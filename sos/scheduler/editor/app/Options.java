@@ -5,9 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Properties;
 
-public class Options {
+import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Shell;
 
-	public static final String OPTIONS_FILE = "../conf/options.properties";
+public class Options {
 
 	public static final String DEFAULT_OPTIONS = "/sos/scheduler/editor/options.properties";
 
@@ -22,6 +24,7 @@ public class Options {
 	}
 
 	public static String loadOptions(Class cl) {
+		String fName="";
 		try {
 			_defaults = new Properties();
 			_defaults.load(cl.getResourceAsStream(DEFAULT_OPTIONS));
@@ -32,15 +35,17 @@ public class Options {
 					+ ": " + e.getMessage();
 		}
 
+
 		try {
-			File file = new File(OPTIONS_FILE);
+			fName = getDefault("editor.options.file").replaceAll("\\{scheduler_home\\}" ,getSchedulerHome()); 
+			File file = new File(fName);
 			if (file.exists()) {
-				FileInputStream fi = new FileInputStream(OPTIONS_FILE);
+				FileInputStream fi = new FileInputStream(fName);
 				_properties.load(fi);
 				fi.close();
 			}
 		} catch (Exception e) {
-			return "Error reading custom options from " + OPTIONS_FILE + ": "
+			return "Error reading custom options from " + fName + ": "
 					+ e.getMessage();
 		}
 
@@ -50,7 +55,7 @@ public class Options {
 	public static String saveProperties() {
 		if (_properties != null && _changed) {
 			try {
-				FileOutputStream fo = new FileOutputStream(OPTIONS_FILE);
+				FileOutputStream fo = new FileOutputStream(getDefault("editor.options.file").replaceAll("\\{scheduler_home\\}" ,getSchedulerHome()));
 				_properties.store(fo, "--Job Scheduler Editor Options--");
 				fo.close();
 			} catch (Exception e) {
@@ -66,7 +71,7 @@ public class Options {
 		_changed = true;
 	}
 
-	public static String getDefault(String key) {
+ 	public static String getDefault(String key) {
 		return _defaults.getProperty(key);
 	}
 	
@@ -114,7 +119,7 @@ public class Options {
 	}
 	
 	public static String getXSLT() {
-		return _properties.getProperty("editor.xml.xslt");
+		return _properties.getProperty("editor.xml.xslt").replaceAll("\\{scheduler_home\\}",getSchedulerHome());
 	}
 	
 	public static String getXSLTFilePrefix() {
@@ -124,4 +129,57 @@ public class Options {
 	public static String getXSLTFileSuffix() {
 		return _properties.getProperty("editor.xml.xslt.file.suffix", "html");
 	}
+	
+	public static void saveWindow(Shell shell){
+		setProperty("editor.window.left", String.valueOf(shell.getLocation().x));
+		setProperty("editor.window.top", String.valueOf(shell.getLocation().y));
+		setProperty("editor.window.width", String.valueOf(shell.getSize().x));
+		setProperty("editor.window.height", String.valueOf(shell.getSize().y));
+		setProperty("editor.window.status", String.valueOf(shell.getMaximized()));
+	}
+
+	public static void loadWindow(Shell shell){
+		Point location = new Point(0,0);
+		Point size = new Point(0,0);
+	 
+		try{
+		   location.x = new Integer(_properties.getProperty("editor.window.left")).intValue();
+		   location.y = new Integer(_properties.getProperty("editor.window.top")).intValue();
+       shell.setLocation(location);
+		}catch (Exception e){e.printStackTrace();}
+		
+		try{
+   		size.x = new Integer(_properties.getProperty("editor.window.width")).intValue();
+	  	size.y = new Integer(_properties.getProperty("editor.window.height")).intValue();
+      shell.setSize(size);
+		}catch (Exception e){e.printStackTrace();}
+		
+		try{
+   		Boolean b = new Boolean(_properties.getProperty("editor.window.status"));
+	  	shell.setMaximized(b.booleanValue());
+		}catch (Exception e){e.printStackTrace();}
+	}
+
+  public static void saveSash(String name, int[] sash){
+  	
+  	setProperty(name + ".sash.layout",sash[0] + "," + sash[1]);
+  }
+  
+  public static void loadSash(String name, SashForm sash){
+  	try{
+  		String value = _properties.getProperty(name + ".sash.layout");
+  		String[] values = value.split(",");
+  		int[] weights = {new Integer(values[0].trim()).intValue(), new Integer(values[1].trim()).intValue()};
+  		
+  		sash.setWeights(weights);
+		}catch (Exception e){e.printStackTrace();}
+  	}
+  
+  public static String getSchedulerHome() {
+  	if (System.getProperty("SCHEDULER_HOME") != null){
+  		return System.getProperty("SCHEDULER_HOME");
+  	}else {
+  		return "";
+  	}
+ 	 }
 }

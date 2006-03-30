@@ -212,7 +212,7 @@ public class PeriodsForm extends Composite implements IUnsaved {
 		gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
 		periodForm = new PeriodForm(group, SWT.NONE);
-		periodForm.setDom(dom);
+		periodForm.setParams(dom, listener.isOnOrder());
 		periodForm.setLayoutData(gridData);
 	}
 	

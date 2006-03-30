@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import com.swtdesigner.SWTResourceManager;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUnsaved;
@@ -131,7 +132,10 @@ public class JobForm extends Composite implements IUnsaved {
 			listener.setProcessClass(cProcessClass.getText());
 		bOrderYes.setSelection(listener.getOrder());
 		bOrderNo.setSelection(!listener.getOrder());
-		sPriority.setSelection(listener.getPriority());
+		sPriority.setEnabled(!bOrderYes.getSelection());
+		if (!bOrderYes.getSelection()) {
+		   sPriority.setSelection(listener.getPriority());
+		}
 		sTasks.setSelection(listener.getTasks());
 		sTimeout.setSelection(listener.getTimeout());
 		sIdleTimeout.setSelection(listener.getIdleTimeout());
@@ -293,8 +297,7 @@ public class JobForm extends Composite implements IUnsaved {
 		tComment = new Text(gMain, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
 		tComment.setToolTipText(Messages.getTooltip("job.comment"));
 		tComment.setLayoutData(gridData61);
-		tComment.setFont(new Font(Display.getDefault(), "Courier New", 8,
-				SWT.NORMAL));
+		tComment.setFont(SWTResourceManager.getFont("Courier New", 10, SWT.NONE));
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setComment(tComment.getText());
@@ -344,6 +347,8 @@ public class JobForm extends Composite implements IUnsaved {
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
+						sPriority.setEnabled(false);
+						sPriority.setSelection(0);
 						listener.setOrder(bOrderYes.getSelection());
 					}
 				});
@@ -356,6 +361,8 @@ public class JobForm extends Composite implements IUnsaved {
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
+						sPriority.setEnabled(true);
+						listener.setPriority(sPriority.getSelection());
 						listener.setOrder(!bOrderNo.getSelection());
 					}
 				});
@@ -385,10 +392,7 @@ public class JobForm extends Composite implements IUnsaved {
 	 * 
 	 */
 	private void createGroup2() {
-		GridData gridData17 = new org.eclipse.swt.layout.GridData();
-		gridData17.horizontalSpan = 5;
-		gridData17.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-		gridData17.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+		GridData gridData17 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
 		GridData gridData16 = new org.eclipse.swt.layout.GridData();
 		gridData16.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData16.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
@@ -396,11 +400,8 @@ public class JobForm extends Composite implements IUnsaved {
 		gridData13.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData13.grabExcessHorizontalSpace = true;
 		gridData13.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-		GridData gridData11 = new org.eclipse.swt.layout.GridData();
-		gridData11.horizontalIndent = 6;
-		gridData11.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData11.grabExcessHorizontalSpace = true;
-		gridData11.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
+		GridData gridData11 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
+		gridData11.horizontalIndent = 32;
 		GridData gridData10 = new org.eclipse.swt.layout.GridData();
 		gridData10.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData10.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
@@ -410,6 +411,8 @@ public class JobForm extends Composite implements IUnsaved {
 		gJobParameter.setText("Job Parameter");
 		gJobParameter.setLayout(gridLayout1);
 		label2 = new Label(gJobParameter, SWT.NONE);
+		final GridData gridData = new GridData();
+		label2.setLayoutData(gridData);
 		label2.setText("Name:");
 		tParaName = new Text(gJobParameter, SWT.BORDER);
 		tParaName.setToolTipText(Messages.getTooltip("job.param.name"));
@@ -483,7 +486,7 @@ public class JobForm extends Composite implements IUnsaved {
 	 */
 	private void createTable() {
 		GridData gridData9 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 3, 1);
-		gridData9.horizontalIndent = 6;
+		gridData9.horizontalIndent = 32;
 		new Label(gJobParameter, SWT.NONE);
 		tParameter = new Table(gJobParameter, SWT.BORDER | SWT.FULL_SELECTION);
 		tParameter.setHeaderVisible(true);
@@ -517,9 +520,9 @@ public class JobForm extends Composite implements IUnsaved {
 	 */
 	private void createGroup3() {
 		GridData gridData14 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
-		GridData gridData12 = new org.eclipse.swt.layout.GridData();
-		gridData12.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData12.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
+		gridData14.horizontalIndent = 24;
+		GridData gridData12 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
+		gridData12.horizontalIndent = 24;
 		GridLayout gridLayout3 = new GridLayout();
 		gridLayout3.numColumns = 2;
 		gDescription = new Group(sashForm, SWT.NONE);
@@ -539,6 +542,7 @@ public class JobForm extends Composite implements IUnsaved {
 				});
 		new Label(gDescription, SWT.NONE);
 		tDescription = new Text(gDescription, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
+		tDescription.setFont(SWTResourceManager.getFont("", 10, SWT.NONE));
 		tDescription.setToolTipText(Messages.getTooltip("job.description"));
 		tDescription.setLayoutData(gridData14);
 		tDescription

@@ -158,7 +158,7 @@ public class MainListener {
 
 		Element runtime = job.getChild("run_time");
 		// create runtime tag
-		if (!Utils.isAttributeValue("order", job) && runtime == null) {
+		if (runtime == null) {
 			runtime = new Element("run_time");
 			job.addContent(runtime);
 		}
@@ -469,7 +469,7 @@ public class MainListener {
 	public void loadOptions() {
 		String msg = Options.loadOptions(getClass());
 		if (msg != null)
-			message("No options file " + Options.OPTIONS_FILE
+			message("No options file " + Options.getDefault("editor.options.file")
 					+ " found - using defaults!\n" + msg, SWT.ICON_ERROR
 					| SWT.OK);
 	}
@@ -479,6 +479,9 @@ public class MainListener {
 			message("The resource bundle " + Messages.getBundle()
 					+ " for the language " + Options.getLanguage()
 					+ " was not found!", SWT.ICON_ERROR | SWT.OK);
+		}
+		if (_gui.getForm() != null){
+		_gui.getForm().setToolTipText();
 		}
 	}
 
@@ -548,7 +551,7 @@ public class MainListener {
 		if (url == null)
 			url = Options.getHelpURL("index").replaceAll("\\{lang\\}", lang);
 
-		return url;
+		return (Options.getHelpURL("maindir") + url).replaceAll("\\{scheduler_home\\}", Options.getSchedulerHome()).replaceAll("\\{lang\\}", lang);
 	}
 
 	public void openHelp(Tree tree) {

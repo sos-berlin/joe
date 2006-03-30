@@ -14,6 +14,8 @@ import sos.scheduler.editor.app.Utils;
 public class PeriodsListener {
 
 	private DomParser _dom;
+	
+	private Element _parent;
 
 	private List _list;
 
@@ -21,9 +23,18 @@ public class PeriodsListener {
 
 	public PeriodsListener(DomParser dom, Element parent) {
 		_dom = dom;
+		_parent = parent;
 		_list = parent.getChildren("period");
 	}
 
+	public boolean isOnOrder() {
+		Element job = _parent;
+		while(!job.getName().equals("job"))
+			job = job.getParentElement();
+		
+		return Utils.isAttributeValue("order", job);
+	}
+	
 	public void fillTable(Table table) {
 		table.removeAll();
 

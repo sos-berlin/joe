@@ -134,10 +134,7 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		GridData gridData5 = new org.eclipse.swt.layout.GridData();
 		gridData5.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData5.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-		GridData gridData4 = new org.eclipse.swt.layout.GridData();
-		gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData4.verticalSpan = 1;
-		gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
+		GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false, 1, 2);
 		GridData gridData3 = new org.eclipse.swt.layout.GridData();
 		gridData3.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData3.verticalSpan = 1;
@@ -148,6 +145,12 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		group.setText("Web Services");
 		createGroup1();
 		bApply = new Button(group, SWT.NONE);
+
+		//final Label PPPP = new Label(group, SWT.NONE);
+		//PPPP.setText("label");
+		createGroup12();
+		new Label(group, SWT.NONE);
+		new Label(group, SWT.NONE);
 		label6 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label6.setText("Label");
 		label6.setLayoutData(gridData18);
@@ -211,7 +214,12 @@ public class WebservicesForm extends Composite implements IUnsaved {
 	 * 
 	 */
 	private void createTable() {
-		GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
+		GridData gridData1 = new org.eclipse.swt.layout.GridData();
+		gridData1.verticalSpan = 3;
+		gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
+		gridData1.grabExcessHorizontalSpace = true;
+		gridData1.grabExcessVerticalSpace = true;
+		gridData1.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		tServices = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
 		tServices.setHeaderVisible(true);
 		tServices.setToolTipText(Messages.getTooltip("web_services.table"));
@@ -277,12 +285,7 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		gridData6.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		GridLayout gridLayout1 = new GridLayout();
 		gridLayout1.numColumns = 6;
-		GridData gridData = new org.eclipse.swt.layout.GridData();
-		gridData.verticalSpan = 1;
-		gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
 		gWebService = new Group(group, SWT.NONE);
 		gWebService.setText("Web Service");
 		gWebService.setLayout(gridLayout1);
@@ -383,7 +386,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 				.getTooltip("web_services.response_xslt"));
 		tResponse.setEnabled(false);
 		tResponse.setLayoutData(gridData6);
-		createGroup12();
 		tResponse
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -406,6 +408,7 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		gridData17.grabExcessHorizontalSpace = true;
 		gridData17.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
 		GridData gridData16 = new org.eclipse.swt.layout.GridData();
+		gridData16.horizontalIndent = 45;
 		gridData16.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData16.grabExcessHorizontalSpace = true;
 		gridData16.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
@@ -417,13 +420,8 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		gridData14.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.numColumns = 5;
-		GridData gridData2 = new org.eclipse.swt.layout.GridData();
-		gridData2.horizontalSpan = 6;
-		gridData2.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData2.grabExcessHorizontalSpace = true;
-		gridData2.grabExcessVerticalSpace = true;
-		gridData2.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		group1 = new Group(gWebService, SWT.NONE);
+		GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 4);
+		group1 = new Group(group, SWT.NONE);
 		group1.setText("Parameters");
 		label4 = new Label(group1, SWT.NONE);
 		label4.setText("Name:");
@@ -508,6 +506,7 @@ public class WebservicesForm extends Composite implements IUnsaved {
 	 */
 	private void createTable2() {
 		GridData gridData13 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 3, 1);
+		gridData13.horizontalIndent = 45;
 		new Label(group1, SWT.NONE);
 		tParams = new Table(group1, SWT.BORDER | SWT.FULL_SELECTION);
 		tParams.setHeaderVisible(true);
@@ -531,7 +530,7 @@ public class WebservicesForm extends Composite implements IUnsaved {
 					}
 				});
 		TableColumn tableColumn3 = new TableColumn(tParams, SWT.NONE);
-		tableColumn3.setWidth(140);
+		tableColumn3.setWidth(125);
 		tableColumn3.setText("Name");
 		TableColumn tableColumn4 = new TableColumn(tParams, SWT.NONE);
 		tableColumn4.setWidth(200);

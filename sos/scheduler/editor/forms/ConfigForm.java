@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
+import com.swtdesigner.SWTResourceManager;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.Messages;
@@ -64,7 +65,6 @@ public class ConfigForm extends Composite {
 
 	private Spinner sPort = null;
 
-	private Label label3 = null;
 
 	private Spinner sTcpPort = null;
 
@@ -158,81 +158,67 @@ public class ConfigForm extends Composite {
 	 */
 	private void createGConfig() {
 		GridLayout gridLayout1 = new GridLayout();
-		gridLayout1.numColumns = 2;
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
-		GridData gridData71 = new GridData();
-		gridData71.widthHint = 60;
-		GridData gridData51 = new GridData();
-		gridData51.horizontalAlignment = GridData.FILL;
-		gridData51.verticalAlignment = GridData.CENTER;
-		GridData gridData41 = new GridData();
-		gridData41.horizontalAlignment = GridData.FILL;
-		gridData41.verticalAlignment = GridData.CENTER;
-		GridData gridData31 = new GridData();
-		gridData31.horizontalAlignment = GridData.FILL;
-		gridData31.verticalAlignment = GridData.CENTER;
-		GridData gridData21 = new GridData();
-		gridData21.horizontalAlignment = GridData.FILL;
-		gridData21.grabExcessHorizontalSpace = true;
-		gridData21.verticalAlignment = GridData.CENTER;
-		GridData gridData1 = new GridData();
-		gridData1.horizontalAlignment = GridData.FILL;
-		gridData1.grabExcessHorizontalSpace = true;
-		gridData1.verticalAlignment = GridData.CENTER;
 		gConfig = new Group(this, SWT.NONE);
 		gConfig.setText("Config");
 		gConfig.setLayout(gridLayout1);
 		gConfig.setSize(new Point(798, 516));
-		label = new Label(gConfig, SWT.NONE);
+
+		final Group group_1 = new Group(gConfig, SWT.NONE);
+		group_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		final GridLayout gridLayout_1 = new GridLayout();
+		gridLayout_1.numColumns = 2;
+		group_1.setLayout(gridLayout_1);
+		label = new Label(group_1, SWT.NONE);
 		label.setText("Scheduler ID:");
-		tSpoolerID = new Text(gConfig, SWT.BORDER);
+		tSpoolerID = new Text(group_1, SWT.BORDER);
+		tSpoolerID.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		tSpoolerID.setToolTipText(Messages.getTooltip("config.spooler_id"));
-		tSpoolerID.setLayoutData(gridData1);
 		tSpoolerID
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 						listener.setSpoolerID(tSpoolerID.getText());
 					}
 				});
-		label7 = new Label(gConfig, SWT.NONE);
+		label7 = new Label(group_1, SWT.NONE);
 		label7.setText("Parameter:");
-		tParameter = new Text(gConfig, SWT.BORDER);
+		tParameter = new Text(group_1, SWT.BORDER);
+		tParameter.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		tParameter.setToolTipText(Messages.getTooltip("config.param"));
-		tParameter.setLayoutData(gridData21);
 		tParameter
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 						listener.setParam(tParameter.getText());
 					}
 				});
-		label10 = new Label(gConfig, SWT.NONE);
+		label10 = new Label(group_1, SWT.NONE);
 		label10.setText("Include Path:");
-		tIncludePath = new Text(gConfig, SWT.BORDER);
+		tIncludePath = new Text(group_1, SWT.BORDER);
+		tIncludePath.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		tIncludePath.setToolTipText(Messages.getTooltip("config.include_path"));
-		tIncludePath.setLayoutData(gridData31);
 		tIncludePath
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 						listener.setIncludePath(tIncludePath.getText());
 					}
 				});
-		label11 = new Label(gConfig, SWT.NONE);
+		label11 = new Label(group_1, SWT.NONE);
 		label11.setText("Log Dir:");
-		tLogDir = new Text(gConfig, SWT.BORDER);
+		tLogDir = new Text(group_1, SWT.BORDER);
+		tLogDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		tLogDir.setToolTipText(Messages.getTooltip("config.log_dir"));
-		tLogDir.setLayoutData(gridData41);
 		tLogDir.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setLogDir(tLogDir.getText());
 			}
 		});
-		label12 = new Label(gConfig, SWT.NONE);
-		label12.setText("Mail XSLT Stylesheet:");
-		tMailXSLTStylesheet = new Text(gConfig, SWT.BORDER);
+		label12 = new Label(group_1, SWT.NONE);
+		label12.setText("Mail XSLT");
+		tMailXSLTStylesheet = new Text(group_1, SWT.BORDER);
+		tMailXSLTStylesheet.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		tMailXSLTStylesheet.setToolTipText(Messages
 				.getTooltip("config.mail_xslt_stylesheet"));
-		tMailXSLTStylesheet.setLayoutData(gridData51);
 		tMailXSLTStylesheet
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -240,12 +226,11 @@ public class ConfigForm extends Composite {
 								.getText());
 					}
 				});
-		label13 = new Label(gConfig, SWT.NONE);
+		label13 = new Label(group_1, SWT.NONE);
 		label13.setText("Max Priority:");
-		sMaxPriority = new Spinner(gConfig, SWT.NONE);
+		sMaxPriority = new Spinner(group_1, SWT.NONE);
 		sMaxPriority.setMaximum(99999999);
 		sMaxPriority.setToolTipText(Messages.getTooltip("config.priority_max"));
-		sMaxPriority.setLayoutData(gridData71);
 		sMaxPriority.addModifyListener(new ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setPriorityMax(sMaxPriority.getSelection());
@@ -269,29 +254,16 @@ public class ConfigForm extends Composite {
 		gridData42.horizontalAlignment = GridData.FILL;
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.numColumns = 6;
-		GridData gridData8 = new GridData();
-		gridData8.grabExcessHorizontalSpace = false;
-		gridData8.widthHint = 60;
-		GridData gridData5 = new GridData();
-		gridData5.horizontalAlignment = GridData.BEGINNING;
-		gridData5.grabExcessHorizontalSpace = false;
-		gridData5.widthHint = 60;
-		gridData5.verticalAlignment = GridData.CENTER;
-		GridData gridData7 = new GridData();
-		gridData7.grabExcessHorizontalSpace = false;
-		gridData7.widthHint = 60;
-		GridData gridData3 = new GridData();
-		gridData3.horizontalSpan = 6;
+		GridData gridData7 = new GridData(60, SWT.DEFAULT);
+		gridData7.horizontalIndent = 41;
 		GridLayout gridLayout11 = new GridLayout();
-		gridLayout11.numColumns = 6;
-		GridData gridData12 = new GridData();
-		gridData12.horizontalAlignment = GridData.FILL;
-		gridData12.horizontalSpan = 2;
-		gridData12.verticalAlignment = GridData.CENTER;
+		gridLayout11.numColumns = 4;
+		GridData gridData12 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		gPorts = new Group(gConfig, SWT.NONE);
 		gPorts.setText("Job Scheduler Port");
 		gPorts.setLayoutData(gridData12);
 		gPorts.setLayout(gridLayout11);
+		GridData gridData3 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
 		cSamePorts = new Button(gPorts, SWT.CHECK);
 		cSamePorts.setText("Use the same port for udp and tcp");
 		cSamePorts.setToolTipText(Messages.getTooltip("config.use_same_port"));
@@ -303,6 +275,12 @@ public class ConfigForm extends Composite {
 						setEditable();
 					}
 				});
+
+		final Label tcpLabel = new Label(gPorts, SWT.NONE);
+		tcpLabel.setText("TCP:");
+		label4 = new Label(gPorts, SWT.NONE);
+		label4.setLayoutData(new GridData());
+		label4.setText("UDP:");
 		label14 = new Label(gPorts, SWT.NONE);
 		label14.setText("Port:");
 		sPort = new Spinner(gPorts, SWT.NONE);
@@ -315,8 +293,7 @@ public class ConfigForm extends Composite {
 				listener.setPort(sPort.getSelection());
 			}
 		});
-		label3 = new Label(gPorts, SWT.NONE);
-		label3.setText("TCP:");
+		GridData gridData5 = new GridData(60, SWT.DEFAULT);
 		sTcpPort = new Spinner(gPorts, SWT.NONE);
 		sTcpPort.setMaximum(99000);
 		sTcpPort.setToolTipText(Messages.getTooltip("config.tcp_port"));
@@ -326,8 +303,7 @@ public class ConfigForm extends Composite {
 				listener.setTcpPort(sTcpPort.getSelection());
 			}
 		});
-		label4 = new Label(gPorts, SWT.NONE);
-		label4.setText("UDP:");
+		GridData gridData8 = new GridData(60, SWT.DEFAULT);
 		sUdpPort = new Spinner(gPorts, SWT.NONE);
 		sUdpPort.setMaximum(99000);
 		sUdpPort.setToolTipText(Messages.getTooltip("config.udp_port"));
@@ -355,7 +331,8 @@ public class ConfigForm extends Composite {
 		gridData18.horizontalAlignment = GridData.FILL;
 		GridLayout gridLayout3 = new GridLayout();
 		gridLayout3.numColumns = 4;
-		GridData gridData2 = new GridData(GridData.FILL, GridData.CENTER, false, false, 4, 1);
+		GridData gridData2 = new GridData();
+		gridData2.horizontalSpan = 4;
 		GridData gridData11 = new GridData();
 		gridData11.widthHint = 60;
 		GridData gridData9 = new GridData();
@@ -412,26 +389,25 @@ public class ConfigForm extends Composite {
 		});
 	}
 
+
 	/**
 	 * This method initializes gJavaOptions
 	 * 
 	 */
 	private void createGJavaOptions() {
 		GridData gridData24 = new GridData();
+		gridData24.horizontalIndent = 9;
 		gridData24.horizontalAlignment = GridData.FILL;
 		gridData24.grabExcessHorizontalSpace = true;
 		gridData24.verticalAlignment = GridData.CENTER;
 		GridData gridData22 = new GridData();
+		gridData22.horizontalIndent = 9;
 		gridData22.horizontalAlignment = GridData.FILL;
 		gridData22.grabExcessHorizontalSpace = true;
 		gridData22.verticalAlignment = GridData.CENTER;
 		GridLayout gridLayout8 = new GridLayout();
 		gridLayout8.numColumns = 2;
-		GridData gridData20 = new GridData();
-		gridData20.horizontalSpan = 2;
-		gridData20.verticalAlignment = GridData.CENTER;
-		gridData20.grabExcessHorizontalSpace = true;
-		gridData20.horizontalAlignment = GridData.FILL;
+		GridData gridData20 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		GridData gridData19 = new GridData();
 		gridData19.horizontalAlignment = GridData.FILL;
 		gridData19.verticalAlignment = GridData.CENTER;
@@ -478,12 +454,7 @@ public class ConfigForm extends Composite {
 		gridData4.grabExcessHorizontalSpace = true;
 		gridData4.grabExcessVerticalSpace = true;
 		gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		GridData gridData = new org.eclipse.swt.layout.GridData();
-		gridData.horizontalSpan = 2;
-		gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
 		group = new Group(gConfig, SWT.NONE);
 		group.setText("Comment");
 		group.setLayoutData(gridData);
@@ -491,8 +462,7 @@ public class ConfigForm extends Composite {
 		tComment = new Text(group, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
 		tComment.setToolTipText(Messages.getTooltip("config.comment"));
 		tComment.setLayoutData(gridData4);
-		tComment.setFont(new Font(Display.getDefault(), "Courier New", 8,
-				SWT.NORMAL));
+		tComment.setFont(SWTResourceManager.getFont("Courier New", 10, SWT.NONE));
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setComment(tComment.getText());

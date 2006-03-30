@@ -18,6 +18,10 @@ public class RunTimeListener {
 		_runtime = _job.getChild("run_time");
 	}
 
+	public boolean isOnOrder() {
+		return Utils.isAttributeValue("order", _job);
+	}
+	
 	public String getComment() {
 		return Utils.getAttributeValue("__comment__", _runtime);
 	}

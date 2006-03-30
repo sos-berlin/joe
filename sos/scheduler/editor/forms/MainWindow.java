@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUpdate;
+import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.TreeMenu;
 import sos.scheduler.editor.listeners.MainListener;
@@ -154,9 +156,13 @@ public class MainWindow implements IUpdate {
 		sShell.setSize(new org.eclipse.swt.graphics.Point(895, 625));
 		sShell.setMinimumSize(890, 620);
 
+
 		// load resources
 		listener.loadOptions();
 		listener.loadMessages();
+		Options.loadWindow(sShell);
+		Options.loadSash("main", sashForm);
+
 
 		menuBar = new Menu(sShell, SWT.BAR);
 		MenuItem submenuItem2 = new MenuItem(menuBar, SWT.CASCADE);
@@ -293,6 +299,9 @@ public class MainWindow implements IUpdate {
 			public void shellClosed(org.eclipse.swt.events.ShellEvent e) {
 				e.doit = applyChanges() && listener.close();
 				setMenuSaveStatus(dom.isChanged());
+				Options.saveWindow(sShell);
+				Options.saveSash("main",sashForm.getWeights());
+				//Options.saveGrid( )
 				listener.saveOptions();
 			}
 
@@ -347,5 +356,15 @@ public class MainWindow implements IUpdate {
 	private boolean applyChanges() {
 		Control[] c = cMainForm.getChildren();
 		return c.length == 0 || listener.applyChanges(c[0]);
+	}
+	
+	public IUpdateLanguage getForm(){
+		if (cMainForm.getChildren().length > 0){
+			if (cMainForm.getChildren()[0] instanceof IUpdateLanguage ){
+				   return (IUpdateLanguage) cMainForm.getChildren()[0];
+			}
+				
+  	}
+		return null;
 	}
 }

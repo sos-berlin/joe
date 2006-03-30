@@ -8,9 +8,7 @@ import sos.scheduler.editor.forms.MainWindow;
 // TODO mussfelder markieren
 // TODO toolbar
 // TODO job options delay nach error count sortierten - bsp. in date
-// TODO runtime optional - runtime löschen bei order entfernen?
 
-// TODO schema datei schreiben
 
 
 public class Editor {

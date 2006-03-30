@@ -208,7 +208,7 @@ public class ExecuteForm extends Composite implements IUnsaved {
 		gExecutable.setLayout(gridLayout);
 		gExecutable.setLayoutData(gridData);
 		label1 = new Label(gExecutable, SWT.NONE);
-		label1.setText("File to Execute:");
+		label1.setText("File");
 		tExecuteFile = new Text(gExecutable, SWT.BORDER);
 		tExecuteFile.setToolTipText(Messages.getTooltip("process.file"));
 		tExecuteFile.setLayoutData(gridData12);

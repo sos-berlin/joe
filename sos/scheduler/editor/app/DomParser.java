@@ -217,6 +217,7 @@ public class DomParser {
 				return;
 		}
 
+		// TODO backup - file copy
 		OutputStreamWriter writer = new OutputStreamWriter(
 				new FileOutputStream(filename), DEFAULT_ENCODING);
 		writer.write(handler.getXML());

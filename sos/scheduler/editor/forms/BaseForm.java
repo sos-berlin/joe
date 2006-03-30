@@ -4,13 +4,11 @@
 package sos.scheduler.editor.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -20,14 +18,17 @@ import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUnsaved;
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.listeners.BaseListener;
+
+import com.swtdesigner.SWTResourceManager;
 
 /**
  * @author sky2000
  * 
  */
-public class BaseForm extends Composite implements IUnsaved {
+public class BaseForm extends Composite implements IUnsaved,IUpdateLanguage{
 	private BaseListener listener;
 	
 	private Group group = null;
@@ -63,7 +64,7 @@ public class BaseForm extends Composite implements IUnsaved {
 		listener = new BaseListener(dom);
 
 		initialize();
-
+		setToolTipText();
 		listener.fillTable(table);
 	}
 
@@ -134,9 +135,7 @@ public class BaseForm extends Composite implements IUnsaved {
 		label3.setLayoutData(gridData8);
 		tComment = new Text(group, SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
 		tComment.setLayoutData(gridData9);
-		tComment.setToolTipText(Messages.getTooltip("base.comment"));
-		tComment.setFont(new Font(Display.getDefault(), "Courier New", 8,
-				SWT.NORMAL));
+		tComment.setFont(SWTResourceManager.getFont("Courier New", 10, SWT.NONE));
 		tComment.setEnabled(false);
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -148,10 +147,8 @@ public class BaseForm extends Composite implements IUnsaved {
 		label.setLayoutData(gridData11);
 		createTable();
 		bNew = new Button(group, SWT.NONE);
-		bNew.setToolTipText(Messages.getTooltip("base.btn_new_file"));
 		bNew.setLayoutData(gridData3);
 		bNew.setText("&New Base File");
-		new Label(group, SWT.NONE);
 		label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label2.setText("Label");
 		label2.setLayoutData(gridData21);
@@ -163,12 +160,10 @@ public class BaseForm extends Composite implements IUnsaved {
 						setInput(true);
 					}
 				});
-		new Label(group, SWT.NONE);
 		bRemove = new Button(group, SWT.NONE);
 		bRemove.setEnabled(false);
 		bRemove.setText("Remove Base File");
 		bRemove.setLayoutData(gridData2);
-		bRemove.setToolTipText(Messages.getTooltip("base.btn_remove_file"));
 		bRemove
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -191,7 +186,6 @@ public class BaseForm extends Composite implements IUnsaved {
 				});
 		tFile.setEnabled(false);
 		tFile.setLayoutData(gridData4);
-		tFile.setToolTipText(Messages.getTooltip("base.file_input"));
 		tFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				bApply.setEnabled(!tFile.getText().equals(""));
@@ -206,7 +200,6 @@ public class BaseForm extends Composite implements IUnsaved {
 		bApply.setLayoutData(gridData1);
 		bApply.setText("&Apply Base File");
 		bApply.setEnabled(false);
-		bApply.setToolTipText(Messages.getTooltip("base.btn_apply"));
 		bApply
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -221,10 +214,8 @@ public class BaseForm extends Composite implements IUnsaved {
 	 *
 	 */
 	private void createTable() {
-		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
-		new Label(group, SWT.NONE);
+		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 2, 3);
 		table = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setToolTipText(Messages.getTooltip("base.table"));
 		table.setHeaderVisible(true);
 		table.setLayoutData(gridData);
 		table.setLinesVisible(true);
@@ -266,5 +257,13 @@ public class BaseForm extends Composite implements IUnsaved {
 		bRemove.setEnabled(table.getSelectionCount() > 0);
 	}
 
-
+  public void setToolTipText(){
+		bNew.setToolTipText(Messages.getTooltip("base.btn_new_file"));
+		tComment.setToolTipText(Messages.getTooltip("base.comment"));
+		bRemove.setToolTipText(Messages.getTooltip("base.btn_remove_file"));
+		bApply.setToolTipText(Messages.getTooltip("base.btn_apply"));
+		table.setToolTipText(Messages.getTooltip("base.table"));
+		tFile.setToolTipText(Messages.getTooltip("base.file_input"));
+ 	
+  }
 } // @jve:decl-index=0:visual-constraint="10,10"

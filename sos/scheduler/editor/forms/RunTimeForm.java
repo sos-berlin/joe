@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import com.swtdesigner.SWTResourceManager;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUpdate;
@@ -39,9 +40,9 @@ public class RunTimeForm extends Composite {
 		
 		holidayForm.setObjects(dom, listener.getRunTime(), gui);
 		
+		periodForm.setParams(dom, listener.isOnOrder());
 		periodForm.setRunOnce(true);
 		periodForm.setEnabled(true);
-		periodForm.setDom(dom);
 		periodForm.setPeriod(listener.getRunTime());
 		tComment.setText(listener.getComment());
 		
@@ -129,8 +130,7 @@ public class RunTimeForm extends Composite {
 		tComment = new Text(gComment, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
 		tComment.setToolTipText(Messages.getTooltip("run_time.comment"));
 		tComment.setLayoutData(gridData1);
-		tComment.setFont(new Font(Display.getDefault(), "Courier New", 8,
-				SWT.NORMAL));
+		tComment.setFont(SWTResourceManager.getFont("Courier New", 10, SWT.NONE));
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setComment(tComment.getText());

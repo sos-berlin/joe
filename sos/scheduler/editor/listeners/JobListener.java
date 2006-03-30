@@ -89,6 +89,7 @@ public class JobListener {
 	public void setOrder(boolean order) {
 		if (order) {
 			_job.setAttribute("order", "yes");
+			_job.removeAttribute("priority");
 			if (_job.getChild("run_time") == null)
 				_job.addContent(new Element("run_time").setAttribute("let_run",
 						"no"));

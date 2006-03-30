@@ -23,8 +23,8 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
 
 public class ScriptForm extends Composite implements IUnsaved {
-	private Label label1_2;
 	private Label label1_1;
+	private Label label1_2;
 	private ScriptListener listener;
 
 	private String groupTitle = "Script";
@@ -119,8 +119,10 @@ public class ScriptForm extends Composite implements IUnsaved {
 	 */
 	private void createGroup() {
 		GridData gridData2 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+		gridData2.horizontalIndent = 7;
 		gridData2.widthHint = 0;
 		GridData gridData = new GridData();
+		gridData.horizontalIndent = 7;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 1;
 		gridData.verticalAlignment = GridData.CENTER;
@@ -287,10 +289,9 @@ public class ScriptForm extends Composite implements IUnsaved {
 		gSource.setText("Source Code");
 
 		label1_1 = new Label(gSource, SWT.NONE);
-		final GridData gridData = new GridData();
-		gridData.horizontalIndent = 55;
-		label1_1.setLayoutData(gridData);
+		label1_1.setLayoutData(new GridData());
 		label1_1.setVisible(false);
+		label1_1.setText("Classname:");
 		tSource = new Text(gSource, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER
 				| SWT.H_SCROLL);
 		tSource.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
