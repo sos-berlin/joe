@@ -48,7 +48,7 @@ public class PeriodListener {
 	
 	private String getIntegerAsString(int i) {
 	String s;
-	if (i == -1) {
+	if (i == -999) {
 		 s = "";
 	}else {
 		s = String.valueOf(i);
@@ -57,7 +57,7 @@ public class PeriodListener {
 	}
 
 	public String getBeginHours() { 
-		return getIntegerAsString(Utils.getHours(_period.getAttributeValue("begin"), -1));
+		return getIntegerAsString(Utils.getHours(_period.getAttributeValue("begin"), -999));
 	}
 
 	public void setPeriodTime(Button bApply, String node,String hours,String minutes,String seconds) {
@@ -65,7 +65,16 @@ public class PeriodListener {
 		if (bApply != null) {
 			bApply.setEnabled(true);
 		}
-}
+  }
+
+	
+	public void setRepeatSeconds(Button bApply,String seconds) {
+		Utils.setAttribute("repeat",  seconds, _period, _dom);
+		if (bApply != null) {
+			bApply.setEnabled(true);
+		}
+  }
+	
 
 	public String getBeginMinutes() {
 		return getIntegerAsString(Utils.getMinutes(_period.getAttributeValue("begin"), -999));
@@ -74,60 +83,60 @@ public class PeriodListener {
 	
 
 	public String getBeginSeconds() {
-		return getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("begin"), -1));
+		return getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("begin"), -999));
 	}
 
 	
 
 	public String getEndHours() {
-		return getIntegerAsString(Utils.getHours(_period.getAttributeValue("end"), -1));
+		return getIntegerAsString(Utils.getHours(_period.getAttributeValue("end"), -999));
 	}
 
 	
 
 	public String getEndMinutes() {
-		return getIntegerAsString(Utils.getMinutes(_period.getAttributeValue("end"), -1));
+		return getIntegerAsString(Utils.getMinutes(_period.getAttributeValue("end"), -999));
 	}
 
 	
 	public String getEndSeconds() {
-		return getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("end"), -1));
+		return getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("end"), -999));
 	}
 
 	 
 
 	public String getRepeatHours() {
-		return getIntegerAsString(Utils.getHours(_period.getAttributeValue("repeat"), -1));
+		return getIntegerAsString(Utils.getHours(_period.getAttributeValue("repeat"), -999));
 	}
 
 	 
 
 	public String getRepeatMinutes() {
-		return getIntegerAsString(Utils.getMinutes(_period.getAttributeValue("repeat"), -1));
+		return getIntegerAsString(Utils.getMinutes(_period.getAttributeValue("repeat"), -999));
 	}
 
 	 
 
 	public String getRepeatSeconds() {
-		return getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("repeat"), -1));
+		return getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("repeat"), -999));
 	}
 
 	 
 
 	public String getSingleHours() {
-		return getIntegerAsString(Utils.getHours(_period.getAttributeValue("single_start"), -1));
+		return getIntegerAsString(Utils.getHours(_period.getAttributeValue("single_start"), -999));
 	}
 
 	 
 
 	public String getSingleMinutes() {
-		return getIntegerAsString(Utils.getMinutes(_period.getAttributeValue("single_start"), -1));
+		return getIntegerAsString(Utils.getMinutes(_period.getAttributeValue("single_start"), -999));
 	}
 
  
 
 	public String getSingleSeconds() {
-		return getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("single_start"), -1));
+		return getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("single_start"), -999));
 	}
 
 	 

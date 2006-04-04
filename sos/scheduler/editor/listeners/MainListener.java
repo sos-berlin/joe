@@ -545,7 +545,7 @@ public class MainListener {
 			TreeItem item = tree.getSelection()[0];
 			TreeData data = (TreeData) item.getData();
 			if (data != null && data.getHelpKey() != null)
-				url = data.getHelpKey().replaceAll("\\{lang\\}", lang);
+				url = data.getHelpKey().replaceAll("\\{lang\\}}", lang);
 		}
 
 		if (url == null)

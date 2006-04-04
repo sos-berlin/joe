@@ -370,9 +370,16 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		sRepeatSeconds
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						if (event) listener.setPeriodTime(bApply,"repeat",sRepeatHours.getText(),sRepeatMinutes.getText(),sRepeatSeconds.getText());
+						if (event) {
+							if(Utils.str2int(sRepeatSeconds.getText()) > 59 ){
+							   listener.setRepeatSeconds(bApply,sRepeatSeconds.getText());
+							}else {
+							   listener.setPeriodTime(bApply,"repeat",sRepeatHours.getText(),sRepeatMinutes.getText(),sRepeatSeconds.getText());
+							}
+						}
 					}
 				});
+		
 		label13 = new Label(gPeriod, SWT.NONE);
 		label13.setText("Single Start:");
 		sSingleHours = new Text(gPeriod, SWT.BORDER);

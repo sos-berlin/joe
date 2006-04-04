@@ -24,7 +24,7 @@ public class Options {
 	}
 	
 	public static String getDefaultOptionFilename() {
-		return getDefault("editor.options.file").replaceAll("%-scheduler_home-%" ,getSchedulerHome());
+		return getDefault("editor.options.file").replaceAll("\\{scheduler_home\\}" ,getSchedulerHome());
 	}
 
 	public static String loadOptions(Class cl) {
@@ -105,8 +105,8 @@ public class Options {
 		else
 			value = _properties.getProperty("editor.browser.unix");
 		
-		value = value.replaceAll("%-file-%", url);
-		value = value.replaceAll("%-lang-%", lang);
+		value = value.replaceAll("\\{file\\}", url);
+		value = value.replaceAll("\\{lang\\}", lang);
 		return value.split("\\|");
 	}
 	
@@ -127,7 +127,7 @@ public class Options {
 	}
 	
 	public static String getXSLT() {
-		return _properties.getProperty("editor.xml.xslt").replaceAll("%-scheduler_home-%",getSchedulerHome());
+		return _properties.getProperty("editor.xml.xslt").replaceAll("\\{scheduler_home\\}",getSchedulerHome());
 	}
 	
 	public static String getXSLTFilePrefix() {

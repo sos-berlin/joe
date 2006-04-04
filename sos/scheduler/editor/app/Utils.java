@@ -165,8 +165,8 @@ public class Utils {
 	public static String getTime(String hours, String minutes, String seconds,
 			boolean onlySeconds) {
 		int h = Utils.str2int(hours,24);
-		int m = Utils.str2int(minutes,60);
-		int s = Utils.str2int(seconds);
+		int m = Utils.str2int(minutes,59);
+		int s = Utils.str2int(seconds,59);
 		if (h<0 && m<0 && s<0) {
      return "";
   		}else {
