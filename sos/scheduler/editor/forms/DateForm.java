@@ -14,11 +14,12 @@ import org.eclipse.swt.widgets.Spinner;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.DomParser;
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.IUpdate;
 import sos.scheduler.editor.listeners.DateListener;
 
-public class DateForm extends Composite {
+public class DateForm extends Composite implements IUpdateLanguage {
 	private DateListener listener;
 
 	private int type;
@@ -57,6 +58,7 @@ public class DateForm extends Composite {
 		super(parent, style);
 		this.type = type;
 		initialize();
+    setToolTipText();		
 	}
 
 	public DateForm(Composite parent, int style, int type, DomParser dom,
@@ -135,7 +137,6 @@ public class DateForm extends Composite {
 		label3.setText("Label");
 		label3.setLayoutData(gridData32);
 		lDates = new List(gDates, SWT.BORDER);
-		lDates.setToolTipText(Messages.getTooltip("date.list"));
 		lDates.setLayoutData(gridData);
 		lDates
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -147,7 +148,6 @@ public class DateForm extends Composite {
 		bRemoveDate = new Button(gDates, SWT.NONE);
 		bRemoveDate.setText("Remove Date");
 		bRemoveDate.setEnabled(false);
-		bRemoveDate.setToolTipText(Messages.getTooltip("date.btn_remove"));
 		bRemoveDate.setLayoutData(gridData1);
 		bRemoveDate
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -170,19 +170,15 @@ public class DateForm extends Composite {
 				});
 		sYear.setMaximum(10000);
 		sYear.setLayoutData(gridData2);
-		sYear.setToolTipText(Messages.getTooltip("date.year"));
 		sYear.setMinimum(1900);
 		sMonth.setMaximum(12);
 		sMonth.setMinimum(1);
 		sMonth.setLayoutData(gridData21);
-		sMonth.setToolTipText(Messages.getTooltip("date.month"));
 		sDay.setMaximum(31);
 		sDay.setMinimum(1);
 		sDay.setLayoutData(gridData31);
-		sDay.setToolTipText(Messages.getTooltip("date.day"));
 		bAddDay.setText("&Add Date");
 		bAddDay.setLayoutData(gridData3);
-		bAddDay.setToolTipText(Messages.getTooltip("date." + btnAddTooltip[type]));
 		bAddDay
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -210,5 +206,13 @@ public class DateForm extends Composite {
 					}
 				});
 	}
+	 public void setToolTipText(){
+			lDates.setToolTipText(Messages.getTooltip("date.list"));
+			bRemoveDate.setToolTipText(Messages.getTooltip("date.btn_remove"));
+			sYear.setToolTipText(Messages.getTooltip("date.year"));
+			sMonth.setToolTipText(Messages.getTooltip("date.month"));
+			sDay.setToolTipText(Messages.getTooltip("date.day"));
+			bAddDay.setToolTipText(Messages.getTooltip("date." + btnAddTooltip[type]));
+	  }
 
 } // @jve:decl-index=0:visual-constraint="10,10"

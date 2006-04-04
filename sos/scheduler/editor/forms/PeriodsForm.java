@@ -13,11 +13,12 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUnsaved;
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.listeners.PeriodsListener;
 import org.eclipse.swt.widgets.Label;
 
-public class PeriodsForm extends Composite implements IUnsaved {
+public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private PeriodsListener listener;
 
 	private DomParser dom;
@@ -44,6 +45,7 @@ public class PeriodsForm extends Composite implements IUnsaved {
 		listener = new PeriodsListener(dom, element);
 		this.dom = dom;
 		initialize();
+		setToolTipText();
 
 		listener.fillTable(tPeriods);
 		periodForm.setEnabled(false);
@@ -99,7 +101,6 @@ public class PeriodsForm extends Composite implements IUnsaved {
 		createTable();
 		bNew = new Button(group, SWT.NONE);
 		bNew.setText("&New Period");
-		bNew.setToolTipText(Messages.getTooltip("periods.btn_new"));
 		bNew.setLayoutData(gridData5);
 		label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label1.setText("Label");
@@ -117,11 +118,9 @@ public class PeriodsForm extends Composite implements IUnsaved {
 		bRemove.setText("Remove Period");
 		bRemove.setEnabled(false);
 		bRemove.setLayoutData(gridData6);
-		bRemove.setToolTipText(Messages.getTooltip("periods.btn_remove"));
 		bApply.setText("&Apply Period");
 		bApply.setEnabled(false);
 		bApply.setLayoutData(gridData1);
-		bApply.setToolTipText(Messages.getTooltip("periods.btn_apply"));
 		bApply
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -170,7 +169,6 @@ public class PeriodsForm extends Composite implements IUnsaved {
 		gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		tPeriods = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
 		tPeriods.setHeaderVisible(true);
-		tPeriods.setToolTipText(Messages.getTooltip("periods.table"));
 		tPeriods.setLayoutData(gridData2);
 		tPeriods.setLinesVisible(true);
 		tPeriods
@@ -179,10 +177,11 @@ public class PeriodsForm extends Composite implements IUnsaved {
 							org.eclipse.swt.events.SelectionEvent e) {
 						bRemove.setEnabled(tPeriods.getSelectionCount() > 0);
 						periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
+						periodForm.setApplyButton(bApply);
 						if (tPeriods.getSelectionCount() > 0) {
 							periodForm.setPeriod(listener.getPeriod(tPeriods
 									.getSelectionIndex()));
-							bApply.setEnabled(true);
+							bApply.setEnabled(false);
 						}
 					}
 				});
@@ -235,5 +234,12 @@ public class PeriodsForm extends Composite implements IUnsaved {
 		bRemove.setEnabled(false);
 		fillPeriod(false);
 	}
+	public void setToolTipText(){
+		bNew.setToolTipText(Messages.getTooltip("periods.btn_new"));
+		bRemove.setToolTipText(Messages.getTooltip("periods.btn_remove"));
+		bApply.setToolTipText(Messages.getTooltip("periods.btn_apply"));
+		tPeriods.setToolTipText(Messages.getTooltip("periods.table"));
 
+
+  }	
 } // @jve:decl-index=0:visual-constraint="10,10"

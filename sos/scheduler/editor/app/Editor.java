@@ -49,9 +49,10 @@ public class Editor {
 		MainWindow window = new MainWindow(app.getDom());
 		app.getDom().setDataChangedListener(window);
 		window.createSShell();
+		
 		window.getSShell().open();
 		window.getSShell().update();
-		window.getSShell().pack(true);
+	//	window.getSShell().pack(true);
 
 		if(args.length > 0)
 			window.openFile(args[0]);

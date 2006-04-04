@@ -17,12 +17,13 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.listeners.ScriptListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
 
-public class ScriptForm extends Composite implements IUnsaved {
+public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private Label label1_1;
 	private Label label1_2;
 	private ScriptListener listener;
@@ -80,6 +81,8 @@ public class ScriptForm extends Composite implements IUnsaved {
 	public ScriptForm(Composite parent, int style) {
 		super(parent, style);
 		initialize();
+		setToolTipText();
+		
 		sashForm.setWeights(new int[] { 40, 60 });
 	}
 
@@ -88,6 +91,8 @@ public class ScriptForm extends Composite implements IUnsaved {
 		super(parent, style);
 		groupTitle = title;
 		initialize();
+		setToolTipText();
+
 		sashForm.setWeights(new int[] { 40, 60 });
 		setAttributes(dom, element, type);
 	}
@@ -137,7 +142,6 @@ public class ScriptForm extends Composite implements IUnsaved {
 		label1 = new Label(gScript, SWT.NONE);
 		label1.setText("Classname:");
 		tClass = new Text(gScript, SWT.BORDER);
-		tClass.setToolTipText(Messages.getTooltip("script.class"));
 		tClass.setLayoutData(gridData);
 		tClass.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -150,7 +154,6 @@ public class ScriptForm extends Composite implements IUnsaved {
 		label3 = new Label(gScript, SWT.NONE);
 		label3.setText("Filename:");
 		tFilename = new Text(gScript, SWT.BORDER);
-		tFilename.setToolTipText(Messages.getTooltip("script.filename"));
 		tFilename.setLayoutData(gridData2);
 		tFilename
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -212,8 +215,6 @@ public class ScriptForm extends Composite implements IUnsaved {
 		label4 = new Label(gInclude, SWT.NONE);
 		label4.setText("File:");
 		tInclude = new Text(gInclude, SWT.BORDER);
-		tInclude.setToolTipText(Messages
-				.getTooltip("script.include.file_entry"));
 		tInclude.setLayoutData(gridData6);
 		bAdd = new Button(gInclude, SWT.NONE);
 		label = new Label(gInclude, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -225,8 +226,6 @@ public class ScriptForm extends Composite implements IUnsaved {
 		label1_2.setVisible(false);
 		label1_2.setText("Classname:");
 		lInclude = new List(gInclude, SWT.BORDER | SWT.H_SCROLL);
-		lInclude
-				.setToolTipText(Messages.getTooltip("script.include.file_list"));
 		lInclude.setLayoutData(gridData4);
 		lInclude
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -238,9 +237,6 @@ public class ScriptForm extends Composite implements IUnsaved {
 		bRemove = new Button(gInclude, SWT.NONE);
 		bRemove.setText("Remove File");
 		bRemove.setEnabled(false);
-		bRemove
-				.setToolTipText(Messages
-						.getTooltip("script.include.btn_remove"));
 		bRemove.setLayoutData(gridData5);
 		bRemove
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -273,7 +269,6 @@ public class ScriptForm extends Composite implements IUnsaved {
 		});
 		bAdd.setText("&Add File");
 		bAdd.setLayoutData(gridData7);
-		bAdd.setToolTipText(Messages.getTooltip("script.include.btn_add"));
 		bAdd.setEnabled(false);
 		bAdd
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -295,7 +290,6 @@ public class ScriptForm extends Composite implements IUnsaved {
 		tSource = new Text(gSource, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER
 				| SWT.H_SCROLL);
 		tSource.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-		tSource.setToolTipText(Messages.getTooltip("script.source_entry"));
 		tSource.setFont(new Font(Display.getDefault(), "Courier New", 8,
 				SWT.NORMAL));
 		tSource.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -314,10 +308,8 @@ public class ScriptForm extends Composite implements IUnsaved {
 		cLanguage.setLayout(new RowLayout());
 		bJava = new Button(cLanguage, SWT.RADIO);
 		bJava.setText("Java");
-		bJava.setToolTipText(Messages.getTooltip("script.language.java"));
 		bCom = new Button(cLanguage, SWT.RADIO);
 		bCom.setText("Com");
-		bCom.setToolTipText(Messages.getTooltip("script.language.com"));
 		bCom
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -340,8 +332,6 @@ public class ScriptForm extends Composite implements IUnsaved {
 				});
 		bJavaScript = new Button(cLanguage, SWT.RADIO);
 		bJavaScript.setText("Javascript");
-		bJavaScript.setToolTipText(Messages
-				.getTooltip("script.language.javascript"));
 		bJavaScript
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -354,7 +344,6 @@ public class ScriptForm extends Composite implements IUnsaved {
 				});
 		bPerl = new Button(cLanguage, SWT.RADIO);
 		bPerl.setText("PerlScript");
-		bPerl.setToolTipText(Messages.getTooltip("script.language.perl"));
 		bPerl
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -367,8 +356,6 @@ public class ScriptForm extends Composite implements IUnsaved {
 				});
 		bVBScript = new Button(cLanguage, SWT.RADIO);
 		bVBScript.setText("VBScript");
-		bVBScript.setToolTipText(Messages
-				.getTooltip("script.language.vb_script"));
 		bVBScript
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -381,7 +368,6 @@ public class ScriptForm extends Composite implements IUnsaved {
 				});
 		bNone = new Button(cLanguage, SWT.RADIO);
 		bNone.setText("None");
-		bNone.setToolTipText(Messages.getTooltip("script.language.none"));
 		bNone
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -493,5 +479,28 @@ public class ScriptForm extends Composite implements IUnsaved {
 		tInclude.setText("");
 		tInclude.setFocus();
 	}
+	public void setToolTipText(){
+		tClass.setToolTipText(Messages.getTooltip("script.class"));
+		tFilename.setToolTipText(Messages.getTooltip("script.filename"));
+		tInclude.setToolTipText(Messages
+				.getTooltip("script.include.file_entry"));
+		lInclude
+				.setToolTipText(Messages.getTooltip("script.include.file_list"));
+		bRemove
+				.setToolTipText(Messages
+						.getTooltip("script.include.btn_remove"));
+		bAdd.setToolTipText(Messages.getTooltip("script.include.btn_add"));
+		tSource.setToolTipText(Messages.getTooltip("script.source_entry"));
+		bJava.setToolTipText(Messages.getTooltip("script.language.java"));
+		bCom.setToolTipText(Messages.getTooltip("script.language.com"));
+		bJavaScript.setToolTipText(Messages
+				.getTooltip("script.language.javascript"));
+		bPerl.setToolTipText(Messages.getTooltip("script.language.perl"));
+		bVBScript.setToolTipText(Messages
+				.getTooltip("script.language.vb_script"));
+		bNone.setToolTipText(Messages.getTooltip("script.language.none"));
+	 
+	 
+  }	
 
 } // @jve:decl-index=0:visual-constraint="10,10"

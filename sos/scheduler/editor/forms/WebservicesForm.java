@@ -19,10 +19,11 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUnsaved;
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.listeners.WebservicesListener;
 
-public class WebservicesForm extends Composite implements IUnsaved {
+public class WebservicesForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private static final String GROUP_WEB_SERVICE = "Web Service";
 
 	private WebservicesListener listener;
@@ -98,7 +99,8 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		super(parent, style);
 		listener = new WebservicesListener(dom, config);
 		initialize();
-
+		setToolTipText();
+		
 		listener.fillTable(tServices);
 		cChain.setItems(listener.getJobChains());
 	}
@@ -183,11 +185,9 @@ public class WebservicesForm extends Composite implements IUnsaved {
 				});
 		bApply.setText("&Apply Web Service");
 		bApply.setLayoutData(gridData4);
-		bApply.setToolTipText(Messages.getTooltip("web_services.btn_apply"));
 		bApply.setEnabled(false);
 		bRemove.setEnabled(false);
 		bRemove.setLayoutData(gridData3);
-		bRemove.setToolTipText(Messages.getTooltip("web_services.btn_remove"));
 		bRemove.setText("Remove Web Service");
 		bApply
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -198,7 +198,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 				});
 		bNew.setText("&New Web Service");
 		bNew.setLayoutData(gridData5);
-		bNew.setToolTipText(Messages.getTooltip("web_services.btn_new"));
 		bNew
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -222,7 +221,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		gridData1.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		tServices = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
 		tServices.setHeaderVisible(true);
-		tServices.setToolTipText(Messages.getTooltip("web_services.table"));
 		tServices.setLayoutData(gridData1);
 		tServices.setLinesVisible(true);
 		tServices
@@ -293,7 +291,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		label = new Label(gWebService, SWT.NONE);
 		label.setText("Name:");
 		tName = new Text(gWebService, SWT.BORDER);
-		tName.setToolTipText(Messages.getTooltip("web_services.name"));
 		tName.setEnabled(false);
 		tName.setLayoutData(gridData9);
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -311,7 +308,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		label1 = new Label(gWebService, SWT.NONE);
 		label1.setText("URL:");
 		tURL = new Text(gWebService, SWT.BORDER);
-		tURL.setToolTipText(Messages.getTooltip("web_services.url"));
 		tURL.setEnabled(false);
 		tURL.setLayoutData(gridData10);
 		tURL.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -323,7 +319,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		label2.setText("Job Chain:");
 		cChain = new CCombo(gWebService, SWT.BORDER);
 		cChain.setEditable(true);
-		cChain.setToolTipText(Messages.getTooltip("web_services.job_chain"));
 		cChain.setEnabled(false);
 		cChain.setLayoutData(gridData12);
 		cChain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -334,7 +329,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		label3 = new Label(gWebService, SWT.NONE);
 		label3.setText("Timeout:");
 		sTimeout = new Spinner(gWebService, SWT.NONE);
-		sTimeout.setToolTipText(Messages.getTooltip("web_services.timeout"));
 		sTimeout.setEnabled(false);
 		sTimeout.setMaximum(99999999);
 		sTimeout.setLayoutData(gridData11);
@@ -346,7 +340,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		label5 = new Label(gWebService, SWT.NONE);
 		label5.setText("Debug:");
 		bDebug = new Button(gWebService, SWT.CHECK);
-		bDebug.setToolTipText(Messages.getTooltip("web_services.debug"));
 		bDebug.setEnabled(false);
 		bDebug
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -358,8 +351,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		label7 = new Label(gWebService, SWT.NONE);
 		label7.setText("Request XSLT:");
 		tRequest = new Text(gWebService, SWT.BORDER);
-		tRequest.setToolTipText(Messages
-				.getTooltip("web_services.request_xslt"));
 		tRequest.setEnabled(false);
 		tRequest.setLayoutData(gridData8);
 		tRequest.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -370,8 +361,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		label13 = new Label(gWebService, SWT.NONE);
 		label13.setText("Forward XSLT:");
 		tForward = new Text(gWebService, SWT.BORDER);
-		tForward.setToolTipText(Messages
-				.getTooltip("web_services.forward_xslt"));
 		tForward.setEnabled(false);
 		tForward.setLayoutData(gridData7);
 		tForward.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -382,8 +371,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		label19 = new Label(gWebService, SWT.NONE);
 		label19.setText("Response XSLT:");
 		tResponse = new Text(gWebService, SWT.BORDER);
-		tResponse.setToolTipText(Messages
-				.getTooltip("web_services.response_xslt"));
 		tResponse.setEnabled(false);
 		tResponse.setLayoutData(gridData6);
 		tResponse
@@ -439,7 +426,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		bRemovePara = new Button(group1, SWT.NONE);
 		bRemovePara.setText("Remove");
 		bRemovePara.setEnabled(false);
-		bRemovePara.setToolTipText(Messages.getTooltip("web_services.param.btn_remove"));
 		bRemovePara.setLayoutData(gridData14);
 		bRemovePara
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -458,7 +444,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 				});
 		tParaName.setEnabled(false);
 		tParaName.setLayoutData(gridData16);
-		tParaName.setToolTipText(Messages.getTooltip("web_services.param.name_entry"));
 		tParaName.setText("");
 		tParaName
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -474,7 +459,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		});
 		tParaValue.setEnabled(false);
 		tParaValue.setLayoutData(gridData17);
-		tParaValue.setToolTipText(Messages.getTooltip("web_services.param.value_entry"));
 		tParaValue
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -489,7 +473,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		});
 		bApplyPara.setText("A&pply");
 		bApplyPara.setLayoutData(gridData15);
-		bApplyPara.setToolTipText(Messages.getTooltip("web_services.param.btn_apply"));
 		bApplyPara.setEnabled(false);
 		bApplyPara
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -511,7 +494,6 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		tParams = new Table(group1, SWT.BORDER | SWT.FULL_SELECTION);
 		tParams.setHeaderVisible(true);
 		tParams.setEnabled(false);
-		tParams.setToolTipText(Messages.getTooltip("web_services.param.table"));
 		tParams.setLayoutData(gridData13);
 		tParams.setLinesVisible(true);
 		tParams
@@ -619,5 +601,28 @@ public class WebservicesForm extends Composite implements IUnsaved {
 		
 		tName.setBackground(null);
 	}
+	public void setToolTipText(){
+		bApply.setToolTipText(Messages.getTooltip("web_services.btn_apply"));
+		bRemove.setToolTipText(Messages.getTooltip("web_services.btn_remove"));
+		bNew.setToolTipText(Messages.getTooltip("web_services.btn_new"));
+		tServices.setToolTipText(Messages.getTooltip("web_services.table"));
+		tName.setToolTipText(Messages.getTooltip("web_services.name"));
+		tURL.setToolTipText(Messages.getTooltip("web_services.url"));
+		cChain.setToolTipText(Messages.getTooltip("web_services.job_chain"));
+		sTimeout.setToolTipText(Messages.getTooltip("web_services.timeout"));
+		bDebug.setToolTipText(Messages.getTooltip("web_services.debug"));
+		tRequest.setToolTipText(Messages
+				.getTooltip("web_services.request_xslt"));
+		tForward.setToolTipText(Messages
+				.getTooltip("web_services.forward_xslt"));
+		tResponse.setToolTipText(Messages
+				.getTooltip("web_services.response_xslt"));
+		bRemovePara.setToolTipText(Messages.getTooltip("web_services.param.btn_remove"));
+		tParaName.setToolTipText(Messages.getTooltip("web_services.param.name_entry"));
+		tParaValue.setToolTipText(Messages.getTooltip("web_services.param.value_entry"));
+		bApplyPara.setToolTipText(Messages.getTooltip("web_services.param.btn_apply"));
+		tParams.setToolTipText(Messages.getTooltip("web_services.param.table"));
 
+	 
+  }	
 } // @jve:decl-index=0:visual-constraint="10,10"

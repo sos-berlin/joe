@@ -17,11 +17,12 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUnsaved;
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.listeners.JobOptionsListener;
 
-public class JobOptionsForm extends Composite implements IUnsaved {
+public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private JobOptionsListener listener;
 
 	private Group group = null;
@@ -123,7 +124,8 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		super(parent, style);
 		listener = new JobOptionsListener(dom, job);
 		initialize();
-
+		setToolTipText();
+		
 		initDirectories(listener.isDirectoryTrigger());
 		initSetbacks(listener.isSetbackDelay());
 		initErrorDelays(listener.isErrorDelay());
@@ -205,19 +207,14 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		label = new Label(group1, SWT.NONE);
 		label.setText("Watch Directory:");
 		tDirectory = new Text(group1, SWT.BORDER);
-		tDirectory.setToolTipText(Messages
-				.getTooltip("start_when_directory_changed.directory"));
 		tDirectory.setLayoutData(gridData3);
 		label11 = new Label(group1, SWT.NONE);
 		label11.setText("File Regex:");
 		tRegex = new Text(group1, SWT.BORDER);
-		tRegex.setToolTipText(Messages
-				.getTooltip("start_when_directory_changed.regex"));
 		tRegex.setLayoutData(gridData4);
 		bApplyDirectory = new Button(group1, SWT.NONE);
 		bApplyDirectory.setText("Apply Dir");
 		bApplyDirectory.setEnabled(false);
-		bApplyDirectory.setToolTipText(Messages.getTooltip("start_when_directory_changed.btn_apply"));
 		bApplyDirectory.setLayoutData(gridData51);
 		bApplyDirectory
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -231,7 +228,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		createTable3();
 		bNewDirectory = new Button(group1, SWT.NONE);
 		bNewDirectory.setText("New Dir");
-		bNewDirectory.setToolTipText(Messages.getTooltip("start_when_directory_changed.btn_new"));
 		bNewDirectory.setLayoutData(gridData41);
 		bNewDirectory
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -248,7 +244,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		bRemoveDirectory = new Button(group1, SWT.NONE);
 		bRemoveDirectory.setText("Remove Dir");
 		bRemoveDirectory.setEnabled(false);
-		bRemoveDirectory.setToolTipText(Messages.getTooltip("start_when_directory_changed.btn_remove"));
 		bRemoveDirectory.setLayoutData(gridData31);
 		bRemoveDirectory
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -346,8 +341,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		createTable();
 		bNewDelay = new Button(group2, SWT.NONE);
 		bNewDelay.setText("&New Delay");
-		bNewDelay.setToolTipText(Messages
-				.getTooltip("delay_after_error.btn_new"));
 		bNewDelay.setLayoutData(gridData13);
 		label6 = new Label(group2, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label6.setText("Label");
@@ -367,8 +360,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		bRemoveDelay.setText("Remove Delay");
 		bRemoveDelay.setEnabled(false);
 		bRemoveDelay.setLayoutData(gridData12);
-		bRemoveDelay.setToolTipText(Messages
-				.getTooltip("delay_after_error.btn_remove"));
 		bRemoveDelay
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -393,8 +384,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		sErrorCount.setMaximum(99999999);
 		sErrorCount.setMinimum(1);
 		sErrorCount.setLayoutData(gridData18);
-		sErrorCount.setToolTipText(Messages
-				.getTooltip("delay_after_error.error_count"));
 		sErrorCount
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -403,8 +392,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 				});
 		sErrorHours.setMaximum(24);
 		sErrorHours.setLayoutData(gridData17);
-		sErrorHours.setToolTipText(Messages
-				.getTooltip("delay_after_error.delay.hours"));
 		sErrorHours
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -413,8 +400,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 				});
 		sErrorMinutes.setMaximum(60);
 		sErrorMinutes.setLayoutData(gridData16);
-		sErrorMinutes.setToolTipText(Messages
-				.getTooltip("delay_after_error.delay.minutes"));
 		sErrorMinutes
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -423,8 +408,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 				});
 		sErrorSeconds.setMaximum(60);
 		sErrorSeconds.setLayoutData(gridData15);
-		sErrorSeconds.setToolTipText(Messages
-				.getTooltip("delay_after_error.delay.seconds"));
 		sErrorSeconds
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -433,8 +416,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 				});
 		bApply.setText("&Apply Delay");
 		bApply.setLayoutData(gridData21);
-		bApply.setToolTipText(Messages
-				.getTooltip("delay_after_error.btn_apply"));
 		bApply.setEnabled(false);
 		bApply
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -496,8 +477,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		label2.setText("Set Back Count:");
 		sSetBackCount = new Spinner(group3, SWT.NONE);
 		sSetBackCount.setMaximum(99999999);
-		sSetBackCount.setToolTipText(Messages
-				.getTooltip("delay_order_after_setback.setback_count"));
 		sSetBackCount.setMinimum(1);
 		sSetBackCount.setLayoutData(gridData7);
 		bIsMaximum = new Button(group3, SWT.CHECK);
@@ -514,8 +493,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 				});
 		bIsMaximum.setText("Is Maximum");
 		bIsMaximum.setLayoutData(gridData6);
-		bIsMaximum.setToolTipText(Messages
-				.getTooltip("delay_order_after_setback.is_maximum"));
 		sSetBackMinutes = new Spinner(group3, SWT.NONE);
 		label9 = new Label(group3, SWT.NONE);
 		label9.setText(":");
@@ -525,7 +502,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		bApplySetback = new Button(group3, SWT.NONE);
 		bApplySetback.setText("Apply Delay");
 		bApplySetback.setEnabled(false);
-		bApplySetback.setToolTipText(Messages.getTooltip("delay_order_after_setback.btn_apply"));
 		bApplySetback.setLayoutData(gridData29);
 		bApplySetback
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -540,7 +516,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		bNewSetback = new Button(group3, SWT.NONE);
 		bNewSetback.setText("New Delay");
 		bNewSetback.setEnabled(true);
-		bNewSetback.setToolTipText(Messages.getTooltip("delay_order_after_setback.btn_new"));
 		bNewSetback.setLayoutData(gridData28);
 		bNewSetback.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -557,7 +532,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		bRemoveSetback = new Button(group3, SWT.NONE);
 		bRemoveSetback.setText("Remove Delay");
 		bRemoveSetback.setEnabled(false);
-		bRemoveSetback.setToolTipText(Messages.getTooltip("delay_order_after_setback.btn_remove"));
 		bRemoveSetback.setLayoutData(gridData27);
 		bRemoveSetback
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -588,9 +562,7 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 				});
 		sSetBackHours.setMaximum(24);
 		sSetBackHours.setLayoutData(gridData8);
-		sSetBackHours.setToolTipText(Messages
-				.getTooltip("delay_order_after_setback.delay.hours"));
-		sSetBackHours
+	sSetBackHours
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 						bApplySetback.setEnabled(true);
@@ -598,8 +570,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 				});
 		sSetBackMinutes.setMaximum(60);
 		sSetBackMinutes.setLayoutData(gridData9);
-		sSetBackMinutes.setToolTipText(Messages
-				.getTooltip("delay_order_after_setback.delay.minutes"));
 		sSetBackMinutes
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -608,8 +578,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 				});
 		sSetBackSeconds.setMaximum(60);
 		sSetBackSeconds.setLayoutData(gridData10);
-		sSetBackSeconds.setToolTipText(Messages
-				.getTooltip("delay_order_after_setback.delay.seconds"));
 		sSetBackSeconds
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -632,8 +600,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		gridData14.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		tErrorDelay = new Table(group2, SWT.BORDER | SWT.FULL_SELECTION);
 		tErrorDelay.setHeaderVisible(true);
-		tErrorDelay.setToolTipText(Messages
-				.getTooltip("delay_after_error.table"));
 		tErrorDelay.setLayoutData(gridData14);
 		tErrorDelay.setLinesVisible(true);
 		tErrorDelay
@@ -672,7 +638,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		composite.setLayoutData(gridData20);
 		bStop = new Button(composite, SWT.RADIO);
 		bStop.setText("STOP");
-		bStop.setToolTipText(Messages.getTooltip("delay_after_error.btn_stop"));
 		bStop
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -683,8 +648,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 				});
 		bDelay = new Button(composite, SWT.RADIO);
 		bDelay.setText("Delay:");
-		bDelay.setToolTipText(Messages
-				.getTooltip("delay_after_error.btn_delay"));
 		bDelay
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -709,7 +672,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		gridData24.verticalSpan = 3;
 		tSetback = new Table(group3, SWT.BORDER | SWT.FULL_SELECTION);
 		tSetback.setHeaderVisible(true);
-		tSetback.setToolTipText(Messages.getTooltip("delay_order_after_setback.table"));
 		tSetback.setLayoutData(gridData24);
 		tSetback.setLinesVisible(true);
 		tSetback.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -749,7 +711,6 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		gridData30.verticalSpan = 3;
 		tDirectories = new Table(group1, SWT.BORDER | SWT.FULL_SELECTION);
 		tDirectories.setHeaderVisible(true);
-		tDirectories.setToolTipText(Messages.getTooltip("start_when_directory_changed.table"));
 		tDirectories.setLayoutData(gridData30);
 		tDirectories.setLinesVisible(true);
 		tDirectories
@@ -904,6 +865,51 @@ public class JobOptionsForm extends Composite implements IUnsaved {
 		initErrorDelay(false);
 	}
 
+	public void setToolTipText(){
+		tDirectory.setToolTipText(Messages
+				.getTooltip("start_when_directory_changed.directory"));
+		tRegex.setToolTipText(Messages
+				.getTooltip("start_when_directory_changed.regex"));
+		bApplyDirectory.setToolTipText(Messages.getTooltip("start_when_directory_changed.btn_apply"));
+		bNewDirectory.setToolTipText(Messages.getTooltip("start_when_directory_changed.btn_new"));
+		bRemoveDirectory.setToolTipText(Messages.getTooltip("start_when_directory_changed.btn_remove"));
+		bNewDelay.setToolTipText(Messages
+				.getTooltip("delay_after_error.btn_new"));
+		bRemoveDelay.setToolTipText(Messages
+				.getTooltip("delay_after_error.btn_remove"));
+		sErrorCount.setToolTipText(Messages
+				.getTooltip("delay_after_error.error_count"));
+		sErrorHours.setToolTipText(Messages
+				.getTooltip("delay_after_error.delay.hours"));
+		sErrorMinutes.setToolTipText(Messages
+				.getTooltip("delay_after_error.delay.minutes"));
+		sErrorSeconds.setToolTipText(Messages
+				.getTooltip("delay_after_error.delay.seconds"));
+		bApply.setToolTipText(Messages
+				.getTooltip("delay_after_error.btn_apply"));
+		sSetBackCount.setToolTipText(Messages
+				.getTooltip("delay_order_after_setback.setback_count"));
+		bIsMaximum.setToolTipText(Messages
+				.getTooltip("delay_order_after_setback.is_maximum"));
+		bApplySetback.setToolTipText(Messages.getTooltip("delay_order_after_setback.btn_apply"));
+		bNewSetback.setToolTipText(Messages.getTooltip("delay_order_after_setback.btn_new"));
+		bRemoveSetback.setToolTipText(Messages.getTooltip("delay_order_after_setback.btn_remove"));
+		sSetBackHours.setToolTipText(Messages
+				.getTooltip("delay_order_after_setback.delay.hours"));
+			sSetBackMinutes.setToolTipText(Messages
+				.getTooltip("delay_order_after_setback.delay.minutes"));
+		sSetBackSeconds.setToolTipText(Messages
+				.getTooltip("delay_order_after_setback.delay.seconds"));
+		tErrorDelay.setToolTipText(Messages
+				.getTooltip("delay_after_error.table"));
+		bStop.setToolTipText(Messages.getTooltip("delay_after_error.btn_stop"));
+		bDelay.setToolTipText(Messages
+				.getTooltip("delay_after_error.btn_delay"));
+		tSetback.setToolTipText(Messages.getTooltip("delay_order_after_setback.table"));
+		tDirectories.setToolTipText(Messages.getTooltip("start_when_directory_changed.table"));
 
+	 
+  }	
+	
 
 } // @jve:decl-index=0:visual-constraint="10,10"

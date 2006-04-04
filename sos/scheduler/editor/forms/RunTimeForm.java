@@ -1,24 +1,26 @@
 package sos.scheduler.editor.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
+
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import com.swtdesigner.SWTResourceManager;
 
 import sos.scheduler.editor.app.DomParser;
+
 import sos.scheduler.editor.app.IUpdate;
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.listeners.RunTimeListener;
 
-public class RunTimeForm extends Composite {
+public class RunTimeForm extends Composite  implements  IUpdateLanguage {
 	private RunTimeListener listener;
 	
 	private Group gRunTime = null;
@@ -35,6 +37,7 @@ public class RunTimeForm extends Composite {
 		super(parent, style);
 		listener = new RunTimeListener(dom, job);
 		initialize();
+		setToolTipText();		
 
 		dom.setInit(true);
 		
@@ -73,6 +76,10 @@ public class RunTimeForm extends Composite {
 		gRunTime.setText("Run Time");
 		createPeriodForm();
 		gRunTime.setLayout(gridLayout3);
+		GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, true);
+		gridData4.heightHint = 318;
+		holidayForm = new DateForm(gRunTime, SWT.NONE, 0);
+		holidayForm.setLayoutData(gridData4);
 		createGroup2();
 		createHollidayForm();
 	}
@@ -82,14 +89,6 @@ public class RunTimeForm extends Composite {
 	 * 
 	 */
 	private void createHollidayForm() {
-		GridData gridData4 = new org.eclipse.swt.layout.GridData();
-		gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData4.grabExcessHorizontalSpace = false;
-		gridData4.grabExcessVerticalSpace = true;
-		gridData4.verticalSpan = 1;
-		gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		holidayForm = new DateForm(gRunTime, SWT.NONE, 0);
-		holidayForm.setLayoutData(gridData4);
 	}
 
 	/**
@@ -97,11 +96,8 @@ public class RunTimeForm extends Composite {
 	 *
 	 */
 	private void createPeriodForm() {
-		GridData gridData2 = new org.eclipse.swt.layout.GridData();
-		gridData2.grabExcessHorizontalSpace = false;
-		gridData2.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData2.grabExcessVerticalSpace = false;
-		gridData2.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+		GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, false);
+		gridData2.widthHint = 151;
 		periodForm = new PeriodForm(gRunTime, SWT.NONE);
 		periodForm.setLayoutData(gridData2);
 	}
@@ -128,7 +124,6 @@ public class RunTimeForm extends Composite {
 		gComment.setLayoutData(gridData);
 		gComment.setLayout(new GridLayout());
 		tComment = new Text(gComment, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
-		tComment.setToolTipText(Messages.getTooltip("run_time.comment"));
 		tComment.setLayoutData(gridData1);
 		tComment.setFont(SWTResourceManager.getFont("Courier New", 10, SWT.NONE));
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -137,5 +132,9 @@ public class RunTimeForm extends Composite {
 			}
 		});
 	}
+	public void setToolTipText(){
+		 
+		tComment.setToolTipText(Messages.getTooltip("run_time.comment"));
 
+  }	
 } // @jve:decl-index=0:visual-constraint="10,10"

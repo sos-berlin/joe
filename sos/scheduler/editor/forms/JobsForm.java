@@ -12,6 +12,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import sos.scheduler.editor.app.DomParser;
+
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.IUpdate;
 import sos.scheduler.editor.listeners.JobsListener;
@@ -20,7 +22,7 @@ import sos.scheduler.editor.listeners.MainListener;
 import org.eclipse.swt.widgets.Label;
 import org.jdom.Element;
 
-public class JobsForm extends Composite {
+public class JobsForm extends Composite implements  IUpdateLanguage {
 
 	private JobsListener listener;
 
@@ -42,6 +44,7 @@ public class JobsForm extends Composite {
 		this.mainListener = mainListener;
 		listener = new JobsListener(dom, update);
 		initialize();
+		setToolTipText();		
 		listener.fillTable(table);
 	}
 
@@ -73,7 +76,6 @@ public class JobsForm extends Composite {
 		createTable();
 		bNewJob = new Button(group, SWT.NONE);
 		bNewJob.setText("&New Job");
-		bNewJob.setToolTipText(Messages.getTooltip("jobs.btn_add_new"));
 		bNewJob.setLayoutData(gridData);
 		label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label.setText("Label");
@@ -89,7 +91,6 @@ public class JobsForm extends Composite {
 		bRemoveJob = new Button(group, SWT.NONE);
 		bRemoveJob.setText("Remove Job");
 		bRemoveJob.setEnabled(false);
-		bRemoveJob.setToolTipText(Messages.getTooltip("jobs.btn_remove"));
 		bRemoveJob.setLayoutData(gridData1);
 		bRemoveJob
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -113,7 +114,6 @@ public class JobsForm extends Composite {
 		gridData2.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		table = new Table(group, SWT.BORDER | SWT.FULL_SELECTION | SWT.CHECK);
 		table.setHeaderVisible(true);
-		table.setToolTipText(Messages.getTooltip("jobs.table"));
 		table.setLayoutData(gridData2);
 		table.setLinesVisible(true);
 		TableColumn tableColumn5 = new TableColumn(table, SWT.NONE);
@@ -157,5 +157,13 @@ public class JobsForm extends Composite {
 		tableColumn4.setWidth(40);
 		tableColumn4.setText("Order");
 	}
+	
+	public void setToolTipText(){
+		bNewJob.setToolTipText(Messages.getTooltip("jobs.btn_add_new"));
+		bRemoveJob.setToolTipText(Messages.getTooltip("jobs.btn_remove"));
+		table.setToolTipText(Messages.getTooltip("jobs.table"));
+
+	 
+  }	
 
 } // @jve:decl-index=0:visual-constraint="10,10"

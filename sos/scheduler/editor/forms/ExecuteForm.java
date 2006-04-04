@@ -17,11 +17,12 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.listeners.ExecuteListener;
 import sos.scheduler.editor.listeners.ScriptListener;
 
-public class ExecuteForm extends Composite implements IUnsaved {
+public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private ExecuteListener listener;
 
 	private Group group = null;
@@ -77,7 +78,8 @@ public class ExecuteForm extends Composite implements IUnsaved {
 	public ExecuteForm(Composite parent, int style, DomParser dom, Element job) {
 		super(parent, style);
 		initialize();
-
+		setToolTipText();
+	
 		listener = new ExecuteListener(dom, job);
 		scriptForm.setAttributes(dom, job, Editor.EXECUTE);
 		fillForm();
@@ -119,7 +121,6 @@ public class ExecuteForm extends Composite implements IUnsaved {
 		group.setText("Execute");
 		bNoExecute = new Button(group, SWT.RADIO);
 		bNoExecute.setSelection(true);
-		bNoExecute.setToolTipText(Messages.getTooltip("execute.choose_none"));
 		bNoExecute.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if(bNoExecute.getSelection()) {
@@ -133,7 +134,6 @@ public class ExecuteForm extends Composite implements IUnsaved {
 		label9.setText("No Execute");
 		label9.setLayoutData(gridData10);
 		bExecutable = new Button(group, SWT.RADIO);
-		bExecutable.setToolTipText(Messages.getTooltip("execute.choose_executable"));
 		bExecutable.setLayoutData(gridData18);
 		bExecutable
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -150,7 +150,6 @@ public class ExecuteForm extends Composite implements IUnsaved {
 		group.setLayout(gridLayout4);
 		createGroup12();
 		bScript = new Button(group, SWT.RADIO);
-		bScript.setToolTipText(Messages.getTooltip("execute.choose_script"));
 		bScript.setLayoutData(gridData17);
 		bScript
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -210,7 +209,6 @@ public class ExecuteForm extends Composite implements IUnsaved {
 		label1 = new Label(gExecutable, SWT.NONE);
 		label1.setText("File");
 		tExecuteFile = new Text(gExecutable, SWT.BORDER);
-		tExecuteFile.setToolTipText(Messages.getTooltip("process.file"));
 		tExecuteFile.setLayoutData(gridData12);
 		tExecuteFile
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -219,9 +217,8 @@ public class ExecuteForm extends Composite implements IUnsaved {
 					}
 				});
 		label3 = new Label(gExecutable, SWT.NONE);
-		label3.setText("Parameter:");
+		label3.setText("Parameter:   ");
 		tParameter = new Text(gExecutable, SWT.BORDER);
-		tParameter.setToolTipText(Messages.getTooltip("process.param"));
 		tParameter.setLayoutData(gridData2);
 		tParameter
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -232,7 +229,6 @@ public class ExecuteForm extends Composite implements IUnsaved {
 		label4 = new Label(gExecutable, SWT.NONE);
 		label4.setText("Log file:");
 		tLogFile = new Text(gExecutable, SWT.BORDER);
-		tLogFile.setToolTipText(Messages.getTooltip("process.log_file"));
 		tLogFile.setLayoutData(gridData3);
 		tLogFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -244,8 +240,6 @@ public class ExecuteForm extends Composite implements IUnsaved {
 		label5.setLayoutData(gridData61);
 		bIgnoreSignal = new Button(gExecutable, SWT.CHECK);
 		bIgnoreSignal.setText("Signal");
-		bIgnoreSignal.setToolTipText(Messages
-				.getTooltip("process.ignore_signal"));
 		bIgnoreSignal.setLayoutData(gridData21);
 		bIgnoreSignal
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -256,8 +250,6 @@ public class ExecuteForm extends Composite implements IUnsaved {
 				});
 		bIgnoreError = new Button(gExecutable, SWT.CHECK);
 		bIgnoreError.setText("Error");
-		bIgnoreError
-				.setToolTipText(Messages.getTooltip("process.ignore_error"));
 		bIgnoreError.setLayoutData(gridData41);
 		bIgnoreError
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -316,12 +308,10 @@ public class ExecuteForm extends Composite implements IUnsaved {
 		label = new Label(gEnvironment, SWT.NONE);
 		label.setText("Name");
 		tName = new Text(gEnvironment, SWT.BORDER);
-		tName.setToolTipText(Messages.getTooltip("process.environment.name"));
 		tName.setLayoutData(gridData11);
 		label7 = new Label(gEnvironment, SWT.NONE);
 		label7.setText("Value");
 		tValue = new Text(gEnvironment, SWT.BORDER);
-		tValue.setToolTipText(Messages.getTooltip("process.environment.value"));
 		tValue.setLayoutData(gridData7);
 		bApply = new Button(gEnvironment, SWT.NONE);
 		label2 = new Label(gEnvironment, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -332,8 +322,6 @@ public class ExecuteForm extends Composite implements IUnsaved {
 		gEnvironment.setLayoutData(gridData9);
 		bRemove = new Button(gEnvironment, SWT.NONE);
 		bRemove.setText("Remove");
-		bRemove.setToolTipText(Messages
-				.getTooltip("process.environment.btn_remove"));
 		bRemove.setEnabled(false);
 		bRemove.setLayoutData(gridData5);
 		bRemove
@@ -378,8 +366,6 @@ public class ExecuteForm extends Composite implements IUnsaved {
 		bApply.setText("&Apply");
 		bApply.setLayoutData(gridData6);
 		bApply.setEnabled(false);
-		bApply.setToolTipText(Messages
-				.getTooltip("process.environment.btn_apply"));
 		bApply
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -402,8 +388,6 @@ public class ExecuteForm extends Composite implements IUnsaved {
 		gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		tVariables = new Table(gEnvironment, SWT.BORDER | SWT.FULL_SELECTION);
 		tVariables.setHeaderVisible(true);
-		tVariables.setToolTipText(Messages
-				.getTooltip("process.environment.table"));
 		tVariables.setLayoutData(gridData4);
 		tVariables.setLinesVisible(true);
 		tVariables
@@ -503,5 +487,25 @@ public class ExecuteForm extends Composite implements IUnsaved {
 		tVariables.deselectAll();
 		tName.setFocus();
 	}
+	public void setToolTipText(){
+		bNoExecute.setToolTipText(Messages.getTooltip("execute.choose_none"));
+		bExecutable.setToolTipText(Messages.getTooltip("execute.choose_executable"));
+		bScript.setToolTipText(Messages.getTooltip("execute.choose_script"));
+		tExecuteFile.setToolTipText(Messages.getTooltip("process.file"));
+		tParameter.setToolTipText(Messages.getTooltip("process.param"));
+		tLogFile.setToolTipText(Messages.getTooltip("process.log_file"));
+		bIgnoreSignal.setToolTipText(Messages
+				.getTooltip("process.ignore_signal"));
+		bIgnoreError
+				.setToolTipText(Messages.getTooltip("process.ignore_error"));
+		tName.setToolTipText(Messages.getTooltip("process.environment.name"));
+		tValue.setToolTipText(Messages.getTooltip("process.environment.value"));
+		bRemove.setToolTipText(Messages
+				.getTooltip("process.environment.btn_remove"));
+		bApply.setToolTipText(Messages
+				.getTooltip("process.environment.btn_apply"));
+		tVariables.setToolTipText(Messages
+				.getTooltip("process.environment.table"));
 
+  }
 } // @jve:decl-index=0:visual-constraint="10,10"

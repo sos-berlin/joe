@@ -21,6 +21,7 @@ import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUnsaved;
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.listeners.ProcessClassesListener;
 
@@ -28,7 +29,7 @@ import sos.scheduler.editor.listeners.ProcessClassesListener;
  * @author sky2000
  * 
  */
-public class ProcessClassesForm extends Composite implements IUnsaved {
+public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private ProcessClassesListener listener;
 
 	private Group group = null;
@@ -68,7 +69,8 @@ public class ProcessClassesForm extends Composite implements IUnsaved {
 		listener = new ProcessClassesListener(dom, config);
 
 		initialize();
-
+		setToolTipText();
+		
 		listener.fillTable(table);
 	}
 
@@ -143,8 +145,6 @@ public class ProcessClassesForm extends Composite implements IUnsaved {
 		createTable();
 		bNew = new Button(group, SWT.NONE);
 		bNew.setText("&New Process Class");
-		bNew.setToolTipText(Messages
-				.getTooltip("process_classes.btn_new_class"));
 		bNew.setLayoutData(gridData1);
 		label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label2.setText("Label");
@@ -160,8 +160,6 @@ public class ProcessClassesForm extends Composite implements IUnsaved {
 				});
 		bRemove = new Button(group, SWT.NONE);
 		bRemove.setText("Remove Process Class");
-		bRemove.setToolTipText(Messages
-				.getTooltip("process_classes.btn_remove_class"));
 		bRemove.setEnabled(false);
 		bRemove.setLayoutData(gridData2);
 		bRemove
@@ -185,8 +183,6 @@ public class ProcessClassesForm extends Composite implements IUnsaved {
 						tProcessClass.setBackground(null);
 					}
 				});
-		tProcessClass.setToolTipText(Messages
-				.getTooltip("process_classes.class_entry"));
 		tProcessClass.setLayoutData(gridData5);
 		tProcessClass.setEnabled(false);
 		tProcessClass.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
@@ -211,8 +207,6 @@ public class ProcessClassesForm extends Composite implements IUnsaved {
 		sMaxProcesses.setMaximum(99999999);
 		sMaxProcesses.setLayoutData(gridData4);
 		sMaxProcesses.setEnabled(false);
-		sMaxProcesses.setToolTipText(Messages
-				.getTooltip("process_classes.max_processes_entry"));
 		sMaxProcesses.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
 				if (e.keyCode == SWT.CR)
@@ -225,8 +219,6 @@ public class ProcessClassesForm extends Composite implements IUnsaved {
 						bApply.setEnabled(true);
 					}
 				});
-		tSpoolerID.setToolTipText(Messages
-				.getTooltip("process_classes.spooler_id_entry"));
 		tSpoolerID.setLayoutData(gridData6);
 		tSpoolerID.setEnabled(false);
 		tSpoolerID.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
@@ -244,7 +236,6 @@ public class ProcessClassesForm extends Composite implements IUnsaved {
 		bApply.setText("&Apply Process Class");
 		bApply.setLayoutData(gridData3);
 		bApply.setEnabled(false);
-		bApply.setToolTipText(Messages.getTooltip("process_classes.btn_apply"));
 		bApply
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -268,7 +259,6 @@ public class ProcessClassesForm extends Composite implements IUnsaved {
 		gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
 		table.setHeaderVisible(true);
-		table.setToolTipText(Messages.getTooltip("process_classes.table"));
 		table.setLayoutData(gridData);
 		table.setLinesVisible(true);
 		table
@@ -322,5 +312,19 @@ public class ProcessClassesForm extends Composite implements IUnsaved {
 		bRemove.setEnabled(table.getSelectionCount() > 0);
 		//tProcessClass.setBackground(null);
 	}
+	public void setToolTipText(){
+		bNew.setToolTipText(Messages
+				.getTooltip("process_classes.btn_new_class"));
+		bRemove.setToolTipText(Messages
+				.getTooltip("process_classes.btn_remove_class"));
+		tProcessClass.setToolTipText(Messages
+				.getTooltip("process_classes.class_entry"));
+		sMaxProcesses.setToolTipText(Messages
+				.getTooltip("process_classes.max_processes_entry"));
+		tSpoolerID.setToolTipText(Messages
+				.getTooltip("process_classes.spooler_id_entry"));
+		bApply.setToolTipText(Messages.getTooltip("process_classes.btn_apply"));
+		table.setToolTipText(Messages.getTooltip("process_classes.table"));
 
+  }	
 } // @jve:decl-index=0:visual-constraint="10,10"

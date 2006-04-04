@@ -22,6 +22,10 @@ public class Options {
 	private Options() {
 
 	}
+	
+	public static String getDefaultOptionFilename() {
+		return getDefault("editor.options.file").replaceAll("%-scheduler_home-%" ,getSchedulerHome());
+	}
 
 	public static String loadOptions(Class cl) {
 		String fName="";
@@ -37,7 +41,7 @@ public class Options {
 
 
 		try {
-			fName = getDefault("editor.options.file").replaceAll("\\{scheduler_home\\}" ,getSchedulerHome()); 
+			fName = getDefaultOptionFilename(); 
 			File file = new File(fName);
 			if (file.exists()) {
 				FileInputStream fi = new FileInputStream(fName);
@@ -55,7 +59,7 @@ public class Options {
 	public static String saveProperties() {
 		if (_properties != null && _changed) {
 			try {
-				FileOutputStream fo = new FileOutputStream(getDefault("editor.options.file").replaceAll("\\{scheduler_home\\}" ,getSchedulerHome()));
+				FileOutputStream fo = new FileOutputStream(getDefaultOptionFilename());
 				_properties.store(fo, "--Job Scheduler Editor Options--");
 				fo.close();
 			} catch (Exception e) {
@@ -101,12 +105,16 @@ public class Options {
 		else
 			value = _properties.getProperty("editor.browser.unix");
 		
-		value = value.replaceAll("\\{file\\}", url);
-		value = value.replaceAll("\\{lang\\}", lang);
+		value = value.replaceAll("%-file-%", url);
+		value = value.replaceAll("%-lang-%", lang);
 		return value.split("\\|");
 	}
 	
+	public static String getSchemaVersion() {
+		return _properties.getProperty("editor.schemaversion");
+	}
 	public static String getVersion() {
+
 		return _properties.getProperty("editor.version");
 	}
 	
@@ -119,7 +127,7 @@ public class Options {
 	}
 	
 	public static String getXSLT() {
-		return _properties.getProperty("editor.xml.xslt").replaceAll("\\{scheduler_home\\}",getSchedulerHome());
+		return _properties.getProperty("editor.xml.xslt").replaceAll("%-scheduler_home-%",getSchedulerHome());
 	}
 	
 	public static String getXSLTFilePrefix() {
@@ -148,16 +156,20 @@ public class Options {
        shell.setLocation(location);
 		}catch (Exception e){e.printStackTrace();}
 		
-		try{
-   		size.x = new Integer(_properties.getProperty("editor.window.width")).intValue();
-	  	size.y = new Integer(_properties.getProperty("editor.window.height")).intValue();
-      shell.setSize(size);
-		}catch (Exception e){e.printStackTrace();}
-		
+
 		try{
    		Boolean b = new Boolean(_properties.getProperty("editor.window.status"));
 	  	shell.setMaximized(b.booleanValue());
 		}catch (Exception e){e.printStackTrace();}
+		
+		try{
+   		size.x = new Integer(_properties.getProperty("editor.window.width")).intValue();
+	  	size.y = new Integer(_properties.getProperty("editor.window.height")).intValue();
+	  	
+      shell.setSize(size);
+		}catch (Exception e){e.printStackTrace();}
+		
+
 	}
 
   public static void saveSash(String name, int[] sash){

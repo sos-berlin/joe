@@ -5,14 +5,14 @@ package sos.scheduler.editor.forms;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Font;
+
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Text;
 import com.swtdesigner.SWTResourceManager;
 
 import sos.scheduler.editor.app.DomParser;
+
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.listeners.ConfigListener;
 
@@ -27,7 +29,7 @@ import sos.scheduler.editor.listeners.ConfigListener;
  * @author sky2000
  * 
  */
-public class ConfigForm extends Composite {
+public class ConfigForm extends Composite  implements IUpdateLanguage{
 
 	private ConfigListener listener;
 
@@ -53,9 +55,7 @@ public class ConfigForm extends Composite {
 
 	private Text tMailXSLTStylesheet = null;
 
-	private Label label13 = null;
 
-	private Spinner sMaxPriority = null;
 
 	private Group gPorts = null;
 
@@ -106,7 +106,7 @@ public class ConfigForm extends Composite {
 		super(parent, style);
 		listener = new ConfigListener(dom);
 		initialize();
-		
+		setToolTipText();
 		tSpoolerID.setFocus();
 	}
 	
@@ -122,7 +122,7 @@ public class ConfigForm extends Composite {
 		tIncludePath.setText(listener.getIncludePath());
 		tLogDir.setText(listener.getLogDir());
 		tMailXSLTStylesheet.setText(listener.getMailXSLTStylesheet());
-		sMaxPriority.setSelection(listener.getPriorityMax());
+	
 		cSamePorts.setSelection(listener.isPort());
 		if (listener.isPort())
 			sPort.setSelection(listener.getPort());
@@ -174,7 +174,7 @@ public class ConfigForm extends Composite {
 		label.setText("Scheduler ID:");
 		tSpoolerID = new Text(group_1, SWT.BORDER);
 		tSpoolerID.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		tSpoolerID.setToolTipText(Messages.getTooltip("config.spooler_id"));
+
 		tSpoolerID
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -185,7 +185,8 @@ public class ConfigForm extends Composite {
 		label7.setText("Parameter:");
 		tParameter = new Text(group_1, SWT.BORDER);
 		tParameter.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		tParameter.setToolTipText(Messages.getTooltip("config.param"));
+
+
 		tParameter
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -196,7 +197,7 @@ public class ConfigForm extends Composite {
 		label10.setText("Include Path:");
 		tIncludePath = new Text(group_1, SWT.BORDER);
 		tIncludePath.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		tIncludePath.setToolTipText(Messages.getTooltip("config.include_path"));
+
 		tIncludePath
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -207,7 +208,7 @@ public class ConfigForm extends Composite {
 		label11.setText("Log Dir:");
 		tLogDir = new Text(group_1, SWT.BORDER);
 		tLogDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		tLogDir.setToolTipText(Messages.getTooltip("config.log_dir"));
+
 		tLogDir.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setLogDir(tLogDir.getText());
@@ -217,8 +218,6 @@ public class ConfigForm extends Composite {
 		label12.setText("Mail XSLT");
 		tMailXSLTStylesheet = new Text(group_1, SWT.BORDER);
 		tMailXSLTStylesheet.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		tMailXSLTStylesheet.setToolTipText(Messages
-				.getTooltip("config.mail_xslt_stylesheet"));
 		tMailXSLTStylesheet
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -226,16 +225,6 @@ public class ConfigForm extends Composite {
 								.getText());
 					}
 				});
-		label13 = new Label(group_1, SWT.NONE);
-		label13.setText("Max Priority:");
-		sMaxPriority = new Spinner(group_1, SWT.NONE);
-		sMaxPriority.setMaximum(99999999);
-		sMaxPriority.setToolTipText(Messages.getTooltip("config.priority_max"));
-		sMaxPriority.addModifyListener(new ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				listener.setPriorityMax(sMaxPriority.getSelection());
-			}
-		});
 		createGPorts();
 		createGMainScheduler();
 		createGJavaOptions();
@@ -266,7 +255,7 @@ public class ConfigForm extends Composite {
 		GridData gridData3 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
 		cSamePorts = new Button(gPorts, SWT.CHECK);
 		cSamePorts.setText("Use the same port for udp and tcp");
-		cSamePorts.setToolTipText(Messages.getTooltip("config.use_same_port"));
+
 		cSamePorts.setLayoutData(gridData3);
 		cSamePorts
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -286,7 +275,7 @@ public class ConfigForm extends Composite {
 		sPort = new Spinner(gPorts, SWT.NONE);
 		sPort.setDigits(0);
 		sPort.setMaximum(99000);
-		sPort.setToolTipText(Messages.getTooltip("config.port"));
+
 		sPort.setLayoutData(gridData7);
 		sPort.addModifyListener(new ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -296,7 +285,7 @@ public class ConfigForm extends Composite {
 		GridData gridData5 = new GridData(60, SWT.DEFAULT);
 		sTcpPort = new Spinner(gPorts, SWT.NONE);
 		sTcpPort.setMaximum(99000);
-		sTcpPort.setToolTipText(Messages.getTooltip("config.tcp_port"));
+
 		sTcpPort.setLayoutData(gridData5);
 		sTcpPort.addModifyListener(new ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -306,7 +295,7 @@ public class ConfigForm extends Composite {
 		GridData gridData8 = new GridData(60, SWT.DEFAULT);
 		sUdpPort = new Spinner(gPorts, SWT.NONE);
 		sUdpPort.setMaximum(99000);
-		sUdpPort.setToolTipText(Messages.getTooltip("config.udp_port"));
+
 		sUdpPort.setLayoutData(gridData8);
 		sUdpPort.addModifyListener(new ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -320,8 +309,8 @@ public class ConfigForm extends Composite {
 	 * 
 	 */
 	private void createGMainScheduler() {
-		GridData gridData6 = new org.eclipse.swt.layout.GridData();
-		gridData6.widthHint = 200;
+		GridData gridData6 = new GridData(200, SWT.DEFAULT);
+		gridData6.horizontalIndent = 37;
 		GridLayout gridLayout7 = new GridLayout();
 		gridLayout7.numColumns = 4;
 		GridData gridData18 = new GridData();
@@ -350,8 +339,6 @@ public class ConfigForm extends Composite {
 		gMainScheduler.setLayout(gridLayout4);
 		cUseMainScheduler = new Button(gMainScheduler, SWT.CHECK);
 		cUseMainScheduler.setText("use a main scheduler");
-		cUseMainScheduler.setToolTipText(Messages
-				.getTooltip("config.use_main_scheduler"));
 		cUseMainScheduler.setLayoutData(gridData2);
 		cUseMainScheduler
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -362,10 +349,8 @@ public class ConfigForm extends Composite {
 				});
 		cUseMainScheduler.setLayoutData(gridData9);
 		label1 = new Label(gMainScheduler, SWT.NONE);
-		label1.setText("Hostname:");
+		label1.setText("Host:");
 		tMainSchedulerHost = new Text(gMainScheduler, SWT.BORDER);
-		tMainSchedulerHost.setToolTipText(Messages
-				.getTooltip("config.main_scheduler_host"));
 		tMainSchedulerHost.setLayoutData(gridData6);
 		tMainSchedulerHost
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -378,8 +363,7 @@ public class ConfigForm extends Composite {
 		label2.setText("Port:");
 		sMainSchedulerPort = new Spinner(gMainScheduler, SWT.NONE);
 		sMainSchedulerPort.setMaximum(99000);
-		sMainSchedulerPort.setToolTipText(Messages
-				.getTooltip("config.main_scheduler_port"));
+
 		sMainSchedulerPort.setLayoutData(gridData11);
 		sMainSchedulerPort.addModifyListener(new ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -422,8 +406,6 @@ public class ConfigForm extends Composite {
 		label8 = new Label(gJavaOptions, SWT.NONE);
 		label8.setText("Class Path:");
 		tJavaClassPath = new Text(gJavaOptions, SWT.BORDER);
-		tJavaClassPath.setToolTipText(Messages
-				.getTooltip("config.java_class_path"));
 		tJavaClassPath.setLayoutData(gridData22);
 		tJavaClassPath
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -434,7 +416,7 @@ public class ConfigForm extends Composite {
 		label9 = new Label(gJavaOptions, SWT.NONE);
 		label9.setText("Options:");
 		tJavaOptions = new Text(gJavaOptions, SWT.BORDER);
-		tJavaOptions.setToolTipText(Messages.getTooltip("config.java_options"));
+
 		tJavaOptions.setLayoutData(gridData24);
 		tJavaOptions
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -460,7 +442,6 @@ public class ConfigForm extends Composite {
 		group.setLayoutData(gridData);
 		group.setLayout(new GridLayout());
 		tComment = new Text(group, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
-		tComment.setToolTipText(Messages.getTooltip("config.comment"));
 		tComment.setLayoutData(gridData4);
 		tComment.setFont(SWTResourceManager.getFont("Courier New", 10, SWT.NONE));
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -470,5 +451,31 @@ public class ConfigForm extends Composite {
 		});
 	}
 
+	 public void setToolTipText(){
+			tSpoolerID.setToolTipText(Messages.getTooltip("config.spooler_id"));
+			tParameter.setToolTipText(Messages.getTooltip("config.param"));
+			tIncludePath.setToolTipText(Messages.getTooltip("config.include_path"));
+			tLogDir.setToolTipText(Messages.getTooltip("config.log_dir"));
+			tMailXSLTStylesheet.setToolTipText(Messages
+					.getTooltip("config.mail_xslt_stylesheet"));
+
+			cSamePorts.setToolTipText(Messages.getTooltip("config.use_same_port"));
+			sPort.setToolTipText(Messages.getTooltip("config.port"));
+			sTcpPort.setToolTipText(Messages.getTooltip("config.tcp_port"));
+			sUdpPort.setToolTipText(Messages.getTooltip("config.udp_port"));
+
+			cUseMainScheduler.setToolTipText(Messages
+					.getTooltip("config.use_main_scheduler"));
+			tMainSchedulerHost.setToolTipText(Messages
+					.getTooltip("config.main_scheduler_host"));
+
+			sMainSchedulerPort.setToolTipText(Messages
+					.getTooltip("config.main_scheduler_port"));
+			tJavaClassPath.setToolTipText(Messages
+					.getTooltip("config.java_class_path"));
+			tComment.setToolTipText(Messages.getTooltip("config.comment"));
+			tComment.setToolTipText(Messages.getTooltip("config.java_options"));
+	 	
+	  }
 
 } // @jve:decl-index=0:visual-constraint="10,10"

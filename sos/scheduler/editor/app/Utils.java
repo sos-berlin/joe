@@ -161,9 +161,80 @@ public class Utils {
 			return asStr(hours) + ":" + asStr(minutes) + ":" + asStr(seconds);
 
 	}
+	
+	public static String getTime(String hours, String minutes, String seconds,
+			boolean onlySeconds) {
+		int h = Utils.str2int(hours,24);
+		int m = Utils.str2int(minutes,60);
+		int s = Utils.str2int(seconds);
+		if (h<0 && m<0 && s<0) {
+     return "";
+  		}else {
+  		if (h<0) h=0;
+  		if (m<0) m=0;
+  		if (s<0) s=0;
+		  return getTime(h,m,s,onlySeconds);
+		}
+	}
 
 	public static String asStr(int value) {
 		return value < 10 ? "0" + value : "" + value;
 	}
+	
+	public static String fill(int l,String s) {
+		String n="00000000000000000000000000000";
+		if ((s.length() < l) && (!s.trim().equals(""))) {
+			s = n.substring(0, l-s.length())+ s;
+		}
+		return s;
+	}
+
+	public static String onlyDigits(String s) {
+		String erg="";
+		int i=0;
+		for (i=0;i < s.length();i++) {
+			try {
+			  Integer.parseInt(String.valueOf(s.charAt(i)));
+			  erg = erg + s.charAt(i);
+  	  }catch (Exception ee) {}		
+		}
+	
+		return erg;
+	}
+	
+	public static  int str2int(String s) {
+		int i = 0;
+		try {
+			  i = Integer.parseInt(s);
+	  	}catch (Exception e) {
+		  	s = onlyDigits(s);
+				try {
+  			  i = Integer.parseInt(s);
+		  	  }catch (Exception ee) {
+		  		  i =-999;
+		  	   }
+		  }
+		return i;
+	}
+ 
+	public static int str2int(String s,int maxValue) {
+		int i = 0;
+		try {
+			  i = Integer.parseInt(s);
+	  	}catch (Exception e) {
+		  	s = onlyDigits(s);
+				try {
+  			  i = Integer.parseInt(s);
+		  	  }catch (Exception ee) {
+		  		  i=-999;
+		  	   }
+		  }
+	  	
+	  if (i > maxValue) 
+	  	i = maxValue;
+		
+	 return i;
+	}
+		
 
 }

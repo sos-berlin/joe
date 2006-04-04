@@ -1,5 +1,8 @@
 package sos.scheduler.editor.listeners;
 
+
+import org.eclipse.swt.widgets.Button;
+
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.DomParser;
@@ -10,7 +13,7 @@ public class PeriodListener {
 	private DomParser _dom;
 
 	private Element _period;
-
+	 
 	public PeriodListener(DomParser dom) {
 		_dom = dom;
 	}
@@ -42,156 +45,92 @@ public class PeriodListener {
 		return Utils.getTime(getSingleHours(), getSingleMinutes(),
 				getSingleSeconds(), false);
 	}
-
-	public int getBeginHours() {
-		return Utils.getHours(_period.getAttributeValue("begin"), 0);
+	
+	private String getIntegerAsString(int i) {
+	String s;
+	if (i == -1) {
+		 s = "";
+	}else {
+		s = String.valueOf(i);
+	}
+	return s;
 	}
 
-	public void setBeginHours(int hours, boolean write) {
-		if (write)
-		Utils.setAttribute("begin", Utils.getTime(hours, getBeginMinutes(),
-				getBeginSeconds(), false), _period);
-		else 
-			removeBeginTime();
+	public String getBeginHours() { 
+		return getIntegerAsString(Utils.getHours(_period.getAttributeValue("begin"), -1));
 	}
 
-	public int getBeginMinutes() {
-		return Utils.getMinutes(_period.getAttributeValue("begin"), 0);
+	public void setPeriodTime(Button bApply, String node,String hours,String minutes,String seconds) {
+		Utils.setAttribute(node, Utils.getTime(hours, minutes,seconds, false), _period , _dom);
+		if (bApply != null) {
+			bApply.setEnabled(true);
+		}
+}
+
+	public String getBeginMinutes() {
+		return getIntegerAsString(Utils.getMinutes(_period.getAttributeValue("begin"), -999));
 	}
 
-	public void setBeginMinutes(int minutes, boolean write) {
-		if (write)
-		Utils.setAttribute("begin", Utils.getTime(getBeginHours(), minutes,
-				getBeginSeconds(), false), _period);
-		else 
-			removeBeginTime();
-		
+	
+
+	public String getBeginSeconds() {
+		return getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("begin"), -1));
 	}
 
-	public int getBeginSeconds() {
-		return Utils.getSeconds(_period.getAttributeValue("begin"), 0);
+	
+
+	public String getEndHours() {
+		return getIntegerAsString(Utils.getHours(_period.getAttributeValue("end"), -1));
 	}
 
-	public void setBeginSeconds(int seconds, boolean write) {
-		if (write)
-		Utils.setAttribute("begin", Utils.getTime(getBeginHours(),
-				getBeginMinutes(), seconds, false), _period);
-		else 
-			removeBeginTime();
-		
+	
+
+	public String getEndMinutes() {
+		return getIntegerAsString(Utils.getMinutes(_period.getAttributeValue("end"), -1));
 	}
 
-	public int getEndHours() {
-		return Utils.getHours(_period.getAttributeValue("end"), 24);
+	
+	public String getEndSeconds() {
+		return getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("end"), -1));
 	}
 
-	public void setEndHours(int hours, boolean write) {
-		if (write)
-		Utils.setAttribute("end", Utils.getTime(hours, getEndMinutes(),
-				getEndSeconds(), false), _period);
-		else 
-			removeEndTime();
+	 
 
+	public String getRepeatHours() {
+		return getIntegerAsString(Utils.getHours(_period.getAttributeValue("repeat"), -1));
 	}
 
-	public int getEndMinutes() {
-		return Utils.getMinutes(_period.getAttributeValue("end"), 0);
+	 
+
+	public String getRepeatMinutes() {
+		return getIntegerAsString(Utils.getMinutes(_period.getAttributeValue("repeat"), -1));
 	}
 
-	public void setEndMinutes(int minutes, boolean write) {
-		if (write)
-		Utils.setAttribute("end", Utils.getTime(getEndHours(), minutes,
-				getEndSeconds(), false), _period);
-		else 
-			removeEndTime();
-		
+	 
+
+	public String getRepeatSeconds() {
+		return getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("repeat"), -1));
 	}
 
-	public int getEndSeconds() {
-		return Utils.getSeconds(_period.getAttributeValue("end"), 0);
+	 
+
+	public String getSingleHours() {
+		return getIntegerAsString(Utils.getHours(_period.getAttributeValue("single_start"), -1));
 	}
 
-	public void setEndSeconds(int seconds, boolean write) {
-		if (write)
-		Utils.setAttribute("end", Utils.getTime(getEndHours(),
-				getEndMinutes(), seconds, false), _period);
-		else 
-			removeEndTime();
-		
+	 
+
+	public String getSingleMinutes() {
+		return getIntegerAsString(Utils.getMinutes(_period.getAttributeValue("single_start"), -1));
 	}
 
-	public int getRepeatHours() {
-		return Utils.getHours(_period.getAttributeValue("repeat"), 0);
+ 
+
+	public String getSingleSeconds() {
+		return getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("single_start"), -1));
 	}
 
-	public void setRepeatHours(int hours, boolean write) {
-		if (write)
-		Utils.setAttribute("repeat", Utils.getTime(hours, getRepeatMinutes(),
-				getRepeatSeconds(), true), "00:00", _period);
-		else 
-			removeRepeatTime();
-	}
-
-	public int getRepeatMinutes() {
-		return Utils.getMinutes(_period.getAttributeValue("repeat"), 0);
-	}
-
-	public void setRepeatMinutes(int minutes, boolean write) {
-		if(write)
-		Utils.setAttribute("repeat", Utils.getTime(getRepeatHours(), minutes,
-				getRepeatSeconds(), true), "00:00", _period);
-		else 
-			removeRepeatTime();
-	}
-
-	public int getRepeatSeconds() {
-		return Utils.getSeconds(_period.getAttributeValue("repeat"), 0);
-	}
-
-	public void setRepeatSeconds(int seconds, boolean write) {
-		if (write) 
-			Utils.setAttribute("repeat", Utils.getTime(getRepeatHours(),
-				getRepeatMinutes(), seconds, true), "00:00", _period);
-		else 
-			removeRepeatTime();
-		
-	}
-
-	public int getSingleHours() {
-		return Utils.getHours(_period.getAttributeValue("single_start"), 0);
-	}
-
-	public void setSingleHours(int hours, boolean write) {
-		if(write)
-		Utils.setAttribute("single_start", Utils.getTime(hours,
-				getSingleMinutes(), getSingleSeconds(), false), _period);
-		else
-			removeSingleStart();
-	}
-
-	public int getSingleMinutes() {
-		return Utils.getMinutes(_period.getAttributeValue("single_start"), 0);
-	}
-
-	public void setSingleMinutes(int minutes, boolean write) {
-		if(write)
-		Utils.setAttribute("single_start", Utils.getTime(getSingleHours(),
-				minutes, getSingleSeconds(), false), _period);
-		else
-			removeSingleStart();
-	}
-
-	public int getSingleSeconds() {
-		return Utils.getSeconds(_period.getAttributeValue("single_start"), 0);
-	}
-
-	public void setSingleSeconds(int seconds, boolean write) {
-		if(write)
-		Utils.setAttribute("single_start", Utils.getTime(getSingleHours(),
-				getSingleMinutes(), seconds, false), _period);
-		else
-			removeSingleStart();
-	}
+	 
 
 	public boolean getLetRun() {
 		String letrun = _period.getAttributeValue("let_run");
@@ -200,7 +139,7 @@ public class PeriodListener {
 
 	public void setLetRun(boolean letrun) {
 		_period.setAttribute("let_run", letrun ? "yes" : "no");
-		//_dom.setChanged(true);
+		_dom.setChanged(true);
 	}
 	
 	public boolean getRunOnce() {
@@ -208,33 +147,8 @@ public class PeriodListener {
 	}
 	
 	public void setRunOnce(boolean once) {
-		Utils.setAttribute("once", once, false, _period, _dom);
+		Utils.setAttribute("once", once, false, _period );
 	}
 	
-	public void removeBeginTime() {
-		_period.removeAttribute("begin");
-	}
-	public void removeEndTime() {
-		_period.removeAttribute("end");
-	}
-	public void removeRepeatTime() {
-		_period.removeAttribute("repeat");
-	}
-	public void removeSingleStart() {
-		_period.removeAttribute("single_start");
-	}
-
-	public boolean hasBeginTime() {
-		return (_period.getAttribute("begin") != null);
-	}
-	public boolean hasEndTime() {
-		return (_period.getAttribute("end") != null);
-	}
-	public boolean hasRepeatTime() {
-		return (_period.getAttribute("repeat") != null);
-	}
-	public boolean hasSingleStart() {
-		return (_period.getAttribute("single_start") != null);
-	}
 	
 }

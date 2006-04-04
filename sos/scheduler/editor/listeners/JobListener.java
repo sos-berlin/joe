@@ -100,11 +100,12 @@ public class JobListener {
 		_dom.setChanged(true);
 	}
 
-	public int getPriority() {
-		return Utils.getIntValue("priority", 1, _job);
+	public String getPriority() {
+
+		return Utils.getAttributeValue("priority", _job);
 	}
 
-	public void setPriority(int priority) {
+	public void setPriority(String priority) {
 		Utils.setAttribute("priority", priority, _job, _dom);
 	}
 
@@ -112,7 +113,7 @@ public class JobListener {
 		return Utils.getIntValue("tasks", 1, _job);
 	}
 
-	public void setTasks(int tasks) {
+	public void setTasks(String tasks) {
 		Utils.setAttribute("tasks", tasks, _job, _dom);
 	}
 
@@ -120,7 +121,7 @@ public class JobListener {
 		return Utils.getIntValue("timeout", _job);
 	}
 
-	public void setTimeout(int timeout) {
+	public void setTimeout(String timeout) {
 		Utils.setAttribute("timeout", timeout, _job, _dom);
 	}
 
@@ -128,7 +129,7 @@ public class JobListener {
 		return Utils.getIntValue("idle_timeout", _job);
 	}
 
-	public void setIdleTimeout(int timeout) {
+	public void setIdleTimeout(String timeout) {
 		Utils.setAttribute("idle_timeout", timeout, _job, _dom);
 	}
 

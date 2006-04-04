@@ -469,7 +469,7 @@ public class MainListener {
 	public void loadOptions() {
 		String msg = Options.loadOptions(getClass());
 		if (msg != null)
-			message("No options file " + Options.getDefault("editor.options.file")
+			message("No options file " + Options.getDefaultOptionFilename()  
 					+ " found - using defaults!\n" + msg, SWT.ICON_ERROR
 					| SWT.OK);
 	}
@@ -579,7 +579,7 @@ public class MainListener {
 	public void showAbout() {
 		TextDialog dialog = new TextDialog(_gui.getSShell());
 		dialog.setText("About Job Scheduler Editor");
-		String message = Messages.getString("MainListener.aboutText", Options.getVersion());
+		String message = Messages.getString("MainListener.aboutText", Options.getVersion() + "\nSchema-Version:" + Options.getSchemaVersion() + "\n");
 		dialog.setContent(message, SWT.CENTER);
 		dialog.getStyledText().setEnabled(false);
 		StyleRange bold = new StyleRange();

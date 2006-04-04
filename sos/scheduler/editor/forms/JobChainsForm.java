@@ -18,10 +18,11 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUnsaved;
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.listeners.JobChainsListener;
 
-public class JobChainsForm extends Composite implements IUnsaved {
+public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private static final String GROUP_NODES_TITLE = "Chain Nodes";
 
 	private JobChainsListener listener;
@@ -93,7 +94,7 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		super(parent, style);
 		listener = new JobChainsListener(dom, config);
 		initialize();
-
+		setToolTipText();
 		fillChain(false, false);
 		listener.fillChains(tChains);
 	}
@@ -169,7 +170,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		label = new Label(cChains, SWT.NONE);
 		label.setText("Chain Name:");
 		tName = new Text(cChains, SWT.BORDER);
-		tName.setToolTipText(Messages.getTooltip("job_chains.chain.name"));
 		tName.setLayoutData(gridData10);
 		bRecoverable = new Button(cChains, SWT.CHECK);
 		bVisible = new Button(cChains, SWT.CHECK);
@@ -182,8 +182,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		cChains.setLayout(gridLayout);
 		bNewChain = new Button(cChains, SWT.NONE);
 		bNewChain.setText("New Job &Chain");
-		bNewChain.setToolTipText(Messages
-				.getTooltip("job_chains.chain.btn_new"));
 		bNewChain.setLayoutData(gridData16);
 		label3 = new Label(cChains, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label3.setText("Label");
@@ -202,8 +200,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		bRemoveChain = new Button(cChains, SWT.NONE);
 		bRemoveChain.setText("Remove Job Chain");
 		bRemoveChain.setEnabled(false);
-		bRemoveChain.setToolTipText(Messages
-				.getTooltip("job_chains.chain.btn_remove"));
 		bRemoveChain.setLayoutData(gridData1);
 		bRemoveChain
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -225,8 +221,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		});
 		bRecoverable.setText("Orders Recoverable");
 		bRecoverable.setLayoutData(gridData3);
-		bRecoverable.setToolTipText(Messages
-				.getTooltip("job_chains.chain.orders_recoverable"));
 		bRecoverable
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -235,12 +229,8 @@ public class JobChainsForm extends Composite implements IUnsaved {
 					}
 				});
 		bVisible.setText("Visible");
-		bVisible
-				.setToolTipText(Messages.getTooltip("job_chains.chain.visible"));
 		bApplyChain.setText("A&pply Job Chain");
 		bApplyChain.setLayoutData(gridData);
-		bApplyChain.setToolTipText(Messages
-				.getTooltip("job_chains.chain.btn_apply"));
 		bApplyChain.setEnabled(false);
 		bApplyChain
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -272,7 +262,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		gridData2.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		tChains = new Table(cChains, SWT.FULL_SELECTION | SWT.BORDER);
 		tChains.setHeaderVisible(true);
-		tChains.setToolTipText(Messages.getTooltip("job_chains.table"));
 		tChains.setLayoutData(gridData2);
 		tChains.setLinesVisible(true);
 		tChains
@@ -282,6 +271,7 @@ public class JobChainsForm extends Composite implements IUnsaved {
 						if (tChains.getSelectionCount() > 0) {
 							listener.selectChain(tChains.getSelectionIndex());
 							fillChain(true, false);
+							bApplyChain.setEnabled(false);
 						}
 						bRemoveChain
 								.setEnabled(tChains.getSelectionCount() > 0);
@@ -354,7 +344,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		label6 = new Label(gNodes, SWT.NONE);
 		label6.setText("State:");
 		tState = new Text(gNodes, SWT.BORDER);
-		tState.setToolTipText(Messages.getTooltip("job_chains.node.state"));
 		tState.setLayoutData(gridData18);
 		label7 = new Label(gNodes, SWT.NONE);
 		label7.setText("Job:");
@@ -369,8 +358,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		label9 = new Label(gNodes, SWT.NONE);
 		label9.setText("Error State:");
 		cErrorState = new CCombo(gNodes, SWT.BORDER);
-		cErrorState.setToolTipText(Messages
-				.getTooltip("job_chains.node.error_state"));
 		cErrorState.setLayoutData(gridData15);
 		label4 = new Label(gNodes, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label4.setText("Label");
@@ -378,7 +365,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		createTable1();
 		bNewNode = new Button(gNodes, SWT.NONE);
 		bNewNode.setText("New Chain &Node");
-		bNewNode.setToolTipText(Messages.getTooltip("job_chains.node.btn_new"));
 		bNewNode.setLayoutData(gridData6);
 		label5 = new Label(gNodes, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label5.setText("Label");
@@ -398,8 +384,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		bRemoveNode = new Button(gNodes, SWT.NONE);
 		bRemoveNode.setText("Remove Chain Node");
 		bRemoveNode.setEnabled(false);
-		bRemoveNode.setToolTipText(Messages
-				.getTooltip("job_chains.node.btn_remove"));
 		bRemoveNode.setLayoutData(gridData11);
 		bRemoveNode
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -440,7 +424,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		});
 		cJob.setLayoutData(gridData13);
 		cJob.setEditable(true);
-		cJob.setToolTipText(Messages.getTooltip("job_chains.node.job"));
 		cJob.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				bApplyNode.setEnabled(!tState.getText().equals("")
@@ -449,8 +432,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		});
 		cNextState.setLayoutData(gridData14);
 		cNextState.setEditable(true);
-		cNextState.setToolTipText(Messages
-				.getTooltip("job_chains.node.next_state"));
 		cNextState
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -465,8 +446,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 				});
 		bApplyNode.setLayoutData(gridData7);
 		bApplyNode.setText("&Apply Chain Node");
-		bApplyNode.setToolTipText(Messages
-				.getTooltip("job_chains.node.btn_apply"));
 		bApplyNode
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -491,8 +470,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		tNodes = new Table(gNodes, SWT.FULL_SELECTION | SWT.BORDER);
 		tNodes.setHeaderVisible(true);
 		tNodes.setLinesVisible(true);
-		tNodes.setToolTipText(Messages
-				.getTooltip("job_chains.chain.node_table"));
 		tNodes.setLayoutData(gridData4);
 		tNodes
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -532,8 +509,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		cType.setLayoutData(gridData5);
 		bFullNode = new Button(cType, SWT.RADIO);
 		bFullNode.setText("Full Node");
-		bFullNode.setToolTipText(Messages
-				.getTooltip("job_chains.node.btn_full_node"));
 		bFullNode
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -546,8 +521,6 @@ public class JobChainsForm extends Composite implements IUnsaved {
 				});
 		bEndNode = new Button(cType, SWT.RADIO);
 		bEndNode.setText("End Node");
-		bEndNode.setToolTipText(Messages
-				.getTooltip("job_chains.node.btn_end_node"));
 		bEndNode
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -672,5 +645,36 @@ public class JobChainsForm extends Composite implements IUnsaved {
 		fillNode(true);
 		enableNode(false);
 	}
-
+	public void setToolTipText(){
+		tName.setToolTipText(Messages.getTooltip("job_chains.chain.name"));
+		bNewChain.setToolTipText(Messages
+				.getTooltip("job_chains.chain.btn_new"));
+		bRemoveChain.setToolTipText(Messages
+				.getTooltip("job_chains.chain.btn_remove"));
+		bRecoverable.setToolTipText(Messages
+				.getTooltip("job_chains.chain.orders_recoverable"));
+		bVisible
+				.setToolTipText(Messages.getTooltip("job_chains.chain.visible"));
+		bApplyChain.setToolTipText(Messages
+				.getTooltip("job_chains.chain.btn_apply"));
+		tChains.setToolTipText(Messages.getTooltip("job_chains.table"));
+		tState.setToolTipText(Messages.getTooltip("job_chains.node.state"));
+		cErrorState.setToolTipText(Messages
+				.getTooltip("job_chains.node.error_state"));
+		bNewNode.setToolTipText(Messages.getTooltip("job_chains.node.btn_new"));
+		bRemoveNode.setToolTipText(Messages
+				.getTooltip("job_chains.node.btn_remove"));
+		cJob.setToolTipText(Messages.getTooltip("job_chains.node.job"));
+		cNextState.setToolTipText(Messages
+				.getTooltip("job_chains.node.next_state"));
+		bApplyNode.setToolTipText(Messages
+				.getTooltip("job_chains.node.btn_apply"));
+		tNodes.setToolTipText(Messages
+				.getTooltip("job_chains.chain.node_table"));
+		bFullNode.setToolTipText(Messages
+				.getTooltip("job_chains.node.btn_full_node"));
+		bEndNode.setToolTipText(Messages
+				.getTooltip("job_chains.node.btn_end_node"));
+	 
+  }
 } // @jve:decl-index=0:visual-constraint="10,10"

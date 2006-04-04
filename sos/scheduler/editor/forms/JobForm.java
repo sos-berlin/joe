@@ -2,8 +2,9 @@ package sos.scheduler.editor.forms;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Font;
+
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -11,10 +12,10 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Spinner;
+
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -25,10 +26,16 @@ import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdate;
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.listeners.JobListener;
 
-public class JobForm extends Composite implements IUnsaved {
+public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
+	private Combo sPriority;
+	private Text sIdleTimeout;
+	private Text sTimeout;
+	private Text sTasks;
 	private JobListener listener;
 
 	private Group group = null;
@@ -61,13 +68,9 @@ public class JobForm extends Composite implements IUnsaved {
 
 	private Combo cProcessClass = null;
 
-	private Spinner sTasks = null;
 
-	private Spinner sIdleTimeout = null;
 
-	private Spinner sPriority = null;
 
-	private Spinner sTimeout = null;
 
 	private Composite cOrder = null;
 
@@ -112,7 +115,7 @@ public class JobForm extends Composite implements IUnsaved {
 		super(parent, style);
 		listener = new JobListener(dom, job, main);
 		initialize();
-		
+		setToolTipText();		
 		sashForm.setWeights(new int[] {40, 30, 30});
 
 		dom.setInit(true);
@@ -128,17 +131,33 @@ public class JobForm extends Composite implements IUnsaved {
 		int index = cProcessClass.indexOf(listener.getProcessClass());
 		if (index >= 0)
 			cProcessClass.select(index);
-		else
-			listener.setProcessClass(cProcessClass.getText());
+//		else
+//			listener.setProcessClass(cProcessClass.getText());
+		
 		bOrderYes.setSelection(listener.getOrder());
 		bOrderNo.setSelection(!listener.getOrder());
 		sPriority.setEnabled(!bOrderYes.getSelection());
 		if (!bOrderYes.getSelection()) {
-		   sPriority.setSelection(listener.getPriority());
-		}
-		sTasks.setSelection(listener.getTasks());
-		sTimeout.setSelection(listener.getTimeout());
-		sIdleTimeout.setSelection(listener.getIdleTimeout());
+			index = sPriority.indexOf(listener.getPriority());
+			if (index >= 0)
+				sPriority.select(index);
+			else {
+				int p = Utils.str2int(listener.getPriority(),19);
+				if (p == -999) {
+					sPriority.setText("");
+				}else {
+  				if (p < -19) {
+	  				p = -19;
+		  		}
+			  	  sPriority.setText(String.valueOf(p));
+			 	}
+			}
+//				listener.setPriority(sPriority.getText());
+			}
+		
+		sTasks.setText(String.valueOf(listener.getTasks()));
+		sTimeout.setText(String.valueOf(listener.getTimeout()));
+		sIdleTimeout.setText(String.valueOf(listener.getIdleTimeout()));
 		listener.fillParams(tParameter);
 		tFileName.setText(listener.getInclude());
 		tDescription.setText(listener.getDescription());
@@ -189,14 +208,6 @@ public class JobForm extends Composite implements IUnsaved {
 		gridData61.grabExcessVerticalSpace = true;
 		gridData61.grabExcessHorizontalSpace = true;
 		gridData61.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		GridData gridData8 = new org.eclipse.swt.layout.GridData();
-		gridData8.widthHint = 60;
-		GridData gridData7 = new org.eclipse.swt.layout.GridData();
-		gridData7.widthHint = 60;
-		GridData gridData6 = new org.eclipse.swt.layout.GridData();
-		gridData6.widthHint = 60;
-		GridData gridData5 = new org.eclipse.swt.layout.GridData();
-		gridData5.widthHint = 60;
 		GridData gridData3 = new org.eclipse.swt.layout.GridData();
 		gridData3.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData3.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
@@ -216,7 +227,6 @@ public class JobForm extends Composite implements IUnsaved {
 		label = new Label(gMain, SWT.NONE);
 		label.setText("Job Name:");
 		tName = new Text(gMain, SWT.BORDER);
-		tName.setToolTipText(Messages.getTooltip("job.name"));
 		tName.setLayoutData(gridData);
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -227,7 +237,6 @@ public class JobForm extends Composite implements IUnsaved {
 		label1 = new Label(gMain, SWT.NONE);
 		label1.setText("Job Title:");
 		tTitle = new Text(gMain, SWT.BORDER);
-		tTitle.setToolTipText(Messages.getTooltip("job.title"));
 		tTitle.setLayoutData(gridData1);
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -237,7 +246,6 @@ public class JobForm extends Composite implements IUnsaved {
 		label3 = new Label(gMain, SWT.NONE);
 		label3.setText("Scheduler ID:");
 		tSpoolerID = new Text(gMain, SWT.BORDER);
-		tSpoolerID.setToolTipText(Messages.getTooltip("job.spooler_id"));
 		tSpoolerID.setLayoutData(gridData3);
 		tSpoolerID
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -253,59 +261,61 @@ public class JobForm extends Composite implements IUnsaved {
 		createComposite();
 		label17 = new Label(gMain, SWT.NONE);
 		label17.setText("Priority:");
-		sPriority = new Spinner(gMain, SWT.NONE);
-		sPriority.setMaximum(99999999);
-		sPriority.setToolTipText(Messages.getTooltip("job.priority"));
-		sPriority.setLayoutData(gridData5);
+
+		sPriority = new Combo(gMain, SWT.NONE);
+		sPriority.setItems(new String[] {"idle", "below_normal", "normal", "above_normal", "high"});
+		final GridData gridData_1 = new GridData(70, SWT.DEFAULT);
+		gridData_1.verticalIndent = -1;
+		sPriority.setLayoutData(gridData_1);
 		sPriority.addModifyListener(new ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				listener.setPriority(sPriority.getSelection());
+			
+			public void modifyText(final ModifyEvent e) {
+				listener.setPriority(sPriority.getText());
 			}
 		});
+		
 		label15 = new Label(gMain, SWT.NONE);
 		label15.setText("Tasks:");
-		sTasks = new Spinner(gMain, SWT.NONE);
-		sTasks.setMaximum(50000);
-		sTasks.setMinimum(1);
-		sTasks.setToolTipText(Messages.getTooltip("job.tasks"));
-		sTasks.setLayoutData(gridData7);
+
+		sTasks = new Text(gMain, SWT.BORDER);
 		sTasks.addModifyListener(new ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				listener.setTasks(sTasks.getSelection());
+			
+			public void modifyText(final ModifyEvent e) {
+				listener.setTasks(sTasks.getText());
 			}
 		});
+		
+		sTasks.setLayoutData(new GridData());
 		label13 = new Label(gMain, SWT.NONE);
 		label13.setText("Timeout:");
-		sTimeout = new Spinner(gMain, SWT.NONE);
-		sTimeout.setMaximum(99999999);
-		sTimeout.setToolTipText(Messages.getTooltip("job.timeout"));
-		sTimeout.setLayoutData(gridData6);
+
+		sTimeout = new Text(gMain, SWT.BORDER);
 		sTimeout.addModifyListener(new ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				listener.setTimeout(sTimeout.getSelection());
+			public void modifyText(final ModifyEvent e) {
+				listener.setTimeout(sTimeout.getText());
 			}
 		});
+		sTimeout.setLayoutData(new GridData());
 		label11 = new Label(gMain, SWT.NONE);
 		label11.setText("Idle Timeout:");
-		sIdleTimeout = new Spinner(gMain, SWT.NONE);
-		sIdleTimeout.setMaximum(99999999);
-		sIdleTimeout.setToolTipText(Messages.getTooltip("job.idle_timeout"));
-		sIdleTimeout.setLayoutData(gridData8);
+
+		sIdleTimeout = new Text(gMain, SWT.BORDER);
+		sIdleTimeout.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				listener.setIdleTimeout(sIdleTimeout.getText());
+			}
+		});
+		
+		sIdleTimeout.setLayoutData(new GridData());
 		label8 = new Label(gMain, SWT.NONE);
 		label8.setText("Comment:");
 		label8.setLayoutData(gridData71);
 		tComment = new Text(gMain, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
-		tComment.setToolTipText(Messages.getTooltip("job.comment"));
 		tComment.setLayoutData(gridData61);
 		tComment.setFont(SWTResourceManager.getFont("Courier New", 10, SWT.NONE));
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setComment(tComment.getText());
-			}
-		});
-		sIdleTimeout.addModifyListener(new ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				listener.setIdleTimeout(sIdleTimeout.getSelection());
 			}
 		});
 	}
@@ -319,7 +329,6 @@ public class JobForm extends Composite implements IUnsaved {
 		gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
 		cProcessClass = new Combo(gMain, SWT.NONE);
-		cProcessClass.setToolTipText(Messages.getTooltip("job.process_class"));
 		cProcessClass.setLayoutData(gridData4);
 		cProcessClass
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -342,27 +351,25 @@ public class JobForm extends Composite implements IUnsaved {
 		cOrder.setLayoutData(gridData15);
 		bOrderYes = new Button(cOrder, SWT.RADIO);
 		bOrderYes.setText("Yes");
-		bOrderYes.setToolTipText(Messages.getTooltip("job.btn_order_yes"));
 		bOrderYes
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
 						sPriority.setEnabled(false);
-						sPriority.setSelection(0);
+					//	sPriority.setSelection(0);
 						listener.setOrder(bOrderYes.getSelection());
 					}
 				});
 		bOrderNo = new Button(cOrder, SWT.RADIO);
 		bOrderNo.setText("No");
 		bOrderNo.setEnabled(true);
-		bOrderNo.setToolTipText(Messages.getTooltip("job.btn_order_no"));
 		bOrderNo.setSelection(false);
 		bOrderNo
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
 						sPriority.setEnabled(true);
-						listener.setPriority(sPriority.getSelection());
+						listener.setPriority(sPriority.getText());
 						listener.setOrder(!bOrderNo.getSelection());
 					}
 				});
@@ -415,12 +422,10 @@ public class JobForm extends Composite implements IUnsaved {
 		label2.setLayoutData(gridData);
 		label2.setText("Name:");
 		tParaName = new Text(gJobParameter, SWT.BORDER);
-		tParaName.setToolTipText(Messages.getTooltip("job.param.name"));
 		tParaName.setLayoutData(gridData11);
 		label6 = new Label(gJobParameter, SWT.NONE);
 		label6.setText("Value:");
 		tParaValue = new Text(gJobParameter, SWT.BORDER);
-		tParaValue.setToolTipText(Messages.getTooltip("job.param.value"));
 		tParaValue.setLayoutData(gridData13);
 		bApply = new Button(gJobParameter, SWT.NONE);
 		label4 = new Label(gJobParameter, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -429,7 +434,6 @@ public class JobForm extends Composite implements IUnsaved {
 		createTable();
 		bRemove = new Button(gJobParameter, SWT.NONE);
 		bRemove.setText("Remove");
-		bRemove.setToolTipText(Messages.getTooltip("job.param.btn_remove"));
 		bRemove.setEnabled(false);
 		bRemove.setLayoutData(gridData10);
 		bRemove
@@ -470,7 +474,6 @@ public class JobForm extends Composite implements IUnsaved {
 		bApply.setText("&Apply");
 		bApply.setLayoutData(gridData16);
 		bApply.setEnabled(false);
-		bApply.setToolTipText(Messages.getTooltip("job.param.btn_add"));
 		bApply
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -491,7 +494,6 @@ public class JobForm extends Composite implements IUnsaved {
 		tParameter = new Table(gJobParameter, SWT.BORDER | SWT.FULL_SELECTION);
 		tParameter.setHeaderVisible(true);
 		tParameter.setLinesVisible(true);
-		tParameter.setToolTipText(Messages.getTooltip("job.param.table"));
 		tParameter.setLayoutData(gridData9);
 		tParameter
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -531,8 +533,6 @@ public class JobForm extends Composite implements IUnsaved {
 		label10 = new Label(gDescription, SWT.NONE);
 		label10.setText("Include:");
 		tFileName = new Text(gDescription, SWT.BORDER);
-		tFileName.setToolTipText(Messages
-				.getTooltip("job.description.filename"));
 		tFileName.setLayoutData(gridData12);
 		tFileName
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -543,7 +543,6 @@ public class JobForm extends Composite implements IUnsaved {
 		new Label(gDescription, SWT.NONE);
 		tDescription = new Text(gDescription, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
 		tDescription.setFont(SWTResourceManager.getFont("", 10, SWT.NONE));
-		tDescription.setToolTipText(Messages.getTooltip("job.description"));
 		tDescription.setLayoutData(gridData14);
 		tDescription
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -564,4 +563,27 @@ public class JobForm extends Composite implements IUnsaved {
 		tParaName.setFocus();
 	}
 
+	public void setToolTipText(){
+		tName.setToolTipText(Messages.getTooltip("job.name"));
+		tTitle.setToolTipText(Messages.getTooltip("job.title"));
+		tSpoolerID.setToolTipText(Messages.getTooltip("job.spooler_id"));
+		sPriority.setToolTipText(Messages.getTooltip("job.priority"));
+		sTasks.setToolTipText(Messages.getTooltip("job.tasks"));
+		sTimeout.setToolTipText(Messages.getTooltip("job.timeout"));
+		sIdleTimeout.setToolTipText(Messages.getTooltip("job.idle_timeout"));
+		tComment.setToolTipText(Messages.getTooltip("job.comment"));
+		cProcessClass.setToolTipText(Messages.getTooltip("job.process_class"));
+		bOrderYes.setToolTipText(Messages.getTooltip("job.btn_order_yes"));
+		bOrderNo.setToolTipText(Messages.getTooltip("job.btn_order_no"));
+		tParaName.setToolTipText(Messages.getTooltip("job.param.name"));
+		tParaValue.setToolTipText(Messages.getTooltip("job.param.value"));
+		bRemove.setToolTipText(Messages.getTooltip("job.param.btn_remove"));
+		bApply.setToolTipText(Messages.getTooltip("job.param.btn_add"));
+		tParameter.setToolTipText(Messages.getTooltip("job.param.table"));
+		tFileName.setToolTipText(Messages
+				.getTooltip("job.description.filename"));
+		tDescription.setToolTipText(Messages.getTooltip("job.description"));
+
+	 
+  }	
 } // @jve:decl-index=0:visual-constraint="10,10"

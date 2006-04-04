@@ -14,12 +14,13 @@ import org.eclipse.swt.widgets.List;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.DomParser;
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.IUpdate;
 import sos.scheduler.editor.listeners.DaysListener;
 
 
-public class DaysForm extends Composite {
+public class DaysForm extends Composite  implements IUpdateLanguage{
 	private DaysListener listener;
 	private IUpdate _main;
 	private int _type = 0;
@@ -27,7 +28,7 @@ public class DaysForm extends Composite {
 	private static String[] _dayLabel = {"Weekday:", "Monthday:", "Ultimo:"};
 	private static String[] _addLabel = {"&Add Weekday", "&Add Monthday", "&Add Ultimo"};
 	private static String[] _removeLabel = {"Remove Weekday", "Remove Monthday", "Remove Ultimo"};
-	private static String[] _listLabel = {"Used Weekdays:", "Used Monthdays:", "Used Ultimos:"};
+//	private static String[] _listLabel = {"Used Weekdays:", "Used Monthdays:", "Used Ultimos:"};
 	
 	private Group group = null;
 	private Label label = null;
@@ -46,7 +47,7 @@ public class DaysForm extends Composite {
 		_type = type;
 		
 		initialize();
-
+		setToolTipText();
 		read();
 	}
 
@@ -87,7 +88,6 @@ public class DaysForm extends Composite {
 		createCombo();
 		bAdd = new Button(group, SWT.NONE);
 		bAdd.setText(_addLabel[_type]);
-		bAdd.setToolTipText(Messages.getTooltip("days.btn_add"));
 		bAdd.setLayoutData(gridData2);
 		label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label2.setText("Label");
@@ -100,7 +100,6 @@ public class DaysForm extends Composite {
 			}
 		});
 		lUsedDays = new List(group, SWT.BORDER);
-		lUsedDays.setToolTipText(Messages.getTooltip("days.used_days"));
 		lUsedDays.setLayoutData(gridData);
 		lUsedDays.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -110,7 +109,6 @@ public class DaysForm extends Composite {
 		bRemove = new Button(group, SWT.NONE);
 		bRemove.setText(_removeLabel[_type]);
 		bRemove.setEnabled(false);
-		bRemove.setToolTipText(Messages.getTooltip("days.btn_remove"));
 		bRemove.setLayoutData(gridData3);
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -130,7 +128,6 @@ public class DaysForm extends Composite {
 		gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
 		cUnusedDays = new Combo(group, SWT.READ_ONLY);
-		cUnusedDays.setToolTipText(Messages.getTooltip("days.unused_days"));
 		cUnusedDays.setVisibleItemCount(10);
 		cUnusedDays.setLayoutData(gridData4);
 	}
@@ -149,5 +146,14 @@ public class DaysForm extends Composite {
 		bAdd.setEnabled(cUnusedDays.getItemCount() > 0);
 		bRemove.setEnabled(lUsedDays.getSelectionCount() > 0);
 	}
+
+	public void setToolTipText(){
+		bAdd.setToolTipText(Messages.getTooltip("days.btn_add"));
+		lUsedDays.setToolTipText(Messages.getTooltip("days.used_days"));
+		bRemove.setToolTipText(Messages.getTooltip("days.btn_remove"));
+		cUnusedDays.setToolTipText(Messages.getTooltip("days.unused_days"));
+
+  }
+
 
 }  //  @jve:decl-index=0:visual-constraint="10,10"

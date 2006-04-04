@@ -21,6 +21,7 @@ import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUnsaved;
+import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.listeners.SecurityListener;
 
@@ -28,7 +29,7 @@ import sos.scheduler.editor.listeners.SecurityListener;
  * @author sky2000
  * 
  */
-public class SecurityForm extends Composite implements IUnsaved {
+public class SecurityForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private SecurityListener listener;
 
 	private Group group = null;
@@ -66,7 +67,8 @@ public class SecurityForm extends Composite implements IUnsaved {
 		listener = new SecurityListener(dom, config);
 
 		initialize();
-
+		setToolTipText();
+		
 		listener.fillTable(table);
 		cIgnoreUnknownHosts.setSelection(listener.getIgnoreUnknownHosts());
 		cLevel.setItems(listener.getLevels());
@@ -125,8 +127,6 @@ public class SecurityForm extends Composite implements IUnsaved {
 		group.setLayout(gridLayout);
 		cIgnoreUnknownHosts = new Button(group, SWT.CHECK);
 		cIgnoreUnknownHosts.setText("Ignore unknown hosts");
-		cIgnoreUnknownHosts.setToolTipText(Messages
-				.getTooltip("security.ignore_unknown_hosts"));
 		cIgnoreUnknownHosts.setLayoutData(gridData1);
 		label = new Label(group, SWT.NONE);
 		tHost = new Text(group, SWT.BORDER);
@@ -147,7 +147,6 @@ public class SecurityForm extends Composite implements IUnsaved {
 				});
 		createTable();
 		bNew = new Button(group, SWT.NONE);
-		bNew.setToolTipText(Messages.getTooltip("security.btn_new_host"));
 		bNew.setLayoutData(gridData2);
 		bNew.setText("&New Host");
 		label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -165,7 +164,6 @@ public class SecurityForm extends Composite implements IUnsaved {
 		bRemove.setEnabled(false);
 		bRemove.setText("Remove Host");
 		bRemove.setLayoutData(gridData4);
-		bRemove.setToolTipText(Messages.getTooltip("security.btn_remove_host"));
 		bRemove
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
@@ -190,7 +188,6 @@ public class SecurityForm extends Composite implements IUnsaved {
 		label.setLayoutData(new org.eclipse.swt.layout.GridData());
 		tHost.setEnabled(false);
 		tHost.setLayoutData(gridData5);
-		tHost.setToolTipText(Messages.getTooltip("security.host_entry"));
 		tHost.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
 				if (e.keyCode == SWT.CR && !tHost.getText().equals(""))
@@ -204,7 +201,6 @@ public class SecurityForm extends Composite implements IUnsaved {
 		});
 		cLevel.setEditable(false);
 		cLevel.setLayoutData(gridData6);
-		cLevel.setToolTipText(Messages.getTooltip("security.level_choice"));
 		cLevel.setEnabled(false);
 		cLevel.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
@@ -219,7 +215,6 @@ public class SecurityForm extends Composite implements IUnsaved {
 		});
 		bApply.setText("&Apply Host");
 		bApply.setLayoutData(gridData3);
-		bApply.setToolTipText(Messages.getTooltip("security.btn_apply"));
 		bApply.setEnabled(false);
 		bApply
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -244,7 +239,6 @@ public class SecurityForm extends Composite implements IUnsaved {
 		gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
 		table.setHeaderVisible(true);
-		table.setToolTipText(Messages.getTooltip("security.table"));
 		table.setLayoutData(gridData);
 		table.setLinesVisible(true);
 		table
@@ -294,5 +288,16 @@ public class SecurityForm extends Composite implements IUnsaved {
 		bApply.setEnabled(false);
 		bRemove.setEnabled(table.getSelectionCount() > 0);
 	}
+	public void setToolTipText(){
+		cIgnoreUnknownHosts.setToolTipText(Messages
+				.getTooltip("security.ignore_unknown_hosts"));
+		bNew.setToolTipText(Messages.getTooltip("security.btn_new_host"));
+		bRemove.setToolTipText(Messages.getTooltip("security.btn_remove_host"));
+		tHost.setToolTipText(Messages.getTooltip("security.host_entry"));
+		cLevel.setToolTipText(Messages.getTooltip("security.level_choice"));
+		bApply.setToolTipText(Messages.getTooltip("security.btn_apply"));
+		table.setToolTipText(Messages.getTooltip("security.table"));
 
+	 
+  }	
 } // @jve:decl-index=0:visual-constraint="10,10"
