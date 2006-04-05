@@ -429,7 +429,8 @@ public class MainListener {
 				_dom.write(filename, this);
 				_filename = filename;
 			}
-
+			
+	    _gui.getSShell().setText("Job Scheduler Editor [" + filename + "]");
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

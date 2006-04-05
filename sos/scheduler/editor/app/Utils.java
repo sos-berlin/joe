@@ -11,6 +11,16 @@ public class Utils {
 
 	private static final String BOOLEAN_DEFAULT = null;
 
+	public static String getIntegerAsString(int i) {
+		String s;
+		if (i == -999) {
+			 s = "";
+		}else {
+			s = String.valueOf(i);
+		}
+		return s;
+		}
+	
 	public static String getAttributeValue(String attribute, Element element) {
 		if (element != null) {
 			String val = element.getAttributeValue(attribute);

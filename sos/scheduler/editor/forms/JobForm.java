@@ -155,9 +155,9 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 //				listener.setPriority(sPriority.getText());
 			}
 		
-		sTasks.setText(String.valueOf(listener.getTasks()));
-		sTimeout.setText(String.valueOf(listener.getTimeout()));
-		sIdleTimeout.setText(String.valueOf(listener.getIdleTimeout()));
+		sTasks.setText(listener.getTasks());
+		sTimeout.setText(listener.getTimeout());
+		sIdleTimeout.setText(listener.getIdleTimeout());
 		listener.fillParams(tParameter);
 		tFileName.setText(listener.getInclude());
 		tDescription.setText(listener.getDescription());
@@ -312,7 +312,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		label8.setLayoutData(gridData71);
 		tComment = new Text(gMain, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
 		tComment.setLayoutData(gridData61);
-		tComment.setFont(SWTResourceManager.getFont("Courier New", 10, SWT.NONE));
+		tComment.setFont(SWTResourceManager.getFont("Courier New", 8, SWT.NONE));
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setComment(tComment.getText());

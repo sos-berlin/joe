@@ -135,7 +135,7 @@ public class BaseForm extends Composite implements IUnsaved,IUpdateLanguage{
 		label3.setLayoutData(gridData8);
 		tComment = new Text(group, SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
 		tComment.setLayoutData(gridData9);
-		tComment.setFont(SWTResourceManager.getFont("Courier New", 10, SWT.NONE));
+		tComment.setFont(SWTResourceManager.getFont("Courier New", 8, SWT.NONE));
 		tComment.setEnabled(false);
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -214,7 +214,7 @@ public class BaseForm extends Composite implements IUnsaved,IUpdateLanguage{
 	 *
 	 */
 	private void createTable() {
-		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 2, 3);
+		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.CENTER, GridData.FILL, true, true, 2, 3);
 		table = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
 		table.setHeaderVisible(true);
 		table.setLayoutData(gridData);
@@ -228,9 +228,10 @@ public class BaseForm extends Composite implements IUnsaved,IUpdateLanguage{
 			}
 		});
 		TableColumn tableColumn = new TableColumn(table, SWT.NONE);
-		tableColumn.setWidth(400);
+		tableColumn.setWidth(300);
 		tableColumn.setText("Base File");
 		TableColumn tableColumn1 = new TableColumn(table, SWT.NONE);
+		table.setSortColumn(tableColumn1);
 		tableColumn1.setWidth(300);
 		tableColumn1.setText("Comment");
 	}

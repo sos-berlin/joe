@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import com.swtdesigner.SWTResourceManager;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.Editor;
@@ -290,8 +291,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 		tSource = new Text(gSource, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER
 				| SWT.H_SCROLL);
 		tSource.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-		tSource.setFont(new Font(Display.getDefault(), "Courier New", 8,
-				SWT.NORMAL));
+		tSource.setFont(SWTResourceManager.getFont("Courier New", 8, SWT.NONE));
 		tSource.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setSource(tSource.getText());

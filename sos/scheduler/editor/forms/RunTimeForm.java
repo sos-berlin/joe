@@ -125,7 +125,7 @@ public class RunTimeForm extends Composite  implements  IUpdateLanguage {
 		gComment.setLayout(new GridLayout());
 		tComment = new Text(gComment, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
 		tComment.setLayoutData(gridData1);
-		tComment.setFont(SWTResourceManager.getFont("Courier New", 10, SWT.NONE));
+		tComment.setFont(SWTResourceManager.getFont("Courier New", 8, SWT.NONE));
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setComment(tComment.getText());

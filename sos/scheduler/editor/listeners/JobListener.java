@@ -109,28 +109,28 @@ public class JobListener {
 		Utils.setAttribute("priority", priority, _job, _dom);
 	}
 
-	public int getTasks() {
-		return Utils.getIntValue("tasks", 1, _job);
+	public String getTasks() {
+		return Utils.getAttributeValue("tasks", _job);
 	}
 
 	public void setTasks(String tasks) {
-		Utils.setAttribute("tasks", tasks, _job, _dom);
+		Utils.setAttribute("tasks", Utils.getIntegerAsString(Utils.str2int(tasks)), _job, _dom);
 	}
 
-	public int getTimeout() {
-		return Utils.getIntValue("timeout", _job);
+	public String getTimeout() {
+		return Utils.getAttributeValue("timeout", _job);
 	}
 
 	public void setTimeout(String timeout) {
-		Utils.setAttribute("timeout", timeout, _job, _dom);
+		Utils.setAttribute("timeout", Utils.getIntegerAsString(Utils.str2int(timeout)), _job, _dom);
 	}
 
-	public int getIdleTimeout() {
-		return Utils.getIntValue("idle_timeout", _job);
+	public String getIdleTimeout() {
+		return Utils.getAttributeValue("idle_timeout", _job);
 	}
 
-	public void setIdleTimeout(String timeout) {
-		Utils.setAttribute("idle_timeout", timeout, _job, _dom);
+	public void setIdleTimeout(String idleTimeout) {
+		Utils.setAttribute("idle_timeout",Utils.getIntegerAsString(Utils.str2int(idleTimeout)), _job, _dom);
 	}
 
 	public String[] getProcessClasses() {

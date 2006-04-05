@@ -153,6 +153,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
+						apply();
 						listener.newProcessClass();
 						setInput(true);
 						bApply.setEnabled(listener.isValidClass(tProcessClass.getText()));
