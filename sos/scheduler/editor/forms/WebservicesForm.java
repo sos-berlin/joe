@@ -2,6 +2,10 @@ package sos.scheduler.editor.forms;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -21,6 +25,7 @@ import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.listeners.WebservicesListener;
 
 public class WebservicesForm extends Composite implements IUnsaved, IUpdateLanguage {
@@ -54,7 +59,7 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 
 	private Label label3 = null;
 
-	private Spinner sTimeout = null;
+	private Text sTimeout = null;
 
 	private Label label5 = null;
 
@@ -105,9 +110,11 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		cChain.setItems(listener.getJobChains());
 	}
 
-	public void apply() {
+	public void apply()  {
 		if(isUnsaved())
-			applyService();
+ 
+				applyService();
+			 
 	}
 
 	public boolean isUnsaved() {
@@ -193,7 +200,9 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
-						applyService();
+ 
+							applyService();
+ 
 					}
 				});
 		bNew.setText("&New Web Service");
@@ -271,11 +280,6 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		gridData8.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
 		gridData8.grabExcessHorizontalSpace = true;
 		gridData8.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		GridData gridData7 = new org.eclipse.swt.layout.GridData();
-		gridData7.horizontalSpan = 5;
-		gridData7.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-		gridData7.grabExcessHorizontalSpace = true;
-		gridData7.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		GridData gridData6 = new org.eclipse.swt.layout.GridData();
 		gridData6.horizontalSpan = 5;
 		gridData6.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
@@ -308,10 +312,20 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		label1 = new Label(gWebService, SWT.NONE);
 		label1.setText("URL:");
 		tURL = new Text(gWebService, SWT.BORDER);
+		tURL.addSelectionListener(new SelectionAdapter() {
+			public void widgetDefaultSelected(final SelectionEvent e) {
+			}
+			public void widgetSelected(final SelectionEvent e) {
+			}
+		});
 		tURL.setEnabled(false);
 		tURL.setLayoutData(gridData10);
 		tURL.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				if ((tURL.getText().length() > 0) && (tURL.getText().charAt(0) != '/')) {
+					tURL.setText("/"+tURL.getText());
+					tURL.setSelection(2);
+				}
 				bApply.setEnabled(!tName.getText().equals("") && !tURL.getText().equals(""));
 			}
 		});
@@ -324,13 +338,20 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		cChain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				bApply.setEnabled(!tName.getText().equals(""));
+				sTimeout.setEnabled(!cChain.getText().equals(""));
+				tRequest.setEnabled(!sTimeout.getEnabled());
+				tResponse.setEnabled(!sTimeout.getEnabled());
 			}
 		});
 		label3 = new Label(gWebService, SWT.NONE);
 		label3.setText("Timeout:");
-		sTimeout = new Spinner(gWebService, SWT.NONE);
+		sTimeout = new Text(gWebService, SWT.BORDER);
+		sTimeout.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+			}
+		});
 		sTimeout.setEnabled(false);
-		sTimeout.setMaximum(99999999);
 		sTimeout.setLayoutData(gridData11);
 		sTimeout.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -356,16 +377,7 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		tRequest.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				bApply.setEnabled(!tName.getText().equals(""));
-			}
-		});
-		label13 = new Label(gWebService, SWT.NONE);
-		label13.setText("Forward XSLT:");
-		tForward = new Text(gWebService, SWT.BORDER);
-		tForward.setEnabled(false);
-		tForward.setLayoutData(gridData7);
-		tForward.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				bApply.setEnabled(!tName.getText().equals(""));
+				cChain.setEnabled(tRequest.getText().equals(""));
 			}
 		});
 		label19 = new Label(gWebService, SWT.NONE);
@@ -377,8 +389,21 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 						bApply.setEnabled(!tName.getText().equals(""));
+						cChain.setEnabled(tResponse.getText().equals(""));
 					}
 				});
+		label13 = new Label(gWebService, SWT.NONE);
+		label13.setLayoutData(new GridData());
+		label13.setText("Forward XSLT:");
+		GridData gridData7 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1);
+		tForward = new Text(gWebService, SWT.BORDER);
+		tForward.setEnabled(false);
+		tForward.setLayoutData(gridData7);
+		tForward.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				bApply.setEnabled(!tName.getText().equals(""));
+			}
+		});
 	}
 
 	/**
@@ -519,13 +544,36 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		tableColumn4.setText("Value");
 	}
 
-	private void applyService() {
-		listener.applyService(bDebug.getSelection(), cChain.getText(), tName
-				.getText(), tForward.getText(), tRequest.getText(), tResponse
-				.getText(), sTimeout.getSelection(), tURL.getText(), tParams
-				.getItems());
-		listener.fillTable(tServices);
-		setInput(false);
+	private void applyService()   {
+		boolean found= false;
+		TableItem[] services = tServices.getItems();
+		for (int i = 0; i < services.length; i++) {
+			String name = services[i].getText(0);
+			String url = services[i].getText(1);
+      if (url.equals(tURL.getText()) && !name.equals(tName.getText())){
+      	found = true;
+      }
+		}
+			
+   if (found) {
+  	 Utils.message(getShell(),"URL already defined",SWT.ICON_INFORMATION );
+   }else {
+  	 
+  	  if (!tRequest.getText().equals ("") && tResponse.getText().equals("")) {
+  	  	 Utils.message(getShell(),"Please set value for Response XSLT",SWT.ICON_INFORMATION );
+  	  }else {
+    	  if (tRequest.getText().equals ("") && !tResponse.getText().equals("")) {
+   	  	 Utils.message(getShell(),"Please set value for Request XSLT",SWT.ICON_INFORMATION );
+    	  }else {
+   	   	listener.applyService(bDebug.getSelection(), cChain.getText(), tName
+	   		   	.getText(), tForward.getText(), tRequest.getText(), tResponse
+		   		   .getText(), sTimeout.getText(), tURL.getText(), tParams  
+			  	   .getItems());
+	   	   listener.fillTable(tServices);
+	   	   setInput(false);
+    	  }
+  	  }
+   }
 	}
 
 	private void applyParam() {
@@ -577,15 +625,17 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 				cChain.select(index);
 			}
 			tName.setText(listener.getName());
+			cChain.select(listener.getChainIndex(listener.getJobChain()));
 			tForward.setText(listener.getForwardXSLT());
 			tRequest.setText(listener.getRequestXSLT());
 			tResponse.setText(listener.getResponseXSLT());
-			sTimeout.setSelection(listener.getTimeout());
+			sTimeout.setText(Utils.getIntegerAsString(Utils.str2int(listener.getTimeout())));
 			tURL.setText(listener.getURL());
 			gWebService.setText(GROUP_WEB_SERVICE + ": " + listener.getName());
 			tName.setFocus();
 		} else {
 			tName.setText("");
+			cChain.select(-1);
 			tForward.setText("");
 			tRequest.setText("");
 			tResponse.setText("");

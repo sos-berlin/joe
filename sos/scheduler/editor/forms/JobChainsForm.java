@@ -172,7 +172,9 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		tName = new Text(cChains, SWT.BORDER);
 		tName.setLayoutData(gridData10);
 		bRecoverable = new Button(cChains, SWT.CHECK);
+		bRecoverable.setSelection(true);
 		bVisible = new Button(cChains, SWT.CHECK);
+		bVisible.setSelection(true);
 		bApplyChain = new Button(cChains, SWT.NONE);
 		label2 = new Label(cChains, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label2.setText("Label");
@@ -516,6 +518,8 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 						if (bFullNode.getSelection()) {
 							cNextState.setEnabled(true);
 							cErrorState.setEnabled(true);
+							cJob.setEnabled(true);
+							bApplyNode.setEnabled(true);
 						}
 					}
 				});
@@ -528,6 +532,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 						if (bEndNode.getSelection()) {
 							cNextState.setEnabled(false);
 							cErrorState.setEnabled(false);
+							cJob.setEnabled(false);
 							cNextState.setText("");
 							cErrorState.setText("");
 							if (tState.getText().equals(""))
@@ -539,12 +544,12 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 
 	private void fillChain(boolean enable, boolean isNew) {
 		tName.setEnabled(enable);
-		bRecoverable.setEnabled(enable);
-		bVisible.setEnabled(enable);
+		bRecoverable.setEnabled(enable );
+		bVisible.setEnabled(enable );
 
 		tName.setText(enable ? listener.getChainName() : "");
-		bRecoverable.setSelection(enable ? listener.getRecoverable() : false);
-		bVisible.setSelection(enable ? listener.getVisible() : false);
+		bRecoverable.setSelection(enable ? listener.getRecoverable() || isNew : true);
+		bVisible.setSelection(enable ? listener.getVisible() || isNew : true);
 
 		tName.setBackground(null);
 		bApplyChain.setEnabled(enable);

@@ -439,7 +439,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 		}
 
 		if (language != ScriptListener.NONE && language != ScriptListener.COM) {
-			tSource.setText(listener.getSource());
+	 		tSource.setText(listener.getSource());
 		}
 		if (language != ScriptListener.NONE) {
 			lInclude.setItems(listener.getIncludes());

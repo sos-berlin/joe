@@ -24,6 +24,7 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.TreeMenu;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.listeners.MainListener;
 
 /**
@@ -328,12 +329,20 @@ public class MainWindow implements IUpdate {
 			listener.treeFillJobs(tree.getSelection()[0]);
 	}
 
+ 
+	
 	public void updateJob() {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			TreeData data = (TreeData) item.getData();
 			listener.treeFillJob(item, data.getElement(), true);
 		}
+	}
+	
+	public void updateJob(String s) {
+		TreeItem item = tree.getSelection()[0];
+    String job = "Job: " + s;
+		item.setText(job);  
 	}
 
 	public void updateDays(int type) {

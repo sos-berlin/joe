@@ -2,6 +2,7 @@ package sos.scheduler.editor.app;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -94,7 +95,7 @@ public class DomParser {
 		tmp.deleteOnExit();
 		
 		InputStream in = getClass().getResourceAsStream(Options.getSchema());
-		FileWriter out = new FileWriter(tmp);
+		FileOutputStream out = new FileOutputStream(tmp, true);
 		
 		int c;
 		while((c = in.read()) != -1)
@@ -115,6 +116,7 @@ public class DomParser {
 			builder.setProperty(
 					"http://java.sun.com/xml/jaxp/properties/schemaSource",
 					writeSchemaFile());
+			 		
 		}
 		return builder;
 	}
@@ -186,9 +188,9 @@ public class DomParser {
 				}
 			}
 
-			// System.out.println(line);
+		//	 System.out.println(line);
 
-			sb.append(line);
+			sb.append(line + "\n");
 		}
 
 		String str = new String(sb.toString().getBytes(), encoding);
@@ -217,7 +219,7 @@ public class DomParser {
 				return;
 		}
 
-		// TODO backup - file copy
+ 
 		OutputStreamWriter writer = new OutputStreamWriter(
 				new FileOutputStream(filename), DEFAULT_ENCODING);
 		writer.write(handler.getXML());

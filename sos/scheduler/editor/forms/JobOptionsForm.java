@@ -1,6 +1,8 @@
 package sos.scheduler.editor.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -9,7 +11,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Spinner;
+import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
@@ -41,17 +44,17 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 
 	private Label label2 = null;
 
-	private Spinner sSetBackCount = null;
+	private Text sSetBackCount = null;
 
 	private Button bIsMaximum = null;
 
 	private Label label3 = null;
 
-	private Spinner sSetBackHours = null;
+	private Text sSetBackHours = null;
 
-	private Spinner sSetBackMinutes = null;
+	private Text sSetBackMinutes = null;
 
-	private Spinner sSetBackSeconds = null;
+	private Text sSetBackSeconds = null;
 
 	private Label label7 = null;
 
@@ -63,17 +66,17 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 
 	private Label label4 = null;
 
-	private Spinner sErrorCount = null;
+	private Text sErrorCount = null;
 
-	private Spinner sErrorHours = null;
+	private Text sErrorHours = null;
 
 	private Label label14 = null;
 
-	private Spinner sErrorMinutes = null;
+	private Text sErrorMinutes = null;
 
 	private Label label17 = null;
 
-	private Spinner sErrorSeconds = null;
+	private Text sErrorSeconds = null;
 
 	private Button bRemoveDelay = null;
 
@@ -323,15 +326,35 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 		group2.setLayout(gridLayout3);
 		label4 = new Label(group2, SWT.NONE);
 		label4.setText("Error count:");
-		sErrorCount = new Spinner(group2, SWT.NONE);
+		sErrorCount = new Text(group2, SWT.BORDER);
+		sErrorCount.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+			}
+		});
 		createComposite();
-		sErrorHours = new Spinner(group2, SWT.NONE);
+		sErrorHours = new Text(group2, SWT.BORDER);
+		sErrorHours.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+			}
+		});
 		label14 = new Label(group2, SWT.NONE);
 		label14.setText(":");
-		sErrorMinutes = new Spinner(group2, SWT.NONE);
+		sErrorMinutes = new Text(group2, SWT.BORDER);
+		sErrorMinutes.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+			}
+		});
 		label17 = new Label(group2, SWT.NONE);
 		label17.setText(":");
-		sErrorSeconds = new Spinner(group2, SWT.NONE);
+		sErrorSeconds = new Text(group2, SWT.BORDER);
+		sErrorSeconds.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+			}
+		});
 		label8 = new Label(group2, SWT.NONE);
 		label8.setText("[hh:mm:]ss");
 		bApply = new Button(group2, SWT.NONE);
@@ -381,8 +404,6 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 						}
 					}
 				});
-		sErrorCount.setMaximum(99999999);
-		sErrorCount.setMinimum(1);
 		sErrorCount.setLayoutData(gridData18);
 		sErrorCount
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -390,7 +411,6 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 						bApply.setEnabled(true);
 					}
 				});
-		sErrorHours.setMaximum(24);
 		sErrorHours.setLayoutData(gridData17);
 		sErrorHours
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -398,7 +418,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 						bApply.setEnabled(true);
 					}
 				});
-		sErrorMinutes.setMaximum(60);
+
 		sErrorMinutes.setLayoutData(gridData16);
 		sErrorMinutes
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -406,7 +426,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 						bApply.setEnabled(true);
 					}
 				});
-		sErrorSeconds.setMaximum(60);
+
 		sErrorSeconds.setLayoutData(gridData15);
 		sErrorSeconds
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -475,14 +495,22 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 		group3.setLayoutData(gridData2);
 		label2 = new Label(group3, SWT.NONE);
 		label2.setText("Set Back Count:");
-		sSetBackCount = new Spinner(group3, SWT.NONE);
-		sSetBackCount.setMaximum(99999999);
-		sSetBackCount.setMinimum(1);
+		sSetBackCount = new Text(group3, SWT.BORDER);
+		sSetBackCount.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+			}
+		});
 		sSetBackCount.setLayoutData(gridData7);
 		bIsMaximum = new Button(group3, SWT.CHECK);
 		label3 = new Label(group3, SWT.NONE);
 		label3.setText("Delay:");
-		sSetBackHours = new Spinner(group3, SWT.NONE);
+		sSetBackHours = new Text(group3, SWT.BORDER);
+		sSetBackHours.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+			}
+		});
 		label7 = new Label(group3, SWT.NONE);
 		label7.setText(":");
 		sSetBackCount
@@ -493,10 +521,20 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 				});
 		bIsMaximum.setText("Is Maximum");
 		bIsMaximum.setLayoutData(gridData6);
-		sSetBackMinutes = new Spinner(group3, SWT.NONE);
+		sSetBackMinutes = new Text(group3, SWT.BORDER);
+		sSetBackMinutes.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+			}
+		});
 		label9 = new Label(group3, SWT.NONE);
 		label9.setText(":");
-		sSetBackSeconds = new Spinner(group3, SWT.NONE);
+		sSetBackSeconds = new Text(group3, SWT.BORDER);
+		sSetBackSeconds.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+			}
+		});
 		label10 = new Label(group3, SWT.NONE);
 		label10.setText("[hh:mm:]ss");
 		bApplySetback = new Button(group3, SWT.NONE);
@@ -560,7 +598,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 						bApplySetback.setEnabled(true);
 					}
 				});
-		sSetBackHours.setMaximum(24);
+		
 		sSetBackHours.setLayoutData(gridData8);
 	sSetBackHours
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -568,7 +606,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 						bApplySetback.setEnabled(true);
 					}
 				});
-		sSetBackMinutes.setMaximum(60);
+		
 		sSetBackMinutes.setLayoutData(gridData9);
 		sSetBackMinutes
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -576,7 +614,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 						bApplySetback.setEnabled(true);
 					}
 				});
-		sSetBackSeconds.setMaximum(60);
+	
 		sSetBackSeconds.setLayoutData(gridData10);
 		sSetBackSeconds
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -599,6 +637,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 		gridData14.verticalSpan = 3;
 		gridData14.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		tErrorDelay = new Table(group2, SWT.BORDER | SWT.FULL_SELECTION);
+		tErrorDelay.setSortDirection(SWT.UP);
 		tErrorDelay.setHeaderVisible(true);
 		tErrorDelay.setLayoutData(gridData14);
 		tErrorDelay.setLinesVisible(true);
@@ -617,6 +656,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 					}
 				});
 		TableColumn tableColumn = new TableColumn(tErrorDelay, SWT.NONE);
+		tErrorDelay.setSortColumn(tableColumn);
 		tableColumn.setWidth(150);
 		tableColumn.setText("Error Count");
 		TableColumn tableColumn1 = new TableColumn(tErrorDelay, SWT.NONE);
@@ -787,25 +827,41 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 		sSetBackSeconds.setEnabled(enabled);
 		
 		if (enabled) {
-			sSetBackCount.setSelection(listener.getSetbackCount());
+			sSetBackCount.setText(listener.getSetbackCount());
 			bIsMaximum.setSelection(listener.isMaximum());
-			sSetBackHours.setSelection(listener.getSetbackCountHours());
-			sSetBackMinutes.setSelection(listener.getSetbackCountMinutes());
-			sSetBackSeconds.setSelection(listener.getSetbackCountSeconds());
+			sSetBackHours.setText(Utils.fill(2,listener.getSetbackCountHours()));
+			sSetBackMinutes.setText(Utils.fill(2,listener.getSetbackCountMinutes()));
+			sSetBackSeconds.setText(Utils.fill(2,listener.getSetbackCountSeconds()));
 		}
 		
 		bApplySetback.setEnabled(false);
 	}
 
 	private void applySetback() {
-		String delay = Utils.getTime(
-				sSetBackHours.getSelection(), sSetBackMinutes
-						.getSelection(), sSetBackSeconds
-						.getSelection(), true);
-		listener.applySetbackDelay(sSetBackCount.getSelection(), bIsMaximum.getSelection(),
+		int maximum=0;
+		int sel = tSetback.getSelectionIndex();
+		TableItem[] setback = tSetback.getItems();
+		for (int i = 0; i < setback.length; i++) {
+
+      if (setback[i].getText(1).equalsIgnoreCase("Yes") && sel != i){
+      	maximum = maximum + 1;
+      }
+		}
+			
+	 if (bIsMaximum.getSelection()) maximum = maximum + 1;
+	 
+   if (maximum > 1) {
+  	 Utils.message(getShell(),"Only one item can be set as maximum",SWT.ICON_INFORMATION );
+   }else {
+  	 	String delay = Utils.getTime(
+				sSetBackHours.getText(), sSetBackMinutes
+						.getText(), sSetBackSeconds
+						.getText(), true);
+		listener.applySetbackDelay(sSetBackCount.getText(), bIsMaximum.getSelection(),
 				delay);
 		listener.fillSetbacks(tSetback);
 		initSetback(false);
+   }
 	}
 
 	// error delays
@@ -837,11 +893,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 				sErrorMinutes.setEnabled(false);
 				sErrorSeconds.setEnabled(false);
 			} else {
-				sErrorHours.setSelection(listener.getErrorCountHours());
-				sErrorMinutes.setSelection(listener.getErrorCountMinutes());
-				sErrorSeconds.setSelection(listener.getErrorCountSeconds());
+				sErrorHours.setText(Utils.fill(2,listener.getErrorCountHours()));
+				sErrorMinutes.setText(Utils.fill(2,listener.getErrorCountMinutes()));
+				sErrorSeconds.setText(Utils.fill(2,listener.getErrorCountSeconds()));
 			}
-			sErrorCount.setSelection(listener.getErrorCount());
+			sErrorCount.setText(listener.getErrorCount());
 		}
 		bApply.setEnabled(false);
 	}
@@ -853,16 +909,29 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 	}
 	
 	private void applyDelay() {
-		String delay = Utils.getTime(
-				sErrorHours.getSelection(), sErrorMinutes
-						.getSelection(), sErrorSeconds
-						.getSelection(), true);
-		if (bStop.getSelection())
-			delay = "STOP";
-		listener.applyErrorDelay(sErrorCount.getSelection(),
-				delay);
-		listener.fillTable(tErrorDelay);
-		initErrorDelay(false);
+		boolean found=false;
+		TableItem[] errorDelay = tErrorDelay.getItems();
+		int sel = tErrorDelay.getSelectionIndex();
+		for (int i = 0; i < errorDelay.length; i++) {
+      if (errorDelay[i].getText(0).equals(sErrorCount.getText()) && sel != i){
+      	found=true;
+      }
+		}
+
+		if (found ) {
+			Utils.message(getShell(),"Error-count already defined",SWT.ICON_INFORMATION );
+		}else {
+   		String delay = Utils.getTime(
+	   			sErrorHours.getText(), sErrorMinutes
+		  				.getText(), sErrorSeconds
+		   				.getText(), true);
+   		if (bStop.getSelection())
+	  		delay = "STOP";
+  		listener.applyErrorDelay(sErrorCount.getText(),
+  				delay);
+	  	listener.fillTable(tErrorDelay);
+	  	initErrorDelay(false);
+		}
 	}
 
 	public void setToolTipText(){

@@ -53,8 +53,9 @@ public class JobListener {
 		return Utils.getAttributeValue("name", _job);
 	}
 
-	public void setName(String name) {
+	public void setName(String name, boolean updateTree) {
 		Utils.setAttribute("name", name, _job, _dom);
+		if (updateTree)	_main.updateJob(name);
 	}
 
 	public String getTitle() {
@@ -188,7 +189,7 @@ public class JobListener {
 					Element e = (Element) o;
 					if (name.equals(e.getAttributeValue("name"))) {
 						found = true;
-						e.setAttribute("name", value);
+						e.setAttribute("value", value);
 						_dom.setChanged(true);
 						table.getItem(index).setText(1, value);
 					}
@@ -234,7 +235,7 @@ public class JobListener {
 				return;
 			}
 
-			boolean found = false;
+	/*		boolean found = false;
 			List mixed = desc.getContent();
 			Iterator it = mixed.iterator();
 			while (it.hasNext()) {
@@ -250,7 +251,9 @@ public class JobListener {
 			}
 			if (!found && !description.equals(""))
 				desc.addContent(new CDATA(description));
-
+*/
+      desc.removeContent();
+			desc.addContent(new CDATA(description));
 			_dom.setChanged(true);
 		}
 	}

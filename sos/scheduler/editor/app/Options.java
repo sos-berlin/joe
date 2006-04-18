@@ -138,6 +138,20 @@ public class Options {
 		return _properties.getProperty("editor.xml.xslt.file.suffix", "html");
 	}
 	
+	public static String getBackupDir() {
+		String s = _properties.getProperty("editor.backup.path", "");
+		if (!s.endsWith("")) {
+			s = s + "/";
+		}
+		return s;
+	}
+	
+	public static boolean getBackupEnabled() {
+		return (_properties.getProperty("editor.backup.enabled", "false").equalsIgnoreCase("true"));
+	}
+	
+	
+	
 	public static void saveWindow(Shell shell){
 		setProperty("editor.window.left", String.valueOf(shell.getLocation().x));
 		setProperty("editor.window.top", String.valueOf(shell.getLocation().y));

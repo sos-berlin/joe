@@ -63,14 +63,14 @@ public class ConfigForm extends Composite  implements IUpdateLanguage{
 
 	private Label label14 = null;
 
-	private Spinner sPort = null;
+	private Text sPort = null;
 
 
-	private Spinner sTcpPort = null;
+	private Text sTcpPort = null;
 
 	private Label label4 = null;
 
-	private Spinner sUdpPort = null;
+	private Text sUdpPort = null;
 
 	private Group gMainScheduler = null;
 
@@ -125,9 +125,9 @@ public class ConfigForm extends Composite  implements IUpdateLanguage{
 	
 		cSamePorts.setSelection(listener.isPort());
 		if (listener.isPort())
-			sPort.setSelection(listener.getPort());
-		sTcpPort.setSelection(listener.getTcpPort());
-		sUdpPort.setSelection(listener.getUdpPort());
+			sPort.setText(listener.getPort());
+		sTcpPort.setText(listener.getTcpPort());
+		sUdpPort.setText(listener.getUdpPort());
 		cUseMainScheduler.setSelection(listener.isMainScheduler());
 
 		int port = listener.getMainSchedulerPort();
@@ -272,34 +272,33 @@ public class ConfigForm extends Composite  implements IUpdateLanguage{
 		label4.setText("UDP:");
 		label14 = new Label(gPorts, SWT.NONE);
 		label14.setText("Port:");
-		sPort = new Spinner(gPorts, SWT.NONE);
-		sPort.setDigits(0);
-		sPort.setMaximum(99000);
+		sPort = new Text(gPorts, SWT.BORDER);
+		 
+		 
 
 		sPort.setLayoutData(gridData7);
 		sPort.addModifyListener(new ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				listener.setPort(sPort.getSelection());
+				listener.setPort(sPort.getText());
 			}
 		});
 		GridData gridData5 = new GridData(60, SWT.DEFAULT);
-		sTcpPort = new Spinner(gPorts, SWT.NONE);
-		sTcpPort.setMaximum(99000);
+		sTcpPort = new Text(gPorts, SWT.BORDER);
 
 		sTcpPort.setLayoutData(gridData5);
 		sTcpPort.addModifyListener(new ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				listener.setTcpPort(sTcpPort.getSelection());
+				listener.setTcpPort(sTcpPort.getText());
 			}
 		});
 		GridData gridData8 = new GridData(60, SWT.DEFAULT);
-		sUdpPort = new Spinner(gPorts, SWT.NONE);
-		sUdpPort.setMaximum(99000);
+		sUdpPort = new Text(gPorts, SWT.BORDER);
+ 
 
 		sUdpPort.setLayoutData(gridData8);
 		sUdpPort.addModifyListener(new ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				listener.setUdpPort(sUdpPort.getSelection());
+				listener.setUdpPort(sUdpPort.getText());
 			}
 		});
 	}
@@ -474,7 +473,7 @@ public class ConfigForm extends Composite  implements IUpdateLanguage{
 			tJavaClassPath.setToolTipText(Messages
 					.getTooltip("config.java_class_path"));
 			tComment.setToolTipText(Messages.getTooltip("config.comment"));
-			tComment.setToolTipText(Messages.getTooltip("config.java_options"));
+			tJavaOptions.setToolTipText(Messages.getTooltip("config.java_options"));
 	 	
 	  }
 

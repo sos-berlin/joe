@@ -115,7 +115,7 @@ public class JobOptionsListener {
 			_setback = (Element) _setbacks.get(index);
 	}
 
-	public void applySetbackDelay(int setbackCount, boolean maximum, String delay) {
+	public void applySetbackDelay(String setbackCount, boolean maximum, String delay) {
 		Utils.setAttribute("setback_count", setbackCount, _setback, _dom);
 		Utils.setAttribute("is_maximum", maximum, _setback, _dom);
 		Utils.setAttribute("delay", delay, _setback, _dom);
@@ -132,24 +132,24 @@ public class JobOptionsListener {
 		}
 	}
 
-	public int getSetbackCount() {
-		return Utils.getIntValue("setback_count", _setback);
+	public String getSetbackCount() {
+		return Utils.getIntegerAsString(Utils.getIntValue("setback_count",-999, _setback)); 
 	}
 
 	public boolean isMaximum() {
 		return Utils.isAttributeValue("is_maximum", _setback);
 	}
 	
-	public int getSetbackCountHours() {
-		return Utils.getHours(_setback.getAttributeValue("delay"), 0);
+	public String getSetbackCountHours() {
+		return Utils.getIntegerAsString(Utils.getHours(_setback.getAttributeValue("delay"), -999)); 
 	}
 
-	public int getSetbackCountMinutes() {
-		return Utils.getMinutes(_setback.getAttributeValue("delay"), 0);
+	public String getSetbackCountMinutes() {
+		return Utils.getIntegerAsString(Utils.getMinutes(_setback.getAttributeValue("delay"), -999)); 
 	}
 
-	public int getSetbackCountSeconds() {
-		return Utils.getSeconds(_setback.getAttributeValue("delay"), 0);
+	public String getSetbackCountSeconds() {
+		return Utils.getIntegerAsString(Utils.getSeconds(_setback.getAttributeValue("delay"), -999)); 
 	}
 
 	
@@ -192,7 +192,7 @@ public class JobOptionsListener {
 			_errorDelay = (Element) _errorDelays.get(index);
 	}
 
-	public void applyErrorDelay(int errorCount, String delay) {
+	public void applyErrorDelay(String errorCount, String delay) {
 		Utils.setAttribute("error_count", errorCount, _errorDelay, _dom);
 		Utils.setAttribute("delay", delay, _errorDelay, _dom);
 		if (!_errorDelays.contains(_errorDelay))
@@ -208,8 +208,8 @@ public class JobOptionsListener {
 		}
 	}
 
-	public int getErrorCount() {
-		return Utils.getIntValue("error_count", _errorDelay);
+	public String getErrorCount() {
+ 		return Utils.getIntegerAsString(Utils.getIntValue("error_count", -999, _errorDelay)); 
 	}
 
 	public boolean isStop() {
@@ -221,15 +221,15 @@ public class JobOptionsListener {
 			return false;
 	}
 
-	public int getErrorCountHours() {
-		return Utils.getHours(_errorDelay.getAttributeValue("delay"), 0);
+	public String getErrorCountHours() {
+		return Utils.getIntegerAsString(Utils.getHours(_errorDelay.getAttributeValue("delay"), -999)); 
 	}
 
-	public int getErrorCountMinutes() {
-		return Utils.getMinutes(_errorDelay.getAttributeValue("delay"), 0);
+	public String getErrorCountMinutes() {
+		return Utils.getIntegerAsString(Utils.getMinutes(_errorDelay.getAttributeValue("delay"), -999)); 
 	}
 
-	public int getErrorCountSeconds() {
-		return Utils.getSeconds(_errorDelay.getAttributeValue("delay"), 0);
+	public String getErrorCountSeconds() {
+		return Utils.getIntegerAsString(Utils.getSeconds(_errorDelay.getAttributeValue("delay"), -999)); 
 	}
 }

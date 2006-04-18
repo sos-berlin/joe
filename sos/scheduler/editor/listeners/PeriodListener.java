@@ -53,9 +53,12 @@ public class PeriodListener {
 	}
 
 	public void setPeriodTime(Button bApply, String node,String hours,String minutes,String seconds) {
-		Utils.setAttribute(node, Utils.getTime(hours, minutes,seconds, false), _period , _dom);
-		if (bApply != null) {
-			bApply.setEnabled(true);
+		if (_period != null) {
+			
+				Utils.setAttribute(node, Utils.getTime(hours, minutes,seconds, false), _period , _dom);
+		    if (bApply != null) {
+		    	bApply.setEnabled(true);
+		    }
 		}
   }
 
@@ -149,7 +152,8 @@ public class PeriodListener {
 	
 	public void setRunOnce(boolean once) {
 		Utils.setAttribute("once", once, false, _period );
-	}
+		_dom.setChanged(true);
+		}
 	
 	
 }

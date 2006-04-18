@@ -120,7 +120,7 @@ public class JobsListener {
 		if(e != null) {
 			for(Iterator it = e.getContent().iterator(); it.hasNext(); ) {
 				Object o = it.next();
-				if(o instanceof Comment)
+				if(o instanceof Comment && false)
 					return true;
 				else if (o instanceof Element) {
 					Element ee = (Element)o;

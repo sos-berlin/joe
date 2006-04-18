@@ -219,26 +219,28 @@ public class ScriptListener {
 
 	public void setSource(String source) {
 		if (_script != null) {
-			List mixed = _script.getContent();
+/*			List mixed = _script.getContent();
 			Iterator it = mixed.iterator();
 			boolean found = false;
-			boolean next = true;
-			while (it.hasNext() && next) {
+ 
+			while (it.hasNext() ) {
 				Object o = it.next();
 				if (o instanceof CDATA || o instanceof Text) {
 					found = true;
 					if (source == null || source.equals("")) {
 						((Text) o).detach();
-						next = false;
+				   	break;
 					} else {
 						((Text) o).setText(source);
 					}
 				}
 			}
+*/
 
-			if (!found && !source.equals("")) {
+//			if (!found && !source.equals("")) {
+			  _script.removeContent();
 				_script.addContent(new CDATA(source));
-			}
+//			}
 
 			_dom.setChanged(true);
 		} else

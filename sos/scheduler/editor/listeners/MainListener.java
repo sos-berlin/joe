@@ -89,8 +89,7 @@ public class MainListener {
 				.getHelpURL("process_classes"), "process_classes"));
 		item.setText("Process Classes");
 		item = new TreeItem(tree, SWT.NONE);
-		item.setData(new TreeData(Editor.SCRIPT, config, Options
-				.getHelpURL("start_script"), "script"));
+		item.setData(new TreeData(Editor.SCRIPT, config, Options.getHelpURL("start_script"), "script"));
 		item.setText("Start Script");
 		item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.WEBSERVICES, config, Options
@@ -177,19 +176,19 @@ public class MainListener {
 			item.setText("Weekdays");
 			item.setData(new TreeData(Editor.WEEKDAYS, runtime, Options
 					.getHelpURL("job.run_time.weekdays"), "weekdays"));
-			treeFillDays(item, job, 0, false);
+			treeFillDays(item, runtime, 0, false);
 
 			item = new TreeItem(run, SWT.NONE);
 			item.setText("Monthdays");
 			item.setData(new TreeData(Editor.MONTHDAYS, runtime, Options
 					.getHelpURL("job.run_time.monthdays"), "monthdays"));
-			treeFillDays(item, job, 1, false);
+			treeFillDays(item, runtime, 1, false);
 
 			item = new TreeItem(run, SWT.NONE);
 			item.setText("Ultimos");
 			item.setData(new TreeData(Editor.ULTIMOS, runtime, Options
 					.getHelpURL("job.run_time.ultimos"), "ultimos"));
-			treeFillDays(item, job, 2, false);
+			treeFillDays(item, runtime, 2, false);
 
 			item = new TreeItem(run, SWT.NONE);
 			item.setText("Specific Days");
@@ -401,7 +400,39 @@ public class MainListener {
 		return false;
 	}
 
+	private void createBackup()  {
+		String backupPath;
+		String f;
+		if (_filename == null) {
+			f = "";
+		}else {
+			f = _filename;
+		}
+		try {
+		if (Options.getBackupEnabled() && !f.equals("")) {
+			 if (Options.getBackupDir().equals("")) {
+				 backupPath = new File(f).getPath();
+			 }else {
+				 backupPath = Options.getBackupDir();
+			 }
+   		 File outFile = new File(backupPath  + "/" +  new File(_filename).getName() + ".bak");
+		   File inFile =  new File(_filename);
+	     if (inFile.exists()){
+          if (outFile.exists()  ){ // Wenn destination schon existiert, dann vorher löschen.
+    	      outFile.delete(); 
+          }
+          boolean ok = inFile.renameTo( outFile );
+          if( !ok )  throw new Exception( "Import-Datei " + inFile + " kann nicht nach " + outFile + " kopiert werden." );
+   		}
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+		message(e.getMessage(), SWT.ICON_ERROR | SWT.OK);
+	}
+	}
+	
 	public boolean saveFile(boolean saveas) {
+	
 		try {
 			String filename = _filename;
 			if (saveas || filename == null || filename.equals("")) { //$NON-NLS-1$
@@ -412,25 +443,28 @@ public class MainListener {
 			}
 			File file = new File(filename);
 
-			if ((_filename == null || _filename.equals("")) && file.exists()) {
+			if ( !filename.equals(_filename) && file.exists()) {
 				int ok = message(Messages
 						.getString("MainListener.doFileOverwrite"), //$NON-NLS-1$
 						SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 				if (ok == SWT.NO)
 					return false;
-			} else
-				file.createNewFile();
+			} 
+			
 
 			if (!file.canWrite()) {
 				message(Messages.getString("MainListener.fileWriteProtected"), //$NON-NLS-1$
 						SWT.ICON_WARNING | SWT.OK);
 				return false;
 			} else {
+				createBackup();
+				
 				_dom.write(filename, this);
 				_filename = filename;
+		    _gui.getSShell().setText("Job Scheduler Editor [" + filename + "]");
+
 			}
 			
-	    _gui.getSShell().setText("Job Scheduler Editor [" + filename + "]");
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -590,4 +624,5 @@ public class MainListener {
 		dialog.getStyledText().setStyleRange(bold);
 		dialog.open();
 	}
+	
 }

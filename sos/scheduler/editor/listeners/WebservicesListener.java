@@ -76,8 +76,8 @@ public class WebservicesListener {
 		return Utils.getAttributeValue("name", _service);
 	}
 
-	public int getTimeout() {
-		return Utils.getIntValue("timeout", _service);
+	public String getTimeout() {
+		return Utils.getAttributeValue("timeout", _service);
 	}
 
 	public String getURL() {
@@ -104,7 +104,7 @@ public class WebservicesListener {
 	}
 
 	public void applyService(boolean debug, String chain, String name,
-			String forward, String request, String response, int timeout,
+			String forward, String request, String response, String timeout,
 			String url, TableItem[] params) {
 		Utils.setAttribute("debug", debug, _service, _dom);
 		Utils.setAttribute("job_chain", chain, _service, _dom);
@@ -114,7 +114,7 @@ public class WebservicesListener {
 		Utils
 				.setAttribute("response_xslt_stylesheet", response, _service,
 						_dom);
-		Utils.setAttribute("timeout", timeout, 0, _service, _dom);
+		Utils.setAttribute("timeout", timeout, _service, _dom);
 		Utils.setAttribute("url_path", url, _service, _dom);
 
 		// params

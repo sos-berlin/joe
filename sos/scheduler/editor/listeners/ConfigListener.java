@@ -124,32 +124,32 @@ public class ConfigListener {
 		_dom.setChanged(true);
 	}
 
-	public int getTcpPort() {
-		return Utils.getIntValue("tcp_port", _config);
+	public String getTcpPort() {
+		return Utils.getAttributeValue("tcp_port", _config);
 	}
 
-	public void setTcpPort(int port) {
-		_config.setAttribute("tcp_port", new Integer(port).toString());
+	public void setTcpPort(String port) {
+		Utils.setAttribute("tcp_port", Utils.getIntegerAsString(Utils.str2int(port)), _config, _dom);
 		_config.removeAttribute("port");
 		_dom.setChanged(true);
 	}
 
-	public int getUdpPort() {
-		return Utils.getIntValue("udp_port", _config);
+	public String getUdpPort() {
+		return Utils.getAttributeValue("udp_port", _config);
 	}
 
-	public void setUdpPort(int port) {
-		_config.setAttribute("udp_port", new Integer(port).toString());
+	public void setUdpPort(String port) {
+		Utils.setAttribute("udp_port", Utils.getIntegerAsString(Utils.str2int(port)), _config, _dom);
 		_config.removeAttribute("port");
 		_dom.setChanged(true);
 	}
 
-	public int getPort() {
-		return Utils.getIntValue("port", _config);
+	public String getPort() {
+		return Utils.getAttributeValue("port", _config);
 	}
 
-	public void setPort(int port) {
-		_config.setAttribute("port", new Integer(port).toString());
+	public void setPort(String port) {
+		Utils.setAttribute("port", Utils.getIntegerAsString(Utils.str2int(port)), _config, _dom);
 		_config.removeAttribute("tcp_port");
 		_config.removeAttribute("udp_port");
 		_dom.setChanged(true);

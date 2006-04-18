@@ -4,6 +4,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -109,6 +113,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private Text tComment = null;
 
 	private Label label8 = null;
+	private boolean updateTree=false;
 
 	public JobForm(Composite parent, int style, DomParser dom, Element job,
 			IUpdate main) {
@@ -120,7 +125,9 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 		dom.setInit(true);
 		
+		updateTree = false;
 		tName.setText(listener.getName());
+		updateTree = true;
 		tTitle.setText(listener.getTitle());
 		tSpoolerID.setText(listener.getSpoolerID());
 		String[] classes = listener.getProcessClasses();
@@ -215,10 +222,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		gridData1.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData1.grabExcessHorizontalSpace = true;
 		gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-		GridData gridData = new org.eclipse.swt.layout.GridData();
-		gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
+		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 4;
 		gMain = new Group(sashForm, SWT.NONE);
@@ -230,8 +234,9 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		tName.setLayoutData(gridData);
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				listener.setName(tName.getText());
+				listener.setName(tName.getText(),updateTree);
 				group.setText("Job: " + tName.getText() + (listener.isDisabled() ? " (Disabled)" : ""));
+			
 			}
 		});
 		label1 = new Label(gMain, SWT.NONE);
@@ -264,7 +269,18 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 		sPriority = new Combo(gMain, SWT.NONE);
 		sPriority.setItems(new String[] {"idle", "below_normal", "normal", "above_normal", "high"});
-		final GridData gridData_1 = new GridData(70, SWT.DEFAULT);
+		sPriority.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = (Utils.isOnlyDigits(e.text) 
+						|| e.text.equals("idle")
+						|| e.text.equals("below_normal")
+						|| e.text.equals("normal")
+						|| e.text.equals("above_normal")
+						|| e.text.equals("high"));
+				
+			}
+		});
+		final GridData gridData_1 = new GridData(80, SWT.DEFAULT);
 		gridData_1.verticalIndent = -1;
 		sPriority.setLayoutData(gridData_1);
 		sPriority.addModifyListener(new ModifyListener() {
@@ -278,6 +294,15 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		label15.setText("Tasks:");
 
 		sTasks = new Text(gMain, SWT.BORDER);
+		sTasks.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+			}
+		});
+		sTasks.addSelectionListener(new SelectionAdapter() {
+			public void widgetDefaultSelected(final SelectionEvent e) {
+			}
+		});
 		sTasks.addModifyListener(new ModifyListener() {
 			
 			public void modifyText(final ModifyEvent e) {
@@ -285,28 +310,40 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 			}
 		});
 		
-		sTasks.setLayoutData(new GridData());
+		sTasks.setLayoutData(new GridData(75, SWT.DEFAULT));
 		label13 = new Label(gMain, SWT.NONE);
 		label13.setText("Timeout:");
 
 		sTimeout = new Text(gMain, SWT.BORDER);
+		sTimeout.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+			}
+		});
+		
 		sTimeout.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				listener.setTimeout(sTimeout.getText());
 			}
 		});
-		sTimeout.setLayoutData(new GridData());
+		sTimeout.setLayoutData(new GridData(75, SWT.DEFAULT));
 		label11 = new Label(gMain, SWT.NONE);
 		label11.setText("Idle Timeout:");
 
 		sIdleTimeout = new Text(gMain, SWT.BORDER);
+		sIdleTimeout.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+
+			}
+		});
 		sIdleTimeout.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				listener.setIdleTimeout(sIdleTimeout.getText());
 			}
 		});
 		
-		sIdleTimeout.setLayoutData(new GridData());
+		sIdleTimeout.setLayoutData(new GridData(75, SWT.DEFAULT));
 		label8 = new Label(gMain, SWT.NONE);
 		label8.setText("Comment:");
 		label8.setLayoutData(gridData71);
@@ -355,7 +392,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
-						sPriority.setEnabled(false);
+						
 					//	sPriority.setSelection(0);
 						listener.setOrder(bOrderYes.getSelection());
 					}
@@ -368,7 +405,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
-						sPriority.setEnabled(true);
+						
 						listener.setPriority(sPriority.getText());
 						listener.setOrder(!bOrderNo.getSelection());
 					}
@@ -534,6 +571,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		label10.setText("Include:");
 		tFileName = new Text(gDescription, SWT.BORDER);
 		tFileName.setLayoutData(gridData12);
+	 
 		tFileName
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {

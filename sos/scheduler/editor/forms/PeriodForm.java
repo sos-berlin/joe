@@ -5,6 +5,8 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -97,6 +99,17 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 	private Button cRunOnce = null;
 	private boolean event  =  true;
 	private Button bApply = null;
+	
+
+	private String  savBeginHours="";      
+	private String  savBeginMinutes="";      
+	private String  savBeginSeconds="";      
+	private String  savEndHours="";          
+	private String  savEndMinutes="";        
+	private String  savEndSeconds="";        
+	private String  savRepeatHours="";       
+	private String  savRepeatMinutes="";     
+	private String  savRepeatSeconds="";		
 
 
 	public PeriodForm(Composite parent, int style) {
@@ -190,6 +203,11 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		label2 = new Label(gPeriod, SWT.NONE);
 		label2.setText("Begin Time:");
 		sBeginHours = new Text(gPeriod, SWT.BORDER);
+		sBeginHours.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+			}
+		});
 		
 	
 		sBeginHours.setLayoutData(gridData11);
@@ -204,6 +222,11 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		label3 = new Label(gPeriod, SWT.NONE);
 		label3.setText(":");
 		sBeginMinutes = new Text(gPeriod, SWT.BORDER);
+		sBeginMinutes.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+			}
+		});
 		sBeginMinutes.addMouseListener(new MouseAdapter() {
 			public void mouseDown(final MouseEvent e) {
 			
@@ -225,6 +248,12 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		label4 = new Label(gPeriod, SWT.NONE);
 		label4.setText(":");
 		sBeginSeconds = new Text(gPeriod, SWT.BORDER);
+		sBeginSeconds.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+
+			}
+		});
 		sBeginSeconds.addMouseListener(new MouseAdapter() {
 			public void mouseDown(final MouseEvent e) {
 
@@ -249,6 +278,12 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		label6 = new Label(gPeriod, SWT.NONE);
 		label6.setText("End Time:");
 		sEndHours = new Text(gPeriod, SWT.BORDER);
+		sEndHours.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+
+			}
+		});
 		sEndHours.addMouseListener(new MouseAdapter() {
 			public void mouseDown(final MouseEvent e) {
 
@@ -269,6 +304,12 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		label7 = new Label(gPeriod, SWT.NONE);
 		label7.setText(":");
 		sEndMinutes = new Text(gPeriod, SWT.BORDER);
+		sEndMinutes.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+
+			}
+		});
 		sEndMinutes.addMouseListener(new MouseAdapter() {
 			public void mouseDown(final MouseEvent e) {
 						}
@@ -289,6 +330,12 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		label8 = new Label(gPeriod, SWT.NONE);
 		label8.setText(":");
 		sEndSeconds = new Text(gPeriod, SWT.BORDER);
+		sEndSeconds.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+
+			}
+		});
 		sEndSeconds.addMouseListener(new MouseAdapter() {
 			public void mouseDown(final MouseEvent e) {
 				
@@ -312,6 +359,12 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		label10 = new Label(gPeriod, SWT.NONE);
 		label10.setText("Repeat Time:");
 		sRepeatHours = new Text(gPeriod, SWT.BORDER);
+		sRepeatHours.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+
+			}
+		});
 		sRepeatHours.addMouseListener(new MouseAdapter() {
 			public void mouseDown(final MouseEvent e) {
 				
@@ -334,6 +387,12 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		label11 = new Label(gPeriod, SWT.NONE);
 		label11.setText(":");
 		sRepeatMinutes = new Text(gPeriod, SWT.BORDER);
+		sRepeatMinutes.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+
+			}
+		});
 		sRepeatMinutes.addMouseListener(new MouseAdapter() {
 			public void mouseDown(final MouseEvent e) {
 				
@@ -355,6 +414,12 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		label12 = new Label(gPeriod, SWT.NONE);
 		label12.setText(":");
 		sRepeatSeconds = new Text(gPeriod, SWT.BORDER);
+		sRepeatSeconds.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+
+			}
+		});
 		sRepeatSeconds.addMouseListener(new MouseAdapter() {
 			public void mouseDown(final MouseEvent e) {
 							}
@@ -383,6 +448,12 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		label13 = new Label(gPeriod, SWT.NONE);
 		label13.setText("Single Start:");
 		sSingleHours = new Text(gPeriod, SWT.BORDER);
+		sSingleHours.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+
+			}
+		});
 		sSingleHours.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				 
@@ -398,12 +469,21 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		sSingleHours
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						if (event) listener.setPeriodTime(bApply,"single_start",sSingleHours.getText(),sSingleMinutes.getText(),sSingleSeconds.getText());
+						if (event) {
+							listener.setPeriodTime(bApply,"single_start",sSingleHours.getText(),sSingleMinutes.getText(),sSingleSeconds.getText());
+							setEnabled(true);
+						}
 					}
 				});
 		label14 = new Label(gPeriod, SWT.NONE);
 		label14.setText(":");
 		sSingleMinutes = new Text(gPeriod, SWT.BORDER);
+		sSingleMinutes.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+
+			}
+		});
 		sSingleMinutes.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				 
@@ -419,12 +499,21 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		sSingleMinutes
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						if (event) listener.setPeriodTime(bApply,"single_start",sSingleHours.getText(),sSingleMinutes.getText(),sSingleSeconds.getText());
+						if (event) {
+							listener.setPeriodTime(bApply,"single_start",sSingleHours.getText(),sSingleMinutes.getText(),sSingleSeconds.getText());
+							setEnabled(true);
+						}
 					}
 				});
 		label15 = new Label(gPeriod, SWT.NONE);
 		label15.setText(":");
 		sSingleSeconds = new Text(gPeriod, SWT.BORDER);
+		sSingleSeconds.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = Utils.isOnlyDigits(e.text);
+
+			}
+		});
 		sSingleSeconds.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				 
@@ -440,7 +529,10 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		sSingleSeconds
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						if (event) listener.setPeriodTime(bApply,"single_start",sSingleHours.getText(),sSingleMinutes.getText(),sSingleSeconds.getText());
+						if (event) {
+							listener.setPeriodTime(bApply,"single_start",sSingleHours.getText(),sSingleMinutes.getText(),sSingleSeconds.getText());
+							setEnabled(true);
+						}
 					}
 				});
 		label16 = new Label(gPeriod, SWT.NONE);
@@ -503,24 +595,66 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 	}
 
 	public void setEnabled(boolean enabled) {
+		boolean singleStart=(!(sSingleHours.getText() + sSingleMinutes.getText() +  sSingleSeconds.getText()).trim().equals(""));
 		gPeriod.setEnabled(enabled);
 
-		bLetRun.setEnabled(enabled);
+		bLetRun.setEnabled(enabled && !singleStart );
 		cRunOnce.setEnabled(enabled && !onOrder);
-		sBeginHours.setEnabled(enabled);
-		sBeginMinutes.setEnabled(enabled);
-		sBeginSeconds.setEnabled(enabled);
-		sEndHours.setEnabled(enabled);
-		sEndMinutes.setEnabled(enabled);
-		sEndSeconds.setEnabled(enabled);
-		sRepeatHours.setEnabled(enabled && !onOrder);
-		sRepeatMinutes.setEnabled(enabled && !onOrder);
-		sRepeatSeconds.setEnabled(enabled && !onOrder);
+		sBeginHours.setEnabled(enabled  && !singleStart);
+		sBeginMinutes.setEnabled(enabled && !singleStart );
+		sBeginSeconds.setEnabled(enabled && !singleStart);
+		sEndHours.setEnabled(enabled && !singleStart);
+		sEndMinutes.setEnabled(enabled && !singleStart);
+		sEndSeconds.setEnabled(enabled && !singleStart);
+		sRepeatHours.setEnabled(enabled && !onOrder && !singleStart);
+		sRepeatMinutes.setEnabled(enabled && !onOrder && !singleStart);
+		sRepeatSeconds.setEnabled(enabled && !onOrder && !singleStart);
+		
 		sSingleHours.setEnabled(enabled && !onOrder);
 		sSingleMinutes.setEnabled(enabled && !onOrder);
 		sSingleSeconds.setEnabled(enabled && !onOrder);
+    
 
-
+		if (singleStart) {
+			if (!sBeginHours.getText().equals("")) savBeginHours=sBeginHours.getText();
+			if (!sBeginMinutes.getText().equals("")) savBeginMinutes=sBeginMinutes.getText();
+			if (!sBeginSeconds.getText().equals("")) savBeginSeconds=sBeginSeconds.getText();
+			if (!sEndHours.getText().equals("")) savEndHours=sEndHours.getText();          
+			if (!sEndMinutes.getText().equals("")) savEndMinutes=sEndMinutes.getText();        
+			if (!sEndSeconds.getText().equals("")) savEndSeconds=sEndSeconds.getText();        
+			if (!sRepeatHours.getText().equals("")) savRepeatHours=sRepeatHours.getText();       
+			if (!sRepeatMinutes.getText().equals("")) savRepeatMinutes=sRepeatMinutes.getText();     
+			if (!sRepeatSeconds.getText().equals("")) savRepeatSeconds=sRepeatSeconds.getText();
+			
+			sBeginHours.setText("");
+			sBeginMinutes.setText("");
+			sBeginSeconds.setText("");
+			sEndHours.setText("");
+			sEndMinutes.setText("");
+			sEndSeconds.setText("");
+			sRepeatHours.setText("");
+			sRepeatMinutes.setText("");
+			sRepeatSeconds.setText("");
+			
+		
+		}else {
+	    event = false;		
+			sSingleHours.setText("");
+			sSingleMinutes.setText("");
+			sSingleSeconds.setText("");
+			listener.setPeriodTime(bApply,"single_start","","","");
+			event = true;		
+			
+			if (!savBeginHours.equals("")) sBeginHours.setText(savBeginHours);
+			if (!savBeginMinutes.equals("")) sBeginMinutes.setText(savBeginMinutes);
+			if (!savBeginSeconds.equals("")) sBeginSeconds.setText(savBeginSeconds);
+			if (!savEndHours.equals("")) sEndHours.setText(savEndHours);
+			if (!savEndMinutes.equals("")) sEndMinutes.setText(savEndMinutes);
+			if (!savEndSeconds.equals("")) sEndSeconds.setText(savEndSeconds);
+			if (!savRepeatHours.equals("")) sRepeatHours.setText(savRepeatHours);
+			if (!savRepeatMinutes.equals("")) sRepeatMinutes.setText(savRepeatMinutes);
+			if (!savRepeatSeconds.equals(""))sRepeatSeconds.setText(savRepeatSeconds);		}
+	
 	}
 	
 	public void setRunOnce(boolean visible) {

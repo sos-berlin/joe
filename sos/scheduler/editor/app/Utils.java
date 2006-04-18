@@ -1,5 +1,7 @@
 package sos.scheduler.editor.app;
 
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.jdom.Element;
 
 public class Utils {
@@ -11,6 +13,7 @@ public class Utils {
 
 	private static final String BOOLEAN_DEFAULT = null;
 
+	 
 	public static String getIntegerAsString(int i) {
 		String s;
 		if (i == -999) {
@@ -55,6 +58,7 @@ public class Utils {
 
 	public static void setAttribute(String attribute, String value,
 			String defaultValue, Element element, DomParser dom) {
+		value = value.trim();
 		if (value == null || value.equals(defaultValue)) {
 			element.removeAttribute(attribute);
 			if (dom != null)
@@ -174,7 +178,7 @@ public class Utils {
 	
 	public static String getTime(String hours, String minutes, String seconds,
 			boolean onlySeconds) {
-		int h = Utils.str2int(hours,24);
+		int h = Utils.str2int(hours,23);
 		int m = Utils.str2int(minutes,59);
 		int s = Utils.str2int(seconds,59);
 		if (h<0 && m<0 && s<0) {
@@ -212,6 +216,19 @@ public class Utils {
 		return erg;
 	}
 	
+	public static boolean isOnlyDigits(String s) {
+		try {
+			if (s.equals("")) {
+				return true;
+			}
+			Integer.parseInt(s);
+			return true;
+		}catch (Exception ee){
+			return false;
+		}
+
+	}
+	
 	public static  int str2int(String s) {
 		int i = 0;
 		try {
@@ -220,9 +237,9 @@ public class Utils {
 		  	s = onlyDigits(s);
 				try {
   			  i = Integer.parseInt(s);
-		  	  }catch (Exception ee) {
+		 	  }catch (Exception ee) {
 		  		  i =-999;
-		  	   }
+	 	   }
 		  }
 		return i;
 	}
@@ -246,5 +263,9 @@ public class Utils {
 	 return i;
 	}
 		
-
+	public static int message(Shell shell, String message, int style) {
+		MessageBox mb = new MessageBox(shell, style);
+		mb.setMessage(message);
+		return mb.open();
+	}
 }

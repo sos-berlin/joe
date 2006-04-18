@@ -143,9 +143,10 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
 								tPeriods.select(index);
 						}
 
-						fillPeriod(false);
+						fillPeriod(true);
 						bRemove.setEnabled(tPeriods.getSelectionCount() > 0);
 						periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
+						bApply.setEnabled(false);
 					}
 				});
 	}
