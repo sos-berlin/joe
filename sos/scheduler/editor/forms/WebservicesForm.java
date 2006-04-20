@@ -14,7 +14,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -207,12 +206,16 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 				});
 		bNew.setText("&New Web Service");
 		bNew.setLayoutData(gridData5);
+		getShell().setDefaultButton(bNew);
+
 		bNew
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
 						listener.newService();
 						setInput(true);
+						tName.setFocus();
+
 					}
 				});
 	}
@@ -242,6 +245,10 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 							listener.selectService(tServices
 									.getSelectionIndex());
 							setInput(true);
+							sTimeout.setEnabled(!cChain.getText().equals(""));
+							tRequest.setEnabled(!sTimeout.getEnabled());
+							tResponse.setEnabled(!sTimeout.getEnabled());
+							tForward.setEnabled(!sTimeout.getEnabled());							
 						}
 					}
 				});
@@ -299,13 +306,18 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		tName.setLayoutData(gridData9);
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				getShell().setDefaultButton(null);
 				boolean valid = listener.isValid(tName.getText());
 				if(valid)
 					tName.setBackground(null);
 				else
 					tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-				
-				bApply.setEnabled(valid && !tName.getText().equals("") && !tURL.getText().equals(""));
+				  
+				valid = (valid && !tName.getText().equals("") && !tURL.getText().equals(""));
+				if (valid) {
+					getShell().setDefaultButton(bApply);
+				}
+				bApply.setEnabled(valid);
 				gWebService.setText(GROUP_WEB_SERVICE + ": " + tName.getText());
 			}
 		});
@@ -326,21 +338,35 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 					tURL.setText("/"+tURL.getText());
 					tURL.setSelection(2);
 				}
-				bApply.setEnabled(!tName.getText().equals("") && !tURL.getText().equals(""));
+				boolean valid = (!tName.getText().equals("") && !tURL.getText().equals(""));
+				if (valid) {
+					getShell().setDefaultButton(bApply);
+				}
+				bApply.setEnabled(valid);
 			}
 		});
 		label2 = new Label(gWebService, SWT.NONE);
 		label2.setText("Job Chain:");
 		cChain = new CCombo(gWebService, SWT.BORDER);
+		cChain.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+			}
+		});
 		cChain.setEditable(true);
 		cChain.setEnabled(false);
 		cChain.setLayoutData(gridData12);
 		cChain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				bApply.setEnabled(!tName.getText().equals(""));
+ 
+				boolean valid = (!tName.getText().equals("") );
+				bApply.setEnabled(valid);
+				if (valid) {
+					getShell().setDefaultButton(bApply);
+				}
 				sTimeout.setEnabled(!cChain.getText().equals(""));
 				tRequest.setEnabled(!sTimeout.getEnabled());
 				tResponse.setEnabled(!sTimeout.getEnabled());
+				tForward.setEnabled(!sTimeout.getEnabled());
 			}
 		});
 		label3 = new Label(gWebService, SWT.NONE);
@@ -355,7 +381,11 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		sTimeout.setLayoutData(gridData11);
 		sTimeout.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				bApply.setEnabled(!tName.getText().equals(""));
+				boolean valid = (!tName.getText().equals("") );
+				if (valid) {
+					getShell().setDefaultButton(bApply);
+				}
+				bApply.setEnabled(valid);
 			}
 		});
 		label5 = new Label(gWebService, SWT.NONE);
@@ -366,8 +396,12 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
-						bApply.setEnabled(!tName.getText().equals(""));
-					}
+						boolean valid = (!tName.getText().equals("") );
+						if (valid) {
+							getShell().setDefaultButton(bApply);
+						}
+						bApply.setEnabled(valid);					
+						}
 				});
 		label7 = new Label(gWebService, SWT.NONE);
 		label7.setText("Request XSLT:");
@@ -376,7 +410,11 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		tRequest.setLayoutData(gridData8);
 		tRequest.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				bApply.setEnabled(!tName.getText().equals(""));
+				boolean valid = (!tName.getText().equals("") );
+				if (valid) {
+					getShell().setDefaultButton(bApply);
+				}
+				bApply.setEnabled(valid);
 				cChain.setEnabled(tRequest.getText().equals(""));
 			}
 		});
@@ -388,7 +426,11 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		tResponse
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						bApply.setEnabled(!tName.getText().equals(""));
+						boolean valid = (!tName.getText().equals("") );
+						if (valid) {
+							getShell().setDefaultButton(bApply);
+						}
+						bApply.setEnabled(valid);
 						cChain.setEnabled(tResponse.getText().equals(""));
 					}
 				});
@@ -401,8 +443,12 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		tForward.setLayoutData(gridData7);
 		tForward.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				bApply.setEnabled(!tName.getText().equals(""));
-			}
+				boolean valid = (!tName.getText().equals("") );
+				if (valid) {
+					getShell().setDefaultButton(bApply);
+				}
+				bApply.setEnabled(valid);
+				}
 		});
 	}
 
@@ -464,8 +510,12 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 							bApplyPara.setEnabled(false);
 						}
 						bRemovePara.setEnabled(false);
-						bApply.setEnabled(!tName.getText().equals(""));
-					}
+						boolean valid = (!tName.getText().equals("") );
+						if (valid) {
+							getShell().setDefaultButton(bApply);
+						}
+						bApply.setEnabled(valid);
+						}
 				});
 		tParaName.setEnabled(false);
 		tParaName.setLayoutData(gridData16);
@@ -546,31 +596,46 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 
 	private void applyService()   {
 		boolean found= false;
+		boolean exist=false;
 		TableItem[] services = tServices.getItems();
+		int sel =  tServices.getSelectionIndex();
 		for (int i = 0; i < services.length; i++) {
-			String name = services[i].getText(0);
 			String url = services[i].getText(1);
-      if (url.equals(tURL.getText()) && !name.equals(tName.getText())){
+			String name = services[i].getText(0);
+			
+      if (url.equals(tURL.getText()) && sel != i){
       	found = true;
+      }      
+      if (name.equals(tName.getText()) && sel != i){
+      	exist = true;
       }
 		}
 			
    if (found) {
-  	 Utils.message(getShell(),"URL already defined",SWT.ICON_INFORMATION );
+  	 Utils.message(getShell(),"URL-path already defined",SWT.ICON_INFORMATION );
+  	 tURL.setFocus();
    }else {
   	 
   	  if (!tRequest.getText().equals ("") && tResponse.getText().equals("")) {
   	  	 Utils.message(getShell(),"Please set value for Response XSLT",SWT.ICON_INFORMATION );
+  	  	 tResponse.setFocus();
   	  }else {
     	  if (tRequest.getText().equals ("") && !tResponse.getText().equals("")) {
    	  	 Utils.message(getShell(),"Please set value for Request XSLT",SWT.ICON_INFORMATION );
+   	  	 tRequest.setFocus();
     	  }else {
+    	  	if (exist){
+      	  	 Utils.message(getShell(),tName.getText()  + " already exists",SWT.ICON_INFORMATION );
+      	  	 tName.setFocus();
+      	  	 }else {
    	   	listener.applyService(bDebug.getSelection(), cChain.getText(), tName
 	   		   	.getText(), tForward.getText(), tRequest.getText(), tResponse
-		   		   .getText(), sTimeout.getText(), tURL.getText(), tParams  
-			  	   .getItems());
+		   		  .getText(), sTimeout.getText(), tURL.getText(), tParams  
+			  	  .getItems());
 	   	   listener.fillTable(tServices);
 	   	   setInput(false);
+	   	   getShell().setDefaultButton(bNew);
+    	  	}
     	  }
   	  }
    }
@@ -597,23 +662,16 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		tParaValue.setText("");
 		bRemovePara.setEnabled(false);
 		bApplyPara.setEnabled(false);
-		bApply.setEnabled(!tName.getText().equals(""));
-		tParaName.setFocus();
+		boolean valid = (!tName.getText().equals("") );
+		if (valid) {
+			getShell().setDefaultButton(bApply);
+		}
+		bApply.setEnabled(valid);		tParaName.setFocus();
+		
 	}
 
 	private void setInput(boolean enabled) {
-		bDebug.setEnabled(enabled);
-		cChain.setEnabled(enabled);
-		tName.setEnabled(enabled);
-		tForward.setEnabled(enabled);
-		tRequest.setEnabled(enabled);
-		tResponse.setEnabled(enabled);
-		sTimeout.setEnabled(enabled);
-		tURL.setEnabled(enabled);
-
-		tParams.setEnabled(enabled);
-		tParaName.setEnabled(enabled);
-		tParaValue.setEnabled(enabled);
+		
 		tParaName.setText("");
 		tParaValue.setText("");
 		listener.fillParams(tParams);
@@ -625,7 +683,7 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 				cChain.select(index);
 			}
 			tName.setText(listener.getName());
-			cChain.select(listener.getChainIndex(listener.getJobChain()));
+			cChain.setText(listener.getJobChain());
 			tForward.setText(listener.getForwardXSLT());
 			tRequest.setText(listener.getRequestXSLT());
 			tResponse.setText(listener.getResponseXSLT());
@@ -639,10 +697,22 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 			tForward.setText("");
 			tRequest.setText("");
 			tResponse.setText("");
-			sTimeout.setSelection(0);
+			sTimeout.setText("");
 			tURL.setText("");
 			gWebService.setText(GROUP_WEB_SERVICE);
 		}
+		bDebug.setEnabled(enabled);
+		cChain.setEnabled(enabled);
+		tName.setEnabled(enabled);
+		tForward.setEnabled(enabled);
+		tRequest.setEnabled(enabled);
+		tResponse.setEnabled(enabled);
+		sTimeout.setEnabled(enabled);
+		tURL.setEnabled(enabled);
+
+		tParams.setEnabled(enabled);
+		tParaName.setEnabled(enabled);
+		tParaValue.setEnabled(enabled);
 		bApply.setEnabled(false);
 		bRemove.setEnabled(tServices.getSelectionCount() > 0);
 

@@ -89,9 +89,12 @@ public class DaysForm extends Composite  implements IUpdateLanguage{
 		bAdd = new Button(group, SWT.NONE);
 		bAdd.setText(_addLabel[_type]);
 		bAdd.setLayoutData(gridData2);
+		getShell().setDefaultButton(bAdd);
+
 		label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label2.setText("Label");
 		label2.setLayoutData(gridData5);
+
 		bAdd.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				listener.addDay(cUnusedDays.getText());

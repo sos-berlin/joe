@@ -179,6 +179,8 @@ public class DateForm extends Composite implements IUpdateLanguage {
 		sDay.setLayoutData(gridData31);
 		bAddDay.setText("&Add Date");
 		bAddDay.setLayoutData(gridData3);
+		getShell().setDefaultButton(bAddDay);
+
 		bAddDay
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(

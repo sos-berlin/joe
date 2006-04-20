@@ -150,7 +150,16 @@ public class Options {
 		return (_properties.getProperty("editor.backup.enabled", "false").equalsIgnoreCase("true"));
 	}
 	
+	public static String getLastDirectory() {
+		return (_properties.getProperty("editor.file.lastopendir", ""));
+	}
 	
+	
+	
+	public static void setLastDirectory(File f){
+		if (f != null && f.getParent() != null)
+		setProperty("editor.file.lastopendir", f.getParent());
+	}
 	
 	public static void saveWindow(Shell shell){
 		setProperty("editor.window.left", String.valueOf(shell.getLocation().x));

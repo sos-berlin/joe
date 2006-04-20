@@ -2,7 +2,7 @@ package sos.scheduler.editor.app;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
+
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -135,6 +135,7 @@ public class DomParser {
 
 		StringReader sr = new StringReader(readFile(file));
 		Document doc = getBuilder(validate).build(sr);
+		sr.close();
 
 		if (!validate
 				&& (!doc.hasRootElement() || !doc.getRootElement().getName()
@@ -164,7 +165,7 @@ public class DomParser {
 		Pattern p4 = Pattern.compile("<!--\\s*disabled");
 
 		BufferedReader br = new BufferedReader(new FileReader(file));
-
+    try {
 		while ((line = br.readLine()) != null) {
 			Matcher m3 = p3.matcher(line);
 			Matcher m4 = p4.matcher(line);
@@ -196,7 +197,11 @@ public class DomParser {
 		String str = new String(sb.toString().getBytes(), encoding);
 
 		return str;
-	}
+    }finally {
+      br.close();
+    }
+		
+  }
 
 	public void write(String filename, MainListener listener)
 			throws IOException, JDOMException {

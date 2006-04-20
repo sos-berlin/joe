@@ -341,7 +341,7 @@ public class MainListener {
 			// open file dialog
 			if (filename == null || filename.equals("")) {
 				FileDialog fdialog = new FileDialog(_gui.getSShell(), SWT.OPEN);
-				// fdialog.setFilterExtensions(new String[] {"*.xml"});
+			  fdialog.setFilterPath(Options.getLastDirectory());
 				filename = fdialog.open();
 			}
 
@@ -390,8 +390,12 @@ public class MainListener {
 					treeFillMain(tree, c);
 				}
 			}
+			if (filename == null) filename=_filename;
+			if (filename == null) filename="";
+			
 			_gui.getSShell().setText("Job Scheduler Editor [" + filename + "]");
-
+			
+      Options.setLastDirectory(new File(filename));
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -401,8 +405,8 @@ public class MainListener {
 	}
 
 	private void createBackup()  {
-		String backupPath;
 		String f;
+		File outFile=null;
 		if (_filename == null) {
 			f = "";
 		}else {
@@ -411,18 +415,20 @@ public class MainListener {
 		try {
 		if (Options.getBackupEnabled() && !f.equals("")) {
 			 if (Options.getBackupDir().equals("")) {
-				 backupPath = new File(f).getPath();
+	   		  outFile = new File(_filename + ".bak");
 			 }else {
-				 backupPath = Options.getBackupDir();
+	   		  outFile = new File(Options.getBackupDir()  + "/" +  new File(_filename).getName() + ".bak");
 			 }
-   		 File outFile = new File(backupPath  + "/" +  new File(_filename).getName() + ".bak");
 		   File inFile =  new File(_filename);
 	     if (inFile.exists()){
           if (outFile.exists()  ){ // Wenn destination schon existiert, dann vorher löschen.
     	      outFile.delete(); 
           }
+          
+          if (!inFile.canRead()) throw new Exception( "Datei " + inFile + " kann nicht gelesen werden." );
+          
           boolean ok = inFile.renameTo( outFile );
-          if( !ok )  throw new Exception( "Import-Datei " + inFile + " kann nicht nach " + outFile + " kopiert werden." );
+          if( !ok )  throw new Exception( "Datei " + inFile + " kann nicht nach " + outFile + " kopiert werden." );
    		}
 		}
 	} catch (Exception e) {

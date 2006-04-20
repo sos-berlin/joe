@@ -430,11 +430,7 @@ public class ConfigForm extends Composite  implements IUpdateLanguage{
 	 *
 	 */
 	private void createGroup() {
-		GridData gridData4 = new org.eclipse.swt.layout.GridData();
-		gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData4.grabExcessHorizontalSpace = true;
-		gridData4.grabExcessVerticalSpace = true;
-		gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
+		GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
 		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
 		group = new Group(gConfig, SWT.NONE);
 		group.setText("Comment");

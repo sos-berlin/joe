@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.jdom.CDATA;
 import org.jdom.Element;
-import org.jdom.Text;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.Editor;

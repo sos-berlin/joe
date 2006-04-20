@@ -21,8 +21,7 @@ import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.listeners.ScriptListener;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.widgets.Display;
+
 
 public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private Label label1_1;
@@ -84,7 +83,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 		initialize();
 		setToolTipText();
 		
-		sashForm.setWeights(new int[] { 40, 60 });
+		sashForm.setWeights(new int[] { 30, 70 });
 	}
 
 	public ScriptForm(Composite parent, int style, String title, DomParser dom,
@@ -94,7 +93,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 		initialize();
 		setToolTipText();
 
-		sashForm.setWeights(new int[] { 40, 60 });
+		sashForm.setWeights(new int[] { 30, 70 });
 		setAttributes(dom, element, type);
 	}
 
@@ -162,6 +161,10 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 						listener.setFilename(tFilename.getText());
 					}
 				});
+		GridData gridData3 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
+		sashForm = new SashForm(gScript, SWT.HORIZONTAL);
+		sashForm.setOrientation(org.eclipse.swt.SWT.VERTICAL);
+		sashForm.setLayoutData(gridData3);
 		createSashForm();
 	}
 
@@ -170,15 +173,6 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 	 * 
 	 */
 	private void createSashForm() {
-		GridData gridData3 = new GridData();
-		gridData3.horizontalAlignment = GridData.FILL;
-		gridData3.grabExcessHorizontalSpace = true;
-		gridData3.grabExcessVerticalSpace = true;
-		gridData3.horizontalSpan = 2;
-		gridData3.verticalAlignment = GridData.FILL;
-		sashForm = new SashForm(gScript, SWT.HORIZONTAL);
-		sashForm.setOrientation(org.eclipse.swt.SWT.VERTICAL);
-		sashForm.setLayoutData(gridData3);
 		createGroup1();
 		createGroup2();
 	}
@@ -204,10 +198,8 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 		gridData7.verticalAlignment = GridData.CENTER;
 		GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		gridData6.widthHint = 50;
-		GridData gridData5 = new GridData();
-		gridData5.horizontalAlignment = GridData.FILL;
-		gridData5.verticalAlignment = GridData.BEGINNING;
-		GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true);
+		GridData gridData5 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
+		GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, false);
 		GridLayout gridLayout1 = new GridLayout();
 		gridLayout1.numColumns = 3;
 		gInclude = new Group(sashForm, SWT.NONE);

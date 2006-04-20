@@ -24,7 +24,6 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.TreeMenu;
-import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.listeners.MainListener;
 
 /**
@@ -93,7 +92,7 @@ public class MainWindow implements IUpdate {
 		sashForm = new SashForm(composite, SWT.NONE);
 		createGTree();
 		createCMainForm();
-		sashForm.setWeights(new int[] { 20, 80 });
+		sashForm.setWeights(new int[] { 176, 698 });
 	}
 
 	/**

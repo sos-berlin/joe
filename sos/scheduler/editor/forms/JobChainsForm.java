@@ -2,6 +2,8 @@ package sos.scheduler.editor.forms;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -20,6 +22,7 @@ import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.listeners.JobChainsListener;
 
 public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguage {
@@ -151,11 +154,8 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		gridData10.grabExcessHorizontalSpace = true;
 		gridData10.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
 		gridData10.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		GridData gridData8 = new org.eclipse.swt.layout.GridData();
-		gridData8.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData8.grabExcessHorizontalSpace = true;
-		gridData8.grabExcessVerticalSpace = true;
-		gridData8.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
+		GridData gridData8 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
+		gridData8.heightHint = 312;
 		GridData gridData3 = new org.eclipse.swt.layout.GridData();
 		gridData3.horizontalAlignment = org.eclipse.swt.layout.GridData.END;
 		gridData3.grabExcessHorizontalSpace = false;
@@ -185,6 +185,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		bNewChain = new Button(cChains, SWT.NONE);
 		bNewChain.setText("New Job &Chain");
 		bNewChain.setLayoutData(gridData16);
+		getShell().setDefaultButton(bNewChain);
 		label3 = new Label(cChains, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label3.setText("Label");
 		label3.setLayoutData(gridData71);
@@ -213,11 +214,13 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				boolean valid = listener.isValidChain(tName.getText());
-				if (!valid)
+        if (!valid)
 					tName.setBackground(Display.getCurrent().getSystemColor(
 							SWT.COLOR_YELLOW));
-				else
+				else {
+					getShell().setDefaultButton(bApplyChain);
 					tName.setBackground(null);
+				}
 				bApplyChain.setEnabled(valid && !tName.equals(""));
 			}
 		});
@@ -227,6 +230,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
+						getShell().setDefaultButton(bApplyChain);
 						bApplyChain.setEnabled(true);
 					}
 				});
@@ -238,13 +242,14 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
-						applyChain();
+            applyChain();
 					}
 				});
 		bVisible
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
+						getShell().setDefaultButton(bApplyChain);
 						bApplyChain.setEnabled(true);
 					}
 				});
@@ -350,6 +355,13 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		label7 = new Label(gNodes, SWT.NONE);
 		label7.setText("Job:");
 		cJob = new CCombo(gNodes, SWT.BORDER);
+		cJob.addKeyListener(new KeyAdapter() {
+			public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR){
+					applyNode();
+	    	}
+			}
+		});
 		bApplyNode = new Button(gNodes, SWT.NONE);
 		label1 = new Label(gNodes, SWT.NONE);
 		label1.setText("Type:");
@@ -357,9 +369,25 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		label8 = new Label(gNodes, SWT.NONE);
 		label8.setText("Next State:");
 		cNextState = new CCombo(gNodes, SWT.BORDER);
+		cNextState.addKeyListener(new KeyAdapter() {
+			public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR){
+					applyNode();
+	    	}
+
+			}
+		});
 		label9 = new Label(gNodes, SWT.NONE);
 		label9.setText("Error State:");
 		cErrorState = new CCombo(gNodes, SWT.BORDER);
+		cErrorState.addKeyListener(new KeyAdapter() {
+			public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR){
+					applyNode();
+	    	}
+
+			}
+		});
 		cErrorState.setLayoutData(gridData15);
 		label4 = new Label(gNodes, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label4.setText("Label");
@@ -375,6 +403,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
+						getShell().setDefaultButton(null);
 						tNodes.deselectAll();
 						listener.selectNode(-1);
 						bRemoveNode.setEnabled(false);
@@ -420,16 +449,16 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 							SWT.COLOR_YELLOW));
 				else
 					tState.setBackground(null);
-				bApplyNode.setEnabled(!tState.getText().equals("")
-						&& !cJob.getText().equals(""));
+				  bApplyNode.setEnabled(isValidNode());
+			    if (bApplyNode.getEnabled())getShell().setDefaultButton(bApplyNode);
 			}
 		});
 		cJob.setLayoutData(gridData13);
 		cJob.setEditable(true);
 		cJob.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				bApplyNode.setEnabled(!tState.getText().equals("")
-						&& !cJob.getText().equals(""));
+				bApplyNode.setEnabled(isValidNode());
+			  if (bApplyNode.getEnabled())getShell().setDefaultButton(bApplyNode);
 			}
 		});
 		cNextState.setLayoutData(gridData14);
@@ -437,13 +466,16 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		cNextState
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						bApplyNode.setEnabled(true);
+						bApplyNode.setEnabled(isValidNode());
+					  if (bApplyNode.getEnabled())getShell().setDefaultButton(bApplyNode);
 					}
 				});
 		cErrorState
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						bApplyNode.setEnabled(true);
+					  getShell().setDefaultButton(bApplyNode);
+						bApplyNode.setEnabled(isValidNode());
+					  if (bApplyNode.getEnabled())getShell().setDefaultButton(bApplyNode);
 					}
 				});
 		bApplyNode.setLayoutData(gridData7);
@@ -519,7 +551,8 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 							cNextState.setEnabled(true);
 							cErrorState.setEnabled(true);
 							cJob.setEnabled(true);
-							bApplyNode.setEnabled(true);
+							bApplyNode.setEnabled(isValidNode());
+						  if (bApplyNode.getEnabled())getShell().setDefaultButton(bApplyNode);
 						}
 					}
 				});
@@ -533,6 +566,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 							cNextState.setEnabled(false);
 							cErrorState.setEnabled(false);
 							cJob.setEnabled(false);
+							cJob.setText("");
 							cNextState.setText("");
 							cErrorState.setText("");
 							if (tState.getText().equals(""))
@@ -638,18 +672,45 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		fillChain(true, false);
 		bRemoveChain.setEnabled(true);
 		bApplyChain.setEnabled(false);
+		getShell().setDefaultButton(bNewChain);
 	}
 	
 	private void applyNode() {
-		listener.applyNode(tState.getText(), cJob.getText(),
-				cNextState.getText(), cErrorState.getText());
-		listener.fillChain(tNodes);
-		bApplyNode.setEnabled(false);
-		bRemoveNode.setEnabled(false);
-		listener.selectNode(-1);
-		fillNode(true);
-		enableNode(false);
+		String msg="";
+	
+		if (bFullNode.getSelection() && cJob.getText().equals("")) {
+			msg = "Please set the name of the job for this state";
+		}
+
+		if (bFullNode.getSelection() && (cNextState.getText() + cErrorState.getText()).equals("")) {
+			msg = "Please set the next/error-state this state";
+		}
+
+		
+    if (!msg.equals("")){
+   	 Utils.message(getShell(),msg,SWT.ICON_INFORMATION );
+    }else {
+   		listener.applyNode(tState.getText(), cJob.getText(),
+   				cNextState.getText(), cErrorState.getText());
+   		listener.fillChain(tNodes);
+	   	bApplyNode.setEnabled(false);
+	   	bRemoveNode.setEnabled(false);
+		  listener.selectNode(-1);
+	  	fillNode(true);
+	  	enableNode(false);
+    }
 	}
+	
+	private boolean isValidNode() {
+		if (tState.getText().equals("")||
+				bFullNode.getSelection() && cJob.getText().equals("") ||
+		    bFullNode.getSelection() && (cNextState.getText() + cErrorState.getText()).equals("")) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+	
 	public void setToolTipText(){
 		tName.setToolTipText(Messages.getTooltip("job_chains.chain.name"));
 		bNewChain.setToolTipText(Messages

@@ -8,7 +8,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.CDATA;
 import org.jdom.Element;
-import org.jdom.Text;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUpdate;

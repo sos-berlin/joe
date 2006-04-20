@@ -106,6 +106,30 @@ public class JobOptionsListener {
 		}
 	}
 
+	public void newErrorDelays(Table errorDelays) {
+		TableItem[] items =  errorDelays.getItems();
+		for (int i = items.length; i >= 0; i--) {
+			deleteErrorDelay	(i);		
+      }
+		
+		for (int i = 0; i < items.length; i++) {
+			newErrorDelay();
+  		applyErrorDelay(items[i].getText(0), items[i].getText(1));
+      }
+	}
+	
+	public void newSetbacks(Table setback) {
+		TableItem[] items =  setback.getItems();
+		for (int i = items.length; i >= 0; i--) {
+			deleteSetbackDelay	(i);		
+      }
+		
+		for (int i = 0; i < items.length; i++) {
+			newSetbackDelay();
+  		applySetbackDelay(items[i].getText(0), items[i].getText(1).equalsIgnoreCase("stop"),items[i].getText(2));
+      }
+	}
+	
 	public void newSetbackDelay() {
 		_setback = new Element("delay_order_after_setback");
 	}
@@ -173,8 +197,10 @@ public class JobOptionsListener {
 
 	private String getDelay(Element e) {
 		String delay = e.getAttributeValue("delay");
-		if (delay == null || delay.equals("") || delay.equalsIgnoreCase("stop"))
-			return "Stop";
+		if (delay == null || delay.equals("")) delay = "00:00";
+		
+		if (delay.equalsIgnoreCase("stop"))
+			return "stop";
 		else {
 			int hours = Utils.getHours(delay, 0);
 			int minutes = Utils.getMinutes(delay, 0);
@@ -216,6 +242,15 @@ public class JobOptionsListener {
 		if (_errorDelay != null
 				&& _errorDelay.getAttributeValue("delay") != null)
 			return _errorDelay.getAttributeValue("delay").equalsIgnoreCase(
+					"stop");
+		else
+			return false;
+	}
+	
+	public boolean isStopSetback() {
+		if (_setback != null
+				&& _setback.getAttributeValue("delay") != null)
+			return _setback.getAttributeValue("delay").equalsIgnoreCase(
 					"stop");
 		else
 			return false;

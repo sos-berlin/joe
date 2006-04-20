@@ -139,7 +139,7 @@ public class BaseForm extends Composite implements IUnsaved,IUpdateLanguage{
 		tComment.setEnabled(false);
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				bApply.setEnabled(!tFile.getText().equals(""));
+        bApply.setEnabled(!tFile.getText().equals(""));
 			}
 		});
 		label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.SHADOW_OUT);
@@ -149,6 +149,8 @@ public class BaseForm extends Composite implements IUnsaved,IUpdateLanguage{
 		bNew = new Button(group, SWT.NONE);
 		bNew.setLayoutData(gridData3);
 		bNew.setText("&New Base File");
+		getShell().setDefaultButton(bNew);
+
 		label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label2.setText("Label");
 		label2.setLayoutData(gridData21);
@@ -188,7 +190,8 @@ public class BaseForm extends Composite implements IUnsaved,IUpdateLanguage{
 		tFile.setLayoutData(gridData4);
 		tFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				bApply.setEnabled(!tFile.getText().equals(""));
+				getShell().setDefaultButton(bApply);
+        bApply.setEnabled(!tFile.getText().equals(""));
 			}
 		});
 		tFile.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
@@ -204,7 +207,7 @@ public class BaseForm extends Composite implements IUnsaved,IUpdateLanguage{
 				.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
-						applyFile();
+            applyFile();
 					}
 				});
 	}
@@ -241,6 +244,7 @@ public class BaseForm extends Composite implements IUnsaved,IUpdateLanguage{
 		listener.applyBaseFile(tFile.getText(), tComment.getText());
 		listener.fillTable(table);
 		setInput(false);
+		getShell().setDefaultButton(bNew);
 	}
 
 	private void setInput(boolean enabled) {

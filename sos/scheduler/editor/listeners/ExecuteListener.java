@@ -81,7 +81,7 @@ public class ExecuteListener {
 
 	public void setParam(String param) {
 		initProcess();
-		Utils.setAttribute("param", param, _process);
+		Utils.setAttribute("param", param, _process,_dom);
 	}
 
 	public String getLogFile() {
@@ -90,7 +90,7 @@ public class ExecuteListener {
 
 	public void setLogFile(String file) {
 		initProcess();
-		Utils.setAttribute("log_file", file, _process);
+		Utils.setAttribute("log_file", file, _process,_dom);
 	}
 
 	public boolean isIgnoreSignal() {
@@ -141,6 +141,7 @@ public class ExecuteListener {
 			variable.setAttribute("value", value);
 			variables.add(variable);
 		}
+		_dom.setChanged(true);
 	}
 
 	public void removeVariable(String name) {
@@ -154,5 +155,6 @@ public class ExecuteListener {
 				found = true;
 			}
 		}
+		_dom.setChanged(true);
 	}
 }

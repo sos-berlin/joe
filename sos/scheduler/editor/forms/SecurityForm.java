@@ -149,6 +149,7 @@ public class SecurityForm extends Composite implements IUnsaved, IUpdateLanguage
 		bNew = new Button(group, SWT.NONE);
 		bNew.setLayoutData(gridData2);
 		bNew.setText("&New Host");
+		getShell().setDefaultButton(bNew);
 		label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label2.setText("Label");
 		label2.setLayoutData(gridData8);
@@ -265,6 +266,7 @@ public class SecurityForm extends Composite implements IUnsaved, IUpdateLanguage
 		listener.applyHost(tHost.getText(), cLevel.getText());
 		listener.fillTable(table);
 		setInput(false);
+		getShell().setDefaultButton(bNew);
 	}
 
 	private void setInput(boolean enabled) {

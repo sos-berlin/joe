@@ -77,6 +77,8 @@ public class JobsForm extends Composite implements  IUpdateLanguage {
 		bNewJob = new Button(group, SWT.NONE);
 		bNewJob.setText("&New Job");
 		bNewJob.setLayoutData(gridData);
+		getShell().setDefaultButton(bNewJob);
+		
 		label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label.setText("Label");
 		label.setLayoutData(gridData4);

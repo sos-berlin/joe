@@ -487,6 +487,7 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
 		tVariables.deselectAll();
 		tName.setFocus();
 	}
+	
 	public void setToolTipText(){
 		bNoExecute.setToolTipText(Messages.getTooltip("execute.choose_none"));
 		bExecutable.setToolTipText(Messages.getTooltip("execute.choose_executable"));

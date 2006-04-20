@@ -101,6 +101,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
 		createTable();
 		bNew = new Button(group, SWT.NONE);
 		bNew.setText("&New Period");
+		getShell().setDefaultButton(bNew);
 		bNew.setLayoutData(gridData5);
 		label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label1.setText("Label");
@@ -111,6 +112,8 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
 						tPeriods.deselectAll();
+						
+						getShell().setDefaultButton(bApply);
 						bApply.setEnabled(true);
 						fillPeriod(true);
 					}
@@ -234,6 +237,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
 		bApply.setEnabled(false);
 		bRemove.setEnabled(false);
 		fillPeriod(false);
+		getShell().setDefaultButton(bNew);
 	}
 	public void setToolTipText(){
 		bNew.setToolTipText(Messages.getTooltip("periods.btn_new"));

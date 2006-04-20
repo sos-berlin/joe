@@ -146,6 +146,8 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		bNew = new Button(group, SWT.NONE);
 		bNew.setText("&New Process Class");
 		bNew.setLayoutData(gridData1);
+		getShell().setDefaultButton(bNew);
+
 		label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label2.setText("Label");
 		label2.setLayoutData(gridData8);
@@ -292,6 +294,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 				.getSelection(), tSpoolerID.getText());
 		listener.fillTable(table);
 		setInput(false);
+		getShell().setDefaultButton(bNew);
 		tProcessClass.setBackground(null);
 	}
 

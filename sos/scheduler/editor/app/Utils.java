@@ -1,7 +1,11 @@
 package sos.scheduler.editor.app;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
 public class Utils {
@@ -267,5 +271,22 @@ public class Utils {
 		MessageBox mb = new MessageBox(shell, style);
 		mb.setMessage(message);
 		return mb.open();
+	}
+	
+	public static void setBackground(int min,int max, Text t) {
+		if ((str2int(t.getText()) > max || str2int(t.getText()) < min ) && str2int(t.getText()) != -999) {
+			t.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+    }else {
+			t.setBackground(null);
+	  }
+
+	}
+	public static void setBackground(int min,int max, Combo c) {
+		if ((str2int(c.getText()) > max || str2int(c.getText()) < min) && str2int(c.getText()) != -999) {
+			c.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+    }else {
+			c.setBackground(null);
+	  }
+
 	}
 }
