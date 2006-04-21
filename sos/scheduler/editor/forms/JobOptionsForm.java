@@ -874,6 +874,8 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 
 	private void applySetback() {
 		int maximum=0;
+		int maximumStop=0;
+		int maxSetbackDelay=0;
 		int sel = tSetback.getSelectionIndex();
 		TableItem[] setback = tSetback.getItems();
 		
@@ -895,6 +897,25 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
       }
 		}
 
+		for (int i = 0; i < setback.length; i++) {
+      if (maxSetbackDelay < Utils.str2int(setback[i].getText(0))) {
+      	maxSetbackDelay = Utils.str2int(setback[i].getText(0));
+      }
+		}
+		
+		for (int i = 0; i < setback.length; i++) {
+
+      if (setback[i].getText(2).equalsIgnoreCase("stop") && sel != i){
+      	maximumStop = maximumStop + 1;
+      }
+		}
+			
+	 if (bStop.getSelection()) maximumStop = maximumStop + 1;
+		
+		
+		 
+		
+		
 	 
    if (maximum > 1) {
   	 Utils.message(getShell(),"Only one item can be set as maximum",SWT.ICON_INFORMATION );
@@ -908,24 +929,34 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 				Utils.message(getShell(),"Setback-count must not be empty",SWT.ICON_INFORMATION );
 		    sSetBackCount.setFocus();
 			}else {
+				if (maxSetbackDelay > Utils.str2int(sSetBackCount.getText()) && bStopSetback.getSelection()) {
+					Utils.message(getShell(),"Setback-count with stop must be highest setback-count in list",SWT.ICON_INFORMATION );
+					sSetBackCount.setFocus();
+				}else {
+				  if (maximumStop > 1) {
+				  	 Utils.message(getShell(),"Only one item can have delay=stop",SWT.ICON_INFORMATION );
+							sSetBackCount.setFocus();
+				   }else {
 
-     	 	String delay = Utils.getTime(
-		   		sSetBackHours.getText(), sSetBackMinutes
-				   		.getText(), sSetBackSeconds
-					   	.getText(), true);
+     	       	String delay = Utils.getTime(
+     	        sSetBackHours.getText(), sSetBackMinutes
+     	             .getText(), sSetBackSeconds
+					       	 .getText(), true);
+     	 	 
+           		if (bStopSetback.getSelection()) delay = "stop";
      	 	
-    		if (bStopSetback.getSelection()) delay = "stop";
-     	 	
-    		listener.applySetbackDelay(sSetBackCount.getText(), bIsMaximum.getSelection(),delay);
-    		listener.fillSetbacks(tSetback);
-    		initSetback(false);
-     		getShell().setDefaultButton(null);
-    		sortTable(tSetback);
-        listener.newSetbacks(tSetback);
-			}
+    	       	listener.applySetbackDelay(sSetBackCount.getText(), bIsMaximum.getSelection(),delay);
+    	       	listener.fillSetbacks(tSetback);
+    	      	initSetback(false);
+     		      getShell().setDefaultButton(null);
+    		      sortTable(tSetback);
+              listener.newSetbacks(tSetback);
+	        		}
+	       	}
+       }
+     }
+   }
 		}
-   }
-   }
 	}
 
 	// error delays

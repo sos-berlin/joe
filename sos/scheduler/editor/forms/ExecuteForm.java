@@ -81,6 +81,7 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
 		setToolTipText();
 	
 		listener = new ExecuteListener(dom, job);
+
 		scriptForm.setAttributes(dom, job, Editor.EXECUTE);
 		fillForm();
 	}
@@ -100,6 +101,7 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
 		this.setLayout(new FillLayout());
 		createGroup();
 		setSize(new org.eclipse.swt.graphics.Point(729,532));
+
 	}
 
 	/**

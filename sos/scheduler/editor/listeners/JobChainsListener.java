@@ -106,8 +106,8 @@ public class JobChainsListener {
 	public void fillChain(Table table) {
 		table.removeAll();
 		if (_chain != null) {
-			if(_states == null)
-				setStates();
+
+			setStates();
 			
 			Iterator it = _chain.getChildren("job_chain_node").iterator();
 			while (it.hasNext()) {

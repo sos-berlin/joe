@@ -141,12 +141,10 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		
 		bOrderYes.setSelection(listener.getOrder());
 		bOrderNo.setSelection(!listener.getOrder());
-		sPriority.setEnabled(!bOrderYes.getSelection());
-		if (!bOrderYes.getSelection()) {
-			index = sPriority.indexOf(listener.getPriority());
-			if (index >= 0)
+		index = sPriority.indexOf(listener.getPriority());
+		if (index >= 0)
 				sPriority.select(index);
-			else {
+		else {
 				int p = Utils.str2int(listener.getPriority(),20);
 				if (p == -999) {
 					sPriority.setText("");
@@ -156,7 +154,6 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		  		}
 			  	  sPriority.setText(String.valueOf(p));
 			 	}
-			}
 			}
 		
 		sTasks.setText(listener.getTasks());

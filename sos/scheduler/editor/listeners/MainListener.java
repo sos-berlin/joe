@@ -231,6 +231,7 @@ public class MainListener {
 				TreeItem item = tree.getSelection()[0];
 				TreeData data = (TreeData) item.getData();
 
+				_dom.setInit(true);
 				switch (data.getType()) {
 				case Editor.CONFIG:
 					new ConfigForm(c, SWT.NONE, _dom);
@@ -307,7 +308,7 @@ public class MainListener {
 			e.printStackTrace();
 			message(e.getMessage(), SWT.ICON_ERROR);
 		}
-
+		_dom.setInit(false);
 		return true;
 	}
 
@@ -463,11 +464,10 @@ public class MainListener {
 						SWT.ICON_WARNING | SWT.OK);
 				return false;
 			} else {
-				createBackup();
-				
-				_dom.write(filename, this);
-				_filename = filename;
-		    _gui.getSShell().setText("Job Scheduler Editor [" + filename + "]");
+  				createBackup();
+  				_dom.write(filename, this);
+  				_filename = filename;
+	  	    _gui.getSShell().setText("Job Scheduler Editor [" + filename + "]"); 
 
 			}
 			

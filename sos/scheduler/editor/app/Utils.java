@@ -267,6 +267,21 @@ public class Utils {
 	 return i;
 	}
 		
+	public static int str2int(int default_value, String s) {
+		int i = 0;
+		try {
+			  i = Integer.parseInt(s);
+	  	}catch (Exception e) {
+		  	s = onlyDigits(s);
+				try {
+  			  i = Integer.parseInt(s);
+		  	  }catch (Exception ee) {
+		  		  i=default_value;
+		  	   }
+		  }
+	 return i;
+	}
+		
 	public static int message(Shell shell, String message, int style) {
 		MessageBox mb = new MessageBox(shell, style);
 		mb.setMessage(message);

@@ -216,7 +216,9 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		sBeginHours
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						Utils.setBackground(0,23,sBeginHours);
+						if (!beginBeforeAfter()) {
+						  Utils.setBackground(0,23,sBeginHours);
+						}
             if (event) 
 						listener.setPeriodTime(bApply,"begin",sBeginHours.getText(),sBeginMinutes.getText(),sBeginSeconds.getText());
 					}
@@ -244,7 +246,9 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		sBeginMinutes
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						Utils.setBackground(0,59,sBeginMinutes);
+						if (!beginBeforeAfter()) {
+							Utils.setBackground(0,59,sBeginMinutes);
+						}
 
 						if (event) listener.setPeriodTime(bApply,"begin",sBeginHours.getText(),sBeginMinutes.getText(),sBeginSeconds.getText());
    				}
@@ -273,7 +277,9 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		sBeginSeconds
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						Utils.setBackground(0,59,sBeginSeconds);
+						if (!beginBeforeAfter()) {
+							Utils.setBackground(0,59,sBeginSeconds);
+						}
           	if (event) listener.setPeriodTime(bApply,"begin",sBeginHours.getText(),sBeginMinutes.getText(),sBeginSeconds.getText());
 					}
 				});
@@ -303,7 +309,9 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		sEndHours
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						Utils.setBackground(0,23,sEndHours);
+						if (!beginBeforeAfter()) {
+							Utils.setBackground(0,23,sEndHours);
+						}
 						if (event) listener.setPeriodTime(bApply,"end",sEndHours.getText(),sEndMinutes.getText(),sEndSeconds.getText());
 					}
 				});
@@ -330,7 +338,10 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		sEndMinutes
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						Utils.setBackground(0,59,sEndMinutes);
+						if (!beginBeforeAfter()) {
+							Utils.setBackground(0,59,sEndMinutes);
+						}
+
 						if (event) listener.setPeriodTime(bApply,"end",sEndHours.getText(),sEndMinutes.getText(),sEndSeconds.getText());
 					}
 				});
@@ -360,7 +371,10 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		sEndSeconds
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						Utils.setBackground(0,59,sEndSeconds);
+						if (!beginBeforeAfter()) {
+							Utils.setBackground(0,59,sEndSeconds);
+						}
+
 						if (event) listener.setPeriodTime(bApply,"end",sEndHours.getText(),sEndMinutes.getText(),sEndSeconds.getText());
 					}
 				});
@@ -480,6 +494,7 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		sSingleHours
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+						
 						Utils.setBackground(0,23,sSingleHours);
 						if (event) {
 							listener.setPeriodTime(bApply,"single_start",sSingleHours.getText(),sSingleMinutes.getText(),sSingleSeconds.getText());
@@ -676,6 +691,44 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		lRunOnce.setVisible(visible);
 		cRunOnce.setVisible(visible);
 	}
+	
+	private boolean beginBeforeAfter() {
+		int bh=Utils.str2int(0,sBeginHours.getText());
+		int bm=Utils.str2int(0,sBeginMinutes.getText());
+		int bs=Utils.str2int(0,sBeginSeconds.getText());
+		int eh=Utils.str2int(0,sEndHours.getText());
+		int em=Utils.str2int(0,sEndMinutes.getText());
+		int es=Utils.str2int(0,sEndSeconds.getText());
+		int gbs = bs + (bm*60) + (bh*60*60);
+		int ges = es + (em*60) + (eh*60*60);
+		if (gbs > ges && gbs != 0 && ges != 0 &&
+				bh < 24 &&
+				bm < 60 &&
+				bs < 60 &&
+				eh < 24 &&
+				em < 60 &&
+				es < 60
+				) {
+			Utils.setBackground(99,0,sBeginHours);
+			Utils.setBackground(99,0,sBeginMinutes);
+			Utils.setBackground(99,0,sBeginSeconds);
+			Utils.setBackground(99,0,sEndHours);
+			Utils.setBackground(99,0,sEndMinutes);
+			Utils.setBackground(99,0,sEndSeconds);
+			return true;
+		}else {
+			 
+			Utils.setBackground(0,23,sBeginHours);
+			Utils.setBackground(0,59,sBeginMinutes);
+			Utils.setBackground(0,59,sBeginSeconds);
+			Utils.setBackground(0,23,sEndHours);
+			Utils.setBackground(0,59,sEndMinutes);
+			Utils.setBackground(0,59,sEndSeconds);
+			 
+			return false;
+		}
+	}
+	
 	public void setToolTipText(){
 	 	bLetRun.setToolTipText(Messages.getTooltip("period.let_run"));
 		cRunOnce.setToolTipText(Messages.getTooltip("run_time.once"));

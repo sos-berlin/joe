@@ -163,8 +163,8 @@ public class DateForm extends Composite implements IUpdateLanguage {
 								lDates.select(index);
 							bRemoveDate
 									.setEnabled(lDates.getSelectionCount() > 0);
-							if (main != null)
-								main.updateDays(3);
+							if ((main != null) && (type == 1))
+								main.updateDays (3);
 						}
 					}
 				});

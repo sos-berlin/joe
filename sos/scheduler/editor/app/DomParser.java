@@ -227,6 +227,7 @@ public class DomParser {
  
 		OutputStreamWriter writer = new OutputStreamWriter(
 				new FileOutputStream(filename), DEFAULT_ENCODING);
+		
 		writer.write(handler.getXML());
 		writer.close();
 

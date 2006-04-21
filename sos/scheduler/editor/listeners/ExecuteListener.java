@@ -19,7 +19,10 @@ public class ExecuteListener {
 	private Element _process;
 
 	private Element _environment;
-
+	
+	public DomParser getDom() {
+		return _dom;
+	}
 	public ExecuteListener(DomParser dom, Element job) {
 		_dom = dom;
 		_job = job;

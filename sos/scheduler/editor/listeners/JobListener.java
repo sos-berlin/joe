@@ -220,6 +220,7 @@ public class JobListener {
 
 	public void setDescription(String description) {
 		Element desc = _job.getChild("description");
+		String f = getInclude();
 
 		if (desc == null && !description.equals("")) {
 			desc = new Element("description");
@@ -227,8 +228,7 @@ public class JobListener {
 		}
 
 		if (desc != null) {
-			if (description.equals("")
-					&& (getInclude() == null || getInclude().equals(""))) {
+			if (description.equals("") && (f == null || f.equals(""))) {
 				_job.removeChild("description");
 				_dom.setChanged(true);
 				return;
@@ -252,12 +252,16 @@ public class JobListener {
 				desc.addContent(new CDATA(description));
 */
       desc.removeContent();
+      if (!(f == null || f.equals(""))) {
+      	setInclude(f);
+      }
 			desc.addContent(new CDATA(description));
 			_dom.setChanged(true);
 		}
 	}
 
 	public String getInclude() {
+
 		Element desc = _job.getChild("description");
 		if (desc != null) {
 			Element inc = desc.getChild("include");

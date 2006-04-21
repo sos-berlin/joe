@@ -112,11 +112,16 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 		for (int i = 0; i < atts.getLength(); i++) {
 			String name = atts.getQName(i);
 			String value = atts.getValue(i);
+			String uri=atts.getURI(i);
 
 			if (name.equals("__comment__")) { // build element comment
 				_sb.append(_indent + "<!-- " + value + " -->\n");
 			}
 			else { // add attribute
+				if (!uri.equals("")) {
+					attributes.append(sep);
+					attributes.append("xmlns:xsi" + "=\"" + uri + "\"");
+				}
 				attributes.append(sep);
 				attributes.append(name + "=\"" + value + "\"");
 				sep = sepStr;

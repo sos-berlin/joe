@@ -123,9 +123,10 @@ public class DateListener implements Comparator {
 	}
 
 	public void fillTreeDays(TreeItem parent, boolean expand) {
-		parent.removeAll();
 		if (_list != null) {
 			Iterator it = _list.iterator();
+			parent.removeAll();
+
 			while (it.hasNext()) {
 				Element e = (Element) it.next();
 				if (e.getAttributeValue("date") != null) {
