@@ -52,10 +52,10 @@ public class PeriodListener {
 		return Utils.getIntegerAsString(Utils.getHours(_period.getAttributeValue("begin"), -999));
 	}
 
-	public void setPeriodTime(Button bApply, String node,String hours,String minutes,String seconds) {
+	public void setPeriodTime(int maxHour,Button bApply, String node,String hours,String minutes,String seconds) {
 		if (_period != null) {
 			
-				Utils.setAttribute(node, Utils.getTime(hours, minutes,seconds, false), _period , _dom);
+				Utils.setAttribute(node, Utils.getTime(maxHour,hours, minutes,seconds, false), _period , _dom);
 		    if (bApply != null) {
 		    	bApply.setEnabled(true);
 		    }

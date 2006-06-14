@@ -75,7 +75,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
 
-
+	private Text tMintasks = null;
 	private Composite cOrder = null;
 
 	private Button bOrderYes = null;
@@ -114,6 +114,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 	private Label label8 = null;
 	private boolean updateTree=false;
+	private Button bForceIdletimeout = null;
 
 	public JobForm(Composite parent, int style, DomParser dom, Element job,
 			IUpdate main) {
@@ -141,6 +142,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		
 		bOrderYes.setSelection(listener.getOrder());
 		bOrderNo.setSelection(!listener.getOrder());
+		sIdleTimeout.setEnabled(bOrderYes.getSelection());
 		index = sPriority.indexOf(listener.getPriority());
 		if (index >= 0)
 				sPriority.select(index);
@@ -326,6 +328,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		label11.setText("Idle Timeout:");
 
 		sIdleTimeout = new Text(gMain, SWT.BORDER);
+
 		sIdleTimeout.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
@@ -339,6 +342,27 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		});
 		
 		sIdleTimeout.setLayoutData(new GridData(75, SWT.DEFAULT));
+
+		final Label minTaskLabel = new Label(gMain, SWT.NONE);
+		minTaskLabel.setText("min tasks");
+
+		tMintasks = new Text(gMain, SWT.BORDER);
+		tMintasks.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				listener.setMintasks(tMintasks.getText());
+			}
+		});
+		tMintasks.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+		final Label force_idle_timeoutLabel = new Label(gMain, SWT.NONE);
+		force_idle_timeoutLabel.setText("force_idle_timeout");
+
+		bForceIdletimeout = new Button(gMain, SWT.CHECK);
+		bForceIdletimeout.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				listener.setForceIdletimeout(bForceIdletimeout.getSelection());
+			}
+		});
 		label8 = new Label(gMain, SWT.NONE);
 		label8.setText("Comment:");
 		label8.setLayoutData(gridData71);
@@ -388,8 +412,20 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
 						
-					//	sPriority.setSelection(0);
+						sIdleTimeout.setEnabled(bOrderYes.getSelection());
+						if (!sIdleTimeout.getEnabled()) {
+							sIdleTimeout.setText("");
+						}
+						tMintasks.setEnabled(bOrderYes.getSelection());
+						if (!tMintasks.getEnabled()) {
+							tMintasks.setText("");
+						}
+						bForceIdletimeout.setEnabled(bOrderYes.getSelection());
+						if (!bForceIdletimeout.getEnabled()) {
+							bForceIdletimeout.setSelection(false);
+						}
 						listener.setOrder(bOrderYes.getSelection());
+						
 					}
 				});
 		bOrderNo = new Button(cOrder, SWT.RADIO);
@@ -602,6 +638,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		tSpoolerID.setToolTipText(Messages.getTooltip("job.spooler_id"));
 		sPriority.setToolTipText(Messages.getTooltip("job.priority"));
 		sTasks.setToolTipText(Messages.getTooltip("job.tasks"));
+		tMintasks.setToolTipText(Messages.getTooltip("job.mintasks"));
+		bForceIdletimeout.setToolTipText(Messages.getTooltip("job.foreIdleTimeout"));
 		sTimeout.setToolTipText(Messages.getTooltip("job.timeout"));
 		sIdleTimeout.setToolTipText(Messages.getTooltip("job.idle_timeout"));
 		tComment.setToolTipText(Messages.getTooltip("job.comment"));

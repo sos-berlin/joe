@@ -1,8 +1,6 @@
 package sos.scheduler.editor.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
@@ -88,8 +86,6 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 	private Composite composite = null;
 
 	private Button bStop = null;
-	private Button bStopSetback = null;
-	private Button bDelaySetback = null;
 
 	private Button bDelay = null;
 
@@ -501,7 +497,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 		GridData gridData26 = new org.eclipse.swt.layout.GridData();
 		gridData26.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData26.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-		GridData gridData25 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 12, 1);
+		GridData gridData25 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 11, 1);
 		gridData25.heightHint = 10;
 		GridData gridData10 = new org.eclipse.swt.layout.GridData();
 		gridData10.widthHint = 25;
@@ -515,7 +511,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 		gridData6.horizontalSpan = 1;
 		gridData6.grabExcessHorizontalSpace = true;
 		GridLayout gridLayout2 = new GridLayout();
-		gridLayout2.numColumns = 12;
+		gridLayout2.numColumns = 11;
 		GridData gridData2 = new org.eclipse.swt.layout.GridData();
 		gridData2.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData2.grabExcessHorizontalSpace = true;
@@ -536,22 +532,8 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 		sSetBackCount.setLayoutData(gridData7);
 		bIsMaximum = new Button(group3, SWT.CHECK);
 
-		bStopSetback = new Button(group3, SWT.RADIO);
-		bStopSetback.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				getShell().setDefaultButton(bApplySetback);
-				bApplySetback.setEnabled(true);
-				switchDelaySetback(!bStopSetback.getSelection());
-			}
-		});
-		bStopSetback.setText("stop");
-
-		bDelaySetback = new Button(group3, SWT.RADIO);
-		bDelaySetback.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-			}
-		});
-		bDelaySetback.setText("Delay:");
+		final Label delayLabel = new Label(group3, SWT.NONE);
+		delayLabel.setText("Delay:");
 		sSetBackHours = new Text(group3, SWT.BORDER);
 		sSetBackHours.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
@@ -645,6 +627,9 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
 						getShell().setDefaultButton(bApplySetback);
+						sSetBackHours.setEnabled(!bIsMaximum.getSelection());
+						sSetBackMinutes.setEnabled(!bIsMaximum.getSelection());
+						sSetBackSeconds.setEnabled(!bIsMaximum.getSelection());
 						bApplySetback.setEnabled(true);
 					}
 				});
@@ -673,7 +658,9 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 		sSetBackSeconds
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						Utils.setBackground(0,59,sSetBackSeconds);
+						if (!(sSetBackHours.getText() + sSetBackMinutes.getText()).equals("")) {
+						   Utils.setBackground(0,59,sSetBackSeconds);
+						}
 						getShell().setDefaultButton(bApplySetback);
 						bApplySetback.setEnabled(true);
 					}
@@ -726,7 +713,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 	 *
 	 */
 	private void createTable2() {
-		GridData gridData24 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 11, 3);
+		GridData gridData24 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 10, 3);
 		tSetback = new Table(group3, SWT.BORDER | SWT.FULL_SELECTION);
 		tSetback.setSortDirection(SWT.UP);
 		tSetback.setHeaderVisible(true);
@@ -845,43 +832,40 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 		sSetBackHours.setEnabled(enabled);
 		sSetBackMinutes.setEnabled(enabled);
 		sSetBackSeconds.setEnabled(enabled);
-		bStopSetback.setEnabled(enabled);
-		bDelaySetback.setEnabled(enabled);
 		
 		if (enabled) {
-			boolean isStop = listener.isStopSetback ();
-			bStopSetback.setSelection(isStop);
-			bDelaySetback.setSelection(!isStop);
-
-			
-			sSetBackCount.setText(listener.getSetbackCount());
 			bIsMaximum.setSelection(listener.isMaximum());
-			if (bStopSetback.getSelection()) {
-  		   sSetBackHours.setText("");
-	    	 sSetBackMinutes.setText("");
-			   sSetBackSeconds.setText("");
-			   sSetBackHours.setEnabled(false);
-			   sSetBackMinutes.setEnabled(false);
-			   sSetBackSeconds.setEnabled(false);
-			}else {
-   		   sSetBackHours.setText(Utils.fill(2,listener.getSetbackCountHours()));
-	    	 sSetBackMinutes.setText(Utils.fill(2,listener.getSetbackCountMinutes()));
-			   sSetBackSeconds.setText(Utils.fill(2,listener.getSetbackCountSeconds()));
+
+			if (bIsMaximum.getSelection()) {
+				sSetBackHours.setEnabled(false);
+				sSetBackMinutes.setEnabled(false);
+				sSetBackSeconds.setEnabled(false);
+			} else {
+				sSetBackHours.setText(Utils.fill(2,listener.getSetbackCountHours()));
+				sSetBackMinutes.setText(Utils.fill(2,listener.getSetbackCountMinutes()));
+				if (!(listener.getSetbackCountHours() + listener.getSetbackCountMinutes()).equals("")) {
+				  sSetBackSeconds.setText(Utils.fill(2,listener.getSetbackCountSeconds()));
+				}else {
+				  sSetBackSeconds.setText(listener.getSetbackCountSeconds());
+				}
 			}
+			sSetBackCount.setText(listener.getSetbackCount());
 		}
+		
 		bApplySetback.setEnabled(false);
 	}
 
 	private void applySetback() {
 		int maximum=0;
-		int maximumStop=0;
-		int maxSetbackDelay=0;
+		int maximumMax=0;
+	
 		int sel = tSetback.getSelectionIndex();
 		TableItem[] setback = tSetback.getItems();
 		
 		if (sSetBackCount.getText().equals("0"))Utils.message(getShell(),"0 is not allowed",SWT.ICON_INFORMATION );
 		else {
-		for (int i = 0; i < setback.length; i++) {
+		
+			for (int i = 0; i < setback.length; i++) {
 
       if (setback[i].getText(1).equalsIgnoreCase("Yes") && sel != i){
       	maximum = maximum + 1;
@@ -890,6 +874,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 			
 	 if (bIsMaximum.getSelection()) maximum = maximum + 1;
 	 
+	 
 		boolean found=false;
 		for (int i = 0; i < setback.length; i++) {
       if (setback[i].getText(0).equals(sSetBackCount.getText()) && sel != i){
@@ -897,25 +882,16 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
       }
 		}
 
-		for (int i = 0; i < setback.length; i++) {
-      if (maxSetbackDelay < Utils.str2int(setback[i].getText(0))) {
-      	maxSetbackDelay = Utils.str2int(setback[i].getText(0));
-      }
-		}
-		
-		for (int i = 0; i < setback.length; i++) {
 
-      if (setback[i].getText(2).equalsIgnoreCase("stop") && sel != i){
-      	maximumStop = maximumStop + 1;
+		for (int i = 0; i < setback.length; i++) {
+      if (maximumMax < Utils.str2int(setback[i].getText(0))) {
+      	maximumMax = Utils.str2int(setback[i].getText(0));
       }
 		}
+	
 			
-	 if (bStop.getSelection()) maximumStop = maximumStop + 1;
-		
-		
-		 
-		
-		
+	 
+	 
 	 
    if (maximum > 1) {
   	 Utils.message(getShell(),"Only one item can be set as maximum",SWT.ICON_INFORMATION );
@@ -929,23 +905,22 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 				Utils.message(getShell(),"Setback-count must not be empty",SWT.ICON_INFORMATION );
 		    sSetBackCount.setFocus();
 			}else {
-				if (maxSetbackDelay > Utils.str2int(sSetBackCount.getText()) && bStopSetback.getSelection()) {
-					Utils.message(getShell(),"Setback-count with stop must be highest setback-count in list",SWT.ICON_INFORMATION );
+				if (maximumMax > Utils.str2int(sSetBackCount.getText()) && bIsMaximum.getSelection()) {
+					Utils.message(getShell(),"Setback-count with maximum=yes must be highest setback-count in list",SWT.ICON_INFORMATION );
 					sSetBackCount.setFocus();
-				}else {
-				  if (maximumStop > 1) {
-				  	 Utils.message(getShell(),"Only one item can have delay=stop",SWT.ICON_INFORMATION );
-							sSetBackCount.setFocus();
 				   }else {
-
-     	       	String delay = Utils.getTime(
+				      String delay  = sSetBackSeconds.getText();
+				  	  if (!(sSetBackMinutes.getText()+sSetBackHours.getText()).equals("")) {
+     	       	delay = Utils.getTime(
      	        sSetBackHours.getText(), sSetBackMinutes
      	             .getText(), sSetBackSeconds
 					       	 .getText(), true);
-     	 	 
-           		if (bStopSetback.getSelection()) delay = "stop";
-     	 	
-    	       	listener.applySetbackDelay(sSetBackCount.getText(), bIsMaximum.getSelection(),delay);
+     	       	     	 	
+				  	  }
+				  	  
+     	 	      if (delay.equals("00") || delay.equals("")) delay = "0";
+     	 	      
+     	 	      listener.applySetbackDelay(sSetBackCount.getText(), bIsMaximum.getSelection(),delay);
     	       	listener.fillSetbacks(tSetback);
     	      	initSetback(false);
      		      getShell().setDefaultButton(null);
@@ -955,8 +930,8 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 	       	}
        }
      }
-   }
-		}
+    
+		}	
 	}
 
 	// error delays
@@ -996,13 +971,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 		}
 		bApply.setEnabled(false);
 	}
-
-	private void switchDelaySetback(boolean enabled) {
-		sSetBackHours.setEnabled(enabled);
-		sSetBackMinutes.setEnabled(enabled);
-		sSetBackSeconds.setEnabled(enabled);
-	}
-	
+ 
 	private void switchDelay(boolean enabled) {
 		sErrorHours.setEnabled(enabled);
 		sErrorMinutes.setEnabled(enabled);

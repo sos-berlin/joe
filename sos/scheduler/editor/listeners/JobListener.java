@@ -133,6 +133,18 @@ public class JobListener {
 		Utils.setAttribute("idle_timeout",Utils.getIntegerAsString(Utils.str2int(idleTimeout)), _job, _dom);
 	}
 
+	public void setForceIdletimeout(boolean forceIdleTimeout) {
+		if (forceIdleTimeout) {
+   		Utils.setAttribute("force_idle_timeout","yes", _job, _dom);
+		}else {
+   		Utils.setAttribute("force_idle_timeout","no", _job, _dom);
+		}
+	}
+	
+	public void setMintasks(String mintasks) {
+		Utils.setAttribute("min_tasks",Utils.getIntegerAsString(Utils.str2int(mintasks)), _job, _dom);
+	}
+
 	public String[] getProcessClasses() {
 		String[] names = null;
 		Element classes = _dom.getRoot().getChild("config").getChild(

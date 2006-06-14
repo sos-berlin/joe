@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-
+ 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.IUpdate;
 import sos.scheduler.editor.app.IUpdateLanguage;
@@ -176,6 +176,7 @@ public class MainWindow implements IUpdate {
 					public void widgetSelected(
 							org.eclipse.swt.events.SelectionEvent e) {
 						if (applyChanges()) {
+							getSShell().setText("Job Scheduler Editor []");
 							setMenuSaveStatus(!listener.newScheduler(tree,
 									cMainForm));
 						}
@@ -220,8 +221,8 @@ public class MainWindow implements IUpdate {
 					}
 				});
 		MenuItem pSaveAs = new MenuItem(mFile, SWT.PUSH);
-		pSaveAs.setText("Save As...\tCtrl+A");
-		pSaveAs.setAccelerator(SWT.CTRL | 'A');
+		pSaveAs.setText("Save As...\tCtrl+V");
+		pSaveAs.setAccelerator(SWT.CTRL | 'V');
 		pSaveAs.setEnabled(false);
 		pSaveAs
 				.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -328,6 +329,20 @@ public class MainWindow implements IUpdate {
 			listener.treeFillJobs(tree.getSelection()[0]);
 	}
 
+	
+	public void updateCommands() {
+		if (tree.getSelectionCount() > 0) {
+			TreeItem item = tree.getSelection()[0];
+			TreeData data = (TreeData) item.getData();
+			listener.treeFillCommands(tree.getSelection()[0], data.getElement(), true);
+		}
+	}
+
+	public void updateCommand(String s) {
+		TreeItem item = tree.getSelection()[0];
+    item.setText(s);  
+	 
+	}
  
 	
 	public void updateJob() {

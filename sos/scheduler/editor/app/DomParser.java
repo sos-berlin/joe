@@ -47,7 +47,7 @@ public class DomParser {
 
 	private static final String[] JOB_ELEMENTS = { "description", "params",
 			"script", "process", "monitor", "start_when_directory_changed",
-			"delay_after_error", "delay_order_after_setback", "run_time" };
+			"delay_after_error", "delay_order_after_setback", "run_time" ,"commands"};
 
 	private static final String[] RUNTIME_ELEMENTS = { "period", "date",
 			"weekdays", "monthdays", "ultimos", "holidays" };
@@ -195,7 +195,7 @@ public class DomParser {
 		}
 
 		String str = new String(sb.toString().getBytes(), encoding);
-
+    Editor.encoding = encoding;
 		return str;
     }finally {
       br.close();
@@ -205,10 +205,13 @@ public class DomParser {
 
 	public void write(String filename, MainListener listener)
 			throws IOException, JDOMException {
+		
+		String encoding =  Editor.encoding;
+		if (encoding.equals(""))encoding = DEFAULT_ENCODING; 
 		reorderDOM();
 
 		FormatHandler handler = new FormatHandler(this);
-		handler.setEnconding(DEFAULT_ENCODING);
+		handler.setEnconding(encoding);
 		handler.setDisableJobs(isJobsDisabled());
 		SAXOutputter saxo = new SAXOutputter(handler);
 		saxo.output(_doc);
@@ -226,7 +229,7 @@ public class DomParser {
 
  
 		OutputStreamWriter writer = new OutputStreamWriter(
-				new FileOutputStream(filename), DEFAULT_ENCODING);
+				new FileOutputStream(filename), encoding);
 		
 		writer.write(handler.getXML());
 		writer.close();

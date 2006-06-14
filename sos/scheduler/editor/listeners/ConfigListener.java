@@ -120,8 +120,7 @@ public class ConfigListener {
 	}
 
 	public void setSpoolerID(String spoolerid) {
-		_config.setAttribute("spooler_id", spoolerid);
-		_dom.setChanged(true);
+		Utils.setAttribute("spooler_id", spoolerid, _config, _dom);
 	}
 
 	public String getTcpPort() {

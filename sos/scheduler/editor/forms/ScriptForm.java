@@ -199,7 +199,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 		GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		gridData6.widthHint = 50;
 		GridData gridData5 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
-		GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, false);
+		GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true);
 		GridLayout gridLayout1 = new GridLayout();
 		gridLayout1.numColumns = 3;
 		gInclude = new Group(sashForm, SWT.NONE);

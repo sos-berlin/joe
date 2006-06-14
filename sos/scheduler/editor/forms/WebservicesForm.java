@@ -628,18 +628,28 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
       	  	 Utils.message(getShell(),tName.getText()  + " already exists",SWT.ICON_INFORMATION );
       	  	 tName.setFocus();
       	  	 }else {
-   	   	listener.applyService(bDebug.getSelection(), cChain.getText(), tName
-	   		   	.getText(), tForward.getText(), tRequest.getText(), tResponse
-		   		  .getText(), sTimeout.getText(), tURL.getText(), tParams  
-			  	  .getItems());
-	   	   listener.fillTable(tServices);
-	   	   setInput(false);
-	   	   getShell().setDefaultButton(bNew);
+      	  		 if (tURL.getText().equals("")){
+          	  	 Utils.message(getShell(),"Url-Path must not be empty",SWT.ICON_INFORMATION );
+      	  		 }else {
+      	  			 if (Utils.str2int(sTimeout.getText())  == 0 && sTimeout.getText().length() > 0) {
+            	  	 Utils.message(getShell(),"Timeout must not be 0",SWT.ICON_INFORMATION );
+      	  				 
+      	  			 }else {
+            	   	listener.applyService(bDebug.getSelection(), cChain.getText(), tName
+	   		   	         .getText(), tForward.getText(), tRequest.getText(), tResponse
+          		   		 .getText(), sTimeout.getText(), tURL.getText(), tParams  
+            		  	 .getItems());
+         	   	   listener.fillTable(tServices);
+	   	           setInput(false);
+	   	           getShell().setDefaultButton(bNew);
+      	  	  	 }
+      	  		 }
+      	  		 }
     	  	}
     	  }
   	  }
    }
-	}
+	
 
 	private void applyParam() {
 		String name = tParaName.getText();

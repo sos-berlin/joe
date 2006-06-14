@@ -1,10 +1,14 @@
 package sos.scheduler.editor.listeners;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
+ 
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
@@ -22,6 +26,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
+ 
 import sos.scheduler.editor.app.TextDialog;
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.Editor;
@@ -37,6 +42,8 @@ import sos.scheduler.editor.forms.DateForm;
 import sos.scheduler.editor.forms.DaysForm;
 import sos.scheduler.editor.forms.ExecuteForm;
 import sos.scheduler.editor.forms.JobChainsForm;
+import sos.scheduler.editor.forms.JobCommandForm;
+import sos.scheduler.editor.forms.JobCommandsForm;
 import sos.scheduler.editor.forms.JobForm;
 import sos.scheduler.editor.forms.JobOptionsForm;
 import sos.scheduler.editor.forms.JobsForm;
@@ -150,12 +157,15 @@ public class MainListener {
 		item.setData(new TreeData(Editor.MONITOR, job, Options
 				.getHelpURL("job.monitor"), "monitor"));
 
+		
+	
 		item = new TreeItem(parent, SWT.NONE);
 		item.setText("Run Options");
 		item.setData(new TreeData(Editor.OPTIONS, job, Options
 				.getHelpURL("job.options")));
 
 		Element runtime = job.getChild("run_time");
+		List commands = job.getChildren("commands");
 		// create runtime tag
 		if (runtime == null) {
 			runtime = new Element("run_time");
@@ -197,10 +207,22 @@ public class MainListener {
 			if (runtime != null)
 				treeFillDays(item, runtime, 3, false);
 		}
-
+		
+		item = new TreeItem(parent, SWT.NONE);
+		item.setText("Commands");
+		
+		if (commands != null)
+			treeFillCommands(item, job, false);
+		
+		
+		item.setData(new TreeData(Editor.COMMANDS, job, Options.getHelpURL("job.commands")));		
 		parent.setExpanded(expand);
 	}
 
+	public void treeFillCommands(TreeItem parent, Element job, boolean expand)  {
+		new JobCommandListener(_dom, null, null).fillCommands(job,parent, expand);
+	}
+			
 	public void treeFillDays(TreeItem parent, Element element, int type,
 			boolean expand) {
 		if (element != null) {
@@ -258,6 +280,12 @@ public class MainListener {
 					break;
 				case Editor.EXECUTE:
 					new ExecuteForm(c, SWT.NONE, _dom, data.getElement());
+					break;
+				case Editor.COMMAND:
+					new JobCommandForm(c, SWT.NONE, _dom, data.getElement(),_gui);
+					break;
+				case Editor.COMMANDS:
+					new JobCommandsForm(c, SWT.NONE, _dom, data.getElement(), _gui, this);
 					break;
 				case Editor.RUNTIME:
 					new RunTimeForm(c, SWT.NONE, _dom, data.getElement(), _gui);
@@ -405,6 +433,29 @@ public class MainListener {
 		return false;
 	}
 
+	private boolean copyFile(File source, File dest, boolean append) throws Exception {
+		int size = (int) source.length();
+		int bytes_read = 0;
+		byte[] data=null;
+		FileInputStream in=null;
+		FileOutputStream out=null;
+		boolean retVal = true;
+		try {
+			in   = new FileInputStream(source);
+			out  = new FileOutputStream(dest,append);
+			data = new byte[size];
+			while (bytes_read < size)
+				bytes_read += in.read(data, bytes_read, size-bytes_read);
+			out.write(data);
+			return retVal;
+			
+		} catch (Exception e) {
+			throw new Exception ("\n -> ..error in copyFile: " + e);
+		} finally {														 
+			if (in != null)  in.close();
+			if (out != null) out.close();
+		}
+	} 
 	private void createBackup()  {
 		String f;
 		File outFile=null;
@@ -428,8 +479,7 @@ public class MainListener {
           
           if (!inFile.canRead()) throw new Exception( "Datei " + inFile + " kann nicht gelesen werden." );
           
-          boolean ok = inFile.renameTo( outFile );
-          if( !ok )  throw new Exception( "Datei " + inFile + " kann nicht nach " + outFile + " kopiert werden." );
+          copyFile(inFile, outFile, false) ; 
    		}
 		}
 	} catch (Exception e) {
@@ -458,13 +508,17 @@ public class MainListener {
 					return false;
 			} 
 			
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			
 
 			if (!file.canWrite()) {
 				message(Messages.getString("MainListener.fileWriteProtected"), //$NON-NLS-1$
 						SWT.ICON_WARNING | SWT.OK);
 				return false;
 			} else {
-  				createBackup();
+  				if (!saveas)createBackup();
   				_dom.write(filename, this);
   				_filename = filename;
 	  	    _gui.getSShell().setText("Job Scheduler Editor [" + filename + "]"); 

@@ -102,7 +102,11 @@ public class JobOptionsListener {
 			TableItem item = new TableItem(table, SWT.NONE);
 			item.setText(0, "" + Utils.getIntValue("setback_count", e));
 			item.setText(1, Utils.isAttributeValue("is_maximum", e) ? "Yes" : "No");
-			item.setText(2, getDelay(e));
+			String s = getDelay(e);
+			if (s.equals("00")) {
+				s = "0";
+			}
+			item.setText(2, s);
 		}
 	}
 
@@ -126,7 +130,7 @@ public class JobOptionsListener {
 		
 		for (int i = 0; i < items.length; i++) {
 			newSetbackDelay();
-  		applySetbackDelay(items[i].getText(0), items[i].getText(1).equalsIgnoreCase("stop"),items[i].getText(2));
+  		applySetbackDelay(items[i].getText(0), items[i].getText(1).equalsIgnoreCase("yes"),items[i].getText(2));
       }
 	}
 	
@@ -205,6 +209,7 @@ public class JobOptionsListener {
 			int hours = Utils.getHours(delay, 0);
 			int minutes = Utils.getMinutes(delay, 0);
 			int seconds = Utils.getSeconds(delay, 0);
+			
 			return Utils.getTime(hours, minutes, seconds, true);
 		}
 	}
@@ -247,15 +252,6 @@ public class JobOptionsListener {
 			return false;
 	}
 	
-	public boolean isStopSetback() {
-		if (_setback != null
-				&& _setback.getAttributeValue("delay") != null)
-			return _setback.getAttributeValue("delay").equalsIgnoreCase(
-					"stop");
-		else
-			return false;
-	}
-
 	public String getErrorCountHours() {
 		return Utils.getIntegerAsString(Utils.getHours(_errorDelay.getAttributeValue("delay"), -999)); 
 	}

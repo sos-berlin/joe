@@ -183,8 +183,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
 						periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
 						periodForm.setApplyButton(bApply);
 						if (tPeriods.getSelectionCount() > 0) {
-							periodForm.setPeriod(listener.getPeriod(tPeriods
-									.getSelectionIndex()));
+							periodForm.setPeriod(listener.getPeriod(tPeriods.getSelectionIndex()));
 							bApply.setEnabled(false);
 						}
 					}

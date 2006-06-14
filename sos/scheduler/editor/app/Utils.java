@@ -180,11 +180,15 @@ public class Utils {
 
 	}
 	
-	public static String getTime(String hours, String minutes, String seconds,
+	public static String getTime(int maxHour,String hours, String minutes, String seconds,
 			boolean onlySeconds) {
-		int h = Utils.str2int(hours,23);
-		int m = Utils.str2int(minutes,59);
-		int s = Utils.str2int(seconds,59);
+		int h = Utils.str2int(hours,maxHour);
+	  int m = 0;
+	  int s = 0;
+		if (h!=24) {
+			 m = Utils.str2int(minutes,59);
+			 s = Utils.str2int(seconds,59);
+	  }
 		if (h<0 && m<0 && s<0) {
      return "";
   		}else {
@@ -193,6 +197,12 @@ public class Utils {
   		if (s<0) s=0;
 		  return getTime(h,m,s,onlySeconds);
 		}
+	}
+
+	public static String getTime(String hours, String minutes, String seconds,
+			boolean onlySeconds) {
+	  return getTime(23,hours,minutes,seconds,onlySeconds);
+
 	}
 
 	public static String asStr(int value) {
@@ -225,6 +235,7 @@ public class Utils {
 			if (s.equals("")) {
 				return true;
 			}
+			if (s.equals("-")) return true;
 			Integer.parseInt(s);
 			return true;
 		}catch (Exception ee){

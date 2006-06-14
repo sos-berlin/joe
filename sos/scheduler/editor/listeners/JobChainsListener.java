@@ -151,8 +151,10 @@ public class JobChainsListener {
 
 	public boolean isFullNode() {
 		if (_node != null)
-			return _node.getAttributeValue("next_state") != null
-					|| _node.getAttributeValue("error_state") != null;
+			return _node.getAttributeValue("job") != null;
+			
+//		return _node.getAttributeValue("next_state") != null
+//		|| _node.getAttributeValue("error_state") != null;
 		else
 			return true;
 	}

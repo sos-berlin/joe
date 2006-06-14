@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: scheduler.xsd 4268 2006-04-17 10:50:41Z jz $ -->
+<!-- $Id: scheduler.xsd 4335 2006-06-06 08:25:42Z jz $ -->
 
 <xsd:schema 
     xmlns:xsd          = "http://www.w3.org/2001/XMLSchema" 
@@ -9,7 +9,7 @@
 
     <xsd:annotation>
         <xsd:documentation xml:lang="de">
-            $Id: scheduler.xsd 4268 2006-04-17 10:50:41Z jz $
+            $Id: scheduler.xsd 4335 2006-06-06 08:25:42Z jz $
             Schema für die Scheduler-Konfiguration,
             s.a. http://www.zschimmer.com/sos/scheduler/konfiguration.xml.html.
         </xsd:documentation>
@@ -98,7 +98,7 @@
     <xsd:element name="commands" type="Commands"/>
 
     <xsd:complexType name="Commands">
-        <xsd:choice maxOccurs="unbounded">
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
             <xsd:element ref="add_jobs"/>
             <xsd:element ref="add_order"/>
             <xsd:element ref="kill_task"/>
@@ -123,6 +123,36 @@
             <!--xsd:element ref="signal_object"/-->
             <xsd:element ref="terminate"/>
         </xsd:choice>
+        
+        <xsd:attribute name="on_exit_code">
+            <xsd:annotation>
+                <xsd:documentation>
+                    Only valid in element job!
+                    examples: on_exit_code="success" on_exit_code="error" on_exit_code="1 2 3"
+                </xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+                <xsd:union>
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:NMTOKEN">
+                            <xsd:enumeration value="success">
+                                <xsd:annotation>
+                                    <xsd:documentation>This is exit code 0</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:enumeration>
+                            <xsd:enumeration value="error">
+                                <xsd:annotation>
+                                    <xsd:documentation>This is all other exit codes but 0</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:enumeration>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                    <xsd:simpleType>
+                        <xsd:list itemType="xsd:integer"/>
+                    </xsd:simpleType>
+                </xsd:union>
+            </xsd:simpleType>
+        </xsd:attribute>
     </xsd:complexType>
 
     
@@ -166,6 +196,8 @@
             <xsd:attribute name="state"             type="String"/>
             <xsd:attribute name="job"               type="Name"/>
             <xsd:attribute name="web_service"       type="Name"/>
+            <xsd:attribute name="replace"           type="Yes_no"/>
+            <xsd:attribute name="at"                type="Date_time_with_now"/>
         </xsd:complexType>
     </xsd:element>
 
@@ -284,6 +316,8 @@
                 
                 <xsd:element ref="run_time" minOccurs="0"/>
 
+                <xsd:element name="commands" type="Commands" minOccurs="0" maxOccurs="unbounded"/>
+
             </xsd:sequence>
 
             <xsd:attribute name="name"                  type="Name"             use="required"/>
@@ -296,8 +330,10 @@
             <xsd:attribute name="order"                 type="Yes_no"/>
             <xsd:attribute name="separate_process"      type="Yes_no"/>
             <xsd:attribute name="tasks"                 type="xsd:nonNegativeInteger"/>
+            <xsd:attribute name="min_tasks"             type="xsd:positiveInteger"/>
             <xsd:attribute name="timeout"               type="Duration"/>                   <!-- Für ap, 1.4.06 timeout="0" soll erlaubt sein (kein Aprilscherz) -->
             <xsd:attribute name="idle_timeout"          type="Duration"/>
+            <xsd:attribute name="force_idle_timeout"    type="Yes_no"/>
             <xsd:attribute name="process_class"         type="Name"/>
             <xsd:attribute name="mail_xslt_stylesheet"  type="File"/>
             <xsd:attribute name="java_options"          type="String"/>
@@ -444,12 +480,30 @@
     <xsd:element name="params">
         <xsd:complexType>
             <xsd:sequence>
-                <xsd:element name="param" minOccurs="0" maxOccurs="unbounded">
-                    <xsd:complexType>
-                        <xsd:attribute name="name"  type="String" use="required"/>
-                        <xsd:attribute name="value" type="String" use="required"/>
-                    </xsd:complexType>
-                </xsd:element>
+                <xsd:choice  minOccurs="0" maxOccurs="unbounded">
+                    <xsd:element name="param">
+                        <xsd:complexType>
+                            <xsd:attribute name="name"  type="String" use="required"/>
+                            <xsd:attribute name="value" type="String" use="required"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    
+                    <xsd:element name="copy_params">
+                        <xsd:complexType>
+                            <xsd:attribute name="from"  use="required">
+                                <xsd:annotation>
+                                    <xsd:documentation>Only valid in element job/commands/start_job and job/commands/add_order</xsd:documentation>
+                                </xsd:annotation>
+                                <xsd:simpleType>
+                                    <xsd:restriction base="xsd:NMTOKEN">
+                                        <xsd:enumeration value="task"/>
+                                        <xsd:enumeration value="order"/>
+                                    </xsd:restriction>
+                                </xsd:simpleType>
+                            </xsd:attribute>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
@@ -899,6 +953,18 @@
 
 
     <xsd:simpleType name="Date_time">
+        <xsd:annotation>
+            <xsd:documentation>"yyyy-mm-dd HH:MM[:SS]"</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="String">
+        </xsd:restriction>
+    </xsd:simpleType>
+
+
+    <xsd:simpleType name="Date_time_with_now">
+        <xsd:annotation>
+            <xsd:documentation>"yyyy-mm-dd HH:MM[:SS]", "now + HH:MM[:SS]" or "now+SECONDS"</xsd:documentation>
+        </xsd:annotation>
         <xsd:restriction base="String">
         </xsd:restriction>
     </xsd:simpleType>

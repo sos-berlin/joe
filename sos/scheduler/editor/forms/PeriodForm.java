@@ -220,7 +220,7 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 						  Utils.setBackground(0,23,sBeginHours);
 						}
             if (event) 
-						listener.setPeriodTime(bApply,"begin",sBeginHours.getText(),sBeginMinutes.getText(),sBeginSeconds.getText());
+						listener.setPeriodTime(23,bApply,"begin",sBeginHours.getText(),sBeginMinutes.getText(),sBeginSeconds.getText());
 					}
 				});
 		label3 = new Label(gPeriod, SWT.NONE);
@@ -250,7 +250,7 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 							Utils.setBackground(0,59,sBeginMinutes);
 						}
 
-						if (event) listener.setPeriodTime(bApply,"begin",sBeginHours.getText(),sBeginMinutes.getText(),sBeginSeconds.getText());
+						if (event) listener.setPeriodTime(23,bApply,"begin",sBeginHours.getText(),sBeginMinutes.getText(),sBeginSeconds.getText());
    				}
 				});
 		label4 = new Label(gPeriod, SWT.NONE);
@@ -280,7 +280,7 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 						if (!beginBeforeAfter()) {
 							Utils.setBackground(0,59,sBeginSeconds);
 						}
-          	if (event) listener.setPeriodTime(bApply,"begin",sBeginHours.getText(),sBeginMinutes.getText(),sBeginSeconds.getText());
+          	if (event) listener.setPeriodTime(23,bApply,"begin",sBeginHours.getText(),sBeginMinutes.getText(),sBeginSeconds.getText());
 					}
 				});
 		label5 = new Label(gPeriod, SWT.NONE);
@@ -310,9 +310,9 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 						if (!beginBeforeAfter()) {
-							Utils.setBackground(0,23,sEndHours);
+							Utils.setBackground(0,24,sEndHours);
 						}
-						if (event) listener.setPeriodTime(bApply,"end",sEndHours.getText(),sEndMinutes.getText(),sEndSeconds.getText());
+						if (event) listener.setPeriodTime(24,bApply,"end",sEndHours.getText(),sEndMinutes.getText(),sEndSeconds.getText());
 					}
 				});
 		label7 = new Label(gPeriod, SWT.NONE);
@@ -342,7 +342,7 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 							Utils.setBackground(0,59,sEndMinutes);
 						}
 
-						if (event) listener.setPeriodTime(bApply,"end",sEndHours.getText(),sEndMinutes.getText(),sEndSeconds.getText());
+						if (event) listener.setPeriodTime(24,bApply,"end",sEndHours.getText(),sEndMinutes.getText(),sEndSeconds.getText());
 					}
 				});
 		label8 = new Label(gPeriod, SWT.NONE);
@@ -375,7 +375,7 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 							Utils.setBackground(0,59,sEndSeconds);
 						}
 
-						if (event) listener.setPeriodTime(bApply,"end",sEndHours.getText(),sEndMinutes.getText(),sEndSeconds.getText());
+						if (event) listener.setPeriodTime(24,bApply,"end",sEndHours.getText(),sEndMinutes.getText(),sEndSeconds.getText());
 					}
 				});
 		label10 = new Label(gPeriod, SWT.NONE);
@@ -404,7 +404,12 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 						Utils.setBackground(0,23,sRepeatHours);
-						if (event) listener.setPeriodTime(bApply,"repeat",sRepeatHours.getText(),sRepeatMinutes.getText(),sRepeatSeconds.getText());
+						if (!(sRepeatMinutes.getText() + sRepeatHours.getText()).equals("")) {
+						   Utils.setBackground(0,59,sRepeatSeconds);
+						}else {
+							sRepeatSeconds.setBackground(null);
+						}						
+						if (event) listener.setPeriodTime(23,bApply,"repeat",sRepeatHours.getText(),sRepeatMinutes.getText(),sRepeatSeconds.getText());
 					}
 				});
 		label11 = new Label(gPeriod, SWT.NONE);
@@ -432,7 +437,12 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 						Utils.setBackground(0,59,sRepeatMinutes);
-						if (event) listener.setPeriodTime(bApply,"repeat",sRepeatHours.getText(),sRepeatMinutes.getText(),sRepeatSeconds.getText());
+						if (!(sRepeatMinutes.getText() + sRepeatHours.getText()).equals("")) {
+						   Utils.setBackground(0,59,sRepeatSeconds);
+						}else {
+							sRepeatSeconds.setBackground(null);
+						}
+						if (event) listener.setPeriodTime(23,bApply,"repeat",sRepeatHours.getText(),sRepeatMinutes.getText(),sRepeatSeconds.getText());
   				}
 				});
 		label12 = new Label(gPeriod, SWT.NONE);
@@ -459,12 +469,16 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 		sRepeatSeconds
 				.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-						Utils.setBackground(0,59,sRepeatSeconds);
+						if (!(sRepeatMinutes.getText() + sRepeatHours.getText()).equals("")) {
+						   Utils.setBackground(0,59,sRepeatSeconds);
+						}else {
+							sRepeatSeconds.setBackground(null);
+						}
 						if (event) {
 							if(Utils.str2int(sRepeatSeconds.getText()) > 59 ){
 							   listener.setRepeatSeconds(bApply,sRepeatSeconds.getText());
 							}else {
-							   listener.setPeriodTime(bApply,"repeat",sRepeatHours.getText(),sRepeatMinutes.getText(),sRepeatSeconds.getText());
+							   listener.setPeriodTime(23,bApply,"repeat",sRepeatHours.getText(),sRepeatMinutes.getText(),sRepeatSeconds.getText());
 							}
 						}
 					}
@@ -497,7 +511,7 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 						
 						Utils.setBackground(0,23,sSingleHours);
 						if (event) {
-							listener.setPeriodTime(bApply,"single_start",sSingleHours.getText(),sSingleMinutes.getText(),sSingleSeconds.getText());
+							listener.setPeriodTime(23,bApply,"single_start",sSingleHours.getText(),sSingleMinutes.getText(),sSingleSeconds.getText());
 							setEnabled(true);
 						}
 					}
@@ -528,7 +542,7 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 						Utils.setBackground(0,59,sSingleMinutes);
 						if (event) {
-							listener.setPeriodTime(bApply,"single_start",sSingleHours.getText(),sSingleMinutes.getText(),sSingleSeconds.getText());
+							listener.setPeriodTime(23,bApply,"single_start",sSingleHours.getText(),sSingleMinutes.getText(),sSingleSeconds.getText());
 							setEnabled(true);
 						}
 					}
@@ -559,7 +573,7 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 					public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 						Utils.setBackground(0,59,sSingleSeconds);
 						if (event) {
-							listener.setPeriodTime(bApply,"single_start",sSingleHours.getText(),sSingleMinutes.getText(),sSingleSeconds.getText());
+							listener.setPeriodTime(23,bApply,"single_start",sSingleHours.getText(),sSingleMinutes.getText(),sSingleSeconds.getText());
 							setEnabled(true);
 						}
 					}
@@ -672,7 +686,7 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 			sSingleHours.setText("");
 			sSingleMinutes.setText("");
 			sSingleSeconds.setText("");
-			listener.setPeriodTime(bApply,"single_start","","","");
+			listener.setPeriodTime(23,bApply,"single_start","","","");
 			event = true;		
 			
 			if (!savBeginHours.equals("")) sBeginHours.setText(savBeginHours);
@@ -721,7 +735,7 @@ public class PeriodForm extends Composite implements  IUpdateLanguage {
 			Utils.setBackground(0,23,sBeginHours);
 			Utils.setBackground(0,59,sBeginMinutes);
 			Utils.setBackground(0,59,sBeginSeconds);
-			Utils.setBackground(0,23,sEndHours);
+			Utils.setBackground(0,24,sEndHours);
 			Utils.setBackground(0,59,sEndMinutes);
 			Utils.setBackground(0,59,sEndSeconds);
 			 

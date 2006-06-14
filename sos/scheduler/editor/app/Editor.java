@@ -26,12 +26,15 @@ public class Editor {
 	public final static int MONITOR = 12;
 	public final static int OPTIONS = 13;
 	public final static int RUNTIME = 14;
-	public final static int WEEKDAYS = 15;
-	public final static int MONTHDAYS = 16;
-	public final static int ULTIMOS = 17;
-	public final static int DAYS = 18;
-	public final static int PERIODS = 19;
-	public final static int EVERYDAY = 20;
+	public final static int COMMANDS = 15;
+	public final static int COMMAND = 16;
+	public final static int WEEKDAYS = 17;
+	public final static int MONTHDAYS = 18;
+	public final static int ULTIMOS = 19;
+	public final static int DAYS = 20;
+	public final static int PERIODS = 21;
+	public final static int EVERYDAY = 22;
+	public static String encoding = "";
 
 	
 	

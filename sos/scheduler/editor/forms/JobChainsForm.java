@@ -683,7 +683,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		}
 
 		if (bFullNode.getSelection() && (cNextState.getText() + cErrorState.getText()).equals("")) {
-			msg = "Please set the next/error-state this state";
+//			msg = "Please set the next/error-state this state";
 		}
 
 		
@@ -703,8 +703,10 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 	
 	private boolean isValidNode() {
 		if (tState.getText().equals("")||
-				bFullNode.getSelection() && cJob.getText().equals("") ||
-		    bFullNode.getSelection() && (cNextState.getText() + cErrorState.getText()).equals("")) {
+				bFullNode.getSelection() && cJob.getText().equals("") //||
+		    //bFullNode.getSelection() 
+		    //&& (cNextState.getText() + cErrorState.getText()).equals("")
+		    ) {
 			return false;
 		}else {
 			return true;
