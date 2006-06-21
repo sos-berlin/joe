@@ -54,7 +54,7 @@ public class JobCommandListener {
 				if (e.getAttributeValue("on_exit_code") != null) {
 					TreeItem item = new TreeItem(parent, SWT.NONE);
 					item.setText(e.getAttributeValue("on_exit_code"));
-					item.setData(new TreeData(Editor.COMMAND, e, Options.getHelpURL("job.commands")));		
+					item.setData(new TreeData(Editor.JOB_COMMAND, e, Options.getHelpURL("job.commands")));		
 				}
 			}
 		}

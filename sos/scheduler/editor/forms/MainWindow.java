@@ -338,6 +338,18 @@ public class MainWindow implements IUpdate {
 		}
 	}
 
+	public void updateOrders() {
+		if (tree.getSelectionCount() > 0) {
+			listener.treeFillOrders(tree.getSelection()[0], true);
+		}
+	}
+	
+	public void updateOrder(String s) {
+		TreeItem item = tree.getSelection()[0];
+    String order = "Order: " + s;
+		item.setText(order);  
+	}
+
 	public void updateCommand(String s) {
 		TreeItem item = tree.getSelection()[0];
     item.setText(s);  

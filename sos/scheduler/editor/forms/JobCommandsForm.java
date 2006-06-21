@@ -75,7 +75,7 @@ public class JobCommandsForm extends Composite implements  IUpdateLanguage {
 		commandsGroup.setLayout(gridLayout);
 		createTable();
 		bNewCommands = new Button(commandsGroup, SWT.NONE);
-		bNewCommands.setText("&New Commands");
+		bNewCommands.setText("&New Command");
 		bNewCommands.setLayoutData(gridData);
 		getShell().setDefaultButton(bNewCommands);
 		
@@ -91,7 +91,7 @@ public class JobCommandsForm extends Composite implements  IUpdateLanguage {
 					}
 				});
 		bRemoveCommand = new Button(commandsGroup, SWT.NONE);
-		bRemoveCommand.setText("Remove Commands");
+		bRemoveCommand.setText("Remove Command");
 		bRemoveCommand.setEnabled(false);
 		bRemoveCommand.setLayoutData(gridData1);
 		bRemoveCommand
@@ -128,9 +128,9 @@ public class JobCommandsForm extends Composite implements  IUpdateLanguage {
 	}
 	
 	public void setToolTipText(){
-		bNewCommands.setToolTipText(Messages.getTooltip("jobs.btn_add_new"));
-		bRemoveCommand.setToolTipText(Messages.getTooltip("jobs.btn_remove"));
-		table.setToolTipText(Messages.getTooltip("jobs.table"));
+		bNewCommands.setToolTipText(Messages.getTooltip("jobcommands.btn_add_new"));
+		bRemoveCommand.setToolTipText(Messages.getTooltip("jobcommands.btn_remove"));
+		table.setToolTipText(Messages.getTooltip("jobcommands.table"));
 
 	 
   }	

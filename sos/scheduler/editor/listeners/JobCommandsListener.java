@@ -6,7 +6,7 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
-import org.jdom.Comment;
+ 
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.DomParser;
@@ -121,27 +121,5 @@ public class JobCommandsListener {
 		return false;
 	}
 	
-	public void setJobDisabled(String name, boolean disabled) {
-		_dom.setJobDisabled(name, disabled);
-		_main.updateJobs();
-	}
-	
-	public boolean hasJobComment(Element e) {
-		if(e != null) {
-			for(Iterator it = e.getContent().iterator(); it.hasNext(); ) {
-				Object o = it.next();
-				if(o instanceof Comment && false)
-					return true;
-				else if (o instanceof Element) {
-					Element ee = (Element)o;
-					if(!Utils.getAttributeValue("__comment__", ee).equals(""))
-						return true;
-					if(hasJobComment(ee))
-						return true;
-				}
-					
-			}
-		}
-		return false;
-	}
+ 
 }

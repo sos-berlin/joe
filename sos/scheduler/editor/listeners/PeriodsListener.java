@@ -29,10 +29,11 @@ public class PeriodsListener {
 
 	public boolean isOnOrder() {
 		Element job = _parent;
-		while(!job.getName().equals("job"))
+		while(!job.getName().equals("job") && !job.getName().equals("add_order"))
 			job = job.getParentElement();
 		
-		return Utils.isAttributeValue("order", job);
+		return Utils.isAttributeValue("order", job) && job.getName().equals("job") || 
+		       Utils.isAttributeValue("id", job) && job.getName().equals("add_order");
 	}
 	
 	public void fillTable(Table table) {

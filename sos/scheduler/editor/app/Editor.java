@@ -21,19 +21,22 @@ public class Editor {
 	public final static int HOLIDAYS = 7;
 	public final static int JOBS = 8;
 	public final static int JOB_CHAINS = 9;
-	public final static int JOB = 10;
-	public final static int EXECUTE = 11;
-	public final static int MONITOR = 12;
-	public final static int OPTIONS = 13;
-	public final static int RUNTIME = 14;
-	public final static int COMMANDS = 15;
-	public final static int COMMAND = 16;
-	public final static int WEEKDAYS = 17;
-	public final static int MONTHDAYS = 18;
-	public final static int ULTIMOS = 19;
-	public final static int DAYS = 20;
-	public final static int PERIODS = 21;
-	public final static int EVERYDAY = 22;
+	public final static int COMMANDS = 10;
+	public final static int ORDER = 11;
+	public final static int ORDERS = 12;
+	public final static int JOB = 13;
+	public final static int EXECUTE = 14;
+	public final static int MONITOR = 15;
+	public final static int OPTIONS = 16;
+	public final static int RUNTIME = 17;
+	public final static int JOB_COMMANDS = 18;
+	public final static int JOB_COMMAND = 19;
+	public final static int WEEKDAYS = 20;
+	public final static int MONTHDAYS = 21;	
+	public final static int ULTIMOS = 22;
+	public final static int DAYS = 23;
+	public final static int PERIODS = 24;
+	public final static int EVERYDAY = 25;
 	public static String encoding = "";
 
 	

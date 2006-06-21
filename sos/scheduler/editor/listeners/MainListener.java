@@ -37,6 +37,7 @@ import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.forms.BaseForm;
+import sos.scheduler.editor.forms.CommandsForm;
 import sos.scheduler.editor.forms.ConfigForm;
 import sos.scheduler.editor.forms.DateForm;
 import sos.scheduler.editor.forms.DaysForm;
@@ -48,6 +49,8 @@ import sos.scheduler.editor.forms.JobForm;
 import sos.scheduler.editor.forms.JobOptionsForm;
 import sos.scheduler.editor.forms.JobsForm;
 import sos.scheduler.editor.forms.MainWindow;
+import sos.scheduler.editor.forms.OrderForm;
+import sos.scheduler.editor.forms.OrdersForm;
 import sos.scheduler.editor.forms.PeriodsForm;
 import sos.scheduler.editor.forms.ProcessClassesForm;
 import sos.scheduler.editor.forms.RunTimeForm;
@@ -117,12 +120,57 @@ public class MainListener {
 				.getHelpURL("job_chains"), "job_chains"));
 		item.setText("Job Chains");
 
+		item = new TreeItem(tree, SWT.NONE);
+		item.setData(new TreeData(Editor.ORDERS, config, Options
+				.getHelpURL("orders"), "commands"));
+		item.setText("Orders");
+		treeFillOrders(item,true);
+		item = new TreeItem(tree, SWT.NONE);
+		item.setData(new TreeData(Editor.COMMANDS, config, Options
+				.getHelpURL("commands"), "commands"));
+		item.setText("Commands");
+
 		tree.setSelection(new TreeItem[] { tree.getItem(0) });
 		treeSelection(tree, c);
 	}
 
+	public void treeFillOrders(TreeItem parent, boolean expand) {
+		TreeItem orders=parent;
+		
+	 if (!parent.getText().equals("Orders")){
+		 Tree t = parent.getParent();
+     for (int i=0;i< t.getItemCount();i++)
+    	 if (t.getItem(i).getText().equals("Orders")) {
+    		 orders = t.getItem(i);
+    	 }
+		 
+	 }
+		
+	 if (orders != null) {
+	 
+		  orders.removeAll();
+		  Element commands = _dom.getRoot().getChild("config").getChild("commands");
+	  	if (commands != null) {
+	   	   List l  = commands.getChildren("add_order");	 
+		     if (l != null) {
+		  	   Iterator it = l.iterator();
+   	  		while (it.hasNext()) {
+		     		Element e = (Element) it.next();
+			  	  if (e.getName().equals("add_order") && e.getAttributeValue("id") != null) {
+				  	   TreeItem item = new TreeItem(orders, SWT.NONE);
+					     item.setText("Order:"+e.getAttributeValue("id"));
+					     item.setData(new TreeData(Editor.ORDER, e, Options.getHelpURL("commands.add_order")));
+					 	   treeFillOrder(item, e, false);
+					   	}
+   	  		  }
+				  }
+			  }
+		  }
+	  	orders.setExpanded(expand);
+	 }
+		
+ 
 	public void treeFillJobs(TreeItem parent) {
-		parent.removeAll();
 		Element jobs = _dom.getRoot().getChild("config").getChild("jobs");
 		if (jobs != null) {
 			Iterator it = jobs.getChildren().iterator();
@@ -215,13 +263,66 @@ public class MainListener {
 			treeFillCommands(item, job, false);
 		
 		
-		item.setData(new TreeData(Editor.COMMANDS, job, Options.getHelpURL("job.commands")));		
+		item.setData(new TreeData(Editor.JOB_COMMANDS, job, Options.getHelpURL("job.commands")));		
+		parent.setExpanded(expand);
+	}
+
+	public void treeFillOrder(TreeItem parent, Element order, boolean expand) {
+		parent.removeAll();
+	 
+		Element runtime = order.getChild("run_time");
+		
+		// create runtime tag
+		if (runtime == null) {
+			runtime = new Element("run_time");
+			order.addContent(runtime);
+		}
+		if (runtime != null) {
+			TreeItem run = new TreeItem(parent, SWT.NONE);
+			run.setText("Run Time");
+			run.setData(new TreeData(Editor.RUNTIME, order, Options
+					.getHelpURL("job.run_time"), "run_time"));
+
+			TreeItem item = new TreeItem(run, SWT.NONE);
+			item.setText("Everyday");
+			item.setData(new TreeData(Editor.EVERYDAY, runtime, Options
+					.getHelpURL("job.run_time.everyday")));
+
+			item = new TreeItem(run, SWT.NONE);
+			item.setText("Weekdays");
+			item.setData(new TreeData(Editor.WEEKDAYS, runtime, Options
+					.getHelpURL("job.run_time.weekdays"), "weekdays"));
+			treeFillDays(item, runtime, 0, false);
+
+			item = new TreeItem(run, SWT.NONE);
+			item.setText("Monthdays");
+			item.setData(new TreeData(Editor.MONTHDAYS, runtime, Options
+					.getHelpURL("job.run_time.monthdays"), "monthdays"));
+			treeFillDays(item, runtime, 1, false);
+
+			item = new TreeItem(run, SWT.NONE);
+			item.setText("Ultimos");
+			item.setData(new TreeData(Editor.ULTIMOS, runtime, Options
+					.getHelpURL("job.run_time.ultimos"), "ultimos"));
+			treeFillDays(item, runtime, 2, false);
+
+			item = new TreeItem(run, SWT.NONE);
+			item.setText("Specific Days");
+			item.setData(new TreeData(Editor.DAYS, runtime, Options
+					.getHelpURL("job.run_time.specific_days")));
+			if (runtime != null)
+				treeFillDays(item, runtime, 3, false);
+		}
+		
+	 
 		parent.setExpanded(expand);
 	}
 
 	public void treeFillCommands(TreeItem parent, Element job, boolean expand)  {
 		new JobCommandListener(_dom, null, null).fillCommands(job,parent, expand);
 	}
+	
+
 			
 	public void treeFillDays(TreeItem parent, Element element, int type,
 			boolean expand) {
@@ -281,10 +382,16 @@ public class MainListener {
 				case Editor.EXECUTE:
 					new ExecuteForm(c, SWT.NONE, _dom, data.getElement());
 					break;
-				case Editor.COMMAND:
+				case Editor.ORDERS:
+					new OrdersForm(c, SWT.NONE, _dom, _gui, this);
+					break;
+				case Editor.ORDER:
+					new OrderForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+					break;
+				case Editor.JOB_COMMAND:
 					new JobCommandForm(c, SWT.NONE, _dom, data.getElement(),_gui);
 					break;
-				case Editor.COMMANDS:
+				case Editor.JOB_COMMANDS:
 					new JobCommandsForm(c, SWT.NONE, _dom, data.getElement(), _gui, this);
 					break;
 				case Editor.RUNTIME:
@@ -325,6 +432,9 @@ public class MainListener {
 					break;
 				case Editor.JOB_CHAINS:
 					new JobChainsForm(c, SWT.NONE, _dom, data.getElement());
+					break;
+				case Editor.COMMANDS:
+					new CommandsForm(c, SWT.NONE, _dom,_gui);
 					break;
 				default:
 					System.out.println("no form found for " + item.getText());
