@@ -43,7 +43,7 @@ public class DomParser {
 
 	private static final String[] CONFIG_ELEMENTS = { "base", "security",
 			"process_classes", "script", "web_services", "holidays", "jobs",
-			"job_chains" };
+			"job_chains", "commands" };
 
 	private static final String[] JOB_ELEMENTS = { "description", "params",
 			"script", "process", "monitor", "start_when_directory_changed",

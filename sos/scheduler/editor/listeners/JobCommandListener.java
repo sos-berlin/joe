@@ -365,11 +365,5 @@ public class JobCommandListener {
 		return _chains;
 	}
 
-	public int getChainIndex(String jobChain) {
-		for (int i = 0; i < _chains.length; i++) {
-			if (_chains[i].equals(jobChain))
-				return i;
-		}
-		return -1;
-	}
+
 }

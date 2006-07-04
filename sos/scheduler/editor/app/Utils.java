@@ -155,6 +155,7 @@ public class Utils {
 	}
 
 	public static int getSeconds(String time, int defaultValue) {
+		try {
 		if (time == null || time.equals(""))
 			return defaultValue;
 
@@ -165,6 +166,9 @@ public class Utils {
 			return new Integer(str[0]).intValue();
 		else
 			return defaultValue;
+		}catch (NumberFormatException e) {
+			return defaultValue;
+		}
 	}
 
 	public static String getTime(int hours, int minutes, int seconds,

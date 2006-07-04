@@ -122,7 +122,7 @@ public class MainListener {
 
 		item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.ORDERS, config, Options
-				.getHelpURL("orders"), "commands"));
+				.getHelpURL("orders"), "orders"));
 		item.setText("Orders");
 		treeFillOrders(item,true);
 		item = new TreeItem(tree, SWT.NONE);
@@ -159,7 +159,7 @@ public class MainListener {
 			  	  if (e.getName().equals("add_order") && e.getAttributeValue("id") != null) {
 				  	   TreeItem item = new TreeItem(orders, SWT.NONE);
 					     item.setText("Order:"+e.getAttributeValue("id"));
-					     item.setData(new TreeData(Editor.ORDER, e, Options.getHelpURL("commands.add_order")));
+					     item.setData(new TreeData(Editor.ORDER, e, Options.getHelpURL("orders")));
 					 	   treeFillOrder(item, e, false);
 					   	}
    	  		  }
