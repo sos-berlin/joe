@@ -155,6 +155,7 @@ public class TreeMenu {
 
 	private String getXML() {
 		Element element = getElement();
+		
 		String xml = "";
 		if (element != null) {
 			try {

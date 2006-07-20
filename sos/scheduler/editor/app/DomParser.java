@@ -243,8 +243,8 @@ public class DomParser {
 	}
 
 	public String getXML(Element element) throws JDOMException {
-		reorderDOM(element);
-
+	  reorderDOM(element);
+ 
 		FormatHandler handler = new FormatHandler(this);
 		handler.setEnconding(DEFAULT_ENCODING);
 		handler.setDisableJobs(isJobsDisabled());
@@ -258,20 +258,26 @@ public class DomParser {
 		reorderDOM(_doc.getRootElement());
 	}
 
+
+	
+	private void reorderElement(Element e) {
+		for (Iterator it2 = _orders.keySet().iterator(); it2.hasNext();) {
+			String key = (String) it2.next();
+			if (e.getName().equals(key)) {
+				String[] order = (String[]) _orders.get(key);
+				for (int i = 0; i < order.length; i++)
+					appendElement(order[i], e);
+			}
+		}
+	}
 	private void reorderDOM(Element parent) {
+		reorderElement(parent);
+		
 		List list = parent.getChildren();
 		for (Iterator it = list.iterator(); it.hasNext();) {
 			Element e = (Element) it.next();
 
-			for (Iterator it2 = _orders.keySet().iterator(); it2.hasNext();) {
-				String key = (String) it2.next();
-				if (e.getName().equals(key)) {
-					String[] order = (String[]) _orders.get(key);
-					for (int i = 0; i < order.length; i++)
-						appendElement(order[i], e);
-				}
-			}
-
+			reorderElement(e);
 			reorderDOM(e);
 		}
 	}
