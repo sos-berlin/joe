@@ -277,8 +277,7 @@ public class DomParser {
 		for (Iterator it = list.iterator(); it.hasNext();) {
 			Element e = (Element) it.next();
 
-			reorderElement(e);
-			reorderDOM(e);
+  		reorderDOM(e);
 		}
 	}
 
