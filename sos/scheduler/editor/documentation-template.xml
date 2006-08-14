@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="scheduler_job_documentation.xsl"?>
+<description xmlns="http://www.sos-berlin.com/schema/scheduler_job_documentation_v1.0"
+xmlns:xhtml="http://www.w3.org/1999/xhtml"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.sos-berlin.com/schema/scheduler_job_documentation_v1.0 http://www.sos-berlin.com/schema/scheduler_job_documentation_v1.0.xsd">
+
+  <job></job>
+
+  <releases>
+  </releases>
+
+  <configuration>
+  </configuration>
+
+  <documentation language="de">
+  </documentation>
+
+</description>

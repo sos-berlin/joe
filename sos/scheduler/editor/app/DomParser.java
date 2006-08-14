@@ -1,21 +1,14 @@
 package sos.scheduler.editor.app;
 
-import java.io.BufferedReader;
 import java.io.File;
-
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -23,354 +16,254 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.stream.StreamSource;
 
-import org.eclipse.swt.SWT;
-import org.jdom.Comment;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.jdom.Text;
+import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
-import org.jdom.output.SAXOutputter;
 import org.jdom.output.XMLOutputter;
 import org.jdom.transform.JDOMResult;
 import org.jdom.transform.JDOMSource;
 
-import sos.scheduler.editor.listeners.MainListener;
+public abstract class DomParser {
+    protected static final String DEFAULT_ENCODING = "ISO-8859-1";
 
-public class DomParser {
-	private static final String DEFAULT_ENCODING = "ISO-8859-1";
+    private Document              _doc;
 
-	private static final String[] CONFIG_ELEMENTS = { "base", "security",
-			"process_classes", "script", "web_services", "holidays", "jobs",
-			"job_chains", "commands" };
+    private boolean               _changed         = false;
 
-	private static final String[] JOB_ELEMENTS = { "description", "params",
-			"script", "process", "monitor", "start_when_directory_changed",
-			"delay_after_error", "delay_order_after_setback", "run_time" ,"commands"};
+    private boolean               _init            = false;
 
-	private static final String[] RUNTIME_ELEMENTS = { "period", "date",
-			"weekdays", "monthdays", "ultimos", "holidays" };
+    private IDataChanged          _changedListener;
 
-	private Document _doc;
+    private HashMap               _orders          = new HashMap();
 
-	private boolean _changed = false;
+    private String[]              _schemaTmpFile;
 
-	private boolean _init = false;
+    private String[]              _schemaResource;
 
-	private IUpdate _changedListener;
+    private String                _xslt;
 
-	private ArrayList _disabled = new ArrayList();
+    private String                _filename        = null;
 
-	private HashMap _orders;
 
-	public DomParser() {
-		_orders = new HashMap();
-		_orders.put("config", CONFIG_ELEMENTS);
-		_orders.put("job", JOB_ELEMENTS);
-		_orders.put("run_time", RUNTIME_ELEMENTS);
+    // public DomParser() {
 
-		init();
-	}
-
-	public void init() {
-		Element config = new Element("config");
-		_doc = new Document(new Element("spooler").addContent(config));
-		Element processClasses = new Element("process_classes");
-		Element defaultClass = new Element("process_class");
-		defaultClass.setAttribute("max_processes", "10");
-		config.addContent(processClasses.addContent(defaultClass));
-	}
-
-	public void setDataChangedListener(IUpdate listener) {
-		_changedListener = listener;
-	}
-
-	public Element getRoot() {
-		return _doc.getRootElement();
-	}
-
-	private String writeSchemaFile() throws IOException {
-		File tmp = File.createTempFile("scheduler_editor_schema", ".xsd");
-		tmp.deleteOnExit();
-		
-		InputStream in = getClass().getResourceAsStream(Options.getSchema());
-		FileOutputStream out = new FileOutputStream(tmp, true);
-		
-		int c;
-		while((c = in.read()) != -1)
-			out.write(c);
-		
-		in.close();
-		out.close();
-
-		return tmp.getAbsolutePath();
-	}
-	
-	private SAXBuilder getBuilder(boolean validate) throws IOException {
-		SAXBuilder builder = new SAXBuilder(validate);
-		if (validate) {
-			builder.setProperty(
-					"http://java.sun.com/xml/jaxp/properties/schemaLanguage",
-					"http://www.w3.org/2001/XMLSchema");
-			builder.setProperty(
-					"http://java.sun.com/xml/jaxp/properties/schemaSource",
-					writeSchemaFile());
-			 		
-		}
-		return builder;
-	}
-
-	// public void read(URL url) throws JDOMException, IOException {
-	// SAXBuilder sb = new SAXBuilder();
-	// _doc = sb.build(url);
-	// }
-
-	public boolean read(File file) throws JDOMException, IOException {
-		return read(file, Options.isValidate());
-	}
-
-	public boolean read(File file, boolean validate) throws JDOMException,
-			IOException {
-
-		StringReader sr = new StringReader(readFile(file));
-		Document doc = getBuilder(validate).build(sr);
-		sr.close();
-
-		if (!validate
-				&& (!doc.hasRootElement() || !doc.getRootElement().getName()
-						.equals("spooler")))
-			return false;
-
-		_doc = doc;
-
-		// set comments as attributes
-		setComments(_doc.getContent());
-
-		setChanged(false);
-		return true;
-	}
-
-	private String readFile(File file) throws IOException {
-		_disabled = new ArrayList();
-
-		String encoding = DEFAULT_ENCODING;
-		String line = null;
-		StringBuffer sb = new StringBuffer();
-		boolean disabled = false;
-
-		Pattern p1 = Pattern.compile("<!--\\s*disabled\\s*=\\s*\"([^\"]+)\"");
-		Pattern p2 = Pattern.compile("-->");
-		Pattern p3 = Pattern.compile("<?xml.+encoding\\s*=\\s*\"([^\"]+)\"");
-		Pattern p4 = Pattern.compile("<!--\\s*disabled");
-
-		BufferedReader br = new BufferedReader(new FileReader(file));
-    try {
-		while ((line = br.readLine()) != null) {
-			Matcher m3 = p3.matcher(line);
-			Matcher m4 = p4.matcher(line);
-			if (m3.find()) {
-				encoding = m3.group(1);
-			} else if (m4.find()) { // disable start
-				Matcher m1 = p1.matcher(line);
-				if (m1.find()) { // disabled job with name
-					_disabled.add(m1.group(1));
-					line = m1.replaceFirst("");
-				} else { // disabled jobs tag
-					line = m4.replaceFirst("");
-				}
-				disabled = true;
-			} else if (disabled) { // disable end
-				Matcher m2 = p2.matcher(line);
-				m2 = p2.matcher(line);
-				if (m2.find()) {
-					line = m2.replaceFirst("");
-					disabled = false;
-				}
-			}
-
-		//	 System.out.println(line);
-
-			sb.append(line + "\n");
-		}
-
-		String str = new String(sb.toString().getBytes(), encoding);
-    Editor.encoding = encoding;
-		return str;
-    }finally {
-      br.close();
+    // }
+    public DomParser(String[] schemaTmp, String[] schemaResource, String xslt) {
+        _schemaTmpFile = schemaTmp;
+        _schemaResource = schemaResource;
+        _xslt = xslt;
     }
-		
-  }
-
-	public void write(String filename, MainListener listener)
-			throws IOException, JDOMException {
-		
-		String encoding =  Editor.encoding;
-		if (encoding.equals(""))encoding = DEFAULT_ENCODING; 
-		reorderDOM();
-
-		FormatHandler handler = new FormatHandler(this);
-		handler.setEnconding(encoding);
-		handler.setDisableJobs(isJobsDisabled());
-		SAXOutputter saxo = new SAXOutputter(handler);
-		saxo.output(_doc);
-
-		try {
-			getBuilder(true).build(new StringReader(handler.getXML()));
-		} catch (JDOMException e) {
-			int res = listener.message(Messages.getString(
-					"MainListener.outputInvalid",
-					new String[] { e.getMessage() }), SWT.ICON_WARNING
-					| SWT.YES | SWT.NO);
-			if (res == SWT.NO)
-				return;
-		}
-
- 
-		OutputStreamWriter writer = new OutputStreamWriter(
-				new FileOutputStream(filename), encoding);
-		
-		writer.write(handler.getXML());
-		writer.close();
-
-		// FileOutputStream stream = new FileOutputStream(new File(filename));
-		// XMLOutputter out = new XMLOutputter(getFormat());
-		// out.output(_doc, stream);
-		// stream.close();
-
-		setChanged(false);
-	}
-
-	public String getXML(Element element) throws JDOMException {
-	  reorderDOM(element);
- 
-		FormatHandler handler = new FormatHandler(this);
-		handler.setEnconding(DEFAULT_ENCODING);
-		handler.setDisableJobs(isJobsDisabled());
-		SAXOutputter saxo = new SAXOutputter(handler);
-		saxo.output(element);
-
-		return handler.getXML();
-	}
-
-	public void reorderDOM() {
-		reorderDOM(_doc.getRootElement());
-	}
 
 
-	
-	private void reorderElement(Element e) {
-		for (Iterator it2 = _orders.keySet().iterator(); it2.hasNext();) {
-			String key = (String) it2.next();
-			if (e.getName().equals(key)) {
-				String[] order = (String[]) _orders.get(key);
-				for (int i = 0; i < order.length; i++)
-					appendElement(order[i], e);
-			}
-		}
-	}
-	private void reorderDOM(Element parent) {
-		reorderElement(parent);
-		
-		List list = parent.getChildren();
-		for (Iterator it = list.iterator(); it.hasNext();) {
-			Element e = (Element) it.next();
+    protected void putDomOrder(String parentElement, String[] orderedElements) {
+        _orders.put(parentElement, orderedElements);
+    }
 
-  		reorderDOM(e);
-		}
-	}
 
-	private void appendElement(String element, Element parent) {
-		List list = new ArrayList(parent.getChildren(element));
-		if (list.size() > 0) {
-			parent.removeChildren(element);
-			for (Iterator it = list.iterator(); it.hasNext();)
-				parent.addContent((Element) it.next());
-		}
-	}
+    protected HashMap getDomOrders() {
+        return _orders;
+    }
 
-	private void setComments(List content) {
-		if (content != null) {
-			String comment = null;
-			for (Iterator it = content.iterator(); it.hasNext();) {
-				Object o = it.next();
-				if (o instanceof Comment) {
-					comment = ((Comment) o).getText();
-				} else if (o instanceof Element) {
-					Element e = (Element) o;
-					if (comment != null) { // set comment as value
-						e.setAttribute("__comment__", comment.trim());
-						comment = null;
-					}
 
-					setComments(e.getContent()); // recursion
-				} else if (!(o instanceof Text)) {
-					comment = null;
-				}
-			}
-		}
-	}
+    protected void setFilename(String filename) {
+        _filename = filename;
+    }
 
-	public String transform(Element element)
-			throws TransformerFactoryConfigurationError, TransformerException,
-			IOException {
-		Document doc = new Document((Element) element.clone());
 
-		Transformer transformer = TransformerFactory.newInstance()
-				.newTransformer(new StreamSource(Options.getXSLT()));
-		JDOMSource in = new JDOMSource(doc);
-		JDOMResult out = new JDOMResult();
-		transformer.transform(in, out);
+    public String getFilename() {
+        return _filename;
+    }
 
-		List result = out.getResult();
 
-		File tmp = File.createTempFile(Options.getXSLTFilePrefix(), Options
-				.getXSLTFileSuffix());
-		tmp.deleteOnExit();
+    public void setXSLT(String xslt) {
+        _xslt = xslt;
+    }
 
-		XMLOutputter outp = new XMLOutputter(Format.getPrettyFormat());
-		outp.output(result, new FileWriter(tmp));
 
-		return tmp.getAbsolutePath();
-	}
+    public String getXSLT() {
+        return _xslt;
+    }
 
-	public boolean isJobDisabled(String name) {
-		return _disabled.contains(name);
-	}
 
-	public boolean isJobsDisabled() {
-		int disabledJobs = _disabled.size();
-		Element jobs = getRoot().getChild("config").getChild("jobs");
-		if (jobs == null)
-			return false;
-		int jobCnt = jobs.getChildren("job").size();
-		return disabledJobs >= jobCnt;
-	}
+    public void setDataChangedListener(IDataChanged listener) {
+        _changedListener = listener;
+    }
 
-	public void setJobDisabled(String name, boolean disabled) {
-		boolean contains = _disabled.contains(name);
-		if (contains && !disabled) {
-			_disabled.remove(name);
-			setChanged(true);
-		} else if (!contains && disabled) {
-			_disabled.add(name);
-			setChanged(true);
-		}
-	}
 
-	public boolean isChanged() {
-		return _changed;
-	}
+    public IDataChanged getDataChangedListener() {
+        return _changedListener;
+    }
 
-	public void setChanged(boolean changed) {
-		if (!_init) {
-			_changed = changed;
-			_changedListener.dataChanged();
-		}
-	}
 
-	public void setInit(boolean init) {
-		_init = init;
-	}
+    public Element getRoot() {
+        return _doc.getRootElement();
+    }
+
+
+    public Document getDoc() {
+        return _doc;
+    }
+
+
+    protected void setDoc(Document doc) {
+        _doc = doc;
+    }
+
+
+    public Namespace getNamespace() {
+        return getRoot().getNamespace();
+    }
+
+
+    public Namespace getNamespace(String name) {
+        return getRoot().getNamespace(name);
+    }
+
+
+    public List getAdditinalNamespaces() {
+        return getRoot().getAdditionalNamespaces();
+    }
+
+
+    protected String[] writeSchemaFile() throws IOException {
+        ArrayList urls = new ArrayList();
+
+        for (int i = 0; i < _schemaTmpFile.length; i++) {
+            if (_schemaTmpFile[i] != null && !_schemaTmpFile[i].equals("") && _schemaResource[i] != null
+                    && !_schemaResource[i].equals("")) {
+
+                File tmp = File.createTempFile(_schemaTmpFile[i], ".xsd");
+                tmp.deleteOnExit();
+
+                InputStream in = getClass().getResourceAsStream(_schemaResource[i]);
+                FileOutputStream out = new FileOutputStream(tmp, true);
+
+                int c;
+                while ((c = in.read()) != -1)
+                    out.write(c);
+
+                in.close();
+                out.close();
+
+                urls.add(tmp.getAbsolutePath());
+            }
+        }
+
+        return (String[]) urls.toArray(new String[urls.size()]);
+    }
+
+
+    protected SAXBuilder getBuilder(boolean validate) throws IOException {
+        SAXBuilder builder = new SAXBuilder(validate);
+        if (validate) {
+            builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
+                    "http://www.w3.org/2001/XMLSchema");
+            builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", writeSchemaFile());
+
+        }
+        return builder;
+    }
+
+
+    public abstract boolean read(String filename) throws JDOMException, IOException;
+
+
+    public abstract boolean read(String filename, boolean validate) throws JDOMException, IOException;
+
+
+    public abstract void write(String filename) throws IOException, JDOMException;
+
+
+    public abstract String getXML(Element element) throws JDOMException;
+
+
+    public void reorderDOM() {
+        reorderDOM(getDoc().getRootElement());
+    }
+
+
+    protected void reorderDOM(Element element) {
+        reorderDOM(element, null);
+    }
+
+
+    protected void reorderDOM(Element element, Namespace ns) {
+        // check if an order list exists for this element
+        if (getDomOrders().containsKey(element.getName())) {
+            // get children names in right order of this element
+            String[] order = (String[]) getDomOrders().get(element.getName());
+
+            // iterate children names
+            for (int i = 0; i < order.length; i++) {
+                // get _new_ list of the children
+                List list = new ArrayList(element.getChildren(order[i], ns));
+                if (list.size() > 0) {
+                    // remove them all
+                    element.removeChildren(order[i], ns);
+
+                    // iterate children list
+                    for (Iterator it2 = list.iterator(); it2.hasNext();) {
+                        Element children = (Element) it2.next();
+                        // readd it at the end
+                        element.addContent(children);
+
+                        // recursion
+                        reorderDOM(children, ns);
+                    }
+                }
+            }
+        } else {
+            // reorder the children
+            List children = element.getChildren();
+            for (Iterator it = children.iterator(); it.hasNext();) {
+                reorderDOM((Element) it.next(), ns);
+            }
+        }
+    }
+
+
+    public String transform(Element element) throws TransformerFactoryConfigurationError, TransformerException,
+            IOException {
+        Document doc = new Document((Element) element.clone());
+
+        // Transformer transformer =
+        // TransformerFactory.newInstance().newTransformer(new
+        // StreamSource(Options.getXSLT()));
+        Transformer transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(getXSLT()));
+        JDOMSource in = new JDOMSource(doc);
+        JDOMResult out = new JDOMResult();
+        transformer.transform(in, out);
+
+        List result = out.getResult();
+
+        File tmp = File.createTempFile(Options.getXSLTFilePrefix(), Options.getXSLTFileSuffix());
+        tmp.deleteOnExit();
+
+        XMLOutputter outp = new XMLOutputter(Format.getPrettyFormat());
+        outp.output(result, new FileWriter(tmp));
+
+        return tmp.getAbsolutePath();
+    }
+
+
+    public boolean isChanged() {
+        return _changed;
+    }
+
+
+    public void setChanged(boolean changed) {
+        if (!_init) {
+            _changed = changed;
+            if (_changedListener != null)
+                _changedListener.dataChanged();
+        }
+    }
+
+
+    public void setInit(boolean init) {
+        _init = init;
+    }
 }
