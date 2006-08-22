@@ -255,7 +255,7 @@ public class DocumentationListener implements IUpdateTree {
                         new PayloadForm(c, SWT.NONE, _dom, data.getElement());
                         break;
                     case Editor.DOC_SETTINGS:
-                        SettingsListener listener = new SettingsListener(_dom, data.getElement());
+                      	SettingsListener listener = new SettingsListener(_dom, data.getElement());
                         listener.setSettings();
                         NoteForm settings = new NoteForm(c, SWT.NONE, Editor.DOC_SETTINGS);
                         settings.setSettingsListener(listener);

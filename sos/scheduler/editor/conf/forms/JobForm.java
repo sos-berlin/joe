@@ -40,6 +40,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
     private Text        sTimeout;
 
     private Text        sTasks;
+    private Text        tIgnoreSignals;
 
     private JobListener listener;
 
@@ -116,6 +117,9 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
     private boolean     updateTree        = false;
 
     private Button      bForceIdletimeout = null;
+    private Button      bStopOnError      = null;
+    private Combo       cSignals          = null;
+
 
 
     public JobForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
@@ -143,6 +147,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 
         bOrderYes.setSelection(listener.getOrder());
         bOrderNo.setSelection(!listener.getOrder());
+        bStopOnError.setSelection(listener.getStopOnError());
+        bForceIdletimeout.setSelection(listener.getForceIdletimeout());
         sIdleTimeout.setEnabled(bOrderYes.getSelection());
         index = sPriority.indexOf(listener.getPriority());
         if (index >= 0)
@@ -160,6 +166,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         }
 
         sTasks.setText(listener.getTasks());
+        tIgnoreSignals.setText(listener.getIgnoreSignal());
         sTimeout.setText(listener.getTimeout());
         sIdleTimeout.setText(listener.getIdleTimeout());
         listener.fillParams(tParameter);
@@ -224,7 +231,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
         GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 4;
+        gridLayout.numColumns = 6;
         gMain = new Group(sashForm, SWT.NONE);
         gMain.setText("Main Options");
         gMain.setLayout(gridLayout);
@@ -248,6 +255,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
                 listener.setTitle(tTitle.getText());
             }
         });
+        new Label(gMain, SWT.NONE);
+        new Label(gMain, SWT.NONE);
         label3 = new Label(gMain, SWT.NONE);
         label3.setText("Scheduler ID:");
         tSpoolerID = new Text(gMain, SWT.BORDER);
@@ -260,9 +269,13 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         label9 = new Label(gMain, SWT.NONE);
         label9.setText("Process Class:");
         createCombo();
+        new Label(gMain, SWT.NONE);
+        new Label(gMain, SWT.NONE);
         label7 = new Label(gMain, SWT.NONE);
         label7.setText("On Order:");
         createComposite();
+        new Label(gMain, SWT.NONE);
+        new Label(gMain, SWT.NONE);
         label17 = new Label(gMain, SWT.NONE);
         label17.setText("Priority:");
 
@@ -307,6 +320,18 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         });
 
         sTasks.setLayoutData(new GridData(75, SWT.DEFAULT));
+
+        final Label force_idle_timeoutLabel = new Label(gMain, SWT.NONE);
+        force_idle_timeoutLabel.setLayoutData(new GridData());
+        force_idle_timeoutLabel.setText("Force Idle Timeout");
+
+        bForceIdletimeout = new Button(gMain, SWT.CHECK);
+        bForceIdletimeout.setLayoutData(new GridData());
+        bForceIdletimeout.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent e) {
+                listener.setForceIdletimeout(bForceIdletimeout.getSelection());
+            }
+        });
         label13 = new Label(gMain, SWT.NONE);
         label13.setText("Timeout:");
 
@@ -342,26 +367,63 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 
         sIdleTimeout.setLayoutData(new GridData(75, SWT.DEFAULT));
 
+        final Label stop_on_errorLabel = new Label(gMain, SWT.NONE);
+        stop_on_errorLabel.setText("Stop On Error");
+
+        bStopOnError = new Button(gMain, SWT.CHECK);
+        bStopOnError.setSelection(true);
+        bStopOnError.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        	  listener.setStopOnError(bStopOnError.getSelection());
+        	}
+        });
+
         final Label minTaskLabel = new Label(gMain, SWT.NONE);
-        minTaskLabel.setText("min tasks");
+        minTaskLabel.setText("Min Tasks");
 
         tMintasks = new Text(gMain, SWT.BORDER);
+        tMintasks.addVerifyListener(new VerifyListener() {
+        	public void verifyText(final VerifyEvent e) {
+            e.doit = Utils.isOnlyDigits(e.text);
+        	}
+        });
         tMintasks.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
                 listener.setMintasks(tMintasks.getText());
             }
         });
-        tMintasks.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        final GridData gridData_2 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+        gridData_2.widthHint = 75;
+        tMintasks.setLayoutData(gridData_2);
 
-        final Label force_idle_timeoutLabel = new Label(gMain, SWT.NONE);
-        force_idle_timeoutLabel.setText("force_idle_timeout");
+        final Label ignore_signalLabel = new Label(gMain, SWT.NONE);
+        ignore_signalLabel.setLayoutData(new GridData());
+        ignore_signalLabel.setText("Ignore Signals");
 
-        bForceIdletimeout = new Button(gMain, SWT.CHECK);
-        bForceIdletimeout.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(final SelectionEvent e) {
-                listener.setForceIdletimeout(bForceIdletimeout.getSelection());
-            }
+        tIgnoreSignals = new Text(gMain, SWT.BORDER);
+        tIgnoreSignals.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		listener.setIgnoreSignal(tIgnoreSignals.getText());
+        	}
         });
+        tIgnoreSignals.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+        final Button addButton = new Button(gMain, SWT.NONE);
+        addButton.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		if (tIgnoreSignals.getText().equals("")){
+      		      tIgnoreSignals.setText(cSignals.getText());
+        		}else {
+        		    tIgnoreSignals.setText( tIgnoreSignals.getText() + " " + cSignals.getText());
+        		}
+        	}
+        });
+        addButton.setLayoutData(new GridData(59, SWT.DEFAULT));
+        addButton.setText("<- Add <-");
+
+        cSignals = new Combo(gMain, SWT.NONE);
+        cSignals.setItems(new String[] {"error", "success", "SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT", "SIGIOT", "SIGBUS", "SIGFPE", "SIGKILL", "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGPIPE", "SIGALRM", "SIGTERM", "SIGSTKFLT", "SIGCHLD", "SIGCONT", "SIGSTOP", "SIGTSTP", "SIGTTIN", "SIGTTOU", "SIGURG", "SIGXCPU", "SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH", "SIGPOLL", "SIGIO", "SIGPWR", "SIGSYS."});
+        cSignals.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         label8 = new Label(gMain, SWT.NONE);
         label8.setText("Comment:");
         label8.setLayoutData(gridData71);
@@ -373,6 +435,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
                 listener.setComment(tComment.getText());
             }
         });
+        new Label(gMain, SWT.NONE);
+        new Label(gMain, SWT.NONE);
     }
 
 
@@ -544,7 +608,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes table
      */
     private void createTable() {
-        GridData gridData9 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 3, 1);
+        GridData gridData9 = new org.eclipse.swt.layout.GridData(GridData.CENTER, GridData.FILL, true, true, 3, 1);
         gridData9.horizontalIndent = 32;
         new Label(gJobParameter, SWT.NONE);
         tParameter = new Table(gJobParameter, SWT.BORDER | SWT.FULL_SELECTION);
@@ -623,8 +687,10 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         tSpoolerID.setToolTipText(Messages.getTooltip("job.spooler_id"));
         sPriority.setToolTipText(Messages.getTooltip("job.priority"));
         sTasks.setToolTipText(Messages.getTooltip("job.tasks"));
+        tIgnoreSignals.setToolTipText(Messages.getTooltip("job.ignore_signal"));
         tMintasks.setToolTipText(Messages.getTooltip("job.mintasks"));
-        bForceIdletimeout.setToolTipText(Messages.getTooltip("job.foreIdleTimeout"));
+        bForceIdletimeout.setToolTipText(Messages.getTooltip("job.foreIdleTimeout"));        
+        bStopOnError.setToolTipText(Messages.getTooltip("job.stop_on_error"));
         sTimeout.setToolTipText(Messages.getTooltip("job.timeout"));
         sIdleTimeout.setToolTipText(Messages.getTooltip("job.idle_timeout"));
         tComment.setToolTipText(Messages.getTooltip("job.comment"));

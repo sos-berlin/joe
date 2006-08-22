@@ -31,10 +31,11 @@ public class OrderListener {
         _config = _dom.getRoot().getChild("config");
         _order = order;
         _main = update;
+        
     }
 
 
-    private void initParams(Table table) {
+    private void initParams() {
 
         if (_order.getChild("params") != null) {
             _params = _order.getChild("params").getChildren();
@@ -52,10 +53,11 @@ public class OrderListener {
     }
 
 
-    public void fillParams(Table tableCommand, Table tableParameters) {
+    public void fillParams(Table tableParameters) {
         clearParams();
-        initParams(tableCommand);
         tableParameters.removeAll();
+        initParams();
+
 
         if (_params != null) {
             Iterator it = _params.iterator();
@@ -114,7 +116,7 @@ public class OrderListener {
             _dom.setChanged(true);
 
             if (_params == null)
-                initParams(table);
+                initParams();
             if (_params != null)
                 _params.add(e);
 

@@ -373,6 +373,7 @@
              		<xs:complexType mixed="true">
              		<xs:complexContent mixed="true">
                     <xs:restriction base="xs:anyType">
+
 			<xs:sequence>
 				<xs:any namespace="http://www.w3.org/1999/xhtml" processContents="lax"/>
 			</xs:sequence>

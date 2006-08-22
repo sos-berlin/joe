@@ -97,9 +97,19 @@ public class JobListener {
 
 
     public boolean getOrder() {
-        String order = _job.getAttributeValue("order");
-        return order == null ? false : order.equalsIgnoreCase("yes");
-    }
+      String order = _job.getAttributeValue("order");
+      return order == null ? false : order.equalsIgnoreCase("yes");
+  }
+
+    public boolean getStopOnError() {
+      String stopOnError = _job.getAttributeValue("stop_on_error");
+      return stopOnError == null ? true : stopOnError.equalsIgnoreCase("yes");
+  }
+
+    public boolean getForceIdletimeout() {
+      String forceIdleTimeout = _job.getAttributeValue("force_idle_timeout");
+      return forceIdleTimeout == null ? false : forceIdleTimeout.equalsIgnoreCase("yes");
+  }
 
 
     public void setOrder(boolean order) {
@@ -165,6 +175,13 @@ public class JobListener {
         }
     }
 
+    public void setStopOnError(boolean stopOnError) {
+      if (stopOnError) {
+          Utils.setAttribute("stop_on_error", "yes", _job, _dom);
+      } else {
+          Utils.setAttribute("stop_on_error", "no", _job, _dom);
+      }
+  }
 
     public void setMintasks(String mintasks) {
         Utils.setAttribute("min_tasks", Utils.getIntegerAsString(Utils.str2int(mintasks)), _job, _dom);
@@ -330,4 +347,14 @@ public class JobListener {
             _dom.setChanged(true);
         }
     }
+
+    public String getIgnoreSignal() {
+      return Utils.getAttributeValue("ignore_signals", _job);
+    }
+
+
+    public void setIgnoreSignal(String signals) {
+      Utils.setAttribute("ignore_signals", signals, _job, _dom);
+    }    
+    
 }

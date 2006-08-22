@@ -207,7 +207,13 @@ public class DocumentationDom extends DomParser {
 
 
     public String noteAsStr(Element element) {
-        StringWriter stream = new StringWriter();
+    	Element div = element.getChild("div", getNamespace("xhtml"));
+    	if (div != null){
+    	  return div.getText();
+    	}else {
+    		return "";
+    	}
+    	/*StringWriter stream = new StringWriter();
         XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
         try {
             out.output(element.getContent(), stream);
@@ -216,6 +222,7 @@ public class DocumentationDom extends DomParser {
             e.printStackTrace();
         }
         return stream.toString().trim();
+        */
     }
 
 }

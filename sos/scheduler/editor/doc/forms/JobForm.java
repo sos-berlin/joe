@@ -1,10 +1,13 @@
 package sos.scheduler.editor.doc.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -100,6 +103,28 @@ public class JobForm extends Composite implements IUpdateLanguage {
         createCOrder();
         label3 = new Label(group, SWT.NONE);
         label3.setText("Tasks:"); // Generated
+        GridData gridData3 = new GridData(200, SWT.DEFAULT);
+        cTasks = new Combo(group, SWT.BORDER | SWT.READ_ONLY);
+        cTasks.setLayoutData(gridData3); // Generated
+        cTasks.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                listener.setTasks(cTasks.getText());
+            }
+
+
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            }
+        });
+        new Label(group, SWT.NONE);
+
+        final Button vorschauButton = new Button(group, SWT.NONE);
+        vorschauButton.setLayoutData(new GridData());
+        vorschauButton.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		listener.preview();
+        	}
+        });
+        vorschauButton.setText("Vorschau");
         createCTasks();
     }
 
@@ -130,21 +155,6 @@ public class JobForm extends Composite implements IUpdateLanguage {
      * This method initializes cTasks
      */
     private void createCTasks() {
-        GridData gridData3 = new GridData();
-        gridData3.horizontalAlignment = GridData.BEGINNING; // Generated
-        gridData3.widthHint = 200; // Generated
-        gridData3.verticalAlignment = GridData.CENTER; // Generated
-        cTasks = new Combo(group, SWT.BORDER | SWT.READ_ONLY);
-        cTasks.setLayoutData(gridData3); // Generated
-        cTasks.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                listener.setTasks(cTasks.getText());
-            }
-
-
-            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-            }
-        });
     }
 
 

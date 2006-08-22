@@ -832,6 +832,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
     private void applySetback() {
         int maximum = 0;
         int maximumMax = 0;
+        int maxSetback=0;
 
         int sel = tSetback.getSelectionIndex();
         TableItem[] setback = tSetback.getItems();
@@ -858,9 +859,23 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
             }
 
             for (int i = 0; i < setback.length; i++) {
-                if (maximumMax < Utils.str2int(setback[i].getText(0))) {
+                if ( i  != sel && maximumMax < Utils.str2int(setback[i].getText(0)) && setback[i].getText(1).equalsIgnoreCase("yes")) {
                     maximumMax = Utils.str2int(setback[i].getText(0));
                 }
+            }
+            
+            for (int i = 0; i < setback.length; i++) {
+              if (i != sel && !setback[i].getText(1).equalsIgnoreCase("yes") && maxSetback < Utils.str2int(setback[i].getText(0))) {
+                  maxSetback = Utils.str2int(setback[i].getText(0));
+              }
+          }
+            
+            if ( bIsMaximum.getSelection() && Utils.str2int(sSetBackCount.getText()) > maximumMax) {
+            	maximumMax = Utils.str2int(sSetBackCount.getText());
+            }
+            
+            if (Utils.str2int(sSetBackCount.getText()) > maxSetback) {
+            	maxSetback = Utils.str2int(sSetBackCount.getText());
             }
 
             if (maximum > 1) {
@@ -875,7 +890,8 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
                         MainWindow.message("Setback-count must not be empty", SWT.ICON_INFORMATION);
                         sSetBackCount.setFocus();
                     } else {
-                        if (maximumMax > Utils.str2int(sSetBackCount.getText()) && bIsMaximum.getSelection()) {
+                        if (maximumMax > 0 && maximumMax < Utils.str2int(sSetBackCount.getText()) ||
+                        		maxSetback > Utils.str2int(sSetBackCount.getText()) && bIsMaximum.getSelection()) {
                             MainWindow.message("Setback-count with maximum=yes must be highest setback-count in list",
                                     SWT.ICON_INFORMATION);
                             sSetBackCount.setFocus();
@@ -958,9 +974,17 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         int sel = tErrorDelay.getSelectionIndex();
         int maximum = 0;
         int maxErrorDelay = 0;
+        int maxAktErrorDelay = 0;
 
+ 
         for (int i = 0; i < errorDelay.length; i++) {
-            if (maxErrorDelay < Utils.str2int(errorDelay[i].getText(0))) {
+          if (i != sel && !errorDelay[i].getText(1).equalsIgnoreCase("stop") && maxAktErrorDelay < Utils.str2int(errorDelay[i].getText(0))) {
+          	maxAktErrorDelay = Utils.str2int(errorDelay[i].getText(0));
+          }
+        }
+        
+        for (int i = 0; i < errorDelay.length; i++) {
+            if (i != sel && maxErrorDelay < Utils.str2int(errorDelay[i].getText(0)) && errorDelay[i].getText(1).equalsIgnoreCase("stop")) {
                 maxErrorDelay = Utils.str2int(errorDelay[i].getText(0));
             }
         }
@@ -981,11 +1005,22 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
             }
         }
 
+        if ( bStop.getSelection() && Utils.str2int(sErrorCount.getText()) > maxErrorDelay) {
+        	maxErrorDelay = Utils.str2int(sErrorCount.getText());
+        }
+        if (  Utils.str2int(sErrorCount.getText()) > maxAktErrorDelay) {
+        	maxAktErrorDelay = Utils.str2int(sErrorCount.getText());
+        }
+        
+      
+     
+        
         if (found) {
             MainWindow.message("Error-count already defined", SWT.ICON_INFORMATION);
             sErrorCount.setFocus();
         } else {
-            if (maxErrorDelay > Utils.str2int(sErrorCount.getText()) && bStop.getSelection()) {
+          if (maxErrorDelay > 0 && maxErrorDelay < Utils.str2int(sErrorCount.getText()) ||
+          		maxAktErrorDelay > Utils.str2int(sErrorCount.getText()) && bStop.getSelection()) {
                 MainWindow.message("Error-count with stop must be highest error-count in list", SWT.ICON_INFORMATION);
                 sErrorCount.setFocus();
             } else {

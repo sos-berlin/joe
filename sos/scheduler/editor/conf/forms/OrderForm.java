@@ -88,6 +88,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         cJobchain.setItems(listener.getJobChains());
 
         fillOrder();
+        listener.fillParams(tParameter);
         dom.setInit(false);
         event = true;
     }

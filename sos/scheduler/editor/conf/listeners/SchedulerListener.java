@@ -137,6 +137,7 @@ public class SchedulerListener {
 
 
     public void treeFillJobs(TreeItem parent) {
+        parent.removeAll();
         Element jobs = _dom.getRoot().getChild("config").getChild("jobs");
         if (jobs != null) {
             Iterator it = jobs.getChildren().iterator();

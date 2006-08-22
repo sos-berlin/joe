@@ -159,13 +159,15 @@ public class TabbedContainer implements IContainer {
             return;
         String filename = getCurrentEditor().getFilename();
         CTabItem tab = getCurrentTab();
-        if (oldFilename != null)
+        if (oldFilename != null) {
             filelist.remove(oldFilename);
+            filelist.add(filename);
+        }
+
         String title = setSuffix(Utils.getFileFromURL(filename));
         tab.setText(title);
         tab.setToolTipText(filename);
         tab.setData(title);
-        filelist.add(filename);
         setWindowTitle();
     }
 

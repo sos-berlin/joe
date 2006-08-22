@@ -68,6 +68,13 @@ public class NoteListener {
         Element item = getElement();
         if (item == null && note.length() > 0) {
             // create new one
+        	  
+        	  if (_parent.getParent()==null) {
+        	    Element r = _dom.getRoot();
+        	    Element c = r.getChild("configuration",_dom.getNamespace());
+        	    c.addContent(_parent);
+        	    
+        	  }
             item = new Element(_name, _dom.getNamespace());
             Utils.setAttribute("language", _lang, item);
             _parent.addContent(item);
@@ -81,8 +88,8 @@ public class NoteListener {
             return;
 
         try {
-            note = "<fake_root>" + note + "</fake_root>";
-            item.setContent(_dom.noteAsDom(note));
+             note = "<fake_root>" + note + "</fake_root>";
+             item.setContent(_dom.noteAsDom(note));
         } catch (Exception e) {
             e.printStackTrace();
         }

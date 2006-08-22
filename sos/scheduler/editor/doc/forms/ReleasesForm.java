@@ -115,14 +115,6 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
         gridData4.horizontalAlignment = GridData.FILL; // Generated
         gridData4.verticalSpan = 4; // Generated
         gridData4.verticalAlignment = GridData.BEGINNING; // Generated
-        GridData gridData3 = new GridData();
-        gridData3.horizontalAlignment = GridData.FILL; // Generated
-        gridData3.grabExcessHorizontalSpace = true; // Generated
-        gridData3.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData21 = new GridData();
-        gridData21.horizontalAlignment = GridData.FILL; // Generated
-        gridData21.grabExcessHorizontalSpace = true; // Generated
-        gridData21.verticalAlignment = GridData.CENTER; // Generated
         GridData gridData2 = new GridData();
         gridData2.horizontalAlignment = GridData.FILL; // Generated
         gridData2.verticalAlignment = GridData.BEGINNING; // Generated
@@ -141,13 +133,15 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
         group = new Group(this, SWT.NONE);
         group.setText("Releases"); // Generated
         group.setLayout(gridLayout); // Generated
-        label = new Label(group, SWT.NONE);
-        label.setText("Title:"); // Generated
-        tTitle = new Text(group, SWT.BORDER);
-        tTitle.setLayoutData(gridData21); // Generated
-        tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+        label1 = new Label(group, SWT.NONE);
+        label1.setLayoutData(new GridData());
+        label1.setText("ID:"); // Generated
+        GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        tID = new Text(group, SWT.BORDER);
+        tID.setLayoutData(gridData3); // Generated
+        tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                Utils.setBackground(tTitle, true);
+                Utils.setBackground(tID, true);
                 setApplyStatus();
             }
         });
@@ -162,21 +156,23 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
                 applyRelease();
             }
         });
-        label1 = new Label(group, SWT.NONE);
-        label1.setText("ID:"); // Generated
-        tID = new Text(group, SWT.BORDER);
-        tID.setLayoutData(gridData3); // Generated
-        tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+        label = new Label(group, SWT.NONE);
+        label.setLayoutData(new GridData());
+        label.setText("Title:"); // Generated
+        GridData gridData21 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        tTitle = new Text(group, SWT.BORDER);
+        tTitle.setLayoutData(gridData21); // Generated
+        tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                Utils.setBackground(tID, true);
+                Utils.setBackground(tTitle, false);
                 setApplyStatus();
             }
         });
         label3 = new Label(group, SWT.NONE);
         label3.setText("Modified:"); // Generated
         createModified();
-        Label filler1 = new Label(group, SWT.NONE);
-        Label filler2 = new Label(group, SWT.NONE);
+        new Label(group, SWT.NONE);
+        new Label(group, SWT.NONE);
         Label filler = new Label(group, SWT.NONE);
         createComposite();
         createGroup1();
@@ -218,7 +214,7 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
                 listener.newRelease();
                 setReleaseStatus(true);
                 tReleases.deselectAll();
-                tTitle.setFocus();
+                tID.setFocus();
             }
         });
         bRemove = new Button(group, SWT.NONE);
@@ -489,7 +485,7 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
 
             tID.setText(listener.getID());
             listener.fillAuthors(tAuthors);
-            tTitle.setFocus();
+            tID.setFocus();
         }
     }
 
@@ -516,7 +512,7 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
 
 
     private void setApplyStatus() {
-        boolean enabled = tTitle.getText().length() > 0 && tID.getText().length() > 0 && tAuthors.getItemCount() > 0;
+        boolean enabled =   tID.getText().length() > 0 && tAuthors.getItemCount() > 0;
         bApply.setEnabled(enabled);
     }
 

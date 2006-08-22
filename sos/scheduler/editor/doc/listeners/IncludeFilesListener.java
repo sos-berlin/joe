@@ -27,7 +27,7 @@ public class IncludeFilesListener {
 
     public String[] getIncludes() {
         if (_parent != null) {
-            List includeList = _parent.getChildren("include");
+            List includeList = _parent.getChildren("include", _dom.getNamespace());
             ArrayList files = new ArrayList();
             for (Iterator it = includeList.iterator(); it.hasNext();) {
                 Element include = (Element) it.next();
@@ -42,7 +42,7 @@ public class IncludeFilesListener {
 
     public void saveIncludes(String[] includes) {
         if (_changes) {
-            _parent.removeChildren("include");
+            _parent.removeChildren("include", _dom.getNamespace());
             for (int i = 0; i < includes.length; i++) {
                 _parent.addContent(new Element("include", _dom.getNamespace()).setAttribute("file", includes[i]));
             }

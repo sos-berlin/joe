@@ -30,7 +30,7 @@ public class ScriptListener {
 
     public final static int      COM         = 5;
 
-    public final static String[] _languages  = { "", "java", "javascript", "perlScript", "VBScript", "" };
+    public final static String[] _languages  = { "", "java", "javascript", "perlScript", "vbscript", "" };
 
 
     public ScriptListener(DocumentationDom dom, Element parent, int type) {
@@ -152,7 +152,7 @@ public class ScriptListener {
 
     public void setComClass(String com) {
         setScript();
-        Utils.setAttribute("com_class", com, "", _script);
+        Utils.setAttribute("com_class", com, "", _script, _dom);
     }
 
 
@@ -163,7 +163,7 @@ public class ScriptListener {
 
     public void setJavaClass(String java) {
         setScript();
-        Utils.setAttribute("java_class", java, "", _script);
+        Utils.setAttribute("java_class", java, "", _script, _dom);
     }
 
 

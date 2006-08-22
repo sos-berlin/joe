@@ -96,7 +96,7 @@ public class ReleasesListener {
         Utils.setAttribute("id", id, _release);
         Utils.setAttribute("created", created, _release);
         Utils.setAttribute("modified", modified, _release);
-        Utils.setElement("title", title, true, _release, _dom.getNamespace(), _dom);
+        Utils.setElement("title", title, false, _release, _dom.getNamespace(), _dom);
 
         _release.removeChildren("author", _dom.getNamespace());
         for (int i = 0; i < authors.length; i++) {

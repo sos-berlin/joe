@@ -1,7 +1,10 @@
 package sos.scheduler.editor.doc.listeners;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.program.Program;
 import org.jdom.Element;
 
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 
@@ -20,7 +23,25 @@ public class JobListener {
         _job = job;
     }
 
+    public void preview() {
+      Element element = _dom.getRoot();
+      if (element != null) {
+          try {
+              String filename = _dom.transform(element);
 
+              Program prog = Program.findProgram("html");
+              if (prog != null)
+                  prog.execute(filename);
+              else {
+                  Runtime.getRuntime().exec(Options.getBrowserExec(filename, null));
+              }
+          } catch (Exception ex) {
+              ex.printStackTrace();
+              //message("Error: " + ex.getMessage(), SWT.ICON_ERROR | SWT.OK);
+          }
+       }
+    }
+      
     public String getName() {
         return Utils.getAttributeValue("name", _job);
     }
@@ -65,11 +86,12 @@ public class JobListener {
 
 
     public String getTasks() {
-        return Utils.getAttributeValue("tasks", _job);
-    }
+      return Utils.getAttributeValue("tasks", _job);
+  }
 
 
     public void setTasks(String tasks) {
         Utils.setAttribute("tasks", tasks, _job, _dom);
     }
+
 }

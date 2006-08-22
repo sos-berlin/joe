@@ -58,6 +58,7 @@ public class IncludeFilesForm extends Composite implements IUnsaved, IUpdateLang
         createGroup();
         setSize(new Point(600, 365));
         setLayout(new FillLayout());
+       
     }
 
 

@@ -209,7 +209,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         exitLabel.setText("Exit  codes");
 
         cExitcode = new Combo(gMain, SWT.NONE);
-        cExitcode.setItems(new String[] { "success", "error" });
+        cExitcode.setItems(new String[] {"error", "success", "SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT", "SIGIOT", "SIGBUS", "SIGFPE", "SIGKILL", "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGPIPE", "SIGALRM", "SIGTERM", "SIGSTKFLT", "SIGCHLD", "SIGCONT", "SIGSTOP", "SIGTSTP", "SIGTTIN", "SIGTTOU", "SIGURG", "SIGXCPU", "SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH", "SIGPOLL", "SIGIO", "SIGPWR", "SIGSYS"});
         cExitcode.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
                 listener.setExitCode(cExitcode.getText(), updateTree);

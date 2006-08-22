@@ -6,10 +6,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
@@ -74,7 +78,7 @@ public class DocumentationForm extends Composite implements IEditor, IDocumentat
         sashForm = new SashForm(this, SWT.NONE);
         createGroup();
         createDocMainForm();
-        sashForm.setWeights(new int[] { 176, 698 });
+        sashForm.setWeights(new int[] { 66, 264 });
         Options.loadSash("documentation", sashForm);
     }
 
@@ -111,7 +115,7 @@ public class DocumentationForm extends Composite implements IEditor, IDocumentat
      */
     private void createDocMainForm() {
         docMainForm = new Composite(sashForm, SWT.NONE);
-        docMainForm.setLayout(new FillLayout()); // Generated
+        docMainForm.setLayout(new GridLayout());
     }
 
 
