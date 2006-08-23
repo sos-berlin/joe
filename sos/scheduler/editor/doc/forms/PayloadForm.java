@@ -60,19 +60,19 @@ public class PayloadForm extends Composite implements IUnsaved, IUpdateLanguage 
         gridLayout.numColumns = 2; // Generated
         group = new Group(this, SWT.NONE);
         bNotes = new Button(group, SWT.NONE);
-        bNotes.setText("Payload Notes..."); // Generated
+        bNotes.setText("Payload Note..."); // Generated
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = Messages.getTooltip("doc.note.text.payload");
-                DocumentationForm.openNoteDialog(dom, listener.getPayloadElement(), "note", tip, true);
+                DocumentationForm.openNoteDialog(dom, listener.getPayloadElement(), "note", tip, true,"Payload Note");
             }
         });
         bDocNotes = new Button(group, SWT.NONE);
-        bDocNotes.setText("Payload Document Notes..."); // Generated
+        bDocNotes.setText("Payload Document Note..."); // Generated
         bDocNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = Messages.getTooltip("doc.note.text.payload.document");
-                DocumentationForm.openNoteDialog(dom, listener.getDocumentationElement(), "note", tip, true);
+                DocumentationForm.openNoteDialog(dom, listener.getDocumentationElement(), "note", tip, true,"Payload Document Note");
             }
         });
         createFParams();

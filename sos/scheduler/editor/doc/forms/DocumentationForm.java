@@ -115,7 +115,7 @@ public class DocumentationForm extends Composite implements IEditor, IDocumentat
      */
     private void createDocMainForm() {
         docMainForm = new Composite(sashForm, SWT.NONE);
-        docMainForm.setLayout(new GridLayout());
+        docMainForm.setLayout(new FillLayout());
     }
 
 
@@ -205,28 +205,29 @@ public class DocumentationForm extends Composite implements IEditor, IDocumentat
     }
 
 
-    public static void openNoteDialog(DocumentationDom dom, Element parentElement, String name, boolean optional) {
-        openNoteDialog(dom, parentElement, name, null, optional, true);
+    public static void openNoteDialog(DocumentationDom dom, Element parentElement, String name, boolean optional,String title) {
+        openNoteDialog(dom, parentElement, name, null, optional, true,title);
     }
 
 
     public static void openNoteDialog(DocumentationDom dom, Element parentElement, String name, boolean optional,
-            boolean changeStatus) {
-        openNoteDialog(dom, parentElement, name, null, optional, changeStatus);
+            boolean changeStatus,String title) {
+        openNoteDialog(dom, parentElement, name, null, optional, changeStatus,title);
     }
 
 
     public static void openNoteDialog(DocumentationDom dom, Element parentElement, String name, String tooltip,
-            boolean optional) {
-        openNoteDialog(dom, parentElement, name, tooltip, optional, true);
+            boolean optional,String title) {
+        openNoteDialog(dom, parentElement, name, tooltip, optional, true,title);
     }
 
 
     public static void openNoteDialog(DocumentationDom dom, Element parentElement, String name, String tooltip,
-            boolean optional, boolean changeStatus) {
-        NoteDialog dialog = new NoteDialog(MainWindow.getSShell());
-        dialog.setText("Notes Editor");
+            boolean optional, boolean changeStatus, String title) {
+        NoteDialog dialog = new NoteDialog(MainWindow.getSShell(),title);
+        dialog.setText("Note Editor");
         dialog.setTooltip(tooltip);
+        
         dialog.setParams(dom, parentElement, name, optional, changeStatus);
         dialog.open();
     }

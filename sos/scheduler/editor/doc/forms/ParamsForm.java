@@ -148,11 +148,11 @@ public class ParamsForm extends Composite implements IUpdateLanguage, IUnsaved {
         label1.setText("Reference:"); // Generated
         createCParamsReference();
         bParamsNotes = new Button(group, SWT.NONE);
-        bParamsNotes.setText("Parameter Notes..."); // Generated
+        bParamsNotes.setText("Parameter Note..."); // Generated
         bParamsNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = Messages.getTooltip("doc.note.text.params");
-                DocumentationForm.openNoteDialog(dom, listener.getParamsElement(), "note", tip, true);
+                DocumentationForm.openNoteDialog(dom, listener.getParamsElement(), "note", tip, true,"Parameter Note");
             }
         });
         createGroup1();
@@ -284,13 +284,13 @@ public class ParamsForm extends Composite implements IUpdateLanguage, IUnsaved {
             }
         });
         bNotes = new Button(group1, SWT.NONE);
-        bNotes.setText("Notes..."); // Generated
+        bNotes.setText("Note..."); // Generated
         bNotes.setLayoutData(gridData14); // Generated
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = Messages.getTooltip("doc.note.text.param");
                 DocumentationForm.openNoteDialog(dom, listener.getParamElement(), "note", tip, true, !listener
-                        .isNewParam());
+                        .isNewParam(),"Parameter Note");
             }
         });
         label7 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -350,6 +350,7 @@ public class ParamsForm extends Composite implements IUpdateLanguage, IUnsaved {
                     bApply.setEnabled(false);
                     bRemove.setEnabled(false);
                     tParams.deselectAll();
+                    listener.fillParams(tParams);
 
                     DocumentationListener.setCheckbox(cParamsReference, listener.getReferences(listener.getID()),
                             listener.getReference());

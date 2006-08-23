@@ -139,7 +139,7 @@ public class ApplicationsForm extends Composite implements IUnsaved, IUpdateLang
             }
         });
         bApply = new Button(group, SWT.NONE);
-        bApply.setText("Apply"); // Generated
+        bApply.setText("Apply Application"); // Generated
         bApply.setLayoutData(gridData2); // Generated
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {

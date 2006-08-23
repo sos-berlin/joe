@@ -155,7 +155,7 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
         group.setLayout(gridLayout2); // Generated
         group.setText("Files"); // Generated
         bNotes = new Button(group, SWT.NONE);
-        bNotes.setText("Notes..."); // Generated
+        bNotes.setText("Note..."); // Generated
         bNotes.setLayoutData(gridData11); // Generated
         label11 = new Label(group, SWT.NONE);
         label11.setText("ID:"); // Generated
@@ -170,7 +170,7 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = Messages.getTooltip("doc.note.text.files");
                 DocumentationForm.openNoteDialog(dom, listener.getFileElement(), "note", tip, true, !listener
-                        .isNewFile());
+                        .isNewFile(),"File Note");
             }
         });
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);

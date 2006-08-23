@@ -30,7 +30,7 @@ public class ScriptListener {
 
     public final static int      COM         = 5;
 
-    public final static String[] _languages  = { "", "java", "javascript", "perlScript", "vbscript", "" };
+    public final static String[] _languages  = { "", "java", "javascript", "perlscript", "vbscript", "" };
 
 
     public ScriptListener(DocumentationDom dom, Element parent, int type) {

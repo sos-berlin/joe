@@ -180,12 +180,12 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
         label2.setText("Type:"); // Generated
         createCType();
         bNotes = new Button(group1, SWT.NONE);
-        bNotes.setText("Notes..."); // Generated
+        bNotes.setText("Note..."); // Generated
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = Messages.getTooltip("doc.note.text.databases");
                 DocumentationForm.openNoteDialog(dom, listener.getResource(), "note", tip, true, !listener
-                        .isNewDatabase());
+                        .isNewDatabase(),"Resource Note");
             }
         });
         bApplyRes = new Button(group1, SWT.NONE);

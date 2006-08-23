@@ -118,12 +118,12 @@ public class ConnectionsForm extends Composite implements IUnsaved, IUpdateLangu
             }
         });
         bNotes = new Button(group, SWT.NONE);
-        bNotes.setText("Connection Notes..."); // Generated
+        bNotes.setText("Connection Note..."); // Generated
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = Messages.getTooltip("doc.note.text.connection");
                 DocumentationForm.openNoteDialog(dom, listener.getConnectionElement(), "note", tip, true, !listener
-                        .isNewConnection());
+                        .isNewConnection(),"Connection Note");
             }
         });
         bApply = new Button(group, SWT.NONE);

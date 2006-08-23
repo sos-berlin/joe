@@ -124,7 +124,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
         		listener.preview();
         	}
         });
-        vorschauButton.setText("Vorschau");
+        vorschauButton.setText("Preview");
         createCTasks();
     }
 

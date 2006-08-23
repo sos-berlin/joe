@@ -157,12 +157,12 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
         label2.setText("Unit:"); // Generated
         createCbMemory();
         bMemoryNotes = new Button(group1, SWT.NONE);
-        bMemoryNotes.setText("Memory Notes..."); // Generated
+        bMemoryNotes.setText("Memory Note..."); // Generated
         bMemoryNotes.setLayoutData(gridData10); // Generated
         bMemoryNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = Messages.getTooltip("doc.note.text.memory");
-                DocumentationForm.openNoteDialog(dom, listener.getMemoryElement(), "note", tip, true);
+                DocumentationForm.openNoteDialog(dom, listener.getMemoryElement(), "note", tip, true,"Memory Note");
             }
         });
     }
@@ -211,12 +211,12 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
         label3.setText("Unit:"); // Generated
         createCbSpace();
         bSpaceNotes = new Button(group2, SWT.NONE);
-        bSpaceNotes.setText("Space Notes..."); // Generated
+        bSpaceNotes.setText("Space Note..."); // Generated
         bSpaceNotes.setLayoutData(gridData6); // Generated
         bSpaceNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = Messages.getTooltip("doc.note.text.space");
-                DocumentationForm.openNoteDialog(dom, listener.getSpaceElement(), "note", tip, true);
+                DocumentationForm.openNoteDialog(dom, listener.getSpaceElement(), "note", tip, true,"Space Note");
             }
         });
     }

@@ -240,12 +240,12 @@ public class DocumentationListener implements IUpdateTree {
                         break;
                     case Editor.DOC_DOCUMENTATION:
                         NoteForm doc = new NoteForm(c, SWT.NONE, Editor.DOC_DOCUMENTATION);
-                        doc.setTitle("Documentation");
+                        doc.setTitle("Note");
                         doc.setParams(_dom, data.getElement(), "documentation", false);
                         break;
                     case Editor.DOC_CONFIGURATION:
                         NoteForm note = new NoteForm(c, SWT.NONE, Editor.DOC_CONFIGURATION);
-                        note.setTitle("Note");
+                        note.setTitle("Configuration Note");
                         note.setParams(_dom, data.getElement(), "note", true);
                         break;
                     case Editor.DOC_PARAMS:

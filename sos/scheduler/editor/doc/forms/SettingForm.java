@@ -183,7 +183,7 @@ public class SettingForm extends Composite implements IUnsaved, IUpdateLanguage 
         label10.setText("Required:"); // Generated
         cRequired = new Button(group1, SWT.CHECK);
         bNotes = new Button(group1, SWT.NONE);
-        bNotes.setText("Notes..."); // Generated
+        bNotes.setText("Note..."); // Generated
         bNotes.setLayoutData(gridData14); // Generated
         tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -199,7 +199,7 @@ public class SettingForm extends Composite implements IUnsaved, IUpdateLanguage 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = Messages.getTooltip("doc.note.text.setting");
                 DocumentationForm.openNoteDialog(dom, listener.getSettingElement(), "note", tip, true, !listener
-                        .isNewSetting());
+                        .isNewSetting(),"Settings Note");
             }
 
         });

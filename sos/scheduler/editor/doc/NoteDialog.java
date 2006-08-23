@@ -26,13 +26,13 @@ public class NoteDialog extends Dialog {
     private NoteForm _fNote      = null;
 
 
-    public NoteDialog(Shell parent) {
+    public NoteDialog(Shell parent, String title) {
         super(parent);
-        init();
+        init(title);
     }
 
 
-    private void init() {
+    private void init(String title) {
         Shell parent = getParent();
         _shell = new Shell(parent, _shellStyle);
         _shell.setVisible(false);
@@ -56,15 +56,16 @@ public class NoteDialog extends Dialog {
             return;
         }
 
-        setDialog();
+        setDialog(title);
     }
 
 
-    private void setDialog() {
+    private void setDialog(String title) {
         final FillLayout fillLayout = new FillLayout();
         _shell.setLayout(fillLayout);
 
         _fNote = new NoteForm(_shell, SWT.NONE);
+        _fNote.setTitle(title);
     }
 
 

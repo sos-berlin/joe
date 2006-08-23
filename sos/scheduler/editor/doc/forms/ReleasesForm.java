@@ -372,12 +372,12 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
         composite.setLayoutData(gridData14); // Generated
         composite.setLayout(fillLayout); // Generated
         bNotes = new Button(composite, SWT.NONE);
-        bNotes.setText("Notes..."); // Generated
+        bNotes.setText("Note..."); // Generated
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = Messages.getTooltip("doc.note.text.releases");
                 DocumentationForm.openNoteDialog(dom, listener.getRelease(), "note", tip, true, !listener
-                        .isNewRelease());
+                        .isNewRelease(),"Release Note");
             }
         });
         bChanges = new Button(composite, SWT.NONE);
@@ -386,7 +386,7 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = Messages.getTooltip("doc.note.text.changes");
                 DocumentationForm.openNoteDialog(dom, listener.getRelease(), "changes", tip, true, !listener
-                        .isNewRelease());
+                        .isNewRelease(),"Changes");
             }
         });
     }

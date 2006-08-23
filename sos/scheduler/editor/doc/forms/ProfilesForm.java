@@ -118,12 +118,12 @@ public class ProfilesForm extends Composite implements IUnsaved, IUpdateLanguage
             }
         });
         bNotes = new Button(group, SWT.NONE);
-        bNotes.setText("Profile Notes..."); // Generated
+        bNotes.setText("Profile Note..."); // Generated
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = Messages.getTooltip("doc.note.text.profile");
                 DocumentationForm.openNoteDialog(dom, listener.getProfileElement(), "note", tip, true, !listener
-                        .isNewProfile());
+                        .isNewProfile(),"Profile Note");
             }
         });
         bApply = new Button(group, SWT.NONE);

@@ -36,7 +36,7 @@ public class DocumentationDom extends DomParser {
 
     private static final String[] _paramsOrder        = { "note", "param" };
 
-    private static final String[] _payloadOrder       = { "note", "params", "documentation" };
+    private static final String[] _payloadOrder       = { "note", "params", "document" };
 
     private static final String[] _settingsOrder      = { "note", "profile", "connection" };
 
