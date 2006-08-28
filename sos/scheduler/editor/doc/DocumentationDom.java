@@ -6,12 +6,14 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.SAXOutputter;
 import org.jdom.output.XMLOutputter;
@@ -127,9 +129,11 @@ public class DocumentationDom extends DomParser {
         XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
         out.output(getDoc(), stream);
         stream.close();
+    	  String s = stream.toString();
 
         try {
-            getBuilder(true).build(new StringReader(stream.toString()));
+        	  s = s.replaceAll("<pre space=\"preserve\">","<pre>");
+            getBuilder(true).build(new StringReader(s));
         } catch (JDOMException e) {
             int res = MainWindow.message(Messages.getString("MainListener.outputInvalid",
                     new String[] { e.getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO);
@@ -139,7 +143,7 @@ public class DocumentationDom extends DomParser {
 
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
 
-        writer.write(stream.toString());
+        writer.write(s);
         writer.close();
 
         setFilename(filename);
@@ -195,25 +199,23 @@ public class DocumentationDom extends DomParser {
 
 
     public Element noteAsDom(String xml) throws JDOMException, IOException {
-        StringReader reader = new StringReader(xml);
-        Element root = getBuilder(false).build(reader).getRootElement();
-        List list = new ArrayList(root.getContent());
-        root.removeContent();
-        Element div = root.getChild("div", getNamespace("xhtml"));
-        if (div == null)
-            div = new Element("div", getNamespace("xhtml")).addContent(list);
+    	  xml = xml.replaceAll("<pre space=\"preserve\">","<pre>");
+         
+    	  StringReader reader = new StringReader(xml);
+        Document doc = getBuilder(false).build(reader);
+
+        Element root = doc.getRootElement();
+        doc.removeContent();
+        doc.addContent(((Element)getRoot().clone()).addContent(root));
+        
+        Element div = doc.getRootElement().getChild("div", getNamespace("xhtml"));
+        doc.getRootElement().removeContent();
         return div;
     }
 
 
     public String noteAsStr(Element element) {
-    	Element div = element.getChild("div", getNamespace("xhtml"));
-    	if (div != null){
-    	  return div.getText();
-    	}else {
-    		return "";
-    	}
-    	/*StringWriter stream = new StringWriter();
+        StringWriter stream = new StringWriter();
         XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
         try {
             out.output(element.getContent(), stream);
@@ -221,8 +223,15 @@ public class DocumentationDom extends DomParser {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return stream.toString().trim();
-        */
+        
+        String str = stream.toString().trim();
+        if(str.startsWith("<div")) {
+            str = str.replaceFirst("\\A<\\s*div\\s*xmlns\\s*=\\s*\"[a-zA-Z0-9/:\\.]*\"\\s*>\\s*", "");
+            str = str.replaceFirst("\\s*<\\s*/\\s*div\\s*>\\Z", "");
+        }
+        str = str.replaceAll("<pre space=\"preserve\">","<pre>");
+        return str;
+        
     }
 
 }

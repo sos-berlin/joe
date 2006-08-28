@@ -165,7 +165,12 @@ public class MainWindow {
         pHelp.setAccelerator(SWT.F1);
         pHelp.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                listener.openHelp(container.getCurrentEditor().getHelpKey());
+            	  if (container.getCurrentEditor() != null) {
+                  listener.openHelp(container.getCurrentEditor().getHelpKey());
+            	  }else {
+            	  	String msg = "Help is available after documentation or configuration is opened";
+            	  	MainWindow.message(msg, SWT.ICON_INFORMATION);
+            	  }
             }
 
 

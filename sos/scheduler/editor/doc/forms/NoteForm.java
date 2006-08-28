@@ -125,7 +125,7 @@ public class NoteForm extends Composite implements IUnsaved, IUpdateLanguage {
         bApply.setLayoutData(gridData11); // Generated
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (isUnsaved())
+              if (isUnsaved())
                     apply();
                 bApply.setEnabled(false);
             }
