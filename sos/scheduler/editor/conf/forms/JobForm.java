@@ -213,22 +213,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes group1
      */
     private void createGroup1() {
-        GridData gridData71 = new org.eclipse.swt.layout.GridData();
-        gridData71.horizontalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-        gridData71.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-        GridData gridData61 = new org.eclipse.swt.layout.GridData();
-        gridData61.horizontalSpan = 3;
-        gridData61.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData61.grabExcessVerticalSpace = true;
-        gridData61.grabExcessHorizontalSpace = true;
-        gridData61.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        GridData gridData3 = new org.eclipse.swt.layout.GridData();
-        gridData3.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData3.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData1 = new org.eclipse.swt.layout.GridData();
-        gridData1.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData1.grabExcessHorizontalSpace = true;
-        gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
+        GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 6;
@@ -256,9 +241,10 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
         new Label(gMain, SWT.NONE);
-        new Label(gMain, SWT.NONE);
         label3 = new Label(gMain, SWT.NONE);
+        label3.setLayoutData(new GridData());
         label3.setText("Scheduler ID:");
+        GridData gridData3 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
         tSpoolerID = new Text(gMain, SWT.BORDER);
         tSpoolerID.setLayoutData(gridData3);
         tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -267,186 +253,9 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
         label9 = new Label(gMain, SWT.NONE);
+        label9.setLayoutData(new GridData());
         label9.setText("Process Class:");
-        createCombo();
-        new Label(gMain, SWT.NONE);
-        new Label(gMain, SWT.NONE);
-        label7 = new Label(gMain, SWT.NONE);
-        label7.setText("On Order:");
-        createComposite();
-        new Label(gMain, SWT.NONE);
-        new Label(gMain, SWT.NONE);
-        label17 = new Label(gMain, SWT.NONE);
-        label17.setText("Priority:");
-
-        sPriority = new Combo(gMain, SWT.NONE);
-        sPriority.setItems(new String[] { "idle", "below_normal", "normal", "above_normal", "high" });
-        sPriority.addVerifyListener(new VerifyListener() {
-            public void verifyText(final VerifyEvent e) {
-                e.doit = (Utils.isOnlyDigits(e.text) || e.text.equals("idle") || e.text.equals("below_normal")
-                        || e.text.equals("normal") || e.text.equals("above_normal") || e.text.equals("high"));
-
-            }
-        });
-        final GridData gridData_1 = new GridData(80, SWT.DEFAULT);
-        gridData_1.verticalIndent = -1;
-        sPriority.setLayoutData(gridData_1);
-        sPriority.addModifyListener(new ModifyListener() {
-
-            public void modifyText(final ModifyEvent e) {
-                Utils.setBackground(-20, 20, sPriority);
-                listener.setPriority(sPriority.getText());
-            }
-        });
-
-        label15 = new Label(gMain, SWT.NONE);
-        label15.setText("Tasks:");
-
-        sTasks = new Text(gMain, SWT.BORDER);
-        sTasks.addVerifyListener(new VerifyListener() {
-            public void verifyText(final VerifyEvent e) {
-                e.doit = Utils.isOnlyDigits(e.text);
-            }
-        });
-        sTasks.addSelectionListener(new SelectionAdapter() {
-            public void widgetDefaultSelected(final SelectionEvent e) {
-            }
-        });
-        sTasks.addModifyListener(new ModifyListener() {
-
-            public void modifyText(final ModifyEvent e) {
-                listener.setTasks(sTasks.getText());
-            }
-        });
-
-        sTasks.setLayoutData(new GridData(75, SWT.DEFAULT));
-
-        final Label force_idle_timeoutLabel = new Label(gMain, SWT.NONE);
-        force_idle_timeoutLabel.setLayoutData(new GridData());
-        force_idle_timeoutLabel.setText("Force Idle Timeout");
-
-        bForceIdletimeout = new Button(gMain, SWT.CHECK);
-        bForceIdletimeout.setLayoutData(new GridData());
-        bForceIdletimeout.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(final SelectionEvent e) {
-                listener.setForceIdletimeout(bForceIdletimeout.getSelection());
-            }
-        });
-        label13 = new Label(gMain, SWT.NONE);
-        label13.setText("Timeout:");
-
-        sTimeout = new Text(gMain, SWT.BORDER);
-        sTimeout.addVerifyListener(new VerifyListener() {
-            public void verifyText(final VerifyEvent e) {
-                e.doit = Utils.isOnlyDigits(e.text);
-            }
-        });
-
-        sTimeout.addModifyListener(new ModifyListener() {
-            public void modifyText(final ModifyEvent e) {
-                listener.setTimeout(sTimeout.getText());
-            }
-        });
-        sTimeout.setLayoutData(new GridData(75, SWT.DEFAULT));
-        label11 = new Label(gMain, SWT.NONE);
-        label11.setText("Idle Timeout:");
-
-        sIdleTimeout = new Text(gMain, SWT.BORDER);
-
-        sIdleTimeout.addVerifyListener(new VerifyListener() {
-            public void verifyText(final VerifyEvent e) {
-                e.doit = Utils.isOnlyDigits(e.text);
-
-            }
-        });
-        sIdleTimeout.addModifyListener(new ModifyListener() {
-            public void modifyText(final ModifyEvent e) {
-                listener.setIdleTimeout(sIdleTimeout.getText());
-            }
-        });
-
-        sIdleTimeout.setLayoutData(new GridData(75, SWT.DEFAULT));
-
-        final Label stop_on_errorLabel = new Label(gMain, SWT.NONE);
-        stop_on_errorLabel.setText("Stop On Error");
-
-        bStopOnError = new Button(gMain, SWT.CHECK);
-        bStopOnError.setSelection(true);
-        bStopOnError.addSelectionListener(new SelectionAdapter() {
-        	public void widgetSelected(final SelectionEvent e) {
-        	  listener.setStopOnError(bStopOnError.getSelection());
-        	}
-        });
-
-        final Label minTaskLabel = new Label(gMain, SWT.NONE);
-        minTaskLabel.setText("Min Tasks");
-
-        tMintasks = new Text(gMain, SWT.BORDER);
-        tMintasks.addVerifyListener(new VerifyListener() {
-        	public void verifyText(final VerifyEvent e) {
-            e.doit = Utils.isOnlyDigits(e.text);
-        	}
-        });
-        tMintasks.addModifyListener(new ModifyListener() {
-            public void modifyText(final ModifyEvent e) {
-                listener.setMintasks(tMintasks.getText());
-            }
-        });
-        final GridData gridData_2 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
-        gridData_2.widthHint = 75;
-        tMintasks.setLayoutData(gridData_2);
-
-        final Label ignore_signalLabel = new Label(gMain, SWT.NONE);
-        ignore_signalLabel.setLayoutData(new GridData());
-        ignore_signalLabel.setText("Ignore Signals");
-
-        tIgnoreSignals = new Text(gMain, SWT.BORDER);
-        tIgnoreSignals.addModifyListener(new ModifyListener() {
-        	public void modifyText(final ModifyEvent e) {
-        		listener.setIgnoreSignal(tIgnoreSignals.getText());
-        	}
-        });
-        tIgnoreSignals.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-
-        final Button addButton = new Button(gMain, SWT.NONE);
-        addButton.addSelectionListener(new SelectionAdapter() {
-        	public void widgetSelected(final SelectionEvent e) {
-        		if (tIgnoreSignals.getText().equals("")){
-      		      tIgnoreSignals.setText(cSignals.getText());
-        		}else {
-        		    tIgnoreSignals.setText( tIgnoreSignals.getText() + " " + cSignals.getText());
-        		}
-        	}
-        });
-        addButton.setLayoutData(new GridData(59, SWT.DEFAULT));
-        addButton.setText("<- Add <-");
-
-        cSignals = new Combo(gMain, SWT.NONE);
-        cSignals.setItems(new String[] {"error", "success", "SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT", "SIGIOT", "SIGBUS", "SIGFPE", "SIGKILL", "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGPIPE", "SIGALRM", "SIGTERM", "SIGSTKFLT", "SIGCHLD", "SIGCONT", "SIGSTOP", "SIGTSTP", "SIGTTIN", "SIGTTOU", "SIGURG", "SIGXCPU", "SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH", "SIGPOLL", "SIGIO", "SIGPWR", "SIGSYS."});
-        cSignals.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        label8 = new Label(gMain, SWT.NONE);
-        label8.setText("Comment:");
-        label8.setLayoutData(gridData71);
-        tComment = new Text(gMain, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
-        tComment.setLayoutData(gridData61);
-        tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
-        tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                listener.setComment(tComment.getText());
-            }
-        });
-        new Label(gMain, SWT.NONE);
-        new Label(gMain, SWT.NONE);
-    }
-
-
-    /**
-     * This method initializes combo
-     */
-    private void createCombo() {
-        GridData gridData4 = new org.eclipse.swt.layout.GridData();
-        gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
+        GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
         cProcessClass = new Combo(gMain, SWT.NONE);
         cProcessClass.setLayoutData(gridData4);
         cProcessClass.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -454,15 +263,12 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
                 listener.setProcessClass(cProcessClass.getText());
             }
         });
-    }
-
-
-    /**
-     * This method initializes composite
-     */
-    private void createComposite() {
-        GridData gridData15 = new org.eclipse.swt.layout.GridData();
-        gridData15.horizontalSpan = 3;
+        createCombo();
+        new Label(gMain, SWT.NONE);
+        label7 = new Label(gMain, SWT.NONE);
+        label7.setLayoutData(new GridData());
+        label7.setText("On Order:");
+        GridData gridData15 = new GridData();
         cOrder = new Composite(gMain, SWT.NONE);
         cOrder.setLayout(new RowLayout());
         cOrder.setLayoutData(gridData15);
@@ -498,6 +304,201 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
                 listener.setOrder(!bOrderNo.getSelection());
             }
         });
+        createComposite();
+        new Label(gMain, SWT.NONE);
+        new Label(gMain, SWT.NONE);
+        new Label(gMain, SWT.NONE);
+        label17 = new Label(gMain, SWT.NONE);
+        label17.setLayoutData(new GridData());
+        label17.setText("Priority:");
+
+        sPriority = new Combo(gMain, SWT.NONE);
+        sPriority.setItems(new String[] { "idle", "below_normal", "normal", "above_normal", "high" });
+        sPriority.addVerifyListener(new VerifyListener() {
+            public void verifyText(final VerifyEvent e) {
+                e.doit = (Utils.isOnlyDigits(e.text) || e.text.equals("idle") || e.text.equals("below_normal")
+                        || e.text.equals("normal") || e.text.equals("above_normal") || e.text.equals("high"));
+
+            }
+        });
+        final GridData gridData_1 = new GridData(80, SWT.DEFAULT);
+        gridData_1.verticalIndent = -1;
+        sPriority.setLayoutData(gridData_1);
+        sPriority.addModifyListener(new ModifyListener() {
+
+            public void modifyText(final ModifyEvent e) {
+                Utils.setBackground(-20, 20, sPriority);
+                listener.setPriority(sPriority.getText());
+            }
+        });
+
+        label15 = new Label(gMain, SWT.NONE);
+        label15.setLayoutData(new GridData());
+        label15.setText("Tasks:");
+
+        sTasks = new Text(gMain, SWT.BORDER);
+        sTasks.addVerifyListener(new VerifyListener() {
+            public void verifyText(final VerifyEvent e) {
+                e.doit = Utils.isOnlyDigits(e.text);
+            }
+        });
+        sTasks.addSelectionListener(new SelectionAdapter() {
+            public void widgetDefaultSelected(final SelectionEvent e) {
+            }
+        });
+        sTasks.addModifyListener(new ModifyListener() {
+
+            public void modifyText(final ModifyEvent e) {
+                listener.setTasks(sTasks.getText());
+            }
+        });
+
+        sTasks.setLayoutData(new GridData(75, SWT.DEFAULT));
+
+        final Label force_idle_timeoutLabel = new Label(gMain, SWT.NONE);
+        force_idle_timeoutLabel.setLayoutData(new GridData());
+        force_idle_timeoutLabel.setText("Force Idle Timeout");
+
+        bForceIdletimeout = new Button(gMain, SWT.CHECK);
+        bForceIdletimeout.setLayoutData(new GridData());
+        bForceIdletimeout.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent e) {
+                listener.setForceIdletimeout(bForceIdletimeout.getSelection());
+            }
+        });
+        label13 = new Label(gMain, SWT.NONE);
+        label13.setLayoutData(new GridData());
+        label13.setText("Timeout:");
+
+        sTimeout = new Text(gMain, SWT.BORDER);
+        sTimeout.addVerifyListener(new VerifyListener() {
+            public void verifyText(final VerifyEvent e) {
+                e.doit = Utils.isOnlyDigits(e.text);
+            }
+        });
+
+        sTimeout.addModifyListener(new ModifyListener() {
+            public void modifyText(final ModifyEvent e) {
+                listener.setTimeout(sTimeout.getText());
+            }
+        });
+        sTimeout.setLayoutData(new GridData(75, SWT.DEFAULT));
+        label11 = new Label(gMain, SWT.NONE);
+        label11.setLayoutData(new GridData());
+        label11.setText("Idle Timeout:");
+
+        sIdleTimeout = new Text(gMain, SWT.BORDER);
+
+        sIdleTimeout.addVerifyListener(new VerifyListener() {
+            public void verifyText(final VerifyEvent e) {
+                e.doit = Utils.isOnlyDigits(e.text);
+
+            }
+        });
+        sIdleTimeout.addModifyListener(new ModifyListener() {
+            public void modifyText(final ModifyEvent e) {
+                listener.setIdleTimeout(sIdleTimeout.getText());
+            }
+        });
+
+        sIdleTimeout.setLayoutData(new GridData(75, SWT.DEFAULT));
+
+        final Label stop_on_errorLabel = new Label(gMain, SWT.NONE);
+        stop_on_errorLabel.setLayoutData(new GridData());
+        stop_on_errorLabel.setText("Stop On Error");
+
+        bStopOnError = new Button(gMain, SWT.CHECK);
+        bStopOnError.setLayoutData(new GridData());
+        bStopOnError.setSelection(true);
+        bStopOnError.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        	  listener.setStopOnError(bStopOnError.getSelection());
+        	}
+        });
+
+        final Label minTaskLabel = new Label(gMain, SWT.NONE);
+        minTaskLabel.setLayoutData(new GridData());
+        minTaskLabel.setText("Min Tasks");
+
+        tMintasks = new Text(gMain, SWT.BORDER);
+        tMintasks.addVerifyListener(new VerifyListener() {
+        	public void verifyText(final VerifyEvent e) {
+            e.doit = Utils.isOnlyDigits(e.text);
+        	}
+        });
+        tMintasks.addModifyListener(new ModifyListener() {
+            public void modifyText(final ModifyEvent e) {
+                listener.setMintasks(tMintasks.getText());
+            }
+        });
+        final GridData gridData_2 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+        gridData_2.widthHint = 75;
+        tMintasks.setLayoutData(gridData_2);
+        new Label(gMain, SWT.NONE);
+        new Label(gMain, SWT.NONE);
+        new Label(gMain, SWT.NONE);
+        new Label(gMain, SWT.NONE);
+
+        final Label ignore_signalLabel = new Label(gMain, SWT.NONE);
+        ignore_signalLabel.setLayoutData(new GridData());
+        ignore_signalLabel.setText("Ignore Signals");
+
+        tIgnoreSignals = new Text(gMain, SWT.BORDER);
+        tIgnoreSignals.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		listener.setIgnoreSignal(tIgnoreSignals.getText());
+        	}
+        });
+        tIgnoreSignals.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+        final Button addButton = new Button(gMain, SWT.NONE);
+        addButton.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		if (tIgnoreSignals.getText().equals("")){
+      		      tIgnoreSignals.setText(cSignals.getText());
+        		}else {
+        		    tIgnoreSignals.setText( tIgnoreSignals.getText() + " " + cSignals.getText());
+        		}
+        	}
+        });
+        addButton.setLayoutData(new GridData(59, SWT.DEFAULT));
+        addButton.setText("<- Add <-");
+
+        cSignals = new Combo(gMain, SWT.NONE);
+        cSignals.setItems(new String[] {"error", "success", "SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT", "SIGIOT", "SIGBUS", "SIGFPE", "SIGKILL", "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGPIPE", "SIGALRM", "SIGTERM", "SIGSTKFLT", "SIGCHLD", "SIGCONT", "SIGSTOP", "SIGTSTP", "SIGTTIN", "SIGTTOU", "SIGURG", "SIGXCPU", "SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH", "SIGPOLL", "SIGIO", "SIGPWR", "SIGSYS."});
+        cSignals.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        new Label(gMain, SWT.NONE);
+        new Label(gMain, SWT.NONE);
+        GridData gridData71 = new org.eclipse.swt.layout.GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
+        label8 = new Label(gMain, SWT.NONE);
+        label8.setText("Comment:");
+        label8.setLayoutData(gridData71);
+        GridData gridData61 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
+        tComment = new Text(gMain, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
+        tComment.setLayoutData(gridData61);
+        tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
+        tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+                listener.setComment(tComment.getText());
+            }
+        });
+        new Label(gMain, SWT.NONE);
+    }
+
+
+    /**
+     * This method initializes combo
+     */
+    private void createCombo() {
+        new Label(gMain, SWT.NONE);
+    }
+
+
+    /**
+     * This method initializes composite
+     */
+    private void createComposite() {
+        new Label(gMain, SWT.NONE);
     }
 
 
@@ -608,7 +609,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes table
      */
     private void createTable() {
-        GridData gridData9 = new org.eclipse.swt.layout.GridData(GridData.CENTER, GridData.FILL, true, true, 3, 1);
+        GridData gridData9 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 3, 1);
         gridData9.horizontalIndent = 32;
         new Label(gJobParameter, SWT.NONE);
         tParameter = new Table(gJobParameter, SWT.BORDER | SWT.FULL_SELECTION);

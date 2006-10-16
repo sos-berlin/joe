@@ -212,7 +212,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes table
      */
     private void createTable() {
-        GridData gridData = new org.eclipse.swt.layout.GridData(GridData.CENTER, GridData.FILL, true, true, 2, 3);
+        GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 2, 3);
         table = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
         table.setHeaderVisible(true);
         table.setLayoutData(gridData);

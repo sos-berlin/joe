@@ -3,10 +3,12 @@ package sos.scheduler.editor.conf.listeners;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
 import org.jdom.CDATA;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 
@@ -20,10 +22,12 @@ public class ScriptListener {
     public final static int      PERL        = 3;
 
     public final static int      VB_SCRIPT   = 4;
+    
+    public final static int      SHELL       = 5;
 
-    public final static int      COM         = 5;
+    public final static int      COM         = 6;
 
-    public final static String[] _languages  = { "", "java", "javascript", "perlScript", "VBScript", "" };
+    public final static String[] _languages  = { "", "java", "javascript", "perlScript", "VBScript", "shell","" };
 
     private SchedulerDom         _dom;
 
@@ -113,6 +117,7 @@ public class ScriptListener {
                 case PERL:
                 case JAVA_SCRIPT:
                 case VB_SCRIPT:
+                case SHELL:
                     _script.removeAttribute("com_class");
                     _script.removeAttribute("filename");
                     _script.removeAttribute("java_class");
@@ -228,7 +233,7 @@ public class ScriptListener {
 
 
     public void setSource(String source) {
-
+      try {
         if (_script != null) {
             // List mixed = _script.getContent();
             // Iterator it = mixed.iterator();
@@ -253,5 +258,13 @@ public class ScriptListener {
             _dom.setChanged(true);
         } else
             System.out.println("no script element defined!");
+    
+    }catch (org.jdom.IllegalDataException jdom) {
+     	 MainWindow.message(jdom.getMessage(), SWT.ICON_ERROR);
+       }
+    catch (Exception e) {
+   	 MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
+   	 System.out.println(e);
+     }
     }
 }

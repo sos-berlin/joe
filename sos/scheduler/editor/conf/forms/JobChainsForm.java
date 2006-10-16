@@ -2,14 +2,21 @@ package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+ 
 import org.eclipse.swt.widgets.Composite;
+ 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -17,6 +24,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import com.swtdesigner.SWTResourceManager;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
@@ -26,14 +34,32 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainsListener;
 
 public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguage {
-    private static final String GROUP_NODES_TITLE = "Chain Nodes";
-
+  private Button dumm2;
+  private Button bRemoveNode;
+  private Button bNewNode;
+  private Table tNodes;
+  private Button dummy1;
+  private static final String GROUP_NODES_TITLE = "Chain Nodes";
+  private static final String GROUP_FILEORDERSOURCE_TITLE = "File Order Sources";
+    private Button bApplyNode;
+    private Label label8;
+    private Button bEndNode;
+    private Button bFullNode;
+    private Composite cType;
+    private Label label7;
+    private Text tState;
+    private Label label6;
+    private Label label1;
+    private CCombo cJob;
+    private CCombo cErrorState;
+    private Label label9;
+    private CCombo cNextState;
+    private Group gFileOrderSource;
+ 
     private JobChainsListener   listener;
 
     private Group               group             = null;
-
-    private Composite           cChains           = null;
-
+  
     private Table               tChains           = null;
 
     private Button              bRemoveChain      = null;
@@ -46,53 +72,35 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 
     private Button              bVisible          = null;
 
-    private Group               gNodes            = null;
+ 
 
-    private Table               tNodes            = null;
-
-    private Button              bRemoveNode       = null;
-
-    private Label               label6            = null;
-
-    private Label               label7            = null;
-
-    private CCombo              cJob              = null;
-
-    private Label               label8            = null;
-
-    private CCombo              cNextState        = null;
-
-    private Label               label9            = null;
-
-    private CCombo              cErrorState       = null;
-
-    private Button              bApplyNode        = null;
-
-    private Composite           cType             = null;
-
-    private Button              bFullNode         = null;
-
-    private Button              bEndNode          = null;
-
-    private Label               label1            = null;
+ 
 
     private Button              bNewChain         = null;
-
-    private Button              bNewNode          = null;
-
-    private Text                tState            = null;
+  
 
     private Button              bApplyChain       = null;
-
-    private Label               label2            = null;
-
-    private Label               label3            = null;
-
-    private Label               label4            = null;
-
-    private Label               label5            = null;
-
-
+ 
+    
+    private SashForm            sashForm               = null;
+    private Group               gNodes                 = null;
+    private Button              bNewFileOrderSource    = null;
+    private Button              bRemoveFileOrderSource = null;
+    private Button              bApplyFileOrderSource  = null;
+    private Text                tDirectory             = null;
+    private Text                tDelayAfterError       = null;
+    private Text                tMax                   = null;
+    private Text                tNextState             = null;
+    private Text                tRegex                 = null;
+    private Text                tRepeat                = null;
+    private Table               tFileOrderSource       = null;
+    private Text                tMoveTo                = null;
+    private Button              bRemoveFile            = null;    
+    private Button              bFileSink              = null;
+    
+    
+    
+    
     public JobChainsForm(Composite parent, int style, SchedulerDom dom, Element config) {
         super(parent, style);
         listener = new JobChainsListener(dom, config);
@@ -100,6 +108,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         setToolTipText();
         fillChain(false, false);
         listener.fillChains(tChains);
+        sashForm.setWeights(new int[] { 20, 50, 30 });
     }
 
 
@@ -128,88 +137,23 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
      */
     private void createGroup() {
         group = new Group(this, SWT.NONE);
-        group.setText("Job Chains");
-        createComposite();
-        group.setLayout(new GridLayout());
-        createGroup1();
-    }
+         
+        final GridLayout gridLayout = new GridLayout();
+        group.setLayout(gridLayout);
 
-
-    /**
-     * This method initializes composite
-     */
-    private void createComposite() {
-        GridData gridData71 = new org.eclipse.swt.layout.GridData();
-        gridData71.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData71.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData61 = new org.eclipse.swt.layout.GridData();
-        gridData61.horizontalSpan = 5;
-        gridData61.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        gridData61.heightHint = 10;
-        gridData61.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        GridData gridData = new org.eclipse.swt.layout.GridData();
-        gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData16 = new org.eclipse.swt.layout.GridData();
-        gridData16.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData16.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-        GridData gridData10 = new org.eclipse.swt.layout.GridData();
-        gridData10.grabExcessHorizontalSpace = true;
-        gridData10.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        gridData10.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        GridData gridData8 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
-        gridData8.heightHint = 312;
-        GridData gridData3 = new org.eclipse.swt.layout.GridData();
-        gridData3.horizontalAlignment = org.eclipse.swt.layout.GridData.END;
-        gridData3.grabExcessHorizontalSpace = false;
-        gridData3.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData1 = new org.eclipse.swt.layout.GridData();
-        gridData1.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData1.verticalSpan = 1;
-        gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-        GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 5;
-        cChains = new Composite(group, SWT.NONE);
-        label = new Label(cChains, SWT.NONE);
+        sashForm = new SashForm(group, SWT.VERTICAL);
+        sashForm.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+        
+        final Group jobchainsGroup = new Group(sashForm, SWT.VERTICAL);
+        jobchainsGroup.setText("Job Chains");
+        final GridLayout gridLayout_2 = new GridLayout();
+        gridLayout_2.numColumns = 5;
+        jobchainsGroup.setLayout(gridLayout_2);
+        label = new Label(jobchainsGroup, SWT.NONE);
         label.setText("Chain Name:");
-        tName = new Text(cChains, SWT.BORDER);
-        tName.setLayoutData(gridData10);
-        bRecoverable = new Button(cChains, SWT.CHECK);
-        bRecoverable.setSelection(true);
-        bVisible = new Button(cChains, SWT.CHECK);
-        bVisible.setSelection(true);
-        bApplyChain = new Button(cChains, SWT.NONE);
-        label2 = new Label(cChains, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label2.setText("Label");
-        label2.setLayoutData(gridData61);
-        createTable();
-        cChains.setLayoutData(gridData8);
-        cChains.setLayout(gridLayout);
-        bNewChain = new Button(cChains, SWT.NONE);
-        bNewChain.setText("New Job &Chain");
-        bNewChain.setLayoutData(gridData16);
-        getShell().setDefaultButton(bNewChain);
-        label3 = new Label(cChains, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label3.setText("Label");
-        label3.setLayoutData(gridData71);
-        bNewChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                listener.newChain();
-                tChains.deselectAll();
-                fillChain(true, true);
-                bApplyChain.setEnabled(false);
-                tName.setFocus();
-            }
-        });
-        bRemoveChain = new Button(cChains, SWT.NONE);
-        bRemoveChain.setText("Remove Job Chain");
-        bRemoveChain.setEnabled(false);
-        bRemoveChain.setLayoutData(gridData1);
-        bRemoveChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                deleteChain();
-            }
-        });
+        tName = new Text(jobchainsGroup, SWT.BORDER);
+        tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+        tName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 boolean valid = listener.isValidChain(tName.getText());
@@ -222,363 +166,629 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
                 bApplyChain.setEnabled(valid && !tName.equals(""));
             }
         });
+        bRecoverable = new Button(jobchainsGroup, SWT.CHECK);
+        bRecoverable.setLayoutData(new GridData());
+        bRecoverable.setSelection(true);
         bRecoverable.setText("Orders Recoverable");
-        bRecoverable.setLayoutData(gridData3);
         bRecoverable.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 getShell().setDefaultButton(bApplyChain);
                 bApplyChain.setEnabled(true);
             }
         });
+        bVisible = new Button(jobchainsGroup, SWT.CHECK);
+        bVisible.setLayoutData(new GridData());
+        bVisible.setSelection(true);
         bVisible.setText("Visible");
-        bApplyChain.setText("A&pply Job Chain");
-        bApplyChain.setLayoutData(gridData);
-        bApplyChain.setEnabled(false);
-        bApplyChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                applyChain();
-            }
-        });
         bVisible.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 getShell().setDefaultButton(bApplyChain);
                 bApplyChain.setEnabled(true);
             }
         });
-    }
-
-
-    /**
-     * This method initializes table
-     */
-    private void createTable() {
-        GridData gridData2 = new org.eclipse.swt.layout.GridData();
-        gridData2.horizontalSpan = 4;
-        gridData2.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData2.grabExcessHorizontalSpace = true;
-        gridData2.grabExcessVerticalSpace = true;
-        gridData2.verticalSpan = 3;
-        gridData2.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        tChains = new Table(cChains, SWT.FULL_SELECTION | SWT.BORDER);
+        bApplyChain = new Button(jobchainsGroup, SWT.NONE);
+        bApplyChain.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+        bApplyChain.setText("A&pply Job Chain");
+        bApplyChain.setEnabled(false);
+        bApplyChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                applyChain();
+            }
+        });
+        tChains = new Table(jobchainsGroup, SWT.FULL_SELECTION | SWT.BORDER);
+        tChains.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2));
         tChains.setHeaderVisible(true);
-        tChains.setLayoutData(gridData2);
         tChains.setLinesVisible(true);
         tChains.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 if (tChains.getSelectionCount() > 0) {
                     listener.selectChain(tChains.getSelectionIndex());
                     fillChain(true, false);
+                    bRemoveNode.setEnabled(false);
+                    bRemoveFileOrderSource.setEnabled(false);
                     bApplyChain.setEnabled(false);
                 }
                 bRemoveChain.setEnabled(tChains.getSelectionCount() > 0);
             }
         });
-        TableColumn tableColumn = new TableColumn(tChains, SWT.NONE);
-        tableColumn.setWidth(200);
-        tableColumn.setText("Name");
+        TableColumn tableColumn_2 = new TableColumn(tChains, SWT.NONE);
+        tableColumn_2.setWidth(200);
+        tableColumn_2.setText("Name");
         TableColumn tableColumn1 = new TableColumn(tChains, SWT.NONE);
         tableColumn1.setWidth(150);
         tableColumn1.setText("Orders Recoverable");
         TableColumn tableColumn2 = new TableColumn(tChains, SWT.NONE);
         tableColumn2.setWidth(150);
         tableColumn2.setText("Visible");
-    }
+        bNewChain = new Button(jobchainsGroup, SWT.NONE);
+        bNewChain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        bNewChain.setText("New Job &Chain");
+        getShell().setDefaultButton(bNewChain);
+        bNewChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                listener.newChain();
+                tChains.deselectAll();
+                fillChain(true, true);
+                bApplyChain.setEnabled(false);
+                enableFileOrderSource(true);              
+                tName.setFocus();
+            }
+        });
+        bRemoveChain = new Button(jobchainsGroup, SWT.NONE);
+        bRemoveChain.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+        bRemoveChain.setText("Remove Job Chain");
+        bRemoveChain.setEnabled(false);
+        bRemoveChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                deleteChain();
+            }
+        });
+        new Label(jobchainsGroup, SWT.NONE);
+        new Label(jobchainsGroup, SWT.NONE);
+        new Label(jobchainsGroup, SWT.NONE);
+        new Label(jobchainsGroup, SWT.NONE);
 
+        dummy1 = new Button(jobchainsGroup, SWT.NONE);
+        dummy1.setVisible(false);
+        dummy1.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+        dummy1.setEnabled(false);
+        dummy1.setText("Remove Order File Source");
 
-    /**
-     * This method initializes group1
-     */
-    private void createGroup1() {
-        GridData gridData18 = new org.eclipse.swt.layout.GridData();
-        gridData18.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData18.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData17 = new org.eclipse.swt.layout.GridData();
-        gridData17.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData17.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData12 = new org.eclipse.swt.layout.GridData();
-        gridData12.horizontalSpan = 7;
-        gridData12.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        gridData12.heightHint = 10;
-        gridData12.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        GridData gridData6 = new org.eclipse.swt.layout.GridData();
-        gridData6.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData6.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-        GridData gridData15 = new org.eclipse.swt.layout.GridData();
-        gridData15.widthHint = 80;
-        gridData15.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        gridData15.grabExcessHorizontalSpace = true;
-        gridData15.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        GridData gridData14 = new org.eclipse.swt.layout.GridData();
-        gridData14.widthHint = 80;
-        gridData14.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        gridData14.grabExcessHorizontalSpace = true;
-        gridData14.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        GridData gridData13 = new org.eclipse.swt.layout.GridData();
-        gridData13.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData13.grabExcessHorizontalSpace = true;
-        gridData13.horizontalSpan = 3;
-        gridData13.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData11 = new org.eclipse.swt.layout.GridData();
-        gridData11.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData11.verticalSpan = 1;
-        gridData11.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-        GridData gridData9 = new org.eclipse.swt.layout.GridData();
-        gridData9.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData9.grabExcessHorizontalSpace = true;
-        gridData9.grabExcessVerticalSpace = true;
-        gridData9.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        GridData gridData7 = new org.eclipse.swt.layout.GridData();
-        gridData7.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData7.verticalSpan = 2;
-        gridData7.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-        GridLayout gridLayout1 = new GridLayout();
-        gridLayout1.numColumns = 7;
-        gNodes = new Group(group, SWT.NONE);
-        gNodes.setText("Chain Nodes");
-        gNodes.setLayout(gridLayout1);
-        gNodes.setLayoutData(gridData9);
+        gNodes = new Group(sashForm, SWT.NONE);
+        gNodes.setText("Chain Node");
+        final GridLayout gridLayout_4 = new GridLayout();
+        gridLayout_4.numColumns = 7;
+        gNodes.setLayout(gridLayout_4);
+
         label6 = new Label(gNodes, SWT.NONE);
+        label6.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
         label6.setText("State:");
+
         tState = new Text(gNodes, SWT.BORDER);
+        tState.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+
+            boolean valid = listener.isValidState(tState.getText());
+            if (!valid)
+                tState.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+            else
+                tState.setBackground(null);
+            bApplyNode.setEnabled(isValidNode()&& valid);
+            if (bApplyNode.getEnabled())
+                getShell().setDefaultButton(bApplyNode);
+        	}
+        });
+        final GridData gridData18 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         tState.setLayoutData(gridData18);
+
         label7 = new Label(gNodes, SWT.NONE);
         label7.setText("Job:");
-        cJob = new CCombo(gNodes, SWT.BORDER);
-        cJob.addKeyListener(new KeyAdapter() {
-            public void keyPressed(final KeyEvent e) {
-                if (e.keyCode == SWT.CR) {
-                    applyNode();
-                }
-            }
-        });
-        bApplyNode = new Button(gNodes, SWT.NONE);
-        label1 = new Label(gNodes, SWT.NONE);
-        label1.setText("Type:");
-        createComposite1();
-        label8 = new Label(gNodes, SWT.NONE);
-        label8.setText("Next State:");
-        cNextState = new CCombo(gNodes, SWT.BORDER);
-        cNextState.addKeyListener(new KeyAdapter() {
-            public void keyPressed(final KeyEvent e) {
-                if (e.keyCode == SWT.CR) {
-                    applyNode();
-                }
 
-            }
+        cJob = new CCombo(gNodes, SWT.BORDER);
+        cJob.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+
+            bApplyNode.setEnabled(isValidNode());
+            if (bApplyNode.getEnabled())
+                getShell().setDefaultButton(bApplyNode);
+        	}
         });
+        cJob.addKeyListener(new KeyAdapter() {
+        	public void keyPressed(final KeyEvent e) {
+        		 if (e.keyCode == SWT.CR) {
+               applyNode();
+           }
+        	}
+        });
+        final GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
+        cJob.setLayoutData(gridData13);
+
+        bApplyNode = new Button(gNodes, SWT.NONE);
+        bApplyNode.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {  
+        		  applyNode();
+        	}
+        });
+        final GridData gridData7 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
+        bApplyNode.setLayoutData(gridData7);
+        bApplyNode.setEnabled(false);
+        bApplyNode.setText("&Apply Chain Node");
+
+        label1 = new Label(gNodes, SWT.NONE);
+        label1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+        label1.setText("Type:");
+
+        cType = new Composite(gNodes, SWT.NONE);
+        final GridData gridData5 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false, 1, 2);
+        cType.setLayoutData(gridData5);
+        cType.setLayout(new RowLayout(SWT.VERTICAL));
+
+        bFullNode = new Button(cType, SWT.RADIO);
+        bFullNode.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		if (bFullNode.getSelection()) {
+        			tMoveTo.setEnabled(false);
+        			bRemoveFile.setEnabled(false);
+              cNextState.setEnabled(true);
+              cErrorState.setEnabled(true);
+              cJob.setEnabled(true);
+              bApplyNode.setEnabled(isValidNode());
+              if (bApplyNode.getEnabled())
+                  getShell().setDefaultButton(bApplyNode);
+          }
+        	}
+        });
+        bFullNode.setText("Full Node");
+
+        bEndNode = new Button(cType, SWT.RADIO);
+        bEndNode.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		if (bEndNode.getSelection()) {
+        			tMoveTo.setEnabled(false);
+        			bRemoveFile.setEnabled(false);
+              cNextState.setEnabled(false);
+              cErrorState.setEnabled(false);
+              cJob.setEnabled(false);
+              cJob.setText("");
+              cNextState.setText("");
+              cErrorState.setText("");
+              if (tState.getText().equals(""))
+                  bApplyNode.setEnabled(false);
+          }
+        	}
+        });
+        bEndNode.setText("End Node");
+
+        bFileSink = new Button(cType, SWT.RADIO);
+        bFileSink.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		if (bFileSink.getSelection()) {
+              cNextState.setEnabled(false);
+              cErrorState.setEnabled(false);
+              cJob.setEnabled(false);
+              cJob.setText("");
+              cNextState.setText("");
+              cErrorState.setText("");
+              tMoveTo.setEnabled(true);
+              bRemoveFile.setEnabled(true);
+              
+              if (tState.getText().equals(""))
+                  bApplyNode.setEnabled(false);
+          }
+        	}
+        });
+        bFileSink.setEnabled(false);
+        bFileSink.setText("File Sink");
+
+        label8 = new Label(gNodes, SWT.NONE);
+        label8.setLayoutData(new GridData());
+        label8.setText("Next State:");
+
+        cNextState = new CCombo(gNodes, SWT.BORDER);
+        cNextState.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+            bApplyNode.setEnabled(isValidNode());
+            if (bApplyNode.getEnabled())
+                getShell().setDefaultButton(bApplyNode);
+        	}
+        });
+        cNextState.addKeyListener(new KeyAdapter() {
+        	public void keyPressed(final KeyEvent e) {
+            if (e.keyCode == SWT.CR) {
+              applyNode();
+          }
+        	}
+        });
+        final GridData gridData14 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        gridData14.widthHint = 80;
+        cNextState.setLayoutData(gridData14);
+
         label9 = new Label(gNodes, SWT.NONE);
         label9.setText("Error State:");
+
         cErrorState = new CCombo(gNodes, SWT.BORDER);
+        cErrorState.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) { getShell().setDefaultButton(bApplyNode);
+          bApplyNode.setEnabled(isValidNode());
+          if (bApplyNode.getEnabled())
+              getShell().setDefaultButton(bApplyNode);
+        	}
+        });
         cErrorState.addKeyListener(new KeyAdapter() {
-            public void keyPressed(final KeyEvent e) {
-                if (e.keyCode == SWT.CR) {
-                    applyNode();
-                }
-
-            }
+        	public void keyPressed(final KeyEvent e) {
+            if (e.keyCode == SWT.CR) {
+              applyNode();
+          }
+        	}
         });
+        final GridData gridData15 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        gridData15.widthHint = 80;
         cErrorState.setLayoutData(gridData15);
-        label4 = new Label(gNodes, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label4.setText("Label");
-        label4.setLayoutData(gridData12);
-        createTable1();
-        bNewNode = new Button(gNodes, SWT.NONE);
-        bNewNode.setText("New Chain &Node");
-        bNewNode.setLayoutData(gridData6);
-        label5 = new Label(gNodes, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label5.setText("Label");
-        label5.setLayoutData(gridData17);
-        bNewNode.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                getShell().setDefaultButton(null);
-                tNodes.deselectAll();
-                listener.selectNode(-1);
-                bRemoveNode.setEnabled(false);
-                enableNode(true);
-                fillNode(true);
-                tState.setFocus();
-            }
-        });
-        bRemoveNode = new Button(gNodes, SWT.NONE);
-        bRemoveNode.setText("Remove Chain Node");
-        bRemoveNode.setEnabled(false);
-        bRemoveNode.setLayoutData(gridData11);
-        bRemoveNode.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (tNodes.getSelectionCount() > 0) {
-                    int index = tNodes.getSelectionIndex();
-                    listener.deleteNode(index);
-                    tNodes.remove(index);
-                    if (index >= tNodes.getItemCount())
-                        index--;
-                    boolean empty = tNodes.getItemCount() == 0;
+        new Label(gNodes, SWT.NONE);
+        new Label(gNodes, SWT.NONE);
 
-                    fillNode(empty);
-                    enableNode(!empty);
-                    bRemoveNode.setEnabled(!empty);
-                    if (!empty) {
-                        tNodes.select(index);
-                        listener.selectNode(index);
-                    } else {
-                        listener.selectNode(-1);
-                    }
-                }
-            }
-        });
-        tState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                boolean valid = listener.isValidState(tState.getText());
-                bApplyNode.setEnabled(valid);
-                if (!valid)
-                    tState.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-                else
-                    tState.setBackground(null);
-                bApplyNode.setEnabled(isValidNode());
-                if (bApplyNode.getEnabled())
-                    getShell().setDefaultButton(bApplyNode);
-            }
-        });
-        cJob.setLayoutData(gridData13);
-        cJob.setEditable(true);
-        cJob.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApplyNode.setEnabled(isValidNode());
-                if (bApplyNode.getEnabled())
-                    getShell().setDefaultButton(bApplyNode);
-            }
-        });
-        cNextState.setLayoutData(gridData14);
-        cNextState.setEditable(true);
-        cNextState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApplyNode.setEnabled(isValidNode());
-                if (bApplyNode.getEnabled())
-                    getShell().setDefaultButton(bApplyNode);
-            }
-        });
-        cErrorState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                getShell().setDefaultButton(bApplyNode);
-                bApplyNode.setEnabled(isValidNode());
-                if (bApplyNode.getEnabled())
-                    getShell().setDefaultButton(bApplyNode);
-            }
-        });
-        bApplyNode.setLayoutData(gridData7);
-        bApplyNode.setText("&Apply Chain Node");
-        bApplyNode.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                applyNode();
-            }
-        });
-    }
+        final Label removeFileLabel = new Label(gNodes, SWT.NONE);
+        removeFileLabel.setText("Remove File");
 
+        bRemoveFile = new Button(gNodes, SWT.CHECK);
+        bRemoveFile.addKeyListener(new KeyAdapter() {
+        	public void keyPressed(final KeyEvent e) {
+        		 if (e.keyCode == SWT.CR) {
+               applyNode();
+           }
+        	}
+        });
+        bRemoveFile.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        	  if (bRemoveFile.getSelection())tMoveTo.setText(""); 
+        		bApplyNode.setEnabled(isValidNode());
+             if (bApplyNode.getEnabled())
+                 getShell().setDefaultButton(bApplyNode);
+         	
+        	}
+        });
+        bRemoveFile.setEnabled(false);
+        bRemoveFile.setLayoutData(new GridData());
 
-    /**
-     * This method initializes table1
-     */
-    private void createTable1() {
-        GridData gridData4 = new org.eclipse.swt.layout.GridData();
-        gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData4.grabExcessHorizontalSpace = true;
-        gridData4.grabExcessVerticalSpace = true;
-        gridData4.horizontalSpan = 6;
-        gridData4.verticalSpan = 3;
-        gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        final Label movweToLabel = new Label(gNodes, SWT.NONE);
+        movweToLabel.setText("Move to");
+
+        tMoveTo = new Text(gNodes, SWT.BORDER);
+        tMoveTo.addKeyListener(new KeyAdapter() {
+        	public void keyPressed(final KeyEvent e) {
+        		 if (e.keyCode == SWT.CR) {
+               applyNode();
+           }
+        	}
+        });
+        tMoveTo.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+       		   if (!tMoveTo.getText().equals(""))bRemoveFile.setSelection(false);
+        	   bApplyNode.setEnabled(isValidNode());
+             if (bApplyNode.getEnabled())
+                 getShell().setDefaultButton(bApplyNode);
+         
+        	}
+        });
+        tMoveTo.setEnabled(false);
+        tMoveTo.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        new Label(gNodes, SWT.NONE);
+
         tNodes = new Table(gNodes, SWT.FULL_SELECTION | SWT.BORDER);
-        tNodes.setHeaderVisible(true);
+        tNodes.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		if (tNodes.getSelectionCount() > 0) {
+              listener.selectNode(tNodes);
+              enableNode(true);
+              fillNode(false);
+           }
+           bRemoveNode.setEnabled(tNodes.getSelectionCount() > 0);
+        	}
+        });
         tNodes.setLinesVisible(true);
+        tNodes.setHeaderVisible(true);
+        final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true, 6, 2);
         tNodes.setLayoutData(gridData4);
-        tNodes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (tNodes.getSelectionCount() > 0) {
-                    listener.selectNode(tNodes.getSelectionIndex());
-                    enableNode(true);
-                    fillNode(false);
-                }
-                bRemoveNode.setEnabled(tNodes.getSelectionCount() > 0);
-            }
-        });
-        TableColumn tableColumn3 = new TableColumn(tNodes, SWT.NONE);
-        tableColumn3.setText("State");
+
+        final TableColumn tableColumn3 = new TableColumn(tNodes, SWT.NONE);
         tableColumn3.setWidth(90);
-        TableColumn tableColumn4 = new TableColumn(tNodes, SWT.NONE);
-        tableColumn4.setText("Job Name");
+        tableColumn3.setText("State");
+
+        final TableColumn newColumnTableColumn_3 = new TableColumn(tNodes, SWT.NONE);
+        newColumnTableColumn_3.setWidth(100);
+        newColumnTableColumn_3.setText("Node");
+
+        final TableColumn tableColumn4 = new TableColumn(tNodes, SWT.NONE);
         tableColumn4.setWidth(200);
-        TableColumn tableColumn5 = new TableColumn(tNodes, SWT.NONE);
-        tableColumn5.setText("Next State");
+        tableColumn4.setText("Job/Dir");
+
+        final TableColumn tableColumn5 = new TableColumn(tNodes, SWT.NONE);
         tableColumn5.setWidth(90);
-        TableColumn tableColumn6 = new TableColumn(tNodes, SWT.NONE);
-        tableColumn6.setText("Error State");
+        tableColumn5.setText("Next State");
+
+        final TableColumn tableColumn6 = new TableColumn(tNodes, SWT.NONE);
         tableColumn6.setWidth(90);
+        tableColumn6.setText("Error State");
+
+        bNewNode = new Button(gNodes, SWT.NONE);
+        bNewNode.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		getShell().setDefaultButton(null);
+            tNodes.deselectAll();
+            listener.selectNode(null);
+            bRemoveNode.setEnabled(false);
+            enableNode(true);
+            fillNode(true);
+            tState.setFocus();
+        	}
+        });
+        bNewNode.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+        bNewNode.setText("New Chain &Node");
+
+        bRemoveNode = new Button(gNodes, SWT.NONE);
+        bRemoveNode.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+            if (tNodes.getSelectionCount() > 0) {
+              int index = tNodes.getSelectionIndex();
+              listener.deleteNode(tNodes);
+              tNodes.remove(index);
+              if (index >= tNodes.getItemCount())
+                  index--;
+              boolean empty = tNodes.getItemCount() == 0;
+
+              fillNode(empty);
+              enableNode(!empty);
+              bRemoveNode.setEnabled(!empty);
+              if (!empty) {
+                  tNodes.select(index);
+                  listener.selectNode(tNodes);
+              } else {
+                  listener.selectNode(null);
+              }
+          }
+        	}
+        });
+        final GridData gridData11 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
+        bRemoveNode.setLayoutData(gridData11);
+        bRemoveNode.setEnabled(false);
+        bRemoveNode.setText("Remove Chain Node");
+        new Label(gNodes, SWT.NONE);
+        new Label(gNodes, SWT.NONE);
+        new Label(gNodes, SWT.NONE);
+        new Label(gNodes, SWT.NONE);
+        new Label(gNodes, SWT.NONE);
+        new Label(gNodes, SWT.NONE);
+
+        dumm2 = new Button(gNodes, SWT.NONE);
+        dumm2.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+        dumm2.setVisible(false);
+        dumm2.setEnabled(false);
+        dumm2.setText("Remove Order File Source");
+
+        
+        gFileOrderSource = new Group(sashForm, SWT.VERTICAL);
+        gFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        gFileOrderSource.setText("File Order Source");
+        final GridLayout gridLayout_1 = new GridLayout();
+        gridLayout_1.numColumns = 5;
+        gFileOrderSource.setLayout(gridLayout_1);
+
+        final Label directoryLabel = new Label(gFileOrderSource, SWT.NONE);
+        directoryLabel.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
+        directoryLabel.setText("Directory");
+
+        tDirectory = new Text(gFileOrderSource, SWT.BORDER);
+        tDirectory.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        	  bApplyFileOrderSource.setEnabled(isValidSource());
+            if (bApplyFileOrderSource.getEnabled())
+                getShell().setDefaultButton(bApplyFileOrderSource);
+        	}
+        });
+        tDirectory.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        	  
+            
+        	}
+        });
+        tDirectory.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+        final Label delay_after_errorLabel = new Label(gFileOrderSource, SWT.NONE);
+        delay_after_errorLabel.setText("Delay after error");
+
+
+        tDelayAfterError = new Text(gFileOrderSource, SWT.BORDER);
+        tDelayAfterError.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        	  bApplyFileOrderSource.setEnabled(isValidSource());
+            if (bApplyFileOrderSource.getEnabled())
+                getShell().setDefaultButton(bApplyFileOrderSource);
+        		
+        	}
+        });
+        tDelayAfterError.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+        bApplyFileOrderSource = new Button(gFileOrderSource, SWT.NONE);
+        bApplyFileOrderSource.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		applyFileOrderSource();
+        	}
+        });
+        bApplyFileOrderSource.setEnabled(false);
+        bApplyFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        bApplyFileOrderSource.setText("Apply File Order Source");
+
+        final Label regexLabel = new Label(gFileOrderSource, SWT.NONE);
+        regexLabel.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
+        regexLabel.setText("Regex");
+
+        
+        tRegex = new Text(gFileOrderSource, SWT.BORDER);
+        tRegex.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+         	  bApplyFileOrderSource.setEnabled(isValidSource());
+            if (bApplyFileOrderSource.getEnabled())
+                getShell().setDefaultButton(bApplyFileOrderSource);
+        	}
+        });
+        tRegex.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+        final Label repeatLabel = new Label(gFileOrderSource, SWT.NONE);
+        repeatLabel.setText("Repeat");
+
+        tRepeat = new Text(gFileOrderSource, SWT.BORDER);
+        tRepeat.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        	  bApplyFileOrderSource.setEnabled(isValidSource());
+            if (bApplyFileOrderSource.getEnabled())
+                getShell().setDefaultButton(bApplyFileOrderSource);
+
+        	}
+        });
+        tRepeat.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        new Label(gFileOrderSource, SWT.NONE);
+
+        final Label maxLabel = new Label(gFileOrderSource, SWT.NONE);
+        maxLabel.setText("Max");
+
+        tMax = new Text(gFileOrderSource, SWT.BORDER);
+        tMax.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        	  bApplyFileOrderSource.setEnabled(isValidSource());
+            if (bApplyFileOrderSource.getEnabled())
+                getShell().setDefaultButton(bApplyFileOrderSource);
+        		
+        	}
+        });
+        tMax.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+        final Label stateLabel = new Label(gFileOrderSource, SWT.NONE);
+        stateLabel.setText("Next state");
+
+        tNextState = new Text(gFileOrderSource, SWT.BORDER);
+        tNextState.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        	  bApplyFileOrderSource.setEnabled(isValidSource());
+            if (bApplyFileOrderSource.getEnabled())
+                getShell().setDefaultButton(bApplyFileOrderSource);
+
+        	}
+        });
+        tNextState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+        tFileOrderSource = new Table(gFileOrderSource, SWT.BORDER);
+        tFileOrderSource.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+         		if (tFileOrderSource.getSelectionCount() > 0) {
+              listener.selectFileOrderSource(tFileOrderSource);
+              bApplyFileOrderSource.setEnabled(false);
+              fillFileOrderSource(false); 
+              enableFileOrderSource(true);              
+           }
+           bRemoveFileOrderSource.setEnabled(tFileOrderSource.getSelectionCount() > 0);
+          	}
+        	
+        });
+        tFileOrderSource.setLinesVisible(true);
+        tFileOrderSource.setHeaderVisible(true);
+        tFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2));
+
+        final TableColumn newColumnTableColumn = new TableColumn(tFileOrderSource, SWT.NONE);
+        newColumnTableColumn.setWidth(300);
+        newColumnTableColumn.setText("Directory");
+
+        final TableColumn newColumnTableColumn_1 = new TableColumn(tFileOrderSource, SWT.NONE);
+        newColumnTableColumn_1.setWidth(200);
+        newColumnTableColumn_1.setText("Regex");
+
+        
+        final TableColumn newColumnTableColumn_2 = new TableColumn(tFileOrderSource, SWT.NONE);
+        newColumnTableColumn_2.setWidth(100);
+        newColumnTableColumn_2.setText("Next State");
+
+        
+        bNewFileOrderSource = new Button(gFileOrderSource, SWT.NONE);
+        bNewFileOrderSource.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {	
+        		getShell().setDefaultButton(null);
+        		tFileOrderSource.deselectAll();
+            listener.selectFileOrderSource(null);
+            bRemoveFileOrderSource.setEnabled(false);
+            fillFileOrderSource(true);
+            enableFileOrderSource(true);
+            tDirectory.setFocus();
+        	}
+        });
+        bNewFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        bNewFileOrderSource.setText("New File Order Source");
+
+        bRemoveFileOrderSource = new Button(gFileOrderSource, SWT.NONE);
+        bRemoveFileOrderSource.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        	  if (tFileOrderSource.getSelectionCount() > 0) {
+              bFileSink.setEnabled(tFileOrderSource.getItemCount() > 0);
+              tMoveTo.setEnabled(tFileOrderSource.getItemCount() > 0);
+              bRemoveFile.setEnabled(tFileOrderSource.getItemCount() > 0);
+              
+              int index = tFileOrderSource.getSelectionIndex();
+              listener.deleteFileOrderSource(tFileOrderSource);
+              tFileOrderSource.remove(index);
+              if (index >= tFileOrderSource.getItemCount())
+                  index--;
+              boolean empty = tFileOrderSource.getItemCount() == 0;
+
+              fillFileOrderSource(empty);
+              enableFileOrderSource(!empty);           
+              bRemoveFileOrderSource.setEnabled(!empty);
+              if (!empty) {
+              	tFileOrderSource.select(index);
+                  listener.selectFileOrderSource(tFileOrderSource);
+              } else {
+                  listener.selectFileOrderSource(null);
+              }
+          }
+        	}
+        });
+        bRemoveFileOrderSource.setEnabled(false);
+        bRemoveFileOrderSource.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+        bRemoveFileOrderSource.setText("Remove Order File Source");
+        //group.setTabList(new Control[] {cChains, fileOrderSourceGroup, gNodes, fileOrderSinkGroup, label_2});
+ 
     }
 
 
-    /**
-     * This method initializes composite1
-     */
-    private void createComposite1() {
-        GridData gridData5 = new org.eclipse.swt.layout.GridData();
-        gridData5.horizontalSpan = 1;
-        cType = new Composite(gNodes, SWT.NONE);
-        cType.setLayout(new RowLayout());
-        cType.setLayoutData(gridData5);
-        bFullNode = new Button(cType, SWT.RADIO);
-        bFullNode.setText("Full Node");
-        bFullNode.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (bFullNode.getSelection()) {
-                    cNextState.setEnabled(true);
-                    cErrorState.setEnabled(true);
-                    cJob.setEnabled(true);
-                    bApplyNode.setEnabled(isValidNode());
-                    if (bApplyNode.getEnabled())
-                        getShell().setDefaultButton(bApplyNode);
-                }
-            }
-        });
-        bEndNode = new Button(cType, SWT.RADIO);
-        bEndNode.setText("End Node");
-        bEndNode.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (bEndNode.getSelection()) {
-                    cNextState.setEnabled(false);
-                    cErrorState.setEnabled(false);
-                    cJob.setEnabled(false);
-                    cJob.setText("");
-                    cNextState.setText("");
-                    cErrorState.setText("");
-                    if (tState.getText().equals(""))
-                        bApplyNode.setEnabled(false);
-                }
-            }
-        });
-    }
+     
 
 
     private void fillChain(boolean enable, boolean isNew) {
-        tName.setEnabled(enable);
-        bRecoverable.setEnabled(enable);
-        bVisible.setEnabled(enable);
+      tName.setEnabled(enable);
+      bRecoverable.setEnabled(enable);
+      bVisible.setEnabled(enable);
 
-        tName.setText(enable ? listener.getChainName() : "");
-        bRecoverable.setSelection(enable ? listener.getRecoverable() || isNew : true);
-        bVisible.setSelection(enable ? listener.getVisible() || isNew : true);
+      tName.setText(enable ? listener.getChainName() : "");
+      bRecoverable.setSelection(enable ? listener.getRecoverable() || isNew : true);
+      bVisible.setSelection(enable ? listener.getVisible() || isNew : true);
 
-        tName.setBackground(null);
-        bApplyChain.setEnabled(enable);
+      tName.setBackground(null);
+      bApplyChain.setEnabled(enable);
 
-        if (enable && !isNew) {
-            listener.fillChain(tNodes);
-            gNodes.setText(GROUP_NODES_TITLE + " for: " + listener.getChainName());
-            bNewNode.setEnabled(true);
-        } else
-            bNewNode.setEnabled(false);
-
-        enableNode(false);
+      if (enable && !isNew) {
+        listener.fillFileOrderSource(tFileOrderSource);
+        listener.fillChain(tNodes);
+        gNodes.setText(GROUP_NODES_TITLE + " for: " + listener.getChainName());
+        gFileOrderSource.setText(GROUP_FILEORDERSOURCE_TITLE + " for: " + listener.getChainName());
+        bNewFileOrderSource.setEnabled(true);
+        bNewNode.setEnabled(true);
+     } else {
+        bNewNode.setEnabled(false);
+        bNewFileOrderSource.setEnabled(false);
     }
 
-
+      enableNode(false);
+      enableFileOrderSource(false);           
+           
+      
+  }
     private void deleteChain() {
         if (tChains.getSelectionCount() > 0) {
             int index = tChains.getSelectionIndex();
@@ -598,52 +808,95 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 
 
     private void enableNode(boolean enable) {
-        bFullNode.setEnabled(enable);
-        bEndNode.setEnabled(enable);
-        tState.setEnabled(enable);
-        cJob.setEnabled(enable);
-        cNextState.setEnabled(enable);
-        cErrorState.setEnabled(enable);
-        bApplyNode.setEnabled(false);
-    }
+      bFullNode.setEnabled(enable);
+      bEndNode.setEnabled(enable);
+      bFileSink.setEnabled(enable && tFileOrderSource.getItemCount() > 0);
+     
+      tState.setEnabled(enable);
+      cJob.setEnabled(enable);
+      cNextState.setEnabled(enable);
+      cErrorState.setEnabled(enable);
 
+      tMoveTo.setEnabled(enable && tFileOrderSource.getItemCount() > 0);
+      bRemoveFile.setEnabled(enable && tFileOrderSource.getItemCount() > 0);
+     
+      
+      
+      bApplyNode.setEnabled(false);
+  }
 
+    private void enableFileOrderSource(boolean enable) {
+      tDirectory.setEnabled(enable);
+      tMax.setEnabled(enable);
+      tRepeat.setEnabled(enable);
+      tDelayAfterError.setEnabled(enable);
+      tNextState.setEnabled(enable);
+      tRegex.setEnabled(enable);
+      bApplyFileOrderSource.setEnabled(false);
+  }
+
+ 
+    
     private void fillNode(boolean clear) {
-        boolean fullNode = listener.isFullNode();
-        bFullNode.setSelection(clear || fullNode);
-        bEndNode.setSelection(!clear && !fullNode);
-        cNextState.setEnabled(fullNode);
-        cErrorState.setEnabled(fullNode);
-        cJob.setEnabled(fullNode);
+      boolean fullNode = listener.isFullNode();
+      boolean fileSinkNode = listener.isFileSinkNode();
+      boolean endNode = !fullNode && !fileSinkNode;
+     
+      bFullNode.setSelection(clear || fullNode);
+      bEndNode.setSelection(!clear && endNode);
+      bFileSink.setSelection(!clear && fileSinkNode  && tFileOrderSource.getItemCount() > 0);
+     
+      cNextState.setEnabled(fullNode);
+      cErrorState.setEnabled(fullNode);
+      cJob.setEnabled(fullNode);
 
-        tState.setText(clear ? "" : listener.getState());
+      tMoveTo.setEnabled(fileSinkNode  && tFileOrderSource.getItemCount() > 0);
+      bRemoveFile.setEnabled(fileSinkNode  && tFileOrderSource.getItemCount() > 0);
 
-        cJob.setItems(listener.getJobs());
-        cNextState.setItems(listener.getStates());
-        cErrorState.setItems(listener.getStates());
+      tState.setText(clear ? "" : listener.getState());
 
-        int job = cJob.indexOf(listener.getJob());
-        if (clear || job == -1)
-            cJob.setText(listener.getJob());
-        else
-            cJob.select(job);
+      cJob.setItems(listener.getJobs());
+      cNextState.setItems(listener.getStates());
+      cErrorState.setItems(listener.getStates());
 
-        int next = cNextState.indexOf(listener.getNextState());
-        if (clear || !fullNode || next == -1)
-            cNextState.setText(listener.getNextState());
-        else
-            cNextState.select(next);
+      tMoveTo.setText(listener.getMoveTo());
+      bRemoveFile.setSelection(listener.getRemoveFile());
+      
+      int job = cJob.indexOf(listener.getJob());
+      if (clear || job == -1)
+          cJob.setText(listener.getJob());
+      else
+          cJob.select(job);
 
-        int error = cErrorState.indexOf(listener.getErrorState());
-        if (clear || !fullNode || error == -1)
-            cErrorState.setText(listener.getErrorState());
-        else
-            cErrorState.select(error);
+      int next = cNextState.indexOf(listener.getNextState());
+      if (clear || !fullNode || next == -1)
+          cNextState.setText(listener.getNextState());
+      else
+          cNextState.select(next);
 
-        bApplyNode.setEnabled(false);
-    }
+      int error = cErrorState.indexOf(listener.getErrorState());
+      if (clear || !fullNode || error == -1)
+          cErrorState.setText(listener.getErrorState());
+      else
+          cErrorState.select(error);
 
+      bApplyNode.setEnabled(false);
+  }
 
+    private void fillFileOrderSource(boolean clear) {
+    	
+    	tDirectory.setText(clear ? "" : listener.getFileOrderSource("directory"));
+    	tRegex.setText(clear ? "" : listener.getFileOrderSource("regex"));
+    	tMax.setText(clear ? "" : listener.getFileOrderSource("max"));
+    	tDelayAfterError.setText(clear ? "" : listener.getFileOrderSource("delay_after_error"));
+    	tRepeat.setText(listener.getFileOrderSource(clear ? "" : "repeat"));
+    	tNextState.setText(listener.getFileOrderSource(clear ? "" : "next_state"));
+
+      bApplyFileOrderSource.setEnabled(false);
+  }
+
+    
+    
     private void applyChain() {
         listener.applyChain(tName.getText(), bRecoverable.getSelection(), bVisible.getSelection());
         int index = tChains.getSelectionIndex();
@@ -656,63 +909,80 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         bApplyChain.setEnabled(false);
         getShell().setDefaultButton(bNewChain);
     }
-
+    
+ 
 
     private void applyNode() {
         String msg = "";
-
-        if (bFullNode.getSelection() && cJob.getText().equals("")) {
-            msg = "Please set the name of the job for this state";
-        }
-
-        if (bFullNode.getSelection() && (cNextState.getText() + cErrorState.getText()).equals("")) {
-            // msg = "Please set the next/error-state this state";
-        }
-
         if (!msg.equals("")) {
             MainWindow.message(msg, SWT.ICON_INFORMATION);
         } else {
-            listener.applyNode(tState.getText(), cJob.getText(), cNextState.getText(), cErrorState.getText());
+            listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText());
             listener.fillChain(tNodes);
             bApplyNode.setEnabled(false);
             bRemoveNode.setEnabled(false);
-            listener.selectNode(-1);
+            listener.selectNode(null);
             fillNode(true);
             enableNode(false);
         }
     }
 
+    private void applyFileOrderSource() {
+      String msg = "";
+
+      if (!msg.equals("")) {
+          MainWindow.message(msg, SWT.ICON_INFORMATION);
+      } else {
+          listener.applyFileOrderSource(tDirectory.getText(),tRegex.getText(), tNextState.getText(), tMax.getText(), tRepeat.getText(),tDelayAfterError.getText());
+          listener.fillFileOrderSource(tFileOrderSource);
+          bApplyFileOrderSource.setEnabled(false);
+          bRemoveFileOrderSource.setEnabled(false);
+     
+          bFileSink.setEnabled(bFullNode.getEnabled());
+          tMoveTo.setEnabled(bFullNode.getEnabled());
+          bRemoveFile.setEnabled(bFullNode.getEnabled());
+          
+          listener.selectFileOrderSource(null);
+          fillFileOrderSource(true);
+          enableFileOrderSource(false);
+      }
+  }
 
     private boolean isValidNode() {
-        if (tState.getText().equals("") || bFullNode.getSelection() && cJob.getText().equals("") // ||
-        // bFullNode.getSelection()
-        // && (cNextState.getText() + cErrorState.getText()).equals("")
-        ) {
-            return false;
-        } else {
-            return true;
-        }
+      if (tState.getText().equals("") || bFullNode.getSelection() && cJob.getText().equals("")) {
+              return false;
+          } else {
+              return true;
+          }
     }
-
+    
+    private boolean isValidSource() {
+      if (tDirectory.getText().equals("") ) {
+              return false;
+          } else {
+              return true;
+          }
+    }
+    
+    
+    
 
     public void setToolTipText() {
-        tName.setToolTipText(Messages.getTooltip("job_chains.chain.name"));
-        bNewChain.setToolTipText(Messages.getTooltip("job_chains.chain.btn_new"));
-        bRemoveChain.setToolTipText(Messages.getTooltip("job_chains.chain.btn_remove"));
-        bRecoverable.setToolTipText(Messages.getTooltip("job_chains.chain.orders_recoverable"));
-        bVisible.setToolTipText(Messages.getTooltip("job_chains.chain.visible"));
-        bApplyChain.setToolTipText(Messages.getTooltip("job_chains.chain.btn_apply"));
-        tChains.setToolTipText(Messages.getTooltip("job_chains.table"));
-        tState.setToolTipText(Messages.getTooltip("job_chains.node.state"));
-        cErrorState.setToolTipText(Messages.getTooltip("job_chains.node.error_state"));
-        bNewNode.setToolTipText(Messages.getTooltip("job_chains.node.btn_new"));
-        bRemoveNode.setToolTipText(Messages.getTooltip("job_chains.node.btn_remove"));
-        cJob.setToolTipText(Messages.getTooltip("job_chains.node.job"));
-        cNextState.setToolTipText(Messages.getTooltip("job_chains.node.next_state"));
-        bApplyNode.setToolTipText(Messages.getTooltip("job_chains.node.btn_apply"));
-        tNodes.setToolTipText(Messages.getTooltip("job_chains.chain.node_table"));
-        bFullNode.setToolTipText(Messages.getTooltip("job_chains.node.btn_full_node"));
-        bEndNode.setToolTipText(Messages.getTooltip("job_chains.node.btn_end_node"));
+      tName.setToolTipText(Messages.getTooltip("job_chains.chain.name"));
+      bNewChain.setToolTipText(Messages.getTooltip("job_chains.chain.btn_new"));
+      bRemoveChain.setToolTipText(Messages.getTooltip("job_chains.chain.btn_remove"));
+      bRecoverable.setToolTipText(Messages.getTooltip("job_chains.chain.orders_recoverable"));
+      bVisible.setToolTipText(Messages.getTooltip("job_chains.chain.visible"));
+      bApplyChain.setToolTipText(Messages.getTooltip("job_chains.chain.btn_apply"));
+      tChains.setToolTipText(Messages.getTooltip("job_chains.table"));
+      tState.setToolTipText(Messages.getTooltip("job_chains.node.state"));
+      cErrorState.setToolTipText(Messages.getTooltip("job_chains.node.error_state"));
+      cJob.setToolTipText(Messages.getTooltip("job_chains.node.job"));
+      cNextState.setToolTipText(Messages.getTooltip("job_chains.node.next_state"));
+      bApplyNode.setToolTipText(Messages.getTooltip("job_chains.node.btn_apply"));
+      bFullNode.setToolTipText(Messages.getTooltip("job_chains.node.btn_full_node"));
+      bEndNode.setToolTipText(Messages.getTooltip("job_chains.node.btn_end_node"));
+      bFileSink.setToolTipText(Messages.getTooltip("job_chains.node.btn_filesink_node"));
 
-    }
+  }
 } // @jve:decl-index=0:visual-constraint="10,10"

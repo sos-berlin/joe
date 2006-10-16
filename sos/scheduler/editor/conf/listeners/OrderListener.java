@@ -87,6 +87,8 @@ public class OrderListener {
 
     public void saveParameter(Table table, String name, String value) {
         boolean found = false;
+        String value2 = value.replaceAll("\"", "&quot;");
+
         if (_params != null) {
 
             int index = 0;
@@ -98,7 +100,7 @@ public class OrderListener {
                     if (e.getName().equals("param")) {
                         if (name.equals(e.getAttributeValue("name"))) {
                             found = true;
-                            e.setAttribute("value", value);
+                            e.setAttribute("value", value2);
                             _dom.setChanged(true);
                             table.getItem(index).setText(1, value);
                         }
@@ -112,7 +114,7 @@ public class OrderListener {
             Element e = new Element("param");
 
             e.setAttribute("name", name);
-            e.setAttribute("value", value);
+            e.setAttribute("value", value2);
             _dom.setChanged(true);
 
             if (_params == null)

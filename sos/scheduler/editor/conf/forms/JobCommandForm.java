@@ -482,7 +482,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
             public void paintControl(final PaintEvent e) {
             }
         });
-        tParameter.setBounds(45, 56, 250, 156);
+        tParameter.setBounds(45, 56, 348, 156);
         tParameter.setHeaderVisible(true);
         tParameter.setLinesVisible(true);
         tParameter.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -499,10 +499,10 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
         TableColumn tcName = new TableColumn(tParameter, SWT.NONE);
-        tcName.setWidth(80);
+        tcName.setWidth(104);
         tcName.setText("Name");
         TableColumn tcValue = new TableColumn(tParameter, SWT.NONE);
-        tcValue.setWidth(150);
+        tcValue.setWidth(226);
         tcValue.setText("Value");
         bRemove = new Button(gJobParameter, SWT.NONE);
         bRemove.setBounds(340, 32, 51, 23);
@@ -585,7 +585,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         });
         paramButton.setSelection(true);
         paramButton.setText("Parameter");
-        paramButton.setBounds(323, 84, 120, 30);
+        paramButton.setBounds(423, 83, 120, 30);
 
         final Button fromTaskButton = new Button(gJobParameter, SWT.RADIO);
         fromTaskButton.addSelectionListener(new SelectionAdapter() {
@@ -595,7 +595,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
         fromTaskButton.setText("from task");
-        fromTaskButton.setBounds(323, 113, 120, 19);
+        fromTaskButton.setBounds(419, 110, 120, 19);
 
         final Button fromOrderButton = new Button(gJobParameter, SWT.RADIO);
         fromOrderButton.addSelectionListener(new SelectionAdapter() {
@@ -605,7 +605,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
         fromOrderButton.setText("from order");
-        fromOrderButton.setBounds(323, 130, 120, 20);
+        fromOrderButton.setBounds(419, 133, 120, 20);
 
         cSource = new Combo(gJobParameter, SWT.READ_ONLY);
         cSource.setItems(new String[] { "order", "task" });

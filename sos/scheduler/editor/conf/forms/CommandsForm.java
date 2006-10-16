@@ -30,7 +30,6 @@ public class CommandsForm extends Composite implements IUpdateLanguage {
 
     private Button            bSave         = null;
 
-    private Label             label         = null;
 
 
     public CommandsForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate main) throws Exception {
@@ -53,16 +52,12 @@ public class CommandsForm extends Composite implements IUpdateLanguage {
      * This method initializes group
      */
     private void createGroup() {
-        GridData gridData4 = new org.eclipse.swt.layout.GridData();
-        gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
         GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 3;
+        gridLayout.numColumns = 2;
         commandsGroup = new Group(this, SWT.NONE);
         commandsGroup.setText("Commands");
         commandsGroup.setLayout(gridLayout);
         createTable();
-        new Label(commandsGroup, SWT.NONE);
 
         tCommands = new Text(commandsGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL);
         tCommands.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
@@ -79,12 +74,6 @@ public class CommandsForm extends Composite implements IUpdateLanguage {
 
             }
         });
-
-        label = new Label(commandsGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label.setText("Label");
-        label.setLayoutData(gridData4);
-        new Label(commandsGroup, SWT.NONE);
-        new Label(commandsGroup, SWT.NONE);
     }
 
 

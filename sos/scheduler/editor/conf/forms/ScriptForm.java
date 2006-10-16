@@ -2,6 +2,8 @@ package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -78,6 +80,8 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     private Button         bCom        = null;
 
     private Label          label       = null;
+    private Button         bShell      = null;
+    
 
 
     public ScriptForm(Composite parent, int style) {
@@ -346,6 +350,20 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
                 }
             }
         });
+
+        bShell = new Button(cLanguage, SWT.RADIO);
+        bShell.addSelectionListener(new SelectionAdapter() {
+        	public void widgetDefaultSelected(final SelectionEvent e) {
+        		
+        	}
+        	public void widgetSelected(final SelectionEvent e) {
+        		if (bShell.getSelection()) {
+              listener.setLanguage(ScriptListener.SHELL);
+              fillForm();
+          }
+        	}
+        });
+        bShell.setText("Shell");
         bNone = new Button(cLanguage, SWT.RADIO);
         bNone.setText("None");
         bNone.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -412,6 +430,10 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
                 bVBScript.setSelection(true);
                 tSource.setFocus();
                 break;
+            case ScriptListener.SHELL:
+                bShell.setSelection(true);
+                tSource.setFocus();
+                break;
         }
 
         if (language != ScriptListener.NONE && language != ScriptListener.COM) {
@@ -442,6 +464,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         bNone.setEnabled(enabled);
         bPerl.setEnabled(enabled);
         bVBScript.setEnabled(enabled);
+        bShell.setEnabled(enabled);
         bCom.setEnabled(enabled);
         fillForm();
     }
@@ -474,6 +497,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         bJavaScript.setToolTipText(Messages.getTooltip("script.language.javascript"));
         bPerl.setToolTipText(Messages.getTooltip("script.language.perl"));
         bVBScript.setToolTipText(Messages.getTooltip("script.language.vb_script"));
+        bShell.setToolTipText(Messages.getTooltip("script.language.shell"));
         bNone.setToolTipText(Messages.getTooltip("script.language.none"));
 
     }

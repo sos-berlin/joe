@@ -236,6 +236,7 @@ public class JobListener {
 
     public void saveParameter(Table table, String name, String value) {
         boolean found = false;
+        String value2 = value.replaceAll("\"", "&quot;");
         if (_params != null) {
             int index = 0;
             Iterator it = _params.iterator();
@@ -245,7 +246,7 @@ public class JobListener {
                     Element e = (Element) o;
                     if (name.equals(e.getAttributeValue("name"))) {
                         found = true;
-                        e.setAttribute("value", value);
+                        e.setAttribute("value", value2);
                         _dom.setChanged(true);
                         table.getItem(index).setText(1, value);
                     }
@@ -256,7 +257,7 @@ public class JobListener {
         if (!found) {
             Element e = new Element("param");
             e.setAttribute("name", name);
-            e.setAttribute("value", value);
+            e.setAttribute("value", value2);
             _dom.setChanged(true);
             if (_params == null)
                 initParams();
