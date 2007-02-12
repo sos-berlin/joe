@@ -65,7 +65,7 @@ public class CommandsForm extends Composite implements IUpdateLanguage {
         tCommands.setLayoutData(gridData4_1);
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);
         bSave = new Button(commandsGroup, SWT.NONE);
-        bSave.setText("&Save");
+        bSave.setText("&Apply");
         bSave.setLayoutData(gridData);
         getShell().setDefaultButton(bSave);
         bSave.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {

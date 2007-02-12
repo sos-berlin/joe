@@ -20,6 +20,18 @@ import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
 
 public class TabbedContainer implements IContainer {
+	
+	class TabData{
+		protected String title="";
+		protected String caption="";
+		protected int cnt=0;
+		
+		public TabData (String title,String caption) {
+			this.title = title;
+			this.caption = caption;
+		}
+	}
+	
     private static final String NEW_SCHEDULER_TITLE     = "Unknown";
 
     private static final String NEW_DOCUMENTATION_TITLE = "Unknown";
@@ -114,10 +126,12 @@ public class TabbedContainer implements IContainer {
         CTabItem tab = new CTabItem(folder, SWT.NONE);
         tab.setControl(control);
         folder.setSelection(folder.indexOf(tab));
-        String title = setSuffix(Utils.getFileFromURL(filename));
-        tab.setText(title);
+        tab.setData(new TabData(Utils.getFileFromURL(filename),""));
+        String title = setSuffix(tab,Utils.getFileFromURL(filename));
+        TabData t = (TabData)tab.getData();
+        t.caption = title;
         tab.setToolTipText(filename);
-        tab.setData(title);
+        tab.setText(title);
 
         if (!filename.equals(NEW_DOCUMENTATION_TITLE) && !filename.equals(NEW_SCHEDULER_TITLE))
             filelist.add(filename);
@@ -147,7 +161,8 @@ public class TabbedContainer implements IContainer {
             return;
 
         CTabItem tab = getCurrentTab();
-        String title = (String) tab.getData();
+        TabData t = (TabData) tab.getData();
+        String title = t.caption;
         tab.setText(getCurrentEditor().hasChanges() == false ? title : "*" + title);
         setWindowTitle();
         window.setMenuStatus();
@@ -164,10 +179,10 @@ public class TabbedContainer implements IContainer {
             filelist.add(filename);
         }
 
-        String title = setSuffix(Utils.getFileFromURL(filename));
+        String title = setSuffix(tab,Utils.getFileFromURL(filename));
         tab.setText(title);
         tab.setToolTipText(filename);
-        tab.setData(title);
+        tab.setData(new TabData(Utils.getFileFromURL(filename),title));
         setWindowTitle();
     }
 
@@ -178,21 +193,52 @@ public class TabbedContainer implements IContainer {
     }
 
 
-    private String setSuffix(String title) {
+    private String setSuffix(CTabItem tab,String title) {
         int sameTitles = getSameTitles(title);
-        if (sameTitles > 0)
-            title = title + "(" + (sameTitles + 1) + ")";
+        TabData t = (TabData) tab.getData();
+        if (t != null){
+           t.cnt=sameTitles;
+           if (sameTitles > 0)
+               title = title + "(" + (sameTitles + 1) + ")";
+        }
         return title;
     }
 
+    
+    private boolean isFreeIndex(int index,String title) {
+    	boolean found=false;
+    	CTabItem[] items = folder.getItems();
+    	int i=0;
+      while (i < items.length && !found) {
+        TabData t = (TabData) items[i].getData();          
+        if (items[i].getData() != null && t.title.equals(title) && t.cnt==index && !items[i].equals(getCurrentTab())) {
+            found = true;
+           }
+        i++;
+        }
+      
+      return !found;
+    }
 
     private int getSameTitles(String title) {
-        int cnt = 0;
-        CTabItem[] items = folder.getItems();
-        for (int i = 0; i < items.length; i++) {
-            if (items[i].getData() != null && items[i].getData().equals(title) && !items[i].equals(getCurrentTab()))
+        int cnt = -1;
+        int i=0;
+        boolean found = false;
+
+        while (cnt==-1) {
+        	if (isFreeIndex(i, title)){
+        		found = true;
+        		cnt=i;
+        	}
+        	i++;
+        }
+       /* for (int i = 0; i < items.length; i++) {
+          TabData t = (TabData) items[i].getData();          
+          if (items[i].getData() != null && t.title.equals(title) && !items[i].equals(getCurrentTab()))
                 cnt++;
         }
+*/
+        
         return cnt;
     }
 

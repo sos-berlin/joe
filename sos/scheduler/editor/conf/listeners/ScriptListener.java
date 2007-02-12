@@ -232,12 +232,17 @@ public class ScriptListener {
     }
 
 
+    public void deleteScript() {
+      if (_script != null) 	_script.removeContent();
+    }
+    
     public void setSource(String source) {
+  
       try {
         if (_script != null) {
             // List mixed = _script.getContent();
             // Iterator it = mixed.iterator();
-            boolean found = false;
+           // boolean found = false;
             /*
              * while (it.hasNext() ) { Object o = it.next(); if (o instanceof
              * CDATA || o instanceof Text) { found = true; if (source == null ||
@@ -246,7 +251,8 @@ public class ScriptListener {
              */
 
             String[] f = getIncludes();
-            if (!found && !source.equals("")) {
+//            if (!found && !source.equals("")) {
+              if (!source.equals("")) {
 
                 _script.removeContent();
                 for (int i = 0; i < f.length; i++) {

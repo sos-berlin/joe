@@ -580,12 +580,12 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         });
         tParaName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(!tParaName.getText().equals(""));
+                bApply.setEnabled(!tParaName.getText().trim().equals(""));
             }
         });
         tParaValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
             public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tParaName.equals(""))
+                if (e.keyCode == SWT.CR && !tParaName.getText().trim().equals(""))
                     addParam();
             }
         });
@@ -672,7 +672,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
     private void addParam() {
-        listener.saveParameter(tParameter, tParaName.getText(), tParaValue.getText());
+        listener.saveParameter(tParameter, tParaName.getText().trim(), tParaValue.getText());
         tParaName.setText("");
         tParaValue.setText("");
         bRemove.setEnabled(false);

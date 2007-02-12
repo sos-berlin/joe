@@ -288,7 +288,11 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         tSource.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
         tSource.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                listener.setSource(tSource.getText());
+            	if (tSource.getText().trim().equals("")) {
+            	  listener.deleteScript();
+            	}else {
+            	  listener.setSource(tSource.getText());
+            	}
             }
         });
     }
