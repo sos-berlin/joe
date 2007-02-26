@@ -17,35 +17,38 @@ public class WebservicesListener {
 
     private Element      _config;
 
-    private Element      _services;
+    private Element      _http_server;
 
     private Element      _service;
 
     private String[]     _chains = new String[0];
 
     private List         _list   = new ArrayList();
-
+  
 
     public WebservicesListener(SchedulerDom dom, Element config) {
         _dom = dom;
         _config = config;
 
-        _services = _config.getChild("web_services");
-        if (_services != null)
-            _list = _services.getChildren("web_service");
+        _http_server = _config.getChild("http_server");
+        if (_http_server != null) {
+          _list = _http_server.getChildren("web_service");
+        }
     }
 
 
     public void fillTable(Table table) {
-        table.removeAll();
-        for (Iterator it = _list.iterator(); it.hasNext();) {
-            Element service = (Element) it.next();
-            TableItem item = new TableItem(table, SWT.NONE);
-            item.setText(0, Utils.getAttributeValue("name", service));
-            item.setText(1, Utils.getAttributeValue("url_path", service));
-            item.setText(2, Utils.getAttributeValue("job_chain", service));
-        }
-    }
+      table.removeAll();
+      for (Iterator it = _list.iterator(); it.hasNext();) {
+          Element service = (Element) it.next();
+          TableItem item = new TableItem(table, SWT.NONE);
+          item.setText(0, Utils.getAttributeValue("name", service));
+          item.setText(1, Utils.getAttributeValue("url_path", service));
+          item.setText(2, Utils.getAttributeValue("job_chain", service));
+      }
+  }
+
+   
 
 
     public void selectService(int index) {
@@ -102,8 +105,8 @@ public class WebservicesListener {
             _service = null;
 
             if (_list.size() == 0) {
-                _config.removeChild("web_services");
-                _services = null;
+                _config.removeChild("http_server");
+                _http_server = null;
                 _list = new ArrayList();
             }
 
@@ -140,10 +143,10 @@ public class WebservicesListener {
         if (parameters != null)
             _service.addContent(parameters);
 
-        if (_services == null && _config.getAttribute("web_services") == null) {
-            _services = new Element("web_services");
-            _config.addContent(_services);
-            _list = _services.getChildren("web_service");
+        if (_http_server == null && _config.getAttribute("http_server") == null) {
+            _http_server = new Element("http_server");
+            _config.addContent(_http_server);
+            _list = _http_server.getChildren("web_service");
         }
 
         if (!_list.contains(_service))
@@ -151,6 +154,8 @@ public class WebservicesListener {
 
         _dom.setChanged(true);
     }
+
+    
 
 
     public String[] getJobChains() {
@@ -181,21 +186,21 @@ public class WebservicesListener {
 
 
     public void fillParams(Table table) {
-        table.removeAll();
-        if (_service != null) {
-            Element params = _service.getChild("params");
-            if (params != null) {
-                for (Iterator it = params.getChildren("param").iterator(); it.hasNext();) {
-                    Element e = (Element) it.next();
-                    TableItem param = new TableItem(table, SWT.NONE);
-                    param.setText(0, Utils.getAttributeValue("name", e));
-                    param.setText(1, Utils.getAttributeValue("value", e));
-                }
-            }
-        }
-    }
+      table.removeAll();
+      if (_service != null) {
+          Element params = _service.getChild("params");
+          if (params != null) {
+              for (Iterator it = params.getChildren("param").iterator(); it.hasNext();) {
+                  Element e = (Element) it.next();
+                  TableItem param = new TableItem(table, SWT.NONE);
+                  param.setText(0, Utils.getAttributeValue("name", e));
+                  param.setText(1, Utils.getAttributeValue("value", e));
+              }
+          }
+      }
+  }
 
-
+    
     public boolean isValid(String name) {
         if (_list != null) {
             for (Iterator it = _list.iterator(); it.hasNext();) {

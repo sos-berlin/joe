@@ -1,5 +1,6 @@
 package sos.scheduler.editor.conf.listeners;
 
+import org.eclipse.swt.widgets.Button;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
@@ -48,5 +49,20 @@ public class RunTimeListener {
             setRuntime();
         return _runtime;
     }
+    
+    public void setFunction(String function_name) {
+      if (_runtime != null) {
+
+          Utils.setAttribute("start_time_function",function_name, _runtime, _dom);
+      
+      }
+  }
+    
+    public String getFunction() {
+    	String s = _runtime.getAttributeValue("start_time_function");
+    	if (s==null)s="";
+      return s;
+    }
+    
 
 }

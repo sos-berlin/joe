@@ -54,14 +54,15 @@ public class PeriodListener {
 
 
     public void setPeriodTime(int maxHour, Button bApply, String node, String hours, String minutes, String seconds) {
-        if (_period != null) {
+      if (_period != null) {
 
-            Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period, _dom);
-            if (bApply != null) {
-                bApply.setEnabled(true);
-            }
-        }
-    }
+          Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period, _dom);
+          if (bApply != null) {
+              bApply.setEnabled(true);
+          }
+      }
+  }
+
 
 
     public void setRepeatSeconds(Button bApply, String seconds) {
@@ -83,8 +84,10 @@ public class PeriodListener {
 
 
     public String getEndHours() {
-        return Utils.getIntegerAsString(Utils.getHours(_period.getAttributeValue("end"), -999));
-    }
+      return Utils.getIntegerAsString(Utils.getHours(_period.getAttributeValue("end"), -999));
+   }
+    
+   
 
 
     public String getEndMinutes() {

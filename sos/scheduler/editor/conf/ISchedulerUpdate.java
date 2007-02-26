@@ -25,5 +25,7 @@ public interface ISchedulerUpdate extends IDataChanged {
 
 
     public void updateDays(int type);
-
+    
+    public void updateSpecificWeekdays();
+    
 }

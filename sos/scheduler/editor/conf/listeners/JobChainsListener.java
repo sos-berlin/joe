@@ -280,11 +280,19 @@ public class JobChainsListener {
     public String getState() {
         return Utils.getAttributeValue("state", _node);
     }
+    
+    public String getDelay() {
+        return Utils.getAttributeValue("delay", _node);
+    }
 
 
     public void setState(String state) {
-        Utils.setAttribute("state", state, _node, _dom);
-    }
+      Utils.setAttribute("state", state, _node, _dom);
+  }
+    
+    public void setDelay(String delay) {
+      Utils.setAttribute("delay", delay, _node, _dom);
+  }
 
 
     public String getJob() {
@@ -324,7 +332,7 @@ public class JobChainsListener {
       return Utils.getAttributeValue("remove", _node).equals("yes");
   }
 
-    public void applyNode(boolean isJobchainNode,String state, String job, String next, String error, boolean removeFile,String moveTo) {
+    public void applyNode(boolean isJobchainNode,String state, String job, String delay, String next, String error, boolean removeFile,String moveTo) {
     	 Element node = null;
     	 
     	 if (_node != null) {//Wenn der Knotentyp geändert wird, alten löschen und einen neuen anlegen.
@@ -342,6 +350,7 @@ public class JobChainsListener {
     		    if (isJobchainNode) {
                Utils.setAttribute("state", state, _node, _dom);
                Utils.setAttribute("job", job, _node, _dom);
+               Utils.setAttribute("delay", delay, _node, _dom);
                Utils.setAttribute("next_state", next, _node, _dom);
                Utils.setAttribute("error_state", error, _node, _dom);
     		    }else {
@@ -354,6 +363,7 @@ public class JobChainsListener {
         	     node = new Element("job_chain_node");
                Utils.setAttribute("state", state, node, _dom);
                Utils.setAttribute("job", job, node, _dom);
+               Utils.setAttribute("delay", delay, node, _dom);
                Utils.setAttribute("next_state", next, node, _dom);
                Utils.setAttribute("error_state", error, node, _dom);
         	  }else {

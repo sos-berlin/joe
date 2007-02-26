@@ -165,6 +165,14 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
         }
     }
 
+    public void updateSpecificWeekdays() {
+        if (tree.getSelectionCount() > 0) {
+            TreeItem item = tree.getSelection()[0];
+            TreeData data = (TreeData) item.getData();
+            listener.treeFillSpecificWeekdays(item, data.getElement(), true);
+        }
+    }
+
 
     public void updateJob() {
         if (tree.getSelectionCount() > 0) {
@@ -269,4 +277,6 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
     public String getFilename() {
         return dom.getFilename();
     }
+
+
 }

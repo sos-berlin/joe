@@ -27,7 +27,7 @@ import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 
 public class SchedulerDom extends DomParser {
-    private static final String[] CONFIG_ELEMENTS  = { "base", "security", "process_classes", "script", "web_services",
+    private static final String[] CONFIG_ELEMENTS  = { "base", "security", "cluster", "process_classes", "script", "http_server",
             "holidays", "jobs", "job_chains", "commands" };
 
     private static final String[] JOB_ELEMENTS     = { "description", "params", "script", "process", "monitor",

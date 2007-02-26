@@ -1,11 +1,14 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
@@ -18,6 +21,7 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.RunTimeListener;
 
 public class RunTimeForm extends Composite implements IUpdateLanguage {
+    private Text tFunction;
     private RunTimeListener listener;
 
     private Group           gRunTime    = null;
@@ -46,6 +50,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         periodForm.setEnabled(true);
         periodForm.setPeriod(listener.getRunTime());
         tComment.setText(listener.getComment());
+        tFunction.setText(listener.getFunction());
 
         String title = gComment.getText();
         if (dom.isJobDisabled(Utils.getAttributeValue("name", job))) {
@@ -70,25 +75,40 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
      */
     private void createGroup() {
         GridLayout gridLayout3 = new GridLayout();
-        gridLayout3.numColumns = 1;
         gRunTime = new Group(this, SWT.NONE);
         gRunTime.setText("Run Time");
         createPeriodForm();
         gRunTime.setLayout(gridLayout3);
         GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, true);
         gridData4.heightHint = 318;
+
+        final Group group = new Group(gRunTime, SWT.NONE);
+        group.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        final GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 2;
+        group.setLayout(gridLayout);
+
+        final Label functionLabel = new Label(group, SWT.NONE);
+        functionLabel.setLayoutData(new GridData());
+        functionLabel.setText("Function");
+
+        tFunction = new Text(group, SWT.BORDER);
+        tFunction.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		listener.setFunction(tFunction.getText());
+        	}
+        });
+        final GridData gridData10_1_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        gridData10_1_1.widthHint = 243;
+        tFunction.setLayoutData(gridData10_1_1);
         holidayForm = new DateForm(gRunTime, SWT.NONE, 0);
         holidayForm.setLayoutData(gridData4);
         createGroup2();
-        createHollidayForm();
+        
     }
 
 
-    /**
-     * This method initializes hollidayForm
-     */
-    private void createHollidayForm() {
-    }
+ 
 
 
     /**
@@ -111,13 +131,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         gridData1.grabExcessHorizontalSpace = true;
         gridData1.grabExcessVerticalSpace = true;
         gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        GridData gridData = new org.eclipse.swt.layout.GridData();
-        gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData.grabExcessHorizontalSpace = true;
-        gridData.grabExcessVerticalSpace = true;
-        gridData.verticalSpan = 1;
-        gridData.horizontalSpan = 1;
-        gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
         gComment = new Group(gRunTime, SWT.NONE);
         gComment.setText("Comment");
         gComment.setLayoutData(gridData);

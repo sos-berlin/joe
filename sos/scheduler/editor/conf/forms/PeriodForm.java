@@ -3,6 +3,8 @@ package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.VerifyEvent;
@@ -589,6 +591,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         label16 = new Label(gPeriod, SWT.NONE);
         label16.setText("hh:mm:ss");
         label16.setLayoutData(gridData4);
+        new Label(gPeriod, SWT.NONE);
+        new Label(gPeriod, SWT.NONE);
+        new Label(gPeriod, SWT.NONE);
+        new Label(gPeriod, SWT.NONE);
+        new Label(gPeriod, SWT.NONE);
     }
 
 
@@ -614,6 +621,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
             sEndMinutes.setText(Utils.fill(2, String.valueOf(listener.getEndMinutes())));
             event = true;
             sEndSeconds.setText(Utils.fill(2, String.valueOf(listener.getEndSeconds())));
+           
 
             if (!onOrder) {
 
@@ -670,6 +678,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         sSingleHours.setEnabled(enabled && !onOrder);
         sSingleMinutes.setEnabled(enabled && !onOrder);
         sSingleSeconds.setEnabled(enabled && !onOrder);
+        
 
         if (singleStart) {
             if (!sBeginHours.getText().equals(""))

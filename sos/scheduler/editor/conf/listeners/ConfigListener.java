@@ -38,8 +38,12 @@ public class ConfigListener {
 
 
     public void setIncludePath(String path) {
-        Utils.setAttribute("include_path", path, _config, _dom);
-    }
+      Utils.setAttribute("include_path", path, _config, _dom);
+  }
+
+    public void setIpAddress(String ip) {
+      Utils.setAttribute("ip_address ", ip, _config, _dom);
+  }
 
 
     public String getJavaClasspath() {
@@ -146,8 +150,12 @@ public class ConfigListener {
 
 
     public String getTcpPort() {
-        return Utils.getAttributeValue("tcp_port", _config);
-    }
+      return Utils.getAttributeValue("tcp_port", _config);
+  }
+
+   public String getIpAddress() {
+      return Utils.getAttributeValue("ip_address ", _config);
+   }
 
 
     public void setTcpPort(String port) {

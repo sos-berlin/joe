@@ -4,6 +4,7 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
@@ -21,7 +22,6 @@ import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ConfigListener;
-
 /**
  * @author sky2000
  */
@@ -90,6 +90,8 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
     private Group          group               = null;
 
     private Text           tComment            = null;
+    private Text           tIpAddress          = null;
+
 
 
     /**
@@ -115,6 +117,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
         tSpoolerID.setText(listener.getSpoolerID());
         tParameter.setText(listener.getParam());
         tIncludePath.setText(listener.getIncludePath());
+        tIpAddress.setText(listener.getIpAddress());
         tLogDir.setText(listener.getLogDir());
         tMailXSLTStylesheet.setText(listener.getMailXSLTStylesheet());
 
@@ -196,6 +199,18 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
                 listener.setIncludePath(tIncludePath.getText());
             }
         });
+
+        final Label ipaddressLabel = new Label(group_1, SWT.NONE);
+        ipaddressLabel.setText("IP-Address");
+
+        tIpAddress = new Text(group_1, SWT.BORDER);
+        tIpAddress.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+            listener.setIpAddress(tIpAddress.getText());
+        		
+        	}
+        });
+        tIpAddress.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         label11 = new Label(group_1, SWT.NONE);
         label11.setText("Log Dir:");
         tLogDir = new Text(group_1, SWT.BORDER);
@@ -438,6 +453,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 
         cUseMainScheduler.setToolTipText(Messages.getTooltip("config.use_main_scheduler"));
         tMainSchedulerHost.setToolTipText(Messages.getTooltip("config.main_scheduler_host"));
+        tIpAddress.setToolTipText(Messages.getTooltip("config.main_scheduler_ip_address"));
 
         sMainSchedulerPort.setToolTipText(Messages.getTooltip("config.main_scheduler_port"));
         tJavaClassPath.setToolTipText(Messages.getTooltip("config.java_class_path"));

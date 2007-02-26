@@ -96,7 +96,7 @@ public class TreeMenu {
                 disableMenu();
                 if (_tree.getSelectionCount() > 0) {
                     Element element = getElement();
-                    if (element != null) {
+                    if (element != null ) {
                         items[0].setEnabled(true); // show info
                         items[1].setEnabled(true); // show xml
                         items[4].setEnabled(true); // copy to clipboard

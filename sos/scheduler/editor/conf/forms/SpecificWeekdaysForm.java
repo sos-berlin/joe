@@ -16,31 +16,16 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.listeners.DaysListener;
+import sos.scheduler.editor.conf.listeners.SpecificWeekdaysListener;
 
-public class DaysForm extends Composite implements IUpdateLanguage {
-    private DaysListener     listener;
+public class SpecificWeekdaysForm extends Composite implements IUpdateLanguage {
+    private SpecificWeekdaysListener     listener;
 
     private ISchedulerUpdate _main;
 
-    private int              _type        = 0;
-
-    private static String[]  _groupLabel  = { "Weekdays", "Monthdays", "Ultimos" };
-
-    private static String[]  _dayLabel    = { "Weekday:", "Monthday:", "Ultimo:" };
-
-    private static String[]  _addLabel    = { "&Add Weekday", "&Add Monthday", "&Add Ultimo" };
-
-    private static String[]  _removeLabel = { "Remove Weekday", "Remove Monthday", "Remove Ultimo" };
-
-    // private static String[] _listLabel = {"Used Weekdays:", "Used
-    // Monthdays:", "Used Ultimos:"};
-
     private Group            group        = null;
-
-    private Label            label        = null;
-
-    private Combo            cUnusedDays  = null;
+ 
+    private Combo            cWeekdays  = null;
 
     private Button           bAdd         = null;
 
@@ -49,20 +34,20 @@ public class DaysForm extends Composite implements IUpdateLanguage {
     private Button           bRemove      = null;
 
     private Label            label2       = null;
+    private Combo            cWeekdayNumber = null;
 
 
-    public DaysForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main, int type) {
+    public SpecificWeekdaysForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main, int type) {
         super(parent, style);
-        if (type > 2 || type < 0)
-            throw new IllegalArgumentException("the type must be from 0 to 2");
-
-        listener = new DaysListener(dom, job, type);
+     
+        listener = new SpecificWeekdaysListener(dom, job);
         _main = main;
-        _type = type;
 
         initialize();
         setToolTipText();
-        read();
+        lUsedDays.setItems(listener.getDays());
+        
+     
     }
 
 
@@ -82,38 +67,36 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         GridData gridData3 = new org.eclipse.swt.layout.GridData();
         gridData3.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData3.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-        GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
-        gridData2.widthHint = 90;
-        GridData gridData = new org.eclipse.swt.layout.GridData();
-        gridData.horizontalSpan = 2;
-        gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData.grabExcessHorizontalSpace = true;
-        gridData.grabExcessVerticalSpace = true;
-        gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 3;
         group = new Group(this, SWT.NONE);
-        group.setText(_groupLabel[_type]);
+        group.setText("Monthdays");
         group.setLayout(gridLayout);
-        label = new Label(group, SWT.NONE);
-        label.setText(_dayLabel[_type]);
+ 
+
         createCombo();
+        GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
+        gridData2.widthHint = 90;
         bAdd = new Button(group, SWT.NONE);
-        bAdd.setText(_addLabel[_type]);
+        bAdd.setText("Add Weekday");
         bAdd.setLayoutData(gridData2);
         getShell().setDefaultButton(bAdd);
+
+        bAdd.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                listener.addDay(cWeekdays.getText() ,cWeekdayNumber.getText());
+                _main.updateSpecificWeekdays();
+                String s = cWeekdayNumber.getText() + "." + cWeekdays.getText();
+                if (lUsedDays.indexOf(s) == -1) lUsedDays.add(s);
+                bRemove.setEnabled(lUsedDays.getSelectionCount() > 0);
+
+            }
+        });
 
         label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label2.setText("Label");
         label2.setLayoutData(gridData5);
-
-        bAdd.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                listener.addDay(cUnusedDays.getText());
-                _main.updateDays(_type);
-                read();
-            }
-        });
         lUsedDays = new List(group, SWT.BORDER);
         lUsedDays.setLayoutData(gridData);
         lUsedDays.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -122,14 +105,16 @@ public class DaysForm extends Composite implements IUpdateLanguage {
             }
         });
         bRemove = new Button(group, SWT.NONE);
-        bRemove.setText(_removeLabel[_type]);
+        bRemove.setText("Remove Weekday");
         bRemove.setEnabled(false);
         bRemove.setLayoutData(gridData3);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 listener.deleteDay(lUsedDays.getItem(lUsedDays.getSelectionIndex()));
-                _main.updateDays(_type);
-                read();
+                lUsedDays.remove(lUsedDays.getSelectionIndex());
+                _main.updateSpecificWeekdays();
+                bRemove.setEnabled(lUsedDays.getSelectionCount() > 0);
+
             }
         });
     }
@@ -141,33 +126,27 @@ public class DaysForm extends Composite implements IUpdateLanguage {
     private void createCombo() {
         GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData4.widthHint = 300;
-        cUnusedDays = new Combo(group, SWT.READ_ONLY);
-        cUnusedDays.setVisibleItemCount(10);
-        cUnusedDays.setLayoutData(gridData4);
+
+        cWeekdayNumber = new Combo(group, SWT.NONE);
+        cWeekdayNumber.setItems(SpecificWeekdaysListener._daynames);
+        cWeekdayNumber.setVisibleItemCount(8);
+        cWeekdayNumber.select(0);
+        cWeekdayNumber.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        cWeekdays = new Combo(group, SWT.READ_ONLY);
+        cWeekdays.setItems(new String[] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"});
+        cWeekdays.setText("Monday");
+        cWeekdays.setVisibleItemCount(7);
+        cWeekdays.setLayoutData(gridData4);
     }
 
 
-    private void read() {
-        cUnusedDays.setItems(listener.getUnusedDays());
-        cUnusedDays.select(0);
-
-        int index = lUsedDays.getSelectionIndex();
-        lUsedDays.setItems(listener.getUsedDays());
-        if (index >= lUsedDays.getItemCount())
-            index--;
-        if (lUsedDays.getItemCount() > 0)
-            lUsedDays.setSelection(index);
-
-        bAdd.setEnabled(cUnusedDays.getItemCount() > 0);
-        bRemove.setEnabled(lUsedDays.getSelectionCount() > 0);
-    }
 
 
     public void setToolTipText() {
         bAdd.setToolTipText(Messages.getTooltip("days.btn_add"));
         lUsedDays.setToolTipText(Messages.getTooltip("days.used_days"));
         bRemove.setToolTipText(Messages.getTooltip("days.btn_remove"));
-        cUnusedDays.setToolTipText(Messages.getTooltip("days.unused_days"));
+        cWeekdays.setToolTipText(Messages.getTooltip("days.unused_days"));
 
     }
 

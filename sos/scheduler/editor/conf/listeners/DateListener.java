@@ -34,7 +34,7 @@ public class DateListener implements Comparator {
     private Element         _parent;
 
     private List            _list;
-
+ 
 
     public DateListener(SchedulerDom dom, Element element, int type) {
         _dom = dom;
@@ -49,6 +49,8 @@ public class DateListener implements Comparator {
             _list = _parent.getChildren(_elementName[_type]);
             sort();
         }
+            
+        
     }
 
 
@@ -70,6 +72,10 @@ public class DateListener implements Comparator {
             _parent = new Element("holidays");
             _element.addContent(_parent);
             _list = _parent.getChildren("holiday");
+        }
+
+        if (_list == null && _type == 0) {
+          _list = _parent.getChildren("holiday");
         }
 
         Element date = new Element(_elementName[_type]);
@@ -183,4 +189,57 @@ public class DateListener implements Comparator {
         }
         return 0;
     }
+    
+    public String[] getIncludes() {
+      if (_parent == null && _type == 0) {
+        _parent = new Element("holidays");
+        _element.addContent(_parent);
+      }
+      
+      if (_parent != null) {
+          List includeList = _parent.getChildren("include");
+          String[] includes = new String[includeList.size()];
+          Iterator it = includeList.iterator();
+          int i = 0;
+          while (it.hasNext()) {
+              Element include = (Element) it.next();
+              String file = include.getAttributeValue("file");
+              includes[i++] = file == null ? "" : file;
+          }
+          return includes;
+      } else
+          return new String[0];
+  }
+    
+    public void addInclude(String filename) {
+      if (_parent == null && _type == 0) {
+        _parent = new Element("holidays");
+        _element.addContent(_parent);
+      }
+  
+      if (_parent != null) {
+          List includes = _element.getChildren("include");
+          _parent.addContent(includes.size(), new Element("include").setAttribute("file", filename));
+          _dom.setChanged(true);
+      } else
+          System.out.println("no script element defined!");
+  }    
+    
+    public void removeInclude(int index) {
+      if (_parent == null && _type == 0) {
+        _parent = new Element("holidays");
+        _element.addContent(_parent);
+      }
+     
+      if (_parent != null) {
+          List includeList = _parent.getChildren("include");
+          if (index >= 0 && index < includeList.size()) {
+              includeList.remove(index);
+              _dom.setChanged(true);
+          } else
+              System.out.println("index " + index + " is out of range for include!");
+      } else
+          System.out.println("no script element defined!");
+  }
+    
 }

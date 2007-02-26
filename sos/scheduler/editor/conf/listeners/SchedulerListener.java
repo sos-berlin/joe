@@ -17,11 +17,13 @@ import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.BaseForm;
+import sos.scheduler.editor.conf.forms.ClusterForm;
 import sos.scheduler.editor.conf.forms.CommandsForm;
 import sos.scheduler.editor.conf.forms.ConfigForm;
 import sos.scheduler.editor.conf.forms.DateForm;
 import sos.scheduler.editor.conf.forms.DaysForm;
 import sos.scheduler.editor.conf.forms.ExecuteForm;
+import sos.scheduler.editor.conf.forms.HttpDirectoriesForm;
 import sos.scheduler.editor.conf.forms.JobChainsForm;
 import sos.scheduler.editor.conf.forms.JobCommandForm;
 import sos.scheduler.editor.conf.forms.JobCommandsForm;
@@ -36,6 +38,7 @@ import sos.scheduler.editor.conf.forms.RunTimeForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.conf.forms.ScriptForm;
 import sos.scheduler.editor.conf.forms.SecurityForm;
+import sos.scheduler.editor.conf.forms.SpecificWeekdaysForm;
 import sos.scheduler.editor.conf.forms.WebservicesForm;
 
 public class SchedulerListener {
@@ -57,14 +60,22 @@ public class SchedulerListener {
         Element config = _dom.getRoot().getChild("config");
 
         TreeItem item = new TreeItem(tree, SWT.NONE);
+
+        
         item.setData(new TreeData(Editor.CONFIG, config, Options.getHelpURL("config")));
         item.setText("Config");
         item = new TreeItem(tree, SWT.NONE);
         item.setData(new TreeData(Editor.BASE, config, Options.getHelpURL("base")));
         item.setText("Base Files");
+        
         item = new TreeItem(tree, SWT.NONE);
         item.setData(new TreeData(Editor.SECURITY, config, Options.getHelpURL("security"), "security"));
         item.setText("Security");
+       
+        item = new TreeItem(tree, SWT.NONE);
+        item.setData(new TreeData(Editor.CLUSTER, config, Options.getHelpURL("cluster"), "cluster"));
+        item.setText("Cluster");
+       
         item = new TreeItem(tree, SWT.NONE);
         item.setData(new TreeData(Editor.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"),
                 "process_classes"));
@@ -72,9 +83,22 @@ public class SchedulerListener {
         item = new TreeItem(tree, SWT.NONE);
         item.setData(new TreeData(Editor.SCRIPT, config, Options.getHelpURL("start_script"), "script"));
         item.setText("Start Script");
-        item = new TreeItem(tree, SWT.NONE);
-        item.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("web_services"), "web_services"));
+        
+        
+        TreeItem http_server = new TreeItem(tree, SWT.NONE);
+        http_server.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
+        http_server.setText("Http Server");
+  
+        item = new TreeItem(http_server, SWT.NONE);
+        item.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
         item.setText("Web Services");
+        item = new TreeItem(http_server, SWT.NONE);
+        item.setData(new TreeData(Editor.HTTPDIRECTORIES, config, Options.getHelpURL("http_directories"), "http_directories"));
+        item.setText("Http Drectories");
+        
+        //http_server.setExpanded(true);
+        
+        
         item = new TreeItem(tree, SWT.NONE);
         item.setData(new TreeData(Editor.HOLIDAYS, config, Options.getHelpURL("holidays"), "holidays"));
         item.setText("Holidays");
@@ -209,6 +233,12 @@ public class SchedulerListener {
             treeFillDays(item, runtime, 2, false);
 
             item = new TreeItem(run, SWT.NONE);
+            item.setText("Specific Weekdays");
+            item.setData(new TreeData(Editor.SPECIFIC_WEEKDAYS, runtime, Options.getHelpURL("job.run_time.monthdays"),
+                    "monthdays"));
+            treeFillDays(item, runtime, 4, false);
+
+            item = new TreeItem(run, SWT.NONE);
             item.setText("Specific Days");
             item.setData(new TreeData(Editor.DAYS, runtime, Options.getHelpURL("job.run_time.specific_days")));
             if (runtime != null)
@@ -250,19 +280,26 @@ public class SchedulerListener {
             item
                     .setData(new TreeData(Editor.WEEKDAYS, runtime, Options.getHelpURL("job.run_time.weekdays"),
                             "weekdays"));
-            treeFillDays(item, runtime, 0, false);
+            treeFillDays(item, runtime, DaysListener.WEEKDAYS, false);
 
             item = new TreeItem(run, SWT.NONE);
             item.setText("Monthdays");
             item.setData(new TreeData(Editor.MONTHDAYS, runtime, Options.getHelpURL("job.run_time.monthdays"),
                     "monthdays"));
-            treeFillDays(item, runtime, 1, false);
+            treeFillDays(item, runtime, DaysListener.MONTHDAYS, false);
 
             item = new TreeItem(run, SWT.NONE);
             item.setText("Ultimos");
             item.setData(new TreeData(Editor.ULTIMOS, runtime, Options.getHelpURL("job.run_time.ultimos"), "ultimos"));
-            treeFillDays(item, runtime, 2, false);
+            treeFillDays(item, runtime, DaysListener.ULTIMOS, false);
 
+            item = new TreeItem(run, SWT.NONE);
+            item.setText("Specific Weekdays");
+            item.setData(new TreeData(Editor.SPECIFIC_WEEKDAYS, runtime, Options.getHelpURL("job.run_time.monthdays"),
+                    "monthdays"));
+            treeFillDays(item, runtime, 4, false);
+            
+            
             item = new TreeItem(run, SWT.NONE);
             item.setText("Specific Days");
             item.setData(new TreeData(Editor.DAYS, runtime, Options.getHelpURL("job.run_time.specific_days")));
@@ -284,12 +321,19 @@ public class SchedulerListener {
             if (type == DaysListener.WEEKDAYS || type == DaysListener.MONTHDAYS || type == DaysListener.ULTIMOS)
                 new DaysListener(_dom, element, type).fillTreeDays(parent, expand);
             else if (type == 3)
-                new DateListener(_dom, element, 1).fillTreeDays(parent, expand);
-            else
+              new DateListener(_dom, element, 1).fillTreeDays(parent, expand);
+             else
                 System.out.println("Invalid type = " + type + " for filling the days in the tree!");
         }
     }
 
+    public void treeFillSpecificWeekdays(TreeItem parent, Element element, boolean expand) {
+      if (element != null) {
+        
+            new SpecificWeekdaysListener(_dom, element).fillTreeDays(parent, expand);
+    
+      }
+  }
 
     public boolean treeSelection(Tree tree, Composite c) {
         try {
@@ -305,6 +349,7 @@ public class SchedulerListener {
 
                 TreeItem item = tree.getSelection()[0];
                 TreeData data = (TreeData) item.getData();
+                if (data != null) {
 
                 _dom.setInit(true);
                 switch (data.getType()) {
@@ -312,8 +357,11 @@ public class SchedulerListener {
                         new ConfigForm(c, SWT.NONE, _dom);
                         break;
                     case Editor.SECURITY:
-                        new SecurityForm(c, SWT.NONE, _dom, data.getElement());
-                        break;
+                      new SecurityForm(c, SWT.NONE, _dom, data.getElement());
+                      break;
+                    case Editor.CLUSTER:
+                      new ClusterForm(c, SWT.NONE, _dom, data.getElement());
+                      break;
                     case Editor.BASE:
                         new BaseForm(c, SWT.NONE, _dom);
                         break;
@@ -367,11 +415,17 @@ public class SchedulerListener {
                         new DateForm(c, SWT.NONE, DateListener.HOLIDAY, _dom, data.getElement(), _gui);
                         break;
                     case Editor.DAYS:
-                        new DateForm(c, SWT.NONE, DateListener.DATE, _dom, data.getElement(), _gui);
-                        break;
+                      new DateForm(c, SWT.NONE, DateListener.DATE, _dom, data.getElement(), _gui);
+                      break;
+                    case Editor.SPECIFIC_WEEKDAYS:
+                      new SpecificWeekdaysForm(c, SWT.NONE, _dom, data.getElement(), _gui, DaysListener.MONTHDAYS);
+                      break;
                     case Editor.WEBSERVICES:
-                        new WebservicesForm(c, SWT.NONE, _dom, data.getElement());
-                        break;
+                      new WebservicesForm(c, SWT.NONE, _dom, data.getElement());
+                      break;
+                    case Editor.HTTPDIRECTORIES:
+                      new HttpDirectoriesForm(c, SWT.NONE, _dom, data.getElement());
+                      break;
                     case Editor.OPTIONS:
                         new JobOptionsForm(c, SWT.NONE, _dom, data.getElement());
                         break;
@@ -383,6 +437,7 @@ public class SchedulerListener {
                         break;
                     default:
                         System.out.println("no form found for " + item.getText());
+                }
                 }
 
                 c.layout();

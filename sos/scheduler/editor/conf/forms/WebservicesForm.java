@@ -2,6 +2,10 @@ package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
@@ -98,6 +102,11 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
     private Label               label8            = null;
 
     private Label               label10           = null;
+    
+
+
+
+
 
 
     public WebservicesForm(Composite parent, int style, SchedulerDom dom, Element config) {
@@ -106,7 +115,7 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
         initialize();
         setToolTipText();
 
-        listener.fillTable(tServices);
+        listener.fillTable(tServices);   
         cChain.setItems(listener.getJobChains());
     }
 
@@ -672,6 +681,7 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
         tParaName.setText("");
         tParaValue.setText("");
         listener.fillParams(tParams);
+   
 
         if (enabled) {
             bDebug.setSelection(listener.getDebug());
