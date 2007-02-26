@@ -42,7 +42,8 @@ public class ConfigListener {
   }
 
     public void setIpAddress(String ip) {
-      Utils.setAttribute("ip_address ", ip, _config, _dom);
+      Utils.setAttribute("ip_address", ip, _config, _dom);
+      _dom.setChanged(true);
   }
 
 
