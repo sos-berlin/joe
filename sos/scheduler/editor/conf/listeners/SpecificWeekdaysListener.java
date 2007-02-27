@@ -30,7 +30,7 @@ public class SpecificWeekdaysListener {
 
     private SchedulerDom      _dom;
 
-    public static String[]   _daynames = {"First","Second","Third","Fourth","Last","<--Second","<--Third","<--Fourth"};
+    public static String[]   _daynames = {"First","Second","Third","Fourth","Last","Second Last","Third Last","Fourth Last"};
     private String[]           _usedDays    = null;
     private Element           _runtime;
 

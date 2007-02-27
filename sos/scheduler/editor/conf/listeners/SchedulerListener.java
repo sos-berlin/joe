@@ -236,7 +236,7 @@ public class SchedulerListener {
             item.setText("Specific Weekdays");
             item.setData(new TreeData(Editor.SPECIFIC_WEEKDAYS, runtime, Options.getHelpURL("job.run_time.monthdays"),
                     "monthdays"));
-            treeFillDays(item, runtime, 4, false);
+            treeFillSpecificWeekdays(item, runtime, false);
 
             item = new TreeItem(run, SWT.NONE);
             item.setText("Specific Days");

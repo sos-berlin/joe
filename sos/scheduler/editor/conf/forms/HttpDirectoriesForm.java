@@ -221,10 +221,9 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
    
 
     public void setToolTipText() {
-
+    	tUrlPath.setToolTipText(Messages.getTooltip("http_directory.url_path"));
+    	tHttpDirectory.setToolTipText(Messages.getTooltip("http_directory.http_directory"));
     }
-
-
 		public boolean isUnsaved() {
  
 			return false;
