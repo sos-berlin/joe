@@ -793,6 +793,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
             int index = tChains.getSelectionIndex();
             listener.deleteChain(index);
             tChains.remove(index);
+            tNodes.removeAll();
             if (index >= tChains.getItemCount())
                 index--;
             if (tChains.getItemCount() > 0) {
@@ -916,7 +917,8 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 
     private void applyNode() {
         String msg = "";
-        if (!msg.equals("")) {
+        if (!listener.isValidState(tState.getText()))msg = "State already defined.";
+      	if (!msg.equals("")) {
             MainWindow.message(msg, SWT.ICON_INFORMATION);
         } else {
             listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText());
