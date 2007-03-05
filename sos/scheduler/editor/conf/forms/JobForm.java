@@ -569,7 +569,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         	}
         });
         butImport.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        butImport.setText("import");
+        butImport.setText("Import");
         bApply = new Button(gJobParameter, SWT.NONE);
         label4 = new Label(gJobParameter, SWT.SEPARATOR | SWT.HORIZONTAL);
         label4.setText("Label");
@@ -665,7 +665,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         gridData12.horizontalIndent = 24;
         GridLayout gridLayout3 = new GridLayout();
         gridLayout3.horizontalSpacing = 6;
-        gridLayout3.numColumns = 2;
+        gridLayout3.numColumns = 3;
         gDescription = new Group(sashForm, SWT.NONE);
         gDescription.setText("Job Description");
         gDescription.setLayout(gridLayout3);
@@ -680,7 +680,6 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
                 listener.setInclude(tFileName.getText());
             }
         });
-        new Label(gDescription, SWT.NONE);
 
         final Button butShow = new Button(gDescription, SWT.NONE);
         butShow.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false, false));
@@ -699,7 +698,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         		}
         	}
         });
-        butShow.setText("show");
+        butShow.setText("Show");
         /*tURL.addMouseListener(new MouseAdapter() {
         	public void mouseDown(final MouseEvent e) {
         		System.out.println("hier wird der URL geöffnet");
@@ -724,6 +723,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
                 listener.setDescription(tDescription.getText());
             }
         });
+        new Label(gDescription, SWT.NONE);
     }
 
 

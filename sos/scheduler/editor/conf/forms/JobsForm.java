@@ -87,17 +87,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 				bRemoveJob.setEnabled(true);
 			}
 		});
-		bRemoveJob = new Button(group, SWT.NONE);
-		//bRemoveJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		bRemoveJob.setText("Remove Job");
-		bRemoveJob.setEnabled(false);
-		bRemoveJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				bRemoveJob.setEnabled(listener.deleteJob(table));
-			}
-		});
 		GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);        
-		bRemoveJob.setLayoutData(gridData1);
 		
 		importJobFromButton = new Button(group, SWT.NONE);        
 		importJobFromButton.addSelectionListener(new SelectionAdapter() {
@@ -113,7 +103,17 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		importJobFromButton.setLayoutData(gridData1);
-		importJobFromButton.setText("import Job");
+		importJobFromButton.setText("Import Job");
+		bRemoveJob = new Button(group, SWT.NONE);
+		//bRemoveJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+		bRemoveJob.setText("Remove Job");
+		bRemoveJob.setEnabled(false);
+		bRemoveJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				bRemoveJob.setEnabled(listener.deleteJob(table));
+			}
+		});
+		bRemoveJob.setLayoutData(new GridData());
 		
 		label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
