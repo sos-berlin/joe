@@ -210,6 +210,15 @@ public class ScriptListener {
             System.out.println("no script element defined!");
     }
 
+    private void removeScriptSource() {
+      String includes[] = getIncludes();
+
+      _script.removeContent();
+
+      for (int i = 0; i < includes.length; i++) {
+        addInclude(includes[i]);
+       }
+    }
 
     public void removeInclude(int index) {
         if (_script != null) {
@@ -233,7 +242,8 @@ public class ScriptListener {
 
 
     public void deleteScript() {
-      if (_script != null) 	_script.removeContent();
+      //    if (_script != null) 	_script.removeContent();
+      if (_script != null) 	removeScriptSource();
     }
     
     public void setSource(String source) {
@@ -250,14 +260,13 @@ public class ScriptListener {
              * o).setText(source); } } }
              */
 
-            String[] f = getIncludes();
+           
 //            if (!found && !source.equals("")) {
               if (!source.equals("")) {
 
-                _script.removeContent();
-                for (int i = 0; i < f.length; i++) {
-                    addInclude(f[i]);
-                }
+//          	_script.removeContent();
+              	removeScriptSource();
+             
                 _script.addContent(new CDATA(source));
             }
 
