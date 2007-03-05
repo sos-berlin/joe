@@ -1,5 +1,7 @@
 package sos.scheduler.editor.conf.listeners;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,9 +11,11 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.CDATA;
 import org.jdom.Element;
 
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.app.Options;
 
 public class JobListener {
     private ISchedulerUpdate _main;
@@ -21,6 +25,7 @@ public class JobListener {
     private Element          _job;
 
     private List             _params;
+        
 
 
     public JobListener(SchedulerDom dom, Element job, ISchedulerUpdate update) {
@@ -224,13 +229,54 @@ public class JobListener {
         }
     }
 
+    public void fillParams(ArrayList listOfParams, Table table) {
+    	boolean existParam = false;
+    	for (int i =0; i < listOfParams.size(); i++) {
+    		HashMap h = (HashMap)listOfParams.get(i);                
+    		TableItem item = new TableItem(table, SWT.NONE);
+    		if (h.get("name") != null) {
+    			if(h.get("required") != null && Boolean.getBoolean(h.get("required").toString())) {
+    				item.setBackground(Options.getRequiredColor());
+    			}
+    			if(existsParams(h.get("name").toString(), table)) {
+    				item.setBackground(Options.getRedColor());
+    				existParam = true;
+    			}
+    			item.setText(0, h.get("name").toString());
+    			item.setText(1, (h.get("default_value") != null ? h.get("default_value").toString() : ""));                    	
+    		}           
+    	}
+    	if(existParam) {
+    		//System.out.println("Die Liste enthält doppelte Parameter. Diese sind in roten hintergrund hinterlegt.");
+    		int cont = MainWindow.message(MainWindow.getSShell(), sos.scheduler.editor.app.Messages.getString("double_params"), SWT.ICON_WARNING | SWT.OK );
+    	}
+    }
+    
+    private boolean existsParams(String name, Table table) {
+    	
+    	try {
+    		for (int i =0; i < table.getItemCount(); i++) {
+    			if(table.getItem(i).getText(0).equals(name)) {
+    				return true;
+    			}
+    		}
+    	} catch (Exception e) {
+    		System.out.println("error in JobListener.existsParams " + e.getMessage());
+    	}
+    	return false;
+    }
 
     public void deleteParameter(Table table, int index) {
+    	String currParam = table.getItem(index).getText(0);
+    	
         if (_params != null) {
             _params.remove(index);
             _dom.setChanged(true);
         }
         table.remove(index);
+        //durch das importieren kann ein Parameter zweimal vorkommen. Der Zweite Parameter ist in ro hinterlegt.
+        //Wenn einer der Parameter gelöscht wird, dann soll der rot hinterlegte Parameter wieder einen weißen Hintergrund haben  
+       updateBackGroundColor(table, currParam);
     }
 
 
@@ -266,8 +312,16 @@ public class JobListener {
             TableItem item = new TableItem(table, SWT.NONE);
             item.setText(new String[] { name, value });
         }
+        //updateBackGroundColor(table, name);
     }
 
+    private void updateBackGroundColor(Table table, String currParamname) {
+    	for (int i = 0; i < table.getItemCount(); i++) {
+    		if(table.getItem(i).getText(0).equals(currParamname)) {
+    			table.getItem(i).setBackground(Options.getWhiteColor());    			
+    		}
+    	}
+    }
 
     public String getDescription() {
         Element desc = _job.getChild("description");
@@ -356,6 +410,16 @@ public class JobListener {
 
     public void setIgnoreSignal(String signals) {
       Utils.setAttribute("ignore_signals", signals, _job, _dom);
-    }    
+    }
+
+
+	public SchedulerDom get_dom() {
+		return _dom;
+	}
+
+
+	public ISchedulerUpdate get_main() {
+		return _main;
+	}    
     
 }

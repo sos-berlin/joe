@@ -2,8 +2,12 @@ package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
@@ -22,6 +26,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import com.swtdesigner.SWTResourceManager;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
@@ -121,7 +126,6 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
     private Combo       cSignals          = null;
 
 
-
     public JobForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
         super(parent, style);
         listener = new JobListener(dom, job, main);
@@ -171,6 +175,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         sIdleTimeout.setText(listener.getIdleTimeout());
         listener.fillParams(tParameter);
         tFileName.setText(listener.getInclude());
+        //tURL.setText(listener.getInclude());
         tDescription.setText(listener.getDescription());
         tComment.setText(listener.getComment());
 
@@ -512,7 +517,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         gridData18.grabExcessHorizontalSpace = true;
         gridData18.grabExcessVerticalSpace = true;
         gridData18.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        sashForm = new SashForm(group, SWT.NONE);
+        sashForm = new SashForm(group, SWT.VERTICAL);
+        //sashForm.setWeights(new int[] { 1 });
         sashForm.setOrientation(org.eclipse.swt.SWT.VERTICAL);
         sashForm.setLayoutData(gridData18);
         createGroup1();
@@ -525,7 +531,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes group2
      */
     private void createGroup2() {
-        GridData gridData17 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
+        GridData gridData17 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 6, 1);
         GridData gridData16 = new org.eclipse.swt.layout.GridData();
         gridData16.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData16.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
@@ -539,7 +545,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         gridData10.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData10.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
         GridLayout gridLayout1 = new GridLayout();
-        gridLayout1.numColumns = 5;
+        gridLayout1.numColumns = 6;
         gJobParameter = new Group(sashForm, SWT.NONE);
         gJobParameter.setText("Job Parameter");
         gJobParameter.setLayout(gridLayout1);
@@ -553,11 +559,23 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         label6.setText("Value:");
         tParaValue = new Text(gJobParameter, SWT.BORDER);
         tParaValue.setLayoutData(gridData13);
+
+        final Button butImport = new Button(gJobParameter, SWT.NONE);
+        butImport.setText("import");
+        butImport.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		ShowAllImportJobsForm importJobForms = new ShowAllImportJobsForm(listener, tParameter);
+        		importJobForms.showAllImportJobs();
+        	}
+        });
+        butImport.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        butImport.setText("import");
         bApply = new Button(gJobParameter, SWT.NONE);
         label4 = new Label(gJobParameter, SWT.SEPARATOR | SWT.HORIZONTAL);
         label4.setText("Label");
         label4.setLayoutData(gridData17);
         createTable();
+        new Label(gJobParameter, SWT.NONE);
         bRemove = new Button(gJobParameter, SWT.NONE);
         bRemove.setText("Remove");
         bRemove.setEnabled(false);
@@ -642,9 +660,11 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
     private void createGroup3() {
         GridData gridData14 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
         gridData14.horizontalIndent = 24;
-        GridData gridData12 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
+        GridData gridData12 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        gridData12.widthHint = 355;
         gridData12.horizontalIndent = 24;
         GridLayout gridLayout3 = new GridLayout();
+        gridLayout3.horizontalSpacing = 6;
         gridLayout3.numColumns = 2;
         gDescription = new Group(sashForm, SWT.NONE);
         gDescription.setText("Job Description");
@@ -653,12 +673,48 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         label10.setText("Include:");
         tFileName = new Text(gDescription, SWT.BORDER);
         tFileName.setLayoutData(gridData12);
+                
 
         tFileName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 listener.setInclude(tFileName.getText());
             }
         });
+        new Label(gDescription, SWT.NONE);
+
+        final Button butShow = new Button(gDescription, SWT.NONE);
+        butShow.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false, false));
+        butShow.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		
+        		try {
+        			if (tFileName.getText() != null && tFileName.getText().length() > 0) {
+        				String sHome = sos.scheduler.editor.app.Options.getSchedulerHome();
+        				if(!(sHome.endsWith("\\") || sHome.endsWith("/")))
+        					sHome = sHome.concat("/");
+        				Process p =Runtime.getRuntime().exec("cmd /C START iExplore ".concat(sHome).concat(tFileName.getText()));
+        			}
+        		} catch (Exception ex) {
+        			System.out.println("..could not open file " + tFileName.getText() + " " + ex.getMessage());
+        		}
+        	}
+        });
+        butShow.setText("show");
+        /*tURL.addMouseListener(new MouseAdapter() {
+        	public void mouseDown(final MouseEvent e) {
+        		System.out.println("hier wird der URL geöffnet");
+        		try {
+        			if (urlLabel.getText() != null && urlLabel.getText().length() > 0) {
+        				Process p =Runtime.getRuntime().exec("cmd /C START iExplore ".concat(tURL.getText()));
+        			}
+        		} catch (Exception ex) {
+        			System.out.println("..could not open file " + urlLabel.getText() + " " + ex.getMessage());
+        		}
+        		
+        		
+        	}
+        });
+        */
         new Label(gDescription, SWT.NONE);
         tDescription = new Text(gDescription, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
         tDescription.setFont(ResourceManager.getFont("", 10, SWT.NONE));

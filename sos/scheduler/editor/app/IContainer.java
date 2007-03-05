@@ -14,6 +14,8 @@ public interface IContainer {
 
 
     public DocumentationForm openDocumentation();
+    
+    public String openDocumentationName();
 
 
     public IEditor getCurrentEditor();

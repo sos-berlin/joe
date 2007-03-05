@@ -39,7 +39,7 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
     private String                _xhtmlNs      = null;
 
     private boolean               _doBreak      = true;
-
+ 
 
     public FormatHandler(DocumentationDom dom) {
         _dom = dom;

@@ -310,4 +310,40 @@ public class Options {
             return ResourceManager.getColor(255, 255, 210);
         }
     }
+    
+    public static Color getBlueColor() {
+        try {
+            int r = 0;
+            int g = 0;
+            int b = new Integer(_properties.getProperty("required.color.b")).intValue();
+            return ResourceManager.getColor(r, g, b);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResourceManager.getColor(255, 255, 210);
+        }
+    }
+    
+    public static Color getRedColor() {
+        try {
+            int r = new Integer(_properties.getProperty("required.color.r")).intValue();
+            int g = 0;
+            int b = 0;
+            return ResourceManager.getColor(r, g, b);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResourceManager.getColor(255, 255, 219);
+        }
+    }
+
+    public static Color getWhiteColor() {
+        try {
+            int r = 255;
+            int g = 255;
+            int b = 255;
+            return ResourceManager.getColor(r, g, b);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResourceManager.getColor(255, 255, 219);
+        }
+    }
 }

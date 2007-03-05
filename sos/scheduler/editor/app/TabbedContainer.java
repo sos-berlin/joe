@@ -48,8 +48,7 @@ public class TabbedContainer implements IContainer {
         folder = new CTabFolder(parent, SWT.TOP | SWT.CLOSE);
         initialize();
     }
-
-
+   
     private void initialize() {
         folder.setSimple(false);
         folder.setSize(new Point(690, 478));
@@ -111,16 +110,35 @@ public class TabbedContainer implements IContainer {
     }
 
 
-    public DocumentationForm openDocumentation() {
-        DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
-        if (doc.open(filelist)) {
-            CTabItem tab = newItem(doc, doc.getFilename());
-            // tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
-            return doc;
-        } else
-            return null;
+    public DocumentationForm openDocumentation(){
+    	try {
+    		DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
+    		if (doc.open(filelist)) {
+    			CTabItem tab = newItem(doc, doc.getFilename());
+    			// tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
+    			return doc;
+    		} else 
+    			return null;
+    	} catch (Exception e) {    		
+    		System.out.println("error in TabbedContainer.openDocumentation()" + e.getMessage() );
+    		return null;
+    	}
     }
 
+    public String openDocumentationName(){
+    	try {
+    		DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
+    		if (doc.open(filelist)) { 
+    			//CTabItem tab = newItem(doc, doc.getFilename());
+    			// tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
+    			return doc.getFilename();
+    		} else 
+    			return null;
+    	} catch (Exception e) {    		
+    		System.out.println("error in TabbedContainer.openDocumentation()" + e.getMessage() );
+    		return null;
+    	}
+    }
 
     private CTabItem newItem(Control control, String filename) {
         CTabItem tab = new CTabItem(folder, SWT.NONE);

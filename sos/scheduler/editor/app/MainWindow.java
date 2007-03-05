@@ -12,7 +12,7 @@ public class MainWindow {
 
     private MainListener listener      = null;
 
-    private IContainer   container     = null;
+    private static IContainer   container     = null;
 
     private Menu         menuBar       = null;
 
@@ -251,7 +251,27 @@ public class MainWindow {
 
 
     public static int message(String message, int style) {
-        MessageBox mb = new MessageBox(getSShell(), style);
+    	return message(getSShell(), message, style);
+       /* MessageBox mb = new MessageBox(getSShell(), style);
+        mb.setMessage(message);
+
+        String title = "Message";
+        if ((style & SWT.ICON_ERROR) != 0)
+            title = "Error";
+        else if ((style & SWT.ICON_INFORMATION) != 0)
+            title = "Information";
+        else if ((style & SWT.ICON_QUESTION) != 0)
+            title = "Question";
+        else if ((style & SWT.ICON_WARNING) != 0)
+            title = "Warning";
+        mb.setText(title);
+
+        return mb.open();
+        */
+    }
+
+    public static int message(Shell shell, String message, int style) {
+        MessageBox mb = new MessageBox(shell, style);
         mb.setMessage(message);
 
         String title = "Message";
@@ -267,4 +287,8 @@ public class MainWindow {
 
         return mb.open();
     }
+
+	public static IContainer getContainer() {
+		return container;
+	}
 }
