@@ -422,11 +422,11 @@ public class ShowAllImportJobParamsForm {
 		butApply.setToolTipText(Messages.getTooltip("jobparameter.apply"));
 		butRemove.setToolTipText(Messages.getTooltip("jobparameter.remove"));
 		if(butNext != null)
-			butNext.setToolTipText(Messages.getTooltip("tooltip.assistent.next"));
+			butNext.setToolTipText(Messages.getTooltip("assistent.next"));
 		
 		if(butFinish != null) butFinish.setToolTipText(Messages.getTooltip("jobparameter.import"));
-		if(butCancel != null ) butCancel.setToolTipText(Messages.getTooltip("tooltip.assistent.cancel"));		
-		if(showButton != null) showButton.setToolTipText(Messages.getTooltip("tooltip.assistent.show"));
+		if(butCancel != null ) butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));		
+		if(showButton != null) showButton.setToolTipText(Messages.getTooltip("assistent.show"));
 		
 		
 	}

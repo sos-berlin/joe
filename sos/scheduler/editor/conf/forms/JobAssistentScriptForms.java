@@ -162,7 +162,7 @@ public class JobAssistentScriptForms {
 			});
 			butNext.setText("Next");
 		}
-		setToolTipText();
+		
 		scriptShell.open();
 
 		{
@@ -175,13 +175,14 @@ public class JobAssistentScriptForms {
 			butShow.setLayoutData(new GridData());
 			butShow.setText("Show");
 		}
+		setToolTipText();
 		scriptShell.layout();		
 	}
 
 	public void setToolTipText() {
-		butCancel.setToolTipText(Messages.getTooltip("tooltip.assistent.cancel"));
-		butNext.setToolTipText(Messages.getTooltip("tooltip.assistent.next"));
-		butShow.setToolTipText(Messages.getTooltip("tooltip.assistent.show"));
-		butFinish.setToolTipText(Messages.getTooltip("tooltip.assistent.finish"));				
+		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
+		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
+		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
+		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));				
 	}
 }

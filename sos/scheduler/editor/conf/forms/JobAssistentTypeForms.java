@@ -166,11 +166,11 @@ public class JobAssistentTypeForms {
 	}
 	
 	public void setToolTipText() {
-		butCancel.setToolTipText(Messages.getTooltip("tooltip.assistent.cancel"));
-		butNext.setToolTipText(Messages.getTooltip("tooltip.assistent.next"));
-		butShow.setToolTipText(Messages.getTooltip("tooltip.assistent.show"));
-		radOrderjob.setToolTipText(Messages.getTooltip("tooltip.assistent.radio_order_job"));
-		radStandalonejob.setToolTipText(Messages.getTooltip("tooltip.assistent.radio_standalone_job"));
+		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
+		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
+		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
+		radOrderjob.setToolTipText(Messages.getTooltip("assistent.radio_order_job"));
+		radStandalonejob.setToolTipText(Messages.getTooltip("assistent.radio_standalone_job"));
 		
 	}
 }

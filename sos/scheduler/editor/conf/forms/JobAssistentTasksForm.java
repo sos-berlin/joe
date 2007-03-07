@@ -146,16 +146,17 @@ public class JobAssistentTasksForm {
 			butShow.setLayoutData(new GridData());
 			butShow.setText("Show");
 		}
+		setToolTipText();
 		tasksShell.layout();
 		
 	}
 
 	public void setToolTipText() {
-		butCancel.setToolTipText(Messages.getTooltip("tooltip.assistent.cancel"));
-		butNext.setToolTipText(Messages.getTooltip("tooltip.assistent.next"));
-		butShow.setToolTipText(Messages.getTooltip("tooltip.assistent.show"));
-		butFinish.setToolTipText(Messages.getTooltip("tooltip.assistent.finish"));
-		txtTask.setToolTipText(Messages.getTooltip("tooltip.assistent.task"));
+		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
+		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
+		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
+		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
+		txtTask.setToolTipText(Messages.getTooltip("assistent.task"));
 		
 	}
 }

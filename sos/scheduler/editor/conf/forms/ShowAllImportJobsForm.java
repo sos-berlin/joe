@@ -457,8 +457,8 @@ public class ShowAllImportJobsForm {
 		txtTitle.setToolTipText(Messages.getTooltip("jobtitle"));
 		txtPath.setToolTipText(Messages.getTooltip("jobdescription"));		
 		
-		if(butCancel != null ) butCancel.setToolTipText(Messages.getTooltip("tooltip.assistent.cancel"));		
-		if(butShow != null) butShow.setToolTipText(Messages.getTooltip("tooltip.assistent.show"));
+		if(butCancel != null ) butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));		
+		if(butShow != null) butShow.setToolTipText(Messages.getTooltip("assistent.show"));
 		
 	}
 	
