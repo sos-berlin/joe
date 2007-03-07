@@ -31,11 +31,23 @@ import sos.scheduler.editor.conf.listeners.JobsListener;
 import com.swtdesigner.SWTResourceManager;
 
 public class JobAssistentScriptForms {
-	private Element job = null;
 	
-	private SchedulerDom dom;
-	private ISchedulerUpdate update;
-	private JobsListener listener;
+	private Element           job          = null;
+	
+	private SchedulerDom      dom          = null;
+	
+	private ISchedulerUpdate  update       = null;
+	
+	private JobsListener      listener     = null;
+	
+	private Button            butFinish    = null;
+	
+	private Button            butCancel    = null;
+	
+	private Button            butNext      = null;
+	
+	private Button            butShow      = null;		
+	
 	
 	public JobAssistentScriptForms(SchedulerDom dom_, ISchedulerUpdate update_) {
 		dom = dom_;
@@ -122,7 +134,7 @@ public class JobAssistentScriptForms {
 		}
 
 		{
-			final Button butFinish = new Button(scriptShell, SWT.NONE);
+			butFinish = new Button(scriptShell, SWT.NONE);
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					listener.newImportJob(job);
@@ -133,7 +145,7 @@ public class JobAssistentScriptForms {
 			butFinish.setText("Finish");
 		}
 		{
-			final Button butCancel = new Button(scriptShell, SWT.NONE);
+			butCancel = new Button(scriptShell, SWT.NONE);
 			butCancel.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					scriptShell.dispose();
@@ -142,7 +154,7 @@ public class JobAssistentScriptForms {
 			butCancel.setText("Cancel");
 		}
 		{
-			final Button butNext = new Button(scriptShell, SWT.NONE);
+			butNext = new Button(scriptShell, SWT.NONE);
 			butNext.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					MainWindow.message(scriptShell, "offen???????", SWT.OK );					
@@ -150,10 +162,11 @@ public class JobAssistentScriptForms {
 			});
 			butNext.setText("Next");
 		}
+		setToolTipText();
 		scriptShell.open();
 
 		{
-			final Button butShow = new Button(scriptShell, SWT.NONE);
+			butShow = new Button(scriptShell, SWT.NONE);
 			butShow.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {					
 					MainWindow.message(scriptShell, Utils.getElementAsString(job), SWT.OK );
@@ -165,4 +178,10 @@ public class JobAssistentScriptForms {
 		scriptShell.layout();		
 	}
 
+	public void setToolTipText() {
+		butCancel.setToolTipText(Messages.getTooltip("tooltip.assistent.cancel"));
+		butNext.setToolTipText(Messages.getTooltip("tooltip.assistent.next"));
+		butShow.setToolTipText(Messages.getTooltip("tooltip.assistent.show"));
+		butFinish.setToolTipText(Messages.getTooltip("tooltip.assistent.finish"));				
+	}
 }

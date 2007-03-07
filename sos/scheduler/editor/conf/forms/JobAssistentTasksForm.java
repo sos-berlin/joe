@@ -28,14 +28,25 @@ import sos.scheduler.editor.conf.listeners.JobsListener;
 
 public class JobAssistentTasksForm {
  
-	private Element job = null;
+	private Element           job          = null;
 	
-	private Text txtTask = null;
+	private Text              txtTasks     = null;
  
-	private JobsListener listener;
+	private Text              txtTask      = null;
 	
-	private SchedulerDom dom;
-	private ISchedulerUpdate update;
+	private JobsListener      listener     = null;
+	
+	private SchedulerDom      dom          = null;
+	
+	private ISchedulerUpdate  update       = null;
+	
+	private Button            butFinish    = null;
+	
+	private Button            butCancel    = null;
+	
+	private Button            butNext      = null;
+	
+	private Button            butShow      = null;		
 	
 	public JobAssistentTasksForm(SchedulerDom dom_, ISchedulerUpdate update_) {
 		dom = dom_;
@@ -55,7 +66,7 @@ public class JobAssistentTasksForm {
 		tasksShell.open();
 
 		{
-			final Text txtTasks = new Text(tasksShell, SWT.MULTI);
+			txtTasks = new Text(tasksShell, SWT.MULTI);
 			txtTasks.setEditable(false);
 			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
 			gridData.heightHint = 87;
@@ -80,7 +91,7 @@ public class JobAssistentTasksForm {
 		}
 
 		{
-			final Button butFinish = new Button(tasksShell, SWT.NONE);
+			butFinish = new Button(tasksShell, SWT.NONE);
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					if(txtTask.getText() != null && txtTask.getText().trim().length() > 0) {
@@ -92,7 +103,7 @@ public class JobAssistentTasksForm {
 			butFinish.setText("Finish");
 		}
 		{
-			final Button butCancel = new Button(tasksShell, SWT.NONE);
+			butCancel = new Button(tasksShell, SWT.NONE);
 			butCancel.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					tasksShell.dispose();
@@ -102,7 +113,7 @@ public class JobAssistentTasksForm {
 			butCancel.setText("Cancel");
 		}
 		{
-			final Button butNext = new Button(tasksShell, SWT.NONE);
+			butNext = new Button(tasksShell, SWT.NONE);
 			butNext.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					if(txtTask.getText() != null && txtTask.getText().trim().length() > 0) {
@@ -123,7 +134,7 @@ public class JobAssistentTasksForm {
 		}
 
 		{
-			final Button butShow = new Button(tasksShell, SWT.NONE);
+			butShow = new Button(tasksShell, SWT.NONE);
 			butShow.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					if(txtTask.getText() != null && txtTask.getText().trim().length() > 0) {
@@ -139,4 +150,12 @@ public class JobAssistentTasksForm {
 		
 	}
 
+	public void setToolTipText() {
+		butCancel.setToolTipText(Messages.getTooltip("tooltip.assistent.cancel"));
+		butNext.setToolTipText(Messages.getTooltip("tooltip.assistent.next"));
+		butShow.setToolTipText(Messages.getTooltip("tooltip.assistent.show"));
+		butFinish.setToolTipText(Messages.getTooltip("tooltip.assistent.finish"));
+		txtTask.setToolTipText(Messages.getTooltip("tooltip.assistent.task"));
+		
+	}
 }

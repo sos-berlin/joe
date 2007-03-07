@@ -50,7 +50,8 @@ public class ShowAllImportJobsForm {
 	private Button butImport = null; 
 	private Button butParameters = null;
 	private Button butdescription = null;
-	
+	private Button butCancel = null;
+	private Button butShow = null;
 	/** true -> In der Treeview stehen nur standalone Jobs
 	 * false -> In der treeview stehen nur orderjob */
 	private String jobType = null; 
@@ -247,7 +248,7 @@ public class ShowAllImportJobsForm {
 					butImport.setLayoutData(new GridData(GridData.BEGINNING, GridData.END, false, true));
 				}
 				butImport.setText("Finish");
-				final Button butCancel = new Button(composite, SWT.NONE);
+				butCancel = new Button(composite, SWT.NONE);
 				butCancel.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						shell.dispose();
@@ -324,7 +325,7 @@ public class ShowAllImportJobsForm {
 				}
 				
 				if(assistent) {
-					final Button butShow = new Button(composite, SWT.NONE);
+					butShow = new Button(composite, SWT.NONE);
 					butShow.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
 							HashMap attr = getJobFromDescription();
@@ -350,7 +351,6 @@ public class ShowAllImportJobsForm {
 				{				
 					tree = new Tree(jobnamenGroup, SWT.FULL_SELECTION | SWT.BORDER);
 					tree.setHeaderVisible(true);
-					//tree.setToolTipText(tree.getSelection().length > 0 && tree.getSelection()[0].getData() != null ? tree.getSelection()[0].getData().toString():"");
 					tree.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
 							//System.out.println("Hallo " + tree.getSelection()[0].getText());
@@ -456,6 +456,9 @@ public class ShowAllImportJobsForm {
 		txtJobname.setToolTipText(Messages.getTooltip("jobname"));
 		txtTitle.setToolTipText(Messages.getTooltip("jobtitle"));
 		txtPath.setToolTipText(Messages.getTooltip("jobdescription"));		
+		
+		if(butCancel != null ) butCancel.setToolTipText(Messages.getTooltip("tooltip.assistent.cancel"));		
+		if(butShow != null) butShow.setToolTipText(Messages.getTooltip("tooltip.assistent.show"));
 		
 	}
 	

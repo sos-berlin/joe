@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -20,10 +19,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-
 import org.jdom.Document;
 import org.jdom.Element;
-
 import org.jdom.input.SAXBuilder;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
@@ -37,30 +34,49 @@ import sos.scheduler.editor.conf.listeners.JobsListener;
 //import sos.util.SOSString;
 
 public class ShowAllImportJobParamsForm {
-	private Text txtDescription         = null;
-	private Table table                 = null;
-	private Shell jobParameterShell     = null;
-	private Text txtValue               = null;
+	private Text         txtDescription         = null;
 	
-	private String xmlPaths             = null;
-	private Text txtName                = null; 
-	private JobsListener listener;
-	private JobListener joblistener;
-	//TAbelle aus der JobFrom
-	private Table tParameter = null; 
-	//private SOSString sosString         = new SOSString();
+	private Table        table                  = null;
+	
+	private Shell        jobParameterShell      = null;
+	
+	private Text         txtValue               = null;
+	
+	private String       xmlPaths               = null;
+	
+	private Text         txtName                = null;
+	
+	private JobsListener listener               = null;
+	
+	private JobListener  joblistener            = null;
+	//TAbelle aus der JobFrom: Falls die Klasse über den Import Button vom JobFrom erfolgte
+	private Table        tParameter             = null; 
+	
+	//private SOSString  sosString              = new SOSString();
+	
+	private Button       butFinish              = null;
 	
 	/** Beiinhaltet Informationen aus der Dialog import Jobs: name, titel und Pfad des Job, */
-	private HashMap jobInfo             = null;
+	private HashMap      jobInfo                = null;
 	
-	private Button butApply         = null;
-	private Button butNext            = null;
-	private Button butRemove         = null;
-	private ArrayList listOfParams = new ArrayList();
+	private Button       butApply               = null;
 	
-	private boolean assistent = false;
-	private SchedulerDom dom;
-	private ISchedulerUpdate update;
+	private Button       butNext                = null;
+	
+	private Button       butRemove              = null;
+	
+	private ArrayList    listOfParams           = new ArrayList();
+	
+	private boolean      assistent              = false;
+	
+	private SchedulerDom dom                    = null;
+	
+	private ISchedulerUpdate update             = null;
+	
+	private Button       butCancel              = null; 
+	
+	private Button       showButton                = null;
+	
 	
 	public ShowAllImportJobParamsForm() {		
 	}
@@ -123,8 +139,6 @@ public class ShowAllImportJobParamsForm {
 				}
 				
 			}
-			
-			
 			
 		} catch( Exception ex ) {
 			ex.printStackTrace();
@@ -229,7 +243,7 @@ public class ShowAllImportJobParamsForm {
 			gridData_6.widthHint = 398;
 			txtDescription.setLayoutData(gridData_6);
 			
-			final Button butFinish = new Button(group_1, SWT.NONE);
+			butFinish = new Button(group_1, SWT.NONE);
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {				
 					ArrayList listOfParams = getParameters();								
@@ -263,15 +277,15 @@ public class ShowAllImportJobParamsForm {
 						jobParameterShell.close();
 					}
 				});
+				
+				final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
+				gridData_4.widthHint = 54;
+				butNext.setLayoutData(gridData_4);
+				
+				butNext.setText("Next");
 			}
-			final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
-			gridData_4.widthHint = 54;
-			butNext.setLayoutData(gridData_4);
-			
-			butNext.setText("Next");
-			
 			new Label(group_1, SWT.NONE);
-			final Button showButton = new Button(group_1, SWT.NONE);
+			showButton = new Button(group_1, SWT.NONE);
 			showButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					
@@ -284,7 +298,7 @@ public class ShowAllImportJobParamsForm {
 			showButton.setText("Show");
 			new Label(group_1, SWT.NONE);
 			
-			final Button butCancel = new Button(group_1, SWT.NONE);
+			butCancel = new Button(group_1, SWT.NONE);
 			butCancel.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					jobParameterShell.dispose();
@@ -294,11 +308,7 @@ public class ShowAllImportJobParamsForm {
 			butCancel.setText("Cancel");
 			
 			listOfParams = this.parseDocuments(xmlFilename);
-			
-			if(assistent) {
-			}
-			
-			
+						
 			final Group jobnamenGroup = new Group(jobParameterShell, SWT.BORDER);
 			final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData_2.heightHint = 417;
@@ -411,9 +421,13 @@ public class ShowAllImportJobParamsForm {
 		table.setToolTipText(Messages.getTooltip("tableparams"));
 		butApply.setToolTipText(Messages.getTooltip("jobparameter.apply"));
 		butRemove.setToolTipText(Messages.getTooltip("jobparameter.remove"));
-		butNext.setToolTipText(Messages.getTooltip("jobparameter.import"));
+		if(butNext != null)
+			butNext.setToolTipText(Messages.getTooltip("tooltip.assistent.next"));
 		
-		//txtDescription
+		if(butFinish != null) butFinish.setToolTipText(Messages.getTooltip("jobparameter.import"));
+		if(butCancel != null ) butCancel.setToolTipText(Messages.getTooltip("tooltip.assistent.cancel"));		
+		if(showButton != null) showButton.setToolTipText(Messages.getTooltip("tooltip.assistent.show"));
+		
 		
 	}
 	

@@ -31,19 +31,29 @@ import sos.scheduler.editor.conf.listeners.JobsListener;
 import com.swtdesigner.SWTResourceManager;
 
 public class JobAssistentProcessForms {
-	private Element job = null;
 	
-	private SchedulerDom dom;
-	private ISchedulerUpdate update;
-	private JobsListener listener;
+    private Element           job          = null;
+	
+	private SchedulerDom      dom          = null;
+	
+	private ISchedulerUpdate  update       = null;
+	
+	private JobsListener      listener     = null;
+	
+	private Button            butFinish    = null;
+	
+	private Button            butCancel    = null;
+	
+	private Button            butNext      = null;
+	
+	private Button            butShow      = null;		
+	
 	
 	public JobAssistentProcessForms(SchedulerDom dom_, ISchedulerUpdate update_) {
 		dom = dom_;
 		update = update_;
 		listener = new JobsListener(dom, update);			
 	}
-
-
 
 	public void showProcessForm(Element job_) {
 		job = job_;
@@ -122,7 +132,7 @@ public class JobAssistentProcessForms {
 		}
 
 		{
-			final Button butFinish = new Button(processShell, SWT.NONE);
+			butFinish = new Button(processShell, SWT.NONE);
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					listener.newImportJob(job);
@@ -133,7 +143,7 @@ public class JobAssistentProcessForms {
 			butFinish.setText("Finish");
 		}
 		{
-			final Button butCancel = new Button(processShell, SWT.NONE);
+			butCancel = new Button(processShell, SWT.NONE);
 			butCancel.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					processShell.dispose();
@@ -142,7 +152,7 @@ public class JobAssistentProcessForms {
 			butCancel.setText("Cancel");
 		}
 		{
-			final Button butNext = new Button(processShell, SWT.NONE);
+			butNext = new Button(processShell, SWT.NONE);
 			butNext.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					MainWindow.message(processShell, "offen???????", SWT.OK );					
@@ -150,10 +160,11 @@ public class JobAssistentProcessForms {
 			});
 			butNext.setText("Next");
 		}
+		setToolTipText();
 		processShell.open();
 
 		{
-			final Button butShow = new Button(processShell, SWT.NONE);
+			butShow = new Button(processShell, SWT.NONE);
 			butShow.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {					
 					MainWindow.message(processShell, Utils.getElementAsString(job), SWT.OK );
@@ -163,6 +174,13 @@ public class JobAssistentProcessForms {
 			butShow.setText("Show");
 		}
 		processShell.layout();		
+	}
+
+	public void setToolTipText() {
+		butCancel.setToolTipText(Messages.getTooltip("tooltip.assistent.cancel"));
+		butNext.setToolTipText(Messages.getTooltip("tooltip.assistent.next"));
+		butShow.setToolTipText(Messages.getTooltip("tooltip.assistent.show"));
+		butFinish.setToolTipText(Messages.getTooltip("tooltip.assistent.finish"));				
 	}
 
 }
