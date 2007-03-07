@@ -13,10 +13,11 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.forms.JobAssistentForm;
 import sos.scheduler.editor.conf.forms.JobsForm;
 import sos.scheduler.editor.conf.forms.ShowAllImportJobsForm;
-import sos.util.SOSClassUtil;
-import sos.util.SOSString;
+//import sos.util.SOSClassUtil;
+//import sos.util.SOSString;
  
 public class JobsListener { 
 
@@ -30,7 +31,7 @@ public class JobsListener {
 
     private List             _list;
     
-    private SOSString        sosString = new SOSString();
+//    private SOSString        sosString = new SOSString();
 
 
     public JobsListener(SchedulerDom dom, ISchedulerUpdate update) {
@@ -93,9 +94,9 @@ public class JobsListener {
     }
  
 
-    public void newImportJob(java.util.HashMap attr) {
-        Element job = new Element("job");
- 
+    public Element createJobElement(java.util.HashMap attr) {
+    	Element job = new Element("job");
+    	 
 //      config Job Attribute bilden
         if(attr.get("name") != null && attr.get("name").toString().length() > 0) 
         	Utils.setAttribute("name", attr.get("name").toString(), job);       
@@ -225,20 +226,7 @@ public class JobsListener {
         	if(mon_script.getAttributes().size()> 0)
         		job.addContent(monitor);
         }
-        
-        //process Element
-        /*
-         * 
-<process file="file" param="param" log_file="lslsls" ignore_signal="yes">
-  <environment>
-    <variable name="a" value="sss" /> 
-    <variable name="ass" value="sss" /> 
-  </environment>
-</process>
-
-         */
-        //process, process_file, process_log, process_param
-        //process_environment(=ARrayListe: ein eintrag der Liste ist ein Hashmap (key=name und value))
+                
         if(attr.get("process") != null && attr.get("process").toString().equals("process")) {
         	Element process = new Element("process");
         	
@@ -247,6 +235,9 @@ public class JobsListener {
         	
         	if(attr.get("process_log") != null && attr.get("process_log").toString().length() > 0)
         		Utils.setAttribute("log_file", attr.get("process_log").toString(), process);
+        	
+        	if(attr.get("process_param") != null && attr.get("process_param").toString().length() > 0)
+        		Utils.setAttribute("param", attr.get("process_param").toString(), process);
         	
         	if(attr.get("process_environment") != null) { 
         		Element environment = new Element("environment");
@@ -271,19 +262,35 @@ public class JobsListener {
         //runtime
         Element runtime = new Element("run_time");
         runtime.setAttribute("let_run", "no");
+        job.addContent(runtime);
+        return job;
+    }
+    
+    public void newImportJob(java.util.HashMap attr) {
         
-        
+        Element job = createJobElement(attr);
         if (_list == null)
             initJobs();
         
-        _list.add(job.addContent(runtime));
+        _list.add(job);
         _dom.setChanged(true);
         fillTable(JobsForm.getTable());
         JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);
         _main.updateJobs();        
     }
 
-    
+public void newImportJob(Element job) {
+                
+        if (_list == null)
+            initJobs();
+        
+        _list.add(job);
+        _dom.setChanged(true);
+        fillTable(JobsForm.getTable());
+        JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);
+        _main.updateJobs();        
+    }
+
     
     public boolean deleteJob(Table table) {
         int index = table.getSelectionIndex();
@@ -337,60 +344,9 @@ public class JobsListener {
         }
         return false;
     }
+       
     
-    /**
-     * Alle in der Verzeichnis -DSCHEDULER_HOME/jobs vorhandene XML-Dateien, also Jobbeschreibungen
-     * werden parsiert. Extrahiert werden: jobname, jobbeschreibung 
-     * 
-     * @param args
-     */
-   /* public void getJobsFromDecription()
-	{		
-		//String xmlFilename = "C:/scheduler/test_configs/accarda/ask/jobs/JobSchedulerRenameFile.xml";
-    	String xmlFilename = "";
-		String xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome();
-		try {
-			
-			java.util.Vector filelist = sos.util.SOSFile.getFilelist(xmlPaths, 
-					"^.*\\.xml$",java.util.regex.Pattern.CASE_INSENSITIVE);
-			Iterator fileIterator = filelist.iterator();
-			int counter = 0;
-			while (fileIterator.hasNext()) {
-				xmlFilename = fileIterator.next().toString();
-				System.out.println("*************************" + ++counter + " " +  xmlFilename);
-//				---- Read XML file ----
-				SAXBuilder builder = new SAXBuilder();
-				Document doc = builder.build( new File( xmlFilename ) );
-				// ---- Modify XML data ----
-				Element root = doc.getRootElement();
-				List listMainElements = root.getChildren();  
-								
-				for( int i=0; i<listMainElements.size(); i++ )
-				{
-					// Find searched element with given text:
-					Element elMain  = (Element)(listMainElements.get( i ));
-					//if( null == elMain )  continue;
-					if(elMain.getName().equalsIgnoreCase("job")) {
-						System.out.println("Name= " + elMain.getAttributeValue("name") + ", title = " + elMain.getAttributeValue("title"));		        							
-					}
-					if(elMain.getName().indexOf("documentation") > -1) {
-						List listDoc = elMain.getChildren();
-						System.out.print("Doku = ");
-						for( int j=0; j<listDoc.size(); j++ ) {
-							Element elDoc  = (Element)(listDoc.get( j ));							
-							System.out.println(elDoc.getText());
-						}
-					}					
-				}
-			}
-
-		} catch( Exception ex ) {
-			ex.printStackTrace();
-		}
-	}
-    */
-    public void openImportJobs(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) throws Exception {
-    	//JobImportForm_ iForm = new JobImportForm_(parent, style, dom, update);
+    public void openImportJobs(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) throws Exception {    
     	ShowAllImportJobsForm iDialog = null;    	
     	
     	try {
@@ -399,10 +355,24 @@ public class JobsListener {
     	  
     	   	  
     	} catch (Exception e) {
-    		throw new Exception ("error in " + SOSClassUtil.getMethodName() + " " + e.getMessage());
+    		throw new Exception ("error in JobsListener.openImportJobs " + e.getMessage());
     	}
       
     }
+    
+    public void startJobAssistent(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) throws Exception {    
+    	    	
+    	
+    	try {
+    		JobAssistentForm assitent = new JobAssistentForm(dom, update);
+    		assitent.startJobAssistant();
+    	   	  
+    	} catch (Exception e) {
+    		throw new Exception ("error in JobsListener.startJobAssistent() " + e.getMessage());
+    	}
+      
+    }
+    
     
     
 }
