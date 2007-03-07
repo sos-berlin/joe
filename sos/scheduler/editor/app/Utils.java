@@ -433,4 +433,21 @@ public class Utils {
         return true;
     }
 
+    public static String getElementAsString(Element job) {
+    	org.jdom.output.XMLOutputter output = new org.jdom.output.XMLOutputter( org.jdom.output.Format.getPrettyFormat() );
+    	String retVal = "";
+    	try {
+    		//ausgabe.output(job,System.out);
+    		
+    		retVal = output.outputString(job);
+    	}
+    	
+    	catch (Exception e) {
+    		System.out.println(e);
+    	}
+    	return retVal;
+    }
+    
+    
+    
 }
