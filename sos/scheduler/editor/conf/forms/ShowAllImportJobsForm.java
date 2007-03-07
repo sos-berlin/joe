@@ -13,7 +13,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -21,14 +20,12 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.eclipse.swt.layout.*;
-
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobsListener;
@@ -53,6 +50,12 @@ public class ShowAllImportJobsForm {
 	private Button butImport = null; 
 	private Button butParameters = null;
 	private Button butdescription = null;
+	
+	/** true -> In der Treeview stehen nur standalone Jobs
+	 * false -> In der treeview stehen nur orderjob */
+	private String jobType = null; 
+	
+	private boolean assistent = false;
 	
 	public ShowAllImportJobsForm(SchedulerDom dom_, ISchedulerUpdate update_) {
 		dom = dom_;
@@ -108,10 +111,16 @@ public class ShowAllImportJobsForm {
 		return listOfDoc;
 	}
 	
+	public void showAllImportJobs(String type_, boolean assistent_) {
+		jobType = type_;
+		assistent = assistent_;
+		showAllImportJobs();
+	}
+	
 	public void showAllImportJobs() {
 		try {
 			
-			shell = new Shell();
+			shell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 			final GridLayout gridLayout = new GridLayout();
 			shell.setLayout(gridLayout);
 			shell.setText("Import Jobs");
@@ -156,8 +165,44 @@ public class ShowAllImportJobsForm {
 				composite = new Composite(group_1, SWT.NONE);
 				composite.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 				final GridLayout gridLayout_2 = new GridLayout();
-				gridLayout_2.numColumns = 3;
+				gridLayout_2.numColumns = 5;
 				composite.setLayout(gridLayout_2);
+				
+				/*if(assistent) {
+					final Button butFinish = new Button(composite, SWT.NONE);
+					butFinish.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(final SelectionEvent e) {
+							if(tree.getSelectionCount()== 0) {
+								int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("no_selected_tree"), SWT.ICON_WARNING | SWT.OK );
+								return;
+							}
+							if(listener != null) {
+								if(txtJobname.getText() == null || txtJobname.getText().length() == 0) {
+									int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("no_jobname"), SWT.ICON_WARNING | SWT.OK );
+									txtJobname.setFocus();
+									return;
+								}						
+								
+								if(txtJobname.getText().concat(".xml").equalsIgnoreCase(new File(txtPath.getText()).getName())) {
+									int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("edit_jobname"), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+									if(cont == SWT.YES) {
+										txtJobname.setFocus();
+										return;
+									}						
+								}
+							}
+							HashMap attr = getJobFromDescription();
+							ShowAllImportJobParamsForm defaultParams = new ShowAllImportJobParamsForm();
+							ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
+							attr.put("params", listOfParams);
+							Element job = listener.createJobElement(attr);						
+							listener.newImportJob(job);
+							shell.dispose();
+						}
+					});
+					butFinish.setText("Finish");
+				}
+				*/
 				{
 					butImport = new Button(composite, SWT.NONE);				
 					butImport.addSelectionListener(new SelectionAdapter() {
@@ -199,9 +244,16 @@ public class ShowAllImportJobsForm {
 							shell.close();
 						}
 					});
-					butImport.setLayoutData(new GridData(GridData.GRAB_VERTICAL
-							| GridData.VERTICAL_ALIGN_END));
+					butImport.setLayoutData(new GridData(GridData.BEGINNING, GridData.END, false, true));
 				}
+				butImport.setText("Finish");
+				final Button butCancel = new Button(composite, SWT.NONE);
+				butCancel.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {
+						shell.dispose();
+					}
+				});
+				butCancel.setText("Cancel");
 				
 				butParameters = new Button(composite, SWT.NONE);
 				
@@ -230,7 +282,10 @@ public class ShowAllImportJobsForm {
 						}												
 						
 						HashMap h = getJobFromDescription();
-						if(listener != null) {
+						if(assistent) {
+							ShowAllImportJobParamsForm paramsForm = new ShowAllImportJobParamsForm(dom, update, h);					
+							paramsForm.showAllImportJobParams(txtPath.getText(), assistent);
+						}else if(listener != null) {
 							ShowAllImportJobParamsForm paramsForm = new ShowAllImportJobParamsForm(dom, update, h);					
 							paramsForm.showAllImportJobParams(txtPath.getText());
 						} else {
@@ -243,7 +298,9 @@ public class ShowAllImportJobsForm {
 				});
 				butParameters.setText("Parameters");
 				
-				if(this.joblistener != null) {					
+				if(assistent) {
+					butParameters.setText("Next");
+				} else if(this.joblistener != null) {					
 					butParameters.setText("Import Parameter");
 					this.butImport.setVisible(false);
 				} else {
@@ -265,6 +322,22 @@ public class ShowAllImportJobsForm {
 					butdescription.setLayoutData(new GridData());
 					butdescription.setText("Description");
 				}
+				
+				if(assistent) {
+					final Button butShow = new Button(composite, SWT.NONE);
+					butShow.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(final SelectionEvent e) {
+							HashMap attr = getJobFromDescription();
+							ShowAllImportJobParamsForm defaultParams = new ShowAllImportJobParamsForm();
+							ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
+							attr.put("params", listOfParams);
+							Element job = listener.createJobElement(attr);
+							MainWindow.message(shell, Utils.getElementAsString(job), SWT.OK );
+						}
+					});
+					butShow.setText("Show");
+				}
+				
 			}
 			{
 				final Group jobnamenGroup = new Group(shell, SWT.NONE);
@@ -313,7 +386,7 @@ public class ShowAllImportJobsForm {
 			shell.open();
 			
 		} catch(Exception e) {
-			System.out.println("error in ShowAllImportJobsForm.showAllImportJob(): " + e.getMessage());
+			System.err.println("error in ShowAllImportJobsForm.showAllImportJob(): " + e.getMessage());
 		}
 	}
 	
@@ -323,34 +396,51 @@ public class ShowAllImportJobsForm {
 			String filename = "";
 			String lastParent = "";
 			TreeItem parentItemTreeItem =null;
+			boolean loop = true;
 			for (int i = 0; i < listOfDoc.size(); i++) {
 				HashMap h = (HashMap)listOfDoc.get(i);
-				filename = h.get("filename").toString();
-				if(new File(filename).getParentFile().equals(new File(xmlPaths))) {							
-					final TreeItem newItemTreeItem = new TreeItem(tree, SWT.NONE);
-					newItemTreeItem.setText(0, h.get("name").toString());
-					newItemTreeItem.setText(1, h.get("title").toString());
-					newItemTreeItem.setText(2, filename);
-					newItemTreeItem.setData(h.get("job"));
-				} else {
-					//Kindknoten
-					//System.out.println("Kindknoten: " + filename);
-					if(!lastParent.equalsIgnoreCase(new File(filename).getParentFile().getPath())) {						
-						if(!new File(lastParent).getName().equals(tree.getItems()[tree.getItems().length -1].getText())) {
-							parentItemTreeItem = new TreeItem(tree, SWT.NONE);
-							parentItemTreeItem.setText(0, new File(filename).getParentFile().getName());
-							lastParent = new File(filename).getParentFile().getPath();
-						} else {
-							parentItemTreeItem = new TreeItem(parentItemTreeItem, SWT.NONE);
-							parentItemTreeItem.setText(0, new File(filename).getParentFile().getName());
-							lastParent = new File(filename).getParentFile().getPath();
-						}
+				loop = true;
+				if(jobType != null && jobType.equals("order")){
+					Element job = (Element)h.get("job");
+					if(!(Utils.getAttributeValue("order", job).equals("yes") ||
+							Utils.getAttributeValue("order", job).equals("both"))) {
+						loop = false;
+					} 
+				} else if(jobType != null && jobType.equals("standalonejob")){
+					Element job = (Element)h.get("job");
+					if(!(Utils.getAttributeValue("order", job).equals("no") ||
+							Utils.getAttributeValue("order", job).equals("both"))) {
+						loop = false;
 					}
-					
-					final TreeItem newItemTreeItem = new TreeItem(parentItemTreeItem, SWT.NONE);
-					newItemTreeItem.setText(0, h.get("name").toString());
-					newItemTreeItem.setText(1, h.get("title").toString());
-					newItemTreeItem.setText(2, filename);						
+				}
+				if(loop) {
+					filename = h.get("filename").toString();
+					if(new File(filename).getParentFile().equals(new File(xmlPaths))) {							
+						final TreeItem newItemTreeItem = new TreeItem(tree, SWT.NONE);
+						newItemTreeItem.setText(0, h.get("name").toString());
+						newItemTreeItem.setText(1, h.get("title").toString());
+						newItemTreeItem.setText(2, filename);
+						newItemTreeItem.setData(h.get("job"));
+					} else {
+						//Kindknoten
+						//System.out.println("Kindknoten: " + filename);
+						if(!lastParent.equalsIgnoreCase(new File(filename).getParentFile().getPath())) {						
+							if(!new File(lastParent).getName().equals(tree.getItems()[tree.getItems().length -1].getText())) {
+								parentItemTreeItem = new TreeItem(tree, SWT.NONE);
+								parentItemTreeItem.setText(0, new File(filename).getParentFile().getName());
+								lastParent = new File(filename).getParentFile().getPath();
+							} else {
+								parentItemTreeItem = new TreeItem(parentItemTreeItem, SWT.NONE);
+								parentItemTreeItem.setText(0, new File(filename).getParentFile().getName());
+								lastParent = new File(filename).getParentFile().getPath();
+							}
+						}
+						
+						final TreeItem newItemTreeItem = new TreeItem(parentItemTreeItem, SWT.NONE);
+						newItemTreeItem.setText(0, h.get("name").toString());
+						newItemTreeItem.setText(1, h.get("title").toString());
+						newItemTreeItem.setText(2, filename);						
+					}
 				}
 			}
 		} catch(Exception e) {
@@ -479,8 +569,8 @@ public class ShowAllImportJobsForm {
 					for (int i = 0; i < listOfEnvironment.size(); i++ ) {
 						HashMap hEnv = new HashMap();
 						Element env = (Element)listOfEnvironment.get(i);
-					    hEnv.put("name", (env.getAttribute("name") != null ? env.getAttribute("name").getValue() :""));
-					    hEnv.put("value", (env.getAttribute("value") != null ? env.getAttribute("value").getValue() :""));						
+						hEnv.put("name", (env.getAttribute("name") != null ? env.getAttribute("name").getValue() :""));
+						hEnv.put("value", (env.getAttribute("value") != null ? env.getAttribute("value").getValue() :""));						
 						listOfIncludeFilename.add(hEnv);
 					}
 					h.put("process_environment", listOfIncludeFilename);
