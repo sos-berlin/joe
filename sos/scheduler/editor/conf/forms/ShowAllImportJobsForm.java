@@ -25,6 +25,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -55,8 +56,11 @@ public class ShowAllImportJobsForm {
 	/** true -> In der Treeview stehen nur standalone Jobs
 	 * false -> In der treeview stehen nur orderjob */
 	private String jobType = null; 
-	
+		
 	private boolean assistent = false;
+	
+	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
+	private int assistentType = -1; 
 	
 	public ShowAllImportJobsForm(SchedulerDom dom_, ISchedulerUpdate update_) {
 		dom = dom_;
@@ -112,9 +116,10 @@ public class ShowAllImportJobsForm {
 		return listOfDoc;
 	}
 	
-	public void showAllImportJobs(String type_, boolean assistent_) {
+	public void showAllImportJobs(String type_, boolean assistent_, int assistentType_) {
 		jobType = type_;
 		assistent = assistent_;
+		assistentType = assistentType_;
 		showAllImportJobs();
 	}
 	
@@ -122,52 +127,73 @@ public class ShowAllImportJobsForm {
 		try {
 			
 			shell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+			//shell.setSize(0, 0);
+			shell.setParent(MainWindow.getSShell());			
+			//shell.getBounds().x = MainWindow.getSShell().getBounds().x;
+			//shell.getBounds().y = MainWindow.getSShell().getBounds().y;
+
 			final GridLayout gridLayout = new GridLayout();
 			shell.setLayout(gridLayout);
 			shell.setText("Import Jobs");
 			
-			final Group group_1 = new Group(shell, SWT.BORDER);
+			final Group jobGroup = new Group(shell, SWT.BORDER);
+			jobGroup.setText("Job");
 			final GridLayout gridLayout_3 = new GridLayout();
 			gridLayout_3.numColumns = 2;
-			group_1.setLayout(gridLayout_3);
-			group_1.setLayoutData(new GridData(595, 133));
+			jobGroup.setLayout(gridLayout_3);
+			final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+			gridData_6.heightHint = 227;
+			gridData_6.widthHint = 613;
+			jobGroup.setLayoutData(gridData_6);
 			Label jobnameLabel;
 			
 			Label lblPath;
 			Composite composite;
+
+			final Composite composite_1 = new Composite(jobGroup, SWT.NONE);
+			final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1);
+			gridData_4.widthHint = 573;
+			gridData_4.heightHint = 90;
+			composite_1.setLayoutData(gridData_4);
+			composite_1.setLayout(new GridLayout());
+
+			final Text txtjobimportText = new Text(composite_1, SWT.MULTI | SWT.WRAP);
+			txtjobimportText.setEditable(false);
+			txtjobimportText.setText(Messages.getString("assistent.import_jobs"));
+			final GridData gridData_5 = new GridData(GridData.BEGINNING, GridData.FILL, true, false);
+			gridData_5.heightHint = 81;
+			txtjobimportText.setLayoutData(gridData_5);
 			{
-				jobnameLabel = new Label(group_1, SWT.NONE);
+				jobnameLabel = new Label(jobGroup, SWT.NONE);
+				jobnameLabel.setLayoutData(new GridData());
 				jobnameLabel.setText("Jobname");
 			}
 			{
-				txtJobname = new Text(group_1, SWT.BORDER);
+				txtJobname = new Text(jobGroup, SWT.BORDER);
 				final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
-				gridData.widthHint = 498;
+				gridData.widthHint = 388;
 				txtJobname.setLayoutData(gridData);
+				txtJobname.setBackground(Options.getRequiredColor());
 				txtJobname.setText("");
 			}
 			
-			final Label lblTitle = new Label(group_1, SWT.NONE);
+			final Label lblTitle = new Label(jobGroup, SWT.NONE);
+			lblTitle.setLayoutData(new GridData());
 			lblTitle.setText("Title");
 			
-			txtTitle = new Text(group_1, SWT.BORDER);
+			txtTitle = new Text(jobGroup, SWT.BORDER);
 			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
-			gridData.widthHint = 510;
+			gridData.widthHint = 401;
 			txtTitle.setLayoutData(gridData);
-			lblPath = new Label(group_1, SWT.NONE);
+			lblPath = new Label(jobGroup, SWT.NONE);
+			lblPath.setLayoutData(new GridData());
 			lblPath.setText("Path");
 			
-			txtPath = new Text(group_1, SWT.BORDER);
+			txtPath = new Text(jobGroup, SWT.BORDER);
 			txtPath.setEditable(false);
-			final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-			gridData_1.widthHint = 400;
+			final GridData gridData_1 = new GridData(412, SWT.DEFAULT);
 			txtPath.setLayoutData(gridData_1);
 			{
-				composite = new Composite(group_1, SWT.NONE);
-				composite.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-				final GridLayout gridLayout_2 = new GridLayout();
-				gridLayout_2.numColumns = 5;
-				composite.setLayout(gridLayout_2);
 				
 				/*if(assistent) {
 					final Button butFinish = new Button(composite, SWT.NONE);
@@ -204,69 +230,36 @@ public class ShowAllImportJobsForm {
 					butFinish.setText("Finish");
 				}
 				*/
-				{
-					butImport = new Button(composite, SWT.NONE);				
-					butImport.addSelectionListener(new SelectionAdapter() {
-						public void widgetSelected(final SelectionEvent e) {
-							
-							//System.out.println("importieren");
-							if(tree.getSelectionCount()== 0) {
-								int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("no_selected_tree"), SWT.ICON_WARNING | SWT.OK );
-								return;
-							}
-							if(listener != null) {
-								if(txtJobname.getText() == null || txtJobname.getText().length() == 0) {
-									int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("no_jobname"), SWT.ICON_WARNING | SWT.OK );
-									txtJobname.setFocus();
-									return;
-								}						
-								
-								if(txtJobname.getText().concat(".xml").equalsIgnoreCase(new File(txtPath.getText()).getName())) {
-									int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("edit_jobname"), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-									if(cont == SWT.YES) {
-										txtJobname.setFocus();
-										return;
-									}						
-								}
-							}
-							HashMap h = getJobFromDescription();
-							
-							ShowAllImportJobParamsForm defaultParams = new ShowAllImportJobParamsForm();
-							ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
-							h.put("params", listOfParams);
-							
-							
-							if(listener != null) {
-								listener.newImportJob(h);
-							} else if(joblistener != null) {							
-								joblistener.fillParams(listOfParams, tParameter);
-							}
-							
-							shell.close();
-						}
-					});
-					butImport.setLayoutData(new GridData(GridData.BEGINNING, GridData.END, false, true));
-				}
-				butImport.setText("Finish");
-				butCancel = new Button(composite, SWT.NONE);
-				butCancel.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(final SelectionEvent e) {
-						shell.dispose();
-					}
-				});
-				butCancel.setText("Cancel");
 				
-				butParameters = new Button(composite, SWT.NONE);
 				
-				butParameters.addSelectionListener(new SelectionAdapter() {
+				
+				
+			}
+
+			final Composite composite_3 = new Composite(jobGroup, SWT.NONE);
+			final GridData gridData_7 = new GridData(GridData.END, GridData.CENTER, false, false);
+			gridData_7.widthHint = 168;
+			composite_3.setLayoutData(gridData_7);
+			final GridLayout gridLayout_4 = new GridLayout();
+			gridLayout_4.numColumns = 3;
+			composite_3.setLayout(gridLayout_4);
+			{
+				butImport = new Button(composite_3, SWT.NONE);				
+				butImport.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
-						if(txtJobname.getText().length() == 0) {
-							int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("no_jobname"), SWT.ICON_WARNING | SWT.OK );
-							txtJobname.setFocus();
+						
+						//System.out.println("importieren");
+						if(tree.getSelectionCount()== 0) {
+							int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("no_selected_tree"), SWT.ICON_WARNING | SWT.OK );
 							return;
 						}
-						
 						if(listener != null) {
+							if(txtJobname.getText() == null || txtJobname.getText().length() == 0) {
+								int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("no_jobname"), SWT.ICON_WARNING | SWT.OK );
+								txtJobname.setFocus();
+								return;
+							}						
+							
 							if(txtJobname.getText().concat(".xml").equalsIgnoreCase(new File(txtPath.getText()).getName())) {
 								int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("edit_jobname"), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 								if(cont == SWT.YES) {
@@ -275,91 +268,148 @@ public class ShowAllImportJobsForm {
 								}						
 							}
 						}
-						
-						if(txtPath.getText().length() == 0) {
-							int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("no_jobdescription"), SWT.ICON_WARNING | SWT.OK );
-							txtPath.setFocus();
-							return;
-						}												
-						
 						HashMap h = getJobFromDescription();
-						if(assistent) {
-							ShowAllImportJobParamsForm paramsForm = new ShowAllImportJobParamsForm(dom, update, h);					
-							paramsForm.showAllImportJobParams(txtPath.getText(), assistent);
-						}else if(listener != null) {
-							ShowAllImportJobParamsForm paramsForm = new ShowAllImportJobParamsForm(dom, update, h);					
-							paramsForm.showAllImportJobParams(txtPath.getText());
-						} else {
-							ShowAllImportJobParamsForm paramsForm = new ShowAllImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), joblistener, tParameter, h);					
-							paramsForm.showAllImportJobParams(txtPath.getText());
-						}												
+						
+						ShowAllImportJobParamsForm defaultParams = new ShowAllImportJobParamsForm();
+						ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
+						h.put("params", listOfParams);
+						
+						
+						if(listener != null) {
+							listener.newImportJob(h);
+						} else if(joblistener != null) {							
+							joblistener.fillParams(listOfParams, tParameter);
+						}
 						
 						shell.close();
 					}
 				});
-				butParameters.setText("Parameters");
-				
-				if(assistent) {
-					butParameters.setText("Next");
-				} else if(this.joblistener != null) {					
-					butParameters.setText("Import Parameter");
-					this.butImport.setVisible(false);
-				} else {
-					//butParameters.setVisible(true);
-					this.butImport.setVisible(true);
-					butImport.setText("Import");
+			}
+			butImport.setText("Finish");
+			
+			if(assistent) {
+			} else if(this.joblistener != null) {					
+				butParameters.setText("Import Parameter");
+				this.butImport.setVisible(false);
+			} else {
+				//butParameters.setVisible(true);
+				this.butImport.setVisible(true);
+				butImport.setText("Import");
+			}
+			
+			
+			butCancel = new Button(composite_3, SWT.NONE);
+			butCancel.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					shell.dispose();
 				}
-				{
-					butdescription = new Button(composite, SWT.NONE);
-					butdescription.addSelectionListener(new SelectionAdapter() {
-						public void widgetSelected(final SelectionEvent e) {
-							try  {							
-								Process p =Runtime.getRuntime().exec("cmd /C START iExplore ".concat(txtPath.getText())); 							
-							} catch(Exception ex) {
-								System.out.println("..could not open description " + txtJobname.getText() + " " + ex);							
+			});
+			butCancel.setText("Cancel");
+			{
+				butdescription = new Button(composite_3, SWT.NONE);
+				butdescription.setLayoutData(new GridData());
+				butdescription.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {
+						try  {							
+							Process p =Runtime.getRuntime().exec("cmd /C START iExplore ".concat(txtPath.getText())); 							
+						} catch(Exception ex) {
+							System.out.println("..could not open description " + txtJobname.getText() + " " + ex);							
+						}						
+					}
+				});
+				butdescription.setText("Description");
+			}
+			composite = new Composite(jobGroup, SWT.NONE);
+			composite.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+			final GridLayout gridLayout_2 = new GridLayout();
+			gridLayout_2.numColumns = 2;
+			composite.setLayout(gridLayout_2);
+			butShow = new Button(composite, SWT.NONE);
+			butShow.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+			butShow.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					HashMap attr = getJobFromDescription();
+					ShowAllImportJobParamsForm defaultParams = new ShowAllImportJobParamsForm();
+					ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
+					attr.put("params", listOfParams);
+					Element job = listener.createJobElement(attr);
+					MainWindow.message(shell, Utils.getElementAsString(job), SWT.OK );
+				}
+			});
+			butShow.setText("Show");
+				
+			butParameters = new Button(composite, SWT.NONE);
+			butParameters.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+				
+			butParameters.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					if(txtJobname.getText().length() == 0) {
+						int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("no_jobname"), SWT.ICON_WARNING | SWT.OK );
+						txtJobname.setFocus();
+						return;
+					}
+					
+					if(listener != null) {
+						if(txtJobname.getText().concat(".xml").equalsIgnoreCase(new File(txtPath.getText()).getName())) {
+							int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("edit_jobname"), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+							if(cont == SWT.YES) {
+								txtJobname.setFocus();
+								return;
 							}						
 						}
-					});
-					butdescription.setLayoutData(new GridData());
-					butdescription.setText("Description");
+					}
+					
+					if(txtPath.getText().length() == 0) {
+						int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("no_jobdescription"), SWT.ICON_WARNING | SWT.OK );
+						txtPath.setFocus();
+						return;
+					}												
+					
+					HashMap h = getJobFromDescription();
+					if(assistent) {
+						ShowAllImportJobParamsForm paramsForm = new ShowAllImportJobParamsForm(dom, update, h);					
+						paramsForm.showAllImportJobParams(txtPath.getText(), assistent, assistentType);
+					}else if(listener != null) {
+						ShowAllImportJobParamsForm paramsForm = new ShowAllImportJobParamsForm(dom, update, h);					
+						paramsForm.showAllImportJobParams(txtPath.getText());
+					} else {
+						ShowAllImportJobParamsForm paramsForm = new ShowAllImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), joblistener, tParameter, h);					
+						paramsForm.showAllImportJobParams(txtPath.getText());
+					}												
+					
+					shell.close();
 				}
-				
-				if(assistent) {
-					butShow = new Button(composite, SWT.NONE);
-					butShow.addSelectionListener(new SelectionAdapter() {
-						public void widgetSelected(final SelectionEvent e) {
-							HashMap attr = getJobFromDescription();
-							ShowAllImportJobParamsForm defaultParams = new ShowAllImportJobParamsForm();
-							ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
-							attr.put("params", listOfParams);
-							Element job = listener.createJobElement(attr);
-							MainWindow.message(shell, Utils.getElementAsString(job), SWT.OK );
-						}
-					});
-					butShow.setText("Show");
-				}
-				
-			}
+			});
+			butParameters.setText("Parameters");
+			butParameters.setText("Next");
 			{
 				final Group jobnamenGroup = new Group(shell, SWT.NONE);
 				final GridLayout gridLayout_1 = new GridLayout();
 				jobnamenGroup.setLayout(gridLayout_1);
 				jobnamenGroup.setText("jobnamen");
-				jobnamenGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
-						| GridData.FILL_VERTICAL));
+				final GridData gridData_3 = new GridData(GridData.BEGINNING, GridData.FILL, true, true);
+				gridData_3.heightHint = 382;
+				gridData_3.minimumHeight = 100;
+				jobnamenGroup.setLayoutData(gridData_3);
+				jobnamenGroup.getBounds().height=100;
 				
 				{				
 					tree = new Tree(jobnamenGroup, SWT.FULL_SELECTION | SWT.BORDER);
 					tree.setHeaderVisible(true);
+					tree.getBounds().height = 100;
 					tree.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
 							//System.out.println("Hallo " + tree.getSelection()[0].getText());
-							txtJobname.setText(tree.getSelection()[0].getText());
+							//txtJobname.setText(tree.getSelection()[0].getText());
 							txtTitle.setText(tree.getSelection()[0].getText(1));
 							txtPath.setText(tree.getSelection()[0].getText(2));
 						}
 					});
-					tree.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+					final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, false);
+					gridData_2.widthHint = 583;
+					gridData_2.heightHint = 385;
+					tree.setLayoutData(gridData_2);
+					
 					TreeColumn column1 = new TreeColumn(tree, SWT.LEFT);
 					column1.setText("Name");					
 					column1.setWidth(200);				

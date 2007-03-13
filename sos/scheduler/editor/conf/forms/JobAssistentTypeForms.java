@@ -14,10 +14,14 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Utils;
@@ -57,47 +61,60 @@ public class JobAssistentTypeForms {
 		try {
 			job = job_;
 			final Shell jobTypeShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+			jobTypeShell.setParent(MainWindow.getSShell());
+			//jobTypeShell.getBounds().x = MainWindow.getSShell().getBounds().x;
+			//jobTypeShell.getBounds().y = MainWindow.getSShell().getBounds().y;
+
 			final GridLayout gridLayout = new GridLayout();
-			gridLayout.numColumns = 4;
+			gridLayout.numColumns = 2;
 			jobTypeShell.setLayout(gridLayout);
-			jobTypeShell.setSize(400, 233);
+			jobTypeShell.setSize(515, 305);
 			jobTypeShell.setText("Job Type"); 
 			
 			{
-				final Group group = new Group(jobTypeShell, SWT.NONE);
-				group.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 4, 1));
-				group.setLayout(new GridLayout());
+				final Group jobGroup = new Group(jobTypeShell, SWT.NONE);
+				jobGroup.setText("Job");
+				final GridData gridData_1 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
+				gridData_1.heightHint = 207;
+				gridData_1.widthHint = 482;
+				jobGroup.setLayoutData(gridData_1);
+				final GridLayout gridLayout_1 = new GridLayout();
+				gridLayout_1.numColumns = 2;
+				jobGroup.setLayout(gridLayout_1);
 				
 				{
-					txtOrder = new Text(group, SWT.MULTI);
+					txtOrder = new Text(jobGroup, SWT.MULTI | SWT.WRAP);
 					txtOrder.setEditable(false);
-					final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
-					gridData.heightHint = 99;
+					final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1);
+					gridData.widthHint = 452;
+					gridData.heightHint = 160;
 					txtOrder.setLayoutData(gridData);
 					txtOrder.setText(Messages.getString("assistent.type"));
 				}
 				
 				{
-					radStandalonejob = new Button(group, SWT.RADIO);
+					radStandalonejob = new Button(jobGroup, SWT.RADIO);
 					radStandalonejob.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
 							Utils.setAttribute("order", "no", job );
 						}
 					});
 					radStandalonejob.setSelection(true);
-					radStandalonejob.setLayoutData(new GridData());
-					radStandalonejob.setText("Standalonejob");
+					final GridData gridData = new GridData(GridData.CENTER, GridData.END, false, false);
+					gridData.widthHint = 158;
+					radStandalonejob.setLayoutData(gridData);
+					radStandalonejob.setText(Messages.getString("assistent.type.standalonejob"));
 				}
 				
 				{
-					radOrderjob = new Button(group, SWT.RADIO);
+					radOrderjob = new Button(jobGroup, SWT.RADIO);
 					radOrderjob.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
 							Utils.setAttribute("order", "yes", job );
 						}
 					});
 					radOrderjob.setLayoutData(new GridData());
-					radOrderjob.setText("Orderjob");
+					radOrderjob.setText(Messages.getString("assistent.order.orderjob"));
 				}
 			}
 			
@@ -120,40 +137,54 @@ public class JobAssistentTypeForms {
 				butCancel.setText("Cancel");
 			}
 			
+			jobTypeShell.open();
+
 			{
-				butShow = new Button(jobTypeShell, SWT.NONE);
-				butShow.setLayoutData(new GridData());
-				butShow.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(final SelectionEvent e) {
-						MainWindow.message(jobTypeShell, Utils.getElementAsString(job), SWT.OK );
-					}
-				});
-				butShow.setText("Show");
-			}
-			{
-				butNext = new Button(jobTypeShell, SWT.NONE);
-				butNext.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(final SelectionEvent e) {
-						if(radOrderjob.getSelection()) {
-							isStandaloneJob = false;						
-						} else {
-							isStandaloneJob = true;
+				final Composite composite = new Composite(jobTypeShell, SWT.NONE);
+				final GridData gridData = new GridData(GridData.END, GridData.FILL, false, false);
+				gridData.heightHint = 29;
+				composite.setLayoutData(gridData);
+				final GridLayout gridLayout_1 = new GridLayout();
+				gridLayout_1.numColumns = 2;
+				composite.setLayout(gridLayout_1);
+			
+				{
+					butShow = new Button(composite, SWT.NONE);
+					butShow.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+					butShow.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(final SelectionEvent e) {
+							MainWindow.message(jobTypeShell, Utils.getElementAsString(job), SWT.OK );
 						}
-						
-						jobTypeShell.dispose();
-						
-						Utils.setAttribute("order", isStandaloneJob, job);
-						
-						ShowAllImportJobsForm importJobs = new ShowAllImportJobsForm(dom, update);
-						importJobs.showAllImportJobs((isStandaloneJob ? "standalonejob" : "order"), true);
-						
-						
-					}
-				});
-				butNext.setText("Next");
+					});
+					butShow.setText("Show");
+				}
+				{
+					butNext = new Button(composite, SWT.NONE);
+					final GridData gridData_1 = new GridData(GridData.END, GridData.CENTER, false, false);
+					gridData_1.widthHint = 57;
+					butNext.setLayoutData(gridData_1);
+					butNext.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(final SelectionEvent e) {
+							if(radOrderjob.getSelection()) {
+								isStandaloneJob = false;						
+							} else {
+								isStandaloneJob = true;
+							}
+							
+							jobTypeShell.dispose();
+							
+							Utils.setAttribute("order", isStandaloneJob, job);
+							
+							ShowAllImportJobsForm importJobs = new ShowAllImportJobsForm(dom, update);
+							importJobs.showAllImportJobs((isStandaloneJob ? "standalonejob" : "order"), true, Editor.JOBS);
+							
+							
+						}
+					});
+					butNext.setText("Next");
+				}
 			}
 			setToolTipText();
-			jobTypeShell.open();
 			jobTypeShell.layout();
 			jobTypeShell.pack();		
 		} catch (Exception e) {

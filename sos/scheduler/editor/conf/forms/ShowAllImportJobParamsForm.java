@@ -12,6 +12,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -77,6 +78,9 @@ public class ShowAllImportJobParamsForm {
 	
 	private Button       showButton                = null;
 	
+	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
+	private int assistentType = -1; 
+	
 	
 	public ShowAllImportJobParamsForm() {		
 	}
@@ -140,14 +144,15 @@ public class ShowAllImportJobParamsForm {
 				
 			}
 			
-		} catch( Exception ex ) {
+		} catch( Exception ex ) {			
 			ex.printStackTrace();
 		}
 		return listOfParams; 
 	}
 	
-	public void showAllImportJobParams(String xmlFilename, boolean assistent_)  {
+	public void showAllImportJobParams(String xmlFilename, boolean assistent_, int assistentType_)  {		
 		assistent = assistent_;
+		this.assistentType = assistentType_;
 		showAllImportJobParams(xmlFilename);
 	}
 	
@@ -159,39 +164,49 @@ public class ShowAllImportJobParamsForm {
 		
 		try {
 			jobParameterShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);		
+			jobParameterShell.setParent(MainWindow.getSShell());
 			final GridLayout gridLayout = new GridLayout();
 			jobParameterShell.setLayout(gridLayout);
 			jobParameterShell.setText("Job Parameter");
 			Label nameLabel;
 			
-			final Group group_1 = new Group(jobParameterShell, SWT.BORDER);
-			final GridData gridData_3 = new GridData(531, 168);
+			final Group textParameterGroup = new Group(jobParameterShell, SWT.BORDER);
+			textParameterGroup.setText("Job");
+			final GridData gridData_3 = new GridData(531, 311);
 			gridData_3.minimumWidth = -1;
-			group_1.setLayoutData(gridData_3);
+			textParameterGroup.setLayoutData(gridData_3);
 			final GridLayout gridLayout_3 = new GridLayout();
 			gridLayout_3.numColumns = 5;
-			group_1.setLayout(gridLayout_3);
+			textParameterGroup.setLayout(gridLayout_3);
+
+			final Text txtParameter = new Text(textParameterGroup, SWT.WRAP);
+			txtParameter.setEnabled(false);
+			final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1);
+			gridData_7.heightHint = 96;
+			gridData_7.widthHint = 523;
+			txtParameter.setLayoutData(gridData_7);
+			txtParameter.setText("assistent.parameters");
 			
 			{
-				nameLabel = new Label(group_1, SWT.NONE);
+				nameLabel = new Label(textParameterGroup, SWT.NONE);
 				nameLabel.setText("Name");
 			}
 			{
-				txtName = new Text(group_1, SWT.BORDER);
+				txtName = new Text(textParameterGroup, SWT.BORDER);
 				txtName.setLayoutData(new GridData(185, SWT.DEFAULT));
 				txtName.setText("");
 			}
 			
-			final Label lblTitle = new Label(group_1, SWT.NONE);
+			final Label lblTitle = new Label(textParameterGroup, SWT.NONE);
 			lblTitle.setLayoutData(new GridData());
 			lblTitle.setText("Value");
 			
-			txtValue = new Text(group_1, SWT.BORDER);
+			txtValue = new Text(textParameterGroup, SWT.BORDER);
 			final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData_5.widthHint = 160;
 			txtValue.setLayoutData(gridData_5);
 			{
-				butApply = new Button(group_1, SWT.NONE);
+				butApply = new Button(textParameterGroup, SWT.NONE);
 				final GridData gridData = new GridData(57, SWT.DEFAULT);
 				butApply.setLayoutData(gridData);
 				butApply.addSelectionListener(new SelectionAdapter() {
@@ -235,15 +250,26 @@ public class ShowAllImportJobParamsForm {
 				});
 				butApply.setText("Apply");
 			}
-			new Label(group_1, SWT.NONE);
+			new Label(textParameterGroup, SWT.NONE);
 			
-			txtDescription = new Text(group_1, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL);
-			final GridData gridData_6 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 4);
+			txtDescription = new Text(textParameterGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL);
+			final GridData gridData_6 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 1);
 			gridData_6.heightHint = 92;
 			gridData_6.widthHint = 398;
 			txtDescription.setLayoutData(gridData_6);
+			new Label(textParameterGroup, SWT.NONE);
 			
-			butFinish = new Button(group_1, SWT.NONE);
+			
+			if(assistent) {
+			}
+
+			final Composite composite = new Composite(textParameterGroup, SWT.NONE);
+			composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1));
+			final GridLayout gridLayout_4 = new GridLayout();
+			gridLayout_4.numColumns = 2;
+			composite.setLayout(gridLayout_4);
+			
+			butFinish = new Button(composite, SWT.NONE);
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {				
 					ArrayList listOfParams = getParameters();								
@@ -255,37 +281,29 @@ public class ShowAllImportJobParamsForm {
 					jobParameterShell.dispose();
 				}
 			});
-			butFinish.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			butFinish.setText("Finish");
+			//butFinish.setText("Finish");
+			
 			if(assistent) {
 				butFinish.setText("Finish");
 			} else {
 				butFinish.setText("Import");
 			}
-			new Label(group_1, SWT.NONE);
 			
-			if(assistent) {
-				butNext = new Button(group_1, SWT.NONE);
-				butNext.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(final SelectionEvent e) {
-						if(assistent) {
-							jobInfo.put("params", getParameters());
-							Element job = listener.createJobElement(jobInfo);
-							JobAssistentTasksForm tasks = new JobAssistentTasksForm(dom, update);
-							tasks.showTasksForm(job);
-						} 
-						jobParameterShell.close();
-					}
-				});
-				
-				final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
-				gridData_4.widthHint = 54;
-				butNext.setLayoutData(gridData_4);
-				
-				butNext.setText("Next");
-			}
-			new Label(group_1, SWT.NONE);
-			showButton = new Button(group_1, SWT.NONE);
+			butCancel = new Button(composite, SWT.NONE);
+			butCancel.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					jobParameterShell.dispose();
+				}
+			});
+			butCancel.setText("Cancel");
+			new Label(textParameterGroup, SWT.NONE);
+
+			final Composite composite_1 = new Composite(textParameterGroup, SWT.NONE);
+			composite_1.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false, 2, 1));
+			final GridLayout gridLayout_2 = new GridLayout();
+			gridLayout_2.numColumns = 2;
+			composite_1.setLayout(gridLayout_2);
+			showButton = new Button(composite_1, SWT.NONE);
 			showButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					
@@ -294,24 +312,28 @@ public class ShowAllImportJobParamsForm {
 					MainWindow.message(jobParameterShell, Utils.getElementAsString(job), SWT.OK );
 				}
 			});
-			showButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 			showButton.setText("Show");
-			new Label(group_1, SWT.NONE);
-			
-			butCancel = new Button(group_1, SWT.NONE);
-			butCancel.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
-					jobParameterShell.dispose();
-				}
-			});
-			butCancel.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			butCancel.setText("Cancel");
-			
+			if(assistent) {
+				butNext = new Button(composite_1, SWT.NONE);
+				butNext.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {
+						if(assistent) {
+							jobInfo.put("params", getParameters());
+							Element job = listener.createJobElement(jobInfo);
+							JobAssistentTasksForm tasks = new JobAssistentTasksForm(dom, update);
+							tasks.showTasksForm(job, assistentType);
+						} 
+						jobParameterShell.close();
+					}
+				});
+				
+				butNext.setText("Next");
+			}
 			listOfParams = this.parseDocuments(xmlFilename);
 						
 			final Group jobnamenGroup = new Group(jobParameterShell, SWT.BORDER);
 			final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-			gridData_2.heightHint = 417;
+			gridData_2.heightHint = 204;
 			gridData_2.widthHint = 522;
 			jobnamenGroup.setLayoutData(gridData_2);
 			jobnamenGroup.setBounds(5, 79,483, 264);
@@ -336,6 +358,7 @@ public class ShowAllImportJobParamsForm {
 			table.setLinesVisible(true);
 			table.setHeaderVisible(true);
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
+			gridData_1.heightHint = 230;
 			gridData_1.widthHint = 392;
 			table.setLayoutData(gridData_1);
 			

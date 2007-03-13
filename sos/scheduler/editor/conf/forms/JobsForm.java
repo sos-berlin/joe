@@ -111,7 +111,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 					//String doc = MainWindow.getContainer().openDocumentationName();        		        		        		        
 					//System.out.println("Hallo "  + doc);
 					try {
-						listener.openImportJobs(parent, style, dom, update);
+						listener.openImportJobs(dom, update);
 					} catch (Exception ex) {
 						System.out.println("..error " + ex.getMessage());
 					}
@@ -206,13 +206,13 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 		bNewJob.setToolTipText(Messages.getTooltip("jobs.btn_add_new"));
 		bRemoveJob.setToolTipText(Messages.getTooltip("jobs.btn_remove"));
 		table.setToolTipText(Messages.getTooltip("jobs.table"));
-		importJobFromButton.setToolTipText(Messages.getTooltip("jobs.import_job"));
-		butAssistent.setToolTipText(Messages.getTooltip("jobs.assisten"));
+		importJobFromButton.setToolTipText(Messages.getTooltip("butImport"));
+		butAssistent.setToolTipText(Messages.getTooltip("jobs.assistent"));
 		
 	}
 	
 	
-	public static Table getTable() {
+	public static Table getTable() {		
 		return table;
 	}
 	

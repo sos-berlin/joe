@@ -31,6 +31,7 @@ import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainsListener;
 
@@ -57,6 +58,9 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
   private Button dummy1;
   private static final String GROUP_NODES_TITLE = "Chain Nodes";
   private static final String GROUP_FILEORDERSOURCE_TITLE = "File Order Sources";
+  
+  private ISchedulerUpdate update = null;
+  
     private Group gFileOrderSource;
  
     private JobChainsListener   listener;
@@ -200,7 +204,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
             }
         });
         tChains = new Table(jobchainsGroup, SWT.FULL_SELECTION | SWT.BORDER);
-        tChains.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2));
+        tChains.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 4));
         tChains.setHeaderVisible(true);
         tChains.setLinesVisible(true);
         tChains.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -247,16 +251,22 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
                 deleteChain();
             }
         });
-        new Label(jobchainsGroup, SWT.NONE);
-        new Label(jobchainsGroup, SWT.NONE);
-        new Label(jobchainsGroup, SWT.NONE);
-        new Label(jobchainsGroup, SWT.NONE);
 
         dummy1 = new Button(jobchainsGroup, SWT.NONE);
         dummy1.setVisible(false);
         dummy1.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
         dummy1.setEnabled(false);
         dummy1.setText("Remove Order File Source");
+
+        final Button butAssistent = new Button(jobchainsGroup, SWT.NONE);
+        butAssistent.setEnabled(false);
+        butAssistent.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		listener.startJobAssistent(tChains, update);
+        	}
+        });
+        butAssistent.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+        butAssistent.setText("Assistent");
 
         gNodes = new Group(sashForm, SWT.NONE);
         gNodes.setText("Chain Node");
@@ -989,4 +999,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
       bFileSink.setToolTipText(Messages.getTooltip("job_chains.node.btn_filesink_node"));
 
   }
+    public void setISchedulerUpdate(ISchedulerUpdate update_) {
+    	update = update_;
+    }
 } // @jve:decl-index=0:visual-constraint="10,10"
