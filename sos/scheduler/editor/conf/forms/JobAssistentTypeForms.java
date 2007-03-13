@@ -175,7 +175,7 @@ public class JobAssistentTypeForms {
 							
 							Utils.setAttribute("order", isStandaloneJob, job);
 							
-							ShowAllImportJobsForm importJobs = new ShowAllImportJobsForm(dom, update);
+							JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(dom, update);
 							importJobs.showAllImportJobs((isStandaloneJob ? "standalonejob" : "order"), true, Editor.JOBS);
 							
 							

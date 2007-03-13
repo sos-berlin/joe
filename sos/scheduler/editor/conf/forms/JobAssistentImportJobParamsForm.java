@@ -34,7 +34,7 @@ import sos.scheduler.editor.conf.listeners.JobsListener;
 //import sos.util.SOSClassUtil;
 //import sos.util.SOSString;
 
-public class ShowAllImportJobParamsForm {
+public class JobAssistentImportJobParamsForm {
 	private Text         txtDescription         = null;
 	
 	private Table        table                  = null;
@@ -82,17 +82,17 @@ public class ShowAllImportJobParamsForm {
 	private int assistentType = -1; 
 	
 	
-	public ShowAllImportJobParamsForm() {		
+	public JobAssistentImportJobParamsForm() {		
 	}
 	
-	public ShowAllImportJobParamsForm(SchedulerDom dom_, ISchedulerUpdate update_, HashMap jobInfo_) {
+	public JobAssistentImportJobParamsForm(SchedulerDom dom_, ISchedulerUpdate update_, HashMap jobInfo_) {
 		dom = dom_;
 		update = update_;
 		listener = new JobsListener(dom, update);			
 		jobInfo = jobInfo_;		
 	}
 	
-	public ShowAllImportJobParamsForm(SchedulerDom dom_, ISchedulerUpdate update_, JobListener joblistener_, Table tParameter_,HashMap jobInfo_) {
+	public JobAssistentImportJobParamsForm(SchedulerDom dom_, ISchedulerUpdate update_, JobListener joblistener_, Table tParameter_,HashMap jobInfo_) {
 		dom = dom_;
 		update = update_;
 		joblistener = joblistener_;		
@@ -127,7 +127,7 @@ public class ShowAllImportJobParamsForm {
 					//System.out.println("Name= " + elMain.getAttributeValue("name") + ", default_value = " + elMain.getAttributeValue("default_value") + " required = " + elMain.getAttributeValue("required"));
 					h = new HashMap();
 					h.put("name", elMain.getAttributeValue("name"));
-					h.put("default_value", (elMain.getAttributeValue("default_value") != null ? elMain.getAttributeValue("default_value").toCharArray() : ""));
+					h.put("default_value", (elMain.getAttributeValue("default_value") != null ? elMain.getAttributeValue("default_value").toString() : ""));
 					h.put("required", elMain.getAttributeValue("required"));
 					Element note = elMain.getChild("note", elMain.getNamespace());
 					if(note != null) {
@@ -305,14 +305,16 @@ public class ShowAllImportJobParamsForm {
 			composite_1.setLayout(gridLayout_2);
 			showButton = new Button(composite_1, SWT.NONE);
 			showButton.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
-					
+				public void widgetSelected(final SelectionEvent e) {					
 					jobInfo.put("params", getParameters());
 					Element job = listener.createJobElement(jobInfo);
 					MainWindow.message(jobParameterShell, Utils.getElementAsString(job), SWT.OK );
 				}
 			});
 			showButton.setText("Show");
+			if(!assistent){
+				showButton.setVisible(false);
+			}
 			if(assistent) {
 				butNext = new Button(composite_1, SWT.NONE);
 				butNext.addSelectionListener(new SelectionAdapter() {
@@ -393,7 +395,7 @@ public class ShowAllImportJobParamsForm {
 			jobParameterShell.pack();
 			jobParameterShell.open();
 		} catch (Exception e) {
-			System.out.println("..error in ShowAllImportJobParamsForm.showAllImportJobParams " + ": " + e.getMessage());
+			System.out.println("..error in JobAssistentImportJobParamsForm.showAllImportJobParams " + ": " + e.getMessage());
 		}
 	}
 	
@@ -434,7 +436,7 @@ public class ShowAllImportJobParamsForm {
 				}
 			}
 		} catch (Exception e) {
-			throw new Exception("error in ShowAllImportJobParamsForm.fillTable() "  + e.toString());
+			throw new Exception("error in JobAssistentImportJobParamsForm.fillTable() "  + e.toString());
 		}
 	}
 	

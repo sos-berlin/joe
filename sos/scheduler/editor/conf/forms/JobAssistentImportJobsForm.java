@@ -33,7 +33,7 @@ import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import org.eclipse.swt.widgets.Table;
 
-public class ShowAllImportJobsForm {
+public class JobAssistentImportJobsForm {
 	private Shell shell = null;
 	private Text txtTitle;
 	private Text txtPath;
@@ -62,14 +62,14 @@ public class ShowAllImportJobsForm {
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
 	private int assistentType = -1; 
 	
-	public ShowAllImportJobsForm(SchedulerDom dom_, ISchedulerUpdate update_) {
+	public JobAssistentImportJobsForm(SchedulerDom dom_, ISchedulerUpdate update_) {
 		dom = dom_;
 		update = update_;
 		listener = new JobsListener(dom, update);
 	}
 	
 	
-	public ShowAllImportJobsForm(JobListener listener_, Table tParameter_) {
+	public JobAssistentImportJobsForm(JobListener listener_, Table tParameter_) {
 		joblistener = listener_;
 		tParameter = tParameter_;		
 		
@@ -219,7 +219,7 @@ public class ShowAllImportJobsForm {
 								}
 							}
 							HashMap attr = getJobFromDescription();
-							ShowAllImportJobParamsForm defaultParams = new ShowAllImportJobParamsForm();
+							JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
 							ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
 							attr.put("params", listOfParams);
 							Element job = listener.createJobElement(attr);						
@@ -270,7 +270,7 @@ public class ShowAllImportJobsForm {
 						}
 						HashMap h = getJobFromDescription();
 						
-						ShowAllImportJobParamsForm defaultParams = new ShowAllImportJobParamsForm();
+						JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
 						ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
 						h.put("params", listOfParams);
 						
@@ -287,15 +287,7 @@ public class ShowAllImportJobsForm {
 			}
 			butImport.setText("Finish");
 			
-			if(assistent) {
-			} else if(this.joblistener != null) {					
-				butParameters.setText("Import Parameter");
-				this.butImport.setVisible(false);
-			} else {
-				//butParameters.setVisible(true);
-				this.butImport.setVisible(true);
-				butImport.setText("Import");
-			}
+			
 			
 			
 			butCancel = new Button(composite_3, SWT.NONE);
@@ -329,7 +321,7 @@ public class ShowAllImportJobsForm {
 			butShow.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					HashMap attr = getJobFromDescription();
-					ShowAllImportJobParamsForm defaultParams = new ShowAllImportJobParamsForm();
+					JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
 					ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
 					attr.put("params", listOfParams);
 					Element job = listener.createJobElement(attr);
@@ -343,13 +335,14 @@ public class ShowAllImportJobsForm {
 				
 			butParameters.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-					if(txtJobname.getText().length() == 0) {
+					
+					if(txtJobname.getText().length() == 0 && listener != null) {
 						int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("no_jobname"), SWT.ICON_WARNING | SWT.OK );
 						txtJobname.setFocus();
 						return;
 					}
 					
-					if(listener != null) {
+					if(listener != null && !assistent) {
 						if(txtJobname.getText().concat(".xml").equalsIgnoreCase(new File(txtPath.getText()).getName())) {
 							int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("edit_jobname"), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 							if(cont == SWT.YES) {
@@ -367,13 +360,13 @@ public class ShowAllImportJobsForm {
 					
 					HashMap h = getJobFromDescription();
 					if(assistent) {
-						ShowAllImportJobParamsForm paramsForm = new ShowAllImportJobParamsForm(dom, update, h);					
+						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(dom, update, h);					
 						paramsForm.showAllImportJobParams(txtPath.getText(), assistent, assistentType);
 					}else if(listener != null) {
-						ShowAllImportJobParamsForm paramsForm = new ShowAllImportJobParamsForm(dom, update, h);					
+						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(dom, update, h);					
 						paramsForm.showAllImportJobParams(txtPath.getText());
 					} else {
-						ShowAllImportJobParamsForm paramsForm = new ShowAllImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), joblistener, tParameter, h);					
+						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), joblistener, tParameter, h);					
 						paramsForm.showAllImportJobParams(txtPath.getText());
 					}												
 					
@@ -382,6 +375,15 @@ public class ShowAllImportJobsForm {
 			});
 			butParameters.setText("Parameters");
 			butParameters.setText("Next");
+			if(assistent) {
+			} else if(this.joblistener != null) {					
+				butParameters.setText("Import Parameter");
+				this.butImport.setVisible(false);
+			} else {
+				//butParameters.setVisible(true);
+				this.butImport.setVisible(true);
+				butImport.setText("Import");
+			}
 			{
 				final Group jobnamenGroup = new Group(shell, SWT.NONE);
 				final GridLayout gridLayout_1 = new GridLayout();
@@ -436,7 +438,7 @@ public class ShowAllImportJobsForm {
 			shell.open();
 			
 		} catch(Exception e) {
-			System.err.println("error in ShowAllImportJobsForm.showAllImportJob(): " + e.getMessage());
+			System.err.println("error in JobAssistentImportJobsForm.showAllImportJob(): " + e.getMessage());
 		}
 	}
 	
@@ -494,7 +496,7 @@ public class ShowAllImportJobsForm {
 				}
 			}
 		} catch(Exception e) {
-			System.out.println("error in ShowAllImportJobsForm.createTreeIteam(): " + e.getMessage());
+			System.out.println("error in JobAssistentImportJobsForm.createTreeIteam(): " + e.getMessage());
 		}
 	}
 	
@@ -631,7 +633,7 @@ public class ShowAllImportJobsForm {
 			}
 			
 		} catch (Exception e) {
-			System.out.println("..error in ShowAllImportJobsForm.getJobFromDescription() " + e.getMessage());
+			System.out.println("..error in JobAssistentImportJobsForm.getJobFromDescription() " + e.getMessage());
 		}
 		return h;
 	}

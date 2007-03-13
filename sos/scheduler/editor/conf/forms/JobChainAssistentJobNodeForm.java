@@ -335,7 +335,7 @@ public class JobChainAssistentJobNodeForm {
 		startJobAssistentButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				
-				ShowAllImportJobsForm importJobs = new ShowAllImportJobsForm(listener.get_dom(), update);
+				JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(listener.get_dom(), update);
 				importJobs.showAllImportJobs("order", true, Editor.JOB_CHAINS);
 				refreshComboBox = true;
 			}

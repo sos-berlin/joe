@@ -564,7 +564,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         butImport.setText("import");
         butImport.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
-        		ShowAllImportJobsForm importJobForms = new ShowAllImportJobsForm(listener, tParameter);
+        		JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, tParameter);
         		importJobForms.showAllImportJobs();
         	}
         });
