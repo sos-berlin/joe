@@ -441,7 +441,8 @@ public class SchedulerListener {
                         new JobOptionsForm(c, SWT.NONE, _dom, data.getElement());
                         break;
                     case Editor.JOB_CHAINS:
-                        new JobChainsForm(c, SWT.NONE, _dom, data.getElement());
+                    	JobChainsForm jc= new JobChainsForm(c, SWT.NONE, _dom, data.getElement());
+                    	jc.setISchedulerUpdate(_gui);
                         break;
                     case Editor.COMMANDS:
                         new CommandsForm(c, SWT.NONE, _dom, _gui);

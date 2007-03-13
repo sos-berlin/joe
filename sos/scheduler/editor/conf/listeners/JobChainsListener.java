@@ -5,13 +5,17 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.forms.JobAssistentForm;
+import sos.scheduler.editor.conf.forms.JobChainAssistentForm;
 
 public class JobChainsListener {
     private SchedulerDom _dom;
@@ -29,6 +33,8 @@ public class JobChainsListener {
 
     private String[]     _chainNames;
 
+    /** brauch ich für den Assistenten*/
+    private Table        tChains;
 
     public JobChainsListener(SchedulerDom dom, Element config) {
         _dom = dom;
@@ -37,6 +43,12 @@ public class JobChainsListener {
     }
 
 
+    public void fillChains() {
+    	if(tChains != null) {
+    		fillChains(tChains);
+    	}
+    }
+    
     public void fillChains(Table table) {
         table.removeAll();
         if (_chains != null) {
@@ -164,7 +176,11 @@ public class JobChainsListener {
           }
       }
   }
-    
+    /*public void fillChain() {
+    	if(tNodes != null) {
+    		fillChain(tNodes);
+    	}
+    }*/
     public void fillChain(Table table) {
         table.removeAll();
         String state = "";
@@ -559,4 +575,16 @@ public class JobChainsListener {
         }
         return true;
     }
+    
+    public void startJobAssistent(Table nodes, ISchedulerUpdate update) {    
+    	tChains = nodes;
+    	JobChainAssistentForm assitent = new JobChainAssistentForm(this);
+    	assitent.startJobChainAssistant(update);   	
+    	
+    }
+
+
+	public SchedulerDom get_dom() {
+		return _dom;
+	}
 }
