@@ -212,7 +212,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 	}
 	
 	
-	public static Table getTable() {		
+	public static Table getTable() {				
 		return table;
 	}
 	

@@ -90,12 +90,12 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		final GridLayout gridLayout = new GridLayout();
 		shellSetBack.setLayout(gridLayout);
 		shellSetBack.setSize(482, 287);
-		shellSetBack.setText("Delay order after setback");
+		shellSetBack.setText("Delay Order After Setback");
 		shellSetBack.open();
 
 		final Group jobGroup = new Group(shellSetBack, SWT.NONE);
 		jobGroup.setText("Job");
-		final GridData gridData_2 = new GridData(454, 237);
+		final GridData gridData_2 = new GridData(454, 230);
 		jobGroup.setLayoutData(gridData_2);
 		final GridLayout gridLayout_1 = new GridLayout();
 		gridLayout_1.numColumns = 5;
@@ -103,14 +103,13 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 
 		{
 			txtDelayOrder = new Text(jobGroup, SWT.MULTI);
-			final GridData gridData = new GridData(GridData.FILL, GridData.FILL, false, false, 4, 1);
+			final GridData gridData = new GridData(GridData.FILL, GridData.FILL, false, false, 5, 1);
 			gridData.heightHint = 100;
 			gridData.widthHint = 360;
 			txtDelayOrder.setLayoutData(gridData);
 			txtDelayOrder.setEditable(false);
 			txtDelayOrder.setText(Messages.getString("assistent.order_after_setback"));
 		}
-		new Label(jobGroup, SWT.NONE);
 
 		{
 			lblOftenSetBack = new Label(jobGroup, SWT.NONE);
@@ -189,7 +188,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 
 		final Composite composite_1 = new Composite(jobGroup, SWT.NONE);
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, false, false);
-		gridData_4.heightHint = 37;
+		gridData_4.heightHint = 34;
 		composite_1.setLayoutData(gridData_4);
 		final GridLayout gridLayout_3 = new GridLayout();
 		gridLayout_3.numColumns = 2;
@@ -240,7 +239,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 
 		final Composite composite_2 = new Composite(jobGroup, SWT.NONE);
 		final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
-		gridData_5.heightHint = 46;
+		gridData_5.heightHint = 35;
 		composite_2.setLayoutData(gridData_5);
 		final GridLayout gridLayout_4 = new GridLayout();
 		gridLayout_4.numColumns = 2;
@@ -279,7 +278,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		{
 			butNext = new Button(composite_2, SWT.NONE);
 			final GridData gridData = new GridData(GridData.END, GridData.CENTER, false, false);
-			gridData.widthHint = 61;
+			gridData.widthHint = 50;
 			butNext.setLayoutData(gridData);
 			butNext.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {

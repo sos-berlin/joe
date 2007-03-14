@@ -22,6 +22,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -82,103 +84,103 @@ public class JobChainAssistentJobNodeForm {
 		update = update_;
 		final Shell shellJobChainl = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		final GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 5;
 		shellJobChainl.setLayout(gridLayout);
-		shellJobChainl.setSize(538, 248);
-		shellJobChainl.setText("Job Chain Node");
+		shellJobChainl.setSize(463, 400);
+		shellJobChainl.setText("Job Chain Node" + (Utils.getAttributeValue("name", jobChain) != null ? " for " + Utils.getAttributeValue("name", jobChain): ""));
 		shellJobChainl.open();
 
+		final Group jobChainGroup = new Group(shellJobChainl, SWT.NONE);
+		jobChainGroup.setText("Job Chain");
+		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, false, false);
+		gridData_2.heightHint = 347;
+		gridData_2.widthHint = 441;
+		jobChainGroup.setLayoutData(gridData_2);
+		final GridLayout gridLayout_1 = new GridLayout();
+		gridLayout_1.marginWidth = 10;
+		gridLayout_1.marginTop = 10;
+		gridLayout_1.marginRight = 10;
+		gridLayout_1.marginLeft = 10;
+		gridLayout_1.marginHeight = 10;
+		gridLayout_1.marginBottom = 10;
+		gridLayout_1.numColumns = 6;
+		jobChainGroup.setLayout(gridLayout_1);
+
 		{
-			txtJobChainNode = new Text(shellJobChainl, SWT.MULTI);
-			txtJobChainNode.setEditable(false);
-			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
-			gridData.heightHint = 41;
-			gridData.widthHint = 383;
+			txtJobChainNode = new Text(jobChainGroup, SWT.MULTI);
+			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false, 6, 1);
+			gridData.heightHint = 99;
 			txtJobChainNode.setLayoutData(gridData);
+			txtJobChainNode.setEditable(false);
 			txtJobChainNode.setText(Messages.getString("assistent.job_chain.node"));
 		}
-		new Label(shellJobChainl, SWT.NONE);
 
 		{
-			final Label tasksLabel = new Label(shellJobChainl, SWT.NONE);
-			tasksLabel.setLayoutData(new GridData());
+			final Label tasksLabel = new Label(jobChainGroup, SWT.NONE);
 			tasksLabel.setText("Jobs");
 		}
-
-		{
-			comboJobs = new Combo(shellJobChainl, SWT.NONE);
-			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
-			gridData.widthHint = 133;
-			comboJobs.setLayoutData(gridData);
-			if(listener.getJobs() != null) {
-				comboJobs.setItems(listener.getJobs());
-			}			
-			comboJobs.addMouseListener(new MouseAdapter() {
-				public void mouseDown(final MouseEvent e) {
-					System.out.println("mouseDown");
-					if(refreshComboBox) {
-						//init oder neue Jobs wurden definiert
-						refreshComboBox = false;
-						if(listener.getJobs() != null) {
-							comboJobs.setItems(listener.getJobs());
-						}
+		comboJobs = new Combo(jobChainGroup, SWT.NONE);
+		comboJobs.setItems(listener.getJobs());
+		final GridData gridData_1 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
+		gridData_1.widthHint = 75;
+		comboJobs.setLayoutData(gridData_1);
+		comboJobs.addMouseListener(new MouseAdapter() {
+			public void mouseDown(final MouseEvent e) {				
+				if(refreshComboBox) {
+					//init oder neue Jobs wurden definiert
+					refreshComboBox = false;
+					if(listener.getJobs() != null) {
+						comboJobs.setItems(listener.getJobs());
 					}
 				}
-			});
-			comboJobs.addMouseTrackListener(new MouseTrackAdapter() {
-				public void mouseEnter(final MouseEvent e) {
-					//System.out.println("mouseEnter");
+			}
+		});		
+			
+		comboJobs.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				if(comboJobs.getItemCount() > 0  && comboJobs.getItem(comboJobs.getSelectionIndex()).trim().length() > 0) {
+					
+					System.out.println(comboJobs.getItem(comboJobs.getSelectionIndex()));
+					txtJobChainNodename.setText(comboJobs.getItem(comboJobs.getSelectionIndex()));					
+					txtState.setText("");
+					txtNextState.setText("");
+					txtErrorState.setText("");
+					table.deselectAll();
 					
 				}
-			});
-			
-			comboJobs.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
-					if(comboJobs.getItemCount() > 0  && comboJobs.getItem(comboJobs.getSelectionIndex()).trim().length() > 0) {
-						
-						System.out.println(comboJobs.getItem(comboJobs.getSelectionIndex()));
-						txtJobChainNodename.setText(comboJobs.getItem(comboJobs.getSelectionIndex()));
-						
-					}
-				}
-			});
-		}
-		new Label(shellJobChainl, SWT.NONE);
-		new Label(shellJobChainl, SWT.NONE);
-		new Label(shellJobChainl, SWT.NONE);
+			}
+		});
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
 
 		{
-			final Label jobNodeLabel = new Label(shellJobChainl, SWT.NONE);
-			jobNodeLabel.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+			final Label jobNodeLabel = new Label(jobChainGroup, SWT.NONE);
 			jobNodeLabel.setText("Job Node");
 		}
 
 		{
-			this.txtJobChainNodename = new Text(shellJobChainl, SWT.BORDER);
-			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
-			gridData.widthHint = 158;
-			this.txtJobChainNodename.setLayoutData(gridData);
+			this.txtJobChainNodename = new Text(jobChainGroup, SWT.BORDER);
+			txtJobChainNodename.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
 		}
 
 		{
-			final Label lblstate = new Label(shellJobChainl, SWT.NONE);
-			lblstate.setLayoutData(new GridData());
+			final Label lblstate = new Label(jobChainGroup, SWT.NONE);
 			lblstate.setText("State");
 		}
 
 		{
-			txtState = new Text(shellJobChainl, SWT.BORDER);
+			txtState = new Text(jobChainGroup, SWT.BORDER);
+			txtState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			txtState.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					
 				}
 			});
-			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
-			gridData.widthHint = 171;
-			txtState.setLayoutData(gridData);
 		}
 
-		final Button butApply = new Button(shellJobChainl, SWT.NONE);
+		final Button butApply = new Button(jobChainGroup, SWT.NONE);
+		final GridData gridData_3 = new GridData(54, SWT.DEFAULT);
+		butApply.setLayoutData(gridData_3);
 		butApply.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if(txtJobChainNodename.getText() != null && txtJobChainNodename.getText().trim().length() > 0) {
@@ -200,45 +202,58 @@ public class JobChainAssistentJobNodeForm {
 				}
 			 }
 		});
-		butApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butApply.setText("Apply");
 
 		{
-			final Label lblnextState = new Label(shellJobChainl, SWT.NONE);
+			final Label lblnextState = new Label(jobChainGroup, SWT.NONE);
 			lblnextState.setText("Next State");
 		}
 
 		{
-			txtNextState = new Text(shellJobChainl, SWT.BORDER);
-			txtNextState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+			txtNextState = new Text(jobChainGroup, SWT.BORDER);
+			txtNextState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
 		}
 
 		{
-			final Label errorStateLabel = new Label(shellJobChainl, SWT.NONE);
-			errorStateLabel.setLayoutData(new GridData());
+			final Label errorStateLabel = new Label(jobChainGroup, SWT.NONE);
 			errorStateLabel.setText("Error State");
 		}
 
 		{
-			txtErrorState = new Text(shellJobChainl, SWT.BORDER);
-			txtErrorState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+			txtErrorState = new Text(jobChainGroup, SWT.BORDER);
+			txtErrorState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		}
-		new Label(shellJobChainl, SWT.NONE);
 
-		table = new Table(shellJobChainl, SWT.FULL_SELECTION | SWT.BORDER);
+		final Button newChainNodeButton = new Button(jobChainGroup, SWT.NONE);
+		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+		gridData_4.heightHint = 21;
+		newChainNodeButton.setLayoutData(gridData_4);
+		newChainNodeButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				txtJobChainNodename.setText("");
+				txtState.setText("");
+				txtNextState.setText("");
+				txtErrorState.setText("");
+				table.deselectAll();
+			}
+		});
+		newChainNodeButton.setText("New");
+
+		table = new Table(jobChainGroup, SWT.FULL_SELECTION | SWT.BORDER);
+		final GridData gridData = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 5, 2);
+		gridData.minimumHeight = 40;
+		gridData.heightHint = 82;
+		gridData.widthHint = 324;
+		table.setLayoutData(gridData);
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2);
-		gridData.heightHint = 70;
-		gridData.widthHint = 400;
-		table.setLayoutData(gridData);
 
 		final TableColumn newColumnTableColumn = new TableColumn(table, SWT.NONE);
-		newColumnTableColumn.setWidth(100);
+		newColumnTableColumn.setWidth(75);
 		newColumnTableColumn.setText("Job");
 
 		final TableColumn newColumnTableColumn_1 = new TableColumn(table, SWT.NONE);
-		newColumnTableColumn_1.setWidth(100);
+		newColumnTableColumn_1.setWidth(77);
 		newColumnTableColumn_1.setText("State");
 
 		final TableColumn newColumnTableColumn_2 = new TableColumn(table, SWT.NONE);
@@ -249,22 +264,8 @@ public class JobChainAssistentJobNodeForm {
 		newColumnTableColumn_3.setWidth(100);
 		newColumnTableColumn_3.setText("Error State");
 
-		final Button newChainNodeButton = new Button(shellJobChainl, SWT.NONE);
-		newChainNodeButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				txtJobChainNodename.setText("");
-				txtState.setText("");
-				txtNextState.setText("");
-				txtErrorState.setText("");
-				table.deselectAll();
-			}
-		});
-		final GridData gridData_1 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
-		gridData_1.widthHint = 86;
-		newChainNodeButton.setLayoutData(gridData_1);
-		newChainNodeButton.setText("New Chain Node");
-
-		final Button butRemove = new Button(shellJobChainl, SWT.NONE);
+		final Button butRemove = new Button(jobChainGroup, SWT.NONE);
+		butRemove.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butRemove.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if(table.getSelectionCount()> 0) {
@@ -272,30 +273,96 @@ public class JobChainAssistentJobNodeForm {
 				}				
 			}
 		});
-		butRemove.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butRemove.setText("Remove");
+		new Label(jobChainGroup, SWT.NONE);
+
+		final Composite composite = new Composite(jobChainGroup, SWT.NONE);
+		composite.setLayoutData(new GridData(GridData.BEGINNING, GridData.FILL, false, false));
+		final GridLayout gridLayout_2 = new GridLayout();
+		gridLayout_2.marginWidth = 0;
+		gridLayout_2.numColumns = 2;
+		composite.setLayout(gridLayout_2);
 
 		{
-			butFinish = new Button(shellJobChainl, SWT.NONE);
+			butFinish = new Button(composite, SWT.NONE);
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {					
 					
+					listener.newChain();
+					listener.applyChain(Utils.getAttributeValue("name", jobChain), true, true);
+					listener.fillChains();
+					refreshElement(true);
+					shellJobChainl.dispose();	
 				}
 			});
 			butFinish.setText("Finish");
 		}
 		{
-			butCancel = new Button(shellJobChainl, SWT.NONE);
+			butCancel = new Button(composite, SWT.NONE);
 			butCancel.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					shellJobChainl.dispose();
 				}
 			});
-			butCancel.setLayoutData(new GridData());
 			butCancel.setText("Cancel");
 		}
+
+		final Button startJobAssistentButton = new Button(jobChainGroup, SWT.NONE);
+		startJobAssistentButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				
+				JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(listener.get_dom(), update);
+				importJobs.showAllImportJobs("order", true, Editor.JOB_CHAINS);
+				txtJobChainNodename.setText("");
+				txtState.setText("");
+				txtNextState.setText("");
+				txtErrorState.setText("");
+				table.deselectAll();
+				refreshComboBox = true;
+			}
+		});
+		startJobAssistentButton.setText("Import Job");
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+
+		final Composite composite_1 = new Composite(jobChainGroup, SWT.NONE);
+		final GridData gridData_5 = new GridData(GridData.END, GridData.FILL, false, false, 2, 1);
+		gridData_5.widthHint = 79;
+		composite_1.setLayoutData(gridData_5);
+		final GridLayout gridLayout_3 = new GridLayout();
+		gridLayout_3.marginWidth = 0;
+		gridLayout_3.numColumns = 2;
+		composite_1.setLayout(gridLayout_3);
+
 		{
-			butNext = new Button(shellJobChainl, SWT.NONE);
+			butShow = new Button(composite_1, SWT.NONE);
+			butShow.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					/*Element jobChain = new Element("job_chain");
+					if(txtJobChainNodename.getText() != null && txtJobChainNodename.getText().trim().length() > 0) {												
+						Utils.setAttribute("name", txtJobChainNodename.getText(), jobChain);						
+					}
+					*/
+					refreshElement(false);
+					/*Utils.setAttribute("orders_recoverable", "yes", jobChain);
+					Utils.setAttribute("visible", "yes", jobChain);
+					for (int i = 0; i < table.getItemCount(); i++) {
+						TableItem ti = table.getItem(i);
+						Element jobChainNode = new Element("job_chain_node");						
+						Utils.setAttribute("job", ti.getText(0), jobChainNode);
+						Utils.setAttribute("state",  ti.getText(1) , jobChainNode);
+						Utils.setAttribute("next_state", ti.getText(2) , jobChainNode);
+						Utils.setAttribute("error_state",  ti.getText(3), jobChainNode);
+						jobChain.addContent(jobChainNode);
+					}*/
+					
+					MainWindow.message(shellJobChainl, Utils.getElementAsString(jobChain), SWT.OK );
+				}
+			});
+			butShow.setText("Show");
+		}
+		{
+			butNext = new Button(composite_1, SWT.NONE);
 			butNext.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					/*if(txtJobChainNodename.getText() != null && txtJobChainNodename.getText().trim().length() > 0) {
@@ -310,38 +377,13 @@ public class JobChainAssistentJobNodeForm {
 					
 				}
 			});
-			butNext.setLayoutData(new GridData());
 			butNext.setText("Next");
 		}
 
 		{
-			butShow = new Button(shellJobChainl, SWT.NONE);
-			butShow.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
-					/*Element jobChain = new Element("job_chain");
-					if(txtJobChainNodename.getText() != null && txtJobChainNodename.getText().trim().length() > 0) {												
-						Utils.setAttribute("name", txtJobChainNodename.getText(), jobChain);						
-					}
-					*/
-					
-					MainWindow.message(shellJobChainl, Utils.getElementAsString(jobChain), SWT.OK );
-				}
-			});
-			butShow.setLayoutData(new GridData());
-			butShow.setText("Show");
+			if(listener.getJobs() != null) {
+			}			
 		}
-
-		final Button startJobAssistentButton = new Button(shellJobChainl, SWT.NONE);
-		startJobAssistentButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				
-				JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(listener.get_dom(), update);
-				importJobs.showAllImportJobs("order", true, Editor.JOB_CHAINS);
-				refreshComboBox = true;
-			}
-		});
-		startJobAssistentButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		startJobAssistentButton.setText("Import Job");
 		setToolTipText();
 		shellJobChainl.layout();
 		shellJobChainl.pack();
@@ -353,6 +395,28 @@ public class JobChainAssistentJobNodeForm {
 		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
 		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
 		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));		
+	}
+	
+	private void refreshElement(boolean apply) {
+		
+		
+		Utils.setAttribute("orders_recoverable", "yes", jobChain);
+		Utils.setAttribute("visible", "yes", jobChain);
+		jobChain.removeContent();
+		for (int i = 0; i < table.getItemCount(); i++) {
+			TableItem ti = table.getItem(i);
+			Element jobChainNode = new Element("job_chain_node");						
+			Utils.setAttribute("job", ti.getText(0), jobChainNode);
+			Utils.setAttribute("state",  ti.getText(1) , jobChainNode);
+			Utils.setAttribute("next_state", ti.getText(2) , jobChainNode);
+			Utils.setAttribute("error_state",  ti.getText(3), jobChainNode);
+			jobChain.addContent(jobChainNode);
+			if(apply) {
+//				Es soll den internen Variable in listener._node auf null setzten. Sonst funktioniert applyNode nicht
+				listener.selectNode(null); 
+				listener.applyNode(true, ti.getText(1), ti.getText(0), "", ti.getText(2), ti.getText(3), false, "");
+			}
+		}
 	}
 }
 

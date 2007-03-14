@@ -259,7 +259,6 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         dummy1.setText("Remove Order File Source");
 
         final Button butAssistent = new Button(jobchainsGroup, SWT.NONE);
-        butAssistent.setEnabled(false);
         butAssistent.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		listener.startJobAssistent(tChains, update);

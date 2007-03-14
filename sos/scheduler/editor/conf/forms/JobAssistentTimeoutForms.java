@@ -68,22 +68,27 @@ public class JobAssistentTimeoutForms {
 		final Shell shellTimeout = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		final GridLayout gridLayout = new GridLayout();
 		shellTimeout.setLayout(gridLayout);
-		shellTimeout.setSize(487, 353);
+		shellTimeout.setSize(523, 378);
 		shellTimeout.setText("Timeout");
 
 		{
 			final Group jobGroup = new Group(shellTimeout, SWT.NONE);
 			jobGroup.setText("Job");
 			final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
-			gridData.heightHint = 305;
+			gridData.heightHint = 327;
 			jobGroup.setLayoutData(gridData);
 			final GridLayout gridLayout_1 = new GridLayout();
+			gridLayout_1.marginWidth = 10;
+			gridLayout_1.marginTop = 10;
+			gridLayout_1.marginRight = 10;
+			gridLayout_1.marginLeft = 10;
+			gridLayout_1.marginHeight = 10;
 			gridLayout_1.numColumns = 2;
 			jobGroup.setLayout(gridLayout_1);
 
 			{
 				Text txtTime = new Text(jobGroup, SWT.MULTI | SWT.WRAP);
-				final GridData gridData_1 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
+				final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1);
 				gridData_1.heightHint = 175;
 				gridData_1.widthHint = 448;
 				txtTime.setLayoutData(gridData_1);
@@ -99,16 +104,18 @@ public class JobAssistentTimeoutForms {
 			{
 				comboForceIdleTimeout = new Combo(jobGroup, SWT.NONE);
 				comboForceIdleTimeout.setItems(new String[] {"yes", "no"});
-				comboForceIdleTimeout.setLayoutData(new GridData());
+				comboForceIdleTimeout.setLayoutData(new GridData(94, SWT.DEFAULT));
+				comboForceIdleTimeout.setText(Utils.getAttributeValue("force_idle_timeout", job));
 				comboForceIdleTimeout.select(1);
 			}
-			comboForceIdleTimeout.setText(Utils.getAttributeValue("force_idle_timeout", job));
+			
 
 			{
 				lblTimeout = new Label(jobGroup, SWT.NONE);
 				lblTimeout.setText("Timeout");
 			}
-			txtTimeout = new Text(jobGroup, SWT.NONE);
+			txtTimeout = new Text(jobGroup, SWT.BORDER);
+			txtTimeout.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			txtTimeout.setText(Utils.getAttributeValue("timeout", job));
 
 			{
@@ -116,13 +123,15 @@ public class JobAssistentTimeoutForms {
 				lblIdleTimeout.setText("Idle Timeout");
 				
 			}
-			txtIdleTimeout = new Text(jobGroup, SWT.NONE);
+			txtIdleTimeout = new Text(jobGroup, SWT.BORDER);
+			txtIdleTimeout.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
 			txtIdleTimeout.setText(Utils.getAttributeValue("idle_timeout", job));
 
 			{
 				final Composite composite = new Composite(jobGroup, SWT.NONE);
 				composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
 				final GridLayout gridLayout_2 = new GridLayout();
+				gridLayout_2.marginWidth = 0;
 				gridLayout_2.numColumns = 2;
 				composite.setLayout(gridLayout_2);
 
@@ -167,6 +176,7 @@ public class JobAssistentTimeoutForms {
 				final Composite composite = new Composite(jobGroup, SWT.NONE);
 				composite.setLayoutData(new GridData(GridData.END, GridData.FILL, false, false));
 				final GridLayout gridLayout_2 = new GridLayout();
+				gridLayout_2.marginWidth = 0;
 				gridLayout_2.numColumns = 2;
 				composite.setLayout(gridLayout_2);
 

@@ -23,6 +23,8 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
@@ -126,24 +128,28 @@ public class JobAssistentImportJobsForm {
 	public void showAllImportJobs() {
 		try {
 			
-			shell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+			shell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL);
 			//shell.setSize(0, 0);
 			shell.setParent(MainWindow.getSShell());			
 			//shell.getBounds().x = MainWindow.getSShell().getBounds().x;
 			//shell.getBounds().y = MainWindow.getSShell().getBounds().y;
 
 			final GridLayout gridLayout = new GridLayout();
+			gridLayout.marginHeight = 0;
 			shell.setLayout(gridLayout);
 			shell.setText("Import Jobs");
 			
 			final Group jobGroup = new Group(shell, SWT.BORDER);
 			jobGroup.setText("Job");
 			final GridLayout gridLayout_3 = new GridLayout();
-			gridLayout_3.numColumns = 2;
+			gridLayout_3.marginRight = 10;
+			gridLayout_3.marginHeight = 10;
+			gridLayout_3.marginLeft = 10;
+			gridLayout_3.numColumns = 3;
 			jobGroup.setLayout(gridLayout_3);
-			final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+			final GridData gridData_6 = new GridData(GridData.BEGINNING, GridData.CENTER, true, true);
 			gridData_6.heightHint = 227;
-			gridData_6.widthHint = 613;
+			gridData_6.widthHint = 592;
 			jobGroup.setLayoutData(gridData_6);
 			Label jobnameLabel;
 			
@@ -151,47 +157,53 @@ public class JobAssistentImportJobsForm {
 			Composite composite;
 
 			final Composite composite_1 = new Composite(jobGroup, SWT.NONE);
-			final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1);
+			final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, false, false, 3, 1);
 			gridData_4.widthHint = 573;
 			gridData_4.heightHint = 90;
 			composite_1.setLayoutData(gridData_4);
 			composite_1.setLayout(new GridLayout());
 
 			final Text txtjobimportText = new Text(composite_1, SWT.MULTI | SWT.WRAP);
+			final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, false, false);
+			gridData_5.heightHint = 80;
+			gridData_5.widthHint = 548;
+			txtjobimportText.setLayoutData(gridData_5);
 			txtjobimportText.setEditable(false);
 			txtjobimportText.setText(Messages.getString("assistent.import_jobs"));
-			final GridData gridData_5 = new GridData(GridData.BEGINNING, GridData.FILL, true, false);
-			gridData_5.heightHint = 81;
-			txtjobimportText.setLayoutData(gridData_5);
+
+			final Composite composite_2 = new Composite(jobGroup, SWT.NONE);
+			final GridData gridData_8 = new GridData(GridData.FILL, GridData.FILL, false, false, 1, 3);
+			gridData_8.heightHint = 57;
+			gridData_8.widthHint = 113;
+			composite_2.setLayoutData(gridData_8);
+			composite_2.setLayout(new GridLayout());
 			{
-				jobnameLabel = new Label(jobGroup, SWT.NONE);
-				jobnameLabel.setLayoutData(new GridData());
+				jobnameLabel = new Label(composite_2, SWT.NONE);
 				jobnameLabel.setText("Jobname");
 			}
+			
+			final Label lblTitle = new Label(composite_2, SWT.NONE);
+			lblTitle.setText("Title");
+			lblPath = new Label(composite_2, SWT.NONE);
+			lblPath.setText("Path");
 			{
 				txtJobname = new Text(jobGroup, SWT.BORDER);
-				final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
-				gridData.widthHint = 388;
+				final GridData gridData = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
+				gridData.widthHint = 420;
 				txtJobname.setLayoutData(gridData);
 				txtJobname.setBackground(Options.getRequiredColor());
 				txtJobname.setText("");
 			}
 			
-			final Label lblTitle = new Label(jobGroup, SWT.NONE);
-			lblTitle.setLayoutData(new GridData());
-			lblTitle.setText("Title");
-			
 			txtTitle = new Text(jobGroup, SWT.BORDER);
-			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
-			gridData.widthHint = 401;
+			final GridData gridData = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
+			gridData.widthHint = 420;
 			txtTitle.setLayoutData(gridData);
-			lblPath = new Label(jobGroup, SWT.NONE);
-			lblPath.setLayoutData(new GridData());
-			lblPath.setText("Path");
 			
 			txtPath = new Text(jobGroup, SWT.BORDER);
 			txtPath.setEditable(false);
-			final GridData gridData_1 = new GridData(412, SWT.DEFAULT);
+			final GridData gridData_1 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
+			gridData_1.widthHint = 420;
 			txtPath.setLayoutData(gridData_1);
 			{
 				
@@ -237,11 +249,10 @@ public class JobAssistentImportJobsForm {
 			}
 
 			final Composite composite_3 = new Composite(jobGroup, SWT.NONE);
-			final GridData gridData_7 = new GridData(GridData.END, GridData.CENTER, false, false);
-			gridData_7.widthHint = 168;
+			final GridData gridData_7 = new GridData(103, SWT.DEFAULT);
 			composite_3.setLayoutData(gridData_7);
 			final GridLayout gridLayout_4 = new GridLayout();
-			gridLayout_4.numColumns = 3;
+			gridLayout_4.numColumns = 2;
 			composite_3.setLayout(gridLayout_4);
 			{
 				butImport = new Button(composite_3, SWT.NONE);				
@@ -276,7 +287,13 @@ public class JobAssistentImportJobsForm {
 						
 						
 						if(listener != null) {
-							listener.newImportJob(h);
+							if(Editor.JOB_CHAINS == assistentType) {
+								Element job = listener.createJobElement(h);
+								listener.newImportJob(job, assistentType);
+							} else {
+								listener.newImportJob(h);
+							}
+							
 						} else if(joblistener != null) {							
 							joblistener.fillParams(listOfParams, tParameter);
 						}
@@ -298,8 +315,7 @@ public class JobAssistentImportJobsForm {
 			});
 			butCancel.setText("Cancel");
 			{
-				butdescription = new Button(composite_3, SWT.NONE);
-				butdescription.setLayoutData(new GridData());
+				butdescription = new Button(jobGroup, SWT.NONE);
 				butdescription.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						try  {							
@@ -314,6 +330,7 @@ public class JobAssistentImportJobsForm {
 			composite = new Composite(jobGroup, SWT.NONE);
 			composite.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			final GridLayout gridLayout_2 = new GridLayout();
+			gridLayout_2.marginRight = 20;
 			gridLayout_2.numColumns = 2;
 			composite.setLayout(gridLayout_2);
 			butShow = new Button(composite, SWT.NONE);
@@ -334,15 +351,16 @@ public class JobAssistentImportJobsForm {
 			butParameters.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 				
 			butParameters.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				public void widgetSelected(final SelectionEvent e) {										
 					
 					if(txtJobname.getText().length() == 0 && listener != null) {
 						int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("no_jobname"), SWT.ICON_WARNING | SWT.OK );
 						txtJobname.setFocus();
 						return;
 					}
-					
+															
 					if(listener != null && !assistent) {
+						
 						if(txtJobname.getText().concat(".xml").equalsIgnoreCase(new File(txtPath.getText()).getName())) {
 							int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("edit_jobname"), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 							if(cont == SWT.YES) {
@@ -387,11 +405,13 @@ public class JobAssistentImportJobsForm {
 			{
 				final Group jobnamenGroup = new Group(shell, SWT.NONE);
 				final GridLayout gridLayout_1 = new GridLayout();
+				gridLayout_1.marginTop = 5;
+				gridLayout_1.marginRight = 5;
+				gridLayout_1.marginLeft = 5;
 				jobnamenGroup.setLayout(gridLayout_1);
-				jobnamenGroup.setText("jobnamen");
-				final GridData gridData_3 = new GridData(GridData.BEGINNING, GridData.FILL, true, true);
-				gridData_3.heightHint = 382;
-				gridData_3.minimumHeight = 100;
+				jobnamenGroup.setText("Jobs");
+				final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, true);
+				gridData_3.heightHint = 409;
 				jobnamenGroup.setLayoutData(gridData_3);
 				jobnamenGroup.getBounds().height=100;
 				
@@ -407,9 +427,9 @@ public class JobAssistentImportJobsForm {
 							txtPath.setText(tree.getSelection()[0].getText(2));
 						}
 					});
-					final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, false);
-					gridData_2.widthHint = 583;
-					gridData_2.heightHint = 385;
+					final GridData gridData_2 = new GridData(GridData.BEGINNING, GridData.FILL, true, false);
+					gridData_2.widthHint = 572;
+					gridData_2.heightHint = 395;
 					tree.setLayoutData(gridData_2);
 					
 					TreeColumn column1 = new TreeColumn(tree, SWT.LEFT);
@@ -528,6 +548,7 @@ public class JobAssistentImportJobsForm {
 			h.put("tasks", elMain.getAttributeValue("tasks"));			
 			h.put("name", txtJobname.getText());
 			h.put("title", txtTitle.getText());
+						
 			
 			//relativen phad bestimmen
 			String sHome = sos.scheduler.editor.app.Options.getSchedulerHome().replaceAll("/", "\\\\");
@@ -567,7 +588,27 @@ public class JobAssistentImportJobsForm {
 					Element inc = (Element)comClassInclude.get(i);
 					listOfIncludeFilename.add(inc.getAttribute("file").getValue());
 				}
-				h.put("script_include_file", listOfIncludeFilename);																	
+				h.put("script_include_file", listOfIncludeFilename);	
+				
+				//welche Library wurde hier verwendet? interne verwendung
+				if(script.getAttributeValue("resource") != null) { 
+					String lib = script.getAttributeValue("resource");
+					if(lib.length() > 0) {
+						Element rese = elMain.getParentElement().getChild("resources", elMain.getNamespace());
+						List r = rese.getChildren("file", elMain.getNamespace());
+						for (int i =0; i < r.size(); i++) {
+							Element res = (Element)r.get(i);
+							
+							if(Utils.getAttributeValue("id", res) != null && 
+									Utils.getAttributeValue("id", res).equals(lib)) {
+								if(Utils.getAttributeValue("file", res) != null)
+									h.put("library", Utils.getAttributeValue("file", res));
+							}
+						}
+					}
+				}
+				
+				
 			}		
 			
 			//Element monitor

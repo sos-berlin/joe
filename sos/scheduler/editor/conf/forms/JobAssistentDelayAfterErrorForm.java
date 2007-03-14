@@ -90,7 +90,7 @@ public class JobAssistentDelayAfterErrorForm {
 		final GridLayout gridLayout = new GridLayout();
 		shellSetBack.setLayout(gridLayout);
 		shellSetBack.setSize(481, 317);
-		shellSetBack.setText("Delay order after setback");
+		shellSetBack.setText("Delay After Error");
 		shellSetBack.open();
 
 		final Group jobGroup = new Group(shellSetBack, SWT.NONE);
@@ -100,6 +100,12 @@ public class JobAssistentDelayAfterErrorForm {
 		gridData_2.widthHint = 454;
 		jobGroup.setLayoutData(gridData_2);
 		final GridLayout gridLayout_1 = new GridLayout();
+		gridLayout_1.marginWidth = 10;
+		gridLayout_1.marginTop = 10;
+		gridLayout_1.marginRight = 10;
+		gridLayout_1.marginLeft = 10;
+		gridLayout_1.marginHeight = 10;
+		gridLayout_1.marginBottom = 10;
 		gridLayout_1.numColumns = 2;
 		jobGroup.setLayout(gridLayout_1);
 
@@ -121,6 +127,7 @@ public class JobAssistentDelayAfterErrorForm {
 		txtErrorCount = new Text(jobGroup, SWT.BORDER);
 		final GridData gridData_1 = new GridData(128, SWT.DEFAULT);
 		txtErrorCount.setLayoutData(gridData_1);
+		txtErrorCount.setFocus();
 		
 
 		{
@@ -133,6 +140,7 @@ public class JobAssistentDelayAfterErrorForm {
 		final Composite composite = new Composite(jobGroup, SWT.NONE);
 		composite.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		final GridLayout gridLayout_5 = new GridLayout();
+		gridLayout_5.marginWidth = 0;
 		gridLayout_5.numColumns = 4;
 		composite.setLayout(gridLayout_5);
 
@@ -193,6 +201,7 @@ public class JobAssistentDelayAfterErrorForm {
 		gridData_4.heightHint = 35;
 		composite_1.setLayoutData(gridData_4);
 		final GridLayout gridLayout_3 = new GridLayout();
+		gridLayout_3.marginWidth = 0;
 		gridLayout_3.numColumns = 2;
 		composite_1.setLayout(gridLayout_3);
 
@@ -245,10 +254,11 @@ public class JobAssistentDelayAfterErrorForm {
 
 		final Composite composite_2 = new Composite(jobGroup, SWT.NONE);
 		final GridData gridData_5 = new GridData(GridData.END, GridData.CENTER, false, false);
-		gridData_5.widthHint = 123;
+		gridData_5.widthHint = 108;
 		gridData_5.heightHint = 46;
 		composite_2.setLayoutData(gridData_5);
 		final GridLayout gridLayout_4 = new GridLayout();
+		gridLayout_4.marginWidth = 0;
 		gridLayout_4.numColumns = 2;
 		composite_2.setLayout(gridLayout_4);
 
@@ -290,7 +300,7 @@ public class JobAssistentDelayAfterErrorForm {
 			butNext = new Button(composite_2, SWT.NONE);
 			butNext.setVisible(false);
 			final GridData gridData = new GridData(GridData.END, GridData.CENTER, false, false);
-			gridData.widthHint = 61;
+			gridData.widthHint = 48;
 			butNext.setLayoutData(gridData);
 			butNext.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {

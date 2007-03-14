@@ -63,6 +63,9 @@ public class JobAssistentScriptForms {
 	
 	private Text              txtJavaClass = null; 
 	
+	private String            libraryName  = "";
+	
+	private Label             lblClass     = null;
 	
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
 	private int assistentType = -1; 
@@ -81,23 +84,29 @@ public class JobAssistentScriptForms {
 		final Shell scriptShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		final GridLayout gridLayout = new GridLayout();
 		scriptShell.setLayout(gridLayout);
-		scriptShell.setSize(488, 426);
+		scriptShell.setSize(511, 388);
 		scriptShell.setText("Script");
 
 		{
 			final Group jobGroup = new Group(scriptShell, SWT.NONE);
 			jobGroup.setText("Job");
 			final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
-			gridData.widthHint = 462;
-			gridData.heightHint = 374;
+			gridData.widthHint = 490;
+			gridData.heightHint = 331;
 			jobGroup.setLayoutData(gridData);
 			final GridLayout gridLayout_1 = new GridLayout();
+			gridLayout_1.marginWidth = 10;
+			gridLayout_1.marginTop = 10;
+			gridLayout_1.marginRight = 10;
+			gridLayout_1.marginLeft = 10;
+			gridLayout_1.marginHeight = 10;
+			gridLayout_1.marginBottom = 10;
 			gridLayout_1.numColumns = 2;
 			jobGroup.setLayout(gridLayout_1);
 
 			{
 				Text txtScript = new Text(jobGroup, SWT.MULTI);
-				final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
+				final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1);
 				gridData_1.heightHint = 120;
 				gridData_1.widthHint = 441;
 				txtScript.setLayoutData(gridData_1);
@@ -133,8 +142,16 @@ public class JobAssistentScriptForms {
 			}*/
 
 			{
-				final Label lblClass = new Label(jobGroup, SWT.NONE);
+				lblClass = new Label(jobGroup, SWT.NONE);
 				lblClass.setText("Java Class");
+				if(job != null){
+					Element script = job.getChild("script");
+					String language = Utils.getAttributeValue("language", script); 
+					if(language != null && language.equalsIgnoreCase("com_class")) {
+						lblClass.setText("Com Class");
+					}
+				}
+				
 			}
 			txtJavaClass = new Text(jobGroup, SWT.NONE);
 			txtJavaClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -145,38 +162,55 @@ public class JobAssistentScriptForms {
 				txtJavaClass.setText(Utils.getAttributeValue("java_class", script));
 			}
 
-			{
+			{				
 				final Label lblRessources = new Label(jobGroup, SWT.NONE);
-				lblRessources.setText("Ressource");
+				if(lblClass != null && lblClass.getText().equals("Com Class")) {
+					lblRessources.setText("Filename");
+				} else {
+					lblRessources.setText("Ressource");
+				}
+				
 				
 			}
 
 			final Text txtResource = new Text(jobGroup, SWT.NONE);
-			txtResource.setEnabled(false);
+			txtResource.setEditable(false);
+			txtResource.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			txtResource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-			if(job != null) {
-				Element script = job.getChild("script");
-				if(script != null && Utils.getAttributeValue("filename", script) != null &&
-						Utils.getAttributeValue("filename", script).trim().length() > 0	){
-					txtResource.setText(Utils.getAttributeValue("filename", script));
+			if(lblClass != null && lblClass.getText().equals("Java Class")) {
+				if(libraryName != null) {
+					txtResource.setText(this.libraryName);
+				}
+			} else {
+				if(job != null) {
+					Element script = job.getChild("script");				
+					if(script != null && Utils.getAttributeValue("filename", script) != null &&
+							Utils.getAttributeValue("filename", script).trim().length() > 0	){
+						txtResource.setText(Utils.getAttributeValue("filename", script));
+					}
 				}
 			}
-			{
-				final Label lblInclude = new Label(jobGroup, SWT.NONE);
-				lblInclude.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
-				lblInclude.setText("Include");
-			}
+			
 					
-			tableInclude = new Table(jobGroup, SWT.BORDER);
-			final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, false, false);
-			gridData_1.heightHint = 107;
-			tableInclude.setLayoutData(gridData_1);
-			tableInclude.setLinesVisible(true);
-			tableInclude.setHeaderVisible(true);
+			
 			if(job != null){
 				Element script = job.getChild("script");				 
 				if(script!= null) {
 					java.util.List includes = script.getChildren("include");
+					if(includes.size() > 0) {
+						{
+							final Label lblInclude = new Label(jobGroup, SWT.NONE);
+							lblInclude.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+							lblInclude.setText("Include");
+						}
+						tableInclude = new Table(jobGroup, SWT.BORDER);
+						final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, false, false);
+						gridData_1.widthHint = 322;
+						gridData_1.heightHint = 55;
+						tableInclude.setLayoutData(gridData_1);
+						tableInclude.setLinesVisible(true);
+						tableInclude.setHeaderVisible(true);			
+					}
 					for (int i = 0; i < includes.size(); i++) {
 						Element include = (Element)includes.get(i);				
 						if( Utils.getAttributeValue("file", include) != null &&
@@ -283,5 +317,9 @@ public class JobAssistentScriptForms {
 		txtJavaClass.setToolTipText(Messages.getTooltip("assistent.java_class"));
 		txtLanguage.setToolTipText(Messages.getTooltip("assistent.language"));
 		if(tableInclude != null ) tableInclude.setToolTipText(Messages.getTooltip("assistent.script_include"));
+	}
+	
+	public void setLibraryName(String libraryName) {
+		this.libraryName = libraryName;
 	}
 }

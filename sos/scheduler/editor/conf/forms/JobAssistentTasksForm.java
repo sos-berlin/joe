@@ -50,6 +50,7 @@ public class JobAssistentTasksForm {
 	
 	private Button            butShow      = null;	
 		
+	private String            libraryName  = "";
 	
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
 	private int assistentType = -1; 
@@ -74,7 +75,7 @@ public class JobAssistentTasksForm {
 		final Shell tasksShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		final GridLayout gridLayout = new GridLayout();
 		tasksShell.setLayout(gridLayout);
-		tasksShell.setSize(404, 287);
+		tasksShell.setSize(455, 287);
 		tasksShell.setText("Tasks");
 		tasksShell.open();
 
@@ -85,12 +86,17 @@ public class JobAssistentTasksForm {
 			gridData.heightHint = 234;
 			jobGroup.setLayoutData(gridData);
 			final GridLayout gridLayout_1 = new GridLayout();
+			gridLayout_1.marginWidth = 10;
+			gridLayout_1.marginTop = 10;
+			gridLayout_1.marginRight = 10;
+			gridLayout_1.marginLeft = 10;
+			gridLayout_1.marginHeight = 10;
 			gridLayout_1.numColumns = 2;
 			jobGroup.setLayout(gridLayout_1);
 
 			{
-				txtTasks = new Text(jobGroup, SWT.MULTI);
-				final GridData gridData_1 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
+				txtTasks = new Text(jobGroup, SWT.MULTI | SWT.WRAP);
+				final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1);
 				gridData_1.heightHint = 125;
 				gridData_1.widthHint = 369;
 				txtTasks.setLayoutData(gridData_1);
@@ -99,8 +105,10 @@ public class JobAssistentTasksForm {
 			}
 
 			final Composite composite_1 = new Composite(jobGroup, SWT.NONE);
-			composite_1.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
+			composite_1.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1));
 			final GridLayout gridLayout_3 = new GridLayout();
+			gridLayout_3.marginWidth = 0;
+			gridLayout_3.marginRight = 5;
 			gridLayout_3.numColumns = 2;
 			composite_1.setLayout(gridLayout_3);
 
@@ -110,15 +118,16 @@ public class JobAssistentTasksForm {
 			}
 			txtTask = new Text(composite_1, SWT.BORDER);
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+			gridData_1.widthHint = 336;
 			gridData_1.minimumWidth = 100;
 			txtTask.setLayoutData(gridData_1);
 			txtTask.setText(Utils.getAttributeValue("tasks", job_));
-			new Label(jobGroup, SWT.NONE);
 
 			{
 				final Composite composite = new Composite(jobGroup, SWT.NONE);
 				composite.setLayoutData(new GridData(97, 42));
 				final GridLayout gridLayout_2 = new GridLayout();
+				gridLayout_2.marginWidth = 0;
 				gridLayout_2.numColumns = 2;
 				composite.setLayout(gridLayout_2);
 
@@ -128,7 +137,7 @@ public class JobAssistentTasksForm {
 						public void widgetSelected(final SelectionEvent e) {
 							if(txtTask.getText() != null && txtTask.getText().trim().length() > 0) {
 								Utils.setAttribute("tasks", txtTask.getText(), job);						
-							}
+							}							
 							listener.newImportJob(job, assistentType);
 						}
 					});
@@ -145,14 +154,16 @@ public class JobAssistentTasksForm {
 				}
 			}
 
-			final Composite composite = new Composite(jobGroup, SWT.NONE);
-			composite.setLayoutData(new GridData(GridData.END, GridData.FILL, false, false));
-			final GridLayout gridLayout_2 = new GridLayout();
-			gridLayout_2.numColumns = 2;
-			composite.setLayout(gridLayout_2);
+			final Composite composite_2 = new Composite(jobGroup, SWT.NONE);
+			composite_2.setLayoutData(new GridData(GridData.END, GridData.FILL, false, false));
+			final GridLayout gridLayout_4 = new GridLayout();
+			gridLayout_4.marginWidth = 0;
+			gridLayout_4.marginRight = 5;
+			gridLayout_4.numColumns = 2;
+			composite_2.setLayout(gridLayout_4);
 
 			{
-				butShow = new Button(composite, SWT.NONE);
+				butShow = new Button(composite_2, SWT.NONE);
 				butShow.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						if(txtTask.getText() != null && txtTask.getText().trim().length() > 0) {
@@ -164,7 +175,7 @@ public class JobAssistentTasksForm {
 				butShow.setText("Show");
 			}
 			{
-				butNext = new Button(composite, SWT.NONE);
+				butNext = new Button(composite_2, SWT.NONE);
 				butNext.setLayoutData(new GridData());
 				butNext.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
@@ -176,6 +187,7 @@ public class JobAssistentTasksForm {
 							process.showProcessForm(job, assistentType);						
 						} else {
 							JobAssistentScriptForms script = new JobAssistentScriptForms(dom, update);
+							script.setLibraryName(libraryName);
 							script.showScriptForm(job, assistentType);						
 						}
 						tasksShell.dispose();
@@ -202,5 +214,9 @@ public class JobAssistentTasksForm {
 		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
 		txtTask.setToolTipText(Messages.getTooltip("assistent.task"));
 		
+	}
+
+	public void setLibraryName(String libraryName) {
+		this.libraryName = libraryName;
 	}
 }
