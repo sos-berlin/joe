@@ -17,7 +17,7 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.JobAssistentForm;
 import sos.scheduler.editor.conf.forms.JobsForm;
-import sos.scheduler.editor.conf.forms.ShowAllImportJobsForm;
+import sos.scheduler.editor.conf.forms.JobAssistentImportJobsForm;
 
 public class JobsListener { 
 	
@@ -289,13 +289,10 @@ public class JobsListener {
 		_dom.setChanged(true);
 		if(Editor.JOB_CHAINS != assistentType) {
 			fillTable(JobsForm.getTable());
-			JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);
-			_main.updateJobs();	
+			JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);			
 		} 
-		//_main.updateJobs();
-		setJobDisabled(Utils.getAttributeValue("name", job), true);
-		setJobDisabled(Utils.getAttributeValue("name", job), false);
-		
+		_main.updateJobs();	
+		_main.updateOrders();							
 	}
 	
 	public void newImportJobOriginal(Element job) {
@@ -308,7 +305,7 @@ public class JobsListener {
 		fillTable(JobsForm.getTable());
 		JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);
 		_main.updateJobs(); 
-		_main.updateOrders();
+		//_main.updateOrders();
 	}
 	
 	public void newImportJobChain(Element job) {
@@ -378,10 +375,10 @@ public class JobsListener {
 	
 	
 	public void openImportJobs(SchedulerDom dom, ISchedulerUpdate update) throws Exception {    
-		ShowAllImportJobsForm iDialog = null;    	
+		JobAssistentImportJobsForm iDialog = null;    	
 		
 		try {
-			iDialog = new ShowAllImportJobsForm (dom, update);//(parent.getShell(), style);
+			iDialog = new JobAssistentImportJobsForm (dom, update);//(parent.getShell(), style);
 			iDialog.showAllImportJobs();
 			
 			

@@ -363,34 +363,36 @@ public class JobChainsListener {
     	 }
     	 
     	 if (_node != null) {
-    		    if (isJobchainNode) {
-               Utils.setAttribute("state", state, _node, _dom);
-               Utils.setAttribute("job", job, _node, _dom);
-               Utils.setAttribute("delay", delay, _node, _dom);
-               Utils.setAttribute("next_state", next, _node, _dom);
-               Utils.setAttribute("error_state", error, _node, _dom);
-    		    }else {
-               Utils.setAttribute("state", state, _node, _dom);
-               Utils.setAttribute("move_to", moveTo, _node, _dom);
-               Utils.setAttribute("remove", removeFile, _node, _dom);
-    		    }
-        } else {
-        	  if (isJobchainNode) {
-        	     node = new Element("job_chain_node");
-               Utils.setAttribute("state", state, node, _dom);
-               Utils.setAttribute("job", job, node, _dom);
-               Utils.setAttribute("delay", delay, node, _dom);
-               Utils.setAttribute("next_state", next, node, _dom);
-               Utils.setAttribute("error_state", error, node, _dom);
-        	  }else {
-        	     node = new Element("file_order_sink");
-               Utils.setAttribute("state", state, node, _dom);
-               Utils.setAttribute("move_to", moveTo, node, _dom);
-               Utils.setAttribute("remove", removeFile, node, _dom);
-        	  }
-            _chain.addContent(node);
-            _node = node;
-        }
+    		 if (isJobchainNode) {
+    			 Utils.setAttribute("state", state, _node, _dom);
+    			 Utils.setAttribute("job", job, _node, _dom);
+    			 Utils.setAttribute("delay", delay, _node, _dom);
+    			 Utils.setAttribute("next_state", next, _node, _dom);
+    			 Utils.setAttribute("error_state", error, _node, _dom);
+    		 }else {
+    			 Utils.setAttribute("state", state, _node, _dom);
+    			 Utils.setAttribute("move_to", moveTo, _node, _dom);
+    			 Utils.setAttribute("remove", removeFile, _node, _dom);
+    		 }
+    	 } else {
+    		 if (isJobchainNode) {
+    			 node = new Element("job_chain_node");
+    			 Utils.setAttribute("state", state, node, _dom);
+    			 Utils.setAttribute("job", job, node, _dom);
+    			 Utils.setAttribute("delay", delay, node, _dom);
+    			 Utils.setAttribute("next_state", next, node, _dom);
+    			 Utils.setAttribute("error_state", error, node, _dom);
+    		 }else {
+    			 node = new Element("file_order_sink");
+    			 Utils.setAttribute("state", state, node, _dom);
+    			 Utils.setAttribute("move_to", moveTo, node, _dom);
+    			 Utils.setAttribute("remove", removeFile, node, _dom);
+    		 }
+    		 
+    		 _chain.addContent(node);
+    		 _node = node;
+    		 
+    	 }
         
         
         _dom.setChanged(true);

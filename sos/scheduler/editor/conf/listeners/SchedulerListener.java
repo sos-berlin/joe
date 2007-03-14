@@ -191,19 +191,7 @@ public class SchedulerListener {
         item.setData(new TreeData(Editor.EXECUTE, job, Options.getHelpURL("job.execute")));
         item = new TreeItem(parent, SWT.NONE);
         item.setText("Monitor");
-        item.setData(new TreeData(Editor.MONITOR, job, Options.getHelpURL("job.monitor"), "monitor"));
-
-        /*test        
-        Element e = job.getChild("monitor");
-        if(e != null) {
-        	Element script =  e.getChild("script");
-        	if(script != null) {
-        		Element includes = script.getChild("include", e.getNamespace());
-        	}
-        }
-//ende test
- * */
- 
+        item.setData(new TreeData(Editor.MONITOR, job, Options.getHelpURL("job.monitor"), "monitor"));        
         
         item = new TreeItem(parent, SWT.NONE);
         item.setText("Run Options");
