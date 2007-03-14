@@ -436,9 +436,7 @@ public class Utils {
     public static String getElementAsString(Element job) {
     	org.jdom.output.XMLOutputter output = new org.jdom.output.XMLOutputter( org.jdom.output.Format.getPrettyFormat() );
     	String retVal = "";
-    	try {
-    		//ausgabe.output(job,System.out);
-    		
+    	try {    		    		
     		retVal = output.outputString(job);
     	}
     	
@@ -448,6 +446,23 @@ public class Utils {
     	return retVal;
     }
     
-    
+    public static boolean isNumeric(String str) {
+    	boolean retVal = true;
+    	char[] c = null;
+    	if(str==null)
+    		return false;
+    	
+    	if(str.length()==0)
+    		return false;
+    	
+    	c = str.toCharArray();
+    	for(int i = 0; i < str.length(); i++) {
+    		if(!Character.isDigit(c[i])){
+    			return false;	
+    		}
+    		
+    	}
+    	return retVal;
+    }
     
 }

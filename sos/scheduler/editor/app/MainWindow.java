@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-public class MainWindow {
+public class MainWindow  {
     private static Shell sShell        = null; // @jve:decl-index=0:visual-constraint="3,1"
 
     private MainListener listener      = null;

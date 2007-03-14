@@ -98,23 +98,24 @@ public class Editor {
     public static String    DOCUMENTATION_ENCODING = "utf-8";
 
 
-    public static void main(String[] args) {
-        Display display = Display.getDefault();
-        MainWindow window = new MainWindow();
-        window.createSShell();
-
-        MainWindow.getSShell().open();
-        MainWindow.getSShell().update();
-        // window.getSShell().pack(true);
-
-        // if(args.length > 0)
-        // window.openFile(args[0]);
-
-        while (!MainWindow.getSShell().isDisposed()) {
-            if (!display.readAndDispatch())
-                display.sleep();
-        }
-        display.dispose();
+    public static void main(String[] args) {    	
+    		Display display = Display.getDefault();
+    		MainWindow window = new MainWindow();
+    		window.createSShell();
+    		
+    		MainWindow.getSShell().open();
+    		MainWindow.getSShell().update();
+    		// window.getSShell().pack(true);
+    		
+    		// if(args.length > 0)
+    		// window.openFile(args[0]);
+    		
+    		while (!MainWindow.getSShell().isDisposed()) {
+    			if (!display.readAndDispatch())
+    				display.sleep();
+    		}
+    		display.dispose();
+    	
     }
 
 }

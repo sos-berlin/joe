@@ -15,6 +15,8 @@ import org.jdom.JDOMException;
 
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.doc.DocumentationDom;
+import sos.util.SOSFile;
+
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.io.FilenameFilter;
@@ -203,7 +205,7 @@ public class IOUtils {
                     if (!inFile.canRead())
                         throw new Exception("Datei " + inFile + " kann nicht gelesen werden.");
 
-                    copyFile(inFile, outFile, false);
+                    SOSFile.copyFile(inFile, outFile, false);
                 }
             }
         } catch (Exception e) {
@@ -213,7 +215,7 @@ public class IOUtils {
     }
 
 
-    public static boolean copyFile(File source, File dest, boolean append) throws Exception {
+    /*public static boolean copyFile(File source, File dest, boolean append) throws Exception {
         int size = (int) source.length();
         int bytes_read = 0;
         byte[] data = null;
@@ -238,6 +240,6 @@ public class IOUtils {
                 out.close();
         }
     }
-   
+   */
 
 }
