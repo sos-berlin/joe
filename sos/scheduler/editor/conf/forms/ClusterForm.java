@@ -123,9 +123,9 @@ public class ClusterForm extends Composite implements IUnsaved, IUpdateLanguage 
 
  
     public void setToolTipText() {
-      tOwnTimeout.setToolTipText(Messages.getTooltip("cluster.heart_beat_timeout"));
-      tWarnTimeout.setToolTipText(Messages.getTooltip("cluster.heart_beat_own_timeout"));
-      tTimeout.setToolTipText(Messages.getTooltip("cluster.heart_beat_warn_timeout"));
+      tOwnTimeout.setToolTipText(Messages.getTooltip("cluster.heart_beat_own_timeout"));
+      tWarnTimeout.setToolTipText(Messages.getTooltip("cluster.heart_beat_warn_timeout"));
+      tTimeout.setToolTipText(Messages.getTooltip("cluster.heart_beat_timeout"));
     }
 
 		public boolean isUnsaved() {

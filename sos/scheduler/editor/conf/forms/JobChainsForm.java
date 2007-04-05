@@ -433,6 +433,10 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         cType.setLayoutData(gridData5);
 
         bFullNode = new Button(cType, SWT.RADIO);
+        bFullNode.addSelectionListener(new SelectionAdapter() {
+        	public void widgetDefaultSelected(final SelectionEvent e) {
+        	}
+        });
         bFullNode.setSelection(true);
         bFullNode.setText("Full Node");
 
@@ -440,16 +444,48 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         bEndNode.setLayoutData(new GridData());
         bEndNode.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
+        	
+        		if (bFileSink.getSelection()) {
+              cNextState.setEnabled(false);
+              cErrorState.setEnabled(false);
+              tDelay.setEnabled(false);
+              cJob.setEnabled(false);
+              cJob.setText("");
+              cNextState.setText("");
+              cErrorState.setText("");
+              tMoveTo.setEnabled(true);
+              bRemoveFile.setEnabled(true);
+              
+              
+            }
+        		
+        		if (bEndNode.getSelection()) {
+               cNextState.setEnabled(false);
+               cErrorState.setEnabled(false);
+               tDelay.setEnabled(false);
+               cJob.setEnabled(false);
+               cJob.setText("");
+               cNextState.setText("");
+               cErrorState.setText("");
+               tMoveTo.setEnabled(false);
+               bRemoveFile.setEnabled(false);
+        		}
+            
+
         		if (bFullNode.getSelection()) {
         			tMoveTo.setEnabled(false);
         			bRemoveFile.setEnabled(false);
               cNextState.setEnabled(true);
               cErrorState.setEnabled(true);
               cJob.setEnabled(true);
-              bApplyNode.setEnabled(isValidNode());
+              tDelay.setEnabled(true);
               if (bApplyNode.getEnabled())
                   getShell().setDefaultButton(bApplyNode);
-          }
+        		}
+        		bApplyNode.setEnabled(isValidNode());
+            
+        		
+        		
         	}
         });
         bEndNode.setText("End Node");
@@ -460,19 +496,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         bFileSink.setLayoutData(gridData);
         bFileSink.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
-        		if (bFileSink.getSelection()) {
-              cNextState.setEnabled(false);
-              cErrorState.setEnabled(false);
-              cJob.setEnabled(false);
-              cJob.setText("");
-              cNextState.setText("");
-              cErrorState.setText("");
-              tMoveTo.setEnabled(true);
-              bRemoveFile.setEnabled(true);
-              
-              if (tState.getText().equals(""))
-                  bApplyNode.setEnabled(false);
-          }
+        		
         	}
         });
         bFileSink.setEnabled(false);

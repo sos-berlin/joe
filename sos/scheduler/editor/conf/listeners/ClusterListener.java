@@ -45,7 +45,7 @@ public class ClusterListener {
     }
 
     public String  getHeartbeatWarnTimeout() {
-      return Utils.getAttributeValue(" heart_beat_warn_timeout", _cluster);
+      return Utils.getAttributeValue("heart_beat_warn_timeout", _cluster);
     }
 
 

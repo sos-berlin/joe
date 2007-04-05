@@ -73,12 +73,27 @@ public class ProcessClassesListener {
 
 
     public String getProcessClass() {
-        String name = Utils.getAttributeValue("name", _class);
-        if (name.equals(CATCHALL))
-            name = "";
-        return name;
-    }
+      String name = Utils.getAttributeValue("name", _class);
+      if (name.equals(CATCHALL))
+          name = "";
+      return name;
+  }
 
+    public String getRemoteHost() {
+      String host = Utils.getAttributeValue("remote_scheduler", _class);
+      try {
+        host = host.substring(0,host.indexOf(":"));
+      }catch (Exception e) {host = "";}
+      return host.trim();
+   }
+
+    public String getRemotePort() {
+      String port = Utils.getAttributeValue("remote_scheduler", _class);
+      try {
+        port = port.substring(port.indexOf(":")+1);
+      }catch (Exception e) {port = "";}
+      return port.trim();
+   }
 
     public int getMaxProcesses() {
         return Utils.getIntValue("max_processes", _class);
@@ -95,10 +110,11 @@ public class ProcessClassesListener {
     }
 
 
-    public void applyProcessClass(String processClass, int maxProcesses, String spoolerID) {
+    public void applyProcessClass(String processClass, String host, String port, int maxProcesses,  String spoolerID) {
         Utils.setAttribute("name", processClass, _class, _dom);
         Utils.setAttribute("max_processes", maxProcesses, _class, _dom);
         Utils.setAttribute("spooler_id", spoolerID, _class, _dom);
+        Utils.setAttribute("remote_scheduler", host.trim()+":"+port.trim(), _class, _dom);
         if (_list == null)
             initClasses();
         if (!_list.contains(_class))

@@ -4,6 +4,10 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -56,6 +60,10 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
     private Label                  label         = null;
 
     private Label                  label2        = null;
+    private Text                   tRemoteHost   = null;
+    private Text                   tRemotePort   = null;
+    
+
 
 
     /**
@@ -141,6 +149,51 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         label10.setText("Scheduler ID:");
         tSpoolerID = new Text(group, SWT.BORDER);
         bApply = new Button(group, SWT.NONE);
+
+        final Label remoteExecutionOnLabel = new Label(group, SWT.NONE);
+        remoteExecutionOnLabel.setText("Executed by Scheduler on host");
+
+        tRemoteHost = new Text(group, SWT.BORDER);
+        tRemoteHost.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+            bApply.setEnabled(true);
+
+        	}
+        });
+        tRemoteHost.setEnabled(false);
+        tRemoteHost.addKeyListener(new KeyAdapter() {
+        	public void keyPressed(final KeyEvent e) {
+        		if (e.keyCode == SWT.CR)
+              applyClass();
+       
+        	}
+        });
+        tRemoteHost.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+        final Label portLabel = new Label(group, SWT.NONE);
+        final GridData gridData_1 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
+        gridData_1.horizontalIndent = 5;
+        portLabel.setLayoutData(gridData_1);
+        portLabel.setText("at Port");
+
+        tRemotePort = new Text(group, SWT.BORDER);
+        tRemotePort.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+            bApply.setEnabled(true);
+
+        	}
+        });
+        tRemotePort.setEnabled(false);
+        tRemotePort.addKeyListener(new KeyAdapter() {
+        	public void keyPressed(final KeyEvent e) {
+        		if (e.keyCode == SWT.CR)
+              applyClass();
+        	}
+        });
+        tRemotePort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        new Label(group, SWT.NONE);
+        new Label(group, SWT.NONE);
+        new Label(group, SWT.NONE);
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setText("Label");
         label.setLayoutData(gridData7);
@@ -279,7 +332,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 
 
     private void applyClass() {
-        listener.applyProcessClass(tProcessClass.getText(), sMaxProcesses.getSelection(), tSpoolerID.getText());
+        listener.applyProcessClass(tProcessClass.getText(), tRemoteHost.getText(),tRemotePort.getText(),sMaxProcesses.getSelection(), tSpoolerID.getText());
         listener.fillTable(table);
         setInput(false);
         getShell().setDefaultButton(bNew);
@@ -291,13 +344,19 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         tProcessClass.setEnabled(enabled);
         sMaxProcesses.setEnabled(enabled);
         tSpoolerID.setEnabled(enabled);
+        tRemoteHost.setEnabled(enabled);
+        tRemotePort.setEnabled(enabled);
         if (enabled) {
             tProcessClass.setText(listener.getProcessClass());
+            tRemoteHost.setText(listener.getRemoteHost());
+            tRemotePort.setText(listener.getRemotePort());
             sMaxProcesses.setSelection(listener.getMaxProcesses());
             tSpoolerID.setText(listener.getSpoolerID());
             tProcessClass.setFocus();
         } else {
             tProcessClass.setText("");
+            tRemoteHost.setText("");
+            tRemotePort.setText("");
             sMaxProcesses.setSelection(0);
             tSpoolerID.setText("");
         }
