@@ -1,7 +1,7 @@
 package sos.scheduler.editor.app;
 
 import org.eclipse.swt.widgets.Display;
-
+ 
 public class Editor {
     public final static int CONFIG                 = 1;
 

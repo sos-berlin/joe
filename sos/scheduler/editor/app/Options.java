@@ -20,6 +20,7 @@ public class Options {
 
     private static boolean     _changed        = false;
 
+    private static boolean     _showWizardInfo = true;
 
     private Options() {
 
@@ -92,6 +93,7 @@ public class Options {
     public static void setLanguage(String language) {
         setProperty("editor.language", language);
     }
+
 
 
     private static String getHelp(String key, String prefix) {
@@ -346,4 +348,19 @@ public class Options {
             return ResourceManager.getColor(255, 255, 219);
         }
     }
+
+
+	public static boolean isShowWizardInfo() {
+		String s =  _properties.getProperty("editor.job.wizard.info.show");
+		if(s != null && s.trim().length() > 0) {
+			_showWizardInfo = s.equals("true");					
+		}
+		return _showWizardInfo;
+	}
+
+
+	public static void setShowWizardInfo(boolean wizardInfo) {
+		_showWizardInfo = wizardInfo;
+		_properties.setProperty("editor.job.wizard.info.show", wizardInfo ? "true" : "false");
+	}
 }

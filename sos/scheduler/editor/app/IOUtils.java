@@ -1,14 +1,9 @@
 package sos.scheduler.editor.app;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.jdom.JDOMException;
@@ -16,10 +11,6 @@ import org.jdom.JDOMException;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.util.SOSFile;
-
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-import java.io.FilenameFilter;
 
 public class IOUtils {
 

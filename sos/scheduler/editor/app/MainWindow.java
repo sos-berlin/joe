@@ -37,7 +37,7 @@ public class MainWindow  {
     private void createContainer() {
         container = new TabbedContainer(this, sShell);
     }
-
+ 
 
     /**
      * This method initializes sShell
