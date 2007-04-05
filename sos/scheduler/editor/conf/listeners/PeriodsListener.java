@@ -54,8 +54,7 @@ public class PeriodsListener {
                 item.setText(4, Utils.getAttributeValue("single_start", e));
             }
         }
-    }
-
+    }   
 
     public void removePeriod(int index) {
         if (index >= 0 && index < _list.size()) {
@@ -92,4 +91,9 @@ public class PeriodsListener {
             _list.set(_period, period);
         _dom.setChanged(true);
     }
+
+
+	public List get_list() {
+		return _list;
+	}
 }

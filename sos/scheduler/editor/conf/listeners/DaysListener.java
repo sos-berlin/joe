@@ -58,6 +58,8 @@ public class DaysListener {
         _dom = dom;
         _type = type;
         _runtime = runtime;
+        
+        setUsedDays();
     }
 
 

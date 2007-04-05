@@ -15,7 +15,7 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.JobAssistentForm;
-import sos.scheduler.editor.conf.forms.JobChainAssistentForm;
+
 
 public class JobChainsListener {
     private SchedulerDom _dom;
@@ -576,14 +576,7 @@ public class JobChainsListener {
             }
         }
         return true;
-    }
-    
-    public void startJobAssistent(Table nodes, ISchedulerUpdate update) {    
-    	tChains = nodes;
-    	JobChainAssistentForm assitent = new JobChainAssistentForm(this);
-    	assitent.startJobChainAssistant(update);   	
-    	
-    }
+    }        
 
 
 	public SchedulerDom get_dom() {

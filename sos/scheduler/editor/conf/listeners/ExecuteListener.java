@@ -180,4 +180,9 @@ public class ExecuteListener {
         }
         _dom.setChanged(true);
     }
+
+
+	public Element getJob() {
+		return _job;
+	}
 }

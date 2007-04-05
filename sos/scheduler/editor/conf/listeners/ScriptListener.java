@@ -80,6 +80,9 @@ public class ScriptListener {
         return _languages[language];
     }
 
+    public String getLanguage(int language) {
+        return _languages[language];
+    }
 
     public int getLanguage() {
         if (_script != null)
@@ -282,4 +285,9 @@ public class ScriptListener {
    	 System.out.println(e);
      }
     }
+
+
+	public Element getParent() {
+		return _parent;
+	}
 }

@@ -292,4 +292,9 @@ public class JobOptionsListener {
     public String getErrorCountSeconds() {
         return Utils.getIntegerAsString(Utils.getSeconds(_errorDelay.getAttributeValue("delay"), -999));
     }
+
+
+	public Element getJob() {
+		return _job;
+	}
 }

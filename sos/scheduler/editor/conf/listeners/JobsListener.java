@@ -105,27 +105,23 @@ public class JobsListener {
 		if(attr.get("order") != null && attr.get("order").toString().length() > 0)
 			Utils.setAttribute("order", attr.get("order").toString(), job);
 		
-		if(attr.get("tasks") != null && attr.get("tasks").toString().length() > 0)
+		if((attr.get("tasks") != null && attr.get("tasks").toString().length() > 0 && !attr.get("tasks").equals("unbounded")))
 			Utils.setAttribute("tasks", attr.get("tasks").toString(), job);
 		
-		/*job.setAttribute("title", (attr.get("title") != null ? attr.get("title").toString() : ""));                
-		 job.setAttribute("order", (attr.get("order") != null ? attr.get("order").toString() : ""));
-		 job.setAttribute("tasks", (attr.get("tasks") != null && !attr.get("tasks").equals("unbounded")? attr.get("tasks").toString() : ""));
-		 */
+	
 		//Element Parameters und entsprechende Kindknoten param bils
 		Element params = new Element("params");
 		job.addContent(0, params);
-		ArrayList listOfParams = (ArrayList)attr.get("params");        
+		ArrayList listOfParams = new ArrayList();
+		if(attr.get("params") != null)
+			listOfParams = (ArrayList)attr.get("params");        
 		//Parameter werden aus der Jobbeschreibung geholt 
 		//config Parameters bilden
 		Element param = null;
 		for (int i = 0; i < listOfParams.size(); i++ ) {
 			HashMap p = (HashMap)listOfParams.get(i);
 			param = new Element("param");
-			/*if(p.get("name") != null && p.get("name").toString().length() > 0) {
-			 Utils.setAttribute("name", p.get("name").toString(), param);        	
-			 Utils.setAttribute("value", (p.get("default_value") != null ? p.get("default_value").toString() :""), param);
-			 }*/        	
+			      	
 			param.setAttribute("name", (p.get("name") != null ? p.get("name").toString() :""));        
 			param.setAttribute("value", (p.get("default_value") != null ? p.get("default_value").toString() :""));
 			//Es gibt hier noch weiter Informationen wie die Parameter Beschreibung und ob required, sollen diese auch übergeben werden?
@@ -146,24 +142,19 @@ public class JobsListener {
 		if(attr.get("script") != null && attr.get("script").toString().equals("script")) {
 			Element script = new Element("script");        	
 			if(attr.get("script_language") != null && attr.get("script_language").toString().length() > 0)
-				Utils.setAttribute("language", attr.get("script_language").toString(), script);
-			//script.setAttribute("language", attr.get("script_language").toString());
+				Utils.setAttribute("language", attr.get("script_language").toString(), script);			
 			
 			if(attr.get("script_java_class") != null && attr.get("script_java_class").toString().length() > 0)
-				Utils.setAttribute("java_class", attr.get("script_java_class").toString(), script);
-			//script.setAttribute("java_class", attr.get("script_java_class").toString()); 
+				Utils.setAttribute("java_class", attr.get("script_java_class").toString(), script);			
 			
 			if(attr.get("script_com_class") != null && attr.get("script_com_class").toString().length() > 0)
-				Utils.setAttribute("com_class", attr.get("script_com_class").toString(), script);
-			//script.setAttribute("com_class", attr.get("script_com_class").toString()); 
+				Utils.setAttribute("com_class", attr.get("script_com_class").toString(), script);			
 			
 			if(attr.get("script_filename") != null && attr.get("script_filename").toString().length() > 0)
-				Utils.setAttribute("filename", attr.get("script_filename").toString(), script);
-			//script.setAttribute("filename", attr.get("script_filename").toString()); 
+				Utils.setAttribute("filename", attr.get("script_filename").toString(), script);			
 			
 			if(attr.get("script_use_engine") != null && attr.get("script_use_engine").toString().length() > 0)
-				Utils.setAttribute("use_engine", attr.get("script_use_engine").toString(), script);
-			//script.setAttribute("use_engine", attr.get("script_use_engine").toString()); 
+				Utils.setAttribute("use_engine", attr.get("script_use_engine").toString(), script);			 
 			
 			if(attr.get("script_include_file") != null) {
 				ArrayList listOfIncludes = (ArrayList)attr.get("script_include_file");
@@ -171,8 +162,7 @@ public class JobsListener {
 					if(listOfIncludes.get(i) != null) {
 						Element include = new Element("include");
 						include.setNamespace(this._dom.getNamespace());
-						Utils.setAttribute("file", listOfIncludes.get(i).toString(), include);
-						//include.setAttribute("file", listOfIncludes.get(i).toString());
+						Utils.setAttribute("file", listOfIncludes.get(i).toString(), include);						
 						script.addContent(include);
 					}
 				}
@@ -190,30 +180,24 @@ public class JobsListener {
 			
 			if(attr.get("monitor_script_language") != null && attr.get("monitor_script_language").toString().length() > 0) 
 				Utils.setAttribute("language", attr.get("monitor_script_language").toString(), mon_script);
-			//mon_script.setAttribute("language", attr.get("monitor_script_language").toString());
 			
 			if(attr.get("monitor_script_java_class") != null && attr.get("monitor_script_java_class").toString().length() > 0)
 				Utils.setAttribute("java_class", attr.get("monitor_script_java_class").toString(), mon_script);
-			//mon_script.setAttribute("java_class", attr.get("monitor_script_java_class").toString());
 			
 			if(attr.get("monitor_script_com_class") != null && attr.get("monitor_script_com_class").toString().length() > 0)
 				Utils.setAttribute("com_class", attr.get("monitor_script_com_class").toString(), mon_script);
-			//mon_script.setAttribute("com_class", attr.get("monitor_script_com_class").toString());
 			
 			if(attr.get("monitor_script_filename") != null && attr.get("monitor_script_filename").toString().length() > 0)
 				Utils.setAttribute("filename", attr.get("monitor_script_filename").toString(), mon_script);
-			//mon_script.setAttribute("filename", attr.get("monitor_script_filename").toString());
 			
 			if(attr.get("monitor_script_use_engine") != null && attr.get("monitor_script_use_engine").toString().length() > 0)
 				Utils.setAttribute("use_engine", attr.get("monitor_script_use_engine").toString(), mon_script);
-			//mon_script.setAttribute("use_engine", attr.get("monitor_script_use_engine").toString());
 			
 			if(attr.get("monitor_script_include_file") != null) {
 				ArrayList listOfMonIncludes = (ArrayList)attr.get("monitor_script_include_file");
 				for (int i = 0; i < listOfMonIncludes.size(); i++) {
 					Element mon_include = new Element("include");
-					mon_include.setNamespace(this._dom.getNamespace());
-					//mon_include.setAttribute("file", listOfMonIncludes.get(i).toString());
+					mon_include.setNamespace(this._dom.getNamespace());			
 					Utils.setAttribute("file", listOfMonIncludes.get(i).toString(), mon_include);
 					mon_script.addContent(mon_include);
 				}
@@ -252,6 +236,7 @@ public class JobsListener {
 				
 				process.addContent(environment);
 			}
+			
 			job.addContent(process);
 			
 		}
@@ -289,10 +274,12 @@ public class JobsListener {
 		_dom.setChanged(true);
 		if(Editor.JOB_CHAINS != assistentType) {
 			fillTable(JobsForm.getTable());
-			JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);			
+			JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);
+			//_main.updateJob(); --> hängt eine run_time unterhalb der config Element
 		} 
-		_main.updateJobs();	
-		_main.updateOrders();							
+		_main.updateOrders();
+		
+		_main.updateJobs();
 	}
 	
 	public void newImportJobOriginal(Element job) {
@@ -308,15 +295,17 @@ public class JobsListener {
 		//_main.updateOrders();
 	}
 	
-	public void newImportJobChain(Element job) {
+	public void newImportJob(Element job) {
 		
 		if (_list == null)
 			initJobs();
 		
 		_list.add(job);
 		_dom.setChanged(true);
-		// fillTable(JobsForm.getTable());
-		//JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);
+		
+		 fillTable(JobsForm.getTable());
+		 JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);
+		 
 		_main.updateJobs(); 
 		_main.updateOrders();
 	}
@@ -330,7 +319,8 @@ public class JobsListener {
 			_dom.setChanged(true);
 			table.remove(index);
 			_main.updateJobs();
-			
+			if(_list==null)
+				initJobs();
 			if (_list.size() == 0) {
 				_config.removeChild("jobs");
 				_jobs = null;
@@ -372,35 +362,18 @@ public class JobsListener {
 		}
 		return false;
 	}
-	
-	
-	public void openImportJobs(SchedulerDom dom, ISchedulerUpdate update) throws Exception {    
-		JobAssistentImportJobsForm iDialog = null;    	
 		
-		try {
-			iDialog = new JobAssistentImportJobsForm (dom, update);//(parent.getShell(), style);
-			iDialog.showAllImportJobs();
-			
-			
-		} catch (Exception e) {
-			throw new Exception ("error in JobsListener.openImportJobs " + e.getMessage());
+	public boolean existJobname(String name) {
+		if(name == null || name.length() == 0)
+			return false;
+		
+		for (int i = 0; _list != null && i < _list.size(); i++) {
+			Element currJob = (Element)_list.get(i);
+			String jobName = Utils.getAttributeValue("name", currJob);
+			if (jobName.equalsIgnoreCase(name)) {			
+				return true;				
+			} 
 		}
-		
+		return false;
 	}
-	
-	public void startJobAssistent(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) throws Exception {    
-		
-		
-		try {
-			JobAssistentForm assitent = new JobAssistentForm(dom, update);
-			assitent.startJobAssistant();
-			
-		} catch (Exception e) {
-			throw new Exception ("error in JobsListener.startJobAssistent() " + e.getMessage());
-		}
-		
-	}
-	
-	
-	
 }

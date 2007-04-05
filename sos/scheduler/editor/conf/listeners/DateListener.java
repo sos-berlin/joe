@@ -55,6 +55,7 @@ public class DateListener implements Comparator {
 
 
     public void fillList(org.eclipse.swt.widgets.List list) {
+    	
         list.removeAll();
         if (_list != null) {
             Iterator it = _list.iterator();
@@ -64,7 +65,7 @@ public class DateListener implements Comparator {
                     list.add(e.getAttributeValue("date"));
             }
         }
-    }
+    }        
 
 
     public void addDate(int year, int month, int day) {
@@ -241,5 +242,10 @@ public class DateListener implements Comparator {
       } else
           System.out.println("no script element defined!");
   }
+
+
+	public List get_list() {
+		return _list;
+	}
     
 }
