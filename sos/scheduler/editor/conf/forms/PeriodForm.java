@@ -117,6 +117,8 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
     private String         savRepeatMinutes = "";
 
     private String         savRepeatSeconds = "";
+    
+    private boolean        assistent      = false;
 
 
     public PeriodForm(Composite parent, int style) {
@@ -127,8 +129,17 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         setRunOnce(false);
 
     }
+    
+    public PeriodForm(Composite parent, int style, boolean assistent_) {
+        super(parent, style);
+        assistent = assistent_;
+        initialize();
+        setToolTipText();
 
+        setRunOnce(false);
 
+    }
+    
     public PeriodForm(Composite parent, int style, SchedulerDom dom, boolean onOrder) {
         this(parent, style);
         this.onOrder = onOrder;
@@ -387,9 +398,14 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
                             .getText());
             }
         });
+        
+        
         label10 = new Label(gPeriod, SWT.NONE);
         label10.setText("Repeat Time:");
+        //label10.setVisible(!assistent);
+        
         sRepeatHours = new Text(gPeriod, SWT.BORDER);
+        //sRepeatHours.setVisible(!assistent);
         sRepeatHours.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -423,7 +439,9 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         });
         label11 = new Label(gPeriod, SWT.NONE);
         label11.setText(":");
+        //label11.setVisible(!assistent);
         sRepeatMinutes = new Text(gPeriod, SWT.BORDER);
+        //sRepeatMinutes.setVisible(!assistent);
         sRepeatMinutes.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -457,7 +475,9 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         });
         label12 = new Label(gPeriod, SWT.NONE);
         label12.setText(":");
+        //label12.setVisible(!assistent);
         sRepeatSeconds = new Text(gPeriod, SWT.BORDER);
+        //sRepeatSeconds.setVisible(!assistent);
         sRepeatSeconds.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -476,7 +496,8 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         sRepeatSeconds.setLayoutData(gridData9);
         label18 = new Label(gPeriod, SWT.NONE);
         label18.setText("hh:mm:ss or ss");
-        sRepeatSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+        //label18.setVisible(!assistent);
+        sRepeatSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {        	
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 if (!(sRepeatMinutes.getText() + sRepeatHours.getText()).equals("")) {
                     Utils.setBackground(0, 59, sRepeatSeconds);
@@ -496,7 +517,9 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
         label13 = new Label(gPeriod, SWT.NONE);
         label13.setText("Single Start:");
+        label13.setVisible(!assistent);
         sSingleHours = new Text(gPeriod, SWT.BORDER);
+        sSingleHours.setVisible(!assistent);
         sSingleHours.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -528,7 +551,9 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         });
         label14 = new Label(gPeriod, SWT.NONE);
         label14.setText(":");
+        label14.setVisible(!assistent);
         sSingleMinutes = new Text(gPeriod, SWT.BORDER);
+        sSingleMinutes.setVisible(!assistent);
         sSingleMinutes.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -559,7 +584,9 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         });
         label15 = new Label(gPeriod, SWT.NONE);
         label15.setText(":");
+        label15.setVisible(!assistent);
         sSingleSeconds = new Text(gPeriod, SWT.BORDER);
+        sSingleSeconds.setVisible(!assistent);
         sSingleSeconds.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -589,8 +616,9 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
             }
         });
         label16 = new Label(gPeriod, SWT.NONE);
-        label16.setText("hh:mm:ss");
+        label16.setText("hh:mm:ss");        
         label16.setLayoutData(gridData4);
+        label16.setVisible(!assistent);
         new Label(gPeriod, SWT.NONE);
         new Label(gPeriod, SWT.NONE);
         new Label(gPeriod, SWT.NONE);
@@ -800,4 +828,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
     public void setApplyButton(Button b) {
         bApply = b;
     }
+
+	public PeriodListener getListener() {
+		return listener;
+	}
+
+
+	
 } // @jve:decl-index=0:visual-constraint="10,10"

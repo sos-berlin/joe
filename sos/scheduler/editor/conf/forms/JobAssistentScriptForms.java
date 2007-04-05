@@ -1,22 +1,16 @@
-/*
- * Created on 06.03.2007
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
- */
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -24,77 +18,88 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobsListener;
-import sos.util.SOSString;
-
+import sos.scheduler.editor.conf.listeners.JobListener;
+import sos.scheduler.editor.conf.listeners.ScriptListener;
+import org.eclipse.swt.widgets.Combo;
 import com.swtdesigner.SWTResourceManager;
 
 public class JobAssistentScriptForms {
 	
-	private Element           job          = null;
+	private SchedulerDom      dom            = null;
+	 
+	private ISchedulerUpdate  update         = null;
 	
-	private SchedulerDom      dom          = null;
+	private ScriptListener    scriptlistener = null;	
 	
-	private ISchedulerUpdate  update       = null;
+	private Button            butFinish      = null;
 	
-	private JobsListener      listener     = null;
+	private Button            butCancel      = null;
 	
-	private Button            butFinish    = null;
+	private Button            butNext        = null;
 	
-	private Button            butCancel    = null;
+	private Button            butShow        = null;		
 	
-	private Button            butNext      = null;
+	private Table             tableInclude   = null;
 	
-	private Button            butShow      = null;		
+	private Text              txtLanguage    = null;  
 	
-	private Table             tableInclude = null;
+	private Text              txtJavaClass   = null; 
 	
-	private SOSString         sosString    = new SOSString();
-	
-	private Text              txtScript    = null; 
-	
-	private Text              txtLanguage  = null;  
-	
-	private Text              txtJavaClass = null; 
-	
-	private String            libraryName  = "";
-	
-	private Label             lblClass     = null;
+	private Label             lblClass       = null;
 	
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
-	private int assistentType = -1; 
+	private int               assistentType  = -1; 
 	
-	public JobAssistentScriptForms(SchedulerDom dom_, ISchedulerUpdate update_) {
+	private Shell             scriptShell    = null;
+	
+	private Combo             jobname        = null;
+	
+	
+	public JobAssistentScriptForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
 		dom = dom_;
 		update = update_;
-		listener = new JobsListener(dom, update);			
-	}
-
-
-
-	public void showScriptForm(Element job_, int assistentType_) {
 		assistentType = assistentType_;
-		job = job_;
-		final Shell scriptShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		scriptlistener = new ScriptListener(dom, job_, Editor.SCRIPT);			
+	}
+	
+		
+	public void showScriptForm() {
+		
+		scriptShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		scriptShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 		final GridLayout gridLayout = new GridLayout();
+		gridLayout.marginTop = 5;
+		gridLayout.marginRight = 5;
+		gridLayout.marginLeft = 5;
+		gridLayout.marginBottom = 5;
+		gridLayout.numColumns = 3;
 		scriptShell.setLayout(gridLayout);
-		scriptShell.setSize(511, 388);
-		scriptShell.setText("Script");
-
+		scriptShell.setSize(521, 385);
+		String step = "  ";
+		if (Utils.getAttributeValue("order", scriptlistener.getParent()).equalsIgnoreCase("yes"))
+			step = step + " [Step 5 of 9]";
+		else 
+			step = step + " [Step 5 of 8]";
+		scriptShell.setText("Script" + step);
+		
 		{
 			final Group jobGroup = new Group(scriptShell, SWT.NONE);
-			jobGroup.setText("Job");
-			final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
+			jobGroup.setText( "Job: " + Utils.getAttributeValue("name", scriptlistener.getParent()));
+			final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false, 3, 1);
 			gridData.widthHint = 490;
-			gridData.heightHint = 331;
+			gridData.heightHint = 287;
 			jobGroup.setLayoutData(gridData);
 			final GridLayout gridLayout_1 = new GridLayout();
+			gridLayout_1.verticalSpacing = 10;
+			gridLayout_1.horizontalSpacing = 10;
 			gridLayout_1.marginWidth = 10;
 			gridLayout_1.marginTop = 10;
 			gridLayout_1.marginRight = 10;
@@ -103,212 +108,227 @@ public class JobAssistentScriptForms {
 			gridLayout_1.marginBottom = 10;
 			gridLayout_1.numColumns = 2;
 			jobGroup.setLayout(gridLayout_1);
-
+			
 			{
-				Text txtScript = new Text(jobGroup, SWT.MULTI);
+				Text txtScript = new Text(jobGroup, SWT.MULTI | SWT.WRAP);				
+				txtScript.setEditable(false);
 				final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1);
-				gridData_1.heightHint = 120;
+				gridData_1.horizontalIndent = -3;
+				gridData_1.heightHint = 77;
 				gridData_1.widthHint = 441;
 				txtScript.setLayoutData(gridData_1);
-				txtScript.setEditable(false);
-				txtScript.setText(Messages.getString("assistent.script"));
+				String lan = "java";				
+				String l = scriptlistener.getLanguage(scriptlistener.getLanguage()); 
+				if(l != null && l.trim().length()>0)
+					lan = l;
+				
+				lan = "assistent.script.".concat(lan);
+				txtScript.setText("ssss");
+				txtScript.setText(Messages.getString(lan));
+				txtScript.setText(Messages.getString("assistent.script.java"));
 			}
-
+			
 			{
 				final Label lblLanguage = new Label(jobGroup, SWT.NONE);
 				lblLanguage.setText("Language");
 			}
-			txtLanguage = new Text(jobGroup, SWT.NONE);
+			txtLanguage = new Text(jobGroup, SWT.BORDER);
+			txtLanguage.addModifyListener(new ModifyListener() {
+				public void modifyText(final ModifyEvent e) {
+					if(txtLanguage.getEnabled()) {
+						if(txtLanguage.getText() != null && txtLanguage.getText().length() > 0) {
+							//"", "java", "javascript", "perlScript", "VBScript", "shell"			        									
+							//scriptlistener.setLanguage( txtLanguage.getText());		
+						}
+					}
+					
+				}
+			});
 			txtLanguage.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
 			txtLanguage.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			txtLanguage.setEditable(false);
-			if(job != null) {
-				Element script = job.getChild("script");
-				txtLanguage.setText(Utils.getAttributeValue("language", script));
+			txtLanguage.setFocus();
+			
+			String lan = scriptlistener.getLanguage(scriptlistener.getLanguage()); 
+			if(lan != null && lan.trim().length() > 0) {
+				txtLanguage.setText(lan);
+			} else {
+				txtLanguage.setEditable(true);
 			}
-
-
-			/*if(this.txtLanguage.getText() != null && txtLanguage.getText().equalsIgnoreCase("com_class")){
-				{
-					if(job != null){
-						Element script = job.getChild("script");				 
-						if(script!= null) {
-							java.util.List includes = script.getChildren("include");
-							
-						}
-						
-					}
-				}
-			}*/
-
 			{
 				lblClass = new Label(jobGroup, SWT.NONE);
 				lblClass.setText("Java Class");
-				if(job != null){
-					Element script = job.getChild("script");
-					String language = Utils.getAttributeValue("language", script); 
-					if(language != null && language.equalsIgnoreCase("com_class")) {
-						lblClass.setText("Com Class");
+				if (scriptlistener.getComClass() != null && scriptlistener.getComClass().length() > 0) {
+					lblClass.setText("Com Class");
+				}
+			}
+			txtJavaClass = new Text(jobGroup, SWT.BORDER);
+			txtJavaClass.addModifyListener(new ModifyListener() {
+				public void modifyText(final ModifyEvent e) {
+					if(txtJavaClass.getEnabled()) {
+						if(txtJavaClass.getText() != null && txtJavaClass.getText().trim().length() > 0)
+							if(lblClass.getText().equals("Java Class")) {				
+								scriptlistener.setJavaClass(txtJavaClass.getText());			
+							} else {				
+								scriptlistener.setComClass(txtJavaClass.getText());
+							}
 					}
 				}
 				
-			}
-			txtJavaClass = new Text(jobGroup, SWT.NONE);
+			});
 			txtJavaClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			txtJavaClass.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			txtJavaClass.setEditable(false);
-			if(job != null) {
-				Element script = job.getChild("script");
-				txtJavaClass.setText(Utils.getAttributeValue("java_class", script));
+			
+			if(scriptlistener.getJavaClass() != null && scriptlistener.getJavaClass().trim().length() > 0) {
+				txtJavaClass.setText(scriptlistener.getJavaClass());
 			}
-
+			
+			if(txtJavaClass.getText()!= null && txtJavaClass.getText().length() == 0) {				
+				txtJavaClass.setEditable(true);
+			}
 			{				
 				final Label lblRessources = new Label(jobGroup, SWT.NONE);
 				if(lblClass != null && lblClass.getText().equals("Com Class")) {
 					lblRessources.setText("Filename");
 				} else {
-					lblRessources.setText("Ressource");
+					lblRessources.setText("Resource");
 				}
 				
 				
 			}
-
-			final Text txtResource = new Text(jobGroup, SWT.NONE);
+			
+			final Text txtResource = new Text(jobGroup, SWT.BORDER);
+			txtResource.addModifyListener(new ModifyListener() {
+				public void modifyText(final ModifyEvent e) {
+					if(txtResource.getEnabled()) {
+						if(txtResource.getText() != null && txtResource.getText().trim().length()>0) {
+							//scriptlistener.setSource(txtResource.getText());
+						}
+					}
+				}
+			});
 			txtResource.setEditable(false);
 			txtResource.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			txtResource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 			if(lblClass != null && lblClass.getText().equals("Java Class")) {
-				if(libraryName != null) {
-					txtResource.setText(this.libraryName);
+				if(JobListener.getLibrary() != null && JobListener.getLibrary().length() > 0) {
+					txtResource.setText(JobListener.getLibrary());
+				} else {
+					txtResource.setEditable(true);
 				}
-			} else {
-				if(job != null) {
-					Element script = job.getChild("script");				
-					if(script != null && Utils.getAttributeValue("filename", script) != null &&
-							Utils.getAttributeValue("filename", script).trim().length() > 0	){
-						txtResource.setText(Utils.getAttributeValue("filename", script));
-					}
-				}
+			} else {				
+				if(scriptlistener.getFilename() != null && scriptlistener.getFilename().trim().length()>0)
+					txtResource.setText(scriptlistener.getFilename() );
 			}
+			if(txtResource.getText() != null && txtResource.getText().length() == 0) {
+				txtResource.setEditable(true);
+			}												
 			
-					
-			
-			if(job != null){
-				Element script = job.getChild("script");				 
-				if(script!= null) {
-					java.util.List includes = script.getChildren("include");
-					if(includes.size() > 0) {
-						{
-							final Label lblInclude = new Label(jobGroup, SWT.NONE);
-							lblInclude.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
-							lblInclude.setText("Include");
-						}
-						tableInclude = new Table(jobGroup, SWT.BORDER);
-						final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, false, false);
-						gridData_1.widthHint = 322;
-						gridData_1.heightHint = 55;
-						tableInclude.setLayoutData(gridData_1);
-						tableInclude.setLinesVisible(true);
-						tableInclude.setHeaderVisible(true);			
-					}
-					for (int i = 0; i < includes.size(); i++) {
-						Element include = (Element)includes.get(i);				
-						if( Utils.getAttributeValue("file", include) != null &&
-								Utils.getAttributeValue("file", include).length() > 0) {							
-							TableItem item = new TableItem(tableInclude, SWT.NONE);
-							item.setText(Utils.getAttributeValue("file", include));							
-						}
-					}
-				}
-			}
-
 			{
-				final Composite composite = new Composite(jobGroup, SWT.NONE);
-				final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, false, false);
-				gridData_2.heightHint = 23;
-				composite.setLayoutData(gridData_2);
-				final GridLayout gridLayout_2 = new GridLayout();
-				gridLayout_2.numColumns = 2;
-				composite.setLayout(gridLayout_2);
-
-				{
-					butFinish = new Button(composite, SWT.NONE);
-					butFinish.addSelectionListener(new SelectionAdapter() {
-						public void widgetSelected(final SelectionEvent e) {
-							listener.newImportJob(job, assistentType);
-							scriptShell.dispose();
-						}
-					});
-					butFinish.setText("Finish");
-				}
-				{
-					butCancel = new Button(composite, SWT.NONE);
-					butCancel.addSelectionListener(new SelectionAdapter() {
-						public void widgetSelected(final SelectionEvent e) {
-							scriptShell.dispose();
-						}
-					});
-					butCancel.setText("Cancel");
-				}
+				final Label lblInclude = new Label(jobGroup, SWT.NONE);
+				lblInclude.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+				lblInclude.setText("Include");
 			}
-
-			{
-				final Composite composite = new Composite(jobGroup, SWT.NONE);
-				composite.setLayoutData(new GridData(GridData.END, GridData.FILL, false, false));
-				final GridLayout gridLayout_2 = new GridLayout();
-				gridLayout_2.numColumns = 2;
-				composite.setLayout(gridLayout_2);
-
-				{
-					butShow = new Button(composite, SWT.NONE);
-					butShow.addSelectionListener(new SelectionAdapter() {
-						public void widgetSelected(final SelectionEvent e) {					
-							MainWindow.message(scriptShell, Utils.getElementAsString(job), SWT.OK );
-						}
-					});
-					butShow.setText("Show");
-				}
-				{
-					butNext = new Button(composite, SWT.NONE);
-					butNext.addSelectionListener(new SelectionAdapter() {
-						public void widgetSelected(final SelectionEvent e) {
-							JobAssistentTimeoutForms timeout = new JobAssistentTimeoutForms(dom, update);
-							timeout.showTimeOutForm(job, assistentType);
-							//MainWindow.message(scriptShell, "offen???????", SWT.OK );
-							scriptShell.dispose();
-						}
-					});
-					butNext.setText("Next");
-				}
-			}
-		}
-
-		{
-			Element script = job.getChild("script");
-			if(script != null && Utils.getAttributeValue("language", script) != null &&
-					Utils.getAttributeValue("language", script).trim().length() > 0	){
-			}
-		}
-
-		{
-			Element script = job.getChild("script");
-			if(script != null && Utils.getAttributeValue("java_class", script) != null &&
-					Utils.getAttributeValue("java_class", script).trim().length() > 0	){
-			}
-		}
-
-		{
-			Element script = job.getChild("script");
-			if(script != null && Utils.getAttributeValue("filename", script) != null &&
-					Utils.getAttributeValue("filename", script).trim().length() > 0	){
+			tableInclude = new Table(jobGroup, SWT.BORDER);
+			final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, false, false);
+			gridData_1.widthHint = 322;
+			gridData_1.heightHint = 55;
+			tableInclude.setLayoutData(gridData_1);
+			tableInclude.setLinesVisible(true);
+			tableInclude.setHeaderVisible(true);
+			tableInclude.setEnabled(false);
+						
+			String[] iElem = scriptlistener.getIncludes();
+			for(int i =0; i < iElem.length; i++) {
+				String in = iElem[i];
+				TableItem item = new TableItem(tableInclude, SWT.NONE);
+				item.setText(in);	
 			}
 		}
 		
+		java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();		
+		scriptShell.setBounds((screen.width - scriptShell.getBounds().width) /2, 
+				(screen.height - scriptShell.getBounds().height) /2, 
+				scriptShell.getBounds().width, 
+				scriptShell.getBounds().height);
+		
 		scriptShell.open();
+		
+		{
+			final Composite composite = new Composite(scriptShell, SWT.NONE);
+			final GridLayout gridLayout_2 = new GridLayout();
+			gridLayout_2.marginWidth = 0;
+			gridLayout_2.horizontalSpacing = 0;
+			composite.setLayout(gridLayout_2);
+			{
+				butCancel = new Button(composite, SWT.NONE);
+				butCancel.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {
+						close();
+					}
+				});
+				butCancel.setText("Cancel");
+			}
+		}
+		
+		{
+			final Composite composite = new Composite(scriptShell, SWT.NONE);
+			composite.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false, 2, 1));
+			final GridLayout gridLayout_2 = new GridLayout();
+			gridLayout_2.marginWidth = 0;
+			gridLayout_2.numColumns = 3;
+			composite.setLayout(gridLayout_2);
+			
+			{
+				butShow = new Button(composite, SWT.NONE);
+				butShow.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {					
+						MainWindow.message(scriptShell, Utils.getElementAsString(scriptlistener.getParent()), SWT.OK );
+					}
+				});
+				butShow.setText("Show");
+			}
+			
+			{
+				butFinish = new Button(composite, SWT.NONE);
+				butFinish.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {
+						if(jobname != null)
+							jobname.setText(Utils.getAttributeValue("name",scriptlistener.getParent()));			
+						JobsListener listener = new JobsListener(dom, update);
+						listener.newImportJob(scriptlistener.getParent(), assistentType);
+						MainWindow.message(scriptShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(scriptlistener.getParent()), SWT.OK );
+						scriptShell.dispose();						
+					}
+				});
+				butFinish.setText("Finish");
+			}
+			{
+				butNext = new Button(composite, SWT.NONE);
+				butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
+				butNext.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {
+						if(Utils.getAttributeValue("order", scriptlistener.getParent()).equals("yes")) {
+							JobAssistentTimeoutOrderForms timeout = new JobAssistentTimeoutOrderForms(dom, update, scriptlistener.getParent(), assistentType);
+							timeout.showTimeOutForm();	
+							if(jobname != null) 													
+								timeout.setJobname(jobname);
+						} else {
+							JobAssistentTimeoutForms timeout = new JobAssistentTimeoutForms(dom, update, scriptlistener.getParent(), assistentType);
+							timeout.showTimeOutForm();
+						}
+						
+						scriptShell.dispose();
+					}
+				});
+				butNext.setText("Next");
+			}
+		}
 		setToolTipText();
 		scriptShell.layout();		
 	}
-
+	
 	public void setToolTipText() {
 		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
 		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
@@ -318,8 +338,15 @@ public class JobAssistentScriptForms {
 		txtLanguage.setToolTipText(Messages.getTooltip("assistent.language"));
 		if(tableInclude != null ) tableInclude.setToolTipText(Messages.getTooltip("assistent.script_include"));
 	}
-	
-	public void setLibraryName(String libraryName) {
-		this.libraryName = libraryName;
+		
+	private void close() {
+		int cont = MainWindow.message(scriptShell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		if(cont == SWT.OK)
+			scriptShell.dispose();
 	}
+	
+	public void setJobname(Combo jobname) {
+		this.jobname = jobname;
+}
+	
 }

@@ -27,9 +27,10 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import com.swtdesigner.SWTResourceManager;
-
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
@@ -124,12 +125,14 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
     private Button      bForceIdletimeout = null;
     private Button      bStopOnError      = null;
     private Combo       cSignals          = null;
+    
+    private Text txtParameterDescription  = null; 
 
 
     public JobForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
         super(parent, style);
         listener = new JobListener(dom, job, main);
-        initialize();
+        initialize();   
         setToolTipText();
         sashForm.setWeights(new int[] { 40, 30, 30 });
 
@@ -170,6 +173,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         }
 
         sTasks.setText(listener.getTasks());
+        if (listener.getMintasks()!= null) tMintasks.setText(listener.getMintasks());
+        if(listener.getPriority()!= null) sPriority.setText(listener.getPriority());
         tIgnoreSignals.setText(listener.getIgnoreSignal());
         sTimeout.setText(listener.getTimeout());
         sIdleTimeout.setText(listener.getIdleTimeout());
@@ -178,6 +183,10 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         //tURL.setText(listener.getInclude());
         tDescription.setText(listener.getDescription());
         tComment.setText(listener.getComment());
+        
+        if(listener.getInclude() != null && listener.getInclude().trim().length() > 0) {
+        	listener.getAllParameterDescription();
+        }
 
         dom.setInit(false);
     }
@@ -535,11 +544,10 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         GridData gridData16 = new org.eclipse.swt.layout.GridData();
         gridData16.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData16.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData13 = new org.eclipse.swt.layout.GridData();
-        gridData13.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData13.grabExcessHorizontalSpace = true;
-        gridData13.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData11 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
+        GridData gridData13 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
+        gridData13.widthHint = 151;
+        GridData gridData11 = new org.eclipse.swt.layout.GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+        gridData11.widthHint = 213;
         gridData11.horizontalIndent = 32;
         GridData gridData10 = new org.eclipse.swt.layout.GridData();
         gridData10.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -556,6 +564,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         tParaName = new Text(gJobParameter, SWT.BORDER);
         tParaName.setLayoutData(gridData11);
         label6 = new Label(gJobParameter, SWT.NONE);
+        label6.setLayoutData(new GridData(46, SWT.DEFAULT));
         label6.setText("Value:");
         tParaValue = new Text(gJobParameter, SWT.BORDER);
         tParaValue.setLayoutData(gridData13);
@@ -564,8 +573,15 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         butImport.setText("import");
         butImport.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
-        		JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, tParameter);
-        		importJobForms.showAllImportJobs();
+        		if(listener.getInclude()!= null && listener.getInclude().trim().length() > 0) {
+        			//JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren        			
+        			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener, tParameter, Editor.JOB);					
+        			paramsForm.showAllImportJobParams(listener.getInclude());        			
+        		} else { 
+        			//Liste aller Jobdokumentation 
+        			JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, tParameter, Editor.JOB);
+        			importJobForms.showAllImportJobs();
+        		}
         	}
         });
         butImport.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -575,7 +591,12 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         label4.setText("Label");
         label4.setLayoutData(gridData17);
         createTable();
-        new Label(gJobParameter, SWT.NONE);
+
+        txtParameterDescription = new Text(gJobParameter, SWT.MULTI | SWT.BORDER | SWT.WRAP);        
+        txtParameterDescription.setEditable(false);
+        txtParameterDescription.setBackground(SWTResourceManager.getColor(255, 255, 255));        
+        txtParameterDescription.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 3, 1));
+        
         bRemove = new Button(gJobParameter, SWT.NONE);
         bRemove.setText("Remove");
         bRemove.setEnabled(false);
@@ -627,7 +648,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes table
      */
     private void createTable() {
-        GridData gridData9 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 3, 1);
+        GridData gridData9 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
+        gridData9.widthHint = 197;
         gridData9.horizontalIndent = 32;
         new Label(gJobParameter, SWT.NONE);
         tParameter = new Table(gJobParameter, SWT.BORDER | SWT.FULL_SELECTION);
@@ -642,11 +664,12 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
                 tParaName.setText(item.getText(0));
                 tParaValue.setText(item.getText(1));
                 bRemove.setEnabled(tParameter.getSelectionCount() > 0);
+                txtParameterDescription.setText(listener.getParameterDescription(item.getText(0)));
                 bApply.setEnabled(false);
             }
         });
         TableColumn tcName = new TableColumn(tParameter, SWT.NONE);
-        tcName.setWidth(150);
+        tcName.setWidth(132);
         tcName.setText("Name");
         TableColumn tcValue = new TableColumn(tParameter, SWT.NONE);
         tcValue.setWidth(450);
@@ -746,7 +769,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         sTasks.setToolTipText(Messages.getTooltip("job.tasks"));
         tIgnoreSignals.setToolTipText(Messages.getTooltip("job.ignore_signal"));
         tMintasks.setToolTipText(Messages.getTooltip("job.mintasks"));
-        bForceIdletimeout.setToolTipText(Messages.getTooltip("job.foreIdleTimeout"));        
+        bForceIdletimeout.setToolTipText(Messages.getTooltip("job.forceIdleTimeout"));        
         bStopOnError.setToolTipText(Messages.getTooltip("job.stop_on_error"));
         sTimeout.setToolTipText(Messages.getTooltip("job.timeout"));
         sIdleTimeout.setToolTipText(Messages.getTooltip("job.idle_timeout"));
@@ -761,6 +784,6 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         tParameter.setToolTipText(Messages.getTooltip("job.param.table"));
         tFileName.setToolTipText(Messages.getTooltip("job.description.filename"));
         tDescription.setToolTipText(Messages.getTooltip("job.description"));
-
+        txtParameterDescription.setToolTipText(Messages.getTooltip("job.param.description"));
     }
 } // @jve:decl-index=0:visual-constraint="10,10"

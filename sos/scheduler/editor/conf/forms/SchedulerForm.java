@@ -200,18 +200,19 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
             listener.treeFillJobs(tree.getSelection()[0]);                
     }
 
-    //test
+    
     public void updateJobs_() {
-        if (tree.getSelectionCount() > 0) {
-        	for (int i =0; i < tree.getItemCount(); i++) {
-        		TreeItem ti = tree.getItem(i);
-        		if(ti.getText().equalsIgnoreCase("Jobs")) {
-        			System.out.println("itemText "+ ti.getText());
-        			listener.treeFillJobs(ti);
-        		}        		        		
-        	}
-            //listener.treeFillJobs(tree.geti .getTopItem().sele .getSelection()]);
-        }
+    	if (tree.getSelectionCount() > 0) {
+    		for (int i =0; i < tree.getItemCount(); i++) {
+    			TreeItem ti = tree.getItem(i);
+    			if(ti.getText().equalsIgnoreCase("Jobs")) {
+    				//System.out.println("itemText "+ ti.getText());
+    				listener.treeFillJobs(ti);
+    			}        		        		
+    		}
+    		
+    		//listener.treeFillJobs(tree.geti .getTopItem().sele .getSelection()]);
+    	}
     }
 
     public void updateOrder(String s) {

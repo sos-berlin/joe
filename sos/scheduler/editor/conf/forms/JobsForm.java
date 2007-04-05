@@ -39,7 +39,6 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 	
 	private Label            label                       = null;
 	
-	private Button           importJobFromButton         = null;
 	
 	private Composite        parent                      = null;
 	
@@ -103,36 +102,21 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 					bRemoveJob.setEnabled(true);
 				}
 			});
-			GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);        
-			
-			importJobFromButton = new Button(group, SWT.NONE);        
-			importJobFromButton.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {        		
-					//String doc = MainWindow.getContainer().openDocumentationName();        		        		        		        
-					//System.out.println("Hallo "  + doc);
-					try {
-						listener.openImportJobs(dom, update);
-					} catch (Exception ex) {
-						System.out.println("..error " + ex.getMessage());
-					}
-					
-				}
-			});
-			importJobFromButton.setLayoutData(gridData1);
-			importJobFromButton.setText("Import Job");
 			
 			butAssistent = new Button(group, SWT.NONE);
 			butAssistent.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					try {
-						listener.startJobAssistent(parent, style, dom, update);
+						//listener.startJobAssistent(parent, style, dom, update);
+						JobAssistentForm assitent = new JobAssistentForm(dom, update);
+						assitent.startJobAssistant();
 					} catch (Exception ex) {
 						System.out.println("..error " + ex.getMessage());
 					}
 				}
 			});
 			butAssistent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			butAssistent.setText("Assistent");
+			butAssistent.setText("Job Wizard");
 			bRemoveJob = new Button(group, SWT.NONE);
 			//bRemoveJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 			bRemoveJob.setText("Remove Job");
@@ -145,7 +129,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			bRemoveJob.setLayoutData(new GridData());
 			
 			label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-			label.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+			label.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 			label.setText("Label");
 		} catch (Exception e) {
 			System.err.println("..error in JobsForm.createGroup() " + e.getMessage());
@@ -158,7 +142,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 	 */
 	private void createTable() {
 		try {
-			GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 5);
+			GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 4);
 			table = new Table(group, SWT.BORDER | SWT.FULL_SELECTION | SWT.CHECK);
 			table.setHeaderVisible(true);
 			table.setLayoutData(gridData2);
@@ -206,7 +190,6 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 		bNewJob.setToolTipText(Messages.getTooltip("jobs.btn_add_new"));
 		bRemoveJob.setToolTipText(Messages.getTooltip("jobs.btn_remove"));
 		table.setToolTipText(Messages.getTooltip("jobs.table"));
-		importJobFromButton.setToolTipText(Messages.getTooltip("butImport"));
 		butAssistent.setToolTipText(Messages.getTooltip("jobs.assistent"));
 		
 	}

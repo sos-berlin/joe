@@ -8,395 +8,236 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-
-import sos.scheduler.editor.app.Editor;
+import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobsListener;
-
+import org.eclipse.swt.widgets.Combo;
 
 public class JobAssistentRunOptionsForms {
 	
-	private Element           job          = null;
+	private Element           job             = null;
 	
-	private SchedulerDom      dom          = null;
+	private SchedulerDom      dom             = null;
 	
-	private ISchedulerUpdate  update       = null;
+	private ISchedulerUpdate  update          = null;
+		
+	private Button            butFinish       = null;
 	
-	private JobsListener      listener     = null;
+	private Button            butCancel       = null;
 	
-	private Button            butFinish    = null;
+	private Button            butNext         = null;
 	
-	private Button            butCancel    = null;
+	private Button            butShow         = null;				
 	
-	private Button            butNext      = null;
+	private Text              txtRunOptions   = null;
 	
-	private Button            butShow      = null;				
-			
-	private Text              txtRunOptions     = null;
-	
-	private Button            butRuntime   = null; 
-	
-	private Button            butDirectoryMonitoring = null;
-	
-	private Text              txtDirectory = null; 
-	
-	private Text              txtRegExp    = null;  
-	
-	private Table             tableWatchDirectory = null; 
-	
-	private Button            butApply     = null; 
-	
-	private Button            butNewDirectory = null; 
-	
-	private Button            butRemoveDirectory = null; 		
+	private Shell             shellRunOptions = null; 
 	
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
-	private int assistentType = -1; 
+	private int               assistentType   = -1; 
 	
+	private Combo        jobname              = null;
 	
-	public JobAssistentRunOptionsForms(SchedulerDom dom_, ISchedulerUpdate update_) {
+	public JobAssistentRunOptionsForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
 		dom = dom_;
 		update = update_;
-		listener = new JobsListener(dom, update);			
-	}
-
-
-
-	public void showRunOptionsForm(Element job_, int assistentType_) {
 		assistentType = assistentType_;
-		job = job_;
-		final Shell shellRunOptions = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		job = job_;		
+	}
+	
+	
+	
+	public void showRunOptionsForm() {
+		
+		shellRunOptions = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		shellRunOptions.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
+		
 		final GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
 		shellRunOptions.setLayout(gridLayout);
-		shellRunOptions.setSize(542, 423);
-		shellRunOptions.setText("Run Options");
-
+		shellRunOptions.setSize(542, 315);
+		String step = "  ";
+		if (Utils.getAttributeValue("order", job).equalsIgnoreCase("yes"))
+			step = step + " [Step 7 of 9]";
+		else 
+			step = step + " [Step 7 of 8]";
+		shellRunOptions.setText("Run Options" + step);
+		
 		final Group jobGroup = new Group(shellRunOptions, SWT.NONE);
-		jobGroup.setText("Job");
-		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, false, false);
+		jobGroup.setText(" Job: " + Utils.getAttributeValue("name", job));
+		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1);
 		gridData_3.widthHint = 514;
-		gridData_3.heightHint = 370;
+		gridData_3.heightHint = 219;
 		jobGroup.setLayoutData(gridData_3);
 		final GridLayout gridLayout_1 = new GridLayout();
-		gridLayout_1.numColumns = 3;
+		gridLayout_1.marginWidth = 10;
+		gridLayout_1.marginTop = 10;
+		gridLayout_1.marginRight = 10;
+		gridLayout_1.marginLeft = 10;
+		gridLayout_1.marginHeight = 10;
+		gridLayout_1.marginBottom = 10;
 		jobGroup.setLayout(gridLayout_1);
-
+		
 		{
 			txtRunOptions = new Text(jobGroup, SWT.MULTI | SWT.WRAP);
-			final GridData gridData = new GridData(GridData.BEGINNING, GridData.FILL, false, false, 3, 1);
-			gridData.heightHint = 117;
-			gridData.widthHint = 488;
+			final GridData gridData = new GridData(GridData.BEGINNING, GridData.FILL, false, false);
+			gridData.horizontalIndent = -3;
+			gridData.heightHint = 143;
+			gridData.widthHint = 466;
 			txtRunOptions.setLayoutData(gridData);
 			txtRunOptions.setEditable(false);
 			txtRunOptions.setText(Messages.getString("assistent.run_options"));
 		}
 
-		butDirectoryMonitoring = new Button(jobGroup, SWT.CHECK);
-		final GridData gridData_2 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
-		gridData_2.heightHint = 32;
-		butDirectoryMonitoring.setLayoutData(gridData_2);
-		butDirectoryMonitoring.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if(butDirectoryMonitoring.getSelection()) {
-				  	txtDirectory.setEnabled(true);
-				  	txtRegExp.setEnabled(true);
-				  	tableWatchDirectory.setEnabled(true);
-				  	butApply.setEnabled(true);
-				  	butNewDirectory.setEnabled(true);  	
-				} else {
-					txtDirectory.setEnabled(false);
-					txtRegExp.setEnabled(false);
-					tableWatchDirectory.setEnabled(false);
-					tableWatchDirectory.setEnabled(false);
-				  	butApply.setEnabled(false);
-				  	butNewDirectory.setEnabled(false);
-				  	butRemoveDirectory.setEnabled(false);
-				}
-			}
-		});
-		butDirectoryMonitoring.setText("Directory Monitoring");
-
-		butRuntime = new Button(jobGroup, SWT.CHECK);
-		final GridData gridData_1 = new GridData(GridData.BEGINNING, GridData.FILL, false, false);
-		gridData_1.horizontalIndent = 10;
-		gridData_1.heightHint = 36;
-		butRuntime.setLayoutData(gridData_1);
-		butRuntime.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				MainWindow.message(shellRunOptions, Messages.getString("assistent.run_time"), SWT.OK );
-			}
-		});
-		butRuntime.setText("The Job Run Time");
-		new Label(jobGroup, SWT.NONE);
-
-		final Label lblDirectory = new Label(jobGroup, SWT.NONE);
-		lblDirectory.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
-		lblDirectory.setText("Directory");
-
-		txtDirectory = new Text(jobGroup, SWT.BORDER);
-		txtDirectory.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		txtDirectory.setEnabled(false);
-
 		final Composite composite = new Composite(jobGroup, SWT.NONE);
-		final GridData gridData_4 = new GridData(GridData.BEGINNING, GridData.FILL, false, false, 1, 3);
-		gridData_4.widthHint = 60;
-		composite.setLayoutData(gridData_4);
+		final GridData gridData = new GridData(GridData.CENTER, GridData.CENTER, false, false);
+		gridData.widthHint = 350;
+		gridData.heightHint = 38;
+		composite.setLayoutData(gridData);
 		final GridLayout gridLayout_4 = new GridLayout();
-		gridLayout_4.marginHeight = 0;
+		gridLayout_4.numColumns = 3;
 		composite.setLayout(gridLayout_4);
 
-		butApply = new Button(composite, SWT.NONE);
-		butApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butApply.setEnabled(false);
-		butApply.addSelectionListener(new SelectionAdapter() {
+		final Button butPeriod = new Button(composite, SWT.NONE);
+		butPeriod.setFocus();
+		butPeriod.addSelectionListener(new SelectionAdapter() {			
 			public void widgetSelected(final SelectionEvent e) {
-				if(butDirectoryMonitoring.getSelection()) {
-									
-					if(txtDirectory.getText() != null && txtDirectory.getText().length() > 0) {
-						if(tableWatchDirectory.getSelectionCount()>0) {							
-							TableItem item = tableWatchDirectory.getItem(tableWatchDirectory.getSelectionIndex());
-							item.setText(0, txtDirectory.getText());	
-							item.setText(1, txtRegExp.getText());			
-							
-							tableWatchDirectory.select(tableWatchDirectory.getItemCount()-1);
-						} else {
-							TableItem item = new TableItem(tableWatchDirectory, SWT.NONE);	
-							item.setText(0, txtDirectory.getText());	
-							item.setText(1, txtRegExp.getText());
-							tableWatchDirectory.select(tableWatchDirectory.getItemCount()-1);
-						}
-					}
-				}
+				JobAssistentPeriodForms periodF = new JobAssistentPeriodForms(dom, update, job, assistentType);
+				periodF.showPeriodeForms();
 			}
 		});
-		butApply.setText("Apply");
+		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+		gridData_4.horizontalIndent = 10;
+		gridData_4.widthHint = 88;
+		gridData_4.minimumWidth = 100;
+		butPeriod.setLayoutData(gridData_4);
+		butPeriod.setText("Periods");
 
-		butNewDirectory = new Button(composite, SWT.NONE);
-		butNewDirectory.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butNewDirectory.addSelectionListener(new SelectionAdapter() {
+		final Button butRunTime = new Button(composite, SWT.NONE);
+		butRunTime.setEnabled(Utils.getAttributeValue("order", job).equals("no"));
+		butRunTime.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				if(butDirectoryMonitoring.getSelection()) {
-					txtDirectory.setText("");
-					txtRegExp.setText("");
-					tableWatchDirectory.deselectAll();
-				}
+				JobAssistentRunTimeForms runtime = new JobAssistentRunTimeForms(dom, update, job, assistentType);
+				runtime.showRunTimeForms();
+				
 			}
 		});
-		butNewDirectory.setEnabled(false);
-		butNewDirectory.setText("New");
+		final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+		gridData_7.horizontalIndent = 10;
+		gridData_7.widthHint = 97;
+		butRunTime.setLayoutData(gridData_7);
+		butRunTime.setText("Single Starts");
 
-		butRemoveDirectory = new Button(composite, SWT.NONE);
-		butRemoveDirectory.setEnabled(false);
-		butRemoveDirectory.addSelectionListener(new SelectionAdapter() {
+		final Button butDirectoryMonitoring = new Button(composite, SWT.NONE);
+		butDirectoryMonitoring.setEnabled(Utils.getAttributeValue("order", job).equals("no"));
+		butDirectoryMonitoring.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				if(butDirectoryMonitoring.getSelection()) {
-					if(tableWatchDirectory.getSelectionCount()>0) {
-						tableWatchDirectory.remove(tableWatchDirectory.getSelectionIndex());
-						txtDirectory.setText("");
-						txtRegExp.setText("");
-					}
-				}
+				JobAssistentMonitoringDirectoryForms monDir = new JobAssistentMonitoringDirectoryForms(dom, update, job, assistentType);
+				monDir.showMonitoringDirectoryForm();
 			}
 		});
-		butRemoveDirectory.setText("Remove");
-
-		final Label lblRegExp = new Label(jobGroup, SWT.NONE);
-		lblRegExp.setText("Regular expression ");
- 
-		txtRegExp = new Text(jobGroup, SWT.BORDER);
-		txtRegExp.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		txtRegExp.setEnabled(false);
-
-		final Label watchDirectoryLabel = new Label(jobGroup, SWT.NONE);
-		watchDirectoryLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
-		watchDirectoryLabel.setText("Watch Directory");
-
-		tableWatchDirectory = new Table(jobGroup, SWT.FULL_SELECTION | SWT.BORDER);
-		final GridData gridData = new GridData(GridData.BEGINNING, GridData.FILL, false, false);
-		gridData.heightHint = 55;
-		gridData.widthHint = 284;
-		gridData.minimumHeight = 200;
-		tableWatchDirectory.setLayoutData(gridData);
-		tableWatchDirectory.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if(butDirectoryMonitoring.getSelection()) {
-					if(tableWatchDirectory.getSelectionCount() > 0){
-						butRemoveDirectory.setEnabled(true);
-					} else {
-						butRemoveDirectory.setEnabled(false);
-					}
-				}
-			}
-		});
-		tableWatchDirectory.setEnabled(false);
-		tableWatchDirectory.setLinesVisible(true);
-		tableWatchDirectory.setHeaderVisible(true);
-
-		final TableColumn newColumnTableColumn = new TableColumn(tableWatchDirectory, SWT.NONE);
-		newColumnTableColumn.setWidth(156);
-		newColumnTableColumn.setText("Directory");
-
-		final TableColumn newColumnTableColumn_1 = new TableColumn(tableWatchDirectory, SWT.NONE);
-		newColumnTableColumn_1.setWidth(186);
-		newColumnTableColumn_1.setText("Regular Expression");
-
-		final Composite composite_1 = new Composite(jobGroup, SWT.NONE);
-		final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, false, false);
-		gridData_5.widthHint = 99;
-		composite_1.setLayoutData(gridData_5);
+		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+		gridData_2.widthHint = 110;
+		gridData_2.horizontalIndent = 10;
+		gridData_2.minimumHeight = 100;
+		butDirectoryMonitoring.setLayoutData(gridData_2);
+		butDirectoryMonitoring.setText("Directory Monitoring");				
+		
+		java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();		
+		shellRunOptions.setBounds((screen.width - shellRunOptions.getBounds().width) /2, 
+				(screen.height - shellRunOptions.getBounds().height) /2, 
+				shellRunOptions.getBounds().width, 
+				shellRunOptions.getBounds().height);
+		
+		shellRunOptions.open();
+		
+		final Composite composite_1 = new Composite(shellRunOptions, SWT.NONE);
 		final GridLayout gridLayout_2 = new GridLayout();
-		gridLayout_2.numColumns = 2;
+		gridLayout_2.marginWidth = 0;
 		composite_1.setLayout(gridLayout_2);
-
-		{
-			butFinish = new Button(composite_1, SWT.NONE);
-			butFinish.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {					
-					if(butDirectoryMonitoring.getSelection()) {						
-						for(int i= 0; i < tableWatchDirectory.getItemCount(); i++) {
-							Element dirMon = new Element("start_when_directory_changed");
-							dirMon.setAttribute("directory", tableWatchDirectory.getItem(i).getText(0));
-							if(tableWatchDirectory.getItem(i).getText(1) != null && tableWatchDirectory.getItem(i).getText(1).length() > 0) {
-								dirMon.setAttribute("regex", tableWatchDirectory.getItem(i).getText(1));
-							}
-							job.addContent(dirMon);
-						}
-					  	
-					}
-					
-					listener.newImportJob(job, assistentType);
-					
-					shellRunOptions.dispose();
-				}
-			});
-			butFinish.setText("Finish");
-		}
 		{
 			butCancel = new Button(composite_1, SWT.NONE);
 			butCancel.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-					shellRunOptions.dispose();
+					close();
 				}
 			});
 			butCancel.setText("Cancel");
 		}
-
-		final Composite composite_2 = new Composite(jobGroup, SWT.NONE);
-		composite_2.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false, 2, 1));
+		
+		final Composite composite_2 = new Composite(shellRunOptions, SWT.NONE);
+		composite_2.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		final GridLayout gridLayout_3 = new GridLayout();
-		gridLayout_3.numColumns = 2;
+		gridLayout_3.marginWidth = 0;
+		gridLayout_3.numColumns = 3;
 		composite_2.setLayout(gridLayout_3);
-
+		
 		{
 			butShow = new Button(composite_2, SWT.NONE);
 			butShow.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-					if(butDirectoryMonitoring.getSelection()) {						
-						for(int i= 0; i < tableWatchDirectory.getItemCount(); i++) {
-							Element dirMon = new Element("start_when_directory_changed");
-							dirMon.setAttribute("directory", tableWatchDirectory.getItem(i).getText(0));
-							if(tableWatchDirectory.getItem(i).getText(1) != null && tableWatchDirectory.getItem(i).getText(1).length() > 0) {
-								dirMon.setAttribute("regex", tableWatchDirectory.getItem(i).getText(1));
-							}
-							job.addContent(dirMon);
-						}
-					  	
-					}
+					
 					MainWindow.message(shellRunOptions, Utils.getElementAsString(job), SWT.OK );
 				}
 			});
 			butShow.setText("Show");
 		}
-		butNext = new Button(composite_2, SWT.NONE);
-		butNext.setLayoutData(new GridData());
-		butNext.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if(butDirectoryMonitoring.getSelection()) {						
-					for(int i= 0; i < tableWatchDirectory.getItemCount(); i++) {
-						Element dirMon = new Element("start_when_directory_changed");
-						dirMon.setAttribute("directory", tableWatchDirectory.getItem(i).getText(0));
-						if(tableWatchDirectory.getItem(i).getText(1) != null && tableWatchDirectory.getItem(i).getText(1).length() > 0) {
-							dirMon.setAttribute("regex", tableWatchDirectory.getItem(i).getText(1));
-						}
-						job.addContent(dirMon);
-					}
-				  	
+		
+		{
+			butFinish = new Button(composite_2, SWT.NONE);
+			butFinish.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {					
+					if(jobname != null)
+						jobname.setText(Utils.getAttributeValue("name",job));		
+					JobsListener listener = new JobsListener(dom, update);
+					listener.newImportJob(job, assistentType);
+					MainWindow.message(shellRunOptions,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
+					shellRunOptions.dispose();
+					
 				}
-				JobAssistentDelayOrderAfterSetbackForm setBack = new JobAssistentDelayOrderAfterSetbackForm(dom, update);
-				setBack.showDelayOrderAfterSetbackForm(job, assistentType);
-				shellRunOptions.dispose();
-				//MainWindow.message(shellRunOptions, "run options??????", SWT.OK );					
+			});
+			butFinish.setText("Finish");
+		}
+		butNext = new Button(composite_2, SWT.NONE);
+		butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
+		final GridData gridData_6 = new GridData(47, SWT.DEFAULT);
+		butNext.setLayoutData(gridData_6);
+		butNext.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {								
+				JobAssistentDelayAfterErrorForm derror = new JobAssistentDelayAfterErrorForm(dom, update, job, assistentType);
+				derror.showDelayAfterErrorForm();
+				if(jobname != null) 													
+					derror.setJobname(jobname);
+				shellRunOptions.dispose();								
 			}
 		});
 		butNext.setText("Next");
-		butNext.setEnabled(false);
-		{
-			if(Utils.getAttributeValue("order", job).equalsIgnoreCase("no")) {
-			} else {
-				butNext.setEnabled(true);
-			}
-		}
-
-		{
-			Element script = job.getChild("script");
-			if(script != null && Utils.getAttributeValue("language", script) != null &&
-					Utils.getAttributeValue("language", script).trim().length() > 0	){
-			}
-		}
-
-		
-		{
-			Element script = job.getChild("script");
-			if(script != null && Utils.getAttributeValue("filename", script) != null &&
-					Utils.getAttributeValue("filename", script).trim().length() > 0	){
-			}
-		}
-
-		{
-			if(job != null){
-				Element script = job.getChild("script");				 
-				if(script!= null) {
-					java.util.List includes = script.getChildren("include");
-					for (int i = 0; i < includes.size(); i++) {
-						Element include = (Element)includes.get(i);
-						if( Utils.getAttributeValue("file", include) != null &&
-								Utils.getAttributeValue("file", include).length() > 0) {
-						}
-					}
-					
-				}
-				
-			}
-		}
-		
-		shellRunOptions.open();
 		setToolTipText();
 		shellRunOptions.layout();		
 	}
-
+	
 	public void setToolTipText() {
 		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
 		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
 		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
 		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));			
-		butDirectoryMonitoring.setToolTipText(Messages.getTooltip("assistent.directory_monitoring"));
-		butRuntime.setToolTipText(Messages.getTooltip("assistent.run_time"));
-		txtDirectory.setToolTipText(Messages.getTooltip("assistent.directory"));
-		txtRegExp.setToolTipText(Messages.getTooltip("assistent.reg_exp"));
-		tableWatchDirectory.setToolTipText(Messages.getTooltip("assistent.table_watch_directory"));
-		butApply.setToolTipText(Messages.getTooltip("assistent.apply_directory"));
-		butNewDirectory.setToolTipText(Messages.getTooltip("assistent.new_directory"));
-		butRemoveDirectory.setToolTipText(Messages.getTooltip("assistent.remove_directory"));
 	}
+	
+	private void close() {
+		int cont = MainWindow.message(shellRunOptions, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		if(cont == SWT.OK)
+			shellRunOptions.dispose();
+	}
+	
+	public void setJobname(Combo jobname) {
+		this.jobname = jobname;
+}
 }
