@@ -319,7 +319,7 @@ public class SchedulerListener {
         if (element != null) {
             if (type == DaysListener.WEEKDAYS || type == DaysListener.MONTHDAYS || type == DaysListener.ULTIMOS)
                 new DaysListener(_dom, element, type).fillTreeDays(parent, expand);
-            else if (type == 3)
+            else if (type == 3 || type==4)
               new DateListener(_dom, element, 1).fillTreeDays(parent, expand);
              else
                 System.out.println("Invalid type = " + type + " for filling the days in the tree!");
