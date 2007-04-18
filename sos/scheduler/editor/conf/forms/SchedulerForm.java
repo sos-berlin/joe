@@ -193,15 +193,19 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
     public void updateJobs() {
     	if(tree.getSelection()[0].getText().equals("Job Chains")) {
         	//Assistent: Der Aufruf erfolgte über den Assistenten. Hier ist nicht das Element "Jobs" im Tree selektiert
-    		//sondern das Element "Job Chains".
+    		  //sondern das Element "Job Chains".
     		updateJobs_();
     	} else 
         if (tree.getSelectionCount() > 0)
             listener.treeFillJobs(tree.getSelection()[0]);                
     }
 
-    
-    public void updateJobs_() {
+
+    public void expandJob(String job) {
+        listener.treeExpandJob(tree.getSelection()[0],job);                
+    }
+
+    private void updateJobs_() {
     	if (tree.getSelectionCount() > 0) {
     		for (int i =0; i < tree.getItemCount(); i++) {
     			TreeItem ti = tree.getItem(i);

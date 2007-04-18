@@ -374,6 +374,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         tSpoolerID.setToolTipText(Messages.getTooltip("process_classes.spooler_id_entry"));
         bApply.setToolTipText(Messages.getTooltip("process_classes.btn_apply"));
         table.setToolTipText(Messages.getTooltip("process_classes.table"));
-
+        tRemoteHost.setToolTipText(Messages.getTooltip("process_classes.remoteHost"));
+        tRemotePort.setToolTipText(Messages.getTooltip("process_classes.remotePort"));
     }
 } // @jve:decl-index=0:visual-constraint="10,10"

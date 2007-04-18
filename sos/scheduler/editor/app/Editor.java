@@ -12,50 +12,54 @@ public class Editor {
 
     public final static int PROCESS_CLASSES        = 5;
 
-    public final static int SCRIPT                 = 6;
+    public final static int LOCKS                  = 6;
 
-    public final static int WEBSERVICES            = 7;
-    public final static int HTTPDIRECTORIES        = 8;
+    public final static int SCRIPT                 = 7;
 
-    public final static int HOLIDAYS               = 9;
+    public final static int WEBSERVICES            = 8;
+    public final static int HTTPDIRECTORIES        = 9;
 
-    public final static int JOBS                   = 10;
+    public final static int HOLIDAYS               = 10;
 
-    public final static int JOB_CHAINS             = 11;
+    public final static int JOBS                   = 11;
 
-    public final static int COMMANDS               = 12;
+    public final static int JOB_CHAINS             = 12;
 
-    public final static int ORDER                  = 13;
+    public final static int COMMANDS               = 13;
 
-    public final static int ORDERS                 = 14;
+    public final static int ORDER                  = 14;
 
-    public final static int JOB                    = 15;
+    public final static int ORDERS                 = 15;
 
-    public final static int EXECUTE                = 16;
+    public final static int JOB                    = 16;
 
-    public final static int MONITOR                = 17;
+    public final static int EXECUTE                = 17;
 
-    public final static int OPTIONS                = 18;
+    public final static int MONITOR                = 18;
 
-    public final static int RUNTIME                = 19;
+    public final static int OPTIONS                = 19;
 
-    public final static int JOB_COMMANDS           = 20;
+    public final static int LOCKUSE                = 20;
 
-    public final static int JOB_COMMAND            = 21;
+    public final static int RUNTIME                = 21;
 
-    public final static int WEEKDAYS               = 22;
+    public final static int JOB_COMMANDS           = 22;
 
-    public final static int MONTHDAYS              = 23;
+    public final static int JOB_COMMAND            = 23;
 
-    public final static int ULTIMOS                = 24;
+    public final static int WEEKDAYS               = 24;
 
-    public final static int SPECIFIC_WEEKDAYS      = 25;
+    public final static int MONTHDAYS              = 25;
 
-    public final static int DAYS                   = 26;
+    public final static int ULTIMOS                = 26;
 
-    public final static int PERIODS                = 27;
+    public final static int SPECIFIC_WEEKDAYS      = 27;
 
-    public final static int EVERYDAY               = 28;
+    public final static int DAYS                   = 28;
+
+    public final static int PERIODS                = 29;
+
+    public final static int EVERYDAY               = 30;
 
     public final static int DOC_JOB                = 50;
 

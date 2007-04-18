@@ -147,7 +147,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         if (classes == null)
             cProcessClass.setEnabled(false);
         else
-            cProcessClass.setItems(listener.getProcessClasses());
+            cProcessClass.setItems(classes);
         int index = cProcessClass.indexOf(listener.getProcessClass());
         if (index >= 0)
             cProcessClass.select(index);

@@ -28,8 +28,10 @@ import sos.scheduler.editor.conf.forms.JobChainsForm;
 import sos.scheduler.editor.conf.forms.JobCommandForm;
 import sos.scheduler.editor.conf.forms.JobCommandsForm;
 import sos.scheduler.editor.conf.forms.JobForm;
+import sos.scheduler.editor.conf.forms.JobLockUseForm;
 import sos.scheduler.editor.conf.forms.JobOptionsForm;
 import sos.scheduler.editor.conf.forms.JobsForm;
+import sos.scheduler.editor.conf.forms.LocksForm;
 import sos.scheduler.editor.conf.forms.OrderForm;
 import sos.scheduler.editor.conf.forms.OrdersForm;
 import sos.scheduler.editor.conf.forms.PeriodsForm;
@@ -80,6 +82,12 @@ public class SchedulerListener {
         item.setData(new TreeData(Editor.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"),
                 "process_classes"));
         item.setText("Process Classes");
+
+        item = new TreeItem(tree, SWT.NONE);
+        item.setData(new TreeData(Editor.LOCKS, config, Options.getHelpURL("locks"),
+                "locks"));
+        item.setText("Locks");
+
         item = new TreeItem(tree, SWT.NONE);
         item.setData(new TreeData(Editor.SCRIPT, config, Options.getHelpURL("start_script"), "script"));
         item.setText("Start Script");
@@ -102,11 +110,13 @@ public class SchedulerListener {
         item = new TreeItem(tree, SWT.NONE);
         item.setData(new TreeData(Editor.HOLIDAYS, config, Options.getHelpURL("holidays"), "holidays"));
         item.setText("Holidays");
+        
         item = new TreeItem(tree, SWT.NONE);
         item.setData(new TreeData(Editor.JOBS, config, Options.getHelpURL("jobs"), "jobs"));
         item.setText("Jobs");
         treeFillJobs(item);
         item.setExpanded(true);
+        
         item = new TreeItem(tree, SWT.NONE);
         item.setData(new TreeData(Editor.JOB_CHAINS, config, Options.getHelpURL("job_chains"), "job_chains"));
         item.setText("Job Chains");
@@ -123,6 +133,7 @@ public class SchedulerListener {
         treeSelection(tree, c);
     }
 
+  
 
     public void treeFillOrders(TreeItem parent, boolean expand) {
         TreeItem orders = parent;
@@ -182,6 +193,18 @@ public class SchedulerListener {
         }
         parent.setExpanded(true);
     }
+    
+    public void treeExpandJob(TreeItem parent, String job) {
+     
+      if (parent.getText().equals("Jobs")) {
+     
+        for (int i = 0; i < parent.getItemCount(); i++)
+            if (parent.getItem(i).getText().equals("Job: "+job)) {
+            	 parent.getItem(i).setExpanded(true);
+            }
+
+    }
+  }
 
 
     public void treeFillJob(TreeItem parent, Element job, boolean expand) {
@@ -196,6 +219,10 @@ public class SchedulerListener {
         item = new TreeItem(parent, SWT.NONE);
         item.setText("Run Options");
         item.setData(new TreeData(Editor.OPTIONS, job, Options.getHelpURL("job.options")));
+
+        item = new TreeItem(parent, SWT.NONE);
+        item.setText("Locks");
+        item.setData(new TreeData(Editor.LOCKUSE, job, Options.getHelpURL("job.locks")));
 
         Element runtime = job.getChild("run_time");
         List commands = job.getChildren("commands");
@@ -252,6 +279,7 @@ public class SchedulerListener {
 
         item.setData(new TreeData(Editor.JOB_COMMANDS, job, Options.getHelpURL("job.commands")));
         parent.setExpanded(expand);
+ 
     }
 
 
@@ -365,8 +393,11 @@ public class SchedulerListener {
                         new BaseForm(c, SWT.NONE, _dom);
                         break;
                     case Editor.PROCESS_CLASSES:
-                        new ProcessClassesForm(c, SWT.NONE, _dom, data.getElement());
-                        break;
+                      new ProcessClassesForm(c, SWT.NONE, _dom, data.getElement());
+                      break;
+                    case Editor.LOCKS:
+                      new LocksForm(c, SWT.NONE, _dom, data.getElement());
+                      break;
                     case Editor.MONITOR:
                         new ScriptForm(c, SWT.NONE, "Monitor", _dom, data.getElement(), data.getType());
                         break;
@@ -426,8 +457,11 @@ public class SchedulerListener {
                       new HttpDirectoriesForm(c, SWT.NONE, _dom, data.getElement());
                       break;
                     case Editor.OPTIONS:
-                        new JobOptionsForm(c, SWT.NONE, _dom, data.getElement());
-                        break;
+                      new JobOptionsForm(c, SWT.NONE, _dom, data.getElement());
+                      break;
+                    case Editor.LOCKUSE:
+                      new JobLockUseForm(c, SWT.NONE, _dom, data.getElement());
+                      break;
                     case Editor.JOB_CHAINS:
                     	JobChainsForm jc= new JobChainsForm(c, SWT.NONE, _dom, data.getElement());
                     	jc.setISchedulerUpdate(_gui);

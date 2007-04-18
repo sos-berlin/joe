@@ -5,6 +5,7 @@ public interface IUpdate {
 	public void updateJobs();
 	
 	public void updateJob();
+	public void expandJob(String job);
 	public void updateJob(String s);
 	public void updateCommand(String s);
 	public void updateCommands();

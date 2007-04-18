@@ -6,7 +6,8 @@ public interface ISchedulerUpdate extends IDataChanged {
     public void updateJobs();
 
 
-    public void updateJob();
+  	public void updateJob();
+  	public void expandJob(String job);
 
 
     public void updateJob(String s);
