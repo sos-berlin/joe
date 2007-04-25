@@ -47,7 +47,7 @@ public class SpecificWeekdaysListener {
     public void addDay(String day, String which) {
     	  boolean found=false;
     	  int index=0;
-    	  for (int i = 0;i<_daynames.length-1;i++) {
+    	  for (int i = 0;i<_daynames.length;i++) {
     	  	if (_daynames[i].equals(which)) index=i+1;
     	  }
     	  if (index>4)index=(-1)*(index-4);
@@ -95,7 +95,7 @@ public class SpecificWeekdaysListener {
         if (t.hasMoreTokens())  which = t.nextToken();
         if (t.hasMoreTokens())  day = t.nextToken();
              
-     	  for (int i = 0;i<_daynames.length-1;i++) {
+     	  for (int i = 0;i<_daynames.length;i++) {
     	  	if (_daynames[i].equalsIgnoreCase(which)) index = i+1;
     	  }
      	  /*	 First       1=0
