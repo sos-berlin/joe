@@ -404,8 +404,10 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         label10.setText("Repeat Time:");
         //label10.setVisible(!assistent);
         
+        
         sRepeatHours = new Text(gPeriod, SWT.BORDER);
-        //sRepeatHours.setVisible(!assistent);
+        //sRepeatHours.setVisible(!assistent);   
+        
         sRepeatHours.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -624,6 +626,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         new Label(gPeriod, SWT.NONE);
         new Label(gPeriod, SWT.NONE);
         new Label(gPeriod, SWT.NONE);
+                
     }
 
 

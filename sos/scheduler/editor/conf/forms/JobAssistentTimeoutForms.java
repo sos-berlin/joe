@@ -1,16 +1,15 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -18,6 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import com.swtdesigner.SWTResourceManager;
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
@@ -47,12 +47,21 @@ public class JobAssistentTimeoutForms {
 	private Text              txtTimeout   = null;
 	
 	private Label             lblTimeout   = null; 
-		
+	
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
 	private int               assistentType= -1; 
 	
 	private Shell             shellTimeout = null;
 	
+	private Button            butBack      = null; 
+	
+	private Element           jobBackUp    = null;  
+	
+	private JobForm           jobForm      = null;
+	
+	/** Hilsvariable für das Schliessen des Dialogs. 
+	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
+	private boolean           closeDialog  = false;        
 	
 	public JobAssistentTimeoutForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
 		dom = dom_;
@@ -65,6 +74,13 @@ public class JobAssistentTimeoutForms {
 	public void showTimeOutForm() {
 		
 		shellTimeout = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		shellTimeout.addShellListener(new ShellAdapter() {
+			public void shellClosed(final ShellEvent e) {
+				if(!closeDialog)
+					close();
+				e.doit = shellTimeout.isDisposed();
+			}
+		});
 		shellTimeout.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
@@ -156,15 +172,15 @@ public class JobAssistentTimeoutForms {
 			composite.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			final GridLayout gridLayout_2 = new GridLayout();
 			gridLayout_2.marginWidth = 0;
-			gridLayout_2.numColumns = 3;
+			gridLayout_2.numColumns = 4;
 			composite.setLayout(gridLayout_2);
 			
 			{
 				butShow = new Button(composite, SWT.NONE);
 				butShow.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
-						txtTimeout.setFocus();
-						MainWindow.message(shellTimeout, Utils.getElementAsString(joblistener.getJob()), SWT.OK );
+						txtTimeout.setFocus();						
+						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), shellTimeout);
 					}
 				});
 				butShow.setText("Show");
@@ -173,15 +189,33 @@ public class JobAssistentTimeoutForms {
 			{
 				butFinish = new Button(composite, SWT.NONE);
 				butFinish.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(final SelectionEvent e) {						
-						JobsListener listener = new JobsListener(dom, update);
-						listener.newImportJob(joblistener.getJob(), assistentType);
-						MainWindow.message(shellTimeout,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK );
-						shellTimeout.dispose();						
+					public void widgetSelected(final SelectionEvent e) {	
+						doFinish();						
 					}
 				});
 				butFinish.setText("Finish");
 			}
+			
+			butBack = new Button(composite, SWT.NONE);
+			butBack.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					Element job = joblistener.getJob();
+					if(job.getChild("process") != null) {
+						JobAssistentProcessForms process = new JobAssistentProcessForms(dom, update, job, assistentType);
+						process.showProcessForm();	
+						if(jobBackUp != null)
+							process.setBackUpJob(jobBackUp, jobForm);	
+					} else {
+						JobAssistentScriptForms script = new JobAssistentScriptForms(dom, update, job, assistentType);
+						script.showScriptForm();	
+						if(jobBackUp != null)
+							script.setBackUpJob(jobBackUp, jobForm);
+					}
+					closeDialog = true;
+					shellTimeout.dispose();
+				}
+			});
+			butBack.setText("Back");
 			{
 				butNext = new Button(composite, SWT.NONE);
 				butNext.setFocus();
@@ -190,7 +224,10 @@ public class JobAssistentTimeoutForms {
 					public void widgetSelected(final SelectionEvent e) {
 						
 						JobAssistentRunOptionsForms runOP = new JobAssistentRunOptionsForms(dom, update, joblistener.getJob(), assistentType);
-						runOP.showRunOptionsForm();						
+						runOP.showRunOptionsForm();	
+						if(jobBackUp != null)
+							runOP.setBackUpJob(jobBackUp, jobForm);
+						closeDialog = true;
 						shellTimeout.dispose();
 						
 					}
@@ -210,11 +247,44 @@ public class JobAssistentTimeoutForms {
 		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));			
 		txtTimeout.setToolTipText(Messages.getTooltip("assistent.lbltimeout"));
 		lblTimeout.setToolTipText(Messages.getTooltip("assistent.lbltimeout"));
+		butBack.setToolTipText(Messages.getTooltip("butBack"));
 	}
 	
 	private void close() {
 		int cont = MainWindow.message(shellTimeout, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-		if(cont == SWT.OK)
+		if(cont == SWT.OK){
+			if(jobBackUp != null)
+				joblistener.getJob().setContent(jobBackUp.cloneContent());
 			shellTimeout.dispose();
+		}
+	}
+	
+	/**
+	 * Der Wizzard wurde für ein bestehende Job gestartet. 
+	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
+	 * @param backUpJob
+	 */
+	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
+		jobBackUp = (Element)backUpJob.clone();	
+		jobForm = jobForm_;
+	}
+	
+	private void doFinish() {
+		
+		if(assistentType == Editor.JOB_WIZZARD) {															
+			jobForm.initForm();	
+			
+		} else {
+			
+			JobsListener listener = new JobsListener(dom, update);
+			listener.newImportJob(joblistener.getJob(), assistentType);
+			
+		}
+		
+		MainWindow.message(shellTimeout,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK );
+		
+		closeDialog = true;
+		shellTimeout.dispose();
+		
 	}
 }

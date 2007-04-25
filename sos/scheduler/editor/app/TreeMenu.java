@@ -174,7 +174,7 @@ public class TreeMenu {
     }
 
 
-    private void copyClipboard(String content) {
+/*    private void copyClipboard(String content) {
 
         if (_cb == null)
             _cb = new Clipboard(_tree.getDisplay());
@@ -183,7 +183,7 @@ public class TreeMenu {
         _cb.setContents(new Object[] { content }, new Transfer[] { transfer });
 
     }
-
+*/
 
     private Listener getXMLListener() {
         return new Listener() {
@@ -194,7 +194,8 @@ public class TreeMenu {
                     if (xml == null) // error
                         return;
 
-                    Font font = new Font(Display.getDefault(), "Courier New", 8, SWT.NORMAL);
+                    Utils.showClipboard(xml, _tree.getShell());
+                    /*Font font = new Font(Display.getDefault(), "Courier New", 8, SWT.NORMAL);
                     TextDialog dialog = new TextDialog(_tree.getShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL
                             | SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
                     dialog.setSize(new Point(500, 400));
@@ -209,6 +210,7 @@ public class TreeMenu {
 
                     if (font != null)
                         font.dispose();
+                        */
                 }
             }
         };
@@ -235,12 +237,12 @@ public class TreeMenu {
                     if (xml == null) // error
                         return;
 
-                    copyClipboard(xml);
+                    Utils.copyClipboard(xml, _tree.getDisplay());
                 }
             }
         };
     }
-
+ 
 
     private Listener getPasteListener() {
         return new Listener() {

@@ -120,6 +120,9 @@ public class MainListener {
         _container.updateLanguages();
     }
 
+    public void resetInfoDialog() {
+    	Options.setShowWizardInfo(true);	
+    }
 
     public void loadOptions() {
         String msg = Options.loadOptions(getClass());

@@ -1,12 +1,12 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import com.swtdesigner.SWTResourceManager;
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
@@ -42,7 +43,9 @@ public class JobAssistentTimeoutOrderForms {
 	
 	private Button            butNext                = null;
 	
-	private Button            butShow                = null;				
+	private Button            butShow                = null;	
+	
+	private Button            butBack                = null; 
 	
 	private Text              txtIdleTimeout         = null;	
 	
@@ -61,6 +64,13 @@ public class JobAssistentTimeoutOrderForms {
 	
 	private Combo             jobname                = null;
 	
+	private Element           jobBackUp              = null;  
+	
+	private JobForm           jobForm      = null;
+	
+	/** Hilsvariable für das Schliessen des Dialogs. 
+	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
+	private boolean               closeDialog   = false;      
 	
 	public JobAssistentTimeoutOrderForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
 		dom = dom_;
@@ -69,10 +79,18 @@ public class JobAssistentTimeoutOrderForms {
 		joblistener = new JobListener(dom, job_, update);			
 	}
 	
-		
+	
 	public void showTimeOutForm() {
 		
 		shellTimeout = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		shellTimeout.addShellListener(new ShellAdapter() {
+			public void shellClosed(final ShellEvent e) {
+				if(!closeDialog)
+					close();
+				e.doit = shellTimeout.isDisposed();
+			}
+		});
+		
 		shellTimeout.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 		
 		final GridLayout gridLayout = new GridLayout();
@@ -98,12 +116,12 @@ public class JobAssistentTimeoutOrderForms {
 			gridLayout_1.marginRight = 10;
 			gridLayout_1.marginLeft = 10;
 			gridLayout_1.marginHeight = 10;
-			gridLayout_1.numColumns = 5;
+			gridLayout_1.numColumns = 6;
 			jobGroup.setLayout(gridLayout_1);
 			
 			{
 				Text txtTime = new Text(jobGroup, SWT.MULTI | SWT.WRAP);
-				final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, false, false, 5, 1);
+				final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, false, false, 6, 1);
 				gridData_1.horizontalIndent = -3;
 				gridData_1.heightHint = 178;
 				gridData_1.widthHint = 448;
@@ -131,13 +149,15 @@ public class JobAssistentTimeoutOrderForms {
 					
 				}
 			});
-			txtTimeout.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
+			final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, false, true);
+			gridData_3.minimumWidth = 70;
+			txtTimeout.setLayoutData(gridData_3);
 			txtTimeout.setText(joblistener.getTimeout());
 			
 			{
 				lblIdleTimeout = new Label(jobGroup, SWT.NONE);
 				lblIdleTimeout.setAlignment(SWT.RIGHT);
-				final GridData gridData_1 = new GridData(GridData.END, GridData.CENTER, false, false);
+				final GridData gridData_1 = new GridData(GridData.END, GridData.CENTER, false, false, 2, 1);
 				gridData_1.widthHint = 77;
 				lblIdleTimeout.setLayoutData(gridData_1);
 				lblIdleTimeout.setText("Idle Timeout");
@@ -153,8 +173,14 @@ public class JobAssistentTimeoutOrderForms {
 					}
 				}
 			});
-			txtIdleTimeout.setLayoutData(new GridData(GridData.BEGINNING, GridData.FILL, false, false));
+			final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, true);
+			gridData_2.minimumWidth = 70;
+			txtIdleTimeout.setLayoutData(gridData_2);
 			txtIdleTimeout.setText(joblistener.getIdleTimeout());						
+			
+			final Composite composite = new Composite(jobGroup, SWT.NONE);
+			composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
+			composite.setLayout(new GridLayout());
 			{
 				lblForceIdleTimeout = new Label(jobGroup, SWT.NONE);
 				final GridData gridData_1 = new GridData(SWT.DEFAULT, 12);
@@ -165,7 +191,7 @@ public class JobAssistentTimeoutOrderForms {
 			
 			final Button noButton = new Button(jobGroup, SWT.RADIO);
 			noButton.setEnabled(joblistener.getMintasks()!=null && joblistener.getMintasks().trim().length() > 0);
-			noButton.setSelection(true);
+			noButton.setSelection(!joblistener.getForceIdletimeout());			
 			noButton.setLayoutData(new GridData());
 			noButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
@@ -175,6 +201,7 @@ public class JobAssistentTimeoutOrderForms {
 			noButton.setText("no");
 			
 			final Button yesButton = new Button(jobGroup, SWT.RADIO);
+			yesButton.setSelection(joblistener.getForceIdletimeout());
 			yesButton.setEnabled(joblistener.getMintasks()!=null && joblistener.getMintasks().trim().length() > 0);
 			yesButton.setLayoutData(new GridData());
 			yesButton.addSelectionListener(new SelectionAdapter() {
@@ -183,6 +210,7 @@ public class JobAssistentTimeoutOrderForms {
 				}
 			});
 			yesButton.setText("yes");
+			new Label(jobGroup, SWT.NONE);
 			new Label(jobGroup, SWT.NONE);
 			new Label(jobGroup, SWT.NONE);
 			
@@ -218,15 +246,14 @@ public class JobAssistentTimeoutOrderForms {
 			composite.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			final GridLayout gridLayout_2 = new GridLayout();
 			gridLayout_2.marginWidth = 0;
-			gridLayout_2.numColumns = 3;
+			gridLayout_2.numColumns = 4;
 			composite.setLayout(gridLayout_2);
 			
 			{
 				butShow = new Button(composite, SWT.NONE);
 				butShow.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(final SelectionEvent e) {
-						
-						MainWindow.message(shellTimeout, Utils.getElementAsString(joblistener.getJob()), SWT.OK );
+					public void widgetSelected(final SelectionEvent e) {												
+						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), shellTimeout);
 						txtTimeout.setFocus();
 					}
 				});
@@ -237,16 +264,39 @@ public class JobAssistentTimeoutOrderForms {
 				butFinish = new Button(composite, SWT.NONE);
 				butFinish.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
-						if(jobname != null)
-							jobname.setText(Utils.getAttributeValue("name",joblistener.getJob()));				
-						JobsListener listener = new JobsListener(dom, update);
-						listener.newImportJob(joblistener.getJob(), assistentType);
-						MainWindow.message(shellTimeout,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK );
-						shellTimeout.dispose();						
+						
+						doFinish();
+						
 					}
 				});
 				butFinish.setText("Finish");
 			}
+			
+			butBack = new Button(composite, SWT.NONE);
+			butBack.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					Element job = joblistener.getJob();
+					if(job.getChild("process") != null) {
+						JobAssistentProcessForms process = new JobAssistentProcessForms(dom, update, job, assistentType);
+						process.showProcessForm();	
+						if(jobname != null) 													
+							process.setJobname(jobname);
+						if(jobBackUp != null)
+							process.setBackUpJob(jobBackUp, jobForm);
+					} else {
+						JobAssistentScriptForms script = new JobAssistentScriptForms(dom, update, job, assistentType);
+						script.showScriptForm();	
+						if(jobname != null) 													
+							script.setJobname(jobname);
+						if(jobBackUp != null)
+							script.setBackUpJob(jobBackUp, jobForm);
+					}
+					closeDialog = true;
+					
+					shellTimeout.dispose();
+				}
+			});
+			butBack.setText("Back");
 			{
 				butNext = new Button(composite, SWT.NONE);
 				butNext.setFocus();
@@ -258,6 +308,9 @@ public class JobAssistentTimeoutOrderForms {
 						runOP.showRunOptionsForm();
 						if(jobname != null) 													
 							runOP.setJobname(jobname);
+						if(jobBackUp != null)
+							runOP.setBackUpJob(jobBackUp, jobForm);
+						closeDialog = true;
 						shellTimeout.dispose();
 						
 					}
@@ -280,15 +333,48 @@ public class JobAssistentTimeoutOrderForms {
 		lblForceIdleTimeout.setToolTipText(Messages.getTooltip("assistent.force_idle_timeout"));
 		txtTimeout.setToolTipText(Messages.getTooltip("assistent.lbltimeout"));
 		lblTimeout.setToolTipText(Messages.getTooltip("assistent.lbltimeout"));
+		butBack.setToolTipText(Messages.getTooltip("butBack"));
 	}
-
+	
 	private void close(){
 		int cont = MainWindow.message(shellTimeout, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-		if(cont == SWT.OK)
+		if(cont == SWT.OK){
+			if(jobBackUp != null)
+				joblistener.getJob().setContent(jobBackUp.cloneContent());
 			shellTimeout.dispose();
+		}
 	}
 	
 	public void setJobname(Combo jobname) {
 		this.jobname = jobname;
-}
+	}
+	/**
+	 * Der Wizzard wurde für ein bestehende Job gestartet. 
+	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
+	 * @param backUpJob
+	 */
+	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
+		jobBackUp = (Element)backUpJob.clone();	
+		jobForm = jobForm_;
+	}
+	
+	private void doFinish(){
+		if(jobname != null)
+			jobname.setText(Utils.getAttributeValue("name",joblistener.getJob()));
+		
+		if(assistentType == Editor.JOB_WIZZARD) {															
+			jobForm.initForm();		
+		} else {
+			
+			JobsListener listener = new JobsListener(dom, update);
+			listener.newImportJob(joblistener.getJob(), assistentType);
+			
+		}
+		
+		MainWindow.message(shellTimeout,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK );
+		
+		closeDialog = true;
+		shellTimeout.dispose();	
+		
+	}
 }

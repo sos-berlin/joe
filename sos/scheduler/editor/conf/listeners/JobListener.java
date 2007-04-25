@@ -13,8 +13,6 @@ import org.jdom.CDATA;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-
-import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -33,6 +31,8 @@ public class JobListener {
 	private static String library      = "";  
 	
 	private static HashMap parameterDescription = new HashMap();
+	
+	private static HashMap parameterRequired = new HashMap();
 	
 	
 	
@@ -236,6 +236,8 @@ public class JobListener {
 					TableItem item = new TableItem(table, SWT.NONE);
 					item.setText(0, ((Element) o).getAttributeValue("name"));
 					item.setText(1, ((Element) o).getAttributeValue("value"));
+					if(parameterRequired != null && isParameterRequired(((Element) o).getAttributeValue("name")))
+						item.setBackground(Options.getRequiredColor());
 				}
 			}						
 		}		
@@ -252,11 +254,11 @@ public class JobListener {
 		for (int i =0; i < listOfParams.size(); i++) {
 			HashMap h = (HashMap)listOfParams.get(i);                
 			if (h.get("name") != null) {
-				TableItem item = existsParams(h.get("name").toString(), table);
-				if(!refreshTable && item != null) {
-					//item.setBackground(Options.getRedColor());
-					if(h.get("required").equals("true"))
+				TableItem item = existsParams(h.get("name").toString(), table, (h.get("default_value") != null? h.get("default_value").toString(): ""));
+				if(!refreshTable && item != null) {					
+					if(h.get("required") != null && h.get("required").equals("true"))
 						item.setBackground(Options.getRequiredColor());
+					
 					existParam = true;
 				} else {
 					String pname = h.get("name").toString();
@@ -266,16 +268,18 @@ public class JobListener {
 				}
 			}           
 		}
-		if(existParam && !refreshTable) {			
-			//MainWindow.message(MainWindow.getSShell(), sos.scheduler.editor.app.Messages.getString("double_params"), SWT.ICON_WARNING | SWT.OK );
-		}				
+						
 	}
 	
-	private TableItem existsParams(String name, Table table) {
+	public TableItem existsParams(String name, Table table, String replaceValue) {
 		
 		try {
 			for (int i =0; i < table.getItemCount(); i++) {
 				if(table.getItem(i).getText(0).equals(name)) {
+					if(replaceValue != null && replaceValue.length() > 0) {
+						table.getItem(i).setText(1, replaceValue);
+						saveParameter(table, table.getItem(i).getText(0), replaceValue);
+					}
 					return table.getItem(i);
 				}
 			}
@@ -319,7 +323,7 @@ public class JobListener {
 	
 	
 	public void saveParameter(Table table, String name, String value) {
-			 
+		
 		boolean found = false;
 		String value2 = value.replaceAll("\"", "&quot;");
 		if (_params != null) {
@@ -350,6 +354,8 @@ public class JobListener {
 			
 			TableItem item = new TableItem(table, SWT.NONE);
 			item.setText(new String[] { name, value });
+			if(parameterRequired != null && isParameterRequired(name))
+				item.setBackground(Options.getRequiredColor());
 		}		
 		
 	}
@@ -386,7 +392,7 @@ public class JobListener {
 				_dom.setChanged(true);
 				return;
 			}
-						
+			
 			desc.removeContent();
 			if (!(f == null || f.equals(""))) {
 				setInclude(f);
@@ -490,8 +496,9 @@ public class JobListener {
 						List notelist = note.getChildren();
 						for (int j = 0; j < notelist.size(); j++) {
 							Element elNote  = (Element)(notelist.get( j ));							
-							parameterDescription.put( elMain.getAttributeValue("name"), elNote.getText());	
-							
+							parameterDescription.put( elMain.getAttributeValue("name"), elNote.getText());
+							if(elMain.getAttributeValue("required") != null)
+								parameterRequired.put( elMain.getAttributeValue("name"), elMain.getAttributeValue("required"));
 						}
 					}																
 				}				
@@ -501,10 +508,22 @@ public class JobListener {
 			ex.printStackTrace();
 		}		
 	}
-	
+	/**
+	 * Note/Beschreibung der Parameter
+	 * @param name
+	 * @return
+	 */
 	public String getParameterDescription(String name) {
 		return (parameterDescription.get(name) != null ? parameterDescription.get(name).toString() : "");
 	}
-  
-    
+	
+	private boolean isParameterRequired(String name) {
+		String _isIt = (parameterRequired.get(name) != null ? parameterRequired.get(name).toString() : "");
+		if(_isIt.equals("true")) { 
+			return ( true);
+		} else {
+			return false;
+		}
+	}
+	
 }

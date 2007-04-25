@@ -96,6 +96,8 @@ public class Editor {
     public final static int DOC_CONNECTIONS        = 69;
 
     public final static int DOC_APPLICATIONS       = 70;
+    
+    public final static int JOB_WIZZARD            = 71;
 
     public static String    SCHEDULER_ENCODING     = "";
 

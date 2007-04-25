@@ -60,7 +60,7 @@ public class ScriptListener {
     }
 
 
-    private int languageAsInt(String language) {
+    public int languageAsInt(String language) {
         for (int i = 0; i < _languages.length; i++) {
             if (_languages[i].equalsIgnoreCase(language))
                 return i;

@@ -5,6 +5,8 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -29,7 +31,7 @@ import sos.scheduler.editor.conf.listeners.JobOptionsListener;
 public class JobAssistentMonitoringDirectoryForms {
 	
 	private Element            job                      = null;
-	 
+	
 	private SchedulerDom       dom                      = null;
 	
 	private ISchedulerUpdate   update                   = null;
@@ -64,7 +66,11 @@ public class JobAssistentMonitoringDirectoryForms {
 	private int                assistentType            = -1; 
 	
 	private Element            jobBackUp                = null;    
-	  
+	
+	/** Hilsvariable für das Schliessen des Dialogs. 
+	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
+	private boolean            closeDialog              = false;
+	
 	
 	public JobAssistentMonitoringDirectoryForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
 		dom = dom_;
@@ -76,11 +82,16 @@ public class JobAssistentMonitoringDirectoryForms {
 		
 	}
 	
-	
-	
 	public void showMonitoringDirectoryForm() {
 		
 		shellRunOptions = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		shellRunOptions.addShellListener(new ShellAdapter() {
+			public void shellClosed(final ShellEvent e) {
+				if(!closeDialog)
+					close();
+				e.doit = shellRunOptions.isDisposed();
+			}
+		});
 		shellRunOptions.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
@@ -146,7 +157,7 @@ public class JobAssistentMonitoringDirectoryForms {
 		butApply.setLayoutData(gridData_2);
 		butApply.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-			    apply();				
+				apply();				
 			}
 		});
 		butApply.setText("Apply Dir");
@@ -223,8 +234,6 @@ public class JobAssistentMonitoringDirectoryForms {
 		});
 		butRemoveDirectory.setText("Remove");
 		
-		
-		
 		java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();		
 		shellRunOptions.setBounds((screen.width - shellRunOptions.getBounds().width) /2, 
 				(screen.height - shellRunOptions.getBounds().height) /2, 
@@ -272,7 +281,7 @@ public class JobAssistentMonitoringDirectoryForms {
 			butFinish.setVisible(false);
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {					
-				
+					closeDialog = true;
 					shellRunOptions.dispose();
 				}
 			});
@@ -284,7 +293,8 @@ public class JobAssistentMonitoringDirectoryForms {
 		gridData_6.widthHint = 54;
 		butNext.setLayoutData(gridData_6);
 		butNext.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {				
+			public void widgetSelected(final SelectionEvent e) {
+				closeDialog = true;
 				shellRunOptions.dispose();								
 			}
 		});
@@ -292,7 +302,7 @@ public class JobAssistentMonitoringDirectoryForms {
 		txtDirectory.setFocus();
 		setToolTipText();
 		shellRunOptions.layout();
-			
+		
 	}
 	
 	public void setToolTipText() {
@@ -309,10 +319,10 @@ public class JobAssistentMonitoringDirectoryForms {
 	}
 	
 	private void close() {
-		int cont = MainWindow.message(shellRunOptions, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		int cont = MainWindow.message(shellRunOptions, sos.scheduler.editor.app.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		if(cont == SWT.OK) {Utils.getElementAsString((Element)jobBackUp);
-			job.setContent(jobBackUp.cloneContent());
-			shellRunOptions.dispose();	
+		job.setContent(jobBackUp.cloneContent());
+		shellRunOptions.dispose();	
 		}
 	}
 	

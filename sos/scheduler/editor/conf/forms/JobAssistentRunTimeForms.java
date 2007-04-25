@@ -9,12 +9,12 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import com.swtdesigner.SWTResourceManager;
-
 import sos.scheduler.editor.app.DatePicker;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
@@ -123,6 +122,10 @@ public class JobAssistentRunTimeForms {
 	
 	private Element          jobBackUp          = null;              		
 	
+	/** Hilsvariable für das Schliessen des Dialogs. 
+	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
+	private boolean               closeDialog   = false;         
+	
 	
 	/**
 	 * Konstruktor 
@@ -150,6 +153,13 @@ public class JobAssistentRunTimeForms {
 		try {
 			
 			runTimeSingleShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+			runTimeSingleShell.addShellListener(new ShellAdapter() {
+				public void shellClosed(final ShellEvent e) {
+					if(!closeDialog)
+						close();
+					e.doit = runTimeSingleShell.isDisposed();
+				}
+			});
 			runTimeSingleShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 			
 			final GridLayout gridLayout = new GridLayout();
@@ -661,7 +671,7 @@ public class JobAssistentRunTimeForms {
 					butNext.setLayoutData(gridData_1);
 					butNext.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
-							
+							closeDialog = true;
 							runTimeSingleShell.dispose();														
 						}
 					});
@@ -694,7 +704,7 @@ public class JobAssistentRunTimeForms {
 		optSpecificDay.setSelection(false);
 		optEveryWeeksdays.setSelection(false);
 		optEveryMonths.setSelection(false);
-						
+		
 		comboEveryWeekdays.setText("");
 		comboMonth.setText("");
 		
@@ -944,12 +954,11 @@ public class JobAssistentRunTimeForms {
 			Element period = (Element)everyDay.get(i);
 			PeriodListener p = new PeriodListener(dom);
 			p.setPeriod(period);			
-			if(selectedStr.equals(EVERY_DAY + "at " + p.getSingle())) {
-				//PeriodsListener _pl = new PeriodsListener(dom, period );
+			if(selectedStr.equals(EVERY_DAY + "at " + p.getSingle())) {		
 				periodslistener.removePeriod(i);
 			}
 		}
-		//update.updateDays()
+		
 	}
 	
 	
@@ -1165,7 +1174,7 @@ public class JobAssistentRunTimeForms {
 	}
 	
 	private void close() {
-		int cont = MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		int cont = MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		if(cont == SWT.OK) {//Utils.getElementAsString((Element)jobBackUp);			
 			job.setContent(jobBackUp.cloneContent());
 			runTimeSingleShell.dispose();	

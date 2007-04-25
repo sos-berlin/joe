@@ -220,7 +220,8 @@ public class JobOptionsListener {
     }
 
 
-    private String getDelay(Element e) {
+    //private String getDelay(Element e) {
+    public String getDelay(Element e) {
         String delay = e.getAttributeValue("delay");
         if (delay == null || delay.equals(""))
             delay = "00:00";
@@ -297,4 +298,17 @@ public class JobOptionsListener {
 	public Element getJob() {
 		return _job;
 	}
+
+    
+	public List getErrorDelays() {
+		return _errorDelays;
+	}
+
+
+	public List getSetbacks() {
+		return _setbacks;
+	}
+
+
+	
 }

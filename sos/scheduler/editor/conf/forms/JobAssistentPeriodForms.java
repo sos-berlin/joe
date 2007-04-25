@@ -11,18 +11,17 @@ package sos.scheduler.editor.conf.forms;
 import java.util.HashMap;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import sos.scheduler.editor.app.DatePicker;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
@@ -97,33 +96,36 @@ public class JobAssistentPeriodForms {
 	
 	private Element                jobBackUp                   = null;
 	
-    public static String           EVERY_DAY                   = "Every Day ";	
-    
-    public static String           SPECIFIC_DAY                = "Specific Day ";			
-    
-    public static String           WEEK_DAY                    = "Week Day ";	
-    
-    public static String           MONTH_DAY                   = "Month Day ";    
-    
-    public static String           SPECIFIC_WEEK_DAY           = "Specific Weekday ";
+	public static String           EVERY_DAY                   = "Every Day ";	
 	
-    private Button                 addPeriodButton             = null;
-    
-    private Button                 removeButton                = null;
-    
-    private TabItem                everyDayTabItem             = null;
-    
-    private TabItem                weekdayTabItem              = null;
-    
-    private TabItem                monthDayTabItem             = null;
-    
-    private TabItem                specificDayTabItem          = null;
-    
-    private Button                 newPeriodButton             = null;
-    
-    private String                  bApply                       = "";                      
-    
-    	
+	public static String           SPECIFIC_DAY                = "Specific Day ";			
+	
+	public static String           WEEK_DAY                    = "Week Day ";	
+	
+	public static String           MONTH_DAY                   = "Month Day ";    
+	
+	public static String           SPECIFIC_WEEK_DAY           = "Specific Weekday ";
+	
+	private Button                 addPeriodButton             = null;
+	
+	private Button                 removeButton                = null;
+	
+	private TabItem                everyDayTabItem             = null;
+	
+	private TabItem                weekdayTabItem              = null;
+	
+	private TabItem                monthDayTabItem             = null;
+	
+	private TabItem                specificDayTabItem          = null;
+	
+	private Button                 newPeriodButton             = null;
+	
+	private String                 bApply                      = "";                      
+	
+	/** Hilsvariable für das Schliessen des Dialogs. 
+	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
+	private boolean                closeDialog                 = false;         
+	
 	public JobAssistentPeriodForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
 		dom = dom_;
 		update = update_;
@@ -145,6 +147,13 @@ public class JobAssistentPeriodForms {
 		try {
 			
 			jobTypeShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+			jobTypeShell.addShellListener(new ShellAdapter() {
+				public void shellClosed(final ShellEvent e) {
+					if(!closeDialog)
+						close();
+					e.doit = jobTypeShell.isDisposed();
+				}
+			});
 			jobTypeShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 			pListForWeekDays = new HashMap();
 			pListForMonthDays = new HashMap();
@@ -157,7 +166,7 @@ public class JobAssistentPeriodForms {
 			jobTypeShell.setLayout(gridLayout);
 			jobTypeShell.setSize(500, 661);
 			jobTypeShell.setText("Run Time/ Periods"); 
-
+			
 			final Group jobGroup = new Group(jobTypeShell, SWT.NONE);
 			jobGroup.setText("Job: " + Utils.getAttributeValue("name", job));
 			final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1);
@@ -171,7 +180,7 @@ public class JobAssistentPeriodForms {
 			gridLayout_2.marginHeight = 10;
 			gridLayout_2.marginBottom = 10;
 			jobGroup.setLayout(gridLayout_2);
-
+			
 			final Text txtGlobal = new Text(jobGroup, SWT.MULTI | SWT.WRAP);
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData_1.widthHint = 419;
@@ -186,9 +195,6 @@ public class JobAssistentPeriodForms {
 				
 				tabFolder.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
-					    
-														
-						
 						discardChanges();
 						if(comboWeekDay != null)
 							comboWeekDay.setText("");
@@ -203,7 +209,7 @@ public class JobAssistentPeriodForms {
 				});
 				
 				final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
-				gridData.heightHint = 208;
+				gridData.heightHint = 197;
 				gridData.widthHint = 364;
 				tabFolder.setLayoutData(gridData);
 				
@@ -216,8 +222,6 @@ public class JobAssistentPeriodForms {
 						final Group group = new Group(tabFolder, SWT.NONE);
 						group.setLayout(new GridLayout());
 						everyDayTabItem.setControl(group);
-						
-
 						{
 							newPeriodButton = new Button(group, SWT.NONE);
 							newPeriodButton.setFocus();
@@ -259,7 +263,7 @@ public class JobAssistentPeriodForms {
 									
 									discardChanges();
 									if(comboWeekDay.getText() == null || comboWeekDay.getText().length() == 0)
-									  return;
+										return;
 									getListener();	
 									addPeriodButton.setEnabled(true);
 									bApply = JobAssistentPeriodForms.WEEK_DAY;
@@ -284,7 +288,7 @@ public class JobAssistentPeriodForms {
 								public void widgetSelected(final SelectionEvent e) {
 									discardChanges();
 									if(comboMonth.getText() == null || comboMonth.getText().length() == 0)
-										  return;
+										return;
 									getMonthListener();
 									addPeriodButton.setEnabled(true);
 									bApply=JobAssistentPeriodForms.MONTH_DAY;
@@ -332,14 +336,14 @@ public class JobAssistentPeriodForms {
 								bApply=JobAssistentPeriodForms.SPECIFIC_DAY;
 							}
 						});
-												
+						
 						
 						createPeriodForm(JobAssistentPeriodForms.SPECIFIC_DAY, group, specificDayTabItem);
 					}
 				}
 			}
 			tabFolder.setSelection(0);
-
+			
 			addPeriodButton = new Button(jobTypeShell, SWT.NONE);
 			addPeriodButton.setEnabled(false);
 			addPeriodButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
@@ -363,7 +367,7 @@ public class JobAssistentPeriodForms {
 				gridData.widthHint = 335;
 				list.setLayoutData(gridData);
 			}
-
+			
 			removeButton = new Button(jobTypeShell, SWT.NONE);
 			removeButton.setEnabled(false);
 			removeButton.addSelectionListener(new SelectionAdapter() {
@@ -394,8 +398,8 @@ public class JobAssistentPeriodForms {
 				butNext.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						discardChanges();
-						jobTypeShell.dispose();
-						//apply();
+						closeDialog=true;
+						jobTypeShell.dispose();						
 					}								
 				});
 				butNext.setText("Apply");
@@ -435,7 +439,7 @@ public class JobAssistentPeriodForms {
 		
 		if(which.equalsIgnoreCase(JobAssistentPeriodForms.EVERY_DAY)) {			
 			periodForm = new PeriodForm(group, SWT.NONE, true);
-			periodForm.setBounds(0, 0,481, 216);						
+			periodForm.setBounds(0, 0,0, 216);						
 			periodForm.setParams(dom, periodsListener.isOnOrder());
 			periodForm.setLayoutData(gridData);
 			periodForm.setEnabled(false);
@@ -443,7 +447,8 @@ public class JobAssistentPeriodForms {
 		} else if(which.equalsIgnoreCase(JobAssistentPeriodForms.WEEK_DAY)) {
 			
 			periodFormWeekDay= new PeriodForm(group, SWT.NONE, true);
-			periodFormWeekDay.setBounds(0, 0,481, 216);						
+			//periodFormWeekDay.setBounds(0, 0,481, 216);						
+			periodFormWeekDay.setBounds(0, 0, 0, 216);
 			periodFormWeekDay.setParams(dom, periodsListener.isOnOrder());
 			periodFormWeekDay.setLayoutData(gridData);			
 			periodFormWeekDay.setEnabled(false);
@@ -451,14 +456,16 @@ public class JobAssistentPeriodForms {
 			
 		} else if(which.equalsIgnoreCase(JobAssistentPeriodForms.MONTH_DAY)) {
 			periodFormMonthDay= new PeriodForm(group, SWT.NONE, true);
-			periodFormMonthDay.setBounds(0, 0,481, 216);						
+			//periodFormMonthDay.setBounds(0, 0,481, 216);						
+			periodFormMonthDay.setBounds(0, 0,0, 216);
 			periodFormMonthDay.setParams(dom, periodsListener.isOnOrder());
 			periodFormMonthDay.setLayoutData(gridData);			
 			periodFormMonthDay.setEnabled(false);
 			item.setControl(group);
 		} else if(which.equalsIgnoreCase(JobAssistentPeriodForms.SPECIFIC_DAY)) {			
 			periodFormSpecificDay = new PeriodForm(group, SWT.NONE, true);
-			periodFormSpecificDay.setBounds(0, 0,481, 216);						
+			//periodFormSpecificDay.setBounds(0, 0,481, 216);						
+			periodFormSpecificDay.setBounds(0, 0,0, 216);
 			periodFormSpecificDay.setParams(dom, periodsListener.isOnOrder());
 			periodFormSpecificDay.setLayoutData(gridData);
 			periodFormSpecificDay.setEnabled(false);
@@ -566,7 +573,7 @@ public class JobAssistentPeriodForms {
 			update.updateDays(DaysListener.WEEKDAYS);
 			
 			list.add(JobAssistentPeriodForms.WEEK_DAY + comboWeekDay.getText() + " at " + periodFormWeekDay.getListener().getBegin() + "-" + periodFormWeekDay.getListener().getEnd());
-		
+			
 		} else if(tabFolder.getSelection()[0].getText().equals(JobAssistentPeriodForms.MONTH_DAY)) {
 			if(comboMonth.getSelectionIndex() == -1 || comboMonth.getText().length()==0) {
 				MainWindow.message(jobTypeShell, sos.scheduler.editor.app.Messages.getString("assistent.period.date"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
@@ -606,7 +613,7 @@ public class JobAssistentPeriodForms {
 				list.add(JobAssistentPeriodForms.EVERY_DAY + "at " + p.getBegin() + "-" + p.getEnd() );
 			}
 		}
-
+		
 		//specific day		
 		java.util.List speDays = speDateListener.get_list();
 		for(int i =0; speDays != null && i < speDays.size(); i++) {
@@ -622,7 +629,7 @@ public class JobAssistentPeriodForms {
 				}
 			}
 		}
-				
+		
 		//Week day				
 		Element[] weekDays = weekDayListener.getDayElements();
 		for(int i =0; weekDays!=null&& i < weekDays.length; i++) {
@@ -630,12 +637,12 @@ public class JobAssistentPeriodForms {
 			String sWeek = comboWeekDay.getItem(Utils.str2int(Utils.getAttributeValue("day", elWeek)) -1);
 			java.util.List periods = elWeek.getChildren("period");			
 			for (int j =0; periods != null && j < periods.size(); j++) {
-			Element period = (Element)periods.get(j);
-			PeriodListener p = new PeriodListener(dom);
-			p.setPeriod(period);
-			if(p.getSingle() == null || p.getSingle().trim().length() == 0) {
-				list.add(JobAssistentPeriodForms.WEEK_DAY + sWeek +  " at " + p.getBegin() + "-" + p.getEnd() );
-			}
+				Element period = (Element)periods.get(j);
+				PeriodListener p = new PeriodListener(dom);
+				p.setPeriod(period);
+				if(p.getSingle() == null || p.getSingle().trim().length() == 0) {
+					list.add(JobAssistentPeriodForms.WEEK_DAY + sWeek +  " at " + p.getBegin() + "-" + p.getEnd() );
+				}
 			}	
 		}
 		
@@ -675,7 +682,7 @@ public class JobAssistentPeriodForms {
 			//Monat entfernen
 			deleteMonth(selectedStr);
 		}
-			
+		
 	}
 	
 	private void deleteEveryDay(String selectedStr) {
@@ -777,7 +784,7 @@ public class JobAssistentPeriodForms {
 		}
 		update.updateDays(DaysListener.MONTHDAYS);
 	} 
-
+	
 	private void discardChanges() {
 		
 		if(bApply!=null && bApply.equals(JobAssistentPeriodForms.SPECIFIC_DAY)) {
@@ -809,8 +816,7 @@ public class JobAssistentPeriodForms {
 			if(periodForm != null)
 				periodForm.setEnabled(false);
 		}
-		
-		
+				
 	}
 	
 	public void setToolTipText() {
@@ -829,9 +835,8 @@ public class JobAssistentPeriodForms {
 	}
 	
 	private void close() {
-		int cont = MainWindow.message(jobTypeShell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-		if(cont == SWT.OK) {Utils.getElementAsString((Element)jobBackUp);
-			
+		int cont = MainWindow.message(jobTypeShell, sos.scheduler.editor.app.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		if(cont == SWT.OK) {			
 			job.setContent(jobBackUp.cloneContent());
 			jobTypeShell.dispose();	
 		}	

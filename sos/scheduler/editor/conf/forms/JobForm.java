@@ -139,59 +139,13 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         dom.setInit(true);
 
         updateTree = false;
-        tName.setText(listener.getName());
-        updateTree = true;
-        tTitle.setText(listener.getTitle());
-        tSpoolerID.setText(listener.getSpoolerID());
-        String[] classes = listener.getProcessClasses();
-        if (classes == null)
-            cProcessClass.setEnabled(false);
-        else
-            cProcessClass.setItems(classes);
-        int index = cProcessClass.indexOf(listener.getProcessClass());
-        if (index >= 0)
-            cProcessClass.select(index);
-
-        bOrderYes.setSelection(listener.getOrder());
-        bOrderNo.setSelection(!listener.getOrder());
-        bStopOnError.setSelection(listener.getStopOnError());
-        bForceIdletimeout.setSelection(listener.getForceIdletimeout());
-        sIdleTimeout.setEnabled(bOrderYes.getSelection());
-        index = sPriority.indexOf(listener.getPriority());
-        if (index >= 0)
-            sPriority.select(index);
-        else {
-            int p = Utils.str2int(listener.getPriority(), 20);
-            if (p == -999) {
-                sPriority.setText("");
-            } else {
-                if (p < -20) {
-                    p = -20;
-                }
-                sPriority.setText(String.valueOf(p));
-            }
-        }
-
-        sTasks.setText(listener.getTasks());
-        if (listener.getMintasks()!= null) tMintasks.setText(listener.getMintasks());
-        if(listener.getPriority()!= null) sPriority.setText(listener.getPriority());
-        tIgnoreSignals.setText(listener.getIgnoreSignal());
-        sTimeout.setText(listener.getTimeout());
-        sIdleTimeout.setText(listener.getIdleTimeout());
-        listener.fillParams(tParameter);
-        tFileName.setText(listener.getInclude());
-        //tURL.setText(listener.getInclude());
-        tDescription.setText(listener.getDescription());
-        tComment.setText(listener.getComment());
         
-        if(listener.getInclude() != null && listener.getInclude().trim().length() > 0) {
-        	listener.getAllParameterDescription();
-        }
+        initForm();
 
         dom.setInit(false);
     }
 
-
+    
     public void apply() {
         if (isUnsaved())
             addParam();
@@ -573,7 +527,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         butImport.setText("import");
         butImport.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
-        		if(listener.getInclude()!= null && listener.getInclude().trim().length() > 0) {
+        		startWizzard(true);
+        		/*if(listener.getInclude()!= null && listener.getInclude().trim().length() > 0) {
         			//JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren        			
         			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener, tParameter, Editor.JOB);					
         			paramsForm.showAllImportJobParams(listener.getInclude());        			
@@ -582,6 +537,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         			JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, tParameter, Editor.JOB);
         			importJobForms.showAllImportJobs();
         		}
+        		*/
         	}
         });
         butImport.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -664,7 +620,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
                 tParaName.setText(item.getText(0));
                 tParaValue.setText(item.getText(1));
                 bRemove.setEnabled(tParameter.getSelectionCount() > 0);
-                txtParameterDescription.setText(listener.getParameterDescription(item.getText(0)));
+                txtParameterDescription.setText(listener.getParameterDescription(item.getText(0)));                
                 bApply.setEnabled(false);
             }
         });
@@ -681,8 +637,6 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes group3
      */
     private void createGroup3() {
-        GridData gridData14 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
-        gridData14.horizontalIndent = 24;
         GridData gridData12 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData12.widthHint = 355;
         gridData12.horizontalIndent = 24;
@@ -705,7 +659,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         });
 
         final Button butShow = new Button(gDescription, SWT.NONE);
-        butShow.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false, false));
+        butShow.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
         butShow.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		
@@ -738,6 +692,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         });
         */
         new Label(gDescription, SWT.NONE);
+        GridData gridData14 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
+        gridData14.horizontalIndent = 24;
         tDescription = new Text(gDescription, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
         tDescription.setFont(ResourceManager.getFont("", 10, SWT.NONE));
         tDescription.setLayoutData(gridData14);
@@ -746,6 +702,17 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
                 listener.setDescription(tDescription.getText());
             }
         });
+
+        final Button butWizzard = new Button(gDescription, SWT.NONE);
+        butWizzard.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		startWizzard(false);
+        		
+        	}
+        });
+        butWizzard.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        butWizzard.setText("Wizzard");
+        new Label(gDescription, SWT.NONE);
         new Label(gDescription, SWT.NONE);
     }
 
@@ -758,6 +725,61 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         bApply.setEnabled(false);
         tParameter.deselectAll();
         tParaName.setFocus();
+    }
+
+    
+    public void initForm(){
+        tName.setText(listener.getName());
+        updateTree = true;
+        tTitle.setText(listener.getTitle());
+        tSpoolerID.setText(listener.getSpoolerID());
+        String[] classes = listener.getProcessClasses();
+        if (classes == null)
+            cProcessClass.setEnabled(false);
+        else
+            cProcessClass.setItems(classes);
+        int index = cProcessClass.indexOf(listener.getProcessClass());
+        if (index >= 0)
+            cProcessClass.select(index);
+
+        bOrderYes.setSelection(listener.getOrder());
+        bOrderNo.setSelection(!listener.getOrder());
+        bStopOnError.setSelection(listener.getStopOnError());
+        bForceIdletimeout.setSelection(listener.getForceIdletimeout());
+        sIdleTimeout.setEnabled(bOrderYes.getSelection());
+        index = sPriority.indexOf(listener.getPriority());
+        if (index >= 0)
+            sPriority.select(index);
+        else {
+            int p = Utils.str2int(listener.getPriority(), 20);
+            if (p == -999) {
+                sPriority.setText("");
+            } else {
+                if (p < -20) {
+                    p = -20;
+                }
+                sPriority.setText(String.valueOf(p));
+            }
+        }
+
+        sTasks.setText(listener.getTasks());
+        if (listener.getMintasks()!= null) tMintasks.setText(listener.getMintasks());
+        if(listener.getPriority()!= null) sPriority.setText(listener.getPriority());
+        tIgnoreSignals.setText(listener.getIgnoreSignal());
+        sTimeout.setText(listener.getTimeout());
+        sIdleTimeout.setText(listener.getIdleTimeout());
+        tParameter.removeAll();
+        if(listener.getInclude() != null && listener.getInclude().trim().length() > 0) {
+        	listener.getAllParameterDescription();
+        }
+        listener.fillParams(tParameter);
+        tFileName.setText(listener.getInclude());
+        //tURL.setText(listener.getInclude());
+        tDescription.setText(listener.getDescription());
+        tComment.setText(listener.getComment());
+        
+        
+
     }
 
 
@@ -786,4 +808,21 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         tDescription.setToolTipText(Messages.getTooltip("job.description"));
         txtParameterDescription.setToolTipText(Messages.getTooltip("job.param.description"));
     }
+    
+    
+    private void startWizzard(boolean onlyParams) {
+    	if(listener.getInclude()!= null && listener.getInclude().trim().length() > 0) {
+    		//JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren        			
+    		JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener, tParameter, onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+    		if(!onlyParams)
+    			paramsForm.setJobForm(this);
+    		paramsForm.showAllImportJobParams(listener.getInclude());        			
+    	} else { 
+    		//Liste aller Jobdokumentation 
+    		JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, tParameter, onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+    		if(!onlyParams)
+    			importJobForms.setJobForm(this);
+    		importJobForms.showAllImportJobs();
+    	}
+}
 } // @jve:decl-index=0:visual-constraint="10,10"

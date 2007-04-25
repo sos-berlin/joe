@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Iterator; 
 import java.util.List;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -72,6 +72,8 @@ public class JobAssistentImportJobsForm {
 	
 	private Button                butShow       = null;
 	
+	private Button                butBack       = null; 
+	
 	private String                jobType       = ""; 
 	
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
@@ -79,6 +81,13 @@ public class JobAssistentImportJobsForm {
 	
 	private Combo                 jobname       = null;
 	
+	private Element               jobBackUp     = null;
+	
+	private JobForm               jobForm       = null;
+	
+	/** Hilsvariable für das Schliessen des Dialogs. 
+	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
+	private boolean               closeDialog   = false;         
 	
 	public JobAssistentImportJobsForm(SchedulerDom dom_, ISchedulerUpdate update_, int assistentType_) {
 		dom = dom_;
@@ -91,10 +100,14 @@ public class JobAssistentImportJobsForm {
 	public void setJobname(Combo jobname) {
 		this.jobname = jobname;
 	}
-
-
+	
+	
 	public JobAssistentImportJobsForm(JobListener listener_, Table tParameter_, int assistentType_) {
+		jobBackUp = (Element)listener_.getJob().clone();
 		joblistener = listener_;
+		dom = joblistener.get_dom();
+		update = joblistener.get_main();
+		listener = new JobsListener(dom, update);
 		tParameter = tParameter_;		
 		assistentType = assistentType_;	
 	}
@@ -107,7 +120,8 @@ public class JobAssistentImportJobsForm {
 		ArrayList listOfDoc = null;
 		try {
 			
-			listOfDoc = new ArrayList();
+			listOfDoc = new ArrayList();				
+			
 			java.util.Vector filelist = sos.util.SOSFile.getFilelist(xmlPaths, "^.*\\.xml$",java.util.regex.Pattern.CASE_INSENSITIVE,true);
 			Iterator fileIterator = filelist.iterator();
 			
@@ -143,14 +157,24 @@ public class JobAssistentImportJobsForm {
 	public void showAllImportJobs(String type_) {
 		jobType = type_;			
 		showAllImportJobs();
-	}
+	}		
+	
+	public void showAllImportJobs(JobListener  joblistener_) {
+		joblistener = joblistener_;
+		jobBackUp = (Element)joblistener_.getJob().clone();
+		jobType = (joblistener.getOrder() ? "order" : "standalonejob");
+		showAllImportJobs();
+	}		
 	
 	public void showAllImportJobs() {
 		try {
 			
 			shell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL);
-			shell.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(final DisposeEvent e) {
+			shell.addShellListener(new ShellAdapter() {
+				public void shellClosed(final ShellEvent e) {
+					if(!closeDialog)
+						close();
+					e.doit = shell.isDisposed();
 				}
 			});
 			shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
@@ -177,7 +201,7 @@ public class JobAssistentImportJobsForm {
 			jobGroup.setLayout(gridLayout_3);
 			final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, true, true);
 			gridData_6.heightHint = 312;
-			gridData_6.widthHint = 600;
+			gridData_6.widthHint = 603;
 			jobGroup.setLayoutData(gridData_6);
 			
 			Composite composite;
@@ -214,7 +238,11 @@ public class JobAssistentImportJobsForm {
 				txtJobname.setLayoutData(gridData);
 				if(listener != null)
 					txtJobname.setBackground(Options.getRequiredColor());
-				txtJobname.setText("");
+				if(joblistener != null) {
+					txtJobname.setText(joblistener.getName());
+				} else {
+					txtJobname.setText("");
+				}
 			}
 			
 			
@@ -226,6 +254,9 @@ public class JobAssistentImportJobsForm {
 			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData.widthHint = 420;
 			txtTitle.setLayoutData(gridData);
+			if(joblistener != null) {
+				txtTitle.setText(joblistener.getTitle());
+			} 
 			
 			final Label pathLabel = new Label(jobGroup, SWT.NONE);
 			pathLabel.setLayoutData(new GridData());
@@ -233,6 +264,9 @@ public class JobAssistentImportJobsForm {
 			
 			txtPath = new Text(jobGroup, SWT.BORDER);
 			txtPath.setEditable(false);
+			if(joblistener != null) {
+				txtPath.setText(joblistener.getInclude());
+			} 
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData_1.widthHint = 420;
 			txtPath.setLayoutData(gridData_1);
@@ -261,7 +295,7 @@ public class JobAssistentImportJobsForm {
 			final GridLayout gridLayout_2 = new GridLayout();
 			gridLayout_2.marginWidth = 0;
 			gridLayout_2.verticalSpacing = 0;
-			gridLayout_2.numColumns = 4;
+			gridLayout_2.numColumns = 5;
 			composite.setLayout(gridLayout_2);
 			{
 				butdescription = new Button(composite, SWT.NONE);
@@ -287,9 +321,18 @@ public class JobAssistentImportJobsForm {
 					HashMap attr = getJobFromDescription();
 					JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
 					ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
-					attr.put("params", listOfParams);					
-					Element job = listener.createJobElement(attr);
-					MainWindow.message(shell, Utils.getElementAsString(job), SWT.OK );
+					attr.put("params", listOfParams);
+					Element job = null;
+					if(assistentType == Editor.JOB_WIZZARD) {
+						//Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn assistentype = Editor.Job_Wizzard
+						Element currJob = (Element)(joblistener.getJob().clone());
+						job  = listener.createJobElement(attr, currJob);
+					} else {
+						job = listener.createJobElement(attr);
+					}
+					
+					Utils.showClipboard(Utils.getElementAsString(job), shell);
+					
 					job.removeChildren("param");
 				}
 			});
@@ -299,36 +342,29 @@ public class JobAssistentImportJobsForm {
 				butImport.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						
+						if(!check()) return;						
 						
-						if(tree.getSelectionCount()== 0) {
-							MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_job_selected"), SWT.ICON_WARNING | SWT.OK );
-							txtJobname.setFocus();
-							return;
-						}
-						
-						if( assistentType != Editor.JOB) {
-							if(txtJobname.getText() == null || txtJobname.getText().length() == 0) {
-								MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_jobname"), SWT.ICON_WARNING | SWT.OK );
-								txtJobname.setFocus();
-								return;
-							}						
-							
-							if(txtJobname.getText().concat(".xml").equalsIgnoreCase(new File(txtPath.getText()).getName())) {
-								int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.edit_jobname"), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-								if(cont == SWT.YES) {
-									txtJobname.setFocus();
-									return;
-								}						
-							}
-						}
 						HashMap h = getJobFromDescription();
+						
 						if(jobname != null)
 							jobname.setText(txtJobname.getText());
+						
 						JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
 						ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
 						h.put("params", listOfParams);
 						
-						if(assistentType == Editor.JOB) {
+						if(assistentType == Editor.JOB_WIZZARD) {
+							
+							//Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn assistentype = Editor.Job_Wizzard							
+							joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+							Element job = joblistener.getJob();
+							job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+							tParameter.removeAll();							
+							joblistener.fillParams(listOfParams, tParameter, true);
+							jobForm.initForm();
+							
+							
+						} else if(assistentType == Editor.JOB) {
 							joblistener.fillParams(listOfParams, tParameter, false);
 							
 						} else {						
@@ -340,50 +376,37 @@ public class JobAssistentImportJobsForm {
 							Element job = listener.createJobElement(h);
 							listener.newImportJob(job, assistentType);
 							MainWindow.message(shell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
+							
 						} 
+						closeDialog = true;
 						
-						shell.close();
+						shell.dispose();
 					}
 				});
 			}
 			butImport.setText("Finish");
+			
+			butBack = new Button(composite, SWT.NONE);			
+			
+			butBack.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					JobAssistentTypeForms typeForms = new JobAssistentTypeForms(dom, update);					
+					typeForms.showTypeForms(jobType, jobBackUp, assistentType);
+					closeDialog = true;
+					
+					shell.dispose();
+				}
+			});
+			butBack.setText("Back");
 			
 			butParameters = new Button(composite, SWT.NONE);
 			butParameters.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			butParameters.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			
 			butParameters.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {										
+				public void widgetSelected(final SelectionEvent e) {
 					
-					if(tree.getSelectionCount() == 0) {
-						int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_job_selected"), SWT.ICON_WARNING | SWT.OK );
-						txtJobname.setFocus();
-						return;
-					}
-					
-					if(txtJobname.getText().length() == 0 && listener != null) {
-						int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_jobname"), SWT.ICON_WARNING | SWT.OK );
-						txtJobname.setFocus();
-						return;
-					}
-					
-					//if(listener != null && !assistent) {
-					if(assistentType != Editor.JOB){
-						
-						if(txtJobname.getText().concat(".xml").equalsIgnoreCase(new File(txtPath.getText()).getName())) {
-							int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.edit_jobname"), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-							if(cont == SWT.YES) {
-								txtJobname.setFocus();
-								return;
-							}						
-						}
-					}
-					
-					if(txtPath.getText().length() == 0) {
-						int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_jobdescription"), SWT.ICON_WARNING | SWT.OK );
-						txtPath.setFocus();
-						return;
-					}												
+					if(!check()) return;
 					
 					HashMap attr = getJobFromDescription();
 					JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
@@ -392,19 +415,39 @@ public class JobAssistentImportJobsForm {
 						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), joblistener, tParameter, assistentType);					
 						paramsForm.showAllImportJobParams(txtPath.getText());
 					} else {
-						if(listener.existJobname(txtJobname.getText())) {
+						if(assistentType != Editor.JOB_WIZZARD && listener.existJobname(txtJobname.getText())) {
 							MainWindow.message(shell,  Messages.getString("assistent.error.job_name_exist"), SWT.OK );
 							txtJobname.setFocus();
 							return;
 						}
-						Element job = listener.createJobElement(attr);
-						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(dom, update, job, assistentType);					
+						
+						Element job = null;
+						if(jobBackUp != null && assistentType != Editor.JOB_WIZZARD) {
+							int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.discard_changes"), SWT.ICON_QUESTION | SWT.YES |SWT.NO |SWT.CANCEL );
+							if(cont == SWT.CANCEL) {
+								return;
+							}else if(cont != SWT.YES) {													
+								job = joblistener.getJob().setContent(jobBackUp.cloneContent());							
+							}	
+						}						
+						
+						if(job==null){
+							job = listener.createJobElement(attr);
+						}
+						JobAssistentImportJobParamsForm paramsForm = null;
+						if(assistentType == Editor.JOB_WIZZARD) {
+							paramsForm = new JobAssistentImportJobParamsForm(dom, update, joblistener, tParameter, assistentType);
+						} else {
+							paramsForm = new JobAssistentImportJobParamsForm(dom, update, job, assistentType);
+						}
 						paramsForm.showAllImportJobParams(txtPath.getText());
 						if(jobname != null) 													
 							paramsForm.setJobname(jobname);
+						if(jobBackUp != null)
+							paramsForm.setBackUpJob(jobBackUp, jobForm);
 					}
-					
-					shell.close();
+					closeDialog = true;
+					shell.dispose();
 				}
 			});
 			
@@ -422,7 +465,7 @@ public class JobAssistentImportJobsForm {
 				jobnamenGroup.setLayout(gridLayout_1);
 				jobnamenGroup.setText("Jobs");
 				final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, true);
-				gridData_3.widthHint = 591;
+				gridData_3.widthHint = 598;
 				gridData_3.heightHint = 434;
 				jobnamenGroup.setLayoutData(gridData_3);
 				jobnamenGroup.getBounds().height=100;
@@ -433,8 +476,7 @@ public class JobAssistentImportJobsForm {
 					tree.getBounds().height = 100;
 					tree.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
-							//System.out.println("Hallo " + tree.getSelection()[0].getText());
-							//txtJobname.setText(tree.getSelection()[0].getText());
+							//System.out.println("Hallo " + tree.getSelection()[0].getText());							
 							txtTitle.setText(tree.getSelection()[0].getText(1));
 							txtPath.setText(tree.getSelection()[0].getText(2));
 							txtJobname.setFocus();
@@ -461,18 +503,28 @@ public class JobAssistentImportJobsForm {
 							System.err.print(e.getMessage());
 						}						
 					}
-					
+					if(joblistener != null) {
+						selectTree();
+					}
 					
 				}
 			}
-			if(this.joblistener != null) {
+			
+			if(assistentType == Editor.JOB) {
 				txtJobname.setEnabled(false);
 				txtTitle.setEnabled(false);
 				butShow.setEnabled(false);
+				butBack.setEnabled(false);
+			} else if(assistentType == Editor.JOB_CHAINS) {
+				txtJobname.setEnabled(true);
+				txtTitle.setEnabled(true);
+				butShow.setEnabled(true);
+				butBack.setEnabled(false);
 			} else {
 				txtJobname.setEnabled(true);
 				txtTitle.setEnabled(true);
 				butShow.setEnabled(true);
+				butBack.setEnabled(true);
 			}
 			setToolTipText();
 			
@@ -493,7 +545,18 @@ public class JobAssistentImportJobsForm {
 	}
 	
 	private void createTreeIteam() throws Exception { 
-		try {
+		try {			
+			
+			//ermöglicht das Startet der Wizzard ohne Jobbeschreibung
+			final TreeItem newItemTreeItem_ = new TreeItem(tree, SWT.NONE);
+			newItemTreeItem_.setText(0, "no job description");
+			newItemTreeItem_.setText(1, "..");
+			newItemTreeItem_.setText(2, "..");			
+			Element j = new Element("job");
+			Utils.setAttribute("order", (jobType.equals("order")? "yes": "no"), j );
+			newItemTreeItem_.setData(j);
+			//ende 
+			
 			ArrayList listOfDoc = parseDocuments();
 			String filename = "";
 			String lastParent = "";
@@ -557,7 +620,8 @@ public class JobAssistentImportJobsForm {
 		tree.setToolTipText(Messages.getTooltip("tree"));
 		txtJobname.setToolTipText(Messages.getTooltip("jobname"));
 		txtTitle.setToolTipText(Messages.getTooltip("jobtitle"));
-		txtPath.setToolTipText(Messages.getTooltip("jobdescription"));		
+		txtPath.setToolTipText(Messages.getTooltip("jobdescription"));	
+		butBack.setToolTipText(Messages.getTooltip("butBack"));
 		
 		if(butCancel != null ) butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));		
 		if(butShow != null) butShow.setToolTipText(Messages.getTooltip("assistent.show"));
@@ -719,9 +783,68 @@ public class JobAssistentImportJobsForm {
 	
 	private void close() {
 		int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-		if(cont == SWT.OK)
+		if(cont == SWT.OK) {
+			if(jobBackUp != null)
+				joblistener.getJob().setContent(jobBackUp.cloneContent());	
 			shell.dispose();
+		}
 	}
 	
 	
+	private void selectTree() {
+		if(joblistener.getInclude()== null || joblistener.getInclude().length() == 0) {
+			TreeItem[] si = new  TreeItem[1];
+			si[0] = tree.getItem(0);
+			tree.setSelection(si);
+			return;
+		}
+		
+		for (int i = 0; i < tree.getItemCount(); i++) {
+			TreeItem item = tree.getItem(i);			
+			if(item.getText(2) != null && item.getText(2).endsWith(joblistener.getInclude())) {
+				TreeItem[] si = new  TreeItem[1];
+				si[0] = item;
+				tree.setSelection(si);
+			}
+		}
+	}
+	
+	/**
+	 * Der Wizzard wurde für ein bestehende Job gestartet. 
+	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
+	 * @param backUpJob
+	 */
+	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
+		jobBackUp = (Element)backUpJob.clone();	
+		jobForm = jobForm_;
+	}
+	
+	public void setJobForm(JobForm jobForm_){
+		jobForm = jobForm_;
+	}
+	
+	private boolean check() {
+		if(tree.getSelectionCount()== 0) {
+			MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_job_selected"), SWT.ICON_WARNING | SWT.OK );
+			txtJobname.setFocus();
+			return false;
+		}
+		
+		if( assistentType != Editor.JOB) {
+			if(txtJobname.getText() == null || txtJobname.getText().length() == 0) {
+				MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_jobname"), SWT.ICON_WARNING | SWT.OK );
+				txtJobname.setFocus();
+				return false;
+			}						
+			
+			if(txtJobname.getText().concat(".xml").equalsIgnoreCase(new File(txtPath.getText()).getName())) {
+				int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.edit_jobname"), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+				if(cont == SWT.YES) {
+					txtJobname.setFocus();
+					return false;
+				}						
+			}
+		}
+		return true;				
+	}
 }

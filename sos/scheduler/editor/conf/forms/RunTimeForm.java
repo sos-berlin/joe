@@ -90,7 +90,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
 
         final Label functionLabel = new Label(group, SWT.NONE);
         functionLabel.setLayoutData(new GridData());
-        functionLabel.setText("Function");
+        functionLabel.setText("Start Time Function");
 
         tFunction = new Text(group, SWT.BORDER);
         tFunction.addModifyListener(new ModifyListener() {

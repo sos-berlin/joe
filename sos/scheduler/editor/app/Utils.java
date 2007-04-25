@@ -1,12 +1,19 @@
 package sos.scheduler.editor.app;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.Namespace;
+import org.eclipse.swt.widgets.Shell;
 
 public class Utils {
 
@@ -17,6 +24,7 @@ public class Utils {
 
     private static final String BOOLEAN_DEFAULT = null;
 
+    private static Clipboard     _cb;
 
     public static String getIntegerAsString(int i) {
         String s;
@@ -464,5 +472,33 @@ public class Utils {
     	}
     	return retVal;
     }
+
+    public static void showClipboard(String xml, Shell shell) {
+    	Font font = new Font(Display.getDefault(), "Courier New", 8, SWT.NORMAL);
+    	TextDialog dialog = new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL
+    			| SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+    	dialog.setSize(new Point(500, 400));
+    	dialog.setContent(xml);
+    	dialog.setClipBoard(true);
+    	dialog.getStyledText().setFont(font);
+    	dialog.getStyledText().setEditable(true);
+    	
+    	String s = dialog.open();
+    	if (dialog.isClipBoardClick()) {
+    		copyClipboard(s, shell.getDisplay());
+    	}
+    	
+    	if (font != null)
+    		font.dispose();
+    }
     
+    public static void copyClipboard(String content, Display display) {
+
+        if (_cb == null)
+            _cb = new Clipboard(display);
+
+        TextTransfer transfer = TextTransfer.getInstance();
+        _cb.setContents(new Object[] { content }, new Transfer[] { transfer });
+
+    }
 }

@@ -6,7 +6,7 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.app.Options;
 
 public class JobAssistentForm {
-				
+	
 	private SchedulerDom dom = null;
 	private ISchedulerUpdate update = null;
 	
@@ -25,12 +25,12 @@ public class JobAssistentForm {
 				JobAssistentTypeForms typeForms = new JobAssistentTypeForms(dom, update);												
 				typeForms.showTypeForms();
 			}
-									
+			
 		} catch (Exception e){
 			System.out.println("error in JobAssistent.startJobAssistent: " + e.getMessage() );
 		}
-			
-			
+		
+		
 	}
 	
 }

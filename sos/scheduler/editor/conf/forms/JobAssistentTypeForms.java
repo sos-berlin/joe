@@ -9,21 +9,20 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import com.swtdesigner.SWTResourceManager;
-
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
@@ -31,7 +30,9 @@ import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.listeners.JobListener;
 
+import org.jdom.Element;
 
 public class JobAssistentTypeForms {
 	
@@ -56,6 +57,12 @@ public class JobAssistentTypeForms {
 	
 	private Shell            jobTypeShell     = null;
 	
+	private String           jobType          = ""; 
+	
+	private Element          jobBackUp        = null;
+	
+	private int              assistentType    = Editor.JOBS;
+	
 	/**
 	 * Konstruktor 
 	 * @param dom_ - Type SchedulerDom 
@@ -66,10 +73,17 @@ public class JobAssistentTypeForms {
 		update = update_;		
 	}
 	
+	public void showTypeForms(String type, Element job, int assistentType_) {
+		jobType = type;
+		jobBackUp = job;
+		assistentType = assistentType_;
+		showTypeForms();
+	}
+	
 	public void showTypeForms() {
 		try {
 			
-			jobTypeShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+			jobTypeShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);			
 			
 			jobTypeShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 			
@@ -114,12 +128,13 @@ public class JobAssistentTypeForms {
 				{
 					radOrderjob = new Button(jobGroup, SWT.RADIO);					
 					radOrderjob.setLayoutData(new GridData());
+					radOrderjob.setSelection(jobType != null && jobType.length() > 0 && jobType.equalsIgnoreCase("order"));
 					radOrderjob.setText(Messages.getString("assistent.order.orderjob"));
 				}
 				
 				{
-					radStandalonejob = new Button(jobGroup, SWT.RADIO);					
-					radStandalonejob.setSelection(true);
+					radStandalonejob = new Button(jobGroup, SWT.RADIO);
+					radStandalonejob.setSelection(jobType == null || jobType.length() == 0 || jobType.equalsIgnoreCase("standalonejob"));					
 					final GridData gridData = new GridData(GridData.CENTER, GridData.END, false, false);
 					gridData.widthHint = 158;
 					radStandalonejob.setLayoutData(gridData);
@@ -175,11 +190,23 @@ public class JobAssistentTypeForms {
 							} else {
 								isStandaloneJob = true;
 							}							
-							jobTypeShell.dispose();
 							
-							JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(dom, update, Editor.JOBS);
+							
+							if(jobBackUp != null) {
+								int cont = MainWindow.message(jobTypeShell, sos.scheduler.editor.app.Messages.getString("assistent.discard_changes"), SWT.ICON_QUESTION | SWT.YES |SWT.NO |SWT.CANCEL );
+								if(cont == SWT.CANCEL) {
+									return;
+								}else if(cont != SWT.YES) {											
+									JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm( new JobListener(dom, jobBackUp, update) ,null,assistentType);
+									importJobs.showAllImportJobs((Utils.getAttributeValue("order", jobBackUp).equals("yes")?"order":"standalonejob")) ;
+									jobTypeShell.dispose();
+									return;
+								}	
+							} 
+							JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(dom, update, assistentType);
 							importJobs.showAllImportJobs((isStandaloneJob ? "standalonejob" : "order"));
 							
+							jobTypeShell.dispose();
 							
 						}
 					});

@@ -1,12 +1,14 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -34,7 +36,7 @@ import com.swtdesigner.SWTResourceManager;
 public class JobAssistentScriptForms {
 	
 	private SchedulerDom      dom            = null;
-	 
+	
 	private ISchedulerUpdate  update         = null;
 	
 	private ScriptListener    scriptlistener = null;	
@@ -46,6 +48,8 @@ public class JobAssistentScriptForms {
 	private Button            butNext        = null;
 	
 	private Button            butShow        = null;		
+	
+	private Button            butBack        = null; 
 	
 	private Table             tableInclude   = null;
 	
@@ -62,6 +66,13 @@ public class JobAssistentScriptForms {
 	
 	private Combo             jobname        = null;
 	
+	private Element           jobBackUp      = null;  
+	
+	private JobForm           jobForm        = null;
+	
+	/** Hilsvariable für das Schliessen des Dialogs. 
+	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
+	private boolean               closeDialog   = false;  
 	
 	public JobAssistentScriptForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
 		dom = dom_;
@@ -70,10 +81,17 @@ public class JobAssistentScriptForms {
 		scriptlistener = new ScriptListener(dom, job_, Editor.SCRIPT);			
 	}
 	
-		
+	
 	public void showScriptForm() {
 		
 		scriptShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		scriptShell.addShellListener(new ShellAdapter() {
+			public void shellClosed(final ShellEvent e) {
+				if(!closeDialog)
+					close();
+				e.doit = scriptShell.isDisposed();
+			}
+		});
 		scriptShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.marginTop = 5;
@@ -133,27 +151,40 @@ public class JobAssistentScriptForms {
 				lblLanguage.setText("Language");
 			}
 			txtLanguage = new Text(jobGroup, SWT.BORDER);
-			txtLanguage.addModifyListener(new ModifyListener() {
-				public void modifyText(final ModifyEvent e) {
+			txtLanguage.addFocusListener(new FocusAdapter() {
+				public void focusLost(final FocusEvent e) {
 					if(txtLanguage.getEnabled()) {
 						if(txtLanguage.getText() != null && txtLanguage.getText().length() > 0) {
-							//"", "java", "javascript", "perlScript", "VBScript", "shell"			        									
-							//scriptlistener.setLanguage( txtLanguage.getText());		
+							if(!(txtLanguage.getText().equalsIgnoreCase("") || 
+									txtLanguage.getText().equalsIgnoreCase("java") ||
+									txtLanguage.getText().equalsIgnoreCase("javascript") ||
+									txtLanguage.getText().equalsIgnoreCase("perlScript") ||
+									txtLanguage.getText().equalsIgnoreCase("VBScript") ||
+									txtLanguage.getText().equalsIgnoreCase("shell"))) {
+								MainWindow.message(scriptShell, sos.scheduler.editor.app.Messages.getString("assistent.script.unknown_language"), SWT.ICON_WARNING | SWT.OK );
+								txtLanguage.setFocus();
+								return;
+							}
+																					
+							scriptlistener.setLanguage( scriptlistener.languageAsInt(txtLanguage.getText()) );
+							
 						}
 					}
-					
 				}
 			});
+			
 			txtLanguage.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
 			txtLanguage.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			txtLanguage.setEditable(false);
 			txtLanguage.setFocus();
 			
 			String lan = scriptlistener.getLanguage(scriptlistener.getLanguage()); 
-			if(lan != null && lan.trim().length() > 0) {
+			if(lan != null && lan.trim().length() > 0 && scriptlistener.getParent().getChild("description") != null ) {
 				txtLanguage.setText(lan);
 			} else {
+				//txtlanguage ist immer editierbar, wenn eine Sprache angegeben ist bzw. Wizzard ohne Jobbeschreibung gestartet wurde
 				txtLanguage.setEditable(true);
+				txtLanguage.setText(lan);
 			}
 			{
 				lblClass = new Label(jobGroup, SWT.NONE);
@@ -184,7 +215,9 @@ public class JobAssistentScriptForms {
 				txtJavaClass.setText(scriptlistener.getJavaClass());
 			}
 			
-			if(txtJavaClass.getText()!= null && txtJavaClass.getText().length() == 0) {				
+			if(txtJavaClass.getText()!= null && txtJavaClass.getText().length() == 0 
+					&& scriptlistener.getParent().getChild("description") == null && txtLanguage.getText().equals("java")) {
+				//ist immer editierbar, wenn eine Sprache angegeben ist bzw. Wizzard ohne Jobbeschreibung gestartet wurde
 				txtJavaClass.setEditable(true);
 			}
 			{				
@@ -199,32 +232,18 @@ public class JobAssistentScriptForms {
 			}
 			
 			final Text txtResource = new Text(jobGroup, SWT.BORDER);
-			txtResource.addModifyListener(new ModifyListener() {
-				public void modifyText(final ModifyEvent e) {
-					if(txtResource.getEnabled()) {
-						if(txtResource.getText() != null && txtResource.getText().trim().length()>0) {
-							//scriptlistener.setSource(txtResource.getText());
-						}
-					}
-				}
-			});
 			txtResource.setEditable(false);
 			txtResource.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			txtResource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 			if(lblClass != null && lblClass.getText().equals("Java Class")) {
 				if(JobListener.getLibrary() != null && JobListener.getLibrary().length() > 0) {
 					txtResource.setText(JobListener.getLibrary());
-				} else {
-					txtResource.setEditable(true);
-				}
+				} 
 			} else {				
 				if(scriptlistener.getFilename() != null && scriptlistener.getFilename().trim().length()>0)
 					txtResource.setText(scriptlistener.getFilename() );
 			}
-			if(txtResource.getText() != null && txtResource.getText().length() == 0) {
-				txtResource.setEditable(true);
-			}												
-			
+						
 			{
 				final Label lblInclude = new Label(jobGroup, SWT.NONE);
 				lblInclude.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
@@ -238,7 +257,7 @@ public class JobAssistentScriptForms {
 			tableInclude.setLinesVisible(true);
 			tableInclude.setHeaderVisible(true);
 			tableInclude.setEnabled(false);
-						
+			
 			String[] iElem = scriptlistener.getIncludes();
 			for(int i =0; i < iElem.length; i++) {
 				String in = iElem[i];
@@ -277,14 +296,14 @@ public class JobAssistentScriptForms {
 			composite.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false, 2, 1));
 			final GridLayout gridLayout_2 = new GridLayout();
 			gridLayout_2.marginWidth = 0;
-			gridLayout_2.numColumns = 3;
+			gridLayout_2.numColumns = 4;
 			composite.setLayout(gridLayout_2);
 			
 			{
 				butShow = new Button(composite, SWT.NONE);
 				butShow.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(final SelectionEvent e) {					
-						MainWindow.message(scriptShell, Utils.getElementAsString(scriptlistener.getParent()), SWT.OK );
+					public void widgetSelected(final SelectionEvent e) {											
+						Utils.showClipboard(Utils.getElementAsString(scriptlistener.getParent()), scriptShell);
 					}
 				});
 				butShow.setText("Show");
@@ -294,16 +313,19 @@ public class JobAssistentScriptForms {
 				butFinish = new Button(composite, SWT.NONE);
 				butFinish.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
-						if(jobname != null)
-							jobname.setText(Utils.getAttributeValue("name",scriptlistener.getParent()));			
-						JobsListener listener = new JobsListener(dom, update);
-						listener.newImportJob(scriptlistener.getParent(), assistentType);
-						MainWindow.message(scriptShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(scriptlistener.getParent()), SWT.OK );
-						scriptShell.dispose();						
+						doFinish();											
 					}
 				});
 				butFinish.setText("Finish");
 			}
+			
+			butBack = new Button(composite, SWT.NONE);
+			butBack.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					doBack();					
+				}
+			});
+			butBack.setText("Back");
 			{
 				butNext = new Button(composite, SWT.NONE);
 				butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
@@ -314,11 +336,15 @@ public class JobAssistentScriptForms {
 							timeout.showTimeOutForm();	
 							if(jobname != null) 													
 								timeout.setJobname(jobname);
+							if(jobBackUp != null)
+								timeout.setBackUpJob(jobBackUp, jobForm);
 						} else {
 							JobAssistentTimeoutForms timeout = new JobAssistentTimeoutForms(dom, update, scriptlistener.getParent(), assistentType);
 							timeout.showTimeOutForm();
+							if(jobBackUp != null)
+								timeout.setBackUpJob(jobBackUp, jobForm);
 						}
-						
+						closeDialog = true;
 						scriptShell.dispose();
 					}
 				});
@@ -334,19 +360,76 @@ public class JobAssistentScriptForms {
 		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
 		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
 		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
+		butBack.setToolTipText(Messages.getTooltip("butBack"));
 		txtJavaClass.setToolTipText(Messages.getTooltip("assistent.java_class"));
 		txtLanguage.setToolTipText(Messages.getTooltip("assistent.language"));
 		if(tableInclude != null ) tableInclude.setToolTipText(Messages.getTooltip("assistent.script_include"));
 	}
-		
+	
 	private void close() {
 		int cont = MainWindow.message(scriptShell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-		if(cont == SWT.OK)
+		if(cont == SWT.OK) {
+			if(jobBackUp != null)
+				scriptlistener.getParent().setContent(jobBackUp.cloneContent());
 			scriptShell.dispose();
+		}
 	}
 	
 	public void setJobname(Combo jobname) {
 		this.jobname = jobname;
-}
+	}
+	
+	private void doBack() {
+		if(scriptlistener.getParent().getChild("description") == null) {			
+			//Wizzard ohne Jobbeschreibung wurde aufgerufen.
+			JobAssistentExecuteForms execute = new JobAssistentExecuteForms(dom, update, scriptlistener.getParent(), assistentType);
+			execute.showExecuteForm();
+			if(jobname != null) 													
+				execute.setJobname(jobname);
+			if(jobBackUp != null)
+				execute.setBackUpJob(jobBackUp, jobForm);
+		} else {
+			JobAssistentTasksForm tasks = new JobAssistentTasksForm(dom, update,  scriptlistener.getParent(), assistentType);											
+			tasks.showTasksForm();	
+			if(jobname != null) 													
+				tasks.setJobname(jobname);
+			if(jobBackUp != null)
+				tasks.setBackUpJob(jobBackUp, jobForm);
+		}
+		closeDialog = true;
+		scriptShell.dispose();
+	}
+	
+	/**
+	 * Der Wizzard wurde für ein bestehende Job gestartet. 
+	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
+	 * @param backUpJob
+	 */
+	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
+		jobBackUp = (Element)backUpJob.clone();	
+		jobForm = jobForm_;
+	}
+	
+	
+	private void doFinish(){
+		
+		if(jobname != null)
+			jobname.setText(Utils.getAttributeValue("name",scriptlistener.getParent()));
+		
+		if(assistentType == Editor.JOB_WIZZARD) {															
+			jobForm.initForm();	
+			
+		} else {
+			
+			JobsListener listener = new JobsListener(dom, update);
+			listener.newImportJob(scriptlistener.getParent(), assistentType);
+			
+		}
+		
+		MainWindow.message(scriptShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(scriptlistener.getParent()), SWT.OK );
+		
+		closeDialog = true;
+		scriptShell.dispose();	
+	}
 	
 }

@@ -7,8 +7,6 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -40,8 +38,6 @@ public class JobAssistentInfoForms {
 		dom = dom_;
 		update = update_;					
 	}
-
-
 
 	public void showInfoForm() {
 				
