@@ -832,6 +832,7 @@ public class JobAssistentPeriodForms {
 		comboWeekDay.setToolTipText(Messages.getTooltip("assistent.period.new_week_day_period"));
 		comboMonth.setToolTipText(Messages.getTooltip("assistent.period.new_month_day_period"));
 		txtSpeDay.setToolTipText(Messages.getTooltip("assistent.period.new_specific_day_period"));
+		list.setToolTipText(Messages.getTooltip("assistent.period.periods_list"));
 	}
 	
 	private void close() {

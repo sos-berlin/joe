@@ -50,7 +50,7 @@ public class JobAssistentInfoForms {
 		gridLayout.marginBottom = 5;
 		gridLayout.numColumns = 3;
 		shell.setLayout(gridLayout);
-		shell.setSize(619, 408);		
+		shell.setSize(619, 420);		
 		
 		shell.setText("Job Wizard");
 
@@ -67,7 +67,7 @@ public class JobAssistentInfoForms {
 			jobGroup.setText( "Job ");
 			final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false, 3, 1);
 			gridData.widthHint = 581;
-			gridData.heightHint = 320;
+			gridData.heightHint = 329;
 			jobGroup.setLayoutData(gridData);
 			final GridLayout gridLayout_1 = new GridLayout();
 			gridLayout_1.verticalSpacing = 10;
@@ -85,7 +85,7 @@ public class JobAssistentInfoForms {
 			txtInfoGlobal.setEditable(false);
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 			gridData_1.widthHint = 491;
-			gridData_1.heightHint = 256;
+			gridData_1.heightHint = 271;
 			txtInfoGlobal.setLayoutData(gridData_1);
 			txtInfoGlobal.setText(Messages.getString("assistent.start.info"));
 

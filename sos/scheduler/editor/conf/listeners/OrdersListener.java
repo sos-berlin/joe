@@ -1,5 +1,6 @@
 package sos.scheduler.editor.conf.listeners;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -123,5 +124,24 @@ public class OrdersListener {
         }
         return false;
     }
+
+
+    /** Lifert alle Order Id's */
+	public String[] getOrderIds() {
+		String[] listOfIds = null;
+		if (_orders != null) {
+			listOfIds = new String[_orders.size()];
+            //for (Iterator it = _orders.iterator(); it.hasNext();) {
+			for(int i = 0; i < _orders.size(); i++) {
+                Object o = _orders.get(i);
+                if (o instanceof Element) {
+                    Element e = (Element) o;
+                    String id = Utils.getAttributeValue("id", e);
+                    listOfIds[i] = id;
+                }
+            }
+        }
+		return listOfIds;
+	}
 
 }

@@ -232,7 +232,7 @@ public class JobAssistentImportJobParamsForm {
 			final Text txtParameter = new Text(textParameterGroup, SWT.WRAP);
 			txtParameter.setEditable(false);
 			final GridData gridData_7 = new GridData(GridData.FILL, GridData.FILL, true, false, 6, 1);
-			gridData_7.heightHint = 122;
+			gridData_7.heightHint = 130;
 			gridData_7.widthHint = 414;
 			txtParameter.setLayoutData(gridData_7);
 			txtParameter.setText(Messages.getString("assistent.parameters"));
@@ -644,8 +644,9 @@ public class JobAssistentImportJobParamsForm {
 		if(butPut != null) butPut.setToolTipText(Messages.getTooltip("jobparameter.put"));
 		if(butPutAll != null) butPutAll.setToolTipText(Messages.getTooltip("jobparameter.put_all"));
 		if(butRemove != null) butRemove.setToolTipText(Messages.getTooltip("jobparameter.remove"));
-		if(butRemoveAll != null) butRemoveAll.setToolTipText(Messages.getTooltip("jobparameter.remove_all"));
+		if(butRemoveAll != null) butRemoveAll.setToolTipText(Messages.getTooltip("jobparameter.remove_all"));		
 		butBack.setToolTipText(Messages.getTooltip("butBack"));		
+		txtDescription.setToolTipText(Messages.getTooltip("jobparameter.param_description"));
 	}
 	
 	public ArrayList getParameters() {

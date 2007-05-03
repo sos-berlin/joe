@@ -119,7 +119,7 @@ public class JobAssistentMonitoringDirectoryForms {
 			txtMonitoringDirectory = new Text(jobGroup, SWT.MULTI | SWT.WRAP);
 			final GridData gridData = new GridData(GridData.BEGINNING, GridData.FILL, false, false, 3, 1);
 			gridData.horizontalIndent = -3;
-			gridData.heightHint = 103;
+			gridData.heightHint = 117;
 			gridData.widthHint = 466;
 			txtMonitoringDirectory.setLayoutData(gridData);
 			txtMonitoringDirectory.setEditable(false);

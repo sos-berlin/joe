@@ -55,6 +55,12 @@ public class JobAssistentRunOptionsForms {
 	
 	private JobForm           jobForm         = null;
 	
+	private Button            butPeriod       = null; 
+	
+	private Button            butRunTime      = null;
+	
+	private Button            butDirectoryMonitoring = null; 
+	
 	/** Hilsvariable für das Schliessen des Dialogs. 
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean           closeDialog     = false;         
@@ -127,7 +133,7 @@ public class JobAssistentRunOptionsForms {
 		gridLayout_4.numColumns = 3;
 		composite.setLayout(gridLayout_4);
 		
-		final Button butPeriod = new Button(composite, SWT.NONE);
+		butPeriod = new Button(composite, SWT.NONE);
 		butPeriod.setFocus();
 		butPeriod.addSelectionListener(new SelectionAdapter() {			
 			public void widgetSelected(final SelectionEvent e) {
@@ -142,7 +148,7 @@ public class JobAssistentRunOptionsForms {
 		butPeriod.setLayoutData(gridData_4);
 		butPeriod.setText("Periods");
 		
-		final Button butRunTime = new Button(composite, SWT.NONE);
+		butRunTime = new Button(composite, SWT.NONE);
 		butRunTime.setEnabled(Utils.getAttributeValue("order", job).equals("no"));
 		butRunTime.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -157,7 +163,7 @@ public class JobAssistentRunOptionsForms {
 		butRunTime.setLayoutData(gridData_7);
 		butRunTime.setText("Single Starts");
 		
-		final Button butDirectoryMonitoring = new Button(composite, SWT.NONE);
+		butDirectoryMonitoring = new Button(composite, SWT.NONE);
 		butDirectoryMonitoring.setEnabled(Utils.getAttributeValue("order", job).equals("no"));
 		butDirectoryMonitoring.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -269,6 +275,9 @@ public class JobAssistentRunOptionsForms {
 		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
 		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
 		butBack.setToolTipText(Messages.getTooltip("butBack"));
+		butPeriod.setToolTipText(Messages.getTooltip("assistent.run_options.periods"));
+		butRunTime.setToolTipText(Messages.getTooltip("assistent.run_options.single_starts"));
+		butDirectoryMonitoring.setToolTipText(Messages.getTooltip("assistent.run_options.directory_monitoring"));
 	}
 	
 	private void close() {

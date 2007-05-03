@@ -121,6 +121,16 @@ public class JobChainsListener {
             _config.removeChild("job_chains");
             _chains = null;
         }
+        //        
+        _chainNames = new String[chains.size()];
+        int i = 0;
+        Iterator it = chains.iterator();
+        while (it.hasNext()) {
+            Element chain = (Element) it.next();
+            String name = Utils.getAttributeValue("name", chain);            
+            _chainNames[i++] = name;
+        }
+        //
         _dom.setChanged(true);
         _chain = null;
     }
