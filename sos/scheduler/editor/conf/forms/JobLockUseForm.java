@@ -108,7 +108,8 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
       label11.setText("Exclusive");
 
       bExclusive = new Button(group1, SWT.CHECK);
-      bExclusive.setEnabled(false);
+      bExclusive.setSelection(true);
+      bExclusive.setEnabled(true);
       bExclusive.addSelectionListener(new SelectionAdapter() {
       	public void widgetSelected(final SelectionEvent e) {
       	   bApplyLockUse.setEnabled(true);
@@ -207,7 +208,7 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
             tLockUse.setText(listener.getLockUse());
         } else {
             tLockUse.setText("");
-            bExclusive.setSelection(false);
+            bExclusive.setSelection(true);
         }
         bApplyLockUse.setEnabled(false);
     }

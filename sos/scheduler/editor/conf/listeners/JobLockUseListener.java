@@ -74,7 +74,11 @@ public class JobLockUseListener {
 
 
     public boolean getExclusive() {
-        return (Utils.getAttributeValue("exclusive", _lockUse).equals("yes"));
+   	if (Utils.getAttributeValue("exclusive", _lockUse) == null || Utils.getAttributeValue("exclusive", _lockUse).length()==0) {
+   		return true;
+   	}else {
+   		return (Utils.getAttributeValue("exclusive", _lockUse).equals("yes"));
+   		}
     }
 
     public boolean isValidLock(String lock) {
