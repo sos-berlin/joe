@@ -110,6 +110,39 @@ public class MainWindow  {
 			}
 		});
 		MenuItem separator = new MenuItem(mFile, SWT.SEPARATOR);
+		
+		//mo
+		MenuItem pNewDetails = new MenuItem(mFile, SWT.PUSH);
+		pNewDetails.setText("New Job Chain Details\tCtrl+F");
+		pNewDetails.setAccelerator(SWT.CTRL | 'F');
+		pNewDetails.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				
+				if (container.newDetails() != null)
+					setSaveStatus();
+			}
+			
+			
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		
+		MenuItem pOpenDetails = new MenuItem(mFile, SWT.PUSH);
+		pOpenDetails.setText("Open Job Chain Details\tCtrl+E");
+		pOpenDetails.setEnabled(true);
+		pOpenDetails.setAccelerator(SWT.CTRL | 'E');
+		pOpenDetails.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (container.openDetails() != null)
+					setSaveStatus();
+			}
+			
+			
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		MenuItem separatorDetails = new MenuItem(mFile, SWT.SEPARATOR);
+		//ende mo
 		pOpenFile.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.openScheduler() != null)
@@ -153,6 +186,7 @@ public class MainWindow  {
 			}
 		});
 		MenuItem separator1 = new MenuItem(mFile, SWT.SEPARATOR);
+		
 		submenuItem2.setMenu(mFile);
 		MenuItem pExit = new MenuItem(mFile, SWT.PUSH);
 		pExit.setText("Exit\tCtrl+E");
@@ -254,8 +288,8 @@ public class MainWindow  {
 			saved = !container.getCurrentEditor().hasChanges();
 		
 		MenuItem[] items = mFile.getItems();
-		items[6].setEnabled(!saved);
-		items[7].setEnabled(true);
+		items[9].setEnabled(!saved);
+		items[10].setEnabled(true);
 		
 		return saved;
 	}

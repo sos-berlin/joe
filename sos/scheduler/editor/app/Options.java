@@ -363,4 +363,10 @@ public class Options {
 		_showWizardInfo = wizardInfo;
 		_properties.setProperty("editor.job.wizard.info.show", wizardInfo ? "true" : "false");
 	}
+	
+    public static String getDetailXSLT() {
+        return _properties.getProperty("detail.editor.xslt");
+    }
+    
+
 }

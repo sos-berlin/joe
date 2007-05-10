@@ -32,8 +32,8 @@ public class IOUtils {
         else
             return "";
     }
-
-
+    
+    
     public static boolean openFile(String filename, Collection filenames, DomParser dom) {
         try {
             // open file dialog

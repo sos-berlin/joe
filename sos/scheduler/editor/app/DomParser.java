@@ -108,7 +108,7 @@ public abstract class DomParser {
     }
 
 
-    protected void setDoc(Document doc) {
+    public void setDoc(Document doc) {
         _doc = doc;
     }
 

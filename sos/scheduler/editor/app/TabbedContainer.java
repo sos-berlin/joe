@@ -15,12 +15,26 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
+import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 
 public class TabbedContainer implements IContainer {
 	
+	
+	private static final String NEW_SCHEDULER_TITLE     = "Unknown";
+
+    private static final String NEW_DOCUMENTATION_TITLE = "Unknown";
+    
+    private static final String NEW_DETAIL_TITLE        = "Unknown";
+
+    private CTabFolder          folder                  = null;
+
+    private MainWindow          window                  = null;
+
+    private ArrayList           filelist                = new ArrayList();
+    
+    
 	class TabData{
 		protected String title="";
 		protected String caption="";
@@ -30,17 +44,7 @@ public class TabbedContainer implements IContainer {
 			this.title = title;
 			this.caption = caption;
 		}
-	}
-	
-    private static final String NEW_SCHEDULER_TITLE     = "Unknown";
-
-    private static final String NEW_DOCUMENTATION_TITLE = "Unknown";
-
-    private CTabFolder          folder                  = null;
-
-    private MainWindow          window                  = null;
-
-    private ArrayList           filelist                = new ArrayList();
+	}	    
 
 
     public TabbedContainer(MainWindow window, Composite parent) {
@@ -90,7 +94,28 @@ public class TabbedContainer implements IContainer {
         return scheduler;
     }
 
+    public JobChainConfigurationForm newDetails() {
+    	JobChainConfigurationForm detailForm = new JobChainConfigurationForm(this, folder, SWT.NONE);
+    	detailForm.openBlank();
+        CTabItem tab = newItem(detailForm, NEW_DETAIL_TITLE);
+        tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(
+                "/sos/scheduler/editor/editor-small.png")));
+        return detailForm;
+    }
 
+    
+    public JobChainConfigurationForm openDetails() {
+    	JobChainConfigurationForm detailForm = new JobChainConfigurationForm(this, folder, SWT.NONE);
+    	
+    	if(detailForm.open(filelist)) {
+        CTabItem tab = newItem(detailForm, detailForm.getFilename());
+        tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(
+                "/sos/scheduler/editor/editor-small.png")));
+        return detailForm;
+    	} else 
+    		return null;
+    }
+    
     public SchedulerForm openScheduler() {
         SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE);
         if (scheduler.open(filelist)) {

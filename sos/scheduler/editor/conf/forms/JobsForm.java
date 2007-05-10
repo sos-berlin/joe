@@ -38,8 +38,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 	private Button           bRemoveJob                  = null;
 	
 	private Label            label                       = null;
-	
-	
+		
 	private Composite        parent                      = null;
 	
 	private int              style                       = 0;

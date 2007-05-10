@@ -1,9 +1,3 @@
-/*
- * Created on 26.04.2007
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
- */
 package sos.scheduler.editor.conf.listeners;
 
 import java.io.File;
@@ -15,12 +9,26 @@ import org.eclipse.swt.widgets.Table;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+
+import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.DetailDom;
+
 import org.eclipse.swt.widgets.TableItem;
 import java.io.FileWriter;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.transform.JDOMSource;
+
+/**
+ * DetailsListener.java
+ * 
+ * @author mo
+ *
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Generation - Code and Comments
+ */
 
 public class DetailsListener {
 	
@@ -43,12 +51,17 @@ public class DetailsListener {
 	private String        orderId           = null;
 	
 	
+	/** Wer hat ihn aufgerufen? */
+	private int           type              = -1;
+	
+	
 	/** Falls Konfigurationsdatei neu generiert wird */
 	private String        encoding          = "ISO-8859-1";
 	
 	/** Falls Konfigurationsdatei neu generiert wird */
-	private String        stylesheet        = "../scheduler_configuration_documentation.xsl";
+	//private String        stylesheet        = "../scheduler_configuration_documentation.xsl";
 	
+	private DetailDom     dom               = null;
 	
 	public DetailsListener(String jobChainname_) {
 		jobChainname = jobChainname_;
@@ -63,10 +76,14 @@ public class DetailsListener {
 		
 	}
 	
-	public DetailsListener(String jobChainname_, String state_, String orderId_) {
+	public DetailsListener(String jobChainname_, String state_, String orderId_, int type_, DetailDom  dom_) {
+		dom = dom_;
+		if(dom != null)
+			doc = dom.getDoc();
 		jobChainname = jobChainname_;
 		state = state_;
 		orderId = orderId_;
+		type = type_;
 		init();
 		
 	}
@@ -78,9 +95,7 @@ public class DetailsListener {
 		
 		parseDocuments();
 		
-		
 	}
-	
 	
 	public void parseDocuments() {
 		
@@ -88,7 +103,7 @@ public class DetailsListener {
 		String xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome() ;
 		xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? "config/" : xmlPaths.concat("/config/"));
 		String _currOrderId = orderId != null && orderId.length()>0? "_" + orderId : "";
-		//xmlFilename = xmlPaths + "scheduler_config_jobchain_" +jobChainname+ _currOrderId + ".xml";
+		
 		xmlFilename = xmlPaths + "scheduler_" +jobChainname+ _currOrderId + ".config.xml";
 		
 		Element root        = null;			
@@ -98,13 +113,24 @@ public class DetailsListener {
 		
 		try {
 			SAXBuilder builder = new SAXBuilder();
-			
-			if(!new File(xmlFilename).exists()) {
-				String xml = createConfigurationFile();				
-				doc = builder.build(new StringReader(xml));
+						
+			if(doc == null) {
+				File f = new File(xmlFilename);
+				if(!f.exists()) {					
+					String xml = createConfigurationFile();
+					
+					doc = builder.build(new StringReader(xml));
+					if(type == Editor.DETAILS) {
+						f.deleteOnExit();					
+						dom.setDoc(doc);
+					}
+				} else {				
+					doc = builder.build( new File( xmlFilename ) );
+					if(type == Editor.DETAILS) {
+						dom.setDoc(doc);
+					}
+				}
 				
-			} else {				
-				doc = builder.build( new File( xmlFilename ) );
 			}
 			
 			root = doc.getRootElement();
@@ -259,7 +285,7 @@ public class DetailsListener {
 			}
 		}
 		return "";
-
+		
 	}
 	
 	public void setParam( String name, String value, String note, String language){
@@ -310,7 +336,7 @@ public class DetailsListener {
 				
 				Element pnde = (Element)params.get(i);
 				if(pnde.getName().equals("note")) {
-						params.remove(i);//note de
+					params.remove(i);//note de
 				} else {
 					break;//das nächste Element ist param, daher abbrechen-> dh. es ex. kein engl. Note
 				}
@@ -341,7 +367,7 @@ public class DetailsListener {
 		String xml = "<?xml version=\"1.0\" encoding=\""+ encoding + "\"?> ";
 		
 		try {
-			xml = xml + "<?xml-stylesheet type=\"text/xsl\" href=\""+ stylesheet+ "\"?> "+ 
+			xml = xml + "<?xml-stylesheet type=\"text/xsl\" href=\""+ Options.getDetailXSLT() + "\"?> "+ 
 			"<settings>" + 		  
 			"  <job_chain name=\""+jobChainname+"\"> " + 
 			"    <note language=\"de\"/> " + 
@@ -397,10 +423,84 @@ public class DetailsListener {
 		}
 		return params_;
 	}
-
+	
 	public String getConfigurationFilename() {
 		return xmlFilename;
 	}
-
+	
+	public void setJobChainname(String jobChainname) {
+		this.jobChainname = jobChainname;
+		if(application != null)
+			Utils.setAttribute("name", jobChainname, application);
+	}
+	
+	public Document getDoc() {
+		return doc;
+	}
+	
+	public void setDoc(Document doc) {
+		this.doc = doc;
+	}	
+	
+	public void setType(int type_) {
+		type = type_;
+	}
+	
+	public void updateState(String oldState, String newState){
+		Element order = null;
+		
+		this.state = state;
+		if(application != null) {
+			order =   application.getChild("order");			
+		}
+		if(order != null) {
+			List pList = order.getChildren("process");
+			for(int i = 0; i < pList.size(); i++) {
+				Element process = (Element)pList.get(i);
+				if(Utils.getAttributeValue("state", process).equalsIgnoreCase(oldState)) {
+					Utils.setAttribute("state", newState, process);		
+					state = newState;
+				}
+				
+			}
+		} 				
+	}
+	
+	public void deleteState(String state){
+		Element order = null;		
+		
+		if(application != null) {
+			order =   application.getChild("order");			
+		}
+		if(order != null) {
+			List pList = order.getChildren("process");
+			for(int i = 0; i < pList.size(); i++) {
+				Element process = (Element)pList.get(i);
+				if(Utils.getAttributeValue("state", process).equalsIgnoreCase(state)) {		
+					pList.remove(i);					
+				}
+				
+			}
+		} 				
+	}
+	
+	public boolean isValidState(String state) {
+		Element order = null;		
+		
+		if(application != null) {
+			order =   application.getChild("order");			
+		}
+		if(order != null) {
+			List pList = order.getChildren("process");
+			for(int i = 0; i < pList.size(); i++) {
+				Element process = (Element)pList.get(i);
+				if(Utils.getAttributeValue("state", process).equalsIgnoreCase(state)) {		
+					return false;
+				}
+				
+			}
+		} 		
+		return true;
+	}
 	
 }

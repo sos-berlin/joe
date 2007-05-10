@@ -7,26 +7,34 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.ShellAdapter;
-import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Text;
-import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.conf.listeners.DetailsListener;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
+import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.conf.listeners.DetailsListener;
+import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.conf.DetailDom;
+import sos.scheduler.editor.conf.IDetailUpdate;
+import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
 
-public class DetailForm {
+
+public class DetailForm extends Composite implements IUpdateLanguage {
 	
 	private String           jobChainname      = "";
 	
@@ -54,8 +62,6 @@ public class DetailForm {
 	
 	private Text             txtParamNote      = null; 
 	
-	private Shell            shell             = null; 
-	
 	private String[]         listOfOrderIds    = null;
 	
 	private Combo            comboOrderId      = null; 
@@ -74,32 +80,118 @@ public class DetailForm {
 	
 	private Label            statusBar         = null;
 	
+	private Group            gDetail           = null;
+	
+	/** wer hat ihn aufgerufen*/
+	private int              type              = -1;
+	
+	private Label            orderIdLabel      = null; 
+	
+	private Text             txtJobChainname   = null;
+	
+	private Label            lblChainname      = null;
+	
+	private Button           butNewState       = null;
+	
+	private Tree             tree              = null;
+	
+	private Label            lblState          = null; 
+	
+	private Text             txtState          = null; 
+	
+	private Composite        parent            = null;
+	
+	private JobChainConfigurationListener confListener = null;
+	
+	private DetailDom        dom              = null;
+	
+	private IDetailUpdate    gui              = null;
+	
+	private Button           butRemoveState   = null;
 	
 	
-	public DetailForm(String jobChainname_, String[] listOfOrderIds_) {
-		jobChainname = jobChainname_;
-		listOfOrderIds = listOfOrderIds_;		
+	
+	public DetailForm(Composite parent_, int style, int type_) {
+		
+		super(parent_, style);
+		type = type_; 
+		initialize();
+		setToolTipText();		
+		parent = parent_;
+		
 	}
 	
-	public DetailForm(String jobChainname_, String state_, String[] listOfOrderIds_) {
+	public DetailForm(Composite parent_, int style, int type_,DetailDom  dom_,
+			IDetailUpdate gui_) {		
+		super(parent_, style);
+		dom = dom_;
+		gui = gui_;		
+		type = type_; 
+		initialize();
+		setToolTipText();		
+		parent = parent_;
+		
+	}
+	public DetailForm(Composite parent_, 
+			int style, 
+			String jobChainname_, 
+			String state_, 
+			String[] listOfOrderIds_, 
+			int type_, 
+			DetailDom  dom_,
+			IDetailUpdate gui_) {		
+		super(parent_, style);
+		dom = dom_;
+		gui = gui_;
+		parent = parent_;
+		type = type_;		
 		jobChainname = jobChainname_;
 		state = state_;
 		listOfOrderIds = listOfOrderIds_;
+		initialize();
+		setToolTipText();
 	}
 	
-	public void showDetails() {
+	private void initialize() {
+		this.setLayout(new FillLayout());
 		
-		final GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2;
-		shell= new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER );
-		
-		shell.setSize(531, 613);
-		shell.addShellListener(new ShellAdapter() {
-			public void shellClosed(final ShellEvent e) {
-				
-			}
-		});
-		shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
+		//setSize(new org.eclipse.swt.graphics.Point(452, 219));
+		/*GridData gridData12 = new GridData(42, SWT.DEFAULT);
+		GridData gridData111 = new org.eclipse.swt.layout.GridData();
+		gridData111.widthHint = 24;
+		GridData gridData10 = new org.eclipse.swt.layout.GridData();
+		gridData10.widthHint = 24;
+		GridData gridData9 = new GridData(42, SWT.DEFAULT);
+		GridData gridData8 = new org.eclipse.swt.layout.GridData();
+		gridData8.widthHint = 24;
+		GridData gridData7 = new org.eclipse.swt.layout.GridData();
+		gridData7.widthHint = 24;
+		GridData gridData6 = new GridData(42, SWT.DEFAULT);
+		GridData gridData5 = new org.eclipse.swt.layout.GridData();
+		gridData5.widthHint = 24;
+		GridData gridData41 = new org.eclipse.swt.layout.GridData();
+		gridData41.widthHint = 24;
+		GridData gridData3 = new GridData(42, SWT.DEFAULT);
+		GridData gridData21 = new GridData(24, SWT.DEFAULT);
+		GridData gridData11 = new org.eclipse.swt.layout.GridData();
+		gridData11.widthHint = 24;
+		GridData gridData4 = new GridData();
+		gridData4.horizontalSpan = 1;
+		GridData gridData2 = new GridData();
+		gridData2.horizontalSpan = 1;
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 7;
+		*/
+		/*gDetail = new Group(this, SWT.NONE);
+		gDetail.setEnabled(false);
+		gDetail.setText("Period");
+		gDetail.setLayout(gridLayout);*/
+		createGroup();   
+		getShell().layout();
+		getShell().open();
+	}
+	
+	private void createGroup() {
 		final GridLayout gridLayout_3 = new GridLayout();
 		gridLayout_3.verticalSpacing = 10;
 		gridLayout_3.marginWidth = 10;
@@ -109,24 +201,78 @@ public class DetailForm {
 		gridLayout_3.marginHeight = 10;
 		gridLayout_3.marginBottom = 10;
 		gridLayout_3.numColumns = 3;
-		shell.setLayout(gridLayout_3);
 		
-		shell.setText("Details for JobChain: " + jobChainname + (state != null && state.length()> 0 ? " State: " + state: ""));
-		
-		final Composite composite = new Composite(shell, SWT.NONE);
+		final Composite composite = new Composite(this, SWT.NONE);
+		composite.setLayout(new FillLayout());
 		final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);
 		gridData_6.heightHint = 31;
 		composite.setLayoutData(gridData_6);
-		final GridLayout gridLayout_4 = new GridLayout();
-		gridLayout_4.marginWidth = 0;
-		gridLayout_4.numColumns = 5;
-		composite.setLayout(gridLayout_4);
+
+		final Group group = new Group(composite, SWT.NONE);
+		final GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 5;
+		group.setLayout(gridLayout);
+		if(jobChainname != null)
+			group.setText(jobChainname);
+
+		lblChainname = new Label(group, SWT.NONE);
+		lblChainname.setLayoutData(new GridData());
+		lblChainname.setText("Job Chain Name:");
+
+		txtJobChainname = new Text(group, SWT.BORDER);
+		txtJobChainname.setText(jobChainname!=null?jobChainname:"");
+		txtJobChainname.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {				
+				//if(txtJobChainname.getText() != null && txtJobChainname.getText().length() > 0)
+				boolean fillMain = false;//hilfsvariable
+				//test
+				if(gui != null ) //&& !detailListener.getNote(comboLanguage.getText()).equalsIgnoreCase(txtJobChainname.getText()))
+					gui.updateJobChainname(txtJobChainname.getText());
+				//test
+				if(jobChainname == null || jobChainname.length() == 0) {
+					fillMain = true;				
+				} 
+				jobChainname = txtJobChainname.getText();
+				if(jobChainname != null && jobChainname.length()>0) {
+					//txtState.setEnabled(true);
+					butNewState.setEnabled(true);
+					setEnabled_(true);
+					
+				} 
+				
+				group.setText(txtJobChainname.getText());				
+				if(tree != null && tree.getSelectionCount() > 0) {					
+					TreeItem item = tree.getSelection()[0];					
+					if(item.getText(0).startsWith("Job Chain:"))
+						item.setText("Job Chain: " + txtJobChainname.getText());
+				}
+				
+				if(fillMain){
+					//confListener.treeFillMain(tree, parent, jobChainname);
+					confListener.setJobChainname(jobChainname);
+				} else {					
+					confListener.setJobChainname(jobChainname);
+				}
+			
+				if(detailListener != null) {
+					detailListener.setJobChainname(txtJobChainname.getText());
+				}
+			}
+		});
+		final GridData gridData_12 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+		gridData_12.widthHint = 105;
+		txtJobChainname.setLayoutData(gridData_12);
+		new Label(group, SWT.NONE);
+		new Label(group, SWT.NONE);
+		new Label(group, SWT.NONE);
 		
-		final Label lnagugaeLabel = new Label(composite, SWT.NONE);
+		final Label lnagugaeLabel = new Label(group, SWT.NONE);
+		lnagugaeLabel.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		lnagugaeLabel.setText("Language: ");
 		
-		comboLanguage = new Combo(composite, SWT.NONE);
+		comboLanguage = new Combo(group, SWT.NONE);
 		comboLanguage.setItems(new String[] {"de", "en"});
+		comboLanguage.setLayoutData(new GridData());
 		comboLanguage.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				
@@ -136,22 +282,29 @@ public class DetailForm {
 					txtParamNote.setText(detailListener.getParamNote(item.getText(0), comboLanguage.getText()));				
 				} else if (txtName.getText() != null && txtName.getText().length() > 0) {
 					txtParamNote.setText(detailListener.getParamNote(txtName.getText(), comboLanguage.getText()));
+				} else if(txtParamNote.getText() != null && txtParamNote.getText().length()>0) {
+					txtParamNote.setText("");
 				}
+				isEditable=false;
+				isEditableParam = false;
+				butApply.setEnabled(isEditable);
+				butApplyParam.setEnabled(isEditableParam);
+				butRemove.setEnabled(false);
 				
 			}
 		});
 		comboLanguage.select(0);
 		
-		final Label orderIdLabel = new Label(composite, SWT.NONE);
+		orderIdLabel = new Label(group, SWT.NONE);
 		orderIdLabel.setAlignment(SWT.RIGHT);
 		final GridData gridData_1 = new GridData(GridData.END, GridData.CENTER, false, false);
-		gridData_1.widthHint = 128;
+		gridData_1.widthHint = 50;
 		orderIdLabel.setLayoutData(gridData_1);
 		orderIdLabel.setText("Order Id:");
 		
-		comboOrderId = new Combo(composite, SWT.NONE);
-		final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		gridData_7.widthHint = 175;
+		comboOrderId = new Combo(group, SWT.NONE);
+		final GridData gridData_7 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+		gridData_7.widthHint = 95;
 		comboOrderId.setLayoutData(gridData_7);
 		
 		if(listOfOrderIds != null)
@@ -163,28 +316,111 @@ public class DetailForm {
 				}
 			}
 		});
+		comboOrderId.setFocus();
 		
-		butOpen = new Button(composite, SWT.NONE);
+		butOpen = new Button(group, SWT.NONE);
+		butOpen.setVisible(true);
 		butOpen.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				open();
 				
 			}
 		});
-		final GridData gridData_10 = new GridData(46, SWT.DEFAULT);
+		final GridData gridData_10 = new GridData(GridData.END, GridData.CENTER, false, false);
+		gridData_10.widthHint = 62;
 		gridData_10.minimumWidth = 60;
 		butOpen.setLayoutData(gridData_10);
 		butOpen.setText("Open");
+
+		lblState = new Label(group, SWT.NONE);
+		lblState.setLayoutData(new GridData(27, SWT.DEFAULT));
+		lblState.setText("State");
+
+		txtState = new Text(group, SWT.BORDER);
+		if( state != null ) {
+			txtState.setText(state);
+		}
+		txtState.setEnabled(false);
+		txtState.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				e.doit = isState();
+			}
+		});
+		if(tree != null) {
+		TreeItem item = tree.getSelection()[0];
+		if(item.getText(0).startsWith("State: "))
+			txtState.setEnabled(true);
+		}
+		txtState.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				boolean valid = detailListener.isValidState(txtState.getText());
+                if (!valid)
+                	txtState.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+                else {
+                	txtState.setBackground(null);
+				if(tree != null && tree.getSelectionCount() > 0) {					
+					TreeItem item = tree.getSelection()[0];
+					if(item.getText(0).startsWith("State: "))
+						item.setText("State: " + txtState.getText());
+					
+					if(gui!=null)
+						gui.updateState(txtState.getText());
+					
+					state = txtState.getText();
+					detailListener.updateState(item.getData() != null ? item.getData().toString(): "", txtState.getText());
+					item.setData(state);					
+				}
+			}
+			}
+		});
+		txtState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		new Label(group, SWT.NONE);
+
+		butRemoveState = new Button(group, SWT.NONE);
+		butRemoveState.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {				
+				deleteState();
+			}
+		});
+		butRemoveState.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+		butRemoveState.setText("Remove State");
+
+		butNewState = new Button(group, SWT.NONE);
+		butNewState.setEnabled(jobChainname != null && jobChainname.length() > 0? true : false);
 		
-		jobChainGroup = new Group(shell, SWT.NONE);
+		butNewState.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				if(tree != null) {					
+					TreeItem item = new TreeItem(tree.getTopItem(), SWT.NONE);	
+					state = String.valueOf(tree.getTopItem().getItemCount());
+		        	item.setText("State: " + state);
+		        	item.setExpanded(true);
+		        	item.setData(state);
+		        	tree.setSelection(new TreeItem[] {item});
+		        	txtState.setText(state);
+		        	txtState.setEnabled(true);
+		        	txtState.setFocus();
+		        	
+		        	if(gui!=null)
+		        		gui.updateState(txtState.getText());		        	
+		        	confListener.treeSelection(tree, parent);
+		        	
+				}
+				
+			}
+		});
+		butNewState.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+		butNewState.setText("New State");
+		
+		jobChainGroup = new Group(group, SWT.NONE);
 		jobChainGroup.setEnabled(false);
 		jobChainGroup.setText("Note");
 		jobChainGroup.setText("Note");
 		final GridLayout gridLayout_1 = new GridLayout();
 		gridLayout_1.numColumns = 2;
 		jobChainGroup.setLayout(gridLayout_1);
-		final GridData gridData = new GridData(GridData.FILL, GridData.END, false, false, 3, 1);
-		gridData.heightHint = 176;
+		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, false, false, 5, 1);
+		gridData.heightHint = 159;
 		gridData.widthHint = 471;
 		gridData.horizontalIndent = -1;
 		jobChainGroup.setLayoutData(gridData);
@@ -193,6 +429,9 @@ public class DetailForm {
 		txtJobchainNote.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if(detailListener != null) {
+					isEditable=true;
+					if(gui!=null ) //&& txtJobchainNote.getText().length()) // && !detailListener.getNote(comboLanguage.getText()).equalsIgnoreCase(txtJobchainNote.getText()))
+						gui.updateNote();
 					detailListener.setNote(txtJobchainNote.getText(), comboLanguage.getText());
 					butApply.setEnabled(isEditable);
 				}
@@ -200,14 +439,14 @@ public class DetailForm {
 		});
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 2);
 		gridData_2.widthHint = 405;
-		gridData_2.heightHint = 144;
+		gridData_2.heightHint = 127;
 		txtJobchainNote.setLayoutData(gridData_2);
 		
 		
-		parameterGroup = new Group(shell, SWT.NONE);
+		parameterGroup = new Group(group, SWT.NONE);
 		parameterGroup.setEnabled(false);
 		parameterGroup.setText("Detail Parameter");
-		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, false, false, 3, 1);
+		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, false, false, 5, 1);
 		gridData_3.heightHint = 239;
 		parameterGroup.setLayoutData(gridData_3);
 		final GridLayout gridLayout_2 = new GridLayout();
@@ -302,11 +541,11 @@ public class DetailForm {
 		
 		final TableColumn newColumnTableColumn = new TableColumn(tableParams, SWT.NONE);
 		newColumnTableColumn.setWidth(181);
-		newColumnTableColumn.setText("name");
+		newColumnTableColumn.setText("Name");
 		
 		final TableColumn newColumnTableColumn_1 = new TableColumn(tableParams, SWT.NONE);
 		newColumnTableColumn_1.setWidth(242);
-		newColumnTableColumn_1.setText("value");
+		newColumnTableColumn_1.setText("Value");
 		
 		butRemove = new Button(parameterGroup, SWT.NONE);
 		butRemove.addSelectionListener(new SelectionAdapter() {
@@ -334,27 +573,28 @@ public class DetailForm {
 			public void modifyText(final ModifyEvent e) {
 				if(detailListener == null)
 					return;
-				
+							
 				//Wert auf leer zurücksetzen
 				if(txtParamNote.getText()!= null && txtParamNote.getText().length()==0)
 					return;
-				
+								
 				if(txtName.getText() != null && txtName.getText().length() == 0) {
-					MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("tooltip.detail.param.missing_param_name_for_note"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );					
+					MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("tooltip.detail.param.missing_param_name_for_note"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );					
 					return;	
 				}
 				
-				
-				if(txtName.getText() != null && txtName.getText().length()>0)
-					detailListener.setParam(txtName.getText(), txtValue.getText(), txtParamNote.getText(), comboLanguage.getText());
-				
-				//butApplyParam.setEnabled(isEditableParam);
 				if(  tableParams.getSelectionCount() == 0  ||
 						( tableParams.getSelectionCount() > 0 && !txtParamNote.getText().equalsIgnoreCase(detailListener.getParamNote(tableParams.getSelection()[0].getText(0), comboLanguage.getText())))){
 					
 					isEditableParam=true;
 					butApplyParam.setEnabled(isEditableParam);
+					isEditable = true;
+				    butApply.setEnabled(isEditable);
+				    if(gui!=null)
+						gui.updateParamNote();
 				}
+				if(txtName.getText() != null && txtName.getText().length()>0)
+					detailListener.setParam(txtName.getText(), txtValue.getText(), txtParamNote.getText(), comboLanguage.getText());
 				
 			}
 			
@@ -363,66 +603,77 @@ public class DetailForm {
 		gridData_5.heightHint = 73;
 		txtParamNote.setLayoutData(gridData_5);
 		
-		cancelButton = new Button(shell, SWT.NONE);
+		cancelButton = new Button(group, SWT.NONE);
 		cancelButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if(butApply.getEnabled()) {
-					int count = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("detailform.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+					int count = MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("detailform.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 					if(count != SWT.OK) {
 						return;
 					}
 				}
-				shell.dispose();
+				getShell().dispose();
 			}
 		});
-		cancelButton.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
+		cancelButton.setLayoutData(new GridData());
 		cancelButton.setText("Cancel");
+		new Label(group, SWT.NONE);
+		new Label(group, SWT.NONE);
+		new Label(group, SWT.NONE);
 		
-		butApply = new Button(shell, SWT.NONE);		
+		butApply = new Button(group, SWT.NONE);		
 		butApply.setEnabled(isEditable);
 		butApply.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				detailListener.save();
-				shell.dispose();
+				
+				txtState.setEnabled(false);
+				if(type == Editor.JOB_CHAINS) {
+					getShell().dispose();
+				} else {
+					isEditable = false;
+					butApply.setEnabled(isEditable);
+				}
 			}
 		});
 		butApply.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		butApply.setText("Apply Details");
-
- 
-
-		statusBar = new Label(shell, SWT.BORDER | SWT.SHADOW_NONE);		
-		final GridData gridData_11 = new GridData(GridData.BEGINNING, GridData.END, false, false, 3, 1);
+		
+		
+		
+		statusBar = new Label(group, SWT.BORDER);		
+		final GridData gridData_11 = new GridData(GridData.FILL, GridData.END, false, false, 5, 1);
 		gridData_11.widthHint = 496;
 		gridData_11.heightHint = 18;
 		statusBar.setLayoutData(gridData_11);
 		statusBar.setText("Configurations File:");
-		
-		shell.layout();
 		setToolTipText();
 		
-		setEnabled(false);
-		comboOrderId.setFocus();
-		shell.open();
+		if(type == Editor.JOB_CHAINS)
+			setEnabled_(false);
+		setVisibility();
 	}
 	
-	private void initForm() {
+	private void setVisibility() {
+		if(type==Editor.DETAILS) {
+			comboOrderId.setVisible(false);
+			cancelButton.setVisible(false);
+			orderIdLabel.setVisible(false);
+			butOpen.setVisible(false);
+			statusBar.setVisible(false);
+			butApply.setVisible(false);
+		} else if(type==Editor.JOB_CHAINS) {
+			txtJobChainname.setVisible(false);
+			lblChainname.setVisible(false);
+			butNewState.setVisible(false);
+			lblState.setVisible(false); 			
+			txtState.setVisible(false); 	
+			butRemoveState.setVisible(false);
+		}		
 		
-		tableParams.removeAll();
-		txtParamNote.setText("");		
-		txtName.setText("");
-		txtValue.setText("");
-		
-		
-		detailListener = new DetailsListener(jobChainname, state, comboOrderId.getText());
-		
-		txtJobchainNote.setText(detailListener.getNote(comboLanguage.getText()));
-		detailListener.fillParams(tableParams);
-		butRemove.setEnabled(false);
 	}
 	
 	public void setToolTipText() {
-		
 		comboLanguage.setToolTipText(Messages.getTooltip("detail.language"));
 		txtJobchainNote.setToolTipText(Messages.getTooltip("detail.detail_note")); 
 		butApply.setToolTipText(Messages.getTooltip("detail.apply")); 
@@ -436,36 +687,10 @@ public class DetailForm {
 		comboOrderId.setToolTipText(Messages.getTooltip("detail.param.order_ids"));
 		butOpen.setToolTipText(Messages.getTooltip("detail.param.open_configuration_file"));
 		statusBar.setToolTipText(Messages.getTooltip("detail.status_bar_for_configuration_filename"));
-	}
-	
-	private void setEnabled(boolean enabled){
-		jobChainGroup.setEnabled(enabled);
-		parameterGroup.setEnabled(enabled);		 
-		comboLanguage.setEnabled(enabled); 
-		txtJobchainNote.setEnabled(enabled); txtName.setEnabled(enabled); 
-		txtValue.setEnabled(enabled); 
-		tableParams.setEnabled(enabled); 
-		txtParamNote.setEnabled(enabled);		
-		butRemove.setEnabled(enabled);
-	}
-	
-	private void open(){
-		if(butApply.getEnabled()) {
-			int count = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("detailform.open"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-			if(count != SWT.OK) {
-				return;
-			}
-		}
-		setEnabled(true);
-		
-		initForm();
-		isEditable = true;
-		txtJobchainNote.setFocus();
-		butApply.setEnabled(false);
-		butApplyParam.setEnabled(false);
-		if(detailListener!= null && detailListener.getConfigurationFilename()!=null) {
-			statusBar.setText("Configurations File: " + detailListener.getConfigurationFilename());
-		}
+		txtJobChainname.setToolTipText(Messages.getTooltip("detail.new_jobchain_name"));		
+		butNewState.setToolTipText(Messages.getTooltip("detail.new_state"));
+		txtState.setToolTipText(Messages.getTooltip("detail.state"));
+		butRemoveState.setToolTipText(Messages.getTooltip("detail.remove_state"));
 	}
 	
 	private void addParam() {
@@ -483,4 +708,105 @@ public class DetailForm {
 			
 		}
 	}
-}
+	
+	private boolean discardChanges() {
+		if(butApply.getEnabled()) {
+			int count = MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("detailform.open"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+			if(count != SWT.OK) {
+				return false;
+			}
+		}
+		setEnabled_(true);
+		return true;
+	}
+	
+	public void open(){
+		if(!discardChanges()) 
+			return;
+		
+		initForm();
+		isEditable = true;
+		if(type == Editor.DETAILS) {
+			if(tree != null && tree.getSelection()[0].getText().startsWith("State: ")) {
+				txtState.setFocus();
+			} else {
+				txtJobChainname.setFocus();
+			}
+		} else {
+			txtJobchainNote.setFocus();
+		}
+		butApply.setEnabled(false);
+		butApplyParam.setEnabled(false);
+		if(detailListener!= null && detailListener.getConfigurationFilename()!=null) {
+			statusBar.setText("Configurations File: " + detailListener.getConfigurationFilename());
+		}
+		
+	}
+	private void initForm() {
+		
+		tableParams.removeAll();
+		txtParamNote.setText("");		
+		txtName.setText("");
+		txtValue.setText("");
+		 				
+		detailListener = new DetailsListener(jobChainname, state, comboOrderId.getText(), type, dom);
+		if(state != null && state.length() > 0) {
+			butRemoveState.setEnabled(true);
+			txtState.setEnabled(true);
+		} else { 
+			butRemoveState.setEnabled(false);
+			txtState.setEnabled(false);
+		}
+		if(detailListener.getNote(comboLanguage.getText()).length() > 0)
+			txtJobchainNote.setText(detailListener.getNote(comboLanguage.getText()));
+		
+		
+		detailListener.fillParams(tableParams);
+		butRemove.setEnabled(false);
+		
+		
+	}	
+	
+	private void setEnabled_(boolean enabled){
+		jobChainGroup.setEnabled(enabled);
+		parameterGroup.setEnabled(enabled);		 
+		comboLanguage.setEnabled(enabled); 
+		txtJobchainNote.setEnabled(enabled); txtName.setEnabled(enabled); 
+		txtValue.setEnabled(enabled); 
+		tableParams.setEnabled(enabled); 
+		txtParamNote.setEnabled(enabled);		
+		butRemove.setEnabled(enabled);
+		
+	}
+	
+	public void setTree(Tree tree_) {
+		tree = tree_;
+	}
+	
+	public void setJobChainConfigurationListener(JobChainConfigurationListener confListener_) {
+		confListener = confListener_;		
+	}
+		
+	private boolean isState() {
+		if(tree != null && tree.getSelectionCount() > 0) {			
+			if(tree.getSelection()[0].equals(tree.getItem(0))) {
+				MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("detailform.chose_state"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );				
+				return false;
+			}			
+		}
+		return true;
+	}
+	
+	private void deleteState() {
+		if (!isState())
+			return;
+		int count = MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("detailform.remove_state"), SWT.ICON_QUESTION | SWT.YES | SWT.NO |SWT.CANCEL );
+		if(count == SWT.YES) {
+			detailListener.deleteState(txtState.getText());
+			confListener.deleteState(txtState.getText(), tree.getTopItem());					
+			tree.setSelection(new TreeItem[] {tree.getItems()[0]});			
+			
+			confListener.treeSelection(tree, parent);
+		}
+	}
+} 
