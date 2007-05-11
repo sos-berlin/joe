@@ -14,22 +14,13 @@ import sos.scheduler.editor.conf.listeners.DetailsListener;
 public class DetailDialogForm {
 	
 	private String           jobChainname      = "";
-	
-	private DetailsListener  detailListener    = null;
-	
-	private String           state             = null;
-	
+		
+	private String           state             = null;	
 	
 	private Shell            shell             = null; 
 	
 	private String[]         listOfOrderIds    = null;
-	
-	/** Hifsvariable, wann der butApply enabled bzw. disabled gesetzt werden soll*/
-	//private boolean          isEditable        = false;
-	
-	/** Hifsvariable, wann der butApplyParam enabled bzw. disabled gesetzt werden soll*/
-	//private boolean          isEditableParam   = false;
-	
+		
 	
 	public DetailDialogForm(String jobChainname_, String[] listOfOrderIds_) {
 		jobChainname = jobChainname_;
@@ -61,34 +52,13 @@ public class DetailDialogForm {
 		final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);
 		gridData_6.widthHint = 686;
 		gridData_6.heightHint = 572;
-		
-		
-		DetailForm dialogForm = new DetailForm(composite, SWT.NONE, jobChainname, state, listOfOrderIds, Editor.JOB_CHAINS, null, null);
-		
+			
+		DetailForm dialogForm = null;		
+		dialogForm =new DetailForm(composite, SWT.NONE, jobChainname, state, listOfOrderIds, Editor.JOB_CHAINS, null, null);
 		dialogForm.setLayout(new FillLayout());
 		
 		
-		
 	}
-	
-	/*private void initForm() {
-	}
-	
-	public void setToolTipText() {
-	}
-	
-	private void setEnabled(boolean enabled){
-	}
-	
-	private void open(){
-		setEnabled(true);
-		
-		initForm();
-		//isEditable = true;
-		if(detailListener!= null && detailListener.getConfigurationFilename()!=null) {
-		}
-	}
-	*/
 	
 	
 }

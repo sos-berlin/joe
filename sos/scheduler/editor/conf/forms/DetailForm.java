@@ -115,7 +115,9 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		
 		super(parent_, style);
 		type = type_; 
+		
 		initialize();
+		
 		setToolTipText();		
 		parent = parent_;
 		
@@ -153,39 +155,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 	}
 	
 	private void initialize() {
-		this.setLayout(new FillLayout());
-		
-		//setSize(new org.eclipse.swt.graphics.Point(452, 219));
-		/*GridData gridData12 = new GridData(42, SWT.DEFAULT);
-		GridData gridData111 = new org.eclipse.swt.layout.GridData();
-		gridData111.widthHint = 24;
-		GridData gridData10 = new org.eclipse.swt.layout.GridData();
-		gridData10.widthHint = 24;
-		GridData gridData9 = new GridData(42, SWT.DEFAULT);
-		GridData gridData8 = new org.eclipse.swt.layout.GridData();
-		gridData8.widthHint = 24;
-		GridData gridData7 = new org.eclipse.swt.layout.GridData();
-		gridData7.widthHint = 24;
-		GridData gridData6 = new GridData(42, SWT.DEFAULT);
-		GridData gridData5 = new org.eclipse.swt.layout.GridData();
-		gridData5.widthHint = 24;
-		GridData gridData41 = new org.eclipse.swt.layout.GridData();
-		gridData41.widthHint = 24;
-		GridData gridData3 = new GridData(42, SWT.DEFAULT);
-		GridData gridData21 = new GridData(24, SWT.DEFAULT);
-		GridData gridData11 = new org.eclipse.swt.layout.GridData();
-		gridData11.widthHint = 24;
-		GridData gridData4 = new GridData();
-		gridData4.horizontalSpan = 1;
-		GridData gridData2 = new GridData();
-		gridData2.horizontalSpan = 1;
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 7;
-		*/
-		/*gDetail = new Group(this, SWT.NONE);
-		gDetail.setEnabled(false);
-		gDetail.setText("Period");
-		gDetail.setLayout(gridLayout);*/
+		this.setLayout(new FillLayout());				
 		createGroup();   
 		getShell().layout();
 		getShell().open();
@@ -207,18 +177,18 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);
 		gridData_6.heightHint = 31;
 		composite.setLayoutData(gridData_6);
-
+		
 		final Group group = new Group(composite, SWT.NONE);
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 5;
 		group.setLayout(gridLayout);
 		if(jobChainname != null)
 			group.setText(jobChainname);
-
+		
 		lblChainname = new Label(group, SWT.NONE);
 		lblChainname.setLayoutData(new GridData());
 		lblChainname.setText("Job Chain Name:");
-
+		
 		txtJobChainname = new Text(group, SWT.BORDER);
 		txtJobChainname.setText(jobChainname!=null?jobChainname:"");
 		txtJobChainname.addModifyListener(new ModifyListener() {
@@ -253,7 +223,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 				} else {					
 					confListener.setJobChainname(jobChainname);
 				}
-			
+				
 				if(detailListener != null) {
 					detailListener.setJobChainname(txtJobChainname.getText());
 				}
@@ -331,11 +301,11 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		gridData_10.minimumWidth = 60;
 		butOpen.setLayoutData(gridData_10);
 		butOpen.setText("Open");
-
+		
 		lblState = new Label(group, SWT.NONE);
 		lblState.setLayoutData(new GridData(27, SWT.DEFAULT));
 		lblState.setText("State");
-
+		
 		txtState = new Text(group, SWT.BORDER);
 		if( state != null ) {
 			txtState.setText(state);
@@ -347,35 +317,35 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		if(tree != null) {
-		TreeItem item = tree.getSelection()[0];
-		if(item.getText(0).startsWith("State: "))
-			txtState.setEnabled(true);
+			TreeItem item = tree.getSelection()[0];
+			if(item.getText(0).startsWith("State: "))
+				txtState.setEnabled(true);
 		}
 		txtState.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				boolean valid = detailListener.isValidState(txtState.getText());
-                if (!valid)
-                	txtState.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-                else {
-                	txtState.setBackground(null);
-				if(tree != null && tree.getSelectionCount() > 0) {					
-					TreeItem item = tree.getSelection()[0];
-					if(item.getText(0).startsWith("State: "))
-						item.setText("State: " + txtState.getText());
-					
-					if(gui!=null)
-						gui.updateState(txtState.getText());
-					
-					state = txtState.getText();
-					detailListener.updateState(item.getData() != null ? item.getData().toString(): "", txtState.getText());
-					item.setData(state);					
+				if (!valid)
+					txtState.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+				else {
+					txtState.setBackground(null);
+					if(tree != null && tree.getSelectionCount() > 0) {					
+						TreeItem item = tree.getSelection()[0];
+						if(item.getText(0).startsWith("State: "))
+							item.setText("State: " + txtState.getText());
+						
+						if(gui!=null)
+							gui.updateState(txtState.getText());
+						
+						state = txtState.getText();
+						detailListener.updateState(item.getData() != null ? item.getData().toString(): "", txtState.getText());
+						item.setData(state);					
+					}
 				}
-			}
 			}
 		});
 		txtState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		new Label(group, SWT.NONE);
-
+		
 		butRemoveState = new Button(group, SWT.NONE);
 		butRemoveState.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {				
@@ -384,7 +354,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		});
 		butRemoveState.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		butRemoveState.setText("Remove State");
-
+		
 		butNewState = new Button(group, SWT.NONE);
 		butNewState.setEnabled(jobChainname != null && jobChainname.length() > 0? true : false);
 		
@@ -393,18 +363,18 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 				if(tree != null) {					
 					TreeItem item = new TreeItem(tree.getTopItem(), SWT.NONE);	
 					state = String.valueOf(tree.getTopItem().getItemCount());
-		        	item.setText("State: " + state);
-		        	item.setExpanded(true);
-		        	item.setData(state);
-		        	tree.setSelection(new TreeItem[] {item});
-		        	txtState.setText(state);
-		        	txtState.setEnabled(true);
-		        	txtState.setFocus();
-		        	
-		        	if(gui!=null)
-		        		gui.updateState(txtState.getText());		        	
-		        	confListener.treeSelection(tree, parent);
-		        	
+					item.setText("State: " + state);
+					item.setExpanded(true);
+					item.setData(state);
+					tree.setSelection(new TreeItem[] {item});
+					txtState.setText(state);
+					txtState.setEnabled(true);
+					txtState.setFocus();
+					
+					if(gui!=null)
+						gui.updateState(txtState.getText());		        	
+					confListener.treeSelection(tree, parent);
+					
 				}
 				
 			}
@@ -573,11 +543,11 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			public void modifyText(final ModifyEvent e) {
 				if(detailListener == null)
 					return;
-							
+				
 				//Wert auf leer zurücksetzen
 				if(txtParamNote.getText()!= null && txtParamNote.getText().length()==0)
 					return;
-								
+				
 				if(txtName.getText() != null && txtName.getText().length() == 0) {
 					MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("tooltip.detail.param.missing_param_name_for_note"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );					
 					return;	
@@ -589,8 +559,8 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 					isEditableParam=true;
 					butApplyParam.setEnabled(isEditableParam);
 					isEditable = true;
-				    butApply.setEnabled(isEditable);
-				    if(gui!=null)
+					butApply.setEnabled(isEditable);
+					if(gui!=null)
 						gui.updateParamNote();
 				}
 				if(txtName.getText() != null && txtName.getText().length()>0)
@@ -721,10 +691,16 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 	}
 	
 	public void open(){
+		
+		
 		if(!discardChanges()) 
 			return;
 		
-		initForm();
+		
+		if(!initForm()) 
+			return;
+		
+		
 		isEditable = true;
 		if(type == Editor.DETAILS) {
 			if(tree != null && tree.getSelection()[0].getText().startsWith("State: ")) {
@@ -742,14 +718,20 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		}
 		
 	}
-	private void initForm() {
+	private boolean initForm() {
 		
 		tableParams.removeAll();
 		txtParamNote.setText("");		
 		txtName.setText("");
 		txtValue.setText("");
-		 				
+		
 		detailListener = new DetailsListener(jobChainname, state, comboOrderId.getText(), type, dom);
+		if(detailListener != null && detailListener.hasError()) {
+			if(type == Editor.DETAILS)
+				dispose();
+			getShell().dispose();
+			return false;
+		}
 		if(state != null && state.length() > 0) {
 			butRemoveState.setEnabled(true);
 			txtState.setEnabled(true);
@@ -757,13 +739,14 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			butRemoveState.setEnabled(false);
 			txtState.setEnabled(false);
 		}
+		
 		if(detailListener.getNote(comboLanguage.getText()).length() > 0)
 			txtJobchainNote.setText(detailListener.getNote(comboLanguage.getText()));
 		
 		
 		detailListener.fillParams(tableParams);
 		butRemove.setEnabled(false);
-		
+		return true;
 		
 	}	
 	
@@ -786,7 +769,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 	public void setJobChainConfigurationListener(JobChainConfigurationListener confListener_) {
 		confListener = confListener_;		
 	}
-		
+	
 	private boolean isState() {
 		if(tree != null && tree.getSelectionCount() > 0) {			
 			if(tree.getSelection()[0].equals(tree.getItem(0))) {
@@ -808,5 +791,12 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			
 			confListener.treeSelection(tree, parent);
 		}
+	}
+	
+	public boolean hasErrors() {
+		if(detailListener!= null) {
+			return detailListener.hasError();
+		}
+		return false;
 	}
 } 

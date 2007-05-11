@@ -51,8 +51,11 @@ public class DetailDom extends DomParser {
         Document doc = getBuilder(validate).build(sr);
         sr.close();
      
+        
         setDoc(doc);
 
+        
+        
         // set comments as attributes
         setComments(getDoc().getContent());
 

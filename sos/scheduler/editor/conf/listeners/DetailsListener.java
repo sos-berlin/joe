@@ -11,6 +11,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.DetailDom;
@@ -62,6 +63,8 @@ public class DetailsListener {
 	//private String        stylesheet        = "../scheduler_configuration_documentation.xsl";
 	
 	private DetailDom     dom               = null;
+	
+	private boolean       hasError          = false;
 	
 	public DetailsListener(String jobChainname_) {
 		jobChainname = jobChainname_;
@@ -137,7 +140,17 @@ public class DetailsListener {
 			
 			application = root.getChild("job_chain");
 			
-			//gloable Detail note			
+			if (application == null) {
+				application = root.getChild("application");
+			}
+			
+			if (application == null) {
+				MainWindow.message(new org.eclipse.swt.widgets.Shell(SWT.NONE), sos.scheduler.editor.app.Messages.getString("details.listener.missing_job_chain_node"), SWT.OK );
+				System.out.println("error: " + sos.scheduler.editor.app.Messages.getString("details.listener.missing_job_chain_node"));
+				hasError = true;
+				return;
+			}
+			//globale Detail note			
 			if(state==null || state.length() == 0) {
 				List note = application.getChildren("note");
 				setGlobaleNote(note);				
@@ -233,8 +246,7 @@ public class DetailsListener {
 		
 		String name = "";
 		String value = "";
-		String note = "";
-		HashMap h = null;
+		
 		for( int i=0; i<params.size(); i++ ){					
 			Element param  = (Element)(params.get( i ));
 			if(param.getName().equalsIgnoreCase("param")) {
@@ -342,7 +354,7 @@ public class DetailsListener {
 				}
 				
 				Element pnen = (Element)params.get(i);
-				if(pnde.getName().equals("note")) {
+				if(pnen.getName().equals("note")) {
 					params.remove(i);//note en
 				}
 				
@@ -367,8 +379,10 @@ public class DetailsListener {
 		String xml = "<?xml version=\"1.0\" encoding=\""+ encoding + "\"?> ";
 		
 		try {
-			xml = xml + "<?xml-stylesheet type=\"text/xsl\" href=\""+ Options.getDetailXSLT() + "\"?> "+ 
-			"<settings>" + 		  
+			if(Options.getDetailXSLT() != null && Options.getDetailXSLT().length() > 0) {
+				xml = xml + "<?xml-stylesheet type=\"text/xsl\" href=\""+ Options.getDetailXSLT() + "\"?> ";
+			}
+			xml = xml + "<settings>" + 		  
 			"  <job_chain name=\""+jobChainname+"\"> " + 
 			"    <note language=\"de\"/> " + 
 			"    <note language=\"en\"/> " + 
@@ -501,6 +515,10 @@ public class DetailsListener {
 			}
 		} 		
 		return true;
+	}
+
+	public boolean hasError() {
+		return hasError;
 	}
 	
 }

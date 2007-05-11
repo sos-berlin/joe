@@ -47,6 +47,10 @@ public class JobChainConfigurationListener{
 		if(_dom.getDoc() != null) {
 			Element jobChain = _dom.getRoot().getChild("job_chain");
 			
+			if(jobChain == null) {
+				jobChain = _dom.getRoot().getChild("application");
+			}
+			
 			jobChainname = Utils.getAttributeValue("name", jobChain);
 		}
 		TreeItem item = new TreeItem(tree, SWT.NONE);
@@ -97,6 +101,10 @@ public class JobChainConfigurationListener{
 			root = doc.getRootElement();
 			
 			Element application = root.getChild("job_chain");
+			if(application == null) {
+				application = root.getChild("application");
+			}
+			
 			jobChainname = Utils.getAttributeValue("name", application);
 			
 			if(application != null)
@@ -113,7 +121,7 @@ public class JobChainConfigurationListener{
 			}
 			
 		} catch(Exception e) {
-			System.err.println("..error im DetailsListener.parseDocuments(): " + e.getMessage());
+			System.err.println("..error im JobChainConfigurationListener.getAllDetailState(): " + e.getMessage());
 		}
 		
 		return list;
@@ -146,18 +154,32 @@ public class JobChainConfigurationListener{
 				
 				TreeItem item = tree.getSelection()[0];
 				_dom.setInit(true);
-				if(jobChainname == null) {
-					DetailForm df = new DetailForm(c, SWT.NONE, Editor.DETAILS, _dom, _gui);					
+				DetailForm df = null;
+				try {
+					if(jobChainname == null) {
+						df = new DetailForm(c, SWT.NONE, Editor.DETAILS, _dom, _gui);					
+					} else {                
+						df = new DetailForm(c, SWT.NONE, jobChainname, item.getData() != null? item.getData().toString(): null, null, Editor.DETAILS, _dom, _gui);										
+					}
 					df.setTree(tree);
 					df.setJobChainConfigurationListener(this);
+					
 					df.open();
-				} else {                
-					DetailForm df = new DetailForm(c, SWT.NONE, jobChainname, item.getData() != null? item.getData().toString(): null, null, Editor.DETAILS, _dom, _gui);										
-					df.setTree(tree);
-					df.setJobChainConfigurationListener(this);
-					df.open();
+					if(df.hasErrors()) {
+						df.dispose();
+						
+						_gui.close();
+						return false;
+					}
+					
+				} catch (Exception e) {					
+					//MainWindow.message(e.getMessage(), SWT.ICON_ERROR);	
+					df.dispose();
+					
+					_gui.close();
+					return false;
 				}
-								
+				
 			}
 			
 			c.layout();

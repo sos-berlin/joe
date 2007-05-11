@@ -5,6 +5,8 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import sos.scheduler.editor.app.Options;
+
 public class FormatDetailHandler extends DefaultHandler implements ContentHandler {
 	
     private DetailDom     _dom;
@@ -40,6 +42,9 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
 
     public void startDocument() {
         _sb.append("<?xml version=\"1.0\" encoding=\"" + _encoding + "\"?>\n\n");
+        if(Options.getDetailXSLT() != null && Options.getDetailXSLT().length() > 0) {
+        	_sb.append("<?xml-stylesheet type=\"text/xsl\" href=\""+ Options.getDetailXSLT() + "\"?> ");
+		}
     }
 
 
