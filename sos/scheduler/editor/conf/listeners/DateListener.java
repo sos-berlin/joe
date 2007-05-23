@@ -14,6 +14,7 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class DateListener implements Comparator {
@@ -34,7 +35,8 @@ public class DateListener implements Comparator {
     private Element         _parent;
 
     private List            _list;
- 
+
+    private List            _listOfAt = null;
 
     public DateListener(SchedulerDom dom, Element element, int type) {
         _dom = dom;
@@ -45,15 +47,19 @@ public class DateListener implements Comparator {
             _parent = _element.getChild("holidays");
         else
             _parent = _element;
+       
         if (_parent != null) {
             _list = _parent.getChildren(_elementName[_type]);
+            if(type == 1) {            	
+            	_listOfAt = _parent.getChildren("at");           	
+            }
             sort();
         }
             
         
     }
 
-
+ 
     public void fillList(org.eclipse.swt.widgets.List list) {
     	
         list.removeAll();
@@ -65,10 +71,43 @@ public class DateListener implements Comparator {
                     list.add(e.getAttributeValue("date"));
             }
         }
+        if (_listOfAt != null) {
+            Iterator it = _listOfAt.iterator();
+            while (it.hasNext()) {
+                Element e = (Element) it.next();
+                if (e.getAttributeValue("at") != null) {
+                	String date = Utils.getAttributeValue("at", e);
+                	date = date.substring(0, 10);                	
+                	String[] split = date.split("-");
+                	if(!exists(Utils.str2int(split[0]), Utils.str2int(split[1]), Utils.str2int(split[2])) &&
+                			!dateExistInList(list, date)) {
+                		list.add(date);
+                	}
+                }
+            }
+        }                   
+        
     }        
+    
+    private boolean dateExistInList(TreeItem parent, String date) {
+    	for(int i = 0; i < parent.getItemCount(); i++) {
+    		if(parent.getItem(i).getText().equalsIgnoreCase(date)){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    private boolean dateExistInList(org.eclipse.swt.widgets.List list, String date) {
+    	for(int i = 0; i < list.getItemCount(); i++) {
+    		if(list.getItem(i).equalsIgnoreCase(date)){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 
-
-    public void addDate(int year, int month, int day) {
+    public Element addDate(int year, int month, int day) {
         if (_parent == null && _type == 0) {
             _parent = new Element("holidays");
             _element.addContent(_parent);
@@ -78,12 +117,22 @@ public class DateListener implements Comparator {
         if (_list == null && _type == 0) {
           _list = _parent.getChildren("holiday");
         }
+        
+        if(_list == null && _type == 1) {
+        	_list = _parent.getChildren(_elementName[_type]);
+        }
 
         Element date = new Element(_elementName[_type]);
         date.setAttribute("date", asStr(year) + "-" + asStr(month) + "-" + asStr(day));
+        
+    
         _list.add(date);
+        
+        
+        
         sort();
         _dom.setChanged(true);
+        return date;
     }
 
 
@@ -96,15 +145,50 @@ public class DateListener implements Comparator {
 
 
     public void removeDate(int index) {
-        if (index >= 0 && index < _list.size()) {
-            _list.remove(index);
-            if (_list.size() == 0 && _type == 0) {
-                _element.removeChild("holidays");
-                _parent = null;
-            }
-            _dom.setChanged(true);
-        } else {
+    	String delDate = "";
+    	
+    	if (index >= 0 && index < _list.size()) {
+    		delDate = Utils.getAttributeValue("date", (Element)(_list.get(index)));
+    	}else {
+    		
+    		int i = _list.size() - (index); 
+    		if(i < 0) 
+    			i = i*(-1);
+    		Element atE = (Element)(_listOfAt.get(i));
+    		System.out.println(atE.getAttributes());
+    		delDate = Utils.getAttributeValue("at", atE).substring(0, 10);
+    		
+    	}
+    	
+    	if (index >= 0 && index < _list.size()) {
+    			
+    			_list.remove(index);
+    			if (_list.size() == 0 && _type == 0) {
+    				_element.removeChild("holidays");
+    				_parent = null;
+    			}
+    			_dom.setChanged(true);
+    		} else {
+    			if(_listOfAt != null && _listOfAt.size()>0) {
+        		index = _list.size() - index;
+        		if(index > -1)
+        			_listOfAt.remove(index);
+        	} else 
             System.out.println("Bad index " + index + " for " + _elementName[_type]);
+        }
+        
+        //gibt es auch einen at-Element am gleichen Tag
+        ArrayList remList = new ArrayList();
+        for(int i =0; i < _listOfAt.size(); i++) {
+        	Element e = (Element)_listOfAt.get(i);
+        	String at = Utils.getAttributeValue("at", e);
+        	String date = at.substring(0, at.indexOf(" "));
+        	if(date.equalsIgnoreCase(delDate)) {
+        		remList.add(e);        		
+        	}
+        }
+        for(int i = 0; i < remList.size(); i++) {
+        	_listOfAt.remove(remList.get(i));
         }
     }
 
@@ -151,6 +235,37 @@ public class DateListener implements Comparator {
                 }
             }
         }
+
+        ArrayList l = new ArrayList();
+        if(_listOfAt != null) {
+        	Iterator it = _listOfAt.iterator();
+        	 while (it.hasNext()) {
+                 Element e = (Element) it.next();                 
+                 if (e.getAttributeValue("at") != null) {
+                	 String sDate = e.getAttributeValue("at").split(" ")[0];                	 
+                	 String[] splitDate = sDate.split("-");
+                	 if(!exists(Utils.str2int(splitDate[0]), Utils.str2int(splitDate[1]), Utils.str2int(splitDate[2]))
+                	  && !dateExistInList(parent, sDate) ) {
+                		 Element a = new Element("date");
+                		 Utils.setAttribute("date", Utils.getAttributeValue("at", e).substring(0, 10), a);               		 
+                		 l.add(a);
+                	 } 
+                 }
+             }
+        }
+        
+        for(int i =0; i < l.size(); i++) {        	
+        	Element e = (Element)l.get(i);        	
+        	if(!dateExistInList(parent, Utils.getAttributeValue("date", e))) {
+        		_list.add(l.get(i));
+        		TreeItem item = new TreeItem(parent, SWT.NONE);
+        		item.setText(e.getAttributeValue("date"));    
+        		
+        		item.setData(new TreeData(Editor.PERIODS, (Element)l.get(i), Options.getHelpURL("periods")));
+        	}
+        }
+        
+    
         parent.setExpanded(expand);
     }
 
@@ -159,17 +274,18 @@ public class DateListener implements Comparator {
         if (_list != null) {
             for (int i = 0; i < _list.size(); i++) {
                 int[] date = getDate(i);
-                if (year == date[0] && month == date[1] && day == date[2])
+                if (year == date[0] && month == date[1] && day == date[2]) {
                     return true;
+                }
             }
         }
         return false;
     }
 
-
+  
     private void sort() {
         if (_list != null && _parent != null) {
-            List copy = new ArrayList(_list);
+            List copy = new ArrayList(_list);             
             Collections.sort(copy, this);
             _parent.removeChildren(_elementName[_type]);
             _parent.addContent(copy);

@@ -6,23 +6,16 @@ import java.util.Iterator;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import com.swtdesigner.SWTResourceManager;
-
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.IEditor;
 import sos.scheduler.editor.app.IOUtils;
@@ -32,9 +25,7 @@ import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
-import sos.scheduler.editor.conf.listeners.SchedulerListener;
 import sos.scheduler.editor.conf.DetailDom;
 import  sos.scheduler.editor.conf.IDetailUpdate;
 
@@ -63,12 +54,8 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
     public JobChainConfigurationForm(IContainer container, Composite parent, int style) {
         super(parent, style);
         this.container = container;
-
-        //setDataChangedListener(this);
         this.dom = new DetailDom();
         this.dom.setDataChangedListener(this);
-
-        //listener = new SchedulerListener(this, this.dom);
         listener = new JobChainConfigurationListener(this, dom);
 
     }
@@ -79,7 +66,6 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
         fillLayout.spacing = 0;
         fillLayout.marginWidth = 5;
         fillLayout.marginHeight = 5;
-        //setSize(new Point(783, 450));
         setLayout(fillLayout);
         createSashForm();
     }
@@ -158,33 +144,6 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
     public void dataChanged() {
         container.setStatusInTitle();
     }
-
-/*
-    public void updateCommand(String s) {
-        TreeItem item = tree.getSelection()[0];
-        item.setText(s);
-    }
-
-
-   
-    
-
-    public void updateJob() {
-        if (tree.getSelectionCount() > 0) {
-            TreeItem item = tree.getSelection()[0];
-            TreeData data = (TreeData) item.getData();
-            //listener.treeFillJob(item, data.getElement(), true);
-        }
-    }
-
-
-    public void updateJob(String s) {
-        TreeItem item = tree.getSelection()[0];
-        String job = "Job: " + s;
-        item.setText(job);
-    }
-   
-*/
     
     public void updateState(String state){
     	TreeItem item = tree.getSelection()[0];        
@@ -206,6 +165,10 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
 		dom.setChanged(true);
 	}
 	
+	public void updateParam(){
+		dom.setChanged(true);
+	}
+	
     public boolean applyChanges() {
         Control[] c = cMainForm.getChildren();
         return c.length == 0 || Utils.applyFormChanges(c[0]);
@@ -213,8 +176,7 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
 
 
     public void openBlank() {
-        initialize();
-        //dom.initScheduler();
+        initialize();       
         listener.treeFillMain(tree, cMainForm);
     }
 
@@ -230,17 +192,9 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
         return res;
     }
     
-    /*public boolean open(Collection files) {
-        String filename = getFile(files); //IOUtils.openFile(files, dom);
-        MainWindow.getSShell().setText("Job Details Editor [" + filename + "]");
-        initialize();
-        listener.setFilename(filename);
-        listener.treeFillMain(tree, cMainForm);
-        return true;
-    }
-*/
+
     public static String getFile(Collection filenames) {
-    	//String filename = "";
+
     	 try {    		 
              // open file dialog
              if (filename == null || filename.equals("")) {
@@ -286,8 +240,7 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
          return filename;
     }
 
-    public boolean save() {
-        //boolean res = IOUtils.saveFile(null, false); 
+    public boolean save() {        
     	boolean res = IOUtils.saveFile(dom, false);
         if (res)
             container.setNewFilename(null);
@@ -296,10 +249,7 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
 
 
     public boolean saveAs() {
-        //String old = null; //
     	String old = dom.getFilename();
-        
-        //boolean res = IOUtils.saveFile(null, true); 
         boolean res = IOUtils.saveFile(dom, true);
         if (res)
             container.setNewFilename(old);
@@ -314,7 +264,6 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
 
     public boolean hasChanges() {
         Options.saveSash("main", sashForm.getWeights());
-        //return true;
         return dom.isChanged();
     }
 
@@ -331,9 +280,7 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
 
 
     public String getFilename() {    	
-        return dom.getFilename();
-        
-    	//return filename;
+        return dom.getFilename();        
     }
 
 

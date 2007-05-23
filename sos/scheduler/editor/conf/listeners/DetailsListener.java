@@ -2,20 +2,17 @@ package sos.scheduler.editor.conf.listeners;
 
 import java.io.File;
 import java.io.StringReader;
-import java.util.HashMap;
 import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.DetailDom;
-
 import org.eclipse.swt.widgets.TableItem;
 import java.io.FileWriter;
 import org.jdom.output.Format;
@@ -58,9 +55,6 @@ public class DetailsListener {
 	
 	/** Falls Konfigurationsdatei neu generiert wird */
 	private String        encoding          = "ISO-8859-1";
-	
-	/** Falls Konfigurationsdatei neu generiert wird */
-	//private String        stylesheet        = "../scheduler_configuration_documentation.xsl";
 	
 	private DetailDom     dom               = null;
 	
@@ -116,7 +110,7 @@ public class DetailsListener {
 		
 		try {
 			SAXBuilder builder = new SAXBuilder();
-						
+			
 			if(doc == null) {
 				File f = new File(xmlFilename);
 				if(!f.exists()) {					
@@ -214,31 +208,84 @@ public class DetailsListener {
 		return n;
 	}
 	
-	private void setNoteText(Element note, String text) {
-		Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		Element p = null;
-		if(div != null) {
-			p = div.getChild("p", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-			if(p==null)
-				p = new Element("p", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));		
-		} else {
-			div = new Element("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-			note.addContent(div);
-			p = new Element("p", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-			div.addContent(p);
+	private Element createNewNoteElement(String text) {
+		Element newNote = null;
+		try {
+			SAXBuilder builder = new SAXBuilder();
+			Document doc = builder.build(new StringReader(text));
+			newNote = doc.getRootElement();
+		} catch (Exception e) {
+			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
+			//System.err.println("error in DetailsListener.createNewNoteElement: " + e.toString());
 		}
-		if(p != null)
-			p.setText(text);
+		return newNote;
+	}
+	
+	private void setNoteText(Element note, String text) {
+		if(text.indexOf("<") == -1) {
+			note.setText(text);	
+		} else {
+			Element newNote = createNewNoteElement(text);
+			if(newNote != null){
+				note.removeContent();
+				note.addContent((List)newNote.cloneContent());
+			} 
+		}
+		/*//if( text != null && text.trim().startsWith("<")) {
+		 Element newNote = createNewNoteElement(text);
+		 if(newNote != null) {				
+		 Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+		 if(div != null) {
+		 div.setContent(newNote.cloneContent());	
+		 } else {
+		 div = new Element("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+		 div.setContent(newNote.cloneContent());
+		 note.addContent(div);
+		 //note.addContent((Element)newNote.clone());
+		  }
+		  
+		  
+		  } else {
+		  note.setText(text);
+		  }*/
+		/*Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+		 Element p = null;
+		 if(div != null) {
+		 p = div.getChild("p", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+		 if(p==null)
+		 p = new Element("p", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));		
+		 } else {
+		 div = new Element("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+		 note.addContent(div);
+		 p = new Element("p", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+		 div.addContent(p);
+		 }
+		 if(p != null)
+		 p.setText(text);
+		 */
 	}
 	
 	private String getNoteText(Element note) {
+		
 		String noteText = "";
-		Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		Element p = null;
-		if(div != null)
-			p = div.getChild("p", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		if(p != null)
-			noteText = p.getTextNormalize();
+		noteText = Utils.getElementAsString(note);
+		if(((note.getText()== null || note.getTextTrim().length() == 0 ) && note.getContent().size() == 0)
+				|| noteText.equals("<note language=\"de\" />")) {
+			noteText="";
+		}
+		/*Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+		 if(div != null)
+		 noteText = Utils.getElementAsString(div);
+		 else
+		 noteText = note.getText();
+		 */
+		/*Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+		 Element p = null;
+		 if(div != null)
+		 p = div.getChild("p", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+		 if(p != null)
+		 noteText = p.getTextNormalize();
+		 */
 		return noteText;
 	}
 	
@@ -516,7 +563,7 @@ public class DetailsListener {
 		} 		
 		return true;
 	}
-
+	
 	public boolean hasError() {
 		return hasError;
 	}

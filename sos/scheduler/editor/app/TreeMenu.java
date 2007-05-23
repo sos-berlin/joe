@@ -55,14 +55,18 @@ public class TreeMenu {
             if (data != null && data instanceof TreeData) {
                 if (data.getChild() != null)
                     return data.getElement().getChild(data.getChild());
-                else
-                    return data.getElement();
+                else {
+                	if(data.getElement().getName().equals("at") || data.getElement().getName().equals("date")) {
+                		return data.getElement().getParentElement();
+                	} else
+                		return data.getElement();
+                }
             } else
                 return null;
         } else
             return null;
     }
-
+    
 
     private void createMenu() {
         _menu = new Menu(_tree.getShell(), SWT.POP_UP);

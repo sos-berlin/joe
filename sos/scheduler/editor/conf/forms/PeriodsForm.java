@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
-
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
@@ -135,12 +135,16 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
                 if (tPeriods.getSelectionCount() > 0) {
                     int index = tPeriods.getSelectionIndex();
                     tPeriods.remove(index);
-                    listener.removePeriod(index);
+                    
+                    //listener.removePeriod(index);
+                    listener.removePeriod(listener.getPeriod(index));
 
                     if (index >= tPeriods.getItemCount())
                         index--;
-                    if (tPeriods.getItemCount() > 0)
+                    if (tPeriods.getItemCount() > 0) {
                         tPeriods.select(index);
+                        //tPeriodSelect();   
+                    }
                 }
 
                 fillPeriod(true);
@@ -174,13 +178,8 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         tPeriods.setLinesVisible(true);
         tPeriods.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                bRemove.setEnabled(tPeriods.getSelectionCount() > 0);
-                periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
-                periodForm.setApplyButton(bApply);
-                if (tPeriods.getSelectionCount() > 0) {
-                    periodForm.setPeriod(listener.getPeriod(tPeriods.getSelectionIndex()));
-                    bApply.setEnabled(false);
-                }
+            	tPeriodSelect();
+                
             }
         });
         TableColumn tableColumn = new TableColumn(tPeriods, SWT.NONE);
@@ -227,13 +226,14 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
     }
 
 
-    private void applyPeriod() {
+    private void applyPeriod() { 
         listener.applyPeriod(periodForm.getPeriod());
         listener.fillTable(tPeriods);
-        bApply.setEnabled(false);
+        
         bRemove.setEnabled(false);
         fillPeriod(false);
         getShell().setDefaultButton(bNew);
+        bApply.setEnabled(false);
     }
 
 
@@ -243,5 +243,25 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         bApply.setToolTipText(Messages.getTooltip("periods.btn_apply"));
         tPeriods.setToolTipText(Messages.getTooltip("periods.table"));
 
+    }
+    
+    private void tPeriodSelect(){
+    	bRemove.setEnabled(tPeriods.getSelectionCount() > 0);
+    	periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
+    	periodForm.setApplyButton(bApply);
+    	if (tPeriods.getSelectionCount() > 0) { 
+    		
+    		Element currPeriod = listener.getPeriod(tPeriods.getSelectionIndex());
+    		if(currPeriod != null) {
+    			periodForm.setPeriod(currPeriod);
+    			
+    		} else {                		                		                		
+    			String sat = tPeriods.getSelection()[0].getText(4);
+    			Element at = listener.getAtElement(sat);
+    			periodForm.setAtElement(at);
+    		}
+    		
+    		bApply.setEnabled(false);
+    	}
     }
 } // @jve:decl-index=0:visual-constraint="10,10"

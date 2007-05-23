@@ -454,6 +454,19 @@ public class Utils {
     	return retVal;
     }
     
+    public static String getElementAsString(org.jdom.Text job) {
+    	org.jdom.output.XMLOutputter output = new org.jdom.output.XMLOutputter( org.jdom.output.Format.getPrettyFormat() );
+    	String retVal = "";
+    	try {    		    		
+    		retVal = output.outputString(job);
+    	}
+    	
+    	catch (Exception e) {
+    		System.out.println(e);
+    	}
+    	return retVal;
+    }
+    
     public static boolean isNumeric(String str) {
     	boolean retVal = true;
     	char[] c = null;

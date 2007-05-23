@@ -20,6 +20,8 @@ public class DetailDialogForm {
 	private Shell            shell             = null; 
 	
 	private String[]         listOfOrderIds    = null;
+	
+	private DetailForm       dialogForm        = null;
 		
 	
 	public DetailDialogForm(String jobChainname_, String[] listOfOrderIds_) {
@@ -53,11 +55,15 @@ public class DetailDialogForm {
 		gridData_6.widthHint = 686;
 		gridData_6.heightHint = 572;
 			
-		DetailForm dialogForm = null;		
+				
 		dialogForm =new DetailForm(composite, SWT.NONE, jobChainname, state, listOfOrderIds, Editor.JOB_CHAINS, null, null);
 		dialogForm.setLayout(new FillLayout());
 		
 		
+	}
+
+	public DetailForm getDialogForm() {
+		return dialogForm;
 	}
 	
 	

@@ -234,9 +234,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
                 if (!beginBeforeAfter()) {
                     Utils.setBackground(0, 23, sBeginHours);
                 }
-                if (event)
+                if (event)  {                	
                     listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
                             sBeginSeconds.getText());
+                }
+                
             }
         });
         label3 = new Label(gPeriod, SWT.NONE);
@@ -278,16 +280,8 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
             }
         });
-        sBeginSeconds.addMouseListener(new MouseAdapter() {
-            public void mouseDown(final MouseEvent e) {
 
-            }
-        });
-        sBeginSeconds.addKeyListener(new KeyAdapter() {
-            public void keyPressed(final KeyEvent e) {
-
-            }
-        });
+      
         sBeginSeconds.setLayoutData(gridData3);
 
         sBeginSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -528,16 +522,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
             }
         });
-        sSingleHours.addKeyListener(new KeyAdapter() {
-            public void keyPressed(final KeyEvent e) {
 
-            }
-        });
-        sSingleHours.addMouseListener(new MouseAdapter() {
-            public void mouseDown(final MouseEvent e) {
-
-            }
-        });
         sSingleHours.setLayoutData(gridData10);
 
         sSingleHours.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -559,19 +544,9 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         sSingleMinutes.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
-
             }
         });
-        sSingleMinutes.addKeyListener(new KeyAdapter() {
-            public void keyPressed(final KeyEvent e) {
-
-            }
-        });
-        sSingleMinutes.addMouseListener(new MouseAdapter() {
-            public void mouseDown(final MouseEvent e) {
-
-            }
-        });
+            
         sSingleMinutes.setLayoutData(gridData111);
 
         sSingleMinutes.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -674,6 +649,13 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
             bLetRun.setSelection(listener.getLetRun());
             sBeginHours.setFocus();
+        }else if(listener.getAtElement() != null) {
+        	 event = false;
+        	 listener.setPeriod(listener.getAtElement());
+             sSingleHours.setText(Utils.fill(2, String.valueOf(listener.getSingleHours())));
+             sSingleMinutes.setText(Utils.fill(2, String.valueOf(listener.getSingleMinutes())));
+             event = true;
+             sSingleSeconds.setText(Utils.fill(2, String.valueOf(listener.getSingleSeconds())));
         }
     }
 
@@ -683,6 +665,10 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         fillPeriod();
     }
 
+    public void setAtElement(Element at) {
+    	listener.setAtElement(at);
+    	fillPeriod();
+    }
 
     public Element getPeriod() {
         return listener.getPeriod();

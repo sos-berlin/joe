@@ -11,5 +11,7 @@ public interface IDetailUpdate extends IDataChanged {
 	public void updateNote();
 	
 	public void updateParamNote();
+	
+	public void updateParam();
   
 }
