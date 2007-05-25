@@ -222,13 +222,22 @@ public class DetailsListener {
 	}
 	
 	private void setNoteText(Element note, String text) {
+		
+		Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+		if(div != null) {			
+			div.setText(text);
+		} else {
+			div = new Element("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+		}
+		
 		if(text.indexOf("<") == -1) {
-			note.setText(text);	
+			div.setText(text);	
+			
 		} else {
 			Element newNote = createNewNoteElement(text);
 			if(newNote != null){
-				note.removeContent();
-				note.addContent((List)newNote.cloneContent());
+				div.removeContent();
+				div.addContent((List)newNote.cloneContent());
 			} 
 		}
 		/*//if( text != null && text.trim().startsWith("<")) {
@@ -266,13 +275,18 @@ public class DetailsListener {
 	}
 	
 	private String getNoteText(Element note) {
-		
+		String noteText = "";
+		Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+		if(div != null)
+			noteText = Utils.getElementAsString(div);
+			
+		/*
 		String noteText = "";
 		noteText = Utils.getElementAsString(note);
 		if(((note.getText()== null || note.getTextTrim().length() == 0 ) && note.getContent().size() == 0)
 				|| noteText.equals("<note language=\"de\" />")) {
 			noteText="";
-		}
+		}*/
 		/*Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
 		 if(div != null)
 		 noteText = Utils.getElementAsString(div);
@@ -310,17 +324,17 @@ public class DetailsListener {
 	}
 	
 	public String save() {		
-		File tmp = new File(xmlFilename);
+		File f = new File(xmlFilename);
 		try {
 			JDOMSource in = new JDOMSource(doc);
 			Format format = Format.getPrettyFormat();
 			format.setEncoding(encoding);
 			XMLOutputter outp = new XMLOutputter(format);					
-			outp.output(in.getDocument(), new FileWriter(tmp));
+			outp.output(in.getDocument(), new FileWriter(f));
 		} catch (Exception e) {
 			System.out.println("..error in DetailsListener.save. Could not save file " + e.getMessage());
 		}
-		return tmp.getAbsolutePath();
+		return f.getAbsolutePath();
 	}
 	
 	/**

@@ -11,6 +11,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.DetailDom;
 import sos.scheduler.editor.conf.IDetailUpdate;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -55,12 +56,15 @@ public class DetailXMLEditorListener {
         String xml = "";
         if (_settings != null) {
             try {
-                Iterator it = _settings.getChildren().iterator();
+            	
+              Iterator it = _settings.getChildren().iterator();
                 while (it.hasNext()) {
                     Element e = (Element) it.next();
                     String s = _dom.getXML(e);
                     xml += s.substring(45);
+                    
                 }
+            
             } catch (JDOMException ex) {
                 throw new Exception("Error: " + ex.getMessage());
 

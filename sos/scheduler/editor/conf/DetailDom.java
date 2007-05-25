@@ -1,8 +1,10 @@
 package sos.scheduler.editor.conf;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
@@ -16,13 +18,17 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Text;
+import org.jdom.output.Format;
 import org.jdom.output.SAXOutputter;
+import org.jdom.output.XMLOutputter;
+import org.jdom.transform.JDOMSource;
 
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.Utils;
 
 public class DetailDom extends DomParser {
    	
@@ -95,7 +101,35 @@ public class DetailDom extends DomParser {
 
     }
 
-
+  /*  public void write(String filename) throws IOException, JDOMException {
+    	
+    	File f = new File(filename);
+    	try {
+    		String encoding = Editor.SCHEDULER_ENCODING;
+    		if (encoding.equals(""))
+    			encoding = DEFAULT_ENCODING;
+    		
+    		JDOMSource in = new JDOMSource(getDoc());
+    		Format format = Format.getPrettyFormat();
+    		format.setEncoding(encoding);
+    		XMLOutputter outp = new XMLOutputter(format);					
+    		outp.output(in.getDocument(), new FileWriter(f));
+    		
+    		
+    		
+    	} catch (Exception e) {
+    		int res = MainWindow.message(Messages.getString("MainListener.outputInvalid",
+                    new String[] { e.getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+            if (res == SWT.NO)
+                return;
+    		System.out.println("..error in DetailDom.save. Could not save file " + e.getMessage());
+    	}
+    	
+    	setFilename(filename);
+    	setChanged(false);
+    }
+    */
+    
     public void write(String filename) throws IOException, JDOMException {
 
         String encoding = Editor.SCHEDULER_ENCODING;
@@ -126,7 +160,20 @@ public class DetailDom extends DomParser {
         setChanged(false);
     }
 
-
+/*    public String getXML(Element element) throws JDOMException {
+    	String encoding = Editor.SCHEDULER_ENCODING;
+		if (encoding.equals(""))
+			encoding = DEFAULT_ENCODING;
+		
+		JDOMSource in = new JDOMSource(element);
+		Format format = Format.getPrettyFormat();
+		format.setEncoding(encoding);
+		XMLOutputter outp = new XMLOutputter(format);			
+		String _xML = outp.outputString(getDoc());
+    	return _xML;
+    
+    }
+*/
     public String getXML(Element element) throws JDOMException {
         reorderDOM(element);
 

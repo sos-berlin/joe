@@ -25,7 +25,8 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
 
     private boolean      _isOpen      = false;
 
-  
+    
+    
     public FormatDetailHandler(DetailDom dom) {
         _dom = dom;
     }
@@ -49,11 +50,13 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
 
 
     public void characters(char[] ch, int start, int length) throws SAXException {
+    	//System.out.println("ch:" + new String(ch, start, length));
         _text.append(new String(ch, start, length));
     }
 
 
     public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
+    	//System.out.println("endelement:" + qName);
         _level--;
         _indent = strRepeat(_indentStr, _level);
 
@@ -79,6 +82,7 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
 
 
     public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
+    	//System.out.println("startelement:" + qName);
         if (_isOpen)
             _sb.append(">\n");        
         else
@@ -114,11 +118,17 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
             }
         }
        
+        String text = _text.toString().trim();
+        if(text != null && text.length() > 0) {        	
+        	_sb.append(text + " \n");
+        	_text = new StringBuffer();
+        }
         String ns = "";
-        if(namespaceURI != null && namespaceURI.length() > 0 )
-        		ns = " xmlns=\"" + namespaceURI + "\"";
+        if( namespaceURI != null && namespaceURI.length() > 0) {
+        	ns = " xmlns=\"" + namespaceURI + "\"";        	
+        }
+        
         _sb.append(_indent + "<" + qName +  ns + attributes.toString());
-
         _isOpen = true;
         _level++;
 

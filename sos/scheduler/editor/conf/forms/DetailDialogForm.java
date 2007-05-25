@@ -42,13 +42,13 @@ public class DetailDialogForm {
 		shell= new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER );
 		shell.setLayout(new GridLayout());
 		
-		shell.setSize(620, 632);	
+		shell.setSize(620, 643);	
 		shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 		shell.setText("Details for JobChain: " + jobChainname + (state != null && state.length()> 0 ? " State: " + state: ""));
 		final Composite composite = new Composite( shell, SWT.NONE);
 		composite.setLayout(new FillLayout());
 		final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
-		gridData.heightHint = 588;
+		gridData.heightHint = 606;
 		gridData.widthHint = 590;
 		composite.setLayoutData(gridData);
 		final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);

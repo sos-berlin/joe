@@ -147,7 +147,7 @@ public class DetailXMLEditorDialogForm {
 							shell.setFocus();
 						}
 						butApply.setEnabled(false);
-					
+						shell.close();
 				}
 			});
 			final GridData gridData_1 = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
