@@ -80,7 +80,9 @@ public class TabbedContainer implements IContainer {
         // on tab close
         folder.addCTabFolder2Listener(new CTabFolder2Adapter() {
             public void close(CTabFolderEvent event) {
-                IEditor editor = getCurrentEditor();
+            	
+                //IEditor editor = getCurrentEditor();
+            	IEditor editor = (IEditor)((CTabItem)(event.item)).getControl();
                 if (editor.hasChanges()) {
                     event.doit = editor.close();
                 }

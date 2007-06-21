@@ -137,16 +137,20 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
     
     private Combo       cSignals          = null;
     
-    private Text txtParameterDescription  = null;
+    private Text        txtParameterDescription  = null;
     
-    private Button              butBrowse = null;
+    private Button      butBrowse         = null;
+    
+    private Button      butShow           = null;
+    
+    private Button      butOpen           = null;
+    
     
 
     public JobForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
         super(parent, style);
         java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
-        if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {
-        	//i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+        if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {        	
         	this.setEnabled(false);        	
         } 
         
@@ -694,10 +698,18 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         tFileName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 listener.setInclude(tFileName.getText());
+                if(tFileName.getText()!= null && tFileName.getText().length() > 0) {
+                	butShow.setEnabled(true);
+                	butOpen.setEnabled(true);
+                } else {
+                	butShow.setEnabled(false);
+                	butOpen.setEnabled(false);
+                }
             }
         });
 
-        final Button butShow = new Button(gDescription, SWT.NONE);
+        butShow = new Button(gDescription, SWT.NONE);
+        butShow.setEnabled(false);
         butShow.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
         butShow.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
@@ -708,9 +720,10 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         				if(!(sHome.endsWith("\\") || sHome.endsWith("/")))
         					sHome = sHome.concat("/");
         				Process p =Runtime.getRuntime().exec("cmd /C START iExplore ".concat(sHome).concat(tFileName.getText()));
-        			}
+        			} 
         		} catch (Exception ex) {
-        			System.out.println("..could not open file " + tFileName.getText() + " " + ex.getMessage());
+        			//System.out.println("..could not open file " + tFileName.getText() + " " + ex.getMessage());
+        			MainWindow.message(getShell(), "..could not open file " + tFileName.getText() + " " + ex.getMessage(), SWT.ICON_WARNING | SWT.OK );
         		}
         	}
         });
@@ -731,7 +744,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         });
         */
         new Label(gDescription, SWT.NONE);
-        GridData gridData14 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
+        GridData gridData14 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
         gridData14.horizontalIndent = 24;
         tDescription = new Text(gDescription, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
         tDescription.setFont(ResourceManager.getFont("", 10, SWT.NONE));
@@ -741,6 +754,28 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
                 listener.setDescription(tDescription.getText());
             }
         });
+
+        butOpen = new Button(gDescription, SWT.NONE);
+        butOpen.setEnabled(false);
+        butOpen.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		String xmlPath = "";
+        		if(tFileName.getText() != null && tFileName.getText().length() > 0) {
+            		xmlPath = sos.scheduler.editor.app.Options.getSchedulerHome() ;
+            		xmlPath = (xmlPath.endsWith("/") || xmlPath.endsWith("\\") ? xmlPath.concat(tFileName.getText()) : xmlPath.concat("/").concat(tFileName.getText()));
+            		 
+            		
+            		sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();        		
+            		con.openDocumentation(xmlPath);
+            		con.setStatusInTitle();
+            	} else {        			
+            		MainWindow.message("There is no Documentation " + xmlPath, SWT.ICON_WARNING | SWT.OK);
+            	}
+        	}
+        });
+        butOpen.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        butOpen.setText("Open");
+        new Label(gDescription, SWT.NONE);
 
         final Button butWizzard = new Button(gDescription, SWT.NONE);
         butWizzard.addSelectionListener(new SelectionAdapter() {
@@ -753,6 +788,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         butWizzard.setText("Wizzard");
         new Label(gDescription, SWT.NONE);
         new Label(gDescription, SWT.NONE);
+        
     }
 
 
@@ -847,6 +883,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         tDescription.setToolTipText(Messages.getTooltip("job.description"));
         txtParameterDescription.setToolTipText(Messages.getTooltip("job.param.description"));
         butBrowse.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));
+        butShow.setToolTipText(Messages.getTooltip("job.param.show"));        
+        butOpen.setToolTipText(Messages.getTooltip("job.param.open"));
     }
     
     

@@ -18,6 +18,8 @@ public interface IContainer {
 
     public DocumentationForm openDocumentation();
     
+    public DocumentationForm openDocumentation(String filename);
+    
     public String openDocumentationName();
 
     public IEditor getCurrentEditor();
