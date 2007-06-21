@@ -191,7 +191,17 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
 
         return res;
     }
-    
+
+    public boolean open(String filename, Collection files) {
+        boolean res = IOUtils.openFile(filename, files, dom);
+        if (res) {
+            initialize();
+            listener.setFilename(filename);
+            listener.treeFillMain(tree, cMainForm);
+        }
+
+        return res;
+    }
 
     public static String getFile(Collection filenames) {
 

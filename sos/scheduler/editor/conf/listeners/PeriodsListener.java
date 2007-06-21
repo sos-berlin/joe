@@ -140,6 +140,7 @@ public class PeriodsListener {
 			}
 		}
 		_listOfAt.removeAll(remList);
+		
 	} 
 	
 	public void removePeriod(Element el) {

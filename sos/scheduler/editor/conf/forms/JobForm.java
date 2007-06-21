@@ -4,6 +4,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
@@ -19,6 +22,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -28,9 +32,11 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
@@ -39,17 +45,20 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
 public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
-    private Combo       sPriority;
+	
+	
+    private Combo       sPriority         = null;
 
-    private Text        sIdleTimeout;
+    private Text        sIdleTimeout      = null;
 
-    private Text        sTimeout;
+    private Text        sTimeout          = null;
 
-    private Text        sTasks;
-    private Text        tIgnoreSignals;
+    private Text        sTasks            = null;
+    
+    private Text        tIgnoreSignals    = null; 
 
-    private JobListener listener;
-
+    private JobListener listener          = null;
+ 
     private Group       group             = null;
 
     private Group       gMain             = null;
@@ -123,14 +132,24 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
     private boolean     updateTree        = false;
 
     private Button      bForceIdletimeout = null;
+    
     private Button      bStopOnError      = null;
+    
     private Combo       cSignals          = null;
     
-    private Text txtParameterDescription  = null; 
-
+    private Text txtParameterDescription  = null;
+    
+    private Button              butBrowse = null;
+    
 
     public JobForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
         super(parent, style);
+        java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
+        if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {
+        	//i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+        	this.setEnabled(false);        	
+        } 
+        
         listener = new JobListener(dom, job, main);
         initialize();   
         setToolTipText();
@@ -181,7 +200,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes group1
      */
     private void createGroup1() {
-        GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
+        GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 6;
@@ -208,7 +227,6 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
                 listener.setTitle(tTitle.getText());
             }
         });
-        new Label(gMain, SWT.NONE);
         label3 = new Label(gMain, SWT.NONE);
         label3.setLayoutData(new GridData());
         label3.setText("Scheduler ID:");
@@ -232,7 +250,6 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
         createCombo();
-        new Label(gMain, SWT.NONE);
         label7 = new Label(gMain, SWT.NONE);
         label7.setLayoutData(new GridData());
         label7.setText("On Order:");
@@ -458,7 +475,17 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes combo
      */
     private void createCombo() {
-        new Label(gMain, SWT.NONE);
+
+        butBrowse = new Button(gMain, SWT.NONE);
+        butBrowse.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false, 2, 1));
+        butBrowse.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		String name = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_PROCESS_CLASS);
+        		if(name != null && name.length() > 0)
+        			cProcessClass.setText(name);
+        	}
+        });
+        butBrowse.setText("Browse");
     }
 
 
@@ -500,9 +527,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         gridData16.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
         GridData gridData13 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData13.widthHint = 151;
-        GridData gridData11 = new org.eclipse.swt.layout.GridData(GridData.BEGINNING, GridData.CENTER, true, false);
-        gridData11.widthHint = 213;
-        gridData11.horizontalIndent = 32;
+        GridData gridData11 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
+        gridData11.widthHint = 223;
         GridData gridData10 = new org.eclipse.swt.layout.GridData();
         gridData10.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData10.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
@@ -512,13 +538,15 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         gJobParameter.setText("Job Parameter");
         gJobParameter.setLayout(gridLayout1);
         label2 = new Label(gJobParameter, SWT.NONE);
-        final GridData gridData = new GridData();
+        final GridData gridData = new GridData(67, SWT.DEFAULT);
         label2.setLayoutData(gridData);
         label2.setText("Name:");
         tParaName = new Text(gJobParameter, SWT.BORDER);
         tParaName.setLayoutData(gridData11);
         label6 = new Label(gJobParameter, SWT.NONE);
-        label6.setLayoutData(new GridData(46, SWT.DEFAULT));
+        final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        gridData_2.widthHint = 37;
+        label6.setLayoutData(gridData_2);
         label6.setText("Value:");
         tParaValue = new Text(gJobParameter, SWT.BORDER);
         tParaValue.setLayoutData(gridData13);
@@ -547,11 +575,6 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         label4.setText("Label");
         label4.setLayoutData(gridData17);
         createTable();
-
-        txtParameterDescription = new Text(gJobParameter, SWT.MULTI | SWT.BORDER | SWT.WRAP);        
-        txtParameterDescription.setEditable(false);
-        txtParameterDescription.setBackground(SWTResourceManager.getColor(255, 255, 255));        
-        txtParameterDescription.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 3, 1));
         
         bRemove = new Button(gJobParameter, SWT.NONE);
         bRemove.setText("Remove");
@@ -597,6 +620,22 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
                 addParam();
             }
         });
+        new Label(gJobParameter, SWT.NONE);
+
+        txtParameterDescription = new Text(gJobParameter, SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.WRAP);        
+        txtParameterDescription.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tParaName.setFocus();
+        	}
+        });
+        
+        txtParameterDescription.setEditable(false);
+        final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, false, 4, 1);
+        gridData_1.widthHint = 340;
+        gridData_1.heightHint = 55;
+        txtParameterDescription.setLayoutData(gridData_1);
+        txtParameterDescription.setBackground(SWTResourceManager.getColor(247, 247, 247));        
+        new Label(gJobParameter, SWT.NONE);
     }
 
 
@@ -604,9 +643,9 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes table
      */
     private void createTable() {
-        GridData gridData9 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
-        gridData9.widthHint = 197;
-        gridData9.horizontalIndent = 32;
+        GridData gridData9 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
+        gridData9.horizontalIndent = -1;
+        gridData9.verticalIndent = -1;
         new Label(gJobParameter, SWT.NONE);
         tParameter = new Table(gJobParameter, SWT.BORDER | SWT.FULL_SELECTION);
         tParameter.setHeaderVisible(true);
@@ -718,7 +757,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
     private void addParam() {
-        listener.saveParameter(tParameter, tParaName.getText().trim(), tParaValue.getText());
+        listener.saveParameter( tParameter, tParaName.getText().trim(), tParaValue.getText());
         tParaName.setText("");
         tParaValue.setText("");
         bRemove.setEnabled(false);
@@ -807,6 +846,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         tFileName.setToolTipText(Messages.getTooltip("job.description.filename"));
         tDescription.setToolTipText(Messages.getTooltip("job.description"));
         txtParameterDescription.setToolTipText(Messages.getTooltip("job.param.description"));
+        butBrowse.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));
     }
     
     

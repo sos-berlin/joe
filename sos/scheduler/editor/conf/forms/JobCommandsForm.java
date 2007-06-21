@@ -14,6 +14,7 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobCommandsListener;
@@ -44,6 +45,10 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
         initialize();
         setToolTipText();
         listener.fillTable(table);
+        java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
+        if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {        	
+        	this.commandsGroup.setEnabled(false);        	
+        }
     }
 
 

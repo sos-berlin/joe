@@ -1,5 +1,7 @@
 package sos.scheduler.editor.app;
 
+import java.io.StringWriter;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -13,6 +15,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.Namespace;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 import org.eclipse.swt.widgets.Shell;
 
 public class Utils {
@@ -416,12 +420,25 @@ public class Utils {
 
 
     public static String getFileFromURL(String url) {
-        String separator = System.getProperty("file.separator");
+        /*String separator = System.getProperty("file.separator");
         int index = url.lastIndexOf(separator);
+        if(url != null && new java.io.File(url).getName().startsWith("#xml#.config.")) {
+        	return new java.io.File(url).getParent();
+        }
         if (index < 0)
             return url;
         else
             return url.substring(index + 1);
+        */
+    	if(url != null && new java.io.File(url).getName().startsWith("#xml#.config.")) {
+        	return new java.io.File(url).getParent();
+        }
+    	java.io.File file = new java.io.File(url);
+    	if (file.isFile()) {
+    		return file.getName();
+    	} else {
+    		return url;
+    	}
     }
 
 
@@ -434,6 +451,8 @@ public class Utils {
                         SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
                 if (ok == SWT.CANCEL)
                     return false;
+                if (ok == SWT.NO)
+                	return true;//return false;
                 else if (ok == SWT.YES)
                     unsaved.apply();
             }
@@ -452,6 +471,29 @@ public class Utils {
     		System.out.println(e);
     	}
     	return retVal;
+    }
+    
+    public static String noteAsStr(Element element) {
+		if(element == null) {
+			return "";
+		}
+        StringWriter stream = new StringWriter();
+        XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
+        try {
+            out.output(element.getContent(), stream);
+            stream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        String str = stream.toString().trim();
+        if(str.startsWith("<div")) {
+            str = str.replaceFirst("\\A<\\s*div\\s*xmlns\\s*=\\s*\"[a-zA-Z0-9/:\\.]*\"\\s*>\\s*", "");
+            str = str.replaceFirst("\\s*<\\s*/\\s*div\\s*>\\Z", "");
+        }
+        str = str.replaceAll("<pre space=\"preserve\">","<pre>");
+        return str;
+        
     }
     
     public static String getElementAsString(org.jdom.Text job) {

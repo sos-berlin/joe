@@ -1,5 +1,7 @@
 package sos.scheduler.editor.app;
 
+import java.io.File;
+import java.io.StringReader;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
@@ -14,7 +16,11 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.jdom.input.SAXBuilder;
+
+import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
@@ -116,6 +122,18 @@ public class TabbedContainer implements IContainer {
     		return null;
     }
     
+    public JobChainConfigurationForm openDetails(String filename) {
+    	JobChainConfigurationForm detailForm = new JobChainConfigurationForm(this, folder, SWT.NONE);
+    	
+    	if(detailForm.open(filename, filelist)) {
+        CTabItem tab = newItem(detailForm, detailForm.getFilename());
+        tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(
+                "/sos/scheduler/editor/editor-small.png")));
+        return detailForm;
+    	} else 
+    		return null;
+    }
+    
     public SchedulerForm openScheduler() {
         SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE);
         if (scheduler.open(filelist)) {
@@ -126,6 +144,15 @@ public class TabbedContainer implements IContainer {
             return null;
     }
 
+    public SchedulerForm openScheduler(String filename) {
+        SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE);
+        if (scheduler.open(filename, filelist)) {
+            CTabItem tab = newItem(scheduler, scheduler.getFilename());
+            tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
+            return scheduler;
+        } else
+            return null;
+    }
 
     public DocumentationForm newDocumentation() {
         DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
@@ -150,6 +177,21 @@ public class TabbedContainer implements IContainer {
     	}
     }
 
+    public DocumentationForm openDocumentation(String filename){
+    	try {
+    		DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
+    		if (doc.open(filename, filelist)) {
+    			CTabItem tab = newItem(doc, doc.getFilename());
+    			// tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
+    			return doc;
+    		} else 
+    			return null;
+    	} catch (Exception e) {    		
+    		System.out.println("error in TabbedContainer.openDocumentation()" + e.getMessage() );
+    		return null;
+    	}
+    }
+    
     public String openDocumentationName(){
     	try {
     		DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
@@ -168,7 +210,7 @@ public class TabbedContainer implements IContainer {
     private CTabItem newItem(Control control, String filename) {
         CTabItem tab = new CTabItem(folder, SWT.NONE);
         tab.setControl(control);
-        folder.setSelection(folder.indexOf(tab));
+        folder.setSelection(folder.indexOf(tab));        
         tab.setData(new TabData(Utils.getFileFromURL(filename),""));
         String title = setSuffix(tab,Utils.getFileFromURL(filename));
         TabData t = (TabData)tab.getData();
@@ -308,4 +350,45 @@ public class TabbedContainer implements IContainer {
             ((IEditor) tab.getControl()).updateLanguage();
         }
     }
+    
+    public SchedulerForm openDirectory() {
+        SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE, SchedulerDom.DIRECTORY);
+        
+        if (scheduler.openDirectory(filelist)) {
+            CTabItem tab = newItem(scheduler, scheduler.getFilename());
+            tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
+            return scheduler;
+        } else
+            return null;
+    }
+    
+    public org.eclipse.swt.widgets.Composite openQuick() {
+    	String xmlFilename = "";
+    	try {
+    		
+    		FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);            	            	
+    		fdialog.setFilterPath(Options.getLastDirectory());
+    		fdialog.setText("Open");
+    		fdialog.setFilterExtensions(new String[] {"*.xml"});
+    		xmlFilename = fdialog.open(); 
+    		if (xmlFilename != null && xmlFilename.length() > 0) {
+    			SAXBuilder builder = new SAXBuilder();   		
+    			org.jdom.Document doc = builder.build( new File( xmlFilename ) );    		
+    			org.jdom.Element root = doc.getRootElement();
+    			if(root.getName().equalsIgnoreCase("description")) {
+    				return openDocumentation(xmlFilename);
+    			} else if(root.getName().equalsIgnoreCase("spooler")) {
+     			   return openScheduler(xmlFilename);
+     			} else if(root.getName().equalsIgnoreCase("settings")) {
+    			   return openDetails(xmlFilename);
+    			} else {
+    				MainWindow.message("Unknows root Element: " + root.getName() + " from filename " + xmlFilename, SWT.NONE);
+    			}
+    		}
+    	} catch (Exception e) {
+    		MainWindow.message("could not open file cause" + e.getMessage(), SWT.NONE);
+    	}
+    	return null; 
+    }
+    
 }

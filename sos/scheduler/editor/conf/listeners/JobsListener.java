@@ -83,6 +83,7 @@ public class JobsListener {
 			initJobs();
 		_list.add(job.addContent(runtime));
 		_dom.setChanged(true);
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.NEW);		
 		fillTable(table);
 		table.setSelection(table.getItemCount() - 1);
 		_main.updateJobs();
@@ -469,6 +470,7 @@ public class JobsListener {
 			_dom.setJobDisabled(Utils.getAttributeValue("name", e), false);
 			e.detach();
 			_dom.setChanged(true);
+			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", e) ,SchedulerDom.DELETE);
 			table.remove(index);
 			_main.updateJobs();
 			if(_list==null)

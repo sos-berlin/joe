@@ -132,7 +132,8 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         });
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (tPeriods.getSelectionCount() > 0) {
+            	removePeriod();
+               /* if (tPeriods.getSelectionCount() > 0) {
                     int index = tPeriods.getSelectionIndex();
                     tPeriods.remove(index);
                     
@@ -151,6 +152,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
                 bRemove.setEnabled(tPeriods.getSelectionCount() > 0);
                 periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
                 bApply.setEnabled(false);
+                */
             }
         });
     }
@@ -227,6 +229,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
 
 
     private void applyPeriod() { 
+    	
         listener.applyPeriod(periodForm.getPeriod());
         listener.fillTable(tPeriods);
         
@@ -264,4 +267,27 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
     		bApply.setEnabled(false);
     	}
     }
+    
+    private void removePeriod() {
+    	if (tPeriods.getSelectionCount() > 0) {
+    		int index = tPeriods.getSelectionIndex();
+    		tPeriods.remove(index);
+    		
+    		//listener.removePeriod(index);
+    		listener.removePeriod(listener.getPeriod(index));
+    		
+    		if (index >= tPeriods.getItemCount())
+    			index--;
+    		if (tPeriods.getItemCount() > 0) {
+    			tPeriods.select(index);
+    			//tPeriodSelect();   
+    		}
+    	}
+    	
+    	fillPeriod(true);
+    	bRemove.setEnabled(tPeriods.getSelectionCount() > 0);
+    	periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
+    	bApply.setEnabled(false);
+    }
+    
 } // @jve:decl-index=0:visual-constraint="10,10"

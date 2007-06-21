@@ -23,6 +23,7 @@ import org.jdom.JDOMException;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.LocksListener;
 
@@ -72,6 +73,7 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
         setToolTipText();
 
         listener.fillTable(tableLocks);
+               
     }
 
 

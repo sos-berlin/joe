@@ -681,6 +681,10 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         gPeriod.setEnabled(enabled);
 
         bLetRun.setEnabled(enabled && !singleStart);
+        if(singleStart && bLetRun.getSelection()) {
+        	bLetRun.setSelection(false);
+        	listener.setLetRun(false);
+        }
         cRunOnce.setEnabled(enabled && !onOrder);
         sBeginHours.setEnabled(enabled && !singleStart);
         sBeginMinutes.setEnabled(enabled && !singleStart);
@@ -821,7 +825,6 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 	public PeriodListener getListener() {
 		return listener;
 	}
-
 
 	
 } // @jve:decl-index=0:visual-constraint="10,10"

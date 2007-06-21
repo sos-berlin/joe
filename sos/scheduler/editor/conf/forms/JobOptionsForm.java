@@ -133,6 +133,12 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         initDirectories(listener.isDirectoryTrigger());
         initSetbacks(listener.isSetbackDelay());
         initErrorDelays(listener.isErrorDelay());
+        
+
+        java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
+        if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {        	
+        	this.group.setEnabled(false);        	
+        }
     }
 
 

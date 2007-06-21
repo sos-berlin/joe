@@ -258,9 +258,12 @@ public class TreeMenu {
 
                     if (tName.equals("jobs") && cName.equals("job")) { // copy
                         // job
+                    	
                         String append = "copy(" + (target.getChildren("job").size() + 1);
-                        _copy.setAttribute("name", append + ")of_" + Utils.getAttributeValue("name", _copy));
-                        target.addContent(_copy);
+                        Element currCopy = (Element)_copy.clone();
+                        currCopy.setAttribute("name", append + ")of_" + Utils.getAttributeValue("name", _copy));
+                        
+                        target.addContent(currCopy);
                         _gui.updateJobs();
                     } else if (tName.equals("job") && cName.equals("run_time")) { // copy
                         // run_time

@@ -11,6 +11,10 @@ public interface IContainer {
     public DocumentationForm newDocumentation();
 
     public SchedulerForm openScheduler();
+    
+    public org.eclipse.swt.widgets.Composite openQuick();
+    
+    public SchedulerForm openScheduler(String filename);
 
     public DocumentationForm openDocumentation();
     
@@ -29,6 +33,8 @@ public interface IContainer {
     public JobChainConfigurationForm newDetails();
     
     public JobChainConfigurationForm openDetails();
+    
+    public SchedulerForm openDirectory();
     
     
 }

@@ -8,6 +8,11 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+import sos.scheduler.editor.app.MainListener;
+import sos.scheduler.editor.app.IContainer;
+import sos.scheduler.editor.app.TabbedContainer;
 
 public class MainWindow  {
 	private static Shell sShell        = null; // @jve:decl-index=0:visual-constraint="3,1"
@@ -68,7 +73,70 @@ public class MainWindow  {
 		MenuItem submenuItem2 = new MenuItem(menuBar, SWT.CASCADE);
 		submenuItem2.setText("&File");
 		mFile = new Menu(submenuItem2);
-		MenuItem pNew = new MenuItem(mFile, SWT.PUSH);
+		
+		//neu
+		MenuItem open = new MenuItem(mFile, SWT.PUSH);
+		open.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				if (container.openQuick() != null)
+					setSaveStatus();
+			}
+		});
+		open.setText("Open...\tCtrl+O");
+		open.setAccelerator(SWT.CTRL | 'O');
+		
+		MenuItem mNew = new MenuItem(mFile, SWT.CASCADE);				
+		mNew.setText("New... \tCtrl+N");
+		mNew.setAccelerator(SWT.CTRL | 'N');
+		
+		Menu pmNew = new Menu(mNew);
+		MenuItem pNew = new MenuItem(pmNew, SWT.PUSH);
+		pNew.setText("Configuration... \tCtrl+C");
+		pNew.setAccelerator(SWT.CTRL | 'C');
+		pNew.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (container.newScheduler() != null)
+					setSaveStatus();
+			}
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		mNew.setMenu(pmNew);
+		
+		MenuItem push1 = new MenuItem(pmNew, SWT.PUSH);
+		push1.setText("Documentation...\tCtrl+P"); // Generated
+		push1.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (container.newDocumentation() != null)
+					setSaveStatus();
+			}
+			
+			
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		
+		MenuItem pNewDetails = new MenuItem(pmNew, SWT.PUSH);
+		pNewDetails.setText("Job Chain Details...\tCtrl+F");
+		pNewDetails.setAccelerator(SWT.CTRL | 'F');
+		pNewDetails.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				
+				if (container.newDetails() != null)
+					setSaveStatus();
+			}
+			
+			
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		MenuItem separator = new MenuItem(mFile, SWT.SEPARATOR);
+		//ende neu
+		//submenu = new Menu(mNew);
+		//MenuItem submenuItem1 = new MenuItem(submenu, SWT.CASCADE);
+		//submenuItem1.setText("New ffff");
+		
+		/*MenuItem pNew = new MenuItem(mFile, SWT.PUSH);
 		pNew.setText("New Configuration\tCtrl+N");
 		pNew.setAccelerator(SWT.CTRL | 'N');
 		pNew.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -81,10 +149,15 @@ public class MainWindow  {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+		
+		
 		MenuItem pOpenFile = new MenuItem(mFile, SWT.PUSH);
 		pOpenFile.setText("Open Configuration...\tCtrl+O");
 		pOpenFile.setAccelerator(SWT.CTRL | 'O');
+		
 		MenuItem separator2 = new MenuItem(mFile, SWT.SEPARATOR);
+		
+		
 		MenuItem push = new MenuItem(mFile, SWT.PUSH);
 		push.setText("New Documentation\tCtrl+M"); // Generated
 		push.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -111,7 +184,7 @@ public class MainWindow  {
 		});
 		MenuItem separator = new MenuItem(mFile, SWT.SEPARATOR);
 		
-		//mo
+		
 		MenuItem pNewDetails = new MenuItem(mFile, SWT.PUSH);
 		pNewDetails.setText("New Job Chain Details\tCtrl+F");
 		pNewDetails.setAccelerator(SWT.CTRL | 'F');
@@ -141,8 +214,30 @@ public class MainWindow  {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+		
 		MenuItem separatorDetails = new MenuItem(mFile, SWT.SEPARATOR);
-		//ende mo
+		
+		
+		MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
+		openDir.setText("Open Directory \tCtrl+D");
+		openDir.setAccelerator(SWT.CTRL | 'D');
+		openDir.setEnabled(true);
+		openDir.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				
+				if (container.openDirectory() != null)
+					setSaveStatus();
+				
+			}
+			
+			
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		
+		MenuItem separatorDetails1 = new MenuItem(mFile, SWT.SEPARATOR);
+		
+		
 		pOpenFile.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.openScheduler() != null)
@@ -153,6 +248,7 @@ public class MainWindow  {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+		*/
 		MenuItem pSaveFile = new MenuItem(mFile, SWT.PUSH);
 		pSaveFile.setText("Save\tCtrl+S");
 		pSaveFile.setAccelerator(SWT.CTRL | 'S');
@@ -191,6 +287,18 @@ public class MainWindow  {
 		MenuItem pExit = new MenuItem(mFile, SWT.PUSH);
 		pExit.setText("Exit\tCtrl+E");
 		pExit.setAccelerator(SWT.CTRL | 'E');
+		
+		/*MenuItem submenuItemOpen = new MenuItem(menuBar, SWT.CASCADE);
+		submenuItemOpen.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				//parsiere die XML Datei und erkenne, ob du eine Konfiguration oder Dokumentation bis
+				if (container.openQuick() != null)
+					setSaveStatus();
+			}
+		});
+		submenuItemOpen.setText("&Quick Open");
+		*/
+		
 		MenuItem submenuItem = new MenuItem(menuBar, SWT.CASCADE);
 		submenuItem.setText("Options");
 		MenuItem submenuItem3 = new MenuItem(menuBar, SWT.CASCADE);
@@ -288,8 +396,20 @@ public class MainWindow  {
 			saved = !container.getCurrentEditor().hasChanges();
 		
 		MenuItem[] items = mFile.getItems();
-		items[9].setEnabled(!saved);
-		items[10].setEnabled(true);
+		int index = 0;
+		for (int i =0; i < items.length; i++){
+			MenuItem item = items[i];
+			if(item.getText().startsWith("Save")) {
+				index = i;
+				break;
+			}
+		}
+		
+		items[index].setEnabled(!saved);
+		items[index+1].setEnabled(true);
+		
+		//items[10].setEnabled(!saved);
+		//items[11].setEnabled(true);
 		
 		return saved;
 	}
@@ -336,4 +456,5 @@ public class MainWindow  {
 	public static IContainer getContainer() {
 		return container;
 	}
+		
 }

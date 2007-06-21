@@ -82,7 +82,7 @@ public class JobAssistentDelayAfterErrorForm {
 	private Element           jobBackUp        = null;
 	
 	private JobForm           jobForm          = null;
-	
+	 
 	/** Hilsvariable für das Schliessen des Dialogs. 
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean               closeDialog   = false;   

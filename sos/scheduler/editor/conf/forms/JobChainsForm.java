@@ -29,9 +29,11 @@ import org.jdom.Element;
 import com.swtdesigner.SWTResourceManager;
 
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -103,6 +105,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
     private boolean             refresh                = false;
     private Button              butDetails             = null; 
     private Button              butDetailsJob          = null;
+    private Button              butBrowse              = null;
     
     
     public JobChainsForm(Composite parent, int style, SchedulerDom dom, Element config) {
@@ -150,7 +153,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
  
         sashForm.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         
-        final Group jobchainsGroup = new Group(sashForm, SWT.VERTICAL);
+        final Group jobchainsGroup = new Group(sashForm, SWT.NONE);
         jobchainsGroup.setText("Job Chains");
         final GridLayout gridLayout_2 = new GridLayout();
         gridLayout_2.numColumns = 5;
@@ -202,7 +205,10 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
             }
         });
         tChains = new Table(jobchainsGroup, SWT.FULL_SELECTION | SWT.BORDER);
-        tChains.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 4));
+        tChains.getHorizontalBar().setMaximum(0);
+        final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 4);
+        gridData_2.heightHint = 42;
+        tChains.setLayoutData(gridData_2);
         tChains.setHeaderVisible(true);
         tChains.setLinesVisible(true);
         tChains.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -219,14 +225,14 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
                 bRemoveChain.setEnabled(tChains.getSelectionCount() > 0);
             }
         });
-        TableColumn tableColumn_2 = new TableColumn(tChains, SWT.NONE);
-        tableColumn_2.setWidth(200);
-        tableColumn_2.setText("Name");
         TableColumn tableColumn1 = new TableColumn(tChains, SWT.NONE);
         tableColumn1.setWidth(150);
         tableColumn1.setText("Orders Recoverable");
+        TableColumn tableColumn_2 = new TableColumn(tChains, SWT.NONE);
+        tableColumn_2.setWidth(104);
+        tableColumn_2.setText("Name");
         TableColumn tableColumn2 = new TableColumn(tChains, SWT.NONE);
-        tableColumn2.setWidth(150);
+        tableColumn2.setWidth(90);
         tableColumn2.setText("Visible");
         bNewChain = new Button(jobchainsGroup, SWT.NONE);
         bNewChain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -265,7 +271,10 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 
         dummy1 = new Button(jobchainsGroup, SWT.NONE);
         dummy1.setVisible(false);
-        dummy1.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+        final GridData gridData_3 = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
+        gridData_3.widthHint = 8;
+        gridData_3.heightHint = 5;
+        dummy1.setLayoutData(gridData_3);
         dummy1.setEnabled(false);
         dummy1.setText("Remove Order File Source");
 
@@ -273,7 +282,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         
         gNodes.setText("Chain Node");
         final GridLayout gridLayout_3 = new GridLayout();
-        gridLayout_3.numColumns = 6;
+        gridLayout_3.numColumns = 7;
         gNodes.setLayout(gridLayout_3);
 
         label6 = new Label(gNodes, SWT.NONE);
@@ -331,6 +340,16 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         });
         final GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         cJob.setLayoutData(gridData13);
+
+        butBrowse = new Button(gNodes, SWT.NONE);
+        butBrowse.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB);
+        		if(jobname != null && jobname.length() > 0)
+        			cJob.setText(jobname);
+        	}
+        });
+        butBrowse.setText("Browse");
 
         butImportJob = new Button(gNodes, SWT.NONE);
         butImportJob.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
@@ -401,7 +420,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         	public void keyPressed(final KeyEvent e) {
         	}
         });
-        tDelay.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        tDelay.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
         new Label(gNodes, SWT.NONE);
         new Label(gNodes, SWT.NONE);
 
@@ -427,6 +446,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         final GridData gridData15 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData15.widthHint = 80;
         cErrorState.setLayoutData(gridData15);
+        new Label(gNodes, SWT.NONE);
         new Label(gNodes, SWT.NONE);
         new Label(gNodes, SWT.NONE);
         new Label(gNodes, SWT.NONE);
@@ -538,6 +558,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         bRemoveFile.setEnabled(false);
         new Label(gNodes, SWT.NONE);
         new Label(gNodes, SWT.NONE);
+        new Label(gNodes, SWT.NONE);
 
         final Label movweToLabel = new Label(gNodes, SWT.NONE);
         movweToLabel.setLayoutData(new GridData());
@@ -561,7 +582,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         	}
         });
         tMoveTo.setEnabled(false);
-        final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
+        final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
         gridData_1.minimumWidth = 80;
         tMoveTo.setLayoutData(gridData_1);
         new Label(gNodes, SWT.NONE);
@@ -581,7 +602,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         });
         tNodes.setLinesVisible(true);
         tNodes.setHeaderVisible(true);
-        final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 4);
+        final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true, 6, 4);
         tNodes.setLayoutData(gridData4);
 
         final TableColumn tableColumn3 = new TableColumn(tNodes, SWT.NONE);
@@ -918,7 +939,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
       cErrorState.setEnabled(enable);
       tDelay.setEnabled(enable);
       butImportJob.setEnabled(enable);
-
+      butBrowse.setEnabled(enable);
       tMoveTo.setEnabled(enable && tFileOrderSource.getItemCount() > 0);
       bRemoveFile.setEnabled(enable && tFileOrderSource.getItemCount() > 0);
      
@@ -1096,6 +1117,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
       bFileSink.setToolTipText(Messages.getTooltip("job_chains.node.btn_filesink_node"));
       butDetails.setToolTipText(Messages.getTooltip("job_chains.chain.details"));
       butDetailsJob.setToolTipText(Messages.getTooltip("job_chains.node.details"));
+      butBrowse.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));
       
 
   }

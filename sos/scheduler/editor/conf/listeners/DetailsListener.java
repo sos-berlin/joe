@@ -216,7 +216,7 @@ public class DetailsListener {
 			newNote = doc.getRootElement();
 		} catch (Exception e) {
 			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
-			//System.err.println("error in DetailsListener.createNewNoteElement: " + e.toString());
+			
 		}
 		return newNote;
 	}
@@ -224,82 +224,30 @@ public class DetailsListener {
 	private void setNoteText(Element note, String text) {
 		
 		Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		if(div != null) {			
-			div.setText(text);
-		} else {
+		
+		if(div == null) {						
 			div = new Element("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+			note.addContent(div);
 		}
 		
-		if(text.indexOf("<") == -1) {
-			div.setText(text);	
-			
+		if(text.indexOf("<") == -1) {			
+			div.setText(text);
 		} else {
-			Element newNote = createNewNoteElement(text);
+			//x-element wird temporär gebildet.
+			Element newNote = createNewNoteElement("<x>" + text + "</x>");
 			if(newNote != null){
 				div.removeContent();
 				div.addContent((List)newNote.cloneContent());
 			} 
-		}
-		/*//if( text != null && text.trim().startsWith("<")) {
-		 Element newNote = createNewNoteElement(text);
-		 if(newNote != null) {				
-		 Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		 if(div != null) {
-		 div.setContent(newNote.cloneContent());	
-		 } else {
-		 div = new Element("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		 div.setContent(newNote.cloneContent());
-		 note.addContent(div);
-		 //note.addContent((Element)newNote.clone());
-		  }
-		  
-		  
-		  } else {
-		  note.setText(text);
-		  }*/
-		/*Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		 Element p = null;
-		 if(div != null) {
-		 p = div.getChild("p", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		 if(p==null)
-		 p = new Element("p", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));		
-		 } else {
-		 div = new Element("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		 note.addContent(div);
-		 p = new Element("p", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		 div.addContent(p);
-		 }
-		 if(p != null)
-		 p.setText(text);
-		 */
+		}				
 	}
 	
 	private String getNoteText(Element note) {
 		String noteText = "";
 		Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		if(div != null)
-			noteText = Utils.getElementAsString(div);
-			
-		/*
-		String noteText = "";
-		noteText = Utils.getElementAsString(note);
-		if(((note.getText()== null || note.getTextTrim().length() == 0 ) && note.getContent().size() == 0)
-				|| noteText.equals("<note language=\"de\" />")) {
-			noteText="";
-		}*/
-		/*Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		 if(div != null)
-		 noteText = Utils.getElementAsString(div);
-		 else
-		 noteText = note.getText();
-		 */
-		/*Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		 Element p = null;
-		 if(div != null)
-		 p = div.getChild("p", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		 if(p != null)
-		 noteText = p.getTextNormalize();
-		 */
+		if(div != null) {			
+			noteText = Utils.noteAsStr(div);
+		}		
 		return noteText;
 	}
 	
@@ -316,7 +264,7 @@ public class DetailsListener {
 				value = param.getAttributeValue("value")!= null?param.getAttributeValue("value"): "";															
 				item.setText(0, name);
 				item.setText(1, value);					
-				item.setData(param);//lösch mich test				
+				item.setData(param);	
 				
 			}	
 		}
@@ -581,5 +529,5 @@ public class DetailsListener {
 	public boolean hasError() {
 		return hasError;
 	}
-	
+		
 }

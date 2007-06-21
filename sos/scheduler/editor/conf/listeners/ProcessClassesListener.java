@@ -111,20 +111,27 @@ public class ProcessClassesListener {
 
 
     public void applyProcessClass(String processClass, String host, String port, int maxProcesses,  String spoolerID) {
+    	_dom.setChangedForDirectory("process_class", Utils.getAttributeValue("name", _class), SchedulerDom.DELETE);
         Utils.setAttribute("name", processClass, _class, _dom);
         Utils.setAttribute("max_processes", maxProcesses, _class, _dom);
         Utils.setAttribute("spooler_id", spoolerID, _class, _dom);
         Utils.setAttribute("remote_scheduler", host.trim()+":"+port.trim(), _class, _dom);
         if (_list == null)
             initClasses();
-        if (!_list.contains(_class))
+        if (!_list.contains(_class)) {
             _list.add(_class);
+            _dom.setChangedForDirectory("process_class", processClass, SchedulerDom.NEW);
+        } else {
+        	_dom.setChangedForDirectory("process_class", processClass, SchedulerDom.MODIFY);
+        }
         _dom.setChanged(true);
+        
     }
 
 
     public void removeProcessClass(int index) {
         if (index >= 0 && index < _list.size()) {
+        	String processClass = Utils.getAttributeValue("name", (Element)_list.get(index));
             _list.remove(index);
             if (_list.size() == 0) {
                 _config.removeChild("process_classes");
@@ -133,6 +140,7 @@ public class ProcessClassesListener {
             }
             _class = null;
             _dom.setChanged(true);
+            _dom.setChangedForDirectory("process_class", processClass, SchedulerDom.DELETE);
         }
     }
 

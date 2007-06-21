@@ -105,7 +105,7 @@ public class Editor {
 
     public static String    DOCUMENTATION_ENCODING = "utf-8";
 
-
+ 
     public static void main(String[] args) {    	
     		Display display = Display.getDefault();
     		MainWindow window = new MainWindow();

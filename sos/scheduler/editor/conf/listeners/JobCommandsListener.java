@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
@@ -77,12 +78,14 @@ public class JobCommandsListener {
         boolean found = false;
         String code = "";
         int count = table.getItemCount();
+        
         for (int i = 0; i < count; i++) {
             TableItem item = table.getItem(i);
             if (item.getText().equals("success"))
                 success = true;
             if (item.getText().equals("error"))
                 error = true;
+            
         }
 
         if (!success)

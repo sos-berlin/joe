@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.TreeItem;
@@ -42,6 +43,7 @@ public class JobCommandListener {
 
     public void fillCommands(Element job, TreeItem parent, boolean expand) {
         List commands = job.getChildren("commands");
+        java.util.ArrayList listOfReadOnly = _dom.getListOfReadOnlyFiles();
         if (commands != null) {
             Iterator it = commands.iterator();
             parent.removeAll();
@@ -52,6 +54,12 @@ public class JobCommandListener {
                     TreeItem item = new TreeItem(parent, SWT.NONE);
                     item.setText(e.getAttributeValue("on_exit_code"));
                     item.setData(new TreeData(Editor.JOB_COMMAND, e, Options.getHelpURL("job.commands")));
+                                
+                    if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {
+                    	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+                    } else {
+                    	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+                    }
                 }
             }
         }

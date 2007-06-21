@@ -21,6 +21,7 @@ import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ScriptListener;
 
@@ -101,6 +102,12 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 
         sashForm.setWeights(new int[] { 30, 70 });
         setAttributes(dom, element, type);
+        
+        java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
+        if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", element))) {        	
+        	this.gScript.setEnabled(false);        	
+        }
+        
     }
 
 

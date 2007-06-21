@@ -98,6 +98,10 @@ public class JobChainsListener {
 
 
     public void applyChain(String name, boolean ordersRecoverable, boolean visible) {
+    	String oldjobChainName = Utils.getAttributeValue("name", _chain);
+    	if (oldjobChainName != null && oldjobChainName.length() > 0) {
+    		_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
+    	}
         Utils.setAttribute("name", name, _chain);
         Utils.setAttribute("orders_recoverable", ordersRecoverable, _chain);
         Utils.setAttribute("visible", visible, _chain);
@@ -111,11 +115,13 @@ public class JobChainsListener {
             _chains.addContent(_chain);
 
         _dom.setChanged(true);
+        _dom.setChangedForDirectory("job_chain", name, SchedulerDom.MODIFY);
     }
 
 
     public void deleteChain(int index) {
         List chains = _chains.getChildren("job_chain");
+        String delname = Utils.getAttributeValue("name", (Element)chains.get(index));
         ((Element) chains.get(index)).detach();
         if (chains.size() == 0) {
             _config.removeChild("job_chains");
@@ -132,6 +138,7 @@ public class JobChainsListener {
         }
         //
         _dom.setChanged(true);
+        _dom.setChangedForDirectory("job_chain", delname, SchedulerDom.DELETE);
         _chain = null;
     }
 
@@ -314,10 +321,12 @@ public class JobChainsListener {
 
     public void setState(String state) {
       Utils.setAttribute("state", state, _node, _dom);
+      _dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
   }
     
     public void setDelay(String delay) {
       Utils.setAttribute("delay", delay, _node, _dom);
+      _dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
   }
 
 
@@ -328,6 +337,7 @@ public class JobChainsListener {
 
     public void setJob(String job) {
         Utils.setAttribute("job", job, _node, _dom);
+        _dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
     }
 
 
@@ -338,6 +348,7 @@ public class JobChainsListener {
 
     public void setNextState(String state) {
         Utils.setAttribute("next_state", state, _node, _dom);
+        _dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
     }
 
 
@@ -348,6 +359,7 @@ public class JobChainsListener {
 
     public void setErrorState(String state) {
         Utils.setAttribute("error_state", state, _node, _dom);
+        _dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
     }
 
     public String getMoveTo() {
@@ -406,6 +418,7 @@ public class JobChainsListener {
         
         
         _dom.setChanged(true);
+        _dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
         setStates();
     }
 
@@ -431,6 +444,7 @@ public class JobChainsListener {
            _source = source;
        }
        _dom.setChanged(true);
+       _dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
     
    }
     
@@ -483,6 +497,7 @@ public class JobChainsListener {
         nodes.remove(index);
         _node = null;
         _dom.setChanged(true);
+        _dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
         setStates();
     }
 
@@ -493,6 +508,7 @@ public class JobChainsListener {
       sources.remove(index);
       _source = null;
       _dom.setChanged(true);
+      _dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
   }
     
 

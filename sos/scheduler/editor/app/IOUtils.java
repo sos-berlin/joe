@@ -1,16 +1,28 @@
 package sos.scheduler.editor.app;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
+import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+import org.jdom.transform.JDOMSource;
 
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.util.SOSFile;
+
 
 public class IOUtils {
 
@@ -33,17 +45,87 @@ public class IOUtils {
             return "";
     }
     
+    /*public static String openDirectory(DomParser dom) {
+    	try {
+    		
+    		FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.MULTI);            	
+    		fdialog.setFilterPath(Options.getLastDirectory());
+    		fdialog.setText("Open" + getDomInstance(dom) + " File");
+    		fdialog.setFileName("xml");
+    		String[] filterExt = { "*.xml" };
+    		fdialog.setFilterExtensions(filterExt); 
+    		fdialog.open();                                             
+    		return fdialog.getFilterPath();
+    		
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		MainWindow.message(e.getMessage(), SWT.ICON_ERROR | SWT.OK);
+    	}
+    	return null;
+    	
+    }*/
+    
+    /**
+     * öffnet
+     */
+    public static String openDirectoryFile(String mask) {
+    	String filename = "";
+    	String jobname = "";
+    	 FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);            	            	
+         fdialog.setFilterPath(Options.getLastDirectory());
+         String filterMask = mask.replaceAll("\\\\", "");
+         filterMask = filterMask.replaceAll("\\^.", "");
+         filterMask = filterMask.replaceAll("\\$", "");
+         
+         //"^.*\\.job\\.xml$";
+         fdialog.setFilterExtensions(new String[]{filterMask});
+         filename = fdialog.open();  
+         if(filename != null) {
+        	 if(filename.matches(mask)) {
+        		 MergeAllXMLinDirectory m = new MergeAllXMLinDirectory(); 
+        		 jobname = m.getJobname(filename);
+        	 } else {
+        		 MainWindow.message("the filename: " + filename + " not match's " + mask, SWT.NONE);
+        	 }
+         }
+    	 return jobname;
+    }
+    
     
     public static boolean openFile(String filename, Collection filenames, DomParser dom) {
         try {
-            // open file dialog
+        	
+            // open file dialog            
             if (filename == null || filename.equals("")) {
-                FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
+                FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);            	            	
                 fdialog.setFilterPath(Options.getLastDirectory());
-                fdialog.setText("Open" + getDomInstance(dom) + " File");
-                filename = fdialog.open();
+                fdialog.setText("Open" + getDomInstance(dom) + " File");                
+                filename = fdialog.open();                
             }
 
+            // open Directory
+            if (filename != null && filename.equals("#xml#")) {
+            	 DirectoryDialog fdialog = new DirectoryDialog(MainWindow.getSShell(), SWT.MULTI);
+            	 fdialog.setFilterPath(Options.getLastDirectory());
+                 fdialog.setText("Open" + getDomInstance(dom) + " File");
+                                  
+                 String fname = fdialog.open();
+                 if (fname == null)
+                 	return false;
+                 String path = fdialog.getFilterPath();
+                 
+                 File tempFile = File.createTempFile("#xml#.config.", ".xml", new File(path) );                
+                 tempFile.deleteOnExit();
+                 //temporäre config.xml bilden
+                 MergeAllXMLinDirectory allJob = new MergeAllXMLinDirectory(path, tempFile.getCanonicalPath());
+                 allJob.parseDocuments();
+                 ((SchedulerDom)dom).setListOfReadOnlyFiles(allJob.getListOfReadOnly());
+                 filename= tempFile.getCanonicalPath();        		
+                 if (filename == null)
+                 	return false;            	
+            }
+
+            
             // check for opened file
             if (filenames != null) {
                 for (Iterator it = filenames.iterator(); it.hasNext();) {
@@ -59,10 +141,11 @@ public class IOUtils {
                 File file = new File(filename);
 
                 // check the file
-                if (!file.exists())
+                if (!file.exists())  {
                     MainWindow.message(Messages.getString("MainListener.fileNotFound"), //$NON-NLS-1$
                             SWT.ICON_WARNING | SWT.OK);
-                else if (!file.canRead())
+                    return false;
+                } else if (!file.canRead())
                     MainWindow.message(Messages.getString("MainListener.fileReadProtected"), //$NON-NLS-1$
                             SWT.ICON_WARNING | SWT.OK);
                 else { // open it...
@@ -100,10 +183,15 @@ public class IOUtils {
         } catch (Exception e) {
             e.printStackTrace();
             MainWindow.message(e.getMessage(), SWT.ICON_ERROR | SWT.OK);
+        } finally {
+        	if(filename != null && new File(filename).getName().startsWith("#xml#.config.")) {
+        		new java.io.File(filename).delete();
+        	}
         }
         return false;
-    }
+    } 
 
+    
 
     public static boolean saveFile(DomParser dom, boolean saveas) {
         String filename = dom.getFilename();
@@ -206,31 +294,19 @@ public class IOUtils {
     }
 
 
-    /*public static boolean copyFile(File source, File dest, boolean append) throws Exception {
-        int size = (int) source.length();
-        int bytes_read = 0;
-        byte[] data = null;
-        FileInputStream in = null;
-        FileOutputStream out = null;
-        boolean retVal = true;
-        try {
-            in = new FileInputStream(source);
-            out = new FileOutputStream(dest, append);
-            data = new byte[size];
-            while (bytes_read < size)
-                bytes_read += in.read(data, bytes_read, size - bytes_read);
-            out.write(data);
-            return retVal;
-
-        } catch (Exception e) {
-            throw new Exception("\n -> ..error in copyFile: " + e);
-        } finally {
-            if (in != null)
-                in.close();
-            if (out != null)
-                out.close();
-        }
+   
+    
+    /**
+	 * Speichert das Dokument in die einzelnen Dateien wieder zurück
+	 */
+    public static boolean saveDirectory(DomParser dom, boolean saveas) {
+    	Document currDoc = dom.getDoc();
+    	File configFile = new File(dom.getFilename());
+    	MergeAllXMLinDirectory save = new MergeAllXMLinDirectory(configFile.getParent());
+    	configFile.delete();
+    	save.saveXMLDirectory(currDoc, ((SchedulerDom)dom).getChangedJob());
+    	dom.setChanged(false);
+    	return true;
     }
-   */
 
 }

@@ -149,6 +149,17 @@ public class DocumentationForm extends Composite implements IEditor, IDocumentat
         return res;
     }
 
+    public boolean open(String filename, Collection files) {
+        boolean res = IOUtils.openFile(filename ,files, dom);
+        if (res) {
+            initialize();
+            listener.fillTree(docTree);
+            docTree.setSelection(new TreeItem[] { docTree.getItem(0) });
+            listener.treeSelection(docTree, docMainForm);
+        }
+
+        return res;
+    }
 
     public void openBlank() {
         initialize();

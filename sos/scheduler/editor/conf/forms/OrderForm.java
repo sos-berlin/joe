@@ -16,6 +16,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -139,11 +140,17 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         label10.setText("Order ID");
 
         tOrderId = new Text(gOrder, SWT.BORDER);
+        tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
         tOrderId.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 if (event) {
                     listener.setOrderId(tOrderId.getText(), true);
                     group.setText("Order: " + tOrderId.getText());
+                }
+                if(tOrderId.getText() == null || tOrderId.getText().length() == 0) {
+                	tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+                } else {
+                	tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
                 }
             }
         });
@@ -151,7 +158,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         tOrderId.setLayoutData(gridData_3);
 
         final Label jobchainLabel = new Label(gOrder, SWT.NONE);
-        jobchainLabel.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+        jobchainLabel.setLayoutData(new GridData());
         jobchainLabel.setText("Job chain");
 
         cJobchain = new Combo(gOrder, SWT.NONE);
@@ -167,7 +174,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         cJobchain.setLayoutData(gridData_1);
 
         final Label titleLabel = new Label(gOrder, SWT.NONE);
-        titleLabel.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false, false));
+        titleLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
         titleLabel.setText("Title");
 
         tTitle = new Text(gOrder, SWT.BORDER);
@@ -183,7 +190,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         tTitle.setLayoutData(gridData_5);
 
         final Label priorityLabel = new Label(gOrder, SWT.NONE);
-        priorityLabel.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+        priorityLabel.setLayoutData(new GridData());
         priorityLabel.setText("Priority");
 
         tPriority = new Text(gOrder, SWT.BORDER);
@@ -201,7 +208,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 
         final Label stateLabel = new Label(gOrder, SWT.NONE);
-        stateLabel.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false, false));
+        stateLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
         stateLabel.setText("State");
 
         tState = new Text(gOrder, SWT.BORDER);
@@ -216,7 +223,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         tState.setLayoutData(gridData);
 
         final Label replaceLabel = new Label(gOrder, SWT.NONE);
-        replaceLabel.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+        replaceLabel.setLayoutData(new GridData());
         replaceLabel.setText("Replace");
 
         bReplace = new Button(gOrder, SWT.CHECK);
@@ -230,6 +237,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
         bReplace.setLayoutData(new GridData());
+        listener.setCommandAttribute("replace", "yes");
 
     }
 
@@ -264,12 +272,8 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         parameterGroup.setLayoutData(new GridData());
         parameterGroup.setText("Parameter");
         final GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 6;
+        gridLayout.numColumns = 5;
         parameterGroup.setLayout(gridLayout);
-
-        final Label joborderIdLabel = new Label(parameterGroup, SWT.NONE);
-        joborderIdLabel.setVisible(false);
-        joborderIdLabel.setText("Order ID");
         label2 = new Label(parameterGroup, SWT.NONE);
         label2.setText("Name");
         tParaName = new Text(parameterGroup, SWT.BORDER);
@@ -288,7 +292,9 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         label6 = new Label(parameterGroup, SWT.NONE);
         label6.setText("Value");
         tParaValue = new Text(parameterGroup, SWT.BORDER);
-        tParaValue.setLayoutData(new GridData(358, SWT.DEFAULT));
+        final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        gridData_1.widthHint = 276;
+        tParaValue.setLayoutData(gridData_1);
         tParaValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
             public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
                 if (e.keyCode == SWT.CR && !tParaName.getText().trim().equals(""))
@@ -311,8 +317,8 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         });
         new Label(parameterGroup, SWT.NONE);
         tParameter = new Table(parameterGroup, SWT.BORDER | SWT.FULL_SELECTION);
-        final GridData gridData = new GridData(GridData.BEGINNING, GridData.FILL, false, true, 4, 1);
-        gridData.widthHint = 522;
+        final GridData gridData = new GridData(GridData.FILL, GridData.FILL, false, true, 3, 1);
+        gridData.widthHint = 461;
         tParameter.setLayoutData(gridData);
         tParameter.addPaintListener(new PaintListener() {
             public void paintControl(final PaintEvent e) {
@@ -335,7 +341,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         tcName.setWidth(100);
         tcName.setText("Name");
         TableColumn tcValue = new TableColumn(tParameter, SWT.NONE);
-        tcValue.setWidth(420);
+        tcValue.setWidth(359);
         tcValue.setText("Value");
         bRemove = new Button(parameterGroup, SWT.NONE);
         bRemove.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, true));

@@ -57,7 +57,19 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 
     }
 
+    public SchedulerForm(IContainer container, Composite parent, int style, int type) {
+        super(parent, style);
+        this.container = container;
 
+        // initialize();
+        this.dom = new SchedulerDom(type);
+        this.dom.setDataChangedListener(this);
+
+        listener = new SchedulerListener(this, this.dom);
+
+    }
+    
+    
     private void initialize() {
         FillLayout fillLayout = new FillLayout();
         fillLayout.spacing = 0;
@@ -246,6 +258,17 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
     }
 
 
+    public boolean openDirectory(Collection files) {
+    	
+        boolean res = IOUtils.openFile("#xml#", files, dom);
+        if (res) {
+            initialize();
+            listener.treeFillMain(tree, cMainForm, SchedulerDom.DIRECTORY);
+        }
+
+        return res;
+    }
+    
     public boolean open(Collection files) {
         boolean res = IOUtils.openFile(files, dom);
         if (res) {
@@ -256,9 +279,23 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
         return res;
     }
 
+    public boolean open(String filename, Collection files) {
+        boolean res = IOUtils.openFile(filename, files, dom);
+        if (res) {
+            initialize();
+            listener.treeFillMain(tree, cMainForm);
+        }
+
+        return res;
+    }
 
     public boolean save() {
-        boolean res = IOUtils.saveFile(dom, false);
+    	boolean res = true;
+    	if(dom.getFilename() != null && new java.io.File(dom.getFilename()).getName().startsWith("#xml#.config.") && dom.getFilename().endsWith(".xml")) {
+    		res = IOUtils.saveDirectory(dom, false);
+    	} else {
+    		res = IOUtils.saveFile(dom, false);
+    	}
         if (res)
             container.setNewFilename(null);
         return res;

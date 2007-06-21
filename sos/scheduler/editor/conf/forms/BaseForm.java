@@ -4,6 +4,11 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -18,6 +23,7 @@ import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -50,6 +56,8 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     private Text         tComment = null;
 
     private Table        table    = null;
+    
+    private Button       butOpen  = null; 
 
 
     /**
@@ -152,6 +160,16 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         bNew.setText("&New Base File");
         getShell().setDefaultButton(bNew);
 
+        butOpen = new Button(group, SWT.NONE);
+        butOpen.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		openBaseElement();
+        		
+        	}
+        });
+        butOpen.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        butOpen.setText("Open Base File");
+
         label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label2.setText("Label");
         label2.setLayoutData(gridData21);
@@ -212,8 +230,13 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes table
      */
     private void createTable() {
-        GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 2, 3);
+        GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 2, 4);
         table = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
+        table.addMouseListener(new MouseAdapter() {
+        	public void mouseDoubleClick(final MouseEvent e) {
+        		openBaseElement();
+        	}
+        });
         table.setHeaderVisible(true);
         table.setLayoutData(gridData);
         table.setLinesVisible(true);
@@ -266,6 +289,21 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         bApply.setToolTipText(Messages.getTooltip("base.btn_apply"));
         table.setToolTipText(Messages.getTooltip("base.table"));
         tFile.setToolTipText(Messages.getTooltip("base.file_input"));
+        butOpen.setToolTipText(Messages.getTooltip("base.file_open"));
 
+    }
+    
+    private void openBaseElement() {
+    	if(tFile.getText() != null && tFile.getText().length() > 0) {
+    		String xmlPath = sos.scheduler.editor.app.Options.getSchedulerHome() ;
+    		xmlPath = (xmlPath.endsWith("/") || xmlPath.endsWith("\\") ? xmlPath.concat("config") : xmlPath.concat("/config/"));
+    		xmlPath = xmlPath.concat(tFile.getText()); 
+    		
+    		sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();        		
+    		con.openScheduler(xmlPath);
+    		con.setStatusInTitle();
+    	} else {        			
+    		MainWindow.message("There is no Basefile defined.", SWT.ICON_WARNING | SWT.OK);
+    	}
     }
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -18,6 +18,7 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ExecuteListener;
 import sos.scheduler.editor.conf.listeners.ScriptListener;
@@ -78,6 +79,8 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
 
     public ExecuteForm(Composite parent, int style, SchedulerDom dom, Element job) {
         super(parent, style);
+        
+        
         initialize();
         setToolTipText();
 
@@ -85,6 +88,11 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
 
         scriptForm.setAttributes(dom, job, Editor.EXECUTE);
         fillForm();
+        java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
+        if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {        	
+        	this.group.setEnabled(false);        	
+        } 
+
     }
 
 
