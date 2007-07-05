@@ -57,6 +57,7 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 
     private Label                  label2        = null;
     
+    private SchedulerDom           dom           = null;
 
 
 
@@ -65,8 +66,9 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
      * @param style
      * @throws JDOMException
      */
-    public LocksForm(Composite parent, int style, SchedulerDom dom, Element config) throws JDOMException {
+    public LocksForm(Composite parent, int style, SchedulerDom dom_, Element config) throws JDOMException {
         super(parent, style);
+        dom = dom_;
         listener = new LocksListener(dom, config);
 
         initialize();
@@ -231,13 +233,22 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
         tableLocks.setLinesVisible(true);
         tableLocks.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                boolean selection = tableLocks.getSelectionCount() > 0;
-                bRemove.setEnabled(selection);
-                if (selection) {
-                    listener.selectLock(tableLocks.getSelectionIndex());
-                    setInput(true);
-                    tLock.setBackground(null);
-                }
+            	
+            	Element currLock = listener.getLock(tableLocks.getSelectionIndex());
+            	if(currLock != null && !Utils.isElementEnabled("lock", dom, currLock)) {
+            		setInput(false);
+            		bRemove.setEnabled(false);
+            		bApply.setEnabled(false);
+            	} else {
+            		
+            		boolean selection = tableLocks.getSelectionCount() > 0;
+            		bRemove.setEnabled(selection);
+            		if (selection) {
+            			listener.selectLock(tableLocks.getSelectionIndex());
+            			setInput(true);
+            			tLock.setBackground(null);
+            		}
+            	}
             }
         });
         TableColumn lockTableColumn = new TableColumn(tableLocks, SWT.NONE);

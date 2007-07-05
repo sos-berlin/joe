@@ -14,6 +14,7 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -29,6 +30,8 @@ import org.eclipse.swt.widgets.TreeItem;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.conf.DetailDom;
@@ -219,8 +222,11 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 				group.setText(txtJobChainname.getText());				
 				if(tree != null && tree.getSelectionCount() > 0) {					
 					TreeItem item = tree.getSelection()[0];					
-					if(item.getText(0).startsWith("Job Chain:"))
+					if(item.getText(0).startsWith("Job Chain:")) {
 						item.setText("Job Chain: " + txtJobChainname.getText());
+					    item.setData(new TreeData(Editor.DETAILS, new org.jdom.Element("details"), Options.getHelpURL("details")));
+						
+					}
 				}
 				
 				if(fillMain){					
@@ -672,9 +678,17 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 					}
         			if (filename != null && filename.length() > 0) {
         				File file = new File(filename);
-        				if(file.exists())
-        					Runtime.getRuntime().exec("cmd /C START iExplore ".concat(filename));
-        				else
+        				if(file.exists()) {
+        					//Runtime.getRuntime().exec("cmd /C START iExplore ".concat(filename));
+        					
+        					Program prog = Program.findProgram("html");
+        		            if (prog != null)
+        		                prog.execute(new File(filename).toURL().toString());
+        		            else {
+        		            	Runtime.getRuntime().exec(Options.getBrowserExec(new File(filename).toURL().toString(), Options.getLanguage()));
+        		            }        					 
+        					
+        				} else
         					MainWindow.message("Missing documentation " + file.getCanonicalPath() , SWT.ICON_ERROR);
         			} else {
         				MainWindow.message("Please save jobchain configuration before opening documentation." , SWT.ICON_ERROR);

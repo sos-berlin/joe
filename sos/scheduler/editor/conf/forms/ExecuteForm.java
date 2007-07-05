@@ -88,10 +88,9 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
 
         scriptForm.setAttributes(dom, job, Editor.EXECUTE);
         fillForm();
-        java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
-        if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {        	
-        	this.group.setEnabled(false);        	
-        } 
+        
+        this.group.setEnabled(Utils.isElementEnabled("job", dom, job));
+         
 
     }
 

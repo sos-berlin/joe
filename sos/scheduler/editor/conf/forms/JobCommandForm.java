@@ -120,10 +120,10 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         bApplyExitcode.setEnabled(false);
         event = true;
         
-        java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
         
-        if (listOfReadOnly != null && command.getParentElement() != null && listOfReadOnly.contains(Utils.getAttributeValue("name", command.getParentElement()))) {        	
-        	this.jobsAndOrdersGroup.setEnabled(false);        	
+        
+        if (command.getParentElement() != null ){        	
+        	this.jobsAndOrdersGroup.setEnabled(Utils.isElementEnabled("job", dom, command.getParentElement()));        	
         }
         
     }

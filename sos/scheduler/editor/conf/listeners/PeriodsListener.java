@@ -154,6 +154,8 @@ public class PeriodsListener {
 			
 		}
 		_dom.setChanged(true);
+		if(_parent != null && _parent.getParentElement() != null )
+        	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent.getParentElement()), SchedulerDom.MODIFY);
 	}
 	
 	public void removePeriod(int index) {
@@ -193,6 +195,8 @@ public class PeriodsListener {
 		}    	
 		
 		_dom.setChanged(true);
+		if(_parent != null && _parent.getParentElement() != null )
+        	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent.getParentElement()), SchedulerDom.MODIFY);
 	}
 	
 	
@@ -233,8 +237,11 @@ public class PeriodsListener {
 			}
 		}
 		_dom.setChanged(true);
+		//Element job = getJobElement(_parent);
+		if(_parent != null )
+        	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 	}
-
+	
 	public List get_list() {
 		return _list;
 	}

@@ -7,6 +7,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -81,7 +83,13 @@ public class JobAssistentInfoForms {
 			jobGroup.setLayout(gridLayout_1);
 		
 
-			final Text txtInfoGlobal = new Text(jobGroup, SWT.WRAP);
+			final Text txtInfoGlobal = new Text(jobGroup, SWT.READ_ONLY | SWT.WRAP);
+			txtInfoGlobal.addFocusListener(new FocusAdapter() {
+				public void focusGained(final FocusEvent e) {
+					butNext.setFocus();
+				}
+			});
+			
 			txtInfoGlobal.setEditable(false);
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 			gridData_1.widthHint = 491;

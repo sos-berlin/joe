@@ -16,6 +16,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.stream.StreamSource;
 
+import org.eclipse.swt.SWT;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -227,6 +228,9 @@ public abstract class DomParser {
 
     public String transform(Element element) throws TransformerFactoryConfigurationError, TransformerException,
             IOException {
+    	
+    	File tmp = null;
+    	try {
         Document doc = new Document((Element) element.clone());
 
         // Transformer transformer =
@@ -239,13 +243,21 @@ public abstract class DomParser {
 
         List result = out.getResult();
 
-        File tmp = File.createTempFile(Options.getXSLTFilePrefix(), Options.getXSLTFileSuffix());
+        tmp = File.createTempFile(Options.getXSLTFilePrefix(), Options.getXSLTFileSuffix());
+        
         tmp.deleteOnExit();
 
         XMLOutputter outp = new XMLOutputter(Format.getPrettyFormat());
         outp.output(result, new FileWriter(tmp));
 
         return tmp.getAbsolutePath();
+    	} catch (Exception e) {
+    		//System.err.println("error in DomParser.transform: " + (tmp != null ? tmp.getCanonicalPath() : "")+ e.getMessage());
+    		MainWindow.message(MainWindow.getSShell(), 
+    				"error in DomParser.transform: " + (tmp != null ? tmp.getCanonicalPath() : "")+ e.getMessage(), 
+    				SWT.ICON_WARNING | SWT.OK );
+    	}
+    	return "";
     }
 
 

@@ -103,10 +103,8 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         sashForm.setWeights(new int[] { 30, 70 });
         setAttributes(dom, element, type);
         
-        java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
-        if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", element))) {        	
-        	this.gScript.setEnabled(false);        	
-        }
+        gScript.setEnabled(Utils.isElementEnabled("job", dom, element));        	
+        
         
     }
 
@@ -174,7 +172,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         tFilename.setLayoutData(gridData2);
         tFilename.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                listener.setFilename(tFilename.getText());
+                listener.setFilename(tFilename.getText());                
             }
         });
         GridData gridData3 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
@@ -239,6 +237,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         lInclude.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 bRemove.setEnabled(lInclude.getSelectionCount() > 0);
+                
             }
         });
         bRemove = new Button(gInclude, SWT.NONE);

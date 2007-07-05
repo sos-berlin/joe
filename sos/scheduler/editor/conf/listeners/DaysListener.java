@@ -5,12 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class DaysListener {
@@ -167,6 +169,8 @@ public class DaysListener {
 
         daylist.addContent(new Element("day").setAttribute("day", "" + getDayNumber(day)));
         _dom.setChanged(true);
+        if(_runtime != null && _runtime.getParentElement() != null )
+           	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
 
         setUsedDays();
     }
@@ -187,6 +191,8 @@ public class DaysListener {
                         _runtime.removeChild(_elementName[_type]);
 
                     _dom.setChanged(true);
+                    if(_runtime != null && _runtime.getParentElement() != null )
+                       	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
                     setUsedDays();
                     break;
                 }
@@ -204,6 +210,9 @@ public class DaysListener {
             TreeItem item = new TreeItem(parent, SWT.NONE);
             item.setText(_usedDays[i]);
             item.setData(new TreeData(Editor.PERIODS, _dayElements[i], Options.getHelpURL("periods")));
+            if(_runtime != null && !Utils.isElementEnabled("job", _dom, _runtime)) {
+            	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+            }
         }
         parent.setExpanded(expand);
     }

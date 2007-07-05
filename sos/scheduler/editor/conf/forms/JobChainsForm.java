@@ -342,6 +342,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         cJob.setLayoutData(gridData13);
 
         butBrowse = new Button(gNodes, SWT.NONE);
+        butBrowse.setVisible(false);
         butBrowse.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB);
@@ -420,7 +421,8 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
         	public void keyPressed(final KeyEvent e) {
         	}
         });
-        tDelay.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
+        tDelay.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        new Label(gNodes, SWT.NONE);
         new Label(gNodes, SWT.NONE);
         new Label(gNodes, SWT.NONE);
 

@@ -109,6 +109,7 @@ public class JobCommandsListener {
             initCommands();
         _commands.add(commands);
         _dom.setChanged(true);
+        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
         fillTable(table);
         table.setSelection(table.getItemCount() - 1);
         _main.updateCommands();
@@ -122,6 +123,7 @@ public class JobCommandsListener {
             Element e = (Element) item.getData();
             e.detach();
             _dom.setChanged(true);
+            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
             table.remove(index);
             _main.updateCommands();
 

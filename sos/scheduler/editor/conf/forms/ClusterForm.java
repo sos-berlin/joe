@@ -76,6 +76,7 @@ public class ClusterForm extends Composite implements IUnsaved, IUpdateLanguage 
      */
     private void createGroup() {
         GridData gridData = new GridData();
+        gridData.minimumWidth = 60;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
         gScript = new Group(this, SWT.NONE);
@@ -102,7 +103,9 @@ public class ClusterForm extends Composite implements IUnsaved, IUpdateLanguage 
             listener.setHeartbeatWarnTimeout(tWarnTimeout.getText());
         	}
         });
-        tWarnTimeout.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+        final GridData gridData_1 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+        gridData_1.minimumWidth = 60;
+        tWarnTimeout.setLayoutData(gridData_1);
      
     }
 
@@ -118,7 +121,9 @@ public class ClusterForm extends Composite implements IUnsaved, IUpdateLanguage 
             listener.setHeartbeatTimeout(tTimeout.getText());
         	}
         });
-        tTimeout.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+        final GridData gridData = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+        gridData.minimumWidth = 60;
+        tTimeout.setLayoutData(gridData);
     }
 
  

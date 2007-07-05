@@ -21,6 +21,7 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.TabbedContainer;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobsListener;
@@ -151,7 +152,13 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			tableColumn5.setText("Disabled");
 			table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-					if (e.detail == SWT.CHECK) {
+					if (Utils.isElementEnabled("job", dom, (Element) e.item.getData())) {
+						bRemoveJob.setEnabled(true);
+					} else {
+						bRemoveJob.setEnabled(false);
+						return;
+					}
+					if (e.detail == SWT.CHECK) {						
 						TableItem item = (TableItem) e.item;
 						if (!listener.hasJobComment((Element) item.getData())) {
 							listener.setJobDisabled(item.getText(1), item.getChecked());
@@ -160,8 +167,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 									| SWT.OK);
 							item.setChecked(false);
 						}
-					} else
-						bRemoveJob.setEnabled(true);
+					} 
 				}
 			});
 			TableColumn tableColumn = new TableColumn(table, SWT.NONE);

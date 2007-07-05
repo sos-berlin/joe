@@ -76,13 +76,15 @@ public class PeriodListener {
     	    				el.addContent(_period);
     	    				Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period, _dom);		
     	    				_dom.setChanged(true);
+    	    				if(el.getParentElement() != null)
+    	    		        	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",el.getParentElement()), SchedulerDom.MODIFY);
     	    				break;    	    				
     	    			}
     	    		}
     	    	}
             		
     		} else {
-    			Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period, _dom);
+    			Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period, _dom);    			
     		}
           if (bApply != null) {
               bApply.setEnabled(true);

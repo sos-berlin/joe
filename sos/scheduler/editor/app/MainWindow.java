@@ -217,8 +217,8 @@ public class MainWindow  {
 		
 		MenuItem separatorDetails = new MenuItem(mFile, SWT.SEPARATOR);
 		
-		
-		MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
+		*/
+		/*MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
 		openDir.setText("Open Directory \tCtrl+D");
 		openDir.setAccelerator(SWT.CTRL | 'D');
 		openDir.setEnabled(true);
@@ -236,7 +236,8 @@ public class MainWindow  {
 		});
 		
 		MenuItem separatorDetails1 = new MenuItem(mFile, SWT.SEPARATOR);
-		
+		*/
+		/*
 		
 		pOpenFile.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -304,13 +305,26 @@ public class MainWindow  {
 		MenuItem submenuItem3 = new MenuItem(menuBar, SWT.CASCADE);
 		submenuItem3.setText("&Help");
 		submenu1 = new Menu(submenuItem3);
+		MenuItem pHelS = new MenuItem(submenu1, SWT.PUSH);
+		pHelS.setText("Scheduler Editor Help");		
+		
+		pHelS.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {				
+				listener.openHelp(Options.getHelpURL("index"));				
+			}
+			
+			
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		
 		MenuItem pHelp = new MenuItem(submenu1, SWT.PUSH);
-		pHelp.setText("Help\tF1");
+		pHelp.setText("Help\tF1");		
 		pHelp.setAccelerator(SWT.F1);
 		pHelp.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.getCurrentEditor() != null) {
-					listener.openHelp(container.getCurrentEditor().getHelpKey());
+					listener.openHelp(container.getCurrentEditor().getHelpKey());					
 				}else {
 					String msg = "Help is available after documentation or configuration is opened";
 					MainWindow.message(msg, SWT.ICON_INFORMATION);

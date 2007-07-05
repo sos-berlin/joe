@@ -25,7 +25,9 @@ import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ProcessClassesListener;
 
@@ -60,8 +62,12 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
     private Label                  label         = null;
 
     private Label                  label2        = null;
+    
     private Text                   tRemoteHost   = null;
+    
     private Text                   tRemotePort   = null;
+    
+    private SchedulerDom           dom           = null;
     
 
 
@@ -71,8 +77,9 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
      * @param style
      * @throws JDOMException
      */
-    public ProcessClassesForm(Composite parent, int style, SchedulerDom dom, Element config) throws JDOMException {
+    public ProcessClassesForm(Composite parent, int style, SchedulerDom dom_, Element config) throws JDOMException {
         super(parent, style);
+        dom = dom_;
         listener = new ProcessClassesListener(dom, config);
 
         initialize();
@@ -164,7 +171,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         tRemoteHost.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
         		if (e.keyCode == SWT.CR)
-              applyClass();
+        			applyClass();
        
         	}
         });
@@ -179,7 +186,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         tRemotePort = new Text(group, SWT.BORDER);
         tRemotePort.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
-            bApply.setEnabled(true);
+        		bApply.setEnabled(true);
 
         	}
         });
@@ -309,15 +316,22 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         table.setLayoutData(gridData);
         table.setLinesVisible(true);
         table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                boolean selection = table.getSelectionCount() > 0;
-                bRemove.setEnabled(selection);
-                if (selection) {
-                    listener.selectProcessClass(table.getSelectionIndex());
-                    setInput(true);
-                    tProcessClass.setBackground(null);
-                }
-            }
+        	public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) { 
+        		Element currElem = listener.getProcessElement(table.getSelectionIndex());
+        		if(currElem != null && !Utils.isElementEnabled("process_class", dom, currElem)) {
+        			setInput(false);
+        			bRemove.setEnabled(false);
+        			bApply.setEnabled(false);
+        		} else {
+        			boolean selection = table.getSelectionCount() > 0;
+        			bRemove.setEnabled(selection);
+        			if (selection) {
+        				listener.selectProcessClass(table.getSelectionIndex());
+        				setInput(true);
+        				tProcessClass.setBackground(null);
+        			}
+        		}
+        	}
         });
         TableColumn tableColumn = new TableColumn(table, SWT.NONE);
         tableColumn.setWidth(200);
@@ -332,6 +346,8 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 
 
     private void applyClass() {
+    	if (!checkRemote())
+    		return;
         listener.applyProcessClass(tProcessClass.getText(), tRemoteHost.getText(),tRemotePort.getText(),sMaxProcesses.getSelection(), tSpoolerID.getText());
         listener.fillTable(table);
         setInput(false);
@@ -376,5 +392,16 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         table.setToolTipText(Messages.getTooltip("process_classes.table"));
         tRemoteHost.setToolTipText(Messages.getTooltip("process_classes.remoteHost"));
         tRemotePort.setToolTipText(Messages.getTooltip("process_classes.remotePort"));
+    }
+    
+    private boolean checkRemote() {
+    	if(tRemoteHost.getText().trim().length() > 0 && tRemotePort.getText().trim().length() == 0) {
+    		MainWindow.message(getShell(), "Missing Scheduler Port.", SWT.ICON_WARNING | SWT.OK );
+    		return false;
+    	} else if (tRemoteHost.getText().trim().length() == 0 && tRemotePort.getText().trim().length() > 0) {
+    		MainWindow.message(getShell(), "Missing Scheduler Host.", SWT.ICON_WARNING | SWT.OK );
+    		return false;
+    	}    	          
+    	return true;
     }
 } // @jve:decl-index=0:visual-constraint="10,10"

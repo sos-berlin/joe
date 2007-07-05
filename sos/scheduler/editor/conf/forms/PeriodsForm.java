@@ -49,6 +49,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
 
         listener.fillTable(tPeriods);
         periodForm.setEnabled(false);
+        this.group.setEnabled(Utils.isElementEnabled("job", dom, element));
     }
 
 

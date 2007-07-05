@@ -12,6 +12,7 @@ import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -303,7 +304,14 @@ public class JobAssistentImportJobsForm {
 					public void widgetSelected(final SelectionEvent e) {
 						try  {		
 							if(txtPath.getText()!= null && txtPath.getText().length() > 0) {
-								Runtime.getRuntime().exec("cmd /C START iExplore ".concat(txtPath.getText()));
+								//Runtime.getRuntime().exec("cmd /C START iExplore ".concat(txtPath.getText()));
+
+	        					Program prog = Program.findProgram("html");
+	        		            if (prog != null)
+	        		                prog.execute(new File(txtPath.getText()).toURL().toString());
+	        		            else {
+	        		            	Runtime.getRuntime().exec(Options.getBrowserExec(new File(txtPath.getText()).toURL().toString(), Options.getLanguage()));
+	        		            } 
 							} else {
 								MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_jobdescription"), SWT.ICON_WARNING | SWT.OK );								 
 							}
@@ -646,9 +654,12 @@ public class JobAssistentImportJobsForm {
 			
 			
 			//relativen phad bestimmen
-			String sHome = sos.scheduler.editor.app.Options.getSchedulerHome().replaceAll("/", "\\\\");
-			String currPath = txtPath.getText().replaceAll("/", "\\\\"); 
-			if(currPath.indexOf(sHome) > -1) {
+			//String sHome = sos.scheduler.editor.app.Options.getSchedulerHome().replaceAll("/", "\\\\");
+			//String currPath = txtPath.getText().replaceAll("/", "\\\\");
+			//String sep = System.getProperty("file.separator");
+			String sHome = sos.scheduler.editor.app.Options.getSchedulerHome().replaceAll("\\\\", "/");
+			String currPath = txtPath.getText().replaceAll("\\\\", "/");
+			if(new File(currPath).getPath().indexOf(new File(sHome).getPath()) > -1) {
 				h.put("filename", currPath.substring(sHome.length() + 1));
 			} else {
 				h.put("filename", txtPath.getText());

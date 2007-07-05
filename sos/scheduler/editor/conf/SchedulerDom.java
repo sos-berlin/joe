@@ -208,6 +208,44 @@ public class SchedulerDom extends DomParser {
         setChanged(false);
     }
 
+    
+    public void writeElement(String filename, Document doc) throws IOException, JDOMException {
+
+        String encoding = Editor.SCHEDULER_ENCODING;
+        if (encoding.equals(""))
+            encoding = DEFAULT_ENCODING;
+          reorderDOM(doc.getRootElement());
+
+        FormatHandler handler = new FormatHandler(this);
+        handler.setEnconding(encoding);
+        handler.setDisableJobs(isJobsDisabled());
+        SAXOutputter saxo = new SAXOutputter(handler);
+        //saxo.output(getDoc());
+        saxo.output(doc);
+
+        try {
+            getBuilder(false).build(new StringReader(handler.getXML()));
+        } catch (JDOMException e) {
+            int res = MainWindow.message(Messages.getString("MainListener.outputInvalid",
+                    new String[] { e.getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+            if (res == SWT.NO)
+                return;
+        }
+
+        OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
+
+        writer.write(handler.getXML());
+        writer.close();
+
+        // FileOutputStream stream = new FileOutputStream(new File(filename));
+        // XMLOutputter out = new XMLOutputter(getFormat());
+        // out.output(_doc, stream);
+        // stream.close();
+
+        //setFilename(filename);
+        setChanged(false);
+    }
+
 
     public String getXML(Element element) throws JDOMException {
         reorderDOM(element);

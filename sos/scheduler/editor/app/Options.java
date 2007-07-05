@@ -147,6 +147,7 @@ public class Options {
 
         value = value.replaceAll("\\{file\\}", url);
         value = value.replaceAll("\\{lang\\}", lang);
+        
         return value.split("\\|");
     }
 

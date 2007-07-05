@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
@@ -59,6 +60,9 @@ public class ProcessClassesListener {
                 item.setText(0, name);
                 item.setText(1, "" + Utils.getIntValue("max_processes", e));
                 item.setText(2, Utils.getAttributeValue("spooler_id", e));
+                if(!Utils.isElementEnabled("process_class", _dom, e)) {
+                	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+                } 
             }
         }
     }
@@ -71,6 +75,10 @@ public class ProcessClassesListener {
             _class = null;
     }
 
+    public Element getProcessElement(int index) {
+    	selectProcessClass(index);
+    	return _class;
+    }
 
     public String getProcessClass() {
       String name = Utils.getAttributeValue("name", _class);
@@ -115,7 +123,9 @@ public class ProcessClassesListener {
         Utils.setAttribute("name", processClass, _class, _dom);
         Utils.setAttribute("max_processes", maxProcesses, _class, _dom);
         Utils.setAttribute("spooler_id", spoolerID, _class, _dom);
-        Utils.setAttribute("remote_scheduler", host.trim()+":"+port.trim(), _class, _dom);
+        if(host.trim().concat(port.trim()).length() > 0) {
+        	Utils.setAttribute("remote_scheduler", host.trim()+":"+port.trim(), _class, _dom);
+        }
         if (_list == null)
             initClasses();
         if (!_list.contains(_class)) {

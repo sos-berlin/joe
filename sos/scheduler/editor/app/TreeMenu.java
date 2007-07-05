@@ -29,7 +29,7 @@ public class TreeMenu {
 
     private Clipboard     _cb;
 
-    private Element       _copy;
+    private static Element       _copy;
 
     private SchedulerForm _gui;
 
@@ -50,21 +50,26 @@ public class TreeMenu {
 
 
     private Element getElement() {
-        if (_tree.getSelectionCount() > 0) {
-            TreeData data = (TreeData) _tree.getSelection()[0].getData();
-            if (data != null && data instanceof TreeData) {
-                if (data.getChild() != null)
-                    return data.getElement().getChild(data.getChild());
-                else {
-                	if(data.getElement().getName().equals("at") || data.getElement().getName().equals("date")) {
-                		return data.getElement().getParentElement();
-                	} else
-                		return data.getElement();
-                }
-            } else
-                return null;
-        } else
-            return null;
+    	if (_tree.getSelectionCount() > 0) {
+    		TreeData data = (TreeData) _tree.getSelection()[0].getData();
+    		if (data != null && data instanceof TreeData) {
+    			if (data.getChild() != null) {
+    				
+    				if(data.getElement().getChild(data.getChild()) == null)                		
+    					data.getElement().addContent(new Element(data.getChild()));
+    				
+    				return data.getElement().getChild(data.getChild());
+    				
+    			} else {
+    				if(data.getElement().getName().equals("at") || data.getElement().getName().equals("date")) {
+    					return data.getElement().getParentElement();
+    				} else
+    					return data.getElement();
+    			}
+    		} else
+    			return null;
+    	} else
+    		return null;
     }
     
 
@@ -97,7 +102,8 @@ public class TreeMenu {
         _menu.addListener(SWT.Show, new Listener() {
             public void handleEvent(Event e) {
                 MenuItem[] items = _menu.getItems();
-                disableMenu();
+                if(_copy == null)
+                	disableMenu();
                 if (_tree.getSelectionCount() > 0) {
                     Element element = getElement();
                     if (element != null ) {
@@ -256,12 +262,13 @@ public class TreeMenu {
                     String tName = target.getName();
                     String cName = _copy.getName();
 
-                    if (tName.equals("jobs") && cName.equals("job")) { // copy
-                        // job
-                    	
+                    if (tName.equals("jobs") && cName.equals("job")) { // copy job
+                        
                         String append = "copy(" + (target.getChildren("job").size() + 1);
                         Element currCopy = (Element)_copy.clone();
-                        currCopy.setAttribute("name", append + ")of_" + Utils.getAttributeValue("name", _copy));
+                        
+                        if(existJobname(target, Utils.getAttributeValue("name", _copy)))
+                        	currCopy.setAttribute("name", append + ")of_" + Utils.getAttributeValue("name", _copy));
                         
                         target.addContent(currCopy);
                         _gui.updateJobs();
@@ -276,4 +283,16 @@ public class TreeMenu {
         };
     }
 
+    private boolean existJobname(Element jobs, String jobname) {
+    	boolean retVal = false;
+    	java.util.List list = jobs.getChildren();
+    	for (int i = 0; i < list.size(); i++) {
+    		Element job = (Element)list.get(i);
+    		if(Utils.getAttributeValue("name", job).equalsIgnoreCase(jobname)) {
+    			retVal = true;
+    			break;
+    		}
+    	}
+    	return retVal;
+    }
 }

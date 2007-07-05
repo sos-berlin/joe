@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
@@ -57,7 +58,9 @@ public class LocksListener {
                
                 item.setText(0, name);
                 item.setText(1, "" + Utils.getIntValue("max_non_exclusive", e));
-
+                if(!Utils.isElementEnabled("lock", _dom, e)) {
+                	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+                } 
             }
         }
     }
@@ -69,6 +72,10 @@ public class LocksListener {
         	_lock = null;
     }
 
+    public Element getLock(int index) {
+    	selectLock(index);
+    	return _lock;
+    }
 
     public String getLock() {
       String name = Utils.getAttributeValue("name", _lock);

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Comment;
@@ -61,7 +62,11 @@ public class JobsListener {
 					TableItem item = new TableItem(table, SWT.NONE);
 					item.setData(e);
 					String name = Utils.getAttributeValue("name", e);
-					
+					if(!Utils.isElementEnabled("job", _dom, e)) {
+						item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));						
+					} else {
+						item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+					}
 					item.setChecked(_dom.isJobDisabled(name));
 					item.setText(1, name);
 					item.setText(2, Utils.getAttributeValue("title", e));

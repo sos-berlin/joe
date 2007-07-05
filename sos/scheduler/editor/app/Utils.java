@@ -19,6 +19,8 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.eclipse.swt.widgets.Shell;
 
+import sos.scheduler.editor.conf.SchedulerDom;
+
 public class Utils {
 
     // saving a default value results in removing the tag
@@ -89,8 +91,12 @@ public class Utils {
                 dom.setChanged(true);
         } else if (!value.equals(element.getAttributeValue(attribute))) {
             element.setAttribute(attribute, value);
-            if (dom != null)
+            if (dom != null) {
                 dom.setChanged(true);
+                if(dom instanceof SchedulerDom) {
+                	((SchedulerDom)dom).setChangedForDirectory("job", Utils.getAttributeValue("name",element), SchedulerDom.MODIFY);
+                }
+            }
         }
     }
 
@@ -556,4 +562,51 @@ public class Utils {
         _cb.setContents(new Object[] { content }, new Transfer[] { transfer });
 
     }
+    
+    /**
+     * Element ist schreibgeschützt
+     * @param dom
+     * @param elem
+     * @return
+     */
+    public static boolean isElementEnabled(String which, sos.scheduler.editor.conf.SchedulerDom dom, Element elem) {
+    	
+    	if(which.equals("job") && elem != null && !elem.getName().equals("job")) {
+    		elem = getJobElement(elem);
+    	}
+    	
+    	java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
+        if (listOfReadOnly != null && listOfReadOnly.contains(which + "_" + Utils.getAttributeValue("name", elem))) {        	
+        	//this.setEnabled(false);
+        	return false;
+        } 
+        return true;
+    }
+    
+    /*
+     * liefert den Vaterknoten Job
+     */
+    private static Element getJobElement(Element elem) {
+		
+		boolean loop = true;
+		int counter = 0;
+		while(loop) {
+			if(elem != null && elem.getParentElement()!= null) {
+				if(elem.getName().equalsIgnoreCase("job")) {
+					return elem;					
+				} else if(elem.getParentElement().getName().equalsIgnoreCase("job")) {
+					return elem.getParentElement();					
+				} else {
+					elem = elem.getParentElement();					
+				}
+				++counter;
+				if(counter == 5) {
+					loop = false;
+				}
+			} else {
+				return elem;
+			}
+		}
+		return elem;
+	}
 }

@@ -140,6 +140,7 @@ public class JobCommandListener {
         if (_params != null) {
             _params.remove(index);
             _dom.setChanged(true);
+            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
         }
         table.remove(index);
     }
@@ -147,6 +148,7 @@ public class JobCommandListener {
 
     public void addCommand(Element e) {
         _dom.setChanged(true);
+        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
         _command.addContent(e);
     }
 
@@ -186,6 +188,7 @@ public class JobCommandListener {
             c.remove(j);
         }
         _dom.setChanged(true);
+        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
     }
 
 
@@ -207,6 +210,7 @@ public class JobCommandListener {
                                 found = true;
                                 e.setAttribute("value", value);
                                 _dom.setChanged(true);
+                                _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
                                 table.getItem(index).setText(1, value);
                             }
                         }
@@ -225,6 +229,7 @@ public class JobCommandListener {
                 e.removeAttribute("name");
                 e.removeAttribute("value");
                 _dom.setChanged(true);
+                _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
             }
         }
 
@@ -239,6 +244,7 @@ public class JobCommandListener {
             }
 
             _dom.setChanged(true);
+            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
             if (_params == null)
                 initParams(table);
             if (_params != null)
@@ -281,6 +287,7 @@ public class JobCommandListener {
     public void setCommandName(Button bApply, String cmd, String value, Table table) {
         if (_command != null) {
             _dom.setChanged(true);
+            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 
             int i = getActCommand(table);
             List l = _command.getChildren();

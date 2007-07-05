@@ -58,10 +58,8 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
 
         setToolTipText();
         
-        java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
-        if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {        	
-        	this.group1.setEnabled(false);        	
-        }
+        group1.setEnabled(Utils.isElementEnabled("job", dom, job));        	
+        
       
     }
 
@@ -165,25 +163,6 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
           }
       });
       new Label(group1, SWT.NONE);
-
-      butBrowse = new Button(group1, SWT.NONE);
-      butBrowse.addSelectionListener(new SelectionAdapter() {
-      	public void widgetSelected(final SelectionEvent e) {
-      		String name = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_LOCK);
-      		tLockUse.setEnabled(true);
-    		if(name != null && name.length() > 0) {
-    			tLockUseTable.deselectAll();
-                listener.newLockUse();
-                initLockUse(true);
-                tLockUse.setFocus();
-    			tLockUse.setText(name);
-    		}
-      		
-      	}
-      });
-      butBrowse.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-      butBrowse.setText("Browse");
-      new Label(group1, SWT.NONE);
       GridData gridData31 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);
       bRemoveLockUse = new Button(group1, SWT.NONE);
       bRemoveLockUse.setText("Remove Lock Use");
@@ -208,6 +187,26 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
               }
           }
       });
+      new Label(group1, SWT.NONE);
+
+      butBrowse = new Button(group1, SWT.NONE);
+      butBrowse.setVisible(false);
+      butBrowse.addSelectionListener(new SelectionAdapter() {
+      	public void widgetSelected(final SelectionEvent e) {
+      		String name = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_LOCK);
+      		tLockUse.setEnabled(true);
+    		if(name != null && name.length() > 0) {
+    			tLockUseTable.deselectAll();
+                listener.newLockUse();
+                initLockUse(true);
+                tLockUse.setFocus();
+    			tLockUse.setText(name);
+    		}
+      		
+      	}
+      });
+      butBrowse.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+      butBrowse.setText("Browse");
     }
 
  

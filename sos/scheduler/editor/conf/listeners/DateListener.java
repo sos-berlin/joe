@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
@@ -132,6 +133,8 @@ public class DateListener implements Comparator {
         
         sort();
         _dom.setChanged(true);
+        if(_element.getParentElement() != null)
+        	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_element.getParentElement()), SchedulerDom.MODIFY);
         return date;
     }
 
@@ -168,6 +171,8 @@ public class DateListener implements Comparator {
     				_parent = null;
     			}
     			_dom.setChanged(true);
+    			if(_element.getParentElement() != null)
+    	        	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_element.getParentElement()), SchedulerDom.MODIFY);
     		} else {
     			if(_listOfAt != null && _listOfAt.size()>0) {
         		index = _list.size() - index;
@@ -232,6 +237,9 @@ public class DateListener implements Comparator {
                     TreeItem item = new TreeItem(parent, SWT.NONE);
                     item.setText(e.getAttributeValue("date"));
                     item.setData(new TreeData(Editor.PERIODS, e, Options.getHelpURL("periods")));
+                    if(!Utils.isElementEnabled("job", _dom, e)) {
+                    	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+                    }
                 }
             }
         }
@@ -262,6 +270,9 @@ public class DateListener implements Comparator {
         		item.setText(e.getAttributeValue("date"));    
         		
         		item.setData(new TreeData(Editor.PERIODS, (Element)l.get(i), Options.getHelpURL("periods")));
+        		if(!Utils.isElementEnabled("job", _dom, e)) {
+                	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+                }
         	}
         }
         
@@ -338,6 +349,8 @@ public class DateListener implements Comparator {
           List includes = _element.getChildren("include");
           _parent.addContent(includes.size(), new Element("include").setAttribute("file", filename));
           _dom.setChanged(true);
+          if(_element.getParentElement() != null)
+          	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_element.getParentElement()), SchedulerDom.MODIFY);
       } else
           System.out.println("no script element defined!");
   }    
@@ -353,6 +366,8 @@ public class DateListener implements Comparator {
           if (index >= 0 && index < includeList.size()) {
               includeList.remove(index);
               _dom.setChanged(true);
+              if(_element.getParentElement() != null)
+              	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_element.getParentElement()), SchedulerDom.MODIFY);
           } else
               System.out.println("index " + index + " is out of range for include!");
       } else

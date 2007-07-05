@@ -43,6 +43,8 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
 
         dom.setInit(true);
 
+        this.gRunTime.setEnabled(Utils.isElementEnabled("job", dom, job));
+        
         holidayForm.setObjects(dom, listener.getRunTime(), gui);
 
         periodForm.setParams(dom, listener.isOnOrder());

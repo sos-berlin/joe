@@ -39,7 +39,7 @@ public class JobLockUseListener {
 
 
     public void newLockUse() {
-    	_lockUse = new Element("lock.use");
+    	_lockUse = new Element("lock.use");    	
     }
 
 
@@ -56,6 +56,7 @@ public class JobLockUseListener {
         if (!_lockUseList.contains(_lockUse))
         	_lockUseList.add(_lockUse);
         _dom.setChanged(true);
+        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
     }
 
 
@@ -64,6 +65,7 @@ public class JobLockUseListener {
         	_lockUseList.remove(index);
         	_lockUse = null;
             _dom.setChanged(true);
+            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
         }
     }
 

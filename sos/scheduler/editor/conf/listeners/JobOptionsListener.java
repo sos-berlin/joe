@@ -59,6 +59,7 @@ public class JobOptionsListener {
 
     public void newDirectory() {
         _directory = new Element("start_when_directory_changed");
+        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
     }
 
 
@@ -73,7 +74,8 @@ public class JobOptionsListener {
         Utils.setAttribute("regex", regex, _directory, _dom);
         if (!_directories.contains(_directory))
             _directories.add(_directory);
-        _dom.setChanged(true);
+        _dom.setChanged(true);                
+        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
     }
 
 
@@ -82,6 +84,7 @@ public class JobOptionsListener {
             _directories.remove(index);
             _directory = null;
             _dom.setChanged(true);
+            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
         }
     }
 
@@ -143,11 +146,13 @@ public class JobOptionsListener {
             newSetbackDelay();
             applySetbackDelay(items[i].getText(0), items[i].getText(1).equalsIgnoreCase("yes"), items[i].getText(2));
         }
+        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
     }
 
 
     public void newSetbackDelay() {
         _setback = new Element("delay_order_after_setback");
+        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
     }
 
 
@@ -164,6 +169,7 @@ public class JobOptionsListener {
         if (!_setbacks.contains(_setback))
             _setbacks.add(_setback);
         _dom.setChanged(true);
+        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
     }
 
 
@@ -172,6 +178,7 @@ public class JobOptionsListener {
             _setbacks.remove(index);
             _setback = null;
             _dom.setChanged(true);
+            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
         }
     }
 
@@ -240,6 +247,7 @@ public class JobOptionsListener {
 
     public void newErrorDelay() {
         _errorDelay = new Element("delay_after_error");
+        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
     }
 
 
@@ -255,6 +263,7 @@ public class JobOptionsListener {
         if (!_errorDelays.contains(_errorDelay))
             _errorDelays.add(_errorDelay);
         _dom.setChanged(true);
+        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
     }
 
 
@@ -263,6 +272,7 @@ public class JobOptionsListener {
             _errorDelays.remove(index);
             _errorDelay = null;
             _dom.setChanged(true);
+            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
         }
     }
 

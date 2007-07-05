@@ -45,10 +45,9 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
         initialize();
         setToolTipText();
         listener.fillTable(table);
-        java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
-        if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {        	
-        	this.commandsGroup.setEnabled(false);        	
-        }
+        
+        commandsGroup.setEnabled(Utils.isElementEnabled("job", dom, job));        	
+        
     }
 
 

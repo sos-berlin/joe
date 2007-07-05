@@ -201,7 +201,7 @@ public class SchedulerListener {
 
     public void treeFillJobs(TreeItem parent) {
         parent.removeAll();
-        java.util.ArrayList listOfReadOnly = _dom.getListOfReadOnlyFiles();
+        //java.util.ArrayList listOfReadOnly = _dom.getListOfReadOnlyFiles();
         Element jobs = _dom.getRoot().getChild("config").getChild("jobs");        
         if (jobs != null) {
             Iterator it = jobs.getChildren().iterator();
@@ -216,7 +216,8 @@ public class SchedulerListener {
 
                     i.setText(job);
                     i.setData(new TreeData(Editor.JOB, element, Options.getHelpURL("job")));
-                    if (listOfReadOnly != null && listOfReadOnly.contains(name)) {
+                    //if (listOfReadOnly != null && listOfReadOnly.contains(name)) {
+                    if(!Utils.isElementEnabled("job", _dom, element)) {
                     	i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
                     } else {
                     	i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
@@ -243,11 +244,12 @@ public class SchedulerListener {
 
 
     public void treeFillJob(TreeItem parent, Element job, boolean expand) {
-    	java.util.ArrayList listOfReadOnly = _dom.getListOfReadOnlyFiles();
-    	boolean disable = false;
+    	//java.util.ArrayList listOfReadOnly = _dom.getListOfReadOnlyFiles();
+    	boolean disable = !Utils.isElementEnabled("job", _dom, job);
+    	/*boolean disable = false;
     	if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {
     		disable = true;        	
-        } 
+        } */
     	
         parent.removeAll();
         TreeItem item = new TreeItem(parent, SWT.NONE);
@@ -289,6 +291,9 @@ public class SchedulerListener {
             TreeItem run = new TreeItem(parent, SWT.NONE);
             run.setText("Run Time");
             run.setData(new TreeData(Editor.RUNTIME, job, Options.getHelpURL("job.run_time"), "run_time"));
+            if(disable) {
+            	run.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+            }
 
             item = new TreeItem(run, SWT.NONE);
             item.setText("Everyday");
@@ -308,6 +313,9 @@ public class SchedulerListener {
             item = new TreeItem(run, SWT.NONE);
             item.setText("Monthdays");
             item.setData(new TreeData(Editor.MONTHDAYS, runtime, Options.getHelpURL("job.run_time.monthdays"),"monthdays"));
+            if(disable) {
+            	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+            }
             treeFillDays(item, runtime, 1, false);
 
             item = new TreeItem(run, SWT.NONE);

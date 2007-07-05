@@ -7,12 +7,14 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 class Weekday {
@@ -77,6 +79,8 @@ public class SpecificWeekdaysListener {
            w.setAttribute("which", which);
            daylist.addContent(w);
            _dom.setChanged(true);
+           if(_runtime != null && _runtime.getParentElement() != null )
+           	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
        }
     }
   
@@ -125,6 +129,8 @@ public class SpecificWeekdaysListener {
                     if (list.size() == 0)
                         _runtime.removeChild("monthdays");
                     _dom.setChanged(true);
+                    if(_runtime != null && _runtime.getParentElement() != null )
+                       	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
                     break;
                 }
             }
@@ -250,7 +256,9 @@ public class SpecificWeekdaysListener {
             w =  (Weekday) weekdayV_it.next();
             TreeItem itemDay = new TreeItem(parent, SWT.NONE);
             itemDay.setText(w.day);
-            
+            if(!Utils.isElementEnabled("job", _dom, _runtime)) {
+            	itemDay.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+            }
             StringTokenizer t = new StringTokenizer(w.which, ",");
             // ----------------------------------------------------------
 
@@ -264,7 +272,11 @@ public class SpecificWeekdaysListener {
                 	  if (i < 0) i = (i+1)*(-1) + 3;
                    	  
                     item.setText(_daynames[i]);
-                    item.setData(new TreeData(Editor.PERIODS, (Element)w.elements.get(token), Options.getHelpURL("periods")));   
+                    item.setData(new TreeData(Editor.PERIODS, (Element)w.elements.get(token), Options.getHelpURL("periods")));
+                    
+                    if(!Utils.isElementEnabled("job", _dom, _runtime)) {
+                    	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+                    }
                  }
              }
             itemDay.setExpanded(expand);

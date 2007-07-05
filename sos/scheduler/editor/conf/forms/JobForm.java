@@ -1,5 +1,7 @@
 package sos.scheduler.editor.conf.forms;
 
+import java.io.File;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.DisposeEvent;
@@ -19,6 +21,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -38,6 +41,7 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -149,10 +153,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 
     public JobForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
         super(parent, style);
-        java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
-        if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {        	
-        	this.setEnabled(false);        	
-        } 
+                
+        this.setEnabled(Utils.isElementEnabled("job", dom, job));
         
         listener = new JobListener(dom, job, main);
         initialize();   
@@ -481,6 +483,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
     private void createCombo() {
 
         butBrowse = new Button(gMain, SWT.NONE);
+        butBrowse.setVisible(false);
         butBrowse.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false, 2, 1));
         butBrowse.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
@@ -719,7 +722,16 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         				String sHome = sos.scheduler.editor.app.Options.getSchedulerHome();
         				if(!(sHome.endsWith("\\") || sHome.endsWith("/")))
         					sHome = sHome.concat("/");
-        				Process p =Runtime.getRuntime().exec("cmd /C START iExplore ".concat(sHome).concat(tFileName.getText()));
+        				
+        				sHome = sHome.replaceAll("\\\\", "/");
+        				//Process p =Runtime.getRuntime().exec("cmd /C START iExplore ".concat(sHome).concat(tFileName.getText()));
+        				Program prog = Program.findProgram("html");
+        				
+    		            if (prog != null)
+    		                prog.execute(new File((sHome).concat(tFileName.getText())).toURL().toString());
+    		            else {
+    		            	Runtime.getRuntime().exec(Options.getBrowserExec(new File((sHome).concat(tFileName.getText())).toURL().toString(), Options.getLanguage()));
+    		            } 
         			} 
         		} catch (Exception ex) {
         			//System.out.println("..could not open file " + tFileName.getText() + " " + ex.getMessage());
@@ -902,5 +914,5 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
     			importJobForms.setJobForm(this);
     		importJobForms.showAllImportJobs();
     	}
-}
+    }
 } // @jve:decl-index=0:visual-constraint="10,10"
