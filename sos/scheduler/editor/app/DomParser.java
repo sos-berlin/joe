@@ -48,10 +48,7 @@ public abstract class DomParser {
 
     private String                _filename        = null;
 
-
-    // public DomParser() {
-
-    // }
+ 
     public DomParser(String[] schemaTmp, String[] schemaResource, String xslt) {
         _schemaTmpFile = schemaTmp;
         _schemaResource = schemaResource;
@@ -168,12 +165,16 @@ public abstract class DomParser {
         return builder;
     }
 
+    public SAXBuilder getBuilder() throws IOException {        
+        return getBuilder(false);
+    }
 
     public abstract boolean read(String filename) throws JDOMException, IOException;
 
 
     public abstract boolean read(String filename, boolean validate) throws JDOMException, IOException;
 
+    public abstract boolean readString(String str, boolean validate) throws JDOMException, IOException;
 
     public abstract void write(String filename) throws IOException, JDOMException;
 

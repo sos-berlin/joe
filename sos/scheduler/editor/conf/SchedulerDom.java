@@ -28,7 +28,7 @@ import sos.scheduler.editor.app.Options;
 
 public class SchedulerDom extends DomParser {
     private static final String[] CONFIG_ELEMENTS     = { "base", "security", "cluster", "process_classes", "locks", "script", "http_server",
-            "holidays", "jobs", "job_chains", "commands" };
+            "holidays", "jobs", "job_chains","orders", "commands" };
 
     private static final String[] JOB_ELEMENTS        = { "description", "params", "script", "process", "monitor",
             "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };
@@ -115,7 +115,41 @@ public class SchedulerDom extends DomParser {
         setFilename(filename);
         return true;
     }
+    
+    public boolean readString(String str, boolean validate) throws JDOMException, IOException {
 
+        StringReader sr = new StringReader(str);
+        Document doc = getBuilder(validate).build(sr);
+        sr.close();
+
+        if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("spooler")))
+            return false;
+
+        setDoc(doc);
+
+        // set comments as attributes
+        setComments(getDoc().getContent());
+
+        setChanged(true);        
+        return true;
+    }
+    
+
+    /*public boolean read_2(String filename) throws JDOMException, IOException {
+
+        StringReader sr = new StringReader(readFile(filename));
+        Document doc = getBuilder(false).build(sr);
+        sr.close();
+
+        setDoc(doc);
+
+        // set comments as attributes
+        setComments(getDoc().getContent());
+
+        setChanged(false);
+        setFilename(filename);
+        return true;
+    }*/
 
     private String readFile(String filename) throws IOException {
         _disabled = new ArrayList();

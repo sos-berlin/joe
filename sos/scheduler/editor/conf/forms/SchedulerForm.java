@@ -226,8 +226,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
     				listener.treeFillJobs(ti);
     			}        		        		
     		}
-    		
-    		//listener.treeFillJobs(tree.geti .getTopItem().sele .getSelection()]);
+    		    		
     	}
     }
 
@@ -289,6 +288,19 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
         return res;
     }
 
+   /* public boolean reOpen(String filename, Collection files) {
+    	try {
+    		dom.read(filename);
+    		
+    		initialize();
+    		listener.treeFillMain(tree, cMainForm);
+    	} catch (Exception e) {
+    		return false;
+    	}
+    	return true;
+    }*/
+    
+    
     public boolean save() {
     	boolean res = true;
     	if(dom.getFilename() != null && new java.io.File(dom.getFilename()).getName().startsWith("#xml#.config.") && dom.getFilename().endsWith(".xml")) {
@@ -338,5 +350,21 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
         return dom.getFilename();
     }
 
+    //test
+	/*public SchedulerListener getListener() {
+		return listener;
+	}*/
 
+	
+    public void updateTree(String which) {
+    	if(which.equalsIgnoreCase("main"))
+    		listener.treeFillMain(tree, cMainForm);	
+    	else if(which.equalsIgnoreCase("jobs"))
+    		listener.treeSelection(tree, cMainForm);
+    }
+	
+	public String getTreeSelection() {
+		return tree.getSelection()[0].getText();
+	}
+	
 }

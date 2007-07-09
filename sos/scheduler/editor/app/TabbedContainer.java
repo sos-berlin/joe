@@ -146,6 +146,8 @@ public class TabbedContainer implements IContainer {
             return null;
     }
 
+    
+    
     public SchedulerForm openScheduler(String filename) {
         SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE);
         if (scheduler.open(filename, filelist)) {
@@ -155,7 +157,20 @@ public class TabbedContainer implements IContainer {
         } else
             return null;
     }
-
+//test
+    
+   /* public SchedulerForm reOpenScheduler(String filename) {
+    	
+        SchedulerForm scheduler = (SchedulerForm)(getCurrentEditor());//
+        scheduler.close();
+        scheduler = new SchedulerForm(this, folder, SWT.NONE);
+        if (scheduler.reOpen(filename, filelist)) {
+            CTabItem tab = getCurrentTab();
+            tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));         
+        }
+        return scheduler;        
+    }*/
+    
     public DocumentationForm newDocumentation() {
         DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
         doc.openBlank();

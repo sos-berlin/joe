@@ -239,17 +239,22 @@ public class Options {
         setProperty(name + ".window.width", String.valueOf(shell.getSize().x));
         setProperty(name + ".window.height", String.valueOf(shell.getSize().y));
         setProperty(name + ".window.status", String.valueOf(shell.getMaximized()));
-    }
-
+    }    
 
     public static void loadWindow(Shell shell, String name) {
         Point location = new Point(0, 0);
         Point size = new Point(0, 0);
 
         try {
-            location.x = new Integer(_properties.getProperty(name + ".window.left")).intValue();
-            location.y = new Integer(_properties.getProperty(name + ".window.top")).intValue();
-            shell.setLocation(location);
+        	String left  = _properties.getProperty(name + ".window.left");
+        	String top = _properties.getProperty(name + ".window.top");
+        	
+        	if(left != null && Utils.isNumeric(left) && 
+        			top != null && Utils.isNumeric(top)) {
+        		location.x = new Integer(left).intValue();        	        	
+        		location.y = new Integer(top).intValue();
+        		shell.setLocation(location);
+        	}
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -262,10 +267,15 @@ public class Options {
         }
 
         try {
-            size.x = new Integer(_properties.getProperty(name + ".window.width")).intValue();
-            size.y = new Integer(_properties.getProperty(name + ".window.height")).intValue();
-
-            shell.setSize(size);
+        	String width  = _properties.getProperty(name + ".window.width");
+        	String height  = _properties.getProperty(name + ".window.height");
+        	
+        	if(width != null && Utils.isNumeric(width) &&
+        			height != null && Utils.isNumeric(height)) {
+        		size.x = new Integer(_properties.getProperty(name + ".window.width")).intValue();
+        		size.y = new Integer(_properties.getProperty(name + ".window.height")).intValue();        		
+        		shell.setSize(size);
+        	}
         } catch (Exception e) {
             e.printStackTrace();
         }

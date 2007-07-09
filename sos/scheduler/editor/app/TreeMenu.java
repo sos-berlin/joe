@@ -1,5 +1,9 @@
 package sos.scheduler.editor.app;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.StringReader;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -14,25 +18,46 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Tree;
+import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
+import sos.scheduler.editor.conf.DetailDom;
+import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
+import sos.util.SOSFile;
+import sos.util.SOSFileOperations;
 
 public class TreeMenu {
 
-    private DomParser     _dom;
+    private DomParser               _dom                  = null;
 
-    private Tree          _tree;
+    private Tree                    _tree                 = null;
 
-    private Menu          _menu;
+    private Menu                    _menu                 = null;
 
-    private Clipboard     _cb;
+    private Clipboard               _cb                   = null;
 
-    private static Element       _copy;
+    private static Element          _copy                 = null;
 
-    private SchedulerForm _gui;
+    private SchedulerForm           _gui                  = null;
 
+    private static final String EDIT_XML                  = "Edit XML";
+    
+    private static final String SHOW_XML                  = "Show XML";
+    
+    private static final String SHOW_INFO                 = "Show Info";
+    
+    private static final String COPY                      = "Copy";
+    
+    private static final String COPY_TO_CLIPBOARD         = "Copy to Clipboard";
+    
+    private static final String PASTE                     = "Paste";
+    
+    
+    private boolean bEdit                                 = false;//hilfsvariable
+    
+   
 
     public TreeMenu(Tree tree, DomParser dom, SchedulerForm gui) {
         _tree = tree;
@@ -75,29 +100,36 @@ public class TreeMenu {
 
     private void createMenu() {
         _menu = new Menu(_tree.getShell(), SWT.POP_UP);
+        
         MenuItem item = new MenuItem(_menu, SWT.PUSH);
-        item.addListener(SWT.Selection, getInfoListener());
-        item.setText("Show Info");
-
+        item.addListener(SWT.Selection, getXMLListener());
+        item.setText(TreeMenu.EDIT_XML);
+        
+        item = new MenuItem(_menu, SWT.SEPARATOR);
+        
         item = new MenuItem(_menu, SWT.PUSH);
         item.addListener(SWT.Selection, getXMLListener());
-        item.setText("Show XML");
+        item.setText(TreeMenu.SHOW_XML);
 
+        item = new MenuItem(_menu, SWT.PUSH);
+        item.addListener(SWT.Selection, getInfoListener());
+        item.setText(TreeMenu.SHOW_INFO);
+        
         item = new MenuItem(_menu, SWT.SEPARATOR);
 
         item = new MenuItem(_menu, SWT.PUSH);
         item.addListener(SWT.Selection, getCopyListener());
-        item.setText("Copy");
+        item.setText(TreeMenu.COPY);
 
         item = new MenuItem(_menu, SWT.PUSH);
         item.addListener(SWT.Selection, getClipboardListener());
-        item.setText("Copy to Clipboard");
+        item.setText(TreeMenu.COPY_TO_CLIPBOARD);
 
         item = new MenuItem(_menu, SWT.SEPARATOR);
 
         item = new MenuItem(_menu, SWT.PUSH);
         item.addListener(SWT.Selection, getPasteListener());
-        item.setText("Paste");
+        item.setText(TreeMenu.PASTE);
 
         _menu.addListener(SWT.Show, new Listener() {
             public void handleEvent(Event e) {
@@ -107,24 +139,32 @@ public class TreeMenu {
                 if (_tree.getSelectionCount() > 0) {
                     Element element = getElement();
                     if (element != null ) {
-                        items[0].setEnabled(true); // show info
-                        items[1].setEnabled(true); // show xml
-                        items[4].setEnabled(true); // copy to clipboard
+                        
+                    	getItem(TreeMenu.EDIT_XML).setEnabled(true); 
+                    	getItem(TreeMenu.SHOW_INFO).setEnabled(true); // show info
+                    	getItem(TreeMenu.SHOW_XML).setEnabled(true); // show xml
+                    	getItem(TreeMenu.COPY_TO_CLIPBOARD).setEnabled(true); // copy to clipboard
+                    	
 
                         String name = element.getName();
 
-                        if (name.equals("job"))
-                            items[3].setEnabled(true); // copy
-                        else if (name.equals("run_time"))
-                            items[3].setEnabled(true); // copy
-
+                        if (name.equals("job") || name.equals("config") || name.equals("run_time"))
+                        	getItem(TreeMenu.COPY).setEnabled(true); // copy
+                        else
+                        	getItem(TreeMenu.COPY).setEnabled(false); // copy
+                       
                         if (_copy != null) {
                             String cName = _copy.getName();
 
+                            MenuItem _paste = getItem(TreeMenu.PASTE);
                             if (name.equals("jobs") && cName.equals("job"))
-                                items[6].setEnabled(true); // paste
-                            if (name.equals("job") && cName.equals("run_time"))
-                                items[6].setEnabled(true); // paste
+                            	_paste.setEnabled(true); // paste
+                            else if (name.equals("job") && cName.equals("run_time"))
+                            	_paste.setEnabled(true); // paste
+                            else if (name.equals("config") && cName.equals("config"))
+                            	_paste.setEnabled(true); // paste
+                            else
+                            	_paste.setEnabled(false); // paste
                         }
                     }
                 }
@@ -194,38 +234,54 @@ public class TreeMenu {
 
     }
 */
-
+ 
     private Listener getXMLListener() {
+    	
         return new Listener() {
             public void handleEvent(Event e) {
-                Element element = getElement();
-                if (element != null) {
-                    String xml = getXML();
-                    if (xml == null) // error
-                        return;
-
-                    Utils.showClipboard(xml, _tree.getShell());
-                    /*Font font = new Font(Display.getDefault(), "Courier New", 8, SWT.NORMAL);
-                    TextDialog dialog = new TextDialog(_tree.getShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL
-                            | SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-                    dialog.setSize(new Point(500, 400));
-                    dialog.setContent(xml);
-                    dialog.setClipBoard(true);
-                    dialog.getStyledText().setFont(font);
-                    dialog.getStyledText().setEditable(true);
-                    String s = dialog.open();
-                    if (dialog.isClipBoardClick()) {
-                        copyClipboard(s);
-                    }
-
-                    if (font != null)
-                        font.dispose();
-                        */
-                }
-            }
+            	MenuItem i = (MenuItem)e.widget;
+            	Element element = null;
+            	if(i.getText().equalsIgnoreCase(TreeMenu.EDIT_XML)) {
+            		element = _dom.getRoot().getChild("config");
+            	} else {
+            		element = getElement();
+            	}
+            		if (element != null) {
+            			String xml = getXML();
+            			
+            			if (xml == null) // error
+            				return;
+            		
+            			String newXML = Utils.showClipboard(xml, _tree.getShell(), i.getText().equalsIgnoreCase(TreeMenu.EDIT_XML));
+            			
+            			//newXML ist null, wenn Änderungen nicht übernommen werden sollen
+            			if(newXML != null)
+            				applyXMLChange(newXML);
+            			
+            		}
+            	}
+            
         };
     }
 
+    private void applyXMLChange(String newXML){
+    	
+    	newXML = newXML.replaceAll("\\?>", "?><spooler>" )+ "</spooler>";
+    	
+    	//System.out.println("debug: \n" + newXML);
+    	    	
+    	try {
+    		    		
+    		_dom.readString(newXML, true);
+    		_gui.update();
+    		
+    		refreshTree("main");
+    		
+    		
+    	} catch (Exception de) {    		    		
+    		MainWindow.message(MainWindow.getSShell(), "..error while update XML: " + de.getMessage(), SWT.ICON_WARNING );    		
+    	} 
+    }
 
     private Listener getCopyListener() {
         return new Listener() {
@@ -271,12 +327,27 @@ public class TreeMenu {
                         	currCopy.setAttribute("name", append + ")of_" + Utils.getAttributeValue("name", _copy));
                         
                         target.addContent(currCopy);
-                        _gui.updateJobs();
+                        
+                         refreshTree("jobs");
+                         _gui.update();
+                         _gui.updateJobs();
+                        
                     } else if (tName.equals("job") && cName.equals("run_time")) { // copy
                         // run_time
                         target.removeChildren("run_time");
                         target.addContent(_copy);
                         _gui.updateJob();
+                    } else if (tName.equals("config") && cName.equals("config")) { // copy
+                        // run_time
+                    	  //target.getParentElement().removeContent();
+                    	  Element spooler = target.getParentElement();
+                    	  spooler.removeChildren("config");
+                    	  spooler.addContent((Element)_copy.clone());
+                    	  
+                    	  refreshTree("main");
+                    	  _dom.setChanged(true);
+                    	  
+                    	  _gui.update();
                     }
                 }
             }
@@ -295,4 +366,23 @@ public class TreeMenu {
     	}
     	return retVal;
     }
+    
+    private void refreshTree(String whichItem) {
+    	sos.scheduler.editor.app.IContainer con = MainWindow.getContainer(); 
+		SchedulerForm sf = (SchedulerForm)(con.getCurrentEditor());
+		sf.updateTree(whichItem);
+		
+    }
+    
+    private MenuItem getItem(String name) {
+    	MenuItem[] items = _menu.getItems();
+    	for (int i = 0; i < items.length; i++) {
+    		MenuItem item = items[i];
+    		if(item.getText().equalsIgnoreCase(name)) {
+    			return item;
+    		}
+    	}
+    	return null;
+    }
+    
 }

@@ -30,7 +30,8 @@ public class Utils {
 
     private static final String BOOLEAN_DEFAULT = null;
 
-    private static Clipboard     _cb;
+    private static Clipboard    _cb             = null;
+    
 
     public static String getIntegerAsString(int i) {
         String s;
@@ -534,7 +535,7 @@ public class Utils {
     	return retVal;
     }
 
-    public static void showClipboard(String xml, Shell shell) {
+    public static String showClipboard(String xml, Shell shell, boolean bApply) {
     	Font font = new Font(Display.getDefault(), "Courier New", 8, SWT.NORMAL);
     	TextDialog dialog = new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL
     			| SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -542,15 +543,30 @@ public class Utils {
     	dialog.setContent(xml);
     	dialog.setClipBoard(true);
     	dialog.getStyledText().setFont(font);
-    	dialog.getStyledText().setEditable(true);
+    	dialog.getStyledText().setEditable(bApply);
+    	dialog.setVisibleApplyButton(bApply);
+    	dialog.setBSaveWindow(true);
     	
-    	String s = dialog.open();
+    	String s = dialog.open(true);
+    	
+    	
     	if (dialog.isClipBoardClick()) {
     		copyClipboard(s, shell.getDisplay());
+    		return null;
     	}
     	
+    	if(!dialog.isApplyBoardClick()) {
+    		s = null;
+    	}
+    	    	
     	if (font != null)
     		font.dispose();
+    	
+    	return s;
+    }
+         
+    public static String showClipboard(String xml, Shell shell) {
+    	return showClipboard(xml, shell, false);    	
     }
     
     public static void copyClipboard(String content, Display display) {
@@ -609,4 +625,5 @@ public class Utils {
 		}
 		return elem;
 	}
+	
 }

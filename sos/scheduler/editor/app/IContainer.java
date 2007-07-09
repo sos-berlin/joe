@@ -15,6 +15,8 @@ public interface IContainer {
     public org.eclipse.swt.widgets.Composite openQuick();
     
     public SchedulerForm openScheduler(String filename);
+    
+   // public SchedulerForm reOpenScheduler(String filename);
 
     public DocumentationForm openDocumentation();
     

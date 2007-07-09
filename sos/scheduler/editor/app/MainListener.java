@@ -59,7 +59,7 @@ public class MainListener {
         bold.length = message.indexOf("\n");
         bold.fontStyle = SWT.BOLD;
         dialog.getStyledText().setStyleRange(bold);
-        dialog.open();
+        dialog.open(false);
     }
 
 

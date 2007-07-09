@@ -54,11 +54,7 @@ public class DetailDom extends DomParser {
         StringReader sr = new StringReader(readFile(filename));
         Document doc = getBuilder(validate).build(sr);
         sr.close();
-     
-        
-        setDoc(doc);
-
-        
+        setDoc(doc);     
         
         // set comments as attributes
         setComments(getDoc().getContent());
@@ -68,6 +64,21 @@ public class DetailDom extends DomParser {
         return true;
     }
 
+
+    public boolean readString(String str, boolean validate) throws JDOMException, IOException {
+
+        StringReader sr = new StringReader(str);
+        Document doc = getBuilder(validate).build(sr);
+        sr.close();
+        setDoc(doc);     
+        
+        // set comments as attributes
+        setComments(getDoc().getContent());
+
+        setChanged(false);
+        
+        return true;
+    }
 
     private String readFile(String filename) throws IOException {      
 

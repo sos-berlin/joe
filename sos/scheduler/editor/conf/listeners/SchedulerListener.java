@@ -227,6 +227,7 @@ public class SchedulerListener {
             }
         }
         parent.setExpanded(true);
+       
     }
     
     public void treeExpandJob(TreeItem parent, String job) {

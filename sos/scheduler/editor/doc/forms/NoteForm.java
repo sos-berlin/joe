@@ -128,6 +128,7 @@ public class NoteForm extends Composite implements IUnsaved, IUpdateLanguage {
               if (isUnsaved())
                     apply();
                 bApply.setEnabled(false);
+                getShell().dispose();
             }
         });
         text = new Text(group, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);

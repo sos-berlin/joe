@@ -107,6 +107,32 @@ public class DocumentationDom extends DomParser {
         return true;
     }
 
+    public boolean readString(String str, boolean validate) throws JDOMException, IOException {
+
+    	StringReader sr = new StringReader(str);
+        Document doc = getBuilder(validate).build(sr);
+        
+        //Document doc = getBuilder(validate).build(filename);
+
+        if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("description")))
+            return false;
+        else if (!validate) {
+            // try to avoid the worst
+            Element description = doc.getRootElement();
+            if (description.getChild("job", getNamespace()) == null)
+                description.addContent(new Element("job", getNamespace()));
+            if (description.getChild("releases", getNamespace()) == null)
+                description.addContent(new Element("releases", getNamespace()));
+            if (description.getChild("configuration", getNamespace()) == null)
+                description.addContent(new Element("configuration", getNamespace()));
+        }
+
+        setDoc(doc);
+
+        setChanged(false);
+        //setFilename(filename);
+        return true;
+    }
 
     public void write(String filename) throws IOException, JDOMException {
         writeWithDom(filename);
