@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.IEditor;
 import sos.scheduler.editor.app.IOUtils;
@@ -203,7 +204,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 
 
     public void updateJobs() {
-    	if(tree.getSelection()[0].getText().equals("Job Chains")) {
+    	if(tree.getSelection()[0].getText().startsWith("Job Chain")) {
         	//Assistent: Der Aufruf erfolgte über den Assistenten. Hier ist nicht das Element "Jobs" im Tree selektiert
     		  //sondern das Element "Job Chains".
     		updateJobs_();
@@ -367,4 +368,13 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		return tree.getSelection()[0].getText();
 	}
 	
+	public void updateJobChains() {
+		listener.treeFillJobChains(tree.getSelection()[0]);
+	}
+	public void updateJobChain(String name) {
+		//listener.treeFillJobChains(tree.getSelection()[0]);
+		TreeItem item = tree.getSelection()[0];
+        String jobChain = "Job Chain: " + name;
+        item.setText(jobChain);
+	}
 }

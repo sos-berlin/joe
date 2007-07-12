@@ -60,10 +60,30 @@ public class TextDialog extends Dialog {
 
 
     public void setContent(String content) {
-        setContent(content, SWT.LEFT);
+        setContent(content, SWT.LEFT);        
         bEdit = true;
     }
 
+    /**
+     * Schreibt den String in das Dialog und schrolt zu der Stelle, 
+     * in der selectString steht 
+     * @param content
+     * @param selectString
+     */
+    public void setContent(String content, String selectString) {
+    	
+    	String _selectString = "=\"" + selectString + "\"";
+    	int pos = content.indexOf(_selectString);
+    	
+    	if (pos == -1) {
+    		pos = content.indexOf(selectString);
+    	}
+    	
+        setContent(content, SWT.LEFT);    	                       
+        _styledText.setSelection(pos, pos);        
+        _styledText.showSelection();
+        bEdit = true;
+    }
 
     public void setContent(String content, int alignment) {
         _styledText.setText(content);        
@@ -149,16 +169,18 @@ public class TextDialog extends Dialog {
         GridData gridData1 = new GridData();
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 3, 1);
 
-        _styledText = new StyledText(_shell, _textStyle);
+        _styledText = new StyledText(_shell, SWT.V_SCROLL | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
         _styledText.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {        		
         		if (bEdit)
-        			butApply.setEnabled(true);        		
+        			butApply.setEnabled(true);  
+        		
         	}
         });
         _styledText.setEditable(false);
         _styledText.setLayoutData(gridData);
 
+        
         Button closeButton = new Button(_shell, SWT.NONE);
         closeButton.setText("Close");
         closeButton.setLayoutData(gridData1);

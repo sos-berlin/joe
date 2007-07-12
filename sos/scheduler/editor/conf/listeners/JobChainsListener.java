@@ -35,13 +35,15 @@ public class JobChainsListener {
 
     /** brauch ich für den Assistenten*/
     private Table        tChains;
-
-    public JobChainsListener(SchedulerDom dom, Element config) {
-        _dom = dom;
-        _config = config;
-        _chains = _config.getChild("job_chains");
+    private ISchedulerUpdate update = null;
+	
+    public JobChainsListener(SchedulerDom dom, Element config, ISchedulerUpdate update_) {
+    	_dom = dom;
+    	_config = config;
+    	update = update_;
+    	_chains = _config.getChild("job_chains");            
     }
-
+    
 
     public void fillChains() {
     	if(tChains != null) {
@@ -93,7 +95,7 @@ public class JobChainsListener {
 
 
     public void newChain() {
-        _chain = new Element("job_chain");
+        _chain = new Element("job_chain");        
     }
 
 
@@ -116,6 +118,7 @@ public class JobChainsListener {
 
         _dom.setChanged(true);
         _dom.setChangedForDirectory("job_chain", name, SchedulerDom.MODIFY);
+        update.updateJobChains();
     }
 
 
@@ -140,6 +143,7 @@ public class JobChainsListener {
         _dom.setChanged(true);
         _dom.setChangedForDirectory("job_chain", delname, SchedulerDom.DELETE);
         _chain = null;
+        update.updateJobChains();
     }
 
     public void fillFileOrderSource(Table table) {

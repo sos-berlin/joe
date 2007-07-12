@@ -25,6 +25,7 @@ import sos.scheduler.editor.conf.forms.DateForm;
 import sos.scheduler.editor.conf.forms.DaysForm;
 import sos.scheduler.editor.conf.forms.ExecuteForm;
 import sos.scheduler.editor.conf.forms.HttpDirectoriesForm;
+import sos.scheduler.editor.conf.forms.JobChainForm;
 import sos.scheduler.editor.conf.forms.JobChainsForm;
 import sos.scheduler.editor.conf.forms.JobCommandForm;
 import sos.scheduler.editor.conf.forms.JobCommandsForm;
@@ -143,6 +144,7 @@ public class SchedulerListener {
         item = new TreeItem(tree, SWT.NONE);
         item.setData(new TreeData(Editor.JOB_CHAINS, config, Options.getHelpURL("job_chains"), "job_chains"));
         item.setText("Job Chains");
+        treeFillJobChains(item);
         
                 	
         item = new TreeItem(tree, SWT.NONE);
@@ -440,6 +442,30 @@ public class SchedulerListener {
       }
   }
 
+    public void treeFillJobChains(TreeItem parent) {
+        parent.removeAll();
+        //java.util.ArrayList listOfReadOnly = _dom.getListOfReadOnlyFiles();
+        Element jobChains = _dom.getRoot().getChild("config").getChild("job_chains");        
+        if (jobChains != null) {
+            Iterator it = jobChains.getChildren().iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (o instanceof Element) {
+                    Element element = (Element) o;
+                    TreeItem i = new TreeItem(parent, SWT.NONE);
+
+                    String name = Utils.getAttributeValue("name", element);
+                    String jobChainName = "Job Chain: " + name;
+                    
+                    i.setText(jobChainName);
+                    i.setData(new TreeData(Editor.JOB_CHAIN, element, Options.getHelpURL("job_chains")));                    
+                    
+                }
+            }
+        }
+        parent.setExpanded(true);
+       
+    }
     public boolean treeSelection(Tree tree, Composite c) {
         try {
             if (tree.getSelectionCount() > 0) {
@@ -541,9 +567,13 @@ public class SchedulerListener {
                       new JobLockUseForm(c, SWT.NONE, _dom, data.getElement());
                       break;
                     case Editor.JOB_CHAINS:
-                    	JobChainsForm jc= new JobChainsForm(c, SWT.NONE, _dom, data.getElement());
-                    	jc.setISchedulerUpdate(_gui);
+                    	JobChainsForm jc= new JobChainsForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+                    	//jc.setISchedulerUpdate(_gui);
                         break;
+                    case Editor.JOB_CHAIN:
+                    	JobChainForm jc_= new JobChainForm(c, SWT.NONE, _dom, data.getElement());
+                    	jc_.setISchedulerUpdate(_gui);
+                    	break;
                     case Editor.COMMANDS:
                         new CommandsForm(c, SWT.NONE, _dom, _gui);
                         break;

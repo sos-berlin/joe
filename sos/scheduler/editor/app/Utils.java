@@ -535,12 +535,15 @@ public class Utils {
     	return retVal;
     }
 
-    public static String showClipboard(String xml, Shell shell, boolean bApply) {
+    public static String showClipboard(String xml, Shell shell, boolean bApply, String selectStr) {
     	Font font = new Font(Display.getDefault(), "Courier New", 8, SWT.NORMAL);
     	TextDialog dialog = new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL
     			| SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
     	dialog.setSize(new Point(500, 400));
-    	dialog.setContent(xml);
+    	if(selectStr != null && selectStr.trim().length() > 0)
+    		dialog.setContent(xml, selectStr);
+    	else
+    		dialog.setContent(xml);
     	dialog.setClipBoard(true);
     	dialog.getStyledText().setFont(font);
     	dialog.getStyledText().setEditable(bApply);
@@ -566,7 +569,7 @@ public class Utils {
     }
          
     public static String showClipboard(String xml, Shell shell) {
-    	return showClipboard(xml, shell, false);    	
+    	return showClipboard(xml, shell, false, null);    	
     }
     
     public static void copyClipboard(String content, Display display) {

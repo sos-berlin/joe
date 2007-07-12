@@ -282,6 +282,7 @@ public class SchedulerDom extends DomParser {
 
 
     public String getXML(Element element) throws JDOMException {
+    	
         reorderDOM(element);
 
         FormatHandler handler = new FormatHandler(this);

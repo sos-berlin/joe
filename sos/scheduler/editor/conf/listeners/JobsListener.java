@@ -446,7 +446,8 @@ public class JobsListener {
 		} 
 		_main.updateOrders();
 		
-		_main.updateJobs();
+		_main.updateJobs();	
+		
 		_main.expandJob(Utils.getAttributeValue("name", job));
 	}
 	

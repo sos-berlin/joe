@@ -367,7 +367,9 @@ public class JobAssistentImportJobsForm {
 							joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
 							Element job = joblistener.getJob();
 							job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
-							tParameter.removeAll();							
+							if(tParameter == null)
+								tParameter = jobForm.getTParameter(); 
+							//tParameter.removeAll();							
 							joblistener.fillParams(listOfParams, tParameter, true);
 							jobForm.initForm();
 							

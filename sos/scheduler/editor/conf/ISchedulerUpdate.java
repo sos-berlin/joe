@@ -5,8 +5,8 @@ import sos.scheduler.editor.app.IDataChanged;
 public interface ISchedulerUpdate extends IDataChanged {
     public void updateJobs();
 
-
   	public void updateJob();
+  	
   	public void expandJob(String job);
 
 
@@ -28,5 +28,9 @@ public interface ISchedulerUpdate extends IDataChanged {
     public void updateDays(int type);
     
     public void updateSpecificWeekdays();
+    
+    public void updateJobChains();
+    
+    public void updateJobChain(String name);
     
 }

@@ -214,15 +214,48 @@ public class TreeMenu {
         String xml = "";
         if (element != null) {
             try {
-                xml = _dom.getXML(element);
+            	if(element.getName().equals("config"))
+            		xml = _dom.getXML(element);        
+            	else
+            		xml = Utils.getElementAsString(element);
             } catch (JDOMException ex) {
                 message("Error: " + ex.getMessage(), SWT.ICON_ERROR | SWT.OK);
                 return null;
             }
+            
+        	/*try {
+                xml = Utils.getElementAsString(element);            
+            } catch (Exception ex) {
+                message("Error: " + ex.getMessage(), SWT.ICON_ERROR | SWT.OK);
+                return null;
+            }*/
         }
         return xml;
     }
 
+    private String getXML(Element element) {
+        
+        String xml = "";
+        if (element != null) {
+            try {
+            	if(element.getName().equals("config"))
+            		xml = _dom.getXML(element);        
+            	else
+            		xml = Utils.getElementAsString(element);
+            } catch (JDOMException ex) {
+                message("Error: " + ex.getMessage(), SWT.ICON_ERROR | SWT.OK);
+                return null;
+            }
+            
+        	/*try {
+                xml = Utils.getElementAsString(element);            
+            } catch (Exception ex) {
+                message("Error: " + ex.getMessage(), SWT.ICON_ERROR | SWT.OK);
+                return null;
+            }*/
+        }
+        return xml;
+    }
 
 /*    private void copyClipboard(String content) {
 
@@ -241,19 +274,26 @@ public class TreeMenu {
             public void handleEvent(Event e) {
             	MenuItem i = (MenuItem)e.widget;
             	Element element = null;
+            	String xml = null;
             	if(i.getText().equalsIgnoreCase(TreeMenu.EDIT_XML)) {
             		element = _dom.getRoot().getChild("config");
+            		if(element != null)
+            			xml = getXML(element);
+            			
             	} else {
             		element = getElement();
+            		if(element != null)
+            			xml = Utils.getElementAsString(element);
             	}
             		if (element != null) {
-            			String xml = getXML();
+            			
             			
             			if (xml == null) // error
             				return;
-            		
-            			String newXML = Utils.showClipboard(xml, _tree.getShell(), i.getText().equalsIgnoreCase(TreeMenu.EDIT_XML));
-            			
+            		            			
+            			String selectStr = Utils.getAttributeValue("name", getElement());
+            			selectStr = selectStr == null || selectStr.length() == 0 ? getElement().getName() : selectStr;
+            			String newXML = Utils.showClipboard(xml, _tree.getShell(), i.getText().equalsIgnoreCase(TreeMenu.EDIT_XML), selectStr);
             			//newXML ist null, wenn Änderungen nicht übernommen werden sollen
             			if(newXML != null)
             				applyXMLChange(newXML);
@@ -298,6 +338,7 @@ public class TreeMenu {
         return new Listener() {
             public void handleEvent(Event e) {
                 Element element = getElement();
+                
                 if (element != null) {
                     String xml = getXML();
                     if (xml == null) // error

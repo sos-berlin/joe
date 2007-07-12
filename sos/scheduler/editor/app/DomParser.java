@@ -180,6 +180,7 @@ public abstract class DomParser {
 
 
     public abstract String getXML(Element element) throws JDOMException;
+        
 
 
     public void reorderDOM() {

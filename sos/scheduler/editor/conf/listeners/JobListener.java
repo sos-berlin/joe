@@ -255,6 +255,7 @@ public class JobListener {
 				}
 			}						
 		}		
+		_main.updateJob();
 	} 
 	
 	public void fillParams(ArrayList listOfParams, Table table, boolean refreshTable) {

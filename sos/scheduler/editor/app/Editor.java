@@ -100,6 +100,8 @@ public class Editor {
     public final static int JOB_WIZZARD            = 71;
     
     public final static int DETAILS                = 72;
+    
+    public final static int JOB_CHAIN              = 73;
 
     public static String    SCHEDULER_ENCODING     = "";
 
