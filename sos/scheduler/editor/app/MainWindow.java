@@ -91,8 +91,8 @@ public class MainWindow  {
 		
 		Menu pmNew = new Menu(mNew);
 		MenuItem pNew = new MenuItem(pmNew, SWT.PUSH);
-		pNew.setText("Configuration... \tCtrl+C");
-		pNew.setAccelerator(SWT.CTRL | 'C');
+		pNew.setText("Configuration... \tCtrl+I");
+		pNew.setAccelerator(SWT.CTRL | 'I');
 		pNew.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.newScheduler() != null)

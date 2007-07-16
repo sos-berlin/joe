@@ -164,8 +164,10 @@ public class DetailsListener {
 				}
 			}
 			
-			
-			params = params_.getChildren();  
+			if(params_ != null)
+				params = params_.getChildren();
+			else 
+				params = new java.util.ArrayList();
 			
 		} catch(Exception e) {
 			System.err.println("..error im DetailsListener.parseDocuments(): " + e.getMessage());
@@ -294,7 +296,9 @@ public class DetailsListener {
 			Element param = (Element)params.get(i);
 			if(param.getName().equals("param") && Utils.getAttributeValue("name", param).equalsIgnoreCase(name)) {
 				for (int j = 1; j < 3; j++) {
-					//nur zweimal durchlaufen, weil die nächsten beiden Elemente note Knoten sein können 
+					if(params.size() <= i+j)
+					  return "";
+					//nur zweimal durchlaufen, weil die nächsten beiden Elemente note Knoten sein können					
 					Element note = (Element)params.get(i+j);
 					if(note.getName().equals("param")) {
 						break;//die nächsten beiden Knoten der param Elemente sind nicht die note Elemente
