@@ -156,10 +156,10 @@ public class ParamsListener {
         Utils.setAttribute("id", id, _param);
         Utils.setAttribute("reference", DocumentationListener.getID(reference), _param);
         Utils.setBoolean("required", required, _param);
-
-        if (_newParam)
-            _params.addContent(_param);
-
+        
+        if(!_params.getContent().contains(_param))
+        	_params.addContent(_param);
+        
         _newParam = false;
         checkParams();
         _dom.setChanged(true);
