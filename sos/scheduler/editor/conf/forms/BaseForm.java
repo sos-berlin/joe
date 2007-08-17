@@ -294,14 +294,26 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     }
     
     private void openBaseElement() {
+    	String currPath = "";
+    	
     	if(tFile.getText() != null && tFile.getText().length() > 0) {
-    		String xmlPath = sos.scheduler.editor.app.Options.getSchedulerHome() ;
-    		xmlPath = (xmlPath.endsWith("/") || xmlPath.endsWith("\\") ? xmlPath.concat("config") : xmlPath.concat("/config/"));
-    		xmlPath = xmlPath.concat(tFile.getText()); 
+    		//String xmlPath = sos.scheduler.editor.app.Options.getSchedulerHome() ;
+    		//xmlPath = (xmlPath.endsWith("/") || xmlPath.endsWith("\\") ? xmlPath.concat("config") : xmlPath.concat("/config/"));
+    		//xmlPath = xmlPath.concat(tFile.getText());
     		
-    		sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();        		
-    		con.openScheduler(xmlPath);
+    		sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
+    		
+    		if(con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
+    			currPath = new java.io.File(con.getCurrentEditor().getFilename()).getParent();
+    			if(!(currPath.endsWith("/") || currPath.endsWith("\\")))
+    				currPath = currPath.concat(System.getProperty("file.separator"));
+    				
+    		}
+    		currPath = currPath.concat(tFile.getText());
+    		con.openScheduler(currPath);
+    		//con.openScheduler(xmlPath);
     		con.setStatusInTitle();
+    		
     	} else {        			
     		MainWindow.message("There is no Basefile defined.", SWT.ICON_WARNING | SWT.OK);
     	}

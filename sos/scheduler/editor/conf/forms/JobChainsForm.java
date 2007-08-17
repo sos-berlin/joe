@@ -187,9 +187,10 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 				tChains.select(index);
 				listener.selectChain(index);
 			}
-		}
+		}		
 		boolean selection = tChains.getSelectionCount() > 0;
-		bRemoveChain.setEnabled(selection);	
+		bRemoveChain.setEnabled(selection);
+		
 	}
 	
 	

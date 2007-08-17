@@ -146,7 +146,13 @@ public class JobAssistentImportJobParamsForm {
 		try {
 			
 			listOfParams = new ArrayList();			
+			if(!new File(xmlFilename).exists()) {
+				MainWindow.message(jobParameterShell, "Missing Job Description " + xmlFilename , SWT.OK );
+				return listOfParams;
+			}
+			
 			SAXBuilder builder = new SAXBuilder();
+			
 			Document doc = builder.build( new File( xmlFilename ) );
 			Element root = doc.getRootElement();				
 			Element config = root.getChild("configuration", root.getNamespace());

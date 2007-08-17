@@ -266,6 +266,11 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         label9.setText("Process Class:");
         GridData gridData4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         cProcessClass = new Combo(gMain, SWT.NONE);
+        cProcessClass.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		 listener.setProcessClass(cProcessClass.getText());
+        	}
+        });
         cProcessClass.setLayoutData(gridData4);
         cProcessClass.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -840,7 +845,22 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         updateTree = true;
         tTitle.setText(listener.getTitle());
         tSpoolerID.setText(listener.getSpoolerID());
+        
+        
+        
+        String process_class = "";
+        if(listener.getProcessClass() != null && listener.getProcessClass().length() > 0)
+        	process_class= listener.getProcessClass();
+        
         String[] classes = listener.getProcessClasses();
+        if(classes != null)
+        	cProcessClass.setItems(classes);
+        
+        cProcessClass.setText(process_class);
+        
+        
+        /*String[] classes = listener.getProcessClasses();
+        
         if (classes == null)
             cProcessClass.setEnabled(false);
         else
@@ -848,6 +868,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         int index = cProcessClass.indexOf(listener.getProcessClass());
         if (index >= 0)
             cProcessClass.select(index);
+        */
+        int index = 0;
 
         bOrderYes.setSelection(listener.getOrder());
         bOrderNo.setSelection(!listener.getOrder());
@@ -877,7 +899,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         sIdleTimeout.setText(listener.getIdleTimeout());
         tParameter.removeAll();
         if(listener.getInclude() != null && listener.getInclude().trim().length() > 0) {
-        	listener.getAllParameterDescription();
+        	if(new File(listener.getInclude()).exists())
+        		listener.getAllParameterDescription();
         }
         listener.fillParams(tParameter);
         tFileName.setText(listener.getInclude());
@@ -885,7 +908,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         tDescription.setText(listener.getDescription());
         tComment.setText(listener.getComment());
         
-        
+       
 
     }
 

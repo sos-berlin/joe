@@ -87,6 +87,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
     public void setObjects(SchedulerDom dom, Element element, ISchedulerUpdate main) {
         listener = new DateListener(dom, element, type);
         listener.fillList(lDates);
+        
         lInclude.setItems(listener.getIncludes());        
         this.main = main;
         this.dom = dom;
