@@ -284,11 +284,15 @@ public class ParamsForm extends Composite implements IUpdateLanguage, IUnsaved {
             }
         });
         bNotes = new Button(group1, SWT.NONE);
+        bNotes.setEnabled(false);
         bNotes.setText("Note..."); // Generated
         bNotes.setLayoutData(gridData14); // Generated
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 String tip = Messages.getTooltip("doc.note.text.param");
+                if((listener.getParamElement() == null)|| ((listener.getParamElement() != null) && listener.getParamElement().getParentElement() == null)) {
+                	 applyParam();
+                }
                 DocumentationForm.openNoteDialog(dom, listener.getParamElement(), "note", tip, true, !listener
                         .isNewParam(),"Parameter Note");
             }
@@ -401,6 +405,7 @@ public class ParamsForm extends Composite implements IUpdateLanguage, IUnsaved {
 
     private void setApplyStatus() {
         bApply.setEnabled(tName.getText().length() > 0);
+        bNotes.setEnabled(tName.getText().length() > 0);
         Utils.setBackground(tName, true);
         getShell().setDefaultButton(bApply);
     }

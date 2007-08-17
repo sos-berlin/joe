@@ -16,6 +16,7 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
@@ -128,7 +129,8 @@ public class NoteForm extends Composite implements IUnsaved, IUpdateLanguage {
               if (isUnsaved())
                     apply();
                 bApply.setEnabled(false);
-                getShell().dispose();
+                if(!getShell().equals(MainWindow.getSShell()))
+                	getShell().dispose();
             }
         });
         text = new Text(group, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
