@@ -359,8 +359,8 @@ public class JobListener {
 					Element e = (Element) o;
 					if (name.equals(e.getAttributeValue("name"))) {
 						found = true;
-						Utils.setAttribute("value", value2, e);
-						//e.setAttribute("value", value2);						
+						//Utils.setAttribute("value", value2, e);						
+						e.setAttribute("value", value2);						
 						_dom.setChanged(true);
 						_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 						table.getItem(index).setText(1, value);

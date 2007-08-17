@@ -194,37 +194,37 @@ public abstract class DomParser {
 
 
     protected void reorderDOM(Element element, Namespace ns) {
-        // check if an order list exists for this element
-        if (getDomOrders().containsKey(element.getName())) {
-            // get children names in right order of this element
-            String[] order = (String[]) getDomOrders().get(element.getName());
-
-            // iterate children names
-            for (int i = 0; i < order.length; i++) {
-                // get _new_ list of the children
-                List list = new ArrayList(element.getChildren(order[i], ns));
-                if (list.size() > 0) {
-                    // remove them all
-                    element.removeChildren(order[i], ns);
-
-                    // iterate children list
-                    for (Iterator it2 = list.iterator(); it2.hasNext();) {
-                        Element children = (Element) it2.next();
-                        // readd it at the end
-                        element.addContent(children);
-
-                        // recursion
-                        reorderDOM(children, ns);
-                    }
-                }
-            }
-        } else {
-            // reorder the children
-            List children = element.getChildren();
-            for (Iterator it = children.iterator(); it.hasNext();) {
-                reorderDOM((Element) it.next(), ns);
-            }
-        }
+    	// check if an order list exists for this element
+    	if (getDomOrders().containsKey(element.getName())) {
+    		// get children names in right order of this element
+    		String[] order = (String[]) getDomOrders().get(element.getName());
+    		
+    		// iterate children names
+    		for (int i = 0; i < order.length; i++) {
+    			// get _new_ list of the children
+    			List list = new ArrayList(element.getChildren(order[i], ns));
+    			if (list.size() > 0) {
+    				// remove them all
+    				element.removeChildren(order[i], ns);
+    				
+    				// iterate children list
+    				for (Iterator it2 = list.iterator(); it2.hasNext();) {
+    					Element children = (Element) it2.next();
+    					// readd it at the end
+    					element.addContent(children);
+    					
+    					// recursion
+    					reorderDOM(children, ns);
+    				}
+    			}
+    		}
+    	} else {
+    		// reorder the children
+    		List children = element.getChildren();
+    		for (Iterator it = children.iterator(); it.hasNext();) {
+    			reorderDOM((Element) it.next(), ns);
+    		}
+    	}
     }
 
 

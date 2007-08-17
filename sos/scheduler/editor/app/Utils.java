@@ -86,7 +86,7 @@ public class Utils {
 
     public static void setAttribute(String attribute, String value, String defaultValue, Element element, DomParser dom) {
         value = value.trim();
-        if (value == null || value.equals(defaultValue)) {
+        if (value == null || value.equals(defaultValue) ) {
             element.removeAttribute(attribute);
             if (dom != null)
                 dom.setChanged(true);

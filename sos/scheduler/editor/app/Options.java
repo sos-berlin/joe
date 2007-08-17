@@ -292,10 +292,13 @@ public class Options {
     public static void loadSash(String name, SashForm sash) {
         try {
             String value = _properties.getProperty(name + ".sash.layout");
-            String[] values = value.split(",");
-            int[] weights = { new Integer(values[0].trim()).intValue(), new Integer(values[1].trim()).intValue() };
-
-            sash.setWeights(weights);
+            if(value != null) {
+            	String[] values = value.split(",");
+            
+            	int[] weights = { new Integer(values[0].trim()).intValue(), new Integer(values[1].trim()).intValue() };
+            	
+            	sash.setWeights(weights);
+            }
         } catch (Exception e) {
             // e.printStackTrace();
             System.err.println("No properties found for sash '" + name + "'!");

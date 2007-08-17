@@ -34,6 +34,7 @@ public class SchedulerDom extends DomParser {
             "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };
 
     private static final String[] RUNTIME_ELEMENTS    = { "period", "at", "date", "weekdays", "monthdays", "ultimos", "holidays" };
+    
     private static final String[] JOBCHAIN_ELEMENTS   = { "file_order_source", "job_chain_node", "file_order_sink"};
 
     private ArrayList             _disabled           = new ArrayList();
@@ -120,6 +121,7 @@ public class SchedulerDom extends DomParser {
 
         StringReader sr = new StringReader(str);
         Document doc = getBuilder(validate).build(sr);
+        
         sr.close();
 
         if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("spooler")))
@@ -292,6 +294,7 @@ public class SchedulerDom extends DomParser {
         saxo.output(element);
 
         return handler.getXML();
+        
     }
 
 
