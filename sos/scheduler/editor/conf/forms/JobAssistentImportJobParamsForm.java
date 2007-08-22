@@ -313,11 +313,12 @@ public class JobAssistentImportJobParamsForm {
 			butBack.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(dom, update, assistentType);
-					importJobs.showAllImportJobs(joblistener);
 					if(jobname != null) 													
 						importJobs.setJobname(jobname);
-					if(jobBackUp != null) 
+					if(jobBackUp != null && jobForm != null) 
 						importJobs.setBackUpJob(jobBackUp, jobForm);
+					importJobs.showAllImportJobs(joblistener);
+					
 					closeDialog = true;
 					jobParameterShell.dispose();
 				}
