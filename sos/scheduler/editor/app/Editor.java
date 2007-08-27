@@ -17,6 +17,7 @@ public class Editor {
     public final static int SCRIPT                 = 7;
 
     public final static int WEBSERVICES            = 8;
+    
     public final static int HTTPDIRECTORIES        = 9;
 
     public final static int HOLIDAYS               = 10;
@@ -103,6 +104,8 @@ public class Editor {
     
     public final static int JOB_CHAIN              = 73;
 
+    public final static int HTTP_AUTHENTICATION    = 74;
+    
     public static String    SCHEDULER_ENCODING     = "";
 
     public static String    DOCUMENTATION_ENCODING = "utf-8";

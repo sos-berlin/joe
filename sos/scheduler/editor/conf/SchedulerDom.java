@@ -31,7 +31,7 @@ public class SchedulerDom extends DomParser {
             "holidays", "jobs", "job_chains","orders", "commands" };
 
     private static final String[] JOB_ELEMENTS        = { "description", "params", "script", "process", "monitor",
-            "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };
+            "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };        
 
     private static final String[] RUNTIME_ELEMENTS    = { "period", "at", "date", "weekdays", "monthdays", "ultimos", "holidays" };
     
@@ -55,7 +55,8 @@ public class SchedulerDom extends DomParser {
     
     /** Schreibheschützte Dateien*/
     private ArrayList             listOfReadOnlyFiles = null;
-             
+          
+    private static final String[] HTTP_SERVER    = { "web_service", "http.authentication", "http_directory"};
        
     public SchedulerDom() {
         super(new String[] { "scheduler_editor_schema" }, new String[] { Options.getSchema() }, Options.getXSLT());
@@ -64,6 +65,7 @@ public class SchedulerDom extends DomParser {
         putDomOrder("job", JOB_ELEMENTS);
         putDomOrder("run_time", RUNTIME_ELEMENTS);
         putDomOrder("job_chain", JOBCHAIN_ELEMENTS);
+        putDomOrder("http_server", HTTP_SERVER);
 
         initScheduler();
     }

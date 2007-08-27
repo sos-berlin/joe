@@ -24,6 +24,7 @@ import sos.scheduler.editor.conf.forms.ConfigForm;
 import sos.scheduler.editor.conf.forms.DateForm;
 import sos.scheduler.editor.conf.forms.DaysForm;
 import sos.scheduler.editor.conf.forms.ExecuteForm;
+import sos.scheduler.editor.conf.forms.HttpAuthenticationForm;
 import sos.scheduler.editor.conf.forms.HttpDirectoriesForm;
 import sos.scheduler.editor.conf.forms.JobChainForm;
 import sos.scheduler.editor.conf.forms.JobChainsForm;
@@ -122,9 +123,16 @@ public class SchedulerListener {
         	item.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
         	item.setText("Web Services");
         	
+
         	item = new TreeItem(http_server, SWT.NONE);
-        	item.setData(new TreeData(Editor.HTTPDIRECTORIES, config, Options.getHelpURL("http_directories"), "http_directories"));
-        	item.setText("Http Drectories");
+        	item.setData(new TreeData(Editor.HTTP_AUTHENTICATION, config, Options.getHelpURL("http_authentication"), "http_server"));
+        	item.setText("Http Authentication");
+        	
+        	
+        	item = new TreeItem(http_server, SWT.NONE);
+        	item.setData(new TreeData(Editor.HTTPDIRECTORIES, config, Options.getHelpURL("http_directories"), "http_server"));
+        	item.setText("Http Directories");
+        	
         	
         }
         //http_server.setExpanded(true);
@@ -560,6 +568,9 @@ public class SchedulerListener {
                     case Editor.HTTPDIRECTORIES:
                       new HttpDirectoriesForm(c, SWT.NONE, _dom, data.getElement());
                       break;
+                    case Editor.HTTP_AUTHENTICATION:
+                        new HttpAuthenticationForm(c, SWT.NONE, _dom, data.getElement());
+                        break;
                     case Editor.OPTIONS:
                       new JobOptionsForm(c, SWT.NONE, _dom, data.getElement());
                       break;
