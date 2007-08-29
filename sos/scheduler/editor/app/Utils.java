@@ -460,8 +460,10 @@ public class Utils {
                     return false;
                 if (ok == SWT.NO)
                 	return true;//return false;
-                else if (ok == SWT.YES)
+                else if (ok == SWT.YES) {
                     unsaved.apply();
+                    //return false;
+                }
             }
         }
         return true;

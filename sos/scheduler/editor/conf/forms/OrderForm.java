@@ -154,8 +154,11 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                 }
             }
         });
-        final GridData gridData_3 = new GridData(183, SWT.DEFAULT);
+        final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, false);
+        gridData_3.widthHint = 319;
         tOrderId.setLayoutData(gridData_3);
+        new Label(gOrder, SWT.NONE);
+        new Label(gOrder, SWT.NONE);
 
         final Label jobchainLabel = new Label(gOrder, SWT.NONE);
         jobchainLabel.setLayoutData(new GridData());
@@ -169,12 +172,15 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
 
-        final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_1.widthHint = 233;
         cJobchain.setLayoutData(gridData_1);
+        new Label(gOrder, SWT.NONE);
+        new Label(gOrder, SWT.NONE);
 
         final Label titleLabel = new Label(gOrder, SWT.NONE);
-        titleLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+        final GridData gridData_6 = new GridData(47, SWT.DEFAULT);
+        titleLabel.setLayoutData(gridData_6);
         titleLabel.setText("Title");
 
         tTitle = new Text(gOrder, SWT.BORDER);
@@ -185,8 +191,8 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
 
-        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-        gridData_5.widthHint = 150;
+        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
+        gridData_5.widthHint = 351;
         tTitle.setLayoutData(gridData_5);
 
         final Label priorityLabel = new Label(gOrder, SWT.NONE);
@@ -205,10 +211,14 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("priority", tPriority.getText());
             }
         });
-        tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        gridData_2.widthHint = 389;
+        tPriority.setLayoutData(gridData_2);
+        new Label(gOrder, SWT.NONE);
+        new Label(gOrder, SWT.NONE);
 
         final Label stateLabel = new Label(gOrder, SWT.NONE);
-        stateLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+        stateLabel.setLayoutData(new GridData());
         stateLabel.setText("State");
 
         tState = new Text(gOrder, SWT.BORDER);
@@ -218,12 +228,13 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("state", tState.getText());
             }
         });
-        final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData.widthHint = 150;
         tState.setLayoutData(gridData);
 
         final Label replaceLabel = new Label(gOrder, SWT.NONE);
-        replaceLabel.setLayoutData(new GridData());
+        final GridData gridData_4 = new GridData(58, SWT.DEFAULT);
+        replaceLabel.setLayoutData(gridData_4);
         replaceLabel.setText("Replace");
 
         bReplace = new Button(gOrder, SWT.CHECK);
@@ -236,7 +247,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("replace", r);
             }
         });
-        bReplace.setLayoutData(new GridData());
+        bReplace.setLayoutData(new GridData(128, SWT.DEFAULT));
         listener.setCommandAttribute("replace", "yes");
 
     }

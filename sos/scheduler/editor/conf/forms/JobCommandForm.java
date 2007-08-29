@@ -287,25 +287,6 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_3.widthHint = 150;
         tJob.setLayoutData(gridData_3);
-        new Label(gDescription, SWT.NONE);
-        new Label(gDescription, SWT.NONE);
-        final Label startAtLabel = new Label(gDescription, SWT.NONE);
-        startAtLabel.setLayoutData(new GridData());
-        startAtLabel.setText("Start at");
-
-        tStartAt = new Text(gDescription, SWT.BORDER);
-        tStartAt.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApplyExitcode.setEnabled(true);
-            }
-        });
-        tStartAt.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(final SelectionEvent e) {
-            }
-        });
-        final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gridData_4.widthHint = 150;
-        tStartAt.setLayoutData(gridData_4);
 
         final Label jobchainLabel = new Label(gDescription, SWT.NONE);
         final GridData gridData_10 = new GridData(57, SWT.DEFAULT);
@@ -324,6 +305,38 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         final GridData gridData_8 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_8.widthHint = 114;
         cJobchain.setLayoutData(gridData_8);
+        final Label startAtLabel = new Label(gDescription, SWT.NONE);
+        startAtLabel.setLayoutData(new GridData());
+        startAtLabel.setText("Start at");
+
+        tStartAt = new Text(gDescription, SWT.BORDER);
+        tStartAt.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+                bApplyExitcode.setEnabled(true);
+            }
+        });
+        tStartAt.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent e) {
+            }
+        });
+        final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        gridData_4.widthHint = 150;
+        tStartAt.setLayoutData(gridData_4);
+
+        final Label priorityLabel = new Label(gDescription, SWT.NONE);
+        final GridData gridData_11 = new GridData();
+        gridData_11.horizontalIndent = 10;
+        priorityLabel.setLayoutData(gridData_11);
+        priorityLabel.setText("Priority");
+
+        tPriority = new Text(gDescription, SWT.BORDER);
+        tPriority.setEnabled(false);
+        tPriority.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+                bApplyExitcode.setEnabled(true);
+            }
+        });
+        tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
         bNew = new Button(gDescription, SWT.NONE);
         final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
@@ -355,24 +368,9 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
 
-        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
         gridData_5.widthHint = 150;
         tTitle.setLayoutData(gridData_5);
-
-        final Label priorityLabel = new Label(gDescription, SWT.NONE);
-        final GridData gridData_11 = new GridData();
-        gridData_11.horizontalIndent = 10;
-        priorityLabel.setLayoutData(gridData_11);
-        priorityLabel.setText("Priority");
-
-        tPriority = new Text(gDescription, SWT.BORDER);
-        tPriority.setEnabled(false);
-        tPriority.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApplyExitcode.setEnabled(true);
-            }
-        });
-        tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
         bRemoveExitcode = new Button(gDescription, SWT.NONE);
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.BEGINNING, false, false, 1, 2);

@@ -1050,8 +1050,9 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 	
 	
 	private void applyChain() {
+		String oldJobChainname = listener.getChainName();
 		listener.applyChain(tName.getText(), bRecoverable.getSelection(), bVisible.getSelection());
-		update.updateJobChain(tName.getText());
+		update.updateJobChain(tName.getText(), oldJobChainname); 
 		fillChain(true, false);
 		bApplyChain.setEnabled(false);
 		if(listener.getChainName() != null && listener.getChainName().length() > 0) {

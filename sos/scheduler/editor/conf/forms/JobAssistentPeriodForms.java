@@ -321,7 +321,7 @@ public class JobAssistentPeriodForms {
 								}
 								String[] tdate = date.split("-");
 								if (!speDateListener.exists(Utils.str2int(tdate[2]), Utils.str2int(tdate[1]), Utils.str2int(tdate[0])) ) {
-									speDateListener.addDate(Utils.str2int(tdate[2]), Utils.str2int(tdate[1]), Utils.str2int(tdate[0]));   
+									speDateListener.addDate(Utils.str2int(tdate[0]), Utils.str2int(tdate[1]), Utils.str2int(tdate[2]));   
 								}
 								java.util.List lastDate = job.getChild("run_time").getChildren("date");
 								Element eDate =  (Element)lastDate.get(lastDate.size()-1);

@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -70,7 +71,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
         super(parent, style);
         this.type = type;
         initialize();
-        gIncludeFiles.setVisible((type == 0));
+        gIncludeFiles.setVisible((type == 0));        
         setToolTipText();
     }
 
@@ -105,6 +106,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
     private void initialize() {
         this.setLayout(new FillLayout());
         createGroup();
+        
         setSize(new org.eclipse.swt.graphics.Point(380, 232));
     }
 
@@ -157,24 +159,32 @@ public class DateForm extends Composite implements IUpdateLanguage {
         bAddDay.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		
-        		 int year = sYear.getSelection();
-             int month = sMonth.getSelection();
-             int day = sDay.getSelection();
-             if (listener.exists(year, month, day)) {
-                 MessageBox mb = new MessageBox(getShell(), SWT.ICON_INFORMATION);
-                 mb.setMessage(Messages.getString("date.date_exists"));
-                 mb.open();
-                 if (main != null && dom.isChanged())
-                     main.dataChanged();
-             } else {
-                 listener.addDate(year, month, day);
-                 listener.fillList(lDates);
-                 bRemoveDate.setEnabled(false);
-
-                 // update the tree if not holidays
-                 if (main != null && type == 1)
-                     main.updateDays(3);
-             }
+        		int year = sYear.getSelection();
+        		int month = sMonth.getSelection();
+        		int day = sDay.getSelection();
+        		
+        		String sDate = listener.asStr(year) + "-" + listener.asStr(month) + "-" + listener.asStr(day);
+        		try {
+                	sos.util.SOSDate.getDate(sDate);
+                } catch (Exception ex) {
+                	MainWindow.message( sDate + " is not a valid Date: " + ex.getMessage(), SWT.ICON_ERROR);
+                	return ;
+                }
+        		if (listener.exists(year, month, day)) {
+        			MessageBox mb = new MessageBox(getShell(), SWT.ICON_INFORMATION);
+        			mb.setMessage(Messages.getString("date.date_exists"));
+        			mb.open();
+        			if (main != null && dom.isChanged())
+        				main.dataChanged();
+        		} else {
+        			listener.addDate(year, month, day);
+        			listener.fillList(lDates);
+        			bRemoveDate.setEnabled(false);
+        			
+        			// update the tree if not holidays
+        			if (main != null && type == 1)
+        				main.updateDays(3);
+        		}
         	}
         });
         final GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, false, false);
@@ -221,13 +231,12 @@ public class DateForm extends Composite implements IUpdateLanguage {
 
         gIncludeFiles = new Group(gDates, SWT.NONE);
         gIncludeFiles.setVisible(false);
-        final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gridData_1.widthHint = 241;
+        final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
         gIncludeFiles.setLayoutData(gridData_1);
         gIncludeFiles.setLayout(new GridLayout());
 
         gInclude = new Group(gIncludeFiles, SWT.NONE);
-        gInclude.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        gInclude.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         final GridLayout gridLayout_2 = new GridLayout();
         gridLayout_2.numColumns = 3;
         gInclude.setLayout(gridLayout_2);

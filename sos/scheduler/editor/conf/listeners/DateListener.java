@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -139,7 +140,7 @@ public class DateListener implements Comparator {
     }
 
 
-    private String asStr(int value) {
+    public String asStr(int value) {
         if (value < 10)
             return "0" + value;
         else

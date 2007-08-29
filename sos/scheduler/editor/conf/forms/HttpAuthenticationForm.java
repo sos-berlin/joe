@@ -128,14 +128,9 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 		txtPassword = new Text(group_1, SWT.BORDER);
 		txtPassword.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR && !txtUsername.getText().equals("")){
-					try {
-						String _encrypt = SOSCrypt.MD5encrypt(txtPassword.getText());
-						txtMD5Password.setText(_encrypt);
-					} catch (Exception ex) {
-						MainWindow.message(getShell(), txtPassword.getText() + " could not encrypt." , SWT.ICON_WARNING | SWT.OK );
-					}
-					//applyHttpUser();
+				if (e.keyCode == SWT.CR && !txtPassword.getText().equals("")){
+					encrypt();
+					
 				}
 				
 			}
@@ -152,19 +147,14 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 		butEncrypt.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if(txtPassword.getText() != null && txtPassword.getText().length() > 0) {
-					try {
-						String _encrypt = SOSCrypt.MD5encrypt(txtPassword.getText());
-						txtMD5Password.setText(_encrypt);
-					} catch (Exception ex) {
-						MainWindow.message(getShell(), txtPassword.getText() + " could not encrypt." , SWT.ICON_WARNING | SWT.OK );
-					}
+					encrypt();
 				}
 				
 			}
 		});
 		butEncrypt.setEnabled(false);
 		butEncrypt.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butEncrypt.setText("Encryt");
+		butEncrypt.setText("Encrypt");
 		new Label(group_1, SWT.NONE);
 		new Label(group_1, SWT.NONE);
 		
@@ -300,5 +290,14 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 	public void apply() {
 		applyHttpUser();
 		
+	}
+	
+	private void encrypt() {
+		try {
+			String _encrypt = SOSCrypt.MD5encrypt(txtPassword.getText());
+			txtMD5Password.setText(_encrypt.toUpperCase());
+		} catch (Exception ex) {
+			MainWindow.message(getShell(), txtPassword.getText() + " could not encrypt." , SWT.ICON_WARNING | SWT.OK );
+		}
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

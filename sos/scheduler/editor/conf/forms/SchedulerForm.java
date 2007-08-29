@@ -371,10 +371,19 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	public void updateJobChains() {
 		listener.treeFillJobChains(tree.getSelection()[0]);
 	}
-	public void updateJobChain(String name) {
+	public void updateJobChain(String newName, String oldName) {
 		//listener.treeFillJobChains(tree.getSelection()[0]);
 		TreeItem item = tree.getSelection()[0];
-        String jobChain = "Job Chain: " + name;
-        item.setText(jobChain);
+		if(item.getText().equals("Job Chains")) {
+			TreeItem[] items = item.getItems();
+			for (int i = 0; i < items.length; i++) {
+				TreeItem it = items[i]; 
+				if(it.getText().equals("Job Chain: " + oldName))
+				    it.setText("Job Chain: " + newName);
+			}
+		} else {
+			String jobChain = "Job Chain: " + newName;
+			item.setText(jobChain);
+		}
 	}
 }
