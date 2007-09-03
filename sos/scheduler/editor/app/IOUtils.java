@@ -1,23 +1,16 @@
 package sos.scheduler.editor.app;
 
 import java.io.File;
-import java.io.FileWriter;
+
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.jdom.Document;
-import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
-import org.jdom.transform.JDOMSource;
 
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.doc.DocumentationDom;
