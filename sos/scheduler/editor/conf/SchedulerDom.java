@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.util.*;
-import java.util.Iterator;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +15,7 @@ import org.jdom.Comment;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.ProcessingInstruction;
 import org.jdom.Text;
 import org.jdom.output.SAXOutputter;
 
@@ -56,7 +55,9 @@ public class SchedulerDom extends DomParser {
     /** Schreibheschützte Dateien*/
     private ArrayList             listOfReadOnlyFiles = null;
           
-    private static final String[] HTTP_SERVER    = { "web_service", "http.authentication", "http_directory"};
+    private static final String[] HTTP_SERVER         = { "web_service", "http.authentication", "http_directory"};       
+    
+    private String                 styleSheet         = "";
        
     public SchedulerDom() {
         super(new String[] { "scheduler_editor_schema" }, new String[] { Options.getSchema() }, Options.getXSLT());
@@ -105,7 +106,12 @@ public class SchedulerDom extends DomParser {
         StringReader sr = new StringReader(readFile(filename));
         Document doc = getBuilder(validate).build(sr);
         sr.close();
-
+                
+        if(doc.getDescendants() != null) {
+        	Iterator descendants = doc.getDescendants();
+        	findStyleSheet(descendants);
+        }
+        
         if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("spooler")))
             return false;
 
@@ -218,10 +224,15 @@ public class SchedulerDom extends DomParser {
         reorderDOM();
 
         FormatHandler handler = new FormatHandler(this);
+        handler.setStyleSheet(styleSheet);
         handler.setEnconding(encoding);
         handler.setDisableJobs(isJobsDisabled());
-        SAXOutputter saxo = new SAXOutputter(handler);
+        
+        
+        SAXOutputter saxo = new SAXOutputter(handler);     
+        
         saxo.output(getDoc());
+        
 
         try {
             getBuilder(true).build(new StringReader(handler.getXML()));
@@ -255,6 +266,7 @@ public class SchedulerDom extends DomParser {
           reorderDOM(doc.getRootElement());
 
         FormatHandler handler = new FormatHandler(this);
+        handler.setStyleSheet(styleSheet);
         handler.setEnconding(encoding);
         handler.setDisableJobs(isJobsDisabled());
         SAXOutputter saxo = new SAXOutputter(handler);
@@ -290,6 +302,7 @@ public class SchedulerDom extends DomParser {
         reorderDOM(element);
 
         FormatHandler handler = new FormatHandler(this);
+        handler.setStyleSheet(styleSheet);
         handler.setEnconding(DEFAULT_ENCODING);
         handler.setDisableJobs(isJobsDisabled());
         SAXOutputter saxo = new SAXOutputter(handler);
@@ -369,4 +382,17 @@ public class SchedulerDom extends DomParser {
 		this.listOfReadOnlyFiles = listOfReadOnlyFiles;
 	}
     
+	private void findStyleSheet(Iterator descendants) {
+		while(descendants != null && descendants.hasNext()) {
+        	Object o = descendants.next(); 
+        	if (o instanceof ProcessingInstruction) {
+        		ProcessingInstruction h = (ProcessingInstruction)o;
+        		try {
+        			styleSheet =  "<?" + h.getTarget() + " " + h.getValue() + "?>";
+        		} catch(Exception e) {
+        			System.out.println("error in SchedulerDom write: " + e.getMessage());        		
+        		}
+        	}           
+        }		 
+	}
 }

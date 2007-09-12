@@ -139,13 +139,15 @@ public class Options {
     public static String[] getBrowserExec(String url, String lang) {
         String os = System.getProperty("os.name").toLowerCase();
         String value = "";
-
+        
         if (os.indexOf("windows") > -1)
             value = _properties.getProperty("editor.browser.windows");
         else
             value = _properties.getProperty("editor.browser.unix");
-
-        value = value.replaceAll("\\{file\\}", url);
+        
+         url = url.replaceAll("file:/", "file://");
+        
+        value = value.replaceAll("\\{file\\}", url);        
         value = value.replaceAll("\\{lang\\}", lang);
         
         return value.split("\\|");

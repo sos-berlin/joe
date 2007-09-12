@@ -210,6 +210,14 @@ public class DetailsListener {
 		return n;
 	}
 	
+	//mo
+	private Element createNote(Element elem, String language) {
+		Element n = new Element("note");
+		Utils.setAttribute("language", language, n);
+        elem.addContent(n);
+		return n;
+	}
+	
 	private Element createNewNoteElement(String text) {
 		Element newNote = null;
 		try {
@@ -246,10 +254,12 @@ public class DetailsListener {
 	
 	private String getNoteText(Element note) {
 		String noteText = "";
-		Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-		if(div != null) {			
-			noteText = Utils.noteAsStr(div);
-		}		
+		if(note != null) {
+			Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+			if(div != null) {			
+				noteText = Utils.noteAsStr(div);
+			}		
+		}
 		return noteText;
 	}
 	
@@ -388,6 +398,7 @@ public class DetailsListener {
 		}
 	}
 	
+	
 	private String  createConfigurationFile() {
 		String xml = "<?xml version=\"1.0\" encoding=\""+ encoding + "\"?> ";
 		
@@ -419,10 +430,15 @@ public class DetailsListener {
 		List processList = order.getChildren("process");		
 		for(int i = 0; i < processList.size(); i++) {						
 			Element process = (Element)processList.get(i);
-			if(Utils.getAttributeValue("state",process).equalsIgnoreCase(state)) {
-				params_=process.getChild("params");
+			if(Utils.getAttributeValue("state",process).equalsIgnoreCase(state)) {				
 				List note = process.getChildren("note");
-				setGlobaleNote(note);
+				if(note.size() == 0) {
+					noteDE = createNote(process, "DE");
+					noteEN = createNote(process, "EN");
+				} else { 
+					setGlobaleNote(note);
+				}
+				params_=process.getChild("params");
 			}			
 		}
 		

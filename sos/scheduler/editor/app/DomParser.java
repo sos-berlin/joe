@@ -101,7 +101,7 @@ public abstract class DomParser {
     }
 
 
-    public Document getDoc() {
+    public Document getDoc() {    	
         return _doc;
     }
 

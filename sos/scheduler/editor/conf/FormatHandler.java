@@ -25,6 +25,8 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
     private boolean      _isOpen      = false;
 
     private String       _disabled    = "";
+    
+    private String      _stylesheet   = "";
 
 
     public FormatHandler(SchedulerDom dom) {
@@ -32,7 +34,13 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
     }
 
 
-    public void setEnconding(String encoding) {
+    /*public void processingInstruction(String arg0, String arg1) throws SAXException {
+		// TODO Auto-generated method stub
+		super.processingInstruction(arg0, arg1);
+	}*/
+
+
+	public void setEnconding(String encoding) {
         _encoding = encoding;
     }
 
@@ -49,8 +57,11 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 
     public void startDocument() {
         _sb.append("<?xml version=\"1.0\" encoding=\"" + _encoding + "\"?>\n\n");
+        if(_stylesheet != null && _stylesheet.length() > 0)
+        	_sb.append(_stylesheet+"\n");
     }
 
+    
 
     public void characters(char[] ch, int start, int length) throws SAXException {
         _text.append(new String(ch, start, length));
@@ -164,6 +175,9 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
         return sb.toString();
     }
 
+    public void setStyleSheet(String stylesheet_) {
+    	_stylesheet = stylesheet_; 
+    }
 
     private String nl() {
         switch (_level) {

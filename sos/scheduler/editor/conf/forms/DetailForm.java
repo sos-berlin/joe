@@ -685,7 +685,12 @@ public class DetailForm extends Composite implements IUpdateLanguage {
         		            if (prog != null)
         		                prog.execute(new File(filename).toURL().toString());
         		            else {
-        		            	Runtime.getRuntime().exec(Options.getBrowserExec(new File(filename).toURL().toString(), Options.getLanguage()));
+        		            	 // String test = "rundll32 url.dll FileProtocolHandler file://C:/scheduler/config/configuration_mci_chandon_incoming_ipm.xml";
+        		            	  //Runtime.getRuntime().exec(test.split(" "));
+        		            	String[] split = Options.getBrowserExec(new File(filename).toURL().toString(), Options.getLanguage());
+        		            	Runtime.getRuntime().exec(split);
+        		            	//Runtime.getRuntime().exec(Options.getBrowserExec(new File(filename).toURL().toString(), Options.getLanguage()));
+        		            	
         		            }        					 
         					
         				} else

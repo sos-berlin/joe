@@ -466,7 +466,7 @@ public class SchedulerListener {
                     String jobChainName = "Job Chain: " + name;
                     
                     i.setText(jobChainName);
-                    i.setData(new TreeData(Editor.JOB_CHAIN, element, Options.getHelpURL("job_chains")));                    
+                    i.setData(new TreeData(Editor.JOB_CHAIN, element, Options.getHelpURL("job_chain")));                    
                     
                 }
             }
