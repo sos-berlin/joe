@@ -36,8 +36,11 @@ public class MainListener {
             Program prog = Program.findProgram("html");
             if (prog != null)
                 prog.execute(url);
-            else {
+            else {             	
                 Runtime.getRuntime().exec(Options.getBrowserExec(url, lang));
+                
+                //Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler javascript:location.href='file://c:/scheduler/config/html/doc/en/xml/job.xml'");
+                
             }
         } catch (Exception e) {
             e.printStackTrace();

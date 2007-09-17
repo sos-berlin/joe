@@ -159,7 +159,7 @@ public class JobChainConfigurationListener{
 					if(jobChainname == null) {
 						df = new DetailForm(c, SWT.NONE, Editor.DETAILS, _dom, _gui);					
 					} else {                
-						df = new DetailForm(c, SWT.NONE, jobChainname, item.getData() != null? item.getData().toString(): null, null, Editor.DETAILS, _dom, _gui);										
+						df = new DetailForm(c, SWT.NONE, jobChainname, item.getData() != null && !(item.getData() instanceof sos.scheduler.editor.app.TreeData)? item.getData().toString(): null, null, Editor.DETAILS, _dom, _gui);										
 					}
 					df.setTree(tree);
 					df.setJobChainConfigurationListener(this);
