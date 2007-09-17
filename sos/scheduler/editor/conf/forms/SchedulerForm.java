@@ -337,26 +337,25 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 
 
     public String getHelpKey() {
-        if (tree.getSelectionCount() > 0) {
-            TreeItem item = tree.getSelection()[0];
-            TreeData data = (TreeData) item.getData();
-            if (data != null && data.getHelpKey() != null)
-                return data.getHelpKey();
-        }
-        return null;
+    	if (tree.getSelectionCount() > 0) {
+    		TreeItem item = tree.getSelection()[0];            
+    		if(item.getData("key") != null) {
+    			return Options.getHelpURL(item.getData("key").toString());
+    		} else {
+    			TreeData data = (TreeData) item.getData(); 
+    			if (data != null && data.getHelpKey() != null)
+    				return data.getHelpKey();
+    		}
+    	}
+    	return null;
     }
-
+    
 
     public String getFilename() {
         return dom.getFilename();
     }
 
-    //test
-	/*public SchedulerListener getListener() {
-		return listener;
-	}*/
-
-	
+  	
     public void updateTree(String which) {
     	if(which.equalsIgnoreCase("main"))
     		listener.treeFillMain(tree, cMainForm);	
