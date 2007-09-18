@@ -17,7 +17,7 @@ import sos.scheduler.editor.conf.SchedulerDom;
 
 public class DaysListener {
     public static final int   WEEKDAYS     = 0;
-
+ 
     public static final int   MONTHDAYS    = 1;
 
     public static final int   ULTIMOS      = 2;
