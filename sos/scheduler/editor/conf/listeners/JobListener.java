@@ -74,11 +74,18 @@ public class JobListener {
 	
 	
 	public void setName(String name, boolean updateTree) {	
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.DELETE);
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.DELETE);		
 		Utils.setAttribute("name", name, _job, _dom);
 		if (updateTree)
 			_main.updateJob(name);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		
+		/*if(_dom.isLifeElement() && _dom.isChanged()) {
+			if(_dom.getListOfEmptyElementNames() == null) {
+				_dom.setListOfEmptyElementNames(new ArrayList());
+			}		
+			_dom.getListOfEmptyElementNames().add(Utils.getAttributeValue("name",_job));
+		}*/
 	}
 	
 	
@@ -221,6 +228,7 @@ public class JobListener {
 	
 	public String[] getProcessClasses() {
 		String[] names = null;
+		if(_dom.getRoot().getName().equalsIgnoreCase("spooler")) {
 		Element classes = _dom.getRoot().getChild("config").getChild("process_classes");
 		if (classes != null) {
 			List list = classes.getChildren("process_class");
@@ -236,6 +244,7 @@ public class JobListener {
 					names[i++] = name;
 				}
 			}
+		}
 		}
 		return names;
 	}
@@ -324,6 +333,12 @@ public class JobListener {
 		e.setAttribute("name", name);
 		e.setAttribute("value", value);
 		
+		 
+		if((_dom.isLifeElement() || _dom.isDirectory()) && _params == null) {
+			Element params = _job.getChild("params");
+			if (params != null)
+				_params = params.getChildren("param");
+		}
 		
 		if (_params == null)
 			initParams();

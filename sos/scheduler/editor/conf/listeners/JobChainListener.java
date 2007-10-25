@@ -1,6 +1,7 @@
 package sos.scheduler.editor.conf.listeners;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.swt.SWT;
@@ -36,7 +37,8 @@ public class JobChainListener {
 	public JobChainListener(SchedulerDom dom, Element jobChain) {
 		_dom = dom;
 		_chain = jobChain;		
-		_config = _chain.getParentElement().getParentElement();
+		if(_chain.getParentElement() != null)
+			_config = _chain.getParentElement().getParentElement();
 	}
 	
 	
@@ -67,6 +69,13 @@ public class JobChainListener {
 		
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("job_chain", name, SchedulerDom.MODIFY);
+		
+		/*if(_dom.isLifeElement() && _dom.isChanged()) {
+			if(_dom.getListOfEmptyElementNames() == null) {
+				_dom.setListOfEmptyElementNames(new ArrayList());
+			}
+			_dom.getListOfEmptyElementNames().add(Utils.getAttributeValue("name",_chain));
+		}*/
 		
 	}
 	
@@ -349,9 +358,11 @@ public class JobChainListener {
 		setStates();
 	}
 	
-	public void changeUp(Table table, boolean up, boolean isJobchainNode,String state, String job, String delay, String next, String error, boolean removeFile,String moveTo, int index ) {
-		Element node = null;
+	public void changeUp(Table table, boolean up, boolean isJobchainNode,String state, String job, String delay, String next, 
+			String error, boolean removeFile,String moveTo, int index ) {
 		
+		Element node = null;
+		System.out.println("test: index= " + index );
 		if (_node != null) {//Wenn der Knotentyp geändert wird, alten löschen und einen neuen anlegen.
 			if (isJobchainNode && _node.getName().equals("file_order_sink")){
 				_node.detach();
@@ -392,25 +403,31 @@ public class JobChainListener {
 			
 		}
 		List l = _chain.getContent();
+		System.out.println("test: l.size= " + l.size() + " _chain.getContenSize(): " + _chain.getContentSize() );
 		int cIndex =-1;
 		boolean found = false;//Hilfsvariabkle für down
+		System.out.println("test: cIndex= " + cIndex );
 		for(int i =0; i < _chain.getContentSize(); i++) {
+			System.out.println("test: " + l.get(i));
 			if(up) {
 				//up
 				if(l.get(i).equals(_node)) {				
 					break;
-				} else if(l.get(i) instanceof Element) {
-					cIndex = i;
+				} else if(l.get(i) instanceof Element) {					
+					cIndex = i;					
 					if(cIndex == -1)
 						cIndex = 0;//up
+					System.out.println("test: up cIndex= " + cIndex );
 					
 				}
 			} else {
 				//down
 				if(l.get(i).equals(_node)) {				
 					found = true;
+					System.out.println("test: up found cIndex= " + cIndex );
 				} else if(l.get(i) instanceof Element && found) {
 					cIndex = i;
+					System.out.println("test: down cIndex= " + cIndex );
 					break;
 				}
 			}
@@ -421,19 +438,24 @@ public class JobChainListener {
 		
 		node = (Element)_node.clone();
 		
+		System.out.println("test: _node= " +  Utils.getElementAsString(node));
+		
 		_chain.removeContent(_node);						
+		System.out.println("test: chain removeContent= " +  Utils.getElementAsString(_chain));
 		
 		_chain.addContent(cIndex, node);
-		
+		System.out.println("test: _node addContent= " +  Utils.getElementAsString(_chain));
 		_node = node;
 		
 		
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
+		
+		System.out.println("test: setStates ");
 		setStates();
-		
+		System.out.println("test: fillChain ");
 		fillChain(table);
-		
+		System.out.println("test: fillChain 2 ");
 		if(up)
 			table.setSelection(index-1);
 		else
@@ -535,6 +557,8 @@ public class JobChainListener {
 	
 	
 	public String[] getJobs() {
+		if(_config == null)
+			return new String[0];
 		Element job = _config.getChild("jobs");
 		if (job != null) {
 			int size = 0;

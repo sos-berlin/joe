@@ -65,7 +65,10 @@ public class JobChainsListener {
                 item.setText(0, name);
                 item.setText(1, Utils.isAttributeValue("orders_recoverable", chain) ? "Yes" : "No");
                 item.setText(2, Utils.isAttributeValue("visible", chain) ? "Yes" : "No");
-                _chainNames[index++] = name;
+                if(!Utils.isElementEnabled("job_chain", _dom, chain)) {
+                	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+                } 
+                _chainNames[index++] = name;                
             }
         }
     }
@@ -611,5 +614,10 @@ public class JobChainsListener {
 
 	public SchedulerDom get_dom() {
 		return _dom;
+	}
+
+
+	public Element getChain() {
+		return _chain;
 	}
 }

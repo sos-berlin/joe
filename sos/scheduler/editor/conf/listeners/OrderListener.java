@@ -1,5 +1,6 @@
 package sos.scheduler.editor.conf.listeners;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -79,6 +80,7 @@ public class OrderListener {
     public void deleteParameter(Table table, int index) {
         if (_params != null) {
             _params.remove(index);
+            _dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.MODIFY);
             _dom.setChanged(true);
         }
         table.remove(index);
@@ -102,6 +104,7 @@ public class OrderListener {
                             found = true;
                             e.setAttribute("value", value2);
                             _dom.setChanged(true);
+                            _dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.MODIFY);
                             table.getItem(index).setText(1, value);
                         }
                     }
@@ -116,6 +119,7 @@ public class OrderListener {
             e.setAttribute("name", name);
             e.setAttribute("value", value2);
             _dom.setChanged(true);
+            _dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.MODIFY);
 
             if (_params == null)
                 initParams();
@@ -134,14 +138,20 @@ public class OrderListener {
 
 
     public void setCommandAttribute(String name, String value) {
-        Utils.setAttribute(name, value, _order, _dom);
+    	
+    	_dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.DELETE);
+        Utils.setAttribute(name, value, _order, _dom);        
+        _dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.MODIFY);
     }
 
 
     public void setOrderId(String id, boolean updateTree) {
+    	_dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.DELETE);
         Utils.setAttribute("id", id, _order, _dom);
         if (updateTree)
             _main.updateOrder(id);
+        
+        _dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.MODIFY);
     }
 
 
@@ -151,6 +161,11 @@ public class OrderListener {
 
 
     public String[] getJobChains() {
+    	if(_dom.isLifeElement()) {
+    		_chains = new String[0];
+    		return _chains;		
+    	}
+    		
         Element element = _config.getChild("job_chains");
         if (element != null) {
             List chains = element.getChildren("job_chain");

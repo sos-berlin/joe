@@ -91,11 +91,11 @@ public class PeriodsListener {
 		if(job.getParentElement()==null)
 			return false;
 		
-		while (!job.getName().equals("job") && !job.getName().equals("add_order"))
+		while (!job.getName().equals("job") && !job.getName().equals("add_order")&& !job.getName().equals("order"))
 			job = job.getParentElement();
 		
 		return Utils.isAttributeValue("order", job) && job.getName().equals("job") || Utils.isAttributeValue("id", job)
-		&& job.getName().equals("add_order");
+		&& (job.getName().equals("add_order") || job.getName().equals("order"));
 	}
 	
 	

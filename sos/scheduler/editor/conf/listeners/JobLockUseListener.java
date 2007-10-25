@@ -97,6 +97,10 @@ public class JobLockUseListener {
 
     public String[] getLocks() {
   		String[] names = null;
+  		if(_dom.isLifeElement()) { 
+  			names = new String[0];
+  			return names;
+  		}
   		Element locks = _dom.getRoot().getChild("config").getChild("locks");
   		if (locks != null) {
   			List list = locks.getChildren("lock");

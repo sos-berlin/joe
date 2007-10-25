@@ -144,6 +144,19 @@ public class PeriodListener {
     }
 
 
+    public String getAbsoluteRepeatHours() {
+    	return Utils.getIntegerAsString(Utils.getHours(_period.getAttributeValue("absolute_repeat"), -999));
+    }
+    
+    public String getAbsoluteRepeatMinutes() {
+    	return Utils.getIntegerAsString(Utils.getMinutes(_period.getAttributeValue("absolute_repeat"), -999));
+    }
+    
+    public String getAbsoluteRepeatSeconds() {
+    	return Utils.getIntegerAsString(Utils.getSeconds(_period.getAttributeValue("absolute_repeat"), -999));
+    }
+    
+
     public String getSingleHours() {
     	if(_period!=null && _period.getName().equals("at")) 
     		return Utils.getIntegerAsString(Utils.getHours(_period.getAttributeValue("at") != null ? _period.getAttributeValue("at").split(" ")[1] : "0", -999));

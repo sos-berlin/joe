@@ -1,14 +1,12 @@
 package sos.scheduler.editor.conf.listeners;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
-
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -24,6 +22,8 @@ public class OrdersListener {
     private Element          _config;
 
     private List             _orders;
+    
+    private List             _orders2;
 
 
     public OrdersListener(SchedulerDom dom, ISchedulerUpdate update) {
@@ -31,8 +31,31 @@ public class OrdersListener {
         _main = update;
         _config = _dom.getRoot().getChild("config");
         _commands = _config.getChild("commands");
-        if (_commands != null)
-            _orders = _commands.getChildren("add_order");
+        if (_commands != null) {
+        	/*List l = new ArrayList();
+        	List listOfAddOrders = _commands.getChildren("add_order");
+        	for(int i = 0; i < listOfAddOrders.size(); i++) {
+        		l.add((Element)listOfAddOrders.get(i));
+        	}
+        	List listOfOrders = _commands.getChildren("order");
+        	for(int i = 0; i < listOfOrders.size(); i++) {
+        		l.add((Element)listOfOrders.get(i));
+        	}
+        	
+        	//l.add(_commands.getChildren("add_order"));
+        	//l.add(_commands.getChildren("order"));        	
+        	
+        	_orders = l;
+        	*/
+            /*_orders = _commands.getChildren("add_order");
+            List l = _commands.getChildren("order");
+            for(int i=0; i < l.size(); i++)
+            	_orders.add(l.get(i));
+            	*/
+            //_orders.addAll(_commands.getChildren("order"));
+        	_orders =  _commands.getChildren("add_order");
+        	_orders2 = _commands.getChildren("order");
+        }
     }
 
 
@@ -44,20 +67,38 @@ public class OrdersListener {
             _commands = _config.getChild("commands");
         }
         _orders = _commands.getChildren("add_order");
+        _orders2 = _commands.getChildren("order");
+        //_orders.addAll(_commands.getChildren("order"));
     }
 
 
     public void fillTable(Table table) {
         table.removeAll();
         if (_orders != null) {
-            for (Iterator it = _orders.iterator(); it.hasNext();) {
-                Object o = it.next();
+            for (Iterator it = _orders.iterator(); it.hasNext();) {        	
+                Object o = it.next();        	
+        	    if (o instanceof Element) {
+                    Element e = (Element) o;
+                    TableItem item = new TableItem(table, SWT.NONE);
+                    item.setData(e);
+                    String id = Utils.getAttributeValue("id", e);
+                    item.setText(0, id);
+                    if(!Utils.isElementEnabled("commands", _dom, e)) {
+                    	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+                    }
+                }
+            }
+            for (Iterator it = _orders2.iterator(); it.hasNext();) {        	
+                Object o = it.next();        	
                 if (o instanceof Element) {
                     Element e = (Element) o;
                     TableItem item = new TableItem(table, SWT.NONE);
                     item.setData(e);
                     String id = Utils.getAttributeValue("id", e);
                     item.setText(0, id);
+                    if(!Utils.isElementEnabled("commands", _dom, e)) {
+                    	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+                    }
                 }
             }
         }
@@ -89,16 +130,23 @@ public class OrdersListener {
             c++;
         }
 
-        Element add_order = new Element("add_order");
+        //Element add_order = new Element("add_order");//mo
+        Element add_order = new Element("order");
         Element runtime = new Element("run_time");
         runtime.setAttribute("let_run", "no");
         add_order.setAttribute("id", id);
+//        add_order.setAttribute("job_chain", "_");
 
         if (_commands == null)
             initCommands();
 
-        _orders.add(add_order.addContent(runtime));
+        //_orders.add(add_order.addContent(runtime));
+        add_order.addContent(runtime); //mo
+        _orders2.add(add_order);//mo
+        //add_order.setName("order");
+        
         _dom.setChanged(true);
+        _dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", add_order) + "," + id, SchedulerDom.NEW);
         fillTable(table);
         table.setSelection(table.getItemCount() - 1);
         _main.updateOrders();
@@ -112,6 +160,7 @@ public class OrdersListener {
             Element e = (Element) item.getData();
             e.detach();
             _dom.setChanged(true);
+            _dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", e)+","+Utils.getAttributeValue("id", e), SchedulerDom.DELETE);
             table.remove(index);
             _main.updateOrders();
 
@@ -134,6 +183,18 @@ public class OrdersListener {
             //for (Iterator it = _orders.iterator(); it.hasNext();) {
 			for(int i = 0; i < _orders.size(); i++) {
                 Object o = _orders.get(i);
+                if (o instanceof Element) {
+                    Element e = (Element) o;
+                    String id = Utils.getAttributeValue("id", e);
+                    listOfIds[i] = id;
+                }
+            }
+        }
+		if (_orders2 != null) {
+			listOfIds = new String[_orders2.size()];
+            //for (Iterator it = _orders.iterator(); it.hasNext();) {
+			for(int i = 0; i < _orders2.size(); i++) {
+                Object o = _orders2.get(i);
                 if (o instanceof Element) {
                     Element e = (Element) o;
                     String id = Utils.getAttributeValue("id", e);

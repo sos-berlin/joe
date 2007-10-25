@@ -33,10 +33,16 @@ public class JobsListener {
 	public JobsListener(SchedulerDom dom, ISchedulerUpdate update) {
 		_dom = dom;
 		_main = update;
+		if(_dom.isLifeElement()) {
+			 
+		} else {
 		_config = _dom.getRoot().getChild("config");
 		_jobs = _config.getChild("jobs");
+		
 		if (_jobs != null)
 			_list = _jobs.getChildren("job");
+		}
+		
 	}
 	
 	

@@ -129,8 +129,11 @@ public class ProcessClassesListener {
         if (_list == null)
             initClasses();
         if (!_list.contains(_class)) {
-            _list.add(_class);
-            _dom.setChangedForDirectory("process_class", processClass, SchedulerDom.NEW);
+            _list.add(_class);            
+            _dom.setChangedForDirectory("process_class", processClass, SchedulerDom.NEW);   
+        } else if (_dom.isLifeElement()) {
+        	_dom.setChangedForDirectory("process_class", processClass, SchedulerDom.NEW);        	
+        	_dom.getRoot().setAttribute("name", _class.getAttributeValue("name"));
         } else {
         	_dom.setChangedForDirectory("process_class", processClass, SchedulerDom.MODIFY);
         }
