@@ -26,38 +26,67 @@ import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 
 public class SchedulerDom extends DomParser {
-    private static final String[] CONFIG_ELEMENTS     = { "base", "security", "cluster", "process_classes", "locks", "script", "http_server",
+    private static final String[] CONFIG_ELEMENTS          = { "base", "security", "cluster", "process_classes", "locks", "script", "http_server",
             "holidays", "jobs", "job_chains","orders", "commands" };
 
-    private static final String[] JOB_ELEMENTS        = { "description", "params", "script", "process", "monitor",
+    private static final String[] JOB_ELEMENTS             = { "description", "params", "script", "process", "monitor",
             "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };        
 
-    private static final String[] RUNTIME_ELEMENTS    = { "period", "at", "date", "weekdays", "monthdays", "ultimos", "holidays" };
+    private static final String[] RUNTIME_ELEMENTS         = { "period", "at", "date", "weekdays", "monthdays", "ultimos", "holidays" };
     
-    private static final String[] JOBCHAIN_ELEMENTS   = { "file_order_source", "job_chain_node", "file_order_sink"};
+    private static final String[] JOBCHAIN_ELEMENTS        = { "file_order_source", "job_chain_node", "file_order_sink"};
 
-    private ArrayList             _disabled           = new ArrayList();
+    private ArrayList             _disabled                = new ArrayList();
     
-    private HashMap               changedForDirectory = new HashMap();    
+    private HashMap               changedForDirectory      = new HashMap();    
     
-    public static final String    MODIFY              = "modify";
+    public static final String    MODIFY                   = "modify";
     
-    public static final String    DELETE              = "delete";
+    public static final String    DELETE                   = "delete";
     
-    public static final String    NEW                 = "new";
+    public static final String    NEW                      = "new";
 
-    private static final String[] CONFIG_ELEMENTS_DIRECTORY  = { "process_classes", "locks", "jobs", "job_chains"};
+    private static final String[] CONFIG_ELEMENTS_DIRECTORY= { "process_classes", "locks", "jobs", "job_chains", "commands"};
 
-    public static final int       CONFIGURATION       = 0;
+    public static final int       CONFIGURATION            = 0;
+                
+    private static final String[] HTTP_SERVER              = { "web_service", "http.authentication", "http_directory"};       
     
-    public static final int       DIRECTORY           = 1;
+    private String                 styleSheet              = "";
     
-    /** Schreibheschützte Dateien*/
-    private ArrayList             listOfReadOnlyFiles = null;
-          
-    private static final String[] HTTP_SERVER         = { "web_service", "http.authentication", "http_directory"};       
+    private static final String[] COMMANDS_ELEMENTS        = { "add_order", "order"};
+
+    /** life Dateien: Schreibheschützte Dateien*/
+    private ArrayList             listOfReadOnlyFiles      = null;
     
-    private String                 styleSheet         = "";
+    /** life Dateien: Wenn dateiname ungleich der Element Attribute Name ist, 
+     * dann wird der Dateiname als Element name-Attribut gesetzt*/
+	private ArrayList             listOfChangeElementNames = null;		
+	
+	/* Ist Attribut name= nicht angegeben, wird der Name der Datei im Feld Name angezeigt.
+    Das Attribut name= wird in diesem Fall nicht zurückgeschrieben.
+ */
+	//private  static     ArrayList  listOfEmptyElementNames  = null;
+	
+	public static final int       DIRECTORY                = 1;
+    
+    public static final int       LIFE_JOB                 = 2;
+    
+    public static final int       LIFE_JOB_CHAIN           = 3;
+    
+    public static final int       LIFE_PROCESS_CLASS       = 4;
+    
+    public static final int       LIFE_LOCK                = 5;
+    
+    public static final int       LIFE_ORDER               = 6;
+    
+    public static final int       LIFE_ADD_ORDER           = 7;
+    
+    private        boolean   isDirectory                   =false;
+    
+
+    
+    
        
     public SchedulerDom() {
         super(new String[] { "scheduler_editor_schema" }, new String[] { Options.getSchema() }, Options.getXSLT());
@@ -67,11 +96,13 @@ public class SchedulerDom extends DomParser {
         putDomOrder("run_time", RUNTIME_ELEMENTS);
         putDomOrder("job_chain", JOBCHAIN_ELEMENTS);
         putDomOrder("http_server", HTTP_SERVER);
+        putDomOrder("commands", COMMANDS_ELEMENTS);
 
         initScheduler();
     }
 
     public SchedulerDom(int type) {
+    	
     	super(new String[] { "scheduler_editor_schema" }, new String[] { Options.getSchema() }, Options.getXSLT());
     	
     	if (type == DIRECTORY) {
@@ -79,11 +110,31 @@ public class SchedulerDom extends DomParser {
     		putDomOrder("job", JOB_ELEMENTS);
     		putDomOrder("run_time", RUNTIME_ELEMENTS);
     		putDomOrder("job_chain", CONFIG_ELEMENTS_DIRECTORY);
+    		//putDomOrder("commands", CONFIG_ELEMENTS_DIRECTORY);
+    		putDomOrder("commands", COMMANDS_ELEMENTS);    		
+    		isDirectory = true;
+    		initScheduler();
+    	} else if(type==LIFE_JOB) {
+    		putDomOrder("job", JOB_ELEMENTS);
+    		initScheduler(type);
+    	} else if(type==LIFE_JOB_CHAIN) {
+    		putDomOrder("job_chain", CONFIG_ELEMENTS_DIRECTORY);
+    		initScheduler(type);
+    	} else if(type==LIFE_ORDER) {
+    		putDomOrder("commands", COMMANDS_ELEMENTS);
+    		initScheduler(type);
+    	} else if(type==LIFE_PROCESS_CLASS) {
+    		putDomOrder("config", new String[]{ "process_classes" });
+    		initScheduler(type);
+    	} else if(type==LIFE_LOCK) {
+    		putDomOrder("config", new String[]{"locks"});
+    		initScheduler(type);
     	} else {
     		new SchedulerDom();
+    		initScheduler();
     	}
     	
-    	initScheduler();
+    	
     }
 
     public void initScheduler() {
@@ -95,6 +146,39 @@ public class SchedulerDom extends DomParser {
         config.addContent(processClasses.addContent(defaultClass));
     }
 
+
+    public void initScheduler(int type) {
+    	if(type==LIFE_ORDER) {
+    		Element order = new Element("order");
+    		order.setAttribute("job_chain", "job_chain1");
+    		order.setAttribute("id", "id");
+            setDoc(new Document(order));
+            //setFilename("job1.job.xml");
+    	}else {
+    		Element elem = null;
+    		
+    		if(type==LIFE_JOB) {
+    			elem = new Element("job");
+    			elem.setAttribute("name", "job1");
+    		} else if(type==LIFE_JOB_CHAIN) {
+    			elem = new Element("job_chain");
+    			elem.setAttribute("name", "job_chain1");
+    		} else if(type==LIFE_PROCESS_CLASS) {
+    			elem = new Element("process_class");
+    			elem.setAttribute("name", "process_class1");
+    		} else if(type==LIFE_LOCK) {
+    			elem = new Element("lock");
+    			elem.setAttribute("name", "lock1");
+    		} else if(type==LIFE_ORDER) {
+    			elem = new Element("job_chain");
+    			elem.setAttribute("name", "job_chain1");
+    		} 
+    		
+            setDoc(new Document(elem));
+            
+    	} 
+        
+    }
 
     public boolean read(String filename) throws JDOMException, IOException {    	
         return read(filename, Options.isValidate());
@@ -112,7 +196,9 @@ public class SchedulerDom extends DomParser {
         	findStyleSheet(descendants);
         }
         
-        if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("spooler")))
+        
+        //if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("spooler")))
+        if (!validate && !doc.hasRootElement())
             return false;
 
         setDoc(doc);
@@ -342,6 +428,9 @@ public class SchedulerDom extends DomParser {
 
 
     public boolean isJobsDisabled() {
+    	if(isLifeElement()) {
+    		return false;
+    	}
         int disabledJobs = _disabled.size();
         Element jobs = getRoot().getChild("config").getChild("jobs");
         if (jobs == null)
@@ -373,14 +462,6 @@ public class SchedulerDom extends DomParser {
     public void clearChangedJob() {
     	changedForDirectory.clear();
     }
-
-	public ArrayList getListOfReadOnlyFiles() {
-		return listOfReadOnlyFiles;
-	}
-
-	public void setListOfReadOnlyFiles(ArrayList listOfReadOnlyFiles) {
-		this.listOfReadOnlyFiles = listOfReadOnlyFiles;
-	}
     
 	private void findStyleSheet(Iterator descendants) {
 		while(descendants != null && descendants.hasNext()) {
@@ -395,4 +476,42 @@ public class SchedulerDom extends DomParser {
         	}           
         }		 
 	}
+
+	public ArrayList getListOfReadOnlyFiles() {
+		return listOfReadOnlyFiles;
+	}
+
+	public void setListOfReadOnlyFiles(ArrayList listOfReadOnlyFiles) {
+		this.listOfReadOnlyFiles = listOfReadOnlyFiles;
+		
+	}
+	
+	public ArrayList getListOfChangeElementNames() {		
+		return listOfChangeElementNames;
+	}
+
+	public void setListOfChangeElementNames(ArrayList listOfChangeElementNames) {
+		this.listOfChangeElementNames = listOfChangeElementNames;
+		for(int i = 0; i < listOfChangeElementNames.size(); i++) {
+			changedForDirectory.put(listOfChangeElementNames.get(i), MODIFY);
+		}
+	}
+	
+	public boolean isLifeElement() {
+		
+		return !getRoot().getName().equals("spooler") ; 		
+	}
+
+	/*public static ArrayList getListOfEmptyElementNames() {
+		return listOfEmptyElementNames;
+	}
+
+	public static void setListOfEmptyElementNames(ArrayList listOfEmptyElementNames) {
+		SchedulerDom.listOfEmptyElementNames = listOfEmptyElementNames;
+	}*/
+
+	public boolean isDirectory() {
+		return isDirectory;
+	}
+	
 }

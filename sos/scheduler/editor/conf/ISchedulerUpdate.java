@@ -27,10 +27,14 @@ public interface ISchedulerUpdate extends IDataChanged {
 
     public void updateDays(int type);
     
+    public void updateDays(int type, String name);    
+    
     public void updateSpecificWeekdays();
     
     public void updateJobChains();
     
     public void updateJobChain(String newName, String oldName);
+    
+    
     
 }
