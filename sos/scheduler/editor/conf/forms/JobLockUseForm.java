@@ -190,7 +190,6 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
       new Label(group1, SWT.NONE);
 
       butBrowse = new Button(group1, SWT.NONE);
-      butBrowse.setVisible(false);
       butBrowse.addSelectionListener(new SelectionAdapter() {
       	public void widgetSelected(final SelectionEvent e) {
       		String name = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_LOCK);

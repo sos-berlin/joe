@@ -27,6 +27,7 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.DateListener;
+import sos.scheduler.editor.conf.listeners.DaysListener;
 
 //TODO implement the app.DateInput class for dates
 
@@ -183,7 +184,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 					
 					// update the tree if not holidays
 					if (main != null && type == 1)
-						main.updateDays(3);
+						main.updateDays(DaysListener.SPECIFIC_DAY);
 				}
 			}
 		});
@@ -220,7 +221,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 						lDates.select(index);
 					bRemoveDate.setEnabled(lDates.getSelectionCount() > 0);
 					if ((main != null) && (type == 1))
-						main.updateDays(3);
+						main.updateDays(DaysListener.SPECIFIC_DAY);
 				}
 			}
 		});

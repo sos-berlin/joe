@@ -104,6 +104,21 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         this.setLayout(new FillLayout());
         createGroup();
         setSize(new org.eclipse.swt.graphics.Point(694, 294));
+        if(dom.isLifeElement()) {
+        	if(table.getItemCount() > 0)
+        		table.setSelection(0);
+        	
+        	listener.selectProcessClass(0);
+			setInput(true);
+			tProcessClass.setBackground(null);
+    	
+    		setEnabled(true);
+        	table.setVisible(false);
+        	bNew.setVisible(false);
+        	bRemove.setVisible(false);
+        	label2.setVisible(false);
+        	label.setVisible(false);
+        }
 
     }
 
@@ -115,20 +130,10 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         GridData gridData8 = new org.eclipse.swt.layout.GridData();
         gridData8.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData8.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData7 = new org.eclipse.swt.layout.GridData();
-        gridData7.horizontalSpan = 7;
-        gridData7.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
+        GridData gridData7 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
         gridData7.heightHint = 10;
-        gridData7.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        GridData gridData6 = new org.eclipse.swt.layout.GridData();
-        gridData6.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData6.grabExcessHorizontalSpace = true;
-        gridData6.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData5 = new org.eclipse.swt.layout.GridData();
-        gridData5.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData5.grabExcessHorizontalSpace = true;
-        gridData5.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData4 = new GridData(20, SWT.DEFAULT);
+        GridData gridData5 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
+        gridData5.widthHint = 97;
         GridData gridData3 = new org.eclipse.swt.layout.GridData();
         gridData3.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData3.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
@@ -139,26 +144,60 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         gridData1.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
         GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 7;
+        gridLayout.numColumns = 5;
         group = new Group(this, SWT.NONE);
         group.setText("Process Classes");
         group.setLayout(gridLayout);
         label1 = new Label(group, SWT.NONE);
+        label1.setLayoutData(new GridData(86, SWT.DEFAULT));
         label1.setText("Process Class:");
         tProcessClass = new Text(group, SWT.BORDER);
+        bApply = new Button(group, SWT.NONE);
         label5 = new Label(group, SWT.NONE);
         final GridData gridData = new GridData();
-        gridData.horizontalIndent = 5;
         label5.setLayoutData(gridData);
         label5.setText("Max Processes:");
+        GridData gridData4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        gridData4.widthHint = 20;
         sMaxProcesses = new Spinner(group, SWT.NONE);
+        sMaxProcesses.setMaximum(99999999);
+        sMaxProcesses.setLayoutData(gridData4);
+        sMaxProcesses.setEnabled(false);
+        sMaxProcesses.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
+            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
+                if (e.keyCode == SWT.CR)
+                    applyClass();
+            }
+        });
+        sMaxProcesses.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+                bApply.setEnabled(true);
+            }
+        });
         label10 = new Label(group, SWT.NONE);
+        final GridData gridData_2 = new GridData(GridData.END, GridData.CENTER, false, false);
+        gridData_2.widthHint = 79;
+        label10.setLayoutData(gridData_2);
         label10.setText("Scheduler ID:");
+        GridData gridData6 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
         tSpoolerID = new Text(group, SWT.BORDER);
-        bApply = new Button(group, SWT.NONE);
+        tSpoolerID.setLayoutData(gridData6);
+        tSpoolerID.setEnabled(false);
+        tSpoolerID.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
+            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
+                if (e.keyCode == SWT.CR)
+                    applyClass();
+            }
+        });
+        tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+                bApply.setEnabled(true);
+            }
+        });
+        new Label(group, SWT.NONE);
 
         final Label remoteExecutionOnLabel = new Label(group, SWT.NONE);
-        remoteExecutionOnLabel.setText("Executed by Scheduler on host");
+        remoteExecutionOnLabel.setText("Executed by Scheduler on host:");
 
         tRemoteHost = new Text(group, SWT.BORDER);
         tRemoteHost.addModifyListener(new ModifyListener() {
@@ -198,8 +237,6 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         	}
         });
         tRemotePort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        new Label(group, SWT.NONE);
-        new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setText("Label");
@@ -254,39 +291,12 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         });
         tProcessClass.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                boolean valid = listener.isValidClass(tProcessClass.getText());
+                boolean valid = listener.isValidClass(tProcessClass.getText()) || dom.isLifeElement();
                 if (valid)
                     tProcessClass.setBackground(null);
                 else
                     tProcessClass.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
                 bApply.setEnabled(valid);
-            }
-        });
-        sMaxProcesses.setMaximum(99999999);
-        sMaxProcesses.setLayoutData(gridData4);
-        sMaxProcesses.setEnabled(false);
-        sMaxProcesses.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR)
-                    applyClass();
-            }
-        });
-        sMaxProcesses.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(true);
-            }
-        });
-        tSpoolerID.setLayoutData(gridData6);
-        tSpoolerID.setEnabled(false);
-        tSpoolerID.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR)
-                    applyClass();
-            }
-        });
-        tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(true);
             }
         });
         bApply.setText("&Apply Process Class");
@@ -304,19 +314,13 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
      * This method initializes table
      */
     private void createTable() {
-        GridData gridData = new org.eclipse.swt.layout.GridData();
-        gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData.grabExcessHorizontalSpace = true;
-        gridData.grabExcessVerticalSpace = true;
-        gridData.horizontalSpan = 6;
-        gridData.verticalSpan = 3;
-        gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 4, 3);
         table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
         table.setHeaderVisible(true);
         table.setLayoutData(gridData);
         table.setLinesVisible(true);
         table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-        	public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) { 
+        	public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
         		Element currElem = listener.getProcessElement(table.getSelectionIndex());
         		if(currElem != null && !Utils.isElementEnabled("process_class", dom, currElem)) {
         			setInput(false);
@@ -353,6 +357,10 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         setInput(false);
         getShell().setDefaultButton(bNew);
         tProcessClass.setBackground(null);
+        if(dom.isLifeElement()) {
+        	setInput(true);
+        }
+        	
     }
 
 
@@ -404,4 +412,6 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
     	}    	          
     	return true;
     }
+    
+    
 } // @jve:decl-index=0:visual-constraint="10,10"

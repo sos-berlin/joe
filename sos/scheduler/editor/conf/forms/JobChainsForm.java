@@ -3,38 +3,22 @@ package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.SWT;
 
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-
 import org.eclipse.swt.widgets.Composite;
-
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-import com.swtdesigner.SWTResourceManager;
-
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainsListener;
@@ -46,9 +30,9 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 	
 	private static final String GROUP_FILEORDERSOURCE_TITLE = "File Order Sources";
 	
-	private ISchedulerUpdate update = null;
+	private ISchedulerUpdate    update            = null;
 	
-	private JobChainsListener   listener;
+	private JobChainsListener   listener          = null;
 	
 	private Group               group             = null;
 	
@@ -58,16 +42,19 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 	
 	private Button              bNewChain         = null;  
 	
-	private SashForm            sashForm               = null;
+	private SashForm            sashForm          = null;
 	
-	private boolean             refresh                = false;
+	private boolean             refresh           = false;
 	
-	private Button              butDetails             = null; 
+	private Button              butDetails        = null; 
+	
+	private SchedulerDom        _dom              = null;
 	
 	
 	public JobChainsForm(Composite parent, int style, SchedulerDom dom, Element config, ISchedulerUpdate update_) {
 		super(parent, style);
 		listener = new JobChainsListener(dom, config, update_);
+		_dom = dom;
 		initialize();
 		setToolTipText();
 		//fillChain(false, false);
@@ -109,18 +96,26 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		tChains.setLinesVisible(true);
 		tChains.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (tChains.getSelectionCount() > 0) {
-					listener.selectChain(tChains.getSelectionIndex());
-					/*fillChain(true, false);
-					bRemoveNode.setEnabled(false);
-					bRemoveFileOrderSource.setEnabled(false);
-					bApplyChain.setEnabled(false);
-					butDetailsJob.setEnabled(false);
-					*/
-					butDetails.setEnabled(true);
+					
+				    boolean enabled = true;
+					if (tChains.getSelectionCount() > 0) {
+						listener.selectChain(tChains.getSelectionIndex());
+						Element currElem = listener.getChain();
+						if(currElem != null && !Utils.isElementEnabled("job_chain", _dom, currElem)) {
+							enabled = false;
+						}
+								
+						/*fillChain(true, false);
+						 bRemoveNode.setEnabled(false);
+						 bRemoveFileOrderSource.setEnabled(false);
+						 bApplyChain.setEnabled(false);
+						 butDetailsJob.setEnabled(false);
+						 */
+						butDetails.setEnabled(true);
+					}
+					bRemoveChain.setEnabled(tChains.getSelectionCount() > 0 && enabled);
 				}
-				bRemoveChain.setEnabled(tChains.getSelectionCount() > 0);
-			}
+			
 		});
 		TableColumn tableColumn1 = new TableColumn(tChains, SWT.NONE);
 		tableColumn1.setWidth(150);

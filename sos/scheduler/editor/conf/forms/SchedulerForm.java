@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.jdom.Element;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IContainer;
@@ -171,27 +172,28 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 
 
     public void updateDays(int type) {
-        if (tree.getSelectionCount() > 0) {
+    	updateDays(type, null);
+        /*if (tree.getSelectionCount() > 0) {
             TreeItem item = tree.getSelection()[0];
             TreeData data = (TreeData) item.getData();
             listener.treeFillDays(item, data.getElement(), type, true);
-        }
+        }*/
     }
 
-    public void updateSpecificWeekdays() {
+    public void updateDays(int type, String name) {
         if (tree.getSelectionCount() > 0) {
             TreeItem item = tree.getSelection()[0];
-            TreeData data = (TreeData) item.getData();
-            listener.treeFillSpecificWeekdays(item, data.getElement(), true);
+            TreeData data = (TreeData) item.getData();            
+            listener.treeFillDays(item, data.getElement(), type, true, name);
+            item.setExpanded(true);
         }
     }
-
 
     public void updateJob() {
         if (tree.getSelectionCount() > 0) {
             TreeItem item = tree.getSelection()[0];
             TreeData data = (TreeData) item.getData();
-            listener.treeFillJob(item, data.getElement(), true);
+            listener.treeFillJob(item, data.getElement(), true);            
         }
     }
 
@@ -257,17 +259,26 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
         listener.treeFillMain(tree, cMainForm);
     }
 
-
+    public void openBlank(int type) {
+        initialize();
+        // dom.initScheduler();
+        listener.treeFillMain(tree, cMainForm, type);
+    }
+    
     public boolean openDirectory(Collection files) {
     	
-        boolean res = IOUtils.openFile("#xml#", files, dom);
-        if (res) {
-            initialize();
-            listener.treeFillMain(tree, cMainForm, SchedulerDom.DIRECTORY);
-        }
-
-        return res;
+    	boolean res = IOUtils.openFile("#xml#", files, dom);
+    	if (res) {
+    		if(dom.getListOfChangeElementNames() != null && dom.getListOfChangeElementNames().size() > 0 ) {
+    			dom.setChanged(true);
+    		}
+    		initialize();
+    		listener.treeFillMain(tree, cMainForm, SchedulerDom.DIRECTORY);
+    	}
+    	
+    	return res;
     }
+    
     
     public boolean open(Collection files) {
         boolean res = IOUtils.openFile(files, dom);
@@ -288,6 +299,16 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 
         return res;
     }
+    
+    public boolean open(String filename, Collection files, int type) {
+        boolean res = IOUtils.openFile(filename, files, dom);
+        if (res) {
+            initialize();
+            listener.treeFillMain(tree, cMainForm, type);
+        }
+
+        return res;
+    }
 
    /* public boolean reOpen(String filename, Collection files) {
     	try {
@@ -304,8 +325,20 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
     
     public boolean save() {
     	boolean res = true;
-    	if(dom.getFilename() != null && new java.io.File(dom.getFilename()).getName().startsWith("#xml#.config.") && dom.getFilename().endsWith(".xml")) {
-    		res = IOUtils.saveDirectory(dom, false);
+    	if(dom.getFilename() != null && new java.io.File(dom.getFilename()).getName().startsWith("#xml#.config.") && dom.getFilename().endsWith(".xml~")) {    		
+    		res = IOUtils.saveDirectory(dom, false, SchedulerDom.DIRECTORY, null, container);
+    		
+    	} else if(dom.isLifeElement()) {
+    		
+    		int type = -1;
+    		if(dom.getRoot().getName().equals("job")) type=SchedulerDom.LIFE_JOB;
+    		if(dom.getRoot().getName().equals("job_chain")) type=SchedulerDom.LIFE_JOB_CHAIN;
+    		if(dom.getRoot().getName().equals("process_class")) type=SchedulerDom.LIFE_PROCESS_CLASS;
+    		if(dom.getRoot().getName().equals("lock")) type=SchedulerDom.LIFE_LOCK;
+    		if(dom.getRoot().getName().equals("order")) type=SchedulerDom.LIFE_ORDER;
+    		if(dom.getRoot().getName().equals("add_order")) type=SchedulerDom.LIFE_ADD_ORDER;
+    		res = IOUtils.saveDirectory(dom, false,type, dom.getRoot().getName(), container);
+    		
     	} else {
     		res = IOUtils.saveFile(dom, false);
     	}
@@ -317,7 +350,13 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 
     public boolean saveAs() {
         String old = dom.getFilename();
+        
         boolean res = IOUtils.saveFile(dom, true);
+        
+        if(dom.isLifeElement()) {             	
+        	updateLifeElement();        	        	
+        }
+        
         if (res)
             container.setNewFilename(old);
         return res;
@@ -385,4 +424,62 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 			item.setText(jobChain);
 		}
 	}
+	
+	public void updateLifeElement() {
+		TreeItem item = tree.getSelection()[0];		
+		TreeData data = (TreeData) item.getData();
+		org.jdom.Element elem = data.getElement();
+		if(elem.getName().equals("job")) {	
+			updateJob(Utils.getAttributeValue("name", elem));
+			updateJob();	    	
+		} else if(elem.getName().equals("job_chain")) {
+			updateJobChain(item.getText(0).substring("Job Chain: ".length()), Utils.getAttributeValue("name", elem));
+		} else if(elem.getName().equals("config")) {
+			
+			if(elem.getChild("process_classes") != null) {
+				Element process_classes = elem.getChild("process_classes");
+				Element pc = process_classes.getChild("process_class");
+				pc.setAttribute("name", dom.getRoot().getAttributeValue("name"));
+				
+			}
+			
+			if(elem.getChild("locks") != null) {
+				Element locks = elem.getChild("locks");
+				Element pc = locks.getChild("lock");
+				pc.setAttribute("name", dom.getRoot().getAttributeValue("name"));
+				
+			}
+			
+		} else if(elem.getName().equals("add_order") || elem.getName().equals("order")) {
+			updateOrder(Utils.getAttributeValue("id", elem));
+		}
+	    	
+	    listener.treeSelection(tree, cMainForm);
+	}
+
+    public void updateSpecificWeekdays() {
+        if (tree.getSelectionCount() > 0) {
+            TreeItem item = tree.getSelection()[0];
+            TreeData data = (TreeData) item.getData();
+            listener.treeFillSpecificWeekdays(item, data.getElement(), true);
+        }
+    }
+
+	public Tree getTree() {
+		return tree;
+	}
+
+	public SchedulerDom getDom() {
+		return dom;
+	}
+
+    /*public void updateMonths(int type) {
+    	
+        if (tree.getSelectionCount() > 0 && type==3) {
+            TreeItem item = tree.getSelection()[0];
+            TreeData data = (TreeData) item.getData();
+            listener.treeFillRunTimes(item, data.getElement(), true, "month");
+        }
+    }
+*/
 }

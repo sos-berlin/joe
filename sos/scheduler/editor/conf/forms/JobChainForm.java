@@ -35,6 +35,7 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
@@ -145,6 +146,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		initialize();
 		setToolTipText();
 		fillChain(false, false);
+		this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
 		
 		////listener.fillChains(tChains);
 		//sashForm.setWeights(new int[] { 20, 50, 30 });
@@ -324,7 +326,6 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		cJob.setLayoutData(gridData13);
 		
 		butBrowse = new Button(gNodes, SWT.NONE);
-		butBrowse.setVisible(false);
 		butBrowse.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB);
@@ -657,13 +658,17 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			public void widgetSelected(final SelectionEvent e) {
 				if (tNodes.getSelectionCount() > 0) {
 					int index = tNodes.getSelectionIndex();
+					
 					if(index == 0) {
 						//System.out.println("Datensatz ist bereits ganz oben.");
 						//MainWindow.message(Messages.getString("job_chain.top_of_table"), SWT.ICON_INFORMATION);
-					} else if(index > 0) {
-						org.eclipse.swt.widgets.TableItem tmp = ((org.eclipse.swt.widgets.TableItem[])tNodes.getSelection().clone())[0];						
+					} else if(index > 0) {						
+						org.eclipse.swt.widgets.TableItem tmp = ((org.eclipse.swt.widgets.TableItem[])tNodes.getSelection().clone())[0];
+						
 						listener.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(), index);
-						selectNodes();						
+						
+						selectNodes();					
+						
 					}
 				}
 			}

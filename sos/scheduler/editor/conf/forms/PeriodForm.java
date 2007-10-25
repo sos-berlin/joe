@@ -26,100 +26,122 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.PeriodListener;
 
 public class PeriodForm extends Composite implements IUpdateLanguage {
-    private PeriodListener listener;
+	   
+    
+    private PeriodListener listener                  = null;
 
     private boolean        onOrder;
 
-    private Group          gPeriod          = null;
+    private Group          gPeriod                    = null;
 
-    private Label          label1           = null;
+    private Label          label1                     = null;
 
-    private Button         bLetRun          = null;
+    private Button         bLetRun                    = null;
 
-    private Label          label2           = null;
+    private Label          label2                     = null;
 
-    private Text           sBeginHours      = null;
+    private Text           sBeginHours                = null;
 
-    private Label          label3           = null;
+    private Label          label3                     = null;
 
-    private Text           sBeginMinutes    = null;
+    private Text           sBeginMinutes              = null;
 
-    private Label          label4           = null;
+    private Label          label4                     = null;
 
-    private Text           sBeginSeconds    = null;
+    private Text           sBeginSeconds              = null;
 
-    private Label          label5           = null;
+    private Label          label5                     = null;
 
-    private Label          label6           = null;
+    private Label          label6                     = null;
 
-    private Text           sEndHours        = null;
+    private Text           sEndHours                  = null;
 
-    private Label          label7           = null;
+    private Label          label7                     = null;
 
-    private Text           sEndMinutes      = null;
+    private Text           sEndMinutes                = null;
 
-    private Label          label8           = null;
+    private Label          label8                     = null;
 
-    private Text           sEndSeconds      = null;
+    private Text           sEndSeconds                = null;
 
-    private Label          label10          = null;
+    private Label          label10                    = null;
 
-    private Text           sRepeatHours     = null;
+    private Text           sRepeatHours               = null;
 
-    private Label          label11          = null;
+    private Label          label11                    = null;
 
-    private Text           sRepeatMinutes   = null;
+    private Text           sRepeatMinutes             = null;
 
-    private Label          label12          = null;
+    private Label          label12                    = null;
 
-    private Text           sRepeatSeconds   = null;
+    private Text           sRepeatSeconds             = null;
 
-    private Label          label13          = null;
+    private Label          label13                    = null;
 
-    private Text           sSingleHours     = null;
+    private Text           sSingleHours               = null;
 
-    private Label          label14          = null;
+    private Label          label14                    = null;
 
-    private Text           sSingleMinutes   = null;
+    private Text           sSingleMinutes             = null;
 
-    private Label          label15          = null;
+    private Label          label15                    = null;
 
-    private Text           sSingleSeconds   = null;
+    private Text           sSingleSeconds             = null;
 
-    private Label          label16          = null;
+    private Label          label16                    = null;
 
-    private Label          label9           = null;
+    private Label          label9                     = null;
 
-    private Label          label18          = null;
+    private Label          label18                    = null;
 
-    private Label          lRunOnce         = null;
+    private Label          lRunOnce                   = null;
 
-    private Button         cRunOnce         = null;
+    private Button         cRunOnce                   = null;
 
-    private boolean        event            = true;
+    private boolean        event                      = true;
 
-    private Button         bApply           = null;
+    private Button         bApply                     = null;
 
-    private String         savBeginHours    = "";
+    private String         savBeginHours              = "";
 
-    private String         savBeginMinutes  = "";
+    private String         savBeginMinutes            = "";
 
-    private String         savBeginSeconds  = "";
+    private String         savBeginSeconds            = "";
 
-    private String         savEndHours      = "";
+    private String         savEndHours                = "";
 
-    private String         savEndMinutes    = "";
+    private String         savEndMinutes              = "";
 
-    private String         savEndSeconds    = "";
+    private String         savEndSeconds              = "";
 
-    private String         savRepeatHours   = "";
+    private String         savRepeatHours             = "";
 
-    private String         savRepeatMinutes = "";
+    private String         savRepeatMinutes           = "";
 
-    private String         savRepeatSeconds = "";
+    private String         savRepeatSeconds           = "";
     
-    private boolean        assistent      = false;
-
+    private boolean        assistent                  = false;
+    
+    private Text           sAbsoluteRepeatHours       = null;
+    
+    private Text           sAbsoluteRepeatMinutes     = null;
+    
+    private Text           sAbsoluteRepeatSeconds     = null;
+    
+    private Label          lblAbsolutRepeat           = null;
+    
+    private Label          label_1                    = null; 
+    
+    private Label          label14_1                 = null;
+    
+    private Label          label18_1                 = null;
+    
+    private String         savAbsoluteHours          = "";
+    
+    private String         savAbsoluteMinutes        = "";
+    
+    private String         savAbsoluteSecounds       = "";
+    
 
     public PeriodForm(Composite parent, int style) {
         super(parent, style);
@@ -158,30 +180,21 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         createGroup();
         setSize(new org.eclipse.swt.graphics.Point(452, 219));
         GridData gridData12 = new GridData(42, SWT.DEFAULT);
-        GridData gridData111 = new org.eclipse.swt.layout.GridData();
-        gridData111.widthHint = 24;
-        GridData gridData10 = new org.eclipse.swt.layout.GridData();
-        gridData10.widthHint = 24;
+        GridData gridData111 = new GridData(24, SWT.DEFAULT);
+        GridData gridData10 = new GridData(24, SWT.DEFAULT);
         GridData gridData9 = new GridData(42, SWT.DEFAULT);
-        GridData gridData8 = new org.eclipse.swt.layout.GridData();
-        gridData8.widthHint = 24;
-        GridData gridData7 = new org.eclipse.swt.layout.GridData();
-        gridData7.widthHint = 24;
+        GridData gridData8 = new GridData(24, SWT.DEFAULT);
+        GridData gridData7 = new GridData(24, SWT.DEFAULT);
         GridData gridData6 = new GridData(42, SWT.DEFAULT);
-        GridData gridData5 = new org.eclipse.swt.layout.GridData();
-        gridData5.widthHint = 24;
-        GridData gridData41 = new org.eclipse.swt.layout.GridData();
-        gridData41.widthHint = 24;
+        GridData gridData5 = new GridData(24, SWT.DEFAULT);
+        GridData gridData41 = new GridData(24, SWT.DEFAULT);
         GridData gridData3 = new GridData(42, SWT.DEFAULT);
         GridData gridData21 = new GridData(24, SWT.DEFAULT);
-        GridData gridData11 = new org.eclipse.swt.layout.GridData();
-        gridData11.widthHint = 24;
-        GridData gridData4 = new GridData();
-        gridData4.horizontalSpan = 1;
-        GridData gridData2 = new GridData();
-        gridData2.horizontalSpan = 1;
+        GridData gridData11 = new GridData(24, SWT.DEFAULT);
+        GridData gridData4 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+        GridData gridData2 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 7;
+        gridLayout.numColumns = 8;
         gPeriod = new Group(this, SWT.NONE);
         gPeriod.setEnabled(false);
         gPeriod.setText("Period");
@@ -189,7 +202,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         label1 = new Label(gPeriod, SWT.NONE);
         label1.setLayoutData(new GridData());
         label1.setText("Let Run:");
-        GridData gridData = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
+        GridData gridData = new GridData();
         bLetRun = new Button(gPeriod, SWT.CHECK);
         bLetRun.setLayoutData(gridData);
         bLetRun.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -201,11 +214,13 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
             }
         });
         GridData gridData101 = new GridData();
+        new Label(gPeriod, SWT.NONE);
         lRunOnce = new Label(gPeriod, SWT.NONE);
         lRunOnce.setText("Run Once:");
         lRunOnce.setLayoutData(gridData101);
-        new Label(gPeriod, SWT.NONE);
         GridData gridData112 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
+        new Label(gPeriod, SWT.NONE);
+        new Label(gPeriod, SWT.NONE);
         cRunOnce = new Button(gPeriod, SWT.CHECK);
         cRunOnce.setLayoutData(gridData112);
         cRunOnce.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -242,6 +257,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
             }
         });
         label3 = new Label(gPeriod, SWT.NONE);
+        label3.setLayoutData(new GridData());
         label3.setText(":");
         sBeginMinutes = new Text(gPeriod, SWT.BORDER);
         sBeginMinutes.addVerifyListener(new VerifyListener() {
@@ -272,6 +288,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
             }
         });
         label4 = new Label(gPeriod, SWT.NONE);
+        label4.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
         label4.setText(":");
         sBeginSeconds = new Text(gPeriod, SWT.BORDER);
         sBeginSeconds.addVerifyListener(new VerifyListener() {
@@ -359,6 +376,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
             }
         });
         label8 = new Label(gPeriod, SWT.NONE);
+        label8.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
         label8.setText(":");
         sEndSeconds = new Text(gPeriod, SWT.BORDER);
         sEndSeconds.addVerifyListener(new VerifyListener() {
@@ -380,6 +398,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         sEndSeconds.setLayoutData(gridData6);
 
         label9 = new Label(gPeriod, SWT.NONE);
+        label9.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
         label9.setText("hh:mm:ss");
         sEndSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -470,6 +489,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
             }
         });
         label12 = new Label(gPeriod, SWT.NONE);
+        label12.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
         label12.setText(":");
         //label12.setVisible(!assistent);
         sRepeatSeconds = new Text(gPeriod, SWT.BORDER);
@@ -477,20 +497,12 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         sRepeatSeconds.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
-
             }
         });
-        sRepeatSeconds.addMouseListener(new MouseAdapter() {
-            public void mouseDown(final MouseEvent e) {
-            }
-        });
-        sRepeatSeconds.addKeyListener(new KeyAdapter() {
-            public void keyPressed(final KeyEvent e) {
-
-            }
-        });
+       
         sRepeatSeconds.setLayoutData(gridData9);
         label18 = new Label(gPeriod, SWT.NONE);
+        label18.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
         label18.setText("hh:mm:ss or ss");
         //label18.setVisible(!assistent);
         sRepeatSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {        	
@@ -510,6 +522,79 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
                 }
             }
         });
+
+        lblAbsolutRepeat = new Label(gPeriod, SWT.NONE);
+        lblAbsolutRepeat.setLayoutData(new GridData());
+        lblAbsolutRepeat.setText("Absolute Repeat:");
+
+        sAbsoluteRepeatHours = new Text(gPeriod, SWT.BORDER);
+        sAbsoluteRepeatHours.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		Utils.setBackground(0, 23, sSingleHours);
+                if (event) {
+                    listener.setPeriodTime(23, bApply, "absolute_repeat", sAbsoluteRepeatHours.getText(),
+                    		sAbsoluteRepeatMinutes.getText(), sAbsoluteRepeatSeconds.getText());
+                    //setEnabled(true);
+                }
+        	}
+        });
+        sAbsoluteRepeatHours.addVerifyListener(new VerifyListener() {
+        	public void verifyText(final VerifyEvent e) {
+        		e.doit = Utils.isOnlyDigits(e.text);
+        	}
+        });
+        final GridData gridData_1 = new GridData(24, SWT.DEFAULT);
+        sAbsoluteRepeatHours.setLayoutData(gridData_1);
+
+        label14_1 = new Label(gPeriod, SWT.NONE);
+        label14_1.setLayoutData(new GridData(8, SWT.DEFAULT));
+        label14_1.setText(":");
+
+        sAbsoluteRepeatMinutes = new Text(gPeriod, SWT.BORDER);
+        sAbsoluteRepeatMinutes.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		Utils.setBackground(0, 23, sSingleHours);
+                if (event) {
+                    listener.setPeriodTime(23, bApply, "absolute_repeat", sAbsoluteRepeatHours.getText(),
+                    		sAbsoluteRepeatMinutes.getText(), sAbsoluteRepeatSeconds.getText());
+                    //setEnabled(true);
+                }
+        	}
+        });
+        sAbsoluteRepeatMinutes.addVerifyListener(new VerifyListener() {
+        	public void verifyText(final VerifyEvent e) {
+        		e.doit = Utils.isOnlyDigits(e.text);
+        	}
+        });
+        final GridData gridData_2 = new GridData(24, SWT.DEFAULT);
+        sAbsoluteRepeatMinutes.setLayoutData(gridData_2);
+
+        label_1 = new Label(gPeriod, SWT.NONE);
+        label_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
+        label_1.setText(":");
+
+        sAbsoluteRepeatSeconds = new Text(gPeriod, SWT.BORDER);
+        sAbsoluteRepeatSeconds.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		Utils.setBackground(0, 23, sSingleHours);
+                if (event) {
+                    listener.setPeriodTime(23, bApply, "absolute_repeat", sAbsoluteRepeatHours.getText(),
+                    		sAbsoluteRepeatMinutes.getText(), sAbsoluteRepeatSeconds.getText());
+                    //setEnabled(true);
+                }
+        	}
+        });
+        sAbsoluteRepeatSeconds.addVerifyListener(new VerifyListener() {
+        	public void verifyText(final VerifyEvent e) {
+        		e.doit = Utils.isOnlyDigits(e.text);
+        	}
+        });
+        final GridData gridData_3 = new GridData(42, SWT.DEFAULT);
+        sAbsoluteRepeatSeconds.setLayoutData(gridData_3);
+
+        label18_1 = new Label(gPeriod, SWT.NONE);
+        label18_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+        label18_1.setText("hh:mm:ss or ss");
 
         label13 = new Label(gPeriod, SWT.NONE);
         label13.setText("Single Start:");
@@ -537,6 +622,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
             }
         });
         label14 = new Label(gPeriod, SWT.NONE);
+        label14.setLayoutData(new GridData(4, SWT.DEFAULT));
         label14.setText(":");
         label14.setVisible(!assistent);
         sSingleMinutes = new Text(gPeriod, SWT.BORDER);
@@ -560,6 +646,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
             }
         });
         label15 = new Label(gPeriod, SWT.NONE);
+        label15.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
         label15.setText(":");
         label15.setVisible(!assistent);
         sSingleSeconds = new Text(gPeriod, SWT.BORDER);
@@ -570,16 +657,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
             }
         });
-        sSingleSeconds.addKeyListener(new KeyAdapter() {
-            public void keyPressed(final KeyEvent e) {
-
-            }
-        });
-        sSingleSeconds.addMouseListener(new MouseAdapter() {
-            public void mouseDown(final MouseEvent e) {
-
-            }
-        });
+       
         sSingleSeconds.setLayoutData(gridData12);
 
         sSingleSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -596,11 +674,6 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         label16.setText("hh:mm:ss");        
         label16.setLayoutData(gridData4);
         label16.setVisible(!assistent);
-        new Label(gPeriod, SWT.NONE);
-        new Label(gPeriod, SWT.NONE);
-        new Label(gPeriod, SWT.NONE);
-        new Label(gPeriod, SWT.NONE);
-        new Label(gPeriod, SWT.NONE);
                 
     }
 
@@ -628,7 +701,13 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
             event = true;
             sEndSeconds.setText(Utils.fill(2, String.valueOf(listener.getEndSeconds())));
            
-
+            event = false;
+            sAbsoluteRepeatHours.setText(Utils.fill(2, String.valueOf(listener.getAbsoluteRepeatHours())));
+            sAbsoluteRepeatMinutes.setText(Utils.fill(2, String.valueOf(listener.getAbsoluteRepeatMinutes())));
+            
+            sAbsoluteRepeatSeconds.setText(Utils.fill(2, String.valueOf(listener.getAbsoluteRepeatSeconds())));
+            event = true;
+            
             if (!onOrder) {
 
                 event = false;
@@ -681,6 +760,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         gPeriod.setEnabled(enabled);
 
         bLetRun.setEnabled(enabled && !singleStart);
+        
         if(singleStart && bLetRun.getSelection()) {
         	bLetRun.setSelection(false);
         	listener.setLetRun(false);
@@ -700,6 +780,9 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
         sSingleMinutes.setEnabled(enabled && !onOrder);
         sSingleSeconds.setEnabled(enabled && !onOrder);
         
+        sAbsoluteRepeatHours.setEnabled(enabled && !singleStart);
+        sAbsoluteRepeatMinutes.setEnabled(enabled && !singleStart);
+        sAbsoluteRepeatSeconds.setEnabled(enabled && !singleStart);                
 
         if (singleStart) {
             if (!sBeginHours.getText().equals(""))
@@ -719,8 +802,15 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
             if (!sRepeatMinutes.getText().equals(""))
                 savRepeatMinutes = sRepeatMinutes.getText();
             if (!sRepeatSeconds.getText().equals(""))
-                savRepeatSeconds = sRepeatSeconds.getText();
+                savRepeatSeconds = sRepeatSeconds.getText();                       
+            if (!sAbsoluteRepeatHours.getText().equals(""))
+            	savAbsoluteHours = sAbsoluteRepeatHours.getText();                        
+            if (!sAbsoluteRepeatMinutes.getText().equals(""))
+            	savAbsoluteMinutes = sAbsoluteRepeatMinutes.getText();            
+            if (!sAbsoluteRepeatSeconds.getText().equals(""))
+            	savAbsoluteSecounds = sAbsoluteRepeatSeconds.getText();
 
+                     
             sBeginHours.setText("");
             sBeginMinutes.setText("");
             sBeginSeconds.setText("");
@@ -730,6 +820,9 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
             sRepeatHours.setText("");
             sRepeatMinutes.setText("");
             sRepeatSeconds.setText("");
+            sAbsoluteRepeatHours.setText("");
+            sAbsoluteRepeatMinutes.setText("");
+            sAbsoluteRepeatSeconds.setText("");  
 
         } else {
             event = false;
@@ -756,7 +849,14 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
             if (!savRepeatMinutes.equals(""))
                 sRepeatMinutes.setText(savRepeatMinutes);
             if (!savRepeatSeconds.equals(""))
-                sRepeatSeconds.setText(savRepeatSeconds);
+                sRepeatSeconds.setText(savRepeatSeconds);            
+            if (!savAbsoluteHours.equals(""))
+            	sAbsoluteRepeatHours.setText(savAbsoluteHours);
+            if (!savAbsoluteMinutes.equals(""))
+            	sAbsoluteRepeatMinutes.setText(savAbsoluteMinutes);
+            if (!savAbsoluteSecounds.equals(""))
+            	sAbsoluteRepeatSeconds.setText(savAbsoluteSecounds); 
+            
         }
 
     }

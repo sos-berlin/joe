@@ -459,6 +459,13 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
                     bJob.setSelection(false);
                     setCommandsEnabled(true);
                 }
+                
+                if (item.getText(0).equals("order")) {
+                    bOrder.setSelection(true);
+                    bJob.setSelection(false);
+                    setCommandsEnabled(true);
+                }
+                
                 if (item.getText(0).equals("start_job")) {
                     bOrder.setSelection(false);
                     bJob.setSelection(true);
@@ -706,7 +713,8 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
                     TableItem item = new TableItem(tCommands, SWT.NONE);
                     item.setText(new String[] { "start_job", tJob.getText(), "", tStartAt.getText() });
                 } else {
-                    e = new Element("add_order");
+                    //e = new Element("add_order");//mo
+                	e = new Element("order");
                     e.setAttribute("at", tStartAt.getText());
                     e.setAttribute("id", tJob.getText());
                     e.setAttribute("priority", tPriority.getText());
@@ -720,7 +728,8 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
                     e.setAttribute("title", tTitle.getText());
 
                     TableItem item = new TableItem(tCommands, SWT.NONE);
-                    item.setText(new String[] { "add_order", tJob.getText(), cJobchain.getText(), tStartAt.getText() });
+                    //item.setText(new String[] { "add_order", tJob.getText(), cJobchain.getText(), tStartAt.getText() });//mo
+                    item.setText(new String[] { "order", tJob.getText(), cJobchain.getText(), tStartAt.getText() });
                 }
 
                 listener.addCommand(e);
@@ -733,10 +742,17 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
                     listener.setCommandName(bApplyExitcode, "start_job", tJob.getText(), tCommands);
                     tCommands.getItem(tCommands.getSelectionIndex()).setText(0, "start_job");
                 }
+                
+                if (cmd.equals("order") && bJob.getSelection() && tCommands.getSelectionIndex() >= 0) {
+                    listener.setCommandName(bApplyExitcode, "start_job", tJob.getText(), tCommands);
+                    tCommands.getItem(tCommands.getSelectionIndex()).setText(0, "start_job");
+                }
 
                 if (cmd.equals("start_job") && bOrder.getSelection() && tCommands.getSelectionIndex() >= 0) {
-                    listener.setCommandName(bNew, "add_order", tJob.getText(), tCommands);
-                    tCommands.getItem(tCommands.getSelectionIndex()).setText(0, "add_order");
+                    //listener.setCommandName(bNew, "add_order", tJob.getText(), tCommands);//mo
+                	listener.setCommandName(bNew, "order", tJob.getText(), tCommands);
+                    //tCommands.getItem(tCommands.getSelectionIndex()).setText(0, "add_order"); //mo
+                	tCommands.getItem(tCommands.getSelectionIndex()).setText(0, "order");
                     tCommands.getItem(tCommands.getSelectionIndex()).setText(2, "");
                     tCommands.getItem(tCommands.getSelectionIndex()).setText(3, tStartAt.getText());
                 }

@@ -92,6 +92,8 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         listener.fillParams(tParameter);
         dom.setInit(false);
         event = true;
+        
+        this.setEnabled(Utils.isElementEnabled("commands", dom, order));
     }
 
 

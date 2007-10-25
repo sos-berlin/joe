@@ -164,12 +164,13 @@ public class JobAssistentPeriodForms {
 			gridLayout.marginBottom = 5;
 			gridLayout.numColumns = 2;
 			jobTypeShell.setLayout(gridLayout);
-			jobTypeShell.setSize(500, 661);
+			jobTypeShell.setSize(522, 701);
 			jobTypeShell.setText("Run Time/ Periods"); 
 			
 			final Group jobGroup = new Group(jobTypeShell, SWT.NONE);
 			jobGroup.setText("Job: " + Utils.getAttributeValue("name", job));
 			final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1);
+			gridData_2.widthHint = 490;
 			gridData_2.heightHint = 261;
 			jobGroup.setLayoutData(gridData_2);
 			final GridLayout gridLayout_2 = new GridLayout();
@@ -183,7 +184,7 @@ public class JobAssistentPeriodForms {
 			
 			final Text txtGlobal = new Text(jobGroup, SWT.MULTI | SWT.WRAP);
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-			gridData_1.widthHint = 419;
+			gridData_1.widthHint = 452;
 			gridData_1.heightHint = 232;
 			txtGlobal.setLayoutData(gridData_1);
 			txtGlobal.setEditable(false);
@@ -209,8 +210,8 @@ public class JobAssistentPeriodForms {
 				});
 				
 				final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
-				gridData.heightHint = 197;
-				gridData.widthHint = 364;
+				gridData.heightHint = 243;
+				gridData.widthHint = 421;
 				tabFolder.setLayoutData(gridData);
 				
 				{
@@ -439,7 +440,8 @@ public class JobAssistentPeriodForms {
 		
 		if(which.equalsIgnoreCase(JobAssistentPeriodForms.EVERY_DAY)) {			
 			periodForm = new PeriodForm(group, SWT.NONE, true);
-			periodForm.setBounds(0, 0,0, 216);						
+			//periodForm.setBounds(0, 0,0, 216);						
+			
 			periodForm.setParams(dom, periodsListener.isOnOrder());
 			periodForm.setLayoutData(gridData);
 			periodForm.setEnabled(false);
@@ -591,7 +593,7 @@ public class JobAssistentPeriodForms {
 			Element period  = periodFormSpecificDay.getPeriod();			
 			periodsListenerSpecDay.applyPeriod(period);			
 			periodFormSpecificDay.setEnabled(false);			
-			update.updateDays(3);
+			update.updateDays(DaysListener.SPECIFIC_DAY);
 			
 			list.add(JobAssistentPeriodForms.SPECIFIC_DAY + txtSpeDay.getISODate() + " at " + periodFormSpecificDay.getListener().getBegin() + "-" + periodFormSpecificDay.getListener().getEnd());
 			
@@ -722,7 +724,7 @@ public class JobAssistentPeriodForms {
 				}
 			}
 		}
-		update.updateDays(3);
+		update.updateDays(DaysListener.SPECIFIC_DAY);
 	}
 	
 	private void deleteWeek(String selectedStr) {

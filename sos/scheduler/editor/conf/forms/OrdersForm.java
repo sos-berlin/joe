@@ -10,9 +10,11 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.OrdersListener;
@@ -33,16 +35,20 @@ public class OrdersForm extends Composite implements IUpdateLanguage {
     private Button            bRemoveOrder = null;
 
     private Label             label        = null;
+    
+    private SchedulerDom      _dom          = null;
 
 
     public OrdersForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update,
             SchedulerListener mainListener) {
         super(parent, style);
+        _dom = dom;
         this.mainListener = mainListener;
         listener = new OrdersListener(dom, update);
         initialize();
         setToolTipText();
         listener.fillTable(table);
+        
     }
 
 
@@ -113,7 +119,16 @@ public class OrdersForm extends Composite implements IUpdateLanguage {
         tableColumn.setText("Order ID");
         table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                bRemoveOrder.setEnabled(true);
+            
+            	boolean enabled = true;
+            	if(table.getSelectionIndex() > -1) {
+            		Element currElem  = (Element)table.getSelection()[0].getData();
+            		if(currElem != null && !Utils.isElementEnabled("commands", _dom,  currElem)) {
+            			enabled = false;	
+            		}
+            		bRemoveOrder.setEnabled(enabled);	
+            	}
+                
             }
         });
 

@@ -238,17 +238,6 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
                 listener.setComment(tComment.getText());
             }
         });
-        label3 = new Label(gMain, SWT.NONE);
-        label3.setLayoutData(new GridData());
-        label3.setText("Scheduler ID:");
-        GridData gridData3 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 4, 1);
-        tSpoolerID = new Text(gMain, SWT.BORDER);
-        tSpoolerID.setLayoutData(gridData3);
-        tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                listener.setSpoolerID(tSpoolerID.getText());
-            }
-        });
         label1 = new Label(gMain, SWT.NONE);
         label1.setLayoutData(new GridData());
         label1.setText("Job Title:");
@@ -260,6 +249,23 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
                 listener.setTitle(tTitle.getText());
             }
         });
+        label3 = new Label(gMain, SWT.NONE);
+        label3.setLayoutData(new GridData());
+        label3.setText("Scheduler ID:");
+        if(listener.get_dom().isLifeElement() ||  listener.get_dom().isDirectory()) {
+        	label3.setVisible(false);
+        }
+        GridData gridData3 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 4, 1);
+        tSpoolerID = new Text(gMain, SWT.BORDER);
+        tSpoolerID.setLayoutData(gridData3);        
+        tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+                listener.setSpoolerID(tSpoolerID.getText());
+            }
+        });
+        if(listener.get_dom().isLifeElement() ||  listener.get_dom().isDirectory() ) {
+        	tSpoolerID.setVisible(false);
+        }
         createCombo();
         label9 = new Label(gMain, SWT.NONE);
         label9.setLayoutData(new GridData());
@@ -279,7 +285,6 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         });
 
         butBrowse = new Button(gMain, SWT.NONE);
-        butBrowse.setVisible(false);
         butBrowse.setLayoutData(new GridData());
         butBrowse.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
@@ -588,16 +593,6 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         butImport.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		startWizzard(true);
-        		/*if(listener.getInclude()!= null && listener.getInclude().trim().length() > 0) {
-        			//JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren        			
-        			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener, tParameter, Editor.JOB);					
-        			paramsForm.showAllImportJobParams(listener.getInclude());        			
-        		} else { 
-        			//Liste aller Jobdokumentation 
-        			JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, tParameter, Editor.JOB);
-        			importJobForms.showAllImportJobs();
-        		}
-        		*/
         	}
         });
         butImport.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -749,7 +744,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         					sHome = sHome.concat("/");
         				
         				sHome = sHome.replaceAll("\\\\", "/");
-        				//Process p =Runtime.getRuntime().exec("cmd /C START iExplore ".concat(sHome).concat(tFileName.getText()));
+        				
         				Program prog = Program.findProgram("html");
         				
     		            if (prog != null)
@@ -759,7 +754,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
     		            } 
         			} 
         		} catch (Exception ex) {
-        			//System.out.println("..could not open file " + tFileName.getText() + " " + ex.getMessage());
+
         			MainWindow.message(getShell(), "..could not open file " + tFileName.getText() + " " + ex.getMessage(), SWT.ICON_WARNING | SWT.OK );
         		}
         	}

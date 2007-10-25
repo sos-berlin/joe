@@ -75,6 +75,17 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
         setToolTipText();
 
         listener.fillTable(tableLocks);
+        if(dom.isLifeElement()) {
+        	tableLocks.setVisible(false);
+        	label.setVisible(false);
+        	label2.setVisible(false);
+        	bNew.setVisible(false);
+        	bRemove.setVisible(false);
+        	
+        	listener.selectLock(0);
+			setInput(true);
+			tLock.setBackground(null);
+        }
                
     }
 
@@ -189,7 +200,7 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
         });
         tLock.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                boolean valid = listener.isValidLock(tLock.getText());
+                boolean valid = listener.isValidLock(tLock.getText()) || dom.isLifeElement();;
                 if (valid)
                     tLock.setBackground(null);
                 else
@@ -262,10 +273,13 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 
     private void applyLock() {
         listener.applyLock(tLock.getText(), sMaxNonExclusive.getSelection());
-        listener.fillTable(tableLocks);
+        listener.fillTable(tableLocks);        
         setInput(false);
         getShell().setDefaultButton(bNew);
         tLock.setBackground(null);
+        if(dom.isLifeElement())
+        	setInput(true);
+        
     }
 
 

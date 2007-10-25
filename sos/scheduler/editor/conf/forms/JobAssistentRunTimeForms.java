@@ -904,7 +904,7 @@ public class JobAssistentRunTimeForms {
 			Element speElem = (Element)speDays.get(i);
 			speDateListener.removeDate(i);		
 		}
-		update.updateDays(3);
+		update.updateDays(DaysListener.SPECIFIC_DAY);
 		
 		//Wochentag löschen
 		Element[] weekDays = weekDayListener.getDayElements();
@@ -984,7 +984,7 @@ public class JobAssistentRunTimeForms {
 				}
 			}
 		}
-		update.updateDays(3);
+		update.updateDays(DaysListener.SPECIFIC_DAY);
 	}
 	
 	private void deleteWeek(String selectedStr) {
@@ -1078,7 +1078,7 @@ public class JobAssistentRunTimeForms {
 			p.applyPeriod(period);
 			
 			if (update != null)
-				update.updateDays(3);
+				update.updateDays(DaysListener.SPECIFIC_DAY);
 			
 		}
 		
