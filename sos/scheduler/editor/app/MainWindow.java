@@ -8,11 +8,10 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
 import sos.scheduler.editor.app.MainListener;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.TabbedContainer;
+import sos.scheduler.editor.conf.SchedulerDom;
 
 public class MainWindow  {
 	private static Shell sShell             = null; // @jve:decl-index=0:visual-constraint="3,1"
@@ -130,6 +129,82 @@ public class MainWindow  {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+		
+		
+		 
+		//pmNew.setMenu();
+		//
+		
+		//ok
+		MenuItem mpLife = new MenuItem(pmNew, SWT.CASCADE);				
+		mpLife.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+			}
+		});
+		mpLife.setText("Hot Folder Element...\tCtrl+L");
+		mpLife.setAccelerator(SWT.CTRL | 'L');
+		
+		Menu mLife = new Menu(mpLife);
+		
+		MenuItem mLifeJob = new MenuItem(mLife, SWT.PUSH);
+		mLifeJob.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				/*if (container.openDirectory(SchedulerDom.LIFE_JOB) != null)
+					setSaveStatus();*/
+				if (container.newScheduler(SchedulerDom.LIFE_JOB) != null)
+					setSaveStatus();
+			}
+		});
+		mLifeJob.setText("Job...     \tCtrl+J");
+		mLifeJob.setAccelerator(SWT.CTRL | 'J');
+
+		mpLife.setMenu(mLife);
+		
+		MenuItem mLifeJobChain = new MenuItem(mLife, SWT.PUSH);
+		mLifeJobChain.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				if (container.newScheduler(SchedulerDom.LIFE_JOB_CHAIN) != null)
+					setSaveStatus();
+			}
+		});
+		mLifeJobChain.setText("Job Chain... \t Ctrl+A");
+		mLifeJobChain.setAccelerator(SWT.CTRL | 'A');
+		
+		MenuItem mLifeProcessClass = new MenuItem(mLife, SWT.PUSH);
+		mLifeProcessClass.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				if (container.newScheduler(SchedulerDom.LIFE_PROCESS_CLASS) != null)
+					setSaveStatus();
+			}
+		});
+		mLifeProcessClass.setText("Process Class... \tCtrl+R");
+		mLifeProcessClass.setAccelerator(SWT.CTRL | 'R');
+		
+		MenuItem mLifeLock = new MenuItem(mLife, SWT.PUSH);
+		mLifeLock.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				if (container.newScheduler(SchedulerDom.LIFE_LOCK) != null)
+					setSaveStatus();
+			}
+		});
+		mLifeLock.setText("Lock...   \tCtrl+M");
+		mLifeLock.setAccelerator(SWT.CTRL | 'M');
+		
+		MenuItem mLifeOrder= new MenuItem(mLife, SWT.PUSH);
+		mLifeOrder.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				if (container.newScheduler(SchedulerDom.LIFE_ORDER) != null)
+					setSaveStatus();
+			}
+		});
+		mLifeOrder.setText("Order... \tCtrl+W");
+		mLifeOrder.setAccelerator(SWT.CTRL | 'W');
+		
+		
+		
+		//////////
+		
+		
 		MenuItem separator = new MenuItem(mFile, SWT.SEPARATOR);
 		//ende neu
 		//submenu = new Menu(mNew);
@@ -218,8 +293,9 @@ public class MainWindow  {
 		MenuItem separatorDetails = new MenuItem(mFile, SWT.SEPARATOR);
 		
 		*/
-		/*MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
-		openDir.setText("Open Directory \tCtrl+D");
+		
+		MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
+		openDir.setText("Open Hot Folder \tCtrl+D");
 		openDir.setAccelerator(SWT.CTRL | 'D');
 		openDir.setEnabled(true);
 		openDir.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -236,7 +312,7 @@ public class MainWindow  {
 		});
 		
 		MenuItem separatorDetails1 = new MenuItem(mFile, SWT.SEPARATOR);
-		*/
+		
 		/*
 		
 		pOpenFile.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -273,6 +349,7 @@ public class MainWindow  {
 		pSaveAs.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.getCurrentEditor() != null && container.getCurrentEditor().applyChanges()) {
+					
 					container.getCurrentEditor().saveAs();
 					setSaveStatus();
 				}
@@ -416,14 +493,20 @@ public class MainWindow  {
 			if(item.getText().startsWith("Save")) {
 				index = i;
 				break;
-			}
+			} 
 		}
 		
 		items[index].setEnabled(!saved);
 		items[index+1].setEnabled(true);
 		
-		//items[10].setEnabled(!saved);
-		//items[11].setEnabled(true);
+		if(container.getCurrentEditor() instanceof sos.scheduler.editor.conf.forms.SchedulerForm)  {
+			sos.scheduler.editor.conf.forms.SchedulerForm form =(sos.scheduler.editor.conf.forms.SchedulerForm)container.getCurrentEditor();
+			SchedulerDom dom = (SchedulerDom)form.getDom(); 
+			if(dom.isDirectory()) {
+				items[index+1].setEnabled(false);
+			}
+			
+		}
 		
 		return saved;
 	}

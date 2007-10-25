@@ -8,6 +8,7 @@ public class Editor {
     public final static int BASE                   = 2;
 
     public final static int SECURITY               = 3;
+    
     public final static int CLUSTER                = 4;
 
     public final static int PROCESS_CLASSES        = 5;
@@ -61,6 +62,8 @@ public class Editor {
     public final static int PERIODS                = 29;
 
     public final static int EVERYDAY               = 30;
+    
+    public final static int SPECIFIC_MONTHS        = 31;
 
     public final static int DOC_JOB                = 50;
 
@@ -109,6 +112,8 @@ public class Editor {
     public static String    SCHEDULER_ENCODING     = "";
 
     public static String    DOCUMENTATION_ENCODING = "utf-8";
+    
+    
 
  
     public static void main(String[] args) {    	

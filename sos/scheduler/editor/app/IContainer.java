@@ -1,5 +1,7 @@
 package sos.scheduler.editor.app;
 
+import org.eclipse.swt.custom.CTabItem;
+
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
@@ -7,6 +9,8 @@ import sos.scheduler.editor.doc.forms.DocumentationForm;
 public interface IContainer {
 	
     public SchedulerForm newScheduler();
+    
+    public SchedulerForm newScheduler(int type);
 
     public DocumentationForm newDocumentation();
 
@@ -39,6 +43,8 @@ public interface IContainer {
     public JobChainConfigurationForm openDetails();
     
     public SchedulerForm openDirectory();
+    
+    public CTabItem getCurrentTab();
     
     
 }

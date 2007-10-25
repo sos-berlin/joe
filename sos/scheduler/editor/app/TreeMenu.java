@@ -11,6 +11,8 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Tree;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+
+import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 
 public class TreeMenu {
@@ -38,6 +40,9 @@ public class TreeMenu {
 	private static final String COPY_TO_CLIPBOARD         = "Copy to Clipboard";
 	
 	private static final String PASTE                     = "Paste";
+	
+	private static final String DELETE                     = "Delete";
+	
 	
 	
 	private boolean bEdit                                 = false;//hilfsvariable
@@ -101,6 +106,16 @@ public class TreeMenu {
 		item.addListener(SWT.Selection, getCopyListener());
 		item.setText(TreeMenu.COPY);
 		
+		if((_dom instanceof sos.scheduler.editor.conf.SchedulerDom)) {
+			if(((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement()) {				
+				item = new MenuItem(_menu, SWT.PUSH);
+				item.addListener(SWT.Selection, getDeleteListener());
+				item.setText(TreeMenu.DELETE);
+				
+			}
+		}
+		
+		
 		item = new MenuItem(_menu, SWT.PUSH);
 		item.addListener(SWT.Selection, getClipboardListener());
 		item.setText(TreeMenu.COPY_TO_CLIPBOARD);
@@ -125,6 +140,8 @@ public class TreeMenu {
 						getItem(TreeMenu.SHOW_INFO).setEnabled(true); // show info
 						getItem(TreeMenu.SHOW_XML).setEnabled(true); // show xml
 						getItem(TreeMenu.COPY_TO_CLIPBOARD).setEnabled(true); // copy to clipboard
+						if(_dom instanceof SchedulerDom && ((SchedulerDom)_dom).isLifeElement())
+							getItem(TreeMenu.DELETE).setEnabled(true);
 						
 						
 						String name = element.getName();
@@ -234,7 +251,11 @@ public class TreeMenu {
 				Element element = null;
 				String xml = null;
 				if(i.getText().equalsIgnoreCase(TreeMenu.EDIT_XML)) {
-					element = _dom.getRoot().getChild("config");
+					if(_dom instanceof sos.scheduler.editor.conf.SchedulerDom && ((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement()) {
+						element = getElement();
+					} else {
+						element = _dom.getRoot().getChild("config");
+				}
 					if(element != null)
 						xml = getXML(element);        				
 					
@@ -293,6 +314,26 @@ public class TreeMenu {
 	}
 	
 	
+	private Listener getDeleteListener () {
+		return new Listener() {
+			public void handleEvent(Event e) {
+				
+				 int ok = MainWindow.message("Do you wont really remove life file: " + _dom.getFilename(), //$NON-NLS-1$
+		                    SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
+
+		            if (ok == SWT.CANCEL || ok == SWT.NO)
+		                return;		           
+		            
+					if(!new java.io.File(_dom.getFilename()).delete()) {
+						MainWindow.message("could not remove life file", SWT.ICON_WARNING | SWT.OK);
+					}
+					sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
+					con.getCurrentTab().dispose();
+				
+			}
+		};
+	}
+	
 	private Listener getClipboardListener() {
 		return new Listener() {
 			public void handleEvent(Event e) {
@@ -338,12 +379,14 @@ public class TreeMenu {
 						refreshTree("jobs");
 						_gui.update();
 						_gui.updateJobs();
+						_dom.setChanged(true);
 						
 					} else if (tName.equals("job") && cName.equals("run_time")) { // copy
 						// run_time
 						target.removeChildren("run_time");
 						target.addContent(_copy);
 						_gui.updateJob();
+						_dom.setChanged(true);
 					} else if (tName.equals("config") && cName.equals("config")) { // copy
 						// run_time
 						//target.getParentElement().removeContent();

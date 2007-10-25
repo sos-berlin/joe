@@ -95,7 +95,11 @@ public class Utils {
             if (dom != null) {
                 dom.setChanged(true);
                 if(dom instanceof SchedulerDom) {
-                	((SchedulerDom)dom).setChangedForDirectory("job", Utils.getAttributeValue("name",element), SchedulerDom.MODIFY);
+                	if(element.getName().equals("order")) {
+                		((SchedulerDom)dom).setChangedForDirectory("order", Utils.getAttributeValue("job_chain",element) + "," + Utils.getAttributeValue("id",element), SchedulerDom.MODIFY);
+                	} else {
+                		((SchedulerDom)dom).setChangedForDirectory("job", Utils.getAttributeValue("name",element), SchedulerDom.MODIFY);
+                	}
                 }
             }
         }
@@ -597,10 +601,20 @@ public class Utils {
     	}
     	
     	java.util.ArrayList listOfReadOnly = dom.getListOfReadOnlyFiles();
-        if (listOfReadOnly != null && listOfReadOnly.contains(which + "_" + Utils.getAttributeValue("name", elem))) {        	
-        	//this.setEnabled(false);
-        	return false;
-        } 
+    	
+    	if(which.equalsIgnoreCase("commands")) {
+    		if (listOfReadOnly != null && listOfReadOnly.contains(which + "_" + Utils.getAttributeValue("job_chain", elem) + "," + Utils.getAttributeValue("id", elem))) {        	
+    			
+    			//this.setEnabled(false);
+    			return false;
+    		}
+    	} else {
+    		if (listOfReadOnly != null && listOfReadOnly.contains(which + "_" + Utils.getAttributeValue("name", elem))) {        	
+    			
+    			//this.setEnabled(false);
+    			return false;
+    		}
+    	}
         return true;
     }
     
