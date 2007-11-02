@@ -344,12 +344,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				importJobs.showAllImportJobs("order");
 				update.updateOrders();
 				refresh = true;
-				/*if(refresh) {
-				 //job wurde importiert. Daher ist der cJob Auswahlbox nicht aktuell, d.h der importierte Job ist nicht in der Liste
-				  cJob.setItems(listener.getJobs());
-				  cJob.select(listener.getJobs().length -1);
-				  }*/
-				//fillNode(true);
+				
 			}
 		});
 		butImportJob.setText("Import Job");

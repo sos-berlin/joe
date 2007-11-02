@@ -6,93 +6,124 @@ package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
+import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ConfigListener;
+
+
 /**
  * @author sky2000
  */
 public class ConfigForm extends Composite implements IUpdateLanguage {
 
-    private ConfigListener listener;
+    private Button         butBrowse_2                  = null;
+    
+    private Combo          cConfigurationDeleteEvent    = null;
+    
+    private Label          label12_3                    = null;
+    
+    private Button         butBrowse_1                  = null;
+    
+    private Combo          cConfigurationModifyEvent    = null;
+    
+    private Label          label12_2                    = null;
+    
+    private Button         butBrowse                    = null;
+    
+    private Combo          cConfigurationAddEvent       = null;
+    
+    private Label          label12_1                    = null;
+    
+    private ConfigListener listener                     = null;
 
-    private Group          gConfig             = null;
+    private Group          gConfig                      = null;
 
-    private Label          label               = null;
+    private Label          label                        = null;
 
-    private Text           tSpoolerID          = null;
+    private Text           tSpoolerID                   = null;
 
-    private Label          label7              = null;
+    private Label          label7                       = null;
 
-    private Text           tParameter          = null;
+    private Text           tParameter                   = null;
 
-    private Label          label10             = null;
+    private Label          label10                      = null;
 
-    private Text           tIncludePath        = null;
+    private Text           tIncludePath                 = null;
 
-    private Label          label11             = null;
+    private Label          label11                      = null;
 
-    private Text           tLogDir             = null;
+    private Text           tLogDir                      = null;
 
-    private Label          label12             = null;
+    private Label          label12                      = null;
 
-    private Text           tMailXSLTStylesheet = null;
+    private Text           tMailXSLTStylesheet          = null;
 
-    private Group          gPorts              = null;
+    private Group          gPorts                       = null;
 
-    private Button         cSamePorts          = null;
+    private Button         cSamePorts                   = null;
 
-    private Label          label14             = null;
+    private Label          label14                      = null;
 
-    private Text           sPort               = null;
+    private Text           sPort                        = null;
 
-    private Text           sTcpPort            = null;
+    private Text           sTcpPort                     = null;
 
-    private Label          label4              = null;
+    private Label          label4                       = null;
 
-    private Text           sUdpPort            = null;
+    private Text           sUdpPort                     = null;
 
-    private Group          gMainScheduler      = null;
+    private Group          gMainScheduler               = null;
 
-    private Button         cUseMainScheduler   = null;
+    private Button         cUseMainScheduler            = null;
 
-    private Label          label1              = null;
+    private Label          label1                       = null;
 
-    private Text           tMainSchedulerHost  = null;
+    private Text           tMainSchedulerHost           = null;
 
-    private Label          label2              = null;
+    private Label          label2                       = null;
 
-    private Spinner        sMainSchedulerPort  = null;
+    private Spinner        sMainSchedulerPort           = null;
 
-    private Group          gJavaOptions        = null;
+    private Group          gJavaOptions                 = null;
 
-    private Label          label8              = null;
+    private Label          label8                       = null;
 
-    private Text           tJavaClassPath      = null;
+    private Text           tJavaClassPath               = null;
 
-    private Label          label9              = null;
+    private Label          label9                       = null;
 
-    private Text           tJavaOptions        = null;
+    private Text           tJavaOptions                 = null;
 
-    private Group          group               = null;
+    private Group          group                        = null;
 
-    private Text           tComment            = null;
-    private Text           tIpAddress          = null;
+    private Text           tComment                     = null;
+    
+    private Text           tIpAddress                   = null;
+    
+    private SchedulerDom   _dom                         = null;
 
-
+    private ISchedulerUpdate update                     = null;
 
     /**
      * @param parent
@@ -101,6 +132,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
     public ConfigForm(Composite parent, int style, SchedulerDom dom) {
         super(parent, style);
         listener = new ConfigListener(dom);
+        _dom = dom;
         initialize();
         setToolTipText();
         tSpoolerID.setFocus();
@@ -253,6 +285,86 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
         GridLayout gridLayout11 = new GridLayout();
         gridLayout11.numColumns = 4;
         GridData gridData12 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+
+        final Group eventGroup = new Group(gConfig, SWT.NONE);
+        eventGroup.setText("Event");
+        eventGroup.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
+        final GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 3;
+        eventGroup.setLayout(gridLayout);
+
+        label12_1 = new Label(eventGroup, SWT.NONE);
+        label12_1.setText("Configuration Add Event");
+
+        cConfigurationAddEvent = new Combo(eventGroup, SWT.NONE);
+        final GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        cConfigurationAddEvent.setLayoutData(gridData13);
+        cConfigurationAddEvent.setItems(listener.getJobs());
+        cConfigurationAddEvent.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		listener.setConfigurationAddEvent(cConfigurationAddEvent.getText());
+        	}
+        });
+        cConfigurationAddEvent.setText(listener.getConfigurationAddEvent());
+        
+
+        butBrowse = new Button(eventGroup, SWT.NONE);
+        butBrowse.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {        		
+        		String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB);
+				if(jobname != null && jobname.length() > 0) {
+					cConfigurationAddEvent.setText(jobname);
+				}
+        	}
+        });
+        butBrowse.setText("Browse");
+
+        label12_2 = new Label(eventGroup, SWT.NONE);
+        label12_2.setText("Configuration Modify Event");
+
+        cConfigurationModifyEvent = new Combo(eventGroup, SWT.NONE);
+        final GridData gridData13_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        cConfigurationModifyEvent.setLayoutData(gridData13_1);
+        cConfigurationModifyEvent.setItems(listener.getJobs());
+        cConfigurationModifyEvent.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		listener.setConfigurationModifyEvent(cConfigurationModifyEvent.getText());
+        	}
+        });
+        cConfigurationModifyEvent.setText(listener.getConfigurationModifyEvent());
+        butBrowse_1 = new Button(eventGroup, SWT.NONE);
+        butBrowse_1.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB);
+				if(jobname != null && jobname.length() > 0)
+					cConfigurationModifyEvent.setText(jobname);
+        	}
+        });
+        butBrowse_1.setText("Browse");
+
+        label12_3 = new Label(eventGroup, SWT.NONE);
+        label12_3.setText("Configuration Delete Event");
+
+        cConfigurationDeleteEvent = new Combo(eventGroup, SWT.NONE);
+        final GridData gridData13_1_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        cConfigurationDeleteEvent.setLayoutData(gridData13_1_1);
+        cConfigurationDeleteEvent.setItems(listener.getJobs());
+        cConfigurationDeleteEvent.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		listener.setConfigurationDeleteEvent(cConfigurationDeleteEvent.getText());
+        	}
+        });
+        cConfigurationDeleteEvent.setText(listener.getConfigurationDeleteEvent());
+
+        butBrowse_2 = new Button(eventGroup, SWT.NONE);
+        butBrowse_2.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB);
+				if(jobname != null && jobname.length() > 0)
+					cConfigurationDeleteEvent.setText(jobname);
+        	}
+        });
+        butBrowse_2.setText("Browse");
         gPorts = new Group(gConfig, SWT.NONE);
         gPorts.setText("Job Scheduler Port");
         gPorts.setLayoutData(gridData12);
@@ -459,7 +571,14 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
         tJavaClassPath.setToolTipText(Messages.getTooltip("config.java_class_path"));
         tComment.setToolTipText(Messages.getTooltip("config.comment"));
         tJavaOptions.setToolTipText(Messages.getTooltip("config.java_options"));
+        
+        cConfigurationAddEvent.setToolTipText(Messages.getTooltip("config.configuration_add_event"));
+        cConfigurationModifyEvent.setToolTipText(Messages.getTooltip("config.configuration_modify_event"));
+        cConfigurationDeleteEvent.setToolTipText(Messages.getTooltip("config.configuration_delete_event"));
 
     }
-
+    
+    public void setISchedulerUpdate(ISchedulerUpdate update_) {
+		update = update_;
+	}
 } // @jve:decl-index=0:visual-constraint="10,10"

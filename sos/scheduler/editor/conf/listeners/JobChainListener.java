@@ -555,7 +555,6 @@ public class JobChainListener {
 	
 	
 	
-	
 	public String[] getJobs() {
 		if(_config == null)
 			return new String[0];

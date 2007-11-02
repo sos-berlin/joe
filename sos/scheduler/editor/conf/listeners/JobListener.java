@@ -27,6 +27,8 @@ public class JobListener {
 	
 	private List             _params;
 	
+	private List             _environments;
+	
 	//Hifsvariable
 	private static String library      = "";  
 	
@@ -40,9 +42,15 @@ public class JobListener {
 		_dom = dom;
 		_job = job;
 		_main = update;
+		
 		Element params = _job.getChild("params");
 		if (params != null)
 			_params = params.getChildren("param");
+		
+		Element environment = _job.getChild("environment");
+		if(environment != null)
+			_environments = environment.getChildren("variable");
+		
 	}
 	
 	
@@ -51,6 +59,10 @@ public class JobListener {
 		_params = _job.getChild("params").getChildren();
 	}
 	
+	private void initEnvironment() {
+		_job.addContent(0, new Element("environment"));
+		_environments = _job.getChild("environment").getChildren();
+	}
 	
 	public String getComment() {
 		return Utils.getAttributeValue("__comment__", _job);
@@ -328,7 +340,21 @@ public class JobListener {
 		
 	}					
 	
+	public void deleteEnvironment(Table table, int index) {
+		
+		
+		if (_environments != null) {
+			_environments.remove(index);
+			_dom.setChanged(true);
+			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);			
+		}
+		table.remove(index);
+		
+	}				
+	
+	
 	public void saveParameter(Table table, String name, String value, String parameterDescription, boolean required) {
+		
 		Element e = new Element("param");
 		e.setAttribute("name", name);
 		e.setAttribute("value", value);
@@ -356,15 +382,51 @@ public class JobListener {
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
+	public void saveEnvironment(Table table, String name, String value) {
+		
+		boolean found = false;
+		String value2 = value.replaceAll("\"", "&quot;");
+				
+		if (_environments != null) {
+			int index = 0;
+			Iterator it = _environments.iterator();
+			while (it.hasNext()) {
+				Object o = it.next();
+				if (o instanceof Element) {
+					Element e = (Element) o;
+					if (name.equals(e.getAttributeValue("name"))) {
+						found = true;												
+						e.setAttribute("value", value2);						
+						_dom.setChanged(true);
+						_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+						table.getItem(index).setText(1, value);
+						break;
+					}
+					index++;
+				}
+			}
+		}
+		if (!found) {
+			Element e = new Element("variable");
+			e.setAttribute("name", name);
+			e.setAttribute("value", value2);
+			_dom.setChanged(true);
+			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+			if (_environments == null)
+				initEnvironment();
+			_environments.add(e);
+			
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setText(new String[] { name, value });
+			
+		}			
+	}
 	
 	public void saveParameter(Table table, String name, String value) {
 		
 		boolean found = false;
 		String value2 = value.replaceAll("\"", "&quot;");
-		
-		//test
-		//_params = _job.getChild("params").getChildren("param");
-		//
+				
 		if (_params != null) {
 			int index = 0;
 			Iterator it = _params.iterator();

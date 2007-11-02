@@ -56,7 +56,11 @@ public class IOUtils {
          
          
          filename = fdialog.open();  
-        
+         filename = filename.replaceAll("\\\\", "/");
+         String env = Options.getSchedulerHotFolder().replaceAll("\\\\", "/");
+         int pos = filename.indexOf(env);
+         filename = filename.substring(pos == -1 ? 0 : pos + env.length()) ;
+         
          return filename;
     }
     
@@ -350,8 +354,26 @@ public class IOUtils {
     		save.saveXMLDirectory(currDoc, ((SchedulerDom)dom).getChangedJob());
     		
     	} else {//sonst life element
+    		org.jdom.Element elem = null;
+    		if(type == SchedulerDom.LIFE_LOCK) {
+    			
+    			sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm)(MainWindow.getContainer().getCurrentEditor());
+    			org.eclipse.swt.widgets.Tree tree = form.getTree();
+    			TreeData data = (TreeData)tree.getSelection()[0].getData();
+    			elem = data.getElement().getChild("locks").getChild("lock");
+    			
+    		} else if (type == SchedulerDom.LIFE_PROCESS_CLASS) {
+    			
+    			sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm)(MainWindow.getContainer().getCurrentEditor());
+    			org.eclipse.swt.widgets.Tree tree = form.getTree();
+    			TreeData data = (TreeData)tree.getSelection()[0].getData();
+    			elem = data.getElement().getChild("process_classes").getChild("process_class");
+    			
+    		} else {
+    			elem = currDoc.getRootElement();
+    		}
     		
-    		String name = save.saveLifeElement(nameOfElement, currDoc.getRootElement(), ((SchedulerDom)dom).getChangedJob(),((SchedulerDom)dom).getListOfChangeElementNames());
+    		String name = save.saveLifeElement(nameOfElement, elem, ((SchedulerDom)dom).getChangedJob(),((SchedulerDom)dom).getListOfChangeElementNames());
     		
     		try {dom.setFilename(new java.io.File(name).getCanonicalPath()); } catch(Exception e) {}
     		dom.setChanged(true);

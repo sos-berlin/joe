@@ -130,7 +130,7 @@ public class ExecuteListener {
     }
 
 
-    public void fillEnvironmentTable(Table table) {
+    /*public void fillEnvironmentTable(Table table) {
         table.removeAll();
         if (_environment != null) {
             Iterator it = _environment.getChildren("variable").iterator();
@@ -143,7 +143,7 @@ public class ExecuteListener {
                 item.setText(1, value != null ? value : "");
             }
         }
-    }
+    }*/
 
 
     public void applyVariable(String name, String value) {

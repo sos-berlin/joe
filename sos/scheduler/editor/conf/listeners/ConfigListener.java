@@ -1,11 +1,13 @@
 package sos.scheduler.editor.conf.listeners;
 
-import org.jdom.Element;
 
+import java.util.List;
+import org.jdom.Element;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class ConfigListener {
+	
     private SchedulerDom _dom;
 
     private Element      _config;
@@ -194,5 +196,51 @@ public class ConfigListener {
     public boolean isPort() {
         return _config.getAttribute("port") != null;
     }
+    
+    public String[] getJobs() {
+    	if(_config == null)
+    		return new String[0];
+    	Element jobs = _config.getChild("jobs");
+    	
+    	if (jobs != null) {
+    		List jobList = jobs.getChildren("job");            
+    		String[] names = new String[jobList.size()];
+    		
+    		for (int i = 0; i < jobList.size(); i++) {
+    			Element job = (Element)jobList.get(i); 
+    			names[i] = job.getAttributeValue("name");
+    		}
+    		
+    		return names;
+    	} else
+    		return new String[0];
+    }
+    
+    
+    public String getConfigurationAddEvent() {
+        return Utils.getAttributeValue("configuration_add_event", _config);
+    }
 
+
+    public void setConfigurationAddEvent(String configurationAddEvent) {
+        Utils.setAttribute("configuration_add_event", configurationAddEvent, _config, _dom);
+    }
+    
+    public String getConfigurationModifyEvent() {
+        return Utils.getAttributeValue("configuration_modify_event", _config);
+    }
+
+
+    public void setConfigurationModifyEvent(String configurationModifyEvent) {
+        Utils.setAttribute("configuration_modify_event", configurationModifyEvent, _config, _dom);
+    }
+    
+    public String getConfigurationDeleteEvent() {
+        return Utils.getAttributeValue("configuration_delete_event", _config);
+    }
+
+
+    public void setConfigurationDeleteEvent(String configurationDeleteEvent) {
+        Utils.setAttribute("configuration_delete_event", configurationDeleteEvent, _config, _dom);
+    }
 }

@@ -54,24 +54,6 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
 
     private Label           label5        = null;
 
-    private Group           gEnvironment  = null;
-
-    private Table           tVariables    = null;
-
-    private Label           label         = null;
-
-    private Text            tName         = null;
-
-    private Label           label7        = null;
-
-    private Text            tValue        = null;
-
-    private Button          bApply        = null;
-
-    private Button          bRemove       = null;
-
-    private Label           label2        = null;
-
     private Button          bNoExecute    = null;
 
     private Label           label9        = null;
@@ -96,15 +78,15 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
 
 
     public void apply() {
-        if (bApply.isEnabled())
-            applyVariable();
+        //if (bApply.isEnabled())
+        //    applyVariable();
         if (scriptForm.isUnsaved())
             scriptForm.apply();
     }
 
 
     public boolean isUnsaved() {
-        return scriptForm.isUnsaved() || bApply.isEnabled();
+        return scriptForm.isUnsaved(); //|| bApply.isEnabled();
     }
 
 
@@ -120,8 +102,7 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
      * This method initializes group
      */
     private void createGroup() {
-        GridData gridData10 = new org.eclipse.swt.layout.GridData();
-        gridData10.horizontalSpan = 2;
+        GridData gridData10 = new GridData();
         GridData gridData18 = new org.eclipse.swt.layout.GridData();
         gridData18.horizontalAlignment = org.eclipse.swt.layout.GridData.CENTER;
         gridData18.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
@@ -129,7 +110,7 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
         gridData17.horizontalAlignment = org.eclipse.swt.layout.GridData.CENTER;
         gridData17.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
         GridLayout gridLayout4 = new GridLayout();
-        gridLayout4.numColumns = 3;
+        gridLayout4.numColumns = 2;
         group = new Group(this, SWT.NONE);
         group.setText("Execute");
         bNoExecute = new Button(group, SWT.RADIO);
@@ -268,12 +249,7 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
      * This method initializes scriptForm
      */
     private void createScriptForm() {
-        GridData gridData1 = new org.eclipse.swt.layout.GridData();
-        gridData1.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData1.grabExcessHorizontalSpace = true;
-        gridData1.grabExcessVerticalSpace = true;
-        gridData1.horizontalSpan = 2;
-        gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
         scriptForm = new ScriptForm(group, SWT.NONE);
         scriptForm.setLayoutData(gridData1);
     }
@@ -283,94 +259,7 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
      * This method initializes group1
      */
     private void createGroup12() {
-        GridData gridData11 = new org.eclipse.swt.layout.GridData();
-        gridData11.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData11.grabExcessHorizontalSpace = true;
-        gridData11.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData8 = new org.eclipse.swt.layout.GridData();
-        gridData8.horizontalSpan = 5;
-        gridData8.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        gridData8.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        GridData gridData7 = new org.eclipse.swt.layout.GridData();
-        gridData7.grabExcessHorizontalSpace = true;
-        gridData7.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        gridData7.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        GridData gridData6 = new org.eclipse.swt.layout.GridData();
-        gridData6.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData6.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData5 = new org.eclipse.swt.layout.GridData();
-        gridData5.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData5.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-        GridLayout gridLayout1 = new GridLayout();
-        gridLayout1.numColumns = 5;
-        GridData gridData9 = new org.eclipse.swt.layout.GridData();
-        gridData9.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData9.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gEnvironment = new Group(group, SWT.NONE);
-        gEnvironment.setText("Environment Variables");
-        label = new Label(gEnvironment, SWT.NONE);
-        label.setText("Name");
-        tName = new Text(gEnvironment, SWT.BORDER);
-        tName.setLayoutData(gridData11);
-        label7 = new Label(gEnvironment, SWT.NONE);
-        label7.setText("Value");
-        tValue = new Text(gEnvironment, SWT.BORDER);
-        tValue.setLayoutData(gridData7);
-        bApply = new Button(gEnvironment, SWT.NONE);
-        label2 = new Label(gEnvironment, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label2.setText("Label");
-        label2.setLayoutData(gridData8);
         createTable();
-        gEnvironment.setLayout(gridLayout1);
-        gEnvironment.setLayoutData(gridData9);
-        bRemove = new Button(gEnvironment, SWT.NONE);
-        bRemove.setText("Remove");
-        bRemove.setEnabled(false);
-        bRemove.setLayoutData(gridData5);
-        bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (tVariables.getSelectionCount() > 0) {
-                    int index = tVariables.getSelectionIndex();
-                    listener.removeVariable(tVariables.getItem(index).getText(0));
-                    tVariables.remove(index);
-
-                    tName.setText("");
-                    tValue.setText("");
-                }
-                bRemove.setEnabled(false);
-                bApply.setEnabled(false);
-            }
-        });
-        tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(!tName.getText().equals(""));
-            }
-        });
-        tName.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tName.getText().equals(""))
-                    applyVariable();
-            }
-        });
-        tValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tName.getText().equals(""))
-                    applyVariable();
-            }
-        });
-        tValue.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(!tName.getText().equals(""));
-            }
-        });
-        bApply.setText("&Apply");
-        bApply.setLayoutData(gridData6);
-        bApply.setEnabled(false);
-        bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                applyVariable();
-            }
-        });
     }
 
 
@@ -378,33 +267,6 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
      * This method initializes table
      */
     private void createTable() {
-        GridData gridData4 = new org.eclipse.swt.layout.GridData();
-        gridData4.horizontalSpan = 4;
-        gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData4.grabExcessVerticalSpace = true;
-        gridData4.heightHint = 60;
-        gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        tVariables = new Table(gEnvironment, SWT.BORDER | SWT.FULL_SELECTION);
-        tVariables.setHeaderVisible(true);
-        tVariables.setLayoutData(gridData4);
-        tVariables.setLinesVisible(true);
-        tVariables.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (tVariables.getSelectionCount() > 0) {
-                    TableItem item = tVariables.getSelection()[0];
-                    tName.setText(item.getText(0));
-                    tValue.setText(item.getText(1));
-                }
-                bRemove.setEnabled(tVariables.getSelectionCount() > 0);
-                bApply.setEnabled(false);
-            }
-        });
-        TableColumn tableColumn = new TableColumn(tVariables, SWT.NONE);
-        tableColumn.setWidth(80);
-        tableColumn.setText("Name");
-        TableColumn tableColumn1 = new TableColumn(tVariables, SWT.NONE);
-        tableColumn1.setWidth(150);
-        tableColumn1.setText("Value");
     }
 
 
@@ -445,9 +307,9 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
                 listener.setIgnoreSignal(true);
             bIgnoreSignal.setSelection(listener.isIgnoreSignal());
 
-            listener.fillEnvironmentTable(tVariables);
-            bApply.setEnabled(!tName.getText().equals(""));
-            bRemove.setEnabled(tVariables.getSelectionCount() > 0);
+            //listener.fillEnvironmentTable(tVariables);
+            //bApply.setEnabled(!tName.getText().equals(""));
+            //bRemove.setEnabled(tVariables.getSelectionCount() > 0);
             tExecuteFile.setFocus();
         } else {
             bNoExecute.setSelection(true);
@@ -464,25 +326,10 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
         tParameter.setEnabled(enabled);
         bIgnoreError.setEnabled(enabled);
         bIgnoreSignal.setEnabled(enabled);
-        tVariables.setEnabled(enabled);
-        tName.setEnabled(enabled);
-        tValue.setEnabled(enabled);
-        bRemove.setEnabled(enabled);
-        bApply.setEnabled(enabled);
     }
 
 
     private void applyVariable() {
-        if (!tName.getText().equals("")) {
-            listener.applyVariable(tName.getText(), tValue.getText());
-            listener.fillEnvironmentTable(tVariables);
-        }
-        tName.setText("");
-        tValue.setText("");
-        bApply.setEnabled(false);
-        bRemove.setEnabled(false);
-        tVariables.deselectAll();
-        tName.setFocus();
     }
 
 
@@ -495,11 +342,6 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
         tLogFile.setToolTipText(Messages.getTooltip("process.log_file"));
         bIgnoreSignal.setToolTipText(Messages.getTooltip("process.ignore_signal"));
         bIgnoreError.setToolTipText(Messages.getTooltip("process.ignore_error"));
-        tName.setToolTipText(Messages.getTooltip("process.environment.name"));
-        tValue.setToolTipText(Messages.getTooltip("process.environment.value"));
-        bRemove.setToolTipText(Messages.getTooltip("process.environment.btn_remove"));
-        bApply.setToolTipText(Messages.getTooltip("process.environment.btn_apply"));
-        tVariables.setToolTipText(Messages.getTooltip("process.environment.table"));
 
     }
 } // @jve:decl-index=0:visual-constraint="10,10"

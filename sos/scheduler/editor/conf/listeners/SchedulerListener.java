@@ -137,7 +137,7 @@ public class SchedulerListener {
 			spooler.addContent(config);
 			Element process_classes = new Element("process_classes");
 			config.addContent(process_classes);
-			process_classes.addContent((Element)element.clone());        	
+			process_classes.addContent((Element)element.clone());        				
 			item.setData(new TreeData(Editor.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"), "process_classes"));
 			item.setData("key", "process_classes");
 			item.setText("Process Classes");
@@ -755,7 +755,7 @@ public class SchedulerListener {
 					_dom.setInit(true);
 					switch (data.getType()) {
 					case Editor.CONFIG:
-						new ConfigForm(c, SWT.NONE, _dom);
+						new ConfigForm(c, SWT.NONE, _dom);						
 						break;
 					case Editor.SECURITY:
 						new SecurityForm(c, SWT.NONE, _dom, data.getElement());

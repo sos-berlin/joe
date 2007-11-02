@@ -15,8 +15,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
-
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.IEditor;
 import sos.scheduler.editor.app.IOUtils;

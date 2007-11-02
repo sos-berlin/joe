@@ -4,6 +4,10 @@ import javax.xml.transform.TransformerException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -18,12 +22,15 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import com.swtdesigner.SWTResourceManager;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
@@ -35,6 +42,13 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobCommandListener;
 
 public class JobCommandForm extends Composite implements IUnsaved, IUpdateLanguage {
+    private Button butEnvRemove;
+    private Table tableEnvironment;
+    private Button butEnvApply;
+    private Text txtEnvValue;
+    private Label label6_1;
+    private Text txtEnvName;
+    private Label label2_1;
     private Table              tCommands;
 
     private JobCommandListener listener;
@@ -45,7 +59,6 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 
     private SashForm           sashForm        = null;
 
-    private Group              gJobParameter   = null;
 
     private Table              tParameter      = null;
 
@@ -98,6 +111,9 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 
     private Button             bNew            = null;
 
+    private Group              group_2         = null;
+    
+    
 
     public JobCommandForm(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main)
             throws JDOMException, TransformerException {
@@ -106,7 +122,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         listener = new JobCommandListener(dom, command, main);
         initialize();
         setToolTipText();
-        sashForm.setWeights(new int[] { 28, 28, 44 });
+        //sashForm.setWeights(new int[] { 28, 28, 44 });
 
         dom.setInit(true);
 
@@ -159,10 +175,292 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         jobsAndOrdersGroup.setText("Commands for Job: " + listener.getName() + (listener.isDisabled() ? " (Disabled)" : ""));
         jobsAndOrdersGroup.setLayout(gridLayout2);
         GridData gridData18 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
-        gridData18.widthHint = 681;
         sashForm = new SashForm(jobsAndOrdersGroup, SWT.NONE);
+        //sashForm.setWeights(new int[] { 1 });
         sashForm.setOrientation(512);
         sashForm.setLayoutData(gridData18);
+
+        group_2 = new Group(jobsAndOrdersGroup, SWT.NONE);
+        final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
+        gridData_1.heightHint = 250;
+        group_2.setLayoutData(gridData_1);
+        group_2.setLayout(new GridLayout());
+
+        final TabFolder tabFolder = new TabFolder(group_2, SWT.NONE);
+        final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true);
+        tabFolder.setLayoutData(gridData);
+
+        final TabItem parameterTabItem = new TabItem(tabFolder, SWT.NONE);
+        parameterTabItem.setText("Parameter");
+
+        final Group group = new Group(tabFolder, SWT.NONE);
+        final GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 5;
+        group.setLayout(gridLayout);
+        parameterTabItem.setControl(group);
+        label2 = new Label(group, SWT.NONE);
+        label2.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        label2.setText("Name: ");
+        tParaName = new Text(group, SWT.BORDER);
+        final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        gridData_9.widthHint = 200;
+        tParaName.setLayoutData(gridData_9);
+        tParaName.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
+            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
+                if (e.keyCode == SWT.CR && !tParaName.equals("") && tCommands.getSelectionIndex() >= 0)
+                    addParam();
+            }
+        });
+        tParaName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+                bApply.setEnabled(!tParaName.getText().equals("") && tCommands.getSelectionIndex() >= 0);
+                if (tParaName.getText().equals("<from>")) {
+                    cSource.setVisible(true);
+                    tParaValue.setVisible(false);
+                } else {
+                    cSource.setVisible(false);
+                    tParaValue.setVisible(true);
+                }
+            }
+        });
+        label6 = new Label(group, SWT.NONE);
+        label6.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        label6.setText("Value: ");
+
+        final Composite composite = new Composite(group, SWT.NONE);
+        composite.addControlListener(new ControlAdapter() {
+        	public void controlResized(final ControlEvent e) {
+        		cSource.setBounds(0, 2, composite.getBounds().width, tParaName.getBounds().height);
+                tParaValue.setBounds(0, 2,composite.getBounds().width, tParaName.getBounds().height);
+        	}
+        });
+        composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
+
+        cSource = new Combo(composite, SWT.READ_ONLY);
+        cSource.setItems(new String[] { "order", "task" });
+        //cSource.setBounds(1, -1,330, 21);
+        cSource.setBounds(0, 0,250, 21);
+
+        
+        cSource.addModifyListener(new ModifyListener() {
+            public void modifyText(final ModifyEvent e) {
+                tParaValue.setText(cSource.getText());
+            }
+        });
+        cSource.setVisible(false);
+        tParaValue = new Text(composite, SWT.BORDER);
+        //tParaValue.setBounds(0, 0,269, 19);        
+        tParaValue.setBounds(0, 0,250, 21);
+        tParaValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
+            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
+                if (e.keyCode == SWT.CR && !tParaName.equals("") && tCommands.getSelectionIndex() >= 0)
+                    addParam();
+            }
+        });
+        tParaValue.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+                bApply.setEnabled(!tParaName.getText().equals("") && tCommands.getSelectionIndex() >= 0);
+            }
+        });
+        bApply = new Button(group, SWT.NONE);
+        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        gridData_5.widthHint = 86;
+        bApply.setLayoutData(gridData_5);
+        bApply.setText("&Apply");
+        bApply.setEnabled(false);
+        bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                addParam();
+            }
+        });
+        tParameter = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
+        final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2);
+        gridData_3.heightHint = 140;
+        tParameter.setLayoutData(gridData_3);
+        tParameter.addPaintListener(new PaintListener() {
+            public void paintControl(final PaintEvent e) {
+            }
+        });
+        tParameter.setHeaderVisible(true);
+        tParameter.setLinesVisible(true);
+        tParameter.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                TableItem item = (TableItem) e.item;
+                if (item == null)
+                    return;
+                tParaName.setText(item.getText(0));
+                if (tParaName.getText().equals("<from>"))
+                    cSource.setText(item.getText(1));
+                tParaValue.setText(item.getText(1));
+                bRemove.setEnabled(tParameter.getSelectionCount() > 0);
+                bApply.setEnabled(false);
+            }
+        });
+        TableColumn tcName = new TableColumn(tParameter, SWT.NONE);
+        tcName.setWidth(252);
+        tcName.setText("Name");
+        TableColumn tcValue = new TableColumn(tParameter, SWT.NONE);
+        tcValue.setWidth(249);
+        tcValue.setText("Value");
+        bRemove = new Button(group, SWT.NONE);
+        bRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+        bRemove.setText("Remove");
+        bRemove.setEnabled(false);
+        bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                listener.deleteParameter(tParameter, tParameter.getSelectionIndex());
+                tParaName.setText("");
+                tParaValue.setText("");
+                tParameter.deselectAll();
+                bRemove.setEnabled(false);
+                bApply.setEnabled(false);
+            }
+        });
+
+        final Composite composite_1 = new Composite(group, SWT.NONE);
+        composite_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.FILL, false, false));
+        composite_1.setLayout(new GridLayout());
+
+        final Button paramButton = new Button(composite_1, SWT.RADIO);
+        paramButton.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+        paramButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent e) {
+                tParaName.setText("");
+                tParaValue.setText("");
+            }
+        });
+        paramButton.setSelection(true);
+        paramButton.setText("Parameter");
+
+        final Button fromTaskButton = new Button(composite_1, SWT.RADIO);
+        fromTaskButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent e) {
+                tParaName.setText("<from>");
+                cSource.setText("task");
+            }
+        });
+        fromTaskButton.setText("from task");
+
+        final Button fromOrderButton = new Button(composite_1, SWT.RADIO);
+        final GridData gridData_2 = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, true);
+        fromOrderButton.setLayoutData(gridData_2);
+        fromOrderButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent e) {
+                tParaName.setText("<from>");
+                cSource.setText("order");
+            }
+        });
+        fromOrderButton.setText("from order");
+
+        final TabItem environmentTabItem = new TabItem(tabFolder, SWT.NONE);
+        environmentTabItem.setText("Environment");
+
+        final Group group_1 = new Group(tabFolder, SWT.NONE);
+        final GridLayout gridLayout_1 = new GridLayout();
+        gridLayout_1.numColumns = 5;
+        group_1.setLayout(gridLayout_1);
+        environmentTabItem.setControl(group_1);
+
+        label2_1 = new Label(group_1, SWT.NONE);
+        label2_1.setLayoutData(new GridData());
+        label2_1.setText("Name: ");
+
+        txtEnvName = new Text(group_1, SWT.BORDER);
+        txtEnvName.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		butEnvApply.setEnabled(!txtEnvName.getText().equals("") && tCommands.getSelectionIndex() >= 0);                
+        	}
+        });
+        txtEnvName.addKeyListener(new KeyAdapter() {
+        	public void keyPressed(final KeyEvent e) {
+        		if (e.keyCode == SWT.CR && !txtEnvName.equals("") && tCommands.getSelectionIndex() >= 0)
+                    addEnvironment();
+        	}
+        });
+        final GridData gridData_8 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        gridData_8.widthHint = 200;
+        txtEnvName.setLayoutData(gridData_8);
+
+        label6_1 = new Label(group_1, SWT.NONE);
+        label6_1.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+        label6_1.setText("Value: ");
+
+        txtEnvValue = new Text(group_1, SWT.BORDER);
+        txtEnvValue.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		butEnvApply.setEnabled(!txtEnvName.getText().equals("") && tCommands.getSelectionIndex() >= 0);
+        	}
+        });
+        txtEnvValue.addKeyListener(new KeyAdapter() {
+        	public void keyPressed(final KeyEvent e) {
+        		if (e.keyCode == SWT.CR && !txtEnvName.equals("") && tCommands.getSelectionIndex() >= 0)
+                    addEnvironment();
+        	}
+        });
+        final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        gridData_7.minimumHeight = 21;
+        gridData_7.widthHint = 228;
+        txtEnvValue.setLayoutData(gridData_7);
+
+        butEnvApply = new Button(group_1, SWT.NONE);
+        butEnvApply.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		 addEnvironment();
+        	}
+        });
+        final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        gridData_6.widthHint = 0;
+        butEnvApply.setLayoutData(gridData_6);
+        butEnvApply.setEnabled(false);
+        butEnvApply.setText("&Apply");
+
+        tableEnvironment = new Table(group_1, SWT.FULL_SELECTION | SWT.BORDER);
+        tableEnvironment.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		TableItem item = (TableItem) e.item;
+                if (item == null)
+                    return;
+                txtEnvName.setText(item.getText(0));
+                
+                txtEnvValue.setText(item.getText(1));
+                butEnvRemove.setEnabled(tParameter.getSelectionCount() > 0);
+                butEnvApply.setEnabled(false);
+        	}
+        });
+        tableEnvironment.setLinesVisible(true);
+        tableEnvironment.setHeaderVisible(true);
+        final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, false, true, 4, 2);
+        gridData_4.widthHint = 545;
+        tableEnvironment.setLayoutData(gridData_4);
+
+        final TableColumn tcName_1 = new TableColumn(tableEnvironment, SWT.NONE);
+        tcName_1.setWidth(252);
+        tcName_1.setText("Name");
+
+        final TableColumn tcValue_1 = new TableColumn(tableEnvironment, SWT.NONE);
+        tcValue_1.setWidth(249);
+        tcValue_1.setText("Value");
+
+        butEnvRemove = new Button(group_1, SWT.NONE);
+        butEnvRemove.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		 listener.deleteEnvironment(tableEnvironment, tableEnvironment.getSelectionIndex());
+                 txtEnvName.setText("");
+                 txtEnvValue.setText("");
+                 tableEnvironment.deselectAll();
+                 butEnvApply.setEnabled(false);
+                 butEnvRemove.setEnabled(false);
+        	}
+        });
+        butEnvRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+        butEnvRemove.setEnabled(false);
+        butEnvRemove.setText("Remove");
+
+        final Composite composite_2 = new Composite(group_1, SWT.NONE);
+        final GridData gridData_10 = new GridData(86, SWT.DEFAULT);
+        gridData_10.minimumHeight = 86;
+        composite_2.setLayoutData(gridData_10);
+        composite_2.setLayout(new GridLayout());
         createSashForm();
     }
 
@@ -207,7 +505,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
      */
     private void createGroup2() {
         GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 2;
+        gridLayout.numColumns = 3;
         gridLayout.marginHeight = 0;
         gridLayout.verticalSpacing = 0;
         GridLayout gridLayout3 = new GridLayout();
@@ -218,7 +516,8 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         //gDescription.setText("Jobs and orders");
         gDescription.setLayout(gridLayout3);
         bJob = new Button(gDescription, SWT.RADIO);
-        bJob.setLayoutData(new GridData(SWT.DEFAULT, 41));
+        final GridData gridData_1 = new GridData(SWT.DEFAULT, 41);
+        bJob.setLayoutData(gridData_1);
         bJob.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
                 setCommandsEnabled(false);
@@ -269,6 +568,8 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         bApplyExitcode.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
                 addCommand();
+                gMain.setEnabled(tCommands.getItemCount() > 0);
+                group_2.setEnabled(tCommands.getItemCount() > 0);
                 bApplyExitcode.setEnabled(false);
             }
         });
@@ -371,23 +672,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
         gridData_5.widthHint = 150;
         tTitle.setLayoutData(gridData_5);
-
-        bRemoveExitcode = new Button(gDescription, SWT.NONE);
-        final GridData gridData_1 = new GridData(GridData.FILL, GridData.BEGINNING, false, false, 1, 2);
-        gridData_1.widthHint = 61;
-        bRemoveExitcode.setLayoutData(gridData_1);
-        bRemoveExitcode.setEnabled(false);
-        bRemoveExitcode.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(final SelectionEvent e) {
-                listener.deleteCommand(tCommands);
-                clearFields();
-                tCommands.deselectAll();
-                bRemoveExitcode.setEnabled(false);
-                bApplyExitcode.setEnabled(false);
-
-            }
-        });
-        bRemoveExitcode.setText("Remove");
+        new Label(gDescription, SWT.NONE);
 
         final Label stateLabel = new Label(gDescription, SWT.NONE);
         stateLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
@@ -419,7 +704,9 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
         bReplace.setLayoutData(new GridData());
+        new Label(gDescription, SWT.NONE);
         gMain = new Group(sashForm, SWT.NONE);
+        gMain.setEnabled(false);
         gMain.setText("Commands");
         gMain.setLayout(gridLayout);
 
@@ -445,6 +732,22 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         final GridData gridData_9 = new GridData(GridData.FILL, GridData.FILL, true, false);
         gridData_9.heightHint = 50;
         cExitcode.setLayoutData(gridData_9);
+
+        bRemoveExitcode = new Button(gMain, SWT.NONE);
+        bRemoveExitcode.setLayoutData(new GridData(67, SWT.DEFAULT));
+        bRemoveExitcode.setEnabled(false);
+        bRemoveExitcode.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(final SelectionEvent e) {
+                listener.deleteCommand(tCommands);                
+                clearFields();
+                tCommands.deselectAll();
+                bRemoveExitcode.setEnabled(false);
+                bApplyExitcode.setEnabled(false);
+                gMain.setEnabled(tCommands.getItemCount() > 0);
+                group_2.setEnabled(tCommands.getItemCount() > 0);
+            }
+        });
+        bRemoveExitcode.setText("Remove");
         new Label(gMain, SWT.NONE);
 
         tCommands = new Table(gMain, SWT.FULL_SELECTION | SWT.BORDER);
@@ -476,6 +779,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 
                     fillCommand();
                     listener.fillParams(tCommands, tParameter);
+                    listener.fillEnvironment(tCommands, tableEnvironment);
                     bApplyExitcode.setEnabled(false);
 
                 }
@@ -485,9 +789,11 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         });
         tCommands.setLinesVisible(true);
         tCommands.setHeaderVisible(true);
-        final GridData gridData9 = new GridData(GridData.FILL, GridData.FILL, true, true);
-        gridData9.heightHint = 205;
+        final GridData gridData9 = new GridData(GridData.BEGINNING, GridData.FILL, true, true);
+        gridData9.heightHint = 149;
         tCommands.setLayoutData(gridData9);
+        gMain.setEnabled(tCommands.getItemCount() > 0);
+        group_2.setEnabled(tCommands.getItemCount() > 0);
 
         final TableColumn tcJob = new TableColumn(tCommands, SWT.NONE);
         tcJob.setWidth(167);
@@ -504,6 +810,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         final TableColumn tcStartAt = new TableColumn(tCommands, SWT.NONE);
         tcStartAt.setWidth(139);
         tcStartAt.setText("Start At");
+        new Label(gMain, SWT.NONE);
 
     }
 
@@ -519,157 +826,6 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
      * This method initializes group3
      */
     private void createGroup3() {
-        gJobParameter = new Group(sashForm, SWT.NONE);
-        final GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 5;
-        gJobParameter.setLayout(gridLayout);
-        gJobParameter.setText("Parameter");
-        label2 = new Label(gJobParameter, SWT.NONE);
-        label2.setLayoutData(new GridData(73, SWT.DEFAULT));
-        label2.setText("Name");
-        tParaName = new Text(gJobParameter, SWT.BORDER);
-        final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gridData_2.widthHint = 210;
-        tParaName.setLayoutData(gridData_2);
-        tParaName.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tParaName.equals("") && tCommands.getSelectionIndex() >= 0)
-                    addParam();
-            }
-        });
-        tParaName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(!tParaName.getText().equals("") && tCommands.getSelectionIndex() >= 0);
-                if (tParaName.getText().equals("<from>")) {
-                    cSource.setVisible(true);
-                    tParaValue.setVisible(false);
-                } else {
-                    cSource.setVisible(false);
-                    tParaValue.setVisible(true);
-                }
-            }
-        });
-        label6 = new Label(gJobParameter, SWT.NONE);
-        label6.setLayoutData(new GridData());
-        label6.setText("Value");
-
-        final Composite composite = new Composite(gJobParameter, SWT.NONE);
-        final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gridData.widthHint = 162;
-        composite.setLayoutData(gridData);
-
-        cSource = new Combo(composite, SWT.READ_ONLY);
-        cSource.setItems(new String[] { "order", "task" });
-        cSource.setBounds(1, -1,210, 21);
-        cSource.addModifyListener(new ModifyListener() {
-            public void modifyText(final ModifyEvent e) {
-                tParaValue.setText(cSource.getText());
-            }
-        });
-        cSource.setVisible(false);
-        tParaValue = new Text(composite, SWT.BORDER);
-        tParaValue.setBounds(0, 0,211, 19);
-        tParaValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tParaName.equals("") && tCommands.getSelectionIndex() >= 0)
-                    addParam();
-            }
-        });
-        tParaValue.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(!tParaName.getText().equals("") && tCommands.getSelectionIndex() >= 0);
-            }
-        });
-        bApply = new Button(gJobParameter, SWT.NONE);
-        bApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        bApply.setText("&Apply");
-        bApply.setEnabled(false);
-        bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                addParam();
-            }
-        });
-        new Label(gJobParameter, SWT.NONE);
-        tParameter = new Table(gJobParameter, SWT.BORDER | SWT.FULL_SELECTION);
-        final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 3, 4);
-        gridData_1.heightHint = 141;
-        gridData_1.widthHint = 480;
-        tParameter.setLayoutData(gridData_1);
-        tParameter.addPaintListener(new PaintListener() {
-            public void paintControl(final PaintEvent e) {
-            }
-        });
-        tParameter.setHeaderVisible(true);
-        tParameter.setLinesVisible(true);
-        tParameter.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                TableItem item = (TableItem) e.item;
-                if (item == null)
-                    return;
-                tParaName.setText(item.getText(0));
-                if (tParaName.getText().equals("<from>"))
-                    cSource.setText(item.getText(1));
-                tParaValue.setText(item.getText(1));
-                bRemove.setEnabled(tParameter.getSelectionCount() > 0);
-                bApply.setEnabled(false);
-            }
-        });
-        TableColumn tcName = new TableColumn(tParameter, SWT.NONE);
-        tcName.setWidth(252);
-        tcName.setText("Name");
-        TableColumn tcValue = new TableColumn(tParameter, SWT.NONE);
-        tcValue.setWidth(249);
-        tcValue.setText("Value");
-        bRemove = new Button(gJobParameter, SWT.NONE);
-        bRemove.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        bRemove.setText("Remove");
-        bRemove.setEnabled(false);
-        bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                listener.deleteParameter(tParameter, tParameter.getSelectionIndex());
-                tParaName.setText("");
-                tParaValue.setText("");
-                tParameter.deselectAll();
-                bRemove.setEnabled(false);
-                bApply.setEnabled(false);
-            }
-        });
-        new Label(gJobParameter, SWT.NONE);
-
-        final Button paramButton = new Button(gJobParameter, SWT.RADIO);
-        paramButton.setLayoutData(new GridData(SWT.DEFAULT, 34));
-        paramButton.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(final SelectionEvent e) {
-                tParaName.setText("");
-                tParaValue.setText("");
-            }
-        });
-        paramButton.setSelection(true);
-        paramButton.setText("Parameter");
-        new Label(gJobParameter, SWT.NONE);
-
-        final Button fromTaskButton = new Button(gJobParameter, SWT.RADIO);
-        fromTaskButton.setLayoutData(new GridData(SWT.DEFAULT, 34));
-        fromTaskButton.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(final SelectionEvent e) {
-                tParaName.setText("<from>");
-                cSource.setText("task");
-            }
-        });
-        fromTaskButton.setText("from task");
-        new Label(gJobParameter, SWT.NONE);
-
-        final Button fromOrderButton = new Button(gJobParameter, SWT.RADIO);
-        final GridData gridData_3 = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
-        gridData_3.heightHint = 23;
-        fromOrderButton.setLayoutData(gridData_3);
-        fromOrderButton.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(final SelectionEvent e) {
-                tParaName.setText("<from>");
-                cSource.setText("order");
-            }
-        });
-        fromOrderButton.setText("from order");
 
         createTable();
     }
@@ -686,7 +842,21 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         tParaName.setFocus();
     }
 
+    
 
+    private void addEnvironment() {
+        listener.saveEnvironment(tableEnvironment, txtEnvName.getText(), txtEnvValue.getText());
+
+        txtEnvName.setText("");
+        txtEnvValue.setText("");
+        butEnvRemove.setEnabled(false);
+        butEnvApply.setEnabled(false);
+        tableEnvironment.deselectAll();
+        txtEnvName.setFocus();
+        
+    }
+    
+    
     private void addCommand() {
         String msg = "";
         if (cJobchain.getText().trim().equals("") && bOrder.getSelection()) {
@@ -735,6 +905,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
                 listener.addCommand(e);
                 tCommands.setSelection(tCommands.getItemCount() - 1);
                 listener.fillParams(tCommands, tParameter);
+                listener.fillEnvironment(tCommands, tableEnvironment);
             } else {
 
                 String cmd = tCommands.getItem(index).getText();

@@ -26,6 +26,8 @@ public class JobCommandListener {
     private String[]         _chains = new String[0];
 
     private List             _params;
+    
+    private List             _environments;	
 
     private Element          _command;
 
@@ -88,6 +90,31 @@ public class JobCommandListener {
 
     }
 
+    private void initEnvironment(Table table) {
+        int j = 0;
+
+        j = getActCommand(table);
+        if (j >= 0) {
+            List l = _command.getChildren();
+            if (l != null) {
+                Element e = (Element) l.get(j);
+                if (e.getChild("environment") != null) {
+                	_environments = e.getChild("environment").getChildren();
+                }
+                if (_environments == null) {
+                    e.addContent(0, new Element("environment"));
+                    _environments = e.getChild("environment").getChildren();
+                }
+            }
+        }
+        /*
+         private void initEnvironment() {
+		_job.addContent(0, new Element("environment"));
+		_environments = _job.getChild("environment").getChildren();
+	}
+         */
+
+    }
 
     public void clearParams() {
         _params = null;
@@ -108,7 +135,29 @@ public class JobCommandListener {
         return Utils.getAttributeValue("title", _job);
     }
 
+    
+    public void fillEnvironment(Table tableCommand, Table tableEnvironment) {
+        _environments = null;
+        initEnvironment(tableCommand);
+        tableEnvironment.removeAll();
 
+        if (_environments != null) {
+            Iterator it = _environments.iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (o instanceof Element) {
+                    Element e = (Element) o;
+                    if (e.getName().equals("variable")) {
+                        TableItem item = new TableItem(tableEnvironment, SWT.NONE);
+                        item.setText(0, ((Element) o).getAttributeValue("name"));
+                        item.setText(1, ((Element) o).getAttributeValue("value"));
+                    }                    
+                }
+            }
+        }
+    }
+
+    
     public void fillParams(Table tableCommand, Table tableParameters) {
         clearParams();
         initParams(tableCommand);
@@ -144,7 +193,17 @@ public class JobCommandListener {
         }
         table.remove(index);
     }
-
+    
+    public void deleteEnvironment(Table table, int index) {    	
+    	
+    	if (_environments != null) {
+    		_environments.remove(index);
+    		_dom.setChanged(true);
+    		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);			
+    	}
+    	table.remove(index);
+    	
+    }	
 
     public void addCommand(Element e) {
         _dom.setChanged(true);
@@ -194,6 +253,46 @@ public class JobCommandListener {
     }
 
 
+	public void saveEnvironment(Table table, String name, String value) {
+		
+		boolean found = false;
+		String value2 = value.replaceAll("\"", "&quot;");
+				
+		if (_environments != null) {
+			int index = 0;
+			Iterator it = _environments.iterator();
+			while (it.hasNext()) {
+				Object o = it.next();
+				if (o instanceof Element) {
+					Element e = (Element) o;
+					if (name.equals(e.getAttributeValue("name"))) {
+						found = true;												
+						e.setAttribute("value", value2);						
+						_dom.setChanged(true);
+						_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+						table.getItem(index).setText(1, value);
+						break;
+					}
+					index++;
+				}
+			}
+		}
+		if (!found) {
+			Element e = new Element("variable");
+			e.setAttribute("name", name);
+			e.setAttribute("value", value2);
+			_dom.setChanged(true);
+			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+			if (_environments == null)
+				initEnvironment(table);
+			_environments.add(e);
+			
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setText(new String[] { name, value });
+			
+		}			
+	}
+    
     public void saveParameter(Table table, String name, String value) {
         boolean found = false;
         if (_params != null) {
@@ -373,6 +472,10 @@ public class JobCommandListener {
 
 
     public String[] getJobChains() {
+    	
+    	if(_dom.isLifeElement())
+    		 return new String[0];
+    	
         Element element = _job.getParentElement().getParentElement().getChild("job_chains");
         if (element != null) {
             List chains = element.getChildren("job_chain");

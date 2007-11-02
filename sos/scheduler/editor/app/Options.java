@@ -317,6 +317,15 @@ public class Options {
     }
 
 
+    public static String getSchedulerHotFolder() {
+        if (System.getProperty("SCHEDULER_HOT_FOLDER") != null) {
+            return System.getProperty("SCHEDULER_HOT_FOLDER");
+        } else {
+            return getSchedulerHome() + "//" + "config//live//";
+        }
+    }
+
+    
     public static Color getRequiredColor() {
         try {
             int r = new Integer(_properties.getProperty("required.color.r")).intValue();
