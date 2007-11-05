@@ -308,6 +308,22 @@ public class JobListener {
 						
 	}
 	
+	public void fillEnvironment(Table table) {
+		if (_environments != null) {
+			Iterator it = _environments.iterator();
+			while (it.hasNext()) {
+				Object o = it.next();
+				if (o instanceof Element) {					
+					TableItem item = new TableItem(table, SWT.NONE);
+					item.setText(0, ((Element) o).getAttributeValue("name"));
+					item.setText(1, (((Element) o).getAttributeValue("value") != null ? ((Element) o).getAttributeValue("value") : ""));					
+				}
+			}						
+		}		
+		_main.updateJob();
+	} 
+	
+	
 	public TableItem existsParams(String name, Table table, String replaceValue) {
 		
 		try {

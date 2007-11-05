@@ -143,6 +143,7 @@ public class JobChainListener {
 		String next = "";
 		String error = "";
 		String s = "";
+		String onError = "";
 		if (_chain != null) {
 			
 			setStates();
@@ -164,11 +165,13 @@ public class JobChainListener {
 						action = Utils.getAttributeValue("job", node);
 						next = Utils.getAttributeValue("next_state", node);
 						error = Utils.getAttributeValue("error_state", node);
+						onError = Utils.getAttributeValue("on_error", node);
 					}else {
 						nodetype = "FileSink";
 						action = Utils.getAttributeValue("move_to", node);
 						next = "";
 						error = "";
+						onError = "";
 						if (Utils.getAttributeValue("remove", node).equals("yes")) {
 							action = "Remove file";
 						}
@@ -176,7 +179,7 @@ public class JobChainListener {
 					
 					
 					TableItem item = new TableItem(table, SWT.NONE);
-					item.setText(new String[] { state, nodetype, action, next, error });
+					item.setText(new String[] { state, nodetype, action, next, error, onError });
 					
 					if (!next.equals("") && (state.equals("next") || !checkForState(next)))
 						item.setBackground(3, Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
@@ -306,7 +309,15 @@ public class JobChainListener {
 		return Utils.getAttributeValue("remove", _node).equals("yes");
 	}
 	
-	public void applyNode(boolean isJobchainNode,String state, String job, String delay, String next, String error, boolean removeFile,String moveTo) {
+	public void applyNode(boolean isJobchainNode,
+			              String state, 
+			              String job, 
+			              String delay, 
+			              String next, 
+			              String error, 
+			              boolean removeFile,
+			              String moveTo,
+			              String onError) {
 		Element node = null;
 		
 		if (_node != null) {//Wenn der Knotentyp geändert wird, alten löschen und einen neuen anlegen.
@@ -327,6 +338,7 @@ public class JobChainListener {
 				Utils.setAttribute("delay", delay, _node, _dom);
 				Utils.setAttribute("next_state", next, _node, _dom);
 				Utils.setAttribute("error_state", error, _node, _dom);
+				Utils.setAttribute("on_error", onError, _node, _dom);
 			}else {
 				Utils.setAttribute("state", state, _node, _dom);
 				Utils.setAttribute("move_to", moveTo, _node, _dom);
@@ -340,6 +352,7 @@ public class JobChainListener {
 				Utils.setAttribute("delay", delay, node, _dom);
 				Utils.setAttribute("next_state", next, node, _dom);
 				Utils.setAttribute("error_state", error, node, _dom);
+				Utils.setAttribute("on_error", onError, node, _dom);
 			}else {
 				node = new Element("file_order_sink");
 				Utils.setAttribute("state", state, node, _dom);
@@ -651,4 +664,14 @@ public class JobChainListener {
 	public SchedulerDom get_dom() {
 		return _dom;
 	}
+	
+	public String getOnError() {
+		return Utils.getAttributeValue("on_error", _node);
+	}
+	
+	/*public void setOnError(String onError) {
+		Utils.setAttribute("on_error", onError, _node, _dom);
+		_dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
+	}*/
+	
 }

@@ -1019,6 +1019,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         		listener.getAllParameterDescription();
         }
         listener.fillParams(tParameter);
+        listener.fillEnvironment(tableEnvironment);
         tFileName.setText(listener.getInclude());
         //tURL.setText(listener.getInclude());
         tDescription.setText(listener.getDescription());

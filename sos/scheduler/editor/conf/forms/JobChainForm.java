@@ -140,6 +140,12 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 	
 	private ISchedulerUpdate    update                      = null;
 	
+	private Combo               cOnError                    = null;
+	
+	
+	
+	
+	
 	public JobChainForm(Composite parent, int style, SchedulerDom dom, Element jobChain) {
 		super(parent, style);
 		listener = new JobChainListener(dom, jobChain);
@@ -385,7 +391,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		
 		final Label delayLabel = new Label(gNodes, SWT.NONE);
 		delayLabel.setLayoutData(new GridData());
-		delayLabel.setText("Delay");
+		delayLabel.setText("Delay:");
 		
 		tDelay = new Text(gNodes, SWT.BORDER);
 		tDelay.addModifyListener(new ModifyListener() {
@@ -441,8 +447,27 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		final GridData gridData15 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData15.widthHint = 80;
 		cErrorState.setLayoutData(gridData15);
-		new Label(gNodes, SWT.NONE);
-		new Label(gNodes, SWT.NONE);
+
+		final Label onErrorLabel = new Label(gNodes, SWT.NONE);
+		onErrorLabel.setText("On Error:");
+
+		cOnError = new Combo(gNodes, SWT.READ_ONLY);
+		cOnError.setItems(new String[] {"", "setback", "suspend"});
+		cOnError.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				bApplyNode.setEnabled(isValidNode());
+				if (bApplyNode.getEnabled())
+					getShell().setDefaultButton(bApplyNode);
+			}
+		});
+		cOnError.addKeyListener(new KeyAdapter() {
+			public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR) {
+					applyNode();
+				}
+			}
+		});
+		cOnError.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		new Label(gNodes, SWT.NONE);
 		new Label(gNodes, SWT.NONE);
 		
@@ -479,11 +504,13 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				if (bFileSink.getSelection()) {
 					cNextState.setEnabled(false);
 					cErrorState.setEnabled(false);
+					cOnError.setEnabled(false);
 					tDelay.setEnabled(false);
 					cJob.setEnabled(false);
 					cJob.setText("");
 					cNextState.setText("");
 					cErrorState.setText("");
+					cOnError.setText("");
 					tMoveTo.setEnabled(true);
 					bRemoveFile.setEnabled(true);
 					
@@ -493,11 +520,13 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				if (bEndNode.getSelection()) {
 					cNextState.setEnabled(false);
 					cErrorState.setEnabled(false);
+					cOnError.setEnabled(false);
 					tDelay.setEnabled(false);
 					cJob.setEnabled(false);
 					cJob.setText("");
 					cNextState.setText("");
 					cErrorState.setText("");
+					cOnError.setText("");
 					tMoveTo.setEnabled(false);
 					bRemoveFile.setEnabled(false);
 				}
@@ -508,6 +537,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 					bRemoveFile.setEnabled(false);
 					cNextState.setEnabled(true);
 					cErrorState.setEnabled(true);
+					cOnError.setEnabled(true);
 					cJob.setEnabled(true);
 					tDelay.setEnabled(true);
 					if (bApplyNode.getEnabled())
@@ -527,21 +557,23 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		bFileSink.setLayoutData(gridData);
 		bFileSink.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-        		if (bFileSink.getSelection()) {
-              cNextState.setEnabled(false);
-              cErrorState.setEnabled(false);
-              cJob.setEnabled(false);
-              cJob.setText("");
-              cNextState.setText("");
-              cErrorState.setText("");
-              tMoveTo.setEnabled(true);
-              bRemoveFile.setEnabled(true);
-              
-              if (tState.getText().equals(""))
-                  bApplyNode.setEnabled(false);
-          }
-        	}
-        });
+				if (bFileSink.getSelection()) {
+					cNextState.setEnabled(false);
+					cErrorState.setEnabled(false);
+					cOnError.setEnabled(false);
+					cJob.setEnabled(false);
+					cJob.setText("");
+					cNextState.setText("");					
+					cErrorState.setText("");
+					cOnError.setText("");
+					tMoveTo.setEnabled(true);
+					bRemoveFile.setEnabled(true);
+					
+					if (tState.getText().equals(""))
+						bApplyNode.setEnabled(false);
+				}
+			}
+		});
 		bFileSink.setEnabled(false);
 		bFileSink.setText("File Sink");
 		
@@ -639,6 +671,10 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		final TableColumn tableColumn6 = new TableColumn(tNodes, SWT.NONE);
 		tableColumn6.setWidth(90);
 		tableColumn6.setText("Error State");
+
+		final TableColumn newColumnTableColumn_4 = new TableColumn(tNodes, SWT.NONE);
+		newColumnTableColumn_4.setWidth(100);
+		newColumnTableColumn_4.setText("On Error");
 
 		final Composite composite_1 = new Composite(gNodes, SWT.NONE);
 		composite_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -963,6 +999,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		cJob.setEnabled(enable);
 		cNextState.setEnabled(enable);
 		cErrorState.setEnabled(enable);
+		cOnError.setEnabled(enable);
 		tDelay.setEnabled(enable);
 		butImportJob.setEnabled(enable);
 		butBrowse.setEnabled(enable);
@@ -998,6 +1035,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		tDelay.setEnabled(fullNode);
 		cNextState.setEnabled(fullNode);
 		cErrorState.setEnabled(fullNode);
+		cOnError.setEnabled(fullNode);
 		cJob.setEnabled(fullNode);
 		
 		tMoveTo.setEnabled(fileSinkNode  && tFileOrderSource.getItemCount() > 0);
@@ -1030,6 +1068,13 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			cErrorState.setText(listener.getErrorState());
 		else
 			cErrorState.select(error);
+		
+		int onError = cOnError.indexOf(listener.getOnError());
+		if (clear || !fullNode || onError == -1)
+			cOnError.setText(listener.getOnError());
+		else
+			cOnError.select(onError);
+		
 		
 		bApplyNode.setEnabled(false);
 		
@@ -1070,11 +1115,11 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		if (!msg.equals("")) {
 			MainWindow.message(msg, SWT.ICON_INFORMATION);
 		} else {
-			listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText());
+			listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(), cOnError.getText());
 			listener.fillChain(tNodes);
 			bApplyNode.setEnabled(false);
 			bRemoveNode.setEnabled(false);            
-			listener.selectNode(null);
+			listener.selectNode(null);			
 			fillNode(true);
 			enableNode(false);
 		}
