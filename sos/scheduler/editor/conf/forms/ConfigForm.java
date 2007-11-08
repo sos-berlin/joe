@@ -19,13 +19,10 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
-
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;

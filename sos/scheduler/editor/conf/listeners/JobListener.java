@@ -85,19 +85,18 @@ public class JobListener {
 	}
 	
 	
-	public void setName(String name, boolean updateTree) {	
+	public void setName(String name, boolean updateTree) {
+		 boolean isDis = isDisabled();
+		 if(isDis) //ändern der Jobname der disabled ist: alte jobname aus der disable Liste löschen und neue hinzufügen
+			 _dom.setJobDisabled(Utils.getAttributeValue("name",_job), false);
+		 
+		_dom.setJobDisabled(name, isDis);		
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.DELETE);		
 		Utils.setAttribute("name", name, _job, _dom);
 		if (updateTree)
 			_main.updateJob(name);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
-		
-		/*if(_dom.isLifeElement() && _dom.isChanged()) {
-			if(_dom.getListOfEmptyElementNames() == null) {
-				_dom.setListOfEmptyElementNames(new ArrayList());
-			}		
-			_dom.getListOfEmptyElementNames().add(Utils.getAttributeValue("name",_job));
-		}*/
+				
 	}
 	
 	
@@ -280,7 +279,7 @@ public class JobListener {
 	} 
 	
 	public void fillParams(ArrayList listOfParams, Table table, boolean refreshTable) {
-		boolean existParam = false;
+		//boolean existParam = false;
 		
 		if(refreshTable) {
 			if(_params!=null)
@@ -296,7 +295,7 @@ public class JobListener {
 					if(h.get("required") != null && h.get("required").equals("true"))
 						item.setBackground(Options.getRequiredColor());
 					
-					existParam = true;
+					//existParam = true;
 				} else {
 					String pname = h.get("name").toString();
 					String pvalue = (h.get("default_value") != null ? h.get("default_value").toString() : "");
@@ -481,13 +480,13 @@ public class JobListener {
 		
 	}
 	
-	private void updateBackGroundColor(Table table, String currParamname) {
+	/*private void updateBackGroundColor(Table table, String currParamname) {
 		for (int i = 0; i < table.getItemCount(); i++) {
 			if(table.getItem(i).getText(0).equals(currParamname)) {
 				table.getItem(i).setBackground(Options.getWhiteColor());    			
 			}
 		}
-	}
+	}*/
 	
 	public String getDescription() {
 		Element desc = _job.getChild("description");

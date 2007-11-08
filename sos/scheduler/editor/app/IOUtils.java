@@ -59,7 +59,8 @@ public class IOUtils {
          filename = filename.replaceAll("\\\\", "/");
          String env = Options.getSchedulerHotFolder().replaceAll("\\\\", "/");
          int pos = filename.indexOf(env);
-         filename = filename.substring(pos == -1 ? 0 : pos + env.length()) ;
+         int add = (env.endsWith("/") ? -1 : 0 );
+         filename = filename.substring(pos == -1 ? 0 : pos + env.length() + add) ;
          
          return filename;
     }

@@ -321,7 +321,7 @@ public class Options {
         if (System.getProperty("SCHEDULER_HOT_FOLDER") != null) {
             return System.getProperty("SCHEDULER_HOT_FOLDER");
         } else {
-            return getSchedulerHome() + "//" + "config//live//";
+            return getSchedulerHome() + "/" + "config/live/";
         }
     }
 
