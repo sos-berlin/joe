@@ -330,15 +330,15 @@ public class IOUtils {
     		
     		DirectoryDialog fdialog = new DirectoryDialog(MainWindow.getSShell(), SWT.MULTI);
     		fdialog.setFilterPath(Options.getLastDirectory());
-    		fdialog.setText("Save Life File in Directory...");
+    		fdialog.setText("Save object to hot folder ...");
     		
-    		String fname = fdialog.open();    		
+    		fdialog.open();    		
     		String path = fdialog.getFilterPath();                            		
     		
     		if(path == null) {
     			return false;
     		}  
-    		String filename = "";
+    		//String filename = "";
     		if(dom.getRoot().getName().equals("order") || dom.getRoot().getName().equals("add_order") ) {
     			configFile = new File(path + "//" + Utils.getAttributeValue("job_chain", dom.getRoot()) + ","+ Utils.getAttributeValue("id", dom.getRoot()) + ".order.xml");	
     		} else  {
@@ -375,7 +375,7 @@ public class IOUtils {
     		}
     		
     		String name = save.saveLifeElement(nameOfElement, elem, ((SchedulerDom)dom).getChangedJob(),((SchedulerDom)dom).getListOfChangeElementNames());
-    		
+    		Options.setLastDirectory(new File(name));
     		try {dom.setFilename(new java.io.File(name).getCanonicalPath()); } catch(Exception e) {}
     		dom.setChanged(true);
     		

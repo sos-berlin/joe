@@ -243,6 +243,7 @@ public class Options {
         setProperty(name + ".window.status", String.valueOf(shell.getMaximized()));
     }    
 
+    
     public static void loadWindow(Shell shell, String name) {
         Point location = new Point(0, 0);
         Point size = new Point(0, 0);
@@ -286,20 +287,33 @@ public class Options {
 
 
     public static void saveSash(String name, int[] sash) {
-
-        setProperty(name + ".sash.layout", sash[0] + "," + sash[1]);
+    	/*
+    	 String val = "";
+    	 for (int i = 0; i < sash.length; i++) {
+    	 val = val + sash[i] + (i < (sash.length -1) ? "," : "" );	
+    	 } 
+    	 setProperty(name + ".sash.layout", val);
+    	 */   		
+    	
+    	setProperty(name + ".sash.layout", sash[0] + "," + sash[1]);
     }
 
 
     public static void loadSash(String name, SashForm sash) {
         try {
-            String value = _properties.getProperty(name + ".sash.layout");
+            String value = _properties.getProperty(name + ".sash.layout" );
             if(value != null) {
-            	String[] values = value.split(",");
-            
-            	int[] weights = { new Integer(values[0].trim()).intValue(), new Integer(values[1].trim()).intValue() };
+            	String[] values = value.split("," );
             	
+            	/*int[] weights = new int[values.length]; 
+            	for (int i = 0; i < values.length; i++) {
+            		weights[i] =  new Integer(values[i].trim()).intValue();
+            	}
+            	*/            	
+            	
+            	int[] weights  = { new Integer(values[0].trim()).intValue(), new Integer(values[1].trim()).intValue() };
             	sash.setWeights(weights);
+            	
             }
         } catch (Exception e) {
             // e.printStackTrace();

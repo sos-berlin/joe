@@ -496,7 +496,8 @@ public class MainWindow  {
 			} 
 		}
 		
-		items[index].setEnabled(!saved);
+		//items[index].setEnabled(!saved);
+		items[index].setEnabled(true);
 		items[index+1].setEnabled(true);
 		
 		if(container.getCurrentEditor() instanceof sos.scheduler.editor.conf.forms.SchedulerForm)  {

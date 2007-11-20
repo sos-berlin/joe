@@ -4,17 +4,16 @@ import java.io.File;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
@@ -27,7 +26,6 @@ import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
@@ -173,7 +171,9 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         listener = new JobListener(dom, job, main);
         initialize();   
         setToolTipText();
-        sashForm.setWeights(new int[] { 40, 30, 30 });
+        //sashForm.setWeights(new int[] { 40, 30, 30 });
+        //Options.loadSash("job_form", sashForm);
+        
 
         dom.setInit(true);
 
@@ -559,12 +559,29 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         gridData18.grabExcessVerticalSpace = true;
         gridData18.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         sashForm = new SashForm(group, SWT.VERTICAL);
+        /*sashForm.addDisposeListener(new DisposeListener() {
+        	public void widgetDisposed(final DisposeEvent e) {
+        		Options.saveSash("job_form",  sashForm.getWeights());
+        		
+        		listener.get_dom().isChanged();
+        	}
+        });
+        */
+       /* sashForm.addControlListener(new ControlAdapter() {
+        	public void controlResized(final ControlEvent e) {        		
+        		Options.saveSash("job_form",  sashForm.getWeights());        			
+        	}
+        });
+        */
         //sashForm.setWeights(new int[] { 1 });
         sashForm.setOrientation(org.eclipse.swt.SWT.VERTICAL);
         sashForm.setLayoutData(gridData18);
+        
         createGroup1();
         createGroup2();
         createGroup3();
+        //Options.loadSash("job_form", sashForm);
+        
     }
 
 
@@ -574,11 +591,13 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
     private void createGroup2() {
         GridLayout gridLayout1 = new GridLayout();
         gJobParameter = new Group(sashForm, SWT.NONE);
+        
         gJobParameter.setText("Job Parameter");
         gJobParameter.setLayout(gridLayout1);
-
+        //gridLayout1.marginHeight =400;
+        
         final TabFolder tabFolder = new TabFolder(gJobParameter, SWT.NONE);
-        final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, true);
+        final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true);
         gridData_2.heightHint = 203;
         gridData_2.widthHint = 760;
         tabFolder.setLayoutData(gridData_2);
@@ -640,7 +659,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         label4.setText("Label");
         tParameter = new Table(group_1, SWT.BORDER | SWT.FULL_SELECTION);
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2);
-        gridData_1.heightHint = 61;
+        gridData_1.heightHint = 85;
         tParameter.setLayoutData(gridData_1);
         tParameter.setHeaderVisible(true);
         tParameter.setLinesVisible(true);
@@ -690,7 +709,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         });
 
         txtParameterDescription = new Text(group_1, SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.WRAP);        
-        final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, true, 4, 1);
+        final GridData gridData = new GridData(GridData.FILL, GridData.FILL, false, true, 4, 1);
         gridData.heightHint = 51;
         txtParameterDescription.setLayoutData(gridData);
         txtParameterDescription.addFocusListener(new FocusAdapter() {

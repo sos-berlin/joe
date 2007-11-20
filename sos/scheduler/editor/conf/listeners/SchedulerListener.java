@@ -113,9 +113,10 @@ public class SchedulerListener {
 				
 				checkLifeAttributes(element, name);
 				
-				Utils.setAttribute("name", name, element);
+				Utils.setAttribute("name", name, element);				
+						
 			} else {
-				name = Utils.getAttributeValue("name", element);
+				name = Utils.getAttributeValue("name", element);				
 			}
 			
 			String jobChainName = "Job Chain: " + name;
@@ -123,6 +124,10 @@ public class SchedulerListener {
 			item.setText(jobChainName);
 			item.setData(new TreeData(Editor.JOB_CHAIN, element, Options.getHelpURL("job_chain")));
 			item.setData("key", "job_chain");
+			
+			Utils.setAttribute("orders_recoverable", true, element);
+			Utils.setAttribute("visible", true, element);
+			
 			if(!Utils.isElementEnabled("job_chain", _dom, element)) {
 				item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 			} else {

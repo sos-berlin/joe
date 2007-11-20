@@ -40,7 +40,6 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
 import sos.scheduler.editor.conf.listeners.OrdersListener;
-import org.eclipse.swt.widgets.*;
 
 public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage {
 	

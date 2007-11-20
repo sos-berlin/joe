@@ -122,9 +122,18 @@ public class JobAssistentImportJobsForm {
 		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome() ;
 		xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths.concat("jobs") : xmlPaths.concat("/jobs"));
 		ArrayList listOfDoc = null;
+				
+		
 		try {
 			
-			listOfDoc = new ArrayList();				
+		
+			listOfDoc = new ArrayList();
+			
+			if(!new File(xmlPaths).exists()) {
+				MainWindow.message(shell, "Missing Directory for Job Description: " + xmlPaths, SWT.ICON_WARNING | SWT.OK );
+				return listOfDoc;
+			}
+			
 			
 			java.util.Vector filelist = sos.util.SOSFile.getFilelist(xmlPaths, "^.*\\.xml$",java.util.regex.Pattern.CASE_INSENSITIVE,true);
 			Iterator fileIterator = filelist.iterator();

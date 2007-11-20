@@ -30,7 +30,7 @@ public class MainListener {
         String url = helpKey;
 
         try {
-
+            //TODO: überprüfen, ob Datei wirklich exitiert
             url = new File(url).toURL().toString();
         	
             Program prog = Program.findProgram("html");

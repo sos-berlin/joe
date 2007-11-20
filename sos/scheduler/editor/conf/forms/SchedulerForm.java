@@ -398,6 +398,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
     		listener.treeFillMain(tree, cMainForm);	
     	else if(which.equalsIgnoreCase("jobs"))
     		listener.treeSelection(tree, cMainForm);
+    	
     }
 	
 	public String getTreeSelection() {
@@ -407,6 +408,8 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	public void updateJobChains() {
 		listener.treeFillJobChains(tree.getSelection()[0]);
 	}
+	
+	
 	public void updateJobChain(String newName, String oldName) {
 		//listener.treeFillJobChains(tree.getSelection()[0]);
 		TreeItem item = tree.getSelection()[0];
@@ -432,6 +435,8 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 			updateJob();	    	
 		} else if(elem.getName().equals("job_chain")) {
 			updateJobChain(item.getText(0).substring("Job Chain: ".length()), Utils.getAttributeValue("name", elem));
+		}	else if(elem.getName().equals("add_order") || elem.getName().equals("order")) {
+			updateOrder(Utils.getAttributeValue("id", elem));		
 		} else if(elem.getName().equals("config")) {
 			
 			if(elem.getChild("process_classes") != null) {
@@ -448,11 +453,9 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 				
 			}
 			
-		} else if(elem.getName().equals("add_order") || elem.getName().equals("order")) {
-			updateOrder(Utils.getAttributeValue("id", elem));
-		}
-	    	
-	    listener.treeSelection(tree, cMainForm);
+		} 
+		
+		listener.treeSelection(tree, cMainForm);
 	}
 
     public void updateSpecificWeekdays() {

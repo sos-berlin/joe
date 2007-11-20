@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: scheduler.xsd 5365 2007-10-28 18:48:59Z jz $ -->
+<!-- $Id: scheduler.xsd 5383 2007-11-14 17:35:31Z jz $ -->
 
 <xsd:schema 
     xmlns:xsd          = "http://www.w3.org/2001/XMLSchema" 
@@ -9,7 +9,7 @@
 
     <xsd:annotation>
         <xsd:documentation xml:lang="de">
-            $Id: scheduler.xsd 5365 2007-10-28 18:48:59Z jz $
+            $Id: scheduler.xsd 5383 2007-11-14 17:35:31Z jz $
             Schema für die Scheduler-Konfiguration,
             s.a. http://www.zschimmer.com/sos/scheduler/konfiguration.html.
         </xsd:documentation>
@@ -81,9 +81,9 @@
                         <xsd:attribute name="supervisor"            type="String"/>
                         <xsd:attribute name="configuration_directory" type="File"/>
 
-                        <xsd:attribute name="configuration_add_event"           type="Path"/>
-                        <xsd:attribute name="configuration_modify_event"        type="Path"/>
-                        <xsd:attribute name="config_configuration_delete_event" type="Path"/>
+                        <xsd:attribute name="configuration_add_event"    type="Path"/>
+                        <xsd:attribute name="configuration_modify_event" type="Path"/>
+                        <xsd:attribute name="configuration_delete_event" type="Path"/>
                     </xsd:complexType>
                 </xsd:element>
 
@@ -956,7 +956,7 @@
             <xsd:attribute name="filename"              type="File"/>
             <xsd:attribute name="java_class"            type="String"/>
             <xsd:attribute name="recompile"             type="Yes_no"/>
-            <xsd:attribute name="process_class"         type="Path"/>
+         <!--xsd:attribute name="process_class"         type="Path"    s. eMail von Püschel 2007-11-06 12:55 /-->
         </xsd:complexType>
     </xsd:element>
 

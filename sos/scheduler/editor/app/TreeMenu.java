@@ -1,7 +1,6 @@
 package sos.scheduler.editor.app;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -23,7 +22,7 @@ public class TreeMenu {
 	
 	private Menu                    _menu                 = null;
 	
-	private Clipboard               _cb                   = null;
+	//private Clipboard               _cb                   = null;
 	
 	private static Element          _copy                 = null;
 	
@@ -42,11 +41,6 @@ public class TreeMenu {
 	private static final String PASTE                     = "Paste";
 	
 	private static final String DELETE                     = "Delete";
-	
-	
-	
-	private boolean bEdit                                 = false;//hilfsvariable
-	
 	
 	
 	public TreeMenu(Tree tree, DomParser dom, SchedulerForm gui) {
@@ -69,8 +63,15 @@ public class TreeMenu {
 			TreeData data = (TreeData) _tree.getSelection()[0].getData();
 			if (data != null && data instanceof TreeData) {
 				if (data.getChild() != null) {    				
-					return data.getElement().getChild(data.getChild());    			
-				} else {
+					if (data.getChild().equalsIgnoreCase("orders")) {
+						return data.getElement().getChild("commands");
+					} else {
+						if(data.getElement().getChild(data.getChild()) == null) {
+							data.getElement().addContent(new Element(data.getChild()));
+						}
+						return data.getElement().getChild(data.getChild());    	
+					}
+				} else {					
 					if(data.getElement().getName().equals("at") || data.getElement().getName().equals("date")) {
 						return data.getElement().getParentElement();
 					} else
@@ -128,7 +129,7 @@ public class TreeMenu {
 		
 		_menu.addListener(SWT.Show, new Listener() {
 			public void handleEvent(Event e) {
-				MenuItem[] items = _menu.getItems();
+				//MenuItem[] items = _menu.getItems();
 				if(_copy == null)
 					disableMenu();
 				if (_tree.getSelectionCount() > 0) {
@@ -144,18 +145,20 @@ public class TreeMenu {
 							getItem(TreeMenu.DELETE).setEnabled(true);
 						
 						
-						String name = element.getName();
-						
-						if (name.equals("job") || name.equals("config") || name.equals("run_time"))
+						//String name = element.getName();
+						//test
+						getItem(TreeMenu.COPY).setEnabled(true); // copy
+						/*if (name.equals("job") || name.equals("config") || name.equals("run_time"))
 							getItem(TreeMenu.COPY).setEnabled(true); // copy
 						else
 							getItem(TreeMenu.COPY).setEnabled(false); // copy
-						
+						*/
 						if (_copy != null) {
-							String cName = _copy.getName();
+							//String cName = _copy.getName();
 							
 							MenuItem _paste = getItem(TreeMenu.PASTE);
-							if (name.equals("jobs") && cName.equals("job"))
+							_paste.setEnabled(true); // paste
+							/*if (name.equals("jobs") && cName.equals("job"))
 								_paste.setEnabled(true); // paste
 							else if (name.equals("job") && cName.equals("run_time"))
 								_paste.setEnabled(true); // paste
@@ -163,6 +166,7 @@ public class TreeMenu {
 								_paste.setEnabled(true); // paste
 							else
 								_paste.setEnabled(false); // paste
+								*/
 						}
 					}
 				}
@@ -361,11 +365,25 @@ public class TreeMenu {
 	private Listener getPasteListener() {
 		return new Listener() {
 			public void handleEvent(Event e) {
-				Element target = getElement();
-				if (target != null && _copy != null) {
+				Element target = getElement();								
+				
+				if ((target != null && _copy != null)) {
 					String tName = target.getName();
 					String cName = _copy.getName();
 					
+					if(_dom instanceof SchedulerDom && ((SchedulerDom)_dom).isLifeElement()) {
+						
+						//if(cName.equals("job")) {
+							target = (Element)_copy.clone();
+							TreeData data = (TreeData) _tree.getSelection()[0].getData();
+							data.setElement(target);
+							_gui.update();
+							_gui.updateLifeElement();
+							//_gui.updateJob(target.getName());
+							return;
+						//}
+					}
+																
 					if (tName.equals("jobs") && cName.equals("job")) { // copy job
 						
 						String append = "copy(" + (target.getChildren("job").size() + 1);
@@ -378,7 +396,8 @@ public class TreeMenu {
 						
 						refreshTree("jobs");
 						_gui.update();
-						_gui.updateJobs();
+						if(_dom instanceof SchedulerDom && !((SchedulerDom)_dom).isLifeElement())
+							_gui.updateJobs();
 						_dom.setChanged(true);
 						
 					} else if (tName.equals("job") && cName.equals("run_time")) { // copy
@@ -398,6 +417,37 @@ public class TreeMenu {
 						_dom.setChanged(true);
 						
 						_gui.update();
+					}  else if (tName.equals("commands") && cName.equals("order")) { // copy job
+						
+						String append = "copy(" + (target.getChildren("order").size() + 1);
+						Element currCopy = (Element)_copy.clone();
+						
+						
+						currCopy.setAttribute("id", append + ")of_" + Utils.getAttributeValue("id", _copy));
+						
+						target.addContent(currCopy);
+						
+						refreshTree("main");						
+						_gui.updateCommands();
+						_gui.updateOrders();
+						_gui.update();
+						_dom.setChanged(true);
+						
+					} else if (tName.equals("job_chains") && cName.equals("job_chain")) { // copy job
+						
+						String append = "copy(" + (target.getChildren("job_chain").size() + 1);
+						Element currCopy = (Element)_copy.clone();
+						
+						if(existJobname(target, Utils.getAttributeValue("name", _copy)))
+							currCopy.setAttribute("name", append + ")of_" + Utils.getAttributeValue("name", _copy));
+						
+						target.addContent(currCopy);
+						
+						_gui.updateJobChains();
+						refreshTree("main");
+						_gui.update();
+						_dom.setChanged(true);
+						
 					}
 				}
 			}
