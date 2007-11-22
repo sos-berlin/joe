@@ -68,10 +68,15 @@ public class NoteListener {
         Element item = getElement();
         if (item == null && note.length() > 0) {
             // create new one
-        	  
+        	 
          	  if (_parent.getParent()==null) {
         	    Element r = _dom.getRoot();
-        	    Element c = r.getChild("configuration",_dom.getNamespace());
+        	    
+        	    Element c = null;
+        	    if(_parent.getName().equalsIgnoreCase("release"))
+        	    	c = r.getChild("releases",_dom.getNamespace());
+        	    else 
+        	    	c = r.getChild("configuration",_dom.getNamespace());
         	    c.addContent(_parent);
         	  }
         	   

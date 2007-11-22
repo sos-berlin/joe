@@ -226,7 +226,8 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
                     setReleaseStatus(false);
                     listener.removeRelease();
                     bRemove.setEnabled(false);
-                    tReleases.remove(tReleases.getSelectionCount());
+                    if(tReleases.getSelectionCount() > 0)
+                    	tReleases.remove(tReleases.getSelectionCount());
                     tReleases.deselectAll();
                     Utils.setBackground(tReleases, true);
                 }
