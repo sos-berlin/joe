@@ -29,7 +29,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import com.swtdesigner.SWTResourceManager;
-
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
@@ -172,8 +171,24 @@ public class JobAssistentImportJobParamsForm {
 					h.put("name", elMain.getAttributeValue("name"));
 					h.put("default_value", (elMain.getAttributeValue("default_value") != null ? elMain.getAttributeValue("default_value").toString() : ""));
 					h.put("required", elMain.getAttributeValue("required"));
-					Element note = elMain.getChild("note", elMain.getNamespace());
-					if(note != null) {
+					List noteList = elMain.getChildren("note", elMain.getNamespace());
+					for (int j = 0; j < noteList.size(); j++) {
+						//Element note = elMain.getChild("note", elMain.getNamespace());//elMain.getChildren("note", elMain.getNamespace()) attribute language
+						Element note = (Element)noteList.get(j);
+						String language = Utils.getAttributeValue("language", note);
+						if(note != null) {						
+							List notelist = note.getChildren();
+							for (int k = 0; k < notelist.size(); k++) {
+								Element elNote  = (Element)(notelist.get( k ));							
+								h.put("description_" + language, elNote.getText());	
+								
+							}
+						}
+												
+					}
+					listOfParams.add(h);
+					/*Element note = elMain.getChild("note", elMain.getNamespace());//elMain.getChildren("note", elMain.getNamespace()) attribute language					
+					if(note != null) {						
 						List notelist = note.getChildren();
 						for (int j = 0; j < notelist.size(); j++) {
 							Element elNote  = (Element)(notelist.get( j ));							
@@ -182,7 +197,9 @@ public class JobAssistentImportJobParamsForm {
 						}
 					}
 					
-					listOfParams.add(h);						
+					listOfParams.add(h);
+					*/
+					
 				}
 				
 			}
@@ -426,7 +443,7 @@ public class JobAssistentImportJobParamsForm {
 			tableDescParameters.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					if(tableDescParameters.getSelectionCount() > -1) {	
-						txtDescription.setText((tableDescParameters.getSelection()[0].getData() != null? tableDescParameters.getSelection()[0].getData().toString(): "") );
+						txtDescription.setText((tableDescParameters.getSelection()[0].getData("parameter_description_" + Options.getLanguage()) != null? tableDescParameters.getSelection()[0].getData("parameter_description_" + Options.getLanguage()).toString(): "") );
 					}
 				}
 			});
@@ -466,7 +483,12 @@ public class JobAssistentImportJobParamsForm {
 			butPutAll.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					for(int i = 0; i < tableDescParameters.getItemCount(); i++) {												
-						joblistener.saveParameter(table, tableDescParameters.getItem(i).getText(0), tableDescParameters.getItem(i).getText(1), (tableDescParameters.getItem(i).getData() != null?tableDescParameters.getItem(i).getData().toString(): ""), tableDescParameters.getItem(i).getBackground().equals(Options.getRequiredColor() ));
+						joblistener.saveParameter(table, 
+								                  tableDescParameters.getItem(i).getText(0), 
+								                  tableDescParameters.getItem(i).getText(1), 
+								                  (tableDescParameters.getItem(i).getData("parameter_description_de") != null?tableDescParameters.getItem(i).getData("parameter_description_de").toString(): ""), 
+								                  (tableDescParameters.getItem(i).getData("parameter_description_en") != null?tableDescParameters.getItem(i).getData("parameter_description_en").toString(): ""),
+								                  tableDescParameters.getItem(i).getBackground().equals(Options.getRequiredColor() ));
 					}
 					tableDescParameters.removeAll();
 					
@@ -501,14 +523,16 @@ public class JobAssistentImportJobParamsForm {
 							h.put("name", item.getText(0));
 							h.put("default_value", (item.getText(1)!=null?item.getText(1):""));
 							h.put("required", "true");
-							h.put("description", (item.getData()!=null?item.getData():""));
+							h.put("parameter_description_de", (item.getData("parameter_description_de")!=null?item.getData("parameter_description_de"):""));
+							h.put("parameter_description_en", (item.getData("parameter_description_en")!=null?item.getData("parameter_description_en"):""));
 							listOfParams.add(h);
 							
 						} else {
 							TableItem itemDP =  new TableItem(tableDescParameters, SWT.NONE);
 							itemDP.setText(0, item.getText(0));
 							itemDP.setText(1, item.getText(1));
-							itemDP.setData(item.getData());
+							itemDP.setData("parameter_description_de", item.getData("parameter_description_de"));
+							itemDP.setData("parameter_description_en", item.getData("parameter_description_en"));
 						}
 						
 					}
@@ -544,7 +568,7 @@ public class JobAssistentImportJobParamsForm {
 					if(table.getSelectionCount() > -1) {						
 						txtName.setText(table.getSelection()[0].getText(0));						
 						txtValue.setText(table.getSelection()[0].getText(1));						
-						txtDescription.setText((table.getSelection()[0].getData() != null? table.getSelection()[0].getData().toString(): "") );
+						txtDescription.setText((table.getSelection()[0].getData("parameter_description_" + Options.getLanguage()) != null? table.getSelection()[0].getData("parameter_description_" + Options.getLanguage()).toString(): "") );
 						txtName.setFocus();
 					}
 				}
@@ -622,8 +646,11 @@ public class JobAssistentImportJobParamsForm {
 							item.setChecked(true);
 							item.setText(0,(h.get("name") != null ? h.get("name").toString() : ""));
 							item.setText(1, (h.get("default_value") != null ? h.get("default_value").toString() : ""));					
-							String desc = (h.get("description") != null ? h.get("description").toString(): "");							
-							item.setData(desc);
+							String desc_de = (h.get("description_de") != null ? h.get("description_de").toString(): "");							
+							item.setData("parameter_description_de", desc_de);
+							String desc_en = (h.get("description_en") != null ? h.get("description_en").toString(): "");							
+							item.setData("parameter_description_en", desc_en);
+							
 						}
 					}
 				}
@@ -673,6 +700,9 @@ public class JobAssistentImportJobParamsForm {
 				HashMap h = new HashMap();	
 				h.put("name", Utils.getAttributeValue("name", el));
 				h.put("default_value", Utils.getAttributeValue("value", el));
+				h.put("description_de", joblistener.getParameterDescription(Utils.getAttributeValue("name", el), "de") );
+				h.put("description_en", joblistener.getParameterDescription(Utils.getAttributeValue("name", el), "en") );
+				//h.put("description_en" + );
 				listOfParams.add(h);
 			}
 		}
@@ -693,7 +723,7 @@ public class JobAssistentImportJobParamsForm {
 	
 	private void refreshTable(Table _table, Table _fillTable) {
 		String exists = "";
-		ArrayList listOfParam = new ArrayList();
+		//ArrayList listOfParam = new ArrayList();
 		for(int i = 0; i < _table.getItemCount(); i++) {
 			TableItem item = _table.getItem(i);
 			String name = item.getText(0);
@@ -755,7 +785,12 @@ public class JobAssistentImportJobParamsForm {
 				TableItem item = tableDescParameters.getItem(tableDescParameters.getSelectionIndices()[i]);
 				String name = item.getText(0);
 				if(!existItem(name, table)) {							
-					joblistener.saveParameter(table, item.getText(0), item.getText(1), (item.getData() != null? item.getData().toString():""), item.getBackground().equals(Options.getRequiredColor() ));
+					//joblistener.saveParameter(table, item.getText(0), item.getText(1), (item.getData() != null? item.getData().toString():""), item.getBackground().equals(Options.getRequiredColor() ));
+					joblistener.saveParameter(table, item.getText(0), item.getText(1), 
+							(item.getData("parameter_description_de") != null? item.getData("parameter_description_de").toString():""), 
+							(item.getData("parameter_description_en") != null? item.getData("parameter_description_en").toString():""),
+							item.getBackground().equals(Options.getRequiredColor() ));
+					
 				} else {
 					existParams = existParams + name+ "\n";															
 				}
@@ -791,6 +826,8 @@ public class JobAssistentImportJobParamsForm {
 					TableItem itemDesc = new TableItem(tableDescParameters, SWT.NONE);
 					itemDesc.setText(0, item.getText(0));
 					itemDesc.setText(1, item.getText(1));
+					itemDesc.setData("parameter_description_de", item.getData("parameter_description_de"));
+					itemDesc.setData("parameter_description_en", item.getData("parameter_description_en"));
 					joblistener.deleteParameter(table,  table.getSelectionIndices()[i]);
 				}
 				

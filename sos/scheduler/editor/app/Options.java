@@ -287,14 +287,6 @@ public class Options {
 
 
     public static void saveSash(String name, int[] sash) {
-    	/*
-    	 String val = "";
-    	 for (int i = 0; i < sash.length; i++) {
-    	 val = val + sash[i] + (i < (sash.length -1) ? "," : "" );	
-    	 } 
-    	 setProperty(name + ".sash.layout", val);
-    	 */   		
-    	
     	setProperty(name + ".sash.layout", sash[0] + "," + sash[1]);
     }
 
@@ -305,14 +297,8 @@ public class Options {
             if(value != null) {
             	String[] values = value.split("," );
             	
-            	/*int[] weights = new int[values.length]; 
-            	for (int i = 0; i < values.length; i++) {
-            		weights[i] =  new Integer(values[i].trim()).intValue();
-            	}
-            	*/            	
-            	
             	int[] weights  = { new Integer(values[0].trim()).intValue(), new Integer(values[1].trim()).intValue() };
-            	sash.setWeights(weights);
+            	sash.setWeights(weights);	
             	
             }
         } catch (Exception e) {

@@ -56,9 +56,14 @@ public class IOUtils {
          
          
          filename = fdialog.open();  
+         
+         if(filename == null || filename.trim().length() == 0)
+        	 return filename;
+         
+         
          filename = filename.replaceAll("\\\\", "/");
          String env = Options.getSchedulerHotFolder().replaceAll("\\\\", "/");
-         int pos = filename.indexOf(env);
+         int pos = filename.toLowerCase().indexOf(env.toLowerCase());
          int add = (env.endsWith("/") ? -1 : 0 );
          filename = filename.substring(pos == -1 ? 0 : pos + env.length() + add) ;
          

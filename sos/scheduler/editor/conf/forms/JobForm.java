@@ -4,10 +4,6 @@ import java.io.File;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
@@ -171,7 +167,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         listener = new JobListener(dom, job, main);
         initialize();   
         setToolTipText();
-        //sashForm.setWeights(new int[] { 40, 30, 30 });
+        sashForm.setWeights(new int[] { 200, 300, 150 });
         //Options.loadSash("job_form", sashForm);
         
 
@@ -1034,7 +1030,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
         sIdleTimeout.setText(listener.getIdleTimeout());
         tParameter.removeAll();
         if(listener.getInclude() != null && listener.getInclude().trim().length() > 0) {
-        	if(new File(listener.getInclude()).exists())
+        	if(new File(Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome(): Options.getSchedulerHome() + "/" + listener.getInclude()).exists())
         		listener.getAllParameterDescription();
         }
         listener.fillParams(tParameter);

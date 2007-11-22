@@ -270,6 +270,10 @@ public class JobListener {
 					TableItem item = new TableItem(table, SWT.NONE);
 					item.setText(0, ((Element) o).getAttributeValue("name"));
 					item.setText(1, (((Element) o).getAttributeValue("value") != null ? ((Element) o).getAttributeValue("value") : ""));
+					if(parameterDescription != null) {
+						item.setData("parameter_description_de", parameterDescription.get("parameter_description_de_" + ((Element) o).getAttributeValue("name")));
+						item.setData("parameter_description_en", parameterDescription.get("parameter_description_en_" + ((Element) o).getAttributeValue("name")));
+					}
 					if(parameterRequired != null && isParameterRequired(((Element) o).getAttributeValue("name")))
 						item.setBackground(Options.getRequiredColor());
 				}
@@ -299,8 +303,9 @@ public class JobListener {
 				} else {
 					String pname = h.get("name").toString();
 					String pvalue = (h.get("default_value") != null ? h.get("default_value").toString() : "");
-					String desc = (h.get("description") != null ? h.get("description").toString() : ""); 
-					saveParameter(table, pname, pvalue, desc, (h.get("required")!=null ? h.get("required").equals("true"):false));					
+					String desc_de = (h.get("description_de") != null ? h.get("description_de").toString() : ""); 
+					String desc_en = (h.get("description_en") != null ? h.get("description_en").toString() : "");
+					saveParameter(table, pname, pvalue, desc_de, desc_en, (h.get("required")!=null ? h.get("required").equals("true"):false));					
 				}
 			}           
 		}
@@ -368,7 +373,7 @@ public class JobListener {
 	}				
 	
 	
-	public void saveParameter(Table table, String name, String value, String parameterDescription, boolean required) {
+	public void saveParameter(Table table, String name, String value, String parameterDescription_de, String parameterDescription_en, boolean required) {
 		
 		Element e = new Element("param");
 		e.setAttribute("name", name);
@@ -387,9 +392,15 @@ public class JobListener {
 		
 		TableItem item = new TableItem(table, SWT.NONE);
 		item.setText(new String[] { name, value });
-		if(parameterDescription!=null && parameterDescription.trim().length()>0) {
-			item.setData(parameterDescription);
+		
+		if(parameterDescription_de!=null && parameterDescription_de.trim().length()>0) {
+			item.setData("parameter_description_de", parameterDescription_de);
 		}
+		if(parameterDescription_en!=null && parameterDescription_en.trim().length()>0) {
+			item.setData("parameter_description_en", parameterDescription_en);
+		}
+		
+		
 		if(required) {
 			item.setBackground(Options.getRequiredColor());
 		}
@@ -615,17 +626,23 @@ public class JobListener {
 			for( int i=0; i<listMainElements.size(); i++ ){					
 				Element elMain  = (Element)(listMainElements.get( i ));					
 				if(elMain.getName().equalsIgnoreCase("param")) { 
-					Element note = elMain.getChild("note", elMain.getNamespace());
-					if(note != null) {
-						List notelist = note.getChildren();
-						for (int j = 0; j < notelist.size(); j++) {
-							Element elNote  = (Element)(notelist.get( j ));							
-							parameterDescription.put( elMain.getAttributeValue("name"), elNote.getText());
-							if(elMain.getAttributeValue("required") != null)
-								parameterRequired.put( elMain.getAttributeValue("name"), elMain.getAttributeValue("required"));
-						}
-					}																
-				}				
+					List noteList = elMain.getChildren("note", elMain.getNamespace());
+					for (int k = 0; k < noteList.size(); k++ ) {						
+						//Element note = elMain.getChild("note", elMain.getNamespace());
+						Element note = (Element)noteList.get(k);
+						String language = Utils.getAttributeValue("language", note);
+						
+						if(note != null) {
+							List notelist = note.getChildren();
+							for (int j = 0; j < notelist.size(); j++) {
+								Element elNote  = (Element)(notelist.get( j ));							
+								parameterDescription.put( "parameter_description_" + language + "_" + elMain.getAttributeValue("name"), elNote.getText());
+								if(elMain.getAttributeValue("required") != null)
+									parameterRequired.put( elMain.getAttributeValue("name"), elMain.getAttributeValue("required"));
+							}
+						}																
+					}				
+				}
 			}
 			
 		} catch( Exception ex ) {			
@@ -638,7 +655,16 @@ public class JobListener {
 	 * @return
 	 */
 	public String getParameterDescription(String name) {
-		return (parameterDescription.get(name) != null ? parameterDescription.get(name).toString() : "");
+		return (parameterDescription.get("parameter_description_" + Options.getLanguage() + "_" + name) != null ? parameterDescription.get("parameter_description_" + Options.getLanguage() + "_" + name).toString() : "");
+	}
+	
+	/**
+	 * Note/Beschreibung der Parameter
+	 * @param name
+	 * @return
+	 */
+	public String getParameterDescription(String name, String language) {
+		return (parameterDescription.get("parameter_description_" + language + "_" + name) != null ? parameterDescription.get("parameter_description_" + language + "_" + name).toString() : "");
 	}
 	
 	private boolean isParameterRequired(String name) {
