@@ -106,12 +106,8 @@ public class ReleasesListener {
             _release.addContent(author);
         }
 
-        if (_newRelease) {
-        	/*if(_release.getParent() != null) {
-        		_release = (Element)_release.clone();
-        	}*/
-        	//_parent.addContent(0, _release);
-        	
+        if (_newRelease) {        	
+        	//_parent.addContent(0, _release);        	
         }
 
         _newRelease = false;

@@ -98,13 +98,17 @@ public class JobCommandListener {
             List l = _command.getChildren();
             if (l != null) {
                 Element e = (Element) l.get(j);
-                if (e.getChild("environment") != null) {
-                	_environments = e.getChild("environment").getChildren();
-                }
-                if (_environments == null) {
-                    e.addContent(0, new Element("environment"));
-                    _environments = e.getChild("environment").getChildren();
-                }
+                //if(e.getName().equals("start_job")) {
+                	if (e.getChild("environment") != null) {
+                		_environments = e.getChild("environment").getChildren();
+                	}
+                	if (_environments == null) {
+                		e.addContent(0, new Element("environment"));
+                		_environments = e.getChild("environment").getChildren();
+                	}
+                //} else {
+                	//e.removeChildren("environment");
+                //}
             }
         }
         /*
@@ -120,6 +124,9 @@ public class JobCommandListener {
         _params = null;
     }
 
+    public void clearEnvironment() {        	
+        _environments = null;
+    }
 
     public boolean isDisabled() {
         return _dom.isJobDisabled(Utils.getAttributeValue("name", _job));
@@ -224,10 +231,10 @@ public class JobCommandListener {
 
             Element e2 = (Element) it2.next();
 
-            if (!e2.getName().equals("start_job") && !e2.getName().equals("add_order")) {
+            if (!e2.getName().equals("start_job") && !e2.getName().equals("add_order") && !e2.getName().equals("order")) {
             	ignore++;
-            } else if (!e2.getName().equals("start_job") && !e2.getName().equals("order")) {
-            	ignore++;                               
+            //} else if (!e2.getName().equals("start_job") && !e2.getName().equals("order")) {
+            //	ignore++;                               
             } else {
             	j--;
             }
@@ -398,9 +405,11 @@ public class JobCommandListener {
             if (cmd.equals("add_order")) {
                 Utils.setAttribute("id", value, e, _dom);
                 Utils.setAttribute("job", "", e, _dom);
+                e.removeChildren("environment");
             }else if (cmd.equals("order")) {
                 Utils.setAttribute("id", value, e, _dom);
                 Utils.setAttribute("job", "", e, _dom);
+                e.removeChildren("environment");
             } else {
                 Utils.setAttribute("id", "", e, _dom);
                 Utils.setAttribute("job", value, e, _dom);
@@ -491,5 +500,10 @@ public class JobCommandListener {
 
         return _chains;
     }
+
+
+	public List getEnvironments() {
+		return _environments;
+	}
 
 }

@@ -54,7 +54,10 @@ public class SchedulerDom extends DomParser {
     
     private String                 styleSheet              = "";
     
-    private static final String[] COMMANDS_ELEMENTS        = { "add_order", "order"};
+    private static final String[] COMMANDS_ELEMENTS        = { "add_order", "order", "start_job"};
+    
+    private static final String[] ORDER_ELEMENTS        = { "params", "environment"};
+    
 
     /** life Dateien: Schreibheschützte Dateien*/
     private ArrayList             listOfReadOnlyFiles      = null;
@@ -96,7 +99,10 @@ public class SchedulerDom extends DomParser {
         putDomOrder("run_time", RUNTIME_ELEMENTS);
         putDomOrder("job_chain", JOBCHAIN_ELEMENTS);
         putDomOrder("http_server", HTTP_SERVER);
-        putDomOrder("commands", COMMANDS_ELEMENTS);
+        putDomOrder("commands", COMMANDS_ELEMENTS);              
+        putDomOrder("start_job", ORDER_ELEMENTS);
+        
+        
 
         initScheduler();
     }
