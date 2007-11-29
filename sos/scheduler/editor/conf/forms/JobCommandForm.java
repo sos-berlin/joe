@@ -115,6 +115,12 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
     
     private Group              group_1         = null; 
 
+    private TabFolder          tabFolder       = null;
+    
+    private Group              group = null;
+    
+    
+    
     public JobCommandForm(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main)
             throws JDOMException, TransformerException {
         super(parent, style);
@@ -186,7 +192,8 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         group_2.setLayoutData(gridData_1);
         group_2.setLayout(new GridLayout());
 
-        final TabFolder tabFolder = new TabFolder(group_2, SWT.NONE);
+        tabFolder = new TabFolder(group_2, SWT.NONE);
+        
         tabFolder.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		if(group_1 != null && bJob != null) {
@@ -202,7 +209,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         final TabItem parameterTabItem = new TabItem(tabFolder, SWT.NONE);
         parameterTabItem.setText("Parameter");
 
-        final Group group = new Group(tabFolder, SWT.NONE);
+        group = new Group(tabFolder, SWT.NONE);
         final GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 5;
         group.setLayout(gridLayout);
@@ -368,6 +375,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         gridLayout_1.numColumns = 5;
         group_1.setLayout(gridLayout_1);
         environmentTabItem.setControl(group_1);
+        
 
         label2_1 = new Label(group_1, SWT.NONE);
         label2_1.setLayoutData(new GridData());
@@ -560,6 +568,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
                                
                 //listener.fillEnvironment(tCommands, tableEnvironment);
                 group_1.setEnabled(false);
+                
                 if (bOrder.getSelection()) {
                     bReplace.setSelection(true);
                     listener.setCommandAttribute(bApplyExitcode, "job", "", tCommands);                    
@@ -585,7 +594,8 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
             public void widgetSelected(final SelectionEvent e) {
                 addCommand();
                 gMain.setEnabled(tCommands.getItemCount() > 0);
-                group_2.setEnabled(tCommands.getItemCount() > 0);
+                //group_2.setEnabled(tCommands.getSelectionCount() == 1);                
+                tabFolder.setSelection(0);
                 bApplyExitcode.setEnabled(false);
             }
         });
@@ -763,7 +773,8 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
                 bRemoveExitcode.setEnabled(false);
                 bApplyExitcode.setEnabled(false);
                 gMain.setEnabled(tCommands.getItemCount() > 0);
-                group_2.setEnabled(tCommands.getItemCount() > 0);
+                //group_2.setEnabled(tCommands.getSelectionCount() == 1);
+                tabFolder.setSelection(0);
             }
         });
         bRemoveExitcode.setText("Remove");
@@ -775,36 +786,50 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
                 TableItem item = (TableItem) e.item;
                 if (item == null)
                     return;
-
+                
                 if (item.getText(0).equals("add_order")) {
                     bOrder.setSelection(true);
                     bJob.setSelection(false);
                     setCommandsEnabled(true);
+                    
                 }
                 
                 if (item.getText(0).equals("order")) {
                     bOrder.setSelection(true);
                     bJob.setSelection(false);
                     setCommandsEnabled(true);
+                    
                 }
                 
                 if (item.getText(0).equals("start_job")) {
                     bOrder.setSelection(false);
                     bJob.setSelection(true);
                     setCommandsEnabled(false);
+                    //group_2.setEnabled(tCommands.getSelectionCount() == 1);
+                    tabFolder.setSelection(0);
                 }
 
                 if (tCommands.getSelectionCount() > 0) {
 
                     fillCommand();
                     listener.fillParams(tCommands, tParameter);
-                    if(bOrder.getSelection())
+                    if(!bOrder.getSelection())
                     	listener.fillEnvironment(tCommands, tableEnvironment);
+                    else {
+                    	listener.clearEnvironment();
+                    	tableEnvironment.removeAll();
+                    	tableEnvironment.clearAll();
+                    }
                     bApplyExitcode.setEnabled(false);
 
                 }
 
                 bRemoveExitcode.setEnabled(tCommands.getSelectionCount() > 0);
+                                   
+                //group_2.setEnabled(item.getText(0).equals("start_job"));
+                tabFolder.setEnabled(true);
+                tabFolder.setSelection(0);
+                
             }
         });
         tCommands.setLinesVisible(true);
@@ -814,8 +839,9 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
         tCommands.setLayoutData(gridData9);
         listener.fillCommands(tCommands);
         gMain.setEnabled(tCommands.getItemCount() > 0);
-        group_2.setEnabled(tCommands.getItemCount() > 0);
-
+        //group_2.setEnabled(tCommands.getSelectionCount() == 1);
+        tabFolder.setSelection(0);
+        
         final TableColumn tcJob = new TableColumn(tCommands, SWT.NONE);
         tcJob.setWidth(167);
         tcJob.setText("Command");
