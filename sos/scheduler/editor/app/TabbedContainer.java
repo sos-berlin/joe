@@ -1,9 +1,7 @@
 package sos.scheduler.editor.app;
 
 import java.io.File;
-import java.io.StringReader;
 import java.util.ArrayList;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
@@ -364,10 +362,22 @@ public class TabbedContainer implements IContainer {
         }
     }
     
-    public SchedulerForm openDirectory() {
+   /* public SchedulerForm openDirectory() {
         SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE, SchedulerDom.DIRECTORY);
         
-        if (scheduler.openDirectory(filelist)) {
+        if (scheduler.openDirectory(null, filelist)) {
+            CTabItem tab = newItem(scheduler, scheduler.getFilename());
+            tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
+            return scheduler;
+        } else
+            return null;
+    }*/
+    
+    public SchedulerForm openDirectory(String filename) {
+    	
+    	SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE, SchedulerDom.DIRECTORY);
+    	
+        if (scheduler.openDirectory(filename, filelist)) {
             CTabItem tab = newItem(scheduler, scheduler.getFilename());
             tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
             return scheduler;

@@ -227,12 +227,13 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
 
              if (filename != null && !filename.equals("")) { //$NON-NLS-1$
                  File file = new File(filename);
-
+//System.out.println("~~~~~~~~~~~~~~~~~filename: " + filename);
                  // check the file
-                 if (!file.exists())
+                 if (!file.exists()) {
+                	 //System.out.println("~~~~~~~~~~~~~~~~~not exist filename: " + filename);
                      MainWindow.message(Messages.getString("MainListener.fileNotFound"), //$NON-NLS-1$
                              SWT.ICON_WARNING | SWT.OK);
-                 else if (!file.canRead())
+                 } else if (!file.canRead())
                      MainWindow.message(Messages.getString("MainListener.fileReadProtected"), //$NON-NLS-1$
                              SWT.ICON_WARNING | SWT.OK);                 
              } else

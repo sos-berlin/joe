@@ -204,7 +204,8 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 
 
     public void updateJobs() {
-    	if(tree.getSelection()[0].getText().startsWith("Job Chain")) {
+    	//if(tree.getSelection()[0].getText().startsWith("Job Chain")) {
+    	if(!tree.getSelection()[0].getText().startsWith("Jobs")) {
         	//Assistent: Der Aufruf erfolgte über den Assistenten. Hier ist nicht das Element "Jobs" im Tree selektiert
     		  //sondern das Element "Job Chains".
     		updateJobs_();
@@ -263,9 +264,11 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
         listener.treeFillMain(tree, cMainForm, type);
     }
     
-    public boolean openDirectory(Collection files) {
+    public boolean openDirectory(String filename, Collection files) {
     	
-    	boolean res = IOUtils.openFile("#xml#", files, dom);
+    	//boolean res = IOUtils.openFile("#xml#", files, dom);
+    	//System.out.println("test: " + filename);
+    	boolean res = IOUtils.openFile(filename, files, dom);
     	if (res) {
     		if(dom.getListOfChangeElementNames() != null && dom.getListOfChangeElementNames().size() > 0 ) {
     			dom.setChanged(true);
@@ -308,19 +311,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
         return res;
     }
 
-   /* public boolean reOpen(String filename, Collection files) {
-    	try {
-    		dom.read(filename);
-    		
-    		initialize();
-    		listener.treeFillMain(tree, cMainForm);
-    	} catch (Exception e) {
-    		return false;
-    	}
-    	return true;
-    }*/
-    
-    
+   
     public boolean save() {
     	boolean res = true;
     	if(dom.getFilename() != null && new java.io.File(dom.getFilename()).getName().startsWith("#xml#.config.") && dom.getFilename().endsWith(".xml~")) {    		
@@ -361,6 +352,19 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
     }
 
 
+    //neu
+   /* public boolean saveAsHotFolderElements() {
+        String old = dom.getFilename();
+        
+        boolean res = IOUtils.saveAsHotFolderElements(dom, true);                
+        
+        if (res)
+            container.setNewFilename(old);
+        return res;
+    }
+    */
+
+    
     public boolean close() {
         return applyChanges() && IOUtils.continueAnyway(dom);
     }

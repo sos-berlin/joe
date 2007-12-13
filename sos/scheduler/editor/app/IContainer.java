@@ -42,7 +42,9 @@ public interface IContainer {
     
     public JobChainConfigurationForm openDetails();
     
-    public SchedulerForm openDirectory();
+    //public SchedulerForm openDirectory();
+    
+    public SchedulerForm openDirectory(String filename);
     
     public CTabItem getCurrentTab();
     

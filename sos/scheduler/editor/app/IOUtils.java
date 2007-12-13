@@ -73,9 +73,10 @@ public class IOUtils {
     
     public static boolean openFile(String filename, Collection filenames, DomParser dom) {
         try {
+        	boolean isDirectory = dom instanceof SchedulerDom &&  ((SchedulerDom)dom).isDirectory();
         	
             // open file dialog            
-            if (filename == null || filename.equals("")) {
+            if (!isDirectory && (filename == null || filename.equals(""))) {
                 FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);            	            	
                 fdialog.setFilterPath(Options.getLastDirectory());
                 fdialog.setText("Open" + getDomInstance(dom) + " File");                
@@ -83,18 +84,25 @@ public class IOUtils {
             }
 
             // open Directory
-            if (filename != null && filename.equals("#xml#")) {
-            	 DirectoryDialog fdialog = new DirectoryDialog(MainWindow.getSShell(), SWT.MULTI);
-            	 fdialog.setFilterPath(Options.getLastDirectory());
-            	 
-                 fdialog.setText("Open" + getDomInstance(dom) + " File");
-                                  
-                 String fname = fdialog.open();
-                 if (fname == null)
-                 	return false;
-                 String path = fdialog.getFilterPath();
+            //if (filename != null && filename.equals("#xml#")) {
+            if(isDirectory) {
+            	
+            	String path = filename;
+            	if(filename == null || filename.length() == 0) {
+            		DirectoryDialog fdialog = new DirectoryDialog(MainWindow.getSShell(), SWT.MULTI);
+            		fdialog.setFilterPath(Options.getLastDirectory());
+            		
+            		fdialog.setText("Open" + getDomInstance(dom) + " File");
+            		
+            		String fname = fdialog.open();
+            		if (fname == null)
+            			return false;
+            		path = fdialog.getFilterPath();
+            		////////System.out.println("test: ................." + path);
+            	}
                  
-                 File tempFile = File.createTempFile("#xml#.config.", ".xml~", new File(path) );                
+                 File tempFile = File.createTempFile("#xml#.config.", ".xml~", new File(path) );
+                 
                  tempFile.deleteOnExit();
                  
                  //temporäre config.xml bilden
@@ -107,10 +115,8 @@ public class IOUtils {
                  //verändert und das Dokument auf geändert markiert
                  if(allJob.getListOfChangeElementNames()!= null && allJob.getListOfChangeElementNames().size() > 0)
                 	 ((SchedulerDom)dom).setListOfChangeElementNames(allJob.getListOfChangeElementNames());
-                 tempFile.delete();
-                 
-                 
-                 
+                 //tempFile.delete();
+               
                  filename= tempFile.getCanonicalPath();        		
                  if (filename == null)
                  	return false;            	
@@ -130,13 +136,14 @@ public class IOUtils {
 
             if (filename != null && !filename.equals("")) { //$NON-NLS-1$
                 File file = new File(filename);
-
+                ////System.out.println("~~~~~~~~~~~~~~~~~filename ioutils: " + filename);
                 // check the file
                 if (!file.exists())  {
+                	////System.out.println("~~~~~~~~~~~~~~~~~filename ioutils not exist: " + file.getCanonicalPath());
                     MainWindow.message(Messages.getString("MainListener.fileNotFound"), //$NON-NLS-1$
-                            SWT.ICON_WARNING | SWT.OK);
+                            SWT.ICON_WARNING | SWT.OK);                    
                     return false;
-                } else if (!file.canRead())
+                } else if (!file.canRead() )
                     MainWindow.message(Messages.getString("MainListener.fileReadProtected"), //$NON-NLS-1$
                             SWT.ICON_WARNING | SWT.OK);
                 else { // open it...
@@ -273,6 +280,13 @@ public class IOUtils {
         
     }
 
+    /*public static boolean saveAsHotFolderElements(DomParser dom, boolean saveas) {
+    	MergeAllXMLinDirectory save = new MergeAllXMLinDirectory(Options.getSchedulerHotFolder());
+    	save.saveXMLDirectory(dom.getDoc(), ((SchedulerDom)dom).getChangedJob());
+    	//TODO: ursprüngliche konfiguratoinsdatei säubern 
+    	return true;
+    }*/
+    
 
     public static boolean continueAnyway(DomParser dom) {
         if (dom.isChanged()) {
@@ -331,7 +345,7 @@ public class IOUtils {
     public static boolean saveDirectory(DomParser dom, boolean saveas, int type, String nameOfElement, IContainer container) {
     	Document currDoc = dom.getDoc();
     	File configFile = null;
-    	if(dom.getFilename() == null) {
+    	if(dom.getFilename() == null || saveas) {
     		
     		DirectoryDialog fdialog = new DirectoryDialog(MainWindow.getSShell(), SWT.MULTI);
     		fdialog.setFilterPath(Options.getLastDirectory());
