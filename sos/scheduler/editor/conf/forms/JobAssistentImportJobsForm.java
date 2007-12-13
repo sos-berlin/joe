@@ -633,10 +633,12 @@ public class JobAssistentImportJobsForm {
 							if(!new File(lastParent).getName().equals(tree.getItems()[tree.getItems().length -1].getText())) {
 								parentItemTreeItem = new TreeItem(tree, SWT.NONE);
 								parentItemTreeItem.setText(0, new File(filename).getParentFile().getName());
+								parentItemTreeItem.setData(h.get("job"));
 								lastParent = new File(filename).getParentFile().getPath();
 							} else {
 								parentItemTreeItem = new TreeItem(parentItemTreeItem, SWT.NONE);
 								parentItemTreeItem.setText(0, new File(filename).getParentFile().getName());
+								parentItemTreeItem.setData(h.get("job"));
 								lastParent = new File(filename).getParentFile().getPath();
 							}
 						}
@@ -644,7 +646,8 @@ public class JobAssistentImportJobsForm {
 						final TreeItem newItemTreeItem = new TreeItem(parentItemTreeItem, SWT.NONE);
 						newItemTreeItem.setText(0, h.get("name").toString());
 						newItemTreeItem.setText(1, h.get("title").toString());
-						newItemTreeItem.setText(2, filename);						
+						newItemTreeItem.setText(2, filename);
+						newItemTreeItem.setData(h.get("job"));
 					}
 				}
 			}
