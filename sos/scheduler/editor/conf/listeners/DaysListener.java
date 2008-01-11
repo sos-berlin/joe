@@ -338,7 +338,6 @@ public class DaysListener {
         	setUsedDays();
     }
 
-
     public void addGroup (String group) {
     	String[] split = null;
     	Element daylist = _runtime.getChild(_elementName[_type]);
@@ -365,6 +364,44 @@ public class DaysListener {
     			split= getNormalizedUltimos(group);        	        	
     		} else {
     			split = group.split(" ");
+    		}
+    		String attr = "";
+    		for(int i = 0; i < split.length; i++) {
+    			attr = (attr.length() == 0 ? "" : attr + " ") + getDayNumber(split[i]);
+    		}
+    		daylist.addContent(new Element("day").setAttribute("day", attr));	
+    	}
+    	
+    	
+    	setUsedDays();
+    }
+
+    public void updateGroup (String newGroup, String oldGroup) {
+    	String[] split = null;
+    	Element daylist = _runtime.getChild(_elementName[_type]);
+    	if (daylist == null && _type != SPECIFIC_MONTHS) {
+    		daylist = new Element(_elementName[_type]);
+    		_runtime.addContent(daylist);
+    	}
+    	if(_type == SPECIFIC_MONTHS) {
+    		List l = _runtime.getChildren("month");
+    		boolean found = false;
+    		for(int i = 0; i < l.size(); i++) {
+    			Element e = (Element)l.get(i);
+    			if(Utils.getAttributeValue("month", e).equals(oldGroup) )
+    				found = true;        		
+    		}
+    		if(!found) {
+    			daylist = new Element(_elementName[_type]);
+    			_runtime.addContent(daylist);
+    			Utils.setAttribute("month", newGroup, daylist);
+    		}
+    	} else {
+    		
+    		if(_type == ULTIMOS) {
+    			split= getNormalizedUltimos(newGroup);        	        	
+    		} else {
+    			split = newGroup.split(" ");
     		}
     		String attr = "";
     		for(int i = 0; i < split.length; i++) {
@@ -433,6 +470,36 @@ public class DaysListener {
         }
     }
 
+    
+    //test
+    public void updateDay(String newDay, String oldDay) {
+    	
+    	
+        Element daylist = _runtime.getChild(_elementName[_type]);
+        if (daylist != null) {
+            List list = daylist.getChildren("day");
+            Iterator it = list.iterator();
+            while (it.hasNext()) {
+                Element e = (Element) it.next(); 
+              
+                if (e.getAttributeValue("day") != null && (e.getAttributeValue("day").equals("" + getDayNumber(oldDay))
+                		|| e.getAttributeValue("day").equals(oldDay) || e.getAttributeValue("day").equals(getDayGroupNumbers(oldDay)))) { 
+                    e.setAttribute("day", getDayGroupNumbers(newDay));
+                    
+                    
+                    // remove empty tag
+                    //if (list.size() == 0)
+                    //    _runtime.removeChild(_elementName[_type]);
+
+                    _dom.setChanged(true);
+                    //if(_runtime != null && _runtime.getParentElement() != null )
+                    //   	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
+                    setUsedDays();
+                    break;
+                }
+            }
+        }
+    }
 
     public void fillTreeDays(TreeItem parent, boolean expand) {
     	String[] used = null;

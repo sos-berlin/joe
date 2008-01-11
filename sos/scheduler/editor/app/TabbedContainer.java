@@ -7,6 +7,8 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -14,7 +16,9 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.input.SAXBuilder;
 
@@ -219,6 +223,13 @@ public class TabbedContainer implements IContainer {
 
     private CTabItem newItem(Control control, String filename) {
         CTabItem tab = new CTabItem(folder, SWT.NONE);
+        tab.addDisposeListener(new DisposeListener() {
+        	public void widgetDisposed(final DisposeEvent e) {        		        		
+        		window.getSShell().setText("Job Scheduler Editor");
+        		window.setSaveStatus();
+        		        		
+        	}
+        });
         tab.setControl(control);
         folder.setSelection(folder.indexOf(tab));        
         tab.setData(new TabData(Utils.getFileFromURL(filename),""));

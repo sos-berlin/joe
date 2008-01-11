@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
+import org.jdom.Attribute;
 import org.jdom.Comment;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -24,6 +25,7 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.Utils;
 
 public class SchedulerDom extends DomParser {
     private static final String[] CONFIG_ELEMENTS          = { "base", "security", "cluster", "process_classes", "locks", "script", "http_server",
@@ -35,6 +37,8 @@ public class SchedulerDom extends DomParser {
     private static final String[] RUNTIME_ELEMENTS         = { "period", "at", "date", "weekdays", "monthdays", "ultimos", "holidays" };
     
     private static final String[] JOBCHAIN_ELEMENTS        = { "file_order_source", "job_chain_node", "file_order_sink"};
+    
+    private static final String[] HOLIDAYS_ELEMENTS        = { "holiday", "include"};
 
     private ArrayList             _disabled                = new ArrayList();
     
@@ -101,6 +105,8 @@ public class SchedulerDom extends DomParser {
         putDomOrder("http_server", HTTP_SERVER);
         putDomOrder("commands", COMMANDS_ELEMENTS);              
         putDomOrder("start_job", ORDER_ELEMENTS);
+        putDomOrder("holidays", HOLIDAYS_ELEMENTS);
+        
         
         
 
@@ -194,9 +200,12 @@ public class SchedulerDom extends DomParser {
     public boolean read(String filename, boolean validate) throws JDOMException, IOException {
 
         StringReader sr = new StringReader(readFile(filename));
-        Document doc = getBuilder(validate).build(sr);
+        
+        Document doc = getBuilder(validate).build(sr);        
+               
+        
         sr.close();
-                
+          //doc.getRootElement().getChild("config").getChild("jobs").getChild("job").getChild("params").getChild("param")
         if(doc.getDescendants() != null) {
         	Iterator descendants = doc.getDescendants();
         	findStyleSheet(descendants);
@@ -325,9 +334,9 @@ public class SchedulerDom extends DomParser {
         
         saxo.output(getDoc());
         
-
+        Document doc  = null;
         try {
-            getBuilder(true).build(new StringReader(handler.getXML()));
+        	doc = getBuilder(true).build(new StringReader(handler.getXML()));
         } catch (JDOMException e) {
             int res = MainWindow.message(Messages.getString("MainListener.outputInvalid",
                     new String[] { e.getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO);
@@ -344,9 +353,12 @@ public class SchedulerDom extends DomParser {
         // XMLOutputter out = new XMLOutputter(getFormat());
         // out.output(_doc, stream);
         // stream.close();
-
+       
         setFilename(filename);
         setChanged(false);
+
+        deorderDOM();
+                
     }
 
     
@@ -355,6 +367,7 @@ public class SchedulerDom extends DomParser {
         String encoding = Editor.SCHEDULER_ENCODING;
         if (encoding.equals(""))
             encoding = DEFAULT_ENCODING;
+        
           reorderDOM(doc.getRootElement());
 
         FormatHandler handler = new FormatHandler(this);
@@ -385,21 +398,27 @@ public class SchedulerDom extends DomParser {
         // stream.close();
 
         //setFilename(filename);
+        
+        
         setChanged(false);
+        deorderDOM();
     }
 
 
     public String getXML(Element element) throws JDOMException {
     	
         reorderDOM(element);
-
+        
+        
+        
         FormatHandler handler = new FormatHandler(this);
         handler.setStyleSheet(styleSheet);
         handler.setEnconding(DEFAULT_ENCODING);
         handler.setDisableJobs(isJobsDisabled());
         SAXOutputter saxo = new SAXOutputter(handler);
         saxo.output(element);
-
+        
+        deorderDOM();
         return handler.getXML();
         
     }

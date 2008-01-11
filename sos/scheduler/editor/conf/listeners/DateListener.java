@@ -159,7 +159,7 @@ public class DateListener implements Comparator {
     		if(i < 0) 
     			i = i*(-1);
     		Element atE = (Element)(_listOfAt.get(i));
-    		System.out.println(atE.getAttributes());
+    		//System.out.println(atE.getAttributes());
     		delDate = Utils.getAttributeValue("at", atE).substring(0, 10);
     		
     	}
@@ -168,8 +168,10 @@ public class DateListener implements Comparator {
     			
     			_list.remove(index);
     			if (_list.size() == 0 && _type == 0) {
-    				_element.removeChild("holidays");
-    				_parent = null;
+    				if(_parent.getChildren("include") == null || _parent.getChildren("include").isEmpty()) {
+    					_element.removeChild("holidays");
+    					_parent = null;
+    				}
     			}
     			_dom.setChanged(true);
     			if(_element.getParentElement() != null)
@@ -184,18 +186,20 @@ public class DateListener implements Comparator {
         }
         
         //gibt es auch einen at-Element am gleichen Tag
-        ArrayList remList = new ArrayList();
-        for(int i =0; i < _listOfAt.size(); i++) {
-        	Element e = (Element)_listOfAt.get(i);
-        	String at = Utils.getAttributeValue("at", e);
-        	String date = at.substring(0, at.indexOf(" "));
-        	if(date.equalsIgnoreCase(delDate)) {
-        		remList.add(e);        		
-        	}
-        }
-        for(int i = 0; i < remList.size(); i++) {
-        	_listOfAt.remove(remList.get(i));
-        }
+    	if(_listOfAt != null) {
+    		ArrayList remList = new ArrayList();
+    		for(int i =0;  i < _listOfAt.size(); i++) {
+    			Element e = (Element)_listOfAt.get(i);
+    			String at = Utils.getAttributeValue("at", e);
+    			String date = at.substring(0, at.indexOf(" "));
+    			if(date.equalsIgnoreCase(delDate)) {
+    				remList.add(e);        		
+    			}
+    		}
+    		for(int i = 0; i < remList.size(); i++) {
+    			_listOfAt.remove(remList.get(i));
+    		}
+    	}
     }
 
 
@@ -357,22 +361,34 @@ public class DateListener implements Comparator {
   }    
     
     public void removeInclude(int index) {
+    	
       if (_parent == null && _type == 0) {
         _parent = new Element("holidays");
         _element.addContent(_parent);
       }
-     
+      
       if (_parent != null) {
           List includeList = _parent.getChildren("include");
           if (index >= 0 && index < includeList.size()) {
+        	  
               includeList.remove(index);
+              if (includeList.size() == 0 && _type == 0) {
+            	  if(_parent.getChildren() == null || _parent.getChildren().isEmpty()) {
+            		  _element.removeChild("holidays");
+            		  _parent = null;
+            	  }
+              }
               _dom.setChanged(true);
+              
               if(_element.getParentElement() != null)
               	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_element.getParentElement()), SchedulerDom.MODIFY);
           } else
               System.out.println("index " + index + " is out of range for include!");
       } else
           System.out.println("no script element defined!");
+      
+     
+      
   }
 
 

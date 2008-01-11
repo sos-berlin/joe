@@ -45,7 +45,7 @@ public class TreeMenu {
 	
 	public TreeMenu(Tree tree, DomParser dom, SchedulerForm gui) {
 		_tree = tree;
-		_dom = dom;
+		_dom = dom; 
 		_gui = gui;
 		createMenu();
 	}
@@ -67,7 +67,8 @@ public class TreeMenu {
 						return data.getElement().getChild("commands");
 					} else {
 						if(data.getElement().getChild(data.getChild()) == null) {
-							data.getElement().addContent(new Element(data.getChild()));
+							//data.getElement().addContent(new Element(data.getChild()));
+							return data.getElement();
 						}
 						return data.getElement().getChild(data.getChild());    	
 					}

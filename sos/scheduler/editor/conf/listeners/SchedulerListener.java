@@ -863,7 +863,8 @@ public class SchedulerListener {
 			if(run_time.equals("run_time")) {
 				item = new TreeItem(run, SWT.NONE);
 				item.setText("Specific Month");
-				item.setData(new TreeData(Editor.SPECIFIC_MONTHS, runtime, Options.getHelpURL("job.run_time.monthdays"),"specific_monthdays"));
+				//item.setData(new TreeData(Editor.SPECIFIC_MONTHS, runtime, Options.getHelpURL("job.run_time.monthdays"),"specific_monthdays"));
+				item.setData(new TreeData(Editor.SPECIFIC_MONTHS, runtime, Options.getHelpURL("job.run_time.monthdays"),"month"));
 				item.setData("key", "job.run_time.specific_monthdays");				
 				if(disable) {
 					item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));

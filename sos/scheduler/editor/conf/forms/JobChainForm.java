@@ -271,7 +271,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		final GridLayout gridLayout_3 = new GridLayout();
 		gridLayout_3.marginBottom = 5;
 		gridLayout_3.marginTop = 5;
-		gridLayout_3.numColumns = 7;
+		gridLayout_3.numColumns = 5;
 		gNodes.setLayout(gridLayout_3);
 		
 		label6 = new Label(gNodes, SWT.NONE);
@@ -294,9 +294,24 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			}
 		});
 		final GridData gridData18 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+		gridData18.widthHint = 459;
 		tState.setLayoutData(gridData18);
+		new Label(gNodes, SWT.NONE);
+		new Label(gNodes, SWT.NONE);
+		
+		bApplyNode = new Button(gNodes, SWT.NONE);
+		bApplyNode.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				applyNode();
+			}
+		});
+		final GridData gridData7 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
+		bApplyNode.setLayoutData(gridData7);
+		bApplyNode.setEnabled(false);
+		bApplyNode.setText("&Apply Chain Node");
 		
 		label7 = new Label(gNodes, SWT.NONE);
+		label7.setLayoutData(new GridData());
 		label7.setText("Job:");
 		
 		cJob = new Combo(gNodes, SWT.BORDER);
@@ -327,10 +342,20 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				}
 			}
 		});
-		final GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+		final GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
+		gridData13.widthHint = 579;
 		cJob.setLayoutData(gridData13);
+
+		final Composite composite = new Composite(gNodes, SWT.NONE);
+		composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
+		final GridLayout gridLayout_2 = new GridLayout();
+		gridLayout_2.marginWidth = 0;
+		gridLayout_2.marginHeight = 0;
+		gridLayout_2.numColumns = 2;
+		composite.setLayout(gridLayout_2);
 		
-		butBrowse = new Button(gNodes, SWT.NONE);
+		butBrowse = new Button(composite, SWT.NONE);
+		butBrowse.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butBrowse.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB);
@@ -340,8 +365,10 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		});
 		butBrowse.setText("Browse");
 		
-		butImportJob = new Button(gNodes, SWT.NONE);
-		butImportJob.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
+		butImportJob = new Button(composite, SWT.NONE);
+		final GridData gridData_3 = new GridData(GridData.END, GridData.CENTER, false, false);
+		gridData_3.widthHint = 84;
+		butImportJob.setLayoutData(gridData_3);
 		butImportJob.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(listener.get_dom(), update, Editor.JOB_CHAINS);
@@ -353,17 +380,6 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			}
 		});
 		butImportJob.setText("Import Job");
-		
-		bApplyNode = new Button(gNodes, SWT.NONE);
-		bApplyNode.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				applyNode();
-			}
-		});
-		final GridData gridData7 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
-		bApplyNode.setLayoutData(gridData7);
-		bApplyNode.setEnabled(false);
-		bApplyNode.setText("&Apply Chain Node");
 		
 		label8 = new Label(gNodes, SWT.NONE);
 		label8.setLayoutData(new GridData());
@@ -404,9 +420,9 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			public void keyPressed(final KeyEvent e) {
 			}
 		});
-		tDelay.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		new Label(gNodes, SWT.NONE);
-		new Label(gNodes, SWT.NONE);
+		final GridData gridData_8 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+		gridData_8.widthHint = 186;
+		tDelay.setLayoutData(gridData_8);
 		
 		bNewNode = new Button(gNodes, SWT.NONE);
 		bNewNode.addSelectionListener(new SelectionAdapter() {
@@ -467,8 +483,6 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			}
 		});
 		cOnError.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		new Label(gNodes, SWT.NONE);
-		new Label(gNodes, SWT.NONE);
 		
 		dumm2 = new Button(gNodes, SWT.NONE);
 		dumm2.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
@@ -483,7 +497,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		gridLayout_4.numColumns = 3;
 		cType.setLayout(gridLayout_4);
 		final GridData gridData5 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false, 2, 2);
-		gridData5.widthHint = 238;
+		gridData5.widthHint = 387;
 		gridData5.heightHint = 35;
 		cType.setLayoutData(gridData5);
 		
@@ -577,7 +591,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		bFileSink.setText("File Sink");
 		
 		final Label removeFileLabel = new Label(gNodes, SWT.NONE);
-		removeFileLabel.setLayoutData(new GridData());
+		removeFileLabel.setLayoutData(new GridData(68, SWT.DEFAULT));
 		removeFileLabel.setText("Remove File");
 		
 		bRemoveFile = new Button(gNodes, SWT.CHECK);
@@ -599,8 +613,6 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		});
 		bRemoveFile.setLayoutData(new GridData(24, SWT.DEFAULT));
 		bRemoveFile.setEnabled(false);
-		new Label(gNodes, SWT.NONE);
-		new Label(gNodes, SWT.NONE);
 		new Label(gNodes, SWT.NONE);
 		
 		final Label movweToLabel = new Label(gNodes, SWT.NONE);
@@ -625,7 +637,8 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			}
 		});
 		tMoveTo.setEnabled(false);
-		final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
+		final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+		gridData_1.widthHint = 235;
 		gridData_1.minimumWidth = 80;
 		tMoveTo.setLayoutData(gridData_1);
 		new Label(gNodes, SWT.NONE);
@@ -647,8 +660,8 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		});
 		tNodes.setLinesVisible(true);
 		tNodes.setHeaderVisible(true);
-		final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true, 6, 3);
-		gridData4.heightHint = 41;
+		final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 3);
+		gridData4.heightHint = 112;
 		tNodes.setLayoutData(gridData4);
 		
 		final TableColumn tableColumn3 = new TableColumn(tNodes, SWT.NONE);
@@ -684,6 +697,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		composite_1.setLayout(gridLayout_5);
 
 		final Button upButton = new Button(composite_1, SWT.NONE);
+		upButton.setLayoutData(new GridData());
 		upButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if (tNodes.getSelectionCount() > 0) {
@@ -720,7 +734,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				}
 			}
 		});
-		downButton.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+		downButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		downButton.setText("Down");
 		
 		bRemoveNode = new Button(gNodes, SWT.NONE);
@@ -762,8 +776,12 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		butDetailsJob.setText("Details");
 		
 		
-		gFileOrderSource = new Group(sashForm, SWT.VERTICAL);
-		gFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		//gFileOrderSource = new Group(sashForm, SWT.VERTICAL);
+		
+		gFileOrderSource = new Group(jobChainGroup, SWT.NONE);
+		
+		
+		gFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1));
 		gFileOrderSource.setText("File Order Source");
 		final GridLayout gridLayout_1 = new GridLayout();
 		gridLayout_1.marginTop = 5;
@@ -889,7 +907,9 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		});
 		tFileOrderSource.setLinesVisible(true);
 		tFileOrderSource.setHeaderVisible(true);
-		tFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2));
+		final GridData gridData_9 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2);
+		gridData_9.heightHint = 138;
+		tFileOrderSource.setLayoutData(gridData_9);
 		
 		final TableColumn newColumnTableColumn = new TableColumn(tFileOrderSource, SWT.NONE);
 		newColumnTableColumn.setWidth(300);
@@ -948,7 +968,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			}
 		});
 		bRemoveFileOrderSource.setEnabled(false);
-		bRemoveFileOrderSource.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+		bRemoveFileOrderSource.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, true));
 		bRemoveFileOrderSource.setText("Remove Order File Source");
 		//group.setTabList(new Control[] {cChains, fileOrderSourceGroup, gNodes, fileOrderSinkGroup, label_2});
 		

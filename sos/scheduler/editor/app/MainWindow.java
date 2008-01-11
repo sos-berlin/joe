@@ -397,8 +397,21 @@ public class MainWindow  {
 				if (container.getCurrentEditor().applyChanges()) {
 					container.getCurrentEditor().save();
 					setSaveStatus();
+					
+//					test
+					/*try {
+						sos.scheduler.editor.conf.forms.SchedulerForm form =(sos.scheduler.editor.conf.forms.SchedulerForm)container.getCurrentEditor();
+						
+						SchedulerDom currdom = (SchedulerDom)form.getDom();
+						currdom.read(currdom.getFilename());
+					} catch (Exception ex) {
+						System.out.println("test" + ex.getMessage());
+					}
+					*/
+					//ende test
 				}
 			}
+			
 			
 			
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {

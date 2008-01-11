@@ -89,7 +89,7 @@ public class OrderListener {
 
     public void saveParameter(Table table, String name, String value) {
         boolean found = false;
-        String value2 = value.replaceAll("\"", "&quot;");
+        //String value2 = value.replaceAll("\"", "&quot;");
 
         if (_params != null) {
 
@@ -102,7 +102,8 @@ public class OrderListener {
                     if (e.getName().equals("param")) {
                         if (name.equals(e.getAttributeValue("name"))) {
                             found = true;
-                            e.setAttribute("value", value2);
+                            //e.setAttribute("value", value2);
+                            e.setAttribute("value", value);
                             _dom.setChanged(true);
                             _dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.MODIFY);
                             table.getItem(index).setText(1, value);
@@ -117,7 +118,8 @@ public class OrderListener {
             Element e = new Element("param");
 
             e.setAttribute("name", name);
-            e.setAttribute("value", value2);
+            //e.setAttribute("value", value2);
+            e.setAttribute("value", value);
             _dom.setChanged(true);
             _dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.MODIFY);
 

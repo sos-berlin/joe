@@ -376,8 +376,10 @@ public class JobListener {
 	public void saveParameter(Table table, String name, String value, String parameterDescription_de, String parameterDescription_en, boolean required) {
 		
 		Element e = new Element("param");
-		e.setAttribute("name", name);
-		e.setAttribute("value", value);
+		//e.setAttribute("name", name);		
+		//e.setAttribute("value", value);
+		Utils.setAttribute("name", name, e);
+		Utils.setAttribute("value", value, e);
 		
 		 
 		if((_dom.isLifeElement() || _dom.isDirectory()) && _params == null) {
@@ -422,7 +424,8 @@ public class JobListener {
 					Element e = (Element) o;
 					if (name.equals(e.getAttributeValue("name"))) {
 						found = true;												
-						e.setAttribute("value", value2);						
+						//e.setAttribute("value", value2);
+						Utils.setAttribute("value", value2, e);
 						_dom.setChanged(true);
 						_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 						table.getItem(index).setText(1, value);
@@ -451,7 +454,8 @@ public class JobListener {
 	public void saveParameter(Table table, String name, String value) {
 		
 		boolean found = false;
-		String value2 = value.replaceAll("\"", "&quot;");
+		//String value2 = value.replaceAll("\"", "&quot;");
+		String value2 = value;
 				
 		if (_params != null) {
 			int index = 0;
@@ -462,8 +466,8 @@ public class JobListener {
 					Element e = (Element) o;
 					if (name.equals(e.getAttributeValue("name"))) {
 						found = true;
-						//Utils.setAttribute("value", value2, e);						
-						e.setAttribute("value", value2);						
+						Utils.setAttribute("value", value2, e);						
+						//e.setAttribute("value", value2);						
 						_dom.setChanged(true);
 						_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 						table.getItem(index).setText(1, value);
@@ -475,8 +479,10 @@ public class JobListener {
 		}
 		if (!found) {
 			Element e = new Element("param");
-			e.setAttribute("name", name);
-			e.setAttribute("value", value2);
+			//e.setAttribute("name", name);
+			//e.setAttribute("value", value2);
+			Utils.setAttribute("name", name, e);
+			Utils.setAttribute("value", value2, e);	
 			_dom.setChanged(true);
 			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 			if (_params == null)

@@ -98,7 +98,7 @@ public class IOUtils {
             		if (fname == null)
             			return false;
             		path = fdialog.getFilterPath();
-            		////////System.out.println("test: ................." + path);
+
             	}
                  
                  File tempFile = File.createTempFile("#xml#.config.", ".xml~", new File(path) );
@@ -257,20 +257,24 @@ public class IOUtils {
                 } else {
                 		dom.write(filename);
                 		dom.setFilename(originFilename);
+                		
+
+                		
                 		if(!overrideOriFile) {
                 			new File(originFilename).delete();                			
                 		}
                 		
                 		if(!new File(filename).renameTo(new File(originFilename)))
-                    		MainWindow.message("..could not rename file: " + filename, SWT.ICON_ERROR | SWT.OK);    
+                    		MainWindow.message("..could not rename file: " + filename, SWT.ICON_ERROR | SWT.OK);  
+                		
                 }
+                                
                 
                 MainWindow.getSShell().setText("Job Scheduler Editor [" + originFilename  + "]");
                 
 
             }
-            
-            
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -279,14 +283,7 @@ public class IOUtils {
         } 
         
     }
-
-    /*public static boolean saveAsHotFolderElements(DomParser dom, boolean saveas) {
-    	MergeAllXMLinDirectory save = new MergeAllXMLinDirectory(Options.getSchedulerHotFolder());
-    	save.saveXMLDirectory(dom.getDoc(), ((SchedulerDom)dom).getChangedJob());
-    	//TODO: ursprüngliche konfiguratoinsdatei säubern 
-    	return true;
-    }*/
-    
+  
 
     public static boolean continueAnyway(DomParser dom) {
         if (dom.isChanged()) {

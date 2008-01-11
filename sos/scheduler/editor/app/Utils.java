@@ -86,6 +86,9 @@ public class Utils {
 
     public static void setAttribute(String attribute, String value, String defaultValue, Element element, DomParser dom) {
         value = value.trim();
+        
+        //value = escape(value);
+        
         if (value == null || value.equals(defaultValue) ) {
             element.removeAttribute(attribute);
             if (dom != null)
@@ -568,6 +571,7 @@ public class Utils {
     		s = null;
     	}
     	    	
+    	
     	if (font != null)
     		font.dispose();
     	
@@ -645,4 +649,53 @@ public class Utils {
 		return elem;
 	}
 	
+    /**
+     * Normalizes the given string
+     */
+    public static String escape(String s) {
+    	if (s == null){
+    		return s;
+    	}
+    	
+    	int len = s.length();
+    	StringBuffer str = new StringBuffer(len);
+    	
+    	for (int i = 0; i < len; i++){
+    		char ch = s.charAt(i);
+    		switch (ch) {
+    		case '<':
+    			str.append("&lt;"); //$NON-NLS-1$
+    			break;
+    			
+    		case '>':
+    			str.append("&gt;"); //$NON-NLS-1$
+    			break;    			    		
+    			
+    		case '"':
+    			str.append("&quot;"); //$NON-NLS-1$
+    			break;
+    			
+    		case '&': 
+    			if( !(s.substring(i).startsWith("&quot;") ||
+    					s.substring(i).startsWith("&lt;") ||
+    					s.substring(i).startsWith("&gt;") ||
+    					s.substring(i).startsWith("&amp;")))
+    				str.append("&amp;"); //$NON-NLS-1$
+    			break;
+    		default:
+    			str.append(ch);
+    		}
+    	}
+    	
+    	return str.toString();
+    }
+    
+    public static String deEscape(String s) { 
+    	String newValue = s;
+    	newValue = newValue.replaceAll("&quot;", "\"");
+    	newValue = newValue.replaceAll("&lt;", "<");
+    	newValue = newValue.replaceAll("&gt;", ">");
+    	newValue = newValue.replaceAll("&amp;", "&");
+    	return newValue;
+    }
 }

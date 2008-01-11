@@ -17,6 +17,7 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.stream.StreamSource;
 
 import org.eclipse.swt.SWT;
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -192,8 +193,11 @@ public abstract class DomParser {
         reorderDOM(element, null);
     }
 
-
+    
     protected void reorderDOM(Element element, Namespace ns) {
+    	//escape element Attributes
+    	escape(element);
+    	
     	// check if an order list exists for this element
     	if (getDomOrders().containsKey(element.getName())) {
     		// get children names in right order of this element
@@ -224,10 +228,52 @@ public abstract class DomParser {
     		for (Iterator it = children.iterator(); it.hasNext();) {
     			reorderDOM((Element) it.next(), ns);
     		}
-    	}
+    	}    	
+    }
+    
+    public void deorderDOM() {
+        deorderDOM(getDoc().getRootElement());
     }
 
-
+    protected void deorderDOM(Element element) {
+        deorderDOM(element, null);
+    }
+    protected void deorderDOM(Element element, Namespace ns) {
+    	//escape element Attributes
+    	deEscape(element);
+    	
+    	// check if an order list exists for this element
+    	if (getDomOrders().containsKey(element.getName())) {
+    		// get children names in right order of this element
+    		String[] order = (String[]) getDomOrders().get(element.getName());
+    		
+    		// iterate children names
+    		for (int i = 0; i < order.length; i++) {
+    			// get _new_ list of the children
+    			List list = new ArrayList(element.getChildren(order[i], ns));
+    			if (list.size() > 0) {
+    				// remove them all
+    				element.removeChildren(order[i], ns);
+    				
+    				// iterate children list
+    				for (Iterator it2 = list.iterator(); it2.hasNext();) {
+    					Element children = (Element) it2.next();
+    					// readd it at the end
+    					element.addContent(children);
+    					
+    					// recursion
+    					deorderDOM(children, ns);
+    				}
+    			}
+    		}
+    	} else {
+    		// reorder the children
+    		List children = element.getChildren();
+    		for (Iterator it = children.iterator(); it.hasNext();) {
+    			deorderDOM((Element) it.next(), ns);
+    		}
+    	}    	
+    }
     public String transform(Element element) throws TransformerFactoryConfigurationError, TransformerException,
             IOException {
     	
@@ -280,4 +326,42 @@ public abstract class DomParser {
     public void setInit(boolean init) {
         _init = init;
     }
+    
+    private void escape(Element e) {
+    	List listOfAtrributes = e.getAttributes();
+    	for(int i = 0; i< listOfAtrributes.size(); i++) {
+    		//System.out.println(listOfAtrributes.get(i));
+    		Attribute attr = (Attribute)listOfAtrributes.get(i);
+    		//System.out.println("name  : " + attr.getName());
+    		//System.out.println("value : " + attr.getValue());    		
+    		Utils.setAttribute(attr.getName(), Utils.escape(attr.getValue()), e);
+    		//System.out.println("neue value  : " + e.getAttributeValue(attr.getName()));
+    		
+    		//System.out.println("*************************************");
+    		
+    	}		
+    }
+    
+    private void deEscape(Element e) {
+    	List listOfAtrributes = e.getAttributes();
+    	for(int i = 0; i< listOfAtrributes.size(); i++) {
+    		//System.out.println(listOfAtrributes.get(i));
+    		Attribute attr = (Attribute)listOfAtrributes.get(i);
+    		//System.out.println("name  : " + attr.getName());
+    		//System.out.println("value : " + attr.getValue());
+    		/*String newValue = attr.getValue();
+    		newValue = newValue.replaceAll("&quot;", "\"");
+    		newValue = newValue.replaceAll("&lt;", "<");
+    		newValue = newValue.replaceAll("&gt;", ">");
+    		newValue = newValue.replaceAll("&amp;", "&");
+    		*/
+    		Utils.setAttribute(attr.getName(), Utils.deEscape(attr.getValue()), e);
+    		
+    		//System.out.println("neue value  : " + newValue);
+    		
+    		//System.out.println("*************************************");
+    		
+    	}		
+    }
+    
 }

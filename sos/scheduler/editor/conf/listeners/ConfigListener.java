@@ -1,7 +1,12 @@
 package sos.scheduler.editor.conf.listeners;
 
 
+import java.util.Iterator;
 import java.util.List;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -11,6 +16,8 @@ public class ConfigListener {
     private SchedulerDom _dom;
 
     private Element      _config;
+    
+    private List         _params;
 
 
     public ConfigListener(SchedulerDom dom) {
@@ -243,4 +250,98 @@ public class ConfigListener {
     public void setConfigurationDeleteEvent(String configurationDeleteEvent) {
         Utils.setAttribute("configuration_delete_event", configurationDeleteEvent, _config, _dom);
     }
+    
+    private void initParams() {
+
+        if (_config.getChild("params") != null) {
+            _params = _config.getChild("params").getChildren();
+        }
+
+        if (_params == null) {
+        	_config.addContent(0, new Element("params"));
+            _params = _config.getChild("params").getChildren();
+        }
+    }
+
+    
+    public void fillParams(Table tableParameters) {
+    	_params = null;
+        tableParameters.removeAll();
+        //initParams();
+
+        if (_config.getChild("params") != null) {
+            _params = _config.getChild("params").getChildren();
+        }
+
+        if (_params != null) {
+            Iterator it = _params.iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (o instanceof Element) {
+                    Element e = (Element) o;
+                    if (e.getName().equals("param")) {
+                        TableItem item = new TableItem(tableParameters, SWT.NONE);
+                        item.setText(0, ((Element) o).getAttributeValue("name"));
+                        item.setText(1, ((Element) o).getAttributeValue("value"));
+                    }
+                }
+            }
+        }
+    }
+
+
+    public void deleteParameter(Table table, int index) {
+        if (_params != null) {
+            _params.remove(index);
+            
+            _dom.setChanged(true);
+        }
+        table.remove(index);
+    }
+
+
+    public void saveParameter(Table table, String name, String value) {
+        boolean found = false;
+        
+
+        if (_params != null) {
+
+            int index = 0;
+            Iterator it = _params.iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (o instanceof Element) {
+                    Element e = (Element) o;
+                    if (e.getName().equals("param")) {
+                        if (name.equals(e.getAttributeValue("name"))) {
+                            found = true;
+                            e.setAttribute("value", value);
+                            _dom.setChanged(true);
+                            
+                            table.getItem(index).setText(1, value);
+                        }
+                    }
+                    index++;
+                }
+            }
+        }
+
+        if (!found) {
+            Element e = new Element("param");
+
+            e.setAttribute("name", name);
+            e.setAttribute("value", value);
+            _dom.setChanged(true);
+            
+
+            if (_params == null)
+                initParams();
+            if (_params != null)
+                _params.add(e);
+
+            TableItem item = new TableItem(table, SWT.NONE);
+            item.setText(new String[] { name, value });
+        }
+    }
+
 }

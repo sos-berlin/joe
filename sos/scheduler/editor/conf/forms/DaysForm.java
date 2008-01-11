@@ -190,6 +190,8 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         listOfGroup.addMouseListener(new MouseAdapter() {
         	public void mouseDoubleClick(final MouseEvent e) {
         		removeGroupDay();
+        		if(listOfGroup.getItemCount() > 0)
+                 	butApplyGroup.setEnabled(true); 
         	}
         });
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, false, 1, 3);
@@ -210,8 +212,8 @@ public class DaysForm extends Composite implements IUpdateLanguage {
 
         butAdd = new Button(group, SWT.NONE);
         butAdd.addSelectionListener(new SelectionAdapter() {
-        	public void widgetSelected(final SelectionEvent e) {
-        		addGroupDay();
+        	public void widgetSelected(final SelectionEvent e) {        		
+        		addGroupDay();        		
         	}
         });
         butAdd.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -222,17 +224,32 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         	public void widgetSelected(final SelectionEvent e) {
         		
         		//bearbeiten: löschen und neu anlegen
-        		if(!newGroup && lUsedDays.getSelectionCount() > 0) {
-        			delete();
-        		}
-                
+        		//if(!newGroup && lUsedDays.getSelectionCount() > 0) {
+        			//delete();
+        		
         		String group = "";
         		for (int i =0; i < listOfGroup.getItemCount(); i++) {
         			group = (group.length()==0 ? "" : group + " ") + listOfGroup.getItem(i);
         		}        		        		
         		
-        		listener.addGroup(group); 
-                _main.updateDays(_type, group);
+        		/*if(!newGroup && lUsedDays.getSelectionCount() > 0) {
+        			//delete();
+        			updateDay(group);
+        		} else {
+        			
+        			listener.addGroup(group);
+        		}*/        		        	
+        		
+        		if(!newGroup && lUsedDays.getSelectionCount() > 0) {  
+        			if(_type == DaysListener.WEEKDAYS)
+        				listener.updateDay(group, lUsedDays.getSelection()[0]);
+        			else 
+        				listener.updateGroup(group, lUsedDays.getSelection()[0]);
+        			
+        		} else {
+        			listener.addGroup(group);
+        		}
+        		_main.updateDays(_type, group);
                 read();
         		setEnabledGroupElement(false);        		        		         		
         		listOfGroup.removeAll();
@@ -245,7 +262,8 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         butRemove = new Button(group, SWT.NONE);
         butRemove.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
-        		removeGroupDay();        		
+        		removeGroupDay();      
+        		
         	}
         });
         butRemove.setLayoutData(new GridData(GridData.CENTER, GridData.BEGINNING, false, true));
@@ -308,11 +326,13 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         listOfGroup.setEnabled(enable);   
         
         butAdd.setEnabled(enable);          
-        butRemove.setEnabled(enable);         
-        butApplyGroup.setEnabled(enable); 
+        butRemove.setEnabled(enable); 
+        
+        butApplyGroup.setEnabled(false); 
     }
     
-    private void addGroupDay() {
+    private void addGroupDay() {    	 
+    	 
     	if(listOfDays.getSelectionCount() > 0) {
     		boolean exist = false;
     		for (int i = 0; i < listOfGroup.getItemCount(); i++) {
@@ -329,12 +349,22 @@ public class DaysForm extends Composite implements IUpdateLanguage {
     			listOfGroup.add(listOfDays.getSelection()[0]);
     		}
     	}
+    	if(listOfGroup.getItemCount() > 0)
+         	butApplyGroup.setEnabled(true); 
+    	else 
+    		butApplyGroup.setEnabled(false);
     }
     
     private void removeGroupDay() {
+    	
     	if(listOfGroup.getSelectionCount() > 0) {
     		listOfGroup.remove(listOfGroup.getSelectionIndex());
     	}
+    	
+    	if(listOfGroup.getItemCount() > 0)
+         	butApplyGroup.setEnabled(true); 
+    	else 
+    		butApplyGroup.setEnabled(false);
     }
     
     private void delete () {
@@ -344,6 +374,14 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         read();
         setEnabledGroupElement(false);
     }
+    
+/*private void updateDay () {
+    	
+        listener.updateDay(lUsedDays.getItem(lUsedDays.getSelectionIndex()));
+        _main.updateDays(_type);
+        read();
+        setEnabledGroupElement(false);
+    }*/
     
     private void initMonth() {    	
     	listOfSameMonths = new HashMap();
