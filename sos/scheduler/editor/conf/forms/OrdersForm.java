@@ -18,13 +18,13 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.OrdersListener;
-import sos.scheduler.editor.conf.listeners.SchedulerListener;
+//import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
 public class OrdersForm extends Composite implements IUpdateLanguage {
 
     private OrdersListener    listener;
 
-    private SchedulerListener mainListener;
+    //private SchedulerListener mainListener;
 
     private Group             ordersGroup  = null;
 
@@ -39,11 +39,11 @@ public class OrdersForm extends Composite implements IUpdateLanguage {
     private SchedulerDom      _dom          = null;
 
 
-    public OrdersForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update,
-            SchedulerListener mainListener) {
+    //public OrdersForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update, SchedulerListener mainListener) {
+    public OrdersForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) {
         super(parent, style);
         _dom = dom;
-        this.mainListener = mainListener;
+        //this.mainListener = mainListener;
         listener = new OrdersListener(dom, update);
         initialize();
         setToolTipText();

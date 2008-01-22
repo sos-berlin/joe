@@ -1,8 +1,6 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -16,11 +14,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
-
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -40,9 +36,9 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 	
 	private Label            label                       = null;
 		
-	private Composite        parent                      = null;
+	//private Composite        parent                      = null;
 	
-	private int              style                       = 0;
+	//private int              style                       = 0;
 	
 	private SchedulerDom     dom                         = null;
 	
@@ -55,8 +51,8 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 		super(parent, style);
 		try {
 			
-			this.parent = parent;
-			this.style = style;
+			//this.parent = parent;
+			//this.style = style;
 			this.dom = dom;
 			this.update = update;
 			listener = new JobsListener(dom, update);

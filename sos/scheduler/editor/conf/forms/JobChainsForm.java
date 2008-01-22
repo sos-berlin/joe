@@ -26,9 +26,9 @@ import sos.scheduler.editor.conf.listeners.OrdersListener;
 
 public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguage {
 	
-	private static final String GROUP_NODES_TITLE = "Chain Nodes";
+	//private static final String GROUP_NODES_TITLE = "Chain Nodes";
 	
-	private static final String GROUP_FILEORDERSOURCE_TITLE = "File Order Sources";
+	//private static final String GROUP_FILEORDERSOURCE_TITLE = "File Order Sources";
 	
 	private ISchedulerUpdate    update            = null;
 	
@@ -44,7 +44,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 	
 	private SashForm            sashForm          = null;
 	
-	private boolean             refresh           = false;
+	//private boolean             refresh           = false;
 	
 	private Button              butDetails        = null; 
 	

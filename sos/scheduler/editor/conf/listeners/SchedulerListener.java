@@ -590,7 +590,7 @@ public class SchedulerListener {
 					_dom.setInit(true);
 					switch (data.getType()) {
 					case Editor.CONFIG:
-						new ConfigForm(c, SWT.NONE, _dom);						
+						new ConfigForm(c, SWT.NONE, _dom, _gui);						
 						break;
 					case Editor.SECURITY:
 						new SecurityForm(c, SWT.NONE, _dom, data.getElement());
@@ -620,7 +620,8 @@ public class SchedulerListener {
 						new ExecuteForm(c, SWT.NONE, _dom, data.getElement());
 						break;
 					case Editor.ORDERS:
-						new OrdersForm(c, SWT.NONE, _dom, _gui, this);
+						//new OrdersForm(c, SWT.NONE, _dom, _gui, this);
+						new OrdersForm(c, SWT.NONE, _dom, _gui);
 						break;
 					case Editor.ORDER:
 						new OrderForm(c, SWT.NONE, _dom, data.getElement(), _gui);

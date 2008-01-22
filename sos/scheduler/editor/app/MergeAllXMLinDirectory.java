@@ -1,6 +1,5 @@
 package sos.scheduler.editor.app;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +38,7 @@ public class MergeAllXMLinDirectory {
 	
 	private             Element    config            = null;	
 	
-	private             String     encoding          = "ISO-8859-1";
+	private      static String     encoding          = "ISO-8859-1";
 	
 	private             HashMap    listOfChanges     = null;
 
@@ -116,7 +115,7 @@ public class MergeAllXMLinDirectory {
 //			Document speichern
 			//System.out.println("test: xmlFilename: " + xmlFilename);
 			//System.out.println("parentDoc: " + Utils.getElementAsString(parentDoc.getRootElement()));
-			saveXML(parentDoc, xmlFilename);
+			IOUtils.saveXML(parentDoc, xmlFilename);
 			//System.out.println("OK: ");
 		} catch(Exception e) {
 			System.err.println("..error : " + e.getMessage());
@@ -142,14 +141,13 @@ public class MergeAllXMLinDirectory {
 		
 	}
 	
-	public void saveXML(Document doc,String filename) {		
+	/*public static void saveXML(Document doc,String filename) {		
 		
 		try {
 			//system.out.println("********************************************************************");
 			JDOMSource in = new JDOMSource(doc);
 			Format format = Format.getPrettyFormat();
-			format.setEncoding(encoding);
-			//format.setEncoding(encoding);
+			format.setEncoding(encoding);			
 			XMLOutputter outp = new XMLOutputter(format);					
 			File f = new File(filename);
 			outp.output(in.getDocument(), new FileWriter(f));			
@@ -159,9 +157,8 @@ public class MergeAllXMLinDirectory {
 			//System.out.println("..error in MergeAllXMLinDirectory.saveXML. Could not save file " + e.getMessage());
 			MainWindow.message("Could not save file " + e.getMessage(), SWT.ICON_ERROR);
 		}
-		
-		
-	}
+
+	}*/
 	
 	protected File getNormalizedFile(String url) throws Exception {
 		try {
@@ -498,7 +495,7 @@ public class MergeAllXMLinDirectory {
 		if(listOfChanges.containsKey(name + "_" + attrName)) {				
 			if(listOfChanges.get(name + "_" + attrName).equals(SchedulerDom.DELETE)) {
 				if (!new File(filename).delete()) {						
-					int cont = MainWindow.message(MainWindow.getSShell(), filename + " could not delete.", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+					MainWindow.message(MainWindow.getSShell(), filename + " could not delete.", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 				}
 			} else {	
 				
@@ -597,7 +594,7 @@ public class MergeAllXMLinDirectory {
 				if(f.exists()) {
 					if (!f.delete()) {	
 						//job5.job.xml
-						int cont = MainWindow.message(MainWindow.getSShell(), filename + " could not delete.", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+						MainWindow.message(MainWindow.getSShell(), filename + " could not delete.", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 					} else {
 						//system.out.println(filename + " wurde gelöscht.");
 					}

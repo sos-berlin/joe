@@ -1,22 +1,22 @@
 package sos.scheduler.editor.conf.listeners;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
+//import java.io.File;
+//import java.util.ArrayList;
+//import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
+//import org.eclipse.swt.SWT;
+//import org.eclipse.swt.widgets.Table;
+//import org.eclipse.swt.widgets.TableItem;
 import org.jdom.CDATA;
-import org.jdom.Document;
+//import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.input.SAXBuilder;
+//import org.jdom.input.SAXBuilder;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.app.Options;
+//import sos.scheduler.editor.app.Options;
 
 public class JobListener {
 	private ISchedulerUpdate _main;
@@ -25,16 +25,18 @@ public class JobListener {
 	
 	private Element          _job;
 	
-	private List             _params;
+	//private List             _params;
 	
-	private List             _environments;
+	//private List             _environments;
+	
+	//private List             _includeParams;
 	
 	//Hifsvariable
 	private static String library      = "";  
 	
-	private static HashMap parameterDescription = new HashMap();
+	//private static HashMap parameterDescription = new HashMap();
 	
-	private static HashMap parameterRequired = new HashMap();
+	//private static HashMap parameterRequired = new HashMap();
 	
 	
 	
@@ -43,26 +45,33 @@ public class JobListener {
 		_job = job;
 		_main = update;
 		
-		Element params = _job.getChild("params");
-		if (params != null)
+		/*Element params = _job.getChild("params");
+		if (params != null) {
 			_params = params.getChildren("param");
+			_includeParams = params.getChildren("include");
+		}
 		
 		Element environment = _job.getChild("environment");
 		if(environment != null)
 			_environments = environment.getChildren("variable");
+		*/
+		
 		
 	}
 	
 	
-	private void initParams() {
+	/*private void initParams() {
 		_job.addContent(0, new Element("params"));
-		_params = _job.getChild("params").getChildren();
+		_params = _job.getChild("params").getChildren("param");
+		_includeParams = _job.getChild("params").getChildren("include");
 	}
 	
-	private void initEnvironment() {
+	
+	private void initEnvironment_loesch_mich() {
 		_job.addContent(0, new Element("environment"));
 		_environments = _job.getChild("environment").getChildren();
 	}
+	*/
 	
 	public String getComment() {
 		return Utils.getAttributeValue("__comment__", _job);
@@ -261,21 +270,23 @@ public class JobListener {
 	}
 	
 	
-	public void fillParams(Table table) {
+	/*public void fillParams(Table table) {
 		if (_params != null) {
 			Iterator it = _params.iterator();
 			while (it.hasNext()) {
 				Object o = it.next();
 				if (o instanceof Element) {					
-					TableItem item = new TableItem(table, SWT.NONE);
-					item.setText(0, ((Element) o).getAttributeValue("name"));
-					item.setText(1, (((Element) o).getAttributeValue("value") != null ? ((Element) o).getAttributeValue("value") : ""));
-					if(parameterDescription != null) {
-						item.setData("parameter_description_de", parameterDescription.get("parameter_description_de_" + ((Element) o).getAttributeValue("name")));
-						item.setData("parameter_description_en", parameterDescription.get("parameter_description_en_" + ((Element) o).getAttributeValue("name")));
-					}
-					if(parameterRequired != null && isParameterRequired(((Element) o).getAttributeValue("name")))
-						item.setBackground(Options.getRequiredColor());
+					if(((Element) o).getAttributeValue("name") != null) {
+						TableItem item = new TableItem(table, SWT.NONE);
+						item.setText(0, ((Element) o).getAttributeValue("name"));
+						item.setText(1, (((Element) o).getAttributeValue("value") != null ? ((Element) o).getAttributeValue("value") : ""));
+						if(parameterDescription != null) {
+							item.setData("parameter_description_de", parameterDescription.get("parameter_description_de_" + ((Element) o).getAttributeValue("name")));
+							item.setData("parameter_description_en", parameterDescription.get("parameter_description_en_" + ((Element) o).getAttributeValue("name")));
+						}
+						if(parameterRequired != null && isParameterRequired(((Element) o).getAttributeValue("name")))
+							item.setBackground(Options.getRequiredColor());
+					} 
 				}
 			}						
 		}		
@@ -327,18 +338,27 @@ public class JobListener {
 		_main.updateJob();
 	} 
 	
+	public void fillIncludeParams(Table table) {
+		if (_includeParams != null) {
+			Iterator it = _includeParams.iterator();
+			while (it.hasNext()) {
+				Object o = it.next();
+				if (o instanceof Element) {					
+					TableItem item = new TableItem(table, SWT.NONE);
+					item.setText(0, ((Element) o).getAttributeValue("file"));
+					item.setText(1, (((Element) o).getAttributeValue("node") != null ? ((Element) o).getAttributeValue("node") : ""));					
+				}
+			}						
+		}		
+		_main.updateJob();
+	} 
+	
 	
 	public TableItem existsParams(String name, Table table, String replaceValue) {
 		
 		try {
 			for (int i =0; i < table.getItemCount(); i++) {
-				if(table.getItem(i).getText(0).equals(name)) {
-					/*if(table.getItem(i).getText(1) == null || table.getItem(i).getText(1).length() == 0) {
-						if(replaceValue != null && replaceValue.length() > 0) {
-							table.getItem(i).setText(1, replaceValue);
-							saveParameter(table, table.getItem(i).getText(0), replaceValue);
-						}
-					}*/
+				if(table.getItem(i).getText(0).equals(name)) {					
 					return table.getItem(i);
 				}
 			}
@@ -370,14 +390,24 @@ public class JobListener {
 		}
 		table.remove(index);
 		
-	}				
+	}	
 	
+	
+	public void deleteIncludeParams(Table table, int index) {
+		
+		
+		if (_includeParams != null) {
+			_includeParams.remove(index);
+			_dom.setChanged(true);
+			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);			
+		}
+		table.remove(index);
+		
+	}	
 	
 	public void saveParameter(Table table, String name, String value, String parameterDescription_de, String parameterDescription_en, boolean required) {
 		
-		Element e = new Element("param");
-		//e.setAttribute("name", name);		
-		//e.setAttribute("value", value);
+		Element e = new Element("param");		
 		Utils.setAttribute("name", name, e);
 		Utils.setAttribute("value", value, e);
 		
@@ -410,10 +440,52 @@ public class JobListener {
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
+	
+	public void saveIncludeParams(Table table, String file, String node) {
+		
+		boolean found = false;
+		
+		if (_includeParams != null) {
+			int index = 0;
+			Iterator it = _includeParams.iterator();
+			while (it.hasNext()) {
+				Object o = it.next();
+				if (o instanceof Element) {
+					Element e = (Element) o;
+					if (file.equals(e.getAttributeValue("file")) && node.equals(e.getAttributeValue("node"))) {
+						found = true;																		
+						Utils.setAttribute("node", node, e);
+						_dom.setChanged(true);
+						_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+						table.getItem(index).setText(1, node);
+						break;
+					}
+					index++;
+				}
+			}
+		}
+		if (!found) {
+			Element e = new Element("include");
+			e.setAttribute("file", file);
+			e.setAttribute("node", node);
+			_dom.setChanged(true);
+			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+			if (_includeParams == null)
+				initParams();
+				
+			_includeParams.add(e);
+			
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setText(new String[] { file, node});
+			
+		}			
+	}
+	*/
+	/*
 	public void saveEnvironment(Table table, String name, String value) {
 		
 		boolean found = false;
-		String value2 = value.replaceAll("\"", "&quot;");
+		//String value2 = value.replaceAll("\"", "&quot;");
 				
 		if (_environments != null) {
 			int index = 0;
@@ -425,7 +497,7 @@ public class JobListener {
 					if (name.equals(e.getAttributeValue("name"))) {
 						found = true;												
 						//e.setAttribute("value", value2);
-						Utils.setAttribute("value", value2, e);
+						Utils.setAttribute("value", value, e);
 						_dom.setChanged(true);
 						_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 						table.getItem(index).setText(1, value);
@@ -438,11 +510,11 @@ public class JobListener {
 		if (!found) {
 			Element e = new Element("variable");
 			e.setAttribute("name", name);
-			e.setAttribute("value", value2);
+			e.setAttribute("value", value);
 			_dom.setChanged(true);
 			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 			if (_environments == null)
-				initEnvironment();
+				 initEnvironment();
 			_environments.add(e);
 			
 			TableItem item = new TableItem(table, SWT.NONE);
@@ -496,6 +568,7 @@ public class JobListener {
 		}		
 		
 	}
+	*/
 	
 	/*private void updateBackGroundColor(Table table, String currParamname) {
 		for (int i = 0; i < table.getItemCount(); i++) {
@@ -615,7 +688,7 @@ public class JobListener {
 		return _job;
 	}    
 	
-	public void getAllParameterDescription() {
+	/*public void getAllParameterDescription() {
 		String xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome() ;
 		xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths.concat(getInclude()) : xmlPaths.concat("/").concat(getInclude()));		
 		
@@ -655,31 +728,32 @@ public class JobListener {
 			ex.printStackTrace();
 		}		
 	}
+	*/
 	/**
 	 * Note/Beschreibung der Parameter
 	 * @param name
 	 * @return
 	 */
-	public String getParameterDescription(String name) {
+	/*public String getParameterDescription(String name) {
 		return (parameterDescription.get("parameter_description_" + Options.getLanguage() + "_" + name) != null ? parameterDescription.get("parameter_description_" + Options.getLanguage() + "_" + name).toString() : "");
-	}
+	}*/
 	
 	/**
 	 * Note/Beschreibung der Parameter
 	 * @param name
 	 * @return
 	 */
-	public String getParameterDescription(String name, String language) {
+	/*public String getParameterDescriptions(String name, String language) {
 		return (parameterDescription.get("parameter_description_" + language + "_" + name) != null ? parameterDescription.get("parameter_description_" + language + "_" + name).toString() : "");
-	}
+	}*/
 	
-	private boolean isParameterRequired(String name) {
+	/*private boolean isParameterRequired(String name) {
 		String _isIt = (parameterRequired.get(name) != null ? parameterRequired.get(name).toString() : "");
 		if(_isIt.equals("true")) { 
 			return ( true);
 		} else {
 			return false;
 		}
-	}
+	}*/
 	
 }

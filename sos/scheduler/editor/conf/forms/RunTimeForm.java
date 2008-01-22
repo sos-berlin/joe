@@ -21,8 +21,10 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.RunTimeListener;
 
 public class RunTimeForm extends Composite implements IUpdateLanguage {
-    private Text tFunction;
-    private RunTimeListener listener;
+    
+	private Text            tFunction   = null;
+	
+    private RunTimeListener listener    = null;
 
     private Group           gRunTime    = null;
 

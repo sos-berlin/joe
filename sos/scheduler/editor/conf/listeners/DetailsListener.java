@@ -492,7 +492,7 @@ public class DetailsListener {
 	public void updateState(String oldState, String newState){
 		Element order = null;
 		
-		this.state = state;
+		this.state = newState;
 		if(application != null) {
 			order =   application.getChild("order");			
 		}

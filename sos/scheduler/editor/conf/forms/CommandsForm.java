@@ -15,7 +15,7 @@ import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.CommandsListener;
-import sos.scheduler.editor.conf.listeners.SchedulerListener;
+
 
 public class CommandsForm extends Composite implements IUpdateLanguage {
 
@@ -23,7 +23,7 @@ public class CommandsForm extends Composite implements IUpdateLanguage {
 
     private CommandsListener  listener;
 
-    private SchedulerListener mainListener;
+    //private SchedulerListener mainListener;
 
     private Group             commandsGroup = null;
 

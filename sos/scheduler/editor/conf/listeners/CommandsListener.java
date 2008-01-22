@@ -2,8 +2,6 @@ package sos.scheduler.editor.conf.listeners;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Iterator;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -35,12 +33,18 @@ public class CommandsListener {
         String xml = "";
         if (_commands != null) {
             try {
-                Iterator it = _commands.getChildren().iterator();
-                while (it.hasNext()) {
-                    Element e = (Element) it.next();
+                //Iterator it = _commands.getChildren().iterator();
+                java.util.List l = _commands.getChildren();
+                for(int i = 0; i < l.size(); i++) {
+                	Element e = (Element) l.get(i);
                     String s = _dom.getXML(e);
                     xml += s.substring(45);
                 }
+               /* while (it.hasNext()) {
+                    Element e = (Element) it.next();
+                    String s = _dom.getXML(e);
+                    xml += s.substring(45);
+                }*/
             } catch (JDOMException ex) {
                 throw new Exception("Error: " + ex.getMessage());
 

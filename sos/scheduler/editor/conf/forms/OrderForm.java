@@ -3,9 +3,6 @@ package sos.scheduler.editor.conf.forms;
 import javax.xml.transform.TransformerException;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
@@ -19,16 +16,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -36,25 +29,10 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.OrderListener;
 
 public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
-    private OrderListener listener;
+    
+	private OrderListener listener;
 
     private Group         group      = null;
-
-    private SashForm      sashForm   = null;
-
-    private Table         tParameter = null;
-
-    private Button        bRemove    = null;
-
-    private Label         label2     = null;
-
-    private Text          tParaName  = null;
-
-    private Label         label6     = null;
-
-    private Text          tParaValue = null;
-
-    private Button        bApply     = null;
 
     private Group         gOrder     = null;
 
@@ -74,22 +52,31 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 
     private boolean       event      = false;
 
+    private SchedulerDom  dom        = null;
 
-    public OrderForm(Composite parent, int style, SchedulerDom dom, Element order, ISchedulerUpdate main)
+    private ISchedulerUpdate main   = null;
+    
+    private Element       order     = null;
+    
+    
+    public OrderForm(Composite parent, int style, SchedulerDom _dom, Element _order, ISchedulerUpdate _main)
             throws JDOMException, TransformerException {
         super(parent, style);
 
+        dom = _dom;
+        main = _main;
+        order = _order;
         listener = new OrderListener(dom, order, main);
         initialize();
         setToolTipText();
-        sashForm.setWeights(new int[] { 25, 75 });
+        //sashForm.setWeights(new int[] { 25, 75 });
 
         dom.setInit(true);
 
         cJobchain.setItems(listener.getJobChains());
 
         fillOrder();
-        listener.fillParams(tParameter);
+        //listener.fillParams(tParameter);
         dom.setInit(false);
         event = true;
         
@@ -98,13 +85,15 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
     public void apply() {
-        if (isUnsaved())
-            addParam();
+    	
+        //if (isUnsaved())
+        //    addParam();
     }
 
 
     public boolean isUnsaved() {
-        return bApply.isEnabled();
+    	return false;
+        //return bApply.isEnabled();
     }
 
 
@@ -124,6 +113,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         group = new Group(this, SWT.NONE);
 
         group.setLayout(gridLayout2);
+
         createSashForm();
     }
 
@@ -132,9 +122,27 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes group1
      */
     private void createGroup1() {
+        listener.setCommandAttribute("replace", "yes");
+
+    }
+
+
+    /**
+     * This method initializes sashForm
+     */
+    private void createSashForm() {
+        GridData gridData18 = new org.eclipse.swt.layout.GridData();
+        gridData18.horizontalSpan = 1;
+        gridData18.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        gridData18.grabExcessHorizontalSpace = true;
+        gridData18.grabExcessVerticalSpace = true;
+        gridData18.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         GridLayout gridLayout3 = new GridLayout();
         gridLayout3.numColumns = 4;
-        gOrder = new Group(sashForm, SWT.NONE);
+        gOrder = new Group(group, SWT.NONE);
+        final GridData gridData_10 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        gridData_10.widthHint = 577;
+        gOrder.setLayoutData(gridData_10);
         gOrder.setText("Order");
         gOrder.setLayout(gridLayout3);
         label10 = new Label(gOrder, SWT.NONE);
@@ -193,9 +201,10 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
 
-        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
+        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
         gridData_5.widthHint = 351;
         tTitle.setLayoutData(gridData_5);
+        new Label(gOrder, SWT.NONE);
 
         final Label priorityLabel = new Label(gOrder, SWT.NONE);
         priorityLabel.setLayoutData(new GridData());
@@ -213,10 +222,9 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("priority", tPriority.getText());
             }
         });
-        final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
         gridData_2.widthHint = 389;
         tPriority.setLayoutData(gridData_2);
-        new Label(gOrder, SWT.NONE);
         new Label(gOrder, SWT.NONE);
 
         final Label stateLabel = new Label(gOrder, SWT.NONE);
@@ -249,25 +257,12 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("replace", r);
             }
         });
-        bReplace.setLayoutData(new GridData(128, SWT.DEFAULT));
-        listener.setCommandAttribute("replace", "yes");
+        final GridData gridData_9 = new GridData(28, SWT.DEFAULT);
+        bReplace.setLayoutData(gridData_9);
 
-    }
-
-
-    /**
-     * This method initializes sashForm
-     */
-    private void createSashForm() {
-        GridData gridData18 = new org.eclipse.swt.layout.GridData();
-        gridData18.horizontalSpan = 1;
-        gridData18.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData18.grabExcessHorizontalSpace = true;
-        gridData18.grabExcessVerticalSpace = true;
-        gridData18.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        sashForm = new SashForm(group, SWT.NONE);
-        sashForm.setOrientation(org.eclipse.swt.SWT.VERTICAL);
-        sashForm.setLayoutData(gridData18);
+      
+        new ParameterForm(dom, order, main, group, Editor.ORDER);
+      
         createGroup1();
         createGroup2();
 
@@ -280,136 +275,8 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
     private void createGroup2() {
         GridLayout gridLayout2 = new GridLayout();
         gridLayout2.numColumns = 1;
-
-        final Group parameterGroup = new Group(sashForm, SWT.NONE);
-        parameterGroup.setLayoutData(new GridData());
-        parameterGroup.setText("Parameter");
-        final GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 5;
-        parameterGroup.setLayout(gridLayout);
-        label2 = new Label(parameterGroup, SWT.NONE);
-        label2.setText("Name");
-        tParaName = new Text(parameterGroup, SWT.BORDER);
-        tParaName.setLayoutData(new GridData(103, SWT.DEFAULT));
-        tParaName.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tParaName.equals(""))
-                    addParam();
-            }
-        });
-        tParaName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(!tParaName.getText().trim().equals(""));
-            }
-        });
-        label6 = new Label(parameterGroup, SWT.NONE);
-        label6.setText("Value");
-        tParaValue = new Text(parameterGroup, SWT.BORDER);
-        final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-        gridData_1.widthHint = 276;
-        tParaValue.setLayoutData(gridData_1);
-        tParaValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tParaName.getText().trim().equals(""))
-                    addParam();
-            }
-        });
-        tParaValue.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(!tParaName.getText().equals(""));
-            }
-        });
-        bApply = new Button(parameterGroup, SWT.NONE);
-        bApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        bApply.setText("&Apply");
-        bApply.setEnabled(false);
-        bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                addParam();
-            }
-        });
-        new Label(parameterGroup, SWT.NONE);
-        tParameter = new Table(parameterGroup, SWT.BORDER | SWT.FULL_SELECTION);
-        final GridData gridData = new GridData(GridData.FILL, GridData.FILL, false, true, 3, 1);
-        gridData.widthHint = 461;
-        tParameter.setLayoutData(gridData);
-        tParameter.addPaintListener(new PaintListener() {
-            public void paintControl(final PaintEvent e) {
-            }
-        });
-        tParameter.setHeaderVisible(true);
-        tParameter.setLinesVisible(true);
-        tParameter.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                TableItem item = (TableItem) e.item;
-                if (item == null)
-                    return;
-                tParaName.setText(item.getText(0));
-                tParaValue.setText(item.getText(1));
-                bRemove.setEnabled(tParameter.getSelectionCount() > 0);
-                bApply.setEnabled(false);
-            }
-        });
-        TableColumn tcName = new TableColumn(tParameter, SWT.NONE);
-        tcName.setWidth(100);
-        tcName.setText("Name");
-        TableColumn tcValue = new TableColumn(tParameter, SWT.NONE);
-        tcValue.setWidth(359);
-        tcValue.setText("Value");
-        bRemove = new Button(parameterGroup, SWT.NONE);
-        bRemove.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, true));
-        bRemove.setText("Remove");
-        bRemove.setEnabled(false);
-        bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                listener.deleteParameter(tParameter, tParameter.getSelectionIndex());
-                tParaName.setText("");
-                tParaValue.setText("");
-                tParameter.deselectAll();
-                bRemove.setEnabled(false);
-                bApply.setEnabled(false);
-            }
-        });
     }
 
-
-    private void addParam() {
-        listener.saveParameter(tParameter, tParaName.getText().trim(), tParaValue.getText());
-
-        tParaName.setText("");
-        tParaValue.setText("");
-        bRemove.setEnabled(false);
-        bApply.setEnabled(false);
-        tParameter.deselectAll();
-        tParaName.setFocus();
-    }
-
-
-    // TODO addOrder() not used - remove it!!?
-  /* private void addOrder() {
-        String msg = "";
-        if (cJobchain.getText().trim().equals("")) {
-            msg = "A jobchain must be given for an order";
-            cJobchain.setFocus();
-        }
-
-        if (!msg.equals("")) {
-            MainWindow.message(msg, SWT.ICON_INFORMATION);
-        } else {
-
-            listener.setCommandAttribute("id", tOrderId.getText());
-            if (bReplace.getSelection()) {
-                listener.setCommandAttribute("replace", "yes");
-            } else {
-                listener.setCommandAttribute("replace", "no");
-            }
-            listener.setCommandAttribute("state", tState.getText());
-            listener.setCommandAttribute("title", tTitle.getText());
-            listener.setCommandAttribute("priority", tPriority.getText());
-            listener.setCommandAttribute("job_chain", cJobchain.getText());
-        }
-    }
-*/
 
     private void clearFields() {
         tOrderId.setText("");
@@ -440,12 +307,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         tState.setToolTipText(Messages.getTooltip("jobcommand.state"));
         bReplace.setToolTipText(Messages.getTooltip("jobcommand.replaceorder"));
         cJobchain.setToolTipText(Messages.getTooltip("jobcommand.jobchain"));
-        tOrderId.setToolTipText(Messages.getTooltip("order.order_id"));
-        tParaName.setToolTipText(Messages.getTooltip("job.param.name"));
-        tParaValue.setToolTipText(Messages.getTooltip("job.param.value"));
-        bRemove.setToolTipText(Messages.getTooltip("job.param.btn_remove"));
-        bApply.setToolTipText(Messages.getTooltip("job.param.btn_add"));
-        tParameter.setToolTipText(Messages.getTooltip("jobcommand.param.table"));
+        tOrderId.setToolTipText(Messages.getTooltip("order.order_id"));       
 
     }
 } // @jve:decl-index=0:visual-constraint="10,10"

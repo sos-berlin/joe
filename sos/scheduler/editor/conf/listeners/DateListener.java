@@ -6,13 +6,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
-
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;

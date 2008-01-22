@@ -85,7 +85,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 	
 	private Label            statusBar         = null;
 	
-	private Group            gDetail           = null;
+	//private Group            gDetail           = null;
 	
 	/** wer hat ihn aufgerufen*/
 	private int              type              = -1;

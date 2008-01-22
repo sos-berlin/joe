@@ -1,10 +1,8 @@
 package sos.scheduler.editor.conf;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
@@ -18,17 +16,13 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Text;
-import org.jdom.output.Format;
 import org.jdom.output.SAXOutputter;
-import org.jdom.output.XMLOutputter;
-import org.jdom.transform.JDOMSource;
-
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.Utils;
+
 
 public class DetailDom extends DomParser {
    	

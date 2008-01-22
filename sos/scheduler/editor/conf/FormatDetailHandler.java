@@ -9,7 +9,7 @@ import sos.scheduler.editor.app.Options;
 
 public class FormatDetailHandler extends DefaultHandler implements ContentHandler {
 	
-    private DetailDom     _dom;
+    //private DetailDom     _dom;
 
     private StringBuffer _sb          = new StringBuffer();
 
@@ -28,7 +28,7 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
     
     
     public FormatDetailHandler(DetailDom dom) {
-        _dom = dom;
+        //_dom = dom;
     }
 
 
@@ -94,7 +94,7 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
         String sep = " ";
         String sepStr = "\n" + _indent + strRepeat(" ", new String("<" + qName).length() + 1);
 
-        String attrName = "";
+        //String attrName = "";
 
         // iterate atributes
         for (int i = 0; i < atts.getLength(); i++) {
@@ -113,8 +113,8 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
                 attributes.append(name + "=\"" + value + "\"");
                 sep = sepStr;
 
-                if (name.equals("name"))
-                    attrName = value;
+                //if (name.equals("name"))
+                 //   attrName = value;
             }
         }
        
@@ -143,14 +143,5 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
     }
 
 
-    private String nl() {
-        switch (_level) {
-            case 2:
-                return strRepeat("\n", 2);
-            case 3:
-                return strRepeat("\n", 1);
-            default:
-                return "";
-        }
-    }
+    
 }

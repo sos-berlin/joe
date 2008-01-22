@@ -16,9 +16,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.input.SAXBuilder;
 
@@ -329,11 +327,11 @@ public class TabbedContainer implements IContainer {
     private int getSameTitles(String title) {
         int cnt = -1;
         int i=0;
-        boolean found = false;
+        //boolean found = false;
 
         while (cnt==-1) {
         	if (isFreeIndex(i, title)){
-        		found = true;
+        		//found = true;
         		cnt=i;
         	}
         	i++;

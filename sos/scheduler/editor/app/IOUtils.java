@@ -1,6 +1,7 @@
 package sos.scheduler.editor.app;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -11,6 +12,10 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.jdom.Document;
 import org.jdom.JDOMException;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+import org.jdom.transform.JDOMSource;
+
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.util.SOSFile;
@@ -400,5 +405,24 @@ public class IOUtils {
     	
     	return true;
     }
-
+    
+    public static void saveXML(Document doc,String filename) {		
+    	
+    	try {
+    		//system.out.println("********************************************************************");
+    		JDOMSource in = new JDOMSource(doc);
+    		Format format = Format.getPrettyFormat();
+    		//format.setEncoding(encoding);			
+    		XMLOutputter outp = new XMLOutputter(format);					
+    		File f = new File(filename);
+    		outp.output(in.getDocument(), new FileWriter(f));			
+    		//system.out.println("xml datei wurde gespeichert: " + f.getCanonicalPath());
+    		//system.out.println("********************************************************************");
+    	} catch (Exception e) {
+    		//System.out.println("..error in MergeAllXMLinDirectory.saveXML. Could not save file " + e.getMessage());
+    		MainWindow.message("Could not save file " + e.getMessage(), SWT.ICON_ERROR);
+    	}
+    	
+    }
+    
 }

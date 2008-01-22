@@ -133,7 +133,7 @@ public class DaysListener {
     				}
     			}
     		used[i] = a;    		
-    		System.out.println(a);
+    		//System.out.println(a);
     		
     	}
     	
@@ -284,9 +284,9 @@ public class DaysListener {
     	return -1;
     }
 
-    private String getDayNumber(int day) {
+    /*private String getDayNumber(int day) {
     	return _days[_type][day];
-    }
+    }*/
     
     private String getDayGroupNumbers (String day) {
     	String retVal = "";

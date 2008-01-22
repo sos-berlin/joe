@@ -59,7 +59,7 @@ public class PeriodsListener {
 	
 	
 	private List getAtChildren() {
-		List ats = null;
+		//List ats = null;
 		ArrayList retval = new ArrayList();
 		
 		if(_parent != null && _parent.getParentElement() != null) {
@@ -71,7 +71,7 @@ public class PeriodsListener {
 			}else {    				
 				date = Utils.getAttributeValue("date",_parent);
 			}
-			ats = _parent.getChildren();
+			//ats = _parent.getChildren();
 			
 			for (int i=0; i <l.size(); i++) {
 				Element at = (Element)l.get(i);
@@ -110,8 +110,10 @@ public class PeriodsListener {
 				item.setText(0, Utils.isAttributeValue("let_run", e) ? "Yes" : "No");
 				item.setText(1, Utils.getAttributeValue("begin", e));
 				item.setText(2, Utils.getAttributeValue("end", e));
-				item.setText(3, Utils.getAttributeValue("repeat", e));                
+				item.setText(3, Utils.getAttributeValue("repeat", e));
 				item.setText(4, Utils.getAttributeValue("single_start", e));
+				item.setText(5, Utils.getAttributeValue("absolute_repeat", e));
+				
 				
 			}
 		}        

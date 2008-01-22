@@ -60,7 +60,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 	
 	private static String[]  groupLabel    = { "Holidays", "Specific dates" };
 	
-	private static String[]  btnAddTooltip = { "btn_add_holiday", "btn_add_specific_day" };
+	//private static String[]  btnAddTooltip = { "btn_add_holiday", "btn_add_specific_day" };
 	
 	private Group            gDates        = null;
 	private Group            gIncludeFiles = null;

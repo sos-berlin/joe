@@ -1,6 +1,6 @@
 package sos.scheduler.editor.conf.listeners;
 
-import java.io.File;
+
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.swt.SWT;
@@ -29,7 +29,7 @@ public class JobChainListener {
 	private String[]     _chainNames;
 	
 	/** brauch ich für den Assistenten*/
-	private Table        tChains;
+	//private Table        tChains;
 	
 	
 	
@@ -85,12 +85,12 @@ public class JobChainListener {
 		table.removeAll();
 		String directory = "";
 		String regex = "";
-		String max = "";
-		String repeat = "";
-		String delay_after_error = "";
+		//String max = "";
+		//String repeat = "";
+		//String delay_after_error = "";
 		String next_state="";
 		
-		File x=new File("");
+		//File x=new File("");
 		
 		if (_chain != null) {
 			Iterator it = _chain.getChildren().iterator();
@@ -99,9 +99,9 @@ public class JobChainListener {
 				if (node.getName() == "file_order_source"){
 					directory = Utils.getAttributeValue("directory", node);
 					regex = Utils.getAttributeValue("regex", node);
-					max = Utils.getAttributeValue("max", node);
-					repeat = Utils.getAttributeValue("repeat", node);
-					delay_after_error = Utils.getAttributeValue("delay_after_error", node);
+					//max = Utils.getAttributeValue("max", node);
+					//repeat = Utils.getAttributeValue("repeat", node);
+					//delay_after_error = Utils.getAttributeValue("delay_after_error", node);
 					next_state = Utils.getAttributeValue("next_state", node);
 					TableItem item = new TableItem(table, SWT.NONE);
 					item.setText(new String[] { directory, regex,next_state});
@@ -136,12 +136,12 @@ public class JobChainListener {
 	public void fillChain(Table table) {
 		table.removeAll();
 		String state = "";
-		String job = "";
+		//String job = "";
 		String nodetype = "";
 		String action = "";
 		String next = "";
 		String error = "";
-		String s = "";
+		//String s = "";
 		String onError = "";
 		if (_chain != null) {
 			
@@ -204,7 +204,7 @@ public class JobChainListener {
 		if (tableNodes == null){
 			_node = null;
 		}else {
-			List nodes = _chain.getChildren();
+			//List nodes = _chain.getChildren();
 			int index = getIndexOfNode(tableNodes.getItem(tableNodes.getSelectionIndex()));
 			_node = (Element) _chain.getChildren().get(index);
 			if (_states == null)
@@ -216,7 +216,7 @@ public class JobChainListener {
 		if (tableSources == null){
 			_source = null;
 		}else {
-			List sources = _chain.getChildren("file_order_source");
+			//List sources = _chain.getChildren("file_order_source");
 			int index = getIndexOfSource(tableSources.getItem(tableSources.getSelectionIndex()));
 			_source = (Element) _chain.getChildren("file_order_source").get(index);
 		}
@@ -370,30 +370,33 @@ public class JobChainListener {
 		setStates();
 	}
 	
-	public void changeUp(Table table, boolean up, boolean isJobchainNode,String state, String job, String delay, String next, 
+	public void changeUp(Table table, boolean up, boolean isJobchainNode ,String state, String job, String delay, String next, 
 			String error, boolean removeFile,String moveTo, int index ) {
-		
+		try {
 		Element node = null;
-		System.out.println("test: index= " + index );
+		
 		if (_node != null) {//Wenn der Knotentyp geändert wird, alten löschen und einen neuen anlegen.
+			
 			if (isJobchainNode && _node.getName().equals("file_order_sink")){
+				
 				_node.detach();
 				_node = null;
 			}
 			if (!isJobchainNode && _node.getName().equals("job_chain_node")){
+				
 				_node.detach();
 				_node = null;
 			}
 		}
 		
 		if (_node != null) {
-			if (isJobchainNode) {
+			if (isJobchainNode) {				
 				Utils.setAttribute("state", state, _node, _dom);
 				Utils.setAttribute("job", job, _node, _dom);
 				Utils.setAttribute("delay", delay, _node, _dom);
 				Utils.setAttribute("next_state", next, _node, _dom);
 				Utils.setAttribute("error_state", error, _node, _dom);
-			}else {
+			}else {				
 				Utils.setAttribute("state", state, _node, _dom);
 				Utils.setAttribute("move_to", moveTo, _node, _dom);
 				Utils.setAttribute("remove", removeFile, _node, _dom);
@@ -406,7 +409,7 @@ public class JobChainListener {
 				Utils.setAttribute("delay", delay, node, _dom);
 				Utils.setAttribute("next_state", next, node, _dom);
 				Utils.setAttribute("error_state", error, node, _dom);
-			}else {
+			}else {								
 				node = new Element("file_order_sink");
 				Utils.setAttribute("state", state, node, _dom);
 				Utils.setAttribute("move_to", moveTo, node, _dom);
@@ -415,64 +418,55 @@ public class JobChainListener {
 			
 		}
 		List l = _chain.getContent();
-		System.out.println("test: l.size= " + l.size() + " _chain.getContenSize(): " + _chain.getContentSize() );
 		int cIndex =-1;
 		boolean found = false;//Hilfsvariabkle für down
-		System.out.println("test: cIndex= " + cIndex );
 		for(int i =0; i < _chain.getContentSize(); i++) {
-			System.out.println("test: " + l.get(i));
-			if(up) {
-				//up
-				if(l.get(i).equals(_node)) {				
-					break;
-				} else if(l.get(i) instanceof Element) {					
-					cIndex = i;					
-					if(cIndex == -1)
-						cIndex = 0;//up
-					System.out.println("test: up cIndex= " + cIndex );
-					
-				}
-			} else {
-				//down
-				if(l.get(i).equals(_node)) {				
-					found = true;
-					System.out.println("test: up found cIndex= " + cIndex );
-				} else if(l.get(i) instanceof Element && found) {
-					cIndex = i;
-					System.out.println("test: down cIndex= " + cIndex );
-					break;
+			if(l.get(i) instanceof Element) {				
+				Element elem_ = (Element)l.get(i);
+				String elemState = Utils.getAttributeValue("state", elem_);
+				String nodeState = Utils.getAttributeValue("state", _node);
+				if(up) {
+					//up				
+					if(elemState.equals(nodeState)) {
+						break;
+					} else {
+						cIndex = i;					
+						if(cIndex == -1)
+							cIndex = 0;//up
+
+					}
+				} else {
+					//down
+					if(elem_.equals(_node)) {
+						found = true;
+					} else if(found) {
+						cIndex = i;
+						break;
+					}
 				}
 			}
-			
 		}
+		node = (Element)_node.clone();		
 		
-		
-		
-		node = (Element)_node.clone();
-		
-		System.out.println("test: _node= " +  Utils.getElementAsString(node));
-		
-		_chain.removeContent(_node);						
-		System.out.println("test: chain removeContent= " +  Utils.getElementAsString(_chain));
-		
+		if(_chain.getChildren().contains(_node)) {
+			_chain.removeContent(_node);						
+		}
 		_chain.addContent(cIndex, node);
-		System.out.println("test: _node addContent= " +  Utils.getElementAsString(_chain));
 		_node = node;
 		
 		
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
 		
-		System.out.println("test: setStates ");
 		setStates();
-		System.out.println("test: fillChain ");
 		fillChain(table);
-		System.out.println("test: fillChain 2 ");
 		if(up)
 			table.setSelection(index-1);
 		else
 			table.setSelection(index+1);
-		
+		} catch (Exception e) {
+			sos.scheduler.editor.app.MainWindow.message(e.getMessage(), SWT.ICON_INFORMATION);
+		}
 	}
 	
 	
@@ -513,12 +507,12 @@ public class JobChainListener {
 			int i = 0;
 			while (it.hasNext()) {
 				Element node = (Element) it.next();
-				if ( Utils.getAttributeValue("state", node)==item.getText(0)) {
+				if ( Utils.getAttributeValue("state", node).equals(item.getText(0))) {
 					index = i;
 				}
 				i = i+1;
 			}
-		}
+		}		
 		return index;
 	}
 	

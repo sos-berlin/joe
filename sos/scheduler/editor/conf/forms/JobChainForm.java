@@ -707,7 +707,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 						//System.out.println("Datensatz ist bereits ganz oben.");
 						//MainWindow.message(Messages.getString("job_chain.top_of_table"), SWT.ICON_INFORMATION);
 					} else if(index > 0) {						
-						org.eclipse.swt.widgets.TableItem tmp = ((org.eclipse.swt.widgets.TableItem[])tNodes.getSelection().clone())[0];
+						//org.eclipse.swt.widgets.TableItem tmp = ((org.eclipse.swt.widgets.TableItem[])tNodes.getSelection().clone())[0];
 						
 						listener.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(), index);
 						
@@ -727,7 +727,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 					if(index == tNodes.getItemCount()-1) {
 						//System.out.println("Datensatz ist bereits ganz unten.");
 					} else if(index >= 0) {
-						org.eclipse.swt.widgets.TableItem tmp = ((org.eclipse.swt.widgets.TableItem[])tNodes.getSelection().clone())[0];						
+						//org.eclipse.swt.widgets.TableItem tmp = ((org.eclipse.swt.widgets.TableItem[])tNodes.getSelection().clone())[0];						
 						listener.changeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(), index);
 						selectNodes();						
 					}

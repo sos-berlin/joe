@@ -6,10 +6,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.conf.listeners.DetailsListener;
+
 
 public class DetailDialogForm {
 	

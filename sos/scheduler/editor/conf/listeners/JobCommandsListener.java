@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;

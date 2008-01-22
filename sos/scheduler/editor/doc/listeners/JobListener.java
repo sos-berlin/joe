@@ -1,9 +1,7 @@
 package sos.scheduler.editor.doc.listeners;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.program.Program;
 import org.jdom.Element;
-
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;

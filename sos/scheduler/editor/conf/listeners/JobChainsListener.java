@@ -1,11 +1,9 @@
 package sos.scheduler.editor.conf.listeners;
 
-import java.io.File;
+
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
@@ -14,7 +12,6 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.forms.JobAssistentForm;
 
 
 public class JobChainsListener {
@@ -153,12 +150,12 @@ public class JobChainsListener {
       table.removeAll();
       String directory = "";
       String regex = "";
-      String max = "";
-      String repeat = "";
-      String delay_after_error = "";
+      //String max = "";
+      //String repeat = "";
+      //String delay_after_error = "";
       String next_state="";
     
-      File x=new File("");
+      
        
       if (_chain != null) {
           Iterator it = _chain.getChildren().iterator();
@@ -167,9 +164,9 @@ public class JobChainsListener {
               if (node.getName() == "file_order_source"){
               	directory = Utils.getAttributeValue("directory", node);
               	regex = Utils.getAttributeValue("regex", node);
-              	max = Utils.getAttributeValue("max", node);
-              	repeat = Utils.getAttributeValue("repeat", node);
-              	delay_after_error = Utils.getAttributeValue("delay_after_error", node);
+              	//max = Utils.getAttributeValue("max", node);
+              	//repeat = Utils.getAttributeValue("repeat", node);
+              	//delay_after_error = Utils.getAttributeValue("delay_after_error", node);
               	next_state = Utils.getAttributeValue("next_state", node);
                 TableItem item = new TableItem(table, SWT.NONE);
                 item.setText(new String[] { directory, regex,next_state});
@@ -208,12 +205,12 @@ public class JobChainsListener {
     public void fillChain(Table table) {
         table.removeAll();
         String state = "";
-        String job = "";
+        //String job = "";
         String nodetype = "";
         String action = "";
         String next = "";
         String error = "";
-        String s = "";
+        //String s = "";
         if (_chain != null) {
 
             setStates();
@@ -273,7 +270,7 @@ public class JobChainsListener {
     	if (tableNodes == null){
         _node = null;
     	}else {
-         List nodes = _chain.getChildren();
+         //List nodes = _chain.getChildren();
          int index = getIndexOfNode(tableNodes.getItem(tableNodes.getSelectionIndex()));
          _node = (Element) _chain.getChildren().get(index);
          if (_states == null)
@@ -285,7 +282,7 @@ public class JobChainsListener {
     	if (tableSources == null){
         _source = null;
     	}else {
-         List sources = _chain.getChildren("file_order_source");
+         //List sources = _chain.getChildren("file_order_source");
          int index = getIndexOfSource(tableSources.getItem(tableSources.getSelectionIndex()));
          _source = (Element) _chain.getChildren("file_order_source").get(index);
     	 }

@@ -890,7 +890,7 @@ public class JobAssistentRunTimeForms {
 		
 	}
 	
-	private void deleteAll() {
+	/*private void deleteAll() {
 		java.util.List everyDay = periodslistener.get_list();
 		
 		//every day löschen
@@ -926,7 +926,7 @@ public class JobAssistentRunTimeForms {
 		
 		
 	}
-	
+	*/
 	private void delete() {
 		//list.remove(list.getSelectionIndex());
 		String selectedStr = list.getItem(list.getSelectionIndex());

@@ -500,12 +500,12 @@ public class HotFolderDialog {
 					//host wurde ausgewählt -> enzsprechende Ports öffnen
 					for (int i = 0; i < tree.getSelection()[0].getItemCount(); i++) {
 						path = sosString.parseToString(tree.getSelection()[0].getItem(i).getData());
-						if (mainwindow.getContainer().openDirectory(path) != null)
+						if (MainWindow.getContainer().openDirectory(path) != null)
 							mainwindow.setSaveStatus();
 					}
 					
 				} else if(!tree.getSelection()[0].getText().equals(sType)){
-					if (mainwindow.getContainer().openDirectory(path) != null)
+					if (MainWindow.getContainer().openDirectory(path) != null)
 						mainwindow.setSaveStatus();
 				}
 				schedulerConfigurationShell.close();

@@ -11,11 +11,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.DetailDom;
-import sos.scheduler.editor.conf.IDetailUpdate;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
 
 public class DetailXMLEditorListener {
 

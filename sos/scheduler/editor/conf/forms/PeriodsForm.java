@@ -163,12 +163,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
      * This method initializes table
      */
     private void createTable() {
-        GridData gridData2 = new org.eclipse.swt.layout.GridData();
-        gridData2.verticalSpan = 3;
-        gridData2.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData2.grabExcessHorizontalSpace = true;
-        gridData2.grabExcessVerticalSpace = true;
-        gridData2.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.CENTER, GridData.FILL, true, true, 1, 3);
         GridData gridData4 = new org.eclipse.swt.layout.GridData();
         gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData4.grabExcessHorizontalSpace = true;
@@ -186,20 +181,24 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
             }
         });
         TableColumn tableColumn = new TableColumn(tPeriods, SWT.NONE);
-        tableColumn.setWidth(60);
+        tableColumn.setWidth(59);
         tableColumn.setText("Let Run");
         TableColumn tableColumn1 = new TableColumn(tPeriods, SWT.NONE);
-        tableColumn1.setWidth(80);
+        tableColumn1.setWidth(56);
         tableColumn1.setText("Begin");
         TableColumn tableColumn2 = new TableColumn(tPeriods, SWT.NONE);
-        tableColumn2.setWidth(80);
+        tableColumn2.setWidth(55);
         tableColumn2.setText("End");
         TableColumn tableColumn3 = new TableColumn(tPeriods, SWT.NONE);
-        tableColumn3.setWidth(80);
+        tableColumn3.setWidth(59);
         tableColumn3.setText("Repeat");
         TableColumn tableColumn4 = new TableColumn(tPeriods, SWT.NONE);
         tableColumn4.setWidth(80);
         tableColumn4.setText("Single Start");
+
+        final TableColumn newColumnTableColumn = new TableColumn(tPeriods, SWT.NONE);
+        newColumnTableColumn.setWidth(92);
+        newColumnTableColumn.setText("Absolute Repeat");
     }
 
 

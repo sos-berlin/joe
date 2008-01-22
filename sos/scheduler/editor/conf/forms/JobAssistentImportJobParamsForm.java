@@ -39,6 +39,7 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
+import sos.scheduler.editor.conf.listeners.ParameterListener;
 
 
 public class JobAssistentImportJobParamsForm {
@@ -92,7 +93,7 @@ public class JobAssistentImportJobParamsForm {
 	
 	private Combo        jobname                = null;
 	
-	private boolean      startWizzard           = true;
+	//private boolean      startWizzard           = true;
 	
 	private Element      jobBackUp              = null;    
 	
@@ -102,6 +103,7 @@ public class JobAssistentImportJobParamsForm {
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean      closeDialog   = false;         
 	
+	private sos.scheduler.editor.conf.listeners.ParameterListener paramListener = null;
 	
 	public JobAssistentImportJobParamsForm() {}
 	
@@ -112,7 +114,8 @@ public class JobAssistentImportJobParamsForm {
 		dom = dom_;
 		update = update_;
 		assistentType = assistentType_;
-		joblistener = new JobListener(dom,  job_, update);				
+		joblistener = new JobListener(dom,  job_, update);
+		paramListener = new ParameterListener(dom, job_, update_, assistentType);		
 	}
 	
 	public JobAssistentImportJobParamsForm(SchedulerDom dom_, 
@@ -127,6 +130,7 @@ public class JobAssistentImportJobParamsForm {
 		jobBackUp = (Element)joblistener.getJob().clone();
 		tParameter = tParameter_;
 		this.assistentType = assistentType_;		
+		paramListener = new ParameterListener(dom, joblistener_.getJob(), update_, assistentType);		
 	}
 	
 	
@@ -308,7 +312,8 @@ public class JobAssistentImportJobParamsForm {
 					if(assistentType == Editor.JOB || assistentType == Editor.JOB_WIZZARD) {
 						
 						tParameter.removeAll();
-						joblistener.fillParams(tParameter);						
+						//joblistener.fillParams(tParameter);						
+						paramListener.fillParams(tParameter);
 						
 					} else {
 						
@@ -483,7 +488,8 @@ public class JobAssistentImportJobParamsForm {
 			butPutAll.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					for(int i = 0; i < tableDescParameters.getItemCount(); i++) {												
-						joblistener.saveParameter(table, 
+						//joblistener.saveParameter(table, 
+						paramListener.saveParameter(table,
 								                  tableDescParameters.getItem(i).getText(0), 
 								                  tableDescParameters.getItem(i).getText(1), 
 								                  (tableDescParameters.getItem(i).getData("parameter_description_de") != null?tableDescParameters.getItem(i).getData("parameter_description_de").toString(): ""), 
@@ -538,7 +544,8 @@ public class JobAssistentImportJobParamsForm {
 					}
 					txtName.setFocus();
 										
-					joblistener.fillParams(listOfParams, table, true);
+					//joblistener.fillParams(listOfParams, table, true);
+					paramListener.fillParams(listOfParams, table, true);
 										
 					if(remItem != null) {
 						MainWindow.message(jobParameterShell, sos.scheduler.editor.app.Messages.getString("assistent.jobparameter.required") + remItem, SWT.ICON_WARNING | SWT.OK );
@@ -628,8 +635,9 @@ public class JobAssistentImportJobParamsForm {
 			tableDescParameters.removeAll();
 			
 			ArrayList jobP = getParameters();
-//			eventuell vorhandene Parameters aus der Job Editor hinzufügen							
-			joblistener.fillParams(jobP, table , true);	
+             /* eventuell vorhandene Parameters aus der Job Editor hinzufügen*/		 					
+			//joblistener.fillParams(jobP, table , true);	
+			paramListener.fillParams(jobP, table , true);
 			
 			if (list != null) {
 				for (int i = 0; i < list.size(); i++) {
@@ -639,7 +647,8 @@ public class JobAssistentImportJobParamsForm {
 						listOfRequired.add(h);												
 					} else {
 						if(h.get("name") != null && 
-								joblistener.existsParams(h.get("name").toString(), table, null) == null) {
+								paramListener.existsParams(h.get("name").toString(), table, null) == null) {
+								//joblistener.existsParams(h.get("name").toString(), table, null) == null) {
 							TableItem item = new TableItem(tableDescParameters, SWT.NONE);
 							item.setBackground(null);
 							
@@ -656,7 +665,8 @@ public class JobAssistentImportJobParamsForm {
 				}
 				
 //				eventuell vorhandene Parameters aus der Job Editor hinzufügen				
-				joblistener.fillParams(listOfRequired, table, false);
+				//joblistener.fillParams(listOfRequired, table, false);
+				paramListener.fillParams(listOfRequired, table, false);
 					
 			}
 		} catch (Exception e) {
@@ -700,8 +710,10 @@ public class JobAssistentImportJobParamsForm {
 				HashMap h = new HashMap();	
 				h.put("name", Utils.getAttributeValue("name", el));
 				h.put("default_value", Utils.getAttributeValue("value", el));
-				h.put("description_de", joblistener.getParameterDescription(Utils.getAttributeValue("name", el), "de") );
-				h.put("description_en", joblistener.getParameterDescription(Utils.getAttributeValue("name", el), "en") );
+				//h.put("description_de", joblistener.getParameterDescription(Utils.getAttributeValue("name", el), "de") );
+				//h.put("description_en", joblistener.getParameterDescription(Utils.getAttributeValue("name", el), "en") );
+				h.put("description_de", paramListener.getParameterDescription(Utils.getAttributeValue("name", el), "de") );
+				h.put("description_en", paramListener.getParameterDescription(Utils.getAttributeValue("name", el), "en") );
 				//h.put("description_en" + );
 				listOfParams.add(h);
 			}
@@ -721,14 +733,14 @@ public class JobAssistentImportJobParamsForm {
 	}
 	
 	
-	private void refreshTable(Table _table, Table _fillTable) {
+	/*private void refreshTable(Table _table, Table _fillTable) {
 		String exists = "";
 		//ArrayList listOfParam = new ArrayList();
 		for(int i = 0; i < _table.getItemCount(); i++) {
 			TableItem item = _table.getItem(i);
 			String name = item.getText(0);
 			if(!existItem(name, _fillTable)) {				
-				joblistener.saveParameter(table, item.getText(0), item.getText(1));				
+				paramListener.saveParameter(table, item.getText(0), item.getText(1));				
 			} else {
 				exists = exists + "\n\t" + name;
 			}
@@ -737,7 +749,7 @@ public class JobAssistentImportJobParamsForm {
 		if(exists != null && exists.trim().length() > 0) {
 			MainWindow.message(jobParameterShell, sos.scheduler.editor.app.Messages.getString("assistent.jobparameter.exist") + exists, SWT.ICON_WARNING | SWT.OK );
 		}
-	}
+	}*/
 	
 	private void close() {
 		int cont = MainWindow.message(jobParameterShell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
@@ -755,7 +767,7 @@ public class JobAssistentImportJobParamsForm {
 			return;
 		}
 		
-		joblistener.saveParameter(table, txtName.getText(),txtValue.getText());
+		paramListener.saveParameter(table, txtName.getText(),txtValue.getText());
 		txtName.setFocus();
 	}
 
@@ -786,7 +798,8 @@ public class JobAssistentImportJobParamsForm {
 				String name = item.getText(0);
 				if(!existItem(name, table)) {							
 					//joblistener.saveParameter(table, item.getText(0), item.getText(1), (item.getData() != null? item.getData().toString():""), item.getBackground().equals(Options.getRequiredColor() ));
-					joblistener.saveParameter(table, item.getText(0), item.getText(1), 
+					//joblistener.saveParameter(table, item.getText(0), item.getText(1), 
+					paramListener.saveParameter(table, item.getText(0), item.getText(1),
 							(item.getData("parameter_description_de") != null? item.getData("parameter_description_de").toString():""), 
 							(item.getData("parameter_description_en") != null? item.getData("parameter_description_en").toString():""),
 							item.getBackground().equals(Options.getRequiredColor() ));
@@ -828,7 +841,8 @@ public class JobAssistentImportJobParamsForm {
 					itemDesc.setText(1, item.getText(1));
 					itemDesc.setData("parameter_description_de", item.getData("parameter_description_de"));
 					itemDesc.setData("parameter_description_en", item.getData("parameter_description_en"));
-					joblistener.deleteParameter(table,  table.getSelectionIndices()[i]);
+					//joblistener.deleteParameter(table,  table.getSelectionIndices()[i]);
+					paramListener.deleteParameter(table,  table.getSelectionIndices()[i]);
 				}
 				
 			}

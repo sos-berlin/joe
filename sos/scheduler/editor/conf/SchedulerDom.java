@@ -11,7 +11,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
-import org.jdom.Attribute;
 import org.jdom.Comment;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -25,11 +24,11 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.Utils;
+
 
 public class SchedulerDom extends DomParser {
     private static final String[] CONFIG_ELEMENTS          = { "base", "security", "cluster", "process_classes", "locks", "script", "http_server",
-            "holidays", "jobs", "job_chains","orders", "commands" };
+            "holidays", "jobs", "job_chains", "orders", "commands" };
 
     private static final String[] JOB_ELEMENTS             = { "description", "params", "environment", "script", "process", "monitor",
             "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };        
@@ -39,6 +38,8 @@ public class SchedulerDom extends DomParser {
     private static final String[] JOBCHAIN_ELEMENTS        = { "file_order_source", "job_chain_node", "file_order_sink"};
     
     private static final String[] HOLIDAYS_ELEMENTS        = { "holiday", "include"};
+    
+    private static final String[] PARAMS_ELEMENTS        = { "param", "include"};
 
     private ArrayList             _disabled                = new ArrayList();
     
@@ -106,6 +107,7 @@ public class SchedulerDom extends DomParser {
         putDomOrder("commands", COMMANDS_ELEMENTS);              
         putDomOrder("start_job", ORDER_ELEMENTS);
         putDomOrder("holidays", HOLIDAYS_ELEMENTS);
+        putDomOrder("params", PARAMS_ELEMENTS);
         
         
         

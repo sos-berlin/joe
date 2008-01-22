@@ -1,12 +1,11 @@
 package sos.scheduler.editor.conf.listeners;
 
 
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.List;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
+//import org.eclipse.swt.SWT;
+//import org.eclipse.swt.widgets.Table;
+//import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -17,7 +16,7 @@ public class ConfigListener {
 
     private Element      _config;
     
-    private List         _params;
+    //private List         _params;
 
 
     public ConfigListener(SchedulerDom dom) {
@@ -251,7 +250,7 @@ public class ConfigListener {
         Utils.setAttribute("configuration_delete_event", configurationDeleteEvent, _config, _dom);
     }
     
-    private void initParams() {
+   /* private void initParams() {
 
         if (_config.getChild("params") != null) {
             _params = _config.getChild("params").getChildren();
@@ -344,4 +343,5 @@ public class ConfigListener {
         }
     }
 
+    */
 }

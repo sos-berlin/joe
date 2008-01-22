@@ -94,7 +94,7 @@ public class SpecificWeekdaysListener {
         StringTokenizer t = new StringTokenizer(day_string.toLowerCase(), ".");
         // ----------------------------------------------------------
 
-        String token = "";
+        //String token = "";
       
         if (t.hasMoreTokens())  which = t.nextToken();
         if (t.hasMoreTokens())  day = t.nextToken();
@@ -226,7 +226,7 @@ public class SpecificWeekdaysListener {
         if (_runtime != null && _runtime.getChild("monthdays") != null) {
           Element daylist = _runtime.getChild("monthdays");
           List list = daylist.getChildren("weekday");
-          int size = list.size();
+          //int size = list.size();
        
 
           Iterator it = list.iterator();

@@ -37,6 +37,8 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.JobListener;
+import sos.scheduler.editor.conf.listeners.ParameterListener;
+
 import org.eclipse.swt.widgets.Table;
 
 public class JobAssistentImportJobsForm {
@@ -86,6 +88,8 @@ public class JobAssistentImportJobsForm {
 	
 	private JobForm               jobForm       = null;
 	
+	private sos.scheduler.editor.conf.listeners.ParameterListener paramListener = null;
+	
 	/** Hilsvariable für das Schliessen des Dialogs. 
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean               closeDialog   = false;         
@@ -97,7 +101,7 @@ public class JobAssistentImportJobsForm {
 		dom = dom_;
 		update = update_;
 		assistentType = assistentType_;
-		listener = new JobsListener(dom, update);
+		listener = new JobsListener(dom, update);		
 	}
 	
 	
@@ -111,9 +115,10 @@ public class JobAssistentImportJobsForm {
 		joblistener = listener_;
 		dom = joblistener.get_dom();
 		update = joblistener.get_main();
-		listener = new JobsListener(dom, update);
+		listener = new JobsListener(dom, update);		
 		tParameter = tParameter_;		
 		assistentType = assistentType_;	
+		paramListener = new ParameterListener(dom, joblistener.getJob(), update, assistentType);
 	}
 	
 	public ArrayList parseDocuments() {
@@ -381,18 +386,20 @@ public class JobAssistentImportJobsForm {
 						if(assistentType == Editor.JOB_WIZZARD) {
 							
 							//Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn assistentype = Editor.Job_Wizzard							
-							joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
-							Element job = joblistener.getJob();
+							//joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+		 					Element job = joblistener.getJob();
 							job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
 							if(tParameter == null)
 								tParameter = jobForm.getTParameter(); 
 							//tParameter.removeAll();							
-							joblistener.fillParams(listOfParams, tParameter, true);
+							//joblistener.fillParams(listOfParams, tParameter, true);
+							paramListener.fillParams(listOfParams, tParameter, true);
 							jobForm.initForm();
 							
 							
 						} else if(assistentType == Editor.JOB) {
-							joblistener.fillParams(listOfParams, tParameter, false);
+							//joblistener.fillParams(listOfParams, tParameter, false);
+							paramListener.fillParams(listOfParams, tParameter, false);
 							
 						} else {						
 							if(listener.existJobname(txtJobname.getText())) {
@@ -442,7 +449,7 @@ public class JobAssistentImportJobsForm {
 					if(!check()) return;
 					
 					HashMap attr = getJobFromDescription();
-					JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
+					//JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
 					
 					if(assistentType == Editor.JOB) {
 						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), joblistener, tParameter, assistentType);					
@@ -492,7 +499,8 @@ public class JobAssistentImportJobsForm {
 			butParameters.setText("Next");
 			if(assistentType == Editor.JOB) {					
 				butParameters.setText("Import Parameters");
-				this.butImport.setVisible(false);
+				//this.butImport.setVisible(false);
+				this.butImport.setVisible(true);
 			} 
 			{
 				final Group jobnamenGroup = new Group(shell, SWT.NONE);

@@ -213,7 +213,8 @@ public class MainWindow  {
 		//////////
 		
 		
-		MenuItem separator = new MenuItem(mFile, SWT.SEPARATOR);
+		//MenuItem separator = new MenuItem(mFile, SWT.SEPARATOR);
+		new MenuItem(mFile, SWT.SEPARATOR);
 		//ende neu
 		//submenu = new Menu(mNew);
 		//MenuItem submenuItem1 = new MenuItem(submenu, SWT.CASCADE);
@@ -373,7 +374,8 @@ public class MainWindow  {
 		mORC.setMenu(pMOpenGlobalScheduler);
 		//
 		
-		MenuItem separatorDetails1 = new MenuItem(mFile, SWT.SEPARATOR);
+		//MenuItem separatorDetails1 = new MenuItem(mFile, SWT.SEPARATOR);
+		new MenuItem(mFile, SWT.SEPARATOR);
 		
 		/*
 		
@@ -482,7 +484,8 @@ public class MainWindow  {
 		
 		//test ende
 		
-		MenuItem separator1 = new MenuItem(mFile, SWT.SEPARATOR);
+		//MenuItem separator1 = new MenuItem(mFile, SWT.SEPARATOR);
+		new MenuItem(mFile, SWT.SEPARATOR);
 		
 		submenuItem2.setMenu(mFile);
 		MenuItem pExit = new MenuItem(mFile, SWT.PUSH);

@@ -2,7 +2,6 @@ package sos.scheduler.editor.conf.listeners;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -87,7 +86,7 @@ public class JobChainConfigurationListener{
 		
 		Element root        = null;					
 		Element order       = null;  
-		Element params_     = null;
+		//Element params_     = null;
 		List process     = null;
 		
 		try {
@@ -210,7 +209,7 @@ public class JobChainConfigurationListener{
         parent.removeAll();        
         Element jobChain = _dom.getRoot().getChild("job_chain");
         if (jobChain != null) {
-            Iterator it = jobChain.getChildren().iterator();
+            //Iterator it = jobChain.getChildren().iterator();
             Element order = jobChain.getChild("order");
             List  pList = order.getChildren("process");
             for(int i = 0; i< pList.size(); i++) {            
