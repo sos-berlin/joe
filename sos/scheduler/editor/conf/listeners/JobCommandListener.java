@@ -97,8 +97,7 @@ public class JobCommandListener {
         if (j >= 0) {
             List l = _command.getChildren();
             if (l != null) {
-                Element e = (Element) l.get(j);
-                //if(e.getName().equals("start_job")) {
+                Element e = (Element) l.get(j);        
                 	if (e.getChild("environment") != null) {
                 		_environments = e.getChild("environment").getChildren();
                 	}
@@ -106,17 +105,9 @@ public class JobCommandListener {
                 		e.addContent(0, new Element("environment"));
                 		_environments = e.getChild("environment").getChildren();
                 	}
-                //} else {
-                	//e.removeChildren("environment");
-                //}
             }
         }
-        /*
-         private void initEnvironment() {
-		_job.addContent(0, new Element("environment"));
-		_environments = _job.getChild("environment").getChildren();
-	}
-         */
+        
 
     }
 

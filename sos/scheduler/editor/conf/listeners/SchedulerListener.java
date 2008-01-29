@@ -194,11 +194,16 @@ public class SchedulerListener {
 		Element config = _dom.getRoot().getChild("config");
 		
 		TreeItem item = new TreeItem(tree, SWT.NONE);
-		
-		
 		item.setData(new TreeData(Editor.CONFIG, config, Options.getHelpURL("config")));
 		item.setData("key", "config");
 		item.setText("Config");
+		if(type == SchedulerDom.DIRECTORY)
+			item.dispose();
+		
+		item = new TreeItem(tree, SWT.NONE);
+		item.setData(new TreeData(Editor.PARAMETER, config, Options.getHelpURL("parameter")));
+		item.setData("key", "parameter");
+		item.setText("Parameter");
 		if(type == SchedulerDom.DIRECTORY)
 			item.dispose();
 		
@@ -310,18 +315,17 @@ public class SchedulerListener {
 	
 	public void treeFillOrders(TreeItem parent, boolean expand) {
 		TreeItem orders = parent;
-		
+
 		if (!parent.getText().equals("Orders")) {
 			Tree t = parent.getParent();
 			for (int i = 0; i < t.getItemCount(); i++)
 				if (t.getItem(i).getText().equals("Orders")) {
 					orders = t.getItem(i);
-				}
-			
+				}			
 		}
-		
+
 		if (orders != null) {
-			
+
 			orders.removeAll();
 			Element commands = _dom.getRoot().getChild("config").getChild("commands");
 			if (commands != null) {
@@ -340,11 +344,12 @@ public class SchedulerListener {
 							} else {
 								item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
 							}
+
 							treeFillOrder(item, e, false);
 						}
 					}
 				}
-				
+
 				List lOrder = commands.getChildren("order");
 				if (lOrder != null) {
 					Iterator it = lOrder.iterator();
@@ -426,6 +431,8 @@ public class SchedulerListener {
 		boolean disable = !Utils.isElementEnabled("job", _dom, job);
 		
 		parent.removeAll();
+		
+		
 		TreeItem item = new TreeItem(parent, SWT.NONE);
 		item.setText("Execute");
 		item.setData(new TreeData(Editor.EXECUTE, job, Options.getHelpURL("job.execute")));
@@ -433,6 +440,13 @@ public class SchedulerListener {
 		if(disable) {
 			item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 		}
+		
+		item = new TreeItem(parent, SWT.NONE);
+		item.setData(new TreeData(Editor.PARAMETER, job, Options.getHelpURL("parameter")));
+		item.setData("key", "parameter");
+		item.setText("Parameter");
+		if(type == SchedulerDom.DIRECTORY)
+			item.dispose();
 		
 		item = new TreeItem(parent, SWT.NONE);
 		item.setText("Monitor");
@@ -488,6 +502,15 @@ public class SchedulerListener {
 		parent.removeAll();
 
 		//Element runtime = order.getChild("run_time");
+		
+		TreeItem item = new TreeItem(parent, SWT.NONE);
+		item.setData(new TreeData(Editor.PARAMETER, order, Options.getHelpURL("parameter")));
+		item.setData("key", "parameter");
+		item.setText("Parameter");
+		if(type == SchedulerDom.DIRECTORY)
+			item.dispose();
+		
+		
 		treeFillRunTimes(parent, order, false, "run_time");
 		
 		List l = order.getChild("run_time").getChildren("month"); 
@@ -591,6 +614,10 @@ public class SchedulerListener {
 					switch (data.getType()) {
 					case Editor.CONFIG:
 						new ConfigForm(c, SWT.NONE, _dom, _gui);						
+						break;
+					case Editor.PARAMETER:					
+						int type = data.getElement().getName().equals("job") ?  Editor.JOB : Editor.CONFIG ;
+						new sos.scheduler.editor.conf.forms.ParameterForm(c, SWT.NONE, _dom, data.getElement(), _gui, type);						
 						break;
 					case Editor.SECURITY:
 						new SecurityForm(c, SWT.NONE, _dom, data.getElement());

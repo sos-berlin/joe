@@ -273,7 +273,7 @@ public class ParameterListener {
 				Object o = it.next();
 				if (o instanceof Element) {
 					Element e = (Element) o;
-					if (file.equals(e.getAttributeValue("file")) && node.equals(e.getAttributeValue("node"))) {
+					if (file.equals(e.getAttributeValue("file")) && (node.equals(e.getAttributeValue("node")) || table.getSelectionCount() > 0 )) {
 						found = true;																		
 						Utils.setAttribute("node", node, e);
 						_dom.setChanged(true);						
@@ -346,7 +346,7 @@ public class ParameterListener {
 	public void saveParameter(Table table, String name, String value) {
 
 		boolean found = false;
-		String value2 = value;
+		//String value2 = value;
 
 		if (_params != null) {
 			int index = 0;
@@ -357,7 +357,7 @@ public class ParameterListener {
 					Element e = (Element) o;
 					if (name.equals(e.getAttributeValue("name"))) {
 						found = true;
-						Utils.setAttribute("value", value2, e);											
+						Utils.setAttribute("value", value, e);											
 						_dom.setChanged(true);
 						if(type == Editor.JOB) _dom.setChangedForDirectory(_parent.getParentElement().getName(), Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);						
 						table.getItem(index).setText(1, value);
@@ -370,7 +370,7 @@ public class ParameterListener {
 		if (!found) {
 			Element e = new Element("param");
 			Utils.setAttribute("name", name, e);
-			Utils.setAttribute("value", value2, e);	
+			Utils.setAttribute("value", value, e);	
 			_dom.setChanged(true);			
 			if(type == Editor.JOB) _dom.setChangedForDirectory(_parent.getParentElement().getName(), Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 			if (_params == null)

@@ -261,7 +261,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         bReplace.setLayoutData(gridData_9);
 
       
-        new ParameterForm(dom, order, main, group, Editor.ORDER);
+        //new ParameterForm(dom, order, main, group, Editor.ORDER);
       
         createGroup1();
         createGroup2();

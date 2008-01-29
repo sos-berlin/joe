@@ -522,7 +522,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		
-		new ParameterForm(_dom, _dom.getRoot().getChild("config"), update, gConfig, Editor.CONFIG);
+		//new ParameterForm(_dom, _dom.getRoot().getChild("config"), update, gConfig, Editor.CONFIG);
 				
 		gJavaOptions = new Group(gConfig, SWT.NONE);
 		gJavaOptions.setText("Main Java Options");
@@ -554,14 +554,27 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 	 * This method initializes group
 	 */
 	private void createGroup() {
-		GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
 		
-		gridData4.heightHint = 46;
-		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, true);
+		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
+		gridData.heightHint = 153;
 		group = new Group(gConfig, SWT.NONE);
 		group.setText("Comment");
 		group.setLayoutData(gridData);
-		group.setLayout(new GridLayout());
+		final GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
+		group.setLayout(gridLayout);
+
+		final Button button = new Button(group, SWT.NONE);
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
+				if(text != null)
+					tComment.setText(text);
+			}
+		});
+		button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
+		
+		GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
 		
 		
 		
@@ -573,6 +586,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 				listener.setComment(tComment.getText());
 			}
 		});
+		new Label(group, SWT.NONE);
 	}
 	
 	

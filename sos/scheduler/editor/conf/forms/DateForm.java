@@ -205,7 +205,6 @@ public class DateForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 6, 2);
-		gridData.heightHint = 280;
 		lDates.setLayoutData(gridData);
 		
 		bRemoveDate = new Button(group, SWT.NONE);
@@ -329,13 +328,13 @@ public class DateForm extends Composite implements IUpdateLanguage {
 	}
 	
 	private void createGroupForIncludes() {
-		gIncludeFiles = new Group(gDates, SWT.NONE);
+		//gIncludeFiles = new Group(gDates, SWT.NONE);
 		//gIncludeFiles.setVisible(false);
-		final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
-		gIncludeFiles.setLayoutData(gridData_1);
-		gIncludeFiles.setLayout(new GridLayout());
+		//final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
+		//gIncludeFiles.setLayoutData(gridData_1);
+		//gIncludeFiles.setLayout(new GridLayout());
 		
-		gInclude = new Group(gIncludeFiles, SWT.NONE);
+		gInclude = new Group(gDates, SWT.NONE);
 		gInclude.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		final GridLayout gridLayout_2 = new GridLayout();
 		gridLayout_2.numColumns = 3;
@@ -343,6 +342,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 		gInclude.setText("Include Files");
 		
 		label4 = new Label(gInclude, SWT.NONE);
+		label4.setLayoutData(new GridData());
 		label4.setText("File:");
 		
 		tInclude = new Text(gInclude, SWT.BORDER);
@@ -360,8 +360,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 				}
 			}
 		});
-		final GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-		gridData6.widthHint = 50;
+		final GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		tInclude.setLayoutData(gridData6);
 		
 		bAdd = new Button(gInclude, SWT.NONE);
@@ -381,9 +380,11 @@ public class DateForm extends Composite implements IUpdateLanguage {
 		label_1.setText("Label");
 		
 		label1_1 = new Label(gInclude, SWT.NONE);
-		label1_1.setLayoutData(new GridData());
+		label1_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		label1_1.setVisible(false);
 		label1_1.setText("Classname:");
+		new Label(gInclude, SWT.NONE);
+		new Label(gInclude, SWT.NONE);
 		
 		lInclude = new List(gInclude, SWT.BORDER | SWT.H_SCROLL);
 		lInclude.addSelectionListener(new SelectionAdapter() {
@@ -391,7 +392,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 				bRemove.setEnabled(lInclude.getSelectionCount() > 0);
 			}
 		});
-		final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true);
+		final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, false, true, 2, 1);
 		lInclude.setLayoutData(gridData4);
 		
 		bRemove = new Button(gInclude, SWT.NONE);

@@ -781,7 +781,9 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		gFileOrderSource = new Group(jobChainGroup, SWT.NONE);
 		
 		
-		gFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1));
+		final GridData gridData_10 = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
+		gridData_10.heightHint = 169;
+		gFileOrderSource.setLayoutData(gridData_10);
 		gFileOrderSource.setText("File Order Source");
 		final GridLayout gridLayout_1 = new GridLayout();
 		gridLayout_1.marginTop = 5;

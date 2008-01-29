@@ -3,6 +3,7 @@ package sos.scheduler.editor.app;
 import java.io.StringWriter;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -698,4 +699,23 @@ public class Utils {
     	newValue = newValue.replaceAll("&amp;", "&");
     	return newValue;
     }
+    
+    /*public static String editComment() {
+        TextDialog dialog = new TextDialog(MainWindow.getSShell());
+        dialog.setText("Comment");
+        String message = "comment";
+        dialog.setContent(message, SWT.LEFT);
+        dialog.getStyledText().setEnabled(true);
+        dialog.getStyledText().setEditable(true);
+        
+        
+        StyleRange bold = new StyleRange();
+        bold.start = 0;
+        bold.length = message.indexOf("\n");
+        bold.fontStyle = SWT.BOLD;
+        
+        String retVal = dialog.open(true);
+        
+        return retVal;
+    }*/
 }

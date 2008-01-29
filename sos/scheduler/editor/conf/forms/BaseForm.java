@@ -98,22 +98,11 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes group
      */
     private void createGroup() {
-        GridData gridData9 = new org.eclipse.swt.layout.GridData();
-        gridData9.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData9.grabExcessVerticalSpace = false;
-        gridData9.heightHint = 80;
-        gridData9.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        GridData gridData8 = new org.eclipse.swt.layout.GridData();
-        gridData8.horizontalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-        gridData8.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
         GridData gridData21 = new org.eclipse.swt.layout.GridData();
         gridData21.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData21.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData11 = new org.eclipse.swt.layout.GridData();
-        gridData11.horizontalSpan = 3;
-        gridData11.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
+        GridData gridData11 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);
         gridData11.heightHint = 10;
-        gridData11.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         GridData gridData4 = new org.eclipse.swt.layout.GridData();
         gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
@@ -124,10 +113,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         gridData2.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData2.verticalSpan = 1;
         gridData2.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-        GridData gridData1 = new org.eclipse.swt.layout.GridData();
-        gridData1.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData1.verticalSpan = 2;
-        gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
+        GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 3;
         gridLayout.verticalSpacing = 5;
@@ -139,9 +125,13 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         label1.setText("Base File:");
         tFile = new Text(group, SWT.BORDER);
         bApply = new Button(group, SWT.NONE);
+        GridData gridData8 = new org.eclipse.swt.layout.GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
         label3 = new Label(group, SWT.NONE);
         label3.setText("Comment:");
         label3.setLayoutData(gridData8);
+        GridData gridData9 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, false);
+        gridData9.heightHint = 80;
+        
         tComment = new Text(group, SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
         tComment.setLayoutData(gridData9);
         tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
@@ -151,6 +141,19 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
                 bApply.setEnabled(!tFile.getText().equals(""));
             }
         });
+
+        final Button button = new Button(group, SWT.NONE);
+        final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
+        gridData.widthHint = 23;
+        button.setLayoutData(gridData);
+        button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
+				if(text != null)
+					tComment.setText(text);
+			}
+		});
+        button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.SHADOW_OUT);
         label.setText("separator");
         label.setLayoutData(gridData11);

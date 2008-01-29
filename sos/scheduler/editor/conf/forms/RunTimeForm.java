@@ -3,9 +3,12 @@ package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -84,7 +87,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         createPeriodForm();
         gRunTime.setLayout(gridLayout3);
         GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, true);
-        gridData4.heightHint = 318;
+        gridData4.heightHint = 348;
 
         final Group group = new Group(gRunTime, SWT.NONE);
         group.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -107,6 +110,34 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         tFunction.setLayoutData(gridData10_1_1);
         holidayForm = new DateForm(gRunTime, SWT.NONE, 0);
         holidayForm.setLayoutData(gridData4);
+        GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
+        gComment = new Group(gRunTime, SWT.NONE);
+        gComment.setText("Comment");
+        gComment.setLayoutData(gridData);
+        final GridLayout gridLayout_1 = new GridLayout();
+        gridLayout_1.numColumns = 2;
+        gComment.setLayout(gridLayout_1);
+
+        final Button button = new Button(gComment, SWT.NONE);
+        button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
+				if(text != null)
+					tComment.setText(text);
+			}
+		});
+		button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
+		
+        GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
+        tComment = new Text(gComment, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
+        tComment.setLayoutData(gridData1);
+        tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
+        tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+                listener.setComment(tComment.getText());
+            }
+        });
+        new Label(gComment, SWT.NONE);
         createGroup2();
         
     }
@@ -130,24 +161,6 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
      * This method initializes group
      */
     private void createGroup2() {
-        GridData gridData1 = new org.eclipse.swt.layout.GridData();
-        gridData1.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData1.grabExcessHorizontalSpace = true;
-        gridData1.grabExcessVerticalSpace = true;
-        gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
-        gComment = new Group(gRunTime, SWT.NONE);
-        gComment.setText("Comment");
-        gComment.setLayoutData(gridData);
-        gComment.setLayout(new GridLayout());
-        tComment = new Text(gComment, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
-        tComment.setLayoutData(gridData1);
-        tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
-        tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                listener.setComment(tComment.getText());
-            }
-        });
     }
 
 

@@ -104,7 +104,7 @@ public class TextDialog extends Dialog {
 
 
     private void init() {
-        Shell parent = getParent();
+        Shell parent = getParent(); 
         _shell = new Shell(parent, _shellStyle);
         _shell.addShellListener(new ShellAdapter() {
         	public void shellClosed(final ShellEvent e) {   
@@ -117,6 +117,8 @@ public class TextDialog extends Dialog {
         });
         
         _shell.setVisible(false);
+        
+        
         
         _shell.setText(getText());
 

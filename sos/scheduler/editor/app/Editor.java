@@ -109,6 +109,8 @@ public class Editor {
 
     public final static int HTTP_AUTHENTICATION    = 74;
     
+    public final static int PARAMETER              = 75;
+    
     public static String    SCHEDULER_ENCODING     = "";
 
     public static String    DOCUMENTATION_ENCODING = "utf-8";
