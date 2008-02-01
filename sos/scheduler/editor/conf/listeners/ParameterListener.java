@@ -53,7 +53,9 @@ public class ParameterListener {
 
 		Element params = _parent.getChild("params");
 		if (params != null) {
-			_params = params.getChildren("param");
+			//_params = params.getChildren("param");
+			_params = params.getChildren();
+			
 			_includeParams = params.getChildren("include");
 		}
 
@@ -69,11 +71,13 @@ public class ParameterListener {
 	private void initParams() {
 		Element params = _parent.getChild("params");
 		if (params != null) {
-			_params = params.getChildren("param");
+			//_params = params.getChildren("param");
+			_params = params.getChildren();
 			_includeParams = params.getChildren("include");
 		} else {
 			_parent.addContent(0, new Element("params"));
-			_params = _parent.getChild("params").getChildren("param");
+			//_params = _parent.getChild("params").getChildren("param");
+			_params = _parent.getChild("params").getChildren();
 			_includeParams = _parent.getChild("params").getChildren("include");
 		}
 	}
@@ -90,23 +94,30 @@ public class ParameterListener {
 			Iterator it = _params.iterator();
 			while (it.hasNext()) {
 				Object o = it.next();
-				if (o instanceof Element) {					
-					if(((Element) o).getAttributeValue("name") != null) {
+				if (o instanceof Element) {	
+					Element e = (Element) o;
+					if (e.getName().equals("copy_params") && type == Editor.COMMANDS) {
 						TableItem item = new TableItem(table, SWT.NONE);
-						item.setText(0, ((Element) o).getAttributeValue("name"));
-						item.setText(1, (((Element) o).getAttributeValue("value") != null ? ((Element) o).getAttributeValue("value") : ""));
-						if(parameterDescription != null) {
-							item.setData("parameter_description_de", parameterDescription.get("parameter_description_de_" + ((Element) o).getAttributeValue("name")));
-							item.setData("parameter_description_en", parameterDescription.get("parameter_description_en_" + ((Element) o).getAttributeValue("name")));
-						}
-						if(parameterRequired != null && isParameterRequired(((Element) o).getAttributeValue("name")))
-							item.setBackground(Options.getRequiredColor());
-					} 
+						item.setText(0, "<from>");
+						item.setText(1, ((Element) o).getAttributeValue("from"));
+					} else if (e.getName().equals("param")){
+						if(e.getAttributeValue("name") != null) {
+							TableItem item = new TableItem(table, SWT.NONE);
+							item.setText(0, ((Element) o).getAttributeValue("name"));
+							item.setText(1, (((Element) o).getAttributeValue("value") != null ? ((Element) o).getAttributeValue("value") : ""));
+							if(parameterDescription != null) {
+								item.setData("parameter_description_de", parameterDescription.get("parameter_description_de_" + ((Element) o).getAttributeValue("name")));
+								item.setData("parameter_description_en", parameterDescription.get("parameter_description_en_" + ((Element) o).getAttributeValue("name")));
+							}
+							if(parameterRequired != null && isParameterRequired(((Element) o).getAttributeValue("name")))
+								item.setBackground(Options.getRequiredColor());
+						} 
+					}
 				}
 			}						
 		}		
-		if(type == Editor.JOB)
-			_main.updateJob();;
+		//if(type == Editor.JOB)
+		//	_main.updateJob();;
 	} 
 
 	public void fillParams(ArrayList listOfParams, Table table, boolean refreshTable) {
@@ -151,8 +162,8 @@ public class ParameterListener {
 				}
 			}						
 		}		
-		if(type == Editor.JOB)
-			_main.updateJob();
+		//if(type == Editor.JOB)
+		//	_main.updateJob();
 
 	} 
 
@@ -168,8 +179,8 @@ public class ParameterListener {
 				}
 			}						
 		}		
-		if(type == Editor.JOB)
-			_main.updateJob();
+		//if(type == Editor.JOB)
+		//	_main.updateJob();
 	} 
 
 
@@ -194,6 +205,9 @@ public class ParameterListener {
 			_params.remove(index);
 			_dom.setChanged(true);
 			if(type == Editor.JOB) _dom.setChangedForDirectory(_parent.getParentElement().getName(), Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);			
+		}
+		if(_params.size() == 0) {
+			_parent.removeChild("params");
 		}
 		table.remove(index);
 
@@ -235,7 +249,8 @@ public class ParameterListener {
 		if((_dom.isLifeElement() || _dom.isDirectory()) && _params == null) {
 			Element params = _parent.getChild("params");
 			if (params != null)
-				_params = params.getChildren("param");
+				//_params = params.getChildren("param");
+				_params = params.getChildren();
 		}
 
 		if (_params == null)
@@ -247,9 +262,11 @@ public class ParameterListener {
 
 		if(parameterDescription_de!=null && parameterDescription_de.trim().length()>0) {
 			item.setData("parameter_description_de", parameterDescription_de);
+			parameterDescription.put( "parameter_description_de_"+ name, parameterDescription_de);
 		}
 		if(parameterDescription_en!=null && parameterDescription_en.trim().length()>0) {
 			item.setData("parameter_description_en", parameterDescription_en);
+			parameterDescription.put( "parameter_description_en_"+ name, parameterDescription_de);
 		}
 
 
@@ -343,7 +360,70 @@ public class ParameterListener {
 		}			
 	}
 
-	public void saveParameter(Table table, String name, String value) {
+	   public void saveParameter(Table table, String name, String value) {
+	        boolean found = false;
+	        if (_params != null) {
+
+	            if (name.equals("<from>") && type == Editor.COMMANDS) {
+	                found = (table.getSelectionIndex() > -1);
+	            } else {
+	                int index = 0;
+	                Iterator it = _params.iterator();
+	                while (it.hasNext()) {
+	                    Object o = it.next();
+	                    if (o instanceof Element) {
+	                        Element e = (Element) o;
+	                        if (e.getName().equals("param")) {
+	                            if (name.equals(e.getAttributeValue("name"))) {
+	                                found = true;
+	                                e.setAttribute("value", value);
+	                                _dom.setChanged(true);
+	                                if(type == Editor.JOB) _dom.setChangedForDirectory(_parent.getParentElement().getName(), Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+	                                table.getItem(index).setText(1, value);
+	                            }
+	                        }
+	                        index++;
+	                    }
+	                }
+	            }
+
+	            if (name.equals("<from>") && found && type == Editor.COMMANDS) {
+	                int index = table.getSelectionIndex();
+	                table.getItem(index).setText(0, name);
+	                table.getItem(index).setText(1, value);
+	                Element e = (Element) _params.get(index);
+	                e.setName("copy_params");
+	                e.setAttribute("from", value);
+	                e.removeAttribute("name");
+	                e.removeAttribute("value");
+	                _dom.setChanged(true);
+	                if(type == Editor.JOB) _dom.setChangedForDirectory(_parent.getParentElement().getName(), Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+	            }
+	        }
+
+	        if (!found) {
+	            Element e = new Element("param");
+	            if (!name.equals("<from>")) {
+	                e.setAttribute("name", name);
+	                e.setAttribute("value", value);
+	            } else {
+	                e.setName("copy_params");
+	                e.setAttribute("from", value);
+	            }
+
+	            _dom.setChanged(true);
+	            if(type == Editor.JOB) _dom.setChangedForDirectory(_parent.getParentElement().getName(), Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+	            if (_params == null)
+	            	initParams();
+	            if (_params != null)
+	                _params.add(e);
+
+	            TableItem item = new TableItem(table, SWT.NONE);
+	            item.setText(new String[] { name, value });
+	        }
+
+	    }
+	/*public void saveParameter(Table table, String name, String value) {
 
 		boolean found = false;
 		//String value2 = value;
@@ -384,6 +464,7 @@ public class ParameterListener {
 		}		
 
 	}
+	*/
 
 	public SchedulerDom get_dom() {
 		return _dom;

@@ -138,9 +138,9 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         gridData18.grabExcessVerticalSpace = true;
         gridData18.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         GridLayout gridLayout3 = new GridLayout();
-        gridLayout3.numColumns = 4;
+        gridLayout3.numColumns = 2;
         gOrder = new Group(group, SWT.NONE);
-        final GridData gridData_10 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        final GridData gridData_10 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_10.widthHint = 577;
         gOrder.setLayoutData(gridData_10);
         gOrder.setText("Order");
@@ -167,8 +167,6 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, false);
         gridData_3.widthHint = 319;
         tOrderId.setLayoutData(gridData_3);
-        new Label(gOrder, SWT.NONE);
-        new Label(gOrder, SWT.NONE);
 
         final Label jobchainLabel = new Label(gOrder, SWT.NONE);
         jobchainLabel.setLayoutData(new GridData());
@@ -185,8 +183,6 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_1.widthHint = 233;
         cJobchain.setLayoutData(gridData_1);
-        new Label(gOrder, SWT.NONE);
-        new Label(gOrder, SWT.NONE);
 
         final Label titleLabel = new Label(gOrder, SWT.NONE);
         final GridData gridData_6 = new GridData(47, SWT.DEFAULT);
@@ -201,10 +197,9 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
 
-        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
+        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_5.widthHint = 351;
         tTitle.setLayoutData(gridData_5);
-        new Label(gOrder, SWT.NONE);
 
         final Label priorityLabel = new Label(gOrder, SWT.NONE);
         priorityLabel.setLayoutData(new GridData());
@@ -222,10 +217,9 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("priority", tPriority.getText());
             }
         });
-        final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
+        final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_2.widthHint = 389;
         tPriority.setLayoutData(gridData_2);
-        new Label(gOrder, SWT.NONE);
 
         final Label stateLabel = new Label(gOrder, SWT.NONE);
         stateLabel.setLayoutData(new GridData());

@@ -39,11 +39,11 @@ public class JobCommandListener {
         _command = command;
         _main = update;
         if (_command != null)
-            _job = _command.getParentElement();
+            _job = _command.getParentElement().getParentElement();
     }
 
 
-    public void fillCommands(Element job, TreeItem parent, boolean expand) {
+    /*public void fillCommands(Element job, TreeItem parent, boolean expand) {
         List commands = job.getChildren("commands");
         java.util.ArrayList listOfReadOnly = _dom.getListOfReadOnlyFiles();
         if (commands != null) {
@@ -68,7 +68,7 @@ public class JobCommandListener {
         parent.setExpanded(expand);
 
     }
-
+*/
 
     private void initParams(Table table) {
         int j = 0;
@@ -356,7 +356,7 @@ public class JobCommandListener {
     }
 
 
-    public String getCommandAttribute(Table table, String attribute) {
+    /*public String getCommandAttribute(Table table, String attribute) {
         int i = getActCommand(table);
         List l = _command.getChildren();
         Element e = (Element) l.get(i);
@@ -381,7 +381,7 @@ public class JobCommandListener {
             }
         }
     }
-
+*/
 
     public void setCommandName(Button bApply, String cmd, String value, Table table) {
         if (_command != null) {
@@ -495,6 +495,49 @@ public class JobCommandListener {
 
 	public List getEnvironments() {
 		return _environments;
+	}
+
+	
+	public void setJob(String job) {
+		Utils.setAttribute("job", job, _command, _dom);
+		_main.updateCommand(job);
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+	}
+	
+	public void setAt(String at) {
+		Utils.setAttribute("at", at, _command, _dom);
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+	}
+
+	public void setOrderId(String orderId) {
+		Utils.setAttribute("id", orderId, _command, _dom);
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+	}
+	
+	public void setPriority(String priority) {
+		Utils.setAttribute("priority", priority, _command, _dom);
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+	}
+	
+	public void setReplace(String replace) {
+		Utils.setAttribute("replace", replace, _command, _dom);
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+	}
+	
+	public void setState(String state) {
+		Utils.setAttribute("state", state, _command, _dom);
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+	}
+	
+	public void setJobChain(String jobChain) {
+		Utils.setAttribute("job_chain", jobChain, _command, _dom);
+		_main.updateCommand(jobChain);
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+	}
+	
+	public void setTitle(String title) {
+		Utils.setAttribute("title", title, _command, _dom);
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 
 }

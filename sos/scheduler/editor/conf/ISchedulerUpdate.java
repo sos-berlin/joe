@@ -18,6 +18,7 @@ public interface ISchedulerUpdate extends IDataChanged {
 
     public void updateCommands();
 
+    public void updateExitCodesCommand();
 
     public void updateOrder(String s);
 
@@ -34,7 +35,7 @@ public interface ISchedulerUpdate extends IDataChanged {
     public void updateJobChains();
     
     public void updateJobChain(String newName, String oldName);
-    
+        
     
     
 }

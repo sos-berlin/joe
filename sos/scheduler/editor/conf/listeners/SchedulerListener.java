@@ -445,8 +445,8 @@ public class SchedulerListener {
 		item.setData(new TreeData(Editor.PARAMETER, job, Options.getHelpURL("parameter")));
 		item.setData("key", "parameter");
 		item.setText("Parameter");
-		if(type == SchedulerDom.DIRECTORY)
-			item.dispose();
+		//if(type == SchedulerDom.DIRECTORY)
+		//	item.dispose();
 		
 		item = new TreeItem(parent, SWT.NONE);
 		item.setText("Monitor");
@@ -521,10 +521,58 @@ public class SchedulerListener {
 		
 		parent.setExpanded(expand);
 	}
+		
+	public void treeFillExitCodesCommands(TreeItem parent, Element elem, boolean expand) {
+		parent.removeAll();
+	    treeFillExitCodesCommands(parent, elem.getChildren("order"));
+	    treeFillExitCodesCommands(parent, elem.getChildren("add_order"));
+	    treeFillExitCodesCommands(parent, elem.getChildren("start_job"));
+	    
+	}
+	
+	private void treeFillExitCodesCommands(TreeItem parent,List cmdList) {		
+		for(int i =0; i < cmdList.size(); i++) {
+	    	Element cmdElem = (Element)cmdList.get(i);   
+	    	TreeItem item = new TreeItem(parent, SWT.NONE);
+	    	String name = Utils.getAttributeValue("job_chain", cmdElem) != null && Utils.getAttributeValue("job_chain",cmdElem).length() > 0? Utils.getAttributeValue("job_chain", cmdElem) : Utils.getAttributeValue("job", cmdElem);
+	    	item.setText(cmdElem.getName()+ ": " + name);
+	    	item.setData(new TreeData(Editor.JOB_COMMAND, cmdElem, Options.getHelpURL("job.commands")));
+	    	item.setExpanded(false);
+	    	//PARAMETER
+	    	item = new TreeItem(item, SWT.NONE);
+			item.setData(new TreeData(Editor.PARAMETER, cmdElem, Options.getHelpURL("parameter")));
+			item.setData("key", "parameter");
+			item.setText("Parameter");
+	    }
+	}
 	
 	
 	public void treeFillCommands(TreeItem parent, Element job, boolean expand) {
-		new JobCommandListener(_dom, null, null).fillCommands(job, parent, expand);
+		//new JobCommandListener(_dom, null, null).fillCommands(job, parent, expand);
+		//fillCommands(job, parent, expand);
+		List commands = job.getChildren("commands");
+        java.util.ArrayList listOfReadOnly = _dom.getListOfReadOnlyFiles();
+        if (commands != null) {
+            Iterator it = commands.iterator();
+            parent.removeAll();
+
+            while (it.hasNext()) {
+                Element e = (Element) it.next();
+                if (e.getAttributeValue("on_exit_code") != null) {
+                    TreeItem item = new TreeItem(parent, SWT.NONE);
+                    item.setText(e.getAttributeValue("on_exit_code"));
+                    item.setData(new TreeData(Editor.JOB_COMMAND_EXIT_CODES, e, Options.getHelpURL("job.commands")));
+                                
+                    if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {
+                    	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+                    } else {
+                    	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+                    }
+                    treeFillExitCodesCommands(item, e, false);
+                }
+            }
+        }
+        parent.setExpanded(expand);
 	}
 	
 	
@@ -616,7 +664,7 @@ public class SchedulerListener {
 						new ConfigForm(c, SWT.NONE, _dom, _gui);						
 						break;
 					case Editor.PARAMETER:					
-						int type = data.getElement().getName().equals("job") ?  Editor.JOB : Editor.CONFIG ;
+						int type = getType(data.getElement());
 						new sos.scheduler.editor.conf.forms.ParameterForm(c, SWT.NONE, _dom, data.getElement(), _gui, type);						
 						break;
 					case Editor.SECURITY:
@@ -653,8 +701,13 @@ public class SchedulerListener {
 					case Editor.ORDER:
 						new OrderForm(c, SWT.NONE, _dom, data.getElement(), _gui);
 						break;
+					case Editor.JOB_COMMAND_EXIT_CODES:
+						//new JobCommandForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+						new sos.scheduler.editor.conf.forms.JobCommandExitCodesForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+						break;
 					case Editor.JOB_COMMAND:
 						new JobCommandForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+						//new sos.scheduler.editor.conf.forms.JobCommandExitCodesForm(c, SWT.NONE, _dom, data.getElement(), _gui);
 						break;
 					case Editor.JOB_COMMANDS:
 						new JobCommandsForm(c, SWT.NONE, _dom, data.getElement(), _gui, this);
@@ -906,5 +959,43 @@ public class SchedulerListener {
 				treeFillDays(item, runtime, 6, false);
 		}
 		
+	}
+	
+	/*public void fillCommands(Element job, TreeItem parent, boolean expand) {
+        List commands = job.getChildren("commands");
+        java.util.ArrayList listOfReadOnly = _dom.getListOfReadOnlyFiles();
+        if (commands != null) {
+            Iterator it = commands.iterator();
+            parent.removeAll();
+
+            while (it.hasNext()) {
+                Element e = (Element) it.next();
+                if (e.getAttributeValue("on_exit_code") != null) {
+                    TreeItem item = new TreeItem(parent, SWT.NONE);
+                    item.setText(e.getAttributeValue("on_exit_code"));
+                    item.setData(new TreeData(Editor.JOB_COMMAND, e, Options.getHelpURL("job.commands")));
+                                
+                    if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {
+                    	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+                    } else {
+                    	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+                    }
+                }
+            }
+        }
+        parent.setExpanded(expand);
+
+    }
+*/
+	
+	private int getType(Element elem){
+		if(elem.getName().equals("job") )
+			return Editor.JOB; 
+		else if(elem.getName().equals("order") && elem.getParentElement().getName().equals("commands"))
+			return Editor.COMMANDS;
+		else if( (elem.getName().equals("order") || elem.getName().equals("add_order") || elem.getName().equals("start_job")) )
+			return Editor.JOB_COMMANDS;
+		else
+			return Editor.CONFIG ;
 	}
 }

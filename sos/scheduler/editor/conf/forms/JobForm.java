@@ -813,7 +813,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 	}
 	
 	
-	private void startWizzard(boolean onlyParams) {
+	public void startWizzard(boolean onlyParams) {
 		if(listener.getInclude()!= null && listener.getInclude().trim().length() > 0) {
 			//JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren        			
 			
