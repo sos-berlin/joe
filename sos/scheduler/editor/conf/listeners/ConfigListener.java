@@ -22,6 +22,14 @@ public class ConfigListener {
     public ConfigListener(SchedulerDom dom) {
         _dom = dom;
         _config = _dom.getRoot().getChild("config");
+        
+        //umschreiben des Attributs main_scheduler in supervisor. Grund: main_scheduler Attribut veraltet
+        String newAttr = Utils.getAttributeValue("main_scheduler", _config);
+        if(newAttr != null && newAttr.trim().length() > 0) {
+        	setMainScheduler(newAttr);
+        	_config.removeAttribute("main_scheduler");
+        	dom.setChanged(true);
+        }
     }
 
 
@@ -96,17 +104,18 @@ public class ConfigListener {
 
 
     public String getMainSchedulerHost() {
-        return Utils.getAttributeValue("main_scheduler", _config).split(":")[0];
+    	
+        return Utils.getAttributeValue("supervisor", _config).split(":")[0];
     }
 
 
     public int getMainSchedulerPort() {
-        String[] str = Utils.getAttributeValue("main_scheduler", _config).split(":");
+        String[] str = Utils.getAttributeValue("supervisor", _config).split(":");
         if (str.length > 1) {
             try {
                 return new Integer(str[1]).intValue();
             } catch (Exception e) {
-                Utils.setAttribute("main_scheduler", str[0] + ":0", _config, _dom);
+                Utils.setAttribute("supervisor", str[0] + ":0", _config, _dom);
             }
         }
         return 0;
@@ -116,12 +125,12 @@ public class ConfigListener {
     public void setMainScheduler(String scheduler) {
         if (scheduler.startsWith(":"))
             scheduler = "";
-        Utils.setAttribute("main_scheduler", scheduler, _config, _dom);
+        Utils.setAttribute("supervisor", scheduler, _config, _dom);
     }
 
 
     public boolean isMainScheduler() {
-        return _config.getAttribute("main_scheduler") != null;
+        return _config.getAttribute("supervisor") != null;
     }
 
 

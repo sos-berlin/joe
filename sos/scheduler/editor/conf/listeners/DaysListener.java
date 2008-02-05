@@ -379,26 +379,101 @@ public class DaysListener {
     public void updateGroup (String newGroup, String oldGroup) {
     	String[] split = null;
     	Element daylist = _runtime.getChild(_elementName[_type]);
+    	
     	if (daylist == null && _type != SPECIFIC_MONTHS) {
     		daylist = new Element(_elementName[_type]);
     		_runtime.addContent(daylist);
     	}
+    	
     	if(_type == SPECIFIC_MONTHS) {
     		List l = _runtime.getChildren("month");
     		boolean found = false;
     		for(int i = 0; i < l.size(); i++) {
     			Element e = (Element)l.get(i);
-    			if(Utils.getAttributeValue("month", e).equals(oldGroup) )
+    			if(Utils.getAttributeValue("month", e).equals(oldGroup) ) {
     				found = true;        		
+    				e.setAttribute("month", newGroup);
+    			}
     		}
     		if(!found) {
     			daylist = new Element(_elementName[_type]);
     			_runtime.addContent(daylist);
     			Utils.setAttribute("month", newGroup, daylist);
     		}
+    			//Utils.setAttribute("month", newGroup, daylist);
+    			
     	} else {
     		
-    		if(_type == ULTIMOS) {
+    		
+    		///test
+    		/*List l = daylist.getChildren("day");
+    		boolean found = false;
+    		for(int i = 0; i <  l.size(); i++) {
+    			Element e = (Element)l.get(i);
+    			if(_type == ULTIMOS) {
+    				if(getNormalizedUltimos(Utils.getAttributeValue("day", e)).equals(getNormalizedUltimos(oldGroup)) )
+    					found = true;        	
+    				//Utils.setAttribute("day", newGroup, e);
+    				Utils.setAttribute("day", newGroup, daylist);
+    			} else {
+    				if(Utils.getAttributeValue("day", e).equals(oldGroup) )
+    					found = true;        	
+    				//Utils.setAttribute("day", newGroup, e);
+    				Utils.setAttribute("day", newGroup, daylist);
+    			}
+    		}
+    		
+    		if(!found) {
+    			if(_type == ULTIMOS) {
+        			split= getNormalizedUltimos(newGroup);        	        	
+        		} else {
+        			split = newGroup.split(" ");
+        		}
+        		String attr = "";
+        		for(int i = 0; i < split.length; i++) {
+        			attr = (attr.length() == 0 ? "" : attr + " ") + getDayNumber(split[i]);
+        		}
+        		daylist.addContent(new Element("day").setAttribute("day", attr));	
+    		}
+    		*/	
+    		///////test 2
+    		//if(_type == ULTIMOS) {
+    	
+    			boolean found = false;
+    			String[] used = getUsedDays() ;
+    	    	
+    	    	if(used.length > 0) {
+    	    		for (int i = 0; _dayElements != null && i < _dayElements.length; i++) {
+    	    			Element e = _dayElements[i];
+    	    			String str = "";
+    	    			String[] group = Utils.getAttributeValue("day", e).split(" ");
+    	    			if(group.length == 1) {
+    	    				str = _days[_type][Integer.parseInt(group[0]) - _offset[_type]];
+    	    			} else
+    	    				for (int j = 0; j < group.length; j++) {
+    	    					str = (str.length() == 0 ? str : str + " ") + _days[_type][Integer.parseInt(group[j]) - _offset[_type]]; 
+    	    				}
+    	    			    if(str.equals(oldGroup)) {    	    			    	
+    	    			    	e.setAttribute("day", getDayGroupNumbers(newGroup));
+    	    			    	found = true;
+    	    			    }
+    	    			//used[i] = str;    	
+    	    		}
+    	    		if(!found) {
+    	    			split= getNormalizedUltimos(newGroup); 
+    	    			String attr = "";
+    	        		for(int i = 0; i < split.length; i++) {
+    	        			attr = (attr.length() == 0 ? "" : attr + " ") + getDayNumber(split[i]);
+    	        		}
+    	        		daylist.addContent(new Element("day").setAttribute("day", attr));
+    	    		}
+    	    	//}
+    	    	
+    	    	
+    		}
+    		
+    		//////////
+    		/*if(_type == ULTIMOS) {
     			split= getNormalizedUltimos(newGroup);        	        	
     		} else {
     			split = newGroup.split(" ");
@@ -407,7 +482,8 @@ public class DaysListener {
     		for(int i = 0; i < split.length; i++) {
     			attr = (attr.length() == 0 ? "" : attr + " ") + getDayNumber(split[i]);
     		}
-    		daylist.addContent(new Element("day").setAttribute("day", attr));	
+    		daylist.addContent(new Element("day").setAttribute("day", attr));
+    			*/
     	}
     	
     	
@@ -526,11 +602,30 @@ public class DaysListener {
     	return _days[_type];
     }
     
+    /*public String[] getNormalizedUltimos(String group) {
+    	String[] allUltimos =  getUltimos();
+    	ArrayList l = new ArrayList();
+    	//for (int i = 0; i < allUltimos.length; i++) {
+    	//for (int i = allUltimos.length - 1; i != 0; i--) {
+    		if(group.indexOf(allUltimos[i].concat(" ")) > -1 || group.endsWith(allUltimos[i])) {
+    			l.add(allUltimos[i]);
+    		}
+    	}
+    	String[] split = new String[l.size()];
+    	for(int i = 0; i < l.size(); i++)
+    	    split[i] = l.get(i).toString()
+    	//for(int i = l.size()-1 ; i >= 0; i--)
+    		//split[l.size() - i - 1] = l.get(i).toString();
+    	return split;
+    }
+*/
+    
     public String[] getNormalizedUltimos(String group) {
     	String[] allUltimos =  getUltimos();
     	ArrayList l = new ArrayList();
     	for (int i = 0; i < allUltimos.length; i++) {
-    		if(group.indexOf(allUltimos[i].concat(" ")) > -1 || group.endsWith(allUltimos[i])) {
+    		//if(group.indexOf(allUltimos[i].concat(" ")) > -1 || group.endsWith(" ".concat(allUltimos[i]))) {
+    		if(group.startsWith(allUltimos[i]) || group.indexOf(" " + allUltimos[i].concat(" ")) > -1 || group.endsWith(" ".concat(allUltimos[i]))) {
     			l.add(allUltimos[i]);
     		}
     	}
@@ -539,5 +634,4 @@ public class DaysListener {
     		split[i] = l.get(i).toString();
     	return split;
     }
-
 }

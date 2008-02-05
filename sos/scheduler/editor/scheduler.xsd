@@ -775,6 +775,13 @@
                             </xsd:attribute>
                         </xsd:complexType>
                     </xsd:element>
+
+                    <xsd:element name="include">
+                        <xsd:complexType>
+                            <xsd:attribute name="file" type="File" use="required"/>
+                            <xsd:attribute name="node" type="String"/>
+                        </xsd:complexType>
+                    </xsd:element>
                 </xsd:choice>
             </xsd:sequence>
         </xsd:complexType>

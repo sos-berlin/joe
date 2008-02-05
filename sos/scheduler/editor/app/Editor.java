@@ -113,6 +113,8 @@ public class Editor {
     
     public final static int JOB_COMMAND_EXIT_CODES = 76;
     
+    public final static int SCHEDULES              = 77;    
+    
     public static String    SCHEDULER_ENCODING     = "";
 
     public static String    DOCUMENTATION_ENCODING = "utf-8";

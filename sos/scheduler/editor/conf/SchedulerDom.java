@@ -33,7 +33,7 @@ public class SchedulerDom extends DomParser {
     private static final String[] JOB_ELEMENTS             = { "description", "params", "environment", "script", "process", "monitor",
             "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };        
 
-    private static final String[] RUNTIME_ELEMENTS         = { "period", "at", "date", "weekdays", "monthdays", "ultimos", "holidays" };
+    private static final String[] RUNTIME_ELEMENTS         = { "period", "at", "date", "weekdays", "monthdays", "ultimos", "holidays" };        
     
     private static final String[] JOBCHAIN_ELEMENTS        = { "file_order_source", "job_chain_node", "file_order_sink"};
     
@@ -62,6 +62,7 @@ public class SchedulerDom extends DomParser {
     private static final String[] COMMANDS_ELEMENTS        = { "add_order", "order", "start_job"};
     
     private static final String[] ORDER_ELEMENTS        = { "params", "environment"};
+        
     
 
     /** life Dateien: Schreibheschützte Dateien*/
@@ -90,6 +91,8 @@ public class SchedulerDom extends DomParser {
     
     public static final int       LIFE_ADD_ORDER           = 7;
     
+    public static final int       LIFE_SCHEDULE            = 8;
+    
     private        boolean   isDirectory                   =false;
     
 
@@ -108,7 +111,7 @@ public class SchedulerDom extends DomParser {
         putDomOrder("start_job", ORDER_ELEMENTS);
         putDomOrder("holidays", HOLIDAYS_ELEMENTS);
         putDomOrder("params", PARAMS_ELEMENTS);
-        
+        putDomOrder("schedules", RUNTIME_ELEMENTS);
         
         
 
@@ -125,7 +128,8 @@ public class SchedulerDom extends DomParser {
     		putDomOrder("run_time", RUNTIME_ELEMENTS);
     		putDomOrder("job_chain", CONFIG_ELEMENTS_DIRECTORY);
     		//putDomOrder("commands", CONFIG_ELEMENTS_DIRECTORY);
-    		putDomOrder("commands", COMMANDS_ELEMENTS);    		
+    		putDomOrder("commands", COMMANDS_ELEMENTS);    	
+    		putDomOrder("schedules", RUNTIME_ELEMENTS);
     		isDirectory = true;
     		initScheduler();
     	} else if(type==LIFE_JOB) {
@@ -142,6 +146,9 @@ public class SchedulerDom extends DomParser {
     		initScheduler(type);
     	} else if(type==LIFE_LOCK) {
     		putDomOrder("config", new String[]{"locks"});
+    		initScheduler(type);
+    	} else if(type==LIFE_SCHEDULE) {
+    		putDomOrder("config", new String[]{"schedules"});
     		initScheduler(type);
     	} else {
     		new SchedulerDom();

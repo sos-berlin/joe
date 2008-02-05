@@ -135,19 +135,46 @@ public class SchedulerListener {
 			}
 			
 		} else if(type == SchedulerDom.LIFE_PROCESS_CLASS) {
+			String name = "";
+			if(_dom.getFilename() != null && new java.io.File(_dom.getFilename()).exists()) {
+				name = new java.io.File(_dom.getFilename()).getName();
+				name = name.substring(0, name.indexOf(".process_class.xml"));
+				
+				checkLifeAttributes(element, name);
+				
+				Utils.setAttribute("name", name, element);				
 						
+			} 
+					
+			
 			Element spooler = new Element("spooler");
 			Element config = new Element("config");
 			spooler.addContent(config);
 			Element process_classes = new Element("process_classes");
 			config.addContent(process_classes);
-			process_classes.addContent((Element)element.clone());        				
+			process_classes.addContent((Element)element.clone());    
+			
+			//String name = new java.io.File(_dom.getFilename()).getName();
+			//name = name.substring(0, name.indexOf(".process_class.xml"));
+			
+			//checkLifeAttributes(element, name);
+			//Utils.setAttribute("name", name, process_classes);			
+			
 			item.setData(new TreeData(Editor.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"), "process_classes"));
 			item.setData("key", "process_classes");
 			item.setText("Process Classes");
 			
 		} else if(type == SchedulerDom.LIFE_LOCK) {
-			
+			String name = "";
+			if(_dom.getFilename() != null && new java.io.File(_dom.getFilename()).exists()) {
+				name = new java.io.File(_dom.getFilename()).getName();
+				name = name.substring(0, name.indexOf(".lock.xml"));
+				
+				checkLifeAttributes(element, name);
+				
+				Utils.setAttribute("name", name, element);				
+						
+			} 
 			Element spooler = new Element("spooler");
 			Element config = new Element("config");
 			spooler.addContent(config);
@@ -271,6 +298,12 @@ public class SchedulerListener {
 			
 			
 		}
+		
+		/*item = new TreeItem(tree, SWT.NONE);
+		item.setData(new TreeData(Editor.SCHEDULES, config, Options.getHelpURL("schedules"), "schedules"));
+		item.setData("key", "schedules");
+		item.setText("Schedules");
+		*/
 		
 		item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.HOLIDAYS, config, Options.getHelpURL("holidays"), "holidays"));
@@ -507,8 +540,6 @@ public class SchedulerListener {
 		item.setData(new TreeData(Editor.PARAMETER, order, Options.getHelpURL("parameter")));
 		item.setData("key", "parameter");
 		item.setText("Parameter");
-		if(type == SchedulerDom.DIRECTORY)
-			item.dispose();
 		
 		
 		treeFillRunTimes(parent, order, false, "run_time");
@@ -770,6 +801,9 @@ public class SchedulerListener {
 					case Editor.COMMANDS:
 						new CommandsForm(c, SWT.NONE, _dom, _gui);
 						break;
+					case Editor.SCHEDULES:
+						new sos.scheduler.editor.conf.forms.SchedulesForm(c, SWT.NONE, _dom, _gui);
+						break;
 					default:
 						System.out.println("no form found for " + item.getText());
 					}
@@ -991,7 +1025,7 @@ public class SchedulerListener {
 	private int getType(Element elem){
 		if(elem.getName().equals("job") )
 			return Editor.JOB; 
-		else if(elem.getName().equals("order") && elem.getParentElement().getName().equals("commands"))
+		else if(elem.getName().equals("order") && (_dom.isLifeElement() || (elem.getParentElement() != null && elem.getParentElement().getName().equals("commands"))))
 			return Editor.COMMANDS;
 		else if( (elem.getName().equals("order") || elem.getName().equals("add_order") || elem.getName().equals("start_job")) )
 			return Editor.JOB_COMMANDS;

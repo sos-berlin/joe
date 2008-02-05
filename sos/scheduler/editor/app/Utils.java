@@ -91,9 +91,11 @@ public class Utils {
         //value = escape(value);
         
         if (value == null || value.equals(defaultValue) ) {
-            element.removeAttribute(attribute);
+        	//if(element.getName().equals("param") && attribute.equals("value")) {
+        		element.removeAttribute(attribute);
             if (dom != null)
                 dom.setChanged(true);
+        	//}
         } else if (!value.equals(element.getAttributeValue(attribute))) {
             element.setAttribute(attribute, value);
             if (dom != null) {

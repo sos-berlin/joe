@@ -334,7 +334,8 @@ public abstract class DomParser {
     		Attribute attr = (Attribute)listOfAtrributes.get(i);
     		//System.out.println("name  : " + attr.getName());
     		//System.out.println("value : " + attr.getValue());    		
-    		Utils.setAttribute(attr.getName(), Utils.escape(attr.getValue()), e);
+    		//Utils.setAttribute(attr.getName(), Utils.escape(attr.getValue()), e);
+    		e.setAttribute(attr.getName(), Utils.escape(attr.getValue()));
     		//System.out.println("neue value  : " + e.getAttributeValue(attr.getName()));
     		
     		//System.out.println("*************************************");
@@ -355,7 +356,8 @@ public abstract class DomParser {
     		newValue = newValue.replaceAll("&gt;", ">");
     		newValue = newValue.replaceAll("&amp;", "&");
     		*/
-    		Utils.setAttribute(attr.getName(), Utils.deEscape(attr.getValue()), e);
+    		//Utils.setAttribute(attr.getName(), Utils.deEscape(attr.getValue()), e);
+    		e.setAttribute(attr.getName(), Utils.deEscape(attr.getValue()));
     		
     		//System.out.println("neue value  : " + newValue);
     		
