@@ -235,12 +235,12 @@ public class JobAssistentRunOptionsForms {
 					timeout.showTimeOutForm();
 					if(jobname != null) 													
 						timeout.setJobname(jobname);
-					if(jobBackUp != null)
+					//if(jobBackUp != null)
 						timeout.setBackUpJob(jobBackUp, jobForm);
 				} else {
 					JobAssistentTimeoutForms timeout = new JobAssistentTimeoutForms(dom, update, job, assistentType);
 					timeout.showTimeOutForm();
-					if(jobBackUp != null)
+					//if(jobBackUp != null)
 						timeout.setBackUpJob(jobBackUp, jobForm);
 				}
 				closeDialog = true;
@@ -258,7 +258,7 @@ public class JobAssistentRunOptionsForms {
 				derror.showDelayAfterErrorForm();
 				if(jobname != null) 													
 					derror.setJobname(jobname);
-				if(jobBackUp != null)
+				//if(jobBackUp != null)
 					derror.setBackUpJob(jobBackUp, jobForm);
 				closeDialog = true;
 				shellRunOptions.dispose();								
@@ -299,7 +299,8 @@ public class JobAssistentRunOptionsForms {
 	 * @param backUpJob
 	 */
 	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
-		jobBackUp = (Element)backUpJob.clone();	
+		if(backUpJob != null)
+			jobBackUp = (Element)backUpJob.clone();	
 		jobForm = jobForm_;
 	}
 	

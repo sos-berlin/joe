@@ -203,12 +203,12 @@ public class JobAssistentTimeoutForms {
 					if(job.getChild("process") != null) {
 						JobAssistentProcessForms process = new JobAssistentProcessForms(dom, update, job, assistentType);
 						process.showProcessForm();	
-						if(jobBackUp != null)
+						//if(jobBackUp != null)
 							process.setBackUpJob(jobBackUp, jobForm);	
 					} else {
 						JobAssistentScriptForms script = new JobAssistentScriptForms(dom, update, job, assistentType);
 						script.showScriptForm();	
-						if(jobBackUp != null)
+						//if(jobBackUp != null)
 							script.setBackUpJob(jobBackUp, jobForm);
 					}
 					closeDialog = true;
@@ -225,7 +225,7 @@ public class JobAssistentTimeoutForms {
 						
 						JobAssistentRunOptionsForms runOP = new JobAssistentRunOptionsForms(dom, update, joblistener.getJob(), assistentType);
 						runOP.showRunOptionsForm();	
-						if(jobBackUp != null)
+						//if(jobBackUp != null)
 							runOP.setBackUpJob(jobBackUp, jobForm);
 						closeDialog = true;
 						shellTimeout.dispose();
@@ -265,7 +265,8 @@ public class JobAssistentTimeoutForms {
 	 * @param backUpJob
 	 */
 	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
-		jobBackUp = (Element)backUpJob.clone();	
+		if(backUpJob != null)
+			jobBackUp = (Element)backUpJob.clone();	
 		jobForm = jobForm_;
 	}
 	

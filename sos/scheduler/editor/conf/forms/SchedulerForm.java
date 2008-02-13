@@ -397,10 +397,14 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	}
 	
 	
-	public void updateTree(String which) {
-		if(which.equalsIgnoreCase("main"))
-			listener.treeFillMain(tree, cMainForm);	
-		else if(which.equalsIgnoreCase("jobs"))
+	public void updateTree(String which) {		
+		if(which.equalsIgnoreCase("main")) {
+			if(dom.isLifeElement()) {
+				listener.treeFillMainForLifeElement(tree, cMainForm);
+			} else {
+				listener.treeFillMain(tree, cMainForm);
+			}
+		} else if(which.equalsIgnoreCase("jobs"))
 			listener.treeSelection(tree, cMainForm);
 		
 	}
@@ -478,6 +482,11 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		return dom;
 	}
 	
+	 public void updateSchedules() { 		
+		 if (tree.getSelectionCount() > 0)
+			 listener.treeFillSchedules(tree.getSelection()[0]);                
+		}
+		
 	/*public void updateMonths(int type) {
 	 
 	 if (tree.getSelectionCount() > 0 && type==3) {

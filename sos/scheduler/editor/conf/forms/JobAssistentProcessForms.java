@@ -275,12 +275,12 @@ public class JobAssistentProcessForms {
 						timeout.showTimeOutForm();
 						if(jobname != null) 													
 							timeout.setJobname(jobname);
-						if(jobBackUp != null)
+						//if(jobBackUp != null)
 							timeout.setBackUpJob(jobBackUp, jobForm);
 					} else {
 						JobAssistentTimeoutForms timeout = new JobAssistentTimeoutForms(dom, update, executeListener.getJob(), assistentType);
 						timeout.showTimeOutForm();
-						if(jobBackUp != null)
+						//if(jobBackUp != null)
 							timeout.setBackUpJob(jobBackUp, jobForm);
 					}
 					closeDialog = true;
@@ -324,14 +324,14 @@ public class JobAssistentProcessForms {
 			execute.showExecuteForm();
 			if(jobname != null) 													
 				execute.setJobname(jobname);
-			if(jobBackUp != null)
+			//if(jobBackUp != null)
 				execute.setBackUpJob(jobBackUp, jobForm);
 		} else {
 			JobAssistentTasksForm tasks = new JobAssistentTasksForm(dom, update,  executeListener.getJob(), assistentType);											
 			tasks.showTasksForm();	
 			if(jobname != null) 													
 				tasks.setJobname(jobname);
-			if(jobBackUp != null)
+			//if(jobBackUp != null)
 				tasks.setBackUpJob(jobBackUp, jobForm);
 		}				
 		closeDialog = true;
@@ -344,7 +344,8 @@ public class JobAssistentProcessForms {
 	 * @param backUpJob
 	 */
 	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
-		jobBackUp = (Element)backUpJob.clone();	
+		if(backUpJob != null)
+			jobBackUp = (Element)backUpJob.clone();	
 		jobForm = jobForm_;
 	}
 	

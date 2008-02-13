@@ -139,7 +139,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private Button      butOpen           = null;
 	
 	
-	private ParameterForm parForm          = null; 
+	//private ParameterForm parForm          = null; 
 	
 	
 	
@@ -728,7 +728,6 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 	}
 	
 	
-	
 	public void initForm(){
 		tName.setText(listener.getName());
 		updateTree = true;
@@ -815,25 +814,31 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 	
 	public void startWizzard(boolean onlyParams) {
 		if(listener.getInclude()!= null && listener.getInclude().trim().length() > 0) {
-			//JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren        			
-			
-			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener, parForm.getTParameter(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+			//JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren        						
+			//JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener, parForm.getTParameter(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+			//JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener.getJob(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener, onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
 			if(!onlyParams)
 				paramsForm.setJobForm(this);
 			paramsForm.showAllImportJobParams(listener.getInclude());        			
 		} else { 
 			//Liste aller Jobdokumentation 
-			JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, parForm.getTParameter(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+			//JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, parForm.getTParameter(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+			//JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+			JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, Editor.JOB_WIZZARD);
+			
+			
 			if(!onlyParams)
 				importJobForms.setJobForm(this);
-			importJobForms.showAllImportJobs();
+			importJobForms.showAllImportJobs();						
+			
 		}
 	}
 	
 	
-	public Table getTParameter() {
+	/*public Table getTParameter() {
 		return parForm.getTParameter();
-	}
+	}*/
 	
 	
 } // @jve:decl-index=0:visual-constraint="10,10"

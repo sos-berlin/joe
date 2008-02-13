@@ -120,6 +120,19 @@ public class JobAssistentImportJobParamsForm {
 	
 	public JobAssistentImportJobParamsForm(SchedulerDom dom_, 
 			ISchedulerUpdate update_, 
+			JobListener joblistener_, 					
+			int assistentType_) {
+		
+		dom = dom_;
+		update = update_;		
+		joblistener = joblistener_;	
+		jobBackUp = (Element)joblistener.getJob().clone();		
+		this.assistentType = assistentType_;		
+		paramListener = new ParameterListener(dom, joblistener_.getJob(), update_, assistentType);		
+	}
+	
+	public JobAssistentImportJobParamsForm(SchedulerDom dom_, 
+			ISchedulerUpdate update_, 
 			JobListener joblistener_, 
 			Table tParameter_,			
 			int assistentType_) {
@@ -309,13 +322,23 @@ public class JobAssistentImportJobParamsForm {
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					
-					if(assistentType == Editor.JOB || assistentType == Editor.JOB_WIZZARD) {
+					//if(assistentType == Editor.JOB || assistentType == Editor.JOB_WIZZARD) {
+					if(assistentType == Editor.PARAMETER) {
 						
 						tParameter.removeAll();
 						//joblistener.fillParams(tParameter);						
 						paramListener.fillParams(tParameter);
 						
-					} else {
+					} else if(assistentType == Editor.JOB || assistentType == Editor.JOB_WIZZARD) {
+						
+						//joblistener.getJob();
+						
+							
+						jobForm.initForm();
+						
+						
+						
+					} else if(assistentType == Editor.JOB_CHAINS) {
 						
 						if(jobname != null)
 							jobname.setText(Utils.getAttributeValue("name",joblistener.getJob()));
@@ -337,7 +360,7 @@ public class JobAssistentImportJobParamsForm {
 					JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(dom, update, assistentType);
 					if(jobname != null) 													
 						importJobs.setJobname(jobname);
-					if(jobBackUp != null && jobForm != null) 
+					//if(jobBackUp != null && jobForm != null) 
 						importJobs.setBackUpJob(jobBackUp, jobForm);
 					importJobs.showAllImportJobs(joblistener);
 					
@@ -355,11 +378,12 @@ public class JobAssistentImportJobParamsForm {
 			butNext.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					if(assistentType != Editor.JOB) {
-						JobAssistentTasksForm tasks = new JobAssistentTasksForm(dom, update, joblistener.getJob(), assistentType);											
+						JobAssistentTasksForm tasks = new JobAssistentTasksForm(dom, update, joblistener.getJob(), assistentType);						
+						
 						tasks.showTasksForm();	
 						if(jobname != null) 													
 							tasks.setJobname(jobname);
-						if(jobBackUp != null)
+						//if(jobBackUp != null)
 							tasks.setBackUpJob(jobBackUp, jobForm);
 					} 
 					closeDialog = true;					
@@ -370,7 +394,7 @@ public class JobAssistentImportJobParamsForm {
 				
 			butNext.setText(" Next ");
 			
-			if(assistentType == Editor.JOB) {
+			if(assistentType == Editor.JOB || assistentType == Editor.PARAMETER) {
 				butNext.setEnabled(false);
 				butBack.setEnabled(false);
 			} else {
@@ -754,8 +778,16 @@ public class JobAssistentImportJobParamsForm {
 	private void close() {
 		int cont = MainWindow.message(jobParameterShell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		if(cont == SWT.OK) {
-			if(jobBackUp != null) 
+			if(jobBackUp != null) {
 				joblistener.getJob().setContent(jobBackUp.cloneContent());
+				List attr = ((Element)(jobBackUp.clone())).getAttributes();
+				joblistener.getJob().getAttributes().clear();
+				for(int i =0; i < attr.size(); i++) {
+					org.jdom.Attribute at = (org.jdom.Attribute)attr.get(i);
+					joblistener.getJob().setAttribute( at.getName(), at.getValue());
+				}
+				
+			}
 			jobParameterShell.dispose();
 		} 
 	}
@@ -776,7 +808,8 @@ public class JobAssistentImportJobParamsForm {
 	}	
 	
 	public void setJobForm(JobForm jobForm_){
-		jobForm = jobForm_;
+		if(jobForm_ != null)
+			jobForm = jobForm_;
 	}
 	
 	/**
@@ -785,8 +818,10 @@ public class JobAssistentImportJobParamsForm {
 	 * @param backUpJob
 	 */
 	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
-		jobBackUp = (Element)backUpJob.clone();	
-		jobForm = jobForm_;
+		if(backUpJob != null)
+			jobBackUp = (Element)backUpJob.clone();	
+		if(jobForm_!= null)
+			jobForm = jobForm_;
 	}
 	
 	private void addParams() {

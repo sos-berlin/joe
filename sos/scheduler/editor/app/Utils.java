@@ -90,6 +90,8 @@ public class Utils {
         
         //value = escape(value);
         
+        //System.out.println("attribute[" + attribute + " = " + value + "]  default: " + defaultValue);
+        
         if (value == null || value.equals(defaultValue) ) {
         	//if(element.getName().equals("param") && attribute.equals("value")) {
         		element.removeAttribute(attribute);

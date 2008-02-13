@@ -35,8 +35,7 @@ public class DaysListener {
 
     private static String[]   _elementName = { "weekdays", "monthdays", "ultimos", "month" };
 
-    private static String[]   _weekdays    = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
-            "Sunday"                      };
+    private static String[]   _weekdays    = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     
     private static String[]   _monthdays   = { "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th",
@@ -55,6 +54,7 @@ public class DaysListener {
     private static String[][] _days        = { _weekdays, _monthdays, _ultimos, _month };
 
     private static int[]      _offset      = { 1, 1, 0, 1 };
+    //private static int[]      _offset      = { 0, 1, 0, 1 };
 
     private String[]          _usedDays    = null;
 
@@ -126,7 +126,12 @@ public class DaysListener {
     		} else
     			for(int j = 0; j < groupUsedDay.length; j++) {
     				try {
-    					a = (a.length() == 0? a : a + " ") + getAllDays()[Integer.parseInt(groupUsedDay[j])- _offset[_type]];
+    					//if(_type == 0)
+    						//a = (a.length() == 0? a : a + " ") + getAllDays()[Integer.parseInt(groupUsedDay[j])];
+    						//a = (a.length() == 0? a : a + " ") + groupUsedDay[j];
+    					//else
+    						a = (a.length() == 0? a : a + " ") + getAllDays()[Integer.parseInt(groupUsedDay[j])- _offset[_type]];
+    					//a = (a.length() == 0? a : a + " ") + getAllDays()[Integer.parseInt(groupUsedDay[j])];
     				} catch (Exception e) {
     					//falls groupUsedDay[j] bereits in STring konvertiert ist
     					a = (a.length() == 0? a : a + " ") + groupUsedDay[j];
@@ -212,15 +217,33 @@ public class DaysListener {
             while (it.hasNext()) {
                 Element e = (Element) it.next();
                 try {
-                	if(Utils.getAttributeValue("day",e).indexOf(" ") == -1) {
-                		int day = new Integer(e.getAttributeValue("day")).intValue();
+                	if(Utils.getAttributeValue("day",e).indexOf(" ") == -1) {                		
+                		int day = 0;
+                		if(!Utils.isNumeric(e.getAttributeValue("day"))) {
+                		   day = getDayNumber(e.getAttributeValue("day"));
+                		   e.setAttribute("day", String.valueOf(day));
+                		} else {
+                			day = new Integer(e.getAttributeValue("day")).intValue();
+                		}
+                		if(_type == WEEKDAYS && day == 0) {
+                			day = 7; //0 und 7 werden als Sonntag interpretiert
+                			e.setAttribute("day", String.valueOf(day));
+                		}
                 		days[i] = _days[_type][day - _offset[_type]];  
                 		elements[i++] = e;                		
                 	} else {
                 		String[] split = Utils.getAttributeValue("day",e).split(" ");                		
                 		String attr = "";
                 		for(int j = 0; j < split.length ; j++) {
-                			int day = new Integer(split[j]).intValue();
+                			int day = 0;
+                			if(!Utils.isNumeric(split[j])) {
+                				day =  getDayNumber(split[j]); 
+                			} else {
+                			    day = new Integer(split[j]).intValue();
+                			}
+                			if(_type == WEEKDAYS && day == 0) {
+                    			day = 7; //0 und 7 werden als Sonntag interpretiert
+                    		}
                 			attr = (attr == null || attr.length() == 0? "" : attr + " ") + day;                			
                 		}
                 		

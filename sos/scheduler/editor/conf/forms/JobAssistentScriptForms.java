@@ -336,12 +336,12 @@ public class JobAssistentScriptForms {
 							timeout.showTimeOutForm();	
 							if(jobname != null) 													
 								timeout.setJobname(jobname);
-							if(jobBackUp != null)
+							//if(jobBackUp != null)
 								timeout.setBackUpJob(jobBackUp, jobForm);
 						} else {
 							JobAssistentTimeoutForms timeout = new JobAssistentTimeoutForms(dom, update, scriptlistener.getParent(), assistentType);
 							timeout.showTimeOutForm();
-							if(jobBackUp != null)
+							//if(jobBackUp != null)
 								timeout.setBackUpJob(jobBackUp, jobForm);
 						}
 						closeDialog = true;
@@ -386,14 +386,14 @@ public class JobAssistentScriptForms {
 			execute.showExecuteForm();
 			if(jobname != null) 													
 				execute.setJobname(jobname);
-			if(jobBackUp != null)
+			//if(jobBackUp != null)
 				execute.setBackUpJob(jobBackUp, jobForm);
 		} else {
 			JobAssistentTasksForm tasks = new JobAssistentTasksForm(dom, update,  scriptlistener.getParent(), assistentType);											
 			tasks.showTasksForm();	
 			if(jobname != null) 													
 				tasks.setJobname(jobname);
-			if(jobBackUp != null)
+			//if(jobBackUp != null)
 				tasks.setBackUpJob(jobBackUp, jobForm);
 		}
 		closeDialog = true;
@@ -406,7 +406,8 @@ public class JobAssistentScriptForms {
 	 * @param backUpJob
 	 */
 	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
-		jobBackUp = (Element)backUpJob.clone();	
+		if(backUpJob != null)
+			jobBackUp = (Element)backUpJob.clone();	
 		jobForm = jobForm_;
 	}
 	

@@ -303,6 +303,7 @@ public class SchedulerListener {
 		item.setData(new TreeData(Editor.SCHEDULES, config, Options.getHelpURL("schedules"), "schedules"));
 		item.setData("key", "schedules");
 		item.setText("Schedules");
+		treeFillSchedules(item);
 		*/
 		
 		item = new TreeItem(tree, SWT.NONE);
@@ -804,6 +805,10 @@ public class SchedulerListener {
 					case Editor.SCHEDULES:
 						new sos.scheduler.editor.conf.forms.SchedulesForm(c, SWT.NONE, _dom, _gui);
 						break;
+					case Editor.SCHEDULE:
+						new RunTimeForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+						break;
+					
 					default:
 						System.out.println("no form found for " + item.getText());
 					}
@@ -871,14 +876,16 @@ public class SchedulerListener {
 			_runtime = new Element(run_time);
 			job.addContent(_runtime);	
 			runtime=_runtime;
-		}  else if(!run_time.equals("run_time")){
-			_runtime = job.getParentElement().getParentElement().getChild("run_time");			
+		}  else if(!run_time.equals("run_time") && !job.getName().equals("schedule")){
+			_runtime = job.getParentElement().getParentElement().getChild("run_time");	
+		} else if(job.getName().equals("schedule")) {
+			runtime = job;
 		} else {
 			runtime=_runtime;
 		}
 		
 		//Specific months: create month child tags (type=3)
-		if(!run_time.equals("run_time")) {
+		if(!run_time.equals("run_time") && !job.getName().equals("schedule")) {
 			
 			List _monthList = _runtime.getChildren("month");
 			boolean monthFound = false;
@@ -919,7 +926,10 @@ public class SchedulerListener {
 				if(disable) {
 					run.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 				}
-			}
+			}else if(job.getName().equals("schedule")) {
+				run.setData(new TreeData(Editor.SCHEDULE, job, Options.getHelpURL("job.schedule"), "schedule"));
+				run.setData("key", "schedule");
+			} 
 			
 			item = new TreeItem(run, SWT.NONE);
 			item.setText("Everyday");
@@ -975,7 +985,7 @@ public class SchedulerListener {
 			}
 			
 			//Specific Monthdays
-			if(run_time.equals("run_time")) {
+			if(run_time.equals("run_time") || job.getName().equals("schedule")) {
 				item = new TreeItem(run, SWT.NONE);
 				item.setText("Specific Month");
 				//item.setData(new TreeData(Editor.SPECIFIC_MONTHS, runtime, Options.getHelpURL("job.run_time.monthdays"),"specific_monthdays"));
@@ -1031,5 +1041,45 @@ public class SchedulerListener {
 			return Editor.JOB_COMMANDS;
 		else
 			return Editor.CONFIG ;
+	}
+	
+	public void treeFillSchedules(TreeItem parent) {
+		parent.removeAll();
+		
+		Element schedules = _dom.getRoot().getChild("config").getChild("schedules");        
+		if (schedules != null) {
+			Iterator it = schedules.getChildren().iterator();
+			while (it.hasNext()) {
+				Object o = it.next();
+				if (o instanceof Element) {
+					Element element = (Element) o;
+					if(type == SchedulerDom.DIRECTORY) {
+						checkLifeAttributes(element, Utils.getAttributeValue("name", element));
+					}
+						
+					/*TreeItem i = new TreeItem(parent, SWT.NONE);
+					String name = Utils.getAttributeValue("name", element);
+					String schedulename = "Schedules: " + name;
+					
+					
+					i.setText(schedulename);
+					i.setData(new TreeData(Editor.SCHEDULE, element, Options.getHelpURL("schedule")));
+					i.setData("key", "schedule");
+					*/
+					
+					/*if(!Utils.isElementEnabled("job", _dom, element)) {
+						i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+					} else {
+						i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+					}*/
+					//treeFillJob(i, element, false);
+					
+					//treeFillRunTimes(parent, element, false, "schedule");
+					treeFillRunTimes(parent, element, false, Utils.getAttributeValue("name", element));
+				}
+			}
+		}
+		parent.setExpanded(true);
+		
 	}
 }

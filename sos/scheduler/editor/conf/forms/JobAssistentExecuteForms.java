@@ -267,7 +267,7 @@ public class JobAssistentExecuteForms {
 					tasks.showTasksForm();	
 					if(jobname != null) 													
 						tasks.setJobname(jobname);
-					if(jobBackUp != null)
+					//if(jobBackUp != null)
 						tasks.setBackUpJob(jobBackUp, jobForm);
 					closeDialog = true;
 					shell.dispose();
@@ -352,7 +352,7 @@ public class JobAssistentExecuteForms {
 				process.showProcessForm();	
 				if(jobname != null) 													
 					process.setJobname(jobname);
-				if(jobBackUp != null)
+				//if(jobBackUp != null)
 					process.setBackUpJob(jobBackUp, jobForm);
 				
 			} else {
@@ -361,7 +361,7 @@ public class JobAssistentExecuteForms {
 				script.showScriptForm();	
 				if(jobname != null) 													
 					script.setJobname(jobname);
-				if(jobBackUp != null)
+				//if(jobBackUp != null)
 					script.setBackUpJob(jobBackUp, jobForm);
 			}
 		}
@@ -387,7 +387,8 @@ public class JobAssistentExecuteForms {
 	 * @param backUpJob
 	 */
 	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
-		jobBackUp = (Element)backUpJob.clone();	
+		if(backUpJob != null)
+			jobBackUp = (Element)backUpJob.clone();	
 		jobForm = jobForm_;
 	}
 	

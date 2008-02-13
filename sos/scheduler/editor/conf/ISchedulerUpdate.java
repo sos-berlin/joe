@@ -36,6 +36,7 @@ public interface ISchedulerUpdate extends IDataChanged {
     
     public void updateJobChain(String newName, String oldName);
         
+    public void updateSchedules();
     
     
 }

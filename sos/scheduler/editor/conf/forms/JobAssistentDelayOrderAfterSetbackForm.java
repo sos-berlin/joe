@@ -371,7 +371,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 				derror.showDelayAfterErrorForm();
 				if(jobname != null) 													
 					derror.setJobname(jobname);
-				if(jobBackUp != null)
+				//if(jobBackUp != null)
 					derror.setBackUpJob(jobBackUp, jobForm);
 				closeDialog = true;
 				shellSetBack.dispose();				
@@ -470,7 +470,8 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 	 * @param backUpJob
 	 */
 	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
-		jobBackUp = (Element)backUpJob.clone();	
+		if(backUpJob != null)
+			jobBackUp = (Element)backUpJob.clone();	
 		jobForm = jobForm_;
 	}
 

@@ -355,7 +355,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		composite.setLayout(gridLayout_2);
 		
 		butBrowse = new Button(composite, SWT.NONE);
-		butBrowse.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+		butBrowse.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		butBrowse.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB);
@@ -365,22 +365,24 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		});
 		butBrowse.setText("Browse");
 		
-		butImportJob = new Button(composite, SWT.NONE);
-		final GridData gridData_3 = new GridData(GridData.END, GridData.CENTER, false, false);
-		gridData_3.widthHint = 84;
-		butImportJob.setLayoutData(gridData_3);
-		butImportJob.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(listener.get_dom(), update, Editor.JOB_CHAINS);
-				importJobs.setJobname(cJob);
-				importJobs.showAllImportJobs("order");
-				update.updateOrders();
-				refresh = true;
-				
-			}
-		});
-		butImportJob.setText("Import Job");
-		
+		if(!listener.get_dom().isLifeElement()) {
+			butImportJob = new Button(composite, SWT.NONE);
+			final GridData gridData_3 = new GridData(GridData.END, GridData.CENTER, false, false);
+			gridData_3.widthHint = 84;
+			butImportJob.setLayoutData(gridData_3);
+			butImportJob.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(listener.get_dom(), update, Editor.JOB_CHAINS);
+					importJobs.setJobname(cJob);
+					importJobs.showAllImportJobs("order");
+					if (!listener.get_dom().isLifeElement())
+						update.updateOrders();
+					refresh = true;
+
+				}
+			});
+			butImportJob.setText("Import Job");
+		}
 		label8 = new Label(gNodes, SWT.NONE);
 		label8.setLayoutData(new GridData());
 		label8.setText("Next State:");
@@ -1022,7 +1024,8 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		cErrorState.setEnabled(enable);
 		cOnError.setEnabled(enable);
 		tDelay.setEnabled(enable);
-		butImportJob.setEnabled(enable);
+		if(!listener.get_dom().isLifeElement())
+			butImportJob.setEnabled(enable);
 		butBrowse.setEnabled(enable);
 		tMoveTo.setEnabled(enable && tFileOrderSource.getItemCount() > 0);
 		bRemoveFile.setEnabled(enable && tFileOrderSource.getItemCount() > 0);

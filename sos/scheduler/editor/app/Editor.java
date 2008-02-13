@@ -115,6 +115,8 @@ public class Editor {
     
     public final static int SCHEDULES              = 77;    
     
+    public final static int SCHEDULE               = 78;
+    
     public static String    SCHEDULER_ENCODING     = "";
 
     public static String    DOCUMENTATION_ENCODING = "utf-8";

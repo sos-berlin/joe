@@ -489,7 +489,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		gMainScheduler = new Group(composite, SWT.NONE);
 		final GridData gridData_7 = new GridData(GridData.FILL, GridData.FILL, true, true);        
 		gMainScheduler.setLayoutData(gridData_7);
-		gMainScheduler.setText("Main Job Scheduler");
+		gMainScheduler.setText("Supervisor");
 		gMainScheduler.setLayout(gridLayout7);
 		gMainScheduler.setLayout(gridLayout4);
 		

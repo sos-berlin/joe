@@ -291,7 +291,10 @@ public class TreeMenu {
 	
 	private void applyXMLChange(String newXML){
 		
-		newXML = newXML.replaceAll("\\?>", "?><spooler>" )+ "</spooler>";
+		if(_dom instanceof SchedulerDom) {
+			if(!((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement())
+				newXML = newXML.replaceAll("\\?>", "?><spooler>" )+ "</spooler>";
+		}
 		
 		//System.out.println("debug: \n" + newXML);
 		

@@ -109,6 +109,15 @@ public class JobAssistentImportJobsForm {
 		this.jobname = jobname;
 	}
 	
+	public JobAssistentImportJobsForm(JobListener listener_, int assistentType_) {
+		jobBackUp = (Element)listener_.getJob().clone();
+		joblistener = listener_;
+		dom = joblistener.get_dom();
+		update = joblistener.get_main();
+		listener = new JobsListener(dom, update);				
+		assistentType = assistentType_;	
+		paramListener = new ParameterListener(dom, joblistener.getJob(), update, assistentType);
+	}
 	
 	public JobAssistentImportJobsForm(JobListener listener_, Table tParameter_, int assistentType_) {
 		jobBackUp = (Element)listener_.getJob().clone();
@@ -389,18 +398,27 @@ public class JobAssistentImportJobsForm {
 							//joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
 		 					Element job = joblistener.getJob();
 							job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
-							if(tParameter == null)
-								tParameter = jobForm.getTParameter(); 
+							jobForm.initForm();
+							//if(tParameter == null)
+							//	tParameter = jobForm.getTParameter(); 
 							//tParameter.removeAll();							
 							//joblistener.fillParams(listOfParams, tParameter, true);
+							
+							//paramListener.fillParams(listOfParams, tParameter, true);
+							//jobForm.initForm();
+							
+						} else if(assistentType == Editor.PARAMETER) {
+							//Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn assistentype = Editor.Job_Wizzard							
+							//joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+		 					Element job = joblistener.getJob();
+							job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+							//if(tParameter == null)
+							//	tParameter = jobForm.getTParameter(); 														
+							
+							
 							paramListener.fillParams(listOfParams, tParameter, true);
-							jobForm.initForm();
-							
-							
-						} else if(assistentType == Editor.JOB) {
-							//joblistener.fillParams(listOfParams, tParameter, false);
-							paramListener.fillParams(listOfParams, tParameter, false);
-							
+							//jobForm.initForm();
+													
 						} else {						
 							if(listener.existJobname(txtJobname.getText())) {
 								MainWindow.message(shell,  Messages.getString("assistent.error.job_name_exist"), SWT.OK );
@@ -450,8 +468,16 @@ public class JobAssistentImportJobsForm {
 					
 					HashMap attr = getJobFromDescription();
 					//JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
-					
-					if(assistentType == Editor.JOB) {
+					if(assistentType == Editor.JOB_WIZZARD || assistentType == Editor.JOB) {
+						
+						Element job  = listener.createJobElement(attr, joblistener.getJob());
+						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), job, assistentType);
+						//JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), joblistener.getJob(), assistentType);
+						paramsForm.setBackUpJob(jobBackUp, jobForm);
+						paramsForm.setJobForm(jobForm);
+						paramsForm.showAllImportJobParams(txtPath.getText());
+						
+					} else if(assistentType == Editor.PARAMETER) {
 						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), joblistener, tParameter, assistentType);					
 						paramsForm.showAllImportJobParams(txtPath.getText());
 					} else {
@@ -481,14 +507,16 @@ public class JobAssistentImportJobsForm {
 						}
 						JobAssistentImportJobParamsForm paramsForm = null;
 						if(assistentType == Editor.JOB_WIZZARD) {
-							paramsForm = new JobAssistentImportJobParamsForm(dom, update, joblistener, tParameter, assistentType);
+							//paramsForm = new JobAssistentImportJobParamsForm(dom, update, joblistener, tParameter, assistentType);
+							paramsForm = new JobAssistentImportJobParamsForm(dom, update, joblistener, assistentType);
 						} else {
 							paramsForm = new JobAssistentImportJobParamsForm(dom, update, job, assistentType);
 						}
+						//paramsForm = new JobAssistentImportJobParamsForm(dom, update, job, assistentType);
 						paramsForm.showAllImportJobParams(txtPath.getText());
 						if(jobname != null) 													
 							paramsForm.setJobname(jobname);
-						if(jobBackUp != null)
+						//if(jobBackUp != null)
 							paramsForm.setBackUpJob(jobBackUp, jobForm);
 					}
 					closeDialog = true;
@@ -558,7 +586,12 @@ public class JobAssistentImportJobsForm {
 				}
 			}
 			
-			if(assistentType == Editor.JOB) {
+			if(assistentType == Editor.JOB_WIZZARD) {
+				txtJobname.setEnabled(false);
+				txtTitle.setEnabled(true);
+				butShow.setEnabled(true);
+				butBack.setEnabled(true);
+			} else if(assistentType == Editor.JOB) {
 				txtJobname.setEnabled(false);
 				txtTitle.setEnabled(false);
 				butShow.setEnabled(false);
@@ -848,24 +881,25 @@ public class JobAssistentImportJobsForm {
 	
 	
 	private void selectTree() {
-		if(joblistener != null && joblistener.getInclude()== null || joblistener.getInclude().length() == 0) {
+		if(joblistener != null && (joblistener.getInclude()== null || joblistener.getInclude().length() == 0)) {
 			TreeItem[] si = new  TreeItem[1];
 			si[0] = tree.getItem(0);
 			tree.setSelection(si);
 			return;
 		}
-		
-		for (int i = 0; i < tree.getItemCount(); i++) {
-			TreeItem item = tree.getItem(i);
-			if(item.getText(2) != null) {
-				String it =  new File(item.getText(2)).getName();
-				String in = new File(joblistener.getInclude()).getName();
-				if(it.endsWith(in)) {
-					TreeItem[] si = new  TreeItem[1];
-					si[0] = item;					
-					tree.setSelection(si);
-					flagBackUpJob = false;
-					break;
+		if(tree != null) {
+			for (int i = 0; i < tree.getItemCount(); i++) {
+				TreeItem item = tree.getItem(i);
+				if(item.getText(2) != null) {
+					String it =  new File(item.getText(2)).getName();
+					String in = new File(joblistener.getInclude()).getName();
+					if(it.endsWith(in)) {
+						TreeItem[] si = new  TreeItem[1];
+						si[0] = item;					
+						tree.setSelection(si);
+						flagBackUpJob = false;
+						break;
+					}
 				}
 			}
 		}
@@ -877,9 +911,12 @@ public class JobAssistentImportJobsForm {
 	 * @param backUpJob
 	 */
 	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
-		jobBackUp = (Element)backUpJob.clone();	
-		jobForm = jobForm_;
-		selectTree();
+		if( backUpJob!= null)
+			jobBackUp = (Element)backUpJob.clone();	
+		if(jobForm_ != null)
+			jobForm = jobForm_;
+		if( backUpJob!= null)
+			selectTree();
 	}
 	
 	public void setJobForm(JobForm jobForm_){

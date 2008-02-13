@@ -308,7 +308,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
                 }
                 if (event)
                     listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
-                            sBeginSeconds.getText());
+                            sBeginSeconds.getText()); 
             }
         });
         label5 = new Label(gPeriod, SWT.NONE);
