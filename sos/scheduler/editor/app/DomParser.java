@@ -157,21 +157,8 @@ public abstract class DomParser {
 
     protected SAXBuilder getBuilder(boolean validate) throws IOException {
 
-    	SAXBuilder builder = new SAXBuilder("org.apache.xerces.parsers.SAXParser",true);
-        if (validate) {
-        	builder.setFeature("http://apache.org/xml/features/validation/schema",true);
-        	builder.setFeature("http://apache.org/xml/features/validation/schema-full-checking",true);
-        	
-            builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
-                    "http://www.w3.org/2001/XMLSchema");
-            builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", writeSchemaFile());
-
-        }
-        
-        return builder;
     	
-
-        /*SAXBuilder builder = new SAXBuilder(validate);
+        SAXBuilder builder = new SAXBuilder(validate);
         if (validate) {
         	
             builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
@@ -181,7 +168,7 @@ public abstract class DomParser {
         }
         
         return builder;
-        */
+        
     }
 
     public SAXBuilder getBuilder() throws IOException {        
