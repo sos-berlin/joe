@@ -1,20 +1,14 @@
 package sos.scheduler.editor.conf.listeners;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
-import org.jdom.Comment;
 import org.jdom.Element;
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.forms.JobsForm;
 
 
 public class SchedulesListener { 
@@ -83,7 +77,8 @@ public class SchedulesListener {
 	
 	public void newScheduler(Table table) {
 		Element schedule = new Element("schedule");
-		schedule.setAttribute("name", "schedule" + (table.getItemCount() + 1));
+		String name = "schedule" + (table.getItemCount() + 1);
+		schedule.setAttribute("name", name);
 		//Element runtime = new Element("run_time");
 		schedule.setAttribute("let_run", "no");
 		if (_list == null)
@@ -94,7 +89,8 @@ public class SchedulesListener {
 		fillTable(table);
 		table.setSelection(table.getItemCount() - 1);
 		_main.updateSchedules();
-		//_main.expandJob("job" + (table.getItemCount()));  
+		_main.expandItem(name);
+		
 	}
 	
 	
@@ -109,11 +105,12 @@ public class SchedulesListener {
 			_dom.setChanged(true);
 			_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", e) ,SchedulerDom.DELETE);
 			table.remove(index);
-			_main.updateJobs();
+			//_main.updateJobs();
+			_main.updateSchedules();
 			if(_list==null)
 				initSchedules();
 			if (_list.size() == 0) {
-				_config.removeChild("jobs");
+				_config.removeChild("schedules");
 				_schedules = null;
 				_list = null;
 			}

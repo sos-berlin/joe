@@ -47,41 +47,42 @@ public class SpecificWeekdaysListener {
 
  
     public void addDay(String day, String which) {
-    	  boolean found=false;
-    	  int index=0;
-    	  for (int i = 0;i<_daynames.length;i++) {
-    	  	if (_daynames[i].equals(which)) index=i+1;
-    	  }
-    	  if (index>4)index=(-1)*(index-4);
-    	  which = String.valueOf(index);
-        Element daylist = _runtime.getChild("monthdays");
-        if (daylist == null) {
-            daylist = new Element("monthdays");
-            _runtime.addContent(daylist);
-        }
-        
-      
-        if (daylist != null) {
-            List list = daylist.getChildren("weekday");
-            Iterator it = list.iterator();
-            while (it.hasNext()) {
-                Element e = (Element) it.next();
-                if (e.getAttributeValue("day") != null && e.getAttributeValue("day").equalsIgnoreCase(day) && 
-                		e.getAttributeValue("which") != null && e.getAttributeValue("which").equalsIgnoreCase(which)) {
-                    found=true;
-                }
-            }
-        }
-     
+    	boolean found=false;
+    	int index=0;
+    	for (int i = 0;i<_daynames.length;i++) {
+    		if (_daynames[i].equals(which)) index=i+1;
+    	}
+    	if (index>4)index=(-1)*(index-4);
+    	which = String.valueOf(index);
+    	Element daylist = _runtime.getChild("monthdays");
+    	if (daylist == null) {
+    		daylist = new Element("monthdays");
+    		_runtime.addContent(daylist);
+    	}
 
-       if (!found) {
-        	 Element w = new Element("weekday").setAttribute("day", day.toLowerCase());
-           w.setAttribute("which", which);
-           daylist.addContent(w);
-           _dom.setChanged(true);
-           if(_runtime != null && _runtime.getParentElement() != null )
-           	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
-       }
+
+    	if (daylist != null) {
+    		List list = daylist.getChildren("weekday");
+    		Iterator it = list.iterator();
+    		while (it.hasNext()) {
+    			Element e = (Element) it.next();
+    			if (e.getAttributeValue("day") != null && e.getAttributeValue("day").equalsIgnoreCase(day) && 
+    					e.getAttributeValue("which") != null && e.getAttributeValue("which").equalsIgnoreCase(which)) {
+    				found=true;
+    			}
+    		}
+    	}
+
+
+    	if (!found) {
+    		Element w = new Element("weekday").setAttribute("day", day.toLowerCase());
+    		w.setAttribute("which", which);
+    		daylist.addContent(w);
+    		_dom.setChanged(true);
+    		if(_runtime != null && _runtime.getParentElement() != null )
+    			//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
+    			_dom.setChangedForDirectory(_runtime, SchedulerDom.MODIFY);
+    	}
     }
   
 
@@ -130,7 +131,8 @@ public class SpecificWeekdaysListener {
                         _runtime.removeChild("monthdays");
                     _dom.setChanged(true);
                     if(_runtime != null && _runtime.getParentElement() != null )
-                       	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
+                       	//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
+                    	_dom.setChangedForDirectory(_runtime, SchedulerDom.MODIFY);
                     break;
                 }
             }

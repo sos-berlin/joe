@@ -266,7 +266,12 @@ public class JobAssistentImportJobsForm {
 				if(listener != null)
 					txtJobname.setBackground(Options.getRequiredColor());
 				if(joblistener != null) {
-					txtJobname.setText(joblistener.getName());
+					if(joblistener.getJob().getName().equals("start_job")) {
+						txtJobname.setText(Utils.getAttributeValue("job", joblistener.getJob()));					
+					}else if(joblistener.getJob().getName().equals("order")) {
+						txtJobname.setText(" ");					
+					} else
+						txtJobname.setText(joblistener.getName());
 				} else {
 					txtJobname.setText("");
 				}
@@ -607,6 +612,15 @@ public class JobAssistentImportJobsForm {
 				butShow.setEnabled(true);
 				butBack.setEnabled(true);
 			}
+			
+			if(joblistener != null) {
+				if(joblistener.getJob().getName().equals("start_job") ||
+						joblistener.getJob().getName().equals("order")) {				
+					txtJobname.setEnabled(false);
+				}
+				
+			}
+			
 			setToolTipText();
 			
 			java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();

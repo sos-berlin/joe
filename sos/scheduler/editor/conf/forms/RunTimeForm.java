@@ -9,13 +9,16 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
+import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
@@ -37,9 +40,12 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
 
     private Group           gComment    = null;
 
-    private Text            tComment    = null;
+    private Text            tComment    = null;        
 
+    private Combo           comSchedule = null; 
 
+    private Button          butBrowse   = null;
+    
     public RunTimeForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate gui) {
         super(parent, style);
         listener = new RunTimeListener(dom, job);
@@ -84,6 +90,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         GridLayout gridLayout3 = new GridLayout();
         gRunTime = new Group(this, SWT.NONE);
         gRunTime.setText("Run Time");
+                
         createPeriodForm();
         gRunTime.setLayout(gridLayout3);
         GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, true);
@@ -97,7 +104,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
 
         final Label functionLabel = new Label(group, SWT.NONE);
         functionLabel.setLayoutData(new GridData());
-        functionLabel.setText("Start Time Function");
+        functionLabel.setText("Start Time Function:");
 
         tFunction = new Text(group, SWT.BORDER);
         tFunction.addModifyListener(new ModifyListener() {
@@ -108,6 +115,41 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         final GridData gridData10_1_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData10_1_1.widthHint = 243;
         tFunction.setLayoutData(gridData10_1_1);
+
+        final Group group_1 = new Group(gRunTime, SWT.NONE);
+        group_1.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
+        final GridLayout gridLayout_2 = new GridLayout();
+        gridLayout_2.numColumns = 3;
+        group_1.setLayout(gridLayout_2);
+
+        final Label scheduleLabel = new Label(group_1, SWT.NONE);
+        scheduleLabel.setText("Schedule:");
+
+        comSchedule = new Combo(group_1, SWT.NONE);
+        comSchedule.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		listener.setSchedule(comSchedule.getText());
+        	}
+        });
+        comSchedule.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        comSchedule.setItems(listener.getSchedules());
+        comSchedule.setText(listener.getSchedule());
+        comSchedule.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		listener.setSchedule(comSchedule.getText());
+        	}
+        });
+
+        butBrowse = new Button(group_1, SWT.NONE);
+        butBrowse.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		String name = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_SCHEDULE);
+				if(name != null && name.length() > 0)
+					comSchedule.setText(name);
+        	}
+        });
+        butBrowse.setText("Browse");
+        
         holidayForm = new DateForm(gRunTime, SWT.NONE, 0);
         holidayForm.setLayoutData(gridData4);
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
@@ -152,7 +194,8 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
     private void createPeriodForm() {
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, false);
         gridData2.widthHint = 151;
-        periodForm = new PeriodForm(gRunTime, SWT.NONE);
+
+       periodForm = new PeriodForm(gRunTime, SWT.NONE);
         periodForm.setLayoutData(gridData2);
     }
 
@@ -167,6 +210,12 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
     public void setToolTipText() {
 
         tComment.setToolTipText(Messages.getTooltip("run_time.comment"));
-
+        butBrowse.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));
+        
+        tFunction.setToolTipText(Messages.getTooltip("run_time.start_time_function"));
+        comSchedule.setToolTipText(Messages.getTooltip("run_time.combo_schedule"));
     }
+    
+    
+    
 } // @jve:decl-index=0:visual-constraint="10,10"

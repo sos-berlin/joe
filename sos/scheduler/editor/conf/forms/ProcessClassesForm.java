@@ -8,6 +8,8 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -22,7 +24,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
@@ -35,7 +36,9 @@ import sos.scheduler.editor.conf.listeners.ProcessClassesListener;
  * @author sky2000
  */
 public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLanguage {
-    private ProcessClassesListener listener;
+	
+	
+    private ProcessClassesListener listener      = null;
 
     private Group                  group         = null;
 
@@ -69,6 +72,9 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
     
     private SchedulerDom           dom           = null;
     
+    private Button                 ignoreButton  = null; 
+
+    private Button                 butReplace    = null; 
 
 
 
@@ -85,7 +91,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         initialize();
         setToolTipText();
 
-        listener.fillTable(table);
+        
     }
 
 
@@ -119,6 +125,9 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         	label2.setVisible(false);
         	label.setVisible(false);
         }
+        listener.fillTable(table);
+        ignoreButton.setSelection(listener.isIgnoreProcessClasses());
+        
 
     }
 
@@ -127,9 +136,6 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
      * This method initializes group
      */
     private void createGroup() {
-        GridData gridData8 = new org.eclipse.swt.layout.GridData();
-        gridData8.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData8.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
         GridData gridData7 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
         gridData7.heightHint = 10;
         GridData gridData5 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
@@ -202,8 +208,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         tRemoteHost = new Text(group, SWT.BORDER);
         tRemoteHost.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
-            bApply.setEnabled(true);
-
+        		bApply.setEnabled(true);
         	}
         });
         tRemoteHost.setEnabled(false);
@@ -238,6 +243,18 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         });
         tRemotePort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         new Label(group, SWT.NONE);
+
+        butReplace = new Button(group, SWT.CHECK);
+        butReplace.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		bApply.setEnabled(true);
+        	}
+        });
+        butReplace.setSelection(true);
+        butReplace.setEnabled(false);
+        butReplace.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 4, 1));
+        butReplace.setText("Replace");
+        new Label(group, SWT.NONE);
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setText("Label");
         label.setLayoutData(gridData7);
@@ -246,18 +263,20 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         bNew.setText("&New Process Class");
         bNew.setLayoutData(gridData1);
         getShell().setDefaultButton(bNew);
-
-        label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label2.setText("Label");
-        label2.setLayoutData(gridData8);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 apply();
                 listener.newProcessClass();
                 setInput(true);
-                bApply.setEnabled(listener.isValidClass(tProcessClass.getText()));
+                
+                bApply.setEnabled(listener.isValidClass(tProcessClass.getText()));                
             }
         });
+        GridData gridData8 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
+
+        label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
+        label2.setText("Label");
+        label2.setLayoutData(gridData8);
         bRemove = new Button(group, SWT.NONE);
         bRemove.setText("Remove Process Class");
         bRemove.setEnabled(false);
@@ -307,6 +326,16 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
                 applyClass();
             }
         });
+
+        ignoreButton = new Button(group, SWT.CHECK);
+        ignoreButton.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		listener.setIgnoreProcessClasses(ignoreButton.getSelection());
+        	}
+        });
+        ignoreButton.setLayoutData(new GridData(GridData.CENTER, GridData.BEGINNING, false, false));
+        ignoreButton.setText("Ignore Process Classes");
+        ignoreButton.setVisible(!dom.isLifeElement());
     }
 
 
@@ -314,7 +343,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
      * This method initializes table
      */
     private void createTable() {
-        GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 4, 3);
+        GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 4, 4);
         table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
         table.setHeaderVisible(true);
         table.setLayoutData(gridData);
@@ -338,21 +367,25 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         	}
         });
         TableColumn tableColumn = new TableColumn(table, SWT.NONE);
-        tableColumn.setWidth(200);
+        tableColumn.setWidth(104);
         tableColumn.setText("Process Class");
         TableColumn tableColumn1 = new TableColumn(table, SWT.NONE);
-        tableColumn1.setWidth(150);
+        tableColumn1.setWidth(91);
         tableColumn1.setText("Max Processes");
         TableColumn tableColumn2 = new TableColumn(table, SWT.NONE);
-        tableColumn2.setWidth(150);
+        tableColumn2.setWidth(85);
         tableColumn2.setText("Scheduler ID");
+
+        final TableColumn tableColumn3 = new TableColumn(table, SWT.NONE);
+        tableColumn3.setWidth(100);
+        tableColumn3.setText("Replace");
     }
 
 
     private void applyClass() {
     	if (!checkRemote())
     		return;
-        listener.applyProcessClass(tProcessClass.getText(), tRemoteHost.getText(),tRemotePort.getText(),sMaxProcesses.getSelection(), tSpoolerID.getText());
+        listener.applyProcessClass(tProcessClass.getText(), tRemoteHost.getText(),tRemotePort.getText(),sMaxProcesses.getSelection(), tSpoolerID.getText(), butReplace.getSelection());
         listener.fillTable(table);
         setInput(false);
         getShell().setDefaultButton(bNew);
@@ -369,6 +402,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         sMaxProcesses.setEnabled(enabled);
         tSpoolerID.setEnabled(enabled);
         tRemoteHost.setEnabled(enabled);
+        butReplace.setEnabled(enabled);
         tRemotePort.setEnabled(enabled);
         if (enabled) {
             tProcessClass.setText(listener.getProcessClass());
@@ -376,13 +410,16 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
             tRemotePort.setText(listener.getRemotePort());
             sMaxProcesses.setSelection(listener.getMaxProcesses());
             tSpoolerID.setText(listener.getSpoolerID());
+            butReplace.setSelection(listener.isReplace());
             tProcessClass.setFocus();
+            
         } else {
             tProcessClass.setText("");
             tRemoteHost.setText("");
             tRemotePort.setText("");
             sMaxProcesses.setSelection(0);
             tSpoolerID.setText("");
+            butReplace.setSelection(true);
         }
         bApply.setEnabled(false);
         bRemove.setEnabled(table.getSelectionCount() > 0);
@@ -400,6 +437,8 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
         table.setToolTipText(Messages.getTooltip("process_classes.table"));
         tRemoteHost.setToolTipText(Messages.getTooltip("process_classes.remoteHost"));
         tRemotePort.setToolTipText(Messages.getTooltip("process_classes.remotePort"));
+        ignoreButton.setToolTipText(Messages.getTooltip("process_classes.ignore"));
+        butReplace.setToolTipText(Messages.getTooltip("process_classes.replace"));
     }
     
     private boolean checkRemote() {

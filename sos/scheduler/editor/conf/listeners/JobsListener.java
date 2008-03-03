@@ -98,7 +98,7 @@ public class JobsListener {
 		fillTable(table);
 		table.setSelection(table.getItemCount() - 1);
 		_main.updateJobs();
-		_main.expandJob("job" + (table.getItemCount()));  
+		_main.expandItem("Job: "+ "job" + (table.getItemCount()));  
 	}
 	
 	
@@ -454,7 +454,7 @@ public class JobsListener {
 		
 		_main.updateJobs();	
 		
-		_main.expandJob(Utils.getAttributeValue("name", job));
+		_main.expandItem("Job: "+Utils.getAttributeValue("name", job));
 	}
 	
 	

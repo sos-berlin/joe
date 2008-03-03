@@ -154,11 +154,6 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	}
 	
 	
-	public void updateCommand(String s) {
-		TreeItem item = tree.getSelection()[0];
-		String name = ((TreeData) item.getData()).getElement().getName()+ ": " +s;
-		item.setText(name);
-	}
 	
 	public void updateExitCodesCommand() {
 		if (tree.getSelectionCount() > 0) {
@@ -227,8 +222,8 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	}
 	
 	
-	public void expandJob(String job) {
-		listener.treeExpandJob(tree.getSelection()[0],job);                
+	public void expandItem(String job) {
+		listener.treeExpandJob(tree.getSelection()[0], job);                
 	}
 	
 	private void updateJobs_() {
@@ -482,21 +477,27 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		return dom;
 	}
 	
-	 public void updateSchedules() { 		
-		 if (tree.getSelectionCount() > 0)
-			 listener.treeFillSchedules(tree.getSelection()[0]);                
+	public void updateSchedules() { 		
+		if (tree.getSelectionCount() > 0)
+			listener.treeFillSchedules(tree.getSelection()[0]);                
+	}	
+	
+	public void updateScripts() {
+			if (tree.getSelectionCount() > 0) {
+				TreeItem item = tree.getSelection()[0];		
+				TreeData data = (TreeData) item.getData();
+				org.jdom.Element elem = data.getElement();
+				
+				listener.treeFillScripts(item, elem, false);
+				
+			}
+	}
+	
+	public void updateTreeItem(String s) {
+		if(tree.getSelectionCount() > 0) {
+			TreeItem item = tree.getSelection()[0];		
+			item.setText(s);		
 		}
-		
-	/*public void updateMonths(int type) {
-	 
-	 if (tree.getSelectionCount() > 0 && type==3) {
-	 TreeItem item = tree.getSelection()[0];
-	 TreeData data = (TreeData) item.getData();
-	 listener.treeFillRunTimes(item, data.getElement(), true, "month");
-	 }
-	 }
-	 */
-	
-	
+	}
 	
 }

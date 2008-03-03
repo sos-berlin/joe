@@ -60,6 +60,7 @@ public class ProcessClassesListener {
                 item.setText(0, name);
                 item.setText(1, "" + Utils.getIntValue("max_processes", e));
                 item.setText(2, Utils.getAttributeValue("spooler_id", e));
+                item.setText(3, Utils.getAttributeValue("replace", e));
                 if(!Utils.isElementEnabled("process_class", _dom, e)) {
                 	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
                 } 
@@ -112,17 +113,36 @@ public class ProcessClassesListener {
         return Utils.getAttributeValue("spooler_id", _class);
     }
 
+    public void setIgnoreProcessClasses(boolean ignore) {
+    	if(_processClasses  != null)
+    		Utils.setAttribute("ignore", ignore, false, _processClasses, _dom);
+    }
+    
+    public boolean isIgnoreProcessClasses() {    	
+    	if(_processClasses  != null)
+    		return Utils.getBooleanValue("ignore", _processClasses);
+    	else 
+    		return false;
+    }
+   
+    public boolean isReplace() {    	    	
+    	//default ist true daher auch gleich leerstring
+    	return Utils.getAttributeValue("replace", _class).equals("") || Utils.getBooleanValue("replace", _class);    	
+    }
+
 
     public void newProcessClass() {
         _class = new Element("process_class");
     }
 
 
-    public void applyProcessClass(String processClass, String host, String port, int maxProcesses,  String spoolerID) {
+    public void applyProcessClass(String processClass, String host, String port, int maxProcesses,  String spoolerID, boolean replace) {
     	_dom.setChangedForDirectory("process_class", Utils.getAttributeValue("name", _class), SchedulerDom.DELETE);
         Utils.setAttribute("name", processClass, _class, _dom);
         Utils.setAttribute("max_processes", maxProcesses, _class, _dom);
         Utils.setAttribute("spooler_id", spoolerID, _class, _dom);
+        Utils.setAttribute("replace", replace, true, _class, _dom);
+        
         if(host.trim().concat(port.trim()).length() > 0) {
         	Utils.setAttribute("remote_scheduler", host.trim()+":"+port.trim(), _class, _dom);
         }

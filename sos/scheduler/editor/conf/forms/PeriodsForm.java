@@ -163,7 +163,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
      * This method initializes table
      */
     private void createTable() {
-        GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.CENTER, GridData.FILL, true, true, 1, 3);
+        GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
         GridData gridData4 = new org.eclipse.swt.layout.GridData();
         gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData4.grabExcessHorizontalSpace = true;

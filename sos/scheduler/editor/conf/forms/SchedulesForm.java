@@ -10,44 +10,37 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
-import org.jdom.Element;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.SchedulesListener;
 
 public class SchedulesForm extends Composite implements IUpdateLanguage {
 	 
-	private SchedulesListener listener;
 	
-	private Group           schedulesGroup                       = null;
+	private SchedulesListener  listener                = null;
 	
-	private static Table    table                       = null;
+	private Group              schedulesGroup          = null;
 	
-	private Button           bNewSchedule                     = null;
+	private static Table       table                   = null;
 	
-	private Button           butRemove                  = null;
+	private Button              bNewSchedule           = null;
 	
-	private Label            label                       = null;
+	private Button              butRemove              = null;
+	 
+	private Label               label                  = null;
 	
-	private SchedulerDom     dom                         = null;
-		
 	
 	public SchedulesForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) {
 		super(parent, style);
 		try {
 			
-			//this.parent = parent;
-			//this.style = style;
-			this.dom = dom;			
 			listener = new SchedulesListener(dom, update);
 			initialize();
 			setToolTipText();
 			listener.fillTable(table);
+			
 		} catch (Exception e) {
 			System.err.println("..error in SchedulesForm.init() " + e.getMessage());
 		}
@@ -88,7 +81,7 @@ public class SchedulesForm extends Composite implements IUpdateLanguage {
 				}
 			});
 			butRemove = new Button(schedulesGroup, SWT.NONE);
-			//bRemoveJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+
 			butRemove.setText("Remove");
 			butRemove.setEnabled(false);
 			butRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -113,29 +106,17 @@ public class SchedulesForm extends Composite implements IUpdateLanguage {
 	private void createTable() {
 		try {
 			GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
-			table = new Table(schedulesGroup, SWT.BORDER | SWT.FULL_SELECTION | SWT.CHECK);
+			table = new Table(schedulesGroup, SWT.FULL_SELECTION | SWT.BORDER);
 			table.setHeaderVisible(true);
 			table.setLayoutData(gridData2);
 			table.setLinesVisible(true);
 			table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-					/*if (Utils.isElementEnabled("job", dom, (Element) e.item.getData())) {
+					if(table.getSelectionCount() > 0)
 						butRemove.setEnabled(true);
-					} else {
+					else 
 						butRemove.setEnabled(false);
-						return;
-					}
-					if (e.detail == SWT.CHECK) {						
-						TableItem item = (TableItem) e.item;
-						if (!listener.hasJobComment((Element) item.getData())) {
-							listener.setJobDisabled(item.getText(1), item.getChecked());
-						} else {
-							MainWindow.message(Messages.getString("MainListener.cannotDisable"), SWT.ICON_INFORMATION
-									| SWT.OK);
-							item.setChecked(false);
-						}
-					}
-					*/ 
+					 
 				}
 			});
 			TableColumn tableColumn = new TableColumn(table, SWT.NONE);
@@ -148,9 +129,9 @@ public class SchedulesForm extends Composite implements IUpdateLanguage {
 	
 	
 	public void setToolTipText() {
-		bNewSchedule.setToolTipText(Messages.getTooltip("jobs.btn_add_new"));
-		butRemove.setToolTipText(Messages.getTooltip("jobs.btn_remove"));
-		table.setToolTipText(Messages.getTooltip("jobs.table"));
+		bNewSchedule.setToolTipText(Messages.getTooltip("schedules.btn_add_new"));
+		butRemove.setToolTipText(Messages.getTooltip("schedules.btn_remove"));
+		table.setToolTipText(Messages.getTooltip("schedules.table"));
 		
 	}
 	

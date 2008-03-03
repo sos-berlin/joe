@@ -15,6 +15,8 @@ import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 
 public class DateListener implements Comparator {
 
@@ -56,8 +58,7 @@ public class DateListener implements Comparator {
         }
             
         
-    }
-
+    }    
  
     public void fillList(org.eclipse.swt.widgets.List list) {
     	
@@ -131,8 +132,9 @@ public class DateListener implements Comparator {
         
         sort();
         _dom.setChanged(true);
-        if(_element.getParentElement() != null)
-        	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_element.getParentElement()), SchedulerDom.MODIFY);
+        if(_dom.isDirectory() && _element.getParentElement() != null)
+        	//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_element.getParentElement()), SchedulerDom.MODIFY);
+        	_dom.setChangedForDirectory(_element, SchedulerDom.MODIFY);
         return date;
     }
 
@@ -171,8 +173,10 @@ public class DateListener implements Comparator {
     				}
     			}
     			_dom.setChanged(true);
-    			if(_element.getParentElement() != null)
-    	        	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_element.getParentElement()), SchedulerDom.MODIFY);
+    			if(_dom.isDirectory() && _element.getParentElement() != null)
+    	        	//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_element.getParentElement()), SchedulerDom.MODIFY);
+    				_dom.setChangedForDirectory(_element, SchedulerDom.MODIFY);
+    				
     		} else {
     			if(_listOfAt != null && _listOfAt.size()>0) {
         		index = _list.size() - index;
@@ -321,10 +325,10 @@ public class DateListener implements Comparator {
     }
     
     public String[] getIncludes() {
-      if (_parent == null && _type == 0) {
+      /*if (_parent == null && _type == 0) {
         _parent = new Element("holidays");
         _element.addContent(_parent);
-      }
+      }*/
       
       if (_parent != null) {
           List includeList = _parent.getChildren("include");
@@ -341,28 +345,66 @@ public class DateListener implements Comparator {
           return new String[0];
   }
     
+    public void fillTable(Table table) {
+    	table.removeAll();
+    	if (_parent != null) {    		
+    		List includeList = _parent.getChildren("include");
+    		for(int i = 0; i < includeList.size(); i++) {
+    			Element include = (Element) includeList.get(i);
+    			
+    			if(include.getAttributeValue("file") != null) {
+    				TableItem item = new TableItem(table, SWT.NONE); 
+    				item.setText(0, Utils.getAttributeValue("file", include));
+    				item.setText(1, "file");
+    			} else {
+    				TableItem item = new TableItem(table, SWT.NONE); 
+    				item.setText(0, Utils.getAttributeValue("live_file", include));
+    				item.setText(1, "live_file");
+    			}    			
+    		}
+    	}
+    }
+    
+    public void addInclude(Table table, String filename, boolean isLive) {
+    	if (_parent == null && _type == 0) {
+    		_parent = new Element("holidays");
+    		_element.addContent(_parent);
+    	}
+
+    	if (_parent != null) {
+    		//List includes = _element.getChildren("include");
+    		//_parent.addContent(includes.size(), new Element("include").setAttribute((isLive?"live_file":"file"), filename));
+    		_parent.addContent(new Element("include").setAttribute((isLive?"live_file":"file"), filename));
+    		_dom.setChanged(true);
+    		if(_dom.isDirectory() && _element.getParentElement() != null)
+    			_dom.setChangedForDirectory(_element, SchedulerDom.MODIFY);
+    	} else
+    		System.out.println("no script element defined!");
+    }   
+
     public void addInclude(String filename) {
-      if (_parent == null && _type == 0) {
-        _parent = new Element("holidays");
-        _element.addContent(_parent);
-      }
-  
-      if (_parent != null) {
-          List includes = _element.getChildren("include");
-          _parent.addContent(includes.size(), new Element("include").setAttribute("file", filename));
-          _dom.setChanged(true);
-          if(_element.getParentElement() != null)
-          	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_element.getParentElement()), SchedulerDom.MODIFY);
-      } else
-          System.out.println("no script element defined!");
-  }    
+    	if (_parent == null && _type == 0) {
+    		_parent = new Element("holidays");
+    		_element.addContent(_parent);
+    	}
+
+    	if (_parent != null) {
+    		List includes = _element.getChildren("include");
+    		_parent.addContent(includes.size(), new Element("include").setAttribute("file", filename));
+    		_dom.setChanged(true);
+    		if(_dom.isDirectory() &&_element.getParentElement() != null)
+    			//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_element.getParentElement()), SchedulerDom.MODIFY);
+    			_dom.setChangedForDirectory(_element, SchedulerDom.MODIFY);
+    	} else
+    		System.out.println("no script element defined!");
+    }    
     
     public void removeInclude(int index) {
     	
-      if (_parent == null && _type == 0) {
+      /*if (_parent == null && _type == 0) {
         _parent = new Element("holidays");
         _element.addContent(_parent);
-      }
+      }*/
       
       if (_parent != null) {
           List includeList = _parent.getChildren("include");
@@ -377,8 +419,9 @@ public class DateListener implements Comparator {
               }
               _dom.setChanged(true);
               
-              if(_element.getParentElement() != null)
-              	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_element.getParentElement()), SchedulerDom.MODIFY);
+              if(_dom.isDirectory() &&_element.getParentElement() != null)
+              	//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_element.getParentElement()), SchedulerDom.MODIFY);
+            	  _dom.setChangedForDirectory(_element, SchedulerDom.MODIFY);
           } else
               System.out.println("index " + index + " is out of range for include!");
       } else

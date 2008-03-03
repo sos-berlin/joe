@@ -76,7 +76,7 @@ public class JobAssistentRunTimeForms {
 	private Button           butRemove          = null; 
 	
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
-	private int              assistentType      = -1; 
+	//private int              assistentType      = -1; 
 	
 	private Text             txtDayAtHour       = null;
 	
@@ -136,7 +136,7 @@ public class JobAssistentRunTimeForms {
 		dom = dom_;
 		update = update_;
 		job = job_;		
-		assistentType = assistentType_;
+		//assistentType = assistentType_;
 		jobBackUp = (Element)job_.clone();
 		init();
 	}

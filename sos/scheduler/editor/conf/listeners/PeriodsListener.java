@@ -90,12 +90,17 @@ public class PeriodsListener {
 		
 		if(job.getParentElement()==null)
 			return false;
+		//TODO: was tut die Abfrage 
 		
-		while (!job.getName().equals("job") && !job.getName().equals("add_order")&& !job.getName().equals("order")&& !job.getName().equals("schedule"))
+		while (!job.getName().equals("job") 
+				&& !job.getName().equals("add_order")
+				&& !job.getName().equals("order")
+				&& !job.getName().equals("schedule")
+				&& !job.getName().equals("config"))
 			job = job.getParentElement();
 		
 		return Utils.isAttributeValue("order", job) && job.getName().equals("job") || Utils.isAttributeValue("id", job)
-		&& (job.getName().equals("add_order") || job.getName().equals("order"));
+		&& (job.getName().equals("add_order") || job.getName().equals("order")|| job.getName().equals("config"));
 	}
 	
 	
@@ -156,8 +161,9 @@ public class PeriodsListener {
 			
 		}
 		_dom.setChanged(true);
-		if(_parent != null && _parent.getParentElement() != null )
-        	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent.getParentElement()), SchedulerDom.MODIFY);
+		
+		_dom.setChangedForDirectory(_parent, SchedulerDom.MODIFY);
+		
 	}
 	
 	public void removePeriod(int index) {
@@ -197,8 +203,9 @@ public class PeriodsListener {
 		}    	
 		
 		_dom.setChanged(true);
-		if(_parent != null && _parent.getParentElement() != null )
-        	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent.getParentElement()), SchedulerDom.MODIFY);
+		_dom.setChangedForDirectory(_parent, SchedulerDom.MODIFY);
+		
+	
 	}
 	
 	
@@ -240,8 +247,7 @@ public class PeriodsListener {
 		}
 		_dom.setChanged(true);
 		//Element job = getJobElement(_parent);
-		if(_parent != null )
-        	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+		_dom.setChangedForDirectory(_parent, SchedulerDom.MODIFY);
 	}
 	
 	public List get_list() {

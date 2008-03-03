@@ -901,8 +901,9 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		if(count == SWT.YES) {
 			detailListener.deleteState(txtState.getText());
 			confListener.deleteState(txtState.getText(), tree.getTopItem());					
-			tree.setSelection(new TreeItem[] {tree.getItems()[0]});			
-			
+			//tree.setSelection(new TreeItem[] {tree.getItems()[0]});
+			tree.setSelection(new TreeItem[] {tree.getTopItem()});
+			confListener.treeFillState(tree.getTopItem());
 			confListener.treeSelection(tree, parent);
 		}
 	}

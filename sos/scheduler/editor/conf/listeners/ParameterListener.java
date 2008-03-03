@@ -161,9 +161,7 @@ public class ParameterListener {
 					item.setText(1, (((Element) o).getAttributeValue("value") != null ? ((Element) o).getAttributeValue("value") : ""));					
 				}
 			}						
-		}		
-		//if(type == Editor.JOB)
-		//	_main.updateJob();
+		}				
 
 	} 
 
@@ -174,13 +172,19 @@ public class ParameterListener {
 				Object o = it.next();
 				if (o instanceof Element) {					
 					TableItem item = new TableItem(table, SWT.NONE);
-					item.setText(0, ((Element) o).getAttributeValue("file"));
-					item.setText(1, (((Element) o).getAttributeValue("node") != null ? ((Element) o).getAttributeValue("node") : ""));					
+					Element elem = (Element) o; 
+					if(elem.getAttribute("file") != null) {
+						item.setText(0, Utils.getAttributeValue("file", elem));
+						item.setText(2, "file");
+					} else { 
+						item.setText(0, Utils.getAttributeValue("live_file", elem));
+						item.setText(2, "live_file");
+					}
+					item.setText(1, (((Element) o).getAttributeValue("node") != null ? ((Element) o).getAttributeValue("node") : ""));
+														
 				}
 			}						
-		}		
-		//if(type == Editor.JOB)
-		//	_main.updateJob();
+		}				
 	} 
 
 
@@ -281,7 +285,7 @@ public class ParameterListener {
 	}
 
 
-	public void saveIncludeParams(Table table, String file, String node) {
+	public void saveIncludeParams(Table table, String file, String node, boolean isLive) {
 
 		boolean found = false;
 
@@ -292,12 +296,19 @@ public class ParameterListener {
 				Object o = it.next();
 				if (o instanceof Element) {
 					Element e = (Element) o;
-					if (file.equals(e.getAttributeValue("file")) && (node.equals(e.getAttributeValue("node")) || table.getSelectionCount() > 0 )) {
-						found = true;																		
+					if ((file.equals(e.getAttributeValue("live_file")) || file.equals(e.getAttributeValue("file"))) && (node.equals(e.getAttributeValue("node")) || table.getSelectionCount() > 0 )) {
+						found = true;																								
+						e.removeAttribute("live_file");
+						e.removeAttribute("file");
+						if(isLive)
+							e.setAttribute("live_file", file);
+						else
+							e.setAttribute("file", file);
 						Utils.setAttribute("node", node, e);
 						_dom.setChanged(true);						
-						if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+						if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);						
 						table.getItem(index).setText(1, node);
+						table.getItem(index).setText(2, (isLive ? "live_file" : "file"));
 						break;
 					}
 					index++;
@@ -306,7 +317,11 @@ public class ParameterListener {
 		}
 		if (!found) {
 			Element e = new Element("include");
-			e.setAttribute("file", file);
+			if(isLive)
+				e.setAttribute("live_file", file);
+			else
+				e.setAttribute("file", file);
+			
 			e.setAttribute("node", node);
 			_dom.setChanged(true);			
 			if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
@@ -317,7 +332,8 @@ public class ParameterListener {
 			_includeParams.add(e);
 
 			TableItem item = new TableItem(table, SWT.NONE);
-			item.setText(new String[] { file, node});
+			item.setText(new String[] { file, node, (isLive ? "live_file" : "file")});
+			
 
 		}			
 	}

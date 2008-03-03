@@ -19,12 +19,15 @@ import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ExecuteListener;
 import sos.scheduler.editor.conf.listeners.ScriptListener;
 
 public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage {
-    private ExecuteListener listener;
+    
+	
+	private ExecuteListener listener      = null;
 
     private Group           group         = null;
 
@@ -57,11 +60,14 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
     private Button          bNoExecute    = null;
 
     private Label           label9        = null;
+    
+    private ISchedulerUpdate update       = null;
 
 
-    public ExecuteForm(Composite parent, int style, SchedulerDom dom, Element job) {
+    public ExecuteForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate update_) {
         super(parent, style);
         
+        update = update_;
         
         initialize();
         setToolTipText();
@@ -250,7 +256,7 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
      */
     private void createScriptForm() {
         GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
-        scriptForm = new ScriptForm(group, SWT.NONE);
+        scriptForm = new ScriptForm(group, SWT.NONE, update);
         scriptForm.setLayoutData(gridData1);
     }
 

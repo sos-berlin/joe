@@ -3,7 +3,6 @@ package sos.scheduler.editor.app;
 import java.io.StringWriter;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -654,6 +653,36 @@ public class Utils {
 		return elem;
 	}
 	
+    /*
+     * liefert den Vaterknoten der Runtime
+     * 
+     * folgende Vaterknoten sind gesucht: job, order, schedule
+     */
+    public static Element getRunTimeParentElement(Element elem) {
+		
+		boolean loop = true;
+		int counter = 0;
+		while(loop) {
+			if(elem != null && elem.getParentElement()!= null) {
+				if(elem.getName().equalsIgnoreCase("job") 
+						|| elem.getName().equalsIgnoreCase("schedule")
+						|| elem.getName().equalsIgnoreCase("order")) {
+					return elem;					
+				} else if(elem.getParentElement().getName().equalsIgnoreCase("job")) {
+					return elem.getParentElement();					
+				} else {
+					elem = elem.getParentElement();					
+				}
+				++counter;
+				if(counter == 5) {
+					loop = false;
+				}
+			} else {
+				return elem;
+			}
+		}
+		return elem;
+	}
     /**
      * Normalizes the given string
      */
@@ -704,22 +733,23 @@ public class Utils {
     	return newValue;
     }
     
-    /*public static String editComment() {
-        TextDialog dialog = new TextDialog(MainWindow.getSShell());
-        dialog.setText("Comment");
-        String message = "comment";
-        dialog.setContent(message, SWT.LEFT);
-        dialog.getStyledText().setEnabled(true);
-        dialog.getStyledText().setEditable(true);
-        
-        
-        StyleRange bold = new StyleRange();
-        bold.start = 0;
-        bold.length = message.indexOf("\n");
-        bold.fontStyle = SWT.BOLD;
-        
-        String retVal = dialog.open(true);
-        
-        return retVal;
-    }*/
+
+    //löscht alle Kinder der Element elem, wenn diese einen Attribut name haben  
+    public static void removeChildrensWithName(Element elem, String name) {    	    	
+    	Element child = elem.getChild(name);
+    	java.util.ArrayList nl = new java.util.ArrayList();
+    	if(child != null) {    		
+    		java.util.List l = child.getChildren();    		
+    		for(int i = 0; i < l.size(); i++) {
+    			Element e = (Element)l.get(i);
+    			if(Utils.getAttributeValue("name", e).length() > 0){
+    				nl.add(e);    				    				
+    			}
+    		}
+    		l.removeAll(nl);
+    		if(l.size() == 0)
+    			elem.removeChildren(name);
+
+    	}
+    }
 }

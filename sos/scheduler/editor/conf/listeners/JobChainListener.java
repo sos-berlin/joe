@@ -57,25 +57,19 @@ public class JobChainListener {
 	}
 	
 	
-	public void applyChain(String name, boolean ordersRecoverable, boolean visible) {
+	public void applyChain(String name, boolean ordersRecoverable, boolean visible, boolean distributed) {
 		String oldjobChainName = Utils.getAttributeValue("name", _chain);
 		if (oldjobChainName != null && oldjobChainName.length() > 0) {
 			_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
 		}
 		Utils.setAttribute("name", name, _chain);
 		Utils.setAttribute("orders_recoverable", ordersRecoverable, _chain);
-		Utils.setAttribute("visible", visible, _chain);
-		
+		Utils.setAttribute("visible", visible, _chain);		
+		Utils.setAttribute("distributed", distributed, false, _chain);
+				
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("job_chain", name, SchedulerDom.MODIFY);
-		
-		/*if(_dom.isLifeElement() && _dom.isChanged()) {
-			if(_dom.getListOfEmptyElementNames() == null) {
-				_dom.setListOfEmptyElementNames(new ArrayList());
-			}
-			_dom.getListOfEmptyElementNames().add(Utils.getAttributeValue("name",_chain));
-		}*/
-		
+				
 	}
 	
 	
@@ -84,13 +78,8 @@ public class JobChainListener {
 	public void fillFileOrderSource(Table table) {
 		table.removeAll();
 		String directory = "";
-		String regex = "";
-		//String max = "";
-		//String repeat = "";
-		//String delay_after_error = "";
+		String regex = "";		
 		String next_state="";
-		
-		//File x=new File("");
 		
 		if (_chain != null) {
 			Iterator it = _chain.getChildren().iterator();
@@ -98,10 +87,7 @@ public class JobChainListener {
 				Element node = (Element) it.next();
 				if (node.getName() == "file_order_source"){
 					directory = Utils.getAttributeValue("directory", node);
-					regex = Utils.getAttributeValue("regex", node);
-					//max = Utils.getAttributeValue("max", node);
-					//repeat = Utils.getAttributeValue("repeat", node);
-					//delay_after_error = Utils.getAttributeValue("delay_after_error", node);
+					regex = Utils.getAttributeValue("regex", node);					
 					next_state = Utils.getAttributeValue("next_state", node);
 					TableItem item = new TableItem(table, SWT.NONE);
 					item.setText(new String[] { directory, regex,next_state});
@@ -180,9 +166,11 @@ public class JobChainListener {
 					TableItem item = new TableItem(table, SWT.NONE);
 					item.setText(new String[] { state, nodetype, action, next, error, onError });
 					
-					if (!next.equals("") && (state.equals("next") || !checkForState(next)))
+					//if (!next.equals("") && (state.equals("next") || !checkForState(next)))
+					if (!next.equals("") && !checkForState(next))
 						item.setBackground(3, Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-					if (!error.equals("") && (state.equals("error") || !checkForState(error)))
+					//if (!error.equals("") && (state.equals("error") || !checkForState(error)))
+					if (!error.equals("") && !checkForState(error))
 						item.setBackground(4, Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
 				}
 			}
@@ -294,7 +282,6 @@ public class JobChainListener {
 		return Utils.getAttributeValue("error_state", _node);
 	}
 	
-	
 	public void setErrorState(String state) {
 		Utils.setAttribute("error_state", state, _node, _dom);
 		_dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
@@ -307,6 +294,15 @@ public class JobChainListener {
 	public boolean getRemoveFile() {
 		return Utils.getAttributeValue("remove", _node).equals("yes");
 	}
+	
+	public boolean isDistributed() {		
+		return Utils.getBooleanValue("distributed", _chain);
+	}
+	
+	/*
+	public void setDistributed(boolean distributed) {		
+		Utils.setAttribute("distributed", distributed, _chain);
+	}*/
 	
 	public void applyNode(boolean isJobchainNode,
 			              String state, 

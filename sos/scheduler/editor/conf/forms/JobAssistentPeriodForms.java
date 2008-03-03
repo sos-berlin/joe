@@ -58,7 +58,7 @@ public class JobAssistentPeriodForms {
 	private Shell                  jobTypeShell                = null;
 	
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
-	private int                    assistentType               = -1;		
+	//private int                    assistentType               = -1;		
 	
 	private PeriodForm             periodForm                  = null;	
 	
@@ -131,7 +131,7 @@ public class JobAssistentPeriodForms {
 		update = update_;
 		job = job_;
 		jobBackUp = (Element)job_.clone();		
-		assistentType = assistentType_;
+		//assistentType = assistentType_;
 		init();
 	}
 	

@@ -24,10 +24,11 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.Utils;
 
 
 public class SchedulerDom extends DomParser {
-    private static final String[] CONFIG_ELEMENTS          = { "base", "security", "cluster", "process_classes", "locks", "script", "http_server",
+    private static final String[] CONFIG_ELEMENTS          = { "base", "params", "security", "cluster", "process_classes", "schedules", "locks", "script", "http_server",
             "holidays", "jobs", "job_chains", "orders", "commands" };
 
     private static final String[] JOB_ELEMENTS             = { "description", "params", "environment", "script", "process", "monitor",
@@ -39,7 +40,7 @@ public class SchedulerDom extends DomParser {
     
     private static final String[] HOLIDAYS_ELEMENTS        = { "holiday", "include"};
     
-    private static final String[] PARAMS_ELEMENTS        = { "param", "include"};
+    private static final String[] PARAMS_ELEMENTS        = { "param", "copy_params", "include"};
 
     private ArrayList             _disabled                = new ArrayList();
     
@@ -193,6 +194,9 @@ public class SchedulerDom extends DomParser {
     		} else if(type==LIFE_ORDER) {
     			elem = new Element("job_chain");
     			elem.setAttribute("name", "job_chain1");
+    		} else if(type==LIFE_SCHEDULE) {
+    			elem = new Element("schedule");
+    			elem.setAttribute("name", "schedule1");
     		} 
     		
             setDoc(new Document(elem));
@@ -343,9 +347,9 @@ public class SchedulerDom extends DomParser {
         
         saxo.output(getDoc());
         
-        Document doc  = null;
+        //Document doc  = null;
         try {
-        	doc = getBuilder(true).build(new StringReader(handler.getXML()));
+        	getBuilder(true).build(new StringReader(handler.getXML()));
         } catch (JDOMException e) {
             int res = MainWindow.message(Messages.getString("MainListener.outputInvalid",
                     new String[] { e.getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO);
@@ -485,6 +489,30 @@ public class SchedulerDom extends DomParser {
         }
     }
     
+    public void setChangedForDirectory(Element _parent, String what) {
+    	Element parent = Utils.getRunTimeParentElement(_parent);
+    	if(parent != null) {
+    		if(parent.getName().equals("order")) {
+    			setChangedForDirectory(parent.getName(), Utils.getAttributeValue("job_chain",parent)+","+Utils.getAttributeValue("id",parent), what);
+    		} else {
+    			setChangedForDirectory(parent.getName(), Utils.getAttributeValue("name",parent), what);
+    		}
+    			
+    	}
+    	/*if(_parent != null) {
+    		if(_parent.getName().equals("schedule")){
+    			setChangedForDirectory(_parent.getName(), Utils.getAttributeValue("name",_parent), what);
+    		} else if(_parent.getParentElement().getName().equals("order")) {
+    			setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_parent.getParentElement())+","+Utils.getAttributeValue("id",_parent.getParentElement()), what);
+    		} else {
+    			setChangedForDirectory(_parent.getParentElement().getName(), Utils.getAttributeValue("name",_parent.getParentElement()), what);
+    		}
+    	}*/
+    }
+    
+    /*
+     * what is: NEW or MODIFY or DELETE
+     */
     public void setChangedForDirectory(String which, String name, String what) {    	
     	changedForDirectory.put(which + "_" + name, what);
     }

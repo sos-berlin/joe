@@ -1,41 +1,47 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.listeners.JobsListener;
+import sos.scheduler.editor.conf.listeners.ScheduleListener;
+import org.jdom.Element;
+import sos.scheduler.editor.app.Utils;
+
 
 public class ScheduleForm extends Composite implements IUpdateLanguage {
 	
-	private JobsListener listener;
+	private ScheduleListener listener                           = null;
 	
 	private Group           scheduleGroup                       = null;
 	
-	private SchedulerDom     dom                         = null;
+	private SchedulerDom    dom                                 = null;
+		
+	private Text            text                                = null;
 	
-	private ISchedulerUpdate update                      = null;
+	private boolean         init                                = true;
 	
 	
-	
-	public ScheduleForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) {
+	public ScheduleForm(Composite parent, int style, SchedulerDom dom, org.jdom.Element schedule_, ISchedulerUpdate update) {
 		super(parent, style);
 		try {
-			
-			//this.parent = parent;
-			//this.style = style;
-			this.dom = dom;
-			this.update = update;
-			listener = new JobsListener(dom, update);
+			init = true;
+			this.dom = dom;			
+			listener = new  ScheduleListener (dom, update, schedule_);
 			initialize();
 			setToolTipText();
-			//listener.fillTable(table);
+			init = false;
+			
 		} catch (Exception e) {
 			System.err.println("..error in ScheduleForm.init() " + e.getMessage());
 		}
@@ -63,31 +69,48 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 			scheduleGroup.setText("Schedule");
 			scheduleGroup.setLayout(gridLayout);
 
-			final Text text = new Text(scheduleGroup, SWT.BORDER);
+			text = new Text(scheduleGroup, SWT.BORDER);
+			text.addModifyListener(new ModifyListener() {
+				public void modifyText(final ModifyEvent e) {
+                    if(!init && !existScheduleName())
+                    	listener.setName(text.getText());
+				}
+			});
 			text.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-			createTable();
-			//bRemoveJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+			text.setText(listener.getName());
 		} catch (Exception e) {
 			System.err.println("..error in ScheduleForm.createGroup() " + e.getMessage());
 		}
 	}
 	
 	
-	/**
-	 * This method initializes table
-	 */
-	private void createTable() {
-		try {
-		} catch (Exception e) {
-			System.err.println("..error in ScheduleForm.createTable() " + e.getMessage());
-		}
-	}
 	
 	
 	public void setToolTipText() {
-		
+		text.setToolTipText(Messages.getTooltip("schedule.name"));
 	}
 	
 	
+	private boolean existScheduleName() {
+		boolean retVal = false;
+		if(!dom.isLifeElement()) {
+			if(listener.getSchedule() != null && listener.getSchedule().getParentElement() != null) {
+				Element parent = listener.getSchedule().getParentElement();
+				java.util.List l = parent.getChildren("schedule");
+				for(int i =0; i < l.size(); i++) {					
+					 Element el = (Element)l.get(i);
+					 if(Utils.getAttributeValue("name", el).equals(text.getText())) {
+						 retVal = true;						 
+						 break;
+					 }					
+				}
+			}
+		}
+		if(retVal)
+			text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+		else
+			text.setBackground(null);
+		return retVal;
+	}
 	
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -11,7 +11,7 @@ public class RunTimeListener {
     private Element      _job;
 
     private Element      _runtime;
-
+    
 
     public RunTimeListener(SchedulerDom dom, Element job) {
         _dom = dom;
@@ -53,7 +53,8 @@ public class RunTimeListener {
       if (_runtime != null) {
 
           Utils.setAttribute("start_time_function",function_name, _runtime, _dom);
-          _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+          //_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+          _dom.setChangedForDirectory(_job, SchedulerDom.MODIFY);
       }
   }
     
@@ -62,6 +63,29 @@ public class RunTimeListener {
     	if (s==null)s="";
       return s;
     }
+
+    public String[] getSchedules() {
+    	String[] retval = new String[0];
+    	if (!_dom.isLifeElement() && _dom.getRoot() != null) {
+    		if(_dom.getRoot().getChild("config") != null && _dom.getRoot().getChild("config").getChild("schedules")!= null) {
+    			java.util.List l = _dom.getRoot().getChild("config").getChild("schedules").getChildren("schedule");
+    			retval = new String[l.size()];
+    			for(int i = 0; i < l.size(); i++){
+    				Element e = (Element)l.get(i);
+    				retval[i] = Utils.getAttributeValue("name", e);
+    			}
+    		}
+    	}
+    	return retval;
+    }
     
+    public String getSchedule() {
+        return Utils.getAttributeValue("schedule", _runtime);
+    }
+
+
+    public void setSchedule(String schedule) {
+        Utils.setAttribute("schedule", schedule, _runtime);
+    }
 
 }

@@ -37,7 +37,7 @@ public class Editor {
 
     public final static int EXECUTE                = 17;
 
-    public final static int MONITOR                = 18;
+    public final static int MONITOR                = 18;        
 
     public final static int OPTIONS                = 19;
 
@@ -115,7 +115,9 @@ public class Editor {
     
     public final static int SCHEDULES              = 77;    
     
-    public final static int SCHEDULE               = 78;
+    public final static int SCHEDULE               = 78;    
+        
+    public final static int MONITORS               = 79;
     
     public static String    SCHEDULER_ENCODING     = "";
 

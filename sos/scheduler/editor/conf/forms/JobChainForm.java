@@ -141,6 +141,8 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 	
 	private Combo               cOnError                    = null;
 	
+	private Button              butDistributed             = null; 
+	
 	
 	
 	
@@ -153,8 +155,6 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		fillChain(false, false);
 		this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
 		
-		////listener.fillChains(tChains);
-		//sashForm.setWeights(new int[] { 20, 50, 30 });
 	}
 	
 	
@@ -213,9 +213,19 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				
 			}
 		});
-		bRecoverable = new Button(jobChainGroup, SWT.CHECK);
-		final GridData gridData_5 = new GridData(GridData.CENTER, GridData.BEGINNING, false, false);
-		bRecoverable.setLayoutData(gridData_5);
+
+		final Composite composite_2 = new Composite(jobChainGroup, SWT.NONE);
+		final GridData gridData_11 = new GridData(GridData.CENTER, GridData.FILL, false, false, 1, 2);
+		gridData_11.heightHint = 48;
+		gridData_11.widthHint = 134;
+		composite_2.setLayoutData(gridData_11);
+		final GridLayout gridLayout_6 = new GridLayout();
+		gridLayout_6.verticalSpacing = 0;
+		gridLayout_6.horizontalSpacing = 0;
+		gridLayout_6.marginHeight = 0;
+		gridLayout_6.marginWidth = 0;
+		composite_2.setLayout(gridLayout_6);
+		bRecoverable = new Button(composite_2, SWT.CHECK);
 		bRecoverable.setSelection(true);
 		bRecoverable.setText("Orders Recoverable");
 		bRecoverable.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -224,6 +234,25 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				bApplyChain.setEnabled(true);
 			}
 		});
+		bVisible = new Button(composite_2, SWT.CHECK);
+		bVisible.setSelection(true);
+		bVisible.setText("Visible");
+		bVisible.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				getShell().setDefaultButton(bApplyChain);
+				bApplyChain.setEnabled(true);
+			}
+		});
+
+		butDistributed = new Button(composite_2, SWT.CHECK);
+		butDistributed.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				getShell().setDefaultButton(bApplyChain);
+				bApplyChain.setEnabled(true);
+			}
+		});
+		butDistributed.setText("Distributed");
+		//butDistributed.setSelection(listener.isDistributed());
 		bApplyChain = new Button(jobChainGroup, SWT.NONE);
 		bApplyChain.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		bApplyChain.setText("A&pply Job Chain");
@@ -235,16 +264,6 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		});
 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
-		bVisible = new Button(jobChainGroup, SWT.CHECK);
-		bVisible.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		bVisible.setSelection(true);
-		bVisible.setText("Visible");
-		bVisible.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				getShell().setDefaultButton(bApplyChain);
-				bApplyChain.setEnabled(true);
-			}
-		});
 		
 		butDetails = new Button(jobChainGroup, SWT.NONE);
 		final GridData gridData_7 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
@@ -1120,7 +1139,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 	
 	private void applyChain() {
 		String oldJobChainname = listener.getChainName();
-		listener.applyChain(tName.getText(), bRecoverable.getSelection(), bVisible.getSelection());
+		listener.applyChain(tName.getText(), bRecoverable.getSelection(), bVisible.getSelection(), butDistributed.getSelection());
 		update.updateJobChain(tName.getText(), oldJobChainname); 
 		fillChain(true, false);
 		bApplyChain.setEnabled(false);
@@ -1205,7 +1224,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		butDetails.setToolTipText(Messages.getTooltip("job_chains.chain.details"));
 		butDetailsJob.setToolTipText(Messages.getTooltip("job_chains.node.details"));
 		butBrowse.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));
-		
+		butDistributed.setToolTipText(Messages.getTooltip("job_chains.distributed"));
 		
 	}
 	public void setISchedulerUpdate(ISchedulerUpdate update_) {

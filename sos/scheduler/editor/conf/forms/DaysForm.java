@@ -71,7 +71,9 @@ public class DaysForm extends Composite implements IUpdateLanguage {
     
     private boolean          newGroup      = false;
     
-    private HashMap        listOfSameMonths = null;
+    private HashMap          listOfSameMonths = null;
+    
+    private Button           butNewGroup   = null; 
 
 
     public DaysForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main, int type) {
@@ -200,7 +202,7 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         gridData_1.heightHint = 95;
         listOfGroup.setLayoutData(gridData_1);
 
-        final Button butNewGroup = new Button(group, SWT.NONE);
+        butNewGroup = new Button(group, SWT.NONE);
         butNewGroup.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		newGroup = true;
@@ -321,6 +323,12 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         bRemove.setToolTipText(Messages.getTooltip("days.btn_remove"));
         cUnusedDays.setToolTipText(Messages.getTooltip("days.unused_days"));
 
+        listOfDays.setToolTipText(Messages.getTooltip("days.list_of_days"));
+        listOfGroup.setToolTipText(Messages.getTooltip("days.list_of_groups"));
+        butAdd.setToolTipText(Messages.getTooltip("days.list_of_groups.but_add"));
+        butRemove.setToolTipText(Messages.getTooltip("days.list_of_groups.but_remove"));
+        butNewGroup.setToolTipText(Messages.getTooltip("days.list_of_groups.but_new_group"));
+        
     }
 
     public void setEnabledGroupElement(boolean enable) {

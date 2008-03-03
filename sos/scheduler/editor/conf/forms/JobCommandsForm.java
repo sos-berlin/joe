@@ -22,9 +22,7 @@ import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
 public class JobCommandsForm extends Composite implements IUpdateLanguage {
 
-    private JobCommandsListener listener;
-
-    private SchedulerListener   mainListener;
+    private JobCommandsListener listener       = null;
 
     private Group               commandsGroup  = null;
 
@@ -39,8 +37,8 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
 
     public JobCommandsForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate update,
             SchedulerListener mainListener) {
-        super(parent, style);
-        this.mainListener = mainListener;
+    	
+        super(parent, style);        
         listener = new JobCommandsListener(dom, job, update);
         initialize();
         setToolTipText();

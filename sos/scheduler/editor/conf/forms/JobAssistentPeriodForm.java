@@ -26,7 +26,7 @@ import sos.scheduler.editor.conf.listeners.*;
 public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage {
     private PeriodListener listener;
 
-    private boolean        onOrder;
+    //private boolean        onOrder;
 
     private Group          gPeriod          = null;
 
@@ -292,13 +292,13 @@ public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage
 
     public JobAssistentPeriodForm(Composite parent, int style, SchedulerDom dom, boolean onOrder) {
         this(parent, style);
-        this.onOrder = onOrder;
+        //this.onOrder = onOrder;
         listener = new PeriodListener(dom);        
     }
 
 
     public void setParams(SchedulerDom dom, boolean onOrder, PeriodsListener periodslistener_) {
-        this.onOrder = onOrder;
+        //this.onOrder = onOrder;
         listener = new PeriodListener(dom);
         periodslistener = periodslistener_;
     }

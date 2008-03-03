@@ -179,7 +179,8 @@ public class TabbedContainer implements IContainer {
     	try {
     		DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
     		if (doc.open(filelist)) {
-    			CTabItem tab = newItem(doc, doc.getFilename());
+    			//CTabItem tab = newItem(doc, doc.getFilename());
+    			newItem(doc, doc.getFilename());
     			return doc;
     		} else 
     			return null;
@@ -193,7 +194,8 @@ public class TabbedContainer implements IContainer {
     	try {
     		DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
     		if (doc.open(filename, filelist)) {
-    			CTabItem tab = newItem(doc, doc.getFilename());
+    			//CTabItem tab = newItem(doc, doc.getFilename());
+    			newItem(doc, doc.getFilename());
     			// tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
     			return doc;
     		} else 
@@ -223,7 +225,7 @@ public class TabbedContainer implements IContainer {
         CTabItem tab = new CTabItem(folder, SWT.NONE);
         tab.addDisposeListener(new DisposeListener() {
         	public void widgetDisposed(final DisposeEvent e) {        		        		
-        		window.getSShell().setText("Job Scheduler Editor");
+        		MainWindow.getSShell().setText("Job Scheduler Editor");
         		window.setSaveStatus();
         		        		
         	}
@@ -434,6 +436,8 @@ public class TabbedContainer implements IContainer {
       			   return openLifeElement(xmlFilename, SchedulerDom.LIFE_LOCK);
     			} else if(root.getName().equalsIgnoreCase("order") || root.getName().equalsIgnoreCase("add_order")) {
       			   return openLifeElement(xmlFilename, SchedulerDom.LIFE_ORDER);
+      			} else if(root.getName().equalsIgnoreCase("schedule")) {
+      			   return openLifeElement(xmlFilename, SchedulerDom.LIFE_SCHEDULE);
       			} else {
     				MainWindow.message("Unknows root Element: " + root.getName() + " from filename " + xmlFilename, SWT.NONE);
     			}

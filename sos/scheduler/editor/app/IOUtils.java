@@ -342,7 +342,7 @@ public class IOUtils {
 
       
     /**
-	 * Speichert das Dokument in die einzelnen Dateien wieder zurück
+	 * Speichert das Dokument in die einzelnen Dateien (als HOT FOLDER ELEMENT) wieder zurück
 	 */
     public static boolean saveDirectory(DomParser dom, boolean saveas, int type, String nameOfElement, IContainer container) {
     	Document currDoc = dom.getDoc();
@@ -354,7 +354,16 @@ public class IOUtils {
     		fdialog.setText("Save object to hot folder ...");
     		
     		fdialog.open();    		
-    		String path = fdialog.getFilterPath();                            		
+    		String path = fdialog.getFilterPath();   
+    		
+    		/*if(!new File(path).isDirectory() || !new File(path).exists()) {
+    			int cont = MainWindow.message("Directory not exist.",  SWT.ICON_WARNING | SWT.YES | SWT.NO);
+    			if(cont == SWT.YES ) {
+    				new File(path).mkdirs();
+    			} else {
+    				return saveDirectory(dom, saveas, type, nameOfElement, container);
+    			}
+    		}*/
     		
     		if(path == null) {
     			return false;

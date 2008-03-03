@@ -4,7 +4,6 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
-//import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -33,7 +32,8 @@ import sos.scheduler.editor.conf.listeners.BaseListener;
  * @author sky2000
  */
 public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
-    private BaseListener listener;
+    
+	private BaseListener listener = null;
 
     private Group        group    = null;
 
@@ -59,6 +59,8 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     
     private Button       butOpen  = null; 
 
+    private Button       button   = null;
+    
 
     /**
      * @param parent
@@ -142,7 +144,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
 
-        final Button button = new Button(group, SWT.NONE);
+        button = new Button(group, SWT.NONE);
         final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
         gridData.widthHint = 23;
         button.setLayoutData(gridData);
@@ -293,6 +295,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         table.setToolTipText(Messages.getTooltip("base.table"));
         tFile.setToolTipText(Messages.getTooltip("base.file_input"));
         butOpen.setToolTipText(Messages.getTooltip("base.file_open"));
+        button.setToolTipText(Messages.getTooltip("button.comment"));
 
     }
     
@@ -300,9 +303,6 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     	String currPath = "";
     	
     	if(tFile.getText() != null && tFile.getText().length() > 0) {
-    		//String xmlPath = sos.scheduler.editor.app.Options.getSchedulerHome() ;
-    		//xmlPath = (xmlPath.endsWith("/") || xmlPath.endsWith("\\") ? xmlPath.concat("config") : xmlPath.concat("/config/"));
-    		//xmlPath = xmlPath.concat(tFile.getText());
     		
     		sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
     		
@@ -314,7 +314,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     		}
     		currPath = currPath.concat(tFile.getText());
     		con.openScheduler(currPath);
-    		//con.openScheduler(xmlPath);
+    		
     		con.setStatusInTitle();
     		
     	} else {        			

@@ -103,8 +103,18 @@ public class ConfigListener {
     }
 
 
-    public String getMainSchedulerHost() {
-    	
+    
+    public String getCentralConfigDir() {
+        return Utils.getAttributeValue("central_configuration_directory", _config);
+    }
+
+
+    public void setCentralConfigDir(String centralConfigDir) {
+        Utils.setAttribute("central_configuration_directory", centralConfigDir, _config, _dom);
+    }
+
+    
+    public String getMainSchedulerHost() {    	
         return Utils.getAttributeValue("supervisor", _config).split(":")[0];
     }
 

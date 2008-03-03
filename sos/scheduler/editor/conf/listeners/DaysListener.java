@@ -355,7 +355,8 @@ public class DaysListener {
 
         _dom.setChanged(true);
         if(_runtime != null && _runtime.getParentElement() != null )
-           	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
+           	//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
+        	_dom.setChangedForDirectory(_runtime, SchedulerDom.MODIFY);
 
         
         	setUsedDays();
@@ -395,7 +396,7 @@ public class DaysListener {
     		daylist.addContent(new Element("day").setAttribute("day", attr));	
     	}
     	
-    	
+    	_dom.setChangedForDirectory(_runtime, SchedulerDom.MODIFY);
     	setUsedDays();
     }
 
@@ -422,46 +423,10 @@ public class DaysListener {
     			daylist = new Element(_elementName[_type]);
     			_runtime.addContent(daylist);
     			Utils.setAttribute("month", newGroup, daylist);
-    		}
-    			//Utils.setAttribute("month", newGroup, daylist);
+    		}    		
     			
     	} else {
     		
-    		
-    		///test
-    		/*List l = daylist.getChildren("day");
-    		boolean found = false;
-    		for(int i = 0; i <  l.size(); i++) {
-    			Element e = (Element)l.get(i);
-    			if(_type == ULTIMOS) {
-    				if(getNormalizedUltimos(Utils.getAttributeValue("day", e)).equals(getNormalizedUltimos(oldGroup)) )
-    					found = true;        	
-    				//Utils.setAttribute("day", newGroup, e);
-    				Utils.setAttribute("day", newGroup, daylist);
-    			} else {
-    				if(Utils.getAttributeValue("day", e).equals(oldGroup) )
-    					found = true;        	
-    				//Utils.setAttribute("day", newGroup, e);
-    				Utils.setAttribute("day", newGroup, daylist);
-    			}
-    		}
-    		
-    		if(!found) {
-    			if(_type == ULTIMOS) {
-        			split= getNormalizedUltimos(newGroup);        	        	
-        		} else {
-        			split = newGroup.split(" ");
-        		}
-        		String attr = "";
-        		for(int i = 0; i < split.length; i++) {
-        			attr = (attr.length() == 0 ? "" : attr + " ") + getDayNumber(split[i]);
-        		}
-        		daylist.addContent(new Element("day").setAttribute("day", attr));	
-    		}
-    		*/	
-    		///////test 2
-    		//if(_type == ULTIMOS) {
-    	
     			boolean found = false;
     			String[] used = getUsedDays() ;
     	    	
@@ -479,8 +444,7 @@ public class DaysListener {
     	    			    if(str.equals(oldGroup)) {    	    			    	
     	    			    	e.setAttribute("day", getDayGroupNumbers(newGroup));
     	    			    	found = true;
-    	    			    }
-    	    			//used[i] = str;    	
+    	    			    }    	    			
     	    		}
     	    		if(!found) {
     	    			split= getNormalizedUltimos(newGroup); 
@@ -490,25 +454,11 @@ public class DaysListener {
     	        		}
     	        		daylist.addContent(new Element("day").setAttribute("day", attr));
     	    		}
-    	    	//}
-    	    	
     	    	
     		}
-    		
-    		//////////
-    		/*if(_type == ULTIMOS) {
-    			split= getNormalizedUltimos(newGroup);        	        	
-    		} else {
-    			split = newGroup.split(" ");
-    		}
-    		String attr = "";
-    		for(int i = 0; i < split.length; i++) {
-    			attr = (attr.length() == 0 ? "" : attr + " ") + getDayNumber(split[i]);
-    		}
-    		daylist.addContent(new Element("day").setAttribute("day", attr));
-    			*/
+    		    	
     	}
-    	
+    	_dom.setChangedForDirectory(_runtime, SchedulerDom.MODIFY);
     	
     	setUsedDays();
     }
@@ -529,7 +479,8 @@ public class DaysListener {
 
                     _dom.setChanged(true);
                     if(_runtime != null && _runtime.getParentElement() != null )
-                       	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
+                       	//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
+                    	_dom.setChangedForDirectory(_runtime, SchedulerDom.MODIFY);
                     setUsedDays();
                     break;
                 }
@@ -561,7 +512,8 @@ public class DaysListener {
 
                     _dom.setChanged(true);
                     if(_runtime != null && _runtime.getParentElement() != null )
-                       	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
+                       	//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
+                    	_dom.setChangedForDirectory(_runtime, SchedulerDom.MODIFY);
                     setUsedDays();
                     break;
                 }
@@ -591,8 +543,9 @@ public class DaysListener {
                     //    _runtime.removeChild(_elementName[_type]);
 
                     _dom.setChanged(true);
-                    //if(_runtime != null && _runtime.getParentElement() != null )
-                    //   	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
+                    if(_runtime != null && _runtime.getParentElement() != null )
+                       	//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_runtime.getParentElement()), SchedulerDom.MODIFY);
+                    	_dom.setChangedForDirectory(_runtime, SchedulerDom.MODIFY);
                     setUsedDays();
                     break;
                 }

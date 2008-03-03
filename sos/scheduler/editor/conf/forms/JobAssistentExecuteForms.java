@@ -181,7 +181,7 @@ public class JobAssistentExecuteForms {
 			gridData_4.widthHint = 60;
 			comLanguage.setLayoutData(gridData_4);
 			if(job.getChild("script")!=null) {
-				ScriptListener scriptlistener = new ScriptListener(dom, job, Editor.SCRIPT);
+				ScriptListener scriptlistener = new ScriptListener(dom, job, Editor.SCRIPT, update);
 				comLanguage.select(scriptlistener.getLanguage());
 				if(scriptlistener.getLanguage() > 1) {
 					txtInclude.setEditable(true);
@@ -328,7 +328,7 @@ public class JobAssistentExecuteForms {
 			ExecuteListener executeListener = new ExecuteListener(dom, job);
 			executeListener.setExecutable(false);
 			
-			ScriptListener scriptlistener = new ScriptListener(dom, job, Editor.SCRIPT);
+			ScriptListener scriptlistener = new ScriptListener(dom, job, Editor.SCRIPT, update);
 			
 			if(comLanguage.getSelectionIndex() > -1) {							
 				scriptlistener.setLanguage(comLanguage.getSelectionIndex());

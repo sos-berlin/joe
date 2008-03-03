@@ -2,17 +2,20 @@ package sos.scheduler.editor.conf.listeners;
 
 import java.util.Iterator;
 import java.util.List;
-
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.SWT;
 import org.jdom.CDATA;
 import org.jdom.Element;
-
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class ScriptListener {
+	
+	
     public final static int      NONE        = 0;
 
     public final static int      JAVA        = 1;
@@ -29,31 +32,33 @@ public class ScriptListener {
 
     public final static String[] _languages  = { "", "java", "javascript", "perlScript", "VBScript", "shell","" };
 
-    private SchedulerDom         _dom;
+    private SchedulerDom         _dom        = null;
 
-    private Element              _parent;
+    private Element              _parent     = null;
 
-    private Element              _script;
+    private Element              _script     = null;
 
-    private int                  _type;
+    private int                  _type       = -1;
+    
+    private ISchedulerUpdate     _update     = null;
 
 
-    public ScriptListener(SchedulerDom dom, Element parent, int type) {
+    public ScriptListener(SchedulerDom dom, Element parent, int type, ISchedulerUpdate update) {
         _dom = dom;
         _parent = parent;
         _type = type;
-
+        _update = update;
         setScript();
     }
 
 
     private void setScript() {
         if (_type == Editor.MONITOR) {
-            Element monitor = _parent.getChild("monitor");
+            //Element monitor = _parent.getChild("monitor");
+        	Element monitor = _parent;
             if (monitor != null) {
                 _script = monitor.getChild("script");
-                if (_script == null)
-                    monitor.detach();
+                //if (_script == null) monitor.detach();
             }
         } else
             _script = _parent.getChild("script");
@@ -98,7 +103,8 @@ public class ScriptListener {
             // init script element
             _script = new Element("script");
             if (_type == Editor.MONITOR) {
-                Element monitor = _parent.getChild("monitor");
+                //Element monitor = _parent.getChild("monitor");
+            	Element monitor = _parent;
                 if (monitor == null) {
                     monitor = new Element("monitor");
                     _parent.addContent(monitor);
@@ -194,16 +200,40 @@ public class ScriptListener {
         setAttributeValue("filename", filename, COM);
     }
 
-
+    public void fillTable(Table table) {
+    	if (_script != null) {
+    		table.removeAll();
+    		List includeList = _script.getChildren("include");
+    		for(int i = 0; i < includeList.size(); i++) {
+    			Element include = (Element) includeList.get(i);
+    			
+    			if(include.getAttributeValue("file") != null) {
+    				TableItem item = new TableItem(table, SWT.NONE); 
+    				item.setText(0, Utils.getAttributeValue("file", include));
+    				item.setText(1, "file");
+    			} else {
+    				TableItem item = new TableItem(table, SWT.NONE); 
+    				item.setText(0, Utils.getAttributeValue("live_file", include));
+    				item.setText(1, "live_file");
+    			}    			
+    		}
+    	}
+    }
+    
     public String[] getIncludes() {
         if (_script != null) {
-            List includeList = _script.getChildren("include");
+            List includeList = _script.getChildren("include");            
             String[] includes = new String[includeList.size()];
             Iterator it = includeList.iterator();
             int i = 0;
             while (it.hasNext()) {
                 Element include = (Element) it.next();
-                String file = include.getAttributeValue("file");
+                String file = "";
+                if(include.getAttribute("live_file")!=null)
+                	file = include.getAttributeValue("live_file");
+                else 
+                	file = include.getAttributeValue("file");
+                
                 includes[i++] = file == null ? "" : file;
             }
             return includes;
@@ -212,6 +242,18 @@ public class ScriptListener {
     }
 
 
+    public void addInclude(Table table, String filename, boolean isLife) {
+    	if (_script != null) {
+            List includes = _script.getChildren("include");
+            _script.addContent(includes.size(), new Element("include").setAttribute((isLife?"live_file":"file"), filename));            
+            _dom.setChanged(true);
+            fillTable(table);
+            if(_parent != null)
+            	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+        } else
+            System.out.println("no script element defined!");
+    }
+    
     public void addInclude(String filename) {
         if (_script != null) {
             List includes = _script.getChildren("include");
@@ -223,7 +265,7 @@ public class ScriptListener {
             System.out.println("no script element defined!");
     }
 
-    private void removeScriptSource() {
+  /*  private void removeScriptSource() {
       String includes[] = getIncludes();
 
       _script.removeContent();
@@ -232,7 +274,7 @@ public class ScriptListener {
         addInclude(includes[i]);
        }
     }
-
+*/
     public void removeInclude(int index) {
         if (_script != null) {
             List includeList = _script.getChildren("include");
@@ -256,52 +298,60 @@ public class ScriptListener {
     }
 
 
-    public void deleteScript() {
+    /*public void deleteScript() {
       //    if (_script != null) 	_script.removeContent();
       if (_script != null) 	removeScriptSource();
-    }
+    }*/
     
     public void setSource(String source) {
-  
-      try {
-        if (_script != null) {
-            // List mixed = _script.getContent();
-            // Iterator it = mixed.iterator();
-           // boolean found = false;
-            /*
-             * while (it.hasNext() ) { Object o = it.next(); if (o instanceof
-             * CDATA || o instanceof Text) { found = true; if (source == null ||
-             * source.equals("")) { ((Text) o).detach(); break; } else { ((Text)
-             * o).setText(source); } } }
-             */
 
-           
-//            if (!found && !source.equals("")) {
-              if (!source.equals("")) {
+    	try {
+    		if (_script != null) {
+    			// List mixed = _script.getContent();
+    			// Iterator it = mixed.iterator();
+    			_script.setText(null);
+    			if (!source.equals("")) {
+    				//removeScriptSource();             
+    				_script.addContent(new CDATA(source));
+    			} 
 
-//          	_script.removeContent();
-              	removeScriptSource();
-             
-                _script.addContent(new CDATA(source));
-            }
+    			_dom.setChanged(true);
+    			if(_parent != null)
+    				_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+    		} else
+    			System.out.println("no script element defined!");
 
-            _dom.setChanged(true);
-            if(_parent != null)
-            	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
-        } else
-            System.out.println("no script element defined!");
-    
-    }catch (org.jdom.IllegalDataException jdom) {
-     	 MainWindow.message(jdom.getMessage(), SWT.ICON_ERROR);
-       }
-    catch (Exception e) {
-   	 MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
-   	 System.out.println(e);
-     }
+    	}catch (org.jdom.IllegalDataException jdom) {
+    		MainWindow.message(jdom.getMessage(), SWT.ICON_ERROR);
+    	}
+    	catch (Exception e) {
+    		MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
+    		System.out.println(e);
+    	}
     }
 
 
 	public Element getParent() {
 		return _parent;
 	}
+	
+	public String getName() {
+        return Utils.getAttributeValue("name", _parent);
+    }
+
+    public void setName(String name) {
+        Utils.setAttribute("name", name, _parent);
+        if(_update != null)
+        	_update.updateTreeItem(name);
+    }
+
+    public String getOrdering() {
+        return Utils.getAttributeValue("ordering", _parent);
+    }
+
+    public void setOrdering(String ordering) {
+        Utils.setAttribute("ordering", ordering, _parent);
+    }
+
+    
 }

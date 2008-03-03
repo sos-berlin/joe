@@ -173,7 +173,8 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
         createModified();
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
-        Label filler = new Label(group, SWT.NONE);
+        //Label filler = new Label(group, SWT.NONE);
+        new Label(group, SWT.NONE);
         createComposite();
         createGroup1();
         label7 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);

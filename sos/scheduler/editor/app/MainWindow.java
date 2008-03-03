@@ -3,19 +3,14 @@ package sos.scheduler.editor.app;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.Element;
-
 import sos.scheduler.editor.app.MainListener;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.TabbedContainer;
@@ -212,6 +207,15 @@ public class MainWindow  {
 		mLifeOrder.setText("Order         \tCtrl+W");
 		mLifeOrder.setAccelerator(SWT.CTRL | 'W');
 		
+		MenuItem mLifeSchedule= new MenuItem(mLife, SWT.PUSH);
+		mLifeSchedule.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				if (container.newScheduler(SchedulerDom.LIFE_SCHEDULE) != null)
+					setSaveStatus();
+			}
+		});
+		mLifeSchedule.setText("Schedule      \tCtrl+K");
+		mLifeSchedule.setAccelerator(SWT.CTRL | 'K');
 		
 		
 		//////////
@@ -459,17 +463,18 @@ public class MainWindow  {
 						if(root != null) {
 							Element config = root.getChild("config");
 							if(config != null) {
+								
 								config.removeChildren("jobs");								
 								config.removeChildren("job_chains");
 								config.removeChildren("locks");
-								config.removeChildren("process_classes");
+								Utils.removeChildrensWithName(config, "process_classes");
+								config.removeChildren("schedules");
 								config.removeChildren("commands");
-								
-								//IOUtils.saveFile(currdom, false);
-								if (container.getCurrentEditor().applyChanges()) {
+																
+								/*if (container.getCurrentEditor().applyChanges()) {
 									container.getCurrentEditor().save();
 									setSaveStatus();
-								}
+								}*/
 								form.updateTree("main");
 								form.update();
 								

@@ -5,15 +5,9 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
-
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -431,7 +425,7 @@ public class JobCommandListener {
     public void setExitCode(String value, boolean updateTree) {
         Utils.setAttribute("on_exit_code", value, _command, _dom);
         if (updateTree)
-            _main.updateCommand(value);
+            _main.updateTreeItem(value);
     }
 
 
@@ -476,7 +470,10 @@ public class JobCommandListener {
     	if(_dom.isLifeElement())
     		 return new String[0];
     	
-        Element element = _job.getParentElement().getParentElement().getChild("job_chains");
+        Element element = null;
+        if(_job.getParentElement() != null && _job.getParentElement().getParentElement() != null)
+        	element = _job.getParentElement().getParentElement().getChild("job_chains");
+        
         if (element != null) {
             List chains = element.getChildren("job_chain");
             _chains = new String[chains.size()];
@@ -500,7 +497,7 @@ public class JobCommandListener {
 	
 	public void setJob(String job) {
 		Utils.setAttribute("job", job, _command, _dom);
-		_main.updateCommand(job);
+		_main.updateTreeItem(_command.getName() + ": " +job);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
@@ -531,7 +528,7 @@ public class JobCommandListener {
 	
 	public void setJobChain(String jobChain) {
 		Utils.setAttribute("job_chain", jobChain, _command, _dom);
-		_main.updateCommand(jobChain);
+		_main.updateTreeItem(_command.getName() + ": " +jobChain);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	

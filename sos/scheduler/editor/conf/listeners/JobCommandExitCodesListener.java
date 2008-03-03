@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
@@ -23,11 +22,11 @@ public class JobCommandExitCodesListener {
 
     private SchedulerDom     _dom;
 
-    private String[]         _chains = new String[0];
+    //private String[]         _chains = new String[0];
 
-    private List             _params;
+    //private List             _params;
     
-    private List             _environments;	
+    //private List             _environments;	
 
     private Element          _command;
 
@@ -434,7 +433,7 @@ public class JobCommandExitCodesListener {
     public void setExitCode(String value, boolean updateTree) {
         Utils.setAttribute("on_exit_code", value, _command, _dom);
         if (updateTree)
-            _main.updateCommand(value);
+            _main.updateTreeItem(value);
     }
 
 

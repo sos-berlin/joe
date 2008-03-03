@@ -30,24 +30,29 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobCommandExitCodesListener;
 
 public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpdateLanguage {
-	private Table              tCommands;
+	
+		
+	private Table                         tCommands                    = null;
 
-	private JobCommandExitCodesListener listener;
+	private JobCommandExitCodesListener   listener                     = null;
 
-	private Group              jobsAndOrdersGroup           = null;
+	private Group                         jobsAndOrdersGroup           = null;
 
-	private Group              gMain           = null;
+	private Group                         gMain                        = null;
 
-	private SashForm           sashForm        = null;
+	private SashForm                      sashForm                     = null;
 
-	private boolean            updateTree      = false;
+	private boolean                       updateTree                   = false;
 
-	private boolean            event           = false;
+	private boolean                       event                        = false;
 
+	private Combo                         cExitcode                    = null;
 
-	private Combo              cExitcode       = null;
-
-	private Button             bRemoveExitcode = null;
+	private Button                        bRemoveExitcode              = null;
+	
+	private Button                        addJobButton                 = null;
+	
+	private Button                        addOrderButton               = null;
 
 
 	public JobCommandExitCodesForm(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main)
@@ -197,7 +202,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		gridLayout_1.marginWidth = 0;
 		composite.setLayout(gridLayout_1);
 
-		final Button addJobButton = new Button(composite, SWT.NONE);
+		addJobButton = new Button(composite, SWT.NONE);
 		addJobButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				addJob();
@@ -206,7 +211,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		addJobButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		addJobButton.setText("Add Job");
 
-		final Button addOrderButton = new Button(composite, SWT.NONE);
+		addOrderButton = new Button(composite, SWT.NONE);
 		addOrderButton.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
 		addOrderButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -227,50 +232,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 				if (item == null)
 					return;
 				bRemoveExitcode.setEnabled(tCommands.getSelectionCount() > 0);
-/*
-				if (item.getText(0).equals("add_order")) {
-					bOrder.setSelection(true);
-					bJob.setSelection(false);
-					setCommandsEnabled(true);
 
-				}
-
-				if (item.getText(0).equals("order")) {
-					bOrder.setSelection(true);
-					bJob.setSelection(false);
-					setCommandsEnabled(true);
-
-				}
-
-				if (item.getText(0).equals("start_job")) {
-					bOrder.setSelection(false);
-					bJob.setSelection(true);
-					setCommandsEnabled(false);
-					//group_2.setEnabled(tCommands.getSelectionCount() == 1);
-					tabFolder.setSelection(0);
-				}
-
-				if (tCommands.getSelectionCount() > 0) {
-
-					fillCommand();
-					listener.fillParams(tCommands, tParameter);
-					if(!bOrder.getSelection())
-						listener.fillEnvironment(tCommands, tableEnvironment);
-					else {
-						listener.clearEnvironment();
-						tableEnvironment.removeAll();
-						tableEnvironment.clearAll();
-					}
-					bApplyExitcode.setEnabled(false);
-
-				}
-
-				bRemoveExitcode.setEnabled(tCommands.getSelectionCount() > 0);
-
-				//group_2.setEnabled(item.getText(0).equals("start_job"));
-				tabFolder.setEnabled(true);
-				tabFolder.setSelection(0);
-*/
 			}
 		});
 		tCommands.setLinesVisible(true);
@@ -279,9 +241,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		gridData9.heightHint = 149;
 		tCommands.setLayoutData(gridData9);
 		listener.fillCommands(tCommands);
-		//gMain.setEnabled(tCommands.getItemCount() > 0);
-		//group_2.setEnabled(tCommands.getSelectionCount() == 1);
-
+	
 		final TableColumn tcJob = new TableColumn(tCommands, SWT.NONE);
 		tcJob.setWidth(167);
 		tcJob.setText("Command");
@@ -306,13 +266,10 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		bRemoveExitcode.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				listener.deleteCommand(tCommands);                
-				//clearFields();
+				
 				tCommands.deselectAll();
 				bRemoveExitcode.setEnabled(false);
-				//bApplyExitcode.setEnabled(false);
-				//gMain.setEnabled(tCommands.getItemCount() > 0);
-				//group_2.setEnabled(tCommands.getSelectionCount() == 1);
-				//tabFolder.setSelection(0);
+				
 			}
 		});
 		bRemoveExitcode.setText("Remove");
@@ -361,129 +318,15 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		if (index == -1) {
 			
 			e = new Element("order");			
-			//e.setAttribute("id", "order" + tCommands.getItemCount());
 			e.setAttribute("job_chain", "job_chain" + tCommands.getItemCount());		
 			e.setAttribute("replace", "yes");
 			TableItem item = new TableItem(tCommands, SWT.NONE);
-			//item.setText(new String[] { "add_order", tJob.getText(), cJobchain.getText(), tStartAt.getText() });//mo
 			item.setText(new String[] { "order", "", "job_chain_" + tCommands.getItemCount(), "" });
 			listener.addCommand(e);
 
 		}
 	}
-	/*private void addCommand() {
-		String msg = "";
-		if (cJobchain.getText().trim().equals("") && bOrder.getSelection()) {
-			msg = "A jobchain must be given for an order";
-			cJobchain.setFocus();
-		} else {
-			if (tJob.getText().trim().equals("") && bJob.getSelection()) {
-				msg = "A jobname must be given for a job";
-				tJob.setFocus();
-			}
-		}
-		if (!msg.equals("")) {
-			MainWindow.message(msg, SWT.ICON_INFORMATION);
-		} else {
-
-			Element e = null;
-			int index = tCommands.getSelectionIndex();
-
-			if (index == -1) {
-				if (bJob.getSelection()) {
-					e = new Element("start_job");
-					e.setAttribute("at", tStartAt.getText());
-					e.setAttribute("job", tJob.getText());
-					TableItem item = new TableItem(tCommands, SWT.NONE);
-					item.setText(new String[] { "start_job", tJob.getText(), "", tStartAt.getText() });
-				} else {
-					//e = new Element("add_order");
-					e = new Element("order");
-					e.setAttribute("at", tStartAt.getText());
-					e.setAttribute("id", tJob.getText());
-					e.setAttribute("priority", tPriority.getText());
-					if (bReplace.getSelection()) {
-						e.setAttribute("replace", "yes");
-					} else {
-						e.setAttribute("replace", "no");
-					}
-					e.setAttribute("state", tState.getText());
-					e.setAttribute("job_chain", cJobchain.getText());
-					e.setAttribute("title", tTitle.getText());
-
-					TableItem item = new TableItem(tCommands, SWT.NONE);
-					//item.setText(new String[] { "add_order", tJob.getText(), cJobchain.getText(), tStartAt.getText() });//mo
-					item.setText(new String[] { "order", tJob.getText(), cJobchain.getText(), tStartAt.getText() });
-					listener.clearEnvironment();
-					tableEnvironment.removeAll();
-					tableEnvironment.clearAll();
-				}
-
-				listener.addCommand(e);
-				tCommands.setSelection(tCommands.getItemCount() - 1);
-				listener.fillParams(tCommands, tParameter);
-				if(bOrder.getSelection()) {
-					listener.clearEnvironment();
-					tableEnvironment.removeAll();
-					tableEnvironment.clearAll();
-				} else                
-					listener.fillEnvironment(tCommands, tableEnvironment);
-
-
-			} else {
-
-				String cmd = tCommands.getItem(index).getText();
-				if (cmd.equals("add_order") && bJob.getSelection() && tCommands.getSelectionIndex() >= 0) {
-					listener.setCommandName(bApplyExitcode, "start_job", tJob.getText(), tCommands);
-					tCommands.getItem(tCommands.getSelectionIndex()).setText(0, "start_job");
-				}
-
-				if (cmd.equals("order") && bJob.getSelection() && tCommands.getSelectionIndex() >= 0) {
-					listener.setCommandName(bApplyExitcode, "start_job", tJob.getText(), tCommands);
-					tCommands.getItem(tCommands.getSelectionIndex()).setText(0, "start_job");
-				}
-
-				if (cmd.equals("start_job") && bOrder.getSelection() && tCommands.getSelectionIndex() >= 0) {
-					//listener.setCommandName(bNew, "add_order", tJob.getText(), tCommands);//mo
-					listener.setCommandName(bNew, "order", tJob.getText(), tCommands);
-					//tCommands.getItem(tCommands.getSelectionIndex()).setText(0, "add_order"); //mo
-					tCommands.getItem(tCommands.getSelectionIndex()).setText(0, "order");
-					tCommands.getItem(tCommands.getSelectionIndex()).setText(2, "");
-					tCommands.getItem(tCommands.getSelectionIndex()).setText(3, tStartAt.getText());
-					listener.clearEnvironment();
-					tableEnvironment.removeAll();
-					tableEnvironment.clearAll();
-				}
-
-				if (bJob.getSelection()) {
-					listener.setCommandAttribute(bApplyExitcode, "job", tJob.getText(), tCommands);
-				} else {
-					listener.setCommandAttribute(bApplyExitcode, "id", tJob.getText(), tCommands);
-					if (bReplace.getSelection()) {
-						listener.setCommandAttribute(bApplyExitcode, "replace", "yes", tCommands);
-					} else {
-						listener.setCommandAttribute(bApplyExitcode, "replace", "no", tCommands);
-					}
-				}
-				listener.setCommandAttribute(bApplyExitcode, "state", tState.getText(), tCommands);
-				listener.setCommandAttribute(bApplyExitcode, "title", tTitle.getText(), tCommands);
-				listener.setCommandAttribute(bApplyExitcode, "priority", tPriority.getText(), tCommands);
-				listener.setCommandAttribute(bApplyExitcode, "at", tStartAt.getText(), tCommands);
-				listener.setCommandAttribute(bApplyExitcode, "job_chain", cJobchain.getText(), tCommands);
-				tCommands.getItem(index).setText(1, tJob.getText());
-				tCommands.getItem(index).setText(3, tStartAt.getText());
-				if (bOrder.getSelection()) {
-					tCommands.getItem(index).setText(2, cJobchain.getText());
-				} else {
-					tCommands.getItem(index).setText(2, "");
-				}
-			}
-
-			bApplyExitcode.setEnabled(false);
-		}
-	}
-
-*/
+	
 
 	
 	public Element getCommand() {
@@ -495,10 +338,10 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 
 	public void setToolTipText() {
 		cExitcode.setToolTipText(Messages.getTooltip("jobcommand.exitcode"));
-	
-		//bApply.setToolTipText(Messages.getTooltip("job.param.btn_add"));
-		//tParameter.setToolTipText(Messages.getTooltip("jobcommand.param.table"));
-
+		addJobButton.setToolTipText(Messages.getTooltip("jobcommand.exitcode.but_add_job"));
+		addOrderButton.setToolTipText(Messages.getTooltip("jobcommand.exitcode.but_add_order"));
+		bRemoveExitcode.setToolTipText(Messages.getTooltip("jobcommand.exitcode.but_remove_exit_codes"));
+		tCommands.setToolTipText(Messages.getTooltip("jobcommand.exitcode.list"));
 	}
 
 	

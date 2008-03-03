@@ -78,7 +78,7 @@ public class JobAssistentScriptForms {
 		dom = dom_;
 		update = update_;
 		assistentType = assistentType_;
-		scriptlistener = new ScriptListener(dom, job_, Editor.SCRIPT);			
+		scriptlistener = new ScriptListener(dom, job_, Editor.SCRIPT, update);			
 	}
 	
 	

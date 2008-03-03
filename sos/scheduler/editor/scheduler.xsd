@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: scheduler.xsd 5542 2008-01-27 15:27:19Z jz $ -->
+<!-- $Id: scheduler.xsd 5643 2008-02-21 12:32:02Z jz $ -->
 
 <xsd:schema 
     xmlns:xsd          = "http://www.w3.org/2001/XMLSchema" 
@@ -9,7 +9,7 @@
 
     <xsd:annotation>
         <xsd:documentation xml:lang="de">
-            $Id: scheduler.xsd 5542 2008-01-27 15:27:19Z jz $
+            $Id: scheduler.xsd 5643 2008-02-21 12:32:02Z jz $
             Schema für die Scheduler-Konfiguration,
             s.a. http://www.zschimmer.com/sos/scheduler/konfiguration.html.
         </xsd:documentation>
@@ -279,7 +279,8 @@
     
     <xsd:element name="include">
         <xsd:complexType>
-            <xsd:attribute name="file" type="File" use="required"/>
+            <xsd:attribute name="file"          type="File"/>
+            <xsd:attribute name="live_file"     type="File"/>
         </xsd:complexType>
     </xsd:element>
 
@@ -506,6 +507,7 @@
             </xsd:sequence>
 
             <xsd:attribute name="name"               type="Name"/>
+            <xsd:attribute name="replace"            type="Yes_no"/>
             <xsd:attribute name="visible"            type="Yes_no_never"/>
             <xsd:attribute name="orders_recoverable" type="Yes_no"/>
             <xsd:attribute name="distributed"        type="Yes_no"/>
@@ -786,7 +788,8 @@
 
                     <xsd:element name="include">
                         <xsd:complexType>
-                            <xsd:attribute name="file" type="File" use="required"/>
+                            <xsd:attribute name="file"      type="File"/>
+                            <xsd:attribute name="live_file" type="File"/>
                             <xsd:attribute name="node" type="String"/>
                         </xsd:complexType>
                     </xsd:element>
@@ -804,7 +807,6 @@
             <xsd:attribute name="let_run"       type="Yes_no"/>
             <xsd:attribute name="repeat"        type="Duration"/>
             <xsd:attribute name="absolute_repeat" type="Duration"/>
-            <!-- <xsd:attribute name="start_once"    type="Yes_no" default="no"> -->
             <xsd:attribute name="start_once"    type="Yes_no">
                 <xsd:annotation>
                     <xsd:documentation>Test only for Joacim Zschimmer</xsd:documentation>

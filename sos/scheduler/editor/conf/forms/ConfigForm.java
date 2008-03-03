@@ -1,6 +1,3 @@
-/**
- * 
- */
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
@@ -18,10 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
-//import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
@@ -94,9 +88,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 	private Text             sUdpPort                     = null;
 	
 	private Group            gMainScheduler               = null;
-	
-	//private Button           cUseMainScheduler            = null;
-	
+		
 	private Label            label1                       = null;
 	
 	private Text             tMainSchedulerHost           = null;
@@ -121,19 +113,17 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 	
 	private Text             tIpAddress                   = null;
 	
-	private SchedulerDom     _dom                         = null;
+	private Button           button                       = null;
 	
-	private ISchedulerUpdate  update                      = null;
-
+	private Text             txtCentralConfigDir          = null; 
+		
 	/**
 	 * @param parent
 	 * @param style
 	 */
 	public ConfigForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate _update) {
 		super(parent, style);
-		listener = new ConfigListener(dom);
-		update = _update;
-		_dom = dom;
+		listener = new ConfigListener(dom);		
 		initialize();
 		setToolTipText();
 		tSpoolerID.setFocus();
@@ -154,6 +144,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		tIpAddress.setText(listener.getIpAddress());
 		tLogDir.setText(listener.getLogDir());
 		tMailXSLTStylesheet.setText(listener.getMailXSLTStylesheet());
+		txtCentralConfigDir.setText(listener.getCentralConfigDir());
 		
 		cSamePorts.setSelection(listener.isPort());
 		if (listener.isPort())
@@ -201,6 +192,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		gridLayout_1.numColumns = 2;
 		group_1.setLayout(gridLayout_1);
 		label = new Label(group_1, SWT.NONE);
+		label.setLayoutData(new GridData());
 		label.setText("Scheduler ID:");
 		tSpoolerID = new Text(group_1, SWT.BORDER);
 		final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -213,6 +205,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		label7 = new Label(group_1, SWT.NONE);
+		label7.setLayoutData(new GridData());
 		label7.setText("Parameter:");
 		tParameter = new Text(group_1, SWT.BORDER);
 		tParameter.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -223,6 +216,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		label10 = new Label(group_1, SWT.NONE);
+		label10.setLayoutData(new GridData());
 		label10.setText("Include Path:");
 		tIncludePath = new Text(group_1, SWT.BORDER);
 		tIncludePath.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -234,6 +228,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		});
 		
 		final Label ipaddressLabel = new Label(group_1, SWT.NONE);
+		ipaddressLabel.setLayoutData(new GridData());
 		ipaddressLabel.setText("IP-Address");
 		
 		tIpAddress = new Text(group_1, SWT.BORDER);
@@ -245,6 +240,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		});
 		tIpAddress.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		label11 = new Label(group_1, SWT.NONE);
+		label11.setLayoutData(new GridData());
 		label11.setText("Log Dir:");
 		tLogDir = new Text(group_1, SWT.BORDER);
 		tLogDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -255,7 +251,8 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		label12 = new Label(group_1, SWT.NONE);
-		label12.setText("Mail XSLT");
+		label12.setLayoutData(new GridData());
+		label12.setText("Mail XSLT:");
 		tMailXSLTStylesheet = new Text(group_1, SWT.BORDER);
 		tMailXSLTStylesheet.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		tMailXSLTStylesheet.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -263,6 +260,18 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 				listener.setMailXSLTStylesheet(tMailXSLTStylesheet.getText());
 			}
 		});
+
+		final Label centralConfigurationDirectoryLabel = new Label(group_1, SWT.NONE);
+		centralConfigurationDirectoryLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+		centralConfigurationDirectoryLabel.setText("Central Configuration Dir:");
+
+		txtCentralConfigDir = new Text(group_1, SWT.BORDER);
+		txtCentralConfigDir.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				listener.setCentralConfigDir(txtCentralConfigDir.getText());
+			}
+		});
+		txtCentralConfigDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		createGPorts();
 		createGMainScheduler();
 		createGJavaOptions();
@@ -290,7 +299,10 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		eventGroup.setLayout(gridLayout);
 		
 		label12_1 = new Label(eventGroup, SWT.NONE);
-		label12_1.setText("Configuration Add Event");
+		final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
+		gridData.widthHint = 153;
+		label12_1.setLayoutData(gridData);
+		label12_1.setText("Configuration Add Event:");
 		
 		cConfigurationAddEvent = new Combo(eventGroup, SWT.NONE);
 		final GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -318,7 +330,8 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		butBrowse.setText("Browse");
 		
 		label12_2 = new Label(eventGroup, SWT.NONE);
-		label12_2.setText("Configuration Modify Event");
+		label12_2.setLayoutData(new GridData());
+		label12_2.setText("Configuration Modify Event:");
 		
 		cConfigurationModifyEvent = new Combo(eventGroup, SWT.NONE);
 		final GridData gridData13_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -342,7 +355,8 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		butBrowse_1.setText("Browse");
 		
 		label12_3 = new Label(eventGroup, SWT.NONE);
-		label12_3.setText("Configuration Delete Event");
+		label12_3.setLayoutData(new GridData());
+		label12_3.setText("Configuration Delete Event:");
 		
 		cConfigurationDeleteEvent = new Combo(eventGroup, SWT.NONE);
 		final GridData gridData13_1_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -420,14 +434,14 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		GridData gridData7 = new GridData(60, SWT.DEFAULT);
 		GridLayout gridLayout11 = new GridLayout();
 		gridLayout11.marginWidth = 0;
-		gridLayout11.numColumns = 4;
+		gridLayout11.numColumns = 6;
 		gPorts = new Group(composite, SWT.NONE);
-		final GridData gridData_2 = new GridData(GridData.BEGINNING, GridData.FILL, false, true);
+		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, false, true);
 		gridData_2.heightHint = 60;
 		gPorts.setLayoutData(gridData_2);
 		gPorts.setText("Job Scheduler Port");
 		gPorts.setLayout(gridLayout11);
-		GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
+		GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, false, false, 6, 1);
 		gridData3.horizontalIndent = 5;
 		cSamePorts = new Button(gPorts, SWT.CHECK);
 		cSamePorts.setText("Use the same port for udp and tcp");
@@ -438,15 +452,6 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 				setEditable();
 			}
 		});
-		
-		final Label tcpLabel = new Label(gPorts, SWT.NONE);
-		final GridData gridData_6 = new GridData();
-		gridData_6.horizontalIndent = 10;
-		tcpLabel.setLayoutData(gridData_6);
-		tcpLabel.setText("TCP:");
-		label4 = new Label(gPorts, SWT.NONE);
-		label4.setLayoutData(new GridData());
-		label4.setText("UDP:");
 		label14 = new Label(gPorts, SWT.NONE);
 		final GridData gridData_5 = new GridData(30, SWT.DEFAULT);
 		gridData_5.horizontalIndent = 5;
@@ -462,6 +467,12 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		});
 		GridData gridData5 = new GridData(60, SWT.DEFAULT);
 		gridData5.horizontalIndent = 10;
+		
+		final Label tcpLabel = new Label(gPorts, SWT.NONE);
+		final GridData gridData_6 = new GridData();
+		gridData_6.horizontalIndent = 10;
+		tcpLabel.setLayoutData(gridData_6);
+		tcpLabel.setText("TCP:");
 		sTcpPort = new Text(gPorts, SWT.BORDER);
 		
 		sTcpPort.setLayoutData(gridData5);
@@ -471,6 +482,9 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		GridData gridData8 = new GridData(60, SWT.DEFAULT);
+		label4 = new Label(gPorts, SWT.NONE);
+		label4.setLayoutData(new GridData());
+		label4.setText("UDP:");
 		sUdpPort = new Text(gPorts, SWT.BORDER);
 		
 		sUdpPort.setLayoutData(gridData8);
@@ -481,7 +495,6 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		});
 		GridLayout gridLayout7 = new GridLayout();
 		gridLayout7.numColumns = 4;
-		//GridData gridData2 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
 		GridData gridData9 = new GridData();
 		gridData9.horizontalSpan = 4;
 		GridLayout gridLayout4 = new GridLayout();
@@ -495,11 +508,10 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		
 		label1 = new Label(gMainScheduler, SWT.NONE);
 		final GridData gridData_8 = new GridData(GridData.BEGINNING, GridData.CENTER, false, true);
-		gridData_8.widthHint = 31;
 		label1.setLayoutData(gridData_8);
 		label1.setText("Host:");
-		GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, false, true);
-		gridData6.horizontalIndent = 5;
+		GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+		gridData6.widthHint = 58;
 		tMainSchedulerHost = new Text(gMainScheduler, SWT.BORDER);
 		tMainSchedulerHost.setLayoutData(gridData6);
 		tMainSchedulerHost.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -511,9 +523,8 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		label2.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
 		label2.setText("Port:");
 		GridData gridData11 = new GridData(GridData.FILL, GridData.CENTER, false, true);
-		gridData11.horizontalIndent = 5;
+		gridData11.widthHint = 47;
 		sMainSchedulerPort = new Spinner(gMainScheduler, SWT.BORDER);
-		sMainSchedulerPort.setMaximum(99000);
 		
 		sMainSchedulerPort.setLayoutData(gridData11);
 		sMainSchedulerPort.addModifyListener(new ModifyListener() {
@@ -521,8 +532,6 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 				listener.setMainScheduler(tMainSchedulerHost.getText() + ":" + sMainSchedulerPort.getSelection());
 			}
 		});
-		
-		//new ParameterForm(_dom, _dom.getRoot().getChild("config"), update, gConfig, Editor.CONFIG);
 				
 		gJavaOptions = new Group(gConfig, SWT.NONE);
 		gJavaOptions.setText("Main Java Options");
@@ -564,7 +573,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		gridLayout.numColumns = 2;
 		group.setLayout(gridLayout);
 
-		final Button button = new Button(group, SWT.NONE);
+		button = new Button(group, SWT.NONE);
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
@@ -596,6 +605,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		tIncludePath.setToolTipText(Messages.getTooltip("config.include_path"));
 		tLogDir.setToolTipText(Messages.getTooltip("config.log_dir"));
 		tMailXSLTStylesheet.setToolTipText(Messages.getTooltip("config.mail_xslt_stylesheet"));
+		txtCentralConfigDir.setToolTipText(Messages.getTooltip("config.central_configuration_directory"));
 		
 		cSamePorts.setToolTipText(Messages.getTooltip("config.use_same_port"));
 		sPort.setToolTipText(Messages.getTooltip("config.port"));
@@ -614,11 +624,13 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		cConfigurationModifyEvent.setToolTipText(Messages.getTooltip("config.configuration_modify_event"));
 		cConfigurationDeleteEvent.setToolTipText(Messages.getTooltip("config.configuration_delete_event"));
 		
+		butBrowse.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));
+		butBrowse_1.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));		
+		butBrowse_2.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));
+		
+		button.setToolTipText(Messages.getTooltip("button.comment"));
 	}
 	
-	public void setISchedulerUpdate(ISchedulerUpdate update_) {
-		update = update_;
-	}
 	
 		
 	

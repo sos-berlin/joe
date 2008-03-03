@@ -135,13 +135,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 				listener.newChain();
 				applyChain();
 				tChains.deselectAll();
-				butDetails.setEnabled(false);   
-				
-				/*fillChain(true, true);
-				bApplyChain.setEnabled(false);
-				enableFileOrderSource(true);              
-				tName.setFocus();
-				*/
+				butDetails.setEnabled(false);   								
 			}
 		});
 		bRemoveChain = new Button(jobchainsGroup, SWT.NONE);

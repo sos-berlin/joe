@@ -106,7 +106,7 @@ public class JobChainsListener {
     	}
         Utils.setAttribute("name", name, _chain);
         Utils.setAttribute("orders_recoverable", ordersRecoverable, _chain);
-        Utils.setAttribute("visible", visible, _chain);
+        Utils.setAttribute("visible", visible, _chain);                
 
         if (_chains == null) {
             _chains = new Element("job_chains");

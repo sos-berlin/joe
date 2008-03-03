@@ -34,7 +34,7 @@ public class JobAssistentMonitoringDirectoryForms {
 	
 	private SchedulerDom       dom                      = null;
 	
-	private ISchedulerUpdate   update                   = null;
+	//private ISchedulerUpdate   update                   = null;
 	
 	private JobOptionsListener optionlistener           = null;
 	
@@ -63,7 +63,7 @@ public class JobAssistentMonitoringDirectoryForms {
 	private Button             butRemoveDirectory       = null; 		
 	
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
-	private int                assistentType            = -1; 
+	//private int                assistentType            = -1; 
 	
 	private Element            jobBackUp                = null;    
 	
@@ -74,11 +74,11 @@ public class JobAssistentMonitoringDirectoryForms {
 	
 	public JobAssistentMonitoringDirectoryForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
 		dom = dom_;
-		update = update_;
+		//update = update_;
 		optionlistener = new JobOptionsListener(dom, job_);
 		job = job_;
 		jobBackUp = (Element)job_.clone();
-		assistentType = assistentType_;
+		//assistentType = assistentType_;
 		
 	}
 	

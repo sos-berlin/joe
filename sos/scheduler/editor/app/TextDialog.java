@@ -32,6 +32,7 @@ public class TextDialog extends Dialog {
     private int        _shellStyle     = SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL;
 
     private int        _textStyle      = SWT.WRAP | SWT.BORDER;
+    
 
     private boolean    clipBoardClick  = false;
     
