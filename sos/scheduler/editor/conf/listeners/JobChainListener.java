@@ -26,7 +26,7 @@ public class JobChainListener {
 	
 	private String[]     _states;
 	
-	private String[]     _chainNames;
+	//private String[]     _chainNames;
 	
 	/** brauch ich für den Assistenten*/
 	//private Table        tChains;
@@ -46,6 +46,10 @@ public class JobChainListener {
 		return Utils.getAttributeValue("name", _chain);
 	}
 	
+	public Element getChain() {
+		return _chain;
+	}
+	
 	
 	public boolean getRecoverable() {
 		return Utils.isAttributeValue("orders_recoverable", _chain);
@@ -59,8 +63,9 @@ public class JobChainListener {
 	
 	public void applyChain(String name, boolean ordersRecoverable, boolean visible, boolean distributed) {
 		String oldjobChainName = Utils.getAttributeValue("name", _chain);
-		if (oldjobChainName != null && oldjobChainName.length() > 0) {
-			_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
+		if (oldjobChainName != null && oldjobChainName.length() > 0) {			
+			if(_dom.isDirectory()|| _dom.isLifeElement())
+				_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
 		}
 		Utils.setAttribute("name", name, _chain);
 		Utils.setAttribute("orders_recoverable", ordersRecoverable, _chain);
@@ -68,7 +73,7 @@ public class JobChainListener {
 		Utils.setAttribute("distributed", distributed, false, _chain);
 				
 		_dom.setChanged(true);
-		_dom.setChangedForDirectory("job_chain", name, SchedulerDom.MODIFY);
+		if(_dom.isDirectory()|| _dom.isLifeElement()) _dom.setChangedForDirectory("job_chain", name, SchedulerDom.MODIFY);
 				
 	}
 	
@@ -639,7 +644,8 @@ public class JobChainListener {
 	}
 	
 	
-	public boolean isValidChain(String name) {
+	/*public boolean isValidChain(String name) {
+		
 		if (_chainNames != null) {
 			for (int i = 0; i < _chainNames.length; i++) {
 				if (_chainNames[i].equals(name))
@@ -647,8 +653,21 @@ public class JobChainListener {
 			}
 		}
 		return true;
-	}        
+	}   */     
 	
+	/*public boolean existName(String name, Element elem) {
+		if(elem.getParentElement() != null) {
+			List l = elem.getParentElement().getChildren("job_chain");
+			for (int i = 0; i < l.size(); i++) {
+				Element e = (Element)l.get(i);
+				if(!e.equals(elem) && Utils.getAttributeValue("name", e).equalsIgnoreCase(name)) {
+					return true;
+				} 
+			}
+		}
+		return false;
+		
+	}*/
 	
 	public SchedulerDom get_dom() {
 		return _dom;

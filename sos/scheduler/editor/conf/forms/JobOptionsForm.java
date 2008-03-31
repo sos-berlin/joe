@@ -783,10 +783,14 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
 
 
     private void applyDirectory() {
-        listener.applyDirectory(tDirectory.getText(), tRegex.getText());
-        listener.fillDirectories(tDirectories);
-        initDirectory(false);
-        getShell().setDefaultButton(null);
+    	if(Utils.isRegExpressions(tRegex.getText())) {
+    		listener.applyDirectory(tDirectory.getText(), tRegex.getText());
+    		listener.fillDirectories(tDirectories);
+    		initDirectory(false);
+    		getShell().setDefaultButton(null);
+    	} else {
+    		MainWindow.message(tRegex.getText() + " is not a Regular expression.", SWT.ICON_INFORMATION);
+    	}
     }
 
 

@@ -34,7 +34,7 @@ public class MergeAllXMLinDirectory {
 	
 	public final static String MASK_SCHEDULE         = "^.*\\.schedule\\.xml$";
 		
-	private             String     xmlFilename       = "";
+	//private             String     xmlFilename       = "";
 	
 	private             String     path              = "";
 	
@@ -57,10 +57,10 @@ public class MergeAllXMLinDirectory {
 	 * @param inputPath
 	 * @param outputfilename
 	 */
-	public MergeAllXMLinDirectory(String path_, String outputfilename) {
+	/*public MergeAllXMLinDirectory(String path_, String outputfilename) {
 		path = path_;
 		xmlFilename = outputfilename;
-	}
+	}*/
 	
 
 	public MergeAllXMLinDirectory(String path_) {
@@ -71,7 +71,7 @@ public class MergeAllXMLinDirectory {
 				
 	}
 	
-	public void parseDocuments() {
+	public String parseDocuments() {
 		
 		Element    root            = null;			
 		Document   parentDoc       = null;		
@@ -115,15 +115,19 @@ public class MergeAllXMLinDirectory {
 			addContainsForOrder(orders, "commands", MASK_ORDER);
 			
 			//Debug Document als String ausgeben
-			//printXML(parentDoc);
+			//printXML(parentDoc);						
 			
 //			Document speichern
 			//System.out.println("test: xmlFilename: " + xmlFilename);
-			//System.out.println("parentDoc: " + Utils.getElementAsString(parentDoc.getRootElement()));
-			IOUtils.saveXML(parentDoc, xmlFilename);
+		    //System.out.println("parentDoc: \n" + Utils.getElementAsString(parentDoc.getRootElement()));
+			return Utils.getElementAsString(parentDoc.getRootElement());
+			
+			//IOUtils.saveXML(parentDoc, xmlFilename);
+			
 			//System.out.println("OK: ");
-		} catch(Exception e) {
+		} catch(Exception e) {			
 			System.err.println("..error : " + e.getMessage());
+			return null;
 		}	
 	}
 	
@@ -530,6 +534,7 @@ public class MergeAllXMLinDirectory {
 			Document doc = builder2.build(new StringReader(xml));
 			//test
 			SchedulerDom dom = new SchedulerDom(SchedulerDom.DIRECTORY);
+			//dom.setInit(true);
 			
 			new File(originalFilename).delete();
 			
@@ -538,7 +543,7 @@ public class MergeAllXMLinDirectory {
 			if(!new File(filename).renameTo(new File(originalFilename))) {
 				MainWindow.message(MainWindow.getSShell(), "could not rename file in " + filename, SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 			}
-		
+			//dom.setInit(false);
 		} catch (Exception e) {
 			//System.out.println("..error in MergeAllXMLinDirectory.saveXML. Could not save file " + e.getMessage());
 			MainWindow.message(MainWindow.getSShell(), "could not save file " + filename + ". cause:"+ e.getMessage(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
@@ -605,8 +610,8 @@ public class MergeAllXMLinDirectory {
 	}
 	
 	public static void main(String[] args) {
-		MergeAllXMLinDirectory allJob = new MergeAllXMLinDirectory("C:/scheduler/config/temp", "C:/scheduler/config/temp/config.xml");
-		allJob.parseDocuments();
+		//MergeAllXMLinDirectory allJob = new MergeAllXMLinDirectory("C:/scheduler/config/temp", "C:/scheduler/config/temp/config.xml");
+		//allJob.parseDocuments();
 	}
 
 

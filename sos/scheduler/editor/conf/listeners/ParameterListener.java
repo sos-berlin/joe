@@ -574,5 +574,50 @@ public class ParameterListener {
 			return false;
 		}
 	}
+	
+	//selektierte Datensatz wird eine Zeile nach oben verschoben
+	public void changeUp(Table table) {
+		int index = table.getSelectionIndex();
+		if(index < 0)//nichts ist selektiert
+			return;
 
+		if(index == 0)//ist bereits ganz oben
+			return;
+
+		if(_params == null)
+			initParams();
+
+
+		Element elem = (Element)(_params.get(index));
+		Object obj =   elem.clone();
+		_params.remove(elem);
+		_params.add(index-1, obj);
+
+		table.removeAll();
+		fillParams(table);
+		table.select(index-1);
+	}
+
+	//selektierte Datensatz wird eine Zeile unten oben verschoben
+	public void changeDown(Table table) {
+		int index = table.getSelectionIndex();
+		if(index < 0)//nichts ist selektiert
+			return;
+
+		if(index == table.getItemCount()-1)//ist bereits ganz oben
+			return;
+
+		if(_params == null)
+			initParams();
+
+
+		Element elem = (Element)(_params.get(index));
+		Object obj =   elem.clone();
+		_params.remove(elem);
+		_params.add(index+1, obj);
+
+		table.removeAll();
+		fillParams(table);
+		table.select(index+1);
+	}
 }

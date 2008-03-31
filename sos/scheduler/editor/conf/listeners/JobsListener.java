@@ -89,7 +89,7 @@ public class JobsListener {
 		Element job = new Element("job");
 		job.setAttribute("name", "job" + (table.getItemCount() + 1));
 		Element runtime = new Element("run_time");
-		runtime.setAttribute("let_run", "no");
+		//runtime.setAttribute("let_run", "no");
 		if (_list == null)
 			initJobs();
 		_list.add(job.addContent(runtime));
@@ -254,9 +254,38 @@ public class JobsListener {
 		
 		//runtime
 		Element runtime = new Element("run_time");
-		runtime.setAttribute("let_run", "no");
+		//runtime.setAttribute("let_run", "no");
 		job.addContent(runtime);
 		return job;
+	}
+	
+	public Element createParams(java.util.HashMap attr, Element parent) {
+
+		//Element Parameters und entsprechende Kindknoten param bilden
+		Element params = null;		
+		if(parent.getChildren("params").size() == 0) {			
+			params = new Element("params");
+			parent.addContent(0, params);
+		} else {
+			params = parent.getChild("params");
+		}
+
+
+		ArrayList listOfParams = new ArrayList();
+		if(attr.get("params") != null)
+			listOfParams = (ArrayList)attr.get("params");        		
+		//Parameters bilden
+		Element param = null;
+		for (int i = 0; i < listOfParams.size(); i++ ) {
+			HashMap p = (HashMap)listOfParams.get(i);			
+			if(p.get("name") != null && !existParams(params, p.get("name").toString())) {
+				param = new Element("param");			      	
+				param.setAttribute("name", (p.get("name") != null ? p.get("name").toString() :""));        
+				param.setAttribute("value", (p.get("default_value") != null ? p.get("default_value").toString() :""));
+				params.addContent(param);
+			}
+		}
+        return parent;		
 	}
 	
 	/**
@@ -288,7 +317,8 @@ public class JobsListener {
 				Utils.setAttribute("tasks", attr.get("tasks").toString(), job);
 		}
 		
-		//Element Parameters und entsprechende Kindknoten param bilden
+		createParams(attr, job);
+		/*//Element Parameters und entsprechende Kindknoten param bilden
 		Element params = null;		
 		if(job.getChildren("params").size() == 0) {			
 			params = new Element("params");
@@ -312,7 +342,7 @@ public class JobsListener {
 				params.addContent(param);
 			}
 		}
-		
+		*/
 		//config Description Element bilden
 		if(job.getChild("description") == null) {
 			if( attr.get("filename") != null && attr.get("filename").toString().length() > 0 && !attr.get("filename").equals("..")) {

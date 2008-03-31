@@ -399,10 +399,10 @@ public class JobAssistentImportJobsForm {
 						
 						if(assistentType == Editor.JOB_WIZZARD) {
 							
-							//Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn assistentype = Editor.Job_Wizzard							
+		 					//Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn assistentype = Editor.Job_Wizzard							
 							//joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
-		 					Element job = joblistener.getJob();
-							job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+		 					Element job = joblistener.getJob();		 					
+		 					job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());		 					
 							jobForm.initForm();
 							//if(tParameter == null)
 							//	tParameter = jobForm.getTParameter(); 
@@ -416,7 +416,10 @@ public class JobAssistentImportJobsForm {
 							//Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn assistentype = Editor.Job_Wizzard							
 							//joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
 		 					Element job = joblistener.getJob();
-							job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+		 					if(job.getName().equals("job"))
+		 						job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+		 					//else
+		 					//	job = job.setContent(listener.createParams(h, joblistener.getJob()).cloneContent());
 							//if(tParameter == null)
 							//	tParameter = jobForm.getTParameter(); 														
 							
@@ -615,7 +618,8 @@ public class JobAssistentImportJobsForm {
 			
 			if(joblistener != null) {
 				if(joblistener.getJob().getName().equals("start_job") ||
-						joblistener.getJob().getName().equals("order")) {				
+						joblistener.getJob().getName().equals("order") ||
+						joblistener.getJob().getName().equals("config")) {				
 					txtJobname.setEnabled(false);
 				}
 				
@@ -944,7 +948,8 @@ public class JobAssistentImportJobsForm {
 			return false;
 		}
 		
-		if( assistentType != Editor.JOB) {
+
+		if( assistentType != Editor.JOB && ( joblistener != null && !joblistener.getJob().getName().equals("config"))) {
 			if(txtJobname.getText() == null || txtJobname.getText().length() == 0) {
 				MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_jobname"), SWT.ICON_WARNING | SWT.OK );
 				txtJobname.setFocus();

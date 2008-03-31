@@ -62,6 +62,7 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
 
         String text = _text.toString().trim();
         _text = new StringBuffer();
+                
     
         boolean hasText = text.length() > 0;
 
@@ -70,8 +71,13 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
         else if (_isOpen)
             _sb.append(">\n");
 
-        if (hasText) {
+        /*if (hasText) {
             _sb.append(text + "\n");
+        }*/
+        if (hasText) {
+            _sb.append(_indent + _indentStr + "<![CDATA[\n");
+            _sb.append(text + "\n");
+            _sb.append(_indent + _indentStr + "]]>\n");
         }
 
         if (!_isOpen || hasText)

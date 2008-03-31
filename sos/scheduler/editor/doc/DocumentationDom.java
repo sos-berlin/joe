@@ -21,8 +21,7 @@ import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 
 public class DocumentationDom extends DomParser {
-    private static final String[] _descriptionOrder   = { "job", "releases", "resources", "configuration",
-            "documentation"                          };
+    private static final String[] _descriptionOrder   = { "job", "releases", "resources", "configuration", "documentation" };
 
     private static final String[] _jobOrder           = { "script", "process", "monitor" };
 
@@ -98,6 +97,9 @@ public class DocumentationDom extends DomParser {
                 description.addContent(new Element("releases", getNamespace()));
             if (description.getChild("configuration", getNamespace()) == null)
                 description.addContent(new Element("configuration", getNamespace()));
+            
+            
+            	
         }
 
         setDoc(doc);
@@ -125,6 +127,7 @@ public class DocumentationDom extends DomParser {
                 description.addContent(new Element("releases", getNamespace()));
             if (description.getChild("configuration", getNamespace()) == null)
                 description.addContent(new Element("configuration", getNamespace()));
+            
         }
 
         setDoc(doc);
@@ -140,7 +143,7 @@ public class DocumentationDom extends DomParser {
 
 
     public void writeWithDom(String filename) throws IOException, JDOMException {
-        String encoding = Editor.DOCUMENTATION_ENCODING;
+        String encoding = Editor.DOCUMENTATION_ENCODING; 
         if (encoding.equals(""))
             encoding = DEFAULT_ENCODING;
         reorderDOM(getDoc().getRootElement(), getNamespace());

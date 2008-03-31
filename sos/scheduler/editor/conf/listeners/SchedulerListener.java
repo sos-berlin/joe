@@ -204,18 +204,19 @@ public class SchedulerListener {
 			item.dispose();
 
 		item = new TreeItem(tree, SWT.NONE);
-		item.setData(new TreeData(Editor.PARAMETER, config, Options.getHelpURL("parameter")));
-		item.setData("key", "parameter");
-		item.setText("Parameter");
-		if(type == SchedulerDom.DIRECTORY)
-			item.dispose();
-
-		item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.BASE, config, Options.getHelpURL("base")));
 		item.setData("key", "base");
 		item.setText("Base Files");
 		if(type == SchedulerDom.DIRECTORY)
 			item.dispose();
+		
+		
+		item = new TreeItem(tree, SWT.NONE);
+		item.setData(new TreeData(Editor.PARAMETER, config, Options.getHelpURL("parameter")));
+		item.setData("key", "parameter");
+		item.setText("Parameter");
+		if(type == SchedulerDom.DIRECTORY)
+			item.dispose();		
 
 		item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.SECURITY, config, Options.getHelpURL("security"), "security"));
@@ -619,6 +620,7 @@ public class SchedulerListener {
 	}
 
 	public void treeFillDays(TreeItem parent, Element element, int type, boolean expand, String name) {
+		parent.removeAll();
 		if (element != null) { 
 			if (type == DaysListener.WEEKDAYS || type == DaysListener.MONTHDAYS || type == DaysListener.ULTIMOS || type == DaysListener.SPECIFIC_MONTHS) {			
 				new DaysListener(_dom, element, type).fillTreeDays(parent, expand);
@@ -627,14 +629,15 @@ public class SchedulerListener {
 					//TreeItem item = _gui.getTree().getSelection()[0];
 					for(int i =0; i < l.size(); i++) {
 						Element e = (Element)l.get(i);
-						treeFillRunTimes(_gui.getTree().getSelection()[0], e, !Utils.isElementEnabled("job", _dom, element), Utils.getAttributeValue("month", e), false);                	
+						//treeFillRunTimes(_gui.getTree().getSelection()[0], e, !Utils.isElementEnabled("job", _dom, element), Utils.getAttributeValue("month", e), false);                	
+						treeFillRunTimes(parent, e, !Utils.isElementEnabled("job", _dom, element), Utils.getAttributeValue("month", e), false);
 					}
 
 				}
 
 
 			} else if (type == 6 || type==4) {
-				new DateListener(_dom, element, 1).fillTreeDays(parent, expand);
+				//new DateListener(_dom, element, 1).fillTreeDays(parent, expand);
 			} else {
 				System.out.println("Invalid type = " + type + " for filling the days in the tree!");
 			}
@@ -879,7 +882,8 @@ public class SchedulerListener {
 			job.addContent(_runtime);	
 			runtime=_runtime;		
 		}  else if(!run_time.equals("run_time") && job.getName().equals("month")){
-			_runtime = Utils.getRunTimeParentElement(job);
+			//_runtime = Utils.getRunTimeParentElement(job);
+			_runtime = job.getParentElement();
 		} else if(job.getName().equals("schedule")) {
 			runtime = job;
 		} else {
@@ -890,6 +894,7 @@ public class SchedulerListener {
 		if(!run_time.equals("run_time") && !job.getName().equals("schedule")) {
 
 			List _monthList = _runtime.getChildren("month");
+			//List _monthList = job.getParentElement().getChildren("month");
 			boolean monthFound = false;
 			for(int i = 0; i < _monthList.size(); i++) {
 				Element _month = (Element)_monthList.get(i);
@@ -903,7 +908,8 @@ public class SchedulerListener {
 			if(!monthFound) {
 				Element newMonth = new Element("month"); 
 				Utils.setAttribute("month", run_time, newMonth );
-				_runtime.addContent(newMonth);
+				//_runtime.addContent(newMonth);
+				job.addContent(newMonth);
 				job = newMonth;
 				runtime=job;
 
@@ -1000,7 +1006,8 @@ public class SchedulerListener {
 				if(disable) {
 					item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 				}
-				treeFillDays(item, runtime, 1, false);
+				//treeFillDays(item, runtime, 1, false);
+				treeFillDays(item, runtime, DaysListener.SPECIFIC_MONTHS, false);
 
 
 			}
@@ -1102,11 +1109,11 @@ public class SchedulerListener {
 					//treeFillRunTimes(parent, element, false, "schedule");
 					treeFillRunTimes(parent, element, false, Utils.getAttributeValue("name", element), true);
 
-					List l = element.getChildren("month");     	
+					/*List l = element.getChildren("month");     	
 					for(int i =0; i < l.size(); i++) {
 						Element e = (Element)l.get(i);
 						treeFillRunTimes(parent.getItem(parent.getItemCount()-1).getItem(parent.getItem(parent.getItemCount()-1).getItemCount()-1), e, false, Utils.getAttributeValue("month", e), false);
-					}
+					}*/
 
 				}
 			}

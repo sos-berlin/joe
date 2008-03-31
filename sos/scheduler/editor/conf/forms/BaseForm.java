@@ -141,10 +141,12 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 bApply.setEnabled(!tFile.getText().equals(""));
+                button.setEnabled(!tFile.getText().equals(""));
             }
         });
 
         button = new Button(group, SWT.NONE);
+        button.setEnabled(false);
         final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
         gridData.widthHint = 23;
         button.setLayoutData(gridData);
@@ -212,6 +214,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 getShell().setDefaultButton(bApply);
                 bApply.setEnabled(!tFile.getText().equals(""));
+                button.setEnabled(!tFile.getText().equals(""));
             }
         });
         tFile.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
@@ -283,6 +286,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
             tComment.setText("");
         }
         bApply.setEnabled(false);
+        button.setEnabled(false);
         bRemove.setEnabled(table.getSelectionCount() > 0);
     }
 

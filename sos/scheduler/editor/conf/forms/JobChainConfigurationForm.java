@@ -103,8 +103,9 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
         tree.addListener(SWT.Selection, new Listener() {
             public void handleEvent(Event e) {
                 if (tree.getSelectionCount() > 0) {
-                    if (selection == null)
-                        selection = tree.getItem(0);
+                    
+                	selection = tree.getSelection()[0];
+                	//if (selection == null)  selection = tree.getItem(0);
 
                     e.doit = listener.treeSelection(tree, cMainForm);
 
@@ -113,7 +114,8 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
                     } else {
                         selection = tree.getSelection()[0];
                     }
-                }
+                } else
+                	selection = tree.getItem(0);
             }
         });
     }

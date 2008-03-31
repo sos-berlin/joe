@@ -20,18 +20,25 @@ public class DetailDialogForm {
 	
 	private String[]         listOfOrderIds    = null;
 	
-	private DetailForm       dialogForm        = null;
-		
+	private DetailForm       dialogForm        = null;	
 	
-	public DetailDialogForm(String jobChainname_, String[] listOfOrderIds_) {
+	private boolean          isLifeElement     = false;
+	
+	private String           path              = null;
+	
+	public DetailDialogForm(String jobChainname_, String[] listOfOrderIds_, boolean isLifeElement_, String path_) {
 		jobChainname = jobChainname_;
-		listOfOrderIds = listOfOrderIds_;		
+		listOfOrderIds = listOfOrderIds_;	
+		isLifeElement = isLifeElement_;
+		path = path_;
 	}
 	
-	public DetailDialogForm(String jobChainname_, String state_, String[] listOfOrderIds_) {
+	public DetailDialogForm(String jobChainname_, String state_, String[] listOfOrderIds_, boolean isLifeElement_, String path_) {
 		jobChainname = jobChainname_;
 		state = state_;
 		listOfOrderIds = listOfOrderIds_;
+		isLifeElement = isLifeElement_;
+		path = path_;
 	}
 	
 	public void showDetails() {
@@ -55,8 +62,9 @@ public class DetailDialogForm {
 		gridData_6.heightHint = 572;
 			
 				
-		dialogForm =new DetailForm(composite, SWT.NONE, jobChainname, state, listOfOrderIds, Editor.JOB_CHAINS, null, null);
+		dialogForm =new DetailForm(composite, SWT.NONE, jobChainname, state, listOfOrderIds, Editor.JOB_CHAINS, null, null, isLifeElement, path);
 		dialogForm.setLayout(new FillLayout());
+	
 		
 		
 	}

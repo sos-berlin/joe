@@ -30,8 +30,8 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobCommandExitCodesListener;
 
 public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpdateLanguage {
-	
-		
+
+
 	private Table                         tCommands                    = null;
 
 	private JobCommandExitCodesListener   listener                     = null;
@@ -49,20 +49,20 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 	private Combo                         cExitcode                    = null;
 
 	private Button                        bRemoveExitcode              = null;
-	
+
 	private Button                        addJobButton                 = null;
-	
+
 	private Button                        addOrderButton               = null;
 
 
-	public JobCommandExitCodesForm(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main)
+	public JobCommandExitCodesForm(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main)	
 	throws JDOMException, TransformerException {
 		super(parent, style);
 
 		listener = new JobCommandExitCodesListener(dom, command, main);
 		initialize();
 		setToolTipText();
-		
+
 		dom.setInit(true);
 
 		listener.fillCommands(tCommands);		
@@ -241,7 +241,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		gridData9.heightHint = 149;
 		tCommands.setLayoutData(gridData9);
 		listener.fillCommands(tCommands);
-	
+
 		final TableColumn tcJob = new TableColumn(tCommands, SWT.NONE);
 		tcJob.setWidth(167);
 		tcJob.setText("Command");
@@ -266,10 +266,10 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		bRemoveExitcode.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				listener.deleteCommand(tCommands);                
-				
+
 				tCommands.deselectAll();
 				bRemoveExitcode.setEnabled(false);
-				
+
 			}
 		});
 		bRemoveExitcode.setText("Remove");
@@ -301,22 +301,22 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		Element e = null;
 		if (index == -1) {
 
-				e = new Element("start_job");				
-				e.setAttribute("job", "job" + tCommands.getItemCount());
-				TableItem item = new TableItem(tCommands, SWT.NONE);
-				item.setText(new String[] { "start_job", "job"+tCommands.getItemCount(), "", "" });
-		
-				listener.addCommand(e);
-				
+			e = new Element("start_job");				
+			e.setAttribute("job", "job" + tCommands.getItemCount());
+			TableItem item = new TableItem(tCommands, SWT.NONE);
+			item.setText(new String[] { "start_job", "job"+tCommands.getItemCount(), "", "" });
+
+			listener.addCommand(e);
+
 		}
-		
+
 	}
 
 	private void addOrder() {
 		int index = tCommands.getSelectionIndex();
 		Element e = null;
 		if (index == -1) {
-			
+
 			e = new Element("order");			
 			e.setAttribute("job_chain", "job_chain" + tCommands.getItemCount());		
 			e.setAttribute("replace", "yes");
@@ -326,15 +326,15 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 
 		}
 	}
-	
 
-	
+
+
 	public Element getCommand() {
 		return listener.getCommand();
 	}
 
 
-	
+
 
 	public void setToolTipText() {
 		cExitcode.setToolTipText(Messages.getTooltip("jobcommand.exitcode"));
@@ -344,7 +344,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		tCommands.setToolTipText(Messages.getTooltip("jobcommand.exitcode.list"));
 	}
 
-	
 
-	
+
+
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -18,13 +18,13 @@ import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IOUtils;
-import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
@@ -36,8 +36,7 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
-
-public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class JobForm extends Composite implements IUpdateLanguage {
 	
 	
 	
@@ -96,8 +95,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private Text        tFileName         = null;
 	
 	private Text        tDescription      = null;
-		
-	
+			
 	private Text        tComment          = null;
 	
 	private Label       label8            = null;
@@ -124,25 +122,34 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 	
 	private Combo       comVisible        = null; 
 	
-	private Button      butIsLifeFile     = null;
+	private Button      butIsLiveFile     = null;
+	
+	private Button      butWizzard        = null; 
+	
+	private Button      addButton         = null;
+	
 	
 	
 	public JobForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
 		super(parent, style);
 		
+		dom.setInit(true);
+		
 		this.setEnabled(Utils.isElementEnabled("job", dom, job));
 		
 		listener = new JobListener(dom, job, main);
+		
 		initialize();   
 		setToolTipText();
 	
-		dom.setInit(true);
+		
 		
 		updateTree = false;
 		
 		initForm();
 		
 		dom.setInit(false);
+		
 	}
 	
 	
@@ -231,6 +238,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		tName.setLayoutData(gridData);
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				checkName();
 				listener.setName(tName.getText(), updateTree);
 				group.setText("Job: " + tName.getText() + (listener.isDisabled() ? " (Disabled)" : ""));
 				
@@ -519,7 +527,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		gridData_3.widthHint = 48;
 		tIgnoreSignals.setLayoutData(gridData_3);
 		
-		final Button addButton = new Button(gMain, SWT.NONE);
+		addButton = new Button(gMain, SWT.NONE);
 		addButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if (tIgnoreSignals.getText().equals("")){
@@ -664,10 +672,22 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		gDescription.setText("Job Description");
 		gDescription.setLayout(gridLayout3);
 
-		butIsLifeFile = new Button(gDescription, SWT.CHECK);
-        butIsLifeFile.setLayoutData(new GridData());
-        butIsLifeFile.setSelection(true);
-        butIsLifeFile.setText("Lifefile?");
+		butIsLiveFile = new Button(gDescription, SWT.CHECK);
+		butIsLiveFile.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				listener.setInclude(tFileName.getText(), butIsLiveFile.getSelection());
+				//listener.setInclude(tFileName.getText());
+				if(tFileName.getText()!= null && tFileName.getText().length() > 0) {
+					butShow.setEnabled(true);
+					butOpen.setEnabled(true);
+				} else {
+					butShow.setEnabled(false);
+					butOpen.setEnabled(false);
+				}
+			}
+		});
+        butIsLiveFile.setLayoutData(new GridData());
+        butIsLiveFile.setText("from Hot Folder");
         
 		GridData gridData12 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData12.horizontalIndent = -1;
@@ -677,8 +697,8 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		
 		tFileName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				//listener.setInclude(tFileName.getText(), butIsLifeFile.getSelection());
-				listener.setInclude(tFileName.getText());
+				listener.setInclude(tFileName.getText(), butIsLiveFile.getSelection());
+				//listener.setInclude(tFileName.getText());
 				if(tFileName.getText()!= null && tFileName.getText().length() > 0) {
 					butShow.setEnabled(true);
 					butOpen.setEnabled(true);
@@ -697,12 +717,13 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 				
 				try {
 					if (tFileName.getText() != null && tFileName.getText().length() > 0) {
-						String sHome = sos.scheduler.editor.app.Options.getSchedulerHome();
+						String sHome = getHome(tFileName.getText());
+						/*String sHome = sos.scheduler.editor.app.Options.getSchedulerHome();
 						if(!(sHome.endsWith("\\") || sHome.endsWith("/")))
 							sHome = sHome.concat("/");
 						
 						sHome = sHome.replaceAll("\\\\", "/");
-						
+						*/
 						Program prog = Program.findProgram("html");
 						
 						if (prog != null)
@@ -752,7 +773,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		butOpen.setText("Open");
 		new Label(gDescription, SWT.NONE);
 		
-		final Button butWizzard = new Button(gDescription, SWT.NONE);
+		butWizzard = new Button(gDescription, SWT.NONE);
 		butWizzard.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				startWizzard(false);
@@ -862,6 +883,7 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		sIdleTimeout.setText(listener.getIdleTimeout());
 		
 		tFileName.setText(listener.getInclude());
+		butIsLiveFile.setSelection(listener.isLiveFile());
 		//tURL.setText(listener.getInclude());
 		tDescription.setText(listener.getDescription());
 		tComment.setText(listener.getComment());
@@ -872,6 +894,78 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		
 	}
 	
+	
+	
+	
+	public void startWizzard(boolean onlyParams) {
+		if(listener.getInclude()!= null && listener.getInclude().trim().length() > 0) {
+			//JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren        						
+			//JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener, parForm.getTParameter(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+			//JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener.getJob(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener, onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+			if(!onlyParams)
+				paramsForm.setJobForm(this);
+			paramsForm.showAllImportJobParams(listener.getInclude());        			
+		} else { 
+			//Liste aller Jobdokumentation 
+			//JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, parForm.getTParameter(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+			//JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+			JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, Editor.JOB_WIZZARD);
+			
+			
+			if(!onlyParams)
+				importJobForms.setJobForm(this);
+			importJobForms.showAllImportJobs();						
+			
+		}
+		if (butWizzard != null) butWizzard.setToolTipText(Messages.getTooltip("jobs.assistent"));
+	}
+	
+	
+	/*public Table getTParameter() {
+		return parForm.getTParameter();
+	}*/
+	
+	public String getHome(String filename) {
+		
+		
+		String home = ".";
+		if((listener.get_dom().isDirectory() || listener.get_dom().isLifeElement()) && butIsLiveFile.getSelection()) {
+			if(filename.startsWith("/") || filename.startsWith("\\")) {
+				home = Options.getSchedulerHotFolder();
+			} else if(listener.get_dom().getFilename() != null){
+			     home = new File(listener.get_dom().getFilename()).getParent(); 
+			}
+		} else {
+			//normale Konfiguration
+			if(butIsLiveFile.getSelection())
+				home = Options.getSchedulerHotFolder();
+			else
+				home = Options.getSchedulerHome();	
+		}
+		
+		if(!(home.endsWith("\\") || home.endsWith("/")))
+			home = home.concat("/");
+		
+		home = home.replaceAll("\\\\", "/");
+		
+		return home;
+		/*String sHome = sos.scheduler.editor.app.Options.getSchedulerHome();
+		if(!(sHome.endsWith("\\") || sHome.endsWith("/")))
+			sHome = sHome.concat("/");
+		
+		sHome = sHome.replaceAll("\\\\", "/");
+		return sHome;
+		*/
+	}
+	
+	private void checkName(){
+	  if(Utils.existName(tName.getText(), listener.getJob(), "job")) {		  
+		  tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+	  } else {
+		  tName.setBackground(null);
+	  }
+	}
 	
 	public void setToolTipText() {
 		tName.setToolTipText(Messages.getTooltip("job.name"));
@@ -900,37 +994,11 @@ public class JobForm extends Composite implements IUnsaved, IUpdateLanguage {
 		butReplace.setToolTipText(Messages.getTooltip("job.replace"));
 		comVisible.setToolTipText(Messages.getTooltip("job.visible"));
 		butTemporary.setToolTipText(Messages.getTooltip("job.temporary"));
+		
+		cSignals.setToolTipText(Messages.getTooltip("job.ignore_signal_list"));
+		addButton.setToolTipText(Messages.getTooltip("job.add_ignore_signal"));
 
 	}
-	
-	
-	public void startWizzard(boolean onlyParams) {
-		if(listener.getInclude()!= null && listener.getInclude().trim().length() > 0) {
-			//JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren        						
-			//JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener, parForm.getTParameter(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
-			//JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener.getJob(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
-			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener, onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
-			if(!onlyParams)
-				paramsForm.setJobForm(this);
-			paramsForm.showAllImportJobParams(listener.getInclude());        			
-		} else { 
-			//Liste aller Jobdokumentation 
-			//JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, parForm.getTParameter(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
-			//JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
-			JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, Editor.JOB_WIZZARD);
-			
-			
-			if(!onlyParams)
-				importJobForms.setJobForm(this);
-			importJobForms.showAllImportJobs();						
-			
-		}
-	}
-	
-	
-	/*public Table getTParameter() {
-		return parForm.getTParameter();
-	}*/
 	
 	
 } // @jve:decl-index=0:visual-constraint="10,10"

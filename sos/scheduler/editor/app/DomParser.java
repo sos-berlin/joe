@@ -340,7 +340,11 @@ public abstract class DomParser {
     		//System.out.println("name  : " + attr.getName());
     		//System.out.println("value : " + attr.getValue());    		
     		//Utils.setAttribute(attr.getName(), Utils.escape(attr.getValue()), e);
-    		e.setAttribute(attr.getName(), Utils.escape(attr.getValue()));
+    		
+    		//ok e.setAttribute(attr.getName(), Utils.escape(attr.getValue()));
+    		Attribute a = new Attribute(attr.getName(), Utils.escape(attr.getValue()), attr.getAttributeType(), attr.getNamespace());
+    		e.setAttribute(a);
+    		//e.setAttribute(attr.getName(), Utils.escape(attr.getValue()));
     		//System.out.println("neue value  : " + e.getAttributeValue(attr.getName()));
     		
     		//System.out.println("*************************************");
@@ -362,7 +366,11 @@ public abstract class DomParser {
     		newValue = newValue.replaceAll("&amp;", "&");
     		*/
     		//Utils.setAttribute(attr.getName(), Utils.deEscape(attr.getValue()), e);
-    		e.setAttribute(attr.getName(), Utils.deEscape(attr.getValue()));
+    		
+    		//ok e.setAttribute(attr.getName(), Utils.deEscape(attr.getValue()));
+    		
+    		Attribute a = new Attribute(attr.getName(), Utils.deEscape(attr.getValue()), attr.getAttributeType(), attr.getNamespace());
+    		e.setAttribute(a);
     		
     		//System.out.println("neue value  : " + newValue);
     		

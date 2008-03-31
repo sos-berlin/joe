@@ -189,7 +189,7 @@ public class PeriodListener {
 
     public void setLetRun(boolean letrun) {
         //_period.setAttribute("let_run", letrun ? "yes" : "no");
-        Utils.setAttribute("let_run", letrun ? "yes" : "no", _period);
+        Utils.setAttribute("let_run", letrun ? "yes" : "no", "no", _period);
         _dom.setChanged(true);
     }
 

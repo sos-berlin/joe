@@ -350,7 +350,7 @@ public class ScriptListener {
     }
 
     public void setOrdering(String ordering) {
-        Utils.setAttribute("ordering", ordering, _parent);
+        Utils.setAttribute("ordering", ordering, "0", _parent);
     }
 
     

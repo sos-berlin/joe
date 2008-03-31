@@ -29,7 +29,7 @@ import sos.scheduler.editor.conf.listeners.OrderListener;
 
 public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
     
-	private OrderListener listener;
+	private OrderListener listener   = null;
 
     private Group         group      = null;
 
@@ -152,15 +152,15 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
         tOrderId.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (event) {
-                    listener.setOrderId(tOrderId.getText(), true);
+                if (event) {                	
+                	listener.setOrderId(tOrderId.getText(), true, !checkName());
                     group.setText("Order: " + tOrderId.getText());
                 }
-                if(tOrderId.getText() == null || tOrderId.getText().length() == 0) {
+                /*if(tOrderId.getText() == null || tOrderId.getText().length() == 0) {
                 	tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
                 } else {
                 	tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
-                }
+                }*/
             }
         });
         final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, false);
@@ -175,7 +175,8 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 if (event)
-                    listener.setCommandAttribute("job_chain", cJobchain.getText());
+                	if(checkName())
+                		listener.setCommandAttribute("job_chain", cJobchain.getText());
             }
         });
 
@@ -290,6 +291,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         cJobchain.setText(listener.getCommandAttribute("job_chain"));
         tPriority.setText(listener.getCommandAttribute("priority"));
         bReplace.setSelection(listener.getCommandReplace());
+        checkName();
 
     }
 
@@ -303,4 +305,41 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         tOrderId.setToolTipText(Messages.getTooltip("order.order_id"));       
 
     }
-} // @jve:decl-index=0:visual-constraint="10,10"
+    
+    private boolean checkName(){
+    	if(listener.existName(tOrderId.getText() + "," + cJobchain.getText())) {
+    		tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+			cJobchain.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+			return false;
+	
+    	} else if(tOrderId.getText() == null || tOrderId.getText().length() == 0) {
+        	tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));    
+        	return false;
+		} else {
+			tOrderId.setBackground(null);
+			cJobchain.setBackground(null);
+			return true;	
+    	} 
+    	
+    	/*java.util.HashMap h = new java.util.HashMap(); 
+    	if(dom.isDirectory()) {
+    		java.util.List l = listener.getOrder().getParentElement().getChildren("order");
+    		for(int i = 0; i < l.size(); i++) {
+    			Element e = (Element)l.get(i);
+    			String name = Utils.getAttributeValue("id", e) + "," + Utils.getAttributeValue("jobchain", e);
+    			if(!h.containsKey(name)) {
+    				h.put(name, "");
+    				tOrderId.setBackground(null);
+    				cJobchain.setBackground(null);
+    			} else {
+    				tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+    				cJobchain.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+    				return false;
+    			}
+    		}
+    	}
+    	*/
+    	
+    }
+    		
+    	} // @jve:decl-index=0:visual-constraint="10,10"

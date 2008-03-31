@@ -74,6 +74,8 @@ public class DaysForm extends Composite implements IUpdateLanguage {
     private HashMap          listOfSameMonths = null;
     
     private Button           butNewGroup   = null; 
+    
+    //private SchedulerDom     _dom                = null;
 
 
     public DaysForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main, int type) {
@@ -84,7 +86,7 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         listener = new DaysListener(dom, job, type);
         _main = main;
         _type = type;
-
+        //_dom= dom;
         initialize();
         setToolTipText();
         read();
@@ -226,23 +228,11 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         butApplyGroup = new Button(group, SWT.NONE);
         butApplyGroup.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
-        		
-        		//bearbeiten: löschen und neu anlegen
-        		//if(!newGroup && lUsedDays.getSelectionCount() > 0) {
-        			//delete();
-        		
+        		        		
         		String group = "";
         		for (int i =0; i < listOfGroup.getItemCount(); i++) {
         			group = (group.length()==0 ? "" : group + " ") + listOfGroup.getItem(i);
-        		}        		        		
-        		
-        		/*if(!newGroup && lUsedDays.getSelectionCount() > 0) {
-        			//delete();
-        			updateDay(group);
-        		} else {
-        			
-        			listener.addGroup(group);
-        		}*/        		        	
+        		}        		        		        	      		        	
         		
         		if(!newGroup && lUsedDays.getSelectionCount() > 0) {  
         			if(_type == DaysListener.WEEKDAYS)
@@ -317,19 +307,7 @@ public class DaysForm extends Composite implements IUpdateLanguage {
     }
 
 
-    public void setToolTipText() {
-        bAdd.setToolTipText(Messages.getTooltip("days.btn_add"));
-        lUsedDays.setToolTipText(Messages.getTooltip("days.used_days"));
-        bRemove.setToolTipText(Messages.getTooltip("days.btn_remove"));
-        cUnusedDays.setToolTipText(Messages.getTooltip("days.unused_days"));
-
-        listOfDays.setToolTipText(Messages.getTooltip("days.list_of_days"));
-        listOfGroup.setToolTipText(Messages.getTooltip("days.list_of_groups"));
-        butAdd.setToolTipText(Messages.getTooltip("days.list_of_groups.but_add"));
-        butRemove.setToolTipText(Messages.getTooltip("days.list_of_groups.but_remove"));
-        butNewGroup.setToolTipText(Messages.getTooltip("days.list_of_groups.but_new_group"));
-        
-    }
+    
 
     public void setEnabledGroupElement(boolean enable) {
     	listOfDays.setEnabled(enable); 
@@ -420,4 +398,19 @@ public class DaysForm extends Composite implements IUpdateLanguage {
     	listOfSameMonths.put("11", "november"); 
     	listOfSameMonths.put("12", "december");
     }
+    
+    public void setToolTipText() {
+        bAdd.setToolTipText(Messages.getTooltip("days.btn_add"));
+        lUsedDays.setToolTipText(Messages.getTooltip("days.used_days"));
+        bRemove.setToolTipText(Messages.getTooltip("days.btn_remove"));
+        cUnusedDays.setToolTipText(Messages.getTooltip("days.unused_days"));
+
+        listOfDays.setToolTipText(Messages.getTooltip("days.list_of_days"));
+        listOfGroup.setToolTipText(Messages.getTooltip("days.list_of_groups"));
+        butAdd.setToolTipText(Messages.getTooltip("days.list_of_groups.but_add"));
+        butRemove.setToolTipText(Messages.getTooltip("days.list_of_groups.but_remove"));
+        butNewGroup.setToolTipText(Messages.getTooltip("days.list_of_groups.but_new_group"));
+        butApplyGroup.setToolTipText(Messages.getTooltip("days.btn_group"));
+    }
+    
 } // @jve:decl-index=0:visual-constraint="10,10"

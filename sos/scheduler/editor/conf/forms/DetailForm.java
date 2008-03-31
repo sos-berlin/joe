@@ -41,86 +41,92 @@ import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
 
 public class DetailForm extends Composite implements IUpdateLanguage {
 	
-	private String           jobChainname      = "";
+	private   String                            jobChainname      = "";
 	
-	private DetailsListener  detailListener    = null;
+	private   DetailsListener                   detailListener    = null;
 	
-	private String           state             = null;
+	private   String                            state             = null;
 	
-	private Combo            comboLanguage     = null; 
+	private   Combo                             comboLanguage     = null; 
 	
-	private Text             txtJobchainNote   = null; 
+	private   Text                              txtJobchainNote   = null; 
 	
-	private Button           butApply          = null; 
+	private   Button                            butApply          = null; 
 	
-	private Text             txtName           = null; 
+	private   Text                              txtName           = null; 
 	
-	private Text             txtValue          = null;
+	private   Text                              txtValue          = null;
 	
-	private Table            tableParams       = null;
+	private   Table                             tableParams       = null;
 	
-	private Button           butApplyParam     = null; 
+	private   Button                            butApplyParam     = null; 
 	
-	private Button           butRemove         = null; 
+	private   Button                            butRemove         = null; 
 	
-	private Button           cancelButton      = null; 
+	private   Button                            cancelButton      = null; 
 	
-	private Text             txtParamNote      = null; 
+	private   Text                              txtParamNote      = null; 
 	
-	private String[]         listOfOrderIds    = null;
+	private   String[]                          listOfOrderIds    = null;
 	
-	private Combo            comboOrderId      = null; 
+	private   Combo                             comboOrderId      = null; 
 	
-	private Group            parameterGroup    = null; 
+	private   Group                             parameterGroup    = null; 
 	
-	private Group            jobChainGroup     = null; 
+	private   Group                             jobChainGroup     = null; 
 	
-	private Button           butOpen           = null; 
+	private   Button                            butOpen           = null; 
 	
 	/** Hifsvariable, wann der butApply enabled bzw. disabled gesetzt werden soll*/
-	private boolean          isEditable        = false;
+	private   boolean                          isEditable        = false;
 	
 	/** Hifsvariable, wann der butApplyParam enabled bzw. disabled gesetzt werden soll*/
-	private boolean          isEditableParam   = false;
+	private   boolean                           isEditableParam   = false;
 	
-	private Label            statusBar         = null;
-	
-	//private Group            gDetail           = null;
+	private   Label                             statusBar         = null;
 	
 	/** wer hat ihn aufgerufen*/
-	private int              type              = -1;
+	private   int                                type              = -1;
 	
-	private Label            orderIdLabel      = null; 
+	private   Label                              orderIdLabel      = null; 
 	
-	private Text             txtJobChainname   = null;
+	private   Text                               txtJobChainname   = null;
 	
-	private Label            lblChainname      = null;
+	private   Label                              lblChainname      = null;
 	
-	private Button           butNewState       = null;
+	private   Button                              butNewState       = null;
 	
-	private Tree             tree              = null;
+	private   Tree                                tree              = null;
 	
-	private Label            lblState          = null; 
+	private   Label                               lblState          = null; 
 	
-	private Text             txtState          = null; 
+	private   Text                                txtState          = null; 
 	
-	private Composite        parent            = null;
+	private   Composite                           parent            = null;
 	
-	private JobChainConfigurationListener confListener = null;
+	private   JobChainConfigurationListener       confListener     = null;
 	
-	private DetailDom        dom              = null;
+	private   DetailDom                           dom              = null;
 	
-	private IDetailUpdate    gui              = null;
+	private   IDetailUpdate                       gui              = null;
 	
-	private Button           butRemoveState   = null;
+	private   Button                              butRemoveState   = null;
 	
-	private Button           butXML           = null; 
+	private   Button                              butXML           = null; 
 		
-	private Button           butDocumentation = null; 
+	private   Button                              butDocumentation = null; 
 	
-	//private String           tag             = "";
+	private   Text                                paramText        = null;
 	
+	private   Button                              butText          = null;
 	
+	private   Text                                txtParamsFile    = null;
+	
+	private   boolean                             isLifeElement    = false;
+	
+	private   String                              path             = null;           
+	
+	/*
 	public DetailForm(Composite parent_, int style, int type_) {
 		
 		super(parent_, style);
@@ -132,9 +138,14 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		parent = parent_;
 		
 	}
-	
-	public DetailForm(Composite parent_, int style, int type_,DetailDom  dom_,
-			IDetailUpdate gui_) {		
+	*/
+	public DetailForm(Composite parent_, 
+			int style, 
+			int type_,
+			DetailDom  dom_,
+			IDetailUpdate gui_,
+			boolean isLifeElement_,
+			String path_) {		
 		super(parent_, style);
 		dom = dom_;
 		gui = gui_;		
@@ -142,8 +153,11 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		initialize();
 		setToolTipText();		
 		parent = parent_;
-		
+		isLifeElement = isLifeElement_;
+		path = path_;
 	}
+	
+	
 	public DetailForm(Composite parent_, 
 			int style, 
 			String jobChainname_, 
@@ -151,18 +165,24 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			String[] listOfOrderIds_, 
 			int type_, 
 			DetailDom  dom_,
-			IDetailUpdate gui_) {		
-		super(parent_, style);
+			IDetailUpdate gui_,
+			boolean isLifeElement_,
+			String path_) {		
+		
+		super(parent_, style);		
 		dom = dom_;
-		gui = gui_;
-		parent = parent_;
+		gui = gui_;		
 		type = type_;		
 		jobChainname = jobChainname_;
 		state = state_;
 		listOfOrderIds = listOfOrderIds_;
 		initialize();
 		setToolTipText();
+		parent = parent_;
+		isLifeElement = isLifeElement_;
+		path = path_;
 	}
+	
 	
 	private void initialize() {
 		this.setLayout(new FillLayout());				
@@ -170,6 +190,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		getShell().layout();
 		getShell().open();
 	}
+	
 	
 	private void createGroup() {
 		final GridLayout gridLayout_3 = new GridLayout();
@@ -183,8 +204,9 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		gridLayout_3.numColumns = 3;
 		
 		final Composite composite = new Composite(this, SWT.NONE);
-		composite.setLayout(new FillLayout());
-		final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);
+		composite.setLayout(new GridLayout());
+		
+		final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, true, true, 3, 1);
 		gridData_6.heightHint = 31;
 		composite.setLayoutData(gridData_6);
 		
@@ -192,6 +214,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 5;
 		group.setLayout(gridLayout);
+		group.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		if(jobChainname != null)
 			group.setText(jobChainname);
 		
@@ -240,11 +263,9 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 				}
 			}
 		});
-		final GridData gridData_12 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+		final GridData gridData_12 = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
 		gridData_12.widthHint = 105;
 		txtJobChainname.setLayoutData(gridData_12);
-		new Label(group, SWT.NONE);
-		new Label(group, SWT.NONE);
 		
 		butOpen = new Button(group, SWT.NONE);
 		butOpen.setVisible(true);
@@ -291,13 +312,12 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		
 		orderIdLabel = new Label(group, SWT.NONE);
 		orderIdLabel.setAlignment(SWT.RIGHT);
-		final GridData gridData_1 = new GridData(GridData.END, GridData.CENTER, false, false);
-		gridData_1.widthHint = 50;
+		final GridData gridData_1 = new GridData(50, SWT.DEFAULT);
 		orderIdLabel.setLayoutData(gridData_1);
 		orderIdLabel.setText("Order Id:");
 		
 		comboOrderId = new Combo(group, SWT.NONE);
-		final GridData gridData_7 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+		final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_7.widthHint = 95;
 		comboOrderId.setLayoutData(gridData_7);
 		
@@ -440,7 +460,8 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		gridData.horizontalIndent = -1;
 		jobChainGroup.setLayoutData(gridData);
 		
-		txtJobchainNote = new Text(jobChainGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);		
+		txtJobchainNote = new Text(jobChainGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
+		//txtJobchainNote = new Text(jobChainGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);		
 		txtJobchainNote.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				/*if(e.text.equals("<") ) {
@@ -469,7 +490,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 				//}
 			}
 		});
-		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, false, 1, 2);
+		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
 		gridData_2.widthHint = 405;
 		gridData_2.heightHint = 127;
 		txtJobchainNote.setLayoutData(gridData_2);
@@ -478,12 +499,25 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		parameterGroup = new Group(group, SWT.NONE);
 		parameterGroup.setEnabled(false);
 		parameterGroup.setText("Detail Parameter");
-		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, false, false, 5, 1);
+		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 1);
 		gridData_3.heightHint = 239;
 		parameterGroup.setLayoutData(gridData_3);
 		final GridLayout gridLayout_2 = new GridLayout();
-		gridLayout_2.numColumns = 5;
+		gridLayout_2.numColumns = 6;
 		parameterGroup.setLayout(gridLayout_2);
+
+		final Label fileLabel = new Label(parameterGroup, SWT.NONE);
+		fileLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.FILL, false, false));
+		fileLabel.setText("File");
+
+		txtParamsFile = new Text(parameterGroup, SWT.BORDER);
+		txtParamsFile.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				detailListener.setParamsFileName(txtParamsFile.getText()); 
+			}
+		});
+		txtParamsFile.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
+		//txtParamsFile.setText(detailListener.getParamsFileName());
 		
 		final Label nameLabel = new Label(parameterGroup, SWT.NONE);
 		nameLabel.setText("Name");
@@ -496,6 +530,9 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 								( tableParams.getSelectionCount() > 0 && !tableParams.getSelection()[0].getText(0).equalsIgnoreCase(txtName.getText())))){
 					isEditableParam=true;
 					butApplyParam.setEnabled(isEditableParam);
+					txtValue.setEnabled(true);
+					butText.setEnabled(true);
+					paramText.setText("");
 				}								
 			}
 		});
@@ -530,10 +567,48 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 								( tableParams.getSelectionCount() > 0 && !tableParams.getSelection()[0].getText(1).equalsIgnoreCase(txtValue.getText())))){
 					isEditableParam=true;
 					butApplyParam.setEnabled(isEditableParam);
+					if(txtValue.getText().trim().length() > 0)
+						butText.setEnabled(false);
+					else 
+						butText.setEnabled(true);
 				}	
 			}
 		});
 		txtValue.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+		butText = new Button(parameterGroup, SWT.NONE);
+		butText.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				String ntext = "";
+				if(tableParams.getSelectionCount() > 0 ) {
+					TableItem item = tableParams.getSelection()[0];
+					ntext = item.getText(2); // != null && item.getText(2).length() > 0 ? item.getText(2) : "<![CDATA[  " + item.getText(2) + "  ]]>";
+				} /*else {
+					ntext =  "<![CDATA[    ]]>";
+				}*/
+				
+				
+				
+				String text = sos.scheduler.editor.app.Utils.showClipboard(ntext, getShell(), true, "");				
+				if(text != null && !text.trim().equalsIgnoreCase(ntext)) {					
+					//item.setText(2, text);
+					paramText.setText(text);
+					txtValue.setText("");
+					txtValue.setEnabled(false);
+					butText.setEnabled(true);
+					addParam();
+				} else if (text == null)  {					
+					txtValue.setEnabled(true);
+					butText.setEnabled(true);
+				} else {
+					txtValue.setEnabled(true);
+					butText.setEnabled(false);
+				}
+				butApply.setEnabled(true);
+					
+			}
+		});
+		butText.setText("Text");
 		
 		butApplyParam = new Button(parameterGroup, SWT.NONE);
 		butApplyParam.setEnabled(isEditableParam);
@@ -554,8 +629,32 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 				
 				if(tableParams.getSelectionCount() > 0) {					
 					TableItem item = tableParams.getSelection()[0];
-					txtName.setText(item.getText(0));
-					txtValue.setText(item.getText(1));
+					txtName.setText(item.getText(0));					
+						
+					//param value ist angegeben
+					if(item.getText(1) != null && item.getText(1).trim().length() > 0) {
+						paramText.setText("");
+						txtValue.setText(item.getText(1));
+						txtValue.setEnabled(true);						
+						butText.setEnabled(false);
+					}
+					
+					//param Textknoten ist angegeben
+					if(item.getText(2) != null && item.getText(2).trim().length() > 0) {
+						paramText.setText(item.getText(2));
+						txtValue.setText("");
+						txtValue.setEnabled(false);
+						butText.setEnabled(true);
+					}
+					
+					if(item.getText(1).trim().equals("") && item.getText(2).trim().equals("")) {
+						paramText.setText("");
+						txtValue.setText("");
+						txtValue.setEnabled(true);
+						butText.setEnabled(true);
+					}
+						
+							
 					txtParamNote.setText(detailListener.getParamNote(item.getText(0), comboLanguage.getText()));
 					butRemove.setEnabled(true);
 					isEditableParam=false;
@@ -566,7 +665,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		});
 		tableParams.setLinesVisible(true);
 		tableParams.setHeaderVisible(true);
-		final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2);
+		final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 3);
 		gridData_4.heightHint = 157;
 		gridData_4.widthHint = 413;
 		tableParams.setLayoutData(gridData_4);
@@ -576,8 +675,27 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		newColumnTableColumn.setText("Name");
 		
 		final TableColumn newColumnTableColumn_1 = new TableColumn(tableParams, SWT.NONE);
-		newColumnTableColumn_1.setWidth(242);
+		newColumnTableColumn_1.setWidth(150);
 		newColumnTableColumn_1.setText("Value");
+
+		final TableColumn newColumnTableColumn_2 = new TableColumn(tableParams, SWT.NONE);
+		newColumnTableColumn_2.setWidth(100);
+		newColumnTableColumn_2.setText("Text");
+
+		final Button butNew = new Button(parameterGroup, SWT.NONE);
+		butNew.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				txtName.setText("");
+				txtValue.setText("");
+				paramText.setText("");
+				txtValue.setEnabled(true);
+				paramText.setEnabled(true);
+				tableParams.deselectAll();
+				txtParamNote.setText("");
+			}
+		});
+		butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+		butNew.setText("New");
 		
 		butRemove = new Button(parameterGroup, SWT.NONE);
 		butRemove.addSelectionListener(new SelectionAdapter() {
@@ -599,11 +717,17 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 				}
 			}
 		});
-		final GridData gridData_8 = new GridData(GridData.FILL, GridData.BEGINNING, false, false, 1, 3);
-		gridData_8.widthHint = 76;
+		final GridData gridData_8 = new GridData(GridData.CENTER, GridData.BEGINNING, false, false);
+		gridData_8.widthHint = 64;
 		gridData_8.minimumWidth = 50;
 		butRemove.setLayoutData(gridData_8);
 		butRemove.setText("Remove");
+
+		paramText = new Text(parameterGroup, SWT.BORDER);
+		paramText.setVisible(false);
+		final GridData gridData_14 = new GridData(GridData.CENTER, GridData.BEGINNING, false, false);
+		gridData_14.widthHint = 27;
+		paramText.setLayoutData(gridData_14);
 		
 		
 		txtParamNote = new Text(parameterGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);		
@@ -624,9 +748,10 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			}
 			
 		});
-		final GridData gridData_5 = new GridData(GridData.FILL, GridData.BEGINNING, true, false, 4, 1);
+		final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 1);
 		gridData_5.heightHint = 73;
 		txtParamNote.setLayoutData(gridData_5);
+		new Label(parameterGroup, SWT.NONE);
 
 		butXML = new Button(group, SWT.NONE);
 		butXML.setLayoutData(new GridData());
@@ -636,14 +761,14 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			public void widgetSelected(final SelectionEvent e) {
 				try {
 					if(type == Editor.JOB_CHAINS) {
-						DetailXMLEditorDialogForm dialog = new DetailXMLEditorDialogForm(detailListener.getConfigurationFilename(), jobChainname, state, listOfOrderIds, comboOrderId.getText(), type);
+						DetailXMLEditorDialogForm dialog = new DetailXMLEditorDialogForm(detailListener.getConfigurationFilename(), jobChainname, state, listOfOrderIds, comboOrderId.getText(), type, isLifeElement, path);
 						
 						dialog.showXMLEditor();
 						
 						getShell().dispose();
 					} else {
 						if(dom != null && dom.getFilename() != null && dom.getFilename().length() > 0) {
-							DetailXMLEditorDialogForm dialog = new DetailXMLEditorDialogForm(dom, type);
+							DetailXMLEditorDialogForm dialog = new DetailXMLEditorDialogForm(dom, type, isLifeElement, path);
 							dialog.setConfigurationData(confListener, tree, parent);
 							dialog.showXMLEditor();
 						} else {
@@ -740,32 +865,17 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		
 	}
 	
-	public void setToolTipText() {
-		comboLanguage.setToolTipText(Messages.getTooltip("detail.language"));
-		txtJobchainNote.setToolTipText(Messages.getTooltip("detail.detail_note")); 
-		butApply.setToolTipText(Messages.getTooltip("detail.apply")); 
-		txtName.setToolTipText(Messages.getTooltip("detail.param.name")); 
-		txtValue.setToolTipText(Messages.getTooltip("detail.param.value"));
-		tableParams.setToolTipText(Messages.getTooltip("detail.param.table"));
-		butApplyParam.setToolTipText(Messages.getTooltip("detail.param.apply")); 
-		butRemove.setToolTipText(Messages.getTooltip("detail.param.remove")); 
-		cancelButton.setToolTipText(Messages.getTooltip("detail.cancel")); 
-		txtParamNote.setToolTipText(Messages.getTooltip("detail.param.note")); 
-		comboOrderId.setToolTipText(Messages.getTooltip("detail.param.order_ids"));
-		butOpen.setToolTipText(Messages.getTooltip("detail.param.open_configuration_file"));
-		statusBar.setToolTipText(Messages.getTooltip("detail.status_bar_for_configuration_filename"));
-		txtJobChainname.setToolTipText(Messages.getTooltip("detail.new_jobchain_name"));		
-		butNewState.setToolTipText(Messages.getTooltip("detail.new_state"));
-		txtState.setToolTipText(Messages.getTooltip("detail.state"));
-		butRemoveState.setToolTipText(Messages.getTooltip("detail.remove_state"));
-		butXML.setToolTipText(Messages.getTooltip("detail.xml_configuration"));
-		butDocumentation.setToolTipText(Messages.getTooltip("detail.open_documentation"));
-	}
+	
 	
 	private void addParam() {
 		
-		if(txtName.getText().length()> 0) {			
-			detailListener.setParam(txtName.getText(), txtValue.getText(), txtParamNote.getText(), comboLanguage.getText());
+		if(txtName.getText().length()> 0) {
+			if(tableParams.getSelectionCount() > 0) {
+				//if(tableParams.getSelection()[0].getText(2).length() > 0)
+					//paramText.setText(tableParams.getSelection()[0].getText(2)); 
+				detailListener.deleteParameter(tableParams, tableParams.getSelectionIndex());				
+			}
+			detailListener.setParam(txtName.getText(), txtValue.getText(), txtParamNote.getText(), paramText.getText(), comboLanguage.getText());
 			txtParamNote.setText(detailListener.getParamNote(txtName.getText(),  comboLanguage.getText()));
 			tableParams.removeAll();
 			detailListener.fillParams(tableParams);			
@@ -783,6 +893,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			txtParamNote.setText("");	
 			if(gui!=null)
 				gui.updateParam();
+			paramText.setText("");
 		}
 	}
 	
@@ -802,6 +913,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			comboOrderId.setText(orderId);
 		open();
 	}
+	
 	public void open(){
 		
 		
@@ -839,7 +951,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		txtName.setText("");
 		txtValue.setText("");
 		
-		detailListener = new DetailsListener(jobChainname, state, comboOrderId.getText(), type, dom);
+		detailListener = new DetailsListener(jobChainname, state, comboOrderId.getText(), type, dom, isLifeElement, path);
 		if(detailListener != null && detailListener.hasError()) {
 			if(type == Editor.DETAILS)
 				dispose();
@@ -857,6 +969,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		if(detailListener.getNote(comboLanguage.getText()).length() > 0)
 			txtJobchainNote.setText(detailListener.getNote(comboLanguage.getText()));
 		
+		txtParamsFile.setText(detailListener.getParamsFileName());
 		
 		detailListener.fillParams(tableParams);
 		butRemove.setEnabled(false);
@@ -902,9 +1015,12 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			detailListener.deleteState(txtState.getText());
 			confListener.deleteState(txtState.getText(), tree.getTopItem());					
 			//tree.setSelection(new TreeItem[] {tree.getItems()[0]});
-			tree.setSelection(new TreeItem[] {tree.getTopItem()});
-			confListener.treeFillState(tree.getTopItem());
-			confListener.treeSelection(tree, parent);
+			//tree.setSelection(new TreeItem[] {tree.getTopItem()});
+			//confListener.treeFillState(tree.getTopItem());
+			
+			//if(gui!=null)
+			//	gui.updateState(txtState.getText());		        	
+			//confListener.treeSelection(tree, parent);
 		}
 	}
 	
@@ -940,4 +1056,25 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		}
 	}
 	
+	public void setToolTipText() {
+		comboLanguage.setToolTipText(Messages.getTooltip("detail.language"));
+		txtJobchainNote.setToolTipText(Messages.getTooltip("detail.detail_note")); 
+		butApply.setToolTipText(Messages.getTooltip("detail.apply")); 
+		txtName.setToolTipText(Messages.getTooltip("detail.param.name")); 
+		txtValue.setToolTipText(Messages.getTooltip("detail.param.value"));
+		tableParams.setToolTipText(Messages.getTooltip("detail.param.table"));
+		butApplyParam.setToolTipText(Messages.getTooltip("detail.param.apply")); 
+		butRemove.setToolTipText(Messages.getTooltip("detail.param.remove")); 
+		cancelButton.setToolTipText(Messages.getTooltip("detail.cancel")); 
+		txtParamNote.setToolTipText(Messages.getTooltip("detail.param.note")); 
+		comboOrderId.setToolTipText(Messages.getTooltip("detail.param.order_ids"));
+		butOpen.setToolTipText(Messages.getTooltip("detail.param.open_configuration_file"));
+		statusBar.setToolTipText(Messages.getTooltip("detail.status_bar_for_configuration_filename"));
+		txtJobChainname.setToolTipText(Messages.getTooltip("detail.new_jobchain_name"));		
+		butNewState.setToolTipText(Messages.getTooltip("detail.new_state"));
+		txtState.setToolTipText(Messages.getTooltip("detail.state"));
+		butRemoveState.setToolTipText(Messages.getTooltip("detail.remove_state"));
+		butXML.setToolTipText(Messages.getTooltip("detail.xml_configuration"));
+		butDocumentation.setToolTipText(Messages.getTooltip("detail.open_documentation"));
+	}
 } 

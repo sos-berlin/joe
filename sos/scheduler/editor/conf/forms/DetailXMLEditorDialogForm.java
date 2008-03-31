@@ -64,20 +64,34 @@ public class DetailXMLEditorDialogForm {
 	/** falls type = Editor.Details*/
 	private Tree             tree                   = null;
 	
+	private boolean                  isLifeElement   = false;
 	
-	public DetailXMLEditorDialogForm(String xmlFilename_, String jobChainname_, String state_, String[] listOfOrderIds_, String orderId_, int type_) {
+	private String                   path            = null;
+	
+	public DetailXMLEditorDialogForm(String xmlFilename_, 
+			                         String jobChainname_, 
+			                         String state_, 
+			                         String[] listOfOrderIds_, 
+			                         String orderId_, 
+			                         int type_, 
+			                         boolean isLifeElement_,
+			                         String path_) {
 		jobChainname = jobChainname_;
 		state = state_;
 		xmlFilename = xmlFilename_;
 		listOfOrderIds = listOfOrderIds_;
 		orderId = orderId_;
 		type = type_;
+		isLifeElement = isLifeElement_;
+		path = path_;
 	}
 	
-	public DetailXMLEditorDialogForm(DetailDom dom_, int type_) {
+	public DetailXMLEditorDialogForm(DetailDom dom_, int type_, boolean isLifeElement_, String path_) {
 		dom = dom_;
 		xmlFilename = dom.getFilename();
 		type = type_;
+		isLifeElement = isLifeElement_;
+		path = path_;
 	}
 	
 	public void showXMLEditor() {
@@ -207,7 +221,7 @@ public class DetailXMLEditorDialogForm {
 	
 	private void openDetailForm() {
 		  		
-			DetailDialogForm detail = new DetailDialogForm(jobChainname, state, listOfOrderIds);
+			DetailDialogForm detail = new DetailDialogForm(jobChainname, state, listOfOrderIds, isLifeElement, path);
 			detail.showDetails();
 			detail.getDialogForm().open(orderId);
 		 

@@ -17,10 +17,14 @@ public class RunTimeListener {
         _dom = dom;
         _job = job;
         _runtime = _job.getChild("run_time");
+        checkRuntime();
     }
 
 
     public boolean isOnOrder() {
+    	if(_job.getName().equals("order"))
+    		return true;
+    	
         return Utils.isAttributeValue("order", _job);
     }
 
@@ -88,4 +92,33 @@ public class RunTimeListener {
         Utils.setAttribute("schedule", schedule, _runtime);
     }
 
+    /*
+    Runtime darf Starttime nicht im Attribut haben.
+    Der Starttime darf nur in Perioden definiert werden.
+	   Wenn ein run_time Element bereits definitionen aus der Starttime hat (repeat_time und single_time und absolute_repeat),
+    dann werden diese Attribute in every-Day gemoved.
+*/
+    private void checkRuntime() {
+
+    	//repeat ins every_day moven
+    	String repeat = Utils.getAttributeValue("repeat", _runtime);
+    	if(repeat.length() > 0) {
+    		Element p = new Element("period");
+    		p.setAttribute("repeat", repeat);
+    		_runtime.addContent(p);
+    		_runtime.removeAttribute("repeat");
+    	}
+
+    	//single_start ins every_day moven
+    	String single_start = Utils.getAttributeValue("single_start", _runtime);
+    	if(single_start.length() > 0) {
+    		Element p = new Element("period");
+    		p.setAttribute("single_start", single_start);
+    		_runtime.addContent(p);
+    		_runtime.removeAttribute("single_start");
+    	}
+
+
+
+    }
 }

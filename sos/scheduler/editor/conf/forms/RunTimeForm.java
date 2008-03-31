@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
@@ -192,11 +193,11 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
      * This method initializes periodForm
      */
     private void createPeriodForm() {
-        GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, false);
-        gridData2.widthHint = 151;
+    	GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, false);
+    	gridData2.widthHint = 151;
 
-       periodForm = new PeriodForm(gRunTime, SWT.NONE);
-        periodForm.setLayoutData(gridData2);
+    	periodForm = new PeriodForm(gRunTime, SWT.NONE, Editor.RUNTIME);
+    	periodForm.setLayoutData(gridData2);
     }
 
 

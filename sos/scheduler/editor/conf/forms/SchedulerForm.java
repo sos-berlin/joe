@@ -28,28 +28,29 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
 public class SchedulerForm extends Composite implements ISchedulerUpdate, IEditor {
-	private SchedulerDom      dom;
 	
-	private SchedulerListener listener;
 	
-	private IContainer        container;
+	private SchedulerDom      dom                  = null;
 	
-	private TreeItem          selection;
+	private SchedulerListener listener             = null;
 	
-	private SashForm          sashForm  = null;
+	private IContainer        container            = null;
 	
-	private Group             gTree     = null;
+	private TreeItem          selection            = null;
 	
-	private Tree              tree      = null;
+	private SashForm          sashForm             = null;
 	
-	private Composite         cMainForm = null;
+	private Group             gTree                = null;
+	
+	private Tree              tree                 = null;
+	
+	private Composite         cMainForm            = null;
 	
 	
 	public SchedulerForm(IContainer container, Composite parent, int style) {
 		super(parent, style);
 		this.container = container;
-		
-		// initialize();
+				
 		this.dom = new SchedulerDom();
 		this.dom.setDataChangedListener(this);
 		
@@ -58,10 +59,10 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	}
 	
 	public SchedulerForm(IContainer container, Composite parent, int style, int type) {
+		
 		super(parent, style);
 		this.container = container;
-		
-		// initialize();
+				
 		this.dom = new SchedulerDom(type);
 		this.dom.setDataChangedListener(this);
 		
@@ -321,7 +322,8 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	
 	public boolean save() {
 		boolean res = true;
-		if(dom.getFilename() != null && new java.io.File(dom.getFilename()).getName().startsWith("#xml#.config.") && dom.getFilename().endsWith(".xml~")) {    		
+		//if(dom.getFilename() != null && new java.io.File(dom.getFilename()).getName().startsWith("#xml#.config.") && dom.getFilename().endsWith(".xml~")) {    		
+		if(dom.isDirectory()) {
 			res = IOUtils.saveDirectory(dom, false, SchedulerDom.DIRECTORY, null, container);
 			
 		} else if(dom.isLifeElement()) {

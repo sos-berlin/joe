@@ -156,14 +156,15 @@ public class JobChainConfigurationListener{
 				DetailForm df = null;
 				try {
 					if(jobChainname == null) {
-						df = new DetailForm(c, SWT.NONE, Editor.DETAILS, _dom, _gui);					
+						df = new DetailForm(c, SWT.NONE, Editor.DETAILS, _dom, _gui, false, null);					
 					} else {                
-						df = new DetailForm(c, SWT.NONE, jobChainname, item.getData() != null && !(item.getData() instanceof sos.scheduler.editor.app.TreeData)? item.getData().toString(): null, null, Editor.DETAILS, _dom, _gui);										
+						df = new DetailForm(c, SWT.NONE, jobChainname, item.getData() != null && !(item.getData() instanceof sos.scheduler.editor.app.TreeData)? item.getData().toString(): null, null, Editor.DETAILS, _dom, _gui, false, null);										
 					}
 					df.setTree(tree);
 					df.setJobChainConfigurationListener(this);
 					
 					df.open();
+					
 					if(df.hasErrors()) {
 						df.dispose();
 						
@@ -172,7 +173,7 @@ public class JobChainConfigurationListener{
 					}
 					
 				} catch (Exception e) {					
-					//MainWindow.message(e.getMessage(), SWT.ICON_ERROR);	
+					MainWindow.message(e.getMessage(), SWT.ICON_ERROR);	
 					df.dispose();
 					
 					_gui.close();

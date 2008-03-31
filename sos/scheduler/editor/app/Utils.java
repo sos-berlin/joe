@@ -1,6 +1,7 @@
 package sos.scheduler.editor.app;
 
 import java.io.StringWriter;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
@@ -20,6 +21,9 @@ import org.jdom.output.XMLOutputter;
 import org.eclipse.swt.widgets.Shell;
 
 import sos.scheduler.editor.conf.SchedulerDom;
+import java.util.regex.Pattern;
+
+
 
 public class Utils {
 
@@ -448,8 +452,11 @@ public class Utils {
         else
             return url.substring(index + 1);
         */
-    	if(url != null && new java.io.File(url).getName().startsWith("#xml#.config.")) {
-        	return new java.io.File(url).getParent();
+    	/*if(url != null && new java.io.File(url).getName().startsWith("#xml#.config.")) {
+    	return new java.io.File(url).getParent();
+    }*/
+    	if(url != null && new java.io.File(url).isDirectory()) {
+        	return new java.io.File(url).getPath();
         }
     	java.io.File file = new java.io.File(url);
     	if (file.isFile()) {
@@ -752,4 +759,46 @@ public class Utils {
 
     	}
     }
+    
+    public static boolean existName(String name, Element elem, String childname) {
+		if(elem.getParentElement() != null) {
+			List l = elem.getParentElement().getChildren(childname);
+			for (int i = 0; i < l.size(); i++) {
+				Element e = (Element)l.get(i);
+				if(!e.equals(elem) && Utils.getAttributeValue("name", e).equalsIgnoreCase(name)) {
+					return true;
+				} 
+				
+			}
+		}
+		return false;		
+	}
+    
+    public static boolean isRegExpressions(String regex) {
+    	try {
+    		Pattern.compile(regex);
+    		return true;
+    	} catch (Exception e) {
+    		return false;
+    	}
+    	//Matcher matcher = pattern.matcher(filename);
+
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

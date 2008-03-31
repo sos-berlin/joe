@@ -89,9 +89,9 @@ public class PeriodsListener {
 		
 		
 		if(job.getParentElement()==null)
-			return false;
-		//TODO: was tut die Abfrage 
+			return false;		
 		
+		//???mögliche Vaterknoten herausfinden
 		while (!job.getName().equals("job") 
 				&& !job.getName().equals("add_order")
 				&& !job.getName().equals("order")
@@ -99,8 +99,11 @@ public class PeriodsListener {
 				&& !job.getName().equals("config"))
 			job = job.getParentElement();
 		
-		return Utils.isAttributeValue("order", job) && job.getName().equals("job") || Utils.isAttributeValue("id", job)
-		&& (job.getName().equals("add_order") || job.getName().equals("order")|| job.getName().equals("config"));
+		return
+		Utils.isAttributeValue("order", job) && job.getName().equals("job") || 
+		Utils.isAttributeValue("id", job)&& job.getName().equals("add_order") || 
+		job.getName().equals("order")|| 
+		job.getName().equals("config");
 	}
 	
 	
@@ -111,8 +114,10 @@ public class PeriodsListener {
 			for (Iterator it = _list.iterator(); it.hasNext();) {
 				Element e = (Element) it.next();
 				TableItem item = new TableItem(table, SWT.NONE);
-				
-				item.setText(0, Utils.isAttributeValue("let_run", e) ? "Yes" : "No");
+				if(Utils.getAttributeValue("single_start", e).length() > 0)
+					item.setText(0, "");
+				else
+					item.setText(0, Utils.isAttributeValue("let_run", e) ? "Yes" : "No");
 				item.setText(1, Utils.getAttributeValue("begin", e));
 				item.setText(2, Utils.getAttributeValue("end", e));
 				item.setText(3, Utils.getAttributeValue("repeat", e));

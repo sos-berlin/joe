@@ -39,9 +39,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 	
 	private Button               butIsLifeFile        = null;
 	
-	private Button               bRemove              = null;
-	
-	
+	private Button               bRemove              = null;		
 	
 	private Label                label_1              = null;
 	
@@ -343,8 +341,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 		tInclude.setFocus();
 	}
 	
-	public void setToolTipText() {
-	}
+	
 	
 	private void createGroupForIncludes() {
 		//gIncludeFiles = new Group(gDates, SWT.NONE);
@@ -366,7 +363,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		butIsLifeFile.setLayoutData(new GridData());
-		butIsLifeFile.setText("Lifefile?");
+		butIsLifeFile.setText("from Hot Folder");
 		
 		tInclude = new Text(gInclude, SWT.BORDER);
 		tInclude.addModifyListener(new ModifyListener() {
@@ -446,6 +443,33 @@ public class DateForm extends Composite implements IUpdateLanguage {
 		bRemove.setLayoutData(gridData5);
 		bRemove.setEnabled(false);
 		bRemove.setText("Remove File");
+	}
+	
+	public void setToolTipText() {
+		
+		/*
+		 * date.list=Liste der Ferientage, d.h. zu diesen Termine wird der Job Scheduler keine Jobs und Aufträge starten.
+		date.btn_remove=entfernt diesen Termin.
+		date.year=Jahr als Bestandteil dieses Termins.
+		date.month=Monat als Bestandteil dieses Termins.
+		date.day=Tag als Bestandteil dieses Termins.
+		date.btn_add_holiday=fügt diesen Termin der Liste der Ferientage hinzu.
+		date.btn_add_specific_day=fügt diesen Termin der Liste einzelner Tage hinzu.
+*/
+		
+		sYear.setToolTipText(Messages.getTooltip("date.year"));
+		sMonth.setToolTipText(Messages.getTooltip("date.month"));
+		sDay.setToolTipText(Messages.getTooltip("date.day"));
+		bAddDay.setToolTipText(Messages.getTooltip("date.btn_add_holiday"));
+		lDates.setToolTipText(Messages.getTooltip("date.list"));
+
+		bRemoveDate.setToolTipText(Messages.getTooltip("date.btn_remove"));
+		if(butIsLifeFile!=null)butIsLifeFile.setToolTipText(Messages.getTooltip("is_live_file"));
+		if(tInclude != null) tInclude.setToolTipText(Messages.getTooltip("include.file"));
+		if(bAdd != null) bAdd.setToolTipText(Messages.getTooltip("include.add"));
+		if(tableIncludes != null)tableIncludes.setToolTipText(Messages.getTooltip("include.list"));
+		if(bRemove != null) bRemove.setToolTipText(Messages.getTooltip("include.remove"));
+
 	}
 	
 } // @jve:decl-index=0:visual-constraint="10,10"

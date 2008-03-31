@@ -114,13 +114,21 @@ public class ProcessClassesListener {
     }
 
     public void setIgnoreProcessClasses(boolean ignore) {
-    	if(_processClasses  != null)
+    	if(_processClasses == null) {
+    		Element config = _dom.getRoot().getChild("config");    		
+    		_processClasses = config.getChild("process_classes");
+    		if(_processClasses ==null) {
+    			_processClasses =  new Element("process_classes");
+    			config.addContent(_processClasses);
+    		}
+    	}
+    	
     		Utils.setAttribute("ignore", ignore, false, _processClasses, _dom);
     }
     
     public boolean isIgnoreProcessClasses() {    	
     	if(_processClasses  != null)
-    		return Utils.getBooleanValue("ignore", _processClasses);
+    		return Utils.getAttributeValue("ignore", _processClasses).equals("yes") ? true : false;
     	else 
     		return false;
     }
@@ -166,7 +174,7 @@ public class ProcessClassesListener {
         if (index >= 0 && index < _list.size()) {
         	String processClass = Utils.getAttributeValue("name", (Element)_list.get(index));
             _list.remove(index);
-            if (_list.size() == 0) {
+            if (_list.size() == 0 && !isIgnoreProcessClasses()) {
                 _config.removeChild("process_classes");
                 _processClasses = null;
                 _list = null;

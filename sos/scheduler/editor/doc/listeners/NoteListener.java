@@ -93,8 +93,15 @@ public class NoteListener {
             return;
 
          try {
-             note = "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n" + note + "\n</div>";
-             item.setContent(_dom.noteAsDom(note));
+        	 /*if(item.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml")) != null) {
+        	 Element div = item.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
+        	 div.setText(note);
+        	 } else {
+        		 
+        	 */
+        		 note = "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n" + note + "\n</div>";
+        		 item.setContent(_dom.noteAsDom(note));
+        	 //}
           } catch (Exception e) {
             e.printStackTrace();
           }

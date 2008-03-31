@@ -224,11 +224,12 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 			String[] listOfOrders = ordersListener.getOrderIds();
 			//DetailDialogForm detail = new DetailDialogForm(tName.getText(), listOfOrders);
 			//detail.showDetails();
+			boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory(); 
 			if(state == null) {
-				DetailDialogForm detail = new DetailDialogForm(name, listOfOrders);
+				DetailDialogForm detail = new DetailDialogForm(name, listOfOrders, isLifeElement, listener.get_dom().getFilename());
 				detail.showDetails();
 			} else {
-				DetailDialogForm detail = new DetailDialogForm(name, state, listOfOrders);
+				DetailDialogForm detail = new DetailDialogForm(name, state, listOfOrders, isLifeElement, listener.get_dom().getFilename());
 				detail.showDetails();
 			} 
 			

@@ -123,7 +123,13 @@ public class DocumentationListener implements IUpdateTree {
 
         item = new TreeItem(tree, SWT.NONE);
         item.setText("Documentation");
+        /*if(desc.getChild("documentation", desc.getNamespace()) == null)
+        	desc.addContent(new Element("documentation", desc.getNamespace())).addContent(new Element("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml")));
+        else if(desc.getChild("documentation", desc.getNamespace()).getChild("div",org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"))==null)
+        	desc.getChild("documentation", desc.getNamespace()).addContent(new Element("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml")));
+        */
         item.setData(new TreeData(Editor.DOC_DOCUMENTATION, desc, Options.getDocHelpURL("documentation")));
+        
 
     }
 
@@ -241,7 +247,7 @@ public class DocumentationListener implements IUpdateTree {
                     case Editor.DOC_DOCUMENTATION:
                         NoteForm doc = new NoteForm(c, SWT.NONE, Editor.DOC_DOCUMENTATION);
                         doc.setTitle("Note");
-                        doc.setParams(_dom, data.getElement(), "documentation", false);
+                         doc.setParams(_dom, data.getElement(), "documentation", false);
                         break;
                     case Editor.DOC_CONFIGURATION:
                         NoteForm note = new NoteForm(c, SWT.NONE, Editor.DOC_CONFIGURATION);

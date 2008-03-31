@@ -254,7 +254,7 @@ public class SchedulerDom extends DomParser {
         // set comments as attributes
         setComments(getDoc().getContent());
 
-        setChanged(true);        
+        setChanged(false);        
         return true;
     }
     

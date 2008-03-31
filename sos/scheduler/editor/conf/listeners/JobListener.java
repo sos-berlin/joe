@@ -33,8 +33,8 @@ public class JobListener {
 	}
 	
 	
-	public void setComment(String comment) {
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+	public void setComment(String comment) {		
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 		Utils.setAttribute("__comment__", comment, _job, _dom);
 	}
 	
@@ -55,11 +55,16 @@ public class JobListener {
 			 _dom.setJobDisabled(Utils.getAttributeValue("name",_job), false);
 		 
 		_dom.setJobDisabled(name, isDis);		
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.DELETE);		
-		Utils.setAttribute("name", name, _job, _dom);
+		
+		
+		String removename = Utils.getAttributeValue("name", _job);
+		Utils.setAttribute("name", name, _job, _dom);		
+		if(_dom.isChanged() && ((_dom.isDirectory() && !Utils.existName(removename, _job, "job"))  || _dom.isLifeElement())) 
+			_dom.setChangedForDirectory("job", removename , SchedulerDom.DELETE);		
+		
 		if (updateTree)
 			_main.updateJob(name);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 				
 	}
 	
@@ -71,7 +76,7 @@ public class JobListener {
 	
 	public void setTitle(String title) {
 		Utils.setAttribute("title", title, _job, _dom);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	
@@ -82,7 +87,7 @@ public class JobListener {
 	
 	public void setSpoolerID(String spoolerID) {
 		Utils.setAttribute("spooler_id", spoolerID, _job, _dom);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	
@@ -93,7 +98,7 @@ public class JobListener {
 	
 	public void setProcessClass(String processClass) {
 		Utils.setAttribute("process_class", processClass, _job, _dom);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	
@@ -123,7 +128,7 @@ public class JobListener {
 			_job.removeAttribute("order");
 		}		
 		_dom.setChanged(true);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	
@@ -134,7 +139,7 @@ public class JobListener {
 	
 	public void setPriority(String priority) {
 		Utils.setAttribute("priority", priority, _job, _dom);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	public String getJavaOptions() {	
@@ -144,7 +149,7 @@ public class JobListener {
 	
 	public void setJavaOptions(String javaOptions) {
 		Utils.setAttribute("java_options", javaOptions, _job, _dom);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	
@@ -156,7 +161,7 @@ public class JobListener {
 	
 	public void setTasks(String tasks) {
 		Utils.setAttribute("tasks", Utils.getIntegerAsString(Utils.str2int(tasks)), _job, _dom);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	
@@ -167,7 +172,7 @@ public class JobListener {
 	
 	public void setTimeout(String timeout) {
 		Utils.setAttribute("timeout", Utils.getIntegerAsString(Utils.str2int(timeout)), _job, _dom);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	
@@ -177,7 +182,7 @@ public class JobListener {
 	
 	
 	public void setIdleTimeout(String idleTimeout) {
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 		Utils.setAttribute("idle_timeout", Utils.getIntegerAsString(Utils.str2int(idleTimeout)), _job, _dom);
 	}
 	
@@ -188,7 +193,7 @@ public class JobListener {
 		} else {
 			Utils.setAttribute("force_idle_timeout", "no", _job, _dom);
 		}
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	public void setStopOnError(boolean stopOnError) {
@@ -197,7 +202,7 @@ public class JobListener {
 		} else {
 			Utils.setAttribute("stop_on_error", "no", _job, _dom);
 		}
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	public void setReplace(boolean replace) {
@@ -206,7 +211,7 @@ public class JobListener {
 		} else {
 			Utils.setAttribute("replace", "no", "yes",_job, _dom);
 		}
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	public boolean getReplace() {
@@ -221,7 +226,7 @@ public class JobListener {
 		} else {
 			Utils.setAttribute("temporary", "no", "no",_job, _dom);
 		}
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	public boolean getTemporary() {
@@ -232,7 +237,7 @@ public class JobListener {
 	
 	public void setMintasks(String mintasks) {
 		Utils.setAttribute("min_tasks", Utils.getIntegerAsString(Utils.str2int(mintasks)), _job, _dom);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	public String getMintasks() {
@@ -241,7 +246,7 @@ public class JobListener {
 	
 	public void setVisivle(String visible) {
 		Utils.setAttribute("visible", visible, _job, _dom);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	public String getVisible() {
@@ -296,7 +301,7 @@ public class JobListener {
 			if (description.equals("") && (f == null || f.equals(""))) {
 				_job.removeChild("description");
 				_dom.setChanged(true);
-				_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+				if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 				return;
 			}
 			
@@ -306,7 +311,7 @@ public class JobListener {
 			}
 			desc.addContent(new CDATA(description));
 			_dom.setChanged(true);
-			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+			if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 		}
 	}
 	
@@ -322,6 +327,15 @@ public class JobListener {
 		return "";
 	}
 	
+	public boolean isLiveFile() {
+		Element desc = _job.getChild("description");
+		if (desc != null) {
+			Element inc = desc.getChild("include");
+			if (inc != null)
+				return Utils.getAttributeValue("live_file",inc).equalsIgnoreCase("yes");
+		}
+		return false;
+	}
 	
 	public void setInclude(String file) {
 		Element desc = _job.getChild("description");
@@ -345,11 +359,11 @@ public class JobListener {
 			}
 			
 			_dom.setChanged(true);
-			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+			if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 		}
 	}
 	
-	public void setInclude(String file, boolean isFile) {
+	public void setInclude(String file, boolean isLifeFileFile) {
 		Element desc = _job.getChild("description");
 		if (desc == null && !file.equals("")) {
 			desc = new Element("description");
@@ -360,11 +374,11 @@ public class JobListener {
 			if (!file.equals("")) {
 				Element incl = desc.getChild("include");
 				if (incl == null)
-					desc.addContent(0, new Element("include").setAttribute((isFile?"file":"live_file"), file));
+					desc.addContent(0, new Element("include").setAttribute((isLifeFileFile?"live_file":"file"), file));
 				else {
 					incl.removeAttribute("file");
 					incl.removeAttribute("live_file");
-					incl.setAttribute((isFile?"file":"live_file"), file);
+					incl.setAttribute((isLifeFileFile?"live_file":"file"), file);
 				}
 				
 			} else {
@@ -374,7 +388,7 @@ public class JobListener {
 			}
 			
 			_dom.setChanged(true);
-			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+			if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 		}
 	}
 	
@@ -385,7 +399,7 @@ public class JobListener {
 	
 	public void setIgnoreSignal(String signals) {
 		Utils.setAttribute("ignore_signals", signals, _job, _dom);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 	
 	
@@ -412,6 +426,24 @@ public class JobListener {
 	public Element getJob() {
 		return _job;
 	}    
-	
-	
+
+	/**
+	 * Überprüft alle Job's, ob der name bereits existiert
+	 * @param name -> zu überprüfende Name 	 
+	 * @return boolean
+	 */
+	/*public boolean existJobName(String name) {
+		if(_job.getParentElement() != null) {
+			List l = _job.getParentElement().getChildren("job");
+			for (int i = 0; i < l.size(); i++) {
+				Element e = (Element)l.get(i);
+				if(!e.equals(_job) && Utils.getAttributeValue("name", e).equalsIgnoreCase(name)) {
+					return true;
+				} 
+			}
+		}
+		return false;
+		
+	}
+	*/
 }

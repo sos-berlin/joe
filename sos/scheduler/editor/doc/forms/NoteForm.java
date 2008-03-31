@@ -25,6 +25,8 @@ import sos.scheduler.editor.doc.listeners.NoteListener;
 import sos.scheduler.editor.doc.listeners.SettingsListener;
 
 public class NoteForm extends Composite implements IUnsaved, IUpdateLanguage {
+	
+	
     private SettingsListener settingsListener = null;
 
     private Group            group            = null;
@@ -156,13 +158,14 @@ public class NoteForm extends Composite implements IUnsaved, IUpdateLanguage {
         cLang = new Combo(group, SWT.BORDER | SWT.READ_ONLY);
         cLang.setLayoutData(gridData1); // Generated
         cLang.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+        	
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 changeLang();
             }
 
-
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
+            
         });
     }
 

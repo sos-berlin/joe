@@ -147,9 +147,17 @@ public class OrderListener {
     }
 
 
-    public void setOrderId(String id, boolean updateTree) {
-    	_dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.DELETE);
-        Utils.setAttribute("id", id, _order, _dom);
+    public void setOrderId(String id, boolean updateTree, boolean rem) {
+    	
+    	
+    	
+    	String removename = Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order);
+    	Utils.setAttribute("id", id, _order, _dom);    	    	
+    	if(rem)
+    		_dom.setChangedForDirectory("order", removename, SchedulerDom.DELETE);    	
+    	
+    	
+        //Utils.setAttribute("id", id, _order, _dom);
         if (updateTree)
             _main.updateOrder(id);
         
@@ -183,4 +191,29 @@ public class OrderListener {
 
         return _chains;
     }
+
+
+	public Element getOrder() {
+		return _order;
+	}
+	
+	 public boolean existName(String removename){
+ 
+	    	if(_dom.isDirectory()) {
+	    		java.util.List l = getOrder().getParentElement().getChildren("order");
+	    		for(int i = 0; i < l.size(); i++) {
+	    			Element e = (Element)l.get(i);
+	    			String name = Utils.getAttributeValue("id", e) + "," + Utils.getAttributeValue("job_chain", e);
+	    			if(!e.equals(_order) && removename != null && name.equals(removename))
+	    				return true;
+	    			/*if(!h.containsKey(name)) {
+	    				h.put(name, "");	    				
+	    			} else {	    				
+	    				return true;
+	    			}*/
+	    		}
+	    	}
+	    
+	    	return false;
+	    }
 }

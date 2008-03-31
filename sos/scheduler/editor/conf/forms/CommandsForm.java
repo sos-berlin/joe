@@ -86,7 +86,7 @@ public class CommandsForm extends Composite implements IUpdateLanguage {
 
     public void setToolTipText() {
         bSave.setToolTipText(Messages.getTooltip("commands.btn_save"));
-
+        tCommands.setToolTipText(Messages.getTooltip("commands.commands"));
     }
 
 } // @jve:decl-index=0:visual-constraint="10,10"

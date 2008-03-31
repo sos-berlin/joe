@@ -19,6 +19,8 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.PeriodsListener;
 
 public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage {
+	
+	
     private PeriodsListener listener;
 
     private SchedulerDom    dom;
@@ -209,7 +211,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         GridData gridData = new org.eclipse.swt.layout.GridData();
         gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        periodForm = new PeriodForm(group, SWT.NONE);
+        periodForm = new PeriodForm(group, SWT.NONE, sos.scheduler.editor.app.Editor.PERIODS);
         periodForm.setParams(dom, listener.isOnOrder());
         periodForm.setLayoutData(gridData);
     }

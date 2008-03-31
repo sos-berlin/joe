@@ -29,7 +29,9 @@ public class OrdersListener {
     public OrdersListener(SchedulerDom dom, ISchedulerUpdate update) {
         _dom = dom;
         _main = update;
-        _config = _dom.getRoot().getChild("config");
+        if(_dom.isLifeElement())
+        	return;
+        _config = _dom.getRoot().getChild("config");        
         _commands = _config.getChild("commands");
         if (_commands != null) {
         	/*List l = new ArrayList();
