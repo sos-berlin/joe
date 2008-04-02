@@ -2,6 +2,8 @@ package sos.scheduler.editor.conf.forms;
 
 import java.io.File;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
@@ -128,10 +130,12 @@ public class JobForm extends Composite implements IUpdateLanguage {
 	
 	private Button      addButton         = null;
 	
+	private boolean     init              = true;
 	
 	
 	public JobForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
 		super(parent, style);
+		init = true;
 		
 		dom.setInit(true);
 		
@@ -149,7 +153,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		initForm();
 		
 		dom.setInit(false);
-		
+		init = false;
 	}
 	
 	
@@ -180,41 +184,21 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.numColumns = 1;
 		group = new Group(this, SWT.NONE);
+		group.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(final DisposeEvent e) {
+				if(isVisible()) 				
+					Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, "CLOSE");
+			
+			}
+		});
 		group.setText("Job: " + listener.getName() + (listener.isDisabled() ? " (Disabled)" : ""));
 		group.setLayout(gridLayout2);
 		createSashForm();
 	}
 	
-	
-	/**
-	 * This method initializes group1
-	 */
-	private void createGroup1() {
-		if(listener.get_dom().isLifeElement() ||  listener.get_dom().isDirectory()) {
-		}
-		if(listener.get_dom().isLifeElement() ||  listener.get_dom().isDirectory() ) {
-		}
-		createCombo();
-		createComposite();
-	}
+
 	
 	
-	/**
-	 * This method initializes combo
-	 */
-	private void createCombo() {
-	}
-	
-	
-	/**
-	 * This method initializes composite
-	 */
-	private void createComposite() {
-		/*label = new Label(gMain, SWT.NONE);
-		label.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		label.setText("Job Name:");
-		*/
-	}
 	
 	
 	/**
@@ -235,14 +219,22 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		label.setText("Job Name:");
 		
 		tName = new Text(gMain, SWT.BORDER);
+		tName.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {				
+				if(!init)//während der initialiserung sollen keine überprüfungen stattfinden
+					e.doit = Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, null);								
+			}
+		});
 		tName.setLayoutData(gridData);
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				checkName();
-				listener.setName(tName.getText(), updateTree);
-				group.setText("Job: " + tName.getText() + (listener.isDisabled() ? " (Disabled)" : ""));
+								
+					listener.setName(tName.getText(), updateTree);
+					group.setText("Job: " + tName.getText() + (listener.isDisabled() ? " (Disabled)" : ""));
 				
 			}
+
 		});
 		label1 = new Label(gMain, SWT.NONE);
 		label1.setLayoutData(new GridData());
@@ -273,6 +265,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		label9.setLayoutData(new GridData());
 		label9.setText("Process Class:");
 		GridData gridData4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+		gridData4.widthHint = 197;
 		cProcessClass = new Combo(gMain, SWT.NONE);
 		cProcessClass.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
@@ -652,8 +645,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 			public void mouseDoubleClick(final MouseEvent e) {
 				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
 				if(text != null)
-					tComment.setText(text);
-				//tComment.setText(sos.scheduler.editor.app.Utils. );
+					tComment.setText(text);				
 				
 			}
 		});
@@ -676,7 +668,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		butIsLiveFile.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				listener.setInclude(tFileName.getText(), butIsLiveFile.getSelection());
-				//listener.setInclude(tFileName.getText());
+				
 				if(tFileName.getText()!= null && tFileName.getText().length() > 0) {
 					butShow.setEnabled(true);
 					butOpen.setEnabled(true);
@@ -697,8 +689,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		
 		tFileName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				listener.setInclude(tFileName.getText(), butIsLiveFile.getSelection());
-				//listener.setInclude(tFileName.getText());
+				listener.setInclude(tFileName.getText(), butIsLiveFile.getSelection());				
 				if(tFileName.getText()!= null && tFileName.getText().length() > 0) {
 					butShow.setEnabled(true);
 					butOpen.setEnabled(true);
@@ -718,12 +709,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 				try {
 					if (tFileName.getText() != null && tFileName.getText().length() > 0) {
 						String sHome = getHome(tFileName.getText());
-						/*String sHome = sos.scheduler.editor.app.Options.getSchedulerHome();
-						if(!(sHome.endsWith("\\") || sHome.endsWith("/")))
-							sHome = sHome.concat("/");
 						
-						sHome = sHome.replaceAll("\\\\", "/");
-						*/
 						Program prog = Program.findProgram("html");
 						
 						if (prog != null)
@@ -783,58 +769,10 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		butWizzard.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butWizzard.setText("Wizzard");
 		new Label(gDescription, SWT.NONE);
-		new Label(gDescription, SWT.NONE);
-		/*sashForm.addDisposeListener(new DisposeListener() {
-		 public void widgetDisposed(final DisposeEvent e) {
-		 Options.saveSash("job_form",  sashForm.getWeights());
-		 
-		 listener.get_dom().isChanged();
-		 }
-		 });
-		 */
-		/* sashForm.addControlListener(new ControlAdapter() {
-		 public void controlResized(final ControlEvent e) {        		
-		 Options.saveSash("job_form",  sashForm.getWeights());        			
-		 }
-		 });
-		 */
-		//sashForm.setWeights(new int[] { 1 });
-		
-		createGroup1();
-		createGroup2();
-		createGroup3();
-		//Options.loadSash("job_form", sashForm);
+		new Label(gDescription, SWT.NONE);		
 		
 	}
-	private void createGroup2() {
-		//parForm = new ParameterForm(listener.get_dom(), listener.getJob(), listener.get_main(), sashForm, listener);
-		//parForm.setJobForm(this);				
-	}
-	
-	
-	/**
-	 * This method initializes group3
-	 */
-	private void createGroup3() {
-		/*tURL.addMouseListener(new MouseAdapter() {
-		 public void mouseDown(final MouseEvent e) {
-		 System.out.println("hier wird der URL geöffnet");
-		 try {
-		 if (urlLabel.getText() != null && urlLabel.getText().length() > 0) {
-		 Process p =Runtime.getRuntime().exec("cmd /C START iExplore ".concat(tURL.getText()));
-		 }
-		 } catch (Exception ex) {
-		 System.out.println("..could not open file " + urlLabel.getText() + " " + ex.getMessage());
-		 }
-		 
-		 
-		 }
-		 });
-		 */
-		
-	}
-	
-	
+
 	public void initForm(){
 		tName.setText(listener.getName());
 		updateTree = true;
@@ -999,6 +937,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		addButton.setToolTipText(Messages.getTooltip("job.add_ignore_signal"));
 
 	}
+	
 	
 	
 } // @jve:decl-index=0:visual-constraint="10,10"

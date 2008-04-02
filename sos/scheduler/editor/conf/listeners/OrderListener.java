@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
+import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -172,6 +173,26 @@ public class OrderListener {
 
     public String[] getJobChains() {
     	if(_dom.isLifeElement()) {
+    		if(_dom.getFilename()!= null) {
+    			try {
+    			java.io.File f = new java.io.File(_dom.getFilename());
+    			java.util.Vector filelist = sos.util.SOSFile.getFilelist(f.getParent(), MergeAllXMLinDirectory.MASK_JOB_CHAIN,java.util.regex.Pattern.CASE_INSENSITIVE,true);
+    			 
+    			Object[] o = filelist.toArray();
+    			_chains= new String[o.length];
+    			for(int i= 0; i < o.length; i++) {
+    				String n = ((java.io.File)o[i]).getName();
+    				n = n.substring(0, n.indexOf(".job_chain.xml"));
+    				_chains[i] = n;    			
+    			}
+    			return _chains;
+    			//_chains = new java.io.File(_dom.getFilename());
+    			} catch(Exception e) {
+    				System.out.println(e.getMessage());
+    				
+    			} //Tu nichts
+    		}
+    			
     		_chains = new String[0];
     		return _chains;		
     	}

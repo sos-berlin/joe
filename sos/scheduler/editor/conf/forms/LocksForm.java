@@ -175,17 +175,19 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 		 bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			 public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				 if (tableLocks.getSelectionCount() > 0) {
-					 int index = tableLocks.getSelectionIndex();
-					 listener.removeLock(index);
-					 tableLocks.remove(index);
-					 if (index >= tableLocks.getItemCount())
-						 index--;
-					 if (tableLocks.getItemCount() > 0) {
-						 tableLocks.select(index);
-						 listener.selectLock(index);
-						 setInput(true);
-					 } else
-						 setInput(false);
+					 if(Utils.checkElement(tableLocks.getSelection()[0].getText(0), dom, sos.scheduler.editor.app.Editor.LOCKS, null)) {
+						 int index = tableLocks.getSelectionIndex();
+						 listener.removeLock(index);
+						 tableLocks.remove(index);
+						 if (index >= tableLocks.getItemCount())
+							 index--;
+						 if (tableLocks.getItemCount() > 0) {
+							 tableLocks.select(index);
+							 listener.selectLock(index);
+							 setInput(true);
+						 } else
+							 setInput(false);
+					 }
 				 }
 				 bRemove.setEnabled(tableLocks.getSelectionCount() > 0);
 				 tLock.setBackground(null);
@@ -273,7 +275,15 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
 	 private void applyLock() {
-		 listener.applyLock(tLock.getText(), sMaxNonExclusive.getSelection());
+		 
+		 boolean _continue = true;
+		 if(listener.getLock().length() > 0 &&  !Utils.checkElement(listener.getLock(), dom, sos.scheduler.editor.app.Editor.LOCKS, null))
+			 _continue = false;
+
+		 if(_continue)		 
+			 listener.applyLock(tLock.getText(), sMaxNonExclusive.getSelection());
+		 
+		 
 		 listener.fillTable(tableLocks);        
 		 setInput(false);
 		 getShell().setDefaultButton(bNew);

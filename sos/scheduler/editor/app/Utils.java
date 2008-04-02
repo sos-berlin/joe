@@ -18,6 +18,7 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.jdom.xpath.XPath;
 import org.eclipse.swt.widgets.Shell;
 
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -786,7 +787,123 @@ public class Utils {
 
     }
     
-    
+    /**
+     * Überprüft die Abhängigkeiten der Elementen 
+     * @param name -> Names des Element, der gelöscht bzw. geändert wurde
+     * @param _dom
+     * @param type -> Im welchen Formular wurde geändert
+     * @param which -> Wenn type nicht ausreicht:  z.B. im Job Formular (type=JOB) wird einmal beim Schliessen und einmal beim Ändern der
+     * Name des Jobs überprüft.
+     * 
+     * @return boolean true alles im grünen Bereich. 
+     */
+    public static boolean checkElement(String name, SchedulerDom _dom, int type, String which ) {
+    	boolean onlyWarning = false;//-> true: Gibt nur eine Warnung aus. Sonst Warnung mit Yes- und No- Button 
+    	try {
+
+    		if(type == Editor.JOB_CHAIN) {
+    			
+    			XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 
+    			List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+    			if(!listOfElement_3.isEmpty())
+    				throw new Exception ("Der Jobkette [job_chain=" + name + "] ist in einer Kommando definiert. " +
+    				"Soll die Jobkette trotzdem umbennant werden");
+
+    			XPath x4 = XPath.newInstance("//add_order[@job_chain='"+ name + "']");				 
+    			List listOfElement_4 = x4.selectNodes(_dom.getDoc());
+    			if(!listOfElement_4.isEmpty())
+    				throw new Exception ("Der Jobkette [job_chain=" + name + "] ist in einer Kommando definiert. " +
+    				"Soll die Jobkette trotzdem umbennant werden");
+    			
+    		} else if(type == Editor.JOB_CHAINS) {
+    			
+    			XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 
+    			List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+    			if(!listOfElement_3.isEmpty())
+    				throw new Exception ("Der Jobkette [job_chain=" + name + "] ist in einer Kommando definiert. " +
+    						"Soll die Jobkette trotzdem gelöscht werden");
+    			
+    			XPath x4 = XPath.newInstance("//add_order[@job_chain='"+ name + "']");				 
+    			List listOfElement_4 = x4.selectNodes(_dom.getDoc());
+    			if(!listOfElement_4.isEmpty())
+    				throw new Exception ("Der Jobkette [job_chain=" + name + "] ist in einer Kommando definiert. " +
+    						"Soll die Jobkette trotzdem gelöscht werden");
+    			
+    		} else if(type==Editor.JOB) {
+    			
+    			if(which != null && which.equalsIgnoreCase("close")) {
+    				onlyWarning = true;
+    				XPath x0 = XPath.newInstance("//job[@name='"+ name + "']");			 
+					Element e = (Element)x0.selectSingleNode(_dom.getDoc());
+					boolean isOrder = Utils.getAttributeValue("order", e).equalsIgnoreCase("yes");
+    				if( isOrder) {						
+
+    					XPath x = XPath.newInstance("//job[@name='"+ name + "']/run_time[@let_run='yes' or @once='yes' or @single_start]");			 
+    					//Element e = (Element)x.selectSingleNode(doc);
+    					List listOfElement = x.selectNodes(_dom.getDoc());
+    					if(!listOfElement.isEmpty())
+    						throw new Exception ("Ein Auftragsgesteuerte Job darf im Runtime Elemente keinen der folgenden Attribute besitzen " +
+    								"single_start, start_once und let_run. Der Job " + name + " ist nicht gültig");
+
+    					XPath x2 = XPath.newInstance("//job[@name='"+ name + "']/run_time//period[@let_run='yes' or @single_start]");				 
+    					List listOfElement_2 = x2.selectNodes(_dom.getDoc());
+    					if(!listOfElement_2.isEmpty())
+    						throw new Exception ("Ein Auftragsgesteuerte Job darf im Period Elemente keinen der folgenden Attribute besitzen " +
+    								"single_start, start_once und let_run. Der Job " + name + " ist nicht gültig");				
+    				} else {
+
+    					XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
+    					List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+    					if(!listOfElement_3.isEmpty())
+    						throw new Exception ("Der Standalone Job " + name + " ist in einer Jobkette definiert.");
+    				}
+    			} else {
+
+    				if(name.length() == 0)
+    					return true;
+
+    				XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
+    				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+    				if(!listOfElement_3.isEmpty())
+    					throw new Exception ("Der Job " + name + " ist in einer Jobkette definiert. Soll der Name des Jobs trotzdem geändert werden?");
+    			}
+    			
+    		} else if(type == Editor.JOBS) {
+    			
+    			XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
+    			List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+    			if(!listOfElement_3.isEmpty())
+    				throw new Exception ("Der Job " + name + " ist in einer Jobkette definiert. Soll der Job trotzdem gelöscht werden");
+    			
+    		} else if(type == Editor.LOCKS) {
+    			
+    			XPath x3 = XPath.newInstance("//lock.use[@lock='"+ name + "']");				 
+				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+				if(!listOfElement_3.isEmpty())
+					throw new Exception ("Die Sperre [lock=" + name + "] wird in einer Job verwendet. Möchten Sie trotzdem fortfahren?");
+			
+    			
+    		} else if(type == Editor.PROCESS_CLASSES) {
+    			
+    			XPath x3 = XPath.newInstance("//job[@process_class='"+ name + "']");				 
+        		List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+        		if(!listOfElement_3.isEmpty())
+        			throw new Exception ("Die Processklasse " + name + " wird in einer Job verwendet. Möchten Sie trotzdem fortfahren?");
+    			
+    		}
+    		
+    		
+    	} catch (Exception e) {
+    		if(onlyWarning) {
+    			MainWindow.message(e.getMessage(), SWT.ICON_WARNING);	
+    		} else {
+    			int c = MainWindow.message(e.getMessage(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
+    			if(c != SWT.YES)
+    				return false;
+    		}
+    	}
+    	return true;
+    }
     
     
     

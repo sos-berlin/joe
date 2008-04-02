@@ -475,10 +475,14 @@ public class MergeAllXMLinDirectory {
 			attrName =  Utils.getAttributeValue("name", e);
 		}
 		
+		
+		
 		if(attrName != null && attrName.length() == 0)
 			return "";
 		
 		filename = (path.endsWith("/") || path.endsWith("\\")? path : path.concat("/")) + attrName + "." + (name.equalsIgnoreCase("add_order")? "order": name) + ".xml";
+		//filename = (path.endsWith("/") || path.endsWith("\\")? path : path.concat("/")) + new File(attrName).getName() + "." + (name.equalsIgnoreCase("add_order")? "order": name) + ".xml";
+		
 		if(listOfChanges.containsKey(name + "_" + attrName)) {				
 			if(listOfChanges.get(name + "_" + attrName).equals(SchedulerDom.DELETE)) {
 				if (!new File(filename).delete()) {						

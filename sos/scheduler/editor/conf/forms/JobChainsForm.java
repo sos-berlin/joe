@@ -144,7 +144,8 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		bRemoveChain.setEnabled(false);
 		bRemoveChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				deleteChain();
+				if(Utils.checkElement(tChains.getSelection()[0].getText(0), listener.get_dom(), sos.scheduler.editor.app.Editor.JOB_CHAINS, null))//wird der Job woandes verwendet?
+					deleteChain();
 			}
 		});
 		

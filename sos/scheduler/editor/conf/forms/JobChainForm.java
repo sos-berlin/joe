@@ -35,6 +35,7 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -737,7 +738,8 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				}
 			}
 		});
-		butUp.setText("Up");
+		//butUp.setText("Up");
+		butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
 
 		butDown = new Button(composite_1, SWT.NONE);
 		butDown.addSelectionListener(new SelectionAdapter() {
@@ -755,7 +757,8 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			}
 		});
 		butDown.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butDown.setText("Down");
+		//butDown.setText("Down");
+		butDown.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
 
 		bRemoveNode = new Button(gNodes, SWT.NONE);
 		bRemoveNode.setEnabled(false);
@@ -1138,8 +1141,15 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 
 	private void applyChain() {
 		String oldJobChainname = listener.getChainName();
-		listener.applyChain(tName.getText(), bRecoverable.getSelection(), bVisible.getSelection(), butDistributed.getSelection());
-		update.updateJobChain(tName.getText(), oldJobChainname); 
+		
+		boolean _continue = true;
+		 if(listener.getChainName().length() > 0 &&  !Utils.checkElement(listener.getChainName(), listener.get_dom(), Editor.JOB_CHAIN, null))
+			 _continue = false;
+
+		 if(_continue) {
+			 listener.applyChain(tName.getText(), bRecoverable.getSelection(), bVisible.getSelection(), butDistributed.getSelection());
+			 update.updateJobChain(tName.getText(), oldJobChainname);
+		 }
 		fillChain(true, false);
 		bApplyChain.setEnabled(false);
 		if(listener.getChainName() != null && listener.getChainName().length() > 0) {
@@ -1265,7 +1275,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		butDistributed.setToolTipText(Messages.getTooltip("job_chains.distributed"));
 		butDown.setToolTipText(Messages.getTooltip("button_down"));
 		butUp.setToolTipText(Messages.getTooltip("button_up"));
-		butImportJob.setToolTipText(Messages.getTooltip("jobs.assistent"));
+		if(butImportJob != null ) butImportJob.setToolTipText(Messages.getTooltip("jobs.assistent"));
 		bNewNode.setToolTipText(Messages.getTooltip("job_chains.node.btn_new"));
 		tDelay.setToolTipText(Messages.getTooltip("job_chains.node.delay"));
 		cOnError.setToolTipText(Messages.getTooltip("job_chains.node.on_error"));

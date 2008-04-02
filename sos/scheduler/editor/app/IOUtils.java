@@ -51,6 +51,8 @@ public class IOUtils {
     	
     	 FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);    	     	
     	 
+    	 
+    	 
          fdialog.setFilterPath(Options.getLastDirectory());
          String filterMask = mask.replaceAll("\\\\", "");
          filterMask = filterMask.replaceAll("\\^.", "");
@@ -66,10 +68,10 @@ public class IOUtils {
          
          filename = filename.replaceAll("\\\\", "/");
          String env = Options.getSchedulerHotFolder().replaceAll("\\\\", "/");
-         int pos = filename.toLowerCase().indexOf(env.toLowerCase());
+         int pos = filename.toLowerCase().indexOf(env.toLowerCase().toLowerCase());
          int add = (env.endsWith("/") ? -1 : 0 );
          filename = filename.substring(pos == -1 ? 0 : pos + env.length() + add) ;
-         
+         filename = filename.substring(0, filename.length() - filterMask.length() +1);
          return filename;
     }
     

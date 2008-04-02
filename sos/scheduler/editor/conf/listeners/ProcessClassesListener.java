@@ -9,7 +9,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 
@@ -196,4 +195,20 @@ public class ProcessClassesListener {
         }
         return true;
     }
+    
+    /*public boolean checkElement(String name) {
+    	try {
+
+    		XPath x3 = XPath.newInstance("//job[@process_class='"+ name + "']");				 
+    		List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+    		if(!listOfElement_3.isEmpty())
+    			throw new Exception ("Die Processklasse " + name + " wird in einer Job verwendet. Möchten Sie trotzdem fortfahren?");
+
+    	} catch (Exception e) {
+    		int c = MainWindow.message(e.getMessage(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
+    		if(c != SWT.YES)
+    			return false;
+    	}
+    	return true;
+    }*/
 }

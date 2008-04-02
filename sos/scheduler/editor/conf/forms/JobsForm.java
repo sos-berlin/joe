@@ -24,11 +24,12 @@ import sos.scheduler.editor.conf.listeners.JobsListener;
 
 public class JobsForm extends Composite implements IUpdateLanguage {
 	
-	private JobsListener listener;
 	
-	private Group           group                       = null;
+	private JobsListener    listener                     = null;
 	
-	private static Table    table                       = null;
+	private Group           group                        = null;
+	
+	private static Table    table                        = null;
 	
 	private Button           bNewJob                     = null;
 	
@@ -36,10 +37,6 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 	
 	private Label            label                       = null;
 		
-	//private Composite        parent                      = null;
-	
-	//private int              style                       = 0;
-	
 	private SchedulerDom     dom                         = null;
 	
 	private ISchedulerUpdate update                      = null;
@@ -49,10 +46,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 	
 	public JobsForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) {
 		super(parent, style);
-		try {
-			
-			//this.parent = parent;
-			//this.style = style;
+		try {						
 			this.dom = dom;
 			this.update = update;
 			listener = new JobsListener(dom, update);
@@ -103,7 +97,6 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			butAssistent.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					try {
-						//listener.startJobAssistent(parent, style, dom, update);
 						JobAssistentForm assitent = new JobAssistentForm(dom, update);
 						assitent.startJobAssistant();
 					} catch (Exception ex) {
@@ -113,13 +106,13 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			});
 			butAssistent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			butAssistent.setText("Job Wizard");
-			bRemoveJob = new Button(group, SWT.NONE);
-			//bRemoveJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+			bRemoveJob = new Button(group, SWT.NONE);			
 			bRemoveJob.setText("Remove Job");
 			bRemoveJob.setEnabled(false);
 			bRemoveJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-					bRemoveJob.setEnabled(listener.deleteJob(table));
+					if(Utils.checkElement(table.getSelection()[0].getText(1), dom, sos.scheduler.editor.app.Editor.JOBS, null))//wird der Job woandes verwendet?
+						bRemoveJob.setEnabled(listener.deleteJob(table));
 				}
 			});
 			bRemoveJob.setLayoutData(new GridData());

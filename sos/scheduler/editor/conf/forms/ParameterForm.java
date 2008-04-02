@@ -44,6 +44,7 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -73,7 +74,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 	private Label                     label4_1                          = null;
 
-	private ParameterListener         listener                    = null;
+	private ParameterListener         listener                          = null;
 
 	private Group                     gJobParameter                     = null;
 
@@ -337,7 +338,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 					}
 				} else {
 					//normale Konfiguration
-					if(butIsLifeFile.getSelection())
+					if(butIsLifeFile != null && butIsLifeFile.getSelection())
 						home = Options.getSchedulerHotFolder();
 					else
 						home = Options.getSchedulerHome();	
@@ -378,10 +379,28 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}else {
 				listOfElement = new java.util.ArrayList();				
 				params = doc.getRootElement();
-				listOfElement.add(params);
+				if(params != null)
+					listOfElement= params.getChildren("param");
 			}
 
 			java.util.HashMap hash = new java.util.HashMap(); //hilfsvariable
+			for(int i = 0; i < listOfElement.size(); i++) {
+				//Parametername in unterschiedlichen XPaths darf nur einmal vorkommen
+				//Element params_ = (Element)listOfElement.get(j);
+				//java.util.List paramList = params_.getChildren("param");
+				//for(int i = 0; i < paramList.size(); i++) {
+					Element param = (Element)listOfElement.get(i);					
+					if(hash.containsKey(Utils.getAttributeValue("name", param))) {
+						MainWindow.message("There is not a clearly Parameter: " + Utils.getAttributeValue("name", param), SWT.ICON_WARNING);
+						return;
+					}
+					hash.put(Utils.getAttributeValue("name", param), "");
+
+				}
+			
+
+			
+			/*java.util.HashMap hash = new java.util.HashMap(); //hilfsvariable
 			for(int j = 0; j < listOfElement.size(); j++) {
 				//Parametername in unterschiedlichen XPaths darf nur einmal vorkommen
 				Element params_ = (Element)listOfElement.get(j);
@@ -395,7 +414,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 					hash.put(Utils.getAttributeValue("name", param), "");
 
 				}
-			}
+			}*/
+			
 
 
 			includeParameterTabItem = new CTabItem(tabFolder,  SWT.CLOSE);			
@@ -467,7 +487,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 
 			//fill Include Params From External File
-			for(int j = 0; j < listOfElement.size(); j++) {
+			/*for(int j = 0; j < listOfElement.size(); j++) {
 				Element params_ = (Element)listOfElement.get(j);
 				java.util.List paramList = params_.getChildren("param");
 				for(int i = 0; i < paramList.size(); i++) {
@@ -477,6 +497,14 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 					item.setText(1, Utils.getAttributeValue("value", param));
 					item.setData("param", param);
 				}
+			}*/
+
+			for(int i= 0; i < listOfElement.size(); i++) {
+				Element param = (Element)listOfElement.get(i);
+				TableItem item = new TableItem( tableIncludeParameter, SWT.NONE);
+				item.setText(0, Utils.getAttributeValue("name", param));
+				item.setText(1, Utils.getAttributeValue("value", param));
+				item.setData("param", param);
 			}
 
 
@@ -736,7 +764,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		butUp.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butUp.setText("Up");
+		//butUp.setText("Up");
+		butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
 
 		butDown = new Button(composite, SWT.NONE);
 		butDown.addSelectionListener(new SelectionAdapter() {
@@ -745,7 +774,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		butDown.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
-		butDown.setText("Down");
+		//butDown.setText("Down");
+		butDown.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
 
 
 		butImport = new Button(Group, SWT.NONE);

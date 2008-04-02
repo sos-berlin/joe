@@ -589,4 +589,19 @@ public class JobsListener {
 		}
 		return false;
 	}
+	
+/*	public boolean checkElement(String name) {
+		try {
+			XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
+			List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+			if(!listOfElement_3.isEmpty())
+				throw new Exception ("Der Job " + name + " ist in einer Jobkette definiert. Soll der Job trotzdem gelöscht werden");
+		} catch (Exception e) {
+			int c = MainWindow.message(e.getMessage(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
+			if(c != SWT.YES)
+				return false;
+		}
+		return true;
+	}
+	*/	
 }

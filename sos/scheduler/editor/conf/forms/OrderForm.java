@@ -26,6 +26,10 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.OrderListener;
+import sos.scheduler.editor.app.MergeAllXMLinDirectory;
+import sos.scheduler.editor.app.IOUtils;
+
+
 
 public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
     
@@ -152,10 +156,16 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
         tOrderId.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (event) {                	
+                /*if (event) {                	
                 	listener.setOrderId(tOrderId.getText(), true, !checkName());
                     group.setText("Order: " + tOrderId.getText());
                 }
+                */
+            	
+            	if (event)
+                	if(checkName())
+                		listener.setCommandAttribute("id", tOrderId.getText());
+            	
                 /*if(tOrderId.getText() == null || tOrderId.getText().length() == 0) {
                 	tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
                 } else {
@@ -167,11 +177,22 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         gridData_3.widthHint = 319;
         tOrderId.setLayoutData(gridData_3);
 
-        final Label jobchainLabel = new Label(gOrder, SWT.NONE);
-        jobchainLabel.setLayoutData(new GridData());
+        final Composite composite = new Composite(gOrder, SWT.NONE);
+        composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1));
+        final GridLayout gridLayout = new GridLayout();
+        gridLayout.verticalSpacing = 0;
+        gridLayout.marginWidth = 0;
+        gridLayout.marginHeight = 0;
+        gridLayout.horizontalSpacing = 0;
+        gridLayout.numColumns = 3;
+        composite.setLayout(gridLayout);
+
+        final Label jobchainLabel = new Label(composite, SWT.NONE);
+        jobchainLabel.setLayoutData(new GridData(63, SWT.DEFAULT));
         jobchainLabel.setText("Job chain");
 
-        cJobchain = new Combo(gOrder, SWT.NONE);
+        cJobchain = new Combo(composite, SWT.NONE);
+        cJobchain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 if (event)
@@ -180,9 +201,20 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
 
-        final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gridData_1.widthHint = 233;
-        cJobchain.setLayoutData(gridData_1);
+        if(!dom.isLifeElement()){
+        	Button butBrowse = new Button(composite, SWT.NONE);
+        	butBrowse.addSelectionListener(new SelectionAdapter() {
+        		public void widgetSelected(final SelectionEvent e) {        		
+        			String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB_CHAIN);
+        			if(jobname != null && jobname.length() > 0) {
+        				cJobchain.setText(jobname);
+        			}
+        		}
+        	});
+        	butBrowse.setText("Browse");
+        }
+       
+       
 
         final Label titleLabel = new Label(gOrder, SWT.NONE);
         final GridData gridData_6 = new GridData(47, SWT.DEFAULT);
