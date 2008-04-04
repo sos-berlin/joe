@@ -106,8 +106,8 @@ public class ReleasesListener {
             _release.addContent(author);
         }
 
-        if (_newRelease) {        	
-        	//_parent.addContent(0, _release);        	
+        if (_newRelease && !_parent.getContent().contains(_release)) {        	
+        	_parent.addContent(_release);        	
         }
 
         _newRelease = false;

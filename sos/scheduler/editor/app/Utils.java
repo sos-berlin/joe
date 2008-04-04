@@ -798,7 +798,7 @@ public class Utils {
      * @return boolean true alles im grünen Bereich. 
      */
     public static boolean checkElement(String name, SchedulerDom _dom, int type, String which ) {
-    	boolean onlyWarning = false;//-> true: Gibt nur eine Warnung aus. Sonst Warnung mit Yes- und No- Button 
+    	boolean onlyWarning = false;//-> true: Gibt nur eine Warnung aus. Sonst Warnung mit Yes- und No- Button um ggf. die Änderungen zurückzunehmen
     	try {
 
     		if(type == Editor.JOB_CHAIN) {
@@ -889,6 +889,13 @@ public class Utils {
         		List listOfElement_3 = x3.selectNodes(_dom.getDoc());
         		if(!listOfElement_3.isEmpty())
         			throw new Exception ("Die Processklasse " + name + " wird in einer Job verwendet. Möchten Sie trotzdem fortfahren?");
+    			
+    		} else if(type == Editor.SCHEDULES || type == Editor.SCHEDULE) {
+    			
+    			XPath x3 = XPath.newInstance("//run_time[@schedule='"+ name + "']");				 
+        		List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+        		if(!listOfElement_3.isEmpty())
+        			throw new Exception ("Die Schedule " + name + " wird in einem Runtime verwendet. Möchten Sie trotzdem fortfahren?");
     			
     		}
     		

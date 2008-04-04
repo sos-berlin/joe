@@ -3,6 +3,8 @@ package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -70,6 +72,12 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 			scheduleGroup.setLayout(gridLayout);
 
 			text = new Text(scheduleGroup, SWT.BORDER);
+			text.addVerifyListener(new VerifyListener() {
+				public void verifyText(final VerifyEvent e) {
+					if(!init)//während der initialiserung sollen keine überprüfungen stattfinden
+						e.doit = Utils.checkElement(text.getText(), dom, sos.scheduler.editor.app.Editor.SCHEDULE, null);
+				}
+			});
 			text.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
                     if(!init && !existScheduleName())

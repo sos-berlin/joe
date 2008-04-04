@@ -62,11 +62,7 @@ public class SchedulesListener {
 					TableItem item = new TableItem(table, SWT.NONE);
 					item.setData(e);
 					String name = Utils.getAttributeValue("name", e);
-					/*if(!Utils.isElementEnabled("job", _dom, e)) {
-						item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));						
-					} else {
-						item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
-					}*/					
+									
 					item.setText(0, name);
 					
 				}
@@ -78,9 +74,7 @@ public class SchedulesListener {
 	public void newScheduler(Table table) {
 		Element schedule = new Element("schedule");
 		String name = "schedule" + (table.getItemCount() + 1);
-		schedule.setAttribute("name", name);
-		//Element runtime = new Element("run_time");
-		schedule.setAttribute("let_run", "no");
+		schedule.setAttribute("name", name);				
 		if (_list == null)
 			initSchedules();
 		_list.add(schedule);
@@ -95,17 +89,15 @@ public class SchedulesListener {
 	
 	
 	
-	public boolean deleteJob(Table table) {
+	public boolean deleteSchedule(Table table) {
 		int index = table.getSelectionIndex();
 		if (index >= 0) {
 			TableItem item = table.getItem(index);
-			Element e = (Element) item.getData();
-			_dom.setJobDisabled(Utils.getAttributeValue("name", e), false);
+			Element e = (Element) item.getData();			
 			e.detach();
 			_dom.setChanged(true);
 			_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", e) ,SchedulerDom.DELETE);
-			table.remove(index);
-			//_main.updateJobs();
+			table.remove(index);			
 			_main.updateSchedules();
 			if(_list==null)
 				initSchedules();

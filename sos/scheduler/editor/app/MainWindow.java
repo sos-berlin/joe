@@ -57,11 +57,11 @@ public class MainWindow  {
 	 */
 	public void createSShell() {
 		sShell = new Shell();
+		sShell.setLayout(new FillLayout());
 		sShell.setText("Job Scheduler Editor");
 		sShell.setData(sShell.getText());
 		
 		sShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
-		sShell.setLayout(new FillLayout());
 		createContainer();
 		
 		listener = new MainListener(this, container);
@@ -76,6 +76,118 @@ public class MainWindow  {
 		Options.loadWindow(sShell, "editor");
 		
 		menuBar = new Menu(sShell, SWT.BAR);
+		//ende neu
+		//submenu = new Menu(mNew);
+		//MenuItem submenuItem1 = new MenuItem(submenu, SWT.CASCADE);
+		//submenuItem1.setText("New ffff");
+		
+		/*MenuItem pNew = new MenuItem(mFile, SWT.PUSH);
+		pNew.setText("New Configuration\tCtrl+N");
+		pNew.setAccelerator(SWT.CTRL | 'N');
+		pNew.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (container.newScheduler() != null)
+					setSaveStatus();
+			}
+			
+			
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		
+		
+		MenuItem pOpenFile = new MenuItem(mFile, SWT.PUSH);
+		pOpenFile.setText("Open Configuration...\tCtrl+O");
+		pOpenFile.setAccelerator(SWT.CTRL | 'O');
+		
+		MenuItem separator2 = new MenuItem(mFile, SWT.SEPARATOR);
+		
+		
+		MenuItem push = new MenuItem(mFile, SWT.PUSH);
+		push.setText("New Documentation\tCtrl+M"); // Generated
+		push.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (container.newDocumentation() != null)
+					setSaveStatus();
+			}
+			
+			
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		MenuItem push1 = new MenuItem(mFile, SWT.PUSH);
+		push1.setText("Open Documentation...\tCtrl+P"); // Generated
+		push1.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (container.openDocumentation() != null)
+					setSaveStatus();
+			}
+			
+			
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		MenuItem separator = new MenuItem(mFile, SWT.SEPARATOR);
+		
+		
+		MenuItem pNewDetails = new MenuItem(mFile, SWT.PUSH);
+		pNewDetails.setText("New Job Chain Details\tCtrl+F");
+		pNewDetails.setAccelerator(SWT.CTRL | 'F');
+		pNewDetails.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				
+				if (container.newDetails() != null)
+					setSaveStatus();
+			}
+			
+			
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		
+		MenuItem pOpenDetails = new MenuItem(mFile, SWT.PUSH);
+		pOpenDetails.setText("Open Job Chain Details\tCtrl+E");
+		pOpenDetails.setEnabled(true);
+		pOpenDetails.setAccelerator(SWT.CTRL | 'E');
+		pOpenDetails.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (container.openDetails() != null)
+					setSaveStatus();
+			}
+			
+			
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		
+		MenuItem separatorDetails = new MenuItem(mFile, SWT.SEPARATOR);
+		
+		*/
+		
+		/*
+		
+		pOpenFile.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (container.openScheduler() != null)
+					setSaveStatus();
+			}
+			
+			
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		*/
+		
+		/*MenuItem submenuItemOpen = new MenuItem(menuBar, SWT.CASCADE);
+		submenuItemOpen.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				//parsiere die XML Datei und erkenne, ob du eine Konfiguration oder Dokumentation bis
+				if (container.openQuick() != null)
+					setSaveStatus();
+			}
+		});
+		submenuItemOpen.setText("&Quick Open");
+		*/
 		MenuItem submenuItem2 = new MenuItem(menuBar, SWT.CASCADE);
 		submenuItem2.setText("&File");
 		mFile = new Menu(submenuItem2);
@@ -223,93 +335,6 @@ public class MainWindow  {
 		
 		//MenuItem separator = new MenuItem(mFile, SWT.SEPARATOR);
 		new MenuItem(mFile, SWT.SEPARATOR);
-		//ende neu
-		//submenu = new Menu(mNew);
-		//MenuItem submenuItem1 = new MenuItem(submenu, SWT.CASCADE);
-		//submenuItem1.setText("New ffff");
-		
-		/*MenuItem pNew = new MenuItem(mFile, SWT.PUSH);
-		pNew.setText("New Configuration\tCtrl+N");
-		pNew.setAccelerator(SWT.CTRL | 'N');
-		pNew.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler() != null)
-					setSaveStatus();
-			}
-			
-			
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		
-		
-		MenuItem pOpenFile = new MenuItem(mFile, SWT.PUSH);
-		pOpenFile.setText("Open Configuration...\tCtrl+O");
-		pOpenFile.setAccelerator(SWT.CTRL | 'O');
-		
-		MenuItem separator2 = new MenuItem(mFile, SWT.SEPARATOR);
-		
-		
-		MenuItem push = new MenuItem(mFile, SWT.PUSH);
-		push.setText("New Documentation\tCtrl+M"); // Generated
-		push.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newDocumentation() != null)
-					setSaveStatus();
-			}
-			
-			
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem push1 = new MenuItem(mFile, SWT.PUSH);
-		push1.setText("Open Documentation...\tCtrl+P"); // Generated
-		push1.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.openDocumentation() != null)
-					setSaveStatus();
-			}
-			
-			
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem separator = new MenuItem(mFile, SWT.SEPARATOR);
-		
-		
-		MenuItem pNewDetails = new MenuItem(mFile, SWT.PUSH);
-		pNewDetails.setText("New Job Chain Details\tCtrl+F");
-		pNewDetails.setAccelerator(SWT.CTRL | 'F');
-		pNewDetails.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				
-				if (container.newDetails() != null)
-					setSaveStatus();
-			}
-			
-			
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		
-		MenuItem pOpenDetails = new MenuItem(mFile, SWT.PUSH);
-		pOpenDetails.setText("Open Job Chain Details\tCtrl+E");
-		pOpenDetails.setEnabled(true);
-		pOpenDetails.setAccelerator(SWT.CTRL | 'E');
-		pOpenDetails.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.openDetails() != null)
-					setSaveStatus();
-			}
-			
-			
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		
-		MenuItem separatorDetails = new MenuItem(mFile, SWT.SEPARATOR);
-		
-		*/
 		
 		MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
 		openDir.setText("Open Hot Folder               \tCtrl+D");		
@@ -384,20 +409,6 @@ public class MainWindow  {
 		
 		//MenuItem separatorDetails1 = new MenuItem(mFile, SWT.SEPARATOR);
 		new MenuItem(mFile, SWT.SEPARATOR);
-		
-		/*
-		
-		pOpenFile.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.openScheduler() != null)
-					setSaveStatus();
-			}
-			
-			
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		*/
 		MenuItem pSaveFile = new MenuItem(mFile, SWT.PUSH);
 		pSaveFile.setText("Save                                    \tCtrl+S");
 		pSaveFile.setAccelerator(SWT.CTRL | 'S');
@@ -501,16 +512,15 @@ public class MainWindow  {
 		pExit.setText("Exit\tCtrl+E");
 		pExit.setAccelerator(SWT.CTRL | 'E');
 		
-		/*MenuItem submenuItemOpen = new MenuItem(menuBar, SWT.CASCADE);
-		submenuItemOpen.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				//parsiere die XML Datei und erkenne, ob du eine Konfiguration oder Dokumentation bis
-				if (container.openQuick() != null)
-					setSaveStatus();
+		pExit.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				sShell.close();
+			}
+			
+			
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-		submenuItemOpen.setText("&Quick Open");
-		*/
 		
 		MenuItem submenuItem = new MenuItem(menuBar, SWT.CASCADE);
 		submenuItem.setText("Options");
@@ -577,16 +587,6 @@ public class MainWindow  {
 			}
 		});
 		submenuItemInfo.setText("Reset Dialog");
-		
-		pExit.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				sShell.close();
-			}
-			
-			
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
 		sShell.setMenuBar(menuBar);
 		sShell.addShellListener(new org.eclipse.swt.events.ShellAdapter() {
 			public void shellClosed(org.eclipse.swt.events.ShellEvent e) {
@@ -602,6 +602,83 @@ public class MainWindow  {
 				setSaveStatus();
 			}
 		});
+
+		//test
+		/*CoolBar coolBar =
+		    new CoolBar(sShell, SWT.BORDER);
+		  // create a tool bar which it
+		  // the control of the coolItem
+		  for (int k = 1; k <3; k++) 
+		  {  
+		    ToolBar toolBar =
+		      new ToolBar(coolBar, SWT.RIGHT | SWT.SHADOW_OUT | SWT.FLAT | SWT.WRAP);
+		    for (int i = 1; i < 5; i++)
+		    {
+		      ToolItem item =
+		        new ToolItem(toolBar, SWT.NULL);
+		      item.setText("B"+k+"."+i);
+		    }
+		    // Add a coolItem to a coolBar
+		    CoolItem coolItem =
+		      new CoolItem(coolBar, SWT.NULL);
+		    // set the control of the coolItem
+		    coolItem.setControl(toolBar);
+		    // You have to specify the size
+		    Point size =
+		      toolBar.computeSize( SWT.DEFAULT,
+		                           SWT.DEFAULT);
+		    Point coolSize =
+		      coolItem.computeSize (size.x, size.y);
+		    coolItem.setSize(coolSize);
+		  }
+*/
+		/*Shell s = new Shell();
+	   CoolBar coolBar = new CoolBar(s, SWT.CASCADE);
+	    
+	    //for (int idxCoolItem = 0; idxCoolItem < 3; ++idxCoolItem) {
+	      CoolItem item = new CoolItem(coolBar, SWT.NONE);
+	      ToolBar tb = new ToolBar(coolBar, SWT.FLAT);
+	      //for (int idxItem = 0; idxItem < 3; ++idxItem) {
+	        ToolItem ti = new ToolItem(tb, SWT.NONE);
+	        ti.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
+	        
+	        ToolItem ti2 = new ToolItem(tb, SWT.NONE);
+	        ti2.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_open.gif"));
+	        
+	      //}
+	      Point p = tb.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+	      tb.setSize(p);
+	      Point p2 = item.computeSize(p.x, p.y);
+	      item.setControl(tb);
+	      item.setSize(p2);
+	   *(
+		/*Shell s = new Shell();
+		ToolBar toolbar = new ToolBar(s, SWT.NONE);
+	    toolbar.setBounds(0, 0, 200, 70);
+	    ToolItem toolItem1 = new ToolItem(toolbar, SWT.PUSH);
+	    toolItem1.setText("Save");
+	    */
+	     /* s.setBounds(100, 100, 200, 100);
+	    s.layout();
+		s.pack();
+		s.open();
+		*/
+		 /*ToolBar toolbar = new ToolBar(sShell, SWT.NONE);
+		    toolbar.setBounds(0, 0, 200, 70);
+		    ToolItem toolItem1 = new ToolItem(toolbar, SWT.PUSH);
+		    toolItem1.setText("Save");
+		    ToolItem toolItem2 = new ToolItem(toolbar, SWT.PUSH);
+		    toolItem2.setText("Save As");
+		    ToolItem toolItem3 = new ToolItem(toolbar, SWT.PUSH);
+		    toolItem3.setText("Print");
+		    ToolItem toolItem4 = new ToolItem(toolbar, SWT.PUSH);
+		    toolItem4.setText("Run");
+		    ToolItem toolItem5 = new ToolItem(toolbar, SWT.PUSH);
+		    toolItem5.setText("Help");
+		    */
+	    //}
+
+		
 	}
 	
 	

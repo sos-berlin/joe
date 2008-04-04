@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.SchedulesListener;
@@ -31,12 +32,14 @@ public class SchedulesForm extends Composite implements IUpdateLanguage {
 	 
 	private Label               label                  = null;
 	
+	private SchedulerDom        dom                    = null;
 	
-	public SchedulesForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) {
+	
+	public SchedulesForm(Composite parent, int style, SchedulerDom dom_, ISchedulerUpdate update) {
 		super(parent, style);
 		try {
-			
-			listener = new SchedulesListener(dom, update);
+			listener = new SchedulesListener(dom_, update);
+			dom = dom_;
 			initialize();
 			setToolTipText();
 			listener.fillTable(table);
@@ -86,7 +89,8 @@ public class SchedulesForm extends Composite implements IUpdateLanguage {
 			butRemove.setEnabled(false);
 			butRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-					butRemove.setEnabled(listener.deleteJob(table));
+					if(Utils.checkElement(table.getSelection()[0].getText(0), dom, sos.scheduler.editor.app.Editor.SCHEDULES, null))//wird der Job woandes verwendet?
+						butRemove.setEnabled(listener.deleteSchedule(table));
 				}
 			});
 			butRemove.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));

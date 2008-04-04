@@ -50,7 +50,7 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
 
     private Button           bApply       = null;
 
-    private Group            group1       = null;
+    //private Group            group1       = null;
 
     private Label            label4       = null;
 
@@ -70,7 +70,6 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
 
     private Label            label7       = null;
 
-    private Composite        composite    = null;
 
     private Button           bNotes       = null;
 
@@ -107,20 +106,10 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
      * This method initializes group
      */
     private void createGroup() {
-        GridData gridData51 = new GridData();
-        gridData51.horizontalSpan = 5; // Generated
-        gridData51.verticalAlignment = GridData.CENTER; // Generated
-        gridData51.horizontalAlignment = GridData.FILL; // Generated
-        GridData gridData4 = new GridData();
-        gridData4.horizontalAlignment = GridData.FILL; // Generated
-        gridData4.verticalSpan = 4; // Generated
-        gridData4.verticalAlignment = GridData.BEGINNING; // Generated
-        GridData gridData2 = new GridData();
-        gridData2.horizontalAlignment = GridData.FILL; // Generated
-        gridData2.verticalAlignment = GridData.BEGINNING; // Generated
-        GridData gridData1 = new GridData();
-        gridData1.horizontalAlignment = GridData.FILL; // Generated
-        gridData1.verticalAlignment = GridData.CENTER; // Generated
+        GridData gridData51 = new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
+        GridData gridData4 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
+        GridData gridData2 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
+        GridData gridData1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         GridData gridData = new GridData();
         gridData.verticalSpan = 2; // Generated
         gridData.verticalAlignment = GridData.FILL; // Generated
@@ -169,18 +158,26 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
             }
         });
         label3 = new Label(group, SWT.NONE);
+        label3.setLayoutData(new GridData());
         label3.setText("Modified:"); // Generated
         createModified();
-        new Label(group, SWT.NONE);
-        new Label(group, SWT.NONE);
+        bNotes = new Button(group, SWT.NONE);
+        bNotes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        bNotes.setText("Note..."); // Generated
+        bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                String tip = Messages.getTooltip("doc.note.text.releases");
+                DocumentationForm.openNoteDialog(dom, listener.getRelease(), "note", tip, true, !listener
+                        .isNewRelease(),"Release Note");
+            }
+        });
         //Label filler = new Label(group, SWT.NONE);
-        new Label(group, SWT.NONE);
         createComposite();
         createGroup1();
         label7 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label7.setText("Label"); // Generated
         label7.setLayoutData(gridData51); // Generated
-        tReleases = new Table(group, SWT.BORDER);
+        tReleases = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
         tReleases.setHeaderVisible(true); // Generated
         tReleases.setLayoutData(gridData); // Generated
         tReleases.setLinesVisible(true); // Generated
@@ -241,45 +238,39 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
      * This method initializes group1
      */
     private void createGroup1() {
-        GridData gridData5 = new GridData();
-        gridData5.horizontalSpan = 4; // Generated
-        gridData5.verticalAlignment = GridData.FILL; // Generated
-        gridData5.grabExcessHorizontalSpace = true; // Generated
-        gridData5.grabExcessVerticalSpace = true; // Generated
-        gridData5.horizontalAlignment = GridData.FILL; // Generated
-        GridData gridData12 = new GridData();
-        gridData12.horizontalAlignment = GridData.FILL; // Generated
-        gridData12.verticalAlignment = GridData.BEGINNING; // Generated
-        GridData gridData11 = new GridData();
-        gridData11.horizontalAlignment = GridData.FILL; // Generated
-        gridData11.horizontalSpan = 4; // Generated
-        gridData11.grabExcessHorizontalSpace = true; // Generated
-        gridData11.grabExcessVerticalSpace = true; // Generated
-        gridData11.verticalAlignment = GridData.FILL; // Generated
-        GridData gridData10 = new GridData();
-        gridData10.horizontalAlignment = GridData.FILL; // Generated
-        gridData10.horizontalSpan = 5; // Generated
-        gridData10.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData9 = new GridData();
-        gridData9.horizontalAlignment = GridData.FILL; // Generated
-        gridData9.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData8 = new GridData();
-        gridData8.horizontalAlignment = GridData.FILL; // Generated
-        gridData8.grabExcessHorizontalSpace = true; // Generated
-        gridData8.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData7 = new GridData();
-        gridData7.horizontalAlignment = GridData.FILL; // Generated
-        gridData7.grabExcessHorizontalSpace = true; // Generated
-        gridData7.verticalAlignment = GridData.CENTER; // Generated
+        GridData gridData5 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2);
+        gridData5.widthHint = 486;
+        GridData gridData12 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
         GridLayout gridLayout1 = new GridLayout();
         gridLayout1.numColumns = 5; // Generated
-        group1 = new Group(group, SWT.NONE);
-        group1.setText("Authors"); // Generated
-        group1.setLayoutData(gridData5); // Generated
-        group1.setLayout(gridLayout1); // Generated
-        label4 = new Label(group1, SWT.NONE);
+        GridData gridData10 = new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
+        new Label(group, SWT.NONE);
+        new Label(group, SWT.NONE);
+        new Label(group, SWT.NONE);
+        new Label(group, SWT.NONE);
+        bChanges = new Button(group, SWT.NONE);
+        bChanges.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+        bChanges.setText("Changes..."); // Generated
+        bChanges.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                String tip = Messages.getTooltip("doc.note.text.changes");
+                DocumentationForm.openNoteDialog(dom, listener.getRelease(), "changes", tip, true, !listener
+                        .isNewRelease(),"Changes");
+            }
+        });
+        label6 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
+        label6.setText("Label"); // Generated
+        label6.setLayoutData(gridData10); // Generated
+        //group1 = new Group(group, SWT.NONE);
+        //group1.setText("Authors"); // Generated
+        //group1.setLayoutData(gridData5); // Generated
+        //group1.setLayout(gridLayout1); // Generated
+        label4 = new Label(group, SWT.NONE);
+        label4.setLayoutData(new GridData());
         label4.setText("Name:"); // Generated
-        tName = new Text(group1, SWT.BORDER);
+        GridData gridData7 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        gridData7.widthHint = 121;
+        tName = new Text(group, SWT.BORDER);
         tName.setLayoutData(gridData7); // Generated
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -290,9 +281,12 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
                 Utils.setBackground(tName, bApplyAuthor.isEnabled());
             }
         });
-        label5 = new Label(group1, SWT.NONE);
+        label5 = new Label(group, SWT.NONE);
+        label5.setLayoutData(new GridData());
         label5.setText("eMail:"); // Generated
-        tEmail = new Text(group1, SWT.BORDER);
+        GridData gridData8 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        gridData8.widthHint = 183;
+        tEmail = new Text(group, SWT.BORDER);
         tEmail.setLayoutData(gridData8); // Generated
         tEmail.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -303,7 +297,8 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
                 Utils.setBackground(tEmail, bApplyAuthor.isEnabled());
             }
         });
-        bApplyAuthor = new Button(group1, SWT.NONE);
+        GridData gridData9 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        bApplyAuthor = new Button(group, SWT.NONE);
         bApplyAuthor.setText("Apply"); // Generated
         bApplyAuthor.setLayoutData(gridData9); // Generated
         bApplyAuthor.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -317,10 +312,8 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
                 setApplyStatus();
             }
         });
-        label6 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label6.setText("Label"); // Generated
-        label6.setLayoutData(gridData10); // Generated
-        tAuthors = new Table(group1, SWT.BORDER);
+        GridData gridData11 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
+        tAuthors = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
         tAuthors.setHeaderVisible(true); // Generated
         tAuthors.setLinesVisible(true); // Generated
         tAuthors.setLayoutData(gridData11); // Generated
@@ -336,7 +329,13 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
                 bApplyAuthor.setEnabled(false);
             }
         });
-        bRemoveAutho = new Button(group1, SWT.NONE);
+        TableColumn tableColumn2 = new TableColumn(tAuthors, SWT.NONE);
+        tableColumn2.setText("Name"); // Generated
+        tableColumn2.setWidth(250); // Generated
+        TableColumn tableColumn11 = new TableColumn(tAuthors, SWT.NONE);
+        tableColumn11.setText("eMail"); // Generated
+        tableColumn11.setWidth(60); // Generated
+        bRemoveAutho = new Button(group, SWT.NONE);
         bRemoveAutho.setText("Remove"); // Generated
         bRemoveAutho.setLayoutData(gridData12); // Generated
         bRemoveAutho.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -352,12 +351,6 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
                 }
             }
         });
-        TableColumn tableColumn2 = new TableColumn(tAuthors, SWT.NONE);
-        tableColumn2.setText("Name"); // Generated
-        tableColumn2.setWidth(250); // Generated
-        TableColumn tableColumn11 = new TableColumn(tAuthors, SWT.NONE);
-        tableColumn11.setText("eMail"); // Generated
-        tableColumn11.setWidth(60); // Generated
     }
 
 
@@ -365,32 +358,6 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
      * This method initializes composite
      */
     private void createComposite() {
-        FillLayout fillLayout = new FillLayout();
-        fillLayout.spacing = 4; // Generated
-        GridData gridData14 = new GridData();
-        gridData14.horizontalAlignment = GridData.FILL; // Generated
-        gridData14.verticalAlignment = GridData.FILL; // Generated
-        composite = new Composite(group, SWT.NONE);
-        composite.setLayoutData(gridData14); // Generated
-        composite.setLayout(fillLayout); // Generated
-        bNotes = new Button(composite, SWT.NONE);
-        bNotes.setText("Note..."); // Generated
-        bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                String tip = Messages.getTooltip("doc.note.text.releases");
-                DocumentationForm.openNoteDialog(dom, listener.getRelease(), "note", tip, true, !listener
-                        .isNewRelease(),"Release Note");
-            }
-        });
-        bChanges = new Button(composite, SWT.NONE);
-        bChanges.setText("Changes..."); // Generated
-        bChanges.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                String tip = Messages.getTooltip("doc.note.text.changes");
-                DocumentationForm.openNoteDialog(dom, listener.getRelease(), "changes", tip, true, !listener
-                        .isNewRelease(),"Changes");
-            }
-        });
     }
 
 
@@ -416,9 +383,7 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
      * This method initializes modified
      */
     private void createModified() {
-        GridData gridData13 = new GridData();
-        gridData13.horizontalAlignment = GridData.FILL; // Generated
-        gridData13.verticalAlignment = GridData.CENTER; // Generated
+        GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         modified = new DatePicker(group, SWT.NONE);
         modified.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -526,6 +491,18 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
         listener.fillReleases(tReleases);
         bRemove.setEnabled(tReleases.getSelectionCount() > 0);
         Utils.setBackground(tReleases, true);
+        
+        tID.setText("");
+        tTitle.setText("");
+        tName.setText("");
+        tEmail.setText("");
+
+        tID.setEnabled(false);
+        tTitle.setEnabled(false);
+        tName.setEnabled(false);
+        tEmail.setEnabled(false);
+
+        
     }
 
 } // @jve:decl-index=0:visual-constraint="10,10"

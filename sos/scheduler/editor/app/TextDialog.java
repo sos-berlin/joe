@@ -189,15 +189,7 @@ public class TextDialog extends Dialog {
         closeButton.setLayoutData(gridData1);
         closeButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-            	close();
-            	/*if(butApply.getEnabled()) {
-					int count = MainWindow.message(_shell, sos.scheduler.editor.app.Messages.getString("detailform.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-					if(count != SWT.OK) {
-						return;
-					}
-				}				
-                _shell.close();
-                */
+            	close();            	
             }
         });
 

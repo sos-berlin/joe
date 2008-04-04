@@ -13,13 +13,13 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.JDOMException;
-
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
@@ -61,6 +61,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
 
     private Button       button   = null;
     
+    private Button       butOpenFileDialog = null; 
 
     /**
      * @param parent
@@ -145,11 +146,18 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
 
-        button = new Button(group, SWT.NONE);
-        button.setEnabled(false);
-        final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
-        gridData.widthHint = 23;
+        final Composite composite = new Composite(group, SWT.NONE);
+        composite.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        final GridLayout gridLayout_1 = new GridLayout();
+        gridLayout_1.marginWidth = 0;
+        gridLayout_1.marginHeight = 0;
+        gridLayout_1.horizontalSpacing = 0;
+        composite.setLayout(gridLayout_1);
+
+        button = new Button(composite, SWT.NONE);
+        final GridData gridData = new GridData(GridData.BEGINNING, GridData.CENTER, true, true);
         button.setLayoutData(gridData);
+        button.setEnabled(false);
         button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
@@ -158,6 +166,18 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
 			}
 		});
         button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
+
+        butOpenFileDialog = new Button(composite, SWT.NONE);
+        butOpenFileDialog.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, true, true));
+        butOpenFileDialog.setEnabled(false);
+        butOpenFileDialog.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		openFileDialog();
+        	}
+        	
+        });
+        butOpenFileDialog.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_open.gif"));
+        
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.SHADOW_OUT);
         label.setText("separator");
         label.setLayoutData(gridData11);
@@ -277,6 +297,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     private void setInput(boolean enabled) {
         tFile.setEnabled(enabled);
         tComment.setEnabled(enabled);
+        butOpenFileDialog.setEnabled(enabled);
         if (enabled) {
             tFile.setText(listener.getFile());
             tComment.setText(listener.getComment());
@@ -303,19 +324,55 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
 
     }
     
+    //öffnet das File Dialog um ein Basefile auszuwählen    
+    private void openFileDialog() {
+    	sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
+    	String currPath = "";
+    	String sep = System.getProperty("file.separator");
+    	if(con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
+    		currPath = new java.io.File(con.getCurrentEditor().getFilename()).getParent();    			
+    	} else {
+    		currPath = sos.scheduler.editor.app.Options.getSchedulerHome() + sep + "config";
+    	}
+    	
+    	currPath = currPath.replace("/".toCharArray()[0], sep.toCharArray()[0]);
+    	currPath = currPath.replace("\\".toCharArray()[0], sep.toCharArray()[0]);
+
+
+    	FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
+    	fdialog.setFilterPath(currPath);
+    	fdialog.setFilterExtensions(new String[]{"*.xml"});
+    	fdialog.setText("Open Base File");
+
+    	String fname = fdialog.open();
+    	if (fname == null)
+    		return;
+
+    	fname = fname.substring(currPath.length()+1);
+    	
+    	tFile.setText(fname);
+    	
+    	//path = fdialog.getFilterPath();
+
+    }	
+
+    
+    //öffnet den BaseFile im seperaten Tabitem im Editor
     private void openBaseElement() {
     	String currPath = "";
-    	
+    	String sep = System.getProperty("file.separator");
     	if(tFile.getText() != null && tFile.getText().length() > 0) {
     		
     		sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
     		
     		if(con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
-    			currPath = new java.io.File(con.getCurrentEditor().getFilename()).getParent();
-    			if(!(currPath.endsWith("/") || currPath.endsWith("\\")))
-    				currPath = currPath.concat(System.getProperty("file.separator"));
-    				
+    			currPath = new java.io.File(con.getCurrentEditor().getFilename()).getParent();    			
+    		} else {
+    			currPath = sos.scheduler.editor.app.Options.getSchedulerHome() + sep + "config";
     		}
+    		if(!(currPath.endsWith("/") || currPath.endsWith("\\")))
+				currPath = currPath.concat(sep);
+			
     		currPath = currPath.concat(tFile.getText());
     		con.openScheduler(currPath);
     		
