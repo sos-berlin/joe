@@ -501,13 +501,28 @@ public class DaysListener {
             while (it.hasNext()) {
                 Element e = (Element) it.next(); 
               
-                if (e.getAttributeValue("day") != null && (e.getAttributeValue("day").equals("" + getDayNumber(day))
-                		|| e.getAttributeValue("day").equals(day) || e.getAttributeValue("day").equals(getDayGroupNumbers(day)))) { 
+                //if(e.getName().equals("day")) {
+                if (e.getName().equals("day") && 
+                		(e.getAttributeValue("day") != null && (e.getAttributeValue("day").equals("" + getDayNumber(day))
+                		|| e.getAttributeValue("day").equals(day) || e.getAttributeValue("day").equals(getDayGroupNumbers(day))))) { 
                     e.detach();
                     
                     
+                    
                     // remove empty tag
-                    if (list.size() == 0)
+                    boolean isEmpty = true;
+                    List _list = _runtime.getChildren(_elementName[_type]);
+                    for(int i = 0; i < _list.size(); i++) {
+                    	Element s = (Element)_list.get(i);
+                    	if(s.getChildren().size() > 0) {
+                    		//_elementName[_type] wird noch woanders verwendet
+                    		isEmpty = false;
+                    		break;
+                    	}
+                    }
+                    
+                    if (list.size() == 0 && isEmpty) 
+                    		//((Element)_runtime.getChildren(_elementName[_type]).get(0)).getChildren().size() == 0)                    
                         _runtime.removeChild(_elementName[_type]);
 
                     _dom.setChanged(true);

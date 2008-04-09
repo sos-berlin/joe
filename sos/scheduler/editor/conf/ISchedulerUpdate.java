@@ -1,5 +1,7 @@
 package sos.scheduler.editor.conf;
 
+import org.eclipse.swt.widgets.TreeItem;
+
 import sos.scheduler.editor.app.IDataChanged;
 
 public interface ISchedulerUpdate extends IDataChanged {
@@ -38,6 +40,10 @@ public interface ISchedulerUpdate extends IDataChanged {
     public void updateScripts();
     
     public void updateTreeItem(String s);
+    
+    public void updateFont();
+    
+    public void updateFont(TreeItem item);
     
     
 }

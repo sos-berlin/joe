@@ -10,23 +10,33 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class PeriodsListener {
 	
-	private SchedulerDom _dom        = null;
 	
-	private Element      _parent     = null;
+	private SchedulerDom          _dom        = null;
 	
-	private List         _list       = null;
+	private Element               _parent     = null;
 	
-	private int          _period;
+	private List                  _list       = null;
 	
-	private List         _listOfAt   = null;
+	private int                   _period     = -1;
+	
+	private List                  _listOfAt   = null;
+		
+	private ISchedulerUpdate      _main        = null;
+	
 	
 	public PeriodsListener(SchedulerDom dom, Element parent) {
-		_dom = dom;
+		this(dom, parent, null);		
+	}
+	
+	public PeriodsListener(SchedulerDom dom, Element parent, ISchedulerUpdate main) {
+		_dom    = dom;
 		_parent = parent; 
+		_main   = main;
 		
 		if(_parent.getName().equals("at")) {
 			_list = getDateChildren();
@@ -168,7 +178,9 @@ public class PeriodsListener {
 		_dom.setChanged(true);
 		
 		_dom.setChangedForDirectory(_parent, SchedulerDom.MODIFY);
-		
+		if(_main != null) {
+			_main.updateFont();
+		}
 	}
 	
 	public void removePeriod(int index) {
@@ -209,7 +221,9 @@ public class PeriodsListener {
 		
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory(_parent, SchedulerDom.MODIFY);
-		
+		if(_main != null) {
+			_main.updateFont();
+		}
 	
 	}
 	
@@ -253,6 +267,9 @@ public class PeriodsListener {
 		_dom.setChanged(true);
 		//Element job = getJobElement(_parent);
 		_dom.setChangedForDirectory(_parent, SchedulerDom.MODIFY);
+		if(_main != null) {
+			_main.updateFont();
+		}
 	}
 	
 	public List get_list() {

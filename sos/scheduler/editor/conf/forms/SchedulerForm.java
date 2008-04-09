@@ -4,10 +4,13 @@ import java.util.Collection;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
@@ -15,6 +18,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
+
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.IEditor;
 import sos.scheduler.editor.app.IOUtils;
@@ -502,6 +507,75 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 			TreeItem item = tree.getSelection()[0];		
 			item.setText(s);		
 		}
+	}
+	
+	public void updateFont() {
+		if(tree.getSelectionCount() > 0) {			 
+			TreeItem item = tree.getSelection()[0];
+			updateFont(item);
+		}
+	}
+	
+	public void updateFont(TreeItem item) {
+
+		FontData fontDatas[] = item.getFont().getFontData();
+		FontData data = fontDatas[0];
+		boolean isBold = false;
+
+		TreeData data_ = (TreeData) item.getData();
+		
+		if(data_ == null || data_.getElement() == null)
+			return;			
+			
+		int type = data_.getType();
+		Element elem = data_.getElement();
+		
+		if (type == Editor.EVERYDAY) {			
+			if(!elem.getChildren("period").isEmpty() || !elem.getChildren("at").isEmpty())
+				isBold = true;
+			
+		} else if(type == Editor.DAYS) {			
+			if(!elem.getChildren("date").isEmpty())
+				isBold = true;
+			
+		} else if(type == Editor.WEEKDAYS) {			
+			if(!elem.getChildren("weekdays").isEmpty())
+				isBold = true;					
+
+		} else if(type == Editor.MONTHDAYS) {			
+			if(!elem.getChildren("monthdays").isEmpty() && !elem.getChild("monthdays").getChildren("day").isEmpty())
+				isBold = true;					
+
+		} else if(type == Editor.ULTIMOS) {
+			if(!elem.getChildren("ultimos").isEmpty())
+				isBold = true;					
+
+		} else if(type == Editor.SPECIFIC_WEEKDAYS) {
+			if(!elem.getChildren("monthdays").isEmpty() && !elem.getChild("monthdays").getChildren("weekday").isEmpty())
+				isBold = true;
+		} else if(type == Editor.SPECIFIC_MONTHS) {
+			if(!elem.getChildren("month").isEmpty())
+				isBold = true;
+		} else if(type == Editor.RUNTIME) {
+			elem = elem.getChild("run_time");
+			if(elem != null) {
+				int hasAttribute = Utils.getAttributeValue("begin", elem).length() + Utils.getAttributeValue("end", elem).length() +
+				(Utils.getAttributeValue("let_run", elem).equals("yes") ? 1 : 0) +
+				(Utils.getAttributeValue("once", elem).equals("yes") ? 1 : 0);
+				if(hasAttribute > 0)
+					isBold = true;
+			}
+		}
+
+		Font font = null;
+		if(isBold){
+			font = new Font(Display.getCurrent(), data.getName(), data.getHeight(), SWT.BOLD);						
+		} else {			
+			font = new Font(Display.getCurrent(), data.getName(), data.getHeight(), SWT.NONE);
+
+		}
+		item.setFont(font);
+
 	}
 	
 }

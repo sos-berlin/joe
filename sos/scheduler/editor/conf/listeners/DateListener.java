@@ -20,25 +20,27 @@ import org.eclipse.swt.widgets.TableItem;
 
 public class DateListener implements Comparator {
 
+	
     public static final int HOLIDAY      = 0;
 
     public static final int DATE         = 1;
 
-    private SchedulerDom    _dom;
+    private SchedulerDom    _dom         = null;
 
     /** 0 = holiday 1 = date */
-    private int             _type;
+    private int             _type        = -1;
 
     private static String[] _elementName = { "holiday", "date" };
 
-    private Element         _element;
+    private Element         _element     = null;
 
-    private Element         _parent;
+    private Element         _parent      = null;
 
-    private List            _list;
+    private List            _list        = null;
 
-    private List            _listOfAt = null;
+    private List            _listOfAt    = null;
 
+    
     public DateListener(SchedulerDom dom, Element element, int type) {
         _dom = dom;
         _element = element;
@@ -135,6 +137,7 @@ public class DateListener implements Comparator {
         if(_dom.isDirectory() && _element.getParentElement() != null)
         	//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_element.getParentElement()), SchedulerDom.MODIFY);
         	_dom.setChangedForDirectory(_element, SchedulerDom.MODIFY);
+                
         return date;
     }
 

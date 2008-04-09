@@ -199,6 +199,11 @@ public class DateForm extends Composite implements IUpdateLanguage {
 					// update the tree if not holidays
 					if (main != null && type == 1)
 						main.updateDays(DaysListener.SPECIFIC_DAY);
+					
+					if(type == DateListener.DATE && main != null) {
+			        	main.updateFont();
+			        }
+			        
 				}
 			}
 		});
@@ -235,6 +240,9 @@ public class DateForm extends Composite implements IUpdateLanguage {
 					bRemoveDate.setEnabled(lDates.getSelectionCount() > 0);
 					if ((main != null) && (type == 1))
 						main.updateDays(DaysListener.SPECIFIC_DAY);
+					if(type == DateListener.DATE && main != null) {
+			        	main.updateFont();
+			        }
 				}
 			}
 		});
@@ -244,98 +252,11 @@ public class DateForm extends Composite implements IUpdateLanguage {
 		bRemoveDate.setText("Remove Date");
 		if(type == 0)
 			createGroupForIncludes();
-		/*
-		 gIncludeFiles = new Group(gDates, SWT.NONE);
-		 gIncludeFiles.setVisible(false);
-		 final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
-		 gIncludeFiles.setLayoutData(gridData_1);
-		 gIncludeFiles.setLayout(new GridLayout());
-		 
-		 gInclude = new Group(gIncludeFiles, SWT.NONE);
-		 gInclude.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-		 final GridLayout gridLayout_2 = new GridLayout();
-		 gridLayout_2.numColumns = 3;
-		 gInclude.setLayout(gridLayout_2);
-		 gInclude.setText("Include Files");
-		 
-		 label4 = new Label(gInclude, SWT.NONE);
-		 label4.setText("File:");
-		 
-		 tInclude = new Text(gInclude, SWT.BORDER);
-		 tInclude.addModifyListener(new ModifyListener() {
-		 public void modifyText(final ModifyEvent e) {
-		 bAdd.setEnabled(!tInclude.getText().equals(""));
-		 }
-		 });
-		 tInclude.addKeyListener(new KeyAdapter() {
-		 public void keyPressed(final KeyEvent e) {
-		 if (e.keyCode == SWT.CR && !tInclude.getText().equals("")) {
-		 listener.addInclude(tInclude.getText());
-		 lInclude.setItems(listener.getIncludes());
-		 tInclude.setText("");
-		 }
-		 }
-		 });
-		 final GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-		 gridData6.widthHint = 50;
-		 tInclude.setLayoutData(gridData6);
-		 
-		 bAdd = new Button(gInclude, SWT.NONE);
-		 bAdd.addSelectionListener(new SelectionAdapter() {
-		 public void widgetSelected(final SelectionEvent e) {
-		 applyFile();
-		 }
-		 });
-		 final GridData gridData7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-		 bAdd.setLayoutData(gridData7);
-		 bAdd.setEnabled(false);
-		 bAdd.setText("&Add File");
-		 
-		 label_1 = new Label(gInclude, SWT.HORIZONTAL | SWT.SEPARATOR);
-		 final GridData gridData1_1 = new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);
-		 label_1.setLayoutData(gridData1_1);
-		 label_1.setText("Label");
-		 
-		 label1_1 = new Label(gInclude, SWT.NONE);
-		 label1_1.setLayoutData(new GridData());
-		 label1_1.setVisible(false);
-		 label1_1.setText("Classname:");
-		 
-		 lInclude = new List(gInclude, SWT.BORDER | SWT.H_SCROLL);
-		 lInclude.addSelectionListener(new SelectionAdapter() {
-		 public void widgetSelected(final SelectionEvent e) {
-		 bRemove.setEnabled(lInclude.getSelectionCount() > 0);
-		 }
-		 });
-		 final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true);
-		 lInclude.setLayoutData(gridData4);
-		 
-		 bRemove = new Button(gInclude, SWT.NONE);
-		 bRemove.addSelectionListener(new SelectionAdapter() {
-		 public void widgetSelected(final SelectionEvent e) {
-		 if (lInclude.getSelectionCount() > 0) {
-		 int index = lInclude.getSelectionIndex();
-		 listener.removeInclude(index);
-		 lInclude.setItems(listener.getIncludes());
-		 if (index >= lInclude.getItemCount())
-		 index--;
-		 if (lInclude.getItemCount() > 0)
-		 lInclude.setSelection(index);
-		 }        		
-		 }
-		 });
-		 final GridData gridData5 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
-		 bRemove.setLayoutData(gridData5);
-		 bRemove.setEnabled(false);
-		 bRemove.setText("Remove File");
-		 */
+		
 	}
 	
 	private void applyFile() {
 		listener.addInclude(tableIncludes, tInclude.getText(), butIsLifeFile.getSelection() );
-		//listener.addInclude(tInclude.getText());
-		//lInclude.setItems(listener.getIncludes());
-		
 		listener.fillTable(tableIncludes);
 		tInclude.setText("");
 		tInclude.setFocus();
@@ -344,12 +265,6 @@ public class DateForm extends Composite implements IUpdateLanguage {
 	
 	
 	private void createGroupForIncludes() {
-		//gIncludeFiles = new Group(gDates, SWT.NONE);
-		//gIncludeFiles.setVisible(false);
-		//final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
-		//gIncludeFiles.setLayoutData(gridData_1);
-		//gIncludeFiles.setLayout(new GridLayout());
-		
 		gInclude = new Group(gDates, SWT.NONE);
 		gInclude.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		final GridLayout gridLayout_2 = new GridLayout();
@@ -373,10 +288,8 @@ public class DateForm extends Composite implements IUpdateLanguage {
 		});
 		tInclude.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR && !tInclude.getText().equals("")) {
-					//listener.addInclude(tInclude.getText());
-					listener.addInclude(tableIncludes, tInclude.getText(), butIsLifeFile.getSelection());
-					//lInclude.setItems(listener.getIncludes());
+				if (e.keyCode == SWT.CR && !tInclude.getText().equals("")) {					
+					listener.addInclude(tableIncludes, tInclude.getText(), butIsLifeFile.getSelection());					
 					listener.fillTable(tableIncludes);
 					tInclude.setText("");
 				}
@@ -428,8 +341,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 			public void widgetSelected(final SelectionEvent e) {
 				if (tableIncludes.getSelectionCount() > 0) {
 					int index = tableIncludes.getSelectionIndex();
-					listener.removeInclude(index);
-					//lInclude.setItems(listener.getIncludes());
+					listener.removeInclude(index);					
 					listener.fillTable(tableIncludes);
 					if (index >= tableIncludes.getItemCount())
 						index--;
@@ -447,16 +359,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 	
 	public void setToolTipText() {
 		
-		/*
-		 * date.list=Liste der Ferientage, d.h. zu diesen Termine wird der Job Scheduler keine Jobs und Aufträge starten.
-		date.btn_remove=entfernt diesen Termin.
-		date.year=Jahr als Bestandteil dieses Termins.
-		date.month=Monat als Bestandteil dieses Termins.
-		date.day=Tag als Bestandteil dieses Termins.
-		date.btn_add_holiday=fügt diesen Termin der Liste der Ferientage hinzu.
-		date.btn_add_specific_day=fügt diesen Termin der Liste einzelner Tage hinzu.
-*/
-		
+			
 		sYear.setToolTipText(Messages.getTooltip("date.year"));
 		sMonth.setToolTipText(Messages.getTooltip("date.month"));
 		sDay.setToolTipText(Messages.getTooltip("date.day"));

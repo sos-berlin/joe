@@ -47,8 +47,11 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
 
     private Button          butBrowse   = null;
     
+    private ISchedulerUpdate _gui        = null;
+    
     public RunTimeForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate gui) {
         super(parent, style);
+        _gui = gui;
         listener = new RunTimeListener(dom, job);
         initialize();
         setToolTipText();
@@ -198,6 +201,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
 
     	periodForm = new PeriodForm(gRunTime, SWT.NONE, Editor.RUNTIME);
     	periodForm.setLayoutData(gridData2);
+    	periodForm.setSchedulerUpdate( _gui);
     }
 
 

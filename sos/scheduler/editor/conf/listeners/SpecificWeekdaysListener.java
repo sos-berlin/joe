@@ -24,17 +24,20 @@ class Weekday {
 }
 
 public class SpecificWeekdaysListener {
+	
     public static final int   WEEKDAYS     = 0;
 
     public static final int   MONTHDAYS    = 1;
 
     public static final int   ULTIMOS      = 2;
 
-    private SchedulerDom      _dom;
+    private SchedulerDom      _dom         = null;
 
-    public static String[]   _daynames = {"First","Second","Third","Fourth","Last","Second Last","Third Last","Fourth Last"};
-    private String[]           _usedDays    = null;
-    private Element           _runtime;
+    public static String[]    _daynames    = {"First","Second","Third","Fourth","Last","Second Last","Third Last","Fourth Last"};
+    
+    private String[]          _usedDays    = null;
+    
+    private Element           _runtime     = null;
 
 
   
@@ -42,8 +45,6 @@ public class SpecificWeekdaysListener {
         _dom = dom;
         _runtime = runtime;
     }
-
- 
 
  
     public void addDay(String day, String which) {
@@ -127,7 +128,18 @@ public class SpecificWeekdaysListener {
                     e.detach();
 
                     // remove empty tag
-                    if (list.size() == 0)
+                    boolean isEmpty = true;
+                    List _list = _runtime.getChildren("monthdays");
+                    for(int i = 0; i < _list.size(); i++) {
+                    	Element s = (Element)_list.get(i);
+                    	if(s.getChildren().size() > 0) {
+                    		//_elementName[_type] wird noch woanders verwendet
+                    		isEmpty = false;
+                    		break;
+                    	}
+                    }
+                    
+                    if (list.size() == 0 && isEmpty) 
                         _runtime.removeChild("monthdays");
                     _dom.setChanged(true);
                     if(_runtime != null && _runtime.getParentElement() != null )

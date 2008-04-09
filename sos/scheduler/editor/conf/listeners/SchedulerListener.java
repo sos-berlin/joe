@@ -696,6 +696,7 @@ public class SchedulerListener {
 				}
 
 				TreeItem item = tree.getSelection()[0];
+				
 				TreeData data = (TreeData) item.getData();
 				if (data != null) {
 
@@ -771,7 +772,7 @@ public class SchedulerListener {
 						break;
 					case Editor.EVERYDAY:
 					case Editor.PERIODS:
-						new PeriodsForm(c, SWT.NONE, _dom, data.getElement());
+						new PeriodsForm(c, SWT.NONE, _dom, data.getElement(), _gui);
 						break;
 					case Editor.JOBS:
 						new JobsForm(c, SWT.NONE, _dom, _gui);
@@ -938,7 +939,8 @@ public class SchedulerListener {
 				if(disable) {
 					run.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 				}
-			}else if(job.getName().equals("schedule")) {
+				_gui.updateFont(run);
+			} else if(job.getName().equals("schedule")) {
 				run.setData(new TreeData(Editor.SCHEDULE, job, Options.getHelpURL("job.schedule"), "schedule"));
 				run.setData("key", "schedule");
 			} 
@@ -946,19 +948,21 @@ public class SchedulerListener {
 			item = new TreeItem(run, SWT.NONE);
 			item.setText("Everyday");
 			item.setData(new TreeData(Editor.EVERYDAY, runtime, Options.getHelpURL("job.run_time.everyday")));
-			item.setData("key", "job.run_time.everyday");
+			item.setData("key", "job.run_time.everyday");																	
 			if(disable) {
 				item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 			}
+			_gui.updateFont(item);
+			
 			item = new TreeItem(run, SWT.NONE);
 			item.setText("Weekdays");
 			item.setData(new TreeData(Editor.WEEKDAYS, runtime, Options.getHelpURL("job.run_time.weekdays"),"weekdays"));
 			item.setData("key", "job.run_time.weekdays");
 			if(disable) {
 				item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-			}
-
+			}			
 			treeFillDays(item, runtime, 0, false);
+			_gui.updateFont(item);
 
 			item = new TreeItem(run, SWT.NONE);
 			item.setText("Monthdays");
@@ -968,6 +972,7 @@ public class SchedulerListener {
 				item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 			}
 			treeFillDays(item, runtime, 1, false);
+			_gui.updateFont(item);
 
 			item = new TreeItem(run, SWT.NONE);
 			item.setText("Ultimos");
@@ -977,6 +982,7 @@ public class SchedulerListener {
 				item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 			}
 			treeFillDays(item, runtime, 2, false);
+			_gui.updateFont(item);
 
 
 			item = new TreeItem(run, SWT.NONE);
@@ -987,11 +993,18 @@ public class SchedulerListener {
 				item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 			}
 			treeFillSpecificWeekdays(item, runtime, false);
+			_gui.updateFont(item);
 
 			item = new TreeItem(run, SWT.NONE);
 			item.setText("Specific Days");
 			item.setData(new TreeData(Editor.DAYS, runtime, Options.getHelpURL("job.run_time.specific_days")));
 			item.setData("key", "job.run_time.specific_days");
+			
+			//item.getParent().setSelection(new TreeItem[] {item});
+			//setFontForRuntimeChild(item);
+			_gui.updateFont(item);
+			
+			
 			if(disable) {
 				item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 			}
@@ -1008,6 +1021,7 @@ public class SchedulerListener {
 				}
 				//treeFillDays(item, runtime, 1, false);
 				treeFillDays(item, runtime, DaysListener.SPECIFIC_MONTHS, false);
+				_gui.updateFont(item);
 
 
 			}
@@ -1142,4 +1156,5 @@ public class SchedulerListener {
 		parent.setExpanded(true);
 
 	}
+
 }

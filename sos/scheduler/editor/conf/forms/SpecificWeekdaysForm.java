@@ -20,22 +20,25 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.SpecificWeekdaysListener;
 
 public class SpecificWeekdaysForm extends Composite implements IUpdateLanguage {
-    private SpecificWeekdaysListener     listener;
+	
+	
+    private SpecificWeekdaysListener     listener        = null;
 
-    private ISchedulerUpdate _main;
+    private ISchedulerUpdate             _main           = null;      
 
-    private Group            group        = null;
+    private Group                        group           = null;
  
-    private Combo            cWeekdays  = null;
+    private Combo                        cWeekdays       = null;
 
-    private Button           bAdd         = null;
+    private Button                       bAdd            = null;
 
-    private List             lUsedDays    = null;
+    private List                         lUsedDays       = null;
 
-    private Button           bRemove      = null;
+    private Button                       bRemove         = null;
 
-    private Label            label2       = null;
-    private Combo            cWeekdayNumber = null;
+    private Label                        label2          = null;
+    
+    private Combo                        cWeekdayNumber  = null;
 
 
     public SpecificWeekdaysForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main, int type) {
@@ -89,6 +92,7 @@ public class SpecificWeekdaysForm extends Composite implements IUpdateLanguage {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 listener.addDay(cWeekdays.getText() ,cWeekdayNumber.getText());
                 _main.updateSpecificWeekdays();
+                _main.updateFont();
                 String s = cWeekdayNumber.getText() + "." + cWeekdays.getText();
                 if (lUsedDays.indexOf(s) == -1) lUsedDays.add(s);
                 bRemove.setEnabled(lUsedDays.getSelectionCount() > 0);
@@ -113,6 +117,7 @@ public class SpecificWeekdaysForm extends Composite implements IUpdateLanguage {
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 listener.deleteDay(lUsedDays.getItem(lUsedDays.getSelectionIndex()));
+                _main.updateFont();
                 lUsedDays.remove(lUsedDays.getSelectionIndex());
                 _main.updateSpecificWeekdays();
                 bRemove.setEnabled(lUsedDays.getSelectionCount() > 0);

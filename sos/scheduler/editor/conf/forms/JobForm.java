@@ -229,10 +229,9 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				checkName();
-								
-					listener.setName(tName.getText(), updateTree);
-					group.setText("Job: " + tName.getText() + (listener.isDisabled() ? " (Disabled)" : ""));
-				
+				listener.setName(tName.getText(), updateTree);
+				group.setText("Job: " + tName.getText() + (listener.isDisabled() ? " (Disabled)" : ""));
+
 			}
 
 		});

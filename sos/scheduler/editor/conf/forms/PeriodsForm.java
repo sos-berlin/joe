@@ -15,37 +15,38 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.PeriodsListener;
 
 public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage {
 	
 	
-    private PeriodsListener listener;
+    private PeriodsListener      listener    = null;
 
-    private SchedulerDom    dom;
+    private SchedulerDom         dom         = null;
 
-    private Group           group      = null;
+    private Group                group       = null;
 
-    private Table           tPeriods   = null;
+    private Table                tPeriods    = null;
 
-    private Button          bNew       = null;
+    private Button               bNew        = null;
 
-    private Button          bRemove    = null;
+    private Button               bRemove     = null;
 
-    private PeriodForm      periodForm = null;
+    private PeriodForm           periodForm  = null;
 
-    private Button          bApply     = null;
+    private Button               bApply      = null;
 
-    private Label           label      = null;
+    private Label                label       = null;
 
-    private Label           label1     = null;
+    private Label                label1      = null;
 
-
-    public PeriodsForm(Composite parent, int style, SchedulerDom dom, Element element) {
+    
+    public PeriodsForm(Composite parent, int style, SchedulerDom dom, Element element, ISchedulerUpdate _main) {
         super(parent, style);
-        listener = new PeriodsListener(dom, element);
-        this.dom = dom;
+        listener = new PeriodsListener(dom, element, _main);
+        this.dom = dom;        
         initialize();
         setToolTipText();
 

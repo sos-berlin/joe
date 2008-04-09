@@ -76,123 +76,11 @@ public class MainWindow  {
 		Options.loadWindow(sShell, "editor");
 		
 		menuBar = new Menu(sShell, SWT.BAR);
-		//ende neu
-		//submenu = new Menu(mNew);
-		//MenuItem submenuItem1 = new MenuItem(submenu, SWT.CASCADE);
-		//submenuItem1.setText("New ffff");
-		
-		/*MenuItem pNew = new MenuItem(mFile, SWT.PUSH);
-		pNew.setText("New Configuration\tCtrl+N");
-		pNew.setAccelerator(SWT.CTRL | 'N');
-		pNew.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler() != null)
-					setSaveStatus();
-			}
-			
-			
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		
-		
-		MenuItem pOpenFile = new MenuItem(mFile, SWT.PUSH);
-		pOpenFile.setText("Open Configuration...\tCtrl+O");
-		pOpenFile.setAccelerator(SWT.CTRL | 'O');
-		
-		MenuItem separator2 = new MenuItem(mFile, SWT.SEPARATOR);
-		
-		
-		MenuItem push = new MenuItem(mFile, SWT.PUSH);
-		push.setText("New Documentation\tCtrl+M"); // Generated
-		push.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newDocumentation() != null)
-					setSaveStatus();
-			}
-			
-			
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem push1 = new MenuItem(mFile, SWT.PUSH);
-		push1.setText("Open Documentation...\tCtrl+P"); // Generated
-		push1.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.openDocumentation() != null)
-					setSaveStatus();
-			}
-			
-			
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem separator = new MenuItem(mFile, SWT.SEPARATOR);
-		
-		
-		MenuItem pNewDetails = new MenuItem(mFile, SWT.PUSH);
-		pNewDetails.setText("New Job Chain Details\tCtrl+F");
-		pNewDetails.setAccelerator(SWT.CTRL | 'F');
-		pNewDetails.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				
-				if (container.newDetails() != null)
-					setSaveStatus();
-			}
-			
-			
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		
-		MenuItem pOpenDetails = new MenuItem(mFile, SWT.PUSH);
-		pOpenDetails.setText("Open Job Chain Details\tCtrl+E");
-		pOpenDetails.setEnabled(true);
-		pOpenDetails.setAccelerator(SWT.CTRL | 'E');
-		pOpenDetails.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.openDetails() != null)
-					setSaveStatus();
-			}
-			
-			
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		
-		MenuItem separatorDetails = new MenuItem(mFile, SWT.SEPARATOR);
-		
-		*/
-		
-		/*
-		
-		pOpenFile.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.openScheduler() != null)
-					setSaveStatus();
-			}
-			
-			
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		*/
-		
-		/*MenuItem submenuItemOpen = new MenuItem(menuBar, SWT.CASCADE);
-		submenuItemOpen.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				//parsiere die XML Datei und erkenne, ob du eine Konfiguration oder Dokumentation bis
-				if (container.openQuick() != null)
-					setSaveStatus();
-			}
-		});
-		submenuItemOpen.setText("&Quick Open");
-		*/
 		MenuItem submenuItem2 = new MenuItem(menuBar, SWT.CASCADE);
 		submenuItem2.setText("&File");
 		mFile = new Menu(submenuItem2);
 		
-		//neu
+		
 		MenuItem open = new MenuItem(mFile, SWT.PUSH);
 		open.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -249,12 +137,7 @@ public class MainWindow  {
 			}
 		});
 		
-		
-		 
-		//pmNew.setMenu();
-		//
-		
-		//ok
+				 		
 		MenuItem mpLife = new MenuItem(pmNew, SWT.CASCADE);				
 		mpLife.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -268,8 +151,7 @@ public class MainWindow  {
 		MenuItem mLifeJob = new MenuItem(mLife, SWT.PUSH);
 		mLifeJob.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				/*if (container.openDirectory(SchedulerDom.LIFE_JOB) != null)
-					setSaveStatus();*/
+				
 				if (container.newScheduler(SchedulerDom.LIFE_JOB) != null)
 					setSaveStatus();
 			}
@@ -328,14 +210,41 @@ public class MainWindow  {
 		});
 		mLifeSchedule.setText("Schedule      \tCtrl+K");
 		mLifeSchedule.setAccelerator(SWT.CTRL | 'K');
-		
-		
-		//////////
-		
-		
-		//MenuItem separator = new MenuItem(mFile, SWT.SEPARATOR);
+					
 		new MenuItem(mFile, SWT.SEPARATOR);
 		
+		
+		
+		/*MenuItem mFTP = new MenuItem(mFile, SWT.CASCADE);				
+		mFTP.setText("FTP");
+		mFTP.setAccelerator(SWT.CTRL | 'N');
+		
+		Menu pmFTP = new Menu(mNew);
+		
+		MenuItem pOpenFTP = new MenuItem(pmFTP, SWT.PUSH);
+		pOpenFTP.setText("Open by FTP");
+		//pOpenFTP.setAccelerator(SWT.CTRL | 'I');
+		pOpenFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {				
+			}
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		
+		MenuItem pSaveFTP = new MenuItem(pmFTP, SWT.PUSH);
+		pSaveFTP.setText("Save by FTP");
+		//pSaveFTP.setAccelerator(SWT.CTRL | 'I');
+		pSaveFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {				
+			}
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		
+		mFTP.setMenu(pmFTP);
+		
+		new MenuItem(mFile, SWT.SEPARATOR);
+		*/
 		MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
 		openDir.setText("Open Hot Folder               \tCtrl+D");		
 		openDir.setAccelerator(SWT.CTRL | 'D');
@@ -365,8 +274,6 @@ public class MainWindow  {
 		pOpenGlobalScheduler.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 
-				//String globalSchedulerPath = Options.getSchedulerHotFolder().endsWith("/") || Options.getSchedulerHotFolder().endsWith("\\") ? Options.getSchedulerHotFolder() : Options.getSchedulerHotFolder() + "/";
-				//globalSchedulerPath = globalSchedulerPath + "#.scheduler";
 				String globalSchedulerPath = Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome() : Options.getSchedulerHome() + "/";
 				globalSchedulerPath = globalSchedulerPath + "config/remote/_all";
 				File f = new java.io.File(globalSchedulerPath); 
@@ -418,18 +325,7 @@ public class MainWindow  {
 				if (container.getCurrentEditor().applyChanges()) {
 					container.getCurrentEditor().save();
 					setSaveStatus();
-					
-//					test
-					/*try {
-						sos.scheduler.editor.conf.forms.SchedulerForm form =(sos.scheduler.editor.conf.forms.SchedulerForm)container.getCurrentEditor();
-						
-						SchedulerDom currdom = (SchedulerDom)form.getDom();
-						currdom.read(currdom.getFilename());
-					} catch (Exception ex) {
-						System.out.println("test" + ex.getMessage());
-					}
-					*/
-					//ende test
+	
 				}
 			}
 			
@@ -455,9 +351,7 @@ public class MainWindow  {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-		
-		
-		//test begin
+						
 		MenuItem pSaveAsHotFolderElement = new MenuItem(mFile, SWT.PUSH);
 		pSaveAsHotFolderElement.setText("Save As Hot Folder Elements   \tCtrl+B");		
 		pSaveAsHotFolderElement.setAccelerator(SWT.CTRL | 'B');
@@ -481,18 +375,14 @@ public class MainWindow  {
 								Utils.removeChildrensWithName(config, "process_classes");
 								config.removeChildren("schedules");
 								config.removeChildren("commands");
-																
-								/*if (container.getCurrentEditor().applyChanges()) {
-									container.getCurrentEditor().save();
-									setSaveStatus();
-								}*/
+																								
 								form.updateTree("main");
 								form.update();
 								
 							}
 						}
 					}
-					//container.getCurrentEditor().saveAs();
+					
 					setSaveStatus();
 				}
 			}
@@ -502,9 +392,7 @@ public class MainWindow  {
 			}
 		});
 		
-		//test ende
 		
-		//MenuItem separator1 = new MenuItem(mFile, SWT.SEPARATOR);
 		new MenuItem(mFile, SWT.SEPARATOR);
 		
 		submenuItem2.setMenu(mFile);

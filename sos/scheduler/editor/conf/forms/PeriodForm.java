@@ -22,6 +22,7 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.PeriodListener;
 
@@ -29,121 +30,124 @@ import sos.scheduler.editor.conf.listeners.PeriodListener;
 public class PeriodForm extends Composite implements IUpdateLanguage {
 
 
-	private PeriodListener listener                  = null;
+	private PeriodListener    listener                  = null;
 
-	private boolean        onOrder;
+	private boolean           onOrder;
 
-	private Composite      gPeriod                    = null;
+	private Composite         gPeriod                    = null;
 
-	private Label          label1                     = null;
+	private Label             label1                     = null;
 
-	private Button         bLetRun                    = null;
+	private Button            bLetRun                    = null;
 
-	private Label          label2                     = null;
+	private Label             label2                     = null;
 
-	private Text           sBeginHours                = null;
+	private Text              sBeginHours                = null;
 
-	private Label          label3                     = null;
+	private Label             label3                     = null;
 
-	private Text           sBeginMinutes              = null;
+	private Text              sBeginMinutes              = null;
 
-	private Label          label4                     = null;
+	private Label             label4                     = null;
 
-	private Text           sBeginSeconds              = null;
+	private Text              sBeginSeconds              = null;
 
-	private Label          label5                     = null;
+	private Label             label5                     = null;
 
-	private Label          label6                     = null;
+	private Label             label6                     = null;
 
-	private Text           sEndHours                  = null;
+	private Text              sEndHours                  = null;
 
-	private Label          label7                     = null;
+	private Label             label7                     = null;
 
-	private Text           sEndMinutes                = null;
+	private Text              sEndMinutes                = null;
 
-	private Label          label8                     = null;
+	private Label             label8                     = null;
 
-	private Text           sEndSeconds                = null;
+	private Text              sEndSeconds                = null;
 
-	private Label          label10                    = null;
+	private Label             label10                    = null;
 
-	private Text           sRepeatHours               = null;
+	private Text              sRepeatHours               = null;
 
-	private Label          label11                    = null;
+	private Label             label11                    = null;
 
-	private Text           sRepeatMinutes             = null;
+	private Text              sRepeatMinutes             = null;
 
-	private Label          label12                    = null;
+	private Label             label12                    = null;
 
-	private Text           sRepeatSeconds             = null;
+	private Text              sRepeatSeconds             = null;
 
-	private Label          label13                    = null;
+	private Label             label13                    = null;
 
-	private Text           sSingleHours               = null;
+	private Text              sSingleHours               = null;
 
-	private Label          label14                    = null;
+	private Label             label14                    = null;
 
-	private Text           sSingleMinutes             = null;
+	private Text              sSingleMinutes             = null;
 
-	private Label          label15                    = null;
+	private Label             label15                    = null;
 
-	private Text           sSingleSeconds             = null;
+	private Text              sSingleSeconds             = null;
 
-	private Label          label16                    = null;
+	private Label             label16                    = null;
 
-	private Label          label9                     = null;
+	private Label             label9                     = null;
 
-	private Label          label18                    = null;
+	private Label             label18                    = null;
 
-	private Label          lRunOnce                   = null;
+	private Label             lRunOnce                   = null;
 
-	private Button         cRunOnce                   = null;
+	private Button            cRunOnce                   = null;
 
-	private boolean        event                      = true;
+	private boolean           event                      = true;
 
-	private Button         bApply                     = null;
+	private Button            bApply                     = null;
 
-	private String         savBeginHours              = "";
+	private String            savBeginHours              = "";
 
-	private String         savBeginMinutes            = "";
+	private String            savBeginMinutes            = "";
 
-	private String         savBeginSeconds            = "";
+	private String            savBeginSeconds            = "";
 
-	private String         savEndHours                = "";
+	private String            savEndHours                = "";
 
-	private String         savEndMinutes              = "";
+	private String            savEndMinutes              = "";
 
-	private String         savEndSeconds              = "";
+	private String            savEndSeconds              = "";
 
-	private String         savRepeatHours             = "";
+	private String            savRepeatHours             = "";
 
-	private String         savRepeatMinutes           = "";
+	private String            savRepeatMinutes           = "";
 
-	private String         savRepeatSeconds           = "";
+	private String            savRepeatSeconds           = "";
 	
-	private String         savAbsoluteHours          = "";
+	private String            savAbsoluteHours           = "";
 
-	private String         savAbsoluteMinutes        = "";
+	private String            savAbsoluteMinutes         = "";
 
-	private String         savAbsoluteSecounds       = "";
+	private String            savAbsoluteSecounds        = "";
 	
-	private boolean        assistent                  = false;
+	private boolean           assistent                  = false;
 
-	private Text           sAbsoluteRepeatHours       = null;
+	private Text              sAbsoluteRepeatHours       = null;
+ 
+	private Text              sAbsoluteRepeatMinutes     = null;
 
-	private Text           sAbsoluteRepeatMinutes     = null;
+	private Text              sAbsoluteRepeatSeconds     = null;
 
-	private Text           sAbsoluteRepeatSeconds     = null;
+	private Label             lblAbsolutRepeat           = null;
 
-	private Label          lblAbsolutRepeat           = null;
+	private Label             label_1                    = null; 
 
-	private Label          label_1                    = null; 
+	private Label             label14_1                  = null;
 
-	private Label          label14_1                 = null;
+	private Label             label18_1                  = null;
 
-	private Label          label18_1                 = null;
-
-	private int            _type                     = Editor.PERIODS;
+	private int               _type                      = Editor.PERIODS;
+	
+	private ISchedulerUpdate  _gui                       = null;
+	
 
 	public PeriodForm(Composite parent, int style, int type) {
 		super(parent, style);
@@ -484,8 +488,9 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		bLetRun.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				listener.setLetRun(bLetRun.getSelection());
+				updateFont();
 				if (bApply != null) {
-					bApply.setEnabled(true);
+					bApply.setEnabled(true);					
 				}
 			}
 		});
@@ -498,6 +503,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		cRunOnce.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				listener.setRunOnce(cRunOnce.getSelection());
+				updateFont();
 				if (bApply != null) {
 					bApply.setEnabled(true);
 				}
@@ -525,6 +531,8 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 				if (event)  {                	
 					listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
 							sBeginSeconds.getText());
+					updateFont();
+					
 				}
 
 			}
@@ -555,9 +563,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 					Utils.setBackground(0, 59, sBeginMinutes);
 				}
 
-				if (event)
+				if (event) 
 					listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
 							sBeginSeconds.getText());
+				updateFont();
+				
 			}
 		});
 		label4 = new Label(groupSlottime, SWT.NONE);
@@ -582,7 +592,8 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 				}
 				if (event)
 					listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
-							sBeginSeconds.getText()); 
+							sBeginSeconds.getText());
+				updateFont();
 			}
 		});
 		label5 = new Label(groupSlottime, SWT.NONE);
@@ -599,15 +610,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
 			}
 		});
-		sEndHours.addMouseListener(new MouseAdapter() {
-			public void mouseDown(final MouseEvent e) {
-
-			}
-		});
-		sEndHours.addKeyListener(new KeyAdapter() {
-			public void keyPressed(final KeyEvent e) {
-			}
-		});
+		
 
 		sEndHours.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -617,6 +620,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 				if (event)
 					listener.setPeriodTime(24, bApply, "end", sEndHours.getText(), sEndMinutes.getText(), sEndSeconds
 							.getText());
+				updateFont();
 			}
 		});
 		label7 = new Label(groupSlottime, SWT.NONE);
@@ -630,15 +634,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
 			}
 		});
-		sEndMinutes.addMouseListener(new MouseAdapter() {
-			public void mouseDown(final MouseEvent e) {
-			}
-		});
-		sEndMinutes.addKeyListener(new KeyAdapter() {
-			public void keyPressed(final KeyEvent e) {
-
-			}
-		});
+		
 
 		sEndMinutes.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -649,6 +645,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 				if (event)
 					listener.setPeriodTime(24, bApply, "end", sEndHours.getText(), sEndMinutes.getText(), sEndSeconds
 							.getText());
+				updateFont();
 			}
 		});
 		label8 = new Label(groupSlottime, SWT.NONE);
@@ -664,16 +661,6 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
 			}
 		});
-		sEndSeconds.addMouseListener(new MouseAdapter() {
-			public void mouseDown(final MouseEvent e) {
-
-			}
-		});
-		sEndSeconds.addKeyListener(new KeyAdapter() {
-			public void keyPressed(final KeyEvent e) {
-
-			}
-		});
 		sEndSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if (!beginBeforeAfter()) {
@@ -683,6 +670,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 				if (event)
 					listener.setPeriodTime(24, bApply, "end", sEndHours.getText(), sEndMinutes.getText(), sEndSeconds
 							.getText());
+				updateFont();
 			}
 		});
 
@@ -935,6 +923,15 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label16.setText("hh:mm:ss");        
 		label16.setVisible(!assistent);
 
+	}
+	
+	public void setSchedulerUpdate(ISchedulerUpdate gui) {
+		_gui = gui;
+	}
+	
+	private void updateFont() {
+		if(_type == Editor.RUNTIME && _gui != null)
+			_gui.updateFont();
 	}
 	
 } // @jve:decl-index=0:visual-constraint="10,10"

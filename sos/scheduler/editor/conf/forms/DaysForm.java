@@ -138,7 +138,8 @@ public class DaysForm extends Composite implements IUpdateLanguage {
             	listOfGroup.removeAll();
             	butApplyGroup.setEnabled(false);
                 listener.addDay(cUnusedDays.getText()); 
-                _main.updateDays(_type, cUnusedDays.getText());
+                _main.updateDays(_type, cUnusedDays.getText());                
+                _main.updateFont();                
                 read();
             }
         });
@@ -244,6 +245,7 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         			listener.addGroup(group);
         		}
         		_main.updateDays(_type, group);
+        		_main.updateFont();
                 read();
         		setEnabledGroupElement(false);        		        		         		
         		listOfGroup.removeAll();
@@ -359,17 +361,12 @@ public class DaysForm extends Composite implements IUpdateLanguage {
     	
         listener.deleteDay(lUsedDays.getItem(lUsedDays.getSelectionIndex()));
         _main.updateDays(_type);
+        _main.updateFont();
         read();
         setEnabledGroupElement(false);
     }
     
-/*private void updateDay () {
-    	
-        listener.updateDay(lUsedDays.getItem(lUsedDays.getSelectionIndex()));
-        _main.updateDays(_type);
-        read();
-        setEnabledGroupElement(false);
-    }*/
+
     
     private void initMonth() {    	
     	listOfSameMonths = new HashMap();
