@@ -75,6 +75,8 @@ public class IOUtils {
          return filename;
     }
     
+    
+    
     public static boolean openFile(String filename, Collection filenames, DomParser dom) {    	
     	try {
         	boolean isDirectory = dom instanceof SchedulerDom &&  ((SchedulerDom)dom).isDirectory();

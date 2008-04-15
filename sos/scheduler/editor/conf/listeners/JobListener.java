@@ -399,7 +399,7 @@ public class JobListener {
 
 
 	public void setIgnoreSignal(String signals) {
-		Utils.setAttribute("ignore_signals", signals, "no", _job, _dom);
+		Utils.setAttribute("ignore_signals", signals, _job, _dom);
 		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 

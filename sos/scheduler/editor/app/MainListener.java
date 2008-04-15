@@ -141,5 +141,5 @@ public class MainListener {
         if (msg != null)
             MainWindow.message("Options cannot be saved!\n" + msg, SWT.ICON_ERROR | SWT.OK);
     }
-
+        
 }

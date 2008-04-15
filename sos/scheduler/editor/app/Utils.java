@@ -806,13 +806,13 @@ public class Utils {
     			XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 
     			List listOfElement_3 = x3.selectNodes(_dom.getDoc());
     			if(!listOfElement_3.isEmpty())
-    				throw new Exception ("Der Jobkette [job_chain=" + name + "] ist in einer Kommando definiert. " +
+    				throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
     				"Soll die Jobkette trotzdem umbennant werden");
 
     			XPath x4 = XPath.newInstance("//add_order[@job_chain='"+ name + "']");				 
     			List listOfElement_4 = x4.selectNodes(_dom.getDoc());
     			if(!listOfElement_4.isEmpty())
-    				throw new Exception ("Der Jobkette [job_chain=" + name + "] ist in einer Kommando definiert. " +
+    				throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
     				"Soll die Jobkette trotzdem umbennant werden");
     			
     		} else if(type == Editor.JOB_CHAINS) {
@@ -820,13 +820,13 @@ public class Utils {
     			XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 
     			List listOfElement_3 = x3.selectNodes(_dom.getDoc());
     			if(!listOfElement_3.isEmpty())
-    				throw new Exception ("Der Jobkette [job_chain=" + name + "] ist in einer Kommando definiert. " +
+    				throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
     						"Soll die Jobkette trotzdem gelöscht werden");
     			
     			XPath x4 = XPath.newInstance("//add_order[@job_chain='"+ name + "']");				 
     			List listOfElement_4 = x4.selectNodes(_dom.getDoc());
     			if(!listOfElement_4.isEmpty())
-    				throw new Exception ("Der Jobkette [job_chain=" + name + "] ist in einer Kommando definiert. " +
+    				throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
     						"Soll die Jobkette trotzdem gelöscht werden");
     			
     		} else if(type==Editor.JOB) {
@@ -842,14 +842,14 @@ public class Utils {
     					//Element e = (Element)x.selectSingleNode(doc);
     					List listOfElement = x.selectNodes(_dom.getDoc());
     					if(!listOfElement.isEmpty())
-    						throw new Exception ("Ein Auftragsgesteuerte Job darf im Runtime Elemente keinen der folgenden Attribute besitzen " +
-    								"single_start, start_once und let_run. Der Job " + name + " ist nicht gültig");
+    						throw new Exception ("Ein Auftragsgesteuerter Job [name=" + name+ "] darf im Runtime Elemente keinen single_start-, start_once- und " +
+    								"let_run-Attribute verwenden.");
 
     					XPath x2 = XPath.newInstance("//job[@name='"+ name + "']/run_time//period[@let_run='yes' or @single_start]");				 
     					List listOfElement_2 = x2.selectNodes(_dom.getDoc());
     					if(!listOfElement_2.isEmpty())
-    						throw new Exception ("Ein Auftragsgesteuerte Job darf im Period Elemente keinen der folgenden Attribute besitzen " +
-    								"single_start, start_once und let_run. Der Job " + name + " ist nicht gültig");				
+    						throw new Exception ("Ein Auftragsgesteuerter Job [name=" + name+ "] darf im Runtime Elemente keinen single_start-, start_once- und " +
+    								"let_run-Attribute verwenden.");				
     				} else {
 
     					XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
@@ -910,19 +910,6 @@ public class Utils {
     		}
     	}
     	return true;
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    }  
     
 }

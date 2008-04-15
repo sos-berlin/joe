@@ -225,7 +225,9 @@ public class MainWindow  {
 		pOpenFTP.setText("Open by FTP");
 		//pOpenFTP.setAccelerator(SWT.CTRL | 'I');
 		pOpenFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {				
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
+				FTPDialog ftp = new FTPDialog();
+				ftp.showForm();
 			}
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
@@ -245,6 +247,7 @@ public class MainWindow  {
 		
 		new MenuItem(mFile, SWT.SEPARATOR);
 		*/
+		
 		MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
 		openDir.setText("Open Hot Folder               \tCtrl+D");		
 		openDir.setAccelerator(SWT.CTRL | 'D');

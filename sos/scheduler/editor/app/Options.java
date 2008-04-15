@@ -3,6 +3,7 @@ package sos.scheduler.editor.app;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.HashMap;
 import java.util.Properties;
 
 import org.eclipse.swt.custom.SashForm;
@@ -393,5 +394,57 @@ public class Options {
         return _properties.getProperty("detail.editor.xslt");
     }
     
+    /**
+     * liefert eine verschachtelte Hashmap mit FTP Profilen 
+     */
+  /*  public static HashMap getFTPProfiles() {
+    	HashMap profiles = new HashMap();
+    	String p = _properties.getProperty("ftp_connections" );
+    	if(p != null && p.length() > 0) {
+    		String[] profilenames = p.split(",");
+    		for(int i = 0; i < profilenames.length; i++) {
+    			HashMap prop = new HashMap();
+    			String pName = profilenames[i];
+    			prop.put("name", _properties.getProperty("ftp." + pName + ".name"));
+    			prop.put("host", _properties.getProperty("ftp." + pName + ".host"));
+    			prop.put("port", _properties.getProperty("ftp." + pName + ".port"));
+    			prop.put("user", _properties.getProperty("ftp." + pName + ".user"));
+    			prop.put("password", _properties.getProperty("ftp." + pName + ".password"));
+    			prop.put("root", _properties.getProperty("ftp." + pName + ".root"));
+    			prop.put("localdirectory", _properties.getProperty("ftp." + pName + ".localdirectory"));
+    			prop.put("transfermode", _properties.getProperty("ftp." + pName + ".transfermode"));
+    			profiles.put(pName, prop);
+    		}    		
+    	}    	    	
+    	return profiles;
+    }
 
+*/
+    /**
+     * speichert FTP Profilen 
+     */
+/*    public static void saveFTPProfiles(HashMap profiles) {
+
+    	Object[] profilenames = profiles.keySet().toArray();
+
+    	String ftpConnections = "";
+    	for(int i = 0; i < profilenames.length; i++) {
+
+    		String pName = profilenames[i].toString();
+    		HashMap prop = (HashMap)profiles.get(pName);
+    		setProperty("ftp." + pName + ".name", prop.get("name") != null ? prop.get("name").toString(): "");
+    		setProperty("ftp." + pName + ".port", prop.get("port") != null ? prop.get("port").toString(): "");
+    		setProperty("ftp." + pName + ".user", prop.get("user") != null ? prop.get("user").toString(): "");
+    		setProperty("ftp." + pName + ".password", prop.get("password") != null ? prop.get("password").toString(): "");
+    		setProperty("ftp." + pName + ".root", prop.get("root") != null ? prop.get("root").toString(): "");
+    		setProperty("ftp." + pName + ".localdirectory", prop.get("localdirectory") != null ? prop.get("localdirectory").toString(): "");
+    		setProperty("ftp." + pName + ".transfermode", prop.get("name") != null ? prop.get("transfermode").toString(): "");
+    		setProperty("ftp." + pName + ".name", prop.get("name") != null ? prop.get("name").toString(): "");
+    		ftpConnections = ftpConnections + pName + (i == profilenames.length -1 ? ",": "");
+    	}    	
+    	_properties.setProperty("ftp_connections", ftpConnections );
+
+    }
+
+    */
 }

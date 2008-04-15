@@ -255,7 +255,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			}
 		});
 		butDistributed.setText("Distributed");
-		//butDistributed.setSelection(listener.isDistributed());
+		butDistributed.setSelection(listener.isDistributed());
 		bApplyChain = new Button(jobChainGroup, SWT.NONE);
 		bApplyChain.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		bApplyChain.setText("A&pply Job Chain");
@@ -629,7 +629,9 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		removeFileLabel.setText("Remove File");
 
 		bRemoveFile = new Button(composite_3, SWT.CHECK);
-		bRemoveFile.setLayoutData(new GridData());
+		final GridData gridData_1 = new GridData();
+		gridData_1.horizontalIndent = 5;
+		bRemoveFile.setLayoutData(gridData_1);
 		bRemoveFile.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if (bRemoveFile.getSelection())tMoveTo.setText(""); 
@@ -652,7 +654,9 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		movweToLabel.setText("Move to");
 
 		tMoveTo = new Text(composite_3, SWT.BORDER);
-		tMoveTo.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+		gridData_3.horizontalIndent = 5;
+		tMoveTo.setLayoutData(gridData_3);
 		tMoveTo.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if (!tMoveTo.getText().equals(""))bRemoveFile.setSelection(false);
@@ -1143,8 +1147,9 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		String oldJobChainname = listener.getChainName();
 		
 		boolean _continue = true;
-		 if(listener.getChainName().length() > 0 &&  !Utils.checkElement(listener.getChainName(), listener.get_dom(), Editor.JOB_CHAIN, null))
-			 _continue = false;
+		if(listener.getChainName().length() > 0  && !tName.getText().equals(listener.getChainName()))
+			if(!Utils.checkElement(listener.getChainName(), listener.get_dom(), Editor.JOB_CHAIN, null))
+				_continue = false;
 
 		 if(_continue) {
 			 listener.applyChain(tName.getText(), bRecoverable.getSelection(), bVisible.getSelection(), butDistributed.getSelection());

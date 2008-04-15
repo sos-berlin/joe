@@ -424,6 +424,9 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	
 	public void updateJobChain(String newName, String oldName) {
 		//listener.treeFillJobChains(tree.getSelection()[0]);
+		if(newName.equals(oldName))
+			return;
+		
 		TreeItem item = tree.getSelection()[0];
 		if(item.getText().equals("Job Chains")) {
 			TreeItem[] items = item.getItems();
@@ -433,8 +436,19 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 					it.setText("Job Chain: " + newName);
 			}
 		} else {
-			String jobChain = "Job Chain: " + newName;
-			item.setText(jobChain);
+			TreeItem[] parent = tree.getItems();
+			for(int i =0; i < parent.length; i++) {
+				if(parent[i].getText().equals("Job Chains")) {
+					TreeItem[] items = parent[i].getItems();
+					for (int j = 0; j < items.length; j++) {
+						TreeItem it = items[j]; 
+						if(it.getText().equals("Job Chain: " + oldName))
+							it.setText("Job Chain: " + newName);
+					}
+				}
+			}
+			//String jobChain = "Job Chain: " + newName;
+			//item.setText(jobChain);
 		}
 	}
 	
@@ -503,9 +517,13 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	}
 	
 	public void updateTreeItem(String s) {
+		
 		if(tree.getSelectionCount() > 0) {
-			TreeItem item = tree.getSelection()[0];		
-			item.setText(s);		
+			TreeItem item = tree.getSelection()[0];
+			if(item.getParentItem().getText().equals("Monitor") && s.equals(""))
+				item.setText("<empty>");
+			else
+				item.setText(s);		
 		}
 	}
 	

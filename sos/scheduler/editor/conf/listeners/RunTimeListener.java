@@ -22,9 +22,9 @@ public class RunTimeListener {
 
 
     public boolean isOnOrder() {
-    	if(_job.getName().equals("order"))
+    	/*if(_job.getName().equals("order"))
     		return true;
-    	
+    	*/
         return Utils.isAttributeValue("order", _job);
     }
 

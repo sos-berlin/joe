@@ -306,9 +306,9 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 			sSingleMinutes.setEnabled(enabled && !onOrder);
 			sSingleSeconds.setEnabled(enabled && !onOrder);
 
-			sAbsoluteRepeatHours.setEnabled(enabled && !singleStart);
-			sAbsoluteRepeatMinutes.setEnabled(enabled && !singleStart);
-			sAbsoluteRepeatSeconds.setEnabled(enabled && !singleStart);                
+			sAbsoluteRepeatHours.setEnabled(enabled && !onOrder  && !singleStart);
+			sAbsoluteRepeatMinutes.setEnabled(enabled && !onOrder  && !singleStart);
+			sAbsoluteRepeatSeconds.setEnabled(enabled  && !onOrder && !singleStart);                
 		}
 		if (singleStart) {
 			if (!sBeginHours.getText().equals(""))
@@ -474,7 +474,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		gPeriod.setLayout(gridLayout);
 
 		final Group groupSlottime = new Group(gPeriod, SWT.NONE);
-		groupSlottime.setText("Time Slot Period");
+		groupSlottime.setText("Time Slot");
 		final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		groupSlottime.setLayoutData(gridData);
 		final GridLayout gridLayout_1 = new GridLayout();
@@ -684,7 +684,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 	private void createStartTimeGroup() {
 
 		final Group startTimePeriodGroup = new Group(gPeriod, SWT.NONE);
-		startTimePeriodGroup.setText("Start Time Period");
+		startTimePeriodGroup.setText("Start Time");
 		startTimePeriodGroup.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 7;

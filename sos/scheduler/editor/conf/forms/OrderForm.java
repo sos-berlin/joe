@@ -165,6 +165,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
             	if (event)
                 	if(checkName())
                 		listener.setCommandAttribute("id", tOrderId.getText());
+                		//listener.setOrderId(tOrderId.getText(), true, rem)
             	
                 /*if(tOrderId.getText() == null || tOrderId.getText().length() == 0) {
                 	tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));

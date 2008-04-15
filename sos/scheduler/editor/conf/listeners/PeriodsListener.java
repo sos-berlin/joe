@@ -95,13 +95,13 @@ public class PeriodsListener {
 	}
 	
 	public boolean isOnOrder() {
+		
 		Element job = _parent;
-		
-		
+				
 		if(job.getParentElement()==null)
 			return false;		
 		
-		//???mögliche Vaterknoten herausfinden
+		//mögliche Vaterknoten herausfinden
 		while (!job.getName().equals("job") 
 				&& !job.getName().equals("add_order")
 				&& !job.getName().equals("order")
@@ -109,11 +109,15 @@ public class PeriodsListener {
 				&& !job.getName().equals("config"))
 			job = job.getParentElement();
 		
-		return
+		return		
+		Utils.isAttributeValue("order", job) && job.getName().equals("job") || 
+		Utils.isAttributeValue("id", job)&& job.getName().equals("add_order");
+
+		/*return		
 		Utils.isAttributeValue("order", job) && job.getName().equals("job") || 
 		Utils.isAttributeValue("id", job)&& job.getName().equals("add_order") || 
 		job.getName().equals("order")|| 
-		job.getName().equals("config");
+		job.getName().equals("config")*/
 	}
 	
 	

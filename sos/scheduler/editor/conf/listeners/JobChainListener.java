@@ -283,7 +283,7 @@ public class JobChainListener {
 	}
 
 	public boolean isDistributed() {		
-		return Utils.getBooleanValue("distributed", _chain);
+		return Utils.getAttributeValue("distributed", _chain).equals("yes");
 	}
 
 	public void applyNode(boolean isJobchainNode,

@@ -1145,7 +1145,10 @@ public class SchedulerListener {
 			Element monitor = (Element)l.get(i);
 			TreeItem item = new TreeItem(parent, SWT.NONE);
 			//item.setText("Monitor: " + Utils.getAttributeValue("name", monitor));
-			item.setText(Utils.getAttributeValue("name", monitor));
+			if(Utils.getAttributeValue("name", monitor).equals(""))
+				item.setText("<empty>");
+			else
+				item.setText(Utils.getAttributeValue("name", monitor));
 			item.setData(new TreeData(Editor.MONITOR, monitor, Options.getHelpURL("job.monitor"), "monitor"));  
 			item.setData("key", "monitor");
 			if(disable) {

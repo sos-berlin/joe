@@ -143,7 +143,9 @@ public class OrderListener {
     public void setCommandAttribute(String name, String value) {
     	
     	_dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.DELETE);
-        Utils.setAttribute(name, value, _order, _dom);        
+        Utils.setAttribute(name, value, _order, _dom);
+        if(name.equals("id"))
+        	_main.updateOrder(value);
         _dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.MODIFY);
     }
 
