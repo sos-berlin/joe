@@ -10,12 +10,14 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import sos.scheduler.editor.app.MainListener;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.HotFolderDialog;
+import java.util.ArrayList;
 
 public class MainWindow  {
 	
@@ -210,43 +212,59 @@ public class MainWindow  {
 		});
 		mLifeSchedule.setText("Schedule      \tCtrl+K");
 		mLifeSchedule.setAccelerator(SWT.CTRL | 'K');
-					
-		new MenuItem(mFile, SWT.SEPARATOR);
+		
+		//ddddd
+		/*new MenuItem(mFile, SWT.SEPARATOR);
 		
 		
 		
-		/*MenuItem mFTP = new MenuItem(mFile, SWT.CASCADE);				
+		MenuItem mFTP = new MenuItem(mFile, SWT.CASCADE);				
 		mFTP.setText("FTP");
 		mFTP.setAccelerator(SWT.CTRL | 'N');
 		
 		Menu pmFTP = new Menu(mNew);
 		
 		MenuItem pOpenFTP = new MenuItem(pmFTP, SWT.PUSH);
-		pOpenFTP.setText("Open by FTP");
+		pOpenFTP.setText("Open By FTP");
 		//pOpenFTP.setAccelerator(SWT.CTRL | 'I');
 		pOpenFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
-				FTPDialog ftp = new FTPDialog();
-				ftp.showForm();
+				FTPDialog ftp = new FTPDialog(main);
+				ftp.showForm(FTPDialog.OPEN);
 			}
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		
+		MenuItem pOpenHotFolderFTP = new MenuItem(pmFTP, SWT.PUSH);
+		pOpenHotFolderFTP.setText("Open Hot Folder By FTP");
+		//pSaveFTP.setAccelerator(SWT.CTRL | 'I');
+		pOpenHotFolderFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
+				FTPDialog ftp = new FTPDialog(main);
+				ftp.showForm(FTPDialog.OPEN_HOT_FOLDER);
+			}
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		
+		new MenuItem(pmFTP, SWT.SEPARATOR);
+		
 		MenuItem pSaveFTP = new MenuItem(pmFTP, SWT.PUSH);
-		pSaveFTP.setText("Save by FTP");
+		pSaveFTP.setText("Save By FTP");
 		//pSaveFTP.setAccelerator(SWT.CTRL | 'I');
 		pSaveFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {				
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
+				FTPDialog ftp = new FTPDialog(main);
+				ftp.showForm(FTPDialog.SAVE_AS);
 			}
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		
 		mFTP.setMenu(pmFTP);
-		
-		new MenuItem(mFile, SWT.SEPARATOR);
 		*/
+		new MenuItem(mFile, SWT.SEPARATOR);
 		
 		MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
 		openDir.setText("Open Hot Folder               \tCtrl+D");		
@@ -319,6 +337,9 @@ public class MainWindow  {
 		
 		//MenuItem separatorDetails1 = new MenuItem(mFile, SWT.SEPARATOR);
 		new MenuItem(mFile, SWT.SEPARATOR);
+		
+		
+		
 		MenuItem pSaveFile = new MenuItem(mFile, SWT.PUSH);
 		pSaveFile.setText("Save                                    \tCtrl+S");
 		pSaveFile.setAccelerator(SWT.CTRL | 'S');
@@ -326,7 +347,61 @@ public class MainWindow  {
 		pSaveFile.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.getCurrentEditor().applyChanges()) {
+					sos.scheduler.editor.conf.forms.SchedulerForm form =(sos.scheduler.editor.conf.forms.SchedulerForm)container.getCurrentEditor();
+    				SchedulerDom currdom = (SchedulerDom)form.getDom();
+    				java.util.HashMap changes = (java.util.HashMap)((SchedulerDom)currdom).getChangedJob().clone()	;
+    				
 					container.getCurrentEditor().save();
+					
+					
+					
+					if(container.getCurrentTab().getData("ftp_title") != null && 
+							container.getCurrentTab().getData("ftp_title").toString().length()>0) {
+						String profilename = container.getCurrentTab().getData("ftp_profile_name").toString();
+						String remoteDir = container.getCurrentTab().getData("ftp_remote_directory").toString();
+						ArrayList ftpHotFolderElements = new ArrayList();
+						if(container.getCurrentTab().getData("ftp_hot_folder_elements") != null)
+							ftpHotFolderElements = (ArrayList)container.getCurrentTab().getData("ftp_hot_folder_elements");
+
+						java.util.Properties profile = (java.util.Properties)container.getCurrentTab().getData("ftp_profile");
+
+						Text txtLog = new Text(getSShell(), SWT.NONE);
+						FTPDialogListener ftpListener = new FTPDialogListener(profile, profilename);
+						ftpListener.setLogText(txtLog);
+						ftpListener.connect(profilename);
+						if(ftpListener.isLoggedIn()) {
+							//ftpListener.changeDirectory(new File(remoteDir).getParent());
+
+							if(currdom.isLifeElement()) {
+
+								String filename = container.getCurrentEditor().getFilename();
+								if(!new File(remoteDir).getName().equalsIgnoreCase(new File(filename).getName())){
+									//Attribute "name" wurde geändert: Das bedeutet auch Änderungen der life Datei namen.
+									ftpListener.removeFile(remoteDir);
+								}
+								remoteDir = new File(remoteDir).getParent() + "/" + new File(filename).getName();
+								ftpListener.saveAs( filename, remoteDir);
+
+							} else if(currdom.isDirectory()) {
+
+								ftpListener.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);
+
+							} else {
+
+								ftpListener.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
+
+							}
+							ftpListener.disconnect();
+						} else {
+							MainWindow.message("could not save file on ftp Server", SWT.ICON_WARNING);
+						}
+						if(ftpListener.hasError()) {
+							String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), getSShell(), false, "");
+							if(text != null)
+								txtLog.setText(text);
+						}
+					}
+					
 					setSaveStatus();
 	
 				}
@@ -344,6 +419,15 @@ public class MainWindow  {
 		pSaveAs.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.getCurrentEditor() != null && container.getCurrentEditor().applyChanges()) {
+					if(container.getCurrentTab().getData("ftp_title") != null) {
+						container.getCurrentTab().setData("ftp_title", null);
+						container.getCurrentTab().setData("ftp_profile_name", null);
+						container.getCurrentTab().setData("ftp_remote_directory", null);
+						container.getCurrentTab().setData("ftp_hot_folder_elements", null);
+						container.getCurrentTab().setData("ftp_profile", null);
+						
+						
+					}
 					
 					container.getCurrentEditor().saveAs();
 					setSaveStatus();
@@ -397,6 +481,59 @@ public class MainWindow  {
 		
 		
 		new MenuItem(mFile, SWT.SEPARATOR);
+		
+//xx
+
+		
+		
+		
+		MenuItem mFTP = new MenuItem(mFile, SWT.CASCADE);				
+		mFTP.setText("FTP");
+		mFTP.setAccelerator(SWT.CTRL | 'N');
+		
+		Menu pmFTP = new Menu(mNew);
+		
+		MenuItem pOpenFTP = new MenuItem(pmFTP, SWT.PUSH);
+		pOpenFTP.setText("Open By FTP");
+		//pOpenFTP.setAccelerator(SWT.CTRL | 'I');
+		pOpenFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
+				FTPDialog ftp = new FTPDialog(main);
+				ftp.showForm(FTPDialog.OPEN);
+			}
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		
+		MenuItem pOpenHotFolderFTP = new MenuItem(pmFTP, SWT.PUSH);
+		pOpenHotFolderFTP.setText("Open Hot Folder By FTP");
+		//pSaveFTP.setAccelerator(SWT.CTRL | 'I');
+		pOpenHotFolderFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
+				FTPDialog ftp = new FTPDialog(main);
+				ftp.showForm(FTPDialog.OPEN_HOT_FOLDER);
+			}
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		
+		new MenuItem(pmFTP, SWT.SEPARATOR);
+		
+		MenuItem pSaveFTP = new MenuItem(pmFTP, SWT.PUSH);
+		pSaveFTP.setText("Save By FTP");
+		//pSaveFTP.setAccelerator(SWT.CTRL | 'I');
+		pSaveFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
+				FTPDialog ftp = new FTPDialog(main);
+				ftp.showForm(FTPDialog.SAVE_AS);
+			}
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		
+		mFTP.setMenu(pmFTP);
+		new MenuItem(mFile, SWT.SEPARATOR);
+		//yy
 		
 		submenuItem2.setMenu(mFile);
 		MenuItem pExit = new MenuItem(mFile, SWT.PUSH);

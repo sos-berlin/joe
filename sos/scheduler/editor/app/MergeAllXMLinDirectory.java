@@ -479,7 +479,7 @@ public class MergeAllXMLinDirectory {
 		
 		if(attrName != null && attrName.length() == 0)
 			return "";
-		
+		 
 		filename = (path.endsWith("/") || path.endsWith("\\")? path : path.concat("/")) + attrName + "." + (name.equalsIgnoreCase("add_order")? "order": name) + ".xml";
 		//filename = (path.endsWith("/") || path.endsWith("\\")? path : path.concat("/")) + new File(attrName).getName() + "." + (name.equalsIgnoreCase("add_order")? "order": name) + ".xml";
 		

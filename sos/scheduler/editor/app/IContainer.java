@@ -18,6 +18,8 @@ public interface IContainer {
     
     public org.eclipse.swt.widgets.Composite openQuick();
     
+    public org.eclipse.swt.widgets.Composite openQuick(String filename);
+    
     public SchedulerForm openScheduler(String filename);
     
    // public SchedulerForm reOpenScheduler(String filename);
@@ -32,7 +34,7 @@ public interface IContainer {
 
     public void setStatusInTitle();
 
-    public void setNewFilename(String oldFilename);
+    public void setNewFilename(String oldFilename);       
 
     public boolean closeAll();
 
@@ -48,5 +50,5 @@ public interface IContainer {
     
     public CTabItem getCurrentTab();
     
-    
+   // public void setFtpFile(String filename, String remotefilename);
 }

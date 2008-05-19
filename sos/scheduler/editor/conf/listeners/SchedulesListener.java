@@ -28,15 +28,15 @@ public class SchedulesListener {
 		_dom = dom;
 		_main = update;
 		if(_dom.isLifeElement()) {
-			 
+
 		} else {
-		_config = _dom.getRoot().getChild("config");
-		_schedules = _config.getChild("schedules");
-		
-		if (_schedules != null)
-			_list = _schedules.getChildren("schedule");
+			_config = _dom.getRoot().getChild("config");
+			_schedules = _config.getChild("schedules");
+
+			if (_schedules != null)
+				_list = _schedules.getChildren("schedule");
 		}
-		
+
 	}
 	
 	

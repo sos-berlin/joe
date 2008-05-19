@@ -2,6 +2,7 @@ package sos.scheduler.editor.app;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
@@ -19,7 +20,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.input.SAXBuilder;
-
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
@@ -39,6 +39,8 @@ public class TabbedContainer implements IContainer {
     private MainWindow          window                  = null;
 
     private ArrayList           filelist                = new ArrayList();
+    
+    private HashMap             ftpfilelist             = new HashMap();
     
     
 	class TabData{
@@ -269,7 +271,12 @@ public class TabbedContainer implements IContainer {
         CTabItem tab = getCurrentTab();
         TabData t = (TabData) tab.getData();
         String title = t.caption;
-        tab.setText(getCurrentEditor().hasChanges() == false ? title : "*" + title);
+        
+        if (tab.getData("ftp_profile_name") != null && tab.getData("ftp_profile_name").toString().length() > 0 && 
+        		tab.getData("ftp_remote_directory") != null && tab.getData("ftp_remote_directory").toString().length() > 0)
+        	title = tab.getData("ftp_remote_directory").toString();
+        
+        tab.setText(getCurrentEditor().hasChanges() == false ? title : "*" + title);        
         setWindowTitle();
         window.setMenuStatus();
     }
@@ -286,6 +293,9 @@ public class TabbedContainer implements IContainer {
         }
 
         String title = setSuffix(tab,Utils.getFileFromURL(filename));
+        if(tab.getData("ftp_remote_directory") != null && tab.getData("ftp_remote_directory").toString().length() > 0 
+        		&& tab.getData("ftp_profile_name") != null && tab.getData("ftp_profile_name").toString().length() > 0)
+        	title = tab.getData("ftp_remote_directory").toString();
         tab.setText(title);
         tab.setToolTipText(filename);
         tab.setData(new TabData(Utils.getFileFromURL(filename),title));
@@ -293,9 +303,32 @@ public class TabbedContainer implements IContainer {
     }
 
 
+    public void setNewFilename(String oldFilename, String newFilename) {
+        if (folder.getItemCount() == 0)
+            return;
+        
+        CTabItem tab = getCurrentTab();
+        if (oldFilename != null) {
+            filelist.remove(oldFilename);
+            filelist.add(newFilename);
+        }
+
+        String title = setSuffix(tab,Utils.getFileFromURL(newFilename));
+        tab.setText(title);
+        tab.setToolTipText(newFilename);
+        tab.setData(new TabData(Utils.getFileFromURL(newFilename),title));
+        setWindowTitle();
+    }
+
+    
     private void setWindowTitle() {
         Shell shell = folder.getShell();
-        shell.setText((String) shell.getData() + " [" + getCurrentTab().getText() + "]");
+        String ftp = getCurrentTab().getData("ftp_title") != null ? getCurrentTab().getData("ftp_title").toString() + "\\": "";	
+        /*if(ftp != null && ftp.length() > 0  ) {
+        	String f = new File(getCurrentTab().getText()).getName();
+        }*/
+        shell.setText((String) shell.getData() + ftp + " " +getCurrentTab().getText());
+        //shell.setText((String) shell.getData() + " [" + getCurrentTab().getText() + "]");
     }
 
 
@@ -407,15 +440,9 @@ public class TabbedContainer implements IContainer {
     }
     
     
-    public org.eclipse.swt.widgets.Composite openQuick() {
-    	String xmlFilename = "";
-    	try {
-    		
-    		FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);            	            	
-    		fdialog.setFilterPath(Options.getLastDirectory());
-    		fdialog.setText("Open");
-    		fdialog.setFilterExtensions(new String[] {"*.xml"});
-    		xmlFilename = fdialog.open(); 
+    public org.eclipse.swt.widgets.Composite openQuick(String xmlFilename) {
+    	
+    	try {    		    	
     		if (xmlFilename != null && xmlFilename.length() > 0) {
     			SAXBuilder builder = new SAXBuilder();   		
     			org.jdom.Document doc = builder.build( new File( xmlFilename ) );    		
@@ -447,5 +474,31 @@ public class TabbedContainer implements IContainer {
     	}
     	return null; 
     }
+    
+    public org.eclipse.swt.widgets.Composite openQuick() {
+    	String xmlFilename = "";
+    	try {
+    		
+    		FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);            	            	
+    		fdialog.setFilterPath(Options.getLastDirectory());
+    		fdialog.setText("Open");
+    		fdialog.setFilterExtensions(new String[] {"*.xml"});
+    		xmlFilename = fdialog.open(); 
+    		return openQuick(xmlFilename);
+    		
+    	} catch (Exception e) {
+    		MainWindow.message("could not open file cause" + e.getMessage(), SWT.NONE);
+    	}
+    	return null; 
+    }
+  /*  
+    public void setFtpFile(String filename, String remotefilename) {
+    	ftpfilelist.put(filename, remotefilename);
+    }
+    
+    public void removeFtpFile(String filename) {
+    	ftpfilelist.remove(filename);
+    }
+    */
     
 }

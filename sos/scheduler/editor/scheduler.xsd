@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: scheduler.xsd 5643 2008-02-21 12:32:02Z jz $ -->
+<!-- $Id: scheduler.xsd 5768 2008-05-05 07:48:00Z jz $ -->
 
 <xsd:schema 
     xmlns:xsd          = "http://www.w3.org/2001/XMLSchema" 
@@ -9,7 +9,7 @@
 
     <xsd:annotation>
         <xsd:documentation xml:lang="de">
-            $Id: scheduler.xsd 5643 2008-02-21 12:32:02Z jz $
+            $Id: scheduler.xsd 5768 2008-05-05 07:48:00Z jz $
             Schema für die Scheduler-Konfiguration,
             s.a. http://www.zschimmer.com/sos/scheduler/konfiguration.html.
         </xsd:documentation>
@@ -167,6 +167,7 @@
             <xsd:element name="lock"                        type="lock"/>
             <xsd:element name="lock.remove"                 type="lock.remove"/>
             <xsd:element ref="modify_job"/>
+            <xsd:element ref="modify_hot_folder"/>
             <xsd:element ref="modify_order"/>
             <xsd:element ref="modify_spooler"/>
             <xsd:element ref="job_chain.modify"/>
@@ -511,6 +512,7 @@
             <xsd:attribute name="visible"            type="Yes_no_never"/>
             <xsd:attribute name="orders_recoverable" type="Yes_no"/>
             <xsd:attribute name="distributed"        type="Yes_no"/>
+            <xsd:attribute name="title"              type="String"/>
         </xsd:complexType>
 
         <!--libxslt xsd:key name="job_chain_node">
@@ -603,7 +605,9 @@
     </xsd:element>
 
 
-
+    <xsd:element name="modify_hot_folder" type="modify_hot_folder"/>
+    
+    
     <xsd:element name="job_chain.modify">
         <xsd:complexType>
             <xsd:attribute name="job_chain" type="Path"         use="required"/>
@@ -629,8 +633,11 @@
         </xsd:complexType>
     </xsd:element>
 
-    
+
     <xsd:element name="lock" type="lock"/>
+
+
+    <xsd:element name="lock.remove" type="lock.remove"/>
 
 
     <xsd:element name="modify_order">
@@ -649,6 +656,7 @@
             <xsd:attribute name="setback"   type="No"/>
             <xsd:attribute name="suspended" type="Yes_no"/>
             <xsd:attribute name="at"        type="Date_time_with_now"/>
+            <xsd:attribute name="end_state" type="String"/>
         </xsd:complexType>
     </xsd:element>
 
@@ -728,6 +736,7 @@
         <xsd:attribute name="priority"          type="xsd:integer"/>
         <xsd:attribute name="title"             type="String"/>
         <xsd:attribute name="state"             type="String"/>
+        <xsd:attribute name="end_state"         type="String"/>
         <xsd:attribute name="web_service"       type="Name"/>
         <xsd:attribute name="replace"           type="Yes_no"/>
         <xsd:attribute name="at"                type="Date_time_with_now"/>
@@ -869,10 +878,15 @@
         </xsd:complexType>
     </xsd:element>
 
+
+    <xsd:element name="run_time" type="run_time"/>      <!-- Für Order.Run_time.xml = "<run_time>" -->
     
 
     <xsd:element name="s" type="Show_state"/>
 
+
+    <xsd:element name="schedule" type="run_time"/>
+    
     
     <xsd:element name="script">
         <xsd:complexType mixed="true">
@@ -1278,6 +1292,20 @@
 
 
 
+    <xsd:complexType name="modify_hot_folder">
+        <xsd:choice>
+            <xsd:element ref="job"/>
+            <xsd:element ref="job_chain"/>
+            <xsd:element ref="lock"/>
+            <xsd:element ref="order"/>
+            <xsd:element ref="process_class"/>
+            <xsd:element ref="schedule"/>
+        </xsd:choice>
+
+        <xsd:attribute name="folder" type="Path"/>
+    </xsd:complexType>
+
+
     <xsd:complexType name="monthdays">
         <xsd:sequence maxOccurs="unbounded">
             <xsd:choice>
@@ -1360,7 +1388,7 @@
 
             <xsd:element name="at" minOccurs="0" maxOccurs="unbounded">
                 <xsd:complexType>
-                    <xsd:attribute name="at" type="Date_time"/>
+                    <xsd:attribute name="at" type="Loose_date_time"/>
                 </xsd:complexType>
             </xsd:element>
 
@@ -1417,8 +1445,16 @@
             </xsd:choice>
         </xsd:sequence>
 
-        <xsd:attribute name="name"              type="String"/>
-        <xsd:attribute name="schedule"          type="String"/>
+
+        <xsd:attribute name="schedule"          type="String"/>             <!-- Nur zum Abruf ("<schedule.use>") -->
+
+        <xsd:attribute name="name"              type="Name"/>               <!-- Nur zur Definition eines benannten <schedule> -->
+        <xsd:attribute name="title"             type="String"/>
+
+        <xsd:attribute name="substitute"        type="Path"/>               <!-- Für überdeckendes <schedule> -->
+        <xsd:attribute name="valid_from"        type="Date_time"/>
+        <xsd:attribute name="valid_to"          type="Date_time"/>
+
         <xsd:attribute name="single_start"      type="Time_of_day"/>
         <xsd:attribute name="begin"             type="Time_of_day"/>
         <xsd:attribute name="end"               type="Time_of_day"/>
@@ -1603,6 +1639,16 @@
 
 
     <xsd:simpleType name="Date_time">
+        <xsd:annotation>
+            <xsd:documentation>"yyyy-mm-dd HH:MM[:SS]"</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="String">
+            <xsd:pattern value="[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}(:[0-9]{2})?"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+
+    <xsd:simpleType name="Loose_date_time">
         <xsd:annotation>
             <xsd:documentation>"yyyy-mm-dd HH:MM[:SS]"</xsd:documentation>
         </xsd:annotation>

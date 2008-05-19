@@ -88,25 +88,35 @@ public class LocksListener {
 
 
 
-    public void newProcessClass() {    	
+    public void newLock() {    	
     	_lock = new Element("lock");    	
     }
 
 
     public void applyLock(String name,  int maxNonExclusive) {
-    	String oldLockName = Utils.getAttributeValue("name", _lock);
+    	String oldLockName = Utils.getAttributeValue("name", _lock); 
     	_dom.setChangedForDirectory("lock", oldLockName, SchedulerDom.DELETE);
         Utils.setAttribute("name", name, _lock, _dom);
         Utils.setAttribute("max_non_exclusive", maxNonExclusive, _lock, _dom);
         if (_list == null)
             initLocks();
-        if (!_list.contains(_lock)) 
+        if (!_list.contains(_lock)) { 
         	_list.add(_lock);
-        else if (_dom.isLifeElement()) {
-        	_dom.setChangedForDirectory("process_class", name, SchedulerDom.NEW);        
-        	_dom.getRoot().setAttribute("name", name);
-        } else {        
-        	_dom.setChangedForDirectory("lock", name, SchedulerDom.MODIFY);
+
+        	if (_dom.isLifeElement() || _dom.isDirectory()) 
+        		_dom.setChangedForDirectory("lock", name, SchedulerDom.NEW);
+
+        	if (_dom.isLifeElement()) 
+        		_dom.getRoot().setAttribute("name", name);        		
+
+        } else {
+        	
+        	if (_dom.isLifeElement())        	        
+        		_dom.getRoot().setAttribute("name", name);
+        	 
+        	if (_dom.isLifeElement() || _dom.isDirectory()) 
+        		_dom.setChangedForDirectory("lock", name, SchedulerDom.MODIFY);
+        	
         }
         _dom.setChanged(true);
     }

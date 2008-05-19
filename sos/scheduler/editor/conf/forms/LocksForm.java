@@ -163,7 +163,7 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 		 bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			 public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				 apply();
-				 listener.newProcessClass();
+				 listener.newLock();
 				 setInput(true);
 				 bApply.setEnabled(listener.isValidLock(tLock.getText()));
 			 }
@@ -249,6 +249,7 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 			 public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 
 				 Element currLock = listener.getLock(tableLocks.getSelectionIndex());
+				 listener.selectLock(tableLocks.getSelectionIndex());
 				 if(currLock != null && !Utils.isElementEnabled("lock", dom, currLock)) {
 					 setInput(false);
 					 bRemove.setEnabled(false);
@@ -280,6 +281,9 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 		 if(listener.getLock().length() > 0 &&  !Utils.checkElement(listener.getLock(), dom, sos.scheduler.editor.app.Editor.LOCKS, null))
 			 _continue = false;
 
+		 if(tableLocks.getSelectionCount() > 0)
+			 listener.selectLock(tableLocks.getSelectionIndex());
+		 
 		 if(_continue)		 
 			 listener.applyLock(tLock.getText(), sMaxNonExclusive.getSelection());
 		 
@@ -290,6 +294,8 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 		 tLock.setBackground(null);
 		 if(dom.isLifeElement())
 			 setInput(true);
+		 
+		 //if(dom.isDirectory() || dom.isLifeElement())dom.setChangedForDirectory("lock", listener.getLock(), SchedulerDom.MODIFY);
 
 	 }
 

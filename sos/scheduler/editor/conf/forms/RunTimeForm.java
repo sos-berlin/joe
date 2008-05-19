@@ -26,28 +26,40 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.RunTimeListener;
+import sos.util.SOSString;;
+
 
 public class RunTimeForm extends Composite implements IUpdateLanguage {
     
-	private Text            tFunction   = null;
 	
-    private RunTimeListener listener    = null;
+	private Text            tFunction                = null;
+	
+    private RunTimeListener listener                 = null;
 
-    private Group           gRunTime    = null;
+    private Group           gRunTime                 = null;
 
-    private DateForm        holidayForm = null;
+    private DateForm        holidayForm              = null;
 
-    private PeriodForm      periodForm  = null;
+    private PeriodForm      periodForm               = null;
 
-    private Group           gComment    = null;
+    private Group           gComment                 = null;
 
-    private Text            tComment    = null;        
+    private Text            tComment                 = null;        
 
-    private Combo           comSchedule = null; 
+    private Combo           comSchedule              = null; 
 
-    private Button          butBrowse   = null;
+    private Button          butBrowse                = null;
     
-    private ISchedulerUpdate _gui        = null;
+    private ISchedulerUpdate _gui                    = null;
+    
+    private Group           groupStartTimeFuction    = null;
+    
+    private Group           groupSchedule            = null;
+    
+    private Element         runTimeBackUpElem        = null;
+    
+    private SOSString       sosString                = null;
+    
     
     public RunTimeForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate gui) {
         super(parent, style);
@@ -81,6 +93,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
 
 
     private void initialize() {
+    	sosString= new SOSString();
         this.setLayout(new FillLayout());
         createGroup();
         setSize(new org.eclipse.swt.graphics.Point(576, 518));
@@ -100,38 +113,41 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, true);
         gridData4.heightHint = 348;
 
-        final Group group = new Group(gRunTime, SWT.NONE);
-        group.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        groupStartTimeFuction = new Group(gRunTime, SWT.NONE);
+        groupStartTimeFuction.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         final GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        group.setLayout(gridLayout);
+        groupStartTimeFuction.setLayout(gridLayout);
 
-        final Label functionLabel = new Label(group, SWT.NONE);
+        final Label functionLabel = new Label(groupStartTimeFuction, SWT.NONE);
         functionLabel.setLayoutData(new GridData());
         functionLabel.setText("Start Time Function:");
 
-        tFunction = new Text(group, SWT.BORDER);
+        tFunction = new Text(groupStartTimeFuction, SWT.BORDER);
         tFunction.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
-        		listener.setFunction(tFunction.getText());
+        			setEnabled();
+        			listener.setFunction(tFunction.getText());
+        			_gui.updateFont();
+        		
         	}
         });
         final GridData gridData10_1_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData10_1_1.widthHint = 243;
         tFunction.setLayoutData(gridData10_1_1);
 
-        final Group group_1 = new Group(gRunTime, SWT.NONE);
-        group_1.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
+        groupSchedule = new Group(gRunTime, SWT.NONE);
+        groupSchedule.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
         final GridLayout gridLayout_2 = new GridLayout();
         gridLayout_2.numColumns = 3;
-        group_1.setLayout(gridLayout_2);
+        groupSchedule.setLayout(gridLayout_2);
 
-        final Label scheduleLabel = new Label(group_1, SWT.NONE);
+        final Label scheduleLabel = new Label(groupSchedule, SWT.NONE);
         scheduleLabel.setText("Schedule:");
 
-        comSchedule = new Combo(group_1, SWT.NONE);
+        comSchedule = new Combo(groupSchedule, SWT.NONE);
         comSchedule.addSelectionListener(new SelectionAdapter() {
-        	public void widgetSelected(final SelectionEvent e) {
+        	public void widgetSelected(final SelectionEvent e) {        		
         		listener.setSchedule(comSchedule.getText());
         	}
         });
@@ -140,11 +156,13 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         comSchedule.setText(listener.getSchedule());
         comSchedule.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
-        		listener.setSchedule(comSchedule.getText());
+        			setEnabled();
+            		listener.setSchedule(comSchedule.getText());
+            		_gui.updateFont();
         	}
         });
 
-        butBrowse = new Button(group_1, SWT.NONE);
+        butBrowse = new Button(groupSchedule, SWT.NONE);
         butBrowse.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		String name = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_SCHEDULE);
@@ -184,7 +202,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
             }
         });
         new Label(gComment, SWT.NONE);
-        createGroup2();
+        
         
     }
 
@@ -205,12 +223,6 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
     }
 
 
-    /**
-     * This method initializes group
-     */
-    private void createGroup2() {
-    }
-
 
     public void setToolTipText() {
 
@@ -221,6 +233,73 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         comSchedule.setToolTipText(Messages.getTooltip("run_time.combo_schedule"));
     }
     
+    private void setEnabled() {
+
+    	boolean enable = true;
+
+    	if(comSchedule.getText().trim().length() > 0) {
+    		
+    		groupSchedule.setEnabled(true);    		
+    		groupStartTimeFuction.setEnabled(false);
+    		enable = false;
+    		
+    	} else if(tFunction.getText().trim().length() > 0) {
+    		
+    		groupSchedule.setEnabled(false);
+    		groupStartTimeFuction.setEnabled(true);
+    		enable = false;
+    		    		
+    	} else {
+    		
+    		if(runTimeBackUpElem != null) {
+    			
+    			Element e = listener.getRunTime(); 
+    			e.setContent(runTimeBackUpElem.cloneContent());    		    
+    			for(int i = 0; i < runTimeBackUpElem.getAttributes().size(); i++) {
+    				org.jdom.Attribute attr = (org.jdom.Attribute)runTimeBackUpElem.getAttributes().get(i);
+    				e.setAttribute(attr.getName(), attr.getValue(), e.getNamespace());
+    			}
+    			runTimeBackUpElem = null;
+    			
+    		}
+    		groupSchedule.setEnabled(true);
+    		groupStartTimeFuction.setEnabled(true);
+    	}
+
+    	    	
+    	if(!enable) {
+    		if(runTimeBackUpElem == null) {
+
+    			runTimeBackUpElem = (Element)listener.getRunTime().clone();    		
+    			listener.getRunTime().removeContent();
+    			listener.getRunTime().getAttributes().clear();
+    		}    		
+    		
+    	} 
+
+    	
+    	periodForm.setEnabled(enable);    	    	
+    	holidayForm.setEnabled(enable);
+    	
+
+    	setEnableOfChildren(holidayForm, enable);
+    	
+    	/*for(int i = 0; i < holidayForm.getChildren().length; i++) {
+    		holidayForm.getChildren()[i].setEnabled(enable);
+    	}*/
+
+    }
     
-    
+    private void setEnableOfChildren(Composite form, boolean enable) {
+    	for(int i = 0; i < form.getChildren().length; i++) {
+    		if(form.getChildren()[i] instanceof Composite) {
+    			org.eclipse.swt.widgets.Composite c = (Composite)form.getChildren()[i]; 
+    			c.setEnabled(enable);    		
+    			//if(c instanceof Composite)
+    			if(c.getChildren() != null &&  c.getChildren().length > 0)
+    				setEnableOfChildren(c, enable) ;
+    		}
+    	}
+    }
+
 } // @jve:decl-index=0:visual-constraint="10,10"

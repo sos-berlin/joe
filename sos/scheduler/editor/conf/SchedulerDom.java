@@ -31,7 +31,7 @@ public class SchedulerDom extends DomParser {
     private static final String[] CONFIG_ELEMENTS          = { "base", "params", "security", "cluster", "process_classes", "schedules", "locks", "script", "http_server",
             "holidays", "jobs", "job_chains", "orders", "commands" };
 
-    private static final String[] JOB_ELEMENTS             = { "description", "params", "environment", "script", "process", "monitor",
+    private static final String[] JOB_ELEMENTS             = { "description", "lock.use", "params", "environment", "script", "process", "monitor",
             "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };        
 
     private static final String[] RUNTIME_ELEMENTS         = { "period", "at", "date", "weekdays", "monthdays", "ultimos", "month" , "holidays"};        

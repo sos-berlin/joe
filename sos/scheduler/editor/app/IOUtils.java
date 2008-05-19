@@ -379,7 +379,9 @@ public class IOUtils {
                 	
                 	originFilename= save.saveAsLifeElement(dom.getRoot().getName(), dom.getRoot(), originFilename);
                 	
-                	try {dom.setFilename(new java.io.File(originFilename).getCanonicalPath()); } catch(Exception e) {}
+                	try {
+                		dom.setFilename(new java.io.File(originFilename).getCanonicalPath()); 
+                	} catch(Exception e) {}
                 	                	
                     dom.setChanged(false);
                     

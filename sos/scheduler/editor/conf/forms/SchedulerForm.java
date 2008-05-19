@@ -520,7 +520,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		
 		if(tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
-			if(item.getParentItem().getText().equals("Monitor") && s.equals(""))
+			if(item.getParentItem() != null && item.getParentItem().getText().equals("Monitor") && s.equals(""))
 				item.setText("<empty>");
 			else
 				item.setText(s);		
@@ -577,10 +577,13 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		} else if(type == Editor.RUNTIME) {
 			elem = elem.getChild("run_time");
 			if(elem != null) {
-				int hasAttribute = Utils.getAttributeValue("begin", elem).length() + Utils.getAttributeValue("end", elem).length() +
+				/*int hasAttribute = Utils.getAttributeValue("begin", elem).length() + Utils.getAttributeValue("end", elem).length() +
 				(Utils.getAttributeValue("let_run", elem).equals("yes") ? 1 : 0) +
 				(Utils.getAttributeValue("once", elem).equals("yes") ? 1 : 0);
+				
 				if(hasAttribute > 0)
+				*/
+				if(elem.getAttributes().size()>0)
 					isBold = true;
 			}
 		}

@@ -31,4 +31,6 @@ public interface IEditor {
 
 
     public String getFilename();
+        
+    
 }

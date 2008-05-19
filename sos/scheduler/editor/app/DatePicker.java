@@ -23,9 +23,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 public class DatePicker extends Composite {
+	
     private static final String ISO_PATTERN = "yyyy-MM-dd";
 
     private static final int    STYLE       = DateFormat.MEDIUM;
@@ -52,6 +55,7 @@ public class DatePicker extends Composite {
         initCalendar();
     }
 
+  
 
     private void initialize() {
         GridData gridData2 = new GridData();
@@ -170,6 +174,14 @@ public class DatePicker extends Composite {
             return new SimpleDateFormat(ISO_PATTERN).format(cal.getTime());
     }
 
+   /* 
+    //test
+     public String getISODateTime() {
+        if (cal == null)
+            return "";
+        else
+            return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(cal.getTime());
+    }*/
 
     public void setNow() {
         setDate(new Date());
@@ -216,5 +228,14 @@ public class DatePicker extends Composite {
         dateField.setToolTipText(string);
         button.setToolTipText(Messages.getTooltip("datepicker.button"));
     }
-
+    
+    public void setEditable(boolean editable) {
+    	dateField.setEditable(editable);
+    }
+    
+    public String getDateText() {
+    	return dateField.getText();
+    }
+   
+   
 } // @jve:decl-index=0:visual-constraint="10,10"

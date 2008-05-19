@@ -117,8 +117,9 @@ public class RunTimeListener {
     		_runtime.addContent(p);
     		_runtime.removeAttribute("single_start");
     	}
-
-
-
+    }
+    
+    public Element getParent() {
+    	return _job;
     }
 }
