@@ -54,6 +54,11 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			setToolTipText();
 			listener.fillTable(table);
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("..error in JobsForm.init() " + e.getMessage());
 		}
 	}
@@ -65,6 +70,11 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			createGroup();
 			setSize(new org.eclipse.swt.graphics.Point(656, 400));
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("..error in JobsForm.initialize() " + e.getMessage());
 		}
 	}
@@ -100,6 +110,11 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 						JobAssistentForm assitent = new JobAssistentForm(dom, update);
 						assitent.startJobAssistant();
 					} catch (Exception ex) {
+						try {
+							new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not start assistent." , ex);
+						} catch(Exception ee) {
+							//tu nichts
+						}
 						System.out.println("..error " + ex.getMessage());
 					}
 				}
@@ -121,6 +136,11 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			label.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 			label.setText("Label");
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("..error in JobsForm.createGroup() " + e.getMessage());
 		}
 	}
@@ -175,6 +195,11 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			tableColumn4.setWidth(40);
 			tableColumn4.setText("Order");
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("..error in JobsForm.createTable() " + e.getMessage());
 		}
 	}

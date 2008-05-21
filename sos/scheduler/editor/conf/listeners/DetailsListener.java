@@ -189,6 +189,11 @@ public class DetailsListener {
 				params = new java.util.ArrayList();
 
 		} catch(Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("..error im DetailsListener.parseDocuments(): " + e.getMessage());
 		}
 
@@ -244,6 +249,11 @@ public class DetailsListener {
 			Document doc = builder.build(new StringReader(text));
 			newNote = doc.getRootElement();
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
 
 		}
@@ -323,6 +333,11 @@ public class DetailsListener {
 			outp.output(in.getDocument(), new FileWriter(f));
 			 */
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.out.println("..error in DetailsListener.save. Could not save file " + e.getMessage());
 		}
 		return f.getAbsolutePath();
@@ -481,6 +496,11 @@ public class DetailsListener {
 
 
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.out.println("..error in DetailsListener.createConfigurationFile(). Could not create a new configuration file: " + e.getMessage());
 		}
 		return xml;

@@ -306,6 +306,11 @@ public abstract class DomParser {
         return tmp.getAbsolutePath();
     	} catch (Exception e) {
     		//System.err.println("error in DomParser.transform: " + (tmp != null ? tmp.getCanonicalPath() : "")+ e.getMessage());
+    		try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
     		MainWindow.message(MainWindow.getSShell(), 
     				"error in DomParser.transform: " + (tmp != null ? tmp.getCanonicalPath() : "")+ e.getMessage(), 
     				SWT.ICON_WARNING | SWT.OK );

@@ -59,6 +59,11 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 			init = false;
 			
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("..error in ScheduleForm.init() " + e.getMessage());
 		}
 	}
@@ -81,6 +86,11 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 			
 			setSize(new org.eclipse.swt.graphics.Point(656, 400));
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("..error in ScheduleForm.initialize() " + e.getMessage());
 		}
 	}
@@ -208,6 +218,11 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 			});
 			validTo.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("..error in ScheduleForm.createGroup() " + e.getMessage());
 		}
 	}

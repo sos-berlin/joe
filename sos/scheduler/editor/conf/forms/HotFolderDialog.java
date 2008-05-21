@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
@@ -225,6 +227,11 @@ public class HotFolderDialog {
 
 					}
 				} catch (Exception ex) {
+					try {
+		    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not rename configuration.", ex);
+		    		} catch(Exception ee) {
+		    			//tu nichts
+		    		}
 					MainWindow.message("could not rename configuration: " + ex.getMessage(), SWT.ICON_ERROR);
 					schedulerConfigurationShell.setFocus();
 				}
@@ -320,6 +327,11 @@ public class HotFolderDialog {
 			rItem.setExpanded(true);
 
 		} catch (Exception e) {
+			try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
 			MainWindow.message("..error in create tree for Open Scheduler Cluster/Host " + e.getMessage(), SWT.ICON_ERROR);
 			schedulerConfigurationShell.setFocus();
 		}
@@ -401,6 +413,11 @@ public class HotFolderDialog {
 
 			}
 		} catch (Exception e) {
+			try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
 			MainWindow.message(
 					"..error in create tree for Open Scheduler Cluster/Host "
 					+ e.getMessage(), SWT.ICON_ERROR);
@@ -429,6 +446,11 @@ public class HotFolderDialog {
 				schedulerConfigurationShell.close();
 			}
 		} catch (Exception e) {
+			try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
 			MainWindow.message(
 					"..error in create tree for Open Scheduler Cluster/Host "
 					+ e.getMessage(), SWT.ICON_ERROR);
@@ -481,6 +503,12 @@ public class HotFolderDialog {
 			}
 
 		} catch (Exception e) {
+			
+			try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " could not change host.", e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
 			MainWindow.message(
 					"..could not Change Host "
 					+ e.getMessage(), SWT.ICON_ERROR);
@@ -562,6 +590,11 @@ public class HotFolderDialog {
 			tree.setSelection(new TreeItem[] {item});
 
 		} catch(Exception ex) {
+			try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() +  " ; Error while creating new " + sType + " Configuration. ", ex);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
 			MainWindow.message("Error while creating new " + sType + " Configuration: " + ex.getMessage(), SWT.ICON_ERROR);
 			schedulerConfigurationShell.setFocus();
 		}

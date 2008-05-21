@@ -592,7 +592,11 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 			tabFolder.setSelection(includeParameterTabItem);
 		} catch(Exception e) {
-
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			MainWindow.message("could not create Tabitem cause: " + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}

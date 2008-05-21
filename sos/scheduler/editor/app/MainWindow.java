@@ -39,9 +39,10 @@ public class MainWindow  {
 	
 	private MainWindow  main                = null;
 	
+	
+	
 	public MainWindow() {
-		super();
-		
+		super();	
 	}
 	
 	

@@ -13,19 +13,23 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class BaseListener {
-    private SchedulerDom _dom;
+	
+	
+    private         SchedulerDom      _dom       = null;
 
-    private Element      _config;
+    private         Element           _config    = null;
 
-    private Element      _baseFile;
+    private         Element           _baseFile  = null;
 
-    private List         _list;
+    private         List              _list      = null;
 
 
     public BaseListener(SchedulerDom dom) throws JDOMException {
+    	
         _dom = dom;
         _config = _dom.getRoot().getChild("config");
         _list = _config.getChildren("base");
+        
     }
 
 
@@ -35,6 +39,7 @@ public class BaseListener {
 
 
     public String[] getFiles() {
+    	
         Iterator it = _list.iterator();
         String[] files = new String[_list.size()];
         int index = 0;
@@ -45,10 +50,12 @@ public class BaseListener {
             files[index++] = file;
         }
         return files;
+        
     }
 
 
     public void fillTable(Table table) {
+    	
         table.removeAll();
         for (Iterator it = _list.iterator(); it.hasNext();) {
             Element e = (Element) it.next();
@@ -59,14 +66,17 @@ public class BaseListener {
                 comment = comment.substring(0, comment.indexOf("\n") - 1) + "...";
             item.setText(1, comment);
         }
+        
     }
 
 
     public void selectBaseFile(int index) {
+    	
         if (index >= 0 && index < _list.size())
             _baseFile = (Element) _list.get(index);
         else
             _baseFile = null;
+        
     }
 
 
@@ -76,18 +86,22 @@ public class BaseListener {
 
 
     public void applyBaseFile(String file, String comment) {
+    	
         _baseFile.setAttribute("file", file);
         _baseFile.setAttribute("__comment__", comment);
         if (!_list.contains(_baseFile))
             _list.add(_baseFile);
         _dom.setChanged(true);
+        
     }
 
 
     public void removeBaseFile(int index) {
+    	
         if (index >= 0 && index < _list.size())
             _list.remove(index);
         _dom.setChanged(true);
+        
     }
 
 

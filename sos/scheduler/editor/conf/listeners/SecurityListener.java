@@ -13,20 +13,23 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class SecurityListener {
-    private SchedulerDom    _dom;
+	
+	
+    private        SchedulerDom    _dom          = null;
 
-    private Element         _config;
+    private        Element         _config       = null;
 
-    private Element         _security;
+    private        Element         _security     = null;
 
-    private Element         _host;
+    private        Element         _host         = null;
 
-    private List            _list;
+    private        List            _list         = null;
 
-    private static String[] _levels = { "none", "signal", "info", "no_add", "all" };
+    private static String[]        _levels       = { "none", "signal", "info", "no_add", "all" };
 
 
     public SecurityListener(SchedulerDom dom, Element config) throws JDOMException {
+    	    	
         _dom = dom;
         _config = config;
 

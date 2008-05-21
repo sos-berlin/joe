@@ -495,6 +495,11 @@ public class FTPDialogProfiles {
 			}
 
 		} catch (Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.out.println("..error in FTPDilagProfiles: " + e.getMessage());
 		}
 		return str;
@@ -578,6 +583,11 @@ public class FTPDialogProfiles {
 			
 			newProfile = false;
 		} catch (Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not reaad FTP Profiles", e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			MainWindow.message("could not reaad FTP Profiles:" + e.getMessage()  , SWT.ICON_WARNING);
 		}
 	}

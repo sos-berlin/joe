@@ -426,6 +426,11 @@ public class JobAssistentPeriodForms {
 			jobTypeShell.layout();
 			jobTypeShell.pack();		
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("..error in JobAssistentPeriodFormss.showPeriodeForms() " + e.getMessage());
 		}
 	}

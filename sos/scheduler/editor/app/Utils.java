@@ -71,7 +71,7 @@ public class Utils {
         if (val != null) {
             try {
                 return new Integer(val).intValue();
-            } catch (Exception e) {
+            } catch (Exception e) {            	
                 element.setAttribute(attribute, "" + defaultValue);
             }
         }
@@ -496,6 +496,11 @@ public class Utils {
     	}
     	
     	catch (Exception e) {
+    		try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
     		System.out.println(e);
     	}
     	return retVal;
@@ -511,6 +516,11 @@ public class Utils {
             out.output(element.getContent(), stream);
             stream.close();
         } catch (Exception e) {
+        	try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
             e.printStackTrace();
         }
         
@@ -901,6 +911,7 @@ public class Utils {
     		
     		
     	} catch (Exception e) {
+    		
     		if(onlyWarning) {
     			MainWindow.message(e.getMessage(), SWT.ICON_WARNING);	
     		} else {

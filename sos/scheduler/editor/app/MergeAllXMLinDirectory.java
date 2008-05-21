@@ -11,10 +11,6 @@ import org.eclipse.swt.SWT;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-/*import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
-import org.jdom.transform.JDOMSource;
-*/
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.util.SOSFile;
 
@@ -32,9 +28,7 @@ public class MergeAllXMLinDirectory {
 	
 	public final static String MASK_ORDER            = "^.*\\.order\\.xml$";
 	
-	public final static String MASK_SCHEDULE         = "^.*\\.schedule\\.xml$";
-		
-	//private             String     xmlFilename       = "";
+	public final static String MASK_SCHEDULE         = "^.*\\.schedule\\.xml$";			
 	
 	private             String     path              = "";
 	
@@ -51,18 +45,6 @@ public class MergeAllXMLinDirectory {
 	private             ArrayList  listOfChangeElementNames = null;
 	
 	
-	/**
-	 * Alle XMLDateien, die in der inputPath liegen und den Maskierungen (siehe oben) matchen,
-	 *  werden in einer XML-Datei konkatiniert und in die Datei  outputfilename geschrieben.
-	 * @param inputPath
-	 * @param outputfilename
-	 */
-	/*public MergeAllXMLinDirectory(String path_, String outputfilename) {
-		path = path_;
-		xmlFilename = outputfilename;
-	}*/
-	
-
 	public MergeAllXMLinDirectory(String path_) {
 		path = path_;		
 	}
@@ -152,24 +134,6 @@ public class MergeAllXMLinDirectory {
 		
 	}
 	
-	/*public static void saveXML(Document doc,String filename) {		
-		
-		try {
-			//system.out.println("********************************************************************");
-			JDOMSource in = new JDOMSource(doc);
-			Format format = Format.getPrettyFormat();
-			format.setEncoding(encoding);			
-			XMLOutputter outp = new XMLOutputter(format);					
-			File f = new File(filename);
-			outp.output(in.getDocument(), new FileWriter(f));			
-			//system.out.println("xml datei wurde gespeichert: " + f.getCanonicalPath());
-			//system.out.println("********************************************************************");
-		} catch (Exception e) {
-			//System.out.println("..error in MergeAllXMLinDirectory.saveXML. Could not save file " + e.getMessage());
-			MainWindow.message("Could not save file " + e.getMessage(), SWT.ICON_ERROR);
-		}
-
-	}*/
 	
 	protected File getNormalizedFile(String url) throws Exception {
 		try {

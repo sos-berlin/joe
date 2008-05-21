@@ -12,19 +12,20 @@ import sos.scheduler.editor.conf.SchedulerDom;
 
 
 public class SchedulesListener { 
-	
-	private SchedulerDom     _dom;
-	
-	private ISchedulerUpdate _main;
-	
-	private Element          _config;
-	
-	private Element          _schedules;
-	
-	private List             _list;
-	
-	
+
+	private    SchedulerDom         _dom          = null;
+
+	private    ISchedulerUpdate     _main         = null;
+
+	private    Element              _config       = null;
+
+	private    Element              _schedules    = null;
+
+	private    List                 _list         = null;
+
+
 	public SchedulesListener(SchedulerDom dom, ISchedulerUpdate update) {
+
 		_dom = dom;
 		_main = update;
 		if(_dom.isLifeElement()) {
@@ -38,8 +39,8 @@ public class SchedulesListener {
 		}
 
 	}
-	
-	
+
+
 	private void initSchedules() {
 		if (_config.getChild("schedules") == null) {
 			Element _schedules = new Element("schedules");
@@ -50,8 +51,8 @@ public class SchedulesListener {
 			_list = _schedules.getChildren("schedule");
 		}
 	}
-	
-	
+
+
 	public void fillTable(Table table) {		
 		table.removeAll();  
 		if (_list != null) {
@@ -62,15 +63,15 @@ public class SchedulesListener {
 					TableItem item = new TableItem(table, SWT.NONE);
 					item.setData(e);
 					String name = Utils.getAttributeValue("name", e);
-									
+
 					item.setText(0, name);
-					
+
 				}
 			}
 		}
 	}
-	
-	
+
+
 	public void newScheduler(Table table) {
 		Element schedule = new Element("schedule");
 		String name = "schedule" + (table.getItemCount() + 1);
@@ -84,11 +85,11 @@ public class SchedulesListener {
 		table.setSelection(table.getItemCount() - 1);
 		_main.updateSchedules();
 		_main.expandItem(name);
-		
+
 	}
-	
-	
-	
+
+
+
 	public boolean deleteSchedule(Table table) {
 		int index = table.getSelectionIndex();
 		if (index >= 0) {
@@ -106,7 +107,7 @@ public class SchedulesListener {
 				_schedules = null;
 				_list = null;
 			}
-			
+
 			if (index >= table.getItemCount())
 				index--;
 			if (index >= 0) {
@@ -116,6 +117,6 @@ public class SchedulesListener {
 		}
 		return false;
 	}
-	
-	
+
+
 }

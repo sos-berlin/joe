@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
@@ -778,7 +779,14 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 					}
 					
 				} catch (Exception ex) {
-					System.out.println("..error in DetailForm.DetailXMLEditorForm: " + ex.getMessage());
+					try {
+						System.out.println("..error in " + sos.util.SOSClassUtil.getMethodName() + ": " +ex.getMessage());
+		    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
+		    		} catch(Exception ee) {
+		    			//tu nichts
+		    		}
+		    		
+					
 				}
 			}
 		});
@@ -825,7 +833,14 @@ public class DetailForm extends Composite implements IUpdateLanguage {
         				
         			}
         		} catch (Exception ex) {
-        			System.out.println("..could not open file " + filename + " " + ex.getMessage());
+        			try {
+             			System.out.println("..could not open file " + filename + " " + ex.getMessage());						
+		    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "..could not open file " + filename, ex);
+		    		} catch(Exception ee) {
+		    			//tu nichts
+		    		}
+		    		
+   
         		}
 			}
 		});

@@ -25,32 +25,42 @@ import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.HttpDirectoriesListener;
 
-public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateLanguage {
-	private HttpDirectoriesListener listener;
 
-	private Group               httpDirectoriesGroup             = null;
-	private Text                tUrlPath              = null;
-	private Text                tPath           = null;
-	private Table               tHttpDirectory     = null;
-	private Button              bApplyHttpDirectory = null;
-	private Button              bRemoveHttpDirectory = null;
+public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateLanguage {
+
+
+	private           HttpDirectoriesListener       listener                     = null;
+
+	private           Group                         httpDirectoriesGroup         = null;
+
+	private           Text                          tUrlPath                     = null;
+
+	private           Text                          tPath                        = null;
+
+	private           Table                         tHttpDirectory               = null;
+
+	private           Button                        bApplyHttpDirectory          = null;
+
+	private           Button                        bRemoveHttpDirectory         = null;
+
 
 	public HttpDirectoriesForm(Composite parent, int style, SchedulerDom dom, Element config) {
+
 		super(parent, style);
 		listener = new HttpDirectoriesListener(dom, config);
 		initialize();
 		setToolTipText();
-
 		listener.fillHttpDirectoryTable(tHttpDirectory);
-
 
 	}
 
 
 	private void initialize() {
+
 		this.setLayout(new FillLayout());
 		createGroup();
 		setSize(new org.eclipse.swt.graphics.Point(653, 468));
+
 	}
 
 
@@ -58,14 +68,14 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 	 * This method initializes group
 	 */
 	private void createGroup() {
+
 		GridLayout gridLayout = new GridLayout();
 		httpDirectoriesGroup = new Group(this, SWT.NONE);
 		httpDirectoriesGroup.setText("HTTP Directories");
 		createGroup1();
-
 		httpDirectoriesGroup.setLayout(gridLayout);
-
 		new Label(httpDirectoriesGroup, SWT.NONE);
+
 	}
 
 
@@ -221,10 +231,12 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 	}
 
 	public void setToolTipText() {
+
 		tUrlPath.setToolTipText(Messages.getTooltip("http_directory.url_path"));
 		tHttpDirectory.setToolTipText(Messages.getTooltip("http_directory.http_directory"));
 		tPath.setToolTipText(Messages.getTooltip("http_directory.http_directory"));
 		bApplyHttpDirectory.setToolTipText(Messages.getTooltip("http_directory.apply_button"));
 		bRemoveHttpDirectory.setToolTipText(Messages.getTooltip("http_directory.remove_button"));
+
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

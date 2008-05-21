@@ -28,7 +28,7 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.LocksListener;
 
 /**
- * @author sky2000
+ * @author
  */
 public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 

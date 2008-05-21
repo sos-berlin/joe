@@ -29,7 +29,8 @@ import sos.scheduler.editor.conf.listeners.SecurityListener;
  * @author sky2000
  */
 public class SecurityForm extends Composite implements IUnsaved, IUpdateLanguage {
-    private SecurityListener listener;
+	
+    private SecurityListener listener            = null;
 
     private Group            group               = null;
 

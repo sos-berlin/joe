@@ -162,11 +162,19 @@ public class IOUtils {
                     	}else
                     		dom.read(filename);
                     } catch (JDOMException e) {
+                    	
                         cont = MainWindow.message(Messages.getString("MainListener.validationError", new String[] {
                                 file.getAbsolutePath(), e.getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO);
                         if (cont == SWT.NO)
                             return false;
                     } catch (IOException e) {
+                    	
+            			try {
+            				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+            			} catch(Exception ee) {
+            				//tu nichts
+            			}
+
                         MainWindow.message(Messages.getString("MainListener.errorReadingFile", new String[] {
                                 file.getAbsolutePath(), e.getMessage() }), SWT.ICON_ERROR | SWT.OK);
                         return false;
@@ -192,6 +200,12 @@ public class IOUtils {
             Options.setLastDirectory(new File(filename));
             return true;
         } catch (Exception e) {
+        	try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
             e.printStackTrace();
             MainWindow.message(e.getMessage(), SWT.ICON_ERROR | SWT.OK);
         } finally {
@@ -202,126 +216,7 @@ public class IOUtils {
         return false;
     }
     
-    /*public static boolean openFile_(String filename, Collection filenames, DomParser dom) {
-        try {
-        	boolean isDirectory = dom instanceof SchedulerDom &&  ((SchedulerDom)dom).isDirectory();
-        	String xml =null;
-            // open file dialog            
-            if (!isDirectory && (filename == null || filename.equals(""))) {
-                FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);            	            	
-                fdialog.setFilterPath(Options.getLastDirectory());
-                fdialog.setText("Open" + getDomInstance(dom) + " File");                
-                filename = fdialog.open();                
-            }
-
-            // open Directory
-            //if (filename != null && filename.equals("#xml#")) {
-            if(isDirectory) {
-            	
-            	String path = filename;
-            	if(filename == null || filename.length() == 0) {
-            		DirectoryDialog fdialog = new DirectoryDialog(MainWindow.getSShell(), SWT.MULTI);
-            		fdialog.setFilterPath(Options.getLastDirectory());
-            		
-            		fdialog.setText("Open" + getDomInstance(dom) + " File");
-            		
-            		String fname = fdialog.open();
-            		if (fname == null)
-            			return false;
-            		path = fdialog.getFilterPath();
-
-            	}
-                 
-                 File tempFile = File.createTempFile("#xml#.config.", ".xml~", new File(path) );
-                 
-                 tempFile.deleteOnExit();
-                 
-                 //temporäre config.xml bilden
-                 MergeAllXMLinDirectory allJob = new MergeAllXMLinDirectory(path, tempFile.getCanonicalPath());
-                 xml = allJob.parseDocuments();
-                 //schreibgeschützte Dateien merken. Diese Elemente werden anders farbig dargestellt und können nicht verändert werden
-                 ((SchedulerDom)dom).setListOfReadOnlyFiles(allJob.getListOfReadOnly());
-                 
-                 //life Dateiname und Element-Attribute-name sind nicht gleich. Attributname wird automatisch
-                 //verändert und das Dokument auf geändert markiert
-                 if(allJob.getListOfChangeElementNames()!= null && allJob.getListOfChangeElementNames().size() > 0)
-                	 ((SchedulerDom)dom).setListOfChangeElementNames(allJob.getListOfChangeElementNames());
-                 //tempFile.delete();
-               
-                 filename= tempFile.getCanonicalPath();        		
-                 if (filename == null)
-                 	return false;            	
-            }
-
-            
-            // check for opened file
-            if (filenames != null) {
-                for (Iterator it = filenames.iterator(); it.hasNext();) {
-                    if (((String) it.next()).equals(filename)) {
-                        MainWindow
-                                .message(Messages.getString("MainListener.fileOpened"), SWT.ICON_INFORMATION | SWT.OK);
-                        return false;
-                    }
-                }
-            }
-
-            if (filename != null && !filename.equals("")) { //$NON-NLS-1$
-                File file = new File(filename);
-                ////System.out.println("~~~~~~~~~~~~~~~~~filename ioutils: " + filename);
-                // check the file
-                if (!file.exists())  {
-                	////System.out.println("~~~~~~~~~~~~~~~~~filename ioutils not exist: " + file.getCanonicalPath());
-                    MainWindow.message(Messages.getString("MainListener.fileNotFound"), //$NON-NLS-1$
-                            SWT.ICON_WARNING | SWT.OK);                    
-                    return false;
-                } else if (!file.canRead() )
-                    MainWindow.message(Messages.getString("MainListener.fileReadProtected"), //$NON-NLS-1$
-                            SWT.ICON_WARNING | SWT.OK);
-                else { // open it...
-                    int cont = SWT.NO;
-                    try {
-                        // read and validate                    	
-                    		dom.read(filename);
-                    } catch (JDOMException e) {
-                        cont = MainWindow.message(Messages.getString("MainListener.validationError", new String[] {
-                                file.getAbsolutePath(), e.getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-                        if (cont == SWT.NO)
-                            return false;
-                    } catch (IOException e) {
-                        MainWindow.message(Messages.getString("MainListener.errorReadingFile", new String[] {
-                                file.getAbsolutePath(), e.getMessage() }), SWT.ICON_ERROR | SWT.OK);
-                        return false;
-                    }
-
-                    if (cont == SWT.YES) { // validation error, continue
-                        // anyway...
-                        if (!dom.read(filename, false)) { // unknown file
-                            MainWindow
-                                    .message(Messages.getString("MainListener.unknownXML"), SWT.ICON_WARNING | SWT.OK);
-                            return false;
-                        }
-                    }
-                }
-            } else
-                return false;
-
-            MainWindow.getSShell().setText("Job Scheduler Editor [" + filename + "]");
-
-            Options.setLastDirectory(new File(filename));
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            MainWindow.message(e.getMessage(), SWT.ICON_ERROR | SWT.OK);
-        } finally {
-        	if(filename != null && new File(filename).getName().startsWith("#xml#.config.")) {
-        		new java.io.File(filename).delete();
-        	}
-        }
-        return false;
-    } 
-*/
-    
-
+  
     public static boolean saveFile(DomParser dom, boolean saveas) {
     	String filename = dom.getFilename();
     	String originFilename = null;
@@ -345,11 +240,10 @@ public class IOUtils {
             filename = filename + "~";
             
             File file = new File(filename);
-            //File file = new File(originFilename);
+           
             Options.setLastDirectory(file);
 
-            // overwrite the new file if it exists?
-            //if (saveas && file.exists()) {
+            // overwrite the new file if it exists?           
             if (saveas && new File(originFilename).exists()) {
                 int ok = MainWindow.message(Messages.getString("MainListener.doFileOverwrite"), //$NON-NLS-1$
                         SWT.ICON_QUESTION | SWT.YES | SWT.NO);
@@ -411,6 +305,12 @@ public class IOUtils {
 
             return true;
         } catch (Exception e) {
+        	try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
             e.printStackTrace();
             MainWindow.message(e.getMessage(), SWT.ICON_ERROR | SWT.OK);
             return false;
@@ -463,6 +363,12 @@ public class IOUtils {
                 }
             }
         } catch (Exception e) {
+        	try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
             e.printStackTrace();
             MainWindow.message(e.getMessage(), SWT.ICON_ERROR | SWT.OK);
         }
@@ -476,86 +382,88 @@ public class IOUtils {
     public static boolean saveDirectory(DomParser dom, boolean saveas, int type, String nameOfElement, IContainer container) {
     	Document currDoc = dom.getDoc();
     	File configFile = null;
-    	
-    	if(dom.getFilename() == null || saveas) {
+    	try {
+    		if(dom.getFilename() == null || saveas) {
 
-    		DirectoryDialog fdialog = new DirectoryDialog(MainWindow.getSShell(), SWT.MULTI);
-    		fdialog.setFilterPath(Options.getLastDirectory());
-    		fdialog.setText("Save object to hot folder ...");
+    			DirectoryDialog fdialog = new DirectoryDialog(MainWindow.getSShell(), SWT.MULTI);
+    			fdialog.setFilterPath(Options.getLastDirectory());
+    			fdialog.setText("Save object to hot folder ...");
 
-    		String path = fdialog.open();    		
-    		//String path = fdialog.getFilterPath();   
-    		
-    		/*if(!new File(path).isDirectory() || !new File(path).exists()) {
-    			int cont = MainWindow.message("Directory not exist.",  SWT.ICON_WARNING | SWT.YES | SWT.NO);
-    			if(cont == SWT.YES ) {
-    				new File(path).mkdirs();
-    			} else {
-    				return saveDirectory(dom, saveas, type, nameOfElement, container);
+    			String path = fdialog.open();    		    			
+
+    			if(path == null) {
+    				return false;
+    			}  
+    			File _file = null;
+    			//existiert der Hot Folder Element
+    			if(dom.getRoot().getName().equals("order") || dom.getRoot().getName().equals("add_order") ) {
+    				_file = new File(path + "//" + Utils.getAttributeValue("job_chain", dom.getRoot()) + ","+ Utils.getAttributeValue("id", dom.getRoot()) + ".order.xml");	
+    			} else  {
+    				_file = new File(path + "//" + Utils.getAttributeValue("name", dom.getRoot()) + "." + dom.getRoot().getName() + ".xml" );
+    			}    
+    			if(_file.exists()) {
+    				int ok = MainWindow.message(Messages.getString("MainListener.doFileOverwrite"), //$NON-NLS-1$
+    						SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+    				if (ok == SWT.NO)
+    					return false;
     			}
-    		}*/
 
-    		if(path == null) {
-    			return false;
-    		}  
-    		File _file = null;
-    		//existiert der Hot Folder Element
-    		if(dom.getRoot().getName().equals("order") || dom.getRoot().getName().equals("add_order") ) {
-    			_file = new File(path + "//" + Utils.getAttributeValue("job_chain", dom.getRoot()) + ","+ Utils.getAttributeValue("id", dom.getRoot()) + ".order.xml");	
-    		} else  {
-    			_file = new File(path + "//" + Utils.getAttributeValue("name", dom.getRoot()) + "." + dom.getRoot().getName() + ".xml" );
-    		}    
-    		if(_file.exists()) {
-    			int ok = MainWindow.message(Messages.getString("MainListener.doFileOverwrite"), //$NON-NLS-1$
-                        SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-                if (ok == SWT.NO)
-                    return false;
-    		}
-    		
-    		
-    		configFile = new File(path);
-    	} else {
-    		configFile = new File(dom.getFilename());
-    	}
-    	MergeAllXMLinDirectory save = null;
-    	if(dom instanceof SchedulerDom &&  ((SchedulerDom)dom).isLifeElement() && configFile.isFile())
-    		save = new MergeAllXMLinDirectory(configFile.getParent());
-    	else
-    		save = new MergeAllXMLinDirectory(configFile.getPath());
-
-    	if(type == SchedulerDom.DIRECTORY) {
-    		//configFile.delete();
-    		save.saveXMLDirectory(currDoc, ((SchedulerDom)dom).getChangedJob());
-
-    	} else {//sonst life element
-     		org.jdom.Element elem = null;
-    		if(type == SchedulerDom.LIFE_LOCK) {
-
-    			sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm)(MainWindow.getContainer().getCurrentEditor());
-    			org.eclipse.swt.widgets.Tree tree = form.getTree();
-    			TreeData data = (TreeData)tree.getSelection()[0].getData();
-    			elem = data.getElement().getChild("locks").getChild("lock");
-
-    		} else if (type == SchedulerDom.LIFE_PROCESS_CLASS) {
-
-    			sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm)(MainWindow.getContainer().getCurrentEditor());
-    			org.eclipse.swt.widgets.Tree tree = form.getTree();
-    			TreeData data = (TreeData)tree.getSelection()[0].getData();
-    			elem = data.getElement().getChild("process_classes").getChild("process_class");
-
+    			configFile = new File(path);
+    			
     		} else {
-    			elem = currDoc.getRootElement();
+    			
+    			configFile = new File(dom.getFilename());
+    			
     		}
+    		
+    		MergeAllXMLinDirectory save = null;
+    		if(dom instanceof SchedulerDom &&  ((SchedulerDom)dom).isLifeElement() && configFile.isFile())
+    			save = new MergeAllXMLinDirectory(configFile.getParent());
+    		else
+    			save = new MergeAllXMLinDirectory(configFile.getPath());
 
-    		String name = save.saveLifeElement(nameOfElement, elem, ((SchedulerDom)dom).getChangedJob(),((SchedulerDom)dom).getListOfChangeElementNames());
-    		Options.setLastDirectory(new File(name));
-    		try {dom.setFilename(new java.io.File(name).getCanonicalPath()); } catch(Exception e) {}
-    		dom.setChanged(true);
+    		if(type == SchedulerDom.DIRECTORY) {    			
+    			save.saveXMLDirectory(currDoc, ((SchedulerDom)dom).getChangedJob());
 
+    		} else {//sonst life element
+    			org.jdom.Element elem = null;
+    			if(type == SchedulerDom.LIFE_LOCK) {
+
+    				sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm)(MainWindow.getContainer().getCurrentEditor());
+    				org.eclipse.swt.widgets.Tree tree = form.getTree();
+    				TreeData data = (TreeData)tree.getSelection()[0].getData();
+    				elem = data.getElement().getChild("locks").getChild("lock");
+
+    			} else if (type == SchedulerDom.LIFE_PROCESS_CLASS) {
+
+    				sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm)(MainWindow.getContainer().getCurrentEditor());
+    				org.eclipse.swt.widgets.Tree tree = form.getTree();
+    				TreeData data = (TreeData)tree.getSelection()[0].getData();
+    				elem = data.getElement().getChild("process_classes").getChild("process_class");
+
+    			} else {
+    				elem = currDoc.getRootElement();
+    			}
+
+    			String name = save.saveLifeElement(nameOfElement, elem, ((SchedulerDom)dom).getChangedJob(),((SchedulerDom)dom).getListOfChangeElementNames());
+    			Options.setLastDirectory(new File(name));
+    			try {dom.setFilename(new java.io.File(name).getCanonicalPath()); } catch(Exception e) {}
+    			dom.setChanged(true);
+
+    		}
+    		
+    		dom.setChanged(false); 
+
+    	} catch (Exception e) {
+    		try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " could not save directory." , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
     	}
-    	dom.setChanged(false); 
-
+    	
     	return true;
+    	
     }
 
     public static void saveXML(Document doc,String filename) {		
@@ -571,7 +479,11 @@ public class IOUtils {
     		//system.out.println("xml datei wurde gespeichert: " + f.getCanonicalPath());
     		//system.out.println("********************************************************************");
     	} catch (Exception e) {
-    		//System.out.println("..error in MergeAllXMLinDirectory.saveXML. Could not save file " + e.getMessage());
+    		try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " .Could not save file " + filename , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
     		MainWindow.message("Could not save file " + e.getMessage(), SWT.ICON_ERROR);
     	}
     	

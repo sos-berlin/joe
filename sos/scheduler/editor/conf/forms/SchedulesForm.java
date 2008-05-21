@@ -36,6 +36,7 @@ public class SchedulesForm extends Composite implements IUpdateLanguage {
 	
 	
 	public SchedulesForm(Composite parent, int style, SchedulerDom dom_, ISchedulerUpdate update) {
+		
 		super(parent, style);
 		try {
 			listener = new SchedulesListener(dom_, update);
@@ -45,8 +46,14 @@ public class SchedulesForm extends Composite implements IUpdateLanguage {
 			listener.fillTable(table);
 			
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("..error in SchedulesForm.init() " + e.getMessage());
 		}
+		
 	}
 	
 	
@@ -56,6 +63,11 @@ public class SchedulesForm extends Composite implements IUpdateLanguage {
 			createGroup();
 			setSize(new org.eclipse.swt.graphics.Point(656, 400));
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("..error in SchedulesForm.initialize() " + e.getMessage());
 		}
 	}
@@ -99,6 +111,11 @@ public class SchedulesForm extends Composite implements IUpdateLanguage {
 			label.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 			label.setText("Label");
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("..error in SchedulesForm.createGroup() " + e.getMessage());
 		}
 	}
@@ -127,6 +144,11 @@ public class SchedulesForm extends Composite implements IUpdateLanguage {
 			tableColumn.setWidth(385);
 			tableColumn.setText("Name");
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("..error in SchedulesForm.createTable() " + e.getMessage());
 		}
 	}

@@ -622,27 +622,6 @@ public class JobChainsListener {
 	public Element getChain() {
 		return _chain;
 	}
-	
-	/*public boolean checkElement(String name) {
-		try {
-			XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 
-			List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-			if(!listOfElement_3.isEmpty())
-				throw new Exception ("Der Jobkette [job_chain=" + name + "] ist in einer Kommando definiert. " +
-						"Soll die Jobkette trotzdem gelöscht werden");
-			
-			XPath x4 = XPath.newInstance("//add_order[@job_chain='"+ name + "']");				 
-			List listOfElement_4 = x4.selectNodes(_dom.getDoc());
-			if(!listOfElement_4.isEmpty())
-				throw new Exception ("Der Jobkette [job_chain=" + name + "] ist in einer Kommando definiert. " +
-						"Soll die Jobkette trotzdem gelöscht werden");
-			
-		} catch (Exception e) {
-			int c = MainWindow.message(e.getMessage(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
-			if(c != SWT.YES)
-				return false;
-		}
-		return true;
-	}*/
+		
 	
 }

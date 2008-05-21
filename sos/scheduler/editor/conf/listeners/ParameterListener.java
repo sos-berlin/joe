@@ -21,41 +21,37 @@ import sos.scheduler.editor.app.Options;
 
 public class ParameterListener {
 
-	private ISchedulerUpdate _main;
 
-	private SchedulerDom     _dom;
+	private         ISchedulerUpdate      _main                    = null;
 
-	private Element          _parent;
+	private         SchedulerDom          _dom                     = null;
 
-	private List             _params;
+	private         Element               _parent                  = null;
 
-	private List             _environments;
+	private         List                  _params                  = null;
 
-	private List             _includeParams;
+	private         List                  _environments            = null;
 
-	//Hifsvariable
-	//private static String library      = "";  
+	private         List                  _includeParams           = null;
 
-	private static HashMap parameterDescription = new HashMap();
+	private  static HashMap               parameterDescription     = new HashMap();
 
-	private static HashMap parameterRequired = new HashMap();
-
+	private  static HashMap               parameterRequired        = new HashMap();
 	//default ist config
-	private int    type     = Editor.CONFIG;
+	private         int                   type                     = Editor.CONFIG;
 
 
 	public ParameterListener(SchedulerDom dom, Element parent, ISchedulerUpdate update, int type_) {
+
+
 		_dom = dom;
 		_parent = parent;
 		_main = update;
 		type = type_;
 
-
 		Element params = _parent.getChild("params");
-		if (params != null) {
-			//_params = params.getChildren("param");
-			_params = params.getChildren();
-			
+		if (params != null) {			
+			_params = params.getChildren();			
 			_includeParams = params.getChildren("include");
 		}
 
@@ -63,20 +59,16 @@ public class ParameterListener {
 		if(environment != null)
 			_environments = environment.getChildren("variable");
 
-
-
 	}
 
 
 	private void initParams() {
 		Element params = _parent.getChild("params");
 		if (params != null) {
-			//_params = params.getChildren("param");
 			_params = params.getChildren();
 			_includeParams = params.getChildren("include");
 		} else {
 			_parent.addContent(0, new Element("params"));
-			//_params = _parent.getChild("params").getChildren("param");
 			_params = _parent.getChild("params").getChildren();
 			_includeParams = _parent.getChild("params").getChildren("include");
 		}
@@ -116,12 +108,10 @@ public class ParameterListener {
 				}
 			}						
 		}		
-		//if(type == Editor.JOB)
-		//	_main.updateJob();;
+		
 	} 
 
-	public void fillParams(ArrayList listOfParams, Table table, boolean refreshTable) {
-		//boolean existParam = false;
+	public void fillParams(ArrayList listOfParams, Table table, boolean refreshTable) {	
 
 		if(refreshTable) {
 			if(_params!=null)
@@ -181,7 +171,7 @@ public class ParameterListener {
 						item.setText(2, "live_file");
 					}
 					item.setText(1, (((Element) o).getAttributeValue("node") != null ? ((Element) o).getAttributeValue("node") : ""));
-														
+
 				}
 			}						
 		}				
@@ -197,6 +187,12 @@ public class ParameterListener {
 				}
 			}
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
 			System.out.println("error in ParameterListener.existsParams " + e.getMessage());
 		}
 		return null;
@@ -245,17 +241,14 @@ public class ParameterListener {
 
 	public void saveParameter(Table table, String name, String value, String parameterDescription_de, String parameterDescription_en, boolean required) {
 
-		Element e = new Element("param");		
-		//Utils.setAttribute("name", name, e);
-		//Utils.setAttribute("value", value, e);
+		Element e = new Element("param");				
 		e.setAttribute("name", name);
 		e.setAttribute("value", value);
 
 
 		if((_dom.isLifeElement() || _dom.isDirectory()) && _params == null) {
 			Element params = _parent.getChild("params");
-			if (params != null)
-				//_params = params.getChildren("param");
+			if (params != null)				
 				_params = params.getChildren();
 		}
 
@@ -321,7 +314,7 @@ public class ParameterListener {
 				e.setAttribute("live_file", file);
 			else
 				e.setAttribute("file", file);
-			
+
 			e.setAttribute("node", node);
 			_dom.setChanged(true);			
 			if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
@@ -333,7 +326,7 @@ public class ParameterListener {
 
 			TableItem item = new TableItem(table, SWT.NONE);
 			item.setText(new String[] { file, node, (isLive ? "live_file" : "file")});
-			
+
 
 		}			
 	}
@@ -379,112 +372,70 @@ public class ParameterListener {
 		}			
 	}
 
-	   public void saveParameter(Table table, String name, String value) {
-	        boolean found = false;
-	        if (_params != null) {
-
-	            if (name.equals("<from>") && type == Editor.COMMANDS) {
-	                found = (table.getSelectionIndex() > -1);
-	            } else {
-	                int index = 0;
-	                Iterator it = _params.iterator();
-	                while (it.hasNext()) {
-	                    Object o = it.next();
-	                    if (o instanceof Element) {
-	                        Element e = (Element) o;
-	                        if (e.getName().equals("param")) {
-	                            if (name.equals(e.getAttributeValue("name"))) {
-	                                found = true;
-	                                e.setAttribute("value", value);
-	                                _dom.setChanged(true);
-	                                if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
-	                                table.getItem(index).setText(1, value);
-	                            }
-	                        }
-	                        index++;
-	                    }
-	                }
-	            }
-
-	            if (name.equals("<from>") && found && type == Editor.COMMANDS) {
-	                int index = table.getSelectionIndex();
-	                table.getItem(index).setText(0, name);
-	                table.getItem(index).setText(1, value);
-	                Element e = (Element) _params.get(index);
-	                e.setName("copy_params");
-	                e.setAttribute("from", value);
-	                e.removeAttribute("name");
-	                e.removeAttribute("value");
-	                _dom.setChanged(true);
-	                if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
-	            }
-	        }
-
-	        if (!found) {
-	            Element e = new Element("param");
-	            if (!name.equals("<from>")) {
-	                e.setAttribute("name", name);
-	                e.setAttribute("value", value);
-	            } else {
-	                e.setName("copy_params");
-	                e.setAttribute("from", value);
-	            }
-
-	            _dom.setChanged(true);
-	            //if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
-	            if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
-	            if (_params == null)
-	            	initParams();
-	            if (_params != null)
-	                _params.add(e);
-
-	            TableItem item = new TableItem(table, SWT.NONE);
-	            item.setText(new String[] { name, value });
-	        }
-
-	    }
-	/*public void saveParameter(Table table, String name, String value) {
-
+	public void saveParameter(Table table, String name, String value) {
 		boolean found = false;
-		//String value2 = value;
-
 		if (_params != null) {
-			int index = 0;
-			Iterator it = _params.iterator();
-			while (it.hasNext()) {
-				Object o = it.next();
-				if (o instanceof Element) {
-					Element e = (Element) o;
-					if (name.equals(e.getAttributeValue("name"))) {
-						found = true;
-						Utils.setAttribute("value", value, e);											
-						_dom.setChanged(true);
-						if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);						
-						table.getItem(index).setText(1, value);
-						break;
+
+			if (name.equals("<from>") && type == Editor.COMMANDS) {
+				found = (table.getSelectionIndex() > -1);
+			} else {
+				int index = 0;
+				Iterator it = _params.iterator();
+				while (it.hasNext()) {
+					Object o = it.next();
+					if (o instanceof Element) {
+						Element e = (Element) o;
+						if (e.getName().equals("param")) {
+							if (name.equals(e.getAttributeValue("name"))) {
+								found = true;
+								e.setAttribute("value", value);
+								_dom.setChanged(true);
+								if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+								table.getItem(index).setText(1, value);
+							}
+						}
+						index++;
 					}
-					index++;
 				}
 			}
+
+			if (name.equals("<from>") && found && type == Editor.COMMANDS) {
+				int index = table.getSelectionIndex();
+				table.getItem(index).setText(0, name);
+				table.getItem(index).setText(1, value);
+				Element e = (Element) _params.get(index);
+				e.setName("copy_params");
+				e.setAttribute("from", value);
+				e.removeAttribute("name");
+				e.removeAttribute("value");
+				_dom.setChanged(true);
+				if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			}
 		}
+
 		if (!found) {
 			Element e = new Element("param");
-			Utils.setAttribute("name", name, e);
-			Utils.setAttribute("value", value, e);	
+			if (!name.equals("<from>")) {
+				e.setAttribute("name", name);
+				e.setAttribute("value", value);
+			} else {
+				e.setName("copy_params");
+				e.setAttribute("from", value);
+			}
+
 			_dom.setChanged(true);			
 			if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 			if (_params == null)
 				initParams();
-			_params.add(e);
+			if (_params != null)
+				_params.add(e);
 
 			TableItem item = new TableItem(table, SWT.NONE);
 			item.setText(new String[] { name, value });
-			if(parameterRequired != null && isParameterRequired(name))
-				item.setBackground(Options.getRequiredColor());
-		}		
+		}
 
 	}
-	*/
+	
 
 	public SchedulerDom get_dom() {
 		return _dom;
@@ -543,7 +494,13 @@ public class ParameterListener {
 				}
 			}
 
-		} catch( Exception ex ) {			
+		} catch( Exception ex ) {	
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , ex);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
 			ex.printStackTrace();
 		}		
 	}
@@ -574,7 +531,7 @@ public class ParameterListener {
 			return false;
 		}
 	}
-	
+
 	//selektierte Datensatz wird eine Zeile nach oben verschoben
 	public void changeUp(Table table) {
 		int index = table.getSelectionIndex();

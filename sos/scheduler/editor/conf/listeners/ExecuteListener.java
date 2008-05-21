@@ -8,13 +8,15 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class ExecuteListener {
-    private SchedulerDom _dom;
+	
+	
+    private    SchedulerDom       _dom             = null;
 
-    private Element      _job;
+    private    Element            _job             = null;
 
-    private Element      _process;
+    private    Element            _process         = null;
 
-    private Element      _environment;
+    private    Element            _environment     = null;
 
 
     public SchedulerDom getDom() {
@@ -23,9 +25,11 @@ public class ExecuteListener {
 
 
     public ExecuteListener(SchedulerDom dom, Element job) {
+    	
         _dom = dom;
         _job = job;
         setProcess();
+        
     }
 
 
@@ -124,22 +128,6 @@ public class ExecuteListener {
     public void setIgnoreError(boolean ignore) {
         Utils.setAttribute("ignore_error", ignore, _process, _dom);
     }
-
-
-    /*public void fillEnvironmentTable(Table table) {
-        table.removeAll();
-        if (_environment != null) {
-            Iterator it = _environment.getChildren("variable").iterator();
-            while (it.hasNext()) {
-                Element variable = (Element) it.next();
-                String name = variable.getAttributeValue("name");
-                String value = variable.getAttributeValue("value");
-                TableItem item = new TableItem(table, SWT.NONE);
-                item.setText(0, name != null ? name : "");
-                item.setText(1, value != null ? value : "");
-            }
-        }
-    }*/
 
 
     public void applyVariable(String name, String value) {

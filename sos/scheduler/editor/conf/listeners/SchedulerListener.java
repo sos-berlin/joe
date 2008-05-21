@@ -829,6 +829,12 @@ public class SchedulerListener {
 				c.layout();
 			}
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
 			e.printStackTrace();
 			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
 		}

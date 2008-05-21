@@ -718,7 +718,11 @@ public class JobForm extends Composite implements IUpdateLanguage {
 						} 
 					} 
 				} catch (Exception ex) {
-					
+					try {
+						new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not open file " + tFileName.getText() , ex);
+					} catch(Exception ee) {
+						//tu nichts
+					}
 					MainWindow.message(getShell(), "..could not open file " + tFileName.getText() + " " + ex.getMessage(), SWT.ICON_WARNING | SWT.OK );
 				}
 			}

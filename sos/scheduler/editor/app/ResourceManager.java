@@ -32,6 +32,11 @@ public class ResourceManager extends SWTResourceManager {
                 m_ClassImageMap.put(key, image);
                 is.close();
             } catch (Exception e) {
+            	try {
+        			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+        		} catch(Exception ee) {
+        			//tu nichts
+        		}
                 image = getMissingImage();
                 m_ClassImageMap.put(key, image);
             }

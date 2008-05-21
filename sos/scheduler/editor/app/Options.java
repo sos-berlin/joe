@@ -41,6 +41,11 @@ public class Options {
 
             _properties = new Properties(_defaults);
         } catch (Exception e) {
+        	try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; Error reading default options from " + DEFAULT_OPTIONS , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
             return "Error reading default options from " + DEFAULT_OPTIONS + ": " + e.getMessage();
         }
 
@@ -53,6 +58,11 @@ public class Options {
                 fi.close();
             }
         } catch (Exception e) {
+        	try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + ". Error reading custom options from " + fName , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
             return "Error reading custom options from " + fName + ": " + e.getMessage();
         }
 
@@ -67,6 +77,11 @@ public class Options {
                 _properties.store(fo, "--Job Scheduler Editor Options--");
                 fo.close();
             } catch (Exception e) {
+            	try {
+        			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+        		} catch(Exception ee) {
+        			//tu nichts
+        		}
                 e.printStackTrace();
                 return e.getMessage();
             }
@@ -101,7 +116,7 @@ public class Options {
         try {
             String url = _properties.getProperty(prefix + ".help.url." + key);
             return url != null && !url.equals("") ? url : null;
-        } catch (Exception e) {
+        } catch (Exception e) {        	
             return null;
         }
     }
@@ -260,6 +275,11 @@ public class Options {
         		shell.setLocation(location);
         	}
         } catch (Exception e) {
+        	try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
             e.printStackTrace();
         }
 
@@ -267,6 +287,11 @@ public class Options {
             Boolean b = new Boolean(_properties.getProperty(name + ".window.status"));
             shell.setMaximized(b.booleanValue());
         } catch (Exception e) {
+        	try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
             e.printStackTrace();
         }
 
@@ -281,6 +306,11 @@ public class Options {
         		shell.setSize(size);
         	}
         } catch (Exception e) {
+        	try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
             e.printStackTrace();
         }
 
@@ -303,6 +333,11 @@ public class Options {
             	
             }
         } catch (Exception e) {
+        	try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
             // e.printStackTrace();
             System.err.println("No properties found for sash '" + name + "'!");
         }
@@ -334,6 +369,11 @@ public class Options {
             int b = new Integer(_properties.getProperty("required.color.b")).intValue();
             return ResourceManager.getColor(r, g, b);
         } catch (Exception e) {
+        	try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
             e.printStackTrace();
             return ResourceManager.getColor(255, 255, 210);
         }
@@ -346,6 +386,11 @@ public class Options {
             int b = new Integer(_properties.getProperty("required.color.b")).intValue();
             return ResourceManager.getColor(r, g, b);
         } catch (Exception e) {
+        	try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
             e.printStackTrace();
             return ResourceManager.getColor(255, 255, 210);
         }
@@ -358,6 +403,11 @@ public class Options {
             int b = 0;
             return ResourceManager.getColor(r, g, b);
         } catch (Exception e) {
+        	try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
             e.printStackTrace();
             return ResourceManager.getColor(255, 255, 219);
         }
@@ -370,6 +420,11 @@ public class Options {
             int b = 255;
             return ResourceManager.getColor(r, g, b);
         } catch (Exception e) {
+        	try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
             e.printStackTrace();
             return ResourceManager.getColor(255, 255, 219);
         }
@@ -394,57 +449,4 @@ public class Options {
         return _properties.getProperty("detail.editor.xslt");
     }
     
-    /**
-     * liefert eine verschachtelte Hashmap mit FTP Profilen 
-     */
-  /*  public static HashMap getFTPProfiles() {
-    	HashMap profiles = new HashMap();
-    	String p = _properties.getProperty("ftp_connections" );
-    	if(p != null && p.length() > 0) {
-    		String[] profilenames = p.split(",");
-    		for(int i = 0; i < profilenames.length; i++) {
-    			HashMap prop = new HashMap();
-    			String pName = profilenames[i];
-    			prop.put("name", _properties.getProperty("ftp." + pName + ".name"));
-    			prop.put("host", _properties.getProperty("ftp." + pName + ".host"));
-    			prop.put("port", _properties.getProperty("ftp." + pName + ".port"));
-    			prop.put("user", _properties.getProperty("ftp." + pName + ".user"));
-    			prop.put("password", _properties.getProperty("ftp." + pName + ".password"));
-    			prop.put("root", _properties.getProperty("ftp." + pName + ".root"));
-    			prop.put("localdirectory", _properties.getProperty("ftp." + pName + ".localdirectory"));
-    			prop.put("transfermode", _properties.getProperty("ftp." + pName + ".transfermode"));
-    			profiles.put(pName, prop);
-    		}    		
-    	}    	    	
-    	return profiles;
-    }
-
-*/
-    /**
-     * speichert FTP Profilen 
-     */
-/*    public static void saveFTPProfiles(HashMap profiles) {
-
-    	Object[] profilenames = profiles.keySet().toArray();
-
-    	String ftpConnections = "";
-    	for(int i = 0; i < profilenames.length; i++) {
-
-    		String pName = profilenames[i].toString();
-    		HashMap prop = (HashMap)profiles.get(pName);
-    		setProperty("ftp." + pName + ".name", prop.get("name") != null ? prop.get("name").toString(): "");
-    		setProperty("ftp." + pName + ".port", prop.get("port") != null ? prop.get("port").toString(): "");
-    		setProperty("ftp." + pName + ".user", prop.get("user") != null ? prop.get("user").toString(): "");
-    		setProperty("ftp." + pName + ".password", prop.get("password") != null ? prop.get("password").toString(): "");
-    		setProperty("ftp." + pName + ".root", prop.get("root") != null ? prop.get("root").toString(): "");
-    		setProperty("ftp." + pName + ".localdirectory", prop.get("localdirectory") != null ? prop.get("localdirectory").toString(): "");
-    		setProperty("ftp." + pName + ".transfermode", prop.get("name") != null ? prop.get("transfermode").toString(): "");
-    		setProperty("ftp." + pName + ".name", prop.get("name") != null ? prop.get("name").toString(): "");
-    		ftpConnections = ftpConnections + pName + (i == profilenames.length -1 ? ",": "");
-    	}    	
-    	_properties.setProperty("ftp_connections", ftpConnections );
-
-    }
-
-    */
 }

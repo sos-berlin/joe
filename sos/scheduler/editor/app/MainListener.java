@@ -30,7 +30,7 @@ public class MainListener {
         String url = helpKey;
 
         try {
-            //TODO: überprüfen, ob Datei wirklich exitiert
+            //TODO: überprüfen, ob Datei wirklich existiert
             url = new File(url).toURL().toString();
         	
             Program prog = Program.findProgram("html");
@@ -43,6 +43,14 @@ public class MainListener {
                 
             }
         } catch (Exception e) {
+        	
+        	try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; " + Messages.getString("MainListener.cannot_open_help", new String[] { url, lang,
+                        e.getMessage() }), e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
+    		
             e.printStackTrace();
             MainWindow.message(Messages.getString("MainListener.cannot_open_help", new String[] { url, lang,
                     e.getMessage() }), SWT.ICON_ERROR | SWT.OK);

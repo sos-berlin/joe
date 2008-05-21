@@ -23,6 +23,7 @@ public class DetailXMLEditorListener {
 
 
     public DetailXMLEditorListener(String xmlFilename_) { 
+    	
     	try {
     		xmlFilename = xmlFilename_;
     		_dom = new DetailDom();
@@ -30,11 +31,18 @@ public class DetailXMLEditorListener {
     		_settings = _dom.getRoot();
     		
     	} catch (Exception e) {
+    		try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
     		System.out.println("error in DetailXMLEditorListener: " + e.getMessage());
     	}
+    	
     }
     
-    public DetailXMLEditorListener(DetailDom     dom) { 
+    public DetailXMLEditorListener(DetailDom     dom) {
+    	
     	try {
     		_dom = dom;
     		xmlFilename = dom.getFilename();
@@ -43,8 +51,14 @@ public class DetailXMLEditorListener {
     		_settings = _dom.getRoot();
     		
     	} catch (Exception e) {
+    		try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
     		System.out.println("error in DetailXMLEditorListener: " + e.getMessage());
     	}
+    	
     }
 
     public String readCommands() throws Exception {
@@ -62,6 +76,11 @@ public class DetailXMLEditorListener {
                 }
             
             } catch (JDOMException ex) {
+            	try {
+    				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , ex);
+    			} catch(Exception ee) {
+    				//tu nichts
+    			}
                 throw new Exception("Error: " + ex.getMessage());
 
             }
@@ -94,9 +113,20 @@ public class DetailXMLEditorListener {
             _dom.write(xmlFilename);
            
         } catch (JDOMException e1) {
+        	try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "  ; XML could not be saved ; [xml=" + sXML + "]", e1);
+			} catch(Exception ee) {
+				//tu nichts
+			}
         	MainWindow.message("XML could not be saved because:\n" + e1.getMessage(), SWT.ICON_ERROR);
             e1.printStackTrace();
         } catch (IOException e1) {
+        	try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "  ; XML could not be saved ; [xml=" + sXML + "]", e1);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
         	MainWindow.message("XML could not be saved because:\n" + e1.getMessage(), SWT.ICON_ERROR);
             e1.printStackTrace();
         }

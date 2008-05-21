@@ -12,29 +12,33 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class JobOptionsListener {
-    private SchedulerDom _dom;
+	
+	
+    private            SchedulerDom     _dom          = null;
 
-    private Element      _job;
+    private            Element          _job          = null;
 
-    private List         _directories;
+    private            List             _directories  = null;
 
-    private Element      _directory;
+    private            Element          _directory    = null;
 
-    private List         _setbacks;
+    private            List             _setbacks     = null;
 
-    private Element      _setback;
+    private            Element          _setback      = null;
 
-    private List         _errorDelays;
+    private            List             _errorDelays  = null;
 
-    private Element      _errorDelay;
+    private            Element          _errorDelay   = null;
 
 
     public JobOptionsListener(SchedulerDom dom, Element job) {
+    	
         _dom = dom;
         _job = job;
         _directories = _job.getChildren("start_when_directory_changed");
         _setbacks = _job.getChildren("delay_order_after_setback");
         _errorDelays = _job.getChildren("delay_after_error");
+        
     }
 
 

@@ -28,6 +28,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
@@ -176,6 +177,12 @@ public class JobAssistentImportJobsForm {
 			
 			
 		} catch( Exception ex ) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , ex);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
 			ex.printStackTrace();
 		}
 		return listOfDoc;
@@ -347,6 +354,12 @@ public class JobAssistentImportJobsForm {
 								MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_jobdescription"), SWT.ICON_WARNING | SWT.OK );								 
 							}
 						} catch(Exception ex) {
+							try {
+								new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not open description " + txtJobname.getText() , ex);
+							} catch(Exception ee) {
+								//tu nichts
+							}
+
 							System.out.println("..could not open description " + txtJobname.getText() + " " + ex);							
 						}						
 					}
@@ -584,6 +597,11 @@ public class JobAssistentImportJobsForm {
 						try {
 							createTreeIteam();
 						} catch (Exception e) {
+							try {
+								new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+							} catch(Exception ee) {
+								//tu nichts
+							}
 							System.err.print(e.getMessage());
 						}						
 					}
@@ -639,6 +657,11 @@ public class JobAssistentImportJobsForm {
 			shell.open();
 			
 		} catch(Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("error in JobAssistentImportJobsForm.showAllImportJob(): " + e.getMessage());
 		}
 	}
@@ -711,6 +734,11 @@ public class JobAssistentImportJobsForm {
 				}
 			}
 		} catch(Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.out.println("error in JobAssistentImportJobsForm.createTreeIteam(): " + e.getMessage());
 		}
 	}
@@ -883,6 +911,11 @@ public class JobAssistentImportJobsForm {
 			}
 			
 		} catch (Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.out.println("..error in JobAssistentImportJobsForm.getJobFromDescription() " + e.getMessage());
 		}
 		return h;

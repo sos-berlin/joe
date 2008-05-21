@@ -695,6 +695,11 @@ public class JobAssistentRunTimeForms {
 			runTimeSingleShell.layout();
 			runTimeSingleShell.pack();		
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			System.err.println("..error in JobAssistentRuntimeForms.showRunTimeForms() " + e.getMessage());
 		}
 	}

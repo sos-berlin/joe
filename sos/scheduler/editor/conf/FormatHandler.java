@@ -6,187 +6,182 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class FormatHandler extends DefaultHandler implements ContentHandler {
-    private SchedulerDom _dom;
-
-    private StringBuffer _sb          = new StringBuffer();
-
-    private String       _encoding    = "ISO-8859-1";
-
-    private boolean      _disableJobs = false;
-
-    private String       _indentStr   = "    ";
-
-    private String       _indent      = "    ";
-
-    private StringBuffer _text        = new StringBuffer();
-
-    private int          _level       = 0;
-
-    private boolean      _isOpen      = false;
-
-    private String       _disabled    = "";
-    
-    private String      _stylesheet   = "";
 
 
-    public FormatHandler(SchedulerDom dom) {
-        _dom = dom;
-    }
+	private    SchedulerDom    _dom           = null;
+
+	private    StringBuffer    _sb            = new StringBuffer();
+
+	private    String          _encoding      = "ISO-8859-1";
+
+	private    boolean         _disableJobs   = false;
+
+	private    String          _indentStr     = "    ";
+
+	private    String          _indent        = "    ";
+
+	private    StringBuffer    _text          = new StringBuffer();
+
+	private    int             _level         = 0;
+
+	private    boolean         _isOpen        = false;
+
+	private    String          _disabled      = "";
+
+	private    String          _stylesheet    = "";
 
 
-    /*public void processingInstruction(String arg0, String arg1) throws SAXException {
-		// TODO Auto-generated method stub
-		super.processingInstruction(arg0, arg1);
-	}*/
-
+	public FormatHandler(SchedulerDom dom) {
+		_dom = dom;
+	}
 
 	public void setEnconding(String encoding) {
-        _encoding = encoding;
-    }
+		_encoding = encoding;
+	}
 
 
-    public void setDisableJobs(boolean disable) {
-        _disableJobs = disable;
-    }
+	public void setDisableJobs(boolean disable) {
+		_disableJobs = disable;
+	}
 
 
-    public String getXML() {
-        return _sb.toString();
-    }
+	public String getXML() {
+		return _sb.toString();
+	}
 
 
-    public void startDocument() {
-        _sb.append("<?xml version=\"1.0\" encoding=\"" + _encoding + "\"?>\n\n");
-        if(_stylesheet != null && _stylesheet.length() > 0)
-        	_sb.append(_stylesheet+"\n");
-    }
-
-    
-
-    public void characters(char[] ch, int start, int length) throws SAXException {
-        _text.append(new String(ch, start, length));
-    }
+	public void startDocument() {
+		_sb.append("<?xml version=\"1.0\" encoding=\"" + _encoding + "\"?>\n\n");
+		if(_stylesheet != null && _stylesheet.length() > 0)
+			_sb.append(_stylesheet+"\n");
+	}
 
 
-    public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
-        _level--;
-        _indent = strRepeat(_indentStr, _level);
 
-        String text = _text.toString().trim();
-        _text = new StringBuffer();
-
-        boolean disableJobs = _disableJobs && qName.equals("jobs");
-        boolean hasText = text.length() > 0;
-
-        if (_isOpen && !hasText)
-            _sb.append("/>\n");
-        else if (_isOpen)
-            _sb.append(">\n");
-
-        if (disableJobs)
-            _sb.append("<!-- disabled\n");
-
-        if (hasText) {
-            _sb.append(_indent + _indentStr + "<![CDATA[\n");
-            _sb.append(text + "\n");
-            _sb.append(_indent + _indentStr + "]]>\n");
-        }
-
-        if (!_isOpen || hasText)
-            _sb.append(_indent + "</" + qName + ">\n");
-
-        if (disableJobs)
-            _sb.append("-->\n");
-
-        if (_disabled.equals(qName)) {
-            _sb.append("-->\n");
-            _disabled = "";
-        }
-
-        _isOpen = false;
-    }
+	public void characters(char[] ch, int start, int length) throws SAXException {
+		_text.append(new String(ch, start, length));
+	}
 
 
-    public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
-        if (_isOpen)
-            _sb.append(">\n");
-        else if (!qName.equals("base") && !qName.equals("holiday"))
-            _sb.append(nl());
-        else
-            _sb.append("\n");
+	public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
+		_level--;
+		_indent = strRepeat(_indentStr, _level);
 
-        _indent = strRepeat(_indentStr, _level);
+		String text = _text.toString().trim();
+		_text = new StringBuffer();
 
-        StringBuffer attributes = new StringBuffer();
-        String sep = " ";
-        String sepStr = "\n" + _indent + strRepeat(" ", new String("<" + qName).length() + 1);
+		boolean disableJobs = _disableJobs && qName.equals("jobs");
+		boolean hasText = text.length() > 0;
 
-        String attrName = "";
+		if (_isOpen && !hasText)
+			_sb.append("/>\n");
+		else if (_isOpen)
+			_sb.append(">\n");
 
-        // iterate atributes
-        for (int i = 0; i < atts.getLength(); i++) {
-            String name = atts.getQName(i);
-            String value = atts.getValue(i);
-            String uri = atts.getURI(i);
+		if (disableJobs)
+			_sb.append("<!-- disabled\n");
 
-            if (name.equals("__comment__")) { // build element comment
-                _sb.append(_indent + "<!-- " + value + " -->\n");
-            } else { // add attribute
-                if (!uri.equals("")) {
-                    attributes.append(sep);
-                    attributes.append("xmlns:xsi" + "=\"" + uri + "\"");
-                }
-                attributes.append(sep);
-                attributes.append(name + "=\"" + value + "\"");
-                sep = sepStr;
+		if (hasText) {
+			_sb.append(_indent + _indentStr + "<![CDATA[\n");
+			_sb.append(text + "\n");
+			_sb.append(_indent + _indentStr + "]]>\n");
+		}
 
-                if (name.equals("name"))
-                    attrName = value;
-            }
-        }
+		if (!_isOpen || hasText)
+			_sb.append(_indent + "</" + qName + ">\n");
 
-        boolean disableJobs = false;
-        if (_dom.isJobDisabled(attrName)) { // disable job
-            _sb.append("<!-- disabled=\"" + attrName + "\"\n");
-            _disabled = qName;
-        } else if (_disableJobs && qName.equals("jobs")) { // disable jobs
-            disableJobs = true;
-        }
+		if (disableJobs)
+			_sb.append("-->\n");
 
-        if (disableJobs)
-            _sb.append("<!-- disabled\n");
+		if (_disabled.equals(qName)) {
+			_sb.append("-->\n");
+			_disabled = "";
+		}
 
-        _sb.append(_indent + "<" + qName + attributes.toString());
-
-        _isOpen = true;
-        _level++;
-
-        if (disableJobs) {
-            _sb.append(">\n-->\n");
-            _isOpen = false;
-        }
-    }
+		_isOpen = false;
+	}
 
 
-    private String strRepeat(String str, int cnt) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < cnt; i++)
-            sb.append(str);
-        return sb.toString();
-    }
+	public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
+		if (_isOpen)
+			_sb.append(">\n");
+		else if (!qName.equals("base") && !qName.equals("holiday"))
+			_sb.append(nl());
+		else
+			_sb.append("\n");
 
-    public void setStyleSheet(String stylesheet_) {
-    	_stylesheet = stylesheet_; 
-    }
+		_indent = strRepeat(_indentStr, _level);
 
-    private String nl() {
-        switch (_level) {
-            case 2:
-                return strRepeat("\n", 2);
-            case 3:
-                return strRepeat("\n", 1);
-            default:
-                return "";
-        }
-    }
+		StringBuffer attributes = new StringBuffer();
+		String sep = " ";
+		String sepStr = "\n" + _indent + strRepeat(" ", new String("<" + qName).length() + 1);
+
+		String attrName = "";
+
+		// iterate atributes
+		for (int i = 0; i < atts.getLength(); i++) {
+			String name = atts.getQName(i);
+			String value = atts.getValue(i);
+			String uri = atts.getURI(i);
+
+			if (name.equals("__comment__")) { // build element comment
+				_sb.append(_indent + "<!-- " + value + " -->\n");
+			} else { // add attribute
+				if (!uri.equals("")) {
+					attributes.append(sep);
+					attributes.append("xmlns:xsi" + "=\"" + uri + "\"");
+				}
+				attributes.append(sep);
+				attributes.append(name + "=\"" + value + "\"");
+				sep = sepStr;
+
+				if (name.equals("name"))
+					attrName = value;
+			}
+		}
+
+		boolean disableJobs = false;
+		if (_dom.isJobDisabled(attrName)) { // disable job
+			_sb.append("<!-- disabled=\"" + attrName + "\"\n");
+			_disabled = qName;
+		} else if (_disableJobs && qName.equals("jobs")) { // disable jobs
+			disableJobs = true;
+		}
+
+		if (disableJobs)
+			_sb.append("<!-- disabled\n");
+
+		_sb.append(_indent + "<" + qName + attributes.toString());
+
+		_isOpen = true;
+		_level++;
+
+		if (disableJobs) {
+			_sb.append(">\n-->\n");
+			_isOpen = false;
+		}
+	}
+
+
+	private String strRepeat(String str, int cnt) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < cnt; i++)
+			sb.append(str);
+		return sb.toString();
+	}
+
+	public void setStyleSheet(String stylesheet_) {
+		_stylesheet = stylesheet_; 
+	}
+
+	private String nl() {
+		switch (_level) {
+		case 2:
+			return strRepeat("\n", 2);
+		case 3:
+			return strRepeat("\n", 1);
+		default:
+			return "";
+		}
+	}
 }

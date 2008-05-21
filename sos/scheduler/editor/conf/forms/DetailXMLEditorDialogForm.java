@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
@@ -188,7 +189,13 @@ public class DetailXMLEditorDialogForm {
 		try {
         txtXML.setText(listener.readCommands());
 		} catch (Exception e) {
-			System.err.println("error in DetailXMLEditorDialogForm.showXMLEditor: " + e.toString());
+			try {
+				System.err.println("error in DetailXMLEditorDialogForm.showXMLEditor: " + e.toString());						
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
+			
 		}
         
 		setToolTipText();

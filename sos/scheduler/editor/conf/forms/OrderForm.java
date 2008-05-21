@@ -33,57 +33,52 @@ import sos.scheduler.editor.app.IOUtils;
 
 public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
     
-	private OrderListener listener   = null;
+	private OrderListener          listener   = null;
 
-    private Group         group      = null;
+    private Group                  group      = null;
 
-    private Group         gOrder     = null;
+    private Group                  gOrder     = null;
 
-    private Label         label10    = null;
+    private Label                  label10    = null;
 
-    private Text          tTitle     = null;
+    private Text                   tTitle     = null;
 
-    private Text          tState     = null;
+    private Text                   tState     = null;
 
-    private Text          tPriority  = null;
+    private Text                   tPriority  = null;
 
-    private Combo         cJobchain  = null;
+    private Combo                  cJobchain  = null;
 
-    private Button        bReplace   = null;
+    private Button                 bReplace   = null;
 
-    private Text          tOrderId   = null;
+    private Text                   tOrderId   = null;
 
-    private boolean       event      = false;
+    private boolean                event      = false;
 
-    private SchedulerDom  dom        = null;
+    private SchedulerDom           dom        = null;
 
-    private ISchedulerUpdate main   = null;
+    private ISchedulerUpdate       main       = null;
     
-    private Element       order     = null;
+    private Element                order      = null;
     
     
     public OrderForm(Composite parent, int style, SchedulerDom _dom, Element _order, ISchedulerUpdate _main)
             throws JDOMException, TransformerException {
+    	
         super(parent, style);
-
         dom = _dom;
         main = _main;
         order = _order;
         listener = new OrderListener(dom, order, main);
         initialize();
         setToolTipText();
-        //sashForm.setWeights(new int[] { 25, 75 });
-
         dom.setInit(true);
-
         cJobchain.setItems(listener.getJobChains());
-
         fillOrder();
-        //listener.fillParams(tParameter);
         dom.setInit(false);
-        event = true;
-        
+        event = true;        
         this.setEnabled(Utils.isElementEnabled("commands", dom, order));
+        
     }
 
 

@@ -15,6 +15,8 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class OrderListener {
+	
+	
     private ISchedulerUpdate _main;
 
     private SchedulerDom     _dom;
@@ -29,6 +31,7 @@ public class OrderListener {
 
 
     public OrderListener(SchedulerDom dom, Element order, ISchedulerUpdate update) {
+    	
         _dom = dom;
         _config = _dom.getRoot().getChild("config");
         _order = order;
@@ -190,6 +193,11 @@ public class OrderListener {
     			return _chains;
     			//_chains = new java.io.File(_dom.getFilename());
     			} catch(Exception e) {
+    				try {
+						new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+					} catch(Exception ee) {
+						//tu nichts
+					}
     				System.out.println(e.getMessage());
     				
     			} //Tu nichts

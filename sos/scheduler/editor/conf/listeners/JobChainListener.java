@@ -39,11 +39,11 @@ public class JobChainListener {
 	public String getChainName() {
 		return Utils.getAttributeValue("name", _chain);
 	}
-	
+
 	public String getTitle() {
 		return Utils.getAttributeValue("title", _chain);
 	}
-	
+
 
 	public Element getChain() {
 		return _chain;
@@ -164,7 +164,7 @@ public class JobChainListener {
 
 					TableItem item = new TableItem(table, SWT.NONE);
 					item.setText(new String[] { state, nodetype, action, next, error, onError });
-					
+
 					if (!next.equals("") && !checkForState(next))
 						item.setBackground(3, Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
 
@@ -449,6 +449,12 @@ public class JobChainListener {
 			else
 				table.setSelection(index+1);
 		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
 			sos.scheduler.editor.app.MainWindow.message(e.getMessage(), SWT.ICON_INFORMATION);
 		}
 	}
@@ -625,7 +631,7 @@ public class JobChainListener {
 		}
 		return true;
 	}
-	
+
 
 	public SchedulerDom get_dom() {
 		return _dom;
@@ -633,28 +639,6 @@ public class JobChainListener {
 
 	public String getOnError() {
 		return Utils.getAttributeValue("on_error", _node);
-	}
-	
-	/*public boolean checkElement(String name) {
-		try {
-			XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 
-			List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-			if(!listOfElement_3.isEmpty())
-				throw new Exception ("Der Jobkette [job_chain=" + name + "] ist in einer Kommando definiert. " +
-						"Soll die Jobkette trotzdem umbennant werden");
-			
-			XPath x4 = XPath.newInstance("//add_order[@job_chain='"+ name + "']");				 
-			List listOfElement_4 = x4.selectNodes(_dom.getDoc());
-			if(!listOfElement_4.isEmpty())
-				throw new Exception ("Der Jobkette [job_chain=" + name + "] ist in einer Kommando definiert. " +
-						"Soll die Jobkette trotzdem umbennant werden");
-			
-		} catch (Exception e) {
-			int c = MainWindow.message(e.getMessage(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
-			if(c != SWT.YES)
-				return false;
-		}
-		return true;
-	}*/
-	
+	}		
+
 }

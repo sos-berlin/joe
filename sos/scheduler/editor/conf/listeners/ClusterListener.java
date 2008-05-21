@@ -7,32 +7,39 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class ClusterListener {
-    public final static int      NONE        = 0;
+	
+    public final static int            NONE              = 0;
 
+    private             SchedulerDom   _dom              = null;
 
-    private SchedulerDom         _dom;
-
-    private Element              _parent;
-    private Element              _cluster;
+    private             Element        _parent           = null;
+    
+    private             Element        _cluster          = null;
     
 
     public ClusterListener(SchedulerDom dom, Element parent) {
+    	
         _dom = dom;
         _parent = parent;
         setCluster();
+        
     }
 
     private void setCluster() {
+    	
        _cluster = _parent.getChild("cluster");
        if (_cluster == null) {
       	 _cluster =   new Element("cluster");
          _parent.addContent(_cluster);
           }
+       
     }
 
     private void setAttributeValue(String element, String value) {
+    	
         _cluster.setAttribute(element, value);
         _dom.setChanged(true);
+        
     }
 
 

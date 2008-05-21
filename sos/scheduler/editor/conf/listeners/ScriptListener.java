@@ -322,9 +322,21 @@ public class ScriptListener {
     			System.out.println("no script element defined!");
 
     	}catch (org.jdom.IllegalDataException jdom) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , jdom);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
     		MainWindow.message(jdom.getMessage(), SWT.ICON_ERROR);
     	}
     	catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
     		MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
     		System.out.println(e);
     	}

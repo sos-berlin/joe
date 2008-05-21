@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
@@ -51,21 +52,22 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 	
 	
 	public HttpAuthenticationForm(Composite parent, int style, SchedulerDom dom, Element config) {
+		
 		super(parent, style);
 		listener = new HttpAuthenticationListener(dom, config);
 		initialize();
-		setToolTipText();
-		
-		listener.fillHttpAuthenticationTable(tableHttpUsers);
-		
+		setToolTipText();		
+		listener.fillHttpAuthenticationTable(tableHttpUsers);		
 		
 	}
 	
 	
 	private void initialize() {
+		
 		this.setLayout(new FillLayout());
 		createGroup();
 		setSize(new org.eclipse.swt.graphics.Point(653, 468));
+		
 	}
 	
 	
@@ -73,6 +75,7 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 	 * This method initializes group
 	 */
 	private void createGroup() {
+		
 		GridLayout gridLayout = new GridLayout();
 		httpAuthenticationGroup = new Group(this, SWT.NONE);
 		httpAuthenticationGroup.setText("HTTP Authentication");
@@ -81,6 +84,7 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 		httpAuthenticationGroup.setLayout(gridLayout);
 		
 		new Label(httpAuthenticationGroup, SWT.NONE);
+		
 	}
 	
 	
@@ -271,6 +275,7 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 	
 	
 	public void setToolTipText() {
+		
 		txtUsername.setToolTipText(Messages.getTooltip("http_authentication.name"));
 		txtMD5Password.setToolTipText(Messages.getTooltip("http_authentication.md5_password"));
 		txtPassword.setToolTipText(Messages.getTooltip("http_authentication.password"));
@@ -278,8 +283,7 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 		butApplyHttpUser.setToolTipText(Messages.getTooltip("http_authentication.apply_button"));
 		butEncrypt.setToolTipText(Messages.getTooltip("http_authentication.encryt_button"));
 		butRemoveHttpUser.setToolTipText(Messages.getTooltip("http_authentication.remove_button"));
-		
-		
+				
 	}
 	
 	public boolean isUnsaved() {	
@@ -297,6 +301,11 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 			String _encrypt = SOSCrypt.MD5encrypt(txtPassword.getText());
 			txtMD5Password.setText(_encrypt.toUpperCase());
 		} catch (Exception ex) {
+			try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() +  txtPassword.getText() + " could not encrypt.", ex);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
 			MainWindow.message(getShell(), txtPassword.getText() + " could not encrypt." , SWT.ICON_WARNING | SWT.OK );
 		}
 	}

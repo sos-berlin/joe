@@ -18,35 +18,38 @@ import sos.scheduler.editor.conf.forms.JobsForm;
 
 
 public class JobsListener { 
-	
-	private SchedulerDom     _dom;
-	
-	private ISchedulerUpdate _main;
-	
-	private Element          _config;
-	
-	private Element          _jobs;
-	
-	private List             _list;
-	
-	
+
+
+	private     SchedulerDom          _dom       = null;
+
+	private     ISchedulerUpdate      _main      = null;
+
+	private     Element               _config    = null;
+
+	private     Element               _jobs      = null;
+
+	private     List                  _list      = null;
+
+
 	public JobsListener(SchedulerDom dom, ISchedulerUpdate update) {
+
 		_dom = dom;
 		_main = update;
 		if(_dom.isLifeElement()) {
-			 
+
 		} else {
-		_config = _dom.getRoot().getChild("config");
-		_jobs = _config.getChild("jobs");
-		
-		if (_jobs != null)
-			_list = _jobs.getChildren("job");
+			_config = _dom.getRoot().getChild("config");
+			_jobs = _config.getChild("jobs");
+
+			if (_jobs != null)
+				_list = _jobs.getChildren("job");
 		}
-		
+
 	}
-	
-	
+
+
 	private void initJobs() {
+
 		if (_config.getChild("jobs") == null) {
 			Element _jobs = new Element("jobs");
 			_config.addContent(_jobs);
@@ -55,10 +58,12 @@ public class JobsListener {
 			_jobs = _config.getChild("jobs");
 			_list = _jobs.getChildren("job");
 		}
+
 	}
-	
-	
-	public void fillTable(Table table) {		
+
+
+	public void fillTable(Table table) {	
+
 		table.removeAll();  
 		if (_list != null) {
 			for (Iterator it = _list.iterator(); it.hasNext();) {
@@ -82,9 +87,10 @@ public class JobsListener {
 				}
 			}
 		}
+
 	}
-	
-	
+
+
 	public void newJob(Table table) {
 		Element job = new Element("job");
 		job.setAttribute("name", "job" + (table.getItemCount() + 1));
@@ -100,25 +106,25 @@ public class JobsListener {
 		_main.updateJobs();
 		_main.expandItem("Job: "+ "job" + (table.getItemCount()));  		
 	}
-	
-	
+
+
 	public Element createJobElement(java.util.HashMap attr) {
 		Element job = new Element("job");
-		
+
 //		config Job Attribute bilden
 		if(attr.get("name") != null && attr.get("name").toString().length() > 0) 
 			Utils.setAttribute("name", attr.get("name").toString(), job);       
-		
+
 		if(attr.get("title") != null && attr.get("title").toString().length() > 0)
 			Utils.setAttribute("title", attr.get("title").toString(), job);
-		
+
 		if(attr.get("order") != null && attr.get("order").toString().length() > 0)
 			Utils.setAttribute("order", attr.get("order").toString(), job);
-		
+
 		if((attr.get("tasks") != null && attr.get("tasks").toString().length() > 0 && !attr.get("tasks").equals("unbounded")))
 			Utils.setAttribute("tasks", attr.get("tasks").toString(), job);
-		
-		
+
+
 		//Element Parameters und entsprechende Kindknoten param bilden
 		Element params = new Element("params");
 		job.addContent(0, params);
@@ -131,13 +137,13 @@ public class JobsListener {
 		for (int i = 0; i < listOfParams.size(); i++ ) {
 			HashMap p = (HashMap)listOfParams.get(i);
 			param = new Element("param");
-			
+
 			param.setAttribute("name", (p.get("name") != null ? p.get("name").toString() :""));        
 			param.setAttribute("value", (p.get("default_value") != null ? p.get("default_value").toString() :""));
 			//Es gibt hier noch weiter Informationen wie die Parameter Beschreibung und ob required, sollen diese auch übergeben werden?
 			params.addContent(param);
 		}
-		
+
 		//config Description Element bilden
 		if( attr.get("filename") != null && attr.get("filename").toString().length() > 0 && !attr.get("filename").equals("..")) {
 			Element desc = new Element("description");
@@ -147,25 +153,25 @@ public class JobsListener {
 			desc.addContent(include);
 			job.addContent(desc);
 		}
-		
+
 		//script Element bilden  
 		if(attr.get("script") != null && attr.get("script").toString().equals("script")) {
 			Element script = new Element("script");        	
 			if(attr.get("script_language") != null && attr.get("script_language").toString().length() > 0)
 				Utils.setAttribute("language", attr.get("script_language").toString(), script);			
-			
+
 			if(attr.get("script_java_class") != null && attr.get("script_java_class").toString().length() > 0)
 				Utils.setAttribute("java_class", attr.get("script_java_class").toString(), script);			
-			
+
 			if(attr.get("script_com_class") != null && attr.get("script_com_class").toString().length() > 0)
 				Utils.setAttribute("com_class", attr.get("script_com_class").toString(), script);			
-			
+
 			if(attr.get("script_filename") != null && attr.get("script_filename").toString().length() > 0)
 				Utils.setAttribute("filename", attr.get("script_filename").toString(), script);			
-			
+
 			if(attr.get("script_use_engine") != null && attr.get("script_use_engine").toString().length() > 0)
 				Utils.setAttribute("use_engine", attr.get("script_use_engine").toString(), script);			 
-			
+
 			if(attr.get("script_include_file") != null) {
 				ArrayList listOfIncludes = (ArrayList)attr.get("script_include_file");
 				for (int i = 0; i < listOfIncludes.size(); i++) {
@@ -176,33 +182,33 @@ public class JobsListener {
 						script.addContent(include);
 					}
 				}
-				
+
 			}      
 			if(script.getAttributes().size()> 0)
 				job.addContent(script);
 		}  
-		
+
 		if(attr.get("monitor") != null && attr.get("monitor").toString().equals("monitor")) {
 			//monitor element bilden        
 			Element monitor = new Element("monitor");
-			
+
 			Element mon_script = new Element("script");
-			
+
 			if(attr.get("monitor_script_language") != null && attr.get("monitor_script_language").toString().length() > 0) 
 				Utils.setAttribute("language", attr.get("monitor_script_language").toString(), mon_script);
-			
+
 			if(attr.get("monitor_script_java_class") != null && attr.get("monitor_script_java_class").toString().length() > 0)
 				Utils.setAttribute("java_class", attr.get("monitor_script_java_class").toString(), mon_script);
-			
+
 			if(attr.get("monitor_script_com_class") != null && attr.get("monitor_script_com_class").toString().length() > 0)
 				Utils.setAttribute("com_class", attr.get("monitor_script_com_class").toString(), mon_script);
-			
+
 			if(attr.get("monitor_script_filename") != null && attr.get("monitor_script_filename").toString().length() > 0)
 				Utils.setAttribute("filename", attr.get("monitor_script_filename").toString(), mon_script);
-			
+
 			if(attr.get("monitor_script_use_engine") != null && attr.get("monitor_script_use_engine").toString().length() > 0)
 				Utils.setAttribute("use_engine", attr.get("monitor_script_use_engine").toString(), mon_script);
-			
+
 			if(attr.get("monitor_script_include_file") != null) {
 				ArrayList listOfMonIncludes = (ArrayList)attr.get("monitor_script_include_file");
 				for (int i = 0; i < listOfMonIncludes.size(); i++) {
@@ -212,25 +218,25 @@ public class JobsListener {
 					mon_script.addContent(mon_include);
 				}
 			}
-			
+
 			monitor.addContent(mon_script);
-			
+
 			if(mon_script.getAttributes().size()> 0)
 				job.addContent(monitor);
 		}
-		
+
 		if(attr.get("process") != null && attr.get("process").toString().equals("process")) {
 			Element process = new Element("process");
-			
+
 			if(attr.get("process_file") != null && attr.get("process_file").toString().length() > 0)
 				Utils.setAttribute("file", attr.get("process_file").toString(), process);
-			
+
 			if(attr.get("process_log") != null && attr.get("process_log").toString().length() > 0)
 				Utils.setAttribute("log_file", attr.get("process_log").toString(), process);
-			
+
 			if(attr.get("process_param") != null && attr.get("process_param").toString().length() > 0)
 				Utils.setAttribute("param", attr.get("process_param").toString(), process);
-			
+
 			if(attr.get("process_environment") != null) { 
 				Element environment = new Element("environment");
 				ArrayList listOfEnv = (ArrayList)attr.get("process_environment");
@@ -243,22 +249,22 @@ public class JobsListener {
 						environment.addContent(variable);
 					}
 				}
-				
+
 				process.addContent(environment);
 			}
-			
+
 			job.addContent(process);
-			
+
 		}
-		
-		
+
+
 		//runtime
 		Element runtime = new Element("run_time");
 		//runtime.setAttribute("let_run", "no");
 		job.addContent(runtime);
 		return job;
 	}
-	
+
 	public Element createParams(java.util.HashMap attr, Element parent) {
 
 		//Element Parameters und entsprechende Kindknoten param bilden
@@ -285,9 +291,9 @@ public class JobsListener {
 				params.addContent(param);
 			}
 		}
-        return parent;		
+		return parent;		
 	}
-	
+
 	/**
 	 * Starten der Wizzard für bestehende Job.
 	 * 
@@ -299,50 +305,26 @@ public class JobsListener {
 	 * @return
 	 */
 	public Element createJobElement(java.util.HashMap attr, Element job) {
-		
+
 //		config Job Attribute bilden	
 		if(Utils.getAttributeValue("title", job).length() == 0) {
 			if(attr.get("title") != null && attr.get("title").toString().length() > 0)
 				Utils.setAttribute("title", attr.get("title").toString(), job);
 		}
-		
-		
+
+
 		if(Utils.getAttributeValue("order", job).length() == 0) {
 			if(attr.get("order") != null && attr.get("order").toString().length() > 0)
 				Utils.setAttribute("order", attr.get("order").toString(), job);
 		}
-		
+
 		if(Utils.getAttributeValue("tasks", job).length() == 0) {
 			if((attr.get("tasks") != null && attr.get("tasks").toString().length() > 0 && !attr.get("tasks").equals("unbounded")))
 				Utils.setAttribute("tasks", attr.get("tasks").toString(), job);
 		}
-		
+
 		createParams(attr, job);
-		/*//Element Parameters und entsprechende Kindknoten param bilden
-		Element params = null;		
-		if(job.getChildren("params").size() == 0) {			
-			params = new Element("params");
-			job.addContent(0, params);
-		} else {
-			params = job.getChild("params");
-		}
-		
-		
-		ArrayList listOfParams = new ArrayList();
-		if(attr.get("params") != null)
-			listOfParams = (ArrayList)attr.get("params");        		
-		//Parameters bilden
-		Element param = null;
-		for (int i = 0; i < listOfParams.size(); i++ ) {
-			HashMap p = (HashMap)listOfParams.get(i);			
-			if(p.get("name") != null && !existParams(params, p.get("name").toString())) {
-				param = new Element("param");			      	
-				param.setAttribute("name", (p.get("name") != null ? p.get("name").toString() :""));        
-				param.setAttribute("value", (p.get("default_value") != null ? p.get("default_value").toString() :""));
-				params.addContent(param);
-			}
-		}
-		*/
+
 		//config Description Element bilden
 		if(job.getChild("description") == null) {
 			if( attr.get("filename") != null && attr.get("filename").toString().length() > 0 && !attr.get("filename").equals("..")) {
@@ -353,26 +335,26 @@ public class JobsListener {
 				job.addContent(desc);
 			}
 		}
-		
+
 		//script Element bilden
 		if(job.getChild("script") == null) {
 			if(attr.get("script") != null && attr.get("script").toString().equals("script")) {
 				Element script = new Element("script");        	
 				if(attr.get("script_language") != null && attr.get("script_language").toString().length() > 0)
 					Utils.setAttribute("language", attr.get("script_language").toString(), script);			
-				
+
 				if(attr.get("script_java_class") != null && attr.get("script_java_class").toString().length() > 0)
 					Utils.setAttribute("java_class", attr.get("script_java_class").toString(), script);			
-				
+
 				if(attr.get("script_com_class") != null && attr.get("script_com_class").toString().length() > 0)
 					Utils.setAttribute("com_class", attr.get("script_com_class").toString(), script);			
-				
+
 				if(attr.get("script_filename") != null && attr.get("script_filename").toString().length() > 0)
 					Utils.setAttribute("filename", attr.get("script_filename").toString(), script);			
-				
+
 				if(attr.get("script_use_engine") != null && attr.get("script_use_engine").toString().length() > 0)
 					Utils.setAttribute("use_engine", attr.get("script_use_engine").toString(), script);			 
-				
+
 				if(attr.get("script_include_file") != null) {
 					ArrayList listOfIncludes = (ArrayList)attr.get("script_include_file");
 					for (int i = 0; i < listOfIncludes.size(); i++) {
@@ -383,35 +365,35 @@ public class JobsListener {
 							script.addContent(include);
 						}
 					}
-					
+
 				}      
 				if(script.getAttributes().size()> 0)
 					job.addContent(script);
 			} 
 		}
-		
+
 		if(job.getChild("monitor") == null) {
 			if(attr.get("monitor") != null && attr.get("monitor").toString().equals("monitor")) {
 				//monitor element bilden        
 				Element monitor = new Element("monitor");
-				
+
 				Element mon_script = new Element("script");
-				
+
 				if(attr.get("monitor_script_language") != null && attr.get("monitor_script_language").toString().length() > 0) 
 					Utils.setAttribute("language", attr.get("monitor_script_language").toString(), mon_script);
-				
+
 				if(attr.get("monitor_script_java_class") != null && attr.get("monitor_script_java_class").toString().length() > 0)
 					Utils.setAttribute("java_class", attr.get("monitor_script_java_class").toString(), mon_script);
-				
+
 				if(attr.get("monitor_script_com_class") != null && attr.get("monitor_script_com_class").toString().length() > 0)
 					Utils.setAttribute("com_class", attr.get("monitor_script_com_class").toString(), mon_script);
-				
+
 				if(attr.get("monitor_script_filename") != null && attr.get("monitor_script_filename").toString().length() > 0)
 					Utils.setAttribute("filename", attr.get("monitor_script_filename").toString(), mon_script);
-				
+
 				if(attr.get("monitor_script_use_engine") != null && attr.get("monitor_script_use_engine").toString().length() > 0)
 					Utils.setAttribute("use_engine", attr.get("monitor_script_use_engine").toString(), mon_script);
-				
+
 				if(attr.get("monitor_script_include_file") != null) {
 					ArrayList listOfMonIncludes = (ArrayList)attr.get("monitor_script_include_file");
 					for (int i = 0; i < listOfMonIncludes.size(); i++) {
@@ -421,27 +403,27 @@ public class JobsListener {
 						mon_script.addContent(mon_include);
 					}
 				}
-				
+
 				monitor.addContent(mon_script);
-				
+
 				if(mon_script.getAttributes().size()> 0)
 					job.addContent(monitor);
 			}
 		}
-		
+
 		if(job.getChild("process") == null) {
 			if(attr.get("process") != null && attr.get("process").toString().equals("process")) {
 				Element process = new Element("process");
-				
+
 				if(attr.get("process_file") != null && attr.get("process_file").toString().length() > 0)
 					Utils.setAttribute("file", attr.get("process_file").toString(), process);
-				
+
 				if(attr.get("process_log") != null && attr.get("process_log").toString().length() > 0)
 					Utils.setAttribute("log_file", attr.get("process_log").toString(), process);
-				
+
 				if(attr.get("process_param") != null && attr.get("process_param").toString().length() > 0)
 					Utils.setAttribute("param", attr.get("process_param").toString(), process);
-				
+
 				if(attr.get("process_environment") != null) { 
 					Element environment = new Element("environment");
 					ArrayList listOfEnv = (ArrayList)attr.get("process_environment");
@@ -454,56 +436,54 @@ public class JobsListener {
 							environment.addContent(variable);
 						}
 					}
-					
+
 					process.addContent(environment);
 				}
-				
+
 				job.addContent(process);
-				
+
 			}
 		}
-		
+
 		return job;
 	}
-	
+
 	public void newImportJob(Element job, int assistentType) {
-		
+
 		if (_list == null)
 			initJobs();
-		
+
 		_list.add(job);		
 		_dom.setChanged(true);
-		
+
 		if(Editor.JOB_CHAINS != assistentType) {
 			fillTable(JobsForm.getTable());
-			JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);
-			
-			//_main.updateJob(); --> hängt eine run_time unterhalb der config Element
+			JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);						
 		} 
 		_main.updateOrders();
-		
+
 		_main.updateJobs();	
-		
+
 		_main.expandItem("Job: "+Utils.getAttributeValue("name", job));
 	}
-	
-	
+
+
 	public void newImportJob(Element job) {
-		
+
 		if (_list == null)
 			initJobs();
-		
+
 		_list.add(job);
 		_dom.setChanged(true);
-		
+
 		fillTable(JobsForm.getTable());
 		JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);
-		
+
 		_main.updateJobs(); 
 		_main.updateOrders();
 	}
-	
-	
+
+
 	public boolean deleteJob(Table table) {
 		int index = table.getSelectionIndex();
 		if (index >= 0) {
@@ -522,7 +502,7 @@ public class JobsListener {
 				_jobs = null;
 				_list = null;
 			}
-			
+
 			if (index >= table.getItemCount())
 				index--;
 			if (index >= 0) {
@@ -532,14 +512,14 @@ public class JobsListener {
 		}
 		return false;
 	}
-	
-	
+
+
 	public void setJobDisabled(String name, boolean disabled) {
 		_dom.setJobDisabled(name, disabled);
 		_main.updateJobs();
 	}
-	
-	
+
+
 	public boolean hasJobComment(Element e) {
 		if (e != null) {
 			for (Iterator it = e.getContent().iterator(); it.hasNext();) {
@@ -553,16 +533,16 @@ public class JobsListener {
 					if (hasJobComment(ee))
 						return true;
 				}
-				
+
 			}
 		}
 		return false;
 	}
-	
+
 	public boolean existJobname(String name) {
 		if(name == null || name.length() == 0)
 			return false;
-		
+
 		for (int i = 0; _list != null && i < _list.size(); i++) {
 			Element currJob = (Element)_list.get(i);
 			String jobName = Utils.getAttributeValue("name", currJob);
@@ -572,7 +552,7 @@ public class JobsListener {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Existiert ein param Element mit der gleichen 
 	 * @param params
@@ -589,19 +569,6 @@ public class JobsListener {
 		}
 		return false;
 	}
-	
-/*	public boolean checkElement(String name) {
-		try {
-			XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
-			List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-			if(!listOfElement_3.isEmpty())
-				throw new Exception ("Der Job " + name + " ist in einer Jobkette definiert. Soll der Job trotzdem gelöscht werden");
-		} catch (Exception e) {
-			int c = MainWindow.message(e.getMessage(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
-			if(c != SWT.YES)
-				return false;
-		}
-		return true;
-	}
-	*/	
+
+
 }

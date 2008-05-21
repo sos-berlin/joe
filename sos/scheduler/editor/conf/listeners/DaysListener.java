@@ -252,6 +252,12 @@ public class DaysListener {
                 		
                 	}                	
                 } catch (Exception ex) {
+                	try {
+        				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;Invalid day element in " + _elementName[_type], ex);
+        			} catch(Exception ee) {
+        				//tu nichts
+        			}
+
                     System.out.println("Invalid day element in " + _elementName[_type]);
                 }               
             }
@@ -289,6 +295,11 @@ public class DaysListener {
     		
     		return sorted;
     	} catch (Exception e) {
+    		try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
     		System.err.println("error in daysListener.sort: " + e.getMessage());
     		return sorted;
     	}

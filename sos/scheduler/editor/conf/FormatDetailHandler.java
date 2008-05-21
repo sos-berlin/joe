@@ -9,21 +9,20 @@ import sos.scheduler.editor.app.Options;
 
 public class FormatDetailHandler extends DefaultHandler implements ContentHandler {
 	
-    //private DetailDom     _dom;
+	
+    private    StringBuffer    _sb          = new StringBuffer();
 
-    private StringBuffer _sb          = new StringBuffer();
-
-    private String       _encoding    = "ISO-8859-1";
+    private    String          _encoding    = "ISO-8859-1";
    
-    private String       _indentStr   = "    ";
+    private    String          _indentStr   = "    ";
 
-    private String       _indent      = "    ";
+    private    String          _indent      = "    ";
 
-    private StringBuffer _text        = new StringBuffer();
+    private    StringBuffer    _text        = new StringBuffer();
 
-    private int          _level       = 0;
+    private    int             _level       = 0;
 
-    private boolean      _isOpen      = false;
+    private    boolean         _isOpen      = false;
 
     
     

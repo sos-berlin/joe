@@ -11,17 +11,18 @@ import sos.scheduler.editor.conf.SchedulerDom;
 
 public class JobListener {
 
-	private ISchedulerUpdate _main;
+	
+	private          ISchedulerUpdate   _main      = null;
 
-	private SchedulerDom     _dom;
+	private          SchedulerDom       _dom       = null;
 
-	private Element          _job;
-
+	private          Element            _job       = null;
 	//Hifsvariable
-	private static String library      = "";  
+	private static   String             library    = "";  
 
 
 	public JobListener(SchedulerDom dom, Element job, ISchedulerUpdate update) {
+		
 		_dom = dom;
 		_job = job;
 		_main = update;
@@ -428,57 +429,4 @@ public class JobListener {
 		return _job;
 	}    
 
-	/**
-	 * Überprüft ob das Element valide ist
-	 * 1. Überprüfung: 
-	 *    Beim order="yes" -> verboten Kindelement run_time  Attribut single_start oder run_once oder repeat_time
-	 *    negative XPath Ausdrücke: /job/run_time[@single_start] keine leere Liste dann entsprechede Fehlermeldung ausgeben.
-	 *    
-	 * 2. Überprüfung: 
-	 *    Auftraggsgesteuerte Job's, die in Jobketten definiert sind und zur Standalone Job wechseln
-	 */
-	/*public void checkElement() {
-		try {
-			if(getOrder()) {						
-
-				XPath x = XPath.newInstance("//job[@name='"+ getName() + "']/run_time[@let_run='yes' or @once='yes' or @single_start]");			 
-				//Element e = (Element)x.selectSingleNode(doc);
-				List listOfElement = x.selectNodes(_dom.getDoc());
-				if(!listOfElement.isEmpty())
-					throw new Exception ("Ein Auftragsgesteuerte Job darf im Runtime Elemente keinen der folgenden Attribute besitzen " +
-							"single_start, start_once und let_run. Der Job " + getName() + " ist nicht gültig");
-
-				XPath x2 = XPath.newInstance("//job[@name='"+ getName() + "']/run_time//period[@let_run='yes' or @single_start]");				 
-				List listOfElement_2 = x2.selectNodes(_dom.getDoc());
-				if(!listOfElement_2.isEmpty())
-					throw new Exception ("Ein Auftragsgesteuerte Job darf im Period Elemente keinen der folgenden Attribute besitzen " +
-							"single_start, start_once und let_run. Der Job " + getName() + " ist nicht gültig");				
-			} else {
-				
-				XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ getName() + "']");				 
-				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-				if(!listOfElement_3.isEmpty())
-					throw new Exception ("Der Standalone Job " + getName() + " ist in einer Jobkette definiert.");
-			}
-		} catch (Exception e) {
-			MainWindow.message(e.getMessage(), SWT.ICON_WARNING);			
-		}
-	}*/
-	
-	/*public boolean checkElement(String name) {
-		try {
-			if(name.length() == 0)
-				return true;
-			
-			XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
-			List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-			if(!listOfElement_3.isEmpty())
-				throw new Exception ("Der Job " + name + " ist in einer Jobkette definiert. Soll der Name des Jobs trotzdem geändert werden?");
-		} catch (Exception e) {
-			int c = MainWindow.message(e.getMessage(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
-			if(c == SWT.NO)
-				return false;
-		}
-		return true;
-	}*/
 }

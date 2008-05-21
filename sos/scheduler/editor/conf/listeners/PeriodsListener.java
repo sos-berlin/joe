@@ -14,41 +14,42 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class PeriodsListener {
-	
-	
-	private SchedulerDom          _dom        = null;
-	
-	private Element               _parent     = null;
-	
-	private List                  _list       = null;
-	
-	private int                   _period     = -1;
-	
-	private List                  _listOfAt   = null;
-		
-	private ISchedulerUpdate      _main        = null;
-	
-	
+
+
+	private    SchedulerDom          _dom        = null;
+
+	private    Element               _parent     = null;
+
+	private    List                  _list       = null;
+
+	private    int                   _period     = -1;
+
+	private    List                  _listOfAt   = null;
+
+	private    ISchedulerUpdate      _main       = null;
+
+
 	public PeriodsListener(SchedulerDom dom, Element parent) {
 		this(dom, parent, null);		
 	}
-	
+
 	public PeriodsListener(SchedulerDom dom, Element parent, ISchedulerUpdate main) {
+
 		_dom    = dom;
 		_parent = parent; 
 		_main   = main;
-		
+
 		if(_parent.getName().equals("at")) {
 			_list = getDateChildren();
 		} else {
 			_list = parent.getChildren("period");
 		}
-				
+
 		_listOfAt = getAtChildren();
-		
+
 	}
-	
-	
+
+
 	private List getDateChildren() {
 		List retval = new ArrayList();
 		String date = Utils.getAttributeValue("at",_parent).substring(0, 10);
@@ -63,15 +64,15 @@ public class PeriodsListener {
 				return retval;
 			}
 		}
-		
+
 		return retval;
 	}
-	
-	
+
+
 	private List getAtChildren() {
-		//List ats = null;
+
 		ArrayList retval = new ArrayList();
-		
+
 		if(_parent != null && _parent.getParentElement() != null) {
 			List l = null;
 			String date = "";
@@ -81,8 +82,7 @@ public class PeriodsListener {
 			}else {    				
 				date = Utils.getAttributeValue("date",_parent);
 			}
-			//ats = _parent.getChildren();
-			
+
 			for (int i=0; i <l.size(); i++) {
 				Element at = (Element)l.get(i);
 				if(Utils.getAttributeValue("at", at).startsWith(date)){
@@ -90,17 +90,17 @@ public class PeriodsListener {
 				}
 			}
 		}
-		
+
 		return retval;
 	}
-	
+
 	public boolean isOnOrder() {
-		
+
 		Element job = _parent;
-				
+
 		if(job.getParentElement()==null)
 			return false;		
-		
+
 		//mögliche Vaterknoten herausfinden
 		while (!job.getName().equals("job") 
 				&& !job.getName().equals("add_order")
@@ -108,22 +108,17 @@ public class PeriodsListener {
 				&& !job.getName().equals("schedule")
 				&& !job.getName().equals("config"))
 			job = job.getParentElement();
-		
+
 		return		
 		Utils.isAttributeValue("order", job) && job.getName().equals("job") || 
 		Utils.isAttributeValue("id", job)&& job.getName().equals("add_order");
 
-		/*return		
-		Utils.isAttributeValue("order", job) && job.getName().equals("job") || 
-		Utils.isAttributeValue("id", job)&& job.getName().equals("add_order") || 
-		job.getName().equals("order")|| 
-		job.getName().equals("config")*/
 	}
-	
-	
+
+
 	public void fillTable(Table table) {
 		table.removeAll();
-		
+
 		if (_list != null) {
 			for (Iterator it = _list.iterator(); it.hasNext();) {
 				Element e = (Element) it.next();
@@ -137,15 +132,15 @@ public class PeriodsListener {
 				item.setText(3, Utils.getAttributeValue("repeat", e));
 				item.setText(4, Utils.getAttributeValue("single_start", e));
 				item.setText(5, Utils.getAttributeValue("absolute_repeat", e));
-				
-				
+
+
 			}
 		}        
 		ArrayList remList = new ArrayList();
 		for(int i =0; i < _listOfAt.size(); i++) {
 			Element at = (Element)_listOfAt.get(i);
 			String sAT = Utils.getAttributeValue("at", at);
-			
+
 			if(sAT != null && sAT.length()> 0) {
 				String date = sAT.substring(0, 10);				
 				String time = sAT.substring((sAT.indexOf(" ") > -1 ? sAT.indexOf(" ") + 1 : sAT.length()));
@@ -166,29 +161,29 @@ public class PeriodsListener {
 			}
 		}
 		_listOfAt.removeAll(remList);
-		
+
 	} 
-	
+
 	public void removePeriod(Element el) {
 		if(_list.contains(el)){
 			_list.remove(el);
 			_period = -1;	
 		} else if(_listOfAt.contains(el)){
-			
+
 			el.getParentElement().getChildren("at").remove(el);
 			_listOfAt.remove(el);
-			
+
 		}
 		_dom.setChanged(true);
-		
+
 		_dom.setChangedForDirectory(_parent, SchedulerDom.MODIFY);
 		if(_main != null) {
 			_main.updateFont();
 		}
 	}
-	
+
 	public void removePeriod(int index) {
-		
+
 		if (index >= 0 && index < _list.size()) {
 			_list.remove(index);
 			_period = -1;			
@@ -198,46 +193,46 @@ public class PeriodsListener {
 				if(i < 0) 
 					i = i*(-1);
 				Element el = (Element)(_listOfAt.get(i));	
-				
+
 				if(_list.size()==0 && _listOfAt.size()==1) {
 					//das letzte at Element wird gelöscht. Das Datum steht auf der Treeview
 					String[] date = Utils.getAttributeValue("at", el).substring(0, 10).split("-");
-					
+
 					DateListener dateListener = new DateListener(_dom, _parent.getParentElement(), 1); 
 					if(!dateListener.exists(Utils.str2int(date[0]), Utils.str2int(date[1]), Utils.str2int(date[2]))) {    					
 						_parent = dateListener.addDate(Utils.str2int(date[0]), Utils.str2int(date[1]), Utils.str2int(date[2]));
 						_list = _parent.getChildren("period");
 					}
 				}
-				
+
 				if(i + 1 < _listOfAt.size())
 					_parent =(Element)_listOfAt.get(i + 1);
-				
+
 				el.getParentElement().getChildren("at").remove(_listOfAt.get(i));
-				
-				
+
+
 				_listOfAt.remove(i);				
-				
+
 			} else {
 				System.out.println("Bad period index for removal!");
 			}
 		}    	
-		
+
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory(_parent, SchedulerDom.MODIFY);
 		if(_main != null) {
 			_main.updateFont();
 		}
-	
+
 	}
-	
-	
+
+
 	public Element getNewPeriod() {
 		_period = -1;
 		return new Element("period");
 	}
-	
-	
+
+
 	public Element getPeriod(int index) {
 		if (index >= 0 && index < _list.size()) {
 			_period = index;
@@ -253,10 +248,10 @@ public class PeriodsListener {
 			} 
 			System.out.println("Bad period index for selection!");
 			return null;
-			
+
 		}
 	}
-	
+
 
 	public void applyPeriod(Element period) {
 		if(!period.getName().equals("at")) {			
@@ -265,7 +260,7 @@ public class PeriodsListener {
 			else {				
 				if(!_list.contains(period))
 					_list.set(_period, period);
-				
+
 			}
 		}
 		_dom.setChanged(true);
@@ -275,11 +270,11 @@ public class PeriodsListener {
 			_main.updateFont();
 		}
 	}
-	
+
 	public List get_list() {
 		return _list;
 	}
-	
+
 	public Element getAtElement(String at) {
 		String date = "";
 		if(_parent.getName().equalsIgnoreCase("at")){
@@ -288,7 +283,7 @@ public class PeriodsListener {
 		} else {
 			date = Utils.getAttributeValue("date", _parent);
 		}
-		
+
 		for (int i =0; i < _listOfAt.size(); i++) {
 			Element eat = (Element)(_listOfAt.get(i));
 			String[] seat = Utils.getAttributeValue("at", eat).split(" ");
@@ -299,8 +294,8 @@ public class PeriodsListener {
 			}
 		}
 		return null;
-		
+
 	}
-		
-	
+
+
 }

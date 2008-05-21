@@ -23,8 +23,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 public class DatePicker extends Composite {
@@ -122,6 +120,13 @@ public class DatePicker extends Composite {
         try {
             calendar.getDaySelectorStyle().setWeekdayNames(new String[] { "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" });
         } catch (Exception e) {
+        	
+        	try {
+        		new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+        	} catch(Exception ee) {
+        		//tu nichts
+        	}
+        
             System.out.println(e);
         }
 

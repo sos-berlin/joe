@@ -57,46 +57,42 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
     private Group           groupSchedule            = null;
     
     private Element         runTimeBackUpElem        = null;
-    
-    private SOSString       sosString                = null;
+        
     
     
     public RunTimeForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate gui) {
+    	
         super(parent, style);
         _gui = gui;
         listener = new RunTimeListener(dom, job);
         initialize();
         setToolTipText();
-
         dom.setInit(true);
-
-        this.gRunTime.setEnabled(Utils.isElementEnabled("job", dom, job));
-        
+        this.gRunTime.setEnabled(Utils.isElementEnabled("job", dom, job));        
         holidayForm.setObjects(dom, listener.getRunTime(), gui);
-
         periodForm.setParams(dom, listener.isOnOrder());
         periodForm.setRunOnce(true);
         periodForm.setEnabled(true);
         periodForm.setPeriod(listener.getRunTime());
         tComment.setText(listener.getComment());
         tFunction.setText(listener.getFunction());
-
         String title = gComment.getText();
         if (dom.isJobDisabled(Utils.getAttributeValue("name", job))) {
             title += " (Cannot be set for disabled Jobs)";
             tComment.setEnabled(false);
         }
         gComment.setText(title);
-
         dom.setInit(false);
+        
     }
 
 
     private void initialize() {
-    	sosString= new SOSString();
+
         this.setLayout(new FillLayout());
         createGroup();
         setSize(new org.eclipse.swt.graphics.Point(576, 518));
+        
     }
 
 
@@ -104,6 +100,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
      * This method initializes group
      */
     private void createGroup() {
+    	
         GridLayout gridLayout3 = new GridLayout();
         gRunTime = new Group(this, SWT.NONE);
         gRunTime.setText("Run Time");
@@ -202,8 +199,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
             }
         });
         new Label(gComment, SWT.NONE);
-        
-        
+                
     }
 
 
@@ -214,12 +210,14 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
      * This method initializes periodForm
      */
     private void createPeriodForm() {
+    	
     	GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, false);
     	gridData2.widthHint = 151;
 
     	periodForm = new PeriodForm(gRunTime, SWT.NONE, Editor.RUNTIME);
     	periodForm.setLayoutData(gridData2);
     	periodForm.setSchedulerUpdate( _gui);
+    	
     }
 
 
@@ -227,10 +225,10 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
     public void setToolTipText() {
 
         tComment.setToolTipText(Messages.getTooltip("run_time.comment"));
-        butBrowse.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));
-        
+        butBrowse.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));        
         tFunction.setToolTipText(Messages.getTooltip("run_time.start_time_function"));
         comSchedule.setToolTipText(Messages.getTooltip("run_time.combo_schedule"));
+        
     }
     
     private void setEnabled() {

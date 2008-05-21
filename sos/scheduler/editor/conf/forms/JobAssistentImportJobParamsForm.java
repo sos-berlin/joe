@@ -30,6 +30,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
@@ -221,7 +222,13 @@ public class JobAssistentImportJobParamsForm {
 				
 			}
 			
-		} catch( Exception ex ) {			
+		} catch( Exception ex ) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , ex);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
 			ex.printStackTrace();
 		}
 		return listOfParams; 
@@ -647,6 +654,12 @@ public class JobAssistentImportJobParamsForm {
 			jobParameterShell.pack();
 			jobParameterShell.open();
 		} catch (Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
 			System.out.println("..error in JobAssistentImportJobParamsForm.showAllImportJobParams " + ": " + e.getMessage());
 		}
 	}
@@ -694,6 +707,12 @@ public class JobAssistentImportJobParamsForm {
 					
 			}
 		} catch (Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
 			throw new Exception("error in JobAssistentImportJobParamsForm.fillTable() "  + e.toString());
 		}
 	}

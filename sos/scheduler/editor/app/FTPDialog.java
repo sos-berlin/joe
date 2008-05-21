@@ -3,6 +3,8 @@ package sos.scheduler.editor.app;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -217,7 +219,10 @@ public class FTPDialog {
 							fillTable(listener.changeDirectory(txtDir.getText()));
 						} else if (item.getData("type").equals("dir_up")) {
 							String parentPath = new java.io.File(txtDir.getText()).getParent();
-							txtDir.setText(parentPath.replaceAll("\\\\", "/"));
+							if(parentPath != null)
+								txtDir.setText(parentPath.replaceAll("\\\\", "/"));
+							else
+								txtDir.setText(".");
 							fillTable(listener.cdUP());
 						}
 						txtFilename.setText("");
@@ -321,6 +326,11 @@ public class FTPDialog {
 			}
 
 			txtFilename = new Text(schedulerGroup, SWT.BORDER);						
+			txtFilename.addModifyListener(new ModifyListener() {
+				public void modifyText(final ModifyEvent e) {
+					butOpenOrSave.setEnabled(listener.isLoggedIn() && txtFilename.getText().length() > 0);
+				}
+			});
 			
 			txtFilename.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 			new Label(schedulerGroup, SWT.NONE);
@@ -431,6 +441,11 @@ public class FTPDialog {
 			_setEnabled(false);
 			
 		} catch (Exception e) {
+			try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
 			MainWindow.message("could not int FTP Profiles:" + e.getMessage()  , SWT.ICON_WARNING);
 		}
 	}
@@ -479,36 +494,17 @@ public class FTPDialog {
 			}
 			
 		} catch(Exception e) {
+			
+			try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
 			System.out.println("..error in FTPDialog " + e.getMessage());
 		}
 
 	}
 	
-	/*public void saveas(String file) {
-		
-		//System.out.println(file);	
-		if(MainWindow.getContainer().getCurrentEditor().hasChanges()) {
-			MainWindow.getContainer().getCurrentEditor().save();
-		} 
-		
-		String localfilename =  MainWindow.getContainer().getCurrentEditor().getFilename();
-		listener.saveAs(localfilename, file);
-
-		String newFilename =  new File(localfilename).getParent() + "/" + new File(file).getName();
-		//main.getContainer().setNewFilename(localfilename, newFilename );
-		sos.scheduler.editor.conf.forms.SchedulerForm form =
-			(sos.scheduler.editor.conf.forms.SchedulerForm)MainWindow.getContainer().getCurrentEditor();
-		
-		
-		SchedulerDom currdom = (SchedulerDom)form.getDom();
-		if(!new File(currdom.getFilename()).delete())
-			System.out.println(currdom.getFilename() + " could not delete");
-		currdom.setFilename(newFilename);
-		MainWindow.getContainer().getCurrentEditor().save();
-				
-		listener.disconnect();
-		schedulerConfigurationShell.dispose();
-	}*/
 	
 	public void saveas(String file) {
 		try {
@@ -593,6 +589,11 @@ public class FTPDialog {
 			listener.saveAs(localfilename, file);
 
 		} catch (Exception e)  {
+			try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not save File", e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
 			MainWindow.message("could not save File: cause: "+  e.getMessage(), SWT.ICON_WARNING);
 		} finally {
 			listener.disconnect();
@@ -603,6 +604,11 @@ public class FTPDialog {
 	public void openHotFolder() {
 		try {
 			HashMap h = listener.changeDirectory(txtDir.getText() + "/" + txtFilename.getText());
+			if(listener.hasError()) {				
+				return;
+			}
+				
+			
 			java.util.Iterator it = h.keySet().iterator();
 			//Alle Hot Folder Dateinamen merken: Grund: Beim Speichern werden alle Dateien gelöscht und anschliessend 
 			//neu zurückgeschrieben
@@ -646,6 +652,11 @@ public class FTPDialog {
 			listener.disconnect();
 			schedulerConfigurationShell.dispose();
 		} catch(Exception e) {
+			try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not Open Hot Folder.", e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
 			MainWindow.message("could not Open Hot Folder: cause: "+  e.getMessage(), SWT.ICON_WARNING);
 		}
 	}
@@ -655,18 +666,18 @@ public class FTPDialog {
 		
 		String file = listener.getFile(txtDir.getText() + "/" + txtFilename.getText(), null);
 		
-		if (MainWindow.getContainer().openQuick(file) != null) {
-			MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-			MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
-			MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-			MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-			main.setSaveStatus();		
+		if(!listener.hasError()) {
+			if (MainWindow.getContainer().openQuick(file) != null) {
+				MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
+				MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
+				MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
+				MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
+				main.setSaveStatus();		
+			}
+
+			listener.disconnect();
+			schedulerConfigurationShell.dispose();
 		}
-		
-		
-		
-		listener.disconnect();
-		schedulerConfigurationShell.dispose();
 	}
 
 
@@ -775,7 +786,12 @@ public class FTPDialog {
 			}
 			
 		} catch(Exception e) {
-			MainWindow.message("could not Open Hot Folder: cause: "+  e.getMessage(), SWT.ICON_WARNING);
+			try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
+			
 		}
 	}
 

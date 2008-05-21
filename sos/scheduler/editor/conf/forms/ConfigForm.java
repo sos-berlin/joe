@@ -5,6 +5,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -20,6 +22,7 @@ import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -525,10 +528,17 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		GridData gridData11 = new GridData(GridData.FILL, GridData.CENTER, false, true);
 		gridData11.widthHint = 47;
 		sMainSchedulerPort = new Spinner(gMainScheduler, SWT.BORDER);
+		sMainSchedulerPort.setMaximum(1000000000);
 		
 		sMainSchedulerPort.setLayoutData(gridData11);
 		sMainSchedulerPort.addModifyListener(new ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				
+				if(sMainSchedulerPort.getSelection() > 100000)
+					sMainSchedulerPort.setBackground(Options.getRequiredColor());
+				else 
+					sMainSchedulerPort.setBackground(null);
+				
 				listener.setMainScheduler(tMainSchedulerHost.getText() + ":" + sMainSchedulerPort.getSelection());
 			}
 		});

@@ -29,7 +29,8 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobOptionsListener;
 
 public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLanguage {
-    private JobOptionsListener listener;
+	
+    private JobOptionsListener listener         = null;
 
     private Group              group            = null;
 

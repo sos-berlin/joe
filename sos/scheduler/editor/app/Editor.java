@@ -126,24 +126,32 @@ public class Editor {
     
 
  
-    public static void main(String[] args) {    	
+    public static void main(String[] args) {    
+    	try {
     		Display display = Display.getDefault();
     		MainWindow window = new MainWindow();
     		window.createSShell();
-    		
+
     		MainWindow.getSShell().open();
     		MainWindow.getSShell().update();
     		// window.getSShell().pack(true);
-    		
+
     		// if(args.length > 0)
     		// window.openFile(args[0]);
-    		
+
     		while (!MainWindow.getSShell().isDisposed()) {
     			if (!display.readAndDispatch())
     				display.sleep();
     		}
     		display.dispose();
-    	
+    	} catch (Exception e) {
+    		try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+    		} catch (Exception ee){
+    			//tu nichts
+    		}
+    	}
+
     }
 
 }

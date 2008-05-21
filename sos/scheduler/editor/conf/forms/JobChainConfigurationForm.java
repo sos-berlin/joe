@@ -246,6 +246,11 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
              Options.setLastDirectory(new File(filename));
              return filename;
          } catch (Exception e) {
+        	 try {
+ 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+ 			} catch(Exception ee) {
+ 				//tu nichts
+ 			}
              e.printStackTrace();
              MainWindow.message(e.getMessage(), SWT.ICON_ERROR | SWT.OK);
          }
