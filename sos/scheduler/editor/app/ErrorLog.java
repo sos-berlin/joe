@@ -24,16 +24,15 @@ public class ErrorLog extends Exception {
 		super();		
 		
 		try {
+			
 			init();	
 			logger.info(msg);
 			
 			if(logger.getLogLevel() > 6)
 				logger.info(getErrorMessage(e));
-			
-			
-		} catch(Exception ex){
-			System.out.println(ex.getMessage());
-			
+					
+		} catch(Exception ex){			
+			System.out.println(ex.getMessage());			
 		}
 				
 	}

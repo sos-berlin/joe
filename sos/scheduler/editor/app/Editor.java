@@ -119,6 +119,10 @@ public class Editor {
         
     public final static int MONITORS               = 79;
     
+    public final static int WEBSERVICE             = 80;
+    
+    public final static int HTTP_SERVER            = 81;
+    
     public static String    SCHEDULER_ENCODING     = "";
 
     public static String    DOCUMENTATION_ENCODING = "utf-8";
@@ -134,6 +138,7 @@ public class Editor {
 
     		MainWindow.getSShell().open();
     		MainWindow.getSShell().update();
+    		    		
     		// window.getSShell().pack(true);
 
     		// if(args.length > 0)

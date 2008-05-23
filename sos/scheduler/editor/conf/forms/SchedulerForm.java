@@ -505,6 +505,13 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 			listener.treeFillSchedules(tree.getSelection()[0]);                
 	}	
 	
+	
+	public void updateWebServices() { 		
+		if (tree.getSelectionCount() > 0)
+			listener.treeFillWebServices(tree.getSelection()[0]);                
+	}	
+	
+	
 	public void updateScripts() {
 			if (tree.getSelectionCount() > 0) {
 				TreeItem item = tree.getSelection()[0];		

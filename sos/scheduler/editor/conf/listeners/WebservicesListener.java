@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class WebservicesListener {
@@ -27,12 +28,15 @@ public class WebservicesListener {
 
 	private List         _list          = new ArrayList();
 
+	private ISchedulerUpdate main       = null;
+	
+	
 
-	public WebservicesListener(SchedulerDom dom, Element config) {
+	public WebservicesListener(SchedulerDom dom, Element config, ISchedulerUpdate main_) {
 
 		_dom = dom;
 		_config = config;
-
+		main = main_;
 		_http_server = _config.getChild("http_server");
 		if (_http_server != null) {
 			_list = _http_server.getChildren("web_service");
@@ -40,7 +44,21 @@ public class WebservicesListener {
 
 	}
 
+	private void init() {
+		
+		if (_http_server == null && _config.getAttribute("http_server") == null) {
+			_http_server = new Element("http_server");
+			_config.addContent(_http_server);
+			_list = _http_server.getChildren("web_service");
+		}
 
+		if (_service != null && !_list.contains(_service))
+			_list.add(_service);
+
+		_dom.setChanged(true);
+	}
+	
+	
 	public void fillTable(Table table) {
 
 		table.removeAll();
@@ -116,12 +134,24 @@ public class WebservicesListener {
 			}
 
 			_dom.setChanged(true);
+			main.updateWebServices();
 		}
+		
 	}
 
 
-	public void newService() {
+	public void newService(Table table) {
+
+		if (_http_server == null)
+			init();
+
 		_service = new Element("web_service");
+		String name = "web_service_" + (table.getItemCount() + 1);
+		_service.setAttribute("name", name);				
+		_http_server.addContent(_service);
+		fillTable(table);
+		main.updateWebServices();
+		
 	}
 
 
@@ -148,7 +178,8 @@ public class WebservicesListener {
 		if (parameters != null)
 			_service.addContent(parameters);
 
-		if (_http_server == null && _config.getAttribute("http_server") == null) {
+		init();
+		/*if (_http_server == null && _config.getAttribute("http_server") == null) {
 			_http_server = new Element("http_server");
 			_config.addContent(_http_server);
 			_list = _http_server.getChildren("web_service");
@@ -156,7 +187,7 @@ public class WebservicesListener {
 
 		if (!_list.contains(_service))
 			_list.add(_service);
-
+*/
 		_dom.setChanged(true);
 	}
 

@@ -43,5 +43,6 @@ public interface ISchedulerUpdate extends IDataChanged {
     
     public void updateFont(TreeItem item);
     
+    public void updateWebServices();
     
 }

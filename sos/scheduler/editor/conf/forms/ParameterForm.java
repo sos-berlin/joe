@@ -231,8 +231,9 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		if(type == Editor.JOB || type == Editor.JOB_COMMANDS)
 			createEnvironment();
 
-		//Includes
-		createIncludes();
+		//Includes		
+		if(type != Editor.WEBSERVICE)
+			createIncludes();
 
 		//test
 		//createParameterTabItem(); 

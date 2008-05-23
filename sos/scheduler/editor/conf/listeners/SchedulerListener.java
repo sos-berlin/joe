@@ -258,7 +258,8 @@ public class SchedulerListener {
 		if(type != SchedulerDom.DIRECTORY) {
 
 			TreeItem http_server = new TreeItem(tree, SWT.NONE);                
-			http_server.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
+			//http_server.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
+			http_server.setData(new TreeData(Editor.HTTP_SERVER, config, Options.getHelpURL("http_server"), "http_server"));
 			http_server.setData("key", "http_server");
 			http_server.setText("Http Server");
 
@@ -266,6 +267,7 @@ public class SchedulerListener {
 			item.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
 			item.setData("key", "http_server");
 			item.setText("Web Services");
+			treeFillWebServices(item);
 
 
 			item = new TreeItem(http_server, SWT.NONE);
@@ -787,7 +789,10 @@ public class SchedulerListener {
 						new SpecificWeekdaysForm(c, SWT.NONE, _dom, data.getElement(), _gui, DaysListener.MONTHDAYS);
 						break;
 					case Editor.WEBSERVICES:
-						new WebservicesForm(c, SWT.NONE, _dom, data.getElement());
+						new WebservicesForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+						break;
+					case Editor.WEBSERVICE:
+						new WebserviceForm(c, SWT.NONE, _dom, data.getElement(), _gui);
 						break;
 					case Editor.HTTPDIRECTORIES:
 						new HttpDirectoriesForm(c, SWT.NONE, _dom, data.getElement());
@@ -818,7 +823,8 @@ public class SchedulerListener {
 						break;
 					case Editor.SCHEDULE:
 						new sos.scheduler.editor.conf.forms.ScheduleForm(c, SWT.NONE, _dom, data.getElement(), _gui);
-
+						break;
+					case Editor.HTTP_SERVER:						
 						break;
 
 					default:
@@ -1091,10 +1097,46 @@ public class SchedulerListener {
 			return Editor.COMMANDS;
 		else if( (elem.getName().equals("order") || elem.getName().equals("add_order") || elem.getName().equals("start_job")) )
 			return Editor.JOB_COMMANDS;
+		else if(elem.getName().equals("web_service") )
+			return Editor.WEBSERVICE;
 		else
 			return Editor.CONFIG ;
 	}
 
+	
+	
+	public void treeFillWebServices(TreeItem parent) {
+		parent.removeAll();
+
+		Element httpServer = null;		
+
+		Element config = _dom.getRoot().getChild("config");
+		if(config != null)
+			httpServer = _dom.getRoot().getChild("config").getChild("http_server");
+		if (httpServer != null) {
+			Iterator it = httpServer.getChildren("web_service").iterator();
+			while (it.hasNext()) {
+				Object o = it.next();
+				if (o instanceof Element) {
+					Element element = (Element) o;
+					TreeItem item = new TreeItem(parent, SWT.NONE);
+					item.setData(new TreeData(Editor.WEBSERVICE, element, Options.getHelpURL("http_server"), "http_server"));
+					item.setData("key", "http_server");
+					item.setText("Web Service: " + element.getAttributeValue("name"));
+					
+					TreeItem itemParam = new TreeItem(item, SWT.NONE);
+					itemParam.setData(new TreeData(Editor.PARAMETER, element, Options.getHelpURL("parameter")));
+					itemParam.setData("key", "parameter");
+					itemParam.setText("Parameter");
+					
+				}
+			}
+		}
+		parent.setExpanded(true);
+
+	}
+
+	
 	public void treeFillSchedules(TreeItem parent) {
 		parent.removeAll();
 
@@ -1108,33 +1150,7 @@ public class SchedulerListener {
 					if(type == SchedulerDom.DIRECTORY) {
 						checkLifeAttributes(element, Utils.getAttributeValue("name", element));
 					}
-
-					/*TreeItem i = new TreeItem(parent, SWT.NONE);
-					String name = Utils.getAttributeValue("name", element);
-					String schedulename = "Schedules: " + name;
-
-
-					i.setText(schedulename);
-					i.setData(new TreeData(Editor.SCHEDULE, element, Options.getHelpURL("schedule")));
-					i.setData("key", "schedule");
-					 */
-
-					/*if(!Utils.isElementEnabled("job", _dom, element)) {
-						i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-					} else {
-						i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
-					}*/
-					//treeFillJob(i, element, false);
-
-					//treeFillRunTimes(parent, element, false, "schedule");
 					treeFillRunTimes(parent, element, false, Utils.getAttributeValue("name", element), true);
-
-					/*List l = element.getChildren("month");     	
-					for(int i =0; i < l.size(); i++) {
-						Element e = (Element)l.get(i);
-						treeFillRunTimes(parent.getItem(parent.getItemCount()-1).getItem(parent.getItem(parent.getItemCount()-1).getItemCount()-1), e, false, Utils.getAttributeValue("month", e), false);
-					}*/
-
 				}
 			}
 		}
