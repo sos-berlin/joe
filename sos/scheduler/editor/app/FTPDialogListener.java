@@ -3,26 +3,25 @@ package sos.scheduler.editor.app;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.Vector;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-
-import org.apache.commons.net.ftp.FTPFile;
 import org.eclipse.swt.SWT;
 import sos.net.SOSFTP;
 import sos.net.SOSFTPS;
 import sos.net.SOSFileTransfer;
 import sos.settings.SOSProfileSettings;
 import sos.util.SOSString;
+import sos.util.SOSUniqueID;
+
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Shell;
 
-import com.trilead.ssh2.SFTPv3DirectoryEntry;
+//import com.trilead.ssh2.SFTPv3DirectoryEntry;
 
 public class FTPDialogListener {
 
@@ -319,23 +318,23 @@ public class FTPDialogListener {
 	}
 
 	public HashMap changeDirectory(String directory) {	
-		
+
 		HashMap listnames = new HashMap();
-		String curWD = workingDirectory; //hilsvariable. Um im Fehlerfall wird dieser zurückgesetzt
+		//String curWD = workingDirectory; //hilsvariable. Um im Fehlerfall wird dieser zurückgesetzt
 
 		try {
 			directory = directory.replaceAll("\\\\", "/");
 
 			if(directory == null || directory.length() == 0)
 				directory = (sosString.parseToString(currProfile.get("root")).length() > 0 ? sosString.parseToString(currProfile.get("root")) : ".");			
-			
+
 			if(!(directory.startsWith(".") || directory.startsWith("/")))
 				directory = "./"+ directory;
-			
+
 			if(ftpClient instanceof SOSFTP) {
-		
+
 				if(directory.startsWith("./")) {
-					
+
 					if(workingDirectory.length() >= 0 && workingDirectory.equalsIgnoreCase(directory)) {
 						directory = ".";						
 					}else if(workingDirectory.length() >= directory.length() && workingDirectory.startsWith(directory)) {
@@ -369,7 +368,7 @@ public class FTPDialogListener {
 					}
 				} else if(directory.equals("..")) {
 
-					
+
 					int pos = workingDirectory.endsWith("/") ? workingDirectory.lastIndexOf("/", 1) : workingDirectory.lastIndexOf("/");
 					if(pos == -1) 
 						pos = directory.length();
@@ -393,9 +392,9 @@ public class FTPDialogListener {
 
 				java.util.Vector onlyfiles= ftpClient.nList(".");
 				String[] filesAndDirs = ftpClient.listNames(".");
-				
+
 				//String[] filesAndDirs = ftpClient.listNames("../..");
-				
+
 				for(int i = 0; i < filesAndDirs.length; i++) {
 					String fd = filesAndDirs[i];					
 					if(onlyfiles.contains(fd)){
@@ -526,6 +525,20 @@ public class FTPDialogListener {
 
 			password      = sosString.parseToString(prop.get("password"));
 
+			try {
+
+				String key = Options.getProperty("ftp.pass." + profile);
+
+				if(password.length() > 0 && sosString.parseToString(key).length() > 0) {
+
+					password = SOSCrypt.decrypt(key, password);
+
+				}
+			} catch(Exception e) {				
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..could not encrypt.", e);
+				throw e;
+			}
+
 			if(tryAgain) {
 				authenticationMethod = "password";	
 				authenticationFilename = "";
@@ -578,12 +591,16 @@ public class FTPDialogListener {
 				try {
 					Class sftpClass;
 					try{
-						sftpClass = Class.forName("sos.stacks.ganymed.SOSSFTP");
+						//sftpClass = Class.forName("sos.stacks.ganymed.SOSSFTP");
+						sftpClass = Class.forName("sos.net.SOSSFTP");
 						Constructor con = sftpClass.getConstructor(new Class[]{String.class,int.class});
 						ftpClient = (SOSFileTransfer) con.newInstance(new Object[]{host, new Integer(port)});									
 					} catch (Exception e){
-						if(logtext != null)  logtext.append("Failed to initialize SOSSFTP class, need recent sos.stacks.jar and trilead jar. "+e);
-						throw new Exception("Failed to initialize SOSSFTP class, need recent sos.stacks.jar and trilead jar. "+e,e);
+						//if(logtext != null)  logtext.append("Failed to initialize SOSSFTP class, need recent sos.stacks.jar and trilead jar. "+e);
+						//throw new Exception("Failed to initialize SOSSFTP class, need recent sos.stacks.jar and trilead jar. "+e,e);
+						if(logtext != null)  logtext.append("Failed to initialize SOSSFTP class, need recent sos.net.jar and trilead jar. "+e);
+						throw new Exception("Failed to initialize SOSSFTP class, need recent sos.net.jar and trilead jar. "+e,e);
+						
 					}
 					Class[] stringParam = new Class[]{String.class};
 					Method method= sftpClass.getMethod("setAuthenticationFilename", stringParam);
@@ -868,7 +885,7 @@ public class FTPDialogListener {
 	public void deleteProfile(String profilename) throws Exception {
 		try {
 			setCurrProfileName(profilename);
-			java.util.Properties profile = getCurrProfile();
+			//java.util.Properties profile = getCurrProfile();
 			String filename = configFile;
 
 
@@ -931,7 +948,7 @@ public class FTPDialogListener {
 
 			byte[] b = getBytesFromFile(new File(filename));
 			String s = new String(b);
-			System.out.println(s);
+			//System.out.println(s);
 
 			int pos1 = s.indexOf("[profile "+profilename+"]");
 			int pos2 = s.indexOf("[", pos1+1);
@@ -952,8 +969,28 @@ public class FTPDialogListener {
 			s2 = s2 + "host=" + sosString.parseToString(profile.get("host")) + "\n";
 			s2 = s2 + "port=" + sosString.parseToString(profile.get("port")) + "\n";
 			s2 = s2 + "user=" + sosString.parseToString(profile.get("user")) + "\n";
-			if(savePassword)
-				s2 = s2 + "password=" + sosString.parseToString(profile.get("password")) + "\n";
+			try {
+				if(savePassword && sosString.parseToString(profile.get("password")).length() > 0) {				
+					String pass = String.valueOf(SOSUniqueID.get());
+					if(pass.length() > 8) {
+						pass = pass.substring(pass.length()-8);
+					}
+
+					Options.setProperty("ftp.pass." + profilename, pass);
+					Options.saveProperties();
+					String encrypt =  SOSCrypt.encrypt(pass , sosString.parseToString(profile.get("password")));
+					s2 = s2 + "password=" +encrypt + "\n";
+
+					profile.put("password", encrypt);
+
+					this.password =encrypt;
+
+					getProfiles().put(profilename, profile);
+				}
+			} catch(Exception e) {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..could not encrypt.", e);
+				throw e;
+			}			
 			s2 = s2 + "root=" + sosString.parseToString(profile.get("root")) + "\n";
 			s2 = s2 + "localdirectory=" + sosString.parseToString(profile.get("localdirectory")) + "\n";
 			s2 = s2 + "transfermode=" + sosString.parseToString(profile.get("transfermode")) + "\n";    		 

@@ -88,13 +88,13 @@ public class Options {
         }
         return null;
     }
-
-
-    private static void setProperty(String key, String value) {
+    
+    public static void setProperty(String key, String value) {
         _properties.setProperty(key, value);
         _changed = true;
     }
 
+    
 
     public static String getDefault(String key) {
         return _defaults.getProperty(key);
@@ -449,4 +449,9 @@ public class Options {
         return _properties.getProperty("detail.editor.xslt");
     }
     
+    public static String getProperty(String key) {
+        
+            return _properties.getProperty(key);
+            
+    }
 }

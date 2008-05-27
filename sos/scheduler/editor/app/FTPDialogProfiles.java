@@ -4,10 +4,14 @@ package sos.scheduler.editor.app;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -83,6 +87,8 @@ public class FTPDialogProfiles {
     
     private              Text                txtDirPublicKey               = null;
     
+    private              boolean             saved                         =false; //hilsvariable            
+    
     
 	public FTPDialogProfiles(FTPDialogListener listener_) {
 		listener = listener_;
@@ -94,6 +100,17 @@ public class FTPDialogProfiles {
 
 		schedulerConfigurationShell = new Shell(SWT.CLOSE | SWT.TITLE
 				| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
+		
+		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(final TraverseEvent e) {				
+				if(e.detail == SWT.TRAVERSE_ESCAPE) {
+					close();
+					saved = true;
+					schedulerConfigurationShell.dispose();
+				}
+			}
+		});
+		
 		schedulerConfigurationShell.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(final DisposeEvent e) {
 				close();
@@ -115,6 +132,17 @@ public class FTPDialogProfiles {
 
 		{
 			schedulerGroup = new Group(schedulerConfigurationShell, SWT.NONE);
+			/*schedulerGroup.addTraverseListener(new TraverseListener() {
+				public void keyTraversed(final TraverseEvent e) {					
+					if(e.detail == SWT.TRAVERSE_ESCAPE) {
+						close();
+						saved = true;
+						schedulerConfigurationShell.dispose();
+					}
+					
+					
+				}
+			});*/
 			schedulerGroup.setText("Profiles");
 			final GridData gridData = new GridData(GridData.FILL,
 					GridData.FILL, true, true);
@@ -245,7 +273,9 @@ public class FTPDialogProfiles {
 			txtLocalDirectory.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
 
 			final Label savePasswordLabel = new Label(group, SWT.NONE);
-			savePasswordLabel.setLayoutData(new GridData(SWT.DEFAULT, 24));
+			final GridData gridData_5 = new GridData(SWT.DEFAULT, 24);
+			gridData_5.verticalIndent = 5;
+			savePasswordLabel.setLayoutData(gridData_5);
 			savePasswordLabel.setText("Save Password");
 
 			butSavePassword = new Button(group, SWT.CHECK);
@@ -460,7 +490,9 @@ public class FTPDialogProfiles {
 		final Button butClose = new Button(schedulerConfigurationShell, SWT.NONE);
 		butClose.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				close();		
+				
+				close();
+				saved = true;
 				schedulerConfigurationShell.dispose();
 			}
 		});
@@ -664,6 +696,9 @@ public class FTPDialogProfiles {
 	}
 	
 	private void close() {
+		if(saved)
+			return;
+		
 		if (butApply.getEnabled()) {
 			int cont = MainWindow.message(schedulerConfigurationShell, sos.scheduler.editor.app.Messages.getString("MainListener.apply_changes"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 			if(cont == SWT.OK) {				

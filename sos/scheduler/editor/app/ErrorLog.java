@@ -18,6 +18,14 @@ public class ErrorLog extends Exception {
 	
 	public ErrorLog(String msg) {
 		super();
+		try {
+
+			init();	
+			logger.info(msg);	
+			
+		} catch(Exception ex){			
+			System.out.println(ex.getMessage());			
+		}
 	}
 	
 	public ErrorLog(String msg, Exception e) {

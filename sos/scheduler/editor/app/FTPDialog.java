@@ -9,6 +9,8 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -98,6 +100,17 @@ public class FTPDialog {
 				| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 		schedulerConfigurationShell.setImage(ResourceManager
 				.getImageFromResource("/sos/scheduler/editor/editor.png"));
+		
+		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(final TraverseEvent e) {				
+				if(e.detail == SWT.TRAVERSE_ESCAPE) {
+					listener.disconnect();
+					schedulerConfigurationShell.dispose();
+				}
+			}
+		});
+		
+		
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		gridLayout.marginTop = 5;
@@ -164,6 +177,7 @@ public class FTPDialog {
 				public void widgetSelected(final SelectionEvent e) {
 					FTPDialogProfiles profiles = new FTPDialogProfiles (listener);
 					profiles.showForm();
+					txtDir.setText(".");
 				}
 			});
 			butProfiles.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));

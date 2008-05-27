@@ -40,10 +40,22 @@ public class JobChainListener {
 		return Utils.getAttributeValue("name", _chain);
 	}
 
+	public void setChainName(String name) {
+		Utils.setAttribute("name", name, _chain);
+		_dom.setChanged(true);
+		if(_dom.isDirectory()|| _dom.isLifeElement()) _dom.setChangedForDirectory("job_chain", name, SchedulerDom.MODIFY);
+	}
+
+	
 	public String getTitle() {
 		return Utils.getAttributeValue("title", _chain);
 	}
 
+	public void setTitle(String title) {
+		Utils.setAttribute("title", title, _chain);
+		_dom.setChanged(true);
+		if(_dom.isDirectory()|| _dom.isLifeElement()) _dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
+	}
 
 	public Element getChain() {
 		return _chain;
@@ -54,11 +66,33 @@ public class JobChainListener {
 		return Utils.isAttributeValue("orders_recoverable", _chain);
 	}
 
+	public void setRecoverable(boolean ordersRecoverable) {
+		Utils.setAttribute("orders_recoverable", ordersRecoverable, _chain);
+		_dom.setChanged(true);
+		if(_dom.isDirectory()|| _dom.isLifeElement()) _dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
+	}
+
 
 	public boolean getVisible() {
 		return Utils.isAttributeValue("visible", _chain);
 	}
 
+	public void setVisible(boolean visible) {
+		Utils.setAttribute("visible", visible, _chain);
+		_dom.setChanged(true);
+		if(_dom.isDirectory()|| _dom.isLifeElement()) _dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
+	}
+	
+	public boolean isDistributed() {		
+		return Utils.getAttributeValue("distributed", _chain).equals("yes");
+	}
+
+
+	public void setDistributed(boolean distributed) {		
+		Utils.setAttribute("distributed", distributed, false, _chain);
+	}
+
+	
 	public void applyChain(String name, boolean ordersRecoverable, boolean visible, boolean distributed, String title) {
 		String oldjobChainName = Utils.getAttributeValue("name", _chain);
 		if (oldjobChainName != null && oldjobChainName.length() > 0) {			
@@ -288,10 +322,7 @@ public class JobChainListener {
 		return Utils.getAttributeValue("remove", _node).equals("yes");
 	}
 
-	public boolean isDistributed() {		
-		return Utils.getAttributeValue("distributed", _chain).equals("yes");
-	}
-
+	
 	public void applyNode(boolean isJobchainNode,
 			String state, 
 			String job, 

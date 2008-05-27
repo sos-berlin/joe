@@ -12,9 +12,12 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
@@ -56,8 +59,10 @@ public class TabbedContainer implements IContainer {
 
 
 	public TabbedContainer(MainWindow window, Composite parent) {
-		this.window = window;
+		this.window = window;		
 		folder = new CTabFolder(parent, SWT.TOP | SWT.CLOSE);
+		
+		folder.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		initialize();
 	}
 
@@ -79,6 +84,8 @@ public class TabbedContainer implements IContainer {
 			}
 		});
 
+		
+		
 		// on tab close
 		folder.addCTabFolder2Listener(new CTabFolder2Adapter() {
 			public void close(CTabFolderEvent event) {
@@ -90,6 +97,21 @@ public class TabbedContainer implements IContainer {
 				}
 				if (event.doit)
 					filelist.remove(editor.getFilename());
+			}
+		});
+		
+		folder.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(final TraverseEvent e) {
+				
+				
+				/*if(e.detail == SWT.TRAVERSE_ESCAPE) {		
+					System.out.println(folder.getChildren().length);
+					IEditor editor = (IEditor)folder.getSelection().getControl();
+					filelist.remove(editor.getFilename());
+					editor.close();
+					folder.getSelection().dispose();
+					folder.removeControlListener(listener)
+				}*/
 			}
 		});
 	}

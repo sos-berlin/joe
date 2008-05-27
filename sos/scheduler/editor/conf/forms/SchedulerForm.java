@@ -427,6 +427,11 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		if(newName.equals(oldName))
 			return;
 		
+		if(dom.isLifeElement()){
+			TreeItem item = tree.getSelection()[0];
+			item.setText("Job Chain: " + newName);
+		}
+		
 		TreeItem item = tree.getSelection()[0];
 		if(item.getText().equals("Job Chains")) {
 			TreeItem[] items = item.getItems();

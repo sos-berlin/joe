@@ -4,6 +4,8 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -47,6 +49,15 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 		Shell parent = getParent();
 		final Shell newFolderShell =
 			new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		
+		newFolderShell.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(final TraverseEvent e) {				
+				if(e.detail == SWT.TRAVERSE_ESCAPE) {
+					close();
+				}
+			}
+		});
+		
 		newFolderShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.verticalSpacing = 10;
