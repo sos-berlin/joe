@@ -5,18 +5,17 @@ import java.io.File;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 import org.jdom.Element;
 import sos.scheduler.editor.app.MainListener;
 import sos.scheduler.editor.app.IContainer;
@@ -24,6 +23,10 @@ import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.HotFolderDialog;
 import java.util.ArrayList;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.CoolBar;
+import org.eclipse.swt.widgets.CoolItem;
+import org.eclipse.swt.widgets.Label;
 
 public class MainWindow  {
 	
@@ -45,7 +48,7 @@ public class MainWindow  {
 	
 	private MainWindow  main                = null;
 	
-	//private Group groupmain = null;
+	//private Composite groupmain = null;
 	
 	
 	public MainWindow() {
@@ -70,16 +73,50 @@ public class MainWindow  {
 	 */
 	public void createSShell() {
 		sShell = new Shell();
-		sShell.setLayout(new GridLayout());
+		final GridLayout gridLayout_1 = new GridLayout();
+		sShell.setLayout(gridLayout_1);
 		sShell.setText("Job Scheduler Editor");
 		sShell.setData(sShell.getText());		
 		sShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 				
-		/*groupmain = new Group(sShell, SWT.NONE);
-		groupmain.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
-		groupmain.setLayout(new GridLayout());
-*/
+		/*groupmain = new Composite(sShell, SWT.NONE);
+		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
+		groupmain.setLayoutData(gridData);
+		final GridLayout gridLayout = new GridLayout();
+		gridLayout.verticalSpacing = 0;
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		gridLayout.horizontalSpacing = 0;
+		groupmain.setLayout(gridLayout);
+
+		final ToolBar toolBar = new ToolBar(groupmain, SWT.NONE);
+		toolBar.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
+
+		final ToolItem butOpen = new ToolItem(toolBar, SWT.PUSH);
+		butOpen.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				if (container.openQuick() != null)
+					setSaveStatus();
+			}
+		});
+		butOpen.setImage(ResourceManager
+				.getImageFromResource("/sos/scheduler/editor/icon_open.gif"));		
+
+		final ToolItem butSave = new ToolItem(toolBar, SWT.PUSH);
+		butSave.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				save();
+			}
+		});
+		butSave.setImage(ResourceManager
+				.getImageFromResource("/sos/scheduler/editor/save.gif"));	
 		
+
+		final ToolItem butUndo = new ToolItem(toolBar, SWT.PUSH);
+		butUndo.setImage(ResourceManager
+				.getImageFromResource("/sos/scheduler/editor/icon_undo3.gif"));	
+		
+		*/
 		createContainer();
 		
 		listener = new MainListener(this, container);
@@ -363,7 +400,8 @@ public class MainWindow  {
 		pSaveFile.setEnabled(false);
 		pSaveFile.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.getCurrentEditor().applyChanges()) {
+				save();
+				/*if (container.getCurrentEditor().applyChanges()) {
 					sos.scheduler.editor.conf.forms.SchedulerForm form =(sos.scheduler.editor.conf.forms.SchedulerForm)container.getCurrentEditor();
     				SchedulerDom currdom = (SchedulerDom)form.getDom();
     				java.util.HashMap changes = (java.util.HashMap)((SchedulerDom)currdom).getChangedJob().clone()	;
@@ -422,6 +460,7 @@ public class MainWindow  {
 					setSaveStatus();
 	
 				}
+				*/
 			}
 			
 			
@@ -817,5 +856,66 @@ public class MainWindow  {
 	public static IContainer getContainer() {
 		return container;
 	}
-		
+
+	private void save() {
+		if (container.getCurrentEditor().applyChanges()) {
+			sos.scheduler.editor.conf.forms.SchedulerForm form =(sos.scheduler.editor.conf.forms.SchedulerForm)container.getCurrentEditor();
+			SchedulerDom currdom = (SchedulerDom)form.getDom();
+			java.util.HashMap changes = (java.util.HashMap)((SchedulerDom)currdom).getChangedJob().clone()	;
+			
+			container.getCurrentEditor().save();
+			
+			
+			
+			if(container.getCurrentTab().getData("ftp_title") != null && 
+					container.getCurrentTab().getData("ftp_title").toString().length()>0) {
+				String profilename = container.getCurrentTab().getData("ftp_profile_name").toString();
+				String remoteDir = container.getCurrentTab().getData("ftp_remote_directory").toString();
+				ArrayList ftpHotFolderElements = new ArrayList();
+				if(container.getCurrentTab().getData("ftp_hot_folder_elements") != null)
+					ftpHotFolderElements = (ArrayList)container.getCurrentTab().getData("ftp_hot_folder_elements");
+
+				java.util.Properties profile = (java.util.Properties)container.getCurrentTab().getData("ftp_profile");
+
+				Text txtLog = new Text(getSShell(), SWT.NONE);
+				FTPDialogListener ftpListener = new FTPDialogListener(profile, profilename);
+				ftpListener.setLogText(txtLog);
+				ftpListener.connect(profilename);
+				if(ftpListener.isLoggedIn()) {
+					//ftpListener.changeDirectory(new File(remoteDir).getParent());
+
+					if(currdom.isLifeElement()) {
+
+						String filename = container.getCurrentEditor().getFilename();
+						if(!new File(remoteDir).getName().equalsIgnoreCase(new File(filename).getName())){
+							//Attribute "name" wurde geändert: Das bedeutet auch Änderungen der life Datei namen.
+							ftpListener.removeFile(remoteDir);
+						}
+						remoteDir = new File(remoteDir).getParent() + "/" + new File(filename).getName();
+						ftpListener.saveAs( filename, remoteDir);
+
+					} else if(currdom.isDirectory()) {
+
+						ftpListener.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);
+
+					} else {
+
+						ftpListener.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
+
+					}
+					ftpListener.disconnect();
+				} else {
+					MainWindow.message("could not save file on ftp Server", SWT.ICON_WARNING);
+				}
+				if(ftpListener.hasError()) {
+					String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), getSShell(), false, "");
+					if(text != null)
+						txtLog.setText(text);
+				}
+			}
+			
+			setSaveStatus();
+
+		}
+	}
 }

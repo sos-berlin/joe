@@ -71,7 +71,11 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 		newFolderShell.setText(getText());
 		newFolderShell.pack();
 
-		text = new Text(newFolderShell, SWT.BORDER);
+		if (obj instanceof FTPDialogListener)
+			text = new Text(newFolderShell, SWT.PASSWORD | SWT.BORDER);
+		else 
+			text = new Text(newFolderShell, SWT.BORDER);
+		
 		text.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR)

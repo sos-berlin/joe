@@ -67,13 +67,20 @@ public class ErrorLog extends Exception {
 	private void init() {
 		String filename = "";
 		try {
+			if(logger != null)
+				return;
 			//filename = "C:/temp/editor.log";
 			filename = sos.scheduler.editor.app.Options.getSchedulerHome();
 			if(filename.endsWith("/") || filename.endsWith("\\"))
-				filename = filename + "config" + "editor.log";
+				filename = filename + "logs";
 			else 
-				filename = filename + "/config" + "/editor.log";
+				filename = filename + "/logs";
 			
+			if(!new java.io.File(filename).exists())
+				new java.io.File(filename).mkdirs();
+			
+			filename = filename+ "/scheduler_editor.log";
+				
 			if(logger == null)
 				logger = new SOSStandardLogger(filename, 9);
 			

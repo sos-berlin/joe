@@ -532,7 +532,7 @@ public class FTPDialogListener {
 				//Options.setProperty("profile.timestamp." + profilename, pass);
 				//Options.saveProperties();
 				
-				if(key.length() > 8) {
+				if(key != null && key.length() > 8) {
 					key = key.substring(key.length()-8);
 				}
 				
