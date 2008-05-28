@@ -527,8 +527,15 @@ public class FTPDialogListener {
 
 			try {
 
-				String key = Options.getProperty("ftp.pass." + profile);
+				String key = Options.getProperty("profile.timestamp." + profile);
 
+				//Options.setProperty("profile.timestamp." + profilename, pass);
+				//Options.saveProperties();
+				
+				if(key.length() > 8) {
+					key = key.substring(key.length()-8);
+				}
+				
 				if(password.length() > 0 && sosString.parseToString(key).length() > 0) {
 
 					password = SOSCrypt.decrypt(key, password);
@@ -972,12 +979,15 @@ public class FTPDialogListener {
 			try {
 				if(savePassword && sosString.parseToString(profile.get("password")).length() > 0) {				
 					String pass = String.valueOf(SOSUniqueID.get());
+					
+					Options.setProperty("profile.timestamp." + profilename, pass);
+					Options.saveProperties();
+					
 					if(pass.length() > 8) {
 						pass = pass.substring(pass.length()-8);
 					}
 
-					Options.setProperty("ftp.pass." + profilename, pass);
-					Options.saveProperties();
+					
 					String encrypt =  SOSCrypt.encrypt(pass , sosString.parseToString(profile.get("password")));
 					s2 = s2 + "password=" +encrypt + "\n";
 
