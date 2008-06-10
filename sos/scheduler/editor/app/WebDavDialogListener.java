@@ -598,7 +598,8 @@ public class WebDavDialogListener {
 			String s = new String(b);
 			//System.out.println(s);
 
-			int pos1 = s.indexOf("[profile "+profilename+"]");
+			
+			int pos1 = s.indexOf("["+ PREFIX+ " "+profilename+"]");
 			int pos2 = s.indexOf("[", pos1+1);
 
 			if(pos1 == -1 ) {
@@ -656,7 +657,7 @@ public class WebDavDialogListener {
 			String s = new String(b);
 			//System.out.println(s);
 
-			int pos1 = s.indexOf("[profile "+profilename+"]");
+			int pos1 = s.indexOf("["+PREFIX+" "+profilename+"]");
 			int pos2 = s.indexOf("[", pos1+1);
 
 			if(pos1 == -1 ) {
