@@ -47,7 +47,7 @@ public class WebDavDialogListener {
 
 	private              boolean                hasError                      = false;
 
-	private              Text                   txtURL                       = null;
+	private              Text                   txtURL                       = null;		
 
 	
 	public WebDavDialogListener(java.util.Properties profile, String profilename) {
@@ -330,7 +330,7 @@ public class WebDavDialogListener {
 			user = sosString.parseToString(currProfile.get("user"));
 			password = sosString.parseToString(currProfile.get("password"));
 			
-			String key = Options.getProperty("webdav_profile.timestamp." + currProfileName);
+			String key = Options.getProperty("profile.timestamp." + currProfileName);
 
 			if(key != null && key.length() > 8) {
 				key = key.substring(key.length()-8);
@@ -677,7 +677,7 @@ public class WebDavDialogListener {
 				if(savePassword && sosString.parseToString(profile.get("password")).length() > 0) {				
 					String pass = String.valueOf(SOSUniqueID.get());
 
-					Options.setProperty("webdav_profile.timestamp." + profilename, pass);
+					Options.setProperty("profile.timestamp." + profilename, pass);
 					Options.saveProperties();
 
 					if(pass.length() > 8) {

@@ -89,6 +89,7 @@ public class FTPDialogProfiles {
     
     private              boolean             saved                         =false; //hilsvariable            
     
+    private              boolean             init                          = false;     
     
 	public FTPDialogProfiles(FTPDialogListener listener_) {
 		listener = listener_;
@@ -189,7 +190,8 @@ public class FTPDialogProfiles {
 			cboConnectname.setLayoutData(gridData_2);
 			cboConnectname.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-					initForm();
+					if( !cboConnectname.getText().equals(currProfile.get("name")))
+						initForm();
 				}
 			});
 			cboConnectname.select(0);
@@ -243,6 +245,26 @@ public class FTPDialogProfiles {
 			txtPassword = new Text(group, SWT.PASSWORD | SWT.BORDER);
 			txtPassword.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
+					if(init) {
+						try {
+							init = false;
+							if(txtPassword.getText().length() > 0) {
+								String key = Options.getProperty("profile.timestamp." + cboConnectname.getText());
+
+								if(key != null && key.length() > 8) {
+									key = key.substring(key.length()-8);
+								}
+								String password = txtPassword.getText();
+
+								if(password.length() > 0 && sosString.parseToString(key).length() > 0) {
+									password = SOSCrypt.decrypt(key, password);
+								}
+								txtPassword.setText(password);
+							}
+						} catch(Exception ex) {
+							System.out.println(ex.getMessage());
+						}
+					}
 					setEnabled();
 				}
 			});
@@ -539,6 +561,7 @@ public class FTPDialogProfiles {
 
 	private void initForm() {
 		try {
+			init = true;
 			 setToolTip();
 			String s = cboConnectname.getText();
 			cboConnectname.setItems(listener.getProfileNames());//löscht den Eintrag, daher mit s merken und wieder zurückschreiben
@@ -614,6 +637,7 @@ public class FTPDialogProfiles {
 			
 			
 			newProfile = false;
+			init = false;
 		} catch (Exception e) {
 			try {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not reaad FTP Profiles", e);
@@ -640,6 +664,9 @@ public class FTPDialogProfiles {
 		prop.put("user", txtUsername.getText());
 		prop.put("password", txtPassword.getText());
 		prop.put("root", txtRoot.getText());
+		if(txtLocalDirectory.getText().length() > 0 &&
+				!new java.io.File(txtLocalDirectory.getText()).exists())
+			new java.io.File(txtLocalDirectory.getText()).mkdirs();
 		prop.put("localdirectory", txtLocalDirectory.getText());
 		prop.put("transfermode", butbinary.getSelection() ? "binary" : "ASCII");
 		prop.put("save_password", (butSavePassword.getSelection() ? "yes" : "no"));

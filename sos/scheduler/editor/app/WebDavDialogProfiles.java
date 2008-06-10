@@ -55,22 +55,17 @@ public class WebDavDialogProfiles {
 
 	private              WebDavDialogListener   listener                      = null;
 
-
-
+	private              boolean             init                          = false;       
 
 	private              Button              butApply                      = null;
 	
 	private              boolean             saveSettings                  = false;
 
     private              Combo               cboProtokol                   = null; 
-    
-	
-    
-
+        
+    private              boolean             saved                         =false; //hilsvariable
     
     
-    
-    private              boolean             saved                         =false; //hilsvariable            
     
     
 	public WebDavDialogProfiles(WebDavDialogListener listener_) {
@@ -204,6 +199,27 @@ public class WebDavDialogProfiles {
 			txtPassword = new Text(group, SWT.PASSWORD | SWT.BORDER);
 			txtPassword.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
+					if(init) {
+						try {
+							init = false;
+							if(txtPassword.getText().length() > 0) {
+								String key = Options.getProperty("profile.timestamp." + cboConnectname.getText());
+
+								if(key != null && key.length() > 8) {
+									key = key.substring(key.length()-8);
+								}
+								String password = txtPassword.getText();
+
+								if(password.length() > 0 && sosString.parseToString(key).length() > 0) {
+									password = SOSCrypt.decrypt(key, password);
+								}
+								txtPassword.setText(password);
+							}
+						} catch(Exception ex) {
+							System.out.println(ex.getMessage());
+						}
+					}
+
 					setEnabled();
 				}
 			});
@@ -358,6 +374,7 @@ public class WebDavDialogProfiles {
 
 	private void initForm() {
 		try {
+			init = true;
 			 setToolTip();
 			String s = cboConnectname.getText();
 			cboConnectname.setItems(listener.getProfileNames());//löscht den Eintrag, daher mit s merken und wieder zurückschreiben
@@ -384,6 +401,7 @@ public class WebDavDialogProfiles {
 			cboProtokol.setText(protocol);			
 			butApply.setEnabled(false);
 			newProfile = false;
+			init = false;
 		} catch (Exception e) {
 			try {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not reaad WebDav Profiles", e);
@@ -402,49 +420,59 @@ public class WebDavDialogProfiles {
 	}
 
 	private void apply() {
-		Properties prop = new Properties();
-		String pName = cboConnectname.getText();
-		prop.put("name", pName);
-		prop.put("user", txtUsername.getText());
-		prop.put("password", txtPassword.getText());
-		prop.put("url", txtURL.getText());
-		
-		if(txtLocalDirectory.getText().length() > 0 &&
-				!new java.io.File(txtLocalDirectory.getText()).exists())
-			new java.io.File(txtLocalDirectory.getText()).mkdirs();
-		
-		prop.put("localdirectory", txtLocalDirectory.getText());
-		
-		prop.put("save_password", (butSavePassword.getSelection() ? "yes" : "no"));
-		prop.put("protocol", cboProtokol.getText());
+		try {
+			Properties prop = new Properties();
+			String pName = cboConnectname.getText();
+			prop.put("name", pName);
+			prop.put("user", txtUsername.getText());
+			
 
-		    				
-		
-		if((newProfile && !listener.getProfiles().containsKey(cboConnectname.getText())) ||
-				listener.getProfiles().isEmpty()) {
-			//neuer Eintrag
-			listener.getProfiles().put(pName, prop);	
+			prop.put("password", txtPassword.getText());
+			prop.put("url", txtURL.getText());
 
-		} else {
-			listener.removeProfile(pName);
+			if(txtLocalDirectory.getText().length() > 0 &&
+					!new java.io.File(txtLocalDirectory.getText()).exists())
+				new java.io.File(txtLocalDirectory.getText()).mkdirs();
 
+			prop.put("localdirectory", txtLocalDirectory.getText());
+
+			prop.put("save_password", (butSavePassword.getSelection() ? "yes" : "no"));
+			prop.put("protocol", cboProtokol.getText());
+
+
+
+			if((newProfile && !listener.getProfiles().containsKey(cboConnectname.getText())) ||
+					listener.getProfiles().isEmpty()) {
+				//neuer Eintrag
+				listener.getProfiles().put(pName, prop);	
+
+			} else {
+				listener.removeProfile(pName);
+
+			}
+
+			listener.setProfiles(pName, prop);
+
+			listener.setCurrProfileName(pName);
+
+			Properties p = new Properties();
+			p.putAll(prop);
+			listener.setCurrProfile(p);
+
+			cboConnectname.setItems(listener.getProfileNames());
+			cboConnectname.setText(pName);
+			//initForm();
+			newProfile = false;
+			saveSettings = true;//Änderungen haben stattgefunden, d.h. in die ini Datei zurückschreiben
+			butApply.setEnabled(false);
+		} catch (Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not save Profile " + cboConnectname.getText(), e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			MainWindow.message("could not save WebDav Profile " + cboConnectname.getText() + ": "  + e.getMessage()  , SWT.ICON_WARNING);
 		}
-
-		listener.setProfiles(pName, prop);
-
-		listener.setCurrProfileName(pName);
-
-		Properties p = new Properties();
-		p.putAll(prop);
-		listener.setCurrProfile(p);
-
-		cboConnectname.setItems(listener.getProfileNames());
-		cboConnectname.setText(pName);
-		//initForm();
-		newProfile = false;
-		saveSettings = true;//Änderungen haben stattgefunden, d.h. in die ini Datei zurückschreiben
-		butApply.setEnabled(false);
-		
 	}
 
 	
