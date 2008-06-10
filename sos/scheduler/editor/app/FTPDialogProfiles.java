@@ -657,7 +657,8 @@ public class FTPDialogProfiles {
 			prop.put("auth_file", txtDirPublicKey.getText());
 		}
 
-		if(newProfile && !listener.getProfiles().containsKey(cboConnectname.getText())) {
+		if(newProfile && !listener.getProfiles().containsKey(cboConnectname.getText()) ||
+				listener.getProfiles().isEmpty()) {
 			//neuer Eintrag
 			listener.getProfiles().put(pName, prop);	
 

@@ -1,5 +1,6 @@
 package sos.scheduler.editor.app;
 
+import org.apache.webdav.lib.WebdavResource;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -26,7 +27,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.util.SOSString;
 import com.swtdesigner.SWTResourceManager;
-import sos.scheduler.editor.app.FTPDialogListener;
+import sos.scheduler.editor.app.WebDavDialogListener;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 
 
 
-public class FTPDialog {
+public class WebDavDialog {
 
 
 	private              Button                  butOpenOrSave                         = null;
@@ -45,13 +46,13 @@ public class FTPDialog {
 
 	private              Shell                   schedulerConfigurationShell   = null;
 
-	private              FTPDialogListener       listener                      = null;
+	private              WebDavDialogListener       listener                      = null;
 
 	private              Combo                   cboConnectname                = null;
 	
 	private              Table                   table                         = null;		
 	
-	private              Text                    txtDir                        = null;
+	private              Text                    txtUrl                        = null;
 	
 	private              SOSString               sosString                     = new SOSString();
 	
@@ -67,9 +68,9 @@ public class FTPDialog {
 	
 	public    static     String                  SAVE_AS                       = "Save As";
 	
-	public    static     String                  SAVE_AS_HOT_FOLDER            = "Save As Hot Folder";
-	
 	public    static     String                  OPEN_HOT_FOLDER               = "Open Hot Folder";
+	
+	public    static     String                  SAVE_AS_HOT_FOLDER            = "Save As Hot Folder";
 	
 	private              Button                  butChangeDir                  = null;
 	
@@ -89,9 +90,9 @@ public class FTPDialog {
 	
 	
 	
-	public FTPDialog(MainWindow  main_) {		
+	public WebDavDialog(MainWindow  main_) {		
 		main = main_;		 
-		listener = new FTPDialogListener();						
+		listener = new WebDavDialogListener();						
 	}
 
 	
@@ -106,7 +107,7 @@ public class FTPDialog {
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(final TraverseEvent e) {				
 				if(e.detail == SWT.TRAVERSE_ESCAPE) {
-					listener.disconnect();
+					//listener.disconnect();
 					schedulerConfigurationShell.dispose();
 				}
 			}
@@ -144,15 +145,15 @@ public class FTPDialog {
 			cboConnectname.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					if(!cboConnectname.getText().equalsIgnoreCase(listener.getCurrProfileName()) ) {
-						listener.disconnect();
-						txtDir.setText("");
+						//listener.disconnect();
+						txtUrl.setText("");
 						table.removeAll();
 						txtFilename.setText("");
 						listener.setCurrProfileName(cboConnectname.getText());
 						initForm();
 					}
-					butOpenOrSave.setEnabled(listener.isLoggedIn() && txtFilename.getText().length() > 0);
-					_setEnabled(listener.isLoggedIn());
+					//butOpenOrSave.setEnabled(listener.isLoggedIn() && txtFilename.getText().length() > 0);
+					//_setEnabled(listener.isLoggedIn());
 					//listener.connect(cboConnectname.getText());
 				}
 			});
@@ -163,12 +164,12 @@ public class FTPDialog {
 				public void widgetSelected(final SelectionEvent e) {
 					//listener.connect(cboConnectname.getText());
 					//listener.connect(cboConnectname.getText());
-					HashMap h = listener.changeDirectory(cboConnectname.getText(), txtDir.getText());
-					if(listener.isLoggedIn()) {
-						butOpenOrSave.setEnabled(listener.isLoggedIn() && txtFilename.getText().length() > 0);
+					HashMap h = listener.changeDirectory(cboConnectname.getText(), txtUrl.getText());
+					//if(listener.isLoggedIn()) {
+						butOpenOrSave.setEnabled(txtFilename.getText().length() > 0);
 						fillTable(h);
 						_setEnabled(true);
-					}
+					//}
 					
 				}
 			});
@@ -177,31 +178,36 @@ public class FTPDialog {
 			butProfiles = new Button(schedulerGroup, SWT.NONE);
 			butProfiles.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-					FTPDialogProfiles profiles = new FTPDialogProfiles (listener);
+					WebDavDialogProfiles profiles = new WebDavDialogProfiles (listener);
 					profiles.showForm();
-					//txtDir.setText(".");
+					//txtUrl.setText(".");
+					txtUrl.setText(listener.getCurrProfile() != null && listener.getCurrProfile().getProperty("url") != null? listener.getCurrProfile().getProperty("url") : "");
 				}
 			});
 			butProfiles.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
 			butProfiles.setText("Profiles");
 
-			txtDir = new Text(schedulerGroup, SWT.BORDER);
-			txtDir.addKeyListener(new KeyAdapter() {
+			txtUrl = new Text(schedulerGroup, SWT.BORDER);
+			txtUrl.addKeyListener(new KeyAdapter() {
 				public void keyPressed(final KeyEvent e) {
 					if (e.keyCode == SWT.CR) {
-						HashMap h = listener.changeDirectory(txtDir.getText());
+						if(!txtUrl.getText().endsWith("/"))
+							txtUrl.setText(txtUrl.getText() + "/");
+					
+						HashMap h = listener.changeDirectory(txtUrl.getText());
 						fillTable(h);
 					}
 				}
 			});
-			txtDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1));
+			txtUrl.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1));
 			
 
 			butChangeDir = new Button(schedulerGroup, SWT.NONE);
 			butChangeDir.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-					
-					HashMap h = listener.changeDirectory(cboConnectname.getText(), txtDir.getText());
+					if(!txtUrl.getText().endsWith("/"))
+						txtUrl.setText(txtUrl.getText() + "/");
+						HashMap h = listener.changeDirectory(cboConnectname.getText(), txtUrl.getText());
 					fillTable(h);
 				}
 			});
@@ -217,35 +223,43 @@ public class FTPDialog {
 						TableItem item = table.getSelection()[0];
 						
 						if(item.getData("type").equals("file") || 
-								type.equalsIgnoreCase(OPEN_HOT_FOLDER) ||
+								type.equalsIgnoreCase(OPEN_HOT_FOLDER) ||								
 								type.equalsIgnoreCase(SAVE_AS_HOT_FOLDER))
 							txtFilename.setText(item.getText(0));
 						else
 							txtFilename.setText("");
 					}
-					butOpenOrSave.setEnabled(listener.isLoggedIn() && txtFilename.getText().length() > 0);
+					butOpenOrSave.setEnabled(txtFilename.getText().length() > 0);
 				}
 			});
 			
 			table.addMouseListener(new MouseAdapter() {
 				public void mouseDoubleClick(final MouseEvent e) {
 					if(table.getSelectionCount() > 0) {
+
 						TableItem item = table.getSelection()[0];
 						if(item.getData("type").equals("dir")) {	
-							
-							txtDir.setText((txtDir.getText().endsWith("/") ? txtDir.getText() :txtDir.getText() + "/") + item.getText());
-							fillTable(listener.changeDirectory(txtDir.getText()));
+
+							txtUrl.setText((txtUrl.getText().endsWith("/") ? txtUrl.getText() :txtUrl.getText() + "/") + item.getText() + "/");
+							fillTable(listener.changeDirectory(txtUrl.getText()));
 						} else if (item.getData("type").equals("dir_up")) {
-							String parentPath = new java.io.File(txtDir.getText()).getParent();
+							String[] split = txtUrl.getText().split("/");
+							String parentPath = "";
+							for(int i = 0; i < split.length-1; i++)
+								parentPath = parentPath + split[i] + "/";
+							//String parentPath = new java.io.File(txtUrl.getText()).getParent();
 							if(parentPath != null)
-								txtDir.setText(parentPath.replaceAll("\\\\", "/"));
-							else
-								txtDir.setText(".");
-							fillTable(listener.cdUP());
+								txtUrl.setText(parentPath);
+							fillTable(listener.changeDirectory(parentPath));							}
+						else {
+							txtUrl.setText("");
+
 						}
-						txtFilename.setText("");
 					}
+					txtFilename.setText("");
+
 				}
+
 			});
 			table.setHeaderVisible(true);
 			table.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 3, 3));
@@ -328,7 +342,7 @@ public class FTPDialog {
 				public void widgetSelected(final SelectionEvent e) {
 					if(txtFilename.getText() != null) {
 						listener.removeFile(txtFilename.getText());
-						HashMap h = listener.changeDirectory(txtDir.getText());
+						HashMap h = listener.changeDirectory(txtUrl.getText());
 						fillTable(h);
 					}
 				}
@@ -337,7 +351,7 @@ public class FTPDialog {
 			butRemove.setText("Remove");
 
 			final Label filenameLabel = new Label(schedulerGroup, SWT.NONE);
-			if(type.equalsIgnoreCase(OPEN_HOT_FOLDER) || type.equalsIgnoreCase(OPEN_HOT_FOLDER)) {
+			if(type.equalsIgnoreCase(OPEN_HOT_FOLDER)) {
 				filenameLabel.setText("Folder");
 			} else {
 				filenameLabel.setText("Filename");
@@ -346,7 +360,7 @@ public class FTPDialog {
 			txtFilename = new Text(schedulerGroup, SWT.BORDER);						
 			txtFilename.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
-					butOpenOrSave.setEnabled(listener.isLoggedIn() && txtFilename.getText().length() > 0);
+					butOpenOrSave.setEnabled(txtFilename.getText().length() > 0);
 				}
 			});
 			
@@ -363,15 +377,12 @@ public class FTPDialog {
 						if(butOpenOrSave.getText().equals(OPEN) || butOpenOrSave.getText().equals(OPEN_HOT_FOLDER)) {
 							if(type.equals(OPEN_HOT_FOLDER)) {
 								openHotFolder();
-							/*} else if (type.equals(OPEN_HOT_FOLDER)) {
-								String file = txtDir.getText() + "/" + txtFilename.getText();
-								saveas(file);*/
 							} else {
 								//Konfiguratoionsdatei oder HOT Folder Element
 								openFile();
 							}
 						} else {							
-							String file = txtDir.getText() + "/" + txtFilename.getText();
+							String file = txtUrl.getText() + "/" + txtFilename.getText();
 							saveas(file);
 						}
 						
@@ -404,7 +415,7 @@ public class FTPDialog {
 			butClose = new Button(schedulerGroup, SWT.NONE);
 			butClose.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-					listener.disconnect();
+					//listener.disconnect();
 					schedulerConfigurationShell.dispose();
 				}
 			});
@@ -448,7 +459,7 @@ public class FTPDialog {
 			cboConnectname.setItems(listener.getProfileNames());
 			if(listener.getProfileNames().length == 0) {
 				cboConnectname.setText("");
-				txtDir.setText("");
+				txtUrl.setText("");
 			} else {
 				
 				String profilename = listener.getCurrProfileName() != null ?  listener.getCurrProfileName() : listener.getProfileNames()[0];
@@ -458,8 +469,9 @@ public class FTPDialog {
 			}
 			listener.setLogText(txtLog);
 			listener.setConnectionsname(cboConnectname);
-			listener.setRemoteDirectory(txtDir);
-			txtDir.setText(listener.getCurrProfile() != null ? listener.getCurrProfile().getProperty("root") : "");
+			listener.setURL(txtUrl);
+			//txtUrl.setText(listener.getCurrProfile() != null && listener.getCurrProfile().getProperty("root") != null? listener.getCurrProfile().getProperty("root") : "");
+			txtUrl.setText(listener.getCurrProfile() != null && listener.getCurrProfile().getProperty("url") != null? listener.getCurrProfile().getProperty("url") : "");
 			_setEnabled(false);
 			
 		} catch (Exception e) {
@@ -468,7 +480,7 @@ public class FTPDialog {
     		} catch(Exception ee) {
     			//tu nichts
     		}
-			MainWindow.message("could not int FTP Profiles:" + e.getMessage()  , SWT.ICON_WARNING);
+			MainWindow.message("could not int WebDav Profiles:" + e.getMessage()  , SWT.ICON_WARNING);
 		}
 	}
 	
@@ -485,8 +497,13 @@ public class FTPDialog {
 			
 			//directories
 			while(it.hasNext()) {
-				String key = sosString.parseToString(it.next());
-				if(h.get(key).equals("dir")) {
+				
+				WebdavResource keys = (WebdavResource)it.next();
+				String key = keys.toString();
+				key = key.replaceAll("%20", " ");
+				key = new File(key).getName();
+				
+				if(h.get(keys).equals("dir")) {
 					TableItem item = new TableItem(table, SWT.NONE);
 					item.setText(0, key);					
 					item.setText(1, "");
@@ -522,7 +539,7 @@ public class FTPDialog {
     		} catch(Exception ee) {
     			//tu nichts
     		}
-			System.out.println("..error in FTPDialog " + e.getMessage());
+			System.out.println("..error in WebDavDialog " + e.getMessage());
 		}
 
 	}
@@ -563,10 +580,10 @@ public class FTPDialog {
 					Utils.setAttribute("name", attrName, currdom.getRoot());
 				}
 				if (MainWindow.getContainer().getCurrentEditor().save()) {
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
-					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
+					MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
+					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
+					MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
+					MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
 					main.setSaveStatus();	
 
 				}
@@ -584,28 +601,27 @@ public class FTPDialog {
 			} else if(currdom.isDirectory()) {
 				if (MainWindow.getContainer().getCurrentEditor().save()) {
 					ArrayList list = new ArrayList();
-					if(MainWindow.getContainer().getCurrentTab().getData("ftp_hot_folder_elements") != null)
-						list = (ArrayList)MainWindow.getContainer().getCurrentTab().getData("ftp_hot_folder_elements");
+					if(MainWindow.getContainer().getCurrentTab().getData("webdav_hot_folder_elements") != null)
+						list = (ArrayList)MainWindow.getContainer().getCurrentTab().getData("webdav_hot_folder_elements");
 					ArrayList newlist = listener.saveHotFolderAs(localfilename, file);
 
-					MainWindow.getContainer().getCurrentTab().setData("ftp_hot_folder_elements", newlist);
-					//MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", file);
+					MainWindow.getContainer().getCurrentTab().setData("webdav_hot_folder_elements", newlist);
+					//MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", file);
 
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
-					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-					main.setSaveStatus();
+					MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
+					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
+					MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
+					MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
 				}
 				return;
 				
 			} else {
 				currdom.setFilename(newFilename);
 				if (MainWindow.getContainer().getCurrentEditor().save()) {
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
-					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
+					MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
+					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
+					MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
+					MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
 					main.setSaveStatus();		
 				}
 			}
@@ -619,118 +635,72 @@ public class FTPDialog {
     		}
 			MainWindow.message("could not save File: cause: "+  e.getMessage(), SWT.ICON_WARNING);
 		} finally {
-			listener.disconnect();
+			//listener.disconnect();
 			schedulerConfigurationShell.dispose();
 		}
 	}
 
 	public void openHotFolder() {
 		try {
-			HashMap h = listener.changeDirectory(txtDir.getText() + "/" + txtFilename.getText());
+			HashMap h = listener.changeDirectory(txtUrl.getText() + "/" + txtFilename.getText() + "/");
 			if(listener.hasError()) {				
 				return;
 			}
+				
 			
 			java.util.Iterator it = h.keySet().iterator();
 			//Alle Hot Folder Dateinamen merken: Grund: Beim Speichern werden alle Dateien gelöscht und anschliessend 
 			//neu zurückgeschrieben
 			ArrayList nameOfLifeElement = new ArrayList();
 			String tempSubHotFolder = txtFilename.getText();
-//test begin
-			String targetfile = sosString.parseToString(listener.getCurrProfile().get("localdirectory" ));
-			targetfile = targetfile.replaceAll("\\\\", "/");
-			
-			targetfile = (targetfile.endsWith("/") ||  targetfile.endsWith("\\") ? targetfile + tempSubHotFolder:  targetfile + "/" + tempSubHotFolder);
-			
-			targetfile = (targetfile.endsWith("/") ||  targetfile.endsWith("\\") ? targetfile :  targetfile + "/");
-
-			File f = new File(targetfile);
-			ArrayList l = new ArrayList();
-			if(f.exists() && f.list().length > 0) {
-				
-				
-				String[] list = f.list();
-				for(int i = 0; i < list.length; i++) {
-					if(list[i] != null && 
-							(list[i].endsWith(".job.xml") ||
-							list[i].endsWith(".job_chain.xml") ||
-							list[i].endsWith(".order.xml") ||
-							list[i].endsWith(".lock.xml") ||
-							list[i].endsWith(".process_class.xml") ||
-							list[i].endsWith(".schedule.xml"))									
-							) {
-						l.add(list[i]);
-						
-					}
-					
-							
-							
-				}
-				
-			}
-			//test end
 			//boolean ok = false;
 			//String tmpDirname = File.createTempFile("tmp", "").getName();
 			//files
-			
-
+			String localFile = "";
 			while(it.hasNext()) {
 				//ok = true;
-				String key = sosString.parseToString(it.next());
-				if(l.contains(key)) {
-					l.remove(key);
-				}
+				//String key = sosString.parseToString(it.next());
+				org.apache.webdav.lib.WebdavResource key = (org.apache.webdav.lib.WebdavResource)it.next();
 				if(h.get(key).equals("file")) {
 					if(isLifeElement(sosString.parseToString(key))) {
+						localFile = listener.getCurrProfile().getProperty("localdirectory");
+						if(!localFile.endsWith("/"))
+							localFile = localFile + "/";
+						localFile = localFile + tempSubHotFolder + "/";
+						if(!new File(localFile).exists())
+							new File(localFile).mkdirs();
+						String slocalFile = localFile + new File(sosString.parseToString(key)).getName();
+						key.getMethod(new File(slocalFile));
+						//key.getMethod(new File("c:/temp/job8.job.xml"));
 						//String file = listener.getFile(sosString.parseToString(key), tmpDirname + "/" + tempSubHotFolder);
-						String file = listener.getFile(sosString.parseToString(key), tempSubHotFolder);
-						nameOfLifeElement.add(file.replaceAll("\\\\", "/"));
+						//nameOfLifeElement.add(File);
+						nameOfLifeElement.add(slocalFile);
 					}
 				} 								
 			}
-
-			
-			String whichFile = "";	
-			if(l.size() >= 0) {
-							
-				for (int i = 0; i < l.size(); i++) {										
-						whichFile = whichFile + l.get(i) + "; ";						
-					}
-				}
-
-				if(whichFile.length() > 0) {
-					int c = MainWindow.message("Die Dateien in der lokalen Verzeichniskopie sind nicht synchron mit den Dateien am Server.\nSollen die Dateien der lokalen Verzeichniskopie entfernt werden?\n" + whichFile, SWT.ICON_QUESTION | SWT.YES |SWT.NO |SWT.CANCEL);
-
-					if(c == SWT.YES) {								
-						for(int j = 0; j < l.size(); j++)
-							new File( targetfile + sosString.parseToString(l.get(j))).delete();
-					}	
-				
-			}
-
 			
 			//if(ok) {
 				
-				//String dirname = listener.getCurrProfile().get("localdirectory")+"/" + tmpDirname;
-			String dirname = listener.getCurrProfile().get("localdirectory")+"/";
+				
+				/*String dirname = listener.getCurrProfile().get("localdirectory")+"/" + tmpDirname;
 				dirname = dirname + "/" + txtFilename.getText();
 				if(!new File(dirname).exists()) {
 					new File(dirname).mkdirs();
-				}
+				}*/
 								
-				if (MainWindow.getContainer().openDirectory(dirname) != null) {
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
-					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-					MainWindow.getContainer().getCurrentTab().setData("ftp_hot_folder_elements", nameOfLifeElement);
+				if (MainWindow.getContainer().openDirectory(localFile) != null) {
+					MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
+					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
+					MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
+					MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
+					MainWindow.getContainer().getCurrentTab().setData("webdav_hot_folder_elements", nameOfLifeElement);
 					
 					main.setSaveStatus();	
 				}
 			//} 
 				
 			
-			listener.disconnect();
+			//listener.disconnect();
 			schedulerConfigurationShell.dispose();
 		} catch(Exception e) {
 			try {
@@ -745,29 +715,32 @@ public class FTPDialog {
 	
 	public void openFile() {
 		
-		String file = listener.getFile(txtDir.getText() + "/" + txtFilename.getText(), null);
+		String file = listener.getFile(txtUrl.getText() + "//" + txtFilename.getText(), null);
 		
 		if(!listener.hasError()) {
 			if (MainWindow.getContainer().openQuick(file) != null) {
-				MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-				MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
-				MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-				MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
+				MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
+				MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
+				MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
+				MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
 				main.setSaveStatus();		
 			}
 
-			listener.disconnect();
+			//listener.disconnect();
 			schedulerConfigurationShell.dispose();
 		}
 	}
 
 
-	public FTPDialogListener getListener() {
+	public WebDavDialogListener getListener() {
 		return listener;
 	}
 	
 	public void refresh() {
-		HashMap h = listener.changeDirectory(txtDir.getText());
+		if(!txtUrl.getText().endsWith("/"))
+			txtUrl.setText(txtUrl.getText() + "/");
+	
+		HashMap h = listener.changeDirectory(txtUrl.getText());
 		fillTable(h);
 	}
 	
@@ -780,7 +753,7 @@ public class FTPDialog {
 	}
 	
 	private void _setEnabled(boolean enabled) {
-		txtDir.setEnabled(enabled);
+		txtUrl.setEnabled(enabled);
 		butChangeDir.setEnabled(enabled);		
 		butRefresh.setEnabled(enabled);	
 		butNewFolder.setEnabled(enabled);		
@@ -883,29 +856,29 @@ public class FTPDialog {
 		.setToolTipText(Messages.getTooltip(""));
 		*/
 		if(type.equalsIgnoreCase(OPEN_HOT_FOLDER)) {
-			butOpenOrSave.setToolTipText(Messages.getTooltip("ftpdialog.btn_open_hot_folder"));
-			txtFilename.setToolTipText(Messages.getTooltip("ftpdialog.txt_open_hot_folder"));
+			butOpenOrSave.setToolTipText(Messages.getTooltip("webdavdialog.btn_open_hot_folder"));
+			txtFilename.setToolTipText(Messages.getTooltip("webdavdialog.txt_open_hot_folder"));
 		} else if(type.equalsIgnoreCase(OPEN)) {
-			butOpenOrSave.setToolTipText(Messages.getTooltip("ftpdialog.btn_open_file"));
-			txtFilename.setToolTipText(Messages.getTooltip("ftpdialog.txt_open_file"));
+			butOpenOrSave.setToolTipText(Messages.getTooltip("webdavdialog.btn_open_file"));
+			txtFilename.setToolTipText(Messages.getTooltip("webdavdialog.txt_open_file"));
 		} else if(type.equalsIgnoreCase(SAVE_AS) || type.equalsIgnoreCase(SAVE_AS_HOT_FOLDER)) {
-			butOpenOrSave.setToolTipText(Messages.getTooltip("ftpdialog.btn_save_as"));
-			txtFilename.setToolTipText(Messages.getTooltip("ftpdialog.txt_save_as"));
+			butOpenOrSave.setToolTipText(Messages.getTooltip("webdavdialog.btn_save_as"));
+			txtFilename.setToolTipText(Messages.getTooltip("webdavdialog.txt_save_as"));
 		}
 		
 		
-		cboConnectname.setToolTipText(Messages.getTooltip("ftpdialog.profilenames"));
-		table.setToolTipText(Messages.getTooltip("ftpdialog.table"));
-		txtDir.setToolTipText(Messages.getTooltip("ftpdialog.directory"));
+		cboConnectname.setToolTipText(Messages.getTooltip("webdavdialog.profilenames"));
+		table.setToolTipText(Messages.getTooltip("webdavdialog.table"));
+		txtUrl.setToolTipText(Messages.getTooltip("webdavdialog.directory"));
 		
-		txtLog.setToolTipText(Messages.getTooltip("ftpdialog.log"));   
-		butChangeDir.setToolTipText(Messages.getTooltip("ftpdialog.change_directory"));
-		butRefresh.setToolTipText(Messages.getTooltip("ftpdialog.refresh"));  	
-		butNewFolder.setToolTipText(Messages.getTooltip("ftpdialog.new_folder"));	
-		butRemove.setToolTipText(Messages.getTooltip("ftpdialog.remove"));  
-		butSite.setToolTipText(Messages.getTooltip("ftpdialog.connect"));
-		butClose.setToolTipText(Messages.getTooltip("ftpdialog.close"));
-		butProfiles.setToolTipText(Messages.getTooltip("ftpdialog.profiles"));
+		txtLog.setToolTipText(Messages.getTooltip("webdavdialog.log"));   
+		butChangeDir.setToolTipText(Messages.getTooltip("webdavdialog.change_directory"));
+		butRefresh.setToolTipText(Messages.getTooltip("webdavdialog.refresh"));  	
+		butNewFolder.setToolTipText(Messages.getTooltip("webdavdialog.new_folder"));	
+		butRemove.setToolTipText(Messages.getTooltip("webdavdialog.remove"));  
+		butSite.setToolTipText(Messages.getTooltip("webdavdialog.connect"));
+		butClose.setToolTipText(Messages.getTooltip("webdavdialog.close"));
+		butProfiles.setToolTipText(Messages.getTooltip("webdavdialog.profiles"));
 	}
 	
 	private boolean isLifeElement(String filename){
@@ -923,4 +896,10 @@ public class FTPDialog {
 		}
 	}
 
+
+	public Text getTxtUrl() {
+		return txtUrl;
+	}
+	
+	
 }

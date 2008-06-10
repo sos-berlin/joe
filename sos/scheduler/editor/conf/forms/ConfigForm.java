@@ -5,8 +5,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -575,7 +573,6 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 	private void createGroup() {
 		
 		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
-		gridData.heightHint = 153;
 		group = new Group(gConfig, SWT.NONE);
 		group.setText("Comment");
 		group.setLayoutData(gridData);

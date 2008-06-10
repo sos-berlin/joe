@@ -61,7 +61,10 @@ public class FTPDialogListener {
 
 	//sFTP mit publickey und Passphares hat nicht geklappt, Rückfall auf nur Password
 	private              boolean                tryAgain                      = false;
+	
+	private              Text                   txtPath                       = null;
 
+	
 	public FTPDialogListener(java.util.Properties profile, String profilename) {
 		sosString = new SOSString();
 		currProfile = profile;
@@ -941,6 +944,8 @@ public class FTPDialogListener {
 
 			cboConnectname.setItems(getProfileNames());
 			cboConnectname.setText(currProfileName);
+			txtPath.setText(currProfile.getProperty("root"));
+			
 		}
 
 
@@ -1049,6 +1054,7 @@ public class FTPDialogListener {
 
 			cboConnectname.setItems(getProfileNames());
 			cboConnectname.setText(currProfileName);
+			txtPath.setText(currProfile.getProperty("root"));
 		}
 
 
@@ -1057,6 +1063,11 @@ public class FTPDialogListener {
 	public void setConnectionsname(Combo cboConnectname_) {
 		cboConnectname = cboConnectname_;
 	}
+	
+	public void setRemoteDirectory(Text txtPath) {
+		this.txtPath = txtPath;
+	}
+	
 
 	public void removeFromProfilenames(String profileName) {
 		ArrayList l = new ArrayList() ;		 

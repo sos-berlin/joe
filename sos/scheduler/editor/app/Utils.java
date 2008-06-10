@@ -29,13 +29,18 @@ import java.util.regex.Pattern;
 public class Utils {
 
     // saving a default value results in removing the tag
-    private static final String STR_DEFAULT     = "";
+    private static final String       STR_DEFAULT     = "";
 
-    private static final String INT_DEFAULT     = null;
+    private static final String       INT_DEFAULT     = null;
 
-    private static final String BOOLEAN_DEFAULT = null;
+    private static final String       BOOLEAN_DEFAULT = null;
 
-    private static Clipboard    _cb             = null;
+    private static       Clipboard    _cb             = null;
+    
+    //all root elements for undo 
+    private static       List         undo            = null;
+    
+    private static       int          UNDO_SIZE       = 10;
     
 
     public static String getIntegerAsString(int i) {
@@ -923,5 +928,22 @@ public class Utils {
     	return true;
     }
     
+    public static void setUndoElement(Element elem) {
+    	if(undo == null)
+    		undo = new java.util.ArrayList();
+    	
+    	undo.set(0, elem);
+    	if(undo.size() > UNDO_SIZE)
+    		undo.remove(undo.size()-1);
+    }
+    
+    public static Element getUndoElement() {
+    	if(undo != null) {    		    
+    		Element retval = (Element)((Element)undo.get(0)).clone();
+    		undo.remove(0);    		
+    		return retval;    		
+    	}
+    	return null;
+    }
     
 }

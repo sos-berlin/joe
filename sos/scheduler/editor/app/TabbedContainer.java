@@ -313,6 +313,10 @@ public class TabbedContainer implements IContainer {
 				tab.getData("ftp_remote_directory") != null && tab.getData("ftp_remote_directory").toString().length() > 0)
 			title = tab.getData("ftp_remote_directory").toString();
 
+		if (tab.getData("webdav_profile_name") != null && tab.getData("webdav_profile_name").toString().length() > 0 && 
+				tab.getData("webdav_remote_directory") != null && tab.getData("webdav_remote_directory").toString().length() > 0)
+			title = tab.getData("webdav_remote_directory").toString();
+
 		tab.setText(getCurrentEditor().hasChanges() == false ? title : "*" + title);        
 		setWindowTitle();
 		window.setMenuStatus();
@@ -361,10 +365,12 @@ public class TabbedContainer implements IContainer {
 	private void setWindowTitle() {
 		Shell shell = folder.getShell();
 		String ftp = getCurrentTab().getData("ftp_title") != null ? getCurrentTab().getData("ftp_title").toString() + "\\": "";	
+		
+		String webdav = getCurrentTab().getData("webdav_title") != null ? getCurrentTab().getData("webdav_title").toString() + "\\": "";
 		/*if(ftp != null && ftp.length() > 0  ) {
         	String f = new File(getCurrentTab().getText()).getName();
         }*/
-		shell.setText((String) shell.getData() + ftp + " " +getCurrentTab().getText());
+		shell.setText((String) shell.getData() + webdav + ftp + " " +getCurrentTab().getText());
 		//shell.setText((String) shell.getData() + " [" + getCurrentTab().getText() + "]");
 	}
 

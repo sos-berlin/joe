@@ -50,5 +50,5 @@ public interface IContainer {
     
     public CTabItem getCurrentTab();
     
-   // public void setFtpFile(String filename, String remotefilename);
+   
 }

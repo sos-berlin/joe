@@ -42,7 +42,7 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
 import sos.scheduler.editor.conf.listeners.OrdersListener;
 
-public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 	private Button              dumm2                       = null;
 
@@ -153,7 +153,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 	private Text                txtTitle                    = null; 
 
 
-	public JobChainForm(Composite parent, int style, SchedulerDom dom, Element jobChain) {
+	public JobChainNodesForm(Composite parent, int style, SchedulerDom dom, Element jobChain) {
 		super(parent, style);
 		listener = new JobChainListener(dom, jobChain);
 		initialize();

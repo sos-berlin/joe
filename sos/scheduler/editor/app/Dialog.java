@@ -147,6 +147,21 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 			FTPDialogListener listener = (FTPDialogListener)obj;
 			listener.setPassword(text.getText());
 			
+		} else if(obj instanceof WebDavDialog) {
+				
+				WebDavDialog webdavDialog = (WebDavDialog)obj;
+				String parentPath = webdavDialog.getTxtUrl().getText();
+				if(!parentPath.endsWith("/"))
+					parentPath = parentPath + "/";
+				
+				webdavDialog.getListener().mkDirs(parentPath + text.getText());
+				webdavDialog.refresh();
+				
+		} else if (obj instanceof WebDavDialogListener) {
+			
+			WebDavDialogListener listener = (WebDavDialogListener)obj;
+			listener.setPassword(text.getText());
+			
 		}
 		close();
 	}
