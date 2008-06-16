@@ -386,10 +386,10 @@ public class MainWindow  {
 							}
 						}
 					}
-					
-					
+
+
 					container.getCurrentEditor().save();
-						
+
 					setSaveStatus();
 				}
 			}
@@ -466,150 +466,160 @@ public class MainWindow  {
 		pOpenWebDav.setText("Open By WebDav");
 		//pOpenWebDav.setAccelerator(SWT.CTRL | 'I');
 		pOpenWebDav.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
-				WebDavDialog webdav = new WebDavDialog(main);
-				webdav.showForm(WebDavDialog.OPEN);
-			}
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-
-		MenuItem pOpenHotFolderWebDav = new MenuItem(pmWebDav, SWT.PUSH);
-		pOpenHotFolderWebDav.setText("Open Hot Folder By WebDav");
-		//pSaveWebDav.setAccelerator(SWT.CTRL | 'I');
-		pOpenHotFolderWebDav.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
-				WebDavDialog webdav = new WebDavDialog(main);
-				webdav.showForm(WebDavDialog.OPEN_HOT_FOLDER);
-			}
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-
-		new MenuItem(pmWebDav, SWT.SEPARATOR);
-
-		MenuItem pSaveWebDav = new MenuItem(pmWebDav, SWT.PUSH);
-		pSaveWebDav.setText("Save By WebDav");
-		//pSaveWebDav.setAccelerator(SWT.CTRL | 'I');
-		pSaveWebDav.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
-				//WebDavDialog webdav = new WebDavDialog(main);
-				//webdav.showForm(WebDavDialog.SAVE_AS);
-				WebDavDialog webdav = new WebDavDialog(main);
-				sos.scheduler.editor.conf.forms.SchedulerForm form =(sos.scheduler.editor.conf.forms.SchedulerForm)container.getCurrentEditor();
-				SchedulerDom dom = (SchedulerDom)form.getDom(); 
-				if(dom.isDirectory()) {
-					webdav.showForm(WebDavDialog.SAVE_AS_HOT_FOLDER);
-				} else
-					webdav.showForm(WebDavDialog.SAVE_AS);
-			}
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-
-		mWebDav.setMenu(pmWebDav);
-		new MenuItem(mFile, SWT.SEPARATOR);
-
-
-		submenuItem2.setMenu(mFile);
-		MenuItem pExit = new MenuItem(mFile, SWT.PUSH);
-		pExit.setText("Exit\tCtrl+E");
-		pExit.setAccelerator(SWT.CTRL | 'E');
-
-		pExit.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				sShell.close();
-			}
-
-
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-
-		MenuItem submenuItem = new MenuItem(menuBar, SWT.CASCADE);
-		submenuItem.setText("Options");
-		MenuItem submenuItem3 = new MenuItem(menuBar, SWT.CASCADE);
-		submenuItem3.setText("&Help");
-		submenu1 = new Menu(submenuItem3);
-		MenuItem pHelS = new MenuItem(submenu1, SWT.PUSH);
-		pHelS.setText("Scheduler Editor Help");		
-
-		pHelS.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {				
-				listener.openHelp(Options.getHelpURL("index"));				
-			}
-
-
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-
-		MenuItem pHelp = new MenuItem(submenu1, SWT.PUSH);
-		pHelp.setText("Help\tF1");		
-		pHelp.setAccelerator(SWT.F1);
-		pHelp.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.getCurrentEditor() != null) {
-					listener.openHelp(container.getCurrentEditor().getHelpKey());					
-				}else {
-					String msg = "Help is available after documentation or configuration is opened";
-					MainWindow.message(msg, SWT.ICON_INFORMATION);
+				try {
+					WebDavDialog webdav = new WebDavDialog(main);
+					webdav.showForm(WebDavDialog.OPEN);
+				} catch(Exception ex) {
+					try {
+		    			new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not open file on Webdav Server", ex);
+		    		} catch(Exception ee) {
+		    			//tu nichts
+		    		}
+					MainWindow.message("could not open file on Webdav Server, cause: "  + ex.getMessage(), SWT.ICON_WARNING);
+					
 				}
 			}
-
-
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-		MenuItem pAbout = new MenuItem(submenu1, SWT.PUSH);
-		pAbout.setText("About");
-		pAbout.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				listener.showAbout();
-			}
+
+				MenuItem pOpenHotFolderWebDav = new MenuItem(pmWebDav, SWT.PUSH);
+				pOpenHotFolderWebDav.setText("Open Hot Folder By WebDav");
+				//pSaveWebDav.setAccelerator(SWT.CTRL | 'I');
+				pOpenHotFolderWebDav.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+					public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
+						WebDavDialog webdav = new WebDavDialog(main);
+						webdav.showForm(WebDavDialog.OPEN_HOT_FOLDER);
+					}
+					public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+					}
+				});
+
+				new MenuItem(pmWebDav, SWT.SEPARATOR);
+
+				MenuItem pSaveWebDav = new MenuItem(pmWebDav, SWT.PUSH);
+				pSaveWebDav.setText("Save By WebDav");
+				//pSaveWebDav.setAccelerator(SWT.CTRL | 'I');
+				pSaveWebDav.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+					public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
+						//WebDavDialog webdav = new WebDavDialog(main);
+						//webdav.showForm(WebDavDialog.SAVE_AS);
+						WebDavDialog webdav = new WebDavDialog(main);
+						sos.scheduler.editor.conf.forms.SchedulerForm form =(sos.scheduler.editor.conf.forms.SchedulerForm)container.getCurrentEditor();
+						SchedulerDom dom = (SchedulerDom)form.getDom(); 
+						if(dom.isDirectory()) {
+							webdav.showForm(WebDavDialog.SAVE_AS_HOT_FOLDER);
+						} else
+							webdav.showForm(WebDavDialog.SAVE_AS);
+					}
+					public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+					}
+				});
+
+				mWebDav.setMenu(pmWebDav);
+				new MenuItem(mFile, SWT.SEPARATOR);
 
 
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		submenuItem3.setMenu(submenu1);
-		submenu = new Menu(submenuItem);
-		MenuItem submenuItem1 = new MenuItem(submenu, SWT.CASCADE);
-		submenuItem1.setText("Help Language");
-		menuLanguages = new Menu(submenuItem1);
+				submenuItem2.setMenu(mFile);
+				MenuItem pExit = new MenuItem(mFile, SWT.PUSH);
+				pExit.setText("Exit\tCtrl+E");
+				pExit.setAccelerator(SWT.CTRL | 'E');
 
-		// create languages menu
-		listener.setLanguages(menuLanguages);
-
-		submenuItem1.setMenu(menuLanguages);
-		submenuItem.setMenu(submenu);
-
-		MenuItem submenuItemInfo = new MenuItem(submenu, SWT.PUSH);
-		submenuItemInfo.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				listener.resetInfoDialog();				
-			}
-		});
-		submenuItemInfo.setText("Reset Dialog");
-		sShell.setMenuBar(menuBar);
-		sShell.addShellListener(new org.eclipse.swt.events.ShellAdapter() {
-			public void shellClosed(org.eclipse.swt.events.ShellEvent e) {
-				e.doit = container.closeAll();
-				setSaveStatus();
-				Options.saveWindow(sShell, "editor");
-				listener.saveOptions();
-				ResourceManager.dispose();
-			}
+				pExit.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+					public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+						sShell.close();
+					}
 
 
-			public void shellActivated(org.eclipse.swt.events.ShellEvent e) {
-				setSaveStatus();
-			}
-		});
+					public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+					}
+				});
+
+				MenuItem submenuItem = new MenuItem(menuBar, SWT.CASCADE);
+				submenuItem.setText("Options");
+				MenuItem submenuItem3 = new MenuItem(menuBar, SWT.CASCADE);
+				submenuItem3.setText("&Help");
+				submenu1 = new Menu(submenuItem3);
+				MenuItem pHelS = new MenuItem(submenu1, SWT.PUSH);
+				pHelS.setText("Scheduler Editor Help");		
+
+				pHelS.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+					public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {				
+						listener.openHelp(Options.getHelpURL("index"));				
+					}
 
 
-		//test
-		/*CoolBar coolBar =
+					public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+					}
+				});
+
+				MenuItem pHelp = new MenuItem(submenu1, SWT.PUSH);
+				pHelp.setText("Help\tF1");		
+				pHelp.setAccelerator(SWT.F1);
+				pHelp.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+					public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+						if (container.getCurrentEditor() != null) {
+							listener.openHelp(container.getCurrentEditor().getHelpKey());					
+						}else {
+							String msg = "Help is available after documentation or configuration is opened";
+							MainWindow.message(msg, SWT.ICON_INFORMATION);
+						}
+					}
+
+
+					public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+					}
+				});
+				MenuItem pAbout = new MenuItem(submenu1, SWT.PUSH);
+				pAbout.setText("About");
+				pAbout.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+					public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+						listener.showAbout();
+					}
+
+
+					public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+					}
+				});
+				submenuItem3.setMenu(submenu1);
+				submenu = new Menu(submenuItem);
+				MenuItem submenuItem1 = new MenuItem(submenu, SWT.CASCADE);
+				submenuItem1.setText("Help Language");
+				menuLanguages = new Menu(submenuItem1);
+
+				// create languages menu
+				listener.setLanguages(menuLanguages);
+
+				submenuItem1.setMenu(menuLanguages);
+				submenuItem.setMenu(submenu);
+
+				MenuItem submenuItemInfo = new MenuItem(submenu, SWT.PUSH);
+				submenuItemInfo.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {
+						listener.resetInfoDialog();				
+					}
+				});
+				submenuItemInfo.setText("Reset Dialog");
+				sShell.setMenuBar(menuBar);
+				sShell.addShellListener(new org.eclipse.swt.events.ShellAdapter() {
+					public void shellClosed(org.eclipse.swt.events.ShellEvent e) {
+						e.doit = container.closeAll();
+						setSaveStatus();
+						Options.saveWindow(sShell, "editor");
+						listener.saveOptions();
+						ResourceManager.dispose();
+					}
+
+
+					public void shellActivated(org.eclipse.swt.events.ShellEvent e) {
+						setSaveStatus();
+					}
+				});
+
+
+				//test
+				/*CoolBar coolBar =
 		    new CoolBar(sShell, SWT.BORDER);
 		  // create a tool bar which it
 		  // the control of the coolItem
@@ -636,8 +646,8 @@ public class MainWindow  {
 		      coolItem.computeSize (size.x, size.y);
 		    coolItem.setSize(coolSize);
 		  }
-		 */
-		/*Shell s = new Shell();
+				 */
+				/*Shell s = new Shell();
 	   CoolBar coolBar = new CoolBar(s, SWT.CASCADE);
 
 	    //for (int idxCoolItem = 0; idxCoolItem < 3; ++idxCoolItem) {
@@ -656,19 +666,19 @@ public class MainWindow  {
 	      Point p2 = item.computeSize(p.x, p.y);
 	      item.setControl(tb);
 	      item.setSize(p2);
-		 *(
+				 *(
 		/*Shell s = new Shell();
 		ToolBar toolbar = new ToolBar(s, SWT.NONE);
 	    toolbar.setBounds(0, 0, 200, 70);
 	    ToolItem toolItem1 = new ToolItem(toolbar, SWT.PUSH);
 	    toolItem1.setText("Save");
-		 */
-		/* s.setBounds(100, 100, 200, 100);
+				 */
+				/* s.setBounds(100, 100, 200, 100);
 	    s.layout();
 		s.pack();
 		s.open();
-		 */
-		/*ToolBar toolbar = new ToolBar(sShell, SWT.NONE);
+				 */
+				/*ToolBar toolbar = new ToolBar(sShell, SWT.NONE);
 		    toolbar.setBounds(0, 0, 200, 70);
 		    ToolItem toolItem1 = new ToolItem(toolbar, SWT.PUSH);
 		    toolItem1.setText("Save");
@@ -680,8 +690,8 @@ public class MainWindow  {
 		    toolItem4.setText("Run");
 		    ToolItem toolItem5 = new ToolItem(toolbar, SWT.PUSH);
 		    toolItem5.setText("Help");
-		 */
-		//}
+				 */
+				//}
 
 
 	}
@@ -809,7 +819,7 @@ public class MainWindow  {
 		toolBar.setLayoutData(gridData);
 
 		final ToolItem butNew = new ToolItem(toolBar, SWT.NONE);
-		
+
 
 		butNew.setImage(ResourceManager
 				.getImageFromResource("/sos/scheduler/editor/icon_new.gif"));	
@@ -817,8 +827,8 @@ public class MainWindow  {
 		final Menu menu = new Menu(toolBar);
 		butNew.setToolTipText("New Confuguration");
 
-		
-		
+
+
 		MenuItem itemConfig = new MenuItem(menu, SWT.PUSH);
 		itemConfig.setText("Configuration");
 		itemConfig.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -1072,7 +1082,7 @@ public class MainWindow  {
 	}
 
 	private static void addDropDown(final ToolItem item, final Menu menu) {
-		
+
 		item.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				Rectangle rect = item.getBounds();
@@ -1094,13 +1104,13 @@ public class MainWindow  {
 				}
 			}
 		});
-		*/
+		 */
 	}
 
 
 	private void saveFTP(java.util.HashMap changes) {
 
-		
+
 
 		if(container.getCurrentTab().getData("ftp_title") != null && 
 				container.getCurrentTab().getData("ftp_title").toString().length()>0) {
@@ -1163,12 +1173,12 @@ public class MainWindow  {
 		WebDavDialogListener webdavListener = null;
 		Text txtLog = null;
 
-		
+
 		if(container.getCurrentTab().getData("webdav_title") != null && 
 				container.getCurrentTab().getData("webdav_title").toString().length()>0) {
 			sos.scheduler.editor.conf.forms.SchedulerForm form =(sos.scheduler.editor.conf.forms.SchedulerForm)container.getCurrentEditor();
 			SchedulerDom currdom = (SchedulerDom)form.getDom();
-			
+
 			String profilename = container.getCurrentTab().getData("webdav_profile_name").toString();
 			String remoteDir = container.getCurrentTab().getData("webdav_remote_directory").toString();
 			ArrayList webdavHotFolderElements = new ArrayList();
@@ -1196,10 +1206,10 @@ public class MainWindow  {
 					//Attribute "name" wurde geändert: Das bedeutet auch Änderungen der life Datei namen.
 					webdavListener.removeFile(remoteDir);
 				}
-				
+
 				remoteDir = remoteDir.substring(0, remoteDir.lastIndexOf("/"))+ "/" + new File(filename).getName();
-				
-				
+
+
 				webdavListener.saveAs( filename, remoteDir);
 
 			} else if(currdom.isDirectory()) {
@@ -1221,8 +1231,9 @@ public class MainWindow  {
 			MainWindow.message("could not save file on webdav Server", SWT.ICON_WARNING);
 		}*/
 
-		
-	
-}
 
+
+	}
+
+	
 }

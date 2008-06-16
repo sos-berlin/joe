@@ -54,7 +54,7 @@ public class SchedulerDom extends DomParser {
 
 	public static final  String     NEW                        = "new";
 
-	private static final String[]   CONFIG_ELEMENTS_DIRECTORY  = { "process_classes", "locks", "jobs", "job_chains", "commands"};
+	private static final String[]   CONFIG_ELEMENTS_DIRECTORY  = { "process_classes", "schedules", "locks", "jobs", "job_chains", "commands"};
 
 	public static final  int        CONFIGURATION              = 0;
 
