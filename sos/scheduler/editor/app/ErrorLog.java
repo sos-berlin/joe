@@ -9,7 +9,6 @@ package sos.scheduler.editor.app;
  */
 
 import sos.util.SOSStandardLogger;
-import sos.util.SOSString;
 import sos.util.SOSClassUtil;
 
 public class ErrorLog extends Exception {

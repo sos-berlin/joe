@@ -1,7 +1,7 @@
 package sos.scheduler.editor.app;
 
 import org.eclipse.swt.widgets.Display;
- 
+  
 public class Editor {
     public final static int CONFIG                 = 1;
 
@@ -122,6 +122,8 @@ public class Editor {
     public final static int WEBSERVICE             = 80;
     
     public final static int HTTP_SERVER            = 81;
+    
+    public final static int JOB_CHAIN_NODES        = 82;
     
     public static String    SCHEDULER_ENCODING     = "";
 

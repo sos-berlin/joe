@@ -24,8 +24,6 @@ import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.HotFolderDialog;
 import java.util.ArrayList;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 
 public class MainWindow  {
 
@@ -388,7 +386,10 @@ public class MainWindow  {
 							}
 						}
 					}
-
+					
+					
+					container.getCurrentEditor().save();
+						
 					setSaveStatus();
 				}
 			}
@@ -801,21 +802,14 @@ public class MainWindow  {
 		}
 	}
 
-	private void undo() {
-		/*sos.scheduler.editor.conf.forms.SchedulerForm form =(sos.scheduler.editor.conf.forms.SchedulerForm)container.getCurrentEditor();
-		SchedulerDom currdom = (SchedulerDom)form.getDom();
-		Element elem = Utils.getUndoElement();
-		 */
-	}
-
-
 	private void createToolBar() {
 
 		final ToolBar toolBar = new ToolBar(groupmain, SWT.NONE);
 		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
 		toolBar.setLayoutData(gridData);
 
-		final ToolItem butNew = new ToolItem(toolBar, SWT.DROP_DOWN);
+		final ToolItem butNew = new ToolItem(toolBar, SWT.NONE);
+		
 
 		butNew.setImage(ResourceManager
 				.getImageFromResource("/sos/scheduler/editor/icon_new.gif"));	
@@ -823,6 +817,8 @@ public class MainWindow  {
 		final Menu menu = new Menu(toolBar);
 		butNew.setToolTipText("New Confuguration");
 
+		
+		
 		MenuItem itemConfig = new MenuItem(menu, SWT.PUSH);
 		itemConfig.setText("Configuration");
 		itemConfig.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -1004,7 +1000,7 @@ public class MainWindow  {
 		butSaveFTP.setToolTipText("Save As By FTP");
 		 */
 
-		final ToolItem butFTP = new ToolItem(toolBar, SWT.DROP_DOWN);
+		final ToolItem butFTP = new ToolItem(toolBar, SWT.NONE);
 
 		final Menu menuFTP = new Menu(toolBar);
 		addDropDown(butFTP, menuFTP);
@@ -1076,6 +1072,17 @@ public class MainWindow  {
 	}
 
 	private static void addDropDown(final ToolItem item, final Menu menu) {
+		
+		item.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				Rectangle rect = item.getBounds();
+				Point pt = new Point(rect.x, rect.y + rect.height);
+				pt = item.getParent().toDisplay(pt);
+				menu.setLocation(pt.x, pt.y);
+				menu.setVisible(true);
+			}
+		});
+		/*
 		item.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				if (event.detail == SWT.ARROW) {
@@ -1087,6 +1094,7 @@ public class MainWindow  {
 				}
 			}
 		});
+		*/
 	}
 
 

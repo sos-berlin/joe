@@ -197,8 +197,11 @@ public class DateForm extends Composite implements IUpdateLanguage {
 					bRemoveDate.setEnabled(false);
 					
 					// update the tree if not holidays
-					if (main != null && type == 1)
+					if (main != null && type == DateListener.DATE)
 						main.updateDays(DaysListener.SPECIFIC_DAY);
+						//main.updateDays(DateListener.DATE);
+					
+					
 					
 					if(type == DateListener.DATE && main != null) {
 			        	main.updateFont();

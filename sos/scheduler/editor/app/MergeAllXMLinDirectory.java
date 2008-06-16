@@ -1,5 +1,8 @@
 package sos.scheduler.editor.app;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,9 +151,13 @@ public class MergeAllXMLinDirectory {
 	}
 	
 	private void addContains(Element parent, String name, String mask) {
+		
 		SAXBuilder builder = new SAXBuilder();
 		Document currDocument = null;
+		
 		try {
+
+
 			Vector filelist = SOSFile.getFilelist(getNormalizedFile(path).getAbsolutePath(), 
 					mask,java.util.regex.Pattern.CASE_INSENSITIVE);
 			Iterator orderIterator = filelist.iterator();
@@ -498,7 +505,7 @@ public class MergeAllXMLinDirectory {
 		
 		try {
 			//system.out.println("********************************************************************");
-			SAXBuilder builder2 = new SAXBuilder();
+			SAXBuilder builder2 = getBuilder(false);
 			Document doc = builder2.build(new StringReader(xml));
 			//test
 			SchedulerDom dom = new SchedulerDom(SchedulerDom.DIRECTORY);
@@ -520,6 +527,8 @@ public class MergeAllXMLinDirectory {
 		
 	}
 	
+	 
+	 
 	private void deleteFiles() {
 		String filename = "";
 		String prefix   ="";
@@ -597,6 +606,53 @@ public class MergeAllXMLinDirectory {
 	}
 	
 	
+	protected SAXBuilder getBuilder(boolean validate) throws IOException {
+
+    	
+        SAXBuilder builder = new SAXBuilder(validate);
+        if (validate) {
+        	
+            builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
+                    "http://www.w3.org/2001/XMLSchema");
+            builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", writeSchemaFile());
+
+        }
+        
+        return builder;
+        
+    }
+
+ protected String[] writeSchemaFile() throws IOException {
+        ArrayList urls = new ArrayList();
+
+        String[]              _schemaTmpFile = new String[] {"scheduler_editor_schema" };
+
+        String[]              _schemaResource =  new String[] { Options.getSchema() };
+
+        for (int i = 0; i < _schemaTmpFile.length; i++) {
+            if (_schemaTmpFile[i] != null && !_schemaTmpFile[i].equals("") && _schemaResource[i] != null
+                    && !_schemaResource[i].equals("")) {
+
+                File tmp = File.createTempFile(_schemaTmpFile[i], ".xsd");
+                tmp.deleteOnExit();
+
+                InputStream in = getClass().getResourceAsStream(_schemaResource[i]);
+                FileOutputStream out = new FileOutputStream(tmp, true);
+
+                int c;
+                while ((c = in.read()) != -1)
+                    out.write(c);
+
+                in.close();
+                out.close();
+
+                urls.add(tmp.getAbsolutePath());
+            }
+        }
+
+        return (String[]) urls.toArray(new String[urls.size()]);
+    }
+
 	
 	
 }

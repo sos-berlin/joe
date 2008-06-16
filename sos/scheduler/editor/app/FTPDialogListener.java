@@ -262,15 +262,27 @@ public class FTPDialogListener {
 
 	public String getFile(String filename, String subFolder) {
 		String targetfile = null;
+		boolean deleteTmpFile = false;//wenn locahdirectory nicht angegeben ist, dann temp Verzeichnis bilden und diese anschliessend löschen
 		try { 			
 
 			targetfile = sosString.parseToString(currProfile.get("localdirectory" ));
+			if(targetfile.length() == 0){				
+				targetfile = System.getProperty("java.io.tmpdir");
+				deleteTmpFile = true;
+			}
+				
 			targetfile = targetfile.replaceAll("\\\\", "/");
 			if(subFolder != null)
 				targetfile = (targetfile.endsWith("/") ||  targetfile.endsWith("\\") ? targetfile + subFolder:  targetfile + "/" + subFolder);
-			if(!new File(targetfile).exists())
-				new File(targetfile).mkdirs();
-
+			
+			File file = new File(targetfile); 
+			if(!file.exists()) {
+				file.mkdirs();				
+			}
+			
+			if(deleteTmpFile)
+				file.deleteOnExit();
+			
 			targetfile = (targetfile.endsWith("/") ||  targetfile.endsWith("\\") ? targetfile :  targetfile + "/")+ new java.io.File(filename).getName();
 
 			if(ftpClient instanceof SOSFTP) {
@@ -279,7 +291,11 @@ public class FTPDialogListener {
 				}
 			}
 
-			long l = ftpClient.getFile(filename, targetfile, false);	
+			long l = ftpClient.getFile(filename, targetfile, false);
+			
+			
+				
+			
 			if (l == -1)
 				throw new Exception (" could not get file [filename=" + filename+"], [target=" + targetfile+"], cause " + ftpClient.getReplyString());
 
@@ -707,6 +723,9 @@ public class FTPDialogListener {
 					}
 				}
 			}
+			
+			Options.setProperty("last_profile" , profile);
+			Options.saveProperties();
 
 
 		} catch (Exception ex) {

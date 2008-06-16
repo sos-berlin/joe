@@ -4,8 +4,6 @@ package sos.scheduler.editor.app;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -391,7 +389,7 @@ public class FTPDialogProfiles {
 			groupAuthenticationMethods.setLayout(gridLayout_4);
 			sshTabItem.setControl(groupAuthenticationMethods);
 
-			final Label label_1 = new Label(groupAuthenticationMethods, SWT.NONE);
+			new Label(groupAuthenticationMethods, SWT.NONE);
 			new Label(groupAuthenticationMethods, SWT.NONE);
 
 			butPublicKey = new Button(groupAuthenticationMethods, SWT.RADIO);
@@ -537,27 +535,7 @@ public class FTPDialogProfiles {
 		schedulerConfigurationShell.layout();
 		schedulerConfigurationShell.open();
 	}
-
-	private String[] convert(Object[] obj) {
-		String[] str = null;
-		try {
-			str = new String[obj.length];
-			for(int i = 0; i < obj.length; i++) {
-				if(sosString.parseToString(obj[i]).startsWith("profile ")) {
-					str[i] = sosString.parseToString(obj[i]).substring("profile ".length());
-				}
-			}
-
-		} catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
-			} catch(Exception ee) {
-				//tu nichts
-			}
-			System.out.println("..error in FTPDilagProfiles: " + e.getMessage());
-		}
-		return str;
-	}
+	
 
 	private void initForm() {
 		try {

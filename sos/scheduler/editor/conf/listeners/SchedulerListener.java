@@ -98,6 +98,12 @@ public class SchedulerListener {
 			} else {
 				item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
 			}
+			
+			//Job Chain Nodes test
+			TreeItem in = new TreeItem(item, SWT.NONE);
+			in.setText("Nodes");
+			in.setData(new TreeData(Editor.JOB_CHAIN_NODES, element, Options.getHelpURL("job_chain")));
+			in.setData("key", "job_chain_nodes");
 
 		} else if(type == SchedulerDom.LIFE_PROCESS_CLASS) {
 
@@ -497,11 +503,11 @@ public class SchedulerListener {
 
 		treeFillRunTimes(parent, job, disable, "run_time", true);
 
-		List l = job.getChild("run_time").getChildren("month");     	
+		/*List l = job.getChild("run_time").getChildren("month");     	
 		for(int i =0; i < l.size(); i++) {
 			Element e = (Element)l.get(i);
 			treeFillRunTimes(parent.getItem(parent.getItemCount()-1).getItem(parent.getItem(parent.getItemCount()-1).getItemCount()-1), e, !Utils.isElementEnabled("job", _dom, job), Utils.getAttributeValue("month", e), false);
-		}
+		}*/
 
 
 		List commands = job.getChildren("commands");		
@@ -624,7 +630,10 @@ public class SchedulerListener {
 	public void treeFillDays(TreeItem parent, Element element, int type, boolean expand, String name) {
 		parent.removeAll();
 		if (element != null) { 
-			if (type == DaysListener.WEEKDAYS || type == DaysListener.MONTHDAYS || type == DaysListener.ULTIMOS || type == DaysListener.SPECIFIC_MONTHS) {			
+			if (    type == DaysListener.WEEKDAYS || 
+					type == DaysListener.MONTHDAYS || 
+					type == DaysListener.ULTIMOS || 
+					type == DaysListener.SPECIFIC_MONTHS) {			
 				new DaysListener(_dom, element, type).fillTreeDays(parent, expand);
 				if(type == DaysListener.SPECIFIC_MONTHS) {
 					List l = element.getChildren("month"); 
@@ -638,8 +647,10 @@ public class SchedulerListener {
 				}
 
 
-			} else if (type == 6 || type==4) {
+			} else if ( type==4) {
 				//new DateListener(_dom, element, 1).fillTreeDays(parent, expand);
+			}  else if (type == 6) {
+				new DateListener(_dom, element, DateListener.DATE).fillTreeDays(parent, expand);
 			} else {
 				System.out.println("Invalid type = " + type + " for filling the days in the tree!");
 			}
@@ -673,10 +684,19 @@ public class SchedulerListener {
 					i.setText(jobChainName);
 					i.setData(new TreeData(Editor.JOB_CHAIN, element, Options.getHelpURL("job_chain")));
 					i.setData("key", "job_chain");
+										
+					//Job Chain Nodes
+					TreeItem in = new TreeItem(i, SWT.NONE);
+					in.setText("Nodes");
+					in.setData(new TreeData(Editor.JOB_CHAIN_NODES, element, Options.getHelpURL("job_chain")));
+					in.setData("key", "job_chain_nodes");
+					
 					if(!Utils.isElementEnabled("job_chain", _dom, element)) {
 						i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+						in.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 					} else {
 						i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+						in.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
 					}
 
 				}
@@ -814,6 +834,10 @@ public class SchedulerListener {
 					case Editor.JOB_CHAIN:
 						JobChainForm jc_= new JobChainForm(c, SWT.NONE, _dom, data.getElement());
 						jc_.setISchedulerUpdate(_gui);
+						break;
+					case Editor.JOB_CHAIN_NODES:
+						JobChainNodesForm jcn_= new JobChainNodesForm(c, SWT.NONE, _dom, data.getElement());
+						jcn_.setISchedulerUpdate(_gui);
 						break;
 					case Editor.COMMANDS:
 						new CommandsForm(c, SWT.NONE, _dom, _gui);
@@ -1007,15 +1031,17 @@ public class SchedulerListener {
 			treeFillSpecificWeekdays(item, runtime, false);
 			_gui.updateFont(item);
 
-			item = new TreeItem(run, SWT.NONE);
-			item.setText("Specific Days");
-			item.setData(new TreeData(Editor.DAYS, runtime, Options.getHelpURL("job.run_time.specific_days")));
-			item.setData("key", "job.run_time.specific_days");
-			
-			//item.getParent().setSelection(new TreeItem[] {item});
-			//setFontForRuntimeChild(item);
-			_gui.updateFont(item);
-			
+			//Specific Days
+			if(run_time.equals("run_time") || job.getName().equals("schedule")) {
+				item = new TreeItem(run, SWT.NONE);
+				item.setText("Specific Days");
+				item.setData(new TreeData(Editor.DAYS, runtime, Options.getHelpURL("job.run_time.specific_days")));
+				item.setData("key", "job.run_time.specific_days");
+				treeFillDays(item, runtime, 6, false);
+				//item.getParent().setSelection(new TreeItem[] {item});
+				//setFontForRuntimeChild(item);
+				_gui.updateFont(item);
+			}
 			
 			if(disable) {
 				item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
@@ -1054,9 +1080,9 @@ public class SchedulerListener {
 				*/
 			}
 
-			if (runtime != null)
+			/*if (runtime != null)
 				treeFillDays(item, runtime, 6, false);
-
+*/
 
 
 		}

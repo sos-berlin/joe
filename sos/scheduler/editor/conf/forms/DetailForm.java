@@ -187,9 +187,11 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 	
 	private void initialize() {
 		this.setLayout(new FillLayout());				
-		createGroup();   
-		getShell().layout();
-		getShell().open();
+		createGroup();		
+		if(type == Editor.JOB_CHAINS) {
+			getShell().layout();
+			getShell().open();
+		}
 	}
 	
 	

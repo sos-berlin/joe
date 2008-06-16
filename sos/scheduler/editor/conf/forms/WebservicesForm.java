@@ -21,8 +21,6 @@ import sos.scheduler.editor.conf.listeners.WebservicesListener;
 public class WebservicesForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
-	private static final String GROUP_WEB_SERVICE = "Web Service";
-
 	private WebservicesListener listener          = null;
 
 	private Group               group             = null;

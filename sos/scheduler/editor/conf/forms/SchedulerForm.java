@@ -194,12 +194,14 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	}
 	
 	public void updateDays(int type, String name) {
+
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			TreeData data = (TreeData) item.getData();            
 			listener.treeFillDays(item, data.getElement(), type, true, name);
 			item.setExpanded(true);
 		}
+		
 	}
 	
 	public void updateJob() {
@@ -345,7 +347,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 			res = IOUtils.saveDirectory(dom, false,type, dom.getRoot().getName(), container);
 			
 		} else {
-			res = IOUtils.saveFile(dom, false);
+ 			res = IOUtils.saveFile(dom, false);
 		}
 		if (res)
 			container.setNewFilename(null);

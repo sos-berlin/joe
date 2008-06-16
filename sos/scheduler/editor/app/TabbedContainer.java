@@ -2,7 +2,6 @@ package sos.scheduler.editor.app;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
@@ -42,8 +41,6 @@ public class TabbedContainer implements IContainer {
 	private MainWindow          window                  = null;
 
 	private ArrayList           filelist                = new ArrayList();
-
-	private HashMap             ftpfilelist             = new HashMap();
 
 
 	class TabData{

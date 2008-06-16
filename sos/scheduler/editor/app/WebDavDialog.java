@@ -426,8 +426,6 @@ public class WebDavDialog {
 
 			// final Tree tree = new Tree(schedulerGroup, SWT.BORDER);
 
-			final GridData gridData_1 = new GridData(GridData.FILL,
-					GridData.FILL, true, true);
 			
 
 		}
@@ -448,6 +446,12 @@ public class WebDavDialog {
 		butLog.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		butLog.setText("Log");
 
+		String selectProfile = Options.getProperty("last_webdav_profile");
+		if(selectProfile != null && selectProfile.length() > 0) {
+			cboConnectname.setText(selectProfile);
+			listener.setCurrProfileName(selectProfile);		
+		}		
+		
 		initForm();
 		schedulerConfigurationShell.layout();
 		schedulerConfigurationShell.open();
@@ -600,9 +604,10 @@ public class WebDavDialog {
 				
 			} else if(currdom.isDirectory()) {
 				if (MainWindow.getContainer().getCurrentEditor().save()) {
-					ArrayList list = new ArrayList();
+					/*ArrayList list = new ArrayList();
 					if(MainWindow.getContainer().getCurrentTab().getData("webdav_hot_folder_elements") != null)
 						list = (ArrayList)MainWindow.getContainer().getCurrentTab().getData("webdav_hot_folder_elements");
+						*/
 					ArrayList newlist = listener.saveHotFolderAs(localfilename, file);
 
 					MainWindow.getContainer().getCurrentTab().setData("webdav_hot_folder_elements", newlist);

@@ -116,20 +116,22 @@ public class SchedulerDom extends DomParser {
 			putDomOrder("config", CONFIG_ELEMENTS_DIRECTORY);
 			putDomOrder("job", JOB_ELEMENTS);
 			putDomOrder("run_time", RUNTIME_ELEMENTS);
-			putDomOrder("job_chain", CONFIG_ELEMENTS_DIRECTORY);
-			//putDomOrder("commands", CONFIG_ELEMENTS_DIRECTORY);
+			putDomOrder("job_chain", JOBCHAIN_ELEMENTS);			
 			putDomOrder("commands", COMMANDS_ELEMENTS);    	
 			putDomOrder("schedules", RUNTIME_ELEMENTS);
 			isDirectory = true;
 			initScheduler();
 		} else if(type==LIFE_JOB) {
 			putDomOrder("job", JOB_ELEMENTS);
+			putDomOrder("run_time", RUNTIME_ELEMENTS);
 			initScheduler(type);
 		} else if(type==LIFE_JOB_CHAIN) {
-			putDomOrder("job_chain", CONFIG_ELEMENTS_DIRECTORY);
+			//putDomOrder("job_chain", CONFIG_ELEMENTS_DIRECTORY);
+			putDomOrder("job_chain", JOBCHAIN_ELEMENTS);
 			initScheduler(type);
 		} else if(type==LIFE_ORDER) {
 			putDomOrder("commands", COMMANDS_ELEMENTS);
+			putDomOrder("run_time", RUNTIME_ELEMENTS);
 			initScheduler(type);
 		} else if(type==LIFE_PROCESS_CLASS) {
 			putDomOrder("config", new String[]{ "process_classes" });
@@ -139,6 +141,7 @@ public class SchedulerDom extends DomParser {
 			initScheduler(type);
 		} else if(type==LIFE_SCHEDULE) {
 			putDomOrder("config", new String[]{"schedules"});
+			putDomOrder("run_time", RUNTIME_ELEMENTS);
 			initScheduler(type);
 		} else {
 			new SchedulerDom();

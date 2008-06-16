@@ -388,7 +388,9 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 			 return;
 
 		 boolean _continue = true;
-		 if(listener.getProcessClass().length() > 0 &&  !Utils.checkElement(listener.getProcessClass(), dom, sos.scheduler.editor.app.Editor.PROCESS_CLASSES, null))
+		 if(listener.getProcessClass().length() > 0 &&
+				 !listener.getProcessClass().equals(tProcessClass.getText()) &&
+				 !Utils.checkElement(listener.getProcessClass(), dom, sos.scheduler.editor.app.Editor.PROCESS_CLASSES, null))
 			 _continue = false;
 
 		 if(_continue)

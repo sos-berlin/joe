@@ -2,10 +2,6 @@ package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
-//import org.eclipse.swt.events.KeyAdapter;
-//import org.eclipse.swt.events.KeyEvent;
-//import org.eclipse.swt.events.ModifyEvent;
-//import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
@@ -18,12 +14,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
@@ -34,9 +26,7 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.WebserviceListener;
 
 public class WebserviceForm extends Composite implements IUnsaved, IUpdateLanguage {
-
-
-	private static final String GROUP_WEB_SERVICE = "Web Service";
+	
 
 	private WebserviceListener listener          = null;
 

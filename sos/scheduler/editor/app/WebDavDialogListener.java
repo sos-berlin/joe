@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpURL;
 import org.apache.webdav.lib.WebdavResource;
 import org.apache.webdav.lib.WebdavResources;
@@ -330,6 +329,13 @@ public class WebDavDialogListener {
 			user = sosString.parseToString(currProfile.get("user"));
 			password = sosString.parseToString(currProfile.get("password"));
 			
+			String proxyHost = sosString.parseToString(currProfile.get("proxy_server"));
+			int proxyPort    = 21;
+			if(sosString.parseToString(currProfile.get("proxy_port")).length() > 0)
+				proxyPort = Integer.parseInt(sosString.parseToString(currProfile.get("proxy_port")));
+			
+			
+			
 			String key = Options.getProperty("profile.timestamp." + currProfileName);
 
 			if(key != null && key.length() > 8) {
@@ -358,10 +364,16 @@ public class WebDavDialogListener {
 			HttpURL hrl = new HttpURL(url);			
 
 			hrl.setUserinfo(user,password);
-			wdr = new WebdavResource(hrl);
+			if(proxyHost.length() > 0)
+				wdr = new WebdavResource(hrl, proxyHost, proxyPort);
+			else
+				wdr = new WebdavResource(hrl);
 
 			wdr.setDebug(9);
 			if(logtext != null)  logtext.append("..webdav server reply [connect] [status= "  + wdr.getStatusMessage() );
+			Options.setProperty("last_webdav_profile" , currProfileName);
+			Options.saveProperties();
+			
 		} catch (Exception ex) {
 
 			hasError = true;

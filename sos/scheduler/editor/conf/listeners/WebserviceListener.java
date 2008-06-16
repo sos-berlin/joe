@@ -1,24 +1,18 @@
 package sos.scheduler.editor.conf.listeners;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
-
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class WebserviceListener {
 
-
 	private SchedulerDom _dom           = null;
-
-	
 
 	private Element           _service       = null;
 
@@ -91,29 +85,6 @@ public class WebserviceListener {
 		Utils.setAttribute("timeout", timeout, _service, _dom);
 		Utils.setAttribute("url_path", url, _service, _dom);
 
-		// params
-		/*_service.removeChild("params");
-		Element parameters = params.length > 0 ? new Element("params") : null;
-		for (int i = 0; i < params.length; i++) {
-			Element param = new Element("param");
-			Utils.setAttribute("name", params[i].getText(0), param);
-			Utils.setAttribute("value", params[i].getText(1), param);
-			parameters.addContent(param);
-		}
-		if (parameters != null)
-			_service.addContent(parameters);
-*/
-		
-		/*if (_http_server == null && _config.getAttribute("http_server") == null) {
-			_http_server = new Element("http_server");
-			_config.addContent(_http_server);
-			_list = _http_server.getChildren("web_service");
-		}
-
-		if (!_list.contains(_service))
-			_list.add(_service);
-*/
-	
 		_main.updateTreeItem("Web Service: " +name);
 		_dom.setChanged(true);
 	}

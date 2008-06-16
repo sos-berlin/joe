@@ -103,8 +103,9 @@ public class IOUtils {
             		String fname = fdialog.open();
             		if (fname == null)
             			return false;
-            		path = fdialog.getFilterPath();
-
+            		//path = fdialog.getFilterPath();
+            		path = fname;
+            		
             	}
                  
                  //File tempFile = File.createTempFile("#xml#.config.", ".xml~", new File(path) );

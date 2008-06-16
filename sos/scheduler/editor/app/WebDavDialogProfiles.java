@@ -4,8 +4,6 @@ package sos.scheduler.editor.app;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -31,43 +29,47 @@ import java.util.*;
 public class WebDavDialogProfiles {
 
 
-	private              Group            schedulerGroup                = null;
+	private              Text                   txtProxyPort                  = null;
+	
+	private              Text                   txtProxyServer                = null;
+	
+	private              Button                 useProxyButton                = null;
+	
+	private              Group                  schedulerGroup                = null;
 
-	private              SOSString           sosString                     = null;
+	private              SOSString              sosString                     = null;
 
-	private              Shell               schedulerConfigurationShell   = null;
+	private              Shell                  schedulerConfigurationShell   = null;
 
-	private              Properties          currProfile                   = null;
+	private              Properties             currProfile                   = null;
 
-	private              Combo               cboConnectname                = null;
+	private              Combo                  cboConnectname                = null;
 
-	private              Text                txtUsername                   = null;
+	private              Text                   txtUsername                   = null;
 
-	private              Text                txtPassword                   = null;
+	private              Text                   txtPassword                   = null;
 
-	private              Text                txtURL                       = null;
+	private              Text                   txtURL                       = null;
 
-	private              Text                txtLocalDirectory             = null;
+	private              Text                   txtLocalDirectory             = null;
+ 
+	private              boolean                newProfile                    = false;
 
-	private              boolean             newProfile                    = false;
-
-	private              Button              butSavePassword               = null; 
+	private              Button                 butSavePassword               = null; 
 
 	private              WebDavDialogListener   listener                      = null;
 
-	private              boolean             init                          = false;       
+	private              boolean                init                          = false;       
 
-	private              Button              butApply                      = null;
+	private              Button                 butApply                      = null;
 	
-	private              boolean             saveSettings                  = false;
+	private              boolean                saveSettings                  = false;
 
-    private              Combo               cboProtokol                   = null; 
+    private              Combo                  cboProtokol                   = null; 
         
-    private              boolean             saved                         =false; //hilsvariable
+    private              boolean                saved                         = false; //hilsvariable
     
-    
-    
-    
+        
 	public WebDavDialogProfiles(WebDavDialogListener listener_) {
 		listener = listener_;
 		sosString = new SOSString();
@@ -265,6 +267,49 @@ public class WebDavDialogProfiles {
 				}
 			});
 			butSavePassword.setLayoutData(new GridData());
+
+			final TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+			tabItem.setText("Proxy");
+
+			final Group group_1 = new Group(tabFolder, SWT.NONE);
+			final GridLayout gridLayout_3 = new GridLayout();
+			gridLayout_3.numColumns = 2;
+			group_1.setLayout(gridLayout_3);
+			tabItem.setControl(group_1);
+
+			useProxyButton = new Button(group_1, SWT.CHECK);
+			useProxyButton.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					txtProxyServer.setEnabled(useProxyButton.getSelection());
+					txtProxyPort.setEnabled(useProxyButton.getSelection());
+					setEnabled();
+				}
+			});
+			useProxyButton.setLayoutData(new GridData(SWT.DEFAULT, 52));
+			useProxyButton.setText("Use Proxy");
+			new Label(group_1, SWT.NONE);
+
+			final Label proxyServerLabel = new Label(group_1, SWT.NONE);
+			proxyServerLabel.setText("Proxy Server");
+
+			txtProxyServer = new Text(group_1, SWT.BORDER);
+			txtProxyServer.addModifyListener(new ModifyListener() {
+				public void modifyText(final ModifyEvent e) {
+					setEnabled();
+				}
+			});
+			txtProxyServer.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+			final Label proxyPortLabel = new Label(group_1, SWT.NONE);
+			proxyPortLabel.setText("Proxy Port");
+
+			txtProxyPort = new Text(group_1, SWT.BORDER);
+			txtProxyPort.addModifyListener(new ModifyListener() {
+				public void modifyText(final ModifyEvent e) {
+					setEnabled();
+				}
+			});
+			txtProxyPort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 			//txtLocalDirectory.setText(currProfile.get("localdirectory") != null ? currProfile.get("localdirectory").toString() : "");
 			new Label(schedulerGroup, SWT.NONE);
 
@@ -290,6 +335,11 @@ public class WebDavDialogProfiles {
 					txtURL.setText("");
 					txtLocalDirectory.setText("");
 					butSavePassword.setSelection(false);					
+					txtProxyPort.setText("");
+					txtProxyServer.setText("");
+					txtProxyPort.setEnabled(false);
+					txtProxyServer.setEnabled(false);
+					useProxyButton.setSelection(false);
 					
 					cboProtokol.select(0);
 				}
@@ -350,28 +400,7 @@ public class WebDavDialogProfiles {
 		schedulerConfigurationShell.open();
 	}
 
-	private String[] convert(Object[] obj) {
-		String[] str = null;
-		try {
-			str = new String[obj.length];
-			for(int i = 0; i < obj.length; i++) {
-				//if(sosString.parseToString(obj[i]).startsWith("profile ")) {
-				if(sosString.parseToString(obj[i]).startsWith(WebDavDialogListener.PREFIX)) {
-					str[i] = sosString.parseToString(obj[i]).substring(WebDavDialogListener.PREFIX.length());
-				}
-			}
-
-		} catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
-			} catch(Exception ee) {
-				//tu nichts
-			}
-			System.out.println("..error in WebDavDilagProfiles: " + e.getMessage());
-		}
-		return str;
-	}
-
+	
 	private void initForm() {
 		try {
 			init = true;
@@ -391,7 +420,19 @@ public class WebDavDialogProfiles {
 
 			butSavePassword.setSelection(sosString.parseToBoolean(currProfile.get("save_password")));
 
-			
+			useProxyButton.setSelection(sosString.parseToBoolean(currProfile.get("use_proxy")));
+			if(useProxyButton.getSelection()) {
+				txtProxyServer.setEnabled(true);
+				txtProxyPort.setEnabled(true);
+				txtProxyServer.setText(sosString.parseToString(currProfile.get("proxy_server")));
+				txtProxyPort.setText(sosString.parseToString(currProfile.get("proxy_port")));
+			} else {
+				txtProxyServer.setEnabled(false);
+				txtProxyPort.setEnabled(false);
+				txtProxyServer.setText("");
+				txtProxyPort.setText("");						
+			}
+
 			
 			String protocol = sosString.parseToString(currProfile.get("protocol"));
 			if(protocol.length() == 0)
@@ -439,6 +480,11 @@ public class WebDavDialogProfiles {
 			prop.put("save_password", (butSavePassword.getSelection() ? "yes" : "no"));
 			prop.put("protocol", cboProtokol.getText());
 
+			if(useProxyButton.getSelection()) {
+				prop.put("use_proxy", "yes");
+				prop.put("proxy_server", txtProxyServer.getText());
+				prop.put("proxy_port", txtProxyPort.getText());
+			}	
 
 
 			if((newProfile && !listener.getProfiles().containsKey(cboConnectname.getText())) ||

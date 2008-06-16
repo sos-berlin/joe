@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
@@ -26,7 +25,6 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.RunTimeListener;
-import sos.util.SOSString;;
 
 
 public class RunTimeForm extends Composite implements IUpdateLanguage {
