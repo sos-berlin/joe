@@ -1094,4 +1094,9 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		butXML.setToolTipText(Messages.getTooltip("detail.xml_configuration"));
 		butDocumentation.setToolTipText(Messages.getTooltip("detail.open_documentation"));
 	}
+
+
+	public DetailDom getDom() {
+		return dom;
+	}
 } 

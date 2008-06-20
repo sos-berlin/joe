@@ -307,4 +307,9 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
 	}
 
 
+	public DetailDom getDom() {
+		return dom;
+	}
+
+
 }

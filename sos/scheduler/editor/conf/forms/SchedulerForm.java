@@ -421,6 +421,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	
 	public void updateJobChains() {
 		listener.treeFillJobChains(tree.getSelection()[0]);
+		tree.getSelection()[0].getItems()[tree.getSelection()[0].getItemCount()-1].setExpanded(true);
 	}
 	
 	

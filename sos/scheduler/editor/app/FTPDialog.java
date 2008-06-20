@@ -28,7 +28,11 @@ import sos.util.SOSString;
 import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.FTPDialogListener;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.DetailDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
+import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
+import sos.scheduler.editor.doc.DocumentationDom;
+import sos.scheduler.editor.doc.forms.DocumentationForm;
 
 import java.io.File; 
 import java.util.HashMap;
@@ -548,15 +552,27 @@ public class FTPDialog {
 			else 
 				newFilename = sosString.parseToString(listener.getCurrProfile().get("localdirectory")) + "/" + new File(file).getName();
 
-			sos.scheduler.editor.conf.forms.SchedulerForm form =
+			DomParser currdom = null;
+			if(MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
+				SchedulerForm form =(SchedulerForm)MainWindow.getContainer().getCurrentEditor();			
+				currdom = (SchedulerDom)form.getDom();
+			} else if(MainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm) {
+				DocumentationForm form =(DocumentationForm)MainWindow.getContainer().getCurrentEditor();			
+				currdom = (DocumentationDom)form.getDom();
+			} else if(MainWindow.getContainer().getCurrentEditor() instanceof JobChainConfigurationForm) {
+				JobChainConfigurationForm form =(JobChainConfigurationForm)MainWindow.getContainer().getCurrentEditor();
+				currdom = (DetailDom)form.getDom();
+			}
+			
+			/*sos.scheduler.editor.conf.forms.SchedulerForm form =
 				(sos.scheduler.editor.conf.forms.SchedulerForm)MainWindow.getContainer().getCurrentEditor();			
 			SchedulerDom currdom = (SchedulerDom)form.getDom();
-
+*/
 			//if(currdom.getFilename() != null && !new File(currdom.getFilename()).delete())
 			//	System.out.println(currdom.getFilename() + " could not delete");
 
-
-			if(currdom.isLifeElement()) {
+			
+			if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isLifeElement()) {
 				File f = new File(newFilename);
 				if(f.isFile())
 					newFilename = f.getParent();
@@ -591,7 +607,7 @@ public class FTPDialog {
 				sf.updateTreeItem(name + ": " + attrName);
 				
 				
-			} else if(currdom.isDirectory()) {
+			} else if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {
 				if (MainWindow.getContainer().getCurrentEditor().save()) {
 					/*ArrayList list = new ArrayList();
 					if(MainWindow.getContainer().getCurrentTab().getData("ftp_hot_folder_elements") != null)

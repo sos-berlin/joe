@@ -38,7 +38,7 @@ public class SchedulerDom extends DomParser {
 
 	private static final String[]   RUNTIME_ELEMENTS           = { "period", "at", "date", "weekdays", "monthdays", "ultimos", "month" , "holidays"};        
 
-	private static final String[]   JOBCHAIN_ELEMENTS          = { "file_order_source", "job_chain_node", "file_order_sink"};
+	private static final String[]   JOBCHAIN_ELEMENTS          = { "file_order_source", "job_chain_node", "job_chain_node.job_chain", "file_order_sink"};
 
 	private static final String[]   HOLIDAYS_ELEMENTS          = { "holiday", "include"};
 
@@ -117,7 +117,8 @@ public class SchedulerDom extends DomParser {
 			putDomOrder("job", JOB_ELEMENTS);
 			putDomOrder("run_time", RUNTIME_ELEMENTS);
 			putDomOrder("job_chain", JOBCHAIN_ELEMENTS);			
-			putDomOrder("commands", COMMANDS_ELEMENTS);    	
+			putDomOrder("commands", COMMANDS_ELEMENTS);
+			putDomOrder("params", PARAMS_ELEMENTS);
 			putDomOrder("schedules", RUNTIME_ELEMENTS);
 			isDirectory = true;
 			initScheduler();

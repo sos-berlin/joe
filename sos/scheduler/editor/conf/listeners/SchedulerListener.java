@@ -77,7 +77,7 @@ public class SchedulerListener {
 			item.setExpanded(true);
 
 		} else if(type == SchedulerDom.LIFE_JOB_CHAIN) {
-
+			
 			String name = "";
 			if(_dom.getFilename() != null && new java.io.File(_dom.getFilename()).exists()) {
 				name = new java.io.File(_dom.getFilename()).getName();
@@ -99,11 +99,21 @@ public class SchedulerListener {
 				item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
 			}
 			
-			//Job Chain Nodes test
+			//Job Chain Nodes
 			TreeItem in = new TreeItem(item, SWT.NONE);
 			in.setText("Nodes");
 			in.setData(new TreeData(Editor.JOB_CHAIN_NODES, element, Options.getHelpURL("job_chain")));
 			in.setData("key", "job_chain_nodes");
+			
+
+			//Job Chain Nested Nodes
+			TreeItem iNestedNodes = new TreeItem(item, SWT.NONE);
+			iNestedNodes.setText("Nested Job Chains");
+			iNestedNodes.setData(new TreeData(Editor.JOB_CHAIN_NESTED_NODES, element, Options.getHelpURL("job_chain")));
+			iNestedNodes.setData("key", "job_chain_nodes");
+			iNestedNodes.setExpanded(true);
+			
+			
 
 		} else if(type == SchedulerDom.LIFE_PROCESS_CLASS) {
 
@@ -686,17 +696,28 @@ public class SchedulerListener {
 					i.setData("key", "job_chain");
 										
 					//Job Chain Nodes
-					TreeItem in = new TreeItem(i, SWT.NONE);
-					in.setText("Nodes");
-					in.setData(new TreeData(Editor.JOB_CHAIN_NODES, element, Options.getHelpURL("job_chain")));
-					in.setData("key", "job_chain_nodes");
+					TreeItem iNodes = new TreeItem(i, SWT.NONE);
+					iNodes.setText("Nodes");
+					iNodes.setData(new TreeData(Editor.JOB_CHAIN_NODES, element, Options.getHelpURL("job_chain")));
+					iNodes.setData("key", "job_chain_nodes");
+					iNodes.setExpanded(true);
+					
+					//Job Chain Nested Nodes
+					TreeItem iNestedNodes = new TreeItem(i, SWT.NONE);
+					iNestedNodes.setText("Nested Job Chains");
+					iNestedNodes.setData(new TreeData(Editor.JOB_CHAIN_NESTED_NODES, element, Options.getHelpURL("job_chain")));
+					iNestedNodes.setData("key", "job_chain_nodes");
+					iNestedNodes.setExpanded(true);
+					
 					
 					if(!Utils.isElementEnabled("job_chain", _dom, element)) {
 						i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-						in.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+						iNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+						iNestedNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 					} else {
 						i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
-						in.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+						iNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+						iNestedNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
 					}
 
 				}
@@ -839,6 +860,11 @@ public class SchedulerListener {
 						JobChainNodesForm jcn_= new JobChainNodesForm(c, SWT.NONE, _dom, data.getElement());
 						jcn_.setISchedulerUpdate(_gui);
 						break;
+					case Editor.JOB_CHAIN_NESTED_NODES:
+						JobChainNestedNodesForm j= new JobChainNestedNodesForm(c, SWT.NONE, _dom, data.getElement());
+						j.setISchedulerUpdate(_gui);
+						break;
+						
 					case Editor.COMMANDS:
 						new CommandsForm(c, SWT.NONE, _dom, _gui);
 						break;

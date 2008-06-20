@@ -238,4 +238,9 @@ public class DocumentationForm extends Composite implements IEditor, IDocumentat
         dialog.open();
     }
 
+
+	public DocumentationDom getDom() {
+		return dom;
+	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"

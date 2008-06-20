@@ -1,5 +1,6 @@
 package sos.scheduler.editor.conf.forms;
 
+import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -22,8 +23,10 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import org.jdom.xpath.XPath;
 import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
@@ -36,6 +39,7 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
 import sos.scheduler.editor.conf.listeners.OrdersListener;
+
 
 public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLanguage {
 
@@ -85,16 +89,6 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 	private Group               jobChainGroup               = null;
 
-
-
-
-
-	//private Button              bApplyChain                 = null;
-
-	//private SashForm            sashForm                    = null;
-	
-	//private Group               sashForm                    = null;
-
 	private Button              bNewFileOrderSource         = null;
 
 	private Button              bRemoveFileOrderSource      = null;
@@ -125,7 +119,6 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 	private boolean             refresh                     = false;
 
-
 	private Button              butDetailsJob               = null;
 
 	private Button              butBrowse                   = null;
@@ -134,34 +127,37 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 	private Combo               cOnError                    = null;
 
-
 	private Button              butUp                       = null;
 
 	private Button              butDown                     = null;
 
+	private SchedulerDom        dom                         = null;
 
 
-	public JobChainNodesForm(Composite parent, int style, SchedulerDom dom, Element jobChain) {
+	public JobChainNodesForm(Composite parent, int style, SchedulerDom dom_, Element jobChain) {
+
 		super(parent, style);
+		dom = dom_;
 		listener = new JobChainListener(dom, jobChain);
 		initialize();
 		setToolTipText();
 		fillChain(false, false);
 		this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
 
+		boolean existChainNodes = check();
+		jobChainGroup.setEnabled(existChainNodes);
+		bNewNode.setEnabled(existChainNodes);
+
 	}
 
 
-	public void apply() {
-		//if (bApplyChain.isEnabled())
-		//	applyChain();
+	public void apply() {		
 		if (bApplyNode.isEnabled())
 			applyNode();
 	}
 
 
-	public boolean isUnsaved() {
-		//return bApplyChain.isEnabled() || bApplyNode.isEnabled();
+	public boolean isUnsaved() {		
 		return bApplyNode.isEnabled();
 	}
 
@@ -178,35 +174,14 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 	 * This method initializes group
 	 */
 	private void createGroup() {
-		jobChainGroup = new Group(this, SWT.NONE);        
-		//jobChainGroup.setText("Job Chain:" + (listener.getChainName() != null ? listener.getChainName() : ""));
 
+		jobChainGroup = new Group(this, SWT.NONE);        
 		final GridLayout gridLayout = new GridLayout();
 		jobChainGroup.setLayout(gridLayout);
-		/*bApplyChain = new Button(jobChainGroup, SWT.NONE);
-		bApplyChain.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		bApplyChain.setText("A&pply Job Chain");
-		bApplyChain.setEnabled(false);
-		bApplyChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				applyChain();
-			}
-		});
-*/
-
-		//sashForm = new SashForm(jobChainGroup, SWT.VERTICAL);
-		/*sashForm = new Group(jobChainGroup, SWT.VERTICAL);
-		sashForm.setLayout(new GridLayout());
-
-		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 1);
-		gridData_2.widthHint = 575;
-		sashForm.setLayoutData(gridData_2);
-*/
-		//gNodes = new Group(sashForm, SWT.NONE);
+		
 		gNodes = new Group(jobChainGroup, SWT.NONE);
 		gNodes.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-
-		gNodes.setText("Chain Node");
+		gNodes.setText("Chain Node");		
 		final GridLayout gridLayout_3 = new GridLayout();
 		gridLayout_3.marginBottom = 5;
 		gridLayout_3.marginTop = 5;
@@ -220,7 +195,6 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		tState = new Text(gNodes, SWT.BORDER);
 		tState.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
-
 
 				boolean valid = listener.isValidState(tState.getText());
 				if (!valid)
@@ -261,10 +235,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 					}
 				}
 			}
-
 		});
-
-
 		cJob.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				bApplyNode.setEnabled(isValidNode());
@@ -468,8 +439,6 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 					cOnError.setText("");
 					tMoveTo.setEnabled(true);
 					bRemoveFile.setEnabled(true);
-
-
 				}
 
 				if (bEndNode.getSelection()) {
@@ -486,7 +455,6 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 					bRemoveFile.setEnabled(false);
 				}
 
-
 				if (bFullNode.getSelection()) {
 					tMoveTo.setEnabled(false);
 					bRemoveFile.setEnabled(false);
@@ -499,8 +467,6 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 						getShell().setDefaultButton(bApplyNode);
 				}
 				bApplyNode.setEnabled(isValidNode());
-
-
 
 			}
 		});
@@ -573,7 +539,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		movweToLabel.setText("Move to");
 
 		tMoveTo = new Text(composite_3, SWT.BORDER);
-		final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+		final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_3.horizontalIndent = 5;
 		tMoveTo.setLayoutData(gridData_3);
 		tMoveTo.addModifyListener(new ModifyListener() {
@@ -645,23 +611,14 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			public void widgetSelected(final SelectionEvent e) {
 				if (tNodes.getSelectionCount() > 0) {
 					int index = tNodes.getSelectionIndex();
-
-					/*if(index == 0) {
-						//System.out.println("Datensatz ist bereits ganz oben.");
-						//MainWindow.message(Messages.getString("job_chain.top_of_table"), SWT.ICON_INFORMATION);
-					} else*/ 
-
 					if(index > 0) {											
-
 						listener.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(), index);
-
 						selectNodes();					
-
 					}
 				}
 			}
 		});
-		//butUp.setText("Up");
+	
 		butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
 
 		butDown = new Button(composite_1, SWT.NONE);
@@ -671,8 +628,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 					int index = tNodes.getSelectionIndex();
 					if(index == tNodes.getItemCount()-1) {
 						//System.out.println("Datensatz ist bereits ganz unten.");
-					} else if(index >= 0) {
-						//org.eclipse.swt.widgets.TableItem tmp = ((org.eclipse.swt.widgets.TableItem[])tNodes.getSelection().clone())[0];						
+					} else if(index >= 0) {												
 						listener.changeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(), index);
 						selectNodes();						
 					}
@@ -680,7 +636,6 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			}
 		});
 		butDown.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		//butDown.setText("Down");
 		butDown.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
 
 		bRemoveNode = new Button(gNodes, SWT.NONE);
@@ -720,13 +675,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		});
 		butDetailsJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		butDetailsJob.setText("Details");
-
-
-		//gFileOrderSource = new Group(sashForm, SWT.VERTICAL);
-
 		gFileOrderSource = new Group(jobChainGroup, SWT.NONE);
-
-
 		final GridData gridData_10 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_10.heightHint = 169;
 		gFileOrderSource.setLayoutData(gridData_10);
@@ -919,7 +868,6 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		bRemoveFileOrderSource.setEnabled(false);
 		bRemoveFileOrderSource.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, true));
 		bRemoveFileOrderSource.setText("Remove Order File Source");
-		//group.setTabList(new Control[] {cChains, fileOrderSourceGroup, gNodes, fileOrderSinkGroup, label_2});
 
 	}
 
@@ -928,20 +876,12 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 
 	private void fillChain(boolean enable, boolean isNew) {
-		//bApplyChain.setEnabled(enable);
-
-		//if (enable && !isNew) {
 		listener.fillFileOrderSource(tFileOrderSource);
 		listener.fillChain(tNodes);
 		gNodes.setText(GROUP_NODES_TITLE + " for: " + listener.getChainName());
 		gFileOrderSource.setText(GROUP_FILEORDERSOURCE_TITLE + " for: " + listener.getChainName());
 		bNewFileOrderSource.setEnabled(true);
 		bNewNode.setEnabled(true);
-		/*} else {
-		 bNewNode.setEnabled(false);
-		 bNewFileOrderSource.setEnabled(false);
-		 }*/
-
 		enableNode(false);
 		enableFileOrderSource(false);           
 
@@ -1052,23 +992,8 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		bApplyFileOrderSource.setEnabled(false);
 	}
 
-
-
-	/*private void applyChain() {
-		String oldJobChainname = listener.getChainName();
-		
-		boolean _continue = true;
-
-		 if(_continue) {
-		 }
-		fillChain(true, false);
-		//bApplyChain.setEnabled(false);
-		
-	}*/
-
-
-
 	private void applyNode() {
+		
 		String msg = "";
 		if (!listener.isValidState(tState.getText()))msg = "State already defined.";
 		if (!msg.equals("")) {
@@ -1085,6 +1010,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 	}
 
 	private void applyFileOrderSource() {
+		
 		if(Utils.isRegExpressions(tRegex.getText())) {
 			listener.applyFileOrderSource(tDirectory.getText(),tRegex.getText(), tNextState.getText(), tMax.getText(), tRepeat.getText(),tDelayAfterError.getText());
 			listener.fillFileOrderSource(tFileOrderSource);
@@ -1103,6 +1029,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		}
 	}
 
+	
 	private boolean isValidNode() {
 		if (tState.getText().equals("") || bFullNode.getSelection() && cJob.getText().equals("")) {
 			return false;
@@ -1111,6 +1038,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		}
 	}
 
+	
 	private boolean isValidSource() {
 		if (tDirectory.getText().equals("") ) {
 			return false;
@@ -1119,35 +1047,30 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		}
 	}
 
-
-
-
-
+	
 	public void setISchedulerUpdate(ISchedulerUpdate update_) {
 		update = update_;
 	}
 
+	
 	private void showDetails(String state) {
 
-			OrdersListener ordersListener =  new OrdersListener(listener.get_dom(), update);
-			String[] listOfOrders = ordersListener.getOrderIds();
-			//DetailDialogForm detail = new DetailDialogForm(tName.getText(), listOfOrders);
-			//detail.showDetails();
-			boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory(); 
+		OrdersListener ordersListener =  new OrdersListener(listener.get_dom(), update);
+		String[] listOfOrders = ordersListener.getOrderIds();
+		boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory(); 
 
-			if(state == null) {
-				DetailDialogForm detail = new  DetailDialogForm(listener.getChainName(), listOfOrders, isLifeElement, listener.get_dom().getFilename());
-				detail.showDetails();
-			} else {
-				DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), state, listOfOrders, isLifeElement, listener.get_dom().getFilename());
-				detail.showDetails();
-			} 
+		if(state == null) {
+			DetailDialogForm detail = new  DetailDialogForm(listener.getChainName(), listOfOrders, isLifeElement, listener.get_dom().getFilename());
+			detail.showDetails();
+		} else {
+			DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), state, listOfOrders, isLifeElement, listener.get_dom().getFilename());
+			detail.showDetails();
+		} 
 
-		
 	}
 
 	private void selectNodes() {
-		
+
 		if (tNodes.getSelectionCount() > 0) {        			
 			listener.selectNode(tNodes);
 			enableNode(true);
@@ -1156,11 +1079,10 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		} else
 			butDetailsJob.setEnabled(false);
 		bRemoveNode.setEnabled(tNodes.getSelectionCount() > 0);
-		
+
 	}
 
 	public void setToolTipText() {
-		//bApplyChain.setToolTipText(Messages.getTooltip("job_chains.chain.btn_apply"));
 		tState.setToolTipText(Messages.getTooltip("job_chains.node.state"));
 		cErrorState.setToolTipText(Messages.getTooltip("job_chains.node.error_state"));
 		cJob.setToolTipText(Messages.getTooltip("job_chains.node.job"));
@@ -1182,7 +1104,6 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		tNodes.setToolTipText(Messages.getTooltip("job_chains.chain.node_table"));
 		tDirectory.setToolTipText(Messages.getTooltip("job_chain.monitoring_directory"));
 		tDelayAfterError.setToolTipText(Messages.getTooltip("job_chain.delay_after_error"));
-		
 		tRegex.setToolTipText(Messages.getTooltip("job_chain.regex"));
 		tRepeat.setToolTipText(Messages.getTooltip("job_chain.repeat")); 
 		tMax.setToolTipText(Messages.getTooltip("job_chain.max"));
@@ -1192,6 +1113,25 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		bNewFileOrderSource.setToolTipText(Messages.getTooltip("job_chain.btn_new"));
 		bRemoveFileOrderSource.setToolTipText(Messages.getTooltip("job_chain.btn_remove"));
 	}
-	
-	
+
+	//ein Job Chain hat entweder job_chain_node ODER job_chain_node.job_chain Kindknoten.
+	private boolean check() {
+		try {
+			XPath x3 = XPath.newInstance("//job_chain[@name='"+ listener.getChainName() + "']/job_chain_node.job_chain");				 
+			List listOfElement_3 = x3.selectNodes(dom.getDoc());
+			if(listOfElement_3.isEmpty())
+				return true;
+			else 
+				return false;
+		} catch (Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			return true;
+		}
+
+	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"
