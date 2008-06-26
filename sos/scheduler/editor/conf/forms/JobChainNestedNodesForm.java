@@ -24,6 +24,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
+
+import sos.scheduler.editor.app.ContextMenu;
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUnsaved;
@@ -94,7 +97,8 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 
 	private SchedulerDom              dom                         = null;
 
-
+	private Button                    butGoto                     = null;
+	
 	public JobChainNestedNodesForm(Composite parent, int style, SchedulerDom dom_, Element jobChain) {
 
 		super(parent, style);
@@ -146,11 +150,11 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		final GridLayout gridLayout_3 = new GridLayout();
 		gridLayout_3.marginBottom = 5;
 		gridLayout_3.marginTop = 5;
-		gridLayout_3.numColumns = 3;
+		gridLayout_3.numColumns = 4;
 		gNodes.setLayout(gridLayout_3);
 
 		label6 = new Label(gNodes, SWT.NONE);
-		label6.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+		label6.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false, 2, 1));
 		label6.setText("State:");
 
 		tState = new Text(gNodes, SWT.BORDER);
@@ -186,7 +190,18 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		label7.setLayoutData(new GridData());
 		label7.setText("Job Chain:");
 
+		butGoto = new Button(gNodes, SWT.ARROW | SWT.DOWN);
+		butGoto.setVisible(listener.get_dom() != null && !listener.get_dom().isLifeElement());
+		butGoto.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				ContextMenu.goTo(cJobChain.getText(), dom, Editor.JOB_CHAIN);
+			}
+		});
+		butGoto.setAlignment(SWT.RIGHT);
+		
+
 		cJobChain = new Combo(gNodes, SWT.BORDER);
+		cJobChain.setMenu(new sos.scheduler.editor.app.ContextMenu(cJobChain, dom, sos.scheduler.editor.app.Editor.JOB_CHAIN).getMenu());
 		cJobChain.addMouseListener(new MouseAdapter() {
 			public void mouseDown(final MouseEvent e) {        		
 				if(refresh) {
@@ -196,6 +211,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 					}
 				}
 			}
+			
 
 		});
 
@@ -238,7 +254,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		if(!listener.get_dom().isLifeElement()) {
 		}
 		label8 = new Label(gNodes, SWT.NONE);
-		label8.setLayoutData(new GridData());
+		label8.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		label8.setText("Next State:");
 
 		cNextState = new Combo(gNodes, SWT.BORDER);
@@ -277,7 +293,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		bNewNode.setText("New Chain &Node");
 
 		label9 = new Label(gNodes, SWT.NONE);
-		label9.setLayoutData(new GridData());
+		label9.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		label9.setText("Error State:");
 
 		cErrorState = new Combo(gNodes, SWT.BORDER);
@@ -307,7 +323,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		gridLayout_4.marginWidth = 0;
 		gridLayout_4.numColumns = 2;
 		cType.setLayout(gridLayout_4);
-		final GridData gridData5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
+		final GridData gridData5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
 		gridData5.widthHint = 387;
 		gridData5.heightHint = 35;
 		cType.setLayoutData(gridData5);
@@ -360,7 +376,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		});
 		tNodes.setLinesVisible(true);
 		tNodes.setHeaderVisible(true);
-		final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 3);
+		final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true, 3, 3);
 		gridData4.heightHint = 112;
 		tNodes.setLayoutData(gridData4);
 
@@ -617,6 +633,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		butUp.setToolTipText(Messages.getTooltip("button_up"));
 		bNewNode.setToolTipText(Messages.getTooltip("job_chains.node.btn_new"));
 		tNodes.setToolTipText(Messages.getTooltip("job_chains.chain.node_table"));
+		butGoto.setToolTipText(Messages.getTooltip("goto"));
 	}
 
 	//ein Job Chain hat entweder job_chain_node ODER job_chain_node.job_chain Kindknoten. 

@@ -352,10 +352,12 @@ public class Options {
 
 
     public static String getSchedulerHotFolder() {
-        if (System.getProperty("SCHEDULER_HOT_FOLDER") != null) {
+        if (System.getProperty("SCHEDULER_HOT_FOLDER") != null && System.getProperty("SCHEDULER_HOT_FOLDER").length() > 0) {
             return System.getProperty("SCHEDULER_HOT_FOLDER");
-        } else {        	
-            return getSchedulerHome() + "/" + "config/live/";
+        } else {  
+        	String shome = getSchedulerHome();
+        	shome = shome.endsWith("/") || shome.endsWith("\\") ? shome : shome+ "/";  
+            return shome + "config/live/";
         }
     }
 

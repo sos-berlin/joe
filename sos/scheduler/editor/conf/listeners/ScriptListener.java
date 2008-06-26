@@ -173,7 +173,7 @@ public class ScriptListener {
 
 
     public void setJavaClass(String javaClass) {
-        setAttributeValue("java_class", javaClass, JAVA);
+        setAttributeValue("java_class", javaClass.trim(), JAVA);
         if(_parent != null)
         	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
     }
@@ -185,7 +185,7 @@ public class ScriptListener {
 
 
     public void setComClass(String comClass) {
-        setAttributeValue("com_class", comClass, COM);
+        setAttributeValue("com_class", comClass.trim(), COM);
         if(_parent != null)
         	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
     }

@@ -19,6 +19,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+
+import sos.scheduler.editor.app.ContextMenu;
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
@@ -60,7 +63,9 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
     private ISchedulerUpdate       main       = null;
     
     private Element                order      = null;
-    
+        
+    private Button                 butGoto    = null;
+	
     
     public OrderForm(Composite parent, int style, SchedulerDom _dom, Element _order, ISchedulerUpdate _main)
             throws JDOMException, TransformerException {
@@ -136,7 +141,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         gridData18.grabExcessVerticalSpace = true;
         gridData18.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         GridLayout gridLayout3 = new GridLayout();
-        gridLayout3.numColumns = 2;
+        gridLayout3.numColumns = 4;
         gOrder = new Group(group, SWT.NONE);
         final GridData gridData_10 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData_10.widthHint = 577;
@@ -144,7 +149,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         gOrder.setText("Order");
         gOrder.setLayout(gridLayout3);
         label10 = new Label(gOrder, SWT.NONE);
-        label10.setLayoutData(new GridData());
+        label10.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
         label10.setText("Order ID");
 
         tOrderId = new Text(gOrder, SWT.BORDER);
@@ -169,9 +174,20 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                 }*/
             }
         });
-        final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, false);
-        gridData_3.widthHint = 319;
+        final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1);
         tOrderId.setLayoutData(gridData_3);
+
+        final Label jobchainLabel = new Label(gOrder, SWT.NONE);
+        jobchainLabel.setText("Job chain");
+
+        butGoto = new Button(gOrder, SWT.ARROW | SWT.DOWN);
+        butGoto.setVisible(dom != null && !dom.isLifeElement());
+        butGoto.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		ContextMenu.goTo(cJobchain.getText(), dom, Editor.JOB_CHAIN);
+        	}
+        });
+        butGoto.setAlignment(SWT.RIGHT);
 
         final Composite composite = new Composite(gOrder, SWT.NONE);
         composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1));
@@ -180,14 +196,12 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         gridLayout.marginWidth = 0;
         gridLayout.marginHeight = 0;
         gridLayout.horizontalSpacing = 0;
-        gridLayout.numColumns = 3;
+        gridLayout.numColumns = 2;
         composite.setLayout(gridLayout);
-
-        final Label jobchainLabel = new Label(composite, SWT.NONE);
-        jobchainLabel.setLayoutData(new GridData(63, SWT.DEFAULT));
-        jobchainLabel.setText("Job chain");
+		
 
         cJobchain = new Combo(composite, SWT.NONE);
+        cJobchain.setMenu(new sos.scheduler.editor.app.ContextMenu(cJobchain, dom, Editor.JOB_CHAIN).getMenu());
         cJobchain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -213,7 +227,8 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
        
 
         final Label titleLabel = new Label(gOrder, SWT.NONE);
-        final GridData gridData_6 = new GridData(47, SWT.DEFAULT);
+        final GridData gridData_6 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
+        gridData_6.widthHint = 47;
         titleLabel.setLayoutData(gridData_6);
         titleLabel.setText("Title");
 
@@ -225,12 +240,11 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
 
-        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gridData_5.widthHint = 351;
+        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
         tTitle.setLayoutData(gridData_5);
 
         final Label priorityLabel = new Label(gOrder, SWT.NONE);
-        priorityLabel.setLayoutData(new GridData());
+        priorityLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
         priorityLabel.setText("Priority");
 
         tPriority = new Text(gOrder, SWT.BORDER);
@@ -245,12 +259,11 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("priority", tPriority.getText());
             }
         });
-        final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gridData_2.widthHint = 389;
+        final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
         tPriority.setLayoutData(gridData_2);
 
         final Label stateLabel = new Label(gOrder, SWT.NONE);
-        stateLabel.setLayoutData(new GridData());
+        stateLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
         stateLabel.setText("State");
 
         tState = new Text(gOrder, SWT.BORDER);
@@ -260,12 +273,12 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("state", tState.getText());
             }
         });
-        final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gridData.widthHint = 150;
+        final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
         tState.setLayoutData(gridData);
 
         final Label replaceLabel = new Label(gOrder, SWT.NONE);
-        final GridData gridData_4 = new GridData(58, SWT.DEFAULT);
+        final GridData gridData_4 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
+        gridData_4.widthHint = 58;
         replaceLabel.setLayoutData(gridData_4);
         replaceLabel.setText("Replace");
 
@@ -279,7 +292,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("replace", r);
             }
         });
-        final GridData gridData_9 = new GridData(28, SWT.DEFAULT);
+        final GridData gridData_9 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
         bReplace.setLayoutData(gridData_9);
 
       
@@ -331,7 +344,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         bReplace.setToolTipText(Messages.getTooltip("jobcommand.replaceorder"));
         cJobchain.setToolTipText(Messages.getTooltip("jobcommand.jobchain"));
         tOrderId.setToolTipText(Messages.getTooltip("order.order_id"));       
-
+        butGoto.setToolTipText(Messages.getTooltip("goto"));
     }
     
     private boolean checkName(){

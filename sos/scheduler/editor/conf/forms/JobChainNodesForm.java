@@ -25,6 +25,8 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
 import com.swtdesigner.SWTResourceManager;
+
+import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IOUtils;
@@ -133,6 +135,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 	private SchedulerDom        dom                         = null;
 
+	private Button              butGoto                     = null;
 
 	public JobChainNodesForm(Composite parent, int style, SchedulerDom dom_, Element jobChain) {
 
@@ -185,12 +188,13 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		final GridLayout gridLayout_3 = new GridLayout();
 		gridLayout_3.marginBottom = 5;
 		gridLayout_3.marginTop = 5;
-		gridLayout_3.numColumns = 5;
+		gridLayout_3.numColumns = 6;
 		gNodes.setLayout(gridLayout_3);
 
 		label6 = new Label(gNodes, SWT.NONE);
 		label6.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
 		label6.setText("State:");
+		new Label(gNodes, SWT.NONE);
 
 		tState = new Text(gNodes, SWT.BORDER);
 		tState.addModifyListener(new ModifyListener() {
@@ -225,7 +229,26 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		label7.setLayoutData(new GridData());
 		label7.setText("Job:");
 
+		butGoto = new Button(gNodes, SWT.ARROW | SWT.DOWN);
+		butGoto.setVisible(listener.get_dom() != null && !listener.get_dom().isLifeElement());
+		butGoto.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				ContextMenu.goTo(cJob.getText(), dom, Editor.JOB);
+			}
+		});
+		butGoto.setAlignment(SWT.RIGHT);
+		
+		
 		cJob = new Combo(gNodes, SWT.BORDER);
+	
+		cJob.setMenu(new sos.scheduler.editor.app.ContextMenu(cJob, dom, Editor.JOB).getMenu());
+		//Utils.goTo(cJob.getText(), listener.get_dom(), sos.scheduler.editor.app.Editor.JOB);
+		/*cJob.addListener(SWT.MenuDetect, new Listener() {
+			public void handleEvent(Event e) {
+				//e.doit = cJob.getSelectionCount() > 0;
+			}
+		});
+		*/
 		cJob.addMouseListener(new MouseAdapter() {
 			public void mouseDown(final MouseEvent e) {        		
 				if(refresh) {
@@ -235,6 +258,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 					}
 				}
 			}
+			
 		});
 		cJob.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
@@ -294,6 +318,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		label8 = new Label(gNodes, SWT.NONE);
 		label8.setLayoutData(new GridData());
 		label8.setText("Next State:");
+		new Label(gNodes, SWT.NONE);
 
 		cNextState = new Combo(gNodes, SWT.BORDER);
 		cNextState.addModifyListener(new ModifyListener() {
@@ -354,6 +379,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		label9 = new Label(gNodes, SWT.NONE);
 		label9.setLayoutData(new GridData());
 		label9.setText("Error State:");
+		new Label(gNodes, SWT.NONE);
 
 		cErrorState = new Combo(gNodes, SWT.BORDER);
 		cErrorState.addModifyListener(new ModifyListener() {
@@ -409,7 +435,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		gridLayout_4.marginWidth = 0;
 		gridLayout_4.numColumns = 4;
 		cType.setLayout(gridLayout_4);
-		final GridData gridData5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
+		final GridData gridData5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1);
 		gridData5.widthHint = 387;
 		gridData5.heightHint = 35;
 		cType.setLayoutData(gridData5);
@@ -569,7 +595,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		});
 		tNodes.setLinesVisible(true);
 		tNodes.setHeaderVisible(true);
-		final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 3);
+		final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 3);
 		gridData4.heightHint = 112;
 		tNodes.setLayoutData(gridData4);
 
@@ -1112,6 +1138,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		bApplyFileOrderSource.setToolTipText(Messages.getTooltip("job_chain.btn_apply"));
 		bNewFileOrderSource.setToolTipText(Messages.getTooltip("job_chain.btn_new"));
 		bRemoveFileOrderSource.setToolTipText(Messages.getTooltip("job_chain.btn_remove"));
+		butGoto.setToolTipText(Messages.getTooltip("goto"));
 	}
 
 	//ein Job Chain hat entweder job_chain_node ODER job_chain_node.job_chain Kindknoten.

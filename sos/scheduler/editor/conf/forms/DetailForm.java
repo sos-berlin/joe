@@ -516,7 +516,12 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		txtParamsFile = new Text(parameterGroup, SWT.BORDER);
 		txtParamsFile.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
-				detailListener.setParamsFileName(txtParamsFile.getText()); 
+				detailListener.setParamsFileName(txtParamsFile.getText());
+				
+				if(gui!=null ) 
+					gui.updateNote();
+				
+				butApply.setEnabled(isEditable);
 			}
 		});
 		txtParamsFile.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
@@ -763,6 +768,19 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		butXML.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				try {
+					if(dom != null && dom.isChanged()) {
+						MainWindow.message("Please save jobchain configuration file before opening XML Editor.", SWT.ICON_ERROR);
+						return;
+					}
+					
+					if(dom == null && butApply.isEnabled()) {
+						//ungespeichert
+						int c = MainWindow.message("Should the current values be saved?", SWT.YES | SWT.NO | SWT.ICON_ERROR);
+						if(c == SWT.YES)
+							detailListener.save();
+						
+					}
+					
 					if(type == Editor.JOB_CHAINS) {
 						DetailXMLEditorDialogForm dialog = new DetailXMLEditorDialogForm(detailListener.getConfigurationFilename(), jobChainname, state, listOfOrderIds, comboOrderId.getText(), type, isLifeElement, path);
 						

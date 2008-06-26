@@ -191,12 +191,12 @@ public class SchedulerListener {
 				name = Utils.getAttributeValue("name", element);				
 			}			
 
-			treeFillRunTimes(item, element, false, Utils.getAttributeValue("name", element), true);
+			treeFillRunTimes(item, element, false, Utils.getAttributeValue("name", element));
 
 			List l = element.getChildren("month");     	
 			for(int i =0; i < l.size(); i++) {
 				Element e = (Element)l.get(i);
-				treeFillRunTimes(item.getItem(item.getItemCount()-1).getItem(item.getItem(item.getItemCount()-1).getItemCount()-1), e, false, Utils.getAttributeValue("month", e), false);
+				treeFillRunTimes(item.getItem(item.getItemCount()-1).getItem(item.getItem(item.getItemCount()-1).getItemCount()-1), e, false, Utils.getAttributeValue("month", e));
 			}
 			item.setExpanded(true);
 
@@ -215,13 +215,15 @@ public class SchedulerListener {
 		TreeItem item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.CONFIG, config, Options.getHelpURL("config")));
 		item.setData("key", "config");
-		item.setText("Config");
+		item.setData("copy_element", config);
+		item.setText("Config");		
 		if(type == SchedulerDom.DIRECTORY)
 			item.dispose();
 
 		item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.BASE, config, Options.getHelpURL("base")));
 		item.setData("key", "base");
+		item.setData("copy_element", config);
 		item.setText("Base Files");
 		if(type == SchedulerDom.DIRECTORY)
 			item.dispose();
@@ -229,14 +231,17 @@ public class SchedulerListener {
 		
 		item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.PARAMETER, config, Options.getHelpURL("parameter")));
-		item.setData("key", "parameter");
+		item.setData("key", "parameter");		
+		item.setData("copy_element", config);
 		item.setText("Parameter");
+		
 		if(type == SchedulerDom.DIRECTORY)
 			item.dispose();		
 
 		item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.SECURITY, config, Options.getHelpURL("security"), "security"));
 		item.setData("key", "security");
+		item.setData("copy_element", config);
 		item.setText("Security");
 		if(type == SchedulerDom.DIRECTORY)
 			item.dispose();
@@ -244,6 +249,7 @@ public class SchedulerListener {
 		item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.CLUSTER, config, Options.getHelpURL("cluster"), "cluster"));
 		item.setData("key", "cluster");
+		item.setData("copy_element", config);
 		item.setText("Cluster");
 		if(type == SchedulerDom.DIRECTORY)
 			item.dispose();
@@ -251,22 +257,26 @@ public class SchedulerListener {
 		item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"), "process_classes"));
 		item.setData("key", "process_classes");
+		item.setData("copy_element", config);
 		item.setText("Process Classes");
 
 		item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.SCHEDULES, config, Options.getHelpURL("schedules"), "schedules"));
 		item.setData("key", "schedules");
+		item.setData("copy_element", config);
 		item.setText("Schedules");
 		treeFillSchedules(item);
 
 		item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.LOCKS, config, Options.getHelpURL("locks"), "locks"));
 		item.setData("key", "locks");
+		item.setData("copy_element", config);
 		item.setText("Locks");
 
 		item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.SCRIPT, config, Options.getHelpURL("start_script"), "script"));
 		item.setData("key", "script");
+		item.setData("copy_element", config);
 		item.setText("Start Script");
 		if(type == SchedulerDom.DIRECTORY)
 			item.dispose();
@@ -300,15 +310,15 @@ public class SchedulerListener {
 
 		}
 
-		item = new TreeItem(tree, SWT.NONE);
-		item.setData(new TreeData(Editor.HOLIDAYS, config, Options.getHelpURL("holidays"), "holidays"));
-		item.setData("key", "holidays");
-		item.setText("Holidays");
-		if(type == SchedulerDom.DIRECTORY)
-			item.dispose();
+		if(type != SchedulerDom.DIRECTORY) {
+			item = new TreeItem(tree, SWT.NONE);
+			item.setData(new TreeData(Editor.HOLIDAYS, config, Options.getHelpURL("holidays"), "holidays"));
+			item.setData("key", "holidays");
+			item.setText("Holidays");
 
-		//treeFillHolidays(item, config);
 
+			treeFillHolidays(item, config);
+		}
 		item = new TreeItem(tree, SWT.NONE);
 		item.setData(new TreeData(Editor.JOBS, config, Options.getHelpURL("jobs"), "jobs"));
 		item.setData("key", "jobs");
@@ -416,6 +426,7 @@ public class SchedulerListener {
 				Object o = it.next();
 				if (o instanceof Element) {
 					Element element = (Element) o;
+					
 					if(type == SchedulerDom.DIRECTORY) {
 						checkLifeAttributes(element, Utils.getAttributeValue("name", element));
 					}
@@ -511,7 +522,7 @@ public class SchedulerListener {
 			item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 		}
 
-		treeFillRunTimes(parent, job, disable, "run_time", true);
+		treeFillRunTimes(parent, job, disable, "run_time");
 
 		/*List l = job.getChild("run_time").getChildren("month");     	
 		for(int i =0; i < l.size(); i++) {
@@ -548,12 +559,12 @@ public class SchedulerListener {
 		item.setText("Parameter");
 
 
-		treeFillRunTimes(parent, order, false, "run_time", true);
+		treeFillRunTimes(parent, order, false, "run_time");
 
 		List l = order.getChild("run_time").getChildren("month"); 
 		for(int i =0; i < l.size(); i++) {
 			Element e = (Element)l.get(i);
-			treeFillRunTimes(parent.getItem(parent.getItemCount()-1).getItem(parent.getItem(parent.getItemCount()-1).getItemCount()-1), e, !Utils.isElementEnabled("job", _dom, order), Utils.getAttributeValue("month", e), false);    		
+			treeFillRunTimes(parent.getItem(parent.getItemCount()-1).getItem(parent.getItem(parent.getItemCount()-1).getItemCount()-1), e, !Utils.isElementEnabled("job", _dom, order), Utils.getAttributeValue("month", e));    		
 		}
 
 		parent.setExpanded(expand);
@@ -561,6 +572,20 @@ public class SchedulerListener {
 
 
 	public void treeFillHolidays(TreeItem item, Element elem) {
+		
+		
+		
+		item = new TreeItem(item, SWT.NONE);
+		item.setText("Weekdays");
+		item.setData(new TreeData(Editor.WEEKDAYS, elem, Options.getHelpURL("job.run_time.weekdays"),"weekdays"));
+		item.setData("key", "holiday.run_time.weekdays");
+					
+		if( elem.getChild("holidays") != null)
+			treeFillDays(item,  elem, 0, false);
+			//treeFillDays(item,  elem.getChild("holidays"), 0, false);
+		_gui.updateFont(item);
+
+		
 		//wurde zurückgestellt
 		/*Element holidays = elem.getChild("holidays");
 		if(holidays == null) {
@@ -633,7 +658,7 @@ public class SchedulerListener {
 	}
 
 
-	public void treeFillDays(TreeItem parent, Element element, int type, boolean expand) {
+	public void treeFillDays(TreeItem parent, Element element, int type, boolean expand){
 		treeFillDays(parent, element, type, expand, null);		
 	}
 
@@ -643,15 +668,32 @@ public class SchedulerListener {
 			if (    type == DaysListener.WEEKDAYS || 
 					type == DaysListener.MONTHDAYS || 
 					type == DaysListener.ULTIMOS || 
-					type == DaysListener.SPECIFIC_MONTHS) {			
+					type == DaysListener.SPECIFIC_MONTHS) {
+				
+				//if(element.getName().equals("config") && element.getChild("holidays") != null)
+				//	element = element.getChild("holidays");
+				
+				if(parent.getParentItem().getText().equals("Holidays")) {
+					if(element.getChild("holidays") == null)
+						element.addContent(new Element("holidays"));
+					
+					element = element.getChild("holidays");
+					
+						
+				}
+					
+				
+				//element = isHolidayWeeksdayParent(element);
+				
 				new DaysListener(_dom, element, type).fillTreeDays(parent, expand);
+				
 				if(type == DaysListener.SPECIFIC_MONTHS) {
 					List l = element.getChildren("month"); 
 					//TreeItem item = _gui.getTree().getSelection()[0];
 					for(int i =0; i < l.size(); i++) {
 						Element e = (Element)l.get(i);
 						//treeFillRunTimes(_gui.getTree().getSelection()[0], e, !Utils.isElementEnabled("job", _dom, element), Utils.getAttributeValue("month", e), false);                	
-						treeFillRunTimes(parent, e, !Utils.isElementEnabled("job", _dom, element), Utils.getAttributeValue("month", e), false);
+						treeFillRunTimes(parent, e, !Utils.isElementEnabled("job", _dom, element), Utils.getAttributeValue("month", e));
 					}
 
 				}
@@ -935,10 +977,9 @@ public class SchedulerListener {
 		}
 	}
 
-	public void treeFillRunTimes(TreeItem item,Element job, boolean disable, String run_time, boolean withHolidays) {
+	public void treeFillRunTimes(TreeItem item,Element job, boolean disable, String run_time) {
 		Element runtime = null; 
 		Element _runtime = job.getChild("run_time");
-
 		// create runtime tag
 		if (_runtime == null && run_time.equals("run_time")) { 			
 			_runtime = new Element(run_time);
@@ -1082,29 +1123,18 @@ public class SchedulerListener {
 				item.setData("key", "job.run_time.specific_monthdays");				
 				if(disable) {
 					item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-				}
-				//treeFillDays(item, runtime, 1, false);
+				}			
 				treeFillDays(item, runtime, DaysListener.SPECIFIC_MONTHS, false);
 				_gui.updateFont(item);
-
-
 			}
-			if(withHolidays) {
-				//wurde zurückgestellt bis auf weiteres
-				/*
-				item = new TreeItem(run, SWT.NONE);
-				item.setData(new TreeData(Editor.HOLIDAYS, runtime, Options.getHelpURL("holidays"), "holidays"));
-				item.setData("key", "holidays");
-				item.setText("Holidays");
-				if(type == SchedulerDom.DIRECTORY)
-					item.dispose();
-
-				Element holiday = new Element("holidays");
-				runtime.addContent(holiday);
-				
-				treeFillHolidays(item, runtime);
-				*/
-			}
+			
+			//holidays
+			item = new TreeItem(run, SWT.NONE);
+			item.setData(new TreeData(Editor.HOLIDAYS, runtime, Options.getHelpURL("holidays"), "holidays"));
+			item.setData("key", "holidays");
+			item.setText("Holidays");
+			treeFillHolidays(item, runtime);
+			
 
 			/*if (runtime != null)
 				treeFillDays(item, runtime, 6, false);
@@ -1202,7 +1232,7 @@ public class SchedulerListener {
 					if(type == SchedulerDom.DIRECTORY) {
 						checkLifeAttributes(element, Utils.getAttributeValue("name", element));
 					}
-					treeFillRunTimes(parent, element, false, Utils.getAttributeValue("name", element), true);
+					treeFillRunTimes(parent, element, false, Utils.getAttributeValue("name", element));
 				}
 			}
 		}
@@ -1234,4 +1264,5 @@ public class SchedulerListener {
 
 	}
 
+	
 }

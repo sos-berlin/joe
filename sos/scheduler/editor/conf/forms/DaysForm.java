@@ -75,6 +75,8 @@ public class DaysForm extends Composite implements IUpdateLanguage {
     
     private Button           butNewGroup   = null; 
     
+    private Element          parent_        = null;
+    
     //private SchedulerDom     _dom                = null;
 
 
@@ -85,6 +87,7 @@ public class DaysForm extends Composite implements IUpdateLanguage {
 
         listener = new DaysListener(dom, job, type);
         _main = main;
+        parent_ = job;
         _type = type;
         //_dom= dom;
         initialize();
@@ -139,7 +142,9 @@ public class DaysForm extends Composite implements IUpdateLanguage {
             	butApplyGroup.setEnabled(false);
                 listener.addDay(cUnusedDays.getText()); 
                 _main.updateDays(_type, cUnusedDays.getText());                
-                _main.updateFont();                
+                _main.updateFont();    
+                //if(parent_.getName().equals("config"))
+                //	_main.expandItem("Weekdays");
                 read();
             }
         });

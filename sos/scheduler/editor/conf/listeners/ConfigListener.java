@@ -182,7 +182,7 @@ public class ConfigListener {
   }
 
    public String getIpAddress() {
-      return Utils.getAttributeValue("ip_address ", _config);
+      return Utils.getAttributeValue("ip_address", _config);
    }
 
 

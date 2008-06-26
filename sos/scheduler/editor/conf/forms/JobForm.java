@@ -37,6 +37,8 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobListener;
+import sos.scheduler.editor.app.ContextMenu;
+
 
 public class JobForm extends Composite implements IUpdateLanguage {
 	
@@ -132,6 +134,8 @@ public class JobForm extends Composite implements IUpdateLanguage {
 	
 	private boolean     init              = true;
 	
+	private Button      butGoto           = null;
+	
 	
 	public JobForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
 		super(parent, style);
@@ -206,7 +210,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 	 */
 	private void createSashForm() {
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 5;
+		gridLayout.numColumns = 6;
 		gMain = new Group(group, SWT.NONE);
 		final GridData gridData_12 = new GridData(GridData.FILL, GridData.FILL, true, true);
 		gMain.setLayoutData(gridData_12);
@@ -215,7 +219,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
 		
 		label = new Label(gMain, SWT.NONE);
-		label.setLayoutData(new GridData());
+		label.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		label.setText("Job Name:");
 		
 		tName = new Text(gMain, SWT.BORDER);
@@ -236,7 +240,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 
 		});
 		label1 = new Label(gMain, SWT.NONE);
-		label1.setLayoutData(new GridData());
+		label1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		label1.setText("Job Title:");
 		GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 4, 1);
 		tTitle = new Text(gMain, SWT.BORDER);
@@ -247,7 +251,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		label3 = new Label(gMain, SWT.NONE);
-		label3.setLayoutData(new GridData());
+		label3.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		label3.setText("Scheduler ID:");
 		label3.setVisible(!listener.get_dom().isLifeElement() && !listener.get_dom().isDirectory());
 		GridData gridData3 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 4, 1);
@@ -262,10 +266,23 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		tSpoolerID.setVisible(!listener.get_dom().isLifeElement()  && !listener.get_dom().isDirectory());
 		label9 = new Label(gMain, SWT.NONE);
 		label9.setLayoutData(new GridData());
-		label9.setText("Process Class:");
+		label9.setText("Process Class:");		
 		GridData gridData4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-		gridData4.widthHint = 197;
+//		gridData4.widthHint = 197;
+
+		 
+		butGoto = new Button(gMain, SWT.ARROW | SWT.DOWN);
+		butGoto.setVisible(listener.get_dom() != null && !listener.get_dom().isLifeElement());
+		butGoto.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				ContextMenu.goTo(cProcessClass.getText(), listener.get_dom(), Editor.PROCESS_CLASSES);
+			}
+		});
+		butGoto.setAlignment(SWT.RIGHT);
+		
 		cProcessClass = new Combo(gMain, SWT.NONE);
+		cProcessClass.setMenu(new ContextMenu(cProcessClass, listener.get_dom(), Editor.PROCESS_CLASSES).getMenu());
+		
 		cProcessClass.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				listener.setProcessClass(cProcessClass.getText());
@@ -313,7 +330,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		label7 = new Label(gMain, SWT.NONE);
-		label7.setLayoutData(new GridData());
+		label7.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		label7.setText("On Order:");
 		GridData gridData15 = new GridData(107, SWT.DEFAULT);
 		cOrder = new Composite(gMain, SWT.NONE);
@@ -379,7 +396,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		});
 		
 		final Composite composite = new Composite(gMain, SWT.NONE);
-		final GridData gridData_8 = new GridData();
+		final GridData gridData_8 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
 		gridData_8.horizontalIndent = 10;
 		composite.setLayoutData(gridData_8);
 		final GridLayout gridLayout_1 = new GridLayout();
@@ -397,7 +414,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		bStopOnError = new Button(composite, SWT.CHECK);
 		final GridData gridData_16 = new GridData(GridData.END, GridData.CENTER, false, false);
 		gridData_16.horizontalIndent = 5;
-		gridData_16.widthHint = 17;
+		//gridData_16.widthHint = 17;
 		bStopOnError.setLayoutData(gridData_16);
 		bStopOnError.setSelection(true);
 		bStopOnError.addSelectionListener(new SelectionAdapter() {
@@ -407,7 +424,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		});
 
 		final Label minMaskLabel = new Label(gMain, SWT.NONE);
-		minMaskLabel.setLayoutData(new GridData());
+		minMaskLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		minMaskLabel.setText("Min Tasks");
 		
 		tMintasks = new Text(gMain, SWT.BORDER);
@@ -422,7 +439,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-		gridData_2.widthHint = 75;
+		//gridData_2.widthHint = 75;
 		tMintasks.setLayoutData(gridData_2);
 		
 		label15 = new Label(gMain, SWT.NONE);
@@ -457,7 +474,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		label13 = new Label(gMain, SWT.NONE);
-		label13.setLayoutData(new GridData());
+		label13.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		label13.setText("Timeout:");
 		
 		sTimeout = new Text(gMain, SWT.BORDER);
@@ -473,7 +490,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-		gridData_9.widthHint = 75;
+		//gridData_9.widthHint = 75;
 		sTimeout.setLayoutData(gridData_9);
 		label11 = new Label(gMain, SWT.NONE);
 		label11.setLayoutData(new GridData());
@@ -481,7 +498,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 
 		final Composite composite_4 = new Composite(gMain, SWT.NONE);
 		final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
-		gridData_6.widthHint = 224;
+//		gridData_6.widthHint = 224;
 		composite_4.setLayoutData(gridData_6);
 		final GridLayout gridLayout_5 = new GridLayout();
 		gridLayout_5.verticalSpacing = 0;
@@ -506,7 +523,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		});
 		
 		final Label ignore_signalLabel = new Label(gMain, SWT.NONE);
-		ignore_signalLabel.setLayoutData(new GridData());
+		ignore_signalLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		ignore_signalLabel.setText("Ignore Signals:");
 		
 		tIgnoreSignals = new Text(gMain, SWT.BORDER);
@@ -516,7 +533,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		final GridData gridData_3 = new GridData(GridData.FILL, GridData.BEGINNING, true, false);
-		gridData_3.widthHint = 48;
+//		gridData_3.widthHint = 48;
 		tIgnoreSignals.setLayoutData(gridData_3);
 		
 		addButton = new Button(gMain, SWT.NONE);
@@ -540,7 +557,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		cSignals.setLayoutData(gridData_4);
 
 		final Label java_optionsLabel = new Label(gMain, SWT.NONE);
-		java_optionsLabel.setLayoutData(new GridData());
+		java_optionsLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		java_optionsLabel.setText("Java Options:");
 
 		txtJavaOptions = new Text(gMain, SWT.BORDER);
@@ -552,6 +569,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		txtJavaOptions.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 4, 1));
 
 		final Label visibleLabel = new Label(gMain, SWT.NONE);
+		visibleLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		visibleLabel.setText("Visible:");
 
 		comVisible = new Combo(gMain, SWT.READ_ONLY);
@@ -588,7 +606,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		});
 
 		final Composite composite_5 = new Composite(gMain, SWT.NONE);
-		final GridData gridData_22 = new GridData();
+		final GridData gridData_22 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
 		gridData_22.horizontalIndent = 10;
 		composite_5.setLayoutData(gridData_22);
 		final GridLayout gridLayout_6 = new GridLayout();
@@ -615,7 +633,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		butReplace.setSelection(true);
 
 		final Composite composite_2 = new Composite(gMain, SWT.NONE);
-		final GridData gridData_20 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
+		final GridData gridData_20 = new GridData(GridData.FILL, GridData.BEGINNING, false, true, 2, 1);
 		gridData_20.minimumHeight = 20;
 		composite_2.setLayoutData(gridData_20);
 		final GridLayout gridLayout_3 = new GridLayout();
@@ -939,6 +957,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		cSignals.setToolTipText(Messages.getTooltip("job.ignore_signal_list"));
 		addButton.setToolTipText(Messages.getTooltip("job.add_ignore_signal"));
 
+		butGoto.setToolTipText(Messages.getTooltip("goto"));
 	}
 	
 	

@@ -59,7 +59,16 @@ public class TreeMenu {
 
 	
 	
-
+/*
+	private Element getElement() {
+		if (_tree.getSelectionCount() > 0) {	
+			Element retVal = (Element) _tree.getSelection()[0].getData("copy_element"); 
+			return (Element)retVal.clone();
+		}
+		return null;
+		
+	}
+*/
 	private Element getElement() {
 		if (_tree.getSelectionCount() > 0) {			
 			TreeData data = (TreeData) _tree.getSelection()[0].getData();
@@ -85,8 +94,6 @@ public class TreeMenu {
 		} else
 			return null;
 	}
-
-
 	private void createMenu() {
 		_menu = new Menu(_tree.getShell(), SWT.POP_UP);
 
@@ -387,7 +394,30 @@ public class TreeMenu {
 		};
 	}
 
-
+	/*private Listener getPasteListener() {
+		return new Listener() {
+			public void handleEvent(Event e) {
+				Element target = getElement();								
+				String key = _tree.getSelection()[0].getData("key").toString();
+				
+				if(key.equalsIgnoreCase(target.getName()) ) {					
+					TreeData data = (TreeData) _tree.getSelection()[0].getData();
+					data.setElement(target);				
+				} else {
+					TreeData data = (TreeData) _tree.getSelection()[0].getData();					
+					data.setElement(target);
+				}
+				
+				refreshTree("main");						
+				_gui.updateCommands();
+				_gui.updateOrders();
+				_gui.update();
+				_dom.setChanged(true);
+				
+			}
+		};
+	}
+	*/
 	private Listener getPasteListener() {
 		return new Listener() {
 			public void handleEvent(Event e) {

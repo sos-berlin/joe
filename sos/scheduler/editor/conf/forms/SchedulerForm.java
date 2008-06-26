@@ -197,7 +197,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
-			TreeData data = (TreeData) item.getData();            
+			TreeData data = (TreeData) item.getData(); 					
 			listener.treeFillDays(item, data.getElement(), type, true, name);
 			item.setExpanded(true);
 		}
@@ -232,8 +232,8 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	}
 	
 	
-	public void expandItem(String job) {
-		listener.treeExpandJob(tree.getSelection()[0], job);                
+	public void expandItem(String name) {
+		listener.treeExpandJob(tree.getSelection()[0], name);                
 	}
 	
 	private void updateJobs_() {
@@ -410,7 +410,8 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 			} else {
 				listener.treeFillMain(tree, cMainForm);
 			}
-		} else if(which.equalsIgnoreCase("jobs"))
+		//} else if(which.equalsIgnoreCase("jobs"))
+		} else 
 			listener.treeSelection(tree, cMainForm);
 		
 	}
@@ -612,6 +613,10 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		}
 		item.setFont(font);
 
+	}
+
+	public SchedulerListener getListener() {
+		return listener;
 	}
 	
 }

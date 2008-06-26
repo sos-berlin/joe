@@ -40,7 +40,7 @@ public class SchedulerDom extends DomParser {
 
 	private static final String[]   JOBCHAIN_ELEMENTS          = { "file_order_source", "job_chain_node", "job_chain_node.job_chain", "file_order_sink"};
 
-	private static final String[]   HOLIDAYS_ELEMENTS          = { "holiday", "include"};
+	private static final String[]   HOLIDAYS_ELEMENTS          = { "include" , "weekdays", "holiday"};
 
 	private static final String[]   PARAMS_ELEMENTS            = { "param", "copy_params", "include"};
 
@@ -120,11 +120,13 @@ public class SchedulerDom extends DomParser {
 			putDomOrder("commands", COMMANDS_ELEMENTS);
 			putDomOrder("params", PARAMS_ELEMENTS);
 			putDomOrder("schedules", RUNTIME_ELEMENTS);
+			putDomOrder("holidays", HOLIDAYS_ELEMENTS);
 			isDirectory = true;
 			initScheduler();
 		} else if(type==LIFE_JOB) {
 			putDomOrder("job", JOB_ELEMENTS);
 			putDomOrder("run_time", RUNTIME_ELEMENTS);
+			putDomOrder("holidays", HOLIDAYS_ELEMENTS);
 			initScheduler(type);
 		} else if(type==LIFE_JOB_CHAIN) {
 			//putDomOrder("job_chain", CONFIG_ELEMENTS_DIRECTORY);
@@ -133,6 +135,7 @@ public class SchedulerDom extends DomParser {
 		} else if(type==LIFE_ORDER) {
 			putDomOrder("commands", COMMANDS_ELEMENTS);
 			putDomOrder("run_time", RUNTIME_ELEMENTS);
+			putDomOrder("holidays", HOLIDAYS_ELEMENTS);
 			initScheduler(type);
 		} else if(type==LIFE_PROCESS_CLASS) {
 			putDomOrder("config", new String[]{ "process_classes" });
@@ -143,6 +146,7 @@ public class SchedulerDom extends DomParser {
 		} else if(type==LIFE_SCHEDULE) {
 			putDomOrder("config", new String[]{"schedules"});
 			putDomOrder("run_time", RUNTIME_ELEMENTS);
+			putDomOrder("holidays", HOLIDAYS_ELEMENTS);
 			initScheduler(type);
 		} else {
 			new SchedulerDom();
