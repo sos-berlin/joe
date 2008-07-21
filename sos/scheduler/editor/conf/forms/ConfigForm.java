@@ -196,6 +196,8 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		label.setLayoutData(new GridData());
 		label.setText("Scheduler ID:");
 		tSpoolerID = new Text(group_1, SWT.BORDER);
+		
+		
 		final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		
 		tSpoolerID.setLayoutData(gridData_1);

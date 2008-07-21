@@ -117,7 +117,6 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData2.widthHint = 90;
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
-        gridData.heightHint = 157;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 5;
         group = new Group(this, SWT.NONE);

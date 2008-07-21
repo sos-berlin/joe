@@ -60,7 +60,8 @@ public class RunTimeListener {
 
 			Utils.setAttribute("start_time_function",function_name, _runtime, _dom);
 			//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
-			_dom.setChangedForDirectory(_job, SchedulerDom.MODIFY);
+			if(_dom.isDirectory() || _dom.isLifeElement())
+				_dom.setChangedForDirectory(_job, SchedulerDom.MODIFY);
 		}
 	}
 
@@ -91,7 +92,11 @@ public class RunTimeListener {
 
 
 	public void setSchedule(String schedule) {
-		Utils.setAttribute("schedule", schedule, _runtime);
+		if(_runtime != null) {
+			Utils.setAttribute("schedule", schedule, _runtime, _dom);
+			if(_dom.isDirectory() || _dom.isLifeElement())
+				_dom.setChangedForDirectory(_job, SchedulerDom.MODIFY);
+		}
 	}
 
 	/*

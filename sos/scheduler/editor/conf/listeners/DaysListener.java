@@ -614,6 +614,11 @@ public class DaysListener {
 		for (int i = 0; used!= null && i < used.length; i++) {
 			TreeItem item = new TreeItem(parent, SWT.NONE);
 			item.setText(used[i]); 
+			
+			item.setData("max_occur", "1");
+			item.setData("key",  used[i] +"_@_"+ _dayElements[i].getName());
+			item.setData("copy_element", _dayElements[i]);
+			
 			item.setData(new TreeData(Editor.PERIODS, _dayElements[i], Options.getHelpURL("periods")));
 			if(_runtime != null && !Utils.isElementEnabled("job", _dom, _runtime)) {
 				item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
@@ -634,6 +639,16 @@ public class DaysListener {
 		return _days[_type];
 	}
 
+	
+	public static java.util.HashMap getDays() {
+		java.util.HashMap l = new java.util.HashMap();
+		l.put("weekdays",_weekdays); 
+		l.put("monthdays", _monthdays);
+		l.put("ultimos", _ultimos);
+		l.put("month", _month);
+		return l;
+	}
+	
 	/*public String[] getNormalizedUltimos(String group) {
     	String[] allUltimos =  getUltimos();
     	ArrayList l = new ArrayList();

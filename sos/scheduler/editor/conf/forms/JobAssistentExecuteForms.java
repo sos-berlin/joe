@@ -375,7 +375,8 @@ public class JobAssistentExecuteForms {
 				JobsListener listener = new JobsListener(dom, update);
 				listener.newImportJob(job, assistentType);
 			}
-			MainWindow.message(shell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
+			//MainWindow.message(shell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
+			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shell);
 			
 			
 		}

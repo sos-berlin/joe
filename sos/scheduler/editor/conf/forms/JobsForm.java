@@ -97,7 +97,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			bNewJob.setLayoutData(gridData);
 			getShell().setDefaultButton(bNewJob);
 			bNewJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {					
 					listener.newJob(table);
 					bRemoveJob.setEnabled(true);
 				}

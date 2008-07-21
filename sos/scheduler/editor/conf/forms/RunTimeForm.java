@@ -54,12 +54,15 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
     private Group           groupSchedule            = null;
     
     private Element         runTimeBackUpElem        = null;
+    
+    private boolean         init                     = false;
         
     
     
     public RunTimeForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate gui) {
     	
         super(parent, style);
+        init = true;
         _gui = gui;
         listener = new RunTimeListener(dom, job);
         initialize();
@@ -79,7 +82,9 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
             tComment.setEnabled(false);
         }
         gComment.setText(title);
-        dom.setInit(false);
+        dom.setInit(false);   
+        setEnabled();
+        init = false;
         
     }
 
@@ -89,6 +94,8 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         this.setLayout(new FillLayout());
         createGroup();
         setSize(new org.eclipse.swt.graphics.Point(576, 518));
+        
+        
         
     }
 
@@ -136,14 +143,17 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         comSchedule = new Combo(groupSchedule, SWT.NONE);
         comSchedule.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {        		
+        		//listener.setSchedule(comSchedule.getText());
+        		
         		listener.setSchedule(comSchedule.getText());
+        		_gui.updateFont();
         	}
         });
         comSchedule.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         comSchedule.setItems(listener.getSchedules());
         comSchedule.setText(listener.getSchedule());
         comSchedule.addModifyListener(new ModifyListener() {
-        	public void modifyText(final ModifyEvent e) {
+        	public void modifyText(final ModifyEvent e) { 
         			setEnabled();
             		listener.setSchedule(comSchedule.getText());
             		_gui.updateFont();
@@ -193,7 +203,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
 			}
 		});
         button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
-                
+        setEnabled();           
     }
 
 
@@ -227,6 +237,24 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
     
     private void setEnabled() {
 
+    	if(init) {
+    		//initialisierung
+    		if(comSchedule.getText().trim().length() > 0) {    		
+        		groupSchedule.setEnabled(true);    		
+        		groupStartTimeFuction.setEnabled(false);    	
+        		periodForm.setEnabled(false);
+        	} else if(tFunction.getText().trim().length() > 0) {    		
+        		groupSchedule.setEnabled(false);
+        		groupStartTimeFuction.setEnabled(true);
+        		periodForm.setEnabled(false);
+        	} else {
+        		groupSchedule.setEnabled(true);
+        		groupStartTimeFuction.setEnabled(true);
+        		periodForm.setEnabled(true);
+        	}
+    		return;
+    	} 
+    	
     	boolean enable = true;
 
     	if(comSchedule.getText().trim().length() > 0) {

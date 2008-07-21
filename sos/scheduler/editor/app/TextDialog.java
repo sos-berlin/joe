@@ -24,7 +24,7 @@ public class TextDialog extends Dialog {
 	private StyledText _styledText;
 
 	private Point      _size           = new Point(300, 200);
-
+	
 	private Image      _image          = null;
 
 	private Button     clipboardButton = null;
@@ -141,25 +141,34 @@ public class TextDialog extends Dialog {
 
 
 	public String open(boolean bLoadWindow) {
-		String s = "";
-		if(bLoadWindow)
-			Options.loadWindow(_shell, "xml_dialog");
-		else
-			_shell.setSize(_size);
+		try {
+			String s = "";
+			if(bLoadWindow)
+				Options.loadWindow(_shell, "xml_dialog");
+			else
+				_shell.setSize(_size);
 
-		_shell.open();
+			_shell.open();
 
-		Display display = _shell.getDisplay();
-		while (!_shell.isDisposed()) {
-			s = _styledText.getText();
-			if (!display.readAndDispatch())
-				display.sleep();
+			Display display = _shell.getDisplay();
+			while (!_shell.isDisposed()) {
+				s = _styledText.getText();
+				if (!display.readAndDispatch())
+					display.sleep();
+			}
+
+			if (_styledText != null)
+				_styledText.dispose();
+
+			return s;
+		} catch (Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			return "";
 		}
-
-		if (_styledText != null)
-			_styledText.dispose();
-
-		return s;
 	}
 
 

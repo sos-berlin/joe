@@ -103,7 +103,7 @@ public class SchedulerDom extends DomParser {
 		putDomOrder("start_job", ORDER_ELEMENTS);
 		putDomOrder("holidays", HOLIDAYS_ELEMENTS);
 		putDomOrder("params", PARAMS_ELEMENTS);
-		putDomOrder("schedules", RUNTIME_ELEMENTS);
+		putDomOrder("schedule", RUNTIME_ELEMENTS);
 		initScheduler();
 
 	}
@@ -119,7 +119,7 @@ public class SchedulerDom extends DomParser {
 			putDomOrder("job_chain", JOBCHAIN_ELEMENTS);			
 			putDomOrder("commands", COMMANDS_ELEMENTS);
 			putDomOrder("params", PARAMS_ELEMENTS);
-			putDomOrder("schedules", RUNTIME_ELEMENTS);
+			putDomOrder("schedule", RUNTIME_ELEMENTS);
 			putDomOrder("holidays", HOLIDAYS_ELEMENTS);
 			isDirectory = true;
 			initScheduler();

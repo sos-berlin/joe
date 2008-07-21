@@ -427,7 +427,8 @@ public class JobAssistentScriptForms {
 			
 		}
 		
-		MainWindow.message(scriptShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(scriptlistener.getParent()), SWT.OK );
+		//MainWindow.message(scriptShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(scriptlistener.getParent()), SWT.OK );
+		Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(scriptlistener.getParent()), scriptShell);
 		
 		closeDialog = true;
 		scriptShell.dispose();	

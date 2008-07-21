@@ -116,16 +116,26 @@ public class ScheduleListener {
 		
 		s = schedules.getChildren("schedule");		
 		
-		/*		java.util.ArrayList _schedules = new java.util.ArrayList();
+		java.util.ArrayList list = new java.util.ArrayList();
+		//int index = 0;
 		for(int i = 0; i < s.size(); i++) {
-			Element e = (Element)s.get(i);
-			if(!e.equals(_schedule)) {
-				_schedules.add(Utils.getAttributeValue("name", e));
+			if(s.get(i) instanceof Element) {
+				Element e = (Element)s.get(i);
+				if(!Utils.getAttributeValue("name", e).equals(currSchedulename)) {
+					list.add(Utils.getAttributeValue("name", e));
+					//index++;
+				}
 			}
 		}
-		*/
+				
+		String[] str = new String[list.size()];
+		for(int i = 0; i < list.size(); i++) {
+			str[i] = (String)list.get(i);
+		}
 		//convert in String[]
-		String[] str = new String[s.size()-1];
+		
+		
+		/*String[] str = new String[s.size()-1];
 		int index = 0;
 		for(int i = 0; i < s.size(); i++) {
 			if(s.get(i) instanceof Element) {
@@ -136,7 +146,8 @@ public class ScheduleListener {
 				}
 			}
 		}
-				
+			
+				*/
 		return str;
 		
 			

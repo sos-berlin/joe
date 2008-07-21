@@ -132,6 +132,8 @@ public class PeriodsListener {
 				item.setText(3, Utils.getAttributeValue("repeat", e));
 				item.setText(4, Utils.getAttributeValue("single_start", e));
 				item.setText(5, Utils.getAttributeValue("absolute_repeat", e));
+				String whenHoliday = Utils.getAttributeValue("when_holiday", e).length() == 0 ? "suppress execution" : Utils.getAttributeValue("when_holiday", e);
+				item.setText(6, whenHoliday);
 
 
 			}
@@ -156,6 +158,7 @@ public class PeriodsListener {
 						item.setText(2, "");
 						item.setText(3, "");                         
 						item.setText(4, time);
+						
 					}
 				}
 			}

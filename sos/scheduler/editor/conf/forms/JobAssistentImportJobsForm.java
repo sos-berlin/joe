@@ -203,7 +203,7 @@ public class JobAssistentImportJobsForm {
 	public void showAllImportJobs() {
 		try {
 			
-			shell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL);
+			shell = new Shell(SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
 			shell.addShellListener(new ShellAdapter() {
 				public void shellClosed(final ShellEvent e) {
 					if(!closeDialog)
@@ -233,9 +233,8 @@ public class JobAssistentImportJobsForm {
 			gridLayout_3.marginLeft = 10;
 			gridLayout_3.numColumns = 2;
 			jobGroup.setLayout(gridLayout_3);
-			final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, true, true);
-			gridData_6.heightHint = 312;
-			gridData_6.widthHint = 603;
+			final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+			gridData_6.minimumWidth = 400;
 			jobGroup.setLayoutData(gridData_6);
 			
 			Composite composite;
@@ -253,10 +252,8 @@ public class JobAssistentImportJobsForm {
 			composite_1.setLayout(gridLayout_6);
 			
 			final Text txtjobimportText = new Text(composite_1, SWT.MULTI | SWT.WRAP);			
-			final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, false, false);
+			final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, true, true);
 			gridData_5.horizontalIndent = -1;
-			gridData_5.heightHint = 158;
-			gridData_5.widthHint = 566;
 			txtjobimportText.setLayoutData(gridData_5);
 			txtjobimportText.setEditable(false);
 			txtjobimportText.setText(Messages.getString("assistent.import_jobs"));
@@ -267,8 +264,7 @@ public class JobAssistentImportJobsForm {
 			{
 				txtJobname = new Text(jobGroup, SWT.BORDER);
 				txtJobname.setFocus();
-				final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
-				gridData.widthHint = 420;
+				final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
 				txtJobname.setLayoutData(gridData);
 				if(listener != null)
 					txtJobname.setBackground(Options.getRequiredColor());
@@ -454,7 +450,9 @@ public class JobAssistentImportJobsForm {
 								job = job.setContent(jobBackUp.cloneContent());
 							}
 							listener.newImportJob(job, assistentType);
-							MainWindow.message(shell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
+							//MainWindow.message(shell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
+							
+							Utils.showClipboard(Utils.getElementAsString(job), shell);
 							
 						} 
 						closeDialog = true;
@@ -551,67 +549,23 @@ public class JobAssistentImportJobsForm {
 				//this.butImport.setVisible(false);
 				this.butImport.setVisible(true);
 			} 
-			{
-				final Group jobnamenGroup = new Group(shell, SWT.NONE);
-				final GridLayout gridLayout_1 = new GridLayout();
-				gridLayout_1.marginTop = 5;
-				gridLayout_1.marginRight = 5;
-				gridLayout_1.marginLeft = 5;
-				jobnamenGroup.setLayout(gridLayout_1);
-				jobnamenGroup.setText("Jobs");
-				final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, true);
-				gridData_3.widthHint = 598;
-				gridData_3.heightHint = 434;
-				jobnamenGroup.setLayoutData(gridData_3);
-				jobnamenGroup.getBounds().height=100;
-				
-				{				
-					tree = new Tree(jobnamenGroup, SWT.FULL_SELECTION | SWT.BORDER);
-					tree.setHeaderVisible(true);
-					tree.getBounds().height = 100;
-					tree.addSelectionListener(new SelectionAdapter() {
-						public void widgetSelected(final SelectionEvent e) {
-							//System.out.println("Hallo " + tree.getSelection()[0].getText());
-							
-								txtTitle.setText(tree.getSelection()[0].getText(1));
-								txtPath.setText(tree.getSelection()[0].getText(2));
-								txtJobname.setFocus();
-								flagBackUpJob = true;
-						}
-					});
-					final GridData gridData_2 = new GridData(GridData.BEGINNING, GridData.FILL, true, false);
-					gridData_2.widthHint = 560;
-					gridData_2.heightHint = 371;
-					tree.setLayoutData(gridData_2);
-					
-					TreeColumn column1 = new TreeColumn(tree, SWT.LEFT);
-					column1.setText("Name");					
-					column1.setWidth(165);				
-					TreeColumn column2 = new TreeColumn(tree, SWT.LEFT);
-					column2.setText("Title");					
-					column2.setWidth(200);
-					TreeColumn column3 = new TreeColumn(tree, SWT.LEFT);
-					column3.setText("Filename");					
-					column3.setWidth(209);
-					{					
-						try {
-							createTreeIteam();
-						} catch (Exception e) {
-							try {
-								new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
-							} catch(Exception ee) {
-								//tu nichts
-							}
-							System.err.print(e.getMessage());
-						}						
-					}
-					if(joblistener != null) {
-						selectTree();
-					}
-					
+	/*									
+			try {
+				createTreeIteam();
+			} catch (Exception e) {
+				try {
+					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+				} catch(Exception ee) {
+					//tu nichts
 				}
+				System.err.print(e.getMessage());
+			}						
+
+			if(joblistener != null) {
+				selectTree();
 			}
-			
+*/
+
 			if(assistentType == Editor.JOB_WIZZARD) {
 				txtJobname.setEnabled(false);
 				txtTitle.setEnabled(true);
@@ -643,7 +597,7 @@ public class JobAssistentImportJobsForm {
 				
 			}
 			
-			setToolTipText();
+			
 			
 			java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 			
@@ -651,6 +605,58 @@ public class JobAssistentImportJobsForm {
 					(screen.height - shell.getBounds().height) /2, 
 					shell.getBounds().width, 
 					shell.getBounds().height);
+			final Group jobnamenGroup = new Group(shell, SWT.NONE);
+			final GridLayout gridLayout_1 = new GridLayout();
+			gridLayout_1.marginTop = 5;
+			gridLayout_1.marginRight = 5;
+			gridLayout_1.marginLeft = 5;
+			jobnamenGroup.setLayout(gridLayout_1);
+			jobnamenGroup.setText("Jobs");
+			final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, true);
+			gridData_3.heightHint = 154;
+			jobnamenGroup.setLayoutData(gridData_3);
+			jobnamenGroup.getBounds().height=100;
+			tree = new Tree(jobnamenGroup, SWT.FULL_SELECTION | SWT.BORDER);
+			tree.setHeaderVisible(true);
+			tree.getBounds().height = 100;
+			tree.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					//System.out.println("Hallo " + tree.getSelection()[0].getText());
+					
+						txtTitle.setText(tree.getSelection()[0].getText(1));
+						txtPath.setText(tree.getSelection()[0].getText(2));
+						txtJobname.setFocus();
+						flagBackUpJob = true;
+				}
+			});
+			final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true);
+			tree.setLayoutData(gridData_2);
+					
+			TreeColumn column1 = new TreeColumn(tree, SWT.LEFT);
+			column1.setText("Name");					
+			column1.setWidth(165);				
+			TreeColumn column2 = new TreeColumn(tree, SWT.LEFT);
+			column2.setText("Title");					
+			column2.setWidth(200);
+			TreeColumn column3 = new TreeColumn(tree, SWT.LEFT);
+			column3.setText("Filename");					
+			column3.setWidth(209);
+			
+			try {
+				createTreeIteam();
+			} catch (Exception e) {
+				try {
+					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+				} catch(Exception ee) {
+					//tu nichts
+				}
+				System.err.print(e.getMessage());
+			}						
+
+			if(joblistener != null) {
+				selectTree();
+			}
+			setToolTipText();
 			shell.layout();
 			shell.pack();						
 			

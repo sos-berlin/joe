@@ -575,6 +575,7 @@ public class Utils {
 		TextDialog dialog = new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL
 				| SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		dialog.setSize(new Point(500, 400));
+		
 		if(selectStr != null && selectStr.trim().length() > 0)
 			dialog.setContent(xml, selectStr);
 		else
@@ -585,7 +586,8 @@ public class Utils {
 		dialog.setVisibleApplyButton(bApply);
 		dialog.setBSaveWindow(true);
 
-		String s = dialog.open(true);
+		//String s = dialog.open(true);
+		String s = dialog.open(false);
 
 
 		if (dialog.isClipBoardClick()) {
@@ -651,12 +653,12 @@ public class Utils {
 	/*
 	 * liefert den Vaterknoten Job
 	 */
-	private static Element getJobElement(Element elem) {
+	public static Element getJobElement(Element elem) {
 
 		boolean loop = true;
 		int counter = 0;
 		while(loop) {
-			if(elem != null && elem.getParentElement()!= null) {
+			if(elem != null && elem.getParentElement()!= null && !elem.getParentElement().getName().equalsIgnoreCase("spooler")) {
 				if(elem.getName().equalsIgnoreCase("job")) {
 					return elem;					
 				} else if(elem.getParentElement().getName().equalsIgnoreCase("job")) {
@@ -675,6 +677,50 @@ public class Utils {
 		return elem;
 	}
 
+	
+	/*
+	 * liefert den Hotfolder Vaterknoten 
+	 * mögliche Vaterknoten
+	 * "job", "job_chain", "add_order", "order", process_class, schedule, lock
+	 */
+	public static Element getHotFolderParentElement(Element elem) {
+
+		boolean loop = true;
+		int counter = 0;
+		while(loop) {
+			if(elem != null && elem.getParentElement()!= null && !elem.getParentElement().getName().equalsIgnoreCase("spooler")) {
+				if( elem.getName().equalsIgnoreCase("job") ||
+						elem.getName().equalsIgnoreCase("job_chain") ||
+						elem.getName().equalsIgnoreCase("add_order") ||
+						elem.getName().equalsIgnoreCase("order") ||
+						elem.getName().equalsIgnoreCase("process_class") || 
+						elem.getName().equalsIgnoreCase("schedule") ||
+						elem.getName().equalsIgnoreCase("lock")
+				) {					
+					return elem;					
+				} else if( elem.getParentElement().getName().equalsIgnoreCase("job") ||
+						elem.getParentElement().getName().equalsIgnoreCase("job_chain") ||
+						elem.getParentElement().getName().equalsIgnoreCase("add_order") ||
+						elem.getParentElement().getName().equalsIgnoreCase("order") ||
+						elem.getParentElement().getName().equalsIgnoreCase("process_class") ||
+						elem.getParentElement().getName().equalsIgnoreCase("schedule") ||
+						elem.getParentElement().getName().equalsIgnoreCase("lock")
+				) {			
+					return elem.getParentElement();					
+				} else {
+					elem = elem.getParentElement();					
+				}
+				++counter;
+				if(counter == 5) {
+					loop = false;
+				}
+			} else {
+				return elem;
+			}
+		}
+		return elem;
+	}
+	
 	/*
 	 * liefert den Vaterknoten der Runtime
 	 * 
@@ -947,6 +993,21 @@ public class Utils {
 
 
 
+	public static void setChangedForDirectory(Element elem, SchedulerDom dom) {
+
+		//mögliche hot folder element
+		Element e = Utils.getHotFolderParentElement(elem);
+		
+		if(e.getName().equals("order") || e.getName().equals("add_order")) {
+			if(getJobElement(e).getName().equals("job"))			
+				dom.setChangedForDirectory(e.getName(), Utils.getAttributeValue("name",Utils.getJobElement(e)), SchedulerDom.MODIFY);
+			else 
+				dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", e) + "," + Utils.getAttributeValue("id", e), SchedulerDom.MODIFY);			
+		} else {
+			dom.setChangedForDirectory(e.getName(), Utils.getAttributeValue("name",e), SchedulerDom.MODIFY);
+		}
+
+	}
 
 	
 

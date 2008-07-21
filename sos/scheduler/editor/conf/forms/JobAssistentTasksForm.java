@@ -401,7 +401,8 @@ public class JobAssistentTasksForm {
 			j.newImportJob(joblistener.getJob(), assistentType);				
 		}
 		
-		MainWindow.message(tasksShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK );
+		//MainWindow.message(tasksShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK );
+		Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), tasksShell);
 		
 		
 		if(jobname != null)

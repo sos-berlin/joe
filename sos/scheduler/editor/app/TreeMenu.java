@@ -8,8 +8,11 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Tree;
+//import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import java.util.ArrayList;
+import java.util.List;
 
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
@@ -25,6 +28,8 @@ public class TreeMenu {
 	//private Clipboard               _cb                   = null;
 
 	private static Element          _copy                 = null;
+
+	private static int              _type                 = -1; 
 
 	private SchedulerForm           _gui                  = null;
 
@@ -57,18 +62,26 @@ public class TreeMenu {
 		return mb.open();
 	}
 
-	
-	
-/*
+
 	private Element getElement() {
 		if (_tree.getSelectionCount() > 0) {	
 			Element retVal = (Element) _tree.getSelection()[0].getData("copy_element"); 
+			if(retVal == null) {
+				try {
+					new sos.scheduler.editor.app.ErrorLog(_tree.getSelection()[0].getText() + " need copy_element." + sos.util.SOSClassUtil.getMethodName());
+				} catch(Exception ee) {
+					//tu nichts
+				}
+				return null;
+			}
 			return (Element)retVal.clone();
 		}
+
 		return null;
-		
+
 	}
-*/
+
+	/*
 	private Element getElement() {
 		if (_tree.getSelectionCount() > 0) {			
 			TreeData data = (TreeData) _tree.getSelection()[0].getData();
@@ -94,6 +107,8 @@ public class TreeMenu {
 		} else
 			return null;
 	}
+	 */
+
 	private void createMenu() {
 		_menu = new Menu(_tree.getShell(), SWT.POP_UP);
 
@@ -167,6 +182,11 @@ public class TreeMenu {
 							//String cName = _copy.getName();
 
 							MenuItem _paste = getItem(TreeMenu.PASTE);
+
+							if(_tree.getSelectionCount() > 0) {								
+								System.out.println(_tree.getSelection()[0].getData("key") + "   " + _tree.getSelection()[0].getText());
+							}
+
 							_paste.setEnabled(true); // paste
 							/*if (name.equals("jobs") && cName.equals("job"))
 								_paste.setEnabled(true); // paste
@@ -315,14 +335,15 @@ public class TreeMenu {
 
 	private void applyXMLChange(String newXML){
 
-		if(_dom instanceof SchedulerDom) {
-			if(!((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement())
-				newXML = newXML.replaceAll("\\?>", "?><spooler>" )+ "</spooler>";
-		}
+		try {  
+			if(_dom instanceof SchedulerDom) {
+				if(!((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement())
+					newXML = newXML.replaceAll("\\?>", "?><spooler>" )+ "</spooler>";
+			}
 
-		//System.out.println("debug: \n" + newXML);
+			//System.out.println("debug: \n" + newXML);
 
-		try {    		
+
 
 			_dom.readString(newXML, true);
 			_gui.update();
@@ -344,8 +365,10 @@ public class TreeMenu {
 		return new Listener() {
 			public void handleEvent(Event e) {
 				Element element = getElement();
-				if (element != null)
+				if (element != null) {
 					_copy = (Element) element.clone();
+					_type = ((TreeData) _tree.getSelection()[0].getData()).getType();
+				}
 			}
 		};
 	}
@@ -394,30 +417,45 @@ public class TreeMenu {
 		};
 	}
 
-	/*private Listener getPasteListener() {
+	private Listener getPasteListener() {
 		return new Listener() {
+
 			public void handleEvent(Event e) {
-				Element target = getElement();								
-				String key = _tree.getSelection()[0].getData("key").toString();
-				
-				if(key.equalsIgnoreCase(target.getName()) ) {					
-					TreeData data = (TreeData) _tree.getSelection()[0].getData();
-					data.setElement(target);				
-				} else {
-					TreeData data = (TreeData) _tree.getSelection()[0].getData();					
-					data.setElement(target);
+
+
+				if(_tree.getSelectionCount() == 0)
+					return;
+
+				TreeData data = (TreeData) _tree.getSelection()[0].getData();
+
+				boolean override = false;
+
+				if(_tree.getSelection()[0].getData("override_attributes") != null)
+					override = _tree.getSelection()[0].getData("override_attributes").equals("true");
+
+				if(_tree.getSelection()[0].getData("key") instanceof String) {
+					//ein Formular hat nur einen Kindknoten Element zum Kopieren, z.B. job Formular
+					String key = _tree.getSelection()[0].getData("key").toString();				
+					paste(key, data, override);
+				} else if(_tree.getSelection()[0].getData("key") instanceof ArrayList) {
+					//ein Formular hat mehreren Kindknoten Element zum Kopieren, z.B. job Run Option -> start_when_directory_changed; delay_after_error; delay_order_after_setback		
+					ArrayList keys = (ArrayList)_tree.getSelection()[0].getData("key");
+					for(int i = 0; i < keys.size(); i++) {
+						paste(keys.get(i).toString(), data, override);
+					}
+				}	
+
+				if(_dom instanceof SchedulerDom && (((SchedulerDom)_dom).isDirectory() || ((SchedulerDom)_dom).isLifeElement())) {
+					Utils.setChangedForDirectory(data.getElement(), ((SchedulerDom)_dom));
 				}
-				
-				refreshTree("main");						
-				_gui.updateCommands();
-				_gui.updateOrders();
-				_gui.update();
-				_dom.setChanged(true);
-				
+
 			}
+
 		};
 	}
-	*/
+
+
+	/*
 	private Listener getPasteListener() {
 		return new Listener() {
 			public void handleEvent(Event e) {
@@ -509,6 +547,7 @@ public class TreeMenu {
 			}
 		};
 	}
+	 */
 
 	private boolean existJobname(Element jobs, String jobname) {
 		boolean retVal = false;
@@ -524,6 +563,7 @@ public class TreeMenu {
 	}
 
 	private void refreshTree(String whichItem) {
+
 		sos.scheduler.editor.app.IContainer con = MainWindow.getContainer(); 
 		SchedulerForm sf = (SchedulerForm)(con.getCurrentEditor());
 		sf.updateTree(whichItem);
@@ -540,5 +580,272 @@ public class TreeMenu {
 		}
 		return null;
 	}
+
+	private boolean isParent(String key, String elemname) {
+
+		//String[] split = key.split("\\.");
+		String[] split = key.split("_@_");
+		if(split.length > 1)
+			key = split[0];
+
+		String[] s = null;
+		if(_dom.getDomOrders().get(key) != null)
+			s = (String[])_dom.getDomOrders().get(key);
+
+		else if (sos.scheduler.editor.conf.listeners.DaysListener.getDays().get(key) != null)
+			//s = (String[])sos.scheduler.editor.conf.listeners.DaysListener.getDays().get(key);
+			return true; //group sind nicht definiert
+		else 
+			s = getPossibleParent(key);
+		for(int i = 0; s != null && i < s.length; i++) {
+			if(s[i].equalsIgnoreCase(elemname)) {				
+				return true;
+			}						
+		}
+		return false;
+	}
+
+	//liefert mögliche Vaterknoten der key, falls diese nicht in dom.orders steht
+	private String[] getPossibleParent(String key) {
+		if(key.equals("jobs") || key.equals("monitor"))
+			return new String[] {"job"};
+		if(key.equals("schedules"))
+			return new String[] {"schedule"};
+		if(key.equals("job_chains"))
+			return new String[] {"job_chain"};
+
+		//weekdays		monthdays		ultimos
+
+		else
+			return new String[] {};
+	}
+
+
+	private void paste(String key, TreeData data, boolean overrideAttributes) {
+
+		try {
+			//ungleiche Typen, überprüfen, ob das pastelement ein möglicher Vaterknoten von _copy element ist, z.B. _copy Element ist job und paste Element ist jobs	
+			if(_type != data.getType()) {
+				System.out.println("*****************************************");					
+				pasteChild(key, data);
+				return;
+			}
+
+			//ab hier gleiche typen
+			Element target = _copy;
+
+			boolean isLifeElement = _dom instanceof SchedulerDom && ((SchedulerDom)_dom).isLifeElement();
+
+			if(key.equalsIgnoreCase(target.getName()) && !isLifeElement) {
+				// Kopieren nur von Attributen und nicht der Kindelement, z.B. Config Formular
+				Element currElem = data.getElement();
+				removeAttributes(currElem);
+				copyAttr(currElem, _copy.getAttributes());
+
+			} else {
+
+				//gleiche Typen und und gleiche Elementname -> alle vorhandenen Kindelement kopieren
+				Element currElem = data.getElement();
+
+				Element copyElement  = _copy;
+
+
+				String[] split = null;
+
+				//split = key.split("\\.");
+				split = key.split("_@_");
+
+
+				System.out.println("*****************************************");
+
+				if(split.length > 1)
+					key = split[split.length-1];
+				java.util.List ce = null;		
+				if(key.equals(copyElement.getName())) {
+					//überschreiben: z.B. copy ist job element und paste ist auch Job element			
+					removeAttributes(currElem);
+					currElem.removeContent();
+					copyAttr(currElem, copyElement.getAttributes());				
+					ce = copyElement.getChildren();
+				} else {
+
+					for(int i = 0; i < split.length-1; i++) {
+						//key ist der Pfad ab data.getelement. 
+						copyElement = copyElement.getChild(split[i]);
+						System.out.println(Utils.getElementAsString(_dom.getRoot()));
+						if(currElem.getChild(split[i]) == null) {						
+							currElem = currElem.addContent(new Element(split[i]));
+						}
+						currElem = data.getElement().getChild(split[i]);					
+						System.out.println(Utils.getElementAsString(_dom.getRoot()));
+					}
+					ce = copyElement.getChildren(key);
+				}
+
+				for(int i = 0; i < ce.size(); i++) {
+					Element a = (Element)ce.get(i);
+					Element cloneElement = (Element)a.clone();
+					java.util.List currElemContent = null;
+					if(_tree.getSelection()[0].getData("max_occur") != null && _tree.getSelection()[0].getData("max_occur").equals("1")) {
+						//es darf nur einen currElem.get(key) Kindknoten geben. Also attribute löschen aber die Kinder mitnehmen
+						if(currElem.getChild(key) != null)
+							currElemContent = currElem.getChild(key).cloneContent();					
+						currElem.removeChild(key);
+					}				
+
+					//
+					//Element copyClone = (Element)_copy.clone();
+
+
+					if( !Utils.getAttributeValue("name", cloneElement).equals("") && existJobname(currElem, Utils.getAttributeValue("name", cloneElement))) {
+						System.out.println(Utils.getAttributeValue("name", cloneElement) + " existiert berteits");
+						String append = "copy(" + (cloneElement.getChildren("job").size() + currElem.getChildren().size() + 1) + ")of_" + Utils.getAttributeValue("name", cloneElement);					
+						cloneElement.setAttribute("name", append);
+					}
+					//
+
+					currElem.addContent(cloneElement);
+					if(currElemContent != null)
+						cloneElement.addContent(currElemContent);
+
+					if(overrideAttributes) {
+						copyElement = cloneElement;
+						currElem = currElem.getChild(key);
+					}
+					System.out.println(Utils.getElementAsString(_dom.getRoot()));
+				}
+
+				if(overrideAttributes) {
+					removeAttributes(currElem);
+					copyAttr(currElem, copyElement.getAttributes());
+				}
+
+			}
+
+			updateTreeView();		
+		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " +  sos.util.SOSClassUtil.getMethodName(), e);
+			} catch(Exception ee) {
+				//tu nichts
+			}	
+		}
+	}
+
+
+	//Ein Kindelement hinzufügen, z.B. jobs einen job element oder job_chains einen job_chain element einfügen
+	private void pasteChild(String key, TreeData data) {
+		if(!isParent(key, _copy.getName())) {
+			return;
+		} else {
+
+			String[] split = key.split("_@_");
+			Element elem = data.getElement();
+			for(int i = 0; i < split.length-1; i++) {
+				if(data.getElement().getChild(split[i]) == null)
+					data.getElement().addContent(new Element(split[i]));
+				elem = data.getElement().getChild(split[i]);												
+				System.out.println(Utils.getElementAsString(_dom.getRoot()));
+			}
+
+			Element copyClone = (Element)_copy.clone();
+
+			if(!Utils.getAttributeValue("name", _copy).equals("") &&  existJobname(elem, Utils.getAttributeValue("name", _copy))) {
+				System.out.println(Utils.getAttributeValue("name", _copy) + " existiert berteits");
+				String append = "copy(" + (copyClone.getChildren("job").size() + elem.getChildren().size() + 1) + ")of_" + Utils.getAttributeValue("name", copyClone);					
+				copyClone.setAttribute("name", append);
+			}
+			elem.addContent(copyClone);
+
+		}
+
+		updateTreeView();
+
+	}
+
+	/*private TreeItem getCurrentItem(String text) {
+		TreeItem retVal = null;
+		for(int i = 0; i < _tree.getItemCount(); i++ ){
+
+			TreeItem item = getCurrentItem(_tree.getItem(i), text);
+			if(item != null && item.getText().equals(text))
+				return item;
+		}
+
+		return retVal;
+	}*/
+
+	/*private TreeItem getCurrentItem(TreeItem parent, String text) {
+		TreeItem retVal = null;
+		if(parent.getText().equals(text))
+			return parent;
+		for(int i = 0; i < parent.getItemCount(); i++ ){							
+			return getCurrentItem(parent.getItem(i), text);			
+		}
+
+		return retVal;
+	}
+*/
+	private void removeAttributes(Element elem) {
+		List l = elem.getAttributes();
+		for(int i = 0; i < l.size(); i++)
+			elem.removeAttribute((org.jdom.Attribute)l.get(i));
+	}
+
+	private void copyAttr(Element elem, java.util.List attr) {	
+		for(int i = 0; i < attr.size(); i++) {
+			org.jdom.Attribute a = (org.jdom.Attribute)attr.get(i);						
+			elem.setAttribute(a.getName(), a.getValue());
+		}
+	}
+
+	private void updateTreeView() {
+
+
+
+		//unpdate der Formular
+		//String currItemString =  _tree.getSelection()[0].getText();
+
+		if(_type == Editor.SPECIFIC_WEEKDAYS)
+			_gui.updateSpecificWeekdays();
+
+
+
+		//if (_dom instanceof SchedulerDom && ((SchedulerDom)_dom).isLifeElement())
+		//	return;
+
+		//sucht das Treeitem mit der currItemString um die gleiche Parent zu selektieren.
+		//TreeItem item = getCurrentItem(currItemString);
+		//if(item != null)
+		//	_tree.setSelection(new TreeItem [] {item});				
+		_gui.update();
+
+
+		if(_tree.getSelection()[0].getText().equals("Jobs"))
+			_gui.updateJobs();
+
+
+		//if(_copy.getName().equals("job"))
+		if(_type == Editor.JOB &&  !_tree.getSelection()[0].getText().endsWith("Jobs") )
+			_gui.updateJob();
+
+		if(_type == Editor.SCHEDULES)
+			_gui.updateSchedules();				
+
+		if(_type == Editor.ORDERS)
+			_gui.updateOrders();
+
+		if(_type == Editor.JOB_CHAINS || _type == Editor.JOB_CHAIN)
+			_gui.updateJobChains();
+
+		_gui.expandItem(_tree.getSelection()[0].getText());
+		_gui.updateTreeItem(_tree.getSelection()[0].getText());
+
+		_gui.updateTree("");
+
+		refreshTree("main");
+		_dom.setChanged(true);
+	}
+
 
 }

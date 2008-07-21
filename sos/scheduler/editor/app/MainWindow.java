@@ -1,6 +1,7 @@
 package sos.scheduler.editor.app;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -18,6 +19,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.jdom.Element;
+
+import sos.net.SOSFileTransfer;
 import sos.scheduler.editor.app.MainListener;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.TabbedContainer;
@@ -68,7 +71,6 @@ public class MainWindow  {
 		container = new TabbedContainer(this, sShell);
 		sShell.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 
-
 		main = this;
 	}
 
@@ -84,7 +86,7 @@ public class MainWindow  {
 		sShell.setData(sShell.getText());		
 		sShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 
-		groupmain = new Composite(sShell, SWT.NONE);
+		groupmain = new Composite(sShell, SWT.NONE);		
 		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
 		groupmain.setLayoutData(gridData);
 		final GridLayout gridLayout = new GridLayout();
@@ -314,8 +316,7 @@ public class MainWindow  {
 			}
 		});
 		MenuItem pSaveAs = new MenuItem(mFile, SWT.PUSH);
-		pSaveAs.setText("Save As                            \tCtrl+A");
-		pSaveAs.setAccelerator(SWT.CTRL | 'A');
+		pSaveAs.setText("Save As                            ");		
 		pSaveAs.setEnabled(false);
 		pSaveAs.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -420,20 +421,24 @@ public class MainWindow  {
 		mFTP.setMenu(pmFTP);
 		new MenuItem(mFile, SWT.SEPARATOR);
 
-//		WebDav
+//		WebDav		
+		boolean existwebDavLib = existLibraries();
 		MenuItem mWebDav = new MenuItem(mFile, SWT.CASCADE);				
 		mWebDav.setText("WebDav");
 		mWebDav.setAccelerator(SWT.CTRL | 'N');
-
+        mWebDav.setEnabled(existwebDavLib);
 		Menu pmWebDav = new Menu(mNew);
 
 		MenuItem pOpenWebDav = new MenuItem(pmWebDav, SWT.PUSH);
 		pOpenWebDav.setText("Open By WebDav");
+		pOpenWebDav.setEnabled(existwebDavLib);
 		pOpenWebDav.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				try {
-					WebDavDialog webdav = new WebDavDialog(main);
-					webdav.showForm(WebDavDialog.OPEN);
+					if(existLibraries()) {
+						WebDavDialog webdav = new WebDavDialog(main);
+						webdav.showForm(WebDavDialog.OPEN);
+					}
 				} catch(Exception ex) {
 					try {
 						new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not open file on Webdav Server", ex);
@@ -450,10 +455,13 @@ public class MainWindow  {
 
 		MenuItem pOpenHotFolderWebDav = new MenuItem(pmWebDav, SWT.PUSH);
 		pOpenHotFolderWebDav.setText("Open Hot Folder By WebDav");
+		pOpenHotFolderWebDav.setEnabled(existwebDavLib);
 		pOpenHotFolderWebDav.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
-				WebDavDialog webdav = new WebDavDialog(main);
-				webdav.showForm(WebDavDialog.OPEN_HOT_FOLDER);
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if(existLibraries()) {
+					WebDavDialog webdav = new WebDavDialog(main);
+					webdav.showForm(WebDavDialog.OPEN_HOT_FOLDER);
+				}
 			}
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
@@ -463,25 +471,29 @@ public class MainWindow  {
 
 		MenuItem pSaveWebDav = new MenuItem(pmWebDav, SWT.PUSH);
 		pSaveWebDav.setText("Save By WebDav");
+		pSaveWebDav.setEnabled(existwebDavLib);
 		pSaveWebDav.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
-				WebDavDialog webdav = new WebDavDialog(main);
-				DomParser currdom = null;
-				if(MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
-					SchedulerForm form =(SchedulerForm)MainWindow.getContainer().getCurrentEditor();			
-					currdom = (SchedulerDom)form.getDom();
-				} else if(MainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm) {
-					DocumentationForm form =(DocumentationForm)MainWindow.getContainer().getCurrentEditor();			
-					currdom = (DocumentationDom)form.getDom();
-				} else if(MainWindow.getContainer() instanceof 	JobChainConfigurationForm) {
-					JobChainConfigurationForm form =(JobChainConfigurationForm)MainWindow.getContainer().getCurrentEditor();
-					currdom = form.getDom();
-				}
+				if(existLibraries()) {
 
-				if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {				
-					webdav.showForm(WebDavDialog.SAVE_AS_HOT_FOLDER);
-				} else
-					webdav.showForm(WebDavDialog.SAVE_AS);
+					WebDavDialog webdav = new WebDavDialog(main);
+					DomParser currdom = null;
+					if(MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
+						SchedulerForm form =(SchedulerForm)MainWindow.getContainer().getCurrentEditor();			
+						currdom = (SchedulerDom)form.getDom();
+					} else if(MainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm) {
+						DocumentationForm form =(DocumentationForm)MainWindow.getContainer().getCurrentEditor();			
+						currdom = (DocumentationDom)form.getDom();
+					} else if(MainWindow.getContainer() instanceof 	JobChainConfigurationForm) {
+						JobChainConfigurationForm form =(JobChainConfigurationForm)MainWindow.getContainer().getCurrentEditor();
+						currdom = form.getDom();
+					}
+
+					if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {				
+						webdav.showForm(WebDavDialog.SAVE_AS_HOT_FOLDER);
+					} else
+						webdav.showForm(WebDavDialog.SAVE_AS);
+				}
 			}
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
@@ -1070,4 +1082,53 @@ public class MainWindow  {
 			ftp.showForm(FTPDialog.SAVE_AS);
 		
 	}
+	
+	private boolean existLibraries() { 
+		boolean libExist = false;
+		try{
+			try {
+				Class.forName("org.apache.commons.logging.LogFactory");
+			} catch (Exception e) {
+				throw e;
+			}
+			try {
+				Class.forName("org.apache.commons.httpclient.HttpState");
+			} catch (Exception e) {
+				throw e;
+			}
+			try {
+				Class.forName("org.apache.commons.codec.DecoderException");
+			} catch (Exception e) {
+				throw e;
+			}
+			try {
+				Class.forName("org.apache.webdav.lib.WebdavResource");
+			} catch (Exception e) {
+				throw e;
+			}
+
+
+			libExist = true;
+		} catch (Exception e){
+			/*
+			String msg = "Missing libraries to open connection to Webdav Server. \n\n " +
+			"\t- webdavclient4j-core-0.92.jar\n" +
+			"\t- commons-logging.jar\n" +								
+			"\t- commons-codec-1.3.jar\n" +
+			"\t- commons-httpclient-3.0.1.jar\n\n" +
+			"for more information see https://sourceforge.net/projects/webdavclient4j/";
+			
+			MainWindow.message(msg, SWT.ICON_WARNING);
+			
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " cause: " + msg, e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			*/
+		}
+		return libExist;
+		
+	}
+	
 }

@@ -351,9 +351,11 @@ public class JobAssistentDelayAfterErrorForm {
 					refreshElement(true);
 					
 					if (Utils.getAttributeValue("order", job).equalsIgnoreCase("yes")) {
-						MainWindow.message(shellSetBack,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );						
+						//MainWindow.message(shellSetBack,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );												
+						Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shellSetBack);
 					} else { 
-						MainWindow.message(shellSetBack,  Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), SWT.OK );						
+						//MainWindow.message(shellSetBack,  Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), SWT.OK );						
+						Utils.showClipboard(Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), shellSetBack);
 					}
 					closeDialog = true;
 					shellSetBack.dispose();					

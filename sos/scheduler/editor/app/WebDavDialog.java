@@ -682,7 +682,7 @@ public class WebDavDialog {
 			while(it.hasNext()) {
 				//ok = true;
 				//String key = sosString.parseToString(it.next());
-				org.apache.webdav.lib.WebdavResource key = (org.apache.webdav.lib.WebdavResource)it.next();
+				WebdavResource key = (WebdavResource)it.next();
 				if(h.get(key).equals("file")) {
 					if(isLifeElement(sosString.parseToString(key))) {
 						localFile = listener.getCurrProfile().getProperty("localdirectory");

@@ -2,24 +2,47 @@ package sos.scheduler.editor.conf.listeners;
 
 import org.eclipse.swt.widgets.Button;
 import org.jdom.Element;
-
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
+import java.util.HashMap;
 
 public class PeriodListener {
 
 
-	private    SchedulerDom      _dom              = null;
+	private    SchedulerDom      _dom                      = null;
 
-	private    Element           _period           = null;
+	private    Element           _period                   = null;
 
-	private    Element           _at               = null;
+	private    Element           _at                       = null;
+	
+	private    String[]          _whenHolidays             = {"previous non holiday", "next non holiday", "suppress execution", "ignore holiday"};
+	  //suppress
+      //ignore_holiday
+      //previous_non_holiday
+      //next_non_holiday
+	private    HashMap          _realNameWhenHolidays     = null;
 
 
 	public PeriodListener(SchedulerDom dom) {
 		_dom = dom;
+		initWhenHolidays();
 	}
 
+	
+	private void initWhenHolidays() {
+		_realNameWhenHolidays = new HashMap();
+		
+		_realNameWhenHolidays.put("previous non holiday","previous_non_holiday"); 
+		_realNameWhenHolidays.put("next non holiday", "next_non_holiday"); 
+		_realNameWhenHolidays.put("suppress execution", "suppress");
+		_realNameWhenHolidays.put("ignore holiday", "ignore_holiday");		
+		
+		_realNameWhenHolidays.put("previous_non_holiday", "previous non holiday"); 
+		_realNameWhenHolidays.put("next_non_holiday", "next non holiday"); 
+		_realNameWhenHolidays.put("suppress", "suppress execution");
+		_realNameWhenHolidays.put("ignore_holiday", "ignore holiday");
+		
+	}
 
 	public void setPeriod(Element period) {
 		if(period != null && period.getName().equals("at"))
@@ -58,8 +81,7 @@ public class PeriodListener {
 		return Utils.getIntegerAsString(Utils.getHours(_period.getAttributeValue("begin"), -999));
 	}
 
-
-	public void setPeriodTime(int maxHour, Button bApply, String node, String hours, String minutes, String seconds) {
+		public void setPeriodTime(int maxHour, Button bApply, String node, String hours, String minutes, String seconds) {
 
 		if (_period != null ){
 			if (node.equals("single_start") && _period.getName().equals("at")) {
@@ -78,15 +100,28 @@ public class PeriodListener {
 							el.addContent(_period);
 							Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period, _dom);		
 							_dom.setChanged(true);
-							if(el.getParentElement() != null)
-								_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",el.getParentElement()), SchedulerDom.MODIFY);
+							if(el.getParentElement() != null) {
+								//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",el.getParentElement()), SchedulerDom.MODIFY);								
+								Element parent = Utils.getRunTimeParentElement(el);
+								String name = parent.getName().equals("order") || parent.getName().equals("order") ? 
+										       Utils.getAttributeValue("job_chain",parent)+","+Utils.getAttributeValue("id",parent) :
+										    	   Utils.getAttributeValue("name",parent);
+								_dom.setChangedForDirectory("job", name, SchedulerDom.MODIFY);
+							}
+								
 							break;    	    				
 						}
 					}
 				}
 
 			} else {
-				Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period, _dom);    			
+				//Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period, _dom);
+				Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period);
+				Element parent = Utils.getRunTimeParentElement(_period);
+				String name = parent.getName().equals("order") || parent.getName().equals("order") ? 
+						       Utils.getAttributeValue("job_chain",parent)+","+Utils.getAttributeValue("id",parent) :
+						    	   Utils.getAttributeValue("name",parent);
+				_dom.setChangedForDirectory("job", name, SchedulerDom.MODIFY);
 			}
 			if (bApply != null) {
 				bApply.setEnabled(true);
@@ -229,5 +264,51 @@ public class PeriodListener {
 		}
 
 	}
+	
+	public String[] getWhenHolidays() {
+		return _whenHolidays;
+	}
 
+	public String getWhenHoliday() {
+		if(Utils.getAttributeValue("when_holiday", _period).length() == 0)	
+            return "suppress execution";
+		
+		if(_realNameWhenHolidays.get(Utils.getAttributeValue("when_holiday", _period)) == null)
+			return Utils.getAttributeValue("when_holiday", _period);
+		else
+			return _realNameWhenHolidays.get(Utils.getAttributeValue("when_holiday", _period)).toString();
+	}
+
+	public void setWhenHoliday(String whenHoliday, Button bApply) {
+		//Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order)
+		Element parent = Utils.getRunTimeParentElement(_period);
+		String name = parent.getName().equals("order") || parent.getName().equals("order") ? 
+				       Utils.getAttributeValue("job_chain",parent)+","+Utils.getAttributeValue("id",parent) :
+				    	   Utils.getAttributeValue("name",parent);
+		_dom.setChangedForDirectory("job", name, SchedulerDom.MODIFY);
+		
+		if(whenHoliday == null || whenHoliday.length() == 0) {			
+			Utils.setAttribute("when_holiday", "suppress", "suppress", _period);
+			return;
+		}
+		
+		if(_realNameWhenHolidays.get(whenHoliday) == null || _realNameWhenHolidays.get(whenHoliday).toString().length() == 0) {
+			Utils.setAttribute("when_holiday", whenHoliday, "suppress", _period);
+		}
+			
+		Utils.setAttribute("when_holiday", _realNameWhenHolidays.get(whenHoliday).toString(), "suppress", _period);  
+		
+		if(bApply != null)
+			bApply.setEnabled(true);
+		else 
+			_dom.setChanged(true);
+	}
+
+
+	public SchedulerDom get_dom() {
+		return _dom;
+	}
+	
+	
 }
+

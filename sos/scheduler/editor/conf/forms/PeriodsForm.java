@@ -202,6 +202,10 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         final TableColumn newColumnTableColumn = new TableColumn(tPeriods, SWT.NONE);
         newColumnTableColumn.setWidth(92);
         newColumnTableColumn.setText("Absolute Repeat");
+
+        final TableColumn newColumnTableColumn_1 = new TableColumn(tPeriods, SWT.NONE);
+        newColumnTableColumn_1.setWidth(100);
+        newColumnTableColumn_1.setText("When Holiday");
     }
 
 

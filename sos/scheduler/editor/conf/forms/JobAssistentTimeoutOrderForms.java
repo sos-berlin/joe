@@ -372,7 +372,8 @@ public class JobAssistentTimeoutOrderForms {
 			
 		}
 		
-		MainWindow.message(shellTimeout,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK );
+		//MainWindow.message(shellTimeout,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK );
+		Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), shellTimeout);
 		
 		closeDialog = true;
 		shellTimeout.dispose();	

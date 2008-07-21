@@ -391,7 +391,10 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 					refreshElement(true);
 					if(jobname != null)
 						jobname.setText(Utils.getAttributeValue("name",job));	
-					MainWindow.message(shellSetBack,  Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
+					
+					
+					//MainWindow.message(shellSetBack,  Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
+					Utils.showClipboard(Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), shellSetBack);
 					
 					closeDialog = true;
 					shellSetBack.dispose();

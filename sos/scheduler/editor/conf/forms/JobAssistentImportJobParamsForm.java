@@ -242,7 +242,7 @@ public class JobAssistentImportJobParamsForm {
 	public void showAllImportJobParams(String xmlFilename)  {
 		
 		try {
-			jobParameterShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);					
+			jobParameterShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);					
 			jobParameterShell.addShellListener(new ShellAdapter() {
 				public void shellClosed(final ShellEvent e) {
 					if(!closeDialog)
@@ -264,7 +264,7 @@ public class JobAssistentImportJobParamsForm {
 			
 			final Group textParameterGroup = new Group(jobParameterShell, SWT.NONE);
 			textParameterGroup.setText(" Job " + Utils.getAttributeValue("name", joblistener.getJob()));
-			final GridData gridData_3 = new GridData(620, 519);
+			final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, true);
 			gridData_3.minimumWidth = -1;
 			textParameterGroup.setLayoutData(gridData_3);
 			final GridLayout gridLayout_3 = new GridLayout();
@@ -353,8 +353,8 @@ public class JobAssistentImportJobParamsForm {
 						listener.newImportJob(joblistener.getJob(), assistentType);		
 						
 					}
-					MainWindow.message(jobParameterShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK );
-					
+					//MainWindow.message(jobParameterShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK);
+					Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell);
 					closeDialog = true;
 					jobParameterShell.dispose();
 				}
@@ -362,6 +362,7 @@ public class JobAssistentImportJobParamsForm {
 			butFinish.setText("Finish");
 
 			butBack = new Button(textParameterGroup, SWT.NONE);
+			butBack.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			butBack.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(dom, update, assistentType);
@@ -378,7 +379,7 @@ public class JobAssistentImportJobParamsForm {
 			butBack.setText("Back");
 			butNext = new Button(textParameterGroup, SWT.NONE);
 			butNext.setFocus();
-			final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+			final GridData gridData_9 = new GridData(GridData.END, GridData.CENTER, true, false);
 			gridData_9.widthHint = 54;
 			butNext.setLayoutData(gridData_9);
 			butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
@@ -597,7 +598,7 @@ public class JobAssistentImportJobParamsForm {
 					removeParams();
 				}
 			});
-			final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);
+			final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 3, 1);
 			gridData_1.heightHint = 135;
 			gridData_1.widthHint = 185;
 			table.setLayoutData(gridData_1);

@@ -357,7 +357,10 @@ public class JobAssistentProcessForms {
 			listener.newImportJob(executeListener.getJob(), assistentType);
 		}
 		
-		MainWindow.message(processShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(executeListener.getJob()), SWT.OK );
+		//MainWindow.message(processShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(executeListener.getJob()), SWT.OK );
+		Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(executeListener.getJob()), processShell);
+		
+		
 		if(jobname != null)
 			jobname.setText(Utils.getAttributeValue("name",executeListener.getJob()));	
 		closeDialog = true;

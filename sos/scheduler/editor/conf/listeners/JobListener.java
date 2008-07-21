@@ -66,7 +66,7 @@ public class JobListener {
 		if (updateTree)
 			_main.updateJob(name);
 		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
-
+		
 	}
 
 

@@ -37,6 +37,7 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
 
     private Text            tExecuteFile  = null;
 
+
     private Button          bIgnoreError  = null;
 
     private Label           label3        = null;
@@ -68,7 +69,7 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
         super(parent, style);
         
         update = update_;
-        
+       
         initialize();
         setToolTipText();
 

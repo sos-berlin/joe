@@ -127,7 +127,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
     public void setAttributes(SchedulerDom dom, Element element, int type) {
-       
+    	
         listener = new ScriptListener(dom, element, type, update);
         fillForm();
     }

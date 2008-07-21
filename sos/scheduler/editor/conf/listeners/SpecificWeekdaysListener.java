@@ -284,6 +284,10 @@ public class SpecificWeekdaysListener {
 				w =  (Weekday) weekdayV_it.next();
 				TreeItem itemDay = new TreeItem(parent, SWT.NONE);
 				itemDay.setText(w.day);
+				//itemDay.setData("max_occur", "1");
+				//itemDay.setData("key", w.getName());
+				
+				
 				if(!Utils.isElementEnabled("job", _dom, _runtime)) {
 					itemDay.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 				}
@@ -298,9 +302,15 @@ public class SpecificWeekdaysListener {
 						TreeItem item = new TreeItem(itemDay, SWT.NONE);
 						i = Integer.parseInt(token)-1;
 						if (i < 0) i = (i+1)*(-1) + 3;
-
+                        Element e = (Element)w.elements.get(token);
 						item.setText(_daynames[i]);
-						item.setData(new TreeData(Editor.PERIODS, (Element)w.elements.get(token), Options.getHelpURL("periods")));
+
+						item.setData("max_occur", "1");
+						item.setData("key", e.getName() +"_@_");
+						item.setData("copy_element", e);
+
+						//item.setData(new TreeData(Editor.PERIODS, (Element)w.elements.get(token), Options.getHelpURL("periods")));
+						item.setData(new TreeData(Editor.PERIODS, e, Options.getHelpURL("periods")));
 
 						if(!Utils.isElementEnabled("job", _dom, _runtime)) {
 							item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));

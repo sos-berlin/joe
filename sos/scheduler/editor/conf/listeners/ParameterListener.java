@@ -204,7 +204,8 @@ public class ParameterListener {
 		if (_params != null) {
 			_params.remove(index);
 			_dom.setChanged(true);
-			if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);			
+			//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			Utils.setChangedForDirectory(_parent, _dom);
 		}
 		if(_params.size() == 0) {
 			_parent.removeChild("params");
@@ -219,8 +220,9 @@ public class ParameterListener {
 		if (_environments != null) {
 			_environments.remove(index);
 			_dom.setChanged(true);
-			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);			
-			if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			Utils.setChangedForDirectory(_parent, _dom);
+			//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 		}
 		table.remove(index);
 
@@ -233,7 +235,8 @@ public class ParameterListener {
 		if (_includeParams != null) {
 			_includeParams.remove(index);
 			_dom.setChanged(true);						
-			if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			Utils.setChangedForDirectory(_parent, _dom);
 		}
 		table.remove(index);
 
@@ -274,7 +277,8 @@ public class ParameterListener {
 		}
 		_dom.setChanged(true);
 
-		if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+		//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+		Utils.setChangedForDirectory(_parent, _dom);
 	}
 
 
@@ -299,7 +303,8 @@ public class ParameterListener {
 							e.setAttribute("file", file);
 						Utils.setAttribute("node", node, e);
 						_dom.setChanged(true);						
-						if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);						
+						//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+						Utils.setChangedForDirectory(_parent, _dom);
 						table.getItem(index).setText(1, node);
 						table.getItem(index).setText(2, (isLive ? "live_file" : "file"));
 						break;
@@ -317,7 +322,8 @@ public class ParameterListener {
 
 			e.setAttribute("node", node);
 			_dom.setChanged(true);			
-			if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			Utils.setChangedForDirectory(_parent, _dom);
 
 			if (_includeParams == null)
 				initParams();
@@ -347,7 +353,8 @@ public class ParameterListener {
 						//Utils.setAttribute("value", value, e);
 						e.setAttribute("value", value);
 						_dom.setChanged(true);
-						if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);						
+						if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+						Utils.setChangedForDirectory(_parent, _dom);
 						table.getItem(index).setText(1, value);
 						break;
 					}
@@ -360,7 +367,8 @@ public class ParameterListener {
 			e.setAttribute("name", name);
 			e.setAttribute("value", value);
 			_dom.setChanged(true);
-			if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			Utils.setChangedForDirectory(_parent, _dom);
 
 			if (_environments == null)
 				initEnvironment();
@@ -390,7 +398,8 @@ public class ParameterListener {
 								found = true;
 								e.setAttribute("value", value);
 								_dom.setChanged(true);
-								if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+								//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+								Utils.setChangedForDirectory(_parent, _dom);
 								table.getItem(index).setText(1, value);
 							}
 						}
@@ -408,9 +417,10 @@ public class ParameterListener {
 				e.setAttribute("from", value);
 				e.removeAttribute("name");
 				e.removeAttribute("value");
-				_dom.setChanged(true);
-				if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+				_dom.setChanged(true);				
+				//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 			}
+			
 		}
 
 		if (!found) {
@@ -433,6 +443,7 @@ public class ParameterListener {
 			TableItem item = new TableItem(table, SWT.NONE);
 			item.setText(new String[] { name, value });
 		}
+		Utils.setChangedForDirectory(_parent, _dom);
 
 	}
 	
@@ -553,6 +564,8 @@ public class ParameterListener {
 		table.removeAll();
 		fillParams(table);
 		table.select(index-1);
+		Utils.setChangedForDirectory(_parent, _dom);
+		_dom.setChanged(true);
 	}
 
 	//selektierte Datensatz wird eine Zeile unten oben verschoben
@@ -576,5 +589,10 @@ public class ParameterListener {
 		table.removeAll();
 		fillParams(table);
 		table.select(index+1);
+		Utils.setChangedForDirectory(_parent, _dom);
+		_dom.setChanged(true);
 	}
+	
+	
+	
 }

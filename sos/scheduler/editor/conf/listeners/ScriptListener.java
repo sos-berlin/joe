@@ -117,9 +117,9 @@ public class ScriptListener {
         if (_script != null) {
             switch (language) {
                 case NONE: // remove script element
-                    if (_type == Editor.MONITOR)
+                    /*if (_type == Editor.MONITOR)
                         _parent.removeChild("monitor");
-                    else
+                    else*/
                         _parent.removeChildren("script");
                     _script = null;
                     break;
@@ -151,8 +151,8 @@ public class ScriptListener {
                 Utils.setAttribute("language", languageAsString(language), _script, _dom);
 
             _dom.setChanged(true);            
-            if(_parent != null)
-            	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+            
+            setChangedForDirectory();
         }
     }
 
@@ -161,8 +161,7 @@ public class ScriptListener {
         if (getLanguage() == language) {
             _script.setAttribute(element, value);
             _dom.setChanged(true);
-            if(_parent != null)
-            	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+            setChangedForDirectory();
         }
     }
 
@@ -174,8 +173,7 @@ public class ScriptListener {
 
     public void setJavaClass(String javaClass) {
         setAttributeValue("java_class", javaClass.trim(), JAVA);
-        if(_parent != null)
-        	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+        setChangedForDirectory();
     }
 
 
@@ -186,8 +184,7 @@ public class ScriptListener {
 
     public void setComClass(String comClass) {
         setAttributeValue("com_class", comClass.trim(), COM);
-        if(_parent != null)
-        	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+        setChangedForDirectory();
     }
 
 
@@ -248,8 +245,9 @@ public class ScriptListener {
             _script.addContent(includes.size(), new Element("include").setAttribute((isLife?"live_file":"file"), filename));            
             _dom.setChanged(true);
             fillTable(table);
-            if(_parent != null)
-            	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+            setChangedForDirectory();
+            
+            
         } else
             System.out.println("no script element defined!");
     }
@@ -259,8 +257,7 @@ public class ScriptListener {
             List includes = _script.getChildren("include");
             _script.addContent(includes.size(), new Element("include").setAttribute("file", filename));
             _dom.setChanged(true);
-            if(_parent != null)
-            	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+            setChangedForDirectory();
         } else
             System.out.println("no script element defined!");
     }
@@ -281,8 +278,7 @@ public class ScriptListener {
             if (index >= 0 && index < includeList.size()) {
                 includeList.remove(index);
                 _dom.setChanged(true);
-                if(_parent != null)
-                	_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+                setChangedForDirectory();
             } else
                 System.out.println("index " + index + " is out of range for include!");
         } else
@@ -306,18 +302,20 @@ public class ScriptListener {
     public void setSource(String source) {
 
     	try {
+    		
     		if (_script != null) {
-    			// List mixed = _script.getContent();
-    			// Iterator it = mixed.iterator();
-    			_script.setText(null);
+    			
     			if (!source.equals("")) {
-    				//removeScriptSource();             
+    				List l = _script.getContent();
+    				for(int i = 0; i < l.size(); i++) {
+    					if(l.get(i) instanceof CDATA)
+    						l.remove(i);
+    				}
     				_script.addContent(new CDATA(source));
     			} 
 
     			_dom.setChanged(true);
-    			if(_parent != null)
-    				_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+    			setChangedForDirectory();
     		} else
     			System.out.println("no script element defined!");
 
@@ -355,6 +353,10 @@ public class ScriptListener {
         Utils.setAttribute("name", name, _parent);
         if(_update != null)
         	_update.updateTreeItem(name);
+        
+        _dom.setChanged(true);   
+        
+        setChangedForDirectory();
     }
 
     public String getOrdering() {
@@ -363,7 +365,17 @@ public class ScriptListener {
 
     public void setOrdering(String ordering) {
         Utils.setAttribute("ordering", ordering, "0", _parent);
+        setChangedForDirectory();
     }
 
-    
+    private void setChangedForDirectory() {
+    	if (_dom.isDirectory() || _dom.isLifeElement()) {
+    		if(_parent != null) {
+    			Element job = _parent;
+    			if(!job.getName().equals(_parent))
+    				job = Utils.getJobElement(_parent);	
+    			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",job), SchedulerDom.MODIFY);
+    		}
+    	}
+    }
 }

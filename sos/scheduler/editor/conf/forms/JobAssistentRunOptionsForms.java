@@ -318,7 +318,8 @@ public class JobAssistentRunOptionsForms {
 			listener.newImportJob(job, assistentType);
 			
 		}
-		MainWindow.message(shellRunOptions,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
+		//MainWindow.message(shellRunOptions,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
+		Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shellRunOptions);
 		
 		closeDialog = true;
 		shellRunOptions.dispose();
