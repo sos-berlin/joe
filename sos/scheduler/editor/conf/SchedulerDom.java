@@ -126,15 +126,17 @@ public class SchedulerDom extends DomParser {
 		} else if(type==LIFE_JOB) {
 			putDomOrder("job", JOB_ELEMENTS);
 			putDomOrder("run_time", RUNTIME_ELEMENTS);
+			putDomOrder("params", PARAMS_ELEMENTS);
 			putDomOrder("holidays", HOLIDAYS_ELEMENTS);
 			initScheduler(type);
 		} else if(type==LIFE_JOB_CHAIN) {
 			//putDomOrder("job_chain", CONFIG_ELEMENTS_DIRECTORY);
-			putDomOrder("job_chain", JOBCHAIN_ELEMENTS);
+			putDomOrder("job_chain", JOBCHAIN_ELEMENTS);			
 			initScheduler(type);
 		} else if(type==LIFE_ORDER) {
 			putDomOrder("commands", COMMANDS_ELEMENTS);
 			putDomOrder("run_time", RUNTIME_ELEMENTS);
+			putDomOrder("params", PARAMS_ELEMENTS);
 			putDomOrder("holidays", HOLIDAYS_ELEMENTS);
 			initScheduler(type);
 		} else if(type==LIFE_PROCESS_CLASS) {

@@ -276,7 +276,7 @@ public class ParameterListener {
 			item.setBackground(Options.getRequiredColor());
 		}
 		_dom.setChanged(true);
-
+		
 		//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 		Utils.setChangedForDirectory(_parent, _dom);
 	}
@@ -393,6 +393,7 @@ public class ParameterListener {
 					Object o = it.next();
 					if (o instanceof Element) {
 						Element e = (Element) o;
+
 						if (e.getName().equals("param")) {
 							if (name.equals(e.getAttributeValue("name"))) {
 								found = true;
@@ -402,8 +403,9 @@ public class ParameterListener {
 								Utils.setChangedForDirectory(_parent, _dom);
 								table.getItem(index).setText(1, value);
 							}
+
+							index++;
 						}
-						index++;
 					}
 				}
 			}
@@ -433,7 +435,10 @@ public class ParameterListener {
 				e.setAttribute("from", value);
 			}
 
-			_dom.setChanged(true);			
+			_dom.setChanged(true);	
+			
+			
+			
 			if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 			if (_params == null)
 				initParams();
@@ -442,9 +447,11 @@ public class ParameterListener {
 
 			TableItem item = new TableItem(table, SWT.NONE);
 			item.setText(new String[] { name, value });
+			
+			
 		}
 		Utils.setChangedForDirectory(_parent, _dom);
-
+		
 	}
 	
 
@@ -544,7 +551,7 @@ public class ParameterListener {
 	}
 
 	//selektierte Datensatz wird eine Zeile nach oben verschoben
-	public void changeUp(Table table) {
+	public void changeUp(Table table) {		
 		int index = table.getSelectionIndex();
 		if(index < 0)//nichts ist selektiert
 			return;
@@ -554,18 +561,45 @@ public class ParameterListener {
 
 		if(_params == null)
 			initParams();
-
-
+		
+		_dom.reorderDOM();
+		Element params = _parent.getChild("params");
+		if (params != null) {			
+			_params = params.getChildren();			
+			_includeParams = params.getChildren("include");
+		}
+		
+		/*String paramname = table.getSelection()[0].getText(0);		
+		for(int i = 0; i < _params.size();++i) {
+			Element elem = (Element)_params.get(i);
+			if(Utils.getAttributeValue("name", elem).equals(paramname)) {
+				Object obj =   elem.clone();
+				_params.remove(i);
+				_params.add(i-1, obj);
+				table.removeAll();
+				fillParams(table);
+				table.select(i-1);
+				Utils.setChangedForDirectory(_parent, _dom);
+				_dom.setChanged(true);
+			}
+				
+				
+		}
+		*/
+		
+		
 		Element elem = (Element)(_params.get(index));
 		Object obj =   elem.clone();
 		_params.remove(elem);
 		_params.add(index-1, obj);
 
+		
 		table.removeAll();
 		fillParams(table);
 		table.select(index-1);
 		Utils.setChangedForDirectory(_parent, _dom);
 		_dom.setChanged(true);
+		
 	}
 
 	//selektierte Datensatz wird eine Zeile unten oben verschoben

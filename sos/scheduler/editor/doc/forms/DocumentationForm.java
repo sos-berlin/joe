@@ -30,6 +30,7 @@ import sos.scheduler.editor.doc.listeners.DocumentationListener;
 // TODO doppelte einträge verhindern
 
 public class DocumentationForm extends Composite implements IEditor, IDocumentationUpdate {
+	
     private DocumentationListener listener    = null;
 
     private DocumentationDom      dom         = null;
@@ -54,7 +55,7 @@ public class DocumentationForm extends Composite implements IEditor, IDocumentat
         // initialize();
         dom = new DocumentationDom();
         dom.setDataChangedListener(this);
-        listener = new DocumentationListener(dom);
+        listener = new DocumentationListener(this, dom);
     }
 
 
@@ -239,8 +240,29 @@ public class DocumentationForm extends Composite implements IEditor, IDocumentat
     }
 
 
+    public static void openNoteDialog(DocumentationDom dom, Element parentElement, String name, String tooltip,
+            boolean optional, boolean changeStatus, String title, org.eclipse.swt.widgets.Text txt) {
+        NoteDialog dialog = new NoteDialog(MainWindow.getSShell(),title);
+        dialog.setText("Note Editor");
+        //dialog.setUpdateText(txt); //Textfeld soll beim verklassen des Dialogs aktualisert werden
+        dialog.setTooltip(tooltip);
+        
+        dialog.setParams(dom, parentElement, name, optional, changeStatus);
+        dialog.open();
+    }
+
+    
 	public DocumentationDom getDom() {
 		return dom;
 	}
 
+	public void updateReleases() {
+		if(docTree.getSelectionCount() > 0) {
+			TreeItem item = docTree.getSelection()[0];		
+			TreeData data = (TreeData) item.getData();
+			org.jdom.Element elem = data.getElement();
+			listener.treeFillReleases(item, elem);
+			//tree.getSelection()[0].getItems()[tree.getSelection()[0].getItemCount()-1].setExpanded(true);
+		}
+	}
 } // @jve:decl-index=0:visual-constraint="10,10"

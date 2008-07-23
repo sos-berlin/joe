@@ -482,7 +482,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			label4.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1));
 			label4.setText("Label");
 			final Table tableIncludeParameter = new Table(group_1, SWT.BORDER | SWT.FULL_SELECTION);
-			final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2);
+			final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 3);
 			gridData_1.heightHint = 85;
 
 			tableIncludeParameter.setLayoutData(gridData_1);
@@ -495,6 +495,22 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			TableColumn tcValue = new TableColumn(tableIncludeParameter, SWT.NONE);
 			tcValue.setWidth(450);
 			tcValue.setText("Value");
+
+			for(int i= 0; i < listOfElement.size(); i++) {
+				Element param = (Element)listOfElement.get(i);
+				TableItem item = new TableItem( tableIncludeParameter, SWT.NONE);
+				item.setText(0, Utils.getAttributeValue("name", param));
+				item.setText(1, Utils.getAttributeValue("value", param));
+				item.setData("param", param);
+			}
+
+			
+			
+			
+			final Button newButton = new Button(group_1, SWT.NONE);
+			
+			newButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+			newButton.setText("New");
 
 
 			//fill Include Params From External File
@@ -509,14 +525,6 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 					item.setData("param", param);
 				}
 			}*/
-
-			for(int i= 0; i < listOfElement.size(); i++) {
-				Element param = (Element)listOfElement.get(i);
-				TableItem item = new TableItem( tableIncludeParameter, SWT.NONE);
-				item.setText(0, Utils.getAttributeValue("name", param));
-				item.setText(1, Utils.getAttributeValue("value", param));
-				item.setData("param", param);
-			}
 
 
 			final Button butIncludeRemove = new Button(group_1, SWT.NONE);			
@@ -589,8 +597,6 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				}
 			});
 
-			
-			
 			tableIncludeParameter.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					TableItem item = (TableItem) e.item;
@@ -603,6 +609,18 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				}
 			});
 
+			newButton.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					
+					
+					txtIncludeParameter.setText("");
+					txtIncludeParameterValue.setText("");
+					butIncludeRemove.setEnabled(false);
+					tableIncludeParameter.deselectAll();
+					txtIncludeParameter.setFocus();
+				}
+			});
+			
 			//Speichern und löschen ist nicht im Xpath Ausdruck erlaubt. Grund: Parameter könne aus verschiedenen Paths geholt werden.
 			boolean hasXPathExpression = txtIncludeNode.getText().trim().length() == 0;
 			butoIncludeSave.setVisible(hasXPathExpression);

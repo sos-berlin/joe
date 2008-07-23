@@ -183,9 +183,9 @@ public class TreeMenu {
 
 							MenuItem _paste = getItem(TreeMenu.PASTE);
 
-							if(_tree.getSelectionCount() > 0) {								
+							/*if(_tree.getSelectionCount() > 0) {								
 								System.out.println(_tree.getSelection()[0].getData("key") + "   " + _tree.getSelection()[0].getText());
-							}
+							}*/
 
 							_paste.setEnabled(true); // paste
 							/*if (name.equals("jobs") && cName.equals("job"))
@@ -626,7 +626,7 @@ public class TreeMenu {
 		try {
 			//ungleiche Typen, überprüfen, ob das pastelement ein möglicher Vaterknoten von _copy element ist, z.B. _copy Element ist job und paste Element ist jobs	
 			if(_type != data.getType()) {
-				System.out.println("*****************************************");					
+				//System.out.println("*****************************************");					
 				pasteChild(key, data);
 				return;
 			}
@@ -656,7 +656,7 @@ public class TreeMenu {
 				split = key.split("_@_");
 
 
-				System.out.println("*****************************************");
+				//System.out.println("*****************************************");
 
 				if(split.length > 1)
 					key = split[split.length-1];
@@ -672,12 +672,12 @@ public class TreeMenu {
 					for(int i = 0; i < split.length-1; i++) {
 						//key ist der Pfad ab data.getelement. 
 						copyElement = copyElement.getChild(split[i]);
-						System.out.println(Utils.getElementAsString(_dom.getRoot()));
+						//System.out.println(Utils.getElementAsString(_dom.getRoot()));
 						if(currElem.getChild(split[i]) == null) {						
 							currElem = currElem.addContent(new Element(split[i]));
 						}
 						currElem = data.getElement().getChild(split[i]);					
-						System.out.println(Utils.getElementAsString(_dom.getRoot()));
+						//System.out.println(Utils.getElementAsString(_dom.getRoot()));
 					}
 					ce = copyElement.getChildren(key);
 				}
@@ -698,7 +698,7 @@ public class TreeMenu {
 
 
 					if( !Utils.getAttributeValue("name", cloneElement).equals("") && existJobname(currElem, Utils.getAttributeValue("name", cloneElement))) {
-						System.out.println(Utils.getAttributeValue("name", cloneElement) + " existiert berteits");
+						//System.out.println(Utils.getAttributeValue("name", cloneElement) + " existiert berteits");
 						String append = "copy(" + (cloneElement.getChildren("job").size() + currElem.getChildren().size() + 1) + ")of_" + Utils.getAttributeValue("name", cloneElement);					
 						cloneElement.setAttribute("name", append);
 					}
@@ -712,7 +712,7 @@ public class TreeMenu {
 						copyElement = cloneElement;
 						currElem = currElem.getChild(key);
 					}
-					System.out.println(Utils.getElementAsString(_dom.getRoot()));
+					//System.out.println(Utils.getElementAsString(_dom.getRoot()));
 				}
 
 				if(overrideAttributes) {
@@ -745,13 +745,13 @@ public class TreeMenu {
 				if(data.getElement().getChild(split[i]) == null)
 					data.getElement().addContent(new Element(split[i]));
 				elem = data.getElement().getChild(split[i]);												
-				System.out.println(Utils.getElementAsString(_dom.getRoot()));
+				//System.out.println(Utils.getElementAsString(_dom.getRoot()));
 			}
 
 			Element copyClone = (Element)_copy.clone();
 
 			if(!Utils.getAttributeValue("name", _copy).equals("") &&  existJobname(elem, Utils.getAttributeValue("name", _copy))) {
-				System.out.println(Utils.getAttributeValue("name", _copy) + " existiert berteits");
+				//System.out.println(Utils.getAttributeValue("name", _copy) + " existiert berteits");
 				String append = "copy(" + (copyClone.getChildren("job").size() + elem.getChildren().size() + 1) + ")of_" + Utils.getAttributeValue("name", copyClone);					
 				copyClone.setAttribute("name", append);
 			}
@@ -804,7 +804,7 @@ public class TreeMenu {
 
 
 		//unpdate der Formular
-		//String currItemString =  _tree.getSelection()[0].getText();
+		String currItemString =  _tree.getSelection()[0].getText();
 
 		if(_type == Editor.SPECIFIC_WEEKDAYS)
 			_gui.updateSpecificWeekdays();
@@ -844,6 +844,7 @@ public class TreeMenu {
 		_gui.updateTree("");
 
 		refreshTree("main");
+		
 		_dom.setChanged(true);
 	}
 

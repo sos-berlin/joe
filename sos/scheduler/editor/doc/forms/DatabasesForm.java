@@ -133,9 +133,8 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
         GridData gridData13 = new GridData();
         gridData13.horizontalAlignment = GridData.FILL; // Generated
         gridData13.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData12 = new GridData();
-        gridData12.horizontalAlignment = GridData.FILL; // Generated
-        gridData12.verticalAlignment = GridData.BEGINNING; // Generated
+        GridData gridData12 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
+        gridData12.widthHint = 90;
         GridData gridData10 = new GridData();
         gridData10.horizontalSpan = 5; // Generated
         gridData10.horizontalAlignment = GridData.FILL; // Generated
@@ -150,19 +149,14 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
         gridData5.horizontalSpan = 6; // Generated
         gridData5.verticalAlignment = GridData.CENTER; // Generated
         gridData5.horizontalAlignment = GridData.FILL; // Generated
-        GridData gridData11 = new GridData();
-        gridData11.horizontalAlignment = GridData.FILL; // Generated
-        gridData11.grabExcessHorizontalSpace = true; // Generated
-        gridData11.grabExcessVerticalSpace = true; // Generated
-        gridData11.horizontalSpan = 3; // Generated
-        gridData11.verticalAlignment = GridData.FILL; // Generated
+        GridData gridData11 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
         GridData gridData3 = new GridData();
         gridData3.horizontalAlignment = GridData.FILL; // Generated
         gridData3.grabExcessHorizontalSpace = true; // Generated
         gridData3.verticalAlignment = GridData.CENTER; // Generated
         GridLayout gridLayout1 = new GridLayout();
         gridLayout1.numColumns = 6; // Generated
-        group1 = new Group(composite, SWT.NONE);
+        group1 = new Group(composite, SWT.NONE);        
         group1.setLayout(gridLayout1); // Generated
         group1.setLayoutData(gridData11); // Generated
         group1.setText("Resources"); // Generated
@@ -286,11 +280,8 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
         gridData71.horizontalAlignment = GridData.FILL; // Generated
         gridData71.grabExcessHorizontalSpace = true; // Generated
         gridData71.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData6 = new GridData();
-        gridData6.horizontalAlignment = GridData.FILL; // Generated
-        gridData6.verticalSpan = 2; // Generated
+        GridData gridData6 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
         gridData6.widthHint = 90; // Generated
-        gridData6.verticalAlignment = GridData.BEGINNING; // Generated
         GridData gridData = new GridData();
         gridData.verticalAlignment = GridData.CENTER; // Generated
         gridData.horizontalSpan = 4; // Generated

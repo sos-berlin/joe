@@ -87,10 +87,6 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes group
      */
     private void createGroup() {
-        GridData gridData11 = new GridData();
-        gridData11.verticalSpan = 2; // Generated
-        gridData11.verticalAlignment = GridData.BEGINNING; // Generated
-        gridData11.horizontalAlignment = GridData.CENTER; // Generated
         GridData gridData9 = new GridData();
         gridData9.horizontalAlignment = GridData.FILL; // Generated
         gridData9.verticalAlignment = GridData.BEGINNING; // Generated
@@ -100,33 +96,13 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
         GridData gridData7 = new GridData();
         gridData7.horizontalAlignment = GridData.FILL; // Generated
         gridData7.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData6 = new GridData();
-        gridData6.horizontalAlignment = GridData.FILL; // Generated
-        gridData6.verticalAlignment = GridData.FILL; // Generated
-        gridData6.grabExcessHorizontalSpace = true; // Generated
-        gridData6.grabExcessVerticalSpace = true; // Generated
-        gridData6.horizontalSpan = 5; // Generated
-        gridData6.verticalSpan = 3; // Generated
-        GridData gridData5 = new GridData();
-        gridData5.verticalAlignment = GridData.CENTER; // Generated
-        gridData5.horizontalSpan = 6; // Generated
-        gridData5.horizontalAlignment = GridData.FILL; // Generated
-        GridData gridData4 = new GridData();
-        gridData4.horizontalAlignment = GridData.FILL; // Generated
-        gridData4.verticalSpan = 3; // Generated
-        gridData4.verticalAlignment = GridData.BEGINNING; // Generated
-        GridData gridData1 = new GridData();
-        gridData1.verticalAlignment = GridData.CENTER; // Generated
-        gridData1.grabExcessHorizontalSpace = true; // Generated
-        gridData1.horizontalSpan = 3; // Generated
-        gridData1.horizontalAlignment = GridData.FILL; // Generated
-        GridData gridData = new GridData();
-        gridData.horizontalSpan = 4; // Generated
-        gridData.verticalAlignment = GridData.CENTER; // Generated
-        gridData.grabExcessHorizontalSpace = true; // Generated
-        gridData.horizontalAlignment = GridData.FILL; // Generated
+        GridData gridData6 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 3);
+        GridData gridData5 = new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
+        GridData gridData4 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
+        GridData gridData1 = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
+        GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
         GridLayout gridLayout2 = new GridLayout();
-        gridLayout2.numColumns = 6; // Generated
+        gridLayout2.numColumns = 5; // Generated
         group = new Group(this, SWT.NONE);
         label6 = new Label(group, SWT.NONE);
         label6.setText("File:"); // Generated
@@ -154,9 +130,17 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
         createCType();
         group.setLayout(gridLayout2); // Generated
         group.setText("Files"); // Generated
+        GridData gridData11 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
         bNotes = new Button(group, SWT.NONE);
         bNotes.setText("Note..."); // Generated
         bNotes.setLayoutData(gridData11); // Generated
+        bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                String tip = Messages.getTooltip("doc.note.text.files");
+                DocumentationForm.openNoteDialog(dom, listener.getFileElement(), "note", tip, true, !listener
+                        .isNewFile(),"File Note");
+            }
+        });
         label11 = new Label(group, SWT.NONE);
         label11.setText("ID:"); // Generated
         tID = new Text(group, SWT.BORDER);
@@ -166,13 +150,7 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
                 setApplyStatus();
             }
         });
-        bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                String tip = Messages.getTooltip("doc.note.text.files");
-                DocumentationForm.openNoteDialog(dom, listener.getFileElement(), "note", tip, true, !listener
-                        .isNewFile(),"File Note");
-            }
-        });
+        new Label(group, SWT.NONE);
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setText("Label"); // Generated
         label.setLayoutData(gridData5); // Generated

@@ -1,7 +1,6 @@
 package sos.scheduler.editor.app;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -19,8 +18,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.jdom.Element;
-
-import sos.net.SOSFileTransfer;
 import sos.scheduler.editor.app.MainListener;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.TabbedContainer;

@@ -24,7 +24,7 @@ public class NoteDialog extends Dialog {
     private Point    _size       = new Point(450, 350);
 
     private NoteForm _fNote      = null;
-
+    org.eclipse.swt.widgets.Text refreshText = null;
 
     public NoteDialog(Shell parent, String title) {
         super(parent);
@@ -88,6 +88,10 @@ public class NoteDialog extends Dialog {
         // _image.dispose();
     }
 
+    //Textfeld soll beim verlassen diese Dialogs aktualiert werden
+    /*public void setUpdateText(org.eclipse.swt.widgets.Text txt) {
+       refreshText;
+    }*/
 
     public void setTooltip(String string) {
         _fNote.setToolTipText(string);

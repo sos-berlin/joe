@@ -127,6 +127,10 @@ public class Editor {
     
     public final static int JOB_CHAIN_NESTED_NODES = 83;
     
+    public final static int DOC_RELEASE            = 84;
+    
+    public final static int DOC_RELEASE_AUTHOR     = 85;
+    
     public static String    SCHEDULER_ENCODING     = "";
 
     public static String    DOCUMENTATION_ENCODING = "utf-8";

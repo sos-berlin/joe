@@ -689,6 +689,9 @@ public class DaysListener {
 		if(_runtime.getName().equals("holidays"))
 			return;
 		
+		if(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor() instanceof sos.scheduler.editor.doc.forms.DocumentationForm)
+			return;
+			
 		SchedulerForm f = (SchedulerForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
 		
 		if(f == null)

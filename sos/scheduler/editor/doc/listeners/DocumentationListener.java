@@ -16,6 +16,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.IUpdateTree;
 import sos.scheduler.editor.doc.forms.ApplicationsForm;
@@ -30,12 +31,18 @@ import sos.scheduler.editor.doc.forms.PayloadForm;
 import sos.scheduler.editor.doc.forms.ProcessForm;
 import sos.scheduler.editor.doc.forms.ProfilesForm;
 import sos.scheduler.editor.doc.forms.ReleasesForm;
+import sos.scheduler.editor.doc.forms.ReleaseForm;
+import sos.scheduler.editor.doc.forms.AuthorsForm;
 import sos.scheduler.editor.doc.forms.ResourcesForm;
 import sos.scheduler.editor.doc.forms.ScriptForm;
 import sos.scheduler.editor.doc.forms.SectionsForm;
 import sos.scheduler.editor.doc.forms.SettingForm;
+import sos.scheduler.editor.doc.forms.DocumentationForm;
+
 
 public class DocumentationListener implements IUpdateTree {
+	
+	
     private DocumentationDom _dom;
 
     private TreeItem         _profiles;
@@ -44,8 +51,10 @@ public class DocumentationListener implements IUpdateTree {
 
     private static ArrayList _IDs;
 
+    private DocumentationForm _gui;
 
-    public DocumentationListener(DocumentationDom dom) {
+    public DocumentationListener(DocumentationForm gui, DocumentationDom dom) {
+    	_gui = gui;
         _dom = dom;
     }
 
@@ -78,7 +87,10 @@ public class DocumentationListener implements IUpdateTree {
         item.setText("Releases");
         item.setData(new TreeData(Editor.DOC_RELEASES, desc.getChild("releases", _dom.getNamespace()), Options
                 .getDocHelpURL("releases")));
-
+        
+        treeFillReleases(item, desc.getChild("releases", _dom.getNamespace()));
+        item.setExpanded(true);
+        
         item = new TreeItem(tree, SWT.NONE);
         item.setText("Resources");
         item.setData(new TreeData(Editor.DOC_RESOURCES, desc, Options.getDocHelpURL("resources")));
@@ -233,8 +245,15 @@ public class DocumentationListener implements IUpdateTree {
                         form.init(true, true);
                         break;
                     case Editor.DOC_RELEASES:
-                        new ReleasesForm(c, SWT.NONE, _dom, data.getElement());
+                        new ReleasesForm(c, SWT.NONE, _dom, data.getElement(), _gui);
                         break;
+                    case Editor.DOC_RELEASE:
+                        new ReleaseForm(c, SWT.NONE, _dom, data.getElement());
+                        break;
+                        
+                    case Editor.DOC_RELEASE_AUTHOR:
+                        new AuthorsForm(c, SWT.NONE, _dom, data.getElement());
+                        break;                                            
                     case Editor.DOC_RESOURCES:
                         new ResourcesForm(c, SWT.NONE, _dom, data.getElement());
                         break;
@@ -348,4 +367,29 @@ public class DocumentationListener implements IUpdateTree {
         c.setItems(values);
         c.setText(getIDName(value));
     }
+    
+    public void treeFillReleases(TreeItem parent, Element elem) {
+    	parent.removeAll();
+    	java.util.List listOfRelease = elem.getChildren("release", elem.getNamespace());
+    	//parent.setExpanded(true);
+    	for(int i = 0; i < listOfRelease.size(); i++) {
+    		Element release = (Element)listOfRelease.get(i);
+    		
+    		//Release
+    		TreeItem item = new TreeItem(parent, SWT.NONE);
+    		item.setText("Release: " + Utils.getAttributeValue("id", release));
+    		item.setData(new TreeData(Editor.DOC_RELEASE, release, Options.getDocHelpURL("releases")));
+    		
+    		
+    		//Autoren
+    		TreeItem itemAuthor = new TreeItem(item, SWT.NONE);
+    		itemAuthor.setText("Author");    		
+    		itemAuthor.setData(new TreeData(Editor.DOC_RELEASE_AUTHOR, release, Options.getDocHelpURL("releases")));
+    		
+    		item.setExpanded(true);
+    		itemAuthor.setExpanded(true);    		
+    	}
+    	
+    }
+
 }

@@ -11,6 +11,7 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 
 public class ReleasesListener {
+	
     private DocumentationDom _dom;
 
     private Element          _parent;
@@ -63,7 +64,9 @@ public class ReleasesListener {
 
     public void newRelease() {
         _release = new Element("release", _dom.getNamespace());
+        _parent.addContent(_release);
         _newRelease = true;
+        
     }
 
 
@@ -72,14 +75,20 @@ public class ReleasesListener {
     }
 
 
-    public void removeRelease() {
+    /*public void removeRelease() {
         if (_release != null) {
             _release.detach();
             _release = null;
             _dom.setChanged(true);
         }
-    }
+    }*/
 
+    public void removeRelease(int index) {
+        if (_parent != null) {        	
+        	_parent.getChildren("release", _dom.getNamespace()).remove(index);
+        	_dom.setChanged(true);
+        }
+    }
 
     public boolean selectRelease(int i) {
         try {
@@ -98,6 +107,7 @@ public class ReleasesListener {
         Utils.setAttribute("modified", modified, _release);
         Utils.setElement("title", title, false, _release, _dom.getNamespace(), _dom);
 
+        /*
         _release.removeChildren("author", _dom.getNamespace());
         for (int i = 0; i < authors.length; i++) {
             Element author = new Element("author", _dom.getNamespace());
@@ -109,7 +119,7 @@ public class ReleasesListener {
         if (_newRelease && !_parent.getContent().contains(_release)) {        	
         	_parent.addContent(_release);        	
         }
-
+*/
         _newRelease = false;
         _dom.setChanged(true);
     }
@@ -126,10 +136,11 @@ public class ReleasesListener {
         for (Iterator it = _parent.getChildren("release", _dom.getNamespace()).iterator(); it.hasNext();) {
             Element release = (Element) it.next();
             TableItem item = new TableItem(table, SWT.NONE);
-            item.setText(0, Utils.getElement("title", release, _dom.getNamespace()));
-            item.setText(1, Utils.getAttributeValue("created", release));
-            item.setText(2, Utils.getAttributeValue("modified", release));
-            item.setText(3, Utils.getAttributeValue("id", release));
+            item.setText(0, Utils.getAttributeValue("id", release));
+            item.setText(1, Utils.getElement("title", release, _dom.getNamespace()));
+            item.setText(2, Utils.getAttributeValue("created", release));
+            item.setText(3, Utils.getAttributeValue("modified", release));
+            
             if (release.equals(_release))
                 table.select(index);
             index++;

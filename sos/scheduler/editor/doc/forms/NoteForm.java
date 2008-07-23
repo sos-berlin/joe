@@ -67,7 +67,8 @@ public class NoteForm extends Composite implements IUnsaved, IUpdateLanguage {
     public void setParams(DocumentationDom dom, Element parent, String name, boolean optional, boolean changeStatus) {
         listener = new NoteListener(dom, parent, name, optional, changeStatus);
         cLang.setItems(listener.getLanguages());
-        cLang.select(cLang.indexOf(listener.getLang()));
+        if(listener.getLang() != null)
+        	cLang.select(cLang.indexOf(listener.getLang()));
         text.setText(listener.getNote());
         bApply.setEnabled(false);
     }
@@ -199,6 +200,8 @@ public class NoteForm extends Composite implements IUnsaved, IUpdateLanguage {
         if (listener != null) {
             listener.setNote(text.getText());
             listener.createDefault();
+           
+            
         }
     }
 

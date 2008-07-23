@@ -101,6 +101,7 @@ public class NoteListener {
         	 */
         		 note = "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n" + note + "\n</div>";
         		 item.setContent(_dom.noteAsDom(note));
+        		 //_dom.setChanged(true);
         	 //}
           } catch (Exception e) {
             e.printStackTrace();
