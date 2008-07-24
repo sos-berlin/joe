@@ -778,7 +778,6 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		label4.setText("Label");
 		tParameter = new Table(Group, SWT.FULL_SELECTION | SWT.BORDER);
 		final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 4);
-		gridData_1.heightHint = 85;
 		tParameter.setLayoutData(gridData_1);
 		tParameter.setHeaderVisible(true);
 		tParameter.setLinesVisible(true);
@@ -803,7 +802,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		tcName.setWidth(262);
 		tcName.setText("Name");
 		TableColumn tcValue = new TableColumn(tParameter, SWT.NONE);
-		tcValue.setWidth(168);
+		tcValue.setWidth(500);
 		tcValue.setText("Value");
 
 		butNewParam = new Button(Group, SWT.NONE);
@@ -973,7 +972,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		tableEnvironment.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2));
 
 		final TableColumn colEnvName = new TableColumn(tableEnvironment, SWT.NONE);
-		colEnvName.setWidth(205);
+		colEnvName.setWidth(250);
 		colEnvName.setText("Name");
 
 		final TableColumn colEnvValue = new TableColumn(tableEnvironment, SWT.NONE);
@@ -1115,12 +1114,12 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		tableIncludeParams.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 3));
 
 		final TableColumn colParamColums = new TableColumn(tableIncludeParams, SWT.NONE);
-		colParamColums.setWidth(197);
+		colParamColums.setWidth(250);
 		colParamColums.setText("File");
 
 
 		final TableColumn newColumnTableColumn_1 = new TableColumn(tableIncludeParams, SWT.NONE);
-		newColumnTableColumn_1.setWidth(167);
+		newColumnTableColumn_1.setWidth(400);
 		newColumnTableColumn_1.setText("Node");
 
 
@@ -1128,7 +1127,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		newColumnTableColumn.setWidth(100);
 		newColumnTableColumn.setText("File/Live_File");
 		if(type != Editor.JOB && type != Editor.COMMANDS && type != Editor.JOB_COMMANDS) {
-			newColumnTableColumn.setWidth(0);
+			newColumnTableColumn.setWidth(200);
 			newColumnTableColumn.setResizable(false);
 		} 
 
@@ -1308,7 +1307,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		tcName.setWidth(252);
 		tcName.setText("Name");
 		TableColumn tcValue = new TableColumn(tParameter, SWT.NONE);
-		tcValue.setWidth(249);
+		tcValue.setWidth(500);
 		tcValue.setText("Value");
 
 		butNewParam = new Button(group, SWT.NONE);
