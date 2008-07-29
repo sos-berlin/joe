@@ -573,9 +573,15 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 			if(!elem.getChildren("date").isEmpty())
 				isBold = true;
 			
-		} else if(type == Editor.WEEKDAYS) {			
-			if(!elem.getChildren("weekdays").isEmpty())
-				isBold = true;					
+		} else if(type == Editor.WEEKDAYS) {
+			if(item.getData("key") != null && item.getData("key").equals("holidays_@_weekdays")) {
+				if(elem.getChild("holidays") != null && !elem.getChild("holidays").getChildren("weekdays").isEmpty()) {
+					isBold = true;
+				}					
+			} else {
+				if(!elem.getChildren("weekdays").isEmpty())
+					isBold = true;
+			}
 
 		} else if(type == Editor.MONTHDAYS) {			
 			if(!elem.getChildren("monthdays").isEmpty() && !elem.getChild("monthdays").getChildren("day").isEmpty())

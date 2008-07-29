@@ -78,14 +78,16 @@ public class DaysForm extends Composite implements IUpdateLanguage {
     private Element          parent_        = null;
     
     //private SchedulerDom     _dom                = null;
+        
 
 
-    public DaysForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main, int type) {
+    public DaysForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main, int type,  boolean isWeekdaysHolidays) {
         super(parent, style);        
         if (type > 3 || type < 0)
             throw new IllegalArgumentException("the type must be from 0 to 2 or 6");
-
-        listener = new DaysListener(dom, job, type);
+    	//_isWeekdaysHoliday = isWeekdaysHolidays;
+        listener = new DaysListener(dom, job, type, isWeekdaysHolidays);
+         
         _main = main;
         parent_ = job;
         _type = type;

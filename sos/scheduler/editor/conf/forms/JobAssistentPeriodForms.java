@@ -138,9 +138,9 @@ public class JobAssistentPeriodForms {
 	private void init() {
 		periodsListener = new PeriodsListener(dom, job.getChild("run_time"));		
 		speDateListener = new DateListener(dom, job.getChild("run_time"), 1);
-		weekDayListener = new DaysListener(dom, job.getChild("run_time"), DaysListener.WEEKDAYS);
+		weekDayListener = new DaysListener(dom, job.getChild("run_time"), DaysListener.WEEKDAYS, false);
 		periodsListenerSpecDay  = new PeriodsListener(dom, job.getChild("run_time"));
-		monthListener = new DaysListener(dom, job.getChild("run_time"), DaysListener.MONTHDAYS);
+		monthListener = new DaysListener(dom, job.getChild("run_time"), DaysListener.MONTHDAYS, false);
 	}
 	
 	public void showPeriodeForms() {

@@ -145,8 +145,8 @@ public class JobAssistentRunTimeForms {
 		periodslistener = new PeriodsListener(dom, job.getChild("run_time"));
 		periodlistener = new PeriodListener(dom);
 		speDateListener = new DateListener(dom, job.getChild("run_time"), 1);
-		weekDayListener = new DaysListener(dom, job.getChild("run_time"), DaysListener.WEEKDAYS);
-		monthListener = new DaysListener(dom, job.getChild("run_time"), DaysListener.MONTHDAYS);
+		weekDayListener = new DaysListener(dom, job.getChild("run_time"), DaysListener.WEEKDAYS, false);
+		monthListener = new DaysListener(dom, job.getChild("run_time"), DaysListener.MONTHDAYS, false);
 	}
 	
 	public void showRunTimeForms() {

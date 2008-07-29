@@ -651,7 +651,7 @@ public class SchedulerListener {
 		item.setText("Weekdays");
 		item.setData(new TreeData(Editor.WEEKDAYS, elem, Options.getHelpURL("job.run_time.weekdays"),"weekdays"));
 		item.setData("key", "holidays_@_weekdays");
-		item.setData("copy_element", elem);
+		item.setData("copy_element", elem);		
 					
 		if( elem.getChild("holidays") != null) {
 			treeFillDays(item,  elem, 0, false);
@@ -762,7 +762,7 @@ public class SchedulerListener {
 				
 				//element = isHolidayWeeksdayParent(element);
 				
-				new DaysListener(_dom, element, type).fillTreeDays(parent, expand);
+				new DaysListener(_dom, element, type, ( parent.getData("key") != null && parent.getData("key").equals("holidays_@_weekdays"))).fillTreeDays(parent, expand);
 				
 				if(type == DaysListener.SPECIFIC_MONTHS) {
 					List l = element.getChildren("month"); 
@@ -928,16 +928,16 @@ public class SchedulerListener {
 						new RunTimeForm(c, SWT.NONE, _dom, data.getElement(), _gui);
 						break;
 					case Editor.WEEKDAYS:
-						new DaysForm(c, SWT.NONE, _dom, data.getElement(), _gui, DaysListener.WEEKDAYS);
+						new DaysForm(c, SWT.NONE, _dom, data.getElement(), _gui, DaysListener.WEEKDAYS, ( item.getData("key") != null && item.getData("key").equals("holidays_@_weekdays")));
 						break;
 					case Editor.MONTHDAYS:
-						new DaysForm(c, SWT.NONE, _dom, data.getElement(), _gui, DaysListener.MONTHDAYS);
+						new DaysForm(c, SWT.NONE, _dom, data.getElement(), _gui, DaysListener.MONTHDAYS, false);
 						break;
 					case Editor.SPECIFIC_MONTHS:
-						new DaysForm(c, SWT.NONE, _dom, data.getElement(), _gui, DaysListener.SPECIFIC_MONTHS);
+						new DaysForm(c, SWT.NONE, _dom, data.getElement(), _gui, DaysListener.SPECIFIC_MONTHS, false);
 						break;
 					case Editor.ULTIMOS:
-						new DaysForm(c, SWT.NONE, _dom, data.getElement(), _gui, DaysListener.ULTIMOS);
+						new DaysForm(c, SWT.NONE, _dom, data.getElement(), _gui, DaysListener.ULTIMOS, false);
 						break;
 					case Editor.EVERYDAY:
 					case Editor.PERIODS:

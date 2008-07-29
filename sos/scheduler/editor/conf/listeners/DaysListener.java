@@ -64,11 +64,13 @@ public class DaysListener {
 
 	private Element[]         _dayElements = null;
 
+	private boolean          _isWeekdaysHoliday = false;
 
-	public DaysListener(SchedulerDom dom, Element runtime, int type) {
+	public DaysListener(SchedulerDom dom, Element runtime, int type,  boolean isWeekdaysHoliday) {
 		if (type != WEEKDAYS && type != MONTHDAYS && type != ULTIMOS && type != SPECIFIC_MONTHS)
 			throw new IllegalArgumentException("type must be 0, 1 or 6!");
-
+		
+		_isWeekdaysHoliday = isWeekdaysHoliday;
 		_dom = dom;
 		_type = type;
 		_runtime = runtime;
@@ -216,10 +218,11 @@ public class DaysListener {
 
 	private void setUsedDays() {
 		
-		if(_runtime.getChild("holidays") != null)
+		if(_runtime.getChild("holidays") != null || _isWeekdaysHoliday)
 			isHolidayWeeksdayParent();
 		
 		if (_runtime != null && _runtime.getChild(_elementName[_type]) != null) {
+			
 			Element daylist = _runtime.getChild(_elementName[_type]);
 
 			List list = daylist.getChildren("day"); 
