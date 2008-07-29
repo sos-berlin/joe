@@ -94,7 +94,10 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         setToolTipText();
         read();
         
-        this.group.setEnabled(Utils.isElementEnabled("job", dom, job));
+        this.group.setEnabled(Utils.isElementEnabled("job", dom, job) && !Utils.hasSchedulesElement(dom, job));
+        //this.group.setEnabled(Utils.isElementEnabled("job", dom, job));
+        
+        
     }
 
 

@@ -286,10 +286,8 @@ public abstract class DomParser {
     	try {
         Document doc = new Document((Element) element.clone());
 
-        // Transformer transformer =
-        // TransformerFactory.newInstance().newTransformer(new
-        // StreamSource(Options.getXSLT()));
-        Transformer transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(getXSLT()));
+      Transformer transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(Options.getXSLT()));
+        //Transformer transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(getXSLT()));
         JDOMSource in = new JDOMSource(doc);
         JDOMResult out = new JDOMResult();
         transformer.transform(in, out);

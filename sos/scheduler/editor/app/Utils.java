@@ -1009,6 +1009,21 @@ public class Utils {
 
 	}
 
+	public static boolean hasSchedulesElement(SchedulerDom dom, Element element) {
+		try {			
+			if(element.getAttributeValue("schedule").length() > 0)
+				return true;
+			else 
+				return false;
+		} catch (Exception e) {
+			try{
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee){}
+
+		}
+		return false;
+}
+
 	
 
 }

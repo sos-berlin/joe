@@ -1062,8 +1062,15 @@ public class SchedulerListener {
 	}
 
 	public void treeFillRunTimes(TreeItem item,Element job, boolean disable, String run_time) {
+		
+		
+		
+		
 		Element runtime = null; 
 		Element _runtime = job.getChild("run_time");
+	
+		
+		
 		// create runtime tag
 		if (_runtime == null && run_time.equals("run_time")) { 			
 			_runtime = new Element(run_time);
@@ -1078,6 +1085,8 @@ public class SchedulerListener {
 			runtime=_runtime;
 		}
 
+		
+		
 		//Specific months: create month child tags (type=3)
 		if(!run_time.equals("run_time") && !job.getName().equals("schedule")) {
 
@@ -1104,12 +1113,29 @@ public class SchedulerListener {
 			}
 
 		}
-
+		
+		//test
 		TreeItem run = null;
+		boolean hasSchedulesAttribut = Utils.getAttributeValue("schedule", _runtime).trim().length() > 0;
+		if(hasSchedulesAttribut) {
+
+			for(int i = 0; i < item.getItemCount(); i++) {
+				if(item.getItem(i).equals("Run Time")){
+					run = item.getItem(i);
+				}
+			}
+
+		}
+		if(item.getText().equals("Run Time")){
+			run = item;
+		}
+		//ende test
+
+		//if(run == null) {
 		if (runtime != null) {
 			if(type == SchedulerDom.LIFE_SCHEDULE) {
 				run = item;
-			} else {
+			} else if(run == null) {
 				run = new TreeItem(item, SWT.NONE);
 			}
 			run.setData("max_occur", "1");
@@ -1121,6 +1147,8 @@ public class SchedulerListener {
 				run.setText(run_time);
 
 			}
+			
+			
 
 			if(run_time.equals("run_time")) {
 				run.setData(new TreeData(Editor.RUNTIME, job, Options.getHelpURL("job.run_time"), "run_time"));

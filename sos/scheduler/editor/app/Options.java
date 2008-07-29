@@ -27,7 +27,8 @@ public class Options {
 
 
     public static String getDefaultOptionFilename() {
-        return getDefault("editor.options.file").replaceAll("\\{scheduler_home\\}", getSchedulerHome());
+        //return getDefault("editor.options.file").replaceAll("\\{scheduler_home\\}", getSchedulerHome());
+    	return getDefault("editor.options.file").replaceAll("\\{scheduler_home\\}", getSchedulerHome().replaceAll("\\\\", "/"));
     }
 
 
@@ -190,7 +191,9 @@ public class Options {
 
 
     public static String getXSLT() {
-        return _properties.getProperty("editor.xml.xslt").replaceAll("\\{scheduler_home\\}", getSchedulerHome());
+        //return _properties.getProperty("editor.xml.xslt").replaceAll("\\{scheduler_home\\}", getSchedulerHome());
+    	return _properties.getProperty("editor.xml.xslt").replaceAll("\\{scheduler_home\\}", getSchedulerHome().replaceAll("\\\\", "/"));
+    	
     }
 
 
@@ -205,7 +208,7 @@ public class Options {
 
 
     public static String getDocXSLT() {
-        return _properties.getProperty("documentation.xml.xslt").replaceAll("\\{scheduler_home\\}", getSchedulerHome());
+        return _properties.getProperty("documentation.xml.xslt").replaceAll("\\{scheduler_home\\}", getSchedulerHome().replaceAll("\\\\", "/"));
     }
 
 

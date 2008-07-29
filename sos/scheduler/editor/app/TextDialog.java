@@ -2,12 +2,16 @@ package sos.scheduler.editor.app;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.custom.VerifyKeyListener;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -44,6 +48,9 @@ public class TextDialog extends Dialog {
 
 	private boolean    bEdit           = false;
 
+	
+	private boolean previousCtrlX = false;
+	
 	public TextDialog(Shell parent, int shellStyle, int textStyle) {
 		super(parent, SWT.NONE);
 		_shellStyle = shellStyle;
@@ -187,8 +194,39 @@ public class TextDialog extends Dialog {
 		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 3, 1);
 
 		_styledText = new StyledText(_shell, SWT.V_SCROLL | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
+		/*_styledText.addVerifyKeyListener(new VerifyKeyListener() {
+			public void verifyKey(VerifyEvent event) {
+				
+				_styledText.setKeyBinding(SWT.CTRL | 'A', 10000);
+				
+				// check whether the current keystroke is a <CTRL>+<X>				
+				boolean isCtrlX = (event.stateMask == SWT.CTRL) && (event.character == 'A' );
+System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.CTRL | 'A') + " " + event.keyCode);
+	        		// select one page if the previous keystroke was <CTRL>+<X> and 
+				// the current keystroke is 'P'
+				if (previousCtrlX && Character.toUpperCase(event.character) == 'P') {
+					_styledText.invokeAction(SWT.SELECTED);
+					// ignore the second key of a multi-keystroke
+					event.doit = false;
+				} else if (isCtrlX) {
+					// ignore <CTRL>+<X> key strokes
+		        		event.doit = false; 		
+	        		}
+				previousCtrlX = isCtrlX;
+				
+			}
+		});*/
+		_styledText.addKeyListener(new KeyAdapter() {
+			public void keyPressed(final KeyEvent e) {
+				
+				if(e.keyCode==97 && e.stateMask == SWT.CTRL){
+					_styledText.setSelection(0, _styledText.getText().length());
+				}
+				
+			}
+		});
 		_styledText.addModifyListener(new ModifyListener() {
-			public void modifyText(final ModifyEvent e) {        		
+			public void modifyText(final ModifyEvent e) {       					
 				if (bEdit)
 					butApply.setEnabled(true);  
 

@@ -11,6 +11,8 @@ import org.eclipse.swt.widgets.Tree;
 //import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,7 +135,7 @@ public class TreeMenu {
 		item.setText(TreeMenu.COPY);
 
 		if((_dom instanceof sos.scheduler.editor.conf.SchedulerDom)) {
-			if(((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement()) {				
+			if(((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement() ) {				
 				item = new MenuItem(_menu, SWT.PUSH);
 				item.addListener(SWT.Selection, getDeleteListener());
 				item.setText(TreeMenu.DELETE);
@@ -162,12 +164,22 @@ public class TreeMenu {
 					if (element != null ) {
 						//test element = _dom.getRoot().getChild("config");
 
+						
 						getItem(TreeMenu.EDIT_XML).setEnabled(true); 
 						getItem(TreeMenu.SHOW_INFO).setEnabled(true); // show info
 						getItem(TreeMenu.SHOW_XML).setEnabled(true); // show xml
 						getItem(TreeMenu.COPY_TO_CLIPBOARD).setEnabled(true); // copy to clipboard
-						if(_dom instanceof SchedulerDom && ((SchedulerDom)_dom).isLifeElement())
-							getItem(TreeMenu.DELETE).setEnabled(true);
+						if(_dom instanceof SchedulerDom ) {
+							SchedulerDom curDom = ((SchedulerDom)_dom); 
+							if(curDom.isLifeElement() ) {
+								getItem(TreeMenu.DELETE).setEnabled(true);
+							}
+							if(curDom.isDirectory()) {
+								String elemName = getElement().getName();
+								if(elemName.equals("config"))
+									getItem(TreeMenu.EDIT_XML).setEnabled(false);
+							}
+						}
 
 
 						//String name = element.getName();
@@ -229,6 +241,7 @@ public class TreeMenu {
 						if (prog != null)
 							prog.execute(filename);
 						else {
+							filename = new File(filename).toURL().toString();
 							Runtime.getRuntime().exec(Options.getBrowserExec(filename, null));
 						}
 					} catch (Exception ex) {
@@ -300,7 +313,9 @@ public class TreeMenu {
 				Element element = null;
 				String xml = null;
 				if(i.getText().equalsIgnoreCase(TreeMenu.EDIT_XML)) {
-					if(_dom instanceof sos.scheduler.editor.conf.SchedulerDom && ((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement()) {
+					if(_dom instanceof sos.scheduler.editor.conf.SchedulerDom && 
+							(((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement() ||
+									((sos.scheduler.editor.conf.SchedulerDom)_dom).isDirectory())) {
 						element = getElement();
 					} else {
 						element = _dom.getRoot().getChild("config");
@@ -337,8 +352,49 @@ public class TreeMenu {
 
 		try {  
 			if(_dom instanceof SchedulerDom) {
-				if(!((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement())
+				
+				if(((sos.scheduler.editor.conf.SchedulerDom)_dom).isDirectory()) {
+					String enco =" ";  
+					if(newXML.indexOf("?>") > -1) {
+						enco = newXML.substring(0, newXML.indexOf("?>") + "?>".length()) ;
+						newXML = newXML.substring(newXML.indexOf("?>")+ "?>".length()) ;
+					}
+					String xml = Utils.getElementAsString(_dom.getRoot().getChild("config"));
+				  	String oldxml = Utils.getElementAsString(getElement());
+				  	int iPosBegin = 0;
+				  	if(oldxml.indexOf("\r\n") > -1)
+				  		iPosBegin = xml.indexOf(oldxml.substring(0, oldxml.indexOf("\r\n")));
+				  	else
+				  		iPosBegin = xml.indexOf(oldxml);
+				  	
+				  	//int iPosEnd = xml.indexOf("</"+ getElement().getName() + ">", iPosBegin) + (("</"+ getElement().getName() + ">").length()) ;
+				  	int iPosEnd = xml.indexOf("</"+ getElement().getName() + ">", iPosBegin) ;
+				  	if(iPosEnd == -1) {
+				  		//hat keinen Kindknoten
+				  		iPosEnd = xml.indexOf("/>", iPosBegin) + "/>".length() ;
+				  	} else {
+				  		iPosEnd = iPosEnd + ("</"+ getElement().getName() + ">").length();
+				  	}
+				  	/*
+				  	System.out.println("****************************************");
+				  	System.out.println("Begin : ");
+				  	System.out.println( xml.substring(0, iPosBegin));
+				  	System.out.println("End   : ");
+				  	System.out.println( xml.substring(iPosEnd));
+				  	System.out.println("****************************************");
+				  	*/
+				  	
+				  	
+				  	//int iPosEnd = iPosBegin + oldxml.length();
+				  	newXML = xml.substring(0, iPosBegin) + newXML + xml.substring(iPosEnd);
+				  	//snewXML = snewXML + newXML + xml.substring(iPosEnd);
+				  	
+				  	
+				  	newXML = enco + "<spooler>" + newXML + "</spooler>";
+				  	//System.out.println(newXML);
+				} else if(!((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement()) {					
 					newXML = newXML.replaceAll("\\?>", "?><spooler>" )+ "</spooler>";
+				}
 			}
 
 			//System.out.println("debug: \n" + newXML);
@@ -347,6 +403,12 @@ public class TreeMenu {
 
 			_dom.readString(newXML, true);
 			_gui.update();
+			if (_dom instanceof SchedulerDom && ((SchedulerDom)_dom).isDirectory()) {
+				System.out.println(Utils.getAttributeValue("name", getElement()  ));
+				((SchedulerDom)_dom).setChangedForDirectory(getElement(), SchedulerDom.NEW);
+			}
+			_gui.updateTree("main");
+			_dom.setChanged(true);
 
 			refreshTree("main");
 
@@ -378,17 +440,48 @@ public class TreeMenu {
 		return new Listener() {
 			public void handleEvent(Event e) {
 
-				int ok = MainWindow.message("Do you wont really remove life file: " + _dom.getFilename(), //$NON-NLS-1$
+				String filename =_dom.getFilename();
+				
+				/*TreeData data = (TreeData) _tree.getSelection()[0].getData();
+				Element elem = data.getElement();
+				if(_dom instanceof SchedulerDom && ((SchedulerDom)_dom).isDirectory()) {
+					
+					
+					String attr =  "";
+					if(elem.getName().equals("order") || elem.getName().equals("add_order"))
+						attr = Utils.getAttributeValue("job_chain", elem)+"," + Utils.getAttributeValue("order", elem) +  Utils.getAttributeValue("add_order", elem);
+					else 
+						attr =  Utils.getAttributeValue("name", elem);
+
+					filename = filename.endsWith("/") || filename.endsWith("\\") ? filename : filename + "/";					
+					filename = filename + attr  + "." + elem.getName() + ".xml"; 
+					Utils.setChangedForDirectory(elem, ((SchedulerDom)_dom));
+				}
+				*/
+				
+				int ok = MainWindow.message("Do you wont really remove life file: " + filename, //$NON-NLS-1$
 						SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
 
 				if (ok == SWT.CANCEL || ok == SWT.NO)
 					return;		           
 
-				if(!new java.io.File(_dom.getFilename()).delete()) {
+				if(!new java.io.File(filename).delete()) {
 					MainWindow.message("could not remove life file", SWT.ICON_WARNING | SWT.OK);
 				}
-				sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
-				con.getCurrentTab().dispose();
+				if(_dom instanceof SchedulerDom && ((SchedulerDom)_dom).isLifeElement()) {
+					sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();				
+					con.getCurrentTab().dispose();
+				}
+				
+				/*if(_dom instanceof SchedulerDom && ((SchedulerDom)_dom).isDirectory()) {
+					Element parent = elem.getParentElement();
+					parent.removeContent(elem);
+					_gui.updateJobChains();
+					_gui.updateJobs();
+					_gui.updateCommands();
+					
+				}
+				*/
 
 			}
 		};
@@ -722,7 +815,7 @@ public class TreeMenu {
 
 			}
 
-			updateTreeView();		
+			updateTreeView(data);		
 		} catch (Exception e) {
 			try {
 				new sos.scheduler.editor.app.ErrorLog("error in " +  sos.util.SOSClassUtil.getMethodName(), e);
@@ -759,7 +852,7 @@ public class TreeMenu {
 
 		}
 
-		updateTreeView();
+		updateTreeView(data);
 
 	}
 
@@ -799,7 +892,7 @@ public class TreeMenu {
 		}
 	}
 
-	private void updateTreeView() {
+	private void updateTreeView(TreeData data) {
 
 
 
@@ -845,6 +938,10 @@ public class TreeMenu {
 
 		refreshTree("main");
 		
+		if (_dom instanceof SchedulerDom && ((SchedulerDom)_dom).isDirectory()) {
+			((SchedulerDom)_dom).setChangedForDirectory(data.getElement(), SchedulerDom.NEW);
+		}
+			
 		_dom.setChanged(true);
 	}
 

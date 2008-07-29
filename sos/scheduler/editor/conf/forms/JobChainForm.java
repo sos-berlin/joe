@@ -30,11 +30,6 @@ import sos.scheduler.editor.conf.listeners.OrdersListener;
 public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
-	//private static final String GROUP_NODES_TITLE           = "Chain Nodes";
-
-	//private static final String GROUP_FILEORDERSOURCE_TITLE = "File Order Sources"; 
-
-
 	private JobChainListener    listener                    = null;
 
 	private Group               jobChainGroup               = null;
@@ -47,20 +42,11 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 
 	private Button              bVisible                    = null;
 
-	//private Button              bApplyChain                 = null;
-
-	//private SashForm            sashForm                    = null;
-
-	//private Group               sashForm                    = null;
-
     private Button              butDetails                  = null;
 
 	private ISchedulerUpdate    update                      = null;
 
-
 	private Button              butDistributed              = null; 
-
-
 
 	private Text                txtTitle                    = null; 
 
@@ -77,15 +63,10 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 
 
 	public void apply() {
-		//if (bApplyChain.isEnabled())
-		//	applyChain();
-		//if (bApplyNode.isEnabled())
-		//	applyNode();
 	}
 
 
 	public boolean isUnsaved() {
-		//return bApplyChain.isEnabled() || bApplyNode.isEnabled();
 		return false;
 	}
 
@@ -138,7 +119,8 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				if(_continue) {
 					listener.setChainName(tName.getText());
 					if(update != null)
-						update.updateJobChain(tName.getText(), oldJobChainname);
+						//update.updateJobChain(tName.getText(), oldJobChainname);
+						update.updateTreeItem(tName.getText());
 				}
 				//bApplyChain.setEnabled(!existname && !tName.equals(""));
 				//mo neu

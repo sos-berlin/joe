@@ -701,7 +701,7 @@ public class DaysListener {
 		if(tree != null && tree.getSelectionCount() > 0) {
 			TreeItem item = f.getTree().getSelection()[0];
             if(item.getParentItem() != null && (item.getParentItem().getText().equalsIgnoreCase("Holidays") ||
-            		item.getParentItem().getData("key").equals("holidays"))) {
+            		(item.getParentItem().getData("key") != null && item.getParentItem().getData("key").equals("holidays")))) {
 			//if(_runtime.getName().equals("config")){
 				if(_runtime.getChild("holidays") != null)
 					_runtime = _runtime.getChild("holidays");

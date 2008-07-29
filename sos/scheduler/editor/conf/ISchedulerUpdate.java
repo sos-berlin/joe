@@ -45,4 +45,6 @@ public interface ISchedulerUpdate extends IDataChanged {
     
     public void updateWebServices();
     
+    public void updateRunTime();
+    
 }

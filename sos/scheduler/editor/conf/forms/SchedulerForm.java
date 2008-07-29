@@ -422,7 +422,8 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	
 	public void updateJobChains() {
 		listener.treeFillJobChains(tree.getSelection()[0]);
-		tree.getSelection()[0].getItems()[tree.getSelection()[0].getItemCount()-1].setExpanded(true);
+		if(tree.getSelection()[0].getItemCount() > 0)
+			tree.getSelection()[0].getItems()[tree.getSelection()[0].getItemCount()-1].setExpanded(true);
 	}
 	
 	
@@ -617,6 +618,18 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 
 	public SchedulerListener getListener() {
 		return listener;
+	}
+	
+	//hasRuntimeChild = false, wenn der Runtime ELement Attribute wie schedule oder runtime_function hat
+	public void updateRunTime() {
+		
+		if(tree.getSelectionCount()> 0) {
+			TreeItem item = tree.getSelection()[0];
+			item.removeAll();
+			TreeData data = (TreeData)item.getData();			
+			listener.treeFillRunTimes(item, data.getElement(), !Utils.isElementEnabled("job", dom, data.getElement()), "run_time");
+		}
+		
 	}
 	
 }

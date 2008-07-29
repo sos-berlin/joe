@@ -57,14 +57,15 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
     
     private boolean         init                     = false;
         
-    
+    //private SchedulerDom    _dom                     = null;               
     
     public RunTimeForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate gui) {
     	
         super(parent, style);
         init = true;
         _gui = gui;
-        listener = new RunTimeListener(dom, job);
+        //_dom = dom;
+        listener = new RunTimeListener(dom, job, _gui);
         initialize();
         setToolTipText();
         dom.setInit(true);
@@ -126,6 +127,8 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         			setEnabled();
         			listener.setFunction(tFunction.getText());
         			_gui.updateFont();
+        			if(!init) 
+            			_gui.updateRunTime();
         		
         	}
         });
@@ -157,6 +160,9 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         			setEnabled();
             		listener.setSchedule(comSchedule.getText());
             		_gui.updateFont();
+            		if(!init) 
+            			_gui.updateRunTime();
+            		
         	}
         });
 
@@ -273,7 +279,8 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
     		
     		if(runTimeBackUpElem != null) {
     			
-    			Element e = listener.getRunTime(); 
+    			Element e = listener.getRunTime();
+                e.removeAttribute("schedule");
     			e.setContent(runTimeBackUpElem.cloneContent());    		    
     			for(int i = 0; i < runTimeBackUpElem.getAttributes().size(); i++) {
     				org.jdom.Attribute attr = (org.jdom.Attribute)runTimeBackUpElem.getAttributes().get(i);
@@ -293,12 +300,17 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
     			runTimeBackUpElem = (Element)listener.getRunTime().clone();    		
     			listener.getRunTime().removeContent();
     			listener.getRunTime().getAttributes().clear();
+    			
+    			//_gui.updateRunTime(!enable);
     		}    		
     		
     	} 
 
     	
-    	periodForm.setEnabled(enable);    	    	
+    	periodForm.setEnabled(enable);   
+    	
+    	//_gui.updateRunTime();
+    	
     	//holidayForm.setEnabled(enable);
     	
 

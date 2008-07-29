@@ -3,6 +3,7 @@ package sos.scheduler.editor.conf.listeners;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class RunTimeListener {
@@ -14,9 +15,11 @@ public class RunTimeListener {
 
 	private       Element         _runtime    = null;
 
+	private       ISchedulerUpdate _gui        = null;
 
-	public RunTimeListener(SchedulerDom dom, Element job) {
+	public RunTimeListener(SchedulerDom dom, Element job, ISchedulerUpdate gui) {
 		_dom = dom;
+		_gui = gui;
 		_job = job;
 		_runtime = _job.getChild("run_time");
 		checkRuntime();
@@ -59,6 +62,7 @@ public class RunTimeListener {
 		if (_runtime != null) {
 
 			Utils.setAttribute("start_time_function",function_name, _runtime, _dom);
+			//_gui.updateRunTime();
 			//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 			if(_dom.isDirectory() || _dom.isLifeElement())
 				_dom.setChangedForDirectory(_job, SchedulerDom.MODIFY);
@@ -94,6 +98,7 @@ public class RunTimeListener {
 	public void setSchedule(String schedule) {
 		if(_runtime != null) {
 			Utils.setAttribute("schedule", schedule, _runtime, _dom);
+			//_gui.updateRunTime();
 			if(_dom.isDirectory() || _dom.isLifeElement())
 				_dom.setChangedForDirectory(_job, SchedulerDom.MODIFY);
 		}

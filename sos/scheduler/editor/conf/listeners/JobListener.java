@@ -324,7 +324,7 @@ public class JobListener {
 		if (desc != null) {
 			Element inc = desc.getChild("include");
 			if (inc != null)
-				return inc.getAttributeValue("file");
+				return Utils.getAttributeValue("file", inc) + Utils.getAttributeValue("live_file", inc);
 		}
 		return "";
 	}
@@ -334,7 +334,7 @@ public class JobListener {
 		if (desc != null) {
 			Element inc = desc.getChild("include");
 			if (inc != null)
-				return Utils.getAttributeValue("live_file",inc).equalsIgnoreCase("yes");
+				return Utils.getAttributeValue("live_file",inc).length() > 0;
 		}
 		return false;
 	}

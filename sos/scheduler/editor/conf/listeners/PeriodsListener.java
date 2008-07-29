@@ -102,13 +102,17 @@ public class PeriodsListener {
 			return false;		
 
 		//mögliche Vaterknoten herausfinden
-		while (!job.getName().equals("job") 
+		while (job != null 
+				&& !job.getName().equals("job") 
 				&& !job.getName().equals("add_order")
 				&& !job.getName().equals("order")
 				&& !job.getName().equals("schedule")
 				&& !job.getName().equals("config"))
 			job = job.getParentElement();
 
+		if(job == null )
+			job = _parent;
+		
 		return		
 		Utils.isAttributeValue("order", job) && job.getName().equals("job") || 
 		Utils.isAttributeValue("id", job)&& job.getName().equals("add_order");

@@ -688,7 +688,10 @@ public class JobForm extends Composite implements IUpdateLanguage {
 				
 				if(tFileName.getText()!= null && tFileName.getText().length() > 0) {
 					butShow.setEnabled(true);
-					butOpen.setEnabled(true);
+					if(tFileName.getText().endsWith(".xml"))
+						butOpen.setEnabled(true);
+					else
+						butOpen.setEnabled(false);
 				} else {
 					butShow.setEnabled(false);
 					butOpen.setEnabled(false);
@@ -707,9 +710,12 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		tFileName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setInclude(tFileName.getText(), butIsLiveFile.getSelection());				
-				if(tFileName.getText()!= null && tFileName.getText().length() > 0) {
+				if(tFileName.getText()!= null && tFileName.getText().length() > 0 ) {					
 					butShow.setEnabled(true);
-					butOpen.setEnabled(true);
+					if(tFileName.getText().endsWith(".xml"))				
+						butOpen.setEnabled(true);
+					else
+						butOpen.setEnabled(false);
 				} else {
 					butShow.setEnabled(false);
 					butOpen.setEnabled(false);
@@ -840,9 +846,9 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		tIgnoreSignals.setText(listener.getIgnoreSignal());
 		sTimeout.setText(listener.getTimeout());
 		sIdleTimeout.setText(listener.getIdleTimeout());
-		
-		tFileName.setText(listener.getInclude());
 		butIsLiveFile.setSelection(listener.isLiveFile());
+		tFileName.setText(listener.getInclude());
+		
 		//tURL.setText(listener.getInclude());
 		tDescription.setText(listener.getDescription());
 		tComment.setText(listener.getComment());
