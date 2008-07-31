@@ -30,10 +30,22 @@ import sos.scheduler.editor.conf.forms.*;
 
 public class SchedulerListener {
 
-	private SchedulerDom  _dom;
+	private        SchedulerDom      _dom           = null;
 
-	private SchedulerForm _gui;
+	private        SchedulerForm     _gui           = null;
+	
+	public static  String            JOBS           = "Jobs"; 
+	
+	public static  String            JOB_CHAINS     = "Job Chains";
+	
+	public static  String            WEB_SERVICE    = "Web Services";
 
+	public static  String            SCHEDULES      = "Schedules";
+	
+	public static  String            ORDERS         = "Orders";
+	
+	
+	
 	/** Aufruf erfolgt durch open Directory oder open Configurations*/
 	private int type = -1;
 
@@ -41,10 +53,12 @@ public class SchedulerListener {
 	public SchedulerListener(SchedulerForm gui, SchedulerDom dom) {
 		_gui = gui;
 		_dom = dom;
+		
 	}
 
 	public void treeFillMain(Tree tree, Composite c, int type_) {
 		type = type_;		
+		
 		if(_dom.isLifeElement())
 			treeFillMainForLifeElement(tree, c);
 		else 
@@ -53,6 +67,7 @@ public class SchedulerListener {
 
 	public void treeFillMainForLifeElement(Tree tree, Composite c) {
 
+		
 		tree.removeAll();
 
 		Element element = _dom.getRoot();        
@@ -285,7 +300,7 @@ public class SchedulerListener {
 		item.setData(new TreeData(Editor.SCHEDULES, config, Options.getHelpURL("schedules"), "schedules"));
 		item.setData("key", "schedules_@_schedule");
 		item.setData("copy_element", config);
-		item.setText("Schedules");
+		item.setText(SCHEDULES);
 		treeFillSchedules(item);
 
 		item = new TreeItem(tree, SWT.NONE);
@@ -320,7 +335,7 @@ public class SchedulerListener {
 			item.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));			
 			item.setData("key", "http_server_@_web_service");
 			item.setData("copy_element", config);
-			item.setText("Web Services");
+			item.setText(WEB_SERVICE);
 			treeFillWebServices(item);
 
 
@@ -354,7 +369,7 @@ public class SchedulerListener {
 		item.setData(new TreeData(Editor.JOBS, config, Options.getHelpURL("jobs"), "jobs"));
 		item.setData("key", "jobs_@_job");
 		item.setData("copy_element", config);
-		item.setText("Jobs");
+		item.setText(JOBS);
 		treeFillJobs(item);
 		item.setExpanded(true);
 
@@ -362,7 +377,7 @@ public class SchedulerListener {
 		item.setData(new TreeData(Editor.JOB_CHAINS, config, Options.getHelpURL("job_chains"), "job_chains"));
 		item.setData("key", "job_chains_@_job_chain");
 		item.setData("copy_element", config);
-		item.setText("Job Chains");
+		item.setText(JOB_CHAINS);
 		treeFillJobChains(item);
 
 
@@ -370,7 +385,7 @@ public class SchedulerListener {
 		item.setData(new TreeData(Editor.ORDERS, config, Options.getHelpURL("orders"), "orders"));
 		item.setData("key", "commands_@_order");
 		item.setData("copy_element", config);
-		item.setText("Orders");
+		item.setText(ORDERS);
 		treeFillOrders(item, true);
 
 		item = new TreeItem(tree, SWT.NONE);
@@ -449,6 +464,7 @@ public class SchedulerListener {
 			}
 		}
 		orders.setExpanded(expand);
+		
 	}
 
 
@@ -854,6 +870,7 @@ public class SchedulerListener {
 	}
 	public boolean treeSelection(Tree tree, Composite c) {
 		try {
+		
 			if (tree.getSelectionCount() > 0) {
 
 				// dispose the old form

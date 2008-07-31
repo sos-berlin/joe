@@ -126,6 +126,8 @@ public class FTPDialogListener {
 		currProfileName = profile;
 		currProfile = (Properties)profiles.get(profile);
 
+		
+		
 	}
 
 	private String[] convert(Object[] obj) {
@@ -531,6 +533,10 @@ public class FTPDialogListener {
 			host                   = sosString.parseToString(prop.get("host"));
 			user                   = sosString.parseToString(prop.get("user"));
 			authenticationMethod   = sosString.parseToString(prop.get("auth_method")).length() > 0 ?   sosString.parseToString(prop.get("auth_method")) : "publickey";
+			String sPort           = sosString.parseToString(prop.get("port"));
+			if(sPort.length() > 0)
+				port = Integer.parseInt(sosString.parseToString(prop.get("port")));
+			
 			if(authenticationMethod.length() > 0 && authenticationMethod.equals("both"))
 				authenticationMethod = "publickey";
 
@@ -571,7 +577,8 @@ public class FTPDialogListener {
 			}
 
 
-			if(password.length() == 0 && !protocol.equalsIgnoreCase("sftp") || tryAgain) {
+			if(password.length() == 0 && !protocol.equalsIgnoreCase("sftp") || 
+					(tryAgain && sosString.parseToString(password).length() == 0)) {
 				Shell shell = new Shell();
 				shell.pack();					
 				Dialog dialog = new Dialog(shell);		
@@ -1149,5 +1156,15 @@ public class FTPDialogListener {
 		}
 		return s;
 	}
+	
+	public void refresh() {
+		
+		if(cboConnectname != null) {
+			cboConnectname.setItems(getProfileNames());
+			cboConnectname.setText(currProfileName);
+			txtPath.setText(currProfile.getProperty("root"));
+		}
+	}
+	
 }
 

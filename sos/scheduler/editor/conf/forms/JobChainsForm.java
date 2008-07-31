@@ -24,6 +24,7 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainsListener;
 import sos.scheduler.editor.conf.listeners.OrdersListener;
 
+
 public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
@@ -33,7 +34,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 
 	private Group               group             = null;
 
-	private Table               tChains           = null;
+	private static Table        tChains           = null;
 
 	private Button              bRemoveChain      = null;
 
@@ -121,10 +122,11 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		getShell().setDefaultButton(bNewChain);
 		bNewChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				listener.newChain();
+				createNewJobChain();
+				/*listener.newChain();
 				applyChain();
 				tChains.deselectAll();
-				butDetails.setEnabled(false);   								
+				butDetails.setEnabled(false);*/
 			}
 		});
 		bRemoveChain = new Button(jobchainsGroup, SWT.NONE);
@@ -238,4 +240,15 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		return false;
 	}
 
+	public void createNewJobChain() {
+		listener.newChain();
+		applyChain();
+		tChains.deselectAll();
+		butDetails.setEnabled(false);
+	}
+
+	public static Table getTableChains() {
+		return tChains;
+	}
+	
 } // @jve:decl-index=0:visual-constraint="10,10"

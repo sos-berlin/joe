@@ -8,46 +8,53 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Tree;
-//import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.forms.JobChainsForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
+import sos.scheduler.editor.conf.listeners.SchedulerListener;
+
+
 
 public class TreeMenu {
 
-	private DomParser               _dom                  = null;
+	private DomParser               _dom                      = null;
 
-	private Tree                    _tree                 = null;
+	private Tree                    _tree                     = null;
 
-	private Menu                    _menu                 = null;
+	private Menu                    _menu                     = null;
 
-	//private Clipboard               _cb                   = null;
+	//private Clipboard               _cb                     = null;
 
-	private static Element          _copy                 = null;
+	private static Element          _copy                     = null;
 
-	private static int              _type                 = -1; 
+	private static int              _type                     = -1; 
 
-	private SchedulerForm           _gui                  = null;
+	private SchedulerForm           _gui                      = null;
 
-	private static final String EDIT_XML                  = "Edit XML";
+	private static final String     EDIT_XML                  = "Edit XML";
 
-	private static final String SHOW_XML                  = "Show XML";
+	private static final String     SHOW_XML                  = "Show XML";
 
-	private static final String SHOW_INFO                 = "Show Info";
+	private static final String     SHOW_INFO                 = "Show Info";
 
-	private static final String COPY                      = "Copy";
+	private static final String     COPY                      = "Copy";
 
-	private static final String COPY_TO_CLIPBOARD         = "Copy to Clipboard";
+	private static final String     COPY_TO_CLIPBOARD         = "Copy to Clipboard";
 
-	private static final String PASTE                     = "Paste";
+	private static final String     PASTE                     = "Paste";
 
-	private static final String DELETE                     = "Delete";
+	private static final String     DELETE_HOT_HOLDER_FILE    = "Delete Hot Folder File";
+	
+	private static final String     NEW                       = "New";
+	
+	private static final String     DELETE                    = "Delete";
+	
 
 
 	public TreeMenu(Tree tree, DomParser dom, SchedulerForm gui) {
@@ -134,16 +141,29 @@ public class TreeMenu {
 		item.addListener(SWT.Selection, getCopyListener());
 		item.setText(TreeMenu.COPY);
 
+		
+		item = new MenuItem(_menu, SWT.PUSH);
+		item.addListener(SWT.Selection, getNewItemSelection());
+		item.setText(TreeMenu.NEW);			
+		item.setEnabled(false);
+
+		item = new MenuItem(_menu, SWT.PUSH);
+		item.addListener(SWT.Selection, getDeleteSelection());
+		item.setText(TreeMenu.DELETE);			
+		item.setEnabled(false);
+
+		
 		if((_dom instanceof sos.scheduler.editor.conf.SchedulerDom)) {
 			if(((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement() ) {				
 				item = new MenuItem(_menu, SWT.PUSH);
-				item.addListener(SWT.Selection, getDeleteListener());
-				item.setText(TreeMenu.DELETE);
+				item.addListener(SWT.Selection, getDeleteHoltFolderFileListener());
+				item.setText(TreeMenu.DELETE_HOT_HOLDER_FILE);
 
 			}
 		}
+		
 
-
+		
 		item = new MenuItem(_menu, SWT.PUSH);
 		item.addListener(SWT.Selection, getClipboardListener());
 		item.setText(TreeMenu.COPY_TO_CLIPBOARD);
@@ -172,7 +192,7 @@ public class TreeMenu {
 						if(_dom instanceof SchedulerDom ) {
 							SchedulerDom curDom = ((SchedulerDom)_dom); 
 							if(curDom.isLifeElement() ) {
-								getItem(TreeMenu.DELETE).setEnabled(true);
+								getItem(TreeMenu.DELETE_HOT_HOLDER_FILE).setEnabled(true);
 							}
 							if(curDom.isDirectory()) {
 								String elemName = getElement().getName();
@@ -210,6 +230,14 @@ public class TreeMenu {
 								_paste.setEnabled(false); // paste
 							 */
 						}
+						
+						if(getParentItemName().length() > 0) {
+							getItem(TreeMenu.NEW).setEnabled(true);							
+						}
+						if(getItemElement() != null) {
+							getItem(TreeMenu.DELETE).setEnabled(true);
+						}
+						
 					}
 				}
 			}
@@ -435,29 +463,116 @@ public class TreeMenu {
 		};
 	}
 
+	//TreeData data = (TreeData)_tree.getSelection()[0].getData();					
+	//sos.scheduler.editor.conf.ISchedulerUpdate update = _gui;
 
-	private Listener getDeleteListener () {
+	private Listener getNewItemSelection() {
+		return new Listener() {
+			public void handleEvent(Event e) {
+				String name = getParentItemName();
+				
+				if(name.equals(SchedulerListener.JOBS)){
+					
+					sos.scheduler.editor.conf.listeners.JobsListener listeners = 
+						new sos.scheduler.editor.conf.listeners.JobsListener((SchedulerDom)_dom, _gui);
+					listeners.newJob(sos.scheduler.editor.conf.forms.JobsForm.getTable());
+						
+				} else if(name.equals(SchedulerListener.JOB_CHAINS)){
+				
+					TreeData data = (TreeData)_tree.getSelection()[0].getData();					
+					sos.scheduler.editor.conf.listeners.JobChainsListener listeners =
+						new sos.scheduler.editor.conf.listeners.JobChainsListener((SchedulerDom)_dom, data.getElement(), _gui);
+					listeners.newChain();					
+					int i = 1;
+					if( data.getElement().getChild("job_chains") != null)
+						i = data.getElement().getChild("job_chains").getChildren("job_chain").size() + 1;
+					listeners.applyChain("job_chain" + i , true, true);
+					listeners.fillChains(JobChainsForm.getTableChains());
+				} else if(name.equals(SchedulerListener.SCHEDULES)) {
+					sos.scheduler.editor.conf.listeners.SchedulesListener listener = 
+						new sos.scheduler.editor.conf.listeners.SchedulesListener((SchedulerDom)_dom, _gui);
+					listener.newScheduler(sos.scheduler.editor.conf.forms.SchedulesForm.getTable());
+				} else if(name.equals(SchedulerListener.ORDERS)) {
+					sos.scheduler.editor.conf.listeners.OrdersListener listener = 
+						new sos.scheduler.editor.conf.listeners.OrdersListener((SchedulerDom)_dom, _gui);
+					listener.newCommands(sos.scheduler.editor.conf.forms.OrdersForm.getTable());
+				}
+				
+			}
+		};
+	}
+
+	
+	private Listener getDeleteSelection() {
+		return new Listener() {
+			public void handleEvent(Event e) {
+				Element elem = getItemElement();
+				String  name = elem.getName();
+				if(name.equals("job")){
+					//TreeData data = (TreeData)_tree.getSelection()[0].getData();
+					_dom.setChanged(true);
+					((SchedulerDom)_dom).setChangedForDirectory("job", Utils.getAttributeValue("name", elem) ,SchedulerDom.DELETE);
+					elem.detach();
+					_gui.updateJobs();				
+						
+				} else if(name.equals("job_chain")){
+				
+					//TreeData data = (TreeData)_tree.getSelection()[0].getData();
+					//data.getElement().detach();
+					_dom.setChanged(true);
+					((SchedulerDom)_dom).setChangedForDirectory("job_chain", Utils.getAttributeValue("name", elem), SchedulerDom.DELETE);
+					elem.detach();
+					TreeItem parentItem = _tree.getSelection()[0].getParentItem();
+					_tree.setSelection(new TreeItem[]{parentItem});
+					if(parentItem.getItemCount() ==  1)//job_chains Element hat keine weiteren Kindelemente
+						((TreeData)parentItem.getData()).getElement().getChild("job_chains").detach();
+					_gui.updateJobChains();
+					_gui.updateCMainForm();
+					
+				} else if(name.equals("schedule")) {
+					
+					_dom.setChanged(true);
+					((SchedulerDom)_dom).setChangedForDirectory("schedule", Utils.getAttributeValue("name", elem) ,SchedulerDom.DELETE);
+					elem.detach();
+					TreeItem parentItem = _tree.getSelection()[0].getParentItem();
+					_tree.setSelection(new TreeItem[]{parentItem});
+					if(parentItem.getItemCount() ==  1)//job_chains Element hat keine weiteren Kindelemente
+						((TreeData)parentItem.getData()).getElement().getChild("schedules").detach();
+					_gui.updateSchedules();
+					_gui.updateCMainForm();	
+				} else if(name.equals("order") || name.equals("add_order")) {
+
+					_dom.setChanged(true);
+					((SchedulerDom)_dom).setChangedForDirectory("order", Utils.getAttributeValue("job_chain", elem)+","+Utils.getAttributeValue("id", elem), SchedulerDom.DELETE);
+					elem.detach();
+
+					TreeItem parentItem = _tree.getSelection()[0].getParentItem();
+					_tree.setSelection(new TreeItem[]{parentItem});
+
+					if(parentItem.getItemCount() ==  1)//job_chains Element hat keine weiteren Kindelemente
+						((TreeData)parentItem.getData()).getElement().getChild("commands").detach();
+
+					//_gui.updateTree("main");
+					_gui.updateOrders();
+					//for(int i = 0; i < _tree.getItemCount(); i++) {
+					//	if(_tree.getItem(i).getText().equals(SchedulerListener.ORDERS)){
+					//		_tree.setSelection(new TreeItem[]{_tree.getItem(i)});
+					_gui.updateCMainForm();
+					//	}
+					//}
+				}
+
+			}
+		};
+	}
+	
+	
+	private Listener getDeleteHoltFolderFileListener () {
 		return new Listener() {
 			public void handleEvent(Event e) {
 
 				String filename =_dom.getFilename();
 				
-				/*TreeData data = (TreeData) _tree.getSelection()[0].getData();
-				Element elem = data.getElement();
-				if(_dom instanceof SchedulerDom && ((SchedulerDom)_dom).isDirectory()) {
-					
-					
-					String attr =  "";
-					if(elem.getName().equals("order") || elem.getName().equals("add_order"))
-						attr = Utils.getAttributeValue("job_chain", elem)+"," + Utils.getAttributeValue("order", elem) +  Utils.getAttributeValue("add_order", elem);
-					else 
-						attr =  Utils.getAttributeValue("name", elem);
-
-					filename = filename.endsWith("/") || filename.endsWith("\\") ? filename : filename + "/";					
-					filename = filename + attr  + "." + elem.getName() + ".xml"; 
-					Utils.setChangedForDirectory(elem, ((SchedulerDom)_dom));
-				}
-				*/
 				
 				int ok = MainWindow.message("Do you wont really remove life file: " + filename, //$NON-NLS-1$
 						SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
@@ -473,16 +588,7 @@ public class TreeMenu {
 					con.getCurrentTab().dispose();
 				}
 				
-				/*if(_dom instanceof SchedulerDom && ((SchedulerDom)_dom).isDirectory()) {
-					Element parent = elem.getParentElement();
-					parent.removeContent(elem);
-					_gui.updateJobChains();
-					_gui.updateJobs();
-					_gui.updateCommands();
-					
-				}
-				*/
-
+				
 			}
 		};
 	}
@@ -945,5 +1051,38 @@ public class TreeMenu {
 		_dom.setChanged(true);
 	}
 
+	//liefert den Namen des selektierten Treeitems, wenn diese Jobs, Job_chains
+	//orders, schedules ist 	
+	private String getParentItemName() {
+		if(_tree.getSelectionCount() > 0) {
+			String name = _tree.getSelection()[0].getText();
+			if ( name.equals(SchedulerListener.JOBS) ||
+					name.equals(SchedulerListener.JOB_CHAINS)  ||
+					name.equals(SchedulerListener.ORDERS) ||
+					name.equals(SchedulerListener.SCHEDULES) 					
+			) {
+				return name;
+			}
+		}
+		return "";
+	}
+	
+	//liefert den Namen des selektierten Treeitems, wenn diese Job, Job chain
+	//order, add_order, schedule ist 	
+	private Element getItemElement() {
+		if(_tree.getSelectionCount() > 0) {
+			Element elem = ((TreeData)(_tree.getSelection()[0].getData())).getElement();
+			String name = elem.getName();
+			if ( name.equals("job") ||
+					name.equals("job_chain")  ||
+					name.equals("order") ||
+					name.equals("add_order") ||
+					name.equals("schedule") 					
+			) {
+				return elem;
+			}
+		}
+		return null;
+	}
 
 }

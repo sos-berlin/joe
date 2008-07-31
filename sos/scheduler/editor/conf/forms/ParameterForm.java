@@ -240,7 +240,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			createIncludes();
 
 		//test
-		//createParameterTabItem(); 
+		createParameterTabItem(); 
 
 		tabFolder.setSelection(0);
 		if(tParaName != null)
@@ -627,6 +627,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			butIncludeRemove.setVisible(hasXPathExpression);
 			txtIncludeParameter.setEnabled(hasXPathExpression);
 			txtIncludeParameterValue.setEnabled(hasXPathExpression);
+			newButton.setEnabled(hasXPathExpression);
 			
 			tabFolder.setSelection(includeParameterTabItem);
 		} catch(Exception e) {

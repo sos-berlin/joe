@@ -1011,7 +1011,7 @@ public class Utils {
 
 	public static boolean hasSchedulesElement(SchedulerDom dom, Element element) {
 		try {			
-			if(element.getAttributeValue("schedule").length() > 0)
+			if(Utils.getAttributeValue("schedule", element).length() > 0)
 				return true;
 			else 
 				return false;

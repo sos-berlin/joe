@@ -33,7 +33,7 @@ public class JobChainsListener {
 	private String[]              _chainNames               = null;
 
 	/** braucht der Wizzard/Assistent*/
-	private Table                 tChains                   = null;
+	private static Table                 tChains                   = null;
 
 	private ISchedulerUpdate      update                    = null;
 

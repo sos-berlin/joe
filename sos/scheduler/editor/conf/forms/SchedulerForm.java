@@ -148,6 +148,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	}
 	
 	
+	
 	public void updateLanguage() {
 		if (cMainForm.getChildren().length > 0) {
 			if (cMainForm.getChildren()[0] instanceof IUpdateLanguage) {
@@ -638,4 +639,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		
 	}
 	
+	public void updateCMainForm() {
+		listener.treeSelection(tree, cMainForm);
+	}
 }

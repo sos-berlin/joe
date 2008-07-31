@@ -512,6 +512,7 @@ public class FTPDialogProfiles {
 			public void widgetSelected(final SelectionEvent e) {
 				
 				close();
+				
 				saved = true;
 				schedulerConfigurationShell.dispose();
 			}
@@ -531,7 +532,9 @@ public class FTPDialogProfiles {
 		});
 
 		//setToolTipText();
+		cboConnectname.setText(listener.getCurrProfileName());
 		initForm();
+		
 		schedulerConfigurationShell.layout();
 		schedulerConfigurationShell.open();
 	}
@@ -594,10 +597,16 @@ public class FTPDialogProfiles {
 				String method = sosString.parseToString(currProfile.get("auth_method"));
 				if(method.equalsIgnoreCase("publickey")) {
 					butPublicKey.setSelection(true);	
+					butAuthPassword.setSelection(false);
+					butPasswordAndPublic.setSelection(false);
 				} else if(method.equalsIgnoreCase("password")) {
 					butAuthPassword.setSelection(true);
+					butPublicKey.setSelection(false);	
+					butPasswordAndPublic.setSelection(false);
 				} else if(method.equalsIgnoreCase("both")) {
 					butPasswordAndPublic.setSelection(true);
+					butAuthPassword.setSelection(false);
+					butPublicKey.setSelection(false);	
 				}
 					
 				
@@ -702,6 +711,9 @@ public class FTPDialogProfiles {
 	}
 	
 	private void close() {
+		
+		listener.refresh();
+		
 		if(saved)
 			return;
 		
@@ -713,8 +725,13 @@ public class FTPDialogProfiles {
 		}
 		if(saveSettings) {
 			//listener.saveSettings();
-			listener.saveProfile(butSavePassword.getSelection());
+			listener.saveProfile(butSavePassword.getSelection());			
 		}
+		
+
+		
+		
+		
 	}
 	
 	

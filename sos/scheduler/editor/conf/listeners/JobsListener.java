@@ -35,8 +35,8 @@ public class JobsListener {
 
 		_dom = dom;
 		_main = update;
-		if(_dom.isLifeElement()) {
-
+		if(_dom.isLifeElement()) { 
+           //tu nichts
 		} else {
 			_config = _dom.getRoot().getChild("config");
 			_jobs = _config.getChild("jobs");
@@ -513,7 +513,7 @@ public class JobsListener {
 		return false;
 	}
 
-
+	
 	public void setJobDisabled(String name, boolean disabled) {
 		_dom.setJobDisabled(name, disabled);
 		_main.updateJobs();

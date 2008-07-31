@@ -28,7 +28,7 @@ public class OrdersForm extends Composite implements IUpdateLanguage {
 
     private Group             ordersGroup  = null;
 
-    private Table             table        = null;
+    private static Table      table        = null;
 
     private Button            bNewOrder    = null;
 
@@ -141,5 +141,10 @@ public class OrdersForm extends Composite implements IUpdateLanguage {
         table.setToolTipText(Messages.getTooltip("orders.table"));
 
     }
+
+
+	public static Table getTable() {
+		return table;
+	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"
