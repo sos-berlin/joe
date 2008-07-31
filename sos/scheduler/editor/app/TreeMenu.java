@@ -234,8 +234,11 @@ public class TreeMenu {
 						if(getParentItemName().length() > 0) {
 							getItem(TreeMenu.NEW).setEnabled(true);							
 						}
-						if(getItemElement() != null) {
-							getItem(TreeMenu.DELETE).setEnabled(true);
+						
+						if((_dom instanceof sos.scheduler.editor.conf.SchedulerDom) && !((SchedulerDom)_dom).isLifeElement()) {
+							if(getItemElement() != null) {
+								getItem(TreeMenu.DELETE).setEnabled(true);
+							}
 						}
 						
 					}
@@ -1069,7 +1072,7 @@ public class TreeMenu {
 	
 	//liefert den Namen des selektierten Treeitems, wenn diese Job, Job chain
 	//order, add_order, schedule ist 	
-	private Element getItemElement() {
+	private Element getItemElement() {		
 		if(_tree.getSelectionCount() > 0) {
 			Element elem = ((TreeData)(_tree.getSelection()[0].getData())).getElement();
 			String name = elem.getName();
