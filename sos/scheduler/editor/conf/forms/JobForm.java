@@ -4,6 +4,8 @@ import java.io.File;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
@@ -658,6 +660,13 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
 		GridData gridData61 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, true, 4, 1);
 		tComment = new Text(gMain, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
+		tComment.addKeyListener(new KeyAdapter() {
+			public void keyPressed(final KeyEvent e) {
+				if(e.keyCode==97 && e.stateMask == SWT.CTRL){
+        			tComment.setSelection(0, tComment.getText().length());
+				}
+			}
+		});
 		tComment.addMouseListener(new MouseAdapter() {
 			public void mouseDoubleClick(final MouseEvent e) {
 				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
@@ -756,6 +765,13 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		GridData gridData14 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
 		gridData14.horizontalIndent = -1;
 		tDescription = new Text(gDescription, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
+		tDescription.addKeyListener(new KeyAdapter() {
+			public void keyPressed(final KeyEvent e) {
+				if(e.keyCode==97 && e.stateMask == SWT.CTRL){
+					tDescription.setSelection(0, tDescription.getText().length());
+				}
+			}
+		});
 		tDescription.setFont(ResourceManager.getFont("", 10, SWT.NONE));
 		tDescription.setLayoutData(gridData14);
 		tDescription.addModifyListener(new org.eclipse.swt.events.ModifyListener() {

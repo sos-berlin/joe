@@ -50,11 +50,11 @@ public class TreeMenu {
 	private static final String     PASTE                     = "Paste";
 
 	private static final String     DELETE_HOT_HOLDER_FILE    = "Delete Hot Folder File";
-	
+
 	private static final String     NEW                       = "New";
-	
+
 	private static final String     DELETE                    = "Delete";
-	
+
 
 
 	public TreeMenu(Tree tree, DomParser dom, SchedulerForm gui) {
@@ -141,7 +141,7 @@ public class TreeMenu {
 		item.addListener(SWT.Selection, getCopyListener());
 		item.setText(TreeMenu.COPY);
 
-		
+
 		item = new MenuItem(_menu, SWT.PUSH);
 		item.addListener(SWT.Selection, getNewItemSelection());
 		item.setText(TreeMenu.NEW);			
@@ -152,7 +152,7 @@ public class TreeMenu {
 		item.setText(TreeMenu.DELETE);			
 		item.setEnabled(false);
 
-		
+
 		if((_dom instanceof sos.scheduler.editor.conf.SchedulerDom)) {
 			if(((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement() ) {				
 				item = new MenuItem(_menu, SWT.PUSH);
@@ -161,9 +161,9 @@ public class TreeMenu {
 
 			}
 		}
-		
 
-		
+
+
 		item = new MenuItem(_menu, SWT.PUSH);
 		item.addListener(SWT.Selection, getClipboardListener());
 		item.setText(TreeMenu.COPY_TO_CLIPBOARD);
@@ -184,7 +184,7 @@ public class TreeMenu {
 					if (element != null ) {
 						//test element = _dom.getRoot().getChild("config");
 
-						
+
 						getItem(TreeMenu.EDIT_XML).setEnabled(true); 
 						getItem(TreeMenu.SHOW_INFO).setEnabled(true); // show info
 						getItem(TreeMenu.SHOW_XML).setEnabled(true); // show xml
@@ -230,17 +230,17 @@ public class TreeMenu {
 								_paste.setEnabled(false); // paste
 							 */
 						}
-						
+
 						if(getParentItemName().length() > 0) {
 							getItem(TreeMenu.NEW).setEnabled(true);							
 						}
-						
+
 						if((_dom instanceof sos.scheduler.editor.conf.SchedulerDom) && !((SchedulerDom)_dom).isLifeElement()) {
 							if(getItemElement() != null) {
 								getItem(TreeMenu.DELETE).setEnabled(true);
 							}
 						}
-						
+
 					}
 				}
 			}
@@ -383,7 +383,7 @@ public class TreeMenu {
 
 		try {  
 			if(_dom instanceof SchedulerDom) {
-				
+
 				if(((sos.scheduler.editor.conf.SchedulerDom)_dom).isDirectory()) {
 					String enco =" ";  
 					if(newXML.indexOf("?>") > -1) {
@@ -391,38 +391,38 @@ public class TreeMenu {
 						newXML = newXML.substring(newXML.indexOf("?>")+ "?>".length()) ;
 					}
 					String xml = Utils.getElementAsString(_dom.getRoot().getChild("config"));
-				  	String oldxml = Utils.getElementAsString(getElement());
-				  	int iPosBegin = 0;
-				  	if(oldxml.indexOf("\r\n") > -1)
-				  		iPosBegin = xml.indexOf(oldxml.substring(0, oldxml.indexOf("\r\n")));
-				  	else
-				  		iPosBegin = xml.indexOf(oldxml);
-				  	
-				  	//int iPosEnd = xml.indexOf("</"+ getElement().getName() + ">", iPosBegin) + (("</"+ getElement().getName() + ">").length()) ;
-				  	int iPosEnd = xml.indexOf("</"+ getElement().getName() + ">", iPosBegin) ;
-				  	if(iPosEnd == -1) {
-				  		//hat keinen Kindknoten
-				  		iPosEnd = xml.indexOf("/>", iPosBegin) + "/>".length() ;
-				  	} else {
-				  		iPosEnd = iPosEnd + ("</"+ getElement().getName() + ">").length();
-				  	}
-				  	/*
+					String oldxml = Utils.getElementAsString(getElement());
+					int iPosBegin = 0;
+					if(oldxml.indexOf("\r\n") > -1)
+						iPosBegin = xml.indexOf(oldxml.substring(0, oldxml.indexOf("\r\n")));
+					else
+						iPosBegin = xml.indexOf(oldxml);
+
+					//int iPosEnd = xml.indexOf("</"+ getElement().getName() + ">", iPosBegin) + (("</"+ getElement().getName() + ">").length()) ;
+					int iPosEnd = xml.indexOf("</"+ getElement().getName() + ">", iPosBegin) ;
+					if(iPosEnd == -1) {
+						//hat keinen Kindknoten
+						iPosEnd = xml.indexOf("/>", iPosBegin) + "/>".length() ;
+					} else {
+						iPosEnd = iPosEnd + ("</"+ getElement().getName() + ">").length();
+					}
+					/*
 				  	System.out.println("****************************************");
 				  	System.out.println("Begin : ");
 				  	System.out.println( xml.substring(0, iPosBegin));
 				  	System.out.println("End   : ");
 				  	System.out.println( xml.substring(iPosEnd));
 				  	System.out.println("****************************************");
-				  	*/
-				  	
-				  	
-				  	//int iPosEnd = iPosBegin + oldxml.length();
-				  	newXML = xml.substring(0, iPosBegin) + newXML + xml.substring(iPosEnd);
-				  	//snewXML = snewXML + newXML + xml.substring(iPosEnd);
-				  	
-				  	
-				  	newXML = enco + "<spooler>" + newXML + "</spooler>";
-				  	//System.out.println(newXML);
+					 */
+
+
+					//int iPosEnd = iPosBegin + oldxml.length();
+					newXML = xml.substring(0, iPosBegin) + newXML + xml.substring(iPosEnd);
+					//snewXML = snewXML + newXML + xml.substring(iPosEnd);
+
+
+					newXML = enco + "<spooler>" + newXML + "</spooler>";
+					//System.out.println(newXML);
 				} else if(!((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement()) {					
 					newXML = newXML.replaceAll("\\?>", "?><spooler>" )+ "</spooler>";
 				}
@@ -472,16 +472,17 @@ public class TreeMenu {
 	private Listener getNewItemSelection() {
 		return new Listener() {
 			public void handleEvent(Event e) {
-				String name = getParentItemName();
 				
+				String name = getParentItemName();
+
 				if(name.equals(SchedulerListener.JOBS)){
-					
+
 					sos.scheduler.editor.conf.listeners.JobsListener listeners = 
 						new sos.scheduler.editor.conf.listeners.JobsListener((SchedulerDom)_dom, _gui);
 					listeners.newJob(sos.scheduler.editor.conf.forms.JobsForm.getTable());
-						
+
 				} else if(name.equals(SchedulerListener.JOB_CHAINS)){
-				
+
 					TreeData data = (TreeData)_tree.getSelection()[0].getData();					
 					sos.scheduler.editor.conf.listeners.JobChainsListener listeners =
 						new sos.scheduler.editor.conf.listeners.JobChainsListener((SchedulerDom)_dom, data.getElement(), _gui);
@@ -491,35 +492,47 @@ public class TreeMenu {
 						i = data.getElement().getChild("job_chains").getChildren("job_chain").size() + 1;
 					listeners.applyChain("job_chain" + i , true, true);
 					listeners.fillChains(JobChainsForm.getTableChains());
+					
 				} else if(name.equals(SchedulerListener.SCHEDULES)) {
+					
 					sos.scheduler.editor.conf.listeners.SchedulesListener listener = 
 						new sos.scheduler.editor.conf.listeners.SchedulesListener((SchedulerDom)_dom, _gui);
 					listener.newScheduler(sos.scheduler.editor.conf.forms.SchedulesForm.getTable());
+					
 				} else if(name.equals(SchedulerListener.ORDERS)) {
+					
 					sos.scheduler.editor.conf.listeners.OrdersListener listener = 
 						new sos.scheduler.editor.conf.listeners.OrdersListener((SchedulerDom)_dom, _gui);
 					listener.newCommands(sos.scheduler.editor.conf.forms.OrdersForm.getTable());
-				}
 				
+				} else if(name.equals(SchedulerListener.WEB_SERVICES)) {
+					TreeData data = (TreeData)_tree.getSelection()[0].getData();	
+					sos.scheduler.editor.conf.listeners.WebservicesListener listener = 
+						new sos.scheduler.editor.conf.listeners.WebservicesListener((SchedulerDom)_dom, data.getElement(), _gui);
+					listener.newService(sos.scheduler.editor.conf.forms.WebservicesForm.getTable());
+					
+				}
+
 			}
 		};
 	}
 
-	
+
 	private Listener getDeleteSelection() {
 		return new Listener() {
 			public void handleEvent(Event e) {
 				Element elem = getItemElement();
 				String  name = elem.getName();
 				if(name.equals("job")){
+					
 					//TreeData data = (TreeData)_tree.getSelection()[0].getData();
 					_dom.setChanged(true);
 					((SchedulerDom)_dom).setChangedForDirectory("job", Utils.getAttributeValue("name", elem) ,SchedulerDom.DELETE);
 					elem.detach();
 					_gui.updateJobs();				
-						
+
 				} else if(name.equals("job_chain")){
-				
+
 					//TreeData data = (TreeData)_tree.getSelection()[0].getData();
 					//data.getElement().detach();
 					_dom.setChanged(true);
@@ -531,9 +544,9 @@ public class TreeMenu {
 						((TreeData)parentItem.getData()).getElement().getChild("job_chains").detach();
 					_gui.updateJobChains();
 					_gui.updateCMainForm();
-					
+
 				} else if(name.equals("schedule")) {
-					
+
 					_dom.setChanged(true);
 					((SchedulerDom)_dom).setChangedForDirectory("schedule", Utils.getAttributeValue("name", elem) ,SchedulerDom.DELETE);
 					elem.detach();
@@ -542,7 +555,8 @@ public class TreeMenu {
 					if(parentItem.getItemCount() ==  1)//job_chains Element hat keine weiteren Kindelemente
 						((TreeData)parentItem.getData()).getElement().getChild("schedules").detach();
 					_gui.updateSchedules();
-					_gui.updateCMainForm();	
+					_gui.updateCMainForm();
+					
 				} else if(name.equals("order") || name.equals("add_order")) {
 
 					_dom.setChanged(true);
@@ -554,29 +568,40 @@ public class TreeMenu {
 
 					if(parentItem.getItemCount() ==  1)//job_chains Element hat keine weiteren Kindelemente
 						((TreeData)parentItem.getData()).getElement().getChild("commands").detach();
-
-					//_gui.updateTree("main");
+					
 					_gui.updateOrders();
-					//for(int i = 0; i < _tree.getItemCount(); i++) {
-					//	if(_tree.getItem(i).getText().equals(SchedulerListener.ORDERS)){
-					//		_tree.setSelection(new TreeItem[]{_tree.getItem(i)});
 					_gui.updateCMainForm();
-					//	}
-					//}
+					
+				} else if(name.equals("web_service")){
+						
+						//TreeData data = (TreeData)_tree.getSelection()[0].getData();
+						_dom.setChanged(true);						
+						elem.detach();
+						
+						TreeItem parentItem = _tree.getSelection()[0].getParentItem();
+						_tree.setSelection(new TreeItem[]{parentItem});
+						
+						//if(parentItem.getItemCount() ==  1)//job_chains Element hat keine weiteren Kindelemente
+						//	((TreeData)parentItem.getData()).getElement().getChild("Web Services").detach();
+						
+						_gui.updateWebServices();	
+						_gui.updateCMainForm();
+
+
 				}
 
 			}
 		};
 	}
-	
-	
+
+
 	private Listener getDeleteHoltFolderFileListener () {
 		return new Listener() {
 			public void handleEvent(Event e) {
 
 				String filename =_dom.getFilename();
-				
-				
+
+
 				int ok = MainWindow.message("Do you wont really remove life file: " + filename, //$NON-NLS-1$
 						SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
 
@@ -590,8 +615,8 @@ public class TreeMenu {
 					sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();				
 					con.getCurrentTab().dispose();
 				}
-				
-				
+
+
 			}
 		};
 	}
@@ -912,8 +937,9 @@ public class TreeMenu {
 
 					if(overrideAttributes) {
 						copyElement = cloneElement;
-						currElem = currElem.getChild(key);
+						currElem = currElem.getChild(key);						
 					}
+
 					//System.out.println(Utils.getElementAsString(_dom.getRoot()));
 				}
 
@@ -987,7 +1013,7 @@ public class TreeMenu {
 
 		return retVal;
 	}
-*/
+	 */
 	private void removeAttributes(Element elem) {
 		List l = elem.getAttributes();
 		for(int i = 0; i < l.size(); i++)
@@ -1006,7 +1032,7 @@ public class TreeMenu {
 
 
 		//unpdate der Formular
-		String currItemString =  _tree.getSelection()[0].getText();
+		//String currItemString =  _tree.getSelection()[0].getText();
 
 		if(_type == Editor.SPECIFIC_WEEKDAYS)
 			_gui.updateSpecificWeekdays();
@@ -1046,11 +1072,11 @@ public class TreeMenu {
 		_gui.updateTree("");
 
 		refreshTree("main");
-		
+
 		if (_dom instanceof SchedulerDom && ((SchedulerDom)_dom).isDirectory()) {
 			((SchedulerDom)_dom).setChangedForDirectory(data.getElement(), SchedulerDom.NEW);
 		}
-			
+
 		_dom.setChanged(true);
 	}
 
@@ -1062,6 +1088,7 @@ public class TreeMenu {
 			if ( name.equals(SchedulerListener.JOBS) ||
 					name.equals(SchedulerListener.JOB_CHAINS)  ||
 					name.equals(SchedulerListener.ORDERS) ||
+					name.equals(SchedulerListener.WEB_SERVICES) ||
 					name.equals(SchedulerListener.SCHEDULES) 					
 			) {
 				return name;
@@ -1069,7 +1096,7 @@ public class TreeMenu {
 		}
 		return "";
 	}
-	
+
 	//liefert den Namen des selektierten Treeitems, wenn diese Job, Job chain
 	//order, add_order, schedule ist 	
 	private Element getItemElement() {		
@@ -1080,6 +1107,7 @@ public class TreeMenu {
 					name.equals("job_chain")  ||
 					name.equals("order") ||
 					name.equals("add_order") ||
+					name.equals("web_service") ||
 					name.equals("schedule") 					
 			) {
 				return elem;

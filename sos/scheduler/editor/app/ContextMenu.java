@@ -15,6 +15,7 @@ import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
+import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
 
 public class ContextMenu {
@@ -267,7 +268,7 @@ public class ContextMenu {
 					Tree tree = f.getTree();
 					for(int i = 0; i < tree.getItemCount(); i++) {    				
 						TreeItem item = tree.getItem(i);
-						if(item.getText().equals("Jobs")){
+						if(item.getText().equals(SchedulerListener.JOBS)){
 
 							TreeItem[] jobsItem = item.getItems();
 							for(int j = 0; j < jobsItem.length; j++) {
@@ -294,7 +295,7 @@ public class ContextMenu {
 					Tree tree = f.getTree();
 					for(int i = 0; i < tree.getItemCount(); i++) {    				
 						TreeItem item = tree.getItem(i);
-						if(item.getText().equals("Job Chains")){
+						if(item.getText().equals(SchedulerListener.JOB_CHAINS)){
 							TreeItem[] jobsItem = item.getItems();
 							for(int j = 0; j < jobsItem.length; j++) {
 								TreeItem jItem = jobsItem[j];
@@ -325,6 +326,99 @@ public class ContextMenu {
 							f.updateTreeItem(item.getText());
 							f.updateTree("");    						
 							break;
+						}
+					}
+				}
+			} else if(type==Editor.SCHEDULE) {
+
+				XPath x3 = XPath.newInstance("//schedule[@name='"+ name + "']");				 
+				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+				if(!listOfElement_3.isEmpty()) {    			
+					SchedulerForm f = (SchedulerForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
+					if(f == null)
+						return;
+					Tree tree = f.getTree();
+					for(int i = 0; i < tree.getItemCount(); i++) {    				
+						TreeItem item = tree.getItem(i);
+						if(item.getText().equals(SchedulerListener.SCHEDULES)){
+
+							TreeItem[] items = item.getItems();
+							for(int j = 0; j < items.length; j++) {
+								TreeItem jItem = items[j];
+								if(jItem.getText().equals(name)){
+									tree.setSelection(new TreeItem [] {jItem});
+									f.updateTreeItem(jItem.getText());
+									f.updateTree("");
+									break;
+								}
+							}
+						}
+					}
+				}
+
+			} else if(type == Editor.ORDER) {
+
+				XPath x3 = XPath.newInstance("//order[@id='"+ name + "']");				 
+				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+
+				if(listOfElement_3.isEmpty()) {
+					x3 = XPath.newInstance("//add_order[@id='"+ name + "']");				 
+					listOfElement_3 = x3.selectNodes(_dom.getDoc());
+				}
+
+				if(!listOfElement_3.isEmpty()) {    			
+					SchedulerForm f = (SchedulerForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
+					if(f == null)
+						return;
+					Tree tree = f.getTree();
+					for(int i = 0; i < tree.getItemCount(); i++) {    				
+						TreeItem item = tree.getItem(i);
+						if(item.getText().equals(SchedulerListener.ORDERS)){
+
+							TreeItem[] items = item.getItems();
+							for(int j = 0; j < items.length; j++) {
+								TreeItem jItem = items[j];
+								if(jItem.getText().equals("Order: " + name)){
+									tree.setSelection(new TreeItem [] {jItem});
+									f.updateTreeItem(jItem.getText());
+									f.updateTree("");
+									break;
+								}
+							}
+						}
+					}
+				}
+
+			} else if(type == Editor.WEBSERVICE) {
+
+				XPath x3 = XPath.newInstance("//web_service[@name='"+ name + "']");				 
+				List listOfElement_3 = x3.selectNodes(_dom.getDoc());				
+
+				if(!listOfElement_3.isEmpty()) {    			
+					SchedulerForm f = (SchedulerForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
+					if(f == null)
+						return;
+					Tree tree = f.getTree();
+					for(int i = 0; i < tree.getItemCount(); i++) {    				
+						TreeItem item = tree.getItem(i);
+						if(item.getText().equals(SchedulerListener.HTTP_SERVER)){
+							for(int k = 0; k < item.getItemCount(); k++) {    
+								TreeItem httpItem = item.getItem(k);
+
+								if(httpItem.getText().equals(SchedulerListener.WEB_SERVICES)){
+
+									TreeItem[] items = httpItem.getItems();
+									for(int j = 0; j < items.length; j++) {
+										TreeItem jItem = items[j];
+										if(jItem.getText().equals("Web Service: " + name)){
+											tree.setSelection(new TreeItem [] {jItem});
+											f.updateTreeItem(jItem.getText());
+											f.updateTree("");
+											break;
+										}
+									}
+								}
+							}
 						}
 					}
 				}

@@ -110,7 +110,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 					tName.setBackground(null);
 				}
 
-				String oldJobChainname = listener.getChainName();
+				//String oldJobChainname = listener.getChainName();
 				boolean _continue = true;
 				if(listener.getChainName().length() > 0  && !tName.getText().equals(listener.getChainName()))
 					if(!Utils.checkElement(listener.getChainName(), listener.get_dom(), Editor.JOB_CHAIN, null))
@@ -120,7 +120,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 					listener.setChainName(tName.getText());
 					if(update != null)
 						//update.updateJobChain(tName.getText(), oldJobChainname);
-						update.updateTreeItem(tName.getText());
+						update.updateTreeItem("Job Chain: " + tName.getText());
 				}
 				//bApplyChain.setEnabled(!existname && !tName.equals(""));
 				//mo neu

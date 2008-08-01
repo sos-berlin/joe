@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -14,6 +16,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
+
+import sos.scheduler.editor.app.ContextMenu;
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
@@ -153,6 +158,12 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 		try {
 			GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 4);
 			table = new Table(group, SWT.BORDER | SWT.FULL_SELECTION | SWT.CHECK);
+			table.addMouseListener(new MouseAdapter() {
+				public void mouseDoubleClick(final MouseEvent e) {
+					if(table.getSelectionCount() > 0)
+						ContextMenu.goTo(table.getSelection()[0].getText(1), dom, Editor.JOB);					
+				}
+			});
 			table.setHeaderVisible(true);
 			table.setLayoutData(gridData2);
 			table.setLinesVisible(true);

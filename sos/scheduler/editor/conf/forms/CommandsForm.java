@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -59,6 +61,13 @@ public class CommandsForm extends Composite implements IUpdateLanguage {
         createTable();
 
         tCommands = new Text(commandsGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL);
+        tCommands.addKeyListener(new KeyAdapter() {
+        	public void keyPressed(final KeyEvent e) {
+        		if(e.keyCode==97 && e.stateMask == SWT.CTRL){
+        			tCommands.setSelection(0, tCommands.getText().length());
+				}
+        	}
+        });
         tCommands.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
         final GridData gridData4_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
         tCommands.setLayoutData(gridData4_1);

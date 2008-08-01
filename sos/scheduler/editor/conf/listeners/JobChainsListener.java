@@ -77,6 +77,9 @@ public class JobChainsListener {
 
 
 	public void selectChain(int index) {
+		if(_chains == null)
+			_chains = _config.getChild("job_chains"); 
+		
 		if (index >= 0)
 			_chain = (Element) _chains.getChildren("job_chain").get(index);
 		else

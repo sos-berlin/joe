@@ -15,11 +15,11 @@ public class RunTimeListener {
 
 	private       Element         _runtime    = null;
 
-	private       ISchedulerUpdate _gui        = null;
+	//private       ISchedulerUpdate _gui        = null;
 
 	public RunTimeListener(SchedulerDom dom, Element job, ISchedulerUpdate gui) {
 		_dom = dom;
-		_gui = gui;
+		//_gui = gui;
 		_job = job;
 		_runtime = _job.getChild("run_time");
 		checkRuntime();

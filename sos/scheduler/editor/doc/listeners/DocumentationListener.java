@@ -16,7 +16,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.forms.SchedulerForm;
+
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.IUpdateTree;
 import sos.scheduler.editor.doc.forms.ApplicationsForm;

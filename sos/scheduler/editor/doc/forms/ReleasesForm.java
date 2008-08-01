@@ -8,14 +8,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-
-import sos.scheduler.editor.app.DatePicker;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
@@ -24,6 +19,8 @@ import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.ReleasesListener;
 
 public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage {
+	
+	
     private ReleasesListener listener     = null;
 
     private DocumentationDom dom          = null;

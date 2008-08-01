@@ -463,11 +463,13 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		}
 	}
 	
-	public void updateLifeElement() {
-		TreeItem item = tree.getSelection()[0];		
+	public void updateLifeElement() {		
+		//TreeItem item = tree.getSelection()[0];
+		TreeItem item = tree.getItem(0);
+		tree.setSelection(new TreeItem[]{item});
 		TreeData data = (TreeData) item.getData();
 		org.jdom.Element elem = data.getElement();
-		if(elem.getName().equals("job")) {	
+		if(elem.getName().equals("job")) {				
 			updateJob(Utils.getAttributeValue("name", elem));
 			updateJob();	    	
 		} else if(elem.getName().equals("job_chain")) {

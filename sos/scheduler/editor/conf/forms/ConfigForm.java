@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -597,6 +599,13 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		
 		
 		tComment = new Text(group, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
+		tComment.addKeyListener(new KeyAdapter() {
+			public void keyPressed(final KeyEvent e) {
+				if(e.keyCode==97 && e.stateMask == SWT.CTRL){
+					tComment.setSelection(0, tComment.getText().length());
+				}
+			}
+		});
 		tComment.setLayoutData(gridData4);
 		tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {

@@ -26,7 +26,7 @@ public class AuthorsForm extends Composite implements IUnsaved, IUpdateLanguage 
 	
     private ReleaseAuthorsListener listener     = null;
 
-    private DocumentationDom dom          = null;
+    //private DocumentationDom dom          = null;
 
     private Group            authorsGroup        = null;
 
@@ -48,7 +48,7 @@ public class AuthorsForm extends Composite implements IUnsaved, IUpdateLanguage 
     public AuthorsForm(Composite parent, int style, DocumentationDom dom, Element parentElement) {
         super(parent, style);
         
-        this.dom = dom;
+        //this.dom = dom;
         listener = new ReleaseAuthorsListener(dom, parentElement);
         
         initialize();

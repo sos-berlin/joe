@@ -2,6 +2,8 @@ package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -372,6 +374,13 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         gSource.setText("Source Code");
         
         tSource = new Text(gSource, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
+        tSource.addKeyListener(new KeyAdapter() {
+        	public void keyPressed(final KeyEvent e) {
+        		if(e.keyCode==97 && e.stateMask == SWT.CTRL){
+        			tSource.setSelection(0, tSource.getText().length());
+				}
+        	}
+        });
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
         gridData_1.widthHint = 454;
         gridData_1.heightHint = 55;

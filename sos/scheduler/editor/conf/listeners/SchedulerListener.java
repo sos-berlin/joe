@@ -38,7 +38,9 @@ public class SchedulerListener {
 	
 	public static  String            JOB_CHAINS     = "Job Chains";
 	
-	public static  String            WEB_SERVICE    = "Web Services";
+	public static  String            HTTP_SERVER    = "Http Server";
+	
+	public static  String            WEB_SERVICES   = "Web Services";
 
 	public static  String            SCHEDULES      = "Schedules";
 	
@@ -329,13 +331,13 @@ public class SchedulerListener {
 			l.add("http_server_@_http_directory");			
 			http_server.setData("key", l);			
 			http_server.setData("copy_element", config);
-			http_server.setText("Http Server");
+			http_server.setText(HTTP_SERVER);
 
 			item = new TreeItem(http_server, SWT.NONE);
 			item.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));			
 			item.setData("key", "http_server_@_web_service");
 			item.setData("copy_element", config);
-			item.setText(WEB_SERVICE);
+			item.setText(WEB_SERVICES);
 			treeFillWebServices(item);
 
 
@@ -540,7 +542,7 @@ public class SchedulerListener {
 		TreeItem item = new TreeItem(parent, SWT.NONE);
 		item.setText("Execute");
 		item.setData("max_occur", "1");
-		item.setData("override_attributes", "true");
+		//item.setData("override_attributes", "true");
 		item.setData(new TreeData(Editor.EXECUTE, job, Options.getHelpURL("job.execute")));
 		//item.setData("key", "job.execute");
 		//process script

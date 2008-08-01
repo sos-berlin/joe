@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -12,6 +14,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
+import sos.scheduler.editor.app.ContextMenu;
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Utils;
@@ -111,6 +115,12 @@ public class OrdersForm extends Composite implements IUpdateLanguage {
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
         gridData2.widthHint = 204;
         table = new Table(ordersGroup, SWT.BORDER | SWT.FULL_SELECTION);
+        table.addMouseListener(new MouseAdapter() {
+        	public void mouseDoubleClick(final MouseEvent e) {
+        		if(table.getSelectionCount() > 0)
+					ContextMenu.goTo(table.getSelection()[0].getText(0), _dom, Editor.ORDER);
+        	}
+        });
         table.setHeaderVisible(true);
         table.setLayoutData(gridData2);
         table.setLinesVisible(true);

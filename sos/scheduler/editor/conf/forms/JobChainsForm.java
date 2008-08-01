@@ -3,6 +3,8 @@ package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.SWT;
 
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -14,6 +16,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
+
+import sos.scheduler.editor.app.ContextMenu;
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
@@ -85,6 +90,12 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		gridLayout_2.numColumns = 2;
 		jobchainsGroup.setLayout(gridLayout_2);
 		tChains = new Table(jobchainsGroup, SWT.FULL_SELECTION | SWT.BORDER);
+		tChains.addMouseListener(new MouseAdapter() {
+			public void mouseDoubleClick(final MouseEvent e) {
+				if(tChains.getSelectionCount() > 0)
+					ContextMenu.goTo(tChains.getSelection()[0].getText(0), _dom, Editor.JOB_CHAIN);
+			}
+		});
 		tChains.getHorizontalBar().setMaximum(0);
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
 		tChains.setLayoutData(gridData_2);

@@ -46,9 +46,13 @@ public class WebservicesListener {
 
 	private void init() {
 		
-		if (_http_server == null && _config.getAttribute("http_server") == null) {
+		//if (_http_server == null && _config.getAttribute("http_server") == null) {
+		if (_http_server == null && _config.getChild("http_server") == null) {
 			_http_server = new Element("http_server");
 			_config.addContent(_http_server);
+			_list = _http_server.getChildren("web_service");
+		} else {
+			_http_server = _config.getChild("http_server");
 			_list = _http_server.getChildren("web_service");
 		}
 

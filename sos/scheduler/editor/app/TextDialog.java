@@ -2,7 +2,6 @@ package sos.scheduler.editor.app;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.custom.VerifyKeyListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -11,7 +10,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
-import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -49,7 +47,7 @@ public class TextDialog extends Dialog {
 	private boolean    bEdit           = false;
 
 	
-	private boolean previousCtrlX = false;
+	//private boolean previousCtrlX = false;
 	
 	public TextDialog(Shell parent, int shellStyle, int textStyle) {
 		super(parent, SWT.NONE);

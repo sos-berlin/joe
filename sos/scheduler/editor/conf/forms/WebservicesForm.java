@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -11,6 +13,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
+import sos.scheduler.editor.app.ContextMenu;
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
@@ -21,21 +25,25 @@ import sos.scheduler.editor.conf.listeners.WebservicesListener;
 public class WebservicesForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
-	private WebservicesListener listener          = null;
+	private        WebservicesListener listener          = null;
 
-	private Group               group             = null;
+	private        Group               group             = null;
 
-	private Table               tServices         = null;
+	private static Table               tServices         = null;
 
-	private Button              bRemove           = null;
+	private        Button              bRemove           = null;
 
-	private Button              bNew              = null;
+	private        Button              bNew              = null;
 
-	private Label               label8            = null;
+	private        Label               label8            = null;
 
+	private        SchedulerDom        _dom              = null;
+	
+	
 	
 	public WebservicesForm(Composite parent, int style, SchedulerDom dom, Element config, ISchedulerUpdate main) {
 		super(parent, style);
+		_dom = dom;
 		listener = new WebservicesListener(dom, config, main);
 		initialize();
 		setToolTipText();
@@ -83,6 +91,12 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		
 		GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
 		tServices = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
+		tServices.addMouseListener(new MouseAdapter() {
+			public void mouseDoubleClick(final MouseEvent e) {
+				if(tServices.getSelectionCount() > 0)
+					ContextMenu.goTo(tServices.getSelection()[0].getText(0), _dom, Editor.WEBSERVICE);
+			}
+		});
 		tServices.setHeaderVisible(true);
 		tServices.setLayoutData(gridData1);
 		tServices.setLinesVisible(true);
@@ -160,4 +174,9 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		 tServices.setToolTipText(Messages.getTooltip("web_services.table"));
 
 	 }
+
+
+	public static Table getTable() {
+		return tServices ;
+	}
 } // @jve:decl-index=0:visual-constraint="10,10"
