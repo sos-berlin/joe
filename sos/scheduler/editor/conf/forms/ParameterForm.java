@@ -240,7 +240,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			createIncludes();
 
 		//test
-		createParameterTabItem(); 
+		//createParameterTabItem(); 
 
 		tabFolder.setSelection(0);
 		if(tParaName != null)
