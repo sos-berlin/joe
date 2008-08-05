@@ -88,7 +88,7 @@ public class JobAssistentTasksForm {
 		
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
-		tasksShell= new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		tasksShell= new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		tasksShell.addShellListener(new ShellAdapter() {
 			public void shellClosed(final ShellEvent e) {
 				if(!closeDialog)
@@ -332,6 +332,8 @@ public class JobAssistentTasksForm {
 	
 	private void doNext() {
 		
+		Utils.startCursor(tasksShell);
+		
 		if(!checkTasks()) 
 			return;		
 		
@@ -367,6 +369,7 @@ public class JobAssistentTasksForm {
 			
 		}
 		closeDialog = true;
+		Utils.stopCursor(tasksShell);
 		tasksShell.dispose();
 	}
 	

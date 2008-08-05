@@ -203,7 +203,7 @@ public class JobAssistentImportJobsForm {
 	public void showAllImportJobs() {
 		try {
 			
-			shell = new Shell(SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
+			shell = new Shell(MainWindow.getSShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
 			shell.addShellListener(new ShellAdapter() {
 				public void shellClosed(final ShellEvent e) {
 					if(!closeDialog)
@@ -483,6 +483,8 @@ public class JobAssistentImportJobsForm {
 			butParameters.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					
+					Utils.startCursor(shell);
+					
 					if(!check()) return;
 					
 					HashMap attr = getJobFromDescription();
@@ -539,6 +541,9 @@ public class JobAssistentImportJobsForm {
 							paramsForm.setBackUpJob(jobBackUp, jobForm);
 					}
 					closeDialog = true;
+					
+					Utils.stopCursor(shell);
+					
 					shell.dispose();
 				}
 			});

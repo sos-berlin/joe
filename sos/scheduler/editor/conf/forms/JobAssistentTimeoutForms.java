@@ -73,7 +73,7 @@ public class JobAssistentTimeoutForms {
 	
 	public void showTimeOutForm() {
 		
-		shellTimeout = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		shellTimeout = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shellTimeout.addShellListener(new ShellAdapter() {
 			public void shellClosed(final ShellEvent e) {
 				if(!closeDialog)
@@ -222,12 +222,13 @@ public class JobAssistentTimeoutForms {
 				butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 				butNext.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
-						
+						Utils.startCursor(shellTimeout);
 						JobAssistentRunOptionsForms runOP = new JobAssistentRunOptionsForms(dom, update, joblistener.getJob(), assistentType);
 						runOP.showRunOptionsForm();	
 						//if(jobBackUp != null)
 							runOP.setBackUpJob(jobBackUp, jobForm);
 						closeDialog = true;
+						Utils.stopCursor(shellTimeout);
 						shellTimeout.dispose();
 						
 					}

@@ -45,7 +45,7 @@ public class DetailDialogForm {
 		
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
-		shell= new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER );
+		shell= new Shell(sos.scheduler.editor.app.MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER );
 		shell.setLayout(new GridLayout());
 		
 		shell.setSize(620, 643);	

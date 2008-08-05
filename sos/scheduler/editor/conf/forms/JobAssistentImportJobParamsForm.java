@@ -242,7 +242,7 @@ public class JobAssistentImportJobParamsForm {
 	public void showAllImportJobParams(String xmlFilename)  {
 		
 		try {
-			jobParameterShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);					
+			jobParameterShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);					
 			jobParameterShell.addShellListener(new ShellAdapter() {
 				public void shellClosed(final ShellEvent e) {
 					if(!closeDialog)
@@ -385,6 +385,7 @@ public class JobAssistentImportJobParamsForm {
 			butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			butNext.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
+					Utils.startCursor(jobParameterShell);
 					if(assistentType != Editor.JOB) {
 						JobAssistentTasksForm tasks = new JobAssistentTasksForm(dom, update, joblistener.getJob(), assistentType);						
 						
@@ -395,7 +396,7 @@ public class JobAssistentImportJobParamsForm {
 							tasks.setBackUpJob(jobBackUp, jobForm);
 					} 
 					closeDialog = true;					
-					
+					Utils.startCursor(jobParameterShell);
 					jobParameterShell.dispose();
 				}
 			});

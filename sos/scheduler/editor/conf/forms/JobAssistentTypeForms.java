@@ -78,7 +78,7 @@ public class JobAssistentTypeForms {
 	public void showTypeForms() {
 		try {
 			
-			jobTypeShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);			
+			jobTypeShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);			
 			
 			jobTypeShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 			
@@ -180,6 +180,8 @@ public class JobAssistentTypeForms {
 					butNext.setLayoutData(gridData_1);
 					butNext.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
+							Utils.startCursor(jobTypeShell);
+							
 							if(radOrderjob.getSelection()) {
 								isStandaloneJob = false;						
 							} else {
@@ -200,6 +202,7 @@ public class JobAssistentTypeForms {
 							} 
 							JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(dom, update, assistentType);
 							importJobs.showAllImportJobs((isStandaloneJob ? "standalonejob" : "order"));
+							Utils.stopCursor(jobTypeShell);
 							
 							jobTypeShell.dispose();
 							

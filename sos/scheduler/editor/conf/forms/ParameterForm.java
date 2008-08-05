@@ -153,6 +153,12 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 	
 	private Button                    butNewEnvironment                 = null; 
 	
+	private Button                    butoIncludeSave                   = null;
+	
+	private boolean                   isRemoteConnection                = false;
+	
+	
+	
 	
 	/**
 	 * @param parent
@@ -175,7 +181,10 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 	}
 
 	private void initialize() {
-		sosString = new SOSString(); 
+		sosString = new SOSString();
+		try {
+			isRemoteConnection = sosString.parseToString(MainWindow.getContainer().getCurrentTab().getData("ftp_title")).length() > 0;
+		} catch (Exception e) {}
 		//this.setLayout(new FillLayout());
 		this.setLayout(new GridLayout());
 		GridLayout gridLayout2 = new GridLayout();
@@ -205,7 +214,12 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 
 	public boolean isUnsaved() {
-		return bApply.isEnabled();
+		return  bApply.isEnabled();
+		/*|| 
+		       (butEnvApply != null && butEnvApply.isEnabled()) ||
+		       (butIncludesApply != null && butIncludesApply.isEnabled()) ||
+		       (butoIncludeSave != null && butoIncludeSave.isEnabled());
+		       */
 		//return false;
 	}
 
@@ -303,7 +317,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 	
 	private void startWizzard() {
-
+		Utils.startCursor(getShell());
 		if(includeFile!= null && includeFile.trim().length() > 0) {
 			//JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren        			
 			//JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
@@ -316,6 +330,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 			importParameterForms.showAllImportJobs();
 		}
+		Utils.stopCursor(getShell());
 	}
 
 
@@ -459,7 +474,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 			txtIncludeParameterValue.setLayoutData(gridData_9);
 
-			final Button butoIncludeSave = new Button(group_1, SWT.NONE);
+			butoIncludeSave = new Button(group_1, SWT.NONE);
 			butoIncludeSave.setEnabled(false);
 			
 			final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
@@ -678,10 +693,10 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 					item.setText(1, txtIncludeParameterValue.getText());
 					
 					
-					Element params = null;
+					/*Element params = null;
 					if(listOfElement.size() > 0)
 						params = ((Element)listOfElement.get(0)).getParentElement();
-					
+					*/
 				
 					Element param = new Element("param");
 					param.setAttribute("name", item.getText(0) );
@@ -1092,7 +1107,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		tableIncludeParams = new Table(group_3, SWT.FULL_SELECTION | SWT.BORDER);
 		tableIncludeParams.addMouseListener(new MouseAdapter() {
 			public void mouseDoubleClick(final MouseEvent e) {
-				createParameterTabItem();
+				if(!isRemoteConnection)
+					createParameterTabItem();
 			}
 		});
 		tableIncludeParams.addSelectionListener(new SelectionAdapter() {
@@ -1107,7 +1123,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 					butIsLifeFile.setSelection(item.getText(2).equalsIgnoreCase("live_file"));								
 				butRemoveInclude.setEnabled(tableIncludeParams.getSelectionCount() > 0);                               
 				butIncludesApply.setEnabled(false);
-				butOpenInclude.setEnabled(true);				
+				
+				butOpenInclude.setEnabled(true && !isRemoteConnection);				
 			}
 		});
 		tableIncludeParams.setLinesVisible(true);
@@ -1150,6 +1167,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		butNewIncludes.setText("New");
 
 		butOpenInclude = new Button(group_3, SWT.NONE);
+		
 		butOpenInclude.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				createParameterTabItem();        		

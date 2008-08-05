@@ -7,6 +7,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Combo;
@@ -106,19 +107,19 @@ public class Utils {
 			if (dom != null)
 				dom.setChanged(true);
 			//}
-	} else if (!value.equals(element.getAttributeValue(attribute))) {
-		element.setAttribute(attribute, value);
-		if (dom != null) {
-			dom.setChanged(true);
-			if(dom instanceof SchedulerDom) {
-				if(element.getName().equals("order")) {
-					((SchedulerDom)dom).setChangedForDirectory("order", Utils.getAttributeValue("job_chain",element) + "," + Utils.getAttributeValue("id",element), SchedulerDom.MODIFY);
-				} else {
-					((SchedulerDom)dom).setChangedForDirectory("job", Utils.getAttributeValue("name",element), SchedulerDom.MODIFY);
+		} else if (!value.equals(element.getAttributeValue(attribute))) {
+			element.setAttribute(attribute, value);
+			if (dom != null) {
+				dom.setChanged(true);
+				if(dom instanceof SchedulerDom) {
+					if(element.getName().equals("order")) {
+						((SchedulerDom)dom).setChangedForDirectory("order", Utils.getAttributeValue("job_chain",element) + "," + Utils.getAttributeValue("id",element), SchedulerDom.MODIFY);
+					} else {
+						((SchedulerDom)dom).setChangedForDirectory("job", Utils.getAttributeValue("name",element), SchedulerDom.MODIFY);
+					}
 				}
 			}
 		}
-	}
 	}
 
 
@@ -457,7 +458,7 @@ public class Utils {
         else
             return url.substring(index + 1);
 		 */
-		 /*if(url != null && new java.io.File(url).getName().startsWith("#xml#.config.")) {
+		/*if(url != null && new java.io.File(url).getName().startsWith("#xml#.config.")) {
     	return new java.io.File(url).getParent();
     }*/
 		if(url != null && new java.io.File(url).isDirectory()) {
@@ -483,10 +484,10 @@ public class Utils {
 					return false;
 				if (ok == SWT.NO)
 					return true;//return false;
-					else if (ok == SWT.YES) {
-						unsaved.apply();
-						//return false;
-					}
+				else if (ok == SWT.YES) {
+					unsaved.apply();
+					//return false;
+				}
 			}
 		}
 		return true;
@@ -575,7 +576,7 @@ public class Utils {
 		TextDialog dialog = new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL
 				| SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		dialog.setSize(new Point(500, 400));
-		
+
 		if(selectStr != null && selectStr.trim().length() > 0)
 			dialog.setContent(xml, selectStr);
 		else
@@ -677,7 +678,7 @@ public class Utils {
 		return elem;
 	}
 
-	
+
 	/*
 	 * liefert den Hotfolder Vaterknoten 
 	 * mögliche Vaterknoten
@@ -720,7 +721,7 @@ public class Utils {
 		}
 		return elem;
 	}
-	
+
 	/*
 	 * liefert den Vaterknoten der Runtime
 	 * 
@@ -997,7 +998,7 @@ public class Utils {
 
 		//mögliche hot folder element
 		Element e = Utils.getHotFolderParentElement(elem);
-		
+
 		if(e.getName().equals("order") || e.getName().equals("add_order")) {
 			if(getJobElement(e).getName().equals("job"))			
 				dom.setChangedForDirectory(e.getName(), Utils.getAttributeValue("name",Utils.getJobElement(e)), SchedulerDom.MODIFY);
@@ -1022,8 +1023,19 @@ public class Utils {
 
 		}
 		return false;
-}
+	}
 
-	
+	//setzt den Maus auf SandUhr
+	public static void startCursor(Shell shell){
+		if(!shell.isDisposed())
+			shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT));
+	}
+
+	//setzt den Maus auf Pfeil
+	public static void stopCursor(Shell shell){
+		if(!shell.isDisposed())
+			shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_ARROW));
+	}
+
 
 }

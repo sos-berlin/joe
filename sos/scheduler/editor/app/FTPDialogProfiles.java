@@ -97,7 +97,7 @@ public class FTPDialogProfiles {
 
 	public void showForm() {
 
-		schedulerConfigurationShell = new Shell(SWT.CLOSE | SWT.TITLE
+		schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE
 				| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 		
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
@@ -195,7 +195,7 @@ public class FTPDialogProfiles {
 			cboConnectname.select(0);
 
 			final Label protocolLabel = new Label(group, SWT.NONE);
-			protocolLabel.setText("protocol");
+			protocolLabel.setText("Protocol");
 
 			cboProtokol = new Combo(group, SWT.NONE);
 			cboProtokol.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
@@ -712,6 +712,7 @@ public class FTPDialogProfiles {
 	
 	private void close() {
 		
+		Utils.startCursor(schedulerConfigurationShell);
 		listener.refresh();
 		
 		if(saved)
@@ -727,7 +728,7 @@ public class FTPDialogProfiles {
 			//listener.saveSettings();
 			listener.saveProfile(butSavePassword.getSelection());			
 		}
-		
+		Utils.stopCursor(schedulerConfigurationShell);
 
 		
 		

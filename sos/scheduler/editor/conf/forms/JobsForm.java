@@ -112,6 +112,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			butAssistent.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					try {
+						Utils.startCursor(getShell());
 						JobAssistentForm assitent = new JobAssistentForm(dom, update);
 						assitent.startJobAssistant();
 					} catch (Exception ex) {
@@ -121,6 +122,8 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 							//tu nichts
 						}
 						System.out.println("..error " + ex.getMessage());
+					} finally {
+						Utils.stopCursor(getShell());
 					}
 				}
 			});

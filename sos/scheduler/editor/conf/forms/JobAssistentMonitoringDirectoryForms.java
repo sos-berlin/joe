@@ -84,7 +84,7 @@ public class JobAssistentMonitoringDirectoryForms {
 	
 	public void showMonitoringDirectoryForm() {
 		
-		shellRunOptions = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		shellRunOptions = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shellRunOptions.addShellListener(new ShellAdapter() {
 			public void shellClosed(final ShellEvent e) {
 				if(!closeDialog)

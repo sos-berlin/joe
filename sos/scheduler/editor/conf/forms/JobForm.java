@@ -739,6 +739,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 			public void widgetSelected(final SelectionEvent e) {
 				
 				try {
+					Utils.startCursor(getShell());
 					if (tFileName.getText() != null && tFileName.getText().length() > 0) {
 						String sHome = getHome(tFileName.getText());
 						
@@ -757,6 +758,8 @@ public class JobForm extends Composite implements IUpdateLanguage {
 						//tu nichts
 					}
 					MainWindow.message(getShell(), "..could not open file " + tFileName.getText() + " " + ex.getMessage(), SWT.ICON_WARNING | SWT.OK );
+				} finally {
+					Utils.stopCursor(getShell());
 				}
 			}
 		});
@@ -784,6 +787,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		butOpen.setEnabled(false);
 		butOpen.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				Utils.startCursor(getShell());
 				String xmlPath = "";
 				if(tFileName.getText() != null && tFileName.getText().length() > 0) {
 					xmlPath = sos.scheduler.editor.app.Options.getSchedulerHome() ;
@@ -796,6 +800,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 				} else {        			
 					MainWindow.message("There is no Documentation " + xmlPath, SWT.ICON_WARNING | SWT.OK);
 				}
+				Utils.stopCursor(getShell());
 			}
 		});
 		butOpen.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
@@ -879,6 +884,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 	
 	
 	public void startWizzard(boolean onlyParams) {
+		Utils.startCursor(getShell());
 		if(listener.getInclude()!= null && listener.getInclude().trim().length() > 0) {
 			//JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren        						
 			//JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener, parForm.getTParameter(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
@@ -900,6 +906,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 			
 		}
 		if (butWizzard != null) butWizzard.setToolTipText(Messages.getTooltip("jobs.assistent"));
+		Utils.stopCursor(getShell());
 	}
 	
 	

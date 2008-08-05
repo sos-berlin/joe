@@ -146,7 +146,7 @@ public class JobAssistentPeriodForms {
 	public void showPeriodeForms() {
 		try {
 			
-			jobTypeShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+			jobTypeShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 			jobTypeShell.addShellListener(new ShellAdapter() {
 				public void shellClosed(final ShellEvent e) {
 					if(!closeDialog)

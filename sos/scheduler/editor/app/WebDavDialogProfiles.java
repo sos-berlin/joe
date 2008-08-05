@@ -78,7 +78,7 @@ public class WebDavDialogProfiles {
 
 	public void showForm() {
 
-		schedulerConfigurationShell = new Shell(SWT.CLOSE | SWT.TITLE
+		schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE
 				| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 		
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {

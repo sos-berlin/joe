@@ -75,7 +75,7 @@ public class HotFolderDialog {
 	public void showForm(int type_) {
 
 		type = type_;
-		schedulerConfigurationShell = new Shell(SWT.CLOSE | SWT.TITLE
+		schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE
 				| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 		
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
@@ -439,6 +439,7 @@ public class HotFolderDialog {
 
 	private void openDirectory() {
 		try {
+			Utils.startCursor(schedulerConfigurationShell);
 			if (tree.getSelectionCount() > 0) {
 				String path = sosString.parseToString(tree.getSelection()[0].getData());
 				if((tree.getSelection()[0].getItemCount() > 0 && type == SCHEDULER_HOST && !tree.getSelection()[0].getText().equals(sType))
@@ -466,6 +467,8 @@ public class HotFolderDialog {
 					"..error in create tree for Open Scheduler Cluster/Host "
 					+ e.getMessage(), SWT.ICON_ERROR);
 			schedulerConfigurationShell.setFocus();
+		} finally {
+			Utils.stopCursor(schedulerConfigurationShell);
 		}
 
 	}

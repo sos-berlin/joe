@@ -259,19 +259,21 @@ public class MainWindow  {
 		MenuItem pOpenGlobalScheduler = new MenuItem(pMOpenGlobalScheduler, SWT.PUSH);
 		pOpenGlobalScheduler.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-
+				Utils.startCursor(getSShell());
 				String globalSchedulerPath = Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome() : Options.getSchedulerHome() + "/";
 				globalSchedulerPath = globalSchedulerPath + "config/remote/_all";
 				File f = new java.io.File(globalSchedulerPath); 
 				if(!f.exists()) {
-					if(!f.mkdirs()) {
+					if(!f.mkdirs()) {						
 						MainWindow.message("could not create Global Scheduler Configurations: " + globalSchedulerPath, SWT.ICON_WARNING);
+						Utils.stopCursor(getSShell());
 						return;
 					}
 				}
 
 				if (container.openDirectory(globalSchedulerPath) != null)
 					setSaveStatus();
+				Utils.stopCursor(getSShell());
 			}
 		});
 		pOpenGlobalScheduler.setText("Open Global Scheduler                          \tCtrl+T");
@@ -674,6 +676,7 @@ public class MainWindow  {
 
 	
 	private void save() {
+		Utils.startCursor(getSShell());
 		HashMap changes = new HashMap();
 		if(container.getCurrentEditor() instanceof sos.scheduler.editor.conf.forms.SchedulerForm) {
 			sos.scheduler.editor.conf.forms.SchedulerForm form =(sos.scheduler.editor.conf.forms.SchedulerForm)container.getCurrentEditor();
@@ -687,6 +690,7 @@ public class MainWindow  {
 			saveWebDav(changes);
 			setSaveStatus();
 		}		
+		Utils.stopCursor(getSShell());
 	}
 
 	private void createToolBar() {

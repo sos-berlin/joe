@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Text;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 
@@ -42,8 +43,8 @@ public class JobAssistentInfoForms {
 	}
 
 	public void showInfoForm() {
-				
-		final Shell shell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+				 
+		final Shell shell = new Shell(sos.scheduler.editor.app.MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.marginTop = 5;
@@ -120,10 +121,12 @@ public class JobAssistentInfoForms {
 			butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			butNext.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
+					Utils.startCursor(shell);
 					JobAssistentTypeForms typeForms = new JobAssistentTypeForms(dom, update);
 					
 					typeForms.showTypeForms();	
 					shell.dispose();
+					Utils.stopCursor(shell);
 				}
 			});
 			butNext.setText("Next");

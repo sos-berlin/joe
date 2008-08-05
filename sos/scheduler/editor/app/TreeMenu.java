@@ -29,8 +29,6 @@ public class TreeMenu {
 
 	private Menu                    _menu                     = null;
 
-	//private Clipboard               _cb                     = null;
-
 	private static Element          _copy                     = null;
 
 	private static int              _type                     = -1; 

@@ -33,7 +33,6 @@ import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
-
 import java.io.File; 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -102,7 +101,7 @@ public class FTPDialog {
 	public void showForm(String type_) {
 		
 		type = type_;
-		schedulerConfigurationShell = new Shell(SWT.CLOSE | SWT.TITLE
+		schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE
 				| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 		schedulerConfigurationShell.setImage(ResourceManager
 				.getImageFromResource("/sos/scheduler/editor/editor.png"));
@@ -167,12 +166,14 @@ public class FTPDialog {
 				public void widgetSelected(final SelectionEvent e) {
 					//listener.connect(cboConnectname.getText());
 					//listener.connect(cboConnectname.getText());
+					Utils.startCursor(schedulerConfigurationShell);
 					HashMap h = listener.changeDirectory(cboConnectname.getText(), txtDir.getText());
 					if(listener.isLoggedIn()) {
 						butOpenOrSave.setEnabled(listener.isLoggedIn() && txtFilename.getText().length() > 0);
 						fillTable(h);
 						_setEnabled(true);
 					}
+					Utils.stopCursor(schedulerConfigurationShell);
 					
 				}
 			});
@@ -181,9 +182,14 @@ public class FTPDialog {
 			butProfiles = new Button(schedulerGroup, SWT.NONE);
 			butProfiles.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
+					
+					Utils.startCursor(schedulerConfigurationShell);
+					
 					FTPDialogProfiles profiles = new FTPDialogProfiles (listener);
 					profiles.showForm();
-					//txtDir.setText(".");
+					
+					Utils.stopCursor(schedulerConfigurationShell);
+					
 				}
 			});
 			butProfiles.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
@@ -204,9 +210,10 @@ public class FTPDialog {
 			butChangeDir = new Button(schedulerGroup, SWT.NONE);
 			butChangeDir.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-					
+					Utils.startCursor(schedulerConfigurationShell);
 					HashMap h = listener.changeDirectory(cboConnectname.getText(), txtDir.getText());
 					fillTable(h);
+					Utils.stopCursor(schedulerConfigurationShell);
 				}
 			});
 			butChangeDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -300,6 +307,7 @@ public class FTPDialog {
 			butRefresh = new Button(schedulerGroup, SWT.NONE);
 			butRefresh.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
+					
 					refresh();
 					//HashMap h = listener.changeDirectory(txtDir.getText());
 					//fillTable(h);
@@ -331,9 +339,11 @@ public class FTPDialog {
 			butRemove.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					if(txtFilename.getText() != null) {
+						Utils.startCursor(schedulerConfigurationShell);
 						listener.removeFile(txtFilename.getText());
 						HashMap h = listener.changeDirectory(txtDir.getText());
 						fillTable(h);
+						Utils.stopCursor(schedulerConfigurationShell);
 					}
 				}
 			});
@@ -363,7 +373,7 @@ public class FTPDialog {
 				butOpenOrSave.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 				butOpenOrSave.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
-						
+						Utils.startCursor(schedulerConfigurationShell);
 						if(butOpenOrSave.getText().equals(OPEN) || butOpenOrSave.getText().equals(OPEN_HOT_FOLDER)) {
 							if(type.equals(OPEN_HOT_FOLDER)) {
 								openHotFolder();
@@ -379,22 +389,7 @@ public class FTPDialog {
 							saveas(file);
 						}
 						
-
-						/*if(butOpenOrSave.getText().equals("Open")) {							
-							String file = listener.getFile(txtDir.getText() + "/" + txtFilename.getText());
-							if (MainWindow.getContainer().openQuick(file) != null)
-								main.setSaveStatus();
-						} else {
-							String file = txtDir.getText() + "/" + txtFilename.getText();
-							System.out.println(file);	
-							if(MainWindow.getContainer().getCurrentEditor().hasChanges()) {
-								MainWindow.getContainer().getCurrentEditor().save();
-							} 
-							listener.saveAs(MainWindow.getContainer().getCurrentEditor().getFilename(), file);
-						}
-						listener.disconnect();
-						schedulerConfigurationShell.dispose();
-						*/
+						Utils.stopCursor(schedulerConfigurationShell);
 					}
 				});
 				butOpenOrSave.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
@@ -432,6 +427,7 @@ public class FTPDialog {
 		final Button butLog = new Button(schedulerConfigurationShell, SWT.NONE);
 		butLog.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				
 				String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), schedulerConfigurationShell, false, "");
 				if(text != null)
 					txtLog.setText(text);
@@ -794,8 +790,10 @@ public class FTPDialog {
 	}
 	
 	public void refresh() {
+		Utils.startCursor(schedulerConfigurationShell);
 		HashMap h = listener.changeDirectory(txtDir.getText());
 		fillTable(h);
+		Utils.stopCursor(schedulerConfigurationShell);
 	}
 	
 	public void openDialog() {

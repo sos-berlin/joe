@@ -110,7 +110,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 	public void showDelayOrderAfterSetbackForm() {
 		
 		
-		shellSetBack = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		shellSetBack = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shellSetBack.addShellListener(new ShellAdapter() {
 			public void shellClosed(final ShellEvent e) {
 				if(!closeDialog)
@@ -423,6 +423,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 	}
 	
 	private void refreshElement(boolean apply) {
+		Utils.startCursor(shellSetBack);
 		if(modify) {
 			
 			if(optionlistener.getSetbacks().size() > 0 ) {
@@ -451,6 +452,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 				
 			}
 		}
+		Utils.stopCursor(shellSetBack);
 	}
 
 	private void close() {

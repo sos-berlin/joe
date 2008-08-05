@@ -97,8 +97,8 @@ public class JobAssistentDelayAfterErrorForm {
 	}		
 	
 	public void showDelayAfterErrorForm() {
-		
-		shellSetBack = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		//sos.scheduler.editor.app.MainWindow.getSShell(),
+		shellSetBack = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shellSetBack.addShellListener(new ShellAdapter() {
 			public void shellClosed(final ShellEvent e) {
 				if(!closeDialog)
@@ -343,8 +343,9 @@ public class JobAssistentDelayAfterErrorForm {
 			butFinish.setLayoutData(new GridData(40, SWT.DEFAULT));
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-					if(!check()) return;
 					
+					if(!check()) return;
+					Utils.startCursor(shellSetBack);
 					if(jobname != null)
 						jobname.setText(Utils.getAttributeValue("name",job));
 					
@@ -358,6 +359,7 @@ public class JobAssistentDelayAfterErrorForm {
 						Utils.showClipboard(Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), shellSetBack);
 					}
 					closeDialog = true;
+					Utils.stopCursor(shellSetBack);
 					shellSetBack.dispose();					
 				}
 			});
@@ -391,7 +393,7 @@ public class JobAssistentDelayAfterErrorForm {
 			butNext.addSelectionListener(new SelectionAdapter() {				
 				
 				public void widgetSelected(final SelectionEvent e) {
-					
+					Utils.startCursor(shellSetBack);
 					refreshElement(false);
 					
 					JobAssistentDelayOrderAfterSetbackForm delay = new JobAssistentDelayOrderAfterSetbackForm(dom, update, job, assistentType);
@@ -401,6 +403,7 @@ public class JobAssistentDelayAfterErrorForm {
 					//if(jobBackUp != null)
 						delay.setBackUpJob(jobBackUp, jobForm);
 					closeDialog = true;
+					Utils.stopCursor(shellSetBack);
 					shellSetBack.dispose();
 					
 				}

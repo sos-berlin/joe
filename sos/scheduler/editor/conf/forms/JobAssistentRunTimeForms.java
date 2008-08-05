@@ -152,7 +152,7 @@ public class JobAssistentRunTimeForms {
 	public void showRunTimeForms() {
 		try {
 			
-			runTimeSingleShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+			runTimeSingleShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 			runTimeSingleShell.addShellListener(new ShellAdapter() {
 				public void shellClosed(final ShellEvent e) {
 					if(!closeDialog)

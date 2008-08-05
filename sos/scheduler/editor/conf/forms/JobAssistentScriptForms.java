@@ -84,7 +84,7 @@ public class JobAssistentScriptForms {
 	
 	public void showScriptForm() {
 		
-		scriptShell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		scriptShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		scriptShell.addShellListener(new ShellAdapter() {
 			public void shellClosed(final ShellEvent e) {
 				if(!closeDialog)
@@ -331,6 +331,7 @@ public class JobAssistentScriptForms {
 				butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 				butNext.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
+						Utils.startCursor(scriptShell);
 						if(Utils.getAttributeValue("order", scriptlistener.getParent()).equals("yes")) {
 							JobAssistentTimeoutOrderForms timeout = new JobAssistentTimeoutOrderForms(dom, update, scriptlistener.getParent(), assistentType);
 							timeout.showTimeOutForm();	
@@ -344,6 +345,7 @@ public class JobAssistentScriptForms {
 							//if(jobBackUp != null)
 								timeout.setBackUpJob(jobBackUp, jobForm);
 						}
+						Utils.stopCursor(scriptShell);
 						closeDialog = true;
 						scriptShell.dispose();
 					}

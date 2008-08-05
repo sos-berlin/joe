@@ -76,7 +76,7 @@ public class JobAssistentRunOptionsForms {
 	
 	public void showRunOptionsForm() {
 		
-		shellRunOptions = new Shell(SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		shellRunOptions = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shellRunOptions.addShellListener(new ShellAdapter() {
 			public void shellClosed(final ShellEvent e) {
 				if(!closeDialog)
@@ -253,7 +253,8 @@ public class JobAssistentRunOptionsForms {
 		final GridData gridData_6 = new GridData(47, SWT.DEFAULT);
 		butNext.setLayoutData(gridData_6);
 		butNext.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {								
+			public void widgetSelected(final SelectionEvent e) {
+				Utils.startCursor(shellRunOptions);
 				JobAssistentDelayAfterErrorForm derror = new JobAssistentDelayAfterErrorForm(dom, update, job, assistentType);
 				derror.showDelayAfterErrorForm();
 				if(jobname != null) 													
@@ -261,6 +262,7 @@ public class JobAssistentRunOptionsForms {
 				//if(jobBackUp != null)
 					derror.setBackUpJob(jobBackUp, jobForm);
 				closeDialog = true;
+				Utils.stopCursor(shellRunOptions);
 				shellRunOptions.dispose();								
 			}
 		});

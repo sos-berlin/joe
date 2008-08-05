@@ -19,7 +19,7 @@ public class JobAssistentForm {
 	
 	public void startJobAssistant() {
 		try {
-			if(Options.isShowWizardInfo()) {
+			if(Options.isShowWizardInfo()) { 
 				JobAssistentInfoForms info = new JobAssistentInfoForms(dom, update);
 				info.showInfoForm();
 			} else {
