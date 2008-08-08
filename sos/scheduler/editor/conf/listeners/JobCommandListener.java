@@ -1,5 +1,6 @@
 package sos.scheduler.editor.conf.listeners;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -8,6 +9,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
+import org.jdom.xpath.XPath;
+
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -473,10 +477,68 @@ public class JobCommandListener {
 		_main.updateTreeItem(_command.getName() + ": " +jobChain);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
+	
+	
+	public void setEndState(String state) {
+		Utils.setAttribute("end_state", state, _command, _dom);
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+	}
 
+	
 	public void setTitle(String title) {
 		Utils.setAttribute("title", title, _command, _dom);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 
+	public String[] getStates(String whichState) {
+    	String[] retVal = new String[]{""};
+    	ArrayList stateList = new ArrayList();
+    	
+    	try {
+    		String jobChainname = Utils.getAttributeValue("job_chain", getCommand());    		
+    		XPath x3 = XPath.newInstance("//job_chain[@name='"+ jobChainname + "']");
+    		Element jobChain = (Element)x3.selectSingleNode(_dom.getDoc());
+    		
+    		if(jobChain == null) {
+    			jobChainname = Utils.getAttributeValue("job_chain_node.job_chain", getCommand()); 
+    			x3 = XPath.newInstance("//job_chain_node.job_chain[@name='"+ jobChainname + "']");
+        		jobChain = (Element)x3.selectSingleNode(_dom.getDoc());
+        		
+    		}
+    		if(jobChain == null)
+    			return retVal;
+    		
+    		
+    		List l = jobChain.getChildren();
+    		for(int i = 0; i < l.size(); i++) {
+    			Element e = (Element)l.get(i);
+    			boolean endstate = Utils.getAttributeValue("job", e).length() == 0 && Utils.getAttributeValue("job_chain", e).length() == 0;
+    			String state = Utils.getAttributeValue("state", e);
+    			if(whichState.equals("state") && !endstate) {    				
+
+    				if(state.length() > 0)
+    					stateList.add(state);
+
+    			} else if(whichState.equals("end_state") && endstate) {
+    				if(state.length() > 0)
+    					stateList.add(state);
+    			}
+    		}
+
+    		if(stateList.size() > 0) {
+    			retVal = new String[stateList.size()];
+    			for(int i = 0; i < stateList.size(); i++)
+    				retVal[i] = stateList.get(i).toString();
+    		} 
+    		//if(!listOfElement_3.isEmpty())
+    	} catch (Exception e){
+    		try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+    	}
+    	return retVal;
+
+    }
 }

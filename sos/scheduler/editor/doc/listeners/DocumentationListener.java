@@ -38,6 +38,7 @@ import sos.scheduler.editor.doc.forms.ScriptForm;
 import sos.scheduler.editor.doc.forms.SectionsForm;
 import sos.scheduler.editor.doc.forms.SettingForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
+import sos.scheduler.editor.doc.forms.DatabaseResourcesForm;
 
 
 public class DocumentationListener implements IUpdateTree {
@@ -52,6 +53,8 @@ public class DocumentationListener implements IUpdateTree {
     private static ArrayList _IDs;
 
     private DocumentationForm _gui;
+    
+    public static String PREFIX_DATABSE =  "Database: ";
 
     public DocumentationListener(DocumentationForm gui, DocumentationDom dom) {
     	_gui = gui;
@@ -101,6 +104,7 @@ public class DocumentationListener implements IUpdateTree {
         item2.setText("Databases");
         item2.setData(new TreeData(Editor.DOC_DATABASES, desc, Options.getDocHelpURL("databases")));
         item.setExpanded(true);
+        treeFillDatabaseResources(item2, desc.getChild("resources", _dom.getNamespace()));
 
         item = new TreeItem(tree, SWT.NONE);
         item.setText("Configuration");
@@ -258,7 +262,10 @@ public class DocumentationListener implements IUpdateTree {
                         new ResourcesForm(c, SWT.NONE, _dom, data.getElement());
                         break;
                     case Editor.DOC_DATABASES:
-                        new DatabasesForm(c, SWT.NONE, _dom, data.getElement());
+                        new DatabasesForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+                        break;
+                    case Editor.DOC_DATABASES_RESOURCE:
+                        new DatabaseResourcesForm(c, SWT.NONE, _dom, data.getElement());
                         break;
                     case Editor.DOC_FILES:
                         new FilesForm(c, SWT.NONE, _dom, data.getElement());
@@ -391,5 +398,25 @@ public class DocumentationListener implements IUpdateTree {
     	}
     	
     }
+    
+    public void treeFillDatabaseResources(TreeItem parent, Element resources) {
+    	
+    	if(resources == null )
+    		return;
+    	parent.removeAll();
+
+    	java.util.List list = resources.getChildren("database", resources.getNamespace());
+    	for(int i = 0; i< list.size(); i++) {
+    		Element database = (Element)list.get(i);
+    		TreeItem itemDatabase = new TreeItem(parent, SWT.NONE);
+    		itemDatabase.setText(PREFIX_DATABSE +  Utils.getAttributeValue("name", database));    		
+    		itemDatabase.setData(new TreeData(Editor.DOC_DATABASES_RESOURCE, database, Options.getDocHelpURL("databases")));
+    		
+    		parent.setExpanded(true);
+    		itemDatabase.setExpanded(true);
+    	}
+    	
+    }
+    
 
 }

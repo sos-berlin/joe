@@ -4,6 +4,8 @@ import javax.xml.transform.TransformerException;
 import sos.scheduler.editor.app.Editor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -39,7 +41,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 
 	private Text               tTitle               = null;
 
-	private Text               tState               = null;
+	private Combo              tState               = null;
 
 	private Text               tStartAt             = null;
 
@@ -62,7 +64,13 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 	private Label              stateLabel           = null;
 
 	private Label              replaceLabel         = null;
+	
+	private Combo              cboEndstate          = null; 
 
+	private Label              endStateLabel        = null;
+	
+	private boolean            event                = false;
+	
 
 	public JobCommandForm(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main)
 	throws JDOMException, TransformerException {
@@ -76,7 +84,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		}
 		initialize();
 		setToolTipText();			
-
+		event = true;
 		if (command.getParentElement() != null ){        	
 			this.jobsAndOrdersGroup.setEnabled(Utils.isElementEnabled("job", dom, command.getParentElement()));        	
 		}
@@ -133,7 +141,23 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		cJobchain.setItems(listener.getJobChains());		
 		cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				listener.setJobChain(cJobchain.getText());							
+				if(!event)
+					return;
+				
+				listener.setJobChain(cJobchain.getText());	
+				
+				String curstate = Utils.getAttributeValue("state", listener.getCommand());
+				if(curstate.length() > 0) {
+					tState.setItems(listener.getStates("state"));                		
+					tState.setText(curstate);
+				}
+                
+                String curEndstate =  Utils.getAttributeValue("end_state", listener.getCommand());
+                if(curEndstate.length()> 0) {
+                	cboEndstate.setItems(listener.getStates("end_state"));
+                	cboEndstate.setText(curEndstate);
+                }
+				
 			}
 		});
 
@@ -188,7 +212,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		});
 		tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		titleLabel = new Label(gDescription, SWT.NONE);
-		titleLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+		titleLabel.setLayoutData(new GridData());
 		titleLabel.setText("Title");
 
 		tTitle = new Text(gDescription, SWT.BORDER);
@@ -205,20 +229,35 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		tTitle.setLayoutData(gridData_5);
 
 		stateLabel = new Label(gDescription, SWT.NONE);
-		stateLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+		stateLabel.setLayoutData(new GridData());
 		stateLabel.setText("State");
 
-		tState = new Text(gDescription, SWT.BORDER);
+		tState = new Combo(gDescription, SWT.BORDER);
 		tState.setEnabled(false);
 		tState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				listener.setState(tState.getText());
+				if(event)
+					listener.setState(tState.getText());
 				
 			}
 		});
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_2.widthHint = 150;
 		tState.setLayoutData(gridData_2);
+
+		endStateLabel = new Label(gDescription, SWT.NONE);
+		endStateLabel.setLayoutData(new GridData());
+		endStateLabel.setText("End State");
+
+		cboEndstate = new Combo(gDescription, SWT.NONE);
+		cboEndstate.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				if(event)
+					listener.setEndState(cboEndstate.getText());
+			}
+		});
+		cboEndstate.setEnabled(false);
+		cboEndstate.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 		replaceLabel = new Label(gDescription, SWT.NONE);
 		final GridData gridData_12 = new GridData();
@@ -271,6 +310,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		if(type == Editor.JOB){
 			
 			tState.setVisible(false);
+			cboEndstate.setVisible(false);
 			tPriority.setVisible(false);
 			cJobchain.setVisible(false);
 			tTitle.setVisible(false);
@@ -279,6 +319,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 			priorityLabel.setVisible(false);
 			titleLabel.setVisible(false);			
 			stateLabel.setVisible(false);
+			endStateLabel.setVisible(false);
 			replaceLabel.setVisible(false);
 			lblJob.setText("Job");
 		} else {
@@ -292,6 +333,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 
 	private void setCommandsEnabled(boolean b) {
 		tState.setEnabled(b);
+		cboEndstate.setEnabled(b);
 		tPriority.setEnabled(b);
 		cJobchain.setEnabled(b);
 		tTitle.setEnabled(b);
@@ -305,15 +347,18 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 
 
 	public void fillCommand() {
-		if (listener.getCommand() != null) {
+		if (listener.getCommand() !=  null) {
 
 			tStartAt.setText(Utils.getAttributeValue("at", listener.getCommand()));
 			if (type == Editor.COMMANDS) {
-				
+				cJobchain.setText(Utils.getAttributeValue("job_chain", listener.getCommand()));
 				tJob.setText(Utils.getAttributeValue("id", listener.getCommand()));
 				tTitle.setText(Utils.getAttributeValue("title", listener.getCommand()));
-				tState.setText(Utils.getAttributeValue("state", listener.getCommand()));				
-				cJobchain.setText(Utils.getAttributeValue("job_chain", listener.getCommand()));
+				tState.setItems(listener.getStates("state"));
+				tState.setText(Utils.getAttributeValue("state", listener.getCommand()));
+				cboEndstate.setItems(listener.getStates("end_state"));
+				cboEndstate.setText(Utils.getAttributeValue("end_state", listener.getCommand()));
+				
 				tPriority.setText(Utils.getAttributeValue("priority", listener.getCommand()));
 				bReplace.setSelection(Utils.getAttributeValue("replace", listener.getCommand()).equals("yes"));
 			} else {
@@ -325,10 +370,12 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 
 
 	public void setToolTipText() {
+		
 		tStartAt.setToolTipText(Messages.getTooltip("jobcommand.startat"));
 		tTitle.setToolTipText(Messages.getTooltip("jobcommand.title"));
 		tPriority.setToolTipText(Messages.getTooltip("jobcommand.priority"));
 		tState.setToolTipText(Messages.getTooltip("jobcommand.state"));		
+		cboEndstate.setToolTipText(Messages.getTooltip("jobcommand.end_state"));
 		bReplace.setToolTipText(Messages.getTooltip("jobcommand.replaceorder"));
 		cJobchain.setToolTipText(Messages.getTooltip("jobcommand.jobchain"));
 		tJob.setToolTipText(Messages.getTooltip("jobcommand.job_order_id"));

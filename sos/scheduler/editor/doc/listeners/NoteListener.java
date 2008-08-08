@@ -75,6 +75,8 @@ public class NoteListener {
         	    Element c = null;
         	    if(_parent.getName().equalsIgnoreCase("release"))
         	    	c = r.getChild("releases",_dom.getNamespace());
+        	    else if(_parent.getName().equalsIgnoreCase("resource"))
+        	    	c = r.getChild("database",_dom.getNamespace());
         	    else 
         	    	c = r.getChild("configuration",_dom.getNamespace());
         	    c.addContent(_parent);

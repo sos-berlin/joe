@@ -29,6 +29,7 @@ import org.jdom.transform.JDOMResult;
 import org.jdom.transform.JDOMSource;
 
 public abstract class DomParser {
+	
     protected static final String DEFAULT_ENCODING = "ISO-8859-1";
 
     private Document              _doc;

@@ -170,7 +170,8 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 			TreeData data = (TreeData) item.getData();
 			listener.treeFillExitCodesCommands(item , data.getElement(), true);
 			item.setExpanded(true);
-			item.getItems()[item.getItemCount()-1].setExpanded(true);
+			if(item.getItemCount() > 0)
+				item.getItems()[item.getItemCount()-1].setExpanded(true);
 			//listener.treeFillCommands(tree.getSelection()[0], data.getElement(), true);
 			//hier einen neuen TreeItem aufbauen
 		}

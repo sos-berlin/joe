@@ -652,7 +652,6 @@ public class MergeAllXMLinDirectory {
 
         return (String[]) urls.toArray(new String[urls.size()]);
     }
-
 	
 	
 }

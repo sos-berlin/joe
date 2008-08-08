@@ -37,7 +37,7 @@ public class DatabasesListener {
         _parent = parent;
         _resources = _parent.getChild("resources", _dom.getNamespace());
     }
-
+ 
 
     public void fillDatabases(Table table) {
         table.removeAll();

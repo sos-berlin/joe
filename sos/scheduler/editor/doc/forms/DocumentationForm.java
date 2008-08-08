@@ -265,4 +265,14 @@ public class DocumentationForm extends Composite implements IEditor, IDocumentat
 			//tree.getSelection()[0].getItems()[tree.getSelection()[0].getItemCount()-1].setExpanded(true);
 		}
 	}
+	
+	public void updateDatabaseResource() {
+		if(docTree.getSelectionCount() > 0) {
+			TreeItem item = docTree.getSelection()[0];		
+			TreeData data = (TreeData) item.getData();
+			org.jdom.Element elem = data.getElement();
+			listener.treeFillDatabaseResources(item, elem.getChild("resources", elem.getNamespace()));
+			//tree.getSelection()[0].getItems()[tree.getSelection()[0].getItemCount()-1].setExpanded(true);
+		}
+	}
 } // @jve:decl-index=0:visual-constraint="10,10"

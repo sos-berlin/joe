@@ -35,15 +35,14 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
 
     private Label             label1     = null;
 
-    private Text              tName      = null;
+    //private Text              tName      = null;
 
-    private Label             label2     = null;
+    //private Label             label2     = null;
 
-    private Combo             cType      = null;
+   // private Combo             cType      = null;
 
-    private SashForm          sashForm   = null;
+    //private SashForm          sashForm   = null;
 
-    private Composite         composite  = null;
 
     private Composite         composite1 = null;
 
@@ -59,36 +58,42 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
 
     private Button            bNew       = null;
 
-    private Label             label3     = null;
 
-    private Button            bNotes     = null;
+    //private Button            bNotes     = null;
 
-    private Table             tResources = null;
+   // private Table             tResources = null;
 
-    private Button            bApplyRes  = null;
+   // private Button            bApplyRes  = null;
 
-    private Button            bNewRes    = null;
+    //private Button            bNewRes    = null;
 
-    private Button            bRemoveRes = null;
+    //private Button            bRemoveRes = null;
 
-    private Label             label4     = null;
+    //private Label             label4     = null;
 
-    private Label             label5     = null;
+    //private Label             label5     = null;
 
     private Label             label6     = null;
 
     private Text              tDB        = null;
+    
+    private DocumentationForm _gui        = null;
 
 
-    public DatabasesForm(Composite parent, int style) {
+    /*public DatabasesForm(Composite parent, int style) {
         super(parent, style);
         initialize();
-    }
+    }*/
 
 
-    public DatabasesForm(Composite parent, int style, DocumentationDom dom, Element parentElement) {
+    public DatabasesForm(Composite parent, 
+    		int style, 
+    		DocumentationDom dom, 
+    		Element parentElement,
+    DocumentationForm gui) {
         super(parent, style);
         this.dom = dom;
+        _gui = gui;
         listener = new DatabasesListener(dom, parentElement);
         initialize();
         listener.fillDatabases(tDatabases);
@@ -101,10 +106,10 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
         setSize(new Point(636, 477));
         setLayout(new FillLayout());
 
-        sashForm.setWeights(new int[] { 65, 35 });
-        Options.loadSash("databases", sashForm);
+        //sashForm.setWeights(new int[] { 65, 35 });
+       //Options.loadSash("databases", sashForm);
 
-        cType.setItems(listener.getTypes());
+        //cType.setItems(listener.getTypes());
         bRemove.setEnabled(false);
         setDatabaseStatus(false);
 
@@ -117,8 +122,8 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
      */
     private void createGroup() {
         group = new Group(this, SWT.NONE);
+        group.setLayout(new GridLayout());
         group.setText("Databases"); // Generated
-        group.setLayout(new FillLayout()); // Generated
         createSashForm();
     }
 
@@ -127,7 +132,7 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
      * This method initializes group1
      */
     private void createGroup1() {
-        GridData gridData14 = new GridData();
+        /*GridData gridData14 = new GridData();
         gridData14.horizontalAlignment = GridData.FILL; // Generated
         gridData14.verticalAlignment = GridData.BEGINNING; // Generated
         GridData gridData13 = new GridData();
@@ -170,8 +175,7 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
                 setApplyResStatus();
             }
         });
-        label2 = new Label(group1, SWT.NONE);
-        label2.setText("Type:"); // Generated
+      
         createCType();
         bNotes = new Button(group1, SWT.NONE);
         bNotes.setText("Note..."); // Generated
@@ -182,7 +186,7 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
                         .isNewDatabase(),"Resource Note");
             }
         });
-        bApplyRes = new Button(group1, SWT.NONE);
+                bApplyRes = new Button(group1, SWT.NONE);
         bApplyRes.setText("Apply"); // Generated
         bApplyRes.setLayoutData(gridData12); // Generated
         bApplyRes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -238,16 +242,17 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
                 bRemoveRes.setEnabled(false);
             }
         });
+        */
     }
 
 
     /**
      * This method initializes cType
      */
-    private void createCType() {
+   /* private void createCType() {
         GridData gridData4 = new GridData();
         gridData4.widthHint = 100; // Generated
-        cType = new Combo(group1, SWT.READ_ONLY);
+        //cType = new Combo(group1, SWT.READ_ONLY);
         cType.setLayoutData(gridData4); // Generated
         cType.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -259,14 +264,14 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
             }
         });
     }
-
+*/
 
     /**
      * This method initializes sashForm
      */
     private void createSashForm() {
-        sashForm = new SashForm(group, SWT.NONE);
-        sashForm.setOrientation(SWT.VERTICAL); // Generated
+        //sashForm = new SashForm(group, SWT.NONE);
+        //sashForm.setOrientation(SWT.VERTICAL); // Generated
         createComposite();
         createComposite1();
     }
@@ -276,50 +281,7 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
      * This method initializes composite
      */
     private void createComposite() {
-        GridData gridData71 = new GridData();
-        gridData71.horizontalAlignment = GridData.FILL; // Generated
-        gridData71.grabExcessHorizontalSpace = true; // Generated
-        gridData71.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData6 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
-        gridData6.widthHint = 90; // Generated
-        GridData gridData = new GridData();
-        gridData.verticalAlignment = GridData.CENTER; // Generated
-        gridData.horizontalSpan = 4; // Generated
-        gridData.horizontalAlignment = GridData.FILL; // Generated
-        GridLayout gridLayout2 = new GridLayout();
-        gridLayout2.numColumns = 4; // Generated
-        composite = new Composite(sashForm, SWT.NONE);
-        label6 = new Label(composite, SWT.NONE);
-        label6.setText("Name:"); // Generated
-        tDB = new Text(composite, SWT.BORDER);
-        tDB.setLayoutData(gridData71); // Generated
-        tDB.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(true);
-                getShell().setDefaultButton(bApply);
-            }
-        });
-        cRequired = new Button(composite, SWT.CHECK);
-        cRequired.setText("Is Required"); // Generated
-        cRequired.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                bApply.setEnabled(true);
-                getShell().setDefaultButton(bApply);
-            }
-        });
-        bApply = new Button(composite, SWT.NONE);
-        bApply.setText("Apply DB"); // Generated
-        bApply.setLayoutData(gridData6); // Generated
         createGroup1();
-        bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                applyDatabase();
-            }
-        });
-        composite.setLayout(gridLayout2); // Generated
-        label = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label.setText("Label"); // Generated
-        label.setLayoutData(gridData); // Generated
     }
 
 
@@ -327,33 +289,53 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
      * This method initializes composite1
      */
     private void createComposite1() {
-        GridData gridData8 = new GridData();
-        gridData8.horizontalAlignment = GridData.FILL; // Generated
+        GridData gridData8 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
         gridData8.widthHint = 90; // Generated
-        gridData8.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData7 = new GridData();
-        gridData7.horizontalAlignment = GridData.FILL; // Generated
-        gridData7.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData2 = new GridData();
-        gridData2.horizontalAlignment = GridData.FILL; // Generated
+        GridData gridData2 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
         gridData2.widthHint = 90; // Generated
-        gridData2.verticalAlignment = GridData.BEGINNING; // Generated
-        GridData gridData1 = new GridData();
-        gridData1.horizontalAlignment = GridData.FILL; // Generated
-        gridData1.grabExcessHorizontalSpace = true; // Generated
-        gridData1.grabExcessVerticalSpace = true; // Generated
-        gridData1.verticalSpan = 3; // Generated
-        gridData1.verticalAlignment = GridData.FILL; // Generated
+        GridData gridData1 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2);
         GridLayout gridLayout3 = new GridLayout();
-        gridLayout3.numColumns = 2; // Generated
-        composite1 = new Composite(sashForm, SWT.NONE);
+        gridLayout3.numColumns = 5; // Generated
+        composite1 = new Composite(group, SWT.NONE);
+        composite1.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         composite1.setLayout(gridLayout3); // Generated
-        tDatabases = new Table(composite1, SWT.BORDER);
+        label6 = new Label(composite1, SWT.NONE);
+        label6.setText("Name:"); // Generated
+        tDB = new Text(composite1, SWT.BORDER);
+        tDB.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        tDB.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+                bApply.setEnabled(true);
+                getShell().setDefaultButton(bApply);
+            }
+        });
+        new Label(composite1, SWT.NONE);
+        cRequired = new Button(composite1, SWT.CHECK);
+        cRequired.setLayoutData(new GridData());
+        cRequired.setText("Is Required"); // Generated
+        cRequired.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                bApply.setEnabled(true);
+                getShell().setDefaultButton(bApply);
+            }
+        });
+        bApply = new Button(composite1, SWT.NONE);
+        bApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        bApply.setText("Apply DB"); // Generated
+        bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                applyDatabase();
+            }
+        });
+        label = new Label(composite1, SWT.SEPARATOR | SWT.HORIZONTAL);
+        label.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1));
+        label.setText("Label"); // Generated
+        tDatabases = new Table(composite1, SWT.FULL_SELECTION | SWT.BORDER);
         TableColumn tableColumn2 = new TableColumn(tDatabases, SWT.NONE);
         tableColumn2.setWidth(300); // Generated
         tableColumn2.setText("Name"); // Generated
         TableColumn tableColumn3 = new TableColumn(tDatabases, SWT.NONE);
-        tableColumn3.setWidth(60); // Generated
+        tableColumn3.setWidth(173); // Generated
         tableColumn3.setText("Required"); // Generated
         bNew = new Button(composite1, SWT.NONE);
         bNew.setText("New DB"); // Generated
@@ -364,11 +346,9 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
                 setDatabaseStatus(true);
                 tDatabases.deselectAll();
                 bApply.setEnabled(true);
+                tDB.setFocus();
             }
         });
-        label3 = new Label(composite1, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label3.setText("Label"); // Generated
-        label3.setLayoutData(gridData7); // Generated
         tDatabases.setLayoutData(gridData1); // Generated
         tDatabases.setHeaderVisible(true); // Generated
         tDatabases.setLinesVisible(true); // Generated
@@ -388,6 +368,7 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 if (tDatabases.getSelectionCount() > 0) {
                     listener.removeDatabase(tDatabases.getSelectionIndex());
+                    _gui.updateDatabaseResource();
                     setDatabaseStatus(false);
                     listener.fillDatabases(tDatabases);
                 }
@@ -398,17 +379,18 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
 
 
     public void apply() {
-        if (bApplyRes.isEnabled())
-            applyResource();
+        //if (bApplyRes.isEnabled())
+         //   applyResource();
         if (bApply.isEnabled())
             applyDatabase();
     }
 
 
     public boolean isUnsaved() {
-        Options.saveSash("databases", sashForm.getWeights());
+       // Options.saveSash("databases", sashForm.getWeights());
 
-        return bApplyRes.isEnabled() || bApply.isEnabled();
+        //return bApplyRes.isEnabled() || bApply.isEnabled();
+    	return bApply.isEnabled();
     }
 
 
@@ -419,59 +401,60 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
         tDatabases.setToolTipText(Messages.getTooltip("doc.databases.table"));
         bNew.setToolTipText(Messages.getTooltip("doc.databases.new"));
         bRemove.setToolTipText(Messages.getTooltip("doc.databases.remove"));
-        tName.setToolTipText(Messages.getTooltip("doc.databases.resources.name"));
+        /*tName.setToolTipText(Messages.getTooltip("doc.databases.resources.name"));
         cType.setToolTipText(Messages.getTooltip("doc.databases.resources.type"));
         bNotes.setToolTipText(Messages.getTooltip("doc.databases.resources.notes"));
         bApplyRes.setToolTipText(Messages.getTooltip("doc.databases.resources.apply"));
         tResources.setToolTipText(Messages.getTooltip("doc.databases.resources.table"));
         bNewRes.setToolTipText(Messages.getTooltip("doc.databases.resources.new"));
         bRemoveRes.setToolTipText(Messages.getTooltip("doc.databases.resources.remove"));
+        */
     }
 
 
     private void setDatabaseStatus(boolean enabled) {
         tDB.setEnabled(enabled);
         cRequired.setEnabled(enabled);
-        tResources.setEnabled(enabled);
-        bNewRes.setEnabled(enabled);
-        setResourceStatus(false);
+        //tResources.setEnabled(enabled);
+        //bNewRes.setEnabled(enabled);
+        //setResourceStatus(false);
 
         if (enabled) {
             tDB.setText(listener.getDBName());
             cRequired.setSelection(listener.isRequired());
-            listener.fillResources(tResources);
+            //listener.fillResources(tResources);
         }
         bApply.setEnabled(false);
     }
 
 
-    private void setResourceStatus(boolean enabled) {
-        tName.setEnabled(enabled);
-        cType.setEnabled(enabled);
-        bNotes.setEnabled(enabled);
-        bRemoveRes.setEnabled(false);
+   /* private void setResourceStatus(boolean enabled) {
+       // tName.setEnabled(enabled);
+       // cType.setEnabled(enabled);
+       // bNotes.setEnabled(enabled);
+       // bRemoveRes.setEnabled(false);
 
         if (enabled) {
             tName.setText(listener.getName());
-            cType.select(cType.indexOf(listener.getType()));
+          //  cType.select(cType.indexOf(listener.getType()));
             tName.setFocus();
         }
-        bApplyRes.setEnabled(false);
+      // bApplyRes.setEnabled(false);
     }
-
+*/
 
     private void setApplyResStatus() {
-        bApplyRes.setEnabled(tName.getText().length() > 0);
-        getShell().setDefaultButton(bApplyRes);
+        //bApplyRes.setEnabled(tName.getText().length() > 0);
+       // getShell().setDefaultButton(bApplyRes);
     }
 
 
     private void applyResource() {
-        listener.applyResource(tName.getText(), cType.getText());
-        listener.fillResources(tResources);
-        bRemoveRes.setEnabled(tResources.getSelectionCount() > 0);
-        bApplyRes.setEnabled(false);
-        getShell().setDefaultButton(bApply);
+        //listener.applyResource(tName.getText(), cType.getText());
+       // listener.fillResources(tResources);
+       // bRemoveRes.setEnabled(tResources.getSelectionCount() > 0);
+       // bApplyRes.setEnabled(false);
+      //  getShell().setDefaultButton(bApply);
     }
 
 
@@ -479,7 +462,15 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
         listener.applyDatabase(tDB.getText(), cRequired.getSelection());
         listener.fillDatabases(tDatabases);
         bRemove.setEnabled(tDatabases.getSelectionCount() > 0);
+        
+        _gui.updateDatabaseResource();
+        tDB.setText("");
+        cRequired.setSelection(false);
         bApply.setEnabled(false);
+        tDatabases.deselectAll();
+        tDB.setEnabled(false);
+        
+        tDB.setFocus();
     }
 
 } // @jve:decl-index=0:visual-constraint="10,10"
