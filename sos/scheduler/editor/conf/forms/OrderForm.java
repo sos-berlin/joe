@@ -215,11 +215,11 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                 	if(checkName()) {
                 		listener.setCommandAttribute("job_chain", cJobchain.getText());
                 		String curstate = listener.getCommandAttribute("state");
-                		tState.setItems(listener.getStates("state"));                		
+                		tState.setItems(listener.getStates());                		
                         tState.setText(curstate);
                         
                         String curEndstate = listener.getCommandAttribute("end_state");
-                        cboEndState.setItems(listener.getStates("end_state"));
+                        cboEndState.setItems(listener.getStates());
                         cboEndState.setText(curEndstate);
             }
             }
@@ -359,9 +359,9 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 
         tOrderId.setText(listener.getCommandAttribute("id"));
         tTitle.setText(listener.getCommandAttribute("title"));       
-        tState.setItems(listener.getStates("state"));
+        tState.setItems(listener.getStates());
         tState.setText(listener.getCommandAttribute("state"));
-        cboEndState.setItems(listener.getStates("end_state"));
+        cboEndState.setItems(listener.getStates());
         cboEndState.setText(listener.getCommandAttribute("end_state"));        
         cJobchain.setText(listener.getCommandAttribute("job_chain"));
         tPriority.setText(listener.getCommandAttribute("priority"));

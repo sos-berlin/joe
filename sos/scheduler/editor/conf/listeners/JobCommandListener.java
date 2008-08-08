@@ -490,7 +490,7 @@ public class JobCommandListener {
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 
-	public String[] getStates(String whichState) {
+	public String[] getStates() {
     	String[] retVal = new String[]{""};
     	ArrayList stateList = new ArrayList();
     	
@@ -512,9 +512,11 @@ public class JobCommandListener {
     		List l = jobChain.getChildren();
     		for(int i = 0; i < l.size(); i++) {
     			Element e = (Element)l.get(i);
-    			boolean endstate = Utils.getAttributeValue("job", e).length() == 0 && Utils.getAttributeValue("job_chain", e).length() == 0;
+    			//boolean endstate = Utils.getAttributeValue("job", e).length() == 0 && Utils.getAttributeValue("job_chain", e).length() == 0;
     			String state = Utils.getAttributeValue("state", e);
-    			if(whichState.equals("state") && !endstate) {    				
+    			if(state.length() > 0)
+    				stateList.add(state);
+    			/*if(whichState.equals("state") && !endstate) {    				
 
     				if(state.length() > 0)
     					stateList.add(state);
@@ -523,6 +525,7 @@ public class JobCommandListener {
     				if(state.length() > 0)
     					stateList.add(state);
     			}
+    			*/
     		}
 
     		if(stateList.size() > 0) {

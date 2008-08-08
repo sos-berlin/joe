@@ -147,16 +147,16 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 				listener.setJobChain(cJobchain.getText());	
 				
 				String curstate = Utils.getAttributeValue("state", listener.getCommand());
-				if(curstate.length() > 0) {
-					tState.setItems(listener.getStates("state"));                		
+
+					tState.setItems(listener.getStates());                		
 					tState.setText(curstate);
-				}
+
                 
                 String curEndstate =  Utils.getAttributeValue("end_state", listener.getCommand());
-                if(curEndstate.length()> 0) {
-                	cboEndstate.setItems(listener.getStates("end_state"));
+
+                	cboEndstate.setItems(listener.getStates());
                 	cboEndstate.setText(curEndstate);
-                }
+
 				
 			}
 		});
@@ -354,9 +354,9 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 				cJobchain.setText(Utils.getAttributeValue("job_chain", listener.getCommand()));
 				tJob.setText(Utils.getAttributeValue("id", listener.getCommand()));
 				tTitle.setText(Utils.getAttributeValue("title", listener.getCommand()));
-				tState.setItems(listener.getStates("state"));
+				tState.setItems(listener.getStates());
 				tState.setText(Utils.getAttributeValue("state", listener.getCommand()));
-				cboEndstate.setItems(listener.getStates("end_state"));
+				cboEndstate.setItems(listener.getStates());
 				cboEndstate.setText(Utils.getAttributeValue("end_state", listener.getCommand()));
 				
 				tPriority.setText(Utils.getAttributeValue("priority", listener.getCommand()));

@@ -147,7 +147,7 @@ public class OrderListener {
         return Utils.getAttributeValue(attribute, _order);
     }
 
-    public String[] getStates(String whichState) {
+    /*public String[] getStates(String whichState) {
     	String[] retVal = new String[]{""};
     	ArrayList stateList = new ArrayList();
     	
@@ -199,7 +199,62 @@ public class OrderListener {
 
     }
     
+*/
+    
+    public String[] getStates() {
+    	String[] retVal = new String[]{""};
+    	ArrayList stateList = new ArrayList();
+    	
+    	try {
+    		String jobChainname = getCommandAttribute("job_chain");    		
+    		XPath x3 = XPath.newInstance("//job_chain[@name='"+ jobChainname + "']");
+    		Element jobChain = (Element)x3.selectSingleNode(_dom.getDoc());
+    		
+    		if(jobChain == null) {
+    			jobChainname = getCommandAttribute("job_chain_node.job_chain");
+    			x3 = XPath.newInstance("//job_chain_node.job_chain[@name='"+ jobChainname + "']");
+        		jobChain = (Element)x3.selectSingleNode(_dom.getDoc());
+        			
+    		}
+    		if(jobChain == null)
+    			return retVal;
+    		
+    		
+    		List l = jobChain.getChildren();
+    		for(int i = 0; i < l.size(); i++) {
+    			Element e = (Element)l.get(i);
+    			//boolean endstate = Utils.getAttributeValue("job", e).length() == 0 && Utils.getAttributeValue("job_chain", e).length() == 0;
+    			String state = Utils.getAttributeValue("state", e);
+    			if(state.length() > 0)
+					stateList.add(state);
+    			/*if(whichState.equals("state") && !endstate) {    				
 
+    				if(state.length() > 0)
+    					stateList.add(state);
+
+    			} else if(whichState.equals("end_state") && endstate) {
+    				if(state.length() > 0)
+    					stateList.add(state);
+    			}*/
+    		}
+
+    		if(stateList.size() > 0) {
+    			retVal = new String[stateList.size()];
+    			for(int i = 0; i < stateList.size(); i++)
+    				retVal[i] = stateList.get(i).toString();
+    		} 
+    		//if(!listOfElement_3.isEmpty())
+    	} catch (Exception e){
+    		try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+    	}
+    	return retVal;
+
+    }
+    
     public void setCommandAttribute(String name, String value) {
     	
     	_dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.DELETE);
