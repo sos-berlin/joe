@@ -54,11 +54,12 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	
 	public SchedulerForm(IContainer container, Composite parent, int style) {
 		super(parent, style);
+		
 		this.container = container;
 				
 		this.dom = new SchedulerDom();
 		this.dom.setDataChangedListener(this);
-		
+	
 		listener = new SchedulerListener(this, this.dom);
 		
 	}
@@ -66,6 +67,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	public SchedulerForm(IContainer container, Composite parent, int style, int type) {
 		
 		super(parent, style);
+		
 		this.container = container;
 				
 		this.dom = new SchedulerDom(type);
@@ -139,6 +141,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	 */
 	private void createCMainForm() {
 		cMainForm = new Composite(sashForm, SWT.NONE);
+		
 		cMainForm.setLayout(new FillLayout());
 	}
 	

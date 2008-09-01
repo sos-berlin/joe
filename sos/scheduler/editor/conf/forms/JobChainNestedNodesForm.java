@@ -418,8 +418,19 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 			public void widgetSelected(final SelectionEvent e) {
 				if (tNodes.getSelectionCount() > 0) {
 					int index = tNodes.getSelectionIndex();
-					if(index > 0) {											
-						listener.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), "", cNextState.getText(), cErrorState.getText(), index);
+					if(index > 0) {		 					
+						//es ist nur erlaubt zwischen fullnode oder zwischen endnode zu wechseln
+						if(tNodes.getItemCount() > index){
+							String select = tNodes.getSelection()[0].getText(1);
+							String up = tNodes.getItem(index-1).getText(1);
+							if(!select.equals(up)) {
+								return;
+								//System.out.println("up:    " +select + "   " + up);
+							}
+								
+						}
+						
+						listener.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), "", cNextState.getText(), cErrorState.getText(), index,  bFullNode.getSelection());
 						selectNodes();					
 
 					}
@@ -437,7 +448,18 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 					if(index == tNodes.getItemCount()-1) {
 						//System.out.println("Datensatz ist bereits ganz unten.");
 					} else if(index >= 0) {
-						listener.changeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), "", cNextState.getText(), cErrorState.getText(), index);
+						
+						//if(tNodes.getItemCount() > index){
+							String select = tNodes.getSelection()[0].getText(1);
+							String up = tNodes.getItem(index+1).getText(1);
+							if(!select.equals(up)) {
+								//System.out.println("down: " + select + "   " + up);
+								return;
+							}
+								
+						//}
+						
+						listener.changeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), "", cNextState.getText(), cErrorState.getText(), index,  bFullNode.getSelection());
 						selectNodes();						
 					}
 				}
@@ -510,8 +532,9 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 	private void fillNode(boolean clear) {
 
 		boolean fullNode = listener.isFullNode();
-		boolean fileSinkNode = listener.isFileSinkNode();
-		boolean endNode = !fullNode && !fileSinkNode;
+		//boolean fileSinkNode = listener.isFileSinkNode();
+		//boolean endNode = !fullNode && !fileSinkNode;
+		boolean endNode = !fullNode;
 
 		bFullNode.setSelection(clear || fullNode);
 		bEndNode.setSelection(!clear && endNode);
@@ -522,8 +545,10 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		tState.setText(clear ? "" : listener.getState());
 
 		cJobChain.setItems(listener.getJobChains());
-		if (listener.getStates().length > 0) cNextState.setItems(listener.getStates());
-		if (listener.getStates().length > 0) cErrorState.setItems(listener.getStates());
+		if (listener.getStates().length > 0) 
+			cNextState.setItems(listener.getStates());
+		if (listener.getStates().length > 0)
+			cErrorState.setItems(listener.getStates());
 
 		int job = cJobChain.indexOf(listener.getJobChain());
 		if (clear || job == -1)
@@ -557,11 +582,12 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 			MainWindow.message(msg, SWT.ICON_INFORMATION);
 		} else {
 			//listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(), cOnError.getText());
-			listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), 
+			listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), 			
 					tState.getText(), 
 					cJobChain.getText(), 
 					cNextState.getText(), 
-					cErrorState.getText()
+					cErrorState.getText(),
+					bFullNode.getSelection()
 			);
 			listener.fillChain(tNodes);
 			bApplyNode.setEnabled(false);
@@ -641,10 +667,13 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		try {
 			XPath x3 = XPath.newInstance("//job_chain[@name='"+ listener.getChainName() + "']/job_chain_node");				 
 			List listOfElement_3 = x3.selectNodes(dom.getDoc());
-			if(listOfElement_3.isEmpty())
+			XPath x4 = XPath.newInstance("//job_chain[@name='"+ listener.getChainName() + "']/file_order_sink");				 
+			List listOfElement_4 = x4.selectNodes(dom.getDoc());
+			if(listOfElement_3.isEmpty() && listOfElement_4.isEmpty())
 				return true;
 			else 
 				return false;
+			
 		} catch (Exception e) {
 			try {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);

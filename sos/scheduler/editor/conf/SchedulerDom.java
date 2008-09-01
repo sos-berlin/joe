@@ -38,7 +38,7 @@ public class SchedulerDom extends DomParser {
 
 	private static final String[]   RUNTIME_ELEMENTS           = { "period", "at", "date", "weekdays", "monthdays", "ultimos", "month" , "holidays"};        
 
-	private static final String[]   JOBCHAIN_ELEMENTS          = { "file_order_source", "job_chain_node", "job_chain_node.job_chain", "file_order_sink"};
+	private static final String[]   JOBCHAIN_ELEMENTS          = { "file_order_source", "job_chain_node", "job_chain_node.job_chain", "job_chain_node.end", "file_order_sink"};
 
 	private static final String[]   HOLIDAYS_ELEMENTS          = { "include" , "weekdays", "holiday"};
 

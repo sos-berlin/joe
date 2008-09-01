@@ -52,7 +52,8 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 
     private Text           tFilename   = null;
 
-    private SashForm       sashForm    = null;
+    //private SashForm       sashForm    = null;
+    private Composite       sashForm    = null;
 
     private Group          gInclude    = null;
 
@@ -108,7 +109,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         initialize();
         setToolTipText();
         
-        sashForm.setWeights(new int[] { 30, 70 });
+        //sashForm.setWeights(new int[] { 30, 70 });
     }
 
 
@@ -119,7 +120,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         groupTitle = title;
         initialize();
         setToolTipText();
-        sashForm.setWeights(new int[] { 30, 70 });
+        //sashForm.setWeights(new int[] { 30, 70 });
         setAttributes(dom, element, type);
         
         gScript.setEnabled(Utils.isElementEnabled("job", dom, element));        	
@@ -233,9 +234,18 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
         GridData gridData3 = new GridData(GridData.FILL, GridData.FILL, false, true, 3, 1);
-        sashForm = new SashForm(gScript, SWT.VERTICAL);
-        sashForm.setOrientation(org.eclipse.swt.SWT.VERTICAL);
-        sashForm.setLayoutData(gridData3);
+
+        sashForm = new Composite(gScript, SWT.NONE);
+        //sashForm.setText("Include Files");
+        sashForm.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 3, 1));
+        final GridLayout gridLayout_1 = new GridLayout();
+        gridLayout_1.marginWidth = 0;
+        gridLayout_1.marginHeight = 0;
+        gridLayout_1.horizontalSpacing = 0;
+        sashForm.setLayout(gridLayout_1);
+        //sashForm = new SashForm(gScript, SWT.VERTICAL);
+        //sashForm.setOrientation(org.eclipse.swt.SWT.VERTICAL);
+        //sashForm.setLayoutData(gridData3);
         createSashForm();
     }
 
@@ -260,12 +270,13 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes group2
      */
     private void createGroup2() {
-        GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);
+        GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, false, 3, 1);
         GridData gridData7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         GridLayout gridLayout1 = new GridLayout();
         gridLayout1.numColumns = 3;
         gInclude = new Group(sashForm, SWT.NONE);
+        gInclude.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         gInclude.setText("Include Files");
         gInclude.setLayout(gridLayout1);
 
@@ -293,7 +304,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         });
         tableIncludes.setLinesVisible(true);
         tableIncludes.setHeaderVisible(true);
-        final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
+        final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 2);
         tableIncludes.setLayoutData(gridData_2);
 
         final TableColumn newColumnTableColumn = new TableColumn(tableIncludes, SWT.NONE);
@@ -338,7 +349,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
                 applyFile();
             }
         });
-        GridData gridData5 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
+        GridData gridData5 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
         bRemove = new Button(gInclude, SWT.NONE);
         bRemove.setText("Remove File");
         bRemove.setEnabled(false);
@@ -367,7 +378,13 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
                 */
             }
         });
+
+        final Label label_1 = new Label(gInclude, SWT.NONE);
+        label_1.setVisible(false);
+        label_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.FILL, false, false));
+        label_1.setText("label");
         gSource = new Group(sashForm, SWT.NONE);
+        gSource.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         final GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
         gSource.setLayout(gridLayout);

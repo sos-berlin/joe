@@ -457,6 +457,9 @@ public class FTPDialog {
 			if(listener.getProfileNames().length == 0) {
 				cboConnectname.setText("");
 				txtDir.setText("");
+				//test
+				listener.setCurrProfileName("");
+				cboConnectname.setText("");
 			} else {
 				
 				

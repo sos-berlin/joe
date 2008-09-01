@@ -65,6 +65,8 @@ public class LocksListener {
 	}
 
 	public void selectLock(int index) {
+		if(_list == null)
+			initLocks();
 		if (_list != null && index >= 0 && index < _list.size())
 			_lock = (Element) _list.get(index);
 		else

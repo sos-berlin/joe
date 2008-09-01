@@ -1159,7 +1159,7 @@ public class FTPDialogListener {
 	
 	public void refresh() {
 		
-		if(cboConnectname != null) {
+		if(cboConnectname != null && cboConnectname.getText().length() > 0 && currProfile != null ) {
 			cboConnectname.setItems(getProfileNames());
 			cboConnectname.setText(currProfileName);
 			txtPath.setText(currProfile.getProperty("root"));

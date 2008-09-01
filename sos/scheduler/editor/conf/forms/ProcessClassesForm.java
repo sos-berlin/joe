@@ -42,7 +42,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 
 	private Group                  group         = null;
 
-	private Table                  table         = null;
+	private static Table           table         = null;
 
 	private Label                  label1        = null;
 
@@ -461,6 +461,11 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		 }    	          
 		 return true;
 	 }
+
+
+	public static Table getTable() {
+		return table;
+	}
 
 
 } // @jve:decl-index=0:visual-constraint="10,10"

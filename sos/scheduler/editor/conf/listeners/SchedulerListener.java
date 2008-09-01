@@ -46,6 +46,9 @@ public class SchedulerListener {
 	
 	public static  String            ORDERS         = "Orders";
 	
+	public static  String            LOCKS          = "Locks";
+	
+	public static  String            PROCESS_CLASSES= "Process Classes";
 	
 	
 	/** Aufruf erfolgt durch open Directory oder open Configurations*/
@@ -53,7 +56,7 @@ public class SchedulerListener {
 
 
 	public SchedulerListener(SchedulerForm gui, SchedulerDom dom) {
-		_gui = gui;
+		_gui = gui;		
 		_dom = dom;
 		
 	}
@@ -164,7 +167,7 @@ public class SchedulerListener {
 			item.setData("key", "process_classes");
 			item.setData("copy_element", element);
 			item.setData("max_occur", "1");
-			item.setText("Process Classes");
+			item.setText(PROCESS_CLASSES);
 
 		} else if(type == SchedulerDom.LIFE_LOCK) {
 
@@ -187,7 +190,8 @@ public class SchedulerListener {
 			item.setData(new TreeData(Editor.LOCKS, config, Options.getHelpURL("locks"), "locks"));
 			item.setData("key", "locks");
 			item.setData("copy_element", element);
-			item.setText("Locks");
+			//item.setText("Locks");
+			item.setText(LOCKS);
 
 		} else if(type == SchedulerDom.LIFE_ORDER || type == SchedulerDom.LIFE_ADD_ORDER) {
 

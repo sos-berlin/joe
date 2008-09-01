@@ -57,7 +57,7 @@ public class TabbedContainer implements IContainer {
 
 	public TabbedContainer(MainWindow window, Composite parent) {
 		this.window = window;		
-		folder = new CTabFolder(parent, SWT.TOP | SWT.CLOSE);
+		folder = new CTabFolder(parent, SWT.TOP | SWT.CLOSE );
 		
 		folder.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		initialize();

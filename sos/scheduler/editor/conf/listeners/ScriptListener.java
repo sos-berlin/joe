@@ -304,13 +304,13 @@ public class ScriptListener {
     	try {
     		
     		if (_script != null) {
-    			
+    			List l = _script.getContent();
+				for(int i = 0; i < l.size(); i++) {
+					if(l.get(i) instanceof CDATA)
+						l.remove(i);
+				}
     			if (!source.equals("")) {
-    				List l = _script.getContent();
-    				for(int i = 0; i < l.size(); i++) {
-    					if(l.get(i) instanceof CDATA)
-    						l.remove(i);
-    				}
+    				
     				_script.addContent(new CDATA(source));
     			} 
 

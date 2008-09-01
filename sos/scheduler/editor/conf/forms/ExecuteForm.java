@@ -37,7 +37,6 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
 
     private Text            tExecuteFile  = null;
 
-
     private Button          bIgnoreError  = null;
 
     private Label           label3        = null;

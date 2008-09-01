@@ -85,7 +85,7 @@ public class FTPDialogProfiles {
     
     private              Text                txtDirPublicKey               = null;
     
-    private              boolean             saved                         =false; //hilsvariable            
+    private              boolean             saved                         = false; //hilsvariable            
     
     private              boolean             init                          = false;     
     
@@ -482,6 +482,9 @@ public class FTPDialogProfiles {
 			final Button butRemove = new Button(schedulerGroup, SWT.NONE);
 			butRemove.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
+					if(cboConnectname.getText().length() == 0)
+						return;
+					
 					listener.removeProfile(cboConnectname.getText());					
 					if(cboConnectname.getItemCount() > 0)
 						cboConnectname.select(0);

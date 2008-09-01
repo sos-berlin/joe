@@ -111,7 +111,7 @@ public class JobChainNestedListener {
 
 	}
 
-	public void fillFileOrderSource(Table table) {
+	/*public void fillFileOrderSource(Table table) {
 		table.removeAll();
 		String directory = "";
 		String regex = "";		
@@ -154,7 +154,7 @@ public class JobChainNestedListener {
 			}
 		}
 	}
-
+*/
 	public void fillChain(Table table) {
 		table.removeAll();
 		String state = "";		
@@ -167,25 +167,45 @@ public class JobChainNestedListener {
 
 			setStates();
 
-			Iterator it = _chain.getChildren().iterator();
+			Iterator it = _chain.getChildren("job_chain_node.job_chain").iterator();
 
 			while (it.hasNext()) {
-				state = "";
+
+				state = "";		
+				nodetype = "";
+				action = "";
+				next = "";
+				error = "";		
+				onError = "";
 				Element node = (Element) it.next();
-				if (node.getName().equals("job_chain_node.job_chain") || node.getName().equals("file_order_sink")){
+				/*
+				 Iterator it = _chain.getChildren().iterator();
+
+			while (it.hasNext()) {
+
+				state = "";		
+				nodetype = "";
+				action = "";
+				next = "";
+				error = "";		
+				onError = "";
+				Element node = (Element) it.next();
+				if (node.getName().equals("job_chain_node.job_chain") || node.getName().equals("job_chain_node.end") || node.getName().equals("file_order_sink")){
 					state = Utils.getAttributeValue("state", node);
 
 					if (node.getName().equals("job_chain_node.job_chain")){
-						if (Utils.getAttributeValue("job_chain", node)== "") {
-							nodetype = "Endnode";
-						}else {
+
 							nodetype = "Job Chain";
-						}
+
 						action = Utils.getAttributeValue("job_chain", node);
 						next = Utils.getAttributeValue("next_state", node);
 						error = Utils.getAttributeValue("error_state", node);
 						onError = Utils.getAttributeValue("on_error", node);
-					}else {
+
+					} else if (node.getName().equals("job_chain_node.end")){						
+							nodetype = "Endnode";
+
+					} else {
 						nodetype = "FileSink";
 						action = Utils.getAttributeValue("move_to", node);
 						next = "";
@@ -207,8 +227,47 @@ public class JobChainNestedListener {
 						item.setBackground(4, Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
 				}
 			}
-		}
+
+
+
+				 */
+				//if (node.getName().equals("job_chain_node.job_chain")){
+					state = Utils.getAttributeValue("state", node);
+					nodetype = "Job Chain";						
+					action = Utils.getAttributeValue("job_chain", node);
+					next = Utils.getAttributeValue("next_state", node);
+					error = Utils.getAttributeValue("error_state", node);
+					onError = Utils.getAttributeValue("on_error", node);
+				//}
+
+
+
+				TableItem item = new TableItem(table, SWT.NONE);
+				item.setText(new String[] { state, nodetype, action, next, error, onError });
+
+				if (!next.equals("") && !checkForState(next))
+					item.setBackground(3, Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+
+				if (!error.equals("") && !checkForState(error))
+					item.setBackground(4, Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+
+			}
+
+			Iterator itEndNode = _chain.getChildren("job_chain_node.end").iterator();
+
+			while (itEndNode.hasNext()) {
+				Element node = (Element) itEndNode.next();
+				state = Utils.getAttributeValue("state", node);										
+
+				TableItem item = new TableItem(table, SWT.NONE);
+				//item.setText(new String[] { state, nodetype, action, next, error, onError });
+				item.setText(new String[] { state, "Endnode", "", "", "", "" });
+
+
+			}
+
 	}
+}
 
 
 	private boolean checkForState(String state) {
@@ -232,14 +291,14 @@ public class JobChainNestedListener {
 		}
 	}
 
-	public void selectFileOrderSource(Table tableSources) {
+	/*public void selectFileOrderSource(Table tableSources) {
 		if (tableSources == null){
 			_source = null;
 		}else {
 			int index = getIndexOfSource(tableSources.getItem(tableSources.getSelectionIndex()));
 			_source = (Element) _chain.getChildren("file_order_source").get(index);
 		}
-	}    
+	} */   
 
 
 
@@ -250,7 +309,7 @@ public class JobChainNestedListener {
 			return true;
 	}
 
-	public boolean isFileSinkNode() {
+	/*public boolean isFileSinkNode() {
 		if (_node != null)
 			return (_node.getAttributeValue("remove") != null || _node.getAttributeValue("move_to") != null) ;
 		else
@@ -261,6 +320,7 @@ public class JobChainNestedListener {
 	public String getFileOrderSource(String a) {
 		return Utils.getAttributeValue(a, _source);
 	}
+	*/
 
 
 
@@ -330,18 +390,19 @@ public class JobChainNestedListener {
 			//String delay, 
 			String next, 
 			String error 
-			//,boolean removeFile,
+			,boolean isFullnode
 			//String moveTo
 			//,String onError
 			) {
 		Element node = null;
 
 		if (_node != null) {//Wenn der Knotentyp geändert wird, alten löschen und einen neuen anlegen.
-			if (isJobchainNode && _node.getName().equals("file_order_sink")){
+			/*if (isJobchainNode && _node.getName().equals("file_order_sink")){
 				_node.detach();
 				_node = null;
-			}
-			if (!isJobchainNode && _node.getName().equals("job_chain_node.job_chain")){
+			}*/
+			//if (!isJobchainNode && (_node.getName().equals("job_chain_node.job_chain") || _node.getName().equals("job_chain_node.end"))){
+			if (_node.getName().equals("job_chain_node.job_chain") || _node.getName().equals("job_chain_node.end")){
 				_node.detach();
 				_node = null;
 			}
@@ -362,19 +423,25 @@ public class JobChainNestedListener {
 			}
 		} else {
 			if (isJobchainNode) {
-				node = new Element("job_chain_node.job_chain");
+				
+				if(!isFullnode)
+					node = new Element("job_chain_node.end");
+				else {
+					node = new Element("job_chain_node.job_chain");
+					Utils.setAttribute("job_chain", job, node, _dom);
+					//Utils.setAttribute("delay", delay, node, _dom);
+					Utils.setAttribute("next_state", next, node, _dom);
+					Utils.setAttribute("error_state", error, node, _dom);
+					//Utils.setAttribute("on_error", onError, node, _dom);
+				}
 				Utils.setAttribute("state", state, node, _dom);
-				Utils.setAttribute("job_chain", job, node, _dom);
-				//Utils.setAttribute("delay", delay, node, _dom);
-				Utils.setAttribute("next_state", next, node, _dom);
-				Utils.setAttribute("error_state", error, node, _dom);
-				//Utils.setAttribute("on_error", onError, node, _dom);
-			}else {
+				
+			} /*else {
 				node = new Element("file_order_sink");
 				Utils.setAttribute("state", state, node, _dom);
 				//Utils.setAttribute("move_to", moveTo, node, _dom);
 				//Utils.setAttribute("remove", removeFile, node, _dom);
-			}
+			}*/
 
 			_chain.addContent(node);
 			_node = node;
@@ -397,18 +464,19 @@ public class JobChainNestedListener {
 			String error, 
 			//boolean removeFile,
 			//String moveTo, 
-			int index ) {
+			int index,
+			boolean isFullNode) {
 		try {
 			Element node = null;
 
 			if (_node != null) {//Wenn der Knotentyp geändert wird, alten löschen und einen neuen anlegen.
 
-				if (isJobchainNode && _node.getName().equals("file_order_sink")){
+				/*if (isJobchainNode && _node.getName().equals("file_order_sink")){
 
 					_node.detach();
 					_node = null;
-				}
-				if (!isJobchainNode && _node.getName().equals("job_chain_node.job_chain")){
+				}*/
+				if (!isJobchainNode && (_node.getName().equals("job_chain_node.job_chain") || _node.getName().equals("job_chain_node.end"))){
 
 					_node.detach();
 					_node = null;
@@ -429,18 +497,21 @@ public class JobChainNestedListener {
 				}
 			} else {
 				if (isJobchainNode) {
-					node = new Element("job_chain_node.job_chain");
+					if(isFullNode)
+						node = new Element("job_chain_node.end");
+					else
+						node = new Element("job_chain_node.job_chain");
 					Utils.setAttribute("state", state, node, _dom);
 					Utils.setAttribute("job_chain", job, node, _dom);
 					Utils.setAttribute("delay", delay, node, _dom);
 					Utils.setAttribute("next_state", next, node, _dom);
 					Utils.setAttribute("error_state", error, node, _dom);
-				}else {								
+				}/*else {								
 					node = new Element("file_order_sink");
 					Utils.setAttribute("state", state, node, _dom);
 					//Utils.setAttribute("move_to", moveTo, node, _dom);
 					//Utils.setAttribute("remove", removeFile, node, _dom);
-				}
+				}*/
 
 			}
 			List l = _chain.getContent();
@@ -503,7 +574,7 @@ public class JobChainNestedListener {
 
 
 
-	public void applyFileOrderSource(String directory, String regex, String next_state, String max, String repeat, String delay_after_error) {
+	/*public void applyFileOrderSource(String directory, String regex, String next_state, String max, String repeat, String delay_after_error) {
 		Element source = null;
 		if (_source != null) {
 			Utils.setAttribute("directory", directory, _source, _dom);
@@ -526,7 +597,7 @@ public class JobChainNestedListener {
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
 
-	}
+	}*/
 
 
 
@@ -548,7 +619,7 @@ public class JobChainNestedListener {
 		return index;
 	}
 
-	private int getIndexOfSource(TableItem item) {
+	/*private int getIndexOfSource(TableItem item) {
 		int index = 0;
 		if (_chain != null) {
 
@@ -567,7 +638,7 @@ public class JobChainNestedListener {
 			}
 		}
 		return index;
-	}
+	}*/
 
 
 
@@ -582,14 +653,14 @@ public class JobChainNestedListener {
 	}
 
 
-	public void deleteFileOrderSource(Table tableSource) {
+	/*public void deleteFileOrderSource(Table tableSource) {
 		List sources = _chain.getChildren("file_order_source");
 		int index = getIndexOfSource(tableSource.getItem(tableSource.getSelectionIndex()));
 		sources.remove(index);
 		_source = null;
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
-	}
+	}*/
 
 
 
@@ -628,22 +699,33 @@ public class JobChainNestedListener {
 
 
 	private void setStates() {
-		List nodes = _chain.getChildren("job_chain_node.job_chain");
-		List sinks = _chain.getChildren("file_order_sink");
+		List nodes = _chain.getChildren("job_chain_node.job_chain");		
+		//List sinks = _chain.getChildren("file_order_sink");
+		List endNodes = _chain.getChildren("job_chain_node.end");
 		Iterator it = nodes.iterator();
-		_states = new String[sinks.size() + nodes.size()];
+		//_states = new String[sinks.size() + nodes.size() + endNodes.size()];
+		_states = new String[nodes.size() + endNodes.size()];
 		int index = 0;
 		while (it.hasNext()) {
 			String state = ((Element) it.next()).getAttributeValue("state");
 			_states[index++] = state != null ? state : "";
 		}
 
-		it = sinks.iterator();
+		/*it = sinks.iterator();
 
 		while (it.hasNext()) {
 			String state = ((Element) it.next()).getAttributeValue("state");
 			_states[index++] = state != null ? state : "";
 		}
+		*/
+		
+		it = endNodes.iterator();
+
+		while (it.hasNext()) {
+			String state = ((Element) it.next()).getAttributeValue("state");
+			_states[index++] = state != null ? state : "";
+		}
+		
 	}
 
 

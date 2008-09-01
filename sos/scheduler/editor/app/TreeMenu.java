@@ -585,7 +585,49 @@ public class TreeMenu {
 						new sos.scheduler.editor.conf.listeners.WebservicesListener((SchedulerDom)_dom, data.getElement(), _gui);
 					listener.newService(sos.scheduler.editor.conf.forms.WebservicesForm.getTable());
 
-				}
+				} else if(name.equals(SchedulerListener.LOCKS)) {
+					try {
+						TreeData data = (TreeData)_tree.getSelection()[0].getData();	
+						sos.scheduler.editor.conf.listeners.LocksListener listener = 
+							new sos.scheduler.editor.conf.listeners.LocksListener((SchedulerDom)_dom, data.getElement());
+						listener.newLock();
+						int i = 1;
+						if(data.getElement().getChild("locks") != null)
+							i = data.getElement().getChild("locks").getChildren("lock").size() +1;
+						listener.applyLock("lock_" + i, 0);
+						listener.fillTable(sos.scheduler.editor.conf.forms.LocksForm.getTable());
+						listener.selectLock(i-1);
+					} catch(Exception es) {
+						try {
+							new sos.scheduler.editor.app.ErrorLog("error in " +  sos.util.SOSClassUtil.getMethodName(), es);
+						} catch(Exception ee) {
+							//tu nichts
+						}
+					}
+
+				} else if(name.equals(SchedulerListener.PROCESS_CLASSES)) {
+					TreeData data = (TreeData)_tree.getSelection()[0].getData();
+					try{
+						sos.scheduler.editor.conf.listeners.ProcessClassesListener listener = 
+							new sos.scheduler.editor.conf.listeners.ProcessClassesListener((SchedulerDom)_dom, data.getElement());
+						listener.newProcessClass();
+						int i = 1;
+						if(data.getElement().getChild("process_classes") != null)
+							i = data.getElement().getChild("process_classes").getChildren("process_class").size() +1;
+						listener.applyProcessClass("processClass_" +i, "", "", 0, "", true);
+						listener.fillTable(sos.scheduler.editor.conf.forms.ProcessClassesForm.getTable());
+						listener.selectProcessClass(i-1);
+
+						
+					} catch(Exception es) {
+						try {
+							new sos.scheduler.editor.app.ErrorLog("error in " +  sos.util.SOSClassUtil.getMethodName(), es);
+						} catch(Exception ee) {
+							//tu nichts
+						}
+					}
+
+				} 
 
 			}
 		};
@@ -1163,11 +1205,17 @@ public class TreeMenu {
 					name.equals(SchedulerListener.JOB_CHAINS)  ||
 					name.equals(SchedulerListener.ORDERS) ||
 					name.equals(SchedulerListener.WEB_SERVICES) ||
-					name.equals(SchedulerListener.SCHEDULES) 					
+					name.equals(SchedulerListener.SCHEDULES) 
 			) {
 				return name;
 			}
+			
+			if(_dom instanceof sos.scheduler.editor.conf.SchedulerDom && 
+					!((SchedulerDom)_dom).isLifeElement() && 
+					(name.equals(SchedulerListener.LOCKS) || name.equals(SchedulerListener.PROCESS_CLASSES)))
+			return name;
 		}
+		
 		return "";
 	}
 

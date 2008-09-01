@@ -76,6 +76,8 @@ public class ProcessClassesListener {
 
 
 	public void selectProcessClass(int index) {
+		if(_list==null)
+			initClasses();
 		if (_list != null && index >= 0 && index < _list.size())
 			_class = (Element) _list.get(index);
 		else

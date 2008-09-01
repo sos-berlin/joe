@@ -38,7 +38,7 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 	private Group                  locksGroup         = null;
 
-	private Table                  tableLocks         = null;
+	private static Table           tableLocks         = null;
 
 	private Label                  label1             = null;
 
@@ -326,4 +326,8 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 		 tableLocks.setToolTipText(Messages.getTooltip("locks.table"));
 
 	 }
+	 
+	 public static Table getTable() {
+			return tableLocks;
+		}
 } // @jve:decl-index=0:visual-constraint="10,10"
