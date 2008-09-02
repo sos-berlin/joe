@@ -784,6 +784,8 @@ public class Utils {
 						s.substring(i).startsWith("&gt;") ||
 						s.substring(i).startsWith("&amp;")))
 					str.append("&amp;"); //$NON-NLS-1$
+				else
+					str.append(ch);
 				break;
 			default:
 				str.append(ch);

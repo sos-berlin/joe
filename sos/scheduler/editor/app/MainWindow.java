@@ -696,7 +696,7 @@ public class MainWindow  {
 	private void createToolBar() {
 
 		final ToolBar toolBar = new ToolBar(groupmain, SWT.NONE);
-		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
+		final GridData gridData = new GridData(GridData.BEGINNING, GridData.FILL, true, false);
 		toolBar.setLayoutData(gridData);
 		final ToolItem butNew = new ToolItem(toolBar, SWT.NONE);
 		butNew.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_new.gif"));	

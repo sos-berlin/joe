@@ -22,7 +22,7 @@ import sos.scheduler.editor.conf.forms.*;
  * jedes Treeitem muss folgende daten speichern, um die kopie und paste Funktion vollständig zu gewährleisten:
  * 
  * item.setData("copy_element", element); -> Element zum kopieren
- * item.setData("key", "run_time"); -> name des Elements bzw. Pfad vom copy_element aus. Beispiel Element ist job, dann muss Parameter den key = params.param haben
+ * item.setData("key", "run_time"); -> name des Elements bzw. Pfad vom copy_element aus. Beispiel Element ist job, dann muss Parameter den key = params_@_param haben
  * item.setData("override_attributes", "true"); -> optional: default ist false. Wenn true angegeben wird, dann werden die Attribute überschrieben. z.B. runtime  
  * item.setData("max_occur", "1"); -> Das Element darf max. einmal vorkommen: z.B. process_classes.
  * 
@@ -543,23 +543,21 @@ public class SchedulerListener {
 		parent.removeAll();
 
 
+		//Job - Execute
 		TreeItem item = new TreeItem(parent, SWT.NONE);
 		item.setText("Execute");
 		item.setData("max_occur", "1");
-		//item.setData("override_attributes", "true");
 		item.setData(new TreeData(Editor.EXECUTE, job, Options.getHelpURL("job.execute")));
-		//item.setData("key", "job.execute");
-		//process script
 		ArrayList  l = new ArrayList();
 		l.add("process");
 		l.add("script");
-		//l.add("script.include");
 		item.setData("key", l);
 		item.setData("copy_element", job);
 		if(disable) {
 			item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 		}
 
+		//Parameter
 		item = new TreeItem(parent, SWT.NONE);
 		item.setData(new TreeData(Editor.PARAMETER, job, Options.getHelpURL("parameter")));
 		item.setData("key", "params_@_param");
@@ -569,13 +567,21 @@ public class SchedulerListener {
 		ll.add("params_@_include");
 		//l.add("environment");			
 		item.setData("key", ll);			
-		
-		
 		item.setData("copy_element", job);
 		item.setText("Parameter");
-		//if(type == SchedulerDom.DIRECTORY)
-		//	item.dispose();
 
+
+		//Mail
+		/*item = new TreeItem(parent, SWT.NONE);
+		item.setData(new TreeData(Editor.SETTINGS, job, Options.getHelpURL("settings")));
+		item.setData("key", "settings");											
+		item.setData("copy_element", job);
+		item.setText("Mail Settings");		
+		item.setData("max_occur", "1");
+		*/
+
+
+		//Monitor
 		item = new TreeItem(parent, SWT.NONE);
 		item.setText("Monitor");
 		item.setData(new TreeData(Editor.MONITORS, job, Options.getHelpURL("job.monitor"), "monitor"));  
@@ -586,10 +592,10 @@ public class SchedulerListener {
 		}
 		treeFillScripts(item, job, disable);
 
+		//RunOptions
 		item = new TreeItem(parent, SWT.NONE);
 		item.setText("Run Options");
 		item.setData(new TreeData(Editor.OPTIONS, job, Options.getHelpURL("job.options")));
-		
 		
 		l = new ArrayList();
 		l.add("start_when_directory_changed");			    
@@ -930,6 +936,9 @@ public class SchedulerListener {
 						break;
 					case Editor.EXECUTE:
 						new ExecuteForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+						break;						
+					case Editor.SETTINGS:
+						new MailForm(c, SWT.NONE, _dom, data.getElement());
 						break;
 					case Editor.ORDERS:
 						//new OrdersForm(c, SWT.NONE, _dom, _gui, this);

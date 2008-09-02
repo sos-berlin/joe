@@ -133,6 +133,8 @@ public class Editor {
     
     public final static int DOC_DATABASES_RESOURCE = 86;
     
+    public final static int SETTINGS               = 87;
+    
     public static String    SCHEDULER_ENCODING     = "";
 
     public static String    DOCUMENTATION_ENCODING = "utf-8";
