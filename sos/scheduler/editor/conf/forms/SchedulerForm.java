@@ -32,6 +32,7 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
+
 public class SchedulerForm extends Composite implements ISchedulerUpdate, IEditor {
 	
 	
@@ -51,6 +52,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	
 	private Composite         cMainForm            = null;
 	
+	//private static  boolean   fontChange           = false; 
 	
 	public SchedulerForm(IContainer container, Composite parent, int style) {
 		super(parent, style);
@@ -212,8 +214,11 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	public void updateJob() {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
+			
 			TreeData data = (TreeData) item.getData();
-			listener.treeFillJob(item, data.getElement(), true);            
+			
+			listener.treeFillJob(item, data.getElement(), true);
+			
 		}
 	}
 	
@@ -222,6 +227,8 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		TreeItem item = tree.getSelection()[0];
 		String job = "Job: " + s;
 		item.setText(job);
+		
+		
 	}
 	
 	
@@ -357,6 +364,9 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		if (res)
 			container.setNewFilename(null);
 		
+		if(res)
+			setReChangedTreeItemText();
+		
 		return res;
 	}
 	
@@ -372,6 +382,11 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		
 		if (res)
 			container.setNewFilename(old);
+		
+		if(res)
+			setReChangedTreeItemText();
+		
+		
 		return res;
 	}
 	
@@ -383,10 +398,67 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	
 	public boolean hasChanges() {
 		Options.saveSash("main", sashForm.getWeights());
+
+		//System.out.println(dom.isChanged() + " isLife: " + (dom.isDirectory() || dom.isLifeElement()));
+		//if(dom.isDirectory()) {
 		
+		/*if(dom.isChanged()) {
+			fontChange = true;
+			setChangedInItalicFont();
+		} else {
+			//zurücksetzen
+			if (fontChange){
+				FontData fontDatas[] = tree.getFont().getFontData();
+				FontData fdata = fontDatas[0];
+				Font font = new Font(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.NORMAL);
+				tree.setFont(font);
+				for(int i = 0; i < tree.getItemCount(); i++) {
+					TreeItem item = tree.getItem(i);
+					setChangedFont(item);
+				}
+			}
+
+
+		}
+		*/
+
+
 		return dom.isChanged();
 	}
 	
+	/*//Nur für Hot Foldern. Setz den Font vom kursiv auf normal
+	private void setChangedFont(TreeItem item ) {
+		FontData fontDatas[] = tree.getFont().getFontData();
+		FontData fdata = fontDatas[0];
+		Font font = new Font(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.NORMAL);
+
+		item.setFont(font);
+		for(int j = 0; j < item.getItemCount(); j++) {
+			TreeItem cItem = item.getItem(j);
+			setChangedFont(cItem);					
+		}			
+	}
+
+	
+
+
+	//Nur für Hot Foldern
+	private void setChangedInItalicFont() {
+		if (tree.getSelectionCount() > 0) {
+			TreeItem item = tree.getSelection()[0];    
+			TreeData data = (TreeData) item.getData();
+			FontData fontDatas[] = item.getFont().getFontData();
+			FontData fdata = fontDatas[0];
+			Font font = new Font(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.ITALIC);
+			item.setFont(font);
+			while(item.getParentItem() != null) {
+				item = item.getParentItem();
+				item.setFont(font);				
+			}
+			
+		}
+	}
+*/
 	
 	public String getHelpKey() {
 		if (tree.getSelectionCount() > 0) {
@@ -558,6 +630,8 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		}
 	}
 	
+	
+	
 	public void updateFont(TreeItem item) {
 
 		FontData fontDatas[] = item.getFont().getFontData();
@@ -648,4 +722,91 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	public void updateCMainForm() {
 		listener.treeSelection(tree, cMainForm);
 	}
+
+
+	public void setChangedTreeItemText(String key1) {
+		if (tree.getSelectionCount() > 0) {
+			TreeItem item = tree.getSelection()[0];    
+			/*TreeData data = (TreeData) item.getData();
+			FontData fontDatas[] = item.getFont().getFontData();
+			FontData fdata = fontDatas[0];
+			Font font = new Font(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.ITALIC);
+			item.setFont(font);
+			*/
+			if(!dom.isDirectory()) 
+				return;
+			 
+			TreeData data = (TreeData) item.getData();
+		    /*Element elem = Utils.getHotFolderParentElement(data.getElement());
+		    String key1 = "";
+		    
+		    if(elem.getName().equals("order") || elem.getName().equals("add_order"))
+		    	key1 = elem.getName()+ "_" + Utils.getAttributeValue("job_chain",elem)+ "," +Utils.getAttributeValue("id",elem);
+		    else
+		    	key1 = elem.getName() + "_" + Utils.getAttributeValue("name", elem);
+			*/
+			
+			
+			if(!dom.getChangedJob().containsKey(key1))
+				return;
+			
+			
+			
+			if(item.getText().endsWith(SchedulerListener.LOCKS) ||
+					item.getText().endsWith(SchedulerListener.PROCESS_CLASSES)) {
+				if(!item.getText().startsWith("*")) {
+					item.setText("*" + item.getText());					
+				}
+				return;
+			}
+			
+			if(dom.getChangedJob().get(key1).equals(dom.NEW)) {
+				item = item.getItem(item.getItemCount()-1);
+				if(!item.getText().startsWith("*")) {
+					//item.getItem(item.getItemCount()-1);
+					item.setText("*" + item.getText());					
+				}
+				return;
+			}
+			
+			while(item != null && item.getParentItem() != null ) {
+				String sParent = item.getParentItem().getText();
+				if(sParent.equals(SchedulerListener.JOBS) || 
+						sParent.equals(SchedulerListener.ORDERS) || 
+						sParent.equals(SchedulerListener.JOB_CHAINS) || 
+						sParent.equals(SchedulerListener.SCHEDULES) ||
+						item.getText().equals(SchedulerListener.LOCKS) ||
+						item.getText().equals(SchedulerListener.PROCESS_CLASSES)) {
+					if(!item.getText().startsWith("*")) {
+						item.setText("*" + item.getText());
+						
+					}
+					item = null;
+				} else {
+					item = item.getParentItem();
+					//item.setFont(font);
+				}
+			}
+
+		}
+	}	
+
+
+	public void setReChangedTreeItemText() {
+		for(int i = 0; i < tree.getItemCount(); i++) {
+			TreeItem item = tree.getItem(i);
+			setChangedItemText(item);
+		}
+	}	
+
+	private void setChangedItemText(TreeItem item ) {
+		if(item.getText().startsWith("*")) {
+			item.setText(item.getText().substring(1));			
+		}
+		for(int j = 0; j < item.getItemCount(); j++) {
+			TreeItem cItem = item.getItem(j);
+			setChangedItemText(cItem);					
+		}			
+	}
+	
 }

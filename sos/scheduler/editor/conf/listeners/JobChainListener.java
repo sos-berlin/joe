@@ -101,6 +101,8 @@ public class JobChainListener {
 
 	public void setDistributed(boolean distributed) {		
 		Utils.setAttribute("distributed", distributed, false, _chain);
+		_dom.setChanged(true);
+		if(_dom.isDirectory()|| _dom.isLifeElement()) _dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
 	}
 
 	

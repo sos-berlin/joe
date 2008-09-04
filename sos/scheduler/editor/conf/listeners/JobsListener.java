@@ -99,12 +99,14 @@ public class JobsListener {
 		if (_list == null)
 			initJobs();
 		_list.add(job.addContent(runtime));
-		_dom.setChanged(true);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.NEW);		
+				
 		fillTable(table);
 		table.setSelection(table.getItemCount() - 1);
 		_main.updateJobs();
-		_main.expandItem("Job: "+ "job" + (table.getItemCount()));  		
+		_main.expandItem("Job: "+ "job" + (table.getItemCount()));
+		_dom.setChanged(true);
+		
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.NEW);
 	}
 
 

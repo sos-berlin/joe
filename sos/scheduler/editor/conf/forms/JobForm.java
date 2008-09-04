@@ -234,6 +234,8 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		tName.setLayoutData(gridData);
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				if(init) return;
+				
 				checkName();
 				listener.setName(tName.getText(), updateTree);
 				group.setText("Job: " + tName.getText() + (listener.isDisabled() ? " (Disabled)" : ""));
@@ -249,6 +251,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		tTitle.setLayoutData(gridData1);
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				if(init) return;
 				listener.setTitle(tTitle.getText());
 			}
 		});
@@ -261,6 +264,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		tSpoolerID.setLayoutData(gridData3);        
 		tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				if(init) return;
 				listener.setSpoolerID(tSpoolerID.getText());
 			}
 		});
@@ -287,12 +291,16 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		
 		cProcessClass.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
+				
+				if(init) return;
+				
 				listener.setProcessClass(cProcessClass.getText());
 			}
 		});
 		cProcessClass.setLayoutData(gridData4);
 		cProcessClass.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if(init) return;
 				listener.setProcessClass(cProcessClass.getText());
 			}
 		});
@@ -327,6 +335,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		sPriority.addModifyListener(new ModifyListener() {
 			
 			public void modifyText(final ModifyEvent e) {
+				if(init) return;
 				Utils.setBackground(-20, 20, sPriority);
 				listener.setPriority(sPriority.getText());
 			}
@@ -342,7 +351,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		bOrderYes.setText("Yes");
 		bOrderYes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				
+				if(init) return;
 				sIdleTimeout.setEnabled(bOrderYes.getSelection());
 				if (!sIdleTimeout.getEnabled()) {
 					sIdleTimeout.setText("");
@@ -365,7 +374,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		bOrderNo.setSelection(false);
 		bOrderNo.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				
+				if(init) return;
 				listener.setPriority(sPriority.getText());
 				listener.setOrder(!bOrderNo.getSelection());
 			}
@@ -393,6 +402,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		bForceIdletimeout.setLayoutData(gridData_14);
 		bForceIdletimeout.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				if(init) return;
 				listener.setForceIdletimeout(bForceIdletimeout.getSelection());
 			}
 		});
@@ -421,6 +431,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		bStopOnError.setSelection(true);
 		bStopOnError.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				if(init) return;
 				listener.setStopOnError(bStopOnError.getSelection());
 			}
 		});
@@ -437,6 +448,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		});
 		tMintasks.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
+				if(init) return;
 				listener.setMintasks(tMintasks.getText());
 			}
 		});
@@ -472,6 +484,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		sTasks.addModifyListener(new ModifyListener() {
 			
 			public void modifyText(final ModifyEvent e) {
+				if(init) return;
 				listener.setTasks(sTasks.getText());
 			}
 		});
@@ -488,6 +501,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		
 		sTimeout.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
+				if(init) return;
 				listener.setTimeout(sTimeout.getText());
 			}
 		});
@@ -520,6 +534,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		});
 		sIdleTimeout.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
+				if(init) return;
 				listener.setIdleTimeout(sIdleTimeout.getText());
 			}
 		});
@@ -531,6 +546,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		tIgnoreSignals = new Text(gMain, SWT.BORDER);
 		tIgnoreSignals.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
+				if(init) return;
 				listener.setIgnoreSignal(tIgnoreSignals.getText());
 			}
 		});
@@ -541,6 +557,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		addButton = new Button(gMain, SWT.NONE);
 		addButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				if(init) return;
 				if (tIgnoreSignals.getText().equals("")){
 					tIgnoreSignals.setText(cSignals.getText());
 				}else {
@@ -565,6 +582,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		txtJavaOptions = new Text(gMain, SWT.BORDER);
 		txtJavaOptions.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
+				if(init) return;
 				listener.setJavaOptions(txtJavaOptions.getText());
 			}
 		});
@@ -579,6 +597,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		comVisible.setItems(new String[] { "", "yes", "no", "never" });
 		comVisible.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
+				if(init) return;
 				listener.setVisivle(comVisible.getText());
 			}
 		});
@@ -603,6 +622,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		butTemporary.setLayoutData(gridData_23);
 		butTemporary.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				if(init) return;
 				listener.setTemporary(butTemporary.getSelection());
 			}
 		});
@@ -628,6 +648,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		butReplace.setLayoutData(gridData_24);
 		butReplace.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				if(init) return;
 				listener.setReplace(butReplace.getSelection());
 			}
 		});
@@ -679,6 +700,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				if(init) return;
 				listener.setComment(tComment.getText());
 			}
 		});
@@ -693,6 +715,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		butIsLiveFile = new Button(gDescription, SWT.CHECK);
 		butIsLiveFile.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				if(init) return;
 				listener.setInclude(tFileName.getText(), butIsLiveFile.getSelection());
 				
 				if(tFileName.getText()!= null && tFileName.getText().length() > 0) {
@@ -718,6 +741,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		
 		tFileName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				if(init) return;
 				listener.setInclude(tFileName.getText(), butIsLiveFile.getSelection());				
 				if(tFileName.getText()!= null && tFileName.getText().length() > 0 ) {					
 					butShow.setEnabled(true);
@@ -779,6 +803,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		tDescription.setLayoutData(gridData14);
 		tDescription.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				if(init) return;
 				listener.setDescription(tDescription.getText());
 			}
 		});

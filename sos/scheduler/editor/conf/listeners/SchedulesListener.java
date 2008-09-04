@@ -79,12 +79,13 @@ public class SchedulesListener {
 		if (_list == null)
 			initSchedules();
 		_list.add(schedule);
-		_dom.setChanged(true);
-		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", schedule), SchedulerDom.NEW);		
+				
 		fillTable(table);
 		table.setSelection(table.getItemCount() - 1);
 		_main.updateSchedules();
 		_main.expandItem(name);
+		_dom.setChanged(true);
+		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", schedule), SchedulerDom.NEW);
 
 	}
 

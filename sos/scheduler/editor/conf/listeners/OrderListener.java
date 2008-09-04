@@ -284,7 +284,7 @@ public class OrderListener {
 
 
     public boolean getCommandReplace() {
-        return Utils.getAttributeValue("replace", _order).equalsIgnoreCase("yes");
+        return Utils.getAttributeValue("replace", _order).equalsIgnoreCase("yes") || Utils.getAttributeValue("replace", _order).length() == 0;
     }
 
 

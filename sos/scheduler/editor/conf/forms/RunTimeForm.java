@@ -126,6 +126,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         tFunction = new Text(groupStartTimeFuction, SWT.BORDER);
         tFunction.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
+        		if(init) return;
         			setEnabled();
         			listener.setFunction(tFunction.getText());
         			_gui.updateFont();
@@ -149,7 +150,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         comSchedule.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {        		
         		//listener.setSchedule(comSchedule.getText());
-        		
+        		if(init) return;
         		listener.setSchedule(comSchedule.getText());
         		_gui.updateFont();
         	}
@@ -159,6 +160,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         comSchedule.setText(listener.getSchedule());
         comSchedule.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) { 
+        		if(init) return;
         			setEnabled();
             		listener.setSchedule(comSchedule.getText());
             		_gui.updateFont();
@@ -201,6 +203,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
         tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+            	if(init) return;
                 listener.setComment(tComment.getText());
             }
         });

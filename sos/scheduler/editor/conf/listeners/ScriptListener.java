@@ -242,7 +242,13 @@ public class ScriptListener {
     public void addInclude(Table table, String filename, boolean isLife) {
     	if (_script != null) {
             List includes = _script.getChildren("include");
-            _script.addContent(includes.size(), new Element("include").setAttribute((isLife?"live_file":"file"), filename));            
+            if(table.getSelectionCount() > 0) {
+            	Element in = (Element)_script.getChildren("include").get(table.getSelectionIndex());
+            	
+            	in.setAttribute((isLife?"live_file":"file"), filename);
+            } else {
+            	_script.addContent(includes.size(), new Element("include").setAttribute((isLife?"live_file":"file"), filename));
+            }
             _dom.setChanged(true);
             fillTable(table);
             setChangedForDirectory();

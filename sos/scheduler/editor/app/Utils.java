@@ -735,7 +735,7 @@ public class Utils {
 			if(elem != null && elem.getParentElement()!= null) {
 				if(elem.getName().equalsIgnoreCase("job") 
 						|| elem.getName().equalsIgnoreCase("schedule")
-						|| elem.getName().equalsIgnoreCase("order")) {
+						|| elem.getName().equalsIgnoreCase("order")|| elem.getName().equalsIgnoreCase("add_order")) {
 					return elem;					
 				} else if(elem.getParentElement().getName().equalsIgnoreCase("job")) {
 					return elem.getParentElement();					

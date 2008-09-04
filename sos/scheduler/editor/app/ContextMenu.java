@@ -256,12 +256,18 @@ public class ContextMenu {
 
 	public static void goTo(String name, SchedulerDom _dom, int type) {
 		try {
+			 
+			if(name.startsWith("*")) {			
+				name = name.substring(1);
+			}
 
 			if(type==Editor.JOB) {
 
 				XPath x3 = XPath.newInstance("//job[@name='"+ name + "']");				 
-				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-				if(!listOfElement_3.isEmpty()) {    			
+				List listOfElement_3 = x3.selectNodes(_dom.getDoc());								 
+				
+				if(!listOfElement_3.isEmpty()) {    
+					
 					SchedulerForm f = (SchedulerForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
 					if(f == null)
 						return;
@@ -273,7 +279,8 @@ public class ContextMenu {
 							TreeItem[] jobsItem = item.getItems();
 							for(int j = 0; j < jobsItem.length; j++) {
 								TreeItem jItem = jobsItem[j];
-								if(jItem.getText().equals("Job: "+ name)){
+								//if(jItem.getText().equals("Job: "+ name)){
+								if(jItem.getText().endsWith("Job: "+ name)){
 									tree.setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("jobs");
@@ -299,7 +306,8 @@ public class ContextMenu {
 							TreeItem[] jobsItem = item.getItems();
 							for(int j = 0; j < jobsItem.length; j++) {
 								TreeItem jItem = jobsItem[j];
-								if(jItem.getText().equals("Job Chain: "+ name)){
+								//if(jItem.getText().equals("Job Chain: "+ name)){
+								if(jItem.getText().endsWith("Job Chain: "+ name)){
 									tree.setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("");
@@ -321,7 +329,8 @@ public class ContextMenu {
 					Tree tree = f.getTree();
 					for(int i = 0; i < tree.getItemCount(); i++) {    				
 						TreeItem item = tree.getItem(i);
-						if(item.getText().equals("Process Classes")){    						
+						//if(item.getText().equals("Process Classes")){
+						if(item.getText().endsWith("Process Classes")){
 							tree.setSelection(new TreeItem [] {item});
 							f.updateTreeItem(item.getText());
 							f.updateTree("");    						
@@ -345,7 +354,8 @@ public class ContextMenu {
 							TreeItem[] items = item.getItems();
 							for(int j = 0; j < items.length; j++) {
 								TreeItem jItem = items[j];
-								if(jItem.getText().equals(name)){
+								//if(jItem.getText().equals(name)){
+								if(jItem.getText().endsWith(name)){
 									tree.setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("");
@@ -378,7 +388,8 @@ public class ContextMenu {
 							TreeItem[] items = item.getItems();
 							for(int j = 0; j < items.length; j++) {
 								TreeItem jItem = items[j];
-								if(jItem.getText().equals("Order: " + name)){
+								//if(jItem.getText().equals("Order: " + name)){
+								if(jItem.getText().endsWith("Order: " + name)){
 									tree.setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("");

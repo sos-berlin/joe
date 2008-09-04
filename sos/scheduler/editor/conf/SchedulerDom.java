@@ -25,6 +25,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.forms.SchedulerForm;
 
 
 public class SchedulerDom extends DomParser {
@@ -503,7 +504,7 @@ public class SchedulerDom extends DomParser {
 	public void setChangedForDirectory(Element _parent, String what) {
 		Element parent = Utils.getRunTimeParentElement(_parent);
 		if(parent != null) {
-			if(parent.getName().equals("order")) {
+			if(parent.getName().equals("order") || parent.getName().equals("add_order")) {
 				setChangedForDirectory(parent.getName(), Utils.getAttributeValue("job_chain",parent)+","+Utils.getAttributeValue("id",parent), what);
 			} else {
 				setChangedForDirectory(parent.getName(), Utils.getAttributeValue("name",parent), what);
@@ -520,12 +521,22 @@ public class SchedulerDom extends DomParser {
     		}
     	}*/
 	}
-
+	 
+	
 	/*
 	 * what is: NEW or MODIFY or DELETE
 	 */
-	public void setChangedForDirectory(String which, String name, String what) {    	
+	public void setChangedForDirectory(String which, String name, String what) {
+		if(!isChanged())
+			return;
+		
+		if(what.equals(DELETE))
+			return;
+		
 		changedForDirectory.put(which + "_" + name, what);
+		SchedulerForm form =(SchedulerForm)MainWindow.getContainer().getCurrentEditor();
+		form.setChangedTreeItemText(which + "_" + name);
+		
 	}
 
 	public HashMap getChangedJob() {

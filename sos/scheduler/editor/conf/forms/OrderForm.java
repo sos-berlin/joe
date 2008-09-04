@@ -131,8 +131,9 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes group1
      */
     private void createGroup1() {
-        listener.setCommandAttribute("replace", "yes");
-
+    	
+        //listener.setCommandAttribute("replace", "yes");
+       
     }
 
 

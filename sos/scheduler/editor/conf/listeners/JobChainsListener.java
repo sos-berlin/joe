@@ -124,9 +124,11 @@ public class JobChainsListener {
 		if (!_chains.getChildren("job_chain").contains(_chain))
 			_chains.addContent(_chain);
 
-		_dom.setChanged(true);
-		_dom.setChangedForDirectory("job_chain", name, SchedulerDom.MODIFY);
+		
 		update.updateJobChains();
+		_dom.setChanged(true);
+		//_dom.setChangedForDirectory("job_chain", name, SchedulerDom.MODIFY);
+		_dom.setChangedForDirectory("job_chain", name, SchedulerDom.NEW);
 	}
 
 

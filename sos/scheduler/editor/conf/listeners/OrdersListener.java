@@ -122,11 +122,12 @@ public class OrdersListener {
 		add_order.addContent(runtime); //mo
 		_orders2.add(add_order);//mo
 
-		_dom.setChanged(true);
-		_dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", add_order) + "," + id, SchedulerDom.NEW);
+		
 		fillTable(table);
 		table.setSelection(table.getItemCount() - 1);
 		_main.updateOrders();
+		_dom.setChanged(true);
+		_dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", add_order) + "," + id, SchedulerDom.NEW);
 	}
 
 

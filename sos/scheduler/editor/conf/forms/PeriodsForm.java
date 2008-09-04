@@ -258,6 +258,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
     }
     
     private void tPeriodSelect(){
+    	
     	bRemove.setEnabled(tPeriods.getSelectionCount() > 0);
     	periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
     	periodForm.setApplyButton(bApply);

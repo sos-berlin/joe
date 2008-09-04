@@ -195,38 +195,38 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		event = false;
 		if (listener.getPeriod() != null) {
 
-			event = false;
+			//event = false;
 			sBeginHours.setText(Utils.fill(2, String.valueOf(listener.getBeginHours())));
 			sBeginMinutes.setText(Utils.fill(2, String.valueOf(listener.getBeginMinutes())));
-			event = true;
+			//event = true;
 			sBeginSeconds.setText(Utils.fill(2, String.valueOf(listener.getBeginSeconds())));
 
-			event = false;
+			//event = false;
 			sEndHours.setText(Utils.fill(2, String.valueOf(listener.getEndHours())));
 			sEndMinutes.setText(Utils.fill(2, String.valueOf(listener.getEndMinutes())));
-			event = true;
+			//event = true;
 			sEndSeconds.setText(Utils.fill(2, String.valueOf(listener.getEndSeconds())));
 			if(_type != Editor.RUNTIME) {
-				event = false;
+				//event = false;
 				sAbsoluteRepeatHours.setText(Utils.fill(2, String.valueOf(listener.getAbsoluteRepeatHours())));
 				sAbsoluteRepeatMinutes.setText(Utils.fill(2, String.valueOf(listener.getAbsoluteRepeatMinutes())));
 
 				sAbsoluteRepeatSeconds.setText(Utils.fill(2, String.valueOf(listener.getAbsoluteRepeatSeconds())));
-				event = true;
+				//event = true;
 			}
 
 			if (!onOrder) {
 				if(_type != Editor.RUNTIME) {
-					event = false;
+					//event = false;
 					sRepeatHours.setText(Utils.fill(2, String.valueOf(listener.getRepeatHours())));
 					sRepeatMinutes.setText(Utils.fill(2, String.valueOf(listener.getRepeatMinutes())));
-					event = true;
+					//event = true;
 					sRepeatSeconds.setText(Utils.fill(2, String.valueOf(listener.getRepeatSeconds())));
 
-					event = false;
+					//event = false;
 					sSingleHours.setText(Utils.fill(2, String.valueOf(listener.getSingleHours())));
 					sSingleMinutes.setText(Utils.fill(2, String.valueOf(listener.getSingleMinutes())));
-					event = true;
+					//event = true;
 					sSingleSeconds.setText(Utils.fill(2, String.valueOf(listener.getSingleSeconds())));
 				}
 				if (cRunOnce.isVisible())
@@ -243,11 +243,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
 		}else if(listener.getAtElement() != null) {
 			if(_type != Editor.RUNTIME) {
-				event = false;
+				//event = false;
 				listener.setPeriod(listener.getAtElement());
 				sSingleHours.setText(Utils.fill(2, String.valueOf(listener.getSingleHours())));
 				sSingleMinutes.setText(Utils.fill(2, String.valueOf(listener.getSingleMinutes())));
-				event = true;
+				//event = true;
 				sSingleSeconds.setText(Utils.fill(2, String.valueOf(listener.getSingleSeconds())));												
 			}
 			if(cboWhenHoliday != null) {
@@ -255,6 +255,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 				cboWhenHoliday.setText(listener.getWhenHoliday());
 			}
 		}
+		event = true;
 	}
 
 
@@ -343,7 +344,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
 
 	public void setEnabled(boolean enabled) {
-
+		event = false;
 		boolean singleStart = false;
 
 		if(_type != Editor.RUNTIME) {
@@ -473,7 +474,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 					sAbsoluteRepeatSeconds.setText(savAbsoluteSecounds); 
 			}
 		}
-
+		event = true;
 	}
 
 

@@ -52,6 +52,7 @@ public class JobListener {
 
 	public void setName(String name, boolean updateTree) {
 		boolean isDis = isDisabled();
+		
 		if(isDis) //ändern der Jobname der disabled ist: alte jobname aus der disable Liste löschen und neue hinzufügen
 			_dom.setJobDisabled(Utils.getAttributeValue("name",_job), false);
 

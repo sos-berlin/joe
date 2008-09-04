@@ -495,7 +495,7 @@ public class SchedulerListener {
 					String job = "Job: " + name;
 					job += _dom.isJobDisabled(name) ? " (Disabled)" : "";
 
-					i.setText(job);
+					i.setText(job);					
 					i.setData(new TreeData(Editor.JOB, element, Options.getHelpURL("job")));
 					
 					i.setData("copy_element", element);
@@ -545,7 +545,9 @@ public class SchedulerListener {
 
 		//Job - Execute
 		TreeItem item = new TreeItem(parent, SWT.NONE);
-		item.setText("Execute");
+		item.setText("Execute" );
+		
+		
 		item.setData("max_occur", "1");
 		item.setData(new TreeData(Editor.EXECUTE, job, Options.getHelpURL("job.execute")));
 		ArrayList  l = new ArrayList();

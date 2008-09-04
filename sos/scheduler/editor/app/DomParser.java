@@ -328,10 +328,12 @@ public abstract class DomParser {
             _changed = changed;
             if (_changedListener != null)
                 _changedListener.dataChanged();
+            
+            
         }
     }
 
-
+    
     public void setInit(boolean init) {
         _init = init;
     }

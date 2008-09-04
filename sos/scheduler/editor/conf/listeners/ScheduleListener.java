@@ -29,11 +29,13 @@ public class ScheduleListener {
 	}
 
 	public void setName(String _name) {
+		
 		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.DELETE);
 		Utils.setAttribute("name", _name, _schedule);
+		_dom.setChanged(true);
 		_main.updateTreeItem(_name);
 		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.MODIFY);	
-		_dom.setChanged(true);
+		
 		
 	}
 
@@ -42,9 +44,10 @@ public class ScheduleListener {
 	}
 	
 	public void setTitle(String title) {		
-		Utils.setAttribute("title", title, _schedule);		
-		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.MODIFY);	
+		Utils.setAttribute("title", title, _schedule);
 		_dom.setChanged(true);
+		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.MODIFY);	
+		
 	}
 	
 	public String getTitle() {
@@ -54,9 +57,10 @@ public class ScheduleListener {
 	
 	public void setValidFrom(String validFrom) {
 		
-		Utils.setAttribute("valid_from", validFrom, _schedule);		
-		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.MODIFY);	
+		Utils.setAttribute("valid_from", validFrom, _schedule);
 		_dom.setChanged(true);
+		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.MODIFY);	
+		
 	}
 	
 	public String getValidFrom() {
@@ -74,9 +78,10 @@ public class ScheduleListener {
 		} catch(Exception e) {
 			System.out.println(validTo + " not a valid day" + e.getMessage());
 		}*/
-		Utils.setAttribute("valid_to", validTo, _schedule);		
-		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.MODIFY);	
+		Utils.setAttribute("valid_to", validTo, _schedule);
 		_dom.setChanged(true);
+		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.MODIFY);	
+		
 	}
 	
 	public String getValidTo() {
@@ -85,9 +90,10 @@ public class ScheduleListener {
 
 	
 	public void setSubstitut(String substitute) {		
-		Utils.setAttribute("substitute", substitute, _schedule);		
-		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.MODIFY);	
+		Utils.setAttribute("substitute", substitute, _schedule);
 		_dom.setChanged(true);
+		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.MODIFY);	
+		
 	}
 	
 	public String getSubstitute() {

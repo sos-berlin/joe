@@ -49,15 +49,19 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 	private Button              butDistributed              = null; 
 
 	private Text                txtTitle                    = null; 
+	
+	private boolean             init                        = false;
 
 
 	public JobChainForm(Composite parent, int style, SchedulerDom dom, Element jobChain) {
 		super(parent, style);
+		init = true;
 		listener = new JobChainListener(dom, jobChain);
 		initialize();
 		setToolTipText();
 		fillChain(false, false);
 		this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
+		init = false;
 
 	}
 
@@ -102,6 +106,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				if(init) return;
 				boolean existname = Utils.existName(tName.getText(), listener.getChain(), "job_chain");
 				if (existname)
 					tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
@@ -117,10 +122,10 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 						_continue = false;
 
 				if(_continue) {
-					listener.setChainName(tName.getText());
 					if(update != null)
-						//update.updateJobChain(tName.getText(), oldJobChainname);
 						update.updateTreeItem("Job Chain: " + tName.getText());
+					listener.setChainName(tName.getText());
+					
 				}
 				//bApplyChain.setEnabled(!existname && !tName.equals(""));
 				//mo neu
@@ -158,6 +163,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				//getShell().setDefaultButton(bApplyChain);				
 				//bApplyChain.setEnabled(true);
 				//mo neu
+				if(init) return;
 				listener.setTitle(txtTitle.getText());
 
 			}
@@ -170,6 +176,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		butDistributed.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		butDistributed.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				if(init) return;
 				listener.setDistributed(butDistributed.getSelection());
 				//getShell().setDefaultButton(bApplyChain);
 				//bApplyChain.setEnabled(true);
@@ -186,6 +193,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				//getShell().setDefaultButton(bApplyChain);
 				//bApplyChain.setEnabled(true);
 				//mo neu
+				if(init) return;
 				listener.setRecoverable(bRecoverable.getSelection());
 
 			}
@@ -196,6 +204,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		bVisible.setText("Visible");
 		bVisible.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if(init) return;
 				listener.setVisible(bVisible.getSelection());
 				//getShell().setDefaultButton(bApplyChain);
 				//bApplyChain.setEnabled(true);

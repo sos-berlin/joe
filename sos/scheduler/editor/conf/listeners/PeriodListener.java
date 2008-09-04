@@ -106,7 +106,8 @@ public class PeriodListener {
 								String name = parent.getName().equals("order") || parent.getName().equals("order") ? 
 										       Utils.getAttributeValue("job_chain",parent)+","+Utils.getAttributeValue("id",parent) :
 										    	   Utils.getAttributeValue("name",parent);
-								_dom.setChangedForDirectory("job", name, SchedulerDom.MODIFY);
+										       
+								_dom.setChangedForDirectory(parent.getName(), name, SchedulerDom.MODIFY);
 							}
 								
 							break;    	    				
@@ -118,10 +119,11 @@ public class PeriodListener {
 				//Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period, _dom);
 				Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period);
 				Element parent = Utils.getRunTimeParentElement(_period);
-				String name = parent.getName().equals("order") || parent.getName().equals("order") ? 
+				String name = parent.getName().equals("order") || parent.getName().equals("add_order") ? 
 						       Utils.getAttributeValue("job_chain",parent)+","+Utils.getAttributeValue("id",parent) :
 						    	   Utils.getAttributeValue("name",parent);
-				_dom.setChangedForDirectory("job", name, SchedulerDom.MODIFY);
+			    _dom.setChanged(true);
+				_dom.setChangedForDirectory(parent.getName(), name, SchedulerDom.MODIFY);
 			}
 			if (bApply != null) {
 				bApply.setEnabled(true);
@@ -285,7 +287,8 @@ public class PeriodListener {
 		String name = parent.getName().equals("order") || parent.getName().equals("order") ? 
 				       Utils.getAttributeValue("job_chain",parent)+","+Utils.getAttributeValue("id",parent) :
 				    	   Utils.getAttributeValue("name",parent);
-		_dom.setChangedForDirectory("job", name, SchedulerDom.MODIFY);
+		//_dom.setChangedForDirectory("job", name, SchedulerDom.MODIFY);
+				       _dom.setChangedForDirectory(parent.getName(), name, SchedulerDom.MODIFY);
 		
 		if(whenHoliday == null || whenHoliday.length() == 0) {			
 			Utils.setAttribute("when_holiday", "suppress", "suppress", _period);

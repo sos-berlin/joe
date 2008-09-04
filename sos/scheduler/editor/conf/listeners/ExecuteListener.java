@@ -46,7 +46,9 @@ public class ExecuteListener {
     public void setNothing() {
         setExecutable(false);
         _job.removeChild("script");
+        Utils.setChangedForDirectory(_job, _dom);
         _dom.setChanged(true);
+        
     }
 
 
@@ -57,6 +59,7 @@ public class ExecuteListener {
             _job.removeChild("process");
             setProcess();
         }
+        Utils.setChangedForDirectory(_job, _dom);
     }
 
 
@@ -64,6 +67,7 @@ public class ExecuteListener {
         _process = _job.getChild("process");
 
         _environment = _process != null ? _process.getChild("environment") : null;
+       
     }
 
 
@@ -85,6 +89,7 @@ public class ExecuteListener {
     public void setFile(String file) {
         initProcess();
         Utils.setAttribute("file", file, _process, _dom);
+        Utils.setChangedForDirectory(_job, _dom);
     }
 
 
@@ -96,6 +101,7 @@ public class ExecuteListener {
     public void setParam(String param) {
         initProcess();
         Utils.setAttribute("param", param, _process, _dom);
+        Utils.setChangedForDirectory(_job, _dom);
     }
 
 
@@ -107,6 +113,7 @@ public class ExecuteListener {
     public void setLogFile(String file) {
         initProcess();
         Utils.setAttribute("log_file", file, _process, _dom);
+        Utils.setChangedForDirectory(_job, _dom);
     }
 
 
@@ -117,6 +124,7 @@ public class ExecuteListener {
 
     public void setIgnoreSignal(boolean ignore) {
         Utils.setAttribute("ignore_signal", ignore, _process, _dom);
+        Utils.setChangedForDirectory(_job, _dom);
     }
 
 
@@ -127,6 +135,7 @@ public class ExecuteListener {
 
     public void setIgnoreError(boolean ignore) {
         Utils.setAttribute("ignore_error", ignore, _process, _dom);
+        Utils.setChangedForDirectory(_job, _dom);
     }
 
 
@@ -147,6 +156,7 @@ public class ExecuteListener {
             variable.setAttribute("value", value);
             variables.add(variable);
         }
+        Utils.setChangedForDirectory(_job, _dom);
         _dom.setChanged(true);
     }
 
