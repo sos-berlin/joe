@@ -96,6 +96,7 @@ public class LocksListener {
 
 
 	public void applyLock(String name,  int maxNonExclusive) {
+		_dom.setChanged(true);
 		String oldLockName = Utils.getAttributeValue("name", _lock); 
 		_dom.setChangedForDirectory("lock", oldLockName, SchedulerDom.DELETE);
 		Utils.setAttribute("name", name, _lock, _dom);
@@ -120,7 +121,7 @@ public class LocksListener {
 				_dom.setChangedForDirectory("lock", name, SchedulerDom.MODIFY);
 
 		}
-		_dom.setChanged(true);
+		
 	}
 
 

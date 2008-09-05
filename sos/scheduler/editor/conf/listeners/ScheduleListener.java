@@ -29,10 +29,10 @@ public class ScheduleListener {
 	}
 
 	public void setName(String _name) {
-		
+		_dom.setChanged(true);
 		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.DELETE);
 		Utils.setAttribute("name", _name, _schedule);
-		_dom.setChanged(true);
+		
 		_main.updateTreeItem(_name);
 		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.MODIFY);	
 		

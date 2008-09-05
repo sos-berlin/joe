@@ -530,10 +530,13 @@ public class SchedulerDom extends DomParser {
 		if(!isChanged())
 			return;
 		
+		
+		
+		changedForDirectory.put(which + "_" + name, what);
+		
 		if(what.equals(DELETE))
 			return;
 		
-		changedForDirectory.put(which + "_" + name, what);
 		SchedulerForm form =(SchedulerForm)MainWindow.getContainer().getCurrentEditor();
 		form.setChangedTreeItemText(which + "_" + name);
 		

@@ -864,6 +864,8 @@ public class Utils {
 		boolean onlyWarning = false;//-> true: Gibt nur eine Warnung aus. Sonst Warnung mit Yes- und No- Button um ggf. die Änderungen zurückzunehmen
 		try {
 
+			
+			
 			if(type == Editor.JOB_CHAIN) {
 
 				XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 

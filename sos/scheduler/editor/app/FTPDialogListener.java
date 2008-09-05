@@ -803,6 +803,33 @@ public class FTPDialogListener {
 				}
 			}
 
+			
+			if(changes != null && changes.keySet() != null) {
+				java.util.Iterator c = changes.keySet().iterator();
+				while(c.hasNext()) {
+					String remFile = c.next().toString();					
+					if(changes.get(remFile) != null && changes.get(remFile).equals("delete")) {
+						String prefix = "";
+						if(remFile.startsWith("job_chain"))
+							prefix = "job_chain";
+						else if(remFile.startsWith("job"))
+							prefix = "job";
+						else if(remFile.startsWith("order"))
+							prefix = "order";
+						else if(remFile.startsWith("add_order"))
+							prefix = "add_order";
+						else if(remFile.startsWith("process_class") )
+							prefix = "process_class";
+						else if(remFile.startsWith("lock") )
+							prefix = "lock";
+						else if(remFile.startsWith("schedule") )
+							prefix = "schedule";
+						 
+						remFile = remFile.substring(prefix.length() + 1) + "." + remFile.substring(0, prefix.length()) + ".xml";	
+						removeFile(target + remFile);	
+					}
+				}
+			}
 			File fSource = new File(source);
 			if(!fSource.exists())
 				throw new Exception (source + " not exist." );
