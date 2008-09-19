@@ -85,7 +85,8 @@ public class DocumentationDom extends DomParser {
     public boolean read(String filename, boolean validate) throws JDOMException, IOException {
 
         Document doc = getBuilder(validate).build(filename);
-
+        
+        
         if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("description")))
             return false;
         else if (!validate) {

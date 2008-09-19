@@ -8,11 +8,15 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
+import org.jdom.filter.ElementFilter;
+import org.jdom.filter.Filter;
 //import org.jdom.xpath.XPath;
 //import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
-
+import org.jdom.filter.Filter;
+import org.jdom.filter.ElementFilter;
+import sos.util.SOSString;
 
 public class JobChainListener {
 
@@ -27,6 +31,8 @@ public class JobChainListener {
 	private    Element                   _source              = null;
 
 	private    String[]                  _states              = null;
+	
+	private    SOSString                 sosString            = new SOSString();
 
 
 	public JobChainListener(SchedulerDom dom, Element jobChain) {
@@ -191,6 +197,7 @@ public class JobChainListener {
 					if (node.getName().equals("job_chain_node")){
 						if (Utils.getAttributeValue("job", node)== "") {
 							nodetype = "Endnode";
+							node.removeAttribute("next_state");//kann eventuell bei reorder changeup entstanden sein
 						}else {
 							nodetype = "Job";
 						}
@@ -399,64 +406,95 @@ public class JobChainListener {
 		setStates();
 	}
 
-	public void changeUp(Table table, boolean up, boolean isJobchainNode ,String state, String job, String delay, String next, 
-			String error, boolean removeFile,String moveTo, int index ) {
+	public void applyInsertNode(boolean isJobchainNode,
+			String state, 
+			String job, 
+			String delay, 
+			String next, 
+			String error, 
+			boolean removeFile,
+			String moveTo,
+			String onError) {
+		Element node = null;
+
+		if (isJobchainNode) {
+			node = new Element("job_chain_node");
+			Utils.setAttribute("state", state, node, _dom);
+			Utils.setAttribute("job", job, node, _dom);
+			Utils.setAttribute("delay", delay, node, _dom);
+			Utils.setAttribute("next_state", next, node, _dom);
+			Utils.setAttribute("error_state", error, node, _dom);
+			Utils.setAttribute("on_error", onError, node, _dom);
+		}else {
+			node = new Element("file_order_sink");
+			Utils.setAttribute("state", state, node, _dom);
+			Utils.setAttribute("move_to", moveTo, node, _dom);
+			Utils.setAttribute("remove", removeFile, node, _dom);
+		}
+
+
+		boolean found = false;
+		List list = _chain.getChildren();
+		if(list.size() > 0 && _node != null) {
+			for(int i = 0; i < list.size(); i++) {
+				if(list.get(i).equals(_node)){						
+					if(i > 0) {
+						Element previosNode = (Element)list.get(i-1);
+						Utils.setAttribute("next_state", state, previosNode, _dom);
+						_chain.addContent(_chain.indexOf(previosNode) +1, node);
+						found = true;
+						break;
+					}
+				}
+			}
+		} 
+		
+		if(!found){
+			_chain.addContent(0, node);
+		}
+		
+		_node = node;
+
+		_dom.setChanged(true);
+		_dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
+		setStates();
+	}
+	
+	public void changeUp(Table table, 
+			             boolean up, 
+			             boolean isJobchainNode ,
+			             String state, 
+			             String job, 
+			             String delay, 
+			             String next, 
+			             String error, 
+			             boolean removeFile,
+			             String moveTo, 
+			             int index,
+			             boolean reorder ) {
 		try {
 			Element node = null;
+			
+			
 
-			if (_node != null) {//Wenn der Knotentyp geändert wird, alten löschen und einen neuen anlegen.
-
-				if (isJobchainNode && _node.getName().equals("file_order_sink")){
-
-					_node.detach();
-					_node = null;
-				}
-				if (!isJobchainNode && _node.getName().equals("job_chain_node")){
-
-					_node.detach();
-					_node = null;
-				}
+			if(reorder && Utils.getAttributeValue("job", _node).length() == 0) {
+				sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
+				return;
 			}
-
-			if (_node != null) {
-				if (isJobchainNode) {				
-					Utils.setAttribute("state", state, _node, _dom);
-					Utils.setAttribute("job", job, _node, _dom);
-					Utils.setAttribute("delay", delay, _node, _dom);
-					Utils.setAttribute("next_state", next, _node, _dom);
-					Utils.setAttribute("error_state", error, _node, _dom);
-				}else {				
-					Utils.setAttribute("state", state, _node, _dom);
-					Utils.setAttribute("move_to", moveTo, _node, _dom);
-					Utils.setAttribute("remove", removeFile, _node, _dom);
-				}
-			} else {
-				if (isJobchainNode) {
-					node = new Element("job_chain_node");
-					Utils.setAttribute("state", state, node, _dom);
-					Utils.setAttribute("job", job, node, _dom);
-					Utils.setAttribute("delay", delay, node, _dom);
-					Utils.setAttribute("next_state", next, node, _dom);
-					Utils.setAttribute("error_state", error, node, _dom);
-				}else {								
-					node = new Element("file_order_sink");
-					Utils.setAttribute("state", state, node, _dom);
-					Utils.setAttribute("move_to", moveTo, node, _dom);
-					Utils.setAttribute("remove", removeFile, node, _dom);
-				}
-
-			}
+			
 			List l = _chain.getContent();
 			int cIndex =-1;
 			boolean found = false;//Hilfsvariabkle für down
 			for(int i =0; i < _chain.getContentSize(); i++) {
 				if(l.get(i) instanceof Element) {				
 					Element elem_ = (Element)l.get(i);
-					String elemState = Utils.getAttributeValue("state", elem_);
-					String nodeState = Utils.getAttributeValue("state", _node);
+					//String elemState = Utils.getAttributeValue("state", elem_);
+					//String nodeState = Utils.getAttributeValue("state", _node);
 					if(up) {
 						//up				
-						if(elemState.equals(nodeState)) {
+						//if(elemState.equals(nodeState)) {
+						if(elem_.equals(_node)) {
+							//System.out.println("up " + elemState + "=" + nodeState + "    elem_.equals(_node) " +elem_.equals(_node) );							
 							break;
 						} else {
 							cIndex = i;					
@@ -467,6 +505,7 @@ public class JobChainListener {
 					} else {
 						//down
 						if(elem_.equals(_node)) {
+							//System.out.println("down " + elemState + "=" + nodeState + "    elem_.equals(_node) " +elem_.equals(_node) );
 							found = true;
 						} else if(found) {
 							cIndex = i;
@@ -476,14 +515,107 @@ public class JobChainListener {
 				}
 			}
 			node = (Element)_node.clone();		
+			
+			if(reorder) {
+				Filter elementFilter2 = new ElementFilter( "job_chain_node", getChain().getNamespace() );
+				// gets all element nodes under the rootElement
+				List elements = getChain().getContent( elementFilter2 );
+				// cycle through all immediate elements under the rootElement
+				//for( java.util.Iterator it = elements.iterator(); it.hasNext(); ) {
+				int size = elements.size();
+				for(int i= 0; i < size; ++i) { 
+					// note that this is a downcast because we
+					// have used the element filter.  This would
+					// not be the case for a getContents() on the element
+					//Element currElement = (Element) it.next();
+					Element currElement  = (Element) elements.get(i);
+					Element prevElement  = null; 
+					Element prev2Element = null;
+					Element nextElement  = null;
+					
+					//String prev2State    = "";
+					String prevState     = "";
+					String curState      = "";
+					String currNextState = "";
+					//String nextState     = "";//only for down
+					String nextNextState  = "";
+					
+					if(currElement.equals(_node)) {
+						
+						if(i >= 2) {
+							prev2Element =  (Element)elements.get(i -2);
+							//prev2State   =  Utils.getAttributeValue("state", prev2Element);
+							//System.out.println("previous   Datensatz: \t\t" + prev2State);							
+						}
+						
+						if(i >= 1) {
+							prevElement =  (Element)elements.get(i -1);
+							prevState   =  Utils.getAttributeValue("state", prevElement);
+							//System.out.println("2 previous Datensatz: \t\t" + prevState);
+							
+						}
+						
+						if(size > i+1) {
+							nextElement =  (Element)elements.get(i+1);
+							//nextElement =  (Element)elements.get(i);
+							//nextState   =  Utils.getAttributeValue("state", nextElement);
+							nextNextState=  Utils.getAttributeValue("next_state", nextElement);
+							//System.out.println("     next Datensatz: \t\t" + nextState);
+							
+						}
+						
+						curState = Utils.getAttributeValue("state", currElement);
+						currNextState = Utils.getAttributeValue("next_state", currElement);
+						
+						//System.out.println(    "selektier  Datensatz: \t\t" + curState);
+						if(up) {
+							
+							if(prev2Element != null && sosString.parseToString(curState).length() > 0 ) {
+								Utils.setAttribute("next_state", curState, prev2Element);
+							}
+							if(prevElement != null && sosString.parseToString(currNextState).length() > 0) {
+								Utils.setAttribute("next_state", currNextState , prevElement);
+							}
+							if(curState != null  && sosString.parseToString(prevState).length() > 0) {
+								Utils.setAttribute("next_state", prevState , currElement);
+								Utils.setAttribute("next_state", prevState , node);								
+							}
 
+						} else {
+							//up							
+							if(prevElement != null && sosString.parseToString(currNextState).length() > 0) {
+								Utils.setAttribute("next_state", currNextState , prevElement);
+							}
+							
+							if(nextElement != null) {
+							  Utils.setAttribute("next_state", curState, nextElement);	
+							}
+							
+							if(curState != null  && sosString.parseToString(nextNextState).length() > 0) {
+								Utils.setAttribute("next_state", nextNextState , currElement);
+								Utils.setAttribute("next_state", nextNextState , node);								
+								Utils.setAttribute("next_state", nextNextState , _node);
+							}
+						}
+						
+						break;
+					}
+					
+					//System.out.println( currElement );
+				}
+			}
+			
+	
 			if(_chain.getChildren().contains(_node)) {
 				_chain.removeContent(_node);						
-			}
+			}						
+	
+			
 			_chain.addContent(cIndex, node);
-			_node = node;
+			
+						_node = node;
 
-
+				
 			_dom.setChanged(true);
 			_dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
 
@@ -493,6 +625,7 @@ public class JobChainListener {
 				table.setSelection(index-1);
 			else
 				table.setSelection(index+1);
+			
 		} catch (Exception e) {
 			try {
 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
@@ -504,7 +637,9 @@ public class JobChainListener {
 		}
 	}
 
+	
 
+	
 
 	public void applyFileOrderSource(String directory, String regex, String next_state, String max, String repeat, String delay_after_error) {
 		Element source = null;
@@ -686,4 +821,5 @@ public class JobChainListener {
 		return Utils.getAttributeValue("on_error", _node);
 	}		
 
+	
 }

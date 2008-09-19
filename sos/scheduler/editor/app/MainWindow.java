@@ -104,6 +104,8 @@ public class MainWindow  {
 		// load resources
 		listener.loadOptions();
 		listener.loadMessages();
+		listener.loadJobTitels();
+		listener.loadHolidaysTitel();
 		Options.loadWindow(sShell, "editor");
 
 		menuBar = new Menu(sShell, SWT.BAR);
@@ -507,7 +509,16 @@ public class MainWindow  {
 		pExit.setAccelerator(SWT.CTRL | 'E');
 		pExit.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				sShell.close();
+				try {
+					sShell.close();
+				} catch(Exception es) {
+					try {
+						new ErrorLog("error: " + sos.util.SOSClassUtil.getMethodName(), es);
+					} catch (Exception ee){
+						//tu nichts
+					}
+				}
+				
 			}
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}

@@ -5,6 +5,8 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -18,9 +20,13 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
+
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
@@ -29,7 +35,7 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.DateListener;
 import sos.scheduler.editor.conf.listeners.DaysListener;
-
+import sos.scheduler.editor.app.Options;
 
 
 public class DateForm extends Composite implements IUpdateLanguage {
@@ -45,7 +51,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 	
 	private Button               bAdd                 = null;
 	
-	private Text                 tInclude             = null;
+	private Combo                tInclude             = null;
 	
 	private Group                gInclude             = null;
 	
@@ -79,7 +85,9 @@ public class DateForm extends Composite implements IUpdateLanguage {
 	
 	private static String[]      groupLabel           = { "Holidays", "Specific dates" };
 	
-	private Group                gDates               = null;		
+	private Group                gDates               = null;	
+
+	private Button               butOpenInclude       = null; 
 			
 	
 	public DateForm(Composite parent, int style, int type) {
@@ -109,6 +117,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 			listener.fillTable(tableIncludes);
 		this.main = main;
 		this.dom = dom;
+		tInclude.setItems(listener.getHolidayDescription());
 		setNow();
 	}
 	
@@ -123,6 +132,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 	private void initialize() {
 		this.setLayout(new FillLayout());
 		createGroup();
+		
 		
 		setSize(new org.eclipse.swt.graphics.Point(380, 232));
 	}
@@ -260,11 +270,16 @@ public class DateForm extends Composite implements IUpdateLanguage {
 		
 	}
 	
-	private void applyFile() {
+	private void applyFile() {		
 		listener.addInclude(tableIncludes, tInclude.getText(), butIsLifeFile.getSelection() );
 		listener.fillTable(tableIncludes);
+		
 		tInclude.setText("");
 		tInclude.setFocus();
+		tableIncludes.deselectAll();
+		butOpenInclude.setEnabled(false);
+		bRemove.setEnabled(false);
+		butIsLifeFile.setSelection(false);
 	}
 	
 	
@@ -285,7 +300,13 @@ public class DateForm extends Composite implements IUpdateLanguage {
 		butIsLifeFile.setLayoutData(new GridData());
 		butIsLifeFile.setText("from Hot Folder");
 		
-		tInclude = new Text(gInclude, SWT.BORDER);
+		tInclude = new Combo(gInclude, SWT.BORDER);
+		tInclude.setCapture(true);
+		tInclude.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {				
+				butIsLifeFile.setSelection(false);
+			}
+		});
 		tInclude.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				bAdd.setEnabled(!tInclude.getText().equals(""));
@@ -320,17 +341,38 @@ public class DateForm extends Composite implements IUpdateLanguage {
 		label_1.setText("Label");
 
 		tableIncludes = new Table(gInclude, SWT.FULL_SELECTION | SWT.BORDER);
+		tableIncludes.addMouseListener(new MouseAdapter() {
+			public void mouseDoubleClick(final MouseEvent e) {
+				openInclude();
+			}
+		});
 		tableIncludes.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				if(tableIncludes.getSelectionCount() > 0)
+				if(tableIncludes.getSelectionCount() > 0) {
 					bRemove.setEnabled(true);
-				else
+					butOpenInclude.setEnabled(true);
+			} else {
 					bRemove.setEnabled(false);
+					butOpenInclude.setEnabled(false);
+					return;
+				}
+				
+				if(tableIncludes.getSelection()[0].getText(2) != null &&
+						tableIncludes.getSelection()[0].getText(2).length() > 0	)
+					tInclude.setText(tableIncludes.getSelection()[0].getText(2));
+				else					
+					tInclude.setText(tableIncludes.getSelection()[0].getText(0));
+				butIsLifeFile.setSelection(tableIncludes.getSelection()[0].getText(1).equalsIgnoreCase("live_file"));
+				/*Object fname = Options.getHolidaysDescription().get(tableIncludes.getSelection()[0].getText());
+				if(fname != null && fname.toString().length() > 0)
+					tInclude.setText(fname.toString());
+					*/
+				
 			}
 		});
 		tableIncludes.setLinesVisible(true);
 		tableIncludes.setHeaderVisible(true);
-		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
+		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 3);
 		tableIncludes.setLayoutData(gridData_2);
 
 		final TableColumn newColumnTableColumn = new TableColumn(tableIncludes, SWT.NONE);
@@ -338,12 +380,43 @@ public class DateForm extends Composite implements IUpdateLanguage {
 		newColumnTableColumn.setText("Name");
 
 		final TableColumn newColumnTableColumn_1 = new TableColumn(tableIncludes, SWT.NONE);
-		newColumnTableColumn_1.setWidth(81);
+		newColumnTableColumn_1.setWidth(67);
 		newColumnTableColumn_1.setText("File/Life File");
+
+		final TableColumn newColumnTableColumn_2 = new TableColumn(tableIncludes, SWT.NONE);
+		newColumnTableColumn_2.setWidth(156);
+		newColumnTableColumn_2.setText("Description");
+
+		final Button butIncludeNew = new Button(gInclude, SWT.NONE);
+		butIncludeNew.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				butOpenInclude.setEnabled(false);
+				butIsLifeFile.setSelection(false);
+				tInclude.setText("");
+				tableIncludes.deselectAll();
+				bRemove.setEnabled(false);
+				
+			}
+		});
+		butIncludeNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+		butIncludeNew.setText("New");
+
+		butOpenInclude = new Button(gInclude, SWT.NONE);
+		butOpenInclude.setEnabled(false);
+		butOpenInclude.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				openInclude();
+			
+			}
+		});
+		butOpenInclude.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+		butOpenInclude.setText("Open");
 		
 		bRemove = new Button(gInclude, SWT.NONE);
 		bRemove.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				removeInclude();
+				/*
 				if (tableIncludes.getSelectionCount() > 0) {
 					int index = tableIncludes.getSelectionIndex();
 					listener.removeInclude(index);					
@@ -353,12 +426,13 @@ public class DateForm extends Composite implements IUpdateLanguage {
 					if (tableIncludes.getItemCount() > 0)
 						tableIncludes.setSelection(index);
 				} 
-				       		
+				*/       		
 			}
 		});
 		final GridData gridData5 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
 		bRemove.setLayoutData(gridData5);
 		bRemove.setEnabled(false);
+		butOpenInclude.setEnabled(false);
 		bRemove.setText("Remove File");
 	}
 	
@@ -378,6 +452,53 @@ public class DateForm extends Composite implements IUpdateLanguage {
 		if(tableIncludes != null)tableIncludes.setToolTipText(Messages.getTooltip("include.list"));
 		if(bRemove != null) bRemove.setToolTipText(Messages.getTooltip("include.remove"));
 
+	}
+	
+	private void removeInclude() {
+	if (tableIncludes.getSelectionCount() > 0) {
+		int index = tableIncludes.getSelectionIndex();
+		listener.removeInclude(index);					
+		listener.fillTable(tableIncludes);
+		if (index >= tableIncludes.getItemCount())
+			index--;
+		if (tableIncludes.getItemCount() > 0)
+			tableIncludes.setSelection(index);
+		tInclude.setText("");
+	} 
+}
+	
+	private void openInclude() {
+		
+		try {
+			
+			if(tableIncludes.getSelectionCount()== 0)
+				return;
+
+			String filename = tableIncludes.getSelection()[0].getText(0);
+			if(butIsLifeFile.getSelection()) {
+
+				filename = Options.getSchedulerNormalizedHotFolder() + filename;					
+			} 
+
+			if(!(new java.io.File(filename).exists())) {
+
+				filename = Options.getSchedulerNormalizedHome() + "config/" + filename;
+				
+			}
+
+			if(!(new java.io.File(filename).exists())) {
+				return;
+			}
+			
+			SAXBuilder builder = new SAXBuilder();
+			Document   doc= builder.build(filename);
+			String xml = Utils.getElementAsString(doc.getRootElement());
+			Utils.showClipboard(xml, getShell());
+			
+		} catch (Exception ex) {
+			MainWindow.message( "could not open Holiday File" + ex.getMessage(), SWT.ICON_ERROR);
+			return ;
+		}
 	}
 	
 } // @jve:decl-index=0:visual-constraint="10,10"

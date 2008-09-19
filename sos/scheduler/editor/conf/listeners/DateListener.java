@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.io.File;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TreeItem;
@@ -356,13 +357,33 @@ public class DateListener implements Comparator {
     			Element include = (Element) includeList.get(i);
     			
     			if(include.getAttributeValue("file") != null) {
+    				String filename = Utils.getAttributeValue("file", include);
     				TableItem item = new TableItem(table, SWT.NONE); 
-    				item.setText(0, Utils.getAttributeValue("file", include));
+    				item.setText(0, filename);
     				item.setText(1, "file");
+    				String fname = new File(filename).getName();
+    				if(filename.endsWith("holidays.xml") && 
+    						Options.getHolidaysDescription().values().contains(Options.getSchedulerNormalizedHotFolder() + fname)) {
+    					//Object key = Options.getHolidaysDescription().get("holiday_id_" + filename.substring(0, filename.indexOf(".holidays.xml")));
+    					Object key = Options.getHolidaysDescription().get("holiday_id_" + fname.substring(0, fname.indexOf(".holidays.xml")));
+    					if(key != null)
+    						item.setText(2, key.toString());
+    				}
     			} else {
-    				TableItem item = new TableItem(table, SWT.NONE); 
-    				item.setText(0, Utils.getAttributeValue("live_file", include));
+    				TableItem item = new TableItem(table, SWT.NONE);
+    				
+    				String filename = Utils.getAttributeValue("live_file", include);
+    				item.setText(0, filename);
     				item.setText(1, "live_file");
+    				
+    				/*if(filename.endsWith("holidays.xml") && 
+    						Options.getHolidaysDescription().values().contains(Options.getSchedulerNormalizedHotFolder() + filename)) {
+    					Object key = Options.getHolidaysDescription().get("holiday_id_" + filename.substring(0, filename.indexOf(".holidays.xml")));
+    					if(key != null)
+    						item.setText(2, key.toString());
+    				}
+    				*/
+    				
     			}    			
     		}
     	}
@@ -375,8 +396,22 @@ public class DateListener implements Comparator {
     	}
 
     	if (_parent != null) {
-    		//List includes = _element.getChildren("include");
-    		//_parent.addContent(includes.size(), new Element("include").setAttribute((isLive?"live_file":"file"), filename));
+    		
+    		
+    		if(Options.getHolidaysDescription().get(filename) != null &&
+    				Options.getHolidaysDescription().get("file_" + Options.getHolidaysDescription().get(filename)) != null 
+    				&& Options.getHolidaysDescription().get("file_" + Options.getHolidaysDescription().get(filename)).toString().length() > 0) {
+    			
+    			String home = Options.getSchedulerNormalizedHotFolder();
+    			    			  	    		
+    			filename = Options.getHolidaysDescription().get("file_" + Options.getHolidaysDescription().get(filename)).toString();
+    			
+    			if(filename.indexOf(home) > -1)
+    				filename = new java.io.File(home).getName() + "/" + filename.substring(home.length());
+    			
+    			isLive = false;
+    		}
+    		
     		_parent.addContent(new Element("include").setAttribute((isLive?"live_file":"file"), filename));
     		_dom.setChanged(true);
     		if(_dom.isDirectory() && _element.getParentElement() != null)
@@ -385,7 +420,7 @@ public class DateListener implements Comparator {
     		System.out.println("no script element defined!");
     }   
 
-    public void addInclude(String filename) {
+    /*public void addInclude(String filename) {
     	if (_parent == null && _type == 0) {
     		_parent = new Element("holidays");
     		_element.addContent(_parent);
@@ -400,7 +435,7 @@ public class DateListener implements Comparator {
     			_dom.setChangedForDirectory(_element, SchedulerDom.MODIFY);
     	} else
     		System.out.println("no script element defined!");
-    }    
+    } */   
     
     public void removeInclude(int index) {
     	
@@ -438,5 +473,29 @@ public class DateListener implements Comparator {
 	public List get_list() {
 		return _list;
 	}
-    
+
+	public String[] getHolidayDescription() {
+		java.util.Iterator h = Options.getHolidaysDescription().keySet().iterator();
+		ArrayList list = new ArrayList();
+		
+		/*String home = Options.getSchedulerHotFolder();
+    	home = home.endsWith("/") || home.endsWith("\\") ? home : home + "/";
+    	home = home.replaceAll("\\\\", "/");
+    	*/
+		while(h.hasNext()) {
+			String desc = h.next().toString();
+			if(desc != null && desc.length() > 0 && !desc.startsWith("file_") && !desc.startsWith("holiday_id_"))
+				//list.add( Options.getHolidaysDescription().get(desc).toString().substring(home.length()));
+				//list.add( Options.getHolidaysDescription().get(desc));
+				list.add( desc);
+		}
+		
+		String[] ret = new String[list.size()];
+		for(int i = 0; i < list.size(); i++) {
+			ret[i]= list.get(i).toString();
+		}
+		
+		return ret;
+	}
+	
 }

@@ -144,6 +144,8 @@ public class Editor {
  
     public static void main(String[] args) {    
     	try {
+    		
+    		
     		Display display = Display.getDefault();
     		MainWindow window = new MainWindow();
     		window.createSShell();
@@ -161,6 +163,7 @@ public class Editor {
     				display.sleep();
     		}
     		display.dispose();
+    		
     	} catch (Exception e) {
     		try {
     			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);

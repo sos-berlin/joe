@@ -3,6 +3,8 @@ package sos.scheduler.editor.app;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Color;
@@ -13,14 +15,18 @@ public class Options {
 
     public static final String DEFAULT_OPTIONS = "/sos/scheduler/editor/options.properties";
 
-    private static Properties  _defaults;
+    private static Properties         _defaults           = null;
 
-    private static Properties  _properties;
+    private static Properties         _properties         = null;
 
-    private static boolean     _changed        = false;
+    private static boolean            _changed            = false;
 
-    private static boolean     _showWizardInfo = true;
+    private static boolean            _showWizardInfo     = true;
 
+    private static String[]           jobTitleList        = null;    
+    
+    private static HashMap            holidaysDescription = null;
+    
     private Options() {
 
     }
@@ -353,7 +359,14 @@ public class Options {
         }
     }
 
-
+    
+    public static String getSchedulerNormalizedHome() {
+    	String home = Options.getSchedulerHome();
+    	home = home.endsWith("/") || home.endsWith("\\") ? home : home + "/";
+    	home = home.replaceAll("\\\\", "/");
+    	return home;
+    }
+    
     public static String getSchedulerHotFolder() {
         if (System.getProperty("SCHEDULER_HOT_FOLDER") != null && System.getProperty("SCHEDULER_HOT_FOLDER").length() > 0) {
             return System.getProperty("SCHEDULER_HOT_FOLDER");
@@ -364,6 +377,12 @@ public class Options {
         }
     }
 
+    public static String getSchedulerNormalizedHotFolder() {
+    	String home = Options.getSchedulerHotFolder();
+    	home = home.endsWith("/") || home.endsWith("\\") ? home : home + "/";
+    	home = home.replaceAll("\\\\", "/");
+    	return home;
+    }
     
     public static Color getRequiredColor() {
         try {
@@ -457,4 +476,31 @@ public class Options {
             return _properties.getProperty(key);
             
     }
+
+
+	public static String[] getJobTitleList() {
+		if(jobTitleList != null)
+			return jobTitleList;
+		else 
+			return new String[]{};
+	}
+
+
+	public static void setJobTitleList(String[] jobTitleList) {
+		
+		Options.jobTitleList = jobTitleList;
+	}
+
+
+	public static HashMap getHolidaysDescription() {
+		if(holidaysDescription != null)
+			return holidaysDescription;
+		else
+			return new HashMap();
+	}
+
+
+	public static void setHolidaysDescription(HashMap holidaysDescription) {
+		Options.holidaysDescription = holidaysDescription;
+	}
 }

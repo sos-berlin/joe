@@ -489,4 +489,23 @@ public class IOUtils {
 
 	}
 
+	public static void saveXML(String xml, String filename){
+		try {
+			
+			org.jdom.input.SAXBuilder builder = new org.jdom.input.SAXBuilder();					
+			org.jdom.Document doc = builder.build(new java.io.StringReader(xml));
+			
+			saveXML(doc, filename);
+			
+		} catch (Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " .Could not save file " + filename , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			MainWindow.message("Could not save file " + e.getMessage(), SWT.ICON_ERROR);
+		}
+
+	}
+
 }

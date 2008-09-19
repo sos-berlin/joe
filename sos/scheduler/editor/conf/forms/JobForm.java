@@ -82,7 +82,9 @@ public class JobForm extends Composite implements IUpdateLanguage {
 	
 	private Label       label17           = null;
 	
-	private Text        tTitle            = null;
+	//private Text        tTitle            = null;
+	
+	private Combo       tTitle            = null;
 	
 	private Text        tSpoolerID        = null;
 	
@@ -247,7 +249,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		label1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		label1.setText("Job Title:");
 		GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 4, 1);
-		tTitle = new Text(gMain, SWT.BORDER);
+		tTitle = new Combo(gMain, SWT.BORDER);
 		tTitle.setLayoutData(gridData1);
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -255,6 +257,9 @@ public class JobForm extends Composite implements IUpdateLanguage {
 				listener.setTitle(tTitle.getText());
 			}
 		});
+		
+		
+		tTitle.setItems(Options.getJobTitleList());
 		label3 = new Label(gMain, SWT.NONE);
 		label3.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		label3.setText("Scheduler ID:");
