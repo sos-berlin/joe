@@ -3,8 +3,10 @@ package sos.scheduler.editor.app;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
@@ -13,14 +15,21 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.jdom.xpath.XPath;
+
 import sos.hostware.Record;
 import sos.settings.SOSProfileSettings;
+import sos.util.SOSString;
+import sos.connection.*;
+import java.sql.Connection;
 
 public class MainListener {
 	
     private     MainWindow         _gui           = null;
 
     private     IContainer         _container     = null;
+    
+    private     SOSString          sosString      = new SOSString();
     
     
     
@@ -156,6 +165,48 @@ public class MainListener {
     }
 
     public void loadJobTitels() {
+
+    	String titleFile = Options.getProperty("title_file");
+    	String iniFile = Options.getProperty("ini_file");
+    	try {
+    		if(sosString.parseToString(titleFile).length() == 0 || sosString.parseToString(iniFile).length() == 0)
+    			return;
+
+
+    		String home = new File(Options.getDefaultOptionFilename()).getParent();
+    		home = home.endsWith("/") || home.endsWith("\\") ? home : home + "/";
+    		iniFile = home + iniFile; 
+    		ArrayList jobTitleList = new ArrayList();
+
+    		try {
+    			SOSConnection sosConnection = getConnection(iniFile);
+    			jobTitleList = sosConnection.getArray(titleFile);
+    		} catch(Exception e) {
+    			throw new Exception("Could not get the connection to database, cause: " + e.toString());
+    		}
+
+
+    		String[] titles = new String[jobTitleList.size()];
+    		for(int i = 0; i<jobTitleList.size(); i++) {            	 
+    			HashMap hash = (HashMap)jobTitleList.get(i);    			
+    			titles [i] = sosString.parseToString(hash, "description");
+    		}
+    		Options.setJobTitleList(titles);
+
+    	} catch (Exception e) {    		
+    		try {
+    			System.out.println("error while read job descrition " + sos.util.SOSClassUtil.getMethodName());
+    			new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
+    		} catch (Exception ee){
+    			//tu nichts
+    		}
+
+    		return;
+    	}
+
+
+    }
+ /*   public void loadJobTitels() {
     	    	
     	String titleFile = Options.getProperty("title_file");
     	String iniFile = Options.getProperty("ini_file");
@@ -192,9 +243,8 @@ public class MainListener {
     	 String inFileName = "-in " + sIniFile + titleFile;
     	// System.out.println(inFileName);
     	 
-    	 ArrayList jobTitleList = new ArrayList();
+    	 ArrayList jobTitleList = new ArrayList();    	       
     	 
-         
          try {
      
              inFile = new sos.hostware.File();
@@ -229,10 +279,11 @@ public class MainListener {
          }
      
     }
-    
+    */
     
     public void loadHolidaysTitel() {
     	    	
+    	
     	HashMap holidaysDescription = loadHolidaysDescription("holiday_description_file");
     	HashMap holidayFile = loadHolidaysDescription("holiday_file");
     	HashMap filenames = new HashMap();
@@ -268,10 +319,155 @@ public class MainListener {
 
     }
     
-    
+    public HashMap loadHolidaysDescription(String propertyName) {
+    	HashMap holidaysDescription = new HashMap();
+    	//System.out.println("******************"+ propertyName +"*****************************");
+    	//get description
+    	//String holidayDescriptionFile = Options.getProperty("holiday_description_file");
+    	String holidayDescriptionFile = Options.getProperty(propertyName);
+    	String iniFile = Options.getProperty("ini_file");
+
+    	try {
+
+    		if(sosString.parseToString(holidayDescriptionFile).length() == 0 ||
+    				sosString.parseToString(iniFile).length() == 0)
+    			return new HashMap();
+
+
+    		String home = new File(Options.getDefaultOptionFilename()).getParent();
+    		home = home.endsWith("/") || home.endsWith("\\") ? home : home + "/";
+    		iniFile = home + iniFile; 
+    		ArrayList holidayList = new ArrayList();
+
+    		try {
+    			SOSConnection sosConnection = getConnection(iniFile);
+    			holidayList = sosConnection.getArray(holidayDescriptionFile);
+    		} catch(Exception e) {
+    			throw new Exception("Could not get the connection to database, cause: " + e.toString());
+    		}
+
+    		String holidayId = "";
+    		String field2 = "";
+
+    		for(int i = 0; i < holidayList.size(); i++) {
+    			//while (!inFile.eof()) {
+    			HashMap hash = (HashMap)holidayList.get(i);
+    			//Record record = inFile.get();
+
+    			//for(int i=0; i<record.field_count(); i++) {
+
+    			//System.out.println("record: " + i + ", field: " + record.field_name(i) + ", value: " + record.string(i));
+
+    			if(sosString.parseToString(hash, "holiday_id").length() > 0) {
+    				holidayId = sosString.parseToString(hash, "holiday_id");
+    			} 
+
+    			if(sosString.parseToString(hash, "description").length() > 0) {    					
+    				field2 = sosString.parseToString(hash, "description");
+    				//merke: holiday_id_<id>, description    					
+    				holidaysDescription.put("holiday_id_"+holidayId, field2);
+    				//merke: description, <id> 
+    				holidaysDescription.put(field2, holidayId);   
+    				holidayId = "";
+    				field2 = "";
+    			}
+    				if(sosString.parseToString(hash, "holiday_date").length() >0) {				
+    					field2 = sosString.parseToString(hash, "holiday_date");
+    					//merke: <id>+_+<datum>, id -> datum ist nicht eindeutig, deshalb kommt der der prefix id
+    					holidaysDescription.put(holidayId + "_" + field2, holidayId);    					
+    					holidayId = "";
+    					field2 = "";
+    				}
+
+
+    				//}
+
+    			
+
+    			/*
+    	String iniFile = Options.getProperty("ini_file");
+    	String sIniFile = ""; 
+    	try {
+    		if(iniFile != null) {
+    			String home = Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome() : Options.getSchedulerHome()+ "/";  
+    			iniFile = home + "config/" + iniFile;
+
+    			SOSProfileSettings settings = new SOSProfileSettings(iniFile);
+    			sIniFile = " " + settings.getSection("spooler").getProperty("db") + " ";
+
+    		}
+    	} catch (Exception e) {    		
+    		//MainWindow.message("could not Read Setting from " +iniFile, SWT.ICON_ERROR | SWT.OK);
+    		System.out.println("could not Read Setting from " +iniFile + e);
+    		return new HashMap();
+    	}
+
+
+
+    	if(holidayDescriptionFile == null && holidayDescriptionFile.length() == 0)
+    		return new HashMap();
+
+    	sos.hostware.File inFile = null;
+
+    	String inFileName = "-in " + sIniFile + holidayDescriptionFile;
+    	//System.out.println(inFileName);
+
+    	try {
+
+    		inFile = new sos.hostware.File();
+    		inFile.open(inFileName);             
+    		String holidayId = "";
+    		String field2 = "";
+
+    		while (!inFile.eof()) {
+    			Record record = inFile.get();
+    			for(int i=0; i<record.field_count(); i++) {
+
+    				//System.out.println("record: " + i + ", field: " + record.field_name(i) + ", value: " + record.string(i));
+
+    				if(record.field_name(i) != null && record.field_name(i).toLowerCase().equals("holiday_id")) {
+    					holidayId = record.string(i);
+    				} else  if(record.field_name(i) != null && record.field_name(i).toLowerCase().equals("description")) {    					
+    					field2 = record.string(i);
+    					//merke: holiday_id_<id>, description    					
+    					holidaysDescription.put("holiday_id_"+holidayId, field2);
+    					//merke: description, <id> 
+    					holidaysDescription.put(field2, holidayId);   
+    					holidayId = "";
+    					field2 = "";
+    				//} else  if(record.field_name(i) != null && record.field_name(i).toLowerCase().equals("holiday_date")) {
+    				} else {
+    					field2 = record.string(i);
+    					//merke: <id>+_+<datum>, id -> datum ist nicht eindeutig, deshalb kommt der der prefix id
+    					holidaysDescription.put(holidayId + "_" + field2, holidayId);    					
+    					holidayId = "";
+    					field2 = "";
+    				}
+
+
+    			}
+    			record.destruct();
+    		}
+    			 */
+
+    		}
+    	} catch (Exception e) {    		
+    		try {
+    			System.out.println("error while read holidays description " + sos.util.SOSClassUtil.getMethodName());
+    			new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
+    		} catch (Exception ee){
+    			//tu nichts
+    		}
+
+
+    	}
+    	return holidaysDescription;
+
+    }
+
     
     //holiday_file
-    public HashMap loadHolidaysDescription(String propertyName) {
+   /* public HashMap loadHolidaysDescription(String propertyName) {
     	HashMap holidaysDescription = new HashMap();
     	//System.out.println("******************"+ propertyName +"*****************************");
     	//get description
@@ -351,5 +547,23 @@ public class MainListener {
     	return holidaysDescription;
 
     }
+    */
+    /**
+     * DB Initialisierung
+     */
+     private SOSConnection getConnection (String iniFile) throws Exception {
+
+          try { // wenn settings_class = SOSConnectionSettings
+             // sosLogger = new SOSSchedulerLogger( this.spooler_log );         
+             // sosLogger.debug3("DB Connecting.. .");
+        	  SOSConnection sosConnection = SOSConnection.createInstance( iniFile, new sos.util.SOSStandardLogger(sos.util.SOSStandardLogger.DEBUG9)) ;
+              sosConnection.connect();
+              return sosConnection;
+                            
+          } catch (Exception e) {
+              throw (new Exception("connect to database failed: " + e.toString()));
+          }
+      }
     
+   
 }
