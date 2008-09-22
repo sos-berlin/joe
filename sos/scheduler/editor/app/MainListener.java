@@ -3,7 +3,6 @@ package sos.scheduler.editor.app;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.ArrayList;
 
@@ -15,13 +14,9 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.jdom.xpath.XPath;
-
-import sos.hostware.Record;
-import sos.settings.SOSProfileSettings;
 import sos.util.SOSString;
 import sos.connection.*;
-import java.sql.Connection;
+
 
 public class MainListener {
 
