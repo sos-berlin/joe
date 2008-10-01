@@ -484,12 +484,18 @@ public class MainListener {
 			if(sosConnection != null)        		  
 				return;
 
-			sosConnection = SOSConnection.createInstance( iniFile, new sos.util.SOSStandardLogger(sos.util.SOSStandardLogger.DEBUG9)) ;
+			//sosConnection = SOSConnection.createInstance( iniFile, new sos.util.SOSStandardLogger(sos.util.SOSStandardLogger.INFO)) ;
+			sosConnection = SOSConnection.createInstance( iniFile, ErrorLog.getLogger()) ;
 			sosConnection.connect();
 
 
 		} catch (Exception e) {
-			throw (new Exception("connect to database failed: " + e.toString()));
+			try {
+				System.out.println("error while read job descrition " + sos.util.SOSClassUtil.getMethodName());
+				new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
+			} catch (Exception ee){
+				//tu nichts
+			}
 		}
 	}
 

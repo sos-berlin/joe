@@ -32,12 +32,12 @@ public class JobChainListener {
 
 	private    String[]                  _states              = null;
 	
-	private    SOSString                 sosString            = new SOSString();
-
+	private    SOSString                 sosString            = new SOSString();	
 
 	public JobChainListener(SchedulerDom dom, Element jobChain) {
 		_dom = dom;
 		_chain = jobChain;		
+		
 		if(_chain.getParentElement() != null)
 			_config = _chain.getParentElement().getParentElement();
 	}
@@ -175,6 +175,7 @@ public class JobChainListener {
 	}
 
 	public void fillChain(Table table) {
+				
 		table.removeAll();
 		String state = "";		
 		String nodetype = "";
@@ -191,16 +192,28 @@ public class JobChainListener {
 			while (it.hasNext()) {
 				state = "";
 				Element node = (Element) it.next();
-				if (node.getName().equals("job_chain_node") || node.getName().equals("file_order_sink")){
+				if (node.getName().equals("job_chain_node") || 
+						node.getName().equals("job_chain_node.end") ||
+						node.getName().equals("file_order_sink") 
+						){
 					state = Utils.getAttributeValue("state", node);
 
-					if (node.getName().equals("job_chain_node")){
+					if (node.getName().equals("job_chain_node")) {
 						if (Utils.getAttributeValue("job", node)== "") {
 							nodetype = "Endnode";
 							node.removeAttribute("next_state");//kann eventuell bei reorder changeup entstanden sein
 						}else {
 							nodetype = "Job";
 						}
+						action = Utils.getAttributeValue("job", node);
+						next = Utils.getAttributeValue("next_state", node);
+						error = Utils.getAttributeValue("error_state", node);
+						onError = Utils.getAttributeValue("on_error", node);
+					}else if(node.getName().equals("job_chain_node.end")) {
+						
+						nodetype = "Endnode";
+						//	node.removeAttribute("next_state");//kann eventuell bei reorder changeup entstanden sein
+
 						action = Utils.getAttributeValue("job", node);
 						next = Utils.getAttributeValue("next_state", node);
 						error = Utils.getAttributeValue("error_state", node);
@@ -227,6 +240,20 @@ public class JobChainListener {
 						item.setBackground(4, Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
 				}
 			}
+			/*
+			Iterator itEndNode = _chain.getChildren("job_chain_node.end").iterator();
+
+			while (itEndNode.hasNext()) {
+				Element node = (Element) itEndNode.next();
+				state = Utils.getAttributeValue("state", node);										
+
+				TableItem item = new TableItem(table, SWT.NONE);
+				//item.setText(new String[] { state, nodetype, action, next, error, onError });
+				item.setText(new String[] { state, "Endnode", "", "", "", "" });
+
+
+			}
+			*/
 		}
 	}
 
@@ -476,10 +503,30 @@ public class JobChainListener {
 			Element node = null;
 			
 			
+			if(reorder) {
+				if(Utils.getAttributeValue("job", _node).length() == 0 ||
+						(_node != null && _node.getName().equals("job_chain_node.end"))
+				) {
+					sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
+					return;
+				}
 
-			if(reorder && Utils.getAttributeValue("job", _node).length() == 0) {
-				sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
-				return;
+
+				//der Austausch darf nicht mit einem EndNode stattfinden			
+				if(up) {
+					if(table.getSelectionIndex() > 0 
+							&& table.getItem(table.getSelectionIndex()-1).getText(1).equals("Endnode")) {
+						sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
+						return;
+					}
+
+				} else {
+					if(table.getSelectionIndex() < table.getItemCount() -1  
+							&& table.getItem(table.getSelectionIndex()+1).getText(1).equals("Endnode")) {
+						sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
+						return;
+					}
+				}
 			}
 			
 			List l = _chain.getContent();
@@ -767,8 +814,9 @@ public class JobChainListener {
 	private void setStates() {
 		List nodes = _chain.getChildren("job_chain_node");
 		List sinks = _chain.getChildren("file_order_sink");
+		List endNodes = _chain.getChildren("job_chain_node.end");
 		Iterator it = nodes.iterator();
-		_states = new String[sinks.size() + nodes.size()];
+		_states = new String[sinks.size() + nodes.size() + endNodes.size()];
 		int index = 0;
 		while (it.hasNext()) {
 			String state = ((Element) it.next()).getAttributeValue("state");
@@ -776,11 +824,17 @@ public class JobChainListener {
 		}
 
 		it = sinks.iterator();
-
 		while (it.hasNext()) {
 			String state = ((Element) it.next()).getAttributeValue("state");
 			_states[index++] = state != null ? state : "";
 		}
+		
+		it = endNodes.iterator();
+		while (it.hasNext()) {
+			String state = ((Element) it.next()).getAttributeValue("state");
+			_states[index++] = state != null ? state : "";
+		}
+		
 	}
 
 

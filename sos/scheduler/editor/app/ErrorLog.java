@@ -63,7 +63,7 @@ public class ErrorLog extends Exception {
 		}
 	}
 	
-	private void init() {
+	private static void init() {
 		String filename = "";
 		try {
 			if(logger != null)
@@ -81,7 +81,7 @@ public class ErrorLog extends Exception {
 			filename = filename+ "/scheduler_editor.log";
 				
 			if(logger == null)
-				logger = new SOSStandardLogger(filename, 9);
+				logger = new SOSStandardLogger(filename, SOSStandardLogger.DEBUG1);
 			
 		} catch(Exception e) {
 			try {
@@ -115,5 +115,11 @@ public class ErrorLog extends Exception {
 			System.out.println(e.getMessage());
 		}
 		return s;
+	}
+
+	public static SOSStandardLogger getLogger() {
+		if(logger == null)
+			init();
+		return logger;
 	}
 }

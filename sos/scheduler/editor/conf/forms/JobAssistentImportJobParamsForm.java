@@ -345,7 +345,7 @@ public class JobAssistentImportJobParamsForm {
 						
 						
 						
-					} else if(assistentType == Editor.JOB_CHAINS) {
+					} else if(assistentType == Editor.JOB_CHAINS || assistentType == Editor.JOBS) {
 						
 						if(jobname != null)
 							jobname.setText(Utils.getAttributeValue("name",joblistener.getJob()));

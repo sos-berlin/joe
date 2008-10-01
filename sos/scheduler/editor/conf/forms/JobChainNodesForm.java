@@ -136,27 +136,32 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 	private SchedulerDom        dom                         = null;
 
 	private Button              butGoto                     = null;
-	
+
 	private Button              butInsert                   = null;
-	
+
 	private boolean             isInsert                    = false;
-	
+
 	private Button              reorderButton               = null; 
-	
+
+
 
 	public JobChainNodesForm(Composite parent, int style, SchedulerDom dom_, Element jobChain) {
 
 		super(parent, style);
+
+
 		dom = dom_;
-		listener = new JobChainListener(dom, jobChain);
+		listener = new JobChainListener(dom, jobChain);		
 		initialize();
 		setToolTipText();
-		fillChain(false, false);
-		this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
-
 		boolean existChainNodes = check();
 		jobChainGroup.setEnabled(existChainNodes);
 		bNewNode.setEnabled(existChainNodes);
+		if(existChainNodes)
+			fillChain(false, false);
+		this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
+
+
 
 	}
 
@@ -188,7 +193,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		jobChainGroup = new Group(this, SWT.NONE);        
 		final GridLayout gridLayout = new GridLayout();
 		jobChainGroup.setLayout(gridLayout);
-		
+
 		gNodes = new Group(jobChainGroup, SWT.NONE);
 		gNodes.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		gNodes.setText("Chain Node");		
@@ -224,7 +229,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		bApplyNode = new Button(gNodes, SWT.NONE);
 		bApplyNode.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {				
-					applyNode();
+				applyNode();
 			}
 		});
 		final GridData gridData7 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
@@ -244,10 +249,10 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			}
 		});
 		butGoto.setAlignment(SWT.RIGHT);
-		
-		
+
+
 		cJob = new Combo(gNodes, SWT.BORDER);
-	
+
 		cJob.setMenu(new sos.scheduler.editor.app.ContextMenu(cJob, dom, Editor.JOB).getMenu());
 		//Utils.goTo(cJob.getText(), listener.get_dom(), sos.scheduler.editor.app.Editor.JOB);
 		/*cJob.addListener(SWT.MenuDetect, new Listener() {
@@ -255,7 +260,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 				//e.doit = cJob.getSelectionCount() > 0;
 			}
 		});
-		*/
+		 */
 		cJob.addMouseListener(new MouseAdapter() {
 			public void mouseDown(final MouseEvent e) {        		
 				if(refresh) {
@@ -265,7 +270,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 					}
 				}
 			}
-			
+
 		});
 		cJob.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
@@ -436,25 +441,19 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			public void widgetSelected(final SelectionEvent e) {
 				isInsert = true;
 				String state = tState.getText();
-				
 				tState.setText("");
-				
-				//listener.selectNode(null);
-								
 				tDelay.setText("");				
 				cErrorState.setText("");
 				cOnError.setText("");
 				cJob.setText("");
-				
+				enableNode(true);
+				bFullNode.setSelection(true);
+				bEndNode.setSelection(false);
 				//nächste status
-				
 				cNextState.setText(state);
-				
-				//System.out.println("state=" + state + " tNextstate.getText(): " + tNextState.getText());
-				
-				
-				
-				
+
+
+
 			}
 		});
 		butInsert.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -671,7 +670,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		butUp.setLayoutData(new GridData());
 		butUp.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				
+
 				if (tNodes.getSelectionCount() > 0) {
 					int index = tNodes.getSelectionIndex();
 					if(index > 0) {											
@@ -681,7 +680,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 				}
 			}
 		});
-	
+
 		butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
 
 		butDown = new Button(composite_1, SWT.NONE);
@@ -729,7 +728,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			}
 		});
 		butIUp.setText("iup");
-*/
+		 */
 
 		bRemoveNode = new Button(gNodes, SWT.NONE);
 		bRemoveNode.setEnabled(false);
@@ -969,6 +968,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 
 	private void fillChain(boolean enable, boolean isNew) {
+
 		listener.fillFileOrderSource(tFileOrderSource);
 		listener.fillChain(tNodes);
 		gNodes.setText(GROUP_NODES_TITLE + " for: " + listener.getChainName());
@@ -1017,60 +1017,67 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 
 	private void fillNode(boolean clear) {
-		boolean fullNode = listener.isFullNode();
-		boolean fileSinkNode = listener.isFileSinkNode();
-		boolean endNode = !fullNode && !fileSinkNode;
+		try {
+			boolean fullNode = listener.isFullNode();
+			boolean fileSinkNode = listener.isFileSinkNode();
+			boolean endNode = !fullNode && !fileSinkNode;
 
-		bFullNode.setSelection(clear || fullNode);
-		bEndNode.setSelection(!clear && endNode);
-		bFileSink.setSelection(!clear && fileSinkNode  && tFileOrderSource.getItemCount() > 0);
+			bFullNode.setSelection(clear || fullNode);
+			bEndNode.setSelection(!clear && endNode);
+			bFileSink.setSelection(!clear && fileSinkNode  && tFileOrderSource.getItemCount() > 0);
 
-		tDelay.setEnabled(fullNode);
-		cNextState.setEnabled(fullNode);
-		cErrorState.setEnabled(fullNode);
-		cOnError.setEnabled(fullNode);
-		cJob.setEnabled(fullNode);
+			tDelay.setEnabled(fullNode);
+			cNextState.setEnabled(fullNode);
+			cErrorState.setEnabled(fullNode);
+			cOnError.setEnabled(fullNode);
+			cJob.setEnabled(fullNode);
 
-		tMoveTo.setEnabled(fileSinkNode  && tFileOrderSource.getItemCount() > 0);
-		bRemoveFile.setEnabled(fileSinkNode  && tFileOrderSource.getItemCount() > 0);
+			tMoveTo.setEnabled(fileSinkNode  && tFileOrderSource.getItemCount() > 0);
+			bRemoveFile.setEnabled(fileSinkNode  && tFileOrderSource.getItemCount() > 0);
 
-		tState.setText(clear ? "" : listener.getState());
-		tDelay.setText(clear ? "" : listener.getDelay());
+			tState.setText(clear ? "" : listener.getState());
+			tDelay.setText(clear ? "" : listener.getDelay());
 
-		cJob.setItems(listener.getJobs());
-		if (listener.getStates().length > 0) cNextState.setItems(listener.getStates());
-		if (listener.getStates().length > 0) cErrorState.setItems(listener.getStates());
+			cJob.setItems(listener.getJobs());
+			if (listener.getStates().length > 0) cNextState.setItems(listener.getStates());
+			if (listener.getStates().length > 0) cErrorState.setItems(listener.getStates());
 
-		tMoveTo.setText(listener.getMoveTo());
-		bRemoveFile.setSelection(listener.getRemoveFile());
+			tMoveTo.setText(listener.getMoveTo());
+			bRemoveFile.setSelection(listener.getRemoveFile());
 
-		int job = cJob.indexOf(listener.getJob());
-		if (clear || job == -1)
-			cJob.setText(listener.getJob());
-		else
-			cJob.select(job);
+			int job = cJob.indexOf(listener.getJob());
+			if (clear || job == -1)
+				cJob.setText(listener.getJob());
+			else
+				cJob.select(job);
 
-		int next = cNextState.indexOf(listener.getNextState());
-		if (clear || !fullNode || next == -1)
-			cNextState.setText(listener.getNextState());
-		else
-			cNextState.select(next);
+			int next = cNextState.indexOf(listener.getNextState());
+			if (clear || !fullNode || next == -1)
+				cNextState.setText(listener.getNextState());
+			else
+				cNextState.select(next);
 
-		int error = cErrorState.indexOf(listener.getErrorState());
-		if (clear || !fullNode || error == -1)
-			cErrorState.setText(listener.getErrorState());
-		else
-			cErrorState.select(error);
+			int error = cErrorState.indexOf(listener.getErrorState());
+			if (clear || !fullNode || error == -1)
+				cErrorState.setText(listener.getErrorState());
+			else
+				cErrorState.select(error);
 
-		int onError = cOnError.indexOf(listener.getOnError());
-		if (clear || !fullNode || onError == -1)
-			cOnError.setText(listener.getOnError());
-		else
-			cOnError.select(onError);
+			int onError = cOnError.indexOf(listener.getOnError());
+			if (clear || !fullNode || onError == -1)
+				cOnError.setText(listener.getOnError());
+			else
+				cOnError.select(onError);
 
 
-		bApplyNode.setEnabled(false);
-
+			bApplyNode.setEnabled(false);
+		} catch(Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+		}
 	}
 
 	private void fillFileOrderSource(boolean clear) {
@@ -1107,10 +1114,10 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		isInsert = false;
 	}
 
-	
-	
+
+
 	private void applyFileOrderSource() {
-		
+
 		if(Utils.isRegExpressions(tRegex.getText())) {
 			listener.applyFileOrderSource(tDirectory.getText(),tRegex.getText(), tNextState.getText(), tMax.getText(), tRepeat.getText(),tDelayAfterError.getText());
 			listener.fillFileOrderSource(tFileOrderSource);
@@ -1129,7 +1136,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		}
 	}
 
-	
+
 	private boolean isValidNode() {
 		if (tState.getText().equals("") || bFullNode.getSelection() && cJob.getText().equals("")) {
 			return false;
@@ -1138,7 +1145,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		}
 	}
 
-	
+
 	private boolean isValidSource() {
 		if (tDirectory.getText().equals("") ) {
 			return false;
@@ -1147,12 +1154,12 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		}
 	}
 
-	
+
 	public void setISchedulerUpdate(ISchedulerUpdate update_) {
 		update = update_;
 	}
 
-	
+
 	private void showDetails(String state) {
 
 		OrdersListener ordersListener =  new OrdersListener(listener.get_dom(), update);
@@ -1215,7 +1222,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		butGoto.setToolTipText(Messages.getTooltip("goto"));
 		butInsert.setToolTipText(Messages.getTooltip("job_chain.insert"));
 		reorderButton.setToolTipText(Messages.getTooltip("job_chain.reorder"));
-		
+
 	}
 
 	//ein Job Chain hat entweder job_chain_node ODER job_chain_node.job_chain Kindknoten.
@@ -1237,8 +1244,8 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		}
 
 	}
-	
-	
 
-	
+
+
+
 } // @jve:decl-index=0:visual-constraint="10,10"
