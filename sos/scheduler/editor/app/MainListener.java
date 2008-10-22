@@ -78,7 +78,7 @@ public class MainListener {
 		bold.start = 0;
 		bold.length = message.indexOf("\n");
 		bold.fontStyle = SWT.BOLD;
-		dialog.getStyledText().setStyleRange(bold);
+		//dialog.getStyledText().setStyleRange(bold);
 		dialog.setVisibleApplyButton(false);
 		dialog.open(false);
 	}

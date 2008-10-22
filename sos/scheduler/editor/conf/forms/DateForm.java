@@ -117,7 +117,8 @@ public class DateForm extends Composite implements IUpdateLanguage {
 			listener.fillTable(tableIncludes);
 		this.main = main;
 		this.dom = dom;
-		tInclude.setItems(listener.getHolidayDescription());
+		if(type == 0)
+			tInclude.setItems(listener.getHolidayDescription());
 		setNow();
 	}
 	

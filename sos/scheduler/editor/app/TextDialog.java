@@ -10,6 +10,8 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -17,13 +19,16 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 public class TextDialog extends Dialog {
 
 	private Shell      _shell;
 
-	private StyledText _styledText;
+	//private StyledText _styledText;
+	private Text _styledText;
 
 	private Point      _size           = new Point(300, 200);
 	
@@ -45,6 +50,7 @@ public class TextDialog extends Dialog {
 	private boolean    bSaveWindow     = false;
 
 	private boolean    bEdit           = false;
+	
 
 	
 	//private boolean previousCtrlX = false;
@@ -77,23 +83,38 @@ public class TextDialog extends Dialog {
 	 * @param selectString
 	 */
 	public void setContent(String content, String selectString) {
+		try {
+			String _selectString = "=\"" + selectString + "\"";
+			int pos = content.indexOf(_selectString);
 
-		String _selectString = "=\"" + selectString + "\"";
-		int pos = content.indexOf(_selectString);
+			if (pos == -1) {
+				pos = content.indexOf(selectString);
+			}
 
-		if (pos == -1) {
-			pos = content.indexOf(selectString);
+			setContent(content, SWT.LEFT);    	                       
+			_styledText.setSelection(pos, pos);        
+			_styledText.showSelection();
+			bEdit = true;
+		} catch(Exception e) {
+			try {
+				new ErrorLog("error in TextDilalog.setContent()" , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 		}
-
-		setContent(content, SWT.LEFT);    	                       
-		_styledText.setSelection(pos, pos);        
-		_styledText.showSelection();
-		bEdit = true;
 	}
 
 	public void setContent(String content, int alignment) {
-		_styledText.setText(content);        
-		_styledText.setLineAlignment(0, _styledText.getLineCount(), alignment);
+		content = content.replaceAll("\r", "");
+		_styledText.setText(content);	
+		
+		//_styledText.setLineAlignment(0, _styledText.getLineCount(), alignment);
+	
+		/*_styledText.append("test line1\r\n");
+		_styledText.append("test line2\r");
+		_styledText.append("\ntest line3\r\n");
+*/
+		
 		bEdit = true;
 
 	}
@@ -103,11 +124,15 @@ public class TextDialog extends Dialog {
 		_size = size;
 	}
 
-
+	
+	public Text getStyledText() {
+		return _styledText;
+	}
+/*
 	public StyledText getStyledText() {
 		return _styledText;
 	}
-
+*/
 
 	private void init() {
 		Shell parent = getParent(); 
@@ -133,7 +158,7 @@ public class TextDialog extends Dialog {
 			_shell.setImage(_image);
 		} catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+				new ErrorLog("error in TextDilalog.init()" , e);
 			} catch(Exception ee) {
 				//tu nichts
 			}
@@ -161,14 +186,26 @@ public class TextDialog extends Dialog {
 				if (!display.readAndDispatch())
 					display.sleep();
 			}
+			
 
 			if (_styledText != null)
 				_styledText.dispose();
+		
 
 			return s;
-		} catch (Exception e) {
+		} catch (java.lang.IllegalArgumentException ex) {
+			ex.printStackTrace();
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+				new ErrorLog("error in TextDialog.open , cause: " + ex.getMessage() , ex);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			return "";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				new ErrorLog("error in TextDialog.open() , cause: " + e.getMessage() , e);
 			} catch(Exception ee) {
 				//tu nichts
 			}
@@ -191,7 +228,14 @@ public class TextDialog extends Dialog {
 		GridData gridData1 = new GridData();
 		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 3, 1);
 
-		_styledText = new StyledText(_shell, SWT.V_SCROLL | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
+		//_styledText = new StyledText(_shell, SWT.V_SCROLL | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
+		_styledText = new Text(_shell, SWT.V_SCROLL | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
+		_styledText.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				//das ist CTRL-Z
+				
+			}
+		});
 		/*_styledText.addVerifyKeyListener(new VerifyKeyListener() {
 			public void verifyKey(VerifyEvent event) {
 				
@@ -216,9 +260,21 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 		});*/
 		_styledText.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
+				//System.out.println("keyCod: " + e.keyCode);
+				if(e.keyCode==122 && e.stateMask== SWT.CTRL)
+					e.doit= false;
+				
+				//System.out.println("char: " + String.valueOf(e.character)+ " -> " + e.character +"keycode= " + e.keyCode + " mask= "+e.stateMask);
+				
 				
 				if(e.keyCode==97 && e.stateMask == SWT.CTRL){
-					_styledText.setSelection(0, _styledText.getText().length());
+					
+					try {
+						_styledText.setSelection(0, _styledText.getText().length());
+					} catch (Exception es) {
+						//System.out.println(es.getMessage());
+					}
+					
 				}
 				
 			}

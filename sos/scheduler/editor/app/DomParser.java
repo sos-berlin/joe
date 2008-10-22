@@ -327,9 +327,7 @@ public abstract class DomParser {
         if (!_init) {
             _changed = changed;
             if (_changedListener != null)
-                _changedListener.dataChanged();
-            
-            
+                _changedListener.dataChanged();                        
         }
     }
 
