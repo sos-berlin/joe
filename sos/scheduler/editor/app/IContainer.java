@@ -2,6 +2,7 @@ package sos.scheduler.editor.app;
 
 import org.eclipse.swt.custom.CTabItem;
 
+import sos.scheduler.editor.actions.forms.ActionsForm;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
@@ -12,7 +13,7 @@ public interface IContainer {
     
     public SchedulerForm newScheduler(int type);
 
-    public DocumentationForm newDocumentation();
+    public DocumentationForm newDocumentation();        
 
     public SchedulerForm openScheduler();
     
@@ -46,9 +47,9 @@ public interface IContainer {
     
     //public SchedulerForm openDirectory();
     
-    public SchedulerForm openDirectory(String filename);
+    public SchedulerForm openDirectory(String filename);        
     
     public CTabItem getCurrentTab();
     
-   
+    public ActionsForm newActions();
 }

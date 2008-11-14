@@ -135,6 +135,20 @@ public class Editor {
     
     public final static int SETTINGS               = 87;
     
+    public final static int ACTIONS                = 88;
+    
+    public final static int ACTION                 = 89;
+    
+    public final static int EVENTS                 = 90;
+    
+    public final static int EVENT_GROUP            = 91;
+    
+    public final static int ACTION_COMMANDS        = 92;
+    
+    public final static int ADD_EVENT_GROUP        = 93;
+    
+    public final static int REMOVE_EVENT_GROUP     = 94;
+    
     public static String    SCHEDULER_ENCODING     = "";
 
     public static String    DOCUMENTATION_ENCODING = "utf-8";

@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.listeners;
+package sos.scheduler.editor.actions.listeners;
 
 import java.util.Iterator;
 import java.util.List;
@@ -9,33 +9,39 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
+//import sos.scheduler.editor.conf.ISchedulerUpdate;
+import sos.scheduler.editor.actions.ActionsDom;
+import sos.scheduler.editor.actions.forms.ActionsForm;
 
 public class JobCommandsListener {
 
 
-	private    SchedulerDom            _dom        = null;
+	private    ActionsDom            _dom        = null;
 
-	private    ISchedulerUpdate        _main       = null;
+	private    ActionsForm           _main       = null;
 
-	private    Element                 _job        = null;
+	private    Element               _action        = null;
 
-	private    List                    _commands   = null;
+	private    List                  _commands   = null;
 
 
-	public JobCommandsListener(SchedulerDom dom, Element job, ISchedulerUpdate update) {
+	public JobCommandsListener(ActionsDom dom, Element action, ActionsForm update) {
 
 		_dom = dom;
 		_main = update;
-		_job = job;
-		if (_job != null)
-			_commands = _job.getChildren("commands");
+		_action = action;
+		if (_action != null) {
+			Element commands = _action.getChild("commands");
+			if(commands != null)
+				_commands = commands.getChildren("command");
+		}
 
 	}		
 	
 	private void initCommands() {
-		_commands = _job.getChildren("commands");
+		if(_action.getChild("commands") == null)
+			_action.addContent(new Element("commands"));
+		_commands = _action.getChild("commands").getChildren("command");
 	}
 
 
@@ -49,8 +55,10 @@ public class JobCommandsListener {
 					Element e = (Element) o;
 					TableItem item = new TableItem(table, SWT.NONE);
 					item.setData(e);
-					String exitcode = Utils.getAttributeValue("on_exit_code", e);
-					item.setText(0, exitcode);
+					
+					item.setText(0, Utils.getAttributeValue("name", e));
+					item.setText(1, Utils.getAttributeValue("scheduler_host", e));
+					item.setText(2, Utils.getAttributeValue("schdeuler_port", e));
 				}
 			}
 		}
@@ -58,7 +66,7 @@ public class JobCommandsListener {
 	}
 
 
-	private boolean haveCode(int code, Table table) {
+	/*private boolean haveCode(int code, Table table) {
 		int count = table.getItemCount();
 		for (int i = 0; i < count; i++) {
 			TableItem item = table.getItem(i);
@@ -71,53 +79,27 @@ public class JobCommandsListener {
 				return true;
 		}
 		return false;
-	}
+	}*/
 
 
 	public void newCommands(Table table) {
 
-		boolean error = false;
-		boolean success = false;
-		boolean found = false;
-		String code = "";
-		int count = table.getItemCount();
-
-		for (int i = 0; i < count; i++) {
-			TableItem item = table.getItem(i);
-			if (item.getText().equals("success"))
-				success = true;
-			if (item.getText().equals("error"))
-				error = true;
-
-		}
-
-		if (!success)
-			code = "success";
-		if (!error)
-			code = "error";
-		if (code.equals("")) {
-			int c = 1;
-			while (!found) {
-				if (!haveCode(c, table)) {
-					found = true;
-					code = String.valueOf(c);
-				}
-				c++;
-			}
-		}
-
-		Element commands = new Element("commands");
-		commands.setAttribute("on_exit_code", code);
+		
+		Element command = new Element("command");
+		command.setAttribute("name", "command_" +(table.getItemCount()+1));
 		if (_commands == null)
 			initCommands();
-		_commands.add(commands);
+		_commands.add(command);
 		_dom.setChanged(true);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		
 		fillTable(table);
 		table.setSelection(table.getItemCount() - 1);
 		_main.updateCommands();
+		
 	}
 
+
+	
 
 	public boolean deleteCommands(Table table) {
 		int index = table.getSelectionIndex();
@@ -126,7 +108,7 @@ public class JobCommandsListener {
 			Element e = (Element) item.getData();
 			e.detach();
 			_dom.setChanged(true);
-			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+			//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 			table.remove(index);
 			_main.updateCommands();
 

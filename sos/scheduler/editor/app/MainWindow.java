@@ -166,6 +166,20 @@ public class MainWindow  {
 			}
 		});
 
+		//new event handler
+		MenuItem pNewActions = new MenuItem(pmNew, SWT.PUSH);
+		pNewActions.setText("Event Handler \tCTRL+V");
+		pNewActions.setAccelerator(SWT.CTRL | 'V');
+		pNewActions.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (container.newActions() != null)
+					setSaveStatus();
+			}
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+
+		
 		MenuItem mpLife = new MenuItem(pmNew, SWT.CASCADE);				
 		mpLife.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -236,6 +250,7 @@ public class MainWindow  {
 		});
 		mLifeSchedule.setText("Schedule      \tCtrl+K");
 		mLifeSchedule.setAccelerator(SWT.CTRL | 'K');
+
 		new MenuItem(mFile, SWT.SEPARATOR);
 
 		MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
@@ -745,6 +760,17 @@ public class MainWindow  {
 			}
 		});
 
+		MenuItem itemActions = new MenuItem(menu, SWT.PUSH);
+		itemActions.setText("Event Handler");
+		itemActions.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (container.newActions() != null)
+					setSaveStatus();
+			}
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+		
 		MenuItem itemHFEJob = new MenuItem(menu, SWT.PUSH);
 		itemHFEJob.setText("Hot Folder Element - Job");
 		itemHFEJob.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {

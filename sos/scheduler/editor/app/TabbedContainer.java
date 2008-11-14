@@ -22,10 +22,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.input.SAXBuilder;
+
+import sos.scheduler.editor.actions.forms.ActionsForm;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
+import sos.scheduler.editor.actions.forms.ActionsForm;
 
 public class TabbedContainer implements IContainer {
 
@@ -165,6 +168,20 @@ public class TabbedContainer implements IContainer {
 			return null;
 	}
 
+	
+	public ActionsForm openActions(String filename) {
+		ActionsForm actionsForm = new ActionsForm(this, folder, SWT.NONE);
+
+		if(actionsForm.open(filename, filelist)) {
+			CTabItem tab = newItem(actionsForm, actionsForm.getFilename());
+			tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(
+					"/sos/scheduler/editor/editor-small.png")));
+			return actionsForm;
+		} else 
+			return null;
+	}
+
+	
 	public SchedulerForm openScheduler() {
 		SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE);
 		if (scheduler.open(filelist)) {
@@ -216,6 +233,7 @@ public class TabbedContainer implements IContainer {
 		}
 	}
 
+	
 	public DocumentationForm openDocumentation(String filename){
 		try {
 			DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
@@ -493,6 +511,8 @@ public class TabbedContainer implements IContainer {
 					return openScheduler(xmlFilename);
 				} else if(root.getName().equalsIgnoreCase("settings")) {
 					return openDetails(xmlFilename);
+				} else if(root.getName().equalsIgnoreCase("actions")) {
+					return openActions(xmlFilename);
 				} else if(root.getName().equalsIgnoreCase("job")) {
 					return openLifeElement(xmlFilename, SchedulerDom.LIFE_JOB);
 				} else if(root.getName().equalsIgnoreCase("job_chain")) {
@@ -541,5 +561,12 @@ public class TabbedContainer implements IContainer {
 		}
 		return null; 
 	}  
+	
+	public ActionsForm newActions() {		
+			ActionsForm actions = new ActionsForm(this, folder, SWT.NONE);
+			actions.openBlank();
+			newItem(actions, NEW_DOCUMENTATION_TITLE);
+			return actions;
+		}
 
 }

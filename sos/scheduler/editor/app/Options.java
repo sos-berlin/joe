@@ -190,6 +190,9 @@ public class Options {
         return _properties.getProperty("editor.xml.xsd");
     }
 
+    public static String getActionSchema() {
+        return _properties.getProperty("actions.xml.xsd");
+    }
 
     public static boolean isValidate() {
         return _properties.getProperty("editor.xml.validate", "true").equalsIgnoreCase("true");
@@ -207,6 +210,10 @@ public class Options {
         return _properties.getProperty("documentation.xml.xsd");
     }
 
+    public static String getActionsSchema() {
+    	return _properties.getProperty("actions.xml.xsd");    	
+    }
+    
 
     public static boolean isDocValidate() {
         return _properties.getProperty("documentation.xml.validate", "true").equalsIgnoreCase("true");

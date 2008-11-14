@@ -17,6 +17,8 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
+import sos.scheduler.editor.actions.forms.ActionsForm;
+
 
 public class ContextMenu {
 
@@ -254,9 +256,14 @@ public class ContextMenu {
 		return null;
 	}
 
-	public static void goTo(String name, SchedulerDom _dom, int type) {
+	public static void goTo(String name, DomParser _dom, int type) {
 		try {
-			 
+			
+			if(_dom instanceof sos.scheduler.editor.actions.ActionsDom)
+				_dom = (sos.scheduler.editor.actions.ActionsDom)_dom;
+			else 
+				_dom = (SchedulerDom)_dom;
+			
 			if(name.startsWith("*")) {			
 				name = name.substring(1);
 			}
@@ -433,8 +440,73 @@ public class ContextMenu {
 						}
 					}
 				}
-			}
+			} else if (type == Editor.ACTIONS) {
 
+
+				XPath x3 = XPath.newInstance("//action[@name='"+ name + "']");				 
+				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+				if(!listOfElement_3.isEmpty()) {    			
+					ActionsForm f = (ActionsForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
+					if(f == null)
+						return;
+					Tree tree = f.getTree();
+					for(int i = 0; i < tree.getItemCount(); i++) {    				
+						TreeItem item = tree.getItem(i);
+						if(item.getText().equals("Actions")){
+							TreeItem[] jobsItem = item.getItems();
+							for(int j = 0; j < jobsItem.length; j++) {
+								TreeItem jItem = jobsItem[j];
+								//if(jItem.getText().equals("Job Chain: "+ name)){
+								if(jItem.getText().endsWith(sos.scheduler.editor.actions.listeners.ActionsListener.ACTION_PREFIX + name)){
+									tree.setSelection(new TreeItem [] {jItem});
+									f.updateTreeItem(jItem.getText());
+									f.updateTree("");
+									break;
+								}
+							}
+						}
+					}
+				}
+			} else if(type == Editor.EVENTS) {
+				 //<event_group logic="or" group="1">
+				XPath x3 = XPath.newInstance("//event_group[@group='"+ name + "']");		
+				
+				
+				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+				if(!listOfElement_3.isEmpty()) {    			
+					ActionsForm f = (ActionsForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
+					if(f == null)
+						return;
+					Tree tree = f.getTree();
+					if(tree.getSelectionCount() > 0) {
+					TreeItem itemp = tree.getSelection()[0];
+					for(int i = 0; i < itemp.getItemCount(); i++) {    				
+						TreeItem item = itemp.getItem(i);
+						if(item.getText().endsWith(sos.scheduler.editor.actions.listeners.ActionsListener.GROUP_PREFIX + name)){
+							tree.setSelection(new TreeItem [] {item});
+							f.updateTreeItem(item.getText());
+							f.updateTree("");
+							break;
+						}
+					}
+					}
+						/*if(item.getText().equals("Events")){
+							TreeItem[] jobsItem = item.getItems();
+							for(int j = 0; j < jobsItem.length; j++) {
+								TreeItem jItem = jobsItem[j];
+						
+								if(jItem.getText().endsWith(sos.scheduler.editor.actions.listeners.ActionsListener.GROUP_PREFIX + name)){
+									tree.setSelection(new TreeItem [] {jItem});
+									f.updateTreeItem(jItem.getText());
+									f.updateTree("");
+									break;
+								}
+							}
+							}
+						}
+					}*/
+				}
+			}
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
