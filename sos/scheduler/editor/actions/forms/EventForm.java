@@ -8,13 +8,13 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -24,6 +24,7 @@ import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.listeners.EventListener;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 
 
@@ -32,13 +33,13 @@ public class EventForm extends Composite implements IUpdateLanguage {
 	
 	private EventListener     listener                  = null;
 
-    private Group              actionsGroup             = null;
+    //private Group              actionsGroup             = null;
        
     private Text               txtEventId               = null;
     
     private Text               txtTitle                 = null;
     
-    private Text               txtEventClass            = null;
+    private Combo               cboEventClass            = null;
     
     private Table              table                    = null;
     
@@ -58,6 +59,8 @@ public class EventForm extends Composite implements IUpdateLanguage {
 
     private int                type                     = -1;
     
+    private Group              group                    = null; 
+    
     public EventForm(Composite parent, int style, ActionsDom dom, Element eventGroup, ActionsForm _gui, int type_) {
         super(parent, style);           
         //gui = _gui;
@@ -74,7 +77,8 @@ public class EventForm extends Composite implements IUpdateLanguage {
         setLayout(new GridLayout());
         //if(table != null)
         	listener.fillEvent(table);
-
+        	group.setText(" Action: " + listener.getActionName() + "  Group: " + listener.getEventGroupName() );
+        	cboEventClass.setItems(listener.getEventClasses());
     }
 
 
@@ -82,12 +86,8 @@ public class EventForm extends Composite implements IUpdateLanguage {
      * This method initializes group
      */
     private void createGroup() {
-        /*GridLayout gridLayout = new GridLayout();
-        actionsGroup = new Group(this, SWT.NONE);
-        actionsGroup.setText("Event"); // Generated
-        actionsGroup.setLayout(gridLayout); // Generated
-*/
-        final Group group = new Group(this, SWT.NONE);
+        
+        group = new Group(this, SWT.NONE);
         group.setText("Events Group");
         final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true);
         gridData.heightHint = 303;
@@ -95,33 +95,6 @@ public class EventForm extends Composite implements IUpdateLanguage {
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.numColumns = 3;
         group.setLayout(gridLayout_1);
-
-        final Label groupLabel = new Label(group, SWT.NONE);
-        groupLabel.setText("Event Id:");
-
-        txtEventId = new Text(group, SWT.BORDER);
-        txtEventId.addKeyListener(new KeyAdapter() {
-        	public void keyPressed(final KeyEvent e) {
-        		if (e.keyCode == SWT.CR && !txtEventId.equals(""))
-        			apply();
-        	}
-        });
-        txtEventId.addModifyListener(new ModifyListener() {
-        	public void modifyText(final ModifyEvent e) {
-        		butApply.setEnabled(txtEventId.getText().length() > 0);
-                
-        	}
-        });
-        txtEventId.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
-        butApply = new Button(group, SWT.NONE);
-        butApply.addSelectionListener(new SelectionAdapter() {
-        	public void widgetSelected(final SelectionEvent e) {
-        		apply();
-        	}
-        });
-        butApply.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-        butApply.setText("Apply");
 
         final Label logicLabel = new Label(group, SWT.NONE);
         logicLabel.setText("Event Title: ");
@@ -140,6 +113,32 @@ public class EventForm extends Composite implements IUpdateLanguage {
         });
         txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
+
+        butApply = new Button(group, SWT.NONE);
+        butApply.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		apply();
+        	}
+        });
+        butApply.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+        butApply.setText("Apply");
+
+        final Label eventClassLabel = new Label(group, SWT.NONE);
+        eventClassLabel.setText("Event Class:");
+
+        cboEventClass = new Combo(group, SWT.BORDER);
+        cboEventClass.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		butApply.setEnabled(txtEventId.getText().length() > 0);
+        	}
+        });
+        cboEventClass.addKeyListener(new KeyAdapter() {
+        	public void keyPressed(final KeyEvent e) {
+        		if (e.keyCode == SWT.CR && !txtEventId.equals(""))
+        			apply();
+        	}
+        });
+        cboEventClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         
         butNew = new Button(group, SWT.NONE);
         butNew.addSelectionListener(new SelectionAdapter() {
@@ -151,22 +150,24 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         butNew.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
         butNew.setText("New");
 
-        final Label eventClassLabel = new Label(group, SWT.NONE);
-        eventClassLabel.setText("Event Class:");
+        final Label groupLabel = new Label(group, SWT.NONE);
+        groupLabel.setLayoutData(new GridData());
+        groupLabel.setText("Event Id:");
 
-        txtEventClass = new Text(group, SWT.BORDER);
-        txtEventClass.addModifyListener(new ModifyListener() {
-        	public void modifyText(final ModifyEvent e) {
-        		butApply.setEnabled(txtEventId.getText().length() > 0);
-        	}
-        });
-        txtEventClass.addKeyListener(new KeyAdapter() {
+        txtEventId = new Text(group, SWT.BORDER);
+        txtEventId.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
         		if (e.keyCode == SWT.CR && !txtEventId.equals(""))
         			apply();
         	}
         });
-        txtEventClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        txtEventId.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		butApply.setEnabled(txtEventId.getText().length() > 0);
+                
+        	}
+        });
+        txtEventId.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         new Label(group, SWT.NONE);
 
         final Label jobNameLabel = new Label(group, SWT.NONE);
@@ -254,7 +255,7 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         				TableItem item = table.getSelection()[0];        			
         				txtEventId.setText(item.getText(0));
         				txtTitle.setText(item.getText(1));
-        				txtEventClass.setText(item.getText(2));        			
+        				cboEventClass.setText(item.getText(2));        			
         				txtJobname.setText(item.getText(3));
         				txtJobChaon.setText(item.getText(4));
         				txtOrderId.setText(item.getText(5));
@@ -299,7 +300,11 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         butRemove.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		if(table != null && table.getSelectionCount() > 0)  {
-        			listener.removeEvent(table);
+        			int cont = MainWindow.message(getShell(), "If you really want to delete this group?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+        			if(cont == SWT.OK) {				        				
+        				listener.removeEvent(table);
+        			} 
+        			
         			 refresh();
         		}
         	}
@@ -312,7 +317,7 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
     public void setToolTipText() {
         txtEventId.setToolTipText(Messages.getTooltip("event.event_id"));
         txtTitle.setToolTipText(Messages.getTooltip("event.title"));
-        txtEventClass.setToolTipText(Messages.getTooltip("event.event_class"));
+        cboEventClass.setToolTipText(Messages.getTooltip("event.event_class"));
         //if(table != null)
         	table.setToolTipText(Messages.getTooltip("event.table"));
         butApply.setToolTipText(Messages.getTooltip("event.button_apply"));
@@ -326,16 +331,17 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
     
     private void apply() {
     	if(txtEventId.getText().length() > 0)
-    		listener.apply(txtEventId.getText(), txtEventClass.getText(), txtTitle.getText(), 
+    		listener.apply(txtEventId.getText(), cboEventClass.getText(), txtTitle.getText(), 
     				       txtJobname.getText(),txtJobChaon.getText(), txtOrderId.getText(), txtComment.getText(), 
     				       table);
+    	cboEventClass.setItems(listener.getEventClasses());
     	refresh();
     }
 
     private void refresh() {
     	txtEventId.setText("");
         txtTitle.setText("");
-        txtEventClass.setText("");
+        cboEventClass.setText("");
         txtJobname.setText("");
         txtJobChaon.setText("");
         txtOrderId.setText("");

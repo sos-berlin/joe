@@ -131,9 +131,10 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     }
 
 
-    public void setAttributes(SchedulerDom dom, Element element, int type) {
+    public void setAttributes(SchedulerDom dom, Element element, int type_) {
     	
-        listener = new ScriptListener(dom, element, type, update);
+        listener = new ScriptListener(dom, element, type_, update);
+        this.type = type_ ;
         fillForm();
     }
 
@@ -557,7 +558,10 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
             bNone.setVisible(false);        
         }
 
-        
+        if (type == Editor.MONITOR) {
+        	bNone.setVisible(false);
+        	bShell.setVisible(false);
+        }
         
         boolean enabled = language != ScriptListener.NONE;
         setEnabled(enabled);

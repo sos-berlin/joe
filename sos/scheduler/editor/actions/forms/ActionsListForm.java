@@ -22,7 +22,6 @@ import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
-import sos.util.SOSString;
 
 
 public class ActionsListForm extends Composite implements IUpdateLanguage {

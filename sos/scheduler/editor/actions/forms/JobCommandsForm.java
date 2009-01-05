@@ -1,8 +1,8 @@
 package sos.scheduler.editor.actions.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -13,14 +13,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
-
+import sos.scheduler.editor.app.ContextMenu;
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.Utils;
-
 import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.listeners.JobCommandsListener;
-//import sos.scheduler.editor.conf.listeners.SchedulerListener;
+
 
 public class JobCommandsForm extends Composite implements IUpdateLanguage {
 
@@ -36,20 +35,18 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
 
     private Label               label          = null;
     
+    private ActionsDom          _dom           = null;
     
 
                                      
   public JobCommandsForm(Composite parent, int style, ActionsDom dom, Element action,  ActionsForm gui) {
-		    //SchedulerListener mainListener) {
         super(parent, style);        
   
         listener = new JobCommandsListener(dom, action, gui);
+        _dom = dom;
         initialize();
         setToolTipText();
-        listener.fillTable(table);
-        
-        //commandsGroup.setEnabled(Utils.isElementEnabled("job", dom, job));        	
-        
+        listener.fillTable(table);       
     }
   
 
@@ -113,6 +110,11 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
         gridData2.widthHint = 204;
         table = new Table(commandsGroup, SWT.BORDER | SWT.FULL_SELECTION);
+        table.addMouseListener(new MouseAdapter() {
+        	public void mouseDoubleClick(final MouseEvent e) {
+        		ContextMenu.goTo(table.getSelection()[0].getText(0), _dom, Editor.ACTION_COMMANDS);
+        	}
+        });
         table.setHeaderVisible(true);
         table.setLayoutData(gridData2);
         table.setLinesVisible(true);

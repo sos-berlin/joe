@@ -3,8 +3,6 @@ package sos.scheduler.editor.actions.forms;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -27,8 +25,6 @@ public class ActionForm extends Composite implements IUpdateLanguage {
     private Group       actionsGroup         = null;
     
     private Text        txtName              = null; 
-   
-   // private ActionsForm gui                 = null;
     
     
     public ActionForm(Composite parent, int style, ActionsDom dom, Element action, ActionsForm _gui) {
@@ -74,7 +70,7 @@ public class ActionForm extends Composite implements IUpdateLanguage {
  
 
     public void setToolTipText() {
-    	txtName.setToolTipText(Messages.getTooltip("actions.name"));
+    	txtName.setToolTipText(Messages.getTooltip("action.name"));
     }
     
 

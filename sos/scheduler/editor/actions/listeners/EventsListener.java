@@ -178,9 +178,17 @@ public class EventsListener {
 	        	table.remove(table.getSelectionIndex());
 	        	fillEvents(table);
 	        	_dom.setChanged(true);
+	        	 gui.updateEvents(_action);
 	        }
 	        if(_events != null && _events.getChildren().isEmpty())
 	        	_events.detach();
+	}
+	
+	public String getActionname() {
+		if(_action != null)
+			return Utils.getAttributeValue("name", _action);
+		else 
+			return "";
 	}
 	
 }

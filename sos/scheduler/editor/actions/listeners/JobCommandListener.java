@@ -32,6 +32,8 @@ public class JobCommandListener {
 	private Element          _command;
 
 	private Element          _job;
+	
+	public static String[]   START_TIMES = new String[]{"period", "yyyy-MM-dd HH:mm:ss", "now", "now + HH:mm", "now + HH:mm:ss", "now + SECOUNDS", };           
 
 
 	public JobCommandListener(ActionsDom dom, Element command, ActionsForm update) {
@@ -98,6 +100,13 @@ public class JobCommandListener {
 
 	public String getName() {
 		return Utils.getAttributeValue("name", _job);
+	}
+
+	public String getCommandName() {
+		if(_command != null && _command.getParentElement() != null)
+			return Utils.getAttributeValue("name", _command.getParentElement());
+		else
+			return "";
 	}
 
 
@@ -546,4 +555,6 @@ public class JobCommandListener {
     	return retVal;
 
     }
+	
+	
 }

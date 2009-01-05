@@ -468,10 +468,10 @@ public class ContextMenu {
 					}
 				}
 			} else if(type == Editor.EVENTS) {
-				 //<event_group logic="or" group="1">
+				//<event_group logic="or" group="1">
 				XPath x3 = XPath.newInstance("//event_group[@group='"+ name + "']");		
-				
-				
+
+
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty()) {    			
 					ActionsForm f = (ActionsForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
@@ -479,33 +479,78 @@ public class ContextMenu {
 						return;
 					Tree tree = f.getTree();
 					if(tree.getSelectionCount() > 0) {
-					TreeItem itemp = tree.getSelection()[0];
-					for(int i = 0; i < itemp.getItemCount(); i++) {    				
-						TreeItem item = itemp.getItem(i);
-						if(item.getText().endsWith(sos.scheduler.editor.actions.listeners.ActionsListener.GROUP_PREFIX + name)){
-							tree.setSelection(new TreeItem [] {item});
-							f.updateTreeItem(item.getText());
-							f.updateTree("");
-							break;
-						}
-					}
-					}
-						/*if(item.getText().equals("Events")){
-							TreeItem[] jobsItem = item.getItems();
-							for(int j = 0; j < jobsItem.length; j++) {
-								TreeItem jItem = jobsItem[j];
-						
-								if(jItem.getText().endsWith(sos.scheduler.editor.actions.listeners.ActionsListener.GROUP_PREFIX + name)){
-									tree.setSelection(new TreeItem [] {jItem});
-									f.updateTreeItem(jItem.getText());
-									f.updateTree("");
-									break;
-								}
-							}
+						TreeItem itemp = tree.getSelection()[0];
+						for(int i = 0; i < itemp.getItemCount(); i++) {    				
+							TreeItem item = itemp.getItem(i);
+							if(item.getText().endsWith(sos.scheduler.editor.actions.listeners.ActionsListener.GROUP_PREFIX + name)){
+								tree.setSelection(new TreeItem [] {item});
+								f.updateTreeItem(item.getText());
+								f.updateTree("");
+								break;
 							}
 						}
-					}*/
+					}						
 				}
+			} else if(type == Editor.ACTION_COMMANDS) {
+				XPath x3 = XPath.newInstance("//command[@name='"+ name + "']");		
+
+
+				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+				if(!listOfElement_3.isEmpty()) {    			
+					ActionsForm f = (ActionsForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
+					if(f == null)
+						return;
+					Tree tree = f.getTree();
+					if(tree.getSelectionCount() > 0) {
+						TreeItem itemp = tree.getSelection()[0];
+						for(int i = 0; i < itemp.getItemCount(); i++) {    				
+							TreeItem item = itemp.getItem(i);
+							if(item.getText().endsWith(sos.scheduler.editor.actions.listeners.ActionsListener.COMMAND_PREFIX + name)){
+								tree.setSelection(new TreeItem [] {item});
+								f.updateTreeItem(item.getText());
+								f.updateTree("");
+								break;
+							}
+						}
+					}						
+				}
+			} else if (type == Editor.JOB_COMMAND_EXIT_CODES){
+
+				
+				XPath x3 = null;
+				String job = "";
+				if(name.startsWith("start_job")) {
+					job = name.substring("start_job: ".length());
+					x3 = XPath.newInstance("//command/start_job[@job='"+ job + "']");
+					
+				} else {
+					String child = name.substring(0, name.indexOf(": "));
+					job = name.substring(child.length() + 2);
+					x3 = XPath.newInstance("//command/"+child+"[@job_chain='"+ job + "']");						
+
+				}
+
+
+				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+				if(!listOfElement_3.isEmpty()) {    			
+					ActionsForm f = (ActionsForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
+					if(f == null)
+						return;
+					Tree tree = f.getTree();
+					if(tree.getSelectionCount() > 0) {
+						TreeItem itemp = tree.getSelection()[0];
+						for(int i = 0; i < itemp.getItemCount(); i++) {    				
+							TreeItem item = itemp.getItem(i);
+							if(item.getText().equals(name)){
+								tree.setSelection(new TreeItem [] {item});
+								f.updateTreeItem(item.getText());
+								f.updateTree("");
+								break;
+							}
+						}
+					}						
+				}
+				
 			}
 		} catch (Exception e) {
 			System.out.println(e.toString());

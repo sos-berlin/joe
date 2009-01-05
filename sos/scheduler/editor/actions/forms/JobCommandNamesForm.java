@@ -3,20 +3,18 @@ package sos.scheduler.editor.actions.forms;
 import javax.xml.transform.TransformerException;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -26,6 +24,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import sos.scheduler.editor.app.ContextMenu;
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
@@ -41,12 +41,9 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 
 	private JobCommandNamesListener   listener                     = null;
 
-	//private Group                         jobsAndOrdersGroup           = null;
-
 	private Group                         gMain                        = null;
 
-
-	private boolean                       updateTree                   = false;
+	//private boolean                       updateTree                   = false;
 
 	private boolean                       event                        = false;
 
@@ -62,7 +59,7 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 	
 	private Text                          txtPort                      = null;
 	
-	
+	private ActionsDom                   _dom                          = null;
 
 
 	public JobCommandNamesForm(Composite parent, int style, ActionsDom dom, Element command, ActionsForm main)	
@@ -70,32 +67,32 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		super(parent, style);
 
 		listener = new JobCommandNamesListener(dom, command, main);
+		_dom = dom;
 		initialize();
 		setToolTipText();
 
 		dom.setInit(true);
 
 		listener.fillCommands(tCommands);		
-		updateTree = false;
+		//updateTree = false;
 		
-		updateTree = true;
+		//updateTree = true;
 
 		dom.setInit(false);		
 		event = true;
 
 
 
-		if (command.getParentElement() != null ){        	
+		/*if (command.getParentElement() != null ){        	
 			//this.jobsAndOrdersGroup.setEnabled(Utils.isElementEnabled("job", dom, command.getParentElement()));        	
-		}
+		}*/
 
 	}
 
 
 	public void apply() {
-		if (isUnsaved())
-			addParam();
-		//addCommand();
+		//if (isUnsaved())
+		//	addParam();		
 	}
 
 
@@ -106,8 +103,7 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 
 	private void initialize() {
 		this.setLayout(new FillLayout());
-		createGroup();
-		//setSize(new org.eclipse.swt.graphics.Point(723, 566));
+		createGroup();	
 		txtName.setText(listener.getName());
 		txtHost.setText(listener.getHost());
 		txtPort.setText(listener.getPort());
@@ -122,20 +118,12 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.numColumns = 3;
 		gMain = new Group(this, SWT.NONE);
-		gMain.setText("Commands for Job: " + listener.getName()); // + (listener.isDisabled() ? " (Disabled)" : ""));
+		gMain.setText("Command: " + listener.getName());
 		gMain.setLayout(gridLayout2);
-		//sashForm.setWeights(new int[] { 1 });
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
 		gridLayout.marginHeight = 0;
 		gridLayout.verticalSpacing = 0;
-		//gDescription =  new Composite(sashForm, SWT.NONE);
-		//gDescription.setText("Jobs and orders");
-		/*gMain = new Group(jobsAndOrdersGroup, SWT.NONE);
-		gMain.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-		gMain.setText("Commands");
-		gMain.setLayout(gridLayout);
-*/
 		final Label nameLabel = new Label(gMain, SWT.NONE);
 		nameLabel.setLayoutData(new GridData());
 		nameLabel.setText("Name: ");
@@ -225,6 +213,12 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		label.setText("label");
 
 		tCommands = new Table(gMain, SWT.FULL_SELECTION | SWT.BORDER);
+		tCommands.addMouseListener(new MouseAdapter() {
+			public void mouseDoubleClick(final MouseEvent e) {
+				String str =  tCommands.getSelection()[0].getText(2).length() > 0 ? tCommands.getSelection()[0].getText(2) : tCommands.getSelection()[0].getText(1);
+				ContextMenu.goTo(tCommands.getSelection()[0].getText(0) + ": " + str, _dom, Editor.JOB_COMMAND_EXIT_CODES);
+			}
+		});
 		tCommands.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				TableItem item = (TableItem) e.item;
@@ -255,77 +249,9 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		final TableColumn tcStartAt = new TableColumn(tCommands, SWT.NONE);
 		tcStartAt.setWidth(139);
 		tcStartAt.setText("Start At");
-		//parameter
-		//createJobCommandParameter();
-		//environment
-		//createEnvironment();		
-		createSashForm();
 	}
 
-
-
-	/**
-	 * This method initializes group1
-	 */
-	private void createGroup1() {
-
-		createCombo();
-		createComposite();
-	}
-
-
-	/**
-	 * This method initializes combo
-	 */
-	private void createCombo() {
-	}
-
-
-	/**
-	 * This method initializes composite
-	 */
-	private void createComposite() {
-	}
-
-
-	/**
-	 * This method initializes sashForm
-	 */
-	private void createSashForm() {
-
-		createGroup1();
-		createGroup2();
-		createGroup3();
-	}
-
-
-	/**
-	 * This method initializes group2
-	 */
-	private void createGroup2() {
-
-	}
-
-
-	/**
-	 * This method initializes table
-	 */
-	private void createTable() {
-	}
-
-
-	/**
-	 * This method initializes group3
-	 */
-	private void createGroup3() {
-
-		createTable();
-	}
-
-
-	private void addParam() {
-	}
-
+	
 	private void addJob() {
 		int index = tCommands.getSelectionIndex();
 		Element e = null;

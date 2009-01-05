@@ -28,11 +28,12 @@ import sos.scheduler.editor.actions.listeners.EventsListener;
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import java.util.ArrayList;
 
 
-public class EventsForm extends Composite implements IUpdateLanguage {
+public class EventsForm extends Composite implements IUpdateLanguage  {
     
 	
 	private EventsListener     listener                 = null;
@@ -45,7 +46,7 @@ public class EventsForm extends Composite implements IUpdateLanguage {
     
     private Text               txtGroupLogic            = null;
     
-    private Combo              txtEventClass            = null;
+    private Combo              cboEventClass            = null;
     
     private Table              table                    = null;
     
@@ -63,7 +64,6 @@ public class EventsForm extends Composite implements IUpdateLanguage {
     public EventsForm(Composite parent, int style, ActionsDom dom, Element action, ActionsForm _gui) {
     	
         super(parent, style);           
-        //gui = _gui;
         listener = new EventsListener(dom, action, _gui);
         _dom = dom;
         initialize();
@@ -78,8 +78,8 @@ public class EventsForm extends Composite implements IUpdateLanguage {
         setLayout(new FillLayout());
         txtLogic.setText(listener.getLogic());
         listener.fillEvents(table);
-        txtEventClass.setItems(listener.getEventClasses());
-
+        cboEventClass.setItems(listener.getEventClasses());
+        actionsGroup.setText("Action: " + listener.getActionname()); // Generated
     }
 
 
@@ -90,8 +90,8 @@ public class EventsForm extends Composite implements IUpdateLanguage {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 3;
         actionsGroup = new Group(this, SWT.NONE);
-        actionsGroup.setText("Action"); // Generated
-        actionsGroup.setLayout(gridLayout); // Generated
+        actionsGroup.setText("Action"); 
+        actionsGroup.setLayout(gridLayout); 
 
         final Label lblLogic = new Label(actionsGroup, SWT.NONE);
         lblLogic.setText("Logic:");
@@ -108,9 +108,6 @@ public class EventsForm extends Composite implements IUpdateLanguage {
         butEventsOperation.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		ArrayList list = new ArrayList();
-        		list.add("or ");
-        		list.add("and ");
-        		list.add("( <key1> and <key2> ) ");
         		list.addAll(listener.getGroups());
         		
         		LogicOperationDialog logicOperationDialog = new LogicOperationDialog(SWT.NONE);
@@ -151,9 +148,10 @@ public class EventsForm extends Composite implements IUpdateLanguage {
                 
         	}
         });
-        txtGroup.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
+        txtGroup.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 
         butApply = new Button(group, SWT.NONE);
+        butApply.setEnabled(false);
         butApply.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		apply();
@@ -172,16 +170,14 @@ public class EventsForm extends Composite implements IUpdateLanguage {
         			apply();
         	}
         });
-        txtGroupLogic.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        txtGroupLogic.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
         butEventGroupOperation = new Button(group, SWT.NONE);
+        butEventGroupOperation.setLayoutData(new GridData());
         butEventGroupOperation.setEnabled(false);
         butEventGroupOperation.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
-        		ArrayList list = new ArrayList();
-        		list.add("or ");
-        		list.add("and ");
-        		list.add("( <key1> and <key2> ) ");
+        		ArrayList list = new ArrayList();        		
         		list.addAll(listener.getEventClassAndId(txtGroup.getText()));
         		
         		LogicOperationDialog logicOperationDialog = new LogicOperationDialog(SWT.NONE);
@@ -196,7 +192,7 @@ public class EventsForm extends Composite implements IUpdateLanguage {
         		    	
                 txtGroup.setText("");
                 txtGroupLogic.setText("");
-                txtEventClass.setText("");
+                cboEventClass.setText("");
                 table.deselectAll();                
                 butNew.setToolTipText(Messages.getTooltip("events.button_new"));
                 butApply.setEnabled(false);
@@ -210,21 +206,32 @@ public class EventsForm extends Composite implements IUpdateLanguage {
         final Label eventClassLabel = new Label(group, SWT.NONE);
         eventClassLabel.setText("Event Class");
 
-        txtEventClass = new Combo(group, SWT.BORDER);
-        txtEventClass.addKeyListener(new KeyAdapter() {
+        cboEventClass = new Combo(group, SWT.BORDER);
+        cboEventClass.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
         		if (e.keyCode == SWT.CR && !txtGroup.equals(""))
         			apply();
         	}
         });
-        txtEventClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
+        cboEventClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 
         butRemove = new Button(group, SWT.NONE);
         butRemove.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		if(table.getSelectionCount() > 0)  {
-        			listener.removeEvent(table);
+        			int cont = MainWindow.message(actionsGroup.getShell(), "If you really want to delete this group?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+        			if(cont == SWT.OK) {				        				
+        				listener.removeEvent(table);
+        			} 
+        			
         			txtGroup.setFocus();
+        			cboEventClass.setText("");    	
+        	        txtGroup.setText("");
+        	        txtGroupLogic.setText("");
+        	        
+        	        cboEventClass.setItems(listener.getEventClasses());
+        	        
+        	    	txtGroup.setFocus();
         		}
         	}
         });
@@ -243,14 +250,14 @@ public class EventsForm extends Composite implements IUpdateLanguage {
         			TableItem item = table.getSelection()[0];        			
         			txtGroup.setText(item.getText(0));
         			txtGroupLogic.setText(item.getText(1));
-        			txtEventClass.setText(item.getText(2));        			
+        			cboEventClass.setText(item.getText(2));        			
         		}
                 butRemove.setEnabled(table.getSelectionCount() > 0);
         	}
         });
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
-        table.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1));
+        table.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1));
 
         final TableColumn newColumnTableColumn = new TableColumn(table, SWT.NONE);
         newColumnTableColumn.setWidth(140);
@@ -263,8 +270,6 @@ public class EventsForm extends Composite implements IUpdateLanguage {
         final TableColumn newColumnTableColumn_2 = new TableColumn(table, SWT.NONE);
         newColumnTableColumn_2.setWidth(189);
         newColumnTableColumn_2.setText("Event Class");
-        new Label(group, SWT.NONE);
-        new Label(group, SWT.NONE);
     }
  
 
@@ -272,22 +277,23 @@ public class EventsForm extends Composite implements IUpdateLanguage {
     	txtLogic.setToolTipText(Messages.getTooltip("events.logic"));    	
         txtGroup.setToolTipText(Messages.getTooltip("events.group"));
         txtGroupLogic.setToolTipText(Messages.getTooltip("events.group_logic"));
-        txtEventClass.setToolTipText(Messages.getTooltip("events.event_class"));
+        cboEventClass.setToolTipText(Messages.getTooltip("events.event_class"));
         table.setToolTipText(Messages.getTooltip("events.table"));
         butApply.setToolTipText(Messages.getTooltip("events.button_apply"));
         butNew.setToolTipText(Messages.getTooltip("events.button_new"));        
         butRemove.setToolTipText(Messages.getTooltip("events.button_remove"));
+        butRemove.setToolTipText(Messages.getTooltip("events.button_operation"));
     }
     
     private void apply() {
     	if(txtGroup.getText().length() > 0)
-    		listener.apply(txtGroup.getText(), txtEventClass.getText(), txtGroupLogic.getText(), table);
+    		listener.apply(txtGroup.getText(), cboEventClass.getText(), txtGroupLogic.getText(), table);
     	
-    	txtEventClass.setText("");    	
+    	cboEventClass.setText("");    	
         txtGroup.setText("");
         txtGroupLogic.setText("");
         
-        txtEventClass.setItems(listener.getEventClasses());
+        cboEventClass.setItems(listener.getEventClasses());
         
     	txtGroup.setFocus();
     	

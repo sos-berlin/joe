@@ -12,6 +12,8 @@ import sos.scheduler.editor.app.Utils;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.SWT;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventListener {
@@ -143,6 +145,46 @@ public class EventListener {
 	        	fillEvent(table);
 	        	_dom.setChanged(true);
 	        }
+	}
+	
+	public String getEventGroupName() {
+		if(_eventGroup != null)			
+			return Utils.getAttributeValue("group", _eventGroup);
+		else 
+			return "";
+	}
+	
+	public String getActionName() {
+		if(_eventGroup != null && _eventGroup.getParentElement() != null && _eventGroup.getParentElement().getParentElement() != null)			
+			return Utils.getAttributeValue("name", _eventGroup.getParentElement().getParentElement());
+		else 
+			return "";
+	}
+	
+	public String[] getEventClasses() {
+		String[] retVal = new String[]{};
+		try {
+			if(_eventGroup != null) {
+				List l = _eventGroup.getChildren("event");
+				ArrayList list = new ArrayList();
+				for(int i=0; i < l.size(); i++) {					
+					Element event = (Element)l.get(i);
+					String eventClass = Utils.getAttributeValue("event_class", event); 
+					if(eventClass.length() > 0 && !list.contains(eventClass)) {
+						list.add(Utils.getAttributeValue("event_class", event));	
+					}
+				}
+				if(list.size() > 0)
+					retVal = new String[list.size()];
+				for(int i = 0; i < list.size(); i++) {
+					retVal[i] = list.get(i).toString(); 
+				}
+			}
+		} catch (Exception e) {
+           //tu nichts
+			System.out.println(e.toString());
+		}
+		return retVal;
 	}
 	
 }

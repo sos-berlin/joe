@@ -16,20 +16,16 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.actions.IActionsUpdate;
-import sos.scheduler.editor.actions.IUpdateTree;
-//import sos.scheduler.editor.actions.NoteDialog;
 import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.listeners.ActionsListener;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.IEditor;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 
-// TODO doppelte einträge verhindern
 
 public class ActionsForm extends Composite implements IEditor, IActionsUpdate {
 	
