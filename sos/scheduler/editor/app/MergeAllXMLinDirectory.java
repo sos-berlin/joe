@@ -530,6 +530,8 @@ public class MergeAllXMLinDirectory {
 	 
 	 
 	private void deleteFiles() {
+		
+		
 		String filename = "";
 		String prefix   ="";
 		Iterator keys1 = listOfChanges.keySet().iterator();         
@@ -559,8 +561,11 @@ public class MergeAllXMLinDirectory {
 						//job5.job.xml
 						MainWindow.message(MainWindow.getSShell(), filename + " could not delete.", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 					} else {
-						//system.out.println(filename + " wurde gelöscht.");
+						//System.out.println(filename + " wurde gelöscht.");
 					}
+				} else {
+					
+					//System.out.println(filename + " zum löschen gibts nicht.");
 				}
 			}
 			

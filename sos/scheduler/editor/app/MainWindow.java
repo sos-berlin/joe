@@ -29,6 +29,8 @@ import sos.scheduler.editor.conf.forms.HotFolderDialog;
 import java.util.ArrayList;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
+import sos.util.SOSString;
+
 
 public class MainWindow  {
 
@@ -55,6 +57,9 @@ public class MainWindow  {
 	private ToolItem     butSave            = null;
 
 	private ToolItem     butShowAsSML       = null; 
+	
+	private SOSString    sosString          = new SOSString();
+	
 
 	public MainWindow() {
 		super();	
@@ -1003,9 +1008,18 @@ public class MainWindow  {
 					if(!new File(remoteDir).getName().equalsIgnoreCase(new File(filename).getName())){
 						//Attribute "name" wurde geändert: Das bedeutet auch Änderungen der life Datei namen.
 						ftpListener.removeFile(remoteDir);
+						try {
+							String newName = sosString.parseToString(new File(remoteDir).getParent()) + "/" + new File(filename).getName();
+							newName = newName.replaceAll("\\\\", "/");
+							container.getCurrentTab().setData("ftp_remote_directory", newName);
+						} catch(Exception e) {
+							System.out.println("test: " + e.toString());
+							
+						} //tu nichts 
 					}
 					remoteDir = new File(remoteDir).getParent() + "/" + new File(filename).getName();
 					ftpListener.saveAs( filename, remoteDir);
+					
 				} else if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {
 
 					ftpListener.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);

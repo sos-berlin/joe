@@ -16,6 +16,7 @@ import sos.net.SOSFileTransfer;
 import sos.settings.SOSProfileSettings;
 import sos.util.SOSString;
 import sos.util.SOSUniqueID;
+import java.util.Vector;
 
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Text;
@@ -333,7 +334,8 @@ public class FTPDialogListener {
 			} catch(Exception ee) {
 				//tu nichts
 			}
-			if(logtext != null)  logtext.append("could not delete file [" + file+ "] cause:" + e.getMessage() );
+			if(logtext != null)  
+				logtext.append("could not delete file [" + file+ "] cause:" + e.getMessage() );
 			hasError = true;
 		}
 	}
@@ -782,6 +784,12 @@ public class FTPDialogListener {
 
 	public void saveHotFolderAs(String source, String target, ArrayList listOfHotFolderElements, HashMap changes) {
 		try {
+			Vector listOfExistFiles = new Vector(); //überprüft ob das HotFolderElement existiert. das kann passieren, wenn ein Element neu angelegt wird und ohne zwischespeichern der Name verändert wird. 
+			if(ftpClient != null) {
+				listOfExistFiles = ftpClient.nList(target);
+			}
+			
+			ArrayList listOfRemovedFiles = new ArrayList(); // hilfsvariable: verhindert das zweimal löschen der Hot Folder Element
 
 			source = source.endsWith("/") ? source : source + "/"; 
 			target = target.endsWith("/") ? target : target + "/";
@@ -797,9 +805,14 @@ public class FTPDialogListener {
 					hotElementname = hotElementname.substring(hotElementname.lastIndexOf(".")+1);					
 					attrname = filename.substring(0, filename.indexOf("." + hotElementname  + ".xml"));
 
-
-					if(changes.containsKey(hotElementname + "_" + attrname) && changes.get(hotElementname + "_" + attrname).equals("delete"))
-						removeFile(target + filename);						
+					
+					if(changes.containsKey(hotElementname + "_" + attrname) && changes.get(hotElementname + "_" + attrname).equals("delete")) {
+						if(listOfExistFiles.contains(filename)){
+							removeFile(target + filename);
+							listOfRemovedFiles.add(target + filename);
+						}
+						
+					}
 				}
 			}
 
@@ -825,8 +838,12 @@ public class FTPDialogListener {
 						else if(remFile.startsWith("schedule") )
 							prefix = "schedule";
 						 
-						remFile = remFile.substring(prefix.length() + 1) + "." + remFile.substring(0, prefix.length()) + ".xml";	
-						removeFile(target + remFile);	
+						remFile = remFile.substring(prefix.length() + 1) + "." + remFile.substring(0, prefix.length()) + ".xml";
+						if(!listOfRemovedFiles.contains(target + remFile)) {
+							if(listOfExistFiles.contains(remFile)){
+								removeFile(target + remFile);	
+							}
+						}
 					}
 				}
 			}
