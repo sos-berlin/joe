@@ -120,17 +120,17 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 	
 	private Text             txtCentralConfigDir          = null; 
 		
+	
 	/**
 	 * @param parent
 	 * @param style
 	 */
 	public ConfigForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate _update) {
-		super(parent, style);
+		super(parent, style);		
 		listener = new ConfigListener(dom);		
 		initialize();
 		setToolTipText();
-		tSpoolerID.setFocus();
-
+		tSpoolerID.setFocus();		
 	}
 	
 	
@@ -649,7 +649,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		button.setToolTipText(Messages.getTooltip("button.comment"));
 	}
 	
+
 	
-		
 	
 } // @jve:decl-index=0:visual-constraint="10,10"

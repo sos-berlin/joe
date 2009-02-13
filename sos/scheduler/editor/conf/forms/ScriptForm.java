@@ -1,7 +1,6 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -241,7 +240,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
             		listener.setFilename(tFilename.getText());                
             }
         });
-        GridData gridData3 = new GridData(GridData.FILL, GridData.FILL, false, true, 3, 1);
+        new GridData(GridData.FILL, GridData.FILL, false, true, 3, 1);
 
         sashForm = new Composite(gScript, SWT.NONE);
         //sashForm.setText("Include Files");

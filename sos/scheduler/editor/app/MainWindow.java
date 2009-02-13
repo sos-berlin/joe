@@ -933,7 +933,25 @@ public class MainWindow  {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+				
+		final ToolItem itemFTPReset = new ToolItem(toolBar, SWT.PUSH);
+		itemFTPReset.setImage(ResourceManager
+				.getImageFromResource("/sos/scheduler/editor/icon_reset.gif"));
+		itemFTPReset.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(final SelectionEvent e) {
+				SchedulerForm form =(SchedulerForm)container.getCurrentEditor();
+				SchedulerDom currdom = (SchedulerDom)form.getDom();
+				if(currdom.isLifeElement())
+					sos.scheduler.editor.app.Utils.reset( currdom.getRoot(), form, currdom);
+				else
+					sos.scheduler.editor.app.Utils.reset( currdom.getRoot().getChild("config"), form, currdom);
 
+			}
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+
+		
 		final ToolItem butHelp = new ToolItem(toolBar, SWT.PUSH);
 		butHelp.setImage(ResourceManager
 				.getImageFromResource("/sos/scheduler/editor/icon_help.gif"));

@@ -56,7 +56,9 @@ public class LocksListener {
 				String name = Utils.getAttributeValue("name", e);
 
 				item.setText(0, name);
-				item.setText(1, "" + Utils.getIntValue("max_non_exclusive", e));
+				if(Utils.getAttributeValue("max_non_exclusive", e).length() > 0)
+					item.setText(1, "" + Utils.getIntValue("max_non_exclusive", e));
+				
 				if(!Utils.isElementEnabled("lock", _dom, e)) {
 					item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 				} 
@@ -83,7 +85,11 @@ public class LocksListener {
 		return name;
 	}
 
+	public boolean hasUnlimitedNonExclusiveLock() {
+		return Utils.getAttributeValue("max_non_exclusive", _lock).length() == 0;
+	}
 	public int getMax_non_exclusive() {
+		
 		int m = Utils.getIntValue("max_non_exclusive", _lock);
 		return m;
 	}
@@ -95,12 +101,15 @@ public class LocksListener {
 	}
 
 
-	public void applyLock(String name,  int maxNonExclusive) {
+	public void applyLock(String name,  int maxNonExclusive, boolean unlimitedNonExclusive) {
 		_dom.setChanged(true);
 		String oldLockName = Utils.getAttributeValue("name", _lock); 
 		_dom.setChangedForDirectory("lock", oldLockName, SchedulerDom.DELETE);
 		Utils.setAttribute("name", name, _lock, _dom);
-		Utils.setAttribute("max_non_exclusive", maxNonExclusive, _lock, _dom);
+		if(unlimitedNonExclusive)
+			_lock.removeAttribute("max_non_exclusive");
+		else
+			Utils.setAttribute("max_non_exclusive", maxNonExclusive, _lock, _dom);
 		if (_list == null)
 			initLocks();
 		if (!_list.contains(_lock)) { 

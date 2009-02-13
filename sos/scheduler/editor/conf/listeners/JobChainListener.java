@@ -10,12 +10,9 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
-//import org.jdom.xpath.XPath;
-//import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
-import org.jdom.filter.Filter;
-import org.jdom.filter.ElementFilter;
+
 import sos.util.SOSString;
 
 public class JobChainListener {

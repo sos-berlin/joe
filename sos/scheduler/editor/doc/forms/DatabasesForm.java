@@ -1,13 +1,11 @@
 package sos.scheduler.editor.doc.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -19,21 +17,19 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.DatabasesListener;
 
 public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguage {
     private DatabasesListener listener   = null;
 
-    private DocumentationDom  dom        = null;
+    //private DocumentationDom  dom        = null;
 
     private Group             group      = null;
 
-    private Group             group1     = null;
+    //private Group             group1     = null;
 
-    private Label             label1     = null;
+    //private Label             label1     = null;
 
     //private Text              tName      = null;
 
@@ -92,7 +88,7 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
     		Element parentElement,
     DocumentationForm gui) {
         super(parent, style);
-        this.dom = dom;
+        //this.dom = dom;
         _gui = gui;
         listener = new DatabasesListener(dom, parentElement);
         initialize();
@@ -443,10 +439,10 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
     }
 */
 
-    private void setApplyResStatus() {
+    /*private void setApplyResStatus() {
         //bApplyRes.setEnabled(tName.getText().length() > 0);
        // getShell().setDefaultButton(bApplyRes);
-    }
+    }*/
 
 
     private void applyResource() {

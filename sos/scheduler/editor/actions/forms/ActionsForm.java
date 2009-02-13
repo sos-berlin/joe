@@ -266,10 +266,24 @@ public class ActionsForm extends Composite implements IEditor, IActionsUpdate {
 	}
 	
 	public void updateEvents(Element action) {
-		if(tree.getSelectionCount() > 0) {
-		listener.fillEventGroup(tree.getSelection()[0], action);
-		tree.getSelection()[0].setExpanded(true);
-		}
+		//if(tree.getSelectionCount() > 0) {
+			
+			//if(!tree.getSelection()[0].getParentItem().getText().equalsIgnoreCase(ActionsListener.ACTION_PREFIX + Utils.getAttributeValue("name", action))) {
+				TreeItem item = tree.getTopItem();
+				for(int i = 0; i < item.getItemCount(); i++) {
+					TreeItem it = item.getItem(i);
+					if(it.getText().equals(ActionsListener.ACTION_PREFIX + Utils.getAttributeValue("name", action))) {
+						it = it.getItem(0);//events Knoten
+						listener.fillEventGroup(it, action);
+						it.setExpanded(true);
+						break;
+					}
+				}
+			/*} else {
+				listener.fillEventGroup(tree.getSelection()[0], action);
+				tree.getSelection()[0].setExpanded(true);
+			}*/
+		//}
 	}
 	
 

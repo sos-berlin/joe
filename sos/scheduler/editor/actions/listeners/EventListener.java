@@ -22,7 +22,7 @@ public class EventListener {
 
     private Element              _eventGroup              = null;
     
-    private ActionsForm          gui                  = null;
+   // private ActionsForm          gui                  = null;
 
     private int                  type                 = -1;
    
@@ -30,7 +30,7 @@ public class EventListener {
         _dom = dom;
         _eventGroup = eventGroup;
         type = type_;
-        gui = _gui;
+        //gui = _gui;
     }
 
 
@@ -71,21 +71,22 @@ public class EventListener {
 			for(int i = 0; i < l.size(); i++){
 				Element event = (Element)l.get(i);
 				TableItem item = new TableItem(table, SWT.NONE);
-				item.setText(0, Utils.getAttributeValue("event_id", event));
-				item.setText(1, Utils.getAttributeValue("event_title", event));
-				item.setText(2, Utils.getAttributeValue("event_class", event));
+				item.setText(0, Utils.getAttributeValue("event_name", event));
+				item.setText(1, Utils.getAttributeValue("event_id", event));
+				item.setText(2, Utils.getAttributeValue("event_title", event));
+				item.setText(3, Utils.getAttributeValue("event_class", event));
 				
-				item.setText(3, Utils.getAttributeValue("job_name", event));
-				item.setText(4, Utils.getAttributeValue("job_chain", event));
-				item.setText(5, Utils.getAttributeValue("order_id", event));
-				item.setText(6, Utils.getAttributeValue("comment", event));
+				item.setText(4, Utils.getAttributeValue("job_name", event));
+				item.setText(5, Utils.getAttributeValue("job_chain", event));
+				item.setText(6, Utils.getAttributeValue("order_id", event));
+				item.setText(7, Utils.getAttributeValue("comment", event));
 				
 				item.setData(event);
 			}
 		}
 	
    
-	public void apply(String eventId, String eventClass, String eventTitle,
+	public void apply(String eventName, String eventId, String eventClass, String eventTitle,
 			String jobname, String jobChain, String orderId, String comment,
 			Table table) {
 		
@@ -95,34 +96,25 @@ public class EventListener {
 			event = (Element)table.getSelection()[0].getData();	
 		} else {					
 			event = new Element("event");
-			//if(_eventGroup.getName().equals("commands")) {
+			
 			if(type == Editor.ADD_EVENT_GROUP) {
-				//if(_eventGroup.getChild("add_event") == null) {
+			
 				Element addEvent = new Element("add_event");
 				addEvent.addContent(event);
 				_eventGroup.addContent(addEvent);   
-				
-				//} 
-				//_eventGroup = _eventGroup.getChild("add_event");
-
+			
 			}else if(type == Editor.REMOVE_EVENT_GROUP){
-				//if(_eventGroup.getChild("remove_event") == null) {
+			
 					Element removeEvent = new Element("remove_event");
 					removeEvent.addContent(event);
 					_eventGroup.addContent(removeEvent);            					   
-					
-				//}
-					
-				//_eventGroup = _eventGroup.getChild("remove_event");
-				//event = new Element("remove_event");						
+								
 			} else {
-				//}
-				//_events.addContent(eventGroup);
 				_eventGroup.addContent(event);
 			}
 		}
 
-
+		Utils.setAttribute("event_name", eventName, event);
 		Utils.setAttribute("event_id", eventId, event);
 		Utils.setAttribute("event_class", eventClass, event);
 		Utils.setAttribute("event_title", eventTitle, event);

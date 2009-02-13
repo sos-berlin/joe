@@ -1,6 +1,7 @@
 package sos.scheduler.editor.actions.forms;
 
 import org.eclipse.swt.SWT;
+import sos.scheduler.editor.app.IUnsaved;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -23,6 +24,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Combo;
 import org.jdom.Element;
+import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.listeners.EventsListener;
 import sos.scheduler.editor.app.ContextMenu;
@@ -33,7 +35,7 @@ import sos.scheduler.editor.app.Messages;
 import java.util.ArrayList;
 
 
-public class EventsForm extends Composite implements IUpdateLanguage  {
+public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  {
     
 	
 	private EventsListener     listener                 = null;
@@ -80,6 +82,7 @@ public class EventsForm extends Composite implements IUpdateLanguage  {
         listener.fillEvents(table);
         cboEventClass.setItems(listener.getEventClasses());
         actionsGroup.setText("Action: " + listener.getActionname()); // Generated
+        butApply.setEnabled(false);
     }
 
 
@@ -135,6 +138,8 @@ public class EventsForm extends Composite implements IUpdateLanguage  {
         groupLabel.setText("Group: ");
 
         txtGroup = new Text(group, SWT.BORDER);
+        txtGroup.setBackground(SWTResourceManager.getColor(255, 255, 217));
+        
         txtGroup.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
         		if (e.keyCode == SWT.CR && !txtGroup.equals(""))
@@ -143,7 +148,7 @@ public class EventsForm extends Composite implements IUpdateLanguage  {
         });
         txtGroup.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
-        		butApply.setEnabled(txtGroup.getText().length() > 0);
+        		butApply.setEnabled(true);
         		butEventGroupOperation.setEnabled(txtGroup.getText().length() > 0);
                 
         	}
@@ -164,6 +169,11 @@ public class EventsForm extends Composite implements IUpdateLanguage  {
         logicLabel.setText("Logic: ");
 
         txtGroupLogic = new Text(group, SWT.BORDER);
+        txtGroupLogic.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		butApply.setEnabled(true);
+        	}
+        });
         txtGroupLogic.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
         		if (e.keyCode == SWT.CR && !txtGroup.equals(""))
@@ -207,6 +217,11 @@ public class EventsForm extends Composite implements IUpdateLanguage  {
         eventClassLabel.setText("Event Class");
 
         cboEventClass = new Combo(group, SWT.BORDER);
+        cboEventClass.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		butApply.setEnabled(true);
+        	}
+        });
         cboEventClass.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
         		if (e.keyCode == SWT.CR && !txtGroup.equals(""))
@@ -250,8 +265,11 @@ public class EventsForm extends Composite implements IUpdateLanguage  {
         			TableItem item = table.getSelection()[0];        			
         			txtGroup.setText(item.getText(0));
         			txtGroupLogic.setText(item.getText(1));
-        			cboEventClass.setText(item.getText(2));        			
+        			cboEventClass.setText(item.getText(2));  
+        			
         		}
+        		butApply.setEnabled(false);
+        		
                 butRemove.setEnabled(table.getSelectionCount() > 0);
         	}
         });
@@ -285,19 +303,27 @@ public class EventsForm extends Composite implements IUpdateLanguage  {
         butRemove.setToolTipText(Messages.getTooltip("events.button_operation"));
     }
     
-    private void apply() {
-    	if(txtGroup.getText().length() > 0)
-    		listener.apply(txtGroup.getText(), cboEventClass.getText(), txtGroupLogic.getText(), table);
-    	
-    	cboEventClass.setText("");    	
-        txtGroup.setText("");
-        txtGroupLogic.setText("");
-        
-        cboEventClass.setItems(listener.getEventClasses());
-        
-    	txtGroup.setFocus();
-    	
-    }
+   
 
+	public boolean isUnsaved() {		
+		return butApply.isEnabled();		
+	}
+	
+	public void apply() {		
+		if (butApply.isEnabled()) {
+			if(txtGroup.getText().length() > 0)
+				listener.apply(txtGroup.getText(), cboEventClass.getText(), txtGroupLogic.getText(), table);
+
+			cboEventClass.setText("");    	
+			txtGroup.setText("");
+			txtGroupLogic.setText("");
+
+			cboEventClass.setItems(listener.getEventClasses());
+
+			txtGroup.setFocus();
+		}
+	}
+
+    
 } // @jve:decl-index=0:visual-constraint="10,10"
 

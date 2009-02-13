@@ -21,6 +21,8 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 import org.eclipse.swt.widgets.Shell;
+
+import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import java.util.regex.Pattern;
 
@@ -41,6 +43,8 @@ public class Utils {
 	private static       List         undo            = null;
 
 	private static       int          UNDO_SIZE       = 10;
+	
+	private static       Element      resetElement    = null;
 
 
 	public static String getIntegerAsString(int i) {
@@ -863,41 +867,82 @@ public class Utils {
 	public static boolean checkElement(String name, SchedulerDom _dom, int type, String which ) {
 		boolean onlyWarning = false;//-> true: Gibt nur eine Warnung aus. Sonst Warnung mit Yes- und No- Button um ggf. die Änderungen zurückzunehmen
 		try {
-
-			
-			
+						
 			if(type == Editor.JOB_CHAIN) {
 
 				XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty())
-					throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
-					"Soll die Jobkette trotzdem umbennant werden");
+					//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
+					//"Soll die Jobkette trotzdem umbennant werden");
+					throw new Exception ("The Jobchain [job_chain=" + name + "] is currently being used by an order. " +
+					 "Do you want really rename the jobchain");				
 
 				XPath x4 = XPath.newInstance("//add_order[@job_chain='"+ name + "']");				 
 				List listOfElement_4 = x4.selectNodes(_dom.getDoc());
 				if(!listOfElement_4.isEmpty())
-					throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
-					"Soll die Jobkette trotzdem umbennant werden");
-
+					throw new Exception ("The Jobchain [job_chain=" + name + "] is currently being used by an order. " +
+					 "Do you want really rename the jobchain");				
+					
 			} else if(type == Editor.JOB_CHAINS) {
 
 				XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty())
-					throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
-					"Soll die Jobkette trotzdem gelöscht werden");
+					//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
+					//"Soll die Jobkette trotzdem gelöscht werden");
+					throw new Exception ("The Jobchain [job_chain=" + name + "] is currently being used by an order. " +
+					 "Do you want to delete the jobchain");
 
 				XPath x4 = XPath.newInstance("//add_order[@job_chain='"+ name + "']");				 
 				List listOfElement_4 = x4.selectNodes(_dom.getDoc());
 				if(!listOfElement_4.isEmpty())
-					throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
-					"Soll die Jobkette trotzdem gelöscht werden");
+					//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
+					//"Soll die Jobkette trotzdem gelöscht werden");
+					throw new Exception ("The Jobchain [job_chain=" + name + "] is currently being used by an order. " +
+					 "Do you want to delete the jobchain");
 
 			} else if(type==Editor.JOB) {
 
 				if(which != null && which.equalsIgnoreCase("close")) {
 					onlyWarning = true;
+					XPath x0 = XPath.newInstance("//job[@name='"+ name + "']");			 
+					Element e = (Element)x0.selectSingleNode(_dom.getDoc());
+					boolean isOrder = Utils.getAttributeValue("order", e).equalsIgnoreCase("yes");
+					/*if( isOrder) {						
+
+						XPath x = XPath.newInstance("//job[@name='"+ name + "']/run_time[@let_run='yes' or @once='yes' or @single_start]");			 
+						//Element e = (Element)x.selectSingleNode(doc);
+						List listOfElement = x.selectNodes(_dom.getDoc());
+						if(!listOfElement.isEmpty())
+							//throw new Exception ("Ein Auftragsgesteuerter Job [name=" + name+ "] darf im Runtime Elemente keinen single_start-, start_once- und " +
+							//"let_run-Attribute verwenden.");
+							throw new Exception ("An order job [name=" + name+ "] may not use single_start-, start_once- and " +
+									"let_run attributes in Runtime Elements.");
+							
+						XPath x2 = XPath.newInstance("//job[@name='"+ name + "']/run_time//period[@let_run='yes' or @single_start]");				 
+						List listOfElement_2 = x2.selectNodes(_dom.getDoc());
+						if(!listOfElement_2.isEmpty())
+							//throw new Exception ("Ein Auftragsgesteuerter Job [name=" + name+ "] darf im Runtime Elemente keinen single_start-, start_once- und " +
+							//"let_run-Attribute verwenden.");
+							throw new Exception ("An order job [name=" + name+ "] may not use single_start-, start_once- and " +
+							"let_run attributes in Runtime Elements.");
+					
+					} else {
+*/
+					if(!isOrder) {
+						XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
+						List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+						if(!listOfElement_3.isEmpty())
+							//throw new Exception ("Der Standalone Job " + name + " ist in einer Jobkette definiert.");
+							throw new Exception   ("The Standalone Job " + name + " is currently being used by a job chain");
+					}
+				} else {
+
+					if(name.length() == 0)
+						return true;
+
+					//test begin
 					XPath x0 = XPath.newInstance("//job[@name='"+ name + "']");			 
 					Element e = (Element)x0.selectSingleNode(_dom.getDoc());
 					boolean isOrder = Utils.getAttributeValue("order", e).equalsIgnoreCase("yes");
@@ -907,30 +952,27 @@ public class Utils {
 						//Element e = (Element)x.selectSingleNode(doc);
 						List listOfElement = x.selectNodes(_dom.getDoc());
 						if(!listOfElement.isEmpty())
-							throw new Exception ("Ein Auftragsgesteuerter Job [name=" + name+ "] darf im Runtime Elemente keinen single_start-, start_once- und " +
-							"let_run-Attribute verwenden.");
-
+							//throw new Exception ("Ein Auftragsgesteuerter Job [name=" + name+ "] darf im Runtime Elemente keinen single_start-, start_once- und " +
+							//"let_run-Attribute verwenden.");
+							throw new Exception ("An order job [name=" + name+ "] may not use single_start-, start_once- and " +
+									"let_run attributes in Runtime Elements. Should these attributes be deleted?");
+							
 						XPath x2 = XPath.newInstance("//job[@name='"+ name + "']/run_time//period[@let_run='yes' or @single_start]");				 
 						List listOfElement_2 = x2.selectNodes(_dom.getDoc());
 						if(!listOfElement_2.isEmpty())
-							throw new Exception ("Ein Auftragsgesteuerter Job [name=" + name+ "] darf im Runtime Elemente keinen single_start-, start_once- und " +
-							"let_run-Attribute verwenden.");				
-					} else {
-
-						XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
-						List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-						if(!listOfElement_3.isEmpty())
-							throw new Exception ("Der Standalone Job " + name + " ist in einer Jobkette definiert.");
+							//throw new Exception ("Ein Auftragsgesteuerter Job [name=" + name+ "] darf im Runtime Elemente keinen single_start-, start_once- und " +
+							//"let_run-Attribute verwenden.");
+							throw new Exception ("An order job [name=" + name+ "] may not use single_start-, start_once- and " +
+							"let_run attributes in Runtime Elements. Should these attributes be deleted?");
+					
 					}
-				} else {
-
-					if(name.length() == 0)
-						return true;
-
+					//test end
+					
 					XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
 					List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 					if(!listOfElement_3.isEmpty())
-						throw new Exception ("Der Job " + name + " ist in einer Jobkette definiert. Soll der Name des Jobs trotzdem geändert werden?");
+						//throw new Exception ("Der Job " + name + " ist in einer Jobkette definiert. Soll der Name des Jobs trotzdem geändert werden?");
+						throw new Exception   ("The Job " + name + " is currently being used by a job chain. Do you want really rename the name?");
 				}
 
 			} else if(type == Editor.JOBS) {
@@ -938,14 +980,16 @@ public class Utils {
 				XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty())
-					throw new Exception ("Der Job " + name + " ist in einer Jobkette definiert. Soll der Job trotzdem gelöscht werden");
+					//throw new Exception ("Der Job " + name + " ist in einer Jobkette definiert. Soll der Job trotzdem gelöscht werden");
+					throw new Exception ("The lock [lock=" + name + "] is currently	being used by a job. Do you want to delete?");
 
 			} else if(type == Editor.LOCKS) {
 
 				XPath x3 = XPath.newInstance("//lock.use[@lock='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty())
-					throw new Exception ("Die Sperre [lock=" + name + "] wird in einer Job verwendet. Möchten Sie trotzdem fortfahren?");
+					//throw new Exception ("Die Sperre [lock=" + name + "] wird in einer Job verwendet. Möchten Sie trotzdem fortfahren?");
+					throw new Exception ("The lock [lock=" + name + "] is currently	being used by a job. Do you want to continue?");				
 
 
 			} else if(type == Editor.PROCESS_CLASSES) {
@@ -953,14 +997,16 @@ public class Utils {
 				XPath x3 = XPath.newInstance("//job[@process_class='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty())
-					throw new Exception ("Die Processklasse " + name + " wird in einer Job verwendet. Möchten Sie trotzdem fortfahren?");
+					//throw new Exception ("Die Processklasse " + name + " wird in einer Job verwendet. Möchten Sie trotzdem fortfahren?");
+					throw new Exception ("The process class [process_class=" + name + "] is currently being used by a job. Do you want to continue?");
 
 			} else if(type == Editor.SCHEDULES || type == Editor.SCHEDULE) {
 
 				XPath x3 = XPath.newInstance("//run_time[@schedule='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty())
-					throw new Exception ("Die Schedule " + name + " wird in einem Runtime verwendet. Möchten Sie trotzdem fortfahren?");
+					//throw new Exception ("Die Schedule " + name + " wird in einem Runtime verwendet. Möchten Sie trotzdem fortfahren?");
+					throw new Exception ("The Schedule [name=" + name + "] is currently being used by a Runtime. Do you want to continue?");
 
 			}
 
@@ -969,10 +1015,11 @@ public class Utils {
 
 			if(onlyWarning) {
 				MainWindow.message(e.getMessage(), SWT.ICON_WARNING);	
-			} else {
+			} else {				
 				int c = MainWindow.message(e.getMessage(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
-				if(c != SWT.YES)
+				if(c != SWT.YES) {					
 					return false;
+				}
 			}
 		}
 		return true;
@@ -1042,4 +1089,31 @@ public class Utils {
 	}
 
 
+	public static void setResetElement(Element elem) {
+         resetElement = (Element)elem.clone();
+	}
+
+	public static void reset(Element elem, ISchedulerUpdate update, SchedulerDom currdom) {
+		try {
+		elem.getAttributes().removeAll(elem.getAttributes());
+		List l = resetElement.getAttributes();
+		for(int i = 0; i < l.size(); i++) {
+			org.jdom.Attribute attr = (org.jdom.Attribute)l.get(i);
+			elem.setAttribute(attr.getName(), attr.getValue());
+		}
+		
+		
+			
+         elem.setContent(resetElement.cloneContent());
+         update.updateTree("main");
+         
+         
+		} catch (Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+		}
+	}
 }

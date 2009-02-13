@@ -20,7 +20,7 @@ import sos.connection.*;
 
 public class MainListener {
 
-	private     MainWindow         _gui           = null;
+	//private     MainWindow         _gui           = null;
 
 	private     IContainer         _container     = null;
 
@@ -29,7 +29,7 @@ public class MainListener {
 	private     SOSConnection      sosConnection  = null;    
 
 	public MainListener(MainWindow gui, IContainer container) {
-		_gui = gui;
+		//_gui = gui;
 		_container = container;
 	}
 

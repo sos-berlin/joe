@@ -3,6 +3,7 @@ package sos.scheduler.editor.app;
 import java.util.Collection;
 
 public interface IEditor {
+	
     public boolean hasChanges();
 
 

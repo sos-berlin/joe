@@ -16,7 +16,6 @@ import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import org.jdom.xpath.XPath;
 
 
 public class OrderListener {

@@ -43,9 +43,7 @@ import sos.scheduler.editor.app.ContextMenu;
 
 
 public class JobForm extends Composite implements IUpdateLanguage {
-	
-	
-	
+			
 	private Combo       sPriority         = null;
 	
 	private Text        sIdleTimeout      = null;
@@ -194,8 +192,17 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		group = new Group(this, SWT.NONE);
 		group.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(final DisposeEvent e) {
-				if(isVisible()) 				
-					Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, "CLOSE");
+				/*boolean _deleteRuntimeAttribute = false;
+				
+				if(isVisible()) 						
+					//_continue = Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, "CLOSE");
+					_deleteRuntimeAttribute = Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, null);
+				
+				if(_deleteRuntimeAttribute) {
+					listener.getJob().removeAttribute("single_start");
+					listener.getJob().removeAttribute("let_run");
+					listener.getJob().removeAttribute("start_once");					
+				}*/
 			
 			}
 		});
@@ -371,6 +378,18 @@ public class JobForm extends Composite implements IUpdateLanguage {
 				}
 				listener.setOrder(bOrderYes.getSelection());
 				
+				boolean _deleteRuntimeAttribute = false;
+				if(isVisible()) 						
+					//_continue = Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, "CLOSE");
+					_deleteRuntimeAttribute = Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, null);
+				
+				if(_deleteRuntimeAttribute) {
+					if(listener.getJob() != null && listener.getJob().getChild("run_time") != null) {
+						listener.getJob().getChild("run_time").removeAttribute("single_start");
+						listener.getJob().getChild("run_time").removeAttribute("let_run");
+						listener.getJob().getChild("run_time").removeAttribute("once");					
+				}
+				}
 			}
 		});
 		bOrderNo = new Button(cOrder, SWT.RADIO);

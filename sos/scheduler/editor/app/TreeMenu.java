@@ -594,7 +594,7 @@ public class TreeMenu {
 						int i = 1;
 						if(data.getElement().getChild("locks") != null)
 							i = data.getElement().getChild("locks").getChildren("lock").size() +1;
-						listener.applyLock("lock_" + i, 0);
+						listener.applyLock("lock_" + i, 0, true);
 						listener.fillTable(sos.scheduler.editor.conf.forms.LocksForm.getTable());
 						listener.selectLock(i-1);
 					} catch(Exception es) {

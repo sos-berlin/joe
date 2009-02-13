@@ -28,7 +28,7 @@ public class JobChainNestedListener {
 
 	private    Element                   _node                = null;
 
-	private    Element                   _source              = null;
+	//private    Element                   _source              = null;
 
 	private    String[]                  _states              = null;
 

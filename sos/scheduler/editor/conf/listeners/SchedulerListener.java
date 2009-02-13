@@ -59,6 +59,7 @@ public class SchedulerListener {
 		_gui = gui;		
 		_dom = dom;
 		
+		
 	}
 
 	public void treeFillMain(Tree tree, Composite c, int type_) {
@@ -247,6 +248,11 @@ public class SchedulerListener {
 
 	public void treeFillMain(Tree tree, Composite c) {
 		tree.removeAll();
+		if(_dom.isLifeElement())
+			sos.scheduler.editor.app.Utils.setResetElement(_dom.getRoot());
+		else
+			sos.scheduler.editor.app.Utils.setResetElement(_dom.getRoot().getChild("config"));
+		
 
 		Element config = _dom.getRoot().getChild("config");
 
@@ -898,6 +904,8 @@ public class SchedulerListener {
 				TreeItem item = tree.getSelection()[0];
 				
 				TreeData data = (TreeData) item.getData();
+				
+				
 				if (data != null) {
 
 					_dom.setInit(true);

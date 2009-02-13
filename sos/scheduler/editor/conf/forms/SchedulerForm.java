@@ -63,7 +63,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		this.dom.setDataChangedListener(this);
 	
 		listener = new SchedulerListener(this, this.dom);
-		
+				
 	}
 	
 	public SchedulerForm(IContainer container, Composite parent, int style, int type) {
@@ -367,6 +367,11 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		if(res)
 			setReChangedTreeItemText();
 		
+		if(dom.getRoot().getName().equals("spooler"))
+			Utils.setResetElement(dom.getRoot().getChild("config"));
+		else
+			Utils.setResetElement(dom.getRoot());
+		
 		return res;
 	}
 	
@@ -480,7 +485,8 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	}
 	
 	
-	public void updateTree(String which) {		
+	public void updateTree(String which) {
+		String mar = getTreeSelection();
 		if(which.equalsIgnoreCase("main")) {
 			if(dom.isLifeElement()) {
 				listener.treeFillMainForLifeElement(tree, cMainForm);
@@ -494,7 +500,10 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	}
 	
 	public String getTreeSelection() {
-		return tree.getSelection()[0].getText();
+		if(tree.getSelectionCount() > 0)
+			return tree.getSelection()[0].getText();
+		else 
+			return "Config";
 	}
 	
 	public void updateJobChains() {
@@ -736,7 +745,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 			if(!dom.isDirectory()) 
 				return;
 			 
-			TreeData data = (TreeData) item.getData();
+			//TreeData data = (TreeData) item.getData();
 		    /*Element elem = Utils.getHotFolderParentElement(data.getElement());
 		    String key1 = "";
 		    
@@ -760,7 +769,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 				return;
 			}
 			
-			if(dom.getChangedJob().get(key1).equals(dom.NEW)) {
+			if(dom.getChangedJob().get(key1).equals(SchedulerDom.NEW)) {
 				item = item.getItem(item.getItemCount()-1);
 				if(!item.getText().startsWith("*")) {
 					//item.getItem(item.getItemCount()-1);

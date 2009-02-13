@@ -2,8 +2,6 @@ package sos.scheduler.editor.actions.listeners;
 
 
 import org.jdom.Element;
-import org.jdom.xpath.XPath;
-
 import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.forms.ActionsForm;
 import sos.scheduler.editor.app.Utils;
@@ -79,11 +77,14 @@ public class EventsListener {
 						List l2 = eventGroup.getChildren("event");
 						for(int j = 0; j < l2.size(); j++) {
 							Element event = (Element)l2.get(j);
-							String eventClass = Utils.getAttributeValue("event_class", event); 
+							String eventName = Utils.getAttributeValue("event_name", event);
+							if(eventName.length()>0)
+								list.add(eventName);
+							/*String eventClass = Utils.getAttributeValue("event_class", event); 
 							String eventId = Utils.getAttributeValue("event_id", event);
 							if(eventClass.concat(eventId).length() > 0 && !list.contains(eventClass + "." + eventId)) {
 								list.add(eventClass + "." + eventId);	
-							}
+							}*/
 						}
 					}
 				}

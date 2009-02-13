@@ -2,14 +2,11 @@ package sos.scheduler.editor.actions.listeners;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
-
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
@@ -25,7 +22,7 @@ public class JobCommandNamesListener {
 
 	private        Element          _command      = null;
 
-	private        Element          _job          = null;
+	//private        Element          _job          = null;
 
 
 	public JobCommandNamesListener(ActionsDom dom, Element command, ActionsForm update) {
@@ -33,8 +30,8 @@ public class JobCommandNamesListener {
 		_dom = dom;
 		_command = command;
 		_main = update;
-		if (_command != null)
-			_job = _command.getParentElement();
+		//if (_command != null)
+		//	_job = _command.getParentElement();
 
 	}
 

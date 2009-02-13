@@ -39,6 +39,8 @@ public interface ISchedulerUpdate extends IDataChanged {
     
     public void updateTreeItem(String s);
     
+    public void updateTree(String which);
+    
     public void updateFont();
     
     public void updateFont(TreeItem item);
@@ -46,5 +48,6 @@ public interface ISchedulerUpdate extends IDataChanged {
     public void updateWebServices();
     
     public void updateRunTime();
+        
     
 }

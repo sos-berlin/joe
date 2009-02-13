@@ -1,20 +1,15 @@
 package sos.scheduler.editor.actions.listeners;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
-
 import sos.scheduler.editor.actions.IUpdateTree;
 import sos.scheduler.editor.actions.ActionsDom;
-import sos.scheduler.editor.actions.forms.ActionsListForm;
 import sos.scheduler.editor.actions.forms.ActionsForm;
 import sos.scheduler.editor.actions.forms.EventsForm;
 import sos.scheduler.editor.actions.forms.EventForm;

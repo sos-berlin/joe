@@ -26,9 +26,10 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.IUnsaved;
 
 
-public class EventForm extends Composite implements IUpdateLanguage {
+public class EventForm extends Composite implements IUnsaved, IUpdateLanguage {
     
 	
 	private EventListener     listener                  = null;
@@ -38,6 +39,8 @@ public class EventForm extends Composite implements IUpdateLanguage {
     private Text               txtEventId               = null;
     
     private Text               txtTitle                 = null;
+    
+    private Text               txtEventName             = null;
     
     private Combo               cboEventClass            = null;
     
@@ -79,6 +82,7 @@ public class EventForm extends Composite implements IUpdateLanguage {
         	listener.fillEvent(table);
         	group.setText(" Action: " + listener.getActionName() + "  Group: " + listener.getEventGroupName() );
         	cboEventClass.setItems(listener.getEventClasses());
+        	butApply.setEnabled(false);
     }
 
 
@@ -96,25 +100,25 @@ public class EventForm extends Composite implements IUpdateLanguage {
         gridLayout_1.numColumns = 3;
         group.setLayout(gridLayout_1);
 
-        final Label logicLabel = new Label(group, SWT.NONE);
-        logicLabel.setText("Event Title: ");
-        logicLabel.setVisible(type != Editor.REMOVE_EVENT_GROUP);
-        txtTitle = new Text(group, SWT.BORDER);
-        txtTitle.addModifyListener(new ModifyListener() {
+        final Label eventNameLabel = new Label(group, SWT.NONE);
+        eventNameLabel.setText("Event Name:");
+
+        txtEventName = new Text(group, SWT.BORDER);
+        txtEventName.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
-        		butApply.setEnabled(txtEventId.getText().length() > 0);
+        		butApply.setEnabled(true);
         	}
         });
-        txtTitle.addKeyListener(new KeyAdapter() {
+        txtEventName.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
-        		if (e.keyCode == SWT.CR && !txtEventId.equals(""))
+        		if (e.keyCode == SWT.CR )
         			apply();
         	}
         });
-        txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
+        txtEventName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
         butApply = new Button(group, SWT.NONE);
+        butApply.setEnabled(false);
         butApply.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		apply();
@@ -123,22 +127,23 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         butApply.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
         butApply.setText("Apply");
 
-        final Label eventClassLabel = new Label(group, SWT.NONE);
-        eventClassLabel.setText("Event Class:");
-
-        cboEventClass = new Combo(group, SWT.BORDER);
-        cboEventClass.addModifyListener(new ModifyListener() {
+        final Label logicLabel = new Label(group, SWT.NONE);
+        logicLabel.setText("Event Title: ");
+        logicLabel.setVisible(type != Editor.REMOVE_EVENT_GROUP);
+        txtTitle = new Text(group, SWT.BORDER);
+        txtTitle.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
-        		butApply.setEnabled(txtEventId.getText().length() > 0);
+        		butApply.setEnabled(true);
         	}
         });
-        cboEventClass.addKeyListener(new KeyAdapter() {
+        txtTitle.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
-        		if (e.keyCode == SWT.CR && !txtEventId.equals(""))
+        		if (e.keyCode == SWT.CR )
         			apply();
         	}
         });
-        cboEventClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         
         butNew = new Button(group, SWT.NONE);
         butNew.addSelectionListener(new SelectionAdapter() {
@@ -150,6 +155,24 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         butNew.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
         butNew.setText("New");
 
+        final Label eventClassLabel = new Label(group, SWT.NONE);
+        eventClassLabel.setText("Event Class:");
+
+        cboEventClass = new Combo(group, SWT.BORDER);
+        cboEventClass.addModifyListener(new ModifyListener() {
+        	public void modifyText(final ModifyEvent e) {
+        		butApply.setEnabled(true);
+        	}
+        });
+        cboEventClass.addKeyListener(new KeyAdapter() {
+        	public void keyPressed(final KeyEvent e) {
+        		if (e.keyCode == SWT.CR )
+        			apply();
+        	}
+        });
+        cboEventClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+        new Label(group, SWT.NONE);
+
         final Label groupLabel = new Label(group, SWT.NONE);
         groupLabel.setLayoutData(new GridData());
         groupLabel.setText("Event Id:");
@@ -157,13 +180,13 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         txtEventId = new Text(group, SWT.BORDER);
         txtEventId.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
-        		if (e.keyCode == SWT.CR && !txtEventId.equals(""))
+        		if (e.keyCode == SWT.CR)
         			apply();
         	}
         });
         txtEventId.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
-        		butApply.setEnabled(txtEventId.getText().length() > 0);
+        		butApply.setEnabled(true);
                 
         	}
         });
@@ -176,12 +199,12 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         txtJobname = new Text(group, SWT.BORDER);
         txtJobname.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
-        		butApply.setEnabled(txtEventId.getText().length() > 0);
+        		butApply.setEnabled(true);
         	}
         });
         txtJobname.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
-        		if (e.keyCode == SWT.CR && !txtEventId.equals(""))
+        		if (e.keyCode == SWT.CR )
         			apply();
         	}
         });
@@ -194,12 +217,12 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         txtJobChaon = new Text(group, SWT.BORDER);
         txtJobChaon.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
-        		butApply.setEnabled(txtEventId.getText().length() > 0);
+        		butApply.setEnabled(true);
         	}
         });
         txtJobChaon.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
-        		if (e.keyCode == SWT.CR && !txtEventId.equals(""))
+        		if (e.keyCode == SWT.CR )
         			apply();
         	}
         });
@@ -212,12 +235,12 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         txtOrderId = new Text(group, SWT.BORDER);
         txtOrderId.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
-        		butApply.setEnabled(txtEventId.getText().length() > 0);
+        		butApply.setEnabled(true);
         	}
         });
         txtOrderId.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
-        		if (e.keyCode == SWT.CR && !txtEventId.equals(""))
+        		if (e.keyCode == SWT.CR )
         			apply();
         	}
         });
@@ -232,12 +255,12 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         txtComment = new Text(group, SWT.MULTI | SWT.BORDER | SWT.WRAP);
         txtComment.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
-        		butApply.setEnabled(txtEventId.getText().length() > 0);
+        		butApply.setEnabled(true);
         	}
         });
         txtComment.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
-        		if (e.keyCode == SWT.CR && !txtEventId.equals(""))
+        		if (e.keyCode == SWT.CR )
         			apply();
         	}
         });
@@ -252,21 +275,27 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         	table.addSelectionListener(new SelectionAdapter() {
         		public void widgetSelected(final SelectionEvent e) {
         			if(table.getSelectionCount() > 0) {
-        				TableItem item = table.getSelection()[0];        			
-        				txtEventId.setText(item.getText(0));
-        				txtTitle.setText(item.getText(1));
-        				cboEventClass.setText(item.getText(2));        			
-        				txtJobname.setText(item.getText(3));
-        				txtJobChaon.setText(item.getText(4));
-        				txtOrderId.setText(item.getText(5));
-        				txtComment.setText(item.getText(6));
+        				TableItem item = table.getSelection()[0];
+        				txtEventName.setText(item.getText(0));
+        				txtEventId.setText(item.getText(1));
+        				txtTitle.setText(item.getText(2));
+        				cboEventClass.setText(item.getText(3));        			
+        				txtJobname.setText(item.getText(4));
+        				txtJobChaon.setText(item.getText(5));
+        				txtOrderId.setText(item.getText(6));
+        				txtComment.setText(item.getText(7));
         			}
+        			butApply.setEnabled(false);
         			butRemove.setEnabled(table.getSelectionCount() > 0);
         		}
         	});
         	table.setLinesVisible(true);
         	table.setHeaderVisible(true);
         	table.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1));
+
+        	final TableColumn newColumnTableColumn_7 = new TableColumn(table, SWT.NONE);
+        	newColumnTableColumn_7.setWidth(100);
+        	newColumnTableColumn_7.setText("Event Name");
 
         	final TableColumn newColumnTableColumn = new TableColumn(table, SWT.NONE);
         	newColumnTableColumn.setWidth(83);
@@ -327,18 +356,27 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         txtOrderId.setToolTipText(Messages.getTooltip("event.order_id"));        
         txtJobname.setToolTipText(Messages.getTooltip("event.jobname"));   
         txtComment.setToolTipText(Messages.getTooltip("event.comment"));
+        txtEventName.setToolTipText(Messages.getTooltip("event.name"));
     }
     
-    private void apply() {
-    	if(txtEventId.getText().length() > 0)
-    		listener.apply(txtEventId.getText(), cboEventClass.getText(), txtTitle.getText(), 
-    				       txtJobname.getText(),txtJobChaon.getText(), txtOrderId.getText(), txtComment.getText(), 
-    				       table);
-    	cboEventClass.setItems(listener.getEventClasses());
-    	refresh();
+    public boolean isUnsaved() {		
+		return butApply.isEnabled();		
+	}
+	
+    public void apply() {		
+    	if (butApply.isEnabled()) {
+    		//public void apply() {
+    		//if(txtEventId.getText().length() > 0)
+    		listener.apply(txtEventName.getText(), txtEventId.getText(), cboEventClass.getText(), txtTitle.getText(), 
+    				txtJobname.getText(),txtJobChaon.getText(), txtOrderId.getText(), txtComment.getText(), 
+    				table);
+    		cboEventClass.setItems(listener.getEventClasses());
+    		refresh();
+    	}
     }
 
     private void refresh() {
+    	txtEventName.setText("");
     	txtEventId.setText("");
         txtTitle.setText("");
         cboEventClass.setText("");

@@ -75,11 +75,6 @@ public class ParameterListener {
 	}
 
 
-	private void initEnvironment() {
-		_parent.addContent(0, new Element("environment"));
-		_environments = _parent.getChild("environment").getChildren();
-	}
-
 
 	public void fillParams(Table table) {
 		if (_params != null) {
