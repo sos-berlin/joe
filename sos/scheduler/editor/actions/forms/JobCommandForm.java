@@ -544,7 +544,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		String hour = "";
 		String min = "";
 		String sec = "";
-
+ 
 		boolean havesec     = false;
 		boolean haveTime    = false;
 		boolean havenow     = false;

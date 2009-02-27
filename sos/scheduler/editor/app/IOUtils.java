@@ -218,6 +218,8 @@ public class IOUtils {
 	}
 
 
+	
+	
 	public static boolean saveFile(DomParser dom, boolean saveas) {
 		String filename = dom.getFilename();
 		String originFilename = null;
@@ -374,6 +376,29 @@ public class IOUtils {
 		}
 	}
 
+	public static boolean saveAction(DomParser dom, boolean saveas) {
+		
+		
+		try {
+			if(dom.getFilename() == null || saveas) {
+
+				sos.scheduler.editor.actions.forms.SaveEventsDialogForm d= new sos.scheduler.editor.actions.forms.SaveEventsDialogForm();
+								
+			} 
+			saveFile(dom , false);
+			
+
+		} catch (Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " could not save directory." , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+		}
+
+		return true;
+
+	}
 
 
 	/**

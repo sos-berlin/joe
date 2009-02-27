@@ -96,9 +96,15 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
         bRemoveCommand.setEnabled(false);
         bRemoveCommand.setLayoutData(gridData1);
         bRemoveCommand.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                bRemoveCommand.setEnabled(listener.deleteCommands(table));
-            }
+        	public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+        		if(table != null && table.getSelectionCount() > 0)  {
+        			int cont = sos.scheduler.editor.app.MainWindow.message(getShell(), "If you really want to delete this command?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+
+        			if(cont == SWT.OK) {				        				
+        				bRemoveCommand.setEnabled(listener.deleteCommands(table));        				
+        			} 
+        		}
+        	}
         });
     }
 

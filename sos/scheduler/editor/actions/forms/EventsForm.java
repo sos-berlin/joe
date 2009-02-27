@@ -321,7 +321,9 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
 			cboEventClass.setItems(listener.getEventClasses());
 
 			txtGroup.setFocus();
+			
 		}
+		butApply.setEnabled(false);
 	}
 
     

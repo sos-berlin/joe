@@ -173,8 +173,8 @@ public class MainWindow  {
 
 		//new event handler
 		MenuItem pNewActions = new MenuItem(pmNew, SWT.PUSH);
-		pNewActions.setText("Event Handler \tCTRL+V");
-		pNewActions.setAccelerator(SWT.CTRL | 'V');
+		pNewActions.setText("Event Handler \tCTRL+X");
+		pNewActions.setAccelerator(SWT.CTRL | 'X');
 		pNewActions.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.newActions() != null)
@@ -714,7 +714,17 @@ public class MainWindow  {
 			SchedulerDom currdom = (SchedulerDom)form.getDom();
 			changes = (java.util.HashMap)((SchedulerDom)currdom).getChangedJob().clone()	;
 		}
-		
+
+
+		/*if(container.getCurrentEditor() instanceof sos.scheduler.editor.actions.forms.ActionsForm) {
+			sos.scheduler.editor.actions.forms.ActionsForm form =(sos.scheduler.editor.actions.forms.ActionsForm)container.getCurrentEditor();
+			sos.scheduler.editor.actions.ActionsDom currdom = (sos.scheduler.editor.actions.ActionsDom)form.getDom();
+			if(currdom.getFilename() == null || currdom.getFilename().length() == 0) {
+				sos.scheduler.editor.actions.forms.SaveEventsDialogForm d= new sos.scheduler.editor.actions.forms.SaveEventsDialogForm();
+
+			}
+		} */
+
 		if (container.getCurrentEditor().applyChanges()) {
 			container.getCurrentEditor().save();
 			saveFTP(changes);
@@ -878,7 +888,8 @@ public class MainWindow  {
 		butSave.setToolTipText("Save Configuration");
 
 		butShowAsSML = new ToolItem(toolBar, SWT.PUSH);
-		butShowAsSML.addSelectionListener(new SelectionAdapter() {
+		butShowAsSML.setEnabled(container != null && container.getCurrentEditor() instanceof SchedulerForm);
+		butShowAsSML.addSelectionListener(new SelectionAdapter() {			
 			public void widgetSelected(final SelectionEvent e) {
 				if(container.getCurrentEditor()== null)
 					return;
@@ -934,17 +945,25 @@ public class MainWindow  {
 			}
 		});
 				
-		final ToolItem itemFTPReset = new ToolItem(toolBar, SWT.PUSH);
-		itemFTPReset.setImage(ResourceManager
+		final ToolItem itemReset = new ToolItem(toolBar, SWT.PUSH);
+		itemReset.setEnabled(container != null && container.getCurrentEditor() instanceof SchedulerForm);
+		itemReset.setImage(ResourceManager
 				.getImageFromResource("/sos/scheduler/editor/icon_reset.gif"));
-		itemFTPReset.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+		
+		itemReset.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(final SelectionEvent e) {
-				SchedulerForm form =(SchedulerForm)container.getCurrentEditor();
-				SchedulerDom currdom = (SchedulerDom)form.getDom();
-				if(currdom.isLifeElement())
-					sos.scheduler.editor.app.Utils.reset( currdom.getRoot(), form, currdom);
-				else
-					sos.scheduler.editor.app.Utils.reset( currdom.getRoot().getChild("config"), form, currdom);
+				if(container.getCurrentEditor() instanceof SchedulerForm) {
+					SchedulerForm form =(SchedulerForm)container.getCurrentEditor();
+					SchedulerDom currdom = (SchedulerDom)form.getDom();
+					if(currdom.isLifeElement())
+						sos.scheduler.editor.app.Utils.reset( currdom.getRoot(), form, currdom);
+					else
+						sos.scheduler.editor.app.Utils.reset( currdom.getRoot().getChild("config"), form, currdom);
+				} /*else if(container.getCurrentEditor() instanceof sos.scheduler.editor.actions.forms.ActionsForm) {
+					 sos.scheduler.editor.actions.forms.ActionsForm form =( sos.scheduler.editor.actions.forms.ActionsForm)container.getCurrentEditor();
+					 sos.scheduler.editor.actions.ActionsDom currdom = ( sos.scheduler.editor.actions.ActionsDom)form.getDom();
+					 sos.scheduler.editor.app.Utils.reset( currdom.getRoot(), form, currdom);
+				}*/
 
 			}
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {

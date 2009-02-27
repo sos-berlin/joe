@@ -164,8 +164,8 @@
         <xsd:element ref="remote_scheduler.remote_task.close" minOccurs="0"/>
       </xsd:sequence>
       <xsd:attribute name="name" type="xsd:string" use="required"/>
-      <xsd:attribute name="scheduler_host" type="xsd:string" use="required"/>
-      <xsd:attribute name="scheduler_port" type="xsd:short" use="required"/>
+      <xsd:attribute name="scheduler_host" type="xsd:string" use="optional"/>
+      <xsd:attribute name="scheduler_port" type="xsd:short" use="optional"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="remove_event">
@@ -546,6 +546,9 @@
   </xsd:element>
   <xsd:element name="start_job">
     <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="params" minOccurs="0"/>
+      </xsd:sequence>
       <xsd:attribute name="job" type="Path" use="required"/>
       <xsd:attribute name="name" type="Name"/>
       <xsd:attribute name="at" type="Date_time_with_now_or_period"/>

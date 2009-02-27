@@ -24,10 +24,14 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+
+import com.swtdesigner.SWTResourceManager;
+
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Utils;
 
@@ -116,7 +120,7 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 	 */
 	private void createGroup() {
 		GridLayout gridLayout2 = new GridLayout();
-		gridLayout2.numColumns = 3;
+		gridLayout2.numColumns = 4;
 		gMain = new Group(this, SWT.NONE);
 		gMain.setText("Command: " + listener.getName());
 		gMain.setLayout(gridLayout2);
@@ -129,6 +133,7 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		nameLabel.setText("Name: ");
 
 		txtName = new Text(gMain, SWT.BORDER);
+		txtName.setBackground(SWTResourceManager.getColor(255, 255, 217));
 		txtName.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				
@@ -142,7 +147,7 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		txtName.setLayoutData(gridData_1);
 
 		addJobButton = new Button(gMain, SWT.NONE);
-		addJobButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+		addJobButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
 		addJobButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				addJob();
@@ -165,7 +170,7 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		txtHost.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 		addOrderButton = new Button(gMain, SWT.NONE);
-		addOrderButton.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
+		addOrderButton.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false, 2, 1));
 		addOrderButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				addOrder();
@@ -177,7 +182,7 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		schedulerPortLabel.setLayoutData(new GridData());
 		schedulerPortLabel.setText("Scheduler Port: ");
 
-		txtPort = new Text(gMain, SWT.BORDER);
+		txtPort = new Text(gMain, SWT.BORDER);		
 		txtPort.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
@@ -192,25 +197,13 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		});
 		
 		txtPort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-
-		bRemoveExitcode = new Button(gMain, SWT.NONE);
-		final GridData gridData = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
-		bRemoveExitcode.setLayoutData(gridData);
-		bRemoveExitcode.setEnabled(false);
-		bRemoveExitcode.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				listener.deleteCommand(tCommands);                
-
-				tCommands.deselectAll();
-				bRemoveExitcode.setEnabled(false);
-
-			}
-		});
-		bRemoveExitcode.setText("Remove");
+		new Label(gMain, SWT.NONE);
+		new Label(gMain, SWT.NONE);
 
 		final Label label = new Label(gMain, SWT.HORIZONTAL | SWT.SEPARATOR);
 		label.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1));
 		label.setText("label");
+		new Label(gMain, SWT.NONE);
 
 		tCommands = new Table(gMain, SWT.FULL_SELECTION | SWT.BORDER);
 		tCommands.addMouseListener(new MouseAdapter() {
@@ -231,6 +224,7 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		tCommands.setLinesVisible(true);
 		tCommands.setHeaderVisible(true);
 		final GridData gridData9 = new GridData(GridData.FILL, GridData.FILL, false, true, 3, 1);
+		gridData9.widthHint = 545;
 		tCommands.setLayoutData(gridData9);
 		listener.fillCommands(tCommands);
 
@@ -249,13 +243,41 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		final TableColumn tcStartAt = new TableColumn(tCommands, SWT.NONE);
 		tcStartAt.setWidth(139);
 		tcStartAt.setText("Start At");
+
+		bRemoveExitcode = new Button(gMain, SWT.NONE);
+		final GridData gridData = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
+		bRemoveExitcode.setLayoutData(gridData);
+		bRemoveExitcode.setEnabled(false);
+		bRemoveExitcode.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				
+				if(tCommands != null && tCommands.getSelectionCount() > 0)  {
+        			int cont = MainWindow.message(getShell(), "If you really want to delete this command?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+        		
+        			if(cont == SWT.OK) {				        				
+        				listener.deleteCommand(tCommands);
+        				tCommands.deselectAll();
+        				bRemoveExitcode.setEnabled(false);
+        				
+        			} 
+        			
+        			
+        		}
+				
+				                
+
+				
+
+			}
+		});
+		bRemoveExitcode.setText("Remove");
 	}
 
 	
 	private void addJob() {
-		int index = tCommands.getSelectionIndex();
+		//int index = tCommands.getSelectionIndex();
 		Element e = null;
-		if (index == -1) {
+		//if (index == -1) {
 
 			e = new Element("start_job");				
 			e.setAttribute("job", "job" + tCommands.getItemCount());
@@ -264,14 +286,14 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 
 			listener.addCommand(e);
 
-		}
+		//}
 
 	}
 
 	private void addOrder() {
-		int index = tCommands.getSelectionIndex();
+		//int index = tCommands.getSelectionIndex();
 		Element e = null;
-		if (index == -1) {
+		//if (index == -1) {
 
 			e = new Element("order");			
 			e.setAttribute("job_chain", "job_chain" + tCommands.getItemCount());		
@@ -280,7 +302,7 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 			item.setText(new String[] { "order", "", "job_chain_" + tCommands.getItemCount(), "" });
 			listener.addCommand(e);
 
-		}
+		//}
 	}
 
 

@@ -1095,19 +1095,19 @@ public class Utils {
 
 	public static void reset(Element elem, ISchedulerUpdate update, SchedulerDom currdom) {
 		try {
-		elem.getAttributes().removeAll(elem.getAttributes());
-		List l = resetElement.getAttributes();
-		for(int i = 0; i < l.size(); i++) {
-			org.jdom.Attribute attr = (org.jdom.Attribute)l.get(i);
-			elem.setAttribute(attr.getName(), attr.getValue());
-		}
-		
-		
-			
-         elem.setContent(resetElement.cloneContent());
-         update.updateTree("main");
-         
-         
+			elem.getAttributes().removeAll(elem.getAttributes());
+			List l = resetElement.getAttributes();
+			for(int i = 0; i < l.size(); i++) {
+				org.jdom.Attribute attr = (org.jdom.Attribute)l.get(i);
+				elem.setAttribute(attr.getName(), attr.getValue());
+			}
+
+
+
+			elem.setContent(resetElement.cloneContent());
+			update.updateTree("main");
+
+
 		} catch (Exception e) {
 			try {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);

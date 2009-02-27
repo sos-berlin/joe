@@ -43,23 +43,18 @@ public class EventListener {
 		//if(_eventGroup.getName().equals("commands")) {
 		try {
 			if(type == Editor.ADD_EVENT_GROUP) {		
-				/*if(_eventGroup.getChild("add_event") != null) {
-					_eventGroup = _eventGroup.getChild("add_event");
-				}*/
-
-				XPath x3 = XPath.newInstance("//add_event/event");				 
-				l = x3.selectNodes(_dom.getDoc());
-
+				XPath x3 = XPath.newInstance("add_event/event");
+				l = x3.selectNodes(_eventGroup);
+			
 
 			} else if(type == Editor.REMOVE_EVENT_GROUP) {
-				/*if(_eventGroup.getChild("remove_event") != null) {
-					_eventGroup = _eventGroup.getChild("remove_event");
-				}
-				l = _eventGroup.getChildren("remove_event");
-				*/
-				XPath x3 = XPath.newInstance("//remove_event/event");				 
-				l = x3.selectNodes(_dom.getDoc());
-
+			
+				XPath x3 = XPath.newInstance("remove_event/event");				 
+				l = x3.selectNodes(_eventGroup);
+				
+				/*XPath x3 = XPath.newInstance("//remove_event/event");				 
+				l = x3.selectNodes(_dom.getDoc());*/
+							 
 			} else {
 				l = _eventGroup.getChildren("event");		
 			}
@@ -147,10 +142,30 @@ public class EventListener {
 	}
 	
 	public String getActionName() {
-		if(_eventGroup != null && _eventGroup.getParentElement() != null && _eventGroup.getParentElement().getParentElement() != null)			
-			return Utils.getAttributeValue("name", _eventGroup.getParentElement().getParentElement());
-		else 
-			return "";
+		
+		Element action = _eventGroup;
+		boolean loop = true;
+		while(loop){
+			if(action == null)
+				loop = false;
+			
+			if(action.getName().equals("action")){
+				loop = false;
+			} else{
+				action = action.getParentElement();		
+			}
+		}
+		
+		/*if(_eventGroup != null && _eventGroup.getParentElement() != null && _eventGroup.getParentElement().getParentElement() != null && _eventGroup.getParentElement().getParentElement().equals("action")) {			
+				return Utils.getAttributeValue("name", _eventGroup.getParentElement().getParentElement());
+		} else if(_eventGroup != null && 
+				  _eventGroup.getParentElement() != null && _eventGroup.getParentElement().getParentElement() != null && _eventGroup.getParentElement().getParentElement().equals("action"))
+		} else
+		*/
+			if(action !=  null)
+				return Utils.getAttributeValue("name", action);
+			else
+				return "";
 	}
 	
 	public String[] getEventClasses() {

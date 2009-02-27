@@ -166,7 +166,8 @@ public class ActionsForm extends Composite implements IEditor, IActionsUpdate {
 
 
     public boolean save() {
-        boolean res = IOUtils.saveFile(dom, false);
+        //boolean res = IOUtils.saveFile(dom, false);
+    	boolean res = IOUtils.saveAction(dom, false);
         if (res)
             container.setNewFilename(null);
         return res;
@@ -175,7 +176,8 @@ public class ActionsForm extends Composite implements IEditor, IActionsUpdate {
 
     public boolean saveAs() {
         String old = dom.getFilename();
-        boolean res = IOUtils.saveFile(dom, true);
+        //boolean res = IOUtils.saveFile(dom, true);
+        boolean res = IOUtils.saveAction(dom, true);
         if (res)
             container.setNewFilename(old);
         return res;

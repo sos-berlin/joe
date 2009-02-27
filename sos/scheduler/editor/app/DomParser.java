@@ -68,7 +68,7 @@ public abstract class DomParser {
     }
 
 
-    protected void setFilename(String filename) {
+    public void setFilename(String filename) {
         _filename = filename;
     }
 

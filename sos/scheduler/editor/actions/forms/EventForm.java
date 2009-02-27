@@ -12,6 +12,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Combo;
@@ -80,7 +81,12 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage {
         setLayout(new GridLayout());
         //if(table != null)
         	listener.fillEvent(table);
-        	group.setText(" Action: " + listener.getActionName() + "  Group: " + listener.getEventGroupName() );
+        	if(type == Editor.EVENT_GROUP)
+        		group.setText(" Action: " + listener.getActionName() + "  Group: " + listener.getEventGroupName() );
+        	else if(type == Editor.REMOVE_EVENT_GROUP)
+        		group.setText(" Action: " + listener.getActionName() + " Remove Event " );
+        	else
+        		group.setText(" Action: " + listener.getActionName() + " Add Event " );
         	cboEventClass.setItems(listener.getEventClasses());
         	butApply.setEnabled(false);
     }
@@ -155,10 +161,24 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         butNew.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
         butNew.setText("New");
 
-        final Label eventClassLabel = new Label(group, SWT.NONE);
-        eventClassLabel.setText("Event Class:");
+        final Group matchingAttributesGroup = new Group(group, SWT.NONE);
+        matchingAttributesGroup.setCapture(true);
+        matchingAttributesGroup.setText("Matching Attributes");
+        final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, false, 3, 1);
+        matchingAttributesGroup.setLayoutData(gridData_2);
+        final GridLayout gridLayout = new GridLayout();
+        gridLayout.horizontalSpacing = 0;
+        gridLayout.marginTop = 5;
+        gridLayout.marginBottom = 5;
+        gridLayout.marginWidth = 0;
+        gridLayout.numColumns = 2;
+        matchingAttributesGroup.setLayout(gridLayout);
 
-        cboEventClass = new Combo(group, SWT.BORDER);
+        final Label eventClassLabel = new Label(matchingAttributesGroup, SWT.NONE);
+        eventClassLabel.setText(" Event Class:");
+
+        cboEventClass = new Combo(matchingAttributesGroup, SWT.BORDER);
+        cboEventClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         cboEventClass.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
         		butApply.setEnabled(true);
@@ -170,14 +190,12 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         			apply();
         	}
         });
-        cboEventClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        new Label(group, SWT.NONE);
 
-        final Label groupLabel = new Label(group, SWT.NONE);
-        groupLabel.setLayoutData(new GridData());
-        groupLabel.setText("Event Id:");
+        final Label groupLabel = new Label(matchingAttributesGroup, SWT.NONE);
+        groupLabel.setText(" Event Id:");
 
-        txtEventId = new Text(group, SWT.BORDER);
+        txtEventId = new Text(matchingAttributesGroup, SWT.BORDER);
+        txtEventId.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         txtEventId.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
         		if (e.keyCode == SWT.CR)
@@ -190,13 +208,12 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
                 
         	}
         });
-        txtEventId.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        new Label(group, SWT.NONE);
 
-        final Label jobNameLabel = new Label(group, SWT.NONE);
-        jobNameLabel.setText("Job Name:");
+        final Label jobNameLabel = new Label(matchingAttributesGroup, SWT.NONE);
+        jobNameLabel.setText(" Job Name:");
 
-        txtJobname = new Text(group, SWT.BORDER);
+        txtJobname = new Text(matchingAttributesGroup, SWT.BORDER);
+        txtJobname.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         txtJobname.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
         		butApply.setEnabled(true);
@@ -208,13 +225,12 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         			apply();
         	}
         });
-        txtJobname.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        new Label(group, SWT.NONE);
 
-        final Label jobChainLabel = new Label(group, SWT.NONE);
-        jobChainLabel.setText("Job Chain: ");
+        final Label jobChainLabel = new Label(matchingAttributesGroup, SWT.NONE);
+        jobChainLabel.setText(" Job Chain: ");
 
-        txtJobChaon = new Text(group, SWT.BORDER);
+        txtJobChaon = new Text(matchingAttributesGroup, SWT.BORDER);
+        txtJobChaon.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         txtJobChaon.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
         		butApply.setEnabled(true);
@@ -226,13 +242,12 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         			apply();
         	}
         });
-        txtJobChaon.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        new Label(group, SWT.NONE);
 
-        final Label orderIdLabel = new Label(group, SWT.NONE);
-        orderIdLabel.setText("Order Id: ");
+        final Label orderIdLabel = new Label(matchingAttributesGroup, SWT.NONE);
+        orderIdLabel.setText(" Order Id: ");
 
-        txtOrderId = new Text(group, SWT.BORDER);
+        txtOrderId = new Text(matchingAttributesGroup, SWT.BORDER);
+        txtOrderId.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         txtOrderId.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
         		butApply.setEnabled(true);
@@ -244,8 +259,7 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         			apply();
         	}
         });
-        txtOrderId.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        new Label(group, SWT.NONE);
+        matchingAttributesGroup.setTabList(new Control[] {cboEventClass, txtEventId, txtJobname, txtJobChaon, txtOrderId});
 
         final Label commandLabel = new Label(group, SWT.NONE);
         commandLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
@@ -265,10 +279,9 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         	}
         });
         txtComment.setVisible(type != Editor.REMOVE_EVENT_GROUP);
-        final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, false);
+        final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
         gridData_1.heightHint = 38;
         txtComment.setLayoutData(gridData_1);
-        new Label(group, SWT.NONE);
 
         //if(type != Editor.REMOVE_EVENT_GROUP || type != Editor.ADD_EVENT_GROUP) {
         	table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
@@ -329,7 +342,12 @@ txtTitle.setVisible(type != Editor.REMOVE_EVENT_GROUP);
         butRemove.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		if(table != null && table.getSelectionCount() > 0)  {
-        			int cont = MainWindow.message(getShell(), "If you really want to delete this group?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+        			int cont = 0;
+        			if(type == Editor.EVENT_GROUP)
+        				cont = MainWindow.message(getShell(), "If you really want to delete this group?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+        			else {
+        				cont = MainWindow.message(getShell(), "If you really want to delete this command?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+        			}
         			if(cont == SWT.OK) {				        				
         				listener.removeEvent(table);
         			} 
