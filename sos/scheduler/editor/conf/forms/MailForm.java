@@ -5,6 +5,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -25,27 +27,35 @@ import sos.scheduler.editor.conf.listeners.MailListener;
 public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
-	private MailListener   listener         = null;
-
-	private int            type             = -1;
-
-	private Group          group            = null;
-
-	private Text           mailCC           = null;
-
-	private Text           mailBCC          = null;
+	private Combo          cboHistoryWithLog            = null;
 	
-	private Combo          mailOnError      = null; 
+	private Combo          cboHistoryOnProcess          = null;
+	
+	private Combo          cboHistory                   = null;
+	
+	private Combo          mailOnDelayAfterError        = null;
+	
+	private MailListener   listener                     = null;
 
-	private Combo          mailOnWarning    = null;
+	private int            type                         = -1;
 
-	private Combo          mailOnSuccess    = null;
+	private Group          group                        = null;
+
+	private Text           mailCC                       = null;
+
+	private Text           mailBCC                      = null;
 	
-	private Combo          mailOnProcess    = null;
+	private Combo          mailOnError                  = null; 
+
+	private Combo          mailOnWarning                = null;
+
+	private Combo          mailOnSuccess                = null;
 	
-	private Text           mailTo           = null;
+	private Combo          mailOnProcess                = null;
 	
-	private Combo          LogLevel        = null; 
+	private Text           mailTo                       = null;
+	
+	private Combo          LogLevel                     = null; 
 	
 	
 	public MailForm(Composite parent, int style) {		
@@ -72,18 +82,25 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 		listener = new MailListener(dom, element);
 		
+		mailOnError.setText(listener.getValue("mail_on_error")); 
+		mailOnWarning.setText(listener.getValue("mail_on_warning"));
+		mailOnSuccess.setText(listener.getValue("mail_on_success"));		
+		mailOnProcess.setText(listener.getValue("mail_on_process"));		        
+		mailOnDelayAfterError.setText(listener.getValue("mail_on_delay_after_error"));
+		
+		mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
+		
 		mailTo.setText(listener.getValue("log_mail_to"));
 		mailCC.setText(listener.getValue("log_mail_cc"));
 		mailBCC.setText(listener.getValue("log_mail_bcc"));		
 		
-		
-		mailOnError.setText(listener.getValue("mail_on_error")); 
-		mailOnWarning.setText(listener.getValue("mail_on_warning"));
-		mailOnSuccess.setText(listener.getValue("mail_on_success"));		
-		mailOnProcess.setText(listener.getValue("mail_on_process"));		
-        
-        
 		LogLevel.setText(listener.getValue("log_level"));
+		
+		cboHistory.setText(listener.getValue("history"));
+		cboHistoryOnProcess.setText(listener.getValue("history_on_process"));
+		cboHistoryWithLog.setText(listener.getValue("history_with_log"));
+				
+		
         
 	}
 
@@ -99,6 +116,13 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		mailOnWarning.setItems(new String[]{"yes", "no"}); 
 		mailOnSuccess.setItems(new String[]{"yes", "no"}); 		
 		mailOnProcess.setItems(new String[]{"yes", "no"});
+		mailOnDelayAfterError.setItems(new String[]{"all", "first_only", "last_only", "first_and_last_only"});
+		cboHistory.setItems(new String[]{"yes", "no"});
+		cboHistoryOnProcess.setItems(new String[]{"yes", "no", "0", "1", ""});
+		cboHistoryWithLog.setItems(new String[]{"yes", "no", "gzip"});
+		
+		
+		
 		
 		LogLevel.setItems(new String[]{"info", "debug1", "debug2", "debug3", "debug4", "debug5", "debug6", "debug7", "debug8", "debug9"});
 		
@@ -125,6 +149,7 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		mailOnError = new Combo(group, SWT.READ_ONLY);
 		mailOnError.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
 				listener.setValue("mail_on_error", mailOnError.getText(), "no");
 			}
 		});
@@ -132,9 +157,10 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		Label label1 = new Label(group, SWT.NONE);
 		label1.setText("Mail On Warning");
 
-		mailOnWarning = new Combo(group, SWT.READ_ONLY);
+		mailOnWarning = new Combo(group, SWT.READ_ONLY);		
 		mailOnWarning.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				mailOnDelayAfterError.setEnabled(mailOnWarning.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
 				listener.setValue("mail_on_warning", mailOnWarning.getText(), "no");
 			}
 		});
@@ -163,9 +189,22 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		});
 		mailOnProcess.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
 
-		final Label label = new Label(group, SWT.HORIZONTAL | SWT.SEPARATOR);
+		final Label mailOnDelayLabel = new Label(group, SWT.NONE);
+		mailOnDelayLabel.setText("Mail On Delay After Error");
+
+		mailOnDelayAfterError = new Combo(group, SWT.READ_ONLY);
+		mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
+		mailOnDelayAfterError.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				listener.setValue("mail_on_delay_after_error", mailOnDelayAfterError.getText(), "no");
+			}
+		});
+		mailOnDelayAfterError.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+
+		final Label ddddLabel = new Label(group, SWT.HORIZONTAL | SWT.SEPARATOR);
 		final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
-		label.setLayoutData(gridData_1);
+		gridData_1.heightHint = 8;
+		ddddLabel.setLayoutData(gridData_1);
 		
 
 		final Label mailToLabel = new Label(group, SWT.NONE);
@@ -209,7 +248,9 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		});
 
 		final Label label_1 = new Label(group, SWT.HORIZONTAL | SWT.SEPARATOR);
-		label_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
+		final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
+		gridData_3.heightHint = 8;
+		label_1.setLayoutData(gridData_3);
 		
 
 		final Label logLevelLabel = new Label(group, SWT.NONE);
@@ -225,7 +266,54 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		LogLevel.setLayoutData(new GridData());
 
 		final Label label_2 = new Label(group, SWT.HORIZONTAL | SWT.SEPARATOR);
-		label_2.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
+		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
+		gridData_4.heightHint = 8;
+		label_2.setLayoutData(gridData_4);
+
+		final Label historyLabel = new Label(group, SWT.NONE);
+		historyLabel.setText("History");
+
+		cboHistory = new Combo(group, SWT.READ_ONLY);
+		cboHistory.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				listener.setValue("history", cboHistory.getText());
+			}
+		});
+		cboHistory.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+
+		final Label historyOnProcessLabel = new Label(group, SWT.NONE);
+		historyOnProcessLabel.setText("History On Process");
+
+		cboHistoryOnProcess = new Combo(group, SWT.NONE);
+		cboHistoryOnProcess.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				boolean isDigit = true;
+				char[] c = cboHistoryOnProcess.getText().toCharArray();
+				for(int i = 0; i < c.length; i++) {
+					isDigit = Character.isDigit(c[i]);
+					if(isDigit)
+						break;
+				}
+				e.doit = cboHistoryOnProcess.getText().equals("yes") || cboHistoryOnProcess.getText().equals("no") || isDigit;
+			}
+		});
+		cboHistoryOnProcess.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				listener.setValue("history_on_process", cboHistoryOnProcess.getText());
+			}
+		});
+		cboHistoryOnProcess.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+
+		final Label historyWithLogLabel = new Label(group, SWT.NONE);
+		historyWithLogLabel.setText("History With Log");
+
+		cboHistoryWithLog = new Combo(group, SWT.READ_ONLY);
+		cboHistoryWithLog.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				listener.setValue("history_with_log", cboHistoryWithLog.getText());
+			}
+		});
+		cboHistoryWithLog.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
 		
 
 	 }

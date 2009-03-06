@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: scheduler.xsd 5826 2008-07-09 10:32:58Z jz $ -->
+<!-- $Id: scheduler.xsd 5971 2009-03-01 17:14:58Z jz $ -->
 
 <xsd:schema 
     xmlns:xsd          = "http://www.w3.org/2001/XMLSchema" 
@@ -9,9 +9,9 @@
 
     <xsd:annotation>
         <xsd:documentation xml:lang="de">
-            $Id: scheduler.xsd 5826 2008-07-09 10:32:58Z jz $
+            $Id: scheduler.xsd 5971 2009-03-01 17:14:58Z jz $
             Schema für die Scheduler-Konfiguration,
-            s.a. http://www.zschimmer.com/sos/scheduler/konfiguration.html.
+            s.a. http://www.zschimmer.com/sos/scheduler/konfiguration.html
         </xsd:documentation>
     </xsd:annotation>
         
@@ -164,6 +164,7 @@
             <xsd:element ref="add_order"/>
             <xsd:element name="check_folders"               type="check_folders"/>
             <xsd:element ref="kill_task"/>
+            <xsd:element ref="licence.use"/>
             <xsd:element name="lock"                        type="lock"/>
             <xsd:element name="lock.remove"                 type="lock.remove"/>
             <xsd:element ref="modify_job"/>
@@ -179,6 +180,9 @@
             <xsd:element ref="remove_job_chain"/>
             <xsd:element ref="remove_order"/>
             <xsd:element name="run_time"                    type="run_time"/>
+            <xsd:element ref="scheduler_log.log_categories.reset"/>
+            <xsd:element ref="scheduler_log.log_categories.set"/>
+            <xsd:element ref="scheduler_log.log_categories.show"/>
             <xsd:element ref="show_calendar"/>
             <xsd:element ref="show_history"/>
             <xsd:element ref="show_job"/>
@@ -305,6 +309,8 @@
     <xsd:element name="job">
         <xsd:complexType>
             <xsd:sequence>
+                <xsd:element name="settings" type="Job.Settings" minOccurs="0"/>
+                
                 <xsd:element name="description" minOccurs="0">
                     <xsd:complexType mixed="true">
                         <xsd:choice minOccurs="0" maxOccurs="unbounded">
@@ -444,6 +450,56 @@
             <xsd:field xpath="@setback_count"/>
         </xsd:key-->
     </xsd:element>
+    
+    
+    
+    <xsd:complexType name="Job.Settings">
+        <xsd:sequence>
+            <xsd:element name="mail_on_error"               type="Yes_no"       minOccurs="0"/>
+            <xsd:element name="mail_on_warning"             type="Yes_no"       minOccurs="0"/>
+            <xsd:element name="mail_on_success"             type="Yes_no"       minOccurs="0"/>
+            
+            <xsd:element name="mail_on_process" minOccurs="0">
+                <xsd:simpleType>
+                    <xsd:union memberTypes="Yes_no xsd:positiveInteger"/>
+                </xsd:simpleType>
+            </xsd:element>
+
+            <xsd:element name="mail_on_delay_after_error" minOccurs="0">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:NMTOKEN">
+                        <xsd:enumeration value="all"/>
+                        <xsd:enumeration value="first_only"/>
+                        <xsd:enumeration value="last_only"/>
+                        <xsd:enumeration value="first_and_last_only"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            
+            <xsd:element name="log_mail_to"                 type="Non_empty_string"   minOccurs="0"/>
+            <xsd:element name="log_mail_cc"                 type="Non_empty_string"   minOccurs="0"/>
+            <xsd:element name="log_mail_bcc"                type="Non_empty_string"   minOccurs="0"/>
+            <xsd:element name="log_level"                   type="Log_level"          minOccurs="0"/>
+            <xsd:element name="history"                     type="Yes_no"             minOccurs="0"/>
+            
+            <xsd:element name="history_on_process" minOccurs="0">
+                <xsd:simpleType>
+                    <xsd:union memberTypes="Yes_no xsd:nonNegativeInteger"/>
+                </xsd:simpleType>
+            </xsd:element>
+            
+            <xsd:element name="history_with_log" minOccurs="0">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:NMTOKEN">
+                        <xsd:enumeration value="yes"/>
+                        <xsd:enumeration value="no"/>
+                        <xsd:enumeration value="gzip"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
 
 
     <xsd:element name="job_chain">
@@ -593,7 +649,14 @@
         </xsd:complexType>
     </xsd:element>
 
-    
+
+    <xsd:element name="licence.use">
+        <xsd:complexType>
+            <xsd:attribute name="key"           type="String"       use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+
+
     <xsd:element name="modify_job">
         <xsd:complexType>
             <xsd:sequence>
@@ -673,6 +736,14 @@
             <xsd:attribute name="suspended" type="Yes_no"/>
             <xsd:attribute name="at"        type="Date_time_with_now"/>
             <xsd:attribute name="end_state" type="String"/>
+
+            <xsd:attribute name="action">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:NMTOKEN">
+                        <xsd:enumeration value="reset"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
@@ -941,6 +1012,7 @@
             <xsd:attribute name="java_class"            type="String"/>
             <xsd:attribute name="recompile"             type="Yes_no"/>
          <!--xsd:attribute name="process_class"         type="Path"    s. eMail von Püschel 2007-11-06 12:55 /-->
+            <xsd:attribute name="encoding"              type="Code_page_encoding"/>
         </xsd:complexType>
     </xsd:element>
 
@@ -1006,6 +1078,24 @@
             <xsd:attribute name="heart_beat_warn_timeout" type="xsd:positiveInteger"/>
         </xsd:complexType>
     </xsd:element>
+
+    
+    <xsd:element name="scheduler_log.log_categories.reset">
+        <xsd:complexType>
+            <xsd:attribute name="delay"     type="xsd:nonNegativeInteger"/>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="scheduler_log.log_categories.set">
+        <xsd:complexType>
+            <xsd:attribute name="category"  type="String"   use="required"/>
+            <xsd:attribute name="value"     type="Yes_no"/>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="scheduler_log.log_categories.show"/>
 
 
     <xsd:element name="service_request">
@@ -1134,6 +1224,7 @@
             <xsd:attribute name="at"                type="Date_time_with_now_or_period"/>
             <xsd:attribute name="after"             type="xsd:nonNegativeInteger"/>
             <xsd:attribute name="web_service"       type="Name"/>
+            <xsd:attribute name="force"             type="Yes_no"/>
         </xsd:complexType>
     </xsd:element>
 
@@ -1589,6 +1680,16 @@
    
     <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ATTRIBUT-TYPEN-->
 
+    <xsd:simpleType name="Code_page_encoding">
+        <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="oem"/>
+            <xsd:enumeration value="cp437"/>
+            <xsd:enumeration value="cp850"/>
+            <xsd:enumeration value="latin1"/>
+            <xsd:enumeration value="none"/><!-- Nur zum Test -->
+        </xsd:restriction>
+    </xsd:simpleType>
+    
     <xsd:simpleType name="Job_chain_node.Action">
         <xsd:restriction base="String">
             <xsd:enumeration value="process"/>
@@ -1794,6 +1895,25 @@
         </xsd:union>
     </xsd:simpleType>
 
+
+    <xsd:simpleType name="Log_level">
+        <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="error"/>
+            <xsd:enumeration value="warn"/>
+            <xsd:enumeration value="info"/>
+            <xsd:enumeration value="debug"/>
+            <xsd:enumeration value="debug1"/>
+            <xsd:enumeration value="debug2"/>
+            <xsd:enumeration value="debug3"/>
+            <xsd:enumeration value="debug4"/>
+            <xsd:enumeration value="debug5"/>
+            <xsd:enumeration value="debug6"/>
+            <xsd:enumeration value="debug7"/>
+            <xsd:enumeration value="debug8"/>
+            <xsd:enumeration value="debug9"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
     
     <xsd:simpleType name="Md5">
         <xsd:restriction base="xsd:string">
@@ -1831,6 +1951,11 @@
         </xsd:restriction>
     </xsd:simpleType>
 
+    <xsd:simpleType name="Non_empty_string">
+        <xsd:restriction base="String">
+            <xsd:pattern value=".+"/>
+        </xsd:restriction>
+    </xsd:simpleType>
     
     <xsd:simpleType name="Positive_duration">
         <xsd:restriction base="Duration">

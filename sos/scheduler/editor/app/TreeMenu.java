@@ -1172,7 +1172,8 @@ public class TreeMenu {
 		//if(_copy.getName().equals("job"))
 		if(_type == Editor.JOB &&  !_tree.getSelection()[0].getText().endsWith("Jobs") )
 			_gui.updateJob();
-
+		
+	
 		if(_type == Editor.SCHEDULES)
 			_gui.updateSchedules();				
 

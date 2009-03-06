@@ -580,13 +580,13 @@ public class SchedulerListener {
 
 
 		//Mail
-		/*item = new TreeItem(parent, SWT.NONE);
+		item = new TreeItem(parent, SWT.NONE);
 		item.setData(new TreeData(Editor.SETTINGS, job, Options.getHelpURL("settings")));
 		item.setData("key", "settings");											
 		item.setData("copy_element", job);
 		item.setText("Mail Settings");		
 		item.setData("max_occur", "1");
-		*/
+		
 
 
 		//Monitor
@@ -1440,7 +1440,7 @@ public class SchedulerListener {
 				item.setText("<empty>");
 			else
 				item.setText(Utils.getAttributeValue("name", monitor));
-			item.setData(new TreeData(Editor.MONITOR, monitor, Options.getHelpURL("job.monitor"), "monitor"));  
+			item.setData(new TreeData(Editor.MONITOR, monitor, Options.getHelpURL("job.monitor"), "monitor"));
 			item.setData("key", "monitor");
 			item.setData("copy_element", elem);
 			if(disable) {

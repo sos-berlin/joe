@@ -463,6 +463,13 @@ public class JobCommandListener {
 		//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 
+
+	//test
+	public String getAt() {
+		return Utils.getAttributeValue("at", _command);
+	
+	}
+	
 	public void setOrderId(String orderId) {
 		Utils.setAttribute("id", orderId, _command, _dom);
 		//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);

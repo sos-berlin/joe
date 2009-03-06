@@ -56,163 +56,15 @@ public class ActionsListener implements IUpdateTree {
         item.setData(new TreeData(Editor.ACTIONS, desc, Options.getDocHelpURL("actions")));
 
         treeFillAction(item);
-        /*TreeItem item2 = new TreeItem(item, SWT.NONE);
-        item2.setText("Action");
-        item2.setData(new TreeData(Editor.ACTION, desc, Options.getDocHelpURL("action")));
-        
-        TreeItem item3 = new TreeItem(item2, SWT.NONE);
-        item3.setText("Events");
-        item3.setData(new TreeData(Editor.EVENTS, desc.getChild("events", _dom.getNamespace()), Options.getDocHelpURL("events")));
-        
-        item2 = new TreeItem(item3, SWT.NONE);
-        item2.setText("Event Group");
-        item2.setData(new TreeData(Editor.EVENT_GROUP, desc.getChild("event_group", _dom.getNamespace()), Options.getDocHelpURL("event_group")));
-        item.setExpanded(true);
-        
-        TreeItem item2 = new TreeItem(item, SWT.NONE);
-        item2.setText("Commands");
-        item2.setData(new TreeData(Editor.ACTION_COMMANDS, desc.getChild("commands", _dom.getNamespace()), Options.getDocHelpURL("commands")));
-        */
-        /*
-        item2 = new TreeItem(item, SWT.NONE);
-        item2.setText("Monitor");
-        item2.setData(new TreeData(Editor.DOC_MONITOR, desc.getChild("job", _dom.getNamespace()), Options.getDocHelpURL("monitor")));
-        item.setExpanded(true);
-
-        item = new TreeItem(tree, SWT.NONE);
-        item.setText("Releases");
-        item.setData(new TreeData(Editor.DOC_RELEASES, desc.getChild("releases", _dom.getNamespace()), Options
-                .getDocHelpURL("releases")));
-        
-        //treeFillReleases(item, desc.getChild("releases", _dom.getNamespace()));
-        item.setExpanded(true);
-        
-        item = new TreeItem(tree, SWT.NONE);
-        item.setText("Resources");
-        item.setData(new TreeData(Editor.DOC_RESOURCES, desc, Options.getDocHelpURL("resources")));
-        item2 = new TreeItem(item, SWT.NONE);
-        item2.setText("Files");
-        item2.setData(new TreeData(Editor.DOC_FILES, desc, Options.getDocHelpURL("files")));
-        item2 = new TreeItem(item, SWT.NONE);
-        item2.setText("Databases");
-        item2.setData(new TreeData(Editor.DOC_DATABASES, desc, Options.getDocHelpURL("databases")));
-        item.setExpanded(true);
-        //treeFillDatabaseResources(item2, desc.getChild("resources", _dom.getNamespace()));
-
-        item = new TreeItem(tree, SWT.NONE);
-        item.setText("Configuration");
-        item.setData(new TreeData(Editor.DOC_CONFIGURATION, desc.getChild("configuration", _dom.getNamespace()),
-                Options.getDocHelpURL("configuration")));
-        item2 = new TreeItem(item, SWT.NONE);
-        item2.setText("Parameters");
-        item2.setData(new TreeData(Editor.DOC_PARAMS, desc.getChild("configuration", _dom.getNamespace()), Options
-                .getDocHelpURL("parameters")));
-        item.setExpanded(true);
-        item2 = new TreeItem(item, SWT.NONE);
-        item2.setText("Payload");
-        item2.setData(new TreeData(Editor.DOC_PAYLOAD, desc.getChild("configuration", _dom.getNamespace()), Options
-                .getDocHelpURL("payload")));
-        item2 = new TreeItem(item, SWT.NONE);
-        item2.setText("Settings");
-        item2.setData(new TreeData(Editor.DOC_SETTINGS, desc.getChild("configuration", _dom.getNamespace()), Options
-                .getDocHelpURL("settings")));
-
-        _profiles = new TreeItem(item2, SWT.NONE);
-        item2.setExpanded(true);
-        _profiles.setText("Profiles");
-        _profiles.setData(new TreeData(Editor.DOC_PROFILES, desc.getChild("configuration", _dom.getNamespace()),
-                Options.getDocHelpURL("profiles")));
-        //fillProfiles();
-
-        _connections = new TreeItem(item2, SWT.NONE);
-        _connections.setText("Connections");
-        _connections.setData(new TreeData(Editor.DOC_CONNECTIONS, desc.getChild("configuration", _dom.getNamespace()),
-                Options.getDocHelpURL("connections")));
-        //fillConnections();
-*/
-        /*item = new TreeItem(tree, SWT.NONE);
-        item.setText("Test");
-        if(desc.getChild("Test", desc.getNamespace()) == null)
-        	desc.addContent(new Element("Test", desc.getNamespace())).addContent(new Element("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml")));
-        else if(desc.getChild("Test", desc.getNamespace()).getChild("div",org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"))==null)
-        	desc.getChild("Test", desc.getNamespace()).addContent(new Element("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml")));
-        */
-        //item.setData(new TreeData(Editor.ACTIONS, desc, Options.getDocHelpURL("Actions")));
-        
+      
 
     }
 
 
-   /* private Element getSettings() {
-        Element configuration = _dom.getRoot().getChild("configuration", _dom.getNamespace());
-        return configuration.getChild("settings", _dom.getNamespace());
-    }
-
-
-    public void fillProfiles() {
-        Element settings = getSettings();
-        _profiles.removeAll();
-        if (settings != null) {
-            for (Iterator it = settings.getChildren("profile", _dom.getNamespace()).iterator(); it.hasNext();) {
-                Element element = (Element) it.next();
-                TreeItem item = new TreeItem(_profiles, SWT.NONE);
-                String name = Utils.getAttributeValue("name", element);
-                item.setText("Sections [Profile: " + (name != null ? name : ProfilesListener.defaultName) + "]");
-                item.setData(new TreeData(Editor.DOC_SECTIONS, element, Options.getDocHelpURL("sections")));
-                _profiles.setExpanded(true);
-                fillSections(item, element, false);
-            }
-        }
-  
-    }
-*/
-
-   /* public void fillConnections() {
-        Element settings = getSettings();
-        _connections.removeAll();
-        if (settings != null) {
-            for (Iterator it = settings.getChildren("connection", _dom.getNamespace()).iterator(); it.hasNext();) {
-                Element element = (Element) it.next();
-                TreeItem item = new TreeItem(_connections, SWT.NONE);
-                String name = Utils.getAttributeValue("name", element);
-                item.setText("Applications [Connection: " + (name != null ? name : ConnectionsListener.defaultName) + "]");
-                item.setData(new TreeData(Editor.DOC_APPLICATIONS, element, Options.getDocHelpURL("applications")));
-                _connections.setExpanded(true);
-                fillApplications(item, element, false);
-            }
-        }
-     
-    }
-    */
-
-
-    /*public void fillApplications(TreeItem parent, Element element, boolean expand) {
-        parent.removeAll();
-        for (Iterator it = element.getChildren("application", _dom.getNamespace()).iterator(); it.hasNext();) {
-            Element section = (Element) it.next();
-            TreeItem item = new TreeItem(parent, SWT.NONE);
-            item.setText("Sections [Appl.: " + Utils.getAttributeValue("name", section) + "]");
-            item.setData(new TreeData(Editor.DOC_SECTIONS, section, Options.getDocHelpURL("sections")));
-            parent.setExpanded(expand);
-            fillSections(item, section, false);
-        }
-    }
-
-
-    public void fillSections(TreeItem parent, Element element, boolean expand) {
-        parent.removeAll();
-        for (Iterator it = element.getChildren("section", _dom.getNamespace()).iterator(); it.hasNext();) {
-            Element section = (Element) it.next();
-            TreeItem item = new TreeItem(parent, SWT.NONE);
-            item.setText("Settings [Section: " + Utils.getAttributeValue("name", section) + "]");
-            item.setData(new TreeData(Editor.DOC_SECTION_SETTINGS, section, Options.getDocHelpURL("setting")));
-            parent.setExpanded(expand);
-        }
-    }
-*/
 
     public boolean treeSelection(Tree tree, Composite c) {
         try {
+        	//System.out.println("--> " + tree.getSelectionCount());
             if (tree.getSelectionCount() > 0) {
 
                 // dispose the old form
@@ -225,14 +77,20 @@ public class ActionsListener implements IUpdateTree {
 
                 TreeItem item = tree.getSelection()[0];
                 TreeData data = (TreeData) item.getData();
-
+                
+                if(data == null)
+                	return false;
+                
+                //System.out.println("test: "  + item.getText());
+                
+                
                 _dom.setInit(true);
 
                 switch (data.getType()) {
                     case Editor.ACTIONS:
                         new sos.scheduler.editor.actions.forms.ActionsListForm(c, SWT.NONE, _dom, data.getElement(), _gui);
                         break;
-                    case Editor.ACTION:
+                    case Editor.ACTION:                    	 
                         new sos.scheduler.editor.actions.forms.ActionForm(c, SWT.NONE, _dom, data.getElement(), _gui);
                         break;
                    
@@ -240,13 +98,16 @@ public class ActionsListener implements IUpdateTree {
                         new EventsForm(c, SWT.NONE, _dom, data.getElement(), _gui);
                         break;
                     case Editor.EVENT_GROUP:
-                        new EventForm(c, SWT.NONE, _dom, data.getElement(), _gui, Editor.EVENT_GROUP);
+                    	new EventForm(c, SWT.NONE, _dom, data.getElement(), Editor.EVENT_GROUP);
+                    	
                         break;
                     case Editor.ADD_EVENT_GROUP:
-                        new EventForm(c, SWT.NONE, _dom, data.getElement(), _gui, Editor.ADD_EVENT_GROUP);
+                       new EventForm(c, SWT.NONE, _dom, data.getElement(), Editor.ADD_EVENT_GROUP);
+                    	
                         break;   
                     case Editor.REMOVE_EVENT_GROUP:
-                        new EventForm(c, SWT.NONE, _dom, data.getElement(), _gui, Editor.REMOVE_EVENT_GROUP);
+                        new EventForm(c, SWT.NONE, _dom, data.getElement(), Editor.REMOVE_EVENT_GROUP);
+                    	
                         break;   
                     case Editor.ACTION_COMMANDS:
 						//new JobCommandsForm(c, SWT.NONE, _dom, data.getElement(), _gui, this);
@@ -337,72 +198,57 @@ public class ActionsListener implements IUpdateTree {
     
     
     public void treeFillCommands(TreeItem parent, Element action, boolean expand) {
-		//new JobCommandListener(_dom, null, null).fillCommands(job, parent, expand);
-		//fillCommands(job, parent, expand);
+    
     	Element eCommands = action.getChild("commands");
+    	TreeItem item = null;
+    	parent.removeAll();
     	if(eCommands != null) {
     		List commands = eCommands.getChildren("command");    		
     		if (commands != null) {
     			Iterator it = commands.iterator();
-    			parent.removeAll();
+    			
 
     			while (it.hasNext()) {
     				Element e = (Element) it.next();
     				if (e.getAttributeValue("name") != null) {
-    					TreeItem item = new TreeItem(parent, SWT.NONE);
+    					item = new TreeItem(parent, SWT.NONE);
     					item.setText(COMMAND_PREFIX + e.getAttributeValue("name"));
     					item.setData(new TreeData(Editor.JOB_COMMAND_EXIT_CODES, e, Options.getHelpURL("job.commands")));
     					item.setData("key", "commands_@_order");	
     					item.setData("copy_element", e);
-
-    					item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+    					//item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
 
     					treeFillCommand(item, e, false);
     				}
     			}
     		}
+
+    		treeFillAddRemoveEvent(parent, eCommands);
     		
-
-    		//List addEvents = eCommands.getChildren("add_event");    		
-    		//if (addEvents != null) {
-    		//	Iterator it = addEvents.iterator();
-    			
-    		//	if (it.hasNext()) {
-    				
-    				TreeItem item = new TreeItem(parent, SWT.NONE);
-					item.setText("add event");
-					item.setData(new TreeData(Editor.ADD_EVENT_GROUP, eCommands, Options.getHelpURL("job.commands")));
-					item.setData("key", "commands_@_add_event");	
-					item.setData("copy_element", eCommands);
-    				
-					item = new TreeItem(parent, SWT.NONE);
-					item.setText("remove event");
-					item.setData(new TreeData(Editor.REMOVE_EVENT_GROUP, eCommands, Options.getHelpURL("job.commands")));
-					item.setData("key", "commands_@_remove_event");	
-					item.setData("copy_element", eCommands);
-    				
-    				/*if (e.getAttributeValue("name") != null) {
-    					TreeItem item = new TreeItem(parent, SWT.NONE);
-    					item.setText(e.getAttributeValue("name"));
-    					item.setData(new TreeData(Editor.JOB_COMMAND_EXIT_CODES, e, Options.getHelpURL("job.commands")));
-    					item.setData("key", "commands_@_order");	
-    					item.setData("copy_element", e);
-
-    					item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
-
-    					treeFillCommand(item, e, false);
-    				}
-    				*/
-    			//}
-    		//}
-
+    		//parent.setExpanded(expand);
     		
     		
-    		parent.setExpanded(expand);
     	}
-	}
+    }
 
+    public void treeFillAddRemoveEvent(TreeItem parent, Element eCommands) {
+    	TreeItem item1 = new TreeItem(parent, SWT.NONE);
+    	item1.setText("add event");    		
+    	item1.setData(new TreeData(Editor.ADD_EVENT_GROUP, eCommands, Options.getHelpURL("job.commands")));
+    	item1.setData("key", "commands_@_add_event");	
+    	item1.setData("copy_element", eCommands);
+    	
+
+
+    	TreeItem item2 = new TreeItem(parent, SWT.NONE);
+    	item2.setText("remove event");
+    	item2.setData(new TreeData(Editor.REMOVE_EVENT_GROUP, eCommands, Options.getHelpURL("job.commands")));
+    	item2.setData("key", "commands_@_remove_event");	
+    	item2.setData("copy_element", eCommands);
+    }
+    
     public void treeFillCommand(TreeItem parent, Element elem, boolean expand) {
+    	
 		parent.removeAll();
 		treeFillCommand(parent, elem.getChildren("order"));
 		treeFillCommand(parent, elem.getChildren("add_order"));
@@ -418,6 +264,7 @@ public class ActionsListener implements IUpdateTree {
 			item.setText(cmdElem.getName()+ ": " + name);
 			item.setData(new TreeData(Editor.JOB_COMMAND, cmdElem, Options.getHelpURL("job.commands")));
 			item.setExpanded(false);
+			
 			//PARAMETER
 			item = new TreeItem(item, SWT.NONE);
 			item.setData(new TreeData(Editor.PARAMETER, cmdElem, Options.getHelpURL("parameter")));

@@ -34,7 +34,7 @@ public class SchedulerDom extends DomParser {
 	private static final String[]   CONFIG_ELEMENTS            = { "base", "params", "security", "cluster", "process_classes", "schedules", "locks", "script", "http_server",
 		"holidays", "jobs", "job_chains", "orders", "commands" };
 
-	private static final String[]   JOB_ELEMENTS               = { "description", "lock.use", "params", "environment", "script", "process", "monitor",
+	private static final String[]   JOB_ELEMENTS               = { "settings", "description", "lock.use", "params", "environment", "script", "process", "monitor",
 		"start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };        
 
 	private static final String[]   RUNTIME_ELEMENTS           = { "period", "at", "date", "weekdays", "monthdays", "ultimos", "month" , "holidays"};        
@@ -66,6 +66,9 @@ public class SchedulerDom extends DomParser {
 	private static final String[]   COMMANDS_ELEMENTS          = { "add_order", "order", "start_job"};
 
 	private static final String[]   ORDER_ELEMENTS             = { "params", "environment"};
+	
+	private static final String[]   SETTINGS_ELEMENTS          = { "mail_on_error", "mail_on_warning", "mail_on_success", "mail_on_process", "mail_on_delay_after_error", "log_mail_to", "log_mail_cc", "log_mail_bcc", "log_level", "history", "history_on_process", "history_with_log" }; 
+
 
 	/** life Dateien: Schreibheschützte Dateien*/
 	private              ArrayList  listOfReadOnlyFiles        = null;
@@ -105,6 +108,8 @@ public class SchedulerDom extends DomParser {
 		putDomOrder("holidays", HOLIDAYS_ELEMENTS);
 		putDomOrder("params", PARAMS_ELEMENTS);
 		putDomOrder("schedule", RUNTIME_ELEMENTS);
+		putDomOrder("settings", SETTINGS_ELEMENTS);
+		
 		initScheduler();
 
 	}
@@ -122,6 +127,7 @@ public class SchedulerDom extends DomParser {
 			putDomOrder("params", PARAMS_ELEMENTS);
 			putDomOrder("schedule", RUNTIME_ELEMENTS);
 			putDomOrder("holidays", HOLIDAYS_ELEMENTS);
+			putDomOrder("settings", SETTINGS_ELEMENTS);
 			isDirectory = true;
 			initScheduler();
 		} else if(type==LIFE_JOB) {
@@ -129,6 +135,7 @@ public class SchedulerDom extends DomParser {
 			putDomOrder("run_time", RUNTIME_ELEMENTS);
 			putDomOrder("params", PARAMS_ELEMENTS);
 			putDomOrder("holidays", HOLIDAYS_ELEMENTS);
+			putDomOrder("settings", SETTINGS_ELEMENTS);
 			initScheduler(type);
 		} else if(type==LIFE_JOB_CHAIN) {
 			//putDomOrder("job_chain", CONFIG_ELEMENTS_DIRECTORY);

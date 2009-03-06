@@ -357,7 +357,12 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     	if (fname == null)
     		return;
 
-    	fname = fname.substring(currPath.length()+1);
+    	//fname = fname.substring(currPath.length()+1);
+    	fname = fname.replaceAll("/", sep);
+    	//fname = fname.replaceAll("\\\\", sep);
+    	
+    	if(fname.toLowerCase().startsWith(currPath.toLowerCase()))
+    		fname = fname.substring(currPath.length()+1);
     	
     	tFile.setText(fname);
     	
@@ -382,7 +387,11 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     		if(!(currPath.endsWith("/") || currPath.endsWith("\\")))
 				currPath = currPath.concat(sep);
 			
-    		currPath = currPath.concat(tFile.getText());
+    		if(tFile.getText().toLowerCase().startsWith(currPath.toLowerCase()))
+    			currPath = tFile.getText();
+    		else
+    			currPath = currPath.concat(tFile.getText());
+    		
     		con.openScheduler(currPath);
     		
     		con.setStatusInTitle();

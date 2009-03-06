@@ -5,7 +5,6 @@ import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.actions.ActionsDom;
-import sos.scheduler.editor.actions.forms.ActionsForm;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
@@ -22,15 +21,13 @@ public class EventListener {
 
     private Element              _eventGroup              = null;
     
-   // private ActionsForm          gui                  = null;
-
     private int                  type                 = -1;
    
-    public EventListener(ActionsDom dom, Element eventGroup, ActionsForm _gui, int type_) {
+    public EventListener(ActionsDom dom, Element eventGroup, int type_) {
         _dom = dom;
         _eventGroup = eventGroup;
         type = type_;
-        //gui = _gui;
+        
     }
 
 
@@ -142,7 +139,7 @@ public class EventListener {
 	}
 	
 	public String getActionName() {
-		
+
 		Element action = _eventGroup;
 		boolean loop = true;
 		while(loop){
