@@ -31,7 +31,7 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 
 	private    String          _stylesheet    = "";
 	
-	private    ArrayList       _noCDATAElements = null; 
+	private    ArrayList       _noIndentInCDATAElements = null; 
 
 	/** NO_CDATA_ELEMENTS dürfen nicht in CDATA geschrieben werden. Es geht hier um "Yes_no" XML Typen, die nur als Text yes oder no (ohne leerzeichen) haben dürfen */
 	private   static final String[]   NO_CDATA_ELEMENTS   = { "mail_on_error", "mail_on_warning", "mail_on_success", "mail_on_process", "mail_on_delay_after_error", "history", "history_on_process", "history_with_log", "log_level"};
@@ -42,10 +42,10 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 	}
 	
 	private void init()  {
-		_noCDATAElements = new ArrayList();
+		_noIndentInCDATAElements = new ArrayList();
 		String[] se = NO_CDATA_ELEMENTS;
 		for(int i = 0; i < se.length; i++) {
-			_noCDATAElements.add(se[i]);
+			_noIndentInCDATAElements.add(se[i]);
 		}
 	}
 
@@ -90,13 +90,13 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 		if (_isOpen && !hasText)
 			_sb.append("/>\n");
 		else if (_isOpen )
-			_sb.append(">" + (_noCDATAElements.contains(localName) ? "" : "\n"));
+			_sb.append(">" + (_noIndentInCDATAElements.contains(localName) ? "" : "\n"));
 
 		if (disableJobs)
 			_sb.append("<!-- disabled\n");
 		
-		if(hasText && _noCDATAElements.contains(localName)) {
-			_sb.append(text);
+		if(hasText && _noIndentInCDATAElements.contains(localName)) {
+			_sb.append("<![CDATA[" + text+ "]]>");
 		} else if (hasText) {
 			_sb.append(_indent + _indentStr + "<![CDATA[\n");
 			_sb.append(text + "\n");
@@ -104,7 +104,7 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 		}
 
 		if (!_isOpen || hasText) {
-			if(_noCDATAElements.contains(localName))
+			if(_noIndentInCDATAElements.contains(localName))
 				_sb.append("</" + qName + ">\n");//test
 			else
 				_sb.append(_indent + "</" + qName + ">\n");
@@ -175,7 +175,7 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 		if (disableJobs)
 			_sb.append("<!-- disabled\n");
 
-		//_sb.append((_noCDATAElements.contains(localName) ? "" : _indent ) + "<" + qName + attributes.toString());
+		//_sb.append((_noIndentInCDATAElements.contains(localName) ? "" : _indent ) + "<" + qName + attributes.toString());
 		_sb.append(_indent + "<" + qName + attributes.toString());
 
 		_isOpen = true;
