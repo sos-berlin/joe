@@ -367,11 +367,12 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		if(res)
 			setReChangedTreeItemText();
 		
+		
 		if(dom.getRoot().getName().equals("spooler"))
 			Utils.setResetElement(dom.getRoot().getChild("config"));
 		else
 			Utils.setResetElement(dom.getRoot());
-		
+
 		return res;
 	}
 	
@@ -486,7 +487,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	
 	
 	public void updateTree(String which) {
-		String mar = getTreeSelection();
+		//String mar = getTreeSelection();
 		if(which.equalsIgnoreCase("main")) {
 			if(dom.isLifeElement()) {
 				listener.treeFillMainForLifeElement(tree, cMainForm);
@@ -769,8 +770,11 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 				return;
 			}
 			
-			if(dom.getChangedJob().get(key1).equals(SchedulerDom.NEW)) {
-				item = item.getItem(item.getItemCount()-1);
+			if(dom.getChangedJob().get(key1).equals(SchedulerDom.NEW) &&
+					!key1.startsWith("process_class")) {
+				int i = item.getItemCount() -1;
+				if(i < 0) i = 0;
+				item = item.getItem(i);
 				if(!item.getText().startsWith("*")) {
 					//item.getItem(item.getItemCount()-1);
 					item.setText("*" + item.getText());					

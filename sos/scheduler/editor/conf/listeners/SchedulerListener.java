@@ -592,7 +592,7 @@ public class SchedulerListener {
 		//Monitor
 		item = new TreeItem(parent, SWT.NONE);
 		item.setText("Monitor");
-		item.setData(new TreeData(Editor.MONITORS, job, Options.getHelpURL("job.monitor"), "monitor"));  
+		item.setData(new TreeData(Editor.MONITORS, job, Options.getHelpURL("job.monitor"), "monitor"));	 
 		item.setData("key", "monitor");
 		item.setData("copy_element", job);
 		if(disable) {
@@ -1441,8 +1441,10 @@ public class SchedulerListener {
 			else
 				item.setText(Utils.getAttributeValue("name", monitor));
 			item.setData(new TreeData(Editor.MONITOR, monitor, Options.getHelpURL("job.monitor"), "monitor"));
+			
 			item.setData("key", "monitor");
-			item.setData("copy_element", elem);
+			//item.setData("copy_element", elem);
+			item.setData("copy_element", monitor);
 			if(disable) {
 				item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 			}

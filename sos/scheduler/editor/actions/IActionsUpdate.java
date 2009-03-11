@@ -13,6 +13,8 @@ public interface IActionsUpdate extends IDataChanged {
 	public void updateCommand();
 	
 	public void updateTreeItem(String s);
-
+	
+	public void updateTree(String which); 
+ 
 }
  

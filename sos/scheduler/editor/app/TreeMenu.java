@@ -1079,7 +1079,10 @@ public class TreeMenu {
 
 	//Ein Kindelement hinzufügen, z.B. jobs einen job element oder job_chains einen job_chain element einfügen
 	private void pasteChild(String key, TreeData data) {
-		if(!isParent(key, _copy.getName())) {
+		if(key.equalsIgnoreCase("monitor") && _type != data.getType()) {
+			//ausnahme
+			data.getElement().addContent((Element)_copy.clone());
+		} else if(!isParent(key, _copy.getName())) {
 			return;
 		} else {
 

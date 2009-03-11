@@ -50,7 +50,7 @@ public class ActionsListener implements IUpdateTree {
         tree.removeAll();
 
         Element desc = _dom.getRoot();
-
+        sos.scheduler.editor.app.Utils.setResetElement(_dom.getRoot());
         TreeItem item = new TreeItem(tree, SWT.NONE);
         item.setText("Actions");
         item.setData(new TreeData(Editor.ACTIONS, desc, Options.getDocHelpURL("actions")));

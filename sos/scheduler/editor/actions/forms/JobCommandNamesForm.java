@@ -44,7 +44,7 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 	private Table                         tCommands                    = null;
 
 	private JobCommandNamesListener   listener                     = null;
-
+ 
 	private Group                         gMain                        = null;
 
 	//private boolean                       updateTree                   = false;

@@ -27,7 +27,7 @@ import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 
 
-public class ActionsForm extends Composite implements IEditor, IActionsUpdate {
+public class ActionsForm extends Composite implements IEditor, IActionsUpdate {	
 
 	private ActionsListener listener    = null;
 
@@ -173,6 +173,9 @@ public class ActionsForm extends Composite implements IEditor, IActionsUpdate {
 		boolean res = IOUtils.saveAction(dom, false);
 		if (res)
 			container.setNewFilename(null);
+		
+		Utils.setResetElement(dom.getRoot());
+		
 		return res;
 	}
 
@@ -303,8 +306,7 @@ public class ActionsForm extends Composite implements IEditor, IActionsUpdate {
 	}
 
 	public void updateTreeItem(String s) {
-
-		if(tree.getSelectionCount() > 0) {
+        if(tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];			
 			item.setText(s);		
 		}
@@ -323,11 +325,18 @@ public class ActionsForm extends Composite implements IEditor, IActionsUpdate {
 		}
 	}
 
+	
+	
 	public Tree getTree() {
 		return tree;
 	}
 
 	public void updateTree(String which) {		
+		if(which.equals("main")) {
+			//neu zeichnen und das erste Element markieren
+			listener.fillTree(tree);
+			tree.setSelection(new TreeItem[] { tree.getItem(0) });
+		}
 		listener.treeSelection(tree, docMainForm);
 
 	}

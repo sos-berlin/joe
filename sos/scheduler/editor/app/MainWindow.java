@@ -31,7 +31,7 @@ import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
 import sos.util.SOSString;
 
-
+ 
 public class MainWindow  {
 
 	private static Shell sShell             = null; // @jve:decl-index=0:visual-constraint="3,1"
@@ -946,7 +946,7 @@ public class MainWindow  {
 		});
 				
 		final ToolItem itemReset = new ToolItem(toolBar, SWT.PUSH);
-		itemReset.setEnabled(container != null && container.getCurrentEditor() instanceof SchedulerForm);
+		//itemReset.setEnabled(container != null && (container.getCurrentEditor() instanceof sos.scheduler.editor.actions.forms.ActionsForm || container.getCurrentEditor() instanceof SchedulerForm ));
 		itemReset.setImage(ResourceManager
 				.getImageFromResource("/sos/scheduler/editor/icon_reset.gif"));
 		
@@ -959,11 +959,16 @@ public class MainWindow  {
 						sos.scheduler.editor.app.Utils.reset( currdom.getRoot(), form, currdom);
 					else
 						sos.scheduler.editor.app.Utils.reset( currdom.getRoot().getChild("config"), form, currdom);
-				} /*else if(container.getCurrentEditor() instanceof sos.scheduler.editor.actions.forms.ActionsForm) {
+					
+				} else if(container.getCurrentEditor() instanceof sos.scheduler.editor.actions.forms.ActionsForm) {
 					 sos.scheduler.editor.actions.forms.ActionsForm form =( sos.scheduler.editor.actions.forms.ActionsForm)container.getCurrentEditor();
 					 sos.scheduler.editor.actions.ActionsDom currdom = ( sos.scheduler.editor.actions.ActionsDom)form.getDom();
-					 sos.scheduler.editor.app.Utils.reset( currdom.getRoot(), form, currdom);
-				}*/
+					 sos.scheduler.editor.app.Utils.reset( currdom.getRoot(),form, currdom);
+				} else if(container.getCurrentEditor() instanceof sos.scheduler.editor.doc.forms.DocumentationForm) {
+					 sos.scheduler.editor.doc.forms.DocumentationForm form =( sos.scheduler.editor.doc.forms.DocumentationForm)container.getCurrentEditor();
+					 sos.scheduler.editor.doc.DocumentationDom currdom = ( sos.scheduler.editor.doc.DocumentationDom)form.getDom();
+					 sos.scheduler.editor.app.Utils.reset( currdom.getRoot(),form, currdom);
+				}
 
 			}
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {

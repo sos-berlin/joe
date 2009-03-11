@@ -66,6 +66,9 @@ public class HotFolderDialog {
 
 	private              Button           butAdd                        = null;
 
+	private              String           SCHEDULER_CLUSTER_MASK        = "^[^#]+$";
+	
+	private              String           SCHEDULER_HOST_MASK           = "^[^#]+#\\d{1,5}$";
 
 	public HotFolderDialog(MainWindow mainwindow_) {
 		sosString = new SOSString();
@@ -196,6 +199,7 @@ public class HotFolderDialog {
 							&& !tree.getSelection()[0].getText().equals(sType) 
 							&& txtName.getText().trim().length() > 0) {
 
+						String changeName = sosString.parseToString(tree.getSelection()[0].getData()); 
 						File f = new File( sosString.parseToString(tree.getSelection()[0].getData()));
 						String path = f.getParent().endsWith("/") || f.getParent().endsWith("\\")  ?  f.getParent() : f.getParent() + "/";
 
@@ -227,9 +231,25 @@ public class HotFolderDialog {
 								tree.getSelection()[0].setData( path);
 							} else {
 								//scheduler id ändern
+								//String changeName = tree.getSelection()[0].getText(); 
 								tree.getSelection()[0].setText(txtName.getText());											
 								tree.getSelection()[0].setData( path);
+								
+								
+								TreeItem _item = tree.getSelection()[0];
+								changeSubTreedata(path, _item, changeName);
+								/*for(int i = 0; i < _item.getItemCount(); i++) {
+									TreeItem cItem = _item.getItem(i);
+									String data = sosString.parseToString(cItem.getData());
+									//hier data ändern
+							        //data = data.replaceAll(changeName, path);
+							        data = data.substring(changeName.length());
+							        data = path + data;								}
+							}*/
 							}
+							butRename.setEnabled(false);
+							butAdd.setEnabled(false);
+							txtName.setText("");
 						} else{
 							MainWindow.message("could not rename configuration: ", SWT.ICON_INFORMATION);
 							schedulerConfigurationShell.setFocus();
@@ -280,6 +300,7 @@ public class HotFolderDialog {
 
 			tree.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
+					
 					if (tree.getSelectionCount() > 0 && !tree.getSelection()[0].getText().equals(sType)) {
 						if(type ==SCHEDULER_CLUSTER) {
 							txtName.setText(tree.getSelection()[0].getText());
@@ -304,6 +325,7 @@ public class HotFolderDialog {
 						butRename.setEnabled(false);
 
 					}
+					butAdd.setEnabled(false);
 				}
 			});
 			tree.addMouseListener(new MouseAdapter() {
@@ -314,9 +336,9 @@ public class HotFolderDialog {
 
 			tree.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true,true));
 			if (type == SCHEDULER_CLUSTER) {				
-				mask = "^[^#]+$";
+				mask = SCHEDULER_CLUSTER_MASK;
 			} else if (type == SCHEDULER_HOST) {
-				mask = "^[^#]+#\\d{1,5}$";
+				mask = SCHEDULER_HOST_MASK;
 			}
 
 			String path = Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome() : Options.getSchedulerHome() + "/";
@@ -374,10 +396,15 @@ public class HotFolderDialog {
 					item.setText(name);
 					item.setData(filename);
 					item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/folder.png"));
+					
+					java.util.Vector subFilelist = sos.util.SOSFile.getFolderlist(filename,
+							SCHEDULER_CLUSTER_MASK, java.util.regex.Pattern.CASE_INSENSITIVE, false);
+					createTreeItem(item, subFilelist, false);
+					
 				} else {
 
 					if (sub) {
-						// ports von hast bestimmen
+						// ports von host bestimmen
 						TreeItem item = new TreeItem(parentItem, SWT.NONE);
 
 						name = f.getName().substring(f.getName().indexOf("#") + 1);
@@ -386,7 +413,6 @@ public class HotFolderDialog {
 						item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/folder.png"));
 					} else {
 						// host bestimmen und ports bilden
-
 						HashMap names = new HashMap();// alle Hostname aufschreiben
 						if(sosString.parseToString(name).length() > 0) {
 							String sname = name.substring(0, f.getName().indexOf("#"));
@@ -420,6 +446,7 @@ public class HotFolderDialog {
 						}
 						// break;
 					}
+					
 				}
 
 			}
@@ -492,6 +519,7 @@ public class HotFolderDialog {
 		} else {
 			txtName.setEditable(true);
 		}
+		butAdd.setEnabled(txtName.getText().length() > 0);
 	}
 
 	private void changeHost(String path) {
@@ -548,10 +576,13 @@ public class HotFolderDialog {
 			} else {
 				name = txtName.getText() + "#" +txtPort.getText();
 			}
-
-
-			String path = (Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome() : Options.getSchedulerHome() + "/") + "config/remote/";
-			path = path  + name;
+			String path = "";
+			if (tree.getSelectionCount() > 0 && tree.getSelection()[0].getData() != null)
+				path = 	sosString.parseToString(tree.getSelection()[0].getData()) ;
+			else 
+				path = Options.getSchedulerHome() + "config/remote/";
+			
+			path = (path.endsWith("/") || path.endsWith("\\") ? path : path + "/")   + name;
 
 			File newFile = new File(path);
 			if(newFile.exists()) {
@@ -562,9 +593,13 @@ public class HotFolderDialog {
 
 			TreeItem item =null;						
 
-			if(type == SCHEDULER_CLUSTER) {						
-				item = new TreeItem(tree.getItems()[0], SWT.NONE);
+			if(type == SCHEDULER_CLUSTER) {		
+				if (tree.getSelectionCount() > 0)
+					item = new TreeItem(tree.getSelection()[0], SWT.NONE);
+				else
+					item = new TreeItem(tree.getItems()[0], SWT.NONE);
 				item.setData(path);
+				item.setExpanded(true);
 			} 
 
 			if (type == SCHEDULER_HOST ) {
@@ -603,6 +638,7 @@ public class HotFolderDialog {
 			}
 			tree.setSelection(new TreeItem[] {item});
 
+			txtName.setText("");
 		} catch(Exception ex) {
 			try {
     			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() +  " ; Error while creating new " + sType + " Configuration. ", ex);
@@ -630,5 +666,24 @@ public class HotFolderDialog {
 		if(txtPort != null)   txtPort.setToolTipText(Messages.getTooltip(""));
 		if(butAdd != null)    butAdd.setToolTipText(Messages.getTooltip(""));
 		if(butRename != null) butRename.setToolTipText(Messages.getTooltip(""));
+	}
+	
+	private void changeSubTreedata(String path, TreeItem _item, String changeName) throws Exception{
+		
+	try {
+		for(int i = 0; i < _item.getItemCount(); i++) {
+			TreeItem cItem = _item.getItem(i);
+			String data = sosString.parseToString(cItem.getData());
+			//hier data ändern
+			//data = data.replaceAll(changeName, path);
+			data = data.substring(changeName.length());
+			data = path + data;	
+			cItem.setData(data);
+			if(cItem.getItemCount() > 0)
+				changeSubTreedata(path, cItem, changeName);
+		}
+	} catch(Exception e) {
+		throw new Exception ("error in changeSubTreedata. could not change cause: " + e.toString(), e);
+	}
 	}
 }

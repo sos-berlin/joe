@@ -31,7 +31,7 @@ public class ActionsListForm extends Composite implements IUpdateLanguage {
     private Group       actionsGroup         = null;
     
     private Table       list                 = null; 
-        
+         
     private Button      butRemove            = null;
     
     private Button      butNew               = null;

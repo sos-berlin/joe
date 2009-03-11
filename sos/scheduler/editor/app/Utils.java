@@ -1093,7 +1093,8 @@ public class Utils {
          resetElement = (Element)elem.clone();
 	}
 
-	public static void reset(Element elem, ISchedulerUpdate update, SchedulerDom currdom) {
+	//public static void reset(Element elem, ISchedulerUpdate update, SchedulerDom currdom) {
+	public static void reset(Element elem, IDataChanged update, DomParser currdom) {
 		try {
 			elem.getAttributes().removeAll(elem.getAttributes());
 			List l = resetElement.getAttributes();
@@ -1102,10 +1103,15 @@ public class Utils {
 				elem.setAttribute(attr.getName(), attr.getValue());
 			}
 
-
-
 			elem.setContent(resetElement.cloneContent());
-			update.updateTree("main");
+			
+			if(currdom instanceof SchedulerDom)
+			    ((sos.scheduler.editor.conf.forms.SchedulerForm)update).updateTree("main");
+			else if(currdom instanceof sos.scheduler.editor.actions.ActionsDom)
+			    ((sos.scheduler.editor.actions.forms.ActionsForm)update).updateTree("main");
+			else if(currdom instanceof sos.scheduler.editor.doc.DocumentationDom)
+			    ((sos.scheduler.editor.doc.forms.DocumentationForm)update).updateTree("main");
+
 
 
 		} catch (Exception e) {

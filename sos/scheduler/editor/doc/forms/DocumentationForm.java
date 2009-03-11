@@ -169,6 +169,9 @@ public class DocumentationForm extends Composite implements IEditor, IDocumentat
         boolean res = IOUtils.saveFile(dom, false);
         if (res)
             container.setNewFilename(null);
+        
+        Utils.setResetElement(dom.getRoot());
+        
         return res;
     }
 
@@ -274,5 +277,15 @@ public class DocumentationForm extends Composite implements IEditor, IDocumentat
 			listener.treeFillDatabaseResources(item, elem.getChild("resources", elem.getNamespace()));
 			//tree.getSelection()[0].getItems()[tree.getSelection()[0].getItemCount()-1].setExpanded(true);
 		}
+	}
+	
+	public void updateTree(String which) {		
+		if(which.equals("main")) {
+			//neu zeichnen und das erste Element markieren
+			listener.fillTree(docTree);
+			docTree.setSelection(new TreeItem[] { docTree.getItem(0) });
+		}
+		listener.treeSelection(docTree, docMainForm);
+
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

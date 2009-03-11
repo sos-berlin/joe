@@ -64,7 +64,7 @@ public class DocumentationListener implements IUpdateTree {
 
     public void fillTree(Tree tree) {
         tree.removeAll();
-
+        Utils.setResetElement(_dom.getRoot());
         Element desc = _dom.getRoot();
 
         TreeItem item = new TreeItem(tree, SWT.NONE);
