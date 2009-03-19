@@ -1,6 +1,7 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import java.util.HashMap;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -22,6 +23,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
@@ -31,6 +33,8 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ScriptListener;
 import sos.scheduler.editor.app.Options;
+import sos.util.SOSString;
+
 
 public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 	
@@ -107,6 +111,9 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     
     private Combo         cboFavorite   = null;
     
+    private HashMap       favorites     = null;
+    
+    private SOSString sosString  = null;
     
 
     public ScriptForm(Composite parent, int style, ISchedulerUpdate update_) {
@@ -159,7 +166,10 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     private void initialize() {
         this.setLayout(new FillLayout());
         createGroup();
-        setSize(new org.eclipse.swt.graphics.Point(604, 427));        
+        setSize(new org.eclipse.swt.graphics.Point(604, 427));     
+        sosString = new SOSString();
+        cboFavorite.setItems(normalized(Options.getPropertiesWithPrefix("monitor_favorite_")));
+        
     }
 
 
@@ -239,10 +249,16 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         butFavorite = new Button(gScript, SWT.NONE);
         butFavorite.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
-        		Options.setProperty(getPrefix() + txtName.getText(), tClass.getText());
+        		Options.setProperty("monitor_favorite_" + ( bCom.getSelection() ? "com" : listener.getLanguage(listener.getLanguage())) +"_" + txtName.getText(), tClass.getText());
         		Options.saveProperties();
-        		if(listener.getLanguage() != 0)
+        		 cboFavorite.setItems(normalized(Options.getPropertiesWithPrefix("monitor_favorite_")));
+        		/*if(listener.getLanguage() != 0) {
+        			//cboFavorite.setItems(normalized(Options.getPropertiesWithPrefix(getPrefix())));
+        			favorites.put(txtName.getText(), listener.getLanguage(listener.getLanguage()));
         			cboFavorite.setItems(Options.getPropertiesWithPrefix(getPrefix()));
+        		} else        		
+        			cboFavorite.setItems(normalized(Options.getPropertiesWithPrefix(getPrefix())));
+        			*/
         	}
         });
         butFavorite.setEnabled(false);
@@ -577,7 +593,24 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         			if(Options.getProperty(getPrefix() + cboFavorite.getText()) != null) {
         				tClass.setText(Options.getProperty(getPrefix() + cboFavorite.getText())) ;
         				txtName.setText(cboFavorite.getText());
+        				if (favorites != null && favorites.get(cboFavorite.getText()) != null && favorites.get(cboFavorite.getText()).toString().length() > 0) {
+        					if(favorites.get(cboFavorite.getText()).equals("com")) {
+        					   bCom.setSelection(true);
+        					   listener.setLanguage(listener.COM);
+        					} else
+        						listener.setLanguage(listener.languageAsInt(favorites.get(cboFavorite.getText()).toString()));
+        					
+        					bNone.setSelection(false);        			
+                			bCom.setSelection(false);
+                			bJava.setSelection(false);
+                			bJavaScript.setSelection(false);
+                			bPerl.setSelection(false);
+                			bShell.setSelection(false);
+                			bVBScript.setSelection(false);
+        					fillForm();
+        				}
         			}
+        			
         		}
         	}
         });
@@ -610,8 +643,8 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         
         cboFavorite.setEnabled(true);
         butFavorite.setEnabled(true);
-        if(Options.getPropertiesWithPrefix(getPrefix())!= null && language != 0)
-        	cboFavorite.setItems(Options.getPropertiesWithPrefix(getPrefix()));
+        //if(Options.getPropertiesWithPrefix(getPrefix())!= null && language != 0)
+        //	cboFavorite.setItems(normalized(Options.getPropertiesWithPrefix(getPrefix())));
 
         switch (language) {
             case ScriptListener.NONE:
@@ -739,8 +772,41 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     }
 
     private String getPrefix() {
+    	if(favorites != null&& cboFavorite.getText().length() > 0 && favorites.get(cboFavorite.getText()) != null)
+    		return "monitor_favorite_" + favorites.get(cboFavorite.getText()) +"_" ;
     	if(listener.getLanguage() == 0)
     		return "";
     	return "monitor_favorite_" + ( bCom.getSelection() ? "com" : listener.getLanguage(listener.getLanguage())) +"_" ;
+    }
+    
+    private String[] normalized(String[] str) {
+    	String[] retVal = new String[0];
+    	try {
+    	favorites = new HashMap();
+    	if(str == null) 
+    		return new String[0];
+    	
+    	retVal = new String[str.length];
+    	for(int i = 0; i < str.length; i++) {
+    		String s = sosString.parseToString(str[i]);
+    		int idx = s.indexOf("_");
+    		if(idx > -1) {    		
+    			String lan = s.substring(0, idx);
+    			String name = s.substring(idx+1);
+    			favorites.put(name, lan);
+    			retVal[i] = name;
+    		} 
+    	}
+    	
+    	return retVal;
+    	} catch (Exception e) {
+    		System.out.println(e.toString());
+    		try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			return retVal;	
+    	}
     }
 } // @jve:decl-index=0:visual-constraint="10,10"
