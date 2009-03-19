@@ -509,6 +509,17 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		reorderButton = new Button(composite_1, SWT.CHECK);
 		reorderButton.setText("Reorder");
 
+		butDetailsJob = new Button(gNodes, SWT.NONE);
+		butDetailsJob.setEnabled(false);
+		butDetailsJob.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				if(tNodes.getSelectionCount() > 0)
+					showDetails(tNodes.getSelection()[0].getText(0));
+			}
+		});
+		butDetailsJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+		butDetailsJob.setText("Details");
+
 		bRemoveNode = new Button(gNodes, SWT.NONE);
 		bRemoveNode.setEnabled(false);
 		bRemoveNode.addSelectionListener(new SelectionAdapter() {
@@ -533,19 +544,8 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 				}
 			}
 		});
-		bRemoveNode.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+		bRemoveNode.setLayoutData(new GridData(GridData.FILL, GridData.END, false, false));
 		bRemoveNode.setText("Remove Node");
-
-		butDetailsJob = new Button(gNodes, SWT.NONE);
-		butDetailsJob.setEnabled(false);
-		butDetailsJob.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if(tNodes.getSelectionCount() > 0)
-					showDetails(tNodes.getSelection()[0].getText(0));
-			}
-		});
-		butDetailsJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		butDetailsJob.setText("Details");
 
 	}
 

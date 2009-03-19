@@ -22,9 +22,9 @@ public class ReleaseAuthorsListener {
 		_release = release;
 	}
 
-	public void removeAuthor(int index) {
+	public void removeAuthor(Element elem) {
 		if (_release != null) {        	
-			_release.getChildren("release", _dom.getNamespace()).remove(index);
+			_release.getContent().remove(elem);
 			_dom.setChanged(true);
 		}
 	} 
@@ -39,6 +39,7 @@ public class ReleaseAuthorsListener {
 				TableItem item = new TableItem(table, SWT.NONE);
 				item.setText(0, Utils.getAttributeValue("name", author));
 				item.setText(1, Utils.getAttributeValue("email", author));
+				item.setData(author);
 			}
 		}
 		Utils.setBackground(table, true);

@@ -45,11 +45,10 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 		
 	private SchedulerDom     dom                               = null;
 	
-	private Button           butNew                         = null; 
-	
-		
+	private Button           butNew                            = null;
 	
 	
+			
 	public ScriptsForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update, Element elem) {
 		super(parent, style);
 		try {
@@ -108,6 +107,7 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 			butRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					butRemove.setEnabled(listener.delete(table));
+					
 					table.deselectAll();
 					//txtName.setText("");
 					//txtOrdering.setText("");

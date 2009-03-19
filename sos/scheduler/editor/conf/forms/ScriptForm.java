@@ -12,6 +12,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -29,12 +30,14 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ScriptListener;
+import sos.scheduler.editor.app.Options;
 
 public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 	
    
     //private Label          label1_2    = null;
 
+    private Button butFavorite;
     private ScriptListener listener    = null;
 
     private String         groupTitle  = "Script";
@@ -98,9 +101,13 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     
     private Button         butIsLifeFile = null;
     
-    //private Label          label1_1      = null;
+    //private Label       label1_1      = null;
 
-    private boolean           init  = false;
+    private boolean       init          = false;
+    
+    private Combo         cboFavorite   = null;
+    
+    
 
     public ScriptForm(Composite parent, int style, ISchedulerUpdate update_) {
         super(parent, style);
@@ -152,7 +159,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     private void initialize() {
         this.setLayout(new FillLayout());
         createGroup();
-        setSize(new org.eclipse.swt.graphics.Point(604, 427));
+        setSize(new org.eclipse.swt.graphics.Point(604, 427));        
     }
 
 
@@ -160,11 +167,11 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes group
      */
     private void createGroup() {
-        GridData gridData2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        GridData gridData2 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
         gridData2.widthHint = 0;
         GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
         GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 3;
+        gridLayout.numColumns = 4;
         gScript = new Group(this, SWT.NONE);
         gScript.setText(groupTitle);
         gScript.setLayout(gridLayout);
@@ -176,7 +183,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         nameLabel.setText("Name: ");
         new Label(gScript, SWT.NONE);
         	final Composite scriptcom = new Composite(gScript, SWT.NONE);
-        	scriptcom.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        	scriptcom.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
         	final GridLayout gridLayout_1 = new GridLayout();
         	gridLayout_1.verticalSpacing = 0;
         	gridLayout_1.marginWidth = 0;
@@ -228,6 +235,19 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
             	}
             }
         });
+
+        butFavorite = new Button(gScript, SWT.NONE);
+        butFavorite.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		Options.setProperty(getPrefix() + txtName.getText(), tClass.getText());
+        		Options.saveProperties();
+        		if(listener.getLanguage() != 0)
+        			cboFavorite.setItems(Options.getPropertiesWithPrefix(getPrefix()));
+        	}
+        });
+        butFavorite.setEnabled(false);
+        butFavorite.setVisible(type == Editor.MONITOR);
+        butFavorite.setText("Favoriten");
         label3 = new Label(gScript, SWT.NONE);
         label3.setLayoutData(new GridData());
         label3.setText("Filename:");
@@ -244,7 +264,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 
         sashForm = new Composite(gScript, SWT.NONE);
         //sashForm.setText("Include Files");
-        sashForm.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 3, 1));
+        sashForm.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1));
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.marginWidth = 0;
         gridLayout_1.marginHeight = 0;
@@ -310,6 +330,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         			tInclude.setText(tableIncludes.getSelection()[0].getText(0));
         			butIsLifeFile.setSelection(tableIncludes.getSelection()[0].getText(1) != null && tableIncludes.getSelection()[0].getText(1).equals("live_file"));
         			bRemove.setEnabled(tableIncludes.getSelectionCount() > 0);
+        			bAdd.setEnabled(false);
         		}
         		
         	}
@@ -466,24 +487,26 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     		
     	
         cLanguage = new Composite(gScript, SWT.NONE);
-        cLanguage.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
-        cLanguage.setLayout(new RowLayout());
+        final GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 8;
+        cLanguage.setLayout(gridLayout);
+        cLanguage.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
         bJava = new Button(cLanguage, SWT.RADIO);
         bJava.setText("Java");
+        bJava.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                if (bJava.getSelection()) {
+                    listener.setLanguage(ScriptListener.JAVA);
+                    fillForm();
+                }
+            }
+        });
         bCom = new Button(cLanguage, SWT.RADIO);
         bCom.setText("Com");
         bCom.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 if (bCom.getSelection()) {
                     listener.setLanguage(ScriptListener.COM);
-                    fillForm();
-                }
-            }
-        });
-        bJava.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (bJava.getSelection()) {
-                    listener.setLanguage(ScriptListener.JAVA);
                     fillForm();
                 }
             }
@@ -542,6 +565,22 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
                 }
             }
         });
+
+        
+        cboFavorite = new Combo(cLanguage, SWT.NONE);
+        cboFavorite.setVisible(type == Editor.MONITOR);
+        
+        cboFavorite.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        cboFavorite.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		if(cboFavorite.getText().length() > 0) {
+        			if(Options.getProperty(getPrefix() + cboFavorite.getText()) != null) {
+        				tClass.setText(Options.getProperty(getPrefix() + cboFavorite.getText())) ;
+        				txtName.setText(cboFavorite.getText());
+        			}
+        		}
+        	}
+        });
     }
 
 
@@ -554,16 +593,25 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         }
         
         if (type == Editor.EXECUTE) {
-            bNone.setVisible(false);        
+            bNone.setVisible(false);
+            //hier
+            
         }
 
         if (type == Editor.MONITOR) {
         	bNone.setVisible(false);
+        	//hier
         	bShell.setVisible(false);
         }
         
         boolean enabled = language != ScriptListener.NONE;
         setEnabled(enabled);
+        
+        
+        cboFavorite.setEnabled(true);
+        butFavorite.setEnabled(true);
+        if(Options.getPropertiesWithPrefix(getPrefix())!= null && language != 0)
+        	cboFavorite.setItems(Options.getPropertiesWithPrefix(getPrefix()));
 
         switch (language) {
             case ScriptListener.NONE:
@@ -583,6 +631,8 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
                 tSource.setEnabled(false);
                 break;
             case ScriptListener.JAVA:
+            	//cboFavorite.setEnabled(true);
+            	//butFavorite.setEnabled(true);            	
                 bJava.setSelection(true);
                 tClass.setEnabled(true);
                 tClass.setFocus();
@@ -688,4 +738,9 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         if(butIsLifeFile!= null) butIsLifeFile.setToolTipText(Messages.getTooltip("is_live_file"));
     }
 
+    private String getPrefix() {
+    	if(listener.getLanguage() == 0)
+    		return "";
+    	return "monitor_favorite_" + ( bCom.getSelection() ? "com" : listener.getLanguage(listener.getLanguage())) +"_" ;
+    }
 } // @jve:decl-index=0:visual-constraint="10,10"

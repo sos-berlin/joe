@@ -97,7 +97,7 @@ public class Options {
         _properties.setProperty(key, value);
         _changed = true;
     }
-
+    
     
 
     public static String getDefault(String key) {
@@ -482,6 +482,7 @@ public class Options {
             return _properties.getProperty(key);
             
     }
+        
 
 
 	public static String[] getJobTitleList() {
@@ -509,4 +510,19 @@ public class Options {
 	public static void setHolidaysDescription(HashMap holidaysDescription) {
 		Options.holidaysDescription = holidaysDescription;
 	}
+	
+    public static String[] getPropertiesWithPrefix(String prefix) {
+    	String[] retVal = null;
+    	String s = "";
+    	java.util.Iterator keys = _properties.keySet().iterator();
+    	while(keys.hasNext())  {
+    		Object key = keys.next();
+    	    if(key != null && key.toString().length() > 0 && key.toString().startsWith(prefix))
+    	    	s = key.toString().substring(prefix.length()) + ";" + s;
+    	}
+    	retVal = s.split(";");
+    	return retVal;
+    	
+    }
+	
 }

@@ -25,7 +25,7 @@ public class SecurityListener {
 
     private        List            _list         = null;
 
-    private static String[]        _levels       = { "none", "signal", "info", "no_add", "all" };
+    private static String[]        _levels       = { "none", "info", "no_add", "all" };
 
 
     public SecurityListener(SchedulerDom dom, Element config) throws JDOMException {

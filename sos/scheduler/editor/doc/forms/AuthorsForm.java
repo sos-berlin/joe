@@ -175,7 +175,9 @@ public class AuthorsForm extends Composite implements IUnsaved, IUpdateLanguage 
         bRemoveAutho.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 if (tAuthors.getSelectionCount() > 0) {
-                    tAuthors.remove(tAuthors.getSelectionIndex());
+                    //tAuthors.remove(tAuthors.getSelectionIndex());
+                    listener.removeAuthor((Element)tAuthors.getSelection()[0].getData());
+                    listener.fillAuthors(tAuthors);
                     tName.setText("");
                     tEmail.setText("");
                     bApplyAuthor.setEnabled(false);

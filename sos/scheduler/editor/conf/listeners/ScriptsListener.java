@@ -73,8 +73,8 @@ public class ScriptsListener {
 			initScripts();		
 		_dom.setChanged(true);
 		
-		if(_dom.isLifeElement())
-			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _parent), SchedulerDom.NEW);
+		if(_dom.isLifeElement() || _dom.isDirectory())
+			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _parent), SchedulerDom.MODIFY);
 		
 		fillTable(table);
 		table.setSelection(table.getItemCount() - 1);
@@ -104,15 +104,12 @@ public class ScriptsListener {
                     	Utils.setAttribute("ordering", ordering, e);
                     	
                     	_dom.setChanged(true);
-                    	if(_dom.isLifeElement()) 
+                    	if(_dom.isLifeElement() || _dom.isDirectory())
                     		_dom.setChangedForDirectory(_parent.getName(), Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
                     	table.getItem(index).setText(new String[] { (name.equals("") ? EMPTY_MONITOR_NAME : name)  , ordering });
                     }
-
                     index++;
-
                 }
-
         }
 
         if (!found) {
@@ -125,9 +122,11 @@ public class ScriptsListener {
                 Utils.setAttribute("ordering", ordering, e);
             }
 
-            _dom.setChanged(true);
+            _dom.setChanged(true);            
             
-            if(_dom.isLifeElement()) _dom.setChangedForDirectory(_parent.getName(), Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+            if(_dom.isLifeElement() || _dom.isDirectory()) 
+            	_dom.setChangedForDirectory(_parent.getName(), Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+            
             if (_list == null)
             	initScripts();
             if (_list != null)
@@ -151,15 +150,16 @@ public class ScriptsListener {
 			_dom.setJobDisabled(Utils.getAttributeValue("name", e), false);
 			e.detach();
 			_dom.setChanged(true);
-			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", e) ,SchedulerDom.DELETE);
+			 if(_dom.isLifeElement() || _dom.isDirectory()) 
+	            	_dom.setChangedForDirectory(_parent.getName(), Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 			table.remove(index);
 			_main.updateScripts();
 			if(_list==null)
 				initScripts();
 			if (_list.size() == 0) {
-					_list = null;
+				_list = null;
 			}
-			
+
 			if (index >= table.getItemCount())
 				index--;
 			if (index >= 0) {
@@ -169,7 +169,7 @@ public class ScriptsListener {
 		}
 		return false;
 	}
-	
+
 
 	public boolean existScriptname(String name) {
 		if(name == null || name.length() == 0)

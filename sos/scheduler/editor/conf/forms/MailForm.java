@@ -112,19 +112,16 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		setSize(new org.eclipse.swt.graphics.Point(604, 427));
 
 		
-		mailOnError.setItems(new String[]{"yes", "no"}); 
-		mailOnWarning.setItems(new String[]{"yes", "no"}); 
-		mailOnSuccess.setItems(new String[]{"yes", "no"}); 		
-		mailOnProcess.setItems(new String[]{"yes", "no"});
-		mailOnDelayAfterError.setItems(new String[]{"all", "first_only", "last_only", "first_and_last_only"});
-		cboHistory.setItems(new String[]{"yes", "no"});
-		cboHistoryOnProcess.setItems(new String[]{"yes", "no", "0", "1", ""});
-		cboHistoryWithLog.setItems(new String[]{"yes", "no", "gzip"});
+		mailOnError.setItems(new String[]{"yes", "no", ""}); 
+		mailOnWarning.setItems(new String[]{"yes", "no", ""}); 
+		mailOnSuccess.setItems(new String[]{"yes", "no", ""}); 		
+		mailOnProcess.setItems(new String[]{"yes", "no", ""});
+		mailOnDelayAfterError.setItems(new String[]{"all", "first_only", "last_only", "first_and_last_only", ""});
+		cboHistory.setItems(new String[]{"yes", "no", ""});
+		cboHistoryOnProcess.setItems(new String[]{"yes", "no", "0", "1", "", ""});
+		cboHistoryWithLog.setItems(new String[]{"yes", "no", "gzip", ""});
 		
-		
-		
-		
-		LogLevel.setItems(new String[]{"info", "debug1", "debug2", "debug3", "debug4", "debug5", "debug6", "debug7", "debug8", "debug9"});
+		LogLevel.setItems(new String[]{"info", "debug1", "debug2", "debug3", "debug4", "debug5", "debug6", "debug7", "debug8", "debug9", ""});
 		
 		
 	}

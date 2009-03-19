@@ -45,8 +45,20 @@ public class MailListener {
 	}
 
     public void setValue(String name, String value, String default_) {
-    	if(value == null || value.length() == 0)
-    		return;
+    	if(value == null || value.length() == 0) {
+    		if(_settings != null) {
+    			//return;
+    			_settings.removeChild(name);
+    			if(_settings.getContentSize() == 0 && _parent != null) {
+    				_parent.removeContent(_settings);
+    			}
+    			_dom.setChanged(true);
+    			if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+    			return;
+    		}else{
+    			return;
+    		}
+    	}
     	setMail();
 		//Utils.setAttribute(name, value, default_, _settings, _dom);
     	
@@ -59,8 +71,9 @@ public class MailListener {
     	
     	elem.setText(value);
     	
+    	_dom.setChanged(true);
 		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
-		_dom.setChanged(true);
+		
 	}
     
     
