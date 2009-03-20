@@ -314,24 +314,39 @@ public class ContextMenu {
 					SchedulerForm f = (SchedulerForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
 					if(f == null)
 						return;
-					Tree tree = f.getTree();
-					for(int i = 0; i < tree.getItemCount(); i++) {    				
-						TreeItem item = tree.getItem(i);
-						if(item.getText().equals(SchedulerListener.JOB + jobname)){
-							TreeItem[] jobsItem = item.getItems();
-							for(int j = 0; j < jobsItem.length; j++) {
-								TreeItem jItem = jobsItem[j];
-								if(jItem.getText().equals("Monitor")){
-									TreeItem[] monitorsItem = jItem.getItems();
-									for(int k = 0; k < monitorsItem.length; k++) {
-										TreeItem monitor = monitorsItem[k];
+					Tree tree = f.getTree(); 
+					if(tree.getSelection()[0].getText().equals("Monitor")){
+						TreeItem[] monitorsItem = tree.getSelection()[0].getItems();
+						for(int k = 0; k < monitorsItem.length; k++) {
+							TreeItem monitor = monitorsItem[k];
 
-										if(monitor.getText().equals(monitorname)){
-											//if(jItem.getText().endsWith("Job: "+ name)){
-											tree.setSelection(new TreeItem [] {monitor});
-											f.updateTreeItem(monitorname);
-											f.updateTree("monitor");
-											break;
+							if(monitor.getText().equals(monitorname)){
+								//if(jItem.getText().endsWith("Job: "+ name)){
+								tree.setSelection(new TreeItem [] {monitor});
+								f.updateTreeItem(monitorname);
+								f.updateTree("monitor");
+								break;
+							}
+						}
+					} else {
+						for(int i = 0; i < tree.getItemCount(); i++) {    				
+							TreeItem item = tree.getItem(i);
+							if(item.getText().equals(SchedulerListener.JOB + jobname)){
+								TreeItem[] jobsItem = item.getItems();
+								for(int j = 0; j < jobsItem.length; j++) {
+									TreeItem jItem = jobsItem[j];
+									if(jItem.getText().equals("Monitor")){
+										TreeItem[] monitorsItem = jItem.getItems();
+										for(int k = 0; k < monitorsItem.length; k++) {
+											TreeItem monitor = monitorsItem[k];
+
+											if(monitor.getText().equals(monitorname)){
+												//if(jItem.getText().endsWith("Job: "+ name)){
+												tree.setSelection(new TreeItem [] {monitor});
+												f.updateTreeItem(monitorname);
+												f.updateTree("monitor");
+												break;
+											}
 										}
 									}
 								}
