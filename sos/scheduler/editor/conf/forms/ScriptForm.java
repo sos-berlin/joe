@@ -830,6 +830,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     		if(str == null) 
     			return new String[0];
 
+    		String newstr = "";
     		retVal = new String[str.length];
     		for(int i = 0; i < str.length; i++) {
     			String s = sosString.parseToString(str[i]);
@@ -837,11 +838,14 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     			if(idx > -1) {    		
     				String lan = s.substring(0, idx);
     				String name = s.substring(idx+1);
+    				if(name == null || lan == null)
+    					System.out.println(name);
     				favorites.put(name, lan);
-    				retVal[i] = name;
+    				//retVal[i] = name;
+    				newstr = name + ";" + newstr;
     			} 
     		}
-
+    		retVal = newstr.split(";");
     		return retVal;
     	} catch (Exception e) {
     		System.out.println(e.toString());

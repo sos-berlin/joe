@@ -20,6 +20,7 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.MailListener;
 
@@ -57,15 +58,8 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 	
 	private Combo          LogLevel                     = null; 
 	
+	private boolean        init                         = true;
 	
-	public MailForm(Composite parent, int style) {		
-
-		super(parent, style);
-		initialize();
-		setToolTipText();
-
-	}
-
 
 	public MailForm(Composite parent, int style, SchedulerDom dom, Element element) {
 
@@ -73,8 +67,9 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 		initialize();
 		setToolTipText();
+		
 		setAttributes(dom, element, type);
-
+		init = false;
 	}
 
 
@@ -118,7 +113,8 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		mailOnProcess.setItems(new String[]{"yes", "no", ""});
 		mailOnDelayAfterError.setItems(new String[]{"all", "first_only", "last_only", "first_and_last_only", ""});
 		cboHistory.setItems(new String[]{"yes", "no", ""});
-		cboHistoryOnProcess.setItems(new String[]{"yes", "no", "0", "1", "", ""});
+		//cboHistoryOnProcess.setItems(new String[]{"yes", "no", "0", "1", "", ""});
+		cboHistoryOnProcess.setItems(new String[]{"0", "1", "2", "3", "4", ""});
 		cboHistoryWithLog.setItems(new String[]{"yes", "no", "gzip", ""});
 		
 		LogLevel.setItems(new String[]{"info", "debug1", "debug2", "debug3", "debug4", "debug5", "debug6", "debug7", "debug8", "debug9", ""});
@@ -282,21 +278,24 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		historyOnProcessLabel.setText("History On Process");
 
 		cboHistoryOnProcess = new Combo(group, SWT.NONE);
+		cboHistoryOnProcess.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				setOnHistory();
+			}
+		});
 		cboHistoryOnProcess.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
-				boolean isDigit = true;
-				char[] c = cboHistoryOnProcess.getText().toCharArray();
-				for(int i = 0; i < c.length; i++) {
-					isDigit = Character.isDigit(c[i]);
-					if(isDigit)
-						break;
-				}
-				e.doit = cboHistoryOnProcess.getText().equals("yes") || cboHistoryOnProcess.getText().equals("no") || isDigit;
+				e.doit=Utils.isOnlyDigits(e.text);
 			}
 		});
 		cboHistoryOnProcess.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				listener.setValue("history_on_process", cboHistoryOnProcess.getText());
+				
+					cboHistoryOnProcess.setText(listener.getValue("history_on_process"));
+				
+
+				
+				
 			}
 		});
 		cboHistoryOnProcess.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
@@ -338,5 +337,19 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 	 public void apply() {
 
 	 }
+	 
+	 private void setOnHistory() {
+		 if(init)
+			 return;
+		boolean isDigit = true;
+		char[] c = cboHistoryOnProcess.getText().toCharArray();
+		for(int i = 0; i < c.length; i++) {
+			isDigit = Character.isDigit(c[i]);
+			if(!isDigit)
+				break;
+		}
+		if(cboHistoryOnProcess.getText().equals("yes") || cboHistoryOnProcess.getText().equals("no") || isDigit)				
+			listener.setValue("history_on_process", cboHistoryOnProcess.getText());
+}
 
 } // @jve:decl-index=0:visual-constraint="10,10"
