@@ -259,6 +259,9 @@ public class ContextMenu {
 	public static void goTo(String name, DomParser _dom, int type) {
 		try {
 			
+			if(name == null || name.length() == 0)
+				return;
+			
 			if(_dom instanceof sos.scheduler.editor.actions.ActionsDom)
 				_dom = (sos.scheduler.editor.actions.ActionsDom)_dom;
 			else 
@@ -297,7 +300,46 @@ public class ContextMenu {
 						}
 					}
 				}
+			} else if(type==Editor.MONITOR) {
+				
+                String[] split = name.split("_@_");
+                String jobname = split[0];
+                String monitorname = split[1];
+                
+				XPath x3 = XPath.newInstance("//job[@name='"+ jobname + "']/monitor[@name='"+ monitorname + "']");				 
+				List listOfElement_3 = x3.selectNodes(_dom.getDoc());								 
+				
+				if(!listOfElement_3.isEmpty()) {    
+					
+					SchedulerForm f = (SchedulerForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
+					if(f == null)
+						return;
+					Tree tree = f.getTree();
+					for(int i = 0; i < tree.getItemCount(); i++) {    				
+						TreeItem item = tree.getItem(i);
+						if(item.getText().equals(SchedulerListener.JOB + jobname)){
+							TreeItem[] jobsItem = item.getItems();
+							for(int j = 0; j < jobsItem.length; j++) {
+								TreeItem jItem = jobsItem[j];
+								if(jItem.getText().equals("Monitor")){
+									TreeItem[] monitorsItem = jItem.getItems();
+									for(int k = 0; k < monitorsItem.length; k++) {
+										TreeItem monitor = monitorsItem[k];
 
+										if(monitor.getText().equals(monitorname)){
+											//if(jItem.getText().endsWith("Job: "+ name)){
+											tree.setSelection(new TreeItem [] {monitor});
+											f.updateTreeItem(monitorname);
+											f.updateTree("monitor");
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			
 			} else if(type==Editor.JOB_CHAIN) {
 
 				XPath x3 = XPath.newInstance("//job_chain[@name='"+ name + "']");				 

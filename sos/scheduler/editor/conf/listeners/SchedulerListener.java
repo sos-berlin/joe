@@ -36,6 +36,8 @@ public class SchedulerListener {
 	
 	public static  String            JOBS           = "Jobs"; 
 	
+	public static  String            JOB            = "Job: ";		
+	
 	public static  String            JOB_CHAINS     = "Job Chains";
 	
 	public static  String            HTTP_SERVER    = "Http Server";

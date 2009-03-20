@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 /*import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -23,6 +25,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 //import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+
+import sos.scheduler.editor.app.ContextMenu;
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Utils;
@@ -138,6 +143,12 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 			GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
 			gridData2.widthHint = 425;
 			table = new Table(scriptsGroup, SWT.FULL_SELECTION | SWT.BORDER);
+			table.addMouseListener(new MouseAdapter() {
+				public void mouseDoubleClick(final MouseEvent e) {
+					if(table.getSelectionCount() > 0)
+						ContextMenu.goTo(Utils.getAttributeValue("name", listener.getParent()) + "_@_" + table.getSelection()[0].getText(0), dom, Editor.MONITOR);			
+				}
+			});
 			table.setHeaderVisible(true);
 			table.setLayoutData(gridData2);
 			table.setLinesVisible(true);

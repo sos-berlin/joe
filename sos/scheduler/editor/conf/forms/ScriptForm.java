@@ -11,7 +11,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -26,6 +25,7 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
@@ -168,7 +168,9 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         createGroup();
         setSize(new org.eclipse.swt.graphics.Point(604, 427));     
         sosString = new SOSString();
-        cboFavorite.setItems(normalized(Options.getPropertiesWithPrefix("monitor_favorite_")));
+        if(normalized(Options.getPropertiesWithPrefix("monitor_favorite_")) != null &&
+        		normalized(Options.getPropertiesWithPrefix("monitor_favorite_"))[0] != null)
+        	cboFavorite.setItems(normalized(Options.getPropertiesWithPrefix("monitor_favorite_")));
         
     }
 
@@ -249,7 +251,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         butFavorite = new Button(gScript, SWT.NONE);
         butFavorite.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
-        		Options.setProperty("monitor_favorite_" + ( bCom.getSelection() ? "com" : listener.getLanguage(listener.getLanguage())) +"_" + txtName.getText(), tClass.getText());
+        		Options.setProperty("monitor_favorite_" + ( bCom.getSelection() ? "com" : listener.getLanguage(listener.getLanguage())) +"_" + txtName.getText(), getFavoriteValue());
         		Options.saveProperties();
         		 cboFavorite.setItems(normalized(Options.getPropertiesWithPrefix("monitor_favorite_")));
         		/*if(listener.getLanguage() != 0) {
@@ -591,14 +593,56 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         	public void widgetSelected(final SelectionEvent e) {
         		if(cboFavorite.getText().length() > 0) {
         			if(Options.getProperty(getPrefix() + cboFavorite.getText()) != null) {
-        				tClass.setText(Options.getProperty(getPrefix() + cboFavorite.getText())) ;
-        				txtName.setText(cboFavorite.getText());
+        				
+        				if( (tClass.isEnabled() && tClass.getText().length() > 0) || 
+        				    (tableIncludes.isEnabled() && tableIncludes.getItemCount() > 0)) {
+        					int c = MainWindow.message(getShell(), "Overwrite this Monitor?", SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+        					if(c != SWT.YES)
+        						return;
+        					else {
+        						tClass.setText("");
+        						tableIncludes.clearAll();
+        						listener.removeIncludes();
+        					}
+        				}
+        				
+        					
+        				
         				if (favorites != null && favorites.get(cboFavorite.getText()) != null && favorites.get(cboFavorite.getText()).toString().length() > 0) {
         					if(favorites.get(cboFavorite.getText()).equals("com")) {
         					   bCom.setSelection(true);
         					   listener.setLanguage(listener.COM);
         					} else
         						listener.setLanguage(listener.languageAsInt(favorites.get(cboFavorite.getText()).toString()));
+        					
+        					txtName.setText(cboFavorite.getText());
+        					
+        					boolean isInclude = false;
+        			    	switch (listener.getLanguage()) {        			    	
+        			    	case ScriptListener.COM:
+        			    		tClass.setText(Options.getProperty(getPrefix() + cboFavorite.getText())) ;
+        			    		break;
+        			    	case ScriptListener.JAVA:
+        			    		tClass.setText(Options.getProperty(getPrefix() + cboFavorite.getText())) ;
+        			    		break;
+        			    	case ScriptListener.JAVA_SCRIPT:   
+        			    		isInclude = true;
+        			    		break;
+        			    	case ScriptListener.PERL:
+        			    		isInclude = true;
+        			    		break;
+        			    	case ScriptListener.VB_SCRIPT:
+        			    		isInclude = true;
+        			    		break;
+        			    	}
+
+        			    	if(isInclude) {
+        			    		String[] split = Options.getProperty(getPrefix() + cboFavorite.getText()).split(";");
+        			    		for(int i = 0; i < split.length ; i++){
+        			    			listener.addInclude(split[i]);
+        			    		}        			    		
+        			    	}
+            				
         					
         					bNone.setSelection(false);        			
                 			bCom.setSelection(false);
@@ -780,33 +824,65 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     }
     
     private String[] normalized(String[] str) {
-    	String[] retVal = new String[0];
+    	String[] retVal = new String[]{""};
     	try {
-    	favorites = new HashMap();
-    	if(str == null) 
-    		return new String[0];
-    	
-    	retVal = new String[str.length];
-    	for(int i = 0; i < str.length; i++) {
-    		String s = sosString.parseToString(str[i]);
-    		int idx = s.indexOf("_");
-    		if(idx > -1) {    		
-    			String lan = s.substring(0, idx);
-    			String name = s.substring(idx+1);
-    			favorites.put(name, lan);
-    			retVal[i] = name;
-    		} 
-    	}
-    	
-    	return retVal;
+    		favorites = new HashMap();
+    		if(str == null) 
+    			return new String[0];
+
+    		retVal = new String[str.length];
+    		for(int i = 0; i < str.length; i++) {
+    			String s = sosString.parseToString(str[i]);
+    			int idx = s.indexOf("_");
+    			if(idx > -1) {    		
+    				String lan = s.substring(0, idx);
+    				String name = s.substring(idx+1);
+    				favorites.put(name, lan);
+    				retVal[i] = name;
+    			} 
+    		}
+
+    		return retVal;
     	} catch (Exception e) {
     		System.out.println(e.toString());
     		try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
-			} catch(Exception ee) {
-				//tu nichts
-			}
-			return retVal;	
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
+    		return retVal;	
     	}
     }
+    
+    private String  getFavoriteValue() {
+    	String retVal = "";
+    	int lan =  listener.getLanguage();
+    	switch (lan) {
+    	//case ScriptListener.NONE:
+    	//	retVal = tClass.getText();
+    	//	break;
+    	case ScriptListener.COM:
+    		retVal = tClass.getText();
+    		break;
+    	case ScriptListener.JAVA:
+    		retVal = tClass.getText();
+    		break;
+    	case ScriptListener.JAVA_SCRIPT:    		
+    		retVal = listener.getIncludesAsString();
+    		break;
+    	case ScriptListener.PERL:
+    		retVal = listener.getIncludesAsString();
+    		break;
+    	case ScriptListener.VB_SCRIPT:
+    		retVal = listener.getIncludesAsString();
+    		break;
+    	//case ScriptListener.SHELL:
+    	//	break;
+    	}
+    	
+    	return retVal;
+    }
+    
+   
+    
 } // @jve:decl-index=0:visual-constraint="10,10"

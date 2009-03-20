@@ -217,6 +217,17 @@ public class ScriptListener {
     	}
     }
     
+    public String getIncludesAsString() {
+    	String retVal = "";
+    	String[] inc = getIncludes();
+    	for(int i = 0; i < inc.length; i++) {
+    		if(inc[i]!= null)
+    			retVal = inc[i] + ";" + retVal;
+    	}
+    	return retVal;
+    }
+    
+    
     public String[] getIncludes() {
         if (_script != null) {
             List includeList = _script.getChildren("include");            
@@ -289,6 +300,12 @@ public class ScriptListener {
                 System.out.println("index " + index + " is out of range for include!");
         } else
             System.out.println("no script element defined!");
+    }
+    
+    public void removeIncludes() {
+        if (_script != null) {
+             _script.removeChildren("include");
+        }
     }
 
 
