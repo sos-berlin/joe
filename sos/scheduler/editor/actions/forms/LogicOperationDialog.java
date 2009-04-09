@@ -24,7 +24,7 @@ import sos.util.SOSString;
 class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 	
 	
-	Object result;
+	private Object          result                = null;
 	
 	private Text            txt                   = null;
 	
@@ -40,9 +40,13 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 	
 	private ArrayList       undo                  = new ArrayList();
 	
-	private  List listOfIds = null;
+	private List            listOfIds             = null;
 	
-	private List list = null; 
+	private List            list                  = null;
+	
+	private Button          restoreButton         = null;
+	
+	private Button          butClear              = null;
 	
 	
 	public LogicOperationDialog(int style) {
@@ -144,7 +148,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 		gridLayout_1.numColumns = 3;
 		composite.setLayout(gridLayout_1);
 
-		final Button restoreButton = new Button(composite, SWT.NONE);
+		restoreButton = new Button(composite, SWT.NONE);
 		restoreButton.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
 		restoreButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -163,7 +167,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 		});
 		restoreButton.setText("Restore");
 
-		final Button butClear = new Button(composite, SWT.NONE);
+		butClear = new Button(composite, SWT.NONE);
 		butClear.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		butClear.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -196,7 +200,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
-			
+		
 		return result;
 		
 	}
@@ -220,7 +224,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 			for(int i =0; i < operator.size(); i++) {
 				listOfIds.add(sosString.parseToString(operator.get(i)));
 			}
-			
+			setToolTipText();
 			
 		} catch(Exception e){
 			try {
@@ -259,7 +263,10 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
         butCancel.setToolTipText(Messages.getTooltip("logic.button_cancel"));
         butApply.setToolTipText(Messages.getTooltip("logic.button_apply"));
         list.setToolTipText(Messages.getTooltip("logic.list_of_operator"));
+        listOfIds.setToolTipText(Messages.getTooltip("logic.list_of_group"));
         txtExpression.setToolTipText(Messages.getTooltip("logic.expression"));
+        butClear.setToolTipText(Messages.getTooltip("logic.button_clear"));
+        restoreButton.setToolTipText(Messages.getTooltip("button_restore"));
         
         
     }

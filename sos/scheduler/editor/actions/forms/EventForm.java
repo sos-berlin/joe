@@ -352,10 +352,6 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 	}
 
 
-	public void setToolTipText() {
-		txtEventName.setToolTipText(Messages.getTooltip("events.logic"));    	
-	}
-
 
 
 	public boolean isUnsaved() {	
@@ -397,6 +393,24 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		butRemove.setEnabled(false);
 
 		txtEventName.setFocus();
+	}
+
+
+	public void setToolTipText() {
+		txtEventName.setToolTipText(Messages.getTooltip("event.name"));		
+		butNew.setToolTipText(Messages.getTooltip("event.but_new"));
+		txtTitle.setToolTipText(Messages.getTooltip("event.title"));		 
+		butApply.setToolTipText(Messages.getTooltip("event.but_apply"));
+		cboEventClass.setToolTipText(Messages.getTooltip("event.event_class"));
+		txtEventId.setToolTipText(Messages.getTooltip("event.event_id")); 
+		txtJobname.setToolTipText(Messages.getTooltip("event.job_name"));
+		txtJobChain.setToolTipText(Messages.getTooltip("event.job_chain"));
+		txtOrderId.setToolTipText(Messages.getTooltip("event.order_id"));
+		txtComment.setToolTipText(Messages.getTooltip("event.comment"));
+		table.setToolTipText(Messages.getTooltip("event.table"));
+		butRemove.setToolTipText(Messages.getTooltip("event.but_remove"));
+
+
 	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"

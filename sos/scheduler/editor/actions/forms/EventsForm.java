@@ -62,6 +62,7 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
     
     private Button             butEventGroupOperation   = null;
     
+    private Button             butEventsOperation       = null; 
     
     public EventsForm(Composite parent, int style, ActionsDom dom, Element action, ActionsForm _gui) {
     	
@@ -107,7 +108,7 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         });
         txtLogic.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
-        final Button butEventsOperation = new Button(actionsGroup, SWT.NONE);
+        butEventsOperation = new Button(actionsGroup, SWT.NONE);
         butEventsOperation.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		ArrayList list = new ArrayList();
@@ -300,7 +301,10 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         butApply.setToolTipText(Messages.getTooltip("events.button_apply"));
         butNew.setToolTipText(Messages.getTooltip("events.button_new"));        
         butRemove.setToolTipText(Messages.getTooltip("events.button_remove"));
-        butRemove.setToolTipText(Messages.getTooltip("events.button_operation"));
+        butEventsOperation.setToolTipText(Messages.getTooltip("events.button_operation"));
+        butEventGroupOperation.setToolTipText(Messages.getTooltip("events.button_operation"));
+        
+        
     }
     
    

@@ -33,7 +33,9 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
+import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.conf.DetailDom;
 import sos.scheduler.editor.conf.IDetailUpdate;
@@ -673,7 +675,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		});
 		tableParams.setLinesVisible(true);
 		tableParams.setHeaderVisible(true);
-		final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 3);
+		final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 4);
 		gridData_4.heightHint = 157;
 		gridData_4.widthHint = 413;
 		tableParams.setLayoutData(gridData_4);
@@ -704,7 +706,17 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		});
 		butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butNew.setText("New");
-		
+
+		/*final Button butImport = new Button(parameterGroup, SWT.NONE);
+		butImport.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				startWizzard();
+				
+			}
+		});
+		butImport.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+		butImport.setText("Import");
+		*/
 		butRemove = new Button(parameterGroup, SWT.NONE);
 		butRemove.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -1117,4 +1129,20 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 	public DetailDom getDom() {
 		return dom;
 	}
+	/*
+	private void startWizzard() {
+		Utils.startCursor(getShell());
+		
+		//Liste aller Jobdokumentation 
+		JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(new JobListener(dom, 
+				detailListener.getParent(), 
+				                                                                           listener.get_main()), 
+				                                                                           tParameter,
+				                                                                           Editor.PARAMETER);
+
+			importParameterForms.showAllImportJobs();
+		
+		Utils.stopCursor(getShell());
+	}
+	*/
 } 

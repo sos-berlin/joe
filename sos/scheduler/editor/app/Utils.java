@@ -317,7 +317,8 @@ public class Utils {
 
 	public static String fill(int l, String s) {
 		String n = "00000000000000000000000000000";
-		if ((s.length() < l) && (!s.trim().equals(""))) {
+		//if ((s.length() < l) && (!s.trim().equals(""))) {
+		if (s.length() < l) {
 			s = n.substring(0, l - s.length()) + s;
 		}
 		return s;

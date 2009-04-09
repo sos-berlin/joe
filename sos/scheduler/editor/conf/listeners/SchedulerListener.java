@@ -1361,11 +1361,16 @@ public class SchedulerListener {
 
 	private int getType(Element elem){
 		if(elem.getName().equals("job") )
-			return Editor.JOB; 
-		else if(elem.getName().equals("order") && (_dom.isLifeElement() || (elem.getParentElement() != null && elem.getParentElement().getName().equals("commands"))))
-			return Editor.COMMANDS;
-		else if( (elem.getName().equals("order") || elem.getName().equals("add_order") || elem.getName().equals("start_job")) )
+			return Editor.JOB;
+		else if( (elem.getName().equals("order") || elem.getName().equals("add_order") || elem.getName().equals("start_job")) &&
+				Utils.getJobElement(elem).getName().equals("job"))
 			return Editor.JOB_COMMANDS;
+		else if((elem.getName().equals("order") || elem.getName().equals("add_order")) && 
+				(_dom.isLifeElement() || (elem.getParentElement() != null && elem.getParentElement().getName().equals("commands"))))
+			return Editor.COMMANDS;
+		/*else if( (elem.getName().equals("order") || elem.getName().equals("add_order") || elem.getName().equals("start_job")) )
+			return Editor.JOB_COMMANDS;
+			*/
 		else if(elem.getName().equals("web_service") )
 			return Editor.WEBSERVICE;
 		else

@@ -241,6 +241,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 		//Parameter
 		if(type == Editor.JOB_COMMANDS)
+		//if(type == Editor.JOB_COMMANDS)
 			createJobCommandParameter();
 		else 
 			createParameter();

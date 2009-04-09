@@ -119,8 +119,8 @@ public class OrdersListener {
 		if (_commands == null)
 			initCommands();
 
-		add_order.addContent(runtime); //mo
-		_orders2.add(add_order);//mo
+		add_order.addContent(runtime); 
+		_orders2.add(add_order);
 
 		
 		fillTable(table);

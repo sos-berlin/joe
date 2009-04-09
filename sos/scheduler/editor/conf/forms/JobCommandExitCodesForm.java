@@ -297,9 +297,9 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 	}
 
 	private void addJob() {
-		int index = tCommands.getSelectionIndex();
+		//int index = tCommands.getSelectionIndex();
 		Element e = null;
-		if (index == -1) {
+		//if (index == -1) {
 
 			e = new Element("start_job");				
 			e.setAttribute("job", "job" + tCommands.getItemCount());
@@ -308,14 +308,14 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 
 			listener.addCommand(e);
 
-		}
+//		}
 
 	}
 
 	private void addOrder() {
-		int index = tCommands.getSelectionIndex();
+		//int index = tCommands.getSelectionIndex();
 		Element e = null;
-		if (index == -1) {
+		//if (index == -1) {
 
 			e = new Element("order");			
 			e.setAttribute("job_chain", "job_chain" + tCommands.getItemCount());		
@@ -324,7 +324,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 			item.setText(new String[] { "order", "", "job_chain_" + tCommands.getItemCount(), "" });
 			listener.addCommand(e);
 
-		}
+//		}
 	}
 
 

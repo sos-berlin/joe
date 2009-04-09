@@ -229,7 +229,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		txtMonth = new Text(composite, SWT.BORDER);
 		txtMonth.addFocusListener(new FocusAdapter() {
 			public void focusLost(final FocusEvent e) {
-				//txtMonth.setText(Utils.fill(2, txtMonth.getText()));		
+				txtMonth.setText(Utils.fill(2, txtMonth.getText()));		
 			}
 		});
 		txtMonth.setEnabled(false);
@@ -258,7 +258,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		txtDay = new Text(composite, SWT.BORDER);
 		txtDay.addFocusListener(new FocusAdapter() {
 			public void focusLost(final FocusEvent e) {
-				//txtDay.setText(Utils.fill(2, txtDay.getText()));
+				txtDay.setText(Utils.fill(2, txtDay.getText()));
 			}
 		});
 		txtDay.setEnabled(false);
@@ -287,13 +287,13 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		txtHour = new Text(composite, SWT.BORDER);
 		txtHour.addFocusListener(new FocusAdapter() {
 			public void focusLost(final FocusEvent e) {
-				//txtHour.setText(Utils.fill(2, txtHour.getText()));
+				txtHour.setText(Utils.fill(2, txtHour.getText()));
 			}
 		});
 		txtHour.setEnabled(false);
 		txtHour.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
-				if(!event)
+				if(!event) 
 					return;
 				Utils.setBackground(0, 24, txtHour);
 				if(!txtHour.getBackground().equals(Options.getRequiredColor()))
@@ -316,7 +316,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		txtMin = new Text(composite, SWT.BORDER);
 		txtMin.addFocusListener(new FocusAdapter() {
 			public void focusLost(final FocusEvent e) {
-				//txtMin.setText(Utils.fill(2, txtMin.getText()));
+				txtMin.setText(Utils.fill(2, txtMin.getText()));
 			}
 		});
 		txtMin.setEnabled(false);
@@ -345,7 +345,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		txtSec = new Text(composite, SWT.BORDER);
 		txtSec.addFocusListener(new FocusAdapter() {
 			public void focusLost(final FocusEvent e) {
-				//txtSec.setText(Utils.fill(2, txtSec.getText()));
+				txtSec.setText(Utils.fill(2, txtSec.getText()));
 			}
 		});
 		txtSec.setEnabled(false);
@@ -628,12 +628,6 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 				sec = time.length > 2 && time[2] != null && time[2].length() > 0 ? Utils.fill(2, time[2]) : "00";
 
 
-				/*try {
-					hour = time.length > 0 &&  time[0] != null && time[0].length() > 0 ? Utils.fill(2, time[0]) : String.valueOf(SOSDate.getCurrentDateAsString("HH"));
-					min = time.length > 1 && time[1] != null && time[1].length() > 0 ? Utils.fill(2, time[1]) : String.valueOf(SOSDate.getCurrentDateAsString("mm"));
-					sec = time.length > 2 && time[2] != null && time[2].length() > 0 ? Utils.fill(2, time[2]) : String.valueOf(SOSDate.getCurrentDateAsString("ss"));
-				} catch(Exception e) {}
-				 */
 			} else if((startAt.indexOf("-") > -1)) {
 				//hat nur date
 				String[] date = startAt.split("-");
@@ -679,8 +673,9 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 			        txtHour.setFocus();
 			        break;
 			        
-			case 5: cboTimes.setText("now + SECOUNDS");
+			case 5: cboTimes.setText("now + SECONDS");
 			        txtSec.setFocus();
+			        break;
 
 			case 6: cboTimes.setText("yyyy-MM-dd HH:mm:ss");
  			        txtYear.setFocus();
@@ -690,54 +685,12 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 			}
 		}
 		
-		//if(!event) {// initialisierung
-		/*if(havenow && haveTime && havesec) {
-			cboTimes.setText("now + HH:mm:ss");
-			txtHour.setFocus();
-		} else if(havenow && haveTime) {
-			cboTimes.setText("now + HH:mm");
-			txtHour.setFocus();
-		} else if(havesec) {
-			cboTimes.setText("now + SECOUNDS");
-			txtSec.setFocus();
-		} else if(havenow){
-			cboTimes.setText("now");
-		} else if(haveperiod){
-			cboTimes.setText("period");
-		} else {
-			cboTimes.setText("yyyy-MM-dd HH:mm:ss");
-			txtYear.setFocus();
-		}
-		*/
-		//}
 		normalized(cboTimes.getText());
 	}
 
-	public void setToolTipText() {
+		private String setTime() {
 
-		//tStartAt.setToolTipText(Messages.getTooltip("jobcommand.startat"));
-		txtYear.setToolTipText(Messages.getTooltip("jobcommand.startat"));
-		txtMonth.setToolTipText(Messages.getTooltip("jobcommand.startat"));
-		txtDay.setToolTipText(Messages.getTooltip("jobcommand.startat"));
-		txtHour.setToolTipText(Messages.getTooltip("jobcommand.startat"));
-		txtMin.setToolTipText(Messages.getTooltip("jobcommand.startat"));
-		txtSec.setToolTipText(Messages.getTooltip("jobcommand.startat"));
-
-		tTitle.setToolTipText(Messages.getTooltip("jobcommand.title"));
-		tPriority.setToolTipText(Messages.getTooltip("jobcommand.priority"));
-		tState.setToolTipText(Messages.getTooltip("jobcommand.state"));		
-		cboEndstate.setToolTipText(Messages.getTooltip("jobcommand.end_state"));
-		bReplace.setToolTipText(Messages.getTooltip("jobcommand.replaceorder"));
-		cJobchain.setToolTipText(Messages.getTooltip("jobcommand.jobchain"));
-		tJob.setToolTipText(Messages.getTooltip("jobcommand.job_order_id"));
-		cboTimes.setToolTipText(Messages.getTooltip("jobcommand.starttimes"));
-
-	}
-
-
-	private String setTime() {
-
-		event = false;
+		//event = false;
 		
 		String retVal = "";
 		if(cboTimes.getText().equals("period")) {		
@@ -747,11 +700,13 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		} else if(cboTimes.getText().startsWith("now ")) {
 			retVal = "now + ";
 			if(txtHour.getEnabled()) {
-				retVal = retVal + Utils.fill(2, txtHour.getText().length() == 0 ? "00" : txtHour.getText()) + ":";
+				//retVal = retVal + Utils.fill(2, txtHour.getText().length() == 0 ? "00" : txtHour.getText()) + ":";
+				retVal = retVal + Utils.fill(2, txtHour.getText()) + ":";
 				//retVal = retVal + "00" + ":";
 			}
 			if(txtMin.getEnabled()) {
-				retVal = retVal + Utils.fill(2, txtMin.getText().length() == 0 ? "00" : txtMin.getText());
+				//retVal = retVal + Utils.fill(2, txtMin.getText().length() == 0 ? "00" : txtMin.getText());
+				retVal = retVal + Utils.fill(2, txtMin.getText());
 				//retVal = retVal + "00";
 				if(txtSec.getEnabled()) {
 					retVal = retVal + ":";
@@ -759,7 +714,8 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 			}
 
 			if(txtSec.getEnabled()) {
-				retVal = retVal + Utils.fill(2, txtSec.getText().length() == 0? "00" : txtSec.getText());				
+				//retVal = retVal + Utils.fill(2, txtSec.getText().length() == 0? "00" : txtSec.getText());				
+				retVal = retVal + Utils.fill(2, txtSec.getText());
 			    //retVal = retVal + "00";
 			}
 
@@ -776,7 +732,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		//System.out.println("test: " + retVal);
 
 		listener.setAt(retVal);
-		event = false;
+		//event = false;
 		return retVal;
 	}
 
@@ -837,7 +793,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 				txtMin.setEnabled(true);					
 			}
 
-			if(format.indexOf("ss") > -1 || format.indexOf("SECOUNDS") > -1) {
+			if(format.indexOf("ss") > -1 || format.indexOf("SECONDS") > -1) {
 				if(!txtHour.isEnabled()) txtSec.setFocus();
 				txtSec.setEnabled(true);
 
@@ -886,6 +842,25 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 
 	}
 
+	public void setToolTipText() {
 
+		//tStartAt.setToolTipText(Messages.getTooltip("jobcommand.startat"));
+		txtYear.setToolTipText(Messages.getTooltip("date.year"));
+		txtMonth.setToolTipText(Messages.getTooltip("date.month"));
+		txtDay.setToolTipText(Messages.getTooltip("date.day"));
+		txtHour.setToolTipText(Messages.getTooltip("period.begin.hours"));
+		txtMin.setToolTipText(Messages.getTooltip("period.begin.minutes"));
+		txtSec.setToolTipText(Messages.getTooltip("period.begin.secounds"));
+
+		tTitle.setToolTipText(Messages.getTooltip("jobcommand.title"));
+		tPriority.setToolTipText(Messages.getTooltip("jobcommand.priority"));
+		tState.setToolTipText(Messages.getTooltip("jobcommand.state"));		
+		cboEndstate.setToolTipText(Messages.getTooltip("jobcommand.end_state"));
+		bReplace.setToolTipText(Messages.getTooltip("jobcommand.replaceorder"));
+		cJobchain.setToolTipText(Messages.getTooltip("jobcommand.jobchain"));
+		tJob.setToolTipText(Messages.getTooltip("jobcommand.job_order_id"));
+		cboTimes.setToolTipText(Messages.getTooltip("jobcommand.startat"));
+
+	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"

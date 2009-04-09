@@ -382,5 +382,13 @@ public abstract class DomParser {
     		
     	}		
     }
+
+
+	/**
+	 * @return the _init
+	 */
+	public boolean isInit() {
+		return _init;
+	}
     
 }

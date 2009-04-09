@@ -18,6 +18,9 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.jdom.Element;
+
+import sos.scheduler.editor.actions.ActionsDom;
+import sos.scheduler.editor.actions.forms.ActionsForm;
 import sos.scheduler.editor.app.MainListener;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.TabbedContainer;
@@ -129,8 +132,8 @@ public class MainWindow  {
 		open.setAccelerator(SWT.CTRL | 'O');
 
 		MenuItem mNew = new MenuItem(mFile, SWT.CASCADE);				
-		mNew.setText("New                                 \tCtrl+N");
-		mNew.setAccelerator(SWT.CTRL | 'N');
+		mNew.setText("New                           ");
+		
 
 		Menu pmNew = new Menu(mNew);
 		MenuItem pNew = new MenuItem(pmNew, SWT.PUSH);
@@ -273,8 +276,8 @@ public class MainWindow  {
 
 		//open remote configuration
 		MenuItem mORC = new MenuItem(mFile, SWT.CASCADE);
-		mORC.setText("Open Remote Configuration\tCtrl+R");
-		mORC.setAccelerator(SWT.CTRL | 'R');
+		mORC.setText("Open Remote Configuration");
+		//mORC.setAccelerator(SWT.CTRL | 'R');
 
 		Menu pMOpenGlobalScheduler = new Menu(mORC);
 
@@ -298,8 +301,7 @@ public class MainWindow  {
 				Utils.stopCursor(getSShell());
 			}
 		});
-		pOpenGlobalScheduler.setText("Open Global Scheduler                          \tCtrl+T");
-		pOpenGlobalScheduler.setAccelerator(SWT.CTRL | 'T');
+		pOpenGlobalScheduler.setText("Open Global Scheduler");	
 
 		MenuItem pOpenSchedulerCluster = new MenuItem(pMOpenGlobalScheduler, SWT.PUSH);
 		pOpenSchedulerCluster.addSelectionListener(new SelectionAdapter() {
@@ -308,8 +310,8 @@ public class MainWindow  {
 				dialog.showForm(HotFolderDialog.SCHEDULER_CLUSTER);
 			}
 		});
-		pOpenSchedulerCluster.setText("Open Cluster Configuration                    \tCtrl+U");
-		pOpenSchedulerCluster.setAccelerator(SWT.CTRL | 'U');
+		pOpenSchedulerCluster.setText("Open Cluster Configuration");
+		
 
 		MenuItem pOpenSchedulerHost = new MenuItem(pMOpenGlobalScheduler, SWT.PUSH);
 		pOpenSchedulerHost.addSelectionListener(new SelectionAdapter() {
@@ -318,8 +320,8 @@ public class MainWindow  {
 				dialog.showForm(HotFolderDialog.SCHEDULER_HOST);
 			}
 		});
-		pOpenSchedulerHost.setText("Open Remote Scheduler Configuration\tCtrl+U");
-		pOpenSchedulerHost.setAccelerator(SWT.CTRL | 'U');
+		pOpenSchedulerHost.setText("Open Remote Scheduler Configuration");
+
 
 		mORC.setMenu(pMOpenGlobalScheduler);
 
@@ -398,7 +400,7 @@ public class MainWindow  {
 //		FTP
 		MenuItem mFTP = new MenuItem(mFile, SWT.CASCADE);				
 		mFTP.setText("FTP");
-		mFTP.setAccelerator(SWT.CTRL | 'N');
+		//mFTP.setAccelerator(SWT.CTRL | 'N');
 
 		Menu pmFTP = new Menu(mNew);
 
@@ -498,6 +500,10 @@ public class MainWindow  {
 				if(existLibraries()) {
 
 					WebDavDialog webdav = new WebDavDialog(main);
+					DomParser currdom = getSpecifiedDom();
+					if(currdom == null)
+						return;
+					/*
 					DomParser currdom = null;
 					if(MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
 						SchedulerForm form =(SchedulerForm)MainWindow.getContainer().getCurrentEditor();			
@@ -509,6 +515,7 @@ public class MainWindow  {
 						JobChainConfigurationForm form =(JobChainConfigurationForm)MainWindow.getContainer().getCurrentEditor();
 						currdom = form.getDom();
 					}
+					*/
 
 					if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {				
 						webdav.showForm(WebDavDialog.SAVE_AS_HOT_FOLDER);
@@ -1014,17 +1021,25 @@ public class MainWindow  {
 		if(container.getCurrentTab().getData("ftp_title") != null && 
 				container.getCurrentTab().getData("ftp_title").toString().length()>0) {
 
-			DomParser currdom = null;
+			DomParser currdom = getSpecifiedDom();
+			if(currdom == null)
+				return;
+			/*DomParser currdom = null;
 			if(container.getCurrentEditor() instanceof SchedulerForm) {
 				SchedulerForm form =(SchedulerForm)container.getCurrentEditor();			
 				currdom = (SchedulerDom)form.getDom();
 			} else if(container.getCurrentEditor() instanceof DocumentationForm) {
 				DocumentationForm form =(DocumentationForm)container.getCurrentEditor();			
 				currdom = (DocumentationDom)form.getDom();
-			}else if(container.getCurrentEditor() instanceof JobChainConfigurationForm) {
+			} else if(container.getCurrentEditor() instanceof JobChainConfigurationForm) {
 				JobChainConfigurationForm form =(JobChainConfigurationForm)MainWindow.getContainer().getCurrentEditor();
 				currdom = (DetailDom)form.getDom();
-			}
+			} else if(MainWindow.getContainer().getCurrentEditor() instanceof ActionsForm) {
+				ActionsForm form =(ActionsForm)MainWindow.getContainer().getCurrentEditor();
+				currdom = (ActionsDom)form.getDom();
+			} else {
+				MainWindow.message("Could not save FTP File. <unspecified type>  ", SWT.ICON_WARNING);
+			}*/
 
 			String profilename = container.getCurrentTab().getData("ftp_profile_name").toString();
 			String remoteDir = container.getCurrentTab().getData("ftp_remote_directory").toString();
@@ -1094,7 +1109,10 @@ public class MainWindow  {
 		if(container.getCurrentTab().getData("webdav_title") != null && 
 				container.getCurrentTab().getData("webdav_title").toString().length()>0) {
 
-			DomParser currdom = null;
+			DomParser currdom = getSpecifiedDom();
+			if(currdom == null)
+				return;
+			/*DomParser currdom = null;
 			if(container.getCurrentEditor() instanceof SchedulerForm) {
 				SchedulerForm form =(SchedulerForm)container.getCurrentEditor();			
 				currdom = (SchedulerDom)form.getDom();
@@ -1104,7 +1122,13 @@ public class MainWindow  {
 			}else if(container.getCurrentEditor() instanceof JobChainConfigurationForm) {
 				JobChainConfigurationForm form =(JobChainConfigurationForm)MainWindow.getContainer().getCurrentEditor();
 				currdom = (DetailDom)form.getDom();
+			}else if(MainWindow.getContainer().getCurrentEditor() instanceof ActionsForm) {
+				ActionsForm form =(ActionsForm)MainWindow.getContainer().getCurrentEditor();
+				currdom = (ActionsDom)form.getDom();
+			} else {
+				MainWindow.message("Could not save FTP File. <unspecified type>  ", SWT.ICON_WARNING);
 			}
+			*/
 
 			String profilename = container.getCurrentTab().getData("webdav_profile_name").toString();
 			String remoteDir = container.getCurrentTab().getData("webdav_remote_directory").toString();
@@ -1160,7 +1184,11 @@ public class MainWindow  {
 
 		FTPDialog ftp = new FTPDialog(main);
 
-		DomParser currdom = null;
+		DomParser currdom = getSpecifiedDom();
+		if(currdom == null)
+			return;
+		
+		/*DomParser currdom = null;
 		if(MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
 			SchedulerForm form =(SchedulerForm)MainWindow.getContainer().getCurrentEditor();			
 			currdom = (SchedulerDom)form.getDom();
@@ -1170,8 +1198,13 @@ public class MainWindow  {
 		} else if(MainWindow.getContainer().getCurrentEditor() instanceof JobChainConfigurationForm) {
 			JobChainConfigurationForm form =(JobChainConfigurationForm)MainWindow.getContainer().getCurrentEditor();
 			currdom = (DetailDom)form.getDom();
+		}else if(MainWindow.getContainer().getCurrentEditor() instanceof ActionsForm) {
+			ActionsForm form =(ActionsForm)MainWindow.getContainer().getCurrentEditor();
+			currdom = (ActionsDom)form.getDom();
+		} else {
+			MainWindow.message("Could not save FTP File. <unspecified type>  ", SWT.ICON_WARNING);
 		}
-		 
+		 */
 		if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {
 			ftp.showForm(FTPDialog.SAVE_AS_HOT_FOLDER);
 		} else
@@ -1227,4 +1260,25 @@ public class MainWindow  {
 		
 	}
 	
+	public static DomParser getSpecifiedDom() {
+
+		DomParser currdom = null;
+		if(MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
+			SchedulerForm form =(SchedulerForm)MainWindow.getContainer().getCurrentEditor();			
+			currdom = (SchedulerDom)form.getDom();
+		} else if(MainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm) {
+			DocumentationForm form =(DocumentationForm)MainWindow.getContainer().getCurrentEditor();			
+			currdom = (DocumentationDom)form.getDom();
+		} else if(MainWindow.getContainer().getCurrentEditor() instanceof JobChainConfigurationForm) {
+			JobChainConfigurationForm form =(JobChainConfigurationForm)MainWindow.getContainer().getCurrentEditor();
+			currdom = (DetailDom)form.getDom();
+		}else if(MainWindow.getContainer().getCurrentEditor() instanceof ActionsForm) {
+			ActionsForm form =(ActionsForm)MainWindow.getContainer().getCurrentEditor();
+			currdom = (ActionsDom)form.getDom();
+		} else {
+			MainWindow.message("Could not save FTP File. <unspecified type>  ", SWT.ICON_WARNING);
+		}
+		return currdom;
+	}
+
 }

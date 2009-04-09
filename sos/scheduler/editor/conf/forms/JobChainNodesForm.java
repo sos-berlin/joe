@@ -20,8 +20,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
 import com.swtdesigner.SWTResourceManager;
@@ -142,6 +144,8 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 	private boolean             isInsert                    = false;
 
 	private Button              reorderButton               = null; 
+	
+	private Button              butAddMissingNodes          = null; 
 
 
 
@@ -630,7 +634,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		});
 		tNodes.setLinesVisible(true);
 		tNodes.setHeaderVisible(true);
-		final GridData gridData4 = new GridData(GridData.CENTER, GridData.FILL, true, true, 5, 3);
+		final GridData gridData4 = new GridData(GridData.CENTER, GridData.FILL, true, true, 5, 4);
 		gridData4.heightHint = 112;
 		tNodes.setLayoutData(gridData4);
 
@@ -740,6 +744,35 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		});
 		butDetailsJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		butDetailsJob.setText("Details");
+
+		butAddMissingNodes = new Button(gNodes, SWT.NONE);
+		butAddMissingNodes.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				if(tNodes.getSelectionCount() > 0) {
+					TableItem item = tNodes.getSelection()[0];
+					if(!listener.checkForState(item.getText(3))) {
+						listener.selectNode(null);
+						listener.applyNode(true, item.getText(3), "", "", "", "", false,"", "");						
+					}
+
+					if(!listener.checkForState(item.getText(4))) {
+						listener.selectNode(null);
+						listener.applyNode(true, item.getText(4), "", "", "", "", false,"", "");						
+					}
+
+					listener.fillChain(tNodes);
+					bApplyNode.setEnabled(false);
+					bRemoveNode.setEnabled(false);            
+					listener.selectNode(null);			
+					fillNode(true);
+					enableNode(false);
+					//listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(), cOnError.getText());
+				}
+			}
+		});
+		butAddMissingNodes.setEnabled(false);
+		butAddMissingNodes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+		butAddMissingNodes.setText("Add Missing Nodes");
 
 		bRemoveNode = new Button(gNodes, SWT.NONE);
 		bRemoveNode.setEnabled(false);
@@ -1020,6 +1053,9 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 	private void fillNode(boolean clear) {
 		try {
+			
+			butAddMissingNodes.setEnabled(false);
+			
 			boolean fullNode = listener.isFullNode();
 			boolean fileSinkNode = listener.isFileSinkNode();
 			boolean endNode = !fullNode && !fileSinkNode;
@@ -1185,8 +1221,12 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			enableNode(true);
 			fillNode(false);
 			butDetailsJob.setEnabled(true);
-		} else
+			butAddMissingNodes.setEnabled(!listener.checkForState(tNodes.getSelection()[0].getText(3)) || !listener.checkForState(tNodes.getSelection()[0].getText(4)));	
+		} else {
 			butDetailsJob.setEnabled(false);
+			butAddMissingNodes.setEnabled(false);
+		}
+		
 		bRemoveNode.setEnabled(tNodes.getSelectionCount() > 0);
 
 	}
@@ -1224,7 +1264,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		butGoto.setToolTipText(Messages.getTooltip("goto"));
 		butInsert.setToolTipText(Messages.getTooltip("job_chain.insert"));
 		reorderButton.setToolTipText(Messages.getTooltip("job_chain.reorder"));
-
+		butAddMissingNodes.setToolTipText(Messages.getTooltip("job_chain.but_add_missing_nodes"));
 	}
 
 	//ein Job Chain hat entweder job_chain_node ODER job_chain_node.job_chain Kindknoten.

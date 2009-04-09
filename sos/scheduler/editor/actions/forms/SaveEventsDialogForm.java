@@ -325,7 +325,7 @@ public class SaveEventsDialogForm {
 		txtJob.setToolTipText(Messages.getTooltip("events.save_dialog.job"));
 		txtEventClass.setToolTipText(Messages.getTooltip("events.save_dialog.event_class"));		
 		butDirectory.setToolTipText(Messages.getTooltip("events.save_dialog.but_directory"));
-
+		txtName.setToolTipText(Messages.getTooltip("events.save_dialog.name"));
 	}
 
 	/**

@@ -324,9 +324,14 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		 mailOnError.setToolTipText(Messages.getTooltip("job.settings.mail_on_error")); 
 		 mailOnWarning.setToolTipText(Messages.getTooltip("job.settings.mail_on_warning"));
 		 mailOnSuccess.setToolTipText(Messages.getTooltip("job.settings.mail_on_success"));			
-		 mailOnProcess.setToolTipText(Messages.getTooltip("job.settings.mail_on_process"));			
+		 mailOnProcess.setToolTipText(Messages.getTooltip("job.settings.mail_on_process"));	
+		 mailOnDelayAfterError.setToolTipText(Messages.getTooltip("job.settings.mail_on_delay_after_error"));
 		 			
 		 LogLevel.setToolTipText(Messages.getTooltip("job.settings.log_level"));
+		 
+		 cboHistory.setToolTipText(Messages.getTooltip("job.settings.history"));
+		 cboHistoryOnProcess.setToolTipText(Messages.getTooltip("job.settings.history_on_process"));
+		 cboHistoryWithLog.setToolTipText(Messages.getTooltip("job.settings.history_with_log"));
 
 	 }
 

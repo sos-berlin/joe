@@ -255,7 +255,7 @@ public class JobChainListener {
 	}
 
 
-	private boolean checkForState(String state) {
+	public boolean checkForState(String state) {
 
 		for (int i = 0; i < _states.length; i++) {
 			if (_states[i].equals(state))

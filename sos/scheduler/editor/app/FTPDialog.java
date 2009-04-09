@@ -36,6 +36,8 @@ import sos.scheduler.editor.doc.forms.DocumentationForm;
 import java.io.File; 
 import java.util.HashMap;
 import java.util.ArrayList;
+import sos.scheduler.editor.actions.forms.ActionsForm;
+import sos.scheduler.editor.actions.ActionsDom;
 
 
 
@@ -551,7 +553,10 @@ public class FTPDialog {
 			else 
 				newFilename = sosString.parseToString(listener.getCurrProfile().get("localdirectory")) + "/" + new File(file).getName();
 
-			DomParser currdom = null;
+			DomParser currdom = MainWindow.getSpecifiedDom();
+			if(currdom == null)
+				return;
+			/*DomParser currdom = null;
 			if(MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
 				SchedulerForm form =(SchedulerForm)MainWindow.getContainer().getCurrentEditor();			
 				currdom = (SchedulerDom)form.getDom();
@@ -561,8 +566,13 @@ public class FTPDialog {
 			} else if(MainWindow.getContainer().getCurrentEditor() instanceof JobChainConfigurationForm) {
 				JobChainConfigurationForm form =(JobChainConfigurationForm)MainWindow.getContainer().getCurrentEditor();
 				currdom = (DetailDom)form.getDom();
+			} else if(MainWindow.getContainer().getCurrentEditor() instanceof ActionsForm) {
+				ActionsForm form =(ActionsForm)MainWindow.getContainer().getCurrentEditor();
+				currdom = (ActionsDom)form.getDom();
+			} else {
+				MainWindow.message("Could not save FTP File. <unspecified type>  ", SWT.ICON_WARNING);
 			}
-			
+			*/
 			/*sos.scheduler.editor.conf.forms.SchedulerForm form =
 				(sos.scheduler.editor.conf.forms.SchedulerForm)MainWindow.getContainer().getCurrentEditor();			
 			SchedulerDom currdom = (SchedulerDom)form.getDom();

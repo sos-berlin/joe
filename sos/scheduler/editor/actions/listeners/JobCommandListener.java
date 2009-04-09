@@ -33,7 +33,7 @@ public class JobCommandListener {
 
 	private Element          _job;
 	
-	public static String[]   START_TIMES = new String[]{"period", "yyyy-MM-dd HH:mm:ss", "now", "now + HH:mm", "now + HH:mm:ss", "now + SECOUNDS", };           
+	public static String[]   START_TIMES = new String[]{"period", "yyyy-MM-dd HH:mm:ss", "now", "now + HH:mm", "now + HH:mm:ss", "now + SECONDS", };           
 
 
 	public JobCommandListener(ActionsDom dom, Element command, ActionsForm update) {
