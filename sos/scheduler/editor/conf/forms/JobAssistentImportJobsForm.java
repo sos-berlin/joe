@@ -425,16 +425,14 @@ public class JobAssistentImportJobsForm {
 							//Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn assistentype = Editor.Job_Wizzard							
 							//joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
 		 					Element job = joblistener.getJob();
-		 					if(job.getName().equals("job"))
+		 					if(job.getName().equals("job")) {
 		 						job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
-		 					//else
-		 					//	job = job.setContent(listener.createParams(h, joblistener.getJob()).cloneContent());
-							//if(tParameter == null)
-							//	tParameter = jobForm.getTParameter(); 														
+		 						paramListener.fillParams(tParameter);
+		 					} else
+		 						paramListener.fillParams(listOfParams, tParameter, true);
+		 					
+		 					
 							
-							
-							paramListener.fillParams(listOfParams, tParameter, true);
-							//jobForm.initForm();
 													
 						} else {						
 							if(listener.existJobname(txtJobname.getText())) {

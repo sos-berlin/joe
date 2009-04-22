@@ -26,17 +26,22 @@ public class DetailDialogForm {
 	
 	private String           path              = null;
 	
-	public DetailDialogForm(String jobChainname_, String[] listOfOrderIds_, boolean isLifeElement_, String path_) {
+	private String           orderId           = null;
+	
+	//public DetailDialogForm(String jobChainname_, String[] listOfOrderIds_, boolean isLifeElement_, String path_) {
+	public DetailDialogForm(String jobChainname_, boolean isLifeElement_, String path_) {
 		jobChainname = jobChainname_;
-		listOfOrderIds = listOfOrderIds_;	
+		//listOfOrderIds = listOfOrderIds_;	
 		isLifeElement = isLifeElement_;
 		path = path_;
 	}
 	
-	public DetailDialogForm(String jobChainname_, String state_, String[] listOfOrderIds_, boolean isLifeElement_, String path_) {
+	//public DetailDialogForm(String jobChainname_, String state_, String[] listOfOrderIds_, boolean isLifeElement_, String path_) {
+	public DetailDialogForm(String jobChainname_, String state_, String orderId_, boolean isLifeElement_, String path_) {
 		jobChainname = jobChainname_;
 		state = state_;
-		listOfOrderIds = listOfOrderIds_;
+		//listOfOrderIds = listOfOrderIds_;
+		this.orderId = orderId_;
 		isLifeElement = isLifeElement_;
 		path = path_;
 	}
@@ -50,7 +55,9 @@ public class DetailDialogForm {
 		
 		shell.setSize(620, 643);	
 		shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
-		shell.setText("Details for JobChain: " + jobChainname + (state != null && state.length()> 0 ? " State: " + state: ""));
+		shell.setText("Details for JobChain: " + jobChainname + 
+				     (state != null && state.length()> 0 ? "  State: " + state: "") + 
+				     (orderId != null && orderId.length() > 0 ? "  Order Id: " + orderId : ""));
 		final Composite composite = new Composite( shell, SWT.NONE);
 		composite.setLayout(new FillLayout());
 		final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
@@ -62,10 +69,10 @@ public class DetailDialogForm {
 		gridData_6.heightHint = 572;
 			
 				
-		dialogForm =new DetailForm(composite, SWT.NONE, jobChainname, state, listOfOrderIds, Editor.JOB_CHAINS, null, null, isLifeElement, path);
+		//dialogForm =new DetailForm(composite, SWT.NONE, jobChainname, state, listOfOrderIds, Editor.JOB_CHAINS, null, null, isLifeElement, path);
+		dialogForm =new DetailForm(composite, SWT.NONE, jobChainname, state, orderId, Editor.JOB_CHAINS, null, null, isLifeElement, path);
 		dialogForm.setLayout(new FillLayout());
 	
-		
 		
 	}
 

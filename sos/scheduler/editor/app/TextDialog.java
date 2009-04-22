@@ -16,47 +16,51 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 public class TextDialog extends Dialog {
-
-	private Shell      _shell;
-
-	//private StyledText _styledText;
-	private Text _styledText;
-
-	private Point      _size           = new Point(300, 200);
 	
-	private Image      _image          = null;
-
-	private Button     clipboardButton = null;
-
-	private int        _shellStyle     = SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL;
-
-	private int        _textStyle      = SWT.WRAP | SWT.BORDER;
-
-
-	private boolean    clipBoardClick  = false;
-
-	private Button     butApply        = null; 
-
-	private boolean    applyBoardClick = false;
-
-	private boolean    bSaveWindow     = false;
-
-	private boolean    bEdit           = false;
 	
-
+	private Shell      _shell                      = null;
 	
-	//private boolean previousCtrlX = false;
+	private Text       _styledText                 = null;
+
+	private Point      _size                       = new Point(300, 200);
+	
+	private Image      _image                      = null;
+
+	private Button     clipboardButton             = null;
+
+	private int        _shellStyle                 = SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL;
+
+	private boolean    clipBoardClick              = false;
+
+	private Button     butApply                    = null; 
+
+	private boolean    applyBoardClick             = false;
+
+	private boolean    bSaveWindow                 = false;
+
+	private boolean    bEdit                       = false;
+	
+	private Label     addPredefinedFunctionsLabel  = null;
+	
+	private Combo     cboFunctions                 = null;
+	
+	private boolean   showFunctions                = false;
+	
+	private String    scriptLanguage               = "";           
+	
+		
 	
 	public TextDialog(Shell parent, int shellStyle, int textStyle) {
 		super(parent, SWT.NONE);
-		_shellStyle = shellStyle;
-		_textStyle = textStyle;
+		_shellStyle = shellStyle;		
 		init();
 
 	}
@@ -220,11 +224,11 @@ public class TextDialog extends Dialog {
 
 	private void setDialog() {
 		final GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 3;
+		gridLayout.numColumns = 5;
 		_shell.setLayout(gridLayout);
 
 		GridData gridData1 = new GridData();
-		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 3, 1);
+		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 5, 1);
 
 		//_styledText = new StyledText(_shell, SWT.V_SCROLL | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
 		_styledText = new Text(_shell, SWT.V_SCROLL | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
@@ -300,7 +304,8 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 		clipboardButton = new Button(_shell, SWT.NONE);
 		clipboardButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				clipBoardClick = true;
+				if(_styledText.getText().length() > 0)					
+					clipBoardClick = true;
 				_shell.close();
 
 			}
@@ -308,6 +313,23 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 		clipboardButton.setVisible(false);
 		clipboardButton.setLayoutData(new GridData());
 		clipboardButton.setText("Clipboard");
+
+		addPredefinedFunctionsLabel = new Label(_shell, SWT.NONE);
+		addPredefinedFunctionsLabel.setVisible(false);
+		addPredefinedFunctionsLabel.setText("Select predefined functions:");
+
+		cboFunctions = new Combo(_shell, SWT.NONE);
+		cboFunctions.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				if(cboFunctions.getText().length() > 0) {
+					_styledText.append(Options.getProperty(scriptLanguage + cboFunctions.getText()));
+					cboFunctions.setText("");
+				}
+			}
+				
+		});
+		cboFunctions.setVisible(false);
+		cboFunctions.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 
 		butApply = new Button(_shell, SWT.NONE);
@@ -357,5 +379,45 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 			}
 		}				
 		_shell.close();
+	}
+
+
+	/**
+	 * @return the showFunctions
+	 */
+	public boolean isShowFunctions() {
+		return showFunctions;
+	}
+
+
+	/**
+	 * @param showFunctions the showFunctions to set
+	 */
+	public void setShowFunctions(boolean showFunctions) {
+		this.showFunctions = showFunctions;
+		cboFunctions.setVisible(showFunctions);
+		addPredefinedFunctionsLabel.setVisible(showFunctions);
+		
+	}
+
+
+	/**
+	 * @return the scriptLanguage
+	 */
+	public String getScriptLanguage() {
+		return scriptLanguage;
+	}
+
+
+	/**
+	 * @param scriptLanguage the scriptLanguage to set
+	 */
+	public void setScriptLanguage(String scriptLanguage_) {
+		if(scriptLanguage_ != null)
+			this.scriptLanguage = scriptLanguage_.toLowerCase();
+		if(isShowFunctions()) {
+			cboFunctions.setText("..please select");
+			cboFunctions.setItems(Options.getPropertiesWithPrefix(scriptLanguage));
+		}
 	}
 }

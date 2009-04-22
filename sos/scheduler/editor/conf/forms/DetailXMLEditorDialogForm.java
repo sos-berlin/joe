@@ -228,7 +228,7 @@ public class DetailXMLEditorDialogForm {
 	
 	private void openDetailForm() {
 		  		
-			DetailDialogForm detail = new DetailDialogForm(jobChainname, state, listOfOrderIds, isLifeElement, path);
+			DetailDialogForm detail = new DetailDialogForm(jobChainname, state, orderId, isLifeElement, path);
 			detail.showDetails();
 			detail.getDialogForm().open(orderId);
 		 

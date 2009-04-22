@@ -13,6 +13,8 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
+import com.swtdesigner.SWTResourceManager;
+
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -82,6 +84,9 @@ public class ParameterListener {
 
 
 	public void fillParams(Table table) {
+		table.removeAll();
+		if(_params == null)
+			this.initParams();
 		if (_params != null) {
 			Iterator it = _params.iterator();
 			while (it.hasNext()) {
@@ -94,21 +99,46 @@ public class ParameterListener {
 						item.setText(1, ((Element) o).getAttributeValue("from"));
 					} else if (e.getName().equals("param")){
 						if(e.getAttributeValue("name") != null) {
+							String name = Utils.getAttributeValue("name", e);
+							String value = Utils.getAttributeValue("value", e);
 							TableItem item = new TableItem(table, SWT.NONE);
+							item.setText(0, name);
+							item.setText(1, value);
+							if(parameterDescription != null) {
+								item.setData("parameter_description_de", parameterDescription.get("parameter_description_de_" + name));
+								item.setData("parameter_description_en", parameterDescription.get("parameter_description_en_" + name));
+							}
+							if(parameterRequired != null && isParameterRequired(name)){
+								if(value.length() == 0)
+									item.setBackground(Options.getRequiredColor());									
+								else
+									item.setBackground(SWTResourceManager.getColor(247, 247, 247));
+									
+							}
+						}
+					}
+					/*TableItem item = new TableItem(table, SWT.NONE);
+							//item.setText(0, ((Element) o).getAttributeValue("name"));
+							//item.setText(1, (((Element) o).getAttributeValue("value") != null ? ((Element) o).getAttributeValue("value") : ""));
 							item.setText(0, ((Element) o).getAttributeValue("name"));
 							item.setText(1, (((Element) o).getAttributeValue("value") != null ? ((Element) o).getAttributeValue("value") : ""));
 							if(parameterDescription != null) {
 								item.setData("parameter_description_de", parameterDescription.get("parameter_description_de_" + ((Element) o).getAttributeValue("name")));
 								item.setData("parameter_description_en", parameterDescription.get("parameter_description_en_" + ((Element) o).getAttributeValue("name")));
 							}
-							if(parameterRequired != null && isParameterRequired(((Element) o).getAttributeValue("name")))
-								item.setBackground(Options.getRequiredColor());
-						} 
-					}
+							if(parameterRequired != null && isParameterRequired(((Element) o).getAttributeValue("name"))){
+								if(Utils.getAttributeValue("value", e).length() > 0)
+									item.setBackground(Options.getLightYellow());
+								else
+									item.setBackground(Options.getRequiredColor());
+							}
+						}
+					 */
+
 				}
 			}						
 		}		
-		
+
 	} 
 
 	public void fillParams(ArrayList listOfParams, Table table, boolean refreshTable) {	
@@ -124,8 +154,12 @@ public class ParameterListener {
 			if (h.get("name") != null) {
 				TableItem item = existsParams(h.get("name").toString(), table, (h.get("default_value") != null? h.get("default_value").toString(): ""));
 				if(!refreshTable && item != null) {					
-					if(h.get("required") != null && h.get("required").equals("true"))
-						item.setBackground(Options.getRequiredColor());
+					if(h.get("required") != null && h.get("required").equals("true")) {
+						if(h.get("value") == null || h.get("value").toString().length() == 0)
+							item.setBackground(Options.getRequiredColor());
+						else
+							item.setBackground(SWTResourceManager.getColor(247, 247, 247));
+					}
 
 					//existParam = true;
 				} else {
@@ -271,12 +305,15 @@ public class ParameterListener {
 			parameterDescription.put( "parameter_description_en_"+ name, parameterDescription_de);
 		}
 
-
-		if(required) {
-			item.setBackground(Options.getRequiredColor());
+		if(required ) {
+			if(value.length() == 0) {
+				item.setBackground(Options.getRequiredColor());				
+			} else {
+				item.setBackground(SWTResourceManager.getColor(247, 247, 247));
+			}
 		}
 		_dom.setChanged(true);
-		
+
 		//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 		Utils.setChangedForDirectory(_parent, _dom);
 	}

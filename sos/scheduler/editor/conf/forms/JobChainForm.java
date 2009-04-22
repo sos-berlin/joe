@@ -310,10 +310,12 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory(); 
 
 			if(state == null) {
-				DetailDialogForm detail = new  DetailDialogForm(tName.getText(), listOfOrders, isLifeElement, listener.get_dom().getFilename());
+				//DetailDialogForm detail = new  DetailDialogForm(tName.getText(), listOfOrders, isLifeElement, listener.get_dom().getFilename());
+				DetailDialogForm detail = new  DetailDialogForm(tName.getText(), isLifeElement, listener.get_dom().getFilename());
 				detail.showDetails();
 			} else {
-				DetailDialogForm detail = new DetailDialogForm(tName.getText(), state, listOfOrders, isLifeElement, listener.get_dom().getFilename());
+				//DetailDialogForm detail = new DetailDialogForm(tName.getText(), state, listOfOrders, isLifeElement, listener.get_dom().getFilename());
+				DetailDialogForm detail = new DetailDialogForm(tName.getText(), state, null, isLifeElement, listener.get_dom().getFilename());
 				detail.showDetails();
 			} 
 

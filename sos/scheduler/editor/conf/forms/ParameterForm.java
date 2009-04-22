@@ -800,6 +800,15 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		tParameter.setLinesVisible(true);
 		tParameter.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if(bApply.isEnabled()) {
+					int ok = MainWindow.message(Messages.getString("MainListener.apply_changes"), //$NON-NLS-1$
+							SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);					
+					if (ok == SWT.YES) {
+						addParam();
+						return;
+					}
+				}
+					
 				TableItem item = (TableItem) e.item;
 				if (item == null)
 					return;

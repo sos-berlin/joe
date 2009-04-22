@@ -39,6 +39,7 @@ import sos.scheduler.editor.app.IOUtils;
 public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 	
     
+	private Button butDetails;
 	private OrderListener          listener           = null;
 
     private Group                  group              = null;
@@ -118,40 +119,13 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
      */
     private void createGroup() {
         GridLayout gridLayout2 = new GridLayout();
-        gridLayout2.numColumns = 1;
         group = new Group(this, SWT.NONE);
 
         group.setLayout(gridLayout2);
-
-        createSashForm();
-    }
-
-
-    /**
-     * This method initializes group1
-     */
-    private void createGroup1() {
-    	
-        //listener.setCommandAttribute("replace", "yes");
-       
-    }
-
-
-    /**
-     * This method initializes sashForm
-     */
-    private void createSashForm() {
-        GridData gridData18 = new org.eclipse.swt.layout.GridData();
-        gridData18.horizontalSpan = 1;
-        gridData18.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData18.grabExcessHorizontalSpace = true;
-        gridData18.grabExcessVerticalSpace = true;
-        gridData18.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         GridLayout gridLayout3 = new GridLayout();
-        gridLayout3.numColumns = 3;
+        gridLayout3.numColumns = 4;
         gOrder = new Group(group, SWT.NONE);
         final GridData gridData_10 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        gridData_10.widthHint = 577;
         gOrder.setLayoutData(gridData_10);
         gOrder.setText("Order");
         gOrder.setLayout(gridLayout3);
@@ -181,7 +155,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                 }*/
             }
         });
-        final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, false);
+        final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1);
         tOrderId.setLayoutData(gridData_3);
 
         final Label jobchainLabel = new Label(gOrder, SWT.NONE);
@@ -197,19 +171,19 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         butGoto.setAlignment(SWT.RIGHT);
 
         final Composite composite = new Composite(gOrder, SWT.NONE);
-        composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
+        composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
         final GridLayout gridLayout = new GridLayout();
         gridLayout.verticalSpacing = 0;
         gridLayout.marginWidth = 0;
         gridLayout.marginHeight = 0;
         gridLayout.horizontalSpacing = 0;
-        gridLayout.numColumns = 2;
         composite.setLayout(gridLayout);
 		
 
         cJobchain = new Combo(composite, SWT.NONE);
         cJobchain.setMenu(new sos.scheduler.editor.app.ContextMenu(cJobchain, dom, Editor.JOB_CHAIN).getMenu());
-        cJobchain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        cJobchain.setLayoutData(gridData_1);
         cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 if (event)
@@ -225,19 +199,17 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
             }
         });
-
-        if(!dom.isLifeElement()){
-        	Button butBrowse = new Button(composite, SWT.NONE);
-        	butBrowse.addSelectionListener(new SelectionAdapter() {
-        		public void widgetSelected(final SelectionEvent e) {        		
-        			String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB_CHAIN);
-        			if(jobname != null && jobname.length() > 0) {
-        				cJobchain.setText(jobname);
-        			}
+        Button butBrowse = new Button(gOrder, SWT.NONE);
+        butBrowse.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+        butBrowse.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {        		
+        		String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB_CHAIN);
+        		if(jobname != null && jobname.length() > 0) {
+        			cJobchain.setText(jobname);
         		}
-        	});
-        	butBrowse.setText("Browse");
-        }
+        	}
+        });
+        butBrowse.setText("Browse");
        
        
 
@@ -255,7 +227,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
 
-        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
         tTitle.setLayoutData(gridData_5);
 
         final Label priorityLabel = new Label(gOrder, SWT.NONE);
@@ -274,7 +246,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("priority", tPriority.getText());
             }
         });
-        final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
         tPriority.setLayoutData(gridData_2);
 
         final Label stateLabel = new Label(gOrder, SWT.NONE);
@@ -288,7 +260,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("state", tState.getText());
             }
         });
-        final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
         tState.setLayoutData(gridData);
 
         final Label endStateLabel = new Label(gOrder, SWT.NONE);
@@ -302,7 +274,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("end_state", cboEndState.getText());
         	}
         });
-        cboEndState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+        cboEndState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 
         final Label replaceLabel = new Label(gOrder, SWT.NONE);
         final GridData gridData_4 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
@@ -320,8 +292,47 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("replace", r);
             }
         });
-        final GridData gridData_9 = new GridData();
+        final GridData gridData_9 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         bReplace.setLayoutData(gridData_9);
+
+        butDetails = new Button(gOrder, SWT.NONE);
+        butDetails.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+        		//DetailForm dialogForm =new DetailForm(composite, SWT.NONE, cJobchain.getText(), tState.getText(), null, Editor.JOB_CHAINS, null, null, dom.isLifeElement(), dom.getFilename());
+        		DetailDialogForm detail = new DetailDialogForm(cJobchain.getText(),  tState.getText(), tOrderId.getText(), dom.isLifeElement(), "");
+				detail.showDetails();
+        	}
+        });
+        butDetails.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+        butDetails.setText("Details");
+
+        createSashForm();
+    }
+
+
+    /**
+     * This method initializes group1
+     */
+    private void createGroup1() {
+    	
+        //listener.setCommandAttribute("replace", "yes");
+       
+    }
+
+
+    /**
+     * This method initializes sashForm
+     */
+    private void createSashForm() {
+        GridData gridData18 = new org.eclipse.swt.layout.GridData();
+        gridData18.horizontalSpan = 1;
+        gridData18.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        gridData18.grabExcessHorizontalSpace = true;
+        gridData18.grabExcessVerticalSpace = true;
+        gridData18.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+
+        if(!dom.isLifeElement()){
+        }
 
       
         //new ParameterForm(dom, order, main, group, Editor.ORDER);

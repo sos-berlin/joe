@@ -152,46 +152,52 @@ public class MergeAllXMLinDirectory {
 	
 	private void addContains(Element parent, String name, String mask) {
 		
-		SAXBuilder builder = new SAXBuilder();
+		//SAXBuilder builder = new SAXBuilder(true);
+		SAXBuilder builder = null;
 		Document currDocument = null;
-		
+		String jobXMLFilename = "";
 		try {
-
-
+			builder = getBuilder(true);
 			Vector filelist = SOSFile.getFilelist(getNormalizedFile(path).getAbsolutePath(), 
 					mask,java.util.regex.Pattern.CASE_INSENSITIVE);
 			Iterator orderIterator = filelist.iterator();
-			while (orderIterator.hasNext()) {				
-				String jobXMLFilename = orderIterator.next().toString();
-				File jobXMLFile = new File( jobXMLFilename );
-				currDocument = builder.build( jobXMLFile );
-				Element xmlRoot = currDocument.getRootElement();
-				if(xmlRoot != null) {
-					if(parent == null) {
-						//config hat keinen Kindknoten {name}, also erzeugen
-						parent = new Element(name);
-						config.addContent(parent);
-					}
-					String jobXMLNameWithoutExtension = jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName() + ".xml"));
-					if(Utils.getAttributeValue("name", xmlRoot).length() > 0 &&
-							!jobXMLNameWithoutExtension.equalsIgnoreCase(Utils.getAttributeValue("name", xmlRoot))) {
-						//life Dateiname und Element-Attribute-name müssen gleich sein. Wenn dieser ungleich sind, 
-						// dann umbennen wie der Dateiname
-						listOfChangeElementNames.add(xmlRoot.getName() + "_" + jobXMLNameWithoutExtension);						
-						xmlRoot.setAttribute("name", jobXMLNameWithoutExtension);						
-					}					
-					if(Utils.getAttributeValue("name", xmlRoot).length() == 0) {
-						//In der Formular sieht man den Namen. Beim speichern soll es nicht zurückgeschrieben werden
-						xmlRoot.setAttribute("name", jobXMLNameWithoutExtension);
-					}
-					
-					parent.addContent((Element)xmlRoot.clone());
+			while (orderIterator.hasNext()) {
+				try {
+					jobXMLFilename = orderIterator.next().toString();
+					File jobXMLFile = new File( jobXMLFilename );
+					currDocument = builder.build( jobXMLFile );
 
-					if(!new File( jobXMLFilename ).canWrite()) {
-						listOfReadOnly.add(getChildElementName(name) + "_" + Utils.getAttributeValue("name", xmlRoot));
+					Element xmlRoot = currDocument.getRootElement();
+					if(xmlRoot != null) {
+						if(parent == null) {
+							//config hat keinen Kindknoten {name}, also erzeugen
+							parent = new Element(name);
+							config.addContent(parent);
+						}
+						String jobXMLNameWithoutExtension = jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName() + ".xml"));
+						if(Utils.getAttributeValue("name", xmlRoot).length() > 0 &&
+								!jobXMLNameWithoutExtension.equalsIgnoreCase(Utils.getAttributeValue("name", xmlRoot))) {
+							//life Dateiname und Element-Attribute-name müssen gleich sein. Wenn dieser ungleich sind, 
+							// dann umbennen wie der Dateiname
+							listOfChangeElementNames.add(xmlRoot.getName() + "_" + jobXMLNameWithoutExtension);						
+							xmlRoot.setAttribute("name", jobXMLNameWithoutExtension);						
+						}					
+						if(Utils.getAttributeValue("name", xmlRoot).length() == 0) {
+							//In der Formular sieht man den Namen. Beim speichern soll es nicht zurückgeschrieben werden
+							xmlRoot.setAttribute("name", jobXMLNameWithoutExtension);
+						}
+
+						parent.addContent((Element)xmlRoot.clone());
+
+						if(!new File( jobXMLFilename ).canWrite()) {
+							listOfReadOnly.add(getChildElementName(name) + "_" + Utils.getAttributeValue("name", xmlRoot));
+						}
 					}
+				} catch (Exception e) {
+					MainWindow.message(MainWindow.getSShell(), jobXMLFilename + " has error:" + e.toString(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+					continue;
 				}
-			
+
 			}
 			
 		} catch (Exception e) {			
@@ -626,37 +632,52 @@ public class MergeAllXMLinDirectory {
         return builder;
         
     }
-
- protected String[] writeSchemaFile() throws IOException {
-        ArrayList urls = new ArrayList();
-
-        String[]              _schemaTmpFile = new String[] {"scheduler_editor_schema" };
-
-        String[]              _schemaResource =  new String[] { Options.getSchema() };
-
-        for (int i = 0; i < _schemaTmpFile.length; i++) {
-            if (_schemaTmpFile[i] != null && !_schemaTmpFile[i].equals("") && _schemaResource[i] != null
-                    && !_schemaResource[i].equals("")) {
-
-                File tmp = File.createTempFile(_schemaTmpFile[i], ".xsd");
-                tmp.deleteOnExit();
-
-                InputStream in = getClass().getResourceAsStream(_schemaResource[i]);
-                FileOutputStream out = new FileOutputStream(tmp, true);
-
-                int c;
-                while ((c = in.read()) != -1)
-                    out.write(c);
-
-                in.close();
-                out.close();
-
-                urls.add(tmp.getAbsolutePath());
-            }
-        }
-
-        return (String[]) urls.toArray(new String[urls.size()]);
-    }
 	
-	
+	protected String[] writeSchemaFile() throws IOException {	
+		try {
+			String[] s = new String[1];							
+			s[0] = getClass().getResource(Options.getSchema()).toString();
+			return s;
+		} catch (Exception e){
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could get schema ", e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			throw new IOException ("error in writeSchemaFile(). could get schema " + e.toString());
+		}
+	}
+	 
+	/*protected String[] writeSchemaFile_old() throws IOException {
+		ArrayList urls = new ArrayList();
+
+		String[]              _schemaTmpFile = new String[] {"scheduler_editor_schema" };
+
+		String[]              _schemaResource =  new String[] { Options.getSchema() };
+
+		for (int i = 0; i < _schemaTmpFile.length; i++) {
+			if (_schemaTmpFile[i] != null && !_schemaTmpFile[i].equals("") && _schemaResource[i] != null
+					&& !_schemaResource[i].equals("")) {
+
+				File tmp = File.createTempFile(_schemaTmpFile[i], ".xsd");
+				tmp.deleteOnExit();
+				InputStream in = getClass().getResourceAsStream(_schemaResource[i]);
+				
+				FileOutputStream out = new FileOutputStream(tmp, true);
+
+				int c;
+				while ((c = in.read()) != -1)
+					out.write(c);
+
+				in.close();
+				out.close();
+
+				urls.add(tmp.getAbsolutePath());
+			}
+		}
+
+		return (String[]) urls.toArray(new String[urls.size()]);
+	}
+*/
+
 }

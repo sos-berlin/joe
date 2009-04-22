@@ -671,10 +671,11 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory(); 
 
 		if(state == null) {
-			DetailDialogForm detail = new  DetailDialogForm(listener.getChainName(), listOfOrders, isLifeElement, listener.get_dom().getFilename());
+			DetailDialogForm detail = new  DetailDialogForm(listener.getChainName(), isLifeElement, listener.get_dom().getFilename());
 			detail.showDetails();
 		} else {
-			DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), state, listOfOrders, isLifeElement, listener.get_dom().getFilename());
+			//DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), state, listOfOrders, isLifeElement, listener.get_dom().getFilename());
+			DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), state, null, isLifeElement, listener.get_dom().getFilename());
 			detail.showDetails();
 		} 
 

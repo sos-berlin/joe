@@ -43,7 +43,9 @@ public class Options {
             _defaults = new Properties();
             _defaults.load(cl.getResourceAsStream(DEFAULT_OPTIONS));
 
-            _properties = new Properties(_defaults);
+           _properties = new Properties(_defaults);
+           // _properties = new Properties();
+           // _properties.putAll(_defaults);
         } catch (Exception e) {
         	try {
     			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; Error reading default options from " + DEFAULT_OPTIONS , e);
@@ -77,7 +79,7 @@ public class Options {
     public static String saveProperties() {
         if (_properties != null && _changed) {
             try {
-                FileOutputStream fo = new FileOutputStream(getDefaultOptionFilename());
+                FileOutputStream fo = new FileOutputStream(getDefaultOptionFilename());                
                 _properties.store(fo, "--Job Scheduler Editor Options--");
                 fo.close();
             } catch (Exception e) {
@@ -407,6 +409,24 @@ public class Options {
         }
     }
     
+    public static Color getLightYellow() {
+    	
+    	try {
+            int r = 255;
+            int g = 255;
+            int b = 187;
+            return ResourceManager.getColor(r, g, b);
+        } catch (Exception e) {
+        	try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
+            e.printStackTrace();
+            return ResourceManager.getColor(255, 255, 187);
+        }
+    }
+    
     public static Color getBlueColor() {
         try {
             int r = 0;
@@ -514,7 +534,10 @@ public class Options {
     public static String[] getPropertiesWithPrefix(String prefix) {
     	String[] retVal = null;
     	String s = "";
-    	java.util.Iterator keys = _properties.keySet().iterator();
+    	Properties p = new Properties();
+    	p.putAll(_defaults);
+    	p.putAll(_properties);
+    	java.util.Iterator keys = p.keySet().iterator();
     	while(keys.hasNext())  {
     		Object key = keys.next();
     	    if(key != null && key.toString().length() > 0 && key.toString().startsWith(prefix))

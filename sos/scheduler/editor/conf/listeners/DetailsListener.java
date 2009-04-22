@@ -633,4 +633,10 @@ public class DetailsListener {
 		return hasError;
 	}
 
+	public Element getParentElement() {
+		if(params_ != null && params_.getParentElement() != null)
+			return this.params_.getParentElement();
+		else
+			return null;
+	}
 }

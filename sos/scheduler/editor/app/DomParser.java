@@ -127,8 +127,22 @@ public abstract class DomParser {
         return getRoot().getAdditionalNamespaces();
     }
 
-
-    protected String[] writeSchemaFile() throws IOException {
+    
+    protected String[] writeSchemaFile() throws IOException {	
+		try {
+			String[] s = new String[1];			
+			s[0] = getClass().getResource(Options.getSchema()).toString();
+			return s;
+		} catch (Exception e){
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could get schema ", e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			throw new IOException ("error in writeSchemaFile(). could get schema " + e.toString());
+		}
+	}
+   /* protected String[] writeSchemaFile_old() throws IOException {
         ArrayList urls = new ArrayList();
 
         for (int i = 0; i < _schemaTmpFile.length; i++) {
@@ -155,7 +169,7 @@ public abstract class DomParser {
         return (String[]) urls.toArray(new String[urls.size()]);
     }
 
-
+*/
     protected SAXBuilder getBuilder(boolean validate) throws IOException {
 
     	

@@ -586,7 +586,7 @@ public class SchedulerListener {
 		item.setData(new TreeData(Editor.SETTINGS, job, Options.getHelpURL("settings")));
 		item.setData("key", "settings");											
 		item.setData("copy_element", job);
-		item.setText("Mail Settings");		
+		item.setText("Job Settings");		
 		item.setData("max_occur", "1");
 		
 

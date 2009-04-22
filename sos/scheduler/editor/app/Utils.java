@@ -577,6 +577,10 @@ public class Utils {
 	}
 
 	public static String showClipboard(String xml, Shell shell, boolean bApply, String selectStr) {
+		return showClipboard(xml, shell, bApply, selectStr, false, null);
+	}
+	public static String showClipboard(String xml, Shell shell, boolean bApply, String selectStr, boolean showFunction, String scriptLanguage) {
+	
 		Font font = new Font(Display.getDefault(), "Courier New", 8, SWT.NORMAL);
 		TextDialog dialog = new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL
 				| SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -591,6 +595,9 @@ public class Utils {
 		dialog.getStyledText().setEditable(bApply);
 		dialog.setVisibleApplyButton(bApply);
 		dialog.setBSaveWindow(true);
+		dialog.setShowFunctions(showFunction);
+		dialog.setScriptLanguage(scriptLanguage);
+		
 
 		//String s = dialog.open(true);
 		String s = dialog.open(false);
