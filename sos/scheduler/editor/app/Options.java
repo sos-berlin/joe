@@ -542,10 +542,10 @@ public class Options {
    	    //configuration_monitor -->sos.scheduler.managed.configuration.ConfigurationOrderMonitor
     	//create_event_monitor --> sos.scheduler.jobs.JobSchedulerSubmitEventMonitor
     	if(prefix.equalsIgnoreCase("monitor_favorite_")) {
-    		if(p.containsKey("monitor_favorite_java_configuration_monitor")){
+    		if(!p.containsKey("monitor_favorite_java_configuration_monitor")){
     			p.put("monitor_favorite_java_configuration_monitor", "sos.scheduler.managed.configuration.ConfigurationOrderMonitor");    			    					
     		}
-    		if(p.containsKey("monitor_favorite_java_create_event_monitor")){
+    		if(!p.containsKey("monitor_favorite_java_create_event_monitor")){
     			p.put("monitor_favorite_java_create_event_monitor", "sos.scheduler.jobs.JobSchedulerSubmitEventMonitor");
     		}
     	}
