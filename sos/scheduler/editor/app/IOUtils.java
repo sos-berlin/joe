@@ -383,6 +383,8 @@ public class IOUtils {
 			if(dom.getFilename() == null || saveas) {
 
 				sos.scheduler.editor.actions.forms.SaveEventsDialogForm d= new sos.scheduler.editor.actions.forms.SaveEventsDialogForm();
+				if(dom.getFilename() == null)//Cancel
+					return false;
 								
 			} 
 			saveFile(dom , false);

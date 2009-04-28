@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -8,6 +10,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 //import org.eclipse.swt.widgets.Table;
 //import org.eclipse.swt.widgets.TableColumn;
 //import org.eclipse.swt.widgets.TableItem;
@@ -49,21 +53,26 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
 
     private Button          bIgnoreSignal = null;
 
-    private Button          bExecutable   = null;
+   // private Button          bExecutable   = null;
 
-    private Button          bScript       = null;
+    //private Button          bScript       = null;
 
     private ScriptForm      scriptForm    = null;
 
     private Label           label5        = null;
 
-    private Button          bNoExecute    = null;
+    //private Button          bNoExecute    = null;
 
-    private Label           label9        = null;
     
     private ISchedulerUpdate update       = null;
 
     private boolean          init         = false;
+    
+    private TabFolder        tabFolder    = null;
+    
+    private static String RUN_EXECUTABLE  = "Run Executable";
+    
+    private static String SCRIPT  = "Script";
 
     public ExecuteForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate update_) {
         super(parent, style);
@@ -74,8 +83,11 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
         setToolTipText();
 
         listener = new ExecuteListener(dom, job);
+        
 
         scriptForm.setAttributes(dom, job, Editor.EXECUTE);
+        //if(job.getChild("script") == null && job.getChild("process")==null)
+        //	scriptForm.setLanguage(ScriptListener.JAVA);
         fillForm();
         
         this.group.setEnabled(Utils.isElementEnabled("job", dom, job));
@@ -110,70 +122,62 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
      * This method initializes group
      */
     private void createGroup() {
-        GridData gridData10 = new GridData();
-        GridData gridData18 = new org.eclipse.swt.layout.GridData();
-        gridData18.horizontalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        gridData18.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-        GridData gridData17 = new org.eclipse.swt.layout.GridData();
-        gridData17.horizontalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        gridData17.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
         GridLayout gridLayout4 = new GridLayout();
-        gridLayout4.numColumns = 2;
         group = new Group(this, SWT.NONE);
         group.setText("Execute");
-        bNoExecute = new Button(group, SWT.RADIO);
-        bNoExecute.setSelection(true);
-        bNoExecute.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-            	if(!init) {
-            		if (bNoExecute.getSelection()) {
-            			scriptForm.setLanguage(ScriptListener.NONE);
-            			listener.setNothing();
-            			fillForm();
-            		}
-            	}
-            }
-        });
-        label9 = new Label(group, SWT.NONE);
-        label9.setText("No Execute");
-        label9.setLayoutData(gridData10);
-        bExecutable = new Button(group, SWT.RADIO);
-        bExecutable.setLayoutData(gridData18);
-        bExecutable.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-            	if(!init) {
-            		if (bExecutable.getSelection()) {
-            			scriptForm.setLanguage(ScriptListener.NONE);
-            			listener.setExecutable(true);
-            			fillForm();
-            		}
-            }
-            }
-        });
         createGroup1();
         group.setLayout(gridLayout4);
         createGroup12();
-        bScript = new Button(group, SWT.RADIO);
-        bScript.setLayoutData(gridData17);
+
+        tabFolder = new TabFolder(group, SWT.NONE);
+        tabFolder.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(final SelectionEvent e) {
+                reInit();
+        		/*
+        		if(!init) {
+        			if(tabFolder.getSelection()[0].getText().equals(SCRIPT)){
+        				//if (bScript.getSelection()) {
+        				listener.setExecutable(false);
+        				scriptForm.setLanguage(ScriptListener.JAVA);
+        				fillForm();
+        			} else if(tabFolder.getSelection()[0].getText().equals(RUN_EXECUTABLE)){        			        				
+        				scriptForm.setLanguage(ScriptListener.NONE);
+        				listener.setExecutable(true);
+        				fillForm();
+        			}
+        		}*/
+
+        	}
+        });
+        tabFolder.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+
+        final TabItem tabItemScript = new TabItem(tabFolder, SWT.NONE);
+        tabItemScript.setText(SCRIPT);
+
+        final Composite composite = new Composite(tabFolder, SWT.NONE);
+        composite.setLayout(new GridLayout());
+        tabItemScript.setControl(composite);
+        scriptForm = new ScriptForm(composite, SWT.NONE, update);
+        scriptForm.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+        /*bScript = new Button(composite, SWT.RADIO);
         bScript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
             	if(!init) {
-                if (bScript.getSelection()) {
-                    listener.setExecutable(false);
-                    scriptForm.setLanguage(ScriptListener.JAVA);
-                    fillForm();
-                }
+            		if (bScript.getSelection()) {
+            			listener.setExecutable(false);
+            			scriptForm.setLanguage(ScriptListener.JAVA);
+            			fillForm();
+            		}
             	}
             }
         });
-        createScriptForm();
-    }
+*/
+        final TabItem tabItemRunExecutable = new TabItem(tabFolder, SWT.NONE);
+        tabItemRunExecutable.setText(RUN_EXECUTABLE);
 
-
-    /**
-     * This method initializes group1
-     */
-    private void createGroup1() {
+        final Composite composite_1 = new Composite(tabFolder, SWT.NONE);
+        composite_1.setLayout(new GridLayout());
+        tabItemRunExecutable.setControl(composite_1);
         GridData gridData61 = new org.eclipse.swt.layout.GridData();
         gridData61.horizontalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
         gridData61.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
@@ -201,15 +205,10 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
         gridData2.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 4;
-        GridData gridData = new org.eclipse.swt.layout.GridData();
-        gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData.grabExcessHorizontalSpace = true;
-        gridData.grabExcessVerticalSpace = false;
-        gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gExecutable = new Group(group, SWT.NONE);
+        gExecutable = new Group(composite_1, SWT.NONE);
+        gExecutable.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         gExecutable.setText("Run Executable");
         gExecutable.setLayout(gridLayout);
-        gExecutable.setLayoutData(gridData);
         label1 = new Label(gExecutable, SWT.NONE);
         label1.setText("File");
         tExecuteFile = new Text(gExecutable, SWT.BORDER);
@@ -217,7 +216,7 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
         tExecuteFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
             	if(!init)
-                listener.setFile(tExecuteFile.getText());
+            		listener.setFile(tExecuteFile.getText());
             }
         });
         label3 = new Label(gExecutable, SWT.NONE);
@@ -261,6 +260,42 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
             		listener.setIgnoreError(bIgnoreError.getSelection());
             }
         });
+        /*bExecutable = new Button(composite_1, SWT.RADIO);
+        bExecutable.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            	if(!init) {
+            		if (bExecutable.getSelection()) {
+            			scriptForm.setLanguage(ScriptListener.NONE);
+            			listener.setExecutable(true);
+            			fillForm();
+            		}
+            	}
+            }
+        });
+*/
+        /*bNoExecute = new Button(composite_2, SWT.RADIO);
+        bNoExecute.setBounds(140, 57,13, 16);
+        bNoExecute.setSelection(true);
+        bNoExecute.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            	if(!init) {
+            		if (bNoExecute.getSelection()) {
+            			scriptForm.setLanguage(ScriptListener.NONE);
+            			listener.setNothing();
+            			fillForm();
+            		}
+            	}
+            }
+        });
+        */
+        createScriptForm();
+    }
+
+
+    /**
+     * This method initializes group1
+     */
+    private void createGroup1() {
     }
 
 
@@ -268,9 +303,6 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
      * This method initializes scriptForm
      */
     private void createScriptForm() {
-        GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
-        scriptForm = new ScriptForm(group, SWT.NONE, update);
-        scriptForm.setLayoutData(gridData1);
     }
 
 
@@ -288,8 +320,54 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
     private void createTable() {
     }
 
-
     private void fillForm() {
+        setEnabled(false);
+        //scriptForm.setFullEnabled(false);
+
+        if (listener.isScript()) {
+            //bNoExecute.setSelection(false);
+            //bExecutable.setSelection(false);
+            //bScript.setSelection(true);
+
+            scriptForm.setFullEnabled(true);
+            tabFolder.setSelection(0);
+        } else if (listener.isExecutable()) {
+            //bNoExecute.setSelection(false);
+            //bExecutable.setSelection(true);
+            //bScript.setSelection(false);
+        	tabFolder.setSelection(1);
+            setEnabled(true);
+
+            if (!tExecuteFile.getText().equals("") && listener.getFile().equals(""))
+                listener.setFile(tExecuteFile.getText());
+            tExecuteFile.setText(listener.getFile());
+
+            if (!tLogFile.getText().equals("") && listener.getLogFile().equals(""))
+                listener.setLogFile(tLogFile.getText());
+            tLogFile.setText(listener.getLogFile());
+
+            if (!tParameter.getText().equals("") && listener.getParam().equals(""))
+                listener.setParam(tParameter.getText());
+            tParameter.setText(listener.getParam());
+
+            if (bIgnoreError.getSelection() && !listener.isIgnoreError())
+                listener.setIgnoreError(true);
+            bIgnoreError.setSelection(listener.isIgnoreError());
+
+            if (bIgnoreSignal.getSelection() && !listener.isIgnoreSignal())
+                listener.setIgnoreSignal(true);
+            bIgnoreSignal.setSelection(listener.isIgnoreSignal());
+
+            tExecuteFile.setFocus();
+        } else {
+        	tabFolder.setSelection(0);
+            //bNoExecute.setSelection(true);
+            //bExecutable.setSelection(false);
+            //bScript.setSelection(false);
+        }
+
+    }
+   /* private void fillForm() {
         setEnabled(false);
         scriptForm.setFullEnabled(false);
 
@@ -337,9 +415,10 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
         }
 
     }
-
+*/
 
     public void setEnabled(boolean enabled) {
+    	enabled = true;
         tExecuteFile.setEnabled(enabled);
         tLogFile.setEnabled(enabled);
         tParameter.setEnabled(enabled);
@@ -351,9 +430,9 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
    
 
     public void setToolTipText() {
-        bNoExecute.setToolTipText(Messages.getTooltip("execute.choose_none"));
-        bExecutable.setToolTipText(Messages.getTooltip("execute.choose_executable"));
-        bScript.setToolTipText(Messages.getTooltip("execute.choose_script"));
+        //bNoExecute.setToolTipText(Messages.getTooltip("execute.choose_none"));
+        //bExecutable.setToolTipText(Messages.getTooltip("execute.choose_executable"));
+        //bScript.setToolTipText(Messages.getTooltip("execute.choose_script"));
         tExecuteFile.setToolTipText(Messages.getTooltip("process.file"));
         tParameter.setToolTipText(Messages.getTooltip("process.param"));
         tLogFile.setToolTipText(Messages.getTooltip("process.log_file"));
@@ -361,4 +440,23 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
         bIgnoreError.setToolTipText(Messages.getTooltip("process.ignore_error"));
 
     }
+    
+    private void  reInit() {
+    	if(!init) {
+    		if(tabFolder.getSelection()[0].getText().equals(SCRIPT)){    			
+    			listener.setExecutable(false);    			
+    			scriptForm.setLanguage(scriptForm.getSelectionLanguageButton());
+    			if(!init)
+    				fillForm();
+    		} else if(tabFolder.getSelection()[0].getText().equals(RUN_EXECUTABLE)){
+    			int p = tExecuteFile.getText().length() + tLogFile.getText().length() + tParameter.getText().length();
+    			if(p > 0) {
+    				scriptForm.setLanguage(ScriptListener.NONE);
+    				listener.setExecutable(true);    			
+    				fillForm();
+    			}
+    		}
+    	}
+    }
+
 } // @jve:decl-index=0:visual-constraint="10,10"

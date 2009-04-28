@@ -131,7 +131,10 @@ public abstract class DomParser {
     protected String[] writeSchemaFile() throws IOException {	
 		try {
 			String[] s = new String[1];			
-			s[0] = getClass().getResource(Options.getSchema()).toString();
+			if(this instanceof sos.scheduler.editor.actions.ActionsDom)
+				s[0] = getClass().getResource(Options.getActionSchema()).toString();
+			else
+				s[0] = getClass().getResource(Options.getSchema()).toString();
 			return s;
 		} catch (Exception e){
 			try {
@@ -178,6 +181,7 @@ public abstract class DomParser {
         	
             builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
                     "http://www.w3.org/2001/XMLSchema");
+                        
             builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", writeSchemaFile());
 
         }

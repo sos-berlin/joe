@@ -295,35 +295,35 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		table.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1));
 
 		final TableColumn newColumnTableColumn = new TableColumn(table, SWT.NONE);
-		newColumnTableColumn.setWidth(82);
+		newColumnTableColumn.setWidth(70);
 		newColumnTableColumn.setText("Event Name");
 
 		final TableColumn newColumnTableColumn_1 = new TableColumn(table, SWT.NONE);
-		newColumnTableColumn_1.setWidth(59);
+		newColumnTableColumn_1.setWidth(70);
 		newColumnTableColumn_1.setText("Event Id");
 
 		final TableColumn newColumnTableColumn_2 = new TableColumn(table, SWT.NONE);
-		newColumnTableColumn_2.setWidth(39);
+		newColumnTableColumn_2.setWidth(70);
 		newColumnTableColumn_2.setText("Event Title");
 
 		final TableColumn newColumnTableColumn_3 = new TableColumn(table, SWT.NONE);
-		newColumnTableColumn_3.setWidth(27);
+		newColumnTableColumn_3.setWidth(73);
 		newColumnTableColumn_3.setText("Event Class");
 
 		final TableColumn newColumnTableColumn_4 = new TableColumn(table, SWT.NONE);
-		newColumnTableColumn_4.setWidth(35);
+		newColumnTableColumn_4.setWidth(70);
 		newColumnTableColumn_4.setText("Jobname");
 
 		final TableColumn newColumnTableColumn_5 = new TableColumn(table, SWT.NONE);
-		newColumnTableColumn_5.setWidth(100);
+		newColumnTableColumn_5.setWidth(70);
 		newColumnTableColumn_5.setText("Jobchain");
 
 		final TableColumn newColumnTableColumn_6 = new TableColumn(table, SWT.NONE);
-		newColumnTableColumn_6.setWidth(100);
+		newColumnTableColumn_6.setWidth(70);
 		newColumnTableColumn_6.setText("Order Id");
 
 		final TableColumn newColumnTableColumn_7 = new TableColumn(table, SWT.NONE);
-		newColumnTableColumn_7.setWidth(100);
+		newColumnTableColumn_7.setWidth(70);
 		newColumnTableColumn_7.setText("Comment");
 
 		butRemove = new Button(group, SWT.NONE);
@@ -332,9 +332,9 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 				if(table != null && table.getSelectionCount() > 0)  {
 					int cont = 0;
 					if(type == Editor.EVENT_GROUP)
-						cont = MainWindow.message(getShell(), "If you really want to delete this group?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+						cont = MainWindow.message(getShell(), "Do you really want to delete this group?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 					else {
-						cont = MainWindow.message(getShell(), "If you really want to delete this command?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+						cont = MainWindow.message(getShell(), "Do you really want to delete this command?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 					}
 					if(cont == SWT.OK) {				        				
 						listener.removeEvent(table);

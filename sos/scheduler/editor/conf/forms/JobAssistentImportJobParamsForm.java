@@ -100,6 +100,8 @@ public class JobAssistentImportJobParamsForm {
 	
 	private JobForm      jobForm                = null;
 	
+	private JobDocumentationForm jobDocForm = null;
+	
 	/** Hilsvariable für das Schliessen des Dialogs. 
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean      closeDialog   = false;         
@@ -340,8 +342,11 @@ public class JobAssistentImportJobParamsForm {
 						
 						//joblistener.getJob();
 						
+							if(jobForm != null)
+								jobForm.initForm();
 							
-						jobForm.initForm();
+							if(jobDocForm != null)
+								jobDocForm.initForm();
 						
 						
 						
@@ -368,9 +373,10 @@ public class JobAssistentImportJobParamsForm {
 					JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(dom, update, assistentType);
 					if(jobname != null) 													
 						importJobs.setJobname(jobname);
-					//if(jobBackUp != null && jobForm != null) 
-						importJobs.setBackUpJob(jobBackUp, jobForm);
+
+					importJobs.setBackUpJob(jobBackUp, jobForm);
 					importJobs.showAllImportJobs(joblistener);
+					
 					
 					closeDialog = true;
 					jobParameterShell.dispose();
@@ -832,6 +838,12 @@ public class JobAssistentImportJobParamsForm {
 		if(jobForm_ != null)
 			jobForm = jobForm_;
 	}
+	
+	public void setJobForm(JobDocumentationForm jobDocForm_){
+		if(jobDocForm_ != null)
+			jobDocForm = jobDocForm_;
+	}
+	
 	
 	/**
 	 * Der Wizzard wurde für ein bestehende Job gestartet. 

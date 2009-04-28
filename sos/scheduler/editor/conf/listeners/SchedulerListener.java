@@ -549,13 +549,12 @@ public class SchedulerListener {
 		boolean disable = !Utils.isElementEnabled("job", _dom, job);
 
 		parent.removeAll();
+		ArrayList  l = new ArrayList();
 
-
+		/*
 		//Job - Execute
 		TreeItem item = new TreeItem(parent, SWT.NONE);
-		item.setText("Execute" );
-		
-		
+		item.setText("Execute" );				
 		item.setData("max_occur", "1");
 		item.setData(new TreeData(Editor.EXECUTE, job, Options.getHelpURL("job.execute")));
 		ArrayList  l = new ArrayList();
@@ -566,7 +565,22 @@ public class SchedulerListener {
 		if(disable) {
 			item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 		}
-
+		*/
+		
+		//Options
+		TreeItem item = new TreeItem(parent, SWT.NONE);
+		item.setText("Options" );				
+		item.setData("max_occur", "1");
+		item.setData(new TreeData(Editor.JOB_OPTION, job, Options.getHelpURL("job")));
+		item.setData("key", "job");
+		item.setData("override_attributes", "true");
+		item.setData("copy_element", job);
+		if(disable) {
+			item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+		}
+		
+		
+		
 		//Parameter
 		item = new TreeItem(parent, SWT.NONE);
 		item.setData(new TreeData(Editor.PARAMETER, job, Options.getHelpURL("parameter")));
@@ -653,6 +667,20 @@ public class SchedulerListener {
 		item.setData("key", "commands");
 		item.setData("copy_element", job);
 		parent.setExpanded(expand);
+		
+		//Documentation
+		item = new TreeItem(parent, SWT.NONE);
+		item.setText("Documentation" );				
+		item.setData("max_occur", "1");
+		item.setData(new TreeData(Editor.JOB_DOCUMENTATION, job, Options.getHelpURL("job")));
+		//ArrayList  l = new ArrayList();
+		//l.add("process");
+		//l.add("script");
+		item.setData("key", "job_@_description");		
+		item.setData("copy_element", job);
+		if(disable) {
+			item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+		}
 
 	}
 
@@ -944,8 +972,16 @@ public class SchedulerListener {
 						new ScriptForm(c, SWT.NONE, "Start Script", _dom, data.getElement(), data.getType(), _gui);
 						break;
 					case Editor.JOB:
-						new JobForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+						//new JobForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+						new JobMainForm(c, SWT.NONE, _dom, data.getElement(), _gui);
 						break;
+					case Editor.JOB_OPTION:
+						new JobMainOptionForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+						break;
+					case Editor.JOB_DOCUMENTATION:
+							new JobDocumentationForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+							break;
+					
 					case Editor.EXECUTE:
 						new ExecuteForm(c, SWT.NONE, _dom, data.getElement(), _gui);
 						break;						

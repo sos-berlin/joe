@@ -67,7 +67,7 @@ public class HotFolderDialog {
 	private              Button           butAdd                        = null;
 
 	private              String           SCHEDULER_CLUSTER_MASK        = "^[^#]+$";
-	
+
 	private              String           SCHEDULER_HOST_MASK           = "^[^#]+#\\d{1,5}$";
 
 	public HotFolderDialog(MainWindow mainwindow_) {
@@ -80,7 +80,7 @@ public class HotFolderDialog {
 		type = type_;
 		schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE
 				| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
-		
+
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(final TraverseEvent e) {				
 				if(e.detail == SWT.TRAVERSE_ESCAPE) {					
@@ -88,7 +88,7 @@ public class HotFolderDialog {
 				}
 			}
 		});
-		
+
 		schedulerConfigurationShell.setImage(ResourceManager
 				.getImageFromResource("/sos/scheduler/editor/editor.png"));
 		final GridLayout gridLayout = new GridLayout();
@@ -201,8 +201,9 @@ public class HotFolderDialog {
 
 						String changeName = sosString.parseToString(tree.getSelection()[0].getData()); 
 						File f = new File( sosString.parseToString(tree.getSelection()[0].getData()));
-						String path = f.getParent().endsWith("/") || f.getParent().endsWith("\\")  ?  f.getParent() : f.getParent() + "/";
-
+						//String path = f.getParent().endsWith("/") || f.getParent().endsWith("\\")  ?  f.getParent() : f.getParent() + "/";
+						String path = f.getParent();
+						
 						if(type == SCHEDULER_HOST && txtName.getText().length() > 0 && txtPort.getText().length() == 0) {
 //							host ändern
 							changeHost(path);														
@@ -214,11 +215,11 @@ public class HotFolderDialog {
 							addItem();
 							return;
 						} else {
-							path = path + txtName.getText();
+							path = new File(path, txtName.getText()).getCanonicalPath();
 						}
 
 						if(type == SCHEDULER_HOST)
-							path = path + "#" + txtPort.getText();
+							path = new File(path, "#" + txtPort.getText()).getCanonicalPath();
 
 
 
@@ -234,8 +235,8 @@ public class HotFolderDialog {
 								//String changeName = tree.getSelection()[0].getText(); 
 								tree.getSelection()[0].setText(txtName.getText());											
 								tree.getSelection()[0].setData( path);
-								
-								
+
+
 								TreeItem _item = tree.getSelection()[0];
 								changeSubTreedata(path, _item, changeName);
 								/*for(int i = 0; i < _item.getItemCount(); i++) {
@@ -259,10 +260,10 @@ public class HotFolderDialog {
 					}
 				} catch (Exception ex) {
 					try {
-		    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not rename configuration.", ex);
-		    		} catch(Exception ee) {
-		    			//tu nichts
-		    		}
+						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not rename configuration.", ex);
+					} catch(Exception ee) {
+						//tu nichts
+					}
 					MainWindow.message("could not rename configuration: " + ex.getMessage(), SWT.ICON_ERROR);
 					schedulerConfigurationShell.setFocus();
 				}
@@ -289,7 +290,7 @@ public class HotFolderDialog {
 		schedulerConfigurationShell.open();
 	}
 
-	
+
 
 	private void createTree() {
 
@@ -300,7 +301,7 @@ public class HotFolderDialog {
 
 			tree.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-					
+
 					if (tree.getSelectionCount() > 0 && !tree.getSelection()[0].getText().equals(sType)) {
 						if(type ==SCHEDULER_CLUSTER) {
 							txtName.setText(tree.getSelection()[0].getText());
@@ -341,8 +342,9 @@ public class HotFolderDialog {
 				mask = SCHEDULER_HOST_MASK;
 			}
 
-			String path = Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome() : Options.getSchedulerHome() + "/";
-			path = path + "config/remote";
+			//String path = Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome() : Options.getSchedulerHome() + "/";
+			//path = path + "config/remote";
+			String path = new File(Options.getSchedulerHome(), "config/remote").getCanonicalPath();
 
 			File p = new File(path); 
 			if(!p.exists()) {
@@ -361,10 +363,10 @@ public class HotFolderDialog {
 
 		} catch (Exception e) {
 			try {
-    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-    		} catch(Exception ee) {
-    			//tu nichts
-    		}
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			MainWindow.message("..error in create tree for Open Scheduler Cluster/Host " + e.getMessage(), SWT.ICON_ERROR);
 			schedulerConfigurationShell.setFocus();
 		}
@@ -396,11 +398,11 @@ public class HotFolderDialog {
 					item.setText(name);
 					item.setData(filename);
 					item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/folder.png"));
-					
+
 					java.util.Vector subFilelist = sos.util.SOSFile.getFolderlist(filename,
 							SCHEDULER_CLUSTER_MASK, java.util.regex.Pattern.CASE_INSENSITIVE, false);
 					createTreeItem(item, subFilelist, false);
-					
+
 				} else {
 
 					if (sub) {
@@ -425,15 +427,17 @@ public class HotFolderDialog {
 							names.put(sname, null);
 						}
 
-						String path = Options.getSchedulerHome().endsWith("/")|| Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome(): Options.getSchedulerHome() + "/";
-						path = path + "config/remote";
+						//String path = Options.getSchedulerHome().endsWith("/")|| Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome(): Options.getSchedulerHome() + "/";
+						//path = path + "config/remote";
+						String path = new File(Options.getSchedulerHome(), "config/remote").getCanonicalPath();
 						Iterator hostIterator = names.keySet().iterator();
 						while (hostIterator.hasNext()) {
 							String sname = sosString.parseToString(hostIterator.next());
 							TreeItem newItem = new TreeItem(parentItem,SWT.NONE);
 							newItem.setText(sname);
 							//newItem.setData(sname);
-							newItem.setData(path + "/" + sname);//test
+							newItem.setData(new File(path, sname).getCanonicalPath());//test
+							
 							newItem.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/folder.png"));
 							//String mask = "^" + sname + ".*\\.scheduler$";
 							String mask = "^" + sname + "#";
@@ -446,16 +450,16 @@ public class HotFolderDialog {
 						}
 						// break;
 					}
-					
+
 				}
 
 			}
 		} catch (Exception e) {
 			try {
-    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-    		} catch(Exception ee) {
-    			//tu nichts
-    		}
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			MainWindow.message(
 					"..error in create tree for Open Scheduler Cluster/Host "
 					+ e.getMessage(), SWT.ICON_ERROR);
@@ -486,10 +490,10 @@ public class HotFolderDialog {
 			}
 		} catch (Exception e) {
 			try {
-    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-    		} catch(Exception ee) {
-    			//tu nichts
-    		}
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			MainWindow.message(
 					"..error in create tree for Open Scheduler Cluster/Host "
 					+ e.getMessage(), SWT.ICON_ERROR);
@@ -529,13 +533,14 @@ public class HotFolderDialog {
 			String filename = "";
 
 			tree.getSelection()[0].setText(txtName.getText());
-			tree.getSelection()[0].setData(path + txtName.getText());
+			tree.getSelection()[0].setData(new File(path, txtName.getText()).getCanonicalPath());
 
 			for(int i = 0; i < tree.getSelection()[0].getItemCount(); i++) {
 				TreeItem item = tree.getSelection()[0].getItem(i);
 				filename = item.getData().toString();
 				File _f = new File(filename);
-				String newFilename = path + txtName.getText() + _f.getName().substring(_f.getName().indexOf("#"));
+				//String newFilename = path + txtName.getText() + _f.getName().substring(_f.getName().indexOf("#"));
+				String newFilename = new File(path, txtName.getText() + _f.getName().substring(_f.getName().indexOf("#"))).getCanonicalPath();
 				File _newF = new File(newFilename);
 				//System.out.println("rename: " + filename + " in " + newFilename);
 				if(!_f.renameTo(_newF)) {
@@ -545,12 +550,12 @@ public class HotFolderDialog {
 			}
 
 		} catch (Exception e) {
-			
+
 			try {
-    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " could not change host.", e);
-    		} catch(Exception ee) {
-    			//tu nichts
-    		}
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " could not change host.", e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			MainWindow.message(
 					"..could not Change Host "
 					+ e.getMessage(), SWT.ICON_ERROR);
@@ -559,7 +564,6 @@ public class HotFolderDialog {
 
 	private void addItem() {
 		try {
-
 
 			String name = "";
 
@@ -577,12 +581,14 @@ public class HotFolderDialog {
 				name = txtName.getText() + "#" +txtPort.getText();
 			}
 			String path = "";
-			if (tree.getSelectionCount() > 0 && tree.getSelection()[0].getData() != null)
+			/*if (tree.getSelectionCount() > 0 && tree.getSelection()[0].getData() != null)
 				path = 	sosString.parseToString(tree.getSelection()[0].getData()) ;
-			else 
-				path = Options.getSchedulerHome() + "config/remote/";
-			
-			path = (path.endsWith("/") || path.endsWith("\\") ? path : path + "/")   + name;
+			else
+			*/ 
+				path = new File(Options.getSchedulerHome(),"config/remote/").getCanonicalPath();
+
+			//path = (path.endsWith("/") || path.endsWith("\\") ? path : path + "/")   + name;
+			path =  new File(path, name).getCanonicalPath();
 
 			File newFile = new File(path);
 			if(newFile.exists()) {
@@ -641,10 +647,10 @@ public class HotFolderDialog {
 			txtName.setText("");
 		} catch(Exception ex) {
 			try {
-    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() +  " ; Error while creating new " + sType + " Configuration. ", ex);
-    		} catch(Exception ee) {
-    			//tu nichts
-    		}
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() +  " ; Error while creating new " + sType + " Configuration. ", ex);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			MainWindow.message("Error while creating new " + sType + " Configuration: " + ex.getMessage(), SWT.ICON_ERROR);
 			schedulerConfigurationShell.setFocus();
 		}
@@ -660,30 +666,32 @@ public class HotFolderDialog {
 				txtName.setToolTipText(Messages.getTooltip("hotfolder.host"));
 			else
 				txtName.setToolTipText(Messages.getTooltip("hotfolder.scheduler"));
-				
+
 		}
-		
+
 		if(txtPort != null)   txtPort.setToolTipText(Messages.getTooltip(""));
 		if(butAdd != null)    butAdd.setToolTipText(Messages.getTooltip(""));
 		if(butRename != null) butRename.setToolTipText(Messages.getTooltip(""));
 	}
-	
+
 	private void changeSubTreedata(String path, TreeItem _item, String changeName) throws Exception{
-		
-	try {
-		for(int i = 0; i < _item.getItemCount(); i++) {
-			TreeItem cItem = _item.getItem(i);
-			String data = sosString.parseToString(cItem.getData());
-			//hier data ändern
-			//data = data.replaceAll(changeName, path);
-			data = data.substring(changeName.length());
-			data = path + data;	
-			cItem.setData(data);
-			if(cItem.getItemCount() > 0)
-				changeSubTreedata(path, cItem, changeName);
+
+		try {
+			for(int i = 0; i < _item.getItemCount(); i++) {
+				TreeItem cItem = _item.getItem(i);
+				String data = sosString.parseToString(cItem.getData());
+				//hier data ändern
+				//data = data.replaceAll(changeName, path);
+				data = data.substring(changeName.length());
+				data = path + data;	
+				cItem.setData(data);
+				if(cItem.getItemCount() > 0)
+					changeSubTreedata(path, cItem, changeName);
+			}
+		} catch(Exception e) {
+			throw new Exception ("error in changeSubTreedata. could not change cause: " + e.toString(), e);
 		}
-	} catch(Exception e) {
-		throw new Exception ("error in changeSubTreedata. could not change cause: " + e.toString(), e);
 	}
-	}
+
+	
 }

@@ -42,13 +42,10 @@ public class EventListener {
 			if(type == Editor.ADD_EVENT_GROUP) {		
 				XPath x3 = XPath.newInstance("add_event/event");
 				l = x3.selectNodes(_eventGroup);
-			
-
 			} else if(type == Editor.REMOVE_EVENT_GROUP) {
 			
 				XPath x3 = XPath.newInstance("remove_event/event");				 
-				l = x3.selectNodes(_eventGroup);
-				
+				l = x3.selectNodes(_eventGroup);			
 				/*XPath x3 = XPath.newInstance("//remove_event/event");				 
 				l = x3.selectNodes(_dom.getDoc());*/
 							 
@@ -124,9 +121,23 @@ public class EventListener {
 	        if(table.getSelectionCount() > 0) {
 	        	TableItem item = table.getSelection()[0];
 	        	Element elem = (Element)item.getData();
-	        	elem.detach();
+	        	if(type == Editor.REMOVE_EVENT_GROUP || type == Editor.ADD_EVENT_GROUP) {
+        			if(elem.getParentElement() != null)
+        			elem.getParentElement().detach();
+        		} else
+        			elem.detach();
 	        	table.remove(table.getSelectionIndex());
+	        	
+	        	
+	        	
 	        	fillEvent(table);
+
+	        	//if(table.getItemCount() == 0 && _eventGroup != null) {
+	        		if(type == Editor.REMOVE_EVENT_GROUP || type == Editor.ADD_EVENT_GROUP) {
+	        			if(elem.getParentElement() != null)
+	        			elem.getParentElement().detach();
+	        		}
+
 	        	_dom.setChanged(true);
 	        }
 	}

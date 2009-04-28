@@ -518,13 +518,19 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 			}
 		});
 		butDetailsJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		butDetailsJob.setText("Details");
+		butDetailsJob.setText("Parameter");
 
 		bRemoveNode = new Button(gNodes, SWT.NONE);
 		bRemoveNode.setEnabled(false);
 		bRemoveNode.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if (tNodes.getSelectionCount() > 0) {
+					
+					int c = MainWindow.message(getShell(), "Do you want remove the job_chain node from this job chain?", SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+					if(c != SWT.YES)
+						return;
+					
+					
 					int index = tNodes.getSelectionIndex();
 					listener.deleteNode(tNodes);
 					tNodes.remove(index);

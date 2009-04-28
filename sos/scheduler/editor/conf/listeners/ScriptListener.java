@@ -136,6 +136,8 @@ public class ScriptListener {
                         _script.setAttribute("java_class", "");
                     _script.removeAttribute("com_class");
                     _script.removeAttribute("filename");
+                    
+                    
                     break;
                 case COM:
                     if (_script.getAttribute("com_class") == null)
@@ -250,6 +252,21 @@ public class ScriptListener {
     }
 
 
+    //Aus der Tabelle werden die includes für die Scripte generiert-
+    public void addIncludesFromTable(Table table, java.util.HashMap inc) {
+    	if (_script != null) {
+    		Iterator it = inc.keySet().iterator();
+    		while(it.hasNext()) {    		
+    			String key = it.next().toString();
+    			String val = inc.get(key) != null && inc.get(key).equals("live_file")?"live_file":"file";
+    			Element include = new Element("include");
+    			include.setAttribute(val, key);
+    			_script.addContent(include);    			
+    		}    		
+    	}
+    	
+    }
+    
     public void addInclude(Table table, String filename, boolean isLife) {
     	if (_script != null) {
             List includes = _script.getChildren("include");
@@ -401,4 +418,12 @@ public class ScriptListener {
     		}
     	}
     }
+
+
+	/**
+	 * @return the _dom
+	 */
+	public SchedulerDom getDom() {
+		return _dom;
+	}
 }

@@ -106,8 +106,10 @@ public class MainWindow  {
 
 		listener = new MainListener(this, container);
 
-		sShell.setSize(new org.eclipse.swt.graphics.Point(895, 625));
-		sShell.setMinimumSize(890, 620);
+		//sShell.setSize(new org.eclipse.swt.graphics.Point(895, 625));
+		//sShell.setMinimumSize(890, 620);
+		sShell.setSize(new org.eclipse.swt.graphics.Point(940, 600));
+		sShell.setMinimumSize(940, 600);
 
 		// load resources
 		listener.loadOptions();

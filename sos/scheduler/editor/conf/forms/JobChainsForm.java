@@ -159,7 +159,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		butDetails.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		butDetails.setText("Details");
+		butDetails.setText("Parameter");
 
 	}
 

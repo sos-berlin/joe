@@ -69,6 +69,7 @@ public class TabbedContainer implements IContainer {
 	private void initialize() {
 		folder.setSimple(false);
 		folder.setSize(new Point(690, 478));
+		
 		folder.setLayout(new FillLayout());
 
 		// on tab selection

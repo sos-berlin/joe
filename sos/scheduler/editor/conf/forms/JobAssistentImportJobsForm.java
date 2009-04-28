@@ -97,7 +97,7 @@ public class JobAssistentImportJobsForm {
 	
 	private boolean               flagBackUpJob = true;
 	
-	
+	JobDocumentationForm jobDocForm = null;
 	public JobAssistentImportJobsForm(SchedulerDom dom_, ISchedulerUpdate update_, int assistentType_) {
 		dom = dom_;
 		update = update_;
@@ -411,8 +411,12 @@ public class JobAssistentImportJobsForm {
 		 					//Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn assistentype = Editor.Job_Wizzard							
 							//joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
 		 					Element job = joblistener.getJob();		 					
-		 					job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());		 					
-							jobForm.initForm();
+		 					job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+		 					if(jobForm != null)//diese Zeiöle löschen
+		 						jobForm.initForm();
+		 					
+		 					if(jobDocForm != null)
+		 						jobDocForm.initForm();
 							//if(tParameter == null)
 							//	tParameter = jobForm.getTParameter(); 
 							//tParameter.removeAll();							
@@ -983,6 +987,12 @@ public class JobAssistentImportJobsForm {
 		jobForm = jobForm_;
 	}
 	
+	public void setJobForm(JobDocumentationForm jobDocForm_){
+		//TODO ANALOG WIE OBEN
+		//if(jobDocForm_ != null)
+		//	jobDocForm = jobDocForm_;
+		jobDocForm_ = jobDocForm;
+	}
 	private boolean check() {
 		if(tree.getSelectionCount()== 0) {
 			MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_job_selected"), SWT.ICON_WARNING | SWT.OK );

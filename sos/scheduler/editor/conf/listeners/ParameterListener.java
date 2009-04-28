@@ -439,8 +439,21 @@ public class ParameterListener {
 								//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 								Utils.setChangedForDirectory(_parent, _dom);
 								table.getItem(index).setText(1, value);
-							}
+							
+					
+								if(isParameterRequired(table.getItem(index).getText())) {
+									if(value != null && value.length() > 0) {
+										table.getItem(index).setBackground(SWTResourceManager.getColor(247, 247, 247));
 
+									} else {
+										table.getItem(index).setBackground(Options.getRequiredColor());
+									}
+
+								}					
+								
+								
+							}
+							
 							index++;
 						}
 					}

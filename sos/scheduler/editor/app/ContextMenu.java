@@ -1,6 +1,7 @@
 package sos.scheduler.editor.app;
 
 import java.util.List;
+import java.util.HashMap;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
@@ -29,6 +30,8 @@ public class ContextMenu {
 	private Menu                    _menu                 = null;	
 
 	private static final String      GOTO                 = "Goto";
+	
+	private static final String      DELETE               = "Delete";
 
 	private static int               _type                = -1;
 
@@ -54,14 +57,21 @@ public class ContextMenu {
 
 		MenuItem item = new MenuItem(_menu, SWT.PUSH);
 		item.addListener(SWT.Selection, getListener());
-		item.setText(ContextMenu.GOTO);
+		
+		
+		if(_type == Editor.SCRIPT)
+			item.setText(ContextMenu.DELETE);
+		else
+			item.setText(ContextMenu.GOTO);
 
+		
+		
 		_menu.addListener(SWT.Show, new Listener() {
 			public void handleEvent(Event e) {
-												
-				getItem(ContextMenu.GOTO).setEnabled(true);
-				
-				
+				if(_type == Editor.SCRIPT)
+					getItem(ContextMenu.DELETE).setEnabled(true);
+				else
+					getItem(ContextMenu.GOTO).setEnabled(true);								
 			}
 		});
 	}
@@ -77,8 +87,10 @@ public class ContextMenu {
 
 		return new Listener() {
 			public void handleEvent(Event e) {
-				
-				goTo(_combo.getText(), _dom, _type);
+				if(_type == Editor.SCRIPT)
+					delete(_combo, _dom, _type);
+				else
+					goTo(_combo.getText(), _dom, _type);
 				
 			}
 
@@ -614,4 +626,21 @@ public class ContextMenu {
 		}
 	}
 
+	public static void delete(Combo combo, DomParser _dom, int type) {
+		try {
+			//favoriten löschen
+			if(type == Editor.SCRIPT) {
+				String prefix = "monitor_favorite_";
+				String name = combo.getText();
+				String lan = ((HashMap)(combo.getData("favorites"))).get(name) +"_";
+				name = prefix + lan + name;
+				Options.removeProperty(name);
+				combo.remove(combo.getText());
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+	}
+			
 }

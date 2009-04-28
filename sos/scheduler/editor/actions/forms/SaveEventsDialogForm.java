@@ -1,6 +1,8 @@
 package sos.scheduler.editor.actions.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -134,8 +136,9 @@ public class SaveEventsDialogForm {
 	}
 	public void showForm() {
 
-		_shell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE
-				| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
+		_shell = new Shell(MainWindow.getSShell(), SWT.TITLE |
+				SWT.CLOSE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
+	
 
 		_shell.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(final TraverseEvent e) {				
@@ -153,7 +156,7 @@ public class SaveEventsDialogForm {
 		gridLayout.marginLeft = 5;
 		gridLayout.marginBottom = 5;
 		_shell.setLayout(gridLayout);
-		_shell.setSize(425, 240);
+		_shell.setSize(425, 267);
 
 
 
@@ -168,7 +171,7 @@ public class SaveEventsDialogForm {
 			eventgroup.setLayoutData(gridData);
 
 			final GridLayout gridLayout_1 = new GridLayout();
-			gridLayout_1.numColumns = 4;
+			gridLayout_1.numColumns = 3;
 			gridLayout_1.verticalSpacing = 10;
 			gridLayout_1.horizontalSpacing = 10;
 			gridLayout_1.marginWidth = 10;
@@ -181,7 +184,7 @@ public class SaveEventsDialogForm {
 
 
 			final Label nameLabel = new Label(eventgroup, SWT.NONE);
-			nameLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
+			nameLabel.setLayoutData(new GridData());
 			nameLabel.setText("Name");
 
 
@@ -196,7 +199,7 @@ public class SaveEventsDialogForm {
 			txtName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 
 			final Label jobketteLabel = new Label(eventgroup, SWT.NONE);
-			jobketteLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
+			jobketteLabel.setLayoutData(new GridData());
 			jobketteLabel.setText("Jobchain");
 
 			txtJobChain = new Text(eventgroup, SWT.BORDER);
@@ -208,7 +211,7 @@ public class SaveEventsDialogForm {
 			txtJobChain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 
 			final Label jobLabel = new Label(eventgroup, SWT.NONE);
-			jobLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
+			jobLabel.setLayoutData(new GridData());
 			jobLabel.setText("Job");
 
 
@@ -224,7 +227,7 @@ public class SaveEventsDialogForm {
 
 
 			final Label eventClassLabel = new Label(eventgroup, SWT.NONE);
-			eventClassLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
+			eventClassLabel.setLayoutData(new GridData());
 			eventClassLabel.setText("Event Class");
 
 
@@ -236,7 +239,36 @@ public class SaveEventsDialogForm {
 			});
 			txtEventClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 
+
+
+			lblDirectory = new Label(eventgroup, SWT.SHADOW_IN | SWT.CENTER | SWT.BORDER);
+			lblDirectory.setAlignment(SWT.CENTER);
+			try {
+				lblDirectory.setText(new File(Options.getSchedulerHome(), "config/events").getCanonicalPath());
+			} catch (Exception e) {}
+			final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1);
+			lblDirectory.setLayoutData(gridData_1);
+
+
+
+			butDirectory = new Button(eventgroup, SWT.NONE);
+			butDirectory.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					DirectoryDialog fdialog = new DirectoryDialog(MainWindow.getSShell(), SWT.MULTI);
+					fdialog.setFilterPath(Options.getLastDirectory());
+					fdialog.setText("Save Event Handler ...");
+
+					String path = fdialog.open();    
+					if(path != null) 						
+						lblDirectory.setText(normalized(path));
+					
+				}
+			});
+			butDirectory.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+			butDirectory.setText("Directory");
+
 			butApply = new Button(eventgroup, SWT.NONE);
+			butApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			butApply.setEnabled(false);
 			butApply.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
@@ -273,29 +305,14 @@ public class SaveEventsDialogForm {
 			});
 			butApply.setText("Save");
 
-
-
-			lblDirectory = new Label(eventgroup, SWT.NONE);
-			lblDirectory.setText(normalized(Options.getSchedulerHome()));
-			lblDirectory.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1));
-
-
-
-			butDirectory = new Button(eventgroup, SWT.NONE);
-			butDirectory.addSelectionListener(new SelectionAdapter() {
+			final Button cancelButton = new Button(eventgroup, SWT.NONE);
+			cancelButton.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false, 2, 1));
+			cancelButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-					DirectoryDialog fdialog = new DirectoryDialog(MainWindow.getSShell(), SWT.MULTI);
-					fdialog.setFilterPath(Options.getLastDirectory());
-					fdialog.setText("Save Event Handler ...");
-
-					String path = fdialog.open();    
-					if(path != null) 						
-						lblDirectory.setText(normalized(path));
-					
+					_shell.dispose();
 				}
 			});
-			butDirectory.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-			butDirectory.setText("Directory");
+			cancelButton.setText("Cancel");
 
 
 

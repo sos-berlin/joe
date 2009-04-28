@@ -743,7 +743,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			}
 		});
 		butDetailsJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		butDetailsJob.setText("Details");
+		butDetailsJob.setText("Parameter");
 
 		butAddMissingNodes = new Button(gNodes, SWT.NONE);
 		butAddMissingNodes.addSelectionListener(new SelectionAdapter() {
@@ -780,6 +780,11 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			public void widgetSelected(final SelectionEvent e) {
 				if (tNodes.getSelectionCount() > 0) {
 					
+					int c = MainWindow.message(getShell(), "Do you want remove the job node from this job chain?", SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+					if(c != SWT.YES)
+						return;
+					
+						
 					
 					int index = tNodes.getSelectionIndex();
 					listener.deleteNode(tNodes);
@@ -1250,6 +1255,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		tDelay.setToolTipText(Messages.getTooltip("job_chains.node.delay"));
 		cOnError.setToolTipText(Messages.getTooltip("job_chains.node.on_error"));
 		bRemoveFile.setToolTipText(Messages.getTooltip("job_chains.node.btn_remove"));
+		bRemoveNode.setToolTipText(Messages.getTooltip("job_chains.node.btn_remove"));
 		tMoveTo.setToolTipText(Messages.getTooltip("job_chain.stop_options.move_to"));
 		tNodes.setToolTipText(Messages.getTooltip("job_chains.chain.node_table"));
 		tDirectory.setToolTipText(Messages.getTooltip("job_chain.monitoring_directory"));

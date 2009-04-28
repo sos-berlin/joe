@@ -537,6 +537,21 @@ public class Options {
     	Properties p = new Properties();
     	p.putAll(_defaults);
     	p.putAll(_properties);
+    	
+    	//9. Folgende Monitore sollen in der Auslieferung im Lieferumfang sein
+   	    //configuration_monitor -->sos.scheduler.managed.configuration.ConfigurationOrderMonitor
+    	//create_event_monitor --> sos.scheduler.jobs.JobSchedulerSubmitEventMonitor
+    	if(prefix.equalsIgnoreCase("monitor_favorite_")) {
+    		if(p.containsKey("monitor_favorite_java_configuration_monitor")){
+    			p.put("monitor_favorite_java_configuration_monitor", "sos.scheduler.managed.configuration.ConfigurationOrderMonitor");    			    					
+    		}
+    		if(p.containsKey("monitor_favorite_java_create_event_monitor")){
+    			p.put("monitor_favorite_java_create_event_monitor", "sos.scheduler.jobs.JobSchedulerSubmitEventMonitor");
+    		}
+    	}
+    	
+    	
+    	
     	java.util.Iterator keys = p.keySet().iterator();
     	while(keys.hasNext())  {
     		Object key = keys.next();
@@ -548,4 +563,10 @@ public class Options {
     	
     }
 	
+    public static void removeProperty(String name) {
+    	if(name != null && name.length() > 0) {
+    		_properties.remove(name);
+    		saveProperties();
+    	}
+    }
 }

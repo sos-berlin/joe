@@ -149,6 +149,10 @@ public class Editor {
     
     public final static int REMOVE_EVENT_GROUP     = 94;
     
+    public final static int JOB_OPTION             = 95;
+    
+    public final static int JOB_DOCUMENTATION      = 96;
+    
     public static String    SCHEDULER_ENCODING     = "";
 
     public static String    DOCUMENTATION_ENCODING = "utf-8";
