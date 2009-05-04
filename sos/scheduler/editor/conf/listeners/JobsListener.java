@@ -451,35 +451,49 @@ public class JobsListener {
 	}
 
 	public void newImportJob(Element job, int assistentType) {
-
-		if(!_dom.isLifeElement()) {
-			if (_list == null)
-				initJobs();
-			_list.add(job);
-		}
-		_dom.setChanged(true);
-
-		if(Editor.JOB_CHAINS != assistentType && JobsForm.getTable() != null) {			
-			fillTable(JobsForm.getTable());
-			JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);						
-		} 
-
-		if(_dom.isLifeElement()) {			
-			List l =   job.getAttributes();
-			for(int i = 0; i < l.size(); i++) {
-				org.jdom.Attribute a = (org.jdom.Attribute)l.get(i);
-				_dom.getRoot().setAttribute(a.getName(), a.getValue());	
+		try {
+			if(!_dom.isLifeElement()) {
+				if (_list == null)
+					initJobs();
+				_list.add(job);
 			}
-			
-			_dom.getRoot().setContent(job);
-			
-			_main.updateJob(job);
-		} else { 
-			_main.updateOrders();
-			_main.updateJobs();	
-		}
+			_dom.setChanged(true);
 
-		_main.expandItem("Job: "+Utils.getAttributeValue("name", job));
+			if(Editor.JOB_CHAINS != assistentType && JobsForm.getTable() != null) {			
+				fillTable(JobsForm.getTable());
+				JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);						
+			} 
+
+			if(_dom.isLifeElement()) {			
+				List l =   job.getAttributes();
+
+				
+				/*List cont = job.getContent();
+				for(int i = 0; i < cont.size(); i++) {
+				     Element elem1 = (Element)cont.get(i);
+					_dom.getRoot().addContent(elem1.clone());
+				}*/
+				_dom.getRoot().removeContent();
+				_dom.getRoot().addContent(job.cloneContent());
+				for(int i = 0; i < l.size(); i++) {
+					org.jdom.Attribute a = (org.jdom.Attribute)l.get(i);
+					_dom.getRoot().setAttribute(a.getName(), a.getValue());	
+				}			
+				_main.updateJob(job);
+			} else { 
+				_main.updateOrders();
+				_main.updateJobs();	
+			}
+
+			_main.expandItem("Job: "+Utils.getAttributeValue("name", job));
+		} catch (Exception e) {
+			System.err.print(e);
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not start assistent." , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+		}
 	}
 
 

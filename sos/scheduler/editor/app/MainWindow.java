@@ -3,7 +3,6 @@ package sos.scheduler.editor.app;
 import java.io.File;
 import java.util.HashMap;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
