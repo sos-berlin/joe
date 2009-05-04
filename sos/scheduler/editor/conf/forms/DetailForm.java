@@ -3,6 +3,7 @@ package sos.scheduler.editor.conf.forms;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyAdapter;
@@ -724,7 +725,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 				startWizzard();
 			}
 		});
-		parameterButton.setVisible(type != Editor.DETAILS);
+		//parameterButton.setVisible(type != Editor.DETAILS);
 		parameterButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		parameterButton.setText("Import");
 		butRemove = new Button(parameterGroup, SWT.NONE);
@@ -1159,12 +1160,19 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 	}
 	
 	
+	private void createTempSchedulerDom(){
+		schedulerDom = new sos.scheduler.editor.conf.SchedulerDom();
+		CTabFolder folder = new CTabFolder(parent, SWT.TOP | SWT.CLOSE );
+		update = new SchedulerForm(MainWindow.getContainer(), folder, SWT.NONE);
+	}
+	
 	private void startWizzard() {
 		Utils.startCursor(getShell());
 		//Liste aller Jobdokumentation 
 		try {
 			if(schedulerDom == null)
-				return;
+				createTempSchedulerDom();
+				//return;
 
 			JobListener joblistener =  new JobListener(schedulerDom, detailListener.getParams().getParentElement(), update);
 
@@ -1173,6 +1181,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 
 			importParameterForms.showAllImportJobs();
 			butApply.setEnabled(true);
+			dom.setChanged(true);
 
 		} catch (Exception e) {
 			try {

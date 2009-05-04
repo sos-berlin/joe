@@ -6,32 +6,23 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
@@ -39,13 +30,13 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobListener;
-import sos.scheduler.editor.app.ContextMenu;
 
 
 public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 			
+	/* Hilfsvariable: setzt die Breite fest*/
+	private Button      only4Weight       = null;
 		
-	private Button only4Weight;
 	private JobListener listener          = null;
 	
 	private Group       group             = null;
@@ -88,8 +79,6 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 		
 		initialize();   
 		setToolTipText();
-	
-		
 		
 		updateTree = false;
 		
@@ -112,8 +101,7 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 	}
 	
 	
-	private void initialize() {
-		//sosString = new SOSString(); 
+	private void initialize() {		
 		this.setLayout(new FillLayout());
 		createGroup();
 		setSize(new org.eclipse.swt.graphics.Point(723, 566));
@@ -126,31 +114,11 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 	private void createGroup() {
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.numColumns = 1;
-		group = new Group(this, SWT.NONE);
-		group.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(final DisposeEvent e) {
-				/*boolean _deleteRuntimeAttribute = false;
-				
-				if(isVisible()) 						
-					//_continue = Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, "CLOSE");
-					_deleteRuntimeAttribute = Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, null);
-				
-				if(_deleteRuntimeAttribute) {
-					listener.getJob().removeAttribute("single_start");
-					listener.getJob().removeAttribute("let_run");
-					listener.getJob().removeAttribute("start_once");					
-				}*/
-			
-			}
-		});
+		group = new Group(this, SWT.NONE);		
 		group.setText("Job: " + listener.getName() + (listener.isDisabled() ? " (Disabled)" : ""));
 		group.setLayout(gridLayout2);
 		createSashForm();
 	}
-	
-
-	
-	
 	
 	
 	/**
@@ -164,11 +132,7 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 		gMain.setLayoutData(gridData_12);
 		gMain.setText("Main Options");
 		gMain.setLayout(gridLayout);
-		//gridData_16.widthHint = 17;
-		//gridData_2.widthHint = 75;
-		//gridData_9.widthHint = 75;
-		//cSignals.setItems(new String[] {"error", "success", "SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT", "SIGIOT", "SIGBUS", "SIGFPE", "SIGKILL", "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGPIPE", "SIGALRM", "SIGTERM", "SIGSTKFLT", "SIGCHLD", "SIGCONT", "SIGSTOP", "SIGTSTP", "SIGTTIN", "SIGTTOU", "SIGURG", "SIGXCPU", "SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH", "SIGPOLL", "SIGIO", "SIGPWR", "SIGSYS."});
-
+		
 		final Composite composite_2 = new Composite(gMain, SWT.NONE);
 		final GridData gridData_20 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
 		gridData_20.minimumHeight = 20;
@@ -368,21 +332,10 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 
 	public void initForm(){
 		updateTree = true;
-		
-		
-		/*
-		String process_class = "";
-		if(listener.getProcessClass() != null && listener.getProcessClass().length() > 0)
-			process_class= listener.getProcessClass();
-		
-		String[] classes = listener.getProcessClasses();
 						
-		int index = 0;
-		*/
 		butIsLiveFile.setSelection(listener.isLiveFile());
 		tFileName.setText(listener.getInclude());
-		
-		//tURL.setText(listener.getInclude());
+				
 		tDescription.setText(listener.getDescription());
 		tComment.setText(listener.getComment());
 		
@@ -396,18 +349,13 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 		Utils.startCursor(getShell());
 		if(listener.getInclude()!= null && listener.getInclude().trim().length() > 0) {
 			//JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren        						
-			//JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener, parForm.getTParameter(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
-			//JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener.getJob(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
 			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener, onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
 			if(!onlyParams)
 				paramsForm.setJobForm(this);
 			paramsForm.showAllImportJobParams(listener.getInclude());        			
 		} else { 
 			//Liste aller Jobdokumentation 
-			//JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, parForm.getTParameter(), onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
-			//JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
 			JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, Editor.JOB_WIZZARD);
-			
 			
 			if(!onlyParams)
 				importJobForms.setJobForm(this);
@@ -417,11 +365,6 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 		if (butWizzard != null) butWizzard.setToolTipText(Messages.getTooltip("jobs.assistent"));
 		Utils.stopCursor(getShell());
 	}
-	
-	
-	/*public Table getTParameter() {
-		return parForm.getTParameter();
-	}*/
 	
 	public String getHome(String filename) {
 		
@@ -447,13 +390,7 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 		home = home.replaceAll("\\\\", "/");
 		
 		return home;
-		/*String sHome = sos.scheduler.editor.app.Options.getSchedulerHome();
-		if(!(sHome.endsWith("\\") || sHome.endsWith("/")))
-			sHome = sHome.concat("/");
 		
-		sHome = sHome.replaceAll("\\\\", "/");
-		return sHome;
-		*/
 	}
 	
 	

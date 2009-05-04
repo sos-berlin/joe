@@ -3,6 +3,7 @@ package sos.scheduler.editor.app;
 import java.io.File;
 import java.util.HashMap;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -1008,8 +1009,9 @@ public class MainWindow  {
 			}
 		});
 
-		/*
+		
 		final ToolItem butWizzard = new ToolItem(toolBar, SWT.PUSH);
+		butWizzard.setToolTipText("Wizzard");
 		butWizzard.setImage(ResourceManager
 				.getImageFromResource("/sos/scheduler/editor/icon_wizzard.gif"));
 		butWizzard.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -1019,7 +1021,7 @@ public class MainWindow  {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-*/
+
 		
 	}
 
@@ -1305,12 +1307,20 @@ public class MainWindow  {
 	private void startWizzard() {
 
 		try {
+			
+			
 			Utils.startCursor(sShell);
+			
+			//schedulerDom = new sos.scheduler.editor.conf.SchedulerDom();
+			//CTabFolder folder = new CTabFolder(parent, SWT.TOP | SWT.CLOSE );
+			//update = new SchedulerForm(MainWindow.getContainer(), folder, SWT.NONE);
+		
 			SchedulerForm _scheduler = container.newScheduler(SchedulerDom.LIFE_JOB);
 			if (_scheduler  != null)
 				setSaveStatus();
 			JobAssistentForm assitent = new JobAssistentForm(_scheduler.getDom(), _scheduler);
 			assitent.startJobAssistant();
+			setSaveStatus();
 		} catch (Exception ex) {
 			try {
 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not start assistent." , ex);

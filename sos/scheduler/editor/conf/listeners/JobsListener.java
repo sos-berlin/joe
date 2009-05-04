@@ -452,19 +452,32 @@ public class JobsListener {
 
 	public void newImportJob(Element job, int assistentType) {
 
-		if (_list == null)
-			initJobs();
-
-		_list.add(job);		
+		if(!_dom.isLifeElement()) {
+			if (_list == null)
+				initJobs();
+			_list.add(job);
+		}
 		_dom.setChanged(true);
 
-		if(Editor.JOB_CHAINS != assistentType) {
+		if(Editor.JOB_CHAINS != assistentType && JobsForm.getTable() != null) {			
 			fillTable(JobsForm.getTable());
 			JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);						
 		} 
-		_main.updateOrders();
 
-		_main.updateJobs();	
+		if(_dom.isLifeElement()) {			
+			List l =   job.getAttributes();
+			for(int i = 0; i < l.size(); i++) {
+				org.jdom.Attribute a = (org.jdom.Attribute)l.get(i);
+				_dom.getRoot().setAttribute(a.getName(), a.getValue());	
+			}
+			
+			_dom.getRoot().setContent(job);
+			
+			_main.updateJob(job);
+		} else { 
+			_main.updateOrders();
+			_main.updateJobs();	
+		}
 
 		_main.expandItem("Job: "+Utils.getAttributeValue("name", job));
 	}

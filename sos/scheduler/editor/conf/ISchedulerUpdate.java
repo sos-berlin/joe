@@ -10,6 +10,8 @@ public interface ISchedulerUpdate extends IDataChanged {
 	public void updateJobs();    
 
   	public void updateJob();  	
+  	
+  	public void updateJob(org.jdom.Element elem);
 
   	public void expandItem(String name);
 

@@ -1077,18 +1077,19 @@ public class Utils {
 
 	public static void setChangedForDirectory(Element elem, SchedulerDom dom) {
 
-		//mögliche hot folder element
-		Element e = Utils.getHotFolderParentElement(elem);
+		if(dom.isDirectory() || dom.isLifeElement()) {
+			//mögliche hot folder element
+			Element e = Utils.getHotFolderParentElement(elem);
 
-		if(e.getName().equals("order") || e.getName().equals("add_order")) {
-			if(getJobElement(e).getName().equals("job"))			
-				dom.setChangedForDirectory(e.getName(), Utils.getAttributeValue("name",Utils.getJobElement(e)), SchedulerDom.MODIFY);
-			else 
-				dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", e) + "," + Utils.getAttributeValue("id", e), SchedulerDom.MODIFY);			
-		} else {
-			dom.setChangedForDirectory(e.getName(), Utils.getAttributeValue("name",e), SchedulerDom.MODIFY);
+			if(e.getName().equals("order") || e.getName().equals("add_order")) {
+				if(getJobElement(e).getName().equals("job"))			
+					dom.setChangedForDirectory(e.getName(), Utils.getAttributeValue("name",Utils.getJobElement(e)), SchedulerDom.MODIFY);
+				else 
+					dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", e) + "," + Utils.getAttributeValue("id", e), SchedulerDom.MODIFY);			
+			} else {
+				dom.setChangedForDirectory(e.getName(), Utils.getAttributeValue("name",e), SchedulerDom.MODIFY);
+			}
 		}
-
 	}
 
 	public static boolean hasSchedulesElement(SchedulerDom dom, Element element) {

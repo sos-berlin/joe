@@ -1,15 +1,10 @@
 package sos.scheduler.editor.conf.forms;
 
-import java.io.File;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
@@ -17,29 +12,19 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobListener;
-import sos.scheduler.editor.app.ContextMenu;
 
 
 public class JobMainOptionForm extends Composite implements IUpdateLanguage {
@@ -59,13 +44,10 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 	private Group       group             = null;
 	
 	private Group       gMain             = null;
+	
 	private Label       label3            = null;
+	
 	private Text        tSpoolerID        = null;
-	
-	
-	
-	
-	
 	
 	private Label       label11           = null;
 	
@@ -74,31 +56,14 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 	private Label       label15           = null;
 	
 	private Label       label17           = null;
-	
-	//private Text        tTitle            = null;
-	
-	
-	
-	
+		
 	private Text        tMintasks         = null;
-	
-	
-	
-	
-	
-	
-			
-	
 	
 	private boolean     updateTree        = false;
 	
-	private Button      bForceIdletimeout = null;
-	
+	private Button      bForceIdletimeout = null;	
 	
 	private Combo       cSignals          = null;
-	
-	
-	
 	
 	private Text        txtJavaOptions    = null; 
 	
@@ -108,12 +73,9 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 	
 	private Combo       comVisible        = null; 
 	
-	
-	
 	private Button      addButton         = null;
 	
 	private boolean     init              = true;
-	
 	
 	
 	public JobMainOptionForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
@@ -129,8 +91,6 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		initialize();   
 		setToolTipText();
 	
-		
-		
 		updateTree = false;
 		
 		initForm();
@@ -152,8 +112,7 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 	}
 	
 	
-	private void initialize() {
-		//sosString = new SOSString(); 
+	private void initialize() {		 
 		this.setLayout(new FillLayout());
 		createGroup();
 		setSize(new org.eclipse.swt.graphics.Point(723, 566));
@@ -166,31 +125,11 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 	private void createGroup() {
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.numColumns = 1;
-		group = new Group(this, SWT.NONE);
-		group.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(final DisposeEvent e) {
-				/*boolean _deleteRuntimeAttribute = false;
-				
-				if(isVisible()) 						
-					//_continue = Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, "CLOSE");
-					_deleteRuntimeAttribute = Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, null);
-				
-				if(_deleteRuntimeAttribute) {
-					listener.getJob().removeAttribute("single_start");
-					listener.getJob().removeAttribute("let_run");
-					listener.getJob().removeAttribute("start_once");					
-				}*/
-			
-			}
-		});
+		group = new Group(this, SWT.NONE);		
 		group.setText("Job: " + listener.getName() + (listener.isDisabled() ? " (Disabled)" : ""));
 		group.setLayout(gridLayout2);
 		createSashForm();
 	}
-	
-
-	
-	
 	
 	
 	/**
@@ -263,8 +202,7 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		addButton.setLayoutData(gridData_5);
 		addButton.setText("<- Add <-");
 		
-		cSignals = new Combo(gMain, SWT.NONE);
-		//cSignals.setItems(new String[] {"error", "success", "SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT", "SIGIOT", "SIGBUS", "SIGFPE", "SIGKILL", "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGPIPE", "SIGALRM", "SIGTERM", "SIGSTKFLT", "SIGCHLD", "SIGCONT", "SIGSTOP", "SIGTSTP", "SIGTTIN", "SIGTTOU", "SIGURG", "SIGXCPU", "SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH", "SIGPOLL", "SIGIO", "SIGPWR", "SIGSYS."});
+		cSignals = new Combo(gMain, SWT.NONE);	
 		cSignals.setItems(new String[] {"SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT", "SIGIOT", "SIGBUS", "SIGFPE", "SIGKILL", "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGPIPE", "SIGALRM", "SIGTERM", "SIGSTKFLT", "SIGCHLD", "SIGCONT", "SIGSTOP", "SIGTSTP", "SIGTTIN", "SIGTTOU", "SIGURG", "SIGXCPU", "SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH", "SIGPOLL", "SIGIO", "SIGPWR", "SIGSYS."});
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, true, false);
 		cSignals.setLayoutData(gridData_4);
@@ -330,7 +268,6 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-		//gridData_2.widthHint = 75;
 		tMintasks.setLayoutData(gridData_2);
 		new Label(gMain, SWT.NONE);
 		new Label(gMain, SWT.NONE);
@@ -452,14 +389,6 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 	public void initForm(){
 		updateTree = true;
 		
-		
-		
-		String process_class = "";
-		if(listener.getProcessClass() != null && listener.getProcessClass().length() > 0)
-			process_class= listener.getProcessClass();
-		
-		String[] classes = listener.getProcessClasses();
-			
 		tSpoolerID.setText(listener.getSpoolerID());
 		
 		int index = 0;
@@ -485,15 +414,11 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		tIgnoreSignals.setText(listener.getIgnoreSignal());
 		sTimeout.setText(listener.getTimeout());
 		sIdleTimeout.setText(listener.getIdleTimeout());
-		
-		//tURL.setText(listener.getInclude());
 		butReplace.setSelection(listener.getReplace());
 		butTemporary.setSelection(listener.getTemporary());
 		comVisible.setText(listener.getVisible());
 		
-		
 	}
-	
 	
 	
 	public void setToolTipText() {
@@ -504,12 +429,10 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		bForceIdletimeout.setToolTipText(Messages.getTooltip("job.forceIdleTimeout"));        
 		sTimeout.setToolTipText(Messages.getTooltip("job.timeout"));
 		sIdleTimeout.setToolTipText(Messages.getTooltip("job.idle_timeout"));
-		txtJavaOptions.setToolTipText(Messages.getTooltip("job.java_options"));
-		
+		txtJavaOptions.setToolTipText(Messages.getTooltip("job.java_options"));		
 		butReplace.setToolTipText(Messages.getTooltip("job.replace"));
 		comVisible.setToolTipText(Messages.getTooltip("job.visible"));
-		butTemporary.setToolTipText(Messages.getTooltip("job.temporary"));
-		
+		butTemporary.setToolTipText(Messages.getTooltip("job.temporary"));		
 		cSignals.setToolTipText(Messages.getTooltip("job.ignore_signal_list"));
 		addButton.setToolTipText(Messages.getTooltip("job.add_ignore_signal"));
 		tSpoolerID.setToolTipText(Messages.getTooltip("job.spooler_id"));

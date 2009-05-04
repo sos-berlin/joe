@@ -315,6 +315,7 @@ public class ParameterListener {
 		_dom.setChanged(true);
 
 		//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+		
 		Utils.setChangedForDirectory(_parent, _dom);
 	}
 
