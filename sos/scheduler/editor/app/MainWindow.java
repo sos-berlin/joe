@@ -27,6 +27,7 @@ import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.conf.DetailDom;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.doc.DocumentationDom;
+import sos.scheduler.editor.conf.forms.JobAssistentForm;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.HotFolderDialog;
 import java.util.ArrayList;
@@ -609,7 +610,9 @@ public class MainWindow  {
 		MenuItem submenuItemInfo = new MenuItem(submenu, SWT.PUSH);
 		submenuItemInfo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				listener.resetInfoDialog();				
+				listener.resetInfoDialog();	
+				Options.setPropertyBoolean("editor.job.show.wizard", true);
+				Options.saveProperties();
 			}
 		});
 		submenuItemInfo.setText("Reset Dialog");
@@ -626,6 +629,10 @@ public class MainWindow  {
 				setSaveStatus();
 			}
 		});
+		
+		
+		
+		
 	}
 
 
@@ -1001,6 +1008,18 @@ public class MainWindow  {
 			}
 		});
 
+		/*
+		final ToolItem butWizzard = new ToolItem(toolBar, SWT.PUSH);
+		butWizzard.setImage(ResourceManager
+				.getImageFromResource("/sos/scheduler/editor/icon_wizzard.gif"));
+		butWizzard.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(final SelectionEvent e) {
+				startWizzard();
+			}
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+*/
 		
 	}
 
@@ -1283,4 +1302,25 @@ public class MainWindow  {
 		return currdom;
 	}
 
+	private void startWizzard() {
+
+		try {
+			Utils.startCursor(sShell);
+			SchedulerForm _scheduler = container.newScheduler(SchedulerDom.LIFE_JOB);
+			if (_scheduler  != null)
+				setSaveStatus();
+			JobAssistentForm assitent = new JobAssistentForm(_scheduler.getDom(), _scheduler);
+			assitent.startJobAssistant();
+		} catch (Exception ex) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not start assistent." , ex);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			System.out.println("..error " + ex.getMessage());
+		} finally {
+			Utils.stopCursor(sShell);
+		}
+	
+	}
 }

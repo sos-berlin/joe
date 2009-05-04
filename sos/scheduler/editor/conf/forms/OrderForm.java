@@ -301,6 +301,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         		//DetailForm dialogForm =new DetailForm(composite, SWT.NONE, cJobchain.getText(), tState.getText(), null, Editor.JOB_CHAINS, null, null, dom.isLifeElement(), dom.getFilename());
         		DetailDialogForm detail = new DetailDialogForm(cJobchain.getText(),  tState.getText(), tOrderId.getText(), dom.isLifeElement(), "");
 				detail.showDetails();
+				detail.getDialogForm().setParamsForWizzard(dom, main);
         	}
         });
         butDetails.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));

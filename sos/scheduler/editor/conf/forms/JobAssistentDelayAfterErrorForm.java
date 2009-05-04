@@ -22,6 +22,7 @@ import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -330,8 +331,9 @@ public class JobAssistentDelayAfterErrorForm {
 			butShow.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					if(!check()) return;
-					refreshElement(false);					
-					Utils.showClipboard(Utils.getElementAsString(job), shellSetBack);
+					refreshElement(false);	
+					if(Options.getPropertyBoolean("editor.job.show.wizard"))
+						Utils.showClipboard(Utils.getElementAsString(job), shellSetBack);
 					txtErrorCount.setFocus();
 				}
 			});
@@ -352,11 +354,13 @@ public class JobAssistentDelayAfterErrorForm {
 					refreshElement(true);
 					
 					if (Utils.getAttributeValue("order", job).equalsIgnoreCase("yes")) {
-						//MainWindow.message(shellSetBack,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );												
-						Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shellSetBack);
+						//MainWindow.message(shellSetBack,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
+						if(Options.getPropertyBoolean("editor.job.show.wizard"))
+							Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shellSetBack);
 					} else { 
-						//MainWindow.message(shellSetBack,  Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), SWT.OK );						
-						Utils.showClipboard(Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), shellSetBack);
+						//MainWindow.message(shellSetBack,  Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
+						if(Options.getPropertyBoolean("editor.job.show.wizard"))
+							Utils.showClipboard(Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), shellSetBack);
 					}
 					closeDialog = true;
 					Utils.stopCursor(shellSetBack);

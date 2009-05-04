@@ -29,6 +29,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.jdom.Element;
+
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUpdateLanguage;
@@ -134,6 +136,10 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 	
 	private   String                              _orderId          = null; 
 	
+
+	//wird nur für wizzard verwendet 
+	private ISchedulerUpdate    update = null;
+	private sos.scheduler.editor.conf.SchedulerDom schedulerDom = null;
 	/*
 	public DetailForm(Composite parent_, int style, int type_) {
 		
@@ -163,6 +169,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		parent = parent_;
 		isLifeElement = isLifeElement_;
 		path = path_;
+		System.out.println(type);
 	}
 	
 	
@@ -192,6 +199,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		isLifeElement = isLifeElement_;
 		path = path_;
 		open();
+		System.out.println(type);
 	}
 	
 	
@@ -677,7 +685,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		});
 		tableParams.setLinesVisible(true);
 		tableParams.setHeaderVisible(true);
-		final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 4);
+		final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 5);
 		gridData_4.heightHint = 157;
 		gridData_4.widthHint = 413;
 		tableParams.setLayoutData(gridData_4);
@@ -709,16 +717,16 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butNew.setText("New");
 
-		/*final Button butImport = new Button(parameterGroup, SWT.NONE);
-		butImport.addSelectionListener(new SelectionAdapter() {
+
+		final Button parameterButton = new Button(parameterGroup, SWT.NONE);
+		parameterButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				startWizzard();
-				
 			}
 		});
-		butImport.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butImport.setText("Import");
-		*/
+		parameterButton.setVisible(type != Editor.DETAILS);
+		parameterButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+		parameterButton.setText("Import");
 		butRemove = new Button(parameterGroup, SWT.NONE);
 		butRemove.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -1143,5 +1151,37 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			isEditable = false;
 			butApply.setEnabled(isEditable);
 		}
+	}
+	
+	public void setParamsForWizzard(sos.scheduler.editor.conf.SchedulerDom dom_, ISchedulerUpdate update_){
+		schedulerDom = dom_;
+		update = update_;
+	}
+	
+	
+	private void startWizzard() {
+		Utils.startCursor(getShell());
+		//Liste aller Jobdokumentation 
+		try {
+			if(schedulerDom == null)
+				return;
+
+			JobListener joblistener =  new JobListener(schedulerDom, detailListener.getParams().getParentElement(), update);
+
+
+			JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(joblistener, tableParams, Editor.PARAMETER);
+
+			importParameterForms.showAllImportJobs();
+			butApply.setEnabled(true);
+
+		} catch (Exception e) {
+			try {
+				System.out.println("..error in " + sos.util.SOSClassUtil.getMethodName() + ": " +e.getMessage());
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+		}
+		Utils.stopCursor(getShell());
 	}
 } 

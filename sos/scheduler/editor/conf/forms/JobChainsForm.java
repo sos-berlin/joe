@@ -229,9 +229,11 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 			if(state == null) {
 				DetailDialogForm detail = new DetailDialogForm(name, isLifeElement, listener.get_dom().getFilename());
 				detail.showDetails();
+				detail.getDialogForm().setParamsForWizzard(_dom, update);
 			} else {
 				DetailDialogForm detail = new DetailDialogForm(name, state, null, isLifeElement, listener.get_dom().getFilename());
 				detail.showDetails();
+				detail.getDialogForm().setParamsForWizzard(_dom, update);
 			} 
 
 		} else {

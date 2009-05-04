@@ -142,7 +142,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				showDetails(null);
 			}
 		});
-		butDetails.setText("Details");
+		butDetails.setText("Parameter");
 		/*bApplyChain = new Button(jobChainGroup, SWT.NONE);
 		bApplyChain.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		bApplyChain.setText("A&pply Job Chain");
@@ -303,8 +303,8 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 
 	private void showDetails(String state) {
 		if(tName.getText() != null && tName.getText().length() > 0) {
-			OrdersListener ordersListener =  new OrdersListener(listener.get_dom(), update);
-			String[] listOfOrders = ordersListener.getOrderIds();
+			//OrdersListener ordersListener =  new OrdersListener(listener.get_dom(), update);
+			//String[] listOfOrders = ordersListener.getOrderIds();
 			//DetailDialogForm detail = new DetailDialogForm(tName.getText(), listOfOrders);
 			//detail.showDetails();
 			boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory(); 
@@ -312,12 +312,17 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			if(state == null) {
 				//DetailDialogForm detail = new  DetailDialogForm(tName.getText(), listOfOrders, isLifeElement, listener.get_dom().getFilename());
 				DetailDialogForm detail = new  DetailDialogForm(tName.getText(), isLifeElement, listener.get_dom().getFilename());
+							
 				detail.showDetails();
+				detail.getDialogForm().setParamsForWizzard(listener.get_dom(), update);
 			} else {
 				//DetailDialogForm detail = new DetailDialogForm(tName.getText(), state, listOfOrders, isLifeElement, listener.get_dom().getFilename());
 				DetailDialogForm detail = new DetailDialogForm(tName.getText(), state, null, isLifeElement, listener.get_dom().getFilename());
+				
 				detail.showDetails();
+				detail.getDialogForm().setParamsForWizzard(listener.get_dom(), update);
 			} 
+			
 
 		} else {
 			MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );

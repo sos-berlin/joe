@@ -576,10 +576,36 @@ public class Utils {
 		return retVal;
 	}
 
+	public static String showClipboard(String xml, Shell shell) {
+		return showClipboard(xml, shell, false, null);    	
+	}
+	
+	/*public static String showClipboard(String xml, Shell shell, boolean dontShowWizzardInfo ) {
+		return showClipboard(xml, shell, false, null, false, null, dontShowWizzardInfo);
+	}*/
+	
 	public static String showClipboard(String xml, Shell shell, boolean bApply, String selectStr) {
 		return showClipboard(xml, shell, bApply, selectStr, false, null);
 	}
-	public static String showClipboard(String xml, Shell shell, boolean bApply, String selectStr, boolean showFunction, String scriptLanguage) {
+		
+	
+	/**
+	 * 
+	 * @param xml
+	 * @param shell
+	 * @param bApply
+	 * @param selectStr
+	 * @param showFunction -> wird in Pre Function in Job Execute verwendet
+	 * @param scriptLanguage -> wird in Pre Function in Job Execute verwendet
+	 * @param dontShowWizzardInfo -> wird in Jobs Wizzard verwendet
+	 * @return
+	 */
+	public static String showClipboard(String xml, 
+			Shell shell, 
+			boolean bApply, 
+			String selectStr, 
+			boolean showFunction, 
+			String scriptLanguage) {
 	
 		Font font = new Font(Display.getDefault(), "Courier New", 8, SWT.NORMAL);
 		TextDialog dialog = new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL
@@ -598,7 +624,6 @@ public class Utils {
 		dialog.setShowFunctions(showFunction);
 		dialog.setScriptLanguage(scriptLanguage);
 		
-
 		//String s = dialog.open(true);
 		String s = dialog.open(false);
 
@@ -618,10 +643,7 @@ public class Utils {
 
 		return s;
 	}
-
-	public static String showClipboard(String xml, Shell shell) {
-		return showClipboard(xml, shell, false, null);    	
-	}
+	
 
 	public static void copyClipboard(String content, Display display) {
 

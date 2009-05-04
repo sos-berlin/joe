@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.conf.ISchedulerUpdate;
 
 
 public class DetailDialogForm {
@@ -28,6 +29,7 @@ public class DetailDialogForm {
 	
 	private String           orderId           = null;
 	
+	
 	//public DetailDialogForm(String jobChainname_, String[] listOfOrderIds_, boolean isLifeElement_, String path_) {
 	public DetailDialogForm(String jobChainname_, boolean isLifeElement_, String path_) {
 		jobChainname = jobChainname_;
@@ -45,6 +47,7 @@ public class DetailDialogForm {
 		isLifeElement = isLifeElement_;
 		path = path_;
 	}
+	
 	
 	public void showDetails() {
 		

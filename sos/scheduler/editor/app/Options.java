@@ -493,6 +493,19 @@ public class Options {
 		_properties.setProperty("editor.job.wizard.info.show", wizardInfo ? "true" : "false");
 	}
 	
+	public static boolean getPropertyBoolean(String name) {
+		String s =  _properties.getProperty(name);		
+		if(s == null)
+			return true;
+		return s.equalsIgnoreCase("true");
+	}
+
+
+	public static void setPropertyBoolean(String name, boolean value) {		
+		_properties.setProperty(name, value ? "true" : "false");
+	}
+	
+	
     public static String getDetailXSLT() {
         return _properties.getProperty("detail.editor.xslt");
     }
@@ -552,9 +565,7 @@ public class Options {
     			setProperty("monitor_favorite_java_create_event_monitor", "sos.scheduler.jobs.JobSchedulerSubmitEventMonitor");
     		}
     	}
-    	
-    	
-    	
+    	        	
     	java.util.Iterator keys = p.keySet().iterator();
     	while(keys.hasNext())  {
     		Object key = keys.next();

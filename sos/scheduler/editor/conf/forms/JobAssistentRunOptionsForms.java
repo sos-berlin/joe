@@ -17,6 +17,7 @@ import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -321,7 +322,8 @@ public class JobAssistentRunOptionsForms {
 			
 		}
 		//MainWindow.message(shellRunOptions,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
-		Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shellRunOptions);
+		if(Options.getPropertyBoolean("editor.job.show.wizard"))
+			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shellRunOptions);
 		
 		closeDialog = true;
 		shellRunOptions.dispose();

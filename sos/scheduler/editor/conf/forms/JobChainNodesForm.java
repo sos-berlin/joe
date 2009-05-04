@@ -1212,9 +1212,11 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		if(state == null) {
 			DetailDialogForm detail = new  DetailDialogForm(listener.getChainName(), isLifeElement, listener.get_dom().getFilename());
 			detail.showDetails();
+			detail.getDialogForm().setParamsForWizzard(listener.get_dom(), update);
 		} else {
 			DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), state, null, isLifeElement, listener.get_dom().getFilename());
 			detail.showDetails();
+			detail.getDialogForm().setParamsForWizzard(listener.get_dom(), update);
 		} 
 		
 

@@ -20,6 +20,7 @@ import org.jdom.Element;
 import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -405,7 +406,8 @@ public class JobAssistentTasksForm {
 		}
 		
 		//MainWindow.message(tasksShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK );
-		Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), tasksShell);
+		if(Options.getPropertyBoolean("editor.job.show.wizard"))
+			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), tasksShell);
 		
 		
 		if(jobname != null)

@@ -49,16 +49,16 @@ public class JobsListener {
 
 
 	private void initJobs() {
-
-		if (_config.getChild("jobs") == null) {
-			Element _jobs = new Element("jobs");
-			_config.addContent(_jobs);
-			_list = _jobs.getChildren("job");
-		} else {
-			_jobs = _config.getChild("jobs");
-			_list = _jobs.getChildren("job");
+		if(!_dom.isLifeElement()) {
+			if (_config.getChild("jobs") == null) {
+				Element _jobs = new Element("jobs");
+				_config.addContent(_jobs);
+				_list = _jobs.getChildren("job");
+			} else {
+				_jobs = _config.getChild("jobs");
+				_list = _jobs.getChildren("job");
+			}
 		}
-
 	}
 
 

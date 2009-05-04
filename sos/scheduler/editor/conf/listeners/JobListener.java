@@ -29,6 +29,8 @@ public class JobListener {
 
 	}
 
+	
+	
 	public String getComment() {
 		return Utils.getAttributeValue("__comment__", _job);
 	}

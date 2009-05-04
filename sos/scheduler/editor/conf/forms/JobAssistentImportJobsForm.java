@@ -384,6 +384,7 @@ public class JobAssistentImportJobsForm {
 					   //flagBackUpJob = true;//backUpJob
 					}
 					
+											
 					Utils.showClipboard(Utils.getElementAsString(job), shell);
 					
 					job.removeChildren("param");
@@ -454,7 +455,8 @@ public class JobAssistentImportJobsForm {
 							listener.newImportJob(job, assistentType);
 							//MainWindow.message(shell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
 							
-							Utils.showClipboard(Utils.getElementAsString(job), shell);
+							if(Options.getPropertyBoolean("editor.job.show.wizard"))						
+								Utils.showClipboard(Utils.getElementAsString(job), shell);
 							
 						} 
 						closeDialog = true;
@@ -597,6 +599,7 @@ public class JobAssistentImportJobsForm {
 			
 			if(joblistener != null) {
 				if(joblistener.getJob().getName().equals("start_job") ||
+						joblistener.getJob().getName().equals("process") ||
 						joblistener.getJob().getName().equals("order") ||
 						joblistener.getJob().getName().equals("config")) {				
 					txtJobname.setEnabled(false);
@@ -1002,12 +1005,13 @@ public class JobAssistentImportJobsForm {
 		
 
 		if( assistentType != Editor.JOB && ( joblistener != null && !joblistener.getJob().getName().equals("config"))) {
-			if(txtJobname.getText() == null || txtJobname.getText().length() == 0) {
-				MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_jobname"), SWT.ICON_WARNING | SWT.OK );
-				txtJobname.setFocus();
-				return false;
-			}						
-			
+			if( txtJobname.isEnabled()) {
+				if(txtJobname.getText() == null || txtJobname.getText().length() == 0 ) {
+					MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_jobname"), SWT.ICON_WARNING | SWT.OK );
+					txtJobname.setFocus();
+					return false;
+				}						
+			}
 			if(txtJobname.getText().concat(".xml").equalsIgnoreCase(new File(txtPath.getText()).getName())) {
 				int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.edit_jobname"), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 				if(cont == SWT.YES) {

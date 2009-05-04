@@ -639,4 +639,15 @@ public class DetailsListener {
 		else
 			return null;
 	}
+
+
+	/**
+	 * Wird nur in Wizzard aufgerufen
+	 * @return the params_
+	 */
+	public Element getParams() {
+		if(params_ == null)
+			params_ = new Element("params");
+		return params_;
+	}
 }

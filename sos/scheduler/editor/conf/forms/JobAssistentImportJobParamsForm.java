@@ -359,7 +359,8 @@ public class JobAssistentImportJobParamsForm {
 						
 					}
 					//MainWindow.message(jobParameterShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK);
-					Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell);
+					if(Options.getPropertyBoolean("editor.job.show.wizard"))
+						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell);
 					closeDialog = true;
 					jobParameterShell.dispose();
 				}

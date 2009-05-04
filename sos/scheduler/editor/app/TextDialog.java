@@ -54,9 +54,11 @@ public class TextDialog extends Dialog {
 	
 	private boolean   showFunctions                = false;
 	
-	private String    scriptLanguage               = "";           
+	private String    scriptLanguage               = "";          
 	
-		
+	private Button button = null;
+	
+	
 	
 	public TextDialog(Shell parent, int shellStyle, int textStyle) {
 		super(parent, SWT.NONE);
@@ -291,6 +293,18 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 		_styledText.setEditable(false);
 		_styledText.setLayoutData(gridData);
 
+		if(Options.getPropertyBoolean("editor.job.show.wizard")) {
+			button = new Button(getShell(), SWT.CHECK);
+			button.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					Options.setPropertyBoolean("editor.job.show.wizard", !button.getSelection());
+					
+				}
+			});
+			button.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 5, 1));
+			button.setText(Messages.getString("assistent.start.info.visible"));
+			
+		}
 
 		Button closeButton = new Button(_shell, SWT.NONE);
 		closeButton.setText("Close");
@@ -420,4 +434,5 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 			cboFunctions.setItems(Options.getPropertiesWithPrefix(scriptLanguage));
 		}
 	}
+	
 }

@@ -16,6 +16,7 @@ public class JobAssistentForm {
 		dom = dom_;
 		update = update_;	
 	}	
+		
 	
 	public void startJobAssistant() {
 		try {
