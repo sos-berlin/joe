@@ -133,8 +133,12 @@ public abstract class DomParser {
 			String[] s = new String[1];			
 			if(this instanceof sos.scheduler.editor.actions.ActionsDom)
 				s[0] = getClass().getResource(Options.getActionSchema()).toString();
-			else
+			else if(this instanceof sos.scheduler.editor.doc.DocumentationDom)
+				s[0] = getClass().getResource(Options.getDocSchema()).toString();
+			else if(this instanceof sos.scheduler.editor.conf.SchedulerDom)
 				s[0] = getClass().getResource(Options.getSchema()).toString();
+			else 
+				s[0] = "";
 			return s;
 		} catch (Exception e){
 			try {

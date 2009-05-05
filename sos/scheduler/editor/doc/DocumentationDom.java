@@ -69,6 +69,18 @@ public class DocumentationDom extends DomParser {
         try {
             Document doc = getBuilder(false).build(
                     getClass().getResource("/sos/scheduler/editor/documentation-template.xml"));
+            //
+            Element description = doc.getRootElement();
+            if(description != null && description.getChild("releases", description.getNamespace()) != null ){
+            	Element release = description.getChild("releases", description.getNamespace()).getChild("release", description.getNamespace());
+            	if (release != null) {
+            		release.setAttribute("created", sos.util.SOSDate.getCurrentDateAsString("yyyy-MM-dd"));
+            		release.setAttribute("modified", sos.util.SOSDate.getCurrentDateAsString("yyyy-MM-dd"));
+            	}
+            }
+            	
+            
+            //
             setDoc(doc);
             setChanged(false);
         } catch (Exception e) {
