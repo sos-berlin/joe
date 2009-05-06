@@ -49,8 +49,7 @@ public class ErrorLog extends Exception {
 	 * @param args
 	 */
 	public static void main(String[] args) throws ErrorLog{
-		// TODO Auto-generated method stub
-
+	
 		try {
 
 			throw new Exception("Testerror");
