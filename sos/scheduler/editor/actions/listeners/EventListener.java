@@ -69,14 +69,14 @@ public class EventListener {
 				item.setText(5, Utils.getAttributeValue("job_chain", event));
 				item.setText(6, Utils.getAttributeValue("order_id", event));
 				item.setText(7, Utils.getAttributeValue("comment", event));
-				
+				item.setText(8, Utils.getAttributeValue("exit_code", event));
 				item.setData(event);
 			}
 		}
 	
    
 	public void apply(String eventName, String eventId, String eventClass, String eventTitle,
-			String jobname, String jobChain, String orderId, String comment,
+			String jobname, String jobChain, String orderId, String comment, String exitCode,
 			Table table) {
 		
 		Element event = null;
@@ -111,6 +111,7 @@ public class EventListener {
 		Utils.setAttribute("job_chain", jobChain, event);
 		Utils.setAttribute("order_id", orderId, event);
 		Utils.setAttribute("comment", comment, event);
+		Utils.setAttribute("exit_code", exitCode, event);
 
 		fillEvent(table);
 

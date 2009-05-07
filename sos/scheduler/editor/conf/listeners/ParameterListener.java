@@ -93,7 +93,8 @@ public class ParameterListener {
 				Object o = it.next();
 				if (o instanceof Element) {	
 					Element e = (Element) o;
-					if (e.getName().equals("copy_params") && type == Editor.COMMANDS) {
+					//if (e.getName().equals("copy_params") && type == Editor.COMMANDS) {
+					if (e.getName().equals("copy_params")) {
 						TableItem item = new TableItem(table, SWT.NONE);
 						item.setText(0, "<from>");
 						item.setText(1, ((Element) o).getAttributeValue("from"));
@@ -422,7 +423,8 @@ public class ParameterListener {
 		boolean found = false;
 		if (_params != null) {
 
-			if (name.equals("<from>") && type == Editor.COMMANDS) {
+			//if (name.equals("<from>") && type == Editor.COMMANDS) {
+			if (name.equals("<from>")) {
 				found = (table.getSelectionIndex() > -1);
 			} else {
 				int index = 0;
@@ -461,7 +463,8 @@ public class ParameterListener {
 				}
 			}
 
-			if (name.equals("<from>") && found && type == Editor.COMMANDS) {
+			//if (name.equals("<from>") && found && type == Editor.COMMANDS) {
+			if (name.equals("<from>") && found) {
 				int index = table.getSelectionIndex();
 				table.getItem(index).setText(0, name);
 				table.getItem(index).setText(1, value);

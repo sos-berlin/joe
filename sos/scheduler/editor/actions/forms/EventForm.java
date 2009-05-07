@@ -67,6 +67,8 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 	private Text               txtTitle                 = null;
 
 	private Text               txtComment               = null;
+	
+	private Text               txtExitCode              = null; 
 
 
 	public EventForm(Composite parent, int style, ActionsDom dom, Element eventGroup, int type_) {
@@ -258,6 +260,24 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		});
 		txtOrderId.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
+		final Label exitCodeLabel = new Label(matchingAttributesGroup, SWT.NONE);
+		exitCodeLabel.setLayoutData(new GridData());
+		exitCodeLabel.setText("Exit Code");
+
+		txtExitCode = new Text(matchingAttributesGroup, SWT.BORDER);
+		txtExitCode.addModifyListener(new ModifyListener() {
+			public void modifyText(final ModifyEvent e) {
+				butApply.setEnabled(true);
+			}
+		});
+		txtExitCode.addKeyListener(new KeyAdapter() {
+			public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR )
+					apply();
+			}
+		});
+		txtExitCode.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
 		final Label commentLabel = new Label(group, SWT.NONE);
 		commentLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		commentLabel.setText("Comment");
@@ -285,6 +305,7 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 					txtJobChain.setText(item.getText(5));
 					txtOrderId.setText(item.getText(6));
 					txtComment.setText(item.getText(7));
+					txtExitCode.setText(item.getText(8));
 				}
 				butApply.setEnabled(false);
 				butRemove.setEnabled(table.getSelectionCount() > 0);
@@ -326,6 +347,10 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		newColumnTableColumn_7.setWidth(70);
 		newColumnTableColumn_7.setText("Comment");
 
+		final TableColumn newColumnTableColumn_8 = new TableColumn(table, SWT.NONE);
+		newColumnTableColumn_8.setWidth(50);
+		newColumnTableColumn_8.setText("Exit Code");
+
 		butRemove = new Button(group, SWT.NONE);
 		butRemove.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -362,7 +387,7 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		try {
 			if (butApply.isEnabled()) {
 				listener.apply(txtEventName.getText(), txtEventId.getText(), cboEventClass.getText(), txtTitle.getText(), 
-						txtJobname.getText(),txtJobChain.getText(), txtOrderId.getText(), txtComment.getText(), 
+						txtJobname.getText(),txtJobChain.getText(), txtOrderId.getText(), txtComment.getText(), txtExitCode.getText(),
 						table);
 				cboEventClass.setItems(listener.getEventClasses());
 				refresh();
@@ -388,6 +413,7 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		txtJobChain.setText("");
 		txtOrderId.setText("");
 		txtComment.setText("");
+		txtExitCode.setText("");
 		table.deselectAll();                                
 		butApply.setEnabled(false);
 		butRemove.setEnabled(false);
@@ -409,7 +435,7 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		txtComment.setToolTipText(Messages.getTooltip("event.comment"));
 		table.setToolTipText(Messages.getTooltip("event.table"));
 		butRemove.setToolTipText(Messages.getTooltip("event.but_remove"));
-
+		txtExitCode.setToolTipText(Messages.getTooltip("event.exit_code"));
 
 	}
 

@@ -185,6 +185,7 @@
   </xsd:element>
   <xsd:element name="event">
     <xsd:complexType>
+      <xsd:attribute name="exit_code" type="xsd:string"/>
       <xsd:attribute name="event_title" type="xsd:string"/>
       <xsd:attribute name="event_class" type="xsd:string"/>
       <xsd:attribute name="event_id" type="xsd:string"/>
