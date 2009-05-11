@@ -37,11 +37,29 @@ public class ActionsDom extends DomParser {
     }
 
 
-    public void initActions() {
+   /* public void initActions() {
      	Element actions = new Element("actions");
 		setDoc(new Document(actions));		
      	
 	}
+	*/
+    
+    public void initActions() {
+        // open a template
+        try {
+            Document doc = getBuilder(false).build(
+                    getClass().getResource("/sos/scheduler/editor/actions-template.xml"));
+            //
+            //Element description = doc.getRootElement();
+            //Element actions = doc.getRootElement(); 
+            
+            setDoc(doc);
+            setChanged(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     
 /*protected SAXBuilder getBuilder(boolean validate) throws IOException {
 
