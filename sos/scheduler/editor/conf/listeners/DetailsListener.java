@@ -120,9 +120,13 @@ public class DetailsListener {
 			String xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome() ;
 			xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths+ "config/" : xmlPaths.concat("/config/"));
 			String _currOrderId = orderId != null && orderId.length()>0? "_" + orderId : "";
-			xmlFilename = xmlPaths + "scheduler_" +jobChainname+ _currOrderId + ".config.xml";
+			if(jobChainname.concat(_currOrderId).length() > 0)
+				xmlFilename = xmlPaths + "scheduler_" +jobChainname+ _currOrderId + ".config.xml";
+			
 		}
 
+		
+		
 		Element root        = null;					
 		Element order       = null;  
 
@@ -131,13 +135,17 @@ public class DetailsListener {
 			SAXBuilder builder = new SAXBuilder();
 
 			if(doc == null) {
-				File f = new File(xmlFilename);
-				if(!f.exists()) {					
+				
+				File f = null;
+				if(xmlFilename != null)
+					f = new File(xmlFilename);
+				if(f==null || !f.exists()) {					
 					String xml = createConfigurationFile();
 
 					doc = builder.build(new StringReader(xml));
 					if(type == Editor.DETAILS) {
-						f.deleteOnExit();					
+						if(f != null)
+							f.deleteOnExit();					
 						dom.setDoc(doc);
 					}
 				} else {				
@@ -400,6 +408,7 @@ public class DetailsListener {
 				}
 				for(int j = 1; j < 3; j++ ){
 					Element elNote = (Element)params.get(i+j);
+					
 					if(elNote.getName().equals("param")) {
 						break;//die nächsten beiden Knoten der param Elemente sind nicht die note Elemente
 					}
@@ -411,6 +420,7 @@ public class DetailsListener {
 			}
 		}
 		//neues Element
+		//setParam(name, value, note, noteText, language);
 		Element param = new Element("param");
 		Utils.setAttribute("name", name, param);
 		Utils.setAttribute("value", value, param);	
@@ -434,6 +444,133 @@ public class DetailsListener {
 			setNoteText(newNoteEN, note);
 
 	}
+	
+	/*
+	 * Vom Wizzard generierte Parameter
+	 */	
+	public void refreshParams(Table table) {
+		//params.clear();
+		try {
+		java.util.ArrayList list = new java.util.ArrayList();
+		for(int i = 0 ; i < table.getItemCount();i++) {
+
+			TableItem item = table.getItem(i);
+			Element param = (Element)item.getData();
+			
+			if(param == null) {
+				param = new Element("param");
+				Utils.setAttribute("name", item.getText(0), param);
+				Utils.setAttribute("value", item.getText(1) != null ? item.getText(1) : "", param);
+				list.add(param);
+				Element notede = new Element("note");
+				Utils.setAttribute("language", "de", notede);
+				String paramNoteDE = item.getData("parameter_description_de") != null ? item.getData("parameter_description_de").toString(): "";
+				setNoteText(notede, paramNoteDE);
+				list.add(notede);
+				
+				Element noteen = new Element("note");
+				Utils.setAttribute("language", "en", noteen);
+				String paramNoteEN = item.getData("parameter_description_en") != null ? item.getData("parameter_description_en").toString(): "";
+				setNoteText(noteen, paramNoteEN);
+				list.add(noteen);
+				
+				//params.set(i, param);
+				//params.set(i+1, notede);
+				//params.set(i+2, noteen);
+				
+			} else {
+				list.add(param);
+				int index = params.indexOf(param);
+				if(params.size() > index +1) {
+					Element notede = (Element)params.get(index+1);
+					if(notede.getName().equals("note") && Utils.getAttributeValue("language", notede).equals("de"))
+						list.add(notede);
+				}
+				if(params.size() > index +1) {
+					Element noteen = (Element)params.get(index+2);
+					if(noteen.getName().equals("note") && Utils.getAttributeValue("language", noteen).equals("en"))
+						list.add(noteen);
+				}
+				
+			}
+			//list.add(param);
+			/*list.add(param);
+			
+			if(params.size() > (params.indexOf(param) + 1)) {
+				String paramNoteDE = item.getData("parameter_description_de") != null ? item.getData("parameter_description_de").toString(): "";
+				Element noteDE = (Element)(params.get(params.indexOf(param) + 1)) ;
+				if(noteDE.getName().equalsIgnoreCase("note")) {
+					list.add(noteDE);
+				} else if(noteDE.getChildren().size() == 0) {			
+					//setNoteText(noteDE, paramNoteDE);
+					
+					Element note = new Element("note");
+					Utils.setAttribute("language", "de", note);										
+					setNoteText(note, paramNoteDE);
+					list.add(note);
+				}
+			}
+			*/
+			/*if(params.size() > (params.indexOf(param) + 2)) {
+				String paramNoteEN = item.getData("parameter_description_en") != null ? item.getData("parameter_description_en").toString(): "";
+				Element noteEN = (Element)(params.get(params.indexOf(param) + 2)) ;
+				if(!noteEN.getName().equalsIgnoreCase("note") && noteEN.getChildren().size() == 0 ) {			
+					setNoteText(noteEN, paramNoteEN);				
+				}
+			}*/
+			/*String name = item.getText(0);
+			String value = item.getText(1) != null ? item.getText(1) : "";
+		    
+			
+			String paramNoteDE = item.getData("parameter_description_de") != null ? item.getData("parameter_description_de").toString(): "";
+			String paramNoteEN = item.getData("parameter_description_en") != null ? item.getData("parameter_description_en").toString(): "";
+
+			setParam(name, value, paramNoteDE, "", "de");
+			setParam(name, value, paramNoteEN, "", "en");
+
+*/
+
+		}
+		
+		params.removeAll(params);
+		//params.addAll(list); 
+		params.addAll((java.util.ArrayList)list.clone());
+		table.removeAll();
+		fillParams(table);
+		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			System.out.println("..error in DetailsListener.refreshParams(). : " + e.getMessage());
+		}
+	}
+	
+	/*public void addParam(String name, String value, String note, String noteText, String language) {
+		//neues Element
+		Element param = new Element("param");
+		Utils.setAttribute("name", name, param);
+		Utils.setAttribute("value", value, param);	
+		if(noteText != null || noteText.trim().length() > 0) {
+			//org.jdom.CDATA txt = new org.jdom.CDATA(noteText); 
+			org.jdom.Text txt = new org.jdom.Text(noteText);
+			param.addContent(txt);
+		}
+		Element newNoteDE = new Element("note");
+
+		Utils.setAttribute("language", "de", newNoteDE);
+		Element newNoteEN = new Element("note");
+		Utils.setAttribute("language", "en", newNoteEN);
+		//Reihenfolge ist wichtig
+		params.add(param);
+		params.add(newNoteDE);
+		params.add(newNoteEN);
+		if(language.equals("de"))
+			setNoteText(newNoteDE, note);
+		else
+			setNoteText(newNoteEN, note);
+	}*/
 
 	public void deleteParameter(Table table, int index) {
 

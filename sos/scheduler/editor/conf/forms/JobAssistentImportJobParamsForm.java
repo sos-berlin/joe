@@ -200,7 +200,8 @@ public class JobAssistentImportJobParamsForm {
 							List notelist = note.getChildren();
 							for (int k = 0; k < notelist.size(); k++) {
 								Element elNote  = (Element)(notelist.get( k ));							
-								h.put("description_" + language, elNote.getText());	
+								//h.put("description_" + language, elNote.getText());
+								h.put("description_" + language, elNote.getValue());
 								
 							}
 						}

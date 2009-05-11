@@ -1153,4 +1153,24 @@ public class Utils {
 			}
 		}
 	}
+	
+	/**
+	 * Löschen aller HTML Tags
+	 * @param desc
+	 * @return
+	 */
+/*	
+	public static String normalizedHTMLTags(String desc) {
+		while(desc.indexOf("<") != -1) {
+			int pos1 = desc.indexOf("<");
+			int pos2 = desc.indexOf(">", pos1);
+			if(pos1 != -1 && pos2 != -1) {
+				desc = desc.substring(0, pos1) + " " + desc.substring(pos2);				
+			}
+		}
+		return desc;
+		
+	}
+*/
+	
 }

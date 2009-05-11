@@ -794,10 +794,10 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		label4.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1));
 		label4.setText("Label");
 		tParameter = new Table(Group, SWT.FULL_SELECTION | SWT.BORDER);
+		tParameter.setLinesVisible(true);
 		final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 4);
 		tParameter.setLayoutData(gridData_1);
 		tParameter.setHeaderVisible(true);
-		tParameter.setLinesVisible(true);
 		tParameter.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if(bApply.isEnabled()) {
@@ -900,9 +900,9 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		if(type == Editor.JOB) {
-			txtParameterDescription = new Text(Group, SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.WRAP);        
-			final GridData gridData = new GridData(GridData.FILL, GridData.FILL, false, true, 4, 1);
-			gridData.heightHint = 51;
+			txtParameterDescription = new Text(Group, SWT.V_SCROLL | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);        
+			final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
+			gridData.minimumHeight = 100;
 			txtParameterDescription.setLayoutData(gridData);
 			txtParameterDescription.addFocusListener(new FocusAdapter() {
 				public void focusGained(final FocusEvent e) {

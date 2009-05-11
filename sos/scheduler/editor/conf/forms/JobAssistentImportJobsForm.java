@@ -91,13 +91,17 @@ public class JobAssistentImportJobsForm {
 	
 	private sos.scheduler.editor.conf.listeners.ParameterListener paramListener = null;
 	
+	private Text refreshDetailsText = null;
+	
 	/** Hilsvariable für das Schliessen des Dialogs. 
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean               closeDialog   = false;         
 	
 	private boolean               flagBackUpJob = true;
 	
-	JobDocumentationForm jobDocForm = null;
+	private JobDocumentationForm jobDocForm = null;
+	
+	
 	public JobAssistentImportJobsForm(SchedulerDom dom_, ISchedulerUpdate update_, int assistentType_) {
 		dom = dom_;
 		update = update_;
@@ -120,7 +124,7 @@ public class JobAssistentImportJobsForm {
 		paramListener = new ParameterListener(dom, joblistener.getJob(), update, assistentType);
 	}
 	
-	public JobAssistentImportJobsForm(JobListener listener_, Table tParameter_, int assistentType_) {
+	public JobAssistentImportJobsForm(JobListener listener_, Table tParameter_, int assistentType_) {		
 		jobBackUp = (Element)listener_.getJob().clone();
 		joblistener = listener_;
 		dom = joblistener.get_dom();
@@ -395,73 +399,84 @@ public class JobAssistentImportJobsForm {
 				butImport = new Button(composite, SWT.NONE);				
 				butImport.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
-						
-						if(!check()) return;						
-						
-						HashMap h = getJobFromDescription();
-						
-						if(jobname != null)
-							jobname.setText(txtJobname.getText());
-						
-						JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
-						ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
-						h.put("params", listOfParams);
-						
-						if(assistentType == Editor.JOB_WIZZARD) {
-							
-		 					//Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn assistentype = Editor.Job_Wizzard							
-							//joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
-		 					Element job = joblistener.getJob();		 					
-		 					job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
-		 					if(jobForm != null)//diese Zeiöle löschen
-		 						jobForm.initForm();
-		 					
-		 					if(jobDocForm != null)
-		 						jobDocForm.initForm();
-							//if(tParameter == null)
-							//	tParameter = jobForm.getTParameter(); 
-							//tParameter.removeAll();							
-							//joblistener.fillParams(listOfParams, tParameter, true);
-							
-							//paramListener.fillParams(listOfParams, tParameter, true);
-							//jobForm.initForm();
-							
-						} else if(assistentType == Editor.PARAMETER) {
-							//Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn assistentype = Editor.Job_Wizzard							
-							//joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
-		 					Element job = joblistener.getJob();
-		 					if(job.getName().equals("job")) {
-		 						job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
-		 						paramListener.fillParams(tParameter);
-		 					} else
-		 						paramListener.fillParams(listOfParams, tParameter, true);
-		 					
-		 					
-							
-													
-						} else {						
-							if(listener.existJobname(txtJobname.getText())) {
-								MainWindow.message(shell,  Messages.getString("assistent.error.job_name_exist"), SWT.OK );
-								txtJobname.setFocus();
-								return;
+						try {
+							if(!check()) return;						
+
+							HashMap h = getJobFromDescription();
+
+							if(jobname != null)
+								jobname.setText(txtJobname.getText());
+
+							JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
+							ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
+							h.put("params", listOfParams);
+
+							if(assistentType == Editor.JOB_WIZZARD) {
+
+								//Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn assistentype = Editor.Job_Wizzard							
+								//joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+								Element job = joblistener.getJob();		 					
+								job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+								if(jobForm != null)//diese Zeiöle löschen
+									jobForm.initForm();
+
+								if(jobDocForm != null)
+									jobDocForm.initForm();
+								//if(tParameter == null)
+								//	tParameter = jobForm.getTParameter(); 
+								//tParameter.removeAll();							
+								//joblistener.fillParams(listOfParams, tParameter, true);
+
+								//paramListener.fillParams(listOfParams, tParameter, true);
+								//jobForm.initForm();
+
+							} else if(assistentType == Editor.PARAMETER) {
+								//Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn assistentype = Editor.Job_Wizzard							
+								//joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+								Element job = joblistener.getJob();
+								if(job.getName().equals("job")) {
+									job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+									paramListener.fillParams(tParameter);
+								} else
+									paramListener.fillParams(listOfParams, tParameter, false);
+
+
+
+
+							} else {						
+								if(listener.existJobname(txtJobname.getText())) {
+									MainWindow.message(shell,  Messages.getString("assistent.error.job_name_exist"), SWT.OK );
+									txtJobname.setFocus();
+									return;
+								}
+								Element job = null;
+								if(flagBackUpJob) {
+									job = listener.createJobElement(h);
+								} else {
+									job = joblistener.getJob();
+									job = job.setContent(jobBackUp.cloneContent());
+								}
+								listener.newImportJob(job, assistentType);
+								//MainWindow.message(shell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
+
+								if(Options.getPropertyBoolean("editor.job.show.wizard"))						
+									Utils.showClipboard(Utils.getElementAsString(job), shell);
+
+							} 
+							closeDialog = true;
+
+							//Event auslösen
+							if(refreshDetailsText != null)
+								refreshDetailsText.setText("X");
+							shell.dispose();
+						} catch (Exception ex) {
+							try {
+								new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , ex);
+							} catch(Exception ee) {
+								//tu nichts
 							}
-							Element job = null;
-							if(flagBackUpJob) {
-								job = listener.createJobElement(h);
-							} else {
-								job = joblistener.getJob();
-								job = job.setContent(jobBackUp.cloneContent());
-							}
-							listener.newImportJob(job, assistentType);
-							//MainWindow.message(shell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
-							
-							if(Options.getPropertyBoolean("editor.job.show.wizard"))						
-								Utils.showClipboard(Utils.getElementAsString(job), shell);
-							
-						} 
-						closeDialog = true;
-						
-						shell.dispose();
+							System.err.print(ex.getMessage());
+						}
 					}
 				});
 			}
@@ -1023,5 +1038,10 @@ public class JobAssistentImportJobsForm {
 		return true;				
 	}
 	
+	//Details hat einen anderen Aufbau der Parameter Description. 
+	//Beim generieren der Parameter mit Wizzard müssen die Parameterdescriptchen anders aufgebaut werden.
+	public void setDetailsRefresh(Text refreshDetailsText_) {
+		refreshDetailsText = refreshDetailsText_;
+	}
 	
 }

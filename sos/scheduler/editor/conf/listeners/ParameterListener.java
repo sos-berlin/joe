@@ -283,6 +283,8 @@ public class ParameterListener {
 		e.setAttribute("name", name);
 		e.setAttribute("value", value);
 
+		//parameterDescription_de = Utils.normalizedHTMLTags(parameterDescription_de);
+		//parameterDescription_en = Utils.normalizedHTMLTags(parameterDescription_en);
 
 		if((_dom.isLifeElement() || _dom.isDirectory()) && _params == null) {
 			Element params = _parent.getChild("params");
@@ -557,7 +559,7 @@ public class ParameterListener {
 							List notelist = note.getChildren();
 							for (int j = 0; j < notelist.size(); j++) {
 								Element elNote  = (Element)(notelist.get( j ));							
-								parameterDescription.put( "parameter_description_" + language + "_" + elMain.getAttributeValue("name"), elNote.getText());
+								parameterDescription.put( "parameter_description_" + language + "_" + elMain.getAttributeValue("name"), elNote.getValue());
 								if(elMain.getAttributeValue("required") != null)
 									parameterRequired.put( elMain.getAttributeValue("name"), elMain.getAttributeValue("required"));
 							}
@@ -680,7 +682,6 @@ public class ParameterListener {
 		Utils.setChangedForDirectory(_parent, _dom);
 		_dom.setChanged(true);
 	}
-	
 	
 	
 }
