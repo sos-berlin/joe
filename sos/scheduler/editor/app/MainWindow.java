@@ -3,6 +3,8 @@ package sos.scheduler.editor.app;
 import java.io.File;
 import java.util.HashMap;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -86,6 +88,11 @@ public class MainWindow  {
 	 */
 	public void createSShell() {
 		sShell = new Shell();
+		sShell.addControlListener(new ControlAdapter() {
+			public void controlResized(final ControlEvent e) {
+				System.out.println("resize");
+			}
+		});
 		final GridLayout gridLayout_1 = new GridLayout();
 		sShell.setLayout(gridLayout_1);
 		sShell.setText("Job Scheduler Editor");
@@ -165,7 +172,9 @@ public class MainWindow  {
 			}
 		});
 
-		MenuItem pNewDetails = new MenuItem(pmNew, SWT.PUSH);
+		
+		/*//TODO: beim resizen dieses Menüpubktes gibt es einen Classcast Exception
+		 * MenuItem pNewDetails = new MenuItem(pmNew, SWT.PUSH);
 		pNewDetails.setText("Job Chain Details   \tCtrl+F");
 		pNewDetails.setAccelerator(SWT.CTRL | 'F');
 		pNewDetails.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -176,7 +185,7 @@ public class MainWindow  {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-
+*/
 		//new event handler
 		MenuItem pNewActions = new MenuItem(pmNew, SWT.PUSH);
 		pNewActions.setText("Event Handler \tCTRL+X");
@@ -757,7 +766,7 @@ public class MainWindow  {
 			}
 		});
 
-		MenuItem itemDetails = new MenuItem(menu, SWT.PUSH);
+		/*MenuItem itemDetails = new MenuItem(menu, SWT.PUSH);
 		itemDetails.setText("Details");
 		itemDetails.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -767,7 +776,7 @@ public class MainWindow  {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-
+*/
 		MenuItem itemActions = new MenuItem(menu, SWT.PUSH);
 		itemActions.setText("Event Handler");
 		itemActions.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {

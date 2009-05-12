@@ -4,6 +4,8 @@ import java.io.File;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyAdapter;
@@ -220,6 +222,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 
 
 	private void createGroup() {
+		try {
 		final GridLayout gridLayout_3 = new GridLayout();
 		gridLayout_3.verticalSpacing = 10;
 		gridLayout_3.marginWidth = 10;
@@ -231,6 +234,11 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		gridLayout_3.numColumns = 3;
 
 		final Composite composite = new Composite(this, SWT.NONE);
+		composite.addControlListener(new ControlAdapter() {
+			public void controlResized(final ControlEvent e) {
+				System.out.println("test " + e);
+			}
+		});
 		composite.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(final DisposeEvent e) {
 				if(butApply.isEnabled()) {
@@ -919,6 +927,13 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		if(type == Editor.JOB_CHAINS)
 			setEnabled_(false);
 		setVisibility();
+		} catch (Exception e) {
+			try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "cause: " + e.toString(), e);
+    		} catch (Exception ee){
+    			//tu nichts
+    		}
+		}
 	}
 
 	private void setVisibility() {

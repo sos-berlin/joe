@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
@@ -162,9 +163,15 @@ public class JobChainConfigurationListener{
 				DetailForm df = null;
 				try {
 					if(jobChainname == null) {
-						df = new DetailForm(c, SWT.NONE, Editor.DETAILS, _dom, _gui, false, null);					
+						
+						df = new DetailForm(c, SWT.NONE, Editor.DETAILS, _dom, _gui, false, null);
+						df.setLayout(new org.eclipse.swt.layout.FillLayout());
+						
 					} else {                
-						df = new DetailForm(c, SWT.NONE, jobChainname, item.getData() != null && !(item.getData() instanceof sos.scheduler.editor.app.TreeData)? item.getData().toString(): null, null, Editor.DETAILS, _dom, _gui, false, null);										
+						Composite composite = new Composite(c.getShell(), SWT.NONE);						
+						composite.setLayout(new org.eclipse.swt.layout.FillLayout());
+						df = new DetailForm(composite, SWT.NONE, jobChainname, item.getData() != null && !(item.getData() instanceof sos.scheduler.editor.app.TreeData)? item.getData().toString(): null, null, Editor.DETAILS, _dom, _gui, false, null);						
+						df.setLayout(new org.eclipse.swt.layout.FillLayout());
 					}
 					df.setTree(tree);
 					df.setJobChainConfigurationListener(this);
@@ -198,7 +205,7 @@ public class JobChainConfigurationListener{
 			c.layout();
 
 		} catch (Exception e) {
-
+			c.layout();
 			try {
 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			} catch(Exception ee) {

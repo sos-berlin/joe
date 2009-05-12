@@ -57,7 +57,7 @@ public class DetailDialogForm {
 		shell= new Shell(sos.scheduler.editor.app.MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER );
 		shell.setLayout(new GridLayout());
 		
-		shell.setSize(620, 643);	
+		shell.setMinimumSize(620, 643);	
 		shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 		shell.setText("Details for JobChain: " + jobChainname + 
 				     (state != null && state.length()> 0 ? "  State: " + state: "") + 

@@ -184,7 +184,7 @@ public class Editor {
     		
     	} catch (Exception e) {
     		try {
-    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "cause: " + e.toString(), e);
     		} catch (Exception ee){
     			//tu nichts
     		}
