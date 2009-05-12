@@ -88,11 +88,6 @@ public class MainWindow  {
 	 */
 	public void createSShell() {
 		sShell = new Shell();
-		sShell.addControlListener(new ControlAdapter() {
-			public void controlResized(final ControlEvent e) {
-				System.out.println("resize");
-			}
-		});
 		final GridLayout gridLayout_1 = new GridLayout();
 		sShell.setLayout(gridLayout_1);
 		sShell.setText("Job Scheduler Editor");

@@ -234,11 +234,6 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		gridLayout_3.numColumns = 3;
 
 		final Composite composite = new Composite(this, SWT.NONE);
-		composite.addControlListener(new ControlAdapter() {
-			public void controlResized(final ControlEvent e) {
-				System.out.println("test " + e);
-			}
-		});
 		composite.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(final DisposeEvent e) {
 				if(butApply.isEnabled()) {
