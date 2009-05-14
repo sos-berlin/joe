@@ -561,8 +561,8 @@ public class Options {
     		}
     		
     		if(!p.containsKey("monitor_favorite_java_create_event_monitor")){
-    			p.put("monitor_favorite_java_create_event_monitor", "sos.scheduler.jobs.JobSchedulerSubmitEventMonitor");
-    			setProperty("monitor_favorite_java_create_event_monitor", "sos.scheduler.jobs.JobSchedulerSubmitEventMonitor");
+    			p.put("monitor_favorite_java_create_event_monitor", "sos.scheduler.job.JobSchedulerSubmitEventMonitor");
+    			setProperty("monitor_favorite_java_create_event_monitor", "sos.scheduler.job.JobSchedulerSubmitEventMonitor");
     		}
     	}
     	        	
