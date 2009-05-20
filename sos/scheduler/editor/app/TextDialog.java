@@ -56,7 +56,7 @@ public class TextDialog extends Dialog {
 	
 	private String    scriptLanguage               = "";          
 	
-	private Button button = null;
+	private Button    button                       = null;
 	
 	
 	

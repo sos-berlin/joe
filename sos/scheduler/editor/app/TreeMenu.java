@@ -81,6 +81,9 @@ public class TreeMenu {
 				}
 				return null;
 			}
+			if(  ((SchedulerDom)_dom).isDirectory()){
+				return (Element)Utils.getHotFolderParentElement(retVal).clone();
+			}
 			return (Element)retVal.clone();
 		}
 
@@ -315,8 +318,13 @@ public class TreeMenu {
 		String xml = "";
 		if (element != null) {
 			try {
+				if(_dom instanceof SchedulerDom && ((SchedulerDom)_dom).isDirectory()) {
+										
+					xml = _dom.getXML(Utils.getHotFolderParentElement(element));
+				} else{
+					xml = _dom.getXML(element);
+				}
 
-				xml = _dom.getXML(element);    
 
 			} catch (JDOMException ex) {
 				try {
@@ -341,11 +349,14 @@ public class TreeMenu {
 				MenuItem i = (MenuItem)e.widget;
 				Element element = null;
 				String xml = null;
-				if(i.getText().equalsIgnoreCase(TreeMenu.EDIT_XML)) {
+				if(i.getText().equalsIgnoreCase(TreeMenu.EDIT_XML)) { 
 					if(_dom instanceof sos.scheduler.editor.conf.SchedulerDom && 
 							(((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement() ||
 									((sos.scheduler.editor.conf.SchedulerDom)_dom).isDirectory())) {
-						element = getElement();
+						
+							element = getElement();
+						
+						
 					} else {
 						element = _dom.getRoot().getChild("config");
 					}
@@ -364,22 +375,6 @@ public class TreeMenu {
 					if (xml == null) // error
 						return;
 
-/*
-					 if(_dom instanceof SchedulerDom) {
-						
-						if(((SchedulerDom)_dom).isDirectory() || ((SchedulerDom)_dom).isLifeElement()) {
-							int i1 = xml.indexOf("name=\"");
-							if(i1 > -1) {	
-								String name = Utils.getAttributeValue("name", getElement());
-								int i2 = xml.indexOf(name+"\"", i1)  + name.length() + "\"".length();
-								if(i2 > -1) {
-									xml = xml.substring(0, i1) + xml.substring(i2);
-								}
-							}
-						}
-						
-					}
-*/
 
 					String selectStr = Utils.getAttributeValue("name", getElement());
 					selectStr = selectStr == null || selectStr.length() == 0 ? getElement().getName() : selectStr;

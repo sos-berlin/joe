@@ -336,19 +336,28 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 	public void setAtElement(Element at) {
 		listener.setAtElement(at);
 		fillPeriod();
+		
 	}
 
 	public Element getPeriod() {
 		return listener.getPeriod();
 	}
 
-
+	
+	
 	public void setEnabled(boolean enabled) {
 		event = false;
 		boolean singleStart = false;
 
 		if(_type != Editor.RUNTIME) {
-			singleStart = (!(sSingleHours.getText() + sSingleMinutes.getText() + sSingleSeconds.getText()).trim().equals(""));
+			/*String s = (sSingleHours.getText() + sSingleMinutes.getText() + sSingleSeconds.getText()).trim();
+			s = s.replaceAll("0", "").trim();
+			singleStart =  !s.equals("");
+			*/
+			//singleStart = isSingleStart();
+			if(listener.getPeriod() != null)
+				singleStart = isSingleStart();
+			//singleStart = (!(sSingleHours.getText() + sSingleMinutes.getText() + sSingleSeconds.getText()).trim().equals(""));
 		}
 
 		if(!enabled){
@@ -445,7 +454,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 				sSingleSeconds.setText("");
 				listener.setPeriodTime(23, bApply, "single_start", "", "", "");
 			}
-			event = true;
+			//event = true;
 
 			if (!savBeginHours.equals(""))
 				sBeginHours.setText(savBeginHours);
@@ -615,12 +624,12 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 					Utils.setBackground(0, 23, sBeginHours);
 				}
 				if (event)  {        
-
-					listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
-							sBeginSeconds.getText());
-					if(listener.get_dom() != null &&  _type == Editor.RUNTIME) listener.get_dom().setChanged(true);
-					updateFont();
-
+					
+						listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
+								sBeginSeconds.getText());
+						if(listener.get_dom() != null &&  _type == Editor.RUNTIME) listener.get_dom().setChanged(true);
+						updateFont();
+					
 				}
 
 			}
@@ -635,16 +644,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 				e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
-		sBeginMinutes.addMouseListener(new MouseAdapter() {
-			public void mouseDown(final MouseEvent e) {
-
-			}
-		});
-		sBeginMinutes.addKeyListener(new KeyAdapter() {
-			public void keyPressed(final KeyEvent e) {
-
-			}
-		});
+		
 		sBeginMinutes.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if (!beginBeforeAfter()) {
@@ -652,10 +652,12 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 				}
 
 				if (event) {
-					listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
-							sBeginSeconds.getText());
-					updateFont();
-					if(listener.get_dom() != null &&  _type == Editor.RUNTIME) listener.get_dom().setChanged(true);
+					
+						listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
+								sBeginSeconds.getText());
+						updateFont();
+						if(listener.get_dom() != null &&  _type == Editor.RUNTIME) listener.get_dom().setChanged(true);
+					
 				}
 			}
 		});
@@ -680,11 +682,13 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 					Utils.setBackground(0, 59, sBeginSeconds);
 				}
 				if (event)  {   
-					listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
-							sBeginSeconds.getText());
+					
+						listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
+								sBeginSeconds.getText());
 
-					updateFont();
-					if(listener.get_dom() != null &&  _type == Editor.RUNTIME) listener.get_dom().setChanged(true);
+						updateFont();
+						if(listener.get_dom() != null &&  _type == Editor.RUNTIME) listener.get_dom().setChanged(true);
+
 				}
 			}
 		});
@@ -965,6 +969,8 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
 				Utils.setBackground(0, 23, sSingleHours);
 				if (event) {
+					if(isSingleStart())
+						listener.clearNONSingleStartAttributes();
 					listener.setPeriodTime(23, bApply, "single_start", sSingleHours.getText(),
 							sSingleMinutes.getText(), sSingleSeconds.getText());
 					setEnabled(true);
@@ -988,6 +994,8 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				Utils.setBackground(0, 59, sSingleMinutes);
 				if (event) {
+					if(isSingleStart())
+						listener.clearNONSingleStartAttributes();
 					listener.setPeriodTime(23, bApply, "single_start", sSingleHours.getText(),
 							sSingleMinutes.getText(), sSingleSeconds.getText());
 					setEnabled(true);
@@ -1012,6 +1020,8 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				Utils.setBackground(0, 59, sSingleSeconds);
 				if (event) {
+					if(isSingleStart())
+						listener.clearNONSingleStartAttributes();
 					listener.setPeriodTime(23, bApply, "single_start", sSingleHours.getText(),
 							sSingleMinutes.getText(), sSingleSeconds.getText());
 					setEnabled(true);
@@ -1056,4 +1066,30 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		cboWhenHoliday.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 	}
+	
+	public boolean isSingleStart() {
+		//String s = (sSingleHours.getText() + sSingleMinutes.getText() + sSingleSeconds.getText()).trim();
+		if(listener.getPeriod() == null)
+			return false;
+		
+		String s = Utils.getAttributeValue("single_start", listener.getPeriod());
+		s = s.replaceAll("0", "").trim();
+		s = s.replaceAll(":", "").trim();
+		return !s.equals("");
+
+	}
+
+	/**
+	 * @param event the event to set
+	 */
+	public void setEvent(boolean event) {
+		this.event = event;
+	}
+	
+/*	public boolean isBegin() {
+		String s = (sBeginHours.getText() + sBeginMinutes.getText() + sBeginSeconds.getText()).trim();
+		s = s.replaceAll("0", "").trim();
+		return !s.equals("");
+	}
+	*/
 } // @jve:decl-index=0:visual-constraint="10,10"

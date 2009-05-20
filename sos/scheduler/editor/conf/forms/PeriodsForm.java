@@ -258,24 +258,34 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
     }
     
     private void tPeriodSelect(){
-    	
+    	periodForm.setEvent(false);
     	bRemove.setEnabled(tPeriods.getSelectionCount() > 0);
-    	periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
-    	periodForm.setApplyButton(bApply);
+    	//periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
+    	periodForm.setApplyButton(bApply);    	
     	if (tPeriods.getSelectionCount() > 0) { 
-    		
-    		Element currPeriod = listener.getPeriod(tPeriods.getSelectionIndex());
-    		if(currPeriod != null) {
-    			periodForm.setPeriod(currPeriod);
-    			
-    		} else {                		                		                		
-    			String sat = tPeriods.getSelection()[0].getText(4);
-    			Element at = listener.getAtElement(sat);
-    			periodForm.setAtElement(at);
-    		}
-    		
+    		if(tPeriods.getSelection()[0].getData() != null) {
+    			Element currPeriod = (Element)tPeriods.getSelection()[0].getData();
+    			if(currPeriod.getName().equals("at"))
+    				periodForm.setAtElement(currPeriod);
+    			else
+    				periodForm.setPeriod(currPeriod);
+    		} /*else {
+    			Element currPeriod = listener.getPeriod(tPeriods.getSelectionIndex());
+    			if(currPeriod != null) {
+    				periodForm.setPeriod(currPeriod);    			
+    			} else {                		                		                		
+    				String sat = tPeriods.getSelection()[0].getText(4);
+    				Element at = listener.getAtElement(sat);
+    				periodForm.setAtElement(at);
+    			}    	
+    		}*/
     		bApply.setEnabled(false);
+    		periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
+    		periodForm.fillPeriod();
+    		periodForm.setEvent(true);
     	}
+    	
+    	
     }
     
     private void removePeriod() {

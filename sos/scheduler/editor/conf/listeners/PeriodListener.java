@@ -117,6 +117,7 @@ public class PeriodListener {
 
 			} else {
 				//Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period, _dom);
+				
 				Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period);
 				Element parent = Utils.getRunTimeParentElement(_period);
 				String name = parent.getName().equals("order") || parent.getName().equals("add_order") ? 
@@ -312,6 +313,16 @@ public class PeriodListener {
 		return _dom;
 	}
 	
-	
+
+	public void clearNONSingleStartAttributes() {
+		 
+		if(_period != null) {
+			//_period.removeAttribute("absolute_repeat");
+			//_period.removeAttribute("begin");
+			//_period.removeAttribute("end");
+			//_period.removeAttribute("repeat");
+			
+		}
+	}
 }
 
