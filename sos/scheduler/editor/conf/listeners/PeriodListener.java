@@ -317,10 +317,10 @@ public class PeriodListener {
 	public void clearNONSingleStartAttributes() {
 		 
 		if(_period != null) {
-			//_period.removeAttribute("absolute_repeat");
-			//_period.removeAttribute("begin");
-			//_period.removeAttribute("end");
-			//_period.removeAttribute("repeat");
+			_period.removeAttribute("absolute_repeat");
+			_period.removeAttribute("begin");
+			_period.removeAttribute("end");
+			_period.removeAttribute("repeat");
 			
 		}
 	}
