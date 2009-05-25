@@ -264,9 +264,11 @@ public class PeriodsListener {
 
 	public void applyPeriod(Element period) {
 		if(!period.getName().equals("at")) {			
-			if (_period == -1)    			
-				_list.add(period);
-			else {				
+			if (_period == -1) {  
+				if(!_list.contains(period))
+					_list.add(period);
+				
+			} else {				
 				if(!_list.contains(period))
 					_list.set(_period, period);
 
