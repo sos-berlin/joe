@@ -71,9 +71,10 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 		newFolderShell.setText(getText());
 		newFolderShell.pack();
 
-		if (obj instanceof FTPDialogListener)
+		/*if (obj instanceof FTPDialogListener)
 			text = new Text(newFolderShell, SWT.PASSWORD | SWT.BORDER);
-		else 
+		else
+		*/ 
 			text = new Text(newFolderShell, SWT.BORDER);
 		
 		text.addKeyListener(new KeyAdapter() {
@@ -136,17 +137,19 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 	}
 	
 	public void doSomethings() {
+		try {
 		if(obj instanceof FTPDialog) {
 			
 			FTPDialog ftpDialog = (FTPDialog)obj;
-			ftpDialog.getListener().mkDirs(text.getText());
+			
+			ftpDialog.getListener().getCurrProfile().mkDirs(text.getText());
 			ftpDialog.refresh();
 			
-		} else if (obj instanceof FTPDialogListener) {
+		/*} else if (obj instanceof FTPDialogListener) {
 			
 			FTPDialogListener listener = (FTPDialogListener)obj;
 			listener.setPassword(text.getText());
-			
+			*/
 		} else if(obj instanceof WebDavDialog) {
 				
 				WebDavDialog webdavDialog = (WebDavDialog)obj;
@@ -162,6 +165,13 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 			WebDavDialogListener listener = (WebDavDialogListener)obj;
 			listener.setPassword(text.getText());
 			
+		}
+		} catch (Exception e) {
+			try {
+  			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+  		} catch(Exception ee) {
+  			//tu nichts
+  		}
 		}
 		close();
 	}

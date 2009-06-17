@@ -258,7 +258,20 @@ public class IOUtils {
 
 
 			if (!file.exists()) {
-				file.createNewFile();
+				if(file.getParentFile() != null && !file.getParentFile().exists()) {//Verzeichnis existier nicht.
+					int c = MainWindow.message("This Directory does not exist. Should it be created now?", SWT.YES | SWT.NO | SWT.ICON_WARNING );
+					if(c == SWT.YES) {
+						if(!file.getParentFile().mkdirs()) {
+							MainWindow.message("Could not create Directory: " + file.getParent(), SWT.ICON_WARNING | SWT.OK);
+							return false;
+						}
+					} else
+						return false;
+				}
+				if(!file.createNewFile()) {
+					MainWindow.message("Could not save file", SWT.ICON_WARNING | SWT.OK);
+						return false;
+				}
 			}
 
 

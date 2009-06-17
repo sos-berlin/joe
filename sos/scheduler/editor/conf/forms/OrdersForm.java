@@ -17,6 +17,7 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -102,6 +103,10 @@ public class OrdersForm extends Composite implements IUpdateLanguage {
         bRemoveOrder.setLayoutData(gridData1);
         bRemoveOrder.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            	int c = MainWindow.message(getShell(), "Do you want remove the order?", SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+				if(c != SWT.YES)
+					return;
+				
                 bRemoveOrder.setEnabled(listener.deleteCommands(table));
             }
         });

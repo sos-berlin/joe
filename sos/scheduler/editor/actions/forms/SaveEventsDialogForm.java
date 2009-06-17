@@ -156,7 +156,7 @@ public class SaveEventsDialogForm {
 		gridLayout.marginLeft = 5;
 		gridLayout.marginBottom = 5;
 		_shell.setLayout(gridLayout);
-		_shell.setSize(425, 267);
+		_shell.setSize(425, 278);
 
 
 

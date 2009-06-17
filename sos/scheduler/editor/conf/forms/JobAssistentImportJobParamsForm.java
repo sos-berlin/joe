@@ -98,7 +98,7 @@ public class JobAssistentImportJobParamsForm {
 	
 	private Element      jobBackUp              = null;    
 	
-	private JobForm      jobForm                = null;
+	private JobMainForm      jobForm                = null;
 	
 	private JobDocumentationForm jobDocForm = null;
 	
@@ -836,7 +836,7 @@ public class JobAssistentImportJobParamsForm {
 		this.jobname = jobname;
 	}	
 	
-	public void setJobForm(JobForm jobForm_){
+	public void setJobForm(JobMainForm jobForm_){
 		if(jobForm_ != null)
 			jobForm = jobForm_;
 	}
@@ -852,7 +852,7 @@ public class JobAssistentImportJobParamsForm {
 	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
-	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
+	public void setBackUpJob(Element backUpJob, JobMainForm jobForm_) {
 		if(backUpJob != null)
 			jobBackUp = (Element)backUpJob.clone();	
 		if(jobForm_!= null)

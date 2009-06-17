@@ -73,7 +73,9 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
     private static String RUN_EXECUTABLE  = "Run Executable";
     
     private static String SCRIPT  = "Script";
-
+       
+    private Composite composite_1 = null;
+    
     public ExecuteForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate update_) {
         super(parent, style);
         init = true;
@@ -172,10 +174,10 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
             }
         });
 */
-        final TabItem tabItemRunExecutable = new TabItem(tabFolder, SWT.NONE);
+        final TabItem tabItemRunExecutable  = new TabItem(tabFolder, SWT.NONE);
         tabItemRunExecutable.setText(RUN_EXECUTABLE);
 
-        final Composite composite_1 = new Composite(tabFolder, SWT.NONE);
+        composite_1 = new Composite(tabFolder, SWT.NONE);
         composite_1.setLayout(new GridLayout());
         tabItemRunExecutable.setControl(composite_1);
         GridData gridData61 = new org.eclipse.swt.layout.GridData();
@@ -215,8 +217,9 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
         tExecuteFile.setLayoutData(gridData12);
         tExecuteFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-            	if(!init)
+            	if(!init) {            		            			
             		listener.setFile(tExecuteFile.getText());
+            	}
             }
         });
         label3 = new Label(gExecutable, SWT.NONE);
@@ -442,15 +445,33 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
     }
     
     private void  reInit() {
-    	if(!init) {
-    		if(tabFolder.getSelection()[0].getText().equals(SCRIPT)){    			
+    	if(!init) {    		    		
+    		
+    		if(tabFolder.getSelection()[0].getText().equals(SCRIPT)){
+    			
+    			/*if(listener.getJob() != null && listener.getJob().getChild("process") != null) {
+    	    		int c = sos.scheduler.editor.app.MainWindow.message("Do you want really remove Run Executable File an put a new Script?", SWT.YES | SWT.NO | SWT.ICON_WARNING);
+    	    		if(c != SWT.YES) {    	    			
+    	    			return;
+    	    		}
+    	    		
+    	    	}*/
+    			
     			listener.setExecutable(false);    			
     			scriptForm.setLanguage(scriptForm.getSelectionLanguageButton());
     			if(!init)
     				fillForm();
     		} else if(tabFolder.getSelection()[0].getText().equals(RUN_EXECUTABLE)){
+    			if(listener.getJob() != null && listener.getJob().getChild("script") != null) {
+		    		sos.scheduler.editor.app.MainWindow.message("Please select None to define a new Run Executable?", SWT.ICON_WARNING);
+		    		composite_1.setEnabled(false);
+		    		tabFolder.setSelection(0);
+		    		return;
+		    	} else {
+					composite_1.setEnabled(true);
+		    	}
     			int p = tExecuteFile.getText().length() + tLogFile.getText().length() + tParameter.getText().length();
-    			if(p > 0) {
+    			if(p > 0) {    				    			
     				scriptForm.setLanguage(ScriptListener.NONE);
     				listener.setExecutable(true);    			
     				fillForm();

@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
 import sos.util.SOSString;
-
+import sos.ftp.profiles.FTPDialogListener;
  
 public class MainWindow  {
 
@@ -954,7 +954,10 @@ public class MainWindow  {
 				.getImageFromResource("/sos/scheduler/editor/icon_reset.gif"));
 		
 		itemReset.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(final SelectionEvent e) {								
+			public void widgetSelected(final SelectionEvent e) {
+				int c = MainWindow.message("Yo want reload the Configuratation and lost the Changes?", SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
+				if(c != SWT.YES)
+					return;
 				if(container.getCurrentEditor() instanceof SchedulerForm) {					
 					SchedulerForm form =(SchedulerForm)container.getCurrentEditor();
 					SchedulerDom currdom = (SchedulerDom)form.getDom();
@@ -1025,8 +1028,8 @@ public class MainWindow  {
 	}
 
 
-	private void saveFTP(java.util.HashMap changes) {
-
+	private void saveFTP(java.util.HashMap changes)  {
+try {
 		if(container.getCurrentTab().getData("ftp_title") != null && 
 				container.getCurrentTab().getData("ftp_title").toString().length()>0) {
 
@@ -1040,7 +1043,8 @@ public class MainWindow  {
 			if(container.getCurrentTab().getData("ftp_hot_folder_elements") != null)
 				ftpHotFolderElements = (ArrayList)container.getCurrentTab().getData("ftp_hot_folder_elements");
 
-			java.util.Properties profile = (java.util.Properties)container.getCurrentTab().getData("ftp_profile");
+			//java.util.Properties profile = (java.util.Properties)container.getCurrentTab().getData("ftp_profile");
+			sos.ftp.profiles.FTPProfile profile = (sos.ftp.profiles.FTPProfile)container.getCurrentTab().getData("ftp_profile");
 
 			Text txtLog = new Text(getSShell(), SWT.NONE);
 			final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
@@ -1048,16 +1052,22 @@ public class MainWindow  {
 			gridData.heightHint = 0;
 			txtLog.setLayoutData(gridData);
 			txtLog.setSize(0, 0);
-			FTPDialogListener ftpListener = new FTPDialogListener(profile, profilename);
-			ftpListener.setLogText(txtLog);
-			ftpListener.connect(profilename);
-			if(ftpListener.isLoggedIn()) {
+			
+			//FTPDialogListener ftpListener = new FTPDialogListener(profile, profilename);
+			//ftpListener.setLogText(txtLog);
+			profile.setLogText(txtLog);
+			//ftpListener.connect(profilename);
+			profile.connect();
+			
+			//if(ftpListener.isLoggedIn()) {
+			if(profile.isLoggedIn()) {
 				
 				if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isLifeElement()) {
 					String filename = container.getCurrentEditor().getFilename();
 					if(!new File(remoteDir).getName().equalsIgnoreCase(new File(filename).getName())){
 						//Attribute "name" wurde geändert: Das bedeutet auch Änderungen der life Datei namen.
-						ftpListener.removeFile(remoteDir);
+						//ftpListener.removeFile(remoteDir);
+						profile.removeFile(remoteDir);
 						try {
 							String newName = sosString.parseToString(new File(remoteDir).getParent()) + "/" + new File(filename).getName();
 							newName = newName.replaceAll("\\\\", "/");
@@ -1068,29 +1078,43 @@ public class MainWindow  {
 						} //tu nichts 
 					}
 					remoteDir = new File(remoteDir).getParent() + "/" + new File(filename).getName();
-					ftpListener.saveAs( filename, remoteDir);
+					//ftpListener.saveAs( filename, remoteDir);
+					profile.saveAs( filename, remoteDir);
 					
 				} else if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {
 
-					ftpListener.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);
+					//ftpListener.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);
+					profile.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);
 
 				} else {
 
-					ftpListener.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
+					//ftpListener.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
+					profile.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
 
 				}
-				ftpListener.disconnect();
+				//ftpListener.disconnect();
+				profile.disconnect();
 				
 			} else {
 				MainWindow.message("could not save file on ftp Server", SWT.ICON_WARNING);
 			}
 
-			if(ftpListener.hasError()) {
+			//if(ftpListener.hasError()) {
+			if(profile.hasError()) {
 				String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), getSShell(), false, "");
 				if(text != null)
 					txtLog.setText(text);
 			} 
 		}
+} catch (Exception e) {
+	MainWindow.message("could not save per ftp, cause: " + e.toString(), SWT.ICON_WARNING);
+	
+	try {
+		new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+	} catch(Exception ee) {
+		//tu nichts
+	}
+}
 	}
 
 	

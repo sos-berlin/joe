@@ -42,7 +42,7 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 	
 	private Group            scriptsGroup                      = null;
 	
-	private Table            table                             = null;	
+	private static Table     table                             = null;	
 	
 	private Button           butRemove                         = null;
 	
@@ -217,4 +217,7 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 		//txtName.setFocus();
 	}
 	
+	public static Table getTable() {				
+		return table;
+	}
 } // @jve:decl-index=0:visual-constraint="10,10"

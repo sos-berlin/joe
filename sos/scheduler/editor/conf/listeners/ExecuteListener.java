@@ -6,6 +6,7 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
+import org.eclipse.swt.SWT;
 
 public class ExecuteListener {
 	
@@ -87,6 +88,13 @@ public class ExecuteListener {
 
 
     public void setFile(String file) {
+    	if(_job.getChild("script") != null) {
+    		int c = sos.scheduler.editor.app.MainWindow.message("Do you want really remove script and put new Run Executable File?", SWT.YES | SWT.NO | SWT.ICON_WARNING);
+    		if(c != SWT.YES)
+    			return;
+    		
+    	}
+    		
         initProcess();
         Utils.setAttribute("file", file, _process, _dom);
         Utils.setChangedForDirectory(_job, _dom);

@@ -2,8 +2,6 @@ package sos.scheduler.editor.conf.forms;
 
 import java.io.File;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
@@ -35,8 +33,8 @@ import sos.scheduler.editor.conf.listeners.JobListener;
 public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 			
 	/* Hilfsvariable: setzt die Breite fest*/
-	private Button      only4Weight       = null;
 		
+	private Button only4width;
 	private JobListener listener          = null;
 	
 	private Group       group             = null;
@@ -51,7 +49,6 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 			
 	private Text        tComment          = null;
 	
-	private Label       label8            = null;
 	
 	private boolean     updateTree        = false;
 	
@@ -128,36 +125,11 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		gMain = new Group(group, SWT.NONE);
+		gMain.setText("Comment");
 		final GridData gridData_12 = new GridData(GridData.FILL, GridData.FILL, true, true);
 		gMain.setLayoutData(gridData_12);
-		gMain.setText("Main Options");
 		gMain.setLayout(gridLayout);
-		
-		final Composite composite_2 = new Composite(gMain, SWT.NONE);
-		final GridData gridData_20 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
-		gridData_20.minimumHeight = 20;
-		composite_2.setLayoutData(gridData_20);
-		final GridLayout gridLayout_3 = new GridLayout();
-		gridLayout_3.horizontalSpacing = 0;
-		gridLayout_3.marginHeight = 0;
-		gridLayout_3.marginWidth = 0;
-		gridLayout_3.verticalSpacing = 0;
-		gridLayout_3.numColumns = 2;
-		composite_2.setLayout(gridLayout_3);
-		label8 = new Label(composite_2, SWT.NONE);
-		label8.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
-		label8.setText("Comment:");
-
-		final Button button = new Button(composite_2, SWT.NONE);
-		button.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
-				if(text != null)
-					tComment.setText(text);
-			}
-		});
-		button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
-		GridData gridData61 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
+		GridData gridData61 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
 		tComment = new Text(gMain, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
 		tComment.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
@@ -183,39 +155,30 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 			}
 		});
 
-		only4Weight = new Button(gMain, SWT.CHECK);
-		only4Weight.setVisible(false);
-		only4Weight.setLayoutData(new GridData());
-		only4Weight.setText("from Hot Folder");
-		new Label(gMain, SWT.NONE);
+		final Button button = new Button(gMain, SWT.NONE);
+		final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
+		gridData.widthHint = 28;
+		button.setLayoutData(gridData);
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
+				if(text != null)
+					tComment.setText(text);
+			}
+		});
+		button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
+
+		only4width = new Button(gMain, SWT.CHECK);
+		only4width.setVisible(false);
+		only4width.setLayoutData(new GridData());
+		only4width.setText("from Hot Folder");
 		GridLayout gridLayout3 = new GridLayout();
-		gridLayout3.numColumns = 3;
+		gridLayout3.numColumns = 2;
 		gDescription = new Group(group, SWT.NONE);
 		final GridData gridData_11 = new GridData(GridData.FILL, GridData.FILL, true, true);
 		gDescription.setLayoutData(gridData_11);
 		gDescription.setText("Job Description");
 		gDescription.setLayout(gridLayout3);
-
-		butIsLiveFile = new Button(gDescription, SWT.CHECK);
-		butIsLiveFile.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if(init) return;
-				listener.setInclude(tFileName.getText(), butIsLiveFile.getSelection());
-				
-				if(tFileName.getText()!= null && tFileName.getText().length() > 0) {
-					butShow.setEnabled(true);
-					if(tFileName.getText().endsWith(".xml"))
-						butOpen.setEnabled(true);
-					else
-						butOpen.setEnabled(false);
-				} else {
-					butShow.setEnabled(false);
-					butOpen.setEnabled(false);
-				}
-			}
-		});
-        butIsLiveFile.setLayoutData(new GridData());
-        butIsLiveFile.setText("from Hot Folder");
         
 		GridData gridData12 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData12.horizontalIndent = -1;
@@ -237,6 +200,45 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 					butShow.setEnabled(false);
 					butOpen.setEnabled(false);
 				}
+			}
+		});
+
+		butIsLiveFile = new Button(gDescription, SWT.CHECK);
+		butIsLiveFile.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				if(init) return;
+				listener.setInclude(tFileName.getText(), butIsLiveFile.getSelection());
+				
+				if(tFileName.getText()!= null && tFileName.getText().length() > 0) {
+					butShow.setEnabled(true);
+					if(tFileName.getText().endsWith(".xml"))
+						butOpen.setEnabled(true);
+					else
+						butOpen.setEnabled(false);
+				} else {
+					butShow.setEnabled(false);
+					butOpen.setEnabled(false);
+				}
+			}
+		});
+		butIsLiveFile.setLayoutData(new GridData());
+		butIsLiveFile.setText("from Hot Folder");
+		GridData gridData14 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
+		gridData14.horizontalIndent = -1;
+		tDescription = new Text(gDescription, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
+		tDescription.addKeyListener(new KeyAdapter() {
+			public void keyPressed(final KeyEvent e) {
+				if(e.keyCode==97 && e.stateMask == SWT.CTRL){
+					tDescription.setSelection(0, tDescription.getText().length());
+				}
+			}
+		});
+		tDescription.setFont(ResourceManager.getFont("", 10, SWT.NONE));
+		tDescription.setLayoutData(gridData14);
+		tDescription.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				if(init) return;
+				listener.setDescription(tDescription.getText());
 			}
 		});
 		
@@ -272,25 +274,6 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		butShow.setText("Show");
-		new Label(gDescription, SWT.NONE);
-		GridData gridData14 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
-		gridData14.horizontalIndent = -1;
-		tDescription = new Text(gDescription, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
-		tDescription.addKeyListener(new KeyAdapter() {
-			public void keyPressed(final KeyEvent e) {
-				if(e.keyCode==97 && e.stateMask == SWT.CTRL){
-					tDescription.setSelection(0, tDescription.getText().length());
-				}
-			}
-		});
-		tDescription.setFont(ResourceManager.getFont("", 10, SWT.NONE));
-		tDescription.setLayoutData(gridData14);
-		tDescription.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				if(init) return;
-				listener.setDescription(tDescription.getText());
-			}
-		});
 		
 		butOpen = new Button(gDescription, SWT.NONE);
 		butOpen.setEnabled(false);
@@ -314,7 +297,6 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 		});
 		butOpen.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		butOpen.setText("Open");
-		new Label(gDescription, SWT.NONE);
 		
 		butWizzard = new Button(gDescription, SWT.NONE);
 		butWizzard.addSelectionListener(new SelectionAdapter() {
@@ -325,8 +307,6 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 		});
 		butWizzard.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butWizzard.setText("Wizzard");
-		new Label(gDescription, SWT.NONE);
-		new Label(gDescription, SWT.NONE);		
 		
 	}
 

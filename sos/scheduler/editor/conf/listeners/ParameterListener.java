@@ -423,6 +423,10 @@ public class ParameterListener {
 
 	public void saveParameter(Table table, String name, String value) {
 		boolean found = false;
+		Element params = _parent.getChild("params");
+		if (params != null) {			
+			_params = params.getChildren();			
+		}
 		if (_params != null) {
 
 			//if (name.equals("<from>") && type == Editor.COMMANDS) {
@@ -440,6 +444,7 @@ public class ParameterListener {
 							if (name.equals(e.getAttributeValue("name"))) {
 								found = true;
 								e.setAttribute("value", value);
+								
 								_dom.setChanged(true);
 								//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 								Utils.setChangedForDirectory(_parent, _dom);

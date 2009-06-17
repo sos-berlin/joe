@@ -52,6 +52,10 @@ public class SchedulerListener {
 	
 	public static  String            PROCESS_CLASSES= "Process Classes";
 	
+	public static  String            MONITOR        = "Monitor";
+	
+	
+	
 	
 	/** Aufruf erfolgt durch open Directory oder open Configurations*/
 	private int type = -1;
@@ -634,7 +638,7 @@ public class SchedulerListener {
 		}
 
 		item = new TreeItem(parent, SWT.NONE);
-		item.setText("Locks");
+		item.setText("Locks ");
 		item.setData(new TreeData(Editor.LOCKUSE, job, Options.getHelpURL("job.locks")));
 		//item.setData("key", "job.locks");
 		item.setData("key", "lock.use");

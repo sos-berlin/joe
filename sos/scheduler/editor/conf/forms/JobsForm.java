@@ -134,6 +134,11 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			bRemoveJob.setEnabled(false);
 			bRemoveJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+					
+					int c = MainWindow.message(getShell(), "Do you want remove the job?", SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+					if(c != SWT.YES)
+						return;
+					
 					if(Utils.checkElement(table.getSelection()[0].getText(1), dom, sos.scheduler.editor.app.Editor.JOBS, null))//wird der Job woandes verwendet?
 						bRemoveJob.setEnabled(listener.deleteJob(table));
 				}

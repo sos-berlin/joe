@@ -87,7 +87,7 @@ public class JobAssistentImportJobsForm {
 	
 	private Element               jobBackUp     = null;
 	
-	private JobForm               jobForm       = null;
+	private JobMainForm               jobForm       = null;
 	
 	private sos.scheduler.editor.conf.listeners.ParameterListener paramListener = null;
 	
@@ -992,7 +992,7 @@ public class JobAssistentImportJobsForm {
 	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
-	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
+	public void setBackUpJob(Element backUpJob, JobMainForm jobForm_) {
 		if( backUpJob!= null)
 			jobBackUp = (Element)backUpJob.clone();	
 		if(jobForm_ != null)
@@ -1001,7 +1001,7 @@ public class JobAssistentImportJobsForm {
 			selectTree();
 	}
 	
-	public void setJobForm(JobForm jobForm_){
+	public void setJobForm(JobMainForm jobForm_){
 		jobForm = jobForm_;
 	}
 	

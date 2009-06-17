@@ -69,7 +69,7 @@ public class JobAssistentScriptForms {
 	
 	private Element           jobBackUp      = null;  
 	
-	private JobForm           jobForm        = null;
+	private JobMainForm           jobForm        = null;
 	
 	/** Hilsvariable für das Schliessen des Dialogs. 
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
@@ -408,7 +408,7 @@ public class JobAssistentScriptForms {
 	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
-	public void setBackUpJob(Element backUpJob, JobForm jobForm_) {
+	public void setBackUpJob(Element backUpJob, JobMainForm jobForm_) {
 		if(backUpJob != null)
 			jobBackUp = (Element)backUpJob.clone();	
 		jobForm = jobForm_;

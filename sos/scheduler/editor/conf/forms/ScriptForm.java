@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import java.util.HashMap;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -8,6 +10,10 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -210,7 +216,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         	txtName.addModifyListener(new ModifyListener() {
         		public void modifyText(final ModifyEvent e) {
         			if(!init)
-        			listener.setName(txtName.getText());
+        				listener.setName(txtName.getText());
         		}
         	});
 
@@ -237,10 +243,20 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         label1.setText("Classname:");
         new Label(gScript, SWT.NONE);
         tClass = new Text(gScript, SWT.BORDER);
+        tClass.addVerifyListener(new VerifyListener() {
+        	public void verifyText(final VerifyEvent e) {
+        		if(e.text.length() > 0 && bJava.getSelection() && tSource.getText().length() > 0) {
+            		MainWindow.message("Please remove first Source Code.", SWT.ICON_WARNING);
+            		e.doit = false;            		            	
+            		return;
+            	}
+        	}
+        });
         tClass.setLayoutData(gridData);
         tClass.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
             	if(!init) {
+            		
             		if (bJava.getSelection())
             			listener.setJavaClass(tClass.getText());
             		else if (bCom.getSelection())
@@ -425,6 +441,15 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
         
         tSource = new Text(gSource, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL);
+        tSource.addVerifyListener(new VerifyListener() {
+        	public void verifyText(final VerifyEvent e) {
+        		if(e.text.length() > 0 && bJava.getSelection() && tClass.getText().length() > 0) {
+            		MainWindow.message("Please remove first Classname.", SWT.ICON_WARNING);
+            		e.doit = false;            		            	
+            		return;
+            	}
+        	}
+        });
         tSource.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
         		if(e.keyCode==97 && e.stateMask == SWT.CTRL){
@@ -469,7 +494,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         bJava.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
         bJava.setText("Java");
         bJava.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {            	
                 if (bJava.getSelection()) {
                     listener.setLanguage(ScriptListener.JAVA);
                     fillForm();
@@ -481,7 +506,17 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         bCom.setText("Com");
         bCom.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            	if(bCom.getSelection() && tSource.getText().length() > 0) {
+            		MainWindow.message("Please remove first Source Code.", SWT.ICON_WARNING);
+            		bCom.setSelection(false);
+            		fillForm();            		
+            		return;
+            	}
                 if (bCom.getSelection()) {
+                	if(tSource.getText().length() > 0) {
+                		MainWindow.message("Please remove first Source Code.", SWT.ICON_WARNING);
+                		return;
+                	}
                     listener.setLanguage(ScriptListener.COM);
                     fillForm();
                 }
@@ -524,23 +559,31 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         bShell = new Button(cLanguage, SWT.RADIO);
         bShell.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
         bShell.addSelectionListener(new SelectionAdapter() {
-        	public void widgetDefaultSelected(final SelectionEvent e) {
-        		
-        	}
+        	
         	public void widgetSelected(final SelectionEvent e) {
         		if (bShell.getSelection()) {
-              listener.setLanguage(ScriptListener.SHELL);
-              fillForm();
-          }
+        			listener.setLanguage(ScriptListener.SHELL);
+        			fillForm();
+        		}
         	}
         });
         bShell.setText("Shell");
         bNone = new Button(cLanguage, SWT.RADIO);
+       
+       
+        
         bNone.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
         bNone.setText("None");
         bNone.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (bNone.getSelection()) {
+            	if(bNone.getSelection() && tSource.getText().length() > 0) {
+            		MainWindow.message("Please remove first Source Code.", SWT.ICON_WARNING);
+            		bNone.setSelection(false);
+            		fillForm();            		
+            		return;
+            	}
+        		
+                if (bNone.getSelection()) {                	
                     listener.setLanguage(ScriptListener.NONE);
                     fillForm();
                 }
@@ -628,6 +671,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     private void fillForm() {
     	init = true;
         int language = listener.getLanguage();
+        cboPrefunction.removeAll();
         if(type == Editor.MONITOR) {
         	txtName.setText(listener.getName());
         	spinner.setSelection((listener.getOrdering().length() == 0 ? 0 : Integer.parseInt(listener.getOrdering())));
@@ -652,6 +696,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         switch (language) {
             case ScriptListener.NONE:
                 bNone.setSelection(true);
+                tSource.setEnabled(false);
                 break;
             case ScriptListener.COM:
                 bCom.setSelection(true);
@@ -671,14 +716,14 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
                 break;
             case ScriptListener.JAVA:
             	bJava.setSelection(true);
-            	 tSource.setEnabled(false);
-            	 tSource.setText("");
+            	 //tSource.setEnabled(false);
+            	 //tSource.setText("");
                 tClass.setEnabled(true);
                 tClass.setFocus();
                 if (!tClass.getText().equals("") && listener.getJavaClass().equals(""))
                     listener.setJavaClass(tClass.getText());
                 tClass.setText(listener.getJavaClass());
-                listener.setSource("");
+                //listener.setSource("");
                 break;
             case ScriptListener.JAVA_SCRIPT:
                 bJavaScript.setSelection(true);                
@@ -698,9 +743,12 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
                 break;
         }
 
-        if (language != ScriptListener.NONE && language != ScriptListener.COM) {
-            tSource.setText(listener.getSource());
-        }                
+        /*if (language != ScriptListener.NONE && language != ScriptListener.COM) {
+        	if(listener.getSource().length() > 0)
+        		tSource.setText(listener.getSource());
+        	else if(tSource.getText().length() > 0)
+        		listener.setSource(tSource.getText());
+        }   */             
         
         if (language != ScriptListener.NONE) {
             listener.fillTable(tableIncludes);
@@ -758,6 +806,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
     public void setLanguage(int language) {
+    	bNone.setSelection(false);
         listener.setLanguage(language);
         fillForm();
     }

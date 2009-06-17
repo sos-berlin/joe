@@ -269,6 +269,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 	private void addParam() {
 		if(!tParaName.getText().equals(""))
 			listener.saveParameter( tParameter, tParaName.getText().trim(), tParaValue.getText());
+		
 		tParaName.setText("");
 		tParaValue.setText("");
 		bRemove.setEnabled(false);
@@ -324,7 +325,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			//JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
 			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, Editor.PARAMETER);
 			paramsForm.showAllImportJobParams(includeFile);
-
+		
 		} else { 
 			//Liste aller Jobdokumentation 
 			JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, Editor.PARAMETER);
@@ -1404,7 +1405,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 		final Composite composite_1 = new Composite(group, SWT.NONE);
 		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, false, true);
-		gridData.widthHint = 74;
+		gridData.widthHint = 87;
 		composite_1.setLayoutData(gridData);
 		composite_1.setLayout(new GridLayout());
 

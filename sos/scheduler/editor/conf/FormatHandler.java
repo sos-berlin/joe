@@ -34,7 +34,7 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 	private    ArrayList       _noIndentInCDATAElements = null; 
 
 	/** NO_CDATA_ELEMENTS dürfen nicht in CDATA geschrieben werden. Es geht hier um "Yes_no" XML Typen, die nur als Text yes oder no (ohne leerzeichen) haben dürfen */
-	private   static final String[]   NO_CDATA_ELEMENTS   = { "mail_on_error", "mail_on_warning", "mail_on_success", "mail_on_process", "mail_on_delay_after_error", "history", "history_on_process", "history_with_log", "log_level"};
+	private   static final String[]   NO_CDATA_ELEMENTS   = {"log_mail_cc", "log_mail_bcc", "log_mail_to",  "mail_on_error", "mail_on_warning", "mail_on_success", "mail_on_process", "mail_on_delay_after_error", "history", "history_on_process", "history_with_log", "log_level"};
 
 	public FormatHandler(SchedulerDom dom) {
 		_dom = dom;
