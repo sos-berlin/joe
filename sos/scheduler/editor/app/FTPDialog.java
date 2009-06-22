@@ -153,7 +153,7 @@ public class FTPDialog {
 
 				ftpProfilePicker = new FTPProfilePicker(schedulerGroup, 
 						SWT.NONE, 
-						new File(Options.getSchedulerHome(), "config/factory.ini").getCanonicalPath());
+						new File(Options.getSchedulerHome(), "config/factory.ini") );
 
 
 				//ftpProfilePicker.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
@@ -585,6 +585,7 @@ public class FTPDialog {
 			txtLog = new Text(schedulerConfigurationShell, SWT.NONE);
 			txtLog.setEditable(false);
 			txtLog.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
+			ftpProfilePicker.setLogText(txtLog);
 
 
 			final Button butLog = new Button(schedulerConfigurationShell, SWT.NONE);
@@ -648,7 +649,7 @@ public class FTPDialog {
 			}
 			listener.setConnectionsname(cboConnectname);
 			 */
-			listener.setLogText(txtLog);
+			//listener.setLogText(txtLog);
 
 			listener.setRemoteDirectory(txtDir);
 			//txtDir.setText(listener.getCurrProfile() != null ? listener.getCurrProfile().getProperty("root") : "");
@@ -909,7 +910,7 @@ public class FTPDialog {
 				if(h.get(key).equals("file")) {
 					if(isLifeElement(sosString.parseToString(key))) {
 						//String file = listener.getFile(sosString.parseToString(key), tmpDirname + "/" + tempSubHotFolder);
-						String file = profile.getFile(sosString.parseToString(key), tempSubHotFolder);
+						String file = profile.openFile(sosString.parseToString(key), tempSubHotFolder);
 						nameOfLifeElement.add(file.replaceAll("\\\\", "/"));
 					}
 				} 								
@@ -975,7 +976,7 @@ public class FTPDialog {
 		String file = "";
 		try {
 			FTPProfile profile = listener.getCurrProfile();
-			file = profile.getFile(txtDir.getText() + "/" + txtFilename.getText(), null);
+			file = profile.openFile(txtDir.getText() + "/" + txtFilename.getText(), null);
 
 			if(!listener.hasError()) {
 				if (MainWindow.getContainer().openQuick(file) != null) {
