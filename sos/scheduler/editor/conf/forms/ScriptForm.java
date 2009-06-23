@@ -429,7 +429,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         		String text = "";    		
         		if(type!=Editor.SCRIPT) {        			        		
         			String lan = "function_" + ((type == Editor.MONITOR)? "monitor" : "job") + "_" + listener.getLanguage(listener.getLanguage()) + "_";
-        			text = sos.scheduler.editor.app.Utils.showClipboard(tSource.getText(), getShell(), true, "", true, lan);
+        			text = sos.scheduler.editor.app.Utils.showClipboard(tSource.getText(), getShell(), true, "", true, lan, false);
         		} else {
         			text = sos.scheduler.editor.app.Utils.showClipboard(tSource.getText(), getShell(), true, "");
         		}

@@ -304,7 +304,7 @@ public class JobAssistentScriptForms {
 				butShow = new Button(composite, SWT.NONE);
 				butShow.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {											
-						Utils.showClipboard(Utils.getElementAsString(scriptlistener.getParent()), scriptShell);
+						Utils.showClipboard(Utils.getElementAsString(scriptlistener.getParent()), scriptShell, false, null, false, null, false); 
 					}
 				});
 				butShow.setText("Show");
@@ -432,7 +432,7 @@ public class JobAssistentScriptForms {
 		
 		//MainWindow.message(scriptShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(scriptlistener.getParent()), SWT.OK );
 		if(Options.getPropertyBoolean("editor.job.show.wizard"))
-			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(scriptlistener.getParent()), scriptShell);
+			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(scriptlistener.getParent()), scriptShell, false, null, false, null, true); 
 		
 		closeDialog = true;
 		scriptShell.dispose();	

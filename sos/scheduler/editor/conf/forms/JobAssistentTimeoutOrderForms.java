@@ -254,7 +254,7 @@ public class JobAssistentTimeoutOrderForms {
 				butShow = new Button(composite, SWT.NONE);
 				butShow.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {												
-						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), shellTimeout);
+						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), shellTimeout, false, null, false, null, false); 
 						txtTimeout.setFocus();
 					}
 				});
@@ -376,7 +376,7 @@ public class JobAssistentTimeoutOrderForms {
 		
 		//MainWindow.message(shellTimeout,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK );
 		if(Options.getPropertyBoolean("editor.job.show.wizard"))
-			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), shellTimeout);
+			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), shellTimeout, false, null, false, null, true); 
 		
 		closeDialog = true;
 		shellTimeout.dispose();	

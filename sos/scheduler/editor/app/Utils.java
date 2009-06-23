@@ -576,16 +576,12 @@ public class Utils {
 		return retVal;
 	}
 
-	public static String showClipboard(String xml, Shell shell) {
-		return showClipboard(xml, shell, false, null);    	
-	}
-	
-	/*public static String showClipboard(String xml, Shell shell, boolean dontShowWizzardInfo ) {
-		return showClipboard(xml, shell, false, null, false, null, dontShowWizzardInfo);
+	/*public static String showClipboard(String xml, Shell shell) {
+		return showClipboard(xml, shell, false, null, false, null, true);    	
 	}*/
 	
 	public static String showClipboard(String xml, Shell shell, boolean bApply, String selectStr) {
-		return showClipboard(xml, shell, bApply, selectStr, false, null);
+		return showClipboard(xml, shell, bApply, selectStr, false, null, false);
 	}
 		
 	
@@ -605,7 +601,8 @@ public class Utils {
 			boolean bApply, 
 			String selectStr, 
 			boolean showFunction, 
-			String scriptLanguage) {
+			String scriptLanguage,
+			boolean showWizzardInfo) {
 	
 		Font font = new Font(Display.getDefault(), "Courier New", 8, SWT.NORMAL);
 		TextDialog dialog = new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL
@@ -623,6 +620,7 @@ public class Utils {
 		dialog.setBSaveWindow(true);
 		dialog.setShowFunctions(showFunction);
 		dialog.setScriptLanguage(scriptLanguage);
+		dialog.setShowWizzardInfo(showWizzardInfo);
 		
 		//String s = dialog.open(true);
 		String s = dialog.open(false);

@@ -50,8 +50,6 @@ public class FTPDialog {
 
 	private              FTPDialogListener       listener                      = null;
 
-	private              Combo                   cboConnectnameX                = null;
-
 	private              Table                   table                         = null;		
 
 	private              Text                    txtDir                        = null;
@@ -592,7 +590,8 @@ public class FTPDialog {
 			butLog.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 
-					String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), schedulerConfigurationShell, false, "");
+					String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), schedulerConfigurationShell, false, null, false, null, false);
+					                                      
 					if(text != null)
 						txtLog.setText(text);
 				}

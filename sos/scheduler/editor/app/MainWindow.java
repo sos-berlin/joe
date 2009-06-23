@@ -892,7 +892,7 @@ public class MainWindow  {
 					if(container.getCurrentEditor()== null)
 						return;
 					DomParser currDomParser = getSpecifiedDom();				
-					Utils.showClipboard(Utils.getElementAsString(currDomParser.getRoot()), getSShell());
+					Utils.showClipboard(Utils.getElementAsString(currDomParser.getRoot()), getSShell(), false, null, false, null, false); 
 				} catch (Exception ex) {
 					try {
 						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " cause: " + ex.toString(), ex);

@@ -56,7 +56,7 @@ public class TextDialog extends Dialog {
 	
 	private String    scriptLanguage               = "";          
 	
-	private Button    button                       = null;
+	private Button    butShowSiteInFuture                       = null;
 	
 	
 	
@@ -294,15 +294,15 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 		_styledText.setLayoutData(gridData);
 
 		if(Options.getPropertyBoolean("editor.job.show.wizard")) {
-			button = new Button(getShell(), SWT.CHECK);
-			button.addSelectionListener(new SelectionAdapter() {
+			butShowSiteInFuture = new Button(getShell(), SWT.CHECK);
+			butShowSiteInFuture.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-					Options.setPropertyBoolean("editor.job.show.wizard", !button.getSelection());
+					Options.setPropertyBoolean("editor.job.show.wizard", !butShowSiteInFuture.getSelection());
 					
 				}
 			});
-			button.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 5, 1));
-			button.setText(Messages.getString("assistent.start.info.visible"));
+			butShowSiteInFuture.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 5, 1));
+			butShowSiteInFuture.setText(Messages.getString("TextDialog.butShowSiteInFuture.text"));
 			
 		}
 
@@ -433,6 +433,28 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 			cboFunctions.setText("..please select");
 			cboFunctions.setItems(Options.getPropertiesWithPrefix(scriptLanguage));
 		}
+	}
+
+
+	/**
+	 * 
+	 * @return the butShowSiteInFuture
+	 */
+/*	
+	public boolean getShowDialogButtonInFutureIsVisible() {
+		if(butShowSiteInFuture != null && butShowSiteInFuture.isVisible())
+		    return true;
+		else
+			return false;
+	}
+
+*/
+	/**
+	 * dont Show Wizzard Info
+	 * @param butShowSiteInFuture the butShowSiteInFuture to set
+	 */
+	public void setShowWizzardInfo(boolean visible) {
+		this.butShowSiteInFuture.setVisible(visible);
 	}
 	
 }

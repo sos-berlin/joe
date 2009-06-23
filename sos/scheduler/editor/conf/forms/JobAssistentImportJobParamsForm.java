@@ -320,7 +320,7 @@ public class JobAssistentImportJobParamsForm {
 			showButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {										
 					//MainWindow.message(jobParameterShell, Utils.getElementAsString(joblistener.getJob()), SWT.OK );
-					Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell);
+					Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell, false, null, false, null, false); 
 				}
 			});
 			showButton.setText("Show");
@@ -361,7 +361,7 @@ public class JobAssistentImportJobParamsForm {
 					}
 					//MainWindow.message(jobParameterShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK);
 					if(Options.getPropertyBoolean("editor.job.show.wizard"))
-						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell);
+						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell, false, null, false, null, true); 
 					closeDialog = true;
 					jobParameterShell.dispose();
 				}

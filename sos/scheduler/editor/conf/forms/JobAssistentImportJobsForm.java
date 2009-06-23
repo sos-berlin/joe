@@ -389,7 +389,7 @@ public class JobAssistentImportJobsForm {
 					}
 					
 											
-					Utils.showClipboard(Utils.getElementAsString(job), shell);
+					Utils.showClipboard(Utils.getElementAsString(job), shell, false, null, false, null, false); 
 					
 					job.removeChildren("param");
 				}
@@ -460,7 +460,7 @@ public class JobAssistentImportJobsForm {
 								//MainWindow.message(shell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
 
 								if(Options.getPropertyBoolean("editor.job.show.wizard"))						
-									Utils.showClipboard(Utils.getElementAsString(job), shell);
+									Utils.showClipboard(Utils.getElementAsString(job), shell, false, null, false, null, true); 
 
 							} 
 							closeDialog = true;

@@ -493,7 +493,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 			SAXBuilder builder = new SAXBuilder();
 			Document   doc= builder.build(filename);
 			String xml = Utils.getElementAsString(doc.getRootElement());
-			Utils.showClipboard(xml, getShell());
+			Utils.showClipboard(xml, getShell(), false, null, false, null, false); 
 			
 		} catch (Exception ex) {
 			MainWindow.message( "could not open Holiday File" + ex.getMessage(), SWT.ICON_ERROR);

@@ -212,7 +212,7 @@ public class JobAssistentRunOptionsForms {
 			butShow = new Button(composite_2, SWT.NONE);
 			butShow.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {										
-					Utils.showClipboard(Utils.getElementAsString(job), shellRunOptions); 
+					Utils.showClipboard(Utils.getElementAsString(job), shellRunOptions, false, null, false, null, false); 
 				}
 			});
 			butShow.setText("Show");
@@ -323,7 +323,7 @@ public class JobAssistentRunOptionsForms {
 		}
 		//MainWindow.message(shellRunOptions,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
 		if(Options.getPropertyBoolean("editor.job.show.wizard"))
-			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shellRunOptions);
+			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shellRunOptions, false, null, false, null, true); 
 		
 		closeDialog = true;
 		shellRunOptions.dispose();

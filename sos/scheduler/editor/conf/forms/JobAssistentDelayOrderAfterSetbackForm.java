@@ -343,7 +343,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 				public void widgetSelected(final SelectionEvent e) {
 					refreshElement(false);
 					txtSetBack.setFocus();					
-					Utils.showClipboard(Utils.getElementAsString(job), shellSetBack);
+					Utils.showClipboard(Utils.getElementAsString(job), shellSetBack, false, null, false, null, false); 
 				}
 			});
 			butShow.setText("Show");
@@ -396,7 +396,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 					
 					//MainWindow.message(shellSetBack,  Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
 					if(Options.getPropertyBoolean("editor.job.show.wizard"))
-						Utils.showClipboard(Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), shellSetBack);
+						Utils.showClipboard(Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), shellSetBack, false, null, false, null, true); 
 					
 					closeDialog = true;
 					shellSetBack.dispose();

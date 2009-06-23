@@ -237,7 +237,7 @@ public class JobAssistentProcessForms {
 			butShow.setLayoutData(new GridData());
 			butShow.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {										
-					Utils.showClipboard(Utils.getElementAsString(executeListener.getJob()), processShell);
+					Utils.showClipboard(Utils.getElementAsString(executeListener.getJob()), processShell, false, null, false, null, false); 
 					txtFile.setFocus();
 				}
 			});
@@ -362,7 +362,7 @@ public class JobAssistentProcessForms {
 		
 		//MainWindow.message(processShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(executeListener.getJob()), SWT.OK );
 		if(Options.getPropertyBoolean("editor.job.show.wizard"))
-			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(executeListener.getJob()), processShell);
+			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(executeListener.getJob()), processShell, false, null, false, null, true); 
 		
 		
 		if(jobname != null)

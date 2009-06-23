@@ -242,7 +242,7 @@ public class JobAssistentExecuteForms {
 				butShow.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						refreshJob();
-						Utils.showClipboard(Utils.getElementAsString(job), shell);						
+						Utils.showClipboard(Utils.getElementAsString(job), shell, false, null, false, null, false); 						
 					}
 				});
 				butShow.setText("Show");
@@ -378,7 +378,7 @@ public class JobAssistentExecuteForms {
 			}
 			//MainWindow.message(shell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
 			if(Options.getPropertyBoolean("editor.job.show.wizard"))
-				Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shell);
+				Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shell, false, null, false, null, true); 
 			
 			
 		}

@@ -333,7 +333,7 @@ public class JobAssistentDelayAfterErrorForm {
 					if(!check()) return;
 					refreshElement(false);	
 					if(Options.getPropertyBoolean("editor.job.show.wizard"))
-						Utils.showClipboard(Utils.getElementAsString(job), shellSetBack);
+						Utils.showClipboard(Utils.getElementAsString(job), shellSetBack, false, null, false, null, false); 
 					txtErrorCount.setFocus();
 				}
 			});
@@ -356,11 +356,11 @@ public class JobAssistentDelayAfterErrorForm {
 					if (Utils.getAttributeValue("order", job).equalsIgnoreCase("yes")) {
 						//MainWindow.message(shellSetBack,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
 						if(Options.getPropertyBoolean("editor.job.show.wizard"))
-							Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shellSetBack);
+							Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shellSetBack, false, null, false, null, true); 
 					} else { 
 						//MainWindow.message(shellSetBack,  Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
 						if(Options.getPropertyBoolean("editor.job.show.wizard"))
-							Utils.showClipboard(Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), shellSetBack);
+							Utils.showClipboard(Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), shellSetBack, false, null, false, null, true); 
 					}
 					closeDialog = true;
 					Utils.stopCursor(shellSetBack);

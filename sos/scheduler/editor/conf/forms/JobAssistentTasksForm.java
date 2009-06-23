@@ -230,7 +230,7 @@ public class JobAssistentTasksForm {
 			butShow.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					if(!checkTasks()) return;										
-					Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), tasksShell);
+					Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), tasksShell, false, null, false, null, false); 
 					txtTask.setFocus();
 				}
 			});
@@ -407,7 +407,7 @@ public class JobAssistentTasksForm {
 		
 		//MainWindow.message(tasksShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK );
 		if(Options.getPropertyBoolean("editor.job.show.wizard"))
-			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), tasksShell);
+			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), tasksShell, false, null, false, null, true); 
 		
 		
 		if(jobname != null)
