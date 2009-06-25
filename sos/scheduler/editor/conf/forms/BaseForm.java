@@ -31,7 +31,7 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.BaseListener;
 
 /**
- * @author sky2000
+ * @author Mueruevet Oeksuez
  */
 public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     
