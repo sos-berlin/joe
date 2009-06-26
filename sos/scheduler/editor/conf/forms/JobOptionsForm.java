@@ -614,9 +614,10 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         bIsMaximum.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 getShell().setDefaultButton(bApplySetback);
-                sSetBackHours.setEnabled(!bIsMaximum.getSelection());
+                /*sSetBackHours.setEnabled(!bIsMaximum.getSelection());
                 sSetBackMinutes.setEnabled(!bIsMaximum.getSelection());
                 sSetBackSeconds.setEnabled(!bIsMaximum.getSelection());
+                */
                 bApplySetback.setEnabled(true);
             }
         });
@@ -808,7 +809,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
     }
 
 
-    private void initSetback(boolean enabled) {
+    /*private void initSetback(boolean enabled) {
         sSetBackCount.setEnabled(enabled);
         bIsMaximum.setEnabled(enabled);
         sSetBackHours.setEnabled(enabled);
@@ -831,6 +832,36 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
                     sSetBackSeconds.setText(listener.getSetbackCountSeconds());
                 }
             }
+            sSetBackCount.setText(listener.getSetbackCount());
+        }
+
+        bApplySetback.setEnabled(false);
+    }
+*/
+    
+    private void initSetback(boolean enabled) {
+        sSetBackCount.setEnabled(enabled);
+        bIsMaximum.setEnabled(enabled);
+        sSetBackHours.setEnabled(enabled);
+        sSetBackMinutes.setEnabled(enabled);
+        sSetBackSeconds.setEnabled(enabled);
+
+        if (enabled) {
+            bIsMaximum.setSelection(listener.isMaximum());
+/*
+            if (bIsMaximum.getSelection()) {
+                sSetBackHours.setEnabled(false);
+                sSetBackMinutes.setEnabled(false);
+                sSetBackSeconds.setEnabled(false);
+            } else {*/
+                sSetBackHours.setText(Utils.fill(2, listener.getSetbackCountHours()));
+                sSetBackMinutes.setText(Utils.fill(2, listener.getSetbackCountMinutes()));
+                if (!(listener.getSetbackCountHours() + listener.getSetbackCountMinutes()).equals("")) {
+                    sSetBackSeconds.setText(Utils.fill(2, listener.getSetbackCountSeconds()));
+                } else {
+                    sSetBackSeconds.setText(listener.getSetbackCountSeconds());
+                }
+           // }
             sSetBackCount.setText(listener.getSetbackCount());
         }
 
