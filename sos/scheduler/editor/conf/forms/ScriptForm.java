@@ -1,8 +1,6 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import java.util.HashMap;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -10,8 +8,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
@@ -319,6 +315,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         		if(tableIncludes.getSelectionCount() > 0) {
         			
         			tInclude.setText(tableIncludes.getSelection()[0].getText(0));
+        			tInclude.setEnabled(true);
         			butIsLifeFile.setSelection(tableIncludes.getSelection()[0].getText(1) != null && tableIncludes.getSelection()[0].getText(1).equals("live_file"));
         			bRemove.setEnabled(tableIncludes.getSelectionCount() > 0);
         			bAdd.setEnabled(false);
@@ -346,7 +343,9 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         	public void widgetSelected(final SelectionEvent e) {
         		tableIncludes.deselectAll();
         		tInclude.setText("");
+        		tInclude.setEnabled(true);
         		butIsLifeFile.setSelection(false);
+        		tInclude.setFocus();
         	}
         });
         butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -386,8 +385,11 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.fillTable(tableIncludes);
                     if (index >= tableIncludes.getItemCount())
                         index--;
-                    if (tableIncludes.getItemCount() > 0)
-                    	tableIncludes.setSelection(index);
+                    //if (tableIncludes.getItemCount() > 0)
+                    //	tableIncludes.setSelection(index);
+                    tableIncludes.deselectAll();
+                    tInclude.setText("");
+                    tInclude.setEnabled(false);
                 }
                
             }
@@ -815,7 +817,9 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     private void applyFile() {
     	listener.addInclude(tableIncludes, tInclude.getText(), butIsLifeFile.getSelection());       
         tInclude.setText("");
+        tInclude.setEnabled(false);
         tInclude.setFocus();
+        tableIncludes.deselectAll();
     }
 
 

@@ -282,8 +282,10 @@ public class ScriptListener {
             setChangedForDirectory();
             
             
-        } else
+        } else {
+        	MainWindow.message("No script element defined!", SWT.ICON_ERROR);
             System.out.println("no script element defined!");
+        }
     }
     
     public void addInclude(String filename) {
@@ -292,8 +294,10 @@ public class ScriptListener {
             _script.addContent(includes.size(), new Element("include").setAttribute("file", filename));
             _dom.setChanged(true);
             setChangedForDirectory();
-        } else
+        } else {
+        	MainWindow.message("No script element defined!", SWT.ICON_ERROR);
             System.out.println("no script element defined!");
+        }
     }
 
   /*  private void removeScriptSource() {
@@ -315,8 +319,10 @@ public class ScriptListener {
                 setChangedForDirectory();
             } else
                 System.out.println("index " + index + " is out of range for include!");
-        } else
+        } else {
+        	MainWindow.message("No script element defined!", SWT.ICON_ERROR);
             System.out.println("no script element defined!");
+        }
     }
     
     public void removeIncludes() {
@@ -356,8 +362,10 @@ public class ScriptListener {
 
     			_dom.setChanged(true);
     			setChangedForDirectory();
-    		} else
+    		} else {
+    			MainWindow.message("No script element defined!", SWT.ICON_ERROR);
     			System.out.println("no script element defined!");
+    		}
 
     	}catch (org.jdom.IllegalDataException jdom) {
 			try {
