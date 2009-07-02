@@ -48,7 +48,7 @@ public class MainWindow  {
 
 	private Menu         menuBar            = null;
 
-	private Menu         mFile              = null;
+	private static Menu         mFile              = null;
 
 	private Menu         submenu            = null;
 
@@ -60,9 +60,9 @@ public class MainWindow  {
 
 	private Composite    groupmain          = null;
 
-	private ToolItem     butSave            = null;
+	private static ToolItem     butSave            = null;
 
-	private ToolItem     butShowAsSML       = null; 
+	private static ToolItem     butShowAsSML       = null; 
 	
 	private SOSString    sosString          = new SOSString();
 	
@@ -632,13 +632,13 @@ public class MainWindow  {
 	}
 
 
-	public void setSaveStatus() {
+	public static void setSaveStatus() {
 		setMenuStatus();
 		container.setStatusInTitle();
 	}
 
 
-	public boolean setMenuStatus() {
+	public static boolean setMenuStatus() {
 		boolean saved = true;
 		if (container.getCurrentEditor() != null) {
 			saved = !container.getCurrentEditor().hasChanges();

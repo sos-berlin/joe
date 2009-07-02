@@ -391,6 +391,7 @@ public class TreeMenu {
 
 	private void applyXMLChange(String newXML){
 		String newName ="";
+		String oldname ="";
 		try {  
 			if(_dom instanceof SchedulerDom) {
 
@@ -441,6 +442,7 @@ public class TreeMenu {
 						xml = Utils.getElementAsString(_dom.getRoot());
 
 					String oldxml = Utils.getElementAsString(getElement());
+					oldname = getHotFolderName(oldxml);
 
 					int iPosBegin = 0;
 					if(oldxml.indexOf("\r\n") > -1)
@@ -448,6 +450,9 @@ public class TreeMenu {
 					else
 						iPosBegin = xml.indexOf(oldxml);
 
+					if(iPosBegin == -1)
+						iPosBegin = 0;
+					
 					//int iPosEnd = xml.indexOf("</"+ getElement().getName() + ">", iPosBegin) + (("</"+ getElement().getName() + ">").length()) ;
 					int iPosEnd = xml.indexOf("</"+ getElement().getName() + ">", iPosBegin) ;
 					if(iPosEnd == -1) {
@@ -474,10 +479,17 @@ public class TreeMenu {
 						newXML = enco + newXML ;
 					else
 						newXML = enco + "<spooler>" + newXML + "</spooler>";
+					/*
+					if(!oldname.equals(newName))
+						((sos.scheduler.editor.conf.SchedulerDom)_dom).setChangedForDirectory("job", oldname, SchedulerDom.DELETE);
+					
+					((sos.scheduler.editor.conf.SchedulerDom)_dom).setChangedForDirectory("job", newName, SchedulerDom.MODIFY);
+					*/
 					//System.out.println(newXML);
 				} else if(!((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement()) {					
 					newXML = newXML.replaceAll("\\?>", "?><spooler>" )+ "</spooler>";
 				}
+				
 			}
 
 			//System.out.println("debug: \n" + newXML);
@@ -486,10 +498,13 @@ public class TreeMenu {
 
 
 			_dom.readString(newXML, true);
+			
 			_gui.update();
+			_dom.setChanged(true);
+			Element elem = null;
 			if (_dom instanceof SchedulerDom && 
 					(((SchedulerDom)_dom).isDirectory() || ((SchedulerDom)_dom).isLifeElement())) {
-				Element elem = getElement();
+				elem = getElement();
 				if(!newName.equals("") && !Utils.getAttributeValue("name", elem).equals(newName) && 
 						(elem.getName().equals("order") || elem.getName().equals("add_order"))) {
 					((SchedulerDom)_dom).setChangedForDirectory(elem.getName(), Utils.getAttributeValue("job_chain",elem)+","+Utils.getAttributeValue("id",elem), SchedulerDom.DELETE);												
@@ -501,14 +516,41 @@ public class TreeMenu {
 					((SchedulerDom)_dom).setChangedForDirectory(elem, SchedulerDom.NEW);				
 			}
 
-			//if(((SchedulerDom)(_dom)).isLifeElement())
-			//	_dom.setFilename(_dom.getFilename().replaceAll(new File(_dom.getFilename()).getName(), (newName + "." + getElement().getName() + ".xml")));
+			if(_dom instanceof SchedulerDom &&  ((SchedulerDom)(_dom)).isLifeElement() && oldname != null && newName != null &&!oldname.equals(newName)) {
+				
+				File oldFilename = new File(_dom.getFilename());
+				File newFilename = null;
+				if(oldFilename.getParent() != null)
+					newFilename = new File(oldFilename.getParent(), newName + "." + getElement().getName() + ".xml");
+				else
+					newFilename = new File(newName + "." + getElement().getName() + ".xml");
+				
+				int c = MainWindow.message(MainWindow.getSShell(), "Do you want really rename Hot Folder File from " + oldFilename + " to " + newFilename + "?", SWT.ICON_WARNING | SWT.YES | SWT.NO );
+				if(c == SWT.YES) {
+					_gui.updateJob(newName);
+					if(_dom.getFilename() != null) {
+						oldFilename.renameTo(newFilename);
+						_dom.setFilename(_dom.getFilename().replaceAll(new File(_dom.getFilename()).getName(), (newName + "." + getElement().getName() + ".xml")));
+					}
+					//_gui.updateTree("main");
+					//_dom.setChanged(false);
+					if(MainWindow.getContainer().getCurrentEditor().applyChanges()) {
+						MainWindow.getContainer().getCurrentEditor().save();
+						MainWindow.setSaveStatus();
+					}
+				
+				} else {					
+					return;
+				}	
+				
+				
+			}
 
-			//	_gui.updateJob(newName);
-
+			
+			_gui.update();
 			_gui.updateTree("main");
 
-			_dom.setChanged(true);
+			
 
 			refreshTree("main");
 
