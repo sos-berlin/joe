@@ -66,9 +66,9 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 
 	private Label                  label2        = null;
 
-	private Text                   tRemoteHost   = null;
+	private Text                   tRARCHITEKTEN_EA_NEUHost   = null;
 
-	private Text                   tRemotePort   = null;
+	private Text                   tRARCHITEKTEN_EA_NEUPort   = null;
 
 	private SchedulerDom           dom           = null;
 
@@ -201,24 +201,24 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		});
 		new Label(group, SWT.NONE);
 
-		final Label remoteExecutionOnLabel = new Label(group, SWT.NONE);
-		remoteExecutionOnLabel.setText("Executed by Scheduler on host:");
+		final Label rARCHITEKTEN_EA_NEUExecutionOnLabel = new Label(group, SWT.NONE);
+		rARCHITEKTEN_EA_NEUExecutionOnLabel.setText("Executed by Scheduler on host:");
 
-		tRemoteHost = new Text(group, SWT.BORDER);
-		tRemoteHost.addModifyListener(new ModifyListener() {
+		tRARCHITEKTEN_EA_NEUHost = new Text(group, SWT.BORDER);
+		tRARCHITEKTEN_EA_NEUHost.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				bApply.setEnabled(true);
 			}
 		});
-		tRemoteHost.setEnabled(false);
-		tRemoteHost.addKeyListener(new KeyAdapter() {
+		tRARCHITEKTEN_EA_NEUHost.setEnabled(false);
+		tRARCHITEKTEN_EA_NEUHost.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR)
 					applyClass();
 
 			}
 		});
-		tRemoteHost.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		tRARCHITEKTEN_EA_NEUHost.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 		final Label portLabel = new Label(group, SWT.NONE);
 		final GridData gridData_1 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
@@ -226,21 +226,21 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		portLabel.setLayoutData(gridData_1);
 		portLabel.setText("at Port");
 
-		tRemotePort = new Text(group, SWT.BORDER);
-		tRemotePort.addModifyListener(new ModifyListener() {
+		tRARCHITEKTEN_EA_NEUPort = new Text(group, SWT.BORDER);
+		tRARCHITEKTEN_EA_NEUPort.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				bApply.setEnabled(true);
 
 			}
 		});
-		tRemotePort.setEnabled(false);
-		tRemotePort.addKeyListener(new KeyAdapter() {
+		tRARCHITEKTEN_EA_NEUPort.setEnabled(false);
+		tRARCHITEKTEN_EA_NEUPort.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR)
 					applyClass();
 			}
 		});
-		tRemotePort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		tRARCHITEKTEN_EA_NEUPort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		new Label(group, SWT.NONE);
 
 		butReplace = new Button(group, SWT.CHECK);
@@ -384,7 +384,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 
 
 	 private void applyClass() {
-		 if (!checkRemote())
+		 if (!checkRARCHITEKTEN_EA_NEU())
 			 return;
 
 		 boolean _continue = true;
@@ -394,7 +394,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 			 _continue = false;
 
 		 if(_continue)
-			 listener.applyProcessClass(tProcessClass.getText(), tRemoteHost.getText(),tRemotePort.getText(),sMaxProcesses.getSelection(), tSpoolerID.getText(), butReplace.getSelection());
+			 listener.applyProcessClass(tProcessClass.getText(), tRARCHITEKTEN_EA_NEUHost.getText(),tRARCHITEKTEN_EA_NEUPort.getText(),sMaxProcesses.getSelection(), tSpoolerID.getText(), butReplace.getSelection());
 
 		 listener.fillTable(table);
 		 setInput(false);
@@ -411,13 +411,13 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		 tProcessClass.setEnabled(enabled);
 		 sMaxProcesses.setEnabled(enabled);
 		 tSpoolerID.setEnabled(enabled);
-		 tRemoteHost.setEnabled(enabled);
+		 tRARCHITEKTEN_EA_NEUHost.setEnabled(enabled);
 		 butReplace.setEnabled(enabled);
-		 tRemotePort.setEnabled(enabled);
+		 tRARCHITEKTEN_EA_NEUPort.setEnabled(enabled);
 		 if (enabled) {
 			 tProcessClass.setText(listener.getProcessClass());
-			 tRemoteHost.setText(listener.getRemoteHost());
-			 tRemotePort.setText(listener.getRemotePort());
+			 tRARCHITEKTEN_EA_NEUHost.setText(listener.getRARCHITEKTEN_EA_NEUHost());
+			 tRARCHITEKTEN_EA_NEUPort.setText(listener.getRARCHITEKTEN_EA_NEUPort());
 			 sMaxProcesses.setSelection(listener.getMaxProcesses());
 			 tSpoolerID.setText(listener.getSpoolerID());
 			 butReplace.setSelection(listener.isReplace());
@@ -425,8 +425,8 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 
 		 } else {
 			 tProcessClass.setText("");
-			 tRemoteHost.setText("");
-			 tRemotePort.setText("");
+			 tRARCHITEKTEN_EA_NEUHost.setText("");
+			 tRARCHITEKTEN_EA_NEUPort.setText("");
 			 sMaxProcesses.setSelection(0);
 			 tSpoolerID.setText("");
 			 butReplace.setSelection(true);
@@ -445,17 +445,17 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		 tSpoolerID.setToolTipText(Messages.getTooltip("process_classes.spooler_id_entry"));
 		 bApply.setToolTipText(Messages.getTooltip("process_classes.btn_apply"));
 		 table.setToolTipText(Messages.getTooltip("process_classes.table"));
-		 tRemoteHost.setToolTipText(Messages.getTooltip("process_classes.remoteHost"));
-		 tRemotePort.setToolTipText(Messages.getTooltip("process_classes.remotePort"));
+		 tRARCHITEKTEN_EA_NEUHost.setToolTipText(Messages.getTooltip("process_classes.rARCHITEKTEN_EA_NEUHost"));
+		 tRARCHITEKTEN_EA_NEUPort.setToolTipText(Messages.getTooltip("process_classes.rARCHITEKTEN_EA_NEUPort"));
 		 ignoreButton.setToolTipText(Messages.getTooltip("process_classes.ignore"));
 		 butReplace.setToolTipText(Messages.getTooltip("process_classes.replace"));
 	 }
 
-	 private boolean checkRemote() {
-		 if(tRemoteHost.getText().trim().length() > 0 && tRemotePort.getText().trim().length() == 0) {
+	 private boolean checkRARCHITEKTEN_EA_NEU() {
+		 if(tRARCHITEKTEN_EA_NEUHost.getText().trim().length() > 0 && tRARCHITEKTEN_EA_NEUPort.getText().trim().length() == 0) {
 			 MainWindow.message(getShell(), "Missing Scheduler Port.", SWT.ICON_WARNING | SWT.OK );
 			 return false;
-		 } else if (tRemoteHost.getText().trim().length() == 0 && tRemotePort.getText().trim().length() > 0) {
+		 } else if (tRARCHITEKTEN_EA_NEUHost.getText().trim().length() == 0 && tRARCHITEKTEN_EA_NEUPort.getText().trim().length() > 0) {
 			 MainWindow.message(getShell(), "Missing Scheduler Host.", SWT.ICON_WARNING | SWT.OK );
 			 return false;
 		 }    	          

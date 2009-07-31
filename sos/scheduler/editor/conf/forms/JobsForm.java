@@ -48,6 +48,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 	
 	private Button           butAssistent                = null;
 	
+	private Button           newOrderJob                 = null; 
 	
 	public JobsForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) {
 		super(parent, style);
@@ -98,15 +99,25 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			group.setLayout(gridLayout);
 			createTable();
 			bNewJob = new Button(group, SWT.NONE);
-			bNewJob.setText("&New Job");
+			bNewJob.setText("New Standalone Job");
 			bNewJob.setLayoutData(gridData);
 			getShell().setDefaultButton(bNewJob);
 			bNewJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {					
-					listener.newJob(table);
+					listener.newJob(table, false);
 					bRemoveJob.setEnabled(true);
 				}
 			});
+
+			newOrderJob = new Button(group, SWT.NONE);
+			newOrderJob.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					listener.newJob(table, true);
+					bRemoveJob.setEnabled(true);
+				}
+			});
+			newOrderJob.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+			newOrderJob.setText("New Order Job");
 			
 			butAssistent = new Button(group, SWT.NONE);
 			butAssistent.addSelectionListener(new SelectionAdapter() {
@@ -143,7 +154,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 						bRemoveJob.setEnabled(listener.deleteJob(table));
 				}
 			});
-			bRemoveJob.setLayoutData(new GridData());
+			bRemoveJob.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			
 			label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 			label.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
@@ -164,7 +175,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 	 */
 	private void createTable() {
 		try {
-			GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 4);
+			GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 5);
 			table = new Table(group, SWT.BORDER | SWT.FULL_SELECTION | SWT.CHECK);
 			table.addMouseListener(new MouseAdapter() {
 				public void mouseDoubleClick(final MouseEvent e) {
@@ -226,6 +237,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 	
 	public void setToolTipText() {
 		bNewJob.setToolTipText(Messages.getTooltip("jobs.btn_add_new"));
+		newOrderJob.setToolTipText(Messages.getTooltip("jobs.btn_add_new"));
 		bRemoveJob.setToolTipText(Messages.getTooltip("jobs.btn_remove"));
 		table.setToolTipText(Messages.getTooltip("jobs.table"));
 		butAssistent.setToolTipText(Messages.getTooltip("jobs.assistent"));

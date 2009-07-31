@@ -343,8 +343,8 @@ public class HotFolderDialog {
 			}
 
 			//String path = Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome() : Options.getSchedulerHome() + "/";
-			//path = path + "config/remote";
-			String path = new File(Options.getSchedulerHome(), "config/remote").getCanonicalPath();
+			//path = path + "config/rARCHITEKTEN_EA_NEU";
+			String path = new File(Options.getSchedulerHome(), "config/rARCHITEKTEN_EA_NEU").getCanonicalPath();
 
 			File p = new File(path); 
 			if(!p.exists()) {
@@ -428,8 +428,8 @@ public class HotFolderDialog {
 						}
 
 						//String path = Options.getSchedulerHome().endsWith("/")|| Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome(): Options.getSchedulerHome() + "/";
-						//path = path + "config/remote";
-						String path = new File(Options.getSchedulerHome(), "config/remote").getCanonicalPath();
+						//path = path + "config/rARCHITEKTEN_EA_NEU";
+						String path = new File(Options.getSchedulerHome(), "config/rARCHITEKTEN_EA_NEU").getCanonicalPath();
 						Iterator hostIterator = names.keySet().iterator();
 						while (hostIterator.hasNext()) {
 							String sname = sosString.parseToString(hostIterator.next());
@@ -585,14 +585,14 @@ public class HotFolderDialog {
 				path = 	sosString.parseToString(tree.getSelection()[0].getData()) ;
 			else
 			*/ 
-				path = new File(Options.getSchedulerHome(),"config/remote/").getCanonicalPath();
+				path = new File(Options.getSchedulerHome(),"config/rARCHITEKTEN_EA_NEU/").getCanonicalPath();
 
 			//path = (path.endsWith("/") || path.endsWith("\\") ? path : path + "/")   + name;
 			path =  new File(path, name).getCanonicalPath();
 
 			File newFile = new File(path);
 			if(newFile.exists()) {
-				MainWindow.message("could not create Remote Directory, cause Directory exist", SWT.NONE);
+				MainWindow.message("could not create RARCHITEKTEN_EA_NEU Directory, cause Directory exist", SWT.NONE);
 				schedulerConfigurationShell.setFocus();
 				return;						
 			} 
@@ -638,7 +638,7 @@ public class HotFolderDialog {
 			newFile = new File(path);
 			if(!newFile.exists() ) {
 				if(!new File(path).mkdirs()) {
-					MainWindow.message("could not crate new remote Directory " , SWT.ICON_ERROR);
+					MainWindow.message("could not crate new rARCHITEKTEN_EA_NEU Directory " , SWT.ICON_ERROR);
 					schedulerConfigurationShell.setFocus();
 				}
 			}

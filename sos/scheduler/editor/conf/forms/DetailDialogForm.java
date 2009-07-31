@@ -55,7 +55,7 @@ public class DetailDialogForm {
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		shell= new Shell(sos.scheduler.editor.app.MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER );
-		shell.setLayout(new GridLayout());
+		shell.setLayout(new FillLayout());
 		
 		shell.setMinimumSize(620, 643);	
 		shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
@@ -64,13 +64,9 @@ public class DetailDialogForm {
 				     (orderId != null && orderId.length() > 0 ? "  Order Id: " + orderId : ""));
 		final Composite composite = new Composite( shell, SWT.NONE);
 		composite.setLayout(new FillLayout());
-		final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
-		gridData.heightHint = 606;
-		gridData.widthHint = 590;
-		composite.setLayoutData(gridData);
 		final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);
-		gridData_6.widthHint = 686;
-		gridData_6.heightHint = 572;
+		gridData_6.widthHint = 500;
+		gridData_6.heightHint = 500;
 			
 				
 		//dialogForm =new DetailForm(composite, SWT.NONE, jobChainname, state, listOfOrderIds, Editor.JOB_CHAINS, null, null, isLifeElement, path);

@@ -649,7 +649,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 
 			}
 		});
-		final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+		final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		butApplyParam.setLayoutData(gridData_9);
 		butApplyParam.setText("Apply");
 
@@ -657,7 +657,9 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		tableParams.setEnabled(false);
 		tableParams.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				
+				if(butApplyParam.isEnabled()) {
+					
+				}
 				if(tableParams.getSelectionCount() > 0) {					
 					TableItem item = tableParams.getSelection()[0];
 					txtName.setText(item.getText(0));					
@@ -725,7 +727,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 				txtParamNote.setText("");
 			}
 		});
-		butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butNew.setText("New");
 
 
@@ -736,7 +738,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		//parameterButton.setVisible(type != Editor.DETAILS);
-		parameterButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		parameterButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		parameterButton.setText("Import");
 		butRemove = new Button(parameterGroup, SWT.NONE);
 		butRemove.addSelectionListener(new SelectionAdapter() {
@@ -758,7 +760,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 				}
 			}
 		});
-		final GridData gridData_8 = new GridData(GridData.FILL, GridData.BEGINNING, true, false);
+		final GridData gridData_8 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
 		gridData_8.widthHint = 64;
 		gridData_8.minimumWidth = 50;
 		butRemove.setLayoutData(gridData_8);
@@ -798,7 +800,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 
 		paramText = new Text(parameterGroup, SWT.BORDER);
 		paramText.setVisible(false);
-		final GridData gridData_14 = new GridData(GridData.CENTER, GridData.BEGINNING, true, false);
+		final GridData gridData_14 = new GridData(GridData.CENTER, GridData.BEGINNING, false, false);
 		gridData_14.widthHint = 27;
 		paramText.setLayoutData(gridData_14);
 		new Label(parameterGroup, SWT.NONE);
@@ -959,8 +961,11 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 				detailListener.deleteParameter(tableParams, tableParams.getSelectionIndex());				
 			}*/
 			detailListener.setParam(txtName.getText(), txtValue.getText(), txtParamNote.getText(), paramText.getText(), comboLanguage.getText());
+			
+			
 			txtParamNote.setText(detailListener.getParamNote(txtName.getText(),  comboLanguage.getText()));
 			tableParams.removeAll();
+			
 			detailListener.fillParams(tableParams);			
 			butApply.setEnabled(isEditable);			
 			txtName.setText("");
@@ -1128,8 +1133,10 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		}
 
 		if(  tableParams.getSelectionCount() == 0  ||
-				( tableParams.getSelectionCount() > 0 && !txtParamNote.getText().equalsIgnoreCase(detailListener.getParamNote(tableParams.getSelection()[0].getText(0), comboLanguage.getText())))){
-
+				( tableParams.getSelectionCount() > 0 && 
+				!txtParamNote.getText().equalsIgnoreCase(detailListener.getParamNote(tableParams.getSelection()[0].getText(0), comboLanguage.getText())))){
+			detailListener.setParam(txtName.getText(), txtValue.getText(), txtParamNote.getText(), paramText.getText(), comboLanguage.getText());
+			
 			isEditableParam=true;
 			butApplyParam.setEnabled(isEditableParam);
 			isEditable = true;
@@ -1169,6 +1176,9 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 
 
 	private void save() {
+		if(butApplyParam.isEnabled()) {
+			addParam();
+		}
 		detailListener.save();
 
 		txtState.setEnabled(false);

@@ -501,10 +501,14 @@ public class JobChainListener {
 			
 			
 			if(reorder) {
+				
+				String msg = "The node " + job + " is an Endnode and therefore cannot be changed with Node in case reorder is activated";
+				
 				if(Utils.getAttributeValue("job", _node).length() == 0 ||
 						(_node != null && _node.getName().equals("job_chain_node.end"))
 				) {
-					sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
+					//sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
+					sos.scheduler.editor.app.MainWindow.message(msg, SWT.ICON_INFORMATION);
 					return;
 				}
 
@@ -513,14 +517,16 @@ public class JobChainListener {
 				if(up) {
 					if(table.getSelectionIndex() > 0 
 							&& table.getItem(table.getSelectionIndex()-1).getText(1).equals("Endnode")) {
-						sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
+						//sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
+						sos.scheduler.editor.app.MainWindow.message(msg, SWT.ICON_INFORMATION);
 						return;
 					}
 
 				} else {
 					if(table.getSelectionIndex() < table.getItemCount() -1  
 							&& table.getItem(table.getSelectionIndex()+1).getText(1).equals("Endnode")) {
-						sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
+						//sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
+						sos.scheduler.editor.app.MainWindow.message(msg, SWT.ICON_INFORMATION);
 						return;
 					}
 				}

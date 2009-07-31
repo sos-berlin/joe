@@ -190,7 +190,9 @@ public class JobListener {
 		Utils.setAttribute("idle_timeout", Utils.getIntegerAsString(Utils.str2int(idleTimeout)), _job, _dom);
 	}
 
-
+	
+	
+	
 	public void setForceIdletimeout(boolean forceIdleTimeout) {
 		if (forceIdleTimeout) {
 			Utils.setAttribute("force_idle_timeout", "yes", _job, _dom);
@@ -432,4 +434,21 @@ public class JobListener {
 		return _job;
 	}    
 
+	public void setWarnIfLongerThan(String warnIfLongerThan) {
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		Utils.setAttribute("warn_if_longer_than", warnIfLongerThan, _job, _dom);
+	}
+	
+	public String getWarnIfLongerThan() {
+		return Utils.getAttributeValue("warn_if_longer_than", _job);
+	}
+	
+	public void setWarnIfShorterThan(String warnIfShorterThan) {
+		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		Utils.setAttribute("warn_if_shorter_than", warnIfShorterThan, _job, _dom);
+	}
+	
+	public String getWarnIfShorterThan() {
+		return Utils.getAttributeValue("warn_if_shorter_than", _job);
+	}
 }

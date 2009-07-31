@@ -72,7 +72,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 	
     private Combo                  cboEndState        = null; 
     
-    
+    private Combo                  cboStates          =  null;
     
     public OrderForm(Composite parent, int style, SchedulerDom _dom, Element _order, ISchedulerUpdate _main)
             throws JDOMException, TransformerException {
@@ -123,7 +123,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 
         group.setLayout(gridLayout2);
         GridLayout gridLayout3 = new GridLayout();
-        gridLayout3.numColumns = 4;
+        gridLayout3.numColumns = 6;
         gOrder = new Group(group, SWT.NONE);
         final GridData gridData_10 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gOrder.setLayoutData(gridData_10);
@@ -155,7 +155,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                 }*/
             }
         });
-        final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1);
+        final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, false, 4, 1);
         tOrderId.setLayoutData(gridData_3);
 
         final Label jobchainLabel = new Label(gOrder, SWT.NONE);
@@ -171,7 +171,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         butGoto.setAlignment(SWT.RIGHT);
 
         final Composite composite = new Composite(gOrder, SWT.NONE);
-        composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
+        composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 3, 1));
         final GridLayout gridLayout = new GridLayout();
         gridLayout.verticalSpacing = 0;
         gridLayout.marginWidth = 0;
@@ -185,19 +185,25 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         cJobchain.setLayoutData(gridData_1);
         cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (event)
-                	if(checkName()) {
-                		listener.setCommandAttribute("job_chain", cJobchain.getText());
-                		String curstate = listener.getCommandAttribute("state");
-                		tState.setItems(listener.getStates());                		
-                        tState.setText(curstate);
-                        
-                        String curEndstate = listener.getCommandAttribute("end_state");
-                        cboEndState.setItems(listener.getStates());
-                        cboEndState.setText(curEndstate);
-            }
-            }
+        	public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+        		if (event)
+        			if(checkName()) {
+        				listener.setCommandAttribute("job_chain", cJobchain.getText());
+        				String curstate = listener.getCommandAttribute("state");
+        				tState.setItems(listener.getStates());                		
+        				tState.setText(curstate);
+        				
+        				cboStates.setItems(listener.getStates()); 
+        				cboStates.add("global");
+        				cboStates.setText("global");
+
+        				String curEndstate = listener.getCommandAttribute("end_state");
+        				cboEndState.setItems(listener.getStates());
+        				cboEndState.setText(curEndstate);
+        				butDetails.setEnabled(cJobchain.getText().length() > 0);
+        				cboStates.setEnabled(cJobchain.getText().length() > 0);
+        			}
+        	}
         });
         Button butBrowse = new Button(gOrder, SWT.NONE);
         butBrowse.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
@@ -227,7 +233,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
             }
         });
 
-        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
+        final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
         tTitle.setLayoutData(gridData_5);
 
         final Label priorityLabel = new Label(gOrder, SWT.NONE);
@@ -246,7 +252,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("priority", tPriority.getText());
             }
         });
-        final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
+        final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
         tPriority.setLayoutData(gridData_2);
 
         final Label stateLabel = new Label(gOrder, SWT.NONE);
@@ -260,7 +266,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("state", tState.getText());
             }
         });
-        final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
+        final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
         tState.setLayoutData(gridData);
 
         final Label endStateLabel = new Label(gOrder, SWT.NONE);
@@ -274,7 +280,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
                     listener.setCommandAttribute("end_state", cboEndState.getText());
         	}
         });
-        cboEndState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
+        cboEndState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1));
 
         final Label replaceLabel = new Label(gOrder, SWT.NONE);
         final GridData gridData_4 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
@@ -295,11 +301,19 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         final GridData gridData_9 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
         bReplace.setLayoutData(gridData_9);
 
+        final Label stateLabel_1 = new Label(gOrder, SWT.NONE);
+        stateLabel_1.setText("State:");
+
+        cboStates = new Combo(gOrder, SWT.NONE);
+        cboStates.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
         butDetails = new Button(gOrder, SWT.NONE);
         butDetails.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		//DetailForm dialogForm =new DetailForm(composite, SWT.NONE, cJobchain.getText(), tState.getText(), null, Editor.JOB_CHAINS, null, null, dom.isLifeElement(), dom.getFilename());
-        		DetailDialogForm detail = new DetailDialogForm(cJobchain.getText(),  tState.getText(), tOrderId.getText(), dom.isLifeElement(), "");
+        		//DetailDialogForm detail = new DetailDialogForm(cJobchain.getText(),  tState.getText(), tOrderId.getText(), dom.isLifeElement() || dom.isDirectory(), dom.getFilename());
+        		String state = cboStates.getText().length() == 0 || cboStates.getText().equals("global") ? null : cboStates.getText();
+        		DetailDialogForm detail = new DetailDialogForm(cJobchain.getText(),  state, tOrderId.getText(), dom.isLifeElement() || dom.isDirectory(), dom.getFilename());
 				detail.showDetails();
 				detail.getDialogForm().setParamsForWizzard(dom, main);
         	}
@@ -379,6 +393,13 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         cJobchain.setText(listener.getCommandAttribute("job_chain"));
         tPriority.setText(listener.getCommandAttribute("priority"));
         bReplace.setSelection(listener.getCommandReplace());
+        
+       
+        cboStates.setItems(listener.getStates());
+        cboStates.add("global");
+        cboStates.setText("global");
+        butDetails.setEnabled(cJobchain.getText().length() > 0);
+        cboStates.setEnabled(cJobchain.getText().length() > 0);
         checkName();
 
     }

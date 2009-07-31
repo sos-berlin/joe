@@ -135,7 +135,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 	
 	private Button                    butNewEnvironment                 = null; 
 	
-	private boolean                   isRemoteConnection                = false;
+	private boolean                   isRARCHITEKTEN_EA_NEUConnection                = false;
 	
 	
 	
@@ -163,7 +163,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 	private void initialize() {
 		sosString = new SOSString();
 		try {
-			isRemoteConnection = sosString.parseToString(MainWindow.getContainer().getCurrentTab().getData("ftp_title")).length() > 0;
+			isRARCHITEKTEN_EA_NEUConnection = sosString.parseToString(MainWindow.getContainer().getCurrentTab().getData("ftp_title")).length() > 0;
 		} catch (Exception e) {}		
 		this.setLayout(new GridLayout());
 		GridLayout gridLayout2 = new GridLayout();
@@ -367,7 +367,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				butRemoveInclude.setEnabled(tableIncludeParams.getSelectionCount() > 0);                               
 				butIncludesApply.setEnabled(false);
 				
-				butOpenInclude.setEnabled(true && !isRemoteConnection);				
+				butOpenInclude.setEnabled(true && !isRARCHITEKTEN_EA_NEUConnection);				
 			}
 		});
 		tableIncludeParams.setLinesVisible(true);

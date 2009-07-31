@@ -86,6 +86,8 @@ public class FTPDialog {
 
 	private              FTPProfilePicker        ftpProfilePicker              = null;	 
 
+	private              TableColumn             newColumnTableColumn_2        = null;
+	
 	public FTPDialog(MainWindow  main_) {		
 		main = main_;		 					
 	}
@@ -205,6 +207,8 @@ public class FTPDialog {
 								if(profile.isLoggedIn()) {
 									butOpenOrSave.setEnabled(profile.isLoggedIn() && txtFilename.getText().length() > 0);
 									fillTable(h);
+									table.setSortDirection(SWT.UP);
+									sort(newColumnTableColumn_2);
 									_setEnabled(true);
 								}
 							}
@@ -338,7 +342,7 @@ public class FTPDialog {
 				table.setHeaderVisible(true);
 				table.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 2, 3));
 
-				final TableColumn newColumnTableColumn_2 = new TableColumn(table, SWT.NONE);
+				newColumnTableColumn_2 = new TableColumn(table, SWT.NONE);
 				newColumnTableColumn_2.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						sort(newColumnTableColumn_2);
@@ -630,7 +634,7 @@ public class FTPDialog {
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
+					MainWindow.getContainer().getCurrentTab().setData("ftp_rARCHITEKTEN_EA_NEU_directory", txtDir.getText() + "/" + txtFilename.getText());
 					main.setSaveStatus();	
 
 				}
@@ -654,7 +658,7 @@ public class FTPDialog {
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
+					MainWindow.getContainer().getCurrentTab().setData("ftp_rARCHITEKTEN_EA_NEU_directory", txtDir.getText() + "/" + txtFilename.getText());
 					main.setSaveStatus();
 				}
 				return;
@@ -665,7 +669,7 @@ public class FTPDialog {
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
+					MainWindow.getContainer().getCurrentTab().setData("ftp_rARCHITEKTEN_EA_NEU_directory", txtDir.getText() + "/" + txtFilename.getText());
 					main.setSaveStatus();		
 				}
 			}
@@ -780,7 +784,7 @@ public class FTPDialog {
 				MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
 				MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
 				MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-				MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
+				MainWindow.getContainer().getCurrentTab().setData("ftp_rARCHITEKTEN_EA_NEU_directory", txtDir.getText() + "/" + txtFilename.getText());
 				MainWindow.getContainer().getCurrentTab().setData("ftp_hot_folder_elements", nameOfLifeElement);
 
 				main.setSaveStatus();	
@@ -810,7 +814,7 @@ public class FTPDialog {
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
+					MainWindow.getContainer().getCurrentTab().setData("ftp_rARCHITEKTEN_EA_NEU_directory", txtDir.getText() + "/" + txtFilename.getText());
 					main.setSaveStatus();		
 				}
 
@@ -864,7 +868,130 @@ public class FTPDialog {
 		butNewFolder.setEnabled(enabled);		
 		butRemove.setEnabled(enabled); 
 	}
+	
+	private void sort(TableColumn col) {
+		try {			
 
+			if(table.getSortDirection() == SWT.DOWN)
+				table.setSortDirection(SWT.UP);
+			else 
+				table.setSortDirection(SWT.DOWN);
+
+			table.setSortColumn(col);
+
+			ArrayList listOfSortData = new ArrayList();
+
+			for(int i = 0; i < table.getItemCount(); i++) {				
+				TableItem item = table.getItem(i);			
+				if(!item.getData("type").equals("dir_up")) {
+					HashMap hash = new HashMap();
+					for(int j = 0; j < table.getColumnCount(); j++) {					
+						hash.put(table.getColumn(j).getText(), item.getText(j));					
+					}
+
+					hash.put("type", item.getData("type"));					
+
+					listOfSortData.add(hash);
+				}
+			}
+
+			listOfSortData = sos.util.SOSSort.sortArrayList(listOfSortData, col.getText());
+
+			table.removeAll();
+
+			TableItem item_ = new TableItem(table, SWT.NONE);			
+			item_.setData("type","dir_up");
+			item_.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory_up.gif"));
+
+
+			TableItem item = null;
+
+			if(table.getSortDirection() == SWT.DOWN) {		
+				//Verzeichnis
+				for(int i = 0; i < listOfSortData.size(); i++) {
+					
+					HashMap hash = (HashMap)listOfSortData.get(i);
+					if(!hash.get("type").equals("file")){
+						
+						item = new TableItem(table, SWT.NONE);				
+						item.setData("type", hash.get("type"));
+						
+						if(hash.get("type").equals("dir")) 
+							item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory.gif"));
+						else if(hash.get("type").equals("dir_up"))					
+							item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory_up.gif"));
+
+						for(int j = 0; j < table.getColumnCount(); j++) {					
+							item.setText(j, sosString.parseToString(hash.get(table.getColumn(j).getText())));
+						}											
+					}
+				}
+				//Datei
+				for(int i = 0; i < listOfSortData.size(); i++) {								
+					HashMap hash = (HashMap)listOfSortData.get(i);					
+					if(hash.get("type").equals("file")) {
+						item = new TableItem(table, SWT.NONE);	
+						item.setData("type", hash.get("type"));
+						item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_file.gif"));
+
+						for(int j = 0; j < table.getColumnCount(); j++) {					
+							item.setText(j, sosString.parseToString(hash.get(table.getColumn(j).getText())));
+						}										
+					}
+				}
+
+			} else {
+
+				for(int i = listOfSortData.size() - 1; i >= 0; i--) {
+					HashMap hash = (HashMap)listOfSortData.get(i);
+					
+                    //Datei
+					if(hash.get("type").equals("file")) {
+						item = new TableItem(table, SWT.NONE);				
+
+						item.setData("type", hash.get("type"));
+						if(hash.get("type").equals("file")) 
+							item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_file.gif"));
+						
+						for(int j = 0; j < table.getColumnCount(); j++) {					
+							item.setText(j, sosString.parseToString(hash.get(table.getColumn(j).getText())));
+						}
+					}
+				}
+				//Verzeichnis
+				for(int i = listOfSortData.size() - 1; i >= 0; i--) {
+					HashMap hash = (HashMap)listOfSortData.get(i);
+							
+					if(!hash.get("type").equals("file")) {
+						item = new TableItem(table, SWT.NONE);		
+						item.setData("type", hash.get("type"));
+
+						if(hash.get("type").equals("dir")) 
+							item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory.gif"));
+						else if(hash.get("type").equals("dir_up"))					
+							item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory_up.gif"));
+
+						for(int j = 0; j < table.getColumnCount(); j++) {					
+							item.setText(j, sosString.parseToString(hash.get(table.getColumn(j).getText())));
+						}
+					}
+				}
+
+
+			}
+
+		} catch(Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
+		}
+	}
+	
+	
+/*
 	private void sort(TableColumn col) {
 		try {			
 
@@ -953,7 +1080,7 @@ public class FTPDialog {
 
 		}
 	}
-
+*/
 	public void setToolTipText() {
 		if(type.equalsIgnoreCase(OPEN_HOT_FOLDER)) {
 			butOpenOrSave.setToolTipText(Messages.getTooltip("ftpdialog.btn_open_hot_folder"));

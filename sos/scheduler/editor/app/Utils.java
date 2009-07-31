@@ -1009,7 +1009,7 @@ public class Utils {
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty())
 					//throw new Exception ("Der Job " + name + " ist in einer Jobkette definiert. Soll der Job trotzdem gelöscht werden");
-					throw new Exception ("The lock [lock=" + name + "] is currently	being used by a job. Do you want to delete?");
+					throw new Exception ("The Job [name=" + name + "] is currently being used by a job chain. Do you want to delete?");
 
 			} else if(type == Editor.LOCKS) {
 

@@ -104,7 +104,9 @@ public class JobAssistentInfoForms {
 					Options.setShowWizardInfo(!butShow.getSelection());					
 				}
 			});
-			butShow.setText(Messages.getString("assistent.start.info.visible"));
+			//butShow.setText(Messages.getString("assistent.start.info.visible"));
+			butShow.setText(Messages.getString("TextDialog.butShowSiteInFuture.text"));
+			
 		}
 		new Label(shell, SWT.NONE);
 

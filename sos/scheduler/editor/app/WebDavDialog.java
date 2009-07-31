@@ -597,7 +597,7 @@ public class WebDavDialog {
 					MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
 					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
+					MainWindow.getContainer().getCurrentTab().setData("webdav_rARCHITEKTEN_EA_NEU_directory", txtUrl.getText() + "/" + txtFilename.getText());
 					main.setSaveStatus();	
 
 				}
@@ -621,12 +621,12 @@ public class WebDavDialog {
 					ArrayList newlist = listener.saveHotFolderAs(localfilename, file);
 
 					MainWindow.getContainer().getCurrentTab().setData("webdav_hot_folder_elements", newlist);
-					//MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", file);
+					//MainWindow.getContainer().getCurrentTab().setData("webdav_rARCHITEKTEN_EA_NEU_directory", file);
 
 					MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
 					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
+					MainWindow.getContainer().getCurrentTab().setData("webdav_rARCHITEKTEN_EA_NEU_directory", txtUrl.getText() + "/" + txtFilename.getText());
 				}
 				return;
 
@@ -636,7 +636,7 @@ public class WebDavDialog {
 					MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
 					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
+					MainWindow.getContainer().getCurrentTab().setData("webdav_rARCHITEKTEN_EA_NEU_directory", txtUrl.getText() + "/" + txtFilename.getText());
 					main.setSaveStatus();		
 				}
 			}
@@ -707,7 +707,7 @@ public class WebDavDialog {
 				MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
 				MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
 				MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
-				MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
+				MainWindow.getContainer().getCurrentTab().setData("webdav_rARCHITEKTEN_EA_NEU_directory", txtUrl.getText() + "/" + txtFilename.getText());
 				MainWindow.getContainer().getCurrentTab().setData("webdav_hot_folder_elements", nameOfLifeElement);
 
 				main.setSaveStatus();	
@@ -737,7 +737,7 @@ public class WebDavDialog {
 				MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
 				MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
 				MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
-				MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
+				MainWindow.getContainer().getCurrentTab().setData("webdav_rARCHITEKTEN_EA_NEU_directory", txtUrl.getText() + "/" + txtFilename.getText());
 				main.setSaveStatus();		
 			}
 

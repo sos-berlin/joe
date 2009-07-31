@@ -98,35 +98,82 @@ public class DetailsListener {
 
 
 	public void parseDocuments() {		
+		String xmlPaths = "";
+		try {
+
+			if(isLifeElement) {
+				
+
+				if(path != null && path.length() > 0) {
+					File f = new File(path);
+					if(f.isFile())
+						xmlPaths = f.getParent();
+					else
+						xmlPaths = path; 
+				} else { 
+					xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHotFolder() ;
+				}
+
+				xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\")) ? xmlPaths : xmlPaths + "/" ;
+				/*String _currOrderId = orderId != null && orderId.length()>0? "," + orderId : "";
+				xmlFilename = xmlPaths + jobChainname+ _currOrderId + ".config.xml";
+
+				if(_currOrderId != null && _currOrderId.length() > 0 ) {
+					File jobChainConfig = new File(xmlPaths + jobChainname+  ".config.xml");
+					if(jobChainConfig.exists()) {
+						int c = MainWindow.message("Es gibt bereits eine Konfiguration für die Jobkette. Soll diese für den Auftrag übernommen werden?", SWT.YES | SWT.NONE | SWT.ICON_QUESTION);
+						if(c == SWT.YES) {
+							sos.util.SOSFile.copyFile(jobChainConfig.getAbsolutePath(), xmlFilename);
+						}
+					}
+				}
+				*/
 
 
-		if(isLifeElement) {
-			String xmlPaths = "";
 
-			if(path != null && path.length() > 0) {
-				File f = new File(path);
-				if(f.isFile())
-					xmlPaths = f.getParent();
-				else
-					xmlPaths = path; 
-			} else { 
-				xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHotFolder() ;
+			} else {
+				xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome() ;
+				xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths+ "config/" : xmlPaths.concat("/config/"));
+				/*String _currOrderId = orderId != null && orderId.length()>0? "," + orderId : "";
+				if(jobChainname.concat(_currOrderId).length() > 0) {
+					//xmlFilename = xmlPaths + "scheduler_" +jobChainname+ _currOrderId + ".config.xml";
+					xmlFilename = xmlPaths + jobChainname+ _currOrderId + ".config.xml";
+				}
+				if(_currOrderId != null && _currOrderId.length() > 0 ) {
+					File jobChainConfig = new File(xmlPaths + jobChainname+  ".config.xml");
+					if(jobChainConfig.exists()) {
+						int c = MainWindow.message("Es gibt bereits eine Konfiguration für die Jobkette. Soll diese für den Auftrag übernommen werden?", SWT.YES | SWT.NONE | SWT.ICON_QUESTION);
+						if(c == SWT.YES) {
+							sos.util.SOSFile.copyFile(jobChainConfig.getAbsolutePath(), xmlFilename);
+						}
+					}
+				}*/
+			}
+			String _currOrderId = orderId != null && orderId.length()>0? "," + orderId : "";
+			xmlFilename = xmlPaths + jobChainname+ _currOrderId + ".config.xml";
+
+			if(_currOrderId != null && _currOrderId.length() > 0 ) {
+				File jobChainConfig = new File(xmlPaths + jobChainname+  ".config.xml");
+				if(jobChainConfig.exists() && !new File(xmlFilename).exists()) {
+					//int c = MainWindow.message("Es gibt bereits eine Konfiguration für die Jobkette. Soll diese für den Auftrag übernommen werden?", SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+					int c = MainWindow.message("A configuration already exists for this job chain. Should this configuration be used for the order?", SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+					if(c == SWT.YES) {
+						if(!sos.util.SOSFile.copyFile(jobChainConfig.getAbsolutePath(), xmlFilename))
+							MainWindow.message("Could not copy configuration File?", SWT.ICON_QUESTION | SWT.YES | SWT.NO );							
+					}
+				}
 			}
 
-			xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\")) ? xmlPaths : xmlPaths + "/" ;
-			String _currOrderId = orderId != null && orderId.length()>0? "_" + orderId : "";
-			xmlFilename = xmlPaths + jobChainname+ _currOrderId + ".config.xml";
-		} else {
-			String xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome() ;
-			xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths+ "config/" : xmlPaths.concat("/config/"));
-			String _currOrderId = orderId != null && orderId.length()>0? "_" + orderId : "";
-			if(jobChainname.concat(_currOrderId).length() > 0)
-				xmlFilename = xmlPaths + "scheduler_" +jobChainname+ _currOrderId + ".config.xml";
-			
+
+		} catch(Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			System.err.println("..error im DetailsListener.parseDocuments(): " + e.getMessage());
 		}
 
-		
-		
 		Element root        = null;					
 		Element order       = null;  
 
@@ -392,12 +439,14 @@ public class DetailsListener {
 	}
 
 	public void setParam( String name, String value, String note, String noteText, String language){
+		try {
+		boolean noNote = false;
 		for(int i =0; i < params.size(); i++) {
 			Element param = (Element)params.get(i);
 			String pName = Utils.getAttributeValue("name", param);
 			if(name.equalsIgnoreCase(pName)){
 				Utils.setAttribute("value", value, param);
-				if(noteText != null || noteText.trim().length() > 0) {
+				if(noteText != null && noteText.trim().length() > 0) {
 					while(!param.getContent().isEmpty()) {
 						if(param.getContent().get(0) instanceof org.jdom.Text)
 							param.getContent().remove(0);
@@ -406,15 +455,31 @@ public class DetailsListener {
 					//org.jdom.CDATA txt = new org.jdom.CDATA(noteText);
 					param.addContent(txt);
 				}
-				for(int j = 1; j < 3; j++ ){
-					Element elNote = (Element)params.get(i+j);
-					
-					if(elNote.getName().equals("param")) {
-						break;//die nächsten beiden Knoten der param Elemente sind nicht die note Elemente
+				//if(params.size() > 1 || params.size() > i+1) {
+				if(params.size() > i+1) {
+					for(int j = 1; j < 3; j++ ){
+						Element elNote = (Element)params.get(i+j);
+
+						if(elNote.getName().equals("param")) {
+							noNote = true;
+							break;//die nächsten beiden Knoten der param Elemente sind nicht die note Elemente
+						}
+						if(elNote.getName().equalsIgnoreCase("note") && Utils.getAttributeValue("language", elNote).equalsIgnoreCase(language)) {
+							setNoteText(elNote, note);
+						}
 					}
-					if(elNote.getName().equalsIgnoreCase("note") && Utils.getAttributeValue("language", elNote).equalsIgnoreCase(language)) {
-						setNoteText(elNote, note);
-					}
+				} else {
+					noNote = true;
+				}
+				if(noNote) {
+					Element newNoteDE = new Element("note");
+					Utils.setAttribute("language", "de", newNoteDE);
+					Element newNoteEN = new Element("note");
+					Utils.setAttribute("language", "en", newNoteEN);
+					//Reihenfolge ist wichtig					
+					params.add(params.indexOf(param) + 1, newNoteDE);
+					params.add(params.indexOf(param) + 2, newNoteEN);
+					return;
 				}
 				return;
 			}
@@ -430,7 +495,6 @@ public class DetailsListener {
 			param.addContent(txt);
 		}
 		Element newNoteDE = new Element("note");
-
 		Utils.setAttribute("language", "de", newNoteDE);
 		Element newNoteEN = new Element("note");
 		Utils.setAttribute("language", "en", newNoteEN);
@@ -442,7 +506,9 @@ public class DetailsListener {
 			setNoteText(newNoteDE, note);
 		else
 			setNoteText(newNoteEN, note);
-
+		} catch (Exception e) {
+			MainWindow.message("Could not add Params cause: " + e.toString(), SWT.ICON_WARNING);
+		}
 	}
 	
 	/*

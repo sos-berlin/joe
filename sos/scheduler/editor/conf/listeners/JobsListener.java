@@ -89,8 +89,7 @@ public class JobsListener {
 		}
 
 	}
-
-
+/*
 	public void newJob(Table table) {
 		Element job = new Element("job");
 		job.setAttribute("name", "job" + (table.getItemCount() + 1));
@@ -107,9 +106,34 @@ public class JobsListener {
 		_dom.setChanged(true);
 		
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.NEW);
+	}*/
+	
+
+	public void newJob(Table table, boolean isOrder) {
+		Element job = new Element("job");
+		Utils.setAttribute("name", "job" + (table.getItemCount() + 1), job);
+		
+		if(isOrder) {
+			Utils.setAttribute("order", "yes", job);
+			Utils.setAttribute("stop_on_error", "no", job);			
+		}
+		Element runtime = new Element("run_time");
+		job.addContent(runtime);
+		
+		if (_list == null)
+			initJobs();
+		_list.add(job);
+				
+		fillTable(table);
+		table.setSelection(table.getItemCount() - 1);
+		_main.updateJobs();
+		_main.expandItem("Job: "+ "job" + (table.getItemCount()));
+		_dom.setChanged(true);
+		
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.NEW);
 	}
-
-
+	
+	
 	public Element createJobElement(java.util.HashMap attr) {
 		Element job = new Element("job");
 

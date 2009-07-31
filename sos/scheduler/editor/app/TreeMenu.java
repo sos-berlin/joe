@@ -338,8 +338,7 @@ public class TreeMenu {
 
 		}
 		return xml;
-	}
-
+	}	
 
 
 	private Listener getXMLListener() {
@@ -360,13 +359,15 @@ public class TreeMenu {
 					} else {
 						element = _dom.getRoot().getChild("config");
 					}
-					if(element != null)
-						xml = getXML(element);        				
+					if(element != null) {
+						xml = getXML(element);
+					}
 
 				} else {
 					element = getElement();
-					if(element != null)        		
+					if(element != null) {        		
 						xml = getXML(element);
+					}
 
 				}
 
@@ -518,9 +519,12 @@ public class TreeMenu {
 
 			if(_dom instanceof SchedulerDom &&  ((SchedulerDom)(_dom)).isLifeElement() && oldname != null && newName != null &&!oldname.equals(newName)) {
 				
-				File oldFilename = new File(_dom.getFilename());
+				File oldFilename = null;
+				if (_dom.getFilename() != null)
+					new File(_dom.getFilename());
+				
 				File newFilename = null;
-				if(oldFilename.getParent() != null)
+				if(oldFilename != null && oldFilename.getParent() != null)
 					newFilename = new File(oldFilename.getParent(), newName + "." + getElement().getName() + ".xml");
 				else
 					newFilename = new File(newName + "." + getElement().getName() + ".xml");
@@ -590,7 +594,7 @@ public class TreeMenu {
 
 					sos.scheduler.editor.conf.listeners.JobsListener listeners = 
 						new sos.scheduler.editor.conf.listeners.JobsListener((SchedulerDom)_dom, _gui);
-					listeners.newJob(sos.scheduler.editor.conf.forms.JobsForm.getTable());
+					listeners.newJob(sos.scheduler.editor.conf.forms.JobsForm.getTable(), false);
 					
 				} else if(name.equals(SchedulerListener.MONITOR)) {
 					
