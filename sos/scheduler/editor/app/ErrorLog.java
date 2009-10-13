@@ -20,8 +20,7 @@ public class ErrorLog extends Exception {
 		try {
 
 			init();	
-			logger.info(msg);	
-			
+			logger.info(msg);				
 		} catch(Exception ex){			
 			System.out.println(ex.getMessage());			
 		}
@@ -37,6 +36,8 @@ public class ErrorLog extends Exception {
 			
 			if(logger.getLogLevel() > 6)
 				logger.info(getErrorMessage(e));
+			
+			
 					
 		} catch(Exception ex){			
 			System.out.println(ex.getMessage());			

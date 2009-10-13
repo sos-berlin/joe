@@ -309,6 +309,19 @@ public class TabbedContainer implements IContainer {
 	}
 
 
+	public CTabItem getFolderTab(String filename) {
+		if (folder.getItemCount() == 0)
+			return null;
+		else {
+			for(int i = 0; i < folder.getItemCount(); i++) {				
+				if(filelist.get(i).equals(filename))
+					return folder.getItem(i);
+			}
+			return null;
+		}
+	}
+
+	
 	public IEditor getCurrentEditor() {
 		if (folder.getItemCount() == 0)
 			return null;
@@ -316,6 +329,13 @@ public class TabbedContainer implements IContainer {
 			return (IEditor) getCurrentTab().getControl();
 	}
 
+	public IEditor getEditor(String filename) {
+		if (folder.getItemCount() == 0)
+			return null;
+		else
+			return ((SchedulerForm)(IEditor) getFolderTab(filename).getControl());
+		//SchedulerForm f = ((SchedulerForm)(IEditor) folder.getItem(0).getControl()).getDom().getFilename()
+	}
 
 	public void setStatusInTitle() {
 		if (folder.getItemCount() == 0)
@@ -326,12 +346,33 @@ public class TabbedContainer implements IContainer {
 		String title = t.caption;
 
 		if (tab.getData("ftp_profile_name") != null && tab.getData("ftp_profile_name").toString().length() > 0 && 
-				tab.getData("ftp_rARCHITEKTEN_EA_NEU_directory") != null && tab.getData("ftp_rARCHITEKTEN_EA_NEU_directory").toString().length() > 0)
-			title = tab.getData("ftp_rARCHITEKTEN_EA_NEU_directory").toString();
+				tab.getData("ftp_remote_directory") != null && tab.getData("ftp_remote_directory").toString().length() > 0)
+			title = tab.getData("ftp_remote_directory").toString();
 
 		if (tab.getData("webdav_profile_name") != null && tab.getData("webdav_profile_name").toString().length() > 0 && 
-				tab.getData("webdav_rARCHITEKTEN_EA_NEU_directory") != null && tab.getData("webdav_rARCHITEKTEN_EA_NEU_directory").toString().length() > 0)
-			title = tab.getData("webdav_rARCHITEKTEN_EA_NEU_directory").toString();
+				tab.getData("webdav_remote_directory") != null && tab.getData("webdav_remote_directory").toString().length() > 0)
+			title = tab.getData("webdav_remote_directory").toString();
+
+		tab.setText(getCurrentEditor().hasChanges() == false ? title : "*" + title);        
+		setWindowTitle();
+		window.setMenuStatus();
+	}
+
+	public void setStatusInTitle(CTabItem tab) {
+		if (folder.getItemCount() == 0)
+			return;
+
+		
+		TabData t = (TabData) tab.getData();
+		String title = t.caption;
+
+		if (tab.getData("ftp_profile_name") != null && tab.getData("ftp_profile_name").toString().length() > 0 && 
+				tab.getData("ftp_remote_directory") != null && tab.getData("ftp_remote_directory").toString().length() > 0)
+			title = tab.getData("ftp_remote_directory").toString();
+
+		if (tab.getData("webdav_profile_name") != null && tab.getData("webdav_profile_name").toString().length() > 0 && 
+				tab.getData("webdav_remote_directory") != null && tab.getData("webdav_remote_directory").toString().length() > 0)
+			title = tab.getData("webdav_remote_directory").toString();
 
 		tab.setText(getCurrentEditor().hasChanges() == false ? title : "*" + title);        
 		setWindowTitle();
@@ -350,9 +391,9 @@ public class TabbedContainer implements IContainer {
 		}
 
 		String title = setSuffix(tab,Utils.getFileFromURL(filename));
-		if(tab.getData("ftp_rARCHITEKTEN_EA_NEU_directory") != null && tab.getData("ftp_rARCHITEKTEN_EA_NEU_directory").toString().length() > 0 
+		if(tab.getData("ftp_remote_directory") != null && tab.getData("ftp_remote_directory").toString().length() > 0 
 				&& tab.getData("ftp_profile_name") != null && tab.getData("ftp_profile_name").toString().length() > 0)
-			title = tab.getData("ftp_rARCHITEKTEN_EA_NEU_directory").toString();
+			title = tab.getData("ftp_remote_directory").toString();
 		tab.setText(title);
 		tab.setToolTipText(filename);
 		tab.setData(new TabData(Utils.getFileFromURL(filename),title));
@@ -569,5 +610,12 @@ public class TabbedContainer implements IContainer {
 			newItem(actions, NEW_DOCUMENTATION_TITLE);
 			return actions;
 		}
+
+	/**
+	 * @return the filelist
+	 */
+	public ArrayList getFilelist() {
+		return filelist;
+	}
 
 }

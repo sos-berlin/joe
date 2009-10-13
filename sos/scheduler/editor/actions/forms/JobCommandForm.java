@@ -98,8 +98,10 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		listener = new JobCommandListener(dom, command, main);
 		if(command.getName().equalsIgnoreCase("start_job")) {
 			type = Editor.JOB;
+			tJob.setFocus();
 		} else {
 			type = Editor.COMMANDS;
+			cJobchain.setFocus();
 		}
 
 		initialize();

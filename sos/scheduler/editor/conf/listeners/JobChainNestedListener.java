@@ -233,7 +233,7 @@ public class JobChainNestedListener {
 	}
 
 
-	private boolean checkForState(String state) {
+	public boolean checkForState(String state) {
 
 		for (int i = 0; i < _states.length; i++) {
 			if (_states[i].equals(state))
@@ -356,15 +356,17 @@ public class JobChainNestedListener {
 			
 	) {
 		Element node = null;
-
-		/*if (_node != null) {//Wenn der Knotentyp geändert wird, alten löschen und einen neuen anlegen.
-			if(!isJobchainNode && _node.getName().equals("job_chain_node.job_chain")) 
-				_node.detach();
-			_node = null;
-
-		}else 
-		*/
+		
 		if(_node != null) {
+			
+			//System.out.println("node != null, old state=" + Utils.getAttributeValue("state", _node) + ", new state=" + state);
+			String oldState = Utils.getAttributeValue("state", _node);
+
+			if(oldState != null &&  state != null &&  !oldState.equals(state)) {
+				//state hat sicg geändert. ggf die Details state auch ändern
+				DetailsListener.changeDetailsState(oldState, state, Utils.getAttributeValue("name", _chain), _dom);
+			}
+
 			if(isJobchainNode && _node.getName().equals("job_chain_node.end"))		{			
 				_node.detach();
 				_node = null;
@@ -649,115 +651,7 @@ public class JobChainNestedListener {
 
 
 
-	public void changeUp_loesch_mich(Table table, 
-			boolean up, 
-			boolean isJobchainNode ,
-			String state, 
-			String job, 
-			String delay, 
-			String next, 
-			String error, 
-			int index,
-			boolean isFullNode) {
-		try {
-			Element node = null;
-
-			if (_node != null) {//Wenn der Knotentyp geändert wird, alten löschen und einen neuen anlegen.
-
-
-				if (!isJobchainNode && (_node.getName().equals("job_chain_node.job_chain") || _node.getName().equals("job_chain_node.end"))){
-
-					_node.detach();
-					_node = null;
-				}
-			}
-
-			if (_node != null) {
-				if (isJobchainNode) {				
-					Utils.setAttribute("state", state, _node, _dom);
-					Utils.setAttribute("job_chain", job, _node, _dom);
-					Utils.setAttribute("delay", delay, _node, _dom);
-					Utils.setAttribute("next_state", next, _node, _dom);
-					Utils.setAttribute("error_state", error, _node, _dom);
-				}else {				
-					Utils.setAttribute("state", state, _node, _dom);
-					//Utils.setAttribute("move_to", moveTo, _node, _dom);
-					//Utils.setAttribute("remove", removeFile, _node, _dom);
-				}
-			} else {
-				if (isJobchainNode) {
-					if(isFullNode)
-						node = new Element("job_chain_node.end");
-					else
-						node = new Element("job_chain_node.job_chain");
-					Utils.setAttribute("state", state, node, _dom);
-					Utils.setAttribute("job_chain", job, node, _dom);
-					Utils.setAttribute("delay", delay, node, _dom);
-					Utils.setAttribute("next_state", next, node, _dom);
-					Utils.setAttribute("error_state", error, node, _dom);
-				}
-
-			}
-			List l = _chain.getContent();
-			int cIndex =-1;
-			boolean found = false;//Hilfsvariabkle für down
-			for(int i =0; i < _chain.getContentSize(); i++) {
-				if(l.get(i) instanceof Element) {				
-					Element elem_ = (Element)l.get(i);
-					String elemState = Utils.getAttributeValue("state", elem_);
-					String nodeState = Utils.getAttributeValue("state", _node);
-					if(up) {
-						//up				
-						if(elemState.equals(nodeState)) {
-							break;
-						} else {
-							cIndex = i;					
-							if(cIndex == -1)
-								cIndex = 0;//up
-
-						}
-					} else {
-						//down
-						if(elem_.equals(_node)) {
-							found = true;
-						} else if(found) {
-							cIndex = i;
-							break;
-						}
-					}
-				}
-			}
-			node = (Element)_node.clone();		
-
-			if(_chain.getChildren().contains(_node)) {
-				_chain.removeContent(_node);						
-			}
-			_chain.addContent(cIndex, node);
-			_node = node;
-
-
-			_dom.setChanged(true);
-			_dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
-
-			setStates();
-			fillChain(table);
-			if(up)
-				table.setSelection(index-1);
-			else
-				table.setSelection(index+1);
-		} catch (Exception e) {
-			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			} catch(Exception ee) {
-				//tu nichts
-			}
-
-			sos.scheduler.editor.app.MainWindow.message(e.getMessage(), SWT.ICON_INFORMATION);
-		}
-	}
-
-
-
+	
 
 
 	private int getIndexOfNode(TableItem item) {
@@ -782,6 +676,8 @@ public class JobChainNestedListener {
 	public void deleteNode(Table tableNodes) {
 		List nodes = _chain.getChildren();
 		int index = getIndexOfNode(tableNodes.getItem(tableNodes.getSelectionIndex()));
+		
+		DetailsListener.deleteDetailsState(tableNodes.getSelection()[0].getText(0), Utils.getAttributeValue("name", _chain), _dom);
 		nodes.remove(index);
 		_node = null;
 		_dom.setChanged(true);
@@ -885,4 +781,5 @@ public class JobChainNestedListener {
 		return Utils.getAttributeValue("on_error", _node);
 	}		
 
+	
 }

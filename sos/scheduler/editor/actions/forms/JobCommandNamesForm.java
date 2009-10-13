@@ -111,7 +111,7 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		txtName.setText(listener.getName());
 		txtHost.setText(listener.getHost());
 		txtPort.setText(listener.getPort());
-		
+		txtName.setFocus();
 	}
 
 

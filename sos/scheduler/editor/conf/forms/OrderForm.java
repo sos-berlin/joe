@@ -171,7 +171,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         butGoto.setAlignment(SWT.RIGHT);
 
         final Composite composite = new Composite(gOrder, SWT.NONE);
-        composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 3, 1));
+        composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 4, 1));
         final GridLayout gridLayout = new GridLayout();
         gridLayout.verticalSpacing = 0;
         gridLayout.marginWidth = 0;
@@ -205,7 +205,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         			}
         	}
         });
-        Button butBrowse = new Button(gOrder, SWT.NONE);
+        /*Button butBrowse = new Button(gOrder, SWT.NONE);
         butBrowse.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
         butBrowse.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {        		
@@ -216,7 +216,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         	}
         });
         butBrowse.setText("Browse");
-       
+       */
        
 
         final Label titleLabel = new Label(gOrder, SWT.NONE);

@@ -70,6 +70,8 @@ public class EventListener {
 				item.setText(6, Utils.getAttributeValue("order_id", event));
 				item.setText(7, Utils.getAttributeValue("comment", event));
 				item.setText(8, Utils.getAttributeValue("exit_code", event));
+				item.setText(9, Utils.getAttributeValue("expiration_period", event));
+				item.setText(10, Utils.getAttributeValue("expiration_cycle", event));
 				item.setData(event);
 			}
 		}
@@ -77,12 +79,17 @@ public class EventListener {
    
 	public void apply(String eventName, String eventId, String eventClass, String eventTitle,
 			String jobname, String jobChain, String orderId, String comment, String exitCode,
+			String expirationPeriod, String expirationCycle,
 			Table table) {
 		
 		Element event = null;
 		
 		if(table.getSelectionCount() > 0) {
-			event = (Element)table.getSelection()[0].getData();	
+			event = (Element)table.getSelection()[0].getData();
+		} else if(table.getItemCount() > 0 && 
+			((Element)table.getItem(0).getData() != null && ((Element)table.getItem(0).getData()).getAttributes().isEmpty())) {
+			//Defaultmässig wird ein leeres Element genommen. Der soll gefüllt werden
+			event = (Element)table.getItem(0).getData();
 		} else {					
 			event = new Element("event");
 			
@@ -112,6 +119,8 @@ public class EventListener {
 		Utils.setAttribute("order_id", orderId, event);
 		Utils.setAttribute("comment", comment, event);
 		Utils.setAttribute("exit_code", exitCode, event);
+		Utils.setAttribute("expiration_period", expirationPeriod, event);
+		Utils.setAttribute("expiration_cycle", expirationCycle, event);
 
 		fillEvent(table);
 

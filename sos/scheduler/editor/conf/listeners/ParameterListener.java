@@ -305,7 +305,7 @@ public class ParameterListener {
 		}
 		if(parameterDescription_en!=null && parameterDescription_en.trim().length()>0) {
 			item.setData("parameter_description_en", parameterDescription_en);
-			parameterDescription.put( "parameter_description_en_"+ name, parameterDescription_de);
+			parameterDescription.put( "parameter_description_en_"+ name, parameterDescription_en);
 		}
 
 		if(required ) {
@@ -628,26 +628,7 @@ public class ParameterListener {
 		if (params != null) {			
 			_params = params.getChildren();			
 			_includeParams = params.getChildren("include");
-		}
-		
-		/*String paramname = table.getSelection()[0].getText(0);		
-		for(int i = 0; i < _params.size();++i) {
-			Element elem = (Element)_params.get(i);
-			if(Utils.getAttributeValue("name", elem).equals(paramname)) {
-				Object obj =   elem.clone();
-				_params.remove(i);
-				_params.add(i-1, obj);
-				table.removeAll();
-				fillParams(table);
-				table.select(i-1);
-				Utils.setChangedForDirectory(_parent, _dom);
-				_dom.setChanged(true);
-			}
-				
-				
-		}
-		*/
-		
+		}				
 		
 		Element elem = (Element)(_params.get(index));
 		Object obj =   elem.clone();
@@ -663,7 +644,7 @@ public class ParameterListener {
 		
 	}
 
-	//selektierte Datensatz wird eine Zeile unten oben verschoben
+	//selektierte Datensatz wird eine Zeile unten  verschoben
 	public void changeDown(Table table) {
 		int index = table.getSelectionIndex();
 		if(index < 0)//nichts ist selektiert

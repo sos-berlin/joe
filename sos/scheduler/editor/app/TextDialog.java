@@ -17,6 +17,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -226,11 +227,8 @@ public class TextDialog extends Dialog {
 
 	private void setDialog() {
 		final GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 5;
 		_shell.setLayout(gridLayout);
-
-		GridData gridData1 = new GridData();
-		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 5, 1);
+		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
 
 		//_styledText = new StyledText(_shell, SWT.V_SCROLL | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
 		_styledText = new Text(_shell, SWT.V_SCROLL | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
@@ -292,7 +290,7 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 		});
 		_styledText.setEditable(false);
 		_styledText.setLayoutData(gridData);
-
+ 
 		if(Options.getPropertyBoolean("editor.job.show.wizard")) {
 			butShowSiteInFuture = new Button(getShell(), SWT.CHECK);
 			butShowSiteInFuture.addSelectionListener(new SelectionAdapter() {
@@ -301,21 +299,30 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 					
 				}
 			});
-			butShowSiteInFuture.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 5, 1));
+			butShowSiteInFuture.setLayoutData(new GridData());
 			butShowSiteInFuture.setText(Messages.getString("TextDialog.butShowSiteInFuture.text"));
 			
 		}
 
-		Button closeButton = new Button(_shell, SWT.NONE);
+		final Composite composite = new Composite(_shell, SWT.NONE);
+		composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
+		final GridLayout gridLayout_1 = new GridLayout();
+		gridLayout_1.marginWidth = 0;
+		gridLayout_1.marginHeight = 0;
+		gridLayout_1.verticalSpacing = 0;
+		gridLayout_1.horizontalSpacing = 2;
+		gridLayout_1.numColumns = 5;
+		composite.setLayout(gridLayout_1);
+
+		Button closeButton = new Button(composite, SWT.NONE);
 		closeButton.setText("Close");
-		closeButton.setLayoutData(gridData1);
 		closeButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				close();            	
 			}
-		});
+		}); 
 
-		clipboardButton = new Button(_shell, SWT.NONE);
+		clipboardButton = new Button(composite, SWT.NONE);
 		clipboardButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if(_styledText.getText().length() > 0)					
@@ -325,14 +332,15 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 			}
 		});
 		clipboardButton.setVisible(false);
-		clipboardButton.setLayoutData(new GridData());
-		clipboardButton.setText("Clipboard");
+		clipboardButton.setText("Clipboard"); 
 
-		addPredefinedFunctionsLabel = new Label(_shell, SWT.NONE);
+		addPredefinedFunctionsLabel = new Label(composite, SWT.NONE);
+		addPredefinedFunctionsLabel.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
 		addPredefinedFunctionsLabel.setVisible(false);
 		addPredefinedFunctionsLabel.setText("Select predefined functions:");
 
-		cboFunctions = new Combo(_shell, SWT.NONE);
+		cboFunctions = new Combo(composite, SWT.NONE);
+		cboFunctions.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		cboFunctions.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if(cboFunctions.getText().length() > 0) {
@@ -343,10 +351,10 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 				
 		});
 		cboFunctions.setVisible(false);
-		cboFunctions.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 
-		butApply = new Button(_shell, SWT.NONE);
+		butApply = new Button(composite, SWT.NONE);
+		butApply.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		butApply.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				applyBoardClick =true;
@@ -354,7 +362,6 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 			}
 		});
 		butApply.setEnabled(false);
-		butApply.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		butApply.setText("Apply");
 
 
@@ -454,7 +461,8 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 	 * @param butShowSiteInFuture the butShowSiteInFuture to set
 	 */
 	public void setShowWizzardInfo(boolean visible) {
-		this.butShowSiteInFuture.setVisible(visible);
+		if(butShowSiteInFuture != null)
+			this.butShowSiteInFuture.setVisible(visible);
 	}
 	
 }

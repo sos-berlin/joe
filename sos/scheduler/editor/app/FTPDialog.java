@@ -634,7 +634,7 @@ public class FTPDialog {
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_rARCHITEKTEN_EA_NEU_directory", txtDir.getText() + "/" + txtFilename.getText());
+					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
 					main.setSaveStatus();	
 
 				}
@@ -658,7 +658,7 @@ public class FTPDialog {
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_rARCHITEKTEN_EA_NEU_directory", txtDir.getText() + "/" + txtFilename.getText());
+					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
 					main.setSaveStatus();
 				}
 				return;
@@ -669,7 +669,7 @@ public class FTPDialog {
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_rARCHITEKTEN_EA_NEU_directory", txtDir.getText() + "/" + txtFilename.getText());
+					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
 					main.setSaveStatus();		
 				}
 			}
@@ -784,7 +784,7 @@ public class FTPDialog {
 				MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
 				MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
 				MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-				MainWindow.getContainer().getCurrentTab().setData("ftp_rARCHITEKTEN_EA_NEU_directory", txtDir.getText() + "/" + txtFilename.getText());
+				MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
 				MainWindow.getContainer().getCurrentTab().setData("ftp_hot_folder_elements", nameOfLifeElement);
 
 				main.setSaveStatus();	
@@ -814,7 +814,7 @@ public class FTPDialog {
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_rARCHITEKTEN_EA_NEU_directory", txtDir.getText() + "/" + txtFilename.getText());
+					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
 					main.setSaveStatus();		
 				}
 

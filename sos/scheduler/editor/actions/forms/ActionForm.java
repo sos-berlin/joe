@@ -42,7 +42,7 @@ public class ActionForm extends Composite implements IUpdateLanguage {
         setSize(new Point(696, 462));
         setLayout(new FillLayout());
        txtName.setText(listener.getName());
-
+       txtName.setFocus();
     }
 
 

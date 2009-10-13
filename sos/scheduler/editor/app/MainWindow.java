@@ -281,9 +281,9 @@ public class MainWindow  {
 			}
 		});
 
-		//open rARCHITEKTEN_EA_NEU configuration
+		//open remote configuration
 		MenuItem mORC = new MenuItem(mFile, SWT.CASCADE);
-		mORC.setText("Open RARCHITEKTEN_EA_NEU Configuration");
+		mORC.setText("Open Remote Configuration");
 		//mORC.setAccelerator(SWT.CTRL | 'R');
 
 		Menu pMOpenGlobalScheduler = new Menu(mORC);
@@ -293,7 +293,7 @@ public class MainWindow  {
 			public void widgetSelected(final SelectionEvent e) {
 				Utils.startCursor(getSShell());
 				String globalSchedulerPath = Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome() : Options.getSchedulerHome() + "/";
-				globalSchedulerPath = globalSchedulerPath + "config/rARCHITEKTEN_EA_NEU/_all";
+				globalSchedulerPath = globalSchedulerPath + "config/remote/_all";
 				File f = new java.io.File(globalSchedulerPath); 
 				if(!f.exists()) {
 					if(!f.mkdirs()) {						
@@ -327,7 +327,7 @@ public class MainWindow  {
 				dialog.showForm(HotFolderDialog.SCHEDULER_HOST);
 			}
 		});
-		pOpenSchedulerHost.setText("Open RARCHITEKTEN_EA_NEU Scheduler Configuration");
+		pOpenSchedulerHost.setText("Open Remote Scheduler Configuration");
 
 
 		mORC.setMenu(pMOpenGlobalScheduler);
@@ -354,7 +354,7 @@ public class MainWindow  {
 					if(container.getCurrentTab().getData("ftp_title") != null) {
 						container.getCurrentTab().setData("ftp_title", null);
 						container.getCurrentTab().setData("ftp_profile_name", null);
-						container.getCurrentTab().setData("ftp_rARCHITEKTEN_EA_NEU_directory", null);
+						container.getCurrentTab().setData("ftp_remote_directory", null);
 						container.getCurrentTab().setData("ftp_hot_folder_elements", null);
 						container.getCurrentTab().setData("ftp_profile", null);
 					}
@@ -1038,7 +1038,7 @@ try {
 				return;			
 
 			String profilename = container.getCurrentTab().getData("ftp_profile_name").toString();
-			String rARCHITEKTEN_EA_NEUDir = container.getCurrentTab().getData("ftp_rARCHITEKTEN_EA_NEU_directory").toString();
+			String remoteDir = container.getCurrentTab().getData("ftp_remote_directory").toString();
 			ArrayList ftpHotFolderElements = new ArrayList();
 			if(container.getCurrentTab().getData("ftp_hot_folder_elements") != null)
 				ftpHotFolderElements = (ArrayList)container.getCurrentTab().getData("ftp_hot_folder_elements");
@@ -1064,32 +1064,32 @@ try {
 				
 				if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isLifeElement()) {
 					String filename = container.getCurrentEditor().getFilename();
-					if(!new File(rARCHITEKTEN_EA_NEUDir).getName().equalsIgnoreCase(new File(filename).getName())){
+					if(!new File(remoteDir).getName().equalsIgnoreCase(new File(filename).getName())){
 						//Attribute "name" wurde geändert: Das bedeutet auch Änderungen der life Datei namen.
-						//ftpListener.removeFile(rARCHITEKTEN_EA_NEUDir);
-						profile.removeFile(rARCHITEKTEN_EA_NEUDir);
+						//ftpListener.removeFile(remoteDir);
+						profile.removeFile(remoteDir);
 						try {
-							String newName = sosString.parseToString(new File(rARCHITEKTEN_EA_NEUDir).getParent()) + "/" + new File(filename).getName();
+							String newName = sosString.parseToString(new File(remoteDir).getParent()) + "/" + new File(filename).getName();
 							newName = newName.replaceAll("\\\\", "/");
-							container.getCurrentTab().setData("ftp_rARCHITEKTEN_EA_NEU_directory", newName);
+							container.getCurrentTab().setData("ftp_remote_directory", newName);
 						} catch(Exception e) {
 							System.out.println("test: " + e.toString());
 							
 						} //tu nichts 
 					}
-					rARCHITEKTEN_EA_NEUDir = new File(rARCHITEKTEN_EA_NEUDir).getParent() + "/" + new File(filename).getName();
-					//ftpListener.saveAs( filename, rARCHITEKTEN_EA_NEUDir);
-					profile.saveAs( filename, rARCHITEKTEN_EA_NEUDir);
+					remoteDir = new File(remoteDir).getParent() + "/" + new File(filename).getName();
+					//ftpListener.saveAs( filename, remoteDir);
+					profile.saveAs( filename, remoteDir);
 					
 				} else if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {
 
-					//ftpListener.saveHotFolderAs(container.getCurrentEditor().getFilename(), rARCHITEKTEN_EA_NEUDir, ftpHotFolderElements, changes);
-					profile.saveHotFolderAs(container.getCurrentEditor().getFilename(), rARCHITEKTEN_EA_NEUDir, ftpHotFolderElements, changes);
+					//ftpListener.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);
+					profile.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);
 
 				} else {
 
-					//ftpListener.saveAs( container.getCurrentEditor().getFilename(), rARCHITEKTEN_EA_NEUDir );
-					profile.saveAs( container.getCurrentEditor().getFilename(), rARCHITEKTEN_EA_NEUDir );
+					//ftpListener.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
+					profile.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
 
 				}
 				//ftpListener.disconnect();
@@ -1131,7 +1131,7 @@ try {
 				return;
 			
 			String profilename = container.getCurrentTab().getData("webdav_profile_name").toString();
-			String rARCHITEKTEN_EA_NEUDir = container.getCurrentTab().getData("webdav_rARCHITEKTEN_EA_NEU_directory").toString();
+			String remoteDir = container.getCurrentTab().getData("webdav_remote_directory").toString();
 			ArrayList webdavHotFolderElements = new ArrayList();
 			if(container.getCurrentTab().getData("webdav_hot_folder_elements") != null)
 				webdavHotFolderElements = (ArrayList)container.getCurrentTab().getData("webdav_hot_folder_elements");
@@ -1150,23 +1150,23 @@ try {
 			if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isLifeElement()) {
 
 				String filename = container.getCurrentEditor().getFilename();
-				if(!new File(rARCHITEKTEN_EA_NEUDir).getName().equalsIgnoreCase(new File(filename).getName())){
+				if(!new File(remoteDir).getName().equalsIgnoreCase(new File(filename).getName())){
 					//Attribute "name" wurde geändert: Das bedeutet auch Änderungen der life Datei namen.
-					webdavListener.removeFile(rARCHITEKTEN_EA_NEUDir);
+					webdavListener.removeFile(remoteDir);
 				}
 
-				rARCHITEKTEN_EA_NEUDir = rARCHITEKTEN_EA_NEUDir.substring(0, rARCHITEKTEN_EA_NEUDir.lastIndexOf("/"))+ "/" + new File(filename).getName();
+				remoteDir = remoteDir.substring(0, remoteDir.lastIndexOf("/"))+ "/" + new File(filename).getName();
 
 
-				webdavListener.saveAs( filename, rARCHITEKTEN_EA_NEUDir);
+				webdavListener.saveAs( filename, remoteDir);
 
 			} else if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {
 
-				webdavListener.saveHotFolderAs(container.getCurrentEditor().getFilename(), rARCHITEKTEN_EA_NEUDir, webdavHotFolderElements, changes);
+				webdavListener.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, webdavHotFolderElements, changes);
 
 			} else {
 
-				webdavListener.saveAs( container.getCurrentEditor().getFilename(), rARCHITEKTEN_EA_NEUDir );
+				webdavListener.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
 
 			}
 		

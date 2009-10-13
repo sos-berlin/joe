@@ -155,7 +155,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 	
 	private Button                    butoIncludeSave                   = null;
 	
-	private boolean                   isRARCHITEKTEN_EA_NEUConnection                = false;
+	private boolean                   isRemoteConnection                = false;
 	
 	
 	
@@ -183,7 +183,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 	private void initialize() {
 		sosString = new SOSString();
 		try {
-			isRARCHITEKTEN_EA_NEUConnection = sosString.parseToString(MainWindow.getContainer().getCurrentTab().getData("ftp_title")).length() > 0;
+			isRemoteConnection = sosString.parseToString(MainWindow.getContainer().getCurrentTab().getData("ftp_title")).length() > 0;
 		} catch (Exception e) {}
 		//this.setLayout(new FillLayout());
 		this.setLayout(new GridLayout());
@@ -1118,7 +1118,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		tableIncludeParams = new Table(group_3, SWT.FULL_SELECTION | SWT.BORDER);
 		tableIncludeParams.addMouseListener(new MouseAdapter() {
 			public void mouseDoubleClick(final MouseEvent e) {
-				if(!isRARCHITEKTEN_EA_NEUConnection)
+				if(!isRemoteConnection)
 					createParameterTabItem();
 			}
 		});
@@ -1135,7 +1135,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				butRemoveInclude.setEnabled(tableIncludeParams.getSelectionCount() > 0);                               
 				butIncludesApply.setEnabled(false);
 				
-				butOpenInclude.setEnabled(true && !isRARCHITEKTEN_EA_NEUConnection);				
+				butOpenInclude.setEnabled(true && !isRemoteConnection);				
 			}
 		});
 		tableIncludeParams.setLinesVisible(true);

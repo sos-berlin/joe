@@ -1,11 +1,10 @@
 package sos.scheduler.editor.conf.forms;
 
 import java.io.File;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyAdapter;
@@ -33,12 +32,14 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
+import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
@@ -47,12 +48,13 @@ import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.conf.DetailDom;
 import sos.scheduler.editor.conf.IDetailUpdate;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
 
 
 public class DetailForm extends Composite implements IUpdateLanguage {
 
+	private Button butDown;
+	private Button butUp;
 	private   String                            jobChainname      = "";
 
 	private   DetailsListener                   detailListener    = null;
@@ -147,6 +149,8 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 	//Verwendung in Wizzard
 	private Text butRefreshWizzardNoteParam = null;
 	private JobListener joblistener = null;  
+	private String jobname = "";
+	
 	
 	/*
 	public DetailForm(Composite parent_, int style, int type_) {
@@ -698,7 +702,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		});
 		tableParams.setLinesVisible(true);
 		tableParams.setHeaderVisible(true);
-		final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 4);
+		final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 5);
 		gridData_4.heightHint = 157;
 		gridData_4.widthHint = 413;
 		tableParams.setLayoutData(gridData_4);
@@ -729,6 +733,32 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		});
 		butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butNew.setText("New");
+
+		final Composite composite_2 = new Composite(parameterGroup, SWT.NONE);
+		final GridData gridData_2_1 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
+		gridData_2_1.heightHint = 67;
+		composite_2.setLayoutData(gridData_2_1);
+		composite_2.setLayout(new GridLayout());
+
+		butUp = new Button(composite_2, SWT.NONE);
+		butUp.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				detailListener.changeUp(tableParams);
+			}
+		});
+		butUp.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+		butUp.setText("UP");
+		butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
+
+		butDown = new Button(composite_2, SWT.NONE);
+		butDown.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				detailListener.changeDown(tableParams);
+			}
+		});
+		butDown.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
+		butDown.setText("do");
+		butDown.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
 
 
 		final Button parameterButton = new Button(parameterGroup, SWT.NONE);
@@ -1180,14 +1210,18 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			addParam();
 		}
 		detailListener.save();
-
+		if(schedulerDom != null)
+			DetailsListener.addMonitoring2Job(jobChainname, state, schedulerDom, update);
 		txtState.setEnabled(false);
 		if(type == Editor.JOB_CHAINS) {
+			isEditable = false;
+			butApply.setEnabled(isEditable);
 			getShell().dispose();
 		} else {
 			isEditable = false;
 			butApply.setEnabled(isEditable);
 		}
+		//butApply.setEnabled(isEditable);
 	}
 
 	public void setParamsForWizzard(sos.scheduler.editor.conf.SchedulerDom dom_, ISchedulerUpdate update_){
@@ -1195,9 +1229,15 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		update = update_;
 	}
 
+	public void setParamsForWizzard(sos.scheduler.editor.conf.SchedulerDom dom_, ISchedulerUpdate update_, String jobname_){
+		schedulerDom = dom_;
+		update = update_;
+		jobname = jobname_;
+	}
 
 	private void createTempSchedulerDom(){
-		schedulerDom = new sos.scheduler.editor.conf.SchedulerDom();
+		if(schedulerDom == null)
+			schedulerDom = new sos.scheduler.editor.conf.SchedulerDom();
 		CTabFolder folder = new CTabFolder(parent, SWT.TOP | SWT.CLOSE );
 		update = new SchedulerForm(MainWindow.getContainer(), folder, SWT.NONE);
 		joblistener =  new JobListener(schedulerDom, detailListener.getParams().getParentElement(), update);
@@ -1208,6 +1248,8 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		butApply.setEnabled(true);
 		//Liste aller Jobdokumentation 
 		try {
+			
+		
 			if(joblistener == null)
 				createTempSchedulerDom();
 			//return;
@@ -1215,12 +1257,38 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			
 			//JobListener joblistener =  new JobListener(schedulerDom, detailListener.getParams().getParentElement(), update);
 			
-                         			
-			JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(joblistener, tableParams, Editor.PARAMETER);
+			
+			String jobDocumenation = ""; 
+			if(jobname != null && jobname.length() > 0) {
+				XPath x = XPath.newInstance("//job[@name='"+ jobname + "']/description/include");				 
+				List listOfElement = x.selectNodes(schedulerDom.getDoc());
+				if(!listOfElement.isEmpty()) {
+					Element include = (Element)listOfElement.get(0);
+					if(include != null) {
+						jobDocumenation = Utils.getAttributeValue("file", include);
+					}
+				}
+			}
+			
+			if(jobDocumenation!= null && jobDocumenation.trim().length() > 0) {
+				//JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren        			
+				//JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+				JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(schedulerDom, joblistener.get_main(), joblistener, tableParams, Editor.PARAMETER);
+				//paramsForm.withParamnote(true);
+				paramsForm.showAllImportJobParams(jobDocumenation);
+				paramsForm.setDetailsRefresh(butRefreshWizzardNoteParam);
+			} else { 
 
-			importParameterForms.showAllImportJobs();
-			importParameterForms.setDetailsRefresh(butRefreshWizzardNoteParam);
+
+				JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(joblistener, tableParams, Editor.PARAMETER);
+				//importParameterForms.withParamnote(true);
+				importParameterForms.showAllImportJobs();
+				importParameterForms.setDetailsRefresh(butRefreshWizzardNoteParam);
+
+			}
+			
 			butApply.setEnabled(true);
+			
 			if(dom != null)
 				dom.setChanged(true);
 
@@ -1243,6 +1311,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 	private void refreshTable() {
 		try {
 			detailListener.refreshParams(tableParams);
+			butApply.setEnabled(true);
 			/*if(tableParams == null) 
 				return;
 						
@@ -1284,4 +1353,6 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 
 		}
 	}
+
+
 } 

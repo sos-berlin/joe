@@ -24,6 +24,8 @@ import org.eclipse.swt.widgets.Shell;
 
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.listeners.DetailsListener;
+
 import java.util.regex.Pattern;
 
 
@@ -538,7 +540,10 @@ public class Utils {
 		if(str.startsWith("<div")) {
 			str = str.replaceFirst("\\A<\\s*div\\s*xmlns\\s*=\\s*\"[a-zA-Z0-9/:\\.]*\"\\s*>\\s*", "");
 			str = str.replaceFirst("\\s*<\\s*/\\s*div\\s*>\\Z", "");
+			
 		}
+		str = str.replaceFirst("\\<\\!\\[CDATA\\[", "");						
+		str = str.replaceFirst("]]>", "");
 		str = str.replaceAll("<pre space=\"preserve\">","<pre>");
 		return str;
 
@@ -604,28 +609,40 @@ public class Utils {
 			String scriptLanguage,
 			boolean showWizzardInfo) {
 	
+		/*System.out.println("test 1 XXX xml " + xml);
+		System.out.println("test 2  XXX shell " + shell);
+		System.out.println("test 3 XXX bApply " + bApply);
+		System.out.println("test 4 XXX selectStr " + selectStr);
+		System.out.println("test 5 XXX showFunction " + showFunction);
+		System.out.println("test 6 XXX scriptLanguage " + scriptLanguage);
+		System.out.println("test 7 XXX showWizzardInfo " + showWizzardInfo);
+		*/
+		
 		Font font = new Font(Display.getDefault(), "Courier New", 8, SWT.NORMAL);
 		TextDialog dialog = new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL
 				| SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		dialog.setSize(new Point(500, 400));
+		
 
-		if(selectStr != null && selectStr.trim().length() > 0)
+		if(selectStr != null && selectStr.trim().length() > 0) {
 			dialog.setContent(xml, selectStr);
-		else
+		} else { 
+		
 			dialog.setContent(xml);
+		}
+		
 		dialog.setClipBoard(true);
-		dialog.getStyledText().setFont(font);
-		dialog.getStyledText().setEditable(bApply);
-		dialog.setVisibleApplyButton(bApply);
-		dialog.setBSaveWindow(true);
+		
+		dialog.getStyledText().setFont(font);		
+		dialog.getStyledText().setEditable(bApply);		
+		dialog.setVisibleApplyButton(bApply);		
+		dialog.setBSaveWindow(true);		
 		dialog.setShowFunctions(showFunction);
 		dialog.setScriptLanguage(scriptLanguage);
 		dialog.setShowWizzardInfo(showWizzardInfo);
-		
 		//String s = dialog.open(true);
 		String s = dialog.open(false);
-
-
+		
 		if (dialog.isClipBoardClick()) {
 			copyClipboard(s, shell.getDisplay());
 			return null;
@@ -635,10 +652,8 @@ public class Utils {
 			s = null;
 		}
 
-
 		if (font != null)
 			font.dispose();
-
 		return s;
 	}
 	
@@ -937,27 +952,7 @@ public class Utils {
 					XPath x0 = XPath.newInstance("//job[@name='"+ name + "']");			 
 					Element e = (Element)x0.selectSingleNode(_dom.getDoc());
 					boolean isOrder = Utils.getAttributeValue("order", e).equalsIgnoreCase("yes");
-					/*if( isOrder) {						
-
-						XPath x = XPath.newInstance("//job[@name='"+ name + "']/run_time[@let_run='yes' or @once='yes' or @single_start]");			 
-						//Element e = (Element)x.selectSingleNode(doc);
-						List listOfElement = x.selectNodes(_dom.getDoc());
-						if(!listOfElement.isEmpty())
-							//throw new Exception ("Ein Auftragsgesteuerter Job [name=" + name+ "] darf im Runtime Elemente keinen single_start-, start_once- und " +
-							//"let_run-Attribute verwenden.");
-							throw new Exception ("An order job [name=" + name+ "] may not use single_start-, start_once- and " +
-									"let_run attributes in Runtime Elements.");
-							
-						XPath x2 = XPath.newInstance("//job[@name='"+ name + "']/run_time//period[@let_run='yes' or @single_start]");				 
-						List listOfElement_2 = x2.selectNodes(_dom.getDoc());
-						if(!listOfElement_2.isEmpty())
-							//throw new Exception ("Ein Auftragsgesteuerter Job [name=" + name+ "] darf im Runtime Elemente keinen single_start-, start_once- und " +
-							//"let_run-Attribute verwenden.");
-							throw new Exception ("An order job [name=" + name+ "] may not use single_start-, start_once- and " +
-							"let_run attributes in Runtime Elements.");
 					
-					} else {
-*/
 					if(!isOrder) {
 						XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
 						List listOfElement_3 = x3.selectNodes(_dom.getDoc());
@@ -970,36 +965,31 @@ public class Utils {
 					if(name.length() == 0)
 						return true;
 
-					//test begin
+					//
 					XPath x0 = XPath.newInstance("//job[@name='"+ name + "']");			 
 					Element e = (Element)x0.selectSingleNode(_dom.getDoc());
 					boolean isOrder = Utils.getAttributeValue("order", e).equalsIgnoreCase("yes");
 					if( isOrder) {						
 
 						XPath x = XPath.newInstance("//job[@name='"+ name + "']/run_time[@let_run='yes' or @once='yes' or @single_start]");			 
-						//Element e = (Element)x.selectSingleNode(doc);
+						
 						List listOfElement = x.selectNodes(_dom.getDoc());
 						if(!listOfElement.isEmpty())
-							//throw new Exception ("Ein Auftragsgesteuerter Job [name=" + name+ "] darf im Runtime Elemente keinen single_start-, start_once- und " +
-							//"let_run-Attribute verwenden.");
 							throw new Exception ("An order job [name=" + name+ "] may not use single_start-, start_once- and " +
 									"let_run attributes in Runtime Elements. Should these attributes be deleted?");
 							
 						XPath x2 = XPath.newInstance("//job[@name='"+ name + "']/run_time//period[@let_run='yes' or @single_start]");				 
 						List listOfElement_2 = x2.selectNodes(_dom.getDoc());
 						if(!listOfElement_2.isEmpty())
-							//throw new Exception ("Ein Auftragsgesteuerter Job [name=" + name+ "] darf im Runtime Elemente keinen single_start-, start_once- und " +
-							//"let_run-Attribute verwenden.");
 							throw new Exception ("An order job [name=" + name+ "] may not use single_start-, start_once- and " +
 							"let_run attributes in Runtime Elements. Should these attributes be deleted?");
 					
 					}
-					//test end
+
 					
 					XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
 					List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-					if(!listOfElement_3.isEmpty())
-						//throw new Exception ("Der Job " + name + " ist in einer Jobkette definiert. Soll der Name des Jobs trotzdem geändert werden?");
+					if(!listOfElement_3.isEmpty())						
 						throw new Exception   ("The Job " + name + " is currently being used by a job chain. Do you want really rename the name?");
 				}
 
@@ -1007,16 +997,14 @@ public class Utils {
 
 				XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-				if(!listOfElement_3.isEmpty())
-					//throw new Exception ("Der Job " + name + " ist in einer Jobkette definiert. Soll der Job trotzdem gelöscht werden");
+				if(!listOfElement_3.isEmpty())					
 					throw new Exception ("The Job [name=" + name + "] is currently being used by a job chain. Do you want to delete?");
 
 			} else if(type == Editor.LOCKS) {
 
 				XPath x3 = XPath.newInstance("//lock.use[@lock='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-				if(!listOfElement_3.isEmpty())
-					//throw new Exception ("Die Sperre [lock=" + name + "] wird in einer Job verwendet. Möchten Sie trotzdem fortfahren?");
+				if(!listOfElement_3.isEmpty())					
 					throw new Exception ("The lock [lock=" + name + "] is currently	being used by a job. Do you want to continue?");				
 
 
@@ -1024,16 +1012,14 @@ public class Utils {
 
 				XPath x3 = XPath.newInstance("//job[@process_class='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-				if(!listOfElement_3.isEmpty())
-					//throw new Exception ("Die Processklasse " + name + " wird in einer Job verwendet. Möchten Sie trotzdem fortfahren?");
+				if(!listOfElement_3.isEmpty())					
 					throw new Exception ("The process class [process_class=" + name + "] is currently being used by a job. Do you want to continue?");
 
 			} else if(type == Editor.SCHEDULES || type == Editor.SCHEDULE) {
 
 				XPath x3 = XPath.newInstance("//run_time[@schedule='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-				if(!listOfElement_3.isEmpty())
-					//throw new Exception ("Die Schedule " + name + " wird in einem Runtime verwendet. Möchten Sie trotzdem fortfahren?");
+				if(!listOfElement_3.isEmpty())					
 					throw new Exception ("The Schedule [name=" + name + "] is currently being used by a Runtime. Do you want to continue?");
 
 			}
@@ -1170,5 +1156,6 @@ public class Utils {
 		
 	}
 */
+
 	
 }

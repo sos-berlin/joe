@@ -56,10 +56,12 @@ public class TreeMenu {
 
 
 	public TreeMenu(Tree tree, DomParser dom, SchedulerForm gui) {
+		
 		_tree = tree;
 		_dom = dom; 
 		_gui = gui;
 		createMenu();
+		
 	}
 
 
@@ -345,6 +347,7 @@ public class TreeMenu {
 
 		return new Listener() {
 			public void handleEvent(Event e) {
+				
 				MenuItem i = (MenuItem)e.widget;
 				Element element = null;
 				String xml = null;
@@ -352,9 +355,7 @@ public class TreeMenu {
 					if(_dom instanceof sos.scheduler.editor.conf.SchedulerDom && 
 							(((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement() ||
 									((sos.scheduler.editor.conf.SchedulerDom)_dom).isDirectory())) {
-						
 							element = getElement();
-						
 						
 					} else {
 						element = _dom.getRoot().getChild("config");
@@ -365,24 +366,26 @@ public class TreeMenu {
 
 				} else {
 					element = getElement();
-					if(element != null) {        		
+					if(element != null) {     
 						xml = getXML(element);
+				
 					}
 
 				}
-
 
 				if (element != null) {
 					if (xml == null) // error
 						return;
 
-
 					String selectStr = Utils.getAttributeValue("name", getElement());
 					selectStr = selectStr == null || selectStr.length() == 0 ? getElement().getName() : selectStr;
+					
 					String newXML = Utils.showClipboard(xml, _tree.getShell(), i.getText().equalsIgnoreCase(TreeMenu.EDIT_XML), selectStr);
+
 					//newXML ist null, wenn Änderungen nicht übernommen werden sollen
 					if(newXML != null)
 						applyXMLChange(newXML);
+
 
 				}
 			}
@@ -397,39 +400,7 @@ public class TreeMenu {
 			if(_dom instanceof SchedulerDom) {
 
 				newName = getHotFolderName(newXML);
-				/*if(((SchedulerDom)_dom).isDirectory() || ((SchedulerDom)_dom).isLifeElement()) {
 				
-					if(getElement().getName().equals("order") || getElement().getName().equals("add_order")) {
-						
-						int i1 = -1;
-						int i2 = -1;
-												
-						i1 = newXML.indexOf("order=\"") + "order=\"".length();
-						i2 = newXML.indexOf("\"", i1);
-						if(i1 > -1 && i2 > -1)
-							newName = newXML.substring(i1, i2);
-	
-						i1 = -1;
-						i2 = -1;
-						i1 = newXML.indexOf("add_order=\"") + "add_order=\"".length();
-						i2 = newXML.indexOf("\"", i1);
-						if(i1 > -1 && i2 > -1)
-							newName = newXML.substring(i1, i2);
-	
-						i1 = -1;
-						i2 = -1;
-						i1 = newXML.indexOf("job_chain=\"") + "job_chain=\"".length();
-						i2 = newXML.indexOf("\"", i1);
-						if(i1 > -1 && i2 > -1)
-							newName = newXML.substring(i1, i2);
-	
-					} else {
-						int i1 = newXML.indexOf("name=\"") + "name=\"".length();
-						int i2 = newXML.indexOf("\"", i1);
-						newName = newXML.substring(i1, i2);
-					}
-				}
-				*/
 				if(((sos.scheduler.editor.conf.SchedulerDom)_dom).isDirectory()|| ((SchedulerDom)_dom).isLifeElement()) {
 					String enco =" ";  
 					if(newXML.indexOf("?>") > -1) {
@@ -689,29 +660,32 @@ public class TreeMenu {
 				Element elem = getItemElement();
 				String  name = elem.getName();
 				if(name.equals("job")){
-					if (_tree.getSelection()[0] != null && !_tree.getSelection()[0].getText().equals(SchedulerListener.JOB)) {
+					/*if (_tree.getSelection()[0] != null && !_tree.getSelection()[0].getText().equals(SchedulerListener.JOB)) {
 						TreeData data = (TreeData)_tree.getSelection()[0].getData();
 						((SchedulerDom)_dom).setChangedForDirectory("job", Utils.getAttributeValue("name", elem) ,SchedulerDom.MODIFY);
-						List el = elem.getChildren(_tree.getSelection()[0].getText().toLowerCase());
-						if(el != null)
-							el.clear();
+						elem.detach();
+						//List el = elem.getChildren(_tree.getSelection()[0].getText().toLowerCase());
+						//if(el != null)
+							//el.clear();
 							
 						//getElement().detach();
 					}
 					//TreeData data = (TreeData)_tree.getSelection()[0].getData();
 					else {
-						
-						((SchedulerDom)_dom).setChangedForDirectory("job", Utils.getAttributeValue("name", elem) ,SchedulerDom.DELETE);
+						*/
+					_dom.setChanged(true);
+						((SchedulerDom)_dom).setChangedForDirectory("job", Utils.getAttributeValue("name", elem) ,SchedulerDom.DELETE);						                
 						elem.detach();
 						
-					}
-					_dom.setChanged(true);
+					//}
+					
 					_gui.updateJobs();
 				
 				} else if (name.equals("monitor")) {
+					_dom.setChanged(true);
 					((SchedulerDom)_dom).setChangedForDirectory("job", Utils.getAttributeValue("name", elem.getParentElement()) ,SchedulerDom.MODIFY);
 					elem.detach();
-					_dom.setChanged(true);
+					
 					_gui.updateJobs();
 				
 				} else if(name.equals("job_chain")){

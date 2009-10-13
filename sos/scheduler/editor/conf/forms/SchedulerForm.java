@@ -3,6 +3,7 @@ package sos.scheduler.editor.conf.forms;
 import java.util.Collection;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -167,6 +168,9 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		container.setStatusInTitle();
 	}
 	
+	public void dataChanged(CTabItem tab) {
+		((sos.scheduler.editor.app.TabbedContainer)container).setStatusInTitle(tab);
+	}
 	
 	
 	public void updateExitCodesCommand() {

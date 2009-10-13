@@ -16,6 +16,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import sos.scheduler.editor.app.Editor;
@@ -307,6 +309,20 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 		});
 		butWizzard.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butWizzard.setText("Wizzard");
+
+		final Table table = new Table(gDescription, SWT.VIRTUAL | SWT.BORDER);
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+		table.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+
+		final TableColumn newColumnTableColumn = new TableColumn(table, SWT.NONE);
+		newColumnTableColumn.setWidth(100);
+		newColumnTableColumn.setText("New column");
+
+		final TableColumn newColumnTableColumn_1 = new TableColumn(table, SWT.NONE);
+		newColumnTableColumn_1.setWidth(100);
+		newColumnTableColumn_1.setText("New column");
+		new Label(gDescription, SWT.NONE);
 		
 	}
 
@@ -318,7 +334,8 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 				
 		tDescription.setText(listener.getDescription());
 		tComment.setText(listener.getComment());
-		
+		butShow.setEnabled(tFileName.getText().trim().length() > 0);
+		butOpen.setEnabled(tFileName.getText().trim().length() > 0 && tFileName.getText().endsWith(".xml"));
 		
 	}
 	

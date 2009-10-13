@@ -30,6 +30,11 @@ public class DetailDialogForm {
 	
 	private String           orderId           = null;
 	
+	/**
+	 * Wenn es eine JobDokumentation gibt, dann wird beim STarten der Wizzard die Parameter Fenster geöffnet
+	 */
+	private String           descriptionname   = null;
+	
 	
 	//public DetailDialogForm(String jobChainname_, String[] listOfOrderIds_, boolean isLifeElement_, String path_) {
 	public DetailDialogForm(String jobChainname_, boolean isLifeElement_, String path_) {
@@ -49,8 +54,18 @@ public class DetailDialogForm {
 		path = path_;
 	}
 	
+	/**
+	 * Aufruf dieser Metho, wenn es eine Jobdokumentation gibt
+	 * @param descriptionname_
+	 */
+	public void showDetails(String descriptionname_) {
+
+		descriptionname = descriptionname_;
+		showDetails();
+	}
 	
 	public void showDetails() {
+		
 		
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;

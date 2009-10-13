@@ -58,7 +58,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		_dom = dom;
 		initialize();
 		setToolTipText();
-
+		update = update_;
 		listener.fillChains(tChains);
 
 	}
@@ -146,6 +146,12 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		bRemoveChain.setEnabled(false);
 		bRemoveChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				
+				int c = MainWindow.message(getShell(), "Do you want remove the jobchain?", SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+				if(c != SWT.YES)
+					return;
+				
+				
 				if(Utils.checkElement(tChains.getSelection()[0].getText(0), listener.get_dom(), sos.scheduler.editor.app.Editor.JOB_CHAINS, null))//wird der Job woandes verwendet?
 					deleteChain();
 			}
@@ -225,11 +231,12 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		if(name != null && name.length() > 0) {
 			//OrdersListener ordersListener =  new OrdersListener(listener.get_dom(), update);
 			//String[] listOfOrders = ordersListener.getOrderIds();
-			boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory(); 
+			boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory();
+			
 			if(state == null) {
 				DetailDialogForm detail = new DetailDialogForm(name, isLifeElement, listener.get_dom().getFilename());
 				detail.showDetails();
-				detail.getDialogForm().setParamsForWizzard(_dom, update);
+				detail.getDialogForm().setParamsForWizzard(_dom, update);				
 			} else {
 				DetailDialogForm detail = new DetailDialogForm(name, state, null, isLifeElement, listener.get_dom().getFilename());
 				detail.showDetails();

@@ -87,11 +87,11 @@ public class JobAssistentImportJobsForm {
 	
 	private Element               jobBackUp     = null;
 	
-	private JobMainForm               jobForm       = null;
+	private JobMainForm           jobForm       = null;
 	
 	private sos.scheduler.editor.conf.listeners.ParameterListener paramListener = null;
 	
-	private Text refreshDetailsText = null;
+	private Text                  refreshDetailsText        = null;
 	
 	/** Hilsvariable für das Schliessen des Dialogs. 
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
@@ -99,7 +99,27 @@ public class JobAssistentImportJobsForm {
 	
 	private boolean               flagBackUpJob = true;
 	
-	private JobDocumentationForm jobDocForm = null;
+	private JobDocumentationForm  jobDocForm    = null;
+	
+
+	/**
+	 * Wenn der Wizzard über den Detail Formular geöffnet wurde. 
+	 * Die Parameter Beschreibung werden dann anders geschrieben:
+	 *  <param name="ftp_passive_mode" value="1"/>
+	 *  <note language="de">
+	 *  	<div xmlns="http://www.w3.org/1999/xhtml">
+	 *         <![CDATA[beschreibung in deutsch]]>
+     *      </div>
+     *  </note>
+     *  
+     *  <note language="en">
+     *    <div xmlns="http://www.w3.org/1999/xhtml">
+     *      <![CDATA[Beschreibung in engisch]]>
+     *    </div>
+     *  </note>
+     *   
+	 */
+	//private boolean               withParamNote = false;
 	
 	
 	public JobAssistentImportJobsForm(SchedulerDom dom_, ISchedulerUpdate update_, int assistentType_) {
@@ -340,7 +360,7 @@ public class JobAssistentImportJobsForm {
 				butdescription = new Button(composite, SWT.NONE);
 				butdescription.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
-						try  {		
+						try  {
 							if(txtPath.getText()!= null && txtPath.getText().length() > 0) {
 								//Runtime.getRuntime().exec("cmd /C START iExplore ".concat(txtPath.getText()));
 
@@ -351,7 +371,7 @@ public class JobAssistentImportJobsForm {
 	        		            	Runtime.getRuntime().exec(Options.getBrowserExec(new File(txtPath.getText()).toURL().toString(), Options.getLanguage()));
 	        		            } 
 							} else {
-								MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_jobdescription"), SWT.ICON_WARNING | SWT.OK );								 
+								MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("no_jobdescription"), SWT.ICON_WARNING | SWT.OK );								 
 							}
 						} catch(Exception ex) {
 							try {
@@ -372,6 +392,7 @@ public class JobAssistentImportJobsForm {
 				public void widgetSelected(final SelectionEvent e) {
 					HashMap attr = getJobFromDescription();
 					JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
+					//defaultParams.withParamnote(withParamNote);
 					ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
 					attr.put("params", listOfParams);
 					Element job = null;
@@ -408,6 +429,7 @@ public class JobAssistentImportJobsForm {
 								jobname.setText(txtJobname.getText());
 
 							JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
+							//defaultParams.withParamnote(withParamNote);
 							ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
 							h.put("params", listOfParams);
 
@@ -514,11 +536,13 @@ public class JobAssistentImportJobsForm {
 						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), job, assistentType);
 						//JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), joblistener.getJob(), assistentType);
 						paramsForm.setBackUpJob(jobBackUp, jobForm);
+						//paramsForm.withParamnote(withParamNote);
 						paramsForm.setJobForm(jobForm);
 						paramsForm.showAllImportJobParams(txtPath.getText());
 						
 					} else if(assistentType == Editor.PARAMETER) {
-						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), joblistener, tParameter, assistentType);					
+						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), joblistener, tParameter, assistentType);
+						//paramsForm.withParamnote(withParamNote);
 						paramsForm.showAllImportJobParams(txtPath.getText());
 					} else {
 						if(assistentType != Editor.JOB_WIZZARD && listener.existJobname(txtJobname.getText())) {
@@ -552,6 +576,7 @@ public class JobAssistentImportJobsForm {
 						} else {
 							paramsForm = new JobAssistentImportJobParamsForm(dom, update, job, assistentType);
 						}
+						//paramsForm.withParamnote(withParamNote);
 						//paramsForm = new JobAssistentImportJobParamsForm(dom, update, job, assistentType);
 						paramsForm.showAllImportJobParams(txtPath.getText());
 						if(jobname != null) 													
@@ -1044,4 +1069,25 @@ public class JobAssistentImportJobsForm {
 		refreshDetailsText = refreshDetailsText_;
 	}
 	
+	/**
+	 * Wenn der Wizzard über den Detail Formular geöffnet wurde. Die Parameter beschreibung werden dann anders 
+	 * geschrieben:
+	 *  <param name="ftp_passive_mode" value="1"/>
+	 *  <note language="de">
+	 *  	<div xmlns="http://www.w3.org/1999/xhtml">
+	 *         <![CDATA[beschreibung in deutsch]]>
+     *      </div>
+     *  </note>
+     *  
+     *  <note language="en">
+     *    <div xmlns="http://www.w3.org/1999/xhtml">
+     *      <![CDATA[Beschreibung in engisch]]>
+     *    </div>
+     *  </note>
+     *   
+	 */
+/*	public void withParamnote(boolean withParamNote_ ) {
+		withParamNote = withParamNote_;
+	}
+	*/
 }

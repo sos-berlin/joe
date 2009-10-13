@@ -7,6 +7,8 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -107,6 +109,29 @@ public class JobAssistentImportJobParamsForm {
 	private boolean      closeDialog   = false;         
 	
 	private sos.scheduler.editor.conf.listeners.ParameterListener paramListener = null;
+	
+	private Text                  refreshDetailsText        = null;
+	
+	/**
+	 * Wenn der Wizzard über den Detail Formular geöffnet wurde. 
+	 * Die Parameter Beschreibung werden dann anders geschrieben:
+	 *  <param name="ftp_passive_mode" value="1"/>
+	 *  <note language="de">
+	 *  	<div xmlns="http://www.w3.org/1999/xhtml">
+	 *         <![CDATA[beschreibung in deutsch]]>
+     *      </div>
+     *  </note>
+     *  
+     *  <note language="en">
+     *    <div xmlns="http://www.w3.org/1999/xhtml">
+     *      <![CDATA[Beschreibung in engisch]]>
+     *    </div>
+     *  </note>
+     *   
+	 */
+	//private boolean               withParamNote = false;
+	
+
 	
 	public JobAssistentImportJobParamsForm() {}
 	
@@ -350,7 +375,6 @@ public class JobAssistentImportJobParamsForm {
 								jobDocForm.initForm();
 						
 						
-						
 					} else if(assistentType == Editor.JOB_CHAINS || assistentType == Editor.JOBS) {
 						
 						if(jobname != null)
@@ -361,7 +385,13 @@ public class JobAssistentImportJobParamsForm {
 					}
 					//MainWindow.message(jobParameterShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), SWT.OK);
 					if(Options.getPropertyBoolean("editor.job.show.wizard"))
-						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell, false, null, false, null, true); 
+						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell, false, null, false, null, true);
+					
+					//Event auslösen
+					if(refreshDetailsText != null)
+						refreshDetailsText.setText("X");
+
+					
 					closeDialog = true;
 					jobParameterShell.dispose();
 				}
@@ -434,6 +464,12 @@ public class JobAssistentImportJobParamsForm {
 			}
 			{
 				txtName = new Text(textParameterGroup, SWT.BORDER);
+				txtName.addModifyListener(new ModifyListener() {
+					public void modifyText(final ModifyEvent e) {
+						if(butApply != null)
+							butApply.setEnabled(txtName.getText().length() > 0);
+					}
+				});
 				txtName.addKeyListener(new KeyAdapter() {
 					public void keyPressed(final KeyEvent e) {
 						if (e.keyCode == SWT.CR && !txtName.getText().equals("")){
@@ -457,6 +493,11 @@ public class JobAssistentImportJobParamsForm {
 			lblTitle.setText("Value");
 			
 			txtValue = new Text(textParameterGroup, SWT.BORDER);
+			txtValue.addModifyListener(new ModifyListener() {
+				public void modifyText(final ModifyEvent e) {
+					butApply.setEnabled(txtName.getText().length() > 0);
+				}
+			});
 			txtValue.addKeyListener(new KeyAdapter() {
 				public void keyPressed(final KeyEvent e) {
 					if (e.keyCode == SWT.CR && !txtName.getText().trim().equals(""))
@@ -469,6 +510,7 @@ public class JobAssistentImportJobParamsForm {
 			new Label(textParameterGroup, SWT.NONE);
 			{
 				butApply = new Button(textParameterGroup, SWT.NONE);
+				butApply.setEnabled(false);
 				butApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 				butApply.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
@@ -538,7 +580,7 @@ public class JobAssistentImportJobParamsForm {
 								                  tableDescParameters.getItem(i).getBackground().equals(Options.getRequiredColor() ));
 					}
 					tableDescParameters.removeAll();
-					
+					butApply.setEnabled(false);
 				}
 			});
 			butPutAll.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -613,11 +655,24 @@ public class JobAssistentImportJobParamsForm {
 			table.setLayoutData(gridData_1);
 			table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+					
+					if(butApply.isEnabled()) {
+						int ok = MainWindow.message(Messages.getString("MainListener.apply_changes"), //$NON-NLS-1$
+								SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);					
+						if (ok == SWT.YES) {
+							
+							addParam();
+							
+							return;
+						}
+					}
+
 					if(table.getSelectionCount() > -1) {						
 						txtName.setText(table.getSelection()[0].getText(0));						
 						txtValue.setText(table.getSelection()[0].getText(1));						
 						txtDescription.setText((table.getSelection()[0].getData("parameter_description_" + Options.getLanguage()) != null? table.getSelection()[0].getData("parameter_description_" + Options.getLanguage()).toString(): "") );
 						txtName.setFocus();
+						butApply.setEnabled(false);
 					}
 				}
 			});
@@ -829,6 +884,10 @@ public class JobAssistentImportJobParamsForm {
 		}
 		
 		paramListener.saveParameter(table, txtName.getText(),txtValue.getText());
+		txtName.setText("");
+		txtValue.setText("");
+		butApply.setEnabled(false);
+		table.deselectAll();
 		txtName.setFocus();
 	}
 
@@ -888,6 +947,7 @@ public class JobAssistentImportJobParamsForm {
 		tableDescParameters.deselectAll();
 		table.deselectAll();
 		txtName.setFocus();
+		butApply.setEnabled(false);
 	}
 	
 	private void removeParams() {
@@ -920,12 +980,46 @@ public class JobAssistentImportJobParamsForm {
 				MainWindow.message(jobParameterShell, sos.scheduler.editor.app.Messages.getString("assistent.jobparameter.required") + remItem, SWT.ICON_WARNING | SWT.OK );
 			
 			table.remove(table.getSelectionIndices());
+			
 		}	else {
 			MainWindow.message(jobParameterShell, sos.scheduler.editor.app.Messages.getString("assistent.jobparameter.no_selected_table") , SWT.ICON_WARNING | SWT.OK );
 		}
 		table.deselectAll();
 		tableDescParameters.deselectAll();
+		
+		butApply.setEnabled(false);
+		txtName.setText("");
+		txtValue.setText("");
+		
 		txtName.setFocus();
 		
+	}
+	
+	/**
+	 * Wenn der Wizzard über den Detail Formular geöffnet wurde. Die Parameter beschreibung werden dann anders 
+	 * geschrieben:
+	 *  <param name="ftp_passive_mode" value="1"/>
+	 *  <note language="de">
+	 *  	<div xmlns="http://www.w3.org/1999/xhtml">
+	 *         <![CDATA[beschreibung in deutsch]]>
+     *      </div>
+     *  </note>
+     *  
+     *  <note language="en">
+     *    <div xmlns="http://www.w3.org/1999/xhtml">
+     *      <![CDATA[Beschreibung in engisch]]>
+     *    </div>
+     *  </note>
+     *   
+	 */
+	
+	/*public void withParamnote(boolean withParamNote_ ) {
+		withParamNote = withParamNote_;
+	}
+	*/
+	//Details hat einen anderen Aufbau der Parameter Description. 
+	//Beim generieren der Parameter mit Wizzard müssen die Parameterdescriptchen anders aufgebaut werden.
+	public void setDetailsRefresh(Text refreshDetailsText_) {
+		refreshDetailsText = refreshDetailsText_;
 	}
 }

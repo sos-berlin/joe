@@ -96,16 +96,16 @@ public class ProcessClassesListener {
 		return name;
 	}
 
-	public String getRARCHITEKTEN_EA_NEUHost() {
-		String host = Utils.getAttributeValue("rARCHITEKTEN_EA_NEU_scheduler", _class);
+	public String getRemoteHost() {
+		String host = Utils.getAttributeValue("remote_scheduler", _class);
 		try {
 			host = host.substring(0,host.indexOf(":"));
 		}catch (Exception e) {host = "";}
 		return host.trim();
 	}
 
-	public String getRARCHITEKTEN_EA_NEUPort() {
-		String port = Utils.getAttributeValue("rARCHITEKTEN_EA_NEU_scheduler", _class);
+	public String getRemotePort() {
+		String port = Utils.getAttributeValue("remote_scheduler", _class);
 		try {
 			port = port.substring(port.indexOf(":")+1);
 		}catch (Exception e) {port = "";}
@@ -162,7 +162,7 @@ public class ProcessClassesListener {
 		Utils.setAttribute("replace", replace, true, _class, _dom);
 
 		if(host.trim().concat(port.trim()).length() > 0) {
-			Utils.setAttribute("rARCHITEKTEN_EA_NEU_scheduler", host.trim()+":"+port.trim(), _class, _dom);
+			Utils.setAttribute("remote_scheduler", host.trim()+":"+port.trim(), _class, _dom);
 		}
 		if (_list == null)
 			initClasses();

@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
@@ -45,6 +46,7 @@ import sos.scheduler.editor.conf.listeners.OrdersListener;
 public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
+	private Button butAddMissingNodes;
 	private Button                    bNewNode                    = null;
 
 	private Table                     tNodes                      = null;
@@ -414,7 +416,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		});
 		tNodes.setLinesVisible(true);
 		tNodes.setHeaderVisible(true);
-		final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true, 3, 3);
+		final GridData gridData4 = new GridData(GridData.FILL, GridData.FILL, true, true, 3, 4);
 		gridData4.heightHint = 112;
 		tNodes.setLayoutData(gridData4);
 
@@ -519,6 +521,47 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		});
 		butDetailsJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		butDetailsJob.setText("Parameter");
+
+		butAddMissingNodes = new Button(gNodes, SWT.NONE);
+		butAddMissingNodes.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+
+				try {
+					if(tNodes.getSelectionCount() > 0) {
+						TableItem item = tNodes.getSelection()[0];
+						if(!listener.checkForState(item.getText(3))) {
+							listener.selectNode(null);
+
+							listener.applyNode(true, item.getText(3), "", "", "", false);
+							
+						}
+
+						if(!listener.checkForState(item.getText(4))) {
+							listener.selectNode(null);
+							listener.applyNode(true, item.getText(4), "", "", "", false);						
+						}
+
+						listener.fillChain(tNodes);
+						bApplyNode.setEnabled(false);
+						bRemoveNode.setEnabled(false);            
+						listener.selectNode(null);			
+						fillNode(true);
+						enableNode(false);
+						//listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(), cOnError.getText());
+					}
+				} catch (Exception ex) {
+					try {
+						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , ex);
+					} catch(Exception ee) {
+						//tu nichts
+					}	
+				}
+			
+			}
+		});
+		butAddMissingNodes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+		butAddMissingNodes.setEnabled(false);
+		butAddMissingNodes.setText("Add Missing Nodes");
 
 		bRemoveNode = new Button(gNodes, SWT.NONE);
 		bRemoveNode.setEnabled(false);
