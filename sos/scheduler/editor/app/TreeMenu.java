@@ -659,6 +659,11 @@ public class TreeMenu {
 			public void handleEvent(Event e) {
 				Element elem = getItemElement();
 				String  name = elem.getName();
+				
+				int c = MainWindow.message("Do you want remove the " + name + "?", SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+				if(c != SWT.YES)
+					return;
+				
 				if(name.equals("job")){
 					/*if (_tree.getSelection()[0] != null && !_tree.getSelection()[0].getText().equals(SchedulerListener.JOB)) {
 						TreeData data = (TreeData)_tree.getSelection()[0].getData();
