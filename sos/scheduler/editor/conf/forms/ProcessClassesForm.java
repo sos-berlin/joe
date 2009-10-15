@@ -12,6 +12,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -128,7 +130,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		}
 		listener.fillTable(table);
 		ignoreButton.setSelection(listener.isIgnoreProcessClasses());
-		bNew.setEnabled(!bApply.getEnabled());
+		//bNew.setEnabled(!bApply.getEnabled());
 
 	}
 
@@ -159,6 +161,15 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		label1.setLayoutData(new GridData(86, SWT.DEFAULT));
 		label1.setText("Process Class:");
 		tProcessClass = new Text(group, SWT.BORDER);
+		tProcessClass.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(final TraverseEvent e) {
+				if (e.keyCode == SWT.CR) {
+					applyClass();
+
+					//bNew.setEnabled(!bApply.getEnabled());
+				}
+			}
+		});
 		bApply = new Button(group, SWT.NONE);
 		label5 = new Label(group, SWT.NONE);
 		final GridData gridData = new GridData();
@@ -167,17 +178,28 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		GridData gridData4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		gridData4.widthHint = 20;
 		sMaxProcesses = new Spinner(group, SWT.NONE);
+		sMaxProcesses.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(final TraverseEvent e) {				
+				if (e.keyCode == SWT.CR) {
+					applyClass();
+
+					//bNew.setEnabled(!bApply.getEnabled());
+				}
+			}			
+		});
 		sMaxProcesses.setMaximum(99999999);
 		sMaxProcesses.setLayoutData(gridData4);
 		sMaxProcesses.setEnabled(false);
-		sMaxProcesses.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
+		/*sMaxProcesses.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
 				if (e.keyCode == SWT.CR) {
 					applyClass();
+					
 					bNew.setEnabled(!bApply.getEnabled());
 				}
 			}
 		});
+		*/
 		sMaxProcesses.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				bApply.setEnabled(true);
@@ -190,6 +212,18 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		label10.setText("Scheduler ID:");
 		GridData gridData6 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
 		tSpoolerID = new Text(group, SWT.BORDER);
+		tSpoolerID.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(final TraverseEvent e) {
+				
+				if (e.keyCode == SWT.CR) {										
+					applyClass();
+					bApply.setEnabled(true);
+					//bNew.setEnabled(false);
+					e.doit = false;
+				}
+			}
+		});
+		
 		tSpoolerID.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent e) {
 				tSpoolerID.selectAll();
@@ -197,16 +231,23 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		});
 		tSpoolerID.setLayoutData(gridData6);
 		tSpoolerID.setEnabled(false);
-		tSpoolerID.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
+		/*tSpoolerID.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
+				
 				if (e.keyCode == SWT.CR) {
+					
+					System.out.println("not do it");
 					applyClass();
+					
 					bNew.setEnabled(!bApply.getEnabled());
+					
 				}
 			}
 		});
+		*/
 		tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				System.out.println("modify ");
 				bApply.setEnabled(true);
 			}
 		});
@@ -216,6 +257,15 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		remoteExecutionOnLabel.setText("Executed by Scheduler on host:");
 
 		tRemoteHost = new Text(group, SWT.BORDER);
+		tRemoteHost.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(final TraverseEvent e) {
+				if (e.keyCode == SWT.CR) {
+					applyClass();
+
+					//bNew.setEnabled(!bApply.getEnabled());
+				}
+			}
+		});
 		tRemoteHost.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent e) {
 				tRemoteHost.selectAll();
@@ -227,15 +277,16 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 			}
 		});
 		tRemoteHost.setEnabled(false);
-		tRemoteHost.addKeyListener(new KeyAdapter() {
+		/*tRemoteHost.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR) {
 					applyClass();
-					bNew.setEnabled(!bApply.getEnabled());
+					bNew.setEnabled(!bApply.getEnabled());					
 				}
 
 			}
 		});
+		*/
 		tRemoteHost.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 		final Label portLabel = new Label(group, SWT.NONE);
@@ -245,6 +296,15 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		portLabel.setText("at Port");
 
 		tRemotePort = new Text(group, SWT.BORDER);
+		tRemotePort.addTraverseListener(new TraverseListener() {
+			public void keyTraversed(final TraverseEvent e) {
+				if (e.keyCode == SWT.CR) {
+					applyClass();
+
+					//bNew.setEnabled(!bApply.getEnabled());
+				}
+			}
+		});
 		tRemotePort.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent e) {
 				tRemotePort.selectAll();
@@ -257,7 +317,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 			}
 		});
 		tRemotePort.setEnabled(false);
-		tRemotePort.addKeyListener(new KeyAdapter() {
+		/*tRemotePort.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR) {
 					applyClass();
@@ -265,6 +325,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 				}
 			}
 		});
+		*/
 		tRemotePort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		new Label(group, SWT.NONE);
 
@@ -292,9 +353,9 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 				apply();
 				listener.newProcessClass();
 				setInput(true);
-
+				
 				bApply.setEnabled(listener.isValidClass(tProcessClass.getText()));     
-				bNew.setEnabled(false);
+				//bNew.setEnabled(false);
 			}
 		});
 		GridData gridData8 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
@@ -325,19 +386,21 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 				}
 				bRemove.setEnabled(table.getSelectionCount() > 0);
 				tProcessClass.setBackground(null);
-				bNew.setEnabled(true);
+				//bNew.setEnabled(true);
 			}
 		});
 		tProcessClass.setLayoutData(gridData5);
 		tProcessClass.setEnabled(false);
-		tProcessClass.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
+		/*tProcessClass.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
 				if (e.keyCode == SWT.CR) {
 					applyClass();
+					
 					bNew.setEnabled(!bApply.getEnabled());
 				}
 			}
 		});
+		*/
 		tProcessClass.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				boolean valid = listener.isValidClass(tProcessClass.getText()) || dom.isLifeElement();
@@ -354,7 +417,8 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				applyClass();
-				bNew.setEnabled(!bApply.getEnabled());
+				
+				//bNew.setEnabled(!bApply.getEnabled());
 			}
 		});
 
@@ -395,7 +459,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 						 tProcessClass.setBackground(null);
 					 }
 				 }
-				 bNew.setEnabled(!bApply.getEnabled());
+				 //bNew.setEnabled(!bApply.getEnabled());
 			 }
 		 });
 		 TableColumn tableColumn = new TableColumn(table, SWT.NONE);
@@ -439,6 +503,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 
 
 	 private void setInput(boolean enabled) {
+		 
 		 tProcessClass.setEnabled(enabled);
 		 sMaxProcesses.setEnabled(enabled);
 		 tSpoolerID.setEnabled(enabled);
