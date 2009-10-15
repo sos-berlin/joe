@@ -4,6 +4,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -186,6 +188,11 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		label10.setText("Scheduler ID:");
 		GridData gridData6 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
 		tSpoolerID = new Text(group, SWT.BORDER);
+		tSpoolerID.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tSpoolerID.selectAll();
+			}
+		});
 		tSpoolerID.setLayoutData(gridData6);
 		tSpoolerID.setEnabled(false);
 		tSpoolerID.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
@@ -205,6 +212,11 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		remoteExecutionOnLabel.setText("Executed by Scheduler on host:");
 
 		tRemoteHost = new Text(group, SWT.BORDER);
+		tRemoteHost.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tRemoteHost.selectAll();
+			}
+		});
 		tRemoteHost.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				bApply.setEnabled(true);
@@ -227,6 +239,11 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		portLabel.setText("at Port");
 
 		tRemotePort = new Text(group, SWT.BORDER);
+		tRemotePort.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tRemotePort.selectAll();
+			}
+		});
 		tRemotePort.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				bApply.setEnabled(true);

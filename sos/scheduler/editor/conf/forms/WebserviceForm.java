@@ -2,6 +2,8 @@ package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
@@ -101,6 +103,7 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 		this.setLayout(new FillLayout());
 		createGroup();
 		setSize(new org.eclipse.swt.graphics.Point(653, 468));
+		tName.setFocus();
 	}
 
 
@@ -178,6 +181,11 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 		 label = new Label(gWebService, SWT.NONE);
 		 label.setText("Name:");
 		 tName = new Text(gWebService, SWT.BORDER);
+		 tName.addFocusListener(new FocusAdapter() {
+		 	public void focusGained(final FocusEvent e) {
+		 		tName.selectAll();
+		 	}
+		 });
 		 tName.setLayoutData(gridData9);
 		 tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			 public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -203,6 +211,11 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 		 label1 = new Label(gWebService, SWT.NONE);
 		 label1.setText("URL:");
 		 tURL = new Text(gWebService, SWT.BORDER);
+		 tURL.addFocusListener(new FocusAdapter() {
+		 	public void focusGained(final FocusEvent e) {
+		 		tURL.selectAll();
+		 	}
+		 });
 		 tURL.addSelectionListener(new SelectionAdapter() {
 			 public void widgetDefaultSelected(final SelectionEvent e) {
 			 }
@@ -252,6 +265,11 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 		 label3 = new Label(gWebService, SWT.NONE);
 		 label3.setText("Timeout:");
 		 sTimeout = new Text(gWebService, SWT.BORDER);
+		 sTimeout.addFocusListener(new FocusAdapter() {
+		 	public void focusGained(final FocusEvent e) {
+		 		sTimeout.selectAll();
+		 	}
+		 });
 		 sTimeout.addVerifyListener(new VerifyListener() {
 			 public void verifyText(final VerifyEvent e) {
 				 e.doit = Utils.isOnlyDigits(e.text);
@@ -282,6 +300,11 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 		 label7 = new Label(gWebService, SWT.NONE);
 		 label7.setText("Request XSLT:");
 		 tRequest = new Text(gWebService, SWT.BORDER);
+		 tRequest.addFocusListener(new FocusAdapter() {
+		 	public void focusGained(final FocusEvent e) {
+		 		tRequest.selectAll();
+		 	}
+		 });
 		 tRequest.setLayoutData(gridData8);
 		 tRequest.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			 public void modifyText(org.eclipse.swt.events.ModifyEvent e) {	
@@ -298,6 +321,11 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 		 label19 = new Label(gWebService, SWT.NONE);
 		 label19.setText("Response XSLT:");
 		 tResponse = new Text(gWebService, SWT.BORDER);
+		 tResponse.addFocusListener(new FocusAdapter() {
+		 	public void focusGained(final FocusEvent e) {
+		 		tResponse.selectAll();
+		 	}
+		 });
 		 tResponse.setLayoutData(gridData6);
 		 tResponse.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			 public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -316,6 +344,11 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 		 label13.setText("Forward XSLT:");
 		 GridData gridData7 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1);
 		 tForward = new Text(gWebService, SWT.BORDER);
+		 tForward.addFocusListener(new FocusAdapter() {
+		 	public void focusGained(final FocusEvent e) {
+		 		tForward.selectAll();		
+		 	}
+		 });
 		 tForward.setLayoutData(gridData7);
 		 tForward.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			 public void modifyText(org.eclipse.swt.events.ModifyEvent e) {

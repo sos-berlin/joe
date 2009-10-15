@@ -4,6 +4,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
@@ -129,6 +131,11 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         label1 = new Label(group, SWT.NONE);
         label1.setText("Base File:");
         tFile = new Text(group, SWT.BORDER);
+        tFile.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tFile.selectAll();
+        	}
+        });
         bApply = new Button(group, SWT.NONE);
         GridData gridData8 = new org.eclipse.swt.layout.GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
         label3 = new Label(group, SWT.NONE);

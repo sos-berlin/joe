@@ -97,6 +97,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 	private void initialize() {
 		this.setLayout(new FillLayout());
 		createGroup();
+		cExitcode.setFocus();
 		//setSize(new org.eclipse.swt.graphics.Point(723, 566));
 	}
 
@@ -232,6 +233,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 				if (item == null)
 					return;
 				bRemoveExitcode.setEnabled(tCommands.getSelectionCount() > 0);
+				cExitcode.setFocus();
 
 			}
 		});

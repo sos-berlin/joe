@@ -375,7 +375,15 @@
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
-	<xsd:element name="add_order" type="order"/>
+	<xsd:element name="add_order">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="order">
+					<xsd:attribute name="end_state" type="String"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
 	<xsd:element name="order" type="order"/>
 	<xsd:complexType name="order">
 		<xsd:sequence>

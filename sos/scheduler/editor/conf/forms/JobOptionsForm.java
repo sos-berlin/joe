@@ -4,6 +4,9 @@ import java.text.Collator;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
@@ -219,10 +222,20 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         label = new Label(group1, SWT.NONE);
         label.setText("Watch Directory:");
         tDirectory = new Text(group1, SWT.BORDER);
+        tDirectory.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tDirectory.selectAll();
+        	}
+        });
         tDirectory.setLayoutData(gridData3);
         label11 = new Label(group1, SWT.NONE);
         label11.setText("File Regex:");
         tRegex = new Text(group1, SWT.BORDER);
+        tRegex.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tRegex.selectAll();		
+        	}
+        });
         tRegex.setLayoutData(gridData4);
         bApplyDirectory = new Button(group1, SWT.NONE);
         bApplyDirectory.setText("Apply Dir");
@@ -333,6 +346,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         label4 = new Label(group2, SWT.NONE);
         label4.setText("Error count:");
         sErrorCount = new Text(group2, SWT.BORDER);
+        sErrorCount.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		sErrorCount.selectAll();
+        	}
+        });
         sErrorCount.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -361,6 +379,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
         sErrorHours = new Text(group2, SWT.BORDER);
+        sErrorHours.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		sErrorHours.selectAll();
+        	}
+        });
         sErrorHours.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -369,6 +392,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         label14 = new Label(group2, SWT.NONE);
         label14.setText(":");
         sErrorMinutes = new Text(group2, SWT.BORDER);
+        sErrorMinutes.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		sErrorMinutes.selectAll();
+        	}
+        });
         sErrorMinutes.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -377,6 +405,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         label17 = new Label(group2, SWT.NONE);
         label17.setText(":");
         sErrorSeconds = new Text(group2, SWT.BORDER);
+        sErrorSeconds.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		sErrorSeconds.selectAll();
+        	}
+        });
         sErrorSeconds.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -516,6 +549,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         label2 = new Label(group3, SWT.NONE);
         label2.setText("Set Back Count:");
         sSetBackCount = new Text(group3, SWT.BORDER);
+        sSetBackCount.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		sSetBackCount.selectAll();
+        	}
+        });
         sSetBackCount.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -527,6 +565,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         final Label delayLabel = new Label(group3, SWT.NONE);
         delayLabel.setText("Delay:");
         sSetBackHours = new Text(group3, SWT.BORDER);
+        sSetBackHours.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		sSetBackHours.selectAll();
+        	}
+        });
         sSetBackHours.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -543,6 +586,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         bIsMaximum.setText("Max");
         bIsMaximum.setLayoutData(gridData6);
         sSetBackMinutes = new Text(group3, SWT.BORDER);
+        sSetBackMinutes.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		sSetBackMinutes.selectAll();
+        	}
+        });
         sSetBackMinutes.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -551,6 +599,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         label9 = new Label(group3, SWT.NONE);
         label9.setText(":");
         sSetBackSeconds = new Text(group3, SWT.BORDER);
+        sSetBackSeconds.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		sSetBackSeconds.selectAll();
+        	}
+        });
         sSetBackSeconds.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -668,6 +721,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
                 if (tErrorDelay.getSelectionCount() > 0) {
                     listener.selectErrorDelay(tErrorDelay.getSelectionIndex());
                     initErrorDelay(true);
+                    sErrorCount.selectAll();
                 } else
                     initErrorDelay(false);
                 bRemoveDelay.setEnabled(tErrorDelay.getSelectionCount() > 0);
@@ -705,6 +759,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
                 if (tSetback.getSelectionCount() > 0) {
                     listener.selectSetbackDelay(tSetback.getSelectionIndex());
                     initSetback(true);
+                    sSetBackCount.selectAll();
                 } else
                     initSetback(false);
                 bRemoveSetback.setEnabled(tSetback.getSelectionCount() > 0);
@@ -744,10 +799,14 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
                 if (tDirectories.getSelectionCount() > 0) {
                     listener.selectDirectory(tDirectories.getSelectionIndex());
                     initDirectory(true);
+                    tDirectory.setFocus();
                 } else
                     initDirectory(false);
                 bRemoveDirectory.setEnabled(tDirectories.getSelectionCount() > 0);
             }
+        	public void widgetDefaultSelected(final SelectionEvent e) {
+        		tDirectory.selectAll();
+        	}
         });
         TableColumn tableColumn5 = new TableColumn(tDirectories, SWT.NONE);
         tableColumn5.setWidth(300);

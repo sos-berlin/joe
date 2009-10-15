@@ -1,8 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -120,6 +120,10 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		this.setLayout(new FillLayout());
 		createGroup();
 		setSize(new org.eclipse.swt.graphics.Point(723, 566));
+		if(tSpoolerID.isVisible())
+			tSpoolerID.setFocus();
+		else
+			txtJavaOptions.setFocus();
 	}
 	
 	
@@ -153,6 +157,11 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		label3.setVisible(!listener.get_dom().isLifeElement() && !listener.get_dom().isDirectory());
 		GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);
 		tSpoolerID = new Text(gMain, SWT.BORDER);
+		tSpoolerID.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tSpoolerID.selectAll();
+			}
+		});
 		tSpoolerID.setLayoutData(gridData3);        
 		tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -168,6 +177,11 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		java_optionsLabel.setText("Java Options:");
 
 		txtJavaOptions = new Text(gMain, SWT.BORDER);
+		txtJavaOptions.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtJavaOptions.selectAll();
+			}
+		});
 		txtJavaOptions.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if(init) return;
@@ -181,6 +195,11 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		ignore_signalLabel.setText("Ignore Signals:");
 		
 		tIgnoreSignals = new Text(gMain, SWT.BORDER);
+		tIgnoreSignals.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tIgnoreSignals.selectAll();
+			}
+		});
 		tIgnoreSignals.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if(init) return;
@@ -261,6 +280,11 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		minMaskLabel.setText("Min Tasks");
 		
 		tMintasks = new Text(gMain, SWT.BORDER);
+		tMintasks.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tMintasks.selectAll();		
+			}
+		});
 		tMintasks.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
@@ -282,6 +306,11 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		label15.setText("Tasks:");
 		
 		sTasks = new Text(gMain, SWT.BORDER);
+		sTasks.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sTasks.selectAll();		
+			}
+		});
 		sTasks.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		sTasks.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
@@ -306,6 +335,11 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		label13.setText("Timeout:");
 		
 		sTimeout = new Text(gMain, SWT.BORDER);
+		sTimeout.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sTimeout.selectAll();
+			}
+		});
 		sTimeout.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
@@ -330,6 +364,11 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		label11.setText("Idle Timeout:");
 		
 		sIdleTimeout = new Text(gMain, SWT.BORDER);
+		sIdleTimeout.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sIdleTimeout.selectAll();
+			}
+		});
 		sIdleTimeout.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		
 		sIdleTimeout.addVerifyListener(new VerifyListener() {
@@ -353,6 +392,11 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		warnIfLongerLabel.setText("Warn if longer than:");
 
 		txtWarnIfLongerThan = new Text(gMain, SWT.BORDER);
+		txtWarnIfLongerThan.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtWarnIfLongerThan.selectAll();
+			}
+		});
 		txtWarnIfLongerThan.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if(init) return;
@@ -370,6 +414,11 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		warnIfShorterLabel.setText("Warn if shorter than:");
 
 		txtWarnIfShorterThan = new Text(gMain, SWT.BORDER);
+		txtWarnIfShorterThan.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtWarnIfShorterThan.selectAll();
+			}
+		});
 		txtWarnIfShorterThan.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if(init) return;
@@ -461,6 +510,7 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		comVisible.setText(listener.getVisible());
 		txtWarnIfLongerThan.setText(listener.getWarnIfLongerThan());
 		txtWarnIfShorterThan.setText(listener.getWarnIfShorterThan());
+		txtJavaOptions.setText(listener.getJavaOptions());
 	}
 	
 	

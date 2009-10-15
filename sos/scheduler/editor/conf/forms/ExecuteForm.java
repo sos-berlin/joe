@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -214,6 +216,11 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
         label1 = new Label(gExecutable, SWT.NONE);
         label1.setText("File");
         tExecuteFile = new Text(gExecutable, SWT.BORDER);
+        tExecuteFile.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tExecuteFile.selectAll();
+        	}
+        });
         tExecuteFile.setLayoutData(gridData12);
         tExecuteFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -225,6 +232,11 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
         label3 = new Label(gExecutable, SWT.NONE);
         label3.setText("Parameter:   ");
         tParameter = new Text(gExecutable, SWT.BORDER);
+        tParameter.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tParameter.selectAll();
+        	}
+        });
         tParameter.setLayoutData(gridData2);
         tParameter.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -235,6 +247,11 @@ public class ExecuteForm extends Composite implements IUnsaved, IUpdateLanguage 
         label4 = new Label(gExecutable, SWT.NONE);
         label4.setText("Log file:");
         tLogFile = new Text(gExecutable, SWT.BORDER);
+        tLogFile.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tLogFile.selectAll();		
+        	}
+        });
         tLogFile.setLayoutData(gridData3);
         tLogFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {

@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
@@ -85,6 +87,7 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 			cboCombo.setText(listener.getSubstitute());
 			
 			setSize(new org.eclipse.swt.graphics.Point(656, 400));
+			txtName.setFocus();
 		} catch (Exception e) {
 			try {
 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
@@ -111,6 +114,11 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 			nameLabel.setText("Name");
 
 			txtName = new Text(scheduleGroup, SWT.BORDER);
+			txtName.addFocusListener(new FocusAdapter() {
+				public void focusGained(final FocusEvent e) {
+					txtName.selectAll();
+				}
+			});
 			txtName.addVerifyListener(new VerifyListener() {
 				public void verifyText(final VerifyEvent e) {
 					if(!init)//während der initialiserung sollen keine überprüfungen stattfinden
@@ -131,6 +139,11 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 			titleLabel.setText("Title");
 
 			txtTitle = new Text(scheduleGroup, SWT.BORDER);
+			txtTitle.addFocusListener(new FocusAdapter() {
+				public void focusGained(final FocusEvent e) {
+					txtTitle.selectAll();
+				}
+			});
 			txtTitle.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					if(!init)

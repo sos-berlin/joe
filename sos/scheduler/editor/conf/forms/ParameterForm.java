@@ -750,6 +750,11 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		label2 = new Label(Group, SWT.NONE);
 		label2.setText("Name: ");
 		tParaName = new Text(Group, SWT.BORDER);
+		tParaName.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tParaName.selectAll();
+			}
+		});
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		tParaName.setLayoutData(gridData_4);
 		tParaName.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
@@ -767,6 +772,11 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		label6.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		label6.setText("Value: ");
 		tParaValue = new Text(Group, SWT.BORDER);
+		tParaValue.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tParaValue.selectAll();
+			}
+		});
 		final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		tParaValue.setLayoutData(gridData_9);
 		tParaValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
@@ -935,6 +945,11 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		nameLabel.setText("Name: ");
 
 		txtEnvName = new Text(group_2, SWT.BORDER);
+		txtEnvName.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtEnvName.selectAll();
+			}
+		});
 		txtEnvName.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				butEnvApply.setEnabled(!txtEnvName.getText().trim().equals(""));
@@ -954,6 +969,11 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		valueLabel.setText("Value: ");
 
 		txtEnvValue = new Text(group_2, SWT.BORDER);
+		txtEnvValue.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtEnvValue.selectAll();
+			}
+		});
 		txtEnvValue.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				butEnvApply.setEnabled(!txtEnvName.getText().trim().equals(""));
@@ -1065,6 +1085,11 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		}
 
 		txtIncludeFilename = new Text(group_3, SWT.BORDER);
+		txtIncludeFilename.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtIncludeFilename.selectAll();
+			}
+		});
 		txtIncludeFilename.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
@@ -1086,6 +1111,11 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		lblNode.setText("Node:");
 
 		txtIncludeNode = new Text(group_3, SWT.BORDER);
+		txtIncludeNode.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtIncludeNode.selectAll();
+			}
+		});
 		txtIncludeNode.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
@@ -1238,6 +1268,11 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		label2.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		label2.setText("Name: ");
 		tParaName = new Text(group, SWT.BORDER);
+		tParaName.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tParaName.selectAll();
+			}
+		});
 		final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_9.widthHint = 200;
 		tParaName.setLayoutData(gridData_9);
@@ -1285,6 +1320,11 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		});
 		cSource.setVisible(false);
 		tParaValue = new Text(composite, SWT.BORDER);
+		tParaValue.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tParaValue.selectAll();
+			}
+		});
 
 		tParaValue.setBounds(0, 0,250, 21);
 		tParaValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
@@ -1331,6 +1371,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 				bRemove.setEnabled(tParameter.getSelectionCount() > 0);
 				bApply.setEnabled(false);
+				tParaName.setFocus();
 			}
 		});
 		TableColumn tcName = new TableColumn(tParameter, SWT.NONE);

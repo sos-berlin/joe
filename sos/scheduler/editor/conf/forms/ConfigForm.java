@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -130,7 +132,8 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		listener = new ConfigListener(dom);		
 		initialize();
 		setToolTipText();
-		tSpoolerID.setFocus();		
+		tSpoolerID.setFocus();	
+		
 	}
 	
 	
@@ -166,6 +169,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		
 		setEditable();
 		listener.getDom().setInit(false);
+		tSpoolerID.setFocus();
 	}
 	
 	
@@ -198,6 +202,11 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		label.setLayoutData(new GridData());
 		label.setText("Scheduler ID:");
 		tSpoolerID = new Text(group_1, SWT.BORDER);
+		tSpoolerID.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tSpoolerID.selectAll();
+			}
+		});
 		
 		
 		final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -213,6 +222,11 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		label7.setLayoutData(new GridData());
 		label7.setText("Parameter:");
 		tParameter = new Text(group_1, SWT.BORDER);
+		tParameter.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tParameter.selectAll();
+			}
+		});
 		tParameter.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		
 		tParameter.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -224,6 +238,11 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		label10.setLayoutData(new GridData());
 		label10.setText("Include Path:");
 		tIncludePath = new Text(group_1, SWT.BORDER);
+		tIncludePath.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tIncludePath.selectAll();
+			}
+		});
 		tIncludePath.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		
 		tIncludePath.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -237,6 +256,11 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		ipaddressLabel.setText("IP-Address");
 		
 		tIpAddress = new Text(group_1, SWT.BORDER);
+		tIpAddress.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tIpAddress.selectAll();		
+			}
+		});
 		tIpAddress.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				listener.setIpAddress(tIpAddress.getText());
@@ -248,6 +272,11 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		label11.setLayoutData(new GridData());
 		label11.setText("Log Dir:");
 		tLogDir = new Text(group_1, SWT.BORDER);
+		tLogDir.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tLogDir.selectAll();		
+			}
+		});
 		tLogDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		
 		tLogDir.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -259,6 +288,11 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		label12.setLayoutData(new GridData());
 		label12.setText("Mail XSLT:");
 		tMailXSLTStylesheet = new Text(group_1, SWT.BORDER);
+		tMailXSLTStylesheet.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tMailXSLTStylesheet.selectAll();
+			}
+		});
 		tMailXSLTStylesheet.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		tMailXSLTStylesheet.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -271,6 +305,11 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		centralConfigurationDirectoryLabel.setText("Central Configuration Dir:");
 
 		txtCentralConfigDir = new Text(group_1, SWT.BORDER);
+		txtCentralConfigDir.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtCentralConfigDir.selectAll();
+			}
+		});
 		txtCentralConfigDir.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				listener.setCentralConfigDir(txtCentralConfigDir.getText());
@@ -314,6 +353,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		
 		cConfigurationAddEvent.setLayoutData(gridData13);
 		cConfigurationAddEvent.setItems(listener.getJobs());
+		
 		cConfigurationAddEvent.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				listener.setConfigurationAddEvent(cConfigurationAddEvent.getText());
@@ -463,6 +503,11 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		label14.setLayoutData(gridData_5);
 		label14.setText("Port:");
 		sPort = new Text(gPorts, SWT.BORDER);
+		sPort.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sPort.selectAll();
+			}
+		});
 		
 		sPort.setLayoutData(gridData7);
 		sPort.addModifyListener(new ModifyListener() {
@@ -479,6 +524,11 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		tcpLabel.setLayoutData(gridData_6);
 		tcpLabel.setText("TCP:");
 		sTcpPort = new Text(gPorts, SWT.BORDER);
+		sTcpPort.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sTcpPort.selectAll();
+			}
+		});
 		
 		sTcpPort.setLayoutData(gridData5);
 		sTcpPort.addModifyListener(new ModifyListener() {
@@ -491,6 +541,11 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		label4.setLayoutData(new GridData());
 		label4.setText("UDP:");
 		sUdpPort = new Text(gPorts, SWT.BORDER);
+		sUdpPort.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sUdpPort.selectAll();		
+			}
+		});
 		
 		sUdpPort.setLayoutData(gridData8);
 		sUdpPort.addModifyListener(new ModifyListener() {
@@ -518,6 +573,11 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData6.widthHint = 58;
 		tMainSchedulerHost = new Text(gMainScheduler, SWT.BORDER);
+		tMainSchedulerHost.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tMainSchedulerHost.selectAll();
+			}
+		});
 		tMainSchedulerHost.setLayoutData(gridData6);
 		tMainSchedulerHost.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -552,6 +612,11 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		label8 = new Label(gJavaOptions, SWT.NONE);
 		label8.setText("Class Path:");
 		tJavaClassPath = new Text(gJavaOptions, SWT.BORDER);
+		tJavaClassPath.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tJavaClassPath.selectAll();
+			}
+		});
 		tJavaClassPath.setLayoutData(gridData22);
 		tJavaClassPath.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -561,6 +626,11 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		label9 = new Label(gJavaOptions, SWT.NONE);
 		label9.setText("Options:");
 		tJavaOptions = new Text(gJavaOptions, SWT.BORDER);
+		tJavaOptions.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tJavaOptions.selectAll();
+			}
+		});
 		
 		tJavaOptions.setLayoutData(gridData24);
 		tJavaOptions.addModifyListener(new org.eclipse.swt.events.ModifyListener() {

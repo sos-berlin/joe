@@ -2,6 +2,8 @@ package sos.scheduler.editor.conf.forms;
 
 import java.util.List;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -43,7 +45,6 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
-import sos.scheduler.editor.conf.listeners.OrdersListener;
 
 
 public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLanguage {
@@ -835,6 +836,11 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			directoryLabel.setText("Directory");
 
 			tDirectory = new Text(gFileOrderSource, SWT.BORDER);
+			tDirectory.addFocusListener(new FocusAdapter() {
+				public void focusGained(final FocusEvent e) {
+					tDirectory.selectAll();
+				}
+			});
 			tDirectory.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					bApplyFileOrderSource.setEnabled(isValidSource());
@@ -855,6 +861,11 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 
 			tDelayAfterError = new Text(gFileOrderSource, SWT.BORDER);
+			tDelayAfterError.addFocusListener(new FocusAdapter() {
+				public void focusGained(final FocusEvent e) {
+					tDelayAfterError.selectAll();
+				}
+			});
 			tDelayAfterError.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					bApplyFileOrderSource.setEnabled(isValidSource());
@@ -881,6 +892,11 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 
 			tRegex = new Text(gFileOrderSource, SWT.BORDER);
+			tRegex.addFocusListener(new FocusAdapter() {
+				public void focusGained(final FocusEvent e) {
+					tRegex.selectAll();		
+				}
+			});
 			tRegex.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					bApplyFileOrderSource.setEnabled(isValidSource());
@@ -894,6 +910,11 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			repeatLabel.setText("Repeat");
 
 			tRepeat = new Text(gFileOrderSource, SWT.BORDER);
+			tRepeat.addFocusListener(new FocusAdapter() {
+				public void focusGained(final FocusEvent e) {
+					tRepeat.selectAll();
+				}
+			});
 			tRepeat.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					bApplyFileOrderSource.setEnabled(isValidSource());
@@ -909,6 +930,11 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			maxLabel.setText("Max");
 
 			tMax = new Text(gFileOrderSource, SWT.BORDER);
+			tMax.addFocusListener(new FocusAdapter() {
+				public void focusGained(final FocusEvent e) {
+					tMax.selectAll();
+				}
+			});
 			tMax.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					bApplyFileOrderSource.setEnabled(isValidSource());
@@ -923,6 +949,11 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			stateLabel.setText("Next state");
 
 			tNextState = new Text(gFileOrderSource, SWT.BORDER);
+			tNextState.addFocusListener(new FocusAdapter() {
+				public void focusGained(final FocusEvent e) {
+					tNextState.selectAll();
+				}
+			});
 			tNextState.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					bApplyFileOrderSource.setEnabled(isValidSource());

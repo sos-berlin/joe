@@ -4,6 +4,8 @@ import javax.xml.transform.TransformerException;
 import sos.scheduler.editor.app.Editor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -169,6 +171,11 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		lblJob.setText("Job / Order ID");
 
 		tJob = new Text(gDescription, SWT.BORDER);
+		tJob.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tJob.selectAll();
+			}
+		});
 		tJob.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if(type == Editor.JOB){
@@ -187,6 +194,11 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		startAtLabel.setText("Start at");
 
 		tStartAt = new Text(gDescription, SWT.BORDER);
+		tStartAt.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tStartAt.selectAll();
+			}
+		});
 		tStartAt.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setAt(tStartAt.getText());
@@ -203,6 +215,11 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		priorityLabel.setText("Priority");
 
 		tPriority = new Text(gDescription, SWT.BORDER);
+		tPriority.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tPriority.selectAll();
+			}
+		});
 		tPriority.setEnabled(false);
 		tPriority.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -216,6 +233,11 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		titleLabel.setText("Title");
 
 		tTitle = new Text(gDescription, SWT.BORDER);
+		tTitle.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tTitle.selectAll();		
+			}
+		});
 		tTitle.setEnabled(false);
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -322,10 +344,13 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 			endStateLabel.setVisible(false);
 			replaceLabel.setVisible(false);
 			lblJob.setText("Job");
+			tJob.setFocus();
 		} else {
-			lblJob.setText("Order Id");			
+			lblJob.setText("Order Id");
+			cJobchain.setFocus();
 		}
 		tJob.setVisible(true);
+		
 		tStartAt.setVisible(true);
 		
 	}

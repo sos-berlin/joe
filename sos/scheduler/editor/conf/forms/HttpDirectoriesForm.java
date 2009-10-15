@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -60,7 +62,7 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 		this.setLayout(new FillLayout());
 		createGroup();
 		setSize(new org.eclipse.swt.graphics.Point(653, 468));
-
+		tUrlPath.setFocus();
 	}
 
 
@@ -98,6 +100,11 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 		urlPathLabel.setText("Url Path");
 
 		tUrlPath = new Text(group_1, SWT.BORDER);
+		tUrlPath.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tUrlPath.selectAll();
+			}
+		});
 		tUrlPath.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {     
 				if ((tUrlPath.getText().length() > 0) && (tUrlPath.getText().charAt(0) != '/')) {
@@ -120,6 +127,11 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 		pathLabel.setText("Path");
 
 		tPath = new Text(group_1, SWT.BORDER);
+		tPath.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tPath.selectAll();
+			}
+		});
 		tPath.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR && !tUrlPath.getText().equals(""))

@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -95,6 +97,7 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		initForm();
 		
 		dom.setInit(false);
+		tName.setFocus();
 		init = false;
 	}
 	
@@ -143,6 +146,11 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		label.setText("Job Name:");
 		
 		tName = new Text(gMain, SWT.BORDER);
+		tName.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tName.selectAll();
+			}
+		});
 		tName.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {				
 				if(!init)//während der initialiserung sollen keine überprüfungen stattfinden
@@ -216,6 +224,7 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		
 		
 		tTitle.setItems(Options.getJobTitleList());
+		
 		new Label(gMain, SWT.NONE);
 		label9 = new Label(gMain, SWT.NONE);
 		label9.setLayoutData(new GridData());

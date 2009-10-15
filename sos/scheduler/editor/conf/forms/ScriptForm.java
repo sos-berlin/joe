@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import java.util.HashMap;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -125,6 +127,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         initialize();
         setToolTipText();
         init = false;
+       
     }
 
 
@@ -141,7 +144,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         
         gScript.setEnabled(Utils.isElementEnabled("job", dom, element));        	
         init = false;
-        
+       
     }
 
 
@@ -208,6 +211,11 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         	scriptcom.setLayout(gridLayout_1);
 
         	txtName = new Text(scriptcom, SWT.BORDER);
+        	txtName.addFocusListener(new FocusAdapter() {
+        		public void focusGained(final FocusEvent e) {
+        			txtName.selectAll();
+        		}
+        	});
         	txtName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         	txtName.addModifyListener(new ModifyListener() {
         		public void modifyText(final ModifyEvent e) {
@@ -239,6 +247,11 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         label1.setText("Classname:");
         new Label(gScript, SWT.NONE);
         tClass = new Text(gScript, SWT.BORDER);
+        tClass.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tClass.selectAll();
+        	}
+        });
         tClass.addVerifyListener(new VerifyListener() {
         	public void verifyText(final VerifyEvent e) {
         		if(e.text.length() > 0 && bJava.getSelection() && tSource.getText().length() > 0) {
@@ -278,6 +291,11 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         label3.setText("Filename:");
         new Label(gScript, SWT.NONE);
         tFilename = new Text(gScript, SWT.BORDER);
+        tFilename.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tFilename.selectAll();		
+        	}
+        });
         tFilename.setLayoutData(gridData2);
         tFilename.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -303,6 +321,11 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         butIsLifeFile.setLayoutData(new GridData());
         butIsLifeFile.setText("from Hot Folder");
         tInclude = new Text(gInclude, SWT.BORDER);
+        tInclude.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tFilename.selectAll();
+        	}
+        });
         tInclude.setLayoutData(gridData6);
         bAdd = new Button(gInclude, SWT.NONE);
         label = new Label(gInclude, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -445,7 +468,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         tSource = new Text(gSource, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL);
         tSource.addVerifyListener(new VerifyListener() {
         	public void verifyText(final VerifyEvent e) {
-        		if(e.text.length() > 0 && bJava.getSelection() && tClass.getText().length() > 0) {
+        		if(e.text.length() > 0 && e.text.trim().length() > 0 && bJava.getSelection() && tClass.getText().length() > 0) {
             		MainWindow.message("Please remove first Classname.", SWT.ICON_WARNING);
             		e.doit = false;            		            	
             		return;

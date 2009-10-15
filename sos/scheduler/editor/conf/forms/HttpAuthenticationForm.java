@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -67,6 +69,7 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 		this.setLayout(new FillLayout());
 		createGroup();
 		setSize(new org.eclipse.swt.graphics.Point(653, 468));
+		txtUsername.setFocus();
 		
 	}
 	
@@ -107,6 +110,11 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 		lblUsername.setText("User Name");
 		
 		txtUsername = new Text(group_1, SWT.BORDER);
+		txtUsername.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtUsername.setFocus();
+			}
+		});
 		txtUsername.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {     
 				/*if ((txtUsername.getText().length() > 0) ) {
@@ -130,6 +138,11 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 		lblPassword.setText("Password");
 		
 		txtPassword = new Text(group_1, SWT.BORDER);
+		txtPassword.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtPassword.selectAll();
+			}
+		});
 		txtPassword.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR && !txtPassword.getText().equals("")){
@@ -166,6 +179,11 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 		md5PasswordLabel.setText("MD5 Password");
 		
 		txtMD5Password = new Text(group_1, SWT.BORDER);
+		txtMD5Password.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtMD5Password.selectAll();
+			}
+		});
 		txtMD5Password.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR && !txtUsername.getText().equals("")){					

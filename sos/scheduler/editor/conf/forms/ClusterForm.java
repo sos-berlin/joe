@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
@@ -76,6 +78,7 @@ public class ClusterForm extends Composite implements IUnsaved, IUpdateLanguage 
 		this.setLayout(new FillLayout());
 		createGroup();
 		setSize(new org.eclipse.swt.graphics.Point(604, 427));
+		tTimeout.setFocus();
 
 	}
 
@@ -98,6 +101,12 @@ public class ClusterForm extends Composite implements IUnsaved, IUpdateLanguage 
 		label1 = new Label(gScript, SWT.NONE);
 		label1.setText("Heartbeat Own Timeout");
 		tOwnTimeout = new Text(gScript, SWT.BORDER);
+		tOwnTimeout.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tOwnTimeout.selectAll();
+			}
+		});
+		
 		tOwnTimeout.setLayoutData(gridData);
 		tOwnTimeout.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -108,6 +117,11 @@ public class ClusterForm extends Composite implements IUnsaved, IUpdateLanguage 
 		label3.setText("Heartbeat Warn Timeout");
 
 		tWarnTimeout = new Text(gScript, SWT.BORDER);
+		tWarnTimeout.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tWarnTimeout.selectAll();
+			}
+		});
 		tWarnTimeout.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				listener.setHeartbeatWarnTimeout(tWarnTimeout.getText());
@@ -126,6 +140,11 @@ public class ClusterForm extends Composite implements IUnsaved, IUpdateLanguage 
 	 private void createComposite() {
 
 		 tTimeout = new Text(gScript, SWT.BORDER);
+		 tTimeout.addFocusListener(new FocusAdapter() {
+		 	public void focusGained(final FocusEvent e) {
+		 		tTimeout.selectAll();
+		 	}
+		 });
 		 tTimeout.addModifyListener(new ModifyListener() {
 			 public void modifyText(final ModifyEvent e) {
 				 listener.setHeartbeatTimeout(tTimeout.getText());

@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -206,6 +208,11 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		
 		
 		mailTo = new Text(group, SWT.BORDER);
+		mailTo.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				mailTo.selectAll();
+			}
+		});
 		mailTo.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				listener.setValue("log_mail_to", mailTo.getText());
@@ -218,6 +225,11 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		mailCcLabel.setText("Mail CC");
 
 		mailCC = new Text(group, SWT.BORDER);
+		mailCC.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				mailCC.selectAll();
+			}
+		});
 		mailCC.addModifyListener(new ModifyListener() {
 			 public void modifyText(final ModifyEvent e) {
 				 listener.setValue("log_mail_cc", mailCC.getText());
@@ -233,6 +245,11 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		gridData.minimumWidth = 60;
 		mailBCC = new Text(group, SWT.BORDER);
+		mailBCC.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				mailBCC.selectAll();		
+			}
+		});
 		mailBCC.setLayoutData(gridData);
 		mailBCC.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {

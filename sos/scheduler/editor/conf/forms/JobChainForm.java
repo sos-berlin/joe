@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -25,7 +27,6 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
-import sos.scheduler.editor.conf.listeners.OrdersListener;
 
 public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage {
 
@@ -80,6 +81,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		this.setLayout(new FillLayout());
 		createGroup();
 		setSize(new org.eclipse.swt.graphics.Point(676, 464));
+		tName.setFocus();
 	}
 
 
@@ -99,6 +101,11 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		chainNameLabel.setLayoutData(gridData_6);
 		chainNameLabel.setText("Chain Name ");
 		tName = new Text(jobChainGroup, SWT.BORDER);
+		tName.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tName.selectAll();
+			}
+		});
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, true, false, 3, 1);
 		gridData_4.widthHint = 273;
 		tName.setLayoutData(gridData_4);
@@ -158,6 +165,11 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		titleLabel.setText("Title");
 
 		txtTitle = new Text(jobChainGroup, SWT.BORDER);
+		txtTitle.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtTitle.selectAll();
+			}
+		});
 		txtTitle.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				//getShell().setDefaultButton(bApplyChain);				

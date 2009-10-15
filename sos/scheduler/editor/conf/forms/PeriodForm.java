@@ -783,7 +783,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 	private void createStartTimeGroup() {
 
 		final Group startTimePeriodGroup = new Group(gPeriod, SWT.NONE);
-		startTimePeriodGroup.setText("Start Time");
+		startTimePeriodGroup.setText("Start Time is not avaible for Order Job");
 		startTimePeriodGroup.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 7;

@@ -747,7 +747,6 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		butUp.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butUp.setText("UP");
 		butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
 
 		butDown = new Button(composite_2, SWT.NONE);
@@ -757,7 +756,6 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		butDown.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
-		butDown.setText("do");
 		butDown.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
 
 
