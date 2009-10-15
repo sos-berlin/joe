@@ -172,8 +172,10 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		sMaxProcesses.setEnabled(false);
 		sMaxProcesses.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-				if (e.keyCode == SWT.CR)
+				if (e.keyCode == SWT.CR) {
 					applyClass();
+					bNew.setEnabled(!bApply.getEnabled());
+				}
 			}
 		});
 		sMaxProcesses.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -197,8 +199,10 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		tSpoolerID.setEnabled(false);
 		tSpoolerID.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-				if (e.keyCode == SWT.CR)
+				if (e.keyCode == SWT.CR) {
 					applyClass();
+					bNew.setEnabled(!bApply.getEnabled());
+				}
 			}
 		});
 		tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -225,8 +229,10 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		tRemoteHost.setEnabled(false);
 		tRemoteHost.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR)
+				if (e.keyCode == SWT.CR) {
 					applyClass();
+					bNew.setEnabled(!bApply.getEnabled());
+				}
 
 			}
 		});
@@ -253,8 +259,10 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		tRemotePort.setEnabled(false);
 		tRemotePort.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR)
+				if (e.keyCode == SWT.CR) {
 					applyClass();
+					bNew.setEnabled(!bApply.getEnabled());
+				}
 			}
 		});
 		tRemotePort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -324,8 +332,10 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		tProcessClass.setEnabled(false);
 		tProcessClass.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-				if (e.keyCode == SWT.CR)
+				if (e.keyCode == SWT.CR) {
 					applyClass();
+					bNew.setEnabled(!bApply.getEnabled());
+				}
 			}
 		});
 		tProcessClass.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
