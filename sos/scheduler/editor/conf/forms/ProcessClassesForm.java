@@ -128,7 +128,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		}
 		listener.fillTable(table);
 		ignoreButton.setSelection(listener.isIgnoreProcessClasses());
-		bNew.setEnabled(true);
+		bNew.setEnabled(!bApply.getEnabled());
 
 	}
 
@@ -286,7 +286,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 				setInput(true);
 
 				bApply.setEnabled(listener.isValidClass(tProcessClass.getText()));     
-				bNew.setEnabled(!bApply.isEnabled() && table.getSelectionCount() == 0);
+				bNew.setEnabled(false);
 			}
 		});
 		GridData gridData8 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
@@ -317,6 +317,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 				}
 				bRemove.setEnabled(table.getSelectionCount() > 0);
 				tProcessClass.setBackground(null);
+				bNew.setEnabled(true);
 			}
 		});
 		tProcessClass.setLayoutData(gridData5);
@@ -343,7 +344,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				applyClass();
-				bNew.setEnabled(true);
+				bNew.setEnabled(!bApply.getEnabled());
 			}
 		});
 
@@ -384,7 +385,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 						 tProcessClass.setBackground(null);
 					 }
 				 }
-				 bNew.setEnabled(false);
+				 bNew.setEnabled(!bApply.getEnabled());
 			 }
 		 });
 		 TableColumn tableColumn = new TableColumn(table, SWT.NONE);

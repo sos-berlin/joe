@@ -314,13 +314,17 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 		gridLayout_1.numColumns = 5;
 		composite.setLayout(gridLayout_1);
 
-		Button closeButton = new Button(composite, SWT.NONE);
-		closeButton.setText("Close");
-		closeButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				close();            	
+
+		butApply = new Button(composite, SWT.NONE);
+		butApply.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+		butApply.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				applyBoardClick =true;
+				_shell.close();
 			}
-		}); 
+		});
+		butApply.setEnabled(false);
+		butApply.setText("Apply");
 
 		clipboardButton = new Button(composite, SWT.NONE);
 		clipboardButton.addSelectionListener(new SelectionAdapter() {
@@ -352,17 +356,13 @@ System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.C
 		});
 		cboFunctions.setVisible(false);
 
-
-		butApply = new Button(composite, SWT.NONE);
-		butApply.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-		butApply.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				applyBoardClick =true;
-				_shell.close();
+		Button closeButton = new Button(composite, SWT.NONE);
+		closeButton.setText("Close");
+		closeButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				close();            	
 			}
-		});
-		butApply.setEnabled(false);
-		butApply.setText("Apply");
+		}); 
 
 
 	}

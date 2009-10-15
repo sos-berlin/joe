@@ -995,17 +995,13 @@ public class DetailsListener {
 	public static void addMonitoring2Job(String jobChainname, String state, SchedulerDom dom, ISchedulerUpdate  update) {
 		try {
 
-
-
-			//FAll 1: Es existiert eine globale Details Parameter. D.h. alle jobs in der Jobkette bekommen einen Monitoring
-
-			//String sel = "//job_chains/job_chain[@name='"+ jobChainname + "']/job_chain_node";
+			//FAll 1: Es existiert eine globale Details Parameter. D.h. alle jobs in der Jobkette bekommen einen Monitoring			
 			String sel = "//job_chain[@name='"+ jobChainname + "']/job_chain_node[@job!='']";
-			if(state != null) {
-				//sel = "//job_chains/job_chain[@name='"+ jobChainname + "']/job_chain_node[@state='"+state+"']";
+			if(state != null) {			
 				sel = "//job_chain[@name='"+ jobChainname + "']/job_chain_node[@state='"+state+"']";
 
 			}
+			
 			XPath x = XPath.newInstance(sel);				 
 			List listOfElement = x.selectNodes(dom.getDoc());
 
@@ -1015,6 +1011,7 @@ public class DetailsListener {
 					Element jobChainNode = (Element)listOfElement.get(i);
 					//jobname in der Jobkette ermitteln 
 					String jobname = Utils.getAttributeValue("job", jobChainNode);
+					
 					String hotFolderfilename = new File(Options.getSchedulerHotFolder(), jobname + ".job.xml").getCanonicalPath();
 										//Unterscheiden, ob Hot Folder Element. Wenn ja, dann Hot Folder Datei öffnen. Wenn der Hot Folder Element bereits offen ist, dann verändern
 					List listOfElement2  = null;
