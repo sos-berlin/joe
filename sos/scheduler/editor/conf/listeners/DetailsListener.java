@@ -997,11 +997,11 @@ public class DetailsListener {
 
 			//FAll 1: Es existiert eine globale Details Parameter. D.h. alle jobs in der Jobkette bekommen einen Monitoring			
 			String sel = "//job_chain[@name='"+ jobChainname + "']/job_chain_node[@job!='']";
-			if(state != null) {			
+			if(state != null) {	
+				//FAll 1: Es gibt eine Details Parameter. D.h. nur der eine job in der Jobkette mit der state bekommt einen Monitoring	
 				sel = "//job_chain[@name='"+ jobChainname + "']/job_chain_node[@state='"+state+"']";
 
-			}
-			
+			}			
 			XPath x = XPath.newInstance(sel);				 
 			List listOfElement = x.selectNodes(dom.getDoc());
 
@@ -1013,7 +1013,7 @@ public class DetailsListener {
 					String jobname = Utils.getAttributeValue("job", jobChainNode);
 					
 					String hotFolderfilename = new File(Options.getSchedulerHotFolder(), jobname + ".job.xml").getCanonicalPath();
-										//Unterscheiden, ob Hot Folder Element. Wenn ja, dann Hot Folder Datei öffnen. Wenn der Hot Folder Element bereits offen ist, dann verändern
+					//Unterscheiden, ob Hot Folder Element. Wenn ja, dann Hot Folder Datei öffnen. Wenn der Hot Folder Element bereits offen ist, dann verändern
 					List listOfElement2  = null;
 					
 					if(dom.isLifeElement() || new File(jobname).getParent() != null ) {
@@ -1023,30 +1023,55 @@ public class DetailsListener {
 							continue;
 						}
 
-						XPath x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+						//XPath x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+						XPath x2 = null;
 						//Es ist ein Hot Folder oder der Job ist woanders abgelegt
 						sos.scheduler.editor.app.TabbedContainer tab = ((sos.scheduler.editor.app.TabbedContainer)MainWindow.getContainer());
-						if(tab.getFilelist() != null && tab.getFilelist().contains(hotFolderfilename)) {
-							//Hot Folder Element ist in einem Tabraiter offen	
-							//org.eclipse.swt.custom.CTabItem f = tab.getFolderTab(hotFolderfilename);
-							SchedulerForm form =(SchedulerForm)tab.getEditor(hotFolderfilename);
+						String pathFromHotFolderDirectory = new File(hotFolderfilename).getParent();
+						if(tab.getFilelist() != null && 
+								(tab.getFilelist().contains(hotFolderfilename) ||  
+										tab.getFilelist().contains(pathFromHotFolderDirectory)		)) {
+							//Hot Folder oder Hot Folder Element ist in einem Tabraiter offen oder							
+							SchedulerForm form = null;
+							//XPath x2 = null;
+							if(tab.getFilelist().contains(hotFolderfilename)) {
+								form = (SchedulerForm)tab.getEditor(hotFolderfilename);//hot folder element
+								x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+							} else {
+								form = (SchedulerForm)tab.getEditor(pathFromHotFolderDirectory);//hot folder
+								x2 = XPath.newInstance("//job[@name='"+new File(jobname).getName()+"']/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+							}
+								
 							SchedulerDom currdom = (SchedulerDom)form.getDom();
-
+							//test
+							//XPath.newInstance("//job[@name='11job1']/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']").selectNodes(currdom.getDoc())
+							//ende test
 							listOfElement2 = x2.selectNodes(currdom.getDoc());
 							if(listOfElement2.isEmpty()) {							
-								XPath x3 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+								XPath x3 = null;
+								XPath x4 = null;
+								if(tab.getFilelist().contains(hotFolderfilename)) {
+									x3 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+									x4 = XPath.newInstance("//job");; 
+								} else {
+									x3 = XPath.newInstance("//job[@name='"+new File(jobname).getName()+"']/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+									x4 = XPath.newInstance("//job[@name='"+new File(jobname).getName()+"']");
+								}
 								List listOfElement3  = x3.selectNodes(currdom.getDoc());
-								if(listOfElement3.isEmpty()) {
-									x3 = XPath.newInstance("//job");
-									listOfElement3  = x3.selectNodes(currdom.getDoc());
-									Element job = (Element)listOfElement3.get(0);
+								if(listOfElement3.isEmpty()) {									
+									List listOfElement4  = x4.selectNodes(currdom.getDoc());
+									Element job = (Element)listOfElement4.get(0);
 									addMonitoring(job, currdom);
 
-									form.getTree().setSelection(new org.eclipse.swt.widgets.TreeItem[] { form.getTree().getItem(0) });
-
+									if(currdom.isLifeElement())
+										form.getTree().setSelection(new org.eclipse.swt.widgets.TreeItem[] { form.getTree().getItem(0) });
+									else if(currdom.isDirectory())
+										form.selectTreeItem(SchedulerListener.JOBS , SchedulerListener.JOB + new File(jobname).getName());
+									
 									currdom.setChanged(true);
 									if(form != null) {
-
+										
+										form.updateJob(job);
 										form.updateJob();
 										form.update();
 									}
@@ -1054,8 +1079,11 @@ public class DetailsListener {
 									form.dataChanged();
 									dom.setChanged(true);
 
-
-									form.dataChanged(tab.getFolderTab(hotFolderfilename));
+									if(tab.getFilelist().contains(hotFolderfilename)) {
+										form.dataChanged(tab.getFolderTab(hotFolderfilename));
+									} else {
+										form.dataChanged(tab.getFolderTab(pathFromHotFolderDirectory));
+									}
 
 								}
 							}
@@ -1088,8 +1116,11 @@ public class DetailsListener {
 								Element job = (Element)listOfElement3.get(0);
 								addMonitoring(job, dom);
 
-								if(update != null)
+								if(update != null) {
 									update.updateJobs();	
+								    update.updateJob(jobname);
+								}
+								dom.setChanged(true);
 							}
 						}
 					}
@@ -1102,7 +1133,7 @@ public class DetailsListener {
 
 
 		} catch (Exception e)  {
-
+ 
 			try {
 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			} catch(Exception ee) {

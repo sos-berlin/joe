@@ -517,6 +517,21 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		} else 
 			listener.treeSelection(tree, cMainForm);
 		
+	}	
+	public void selectTreeItem(String parent, String child) {
+		
+		for(int i = 0; i < tree.getItemCount(); i++) {
+			TreeItem pItem = tree.getItem(i);
+			if(pItem.getText().equals(parent)){
+				for(int j = 0; j < pItem.getItemCount(); j++) {
+					TreeItem cItem = pItem.getItem(j);
+					if(cItem.getText().equals(child)){
+						tree.setSelection(new TreeItem[]{cItem});
+						break;
+					}
+				}
+			}
+		}
 	}
 	
 	public String getTreeSelection() {

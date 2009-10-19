@@ -6,8 +6,6 @@ package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -163,11 +161,18 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		tProcessClass = new Text(group, SWT.BORDER);
 		tProcessClass.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(final TraverseEvent e) {
-				if (e.keyCode == SWT.CR) {
+				if(!listener.isValidClass(tProcessClass.getText()) || dom.isLifeElement()) {
+					 e.doit = false;
+					 return;
+				 }
+				
+				traversed(e);
+				/*if (e.keyCode == SWT.CR) {		
+					e.doit = false;
 					applyClass();
-
+					//setInput(false);
 					//bNew.setEnabled(!bApply.getEnabled());
-				}
+				}*/
 			}
 		});
 		bApply = new Button(group, SWT.NONE);
@@ -179,12 +184,13 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		gridData4.widthHint = 20;
 		sMaxProcesses = new Spinner(group, SWT.NONE);
 		sMaxProcesses.addTraverseListener(new TraverseListener() {
-			public void keyTraversed(final TraverseEvent e) {				
-				if (e.keyCode == SWT.CR) {
+			public void keyTraversed(final TraverseEvent e) {
+				traversed(e);
+				/*if (e.keyCode == SWT.CR) {
 					applyClass();
 
 					//bNew.setEnabled(!bApply.getEnabled());
-				}
+				}*/
 			}			
 		});
 		sMaxProcesses.setMaximum(99999999);
@@ -214,13 +220,13 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		tSpoolerID = new Text(group, SWT.BORDER);
 		tSpoolerID.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(final TraverseEvent e) {
+				traversed(e);
+				/*if (e.keyCode == SWT.CR) {
+					//tSpoolerID.addSelectionListener(getSelectionListener());
 				
-				if (e.keyCode == SWT.CR) {										
 					applyClass();
-					bApply.setEnabled(true);
-					//bNew.setEnabled(false);
-					e.doit = false;
-				}
+					
+				}*/
 			}
 		});
 		
@@ -247,7 +253,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		*/
 		tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				System.out.println("modify ");
+				//System.out.println("modify ");
 				bApply.setEnabled(true);
 			}
 		});
@@ -259,11 +265,12 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		tRemoteHost = new Text(group, SWT.BORDER);
 		tRemoteHost.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(final TraverseEvent e) {
-				if (e.keyCode == SWT.CR) {
+				traversed(e);
+				/*if (e.keyCode == SWT.CR) {
 					applyClass();
 
 					//bNew.setEnabled(!bApply.getEnabled());
-				}
+				}*/
 			}
 		});
 		tRemoteHost.addFocusListener(new FocusAdapter() {
@@ -298,11 +305,12 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		tRemotePort = new Text(group, SWT.BORDER);
 		tRemotePort.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(final TraverseEvent e) {
-				if (e.keyCode == SWT.CR) {
+				traversed(e);
+				/*if (e.keyCode == SWT.CR) {
 					applyClass();
 
 					//bNew.setEnabled(!bApply.getEnabled());
-				}
+				}*/
 			}
 		});
 		tRemotePort.addFocusListener(new FocusAdapter() {
@@ -350,10 +358,18 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		getShell().setDefaultButton(bNew);
 		bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				apply();
+				/*if(bApply.isEnabled()) {
+					int ok = MainWindow.message(Messages.getString("MainListener.apply_changes"), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);					
+					if (ok == SWT.YES) {
+						
+						return;
+					}
+				}*/
+
+				//apply();
 				listener.newProcessClass();
 				setInput(true);
-				
+
 				bApply.setEnabled(listener.isValidClass(tProcessClass.getText()));     
 				//bNew.setEnabled(false);
 			}
@@ -414,14 +430,16 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		bApply.setText("&Apply Process Class");
 		bApply.setLayoutData(gridData3);
 		bApply.setEnabled(false);
+
 		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				applyClass();
-				
-				//bNew.setEnabled(!bApply.getEnabled());
+				applyClass();				
 			}
 		});
 
+		
+		//bApply.addSelectionListener(getSelectionListener());
+		
 		ignoreButton = new Button(group, SWT.CHECK);
 		ignoreButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -483,6 +501,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 			 return;
 
 		 boolean _continue = true;
+		 
 		 if(listener.getProcessClass().length() > 0 &&
 				 !listener.getProcessClass().equals(tProcessClass.getText()) &&
 				 !Utils.checkElement(listener.getProcessClass(), dom, sos.scheduler.editor.app.Editor.PROCESS_CLASSES, null))
@@ -567,5 +586,15 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		return table;
 	}
 
+	
+	 private void traversed(final TraverseEvent e) {
+		 	 
+		 if (e.keyCode == SWT.CR) {		
+				e.doit = false;
+				applyClass();
+				//setInput(false);
+				//bNew.setEnabled(!bApply.getEnabled());
+			}
+	 }
 
 } // @jve:decl-index=0:visual-constraint="10,10"
