@@ -159,6 +159,11 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		label1.setLayoutData(new GridData(86, SWT.DEFAULT));
 		label1.setText("Process Class:");
 		tProcessClass = new Text(group, SWT.BORDER);
+		tProcessClass.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				//tProcessClass.selectAll();
+			}
+		});
 		tProcessClass.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(final TraverseEvent e) {
 				if(!listener.isValidClass(tProcessClass.getText()) || dom.isLifeElement()) {

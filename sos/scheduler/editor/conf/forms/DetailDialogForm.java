@@ -1,7 +1,6 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -9,7 +8,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 
 
 public class DetailDialogForm {
@@ -20,7 +18,7 @@ public class DetailDialogForm {
 	
 	private Shell            shell             = null; 
 	
-	private String[]         listOfOrderIds    = null;
+	//private String[]         listOfOrderIds    = null;
 	
 	private DetailForm       dialogForm        = null;	
 	
@@ -33,7 +31,7 @@ public class DetailDialogForm {
 	/**
 	 * Wenn es eine JobDokumentation gibt, dann wird beim STarten der Wizzard die Parameter Fenster geöffnet
 	 */
-	private String           descriptionname   = null;
+	//private String           descriptionname   = null;
 	
 	
 	//public DetailDialogForm(String jobChainname_, String[] listOfOrderIds_, boolean isLifeElement_, String path_) {
@@ -58,11 +56,11 @@ public class DetailDialogForm {
 	 * Aufruf dieser Metho, wenn es eine Jobdokumentation gibt
 	 * @param descriptionname_
 	 */
-	public void showDetails(String descriptionname_) {
+	/*public void showDetails(String descriptionname_) {
 
 		descriptionname = descriptionname_;
 		showDetails();
-	}
+	}*/
 	
 	public void showDetails() {
 		

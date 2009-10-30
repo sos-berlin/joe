@@ -3,8 +3,6 @@ package sos.scheduler.editor.app;
 import java.io.File;
 import java.util.HashMap;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -36,8 +34,8 @@ import java.util.ArrayList;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
 import sos.util.SOSString;
-import sos.ftp.profiles.FTPDialogListener;
- 
+
+
 public class MainWindow  {
 
 	private static Shell sShell             = null; // @jve:decl-index=0:visual-constraint="3,1"
@@ -63,9 +61,9 @@ public class MainWindow  {
 	private static ToolItem     butSave            = null;
 
 	private static ToolItem     butShowAsSML       = null; 
-	
-	private SOSString    sosString          = new SOSString();
-	
+
+	private static SOSString    sosString          = new SOSString();
+
 
 	public MainWindow() {
 		super();	
@@ -76,7 +74,7 @@ public class MainWindow  {
 	 * This method initializes composite
 	 */
 	private void createContainer() {
-		container = new TabbedContainer(this, sShell);
+		container = new TabbedContainer(sShell);
 		sShell.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 
 		main = this;
@@ -138,7 +136,7 @@ public class MainWindow  {
 
 		MenuItem mNew = new MenuItem(mFile, SWT.CASCADE);				
 		mNew.setText("New                           ");
-		
+
 
 		Menu pmNew = new Menu(mNew);
 		MenuItem pNew = new MenuItem(pmNew, SWT.PUSH);
@@ -167,7 +165,7 @@ public class MainWindow  {
 			}
 		});
 
-		
+
 		/*//TODO: beim resizen dieses Menüpubktes gibt es einen Classcast Exception
 		 * MenuItem pNewDetails = new MenuItem(pmNew, SWT.PUSH);
 		pNewDetails.setText("Job Chain Details   \tCtrl+F");
@@ -180,7 +178,7 @@ public class MainWindow  {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-*/
+		 */
 		//new event handler
 		MenuItem pNewActions = new MenuItem(pmNew, SWT.PUSH);
 		pNewActions.setText("Event Handler \tCTRL+X");
@@ -194,7 +192,7 @@ public class MainWindow  {
 			}
 		});
 
-		
+
 		MenuItem mpLife = new MenuItem(pmNew, SWT.CASCADE);				
 		mpLife.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -313,17 +311,17 @@ public class MainWindow  {
 		MenuItem pOpenSchedulerCluster = new MenuItem(pMOpenGlobalScheduler, SWT.PUSH);
 		pOpenSchedulerCluster.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				HotFolderDialog dialog = new HotFolderDialog(main);
+				HotFolderDialog dialog = new HotFolderDialog();
 				dialog.showForm(HotFolderDialog.SCHEDULER_CLUSTER);
 			}
 		});
 		pOpenSchedulerCluster.setText("Open Cluster Configuration");
-		
+
 
 		MenuItem pOpenSchedulerHost = new MenuItem(pMOpenGlobalScheduler, SWT.PUSH);
 		pOpenSchedulerHost.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				HotFolderDialog dialog = new HotFolderDialog(main);
+				HotFolderDialog dialog = new HotFolderDialog();
 				dialog.showForm(HotFolderDialog.SCHEDULER_HOST);
 			}
 		});
@@ -456,7 +454,7 @@ public class MainWindow  {
 		MenuItem mWebDav = new MenuItem(mFile, SWT.CASCADE);				
 		mWebDav.setText("WebDav");
 		mWebDav.setAccelerator(SWT.CTRL | 'N');
-        mWebDav.setEnabled(existwebDavLib);
+		mWebDav.setEnabled(existwebDavLib);
 		Menu pmWebDav = new Menu(mNew);
 
 		MenuItem pOpenWebDav = new MenuItem(pmWebDav, SWT.PUSH);
@@ -466,7 +464,7 @@ public class MainWindow  {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				try {
 					if(existLibraries()) {
-						WebDavDialog webdav = new WebDavDialog(main);
+						WebDavDialog webdav = new WebDavDialog();
 						webdav.showForm(WebDavDialog.OPEN);
 					}
 				} catch(Exception ex) {
@@ -489,7 +487,7 @@ public class MainWindow  {
 		pOpenHotFolderWebDav.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if(existLibraries()) {
-					WebDavDialog webdav = new WebDavDialog(main);
+					WebDavDialog webdav = new WebDavDialog();
 					webdav.showForm(WebDavDialog.OPEN_HOT_FOLDER);
 				}
 			}
@@ -506,11 +504,11 @@ public class MainWindow  {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {	
 				if(existLibraries()) {
 
-					WebDavDialog webdav = new WebDavDialog(main);
+					WebDavDialog webdav = new WebDavDialog();
 					DomParser currdom = getSpecifiedDom();
 					if(currdom == null)
 						return;
-					
+
 					if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {				
 						webdav.showForm(WebDavDialog.SAVE_AS_HOT_FOLDER);
 					} else
@@ -539,7 +537,7 @@ public class MainWindow  {
 						//tu nichts
 					}
 				}
-				
+
 			}
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
@@ -620,10 +618,10 @@ public class MainWindow  {
 				setSaveStatus();
 			}
 		});
-		
-		
-		
-		
+
+
+
+
 	}
 
 
@@ -688,7 +686,7 @@ public class MainWindow  {
 		return message(getSShell(), message, style);		
 	}
 
-	
+
 	public static int message(Shell shell, String message, int style) {
 		MessageBox mb = new MessageBox(shell, style);
 		mb.setMessage(message);
@@ -707,12 +705,12 @@ public class MainWindow  {
 		return mb.open();
 	}
 
-	
+
 	public static IContainer getContainer() {
 		return container;
 	}
 
-	
+
 	private void save() {
 		Utils.startCursor(getSShell());
 		HashMap changes = new HashMap();
@@ -771,7 +769,7 @@ public class MainWindow  {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-*/
+		 */
 		MenuItem itemActions = new MenuItem(menu, SWT.PUSH);
 		itemActions.setText("Event Handler");
 		itemActions.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -782,7 +780,7 @@ public class MainWindow  {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-		
+
 		MenuItem itemHFEJob = new MenuItem(menu, SWT.PUSH);
 		itemHFEJob.setText("Hot Folder Element - Job");
 		itemHFEJob.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -905,7 +903,7 @@ public class MainWindow  {
 		butShowAsSML.setImage(ResourceManager
 				.getImageFromResource("/sos/scheduler/editor/icon_view_as_xml.gif"));	
 		butShowAsSML.setToolTipText("Show Configuration as XML");
-		
+
 		final ToolItem butFTP = new ToolItem(toolBar, SWT.NONE);
 
 		final Menu menuFTP = new Menu(toolBar);
@@ -947,15 +945,15 @@ public class MainWindow  {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-				
+
 		final ToolItem itemReset = new ToolItem(toolBar, SWT.PUSH);
 		//itemReset.setEnabled(container != null && (container.getCurrentEditor() instanceof sos.scheduler.editor.actions.forms.ActionsForm || container.getCurrentEditor() instanceof SchedulerForm ));
 		itemReset.setImage(ResourceManager
 				.getImageFromResource("/sos/scheduler/editor/icon_reset.gif"));
-		
+
 		itemReset.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(final SelectionEvent e) {
-				int c = MainWindow.message("Yo want reload the Configuratation and lost the Changes?", SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
+				int c = MainWindow.message("Do you want to reload the configuration and loose the changes?", SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
 				if(c != SWT.YES)
 					return;
 				if(container.getCurrentEditor() instanceof SchedulerForm) {					
@@ -965,15 +963,15 @@ public class MainWindow  {
 						sos.scheduler.editor.app.Utils.reset( currdom.getRoot(), form, currdom);
 					else
 						sos.scheduler.editor.app.Utils.reset( currdom.getRoot().getChild("config"), form, currdom);
-					
+
 				} else if(container.getCurrentEditor() instanceof sos.scheduler.editor.actions.forms.ActionsForm) {
-					 sos.scheduler.editor.actions.forms.ActionsForm form =( sos.scheduler.editor.actions.forms.ActionsForm)container.getCurrentEditor();
-					 sos.scheduler.editor.actions.ActionsDom currdom = ( sos.scheduler.editor.actions.ActionsDom)form.getDom();
-					 sos.scheduler.editor.app.Utils.reset( currdom.getRoot(),form, currdom);
+					sos.scheduler.editor.actions.forms.ActionsForm form =( sos.scheduler.editor.actions.forms.ActionsForm)container.getCurrentEditor();
+					sos.scheduler.editor.actions.ActionsDom currdom = ( sos.scheduler.editor.actions.ActionsDom)form.getDom();
+					sos.scheduler.editor.app.Utils.reset( currdom.getRoot(),form, currdom);
 				} else if(container.getCurrentEditor() instanceof sos.scheduler.editor.doc.forms.DocumentationForm) {
-					 sos.scheduler.editor.doc.forms.DocumentationForm form =( sos.scheduler.editor.doc.forms.DocumentationForm)container.getCurrentEditor();
-					 sos.scheduler.editor.doc.DocumentationDom currdom = ( sos.scheduler.editor.doc.DocumentationDom)form.getDom();
-					 sos.scheduler.editor.app.Utils.reset( currdom.getRoot(),form, currdom);
+					sos.scheduler.editor.doc.forms.DocumentationForm form =( sos.scheduler.editor.doc.forms.DocumentationForm)container.getCurrentEditor();
+					sos.scheduler.editor.doc.DocumentationDom currdom = ( sos.scheduler.editor.doc.DocumentationDom)form.getDom();
+					sos.scheduler.editor.app.Utils.reset( currdom.getRoot(),form, currdom);
 				}
 
 			}
@@ -981,7 +979,7 @@ public class MainWindow  {
 			}
 		});
 
-		
+
 		final ToolItem butWizzard = new ToolItem(toolBar, SWT.PUSH);
 		butWizzard.setToolTipText("Wizzard");
 		butWizzard.setImage(ResourceManager
@@ -994,7 +992,7 @@ public class MainWindow  {
 			}
 		});
 
-		
+
 		final ToolItem butHelp = new ToolItem(toolBar, SWT.PUSH);
 		butHelp.setImage(ResourceManager
 				.getImageFromResource("/sos/scheduler/editor/icon_help.gif"));
@@ -1011,10 +1009,10 @@ public class MainWindow  {
 			}
 		});
 
-		
+
 	}
 
-	
+
 	private static void addDropDown(final ToolItem item, final Menu menu) {
 		item.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -1028,98 +1026,102 @@ public class MainWindow  {
 	}
 
 
-	private void saveFTP(java.util.HashMap changes)  {
-try {
-		if(container.getCurrentTab().getData("ftp_title") != null && 
-				container.getCurrentTab().getData("ftp_title").toString().length()>0) {
+	public static void saveFTP(java.util.HashMap changes)  {
+		try {
+			if(container.getCurrentTab().getData("ftp_title") != null && 
+					container.getCurrentTab().getData("ftp_title").toString().length()>0) {
 
-			DomParser currdom = getSpecifiedDom();
-			if(currdom == null)
-				return;			
+				DomParser currdom = getSpecifiedDom();
+				if(currdom == null)
+					return;			
 
-			String profilename = container.getCurrentTab().getData("ftp_profile_name").toString();
-			String remoteDir = container.getCurrentTab().getData("ftp_remote_directory").toString();
-			ArrayList ftpHotFolderElements = new ArrayList();
-			if(container.getCurrentTab().getData("ftp_hot_folder_elements") != null)
-				ftpHotFolderElements = (ArrayList)container.getCurrentTab().getData("ftp_hot_folder_elements");
+				//String profilename = container.getCurrentTab().getData("ftp_profile_name").toString();
+				String remoteDir = container.getCurrentTab().getData("ftp_remote_directory").toString();
+				ArrayList ftpHotFolderElements = new ArrayList();
+				if(container.getCurrentTab().getData("ftp_hot_folder_elements") != null)
+					ftpHotFolderElements = (ArrayList)container.getCurrentTab().getData("ftp_hot_folder_elements");
 
-			//java.util.Properties profile = (java.util.Properties)container.getCurrentTab().getData("ftp_profile");
-			sos.ftp.profiles.FTPProfile profile = (sos.ftp.profiles.FTPProfile)container.getCurrentTab().getData("ftp_profile");
+				//java.util.Properties profile = (java.util.Properties)container.getCurrentTab().getData("ftp_profile");
+				sos.ftp.profiles.FTPProfile profile = (sos.ftp.profiles.FTPProfile)container.getCurrentTab().getData("ftp_profile");
 
-			Text txtLog = new Text(getSShell(), SWT.NONE);
-			final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
-			gridData.widthHint = 0;
-			gridData.heightHint = 0;
-			txtLog.setLayoutData(gridData);
-			txtLog.setSize(0, 0);
-			
-			//FTPDialogListener ftpListener = new FTPDialogListener(profile, profilename);
-			//ftpListener.setLogText(txtLog);
-			profile.setLogText(txtLog);
-			//ftpListener.connect(profilename);
-			profile.connect();
-			
-			//if(ftpListener.isLoggedIn()) {
-			if(profile.isLoggedIn()) {
-				
-				if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isLifeElement()) {
-					String filename = container.getCurrentEditor().getFilename();
-					if(!new File(remoteDir).getName().equalsIgnoreCase(new File(filename).getName())){
-						//Attribute "name" wurde geändert: Das bedeutet auch Änderungen der life Datei namen.
-						//ftpListener.removeFile(remoteDir);
-						profile.removeFile(remoteDir);
-						try {
-							String newName = sosString.parseToString(new File(remoteDir).getParent()) + "/" + new File(filename).getName();
-							newName = newName.replaceAll("\\\\", "/");
-							container.getCurrentTab().setData("ftp_remote_directory", newName);
-						} catch(Exception e) {
-							System.out.println("test: " + e.toString());
-							
-						} //tu nichts 
+				Text txtLog = new Text(getSShell(), SWT.NONE);
+				final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
+				gridData.widthHint = 0;
+				gridData.heightHint = 0;
+				txtLog.setLayoutData(gridData);
+				txtLog.setSize(0, 0);
+
+				//FTPDialogListener ftpListener = new FTPDialogListener(profile, profilename);
+				//ftpListener.setLogText(txtLog);
+				profile.setLogText(txtLog);
+				//ftpListener.connect(profilename);
+				profile.connect();
+
+				//if(ftpListener.isLoggedIn()) {
+				if(profile.isLoggedIn()) {
+					if( currdom instanceof SchedulerDom && sosString.parseToString(container.getCurrentTab().getData("ftp_details_parameter_file")).length() > 0) {
+						//Details Parameter speichern
+						File source = new File(container.getCurrentTab().getData("ftp_details_parameter_file").toString());
+						profile.saveAs( container.getCurrentTab().getData("ftp_details_parameter_file").toString(), remoteDir + "/" + source.getName());
+						container.getCurrentTab().setData("ftp_details_parameter_file", "");
+					} else if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isLifeElement()) {
+						String filename = container.getCurrentEditor().getFilename();
+						if(!new File(remoteDir).getName().equalsIgnoreCase(new File(filename).getName())){
+							//Attribute "name" wurde geändert: Das bedeutet auch Änderungen der life Datei namen.
+							//ftpListener.removeFile(remoteDir);
+							profile.removeFile(remoteDir);
+							try {
+								String newName = sosString.parseToString(new File(remoteDir).getParent()) + "/" + new File(filename).getName();
+								newName = newName.replaceAll("\\\\", "/");
+								container.getCurrentTab().setData("ftp_remote_directory", newName);
+							} catch(Exception e) {
+								System.out.println("test: " + e.toString());
+
+							} //tu nichts 
+						}
+						remoteDir = new File(remoteDir).getParent() + "/" + new File(filename).getName();
+						//ftpListener.saveAs( filename, remoteDir);
+						profile.saveAs( filename, remoteDir);
+
+					} else if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {
+
+						//ftpListener.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);
+						profile.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);
+
+					} else {
+
+						//ftpListener.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
+						profile.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
+
 					}
-					remoteDir = new File(remoteDir).getParent() + "/" + new File(filename).getName();
-					//ftpListener.saveAs( filename, remoteDir);
-					profile.saveAs( filename, remoteDir);
-					
-				} else if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {
-
-					//ftpListener.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);
-					profile.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);
+					//ftpListener.disconnect();
+					profile.disconnect();
 
 				} else {
-
-					//ftpListener.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
-					profile.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
-
+					MainWindow.message("could not save file on ftp Server", SWT.ICON_WARNING);
 				}
-				//ftpListener.disconnect();
-				profile.disconnect();
-				
-			} else {
-				MainWindow.message("could not save file on ftp Server", SWT.ICON_WARNING);
+
+				//if(ftpListener.hasError()) {
+				if(profile.hasError()) {
+					String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), getSShell(), false, "");
+					if(text != null)
+						txtLog.setText(text);
+				} 
 			}
+		} catch (Exception e) {
+			MainWindow.message("could not save per ftp, cause: " + e.toString(), SWT.ICON_WARNING);
 
-			//if(ftpListener.hasError()) {
-			if(profile.hasError()) {
-				String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), getSShell(), false, "");
-				if(text != null)
-					txtLog.setText(text);
-			} 
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 		}
-} catch (Exception e) {
-	MainWindow.message("could not save per ftp, cause: " + e.toString(), SWT.ICON_WARNING);
-	
-	try {
-		new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
-	} catch(Exception ee) {
-		//tu nichts
-	}
-}
 	}
 
-	
+
 	private void saveWebDav(java.util.HashMap changes) {
-	
+
 		WebDavDialogListener webdavListener = null;
 		Text txtLog = null;
 
@@ -1129,7 +1131,7 @@ try {
 			DomParser currdom = getSpecifiedDom();
 			if(currdom == null)
 				return;
-			
+
 			String profilename = container.getCurrentTab().getData("webdav_profile_name").toString();
 			String remoteDir = container.getCurrentTab().getData("webdav_remote_directory").toString();
 			ArrayList webdavHotFolderElements = new ArrayList();
@@ -1146,7 +1148,7 @@ try {
 			txtLog.setSize(0, 0);
 			webdavListener = new WebDavDialogListener(profile, profilename);
 			webdavListener.setLogText(txtLog);
-			
+
 			if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isLifeElement()) {
 
 				String filename = container.getCurrentEditor().getFilename();
@@ -1169,7 +1171,7 @@ try {
 				webdavListener.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
 
 			}
-		
+
 			if(webdavListener.hasError()) {
 				String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), getSShell(), false, "");
 				if(text != null)
@@ -1187,14 +1189,14 @@ try {
 		DomParser currdom = getSpecifiedDom();
 		if(currdom == null)
 			return;
-				
+
 		if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {
 			ftp.showForm(FTPDialog.SAVE_AS_HOT_FOLDER);
 		} else
 			ftp.showForm(FTPDialog.SAVE_AS);
-		
+
 	}
-	
+
 	private boolean existLibraries() { 
 		boolean libExist = false;
 		try{
@@ -1229,20 +1231,20 @@ try {
 			"\t- commons-codec-1.3.jar\n" +
 			"\t- commons-httpclient-3.0.1.jar\n\n" +
 			"for more information see https://sourceforge.net/projects/webdavclient4j/";
-			
+
 			MainWindow.message(msg, SWT.ICON_WARNING);
-			
+
 			try {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " cause: " + msg, e);
 			} catch(Exception ee) {
 				//tu nichts
 			}
-			*/
+			 */
 		}
 		return libExist;
-		
+
 	}
-	
+
 	public static DomParser getSpecifiedDom() {
 
 		DomParser currdom = null;
@@ -1284,6 +1286,6 @@ try {
 		} finally {
 			Utils.stopCursor(sShell);
 		}
-	
+
 	}
 }

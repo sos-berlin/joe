@@ -1,6 +1,8 @@
 package sos.scheduler.editor.doc.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -111,6 +113,11 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
         label1.setText("ID:"); // Generated
         GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         tID = new Text(group, SWT.BORDER);
+        tID.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tID.selectAll();
+        	}
+        });
         tID.setLayoutData(gridData3); // Generated
         tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -126,6 +133,11 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
         label.setText("Title:"); // Generated
         GridData gridData21 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         tTitle = new Text(group, SWT.BORDER);
+        tTitle.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tTitle.selectAll();
+        	}
+        });
         tTitle.setLayoutData(gridData21); // Generated
         tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {

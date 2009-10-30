@@ -342,7 +342,7 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		});
 		sTimeout.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
-				e.doit = Utils.isOnlyDigits(e.text);
+				//e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
 		
@@ -373,7 +373,7 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		
 		sIdleTimeout.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
-				e.doit = Utils.isOnlyDigits(e.text);
+				//e.doit = Utils.isOnlyDigits(e.text);
 				
 			}
 		});
@@ -392,6 +392,10 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		warnIfLongerLabel.setText("Warn if longer than:");
 
 		txtWarnIfLongerThan = new Text(gMain, SWT.BORDER);
+		txtWarnIfLongerThan.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+			}
+		});
 		txtWarnIfLongerThan.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent e) {
 				txtWarnIfLongerThan.selectAll();

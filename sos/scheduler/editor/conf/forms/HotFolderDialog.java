@@ -52,7 +52,7 @@ public class HotFolderDialog {
 
 	private              String           sType                         = "";
 
-	private              MainWindow       mainwindow                    = null;
+	//private              MainWindow       mainwindow                    = null;
 
 	private              SOSString        sosString                     = null;
 
@@ -70,9 +70,10 @@ public class HotFolderDialog {
 
 	private              String           SCHEDULER_HOST_MASK           = "^[^#]+#\\d{1,5}$";
 
-	public HotFolderDialog(MainWindow mainwindow_) {
+	//public HotFolderDialog(MainWindow mainwindow_) {
+	public HotFolderDialog() {
 		sosString = new SOSString();
-		mainwindow = mainwindow_;
+		//mainwindow = mainwindow_;
 	}
 
 	public void showForm(int type_) {
@@ -479,12 +480,12 @@ public class HotFolderDialog {
 					for (int i = 0; i < tree.getSelection()[0].getItemCount(); i++) {
 						path = sosString.parseToString(tree.getSelection()[0].getItem(i).getData());
 						if (MainWindow.getContainer().openDirectory(path) != null)
-							mainwindow.setSaveStatus();
+							MainWindow.setSaveStatus();
 					}
 
 				} else if(!tree.getSelection()[0].getText().equals(sType)){
 					if (MainWindow.getContainer().openDirectory(path) != null)
-						mainwindow.setSaveStatus();
+						MainWindow.setSaveStatus();
 				}
 				schedulerConfigurationShell.close();
 			}

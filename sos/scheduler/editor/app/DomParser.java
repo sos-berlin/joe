@@ -1,10 +1,8 @@
 package sos.scheduler.editor.app;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,9 +40,9 @@ public abstract class DomParser {
 
     private HashMap               _orders          = new HashMap();
 
-    private String[]              _schemaTmpFile;
+   // private String[]              _schemaTmpFile;
 
-    private String[]              _schemaResource;
+    //private String[]              _schemaResource;
 
     private String                _xslt;
 
@@ -52,8 +50,8 @@ public abstract class DomParser {
 
  
     public DomParser(String[] schemaTmp, String[] schemaResource, String xslt) {
-        _schemaTmpFile = schemaTmp;
-        _schemaResource = schemaResource;
+       // _schemaTmpFile = schemaTmp;
+        //_schemaResource = schemaResource;
         _xslt = xslt;
     }
 

@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -148,6 +150,8 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 	private ISchedulerUpdate  _gui                       = null;
 
 	private Combo             cboWhenHoliday             = null;
+	
+	private Group             startTimePeriodGroup       = null; 
 
 	public PeriodForm(Composite parent, int style, int type) {
 		super(parent, style);
@@ -168,6 +172,9 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
 	public void setParams(SchedulerDom dom, boolean onOrder) {
 		this.onOrder = onOrder;
+		if(onOrder && startTimePeriodGroup != null)
+			startTimePeriodGroup.setText("Start Time is not avaible for Order Job");
+		
 		listener = new PeriodListener(dom);
 	}
 
@@ -606,6 +613,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label2.setLayoutData(gridData_1);
 		label2.setText("Begin Time:");
 		sBeginHours = new Text(groupSlottime, SWT.BORDER);
+		sBeginHours.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sBeginHours.selectAll();
+			}
+		});
 		sBeginHours.setLayoutData(new GridData(24, SWT.DEFAULT));
 
 		sBeginHours.addVerifyListener(new VerifyListener() {
@@ -634,6 +646,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label3.setLayoutData(new GridData());
 		label3.setText(":");
 		sBeginMinutes = new Text(groupSlottime, SWT.BORDER);
+		sBeginMinutes.addFocusListener(new FocusAdapter() {			
+			public void focusGained(final FocusEvent e) {
+				sBeginMinutes.selectAll();
+			}
+		});
 		sBeginMinutes.setLayoutData(new GridData(24, SWT.DEFAULT));
 		sBeginMinutes.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
@@ -661,6 +678,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label4.setLayoutData(new GridData());
 		label4.setText(":");
 		sBeginSeconds = new Text(groupSlottime, SWT.BORDER);
+		sBeginSeconds.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sBeginSeconds.selectAll();
+			}
+		});
 		final GridData gridData_2 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
 		gridData_2.widthHint = 24;
 		sBeginSeconds.setLayoutData(gridData_2);
@@ -695,6 +717,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label6.setLayoutData(new GridData(86, SWT.DEFAULT));
 		label6.setText("End Time:");
 		sEndHours = new Text(groupSlottime, SWT.BORDER);
+		sEndHours.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sEndHours.selectAll();
+			}
+		});
 		sEndHours.setLayoutData(new GridData(24, SWT.DEFAULT));
 		sEndHours.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
@@ -721,6 +748,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label7.setLayoutData(new GridData());
 		label7.setText(":");
 		sEndMinutes = new Text(groupSlottime, SWT.BORDER);
+		sEndMinutes.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sEndMinutes.selectAll();
+			}
+		});
 		sEndMinutes.setLayoutData(new GridData(24, SWT.DEFAULT));
 		sEndMinutes.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
@@ -748,6 +780,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label8.setLayoutData(new GridData());
 		label8.setText(":");
 		sEndSeconds = new Text(groupSlottime, SWT.BORDER);
+		sEndSeconds.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sEndSeconds.selectAll();
+			}
+		});
 		final GridData gridData_3 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
 		gridData_3.widthHint = 24;
 		sEndSeconds.setLayoutData(gridData_3);
@@ -782,8 +819,8 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
 	private void createStartTimeGroup() {
 
-		final Group startTimePeriodGroup = new Group(gPeriod, SWT.NONE);
-		startTimePeriodGroup.setText("Start Time is not avaible for Order Job");
+		startTimePeriodGroup = new Group(gPeriod, SWT.NONE);
+		startTimePeriodGroup.setText("Start Time");
 		startTimePeriodGroup.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 7;
@@ -795,6 +832,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label10.setText("Repeat Time:");
 
 		sRepeatHours = new Text(startTimePeriodGroup, SWT.BORDER);
+		sRepeatHours.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sRepeatHours.selectAll();
+			}
+		});
 		sRepeatHours.setLayoutData(new GridData(24, SWT.DEFAULT));
 
 
@@ -823,6 +865,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label11.setText(":");
 
 		sRepeatMinutes = new Text(startTimePeriodGroup, SWT.BORDER);
+		sRepeatMinutes.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sRepeatMinutes.selectAll();
+			}
+		});
 		sRepeatMinutes.setLayoutData(new GridData(24, SWT.DEFAULT));
 
 		sRepeatMinutes.addVerifyListener(new VerifyListener() {
@@ -850,6 +897,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label12.setText(":");
 
 		sRepeatSeconds = new Text(startTimePeriodGroup, SWT.BORDER);
+		sRepeatSeconds.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sRepeatSeconds.selectAll();
+			}
+		});
 		sRepeatSeconds.setLayoutData(new GridData(24, SWT.DEFAULT));
 
 		sRepeatSeconds.addVerifyListener(new VerifyListener() {
@@ -883,6 +935,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		lblAbsolutRepeat.setText("Absolute Repeat:");
 
 		sAbsoluteRepeatHours = new Text(startTimePeriodGroup, SWT.BORDER);
+		sAbsoluteRepeatHours.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sAbsoluteRepeatHours.selectAll();
+			}
+		});
 		sAbsoluteRepeatHours.setLayoutData(new GridData(24, SWT.DEFAULT));
 		sAbsoluteRepeatHours.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
@@ -905,6 +962,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label14_1.setText(":");
 
 		sAbsoluteRepeatMinutes = new Text(startTimePeriodGroup, SWT.BORDER);
+		sAbsoluteRepeatMinutes.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sAbsoluteRepeatMinutes.selectAll();
+			}
+		});
 		sAbsoluteRepeatMinutes.setLayoutData(new GridData(24, SWT.DEFAULT));
 		sAbsoluteRepeatMinutes.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
@@ -927,6 +989,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label_1.setText(":");
 
 		sAbsoluteRepeatSeconds = new Text(startTimePeriodGroup, SWT.BORDER);
+		sAbsoluteRepeatSeconds.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sAbsoluteRepeatSeconds.selectAll();
+			}
+		});
 		sAbsoluteRepeatSeconds.setLayoutData(new GridData(24, SWT.DEFAULT));
 		sAbsoluteRepeatSeconds.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
@@ -951,6 +1018,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label13.setText("Single Start:");
 		label13.setVisible(!assistent);
 		sSingleHours = new Text(startTimePeriodGroup, SWT.BORDER);
+		sSingleHours.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sSingleHours.selectAll();		
+			}
+		});
 		sSingleHours.setLayoutData(new GridData(24, SWT.DEFAULT));
 		sSingleHours.setVisible(!assistent);
 		sSingleHours.addVerifyListener(new VerifyListener() {
@@ -978,6 +1050,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label14.setText(":");
 		label14.setVisible(!assistent);
 		sSingleMinutes = new Text(startTimePeriodGroup, SWT.BORDER);
+		sSingleMinutes.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sSingleMinutes.selectAll();
+			}
+		});
 		sSingleMinutes.setLayoutData(new GridData(24, SWT.DEFAULT));
 		sSingleMinutes.setVisible(!assistent);
 		sSingleMinutes.addVerifyListener(new VerifyListener() {
@@ -1003,6 +1080,11 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label15.setText(":");
 		label15.setVisible(!assistent);
 		sSingleSeconds = new Text(startTimePeriodGroup, SWT.BORDER);
+		sSingleSeconds.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				sSingleSeconds.selectAll();
+			}
+		});
 		final GridData gridData_1 = new GridData(24, SWT.DEFAULT);
 		sSingleSeconds.setLayoutData(gridData_1);
 		sSingleSeconds.setVisible(!assistent);

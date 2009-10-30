@@ -1,6 +1,8 @@
 package sos.scheduler.editor.actions.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import sos.scheduler.editor.app.IUnsaved;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -102,6 +104,11 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         lblLogic.setText("Logic:");
 
         txtLogic = new Text(actionsGroup, SWT.BORDER);
+        txtLogic.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		txtLogic.selectAll();
+        	}
+        });
         txtLogic.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
         		listener.setLogic(txtLogic.getText());
@@ -140,6 +147,11 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         groupLabel.setText("Group: ");
 
         txtGroup = new Text(group, SWT.BORDER);
+        txtGroup.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		txtGroup.selectAll();		
+        	}
+        });
         txtGroup.setBackground(SWTResourceManager.getColor(255, 255, 217));
         
         txtGroup.addKeyListener(new KeyAdapter() {
@@ -171,6 +183,11 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         logicLabel.setText("Logic: ");
 
         txtGroupLogic = new Text(group, SWT.BORDER);
+        txtGroupLogic.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		txtGroupLogic.selectAll();
+        	}
+        });
         txtGroupLogic.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
         		butApply.setEnabled(true);
@@ -219,6 +236,7 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         eventClassLabel.setText("Event Class");
 
         cboEventClass = new Combo(group, SWT.BORDER);
+        
         cboEventClass.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
         		butApply.setEnabled(true);

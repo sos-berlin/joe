@@ -445,13 +445,13 @@ public class DatabasesForm extends Composite implements IUnsaved, IUpdateLanguag
     }*/
 
 
-    private void applyResource() {
+    /*private void applyResource() {
         //listener.applyResource(tName.getText(), cType.getText());
        // listener.fillResources(tResources);
        // bRemoveRes.setEnabled(tResources.getSelectionCount() > 0);
        // bApplyRes.setEnabled(false);
       //  getShell().setDefaultButton(bApply);
-    }
+    }*/
 
 
     private void applyDatabase() {

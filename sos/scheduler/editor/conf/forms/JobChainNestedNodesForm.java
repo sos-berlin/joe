@@ -2,6 +2,8 @@ package sos.scheduler.editor.conf.forms;
 
 import java.util.List;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -40,7 +42,6 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainNestedListener;
-import sos.scheduler.editor.conf.listeners.OrdersListener;
 
 
 public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpdateLanguage {
@@ -170,6 +171,11 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		label6.setText("State:");
 
 		tState = new Text(gNodes, SWT.BORDER);
+		tState.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tState.selectAll();
+			}
+		});
 		tState.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				boolean valid = listener.isValidState(tState.getText());
@@ -715,8 +721,8 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 
 	private void showDetails(String state) {
 
-		OrdersListener ordersListener =  new OrdersListener(listener.get_dom(), update);
-		String[] listOfOrders = ordersListener.getOrderIds();
+		//OrdersListener ordersListener =  new OrdersListener(listener.get_dom(), update);
+		//String[] listOfOrders = ordersListener.getOrderIds();
 		boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory(); 
 
 		if(state == null) {

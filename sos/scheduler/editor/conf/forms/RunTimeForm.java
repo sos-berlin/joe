@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -124,6 +126,12 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         groupStartTimeFuction.setLayout(gridLayout);
 
         tFunction = new Text(groupStartTimeFuction, SWT.BORDER);
+        tFunction.addFocusListener(new FocusAdapter() {
+        	
+        	public void focusGained(final FocusEvent e) {
+        		tFunction.selectAll();
+        	}
+        });
         tFunction.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
         		if(init) return;

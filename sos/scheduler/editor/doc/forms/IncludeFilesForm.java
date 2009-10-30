@@ -117,6 +117,7 @@ public class IncludeFilesForm extends Composite implements IUnsaved, IUpdateLang
         label1.setText("Label"); // Generated
         label1.setLayoutData(gridData1); // Generated
         label51 = new Label(group, SWT.NONE);
+        label51.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
         label51.setVisible(false); // Generated
         label51.setText("Parameter:"); // Generated
         fileList = new List(group, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);

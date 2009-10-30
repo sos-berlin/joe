@@ -3,6 +3,8 @@ package sos.scheduler.editor.conf.forms;
 import javax.xml.transform.TransformerException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -31,8 +33,6 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.OrderListener;
-import sos.scheduler.editor.app.MergeAllXMLinDirectory;
-import sos.scheduler.editor.app.IOUtils;
 
 
 
@@ -134,6 +134,11 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         label10.setText("Order ID");
 
         tOrderId = new Text(gOrder, SWT.BORDER);
+        tOrderId.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tOrderId.selectAll();
+        	}
+        });
         tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
         tOrderId.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -181,6 +186,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		
 
         cJobchain = new Combo(composite, SWT.NONE);
+        
         cJobchain.setMenu(new sos.scheduler.editor.app.ContextMenu(cJobchain, dom, Editor.JOB_CHAIN).getMenu());
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         cJobchain.setLayoutData(gridData_1);
@@ -226,6 +232,11 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         titleLabel.setText("Title");
 
         tTitle = new Text(gOrder, SWT.BORDER);
+        tTitle.addFocusListener(new FocusAdapter() {        	
+        	public void focusGained(final FocusEvent e) {
+        		tTitle.selectAll();
+        	}
+        });
         tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 if (event)
@@ -241,6 +252,11 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
         priorityLabel.setText("Priority");
 
         tPriority = new Text(gOrder, SWT.BORDER);
+        tPriority.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tPriority.selectAll();
+        	}
+        });
         tPriority.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);

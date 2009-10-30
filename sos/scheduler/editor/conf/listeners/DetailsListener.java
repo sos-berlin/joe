@@ -11,7 +11,6 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IEditor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
@@ -918,6 +917,8 @@ public class DetailsListener {
 					Element process = (Element)listOfElement.get(0);
 					process.setAttribute("state", newstate);
 					detailListener.save();
+					MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", detailListener.getConfigurationFilename());
+					MainWindow.saveFTP(new java.util.HashMap());
 				}
 			}
 		} catch (Exception e)  {

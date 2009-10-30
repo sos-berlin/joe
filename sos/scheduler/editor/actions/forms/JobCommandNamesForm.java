@@ -3,6 +3,8 @@ package sos.scheduler.editor.actions.forms;
 import javax.xml.transform.TransformerException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
@@ -133,6 +135,11 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		nameLabel.setText("Name: ");
 
 		txtName = new Text(gMain, SWT.BORDER);
+		txtName.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtName.selectAll();
+			}
+		});
 		txtName.setBackground(SWTResourceManager.getColor(255, 255, 217));
 		txtName.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
@@ -160,6 +167,11 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		schedulerHostLabel.setText("Scheduler Host:");
 
 		txtHost = new Text(gMain, SWT.BORDER);
+		txtHost.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtHost.selectAll();
+			}
+		});
 		txtHost.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if (event) {
@@ -183,6 +195,11 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		schedulerPortLabel.setText("Scheduler Port: ");
 
 		txtPort = new Text(gMain, SWT.BORDER);		
+		txtPort.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtPort.selectAll();
+			}
+		});
 		txtPort.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);

@@ -369,7 +369,7 @@ public class DatabaseResourcesForm extends Composite implements IUnsaved, IUpdat
     }
 
 
-    private void applyDatabase() {
-    }
+   /* private void applyDatabase() {
+    }*/
 
 } // @jve:decl-index=0:visual-constraint="10,10"

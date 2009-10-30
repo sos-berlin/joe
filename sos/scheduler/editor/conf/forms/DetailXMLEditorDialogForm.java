@@ -47,7 +47,7 @@ public class DetailXMLEditorDialogForm {
 	 
 	private String                  jobChainname    = null;
 	
-	private String[]                listOfOrderIds  = null;
+	//private String[]                listOfOrderIds  = null;
 	
 	private String                  orderId         = null;    
 	
@@ -69,7 +69,8 @@ public class DetailXMLEditorDialogForm {
 	
 	private String                   path            = null;
 	
-	public DetailXMLEditorDialogForm(String xmlFilename_, 
+	/*public DetailXMLEditorDialogForm(String xmlFilename_, 
+	 
 			                         String jobChainname_, 
 			                         String state_, 
 			                         String[] listOfOrderIds_, 
@@ -77,10 +78,19 @@ public class DetailXMLEditorDialogForm {
 			                         int type_, 
 			                         boolean isLifeElement_,
 			                         String path_) {
+		*/
+	public DetailXMLEditorDialogForm(String xmlFilename_, 
+            String jobChainname_, 
+            String state_,            
+            String orderId_, 
+            int type_, 
+            boolean isLifeElement_,
+            String path_) {
+
 		jobChainname = jobChainname_;
 		state = state_;
 		xmlFilename = xmlFilename_;
-		listOfOrderIds = listOfOrderIds_;
+		//listOfOrderIds = listOfOrderIds_;
 		orderId = orderId_;
 		type = type_;
 		isLifeElement = isLifeElement_;

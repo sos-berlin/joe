@@ -50,10 +50,17 @@ public class JobChainListener {
 		 */
 		_dom.setChanged(true);
 		String oldjobChainName = Utils.getAttributeValue("name", _chain);
+		
 		if (oldjobChainName != null && oldjobChainName.length() > 0) {			
-			if(_dom.isDirectory()|| _dom.isLifeElement())
-				_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
+			//if(_dom.isDirectory()|| _dom.isLifeElement())
+			//	_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
+			if(_dom.isChanged() && ((_dom.isDirectory() && !Utils.existName(oldjobChainName, _chain, "job_chain"))  || _dom.isLifeElement())) 
+				_dom.setChangedForDirectory("job_chain", oldjobChainName , SchedulerDom.DELETE);		
+
 		}
+
+		
+		
 		Utils.setAttribute("name", name, _chain);
 
 

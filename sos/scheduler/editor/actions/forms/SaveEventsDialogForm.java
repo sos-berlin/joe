@@ -1,8 +1,8 @@
 package sos.scheduler.editor.actions.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -190,6 +190,11 @@ public class SaveEventsDialogForm {
 
 
 			txtName = new Text(eventgroup, SWT.BORDER);
+			txtName.addFocusListener(new FocusAdapter() {
+				public void focusGained(final FocusEvent e) {
+					txtName.selectAll();
+				}
+			});
 			txtName.setBackground(SWTResourceManager.getColor(255, 255, 217));
 			txtName.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
@@ -203,6 +208,11 @@ public class SaveEventsDialogForm {
 			jobketteLabel.setText("Jobchain");
 
 			txtJobChain = new Text(eventgroup, SWT.BORDER);
+			txtJobChain.addFocusListener(new FocusAdapter() {
+				public void focusGained(final FocusEvent e) {
+					txtJobChain.selectAll();		
+				}
+			});
 			txtJobChain.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					refresh();
@@ -217,6 +227,11 @@ public class SaveEventsDialogForm {
 
 
 			txtJob = new Text(eventgroup, SWT.BORDER);
+			txtJob.addFocusListener(new FocusAdapter() {
+				public void focusGained(final FocusEvent e) {
+					txtJob.selectAll();
+				}
+			});
 			txtJob.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					refresh();
@@ -232,6 +247,11 @@ public class SaveEventsDialogForm {
 
 
 			txtEventClass = new Text(eventgroup, SWT.BORDER);
+			txtEventClass.addFocusListener(new FocusAdapter() {
+				public void focusGained(final FocusEvent e) {
+					txtEventClass.selectAll();
+				}
+			});
 			txtEventClass.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					refresh();

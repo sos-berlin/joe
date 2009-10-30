@@ -138,6 +138,11 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		lblLogic.setText("Event Name");
 
 		txtEventName = new Text(group, SWT.BORDER);
+		txtEventName.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtEventName.selectAll();
+			}
+		});
 		
 		txtEventName.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
@@ -223,6 +228,11 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		labeld.setText("Event Id");
 
 		txtEventId = new Text(matchingAttributesGroup, SWT.BORDER);
+		txtEventId.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtEventId.selectAll();		
+			}
+		});
 		txtEventId.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				butApply.setEnabled(true);
@@ -240,6 +250,11 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		jobNameLabel.setText("Job Name");
 
 		txtJobname = new Text(matchingAttributesGroup, SWT.BORDER);
+		txtJobname.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtJobname.selectAll();
+			}
+		});
 		txtJobname.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				butApply.setEnabled(true);
@@ -257,6 +272,11 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		jobChainLabel.setText("Job Chain");
 
 		txtJobChain = new Text(matchingAttributesGroup, SWT.BORDER);
+		txtJobChain.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtJobChain.selectAll();
+			}
+		});
 		txtJobChain.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				butApply.setEnabled(true);
@@ -274,6 +294,11 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		lblOrderId.setText("Order Id");
 
 		txtOrderId = new Text(matchingAttributesGroup, SWT.BORDER);
+		txtOrderId.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtOrderId.selectAll();		
+			}
+		});
 		txtOrderId.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				butApply.setEnabled(true);
@@ -292,6 +317,11 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		exitCodeLabel.setText("Exit Code");
 
 		txtExitCode = new Text(matchingAttributesGroup, SWT.BORDER);
+		txtExitCode.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtExitCode.selectAll();
+			}
+		});
 		txtExitCode.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				butApply.setEnabled(true);
@@ -658,6 +688,11 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		composite.setLayout(gridLayout_2);
 
 		txtHourExpirationPeriod = new Text(composite, SWT.BORDER);
+		txtHourExpirationPeriod.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtHourExpirationPeriod.selectAll();
+			}
+		});
 		txtHourExpirationPeriod.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				Utils.setBackground(0, 23, txtHourExpirationPeriod);
@@ -678,6 +713,11 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		label.setText(":");
 
 		txtMinExpirationPeriod = new Text(composite, SWT.BORDER);
+		txtMinExpirationPeriod.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtMinExpirationPeriod.selectAll();
+			}
+		});
 		txtMinExpirationPeriod.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				Utils.setBackground(0, 59, txtMinExpirationPeriod);
@@ -698,6 +738,11 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		label_1.setText(":");
 
 		txtSecExpirationPeriod = new Text(composite, SWT.BORDER);
+		txtSecExpirationPeriod.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtSecExpirationPeriod.selectAll();
+			}
+		});
 		txtSecExpirationPeriod.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				Utils.setBackground(0, 59, txtSecExpirationPeriod);
@@ -733,6 +778,11 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		composite_1.setLayout(gridLayout_3);
 
 		txtHourExpirationCycle = new Text(composite_1, SWT.BORDER);
+		txtHourExpirationCycle.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtHourExpirationCycle.selectAll();
+			}
+		});
 		txtHourExpirationCycle.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				Utils.setBackground(0, 23, txtHourExpirationCycle);
@@ -755,6 +805,11 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		label_2.setText(":");
 
 		txtMinExpirationCycle = new Text(composite_1, SWT.BORDER);
+		txtMinExpirationCycle.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtMinExpirationCycle.selectAll();
+			}
+		});
 		txtMinExpirationCycle.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				Utils.setBackground(0, 59, txtMinExpirationCycle);
@@ -777,6 +832,11 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		label_1_1.setText(":");
 
 		txtSecExpirationCycle = new Text(composite_1, SWT.BORDER);
+		txtSecExpirationCycle.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtSecExpirationCycle.selectAll();
+			}
+		});
 		txtSecExpirationCycle.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				Utils.setBackground(0, 59, txtSecExpirationCycle);

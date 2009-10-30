@@ -21,11 +21,7 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 import org.eclipse.swt.widgets.Shell;
-
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.listeners.DetailsListener;
-
 import java.util.regex.Pattern;
 
 
@@ -909,8 +905,9 @@ public class Utils {
 	 */
 	public static boolean checkElement(String name, SchedulerDom _dom, int type, String which ) {
 		boolean onlyWarning = false;//-> true: Gibt nur eine Warnung aus. Sonst Warnung mit Yes- und No- Button um ggf. die Änderungen zurückzunehmen
+		
 		try {
-						
+		if(which == null) which ="";				
 			if(type == Editor.JOB_CHAIN) {
 
 				XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 
@@ -989,8 +986,14 @@ public class Utils {
 					
 					XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
 					List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-					if(!listOfElement_3.isEmpty())						
-						throw new Exception   ("The Job " + name + " is currently being used by a job chain. Do you want really rename the name?");
+					if(!listOfElement_3.isEmpty()) {
+						if(which.equalsIgnoreCase("change_order")) {
+							throw new Exception   ("The Job " + name + " is currently being used by a job chain. Do you want really change to a standalone job?");
+						} else {
+							throw new Exception   ("The Job " + name + " is currently being used by a job chain. Do you want really rename the name?");
+						}
+					}
+					
 				}
 
 			} else if(type == Editor.JOBS) {

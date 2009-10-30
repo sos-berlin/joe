@@ -28,7 +28,6 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
-import sos.scheduler.editor.actions.forms.ActionsForm;
 
 public class TabbedContainer implements IContainer {
 
@@ -39,9 +38,7 @@ public class TabbedContainer implements IContainer {
 
 	private static final String NEW_DETAIL_TITLE        = "Unknown";
 
-	private CTabFolder          folder                  = null;
-
-	private MainWindow          window                  = null;
+	private CTabFolder          folder                  = null;	
 
 	private ArrayList           filelist                = new ArrayList();
 
@@ -58,8 +55,9 @@ public class TabbedContainer implements IContainer {
 	}	    
 
 
-	public TabbedContainer(MainWindow window, Composite parent) {
-		this.window = window;		
+	//public TabbedContainer(MainWindow window, Composite parent) {
+	public TabbedContainer(Composite parent) {
+		//this.window = window;		
 		folder = new CTabFolder(parent, SWT.TOP | SWT.CLOSE );
 		
 		folder.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
@@ -76,7 +74,7 @@ public class TabbedContainer implements IContainer {
 		folder.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				setWindowTitle();
-				window.setMenuStatus();
+				MainWindow.setMenuStatus();
 			}
 
 
@@ -281,7 +279,7 @@ public class TabbedContainer implements IContainer {
 		tab.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(final DisposeEvent e) {        		        		
 				MainWindow.getSShell().setText("Job Scheduler Editor");
-				window.setSaveStatus();
+				MainWindow.setSaveStatus();
 
 			}
 		});
@@ -355,7 +353,7 @@ public class TabbedContainer implements IContainer {
 
 		tab.setText(getCurrentEditor().hasChanges() == false ? title : "*" + title);        
 		setWindowTitle();
-		window.setMenuStatus();
+		MainWindow.setMenuStatus();
 	}
 
 	public void setStatusInTitle(CTabItem tab) {
@@ -376,7 +374,7 @@ public class TabbedContainer implements IContainer {
 
 		tab.setText(getCurrentEditor().hasChanges() == false ? title : "*" + title);        
 		setWindowTitle();
-		window.setMenuStatus();
+		MainWindow.setMenuStatus();
 	}
 
 

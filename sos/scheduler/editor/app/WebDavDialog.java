@@ -60,9 +60,7 @@ public class WebDavDialog {
 
 	private              SOSString               sosString                     = new SOSString();
 
-	private              Text                    txtFilename                   = null;
-
-	private              MainWindow              main                          = null;
+	private              Text                    txtFilename                   = null;	
 
 	private              Text                    txtLog                        = null;
 
@@ -94,8 +92,9 @@ public class WebDavDialog {
 
 
 
-	public WebDavDialog(MainWindow  main_) {		
-		main = main_;		 
+	//public WebDavDialog(MainWindow  main_) {		
+	public WebDavDialog() {
+		//main = main_;		 
 		listener = new WebDavDialogListener();						
 	}
 
@@ -598,7 +597,7 @@ public class WebDavDialog {
 					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
 					MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
-					main.setSaveStatus();	
+					MainWindow.setSaveStatus();	
 
 				}
 
@@ -637,7 +636,7 @@ public class WebDavDialog {
 					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
 					MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
-					main.setSaveStatus();		
+					MainWindow.setSaveStatus();		
 				}
 			}
 			listener.saveAs(localfilename, file);
@@ -710,7 +709,7 @@ public class WebDavDialog {
 				MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
 				MainWindow.getContainer().getCurrentTab().setData("webdav_hot_folder_elements", nameOfLifeElement);
 
-				main.setSaveStatus();	
+				MainWindow.setSaveStatus();	
 			}
 			//} 
 
@@ -738,7 +737,7 @@ public class WebDavDialog {
 				MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
 				MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
 				MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
-				main.setSaveStatus();		
+				MainWindow.setSaveStatus();		
 			}
 
 			//listener.disconnect();

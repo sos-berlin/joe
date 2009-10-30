@@ -1,6 +1,8 @@
 package sos.scheduler.editor.doc.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
@@ -146,6 +148,11 @@ public class SettingForm extends Composite implements IUnsaved, IUpdateLanguage 
         label6 = new Label(group1, SWT.NONE);
         label6.setText("Name:"); // Generated
         tName = new Text(group1, SWT.BORDER);
+        tName.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tName.selectAll();
+        	}
+        });
         tName.setLayoutData(gridData3); // Generated
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -163,6 +170,11 @@ public class SettingForm extends Composite implements IUnsaved, IUpdateLanguage 
         label7 = new Label(group1, SWT.NONE);
         label7.setText("Default Value:"); // Generated
         tDefault = new Text(group1, SWT.BORDER);
+        tDefault.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tDefault.selectAll();		
+        	}
+        });
         tDefault.setLayoutData(gridData11); // Generated
         label13 = new Label(group1, SWT.NONE);
         label13.setText("Type:"); // Generated
@@ -178,6 +190,11 @@ public class SettingForm extends Composite implements IUnsaved, IUpdateLanguage 
         label8 = new Label(group1, SWT.NONE);
         label8.setText("ID:"); // Generated
         tID = new Text(group1, SWT.BORDER);
+        tID.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tID.selectAll();
+        	}
+        });
         tID.setLayoutData(gridData12); // Generated
         label10 = new Label(group1, SWT.NONE);
         label10.setText("Required:"); // Generated

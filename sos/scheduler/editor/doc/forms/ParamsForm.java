@@ -1,6 +1,8 @@
 package sos.scheduler.editor.doc.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
@@ -138,6 +140,11 @@ public class ParamsForm extends Composite implements IUpdateLanguage, IUnsaved {
         label = new Label(group, SWT.NONE);
         label.setText("ID:"); // Generated
         tParamsID = new Text(group, SWT.BORDER);
+        tParamsID.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tParamsID.selectAll();
+        	}
+        });
         tParamsID.setLayoutData(gridData); // Generated
         tParamsID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -239,6 +246,11 @@ public class ParamsForm extends Composite implements IUpdateLanguage, IUnsaved {
         label2 = new Label(group1, SWT.NONE);
         label2.setText("Name:"); // Generated
         tName = new Text(group1, SWT.BORDER);
+        tName.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tName.selectAll();
+        	}
+        });
         tName.setLayoutData(gridData3); // Generated
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -256,6 +268,11 @@ public class ParamsForm extends Composite implements IUpdateLanguage, IUnsaved {
         label3 = new Label(group1, SWT.NONE);
         label3.setText("Default Value:"); // Generated
         tDefault = new Text(group1, SWT.BORDER);
+        tDefault.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tDefault.selectAll();		
+        	}
+        });
         tDefault.setLayoutData(gridData4); // Generated
         label6 = new Label(group1, SWT.NONE);
         label6.setText("Reference:"); // Generated
@@ -277,6 +294,11 @@ public class ParamsForm extends Composite implements IUpdateLanguage, IUnsaved {
         label5 = new Label(group1, SWT.NONE);
         label5.setText("ID:"); // Generated
         tID = new Text(group1, SWT.BORDER);
+        tID.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tID.selectAll();
+        	}
+        });
         tID.setLayoutData(gridData5); // Generated
         tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {

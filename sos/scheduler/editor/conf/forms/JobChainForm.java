@@ -8,6 +8,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -101,6 +103,12 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		chainNameLabel.setLayoutData(gridData_6);
 		chainNameLabel.setText("Chain Name ");
 		tName = new Text(jobChainGroup, SWT.BORDER);
+		tName.addVerifyListener(new VerifyListener() {
+			public void verifyText(final VerifyEvent e) {
+				if(!init)//während der initialiserung sollen keine überprüfungen stattfinden
+					Utils.checkElement(listener.getChainName(), listener.get_dom(), Editor.JOB_CHAIN, null);
+			}
+		});
 		tName.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent e) {
 				tName.selectAll();
@@ -123,7 +131,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				}
 
 				//String oldJobChainname = listener.getChainName();
-				boolean _continue = true;
+				/*boolean _continue = true;
 				if(listener.getChainName().length() > 0  && !tName.getText().equals(listener.getChainName()))
 					if(!Utils.checkElement(listener.getChainName(), listener.get_dom(), Editor.JOB_CHAIN, null))
 						_continue = false;
@@ -134,8 +142,15 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 					listener.setChainName(tName.getText());
 					
 				}
+				*/
 				//bApplyChain.setEnabled(!existname && !tName.equals(""));
-				//mo neu
+
+				if(update != null)
+					update.updateTreeItem("Job Chain: " + tName.getText());
+				listener.setChainName(tName.getText());
+
+
+
 
 
 			}

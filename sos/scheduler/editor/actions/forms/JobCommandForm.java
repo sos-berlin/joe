@@ -184,6 +184,11 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		lblJob.setText("Job / Order ID");
 
 		tJob = new Text(jobsAndOrdersGroup, SWT.BORDER);
+		tJob.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tJob.selectAll();
+			}
+		});
 		tJob.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if(type == Editor.JOB){
@@ -392,6 +397,11 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		priorityLabel.setText("Priority");
 
 		tPriority = new Text(jobsAndOrdersGroup, SWT.BORDER);
+		tPriority.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tPriority.selectAll();
+			}
+		});
 		tPriority.setEnabled(false);
 		tPriority.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -405,6 +415,11 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		titleLabel.setText("Title");
 
 		tTitle = new Text(jobsAndOrdersGroup, SWT.BORDER);
+		tTitle.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				tTitle.selectAll();
+			}
+		});
 		tTitle.setEnabled(false);
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {

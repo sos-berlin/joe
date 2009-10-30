@@ -7,6 +7,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -264,6 +266,11 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		lblChainname.setText("Job Chain Name:");
 
 		txtJobChainname = new Text(group, SWT.BORDER);
+		txtJobChainname.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtJobChainname.selectAll();
+			}
+		});
 		txtJobChainname.setText(jobChainname!=null?jobChainname:"");
 		txtJobChainname.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {				
@@ -386,6 +393,11 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		lblState.setText("State");
 
 		txtState = new Text(group, SWT.BORDER);
+		txtState.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtState.selectAll();
+			}
+		});
 		if( state != null ) {
 			txtState.setText(state);
 		}
@@ -541,6 +553,11 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		fileLabel.setText("File");
 
 		txtParamsFile = new Text(parameterGroup, SWT.BORDER);
+		txtParamsFile.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtParamsFile.selectAll();
+			}
+		});
 		txtParamsFile.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				detailListener.setParamsFileName(txtParamsFile.getText());
@@ -558,6 +575,11 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		nameLabel.setText("Name");
 
 		txtName = new Text(parameterGroup, SWT.BORDER);
+		txtName.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtName.selectAll();		
+			}
+		});
 		txtName.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if( !txtName.getText().equals("") &&  
@@ -588,6 +610,11 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		valueLabel.setText("Value");
 
 		txtValue = new Text(parameterGroup, SWT.BORDER);
+		txtValue.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				txtValue.selectAll();
+			}
+		});
 		txtValue.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR && !txtName.getText().equals("")){
@@ -855,7 +882,9 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 
 					if(type == Editor.JOB_CHAINS) {
 						//DetailXMLEditorDialogForm dialog = new DetailXMLEditorDialogForm(detailListener.getConfigurationFilename(), jobChainname, state, listOfOrderIds, comboOrderId.getText(), type, isLifeElement, path);
-						DetailXMLEditorDialogForm dialog = new DetailXMLEditorDialogForm(detailListener.getConfigurationFilename(), jobChainname, state, null, _orderId, type, isLifeElement, path);
+						//DetailXMLEditorDialogForm dialog = new DetailXMLEditorDialogForm(detailListener.getConfigurationFilename(), jobChainname, state, null, _orderId, type, isLifeElement, path);
+						DetailXMLEditorDialogForm dialog = 
+							new DetailXMLEditorDialogForm(detailListener.getConfigurationFilename(), jobChainname, state, _orderId, type, isLifeElement, path);
 
 						dialog.showXMLEditor();
 
@@ -1208,8 +1237,12 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			addParam();
 		}
 		detailListener.save();
-		if(schedulerDom != null)
+		if(schedulerDom != null) {
 			DetailsListener.addMonitoring2Job(jobChainname, state, schedulerDom, update);
+			MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", detailListener.getConfigurationFilename());
+			MainWindow.saveFTP(new java.util.HashMap());
+			
+		}
 		txtState.setEnabled(false);
 		if(type == Editor.JOB_CHAINS) {
 			isEditable = false;

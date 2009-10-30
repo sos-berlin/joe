@@ -27,7 +27,6 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainsListener;
-import sos.scheduler.editor.conf.listeners.OrdersListener;
 
 
 public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguage {

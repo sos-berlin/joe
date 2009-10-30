@@ -635,7 +635,7 @@ public class FTPDialog {
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
 					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-					main.setSaveStatus();	
+					MainWindow.setSaveStatus();	
 
 				}
 
@@ -659,7 +659,7 @@ public class FTPDialog {
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
 					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-					main.setSaveStatus();
+					MainWindow.setSaveStatus();
 				}
 				return;
 
@@ -670,7 +670,7 @@ public class FTPDialog {
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
 					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-					main.setSaveStatus();		
+					MainWindow.setSaveStatus();		
 				}
 			}
 			listener.getCurrProfile().saveAs(localfilename, file);
@@ -787,7 +787,7 @@ public class FTPDialog {
 				MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
 				MainWindow.getContainer().getCurrentTab().setData("ftp_hot_folder_elements", nameOfLifeElement);
 
-				main.setSaveStatus();	
+				MainWindow.setSaveStatus();	
 			}
 
 			profile.disconnect();
@@ -815,7 +815,7 @@ public class FTPDialog {
 					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
 					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-					main.setSaveStatus();		
+					MainWindow.setSaveStatus();		
 				}
 
 				profile.disconnect();

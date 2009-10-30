@@ -177,27 +177,46 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		cOrder.setLayout(new RowLayout());
 		cOrder.setLayoutData(gridData15);
 		bOrderYes = new Button(cOrder, SWT.RADIO);
+		
 		bOrderYes.setText("Yes");
 		bOrderYes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if(init) return;
+				if(init) return;																					
+				
+				if(!bOrderYes.getSelection())
+					return;
 				
 				listener.setOrder(bOrderYes.getSelection());
 				
 				boolean _deleteRuntimeAttribute = false;
-				if(isVisible()) 											
-					_deleteRuntimeAttribute = Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, null);
 				
-				if(_deleteRuntimeAttribute) {
-					if(listener.getJob() != null && listener.getJob().getChild("run_time") != null) {
-						listener.getJob().getChild("run_time").removeAttribute("single_start");
-						listener.getJob().getChild("run_time").removeAttribute("let_run");
-						listener.getJob().getChild("run_time").removeAttribute("once");					
+				
+				Element job = listener.getJob();
+				if(listener.getOrder() && job != null && job.getChild("run_time") != null) {
+					if(sos.scheduler.editor.app.Utils.getAttributeValue("single_start", job.getChild("run_time")).length() > 0 ||
+							sos.scheduler.editor.app.Utils.getAttributeValue("let_run", job.getChild("run_time")).length() > 0||
+							sos.scheduler.editor.app.Utils.getAttributeValue("once", job.getChild("run_time")).length() > 0) {
+
+
+
+
+						if(isVisible()) {					
+							_deleteRuntimeAttribute = Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, "change_order");
+						}
+
+						if(_deleteRuntimeAttribute) {
+
+							listener.getJob().getChild("run_time").removeAttribute("single_start");
+							listener.getJob().getChild("run_time").removeAttribute("let_run");
+							listener.getJob().getChild("run_time").removeAttribute("once");					
+						}
+					}
 				}
-				}
+				
 			}
 		});
 		bOrderNo = new Button(cOrder, SWT.RADIO);
+		
 		bOrderNo.setText("No");
 		bOrderNo.setEnabled(true);
 		bOrderNo.setSelection(false);
@@ -205,6 +224,16 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if(init) return;
 				//listener.setPriority(sPriority.getText());
+				
+				if(listener.getOrder() && !Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, "change_order")){
+					//e.doit = false;
+					init = true;
+					bOrderNo.setSelection(false);					
+					bOrderYes.setSelection(true);
+					init = false;
+					return;
+				}			
+				
 				listener.setOrder(!bOrderNo.getSelection());
 			}
 		});

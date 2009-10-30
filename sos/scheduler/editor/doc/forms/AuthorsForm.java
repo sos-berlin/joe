@@ -1,6 +1,8 @@
 package sos.scheduler.editor.doc.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -105,6 +107,12 @@ public class AuthorsForm extends Composite implements IUnsaved, IUpdateLanguage 
         GridData gridData7 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData7.widthHint = 121;
         tName = new Text(authorsGroup, SWT.BORDER);
+        tName.addFocusListener(new FocusAdapter() {
+        	
+        	public void focusGained(final FocusEvent e) {
+        		tName.selectAll();
+        	}
+        });
         tName.setLayoutData(gridData7); // Generated
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -121,6 +129,11 @@ public class AuthorsForm extends Composite implements IUnsaved, IUpdateLanguage 
         GridData gridData8 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData8.widthHint = 183;
         tEmail = new Text(authorsGroup, SWT.BORDER);
+        tEmail.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tEmail.selectAll();
+        	}
+        });
         tEmail.setLayoutData(gridData8); // Generated
         tEmail.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {

@@ -1,6 +1,8 @@
 package sos.scheduler.editor.doc.forms;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -107,6 +109,11 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
         label6 = new Label(group, SWT.NONE);
         label6.setText("File:"); // Generated
         tFile = new Text(group, SWT.BORDER);
+        tFile.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tFile.selectAll();
+        	}
+        });
         tFile.setLayoutData(gridData); // Generated
         tFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -144,6 +151,11 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
         label11 = new Label(group, SWT.NONE);
         label11.setText("ID:"); // Generated
         tID = new Text(group, SWT.BORDER);
+        tID.addFocusListener(new FocusAdapter() {
+        	public void focusGained(final FocusEvent e) {
+        		tID.selectAll();
+        	}
+        });
         tID.setLayoutData(gridData1); // Generated
         tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
