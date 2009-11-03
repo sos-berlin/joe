@@ -1237,7 +1237,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			addParam();
 		}
 		detailListener.save();
-		if(schedulerDom != null) {
+		if(schedulerDom != null) {			
 			DetailsListener.addMonitoring2Job(jobChainname, state, schedulerDom, update);
 			MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", detailListener.getConfigurationFilename());
 			MainWindow.saveFTP(new java.util.HashMap());

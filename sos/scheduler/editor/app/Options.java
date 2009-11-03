@@ -260,9 +260,15 @@ public class Options {
     }
 
 
-    public static void setLastDirectory(File f) {
-        if (f != null && f.getParent() != null)
-            setProperty("editor.file.lastopendir", f.getParent());
+    public static void setLastDirectory(File f, sos.scheduler.editor.app.DomParser dom) {
+        if (f != null && f.getParent() != null) {
+        	if(dom instanceof sos.scheduler.editor.conf.SchedulerDom &&
+        			((sos.scheduler.editor.conf.SchedulerDom)dom).isDirectory()) {
+        		setProperty("editor.file.lastopendir", f.getPath());
+        	} else {
+        		setProperty("editor.file.lastopendir", f.getParent());
+        	}
+        }
     }
 
 

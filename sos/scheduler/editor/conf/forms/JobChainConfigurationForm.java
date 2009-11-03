@@ -48,14 +48,14 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
     
     private static String     filename  = "";
     
-    private DetailDom         dom       = null;
+    private static DetailDom         dom       = null;
 
 
     public JobChainConfigurationForm(IContainer container, Composite parent, int style) {
         super(parent, style);
         this.container = container;
-        this.dom = new DetailDom();
-        this.dom.setDataChangedListener(this);
+        dom = new DetailDom();
+        dom.setDataChangedListener(this);
         listener = new JobChainConfigurationListener(this, dom);
 
     }
@@ -243,7 +243,7 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
 
              MainWindow.getSShell().setText("Job Details Editor [" + filename + "]");
 
-             Options.setLastDirectory(new File(filename));
+             Options.setLastDirectory(new File(filename), dom);
              return filename;
          } catch (Exception e) {
         	 try {

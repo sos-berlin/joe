@@ -198,7 +198,7 @@ public class IOUtils {
 
 			MainWindow.getSShell().setText("Job Scheduler Editor [" + filename + "]");
 
-			Options.setLastDirectory(new File(filename));
+			Options.setLastDirectory(new File(filename), dom);
 			return true;
 		} catch (Exception e) {
 			try {
@@ -244,7 +244,7 @@ public class IOUtils {
 
 			File file = new File(filename);
 
-			Options.setLastDirectory(file);
+			Options.setLastDirectory(file, dom);
 
 			// overwrite the new file if it exists?           
 			if (saveas && new File(originFilename).exists()) {
@@ -487,7 +487,7 @@ public class IOUtils {
 				}
 
 				String name = save.saveLifeElement(nameOfElement, elem, ((SchedulerDom)dom).getChangedJob(),((SchedulerDom)dom).getListOfChangeElementNames());
-				Options.setLastDirectory(new File(name));
+				Options.setLastDirectory(new File(name), dom);
 				try {dom.setFilename(new java.io.File(name).getCanonicalPath()); } catch(Exception e) {}
 				dom.setChanged(true);
 

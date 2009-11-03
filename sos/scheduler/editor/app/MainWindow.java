@@ -1062,6 +1062,8 @@ public class MainWindow  {
 					if( currdom instanceof SchedulerDom && sosString.parseToString(container.getCurrentTab().getData("ftp_details_parameter_file")).length() > 0) {
 						//Details Parameter speichern
 						File source = new File(container.getCurrentTab().getData("ftp_details_parameter_file").toString());
+						remoteDir = new File(remoteDir).getCanonicalPath().endsWith(".xml") ? new File(remoteDir).getParent() : remoteDir;
+						remoteDir = remoteDir != null ? remoteDir.replaceAll("\\\\", "/") : "";
 						profile.saveAs( container.getCurrentTab().getData("ftp_details_parameter_file").toString(), remoteDir + "/" + source.getName());
 						container.getCurrentTab().setData("ftp_details_parameter_file", "");
 					} else if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isLifeElement()) {

@@ -10,7 +10,10 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
+import sos.ftp.profiles.FTPProfile;
+import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
@@ -27,8 +30,6 @@ import org.eclipse.swt.widgets.TableItem;
  * 
  * @author mo
  *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Generation - Code and Comments
  */
 
 public class DetailsListener {
@@ -102,14 +103,65 @@ public class DetailsListener {
 
 	}
 
+	public void openFilePerFTP(String xmlFilename) {
+		String file = "";
+		try {
+			
+			org.eclipse.swt.custom.CTabItem currentTab  = MainWindow.getContainer().getCurrentTab();
+			if(currentTab != null && currentTab.getData("ftp_title") != null && 
+					currentTab.getData("ftp_title").toString().length()>0) {
+
+				String remoteDir = currentTab.getData("ftp_remote_directory").toString();
+				DomParser currdom = MainWindow.getSpecifiedDom();
+				if(currdom == null)
+					return;
+
+				if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {				
+					remoteDir = remoteDir + "/" + new File(xmlFilename).getName();
+				} else { //if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isLifeElement()) {
+					String p = new File(remoteDir).getParent();
+					p = p == null ? "" : p + "/";
+					remoteDir =  p + new File(xmlFilename).getName();
+					remoteDir = remoteDir.replaceAll("\\\\", "/");
+				}
+		 		
+
+				FTPProfile profile = (sos.ftp.profiles.FTPProfile)currentTab.getData("ftp_profile");
+				
+				 
+				
+				profile.setLogText(null);
+				//String a = profile.openFile(remoteDir, xmlFilename);
+				profile.connect();
+				String parent = new File(remoteDir).getParent() != null ? new File(remoteDir).getParent() : ".";
+				if(profile.getList(parent).contains(new File(remoteDir))) {
+				
+					long l = profile.getFile(remoteDir, xmlFilename);
+				//long l = profile.getFile(remoteDir, xmlFilename);
+				}
+				
+				profile.disconnect();
+
+
+			}
+		} catch (Exception r) {
+			try {
+				MainWindow.message("could not open File: " + file + ", cause: " + r.toString(), SWT.ICON_WARNING);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+		}
+	}
+
 
 	public void parseDocuments() {		
 		String xmlPaths = "";
 		try {
 
 
-			if(isLifeElement) {
-
+			if(isLifeElement || (MainWindow.getContainer().getCurrentTab().getData("ftp_title") != null && 
+					MainWindow.getContainer().getCurrentTab().getData("ftp_title").toString().length()>0)) {								
 
 				if(path != null && path.length() > 0) {
 					File f = new File(path);
@@ -123,15 +175,23 @@ public class DetailsListener {
 
 				xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\")) ? xmlPaths : xmlPaths + "/" ;
 
-
 			} else {
+				if(path != null && path.length() > 0) {
+					File f = new File(path);
+					if(f.isFile())
+						xmlPaths = f.getParent();
+					else
+						xmlPaths = path; 
+				} else { 
 				xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome() ;
 				xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths+ "config/" : xmlPaths.concat("/config/"));
-
+				}
 			}
+			
 			String _currOrderId = orderId != null && orderId.length()>0? "," + orderId : "";
 			xmlFilename = xmlPaths + jobChainname+ _currOrderId + ".config.xml";
 
+			
 			if(_currOrderId != null && _currOrderId.length() > 0 ) {
 				File jobChainConfig = new File(xmlPaths + jobChainname+  ".config.xml");
 				if(jobChainConfig.exists() && !new File(xmlFilename).exists()) {
@@ -144,6 +204,8 @@ public class DetailsListener {
 				}
 			}
 
+			if(xmlFilename.endsWith(".config.xml"))
+				openFilePerFTP(xmlFilename); 
 
 		} catch(Exception e) {
 			try {

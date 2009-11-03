@@ -831,6 +831,7 @@ public class FTPDialog {
 		}
 	}
 
+	
 
 	public FTPDialogListener getListener() {
 		return listener;
