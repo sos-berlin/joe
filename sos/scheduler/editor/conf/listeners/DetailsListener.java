@@ -103,10 +103,10 @@ public class DetailsListener {
 
 	}
 
-	public void openFilePerFTP(String xmlFilename) {
+	public static void openFilePerFTP(String xmlFilename) {
 		String file = "";
 		try {
-			
+
 			org.eclipse.swt.custom.CTabItem currentTab  = MainWindow.getContainer().getCurrentTab();
 			if(currentTab != null && currentTab.getData("ftp_title") != null && 
 					currentTab.getData("ftp_title").toString().length()>0) {
@@ -124,22 +124,22 @@ public class DetailsListener {
 					remoteDir =  p + new File(xmlFilename).getName();
 					remoteDir = remoteDir.replaceAll("\\\\", "/");
 				}
-		 		
+
 
 				FTPProfile profile = (sos.ftp.profiles.FTPProfile)currentTab.getData("ftp_profile");
-				
-				 
-				
+
+
+
 				profile.setLogText(null);
 				//String a = profile.openFile(remoteDir, xmlFilename);
 				profile.connect();
 				String parent = new File(remoteDir).getParent() != null ? new File(remoteDir).getParent() : ".";
-				if(profile.getList(parent).contains(new File(remoteDir))) {
-				
-					long l = profile.getFile(remoteDir, xmlFilename);
+				//if(profile.getList(parent).contains(new File(remoteDir))) {
+
+				long l = profile.getFile(remoteDir, xmlFilename);
 				//long l = profile.getFile(remoteDir, xmlFilename);
-				}
-				
+				//}
+
 				profile.disconnect();
 
 
@@ -183,15 +183,15 @@ public class DetailsListener {
 					else
 						xmlPaths = path; 
 				} else { 
-				xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome() ;
-				xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths+ "config/" : xmlPaths.concat("/config/"));
+					xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome() ;
+					xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths+ "config/" : xmlPaths.concat("/config/"));
 				}
 			}
-			
+
 			String _currOrderId = orderId != null && orderId.length()>0? "," + orderId : "";
 			xmlFilename = xmlPaths + jobChainname+ _currOrderId + ".config.xml";
 
-			
+
 			if(_currOrderId != null && _currOrderId.length() > 0 ) {
 				File jobChainConfig = new File(xmlPaths + jobChainname+  ".config.xml");
 				if(jobChainConfig.exists() && !new File(xmlFilename).exists()) {
@@ -997,6 +997,20 @@ public class DetailsListener {
 	public static void deleteDetailsState(String state, String jobchainname, SchedulerDom dom) {
 		try {
 
+
+
+			String parent = "";
+			if(dom.isDirectory()) {
+				parent = dom.getFilename()!= null	&& new File(dom.getFilename()).getParent() != null ? new File(dom.getFilename()).getParent() : Options.getSchedulerHotFolder() + "/config";  
+			} else {
+				parent = dom.getFilename()!= null	&& new File(dom.getFilename()).getParent() != null ? new File(dom.getFilename()).getParent() : Options.getSchedulerHome() + "/config";
+			}
+			if(!new File(parent, jobchainname + ".config.xml").exists())
+				return;
+
+
+
+
 			if(state == null || state.length() == 0)
 				return;
 
@@ -1070,20 +1084,28 @@ public class DetailsListener {
 
 			if(!listOfElement.isEmpty()) {
 				for(int i = 0; i < listOfElement.size(); i++) {
-					
+
 					Element jobChainNode = (Element)listOfElement.get(i);
 					//jobname in der Jobkette ermitteln 
 					String jobname = Utils.getAttributeValue("job", jobChainNode);
-					
-					String hotFolderfilename = new File(Options.getSchedulerHotFolder(), jobname + ".job.xml").getCanonicalPath();
+
+
+					String hotFolderfilename = "";
+					if(dom.getFilename() != null && new File(dom.getFilename()).getParent() != null)
+						hotFolderfilename = new File(new File(dom.getFilename()).getParent(), jobname + ".job.xml").getCanonicalPath();
+					else
+						hotFolderfilename = new File(Options.getSchedulerHotFolder(), jobname + ".job.xml").getCanonicalPath();
 					//Unterscheiden, ob Hot Folder Element. Wenn ja, dann Hot Folder Datei öffnen. Wenn der Hot Folder Element bereits offen ist, dann verändern
 					List listOfElement2  = null;
-					
+
 					if(dom.isLifeElement() || new File(jobname).getParent() != null ) {
 
 						if(!new File(hotFolderfilename).exists()) {
-							sos.scheduler.editor.app.MainWindow.message("Could not add Monitoring Job, cause Hot Folder File " + hotFolderfilename + " not exist.", SWT.ICON_WARNING);
-							continue;
+							openFilePerFTP(hotFolderfilename);
+							if(!new File(hotFolderfilename).exists()) {
+								sos.scheduler.editor.app.MainWindow.message("Could not add Monitoring Job, cause Hot Folder File " + hotFolderfilename + " not exist.", SWT.ICON_WARNING);
+								continue;
+							}
 						}
 
 						//XPath x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
@@ -1104,7 +1126,7 @@ public class DetailsListener {
 								form = (SchedulerForm)tab.getEditor(pathFromHotFolderDirectory);//hot folder
 								x2 = XPath.newInstance("//job[@name='"+new File(jobname).getName()+"']/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
 							}
-								
+
 							SchedulerDom currdom = (SchedulerDom)form.getDom();
 							//test
 							//XPath.newInstance("//job[@name='11job1']/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']").selectNodes(currdom.getDoc())
@@ -1130,10 +1152,10 @@ public class DetailsListener {
 										form.getTree().setSelection(new org.eclipse.swt.widgets.TreeItem[] { form.getTree().getItem(0) });
 									else if(currdom.isDirectory())
 										form.selectTreeItem(SchedulerListener.JOBS , SchedulerListener.JOB + new File(jobname).getName());
-									
+
 									currdom.setChanged(true);
 									if(form != null) {
-										
+
 										form.updateJob(job);
 										form.updateJob();
 										form.update();
@@ -1155,6 +1177,10 @@ public class DetailsListener {
 //							Hot Folder Element ist nicht offen in einem Tabraiter 
 							SchedulerDom currDom = new SchedulerDom(SchedulerDom.LIFE_JOB);
 							currDom.read(hotFolderfilename);
+
+							if(x2==null)
+								x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
+
 							listOfElement2 = x2.selectNodes(currDom.getDoc());
 							if(listOfElement2.isEmpty()) {							
 								//XPath x3 = XPath.newInstance("//jobs/job[@name='"+ jobname + "']");
@@ -1165,6 +1191,8 @@ public class DetailsListener {
 									Element job = (Element)listOfElement3.get(0); 
 									addMonitoring(job, currDom);
 									currDom.writeElement(currDom.getFilename(), currDom.getDoc());
+									MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", hotFolderfilename);
+									MainWindow.saveFTP(new java.util.HashMap());
 								}
 
 							}
@@ -1181,7 +1209,7 @@ public class DetailsListener {
 
 								if(update != null) {
 									update.updateJobs();	
-								    update.updateJob(jobname);
+									//update.updateJob(jobname);
 								}
 								dom.setChanged(true);
 							}
@@ -1196,7 +1224,7 @@ public class DetailsListener {
 
 
 		} catch (Exception e)  {
- 
+
 			try {
 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			} catch(Exception ee) {
@@ -1225,14 +1253,14 @@ public class DetailsListener {
 			//Document d = detailListener.getDoc();
 			XPath x = XPath.newInstance("//order/params/param");				 
 			List listOfElement = x.selectNodes(detailListener.getDoc());
-			
+
 			if(!listOfElement.isEmpty()){
 
-				
+
 				String hotFolderfilename = new File(Options.getSchedulerHotFolder(), jobname + ".job.xml").getCanonicalPath();
 				//Unterscheiden, ob Hot Folder Element. Wenn ja, dann Hot Folder Datei öffnen. Wenn der Hot Folder Element bereits offen ist, dann verändern
 				List listOfElement2  = null;
-				
+
 				if(dom.isLifeElement() || new File(jobname).getParent() != null ) {
 
 					if(!new File(hotFolderfilename).exists()) {

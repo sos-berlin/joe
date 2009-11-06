@@ -490,7 +490,11 @@ public class SchedulerListener {
 	public void treeFillJobs(TreeItem parent) {
 		parent.removeAll();
 
-		Element jobs = _dom.getRoot().getChild("config").getChild("jobs");        
+		Element jobs = _dom.getRoot().getChild("config").getChild("jobs");  
+		if(jobs == null) {
+			 TreeData data = (TreeData) (parent.getData());
+			 jobs = data.getElement().getChild("jobs");
+		}
 		if (jobs != null) {
 			Iterator it = jobs.getChildren().iterator();
 			while (it.hasNext()) {

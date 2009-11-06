@@ -1045,11 +1045,13 @@ public class MainWindow  {
 				sos.ftp.profiles.FTPProfile profile = (sos.ftp.profiles.FTPProfile)container.getCurrentTab().getData("ftp_profile");
 
 				Text txtLog = new Text(getSShell(), SWT.NONE);
+				txtLog.setVisible(false);
+				
 				final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
 				gridData.widthHint = 0;
 				gridData.heightHint = 0;
 				txtLog.setLayoutData(gridData);
-				txtLog.setSize(0, 0);
+				txtLog.setSize(0, 0);				
 
 				//FTPDialogListener ftpListener = new FTPDialogListener(profile, profilename);
 				//ftpListener.setLogText(txtLog);
@@ -1143,6 +1145,7 @@ public class MainWindow  {
 			java.util.Properties profile = (java.util.Properties)container.getCurrentTab().getData("webdav_profile");
 
 			txtLog = new Text(getSShell(), SWT.NONE);
+			txtLog.setVisible(false);
 			final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
 			gridData.widthHint = 0;
 			gridData.heightHint = 0;

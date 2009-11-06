@@ -99,20 +99,7 @@ public class TabbedContainer implements IContainer {
 			}
 		});
 		
-		folder.addTraverseListener(new TraverseListener() {
-			public void keyTraversed(final TraverseEvent e) {
-				
-				
-				/*if(e.detail == SWT.TRAVERSE_ESCAPE) {		
-					System.out.println(folder.getChildren().length);
-					IEditor editor = (IEditor)folder.getSelection().getControl();
-					filelist.remove(editor.getFilename());
-					editor.close();
-					folder.getSelection().dispose();
-					folder.removeControlListener(listener)
-				}*/
-			}
-		});
+		
 	}
 
 
@@ -549,8 +536,8 @@ public class TabbedContainer implements IContainer {
 					return openDocumentation(xmlFilename);
 				} else if(root.getName().equalsIgnoreCase("spooler")) {
 					return openScheduler(xmlFilename);
-				} else if(root.getName().equalsIgnoreCase("settings")) {
-					return openDetails(xmlFilename);
+				//} else if(root.getName().equalsIgnoreCase("settings")) {
+				//	return openDetails(xmlFilename);
 				} else if(root.getName().equalsIgnoreCase("actions")) {
 					return openActions(xmlFilename);
 				} else if(root.getName().equalsIgnoreCase("job")) {
