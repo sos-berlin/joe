@@ -189,7 +189,7 @@ public class DetailsListener {
 			}
 
 			String _currOrderId = orderId != null && orderId.length()>0? "," + orderId : "";
-			xmlFilename = xmlPaths + jobChainname+ _currOrderId + ".config.xml";
+			xmlFilename = new File(xmlPaths, jobChainname+ _currOrderId + ".config.xml").getCanonicalPath();
 
 
 			if(_currOrderId != null && _currOrderId.length() > 0 ) {

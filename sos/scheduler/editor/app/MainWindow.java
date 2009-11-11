@@ -724,7 +724,9 @@ public class MainWindow  {
 			container.getCurrentEditor().save();
 			saveFTP(changes);
 			saveWebDav(changes);
+			saveJobChainNoteParameter();
 			setSaveStatus();
+			
 		}		
 		Utils.stopCursor(getSShell());
 	}
@@ -1025,6 +1027,42 @@ public class MainWindow  {
 		});	
 	}
 
+	
+	/**
+	 * Überprüfen, ob job Chain namen verändert wurden. Wenn ja, dann ggf. die job chain note parameter anpassen
+	 * Job Chain Note Parameter
+	 */
+	public void saveJobChainNoteParameter() {
+		try {
+			
+		
+			if(container.getCurrentTab().getData("details_parameter") != null) {
+				HashMap h = new HashMap();
+				h = (HashMap)container.getCurrentTab().getData("details_parameter");
+			    java.util.Iterator it = h.keySet().iterator();
+			    while(it.hasNext()) {
+			    	Element jobChain = (Element)it.next();
+			    	String configFilename = h.get(jobChain).toString();
+			    	File configFile = new File(configFilename);
+			    	if(configFile.exists()) {
+			    		String newConfigFilename = configFile.getParent();
+			    		newConfigFilename = newConfigFilename != null ? newConfigFilename : "";
+			    		newConfigFilename = new File(newConfigFilename, Utils.getAttributeValue("name", jobChain) + ".config.xml").getCanonicalPath();
+			    		File newConfigFile = new File(newConfigFilename);
+			    		if(!newConfigFile.exists() &&  !configFile.renameTo(newConfigFile)) {
+			    			MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename+ "].\n" +
+			    					"Please try later by Hand."
+			    					, SWT.ICON_WARNING);
+			    		}
+			    	}
+
+			    }
+			    container.getCurrentTab().setData("details_parameter", new HashMap());
+			}
+		} catch (Exception e) {
+			
+		}
+	}
 
 	public static void saveFTP(java.util.HashMap changes)  {
 		try {

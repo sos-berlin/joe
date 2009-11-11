@@ -1151,7 +1151,12 @@ public class TreeMenu {
 				//System.out.println(Utils.getAttributeValue("name", _copy) + " existiert berteits");
 				String append = "copy(" + (copyClone.getChildren("job").size() + elem.getChildren().size() + 1) + ")of_" + Utils.getAttributeValue("name", copyClone);					
 				copyClone.setAttribute("name", append);
+			} else if(!Utils.getAttributeValue("id", _copy).equals("")) {
+				//System.out.println(Utils.getAttributeValue("name", _copy) + " existiert berteits");
+				String append = "copy(" + (elem.getChildren().size() + 1) + ")of_" + Utils.getAttributeValue("id", copyClone);					
+				copyClone.setAttribute("id", append);
 			}
+			
 			elem.addContent(copyClone);
 
 		}

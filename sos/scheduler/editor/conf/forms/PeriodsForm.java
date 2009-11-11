@@ -118,11 +118,13 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         bRemove = new Button(group, SWT.NONE);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            	
                 tPeriods.deselectAll();
-
+                
                 getShell().setDefaultButton(bApply);
                 bApply.setEnabled(true);
                 fillPeriod(true);
+                
             }
         });
         bRemove.setText("Remove Period");
@@ -227,13 +229,17 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
     private void fillPeriod(boolean newPeriod) {
         int index = tPeriods.getSelectionIndex();
         periodForm.setEnabled(index != -1 || newPeriod);
+        
         if (index != -1) {
             periodForm.setPeriod(listener.getPeriod(index));
             periodForm.fillPeriod();
         } else if (newPeriod) {
-            periodForm.setPeriod(listener.getNewPeriod());
+        	periodForm.setPeriod(listener.getNewPeriod());        	
             periodForm.fillPeriod();
+            
+            
         }
+        
     }
 
 

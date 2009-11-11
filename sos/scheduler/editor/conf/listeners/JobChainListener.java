@@ -12,8 +12,9 @@ import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
-
+import sos.scheduler.editor.app.MainWindow;
 import sos.util.SOSString;
+import java.util.HashMap;
 
 public class JobChainListener {
 
@@ -51,18 +52,40 @@ public class JobChainListener {
 		_dom.setChanged(true);
 		String oldjobChainName = Utils.getAttributeValue("name", _chain);
 		
+		//Für job_chain node Parameter
+		if(_chain != null) {
+			org.eclipse.swt.custom.CTabItem currentTab  = MainWindow.getContainer().getCurrentTab();
+			
+			String path = _dom.isDirectory() ? _dom.getFilename() : new java.io.File(_dom.getFilename()).getParent();
+			try {
+				if(currentTab.getData("details_parameter") != null) {
+					HashMap h = new HashMap();
+					h = (HashMap)currentTab.getData("details_parameter");
+					if(!h.containsKey(_chain)) {
+						h.put(_chain, new java.io.File(path, oldjobChainName + ".config.xml").getCanonicalPath());	
+					}					
+				} else {
+					HashMap h = new HashMap();
+					h.put(_chain, new java.io.File(path, oldjobChainName + ".config.xml").getCanonicalPath());
+					currentTab.setData("details_parameter", h);
+					
+				}
+			} catch (Exception e) {
+				System.out.println("error in setChainName, cause: " + e.toString());
+			}
+			
+		}
+		//
+		
 		if (oldjobChainName != null && oldjobChainName.length() > 0) {			
 			//if(_dom.isDirectory()|| _dom.isLifeElement())
 			//	_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
 			if(_dom.isChanged() && ((_dom.isDirectory() && !Utils.existName(oldjobChainName, _chain, "job_chain"))  || _dom.isLifeElement())) 
 				_dom.setChangedForDirectory("job_chain", oldjobChainName , SchedulerDom.DELETE);		
 
-		}
-
-		
+		}		
 		
 		Utils.setAttribute("name", name, _chain);
-
 
 		if(_dom.isDirectory()|| _dom.isLifeElement()) _dom.setChangedForDirectory("job_chain", name, SchedulerDom.MODIFY);
 
@@ -528,7 +551,7 @@ public class JobChainListener {
 						(_node != null && _node.getName().equals("job_chain_node.end"))
 				) {
 					//sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
-					sos.scheduler.editor.app.MainWindow.message(msg, SWT.ICON_INFORMATION);
+					MainWindow.message(msg, SWT.ICON_INFORMATION);
 					return;
 				}
 

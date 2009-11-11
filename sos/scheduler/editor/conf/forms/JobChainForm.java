@@ -54,6 +54,8 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 	private Text                txtTitle                    = null; 
 	
 	private boolean             init                        = false;
+	
+	private boolean             changeJobChainName          = true;
 
 
 	public JobChainForm(Composite parent, int style, SchedulerDom dom, Element jobChain) {
@@ -128,31 +130,14 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				else {
 					//getShell().setDefaultButton(bApplyChain);
 					tName.setBackground(null);
-				}
-
-				//String oldJobChainname = listener.getChainName();
-				/*boolean _continue = true;
-				if(listener.getChainName().length() > 0  && !tName.getText().equals(listener.getChainName()))
-					if(!Utils.checkElement(listener.getChainName(), listener.get_dom(), Editor.JOB_CHAIN, null))
-						_continue = false;
-
-				if(_continue) {
-					if(update != null)
-						update.updateTreeItem("Job Chain: " + tName.getText());
-					listener.setChainName(tName.getText());
-					
-				}
-				*/
-				//bApplyChain.setEnabled(!existname && !tName.equals(""));
+				}				
 
 				if(update != null)
 					update.updateTreeItem("Job Chain: " + tName.getText());
 				listener.setChainName(tName.getText());
 
-
-
-
-
+				jobChainGroup.setText("Job Chain:" + (listener.getChainName() != null ? listener.getChainName() : ""));								
+				changeJobChainName = true;
 			}
 		});
 
@@ -160,7 +145,14 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		butDetails.setLayoutData(new GridData());
 		butDetails.setEnabled(true);
 		butDetails.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
+			public void widgetSelected(final SelectionEvent e) {	
+				if(listener.get_dom().isChanged() && changeJobChainName){
+					MainWindow.message("Job Chain Name has changed. Please save before open the Jobchain Node Parameter", SWT.ICON_WARNING);
+					
+					return;
+				} else {
+					changeJobChainName = false;
+				}
 				showDetails(null);
 			}
 		});
