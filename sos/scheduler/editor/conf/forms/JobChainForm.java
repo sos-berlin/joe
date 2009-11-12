@@ -147,7 +147,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		butDetails.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {	
 				if(listener.get_dom().isChanged() && changeJobChainName){
-					MainWindow.message("Job Chain Name has changed. Please save before open the Jobchain Node Parameter", SWT.ICON_WARNING);
+					MainWindow.message("The Jobchain Name has been changed.\nPlease save your changes before selecting the Jobchain Node Parameters.", SWT.ICON_WARNING);
 					
 					return;
 				} else {
