@@ -744,7 +744,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 		final Group Group = new Group(tabFolder, SWT.NONE);
 		final GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 5;
+		gridLayout.numColumns = 6;
 		Group.setLayout(gridLayout);
 		parameterTabItem.setControl(Group);
 		label2 = new Label(Group, SWT.NONE);
@@ -790,6 +790,20 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				bApply.setEnabled(!tParaName.getText().equals(""));
 			}
 		});
+
+		final Button button = new Button(Group, SWT.NONE);
+		final GridData gridDatax = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
+		gridDatax.widthHint = 28;
+		button.setLayoutData(gridDatax);
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				String text = sos.scheduler.editor.app.Utils.showClipboard(tParaValue.getText(), getShell(), true, "");
+				if(text != null)
+					tParaValue.setText(text);
+			}
+		});
+		button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
+
 		bApply = new Button(Group, SWT.NONE);
 		bApply.setEnabled(false);
 		final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
@@ -802,11 +816,11 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		label4 = new Label(Group, SWT.SEPARATOR | SWT.HORIZONTAL);
-		label4.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1));
+		label4.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 6, 1));
 		label4.setText("Label");
 		tParameter = new Table(Group, SWT.FULL_SELECTION | SWT.BORDER);
 		tParameter.setLinesVisible(true);
-		final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 4);
+		final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 4);
 		tParameter.setLayoutData(gridData_1);
 		tParameter.setHeaderVisible(true);
 		tParameter.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -912,7 +926,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		});
 		if(type == Editor.JOB) {
 			txtParameterDescription = new Text(Group, SWT.V_SCROLL | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);        
-			final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
+			final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 1);
 			gridData.minimumHeight = 100;
 			txtParameterDescription.setLayoutData(gridData);
 			txtParameterDescription.addFocusListener(new FocusAdapter() {
@@ -1260,7 +1274,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 		group = new Group(tabFolder, SWT.NONE);
 		final GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 5;
+		gridLayout.numColumns = 6;
 		group.setLayout(gridLayout);
 		parameterJobCmdTabItem.setControl(group);
 
@@ -1338,6 +1352,21 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				bApply.setEnabled(!tParaName.getText().equals(""));
 			}
 		});
+
+		final Button button = new Button(group, SWT.NONE);
+		final GridData gridDatax = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
+		gridDatax.widthHint = 28;
+		button.setLayoutData(gridDatax);
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				String text = sos.scheduler.editor.app.Utils.showClipboard(tParaValue.getText(), getShell(), true, "");
+				if(text != null)
+					tParaValue.setText(text);
+			}
+		});
+		button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
+
+				
 		bApply = new Button(group, SWT.NONE);
 		final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		bApply.setLayoutData(gridData_5);
@@ -1349,7 +1378,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		tParameter = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
-		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, false, true, 4, 5);
+		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, false, true, 5, 5);
 		gridData_3.widthHint = 342;
 		gridData_3.heightHint = 140;
 		tParameter.setLayoutData(gridData_3);

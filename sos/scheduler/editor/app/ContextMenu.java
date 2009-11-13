@@ -30,17 +30,17 @@ public class ContextMenu {
 	private Menu                    _menu                 = null;	
 
 	private static final String      GOTO                 = "Goto";
-	
+
 	private static final String      DELETE               = "Delete";
 
 	private static int               _type                = -1;
 
-	
+
 	public ContextMenu(Combo combo, SchedulerDom dom, int type) {
 		_combo = combo;
 		_dom = dom; 		
 		_type = type;
-		
+
 		createMenu();
 	}
 
@@ -57,15 +57,15 @@ public class ContextMenu {
 
 		MenuItem item = new MenuItem(_menu, SWT.PUSH);
 		item.addListener(SWT.Selection, getListener());
-		
-		
+
+
 		if(_type == Editor.SCRIPT)
 			item.setText(ContextMenu.DELETE);
 		else
 			item.setText(ContextMenu.GOTO);
 
-		
-		
+
+
 		_menu.addListener(SWT.Show, new Listener() {
 			public void handleEvent(Event e) {
 				if(_type == Editor.SCRIPT)
@@ -91,7 +91,7 @@ public class ContextMenu {
 					delete(_combo, _dom, _type);
 				else
 					goTo(_combo.getText(), _dom, _type);
-				
+
 			}
 
 		};
@@ -109,7 +109,7 @@ public class ContextMenu {
 		try {    		
 
 			_dom.readString(newXML, true);
-			
+
 
 			refreshTree("main");
 
@@ -158,10 +158,10 @@ public class ContextMenu {
 	private Listener getClipboardListener() {
 		return new Listener() {
 			public void handleEvent(Event e) {
-				
+
 			}
 
-				
+
 		};
 	}
 
@@ -181,7 +181,7 @@ public class ContextMenu {
 						target = (Element)_copy.clone();
 						TreeData data = (TreeData) _combo.getData();
 						data.setElement(target);
-						
+
 						return;
 						//}
 					}
@@ -256,7 +256,7 @@ public class ContextMenu {
 		};
 	}
 
-	*/
+	 */
 	private MenuItem getItem(String name) {
 		MenuItem[] items = _menu.getItems();
 		for (int i = 0; i < items.length; i++) {
@@ -270,15 +270,15 @@ public class ContextMenu {
 
 	public static void goTo(String name, DomParser _dom, int type) {
 		try {
-			
+
 			if(name == null || name.length() == 0)
 				return;
-			
+
 			if(_dom instanceof sos.scheduler.editor.actions.ActionsDom)
 				_dom = (sos.scheduler.editor.actions.ActionsDom)_dom;
 			else 
 				_dom = (SchedulerDom)_dom;
-			
+
 			if(name.startsWith("*")) {			
 				name = name.substring(1);
 			}
@@ -287,9 +287,9 @@ public class ContextMenu {
 
 				XPath x3 = XPath.newInstance("//job[@name='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());								 
-				
+
 				if(!listOfElement_3.isEmpty()) {    
-					
+
 					SchedulerForm f = (SchedulerForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
 					if(f == null)
 						return;
@@ -313,16 +313,16 @@ public class ContextMenu {
 					}
 				}
 			} else if(type==Editor.MONITOR) {
-				
-                String[] split = name.split("_@_");
-                String jobname = split[0];
-                String monitorname = split[1];
-                
+
+				String[] split = name.split("_@_");
+				String jobname = split[0];
+				String monitorname = split[1];
+
 				XPath x3 = XPath.newInstance("//job[@name='"+ jobname + "']/monitor[@name='"+ monitorname + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());								 
-				
+
 				if(!listOfElement_3.isEmpty()) {    
-					
+
 					SchedulerForm f = (SchedulerForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
 					if(f == null)
 						return;
@@ -366,7 +366,7 @@ public class ContextMenu {
 						}
 					}
 				}
-			
+
 			} else if(type==Editor.JOB_CHAIN) {
 
 				XPath x3 = XPath.newInstance("//job_chain[@name='"+ name + "']");				 
@@ -583,15 +583,16 @@ public class ContextMenu {
 						}
 					}						
 				}
-			} else if (type == Editor.JOB_COMMAND_EXIT_CODES){
+			} else if (type == Editor.JOB_COMMAND_EXIT_CODES && 
+					sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor() instanceof ActionsForm){
 
-				
+
 				XPath x3 = null;
 				String job = "";
 				if(name.startsWith("start_job")) {
 					job = name.substring("start_job: ".length());
 					x3 = XPath.newInstance("//command/start_job[@job='"+ job + "']");
-					
+
 				} else {
 					String child = name.substring(0, name.indexOf(": "));
 					job = name.substring(child.length() + 2);
@@ -619,7 +620,63 @@ public class ContextMenu {
 						}
 					}						
 				}
-				
+			} else if (type == Editor.JOB_COMMAND_EXIT_CODES && 
+					sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm){
+
+
+				XPath x3 = null;
+				String job = "";
+				if(name.startsWith("start_job")) {
+					job = name.substring("start_job: ".length());
+					x3 = XPath.newInstance("//commands/start_job[@job='"+ job + "']");
+
+				} else {
+					String child = name.substring(0, name.indexOf(": "));
+					job = name.substring(child.length() + 2);
+					x3 = XPath.newInstance("//commands/"+child+"[@job_chain='"+ job + "']");						
+
+				}
+
+
+				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+				if(!listOfElement_3.isEmpty()) {    			
+					SchedulerForm f = (SchedulerForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
+					if(f == null)
+						return;
+					Tree tree = f.getTree();
+					if(tree.getSelectionCount() > 0) {
+						TreeItem itemp = tree.getSelection()[0];
+						for(int i = 0; i < itemp.getItemCount(); i++) {    				
+							TreeItem item = itemp.getItem(i);
+							if(item.getText().equals(name)){
+								tree.setSelection(new TreeItem [] {item});
+								f.updateTreeItem(item.getText());
+								f.updateTree("");
+								break;
+							}
+						}
+					}						
+				}
+
+			} else if(type == Editor.JOB_COMMAND) {
+				SchedulerForm f = (SchedulerForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
+				if(f == null)
+					return;
+
+				Tree tree = f.getTree();
+				if(tree.getSelectionCount() > 0) {
+					TreeItem itemp = tree.getSelection()[0];
+					for(int i = 0; i < itemp.getItemCount(); i++) {    				
+						TreeItem item = itemp.getItem(i);
+						if(item.getText().equals(name)){
+							tree.setSelection(new TreeItem [] {item});
+							f.updateTreeItem(item.getText());
+							f.updateTree("");
+							break;
+						}
+					}
+				}
+
 			}
 		} catch (Exception e) {
 			System.out.println(e.toString());
@@ -637,10 +694,10 @@ public class ContextMenu {
 				Options.removeProperty(name);
 				combo.remove(combo.getText());
 			}
-			
+
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
 	}
-			
+
 }

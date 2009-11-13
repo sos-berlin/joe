@@ -6,6 +6,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -21,6 +23,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+
+import sos.scheduler.editor.app.ContextMenu;
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
@@ -54,11 +59,14 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 
 	private Button                        addOrderButton               = null;
 
+	private SchedulerDom                  _dom                         = null;
+	
 
 	public JobCommandExitCodesForm(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main)	
 	throws JDOMException, TransformerException {
 		super(parent, style);
 
+		_dom = dom;
 		listener = new JobCommandExitCodesListener(dom, command, main);
 		initialize();
 		setToolTipText();
@@ -227,6 +235,14 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		new Label(gMain, SWT.NONE);
 
 		tCommands = new Table(gMain, SWT.FULL_SELECTION | SWT.BORDER);
+		tCommands.addMouseListener(new MouseAdapter() {
+			public void mouseDoubleClick(final MouseEvent e) {
+				if(tCommands.getSelectionCount() > 0){
+					String name = tCommands.getSelection()[0].getText(0) +": " + tCommands.getSelection()[0].getText(1) + tCommands.getSelection()[0].getText(2);
+					ContextMenu.goTo(name, _dom, Editor.JOB_COMMAND_EXIT_CODES);
+				}
+			}
+		});
 		tCommands.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				TableItem item = (TableItem) e.item;
