@@ -590,7 +590,9 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 					txtValue.setEnabled(true);
 					butText.setEnabled(true);
 					paramText.setText("");
-				}								
+				} else {
+					butText.setEnabled(false);
+				}
 			}
 		});
 		txtName.addKeyListener(new KeyAdapter() {
@@ -639,6 +641,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		txtValue.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 		butText = new Button(parameterGroup, SWT.NONE);
+		butText.setEnabled(false);
 		butText.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				String ntext = "";
