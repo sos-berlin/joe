@@ -215,17 +215,13 @@ public class ActionsListener implements IUpdateTree {
     					item.setData(new TreeData(Editor.JOB_COMMAND_EXIT_CODES, e, Options.getHelpURL("job.commands")));
     					item.setData("key", "commands_@_order");	
     					item.setData("copy_element", e);
-    					//item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
-
     					treeFillCommand(item, e, false);
     				}
     			}
     		}
 
     		treeFillAddRemoveEvent(parent, eCommands);
-    		
-    		//parent.setExpanded(expand);
-    		
+    		    		
     		
     	}
     }

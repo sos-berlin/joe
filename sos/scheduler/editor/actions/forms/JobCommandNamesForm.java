@@ -46,10 +46,8 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 	private Table                         tCommands                    = null;
 
 	private JobCommandNamesListener   listener                     = null;
- 
-	private Group                         gMain                        = null;
 
-	//private boolean                       updateTree                   = false;
+	private Group                         gMain                        = null;
 
 	private boolean                       event                        = false;
 
@@ -58,13 +56,13 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 	private Button                        addJobButton                 = null;
 
 	private Button                        addOrderButton               = null;
-	
+
 	private Text                          txtName                      = null;
-	
+
 	private Text                          txtHost                      = null;
-	
+
 	private Text                          txtPort                      = null;
-	
+
 	private ActionsDom                   _dom                          = null;
 
 
@@ -80,18 +78,9 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		dom.setInit(true);
 
 		listener.fillCommands(tCommands);		
-		//updateTree = false;
-		
-		//updateTree = true;
 
 		dom.setInit(false);		
 		event = true;
-
-
-
-		/*if (command.getParentElement() != null ){        	
-			//this.jobsAndOrdersGroup.setEnabled(Utils.isElementEnabled("job", dom, command.getParentElement()));        	
-		}*/
 
 	}
 
@@ -143,7 +132,7 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		txtName.setBackground(SWTResourceManager.getColor(255, 255, 217));
 		txtName.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
-				
+
 				if (event) {
 					listener.setName(txtName.getText());					
 				}
@@ -212,7 +201,7 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 				}
 			}
 		});
-		
+
 		txtPort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		new Label(gMain, SWT.NONE);
 		new Label(gMain, SWT.NONE);
@@ -267,59 +256,52 @@ public class JobCommandNamesForm extends Composite implements IUnsaved, IUpdateL
 		bRemoveExitcode.setEnabled(false);
 		bRemoveExitcode.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				
-				if(tCommands != null && tCommands.getSelectionCount() > 0)  {
-        			int cont = MainWindow.message(getShell(), "If you really want to delete this command?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-        		
-        			if(cont == SWT.OK) {				        				
-        				listener.deleteCommand(tCommands);
-        				tCommands.deselectAll();
-        				bRemoveExitcode.setEnabled(false);
-        				
-        			} 
-        			
-        			
-        		}
-				
-				                
 
-				
+				if(tCommands != null && tCommands.getSelectionCount() > 0)  {
+					int cont = MainWindow.message(getShell(), "If you really want to delete this command?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+
+					if(cont == SWT.OK) {				        				
+						listener.deleteCommand(tCommands);
+						tCommands.deselectAll();
+						bRemoveExitcode.setEnabled(false);
+
+					} 
+
+
+				}
+
+
+
+
 
 			}
 		});
 		bRemoveExitcode.setText("Remove");
 	}
 
-	
+
 	private void addJob() {
-		//int index = tCommands.getSelectionIndex();
 		Element e = null;
-		//if (index == -1) {
 
-			e = new Element("start_job");				
-			e.setAttribute("job", "job" + tCommands.getItemCount());
-			TableItem item = new TableItem(tCommands, SWT.NONE);
-			item.setText(new String[] { "start_job", "job"+tCommands.getItemCount(), "", "" });
+		e = new Element("start_job");				
+		e.setAttribute("job", "job" + tCommands.getItemCount());
+		TableItem item = new TableItem(tCommands, SWT.NONE);
+		item.setText(new String[] { "start_job", "job"+tCommands.getItemCount(), "", "" });
 
-			listener.addCommand(e);
-
-		//}
+		listener.addCommand(e);
 
 	}
 
 	private void addOrder() {
-		//int index = tCommands.getSelectionIndex();
 		Element e = null;
-		//if (index == -1) {
 
-			e = new Element("order");			
-			e.setAttribute("job_chain", "job_chain" + tCommands.getItemCount());		
-			e.setAttribute("replace", "yes");
-			TableItem item = new TableItem(tCommands, SWT.NONE);
-			item.setText(new String[] { "order", "", "job_chain_" + tCommands.getItemCount(), "" });
-			listener.addCommand(e);
+		e = new Element("order");			
+		e.setAttribute("job_chain", "job_chain" + tCommands.getItemCount());		
+		e.setAttribute("replace", "yes");
+		TableItem item = new TableItem(tCommands, SWT.NONE);
+		item.setText(new String[] { "order", "", "job_chain_" + tCommands.getItemCount(), "" });
+		listener.addCommand(e);
 
-		//}
 	}
 
 

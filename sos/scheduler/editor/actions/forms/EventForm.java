@@ -337,130 +337,7 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 
 		if(type == Editor.ADD_EVENT_GROUP)
 			createExpirationTime(matchingAttributesGroup);
-		/*final Label expirationPeriodLabel = new Label(matchingAttributesGroup, SWT.NONE);
-		expirationPeriodLabel.setText("Expiration Period");
-
-		final Composite composite = new Composite(matchingAttributesGroup, SWT.NONE);
-		composite.setLayoutData(new GridData(GridData.BEGINNING, GridData.FILL, true, false));
-		final GridLayout gridLayout_2 = new GridLayout();
-		gridLayout_2.verticalSpacing = 0;
-		gridLayout_2.marginWidth = 0;
-		gridLayout_2.marginHeight = 0;
-		gridLayout_2.horizontalSpacing = 0;
-		gridLayout_2.numColumns = 6;
-		composite.setLayout(gridLayout_2);
-
-		txtHourExpirationPeriod = new Text(composite, SWT.BORDER);
-		txtHourExpirationPeriod.addVerifyListener(new VerifyListener() {
-			public void verifyText(final VerifyEvent e) {
-				e.doit = Utils.isOnlyDigits(e.text);
-			}
-		});
-		txtHourExpirationPeriod.setLayoutData(new GridData(30, SWT.DEFAULT));
-		txtHourExpirationPeriod.setTextLimit(2);
-
-		final Label label = new Label(composite, SWT.NONE);
-		label.setAlignment(SWT.CENTER);
-		final GridData gridData_2 = new GridData(10, SWT.DEFAULT);
-		label.setLayoutData(gridData_2);
-		label.setText(":");
-
-		txtMinExpirationPeriod = new Text(composite, SWT.BORDER);
-		txtMinExpirationPeriod.addVerifyListener(new VerifyListener() {
-			public void verifyText(final VerifyEvent e) {
-				e.doit = Utils.isOnlyDigits(e.text);
-			}
-		});
-		txtMinExpirationPeriod.setLayoutData(new GridData(30, SWT.DEFAULT));
-		txtMinExpirationPeriod.setTextLimit(2);
-
-		final Label label_1 = new Label(composite, SWT.NONE);
-		final GridData gridData_2_1 = new GridData(10, SWT.DEFAULT);
-		label_1.setLayoutData(gridData_2_1);
-		label_1.setAlignment(SWT.CENTER);
-		label_1.setText(":");
-
-		txtSecExpirationPeriod = new Text(composite, SWT.BORDER);
-		txtSecExpirationPeriod.addVerifyListener(new VerifyListener() {
-			public void verifyText(final VerifyEvent e) {
-				e.doit = Utils.isOnlyDigits(e.text);
-			}
-		});
-		txtSecExpirationPeriod.setLayoutData(new GridData(30, SWT.DEFAULT));
-		txtSecExpirationPeriod.setTextLimit(2);
-
-		final Label hhmmssLabel = new Label(composite, SWT.NONE);
-		final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-		gridData_3.horizontalIndent = 5;
-		hhmmssLabel.setLayoutData(gridData_3);
-		hhmmssLabel.setText("HH:MM:SS");
-
-
-		final Label expirationCycleLabel = new Label(matchingAttributesGroup, SWT.NONE);
-		expirationCycleLabel.setLayoutData(new GridData(96, SWT.DEFAULT));
-		expirationCycleLabel.setText("Expiration Cycle");
-
-		final Composite composite_1 = new Composite(matchingAttributesGroup, SWT.NONE);
-		composite_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.FILL, false, false));
-		final GridLayout gridLayout_3 = new GridLayout();
-		gridLayout_3.verticalSpacing = 0;
-		gridLayout_3.numColumns = 6;
-		gridLayout_3.marginWidth = 0;
-		gridLayout_3.marginHeight = 0;
-		gridLayout_3.horizontalSpacing = 0;
-		composite_1.setLayout(gridLayout_3);
-
-		txtHourExpirationCycle = new Text(composite_1, SWT.BORDER);
-		txtHourExpirationCycle.addVerifyListener(new VerifyListener() {
-			public void verifyText(final VerifyEvent e) {
-				e.doit = Utils.isOnlyDigits(e.text);
-			}
-		});
-		txtHourExpirationCycle.setTextLimit(2);
-		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		gridData_4.widthHint = 30;
-		txtHourExpirationCycle.setLayoutData(gridData_4);
-
-		final Label label_2 = new Label(composite_1, SWT.NONE);
-		final GridData gridData_2_2 = new GridData(10, SWT.DEFAULT);
-		label_2.setLayoutData(gridData_2_2);
-		label_2.setAlignment(SWT.CENTER);
-		label_2.setText(":");
-
-		txtMinExpirationCycle = new Text(composite_1, SWT.BORDER);
-		txtMinExpirationCycle.addVerifyListener(new VerifyListener() {
-			public void verifyText(final VerifyEvent e) {
-				e.doit = Utils.isOnlyDigits(e.text);
-			}
-		});
-		txtMinExpirationCycle.setTextLimit(2);
-		final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		gridData_5.widthHint = 30;
-		txtMinExpirationCycle.setLayoutData(gridData_5);
-
-		final Label label_1_1 = new Label(composite_1, SWT.NONE);
-		final GridData gridData_2_1_1 = new GridData(10, SWT.DEFAULT);
-		label_1_1.setLayoutData(gridData_2_1_1);
-		label_1_1.setAlignment(SWT.CENTER);
-		label_1_1.setText(":");
-
-		txtSecExpirationCycle = new Text(composite_1, SWT.BORDER);
-		txtSecExpirationCycle.addVerifyListener(new VerifyListener() {
-			public void verifyText(final VerifyEvent e) {
-				e.doit = Utils.isOnlyDigits(e.text);
-			}
-		});
-		txtSecExpirationCycle.setTextLimit(2);
-		final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		gridData_6.widthHint = 30;
-		txtSecExpirationCycle.setLayoutData(gridData_6);
-
-		final Label hhmmssLabel_1 = new Label(composite_1, SWT.NONE);
-		final GridData gridData_3_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-		gridData_3_1.horizontalIndent = 5;
-		hhmmssLabel_1.setLayoutData(gridData_3_1);
-		hhmmssLabel_1.setText("HH:MM:SS");
-		 */
+		
 		final Label commentLabel = new Label(group, SWT.NONE);
 		commentLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		commentLabel.setText("Comment");
@@ -586,7 +463,7 @@ public class EventForm extends Composite implements IUnsaved, IUpdateLanguage  {
 		gridData_1.widthHint = 55;
 		butRemove.setLayoutData(gridData_1);
 		butRemove.setText(" Remove ");
-		//gridData_1.heightHint = 18;
+		
 	}
 
 

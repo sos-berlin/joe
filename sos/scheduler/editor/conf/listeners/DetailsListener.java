@@ -213,6 +213,8 @@ public class DetailsListener {
 			} catch(Exception ee) {
 				//tu nichts
 			}
+			hasError = true;
+			
 			System.err.println("..error im DetailsListener.parseDocuments(): " + e.getMessage());
 		}
 
@@ -286,12 +288,15 @@ public class DetailsListener {
 				params = new java.util.ArrayList();
 
 		} catch(Exception e) {
+			hasError = true;
 			try {
 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
 			} catch(Exception ee) {
 				//tu nichts
 			}
+			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
 			System.err.println("..error im DetailsListener.parseDocuments(): " + e.getMessage());
+			
 		}
 
 	}

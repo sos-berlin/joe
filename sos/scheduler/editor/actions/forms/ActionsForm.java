@@ -182,7 +182,6 @@ public class ActionsForm extends Composite implements IEditor, IActionsUpdate {
 
 	public boolean saveAs() {
 		String old = dom.getFilename();
-		//boolean res = IOUtils.saveFile(dom, true);
 		boolean res = IOUtils.saveAction(dom, true);
 		if (res)
 			container.setNewFilename(old);
@@ -220,46 +219,6 @@ public class ActionsForm extends Composite implements IEditor, IActionsUpdate {
 	}
 
 
-	/*  public static void openNoteDialog(ActionsDom dom, Element parentElement, String name, boolean optional,String title) {
-        openNoteDialog(dom, parentElement, name, null, optional, true,title);
-    }
-
-
-    public static void openNoteDialog(ActionsDom dom, Element parentElement, String name, boolean optional,
-            boolean changeStatus,String title) {
-        openNoteDialog(dom, parentElement, name, null, optional, changeStatus,title);
-    }
-
-
-    public static void openNoteDialog(ActionsDom dom, Element parentElement, String name, String tooltip,
-            boolean optional,String title) {
-        openNoteDialog(dom, parentElement, name, tooltip, optional, true,title);
-    }
-	 */
-
-	/* public static void openNoteDialog(ActionsDom dom, Element parentElement, String name, String tooltip,
-            boolean optional, boolean changeStatus, String title) {
-        NoteDialog dialog = new NoteDialog(MainWindow.getSShell(),title);
-        dialog.setText("Note Editor");
-        dialog.setTooltip(tooltip);
-
-        dialog.setParams(dom, parentElement, name, optional, changeStatus);
-        dialog.open();
-    }
-
-
-    public static void openNoteDialog(ActionsDom dom, Element parentElement, String name, String tooltip,
-            boolean optional, boolean changeStatus, String title, org.eclipse.swt.widgets.Text txt) {
-        NoteDialog dialog = new NoteDialog(MainWindow.getSShell(),title);
-        dialog.setText("Note Editor");
-        //dialog.setUpdateText(txt); //Textfeld soll beim verklassen des Dialogs aktualisert werden
-        dialog.setTooltip(tooltip);
-
-        dialog.setParams(dom, parentElement, name, optional, changeStatus);
-        dialog.open();
-    }
-	 */
-
 	public ActionsDom getDom() {
 		return dom;
 	}
@@ -274,9 +233,6 @@ public class ActionsForm extends Composite implements IEditor, IActionsUpdate {
 	}
 
 	public void updateEvents(Element action) {
-		//if(tree.getSelectionCount() > 0) {
-
-		//if(!tree.getSelection()[0].getParentItem().getText().equalsIgnoreCase(ActionsListener.ACTION_PREFIX + Utils.getAttributeValue("name", action))) {
 		TreeItem item = tree.getTopItem();
 		for(int i = 0; i < item.getItemCount(); i++) {
 			TreeItem it = item.getItem(i);
@@ -286,12 +242,7 @@ public class ActionsForm extends Composite implements IEditor, IActionsUpdate {
 				it.setExpanded(true);
 				break;
 			}
-		}
-		/*} else {
-				listener.fillEventGroup(tree.getSelection()[0], action);
-				tree.getSelection()[0].setExpanded(true);
-			}*/
-		//}
+		}	
 	}
 
 

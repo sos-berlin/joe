@@ -84,7 +84,8 @@ public class DetailDialogForm {
 				
 		//dialogForm =new DetailForm(composite, SWT.NONE, jobChainname, state, listOfOrderIds, Editor.JOB_CHAINS, null, null, isLifeElement, path);
 		dialogForm =new DetailForm(composite, SWT.NONE, jobChainname, state, orderId, Editor.JOB_CHAINS, null, null, isLifeElement, path);
-		dialogForm.setLayout(new FillLayout());
+		if(!dialogForm.hasErrors())//im fehlerfall
+			dialogForm.setLayout(new FillLayout());
 	
 		
 	}
