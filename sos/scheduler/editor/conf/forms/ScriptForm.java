@@ -439,6 +439,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         			String lan = "function_" + ((type == Editor.MONITOR)? "monitor" : "job") + "_" + listener.getLanguage(listener.getLanguage()) + "_";
 					tSource.append(Options.getProperty(lan.toLowerCase() + cboPrefunction.getText()));
 					cboPrefunction.setText("");
+					tSource.setFocus();
 					//cboPrefunction.setText("-- Templates --");
 				}
         	}
