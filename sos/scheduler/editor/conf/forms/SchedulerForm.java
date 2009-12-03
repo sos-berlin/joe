@@ -49,7 +49,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	
 	private Group             gTree                = null;
 	
-	private static Tree       tree                 = null;
+	private Tree              tree                 = null;
 	
 	private Composite         cMainForm            = null;
 	
