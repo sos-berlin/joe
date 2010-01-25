@@ -34,12 +34,14 @@ public class JobChainListener {
 
 	public JobChainListener(SchedulerDom dom, Element jobChain) {
 		_dom = dom;
-		_chain = jobChain;		
-
+		_chain = jobChain;	
 		if(_chain.getParentElement() != null)
 			_config = _chain.getParentElement().getParentElement();
 	}
 
+	public boolean isChanged() {
+	   return _dom.isChanged();
+	}
 	public String getChainName() {
 		return Utils.getAttributeValue("name", _chain);
 	}
@@ -140,7 +142,7 @@ public class JobChainListener {
 	}
 
 
-	public void applyChain(String name, boolean ordersRecoverable, boolean visible, boolean distributed, String title) {
+	private  void applyChain(String name, boolean ordersRecoverable, boolean visible, boolean distributed, String title) {
 		String oldjobChainName = Utils.getAttributeValue("name", _chain);
 		if (oldjobChainName != null && oldjobChainName.length() > 0) {			
 			if(_dom.isDirectory()|| _dom.isLifeElement())
