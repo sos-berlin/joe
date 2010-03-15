@@ -56,13 +56,11 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 	private boolean             init                        = false;
 	
 	private boolean             changeJobChainName          = true;
-	private boolean             checked	                    = false;
 
 
 	public JobChainForm(Composite parent, int style, SchedulerDom dom, Element jobChain) {
 		super(parent, style);
 		init = true;
-		checked = false;
 		listener = new JobChainListener(dom, jobChain);
 		initialize();
 		setToolTipText();
@@ -78,7 +76,6 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 
 
 	public boolean isUnsaved() {
-	    checked = false; 
 		return false;
 	}
 
@@ -104,23 +101,30 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		gridLayout.numColumns = 5;
 		jobChainGroup.setLayout(gridLayout);
 		chainNameLabel = new Label(jobChainGroup, SWT.NONE);
-		chainNameLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+		final GridData gridData_6 = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
+		chainNameLabel.setLayoutData(gridData_6);
 		chainNameLabel.setText("Chain Name ");
 		tName = new Text(jobChainGroup, SWT.BORDER);
-		tName.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-			}
-		});
 		tName.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
-			
-			 }
+				if(!init) {//während der initialiserung sollen keine überprüfungen stattfinden
+					//String name =  listener.getChainName();				
+					e.doit = Utils.checkElement(listener.getChainName(), listener.get_dom(), Editor.JOB_CHAIN, null);
+					/*System.out.println(e.doit);
+					if(e.doit) {
+						init = true; 
+						name = name.substring(0, e.start) + e.text + name.substring(e.start,  e.end);
+						tName.setText(name); 
+						listener.setChainName(name);
+						init = false;
+					}
+					*/
+				}
+			}
 		});
 		tName.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent e) {
-			    if (!checked){
-				    tName.selectAll();
-      		    }
+				//tName.selectAll();
 			}
 		});
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, true, false, 3, 1);
@@ -130,24 +134,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				if(init) return;//während der initialiserung sollen keine überprüfungen stattfinden
-				
-					if(!checked) {//Nur einmal prüfen und fragen.
-					    checked = true;
- 				    	if (!Utils.checkElement(listener.getChainName(), listener.get_dom(), Editor.JOB_CHAIN, null)) {
-						   init = true; //Damit modifyText nicht implizit rekursiv durchlaufen wird.
-					       tName.setText(listener.getChainName()); //den alten Namen wieder anzeigen
-					       tName.setSelection(tName.getText().length()); //an das Ende des String positionieren.
-					       checked = false; //Bei Nein: Wenn geändert wird, erneut fragen.
-						   init = false;
-						}else {
-					       tName.setSelection(tName.getText().length()); //an das Ende des String positionieren.
-						}
-					}else {
-					   checked = listener.isChanged(); 
-					}
-				
-				
+				if(init) return;
 				
 				boolean existname = Utils.existName(tName.getText(), listener.getChain(), "job_chain");
 				if (existname)
@@ -159,6 +146,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 
 				if(update != null)
 					update.updateTreeItem("Job Chain: " + tName.getText());
+				
 				listener.setChainName(tName.getText());
 
 				jobChainGroup.setText("Job Chain:" + (listener.getChainName() != null ? listener.getChainName() : ""));								
@@ -167,11 +155,15 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		});
 
 		butDetails = new Button(jobChainGroup, SWT.NONE);
+		butDetails.setLayoutData(new GridData());
 		butDetails.setEnabled(true);
 		butDetails.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {	
 				if(listener.get_dom().isChanged() && changeJobChainName){
-					MainWindow.message("The Jobchain Name has been changed.\nPlease save your changes before selecting the Jobchain Node Parameters.", SWT.ICON_WARNING);
+					if(listener.get_dom().getFilename() == null)
+						MainWindow.message("Please save your Jobchain before selecting the Jobchain Node Parameters.", SWT.ICON_WARNING);
+					else 
+						MainWindow.message("The Jobchain Name has been changed.\nPlease save your changes before selecting the Jobchain Node Parameters.", SWT.ICON_WARNING);
 					
 					return;
 				} else {
@@ -192,6 +184,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		});
 		 */
 		final Label titleLabel = new Label(jobChainGroup, SWT.NONE);
+		titleLabel.setLayoutData(new GridData());
 		titleLabel.setText("Title");
 
 		txtTitle = new Text(jobChainGroup, SWT.BORDER);
