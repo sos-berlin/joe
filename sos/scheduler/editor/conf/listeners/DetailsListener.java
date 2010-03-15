@@ -133,10 +133,10 @@ public class DetailsListener {
 				profile.setLogText(null);
 				//String a = profile.openFile(remoteDir, xmlFilename);
 				profile.connect();
-				String parent = new File(remoteDir).getParent() != null ? new File(remoteDir).getParent() : ".";
+				//String parent = new File(remoteDir).getParent() != null ? new File(remoteDir).getParent() : ".";
 				//if(profile.getList(parent).contains(new File(remoteDir))) {
 
-				long l = profile.getFile(remoteDir, xmlFilename);
+				profile.getFile(remoteDir, xmlFilename);
 				//long l = profile.getFile(remoteDir, xmlFilename);
 				//}
 
@@ -204,8 +204,9 @@ public class DetailsListener {
 				}
 			}
 
-			if(xmlFilename.endsWith(".config.xml"))
-				openFilePerFTP(xmlFilename); 
+			//hier
+			//if(xmlFilename.endsWith(".config.xml"))
+			//	openFilePerFTP(xmlFilename); 
 
 		} catch(Exception e) {
 			try {
@@ -421,25 +422,18 @@ public class DetailsListener {
 		try { 
 
 			if(dom == null) {
-				dom = new DetailDom();
-				//dom.read(xmlFilename);
+				dom = new DetailDom();				
 			}
 
 			dom.writeElement(xmlFilename, doc);
 
-
-			/*JDOMSource in = new JDOMSource(doc);
-			Format format = Format.getPrettyFormat();			
-			format.setEncoding(encoding);
-			XMLOutputter outp = new XMLOutputter(format);					
-			outp.output(in.getDocument(), new FileWriter(f));
-			 */
 		} catch (Exception e) {
 			try {
 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
 			} catch(Exception ee) {
 				//tu nichts
 			}
+			MainWindow.message("Could not save file, cause: " + e.toString(), SWT.ICON_WARNING);
 			System.out.println("..error in DetailsListener.save. Could not save file " + e.getMessage());
 		}
 		return f.getAbsolutePath();
@@ -536,7 +530,7 @@ public class DetailsListener {
 			Element param = new Element("param");
 			Utils.setAttribute("name", name, param);
 			Utils.setAttribute("value", value, param);	
-			if(noteText != null || noteText.trim().length() > 0) {
+			if(noteText != null && noteText.trim().length() > 0) {
 				//org.jdom.CDATA txt = new org.jdom.CDATA(noteText); 
 				org.jdom.Text txt = new org.jdom.Text(noteText);
 				param.addContent(txt);
@@ -1048,14 +1042,7 @@ public class DetailsListener {
 		}
 	}
 
-	/*
-
-	 <monitor name="configuration_monitor"
-             ordering="0">
-        <script java_class="sos.scheduler.managed.configuration.ConfigurationOrderMonitor"
-                language="java"/>
-    </monitor>
-	 */
+	
 	private static void addMonitoring(Element job, SchedulerDom dom) {
 		if(job == null)
 			return;
@@ -1080,7 +1067,7 @@ public class DetailsListener {
 			//FAll 1: Es existiert eine globale Details Parameter. D.h. alle jobs in der Jobkette bekommen einen Monitoring			
 			String sel = "//job_chain[@name='"+ jobChainname + "']/job_chain_node[@job!='']";
 			if(state != null) {	
-				//FAll 1: Es gibt eine Details Parameter. D.h. nur der eine job in der Jobkette mit der state bekommt einen Monitoring	
+				//FAll 2: Es gibt eine Details Parameter. D.h. nur der eine job in der Jobkette mit der state bekommt einen Monitoring	
 				sel = "//job_chain[@name='"+ jobChainname + "']/job_chain_node[@state='"+state+"']";
 
 			}			
@@ -1093,7 +1080,6 @@ public class DetailsListener {
 					Element jobChainNode = (Element)listOfElement.get(i);
 					//jobname in der Jobkette ermitteln 
 					String jobname = Utils.getAttributeValue("job", jobChainNode);
-
 
 					String hotFolderfilename = "";
 					if(dom.getFilename() != null && new File(dom.getFilename()).getParent() != null)
@@ -1113,7 +1099,6 @@ public class DetailsListener {
 							}
 						}
 
-						//XPath x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
 						XPath x2 = null;
 						//Es ist ein Hot Folder oder der Job ist woanders abgelegt
 						sos.scheduler.editor.app.TabbedContainer tab = ((sos.scheduler.editor.app.TabbedContainer)MainWindow.getContainer());
@@ -1123,7 +1108,7 @@ public class DetailsListener {
 										tab.getFilelist().contains(pathFromHotFolderDirectory)		)) {
 							//Hot Folder oder Hot Folder Element ist in einem Tabraiter offen oder							
 							SchedulerForm form = null;
-							//XPath x2 = null;
+
 							if(tab.getFilelist().contains(hotFolderfilename)) {
 								form = (SchedulerForm)tab.getEditor(hotFolderfilename);//hot folder element
 								x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
@@ -1133,9 +1118,7 @@ public class DetailsListener {
 							}
 
 							SchedulerDom currdom = (SchedulerDom)form.getDom();
-							//test
-							//XPath.newInstance("//job[@name='11job1']/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']").selectNodes(currdom.getDoc())
-							//ende test
+
 							listOfElement2 = x2.selectNodes(currdom.getDoc());
 							if(listOfElement2.isEmpty()) {							
 								XPath x3 = null;
@@ -1188,8 +1171,6 @@ public class DetailsListener {
 
 							listOfElement2 = x2.selectNodes(currDom.getDoc());
 							if(listOfElement2.isEmpty()) {							
-								//XPath x3 = XPath.newInstance("//jobs/job[@name='"+ jobname + "']");
-								//XPath x3 = XPath.newInstance("//job[@name='"+ jobname + "']");
 								XPath x3 = XPath.newInstance("//job");
 								List listOfElement3  = x3.selectNodes(currDom.getDoc());
 								if(!listOfElement3.isEmpty()) {
@@ -1220,10 +1201,6 @@ public class DetailsListener {
 							}
 						}
 					}
-
-
-
-
 				}
 			}
 
@@ -1239,6 +1216,46 @@ public class DetailsListener {
 		}
 	}
 
+	/**
+	 * Ein neuer Job wurde den Jobkette hinzugefügt. Es wird jetzt überprüft, ob die Details Konfigurationsdatei
+	 * globale Parameter hat. Wenn ja, dann wird diesem Job monitoring hinzugefügt  
+	 * Details der state geändert.
+	 */
+
+	public static boolean existDetailsParameter(String state , String jobchainname, String jobname, SchedulerDom dom, ISchedulerUpdate  update, boolean global){
+		try { 
+			DetailsListener detailListener = new DetailsListener(jobchainname, 
+					state, 
+					null,  
+					Editor.JOB_CHAINS, 
+					null, 
+					dom.isLifeElement() || dom.isDirectory(), 
+					dom.getFilename());
+
+			//Document d = detailListener.getDoc();
+			XPath x = null;
+			if(global)
+				x = XPath.newInstance("//order/params/param");
+			else
+				x = XPath.newInstance("//process[@state='"+ state + "']/params/param");
+			
+			List listOfElement = x.selectNodes(detailListener.getDoc());
+
+			return !listOfElement.isEmpty();
+
+
+
+		} catch (Exception e)  {
+
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			sos.scheduler.editor.app.MainWindow.message("error in DetailsListener.existDetailsParameter, cause: " + e.getMessage(), SWT.ICON_ERROR);
+			return false;
+		}
+	}
 	/**
 	 * Ein neuer Job wurde den Jobkette hinzugefügt. Es wird jetzt überprüft, ob die Details Konfigurationsdatei
 	 * globale Parameter hat. Wenn ja, dann wird diesem Job monitoring hinzugefügt  

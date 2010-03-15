@@ -182,13 +182,12 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 									java.util.Date d = sos.util.SOSDate.getDate(validFrom.getDateText(), "dd.MM.yyyy");
 									String ds = sos.util.SOSDate.getDateAsString(d,"yyyy-MM-dd");								
 									listener.setValidFrom(ds + " 00:00:00");
+									validTo.validFrom(d);
 								}
 							} catch(Exception es) {
 								//System.out.println(es.getMessage());
 							}
-						/*} else if(validFrom.getISODate() != null && validFrom.getISODate().length() > 0) {
-							listener.setValidFrom(validFrom.getISODate() + " 00:00:00");
-						*/} else {
+						} else {
 							validFrom.setISODate("");
 							listener.setValidFrom("");
 						}
@@ -215,13 +214,14 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 									java.util.Date d = sos.util.SOSDate.getDate(validTo.getDateText(), "dd.MM.yyyy");
 									String ds = sos.util.SOSDate.getDateAsString(d,"yyyy-MM-dd");								
 									listener.setValidTo(ds + " 00:00:00");
+									//test
+									validFrom.validto(d);
+									
 								}
 							} catch(Exception es) {
 								//System.out.println(es.getMessage());
 							}
-						/*} else if(validTo.getISODate() != null && validTo.getISODate().length() > 0) {
-							listener.setValidTo(validTo.getISODate() + " 00:00:00");
-							*/
+						
 						} else {
 							validTo.setISODate("");
 							listener.setValidTo("");

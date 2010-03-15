@@ -67,9 +67,7 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 	
 	private Text        txtJavaOptions    = null; 
 	
-	private Button      butReplace        = null; 
 	
-	private Button      butTemporary      = null; 
 	
 	private Combo       comVisible        = null; 
 	
@@ -148,6 +146,7 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		gridLayout.numColumns = 4;
 		gMain = new Group(group, SWT.NONE);
 		final GridData gridData_12 = new GridData(GridData.FILL, GridData.FILL, true, true);
+		gridData_12.heightHint = 353;
 		gMain.setLayoutData(gridData_12);
 		gMain.setText("Main Options for Job: " + listener.getName());
 		gMain.setLayout(gridLayout);
@@ -386,7 +385,7 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 
 		final Label hhmmssLabel_1 = new Label(gMain, SWT.NONE);
 		hhmmssLabel_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		hhmmssLabel_1.setText("HH:MM:SS or never");
+		hhmmssLabel_1.setText("HH:MM:SS or HH:MM or SS never");
 
 		final Label warnIfLongerLabel = new Label(gMain, SWT.NONE);
 		warnIfLongerLabel.setText("Warn if longer than:");
@@ -438,46 +437,15 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		final Label force_idle_timeoutLabel = new Label(gMain, SWT.NONE);
 		force_idle_timeoutLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
 		force_idle_timeoutLabel.setText("Force Idle Timeout");
-		new Label(gMain, SWT.NONE);
 		
 		bForceIdletimeout = new Button(gMain, SWT.CHECK);
-		bForceIdletimeout.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
+		bForceIdletimeout.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 1));
 		bForceIdletimeout.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if(init) return;
 				listener.setForceIdletimeout(bForceIdletimeout.getSelection());
 			}
 		});
-
-		final Label temporaryLabel = new Label(gMain, SWT.NONE);
-		temporaryLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
-		temporaryLabel.setText("Temporary");
-		new Label(gMain, SWT.NONE);
-
-		butTemporary = new Button(gMain, SWT.CHECK);
-		butTemporary.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		butTemporary.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if(init) return;
-				listener.setTemporary(butTemporary.getSelection());
-			}
-		});
-
-		final Label replaceLabel = new Label(gMain, SWT.NONE);
-		replaceLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
-		replaceLabel.setText("Replace");
-		new Label(gMain, SWT.NONE);
-
-		butReplace = new Button(gMain, SWT.CHECK);
-		butReplace.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		butReplace.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if(init) return;
-				listener.setReplace(butReplace.getSelection());
-			}
-		});
-		
-		butReplace.setSelection(true);
 		
 	}
 
@@ -509,8 +477,6 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		tIgnoreSignals.setText(listener.getIgnoreSignal());
 		sTimeout.setText(listener.getTimeout());
 		sIdleTimeout.setText(listener.getIdleTimeout());
-		butReplace.setSelection(listener.getReplace());
-		butTemporary.setSelection(listener.getTemporary());
 		comVisible.setText(listener.getVisible());
 		txtWarnIfLongerThan.setText(listener.getWarnIfLongerThan());
 		txtWarnIfShorterThan.setText(listener.getWarnIfShorterThan());
@@ -527,9 +493,7 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		sTimeout.setToolTipText(Messages.getTooltip("job.timeout"));
 		sIdleTimeout.setToolTipText(Messages.getTooltip("job.idle_timeout"));
 		txtJavaOptions.setToolTipText(Messages.getTooltip("job.java_options"));		
-		butReplace.setToolTipText(Messages.getTooltip("job.replace"));
 		comVisible.setToolTipText(Messages.getTooltip("job.visible"));
-		butTemporary.setToolTipText(Messages.getTooltip("job.temporary"));		
 		cSignals.setToolTipText(Messages.getTooltip("job.ignore_signal_list"));
 		addButton.setToolTipText(Messages.getTooltip("job.add_ignore_signal"));
 		tSpoolerID.setToolTipText(Messages.getTooltip("job.spooler_id"));

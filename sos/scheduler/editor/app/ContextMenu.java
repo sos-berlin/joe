@@ -327,7 +327,8 @@ public class ContextMenu {
 					if(f == null)
 						return;
 					Tree tree = f.getTree(); 
-					if(tree.getSelection()[0].getText().equals("Monitor")){
+					//if(tree.getSelection()[0].getText().equals("Monitor")){
+					if(tree.getSelection()[0].getText().equals(SchedulerListener.MONITOR)){
 						TreeItem[] monitorsItem = tree.getSelection()[0].getItems();
 						for(int k = 0; k < monitorsItem.length; k++) {
 							TreeItem monitor = monitorsItem[k];

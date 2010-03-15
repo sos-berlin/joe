@@ -309,4 +309,39 @@ public class PeriodsListener {
 	}
 
 
+	/**
+	 * Überprüft, ob ein das Period Element absolute_repeat oder repeat Attribute har.
+	 * Es ist nur eins erlaubt.
+	 * @return
+	 */
+	public boolean hasRepeatTimes() {		
+		if(_parent != null )  {
+			java.util.List l = _parent.getChildren("period");
+			for(int i = 0; i < l.size(); i++) {
+				Element p = (Element)l.get(i);
+				if(Utils.getAttributeValue("repeat", p).length() > 0 || Utils.getAttributeValue("absolute_repeat", p).length() > 0) {
+					return true;
+				}
+			}			
+		}
+		return false;
+	}
+
+	/**
+	 * Überprüft, ob Element p ein repeat bzw. absolute_repeat Attribut har
+	 * @param p
+	 * @return
+	 */
+	public boolean isRepeatElement(Element p) {		
+		
+		if(Utils.getAttributeValue("repeat", p).trim().length() > 0 || 
+		   Utils.getAttributeValue("absolute_repeat", p).trim().length() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	
+	
 }

@@ -3,29 +3,18 @@ package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-/*import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-*/
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-//import org.eclipse.swt.events.VerifyEvent;
-//import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-//import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
-//import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.TableColumn;
-//import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
@@ -52,6 +41,9 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 	private SchedulerDom     dom                               = null;
 	
 	private Button           butNew                            = null;
+		
+	private static String    MONITOR                           = "process";
+	
 	
 	
 			
@@ -99,7 +91,8 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 2;
 			scriptsGroup = new Group(this, SWT.NONE);
-			scriptsGroup.setText("Monitors");
+			//scriptsGroup.setText("Monitors");
+			scriptsGroup.setText(sos.scheduler.editor.conf.listeners.SchedulerListener.MONITOR);
 			scriptsGroup.setLayout(gridLayout);
 			if (Utils.isElementEnabled("job", dom, listener.getParent())) {
 				scriptsGroup.setEnabled(true);
@@ -217,7 +210,8 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 			//listener.save(table, txtName.getText(), txtOrdering.getText(), null );
 		//txtName.setText("");
 		//txtOrdering.setText("");		
-		listener.save(table, "monitor" + table.getItemCount() , String.valueOf(table.getItemCount()), null );
+		//listener.save(table, "monitor" + table.getItemCount() , String.valueOf(table.getItemCount()), null );
+		listener.save(table, MONITOR + table.getItemCount() , String.valueOf(table.getItemCount()), null );
 		butRemove.setEnabled(false);
 		table.deselectAll();
 		//txtName.setFocus();

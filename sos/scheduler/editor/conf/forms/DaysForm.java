@@ -122,6 +122,7 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData2.widthHint = 90;
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
+        gridData.minimumHeight = 30;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 5;
         group = new Group(this, SWT.NONE);
@@ -199,7 +200,9 @@ public class DaysForm extends Composite implements IUpdateLanguage {
         		addGroupDay();
         	}
         });
-        listOfDays.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 2, 3));
+        final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, false, 2, 3);
+        gridData_2.minimumWidth = 30;
+        listOfDays.setLayoutData(gridData_2);
         new Label(group, SWT.NONE);
 
         listOfGroup = new List(group, SWT.BORDER);

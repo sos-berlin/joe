@@ -8,7 +8,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
-import org.jdom.Comment;
 import org.jdom.Element;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Utils;
@@ -577,9 +576,10 @@ public class JobsListener {
 		if (e != null) {
 			for (Iterator it = e.getContent().iterator(); it.hasNext();) {
 				Object o = it.next();
-				if (o instanceof Comment && false)
+				/*if (o instanceof Comment && false)
 					return true;
-				else if (o instanceof Element) {
+				else */
+				 if (o instanceof Element) {
 					Element ee = (Element) o;
 					if (!Utils.getAttributeValue("__comment__", ee).equals(""))
 						return true;

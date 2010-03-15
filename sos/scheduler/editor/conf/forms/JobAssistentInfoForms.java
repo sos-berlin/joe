@@ -27,6 +27,13 @@ import sos.scheduler.editor.conf.SchedulerDom;
 
 import com.swtdesigner.SWTResourceManager;
 
+/**
+ * StartDialog vom Wizzard
+ * 
+ * @author mueruevet.oeksuez@sos-berlin.com
+ *
+ */
+
 public class JobAssistentInfoForms {
 	
 	private SchedulerDom      dom          = null;
@@ -38,6 +45,7 @@ public class JobAssistentInfoForms {
 	private Button            cancelButton = null;
 				
 	public JobAssistentInfoForms(SchedulerDom dom_, ISchedulerUpdate update_) {
+		
 		dom = dom_;
 		update = update_;					
 	}
@@ -53,7 +61,7 @@ public class JobAssistentInfoForms {
 		gridLayout.marginBottom = 5;
 		gridLayout.numColumns = 3;
 		shell.setLayout(gridLayout);
-		shell.setSize(619, 420);		
+		shell.setSize(619, 431);		
 		
 		shell.setText("Job Wizard");
 
@@ -103,8 +111,7 @@ public class JobAssistentInfoForms {
 				public void widgetSelected(final SelectionEvent e) {					
 					Options.setShowWizardInfo(!butShow.getSelection());					
 				}
-			});
-			//butShow.setText(Messages.getString("assistent.start.info.visible"));
+			});		
 			butShow.setText(Messages.getString("TextDialog.butShowSiteInFuture.text"));
 			
 		}

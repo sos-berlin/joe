@@ -146,13 +146,14 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		label.setText("Job Name:");
 		
 		tName = new Text(gMain, SWT.BORDER);
+		
 		tName.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent e) {
-				tName.selectAll();
+				//tName.selectAll();
 			}
 		});
 		tName.addVerifyListener(new VerifyListener() {
-			public void verifyText(final VerifyEvent e) {				
+			public void verifyText(final VerifyEvent e) {									
 				if(!init)//während der initialiserung sollen keine überprüfungen stattfinden
 					e.doit = Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, null);								
 			}
@@ -171,7 +172,7 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		});
 		label7 = new Label(gMain, SWT.NONE);
 		label7.setLayoutData(new GridData());
-		label7.setText("On Order:");
+		label7.setText("Order Job:");
 		GridData gridData15 = new GridData();
 		cOrder = new Composite(gMain, SWT.NONE);
 		cOrder.setLayout(new RowLayout());

@@ -3,6 +3,8 @@ package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.SWT;
 
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -49,12 +51,18 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 	private Button              butDetails        = null; 
 
 	private SchedulerDom        _dom              = null;
+	
+	/**Hilfsvariable: Wenn Parameter Formular geöffnet wurde muss überprüft werden, ob der Checkbox in der Tabelle - State gesetzt werden soll.*/
+	private boolean             checkParameter             = false;
+
 
 
 	public JobChainsForm(Composite parent, int style, SchedulerDom dom, Element config, ISchedulerUpdate update_) {
 		super(parent, style);
-		listener = new JobChainsListener(dom, config, update_);
+		
+		listener = new JobChainsListener(dom, config, update_);		
 		_dom = dom;
+		
 		initialize();
 		setToolTipText();
 		update = update_;
@@ -88,13 +96,15 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		final GridLayout gridLayout_2 = new GridLayout();
 		gridLayout_2.numColumns = 2;
 		jobchainsGroup.setLayout(gridLayout_2);
-		tChains = new Table(jobchainsGroup, SWT.FULL_SELECTION | SWT.BORDER);
+		tChains = new Table(jobchainsGroup, SWT.BORDER);
 		tChains.addMouseListener(new MouseAdapter() {
 			public void mouseDoubleClick(final MouseEvent e) {
 				if(tChains.getSelectionCount() > 0)
 					ContextMenu.goTo(tChains.getSelection()[0].getText(0), _dom, Editor.JOB_CHAIN);
 			}
 		});
+		
+		
 		tChains.getHorizontalBar().setMaximum(0);
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
 		tChains.setLayoutData(gridData_2);
@@ -102,7 +112,11 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		tChains.setLinesVisible(true);
 		tChains.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-
+				
+				/*if (e.detail == SWT.CHECK) {
+					e.doit = false;
+					return;
+				}*/
 				boolean enabled = true;
 				if (tChains.getSelectionCount() > 0) {
 					listener.selectChain(tChains.getSelectionIndex());
@@ -117,12 +131,16 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 
 		});
+		
+		
 		TableColumn tableColumn1 = new TableColumn(tChains, SWT.NONE);
 		tableColumn1.setWidth(150);
-		tableColumn1.setText("Orders Recoverable");
-		TableColumn tableColumn_2 = new TableColumn(tChains, SWT.NONE);
-		tableColumn_2.setWidth(104);
-		tableColumn_2.setText("Name");
+		
+		tableColumn1.setText("Name");
+		
+		TableColumn ordersRecoverableTableColumn = new TableColumn(tChains, SWT.NONE);
+		ordersRecoverableTableColumn.setWidth(104);
+		ordersRecoverableTableColumn.setText("Orders Recoverable");
 		TableColumn tableColumn2 = new TableColumn(tChains, SWT.NONE);
 		tableColumn2.setWidth(90);
 		tableColumn2.setText("Visible");
@@ -160,7 +178,18 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		butDetails.setEnabled(false);
 		butDetails.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				checkParameter = true;
 				showDetails(null);
+			}
+		});
+		butDetails.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent e) {
+				
+				if(checkParameter) {
+					listener.fillChains(tChains);
+					checkParameter = false;
+				}
+					
 			}
 		});
 		butDetails.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));

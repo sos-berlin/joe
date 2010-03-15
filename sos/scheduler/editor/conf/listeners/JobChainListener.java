@@ -1,7 +1,9 @@
 package sos.scheduler.editor.conf.listeners;
 
 
+import java.io.File;
 import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -10,11 +12,14 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.app.MainWindow;
 import sos.util.SOSString;
 import java.util.HashMap;
+
 
 public class JobChainListener {
 
@@ -29,34 +34,37 @@ public class JobChainListener {
 	private    Element                   _source              = null;
 
 	private    String[]                  _states              = null;
+	
+	//private    String[]                  _statesWithError     = null;
 
-	private    SOSString                 sosString            = new SOSString();	
+	private    SOSString                 sosString            = new SOSString();
+	
+	private    ISchedulerUpdate          update               = null;
+	
+	private    ArrayList                 listOfAllState       = null;
 
 	public JobChainListener(SchedulerDom dom, Element jobChain) {
 		_dom = dom;
-		_chain = jobChain;	
+		_chain = jobChain;		
+
 		if(_chain.getParentElement() != null)
 			_config = _chain.getParentElement().getParentElement();
 	}
 
-	public boolean isChanged() {
-	   return _dom.isChanged();
-	}
 	public String getChainName() {
 		return Utils.getAttributeValue("name", _chain);
 	}
 
 	public void setChainName(String name) {
-		/*Utils.setAttribute("name", name, _chain);
+		
 		_dom.setChanged(true);
-		if(_dom.isDirectory()|| _dom.isLifeElement()) _dom.setChangedForDirectory("job_chain", name, SchedulerDom.MODIFY);
-		 */
-		_dom.setChanged(true);
+		
 		String oldjobChainName = Utils.getAttributeValue("name", _chain);
 		
 		//Für job_chain node Parameter
-		if(_chain != null) {
+		if(_chain != null && _dom.getFilename() != null) {
 			org.eclipse.swt.custom.CTabItem currentTab  = MainWindow.getContainer().getCurrentTab();
+			
 			
 			String path = _dom.isDirectory() ? _dom.getFilename() : new java.io.File(_dom.getFilename()).getParent();
 			try {
@@ -66,24 +74,33 @@ public class JobChainListener {
 					if(!h.containsKey(_chain)) {
 						h.put(_chain, new java.io.File(path, oldjobChainName + ".config.xml").getCanonicalPath());	
 					}					
+					
 				} else {
 					HashMap h = new HashMap();
 					h.put(_chain, new java.io.File(path, oldjobChainName + ".config.xml").getCanonicalPath());
 					currentTab.setData("details_parameter", h);
 					
 				}
+				//für das Speicher per FTP
+				String filename = _dom.isLifeElement() ? new File(_dom.getFilename()).getParent() : _dom.getFilename();
+				currentTab.setData("ftp_details_parameter_file",filename + "/" +  name + ".config.xml");
+				if (oldjobChainName != null && oldjobChainName.length() > 0 && new File(filename + "/" +  oldjobChainName + ".config.xml").exists()) {
+					currentTab.setData("ftp_details_parameter_remove_file",oldjobChainName + ".config.xml");
+				}
+				
 			} catch (Exception e) {
 				System.out.println("error in setChainName, cause: " + e.toString());
 			}
 			
-		}
-		//
+		}		
 		
 		if (oldjobChainName != null && oldjobChainName.length() > 0) {			
-			//if(_dom.isDirectory()|| _dom.isLifeElement())
-			//	_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
-			if(_dom.isChanged() && ((_dom.isDirectory() && !Utils.existName(oldjobChainName, _chain, "job_chain"))  || _dom.isLifeElement())) 
+			
+			if(_dom.isChanged() && ((_dom.isDirectory() && !Utils.existName(oldjobChainName, _chain, "job_chain"))  || _dom.isLifeElement())) { 
 				_dom.setChangedForDirectory("job_chain", oldjobChainName , SchedulerDom.DELETE);		
+				//_dom.setChangedForDirectory("job_chain", oldjobChainName + ".config.xml" , SchedulerDom.DELETE);
+			}
+			
 
 		}		
 		
@@ -142,7 +159,7 @@ public class JobChainListener {
 	}
 
 
-	private  void applyChain(String name, boolean ordersRecoverable, boolean visible, boolean distributed, String title) {
+	public void applyChain(String name, boolean ordersRecoverable, boolean visible, boolean distributed, String title) {
 		String oldjobChainName = Utils.getAttributeValue("name", _chain);
 		if (oldjobChainName != null && oldjobChainName.length() > 0) {			
 			if(_dom.isDirectory()|| _dom.isLifeElement())
@@ -240,8 +257,7 @@ public class JobChainListener {
 						onError = Utils.getAttributeValue("on_error", node);
 					}else if(node.getName().equals("job_chain_node.end")) {
 
-						nodetype = "Endnode";
-						//	node.removeAttribute("next_state");//kann eventuell bei reorder changeup entstanden sein
+						nodetype = "Endnode";					
 
 						action = Utils.getAttributeValue("job", node);
 						next = Utils.getAttributeValue("next_state", node);
@@ -258,8 +274,12 @@ public class JobChainListener {
 						}
 					}
 
-
 					TableItem item = new TableItem(table, SWT.NONE);
+					//item.setChecked(sos.scheduler.editor.conf.listeners.DetailsListener.existDetailsParameter(state, Utils.getAttributeValue("name", _chain), action, _dom, update, false));
+					if(sos.scheduler.editor.conf.listeners.DetailsListener.existDetailsParameter(state, Utils.getAttributeValue("name", _chain), action, _dom, update, false))
+						item.setBackground(Options.getLightBlueColor());
+					else
+						item.setBackground(null);
 					item.setText(new String[] { state, nodetype, action, next, error, onError });
 
 					if (!next.equals("") && !checkForState(next))
@@ -268,21 +288,7 @@ public class JobChainListener {
 					if (!error.equals("") && !checkForState(error))
 						item.setBackground(4, Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
 				}
-			}
-			/*
-			Iterator itEndNode = _chain.getChildren("job_chain_node.end").iterator();
-
-			while (itEndNode.hasNext()) {
-				Element node = (Element) itEndNode.next();
-				state = Utils.getAttributeValue("state", node);										
-
-				TableItem item = new TableItem(table, SWT.NONE);
-				//item.setText(new String[] { state, nodetype, action, next, error, onError });
-				item.setText(new String[] { state, "Endnode", "", "", "", "" });
-
-
-			}
-			 */
+			}			
 		}
 	}
 
@@ -866,26 +872,43 @@ public class JobChainListener {
 		List endNodes = _chain.getChildren("job_chain_node.end");
 		Iterator it = nodes.iterator();
 		_states = new String[sinks.size() + nodes.size() + endNodes.size()];
+		
+		listOfAllState = new ArrayList();
+		
 		int index = 0;
 		while (it.hasNext()) {
-			String state = ((Element) it.next()).getAttributeValue("state");
+			Element el = ((Element) it.next());
+			String state = el.getAttributeValue("state");
 			_states[index++] = state != null ? state : "";
+			if(state != null && !listOfAllState.contains(state))
+				listOfAllState.add(state);
+			String errorState = el.getAttributeValue("error_state");
+			if(errorState != null && !listOfAllState.contains(errorState))
+				listOfAllState.add(errorState);			
 		}
 
 		it = sinks.iterator();
 		while (it.hasNext()) {
 			String state = ((Element) it.next()).getAttributeValue("state");
 			_states[index++] = state != null ? state : "";
+			if(state != null && !listOfAllState.contains(state))
+				listOfAllState.add(state);
 		}
 
 		it = endNodes.iterator();
 		while (it.hasNext()) {
-			String state = ((Element) it.next()).getAttributeValue("state");
+			Element el = (Element) it.next();
+			String state = el.getAttributeValue("state");
 			_states[index++] = state != null ? state : "";
+			if(state != null && !listOfAllState.contains(state))
+				listOfAllState.add(state);
+				
 		}
 
+		
 	}
-
+		
+	
 
 	public String[] getStates() {
 		if (_states == null)
@@ -903,7 +926,86 @@ public class JobChainListener {
 			return _states;
 	}
 
+	
+	public String[] getAllStates() {
+		try {
+			//String[] _statesWithError = new String[listOfAllState.size()]; 
+		if (listOfAllState == null)
+			return new String[0];
+		else { //if (_node != null) {
+			String errorState = getErrorState() != null ? getErrorState() : "";
+			String state = getState() != null ? getState() : "";
+			int i_ = 0;
+			if(state.length() > 0)
+				i_++;
+			if(errorState.length() > 0)
+				i_++;
+			
+			int index = 0;
+			if(listOfAllState.size() - i_ < -1)
+				i_ = 0;
+				
+			String[] states = new String[listOfAllState.size()-i_];
+			for (int i = 0; i < listOfAllState.size(); i++) {
+				if (!listOfAllState.get(i).equals(state) && !listOfAllState.get(i).equals(errorState))
+					states[index++] = listOfAllState.get(i) != null ? listOfAllState.get(i).toString(): "";
+			}
+			return states;
+		} //else
+		//	return new String[0];
+		} catch (Exception e) {
+			
+			sos.scheduler.editor.app.MainWindow.message("Could not Read Error State, cause " + e.toString(), SWT.ICON_WARNING);
+			return new String[0];
+		}
+	}
+	
+	
+	/*public String[] getAllStates() {
+		
+		String[] states = null;
+		List nodes = _chain.getChildren("job_chain_node");
+		List sinks = _chain.getChildren("file_order_sink");
+		List endNodes = _chain.getChildren("job_chain_node.end");
+		
+		Iterator it = nodes.iterator();
+		_states = new String[sinks.size() + nodes.size() + endNodes.size()];
 
+		listOfAllState = new ArrayList();
+
+		int index = 0;
+		while (it.hasNext()) {
+			Element el = ((Element) it.next());
+			String state = el.getAttributeValue("state");
+			_states[index++] = state != null ? state : "";
+			if(state != null && !listOfAllState.contains(state))
+				listOfAllState.add(state);
+			
+			String errorState = el.getAttributeValue("error_state");
+			if(errorState != null && !listOfAllState.contains(errorState))
+				listOfAllState.add(errorState);			
+		}
+
+		it = sinks.iterator();
+		while (it.hasNext()) {
+			String state = ((Element) it.next()).getAttributeValue("state");
+			_states[index++] = state != null ? state : "";
+			if(state != null && !listOfAllState.contains(state))
+				listOfAllState.add(state);
+		}
+
+		it = endNodes.iterator();
+		while (it.hasNext()) {
+			Element el = (Element) it.next();
+			String state = el.getAttributeValue("state");
+			_states[index++] = state != null ? state : "";
+			if(state != null && !listOfAllState.contains(state))
+				listOfAllState.add(state);
+
+		}
+		return states;
+	}
+	*/
 	public boolean isValidState(String state) {
 		if (_states == null)
 			return true;
@@ -924,5 +1026,8 @@ public class JobChainListener {
 		return Utils.getAttributeValue("on_error", _node);
 	}		
 
+	public void setISchedulerUpdate(ISchedulerUpdate update_) {
+		update = update_;		
+	}
 	
 }

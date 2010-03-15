@@ -148,8 +148,13 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 	private Button              reorderButton               = null; 
 
 	private Button              butAddMissingNodes          = null; 
+		
+	/**Hilfsvariable: Wenn Parameter Formular geöffnet wurde muss überprüft werden, ob der Checkbox in der Tabelle - State gesetzt werden soll.*/
+	private boolean             checkParameter             = false;
 
+	//private Text                txtStateText               = null;
 
+	//private Composite composite_2 = null;
 
 	public JobChainNodesForm(Composite parent, int style, SchedulerDom dom_, Element jobChain) {
 
@@ -201,6 +206,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			jobChainGroup.setLayout(gridLayout);
 
 			gNodes = new Group(jobChainGroup, SWT.NONE);
+			
 			gNodes.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 			gNodes.setText("Chain Node");		
 			final GridLayout gridLayout_3 = new GridLayout();
@@ -242,6 +248,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			bApplyNode.setLayoutData(gridData7);
 			bApplyNode.setEnabled(false);
 			bApplyNode.setText("&Apply Chain Node");
+			//composite_2.setLayout(gridLayout_6);
 
 			label7 = new Label(gNodes, SWT.NONE);
 			label7.setLayoutData(new GridData());
@@ -258,6 +265,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 
 			cJob = new Combo(gNodes, SWT.BORDER);
+			cJob.setVisibleItemCount(9);
 
 			cJob.setMenu(new sos.scheduler.editor.app.ContextMenu(cJob, dom, Editor.JOB).getMenu());
 			//Utils.goTo(cJob.getText(), listener.get_dom(), sos.scheduler.editor.app.Editor.JOB);
@@ -338,7 +346,26 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			label8.setText("Next State:");
 			new Label(gNodes, SWT.NONE);
 
-			cNextState = new Combo(gNodes, SWT.BORDER);
+			/*composite_2 = new Composite(gNodes, SWT.NONE);
+			composite_2.addListener (SWT.Resize,  new org.eclipse.swt.widgets.Listener () {
+			    public void handleEvent (Event e) {
+			    	cNextState.setBounds(0, 0, composite_2.getBounds().height, composite_2.getBounds().height);
+			    	txtStateText.setBounds(0, 0, composite_2.getBounds().height, composite_2.getBounds().height);
+			      }
+			    });
+*/
+			
+			/*final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, false);
+			gridData_2.minimumWidth = 35;
+			composite_2.setLayoutData(gridData_2);
+
+			final Composite composite_4 = new Composite(gNodes, SWT.NONE);
+			final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, false, false);
+			gridData_4.widthHint = 59;
+			composite_4.setLayoutData(gridData_4);
+			composite_4.setLayout(new GridLayout());
+*/
+			cNextState = new Combo(gNodes, SWT.NONE);
 			cNextState.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					bApplyNode.setEnabled(isValidNode());
@@ -353,10 +380,29 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 					}
 				}
 			});
-			final GridData gridData14 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-			gridData14.widthHint = 80;
-			cNextState.setLayoutData(gridData14);
+			//cNextState = new Combo(composite_4, SWT.BORDER);
+			
+			/*cNextState.setBounds(0, 0, composite_2.getBounds().height, composite_2.getBounds().height);
+			
+			cNextState.addModifyListener(new ModifyListener() {
+				public void modifyText(final ModifyEvent e) {
+					bApplyNode.setEnabled(isValidNode());
+					if (bApplyNode.getEnabled())
+						getShell().setDefaultButton(bApplyNode);
+				}
+			});
+			cNextState.addKeyListener(new KeyAdapter() {
+				public void keyPressed(final KeyEvent e) {
+					if (e.keyCode == SWT.CR) {
+						applyNode();
+					}
+				}
+			});
+*/
+			//txtStateText = new Text(composite_2, SWT.BORDER);
+			//txtStateText.setBounds(0, 0, composite_2.getBounds().height, composite_2.getBounds().height);
 
+			
 			final Label delayLabel = new Label(gNodes, SWT.NONE);
 			delayLabel.setLayoutData(new GridData());
 			delayLabel.setText("Delay:");
@@ -381,6 +427,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			bNewNode = new Button(gNodes, SWT.NONE);
 			bNewNode.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
+					
 					isInsert = false;
 					getShell().setDefaultButton(null);
 					tNodes.deselectAll();
@@ -390,6 +437,12 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 					enableNode(true);
 					fillNode(true);
 					tState.setFocus();
+					//test
+					//cNextState.setVisible(false);
+					//txtStateText.setVisible(true);
+					cNextState.setVisibleItemCount(0);
+					
+					
 				}
 			});
 			bNewNode.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
@@ -400,7 +453,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			label9.setText("Error State:");
 			new Label(gNodes, SWT.NONE);
 
-			cErrorState = new Combo(gNodes, SWT.BORDER);
+			cErrorState = new Combo(gNodes, SWT.NONE);
 			cErrorState.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					bApplyNode.setEnabled(isValidNode());
@@ -408,6 +461,9 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 						getShell().setDefaultButton(bApplyNode);
 				}
 			});
+			
+			
+			
 			cErrorState.addKeyListener(new KeyAdapter() {
 				public void keyPressed(final KeyEvent e) {
 					if (e.keyCode == SWT.CR) {
@@ -629,8 +685,12 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			dumm2.setText("Remove Order File Source");
 
 			tNodes = new Table(gNodes, SWT.FULL_SELECTION | SWT.BORDER);		
+		
 			tNodes.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
+					//test
+					//cNextState.setVisible(true);
+					//txtStateText.setVisible(false);
 					selectNodes();				
 				}
 			});
@@ -740,14 +800,30 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			butDetailsJob.setEnabled(false);
 			butDetailsJob.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-					if(tNodes.getSelectionCount() > 0)
-
+					
+					if(tNodes.getSelectionCount() > 0) { 						
 						showDetails(tNodes.getSelection()[0].getText(0), cJob.getText());
+						
+						//tNodes.deselectAll();
+						//selectNodes();
+						//butDetailsJob.setEnabled(false);
+					
+					checkParameter = true;
+					}
 				}
 			});
 			butDetailsJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 			butDetailsJob.setText("Parameter");
-
+			butDetailsJob.addFocusListener(new FocusAdapter() {
+				public void focusGained(final FocusEvent e) {
+					
+					if(checkParameter) {
+						listener.fillChain(tNodes);
+						checkParameter = false;
+					}
+						
+				}
+			});
 			butAddMissingNodes = new Button(gNodes, SWT.NONE);
 			butAddMissingNodes.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
@@ -1131,7 +1207,8 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 				cJob.setItems(listener.getJobs());
 				if (listener.getStates().length > 0) cNextState.setItems(listener.getStates());
-				if (listener.getStates().length > 0) cErrorState.setItems(listener.getStates());
+				if (listener.getAllStates().length > 0) 
+					cErrorState.setItems(listener.getAllStates());
 
 				tMoveTo.setText(listener.getMoveTo());
 				bRemoveFile.setSelection(listener.getRemoveFile());
@@ -1185,6 +1262,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 		private void applyNode() {
 			try {
+				cNextState.setVisibleItemCount(5);
 				String msg = "";
 				if (!listener.isValidState(tState.getText()))
 					msg = "State already defined.";
@@ -1263,19 +1341,18 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 		public void setISchedulerUpdate(ISchedulerUpdate update_) {
 			update = update_;
+			listener.setISchedulerUpdate(update_);
 		}
 
 
 		private void showDetails(String state, String jobname) {
-
-			//OrdersListener ordersListener =  new OrdersListener(listener.get_dom(), update);
-			//String[] listOfOrders = ordersListener.getOrderIds();
+			
 			boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory(); 
 
 			if(state == null) {
-				DetailDialogForm detail = new  DetailDialogForm(listener.getChainName(), isLifeElement, listener.get_dom().getFilename());
+				DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), isLifeElement, listener.get_dom().getFilename());				
 				detail.showDetails();
-				detail.getDialogForm().setParamsForWizzard(listener.get_dom(), update, jobname);
+				detail.getDialogForm().setParamsForWizzard(listener.get_dom(), update, jobname);				
 			} else {
 
 				DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), state, null, isLifeElement, listener.get_dom().getFilename());			
@@ -1287,7 +1364,15 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		}
 
 		private void selectNodes() {
+			if(bApplyNode.isEnabled()) {
+				
+				int c = MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("MainListener.apply_changes"), SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+				if(c == SWT.YES){
+					applyNode();
+				}
+					
 
+			}
 			if (tNodes.getSelectionCount() > 0) {        			
 				listener.selectNode(tNodes);
 				enableNode(true);
@@ -1343,7 +1428,8 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		//ein Job Chain hat entweder job_chain_node ODER job_chain_node.job_chain Kindknoten.
 		private boolean check() {
 			try {
-				XPath x3 = XPath.newInstance("//job_chain[@name='"+ listener.getChainName() + "']/job_chain_node.job_chain");				 
+				XPath x3 = XPath.newInstance("//job_chain[@name='"+ listener.getChainName() + "']/job_chain_node.job_chain");
+				
 				List listOfElement_3 = x3.selectNodes(dom.getDoc());
 				if(listOfElement_3.isEmpty())
 					return true;

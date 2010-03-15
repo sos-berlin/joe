@@ -42,75 +42,75 @@ import sos.scheduler.editor.conf.listeners.JobOptionsListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 
 public class JobAssistentDelayOrderAfterSetbackForm {
- 
+
 	private Element            job              = null;
-	
-	private Text               txtDelayOrder    = null;
- 
+
 	private Text               txtSetBack       = null;
-		
+
 	private SchedulerDom       dom              = null;
-	
+
 	private ISchedulerUpdate   update           = null;
-	
+
 	private Button             butFinish        = null;
-	
+
 	private Button             butCancel        = null;
-	
+
 	private Button             butNext          = null;
-	
+
 	private Button             butShow          = null;	
-		
+
 	private Label              lblOftenSetBack  = null; 
-	
+
 	private Label              lblLongWait      = null;
-	
+
 	private Text               txtHour          = null;
-	
+
 	private Text               txtMin           = null;
-	 
+
 	private Text               txtSecound       = null;	
-	
+
 	private JobOptionsListener optionlistener   = null;
-	 
+
 	private Button             noButton         = null;
-	
+
 	private Button             yesButton        = null;
-	
+
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
 	private int                assistentType    = -1; 
-	
+
 	private Shell              shellSetBack     = null; 
-	
+
 	private Combo              jobname          = null;
-	
+
 	/** Hilfsvariable*/
 	private boolean            modify           = false;
-	
+
 	private int                sizeOfSetbacks   = 0;
-	
+
 	private Button             butBack          = null;
-	
+
 	private Element            jobBackUp        = null;
-	
+
 	private JobMainForm           jobForm           = null;
-	
+
 	/** Hilsvariable für das Schliessen des Dialogs. 
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean               closeDialog   = false;      
-	
+
+
 	public JobAssistentDelayOrderAfterSetbackForm(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
 		dom = dom_;
 		update = update_;
-			
+
 		optionlistener = new JobOptionsListener(dom, job_);
 		assistentType = assistentType_;
 		job = job_;	
 	}		
-	
+
+
 	public void showDelayOrderAfterSetbackForm() {
-		
-		
+
+
 		shellSetBack = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shellSetBack.addShellListener(new ShellAdapter() {
 			public void shellClosed(final ShellEvent e) {
@@ -123,15 +123,15 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		shellSetBack.setLayout(gridLayout);
-		shellSetBack.setSize(538, 306);
+		shellSetBack.setSize(598, 217);
 		String step = "  ";		
 		step = step + " [Step 9 of 9]";		
 		shellSetBack.setText("Delay Order After Setback" + step);
-		
+
 
 		final Group jobGroup = new Group(shellSetBack, SWT.NONE);
 		jobGroup.setText(" Job: " + Utils.getAttributeValue("name", job));
-		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
+		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, true, 2, 1);
 		gridData_2.heightHint = 215;
 		gridData_2.widthHint = 507;
 		jobGroup.setLayoutData(gridData_2);
@@ -152,7 +152,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		int sec = 0;
 		String setback = "";
 		boolean ismax = false;
-		
+
 		if(l.size()> 0) {
 			Element e = (Element)l.get(l.size()-1);
 			ismax= Utils.isAttributeValue("is_maximum", e);
@@ -162,26 +162,13 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 			min = Utils.getMinutes(delay, -999);
 			sec = Utils.getSeconds(delay, -999);
 		}
-		
-		{
-			txtDelayOrder = new Text(jobGroup, SWT.MULTI | SWT.WRAP);
-			final GridData gridData = new GridData(GridData.FILL, GridData.FILL, false, false, 5, 1);
-			gridData.horizontalIndent = -3;
-			gridData.heightHint = 102;
-			gridData.widthHint = 360;
-			txtDelayOrder.setLayoutData(gridData);
-			txtDelayOrder.setEditable(false);
-			txtDelayOrder.setText(Messages.getString("assistent.delay_order_after_setback"));
-		}
 
 		{
 			lblLongWait = new Label(jobGroup, SWT.NONE);
 			lblLongWait.setLayoutData(new GridData());
-			lblLongWait.setText(Messages.getString("assistent.delay_order_after_setback.time"));
-			
+			lblLongWait.setText(Messages.getString("assistent.delay_order_after_setback.time"));			
 		}
 
-		
 		{
 			txtHour = new Text(jobGroup, SWT.BORDER);
 			txtHour.addVerifyListener(new VerifyListener() {
@@ -267,7 +254,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 				modify = true;
 			}
 		});
-		
+
 		final GridData gridData_1 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 4, 1);
 		gridData_1.minimumWidth = 50;
 		gridData_1.widthHint = 55;
@@ -286,8 +273,8 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 				modify = true;
 			}
 		});
-		
-		
+
+
 		noButton.setLayoutData(new GridData());
 		noButton.setText("no");
 
@@ -298,19 +285,19 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 				modify = true;
 			}
 		});
-		
+
 		yesButton.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 1));
 		yesButton.setText("yes");
 
-		
-		
+
+
 		java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();		
 		shellSetBack.setBounds((screen.width - shellSetBack.getBounds().width) /2, 
-				        (screen.height - shellSetBack.getBounds().height) /2, 
-				        shellSetBack.getBounds().width, 
-				        shellSetBack.getBounds().height);
-		
-		
+				(screen.height - shellSetBack.getBounds().height) /2, 
+				shellSetBack.getBounds().width, 
+				shellSetBack.getBounds().height);
+
+
 		shellSetBack.open();
 
 		final Composite composite_1 = new Composite(shellSetBack, SWT.NONE);
@@ -329,12 +316,11 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		}
 
 		final Composite composite_2 = new Composite(shellSetBack, SWT.NONE);
-		final GridData gridData_3 = new GridData(GridData.END, GridData.CENTER, false, false);
-		gridData_3.widthHint = 143;
+		final GridData gridData_3 = new GridData(GridData.END, GridData.CENTER, true, false);
 		composite_2.setLayoutData(gridData_3);
 		final GridLayout gridLayout_4 = new GridLayout();
 		gridLayout_4.marginWidth = 0;
-		gridLayout_4.numColumns = 4;
+		gridLayout_4.numColumns = 6;
 		composite_2.setLayout(gridLayout_4);
 
 		{
@@ -371,44 +357,40 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 				JobAssistentDelayAfterErrorForm derror = new JobAssistentDelayAfterErrorForm(dom, update, job, assistentType);
 				derror.showDelayAfterErrorForm();
 				if(jobname != null) 													
-					derror.setJobname(jobname);
-				//if(jobBackUp != null)
-					derror.setBackUpJob(jobBackUp, jobForm);
+					derror.setJobname(jobname);				
+				derror.setBackUpJob(jobBackUp, jobForm);
 				closeDialog = true;
 				shellSetBack.dispose();				
 			}
 		});
 		butBack.setText("Back");
+		butFinish = new Button(composite_2, SWT.NONE);
+		butFinish.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
+		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+		butFinish.setLayoutData(gridData_4);
+		butFinish.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
 
-		{
-			butFinish = new Button(composite_2, SWT.NONE);
-			butFinish.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
-			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
-			gridData.widthHint = 53;
-			butFinish.setLayoutData(gridData);
-			butFinish.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
-					
-					refreshElement(true);
-					if(jobname != null)
-						jobname.setText(Utils.getAttributeValue("name",job));	
-					
-					
-					//MainWindow.message(shellSetBack,  Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), SWT.OK );
-					if(Options.getPropertyBoolean("editor.job.show.wizard"))
-						Utils.showClipboard(Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), shellSetBack, false, null, false, null, true); 
-					
-					closeDialog = true;
-					shellSetBack.dispose();
-					
-					
-				}
-			});
-			butFinish.setText("Finish");
-		}
+				refreshElement(true);
+				if(jobname != null)
+					jobname.setText(Utils.getAttributeValue("name",job));					
+
+				if(Options.getPropertyBoolean("editor.job.show.wizard"))
+					Utils.showClipboard(Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), shellSetBack, false, null, false, null, true); 
+
+				closeDialog = true;
+				shellSetBack.dispose();
+
+
+			}
+		});
+		butFinish.setText("Finish");
+
+		Utils.createHelpButton(composite_2, "assistent.delay_order_after_setback", shellSetBack);
+
 		setToolTipText();
 		shellSetBack.layout();
-		
+
 	}
 
 	public void setToolTipText() {
@@ -421,37 +403,37 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		txtMin.setToolTipText(Messages.getTooltip("assistent.delay_order_after_setback.delay.minutes"));
 		txtSecound.setToolTipText(Messages.getTooltip("assistent.delay_order_after_setback.delay.seconds"));
 		butBack.setToolTipText(Messages.getTooltip("butBack"));
-		
+
 	}
-	
+
 	private void refreshElement(boolean apply) {
 		Utils.startCursor(shellSetBack);
 		if(modify) {
-			
+
 			if(optionlistener.getSetbacks().size() > 0 ) {
 				if(sizeOfSetbacks != optionlistener.getSetbacks().size()) {					
 					optionlistener.deleteSetbackDelay(optionlistener.getSetbacks().size()-1);										
 				} 
 			}			
-			
+
 			if(txtSetBack.getText() != null && txtSetBack.getText().trim().length() > 0 ) {			
 				optionlistener.newSetbackDelay();			
 				String delay = Utils.getTime(txtHour.getText(), txtMin.getText(), txtSecound.getText(), true);
 				optionlistener.applySetbackDelay(txtSetBack.getText(),  yesButton.getSelection() , delay);
 			}
 		}
-		
+
 		modify = false;
-		
+
 		if(apply){
 			if(assistentType == Editor.JOB_WIZZARD) {															
 				jobForm.initForm();		
-				
+
 			} else {
-				
+
 				JobsListener listener = new JobsListener(dom, update);
 				listener.newImportJob(job, assistentType);
-				
+
 			}
 		}
 		Utils.stopCursor(shellSetBack);
@@ -465,12 +447,12 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 			shellSetBack.dispose();
 		}
 	}
-	
+
 	public void setJobname(Combo jobname) {
 		this.jobname = jobname;
-}
+	}
 
-	
+
 	/**
 	 * Der Wizzard wurde für ein bestehende Job gestartet. 
 	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.

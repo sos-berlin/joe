@@ -715,7 +715,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 
 
 	public void setISchedulerUpdate(ISchedulerUpdate update_) {
-		update = update_;
+		update = update_;		
 	}
 
 

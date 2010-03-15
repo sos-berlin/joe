@@ -483,7 +483,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 				}
         	}
         });
-        final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, false, true, 2, 1);
+        final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, false, true, 3, 1);
         gridData_1.minimumHeight = 40;
         gridData_1.widthHint = 454;
         gridData_1.heightHint = 55;
@@ -496,7 +496,6 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
             		listener.setSource(tSource.getText());
             }
         });
-        new Label(gSource, SWT.NONE);
        
         
     }

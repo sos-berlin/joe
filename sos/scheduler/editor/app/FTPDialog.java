@@ -56,7 +56,7 @@ public class FTPDialog {
 
 	private              Text                    txtFilename                   = null;
 
-	private              MainWindow              main                          = null;
+	//private              MainWindow              main                          = null;
 
 	private              Text                    txtLog                        = null;
 
@@ -89,7 +89,7 @@ public class FTPDialog {
 	private              TableColumn             newColumnTableColumn_2        = null;
 	
 	public FTPDialog(MainWindow  main_) {		
-		main = main_;		 					
+		//main = main_;		 					
 	}
 
 
@@ -730,6 +730,7 @@ public class FTPDialog {
 									list[i].endsWith(".order.xml") ||
 									list[i].endsWith(".lock.xml") ||
 									list[i].endsWith(".process_class.xml") ||
+									list[i].endsWith(".config.xml") ||
 									list[i].endsWith(".schedule.xml"))									
 					) {
 						l.add(list[i]);
@@ -751,6 +752,8 @@ public class FTPDialog {
 					if(isLifeElement(sosString.parseToString(key))) {
 						String file = profile.openFile(sosString.parseToString(key), tempSubHotFolder);
 						nameOfLifeElement.add(file.replaceAll("\\\\", "/"));
+					} else if(key.endsWith(".config.xml") ){
+						profile.openFile(sosString.parseToString(key), tempSubHotFolder);
 					}
 				} 								
 			}
@@ -802,10 +805,16 @@ public class FTPDialog {
 		}
 	}
 
-
+	/**
+	 * Öffnet das ausgewählte Datei.
+	 *  
+	 * 
+	 * Wenn eine
+	 */
 	public void openFile() {
 		String file = "";
 		try {
+
 			FTPProfile profile = listener.getCurrProfile();
 			file = profile.openFile(txtDir.getText() + "/" + txtFilename.getText(), null);
 
@@ -816,6 +825,19 @@ public class FTPDialog {
 					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::"+listener.getCurrProfileName()+"]");
 					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
 					MainWindow.setSaveStatus();		
+				}
+				
+				if(new File(file).getName().endsWith(".job_chain.xml")) {
+					
+					//Es wurde eine Jobkette geöffnet. Es werden automatisch, falls vorhanden die entsprechende Job Chain Node Parameter datei geöffnet
+					int endP = txtFilename.getText().length() - ".job_chain.xml".length();
+					//File detailsfile = new File(txtDir.getText() + "/" +  txtFilename.getText().substring(0, endP) + ".config.xml");
+					//File detailsfile = new File(txtFilename.getText().substring(0, endP) + ".config.xml");
+					java.util.Vector ftpFiles = profile.getList();
+					// fehler wird ueber nlist return value verwertet											
+					if (!ftpFiles.isEmpty()) {
+						profile.openFile(txtFilename.getText().substring(0, endP) + ".config.xml", null);
+					}
 				}
 
 				profile.disconnect();
@@ -831,7 +853,7 @@ public class FTPDialog {
 		}
 	}
 
-	
+
 
 	public FTPDialogListener getListener() {
 		return listener;

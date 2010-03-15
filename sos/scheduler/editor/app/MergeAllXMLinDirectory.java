@@ -155,7 +155,7 @@ public class MergeAllXMLinDirectory {
 		Document currDocument = null;
 		String jobXMLFilename = "";
 		try {
-			builder = getBuilder(true);
+			builder = getBuilder(false);
 			Vector filelist = SOSFile.getFilelist(getNormalizedFile(path).getAbsolutePath(), 
 					mask,java.util.regex.Pattern.CASE_INSENSITIVE);
 			Iterator orderIterator = filelist.iterator();
@@ -595,9 +595,59 @@ public class MergeAllXMLinDirectory {
 		return jobname;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		//MergeAllXMLinDirectory allJob = new MergeAllXMLinDirectory("C:/scheduler/config/temp", "C:/scheduler/config/temp/config.xml");
 		//allJob.parseDocuments();
+		
+		/*SAXBuilder builder = new SAXBuilder();
+		
+		builder.setFeature("http://apache.org/xml/features/xinclude", true);
+		Document doc = builder.build("C:/temp/a.xml");
+		
+		Element root = doc.getRootElement();
+		System.out.println(Utils.getElementAsString(root));
+		*/
+		
+		
+	     /*
+		javax.xml.parsers.SAXParserFactory spf = javax.xml.parsers.SAXParserFactory.newInstance();
+		spf.setNamespaceAware(true); 
+		spf.setXIncludeAware(true);
+		*/
+		
+		
+		
+		/*javax.xml.parsers.DocumentBuilderFactory dbf = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(true);
+		dbf.setXIncludeAware(true);
+	
+		javax.xml.parsers.DocumentBuilder dom = dbf.newDocumentBuilder();
+		org.w3c.dom.Document document_ = dom.parse("C:/temp/a.xml");
+		org.w3c.dom.Element root_ = document_.getDocumentElement();
+		System.out.println(root_);
+	*/	
+		
+		/*System.setProperty("javax.xml.parsers.DocumentBuilderFactory","org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
+		javax.xml.parsers.DocumentBuilderFactory dbfactory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+		
+		dbfactory.setFeature("http://apache.org/xml/features/xinclude", true); 
+		dbfactory.setFeature("http://apache.org/xml/features/xinclude/fixup-base-uris",false);
+
+		
+		dbfactory.setNamespaceAware(true);
+		dbfactory.setXIncludeAware(true);
+		
+
+		javax.xml.parsers.DocumentBuilder parser = dbfactory.newDocumentBuilder();
+
+		System.out.println("Namespace aware:" + parser.isNamespaceAware()); System.out.println("XInclude aware:" + parser.isXIncludeAware());
+
+		org.w3c.dom.Document document = parser.parse(new File("sourceXMLFilePath"));
+
+		//Source xmlsource = new DOMSource(document);
+*/
+
+		
 	}
 
 

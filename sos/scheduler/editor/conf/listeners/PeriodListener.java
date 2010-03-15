@@ -324,5 +324,13 @@ public class PeriodListener {
 			
 		}
 	}
+	
+	public void clearSingleStartAttributes() {
+		 
+		if(_period != null) {
+			_period.removeAttribute("single_start");			
+		}
+	}
+	
 }
 

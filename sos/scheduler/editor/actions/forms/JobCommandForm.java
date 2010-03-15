@@ -586,24 +586,24 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		String min    = txtMin.getText();
 		String sec    = txtSec.getText();
 
-		boolean havesec     = false;
+		//boolean havesec     = false;
 		boolean haveTime    = false;		
-		boolean havenow     = false;
-		boolean haveperiod  = false;
+		//boolean havenow     = false;
+		//boolean haveperiod  = false;
 		int whichtime = 0; 
 
 
 
 
 		if (startAt.equals("now")) {
-			havenow = true;
+			//havenow = true;
 			whichtime = 0;
 		} else if (startAt.startsWith("period")) {
-			haveperiod = true;
+			//haveperiod = true;
 			whichtime = 1;
 		} else if(startAt.startsWith("now")){
 			startAt = startAt.trim();
-			havenow = true;
+			//havenow = true;
 			haveTime = true;
 			String[] split = startAt.split("\\+");
 			if(split.length == 2) {
@@ -613,7 +613,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 					hour = time[0] != null && time[0].length() > 0 ? Utils.fill(2, time[0]) : "00";
 					min = time[1] != null && time[1].length() > 0 ? Utils.fill(2, time[1]) : "00";
 					sec = time[2] != null && time[2].length() > 0 ? Utils.fill(2, time[2]) : "00";
-					havesec = true;	
+					//havesec = true;	
 				} else if(time.length == 2) {
 					/*hour = "00";
 					min = time[0] != null && time[0].length() > 0 ? Utils.fill(2, time[0]) : "00";
@@ -622,9 +622,9 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 					whichtime = 4;
 					hour = time[0] != null && time[0].length() > 0 ? Utils.fill(2, time[0]) : "00";
 					min = time[1] != null && time[1].length() > 0 ? Utils.fill(2, time[1]) : "00";
-					havesec = false;	
+					//havesec = false;	
 				} else if(time.length == 1) {
-					havesec = true;		
+					//havesec = true;		
 					whichtime = 5;
 					sec = time[0] != null && time[0].length() > 0 ? Utils.fill(2, time[0]) : "00";
 				}

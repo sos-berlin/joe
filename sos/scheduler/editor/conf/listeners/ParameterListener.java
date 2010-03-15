@@ -244,8 +244,13 @@ public class ParameterListener {
 		}
 		if(_params.size() == 0) {
 			_parent.removeChild("params");
-		}
+		} 
+		
 		table.remove(index);
+		
+		
+			
+		
 
 	}					
 

@@ -52,8 +52,10 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
 
         listener.fillTable(tPeriods);
         periodForm.setEnabled(false);
+        periodForm.hasRepeatTimes(listener.hasRepeatTimes());
         //periodForm.setEnabled(!Utils.hasSchedulesElement(dom, element));
         this.group.setEnabled(Utils.isElementEnabled("job", dom, element)&& !Utils.hasSchedulesElement(dom, element));
+        
         //this.group.setEnabled(Utils.isElementEnabled("job", dom, element));
     }
 
@@ -118,12 +120,18 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         bRemove = new Button(group, SWT.NONE);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-            	
+            	            	
+            	//repeat bzw. repeat_absolute darf nur einmal  def. werden
+            	periodForm.hasRepeatTimes(listener.hasRepeatTimes());
+
+            		
                 tPeriods.deselectAll();
                 
                 getShell().setDefaultButton(bApply);
-                bApply.setEnabled(true);
-                fillPeriod(true);
+                bApply.setEnabled(false);
+                fillPeriod(true);     
+                periodForm.setApplyButton(bApply);
+                
                 
             }
         });
@@ -198,14 +206,14 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         tableColumn2.setText("End");
         TableColumn tableColumn3 = new TableColumn(tPeriods, SWT.NONE);
         tableColumn3.setWidth(59);
-        tableColumn3.setText("Repeat");
+        tableColumn3.setText(PeriodForm.REPEAT_TIME);
         TableColumn tableColumn4 = new TableColumn(tPeriods, SWT.NONE);
         tableColumn4.setWidth(80);
         tableColumn4.setText("Single Start");
 
         final TableColumn newColumnTableColumn = new TableColumn(tPeriods, SWT.NONE);
         newColumnTableColumn.setWidth(92);
-        newColumnTableColumn.setText("Absolute Repeat");
+        newColumnTableColumn.setText(PeriodForm.ABSOLUTE_TIME);
 
         final TableColumn newColumnTableColumn_1 = new TableColumn(tPeriods, SWT.NONE);
         newColumnTableColumn_1.setWidth(100);
@@ -223,6 +231,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         periodForm = new PeriodForm(group, SWT.NONE, sos.scheduler.editor.app.Editor.PERIODS);
         periodForm.setParams(dom, listener.isOnOrder());
         periodForm.setLayoutData(gridData);
+        //periodForm.setPeriodsForm(this);//um die Tabelle zu aktualisieren
     }
 
 
@@ -236,24 +245,40 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         } else if (newPeriod) {
         	periodForm.setPeriod(listener.getNewPeriod());        	
             periodForm.fillPeriod();
-            
-            
+            periodForm.setEnabled(true);    
         }
+        
         
     }
 
 
-    private void applyPeriod() { 
+    public void applyPeriod() { 
     	
+    	periodForm.savePeriod();
         listener.applyPeriod(periodForm.getPeriod());
         listener.fillTable(tPeriods);
         
         bRemove.setEnabled(false);
         fillPeriod(false);
+        
+        periodForm.hasRepeatTimes(listener.hasRepeatTimes());
+        
         getShell().setDefaultButton(bNew);
         bApply.setEnabled(false);
     }
 
+    public void refreshPeriodsTable() {
+    	
+        listener.fillTable(tPeriods);
+        bRemove.setEnabled(false);
+        fillPeriod(false);
+        
+        
+        periodForm.hasRepeatTimes(listener.hasRepeatTimes());
+        periodForm.setEnabled(false);
+        bApply.setEnabled(false);
+        
+    }
 
     public void setToolTipText() {
         bNew.setToolTipText(Messages.getTooltip("periods.btn_new"));
@@ -264,9 +289,20 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
     }
     
     private void tPeriodSelect(){
+    	
+    	if(bApply.isEnabled()) {
+			
+			int c = sos.scheduler.editor.app.MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("MainListener.apply_changes"), SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+			if(c == SWT.YES){
+				applyPeriod();
+			}
+				
+
+		}
+    	
     	periodForm.setEvent(false);
     	bRemove.setEnabled(tPeriods.getSelectionCount() > 0);
-    	//periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
+
     	periodForm.setApplyButton(bApply);    	
     	if (tPeriods.getSelectionCount() > 0) { 
     		if(tPeriods.getSelection()[0].getData() != null) {
@@ -275,22 +311,22 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
     				periodForm.setAtElement(currPeriod);
     			else
     				periodForm.setPeriod(currPeriod);
-    		} /*else {
-    			Element currPeriod = listener.getPeriod(tPeriods.getSelectionIndex());
-    			if(currPeriod != null) {
-    				periodForm.setPeriod(currPeriod);    			
-    			} else {                		                		                		
-    				String sat = tPeriods.getSelection()[0].getText(4);
-    				Element at = listener.getAtElement(sat);
-    				periodForm.setAtElement(at);
-    			}    	
-    		}*/
+    			
+    			if(listener.isRepeatElement(currPeriod)) {
+    				//es muss die Möglichkeit gegeben werden, einen repeat/absolute_repeat element zu verändern
+                	periodForm.hasRepeatTimes(false);
+    			} else {
+    				periodForm.hasRepeatTimes(listener.hasRepeatTimes());
+    			}
+    		} 
+    		
     		bApply.setEnabled(false);
     		periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
     		periodForm.fillPeriod();
     		periodForm.setEvent(true);
+    		periodForm.setFocus();
     	}
-    	
+    	bApply.setEnabled(false);
     	
     }
     

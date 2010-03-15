@@ -24,13 +24,10 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.*;
 
 public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage {
-    private PeriodListener listener;
 
-    //private boolean        onOrder;
+	private PeriodListener listener;
 
     private Group          gPeriod          = null;
-
-
 
     private Label          label2           = null;
 
@@ -87,9 +84,7 @@ public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage
     public static String    MONTH_DAY          = "Month Day";
     
     public static String    SPECIFIC_WEEK_DAY          = "Specific Weekday";
-    
-    
-	
+    	
 
     public JobAssistentPeriodForm(Composite parent, int style) {
         super(parent, style);
@@ -129,8 +124,7 @@ public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 if (!beginBeforeAfter()) {
                     Utils.setBackground(0, 23, sBeginHours);
-                }
-                //if (event)
+                }                
                     listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
                             sBeginSeconds.getText());
             }
@@ -159,8 +153,7 @@ public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage
                 if (!beginBeforeAfter()) {
                     Utils.setBackground(0, 59, sBeginMinutes);
                 }
-
-                //if (event)
+                
                     listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
                             sBeginSeconds.getText());
             }
@@ -181,7 +174,7 @@ public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage
                 if (!beginBeforeAfter()) {
                     Utils.setBackground(0, 59, sBeginSeconds);
                 }
-                //if (event)
+                
                     listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
                             sBeginSeconds.getText());
             }
@@ -214,7 +207,7 @@ public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage
                 if (!beginBeforeAfter()) {
                     Utils.setBackground(0, 24, sEndHours);
                 }
-                //if (event)
+               
                     listener.setPeriodTime(24, bApply, "end", sEndHours.getText(), sEndMinutes.getText(), sEndSeconds
                             .getText());
             }
@@ -244,8 +237,7 @@ public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage
                 if (!beginBeforeAfter()) {
                     Utils.setBackground(0, 59, sEndMinutes);
                 }
-
-                //if (event)
+               
                     listener.setPeriodTime(24, bApply, "end", sEndHours.getText(), sEndMinutes.getText(), sEndSeconds
                             .getText());
             }
@@ -279,7 +271,6 @@ public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage
                     Utils.setBackground(0, 59, sEndSeconds);
                 }
 
-                //if (event)
                     listener.setPeriodTime(24, bApply, "end", sEndHours.getText(), sEndMinutes.getText(), sEndSeconds
                             .getText());
             }
@@ -292,13 +283,11 @@ public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage
 
     public JobAssistentPeriodForm(Composite parent, int style, SchedulerDom dom, boolean onOrder) {
         this(parent, style);
-        //this.onOrder = onOrder;
         listener = new PeriodListener(dom);        
     }
 
 
     public void setParams(SchedulerDom dom, boolean onOrder, PeriodsListener periodslistener_) {
-        //this.onOrder = onOrder;
         listener = new PeriodListener(dom);
         periodslistener = periodslistener_;
     }

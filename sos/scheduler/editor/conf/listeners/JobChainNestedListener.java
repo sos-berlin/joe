@@ -11,8 +11,6 @@ import org.jdom.Element;
 import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
 import org.jdom.xpath.XPath;
-//import org.jdom.xpath.XPath;
-//import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.util.SOSString;
@@ -28,11 +26,10 @@ public class JobChainNestedListener {
 
 	private    Element                   _node                = null;
 
-	//private    Element                   _source              = null;
-
 	private    String[]                  _states              = null;
 
 	private    SOSString                 sosString            = new SOSString();	
+	
 
 
 	public JobChainNestedListener(SchedulerDom dom, Element jobChain) {
@@ -116,50 +113,7 @@ public class JobChainNestedListener {
 
 	}
 
-	/*public void fillFileOrderSource(Table table) {
-		table.removeAll();
-		String directory = "";
-		String regex = "";		
-		String next_state="";
-
-		if (_chain != null) {
-			Iterator it = _chain.getChildren().iterator();
-			while (it.hasNext()) {
-				Element node = (Element) it.next();
-				if (node.getName() == "file_order_source"){
-					directory = Utils.getAttributeValue("directory", node);
-					regex = Utils.getAttributeValue("regex", node);					
-					next_state = Utils.getAttributeValue("next_state", node);
-					TableItem item = new TableItem(table, SWT.NONE);
-					item.setText(new String[] { directory, regex,next_state});
-
-				}
-
-			}
-		}
-	}
-
-	public void fillFileOrderSink(Table table) {
-		table.removeAll();
-		String state = "";
-		String moveFileTo = "";
-		String remove = "";
-
-		if (_chain != null) {
-			Iterator it = _chain.getChildren().iterator();
-			while (it.hasNext()) {
-				Element node = (Element) it.next();
-				if (node.getName() == "file_order_sink"){
-					state = Utils.getAttributeValue("state", node);
-					moveFileTo = Utils.getAttributeValue("move_to", node);
-					remove = Utils.getAttributeValue("remove", node);
-					TableItem item = new TableItem(table, SWT.NONE);
-					item.setText(new String[] { state, moveFileTo,remove});
-				}
-			}
-		}
-	}
-	 */
+	
 	public void fillChain(Table table) {
 		table.removeAll();
 		String state = "";		

@@ -157,6 +157,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 	
 	private boolean                   isRemoteConnection                = false;
 	
+	public static String              WIZZARD                           = "Wizzard";
 	
 	
 	
@@ -564,14 +565,16 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				butImport = new Button(group_1, SWT.NONE);
 				butImport.setVisible(false);
 				butImport.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-				butImport.setText("import");
+				//butImport.setText("import");
+				butImport.setText(WIZZARD);
 				butImport.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {				
 						JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(new JobListener(dom, listener.getParent(), listener.get_main()), tableIncludeParameter, Editor.JOB);					
 						importParameterForms.showAllImportJobs();
 					}
 				});
-				butImport.setText("Import");
+				//butImport.setText("Import");
+				butImport.setText(WIZZARD);
 			}
 
 
@@ -899,14 +902,16 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 		butImport = new Button(Group, SWT.NONE);
 		butImport.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butImport.setText("import");
+		//butImport.setText("import");
+		butImport.setText(WIZZARD);
 		butImport.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				startWizzard();
 				tParaName.setFocus();
 			}
 		});
-		butImport.setText("Import");
+		//butImport.setText("Import");
+		butImport.setText(WIZZARD);
 
 		bRemove = new Button(Group, SWT.NONE);
 		final GridData gridData_8 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
@@ -915,12 +920,20 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		bRemove.setEnabled(false);
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				listener.deleteParameter(tParameter, tParameter.getSelectionIndex());
+				int index = tParameter.getSelectionIndex();
+				listener.deleteParameter(tParameter, index);
 				tParaName.setText("");
 				tParaValue.setText("");
 				tParameter.deselectAll();
 				bRemove.setEnabled(false);
 				bApply.setEnabled(false);
+				if (index >= tParameter.getItemCount())
+					index--;
+				if (index >= 0) {
+					tParameter.select(index);
+					tParameter.setSelection(index);
+					setParams(tParameter.getItem(index));
+				}
 
 			}
 		});
@@ -1022,10 +1035,12 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				TableItem item = (TableItem) e.item;
 				if (item == null)
 					return;
-				txtEnvName.setText(item.getText(0));
+				setEnvironment(item);
+				/*txtEnvName.setText(item.getText(0));
 				txtEnvValue.setText(item.getText(1));
 				butEnvRemove.setEnabled(tableEnvironment.getSelectionCount() > 0);                                
 				butEnvApply.setEnabled(false);
+				*/
 			}
 		});
 		tableEnvironment.setLinesVisible(true);
@@ -1057,13 +1072,21 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		butEnvRemove = new Button(group_2, SWT.NONE);
 		butEnvRemove.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				listener.deleteEnvironment(tableEnvironment, tableEnvironment.getSelectionIndex());
+				int index = tableEnvironment.getSelectionIndex();
+				listener.deleteEnvironment(tableEnvironment, index);
 				txtEnvName.setText("");
 				txtEnvValue.setText("");
 				tableEnvironment.deselectAll();
 				butEnvApply.setEnabled(false);
 				butEnvRemove.setEnabled(false);
 				txtEnvName.setFocus();
+				if (index >= tableEnvironment.getItemCount())
+					index--;
+				if (index >= 0) {
+					tableEnvironment.setSelection(index);
+					tableEnvironment.select(index);
+					setEnvironment(tableEnvironment.getItem(index));
+				}
 			}
 		});
 		final GridData gridData_3 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
@@ -1172,6 +1195,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				TableItem item = (TableItem) e.item;
 				if (item == null)
 					return;
+				setInclude(item);
+				/*
 				txtIncludeFilename.setText(item.getText(0));
 				txtIncludeNode.setText(item.getText(1));
 				if(type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS) 
@@ -1180,6 +1205,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				butIncludesApply.setEnabled(false);
 				
 				butOpenInclude.setEnabled(true && !isRemoteConnection);				
+				*/
 			}
 		});
 		tableIncludeParams.setLinesVisible(true);
@@ -1236,6 +1262,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		butRemoveInclude.setEnabled(false);
 		butRemoveInclude.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				int index = tableIncludeParams.getSelectionIndex();
 				listener.deleteIncludeParams(tableIncludeParams, tableIncludeParams.getSelectionIndex());
 				txtIncludeFilename.setText("");
 				txtIncludeNode.setText("");
@@ -1243,6 +1270,14 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				butIncludesApply.setEnabled(false);
 				butRemoveInclude.setEnabled(false);
 				txtIncludeFilename.setFocus();
+				
+				if (index >= tableIncludeParams.getItemCount())
+					index--;
+				if (index >= 0) {
+					tableIncludeParams.setSelection(index);					
+					setInclude(tableIncludeParams.getItem(index));
+				}
+				
 			}
 		});
 		butRemoveInclude.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
@@ -1393,7 +1428,10 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				TableItem item = (TableItem) e.item;
 				if (item == null)
 					return;
-				tParaName.setText(item.getText(0));
+				
+				setParams(item);
+				
+/*				tParaName.setText(item.getText(0));
 				if (tParaName.getText().equals("<from>"))
 					cSource.setText(item.getText(1));
 				tParaValue.setText(item.getText(1));								
@@ -1401,6 +1439,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				bRemove.setEnabled(tParameter.getSelectionCount() > 0);
 				bApply.setEnabled(false);
 				tParaName.setFocus();
+				*/
 			}
 		});
 		TableColumn tcName = new TableColumn(tParameter, SWT.NONE);
@@ -1446,7 +1485,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		butDown_1.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
-		//butDown_1.setText("Down");
+		
 		butDown_1.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
 
 		butImport_1 = new Button(group, SWT.NONE);
@@ -1456,20 +1495,30 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		butImport_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butImport_1.setText("Import");
+		//butImport_1.setText("Import");
+		butImport_1.setText(WIZZARD);
 		bRemove = new Button(group, SWT.NONE);
 		bRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		bRemove.setText("Remove");
 		bRemove.setEnabled(false);
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				listener.deleteParameter(tParameter, tParameter.getSelectionIndex());
+				int index = tParameter.getSelectionIndex();
+				listener.deleteParameter(tParameter, index);
 				tParaName.setText("");
 				tParaValue.setText("");
 				tParameter.deselectAll();
 				bRemove.setEnabled(false);
 				bApply.setEnabled(false);
 				tParaName.setFocus();
+				
+				if (index >= tParameter.getItemCount())
+					index--;
+				if (index >= 0) {
+					tParameter.setSelection(index);
+					tParameter.select(index);
+					setParams(tParameter.getItem(index));
+				}
 			}
 		});
 
@@ -1559,6 +1608,36 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			if(type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
 				butIsLifeFile.setToolTipText(Messages.getTooltip("is_live_file"));
 		}
+
+	}
+	
+	private void setParams(TableItem item) {
+
+		tParaName.setText(item.getText(0));
+		if (tParaName.getText().equals("<from>"))
+			cSource.setText(item.getText(1));
+		tParaValue.setText(item.getText(1));								
+
+		bRemove.setEnabled(tParameter.getSelectionCount() > 0);
+		bApply.setEnabled(false);
+		tParaName.setFocus();
 	}
 
+	private void setEnvironment(TableItem item) {
+		txtEnvName.setText(item.getText(0));
+		txtEnvValue.setText(item.getText(1));
+		butEnvRemove.setEnabled(tableEnvironment.getSelectionCount() > 0);                                
+		butEnvApply.setEnabled(false);
+	}
+	
+	private void setInclude(TableItem item) {
+		txtIncludeFilename.setText(item.getText(0));
+		txtIncludeNode.setText(item.getText(1));
+		if(type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS) 
+			butIsLifeFile.setSelection(item.getText(2).equalsIgnoreCase("live_file"));								
+		butRemoveInclude.setEnabled(tableIncludeParams.getSelectionCount() > 0);                               
+		butIncludesApply.setEnabled(false);
+
+		butOpenInclude.setEnabled(true && !isRemoteConnection);
+}
 } // @jve:decl-index=0:visual-constraint="10,10"

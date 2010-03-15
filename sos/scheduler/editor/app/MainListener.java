@@ -80,6 +80,7 @@ public class MainListener {
 		bold.fontStyle = SWT.BOLD;
 		//dialog.getStyledText().setStyleRange(bold);
 		dialog.setVisibleApplyButton(false);
+		dialog.setShowWizzardInfo(false);
 		dialog.open(false);
 	}
 

@@ -415,6 +415,25 @@ public class Options {
         }
     }
     
+    
+   
+    public static Color getLightBlueColor() {
+    	
+    	try {
+            return  ResourceManager.getColor(224, 255, 255);
+        } catch (Exception e) {
+        	try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
+            e.printStackTrace();
+            return ResourceManager.getColor(255, 255, 187);
+        }
+    }
+    
+    
+    
     public static Color getLightYellow() {
     	
     	try {

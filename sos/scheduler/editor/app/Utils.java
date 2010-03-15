@@ -2,7 +2,6 @@ package sos.scheduler.editor.app;
 
 import java.io.StringWriter;
 import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -24,7 +23,9 @@ import org.eclipse.swt.widgets.Shell;
 import sos.scheduler.editor.conf.SchedulerDom;
 import java.util.regex.Pattern;
 
-
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.*;
 
 public class Utils {
 
@@ -41,7 +42,7 @@ public class Utils {
 	private static       List         undo            = null;
 
 	private static       int          UNDO_SIZE       = 10;
-	
+
 	private static       Element      resetElement    = null;
 
 
@@ -536,7 +537,7 @@ public class Utils {
 		if(str.startsWith("<div")) {
 			str = str.replaceFirst("\\A<\\s*div\\s*xmlns\\s*=\\s*\"[a-zA-Z0-9/:\\.]*\"\\s*>\\s*", "");
 			str = str.replaceFirst("\\s*<\\s*/\\s*div\\s*>\\Z", "");
-			
+
 		}
 		str = str.replaceFirst("\\<\\!\\[CDATA\\[", "");						
 		str = str.replaceFirst("]]>", "");
@@ -580,12 +581,12 @@ public class Utils {
 	/*public static String showClipboard(String xml, Shell shell) {
 		return showClipboard(xml, shell, false, null, false, null, true);    	
 	}*/
-	
+
 	public static String showClipboard(String xml, Shell shell, boolean bApply, String selectStr) {
 		return showClipboard(xml, shell, bApply, selectStr, false, null, false);
 	}
-		
-	
+
+
 	/**
 	 * 
 	 * @param xml
@@ -604,7 +605,7 @@ public class Utils {
 			boolean showFunction, 
 			String scriptLanguage,
 			boolean showWizzardInfo) {
-	
+
 		/*System.out.println("test 1 XXX xml " + xml);
 		System.out.println("test 2  XXX shell " + shell);
 		System.out.println("test 3 XXX bApply " + bApply);
@@ -612,23 +613,23 @@ public class Utils {
 		System.out.println("test 5 XXX showFunction " + showFunction);
 		System.out.println("test 6 XXX scriptLanguage " + scriptLanguage);
 		System.out.println("test 7 XXX showWizzardInfo " + showWizzardInfo);
-		*/
-		
+		 */
+
 		Font font = new Font(Display.getDefault(), "Courier New", 8, SWT.NORMAL);
 		TextDialog dialog = new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL
 				| SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		dialog.setSize(new Point(500, 400));
-		
+
 
 		if(selectStr != null && selectStr.trim().length() > 0) {
 			dialog.setContent(xml, selectStr);
 		} else { 
-		
+
 			dialog.setContent(xml);
 		}
-		
+
 		dialog.setClipBoard(true);
-		
+
 		dialog.getStyledText().setFont(font);		
 		dialog.getStyledText().setEditable(bApply);		
 		dialog.setVisibleApplyButton(bApply);		
@@ -638,7 +639,7 @@ public class Utils {
 		dialog.setShowWizzardInfo(showWizzardInfo);
 		//String s = dialog.open(true);
 		String s = dialog.open(false);
-		
+
 		if (dialog.isClipBoardClick()) {
 			copyClipboard(s, shell.getDisplay());
 			return null;
@@ -652,7 +653,7 @@ public class Utils {
 			font.dispose();
 		return s;
 	}
-	
+
 
 	public static void copyClipboard(String content, Display display) {
 
@@ -905,9 +906,9 @@ public class Utils {
 	 */
 	public static boolean checkElement(String name, SchedulerDom _dom, int type, String which ) {
 		boolean onlyWarning = false;//-> true: Gibt nur eine Warnung aus. Sonst Warnung mit Yes- und No- Button um ggf. die Änderungen zurückzunehmen
-		
+
 		try {
-		if(which == null) which ="";				
+			if(which == null) which ="";				
 			if(type == Editor.JOB_CHAIN) {
 
 				XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 
@@ -916,14 +917,14 @@ public class Utils {
 					//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
 					//"Soll die Jobkette trotzdem umbennant werden");
 					throw new Exception ("The Jobchain [job_chain=" + name + "] is currently being used by an order. " +
-					 "Do you want really rename the jobchain");				
+					"Do you want really rename the jobchain");				
 
 				XPath x4 = XPath.newInstance("//add_order[@job_chain='"+ name + "']");				 
 				List listOfElement_4 = x4.selectNodes(_dom.getDoc());
 				if(!listOfElement_4.isEmpty())
 					throw new Exception ("The Jobchain [job_chain=" + name + "] is currently being used by an order. " +
-					 "Do you want really rename the jobchain");				
-					
+					"Do you want really rename the jobchain");				
+
 			} else if(type == Editor.JOB_CHAINS) {
 
 				XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 
@@ -932,7 +933,7 @@ public class Utils {
 					//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
 					//"Soll die Jobkette trotzdem gelöscht werden");
 					throw new Exception ("The Jobchain [job_chain=" + name + "] is currently being used by an order. " +
-					 "Do you want to delete the jobchain");
+					"Do you want to delete the jobchain");
 
 				XPath x4 = XPath.newInstance("//add_order[@job_chain='"+ name + "']");				 
 				List listOfElement_4 = x4.selectNodes(_dom.getDoc());
@@ -940,7 +941,7 @@ public class Utils {
 					//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
 					//"Soll die Jobkette trotzdem gelöscht werden");
 					throw new Exception ("The Jobchain [job_chain=" + name + "] is currently being used by an order. " +
-					 "Do you want to delete the jobchain");
+					"Do you want to delete the jobchain");
 
 			} else if(type==Editor.JOB) {
 
@@ -949,7 +950,7 @@ public class Utils {
 					XPath x0 = XPath.newInstance("//job[@name='"+ name + "']");			 
 					Element e = (Element)x0.selectSingleNode(_dom.getDoc());
 					boolean isOrder = Utils.getAttributeValue("order", e).equalsIgnoreCase("yes");
-					
+
 					if(!isOrder) {
 						XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
 						List listOfElement_3 = x3.selectNodes(_dom.getDoc());
@@ -969,21 +970,21 @@ public class Utils {
 					if( isOrder) {						
 
 						XPath x = XPath.newInstance("//job[@name='"+ name + "']/run_time[@let_run='yes' or @once='yes' or @single_start]");			 
-						
+
 						List listOfElement = x.selectNodes(_dom.getDoc());
 						if(!listOfElement.isEmpty())
 							throw new Exception ("An order job [name=" + name+ "] may not use single_start-, start_once- and " +
-									"let_run attributes in Runtime Elements. Should these attributes be deleted?");
-							
+							"let_run attributes in Runtime Elements. Should these attributes be deleted?");
+
 						XPath x2 = XPath.newInstance("//job[@name='"+ name + "']/run_time//period[@let_run='yes' or @single_start]");				 
 						List listOfElement_2 = x2.selectNodes(_dom.getDoc());
 						if(!listOfElement_2.isEmpty())
 							throw new Exception ("An order job [name=" + name+ "] may not use single_start-, start_once- and " +
 							"let_run attributes in Runtime Elements. Should these attributes be deleted?");
-					
+
 					}
 
-					
+
 					XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
 					List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 					if(!listOfElement_3.isEmpty()) {
@@ -993,7 +994,7 @@ public class Utils {
 							throw new Exception   ("The Job " + name + " is currently being used by a job chain. Do you want really rename the name?");
 						}
 					}
-					
+
 				}
 
 			} else if(type == Editor.JOBS) {
@@ -1108,7 +1109,7 @@ public class Utils {
 
 
 	public static void setResetElement(Element elem) {
-         resetElement = (Element)elem.clone();
+		resetElement = (Element)elem.clone();
 	}
 
 	//public static void reset(Element elem, ISchedulerUpdate update, SchedulerDom currdom) {
@@ -1122,13 +1123,13 @@ public class Utils {
 			}
 
 			elem.setContent(resetElement.cloneContent());
-			
+
 			if(currdom instanceof SchedulerDom)
-			    ((sos.scheduler.editor.conf.forms.SchedulerForm)update).updateTree("main");
+				((sos.scheduler.editor.conf.forms.SchedulerForm)update).updateTree("main");
 			else if(currdom instanceof sos.scheduler.editor.actions.ActionsDom)
-			    ((sos.scheduler.editor.actions.forms.ActionsForm)update).updateTree("main");
+				((sos.scheduler.editor.actions.forms.ActionsForm)update).updateTree("main");
 			else if(currdom instanceof sos.scheduler.editor.doc.DocumentationDom)
-			    ((sos.scheduler.editor.doc.forms.DocumentationForm)update).updateTree("main");
+				((sos.scheduler.editor.doc.forms.DocumentationForm)update).updateTree("main");
 
 
 
@@ -1140,25 +1141,27 @@ public class Utils {
 			}
 		}
 	}
-	
-	/**
-	 * Löschen aller HTML Tags
-	 * @param desc
-	 * @return
-	 */
-/*	
-	public static String normalizedHTMLTags(String desc) {
-		while(desc.indexOf("<") != -1) {
-			int pos1 = desc.indexOf("<");
-			int pos2 = desc.indexOf(">", pos1);
-			if(pos1 != -1 && pos2 != -1) {
-				desc = desc.substring(0, pos1) + " " + desc.substring(pos2);				
-			}
-		}
-		return desc;
-		
-	}
-*/
 
-	
+	/**
+	 * Generiert einen Help Button. 
+	 * Beim Klicken wird ein Fenster geöffnet, indem der text steht 
+	 */
+	public static Button createHelpButton(Composite composite, String text, Shell shell) {
+
+		Button butHelp = new Button(composite, SWT.NONE);
+		//butHelp.setLayoutData(new GridData());
+		final Shell shell_ = shell;
+		final String text_ = text;
+		butHelp.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				Utils.showClipboard(Messages.getString(text_), shell_, false, null);
+			}
+		});
+
+		butHelp.setImage(ResourceManager
+				.getImageFromResource("/sos/scheduler/editor/icon_help_small.gif"));
+
+		return butHelp;
+	}
+
 }

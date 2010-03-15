@@ -31,55 +31,54 @@ import org.eclipse.swt.widgets.Combo;
 import com.swtdesigner.SWTResourceManager;
 
 public class JobAssistentProcessForms {
-	
+
 	private SchedulerDom      dom              = null;
-	
+
 	private ISchedulerUpdate  update           = null;
-	
+
 	private ExecuteListener    executeListener = null;
-	
+
 	private Button            butFinish        = null;
-	
+
 	private Button            butCancel        = null;
-	
+
 	private Button            butNext          = null;
-	
+
 	private Button            butShow          = null;	
-	
+
 	private Button            butBack          = null; 
-	
+
 	private Text              txtFile          = null;
-	
+
 	private Text              txtParameter     = null;
-	
+
 	private Text              txtLog           = null; 
-	
+
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
 	private int               assistentType    = -1; 		
-	
+
 	private Shell processShell                 = null;
-	
+
 	private Combo             jobname          = null;
-	
+
 	private Element           jobBackUp        = null;  
-	
+
 	private JobMainForm           jobForm          = null;
-	
+
 	/** Hilsvariable für das Schliessen des Dialogs. 
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean               closeDialog   = false;         
-	
-	
+
+
 	public JobAssistentProcessForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
 		dom = dom_;
 		update = update_;
 		assistentType = assistentType_;
 		executeListener = new ExecuteListener(dom, job_);		
 	}
-	
+
 	public void showProcessForm() {
-		
-		
+
 		processShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		processShell.addShellListener(new ShellAdapter() {
 			public void shellClosed(final ShellEvent e) {
@@ -92,19 +91,18 @@ public class JobAssistentProcessForms {
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		processShell.setLayout(gridLayout);
-		processShell.setSize(468, 385);
+		processShell.setSize(434, 207);
 		String step = "  ";
 		if (Utils.getAttributeValue("order", executeListener.getJob()).equalsIgnoreCase("yes"))
 			step = step + " [Step 5 of 9]";
 		else 
 			step = step + " [Step 5 of 8]";
 		processShell.setText("Execute" + step);
-		
+
 		{
 			final Group jobGroup = new Group(processShell, SWT.NONE);
 			jobGroup.setText(" Job: " + Utils.getAttributeValue("name", executeListener.getJob()));
-			final GridData gridData = new GridData(GridData.BEGINNING, GridData.FILL, false, false, 2, 1);
-			gridData.heightHint = 293;
+			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
 			jobGroup.setLayoutData(gridData);
 			final GridLayout gridLayout_1 = new GridLayout();
 			gridLayout_1.marginWidth = 10;
@@ -115,18 +113,7 @@ public class JobAssistentProcessForms {
 			gridLayout_1.marginBottom = 10;
 			gridLayout_1.numColumns = 2;
 			jobGroup.setLayout(gridLayout_1);
-			
-			{
-				final Text txtProcess = new Text(jobGroup, SWT.MULTI);
-				final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
-				gridData_1.horizontalIndent = -3;
-				gridData_1.heightHint = 175;
-				gridData_1.widthHint = 394;
-				txtProcess.setLayoutData(gridData_1);
-				txtProcess.setEnabled(false);
-				txtProcess.setText(Messages.getString("assistent.process"));
-			}
-			
+
 			{
 				final Label lblFile = new Label(jobGroup, SWT.NONE);
 				lblFile.setText("File");
@@ -140,12 +127,12 @@ public class JobAssistentProcessForms {
 					}
 				}
 			});
-			txtFile.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
+			txtFile.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
 			txtFile.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			txtFile.setEnabled(false);
-			
+
 			txtFile.setText(executeListener.getFile() );
-			
+
 			{
 				final Label lblParameter = new Label(jobGroup, SWT.NONE);
 				lblParameter.setText("Parameter");
@@ -158,17 +145,17 @@ public class JobAssistentProcessForms {
 					}
 				}
 			});
-			txtParameter.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+			txtParameter.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 			txtParameter.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			txtParameter.setEnabled(false);
-			
+
 			txtParameter.setText(executeListener.getParam());
-			
+
 			{
 				final Label lblRessources = new Label(jobGroup, SWT.NONE);
 				lblRessources.setLayoutData(new GridData(SWT.DEFAULT, 17));
 				lblRessources.setText("Log File");
-				
+
 			}
 			txtLog = new Text(jobGroup, SWT.BORDER);
 			txtLog.addModifyListener(new ModifyListener() {
@@ -178,36 +165,36 @@ public class JobAssistentProcessForms {
 					}
 				}
 			});
-			final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, false, false);
+			final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, false);
 			gridData_1.heightHint = 0;
 			txtLog.setLayoutData(gridData_1);
 			txtLog.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			txtLog.setEnabled(false);
-			
+
 			txtLog.setText(executeListener.getLogFile());
 		}
-		
-		
+
+
 		if(executeListener.getFile() == null || executeListener.getFile().trim().length()==0){
 			txtFile.setEnabled(true);
 		}
-		
+
 		if(executeListener.getParam() == null || executeListener.getParam().trim().length() ==0) {
 			txtParameter.setEnabled(true);
 		}
-		
+
 		if(executeListener.getLogFile() == null || executeListener.getLogFile().trim().length() ==0) {
 			txtLog.setEnabled(true);
 		}
-		
-		
+
+
 		java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();		
 		processShell.setBounds((screen.width - processShell.getBounds().width) /2, 
 				(screen.height - processShell.getBounds().height) /2, 
 				processShell.getBounds().width, 
 				processShell.getBounds().height);
 		processShell.open();
-		
+
 		final Composite composite = new Composite(processShell, SWT.NONE);
 		composite.setLayoutData(new GridData());
 		final GridLayout gridLayout_2 = new GridLayout();
@@ -222,16 +209,16 @@ public class JobAssistentProcessForms {
 			});
 			butCancel.setText("Cancel");
 		}
-		
+
 		final Composite composite_1 = new Composite(processShell, SWT.NONE);
-		final GridData gridData = new GridData(GridData.END, GridData.CENTER, false, false);
-		gridData.widthHint = 176;
+		final GridData gridData = new GridData(GridData.END, GridData.CENTER, true, false);
+		gridData.widthHint = 220;
 		composite_1.setLayoutData(gridData);
 		final GridLayout gridLayout_3 = new GridLayout();
 		gridLayout_3.marginWidth = 0;
-		gridLayout_3.numColumns = 4;
+		gridLayout_3.numColumns = 5;
 		composite_1.setLayout(gridLayout_3);
-		
+
 		{
 			butShow = new Button(composite_1, SWT.NONE);
 			butShow.setLayoutData(new GridData());
@@ -243,7 +230,7 @@ public class JobAssistentProcessForms {
 			});
 			butShow.setText("Show");
 		}
-		
+
 		{
 			butFinish = new Button(composite_1, SWT.NONE);
 			butFinish.addSelectionListener(new SelectionAdapter() {
@@ -253,12 +240,12 @@ public class JobAssistentProcessForms {
 			});
 			butFinish.setText("Finish");
 		}
-		
+
 		butBack = new Button(composite_1, SWT.NONE);
 		butBack.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				doBack();
-				
+
 			}
 		});
 		final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
@@ -276,14 +263,12 @@ public class JobAssistentProcessForms {
 						JobAssistentTimeoutOrderForms timeout = new JobAssistentTimeoutOrderForms(dom, update, executeListener.getJob(), assistentType);
 						timeout.showTimeOutForm();
 						if(jobname != null) 													
-							timeout.setJobname(jobname);
-						//if(jobBackUp != null)
-							timeout.setBackUpJob(jobBackUp, jobForm);
+							timeout.setJobname(jobname);						
+						timeout.setBackUpJob(jobBackUp, jobForm);
 					} else {
 						JobAssistentTimeoutForms timeout = new JobAssistentTimeoutForms(dom, update, executeListener.getJob(), assistentType);
-						timeout.showTimeOutForm();
-						//if(jobBackUp != null)
-							timeout.setBackUpJob(jobBackUp, jobForm);
+						timeout.showTimeOutForm();						
+						timeout.setBackUpJob(jobBackUp, jobForm);
 					}
 					closeDialog = true;
 					Utils.stopCursor(processShell);
@@ -292,10 +277,14 @@ public class JobAssistentProcessForms {
 			});
 			butNext.setText("Next");
 		}
+		{
+			Utils.createHelpButton(composite_1, "assistent.process", processShell);
+
+		}
 		setToolTipText();
 		processShell.layout();		
 	}
-	
+
 	public void setToolTipText() {
 		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
 		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
@@ -306,7 +295,7 @@ public class JobAssistentProcessForms {
 		txtLog.setToolTipText(Messages.getTooltip("assistent.process_log"));
 		butBack.setToolTipText(Messages.getTooltip("butBack"));
 	}
-	
+
 	private void close() {
 		int cont = MainWindow.message(processShell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		if(cont == SWT.OK){
@@ -315,32 +304,30 @@ public class JobAssistentProcessForms {
 			processShell.dispose();
 		}
 	}
-	
+
 	public void setJobname(Combo jobname) {
 		this.jobname = jobname;
 	}
-	
+
 	private void doBack() {
 		if(executeListener.getJob().getChild("description") == null) {			
 			//Wizzard ohne Jobbeschreibung wurde aufgerufen.
 			JobAssistentExecuteForms execute = new JobAssistentExecuteForms(dom, update, executeListener.getJob(), assistentType);
 			execute.showExecuteForm();
 			if(jobname != null) 													
-				execute.setJobname(jobname);
-			//if(jobBackUp != null)
-				execute.setBackUpJob(jobBackUp, jobForm);
+				execute.setJobname(jobname);			
+			execute.setBackUpJob(jobBackUp, jobForm);
 		} else {
 			JobAssistentTasksForm tasks = new JobAssistentTasksForm(dom, update,  executeListener.getJob(), assistentType);											
 			tasks.showTasksForm();	
 			if(jobname != null) 													
-				tasks.setJobname(jobname);
-			//if(jobBackUp != null)
-				tasks.setBackUpJob(jobBackUp, jobForm);
+				tasks.setJobname(jobname);			
+			tasks.setBackUpJob(jobBackUp, jobForm);
 		}				
 		closeDialog = true;
 		processShell.dispose();
 	}
-	
+
 	/**
 	 * Der Wizzard wurde für ein bestehende Job gestartet. 
 	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
@@ -351,7 +338,7 @@ public class JobAssistentProcessForms {
 			jobBackUp = (Element)backUpJob.clone();	
 		jobForm = jobForm_;
 	}
-	
+
 	private void doFinish() {
 		if(assistentType == Editor.JOB_WIZZARD) {															
 			jobForm.initForm();	
@@ -359,12 +346,11 @@ public class JobAssistentProcessForms {
 			JobsListener listener = new JobsListener(dom, update);
 			listener.newImportJob(executeListener.getJob(), assistentType);
 		}
-		
-		//MainWindow.message(processShell,  Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(executeListener.getJob()), SWT.OK );
+
 		if(Options.getPropertyBoolean("editor.job.show.wizard"))
 			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(executeListener.getJob()), processShell, false, null, false, null, true); 
-		
-		
+
+
 		if(jobname != null)
 			jobname.setText(Utils.getAttributeValue("name",executeListener.getJob()));	
 		closeDialog = true;

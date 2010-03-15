@@ -44,7 +44,10 @@ public class DatePicker extends Composite {
     private Calendar            cal         = null;                                          // @jve:decl-index=0:
 
     private Locale              locale      = Locale.getDefault();                           // @jve:decl-index=0:
+    
+    private Date validto = null; 
 
+    private Date validFrom = null; 
 
     public DatePicker(Composite parent, int style) {
         super(parent, style);
@@ -133,6 +136,16 @@ public class DatePicker extends Composite {
         calendar.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 if (calendar.getDate() != null) {
+                	
+                	if(validFrom != null && calendar.getDate().getTime().before(validFrom)) {
+                		//System.out.println("datum ist früher als erlaub");
+                		dateField.setBackground(Options.getRequiredColor());
+                	} else if(validto != null && calendar.getDate().getTime().after(validto)) {
+                		//System.out.println("datum ist später als erlaub");
+                		dateField.setBackground(Options.getRequiredColor());
+                	} else {
+                		dateField.setBackground(null);
+                	}
                     setDate(calendar.getDate().getTime());
                 }
             }
@@ -241,6 +254,25 @@ public class DatePicker extends Composite {
     public String getDateText() {
     	return dateField.getText();
     }
+
+    /**
+     * Gültig ab. 
+     * Datum vor dem date sind nicht gültig
+     *  
+     * @param date
+     */
+    
+    public void validFrom(Date date) {
+       validFrom = date; 	
+    }
    
-   
+    /**
+     * Gültig bis.
+     * 
+     *  Datum nach date sind nicht gültig
+     * @param date
+     */
+    public void validto(Date date) {
+    	validto = date;
+    }
 } // @jve:decl-index=0:visual-constraint="10,10"

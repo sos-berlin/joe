@@ -104,7 +104,7 @@ public class DateForm extends Composite implements IUpdateLanguage {
 		setNow();
 		//this.gDates.setEnabled(Utils.isElementEnabled("job", dom, element));
 		this.gDates.setEnabled(Utils.isElementEnabled("job", dom, element) && !Utils.hasSchedulesElement(dom, element));
-		
+		bAddDay.setFocus();
 	}
 	
 	

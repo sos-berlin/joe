@@ -34,35 +34,39 @@ import java.util.ArrayList;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
 import sos.util.SOSString;
-
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.ShellListener;
 
 public class MainWindow  {
+	
 
-	private static Shell sShell             = null; // @jve:decl-index=0:visual-constraint="3,1"
+	private static Shell                 sShell             = null; // @jve:decl-index=0:visual-constraint="3,1"
 
-	private MainListener listener           = null;
+	private        MainListener          listener           = null;
 
-	private static IContainer container     = null;
+	private static IContainer            container          = null;
 
-	private Menu         menuBar            = null;
+	private        Menu                  menuBar            = null;
 
-	private static Menu         mFile              = null;
+	private static Menu                  mFile              = null;
 
-	private Menu         submenu            = null;
+	private        Menu                  submenu            = null;
 
-	private Menu         menuLanguages      = null;
+	private        Menu                  menuLanguages      = null;
 
-	private Menu         submenu1           = null;
+	private        Menu                  submenu1           = null;
 
-	private MainWindow   main               = null;
+	private        MainWindow            main               = null;
 
-	private Composite    groupmain          = null;
+	private        Composite             groupmain          = null;
 
-	private static ToolItem     butSave            = null;
+	private static ToolItem              butSave            = null;
 
-	private static ToolItem     butShowAsSML       = null; 
+	private static ToolItem              butShowAsSML       = null; 
 
-	private static SOSString    sosString          = new SOSString();
+	private static SOSString             sosString          = new SOSString();
+	
 
 
 	public MainWindow() {
@@ -76,7 +80,31 @@ public class MainWindow  {
 	private void createContainer() {
 		container = new TabbedContainer(sShell);
 		sShell.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+/*
+ //TODO: Ausserhalb des Job Editors veränderte Files sollten mit Hilfe einer "Aktualisieren" Funktion neu eingelesen werden können.		
+		sShell.addShellListener(new ShellListener() {
 
+		      public void shellActivated(ShellEvent event) {
+		        System.out.println("activate");
+		      }
+
+		      public void shellClosed(ShellEvent arg0) {
+		        System.out.println("close");
+		      }
+
+		      public void shellDeactivated(ShellEvent arg0) {
+		    	  System.out.println("deactivated");
+		      }
+
+		      public void shellDeiconified(ShellEvent arg0) {
+		    	  System.out.println("deicon");
+		      }
+
+		      public void shellIconified(ShellEvent arg0) {
+		    	  System.out.println("icon");
+		      }
+		    });
+*/
 		main = this;
 	}
 
@@ -85,13 +113,14 @@ public class MainWindow  {
 	 * This method initializes sShell
 	 */
 	public void createSShell() {
+		
 		sShell = new Shell();
 		final GridLayout gridLayout_1 = new GridLayout();
 		sShell.setLayout(gridLayout_1);
 		sShell.setText("Job Scheduler Editor");
 		sShell.setData(sShell.getText());		
 		sShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
-
+		
 		groupmain = new Composite(sShell, SWT.NONE);		
 		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
 		groupmain.setLayoutData(gridData);
@@ -106,9 +135,6 @@ public class MainWindow  {
 		createContainer();
 
 		listener = new MainListener(this, container);
-
-		//sShell.setSize(new org.eclipse.swt.graphics.Point(895, 625));
-		//sShell.setMinimumSize(890, 620);
 		sShell.setSize(new org.eclipse.swt.graphics.Point(940, 600));
 		sShell.setMinimumSize(940, 600);
 
@@ -165,20 +191,6 @@ public class MainWindow  {
 			}
 		});
 
-
-		/*//TODO: beim resizen dieses Menüpubktes gibt es einen Classcast Exception
-		 * MenuItem pNewDetails = new MenuItem(pmNew, SWT.PUSH);
-		pNewDetails.setText("Job Chain Details   \tCtrl+F");
-		pNewDetails.setAccelerator(SWT.CTRL | 'F');
-		pNewDetails.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newDetails() != null)
-					setSaveStatus();
-			}
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		 */
 		//new event handler
 		MenuItem pNewActions = new MenuItem(pmNew, SWT.PUSH);
 		pNewActions.setText("Event Handler \tCTRL+X");
@@ -282,7 +294,6 @@ public class MainWindow  {
 		//open remote configuration
 		MenuItem mORC = new MenuItem(mFile, SWT.CASCADE);
 		mORC.setText("Open Remote Configuration");
-		//mORC.setAccelerator(SWT.CTRL | 'R');
 
 		Menu pMOpenGlobalScheduler = new Menu(mORC);
 
@@ -405,8 +416,6 @@ public class MainWindow  {
 //		FTP
 		MenuItem mFTP = new MenuItem(mFile, SWT.CASCADE);				
 		mFTP.setText("FTP");
-		//mFTP.setAccelerator(SWT.CTRL | 'N');
-
 		Menu pmFTP = new Menu(mNew);
 
 		MenuItem pOpenFTP = new MenuItem(pmFTP, SWT.PUSH);
@@ -714,6 +723,7 @@ public class MainWindow  {
 	private void save() {
 		Utils.startCursor(getSShell());
 		HashMap changes = new HashMap();
+		
 		if(container.getCurrentEditor() instanceof sos.scheduler.editor.conf.forms.SchedulerForm) {
 			sos.scheduler.editor.conf.forms.SchedulerForm form =(sos.scheduler.editor.conf.forms.SchedulerForm)container.getCurrentEditor();
 			SchedulerDom currdom = (SchedulerDom)form.getDom();
@@ -722,9 +732,9 @@ public class MainWindow  {
 
 		if (container.getCurrentEditor().applyChanges()) {
 			container.getCurrentEditor().save();
-			saveFTP(changes);
-			saveWebDav(changes);
 			saveJobChainNoteParameter();
+			saveFTP(changes);
+			saveWebDav(changes);			
 			setSaveStatus();
 			
 		}		
@@ -1053,6 +1063,9 @@ public class MainWindow  {
 			    			MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename+ "].\n" +
 			    					"Please try later by Hand."
 			    					, SWT.ICON_WARNING);
+			    		} else {
+			    			//Details Parameter auch per ftp speichern
+			    			
 			    		}
 			    	}
 
@@ -1073,13 +1086,11 @@ public class MainWindow  {
 				if(currdom == null)
 					return;			
 
-				//String profilename = container.getCurrentTab().getData("ftp_profile_name").toString();
 				String remoteDir = container.getCurrentTab().getData("ftp_remote_directory").toString();
 				ArrayList ftpHotFolderElements = new ArrayList();
 				if(container.getCurrentTab().getData("ftp_hot_folder_elements") != null)
 					ftpHotFolderElements = (ArrayList)container.getCurrentTab().getData("ftp_hot_folder_elements");
 
-				//java.util.Properties profile = (java.util.Properties)container.getCurrentTab().getData("ftp_profile");
 				sos.ftp.profiles.FTPProfile profile = (sos.ftp.profiles.FTPProfile)container.getCurrentTab().getData("ftp_profile");
 
 				Text txtLog = new Text(getSShell(), SWT.NONE);
@@ -1091,59 +1102,64 @@ public class MainWindow  {
 				txtLog.setLayoutData(gridData);
 				txtLog.setSize(0, 0);				
 
-				//FTPDialogListener ftpListener = new FTPDialogListener(profile, profilename);
-				//ftpListener.setLogText(txtLog);
+				
 				profile.setLogText(txtLog);
-				//ftpListener.connect(profilename);
+				
 				profile.connect();
-
-				//if(ftpListener.isLoggedIn()) {
+				
 				if(profile.isLoggedIn()) {
-					if( currdom instanceof SchedulerDom && sosString.parseToString(container.getCurrentTab().getData("ftp_details_parameter_file")).length() > 0) {
-						//Details Parameter speichern
+					if( currdom instanceof SchedulerDom && 
+							sosString.parseToString(container.getCurrentTab().getData("ftp_details_parameter_file")).length() > 0) {
+						
+						//Details Parameter speichern						
 						File source = new File(container.getCurrentTab().getData("ftp_details_parameter_file").toString());
-						remoteDir = new File(remoteDir).getCanonicalPath().endsWith(".xml") ? new File(remoteDir).getParent() : remoteDir;
-						remoteDir = remoteDir != null ? remoteDir.replaceAll("\\\\", "/") : "";
-						profile.saveAs( container.getCurrentTab().getData("ftp_details_parameter_file").toString(), remoteDir + "/" + source.getName());
+						String remoteDir_ = remoteDir; //remoteDir nicht verändern, da es unten weiterverarbeitet wird
+						remoteDir_ = new File(remoteDir_).getCanonicalPath().endsWith(".xml") ? new File(remoteDir_).getParent() : remoteDir_;
+						remoteDir_ = remoteDir_ != null ? remoteDir_.replaceAll("\\\\", "/") : "";
+						profile.saveAs( container.getCurrentTab().getData("ftp_details_parameter_file").toString(), remoteDir_ + "/" + source.getName());
 						container.getCurrentTab().setData("ftp_details_parameter_file", "");
-					} else if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isLifeElement()) {
+						
+						if(sosString.parseToString(container.getCurrentTab().getData("ftp_details_parameter_remove_file")).length() > 0) {
+							//Alte Jobkettenname wurde gelöscht.. Deshalb den alten Job Node Parametern auch löschen.
+							String removeOldFilename = container.getCurrentTab().getData("ftp_details_parameter_remove_file").toString();							
+							profile.removeFile(remoteDir_ + "/" + removeOldFilename);
+							container.getCurrentTab().setData("ftp_details_parameter_remove_file", "");
+						}
+					} 
+					if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isLifeElement()) {
 						String filename = container.getCurrentEditor().getFilename();
+						//if(!new File(remoteDir).getName().equalsIgnoreCase(new File(filename).getName())){
 						if(!new File(remoteDir).getName().equalsIgnoreCase(new File(filename).getName())){
 							//Attribute "name" wurde geändert: Das bedeutet auch Änderungen der life Datei namen.
-							//ftpListener.removeFile(remoteDir);
 							profile.removeFile(remoteDir);
 							try {
 								String newName = sosString.parseToString(new File(remoteDir).getParent()) + "/" + new File(filename).getName();
 								newName = newName.replaceAll("\\\\", "/");
 								container.getCurrentTab().setData("ftp_remote_directory", newName);
 							} catch(Exception e) {
-								System.out.println("test: " + e.toString());
+								System.out.println("could not save per ftp, cause: " + e.toString());
 
 							} //tu nichts 
 						}
 						remoteDir = new File(remoteDir).getParent() + "/" + new File(filename).getName();
-						//ftpListener.saveAs( filename, remoteDir);
+
 						profile.saveAs( filename, remoteDir);
 
 					} else if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isDirectory()) {
 
-						//ftpListener.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);
 						profile.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);
 
 					} else {
 
-						//ftpListener.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
 						profile.saveAs( container.getCurrentEditor().getFilename(), remoteDir );
 
 					}
-					//ftpListener.disconnect();
 					profile.disconnect();
 
 				} else {
 					MainWindow.message("could not save file on ftp Server", SWT.ICON_WARNING);
 				}
 
-				//if(ftpListener.hasError()) {
 				if(profile.hasError()) {
 					String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), getSShell(), false, "");
 					if(text != null)

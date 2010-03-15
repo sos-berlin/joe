@@ -52,7 +52,8 @@ public class SchedulerListener {
 	
 	public static  String            PROCESS_CLASSES= "Process Classes";
 	
-	public static  String            MONITOR        = "Monitor";
+	//public static  String            MONITOR        = "Monitor";
+	public static  String            MONITOR        = "Pre-/Postprocessing";
 	
 	
 	
@@ -615,7 +616,7 @@ public class SchedulerListener {
 
 		//Monitor
 		item = new TreeItem(parent, SWT.NONE);
-		item.setText("Monitor");
+		item.setText(MONITOR);
 		item.setData(new TreeData(Editor.MONITORS, job, Options.getHelpURL("job.monitor"), "monitor"));	 
 		item.setData("key", "monitor");
 		item.setData("copy_element", job);
@@ -974,7 +975,8 @@ public class SchedulerListener {
 						new ScriptsForm(c, SWT.NONE, _dom, _gui, data.getElement());
 						break;
 					case Editor.MONITOR:
-						new ScriptForm(c, SWT.NONE, "Monitor", _dom, data.getElement(), data.getType(), _gui);
+						//new ScriptForm(c, SWT.NONE, "Monitor", _dom, data.getElement(), data.getType(), _gui);
+						new ScriptForm(c, SWT.NONE, MONITOR, _dom, data.getElement(), data.getType(), _gui);
 						break;
 					case Editor.SCRIPT:
 						new ScriptForm(c, SWT.NONE, "Start Script", _dom, data.getElement(), data.getType(), _gui);

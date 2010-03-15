@@ -8,6 +8,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
+
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -26,9 +28,9 @@ public class JobChainsListener {
 
 	private Element               _node                     = null;
 
-	private Element               _source                   = null;
+	//private Element               _source                   = null;
 
-	private String[]              _states                   = null;
+	//private String[]              _states                   = null;
 
 	private String[]              _chainNames               = null;
 
@@ -56,6 +58,7 @@ public class JobChainsListener {
 	public void fillChains(Table table) {
 		table.removeAll();
 		if (_chains != null) {
+			
 			List list = _chains.getChildren("job_chain");
 			_chainNames = new String[list.size()];
 			int index = 0;
@@ -64,9 +67,21 @@ public class JobChainsListener {
 				Element chain = (Element) it.next();
 				String name = Utils.getAttributeValue("name", chain);
 				TableItem item = new TableItem(table, SWT.NONE);
+				
+				//item.setChecked(sos.scheduler.editor.conf.listeners.DetailsListener.existDetailsParameter(null, name, null, _dom, update, true));
+				if(sos.scheduler.editor.conf.listeners.DetailsListener.existDetailsParameter(null, name, null, _dom, update, true))
+					item.setBackground(Options.getLightBlueColor());
+				else
+					item.setBackground(null);
 				item.setText(0, name);
 				item.setText(1, Utils.isAttributeValue("orders_recoverable", chain) ? "Yes" : "No");
 				item.setText(2, Utils.isAttributeValue("visible", chain) ? "Yes" : "No");
+				
+				
+				/*item.setText(0, name);
+				item.setText(1, Utils.isAttributeValue("orders_recoverable", chain) ? "Yes" : "No");
+				item.setText(2, Utils.isAttributeValue("visible", chain) ? "Yes" : "No");
+				*/
 				if(!Utils.isElementEnabled("job_chain", _dom, chain)) {
 					item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 				} 
@@ -90,17 +105,16 @@ public class JobChainsListener {
 	public String getChainName() {
 		return Utils.getAttributeValue("name", _chain);
 	}
-
+/*
 
 	public boolean getRecoverable() {
 		return Utils.isAttributeValue("orders_recoverable", _chain);
 	}
 
-
 	public boolean getVisible() {
 		return Utils.isAttributeValue("visible", _chain);
 	}
-
+*/
 
 	public void newChain() {
 		_chain = new Element("job_chain");        
@@ -156,7 +170,7 @@ public class JobChainsListener {
 		update.updateJobChains();
 	}
 
-	public void fillFileOrderSource(Table table) {
+	/*public void fillFileOrderSource(Table table) {
 		table.removeAll();
 		String directory = "";
 		String regex = "";
@@ -186,8 +200,8 @@ public class JobChainsListener {
 			}
 		}
 	}
-
-	public void fillFileOrderSink(Table table) {
+*/
+/*	public void fillFileOrderSink(Table table) {
 		table.removeAll();
 		String state = "";
 		String moveFileTo = "";
@@ -207,11 +221,13 @@ public class JobChainsListener {
 			}
 		}
 	}
+	*/
 	/*public void fillChain() {
     	if(tNodes != null) {
     		fillChain(tNodes);
     	}
     }*/
+	/*
 	public void fillChain(Table table) {
 		table.removeAll();
 		String state = "";
@@ -265,7 +281,8 @@ public class JobChainsListener {
 		}
 	}
 
-
+*/
+	/*
 	private boolean checkForState(String state) {
 
 		for (int i = 0; i < _states.length; i++) {
@@ -275,7 +292,8 @@ public class JobChainsListener {
 		return false;  
 	}
 
-
+*/
+	/*
 	public void selectNode(Table tableNodes) {
 		if (tableNodes == null){
 			_node = null;
@@ -321,14 +339,14 @@ public class JobChainsListener {
 	public String getFileOrderSource(String a) {
 		return Utils.getAttributeValue(a, _source);
 	}
-
+*/
 
 
 	public String getState() {
 		return Utils.getAttributeValue("state", _node);
 	}
 
-	public String getDelay() {
+/*	public String getDelay() {
 		return Utils.getAttributeValue("delay", _node);
 	}
 
@@ -384,6 +402,7 @@ public class JobChainsListener {
 		return Utils.getAttributeValue("remove", _node).equals("yes");
 	}
 
+	
 	public void applyNode(boolean isJobchainNode,String state, String job, String delay, String next, String error, boolean removeFile,String moveTo) {
 		Element node = null;
 
@@ -618,7 +637,7 @@ public class JobChainsListener {
 		return true;
 	}        
 
-
+*/
 	public SchedulerDom get_dom() {
 		return _dom;
 	}

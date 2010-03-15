@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.Editor;
@@ -29,6 +28,21 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
+/**
+ * Job Wizzard.
+ * 
+ * Auswahl zwischen der Standalone Jobs und Auftragsgesteuerte Jobs.
+ * 
+ * Es werden im nächsten Dialog (Job Auswahl Dialoge) entsprechend Standalone Jobs oder 
+ * Auftragsgesteuerte Jobs zur Auswahl gestellt.
+ * 
+ * Die Kriterien stehen in der Job Dokumentation.
+ * Das bedeutet alle Job Dokumentationen aus der Verzeichnis <SCHEDULER_HOME>/jobs/*.xml werden parsiert. 
+ * 
+ * 
+ * @author mueruevet.oeksuez@sos-berlin.com
+ *
+ */
 public class JobAssistentTypeForms {
 	
 	/** Parameter: isStandaloneJob = true -> Standalone Job, sonst Order Job*/
@@ -46,9 +60,7 @@ public class JobAssistentTypeForms {
 	
 	private Button           butShow          = null;
 	
-	private Button           butNext          = null;
-	
-	private Text             txtOrder         = null; 
+	private Button           butNext          = null;	 
 	
 	private Shell            jobTypeShell     = null;
 	
@@ -79,7 +91,7 @@ public class JobAssistentTypeForms {
 		try {
 			
 			jobTypeShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);			
-			
+						
 			jobTypeShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 			
 			final GridLayout gridLayout = new GridLayout();
@@ -88,41 +100,32 @@ public class JobAssistentTypeForms {
 			gridLayout.marginLeft = 5;
 			gridLayout.marginBottom = 5;
 			gridLayout.numColumns = 2;
-			jobTypeShell.setLayout(gridLayout);
-			jobTypeShell.setSize(512, 300);
+			jobTypeShell.setLayout(gridLayout);			
 			String step = "  [Step 1]";
 			jobTypeShell.setText("Job Type" + step); 
+
+			
 			
 			{
 				final Group jobGroup = new Group(jobTypeShell, SWT.NONE);
+				jobGroup.setCapture(true);
 				jobGroup.setText("Job");
-				final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
-				gridData_1.heightHint = 207;
-				gridData_1.widthHint = 482;
+				final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, true, 2, 1);
+				gridData_1.heightHint = 99;
+				gridData_1.verticalIndent = -1;
 				jobGroup.setLayoutData(gridData_1);
 				final GridLayout gridLayout_1 = new GridLayout();
+				gridLayout_1.horizontalSpacing = 15;
 				gridLayout_1.marginWidth = 10;
-				gridLayout_1.marginTop = 10;
-				gridLayout_1.marginRight = 10;
-				gridLayout_1.marginLeft = 10;
-				gridLayout_1.marginHeight = 10;
-				gridLayout_1.marginBottom = 10;
+				gridLayout_1.marginHeight = 0;
 				gridLayout_1.numColumns = 2;
 				jobGroup.setLayout(gridLayout_1);
-				
-				{
-					txtOrder = new Text(jobGroup, SWT.MULTI | SWT.WRAP);
-					txtOrder.setEditable(false);
-					final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1);
-					gridData.widthHint = 452;
-					gridData.heightHint = 154;
-					txtOrder.setLayoutData(gridData);
-					txtOrder.setText(Messages.getString("assistent.type"));
-				}
-				
+								
 				{
 					radOrderjob = new Button(jobGroup, SWT.RADIO);					
-					radOrderjob.setLayoutData(new GridData());
+					final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, true);
+					gridData.heightHint = 48;
+					radOrderjob.setLayoutData(gridData);
 					radOrderjob.setSelection(jobType != null && jobType.length() > 0 && jobType.equalsIgnoreCase("order"));
 					radOrderjob.setText(Messages.getString("assistent.order.orderjob"));
 				}
@@ -130,8 +133,7 @@ public class JobAssistentTypeForms {
 				{
 					radStandalonejob = new Button(jobGroup, SWT.RADIO);
 					radStandalonejob.setSelection(jobType == null || jobType.length() == 0 || jobType.equalsIgnoreCase("standalonejob"));					
-					final GridData gridData = new GridData(GridData.CENTER, GridData.END, false, false);
-					gridData.widthHint = 158;
+					final GridData gridData = new GridData(GridData.CENTER, GridData.CENTER, true, true);					
 					radStandalonejob.setLayoutData(gridData);
 					radStandalonejob.setText(Messages.getString("assistent.type.standalonejob"));
 				}
@@ -150,12 +152,12 @@ public class JobAssistentTypeForms {
 			
 			{
 				final Composite composite = new Composite(jobTypeShell, SWT.NONE);
-				final GridData gridData = new GridData(GridData.END, GridData.FILL, false, false);
-				gridData.heightHint = 29;
+				final GridData gridData = new GridData(GridData.END, GridData.CENTER, false, false);
 				composite.setLayoutData(gridData);
 				final GridLayout gridLayout_1 = new GridLayout();
+				gridLayout_1.marginHeight = 0;
 				gridLayout_1.marginWidth = 0;
-				gridLayout_1.numColumns = 2;
+				gridLayout_1.numColumns = 3;
 				composite.setLayout(gridLayout_1);
 				
 				{
@@ -175,8 +177,7 @@ public class JobAssistentTypeForms {
 				{
 					butNext = new Button(composite, SWT.NONE);
 					butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
-					final GridData gridData_1 = new GridData(GridData.END, GridData.CENTER, false, false);
-					gridData_1.widthHint = 57;
+					final GridData gridData_1 = new GridData(GridData.END, GridData.CENTER, false, false);					
 					butNext.setLayoutData(gridData_1);
 					butNext.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
@@ -210,10 +211,10 @@ public class JobAssistentTypeForms {
 					});
 					butNext.setText("Next");
 				}
+
+				
+				Utils.createHelpButton(composite, "assistent.type", jobTypeShell);
 			}
-			
-			
-			
 			
 			setToolTipText();
 			java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
