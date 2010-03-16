@@ -77,6 +77,20 @@ public class IOUtils {
 
 
 
+	/**
+	 * 
+	 * Es wird entweder eine Scheduler Konfigurationsdatei, eine Hot Folder Verzeichnis oder 
+	 * ein Hot Folder Datei geöffnet. 
+	 * 
+	 * Beim erfolgreichen Öffnet wird true, sansonsten flase geliefert.
+	 * 
+	 * @param filename String
+	 * @param filenames java.util.Collection
+	 * @param dom DomParser
+	 * @return boolean 
+	 * 
+	 * 
+	 */
 	public static boolean openFile(String filename, Collection filenames, DomParser dom) {    	
 		try {
 			boolean isDirectory = dom instanceof SchedulerDom &&  ((SchedulerDom)dom).isDirectory();

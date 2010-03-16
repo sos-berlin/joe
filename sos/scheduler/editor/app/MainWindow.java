@@ -80,31 +80,31 @@ public class MainWindow  {
 	private void createContainer() {
 		container = new TabbedContainer(sShell);
 		sShell.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-/*
+
  //TODO: Ausserhalb des Job Editors veränderte Files sollten mit Hilfe einer "Aktualisieren" Funktion neu eingelesen werden können.		
 		sShell.addShellListener(new ShellListener() {
 
 		      public void shellActivated(ShellEvent event) {
-		        System.out.println("activate");
+		       // System.out.println("activate");
 		      }
 
 		      public void shellClosed(ShellEvent arg0) {
-		        System.out.println("close");
+		        //System.out.println("close");
 		      }
 
 		      public void shellDeactivated(ShellEvent arg0) {
-		    	  System.out.println("deactivated");
+		    	  //System.out.println("deactivated");
 		      }
 
 		      public void shellDeiconified(ShellEvent arg0) {
-		    	  System.out.println("deicon");
+		    	  //System.out.println("deicon");
 		      }
 
 		      public void shellIconified(ShellEvent arg0) {
-		    	  System.out.println("icon");
+		    	 // System.out.println("icon");
 		      }
 		    });
-*/
+
 		main = this;
 	}
 
@@ -1039,7 +1039,7 @@ public class MainWindow  {
 
 	
 	/**
-	 * Überprüfen, ob job Chain namen verändert wurden. Wenn ja, dann ggf. die job chain note parameter anpassen
+	 * Überprüfen, ob job Chain namen verändert wurden. Wenn ja, dann die job chain note parameter anpassen
 	 * Job Chain Note Parameter
 	 */
 	public void saveJobChainNoteParameter() {
@@ -1059,13 +1059,21 @@ public class MainWindow  {
 			    		newConfigFilename = newConfigFilename != null ? newConfigFilename : "";
 			    		newConfigFilename = new File(newConfigFilename, Utils.getAttributeValue("name", jobChain) + ".config.xml").getCanonicalPath();
 			    		File newConfigFile = new File(newConfigFilename);
+			    		
+			    		//Attribute anpassem
+			    		DomParser currdom = getSpecifiedDom();
+		    			 String oldname = configFile.getName().replaceAll(".config.xml", "");
+		    			 String newName = newConfigFile.getName().replaceAll(".config.xml", "");
+		    			sos.scheduler.editor.conf.listeners.DetailsListener.changeDetailsJobChainname(newName, oldname, (SchedulerDom)currdom);
+			    		//
+			    		
 			    		if(!newConfigFile.exists() &&  !configFile.renameTo(newConfigFile)) {
 			    			MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename+ "].\n" +
 			    					"Please try later by Hand."
 			    					, SWT.ICON_WARNING);
 			    		} else {
-			    			//Details Parameter auch per ftp speichern
-			    			
+			    			//Attribute in der config.xml Datei vderändern
+			    					    			
 			    		}
 			    	}
 

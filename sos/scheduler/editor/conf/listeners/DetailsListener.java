@@ -992,6 +992,41 @@ public class DetailsListener {
 			sos.scheduler.editor.app.MainWindow.message("Parameter note could not change, cause: " + e.getMessage(), SWT.ICON_ERROR);
 		}
 	}
+	
+	/**
+	 * Wenn der Jobname vom Details sich ändert, dann wird auch in der Job Chain Node Parameter Datei der Attribut job chainname angepasst
+	 */
+	public static void changeDetailsJobChainname(String jobChainNewName, String jobchainName, SchedulerDom _dom) {
+		try {
+			DetailsListener detailListener = new DetailsListener(jobchainName, 
+					null, 
+					null,  
+					Editor.JOB_CHAINS, 
+					null, 
+					_dom.isLifeElement() || _dom.isDirectory(), 
+					_dom.getFilename());
+
+
+			XPath x = XPath.newInstance("settings/job_chain[@name='"+ jobchainName +"']");				 
+			List listOfElement = x.selectNodes(detailListener.getDoc());
+			if(!listOfElement.isEmpty()) {
+					Element jobchain = (Element)listOfElement.get(0);
+					jobchain.setAttribute("name", jobChainNewName);
+					detailListener.save();
+					//MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", detailListener.getConfigurationFilename());
+					//MainWindow.saveFTP(new java.util.HashMap());
+
+			}
+		} catch (Exception e)  {
+
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			sos.scheduler.editor.app.MainWindow.message("Parameter note could not change, cause: " + e.getMessage(), SWT.ICON_ERROR);
+		}
+	}
 
 	public static void deleteDetailsState(String state, String jobchainname, SchedulerDom dom) {
 		try {
