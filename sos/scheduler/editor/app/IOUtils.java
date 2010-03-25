@@ -318,11 +318,13 @@ public class IOUtils {
 					if(!overrideOriFile) {
 						new File(originFilename).delete();                			
 					}
+					
 
 					if(!(dom instanceof SchedulerDom &&  ((SchedulerDom)dom).isDirectory()) 
 							&& !new File(filename).renameTo(new File(originFilename))) {                   			
 						MainWindow.message("..could not rename file: " + filename, SWT.ICON_ERROR | SWT.OK);
 					}
+					dom.readFileLastModified();
 
 				}
 

@@ -38,7 +38,7 @@ public abstract class DomParser {
 
     private IDataChanged          _changedListener;
 
-    private HashMap               _orders          = new HashMap();
+    private HashMap<String, String[]>   _orders          = new HashMap<String, String[]>();
 
    // private String[]              _schemaTmpFile;
 
@@ -47,11 +47,14 @@ public abstract class DomParser {
     private String                _xslt;
 
     private String                _filename        = null;
+    
+    private long                  _lastModifiedFile=0;
+   
 
  
-    public DomParser(String[] schemaTmp, String[] schemaResource, String xslt) {
-       // _schemaTmpFile = schemaTmp;
-        //_schemaResource = schemaResource;
+    
+
+	public DomParser(String[] schemaTmp, String[] schemaResource, String xslt) {
         _xslt = xslt;
     }
 
@@ -61,21 +64,43 @@ public abstract class DomParser {
     }
 
 
-    protected HashMap getDomOrders() {
+    protected HashMap<String, String[]> getDomOrders() {
         return _orders;
     }
 
 
     public void setFilename(String filename) {
         _filename = filename;
+        readFileLastModified();
+        //readFileMD5encrypt();
     }
 
 
     public String getFilename() {
         return _filename;
     }
+    
+    /**
+     * Liest den letzten Änderungszeitpunkt (in long) der Konfigurationsdatei.
+     * Wurde ausserhalb vom Editor etwas verändert?
+     * 
+     */
+    public void readFileLastModified() {
+    
+    	if(_filename == null)
+    		_lastModifiedFile = 0;
+    	
+    	File f = new File(_filename);
+    	if(f.exists())
+    		_lastModifiedFile = f.lastModified();
+    	else 
+    		_lastModifiedFile = 0;
+    	
+    	//System.out.println("domparser= " + _lastModifiedFile);
+    	
+    }
 
-
+    
     public void setXSLT(String xslt) {
         _xslt = xslt;
     }
@@ -410,5 +435,20 @@ public abstract class DomParser {
 	public boolean isInit() {
 		return _init;
 	}
-    
+
+	/**
+	 * @return the _lastModifiedFile
+	 */
+	public long getLastModifiedFile() {
+		return _lastModifiedFile;
+	}
+
+	
+	/**
+	 * @return the _lastModifiedFile
+	 */
+	public void setLastModifiedFile(long lastModifiedFile) {
+		_lastModifiedFile = lastModifiedFile;
+	}
+
 }

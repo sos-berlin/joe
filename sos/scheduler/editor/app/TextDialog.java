@@ -31,7 +31,7 @@ public class TextDialog extends Dialog {
 	
 	private Text       _styledText                 = null;
 
-	private Point      _size                       = new Point(300, 200);
+	private Point      _size                       = new Point(300, 250);
 	
 	private Image      _image                      = null;
 

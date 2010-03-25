@@ -1,6 +1,7 @@
 package sos.scheduler.editor.conf;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -283,7 +284,7 @@ public class SchedulerDom extends DomParser {
     }*/
 
 	private String readFile(String filename) throws IOException {
-		_disabled = new ArrayList();
+		_disabled = new ArrayList<String>();
 
 		String encoding = DEFAULT_ENCODING;
 		String line = null;
@@ -381,6 +382,7 @@ public class SchedulerDom extends DomParser {
 		// stream.close();
 
 		setFilename(filename);
+		
 		setChanged(false);
 
 		deorderDOM();
@@ -602,17 +604,35 @@ public class SchedulerDom extends DomParser {
 		return !getRoot().getName().equals("spooler") ; 		
 	}
 
-	/*public static ArrayList getListOfEmptyElementNames() {
-		return listOfEmptyElementNames;
-	}
-
-	public static void setListOfEmptyElementNames(ArrayList listOfEmptyElementNames) {
-		SchedulerDom.listOfEmptyElementNames = listOfEmptyElementNames;
-	}*/
-
 	public boolean isDirectory() {
 		return isDirectory;
 	}
-	
+
+	/**
+     * Liest den letzten Änderungszeitpunkt (in long) der Konfigurationsdatei.
+     * Wurde ausserhalb vom Editor etwas verändert?
+     * 
+     */
+    public void readFileLastModified() {
+    	super.readFileLastModified();
+    	//TODO
+    	/*if(!isDirectory) {
+    		super.readFileLastModified();
+    	} else {
+    		if(getFilename() == null)
+        		this.setLastModifiedFile(0);
+        	
+        	File f = new File(getFilename());
+        	if(f.exists() && f.isDirectory()) {
+        		int lm = 0;
+        		f.listFiles(new FileFile())
+        	} else 
+        		this.setLastModifiedFile(0);
+        	
+        	System.out.println("domparser= " + _lastModifiedFile);
+        	
+    	}
+    	*/
+    }
 	
 }

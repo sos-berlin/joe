@@ -68,10 +68,14 @@ public class ContextMenu {
 
 		_menu.addListener(SWT.Show, new Listener() {
 			public void handleEvent(Event e) {
-				if(_type == Editor.SCRIPT)
-					getItem(ContextMenu.DELETE).setEnabled(true);
-				else
-					getItem(ContextMenu.GOTO).setEnabled(true);								
+				MenuItem item = null;
+				if(_type == Editor.SCRIPT) {
+					 item = getItem(ContextMenu.DELETE); 					
+				}else
+					item = getItem(ContextMenu.GOTO);
+				
+				if(item != null)
+					item.setEnabled(true);
 			}
 		});
 	}
@@ -687,10 +691,14 @@ public class ContextMenu {
 	public static void delete(Combo combo, DomParser _dom, int type) {
 		try {
 			//favoriten löschen
+			if(combo.getData("favorites") == null)
+				return;
 			if(type == Editor.SCRIPT) {
 				String prefix = "monitor_favorite_";
 				String name = combo.getText();
-				String lan = ((HashMap)(combo.getData("favorites"))).get(name) +"_";
+				String lan = "";
+				if(combo.getData("favorites") != null)
+					lan = ((HashMap)(combo.getData("favorites"))).get(name) +"_";
 				name = prefix + lan + name;
 				Options.removeProperty(name);
 				combo.remove(combo.getText());

@@ -1,10 +1,14 @@
 package sos.scheduler.editor.app;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.ArrayList;
+import java.util.jar.Manifest;
 
 
 import org.eclipse.swt.SWT;
@@ -71,19 +75,54 @@ public class MainListener {
 		TextDialog dialog = new TextDialog(MainWindow.getSShell());
 		dialog.setText("About Job Scheduler Editor");
 		String message = Messages.getString("MainListener.aboutText", Options.getVersion() + "\nSchema-Version:"
-				+ Options.getSchemaVersion() + "\n");
+				+ Options.getSchemaVersion() + "\n" +
+				"SVN " + getSVNVersion()		
+		);
 		dialog.setContent(message, SWT.CENTER);
-		dialog.getStyledText().setEnabled(false);
+		dialog.getStyledText().setEditable(false);
 		StyleRange bold = new StyleRange();
 		bold.start = 0;
-		bold.length = message.indexOf("\n");
+		bold.length = message.lastIndexOf("\n");
+		
 		bold.fontStyle = SWT.BOLD;
 		//dialog.getStyledText().setStyleRange(bold);
 		dialog.setVisibleApplyButton(false);
 		dialog.setShowWizzardInfo(false);
+		//dialog.setSize(new org.eclipse.swt.graphics.Point(100, 200));
 		dialog.open(false);
 	}
 
+	public String getSVNVersion()  {
+		String svnVersion ="";
+		try {
+
+
+			Manifest manifest = null;			
+			String classContainer = getClass().getProtectionDomain().getCodeSource().getLocation().toString();			
+			java.net.URL manifestUrl = new java.net.URL("jar:" + classContainer + "!/META-INF/MANIFEST.MF");
+			
+			if(classContainer.contains(".jar")) {
+				manifest = new Manifest(manifestUrl.openStream());
+			} else {
+				manifest = new Manifest(new java.net.URL(classContainer + "/META-INF/MANIFEST.MF").openStream());
+			}
+			if(manifest != null) {
+				java.util.jar.Attributes atr = manifest.getMainAttributes();
+				Iterator it = atr.keySet().iterator();
+				while(it.hasNext()) {		
+					String key = it.next().toString();
+					if(key.contains("Implementation-Version")){
+						String value = atr.getValue(key);
+						svnVersion = svnVersion + key +"="+ value ;
+					}
+				}
+			}
+			
+		} catch(Exception e) {
+			MainWindow.message("could not read SVN-Version " , SWT.ICON_WARNING | SWT.OK);
+		}
+		return svnVersion;
+	}
 
 	public void setLanguages(Menu menu) {
 		boolean found = false;

@@ -152,7 +152,8 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     	
         listener = new ScriptListener(dom, element, type_, update);
         cboFavorite.setData("favorites", favorites);
-        cboFavorite.setMenu(new ContextMenu(cboFavorite, listener.getDom(), Editor.SCRIPT).getMenu());
+        if(type == Editor.MONITOR)
+        	cboFavorite.setMenu(new ContextMenu(cboFavorite, listener.getDom(), Editor.SCRIPT).getMenu());
         this.type = type_ ;
         fillForm();
     }

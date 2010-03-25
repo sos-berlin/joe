@@ -266,7 +266,8 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		butGoto.setVisible(listener.get_dom() != null && !listener.get_dom().isLifeElement());
 		butGoto.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				ContextMenu.goTo(cProcessClass.getText(), listener.get_dom(), Editor.PROCESS_CLASSES);
+				if(cProcessClass.getText().length() > 0)
+					ContextMenu.goTo(cProcessClass.getText(), listener.get_dom(), Editor.PROCESS_CLASSES);
 			}
 		});
 		butGoto.setAlignment(SWT.RIGHT);
@@ -285,6 +286,7 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		cProcessClass.setLayoutData(gridData4);
 		cProcessClass.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				
 				if(init) return;
 				listener.setProcessClass(cProcessClass.getText());
 			}

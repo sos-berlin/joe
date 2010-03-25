@@ -39,7 +39,7 @@ import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 
 public class MainWindow  {
-	
+
 
 	private static Shell                 sShell             = null; // @jve:decl-index=0:visual-constraint="3,1"
 
@@ -66,7 +66,8 @@ public class MainWindow  {
 	private static ToolItem              butShowAsSML       = null; 
 
 	private static SOSString             sosString          = new SOSString();
-	
+
+	private static boolean flag = true;//hilfsvariable
 
 
 	public MainWindow() {
@@ -81,29 +82,74 @@ public class MainWindow  {
 		container = new TabbedContainer(sShell);
 		sShell.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 
- //TODO: Ausserhalb des Job Editors veränderte Files sollten mit Hilfe einer "Aktualisieren" Funktion neu eingelesen werden können.		
+		//TODO: Ausserhalb des Job Editors veränderte Files sollten mit Hilfe einer "Aktualisieren" Funktion neu eingelesen werden können.
+
+
 		sShell.addShellListener(new ShellListener() {
 
-		      public void shellActivated(ShellEvent event) {
-		       // System.out.println("activate");
-		      }
+			public void shellActivated(ShellEvent event) {
 
-		      public void shellClosed(ShellEvent arg0) {
-		        //System.out.println("close");
-		      }
+				shellActivated_();
+				/*System.out.println("activated");
+				if(!flag) {
+					System.out.println("ignore");
+					return;
+				}
 
-		      public void shellDeactivated(ShellEvent arg0) {
-		    	  //System.out.println("deactivated");
-		      }
 
-		      public void shellDeiconified(ShellEvent arg0) {
-		    	  //System.out.println("deicon");
-		      }
+				if(MainWindow.getContainer().getCurrentEditor() == null)
+					return;
 
-		      public void shellIconified(ShellEvent arg0) {
-		    	 // System.out.println("icon");
-		      }
-		    });
+				DomParser dom = getSpecifiedDom();
+				if(dom.getFilename() != null) {
+
+					File f = new File(dom.getFilename());
+
+					if(dom.getFileLastModified() > 0 && 
+                		   f.lastModified() != dom.getFileLastModified()) {
+
+						flag = false;
+                	   int c = MainWindow.message(sShell, "This file " + dom.getFilename()+ " has been modified outside.\nDo you want to reload it?",  SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+						if(c == SWT.YES) {
+
+							System.out.println("hier neu laden");
+							try {
+
+							dom.read(dom.getFilename());
+
+							if (container.getCurrentEditor() instanceof SchedulerForm) {
+								SchedulerForm form =(SchedulerForm)container.getCurrentEditor();
+								form.updateTree("main");
+								form.update();
+							}
+							} catch (Exception e) {
+								System.out.println(e.toString());
+							}
+						}
+
+
+                   }
+				}
+				flag = true;
+				 */
+			}
+
+			public void shellClosed(ShellEvent arg0) {
+				//System.out.println("close");
+			}
+
+			public void shellDeactivated(ShellEvent arg0) {
+				//System.out.println("deactivated");
+			}
+
+			public void shellDeiconified(ShellEvent arg0) {
+				//System.out.println("deicon");
+			}
+
+			public void shellIconified(ShellEvent arg0) {
+				//System.out.println("icon");
+			}
+		});
 
 		main = this;
 	}
@@ -113,14 +159,14 @@ public class MainWindow  {
 	 * This method initializes sShell
 	 */
 	public void createSShell() {
-		
+
 		sShell = new Shell();
 		final GridLayout gridLayout_1 = new GridLayout();
 		sShell.setLayout(gridLayout_1);
 		sShell.setText("Job Scheduler Editor");
 		sShell.setData(sShell.getText());		
 		sShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
-		
+
 		groupmain = new Composite(sShell, SWT.NONE);		
 		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
 		groupmain.setLayoutData(gridData);
@@ -413,7 +459,7 @@ public class MainWindow  {
 
 		new MenuItem(mFile, SWT.SEPARATOR);
 
-//		FTP
+		//		FTP
 		MenuItem mFTP = new MenuItem(mFile, SWT.CASCADE);				
 		mFTP.setText("FTP");
 		Menu pmFTP = new Menu(mNew);
@@ -458,7 +504,7 @@ public class MainWindow  {
 		mFTP.setMenu(pmFTP);
 		new MenuItem(mFile, SWT.SEPARATOR);
 
-//		WebDav		
+		//		WebDav		
 		boolean existwebDavLib = existLibraries();
 		MenuItem mWebDav = new MenuItem(mFile, SWT.CASCADE);				
 		mWebDav.setText("WebDav");
@@ -615,8 +661,8 @@ public class MainWindow  {
 		});
 		submenuItemInfo.setText("Reset Dialog");
 		sShell.setMenuBar(menuBar);
-		sShell.addShellListener(new org.eclipse.swt.events.ShellAdapter() {
-			public void shellClosed(org.eclipse.swt.events.ShellEvent e) {
+		sShell.addShellListener(new ShellAdapter() {
+			public void shellClosed(ShellEvent e) {
 				e.doit = container.closeAll();
 				setSaveStatus();
 				Options.saveWindow(sShell, "editor");
@@ -723,7 +769,7 @@ public class MainWindow  {
 	private void save() {
 		Utils.startCursor(getSShell());
 		HashMap changes = new HashMap();
-		
+
 		if(container.getCurrentEditor() instanceof sos.scheduler.editor.conf.forms.SchedulerForm) {
 			sos.scheduler.editor.conf.forms.SchedulerForm form =(sos.scheduler.editor.conf.forms.SchedulerForm)container.getCurrentEditor();
 			SchedulerDom currdom = (SchedulerDom)form.getDom();
@@ -736,7 +782,7 @@ public class MainWindow  {
 			saveFTP(changes);
 			saveWebDav(changes);			
 			setSaveStatus();
-			
+
 		}		
 		Utils.stopCursor(getSShell());
 	}
@@ -1037,51 +1083,51 @@ public class MainWindow  {
 		});	
 	}
 
-	
+
 	/**
 	 * Überprüfen, ob job Chain namen verändert wurden. Wenn ja, dann die job chain note parameter anpassen
 	 * Job Chain Note Parameter
 	 */
 	public void saveJobChainNoteParameter() {
 		try {
-			
-		
+
+
 			if(container.getCurrentTab().getData("details_parameter") != null) {
 				HashMap h = new HashMap();
 				h = (HashMap)container.getCurrentTab().getData("details_parameter");
-			    java.util.Iterator it = h.keySet().iterator();
-			    while(it.hasNext()) {
-			    	Element jobChain = (Element)it.next();
-			    	String configFilename = h.get(jobChain).toString();
-			    	File configFile = new File(configFilename);
-			    	if(configFile.exists()) {
-			    		String newConfigFilename = configFile.getParent();
-			    		newConfigFilename = newConfigFilename != null ? newConfigFilename : "";
-			    		newConfigFilename = new File(newConfigFilename, Utils.getAttributeValue("name", jobChain) + ".config.xml").getCanonicalPath();
-			    		File newConfigFile = new File(newConfigFilename);
-			    		
-			    		//Attribute anpassem
-			    		DomParser currdom = getSpecifiedDom();
-		    			 String oldname = configFile.getName().replaceAll(".config.xml", "");
-		    			 String newName = newConfigFile.getName().replaceAll(".config.xml", "");
-		    			sos.scheduler.editor.conf.listeners.DetailsListener.changeDetailsJobChainname(newName, oldname, (SchedulerDom)currdom);
-			    		//
-			    		
-			    		if(!newConfigFile.exists() &&  !configFile.renameTo(newConfigFile)) {
-			    			MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename+ "].\n" +
-			    					"Please try later by Hand."
-			    					, SWT.ICON_WARNING);
-			    		} else {
-			    			//Attribute in der config.xml Datei vderändern
-			    					    			
-			    		}
-			    	}
+				java.util.Iterator it = h.keySet().iterator();
+				while(it.hasNext()) {
+					Element jobChain = (Element)it.next();
+					String configFilename = h.get(jobChain).toString();
+					File configFile = new File(configFilename);
+					if(configFile.exists()) {
+						String newConfigFilename = configFile.getParent();
+						newConfigFilename = newConfigFilename != null ? newConfigFilename : "";
+						newConfigFilename = new File(newConfigFilename, Utils.getAttributeValue("name", jobChain) + ".config.xml").getCanonicalPath();
+						File newConfigFile = new File(newConfigFilename);
 
-			    }
-			    container.getCurrentTab().setData("details_parameter", new HashMap());
+						//Attribute anpassem
+						DomParser currdom = getSpecifiedDom();
+						String oldname = configFile.getName().replaceAll(".config.xml", "");
+						String newName = newConfigFile.getName().replaceAll(".config.xml", "");
+						sos.scheduler.editor.conf.listeners.DetailsListener.changeDetailsJobChainname(newName, oldname, (SchedulerDom)currdom);
+						//
+
+						if(!newConfigFile.exists() &&  !configFile.renameTo(newConfigFile)) {
+							MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename+ "].\n" +
+									"Please try later by Hand."
+									, SWT.ICON_WARNING);
+						} else {
+							//Attribute in der config.xml Datei vderändern
+
+						}
+					}
+
+				}
+				container.getCurrentTab().setData("details_parameter", new HashMap());
 			}
 		} catch (Exception e) {
-			
+
 		}
 	}
 
@@ -1103,22 +1149,22 @@ public class MainWindow  {
 
 				Text txtLog = new Text(getSShell(), SWT.NONE);
 				txtLog.setVisible(false);
-				
+
 				final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
 				gridData.widthHint = 0;
 				gridData.heightHint = 0;
 				txtLog.setLayoutData(gridData);
 				txtLog.setSize(0, 0);				
 
-				
+
 				profile.setLogText(txtLog);
-				
+
 				profile.connect();
-				
+
 				if(profile.isLoggedIn()) {
 					if( currdom instanceof SchedulerDom && 
 							sosString.parseToString(container.getCurrentTab().getData("ftp_details_parameter_file")).length() > 0) {
-						
+
 						//Details Parameter speichern						
 						File source = new File(container.getCurrentTab().getData("ftp_details_parameter_file").toString());
 						String remoteDir_ = remoteDir; //remoteDir nicht verändern, da es unten weiterverarbeitet wird
@@ -1126,7 +1172,7 @@ public class MainWindow  {
 						remoteDir_ = remoteDir_ != null ? remoteDir_.replaceAll("\\\\", "/") : "";
 						profile.saveAs( container.getCurrentTab().getData("ftp_details_parameter_file").toString(), remoteDir_ + "/" + source.getName());
 						container.getCurrentTab().setData("ftp_details_parameter_file", "");
-						
+
 						if(sosString.parseToString(container.getCurrentTab().getData("ftp_details_parameter_remove_file")).length() > 0) {
 							//Alte Jobkettenname wurde gelöscht.. Deshalb den alten Job Node Parametern auch löschen.
 							String removeOldFilename = container.getCurrentTab().getData("ftp_details_parameter_remove_file").toString();							
@@ -1354,5 +1400,82 @@ public class MainWindow  {
 			Utils.stopCursor(sShell);
 		}
 
+	}
+
+
+	/**
+	 * Überprüft beim wieder Aktivieren des Editor, ob sich eine 
+	 * im Editor geöffnete Konfigurationsdatei ausserhalb sich geändert hat.
+	 *  TODO:
+	 */
+	public static void shellActivated_() {
+		/*
+		try {
+		//System.out.println("activated");
+		
+		
+		if(MainWindow.getContainer().getCurrentEditor() == null || !flag) {
+			//System.out.println("ignore");
+			return;
+		}
+
+
+		
+		DomParser dom = getSpecifiedDom();
+		if(dom.getFilename() != null) {
+
+			File f = new File(dom.getFilename());
+
+			//System.out.println("file     = " + dom.getLastModifiedFile());
+			//System.out.println("dom file = " + f.lastModified() );
+
+			if(dom.getFilename() != null && 
+					//!sos.util.SOSCrypt.MD5encrypt(dom.getFilename()).equals(dom.getMD5encryptFile())) {
+					f.lastModified() != dom.getLastModifiedFile()) {
+				flag = false;
+				
+				int c = MainWindow.message(sShell, "This file " + dom.getFilename()+ " has been modified outside.\nDo you want to reload it?",  SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+				if(c == SWT.YES) {
+
+					//System.out.println("hier neu laden");
+					try {
+
+						dom.read(dom.getFilename());
+						
+						if (container.getCurrentEditor() instanceof SchedulerForm) {
+							SchedulerForm form =(SchedulerForm)container.getCurrentEditor();
+							form.updateTree("main");
+							form.update();
+						} else if (container.getCurrentEditor() instanceof DocumentationForm) {
+							DocumentationForm form =(DocumentationForm)container.getCurrentEditor();
+							form.updateTree("main");
+							form.update();
+						} else if (container.getCurrentEditor() instanceof ActionsForm) {
+							ActionsForm form =(ActionsForm)container.getCurrentEditor();
+							form.updateTree("main");
+							form.update();
+						}
+						//dom.setFileLastModified(f.lastModified());
+						
+						//System.out.println("neu= " + f.lastModified());
+						//System.out.println("neu= " + dom.getFileLastModified());
+					} catch (Exception e) {
+						System.out.println(e.toString());
+					}
+				}
+
+
+			}
+		}
+		
+		} catch(Exception e) {
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+		} 
+		flag = true;
+		*/
 	}
 }

@@ -72,9 +72,10 @@ public class TabbedContainer implements IContainer {
 
 		// on tab selection
 		folder.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent e) {				
 				setWindowTitle();
 				MainWindow.setMenuStatus();
+				MainWindow.shellActivated_();
 			}
 
 
