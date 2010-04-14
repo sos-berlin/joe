@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<properties name="sos.scheduler.editor">
+	<package>
+		<path>com/sos/scheduler/editor</path>
+		<pref>com.sos.scheduler.editor</pref> <!-- Wird verwendet für Dateiname des Jars -->
+	</package>
+	<main.class.name>${properties.package.pref}.NoMainClass</main.class.name>
+	<svn>
+		<target>
+			<url>http://subversion/svn/sos/scheduler_editor</url>
+		</target>
+		<!--<working.dir>./src/sos/scheduler/editor</working.dir> -->
+	</svn>
+	<classpath>../../lib/com.sos.connection.jar;../../lib/webdavclient4j-core-0.92.jar;../../lib/commons-logging.jar;../../lib/commons-httpclient-3.0.1.jar;../../lib/commons-codec-1.3.jar;../../lib/com.sos.ftp.profiles.jar;../../lib/trilead-ssh2-build211.jar;../../lib/jce-jdk13-129.jar;../../lib/jdom.jar;../../lib/swt.jar;../../lib/com.sos.util.jar;../../lib/jaxen-1.1.1.jar;../../lib/com.sos.net.jar;../../lib/com.sos.settings.jar;../../lib/commons-net-1.2.2.jar
+	</classpath>
+	<javac>
+		<target>1.6</target> <!--  Bestandteil des Jar-Namens -->
+		<source>1.6</source>
+	</javac>
+	<settings>
+		<copyright>Copyright (c) 2010 SOS GmbH Berlin - www.sos-berlin.com -
+		</copyright>
+	</settings>
+</properties>
