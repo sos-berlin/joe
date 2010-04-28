@@ -488,24 +488,34 @@ public class TreeMenu {
 					((SchedulerDom)_dom).setChangedForDirectory(elem, SchedulerDom.NEW);				
 			}
 
-			if(_dom instanceof SchedulerDom &&  ((SchedulerDom)(_dom)).isLifeElement() && oldname != null && newName != null &&!oldname.equals(newName)) {
+			if(_dom instanceof SchedulerDom &&  
+					((SchedulerDom)(_dom)).isLifeElement() && 
+					oldname != null && 
+					newName != null 
+					&& !oldname.equals(newName) &&
+					_dom.getFilename() != null) {
 				
-				File oldFilename = null;
-				if (_dom.getFilename() != null)
-					new File(_dom.getFilename());
+				String parent = "";
+				if (_dom.getFilename() != null && new File(_dom.getFilename()).getParent() != null)
+					parent = new File(_dom.getFilename()).getParent();
+				
+				File oldFilename = new File(parent, oldname  + "." + getElement().getName() + ".xml");
+				 
+				
 				
 				File newFilename = null;
 				if(oldFilename != null && oldFilename.getParent() != null)
 					newFilename = new File(oldFilename.getParent(), newName + "." + getElement().getName() + ".xml");
 				else
-					newFilename = new File(newName + "." + getElement().getName() + ".xml");
+					newFilename = new File(parent, newName + "." + getElement().getName() + ".xml");
 				
 				int c = MainWindow.message(MainWindow.getSShell(), "Do you want really rename Hot Folder File from " + oldFilename + " to " + newFilename + "?", SWT.ICON_WARNING | SWT.YES | SWT.NO );
 				if(c == SWT.YES) {
 					_gui.updateJob(newName);
 					if(_dom.getFilename() != null) {
 						oldFilename.renameTo(newFilename);
-						_dom.setFilename(_dom.getFilename().replaceAll(new File(_dom.getFilename()).getName(), (newName + "." + getElement().getName() + ".xml")));
+						//_dom.setFilename(_dom.getFilename().replaceAll(new File(_dom.getFilename()).getName(), (newName + "." + getElement().getName() + ".xml")));
+						_dom.setFilename(newFilename.getCanonicalPath());
 					}
 					//_gui.updateTree("main");
 					//_dom.setChanged(false);

@@ -74,9 +74,9 @@ public class MainListener {
 	public void showAbout() {
 		TextDialog dialog = new TextDialog(MainWindow.getSShell());
 		dialog.setText("About Job Scheduler Editor");
-		String message = Messages.getString("MainListener.aboutText", Options.getVersion() + "\nSchema-Version:"
+		String message = Messages.getString("MainListener.aboutText", Options.getVersion() + "\nSchema-Version:\n\t"
 				+ Options.getSchemaVersion() + "\n" +
-				"SVN " + getSVNVersion()		
+				"SVN: \t" + getSVNVersion()		
 		);
 		dialog.setContent(message, SWT.CENTER);
 		dialog.getStyledText().setEditable(false);

@@ -3,12 +3,18 @@ package sos.scheduler.editor.app;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.StringReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
+import org.jdom.xpath.XPath;
 
 public class Options {
 
@@ -26,6 +32,7 @@ public class Options {
     
     private static HashMap            holidaysDescription = null;
     
+   
     private Options() {
 
     }
@@ -42,7 +49,7 @@ public class Options {
         try {
             _defaults = new Properties();
             _defaults.load(cl.getResourceAsStream(DEFAULT_OPTIONS));
-
+            
            _properties = new Properties(_defaults);
            // _properties = new Properties();
            // _properties.putAll(_defaults);
@@ -177,8 +184,44 @@ public class Options {
 
 
     public static String getSchemaVersion() {
+    	readSchemaVersion();//zum testen
         return _properties.getProperty("editor.schemaversion");
     }
+    
+    
+    
+    public static void readSchemaVersion() {
+    	
+    	
+    	try {
+    		//String schema = _properties.getProperty("editor.xml.xsd");
+    		SAXBuilder builder = new SAXBuilder(false);
+    		
+			Document doc = builder.build(System.class.getResource(Options.getSchema()).toString());
+			
+			XPath x = XPath.newInstance("//xsd:documentation");	 			 
+			List<Element> listOfElement = x.selectNodes(doc);
+			if(!listOfElement.isEmpty()) {
+				Element e = listOfElement.get(0); 
+				String version = e.getText();
+				int pos1 = version.indexOf("$") + "$Id: ".length();
+				int pos2 = version.indexOf("jz $");
+				version = version.substring(pos1, pos2);
+				_properties.put("editor.schemaversion", version);
+			}
+				
+			
+    	} catch (Exception e) {
+    		try {
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName()+ ". could not read schema version from " , e);
+    		} catch(Exception ee) {
+    			//tu nichts
+    		}
+    	}
+        
+   
+    }
+    
 
 
     public static String getVersion() {

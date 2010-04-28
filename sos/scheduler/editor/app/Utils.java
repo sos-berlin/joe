@@ -39,9 +39,9 @@ public class Utils {
 	private static       Clipboard    _cb             = null;
 
 	//all root elements for undo 
-	private static       List         undo            = null;
+	//private static       List         undo            = null;
 
-	private static       int          UNDO_SIZE       = 10;
+	//private static       int          UNDO_SIZE       = 10;
 
 	private static       Element      resetElement    = null;
 
@@ -912,7 +912,7 @@ public class Utils {
 			if(type == Editor.JOB_CHAIN) {
 
 				XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 
-				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+				List<Element> listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty())
 					//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
 					//"Soll die Jobkette trotzdem umbennant werden");
@@ -920,7 +920,7 @@ public class Utils {
 					"Do you want really rename the jobchain");				
 
 				XPath x4 = XPath.newInstance("//add_order[@job_chain='"+ name + "']");				 
-				List listOfElement_4 = x4.selectNodes(_dom.getDoc());
+				List<Element> listOfElement_4 = x4.selectNodes(_dom.getDoc());
 				if(!listOfElement_4.isEmpty())
 					throw new Exception ("The Jobchain [job_chain=" + name + "] is currently being used by an order. " +
 					"Do you want really rename the jobchain");				
@@ -1043,7 +1043,7 @@ public class Utils {
 		return true;
 	}
 
-	public static void setUndoElement(Element elem) {
+	/*public static void setUndoElement(Element elem) {
 		if(undo == null)
 			undo = new java.util.ArrayList();
 
@@ -1060,7 +1060,7 @@ public class Utils {
 		}
 		return null;
 	}
-
+*/
 
 
 	public static void setChangedForDirectory(Element elem, SchedulerDom dom) {

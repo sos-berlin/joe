@@ -542,6 +542,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label2.setLayoutData(gridData_1);
 		label2.setText("Begin Time:");
 		sBeginHours = new Text(groupSlottime, SWT.BORDER);
+		sBeginHours.setTextLimit(2);
 		sBeginHours.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
@@ -573,6 +574,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label3.setLayoutData(new GridData());
 		label3.setText(":");
 		sBeginMinutes = new Text(groupSlottime, SWT.BORDER);
+		sBeginMinutes.setTextLimit(2);
 		sBeginMinutes.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
@@ -605,6 +607,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label4.setLayoutData(new GridData());
 		label4.setText(":");
 		sBeginSeconds = new Text(groupSlottime, SWT.BORDER);
+		sBeginSeconds.setTextLimit(2);
 		sBeginSeconds.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
@@ -644,6 +647,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label6.setLayoutData(new GridData(86, SWT.DEFAULT));
 		label6.setText("End Time:");
 		sEndHours = new Text(groupSlottime, SWT.BORDER);
+		sEndHours.setTextLimit(2);
 		sEndHours.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
@@ -677,6 +681,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label7.setLayoutData(new GridData());
 		label7.setText(":");
 		sEndMinutes = new Text(groupSlottime, SWT.BORDER);
+		sEndMinutes.setTextLimit(2);
 		sEndMinutes.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
@@ -711,6 +716,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label8.setLayoutData(new GridData());
 		label8.setText(":");
 		sEndSeconds = new Text(groupSlottime, SWT.BORDER);
+		sEndSeconds.setTextLimit(2);
 		sEndSeconds.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
@@ -808,6 +814,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		cboStarttime.setText("Single Start");
 
 		stHour = new Text(composite, SWT.BORDER);
+		stHour.setTextLimit(2);
 		stHour.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				//test
@@ -847,6 +854,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label11_1.setText(":");
 
 		stMinutes = new Text(composite, SWT.BORDER);
+		stMinutes.setTextLimit(2);
 		stMinutes.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
@@ -887,6 +895,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		label12_1.setText(":");
 
 		stSeconds = new Text(composite, SWT.BORDER);
+		stSeconds.setTextLimit(2);
 		stSeconds.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);

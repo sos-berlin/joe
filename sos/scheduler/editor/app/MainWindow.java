@@ -1,7 +1,10 @@
 package sos.scheduler.editor.app;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.HashMap;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -18,6 +21,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.jdom.Element;
+import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.forms.ActionsForm;
@@ -67,6 +71,7 @@ public class MainWindow  {
 
 	private static SOSString             sosString          = new SOSString();
 
+	/**  */
 	private static boolean flag = true;//hilfsvariable
 
 
@@ -795,7 +800,7 @@ public class MainWindow  {
 		final ToolItem butNew = new ToolItem(toolBar, SWT.NONE);
 		butNew.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_new.gif"));	
 		final Menu menu = new Menu(toolBar);
-		butNew.setToolTipText("New Confuguration");
+		butNew.setToolTipText("New Configuration");
 		MenuItem itemConfig = new MenuItem(menu, SWT.PUSH);
 		itemConfig.setText("Configuration");
 		itemConfig.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -1095,7 +1100,7 @@ public class MainWindow  {
 			if(container.getCurrentTab().getData("details_parameter") != null) {
 				HashMap h = new HashMap();
 				h = (HashMap)container.getCurrentTab().getData("details_parameter");
-				java.util.Iterator it = h.keySet().iterator();
+				Iterator it = h.keySet().iterator();
 				while(it.hasNext()) {
 					Element jobChain = (Element)it.next();
 					String configFilename = h.get(jobChain).toString();
@@ -1409,65 +1414,252 @@ public class MainWindow  {
 	 *  TODO:
 	 */
 	public static void shellActivated_() {
-		/*
+
 		try {
-		//System.out.println("activated");
-		
-		
-		if(MainWindow.getContainer().getCurrentEditor() == null || !flag) {
-			//System.out.println("ignore");
-			return;
-		}
+			//System.out.println("activated");
 
 
-		
-		DomParser dom = getSpecifiedDom();
-		if(dom.getFilename() != null) {
+			if(MainWindow.getContainer().getCurrentEditor() == null || !flag) {
+				//System.out.println("ignore");
+				return;
+			}
 
-			File f = new File(dom.getFilename());
 
-			//System.out.println("file     = " + dom.getLastModifiedFile());
-			//System.out.println("dom file = " + f.lastModified() );
 
-			if(dom.getFilename() != null && 
-					//!sos.util.SOSCrypt.MD5encrypt(dom.getFilename()).equals(dom.getMD5encryptFile())) {
-					f.lastModified() != dom.getLastModifiedFile()) {
-				flag = false;
-				
-				int c = MainWindow.message(sShell, "This file " + dom.getFilename()+ " has been modified outside.\nDo you want to reload it?",  SWT.ICON_QUESTION | SWT.YES | SWT.NO );
-				if(c == SWT.YES) {
+			DomParser dom = getSpecifiedDom();
+			if(dom.getFilename() != null) {
 
-					//System.out.println("hier neu laden");
-					try {
+				File f = new File(dom.getFilename());
+				ArrayList<File> changeFiles = new ArrayList<File>();//gilt für Hot Folder Dateien, die von einer anderen Process verändert wurden
+				ArrayList<File> newFFiles = new ArrayList<File>();
+				ArrayList<File> delFFiles = new ArrayList<File>();
+				HashMap<String, Long> hFFiles = new HashMap<String, Long>();
+				//System.out.println("file     = " + dom.getLastModifiedFile());
+				//System.out.println("dom file = " + f.lastModified() );
 
-						dom.read(dom.getFilename());
-						
-						if (container.getCurrentEditor() instanceof SchedulerForm) {
-							SchedulerForm form =(SchedulerForm)container.getCurrentEditor();
-							form.updateTree("main");
-							form.update();
-						} else if (container.getCurrentEditor() instanceof DocumentationForm) {
-							DocumentationForm form =(DocumentationForm)container.getCurrentEditor();
-							form.updateTree("main");
-							form.update();
-						} else if (container.getCurrentEditor() instanceof ActionsForm) {
-							ActionsForm form =(ActionsForm)container.getCurrentEditor();
-							form.updateTree("main");
-							form.update();
+				//Hot Folder. Hat sich ein Holt Folder Datei ausserhalb verändert?
+				long lastmod = 0;
+				if(dom.getFilename() != null) {
+					hFFiles = ((SchedulerDom)dom).getHotFolderFiles();
+					if(f.isDirectory() ) {				
+						ArrayList<File> listOfhotFolderFiles = ((SchedulerDom)dom).getHoltFolderFiles(new File(dom.getFilename()));
+						//wurden Veänderungen ausserhalb durchgeführt
+						for(int i = 0; i < listOfhotFolderFiles.size(); i++) {           		    	
+							File fFile = listOfhotFolderFiles.get(i);								
+							
+
+							try {								
+								long current = fFile.lastModified();//aktuelle Änderungs Zeitstempel
+								if(hFFiles.containsKey(fFile.getName())) {
+									long domc = Long.parseLong((hFFiles.get(fFile.getName()).toString()));//gespeicherte Zeitstempel
+									if(current != domc)
+										changeFiles.add(fFile);
+								} else {
+									//sind neue HotFolder Dateien ausserhalb zustande gekommen?
+									//("jobname" + "_" + name, what)
+									String fName = fFile.getName();
+									int pos1 = fName.indexOf(".");
+									int pos2 = fName.lastIndexOf(".");
+									String n = fName.substring(pos1, pos2) + "_" + fName.substring(0, pos1);
+									if(!( ((SchedulerDom)dom).getChangedJob().get(n) != null && ((SchedulerDom)dom).getChangedJob().get(n).equals(SchedulerDom.DELETE) ))
+										newFFiles.add(fFile);
+								}
+
+								
+
+							} catch (Exception e) {
+								//tu nichts
+								e.printStackTrace();
+							}
+							lastmod = lastmod + fFile.lastModified();
 						}
-						//dom.setFileLastModified(f.lastModified());
-						
-						//System.out.println("neu= " + f.lastModified());
-						//System.out.println("neu= " + dom.getFileLastModified());
-					} catch (Exception e) {
-						System.out.println(e.toString());
+
+						//Überprüfen, ob Dateien ausserhalb gelöscht wurden
+						Iterator<String> it = hFFiles.keySet().iterator();
+						while(it.hasNext()) {
+							String fName = it.next();
+							if(!new File(dom.getFilename(), fName).exists()) {
+								delFFiles.add(new File(dom.getFilename(), fName));
+							}
+						}
+
+					} else {
+						//if(!new File(dom.getFilename()).exists())
+						//	delFFiles.add(new File(dom.getFilename()));
+						lastmod = f.lastModified(); 
 					}
 				}
+				if(dom.getFilename() != null && 						
+						lastmod != dom.getLastModifiedFile()) {
+
+					flag = false;
+
+					String msg = "";
+					if(f.isDirectory()) {
+
+						msg = "This directory " + dom.getFilename()+ " has been modified outside.";
+						if(newFFiles.size() > 0) {
+							msg = msg + "\nNew Files: ";
+
+							for(int i = 0; i < newFFiles.size(); i++) {
+								if(i == 0)
+									msg = msg + "n\t" + 	 newFFiles.get(i).getName();
+								else
+									msg = msg + "\n\t" + newFFiles.get(i).getName();
+							}
+						}
+						if(changeFiles.size() > 0) {
+							msg = msg + "\nChange Files: ";
+
+							for(int i = 0; i < changeFiles.size(); i++) {
+								if(i == 0)
+									msg = msg + "n\t" + 	 changeFiles.get(i);
+								else
+									msg = msg + "\n\t" + changeFiles.get(i);
+							}
+						}						
+
+						if(delFFiles.size() > 0) {
+							msg = msg + "\nRemove Files: ";
+
+							for(int i = 0; i < delFFiles.size(); i++) {
+								if(i == 0)
+									msg = msg + "\n\t" + delFFiles.get(i);
+								else
+									msg = msg + "\n\t" + delFFiles.get(i);
+							}
+							
+						}
+						
+						msg = msg + "\nDo you want to reload it?";
+					} else {
+						if(!new File(dom.getFilename()).exists()){
+							msg = "This file " + dom.getFilename()+ " has been deleted outside.\nDo you want to close the Editor?";
+							delFFiles.add(new File(dom.getFilename()));
+							
+						} else 
+							msg = "This file " + dom.getFilename()+ " has been modified outside.\nDo you want to reload it?";
+					}
 
 
+					int c = MainWindow.message(sShell, msg,  SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+					if(c == SWT.YES) {
+
+						//System.out.println("hier neu laden");
+						try {
+
+							if(f.isDirectory()) {
+								for(int i = 0; i < changeFiles.size(); i++) {
+									File hFfile = changeFiles.get(i);
+									String sXPATH= getXPathString(hFfile, false);
+
+									XPath x1 = XPath.newInstance(sXPATH);
+									List<Element> listOfElement = x1.selectNodes(dom.getDoc());
+									if(!listOfElement.isEmpty()){
+										Element e = listOfElement.get(0);
+										Element pe = e.getParentElement();
+										e.detach();
+										Element n = MergeAllXMLinDirectory.readElementFromHotHolderFile(hFfile);
+										pe.addContent((Element)n.clone());
+
+									}
+
+								}
+
+
+								//Es wurden ausserhalb vom Editor neue Hot Folder dateien hinzugefügt. In diesem Fall soll der Editor aktualisiert werden 
+								for(int i = 0; i < newFFiles.size(); i++) {
+									File newHFFile = newFFiles.get(i);
+
+									String sXPATH= getXPathString(newHFFile, true);
+
+									XPath x1 = XPath.newInstance(sXPATH);
+									List<Element> listOfElement = x1.selectNodes(dom.getDoc());
+									if(!listOfElement.isEmpty()) {
+										Element pe = listOfElement.get(0);
+										Element n = MergeAllXMLinDirectory.readElementFromHotHolderFile(newHFFile);
+										pe.addContent((Element)n.clone());
+									} else {
+
+										Element pe = new Element(sXPATH);							
+										dom.getRoot().addContent(pe);
+										Element n = MergeAllXMLinDirectory.readElementFromHotHolderFile(newHFFile);
+										pe.addContent((Element)n.clone());
+
+									}
+								}
+												
+								
+								for(int i = 0; i < delFFiles.size(); i++){
+									File delFile = delFFiles.get(i);
+									String sXPATH= getXPathString(delFile, false);
+
+									XPath x1 = XPath.newInstance(sXPATH);
+									List<Element> listOfElement = x1.selectNodes(dom.getDoc());
+									if(!listOfElement.isEmpty()) {
+										Element pe = listOfElement.get(0);
+										pe.detach();
+										((SchedulerDom)dom).getHotFolderFiles().remove(delFile.getName());
+									}									
+								}
+
+								if(changeFiles.size() > 0 || newFFiles.size() > 0 || delFFiles.size() > 0) {
+									SchedulerForm form =(SchedulerForm)container.getCurrentEditor();
+									form.updateTree("main");
+									//form.updateCommands();
+									form.update();
+									dom.readFileLastModified();
+								}
+
+							} else {
+
+								if(delFFiles.size() > 0) {
+									//current Tabraiter  soll geschlossen werden weil die Kpnfigurationsdatei ausserhalb gelöscht wurden
+									MainWindow.getContainer().getCurrentTab().dispose();
+									return;
+								}
+								
+								dom.read(dom.getFilename());
+								
+
+								if (container.getCurrentEditor() instanceof SchedulerForm) {							
+									SchedulerForm form =(SchedulerForm)container.getCurrentEditor();
+									form.updateTree("main");
+									form.update();
+								} else if (container.getCurrentEditor() instanceof DocumentationForm) {
+									DocumentationForm form =(DocumentationForm)container.getCurrentEditor();
+									form.updateTree("main");
+									form.update();
+								} else if (container.getCurrentEditor() instanceof ActionsForm) {
+									ActionsForm form =(ActionsForm)container.getCurrentEditor();
+									form.updateTree("main");
+									form.update();
+								}
+								//dom.setFileLastModified(f.lastModified());
+
+								//System.out.println("neu= " + f.lastModified());
+								//System.out.println("neu= " + dom.getFileLastModified());
+							}
+						} catch (Exception e) {
+							System.out.println(e.toString());
+						}
+					} else {
+						
+						if(!f.isDirectory()) {
+							if(delFFiles.size() > 0) {
+								dom.setFilename(null);
+								dom.setChanged(true);
+								
+							}
+						}
+						
+					}
+
+			
+
+				}
 			}
-		}
-		
+
 		} catch(Exception e) {
 			try {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
@@ -1476,6 +1668,40 @@ public class MainWindow  {
 			}
 		} 
 		flag = true;
-		*/
+
 	}
+
+	/**
+
+	 * @param hFfile
+	 * @return
+	 */
+	private static String  getXPathString(File hFfile, boolean onlyParentPath) {
+		String aName = "";
+		String eName = "";
+		String parentElementname = "";
+		String attributName = "name";
+
+
+		int pos1 = hFfile.getName().indexOf(".");
+		int pos2 = hFfile.getName().lastIndexOf(".");
+		aName = hFfile.getName().substring(0, pos1);
+		eName = hFfile.getName().substring(pos1 + 1, pos2);
+		if(eName.equalsIgnoreCase("order") || eName.equalsIgnoreCase("add_order") ) {
+			parentElementname = "commands";
+			aName = aName.substring(aName.indexOf(",")+ 1);
+			attributName = "id";
+		} else if(eName.equalsIgnoreCase("process_class")) {
+			parentElementname = eName.concat("es");
+		} else {
+			parentElementname = eName.concat("s");
+		}	
+
+		if(onlyParentPath)
+			return "//" + parentElementname;
+		else
+			return "//"+ parentElementname +"/"+ eName+"[@"+attributName+"='"+ aName + "']";
+	}
+
+
 }

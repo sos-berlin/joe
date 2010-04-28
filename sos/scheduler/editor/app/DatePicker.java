@@ -45,8 +45,8 @@ public class DatePicker extends Composite {
 
     private Locale              locale      = Locale.getDefault();                           // @jve:decl-index=0:
     
+    //Überprüfung: validFrom muss kleiner als validFrom sein.
     private Date validto = null; 
-
     private Date validFrom = null; 
 
     public DatePicker(Composite parent, int style) {
@@ -82,20 +82,30 @@ public class DatePicker extends Composite {
         this.setLayout(gridLayout); // Generated
         button.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            	if(calendar.getShell().isDisposed()) {                        
+            		org.eclipse.swt.widgets.Shell s = new org.eclipse.swt.widgets.Shell(getShell());
+                    calendar = new PopupCalendar(s, PopupCalendar.SHOWALL, locale);
+            	}
                 if (!calendar.isOpen()) {
+                	
                     Control comp = (Control) e.getSource();
                     calendar.open(comp, SWT.RIGHT);
                 } else
                     calendar.close();
             }
         });
+        
+        
         setSize(new Point(242, 45));
+               
+        
     }
 
 
     private void initCalendar() {
-        calendar = new PopupCalendar(getShell(), PopupCalendar.SHOWALL, locale);
-
+    	org.eclipse.swt.widgets.Shell s = new org.eclipse.swt.widgets.Shell(getShell());
+        calendar = new PopupCalendar(s, PopupCalendar.SHOWALL, locale);
+    
         // add the adapter.
         calendar.setDaySelectorStyle(new DaySelectorStyleAdapter() {
 
@@ -132,7 +142,7 @@ public class DatePicker extends Composite {
         
             System.out.println(e);
         }
-
+        
         calendar.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 if (calendar.getDate() != null) {

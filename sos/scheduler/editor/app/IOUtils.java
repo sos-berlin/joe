@@ -324,10 +324,10 @@ public class IOUtils {
 							&& !new File(filename).renameTo(new File(originFilename))) {                   			
 						MainWindow.message("..could not rename file: " + filename, SWT.ICON_ERROR | SWT.OK);
 					}
-					dom.readFileLastModified();
+					
 
 				}
-
+				dom.readFileLastModified();
 
 				MainWindow.getSShell().setText("Job Scheduler Editor [" + originFilename  + "]");
 
@@ -508,7 +508,7 @@ public class IOUtils {
 				dom.setChanged(true);
 
 			}
-
+			dom.readFileLastModified();
 			dom.setChanged(false); 
 
 		} catch (Exception e) {

@@ -48,6 +48,8 @@ public abstract class DomParser {
 
     private String                _filename        = null;
     
+    /** wann wurde die Konfigurationsdatei zuletzt geändert. Dieser parameter soll dazu dienen, mitzubekommen, ob der 
+     * Konfigurationsdatei von einem anderen Process verändert wurde*/
     private long                  _lastModifiedFile=0;
    
 

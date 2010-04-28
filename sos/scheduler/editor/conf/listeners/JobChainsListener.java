@@ -69,7 +69,7 @@ public class JobChainsListener {
 				TableItem item = new TableItem(table, SWT.NONE);
 				
 				//item.setChecked(sos.scheduler.editor.conf.listeners.DetailsListener.existDetailsParameter(null, name, null, _dom, update, true));
-				if(sos.scheduler.editor.conf.listeners.DetailsListener.existDetailsParameter(null, name, null, _dom, update, true))
+				if(sos.scheduler.editor.conf.listeners.DetailsListener.existDetailsParameter(null, name, null, _dom, update, true, null))
 					item.setBackground(Options.getLightBlueColor());
 				else
 					item.setBackground(null);

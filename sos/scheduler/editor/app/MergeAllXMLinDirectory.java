@@ -595,6 +595,35 @@ public class MergeAllXMLinDirectory {
 		return jobname;
 	}
 	
+	public static Element readElementFromHotHolderFile(File file) {
+		Element elem = null;
+		try {
+			SAXBuilder builder = new SAXBuilder();
+
+			//String xml = createConfigurationFile();
+
+			Document doc = builder.build(file);
+
+			elem = doc.getRootElement();
+			String name = file.getName().substring(0, file.getName().indexOf("."));
+			
+			if(elem.getName().equals("order") || elem.getName().equals("add_order")) {
+				String[] split = name.split(",");
+				String jobChain = split[0];
+				String id = split.length > 1 ? split[1] : "";
+				Utils.setAttribute("job_chain", jobChain, elem);
+				Utils.setAttribute("id", id, elem);
+			} else 
+			
+				Utils.setAttribute("name", name, elem);
+
+
+		} catch (Exception e) {
+			MainWindow.message(".. could not read Element from " + file + " cause: " + e.getMessage(), SWT.ICON_ERROR);
+		}
+		return elem;
+	}
+	
 	public static void main(String[] args) throws Exception {
 		//MergeAllXMLinDirectory allJob = new MergeAllXMLinDirectory("C:/scheduler/config/temp", "C:/scheduler/config/temp/config.xml");
 		//allJob.parseDocuments();
@@ -727,5 +756,7 @@ public class MergeAllXMLinDirectory {
 		return (String[]) urls.toArray(new String[urls.size()]);
 	}
 */
+	
+	
 
 }

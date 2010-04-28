@@ -1257,11 +1257,17 @@ public class DetailsListener {
 	 * Details der state geändert.
 	 */
 
-	public static boolean existDetailsParameter(String state , String jobchainname, String jobname, SchedulerDom dom, ISchedulerUpdate  update, boolean global){
+	public static boolean existDetailsParameter(String state , 
+			String jobchainname, 
+			String jobname, 
+			SchedulerDom dom, 
+			ISchedulerUpdate  update, 
+			boolean global,
+			String orderid){
 		try { 
 			DetailsListener detailListener = new DetailsListener(jobchainname, 
 					state, 
-					null,  
+					orderid,  
 					Editor.JOB_CHAINS, 
 					null, 
 					dom.isLifeElement() || dom.isDirectory(), 
@@ -1407,6 +1413,10 @@ public class DetailsListener {
 			}
 			sos.scheduler.editor.app.MainWindow.message("Parameter note could not change, cause: " + e.getMessage(), SWT.ICON_ERROR);
 		}
+
 	}
+	
+
+	
 
 }

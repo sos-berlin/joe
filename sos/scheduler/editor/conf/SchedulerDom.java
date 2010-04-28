@@ -23,11 +23,12 @@ import org.jdom.output.SAXOutputter;
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
-
+import sos.util.SOSFile;
 
 public class SchedulerDom extends DomParser {
 
@@ -46,9 +47,9 @@ public class SchedulerDom extends DomParser {
 
 	private static final String[]   PARAMS_ELEMENTS            = { "param", "copy_params", "include"};
 
-	private              ArrayList  _disabled                  = new ArrayList();
+	private              ArrayList<String>  _disabled                  = new ArrayList();
 
-	private              HashMap    changedForDirectory        = new HashMap();    
+	private              HashMap<String, String>    changedForDirectory        = new HashMap<String, String>();    
 
 	public static final  String     MODIFY                     = "modify";
 
@@ -67,34 +68,30 @@ public class SchedulerDom extends DomParser {
 	private static final String[]   COMMANDS_ELEMENTS          = { "add_order", "order", "start_job"};
 
 	private static final String[]   ORDER_ELEMENTS             = { "params", "environment"};
-	
+
 	private static final String[]   SETTINGS_ELEMENTS          = { "mail_on_error", "mail_on_warning", "mail_on_success", "mail_on_process", "mail_on_delay_after_error", "log_mail_to", "log_mail_cc", "log_mail_bcc", "log_level", "history", "history_on_process", "history_with_log" }; 
 
 
 	/** life Dateien: Schreibheschützte Dateien*/
-	private              ArrayList  listOfReadOnlyFiles        = null;
+	private              ArrayList<String>  listOfReadOnlyFiles        = null;
 
 	/** life Dateien: Wenn dateiname ungleich der Element Attribute Name ist, dann wird der Dateiname als Element name-Attribut gesetzt*/
-	private              ArrayList   listOfChangeElementNames  = null;		
+	private              ArrayList<String>   listOfChangeElementNames  = null;		
 
+	/** Typen der Hot Folder Dateien */
 	public static final  int         DIRECTORY                 = 1;
-
 	public static final  int         LIFE_JOB                  = 2;
-
 	public static final  int         LIFE_JOB_CHAIN            = 3;
-
 	public static final  int         LIFE_PROCESS_CLASS        = 4;
-
 	public static final  int         LIFE_LOCK                 = 5;
-
 	public static final  int         LIFE_ORDER                = 6;
-
 	public static final  int         LIFE_ADD_ORDER            = 7;
-
 	public static final  int         LIFE_SCHEDULE             = 8;
 
 	private              boolean     isDirectory               = false;
 
+	/** Gilt nur für Hot Folder: Dient zur Überprüfeng ob ausserhalb einer der Hot Folder Dateien von einem  anderen Process verändert wurde*/ 
+	private     HashMap<String, Long> hotFolderFiles = null;	
 
 	public SchedulerDom() {
 
@@ -110,7 +107,7 @@ public class SchedulerDom extends DomParser {
 		putDomOrder("params", PARAMS_ELEMENTS);
 		putDomOrder("schedule", RUNTIME_ELEMENTS);
 		putDomOrder("settings", SETTINGS_ELEMENTS);
-		
+
 		initScheduler();
 
 	}
@@ -382,7 +379,7 @@ public class SchedulerDom extends DomParser {
 		// stream.close();
 
 		setFilename(filename);
-		
+
 		setChanged(false);
 
 		deorderDOM();
@@ -519,6 +516,7 @@ public class SchedulerDom extends DomParser {
 				setChangedForDirectory(parent.getName(), Utils.getAttributeValue("name",parent), what);
 			}
 
+			
 		}
 		/*if(_parent != null) {
     		if(_parent.getName().equals("schedule")){
@@ -530,24 +528,39 @@ public class SchedulerDom extends DomParser {
     		}
     	}*/
 	}
-	 
-	
+
+
 	/*
 	 * what is: NEW or MODIFY or DELETE
 	 */
 	public void setChangedForDirectory(String which, String name, String what) {
 		if(!isChanged())
 			return;
-		
-		
-		
+
+
+
 		changedForDirectory.put(which + "_" + name, what);
+
+		//test
+		String filename = which + "." + name + ".xml";
+		/*
+		if(what.equals(SchedulerDom.DELETE)) {
+			 			 
+			hotFolderFiles.remove(filename);
+		} else if(what.equals(SchedulerDom.MODIFY)) {
+			File f = new File(filename);
+			if(f.exists())
+				hotFolderFiles.put(f.getName(), f.lastModified());
+		}
+		*/
+		//ende test
 		
 		if(what.equals(DELETE))
 			return;
-		
+
 		SchedulerForm form =(SchedulerForm)MainWindow.getContainer().getCurrentEditor();
 		form.setChangedTreeItemText(which + "_" + name);
+
 		
 	}
 
@@ -579,20 +592,20 @@ public class SchedulerDom extends DomParser {
 		}		 
 	}
 
-	public ArrayList getListOfReadOnlyFiles() {
+	public ArrayList<String> getListOfReadOnlyFiles() {
 		return listOfReadOnlyFiles;
 	}
 
-	public void setListOfReadOnlyFiles(ArrayList listOfReadOnlyFiles) {
+	public void setListOfReadOnlyFiles(ArrayList<String> listOfReadOnlyFiles) {
 		this.listOfReadOnlyFiles = listOfReadOnlyFiles;
 
 	}
 
-	public ArrayList getListOfChangeElementNames() {		
+	public ArrayList<String> getListOfChangeElementNames() {		
 		return listOfChangeElementNames;
 	}
 
-	public void setListOfChangeElementNames(ArrayList listOfChangeElementNames) {
+	public void setListOfChangeElementNames(ArrayList<String> listOfChangeElementNames) {
 		this.listOfChangeElementNames = listOfChangeElementNames;
 		for(int i = 0; i < listOfChangeElementNames.size(); i++) {
 			changedForDirectory.put(listOfChangeElementNames.get(i), MODIFY);
@@ -609,30 +622,98 @@ public class SchedulerDom extends DomParser {
 	}
 
 	/**
-     * Liest den letzten Änderungszeitpunkt (in long) der Konfigurationsdatei.
-     * Wurde ausserhalb vom Editor etwas verändert?
-     * 
-     */
-    public void readFileLastModified() {
-    	super.readFileLastModified();
-    	//TODO
-    	/*if(!isDirectory) {
-    		super.readFileLastModified();
-    	} else {
-    		if(getFilename() == null)
-        		this.setLastModifiedFile(0);
-        	
-        	File f = new File(getFilename());
-        	if(f.exists() && f.isDirectory()) {
-        		int lm = 0;
-        		f.listFiles(new FileFile())
-        	} else 
-        		this.setLastModifiedFile(0);
-        	
-        	System.out.println("domparser= " + _lastModifiedFile);
-        	
-    	}
-    	*/
-    }
+	 * Liest den letzten Änderungszeitpunkt (in long) der Konfigurationsdatei.
+	 * Wurde ausserhalb vom Editor etwas verändert?
+	 * 
+	 */
+	public void readFileLastModified() {
+		try {
+
+			/*
+    		  if(!isDirectory) {    		 
+    			super.readFileLastModified();
+    		}
+			 */
+
+			if(!isDirectory) {
+				super.readFileLastModified();
+			} else {
+
+				if(getFilename() == null) {
+					this.setLastModifiedFile(0); 
+					return;
+				}
+
+				long lastModified = 0;
+				File f = new File(getFilename());
+
+				if(f.exists() && f.isDirectory()) {
+
+					ArrayList<File> listOfhotFolderFiles =  getHoltFolderFiles(f);
+					hotFolderFiles = new HashMap<String, Long>();
+
+					//die letzte Änderung merken
+					for(int i = 0; i < listOfhotFolderFiles.size(); i++) {           		    	
+						File fFile = listOfhotFolderFiles.get(i);
+						hotFolderFiles.put(fFile.getName(), fFile.lastModified());
+						lastModified = lastModified + fFile.lastModified();
+					}
+
+					this.setLastModifiedFile(lastModified);
+
+				} else 
+					this.setLastModifiedFile(0);
+
+				//System.out.println("domparser= " + _lastModifiedFile);
+
+			}
+		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
+		}
+
+	}
+
+	/**
+	 * Liefert alle Hot Folder dateinamen
+	 * @param java.io.File entspricht das Hot Folder Verzeichnis
+	 * @return Liste der Dateinamen. Ein Listeneintrag entspricht einen File Object
+	 */
+	public ArrayList<File> getHoltFolderFiles(File f) {		
+		ArrayList<File> listOfhotFolderFiles = new ArrayList<File>();
+		try {
+
+			//Alle Hot Folder Dateien nehmen
+			listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_JOB,java.util.regex.Pattern.CASE_INSENSITIVE));
+			listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_JOB_CHAIN,java.util.regex.Pattern.CASE_INSENSITIVE));
+			listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_LOCK,java.util.regex.Pattern.CASE_INSENSITIVE));
+			listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_ORDER,java.util.regex.Pattern.CASE_INSENSITIVE));
+			listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_PROCESS_CLASS,java.util.regex.Pattern.CASE_INSENSITIVE));
+			listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_SCHEDULE,java.util.regex.Pattern.CASE_INSENSITIVE));
+			
+		} catch (Exception e) {
+			try {
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+
+		}
+		return listOfhotFolderFiles;
+	}
+	
+	/**
+	 * Liefert alle Hot Folder Dateien mit der letzten Änderungen
+	 * key   = File Objekt -> Hot Folder Dateiname name
+	 * value = long -> letzte Änderung
+	 *  @return the hotFolderFiles
+	 */
+	public HashMap<String, Long> getHotFolderFiles() {
+		return hotFolderFiles;
+	}
 	
 }
