@@ -33,8 +33,7 @@ public class CalendarNamesUtil {
      */
     public static String[] getMonthNames(Locale locale) {
         // get a norm calendar using the default locale
-        //SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM", locale);
-    	SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM", Locale.ENGLISH);
+        SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM", locale);
         String[] monthName = new String[12];
         GregorianCalendar cal = new GregorianCalendar(2005, java.util.Calendar.JANUARY, 1);
         for (int iMonth = 0; iMonth < 12; iMonth++) {

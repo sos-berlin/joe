@@ -1115,18 +1115,22 @@ public class DetailsListener {
 					Element jobChainNode = (Element)listOfElement.get(i);
 					//jobname in der Jobkette ermitteln 
 					String jobname = Utils.getAttributeValue("job", jobChainNode);
-
 					String hotFolderfilename = "";
-					if(dom.getFilename() != null && new File(dom.getFilename()).getParent() != null)
-						hotFolderfilename = new File(new File(dom.getFilename()).getParent(), jobname + ".job.xml").getCanonicalPath();
-					else
-						hotFolderfilename = new File(Options.getSchedulerHotFolder(), jobname + ".job.xml").getCanonicalPath();
+                    File hotFolderfile = null;
+                    
+					if ( new File(Options.getSchedulerHotFolder(), jobname + ".job.xml").exists()) {
+					   hotFolderfile = new File(Options.getSchedulerHotFolder(), jobname + ".job.xml");
+					}else {
+					   hotFolderfile = new File(new File(dom.getFilename()).getParent(), new File(jobname).getName() + ".job.xml");
+					}
+					
+					hotFolderfilename = hotFolderfile.getCanonicalPath();
 					//Unterscheiden, ob Hot Folder Element. Wenn ja, dann Hot Folder Datei öffnen. Wenn der Hot Folder Element bereits offen ist, dann verändern
 					List listOfElement2  = null;
 
 					if(dom.isLifeElement() || new File(jobname).getParent() != null ) {
 
-						if(!new File(hotFolderfilename).exists()) {
+						if(!hotFolderfile.exists()) {
 							openFilePerFTP(hotFolderfilename);
 							if(!new File(hotFolderfilename).exists()) {
 								sos.scheduler.editor.app.MainWindow.message("Could not add Monitoring Job, cause Hot Folder File " + hotFolderfilename + " not exist.", SWT.ICON_WARNING);

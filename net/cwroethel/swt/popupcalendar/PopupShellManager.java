@@ -52,8 +52,8 @@ public class PopupShellManager {
 
 
     // Don't create an empty PopupShellManager.
-    //private PopupShellManager() {
-    //}
+    private PopupShellManager() {
+    }
 
 
     /**

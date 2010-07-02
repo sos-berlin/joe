@@ -101,7 +101,7 @@ public class PopupCalendar {
      * DateChooser.
      */
     public static final int SHOWMONTH          = 1;
- 
+
     /**
      * If set displays the Today Button at the bottom of the calendar widget.
      * Used as style option for DateChooser.

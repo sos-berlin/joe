@@ -156,7 +156,7 @@ public class MonthSelector extends DateChooserPanel {
                 SelectionEvent selectionEvent = new SelectionEvent(event);
                 sendSelectionEvent(selectionEvent);
             }
-        }); 
+        });
 
         yearSelector = new Spinner(this, SWT.FLAT);
         yearSelector.setLayoutData(yearData);
