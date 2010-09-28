@@ -92,6 +92,10 @@ public class FTPDialog {
 		//main = main_;		 					
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
+
 
 	public void showForm(String type_) {
 		try {

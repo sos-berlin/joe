@@ -244,14 +244,12 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 					applyNode();
 				}
 			});
-			final GridData gridData7 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
-			bApplyNode.setLayoutData(gridData7);
+			bApplyNode.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 			bApplyNode.setEnabled(false);
 			bApplyNode.setText("&Apply Chain Node");
 			//composite_2.setLayout(gridLayout_6);
 
 			label7 = new Label(gNodes, SWT.NONE);
-			label7.setLayoutData(new GridData());
 			label7.setText("Job:");
 
 			butGoto = new Button(gNodes, SWT.ARROW | SWT.DOWN);
@@ -342,7 +340,6 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 				butImportJob.setText("Import Job");
 			}
 			label8 = new Label(gNodes, SWT.NONE);
-			label8.setLayoutData(new GridData());
 			label8.setText("Next State:");
 			new Label(gNodes, SWT.NONE);
 
@@ -366,6 +363,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			composite_4.setLayout(new GridLayout());
 */
 			cNextState = new Combo(gNodes, SWT.NONE);
+			cNextState.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 			cNextState.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					bApplyNode.setEnabled(isValidNode());
@@ -404,7 +402,6 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 			
 			final Label delayLabel = new Label(gNodes, SWT.NONE);
-			delayLabel.setLayoutData(new GridData());
 			delayLabel.setText("Delay:");
 
 			tDelay = new Text(gNodes, SWT.BORDER);
@@ -449,7 +446,6 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			bNewNode.setText("New Chain &Node");
 
 			label9 = new Label(gNodes, SWT.NONE);
-			label9.setLayoutData(new GridData());
 			label9.setText("Error State:");
 			new Label(gNodes, SWT.NONE);
 
@@ -541,7 +537,6 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			bFullNode.setText("Full Node");
 
 			bEndNode = new Button(cType, SWT.RADIO);
-			bEndNode.setLayoutData(new GridData());
 			bEndNode.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 
@@ -733,7 +728,6 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			composite_1.setLayout(gridLayout_5);
 
 			butUp = new Button(composite_1, SWT.NONE);
-			butUp.setLayoutData(new GridData());
 			butUp.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 

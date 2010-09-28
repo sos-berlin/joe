@@ -43,7 +43,8 @@ public class JobListener {
 
 
 	public boolean isDisabled() {
-		return _dom.isJobDisabled(Utils.getAttributeValue("name", _job));
+	    boolean disabled = (!Utils.getAttributeValue("enabled", _job).equalsIgnoreCase("yes"));
+		return disabled;
 	}
 
 
@@ -53,13 +54,7 @@ public class JobListener {
 
 
 	public void setName(String name, boolean updateTree) {
-		boolean isDis = isDisabled();
 		
-		if(isDis) //ändern der Jobname der disabled ist: alte jobname aus der disable Liste löschen und neue hinzufügen
-			_dom.setJobDisabled(Utils.getAttributeValue("name",_job), false);
-
-		_dom.setJobDisabled(name, isDis);		
-
 
 		String removename = Utils.getAttributeValue("name", _job);
 		Utils.setAttribute("name", name, _job, _dom);		

@@ -29,6 +29,7 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
+import org.eclipse.swt.widgets.Spinner;
 
 public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage {
 
@@ -56,6 +57,8 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 	private boolean             init                        = false;
 	
 	private boolean             changeJobChainName          = true;
+	private Spinner             sMaxorder                   = null;
+	private Spinner sMaxorders;
 
 
 	public JobChainForm(Composite parent, int style, SchedulerDom dom, Element jobChain) {
@@ -101,8 +104,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		gridLayout.numColumns = 5;
 		jobChainGroup.setLayout(gridLayout);
 		chainNameLabel = new Label(jobChainGroup, SWT.NONE);
-		final GridData gridData_6 = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
-		chainNameLabel.setLayoutData(gridData_6);
+		chainNameLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		chainNameLabel.setText("Chain Name ");
 		tName = new Text(jobChainGroup, SWT.BORDER);
 		tName.addVerifyListener(new VerifyListener() {
@@ -155,7 +157,6 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		});
 
 		butDetails = new Button(jobChainGroup, SWT.NONE);
-		butDetails.setLayoutData(new GridData());
 		butDetails.setEnabled(true);
 		butDetails.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {	
@@ -184,7 +185,6 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		});
 		 */
 		final Label titleLabel = new Label(jobChainGroup, SWT.NONE);
-		titleLabel.setLayoutData(new GridData());
 		titleLabel.setText("Title");
 
 		txtTitle = new Text(jobChainGroup, SWT.BORDER);
@@ -206,19 +206,45 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1));
 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
-
-		butDistributed = new Button(jobChainGroup, SWT.CHECK);
-		butDistributed.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
-		butDistributed.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		
+		Label lblMaxOrders = new Label(jobChainGroup, SWT.NONE);
+		lblMaxOrders.setText("Max Orders");
+		
+		sMaxorders = new Spinner(jobChainGroup, SWT.BORDER);
+		sMaxorders.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
 				if(init) return;
-				listener.setDistributed(butDistributed.getSelection());
-				//getShell().setDefaultButton(bApplyChain);
-				//bApplyChain.setEnabled(true);
+				listener.setMaxorders(sMaxorders.getSelection());
 			}
 		});
-		butDistributed.setText("Distributed");
-		butDistributed.setSelection(listener.isDistributed());
+		sMaxorders.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		sMaxorders.setMaximum(99999);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		
+				butDistributed = new Button(jobChainGroup, SWT.CHECK);
+				butDistributed.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+				butDistributed.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(final SelectionEvent e) {
+						if(init) return;
+						listener.setDistributed(butDistributed.getSelection());
+						//getShell().setDefaultButton(bApplyChain);
+						//bApplyChain.setEnabled(true);
+					}
+				});
+				butDistributed.setText("Distributed");
+				butDistributed.setSelection(listener.isDistributed());
 		bRecoverable = new Button(jobChainGroup, SWT.CHECK);
 		bRecoverable.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		bRecoverable.setSelection(true);
@@ -269,6 +295,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 
 		tName.setText(listener.getChainName());
 		txtTitle.setText(listener.getTitle());
+		sMaxorders.setSelection(listener.getMaxOrders());
 
 		bRecoverable.setSelection(listener.getRecoverable() );
 		bVisible.setSelection(listener.getVisible());

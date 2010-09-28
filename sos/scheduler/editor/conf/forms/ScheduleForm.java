@@ -231,6 +231,8 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 
 			});
 			final GridData gridData = new GridData();
+			gridData.grabExcessHorizontalSpace = true;
+			gridData.horizontalAlignment = SWT.FILL;
 			validFrom.setLayoutData(gridData);
 
 			final Composite composite_1_1 = new Composite(scheduleGroup, SWT.NONE);
@@ -318,13 +320,13 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 			validToLabel.setText("Valid To");
 
 			validTo = new DatePicker(scheduleGroup, SWT.BORDER);
+			validTo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 			validTo.setEditable(true);
 			validTo.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					setValidDateTo();					
 				}
 			});
-			validTo.setLayoutData(new GridData());
 
 			final Composite composite_1 = new Composite(scheduleGroup, SWT.NONE);
 			composite_1.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));

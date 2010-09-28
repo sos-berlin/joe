@@ -101,7 +101,8 @@ public class SchedulerListener {
 			}
 
 			String job = "Job: " + name;
-			job += _dom.isJobDisabled(name) ? " (Disabled)" : "";        	
+			
+			job += _dom.isEnabled(element) ? " (Disabled)" : "";        	
 			item.setText(job);
 			item.setData(new TreeData(Editor.JOB, element, Options.getHelpURL("job")));
 			item.setData("key", "job"); 
@@ -510,7 +511,7 @@ public class SchedulerListener {
 					TreeItem i = new TreeItem(parent, SWT.NONE);
 					String name = Utils.getAttributeValue("name", element);
 					String job = "Job: " + name;
-					job += _dom.isJobDisabled(name) ? " (Disabled)" : "";
+ 					job += _dom.isEnabled(element) ? " (Disabled)" : "";
 
 					i.setText(job);					
 					i.setData(new TreeData(Editor.JOB, element, Options.getHelpURL("job")));

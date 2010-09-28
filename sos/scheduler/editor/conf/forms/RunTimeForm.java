@@ -82,10 +82,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         tComment.setText(listener.getComment());
         tFunction.setText(listener.getFunction());
         String title = gComment.getText();
-        if (dom.isJobDisabled(Utils.getAttributeValue("name", job))) {
-            title += " (Cannot be set for disabled Jobs)";
-            tComment.setEnabled(false);
-        }
+	    
         gComment.setText(title);
         dom.setInit(false);   
         setEnabled();

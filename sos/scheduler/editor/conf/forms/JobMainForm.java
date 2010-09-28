@@ -135,11 +135,9 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		gridLayout.marginHeight = 2;
 		gridLayout.numColumns = 6;
 		gMain = new Group(group, SWT.NONE);
-		final GridData gridData_12 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		gMain.setLayoutData(gridData_12);
+		gMain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		gMain.setText("Main Options");
 		gMain.setLayout(gridLayout);
-		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
 		
 		label = new Label(gMain, SWT.NONE);
 		label.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
@@ -151,14 +149,18 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 			public void focusGained(final FocusEvent e) {
 				//tName.selectAll();
 			}
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
 		});
 		tName.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {									
-				if(!init)//während der initialiserung sollen keine überprüfungen stattfinden
-					e.doit = Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, null);								
+			   if(!init)//während der initialiserung sollen keine überprüfungen stattfinden
+				   e.doit = Utils.checkElement(listener.getName(), listener.get_dom(), Editor.JOB, null);  
+											
 			}
 		});
-		tName.setLayoutData(gridData);
+		tName.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false));
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if(init) return;
@@ -171,12 +173,9 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 
 		});
 		label7 = new Label(gMain, SWT.NONE);
-		label7.setLayoutData(new GridData());
 		label7.setText("Order Job:");
-		GridData gridData15 = new GridData();
 		cOrder = new Composite(gMain, SWT.NONE);
 		cOrder.setLayout(new RowLayout());
-		cOrder.setLayoutData(gridData15);
 		bOrderYes = new Button(cOrder, SWT.RADIO);
 		
 		bOrderYes.setText("Yes");
@@ -242,9 +241,8 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		label1 = new Label(gMain, SWT.NONE);
 		label1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		label1.setText("Job Title:");
-		GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1);
 		tTitle = new Combo(gMain, SWT.BORDER);
-		tTitle.setLayoutData(gridData1);
+		tTitle.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1));
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if(init) return;
@@ -257,12 +255,9 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		
 		new Label(gMain, SWT.NONE);
 		label9 = new Label(gMain, SWT.NONE);
-		label9.setLayoutData(new GridData());
-		label9.setText("Process Class:");		
-		GridData gridData4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+		label9.setText("Process Class:");
 	 
 		butGoto = new Button(gMain, SWT.ARROW | SWT.DOWN);
-		butGoto.setLayoutData(new GridData());
 		butGoto.setVisible(listener.get_dom() != null && !listener.get_dom().isLifeElement());
 		butGoto.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -283,7 +278,7 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 				listener.setProcessClass(cProcessClass.getText());
 			}
 		});
-		cProcessClass.setLayoutData(gridData4);
+		cProcessClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		cProcessClass.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				
@@ -293,7 +288,6 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		});
 		
 		butBrowse = new Button(gMain, SWT.NONE);
-		butBrowse.setLayoutData(new GridData());
 		butBrowse.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				String name = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_PROCESS_CLASS);
@@ -308,7 +302,6 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		stop_on_errorLabel.setText("Stop On Error");
 		
 		bStopOnError = new Button(gMain, SWT.CHECK);
-		bStopOnError.setLayoutData(new GridData());
 		//gridData_16.widthHint = 17;
 		bStopOnError.setSelection(true);
 		bStopOnError.addSelectionListener(new SelectionAdapter() {

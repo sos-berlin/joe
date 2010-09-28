@@ -182,8 +182,6 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		});
 		bApply = new Button(group, SWT.NONE);
 		label5 = new Label(group, SWT.NONE);
-		final GridData gridData = new GridData();
-		label5.setLayoutData(gridData);
 		label5.setText("Max Processes:");
 		GridData gridData4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		gridData4.widthHint = 20;
@@ -201,7 +199,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		sMaxProcesses.setMaximum(99999999);
 		sMaxProcesses.setLayoutData(gridData4);
 		sMaxProcesses.setEnabled(false);
-		/*sMaxProcesses.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
+		sMaxProcesses.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
 				if (e.keyCode == SWT.CR) {
 					applyClass();
@@ -210,7 +208,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 				}
 			}
 		});
-		*/
+		 
 		sMaxProcesses.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				bApply.setEnabled(true);
@@ -221,7 +219,6 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		gridData_2.widthHint = 79;
 		label10.setLayoutData(gridData_2);
 		label10.setText("Scheduler ID:");
-		GridData gridData6 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false);
 		tSpoolerID = new Text(group, SWT.BORDER);
 		tSpoolerID.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(final TraverseEvent e) {
@@ -240,7 +237,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 				tSpoolerID.selectAll();
 			}
 		});
-		tSpoolerID.setLayoutData(gridData6);
+		tSpoolerID.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false));
 		tSpoolerID.setEnabled(false);
 		/*tSpoolerID.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
@@ -379,11 +376,10 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 				//bNew.setEnabled(false);
 			}
 		});
-		GridData gridData8 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
 
 		label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label2.setText("Label");
-		label2.setLayoutData(gridData8);
+		label2.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false));
 		bRemove = new Button(group, SWT.NONE);
 		bRemove.setText("Remove Process Class");
 		bRemove.setEnabled(false);
@@ -461,10 +457,9 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 	  * This method initializes table
 	  */
 	 private void createTable() {
-		 GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 4, 4);
 		 table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
 		 table.setHeaderVisible(true);
-		 table.setLayoutData(gridData);
+		 table.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 4, 4));
 		 table.setLinesVisible(true);
 		 table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			 public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {

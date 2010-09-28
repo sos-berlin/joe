@@ -47,8 +47,7 @@ public class SchedulerDom extends DomParser {
 
 	private static final String[]   PARAMS_ELEMENTS            = { "param", "copy_params", "include"};
 
-	private              ArrayList<String>  _disabled                  = new ArrayList();
-
+ 
 	private              HashMap<String, String>    changedForDirectory        = new HashMap<String, String>();    
 
 	public static final  String     MODIFY                     = "modify";
@@ -280,43 +279,26 @@ public class SchedulerDom extends DomParser {
         return true;
     }*/
 
+	public boolean isEnabled(Element e) {
+	    boolean enabled = (Utils.getAttributeValue("enabled", e).equalsIgnoreCase("yes"));
+		return enabled;
+	}
+	
 	private String readFile(String filename) throws IOException {
-		_disabled = new ArrayList<String>();
-
+ 
 		String encoding = DEFAULT_ENCODING;
 		String line = null;
 		StringBuffer sb = new StringBuffer();
-		boolean disabled = false;
-
-		Pattern p1 = Pattern.compile("<!--\\s*disabled\\s*=\\s*\"([^\"]+)\"");
-		Pattern p2 = Pattern.compile("-->");
+ 
 		Pattern p3 = Pattern.compile("<?xml.+encoding\\s*=\\s*\"([^\"]+)\"");
-		Pattern p4 = Pattern.compile("<!--\\s*disabled");
-
+ 
 		BufferedReader br = new BufferedReader(new FileReader(filename));
 		try {
 			while ((line = br.readLine()) != null) {
 				Matcher m3 = p3.matcher(line);
-				Matcher m4 = p4.matcher(line);
-				if (m3.find()) {
+ 				if (m3.find()) {
 					encoding = m3.group(1);
-				} else if (m4.find()) { // disable start
-					Matcher m1 = p1.matcher(line);
-					if (m1.find()) { // disabled job with name
-						_disabled.add(m1.group(1));
-						line = m1.replaceFirst("");
-					} else { // disabled jobs tag
-						line = m4.replaceFirst("");
-					}
-					disabled = true;
-				} else if (disabled) { // disable end
-					Matcher m2 = p2.matcher(line);
-					m2 = p2.matcher(line);
-					if (m2.find()) {
-						line = m2.replaceFirst("");
-						disabled = false;
-					}
-				}
+				} 
 
 				// System.out.println(line);
 
@@ -345,8 +327,7 @@ public class SchedulerDom extends DomParser {
 		FormatHandler handler = new FormatHandler(this);
 		handler.setStyleSheet(styleSheet);
 		handler.setEnconding(encoding);
-		handler.setDisableJobs(isJobsDisabled());
-
+ 
 
 		SAXOutputter saxo = new SAXOutputter(handler);     
 
@@ -398,8 +379,7 @@ public class SchedulerDom extends DomParser {
 		FormatHandler handler = new FormatHandler(this);
 		handler.setStyleSheet(styleSheet);
 		handler.setEnconding(encoding);
-		handler.setDisableJobs(isJobsDisabled());
-		SAXOutputter saxo = new SAXOutputter(handler);
+ 		SAXOutputter saxo = new SAXOutputter(handler);
 		//saxo.output(getDoc());
 		saxo.output(doc);
 
@@ -445,8 +425,7 @@ public class SchedulerDom extends DomParser {
 		FormatHandler handler = new FormatHandler(this);
 		handler.setStyleSheet(styleSheet);
 		handler.setEnconding(DEFAULT_ENCODING);
-		handler.setDisableJobs(isJobsDisabled());
-		SAXOutputter saxo = new SAXOutputter(handler);
+ 		SAXOutputter saxo = new SAXOutputter(handler);
 		saxo.output(element);
 
 		deorderDOM();
@@ -478,34 +457,7 @@ public class SchedulerDom extends DomParser {
 	}
 
 
-	public boolean isJobDisabled(String name) {
-		return _disabled.contains(name);
-	}
 
-
-	public boolean isJobsDisabled() {
-		if(isLifeElement()) {
-			return false;
-		}
-		int disabledJobs = _disabled.size();
-		Element jobs = getRoot().getChild("config").getChild("jobs");
-		if (jobs == null)
-			return false;
-		int jobCnt = jobs.getChildren("job").size();
-		return disabledJobs >= jobCnt;
-	}
-
-
-	public void setJobDisabled(String name, boolean disabled) {
-		boolean contains = _disabled.contains(name);
-		if (contains && !disabled) {
-			_disabled.remove(name);
-			setChanged(true);
-		} else if (!contains && disabled) {
-			_disabled.add(name);
-			setChanged(true);
-		}
-	}
 
 	public void setChangedForDirectory(Element _parent, String what) {
 		Element parent = Utils.getRunTimeParentElement(_parent);

@@ -136,7 +136,7 @@ public class NoteForm extends Composite implements IUnsaved, IUpdateLanguage {
                 	getShell().dispose();
             }
         });
-        text = new Text(group, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
+        text = new Text(group, SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.V_SCROLL |  SWT.CANCEL | SWT.MULTI);
         text.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
         text.setLayoutData(gridData); // Generated
         text.addModifyListener(new org.eclipse.swt.events.ModifyListener() {

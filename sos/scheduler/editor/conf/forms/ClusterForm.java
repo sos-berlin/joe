@@ -89,6 +89,7 @@ public class ClusterForm extends Composite implements IUnsaved, IUpdateLanguage 
 	 private void createGroup() {
 
 		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
 		gridData.minimumWidth = 60;
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;

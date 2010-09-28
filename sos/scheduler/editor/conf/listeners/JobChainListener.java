@@ -114,6 +114,7 @@ public class JobChainListener {
 	public String getTitle() {
 		return Utils.getAttributeValue("title", _chain);
 	}
+	
 
 	public void setTitle(String title) {
 		Utils.setAttribute("title", title, _chain);
@@ -121,6 +122,20 @@ public class JobChainListener {
 		if(_dom.isDirectory()|| _dom.isLifeElement()) _dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
 	}
 
+	public int getMaxOrders() {
+	   int i;
+	   try {
+	     i = Integer.parseInt(Utils.getAttributeValue("max_orders", _chain));
+	   }catch (NumberFormatException e) {i = 0;}
+		return i;
+	}
+	
+	public void setMaxorders(int maxOrder) {
+		Utils.setAttribute("max_orders", maxOrder, _chain);
+		_dom.setChanged(true);
+		if(_dom.isDirectory()|| _dom.isLifeElement()) _dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
+	}
+	
 	public Element getChain() {
 		return _chain;
 	}

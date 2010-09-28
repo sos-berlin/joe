@@ -148,7 +148,9 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 				listener.setValue("mail_on_error", mailOnError.getText(), "no");
 			}
 		});
-		mailOnError.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+		GridData gd_mailOnError = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+		gd_mailOnError.minimumWidth = 150;
+		mailOnError.setLayoutData(gd_mailOnError);
 		Label label1 = new Label(group, SWT.NONE);
 		label1.setText("Mail On Warning");
 
@@ -159,7 +161,9 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 				listener.setValue("mail_on_warning", mailOnWarning.getText(), "no");
 			}
 		});
-		mailOnWarning.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+		GridData gd_mailOnWarning = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+		gd_mailOnWarning.minimumWidth = 150;
+		mailOnWarning.setLayoutData(gd_mailOnWarning);
 		Label label3 = new Label(group, SWT.NONE);
 		label3.setText("Mail On Success");
 
@@ -169,11 +173,12 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 				listener.setValue("mail_on_success", mailOnSuccess.getText(), "no");
 			}
 		});
-		mailOnSuccess.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+		GridData gd_mailOnSuccess = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+		gd_mailOnSuccess.minimumWidth = 150;
+		mailOnSuccess.setLayoutData(gd_mailOnSuccess);
 
 		
 		final Label mailOnProcessLabel = new Label(group, SWT.NONE);
-		mailOnProcessLabel.setLayoutData(new GridData());
 		mailOnProcessLabel.setText("Mail On Process");
 
 		mailOnProcess = new Combo(group, SWT.READ_ONLY);
@@ -182,7 +187,9 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 				listener.setValue("mail_on_process", mailOnProcess.getText(), "no");
 			}
 		});
-		mailOnProcess.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+		GridData gd_mailOnProcess = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+		gd_mailOnProcess.minimumWidth = 150;
+		mailOnProcess.setLayoutData(gd_mailOnProcess);
 
 		final Label mailOnDelayLabel = new Label(group, SWT.NONE);
 		mailOnDelayLabel.setText("Mail On Delay After Error");
@@ -264,16 +271,17 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		
 
 		final Label logLevelLabel = new Label(group, SWT.NONE);
-		logLevelLabel.setLayoutData(new GridData());
 		logLevelLabel.setText("Log Level");
 
 		LogLevel = new Combo(group, SWT.READ_ONLY);
+		GridData gd_LogLevel = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_LogLevel.minimumWidth = 150;
+		LogLevel.setLayoutData(gd_LogLevel);
 		LogLevel.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				listener.setValue("log_level", LogLevel.getText());
 			}
 		});
-		LogLevel.setLayoutData(new GridData());
 
 		final Label label_2 = new Label(group, SWT.HORIZONTAL | SWT.SEPARATOR);
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
@@ -289,7 +297,9 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 				listener.setValue("history", cboHistory.getText());
 			}
 		});
-		cboHistory.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+		GridData gd_cboHistory = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+		gd_cboHistory.minimumWidth = 150;
+		cboHistory.setLayoutData(gd_cboHistory);
 
 		final Label historyOnProcessLabel = new Label(group, SWT.NONE);
 		historyOnProcessLabel.setText("History On Process");
@@ -315,7 +325,9 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 				
 			}
 		});
-		cboHistoryOnProcess.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+		GridData gd_cboHistoryOnProcess = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+		gd_cboHistoryOnProcess.minimumWidth = 150;
+		cboHistoryOnProcess.setLayoutData(gd_cboHistoryOnProcess);
 
 		final Label historyWithLogLabel = new Label(group, SWT.NONE);
 		historyWithLogLabel.setText("History With Log");
@@ -326,7 +338,9 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 				listener.setValue("history_with_log", cboHistoryWithLog.getText());
 			}
 		});
-		cboHistoryWithLog.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
+		GridData gd_cboHistoryWithLog = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
+		gd_cboHistoryWithLog.minimumWidth = 150;
+		cboHistoryWithLog.setLayoutData(gd_cboHistoryWithLog);
 		
 
 	 }

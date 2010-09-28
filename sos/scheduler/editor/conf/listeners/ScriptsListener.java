@@ -147,7 +147,6 @@ public class ScriptsListener {
 		if (index >= 0) {
 			TableItem item = table.getItem(index);
 			Element e = (Element) item.getData();
-			_dom.setJobDisabled(Utils.getAttributeValue("name", e), false);
 			e.detach();
 			_dom.setChanged(true);
 			 if(_dom.isLifeElement() || _dom.isDirectory()) 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.SWT;
+import org.jdom.Attribute;
 import org.jdom.CDATA;
 import org.jdom.Element;
 import sos.scheduler.editor.app.Editor;
@@ -39,6 +40,7 @@ public class ScriptListener {
     private Element              _script     = null;
 
     private int                  _type       = -1;
+    
     
     private ISchedulerUpdate     _update     = null;
 
@@ -194,6 +196,14 @@ public class ScriptListener {
         return Utils.getAttributeValue("filename", _script);
     }
 
+    public void setClasspath(String classpath) {
+          setAttributeValue("java_class_path", classpath, JAVA);
+    }
+    
+    public String getClasspath() {
+       String s = Utils.getAttributeValue("java_class_path", _script);
+       return s;
+    }
 
     public void setFilename(String filename) {
         setAttributeValue("filename", filename, COM);

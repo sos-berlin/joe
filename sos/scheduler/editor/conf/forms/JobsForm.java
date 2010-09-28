@@ -91,7 +91,6 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 	 */
 	private void createGroup() {
 		try {
-			GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 2;
 			group = new Group(this, SWT.NONE);
@@ -100,7 +99,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			createTable();
 			bNewJob = new Button(group, SWT.NONE);
 			bNewJob.setText("New Standalone Job");
-			bNewJob.setLayoutData(gridData);
+			bNewJob.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false));
 			getShell().setDefaultButton(bNewJob);
 			bNewJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {					
@@ -175,7 +174,6 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 	 */
 	private void createTable() {
 		try {
-			GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 5);
 			table = new Table(group, SWT.BORDER | SWT.FULL_SELECTION | SWT.CHECK);
 			table.addMouseListener(new MouseAdapter() {
 				public void mouseDoubleClick(final MouseEvent e) {
@@ -184,7 +182,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 				}
 			});
 			table.setHeaderVisible(true);
-			table.setLayoutData(gridData2);
+			table.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 5));
 			table.setLinesVisible(true);
 			TableColumn tableColumn5 = new TableColumn(table, SWT.NONE);
 			tableColumn5.setWidth(60);
@@ -200,7 +198,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 					if (e.detail == SWT.CHECK) {						
 						TableItem item = (TableItem) e.item;
 						if (!listener.hasJobComment((Element) item.getData())) {
-							listener.setJobDisabled(item.getText(1), item.getChecked());
+							listener.setJobEnabled((Element)item.getData(), !item.getChecked());
 						} else {
 							MainWindow.message(Messages.getString("MainListener.cannotDisable"), SWT.ICON_INFORMATION
 									| SWT.OK);

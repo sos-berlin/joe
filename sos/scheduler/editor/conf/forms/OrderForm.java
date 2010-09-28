@@ -65,8 +65,6 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 	private Combo                  cJobchain          = null;
 
-	private Button                 bReplace           = null;
-
 	private Text                   tOrderId           = null;
 
 	private boolean                event              = false;
@@ -139,8 +137,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		GridLayout gridLayout3 = new GridLayout();
 		gridLayout3.numColumns = 7;
 		gOrder = new Group(group, SWT.NONE);
-		final GridData gridData_10 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		gOrder.setLayoutData(gridData_10);
+		gOrder.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		gOrder.setText("Order");
 		gOrder.setLayout(gridLayout3);
 		label10 = new Label(gOrder, SWT.NONE);
@@ -170,8 +167,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 				}
 			}
 		});
-		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, false, 5, 1);
-		tOrderId.setLayoutData(gridData_3);
+		tOrderId.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 5, 1));
 
 		final Label jobchainLabel = new Label(gOrder, SWT.NONE);
 		jobchainLabel.setText("Job chain");
@@ -198,8 +194,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		cJobchain = new Combo(composite, SWT.NONE);
 
 		cJobchain.setMenu(new sos.scheduler.editor.app.ContextMenu(cJobchain, dom, Editor.JOB_CHAIN).getMenu());
-		final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		cJobchain.setLayoutData(gridData_1);
+		cJobchain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if (event)
@@ -254,9 +249,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 					listener.setCommandAttribute("title", tTitle.getText());
 			}
 		});
-
-		final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1);
-		tTitle.setLayoutData(gridData_5);
+		tTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
 
 		final Label priorityLabel = new Label(gOrder, SWT.NONE);
 		priorityLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
@@ -279,8 +272,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 					listener.setCommandAttribute("priority", tPriority.getText());
 			}
 		});
-		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1);
-		tPriority.setLayoutData(gridData_2);
+		tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
 
 		final Label stateLabel = new Label(gOrder, SWT.NONE);
 		stateLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
@@ -293,8 +285,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 					listener.setCommandAttribute("state", tState.getText());
 			}
 		});
-		final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1);
-		tState.setLayoutData(gridData);
+		tState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
 
 		final Label endStateLabel = new Label(gOrder, SWT.NONE);
 		endStateLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
@@ -308,26 +299,10 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 			}
 		});
 		cboEndState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
+		new Label(gOrder, SWT.NONE);
+		new Label(gOrder, SWT.NONE);
 
-		final Label replaceLabel = new Label(gOrder, SWT.NONE);
-		final GridData gridData_4 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
-		gridData_4.widthHint = 58;
-		replaceLabel.setLayoutData(gridData_4);
-		replaceLabel.setText("Replace");
-
-		bReplace = new Button(gOrder, SWT.CHECK);
-		bReplace.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				String r = "no";
-				if (bReplace.getSelection())
-					r = "yes";
-				if (event)
-					listener.setCommandAttribute("replace", r);
-			}
-		});
-		final GridData gridData_9 = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
-		bReplace.setLayoutData(gridData_9);
-
+		 
 		final Label stateLabel_1 = new Label(gOrder, SWT.NONE);
 		stateLabel_1.setText("State:");
 
@@ -355,7 +330,6 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 				}
 			}
 		});
-		butRemove.setLayoutData(new GridData());
 		butRemove.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_delete.gif"));
 
 		butDetails = new Button(gOrder, SWT.NONE);
@@ -432,7 +406,6 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		tState.removeAll();
 		cboEndState.setText("");
 		cboEndState.removeAll();
-		bReplace.setSelection(true);
 
 	}
 
@@ -448,7 +421,6 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		cboEndState.setText(listener.getCommandAttribute("end_state"));        
 		cJobchain.setText(listener.getCommandAttribute("job_chain"));
 		tPriority.setText(listener.getCommandAttribute("priority"));
-		bReplace.setSelection(listener.getCommandReplace());
 
 
 		cboStates.setItems(listener.getStates());
@@ -470,7 +442,6 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		tPriority.setToolTipText(Messages.getTooltip("jobcommand.priority"));
 		tState.setToolTipText(Messages.getTooltip("jobcommand.state"));
 		cboEndState.setToolTipText(Messages.getTooltip("jobcommand.end_state"));
-		bReplace.setToolTipText(Messages.getTooltip("jobcommand.replaceorder"));
 		cJobchain.setToolTipText(Messages.getTooltip("jobcommand.jobchain"));
 		tOrderId.setToolTipText(Messages.getTooltip("order.order_id"));       
 		butGoto.setToolTipText(Messages.getTooltip("goto"));

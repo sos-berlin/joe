@@ -77,7 +77,7 @@ public class JobsListener {
 					} else {
 						item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
 					}
-					item.setChecked(_dom.isJobDisabled(name));
+					item.setChecked(!isEnabled(e));
 					item.setText(1, name);
 					item.setText(2, Utils.getAttributeValue("title", e));
 					item.setText(3, Utils.getAttributeValue("spooler_id", e));
@@ -541,7 +541,6 @@ public class JobsListener {
 		if (index >= 0) {
 			TableItem item = table.getItem(index);
 			Element e = (Element) item.getData();
-			_dom.setJobDisabled(Utils.getAttributeValue("name", e), false);
 			e.detach();
 			_dom.setChanged(true);
 			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", e) ,SchedulerDom.DELETE);
@@ -565,10 +564,17 @@ public class JobsListener {
 		return false;
 	}
 
+	public boolean isEnabled(Element e) {
+	   boolean enabled = (Utils.getAttributeValue("enabled", e).equalsIgnoreCase("yes"));
+	   return enabled;
+	}
 	
-	public void setJobDisabled(String name, boolean disabled) {
-		_dom.setJobDisabled(name, disabled);
-		_main.updateJobs();
+	public void setJobEnabled(Element e, boolean enabled) {
+			Utils.setAttribute("enabled", enabled, e);
+			 
+			_dom.setChanged(true);
+			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", e) ,SchedulerDom.MODIFY);
+			_main.updateJobs();
 	}
 
 

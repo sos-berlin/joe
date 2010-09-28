@@ -4,8 +4,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
@@ -47,7 +45,7 @@ public class SWTResourceManager {
     /**
      * Maps RGB values to colors
      */
-    private static HashMap m_ColorMap = new HashMap();
+    private static HashMap<RGB, Color> m_ColorMap = new HashMap<RGB, Color>();
 
     /**
      * Returns the system color matching the specific ID
@@ -76,7 +74,7 @@ public class SWTResourceManager {
      * @return Color The color matching the RGB value
      */
     public static Color getColor(RGB rgb) {
-        Color color = (Color) m_ColorMap.get(rgb);
+        Color color = m_ColorMap.get(rgb);
         if (color == null) {
             Display display = Display.getCurrent();
             color = new Color(display, rgb);
@@ -101,30 +99,13 @@ public class SWTResourceManager {
 	/**
 	 * Maps image names to images
 	 */
-    private static HashMap m_ClassImageMap = new HashMap();
+    private static HashMap<String, Image> m_ClassImageMap = new HashMap<String, Image>();
 
 	/**
 	 * Maps images to image decorators
 	 */
-    private static HashMap m_ImageToDecoratorMap = new HashMap();
+    private static HashMap<Image, HashMap<Image, Image>> m_ImageToDecoratorMap = new HashMap<Image, HashMap<Image, Image>>();
 
-    /**
-     * Clears images loaded relative to the class with given name.
-     */
-    public static void clearImages(String className) {
-		for (Iterator I = m_ClassImageMap.entrySet().iterator(); I.hasNext();) {
-			Map.Entry entry = (Map.Entry) I.next();
-			String key = (String) entry.getKey();
-			if (key.startsWith(className + "|")) {
-				try {
-					((Image) entry.getValue()).dispose();
-				} catch (Throwable e) {
-				}
-				I.remove();
-			}
-		}
-	}
-    
     /**
      * Returns an image encoded by the specified input stream
      * @param is InputStream The input stream encoding the image data
@@ -155,7 +136,7 @@ public class SWTResourceManager {
      */
     public static Image getImage(String section, String path) {
         String key = section + '|' + SWTResourceManager.class.getName() + '|' + path;
-        Image image = (Image) m_ClassImageMap.get(key);
+        Image image = m_ClassImageMap.get(key);
         if (image == null) {
             try {
                 FileInputStream fis = new FileInputStream(path);
@@ -178,7 +159,7 @@ public class SWTResourceManager {
      */
     public static Image getImage(Class clazz, String path) {
         String key = clazz.getName() + '|' + path;
-        Image image = (Image) m_ClassImageMap.get(key);
+        Image image = m_ClassImageMap.get(key);
         if (image == null) {
         	try {
         		if (path.length() > 0 && path.charAt(0) == '/') {
@@ -243,12 +224,12 @@ public class SWTResourceManager {
 	 * @return Image The resulting decorated image
 	 */
 	public static Image decorateImage(Image baseImage, Image decorator, int corner) {
-		HashMap decoratedMap = (HashMap) m_ImageToDecoratorMap.get(baseImage);
+		HashMap<Image, Image> decoratedMap = m_ImageToDecoratorMap.get(baseImage);
 		if (decoratedMap == null) {
-			decoratedMap = new HashMap();
+			decoratedMap = new HashMap<Image, Image>();
 			m_ImageToDecoratorMap.put(baseImage, decoratedMap);
 		}
-		Image result = (Image) decoratedMap.get(decorator);
+		Image result = decoratedMap.get(decorator);
 		if (result == null) {
 			Rectangle bid = baseImage.getBounds();
 			Rectangle did = decorator.getBounds();
@@ -298,7 +279,7 @@ public class SWTResourceManager {
 			String key = (String) I.next();
 			if (!key.startsWith(section + '|'))
 				continue;
-			Image image = (Image) m_ClassImageMap.get(key);
+			Image image = m_ClassImageMap.get(key);
 			image.dispose();
 			I.remove();
 		}
@@ -311,12 +292,12 @@ public class SWTResourceManager {
     /**
      * Maps font names to fonts
      */
-    private static HashMap m_FontMap = new HashMap();
+    private static HashMap<String, Font> m_FontMap = new HashMap<String, Font>();
 
     /**
      * Maps fonts to their bold versions
      */
-    private static HashMap m_FontToBoldFontMap = new HashMap();
+    private static HashMap<Font, Font> m_FontToBoldFontMap = new HashMap<Font, Font>();
 
     /**
      * Returns a font based on its name, height and style
@@ -342,7 +323,7 @@ public class SWTResourceManager {
      */
 	public static Font getFont(String name, int size, int style, boolean strikeout, boolean underline) {
 		String fontName = name + '|' + size + '|' + style + '|' + strikeout + '|' + underline;
-        Font font = (Font) m_FontMap.get(fontName);
+        Font font = m_FontMap.get(fontName);
         if (font == null) {
         	FontData fontData = new FontData(name, size, style);
     		if (strikeout || underline) {
@@ -375,7 +356,7 @@ public class SWTResourceManager {
      * @return Font The bold version of the give font
      */
     public static Font getBoldFont(Font baseFont) {
-        Font font = (Font) m_FontToBoldFontMap.get(baseFont);
+        Font font = m_FontToBoldFontMap.get(baseFont);
         if (font == null) {
             FontData fontDatas[] = baseFont.getFontData();
             FontData data = fontDatas[0];
@@ -389,16 +370,9 @@ public class SWTResourceManager {
      * Dispose all of the cached fonts
      */
     public static void disposeFonts() {
-		// clear fonts
-		for (Iterator iter = m_FontMap.values().iterator(); iter.hasNext();) {
-			((Font) iter.next()).dispose();
-		}
-		m_FontMap.clear();
-		// clear bold fonts
-		for (Iterator iter = m_FontToBoldFontMap.values().iterator(); iter.hasNext();) {
-			((Font) iter.next()).dispose();
-		}
-		m_FontToBoldFontMap.clear();
+        for (Iterator iter = m_FontMap.values().iterator(); iter.hasNext();)
+             ((Font) iter.next()).dispose();
+        m_FontMap.clear();
     }
 
 	//////////////////////////////
@@ -416,6 +390,7 @@ public class SWTResourceManager {
             CoolItem item = items[i];
             if (item.getControl() == null)
                 item.setControl(new Canvas(bar, SWT.NONE) {
+                @Override
 				public Point computeSize(int wHint, int hHint, boolean changed) {
                     return new Point(20, 20);
                 }
@@ -438,7 +413,7 @@ public class SWTResourceManager {
     /**
      * Maps IDs to cursors
      */
-    private static HashMap m_IdToCursorMap = new HashMap();
+    private static HashMap<Integer, Cursor> m_IdToCursorMap = new HashMap<Integer, Cursor>();
  
     /**
      * Returns the system cursor matching the specific ID
@@ -447,7 +422,7 @@ public class SWTResourceManager {
      */
     public static Cursor getCursor(int id) {
         Integer key = new Integer(id);
-        Cursor cursor = (Cursor) m_IdToCursorMap.get(key);
+        Cursor cursor = m_IdToCursorMap.get(key);
         if (cursor == null) {
             cursor = new Cursor(Display.getDefault(), id);
             m_IdToCursorMap.put(key, cursor);

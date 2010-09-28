@@ -15,8 +15,6 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 
 	private    String          _encoding      = "ISO-8859-1";
 
-	private    boolean         _disableJobs   = false;
-
 	private    String          _indentStr     = "    ";
 
 	private    String          _indent        = "    ";
@@ -26,8 +24,6 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 	private    int             _level         = 0;
 
 	private    boolean         _isOpen        = false;
-
-	private    String          _disabled      = "";
 
 	private    String          _stylesheet    = "";
 	
@@ -53,10 +49,7 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 		_encoding = encoding;
 	}
 
-
-	public void setDisableJobs(boolean disable) {
-		_disableJobs = disable;
-	}
+ 
 
 
 	public String getXML() {
@@ -84,7 +77,6 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 		String text = _text.toString().trim();
 		_text = new StringBuffer();
 
-		boolean disableJobs = _disableJobs && qName.equals("jobs");
 		boolean hasText = text.length() > 0;
 
 		if (_isOpen && !hasText)
@@ -92,9 +84,6 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 		else if (_isOpen )
 			_sb.append(">" + (_noIndentInCDATAElements.contains(localName) ? "" : "\n"));
 
-		if (disableJobs)
-			_sb.append("<!-- disabled\n");
-		
 		if(hasText && _noIndentInCDATAElements.contains(localName)) {
 			_sb.append("<![CDATA[" + text+ "]]>");
 		} else if (hasText) {
@@ -109,13 +98,6 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 			else
 				_sb.append(_indent + "</" + qName + ">\n");
 			
-		}
-		if (disableJobs)
-			_sb.append("-->\n");
-
-		if (_disabled.equals(qName)) {
-			_sb.append("-->\n");
-			_disabled = "";
 		}
 
 		_isOpen = false;
@@ -164,27 +146,13 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 			}
 		}
 
-		boolean disableJobs = false;
-		if (_dom.isJobDisabled(attrName)) { // disable job
-			_sb.append("<!-- disabled=\"" + attrName + "\"\n");
-			_disabled = qName;
-		} else if (_disableJobs && qName.equals("jobs")) { // disable jobs
-			disableJobs = true;
-		}
-
-		if (disableJobs)
-			_sb.append("<!-- disabled\n");
-
-		//_sb.append((_noIndentInCDATAElements.contains(localName) ? "" : _indent ) + "<" + qName + attributes.toString());
+	 
 		_sb.append(_indent + "<" + qName + attributes.toString());
 
 		_isOpen = true;
 		_level++;
 
-		if (disableJobs) {
-			_sb.append(">\n-->\n");
-			_isOpen = false;
-		}
+		 
 	}
 
 

@@ -24,6 +24,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.util.SOSString;
 import java.util.*;
+import com.swtdesigner.SWTResourceManager;
 
 
 public class FTPDialogProfiles {
@@ -87,13 +88,18 @@ public class FTPDialogProfiles {
     
     private              boolean             saved                         = false; //hilsvariable            
     
-    private              boolean             init                          = false;     
+    private              boolean             init                          = false;   
+    private 			 Label               lbErrorMessage                = null;
     
 	public FTPDialogProfiles(FTPDialogListener listener_) {
 		listener = listener_;
 		sosString = new SOSString();
 
 	}
+
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 
 	public void showForm() {
 
@@ -184,8 +190,7 @@ public class FTPDialogProfiles {
 
 				}
 			});
-			final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
-			cboConnectname.setLayoutData(gridData_2);
+			cboConnectname.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 			cboConnectname.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					if( !cboConnectname.getText().equals(currProfile.get("name")))
@@ -307,7 +312,6 @@ public class FTPDialogProfiles {
 					setEnabled();
 				}
 			});
-			butSavePassword.setLayoutData(new GridData());
 			new Label(group, SWT.NONE);
 			//txtLocalDirectory.setText(currProfile.get("localdirectory") != null ? currProfile.get("localdirectory").toString() : "");
 
@@ -323,7 +327,6 @@ public class FTPDialogProfiles {
 					setEnabled();
 				}
 			});
-			butAscii.setLayoutData(new GridData());
 			butAscii.setText("ASCII");
 
 
@@ -333,7 +336,6 @@ public class FTPDialogProfiles {
 					setEnabled();
 				}
 			});
-			butbinary.setLayoutData(new GridData());
 			butbinary.setText("Binary");
 
 			final TabItem proxyTabItem = new TabItem(tabFolder, SWT.NONE);
@@ -398,8 +400,7 @@ public class FTPDialogProfiles {
 					setEnabled();
 				}
 			});
-			final GridData gridData_4 = new GridData(GridData.BEGINNING, GridData.END, false, false, 2, 1);
-			butPublicKey.setLayoutData(gridData_4);
+			butPublicKey.setLayoutData(new GridData(GridData.BEGINNING, GridData.END, false, false, 2, 1));
 			butPublicKey.setText("Public Key");
 
 			butAuthPassword = new Button(groupAuthenticationMethods, SWT.RADIO);
@@ -509,6 +510,11 @@ public class FTPDialogProfiles {
 
 
 		}
+		
+		lbErrorMessage = new Label(schedulerConfigurationShell, SWT.NONE);
+		lbErrorMessage.setText("xxxxxxxxxxxxxxxxxxxx");
+		lbErrorMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		lbErrorMessage.setFont(SWTResourceManager.getFont("Tahoma", 8, SWT.BOLD));
 
 		final Button butClose = new Button(schedulerConfigurationShell, SWT.NONE);
 		butClose.addSelectionListener(new SelectionAdapter() {
@@ -645,61 +651,64 @@ public class FTPDialogProfiles {
 				
 	}
 
-	private void apply() {
-		Properties prop = new Properties();
-		String pName = cboConnectname.getText();
-		prop.put("name", pName);
-		prop.put("host", txtHost.getText());
-		prop.put("port", txtPort.getText());
-		prop.put("user", txtUsername.getText());
-		prop.put("password", txtPassword.getText());
-		prop.put("root", txtRoot.getText());
-		if(txtLocalDirectory.getText().length() > 0 &&
-				!new java.io.File(txtLocalDirectory.getText()).exists())
+	private boolean plausi() {
+	    lbErrorMessage.setText("");
+	    if (txtLocalDirectory.getText().trim().equals("")){
+	       lbErrorMessage.setText("Please specify local directory!");
+	       return false;
+	    }else{
+	       return true;
+	    }
+	}
+	
+   private void apply() {
+	  if (plausi()) {
+		 Properties prop = new Properties();
+		 String pName = cboConnectname.getText();
+		 prop.put("name", pName);
+		 prop.put("host", txtHost.getText());
+		 prop.put("port", txtPort.getText());
+		 prop.put("user", txtUsername.getText());
+		 prop.put("password", txtPassword.getText());
+		 prop.put("root", txtRoot.getText());
+		 if (txtLocalDirectory.getText().length() > 0 && !new java.io.File(txtLocalDirectory.getText()).exists())
 			new java.io.File(txtLocalDirectory.getText()).mkdirs();
-		prop.put("localdirectory", txtLocalDirectory.getText());
-		prop.put("transfermode", butbinary.getSelection() ? "binary" : "ASCII");
-		prop.put("save_password", (butSavePassword.getSelection() ? "yes" : "no"));
-		prop.put("protocol", cboProtokol.getText());
-
-		if(useProxyButton.getSelection()) {
+		 prop.put("localdirectory", txtLocalDirectory.getText());
+		 prop.put("transfermode", butbinary.getSelection() ? "binary" : "ASCII");
+		 prop.put("save_password", (butSavePassword.getSelection() ? "yes" : "no"));
+		 prop.put("protocol", cboProtokol.getText());
+		 if (useProxyButton.getSelection()) {
 			prop.put("use_proxy", "yes");
 			prop.put("proxy_server", txtProxyServer.getText());
 			prop.put("proxy_port", txtProxyPort.getText());
-		}	    				
-		
-		if(cboProtokol.getText().equalsIgnoreCase("SFTP")){
-			String method = getAuthMethod();			
+		 }
+		 if (cboProtokol.getText().equalsIgnoreCase("SFTP")) {
+			String method = getAuthMethod();
 			prop.put("auth_method", method);
 			prop.put("auth_file", txtDirPublicKey.getText());
-		}
-
-		if(newProfile && !listener.getProfiles().containsKey(cboConnectname.getText()) ||
-				listener.getProfiles().isEmpty()) {
-			//neuer Eintrag
-			listener.getProfiles().put(pName, prop);	
-
-		} else {
+		 }
+		 if (newProfile && !listener.getProfiles().containsKey(cboConnectname.getText())
+			   || listener.getProfiles().isEmpty()) {
+			// neuer Eintrag
+			listener.getProfiles().put(pName, prop);
+		 }
+		 else {
 			listener.removeProfile(pName);
-
-		}
-
-		listener.setProfiles(pName, prop);
-
-		listener.setCurrProfileName(pName);
-
-		Properties p = new Properties();
-		p.putAll(prop);
-		listener.setCurrProfile(p);
-
-		cboConnectname.setItems(listener.getProfileNames());
-		cboConnectname.setText(pName);
-		//initForm();
-		newProfile = false;
-		saveSettings = true;//Änderungen haben stattgefunden, d.h. in die ini Datei zurückschreiben
-		butApply.setEnabled(false);
-		
-	}
+		 }
+		 listener.setProfiles(pName, prop);
+		 listener.setCurrProfileName(pName);
+		 Properties p = new Properties();
+		 p.putAll(prop);
+		 listener.setCurrProfile(p);
+		 cboConnectname.setItems(listener.getProfileNames());
+		 cboConnectname.setText(pName);
+		 // initForm();
+		 newProfile = false;
+		 saveSettings = true;// Änderungen haben stattgefunden, d.h. in die ini
+							 // Datei zurückschreiben
+		 butApply.setEnabled(false);
+	  }
+   }
 
 	private String getAuthMethod() {
 		String authMethod = "";

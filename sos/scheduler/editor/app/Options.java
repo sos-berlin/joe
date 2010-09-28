@@ -103,20 +103,20 @@ public class Options {
     }
     
     public static void setProperty(String key, String value) {
-        _properties.setProperty(key, value);
-        _changed = true;
+        if (_properties != null) {
+           _properties.setProperty(key, value);
+           _changed = true;
+        }
     }
     
-    
-
-    public static String getDefault(String key) {
-        return _defaults.getProperty(key);
-    }
-
 
     public static String getLanguage() {
         return _properties.getProperty("editor.language");
     }
+
+    public static String getDefault(String key) {
+       return _defaults.getProperty(key);
+   }
 
 
     public static void setLanguage(String language) {

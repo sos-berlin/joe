@@ -6,6 +6,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
@@ -21,6 +22,8 @@ import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 import org.eclipse.swt.widgets.Shell;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.forms.SchedulerEditorFontDialog;
+
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.widgets.Composite;
@@ -615,7 +618,7 @@ public class Utils {
 		System.out.println("test 7 XXX showWizzardInfo " + showWizzardInfo);
 		 */
 
-		Font font = new Font(Display.getDefault(), "Courier New", 8, SWT.NORMAL);
+		//kommt jetzt aus den Options Font font = new Font(Display.getDefault(), "Courier New", 8, SWT.NORMAL);
 		TextDialog dialog = new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL
 				| SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		dialog.setSize(new Point(500, 400));
@@ -629,8 +632,13 @@ public class Utils {
 		}
 
 		dialog.setClipBoard(true);
+		
+		SchedulerEditorFontDialog fd = new SchedulerEditorFontDialog();
+	    fd.readFontData();
+ 	    dialog.getStyledText().setFont(new Font(null, fd.getFontData()));
+	    dialog.getStyledText().setForeground(new Color(null, fd.getForeGround())); 
 
-		dialog.getStyledText().setFont(font);		
+
 		dialog.getStyledText().setEditable(bApply);		
 		dialog.setVisibleApplyButton(bApply);		
 		dialog.setBSaveWindow(true);		
@@ -649,8 +657,9 @@ public class Utils {
 			s = null;
 		}
 
-		if (font != null)
+		/*if (font != null)
 			font.dispose();
+			*/
 		return s;
 	}
 
