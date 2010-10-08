@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
+<!-- $Id: scheduler.xsd 6308 2010-09-28 07:46:07Z rb $ -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 	<!-- <xsd:key> nicht verwenden, libxslt kann das nicht: "Internal error: xmlSchemaAreValuesEqual, failed to compare the values." -->
 	<xsd:annotation>
 		<xsd:documentation xml:lang="de">
-            $Id$
+            $Id: scheduler.xsd 6308 2010-09-28 07:46:07Z rb $
             Schema für die Scheduler-Konfiguration,
             s.a. http://www.zschimmer.com/sos/scheduler/konfiguration.html
         </xsd:documentation>
@@ -382,6 +382,7 @@
 			<xsd:attribute name="warn_if_shorter_than" type="Duration_or_percentage"/>
 			<!-- Veraltet, wird ignoriert -->
 			<!-- Für ap, 1.4.06 timeout="0" soll erlaubt sein (kein Aprilscherz) -->
+			<xsd:attribute name="enabled" type="Yes_no"/>
 		</xsd:complexType>
 		<!--libxslt xsd:key name="delay_after_error">
             <xsd:selector xpath="delay_after_error"/>
@@ -579,6 +580,8 @@
 						<xsd:enumeration value="continue"/>
 						<xsd:enumeration value="reread"/>
 						<xsd:enumeration value="remove"/>
+                        <xsd:enumeration value="enable"/>
+                        <xsd:enumeration value="disable"/>                      
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
