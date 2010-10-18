@@ -1175,8 +1175,9 @@ public class MainWindow  {
 						String remoteDir_ = remoteDir; //remoteDir nicht verändern, da es unten weiterverarbeitet wird
 						remoteDir_ = new File(remoteDir_).getCanonicalPath().endsWith(".xml") ? new File(remoteDir_).getParent() : remoteDir_;
 						remoteDir_ = remoteDir_ != null ? remoteDir_.replaceAll("\\\\", "/") : "";
-						profile.saveAs( container.getCurrentTab().getData("ftp_details_parameter_file").toString(), remoteDir_ + "/" + source.getName());
-						container.getCurrentTab().setData("ftp_details_parameter_file", "");
+						if (source.exists()) {
+							profile.saveAs( container.getCurrentTab().getData("ftp_details_parameter_file").toString(), remoteDir_ + "/" + source.getName());
+						}						container.getCurrentTab().setData("ftp_details_parameter_file", "");
 
 						if(sosString.parseToString(container.getCurrentTab().getData("ftp_details_parameter_remove_file")).length() > 0) {
 							//Alte Jobkettenname wurde gelöscht.. Deshalb den alten Job Node Parametern auch löschen.

@@ -422,7 +422,7 @@ public class JobAssistentImportJobsForm {
 				public void widgetSelected(final SelectionEvent e) {
 					HashMap attr = getJobFromDescription();
 					JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();					
-					ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
+					ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText(),"");							
 					attr.put("params", listOfParams);
 					Element job = null;
 					if(flagBackUpJob) {
@@ -457,7 +457,7 @@ public class JobAssistentImportJobsForm {
 								jobname.setText(txtJobname.getText());
 
 							JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();							
-							ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText());							
+							ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText(),"required");							
 							h.put("params", listOfParams);
 
 							if(assistentType == Editor.JOB_WIZZARD) {

@@ -772,8 +772,8 @@ public class FTPDialog {
 			}
 
 			if(whichFile.length() > 0) {
-				int c = MainWindow.message("Die Dateien in der lokalen Verzeichniskopie sind nicht synchron mit den Dateien am Server.\nSollen die Dateien der lokalen Verzeichniskopie entfernt werden?\n" + whichFile, SWT.ICON_QUESTION | SWT.YES |SWT.NO |SWT.CANCEL);
-
+				int c = MainWindow.message("The files in the local directory are not synchron with the files at the server.\nShould the files in the local directory be deleted?\n" + whichFile, SWT.ICON_QUESTION | SWT.YES |SWT.NO |SWT.CANCEL);
+				
 				if(c == SWT.YES) {								
 					for(int j = 0; j < l.size(); j++)
 						new File( targetfile + sosString.parseToString(l.get(j))).delete();

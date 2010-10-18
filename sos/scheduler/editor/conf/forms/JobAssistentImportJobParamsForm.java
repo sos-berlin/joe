@@ -114,6 +114,7 @@ public class JobAssistentImportJobParamsForm {
 
 	public JobAssistentImportJobParamsForm() {}
 
+
 	public JobAssistentImportJobParamsForm(SchedulerDom dom_, 
 			ISchedulerUpdate update_, 
 			Element job_, 
@@ -137,7 +138,7 @@ public class JobAssistentImportJobParamsForm {
 		this.assistentType = assistentType_;		
 		paramListener = new ParameterListener(dom, joblistener_.getJob(), update_, assistentType);		
 	}
-
+	
 	public JobAssistentImportJobParamsForm(SchedulerDom dom_, 
 			ISchedulerUpdate update_, 
 			JobListener joblistener_, 
@@ -152,9 +153,9 @@ public class JobAssistentImportJobParamsForm {
 		this.assistentType = assistentType_;		
 		paramListener = new ParameterListener(dom, joblistener_.getJob(), update_, assistentType);		
 	}
+	
 
-
-	public ArrayList parseDocuments(String xmlFilename) {
+	public ArrayList parseDocuments(String xmlFilename, String type) {
 
 		//Wizzard ohne Jobbeschreibung starten
 		if(xmlFilename == null || xmlFilename.trim().length() == 0) 
@@ -189,7 +190,7 @@ public class JobAssistentImportJobParamsForm {
 			HashMap h = null; 
 			for( int i=0; i<listMainElements.size(); i++ ){					
 				Element elMain  = (Element)(listMainElements.get( i ));					
-				if(elMain.getName().equalsIgnoreCase("param")) { 					
+				if(elMain.getName().equalsIgnoreCase("param") && (type.length() == 0 || elMain.getAttributeValue(type).equalsIgnoreCase("true"))) { 					
 					h = new HashMap();
 					h.put("name", elMain.getAttributeValue("name"));
 					h.put("default_value", (elMain.getAttributeValue("default_value") != null ? elMain.getAttributeValue("default_value").toString() : ""));
@@ -231,6 +232,8 @@ public class JobAssistentImportJobParamsForm {
 	 * 
 	 * @param xmlFilename -> Job Dokumentation
 	 */
+
+	
 	public void showAllImportJobParams(String xmlFilename)  {
 
 		try {
@@ -654,7 +657,7 @@ public class JobAssistentImportJobParamsForm {
 
 			//der Wizzard soll ohne Jobbeschreibung laufen
 			if(!xmlFilename.equals(".."))
-				listOfParams = this.parseDocuments(xmlFilename);
+				listOfParams = this.parseDocuments(xmlFilename,"");
 
 			fillTable(listOfParams);
 
