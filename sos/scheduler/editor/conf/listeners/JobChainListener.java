@@ -131,7 +131,11 @@ public class JobChainListener {
 	}
 	
 	public void setMaxorders(int maxOrder) {
-		Utils.setAttribute("max_orders", maxOrder, _chain);
+	    if (maxOrder == 0){
+	       _chain.removeAttribute("max_orders");
+ 	    }else {
+    		Utils.setAttribute("max_orders", maxOrder, _chain);
+	    }
 		_dom.setChanged(true);
 		if(_dom.isDirectory()|| _dom.isLifeElement()) _dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
 	}

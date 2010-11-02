@@ -58,7 +58,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 	
 	private boolean             changeJobChainName          = true;
 	private Spinner             sMaxorder                   = null;
-	private Spinner sMaxorders;
+	private Text sMaxorders;
 
 
 	public JobChainForm(Composite parent, int style, SchedulerDom dom, Element jobChain) {
@@ -214,15 +214,20 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		Label lblMaxOrders = new Label(jobChainGroup, SWT.NONE);
 		lblMaxOrders.setText("Max Orders");
 		
-		sMaxorders = new Spinner(jobChainGroup, SWT.BORDER);
+		sMaxorders = new Text(jobChainGroup, SWT.BORDER);
 		sMaxorders.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
-				if(init) return;
-				listener.setMaxorders(sMaxorders.getSelection());
+			   if(init) return;
+			   int maxOrders;
+			   try {
+				  maxOrders = Integer.parseInt(sMaxorders.getText().trim());
+			   }catch (NumberFormatException e) {
+				  maxOrders = 0;
+			   }
+			   listener.setMaxorders(maxOrders);
 			}
 		});
-		sMaxorders.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		sMaxorders.setMaximum(99999);
+		sMaxorders.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
@@ -295,7 +300,6 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 
 		tName.setText(listener.getChainName());
 		txtTitle.setText(listener.getTitle());
-		sMaxorders.setSelection(listener.getMaxOrders());
 
 		bRecoverable.setSelection(listener.getRecoverable() );
 		bVisible.setSelection(listener.getVisible());
