@@ -208,9 +208,9 @@ public class MainListener {
 				return;
 
 
-			String home = new File(Options.getDefaultOptionFilename()).getParent();
-			home = home.endsWith("/") || home.endsWith("\\") ? home : home + "/";
-			iniFile = home + iniFile; 
+			String data = new File(Options.getDefaultOptionFilename()).getParent();
+			data = data.endsWith("/") || data.endsWith("\\") ? data : data + "/";
+			iniFile = data + iniFile; 
 			ArrayList jobTitleList = new ArrayList();
 
 			try {
@@ -241,81 +241,7 @@ public class MainListener {
 
 
 	}
-	/*   public void loadJobTitels() {
-
-    	String titleFile = Options.getProperty("title_file");
-    	String iniFile = Options.getProperty("ini_file");
-    	String sIniFile = ""; 
-    	try {
-    		if(iniFile != null) {
-    			String home = Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome() : Options.getSchedulerHome()+ "/";  
-    			iniFile = home + "config/" + iniFile;
-
-    			SOSProfileSettings settings = new SOSProfileSettings(iniFile);
-    			sIniFile = " " + settings.getSection("spooler").getProperty("db") + " ";
-
-    		}
-    	} catch (Exception e) {    		
-    		try {
-    			new ErrorLog("could not Read Setting from " +iniFile + " " + sos.util.SOSClassUtil.getMethodName(), e);
-    		} catch (Exception ee){
-    			//tu nichts
-    		}
-    		System.out.println("could not Read Setting from " +iniFile + e);
-    		return;
-    	}
-
-
-    	if(titleFile == null && titleFile.length() == 0)
-    		return;
-
-    	 sos.hostware.File inFile = null;
-
-
-         //String inFileName = "-in -type=(summary_id,description) xml -encoding=iso-8859-1 -tag=summary_descriptions -record-tag=summary_description -lower-tags | j:/log/mo/dowjones/dowjones_summary_descriptions.xml";
-         //String inFileName = "-in jdbc -class=com.sybase.jdbc3.jdbc.SybDriver jdbc:sybase:Tds:wilma:4112/scheduler -user=scheduler -password=scheduler select SUMMARY_ID, DESCRIPTION from DOWJONES_SUMMARY_DESCRIPTIONS";
-
-    	 String inFileName = "-in " + sIniFile + titleFile;
-    	// System.out.println(inFileName);
-
-    	 ArrayList jobTitleList = new ArrayList();    	       
-
-         try {
-
-             inFile = new sos.hostware.File();
-             inFile.open(inFileName);
-             //System.out.println(inFile.field_count());
-
-             while (!inFile.eof()) {
-                 Record record = inFile.get();
-
-                 for(int i=0; i<record.field_count(); i++) {
-                	 //System.out.println("record: " + i + ", field: " + record.field_name(i) + ", value: " + record.string(i));
-                	 if(record.field_name(i) != null && record.field_name(i).toLowerCase().equals("description")) {
-                		 jobTitleList.add(record.string(i));
-
-                	 }
-                 }
-                 record.destruct();
-
-
-             }
-
-             String[] titles = new String[jobTitleList.size()];
-             for(int i = 0; i<jobTitleList.size(); i++)            	 
-            	 titles [i] = jobTitleList.get(i) != null ? jobTitleList.get(i).toString(): "";
-
-             Options.setJobTitleList(titles);
-
-         } catch (Exception e) {
-             System.out.println(e);
-         } finally {        	
-             if (inFile != null) try { if (inFile.opened()) inFile.close(); inFile.destruct(); } catch (Exception ex) {} // ignore this error
-         }
-
-    }
-	 */
-
+ 
 	public void loadHolidaysTitel() {
 
 		try {
@@ -326,7 +252,7 @@ public class MainListener {
 
 			HashMap filenames = new HashMap();
 
-			String home = Options.getSchedulerNormalizedHotFolder();
+			String data = Options.getSchedulerNormalizedHotFolder();
 
 			Iterator desc = holidaysDescription.keySet().iterator();    	
 			while(desc.hasNext()) {
@@ -335,7 +261,7 @@ public class MainListener {
 				if(!holidayId.startsWith("holiday_id")) {
 					String xml = "<holidays>";
 					holidayId = holidaysDescription.get(holidayId).toString();
-					String filename = home + holidayId + ".holidays.xml";
+					String filename = data + holidayId + ".holidays.xml";
 					Iterator files = holidayFile.keySet().iterator();
 					while(files.hasNext()) {
 						String date = files.next().toString();
@@ -433,88 +359,7 @@ public class MainListener {
 	}
 
 
-	//holiday_file
-	/* public HashMap loadHolidaysDescription(String propertyName) {
-    	HashMap holidaysDescription = new HashMap();
-    	//System.out.println("******************"+ propertyName +"*****************************");
-    	//get description
-    	//String holidayDescriptionFile = Options.getProperty("holiday_description_file");
-    	String holidayDescriptionFile = Options.getProperty(propertyName);
-
-    	String iniFile = Options.getProperty("ini_file");
-    	String sIniFile = ""; 
-    	try {
-    		if(iniFile != null) {
-    			String home = Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome() : Options.getSchedulerHome()+ "/";  
-    			iniFile = home + "config/" + iniFile;
-
-    			SOSProfileSettings settings = new SOSProfileSettings(iniFile);
-    			sIniFile = " " + settings.getSection("spooler").getProperty("db") + " ";
-
-    		}
-    	} catch (Exception e) {    		
-    		//MainWindow.message("could not Read Setting from " +iniFile, SWT.ICON_ERROR | SWT.OK);
-    		System.out.println("could not Read Setting from " +iniFile + e);
-    		return new HashMap();
-    	}
-
-
-    	if(holidayDescriptionFile == null && holidayDescriptionFile.length() == 0)
-    		return new HashMap();
-
-    	sos.hostware.File inFile = null;
-
-    	String inFileName = "-in " + sIniFile + holidayDescriptionFile;
-    	//System.out.println(inFileName);
-
-    	try {
-
-    		inFile = new sos.hostware.File();
-    		inFile.open(inFileName);             
-    		String holidayId = "";
-    		String field2 = "";
-
-    		while (!inFile.eof()) {
-    			Record record = inFile.get();
-    			for(int i=0; i<record.field_count(); i++) {
-
-    				//System.out.println("record: " + i + ", field: " + record.field_name(i) + ", value: " + record.string(i));
-
-    				if(record.field_name(i) != null && record.field_name(i).toLowerCase().equals("holiday_id")) {
-    					holidayId = record.string(i);
-    				} else  if(record.field_name(i) != null && record.field_name(i).toLowerCase().equals("description")) {    					
-    					field2 = record.string(i);
-    					//merke: holiday_id_<id>, description    					
-    					holidaysDescription.put("holiday_id_"+holidayId, field2);
-    					//merke: description, <id> 
-    					holidaysDescription.put(field2, holidayId);   
-    					holidayId = "";
-    					field2 = "";
-    				//} else  if(record.field_name(i) != null && record.field_name(i).toLowerCase().equals("holiday_date")) {
-    				} else {
-    					field2 = record.string(i);
-    					//merke: <id>+_+<datum>, id -> datum ist nicht eindeutig, deshalb kommt der der prefix id
-    					holidaysDescription.put(holidayId + "_" + field2, holidayId);    					
-    					holidayId = "";
-    					field2 = "";
-    				}
-
-
-    			}
-    			record.destruct();
-    		}
-
-
-
-    	} catch (Exception e) {
-    		System.out.println(e);
-    	} finally {
-    		if (inFile != null) try { if (inFile.opened()) inFile.close(); inFile.destruct(); } catch (Exception ex) {} // ignore this error
-    	}
-    	return holidaysDescription;
-
-    }
-	 */
+	 
 	/**
 	 * DB Initialisierung
 	 */

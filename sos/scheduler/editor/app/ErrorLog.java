@@ -69,7 +69,7 @@ public class ErrorLog extends Exception {
 			if(logger != null)
 				return;
 			//filename = "C:/temp/editor.log";
-			filename = sos.scheduler.editor.app.Options.getSchedulerHome();
+			filename = sos.scheduler.editor.app.Options.getSchedulerData();
 			if(filename.endsWith("/") || filename.endsWith("\\"))
 				filename = filename + "logs";
 			else 

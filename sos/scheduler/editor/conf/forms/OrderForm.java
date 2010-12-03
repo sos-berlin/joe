@@ -490,7 +490,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 				else
 					xmlPaths = path; 
 			} else { 
-				xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome() ;
+				xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData() ;
 				xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths+ "config/" : xmlPaths.concat("/config/"));
 			}
 

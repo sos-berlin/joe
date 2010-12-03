@@ -264,7 +264,7 @@ public class SaveEventsDialogForm {
 			lblDirectory = new Label(eventgroup, SWT.SHADOW_IN | SWT.CENTER | SWT.BORDER);
 			lblDirectory.setAlignment(SWT.CENTER);
 			try {
-				lblDirectory.setText(new File(Options.getSchedulerHome(), "config/events").getCanonicalPath());
+				lblDirectory.setText(new File(Options.getSchedulerData(), "config/events").getCanonicalPath());
 			} catch (Exception e) {}
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, false, 2, 1);
 			lblDirectory.setLayoutData(gridData_1);

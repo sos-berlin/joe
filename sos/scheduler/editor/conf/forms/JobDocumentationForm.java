@@ -250,14 +250,14 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 				try {
 					Utils.startCursor(getShell());
 					if (tFileName.getText() != null && tFileName.getText().length() > 0) {
-						String sHome = getHome(tFileName.getText());
+						String sData = getData(tFileName.getText());
 						
 						Program prog = Program.findProgram("html");
 						
 						if (prog != null)
-							prog.execute(new File((sHome).concat(tFileName.getText())).toURL().toString());
+							prog.execute(new File((sData).concat(tFileName.getText())).toURL().toString());
 						else {
-							Runtime.getRuntime().exec(Options.getBrowserExec(new File((sHome).concat(tFileName.getText())).toURL().toString(), Options.getLanguage()));
+							Runtime.getRuntime().exec(Options.getBrowserExec(new File((sData).concat(tFileName.getText())).toURL().toString(), Options.getLanguage()));
 						} 
 					} 
 				} catch (Exception ex) {
@@ -281,7 +281,7 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 				Utils.startCursor(getShell());
 				String xmlPath = "";
 				if(tFileName.getText() != null && tFileName.getText().length() > 0) {
-					xmlPath = sos.scheduler.editor.app.Options.getSchedulerHome() ;
+					xmlPath = sos.scheduler.editor.app.Options.getSchedulerData() ;
 					xmlPath = (xmlPath.endsWith("/") || xmlPath.endsWith("\\") ? xmlPath.concat(tFileName.getText()) : xmlPath.concat("/").concat(tFileName.getText()));
 					
 					
@@ -346,30 +346,30 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 		Utils.stopCursor(getShell());
 	}
 	
-	public String getHome(String filename) {
+	public String getData(String filename) {
 		
 		
-		String home = ".";
+		String data = ".";
 		if((listener.get_dom().isDirectory() || listener.get_dom().isLifeElement()) && butIsLiveFile.getSelection()) {
 			if(filename.startsWith("/") || filename.startsWith("\\")) {
-				home = Options.getSchedulerHotFolder();
+				data = Options.getSchedulerHotFolder();
 			} else if(listener.get_dom().getFilename() != null){
-			     home = new File(listener.get_dom().getFilename()).getParent(); 
+			     data = new File(listener.get_dom().getFilename()).getParent(); 
 			}
 		} else {
 			//normale Konfiguration
 			if(butIsLiveFile.getSelection())
-				home = Options.getSchedulerHotFolder();
+				data = Options.getSchedulerHotFolder();
 			else
-				home = Options.getSchedulerHome();	
+				data = Options.getSchedulerData();	
 		}
 		
-		if(!(home.endsWith("\\") || home.endsWith("/")))
-			home = home.concat("/");
+		if(!(data.endsWith("\\") || data.endsWith("/")))
+			data = data.concat("/");
 		
-		home = home.replaceAll("\\\\", "/");
+		data = data.replaceAll("\\\\", "/");
 		
-		return home;
+		return data;
 		
 	}
 	

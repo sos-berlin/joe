@@ -161,7 +161,7 @@ public class JobAssistentImportJobParamsForm {
 		if(xmlFilename == null || xmlFilename.trim().length() == 0) 
 			return new ArrayList();
 
-		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome() ;
+		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData() ;
 		if(!xmlFilename.replaceAll("\\\\", "/").startsWith(xmlPaths.replaceAll("\\\\", "/")))
 			xmlFilename  = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths.concat(xmlFilename) : xmlPaths.concat("\\").concat(xmlFilename));
 

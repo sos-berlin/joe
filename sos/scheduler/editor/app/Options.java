@@ -40,7 +40,7 @@ public class Options {
 
     public static String getDefaultOptionFilename() {
         //return getDefault("editor.options.file").replaceAll("\\{scheduler_home\\}", getSchedulerHome());
-    	return getDefault("editor.options.file").replaceAll("\\{scheduler_home\\}", getSchedulerHome().replaceAll("\\\\", "/"));
+    	return getDefault("editor.options.file").replaceAll("\\{scheduler_data\\}", getSchedulerData().replaceAll("\\\\", "/"));
     }
 
 
@@ -245,7 +245,7 @@ public class Options {
 
     public static String getXSLT() {
         //return _properties.getProperty("editor.xml.xslt").replaceAll("\\{scheduler_home\\}", getSchedulerHome());
-    	return _properties.getProperty("editor.xml.xslt").replaceAll("\\{scheduler_home\\}", getSchedulerHome().replaceAll("\\\\", "/"));
+    	return _properties.getProperty("editor.xml.xslt").replaceAll("\\{scheduler_data\\}", getSchedulerData().replaceAll("\\\\", "/"));
     	
     }
 
@@ -265,7 +265,7 @@ public class Options {
 
 
     public static String getDocXSLT() {
-        return _properties.getProperty("documentation.xml.xslt").replaceAll("\\{scheduler_home\\}", getSchedulerHome().replaceAll("\\\\", "/"));
+        return _properties.getProperty("documentation.xml.xslt").replaceAll("\\{scheduler_data\\}", getSchedulerData().replaceAll("\\\\", "/"));
     }
 
 
@@ -299,7 +299,8 @@ public class Options {
 
 
     public static String getLastDirectory() {
-        return (_properties.getProperty("editor.file.lastopendir", ""));
+       return getSchedulerHotFolder();
+       //return (_properties.getProperty("editor.file.lastopendir", ""));
     }
 
 
@@ -416,7 +417,14 @@ public class Options {
         }
     }
 
-    
+
+    public static String getSchedulerData() {
+        if (System.getProperty("SCHEDULER_DATA") != null) {
+            return System.getProperty("SCHEDULER_DATA");
+        } else {
+            return  getSchedulerHome();
+        }
+    }    
     public static String getSchedulerNormalizedHome() {
     	String home = Options.getSchedulerHome();
     	home = home.endsWith("/") || home.endsWith("\\") ? home : home + "/";
@@ -424,21 +432,28 @@ public class Options {
     	return home;
     }
     
+    public static String getSchedulerNormalizedData() {
+      	String data = Options.getSchedulerData();
+    	data = data.endsWith("/") || data.endsWith("\\") ? data : data + "/";
+    	data = data.replaceAll("\\\\", "/");
+    	return data;
+   }
+     
     public static String getSchedulerHotFolder() {
         if (System.getProperty("SCHEDULER_HOT_FOLDER") != null && System.getProperty("SCHEDULER_HOT_FOLDER").length() > 0) {
             return System.getProperty("SCHEDULER_HOT_FOLDER");
         } else {  
-        	String shome = getSchedulerHome();
-        	shome = shome.endsWith("/") || shome.endsWith("\\") ? shome : shome+ "/";  
-            return shome + "config/live/";
+        	String sdata = getSchedulerData();
+        	sdata = sdata.endsWith("/") || sdata.endsWith("\\") ? sdata : sdata+ "/";  
+            return sdata + "config/live/";
         }
     }
 
     public static String getSchedulerNormalizedHotFolder() {
-    	String home = Options.getSchedulerHotFolder();
-    	home = home.endsWith("/") || home.endsWith("\\") ? home : home + "/";
-    	home = home.replaceAll("\\\\", "/");
-    	return home;
+    	String sdata = Options.getSchedulerHotFolder();
+    	sdata = sdata.endsWith("/") || sdata.endsWith("\\") ? sdata : sdata + "/";
+    	sdata = sdata.replaceAll("\\\\", "/");
+    	return sdata;
     }
     
     public static Color getRequiredColor() {

@@ -183,7 +183,7 @@ public class DetailsListener {
 					else
 						xmlPaths = path; 
 				} else { 
-					xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome() ;
+					xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData() ;
 					xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths+ "config/" : xmlPaths.concat("/config/"));
 				}
 			}
@@ -1037,7 +1037,7 @@ public class DetailsListener {
 			if(dom.isDirectory()) {
 				parent = dom.getFilename()!= null	&& new File(dom.getFilename()).getParent() != null ? new File(dom.getFilename()).getParent() : Options.getSchedulerHotFolder() + "/config";  
 			} else {
-				parent = dom.getFilename()!= null	&& new File(dom.getFilename()).getParent() != null ? new File(dom.getFilename()).getParent() : Options.getSchedulerHome() + "/config";
+				parent = dom.getFilename()!= null	&& new File(dom.getFilename()).getParent() != null ? new File(dom.getFilename()).getParent() : Options.getSchedulerData() + "/config";
 			}
 			if(!new File(parent, jobchainname + ".config.xml").exists())
 				return;

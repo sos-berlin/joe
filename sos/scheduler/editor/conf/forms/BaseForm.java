@@ -348,7 +348,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     	if(con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
     		currPath = new java.io.File(con.getCurrentEditor().getFilename()).getParent();    			
     	} else {
-    		currPath = sos.scheduler.editor.app.Options.getSchedulerHome() + sep + "config";
+    		currPath = sos.scheduler.editor.app.Options.getSchedulerData() + sep + "config";
     	}
     	
     	currPath = currPath.replace("/".toCharArray()[0], sep.toCharArray()[0]);
@@ -389,7 +389,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     		if(con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
     			currPath = new java.io.File(con.getCurrentEditor().getFilename()).getParent();    			
     		} else {
-    			currPath = sos.scheduler.editor.app.Options.getSchedulerHome() + sep + "config";
+    			currPath = sos.scheduler.editor.app.Options.getSchedulerData() + sep + "config";
     		}
     		if(!(currPath.endsWith("/") || currPath.endsWith("\\")))
 				currPath = currPath.concat(sep);

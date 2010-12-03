@@ -152,7 +152,7 @@ public class FTPDialog {
 
 				ftpProfilePicker = new FTPProfilePicker(schedulerGroup, 
 						SWT.NONE, 
-						new File(Options.getSchedulerHome(), "config/factory.ini") );
+						new File(Options.getSchedulerData(), "config/factory.ini") );
 
 
 				//ftpProfilePicker.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));

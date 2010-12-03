@@ -75,6 +75,9 @@ public class HotFolderDialog {
 		sosString = new SOSString();
 		//mainwindow = mainwindow_;
 	}
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 
 	public void showForm(int type_) {
 
@@ -343,9 +346,7 @@ public class HotFolderDialog {
 				mask = SCHEDULER_HOST_MASK;
 			}
 
-			//String path = Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome() : Options.getSchedulerHome() + "/";
-			//path = path + "config/remote";
-			String path = new File(Options.getSchedulerHome(), "config/remote").getCanonicalPath();
+			String path = new File(Options.getSchedulerData(), "config/remote").getCanonicalPath();
 
 			File p = new File(path); 
 			if(!p.exists()) {
@@ -428,9 +429,7 @@ public class HotFolderDialog {
 							names.put(sname, null);
 						}
 
-						//String path = Options.getSchedulerHome().endsWith("/")|| Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome(): Options.getSchedulerHome() + "/";
-						//path = path + "config/remote";
-						String path = new File(Options.getSchedulerHome(), "config/remote").getCanonicalPath();
+						String path = new File(Options.getSchedulerData(), "config/remote").getCanonicalPath();
 						Iterator hostIterator = names.keySet().iterator();
 						while (hostIterator.hasNext()) {
 							String sname = sosString.parseToString(hostIterator.next());
@@ -586,7 +585,7 @@ public class HotFolderDialog {
 				path = 	sosString.parseToString(tree.getSelection()[0].getData()) ;
 			else
 			*/ 
-				path = new File(Options.getSchedulerHome(),"config/remote/").getCanonicalPath();
+				path = new File(Options.getSchedulerData(),"config/remote/").getCanonicalPath();
 
 			//path = (path.endsWith("/") || path.endsWith("\\") ? path : path + "/")   + name;
 			path =  new File(path, name).getCanonicalPath();

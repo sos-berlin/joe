@@ -466,7 +466,7 @@ public class ParameterListener {
 	}    
 
 	public void getAllParameterDescription() {
-		String xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome() ;
+		String xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData() ;
 		String include = "";
 		Element desc = _parent.getChild("description");
 		if (desc != null) {

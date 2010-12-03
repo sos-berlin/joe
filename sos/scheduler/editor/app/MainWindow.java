@@ -78,8 +78,6 @@ public class MainWindow  {
 	public MainWindow() {
 		super();	
 	}
-
-
 	/**
 	 * This method initializes composite
 	 */
@@ -162,6 +160,7 @@ public class MainWindow  {
 
 	/**
 	 * This method initializes sShell
+	 * @wbp.parser.entryPoint
 	 */
 	public void createSShell() {
 
@@ -172,9 +171,8 @@ public class MainWindow  {
 		sShell.setData(sShell.getText());		
 		sShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 
-		groupmain = new Composite(sShell, SWT.NONE);		
-		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
-		groupmain.setLayoutData(gridData);
+		groupmain = new Composite(sShell, SWT.NONE);
+		groupmain.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.verticalSpacing = 0;
 		gridLayout.marginWidth = 0;
@@ -352,7 +350,7 @@ public class MainWindow  {
 		pOpenGlobalScheduler.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				Utils.startCursor(getSShell());
-				String globalSchedulerPath = Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome() : Options.getSchedulerHome() + "/";
+				String globalSchedulerPath = Options.getSchedulerData().endsWith("/") || Options.getSchedulerData().endsWith("\\") ? Options.getSchedulerData() : Options.getSchedulerData() + "/";
 				globalSchedulerPath = globalSchedulerPath + "config/remote/_all";
 				File f = new java.io.File(globalSchedulerPath); 
 				if(!f.exists()) {
@@ -795,8 +793,7 @@ public class MainWindow  {
 	private void createToolBar() {
 
 		final ToolBar toolBar = new ToolBar(groupmain, SWT.NONE);
-		final GridData gridData = new GridData(GridData.BEGINNING, GridData.FILL, true, false);
-		toolBar.setLayoutData(gridData);
+		toolBar.setLayoutData(new GridData(GridData.BEGINNING, GridData.FILL, true, false));
 		final ToolItem butNew = new ToolItem(toolBar, SWT.NONE);
 		butNew.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_new.gif"));	
 		final Menu menu = new Menu(toolBar);

@@ -101,7 +101,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.marginTop = 10;
-		gridLayout.numColumns = 5;
+		gridLayout.numColumns = 14;
 		jobChainGroup.setLayout(gridLayout);
 		chainNameLabel = new Label(jobChainGroup, SWT.NONE);
 		chainNameLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
@@ -129,7 +129,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				//tName.selectAll();
 			}
 		});
-		final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, true, false, 3, 1);
+		final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, true, false, 12, 1);
 		gridData_4.widthHint = 273;
 		tName.setLayoutData(gridData_4);
 		tName.setText(listener.getChainName());
@@ -203,7 +203,16 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 
 			}
 		});
-		txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1));
+		txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 12, 1));
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
@@ -215,6 +224,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		lblMaxOrders.setText("Max Orders");
 		
 		sMaxorders = new Text(jobChainGroup, SWT.BORDER);
+		
 		sMaxorders.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
 			   if(init) return;
@@ -227,7 +237,27 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			   listener.setMaxorders(maxOrders);
 			}
 		});
-		sMaxorders.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		GridData gd_sMaxorders = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_sMaxorders.minimumWidth = 60;
+		sMaxorders.setLayoutData(gd_sMaxorders);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
@@ -264,6 +294,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 
 			}
 		});
+		new Label(jobChainGroup, SWT.NONE);
 		bVisible = new Button(jobChainGroup, SWT.CHECK);
 		bVisible.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		bVisible.setSelection(true);
@@ -276,6 +307,14 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				//bApplyChain.setEnabled(true);
 			}
 		});
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
 
 		if(!listener.get_dom().isLifeElement()) {

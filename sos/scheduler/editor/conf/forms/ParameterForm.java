@@ -309,7 +309,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 		tParameter.removeAll();
 		if(includeFile != null && includeFile.trim().length() > 0) {
-			if(new File(Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome(): Options.getSchedulerHome() + "/" + includeFile).exists())
+			if(new File(Options.getSchedulerData().endsWith("/") || Options.getSchedulerData().endsWith("\\") ? Options.getSchedulerData(): Options.getSchedulerData() + "/" + includeFile).exists())
 				listener.getAllParameterDescription();
 		}
 		listener.fillParams(tParameter);
@@ -352,26 +352,26 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			boolean fNotExist = false;
 			if(!new File(f).exists()) {
 
-				String home = ".";
+				String data = ".";
 				if((dom.isDirectory() || dom.isLifeElement()) && butIsLifeFile.getSelection()) {
 					if(f.startsWith("/") || f.startsWith("\\")) {
-						home = Options.getSchedulerHotFolder();
+						data = Options.getSchedulerHotFolder();
 					} else if(dom.getFilename() != null){
 						if(dom.isLifeElement())
-							home =  new File(dom.getFilename()).getParent();
+							data =  new File(dom.getFilename()).getParent();
 						else //iddirectory
-							home = new File(dom.getFilename()).getPath();
+							data = new File(dom.getFilename()).getPath();
 						
 					}
 				} else {
 					//normale Konfiguration
 					if(butIsLifeFile != null && butIsLifeFile.getSelection())
-						home = Options.getSchedulerHotFolder();
+						data = Options.getSchedulerHotFolder();
 					else
-						home = Options.getSchedulerHome();	
+						data = Options.getSchedulerData();	
 				}
 
-				f =  ((home.endsWith("/") || home.endsWith("\\") ? home : home + "/") + f);
+				f =  ((data.endsWith("/") || data.endsWith("\\") ? data : data + "/") + f);
 				if(!new File(f).exists()) {
 					fNotExist = true;
 				}

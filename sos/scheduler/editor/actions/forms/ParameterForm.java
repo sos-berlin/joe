@@ -253,7 +253,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 		tParameter.removeAll();
 		if(includeFile != null && includeFile.trim().length() > 0) {
-			if(new File(Options.getSchedulerHome().endsWith("/") || Options.getSchedulerHome().endsWith("\\") ? Options.getSchedulerHome(): Options.getSchedulerHome() + "/" + includeFile).exists())
+			if(new File(Options.getSchedulerData().endsWith("/") || Options.getSchedulerData().endsWith("\\") ? Options.getSchedulerData(): Options.getSchedulerData() + "/" + includeFile).exists())
 				listener.getAllParameterDescription();
 		}
 		listener.fillParams(tParameter);

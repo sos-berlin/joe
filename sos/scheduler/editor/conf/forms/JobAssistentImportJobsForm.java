@@ -51,7 +51,7 @@ import org.eclipse.swt.widgets.Table;
  * Es werden alle Standalone Jobs oder Auftragsgesteuerte Jobs zur Auswahl gestellt.
  * 
  * Die Kriterien stehen in der Job Dokumentation.
- * Das bedeutet alle Job Dokumentationen aus der Verzeichnis <SCHEDULER_HOME>/jobs/*.xml werden parsiert.
+ * Das bedeutet alle Job Dokumentationen aus der Verzeichnis <SCHEDULER_DATA>/jobs/*.xml werden parsiert.
  * 
  * Folgen Funktionen können hier ausgeführt werden:
  * 
@@ -79,7 +79,7 @@ import org.eclipse.swt.widgets.Table;
  * Cancel: 
  * 		beendet den Wizzard
  * 
- * Der Aufbau eines Jobs kann aus der Dokumentation <SCHEDULER_HOME>\config\html\doc\de\xml.xml entnommen werden. 
+ * Der Aufbau eines Jobs kann aus der Dokumentation <SCHEDULER_>\config\html\doc\de\xml.xml entnommen werden. 
  * 
  * @author mueruevet.oeksuez@sos-berlin.com
  *
@@ -203,7 +203,7 @@ public class JobAssistentImportJobsForm {
 
 	
 	/**
-	 * Alle vorhandenen Job Dokumentation aus der <SCHEDULER_HOME>/jobs/*.xml
+	 * Alle vorhandenen Job Dokumentation aus der <SCHEDULER_DATA>/jobs/*.xml
 	 * parsieren und in die Tabelle Schreiben. Folgende Informationen werden bei der Parsierung ausgelesen:
 	 * Name, Title, Filename, Job-Meta-Element
 	 * 
@@ -213,7 +213,7 @@ public class JobAssistentImportJobsForm {
 	public ArrayList parseDocuments() {
 
 		String xmlFilename = "";
-		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHome() ;
+		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData() ;
 		xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths.concat("jobs") : xmlPaths.concat("/jobs"));
 		ArrayList listOfDoc = null;
 		
@@ -822,10 +822,10 @@ public class JobAssistentImportJobsForm {
 
 
 			//relativen pfad bestimmen
-			String sHome = sos.scheduler.editor.app.Options.getSchedulerHome().replaceAll("\\\\", "/");
+			String sData = sos.scheduler.editor.app.Options.getSchedulerData().replaceAll("\\\\", "/");
 			String currPath = txtPath.getText().replaceAll("\\\\", "/");
-			if(new File(currPath).getPath().indexOf(new File(sHome).getPath()) > -1) {
-				h.put("filename", currPath.substring(sHome.length() + 1));
+			if(new File(currPath).getPath().indexOf(new File(sData).getPath()) > -1) {
+				h.put("filename", currPath.substring(sData.length() + 1));
 			} else {
 				h.put("filename", txtPath.getText());
 			}			

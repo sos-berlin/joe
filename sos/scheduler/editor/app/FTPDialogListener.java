@@ -81,7 +81,7 @@ public class FTPDialogListener {
 		String sep = "/";
 		try {		
 
-			configFile = Options.getSchedulerHome();
+			configFile = Options.getSchedulerData();
 
 			configFile = configFile.endsWith("/") || configFile.endsWith("\\") ? configFile : configFile + sep;
 			configFile = configFile + "config" + sep + "factory.ini";

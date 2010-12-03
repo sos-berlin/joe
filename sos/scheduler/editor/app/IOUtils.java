@@ -59,7 +59,6 @@ public class IOUtils {
 		filterMask = filterMask.replaceAll("\\$", "");
 
 		fdialog.setFilterExtensions(new String[]{filterMask});
-
 		filename = fdialog.open();  
 
 		if(filename == null || filename.trim().length() == 0)
