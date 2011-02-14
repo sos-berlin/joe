@@ -8,6 +8,7 @@ package sos.scheduler.editor.app;
  *
  */
 
+
 import sos.util.SOSStandardLogger;
 import sos.util.SOSClassUtil;
 
@@ -74,6 +75,7 @@ public class ErrorLog extends Exception {
 				filename = filename + "logs";
 			else 
 				filename = filename + "/logs";
+			
 			
 			if(!new java.io.File(filename).exists())
 				new java.io.File(filename).mkdirs();
