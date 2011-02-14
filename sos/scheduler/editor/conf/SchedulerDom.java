@@ -280,7 +280,8 @@ public class SchedulerDom extends DomParser {
     }*/
 
 	public boolean isEnabled(Element e) {
-	    boolean enabled = (Utils.getAttributeValue("enabled", e).equalsIgnoreCase("yes"));
+	    String enabledAttr =  Utils.getAttributeValue("enabled", e);
+	    boolean enabled = enabledAttr.equalsIgnoreCase("yes") || enabledAttr.length()==0;
 		return enabled;
 	}
 	

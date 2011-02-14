@@ -565,7 +565,8 @@ public class JobsListener {
 	}
 
 	public boolean isEnabled(Element e) {
-	   boolean enabled = (Utils.getAttributeValue("enabled", e).equalsIgnoreCase("yes"));
+	   String enabledAtt =  Utils.getAttributeValue("enabled", e);
+	   boolean enabled = enabledAtt.equalsIgnoreCase("yes")  || enabledAtt.length()==0;
 	   return enabled;
 	}
 	

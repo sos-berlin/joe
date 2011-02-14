@@ -87,7 +87,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		initialize();
 		setToolTipText();			
 		event = true;
-		if (command.getParentElement() != null ){        	
+ 		if (command.getParentElement() != null ){        	
 			this.jobsAndOrdersGroup.setEnabled(Utils.isElementEnabled("job", dom, command.getParentElement()));        	
 		}
 

@@ -181,6 +181,21 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 	}
 
+	public ParameterForm(Composite parent, int style, 
+			SchedulerDom _dom, 
+			Element parentElem, 
+			ISchedulerUpdate main, 			
+			int type_, String jobname) throws JDOMException {
+
+		super(parent, style);       
+		dom = _dom;
+		type = type_;
+		listener = new ParameterListener(dom, parentElem, main, type_);
+		listener.setJobname(jobname);
+		initialize();       
+		setToolTipText();
+
+	}
 	private void initialize() {
 		sosString = new SOSString();
 		try {

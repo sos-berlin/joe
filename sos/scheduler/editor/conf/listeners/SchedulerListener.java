@@ -852,7 +852,8 @@ public class SchedulerListener {
 							break;
 						case Editor.PARAMETER:
 							int type = getType(objTreeItemUserdata.getElement());
-							new sos.scheduler.editor.conf.forms.ParameterForm(c, SWT.NONE, _dom, objTreeItemUserdata.getElement(), _gui, type);
+							String jobname = Utils.getJobElement(objTreeItemUserdata.getElement()).getAttribute("name").getValue();
+							new sos.scheduler.editor.conf.forms.ParameterForm(c, SWT.NONE, _dom, objTreeItemUserdata.getElement(), _gui, type,jobname);
 							break;
 						case Editor.SECURITY:
 							new SecurityForm(c, SWT.NONE, _dom, objTreeItemUserdata.getElement());

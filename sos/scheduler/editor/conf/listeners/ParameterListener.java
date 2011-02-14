@@ -24,7 +24,11 @@ import sos.scheduler.editor.app.Options;
 public class ParameterListener {
 
 
-	private         ISchedulerUpdate      _main                    = null;
+	public void setJobname(String jobname) {
+      this.jobname = jobname;
+   }
+
+   private         ISchedulerUpdate      _main                    = null;
 
 	private         SchedulerDom          _dom                     = null;
 
@@ -35,6 +39,7 @@ public class ParameterListener {
 	private         List                  _environments            = null;
 
 	private         List                  _includeParams           = null;
+	private         String                jobname="";
 
 	private  static HashMap               parameterDescription     = new HashMap();
 
@@ -321,6 +326,7 @@ public class ParameterListener {
 			}
 		}
 		_dom.setChanged(true);
+		if(type == Editor.JOB_COMMANDS) _dom.setChangedForDirectory("job", jobname, SchedulerDom.MODIFY);
 
 		//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 		
@@ -516,6 +522,7 @@ public class ParameterListener {
 			
 			
 		}
+		if(type == Editor.JOB_COMMANDS) _dom.setChangedForDirectory("job", jobname, SchedulerDom.MODIFY);
 		Utils.setChangedForDirectory(_parent, _dom);
 		
 	}
