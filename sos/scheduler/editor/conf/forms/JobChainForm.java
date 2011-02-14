@@ -204,22 +204,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			}
 		});
 		txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 12, 1));
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		
+		 
 		Label lblMaxOrders = new Label(jobChainGroup, SWT.NONE);
 		lblMaxOrders.setText("Max Orders");
 		
