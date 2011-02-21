@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.jdom.Attribute;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Editor;
@@ -852,8 +853,13 @@ public class SchedulerListener {
 							break;
 						case Editor.PARAMETER:
 							int type = getType(objTreeItemUserdata.getElement());
-							String jobname = Utils.getJobElement(objTreeItemUserdata.getElement()).getAttribute("name").getValue();
-							new sos.scheduler.editor.conf.forms.ParameterForm(c, SWT.NONE, _dom, objTreeItemUserdata.getElement(), _gui, type,jobname);
+							Attribute a = Utils.getJobElement(objTreeItemUserdata.getElement()).getAttribute("name");
+							if (a == null) {
+							  new sos.scheduler.editor.conf.forms.ParameterForm(c, SWT.NONE, _dom, objTreeItemUserdata.getElement(), _gui, type);
+							}else {
+							  String jobname = a.getValue();
+							  new sos.scheduler.editor.conf.forms.ParameterForm(c, SWT.NONE, _dom, objTreeItemUserdata.getElement(), _gui, type,jobname);
+							}
 							break;
 						case Editor.SECURITY:
 							new SecurityForm(c, SWT.NONE, _dom, objTreeItemUserdata.getElement());
