@@ -275,6 +275,19 @@ public class TabbedContainer implements IContainer {
 		}
 	}
 
+	private String shortCaption(String caption) {
+		if (caption.length() > 30){
+		   File f = new File(caption);
+		   String s = "..." + f.getParentFile().getParentFile().getName() + "/" + f.getParentFile().getName() + "/" + f.getName();
+		   if (s.length() > 30) {
+			    return caption;
+		   }else {
+			   return s;
+		   }
+		}else {
+		   return caption;
+		}
+	}
 	private CTabItem newItem(Control control, String filename) {
 		CTabItem tab = new CTabItem(folder, SWT.NONE);
 		tab.addDisposeListener(new DisposeListener() {
@@ -286,10 +299,12 @@ public class TabbedContainer implements IContainer {
 		});
 		tab.setControl(control);
 		folder.setSelection(folder.indexOf(tab));        
-		tab.setData(new TabData(Utils.getFileFromURL(filename),""));
-		String title = setSuffix(tab,Utils.getFileFromURL(filename));
+		String actFilename = Utils.getFileFromURL(filename);
+		tab.setData(new TabData(actFilename,""));
+		String title = setSuffix(tab,actFilename);
+ 		 
 		TabData t = (TabData)tab.getData();
-		t.caption = title;
+		t.caption = shortCaption(title);
 		tab.setToolTipText(filename);
 		tab.setText(title);
 
@@ -395,7 +410,7 @@ public class TabbedContainer implements IContainer {
 			title = tab.getData("ftp_remote_directory").toString();
 		tab.setText(title);
 		tab.setToolTipText(filename);
-		tab.setData(new TabData(Utils.getFileFromURL(filename),title));
+		tab.setData(new TabData(Utils.getFileFromURL(filename),shortCaption(title)));
 		setWindowTitle();
 	}
 
@@ -413,7 +428,7 @@ public class TabbedContainer implements IContainer {
 		String title = setSuffix(tab,Utils.getFileFromURL(newFilename));
 		tab.setText(title);
 		tab.setToolTipText(newFilename);
-		tab.setData(new TabData(Utils.getFileFromURL(newFilename),title));
+		tab.setData(new TabData(Utils.getFileFromURL(newFilename),shortCaption(title)));
 		setWindowTitle();
 	}
 

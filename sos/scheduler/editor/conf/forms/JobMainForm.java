@@ -95,7 +95,7 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		updateTree = false;
 		
 		initForm();
-		
+
 		dom.setInit(false);
 		tName.setFocus();
 		init = false;
@@ -324,7 +324,8 @@ public class JobMainForm extends Composite implements IUpdateLanguage {
 		tName.setText(listener.getName());
 		updateTree = true;
 		tTitle.setText(listener.getTitle());
-		
+		group.setText("Job: " + listener.getName() + (listener.isDisabled() ? " (Disabled)" : ""));
+
 		String process_class = "";
 		if(listener.getProcessClass() != null && listener.getProcessClass().length() > 0)
 			process_class= listener.getProcessClass();
