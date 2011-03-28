@@ -400,8 +400,12 @@ public class MainWindow  {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				save();				
 			}
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+			  
 			}
+		
 		});
 		MenuItem pSaveAs = new MenuItem(mFile, SWT.PUSH);
 		pSaveAs.setText("Save As                            ");		

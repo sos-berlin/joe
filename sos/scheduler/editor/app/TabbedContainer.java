@@ -276,8 +276,8 @@ public class TabbedContainer implements IContainer {
 	}
 
 	private String shortCaption(String caption) {
-		if (caption.length() > 30){
-		   File f = new File(caption);
+	   File f = new File(caption);
+	   if (caption.length() > 30 && f.getParentFile() !=  null && f.getParentFile().getParentFile() != null){
 		   String s = "..." + f.getParentFile().getParentFile().getName() + "/" + f.getParentFile().getName() + "/" + f.getName();
 		   if (s.length() > 30) {
 			    return caption;
