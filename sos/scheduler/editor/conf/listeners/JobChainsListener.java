@@ -90,6 +90,24 @@ public class JobChainsListener {
 		}
 	}
 
+	public int indexOf (String jobChainName) {
+	    
+	    boolean found = false;
+		List list = _chains.getChildren("job_chain");
+		Iterator it = list.iterator();
+		int i = -1;
+		int index = -1;
+		while (it.hasNext()&& !found) {
+			Element chain = (Element) it.next();
+			String name = Utils.getAttributeValue("name", chain);
+			if (name.equals(jobChainName)){
+			   found = true;
+			   i++;
+			   index = i;
+			}
+		}
+		return index;
+	}
 
 	public void selectChain(int index) {
 		if(_chains == null)

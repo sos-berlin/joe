@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
@@ -106,8 +107,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		
 		
 		tChains.getHorizontalBar().setMaximum(0);
-		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
-		tChains.setLayoutData(gridData_2);
+		tChains.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 1, 3));
 		tChains.setHeaderVisible(true);
 		tChains.setLinesVisible(true);
 		tChains.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -220,7 +220,16 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 
 
 	private void applyChain() {
-		listener.applyChain("job_chain" + (tChains.getItemCount() + 1), true, true);
+	
+       int i = tChains.getItemCount() + 1;
+	   String newName = "job_chain" + i;
+ 	   while (listener.indexOf(newName) >= 0) {
+ 		   i++;
+		   newName = "job_chain" + i;
+	   }
+ 	    
+	
+		listener.applyChain(newName, true, true);
 		int index = tChains.getSelectionIndex();
 		if (index == -1)
 			index = tChains.getItemCount();
