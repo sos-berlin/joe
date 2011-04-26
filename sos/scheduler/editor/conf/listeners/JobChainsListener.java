@@ -93,7 +93,12 @@ public class JobChainsListener {
 	public int indexOf (String jobChainName) {
 	    
 	    boolean found = false;
-		List list = _chains.getChildren("job_chain");
+	    List list;
+	    if (_chains == null){
+	       return -1;
+	    }else {
+		    list = _chains.getChildren("job_chain");
+	    }
 		Iterator it = list.iterator();
 		int i = -1;
 		int index = -1;
