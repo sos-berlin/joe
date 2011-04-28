@@ -105,7 +105,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.marginTop = 10;
-		gridLayout.numColumns = 14;
+		gridLayout.numColumns = 3;
 		jobChainGroup.setLayout(gridLayout);
 		chainNameLabel = new Label(jobChainGroup, SWT.NONE);
 		chainNameLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
@@ -133,7 +133,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				//tName.selectAll();
 			}
 		});
-		final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, true, false, 12, 1);
+		final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, true, false, 1, 1);
 		gridData_4.widthHint = 273;
 		tName.setLayoutData(gridData_4);
 		tName.setText(listener.getChainName());
@@ -178,16 +178,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			}
 		});
 		butDetails.setText("Parameter");
-		/*bApplyChain = new Button(jobChainGroup, SWT.NONE);
-		bApplyChain.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		bApplyChain.setText("A&pply Job Chain");
-		bApplyChain.setEnabled(false);
-		bApplyChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				applyChain();
-			}
-		});
-		 */
+		
 		final Label titleLabel = new Label(jobChainGroup, SWT.NONE);
 		titleLabel.setText("Title");
 
@@ -199,15 +190,13 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		});
 		txtTitle.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
-				//getShell().setDefaultButton(bApplyChain);				
-				//bApplyChain.setEnabled(true);
-				//mo neu
+				
 				if(init) return;
 				listener.setTitle(txtTitle.getText());
 
 			}
 		});
-		txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 12, 1));
+		txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 		new Label(jobChainGroup, SWT.NONE);
 		
 		Label lblMaxOrders = new Label(jobChainGroup, SWT.NONE);
@@ -233,16 +222,6 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
 		
 		bRecoverable = new Button(jobChainGroup, SWT.CHECK);
 		bRecoverable.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
@@ -258,17 +237,6 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 
 			}
 		});
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
 		
@@ -287,17 +255,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				butDistributed.setSelection(listener.isDistributed());
 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
+		
 		
 		bVisible = new Button(jobChainGroup, SWT.CHECK);
 		bVisible.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
@@ -312,28 +270,12 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			}
 		});
 		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
+		 
 		 
 
 		if(!listener.get_dom().isLifeElement()) {
 		}
-		//butUp.setText("Up");
-		//butDown.setText("Down");
-
-
-		//gFileOrderSource = new Group(sashForm, SWT.VERTICAL);
-		//group.setTabList(new Control[] {cChains, fileOrderSourceGroup, gNodes, fileOrderSinkGroup, label_2});
-
+		
 	}
 
 
@@ -352,64 +294,14 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 		bVisible.setSelection(listener.getVisible());
 
 		tName.setBackground(null);
-		//bApplyChain.setEnabled(enable);
-
-		//if (enable && !isNew) {
-		/*} else {
-		 bNewNode.setEnabled(false);
-		 bNewFileOrderSource.setEnabled(false);
-		 }*/
-
-		enableNode(false);
-		enableFileOrderSource(false);           
-
-
-	}
-
-
-	private void enableNode(boolean enable) {
-
-
-	}
-
-	private void enableFileOrderSource(boolean enable) {
+		
+		sMaxorders.setText(String.valueOf(listener.getMaxOrders()));
+	
 	}
 
 
 
-	/*private void fillNode(boolean clear) {
-		boolean fullNode = listener.isFullNode();
-		boolean fileSinkNode = listener.isFileSinkNode();
-		boolean endNode = !fullNode && !fileSinkNode;
-
-
-	}
-*/
-
-
-
-
-	/*private void applyChain() {
-		String oldJobChainname = listener.getChainName();
-
-		boolean _continue = true;
-		if(listener.getChainName().length() > 0  && !tName.getText().equals(listener.getChainName()))
-			if(!Utils.checkElement(listener.getChainName(), listener.get_dom(), Editor.JOB_CHAIN, null))
-				_continue = false;
-
-		if(_continue) {
-			listener.applyChain(tName.getText(), bRecoverable.getSelection(), bVisible.getSelection(), butDistributed.getSelection(), txtTitle.getText());
-			update.updateJobChain(tName.getText(), oldJobChainname);
-		}
-		fillChain(true, false);
-		//bApplyChain.setEnabled(false);
-		if(listener.getChainName() != null && listener.getChainName().length() > 0) {
-			butDetails.setEnabled(true);
-		}  else {
-			butDetails.setEnabled(false);
-		}
-	}*/
-
+	
 	public void setISchedulerUpdate(ISchedulerUpdate update_) {
 		update = update_;
 	}
