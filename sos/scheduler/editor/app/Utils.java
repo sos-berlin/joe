@@ -290,7 +290,11 @@ public class Utils {
 		int s = 0;
 		if (h != 24) {
 			m = Utils.str2int(minutes, 59);
-			s = Utils.str2int(seconds, 59);
+			if ( h > 0 || m > 0) {
+				s = Utils.str2int(seconds,59);
+			}else {
+				s = Utils.str2int(seconds);
+			}
 		}
 		if (h < 0 && m < 0 && s < 0) {
 			return "";

@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
@@ -100,7 +99,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 	
 	private Label            label2                       = null;
 	
-	private Spinner          sMainSchedulerPort           = null;
+	private Text             sMainSchedulerPort           = null;
 	
 	private Group            gJavaOptions                 = null;
 	
@@ -160,7 +159,6 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		
 		int port = listener.getMainSchedulerPort();
 		tMainSchedulerHost.setText(listener.getMainSchedulerHost());
-		sMainSchedulerPort.setSelection(port);
 		
 		tJavaClassPath.setText(listener.getJavaClasspath());
 		tJavaOptions.setText(listener.getJavaOptions());
@@ -177,6 +175,16 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		sPort.setEnabled(cSamePorts.getSelection());
 		sTcpPort.setEnabled(!cSamePorts.getSelection());
 		sUdpPort.setEnabled(!cSamePorts.getSelection());
+	    if (!sPort.getEnabled() && sTcpPort.getText().equals("") && sUdpPort.getText().equals("")) {
+	       sTcpPort.setText(sPort.getText());
+	       sUdpPort.setText(sPort.getText());
+	    }
+	    if (sPort.getEnabled() && sTcpPort.getText().equals(sUdpPort.getText()) &&  !sTcpPort.getText().equals("") ) {
+	       String s = sTcpPort.getText();
+	       sTcpPort.setText("");
+	       sUdpPort.setText("");
+	       sPort.setText(s);
+	    }
 	}
 	
 	
@@ -193,13 +201,11 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		gConfig.setSize(new Point(798, 516));
 		
 		final Group group_1 = new Group(gConfig, SWT.NONE);
-		final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		group_1.setLayoutData(gridData);
+		group_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		final GridLayout gridLayout_1 = new GridLayout();
 		gridLayout_1.numColumns = 2;
 		group_1.setLayout(gridLayout_1);
 		label = new Label(group_1, SWT.NONE);
-		label.setLayoutData(new GridData());
 		label.setText("Scheduler ID:");
 		tSpoolerID = new Text(group_1, SWT.BORDER);
 		tSpoolerID.addFocusListener(new FocusAdapter() {
@@ -208,10 +214,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		
-		
-		final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		
-		tSpoolerID.setLayoutData(gridData_1);
+		tSpoolerID.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		
 		tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -219,7 +222,6 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		label7 = new Label(group_1, SWT.NONE);
-		label7.setLayoutData(new GridData());
 		label7.setText("Parameter:");
 		tParameter = new Text(group_1, SWT.BORDER);
 		tParameter.addFocusListener(new FocusAdapter() {
@@ -235,7 +237,6 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		label10 = new Label(group_1, SWT.NONE);
-		label10.setLayoutData(new GridData());
 		label10.setText("Include Path:");
 		tIncludePath = new Text(group_1, SWT.BORDER);
 		tIncludePath.addFocusListener(new FocusAdapter() {
@@ -252,7 +253,6 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		});
 		
 		final Label ipaddressLabel = new Label(group_1, SWT.NONE);
-		ipaddressLabel.setLayoutData(new GridData());
 		ipaddressLabel.setText("IP-Address");
 		
 		tIpAddress = new Text(group_1, SWT.BORDER);
@@ -269,7 +269,6 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		});
 		tIpAddress.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		label11 = new Label(group_1, SWT.NONE);
-		label11.setLayoutData(new GridData());
 		label11.setText("Log Dir:");
 		tLogDir = new Text(group_1, SWT.BORDER);
 		tLogDir.addFocusListener(new FocusAdapter() {
@@ -285,7 +284,6 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		label12 = new Label(group_1, SWT.NONE);
-		label12.setLayoutData(new GridData());
 		label12.setText("Mail XSLT:");
 		tMailXSLTStylesheet = new Text(group_1, SWT.BORDER);
 		tMailXSLTStylesheet.addFocusListener(new FocusAdapter() {
@@ -349,9 +347,8 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		label12_1.setText("Configuration Add Event:");
 		
 		cConfigurationAddEvent = new Combo(eventGroup, SWT.NONE);
-		final GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		
-		cConfigurationAddEvent.setLayoutData(gridData13);
+		cConfigurationAddEvent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		cConfigurationAddEvent.setItems(listener.getJobs());
 		
 		cConfigurationAddEvent.addModifyListener(new ModifyListener() {
@@ -375,12 +372,10 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		butBrowse.setText("Browse");
 		
 		label12_2 = new Label(eventGroup, SWT.NONE);
-		label12_2.setLayoutData(new GridData());
 		label12_2.setText("Configuration Modify Event:");
 		
 		cConfigurationModifyEvent = new Combo(eventGroup, SWT.NONE);
-		final GridData gridData13_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		cConfigurationModifyEvent.setLayoutData(gridData13_1);
+		cConfigurationModifyEvent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		cConfigurationModifyEvent.setItems(listener.getJobs());
 		cConfigurationModifyEvent.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
@@ -400,12 +395,10 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		butBrowse_1.setText("Browse");
 		
 		label12_3 = new Label(eventGroup, SWT.NONE);
-		label12_3.setLayoutData(new GridData());
 		label12_3.setText("Configuration Delete Event:");
 		
 		cConfigurationDeleteEvent = new Combo(eventGroup, SWT.NONE);
-		final GridData gridData13_1_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		cConfigurationDeleteEvent.setLayoutData(gridData13_1_1);
+		cConfigurationDeleteEvent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		cConfigurationDeleteEvent.setItems(listener.getJobs());
 		cConfigurationDeleteEvent.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
@@ -457,7 +450,6 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		gridData22.verticalAlignment = GridData.CENTER;
 		GridLayout gridLayout8 = new GridLayout();
 		gridLayout8.numColumns = 2;
-		GridData gridData20 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		GridData gridData19 = new GridData();
 		gridData19.horizontalAlignment = GridData.FILL;
 		gridData19.verticalAlignment = GridData.CENTER;
@@ -476,7 +468,6 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		gridLayout.marginWidth = 0;
 		gridLayout.numColumns = 2;
 		composite.setLayout(gridLayout);
-		GridData gridData7 = new GridData(60, SWT.DEFAULT);
 		GridLayout gridLayout11 = new GridLayout();
 		gridLayout11.marginWidth = 0;
 		gridLayout11.numColumns = 6;
@@ -509,7 +500,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		
-		sPort.setLayoutData(gridData7);
+		sPort.setLayoutData(new GridData(60, SWT.DEFAULT));
 		sPort.addModifyListener(new ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setPort(sPort.getText());
@@ -536,9 +527,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 				listener.setTcpPort(sTcpPort.getText());
 			}
 		});
-		GridData gridData8 = new GridData(60, SWT.DEFAULT);
 		label4 = new Label(gPorts, SWT.NONE);
-		label4.setLayoutData(new GridData());
 		label4.setText("UDP:");
 		sUdpPort = new Text(gPorts, SWT.BORDER);
 		sUdpPort.addFocusListener(new FocusAdapter() {
@@ -547,7 +536,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		
-		sUdpPort.setLayoutData(gridData8);
+		sUdpPort.setLayoutData(new GridData(60, SWT.DEFAULT));
 		sUdpPort.addModifyListener(new ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setUdpPort(sUdpPort.getText());
@@ -560,15 +549,12 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		GridLayout gridLayout4 = new GridLayout();
 		gridLayout4.numColumns = 4;
 		gMainScheduler = new Group(composite, SWT.NONE);
-		final GridData gridData_7 = new GridData(GridData.FILL, GridData.FILL, true, true);        
-		gMainScheduler.setLayoutData(gridData_7);
+		gMainScheduler.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		gMainScheduler.setText("Supervisor");
 		gMainScheduler.setLayout(gridLayout7);
-		gMainScheduler.setLayout(gridLayout4);
 		
 		label1 = new Label(gMainScheduler, SWT.NONE);
-		final GridData gridData_8 = new GridData(GridData.BEGINNING, GridData.CENTER, false, true);
-		label1.setLayoutData(gridData_8);
+		label1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
 		label1.setText("Host:");
 		GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData6.widthHint = 58;
@@ -589,14 +575,20 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		label2.setText("Port:");
 		GridData gridData11 = new GridData(GridData.FILL, GridData.CENTER, false, true);
 		gridData11.widthHint = 47;
-		sMainSchedulerPort = new Spinner(gMainScheduler, SWT.BORDER);
-		sMainSchedulerPort.setMaximum(1000000000);
+		sMainSchedulerPort = new Text(gMainScheduler, SWT.BORDER);
+		sMainSchedulerPort.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+			   sMainSchedulerPort.selectAll();		}
+			
+		});
+		 
 		
 		sMainSchedulerPort.setLayoutData(gridData11);
 		sMainSchedulerPort.addModifyListener(new ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				
-				if(sMainSchedulerPort.getSelection() > 100000)
+				if(sMainSchedulerPort.getText().equals(""))
 					sMainSchedulerPort.setBackground(Options.getRequiredColor());
 				else 
 					sMainSchedulerPort.setBackground(null);
@@ -608,7 +600,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		gJavaOptions = new Group(gConfig, SWT.NONE);
 		gJavaOptions.setText("Main Java Options");
 		gJavaOptions.setLayout(gridLayout8);
-		gJavaOptions.setLayoutData(gridData20);
+		gJavaOptions.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		label8 = new Label(gJavaOptions, SWT.NONE);
 		label8.setText("Class Path:");
 		tJavaClassPath = new Text(gJavaOptions, SWT.BORDER);
@@ -645,11 +637,9 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 	 * This method initializes group
 	 */
 	private void createGroup() {
-		
-		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
 		group = new Group(gConfig, SWT.NONE);
 		group.setText("Comment");
-		group.setLayoutData(gridData);
+		group.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		group.setLayout(gridLayout);
@@ -664,8 +654,6 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		});
 		button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
 		
-		GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
-		
 		
 		
 		tComment = new Text(group, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
@@ -676,7 +664,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 				}
 			}
 		});
-		tComment.setLayoutData(gridData4);
+		tComment.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2));
 		tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {

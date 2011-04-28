@@ -357,10 +357,9 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
         createComposite();
-        GridData gridData20 = new org.eclipse.swt.layout.GridData(GridData.END, GridData.CENTER, true, false);
         composite = new Composite(group2, SWT.NONE);
         composite.setLayout(new RowLayout(SWT.HORIZONTAL));
-        composite.setLayoutData(gridData20);
+        composite.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.END, GridData.CENTER, true, false));
         bStop = new Button(group2, SWT.RADIO);
         bStop.setText("stop");
         bStop.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -489,7 +488,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         sErrorSeconds.setLayoutData(gridData15);
         sErrorSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                Utils.setBackground(0, 59, sErrorSeconds);
+               if ((Utils.str2int(sErrorHours.getText()) > 0) ||  (Utils.str2int(sErrorMinutes.getText()) > 0 )   ) {
+                  Utils.setBackground(0, 59, sErrorSeconds);
+               }else {
+            	  sErrorSeconds.setBackground(null);
+               }
                 getShell().setDefaultButton(bApply);
                 bApply.setEnabled(true);
             }
@@ -531,7 +534,6 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         gridData9.widthHint = 25;
         GridData gridData8 = new org.eclipse.swt.layout.GridData();
         gridData8.widthHint = 25;
-        GridData gridData7 = new GridData(48, SWT.DEFAULT);
         GridData gridData6 = new org.eclipse.swt.layout.GridData();
         gridData6.horizontalSpan = 1;
         gridData6.grabExcessHorizontalSpace = true;
@@ -559,7 +561,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
-        sSetBackCount.setLayoutData(gridData7);
+        sSetBackCount.setLayoutData(new GridData(48, SWT.DEFAULT));
         bIsMaximum = new Button(group3, SWT.CHECK);
 
         final Label delayLabel = new Label(group3, SWT.NONE);
@@ -696,12 +698,14 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         sSetBackSeconds.setLayoutData(gridData10);
         sSetBackSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if (!(sSetBackHours.getText() + sSetBackMinutes.getText()).equals("")) {
+                if ((Utils.str2int(sSetBackHours.getText()) > 0) ||  (Utils.str2int(sSetBackMinutes.getText()) > 0 )   ) {
                     Utils.setBackground(0, 59, sSetBackSeconds);
+                }else {
+                   sSetBackSeconds.setBackground(null);
                 }
                 getShell().setDefaultButton(bApplySetback);
                 bApplySetback.setEnabled(true);
-            }
+            }  
         });
     }
 
@@ -710,11 +714,10 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
      * This method initializes table
      */
     private void createTable() {
-        GridData gridData14 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 11, 3);
         tErrorDelay = new Table(group2, SWT.BORDER | SWT.FULL_SELECTION);
         tErrorDelay.setSortDirection(SWT.UP);
         tErrorDelay.setHeaderVisible(true);
-        tErrorDelay.setLayoutData(gridData14);
+        tErrorDelay.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 11, 3));
         tErrorDelay.setLinesVisible(true);
         tErrorDelay.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -748,11 +751,10 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
      * This method initializes table
      */
     private void createTable2() {
-        GridData gridData24 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 10, 3);
         tSetback = new Table(group3, SWT.BORDER | SWT.FULL_SELECTION);
         tSetback.setSortDirection(SWT.UP);
         tSetback.setHeaderVisible(true);
-        tSetback.setLayoutData(gridData24);
+        tSetback.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 10, 3));
         tSetback.setLinesVisible(true);
         tSetback.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
