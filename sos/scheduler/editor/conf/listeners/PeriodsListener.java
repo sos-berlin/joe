@@ -238,7 +238,9 @@ public class PeriodsListener {
 
 	public Element getNewPeriod() {
 		_period = -1;
-		return new Element("period");
+		Element e = new Element("period");
+		e.setAttribute("end","24:00");
+		return e;
 	}
 
 

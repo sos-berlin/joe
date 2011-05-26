@@ -123,7 +123,6 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
             	            	
             	//repeat bzw. repeat_absolute darf nur einmal  def. werden
             	periodForm.hasRepeatTimes(listener.hasRepeatTimes());
-
             		
                 tPeriods.deselectAll();
                 
@@ -178,7 +177,6 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
      * This method initializes table
      */
     private void createTable() {
-        GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
         GridData gridData4 = new org.eclipse.swt.layout.GridData();
         gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData4.grabExcessHorizontalSpace = true;
@@ -187,7 +185,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
         tPeriods = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
         tPeriods.setHeaderVisible(true);
-        tPeriods.setLayoutData(gridData2);
+        tPeriods.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3));
         tPeriods.setLinesVisible(true);
         tPeriods.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {

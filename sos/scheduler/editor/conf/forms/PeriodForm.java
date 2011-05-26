@@ -130,6 +130,9 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 	//private PeriodsForm       periodsForm                = null;
 	
 
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public PeriodForm(Composite parent, int style, int type) {
 		super(parent, style);
 		_type = type;
@@ -388,6 +391,9 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 			}
 		} else {
 			event = false;
+			if (savEndHours.equals("") || (savEndHours.equals("00") && savEndMinutes.equals("00") &&  savEndSeconds.equals("00"))) {
+			   savEndHours = "24";
+			}
 			
 			if (!savBeginHours.equals(""))
 				sBeginHours.setText(savBeginHours);
@@ -502,16 +508,13 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
 		final Group groupSlottime = new Group(gPeriod, SWT.NONE);
 		groupSlottime.setText("Time Slot");
-		final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		groupSlottime.setLayoutData(gridData);
+		groupSlottime.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		final GridLayout gridLayout_1 = new GridLayout();
 		gridLayout_1.numColumns = 8;
 		groupSlottime.setLayout(gridLayout_1);
 		label1 = new Label(groupSlottime, SWT.NONE);
-		label1.setLayoutData(new GridData());
 		label1.setText("Let Run:");
 		bLetRun = new Button(groupSlottime, SWT.CHECK);
-		bLetRun.setLayoutData(new GridData());
 		bLetRun.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				listener.setLetRun(bLetRun.getSelection());
@@ -538,8 +541,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		label2 = new Label(groupSlottime, SWT.NONE);
-		final GridData gridData_1 = new GridData(86, SWT.DEFAULT);
-		label2.setLayoutData(gridData_1);
+		label2.setLayoutData(new GridData(86, SWT.DEFAULT));
 		label2.setText("Begin Time:");
 		sBeginHours = new Text(groupSlottime, SWT.BORDER);
 		sBeginHours.setTextLimit(2);
@@ -571,7 +573,6 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		label3 = new Label(groupSlottime, SWT.NONE);
-		label3.setLayoutData(new GridData());
 		label3.setText(":");
 		sBeginMinutes = new Text(groupSlottime, SWT.BORDER);
 		sBeginMinutes.setTextLimit(2);
@@ -604,7 +605,6 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		label4 = new Label(groupSlottime, SWT.NONE);
-		label4.setLayoutData(new GridData());
 		label4.setText(":");
 		sBeginSeconds = new Text(groupSlottime, SWT.BORDER);
 		sBeginSeconds.setTextLimit(2);
@@ -678,7 +678,6 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		label7 = new Label(groupSlottime, SWT.NONE);
-		label7.setLayoutData(new GridData());
 		label7.setText(":");
 		sEndMinutes = new Text(groupSlottime, SWT.BORDER);
 		sEndMinutes.setTextLimit(2);
@@ -713,7 +712,6 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		label8 = new Label(groupSlottime, SWT.NONE);
-		label8.setLayoutData(new GridData());
 		label8.setText(":");
 		sEndSeconds = new Text(groupSlottime, SWT.BORDER);
 		sEndSeconds.setTextLimit(2);

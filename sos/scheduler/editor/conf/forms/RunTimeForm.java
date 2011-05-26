@@ -184,18 +184,12 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         	}
         });
         butBrowse.setText("Browse");
-        
-       // holidayForm = new DateForm(gRunTime, SWT.NONE, 0);
-      //  holidayForm.setLayoutData(gridData4);
-        GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
         gComment = new Group(gRunTime, SWT.NONE);
         gComment.setText("Comment");
-        gComment.setLayoutData(gridData);
+        gComment.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true));
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.numColumns = 2;
         gComment.setLayout(gridLayout_1);
-		
-        GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
         tComment = new Text(gComment, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
         tComment.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
@@ -204,7 +198,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
 				}
         	}
         });
-        tComment.setLayoutData(gridData1);
+        tComment.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true));
         tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
         tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
