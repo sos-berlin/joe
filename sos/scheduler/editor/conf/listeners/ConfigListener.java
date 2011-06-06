@@ -119,22 +119,23 @@ public class ConfigListener {
     }
 
 
-    public int getMainSchedulerPort() {
+    public String getMainSchedulerPort() {
         String[] str = Utils.getAttributeValue("supervisor", _config).split(":");
         if (str.length > 1) {
             try {
-                return new Integer(str[1]).intValue();
+                return str[1];
             } catch (Exception e) {
                 Utils.setAttribute("supervisor", str[0] + ":0", _config, _dom);
             }
         }
-        return 0;
+        return "";
     }
 
 
     public void setMainScheduler(String scheduler) {
-        if (scheduler.startsWith(":"))
+        if (scheduler.equals(":")) {
             scheduler = "";
+        }
         Utils.setAttribute("supervisor", scheduler, _config, _dom);
     }
 

@@ -157,8 +157,8 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		sTcpPort.setText(listener.getTcpPort());
 		sUdpPort.setText(listener.getUdpPort());
 		
-		int port = listener.getMainSchedulerPort();
 		tMainSchedulerHost.setText(listener.getMainSchedulerHost());
+		sMainSchedulerPort.setText(listener.getMainSchedulerPort());
 		
 		tJavaClassPath.setText(listener.getJavaClasspath());
 		tJavaOptions.setText(listener.getJavaOptions());
@@ -567,7 +567,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		tMainSchedulerHost.setLayoutData(gridData6);
 		tMainSchedulerHost.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				listener.setMainScheduler(tMainSchedulerHost.getText() + ":" + sMainSchedulerPort.getSelection());
+				listener.setMainScheduler(tMainSchedulerHost.getText() + ":" + listener.getMainSchedulerPort());
 			}
 		});
 		label2 = new Label(gMainScheduler, SWT.NONE);
@@ -593,7 +593,7 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 				else 
 					sMainSchedulerPort.setBackground(null);
 				
-				listener.setMainScheduler(tMainSchedulerHost.getText() + ":" + sMainSchedulerPort.getSelection());
+				listener.setMainScheduler(listener.getMainSchedulerHost() + ":" + sMainSchedulerPort.getText());
 			}
 		});
 				
