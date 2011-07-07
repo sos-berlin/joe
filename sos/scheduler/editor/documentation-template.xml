@@ -10,5 +10,5 @@
     </release>
   </releases>
   <configuration/>
-  <documentation language="de"/>
+  <documentation language="de">.</documentation>
 </description>
