@@ -15,6 +15,13 @@
 	<classpathentry kind="var" path="SOS_LIB/webdavclient4j-core-0.92.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.sos.util"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.sos.ftp.profiles"/>
+	<classpathentry kind="var" path="SOS_LIB/commons-net-2.2/commons-net-2.2.jar" sourcepath="/SOS_LIB/commons-net-2.2-src"/>
 	<classpathentry kind="var" path="SOS_LIB/commons-net-2.0/commons-net-2.0.jar"/>
+	<classpathentry kind="var" path="SOS_LIB/com.sos.xml.jar"/>
+	<classpathentry kind="src" path="/JobSchedulerHelper"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SOSJobSchedulerModel"/>
+	<classpathentry kind="var" path="SOS_LIB/xerces-2_9_1/xercesImpl.jar"/>
+	<classpathentry kind="var" path="SOS_LIB/log4j-1.2.16.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/JobSchedulerLocalization"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
