@@ -1,10 +1,10 @@
 package sos.scheduler.editor.conf.forms;
 
+import java.util.HashMap;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
-
- import java.util.HashMap;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -39,14 +39,13 @@ import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ScriptListener;
-import sos.scheduler.editor.app.Options;
 import sos.util.SOSString;
-import com.swtdesigner.SWTResourceManager;
  public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 	
 
@@ -272,7 +271,6 @@ import com.swtdesigner.SWTResourceManager;
        tClass.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
            	if(!init) {
-           		
            		if (bJava.getSelection())
            			listener.setJavaClass(tClass.getText());
            		else if (bCom.getSelection())

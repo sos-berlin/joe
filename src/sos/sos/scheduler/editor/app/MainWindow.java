@@ -39,6 +39,7 @@ import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
 import sos.util.SOSString;
 
+import com.sos.JSHelper.Basics.JSVersionInfo;
 import com.sos.i18n.I18NBase;
 import com.sos.i18n.annotation.I18NMessage;
 import com.sos.i18n.annotation.I18NMessages;
@@ -132,8 +133,6 @@ public class MainWindow extends I18NBase {
 		sShell = new Shell();
 		final GridLayout gridLayout_1 = new GridLayout();
 		sShell.setLayout(gridLayout_1);
-//		sShell.setText(this.getMsg(JOE_I_0010));
-//		sShell.setData(sShell.getText());
 		sShell.setImage(ResourceManager.getImageFromResource(conIconEDITOR_PNG));
 		groupmain = new Composite(sShell, SWT.NONE);
 		groupmain.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
@@ -155,7 +154,10 @@ public class MainWindow extends I18NBase {
 		listener.loadHolidaysTitel();
 		Options.loadWindow(sShell, conStringEDITOR);
 
-		sShell.setText(this.getMsg(JOE_I_0010));
+		String strT = this.getMsg(JOE_I_0010) + JSVersionInfo.conVersionNumber;
+		sShell.setText(strT);
+		logger.debug(strT);
+		Options.conJOEGreeting = strT;
 		sShell.setData(sShell.getText());
 
 		menuBar = new Menu(sShell, SWT.BAR);

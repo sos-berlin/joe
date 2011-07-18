@@ -16,10 +16,13 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
-public class Options {
+import com.sos.i18n.I18NBase;
+import com.sos.i18n.annotation.I18NResourceBundle;
+
+@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
+public class Options extends I18NBase {
 	public static final String	conPropertyEDITOR_OPTIONS_FILE	= "editor.options.file";
 	public static final String	conPropertyEDITOR_LANGUAGE		= "editor.language";
-	@SuppressWarnings("unused")
 	private final static String	conClassName					= "Options";
 	@SuppressWarnings("unused")
 	private final String		conSVNVersion					= "$Id$";
@@ -31,7 +34,7 @@ public class Options {
 	private static boolean		_showWizardInfo					= true;
 	private static String[]		jobTitleList					= null;
 	private static HashMap		holidaysDescription				= null;
-
+	public static String conJOEGreeting = ""; 
 	private Options() {
 	}
 
@@ -91,7 +94,7 @@ public class Options {
 		if (_properties != null && _changed) {
 			try {
 				FileOutputStream fo = new FileOutputStream(getDefaultOptionFilename());
-				_properties.store(fo, "--JOE - SOSJobScheduler Object Editor - Options--");
+				_properties.store(fo, conJOEGreeting + " - Options --");
 				fo.close();
 			}
 			catch (Exception e) {
