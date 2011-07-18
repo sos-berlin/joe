@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -65,6 +66,10 @@ import sos.scheduler.editor.conf.forms.WebservicesForm;
  */
 public class SchedulerListener {
 	private final String conClassName = "SchedulerListener";
+		@SuppressWarnings("unused")
+	private final String conSVNVersion = "$Id$";
+	private static final Logger logger = Logger.getLogger(SchedulerListener.class);
+
 	private SchedulerDom	_dom			= null;
 	private SchedulerForm	_gui			= null;
 	public static String	JOBS			= "Jobs";
@@ -88,16 +93,20 @@ public class SchedulerListener {
 
 	public void treeFillMain(Tree tree, Composite c, int type_) {
 		type = type_;
-		if (_dom.isLifeElement())
+		if (_dom.isLifeElement()) {
 			treeFillMainForLifeElement(tree, c);
-		else
+		}
+		else {
 			treeFillMain(tree, c);
+		}
 	}
 
 	public void treeFillMainForLifeElement(Tree tree, Composite c) {
+		logger.debug("Enter procedure ...");
 		tree.removeAll();
 		Element element = _dom.getRoot();
 		TreeItem item = new TreeItem(tree, SWT.NONE);
+		
 		if (type == SchedulerDom.LIFE_JOB) {
 			String name = "";
 			if (_dom.getFilename() != null && new java.io.File(_dom.getFilename()).exists()) {
@@ -253,6 +262,8 @@ public class SchedulerListener {
 	}
 
 	public void treeFillMain(Tree tree, Composite c) {
+		logger.debug("Enter procedure ...");
+
 		tree.removeAll();
 		if (_dom.isLifeElement())
 			sos.scheduler.editor.app.Utils.setResetElement(_dom.getRoot());
