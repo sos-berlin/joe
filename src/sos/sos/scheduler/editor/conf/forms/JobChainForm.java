@@ -142,7 +142,9 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if(init) return;
 				
-				boolean existname = Utils.existName(tName.getText(), listener.getChain(), "job_chain");
+			    String newName = tName.getText().trim();
+			    
+				boolean existname = Utils.existName(newName, listener.getChain(), "job_chain");
 				if (existname)
 					tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
 				else {
@@ -151,9 +153,9 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				}				
 
 				if(update != null)
-					update.updateTreeItem("Job Chain: " + tName.getText());
+					update.updateTreeItem("Job Chain: " + newName);
 				
-				listener.setChainName(tName.getText());
+				listener.setChainName(newName);
 
 				jobChainGroup.setText("Job Chain:" + (listener.getChainName() != null ? listener.getChainName() : ""));								
 				changeJobChainName = true;
@@ -269,6 +271,8 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 				//bApplyChain.setEnabled(true);
 			}
 		});
+		new Label(jobChainGroup, SWT.NONE);
+		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
 		 
 		 

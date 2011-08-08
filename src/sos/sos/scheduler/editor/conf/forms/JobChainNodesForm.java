@@ -320,6 +320,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 				}
 			});
 			butBrowse.setText("Browse");
+			new Label(composite, SWT.NONE);
 
 			if(!listener.get_dom().isLifeElement()) {
 				butImportJob = new Button(composite, SWT.NONE);
@@ -1033,6 +1034,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 				}
 			});
 			tNextState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+			new Label(gFileOrderSource, SWT.NONE);
 
 			tFileOrderSource = new Table(gFileOrderSource, SWT.BORDER);
 			tFileOrderSource.addSelectionListener(new SelectionAdapter() {

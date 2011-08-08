@@ -272,6 +272,8 @@ public class JobAssistentImportJobParamsForm {
 		return objParams;
 	} // private void getParamList
 
+	
+
 	/**
 	 * 
 	 * @param xmlFilename -> Job Dokumentation
@@ -287,7 +289,13 @@ public class JobAssistentImportJobParamsForm {
 				}
 			});
 			jobParameterShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
+			java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+			jobParameterShell.setBounds((screen.width - jobParameterShell.getBounds().width) / 2, (screen.height - jobParameterShell.getBounds().height) / 2, 1,
+					jobParameterShell.getBounds().height);
+	//		jobParameterShell.setSize(MainWindow.getSShell().getSize().x,MainWindow.getSShell().getSize().y);
+
 			final GridLayout gridLayout = new GridLayout();
+			
 			jobParameterShell.setLayout(gridLayout);
 			String step = "  ";
 			if (Utils.getAttributeValue("order", joblistener.getJob()).equalsIgnoreCase("yes"))
@@ -654,9 +662,7 @@ public class JobAssistentImportJobParamsForm {
 			}
 			fillTable(listOfParams);
 			setToolTipText();
-			java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-			jobParameterShell.setBounds((screen.width - jobParameterShell.getBounds().width) / 2, (screen.height - jobParameterShell.getBounds().height) / 2,
-					jobParameterShell.getBounds().width, jobParameterShell.getBounds().height);
+			
 			jobParameterShell.layout();
 			jobParameterShell.pack();
 			jobParameterShell.open();
@@ -672,36 +678,77 @@ public class JobAssistentImportJobParamsForm {
 		}
 	}
 
-	public void fillTable(ArrayList<HashMap<String, Object>> list) throws Exception {
+	private boolean isInList(HashMap item, ArrayList list) {
+		for (int i = 0; i < list.size(); i++) {
+			HashMap h = (HashMap) list.get(i);
+			if (h.get("name").equals(item.get("name"))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void fillTable(ArrayList list) throws Exception {
 		ArrayList<HashMap<String, Object>> listOfRequired = new ArrayList<HashMap<String, Object>>();
 		try {
-			HashMap<String, Object> h = new HashMap<String, Object>();
+			HashMap h = new HashMap();
 			tableDescParameters.removeAll();
+
 			ArrayList<HashMap<String, Object>> jobP = getParameters();
-			/* eventuell vorhandene Parameters aus der JobEditor hinzufügen */
-			paramListener.fillParams(jobP, tblSelectedParams, true);
 			if (list != null) {
 				for (int i = 0; i < list.size(); i++) {
-					h = list.get(i);
-					if (h.get(conParamAttributeREQUIRED) != null && (h.get(conParamAttributeREQUIRED).equals(conTRUE))) {
-						listOfRequired.add(h);
-					}
-					else {
-						if (h.get(conParamNAME) != null && paramListener.existsParams(h.get(conParamNAME).toString(), tblSelectedParams, null) == null) {
-							TableItem item = new TableItem(tableDescParameters, SWT.NONE);
-							item.setBackground(null);
-							item.setChecked(true);
-							item.setText(0, (h.get(conParamNAME) != null ? h.get(conParamNAME).toString() : ""));
-							item.setText(1, (h.get(conParamAttributeDEFAULT_VALUE) != null ? h.get(conParamAttributeDEFAULT_VALUE).toString() : ""));
-							String desc_de = (h.get("description_de") != null ? h.get("description_de").toString() : "");
-							item.setData(conKeyPARAMETER_DESCRIPTION_DE, desc_de);
-							String desc_en = (h.get("description_en") != null ? h.get("description_en").toString() : "");
-							item.setData(conKeyPARAMETER_DESCRIPTION_EN, desc_en);
+					h = (HashMap) list.get(i);
+
+					if (!isInList(h, jobP)) {
+						if (h.get(conParamAttributeREQUIRED) != null && (h.get(conParamAttributeREQUIRED).equals(conTRUE))) {
+							listOfRequired.add(h);
 						}
 					}
 				}
-				// eventuell vorhandene Parameters aus der JobEditor hinzufügen
-				paramListener.fillParams(listOfRequired, tblSelectedParams, false);
+			}
+
+			//			eventuell vorhandene Parameters aus der Job Editor hinzufügen								
+			paramListener.fillParams(jobP, tblSelectedParams, true);
+
+			for (int i = 0; i < listOfRequired.size(); i++) {
+				h = (HashMap) listOfRequired.get(i);
+
+				if (h.get(conParamNAME) != null && paramListener.existsParams(h.get(conParamNAME).toString(), tblSelectedParams, null) == null) {
+					TableItem item = new TableItem(tableDescParameters, SWT.NONE);
+					item.setBackground(Options.getRequiredColor());
+					item.setChecked(true);
+					item.setText(0, (h.get(conParamNAME) != null ? h.get(conParamNAME).toString() : ""));
+					item.setText(1, (h.get(conParamAttributeDEFAULT_VALUE) != null ? h.get(conParamAttributeDEFAULT_VALUE).toString() : ""));
+					String desc_de = (h.get(conKeyPARAMETER_DESCRIPTION_DE) != null ? h.get(conKeyPARAMETER_DESCRIPTION_DE).toString() : "");
+					item.setData(conKeyPARAMETER_DESCRIPTION_DE, desc_de);
+					String desc_en = (h.get(conKeyPARAMETER_DESCRIPTION_EN) != null ? h.get(conKeyPARAMETER_DESCRIPTION_EN).toString() : "");
+					item.setData(conKeyPARAMETER_DESCRIPTION_EN, desc_en);
+
+				}
+
+			}
+
+			if (list != null) {
+				for (int i = 0; i < list.size(); i++) {
+					h = (HashMap) list.get(i);
+
+					if (h.get(conParamAttributeREQUIRED) == null || (h.get("required").equals("false"))) {
+						if (h.get(conParamNAME) != null && paramListener.existsParams(h.get("name").toString(), tblSelectedParams, null) == null) {
+							TableItem item = new TableItem(tableDescParameters, SWT.NONE);
+							item.setBackground(null);
+
+							item.setChecked(true);
+							item.setText(0, (h.get(conParamNAME) != null ? h.get(conParamNAME).toString() : ""));
+							item.setText(1, (h.get(conParamAttributeDEFAULT_VALUE) != null ? h.get(conParamAttributeDEFAULT_VALUE).toString() : ""));
+							String desc_de = (h.get(conKeyPARAMETER_DESCRIPTION_DE) != null ? h.get(conKeyPARAMETER_DESCRIPTION_DE).toString() : "");
+							item.setData(conKeyPARAMETER_DESCRIPTION_DE, desc_de);
+							String desc_en = (String) (h.get(conKeyPARAMETER_DESCRIPTION_EN) != null ? h.get(conKeyPARAMETER_DESCRIPTION_EN).toString() : "");
+							item.setData(conKeyPARAMETER_DESCRIPTION_EN, desc_en);
+
+						}
+					}
+				}
+
 			}
 		}
 		catch (Exception e) {
@@ -709,8 +756,9 @@ public class JobAssistentImportJobParamsForm {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
-				// tu nichts
+				//tu nichts
 			}
+
 			throw new Exception("error in JobAssistentImportJobParamsForm.fillTable() " + e.toString());
 		}
 	}

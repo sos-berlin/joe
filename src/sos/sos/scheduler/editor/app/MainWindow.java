@@ -268,7 +268,8 @@ public class MainWindow extends I18NBase {
 					setSaveStatus();
 			}
 		});
-		mLifeOrder.setText("Order         \tCtrl+W");
+		
+		mLifeOrder.setText(getMenuText(this.getMsg(MENU_Order), "W"));
 		mLifeOrder.setAccelerator(SWT.CTRL | 'W');
 		MenuItem mLifeSchedule = new MenuItem(mLife, SWT.PUSH);
 		mLifeSchedule.addSelectionListener(new SelectionAdapter() {
@@ -1931,5 +1932,32 @@ public class MainWindow extends I18NBase {
 	 * \brief Reset Dialog
 	 */
 	public static final String MENU_Reset_Dialog = "MENU_ResetDialog";
+
+	@I18NMessages( value = {
+			@I18NMessage( "Order" ),  //
+			@I18NMessage( value = "Order", //
+					locale = "en_UK",  //
+					explanation = "Order"   // 
+			),      //
+			@I18NMessage( value = "Auftrag", //
+					locale = "de", //
+					explanation = "Auftrag ...."   // 
+			),      //
+			@I18NMessage( value = "Order", locale = "es", //
+					explanation = "Order"   // 
+			),      //
+			@I18NMessage( value = "Order", locale = "fr", //
+					explanation = "Order"   // 
+			),      //
+			@I18NMessage( value = "Order", locale = "it", //
+					explanation = "Order"   // 
+			)      //
+	}, msgnum="MENU_Order",
+	msgurl="MENU_ORDER")
+	/*!
+	 * \var MENU_Order
+	 * \brief Order
+	 */
+	public static final String MENU_Order = "MENU_Order";
 
 }

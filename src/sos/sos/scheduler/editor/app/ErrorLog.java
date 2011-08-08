@@ -9,11 +9,15 @@ package sos.scheduler.editor.app;
  */
 
 
-import sos.util.SOSStandardLogger;
 import sos.util.SOSClassUtil;
+import sos.util.SOSStandardLogger;
 
 public class ErrorLog extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -4414810697191992062L;
 	private  static  SOSStandardLogger logger = null;  
 	
 	public ErrorLog(String msg) {

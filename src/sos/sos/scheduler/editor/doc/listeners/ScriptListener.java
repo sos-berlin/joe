@@ -28,9 +28,12 @@ public class ScriptListener {
 
     public final static int      VB_SCRIPT   = 4;
 
-    public final static int      COM         = 5;
+    public final static int      SHELL       = 5;
 
-    public final static String[] _languages  = { "", "java", "javascript", "perlscript", "vbscript", "" };
+    public final static int      COM         = 99;
+
+    
+    public final static String[] _languages  = { "", "java", "javascript", "perlscript", "vbscript", "shell",  "" };
 
 
     public ScriptListener(DocumentationDom dom, Element parent, int type) {
@@ -124,9 +127,13 @@ public class ScriptListener {
                 case PERL:
                 case JAVA_SCRIPT:
                 case VB_SCRIPT:
-                    _script.removeAttribute("com_class");
-                    _script.removeAttribute("java_class");
-                    break;
+                   _script.removeAttribute("com_class");
+                   _script.removeAttribute("java_class");
+                   break;
+                case SHELL:
+                   _script.removeAttribute("com_class");
+                   _script.removeAttribute("java_class");
+                   break;
                 case JAVA:
                     _script.removeAttribute("com_class");
                     break;

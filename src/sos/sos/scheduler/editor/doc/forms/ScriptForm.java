@@ -21,15 +21,17 @@ import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.DocumentationListener;
 import sos.scheduler.editor.doc.listeners.ScriptListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
     private ScriptListener   listener         = null;
 
-    private Group            group            = null;
+    private Group group;
 
     private Label            label            = null;
 
-    private Composite        composite        = null;
+    private Composite composite;
 
     private Button           rbJava           = null;
 
@@ -39,15 +41,11 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 
     private Button           rbVBScript       = null;
 
-    private Button           rbCom            = null;
 
     private Label            label1           = null;
 
-    private Label            label2           = null;
 
     private Text             tJavaClass       = null;
-
-    private Text             tComClass        = null;
 
     private Label            label3           = null;
 
@@ -55,6 +53,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 
     private IncludeFilesForm includeFilesForm = null;
 
+    private Button           rbShell            = null;
     private Button           rbNone           = null;
 
 
@@ -86,7 +85,9 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         createGroup();
         setSize(new Point(743, 447));
         setLayout(new FillLayout());
-        rbNone.setVisible(false);
+        
+       
+
         includeFilesForm.setSeparator(label3.getText());
     }
 
@@ -106,11 +107,11 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         gridData.grabExcessHorizontalSpace = true; // Generated
         gridData.horizontalIndent = 7; // Generated
         gridData.verticalAlignment = GridData.CENTER; // Generated
-        GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 2; // Generated
+        GridLayout gl_group = new GridLayout();
+        gl_group.numColumns = 2; // Generated
         group = new Group(this, SWT.NONE);
         group.setText("Script"); // Generated
-        group.setLayout(gridLayout); // Generated
+        group.setLayout(gl_group); // Generated
         label = new Label(group, SWT.NONE);
         label.setText("Language:"); // Generated
         createComposite();
@@ -123,17 +124,8 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
                 listener.setJavaClass(tJavaClass.getText());
             }
         });
-        label2 = new Label(group, SWT.NONE);
-        label2.setText("Com Class:"); // Generated
-        tComClass = new Text(group, SWT.BORDER);
-        tComClass.setLayoutData(gridData1); // Generated
-        tComClass.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                listener.setComClass(tComClass.getText());
-            }
-        });
         label3 = new Label(group, SWT.NONE);
-        label3.setText("Resource ID:"); // Generated
+        label3.setText("Resource ID:");
         createCResource();
         createIncludeFilesForm();
     }
@@ -143,26 +135,16 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes composite
      */
     private void createComposite() {
-        GridLayout gridLayout1 = new GridLayout();
-        gridLayout1.numColumns = 6; // Generated
+        GridLayout gl_composite = new GridLayout();
+        gl_composite.numColumns = 7; // Generated
         composite = new Composite(group, SWT.NONE);
-        composite.setLayout(gridLayout1); // Generated
+        composite.setLayout(gl_composite); // Generated
         rbJava = new Button(composite, SWT.RADIO);
         rbJava.setText("Java"); // Generated
         rbJava.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 if (rbJava.getSelection()) {
                     listener.setLanguage(ScriptListener.JAVA);
-                    fillForm();
-                }
-            }
-        });
-        rbCom = new Button(composite, SWT.RADIO);
-        rbCom.setText("Com"); // Generated
-        rbCom.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (rbCom.getSelection()) {
-                    listener.setLanguage(ScriptListener.COM);
                     fillForm();
                 }
             }
@@ -197,9 +179,21 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
                 }
             }
         });
+        
+        rbShell = new Button(composite, SWT.RADIO);
+        rbShell.setText("Shell");
+        rbShell.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+           public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+               if (rbShell.getSelection()) {
+                  listener.setLanguage(ScriptListener.SHELL);
+                  fillForm();
+              }
+
+        	}
+        });
+        
         rbNone = new Button(composite, SWT.RADIO);
         rbNone.setText("None"); // Generated
-        rbNone.setVisible(true); // Generated
         rbNone.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 if (rbNone.getSelection()) {
@@ -208,6 +202,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
                 }
             }
         });
+   
     }
 
 
@@ -233,6 +228,9 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
      * This method initializes includeFilesForm
      */
     private void createIncludeFilesForm() {
+        new Label(group, SWT.NONE);
+        new Label(group, SWT.NONE);
+         
         GridData gridData3 = new GridData();
         gridData3.horizontalSpan = 2; // Generated
         gridData3.verticalAlignment = GridData.FILL; // Generated
@@ -246,13 +244,12 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 
     public void setToolTipText() {
         rbJava.setToolTipText(Messages.getTooltip("doc.script.java"));
-        rbCom.setToolTipText(Messages.getTooltip("doc.script.com"));
         rbJavascript.setToolTipText(Messages.getTooltip("doc.script.javascript"));
         rbPerlscript.setToolTipText(Messages.getTooltip("doc.script.perlscript"));
         rbVBScript.setToolTipText(Messages.getTooltip("doc.script.vbscript"));
+        rbShell.setToolTipText(Messages.getTooltip("doc.script.shellscript"));
         rbNone.setToolTipText(Messages.getTooltip("doc.script.none"));
         tJavaClass.setToolTipText(Messages.getTooltip("doc.script.javaclass"));
-        tComClass.setToolTipText(Messages.getTooltip("doc.script.comclass"));
         cResource.setToolTipText(Messages.getTooltip("doc.script.resource"));
     }
 
@@ -276,13 +273,12 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
         rbNone.setVisible(btnNoneVisible);
 
         rbJava.setEnabled(enabled);
-        rbCom.setEnabled(enabled);
         rbJavascript.setEnabled(enabled);
         rbPerlscript.setEnabled(enabled);
         rbVBScript.setEnabled(enabled);
+        rbShell.setEnabled(enabled);
         rbNone.setEnabled(enabled);
         tJavaClass.setEnabled(enabled);
-        tComClass.setEnabled(enabled);
         cResource.setEnabled(enabled);
         includeFilesForm.setEnabled(enabled);
 
@@ -297,20 +293,11 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 
         int language = listener.getLanguage();
 
-        tComClass.setEnabled(false);
         tJavaClass.setEnabled(false);
 
         switch (language) {
             case ScriptListener.NONE:
                 rbNone.setSelection(true);
-                break;
-            case ScriptListener.COM:
-                rbCom.setSelection(true);
-                tComClass.setEnabled(true);
-                tComClass.setFocus();
-                if (!tComClass.getText().equals("") && listener.getComClass().equals(""))
-                    listener.setComClass(tComClass.getText());
-                tComClass.setText(listener.getComClass());
                 break;
             case ScriptListener.JAVA:
                 rbJava.setSelection(true);
@@ -322,16 +309,20 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
                 break;
             case ScriptListener.JAVA_SCRIPT:
                 rbJavascript.setSelection(true);
-                // tComClass.setFocus();
+ 
                 break;
             case ScriptListener.PERL:
                 rbPerlscript.setSelection(true);
-                // tComClass.setFocus();
+ 
                 break;
             case ScriptListener.VB_SCRIPT:
-                rbVBScript.setSelection(true);
-                // tComClass.setFocus();
-                break;
+               rbVBScript.setSelection(true);
+
+               break;
+            case ScriptListener.SHELL:
+               rbShell.setSelection(true);
+
+               break;
         }
 
     }

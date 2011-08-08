@@ -561,27 +561,7 @@ import sos.util.SOSString;
                 }
             }
         });
-        bCom = new Button(cLanguage, SWT.RADIO);
-        bCom.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
-        bCom.setText("Com");
-        bCom.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-            	if(bCom.getSelection() && tSource.getText().length() > 0) {
-            		MainWindow.message("Please remove first Source Code.", SWT.ICON_WARNING);
-            		bCom.setSelection(false);
-            		fillForm();            		
-            		return;
-            	}
-                if (bCom.getSelection()) {
-                	if(tSource.getText().length() > 0) {
-                		MainWindow.message("Please remove first Source Code.", SWT.ICON_WARNING);
-                		return;
-                	}
-                    listener.setLanguage(ScriptListener.COM);
-                    fillForm();
-                }
-            }
-        });
+      
         bJavaScript = new Button(cLanguage, SWT.RADIO);
         bJavaScript.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
         bJavaScript.setText("Javascript");
@@ -650,7 +630,29 @@ import sos.util.SOSString;
             }
         });
 
-        
+        bCom = new Button(cLanguage, SWT.RADIO);
+        bCom.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
+        bCom.setText("Com");
+        bCom.setVisible(false);
+        bCom.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            	if(bCom.getSelection() && tSource.getText().length() > 0) {
+            		MainWindow.message("Please remove first Source Code.", SWT.ICON_WARNING);
+            		bCom.setSelection(false);
+            		fillForm();            		
+            		return;
+            	}
+                if (bCom.getSelection()) {
+                	if(tSource.getText().length() > 0) {
+                		MainWindow.message("Please remove first Source Code.", SWT.ICON_WARNING);
+                		return;
+                	}
+                    listener.setLanguage(ScriptListener.COM);
+                    fillForm();
+                }
+            }
+        });
+ 
         cboFavorite = new Combo(cLanguage, SWT.NONE);
         cboFavorite.setVisible(type == Editor.MONITOR);
         

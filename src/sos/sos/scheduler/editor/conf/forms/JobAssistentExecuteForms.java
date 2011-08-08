@@ -71,6 +71,9 @@ public class JobAssistentExecuteForms {
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean				closeDialog		= false;
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public JobAssistentExecuteForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
 		dom = dom_;
 		update = update_;
@@ -80,7 +83,7 @@ public class JobAssistentExecuteForms {
 
 	public void showExecuteForm() {
 
-		shell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		shell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER );
 		shell.addShellListener(new ShellAdapter() {
 			public void shellClosed(final ShellEvent e) {
 				if (!closeDialog)

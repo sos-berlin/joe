@@ -517,6 +517,7 @@
             <xs:enumeration value="javascript"/>
             <xs:enumeration value="perlscript"/>
             <xs:enumeration value="vbscript"/>
+            <xs:enumeration value="shell"/>
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>

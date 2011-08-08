@@ -384,7 +384,7 @@ public class JobAssistentImportJobsForm {
 					Element job = null;
 					if (flagBackUpJob) {
 						if (assistentType == Editor.JOB_WIZZARD) {
-							// Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn
+							// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn
 							// assistentype = Editor.Job_Wizzard
 							Element currJob = (Element) (joblistener.getJob().clone());
 							job = listener.createJobElement(attr, currJob);
@@ -415,7 +415,7 @@ public class JobAssistentImportJobsForm {
 							ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText(), "required");
 							h.put("params", listOfParams);
 							if (assistentType == Editor.JOB_WIZZARD) {
-								// Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn
+								// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn
 								// assistentype = Editor.Job_Wizzard
 								Element job = joblistener.getJob();
 								job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
@@ -426,7 +426,7 @@ public class JobAssistentImportJobsForm {
 							}
 							else
 								if (assistentType == Editor.PARAMETER) {
-									// Starten der Wizzard für bestehende Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob
+									// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob
 									// wenn assistentype = Editor.Job_Wizzard
 									// joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
 									Element job = joblistener.getJob();

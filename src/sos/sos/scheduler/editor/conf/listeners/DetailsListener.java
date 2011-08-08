@@ -1125,7 +1125,7 @@ public class DetailsListener {
 					}
 					
 					hotFolderfilename = hotFolderfile.getCanonicalPath();
-					//Unterscheiden, ob Hot Folder Element. Wenn ja, dann Hot Folder Datei öffnen. Wenn der Hot Folder Element bereits offen ist, dann verändern
+					//Unterscheiden, ob Hot Folder Element. Wenn ja, dann Hot Folder Datei öffnen. Wenn das Hot Folder Element bereits offen ist, dann verändern
 					List listOfElement2  = null;
 
 					if(dom.isLifeElement() || new File(jobname).getParent() != null ) {

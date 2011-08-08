@@ -828,7 +828,8 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		if (schedulerDom == null)
 			schedulerDom = new sos.scheduler.editor.conf.SchedulerDom();
 		CTabFolder folder = new CTabFolder(parent, SWT.TOP | SWT.CLOSE);
-		update = new SchedulerForm(MainWindow.getContainer(), folder, SWT.NONE);
+//	Sonst Nullpointer Exception wenn Parameter aus Wizzard eingetragen werden.	
+//update = new SchedulerForm(MainWindow.getContainer(), folder, SWT.NONE);
 		joblistener = new JobListener(schedulerDom, detailListener.getParams().getParentElement(), update);
 	}
 
