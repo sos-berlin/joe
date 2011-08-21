@@ -24,5 +24,6 @@
 	<classpathentry kind="var" path="SOS_LIB/log4j-1.2.16.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JobSchedulerLocalization"/>
 	<classpathentry kind="var" path="SOS_LIB/jaxen-1.1.1.jar"/>
+	<classpathentry kind="var" path="SOS_LIB/com.sos.util.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
