@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.eclipse.swt.SWT;
 import org.jdom.Comment;
 import org.jdom.Document;
@@ -17,18 +18,20 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Text;
 import org.jdom.output.SAXOutputter;
+
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 
 
 public class DetailDom extends DomParser {
-   	
+
+	@SuppressWarnings("unused")
+	private final static String	conSVNVersion			= "$Id$";
+
     public DetailDom() {
     	super(new String[] {}, new String[] {}, Options.getDetailXSLT());
-
     }
 
     public void initDetail() {
@@ -150,8 +153,8 @@ public class DetailDom extends DomParser {
         try {
             getBuilder(false).build(new StringReader(handler.getXML()));
         } catch (JDOMException e) {
-            int res = MainWindow.message(Messages.getString("MainListener.outputInvalid",
-                    new String[] { e.getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+            int res = MainWindow.message(Messages.getMsg("MainListener.outputInvalid",
+                    e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
             if (res == SWT.NO)
                 return;
         }
@@ -183,8 +186,8 @@ public class DetailDom extends DomParser {
         try {
             getBuilder(false).build(new StringReader(handler.getXML()));
         } catch (JDOMException e) {
-            int res = MainWindow.message(Messages.getString("MainListener.outputInvalid",
-                    new String[] { e.getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+            int res = MainWindow.message(Messages.getMsg("MainListener.outputInvalid",
+                    e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
             if (res == SWT.NO)
                 return;
         }

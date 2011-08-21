@@ -17,259 +17,235 @@ import org.jdom.output.XMLOutputter;
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 
 public class DocumentationDom extends DomParser {
-    private static final String[] _descriptionOrder   = { "job", "releases", "resources", "configuration", "documentation" };
+	private final static String	conSVNVersion			= "$Id$";
 
-    private static final String[] _jobOrder           = { "script", "process", "monitor" };
+	private static final String[]	_descriptionOrder	= { "job", "releases", "resources", "configuration", "documentation" };
+	private static final String[]	_jobOrder			= { "script", "process", "monitor" };
+	private static final String[]	_releaseOrder		= { "title", "author", "note", "changes" };
+	private static final String[]	_resourcesOrder		= { "database", "memory", "space", "file" };
+	private static final String[]	_configurationOrder	= { "note", "params", "payload", "settings" };
+	private static final String[]	_paramsOrder		= { "note", "param" };
+	private static final String[]	_payloadOrder		= { "note", "params", "document" };
+	private static final String[]	_settingsOrder		= { "note", "profile", "connection" };
+	private static final String[]	_profileOrder		= { "note", "section" };
+	private static final String[]	_connectionOrder	= { "note", "application" };
+	private static final String[]	_tmpFiles			= { "documentation_editor_schema", "xhtml_schema" };
+	private static final String[]	_schemas			= { Options.getDocSchema(), Options.getXHTMLSchema() };
 
-    private static final String[] _releaseOrder       = { "title", "author", "note", "changes" };
+	public DocumentationDom() {
+		super(_tmpFiles, _schemas, Options.getDocXSLT());
 
-    private static final String[] _resourcesOrder     = { "database", "memory", "space", "file" };
+		putDomOrder("description", _descriptionOrder);
+		putDomOrder("release", _releaseOrder);
+		putDomOrder("job", _jobOrder);
+		putDomOrder("resources", _resourcesOrder);
+		putDomOrder("configuration", _configurationOrder);
+		putDomOrder("params", _paramsOrder);
+		putDomOrder("payload", _payloadOrder);
+		putDomOrder("settings", _settingsOrder);
+		putDomOrder("profile", _profileOrder);
+		putDomOrder("connection", _connectionOrder);
 
-    private static final String[] _configurationOrder = { "note", "params", "payload", "settings" };
+		initDocumentation();
+	}
 
-    private static final String[] _paramsOrder        = { "note", "param" };
+	public void initDocumentation() {
+		// open a template
+		try {
+			Document doc = getBuilder(false).build(getClass().getResource("/sos/scheduler/editor/documentation-template.xml"));
+			//
+			Element description = doc.getRootElement();
+			if (description != null && description.getChild("releases", description.getNamespace()) != null) {
+				Element release = description.getChild("releases", description.getNamespace()).getChild("release", description.getNamespace());
+				if (release != null) {
+					release.setAttribute("created", sos.util.SOSDate.getCurrentDateAsString("yyyy-MM-dd"));
+					release.setAttribute("modified", sos.util.SOSDate.getCurrentDateAsString("yyyy-MM-dd"));
+				}
+			}
 
-    private static final String[] _payloadOrder       = { "note", "params", "document" };
+			//
+			setDoc(doc);
+			setChanged(false);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    private static final String[] _settingsOrder      = { "note", "profile", "connection" };
+	public boolean read(String filename) throws JDOMException, IOException {
+		return read(filename, Options.isDocValidate());
+	}
 
-    private static final String[] _profileOrder       = { "note", "section" };
+	public boolean read(String filename, boolean validate) throws JDOMException, IOException {
 
-    private static final String[] _connectionOrder    = { "note", "application" };
+		Document doc = getBuilder(validate).build(filename);
 
-    private static final String[] _tmpFiles           = { "documentation_editor_schema", "xhtml_schema" };
+		if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("description")))
+			return false;
+		else
+			if (!validate) {
+				// try to avoid the worst
+				Element description = doc.getRootElement();
+				if (description.getChild("job", getNamespace()) == null)
+					description.addContent(new Element("job", getNamespace()));
+				if (description.getChild("releases", getNamespace()) == null)
+					description.addContent(new Element("releases", getNamespace()));
+				if (description.getChild("configuration", getNamespace()) == null)
+					description.addContent(new Element("configuration", getNamespace()));
+			}
+		setDoc(doc);
 
-    private static final String[] _schemas            = { Options.getDocSchema(), Options.getXHTMLSchema() };
+		setChanged(false);
+		setFilename(filename);
+		return true;
+	}
 
+	public boolean readString(String str, boolean validate) throws JDOMException, IOException {
 
-    public DocumentationDom() {
-        super(_tmpFiles, _schemas, Options.getDocXSLT());
+		StringReader sr = new StringReader(str);
+		Document doc = getBuilder(validate).build(sr);
 
-        putDomOrder("description", _descriptionOrder);
-        putDomOrder("release", _releaseOrder);
-        putDomOrder("job", _jobOrder);
-        putDomOrder("resources", _resourcesOrder);
-        putDomOrder("configuration", _configurationOrder);
-        putDomOrder("params", _paramsOrder);
-        putDomOrder("payload", _payloadOrder);
-        putDomOrder("settings", _settingsOrder);
-        putDomOrder("profile", _profileOrder);
-        putDomOrder("connection", _connectionOrder);
+		if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("description")))
+			return false;
+		else
+			if (!validate) {
+				// try to avoid the worst
+				Element description = doc.getRootElement();
+				if (description.getChild("job", getNamespace()) == null)
+					description.addContent(new Element("job", getNamespace()));
+				if (description.getChild("releases", getNamespace()) == null)
+					description.addContent(new Element("releases", getNamespace()));
+				if (description.getChild("configuration", getNamespace()) == null)
+					description.addContent(new Element("configuration", getNamespace()));
 
-        initDocumentation();
-    }
+			}
 
+		setDoc(doc);
 
-    public void initDocumentation() {
-        // open a template
-        try {
-            Document doc = getBuilder(false).build(
-                    getClass().getResource("/sos/scheduler/editor/documentation-template.xml"));
-            //
-            Element description = doc.getRootElement();
-            if(description != null && description.getChild("releases", description.getNamespace()) != null ){
-            	Element release = description.getChild("releases", description.getNamespace()).getChild("release", description.getNamespace());
-            	if (release != null) {
-            		release.setAttribute("created", sos.util.SOSDate.getCurrentDateAsString("yyyy-MM-dd"));
-            		release.setAttribute("modified", sos.util.SOSDate.getCurrentDateAsString("yyyy-MM-dd"));
-            	}
-            }
-            	
-            
-            //
-            setDoc(doc);
-            setChanged(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+		setChanged(false);
+		// setFilename(filename);
+		return true;
+	}
 
+	public void write(String filename) throws IOException, JDOMException {
+		writeWithDom(filename);
+	}
 
-    public boolean read(String filename) throws JDOMException, IOException {
-        return read(filename, Options.isDocValidate());
-    }
+	public void writeWithDom(String filename) throws IOException, JDOMException {
+		String encoding = Editor.DOCUMENTATION_ENCODING;
+		if (encoding.equals(""))
+			encoding = DEFAULT_ENCODING;
+		reorderDOM(getDoc().getRootElement(), getNamespace());
 
+		StringWriter stream = new StringWriter();
+		// FileOutputStream stream = new FileOutputStream(new File(filename));
 
-    public boolean read(String filename, boolean validate) throws JDOMException, IOException {
+		XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
+		out.output(getDoc(), stream);
+		stream.close();
+		String s = stream.toString();
 
-        Document doc = getBuilder(validate).build(filename);
-        
-        
-        if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("description")))
-            return false;
-        else if (!validate) {
-            // try to avoid the worst
-            Element description = doc.getRootElement();
-            if (description.getChild("job", getNamespace()) == null)
-                description.addContent(new Element("job", getNamespace()));
-            if (description.getChild("releases", getNamespace()) == null)
-                description.addContent(new Element("releases", getNamespace()));
-            if (description.getChild("configuration", getNamespace()) == null)
-                description.addContent(new Element("configuration", getNamespace()));
-            
-            
-            	
-        }
+		try {
+			s = s.replaceAll("<pre space=\"preserve\">", "<pre>");
+			getBuilder(true).build(new StringReader(s));
+		}
+		catch (JDOMException e) {
+			int res = MainWindow.message(Messages.getMsg(conMessage_MAIN_LISTENER_OUTPUT_INVALID, e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+			if (res == SWT.NO)
+				return;
+		}
 
-        setDoc(doc);
+		OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
 
-        setChanged(false);
-        setFilename(filename);
-        return true;
-    }
+		writer.write(s);
+		writer.close();
 
-    public boolean readString(String str, boolean validate) throws JDOMException, IOException {
+		setFilename(filename);
+		setChanged(false);
+	}
 
-    	StringReader sr = new StringReader(str);
-        Document doc = getBuilder(validate).build(sr);
-        
-        //Document doc = getBuilder(validate).build(filename);
+	public void writeWithHandler(String filename) throws IOException, JDOMException {
 
-        if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("description")))
-            return false;
-        else if (!validate) {
-            // try to avoid the worst
-            Element description = doc.getRootElement();
-            if (description.getChild("job", getNamespace()) == null)
-                description.addContent(new Element("job", getNamespace()));
-            if (description.getChild("releases", getNamespace()) == null)
-                description.addContent(new Element("releases", getNamespace()));
-            if (description.getChild("configuration", getNamespace()) == null)
-                description.addContent(new Element("configuration", getNamespace()));
-            
-        }
+		String encoding = Editor.DOCUMENTATION_ENCODING;
+		if (encoding.equals(""))
+			encoding = DEFAULT_ENCODING;
+		reorderDOM(getDoc().getRootElement(), getNamespace());
 
-        setDoc(doc);
+		FormatHandler handler = new FormatHandler(this);
+		handler.setEnconding(encoding);
+		SAXOutputter saxo = new SAXOutputter(handler);
+		saxo.output(getDoc());
 
-        setChanged(false);
-        //setFilename(filename);
-        return true;
-    }
+		try {
+			getBuilder(true).build(new StringReader(handler.getXML()));
+		}
+		catch (JDOMException e) {
+			int res = MainWindow.message(Messages.getMsg(conMessage_MAIN_LISTENER_OUTPUT_INVALID, e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+			if (res == SWT.NO)
+				return;
+		}
 
-    public void write(String filename) throws IOException, JDOMException {
-        writeWithDom(filename);
-    }
+		OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
 
+		writer.write(handler.getXML());
+		writer.close();
 
-    public void writeWithDom(String filename) throws IOException, JDOMException {
-        String encoding = Editor.DOCUMENTATION_ENCODING; 
-        if (encoding.equals(""))
-            encoding = DEFAULT_ENCODING;
-        reorderDOM(getDoc().getRootElement(), getNamespace());
+		setFilename(filename);
+		setChanged(false);
+	}
 
-        StringWriter stream = new StringWriter();
-        // FileOutputStream stream = new FileOutputStream(new File(filename));
+	public String getXML(Element element) throws JDOMException {
+		String encoding = Editor.DOCUMENTATION_ENCODING;
+		if (encoding.equals(""))
+			encoding = DEFAULT_ENCODING;
 
-        XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
-        out.output(getDoc(), stream);
-        stream.close();
-    	  String s = stream.toString();
+		reorderDOM(element, getNamespace());
 
-        try {
-        	  s = s.replaceAll("<pre space=\"preserve\">","<pre>");
-            getBuilder(true).build(new StringReader(s));
-        } catch (JDOMException e) {
-            int res = MainWindow.message(Messages.getString("MainListener.outputInvalid",
-                    new String[] { e.getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-            if (res == SWT.NO)
-                return;
-        }
+		FormatHandler handler = new FormatHandler(this);
+		handler.setEnconding(encoding);
+		SAXOutputter saxo = new SAXOutputter(handler);
+		saxo.output(element);
 
-        OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
+		return handler.getXML();
+	}
 
-        writer.write(s);
-        writer.close();
+	public Element noteAsDom(String xml) throws JDOMException, IOException {
+		xml = xml.replaceAll("<pre space=\"preserve\">", "<pre>");
 
-        setFilename(filename);
-        setChanged(false);
-    }
+		StringReader reader = new StringReader(xml);
+		Document doc = getBuilder(false).build(reader);
 
+		Element root = doc.getRootElement();
+		doc.removeContent();
+		doc.addContent(((Element) getRoot().clone()).addContent(root));
 
-    public void writeWithHandler(String filename) throws IOException, JDOMException {
+		Element div = doc.getRootElement().getChild("div", getNamespace("xhtml"));
+		doc.getRootElement().removeContent();
+		return div;
+	}
 
-        String encoding = Editor.DOCUMENTATION_ENCODING;
-        if (encoding.equals(""))
-            encoding = DEFAULT_ENCODING;
-        reorderDOM(getDoc().getRootElement(), getNamespace());
+	public String noteAsStr(Element element) {
+		StringWriter stream = new StringWriter();
+		XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
+		try {
+			out.output(element.getContent(), stream);
+			stream.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        FormatHandler handler = new FormatHandler(this);
-        handler.setEnconding(encoding);
-        SAXOutputter saxo = new SAXOutputter(handler);
-        saxo.output(getDoc());
+		String str = stream.toString().trim();
+		if (str.startsWith("<div")) {
+			str = str.replaceFirst("\\A<\\s*div\\s*xmlns\\s*=\\s*\"[a-zA-Z0-9/:\\.]*\"\\s*>\\s*", "");
+			str = str.replaceFirst("\\s*<\\s*/\\s*div\\s*>\\Z", "");
+		}
+		str = str.replaceAll("<pre space=\"preserve\">", "<pre>");
+		return str;
 
-        try {
-            getBuilder(true).build(new StringReader(handler.getXML()));
-        } catch (JDOMException e) {
-            int res = MainWindow.message(Messages.getString("MainListener.outputInvalid",
-                    new String[] { e.getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-            if (res == SWT.NO)
-                return;
-        }
-
-        OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
-
-        writer.write(handler.getXML());
-        writer.close();
-
-        setFilename(filename);
-        setChanged(false);
-    }
-
-
-    public String getXML(Element element) throws JDOMException {
-        String encoding = Editor.DOCUMENTATION_ENCODING;
-        if (encoding.equals(""))
-            encoding = DEFAULT_ENCODING;
-
-        reorderDOM(element, getNamespace());
-
-        FormatHandler handler = new FormatHandler(this);
-        handler.setEnconding(encoding);
-        SAXOutputter saxo = new SAXOutputter(handler);
-        saxo.output(element);
-
-        return handler.getXML();
-    }
-
-
-    public Element noteAsDom(String xml) throws JDOMException, IOException {
-    	  xml = xml.replaceAll("<pre space=\"preserve\">","<pre>");
-         
-    	  StringReader reader = new StringReader(xml);
-        Document doc = getBuilder(false).build(reader);
-
-        Element root = doc.getRootElement();
-        doc.removeContent();
-        doc.addContent(((Element)getRoot().clone()).addContent(root));
-        
-        Element div = doc.getRootElement().getChild("div", getNamespace("xhtml"));
-        doc.getRootElement().removeContent();
-        return div;
-    }
-
-
-    public String noteAsStr(Element element) {
-        StringWriter stream = new StringWriter();
-        XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
-        try {
-            out.output(element.getContent(), stream);
-            stream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        String str = stream.toString().trim();
-        if(str.startsWith("<div")) {
-            str = str.replaceFirst("\\A<\\s*div\\s*xmlns\\s*=\\s*\"[a-zA-Z0-9/:\\.]*\"\\s*>\\s*", "");
-            str = str.replaceFirst("\\s*<\\s*/\\s*div\\s*>\\Z", "");
-        }
-        str = str.replaceAll("<pre space=\"preserve\">","<pre>");
-        return str;
-        
-    }
+	}
 
 }
