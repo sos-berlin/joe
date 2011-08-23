@@ -43,6 +43,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 	private ProcessClassesListener listener      = null;
 
 	private Group                  group         = null;
+	private Group group_1;
 
 	private static Table           table         = null;
 
@@ -58,12 +59,8 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 
 	private Label                  label5        = null;
 
-	private Spinner                sMaxProcesses = null;
-
-	private Label                  label10       = null;
-
-	private Text                   tSpoolerID    = null;
-
+	private Text                   tMaxProcesses = null;
+ 
 	private Label                  label         = null;
 
 	private Label                  label2        = null;
@@ -73,10 +70,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 	private Text                   tRemotePort   = null;
 
 	private SchedulerDom           dom           = null;
-
-	private Button                 ignoreButton  = null; 
-
-	private Button                 butReplace    = null; 
+ 
 
 
 
@@ -127,8 +121,8 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 			label.setVisible(false);
 		}
 		listener.fillTable(table);
-		ignoreButton.setSelection(listener.isIgnoreProcessClasses());
-		//bNew.setEnabled(!bApply.getEnabled());
+		new Label(group_1, SWT.NONE);
+		
 
 	}
 
@@ -152,13 +146,13 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 5;
-		group = new Group(this, SWT.NONE);
-		group.setText("Process Classes");
-		group.setLayout(gridLayout);
-		label1 = new Label(group, SWT.NONE);
+		group_1 = new Group(this, SWT.NONE);
+		group_1.setText("Process Classes");
+		group_1.setLayout(gridLayout);
+		label1 = new Label(group_1, SWT.NONE);
 		label1.setLayoutData(new GridData(86, SWT.DEFAULT));
 		label1.setText("Process Class:");
-		tProcessClass = new Text(group, SWT.BORDER);
+		tProcessClass = new Text(group_1, SWT.BORDER);
 		tProcessClass.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent e) {
 				//tProcessClass.selectAll();
@@ -180,26 +174,20 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 				}*/
 			}
 		});
-		bApply = new Button(group, SWT.NONE);
-		label5 = new Label(group, SWT.NONE);
+		bApply = new Button(group_1, SWT.NONE);
+		label5 = new Label(group_1, SWT.NONE);
 		label5.setText("Max Processes:");
-		GridData gridData4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+		GridData gridData4 = new GridData(GridData.FILL, SWT.FILL, false, false);
 		gridData4.widthHint = 20;
-		sMaxProcesses = new Spinner(group, SWT.NONE);
-		sMaxProcesses.addTraverseListener(new TraverseListener() {
+		tMaxProcesses = new Text(group_1, SWT.BORDER);
+		tMaxProcesses.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(final TraverseEvent e) {
 				traversed(e);
-				/*if (e.keyCode == SWT.CR) {
-					applyClass();
-
-					//bNew.setEnabled(!bApply.getEnabled());
-				}*/
 			}			
 		});
-		sMaxProcesses.setMaximum(99999999);
-		sMaxProcesses.setLayoutData(gridData4);
-		sMaxProcesses.setEnabled(false);
-		sMaxProcesses.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
+		tMaxProcesses.setLayoutData(gridData4);
+		tMaxProcesses.setEnabled(false);
+		tMaxProcesses.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
 				if (e.keyCode == SWT.CR) {
 					applyClass();
@@ -209,166 +197,86 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 			}
 		});
 		 
-		sMaxProcesses.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+		tMaxProcesses.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				try {
+					Integer.parseInt(tMaxProcesses.getText());
+				}catch(NumberFormatException nf) {}
+				
 				bApply.setEnabled(true);
 			}
 		});
-		label10 = new Label(group, SWT.NONE);
-		final GridData gridData_2 = new GridData(GridData.END, GridData.CENTER, false, false);
-		gridData_2.widthHint = 79;
-		label10.setLayoutData(gridData_2);
-		label10.setText("Scheduler ID:");
-		tSpoolerID = new Text(group, SWT.BORDER);
-		tSpoolerID.addTraverseListener(new TraverseListener() {
-			public void keyTraversed(final TraverseEvent e) {
-				traversed(e);
-				/*if (e.keyCode == SWT.CR) {
-					//tSpoolerID.addSelectionListener(getSelectionListener());
-				
-					applyClass();
-					
-				}*/
-			}
-		});
+		 
+		new Label(group_1, SWT.NONE);
+		new Label(group_1, SWT.NONE);
+		 
+				new Label(group_1, SWT.NONE);
 		
-		tSpoolerID.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tSpoolerID.selectAll();
-			}
-		});
-		tSpoolerID.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false));
-		tSpoolerID.setEnabled(false);
-		/*tSpoolerID.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-				
-				if (e.keyCode == SWT.CR) {
-					
-					System.out.println("not do it");
-					applyClass();
-					
-					bNew.setEnabled(!bApply.getEnabled());
-					
-				}
-			}
-		});
-		*/
-		tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				//System.out.println("modify ");
-				bApply.setEnabled(true);
-			}
-		});
-		new Label(group, SWT.NONE);
+				final Label remoteExecutionOnLabel = new Label(group_1, SWT.NONE);
+				remoteExecutionOnLabel.setText("Executed by Scheduler on host:");
+		
+				tRemoteHost = new Text(group_1, SWT.BORDER);
+				tRemoteHost.addTraverseListener(new TraverseListener() {
+					public void keyTraversed(final TraverseEvent e) {
+						traversed(e);
+						/*if (e.keyCode == SWT.CR) {
+							applyClass();
 
-		final Label remoteExecutionOnLabel = new Label(group, SWT.NONE);
-		remoteExecutionOnLabel.setText("Executed by Scheduler on host:");
+							//bNew.setEnabled(!bApply.getEnabled());
+						}*/
+					}
+				});
+				tRemoteHost.addFocusListener(new FocusAdapter() {
+					public void focusGained(final FocusEvent e) {
+						tRemoteHost.selectAll();
+					}
+				});
+				tRemoteHost.addModifyListener(new ModifyListener() {
+					public void modifyText(final ModifyEvent e) {
+						bApply.setEnabled(true);
+					}
+				});
+				tRemoteHost.setEnabled(false);
+				tRemoteHost.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		
+				final Label portLabel = new Label(group_1, SWT.NONE);
+				final GridData gridData_1 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
+				gridData_1.horizontalIndent = 5;
+				portLabel.setLayoutData(gridData_1);
+				portLabel.setText("at Port");
+		
+				tRemotePort = new Text(group_1, SWT.BORDER);
+				tRemotePort.addTraverseListener(new TraverseListener() {
+					public void keyTraversed(final TraverseEvent e) {
+						traversed(e);
+						 
+					}
+				});
+				tRemotePort.addFocusListener(new FocusAdapter() {
+					public void focusGained(final FocusEvent e) {
+						tRemotePort.selectAll();
+					}
+				});
+				tRemotePort.addModifyListener(new ModifyListener() {
+					public void modifyText(final ModifyEvent e) {
+						bApply.setEnabled(true);
 
-		tRemoteHost = new Text(group, SWT.BORDER);
-		tRemoteHost.addTraverseListener(new TraverseListener() {
-			public void keyTraversed(final TraverseEvent e) {
-				traversed(e);
-				/*if (e.keyCode == SWT.CR) {
-					applyClass();
-
-					//bNew.setEnabled(!bApply.getEnabled());
-				}*/
-			}
-		});
-		tRemoteHost.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tRemoteHost.selectAll();
-			}
-		});
-		tRemoteHost.addModifyListener(new ModifyListener() {
-			public void modifyText(final ModifyEvent e) {
-				bApply.setEnabled(true);
-			}
-		});
-		tRemoteHost.setEnabled(false);
-		/*tRemoteHost.addKeyListener(new KeyAdapter() {
-			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR) {
-					applyClass();
-					bNew.setEnabled(!bApply.getEnabled());					
-				}
-
-			}
-		});
-		*/
-		tRemoteHost.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-
-		final Label portLabel = new Label(group, SWT.NONE);
-		final GridData gridData_1 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
-		gridData_1.horizontalIndent = 5;
-		portLabel.setLayoutData(gridData_1);
-		portLabel.setText("at Port");
-
-		tRemotePort = new Text(group, SWT.BORDER);
-		tRemotePort.addTraverseListener(new TraverseListener() {
-			public void keyTraversed(final TraverseEvent e) {
-				traversed(e);
-				/*if (e.keyCode == SWT.CR) {
-					applyClass();
-
-					//bNew.setEnabled(!bApply.getEnabled());
-				}*/
-			}
-		});
-		tRemotePort.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tRemotePort.selectAll();
-			}
-		});
-		tRemotePort.addModifyListener(new ModifyListener() {
-			public void modifyText(final ModifyEvent e) {
-				bApply.setEnabled(true);
-
-			}
-		});
-		tRemotePort.setEnabled(false);
-		/*tRemotePort.addKeyListener(new KeyAdapter() {
-			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR) {
-					applyClass();
-					bNew.setEnabled(!bApply.getEnabled());
-				}
-			}
-		});
-		*/
-		tRemotePort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		new Label(group, SWT.NONE);
-
-		butReplace = new Button(group, SWT.CHECK);
-		butReplace.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				bApply.setEnabled(true);
-			}
-		});
-		butReplace.setSelection(true);
-		butReplace.setEnabled(false);
-		butReplace.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 4, 1));
-		butReplace.setText("Replace");
-		new Label(group, SWT.NONE);
-		label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
+					}
+				});
+				tRemotePort.setEnabled(false);
+				tRemotePort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		new Label(group_1, SWT.NONE);
+		label = new Label(group_1, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label.setText("Label");
 		label.setLayoutData(gridData7);
 		createTable();
-		bNew = new Button(group, SWT.NONE);
+		bNew = new Button(group_1, SWT.NONE);
 		bNew.setText("&New Process Class");
 		bNew.setLayoutData(gridData1);
 		getShell().setDefaultButton(bNew);
 		bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				/*if(bApply.isEnabled()) {
-					int ok = MainWindow.message(Messages.getString("MainListener.apply_changes"), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);					
-					if (ok == SWT.YES) {
-						
-						return;
-					}
-				}*/
-
-				//apply();
+				 
 				listener.newProcessClass();
 				setInput(true);
 
@@ -377,10 +285,10 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 			}
 		});
 
-		label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
+		label2 = new Label(group_1, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label2.setText("Label");
 		label2.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false));
-		bRemove = new Button(group, SWT.NONE);
+		bRemove = new Button(group_1, SWT.NONE);
 		bRemove.setText("Remove Process Class");
 		bRemove.setEnabled(false);
 		bRemove.setLayoutData(gridData2);
@@ -408,16 +316,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		});
 		tProcessClass.setLayoutData(gridData5);
 		tProcessClass.setEnabled(false);
-		/*tProcessClass.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-				if (e.keyCode == SWT.CR) {
-					applyClass();
-					
-					bNew.setEnabled(!bApply.getEnabled());
-				}
-			}
-		});
-		*/
+		 
 		tProcessClass.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				boolean valid = listener.isValidClass(tProcessClass.getText()) || dom.isLifeElement();
@@ -439,17 +338,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		});
 
 		
-		//bApply.addSelectionListener(getSelectionListener());
-		
-		ignoreButton = new Button(group, SWT.CHECK);
-		ignoreButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				listener.setIgnoreProcessClasses(ignoreButton.getSelection());
-			}
-		});
-		ignoreButton.setLayoutData(new GridData(GridData.CENTER, GridData.BEGINNING, false, false));
-		ignoreButton.setText("Ignore Process Classes");
-		ignoreButton.setVisible(!dom.isLifeElement());
+		 
 	 }
 
 
@@ -457,7 +346,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 	  * This method initializes table
 	  */
 	 private void createTable() {
-		 table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
+		 table = new Table(group_1, SWT.FULL_SELECTION | SWT.BORDER);
 		 table.setHeaderVisible(true);
 		 table.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 4, 4));
 		 table.setLinesVisible(true);
@@ -508,7 +397,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 			 _continue = false;
 
 		 if(_continue)
-			 listener.applyProcessClass(tProcessClass.getText(), tRemoteHost.getText(),tRemotePort.getText(),sMaxProcesses.getSelection(), tSpoolerID.getText(), butReplace.getSelection());
+			 listener.applyProcessClass(tProcessClass.getText(), tRemoteHost.getText(),tRemotePort.getText(),Integer.parseInt(tMaxProcesses.getText()));
 
 		 listener.fillTable(table);
 		 setInput(false);
@@ -524,35 +413,27 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 	 private void setInput(boolean enabled) {
 		 
 		 tProcessClass.setEnabled(enabled);
-		 sMaxProcesses.setEnabled(enabled);
-		 tSpoolerID.setEnabled(enabled);
+		 tMaxProcesses.setEnabled(enabled);
 		 tRemoteHost.setEnabled(enabled);
-		 butReplace.setEnabled(enabled);
 		 tRemotePort.setEnabled(enabled);
 		 
 		 if (enabled) {
 			 tProcessClass.setText(listener.getProcessClass());
 			 tRemoteHost.setText(listener.getRemoteHost());
 			 tRemotePort.setText(listener.getRemotePort());
-			 sMaxProcesses.setSelection(listener.getMaxProcesses());
-			 tSpoolerID.setText(listener.getSpoolerID());
-			 butReplace.setSelection(listener.isReplace());
+			 tMaxProcesses.setSelection(listener.getMaxProcesses());
 			 tProcessClass.setFocus();
 
 		 } else {
 			 tProcessClass.setText("");
 			 tRemoteHost.setText("");
 			 tRemotePort.setText("");
-			 sMaxProcesses.setSelection(0);
-			 tSpoolerID.setText("");
-			 butReplace.setSelection(true);
-			
+			 tMaxProcesses.setSelection(0);
 		 }
 		 
 		 bApply.setEnabled(false);
 		 bRemove.setEnabled(table.getSelectionCount() > 0);
-		 
-		 // tProcessClass.setBackground(null);
+ 
 	 }
 
 
@@ -560,14 +441,11 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		 bNew.setToolTipText(Messages.getTooltip("process_classes.btn_new_class"));
 		 bRemove.setToolTipText(Messages.getTooltip("process_classes.btn_remove_class"));
 		 tProcessClass.setToolTipText(Messages.getTooltip("process_classes.class_entry"));
-		 sMaxProcesses.setToolTipText(Messages.getTooltip("process_classes.max_processes_entry"));
-		 tSpoolerID.setToolTipText(Messages.getTooltip("process_classes.spooler_id_entry"));
+		 tMaxProcesses.setToolTipText(Messages.getTooltip("process_classes.max_processes_entry"));
 		 bApply.setToolTipText(Messages.getTooltip("process_classes.btn_apply"));
 		 table.setToolTipText(Messages.getTooltip("process_classes.table"));
 		 tRemoteHost.setToolTipText(Messages.getTooltip("process_classes.RemoteHost"));
 		 tRemotePort.setToolTipText(Messages.getTooltip("process_classes.RemotePort"));
-		 ignoreButton.setToolTipText(Messages.getTooltip("process_classes.ignore"));
-		 butReplace.setToolTipText(Messages.getTooltip("process_classes.replace"));
 	 }
 
 	 private boolean checkRemote() {

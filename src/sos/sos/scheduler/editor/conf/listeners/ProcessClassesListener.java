@@ -152,14 +152,12 @@ public class ProcessClassesListener {
 	}
 
 
-	public void applyProcessClass(String processClass, String host, String port, int maxProcesses,  String spoolerID, boolean replace) {
+	public void applyProcessClass(String processClass, String host, String port, int maxProcesses) {
 		
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("process_class", Utils.getAttributeValue("name", _class), SchedulerDom.DELETE);
 		Utils.setAttribute("name", processClass, _class, _dom);
 		Utils.setAttribute("max_processes", maxProcesses, _class, _dom);
-		Utils.setAttribute("spooler_id", spoolerID, _class, _dom);
-		Utils.setAttribute("replace", replace, true, _class, _dom);
 
 		if(host.trim().concat(port.trim()).length() > 0) {
 			Utils.setAttribute("remote_scheduler", host.trim()+":"+port.trim(), _class, _dom);
