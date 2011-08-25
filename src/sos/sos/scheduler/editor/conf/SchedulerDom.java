@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.jdom.Comment;
 import org.jdom.Document;
@@ -35,6 +36,7 @@ import sos.util.SOSFile;
 
 public class SchedulerDom extends DomParser {
 	private final static String		conSVNVersion				= "$Id$";
+	private static Logger		logger					        = Logger.getLogger(SchedulerDom.class);
 
 	private static final String[]	CONFIG_ELEMENTS				= { "base", "params", "security", "cluster", "process_classes", "schedules", "locks", "script",
 			"http_server", "holidays", "jobs", "job_chains", "orders", "commands" };
@@ -255,7 +257,10 @@ public class SchedulerDom extends DomParser {
 	public boolean readString(String str, boolean validate) throws JDOMException, IOException {
 
 		StringReader sr = new StringReader(str);
-		Document doc = getBuilder(validate).build(sr);
+		logger.debug(str);
+//		Document doc = getBuilder(validate).build(sr);
+		
+		Document doc = getBuilder(false).build(sr);
 
 		sr.close();
 

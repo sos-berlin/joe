@@ -31,8 +31,11 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.classes.IntegerField;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ProcessClassesListener;
+import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.events.VerifyEvent;
 
 /**
  * @author sky2000
@@ -179,7 +182,12 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		label5.setText("Max Processes:");
 		GridData gridData4 = new GridData(GridData.FILL, SWT.FILL, false, false);
 		gridData4.widthHint = 20;
-		tMaxProcesses = new Text(group_1, SWT.BORDER);
+		tMaxProcesses = new IntegerField(group_1, SWT.BORDER);
+		tMaxProcesses.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
+				bApply.setEnabled(true);
+			}
+		});
 		tMaxProcesses.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(final TraverseEvent e) {
 				traversed(e);
@@ -197,15 +205,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 			}
 		});
 		 
-		tMaxProcesses.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				try {
-					Integer.parseInt(tMaxProcesses.getText());
-				}catch(NumberFormatException nf) {}
-				
-				bApply.setEnabled(true);
-			}
-		});
+	 
 		 
 		new Label(group_1, SWT.NONE);
 		new Label(group_1, SWT.NONE);
@@ -245,7 +245,7 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 				portLabel.setLayoutData(gridData_1);
 				portLabel.setText("at Port");
 		
-				tRemotePort = new Text(group_1, SWT.BORDER);
+				tRemotePort = new IntegerField(group_1, SWT.BORDER);
 				tRemotePort.addTraverseListener(new TraverseListener() {
 					public void keyTraversed(final TraverseEvent e) {
 						traversed(e);

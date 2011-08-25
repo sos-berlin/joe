@@ -17,21 +17,18 @@ import sos.scheduler.editor.conf.SchedulerDom;
 public class ScriptListener {
 	
 	
-    public final static int      NONE        = 0;
+    public final static int      NONE        = 999;
 
+    public final static int      SHELL       = 0;
     public final static int      JAVA        = 1;
-
     public final static int      JAVA_SCRIPT = 2;
-
-    public final static int      PERL        = 3;
-
-    public final static int      VB_SCRIPT   = 4;
-    
-    public final static int      SHELL       = 5;
+    public final static int      VB_SCRIPT   = 3;
+    public final static int      PERL        = 4;
 
     public final static int      COM         = 6;
 
-    public final static String[] _languages  = { "", "java", "javascript", "perlScript", "VBScript", "shell","" };
+   // public final static String[] _languages  = { "", "java", "javascript", "perlScript", "VBScript", "shell","" };
+    public final static String[] _languages  = {  "shell", "java", "javascript", "VBScript", "perlScript","" };
 
     private SchedulerDom         _dom        = null;
 
