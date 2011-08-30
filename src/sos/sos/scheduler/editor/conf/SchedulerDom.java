@@ -258,9 +258,8 @@ public class SchedulerDom extends DomParser {
 
 		StringReader sr = new StringReader(str);
 		logger.debug(str);
-//		Document doc = getBuilder(validate).build(sr);
+		Document doc = getBuilder(validate).build(sr);
 		
-		Document doc = getBuilder(false).build(sr);
 
 		sr.close();
 
@@ -397,7 +396,7 @@ public class SchedulerDom extends DomParser {
 		saxo.output(doc);
 
 		try {
-			getBuilder(false).build(new StringReader(handler.getXML()));
+			getBuilder(true).build(new StringReader(handler.getXML()));
 		}
 		catch (JDOMException e) {
 			try {

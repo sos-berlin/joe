@@ -185,7 +185,7 @@ public class JobAssistentScriptForms {
 							if(lblClass.getText().equals("Java Class")) {				
 								scriptlistener.setJavaClass(txtJavaClass.getText());			
 							} else {				
-								scriptlistener.setComClass(txtJavaClass.getText());
+								//scriptlistener.setComClass(txtJavaClass.getText());
 							}
 					}
 				}

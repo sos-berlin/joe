@@ -152,10 +152,13 @@ public class ConfigForm extends Composite implements IUpdateLanguage {
 		txtCentralConfigDir.setText(listener.getCentralConfigDir());
 		
 		cSamePorts.setSelection(listener.isPort());
-		if (listener.isPort())
+		if (listener.isPort()) {
 			sPort.setText(listener.getPort());
-		sTcpPort.setText(listener.getTcpPort());
-		sUdpPort.setText(listener.getUdpPort());
+		}else {
+			sTcpPort.setText(listener.getTcpPort());
+			sUdpPort.setText(listener.getUdpPort());
+		}
+		
 		
 		tMainSchedulerHost.setText(listener.getMainSchedulerHost());
 		sMainSchedulerPort.setText(listener.getMainSchedulerPort());

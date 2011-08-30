@@ -17,21 +17,14 @@ import sos.scheduler.editor.conf.SchedulerDom;
 public class ScriptListener {
 	
 	
-    public final static int      NONE        = 999;
+     
 
-    public final static int      SHELL       = 0;
-    public final static int      JAVA        = 1;
-    public final static int      JAVA_SCRIPT = 2;
-    public final static int      VB_SCRIPT   = 3;
-    public final static int      PERL        = 4;
-
-    public final static int      COM         = 6;
-
-   // public final static String[] _languages  = { "", "java", "javascript", "perlScript", "VBScript", "shell","" };
-    public final static String[] _languages  = {  "shell", "java", "javascript", "VBScript", "perlScript","" };
-
+    public final static int NONE = -1;
+    public final static String[] _languagesJob  = {  "shell", "java", "javascript", "VBScript", "perlScript","" };
+    public final static String[] _languagesMonitor  = { "java", "javascript", "VBScript", "perlScript","" };
+    public String[] _languages = null;
     private SchedulerDom         _dom        = null;
-
+    
     private Element              _parent     = null;
 
     private Element              _script     = null;
@@ -40,17 +33,22 @@ public class ScriptListener {
     
     
     private ISchedulerUpdate     _update     = null;
-
-
+    
     public ScriptListener(SchedulerDom dom, Element parent, int type, ISchedulerUpdate update) {
         _dom = dom;
         _parent = parent;
         _type = type;
+        if (type==Editor.MONITOR) {
+            _languages = _languagesMonitor;	
+        }else {
+            _languages = _languagesJob;	
+        }
         _update = update;
         setScript();
     }
 
 
+    
     private void setScript() {
         if (_type == Editor.MONITOR) {
             //Element monitor = _parent.getChild("monitor");
@@ -69,14 +67,10 @@ public class ScriptListener {
             if (_languages[i].equalsIgnoreCase(language))
                 return i;
         }
-
-        if (_script != null && (_script.getAttribute("com_class") != null || _script.getAttribute("filename") != null))
-            return COM;
-
-        System.out.println("unknown language: " + language + " - set to java...");
+  
         if (_script != null)
             _script.setAttribute("language", "java");
-        return -1;
+        return 0;
     }
 
 
@@ -93,6 +87,13 @@ public class ScriptListener {
             return languageAsInt(_script.getAttributeValue("language"));
         else
             return NONE;
+    }
+    public String getLanguageAsString(int language) {
+        if (_script != null)
+            return languageAsString(language);
+        else {
+            return "";
+        }
     }
 
 
@@ -114,40 +115,14 @@ public class ScriptListener {
         }
 
         if (_script != null) {
-            switch (language) {
-                case NONE: // remove script element
-                    /*if (_type == Editor.MONITOR)
-                        _parent.removeChild("monitor");
-                    else*/
-                        _parent.removeChildren("script");
-                    _script = null;
-                    break;
-                case PERL:
-                case JAVA_SCRIPT:
-                case VB_SCRIPT:
-                case SHELL:
-                    _script.removeAttribute("com_class");
-                    _script.removeAttribute("filename");
-                    _script.removeAttribute("java_class");
-                    break;
-                case JAVA:
-                    if (_script.getAttribute("java_class") == null)
-                        _script.setAttribute("java_class", "");
-                    _script.removeAttribute("com_class");
-                    _script.removeAttribute("filename");
-                    
-                    
-                    break;
-                case COM:
-                    if (_script.getAttribute("com_class") == null)
-                        _script.setAttribute("com_class", "");
-                    if (_script.getAttribute("filename") == null)
-                        _script.setAttribute("filename", "");
-                    _script.removeAttribute("java_class");
-                    setSource("");
-                    break;
-            }
-
+        	
+        	
+             if (!isJava()){
+            	 _script.removeAttribute("java_class");
+            	 _script.removeAttribute("java_class_path");
+             }
+             
+            
             if (language != NONE)
                 Utils.setAttribute("language", languageAsString(language), _script, _dom);
 
@@ -173,7 +148,7 @@ public class ScriptListener {
 
 
     public void setJavaClass(String javaClass) {
-        setAttributeValue("java_class", javaClass.trim(), JAVA);
+        setAttributeValue("java_class", javaClass.trim(), languageAsInt("java"));
         setChangedForDirectory();
     }
 
@@ -182,19 +157,13 @@ public class ScriptListener {
         return Utils.getAttributeValue("com_class", _script);
     }
 
-
-    public void setComClass(String comClass) {
-        setAttributeValue("com_class", comClass.trim(), COM);
-        setChangedForDirectory();
-    }
-
-
+ 
     public String getFilename() {
         return Utils.getAttributeValue("filename", _script);
     }
 
     public void setClasspath(String classpath) {
-          setAttributeValue("java_class_path", classpath, JAVA);
+          setAttributeValue("java_class_path", classpath, languageAsInt("java"));
     }
     
     public String getClasspath() {
@@ -202,9 +171,7 @@ public class ScriptListener {
        return s;
     }
 
-    public void setFilename(String filename) {
-        setAttributeValue("filename", filename, COM);
-    }
+    
 
     public void fillTable(Table table) {
     	if (_script != null) {
@@ -440,5 +407,9 @@ public class ScriptListener {
 	 */
 	public SchedulerDom getDom() {
 		return _dom;
+	}
+	
+	public boolean isJava() {
+    	return languageAsString(getLanguage()).equalsIgnoreCase("java");
 	}
 }

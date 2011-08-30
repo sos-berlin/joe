@@ -152,7 +152,7 @@ public class JobAssistentExecuteForms {
 			}
 
 			comLanguage = new Combo(jobGroup, SWT.NONE);
-			comLanguage.setItems(ScriptListener._languages);
+			comLanguage.setItems(ScriptListener._languagesJob);
 			comLanguage.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					if (comLanguage.getSelectionIndex() > 1) {
