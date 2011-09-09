@@ -294,9 +294,12 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 							public void widgetSelected(final SelectionEvent e) {
 								if (cboPrefunction.getText().length() > 0) {
 									String lan = "function_" + ((type == Editor.MONITOR) ? "monitor" : "job") + "_" + listener.getLanguage(listener.getLanguage()) + "_";
-									tSource.append(Options.getProperty(lan.toLowerCase() + cboPrefunction.getText()));
-									cboPrefunction.setText("");
-									tSource.setFocus();
+									String sourceTemplate = Options.getProperty(lan.toLowerCase() + cboPrefunction.getText());
+									if (sourceTemplate != null) {
+									   tSource.append(Options.getProperty(lan.toLowerCase() + cboPrefunction.getText()));
+									   cboPrefunction.setText("");
+									   tSource.setFocus();
+									}
 								}
 							}
 						});
