@@ -45,7 +45,11 @@ public class LanguageSelector extends Combo {
     }
 	
 	public boolean isJava (){
-		return this.getText().equalsIgnoreCase("Java");
+		return this.getText().equalsIgnoreCase("java");
+	}
+	
+	public boolean isShell (){
+		return this.getText().equalsIgnoreCase("shell");
 	}
 	
 	protected void checkSubclass() {

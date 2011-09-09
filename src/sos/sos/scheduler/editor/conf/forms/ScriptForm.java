@@ -634,9 +634,12 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 		if (language != ScriptListener.NONE) {
 			listener.fillTable(tableIncludes);
 		}
+		
+
+		
 
 		String lan = "";
-		if (listener.getLanguageAsString(listener.getLanguage()) != "shell") {
+		if (!languageSelector.isShell() && !languageSelector.isJava()) {
 			if (type == Editor.MONITOR) {
 				lan = "spooler_task_before;spooler_task_after;spooler_process_before;spooler_process_after";
 			}
