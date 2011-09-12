@@ -9,7 +9,6 @@
 	<classpathentry kind="var" path="SOS_LIB/commons-httpclient-3.0.1.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/commons-logging.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/jce-jdk13-129.jar"/>
-	<classpathentry kind="var" path="SOS_LIB/jdom.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/swt.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/trilead-ssh2-build211.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/webdavclient4j-core-0.92.jar"/>
@@ -20,10 +19,23 @@
 	<classpathentry kind="var" path="SOS_LIB/com.sos.xml.jar"/>
 	<classpathentry kind="src" path="/JobSchedulerHelper"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SOSJobSchedulerModel"/>
-	<classpathentry kind="var" path="SOS_LIB/xerces-2_9_1/xercesImpl.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/log4j-1.2.16.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/JobSchedulerLocalization"/>
 	<classpathentry kind="var" path="SOS_LIB/jaxen-1.1.1.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/com.sos.util.jar"/>
+	<classpathentry kind="var" path="SOS_LIB/com.sos.ldap.jar"/>
+	<classpathentry kind="var" path="SOS_LIB/com.sos.ftp.profiles.jar"/>
+	<classpathentry kind="var" path="SOS_LIB/com.sos.marshalling.jar"/>
+	<classpathentry kind="var" path="SOS_LIB/com.sos.SOSJobSchedulerModel.jar"/>
+	<classpathentry kind="var" path="SOS_LIB/com.sos.configuration.jar"/>
+	<classpathentry kind="var" path="SOS_LIB/com.sos.connection.jar"/>
+	<classpathentry kind="var" path="SOS_LIB/com.sos.VirtualFileSystem.jar" sourcepath="/SOS_DEV/com.sos.VirtualFileSystem"/>
+	<classpathentry kind="var" path="SOS_LIB/com.sos.JSHelper.jar"/>
+	<classpathentry kind="var" path="SOS_LIB/jdom/build/jdom.jar"/>
+	<classpathentry kind="var" path="SOS_LIB/jdom/lib/jaxen.jar"/>
+	<classpathentry kind="lib" path="J:/E/java/lib/xalan-j_2_7_1/xalan.jar"/>
+	<classpathentry kind="lib" path="J:/E/java/lib/xalan-j_2_7_1/xml-apis.jar"/>
+	<classpathentry kind="lib" path="J:/E/java/lib/xerces-2_9_1/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="J:/E/java/lib/xerces-2_11_0-xml-schema-1.1-beta/org.eclipse.wst.xml.xpath2.processor_1.1.0.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/JobSchedulerLocalization"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
