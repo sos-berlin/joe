@@ -383,7 +383,7 @@ public class JobAssistentImportJobsForm {
 					attr.put("params", listOfParams);
 					Element job = null;
 					if (flagBackUpJob) {
-						if (assistentType == Editor.JOB_WIZZARD) {
+						if (assistentType == Editor.JOB_WIZARD) {
 							// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn
 							// assistentype = Editor.Job_Wizzard
 							Element currJob = (Element) (joblistener.getJob().clone());
@@ -414,7 +414,7 @@ public class JobAssistentImportJobsForm {
 							JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
 							ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText(), "required");
 							h.put("params", listOfParams);
-							if (assistentType == Editor.JOB_WIZZARD) {
+							if (assistentType == Editor.JOB_WIZARD) {
 								// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn
 								// assistentype = Editor.Job_Wizzard
 								Element job = joblistener.getJob();
@@ -493,7 +493,7 @@ public class JobAssistentImportJobsForm {
 					if (!check())
 						return;
 					HashMap attr = getJobFromDescription();
-					if (assistentType == Editor.JOB_WIZZARD || assistentType == Editor.JOB) {
+					if (assistentType == Editor.JOB_WIZARD || assistentType == Editor.JOB) {
 						Element job = listener.createJobElement(attr, joblistener.getJob());
 						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), job,
 								assistentType);
@@ -508,14 +508,14 @@ public class JobAssistentImportJobsForm {
 							paramsForm.showAllImportJobParams(txtPath.getText());
 						}
 						else {
-							if (assistentType != Editor.JOB_WIZZARD && listener.existJobname(txtJobname.getText())) {
+							if (assistentType != Editor.JOB_WIZARD && listener.existJobname(txtJobname.getText())) {
 								MainWindow.message(shell, Messages.getString("assistent.error.job_name_exist"), SWT.OK);
 								txtJobname.setFocus();
 								return;
 							}
 							Element job = null;
 							if (flagBackUpJob) {
-								if (jobBackUp != null && assistentType != Editor.JOB_WIZZARD) {
+								if (jobBackUp != null && assistentType != Editor.JOB_WIZARD) {
 									int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.discard_changes"),
 											SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
 									if (cont == SWT.CANCEL) {
@@ -535,7 +535,7 @@ public class JobAssistentImportJobsForm {
 								job = listener.createJobElement(attr);
 							}
 							JobAssistentImportJobParamsForm paramsForm = null;
-							if (assistentType == Editor.JOB_WIZZARD) {
+							if (assistentType == Editor.JOB_WIZARD) {
 								paramsForm = new JobAssistentImportJobParamsForm(dom, update, joblistener, assistentType);
 							}
 							else {
@@ -557,7 +557,7 @@ public class JobAssistentImportJobsForm {
 				this.butImport.setVisible(true);
 				butParameters.setText("Import Parameters");
 			}
-			if (assistentType == Editor.JOB_WIZZARD) {
+			if (assistentType == Editor.JOB_WIZARD) {
 				txtJobname.setEnabled(false);
 				txtTitle.setEnabled(true);
 				butShow.setEnabled(true);

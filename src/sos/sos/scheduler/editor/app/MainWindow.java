@@ -48,32 +48,33 @@ import com.sos.i18n.annotation.I18NResourceBundle;
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class MainWindow extends I18NBase {
 	private static final String	conPropertyNameEDITOR_JOB_SHOW_WIZARD	= "editor.job.show.wizard";
-	private static final String	conStringEDITOR	= "editor";
-	private static final String	conIconOPEN_HOT_FOLDER_GIF	= "/sos/scheduler/editor/icon_open_hot_folder.gif";
-	public static final String	conIconICON_OPEN_GIF		= "/sos/scheduler/editor/icon_open.gif";
-	public static final String	conIconEDITOR_PNG			= "/sos/scheduler/editor/editor.png";
-	private final String		conClassName				= "MainWindow";
+	private static final String	conStringEDITOR							= "editor";
+	private static final String	conIconOPEN_HOT_FOLDER_GIF				= "/sos/scheduler/editor/icon_open_hot_folder.gif";
+	public static final String	conIconICON_OPEN_GIF					= "/sos/scheduler/editor/icon_open.gif";
+	public static final String	conIconEDITOR_PNG						= "/sos/scheduler/editor/editor.png";
+	private final String		conClassName							= "MainWindow";
 	@SuppressWarnings("unused")
-	private final String		conSVNVersion				= "$Id$";
-	private static final Logger	logger						= Logger.getLogger(MainWindow.class);
-	private static Shell		sShell						= null;											// @jve:decl-index=0:visual-constraint="3,1"
-	private MainListener		listener					= null;
-	private static IContainer	container					= null;
-	private Menu				menuBar						= null;
-	private static Menu			mFile						= null;
-	private Menu				submenu						= null;
-	private Menu				menuLanguages				= null;
-	private Menu				submenu1					= null;
-	private MainWindow			main						= null;
-	private Composite			groupmain					= null;
-	private static ToolItem		butSave						= null;
-	private static ToolItem		butShowAsSML				= null;
-	private static SOSString	sosString					= new SOSString();
+	private final String		conSVNVersion							= "$Id$";
+	private static final Logger	logger									= Logger.getLogger(MainWindow.class);
+	private static Shell		sShell									= null;													// @jve:decl-index=0:visual-constraint="3,1"
+	private MainListener		listener								= null;
+	private static IContainer	container								= null;
+	private Menu				menuBar									= null;
+	private static Menu			mFile									= null;
+	private Menu				submenu									= null;
+	private Menu				menuLanguages							= null;
+	private Menu				submenu1								= null;
+	private MainWindow			main									= null;
+	private Composite			groupmain								= null;
+	private static ToolItem		butSave									= null;
+	private static ToolItem		butShowAsSML							= null;
+	private static SOSString	sosString								= new SOSString();
 	/**  */
-	private static boolean		flag						= true;											// hilfsvariable
+	private static boolean		flag									= true;													// hilfsvariable
 
 	public MainWindow() {
-		super("JOEMessages"); // , Options.getLanguage());
+//		super("JOEMessages"); // , Options.getLanguage());
+		super("JOEMessages", Options.getLanguage());
 		logger.debug(conSVNVersion);
 	}
 
@@ -125,6 +126,14 @@ public class MainWindow extends I18NBase {
 		return strRet;
 	} // private String getMenuText
 
+	public void OpenLastFolder() {
+		String strF = Options.getLastFolderName();
+		// String strF = "C:/Users/KB/sos-berlin.com/jobscheduler/scheduler/config/live";
+		if (strF != null && strF.trim().length() > 0) {
+			container.openDirectory(strF);
+		}
+	}
+
 	/**
 	 * This method initializes sShell
 	 * @wbp.parser.entryPoint
@@ -155,6 +164,7 @@ public class MainWindow extends I18NBase {
 		Options.loadWindow(sShell, conStringEDITOR);
 
 		String strT = this.getMsg(JOE_I_0010) + JSVersionInfo.conVersionNumber;
+		container.setTitleText(strT);
 		sShell.setText(strT);
 		logger.debug(strT);
 		Options.conJOEGreeting = strT;
@@ -227,7 +237,7 @@ public class MainWindow extends I18NBase {
 		MenuItem mLifeJob = new MenuItem(mLife, SWT.PUSH);
 		mLifeJob.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_JOB) != null)
+				if (container.newScheduler(SchedulerDom.LIVE_JOB) != null)
 					setSaveStatus();
 			}
 		});
@@ -237,7 +247,7 @@ public class MainWindow extends I18NBase {
 		MenuItem mLifeJobChain = new MenuItem(mLife, SWT.PUSH);
 		mLifeJobChain.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_JOB_CHAIN) != null)
+				if (container.newScheduler(SchedulerDom.LIVE_JOB_CHAIN) != null)
 					setSaveStatus();
 			}
 		});
@@ -268,7 +278,7 @@ public class MainWindow extends I18NBase {
 					setSaveStatus();
 			}
 		});
-		
+
 		mLifeOrder.setText(getMenuText(this.getMsg(MENU_Order), "W"));
 		mLifeOrder.setAccelerator(SWT.CTRL | 'W');
 		MenuItem mLifeSchedule = new MenuItem(mLife, SWT.PUSH);
@@ -586,7 +596,7 @@ public class MainWindow extends I18NBase {
 		menuLanguages = new Menu(submenuItem1);
 		// create languages menu
 		listener.setLanguages(menuLanguages);
-		
+
 		submenuItem1.setMenu(menuLanguages);
 		submenuItem.setMenu(submenu);
 		MenuItem submenuItemInfo = new MenuItem(submenu, SWT.PUSH);
@@ -619,15 +629,16 @@ public class MainWindow extends I18NBase {
 	}
 
 	private String getMsg(final String pstrKey) {
-		
+
 		@SuppressWarnings("unused")
-		final String	conMethodName	= conClassName + "::getMsg";
+		final String conMethodName = conClassName + "::getMsg";
 		super.setLocale(Options.getLanguage());
 
-		String strT = super.getMsg(pstrKey, ""); 
-		
+		String strT = super.getMsg(pstrKey, "");
+
 		return strT;
 	} // private String getMsg
+
 	public static void setSaveStatus() {
 		setMenuStatus();
 		container.setStatusInTitle();
@@ -775,7 +786,7 @@ public class MainWindow extends I18NBase {
 		itemHFEJob.setText("Hot Folder Element - Job");
 		itemHFEJob.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_JOB) != null)
+				if (container.newScheduler(SchedulerDom.LIVE_JOB) != null)
 					setSaveStatus();
 			}
 
@@ -786,7 +797,7 @@ public class MainWindow extends I18NBase {
 		itemHFEJobChain.setText("Hot Folder Element - Job Chain");
 		itemHFEJobChain.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_JOB_CHAIN) != null)
+				if (container.newScheduler(SchedulerDom.LIVE_JOB_CHAIN) != null)
 					setSaveStatus();
 			}
 
@@ -847,6 +858,7 @@ public class MainWindow extends I18NBase {
 		});
 		butOpen.setImage(ResourceManager.getImageFromResource(conIconICON_OPEN_GIF));
 		butOpen.setToolTipText("Open Configuration File");
+
 		// ---------- butOpenHotFolder ---------
 		final ToolItem butOpenHotFolder = new ToolItem(toolBar, SWT.PUSH);
 		butOpenHotFolder.addSelectionListener(new SelectionAdapter() {
@@ -857,6 +869,7 @@ public class MainWindow extends I18NBase {
 		});
 		butOpenHotFolder.setImage(ResourceManager.getImageFromResource(conIconOPEN_HOT_FOLDER_GIF));
 		butOpenHotFolder.setToolTipText("Open HotFolder");
+
 		butSave = new ToolItem(toolBar, SWT.PUSH);
 		butSave.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -963,7 +976,7 @@ public class MainWindow extends I18NBase {
 		butWizzard.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_wizzard.gif"));
 		butWizzard.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(final SelectionEvent e) {
-				startWizzard();
+				startWizard();
 			}
 
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -1262,10 +1275,10 @@ public class MainWindow extends I18NBase {
 		return currdom;
 	}
 
-	private void startWizzard() {
+	private void startWizard() {
 		try {
 			Utils.startCursor(sShell);
-			SchedulerForm _scheduler = container.newScheduler(SchedulerDom.LIFE_JOB);
+			SchedulerForm _scheduler = container.newScheduler(SchedulerDom.LIVE_JOB);
 			if (_scheduler != null)
 				setSaveStatus();
 			JobAssistentForm assitent = new JobAssistentForm(_scheduler.getDom(), _scheduler);
@@ -1879,85 +1892,79 @@ public class MainWindow extends I18NBase {
 	 */
 	public static final String	MENU_Help				= "MENU_Help";
 
-	@I18NMessages( value = {
-			@I18NMessage( "About" ),  //
-			@I18NMessage( value = "About", //
-					locale = "en_UK",  //
-					explanation = "About"   // 
-			),      //
-			@I18NMessage( value = "Über", //
-					locale = "de", //
-					explanation = "Liefert Informationen über ..."   // 
-			),      //
-			@I18NMessage( value = "About", locale = "es", //
-					explanation = "About"   // 
-			),      //
-			@I18NMessage( value = "About", locale = "fr", //
-					explanation = "About"   // 
-			),      //
-			@I18NMessage( value = "About", locale = "it", //
-					explanation = "About"   // 
-			)      //
-	}, msgnum="MENU_About",
-	msgurl="Menu-About")
+	@I18NMessages(value = { @I18NMessage("About"), //
+			@I18NMessage(value = "About", //
+			locale = "en_UK", //
+			explanation = "About" //
+			), //
+			@I18NMessage(value = "Über", //
+			locale = "de", //
+			explanation = "Liefert Informationen über ..." //
+			), //
+			@I18NMessage(value = "About", locale = "es", //
+			explanation = "About" //
+			), //
+			@I18NMessage(value = "About", locale = "fr", //
+			explanation = "About" //
+			), //
+			@I18NMessage(value = "About", locale = "it", //
+			explanation = "About" //
+			) //
+	}, msgnum = "MENU_About", msgurl = "Menu-About")
 	/*!
 	 * \var MENU_About
 	 * \brief About
 	 */
-	public static final String MENU_About = "MENU_About";
+	public static final String	MENU_About				= "MENU_About";
 
-	@I18NMessages( value = {
-			@I18NMessage( "Reset Dialog" ),  //
-			@I18NMessage( value = "Reset Dialog", //
-					locale = "en_UK",  //
-					explanation = "Reset Dialog"   // 
-			),      //
-			@I18NMessage( value = "Programm neu initialisieren", //
-					locale = "de", //
-					explanation = "JOE wird neu initialisiert. Die Einstellungen werden neu geladen"   // 
-			),      //
-			@I18NMessage( value = "Reset Dialog", locale = "es", //
-					explanation = "Reset Dialog"   // 
-			),      //
-			@I18NMessage( value = "Reset Dialog", locale = "fr", //
-					explanation = "Reset Dialog"   // 
-			),      //
-			@I18NMessage( value = "Reset Dialog", locale = "it", //
-					explanation = "Reset Dialog"   // 
-			)      //
-	}, msgnum="MENU_ResetDialog",
-	msgurl="Menu-ResetDialog")
+	@I18NMessages(value = { @I18NMessage("Reset Dialog"), //
+			@I18NMessage(value = "Reset Dialog", //
+			locale = "en_UK", //
+			explanation = "Reset Dialog" //
+			), //
+			@I18NMessage(value = "Programm neu initialisieren", //
+			locale = "de", //
+			explanation = "JOE wird neu initialisiert. Die Einstellungen werden neu geladen" //
+			), //
+			@I18NMessage(value = "Reset Dialog", locale = "es", //
+			explanation = "Reset Dialog" //
+			), //
+			@I18NMessage(value = "Reset Dialog", locale = "fr", //
+			explanation = "Reset Dialog" //
+			), //
+			@I18NMessage(value = "Reset Dialog", locale = "it", //
+			explanation = "Reset Dialog" //
+			) //
+	}, msgnum = "MENU_ResetDialog", msgurl = "Menu-ResetDialog")
 	/*!
 	 * \var MENU_Reset Dialog
 	 * \brief Reset Dialog
 	 */
-	public static final String MENU_Reset_Dialog = "MENU_ResetDialog";
+	public static final String	MENU_Reset_Dialog		= "MENU_ResetDialog";
 
-	@I18NMessages( value = {
-			@I18NMessage( "Order" ),  //
-			@I18NMessage( value = "Order", //
-					locale = "en_UK",  //
-					explanation = "Order"   // 
-			),      //
-			@I18NMessage( value = "Auftrag", //
-					locale = "de", //
-					explanation = "Auftrag ...."   // 
-			),      //
-			@I18NMessage( value = "Order", locale = "es", //
-					explanation = "Order"   // 
-			),      //
-			@I18NMessage( value = "Order", locale = "fr", //
-					explanation = "Order"   // 
-			),      //
-			@I18NMessage( value = "Order", locale = "it", //
-					explanation = "Order"   // 
-			)      //
-	}, msgnum="MENU_Order",
-	msgurl="MENU_ORDER")
+	@I18NMessages(value = { @I18NMessage("Order"), //
+			@I18NMessage(value = "Order", //
+			locale = "en_UK", //
+			explanation = "Order" //
+			), //
+			@I18NMessage(value = "Auftrag", //
+			locale = "de", //
+			explanation = "Auftrag ...." //
+			), //
+			@I18NMessage(value = "Order", locale = "es", //
+			explanation = "Order" //
+			), //
+			@I18NMessage(value = "Order", locale = "fr", //
+			explanation = "Order" //
+			), //
+			@I18NMessage(value = "Order", locale = "it", //
+			explanation = "Order" //
+			) //
+	}, msgnum = "MENU_Order", msgurl = "MENU_ORDER")
 	/*!
 	 * \var MENU_Order
 	 * \brief Order
 	 */
-	public static final String MENU_Order = "MENU_Order";
+	public static final String	MENU_Order				= "MENU_Order";
 
 }

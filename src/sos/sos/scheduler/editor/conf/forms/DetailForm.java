@@ -367,7 +367,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			});
 			// parameterButton.setVisible(type != Editor.DETAILS);
 			parameterButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			parameterButton.setText("Wizzard");
+			parameterButton.setText("Wizard");
 			butRemove = new Button(parameterGroup, SWT.NONE);
 			butRemove.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
@@ -845,7 +845,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 				// JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren
 				// JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(),
 				// new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? Editor.JOB :
-				// Editor.JOB_WIZZARD);
+				// Editor.JOB_WIZARD);
 				JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(schedulerDom, joblistener.get_main(), joblistener,
 						tableParams, Editor.PARAMETER);
 				paramsForm.showAllImportJobParams(jobDocumentation);

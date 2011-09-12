@@ -274,18 +274,22 @@ public class TabbedContainer implements IContainer {
 		}
 	}
 
+	private String strTitleText = "";
+	public void setTitleText (final String pstrTitle) {
+		strTitleText = pstrTitle;
+	}
 	private CTabItem newItem(Control control, String filename) {
 		CTabItem tab = new CTabItem(folder, SWT.NONE);
 		tab.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(final DisposeEvent e) {
-				MainWindow.getSShell().setText("Job Scheduler Editor");
+				MainWindow.getSShell().setText(strTitleText /* "Job Scheduler Editor" */);
 				MainWindow.setSaveStatus();
 			}
 		});
 		tab.setControl(control);
 		folder.setSelection(folder.indexOf(tab));
 		String actFilename = Utils.getFileFromURL(filename);
-		tab.setData(new TabData(actFilename, ""));
+		tab.setData(new TabData(actFilename, strTitleText));
 		String title = setSuffix(tab, actFilename);
 		TabData t = (TabData) tab.getData();
 		t.caption = shortCaption(title);
@@ -404,7 +408,8 @@ public class TabbedContainer implements IContainer {
 		/*if(ftp != null && ftp.length() > 0  ) {
 			String f = new File(getCurrentTab().getText()).getName();
 		}*/
-		shell.setText((String) shell.getData() + webdav + ftp + " " + getCurrentTab().getText());
+///		shell.setText((String) shell.getData() + webdav + ftp + " " + getCurrentTab().getText());
+		shell.setText(strTitleText + webdav + ftp + " " + getCurrentTab().getText());
 		// shell.setText((String) shell.getData() + " [" + getCurrentTab().getText() + "]");
 	}
 
@@ -494,6 +499,7 @@ public class TabbedContainer implements IContainer {
 		SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE, SchedulerDom.DIRECTORY);
 		if (scheduler.openDirectory(filename, filelist)) {
 			CTabItem tab = newItem(scheduler, scheduler.getFilename());
+			Options.setLastFolderName(scheduler.getFilename());
 			tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
 			return scheduler;
 		}
@@ -501,7 +507,7 @@ public class TabbedContainer implements IContainer {
 			return null;
 	}
 
-	public SchedulerForm openLifeElement(String filename, int type) {
+	public SchedulerForm openLiveElement(String filename, int type) {
 		SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE, type);
 		if (scheduler.open(filename, filelist, type)) {
 			CTabItem tab = newItem(scheduler, scheduler.getFilename());
@@ -533,27 +539,27 @@ public class TabbedContainer implements IContainer {
 						}
 						else
 							if (root.getName().equalsIgnoreCase("job")) {
-								return openLifeElement(xmlFilename, SchedulerDom.LIFE_JOB);
+								return openLiveElement(xmlFilename, SchedulerDom.LIVE_JOB);
 							}
 							else
 								if (root.getName().equalsIgnoreCase("job_chain")) {
-									return openLifeElement(xmlFilename, SchedulerDom.LIFE_JOB_CHAIN);
+									return openLiveElement(xmlFilename, SchedulerDom.LIVE_JOB_CHAIN);
 								}
 								else
 									if (root.getName().equalsIgnoreCase("process_class")) {
-										return openLifeElement(xmlFilename, SchedulerDom.LIFE_PROCESS_CLASS);
+										return openLiveElement(xmlFilename, SchedulerDom.LIFE_PROCESS_CLASS);
 									}
 									else
 										if (root.getName().equalsIgnoreCase("lock")) {
-											return openLifeElement(xmlFilename, SchedulerDom.LIFE_LOCK);
+											return openLiveElement(xmlFilename, SchedulerDom.LIFE_LOCK);
 										}
 										else
 											if (root.getName().equalsIgnoreCase("order") || root.getName().equalsIgnoreCase("add_order")) {
-												return openLifeElement(xmlFilename, SchedulerDom.LIFE_ORDER);
+												return openLiveElement(xmlFilename, SchedulerDom.LIFE_ORDER);
 											}
 											else
 												if (root.getName().equalsIgnoreCase("schedule")) {
-													return openLifeElement(xmlFilename, SchedulerDom.LIFE_SCHEDULE);
+													return openLiveElement(xmlFilename, SchedulerDom.LIFE_SCHEDULE);
 												}
 												else {
 													MainWindow.message("Unknows root Element: " + root.getName() + " from filename " + xmlFilename, SWT.NONE);

@@ -3,6 +3,7 @@ package sos.scheduler.editor.conf.listeners;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
@@ -34,7 +35,7 @@ public class JobChainsListener {
 
 	private String[]              _chainNames               = null;
 
-	/** braucht der Wizzard/Assistent*/
+	/** braucht der Wizard/Assistent*/
 	private static Table                 tChains                   = null;
 
 	private ISchedulerUpdate      update                    = null;

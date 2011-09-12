@@ -1202,7 +1202,7 @@ public class DetailsListener {
 
 						} else {
 //							Hot Folder Element ist nicht offen in einem Tabraiter 
-							SchedulerDom currDom = new SchedulerDom(SchedulerDom.LIFE_JOB);
+							SchedulerDom currDom = new SchedulerDom(SchedulerDom.LIVE_JOB);
 							currDom.read(hotFolderfilename);
 
 							if(x2==null)
@@ -1374,7 +1374,7 @@ public class DetailsListener {
 
 					} else {
 //						Hot Folder Element ist nicht offen in einem Tabraiter 
-						SchedulerDom currDom = new SchedulerDom(SchedulerDom.LIFE_JOB);
+						SchedulerDom currDom = new SchedulerDom(SchedulerDom.LIVE_JOB);
 						currDom.read(hotFolderfilename);
 						listOfElement2 = x2.selectNodes(currDom.getDoc());
 						if(listOfElement2.isEmpty()) {							

@@ -3,11 +3,10 @@ import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Display;
 
 import com.sos.JSHelper.Logging.Log4JHelper;
-import com.sos.i18n.I18NBase;
 import com.sos.i18n.annotation.I18NResourceBundle;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
-public class Editor extends I18NBase {
+public class Editor /* extends I18NBase */ {
 	private final static String	conSVNVersion			= "$Id$";
 	private static Logger		logger					= Logger.getLogger(Editor.class);
 	@SuppressWarnings("unused")
@@ -64,7 +63,7 @@ public class Editor extends I18NBase {
 	public final static int		DOC_PROFILES			= 68;
 	public final static int		DOC_CONNECTIONS			= 69;
 	public final static int		DOC_APPLICATIONS		= 70;
-	public final static int		JOB_WIZZARD				= 71;
+	public final static int		JOB_WIZARD				= 71;
 	public final static int		DETAILS					= 72;
 	public final static int		JOB_CHAIN				= 73;
 	public final static int		HTTP_AUTHENTICATION		= 74;
@@ -105,9 +104,11 @@ public class Editor extends I18NBase {
 			window.createSShell();
 			MainWindow.getSShell().open();
 			MainWindow.getSShell().update();
+			window.OpenLastFolder();
 			// window.getSShell().pack(true);
-			// if(args.length > 0)
-			// window.openFile(args[0]);
+//			if (args.length > 0) {
+//				window.openFile(args[0]);
+//			}
 			while (!MainWindow.getSShell().isDisposed()) {
 				if (!display.readAndDispatch())
 					display.sleep();
@@ -117,6 +118,7 @@ public class Editor extends I18NBase {
 		catch (Exception e) {
 			try {
 				logger.fatal("sudden death", e);
+				e.printStackTrace();
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "cause: " + e.toString(), e);
 			}
 			catch (Exception ee) {

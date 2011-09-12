@@ -52,4 +52,6 @@ public interface IContainer {
     public CTabItem getCurrentTab();
     
     public ActionsForm newActions();
+
+	public void setTitleText(String strT);
 }

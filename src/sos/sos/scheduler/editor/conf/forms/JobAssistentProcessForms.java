@@ -340,7 +340,7 @@ public class JobAssistentProcessForms {
 	}
 
 	private void doFinish() {
-		if(assistentType == Editor.JOB_WIZZARD) {															
+		if(assistentType == Editor.JOB_WIZARD) {															
 			jobForm.initForm();	
 		} else {
 			JobsListener listener = new JobsListener(dom, update);

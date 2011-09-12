@@ -402,7 +402,7 @@ public class JobAssistentScriptForms {
 		if(jobname != null)
 			jobname.setText(Utils.getAttributeValue("name",scriptlistener.getParent()));
 
-		if(assistentType == Editor.JOB_WIZZARD) {															
+		if(assistentType == Editor.JOB_WIZARD) {															
 			jobForm.initForm();	
 
 		} else {

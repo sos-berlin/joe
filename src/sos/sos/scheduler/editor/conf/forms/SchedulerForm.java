@@ -26,6 +26,7 @@ import sos.scheduler.editor.app.IEditor;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.TreeMenu;
 import sos.scheduler.editor.app.Utils;
@@ -144,7 +145,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	}
 
 	public void dataChanged(CTabItem tab) {
-		((sos.scheduler.editor.app.TabbedContainer) container).setStatusInTitle(tab);
+		((TabbedContainer) container).setStatusInTitle(tab);
 	}
 
 	public void updateExitCodesCommand() {
@@ -201,7 +202,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 			item.setText(job);
 			TreeData data = (TreeData) item.getData();
 			data.setElement(elem);
-			// listener.treeFillMain(tree, this, SchedulerDom.LIFE_JOB);
+			// listener.treeFillMain(tree, this, SchedulerDom.LIVE_JOB);
 			listener.treeFillJob(item, data.getElement(), true);
 			listener.treeSelection(tree, cMainForm);
 			// listener.treeFillJobs(tree.getParentItem());
@@ -323,9 +324,9 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 			if (dom.isLifeElement()) {
 				int type = -1;
 				if (dom.getRoot().getName().equals("job"))
-					type = SchedulerDom.LIFE_JOB;
+					type = SchedulerDom.LIVE_JOB;
 				if (dom.getRoot().getName().equals("job_chain"))
-					type = SchedulerDom.LIFE_JOB_CHAIN;
+					type = SchedulerDom.LIVE_JOB_CHAIN;
 				if (dom.getRoot().getName().equals("process_class"))
 					type = SchedulerDom.LIFE_PROCESS_CLASS;
 				if (dom.getRoot().getName().equals("lock"))

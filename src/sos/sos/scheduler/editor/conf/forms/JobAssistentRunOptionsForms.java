@@ -290,7 +290,7 @@ public class JobAssistentRunOptionsForms {
 		if(jobname != null)
 			jobname.setText(Utils.getAttributeValue("name",job));
 
-		if(assistentType == Editor.JOB_WIZZARD) {															
+		if(assistentType == Editor.JOB_WIZARD) {															
 			jobForm.initForm();	
 		} else {
 

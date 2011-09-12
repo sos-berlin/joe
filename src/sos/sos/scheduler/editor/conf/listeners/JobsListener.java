@@ -1,14 +1,16 @@
 package sos.scheduler.editor.conf.listeners;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
+
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -320,7 +322,7 @@ public class JobsListener {
 	}
 
 	/**
-	 * Starten der Wizzard für bestehende Job.
+	 * Starten der Wizard für bestehende Job.
 	 * 
 	 * Einstellungen aus einer Jobbeschreibung werden den jobelement hinzugefügt,
 	 * soweit der Jobelement diese Einstellungen nicht hat.

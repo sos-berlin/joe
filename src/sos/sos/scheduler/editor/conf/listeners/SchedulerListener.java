@@ -107,7 +107,7 @@ public class SchedulerListener {
 		Element element = _dom.getRoot();
 		TreeItem item = new TreeItem(tree, SWT.NONE);
 		
-		if (type == SchedulerDom.LIFE_JOB) {
+		if (type == SchedulerDom.LIVE_JOB) {
 			String name = "";
 			if (_dom.getFilename() != null && new java.io.File(_dom.getFilename()).exists()) {
 				name = new java.io.File(_dom.getFilename()).getName();
@@ -134,7 +134,7 @@ public class SchedulerListener {
 			item.setExpanded(true);
 		}
 		else
-			if (type == SchedulerDom.LIFE_JOB_CHAIN) {
+			if (type == SchedulerDom.LIVE_JOB_CHAIN) {
 				String name = "";
 				if (_dom.getFilename() != null && new java.io.File(_dom.getFilename()).exists()) {
 					name = new java.io.File(_dom.getFilename()).getName();

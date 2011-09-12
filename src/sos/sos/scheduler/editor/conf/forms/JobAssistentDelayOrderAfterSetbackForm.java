@@ -426,7 +426,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		modify = false;
 
 		if(apply){
-			if(assistentType == Editor.JOB_WIZZARD) {															
+			if(assistentType == Editor.JOB_WIZARD) {															
 				jobForm.initForm();		
 
 			} else {

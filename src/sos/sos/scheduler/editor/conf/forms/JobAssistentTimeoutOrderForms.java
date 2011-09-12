@@ -348,7 +348,7 @@ public class JobAssistentTimeoutOrderForms {
 		if(jobname != null)
 			jobname.setText(Utils.getAttributeValue("name",joblistener.getJob()));
 
-		if(assistentType == Editor.JOB_WIZZARD) {															
+		if(assistentType == Editor.JOB_WIZARD) {															
 			jobForm.initForm();		
 		} else {
 

@@ -63,16 +63,16 @@ public class SchedulerDom extends DomParser {
 	private static final String[]	SETTINGS_ELEMENTS			= { "mail_on_error", "mail_on_warning", "mail_on_success", "mail_on_process",
 			"mail_on_delay_after_error", "log_mail_to", "log_mail_cc", "log_mail_bcc", "log_level", "history", "history_on_process", "history_with_log" };
 
-	/** life Dateien: Schreibheschützte Dateien*/
+	/** live Dateien: Schreibheschützte Dateien*/
 	private ArrayList<String>		listOfReadOnlyFiles			= null;
 
-	/** life Dateien: Wenn dateiname ungleich der Element Attribute Name ist, dann wird der Dateiname als Element name-Attribut gesetzt*/
+	/** live Dateien: Wenn dateiname ungleich der Element Attribute Name ist, dann wird der Dateiname als Element name-Attribut gesetzt*/
 	private ArrayList<String>		listOfChangeElementNames	= null;
 
 	/** Typen der Hot Folder Dateien */
 	public static final int			DIRECTORY					= 1;
-	public static final int			LIFE_JOB					= 2;
-	public static final int			LIFE_JOB_CHAIN				= 3;
+	public static final int			LIVE_JOB					= 2;
+	public static final int			LIVE_JOB_CHAIN				= 3;
 	public static final int			LIFE_PROCESS_CLASS			= 4;
 	public static final int			LIFE_LOCK					= 5;
 	public static final int			LIFE_ORDER					= 6;
@@ -121,7 +121,7 @@ public class SchedulerDom extends DomParser {
 			initScheduler();
 		}
 		else
-			if (type == LIFE_JOB) {
+			if (type == LIVE_JOB) {
 				putDomOrder("job", JOB_ELEMENTS);
 				putDomOrder("run_time", RUNTIME_ELEMENTS);
 				putDomOrder("params", PARAMS_ELEMENTS);
@@ -130,7 +130,7 @@ public class SchedulerDom extends DomParser {
 				initScheduler(type);
 			}
 			else
-				if (type == LIFE_JOB_CHAIN) {
+				if (type == LIVE_JOB_CHAIN) {
 					// putDomOrder("job_chain", CONFIG_ELEMENTS_DIRECTORY);
 					putDomOrder("job_chain", JOBCHAIN_ELEMENTS);
 					initScheduler(type);
@@ -187,12 +187,12 @@ public class SchedulerDom extends DomParser {
 		else {
 			Element elem = null;
 
-			if (type == LIFE_JOB) {
+			if (type == LIVE_JOB) {
 				elem = new Element("job");
 				elem.setAttribute("name", "job1");
 			}
 			else
-				if (type == LIFE_JOB_CHAIN) {
+				if (type == LIVE_JOB_CHAIN) {
 					elem = new Element("job_chain");
 					elem.setAttribute("name", "job_chain1");
 				}

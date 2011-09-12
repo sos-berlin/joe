@@ -57,9 +57,6 @@ import sos.util.SOSString;
 
 import com.swtdesigner.SWTResourceManager;
 
-/**
- * @author mo
- */
 public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private Button				butDown_1				= null;
 	private Button				butUp_1					= null;
@@ -108,7 +105,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 	private Button				butNewEnvironment		= null;
 	private Button				butoIncludeSave			= null;
 	private boolean				isRemoteConnection		= false;
-	public static String		WIZZARD					= "Wizzard";
+	public static String		WIZARD					= "Wizard";
 
 	/**
 	 * @param parent
@@ -257,7 +254,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		if (includeFile != null && includeFile.trim().length() > 0) {
 			// JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren
 			// JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), new
-			// JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+			// JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? Editor.JOB : Editor.JOB_WIZARD);
 			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), new JobListener(dom,
 					listener.getParent(), listener.get_main()), tParameter, Editor.PARAMETER);
 			paramsForm.showAllImportJobParams(includeFile);
@@ -454,7 +451,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				butImport.setVisible(false);
 				butImport.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 				// butImport.setText("import");
-				butImport.setText(WIZZARD);
+				butImport.setText(WIZARD);
 				butImport.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(new JobListener(dom, listener.getParent(),
@@ -463,7 +460,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 					}
 				});
 				// butImport.setText("Import");
-				butImport.setText(WIZZARD);
+				butImport.setText(WIZARD);
 			}
 			txtIncludeParameterValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 				public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
@@ -741,7 +738,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		butImport = new Button(Group, SWT.NONE);
 		butImport.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		// butImport.setText("import");
-		butImport.setText(WIZZARD);
+		butImport.setText(WIZARD);
 		butImport.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				startWizzard();
@@ -749,7 +746,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		// butImport.setText("Import");
-		butImport.setText(WIZZARD);
+		butImport.setText(WIZARD);
 		bRemove = new Button(Group, SWT.NONE);
 		final GridData gridData_8 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
 		bRemove.setLayoutData(gridData_8);
@@ -1264,7 +1261,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		});
 		butImport_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		// butImport_1.setText("Import");
-		butImport_1.setText(WIZZARD);
+		butImport_1.setText(WIZARD);
 		bRemove = new Button(group, SWT.NONE);
 		bRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		bRemove.setText("Remove");

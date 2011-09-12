@@ -384,7 +384,7 @@ public class JobAssistentTasksForm {
 
 		if(!checkTasks()) return;
 
-		if(assistentType == Editor.JOB_WIZZARD) {															
+		if(assistentType == Editor.JOB_WIZARD) {															
 			jobForm.initForm();		
 		} else {						
 			JobsListener j = new JobsListener(dom, update);

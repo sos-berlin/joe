@@ -331,14 +331,14 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 		if (listener.getInclude() != null && listener.getInclude().trim().length() > 0) {
 			// JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren
 			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), listener,
-					onlyParams ? Editor.JOB : Editor.JOB_WIZZARD);
+					onlyParams ? Editor.JOB : Editor.JOB_WIZARD);
 			if (!onlyParams)
 				paramsForm.setJobForm(this);
 			paramsForm.showAllImportJobParams(listener.getInclude());
 		}
 		else {
 			// Liste aller Jobdokumentation
-			JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, Editor.JOB_WIZZARD);
+			JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(listener, Editor.JOB_WIZARD);
 
 			if (!onlyParams)
 				importJobForms.setJobForm(this);

@@ -75,6 +75,7 @@ public class JobAssistentImportJobParamsForm {
 	private static final String										conMsgKeyASSISTENT_JOBPARAMETER_EXIST		= "assistent.jobparameter.exist";
 	private static final String										conMsgKeyMAIN_LISTENER_APPLY_CHANGES		= "MainListener.apply_changes";
 	private static final String										conMsgKeyASSISTENT_JOBPARAMETER_REQUIRED	= "assistent.jobparameter.required";
+	private static final String										conKeyPARAMETER_DESCRIPTION_				= "parameter_description_";
 	private static final String										conKeyPARAMETER_DESCRIPTION_EN				= "parameter_description_en";
 	private static final String										conKeyPARAMETER_DESCRIPTION_DE				= "parameter_description_de";
 	public static final String										conSystemPropertyUSER_DIR					= "user.dir";
@@ -153,7 +154,7 @@ public class JobAssistentImportJobParamsForm {
 	}
 
 	public ArrayList<HashMap<String, Object>> parseDocuments(String xmlFilename, String type) {
-		// Wizzard ohne Jobbeschreibung starten
+		// Wizard ohne Jobbeschreibung starten
 		if (xmlFilename == null || xmlFilename.trim().length() == 0)
 			return new ArrayList<HashMap<String, Object>>();
 		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData();
@@ -223,7 +224,7 @@ public class JobAssistentImportJobParamsForm {
 					transformer.transform(source, result);
 					String strTempXML = bout.toString();
 					logger.debug(strTempXML);
-					h.put("description_" + strLanguage, strTempXML);
+					h.put(conKeyPARAMETER_DESCRIPTION_ + strLanguage, strTempXML);
 				}
 				listOfParams1.add(h);
 			}
@@ -363,7 +364,7 @@ public class JobAssistentImportJobParamsForm {
 						paramListener.fillParams(tParameter);
 					}
 					else
-						if (assistentType == Editor.JOB || assistentType == Editor.JOB_WIZZARD) {
+						if (assistentType == Editor.JOB || assistentType == Editor.JOB_WIZARD) {
 							if (jobForm != null)
 								jobForm.initForm();
 							if (jobDocForm != null)
@@ -503,8 +504,8 @@ public class JobAssistentImportJobParamsForm {
 			tableDescParameters.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					if (tableDescParameters.getSelectionCount() > -1) {
-						txtDescription.setText((tableDescParameters.getSelection()[0].getData("parameter_description_" + Options.getLanguage()) != null ? tableDescParameters.getSelection()[0].getData(
-								"parameter_description_" + Options.getLanguage())
+						txtDescription.setText((tableDescParameters.getSelection()[0].getData(conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage()) != null ? tableDescParameters.getSelection()[0].getData(
+								conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage())
 								.toString()
 								: ""));
 					}
@@ -630,8 +631,8 @@ public class JobAssistentImportJobParamsForm {
 					if (tblSelectedParams.getSelectionCount() > -1) {
 						txtName.setText(tblSelectedParams.getSelection()[0].getText(0));
 						txtValue.setText(tblSelectedParams.getSelection()[0].getText(1));
-						txtDescription.setText((tblSelectedParams.getSelection()[0].getData("parameter_description_" + Options.getLanguage()) != null ? tblSelectedParams.getSelection()[0].getData(
-								"parameter_description_" + Options.getLanguage())
+						txtDescription.setText((tblSelectedParams.getSelection()[0].getData(conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage()) != null ? tblSelectedParams.getSelection()[0].getData(
+								conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage())
 								.toString()
 								: ""));
 						// txtName.setFocus();
@@ -656,7 +657,7 @@ public class JobAssistentImportJobParamsForm {
 			txtDescription.setLayoutData(gridData_2);
 			txtDescription.setBackground(SWTResourceManager.getColor(247, 247, 247));
 			// txtDescription.setEditable(false);
-			// der Wizzard soll ohne Jobbeschreibung laufen
+			// der Wizard soll ohne Jobbeschreibung laufen
 			if (!xmlFilename.equals("..")) {
 				listOfParams = this.parseDocuments(xmlFilename, "");
 			}
@@ -866,8 +867,8 @@ public class JobAssistentImportJobParamsForm {
 	}
 
 	/**
-	 * Der Wizzard wurde für ein bestehende Job gestartet. 
-	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
+	 * Der Wizard wurde für ein bestehende Job gestartet. 
+	 * Beim verlassen der Wizard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
 	public void setBackUpJob(Element backUpJob, JobMainForm jobForm_) {
@@ -952,7 +953,7 @@ public class JobAssistentImportJobParamsForm {
 	}
 
 	// Details hat einen anderen Aufbau der Parameter Description.
-	// Beim generieren der Parameter mit Wizzard müssen die Parameterdescriptchen anders aufgebaut werden.
+	// Beim generieren der Parameter mit Wizard müssen die Parameterdescriptchen anders aufgebaut werden.
 	public void setDetailsRefresh(Text refreshDetailsText_) {
 		refreshDetailsText = refreshDetailsText_;
 	}

@@ -23,140 +23,127 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.OrdersListener;
+
 //import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
 public class OrdersForm extends Composite implements IUpdateLanguage {
 
-    private OrdersListener    listener;
+	private OrdersListener	listener;
 
-    //private SchedulerListener mainListener;
+	// private SchedulerListener mainListener;
 
-    private Group             ordersGroup  = null;
+	private Group			ordersGroup		= null;
+	private static Table	table			= null;
+	private Button			bNewOrder		= null;
+	private Button			bRemoveOrder	= null;
+	private Label			label			= null;
+	private SchedulerDom	_dom			= null;
 
-    private static Table      table        = null;
+	// public OrdersForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update, SchedulerListener mainListener) {
+	public OrdersForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) {
+		super(parent, style);
+		_dom = dom;
+		// this.mainListener = mainListener;
+		listener = new OrdersListener(dom, update);
+		initialize();
+		setToolTipText();
+		listener.fillTable(table);
 
-    private Button            bNewOrder    = null;
+	}
 
-    private Button            bRemoveOrder = null;
+	private void initialize() {
+		this.setLayout(new FillLayout());
+		createGroup();
+		setSize(new org.eclipse.swt.graphics.Point(656, 400));
+	}
 
-    private Label             label        = null;
-    
-    private SchedulerDom      _dom          = null;
+	private void createGroup() {
+		GridData gridData4 = new org.eclipse.swt.layout.GridData();
+		gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+		gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
+		GridData gridData1 = new org.eclipse.swt.layout.GridData();
+		gridData1.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+		gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
+		GridData gridData = new org.eclipse.swt.layout.GridData();
+		gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+		gridData.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
+		ordersGroup = new Group(this, SWT.NONE);
+		ordersGroup.setText("Orders");
+		ordersGroup.setLayout(gridLayout);
+		createTable();
+		bNewOrder = new Button(ordersGroup, SWT.NONE);
+		bNewOrder.setText("&New Order");
+		bNewOrder.setLayoutData(gridData);
+		getShell().setDefaultButton(bNewOrder);
 
-
-    //public OrdersForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update, SchedulerListener mainListener) {
-    public OrdersForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) {
-        super(parent, style);
-        _dom = dom;
-        //this.mainListener = mainListener;
-        listener = new OrdersListener(dom, update);
-        initialize();
-        setToolTipText();
-        listener.fillTable(table);
-        
-    }
-
-
-    private void initialize() {
-        this.setLayout(new FillLayout());
-        createGroup();
-        setSize(new org.eclipse.swt.graphics.Point(656, 400));
-    }
-
-
-    /**
-     * This method initializes group
-     */
-    private void createGroup() {
-        GridData gridData4 = new org.eclipse.swt.layout.GridData();
-        gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        GridData gridData1 = new org.eclipse.swt.layout.GridData();
-        gridData1.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-        GridData gridData = new org.eclipse.swt.layout.GridData();
-        gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        gridData.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-        GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 2;
-        ordersGroup = new Group(this, SWT.NONE);
-        ordersGroup.setText("Orders");
-        ordersGroup.setLayout(gridLayout);
-        createTable();
-        bNewOrder = new Button(ordersGroup, SWT.NONE);
-        bNewOrder.setText("&New Order");
-        bNewOrder.setLayoutData(gridData);
-        getShell().setDefaultButton(bNewOrder);
-
-        label = new Label(ordersGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label.setText("Label");
-        label.setLayoutData(gridData4);
-        bNewOrder.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                listener.newCommands(table);
-                bRemoveOrder.setEnabled(true);
-            }
-        });
-        bRemoveOrder = new Button(ordersGroup, SWT.NONE);
-        bRemoveOrder.setText("Remove Order");
-        bRemoveOrder.setEnabled(false);
-        bRemoveOrder.setLayoutData(gridData1);
-        bRemoveOrder.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-            	int c = MainWindow.message(getShell(), "Do you want remove the order?", SWT.ICON_QUESTION | SWT.YES | SWT.NO );
-				if(c != SWT.YES)
+		label = new Label(ordersGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
+		label.setText("Label");
+		label.setLayoutData(gridData4);
+		bNewOrder.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				listener.newCommands(table);
+				bRemoveOrder.setEnabled(true);
+			}
+		});
+		bRemoveOrder = new Button(ordersGroup, SWT.NONE);
+		bRemoveOrder.setText("Remove Order");
+		bRemoveOrder.setEnabled(false);
+		bRemoveOrder.setLayoutData(gridData1);
+		bRemoveOrder.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				int c = MainWindow.message(getShell(), "Do you want to remove the order?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+				if (c != SWT.YES)
 					return;
-				
-                bRemoveOrder.setEnabled(listener.deleteCommands(table));
-            }
-        });
-    }
 
+				bRemoveOrder.setEnabled(listener.deleteCommands(table));
+			}
+		});
+	}
 
-    /**
-     * This method initializes table
-     */
-    private void createTable() {
-        GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
-        gridData2.widthHint = 204;
-        table = new Table(ordersGroup, SWT.BORDER | SWT.FULL_SELECTION);
-        table.addMouseListener(new MouseAdapter() {
-        	public void mouseDoubleClick(final MouseEvent e) {
-        		if(table.getSelectionCount() > 0)
+	/**
+	 * This method initializes table
+	 */
+	private void createTable() {
+		GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
+		gridData2.widthHint = 204;
+		table = new Table(ordersGroup, SWT.BORDER | SWT.FULL_SELECTION);
+		table.addMouseListener(new MouseAdapter() {
+			public void mouseDoubleClick(final MouseEvent e) {
+				if (table.getSelectionCount() > 0)
 					ContextMenu.goTo(table.getSelection()[0].getText(0), _dom, Editor.ORDER);
-        	}
-        });
-        table.setHeaderVisible(true);
-        table.setLayoutData(gridData2);
-        table.setLinesVisible(true);
-        TableColumn tableColumn = new TableColumn(table, SWT.NONE);
-        tableColumn.setWidth(240);
-        tableColumn.setText("Order ID");
-        table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-            
-            	boolean enabled = true;
-            	if(table.getSelectionIndex() > -1) {
-            		Element currElem  = (Element)table.getSelection()[0].getData();
-            		if(currElem != null && !Utils.isElementEnabled("commands", _dom,  currElem)) {
-            			enabled = false;	
-            		}
-            		bRemoveOrder.setEnabled(enabled);	
-            	}
-                
-            }
-        });
+			}
+		});
+		table.setHeaderVisible(true);
+		table.setLayoutData(gridData2);
+		table.setLinesVisible(true);
+		TableColumn tableColumn = new TableColumn(table, SWT.NONE);
+		tableColumn.setWidth(240);
+		tableColumn.setText("Order Name/-ID");
+		table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 
-    }
+				boolean enabled = true;
+				if (table.getSelectionIndex() > -1) {
+					Element currElem = (Element) table.getSelection()[0].getData();
+					if (currElem != null && !Utils.isElementEnabled("commands", _dom, currElem)) {
+						enabled = false;
+					}
+					bRemoveOrder.setEnabled(enabled);
+				}
 
+			}
+		});
 
-    public void setToolTipText() {
-        bNewOrder.setToolTipText(Messages.getTooltip("orders.btn_add_new"));
-        bRemoveOrder.setToolTipText(Messages.getTooltip("orders.btn_remove"));
-        table.setToolTipText(Messages.getTooltip("orders.table"));
+	}
 
-    }
+	public void setToolTipText() {
+		bNewOrder.setToolTipText(Messages.getTooltip("orders.btn_add_new"));
+		bRemoveOrder.setToolTipText(Messages.getTooltip("orders.btn_remove"));
+		table.setToolTipText(Messages.getTooltip("orders.table"));
 
+	}
 
 	public static Table getTable() {
 		return table;

@@ -35,12 +35,25 @@ public class Options extends I18NBase {
 	private static String[]		jobTitleList					= null;
 	private static HashMap		holidaysDescription				= null;
 	public static String conJOEGreeting = ""; 
+	private static String strLastFolderName = "";
+	
 	private Options() {
 	}
 
+	public static String getLastFolderName () {
+		return _properties.getProperty("LastFolderName");
+	}
+	public static void setLastFolderName (final String pstrLastFolderName) {
+		setProperty("LastFolderName", pstrLastFolderName);
+	}
 	public static String getDefaultOptionFilename() {
+		getProperties();
 		// return getDefault("editor.options.file").replaceAll("\\{scheduler_home\\}", getSchedulerHome());
-		return getDefault(conPropertyEDITOR_OPTIONS_FILE).replaceAll("\\{scheduler_data\\}", getSchedulerData().replaceAll("\\\\", "/"));
+		String strSD = getSchedulerData().replaceAll("\\\\", "/");
+		String strKey = conPropertyEDITOR_OPTIONS_FILE;
+		String strF = getDefault(strKey);
+		String strRet = strF.replaceAll("\\{scheduler_data\\}", strSD);
+		return strRet;
 	}
 
 	private static void getProperties() {
@@ -120,10 +133,17 @@ public class Options extends I18NBase {
 
 	public static String getLanguage() {
 		getProperties();
-		return _properties.getProperty(conPropertyEDITOR_LANGUAGE);
+		String strT = _properties.getProperty(conPropertyEDITOR_LANGUAGE);
+		if (strT == null || strT.trim().length() <= 0) {
+			strT = "en";
+		}
+		return strT;
 	}
 
 	public static String getDefault(String key) {
+		if (_defaults == null) {
+			_defaults = new Properties();
+		}
 		return _defaults.getProperty(key);
 	}
 

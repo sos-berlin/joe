@@ -144,7 +144,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 	}
 
 	public PeriodForm(Composite parent, int style, boolean assistent_) {		
-		this(parent, style, Editor.JOB_WIZZARD);
+		this(parent, style, Editor.JOB_WIZARD);
 		assistent = assistent_;
 	}
 
