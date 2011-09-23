@@ -185,8 +185,8 @@ public class MainWindow extends I18NBase {
 		open.setAccelerator(SWT.CTRL | 'O');
 		//
 		MenuItem mNew = new MenuItem(mFile, SWT.CASCADE);
-		mNew.setText(getMenuText(this.getMsg(MENU_New), "N"));
-		mNew.setAccelerator(SWT.CTRL | 'N');
+		mNew.setText(getMenuText(this.getMsg(MENU_New), ""));
+		//mNew.setAccelerator(SWT.CTRL | 'N');
 		Menu pmNew = new Menu(mNew);
 		MenuItem pNew = new MenuItem(pmNew, SWT.PUSH);
 		pNew.setText(getMenuText(this.getMsg(MENU_Configuration), "I"));
@@ -215,7 +215,7 @@ public class MainWindow extends I18NBase {
 		});
 		// new event handler
 		MenuItem pNewActions = new MenuItem(pmNew, SWT.PUSH);
-		pNewActions.setText(getMenuText(this.getMsg(MENU_New), "X"));
+		pNewActions.setText(getMenuText(this.getMsg(MENU_EventHandler), "X"));
 		pNewActions.setAccelerator(SWT.CTRL | 'X');
 		pNewActions.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -231,8 +231,8 @@ public class MainWindow extends I18NBase {
 			public void widgetSelected(final SelectionEvent e) {
 			}
 		});
-		mpLife.setText(getMenuText(this.getMsg(MENU_HotFolderObject), "L"));
-		mpLife.setAccelerator(SWT.CTRL | 'L');
+		mpLife.setText(getMenuText(this.getMsg(MENU_HotFolderObject), ""));
+		//mpLife.setAccelerator(SWT.CTRL | 'L');
 		Menu mLife = new Menu(mpLife);
 		MenuItem mLifeJob = new MenuItem(mLife, SWT.PUSH);
 		mLifeJob.addSelectionListener(new SelectionAdapter() {
@@ -288,8 +288,8 @@ public class MainWindow extends I18NBase {
 					setSaveStatus();
 			}
 		});
-		mLifeSchedule.setText("Schedule      \tCtrl+K");
-		mLifeSchedule.setAccelerator(SWT.CTRL | 'K');
+		mLifeSchedule.setText("Schedule      \tCtrl+C");
+		mLifeSchedule.setAccelerator(SWT.CTRL | 'C');
 		new MenuItem(mFile, SWT.SEPARATOR);
 		MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
 		openDir.setText("Open Hot Folder               \tCtrl+D");
@@ -592,7 +592,7 @@ public class MainWindow extends I18NBase {
 		submenuItem3.setMenu(submenu1);
 		submenu = new Menu(submenuItem);
 		MenuItem submenuItem1 = new MenuItem(submenu, SWT.CASCADE);
-		submenuItem1.setText(getMenuText(this.getMsg(MENU_Help), "") + " Language");
+		submenuItem1.setText("Help Language");
 		menuLanguages = new Menu(submenuItem1);
 		// create languages menu
 		listener.setLanguages(menuLanguages);
@@ -1922,7 +1922,7 @@ public class MainWindow extends I18NBase {
 			locale = "en_UK", //
 			explanation = "Reset Dialog" //
 			), //
-			@I18NMessage(value = "Programm neu initialisieren", //
+			@I18NMessage(value = "Einstellung zurücksetzen", //
 			locale = "de", //
 			explanation = "JOE wird neu initialisiert. Die Einstellungen werden neu geladen" //
 			), //
@@ -1966,5 +1966,7 @@ public class MainWindow extends I18NBase {
 	 * \brief Order
 	 */
 	public static final String	MENU_Order				= "MENU_Order";
+	
+	
 
 }
