@@ -65,8 +65,7 @@ public class ProcessClassesListener {
 					name = CATCHALL;
 				item.setText(0, name);
 				item.setText(1, "" + Utils.getIntValue("max_processes", e));
-				item.setText(2, Utils.getAttributeValue("spooler_id", e));
-				item.setText(3, Utils.getAttributeValue("replace", e));
+				item.setText(2, Utils.getAttributeValue("remote_scheduler", e));
 				if(!Utils.isElementEnabled("process_class", _dom, e)) {
 					item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 				} 
@@ -112,8 +111,8 @@ public class ProcessClassesListener {
 		return port.trim();
 	}
 
-	public int getMaxProcesses() {
-		return Utils.getIntValue("max_processes", _class);
+	public String getMaxProcesses() {
+		return Utils.getAttributeValue("max_processes", _class);
 	}
 
 

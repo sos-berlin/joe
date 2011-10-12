@@ -376,12 +376,8 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 		 tableColumn1.setWidth(91);
 		 tableColumn1.setText("Max Processes");
 		 TableColumn tableColumn2 = new TableColumn(table, SWT.NONE);
-		 tableColumn2.setWidth(85);
-		 tableColumn2.setText("Scheduler ID");
-
-		 final TableColumn tableColumn3 = new TableColumn(table, SWT.NONE);
-		 tableColumn3.setWidth(100);
-		 tableColumn3.setText("Replace");
+		 tableColumn2.setWidth(355);
+		 tableColumn2.setText("Host");
 	 }
 
 
@@ -397,6 +393,9 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 			 _continue = false;
 
 		 if(_continue)
+			 try {
+				 Integer.parseInt(tMaxProcesses.getText());
+			 }catch (NumberFormatException e) {tMaxProcesses.setText("1");}
 			 listener.applyProcessClass(tProcessClass.getText(), tRemoteHost.getText(),tRemotePort.getText(),Integer.parseInt(tMaxProcesses.getText()));
 
 		 listener.fillTable(table);
@@ -421,14 +420,14 @@ public class ProcessClassesForm extends Composite implements IUnsaved, IUpdateLa
 			 tProcessClass.setText(listener.getProcessClass());
 			 tRemoteHost.setText(listener.getRemoteHost());
 			 tRemotePort.setText(listener.getRemotePort());
-			 tMaxProcesses.setSelection(listener.getMaxProcesses());
+			 tMaxProcesses.setText(String.valueOf(listener.getMaxProcesses()));
 			 tProcessClass.setFocus();
 
 		 } else {
 			 tProcessClass.setText("");
 			 tRemoteHost.setText("");
 			 tRemotePort.setText("");
-			 tMaxProcesses.setSelection(0);
+			 tMaxProcesses.setText("");
 		 }
 		 
 		 bApply.setEnabled(false);
