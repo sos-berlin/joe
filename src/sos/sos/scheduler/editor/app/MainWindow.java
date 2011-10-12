@@ -215,8 +215,8 @@ public class MainWindow extends I18NBase {
 		});
 		// new event handler
 		MenuItem pNewActions = new MenuItem(pmNew, SWT.PUSH);
-		pNewActions.setText(getMenuText(this.getMsg(MENU_EventHandler), "X"));
-		pNewActions.setAccelerator(SWT.CTRL | 'X');
+		pNewActions.setText(getMenuText(this.getMsg(MENU_EventHandler), "H"));
+		pNewActions.setAccelerator(SWT.CTRL | 'H');
 		pNewActions.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.newActions() != null)
@@ -288,8 +288,8 @@ public class MainWindow extends I18NBase {
 					setSaveStatus();
 			}
 		});
-		mLifeSchedule.setText("Schedule      \tCtrl+C");
-		mLifeSchedule.setAccelerator(SWT.CTRL | 'C');
+		mLifeSchedule.setText("Schedule      \tCtrl+U");
+		mLifeSchedule.setAccelerator(SWT.CTRL | 'U');
 		new MenuItem(mFile, SWT.SEPARATOR);
 		MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
 		openDir.setText("Open Hot Folder               \tCtrl+D");
