@@ -393,52 +393,58 @@ public class Options extends I18NBase {
 		}
 	}
 
-	public static String getSchedulerHome() {
-		if (System.getProperty("SCHEDULER_HOME") != null) {
-			return System.getProperty("SCHEDULER_HOME");
+	private static String getProp (final String pstrPropertyName, final String pstrDefaultValue) {
+		String strT = System.getProperty(pstrPropertyName);
+		if (strT != null && strT.length() > 0) {
+			if (strT.startsWith("%") && strT.endsWith("%")) {
+				String strV = strT.substring(1, strT.length() - 1);
+				String strW = System.getenv(strV);
+				if (strW != null) {
+					strT = strW;
+				}else {
+					strT = pstrDefaultValue;
+				}
+			}
 		}
 		else {
-			return "";
+			strT = pstrDefaultValue;
 		}
+		
+		return strT;
+	}
+	public static String getSchedulerHome() {
+			return getProp("SCHEDULER_HOME", "");
 	}
 
 	public static String getSchedulerData() {
-		if (System.getProperty("SCHEDULER_DATA") != null) {
-			return System.getProperty("SCHEDULER_DATA");
-		}
-		else {
-			return getSchedulerHome();
-		}
+		return getProp("SCHEDULER_DATA", getSchedulerHome());
 	}
 
 	public static String getSchedulerNormalizedHome() {
 		String home = Options.getSchedulerHome();
-		home = home.endsWith("/") || home.endsWith("\\") ? home : home + "/";
+		home  new File (home).getAbsolutePath() + "/";
 		home = home.replaceAll("\\\\", "/");
 		return home;
 	}
 
 	public static String getSchedulerNormalizedData() {
 		String data = Options.getSchedulerData();
-		data = data.endsWith("/") || data.endsWith("\\") ? data : data + "/";
+		data = new File (data).getAbsolutePath() + "/";
 		data = data.replaceAll("\\\\", "/");
 		return data;
 	}
 
 	public static String getSchedulerHotFolder() {
-		if (System.getProperty("SCHEDULER_HOT_FOLDER") != null && System.getProperty("SCHEDULER_HOT_FOLDER").length() > 0) {
-			return System.getProperty("SCHEDULER_HOT_FOLDER");
-		}
-		else {
-			String sdata = getSchedulerData();
-			sdata = sdata.endsWith("/") || sdata.endsWith("\\") ? sdata : sdata + "/";
-			return sdata + "config/live/";
-		}
+		String sdata = getSchedulerData();
+		sdata = sdata.endsWith("/") || sdata.endsWith("\\") ? sdata : sdata + "/";
+		String strData = sdata + "config/live/";		
+		return getProp("SCHEDULER_HOT_FOLDER", strData);
+
 	}
 
 	public static String getSchedulerNormalizedHotFolder() {
 		String sdata = Options.getSchedulerHotFolder();
-		sdata = sdata.endsWith("/") || sdata.endsWith("\\") ? sdata : sdata + "/";
+		sdata = new File (sdata).getAbsolutePath() + "/";
 		sdata = sdata.replaceAll("\\\\", "/");
 		return sdata;
 	}
