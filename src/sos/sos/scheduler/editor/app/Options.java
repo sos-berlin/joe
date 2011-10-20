@@ -422,7 +422,7 @@ public class Options extends I18NBase {
 
 	public static String getSchedulerNormalizedHome() {
 		String home = Options.getSchedulerHome();
-		home  new File (home).getAbsolutePath() + "/";
+		home = new File (home).getAbsolutePath() + "/";
 		home = home.replaceAll("\\\\", "/");
 		return home;
 	}
