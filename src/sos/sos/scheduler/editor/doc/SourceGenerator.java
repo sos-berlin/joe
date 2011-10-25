@@ -58,8 +58,6 @@ import com.sos.VirtualFileSystem.FTP.FTPIllegalReplyException;
 public class SourceGenerator {
 
  	private final String	conClassName	= "SourceGenerator";
-
-
  
 	private final String								conXsltParmExtendsClassName		= "ExtendsClassName";
 	private final String								conXsltParmClassNameExtension	= "ClassNameExtension";
@@ -68,36 +66,49 @@ public class SourceGenerator {
 	private final String								conXsltParmClassName			= "ClassName";
 	private final String								conXsltParmWorkerClassName		= "WorkerClassName";
 	private final String								conJavaFilenameExtension		= ".java";
-    private  		HashMap pobjHshMap;
+	private File jobdocFile;
+	private File outputDir;
+	private String packageName;
+	private String defaultLang = "en";
+	private boolean standAlone=true;
+	
+    private HashMap pobjHshMap;
 
 	
 	private static final Logger	logger			= Logger.getLogger(SourceGenerator.class);
+	
 	private void SourceGenerator() {
 
-		//
-	}
+ 	}
 
 
 
-protected void execute( )  {
+public void execute( )  {
 	logger.setLevel(Level.DEBUG);
 	try {
- 		String strXMLFileName = "c:\\temp\\job.xml";
+ 		//String strXMLFileName = "c:\\temp\\job.xml";
+ 		String strXMLFileName = jobdocFile.getCanonicalPath();
+
 		JSXMLFile objXMLFile = new JSXMLFile(strXMLFileName);
 		objXMLFile.MustExist();
 		strXMLFileName = strXMLFileName.replaceAll("\\\\", "/");
-		String strA[] = strXMLFileName.split("/"); //$NON-NLS-1$
-		String strWorkerClassName = strA[strA.length - 1];
-		strWorkerClassName.replaceAll("\\..*$","");
+ 		String strWorkerClassName = jobdocFile.getName();
+ 		strWorkerClassName = strWorkerClassName.replaceAll("\\..*$","");
 	 
  		File objXSLFile = new File("xsl/JSJobDoc2JSOptionSuperClass.xsl");
  		pobjHshMap = new HashMap();
 	 
- 		setXSLTParameter("package_name", "package");
- 		setXSLTParameter("XSLTFileName", objXSLFile.getAbsolutePath());
+ 		setXSLTParameter("package_name", packageName);
+ 		setXSLTParameter("XSLTFilename", objXSLFile.getAbsolutePath());
  		                   
- 		setXSLTParameter("default_lang", "en");
- 		setXSLTParameter("standalone", "false");
+ 		setXSLTParameter("default_lang", defaultLang);
+ 		                  		
+ 		if (standAlone) {
+ 		    setXSLTParameter("standalone", "true");
+ 		}else{
+ 	 		setXSLTParameter("standalone", "false");
+ 		 }
+ 		
 
 		JSToolBox objTools = new JSToolBox();
 		JSDataElementDate objDate = new JSDataElementDate(objTools.Now());
@@ -118,24 +129,25 @@ protected void execute( )  {
  
 
  		objXMLFile.setParameters(pobjHshMap);
- 		doTransform( objXSLFile, objXMLFile);
+ 		doTransform( objXSLFile, objXMLFile,new File(outputDir,strWorkerClassName+ strClassNameExtension+conJavaFilenameExtension));
  		
-	/*	 
-		CreateTransformer("xsl/JSJobDoc2JSOptionClass.xsl"); //$NON-NLS-1$
 
-		 
-		setXSLTParameter(conXsltParmExtendsClassName, strWorkerClassName + strClassNameExtension);
+ 		File objXSLOptionClassFile = new File("xsl/JSJobDoc2JSOptionClass.xsl"); //$NON-NLS-1$
+ 		setXSLTParameter("XSLTFilename", objXSLOptionClassFile.getAbsolutePath());
+ 		                  
+ 		setXSLTParameter(conXsltParmExtendsClassName, strWorkerClassName + strClassNameExtension);
 		strClassNameExtension = "Options"; //$NON-NLS-1$
 		setXSLTParameter(conXsltParmClassNameExtension, strClassNameExtension);
 
 		setXSLTParameter(conXsltParmClassName, strWorkerClassName + strClassNameExtension);
-		config.setTargetFile(strWorkerClassName + strClassNameExtension + conJavaFilenameExtension);
 
-		doTransform(monitor, objXMLFile);
+		objXMLFile.setParameters(pobjHshMap);
+		doTransform(objXSLOptionClassFile, objXMLFile,new File (outputDir,strWorkerClassName + strClassNameExtension + conJavaFilenameExtension));
 
 		 
-		CreateTransformer("xsl/JSJobDoc2JSAdapterClass.xsl"); //$NON-NLS-1$
-
+	 
+ 		File objXSLJSAdapterClassFile = new File("xsl/JSJobDoc2JSAdapterClass.xsl"); //$NON-NLS-1$
+ 		setXSLTParameter("XSLTFilename", objXSLJSAdapterClassFile.getAbsolutePath());
 		setXSLTParameter(conXsltParmExtendsClassName, "JobSchedulerJob"); //$NON-NLS-1$
 		strClassNameExtension = "JSAdapterClass"; //$NON-NLS-1$
 		setXSLTParameter(conXsltParmClassNameExtension, strClassNameExtension);
@@ -144,13 +156,14 @@ protected void execute( )  {
 		setXSLTParameter(conXsltParmClassName, strClassName);
 		setXSLTParameter(conXsltParmWorkerClassName, strWorkerClassName);
 		setXSLTParameter(conXsltParmSourceType, "JSJavaApiJob"); //$NON-NLS-1$
-		config.setTargetFile(strClassName + conJavaFilenameExtension);
-
-		doTransform(monitor, objXMLFile);
+ 
+ 		objXMLFile.setParameters(pobjHshMap);
+        doTransform(objXSLJSAdapterClassFile, objXMLFile,new File (outputDir,strClassName + conJavaFilenameExtension));
 
 		 
-		CreateTransformer("xsl/JSJobDoc2JSWorkerClass.xsl");
-
+ 
+ 		File objXSLJSWorkerClassFile = new File("xsl/JSJobDoc2JSWorkerClass.xsl"); //$NON-NLS-1$
+ 		setXSLTParameter("XSLTFilename", objXSLJSWorkerClassFile.getAbsolutePath());
 		setXSLTParameter(conXsltParmExtendsClassName, "JSToolBox");
 		strClassNameExtension = "";
 		setXSLTParameter(conXsltParmClassNameExtension, strClassNameExtension);
@@ -158,12 +171,13 @@ protected void execute( )  {
 		strClassName = strWorkerClassName + strClassNameExtension;
 		setXSLTParameter(conXsltParmClassName, strClassName);
 		setXSLTParameter(conXsltParmWorkerClassName, strWorkerClassName);
-		config.setTargetFile(strClassName.trim() + conJavaFilenameExtension);
 
-		doTransform(monitor, objXMLFile);
+ 		objXMLFile.setParameters(pobjHshMap);
+        doTransform(objXSLJSWorkerClassFile, objXMLFile,new File (outputDir,strClassName.trim() + conJavaFilenameExtension));
 
 		 
-		CreateTransformer("xsl/JSJobDoc2JSMainClass.xsl");
+ 		File objXSLJSMainClassFile = new File("xsl/JSJobDoc2JSMainClass.xsl"); //$NON-NLS-1$
+ 		setXSLTParameter("XSLTFilename", objXSLJSMainClassFile.getAbsolutePath());
 
 		setXSLTParameter(conXsltParmExtendsClassName, "JSToolBox");
 		strClassNameExtension = "Main";
@@ -173,12 +187,13 @@ protected void execute( )  {
 		setXSLTParameter(conXsltParmClassName, strClassName.trim());
 		setXSLTParameter(conXsltParmWorkerClassName, strWorkerClassName.trim());
 		setXSLTParameter(conXsltParmSourceType, "Main");
-		config.setTargetFile(strClassName.trim() + conJavaFilenameExtension);
-
-		doTransform(monitor, objXMLFile);
+		
+ 		objXMLFile.setParameters(pobjHshMap);
+        doTransform(objXSLJSMainClassFile, objXMLFile,new File (outputDir,strClassName.trim() + conJavaFilenameExtension));
 
 		 
-		CreateTransformer("xsl/JSJobDoc2JSJUnitClass.xsl");
+ 		File objXSLJSJUnitClassFile = new File("xsl/JSJobDoc2JSJUnitClass.xsl"); //$NON-NLS-1$
+ 		setXSLTParameter("XSLTFilename", objXSLJSJUnitClassFile.getAbsolutePath());
 
 		setXSLTParameter(conXsltParmExtendsClassName, "JSToolBox");
 		strClassNameExtension = "JUnitTest";
@@ -188,12 +203,13 @@ protected void execute( )  {
 		setXSLTParameter(conXsltParmClassName, strClassName);
 		setXSLTParameter(conXsltParmWorkerClassName, strWorkerClassName);
 		setXSLTParameter(conXsltParmSourceType, "Junit");
-		config.setTargetFile(strClassName + conJavaFilenameExtension);
 
-		doTransform(monitor, objXMLFile);
+ 		objXMLFile.setParameters(pobjHshMap);
+        doTransform(objXSLJSJUnitClassFile, objXMLFile,new File (outputDir,strClassName + conJavaFilenameExtension));
 
 		 
-		CreateTransformer("xsl/JSJobDoc2JSJUnitOptionSuperClass.xsl");
+  		File objXSLJSJUnitOptionSuperClassFile = new File("xsl/JSJobDoc2JSJUnitOptionSuperClass.xsl"); //$NON-NLS-1$
+ 		setXSLTParameter("XSLTFilename", objXSLJSJUnitOptionSuperClassFile.getAbsolutePath());
 
 		setXSLTParameter(conXsltParmExtendsClassName, "JSToolBox");
 		strClassNameExtension = "OptionsJUnitTest";
@@ -203,16 +219,13 @@ protected void execute( )  {
 		setXSLTParameter(conXsltParmClassName, strClassName);
 		setXSLTParameter(conXsltParmWorkerClassName, strWorkerClassName);
 		setXSLTParameter(conXsltParmSourceType, "Junit");
-		config.setTargetFile(strClassName + conJavaFilenameExtension);
 
-		doTransform(monitor, objXMLFile);
-		*/
-
+ 		objXMLFile.setParameters(pobjHshMap);
+        doTransform(objXSLJSJUnitOptionSuperClassFile, objXMLFile,new File (outputDir,strClassName + conJavaFilenameExtension));
+ 
 	}
 	catch (Exception e) {
-		e.printStackTrace(System.err);
-		// StatusManager.getManager().han
-		
+		e.printStackTrace(System.err);		
 
 	}
 }
@@ -227,16 +240,14 @@ private void setXSLTParameter(final String strVarName, final String strVarValue)
 }
 
 
- 
 
-private void doTransform(File objXSLFile,final JSXMLFile objXMLFile) throws Exception {
-	//File objOutFile = File.createTempFile("SOS", ".tmp");
-	File objOutFile = new File("c:\\temp","out.txt");
+private void doTransform(File objXSLFile,final JSXMLFile objXMLFile, File objOutFile) throws Exception {
+
+	//File objOutFile = new File("c:\\temp","out.txt");
 	//objOutFile.deleteOnExit();
 	 
 
-	logger.debug("TempFileName = " + objOutFile.getAbsolutePath()); //$NON-NLS-1$
-	logger.debug("TargetFileName = " + objOutFile.getAbsolutePath()); //$NON-NLS-1$
+ 	logger.debug("TargetFileName = " + objOutFile.getAbsolutePath()); //$NON-NLS-1$
 
 	objXMLFile.Transform( objXSLFile,objOutFile);
 	  
@@ -285,9 +296,44 @@ private String getContent(final String strFileName) {
 	return strT;
 }  
 
+public void setJobdocFile(File jobdocFile) {
+	this.jobdocFile = jobdocFile;
+}
+
+
+
+public void setOutputDir(File outputDir) {
+	this.outputDir = outputDir;
+}
+
+
+
+public void setPackageName(String packageName) {
+	this.packageName = packageName;
+}
+
+
+
+public void setDefaultLang(String defaultLang) {
+	this.defaultLang = defaultLang;
+}
+
+
+
+public void setStandAlone(boolean standAlone) {
+	this.standAlone = standAlone;
+}
+
+
 
 public static void main(String[] args) {
 	SourceGenerator s = new SourceGenerator();
+	s.setDefaultLang("de");
+	s.setJobdocFile(new File("c:\\temp\\job.xml"));
+	s.setOutputDir(new File("c:\\temp\\out"));
+	s.setPackageName("test");
+	s.setStandAlone(true);
+
 	s.execute();
 }
 }

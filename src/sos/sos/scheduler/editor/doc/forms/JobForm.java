@@ -1,5 +1,8 @@
 package sos.scheduler.editor.doc.forms;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -16,11 +19,13 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
+import sos.scheduler.editor.doc.SourceGenerator;
 import sos.scheduler.editor.doc.listeners.JobListener;
 
 public class JobForm extends Composite implements IUpdateLanguage {
@@ -104,10 +109,9 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		label2.setText("Order:"); // Generated
 		createCOrder();
 		label3 = new Label(group, SWT.NONE);
-		label3.setText("Tasks:"); // Generated
-		GridData gridData3 = new GridData(200, SWT.DEFAULT);
+		label3.setText("Tasks:");
 		cTasks = new Combo(group, SWT.BORDER | SWT.READ_ONLY);
-		cTasks.setLayoutData(gridData3); // Generated
+		cTasks.setLayoutData(new GridData(200, SWT.DEFAULT)); // Generated
 		cTasks.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				listener.setTasks(cTasks.getText());
@@ -119,13 +123,39 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		new Label(group, SWT.NONE);
 
 		final Button vorschauButton = new Button(group, SWT.NONE);
-		vorschauButton.setLayoutData(new GridData());
 		vorschauButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				listener.preview();
 			}
 		});
 		vorschauButton.setText("Preview");
+		new Label(group, SWT.NONE);
+		
+		Button btnNewButton = new Button(group, SWT.NONE);
+		btnNewButton.setVisible(false);
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				SourceGenerator s = new SourceGenerator();
+                File documentation;
+				try {
+					documentation = listener.writeToFile();
+				s.setDefaultLang("en");
+				s.setJobdocFile(documentation);
+				s.setOutputDir(new File("c:\\temp\\out"));
+				s.setPackageName("test");
+				s.setStandAlone(true);
+
+				s.execute();
+				}catch (IOException e) {
+					e.printStackTrace();
+				}
+				catch (JDOMException e) {
+ 					e.printStackTrace();
+				}
+			}
+		});
+		btnNewButton.setText("New Button");
 		createCTasks();
 	}
 

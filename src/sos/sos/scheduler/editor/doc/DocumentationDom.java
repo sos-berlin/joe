@@ -1,5 +1,6 @@
 package sos.scheduler.editor.doc;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -135,13 +136,19 @@ public class DocumentationDom extends DomParser {
 	}
 
 	public void writeWithDom(String filename) throws IOException, JDOMException {
+		writeFileWithDom(new File(filename));
+
+		setFilename(filename);
+		setChanged(false);
+	}
+	
+	public void writeFileWithDom(File file) throws IOException, JDOMException {
 		String encoding = Editor.DOCUMENTATION_ENCODING;
 		if (encoding.equals(""))
 			encoding = DEFAULT_ENCODING;
 		reorderDOM(getDoc().getRootElement(), getNamespace());
 
 		StringWriter stream = new StringWriter();
-		// FileOutputStream stream = new FileOutputStream(new File(filename));
 
 		XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
 		out.output(getDoc(), stream);
@@ -155,16 +162,15 @@ public class DocumentationDom extends DomParser {
 		catch (JDOMException e) {
 			int res = MainWindow.message(Messages.getMsg(conMessage_MAIN_LISTENER_OUTPUT_INVALID, e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
 			if (res == SWT.NO)
-				return;
+				return ;
 		}
 
-		OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
+		OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), encoding);
 
 		writer.write(s);
 		writer.close();
-
-		setFilename(filename);
-		setChanged(false);
+	 
+ 
 	}
 
 	public void writeWithHandler(String filename) throws IOException, JDOMException {

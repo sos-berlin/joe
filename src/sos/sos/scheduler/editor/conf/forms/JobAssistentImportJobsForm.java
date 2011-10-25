@@ -196,22 +196,27 @@ public class JobAssistentImportJobsForm {
 			java.util.Vector filelist = sos.util.SOSFile.getFilelist(xmlPaths, "^.*\\.xml$", java.util.regex.Pattern.CASE_INSENSITIVE, true);
 			Iterator fileIterator = filelist.iterator();
 			while (fileIterator.hasNext()) {
-				xmlFilename = fileIterator.next().toString();
-				SAXBuilder builder = new SAXBuilder();
-				Document doc = builder.build(new File(xmlFilename));
-				Element root = doc.getRootElement();
-				List listMainElements = root.getChildren();
-				HashMap h = null;
-				for (int i = 0; i < listMainElements.size(); i++) {
-					Element elMain = (Element) (listMainElements.get(i));
-					if (elMain.getName().equalsIgnoreCase("job")) {
-						h = new HashMap();
-						h.put("name", elMain.getAttributeValue("name"));
-						h.put("title", elMain.getAttributeValue("title"));
-						h.put("filename", xmlFilename);
-						h.put("job", elMain);
-						listOfDoc.add(h);
+				try {
+					xmlFilename = fileIterator.next().toString();
+					SAXBuilder builder = new SAXBuilder();
+					Document doc = builder.build(new File(xmlFilename));
+					Element root = doc.getRootElement();
+					List listMainElements = root.getChildren();
+					HashMap h = null;
+					for (int i = 0; i < listMainElements.size(); i++) {
+						Element elMain = (Element) (listMainElements.get(i));
+						if (elMain.getName().equalsIgnoreCase("job")) {
+							h = new HashMap();
+							h.put("name", elMain.getAttributeValue("name"));
+							h.put("title", elMain.getAttributeValue("title"));
+							h.put("filename", xmlFilename);
+							h.put("job", elMain);
+							listOfDoc.add(h);
+						}
 					}
+				}
+				catch (Exception e) {
+					 //Damit die nächste Datei verarbeitet wird, hier keine weitere Behandlung. Kaputte Dateien sind uns egal.
 				}
 			}
 		}

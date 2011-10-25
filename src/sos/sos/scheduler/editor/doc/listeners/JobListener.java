@@ -1,7 +1,12 @@
 package sos.scheduler.editor.doc.listeners;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.eclipse.swt.program.Program;
 import org.jdom.Element;
+import org.jdom.JDOMException;
+
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
@@ -21,10 +26,19 @@ public class JobListener {
         _job = job;
     }
 
+    
+    public File writeToFile() throws IOException, JDOMException {
+    	File tmp = File.createTempFile(Options.getXSLTFilePrefix(), Options.getXSLTFileSuffix());
+		tmp.deleteOnExit();
+       _dom.writeFileWithDom(tmp);
+       return tmp;
+    }
     public void preview() {
+
       Element element = _dom.getRoot();
       if (element != null) {
           try {
+        	   
               String filename = _dom.transform(element);
 
               Program prog = Program.findProgram("html");
