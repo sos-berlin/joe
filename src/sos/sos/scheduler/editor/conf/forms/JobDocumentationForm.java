@@ -387,5 +387,4 @@ public class JobDocumentationForm extends Composite implements IUpdateLanguage {
 		butShow.setToolTipText(Messages.getTooltip("job.param.show"));
 		butOpen.setToolTipText(Messages.getTooltip("job.param.open"));
 	}
-
 } // @jve:decl-index=0:visual-constraint="10,10"

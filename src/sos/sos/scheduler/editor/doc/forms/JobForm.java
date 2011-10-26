@@ -180,6 +180,7 @@ public class JobForm extends Composite implements IUpdateLanguage {
 				    }
 				    s.setOutputDir(new File(sourceOutputPath.getText()));
 				    s.setPackageName(packageName.getText());
+				    s.setTemplatePath(new File(Options.getSchedulerData() , "config/JOETemplates/java/xsl"));
 				    if ((cOrder.getText().equalsIgnoreCase("no")) && cbJobType.getText().equalsIgnoreCase("Standalone Job")) {
 				      s.setStandAlone(true);
 				    }else {

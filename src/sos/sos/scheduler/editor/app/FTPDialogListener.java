@@ -40,7 +40,7 @@ public class FTPDialogListener {
 
 	private              String                 prefix                        = "profile ";
 
-	private              String                 configFile                    = "";
+	private              File                 configFile                    = null;
 
 	private              SOSFileTransfer        ftpClient                     = null;
 
@@ -77,20 +77,15 @@ public class FTPDialogListener {
 	public FTPDialogListener() {
 
 		sosString = new SOSString();
+ 		try {		
 
-		String sep = "/";
-		try {		
-
-			configFile = Options.getSchedulerData();
-
-			configFile = configFile.endsWith("/") || configFile.endsWith("\\") ? configFile : configFile + sep;
-			configFile = configFile + "config" + sep + "factory.ini";
-
-			if(!new File(configFile).exists()) {
-				new File(configFile).createNewFile();
+			configFile = new File(Options.getSchedulerData(), "factory.ini");
+ 			 
+			if(!configFile.exists()) {
+				configFile.createNewFile();
 			}
 
-			settings = new SOSProfileSettings(configFile);
+			settings = new SOSProfileSettings(configFile.getAbsolutePath());
 			ArrayList l = settings.getSections();
 			profileNames = convert(settings.getSections().toArray());
 
@@ -966,10 +961,10 @@ public class FTPDialogListener {
 		try {
 			setCurrProfileName(profilename);
 			//java.util.Properties profile = getCurrProfile();
-			String filename = configFile;
+			 
 
 
-			byte[] b = getBytesFromFile(new File(filename));
+			byte[] b = getBytesFromFile(configFile);
 			String s = new String(b);
 			//System.out.println(s);
 
@@ -990,11 +985,10 @@ public class FTPDialogListener {
 
 			java.nio.ByteBuffer bbuf = java.nio.ByteBuffer.wrap(s2.getBytes());
 
-			java.io.File file = new java.io.File(filename);
 
 			boolean append = false;
 
-			java.nio.channels.FileChannel wChannel = new java.io.FileOutputStream(file, append).getChannel();
+			java.nio.channels.FileChannel wChannel = new java.io.FileOutputStream(configFile, append).getChannel();
 
 			wChannel.write(bbuf);
 
@@ -1025,10 +1019,10 @@ public class FTPDialogListener {
 		try {
 
 			java.util.Properties profile = getCurrProfile();
-			String filename = configFile;
+			 
 			String profilename = currProfileName;
 
-			byte[] b = getBytesFromFile(new File(filename));
+			byte[] b = getBytesFromFile(configFile);
 			String s = new String(b);
 			//System.out.println(s);
 
@@ -1098,11 +1092,10 @@ public class FTPDialogListener {
 			java.nio.ByteBuffer bbuf = java.nio.ByteBuffer.wrap(s2.getBytes());
 
 
-			java.io.File file = new java.io.File(filename);
-
+ 
 			boolean append = false;
 
-			java.nio.channels.FileChannel wChannel = new java.io.FileOutputStream(file, append).getChannel();
+			java.nio.channels.FileChannel wChannel = new java.io.FileOutputStream(configFile, append).getChannel();
 
 			wChannel.write(bbuf);
 

@@ -761,7 +761,7 @@ public class JobAssistentImportJobsForm {
 	 * @return HashMap
 	 */
 	private HashMap getJobFromDescription() {
-		HashMap h = new HashMap();
+		HashMap  h = new HashMap();
 		try {
 			// elMain ist ein Job Element der Jobbeschreibung
 			if (tree.getSelection().length == 0)
@@ -774,10 +774,11 @@ public class JobAssistentImportJobsForm {
 			h.put("name", txtJobname.getText());
 			h.put("title", txtTitle.getText());
 			// relativen pfad bestimmen
-			String sData = sos.scheduler.editor.app.Options.getSchedulerData().replaceAll("\\\\", "/");
-			String currPath = txtPath.getText().replaceAll("\\\\", "/");
-			if (new File(currPath).getPath().indexOf(new File(sData).getPath()) > -1) {
-				h.put("filename", currPath.substring(sData.length() + 1));
+			File sData = new File (sos.scheduler.editor.app.Options.getSchedulerData());
+			File currPathFile = new File (txtPath.getText());
+			File currPathParent = new File(currPathFile.getParent());
+			if (currPathFile.getPath().indexOf(sData.getPath()) > -1) {
+				h.put("filename", currPathParent.getName()+ "/" + currPathFile.getName());
 			}
 			else {
 				h.put("filename", txtPath.getText());

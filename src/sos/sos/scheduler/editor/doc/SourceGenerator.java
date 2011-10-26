@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -16,6 +17,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+
+import sos.scheduler.editor.app.Options;
 
 
 
@@ -70,6 +73,7 @@ public class SourceGenerator {
 	private File outputDir;
 	private String packageName;
 	private String javaClassName;
+    private File templatePath;
 
 
 
@@ -86,10 +90,9 @@ public class SourceGenerator {
 
  	}
 
-
-
 public void execute( )  {
 	logger.setLevel(Level.DEBUG);
+	 
 	try {
  		//String strXMLFileName = "c:\\temp\\job.xml";
  		String strXMLFileName = jobdocFile.getCanonicalPath();
@@ -100,8 +103,8 @@ public void execute( )  {
  		String strWorkerClassName = jobdocFile.getName();
  		strWorkerClassName = strWorkerClassName.replaceAll("\\..*$","");
  		strWorkerClassName = javaClassName;
- 		
- 		File objXSLFile = new File("xsl/JSJobDoc2JSOptionSuperClass.xsl");
+  
+ 		File objXSLFile = new File(templatePath,"JSJobDoc2JSOptionSuperClass.xsl");
  		pobjHshMap = new HashMap();
 	 
  		setXSLTParameter("package_name", packageName);
@@ -138,7 +141,7 @@ public void execute( )  {
  		doTransform( objXSLFile, objXMLFile,new File(outputDir,strWorkerClassName+ strClassNameExtension+conJavaFilenameExtension));
  		
 
- 		File objXSLOptionClassFile = new File("xsl/JSJobDoc2JSOptionClass.xsl"); //$NON-NLS-1$
+ 		File objXSLOptionClassFile = new File(templatePath,"JSJobDoc2JSOptionClass.xsl"); //$NON-NLS-1$
  		setXSLTParameter("XSLTFilename", objXSLOptionClassFile.getAbsolutePath());
  		                  
  		setXSLTParameter(conXsltParmExtendsClassName, strWorkerClassName + strClassNameExtension);
@@ -152,7 +155,7 @@ public void execute( )  {
 
 		 
 	 
- 		File objXSLJSAdapterClassFile = new File("xsl/JSJobDoc2JSAdapterClass.xsl"); //$NON-NLS-1$
+ 		File objXSLJSAdapterClassFile = new File(templatePath,"JSJobDoc2JSAdapterClass.xsl"); //$NON-NLS-1$
  		setXSLTParameter("XSLTFilename", objXSLJSAdapterClassFile.getAbsolutePath());
 		setXSLTParameter(conXsltParmExtendsClassName, "JobSchedulerJob"); //$NON-NLS-1$
 		strClassNameExtension = "JSAdapterClass"; //$NON-NLS-1$
@@ -168,7 +171,7 @@ public void execute( )  {
 
 		 
  
- 		File objXSLJSWorkerClassFile = new File("xsl/JSJobDoc2JSWorkerClass.xsl"); //$NON-NLS-1$
+ 		File objXSLJSWorkerClassFile = new File(templatePath,"JSJobDoc2JSWorkerClass.xsl"); //$NON-NLS-1$
  		setXSLTParameter("XSLTFilename", objXSLJSWorkerClassFile.getAbsolutePath());
 		setXSLTParameter(conXsltParmExtendsClassName, "JSToolBox");
 		strClassNameExtension = "";
@@ -182,7 +185,7 @@ public void execute( )  {
         doTransform(objXSLJSWorkerClassFile, objXMLFile,new File (outputDir,strClassName.trim() + conJavaFilenameExtension));
 
 		 
- 		File objXSLJSMainClassFile = new File("xsl/JSJobDoc2JSMainClass.xsl"); //$NON-NLS-1$
+ 		File objXSLJSMainClassFile = new File(templatePath,"JSJobDoc2JSMainClass.xsl"); //$NON-NLS-1$
  		setXSLTParameter("XSLTFilename", objXSLJSMainClassFile.getAbsolutePath());
 
 		setXSLTParameter(conXsltParmExtendsClassName, "JSToolBox");
@@ -198,7 +201,7 @@ public void execute( )  {
         doTransform(objXSLJSMainClassFile, objXMLFile,new File (outputDir,strClassName.trim() + conJavaFilenameExtension));
 
 		 
- 		File objXSLJSJUnitClassFile = new File("xsl/JSJobDoc2JSJUnitClass.xsl"); //$NON-NLS-1$
+ 		File objXSLJSJUnitClassFile = new File(templatePath,"JSJobDoc2JSJUnitClass.xsl"); //$NON-NLS-1$
  		setXSLTParameter("XSLTFilename", objXSLJSJUnitClassFile.getAbsolutePath());
 
 		setXSLTParameter(conXsltParmExtendsClassName, "JSToolBox");
@@ -214,7 +217,7 @@ public void execute( )  {
         doTransform(objXSLJSJUnitClassFile, objXMLFile,new File (outputDir,strClassName + conJavaFilenameExtension));
 
 		 
-  		File objXSLJSJUnitOptionSuperClassFile = new File("xsl/JSJobDoc2JSJUnitOptionSuperClass.xsl"); //$NON-NLS-1$
+  		File objXSLJSJUnitOptionSuperClassFile = new File(templatePath,"JSJobDoc2JSJUnitOptionSuperClass.xsl"); //$NON-NLS-1$
  		setXSLTParameter("XSLTFilename", objXSLJSJUnitOptionSuperClassFile.getAbsolutePath());
 
 		setXSLTParameter(conXsltParmExtendsClassName, "JSToolBox");
@@ -335,11 +338,18 @@ public void setJavaClassName(String javaClassName) {
 	this.javaClassName = javaClassName;
 }
 
+public void setTemplatePath(File templatePath) {
+	this.templatePath = templatePath;
+}
+
+
 public static void main(String[] args) {
 	SourceGenerator s = new SourceGenerator();
+	s.setTemplatePath(new File("C:/Dokumente und Einstellungen/Uwe Risse/Eigene Dateien/sos-berlin.com/jobscheduler.1.3.9/scheduler_139/config/JOETemplates/java/xsl"));
 	s.setDefaultLang("de");
 	s.setJobdocFile(new File("c:\\temp\\job.xml"));
 	s.setOutputDir(new File("c:\\temp\\out"));
+	s.setJavaClassName("testClass");
 	s.setPackageName("test");
 	s.setStandAlone(true);
 
