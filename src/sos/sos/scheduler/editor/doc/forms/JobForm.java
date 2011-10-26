@@ -23,6 +23,7 @@ import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.SourceGenerator;
@@ -40,6 +41,9 @@ public class JobForm extends Composite implements IUpdateLanguage {
 	private Label				label3			= null;
 	private Combo				cOrder			= null;
 	private Combo				cTasks			= null;
+	private Combo cbJobType;
+	private Text sourceOutputPath;
+	private Text packageName;
 
 	public JobForm(Composite parent, int style, DocumentationDom dom, Element job) {
 		super(parent, style);
@@ -130,32 +134,69 @@ public class JobForm extends Composite implements IUpdateLanguage {
 		});
 		vorschauButton.setText("Preview");
 		new Label(group, SWT.NONE);
+		new Label(group, SWT.NONE);
+		
+		Label lblO = new Label(group, SWT.NONE);
+		lblO.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblO.setText("Source Output Path");
+		
+		sourceOutputPath = new Text(group, SWT.BORDER);
+		sourceOutputPath.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Label lblPackageName = new Label(group, SWT.NONE);
+		lblPackageName.setText("Package Name");
+		
+		packageName = new Text(group, SWT.BORDER);
+		packageName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Label lblJobType = new Label(group, SWT.NONE);
+		lblJobType.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblJobType.setText("Job Type");
+		
+		cbJobType = new Combo(group, SWT.NONE);
+		cbJobType.setItems(new String[] {"Job in a Job Chain", "Standalone Job"});
+		GridData gd_cbJobType = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_cbJobType.widthHint = 190;
+		cbJobType.setLayoutData(gd_cbJobType);
+		cbJobType.setText("Standalone Job");
+		new Label(group, SWT.NONE);
 		
 		Button btnNewButton = new Button(group, SWT.NONE);
-		btnNewButton.setVisible(false);
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				SourceGenerator s = new SourceGenerator();
                 File documentation;
 				try {
+				 
 					documentation = listener.writeToFile();
-				s.setDefaultLang("en");
-				s.setJobdocFile(documentation);
-				s.setOutputDir(new File("c:\\temp\\out"));
-				s.setPackageName("test");
-				s.setStandAlone(true);
+				    s.setDefaultLang("en");
+				    s.setJavaClassName(tName.getText());
+				    s.setJobdocFile(documentation);
+				    if (sourceOutputPath.getText().trim().equals("")) {
+				    	File tmp = File.createTempFile(Options.getXSLTFilePrefix(), Options.getXSLTFileSuffix());
+						tmp.deleteOnExit();
+						sourceOutputPath.setText(tmp.getParent());
+				    }
+				    s.setOutputDir(new File(sourceOutputPath.getText()));
+				    s.setPackageName(packageName.getText());
+				    if ((cOrder.getText().equalsIgnoreCase("no")) && cbJobType.getText().equalsIgnoreCase("Standalone Job")) {
+				      s.setStandAlone(true);
+				    }else {
+					  s.setStandAlone(false);
+				    }
 
-				s.execute();
+				    s.execute();
 				}catch (IOException e) {
 					e.printStackTrace();
 				}
 				catch (JDOMException e) {
- 					e.printStackTrace();
+					e.printStackTrace();
 				}
+			 
 			}
 		});
-		btnNewButton.setText("New Button");
+		btnNewButton.setText("Generate Java Source");
 		createCTasks();
 	}
 

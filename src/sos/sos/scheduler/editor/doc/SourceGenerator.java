@@ -69,6 +69,11 @@ public class SourceGenerator {
 	private File jobdocFile;
 	private File outputDir;
 	private String packageName;
+	private String javaClassName;
+
+
+
+
 	private String defaultLang = "en";
 	private boolean standAlone=true;
 	
@@ -91,10 +96,11 @@ public void execute( )  {
 
 		JSXMLFile objXMLFile = new JSXMLFile(strXMLFileName);
 		objXMLFile.MustExist();
-		strXMLFileName = strXMLFileName.replaceAll("\\\\", "/");
+
  		String strWorkerClassName = jobdocFile.getName();
  		strWorkerClassName = strWorkerClassName.replaceAll("\\..*$","");
-	 
+ 		strWorkerClassName = javaClassName;
+ 		
  		File objXSLFile = new File("xsl/JSJobDoc2JSOptionSuperClass.xsl");
  		pobjHshMap = new HashMap();
 	 
@@ -325,6 +331,9 @@ public void setStandAlone(boolean standAlone) {
 }
 
 
+public void setJavaClassName(String javaClassName) {
+	this.javaClassName = javaClassName;
+}
 
 public static void main(String[] args) {
 	SourceGenerator s = new SourceGenerator();

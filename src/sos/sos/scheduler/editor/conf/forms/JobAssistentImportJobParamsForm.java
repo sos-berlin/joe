@@ -260,7 +260,9 @@ public class JobAssistentImportJobParamsForm {
 			objTempFile.deleteOnExit();
 			String strTempFileName = objTempFile.getAbsolutePath();
 			fleFile.writeDocument(strTempFileName);
-			Description objDescr = (Description) unmarshaller.unmarshal(objTempFile);
+//			Description objDescr = (Description) unmarshaller.unmarshal(objTempFile);
+			Description objDescr = (Description) unmarshaller.unmarshal(new File(pstrDocuFileName));
+
 			objParams = objDescr.getConfiguration().getParams();
 		}
 		catch (TransformerFactoryConfigurationError e) {
