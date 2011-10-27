@@ -27,8 +27,7 @@ import com.sos.JSHelper.Basics.JSToolBox;
 import com.sos.JSHelper.DataElements.JSDataElementDate;
 import com.sos.JSHelper.DataElements.JSDateFormat;
 import com.sos.JSHelper.io.Files.JSXMLFile;
-import com.sos.VirtualFileSystem.FTP.FTPIllegalReplyException;
- 
+  
 
 /**
 * \class SourceGenerator 
@@ -92,6 +91,7 @@ public class SourceGenerator {
 
 public void execute( )  {
 	logger.setLevel(Level.DEBUG);
+	logger.info("Starting transformation");
 	 
 	try {
  		//String strXMLFileName = "c:\\temp\\job.xml";
@@ -135,9 +135,8 @@ public void execute( )  {
 		setXSLTParameter(conXsltParmWorkerClassName, strWorkerClassName);
 		setXSLTParameter("XMLDocuFilename", objXMLFile.getAbsolutePath());
 		
- 
-
  		objXMLFile.setParameters(pobjHshMap);
+ 		logger.info("Transformation JSOptionsClass");
  		doTransform( objXSLFile, objXMLFile,new File(outputDir,strWorkerClassName+ strClassNameExtension+conJavaFilenameExtension));
  		
 
@@ -151,7 +150,9 @@ public void execute( )  {
 		setXSLTParameter(conXsltParmClassName, strWorkerClassName + strClassNameExtension);
 
 		objXMLFile.setParameters(pobjHshMap);
-		doTransform(objXSLOptionClassFile, objXMLFile,new File (outputDir,strWorkerClassName + strClassNameExtension + conJavaFilenameExtension));
+ 		logger.info("Transformation Options");
+	
+ 		doTransform(objXSLOptionClassFile, objXMLFile,new File (outputDir,strWorkerClassName + strClassNameExtension + conJavaFilenameExtension));
 
 		 
 	 
@@ -231,7 +232,7 @@ public void execute( )  {
 
  		objXMLFile.setParameters(pobjHshMap);
         doTransform(objXSLJSJUnitOptionSuperClassFile, objXMLFile,new File (outputDir,strClassName + conJavaFilenameExtension));
- 
+  
 	}
 	catch (Exception e) {
 		e.printStackTrace(System.err);		

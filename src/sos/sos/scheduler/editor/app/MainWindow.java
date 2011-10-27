@@ -203,6 +203,7 @@ public class MainWindow extends I18NBase {
 		mNew.setMenu(pmNew);
 		MenuItem push1 = new MenuItem(pmNew, SWT.PUSH);
 		push1.setText(getMenuText(this.getMsg(MENU_Documentation), "P")); // Generated
+//		push1.setText(getMenuText("Modify Documentation", "P")); // Generated
 		push1.setAccelerator(SWT.CTRL | 'P');
 		push1.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -1652,22 +1653,22 @@ public class MainWindow extends I18NBase {
 	 */
 	public static final String	MENU_New				= "MENU_New";
 	@I18NMessages(value = { @I18NMessage("Documentation"), //
-			@I18NMessage(value = "Documentation", //
+			@I18NMessage(value = "Modify Documentation", //
 			locale = "en_UK", //
-			explanation = "Documentation" //
+			explanation = "Modify Documentation of a job template" //
 			), //
-			@I18NMessage(value = "Objekt-Dokumentation", //
+			@I18NMessage(value = "Dokumentation bearbeiten", //
 			locale = "de", //
-			explanation = "Dokumentation eines JobScheduler-Objekts bearbeiten" //
+			explanation = "Dokumentation eines Job Templates bearbeiten" //
 			), //
-			@I18NMessage(value = "Documentation", locale = "es", //
-			explanation = "Documentation" //
+			@I18NMessage(value = "Modify Documentation", locale = "es", //
+					explanation = "Modify Documentation of a job template" //
 			), //
-			@I18NMessage(value = "Documentation", locale = "fr", //
-			explanation = "Documentation" //
+			@I18NMessage(value = "Modify Documentation", locale = "fr", //
+			explanation = "Modify Documentation of a job template" //
 			), //
-			@I18NMessage(value = "Documentation", locale = "it", //
-			explanation = "Documentation" //
+			@I18NMessage(value = "Modify Documentation", locale = "it", //
+			explanation = "Modify Documentation of a job template" //
 			) //
 	}, msgnum = "MENU_Documentation", msgurl = "Menu-Documentation")
 	/*!
@@ -1676,21 +1677,21 @@ public class MainWindow extends I18NBase {
 	 */
 	public static final String	MENU_Documentation		= "MENU_Documentation";
 	@I18NMessages(value = { @I18NMessage("EventHandler"), //
-			@I18NMessage(value = "EventHandler", //
+			@I18NMessage(value = "xEventHandler", //
 			locale = "en_UK", //
 			explanation = "EventHandler" //
 			), //
-			@I18NMessage(value = "Ereignis-Behandlung", //
+			@I18NMessage(value = "xEreignis-Behandlung", //
 			locale = "de", //
 			explanation = "EventHandler" //
 			), //
-			@I18NMessage(value = "EventHandler", locale = "es", //
+			@I18NMessage(value = "xEventHandler", locale = "es", //
 			explanation = "EventHandler" //
 			), //
-			@I18NMessage(value = "EventHandler", locale = "fr", //
+			@I18NMessage(value = "xEventHandler", locale = "fr", //
 			explanation = "EventHandler" //
 			), //
-			@I18NMessage(value = "EventHandler", locale = "it", //
+			@I18NMessage(value = "xEventHandler", locale = "it", //
 			explanation = "EventHandler" //
 			) //
 	}, msgnum = "MENU_EventHandler", msgurl = "Menu-EventHandler")
