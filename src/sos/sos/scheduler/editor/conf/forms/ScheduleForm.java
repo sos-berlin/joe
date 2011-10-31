@@ -218,7 +218,7 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 
 
 			validFrom = new DatePicker(scheduleGroup, SWT.BORDER);
-			validFrom.setEditable(true);
+ 			validFrom.setEditable(true);
 
 
 

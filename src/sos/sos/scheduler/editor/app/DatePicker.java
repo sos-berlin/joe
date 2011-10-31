@@ -82,7 +82,7 @@ public class DatePicker extends Composite {
         this.setLayout(gridLayout); // Generated
         button.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-            	if(calendar.getShell().isDisposed()) {                        
+             	if(calendar.getShell().isDisposed()) {                        
             		org.eclipse.swt.widgets.Shell s = new org.eclipse.swt.widgets.Shell(getShell());
                     calendar = new PopupCalendar(s, PopupCalendar.SHOWALL, locale);
             	}
@@ -104,6 +104,7 @@ public class DatePicker extends Composite {
 
     private void initCalendar() {
     	org.eclipse.swt.widgets.Shell s = new org.eclipse.swt.widgets.Shell(getShell());
+ 
         calendar = new PopupCalendar(s, PopupCalendar.SHOWALL, locale);
     
         // add the adapter.

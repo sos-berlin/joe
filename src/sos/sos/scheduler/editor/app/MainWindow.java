@@ -1681,17 +1681,17 @@ public class MainWindow extends I18NBase {
 			locale = "en_UK", //
 			explanation = "EventHandler" //
 			), //
-			@I18NMessage(value = "xEreignis-Behandlung", //
+			@I18NMessage(value = "Ereignis-Behandlung", //
 			locale = "de", //
 			explanation = "EventHandler" //
 			), //
-			@I18NMessage(value = "xEventHandler", locale = "es", //
+			@I18NMessage(value = "EventHandler", locale = "es", //
 			explanation = "EventHandler" //
 			), //
-			@I18NMessage(value = "xEventHandler", locale = "fr", //
+			@I18NMessage(value = "EventHandler", locale = "fr", //
 			explanation = "EventHandler" //
 			), //
-			@I18NMessage(value = "xEventHandler", locale = "it", //
+			@I18NMessage(value = "EventHandler", locale = "it", //
 			explanation = "EventHandler" //
 			) //
 	}, msgnum = "MENU_EventHandler", msgurl = "Menu-EventHandler")
