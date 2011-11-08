@@ -1,5 +1,7 @@
 package sos.scheduler.editor.conf.forms;
 
+import java.util.prefs.Preferences;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -8,6 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.classes.WindowsSaver;
 
 
 public class DetailDialogForm {
@@ -27,6 +30,7 @@ public class DetailDialogForm {
 	private String           path              = null;
 	
 	private String           orderId           = null;
+ 
 	
 	/**
 	 * Wenn es eine JobDokumentation gibt, dann wird beim STarten der Wizzard die Parameter Fenster geöffnet
@@ -70,7 +74,8 @@ public class DetailDialogForm {
 		shell= new Shell(sos.scheduler.editor.app.MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 		shell.setLayout(new FillLayout());
 		
-		shell.setMinimumSize(620, 643);	
+ 		
+	 
 		shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 		shell.setText("Details for JobChain: " + jobChainname + 
 				     (state != null && state.length()> 0 ? "  State: " + state: "") + 
@@ -84,10 +89,10 @@ public class DetailDialogForm {
 				
 		//dialogForm =new DetailForm(composite, SWT.NONE, jobChainname, state, listOfOrderIds, Editor.JOB_CHAINS, null, null, isLifeElement, path);
 		dialogForm =new DetailForm(composite, SWT.NONE, jobChainname, state, orderId, Editor.JOB_CHAINS, null, null, isLifeElement, path);
+
+
 		if(!dialogForm.hasErrors())//im fehlerfall
 			dialogForm.setLayout(new FillLayout());
-	
-		
 	}
 
 	public DetailForm getDialogForm() {

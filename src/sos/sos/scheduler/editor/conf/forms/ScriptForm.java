@@ -692,7 +692,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 		tableIncludes.setToolTipText(Messages.getTooltip("script.include.file_list"));
 		bRemove.setToolTipText(Messages.getTooltip("script.include.btn_remove"));
 		bAdd.setToolTipText(Messages.getTooltip("script.include.btn_add"));
-		tSource.setToolTipText(Messages.getTooltip("script.source_entry"));
+//		tSource.setToolTipText(Messages.getTooltip("script.source_entry"));
 
 		if (txtName != null)
 			txtName.setToolTipText(Messages.getTooltip("script.name"));

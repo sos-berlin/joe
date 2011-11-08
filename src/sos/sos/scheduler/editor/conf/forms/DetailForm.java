@@ -44,6 +44,7 @@ import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.classes.WindowsSaver;
 import sos.scheduler.editor.conf.DetailDom;
 import sos.scheduler.editor.conf.IDetailUpdate;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -112,21 +113,28 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		path = path_;
 	}
 
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public DetailForm(Composite parent_, int style, String jobChainname_, String state_, String orderId, int type_, DetailDom dom_, IDetailUpdate gui_,
 			boolean isLifeElement_, String path_) {
 		super(parent_, style);
-		dom = dom_;
+ 		dom = dom_;
 		gui = gui_;
 		type = type_;
 		jobChainname = jobChainname_;
 		state = state_;
 		_orderId = orderId;
+		WindowsSaver w = new WindowsSaver(this.getClass(),getShell(),643,600);
+		w.restoreWindowLocation();
 		initialize();
-		setToolTipText();
+		w.restoreWindowSize();
+ 		setToolTipText();
 		parent = parent_;
 		isLifeElement = isLifeElement_;
 		path = path_;
 		open();
+
 	}
 
 	private void initialize() {
@@ -413,6 +421,8 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			cancelButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			cancelButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
+					WindowsSaver w = new WindowsSaver(this.getClass(),getShell(),643,600);
+					w.saveWindow();
 					if (butApply.getEnabled()) {
 						int count = MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("detailform.close"), SWT.ICON_WARNING | SWT.OK
 								| SWT.CANCEL);
@@ -792,6 +802,9 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 	}
 
 	private void save() {
+		WindowsSaver w = new WindowsSaver(this.getClass(),getShell(),643,600);
+		w.saveWindow();
+
 		if (butApplyParam.isEnabled()) {
 			addParam();
 		}
