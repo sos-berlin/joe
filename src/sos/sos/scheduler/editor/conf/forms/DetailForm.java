@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusAdapter;
@@ -100,9 +102,11 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 	private JobListener						joblistener					= null;
 	private String							jobname						= "";
 	private String							jobDocumentation			= null;
+	private WindowsSaver w;
 
 	public DetailForm(Composite parent_, int style, int type_, DetailDom dom_, IDetailUpdate gui_, boolean isLifeElement_, String path_) {
 		super(parent_, style);
+		w = new WindowsSaver(this.getClass(),getShell(),643,600);
 		dom = dom_;
 		gui = gui_;
 		type = type_;
@@ -113,6 +117,10 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		path = path_;
 	}
 
+	
+	private void saveWindowPosAndSize() {
+ 		w.saveWindow();
+	}
 	/**
 	 * @wbp.parser.constructor
 	 */
@@ -125,7 +133,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 		jobChainname = jobChainname_;
 		state = state_;
 		_orderId = orderId;
-		WindowsSaver w = new WindowsSaver(this.getClass(),getShell(),643,600);
+		w = new WindowsSaver(this.getClass(),getShell(),643,600);
 		w.restoreWindowLocation();
 		initialize();
 		w.restoreWindowSize();
@@ -324,14 +332,34 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 7);
 			tableParams.setLayoutData(gridData_4);
 			final TableColumn newColumnTableColumn = new TableColumn(tableParams, SWT.NONE);
-			newColumnTableColumn.setWidth(181);
 			newColumnTableColumn.setText("Name");
+			newColumnTableColumn.setWidth(118);
+			newColumnTableColumn.addControlListener(new ControlAdapter() {
+				public void controlResized(final ControlEvent e) {
+					w.saveTableColumn("tableParams", newColumnTableColumn);
+				}
+			});
+		    
+			w.restoreTableColumn("tableParams", newColumnTableColumn,118);
 			final TableColumn newColumnTableColumn_1 = new TableColumn(tableParams, SWT.NONE);
-			newColumnTableColumn_1.setWidth(150);
 			newColumnTableColumn_1.setText("Value");
+			newColumnTableColumn_1.setWidth(150);
+			newColumnTableColumn_1.addControlListener(new ControlAdapter() {
+				public void controlResized(final ControlEvent e) {
+					w.saveTableColumn("tableParams", newColumnTableColumn_1);
+				}
+			});
+			w.restoreTableColumn("tableParams", newColumnTableColumn_1,150);
+			
 			final TableColumn newColumnTableColumn_2 = new TableColumn(tableParams, SWT.NONE);
-			newColumnTableColumn_2.setWidth(100);
 			newColumnTableColumn_2.setText("Text");
+			newColumnTableColumn_2.setWidth(100);
+			newColumnTableColumn_2.addControlListener(new ControlAdapter() {
+				public void controlResized(final ControlEvent e) {
+					w.saveTableColumn("tableParams", newColumnTableColumn_2);
+				}
+			});
+			w.restoreTableColumn("tableParams", newColumnTableColumn_2,100);
 			final Button butNew = new Button(parameterGroup, SWT.NONE);
 			butNew.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
@@ -421,8 +449,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 			cancelButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			cancelButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-					WindowsSaver w = new WindowsSaver(this.getClass(),getShell(),643,600);
-					w.saveWindow();
+					saveWindowPosAndSize();
 					if (butApply.getEnabled()) {
 						int count = MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("detailform.close"), SWT.ICON_WARNING | SWT.OK
 								| SWT.CANCEL);
@@ -802,8 +829,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 	}
 
 	private void save() {
-		WindowsSaver w = new WindowsSaver(this.getClass(),getShell(),643,600);
-		w.saveWindow();
+		saveWindowPosAndSize();
 
 		if (butApplyParam.isEnabled()) {
 			addParam();

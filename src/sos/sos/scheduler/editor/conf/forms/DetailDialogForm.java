@@ -1,6 +1,6 @@
 package sos.scheduler.editor.conf.forms;
 
-import java.util.prefs.Preferences;
+ 
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.classes.WindowsSaver;
+ 
 
 
 public class DetailDialogForm {
