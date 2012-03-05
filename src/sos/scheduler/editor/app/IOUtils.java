@@ -33,7 +33,7 @@ public class IOUtils {
 	public static boolean openFile(Collection filenames, DomParser dom) {
 		return openFile(null, filenames, dom);
 	}
-
+ 
 	private static String getDomInstance(DomParser dom) {
 		if (dom instanceof SchedulerDom)
 			return " Scheduler";
@@ -44,39 +44,27 @@ public class IOUtils {
 				return "";
 	}
 
+	/**
+	 * öffnet
+	 */
 	public static String openDirectoryFile(String mask) {
-		return openDirectoryFile(mask, Options.getLastDirectory());
-	}
-
-	public static String openDirectoryFile(String mask, final String pstrDirectoryName) {
-
 		String filename = "";
 		FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
-		
-		fdialog.setFilterPath(pstrDirectoryName);
+		fdialog.setFilterPath(Options.getLastDirectory());
 		String filterMask = mask.replaceAll("\\\\", "");
 		filterMask = filterMask.replaceAll("\\^.", "");
 		filterMask = filterMask.replaceAll("\\$", "");
 		fdialog.setFilterExtensions(new String[] { filterMask });
-
 		filename = fdialog.open();
-		if (filename == null || filename.trim().length() == 0) {
+		if (filename == null || filename.trim().length() == 0)
 			return filename;
-		}
 		filename = filename.replaceAll("\\\\", "/");
-
 		String env = Options.getSchedulerHotFolder().replaceAll("\\\\", "/");
-
 		int pos = filename.toLowerCase().indexOf(env.toLowerCase().toLowerCase());
-		if (pos >= 0) {
-			File fleT = new File (filename);
-			filename = fleT.getName();
-//			int add = (env.endsWith("/") ? -1 : 0);
-//			filename = filename.substring(pos == -1 ? 0 : pos + env.length() + add);
-//			filename = filename.substring(0, filename.length() - filterMask.length() + 1);
-		}
+		int add = (env.endsWith("/") ? -1 : 0);
+		filename = filename.substring(pos == -1 ? 0 : pos + env.length() + add);
+		filename = filename.substring(0, filename.length() - filterMask.length() + 1);
 		return filename;
-
 	}
 
 	/**

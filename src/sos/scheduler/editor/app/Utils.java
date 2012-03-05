@@ -2,24 +2,17 @@ package sos.scheduler.editor.app;
 
 import java.io.StringWriter;
 import java.util.List;
-import java.util.regex.Pattern;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
@@ -27,9 +20,15 @@ import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
-
+import org.eclipse.swt.widgets.Shell;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerEditorFontDialog;
+
+import java.util.regex.Pattern;
+
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.*;
 
 public class Utils {
 
@@ -49,7 +48,7 @@ public class Utils {
 
 	private static       Element      resetElement    = null;
 
-
+ 
 	public static String getIntegerAsString(int i) {
 		String s;
 		if (i == -999) {
@@ -103,6 +102,8 @@ public class Utils {
 
 	public static void setAttribute(String attribute, String value, String defaultValue, Element element, DomParser dom) {
 		value = value.trim();
+
+		//value = escape(value);
 
 		//System.out.println("attribute[" + attribute + " = " + value + "]  default: " + defaultValue);
 
@@ -1107,11 +1108,13 @@ public class Utils {
 		return false;
 	}
 
+	//setzt den Maus auf SandUhr
 	public static void startCursor(Shell shell){
 		if(!shell.isDisposed())
 			shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT));
 	}
 
+	//setzt den Maus auf Pfeil
 	public static void stopCursor(Shell shell){
 		if(!shell.isDisposed())
 			shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_ARROW));

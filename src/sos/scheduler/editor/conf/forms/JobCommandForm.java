@@ -50,7 +50,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 	private Text               tPriority            = null;
 
 	private Combo              cJobchain            = null;
-
+ 
 	private Button             bReplace             = null;
 
 	private Text               tJob                 = null;
@@ -120,7 +120,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		gridLayout2.makeColumnsEqualWidth = true;
 		gridLayout2.numColumns = 1;
 		jobsAndOrdersGroup = new Group(this, SWT.NONE);
-		jobsAndOrdersGroup.setText("Commands for Job: " + listener.getName() + (listener.isDisabled() ? " (Disabled)" : "")); //TODO lang "Commands for Job: "...
+		jobsAndOrdersGroup.setText("Commands for Job: " + listener.getName() + (listener.isDisabled() ? " (Disabled)" : ""));
 		jobsAndOrdersGroup.setLayout(gridLayout2);
 		GridData gridData18 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
 		sashForm = new SashForm(jobsAndOrdersGroup, SWT.NONE);
@@ -129,14 +129,14 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		GridLayout gridLayout3 = new GridLayout();
 		gridLayout3.numColumns = 2;
 		gDescription = new Group(sashForm, SWT.NONE);
-		gDescription.setText("Jobs and Orders"); //TODO lang "Jobs and Orders"
+		gDescription.setText("Jobs and Orders");
 		gDescription.setLayout(gridLayout3);
 		
 
 		jobchainLabel = new Label(gDescription, SWT.NONE);
 		final GridData gridData_10 = new GridData();
 		jobchainLabel.setLayoutData(gridData_10);
-		jobchainLabel.setText("Job chain"); //TODO lang "Job chain"
+		jobchainLabel.setText("Job chain");
 
 		cJobchain = new Combo(gDescription, SWT.NONE);
 		cJobchain.setEnabled(false);
@@ -168,7 +168,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		cJobchain.setLayoutData(gridData_8);
 		lblJob = new Label(gDescription, SWT.NONE);
 		lblJob.setLayoutData(new GridData(73, SWT.DEFAULT));
-		lblJob.setText("Job / Order ID"); //TODO lang "Job / Order ID"
+		lblJob.setText("Job / Order ID");
 
 		tJob = new Text(gDescription, SWT.BORDER);
 		tJob.addFocusListener(new FocusAdapter() {
@@ -191,7 +191,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		tJob.setLayoutData(gridData_3);
 		final Label startAtLabel = new Label(gDescription, SWT.NONE);
 		startAtLabel.setLayoutData(new GridData());
-		startAtLabel.setText("Start at"); //TODO lang "Start at"
+		startAtLabel.setText("Start at");
 
 		tStartAt = new Text(gDescription, SWT.BORDER);
 		tStartAt.addFocusListener(new FocusAdapter() {
@@ -212,7 +212,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		priorityLabel = new Label(gDescription, SWT.NONE);
 		final GridData gridData_11 = new GridData();
 		priorityLabel.setLayoutData(gridData_11);
-		priorityLabel.setText("Priority"); //TODO lang "Priority"
+		priorityLabel.setText("Priority");
 
 		tPriority = new Text(gDescription, SWT.BORDER);
 		tPriority.addFocusListener(new FocusAdapter() {
@@ -230,7 +230,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		titleLabel = new Label(gDescription, SWT.NONE);
 		titleLabel.setLayoutData(new GridData());
-		titleLabel.setText("Title"); //TODO lang "Title"
+		titleLabel.setText("Title");
 
 		tTitle = new Text(gDescription, SWT.BORDER);
 		tTitle.addFocusListener(new FocusAdapter() {
@@ -252,7 +252,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 
 		stateLabel = new Label(gDescription, SWT.NONE);
 		stateLabel.setLayoutData(new GridData());
-		stateLabel.setText("State"); //TODO lang "State"
+		stateLabel.setText("State");
 
 		tState = new Combo(gDescription, SWT.BORDER);
 		tState.setEnabled(false);
@@ -269,7 +269,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 
 		endStateLabel = new Label(gDescription, SWT.NONE);
 		endStateLabel.setLayoutData(new GridData());
-		endStateLabel.setText("End State"); //TODO lang "End State"
+		endStateLabel.setText("End State");
 
 		cboEndstate = new Combo(gDescription, SWT.NONE);
 		cboEndstate.addModifyListener(new ModifyListener() {
@@ -284,7 +284,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		replaceLabel = new Label(gDescription, SWT.NONE);
 		final GridData gridData_12 = new GridData();
 		replaceLabel.setLayoutData(gridData_12);
-		replaceLabel.setText("Replace"); //TODO lang "Replace"
+		replaceLabel.setText("Replace");
 
 		bReplace = new Button(gDescription, SWT.CHECK);
 		bReplace.setSelection(true);
@@ -343,10 +343,10 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 			stateLabel.setVisible(false);
 			endStateLabel.setVisible(false);
 			replaceLabel.setVisible(false);
-			lblJob.setText("Job"); //TODO lang "Job"
+			lblJob.setText("Job");
 			tJob.setFocus();
 		} else {
-			lblJob.setText("Order Id"); //TODO lang "Order Id"
+			lblJob.setText("Order Id");
 			cJobchain.setFocus();
 		}
 		tJob.setVisible(true);

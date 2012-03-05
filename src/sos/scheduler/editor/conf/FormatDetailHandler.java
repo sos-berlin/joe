@@ -11,13 +11,21 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
 	
 	
     private    StringBuffer    _sb          = new StringBuffer();
+
     private    String          _encoding    = "ISO-8859-1";
+   
     private    String          _indentStr   = "    ";
+
     private    String          _indent      = "    ";
+
     private    StringBuffer    _text        = new StringBuffer();
+
     private    int             _level       = 0;
+
     private    boolean         _isOpen      = false;
 
+     
+    
     public FormatDetailHandler(DetailDom dom) {
         //_dom = dom;
     }
@@ -138,4 +146,7 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
             sb.append(str);
         return sb.toString();
     }
+
+
+    
 }

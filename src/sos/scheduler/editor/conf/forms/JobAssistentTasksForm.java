@@ -36,7 +36,7 @@ public class JobAssistentTasksForm {
 	private JobListener       joblistener  = null;
 
 	private SchedulerDom      dom          = null;
-
+ 
 	private ISchedulerUpdate  update       = null;
 
 	private Button            butFinish    = null;
@@ -103,7 +103,7 @@ public class JobAssistentTasksForm {
 			step = step + " [Step 4 of 9]";
 		else 
 			step = step + " [Step 4 of 8]";
-		tasksShell.setText("Tasks" + step); //TODO lang "Tasks"
+		tasksShell.setText("Tasks" + step);
 
 		{
 			if(Utils.getAttributeValue("tasks", joblistener.getJob()) != null && 
@@ -114,7 +114,7 @@ public class JobAssistentTasksForm {
 
 		{
 			final Group jobGroup = new Group(tasksShell, SWT.NONE);
-			jobGroup.setText("Job " + Utils.getAttributeValue("name", joblistener.getJob())); //TODO lang "Job "
+			jobGroup.setText("Job " + Utils.getAttributeValue("name", joblistener.getJob()));
 			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, true, 2, 1);
 			jobGroup.setLayoutData(gridData);
 			final GridLayout gridLayout_1 = new GridLayout();
@@ -138,7 +138,7 @@ public class JobAssistentTasksForm {
 				final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 				gridData_1.widthHint = 57;
 				tasksLabel.setLayoutData(gridData_1);
-				tasksLabel.setText("Tasks"); //TODO lang "Tasks"
+				tasksLabel.setText("Tasks");
 			}
 			txtTask = new Text(composite_1, SWT.BORDER);
 			txtTask.setFocus();
@@ -165,7 +165,7 @@ public class JobAssistentTasksForm {
 			final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData_3.widthHint = 95;
 			minimumTasksLabel.setLayoutData(gridData_3);
-			minimumTasksLabel.setText("Minimum Tasks"); //TODO lang "Minimum Tasks"
+			minimumTasksLabel.setText("Minimum Tasks");
 
 			txtMinTasks = new Text(composite_1, SWT.BORDER);
 			txtMinTasks.setText(joblistener.getMintasks());
@@ -198,7 +198,7 @@ public class JobAssistentTasksForm {
 						close();
 					}
 				});
-				butCancel.setText("Cancel"); //TODO lang "Cancel"
+				butCancel.setText("Cancel");
 			}
 		}
 
@@ -221,7 +221,7 @@ public class JobAssistentTasksForm {
 					txtTask.setFocus();
 				}
 			});
-			butShow.setText("Show"); //TODO lang "Show"
+			butShow.setText("Show");
 		}
 
 		{
@@ -233,7 +233,7 @@ public class JobAssistentTasksForm {
 
 				}
 			});
-			butFinish.setText("Finish"); //TODO lang "Finish"
+			butFinish.setText("Finish");
 		}
 
 		butBack = new Button(composite_2, SWT.NONE);
@@ -250,7 +250,7 @@ public class JobAssistentTasksForm {
 				tasksShell.dispose();
 			}
 		});
-		butBack.setText("Back"); //TODO lang "Back"
+		butBack.setText("Back");
 		{
 			butNext = new Button(composite_2, SWT.NONE);
 			butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
@@ -260,7 +260,7 @@ public class JobAssistentTasksForm {
 					doNext();					
 				}
 			});
-			butNext.setText("Next"); //TODO lang "Next"
+			butNext.setText("Next");
 		}
 
 		Utils.createHelpButton(composite_2, "assistent.tasks", tasksShell);				

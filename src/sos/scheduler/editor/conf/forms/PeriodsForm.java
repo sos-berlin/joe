@@ -35,7 +35,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
     private Button               bRemove     = null;
 
     private PeriodForm           periodForm  = null;
-
+ 
     private Button               bApply      = null;
 
     private Label                label       = null;
@@ -102,7 +102,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
         group = new Group(this, SWT.NONE);
-        group.setText("Periods"); //TODO lang "Periods" gr
+        group.setText("Periods");
         group.setLayout(gridLayout);
         createPeriodForm();
         bApply = new Button(group, SWT.NONE);
@@ -111,7 +111,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         label.setLayoutData(gridData3);
         createTable();
         bNew = new Button(group, SWT.NONE);
-        bNew.setText("&New Period"); //TODO lang "&New Period" b
+        bNew.setText("&New Period");
         getShell().setDefaultButton(bNew);
         bNew.setLayoutData(gridData5);
         label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -134,10 +134,10 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
                 
             }
         });
-        bRemove.setText("Remove Period"); //TODO lang "Remove Period" b
+        bRemove.setText("Remove Period");
         bRemove.setEnabled(false);
         bRemove.setLayoutData(gridData6);
-        bApply.setText("&Apply Period"); //TODO lang "&Apply Period" b
+        bApply.setText("&Apply Period");
         bApply.setEnabled(false);
         bApply.setLayoutData(gridData1);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -195,19 +195,19 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         });
         TableColumn tableColumn = new TableColumn(tPeriods, SWT.NONE);
         tableColumn.setWidth(59);
-        tableColumn.setText("Let Run"); //TODO lang "Let Run" tc
+        tableColumn.setText("Let Run");
         TableColumn tableColumn1 = new TableColumn(tPeriods, SWT.NONE);
         tableColumn1.setWidth(56);
-        tableColumn1.setText("Begin"); //TODO lang "Begin" tc
+        tableColumn1.setText("Begin");
         TableColumn tableColumn2 = new TableColumn(tPeriods, SWT.NONE);
         tableColumn2.setWidth(55);
-        tableColumn2.setText("End"); //TODO lang "End" tc
+        tableColumn2.setText("End");
         TableColumn tableColumn3 = new TableColumn(tPeriods, SWT.NONE);
         tableColumn3.setWidth(59);
         tableColumn3.setText(PeriodForm.REPEAT_TIME);
         TableColumn tableColumn4 = new TableColumn(tPeriods, SWT.NONE);
         tableColumn4.setWidth(80);
-        tableColumn4.setText("Single Start"); //TODO lang "Single Start" tc
+        tableColumn4.setText("Single Start");
 
         final TableColumn newColumnTableColumn = new TableColumn(tPeriods, SWT.NONE);
         newColumnTableColumn.setWidth(92);
@@ -215,7 +215,7 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
 
         final TableColumn newColumnTableColumn_1 = new TableColumn(tPeriods, SWT.NONE);
         newColumnTableColumn_1.setWidth(100);
-        newColumnTableColumn_1.setText("When Holiday"); //TODO lang "When Holiday" tc
+        newColumnTableColumn_1.setText("When Holiday");
     }
 
 

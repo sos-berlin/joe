@@ -2,13 +2,12 @@ package sos.scheduler.editor.conf.listeners;
 
 import java.util.Iterator;
 import java.util.List;
-
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.SWT;
+import org.jdom.Attribute;
 import org.jdom.CDATA;
 import org.jdom.Element;
-
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
@@ -34,7 +33,7 @@ public class ScriptListener {
     
     
     private ISchedulerUpdate     _update     = null;
-    
+     
     public ScriptListener(SchedulerDom dom, Element parent, int type, ISchedulerUpdate update) {
         _dom = dom;
         _parent = parent;
@@ -175,7 +174,7 @@ public class ScriptListener {
     
 
     public void fillTable(Table table) {
-    	if (_script != null && table != null) {
+    	if (_script != null) {
     		table.removeAll();
     		List includeList = _script.getChildren("include");
     		for(int i = 0; i < includeList.size(); i++) {

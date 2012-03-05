@@ -52,7 +52,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 	private boolean                       event                        = false;
 
 	private Combo                         cExitcode                    = null;
-
+ 
 	private Button                        bRemoveExitcode              = null;
 
 	private Button                        addJobButton                 = null;
@@ -118,7 +118,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		gridLayout2.makeColumnsEqualWidth = true;
 		gridLayout2.numColumns = 1;
 		jobsAndOrdersGroup = new Group(this, SWT.NONE);
-		jobsAndOrdersGroup.setText("Commands for Job: " + listener.getName() + (listener.isDisabled() ? " (Disabled)" : "")); //TODO lang "Commands for Job: "...
+		jobsAndOrdersGroup.setText("Commands for Job: " + listener.getName() + (listener.isDisabled() ? " (Disabled)" : ""));
 		jobsAndOrdersGroup.setLayout(gridLayout2);
 		GridData gridData18 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
 		sashForm = new SashForm(jobsAndOrdersGroup, SWT.NONE);
@@ -180,7 +180,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		//gDescription =  new Composite(sashForm, SWT.NONE);
 		//gDescription.setText("Jobs and orders");
 		gMain = new Group(sashForm, SWT.NONE);
-		gMain.setText("Commands"); //TODO lang "Commands"
+		gMain.setText("Commands");
 		gMain.setLayout(gridLayout);
 
 		cExitcode = new Combo(gMain, SWT.NONE);
@@ -189,7 +189,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 			public void modifyText(final ModifyEvent e) {
 				listener.setExitCode(cExitcode.getText(), updateTree);
 				jobsAndOrdersGroup.setText("Job: " + listener.getName() + " " + listener.getExitCode() + " "
-						+ (listener.isDisabled() ? " (Disabled)" : "")); //TODO lang "Job: "...
+						+ (listener.isDisabled() ? " (Disabled)" : ""));
 				if (event) {
 					listener.setExitCode(cExitcode.getText(), true);					
 				}
@@ -218,7 +218,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 			}
 		});
 		addJobButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		addJobButton.setText("Add Job"); //TODO lang "Add Job"
+		addJobButton.setText("Add Job");
 
 		addOrderButton = new Button(composite, SWT.NONE);
 		addOrderButton.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
@@ -227,11 +227,11 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 				addOrder();
 			}
 		});
-		addOrderButton.setText("Add Order"); //TODO lang "Add Order"
+		addOrderButton.setText("Add Order");
 
 		final Label exitLabel = new Label(gMain, SWT.NONE);
 		exitLabel.setLayoutData(new GridData(73, SWT.DEFAULT));
-		exitLabel.setText("Exit  codes"); //TODO lang "Exit codes"
+		exitLabel.setText("Exit  codes");
 		new Label(gMain, SWT.NONE);
 
 		tCommands = new Table(gMain, SWT.FULL_SELECTION | SWT.BORDER);
@@ -262,19 +262,19 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 
 		final TableColumn tcJob = new TableColumn(tCommands, SWT.NONE);
 		tcJob.setWidth(167);
-		tcJob.setText("Command"); //TODO lang "Command"
+		tcJob.setText("Command");
 
 		final TableColumn tcCommand = new TableColumn(tCommands, SWT.NONE);
 		tcCommand.setWidth(154);
-		tcCommand.setText("Job/Id"); //TODO lang "Job/Id"
+		tcCommand.setText("Job/Id");
 
 		final TableColumn tcJobchain = new TableColumn(tCommands, SWT.NONE);
 		tcJobchain.setWidth(136);
-		tcJobchain.setText("Job Chain"); //TODO lang "Job Chain"
+		tcJobchain.setText("Job Chain");
 
 		final TableColumn tcStartAt = new TableColumn(tCommands, SWT.NONE);
 		tcStartAt.setWidth(139);
-		tcStartAt.setText("Start At"); //TODO lang "Start At"
+		tcStartAt.setText("Start At");
 
 		bRemoveExitcode = new Button(gMain, SWT.NONE);
 		final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
@@ -290,7 +290,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 
 			}
 		});
-		bRemoveExitcode.setText("Remove"); //TODO lang "Remove"
+		bRemoveExitcode.setText("Remove");
 
 	}
 

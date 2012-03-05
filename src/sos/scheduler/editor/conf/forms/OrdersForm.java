@@ -49,7 +49,7 @@ public class OrdersForm extends Composite implements IUpdateLanguage {
 		setToolTipText();
 		listener.fillTable(table);
 
-	}
+	} 
 
 	private void initialize() {
 		this.setLayout(new FillLayout());
@@ -70,11 +70,11 @@ public class OrdersForm extends Composite implements IUpdateLanguage {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		ordersGroup = new Group(this, SWT.NONE);
-		ordersGroup.setText("Orders"); //TODO lang "Orders"
+		ordersGroup.setText("Orders");
 		ordersGroup.setLayout(gridLayout);
 		createTable();
 		bNewOrder = new Button(ordersGroup, SWT.NONE);
-		bNewOrder.setText("&New Order"); //TODO lang "&New Order"
+		bNewOrder.setText("&New Order");
 		bNewOrder.setLayoutData(gridData);
 		getShell().setDefaultButton(bNewOrder);
 
@@ -88,7 +88,7 @@ public class OrdersForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		bRemoveOrder = new Button(ordersGroup, SWT.NONE);
-		bRemoveOrder.setText("Remove Order"); //TODO lang "Remove Order"
+		bRemoveOrder.setText("Remove Order");
 		bRemoveOrder.setEnabled(false);
 		bRemoveOrder.setLayoutData(gridData1);
 		bRemoveOrder.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -120,7 +120,7 @@ public class OrdersForm extends Composite implements IUpdateLanguage {
 		table.setLinesVisible(true);
 		TableColumn tableColumn = new TableColumn(table, SWT.NONE);
 		tableColumn.setWidth(240);
-		tableColumn.setText("Order Name/-ID"); //TODO lang "Order Name/_ID"
+		tableColumn.setText("Order Name/-ID");
 		table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 

@@ -47,7 +47,7 @@ public class JobAssistentPeriodForms {
 	private Element                job                         = null;
 
 	private SchedulerDom           dom                         = null;
-
+ 
 	private ISchedulerUpdate       update                      = null;
 
 	private Button                 butCancel                   = null;
@@ -161,7 +161,7 @@ public class JobAssistentPeriodForms {
 			gridLayout.numColumns = 3;
 			shell.setLayout(gridLayout);
 			shell.setSize(577, 714);
-			shell.setText("Run Time/ Periods"); //TODO lang "Run Time/ Periods"			
+			shell.setText("Run Time/ Periods"); 			
 
 			{
 				tabFolder = new TabFolder(shell, SWT.NONE);				
@@ -208,7 +208,7 @@ public class JobAssistentPeriodForms {
 								}
 							});
 							newPeriodButton.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
-							newPeriodButton.setText("New Period");//TODO lang "New Period"
+							newPeriodButton.setText("New Period");
 						}
 						createPeriodForm(JobAssistentPeriodForms.EVERY_DAY, group, everyDayTabItem);
 					}
@@ -329,7 +329,7 @@ public class JobAssistentPeriodForms {
 					apply();
 				}
 			});
-			addPeriodButton.setText("Add Period");	//TODO lang "Add Period"		
+			addPeriodButton.setText("Add Period");			
 
 			{
 				list = new List(shell, SWT.V_SCROLL | SWT.BORDER);
@@ -365,7 +365,7 @@ public class JobAssistentPeriodForms {
 						close();					
 					}
 				});
-				butCancel.setText("Close");//TODO lang "Close"
+				butCancel.setText("Close");
 			}
 
 			fillList();
@@ -393,7 +393,7 @@ public class JobAssistentPeriodForms {
 						shell.dispose();						
 					}								
 				});
-				butNext.setText("Apply");//TODO lang "Apply"
+				butNext.setText("Apply");
 				periodForm.setApplyButton(butNext);
 			}
 

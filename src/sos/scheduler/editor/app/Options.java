@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -17,63 +16,36 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
-import com.sos.JSHelper.Options.SOSOptionLocale;
 import com.sos.i18n.I18NBase;
 import com.sos.i18n.annotation.I18NResourceBundle;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class Options extends I18NBase {
-	private static final String	conLanguageEN						= "en";
-	private static final String	conEnvironmentVariableSOS_LOCALE	= "SOS_LOCALE";
-	public static final String	conPropertyEDITOR_OPTIONS_FILE		= "editor.options.file";
-	public static final String	conPropertyEDITOR_LANGUAGE			= "editor.language";
-	public static final String	conPropertyTEMPLATE_LANGUAGE		= "template.language";
-	public static final String	conPropertyTEMPLATE_LANGUAGE_LIST	= "template.language.list";
-	private final static String	conClassName						= "Options";
+	public static final String	conPropertyEDITOR_OPTIONS_FILE	= "editor.options.file";
+	public static final String	conPropertyEDITOR_LANGUAGE		= "editor.language";
+	private final static String	conClassName					= "Options";
 	@SuppressWarnings("unused")
-	private final String		conSVNVersion						= "$Id$";
-	private static final Logger	logger								= Logger.getLogger(Options.class);
-	public static final String	DEFAULT_OPTIONS						= "/sos/scheduler/editor/options.properties";
-	private static Properties	_defaults							= null;
-	private static Properties	_properties							= null;
-	private static boolean		_changed							= false;
-	private static boolean		_showWizardInfo						= true;
-	private static String[]		jobTitleList						= null;
-	private static HashMap		holidaysDescription					= null;
-	public static String		conJOEGreeting						= "";
-	private static String		strLastFolderName					= "";
-
+	private final String		conSVNVersion					= "$Id$";
+	private static final Logger	logger							= Logger.getLogger(Options.class);
+	public static final String	DEFAULT_OPTIONS					= "/sos/scheduler/editor/options.properties";
+	private static Properties	_defaults						= null;
+	private static Properties	_properties						= null;
+	private static boolean		_changed						= false;
+	private static boolean		_showWizardInfo					= true;
+	private static String[]		jobTitleList					= null;
+	private static HashMap		holidaysDescription				= null;
+	public static String conJOEGreeting = ""; 
+	private static String strLastFolderName = "";
+	 
 	private Options() {
 	}
-
-	public static int getLastTabItemIndex() {
-		String strR = _properties.getProperty("LastTabItemIndex");
-		if (strR == null || strR == "") {
-			return -1;
-		}
-		return (int) new Integer(strR);
-	}
-	
-	public static void setLastTabItemIndex(final int pintLastTabItemIndex) {
-		setProperty("LastTabItemIndex", String.valueOf(pintLastTabItemIndex));
-	}
-	
-	public static String getLastFolderName() {
+  
+	public static String getLastFolderName () {
 		return _properties.getProperty("LastFolderName");
 	}
-
-	public static void setLastFolderName(final String pstrLastFolderName) {
+	public static void setLastFolderName (final String pstrLastFolderName) {
 		setProperty("LastFolderName", pstrLastFolderName);
 	}
-
-	public static String getLastIncludeFolderName() {
-		return _properties.getProperty("LastIncludeFolderName");
-	}
-
-	public static void setLastIncludeFolderName(final String pstrLastFolderName) {
-		setProperty("LastIncludeFolderName", pstrLastFolderName);
-	}
-
 	public static String getDefaultOptionFilename() {
 		getProperties();
 		// return getDefault("editor.options.file").replaceAll("\\{scheduler_home\\}", getSchedulerHome());
@@ -161,51 +133,10 @@ public class Options extends I18NBase {
 
 	public static String getLanguage() {
 		getProperties();
-		String strT = Locale.getDefault().getLanguage();
-		String strSOSLocale = System.getenv(conEnvironmentVariableSOS_LOCALE);
-		if (strSOSLocale != null) {
-			strT = strSOSLocale;
-		}
-		else {
-			strT = _properties.getProperty(conPropertyEDITOR_LANGUAGE);
-			if (strT == null || strT.trim().length() <= 0) {
-				strT = conLanguageEN;
-			}
-		}
-		SOSOptionLocale.i18nLocale = new Locale(strT);
-		return strT;
-	}
-
-	public static String getTemplateLanguage() {
-		getProperties();
-		String strT = Locale.getDefault().getLanguage();
-		String strSOSLocale = System.getenv(conEnvironmentVariableSOS_LOCALE);
-		if (strSOSLocale != null) {
-			strT = strSOSLocale;
-		}
-		else {
-			strSOSLocale = strT;
-		}
-
-		strT = _properties.getProperty(conPropertyTEMPLATE_LANGUAGE);
+		String strT = _properties.getProperty(conPropertyEDITOR_LANGUAGE);
 		if (strT == null || strT.trim().length() <= 0) {
-			strT = strSOSLocale;
-			setTemplateLanguage(strT);
+			strT = "en";
 		}
-
-		return strT;
-	}
-
-	public static String getTemplateLanguageList() {
-		getProperties();
-		String strLanguages = "de;en;fr;it;es";
-
-		String strT = _properties.getProperty(conPropertyTEMPLATE_LANGUAGE_LIST);
-		if (strT == null || strT.trim().length() <= 0) {
-			strT = strLanguages;
-			setProperty(conPropertyTEMPLATE_LANGUAGE_LIST, strT);
-		}
-
 		return strT;
 	}
 
@@ -217,12 +148,7 @@ public class Options extends I18NBase {
 	}
 
 	public static void setLanguage(String language) {
-		SOSOptionLocale.i18nLocale = new Locale(language);
 		setProperty(conPropertyEDITOR_LANGUAGE, language);
-	}
-
-	public static void setTemplateLanguage(String language) {
-		setProperty(conPropertyTEMPLATE_LANGUAGE, language);
 	}
 
 	private static String getHelp(String key, String prefix) {
@@ -467,7 +393,7 @@ public class Options extends I18NBase {
 		}
 	}
 
-	private static String getProp(final String pstrPropertyName, final String pstrDefaultValue) {
+	private static String getProp (final String pstrPropertyName, final String pstrDefaultValue) {
 		String strT = System.getProperty(pstrPropertyName);
 		if (strT != null && strT.length() > 0) {
 			if (strT.startsWith("%") && strT.endsWith("%")) {
@@ -475,8 +401,7 @@ public class Options extends I18NBase {
 				String strW = System.getenv(strV);
 				if (strW != null) {
 					strT = strW;
-				}
-				else {
+				}else {
 					strT = pstrDefaultValue;
 				}
 			}
@@ -484,12 +409,11 @@ public class Options extends I18NBase {
 		else {
 			strT = pstrDefaultValue;
 		}
-
+		
 		return strT;
 	}
-
 	public static String getSchedulerHome() {
-		return getProp("SCHEDULER_HOME", "");
+			return getProp("SCHEDULER_HOME", "");
 	}
 
 	public static String getSchedulerData() {
@@ -498,14 +422,14 @@ public class Options extends I18NBase {
 
 	public static String getSchedulerNormalizedHome() {
 		String home = Options.getSchedulerHome();
-		home = new File(home).getAbsolutePath() + "/";
+		home = new File (home).getAbsolutePath() + "/";
 		home = home.replaceAll("\\\\", "/");
 		return home;
 	}
 
 	public static String getSchedulerNormalizedData() {
 		String data = Options.getSchedulerData();
-		data = new File(data).getAbsolutePath() + "/";
+		data = new File (data).getAbsolutePath() + "/";
 		data = data.replaceAll("\\\\", "/");
 		return data;
 	}
@@ -513,14 +437,14 @@ public class Options extends I18NBase {
 	public static String getSchedulerHotFolder() {
 		String sdata = getSchedulerData();
 		sdata = sdata.endsWith("/") || sdata.endsWith("\\") ? sdata : sdata + "/";
-		String strData = sdata + "config/live/";
+		String strData = sdata + "config/live/";		
 		return getProp("SCHEDULER_HOT_FOLDER", strData);
 
 	}
 
 	public static String getSchedulerNormalizedHotFolder() {
 		String sdata = Options.getSchedulerHotFolder();
-		sdata = new File(sdata).getAbsolutePath() + "/";
+		sdata = new File (sdata).getAbsolutePath() + "/";
 		sdata = sdata.replaceAll("\\\\", "/");
 		return sdata;
 	}

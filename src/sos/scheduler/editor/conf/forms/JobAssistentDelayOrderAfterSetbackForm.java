@@ -44,7 +44,7 @@ import sos.scheduler.editor.conf.listeners.JobsListener;
 public class JobAssistentDelayOrderAfterSetbackForm {
 
 	private Element            job              = null;
-
+ 
 	private Text               txtSetBack       = null;
 
 	private SchedulerDom       dom              = null;
@@ -126,11 +126,11 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		shellSetBack.setSize(598, 217);
 		String step = "  ";		
 		step = step + " [Step 9 of 9]";		
-		shellSetBack.setText("Delay Order After Setback" + step);//TODO lang "Delay Order After Setback"
+		shellSetBack.setText("Delay Order After Setback" + step);
 
 
 		final Group jobGroup = new Group(shellSetBack, SWT.NONE);
-		jobGroup.setText(" Job: " + Utils.getAttributeValue("name", job));//TODO lang " Job: " ?
+		jobGroup.setText(" Job: " + Utils.getAttributeValue("name", job));
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, true, 2, 1);
 		gridData_2.heightHint = 215;
 		gridData_2.widthHint = 507;
@@ -239,7 +239,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		{
 			final Label hhmmssLabel = new Label(jobGroup, SWT.NONE);
 			hhmmssLabel.setLayoutData(new GridData(57, SWT.DEFAULT));
-			hhmmssLabel.setText("hh:mm:ss");//TODO lang "hh:mm:ss"
+			hhmmssLabel.setText("hh:mm:ss");
 		}
 
 		{
@@ -276,7 +276,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 
 
 		noButton.setLayoutData(new GridData());
-		noButton.setText("no");//TODO lang "no"
+		noButton.setText("no");
 
 		yesButton = new Button(jobGroup, SWT.RADIO);
 		yesButton.setSelection(ismax);
@@ -287,7 +287,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		});
 
 		yesButton.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 1));
-		yesButton.setText("yes");//TODO lang "yes"
+		yesButton.setText("yes");
 
 
 
@@ -312,7 +312,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 					close();
 				}
 			});
-			butCancel.setText("Cancel");//TODO lang "Cancel"
+			butCancel.setText("Cancel");
 		}
 
 		final Composite composite_2 = new Composite(shellSetBack, SWT.NONE);
@@ -332,7 +332,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 					Utils.showClipboard(Utils.getElementAsString(job), shellSetBack, false, null, false, null, false); 
 				}
 			});
-			butShow.setText("Show");//TODO lang "Show"
+			butShow.setText("Show");
 		}
 		{
 			butNext = new Button(composite_2, SWT.NONE);
@@ -347,7 +347,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 					shellSetBack.dispose();					
 				}
 			});
-			butNext.setText("Next");//TODO lang "Next"
+			butNext.setText("Next");
 		}
 
 		butBack = new Button(composite_2, SWT.NONE);
@@ -363,7 +363,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 				shellSetBack.dispose();				
 			}
 		});
-		butBack.setText("Back");//TODO lang "Back"
+		butBack.setText("Back");
 		butFinish = new Button(composite_2, SWT.NONE);
 		butFinish.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
@@ -384,7 +384,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 
 			}
 		});
-		butFinish.setText("Finish");//TODO lang "Finish"
+		butFinish.setText("Finish");
 
 		Utils.createHelpButton(composite_2, "assistent.delay_order_after_setback", shellSetBack);
 

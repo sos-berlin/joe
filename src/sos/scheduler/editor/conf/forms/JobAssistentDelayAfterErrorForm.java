@@ -38,7 +38,7 @@ public class JobAssistentDelayAfterErrorForm {
 	private Text              txtErrorCount    = null;
 
 	private SchedulerDom      dom              = null;
-
+ 
 	private ISchedulerUpdate  update           = null;
 
 	private Button            butFinish        = null;
@@ -115,11 +115,11 @@ public class JobAssistentDelayAfterErrorForm {
 			step = step + "  [Step 8 of 9]";
 		else 
 			step = step + "  [Step 8 of 8]";
-		shellSetBack.setText("Delay After Error" + step);//TODO lang "Delay After Error"
+		shellSetBack.setText("Delay After Error" + step);
 
 
 		final Group jobGroup = new Group(shellSetBack, SWT.NONE);
-		jobGroup.setText(" Job: " + Utils.getAttributeValue("name", job));//TODO lang " Job: " ?
+		jobGroup.setText(" Job: " + Utils.getAttributeValue("name", job));
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
 		jobGroup.setLayoutData(gridData_2);
 		final GridLayout gridLayout_1 = new GridLayout();
@@ -237,7 +237,7 @@ public class JobAssistentDelayAfterErrorForm {
 		{
 			final Label hhmmssLabel = new Label(jobGroup, SWT.NONE);
 			hhmmssLabel.setLayoutData(new GridData(64, SWT.DEFAULT));
-			hhmmssLabel.setText("hh:mm:ss");//TODO lang "hh:mm:ss"
+			hhmmssLabel.setText("hh:mm:ss");
 		}
 
 		{
@@ -298,7 +298,7 @@ public class JobAssistentDelayAfterErrorForm {
 					close();
 				}
 			});
-			butCancel.setText("Cancel");//TODO lang "Cancel"
+			butCancel.setText("Cancel");
 		}
 
 		final Composite composite_2 = new Composite(shellSetBack, SWT.NONE);
@@ -319,7 +319,7 @@ public class JobAssistentDelayAfterErrorForm {
 					txtErrorCount.setFocus();
 				}
 			});
-			butShow.setText("Show");//TODO lang "Show"
+			butShow.setText("Show");
 		}
 
 		{
@@ -347,7 +347,7 @@ public class JobAssistentDelayAfterErrorForm {
 					shellSetBack.dispose();					
 				}
 			});
-			butFinish.setText("Finish");//TODO lang "Finish"
+			butFinish.setText("Finish");
 			if(!Utils.getAttributeValue("order", job).equals("yes"))
 				butFinish.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 		}
@@ -365,7 +365,7 @@ public class JobAssistentDelayAfterErrorForm {
 				shellSetBack.dispose();
 			}
 		});
-		butBack.setText("Back");//TODO lang "Back"
+		butBack.setText("Back");
 
 
 		{
@@ -392,7 +392,7 @@ public class JobAssistentDelayAfterErrorForm {
 
 				}
 			});
-			butNext.setText("Next");//TODO lang "Next"
+			butNext.setText("Next");
 
 			Utils.createHelpButton(composite_2, "assistent.delay_after_error", shellSetBack);
 

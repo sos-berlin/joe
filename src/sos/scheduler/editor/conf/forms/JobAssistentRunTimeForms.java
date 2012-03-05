@@ -46,7 +46,7 @@ public class JobAssistentRunTimeForms {
 	private ISchedulerUpdate update             = null;
 
 	private Button           butCancel          = null;
-
+ 
 	private Button           butShow            = null;
 
 	private Button           butNext            = null;		
@@ -165,11 +165,11 @@ public class JobAssistentRunTimeForms {
 			gridLayout.numColumns = 2;
 			runTimeSingleShell.setLayout(gridLayout);
 			runTimeSingleShell.setSize(553, 489);
-			runTimeSingleShell.setText("Run Time/ Single Starts"); //TODO lang "Run Time/ Single Starts"
+			runTimeSingleShell.setText("Run Time/ Single Starts"); 
 
 			{
 				final Group jobGroup = new Group(runTimeSingleShell, SWT.NONE);
-				jobGroup.setText("Job"); //TODO lang "Job"
+				jobGroup.setText("Job");
 				final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, true, 2, 1);
 				gridData_1.heightHint = 390;
 				gridData_1.widthHint = 517;
@@ -209,7 +209,7 @@ public class JobAssistentRunTimeForms {
 				final GridData gridData_15 = new GridData(GridData.END, GridData.CENTER, false, false);
 				gridData_15.widthHint = 28;
 				atLabel.setLayoutData(gridData_15);
-				atLabel.setText("at"); //TODO lang "at"
+				atLabel.setText("at");
 
 				txtDayAtHour = new Text(jobGroup, SWT.CENTER | SWT.BORDER);				
 				txtDayAtHour.addModifyListener(new ModifyListener() {
@@ -270,7 +270,7 @@ public class JobAssistentRunTimeForms {
 				{
 					final Label hhmmssLabel = new Label(jobGroup, SWT.NONE);
 					hhmmssLabel.setLayoutData(new GridData());
-					hhmmssLabel.setText("hh:mm:ss"); //TODO lang "hh:mm:ss"
+					hhmmssLabel.setText("hh:mm:ss");
 				}
 
 				{
@@ -303,7 +303,7 @@ public class JobAssistentRunTimeForms {
 
 				final Label atLabel_1 = new Label(jobGroup, SWT.NONE);
 				atLabel_1.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-				atLabel_1.setText("at"); //TODO lang "at"
+				atLabel_1.setText("at");
 
 				txtSpeDayHour = new Text(jobGroup, SWT.CENTER | SWT.BORDER);
 				txtSpeDayHour.addModifyListener(new ModifyListener() {
@@ -367,7 +367,7 @@ public class JobAssistentRunTimeForms {
 
 				final Label hhmmssLabel_1 = new Label(jobGroup, SWT.NONE);
 				hhmmssLabel_1.setLayoutData(new GridData());
-				hhmmssLabel_1.setText("hh:mm:ss"); //TODO lang "hh:mm:ss"
+				hhmmssLabel_1.setText("hh:mm:ss");
 
 				optEveryWeeksdays = new Button(jobGroup, SWT.CHECK);
 				optEveryWeeksdays.addSelectionListener(new SelectionAdapter() {
@@ -399,7 +399,7 @@ public class JobAssistentRunTimeForms {
 				final Label atLabel_2 = new Label(jobGroup, SWT.NONE);
 				atLabel_2.setLayoutData(new GridData(37, SWT.DEFAULT));
 				atLabel_2.setAlignment(SWT.RIGHT);
-				atLabel_2.setText("at"); //TODO lang "at"
+				atLabel_2.setText("at");
 
 				txtWeekAtHour = new Text(jobGroup, SWT.CENTER | SWT.BORDER);				
 				txtWeekAtHour.addModifyListener(new ModifyListener() {
@@ -471,7 +471,7 @@ public class JobAssistentRunTimeForms {
 
 				final Label hhmmssLabel_2 = new Label(jobGroup, SWT.NONE);
 				hhmmssLabel_2.setLayoutData(new GridData());
-				hhmmssLabel_2.setText("hh:mm:ss"); //TODO lang "hh:mm:ss"
+				hhmmssLabel_2.setText("hh:mm:ss");
 
 				{
 					optEveryMonths = new Button(jobGroup, SWT.CHECK);
@@ -506,7 +506,7 @@ public class JobAssistentRunTimeForms {
 				final Label atLabel_3 = new Label(jobGroup, SWT.NONE);
 				atLabel_3.setLayoutData(new GridData(37, SWT.DEFAULT));
 				atLabel_3.setAlignment(SWT.RIGHT);
-				atLabel_3.setText("at"); //TODO lang "at"
+				atLabel_3.setText("at");
 
 				txtMonthAtHour = new Text(jobGroup, SWT.CENTER | SWT.BORDER);
 				txtMonthAtHour.addModifyListener(new ModifyListener() {
@@ -577,7 +577,7 @@ public class JobAssistentRunTimeForms {
 
 				final Label hhmmssLabel_3 = new Label(jobGroup, SWT.NONE);
 				hhmmssLabel_3.setLayoutData(new GridData());
-				hhmmssLabel_3.setText("hh:mm:ss"); //TODO lang "hh:mm:ss"
+				hhmmssLabel_3.setText("hh:mm:ss");
 
 				list = new List(jobGroup, SWT.BORDER);
 				list.addSelectionListener(new SelectionAdapter() {
@@ -598,7 +598,7 @@ public class JobAssistentRunTimeForms {
 						}
 					});
 					butAdd.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-					butAdd.setText("Add"); //TODO lang "Add"
+					butAdd.setText("Add");
 				}
 
 				butRemove = new Button(jobGroup, SWT.NONE);
@@ -611,7 +611,7 @@ public class JobAssistentRunTimeForms {
 					}
 				});
 				butRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-				butRemove.setText("Remove"); //TODO lang "Remove"
+				butRemove.setText("Remove");
 			}
 
 
@@ -622,7 +622,7 @@ public class JobAssistentRunTimeForms {
 						close();
 					}
 				});
-				butCancel.setText("Close"); //TODO lang "Close"
+				butCancel.setText("Close");
 			}
 
 
@@ -645,7 +645,7 @@ public class JobAssistentRunTimeForms {
 							MainWindow.message(runTimeSingleShell, Utils.getElementAsString(job), SWT.OK );
 						}
 					});
-					butShow.setText("Show"); //TODO lang "Show"
+					butShow.setText("Show");
 				}
 
 				Utils.createHelpButton(composite, "assistent.run_time", runTimeSingleShell);
@@ -662,7 +662,7 @@ public class JobAssistentRunTimeForms {
 							runTimeSingleShell.dispose();														
 						}
 					});
-					butNext.setText("Apply"); //TODO lang "Apply"
+					butNext.setText("Apply");
 				}							
 			}
 

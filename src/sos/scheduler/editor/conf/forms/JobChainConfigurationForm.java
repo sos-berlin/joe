@@ -35,7 +35,7 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
     private JobChainConfigurationListener listener;
 
     private IContainer        container;
-
+ 
     private TreeItem          selection;
 
     private SashForm          sashForm  = null;
@@ -92,7 +92,7 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
     private void createGTree() {
         gTree = new Group(sashForm, SWT.NONE);
         gTree.setLayout(new FillLayout());
-        gTree.setText("Job Chain Configuration"); //TODO lang "Job Chain Configuration"
+        gTree.setText("Job Chain Configuration");
         tree = new Tree(gTree, SWT.BORDER);
         //tree.setMenu(new TreeMenu(tree, dom, this).getMenu());
         tree.addListener(SWT.MenuDetect, new Listener() {
@@ -149,13 +149,13 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
     
     public void updateState(String state){
     	TreeItem item = tree.getSelection()[0];        
-        item.setText("State: " + state); //TODO lang "State: "
+        item.setText("State: " + state);
         dom.setChanged(true);
     }
     
     public void updateJobChainname(String name){    	
     	TreeItem item = tree.getItem(0);
-    	item.setText("Job Chain: " + name); //TODO lang "Job Chain: "
+    	item.setText("Job Chain: " + name);
     	dom.setChanged(true);
     }
 
@@ -212,7 +212,7 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
              if (filename == null || filename.equals("")) {
                  FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
                  fdialog.setFilterPath(Options.getLastDirectory());
-                 fdialog.setText("Open File"); //TODO lang "Open File"
+                 fdialog.setText("Open File");
                  filename = fdialog.open();
              }
 
@@ -241,7 +241,7 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
              } else
                  return filename;
 
-             MainWindow.getSShell().setText("Job Details Editor [" + filename + "]"); //TODO lang "Job Details Editor []"
+             MainWindow.getSShell().setText("Job Details Editor [" + filename + "]");
 
              Options.setLastDirectory(new File(filename), dom);
              return filename;

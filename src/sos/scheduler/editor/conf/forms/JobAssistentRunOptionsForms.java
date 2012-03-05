@@ -31,7 +31,7 @@ public class JobAssistentRunOptionsForms {
 	private SchedulerDom      dom             = null;
 
 	private ISchedulerUpdate  update          = null;
-
+ 
 	private Button            butFinish       = null;
 
 	private Button            butCancel       = null;
@@ -94,10 +94,10 @@ public class JobAssistentRunOptionsForms {
 			step = step + " [Step 7 of 9]";
 		else 
 			step = step + " [Step 7 of 8]";
-		shellRunOptions.setText("Run Options" + step);//TODO lang "Run Options"
+		shellRunOptions.setText("Run Options" + step);
 
 		final Group jobGroup = new Group(shellRunOptions, SWT.NONE);
-		jobGroup.setText(" Job: " + Utils.getAttributeValue("name", job));//TODO lang " Job: " ?
+		jobGroup.setText(" Job: " + Utils.getAttributeValue("name", job));
 		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
 		jobGroup.setLayoutData(gridData_3);
 		final GridLayout gridLayout_1 = new GridLayout();
@@ -138,7 +138,7 @@ public class JobAssistentRunOptionsForms {
 		gridData_7.horizontalIndent = 10;
 		gridData_7.widthHint = 97;
 		butRunTime.setLayoutData(gridData_7);
-		butRunTime.setText("Single Starts");//TODO lang "Single Starts"
+		butRunTime.setText("Single Starts");
 
 		butDirectoryMonitoring = new Button(composite, SWT.NONE);
 		butDirectoryMonitoring.setEnabled(Utils.getAttributeValue("order", job).equals("no"));
@@ -174,7 +174,7 @@ public class JobAssistentRunOptionsForms {
 					close();
 				}
 			});
-			butCancel.setText("Cancel");//TODO lang "Cancel"
+			butCancel.setText("Cancel");
 		}
 
 		final Composite composite_2 = new Composite(shellRunOptions, SWT.NONE);
@@ -201,7 +201,7 @@ public class JobAssistentRunOptionsForms {
 					doFinish();
 				}
 			});
-			butFinish.setText("Finish");//TODO lang "Finish"
+			butFinish.setText("Finish");
 		}
 
 		butBack = new Button(composite_2, SWT.NONE);
@@ -222,7 +222,7 @@ public class JobAssistentRunOptionsForms {
 				shellRunOptions.dispose();
 			}
 		});
-		butBack.setText("Back");//TODO lang "Back"
+		butBack.setText("Back");
 		butNext = new Button(composite_2, SWT.NONE);
 		butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 		final GridData gridData_6 = new GridData(47, SWT.DEFAULT);
@@ -240,7 +240,7 @@ public class JobAssistentRunOptionsForms {
 				shellRunOptions.dispose();								
 			}
 		});
-		butNext.setText("Next");//TODO lang "Next"
+		butNext.setText("Next");
 
 
 		Utils.createHelpButton(composite_2, "assistent.run_options", shellRunOptions);

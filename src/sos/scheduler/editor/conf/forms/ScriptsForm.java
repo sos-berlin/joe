@@ -53,7 +53,7 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 				// tu nichts
 			}
 			System.err.println("..error in ScriptsForm.init() " + e.getMessage());
-		}
+		} 
 	}
 
 	private void initialize() {
@@ -73,6 +73,9 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 		}
 	}
 
+	/**
+	 * This method initializes group
+	 */
 	private void createGroup() {
 		try {
 			GridLayout gridLayout = new GridLayout();

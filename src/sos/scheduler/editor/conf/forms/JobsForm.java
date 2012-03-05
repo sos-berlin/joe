@@ -39,7 +39,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 	private Button           bNewJob                     = null;
 	
 	private Button           bRemoveJob                  = null;
-	
+	 
 	private Label            label                       = null;
 		
 	private SchedulerDom     dom                         = null;
@@ -94,11 +94,11 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 2;
 			group = new Group(this, SWT.NONE);
-			group.setText("Jobs");//TODO lang "Jobs"
+			group.setText("Jobs");
 			group.setLayout(gridLayout);
 			createTable();
 			bNewJob = new Button(group, SWT.NONE);
-			bNewJob.setText("New Standalone Job");//TODO lang "New Standalone Job"
+			bNewJob.setText("New Standalone Job");
 			bNewJob.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false));
 			getShell().setDefaultButton(bNewJob);
 			bNewJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -116,7 +116,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 				}
 			});
 			newOrderJob.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			newOrderJob.setText("New Order Job");//TODO lang "New Order Job"
+			newOrderJob.setText("New Order Job");
 			
 			butAssistent = new Button(group, SWT.NONE);
 			butAssistent.addSelectionListener(new SelectionAdapter() {
@@ -138,9 +138,9 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 				}
 			});
 			butAssistent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			butAssistent.setText("Job Wizard");//TODO lang "Job Wizard"
+			butAssistent.setText("Job Wizard");
 			bRemoveJob = new Button(group, SWT.NONE);			
-			bRemoveJob.setText("Remove Job");//TODO lang "Remove Job"
+			bRemoveJob.setText("Remove Job");
 			bRemoveJob.setEnabled(false);
 			bRemoveJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -157,7 +157,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			
 			label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 			label.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-			label.setText("Label");//TODO lang "Label"
+			label.setText("Label");
 		} catch (Exception e) {
 			try {
 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
@@ -186,7 +186,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			table.setLinesVisible(true);
 			TableColumn tableColumn5 = new TableColumn(table, SWT.NONE);
 			tableColumn5.setWidth(60);
-			tableColumn5.setText("Disabled");//TODO lang "Disabled"
+			tableColumn5.setText("Disabled");
 			table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					if (Utils.isElementEnabled("job", dom, (Element) e.item.getData())) {
@@ -209,19 +209,19 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 			});
 			TableColumn tableColumn = new TableColumn(table, SWT.NONE);
 			tableColumn.setWidth(100);
-			tableColumn.setText("Name");//TODO lang "Name"
+			tableColumn.setText("Name");
 			TableColumn tableColumn1 = new TableColumn(table, SWT.NONE);
 			tableColumn1.setWidth(200);
-			tableColumn1.setText("Title");//TODO lang "Title"
+			tableColumn1.setText("Title");
 			TableColumn tableColumn2 = new TableColumn(table, SWT.NONE);
 			tableColumn2.setWidth(100);
-			tableColumn2.setText("Scheduler ID");//TODO lang "Scheduler ID"
+			tableColumn2.setText("Scheduler ID");
 			TableColumn tableColumn3 = new TableColumn(table, SWT.NONE);
 			tableColumn3.setWidth(100);
-			tableColumn3.setText("Process Class");//TODO lang "Process Class"
+			tableColumn3.setText("Process Class");
 			TableColumn tableColumn4 = new TableColumn(table, SWT.NONE);
 			tableColumn4.setWidth(40);
-			tableColumn4.setText("Order");//TODO lang "Order"
+			tableColumn4.setText("Order");
 		} catch (Exception e) {
 			try {
 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);

@@ -52,7 +52,6 @@ import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
@@ -64,7 +63,7 @@ import com.sos.scheduler.model.xmldoc.Description.Configuration.Params;
 import com.sos.scheduler.model.xmldoc.Note;
 import com.sos.scheduler.model.xmldoc.Param;
 import com.swtdesigner.SWTResourceManager;
-
+ 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class JobAssistentImportJobParamsForm {
 	@SuppressWarnings("unused")
@@ -90,7 +89,7 @@ public class JobAssistentImportJobParamsForm {
 	private static Unmarshaller										unmarshaller								= null;
 	// private Text txtDescription = null;
 	private Browser													txtDescription								= null;
-	private Table													tblSelectedParams							= null;
+	private Table	 												tblSelectedParams							= null;
 	private Table													tableDescParameters							= null;
 	private Shell													jobParameterShell							= null;
 	private Text													txtValue									= null;
@@ -306,7 +305,7 @@ public class JobAssistentImportJobParamsForm {
 				step = step + " [Step 3 of 9]";
 			else
 				step = step + " [Step 3 of 8]";
-			jobParameterShell.setText("Job Parameter" + step);//TODO lang "Job Parameter"
+			jobParameterShell.setText("Job Parameter" + step);
 			Label nameLabel;
 			final Group textParameterGroup = new Group(jobParameterShell, SWT.NONE);
 			textParameterGroup.setText(" Job " + Utils.getAttributeValue(conParamNAME, joblistener.getJob()));
@@ -341,7 +340,7 @@ public class JobAssistentImportJobParamsForm {
 					close();
 				}
 			});
-			butCancel.setText("Cancel");//TODO lang "Cancel"
+			butCancel.setText("Cancel");
 			final Composite composite_1 = new Composite(composite_3, SWT.NONE);
 			composite_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
 			final GridLayout gridLayout_2 = new GridLayout();
@@ -355,7 +354,7 @@ public class JobAssistentImportJobParamsForm {
 					Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell, false, null, false, null, false);
 				}
 			});
-			showButton.setText("Show");//TODO lang "Show"
+			showButton.setText("Show");
 			if (assistentType == Editor.JOB)
 				showButton.setVisible(false);
 			butFinish = new Button(composite_1, SWT.NONE);
@@ -384,12 +383,12 @@ public class JobAssistentImportJobParamsForm {
 						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell, false, null, false, null, true);
 					// Event auslösen
 					if (refreshDetailsText != null)
-//ur 2011-11-09						refreshDetailsText.setText("X");
+						refreshDetailsText.setText("X");
 					closeDialog = true;
 					jobParameterShell.dispose();
 				}
 			});
-			butFinish.setText("Finish");//TODO lang "Finish"
+			butFinish.setText("Finish");
 			butBack = new Button(composite_3, SWT.NONE);
 			butBack.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
 			butBack.addSelectionListener(new SelectionAdapter() {
@@ -403,7 +402,7 @@ public class JobAssistentImportJobParamsForm {
 					jobParameterShell.dispose();
 				}
 			});
-			butBack.setText("Back");//TODO lang "Back"
+			butBack.setText("Back");
 			butBack.setEnabled(false);
 			butNext = new Button(composite_3, SWT.NONE);
 			butNext.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
@@ -424,7 +423,7 @@ public class JobAssistentImportJobParamsForm {
 					jobParameterShell.dispose();
 				}
 			});
-			butNext.setText(" Next ");//TODO lang "Next"
+			butNext.setText(" Next ");
 			butNext.setEnabled(false);
 			if (assistentType == Editor.JOB || assistentType == Editor.PARAMETER) {
 				butNext.setEnabled(false);
@@ -439,11 +438,11 @@ public class JobAssistentImportJobParamsForm {
 			final GridData gridData_6_1 = new GridData(GridData.FILL, GridData.BEGINNING, false, false, 5, 1);
 			gridData_6_1.heightHint = 0;
 			label_1.setLayoutData(gridData_6_1);
-			label_1.setText("label");//TODO lang "label"
+			label_1.setText("label");
 			{
 				nameLabel = new Label(textParameterGroup, SWT.NONE);
 				nameLabel.setLayoutData(new GridData());
-				nameLabel.setText("Name");//TODO lang "Name"
+				nameLabel.setText("Name");
 			}
 			{
 				txtName = new Text(textParameterGroup, SWT.BORDER);
@@ -471,7 +470,7 @@ public class JobAssistentImportJobParamsForm {
 			gridData_6.widthHint = 41;
 			lblTitle.setLayoutData(gridData_6);
 			lblTitle.setAlignment(SWT.RIGHT);
-			lblTitle.setText("Value");//TODO lang "Value"
+			lblTitle.setText("Value");
 			txtValue = new Text(textParameterGroup, SWT.BORDER);
 			txtValue.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
@@ -496,7 +495,7 @@ public class JobAssistentImportJobParamsForm {
 						addParam();
 					}
 				});
-				butApply.setText("Apply");//TODO lang "Apply"
+				butApply.setText("Apply");
 			}
 			tableDescParameters = new Table(textParameterGroup, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER);
 			tableDescParameters.addMouseListener(new MouseAdapter() {
@@ -521,10 +520,10 @@ public class JobAssistentImportJobParamsForm {
 			tableDescParameters.setLayoutData(gridData);
 			final TableColumn newColumnTableColumn = new TableColumn(tableDescParameters, SWT.NONE);
 			newColumnTableColumn.setWidth(122);
-			newColumnTableColumn.setText("Name");//TODO lang "Name"
+			newColumnTableColumn.setText("Name");
 			final TableColumn newColumnTableColumn_1 = new TableColumn(tableDescParameters, SWT.NONE);
 			newColumnTableColumn_1.setWidth(145);
-			newColumnTableColumn_1.setText("Value");//TODO lang "Value"
+			newColumnTableColumn_1.setText("Value");
 			final Composite composite_2 = new Composite(textParameterGroup, SWT.NONE);
 			final GridData gridData_11 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
 			gridData_11.widthHint = 49;
@@ -649,10 +648,10 @@ public class JobAssistentImportJobParamsForm {
 			tblSelectedParams.setHeaderVisible(true);
 			final TableColumn colName = new TableColumn(tblSelectedParams, SWT.NONE);
 			colName.setWidth(119);
-			colName.setText("Name");//TODO lang "Name"
+			colName.setText("Name");
 			final TableColumn colValue = new TableColumn(tblSelectedParams, SWT.NONE);
 			colValue.setWidth(212);
-			colValue.setText("Value");//TODO lang "Value"
+			colValue.setText("Value");
 			// txtDescription = new Text(textParameterGroup, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.H_SCROLL);
 			txtDescription = new Browser(textParameterGroup, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.H_SCROLL);
 			final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
@@ -867,11 +866,6 @@ public class JobAssistentImportJobParamsForm {
 	public void setJobForm(JobDocumentationForm jobDocForm_) {
 		if (jobDocForm_ != null)
 			jobDocForm = jobDocForm_;
-	}
-
-	public void setJobForm(JobDocumentation jobDocForm_) {
-//		if (jobDocForm_ != null)
-//			jobDocForm = jobDocForm_;
 	}
 
 	/**

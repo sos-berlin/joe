@@ -31,20 +31,35 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
 	private Combo          cboHistoryWithLog            = null;
-		private Combo          cboHistoryOnProcess          = null;
-		private Combo          cboHistory                   = null;
-		private Combo          mailOnDelayAfterError        = null;
-		private MailListener   listener                     = null;
+	
+	private Combo          cboHistoryOnProcess          = null;
+	
+	private Combo          cboHistory                   = null;
+	
+	private Combo          mailOnDelayAfterError        = null;
+	
+	private MailListener   listener                     = null;
+
 	private int            type                         = -1;
+
 	private Group          group                        = null;
+
 	private Text           mailCC                       = null;
+
 	private Text           mailBCC                      = null;
+	 
 	private Combo          mailOnError                  = null; 
+
 	private Combo          mailOnWarning                = null;
+
 	private Combo          mailOnSuccess                = null;
+	
 	private Combo          mailOnProcess                = null;
+	
 	private Text           mailTo                       = null;
+	
 	private Combo          LogLevel                     = null; 
+	
 	private boolean        init                         = true;
 	
 
@@ -100,6 +115,7 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		mailOnProcess.setItems(new String[]{"yes", "no", ""});
 		mailOnDelayAfterError.setItems(new String[]{"all", "first_only", "last_only", "first_and_last_only", ""});
 		cboHistory.setItems(new String[]{"yes", "no", ""});
+		//cboHistoryOnProcess.setItems(new String[]{"yes", "no", "0", "1", "", ""});
 		cboHistoryOnProcess.setItems(new String[]{"0", "1", "2", "3", "4", ""});
 		cboHistoryWithLog.setItems(new String[]{"yes", "no", "gzip", ""});
 		
@@ -119,12 +135,11 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		gridLayout.marginLeft = 5;
 		gridLayout.marginTop = 5;
 		gridLayout.numColumns = 2;
-		
 		group = new Group(this, SWT.NONE);
 		group.setText("Mail");
 		group.setLayout(gridLayout);
 		Label label14 = new Label(group, SWT.NONE);
-		label14.setText("Mail On Error"); //TODO lang "Mail on Error"
+		label14.setText("Mail On Error");
 		
 		mailOnError = new Combo(group, SWT.READ_ONLY);
 		mailOnError.addSelectionListener(new SelectionAdapter() {
@@ -137,7 +152,7 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		gd_mailOnError.minimumWidth = 150;
 		mailOnError.setLayoutData(gd_mailOnError);
 		Label label1 = new Label(group, SWT.NONE);
-		label1.setText("Mail On Warning"); //TODO lang "Mail On Warning"
+		label1.setText("Mail On Warning");
 
 		mailOnWarning = new Combo(group, SWT.READ_ONLY);		
 		mailOnWarning.addSelectionListener(new SelectionAdapter() {
@@ -150,7 +165,7 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		gd_mailOnWarning.minimumWidth = 150;
 		mailOnWarning.setLayoutData(gd_mailOnWarning);
 		Label label3 = new Label(group, SWT.NONE);
-		label3.setText("Mail On Success"); //TODO lang "Mail On Success"
+		label3.setText("Mail On Success");
 
 		mailOnSuccess = new Combo(group, SWT.READ_ONLY);
 		mailOnSuccess.addSelectionListener(new SelectionAdapter() {
@@ -164,7 +179,7 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 		
 		final Label mailOnProcessLabel = new Label(group, SWT.NONE);
-		mailOnProcessLabel.setText("Mail On Process"); //TODO lang "Mail On Process"
+		mailOnProcessLabel.setText("Mail On Process");
 
 		mailOnProcess = new Combo(group, SWT.READ_ONLY);
 		mailOnProcess.addSelectionListener(new SelectionAdapter() {
@@ -177,7 +192,7 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		mailOnProcess.setLayoutData(gd_mailOnProcess);
 
 		final Label mailOnDelayLabel = new Label(group, SWT.NONE);
-		mailOnDelayLabel.setText("Mail On Delay After Error"); //TODO lang "Mail On Delay After Error"
+		mailOnDelayLabel.setText("Mail On Delay After Error");
 
 		mailOnDelayAfterError = new Combo(group, SWT.READ_ONLY);
 		mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
@@ -195,7 +210,7 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		
 
 		final Label mailToLabel = new Label(group, SWT.NONE);
-		mailToLabel.setText("Mail To"); //TODO lang "Mail To"
+		mailToLabel.setText("Mail To");
 
 		
 		
@@ -214,7 +229,7 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 		
 		final Label mailCcLabel = new Label(group, SWT.NONE);
-		mailCcLabel.setText("Mail CC"); //TODO lang "Mail CC"
+		mailCcLabel.setText("Mail CC");
 
 		mailCC = new Text(group, SWT.BORDER);
 		mailCC.addFocusListener(new FocusAdapter() {
@@ -232,7 +247,7 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		mailCC.setLayoutData(gridData_2);
 
 		final Label mailBccLabel = new Label(group, SWT.NONE);
-		mailBccLabel.setText("Mail BCC"); //TODO lang "Mail BCC"
+		mailBccLabel.setText("Mail BCC");
 
 		GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		gridData.minimumWidth = 60;
@@ -256,7 +271,7 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		
 
 		final Label logLevelLabel = new Label(group, SWT.NONE);
-		logLevelLabel.setText("Log Level"); //TODO lang "Log Level"
+		logLevelLabel.setText("Log Level");
 
 		LogLevel = new Combo(group, SWT.READ_ONLY);
 		GridData gd_LogLevel = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -274,7 +289,7 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		label_2.setLayoutData(gridData_4);
 
 		final Label historyLabel = new Label(group, SWT.NONE);
-		historyLabel.setText("History"); //TODO lang "History"
+		historyLabel.setText("History");
 
 		cboHistory = new Combo(group, SWT.READ_ONLY);
 		cboHistory.addSelectionListener(new SelectionAdapter() {
@@ -287,7 +302,7 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		cboHistory.setLayoutData(gd_cboHistory);
 
 		final Label historyOnProcessLabel = new Label(group, SWT.NONE);
-		historyOnProcessLabel.setText("History On Process"); //TODO lang "History On Process"
+		historyOnProcessLabel.setText("History On Process");
 
 		cboHistoryOnProcess = new Combo(group, SWT.NONE);
 		cboHistoryOnProcess.addModifyListener(new ModifyListener() {
@@ -315,7 +330,7 @@ public class MailForm extends Composite implements IUnsaved, IUpdateLanguage {
 		cboHistoryOnProcess.setLayoutData(gd_cboHistoryOnProcess);
 
 		final Label historyWithLogLabel = new Label(group, SWT.NONE);
-		historyWithLogLabel.setText("History With Log"); //TODO lang "History With Log"
+		historyWithLogLabel.setText("History With Log");
 
 		cboHistoryWithLog = new Combo(group, SWT.READ_ONLY);
 		cboHistoryWithLog.addSelectionListener(new SelectionAdapter() {

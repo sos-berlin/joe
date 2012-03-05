@@ -53,7 +53,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 	private Label             label1                     = null;
 
 	private Button            bLetRun                    = null;
-
+ 
 	private Label             label2                     = null;
 
 	private Text              sBeginHours                = null;
@@ -151,7 +151,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 	public void setParams(SchedulerDom dom, boolean onOrder) {
 		this.onOrder = onOrder;
 		if(onOrder && startTimePeriodGroup != null)
-			startTimePeriodGroup.setText("Start Time is not avaible for Order Job"); //TODO lang "Start Time is not avaible for Order Job" gr 
+			startTimePeriodGroup.setText("Start Time is not avaible for Order Job");
 
 		listener = new PeriodListener(dom);
 	}
@@ -507,13 +507,13 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		gPeriod.setLayout(gridLayout);
 
 		final Group groupSlottime = new Group(gPeriod, SWT.NONE);
-		groupSlottime.setText("Time Slot"); //TODO lang "Time Slot" gr
+		groupSlottime.setText("Time Slot");
 		groupSlottime.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		final GridLayout gridLayout_1 = new GridLayout();
 		gridLayout_1.numColumns = 8;
 		groupSlottime.setLayout(gridLayout_1);
 		label1 = new Label(groupSlottime, SWT.NONE);
-		label1.setText("Let Run:"); //TODO lang "Let Run:" l
+		label1.setText("Let Run:");
 		bLetRun = new Button(groupSlottime, SWT.CHECK);
 		bLetRun.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -527,7 +527,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		new Label(groupSlottime, SWT.NONE);
 		lRunOnce = new Label(groupSlottime, SWT.NONE);
 		lRunOnce.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 1));
-		lRunOnce.setText("Run Once:"); //TODO lang "Run Once:" l
+		lRunOnce.setText("Run Once:");
 		cRunOnce = new Button(groupSlottime, SWT.CHECK);
 		cRunOnce.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		cRunOnce.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -542,7 +542,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		});
 		label2 = new Label(groupSlottime, SWT.NONE);
 		label2.setLayoutData(new GridData(86, SWT.DEFAULT));
-		label2.setText("Begin Time:"); //TODO lang "Begin Time:" l
+		label2.setText("Begin Time:");
 		sBeginHours = new Text(groupSlottime, SWT.BORDER);
 		sBeginHours.setTextLimit(2);
 		sBeginHours.addKeyListener(new KeyAdapter() {
@@ -642,10 +642,10 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 		});
 		label5 = new Label(groupSlottime, SWT.NONE);
 		label5.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		label5.setText("hh:mm:ss"); //TODO lang "hh:mm:ss" l
+		label5.setText("hh:mm:ss");
 		label6 = new Label(groupSlottime, SWT.NONE);
 		label6.setLayoutData(new GridData(86, SWT.DEFAULT));
-		label6.setText("End Time:"); //TODO lang "End Time:" l
+		label6.setText("End Time:");
 		sEndHours = new Text(groupSlottime, SWT.BORDER);
 		sEndHours.setTextLimit(2);
 		sEndHours.addKeyListener(new KeyAdapter() {
@@ -748,7 +748,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
 		label9 = new Label(groupSlottime, SWT.NONE);
 		label9.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
-		label9.setText("hh:mm:ss"); //TODO lang "hh:mm:ss" l
+		label9.setText("hh:mm:ss");
 
 
 	}
@@ -756,7 +756,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 	private void createStartTimeGroup() {
 
 		startTimePeriodGroup = new Group(gPeriod, SWT.NONE);
-		startTimePeriodGroup.setText("Start Time"); //TODO lang "Start Time" gr
+		startTimePeriodGroup.setText("Start Time");
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		startTimePeriodGroup.setLayoutData(gridData_2);
 		final GridLayout gridLayout = new GridLayout();
@@ -809,7 +809,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 				setStarttimeToolTip();
 			}
 		});
-		cboStarttime.setText("Single Start"); //TODO lang "Single Start" 
+		cboStarttime.setText("Single Start");
 
 		stHour = new Text(composite, SWT.BORDER);
 		stHour.setTextLimit(2);
@@ -922,12 +922,12 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
 		label18_2 = new Label(composite, SWT.NONE);
 		label18_2.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		label18_2.setText("hh:mm:ss"); //TODO lang "hh:mm:ss" l
+		label18_2.setText("hh:mm:ss");
 
 		lblOrSecond = new Label(composite, SWT.NONE);
 		lblOrSecond.setVisible(false);
 		lblOrSecond.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		lblOrSecond.setText("or ss"); //TODO lang "or ss" l
+		lblOrSecond.setText("or ss");
 
 	}
 
@@ -943,7 +943,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 	private void createWhenHoliday()         {
 
 		final Group whenHolidayGroup = new Group(gPeriod, SWT.NONE);
-		whenHolidayGroup.setText("When Holiday"); //TODO lang "When Holiday" gr
+		whenHolidayGroup.setText("When Holiday");
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, true, false);
 		whenHolidayGroup.setLayoutData(gridData_4);
 		whenHolidayGroup.setLayout(new GridLayout());

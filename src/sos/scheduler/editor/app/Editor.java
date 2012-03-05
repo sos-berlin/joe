@@ -1,25 +1,18 @@
 package sos.scheduler.editor.app;
-import java.lang.reflect.Method;
-
 import org.apache.log4j.Logger;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-
-import sos.scheduler.editor.classes.SOSSplashScreen;
-
+ 
 import com.sos.JSHelper.Logging.Log4JHelper;
 import com.sos.i18n.annotation.I18NResourceBundle;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
-public class Editor /* extends I18NBase */{
+public class Editor /* extends I18NBase */ {
 	private final static String	conSVNVersion			= "$Id$";
 	private static Logger		logger					= Logger.getLogger(Editor.class);
 	@SuppressWarnings("unused")
 	private final String		conClassName			= "Editor";
 	@SuppressWarnings("unused")
 	private static Log4JHelper	objLogger				= null;
-	public static MainWindow	objMainWindow			= null;
 
 	public final static int		CONFIG					= 1;
 	public final static int		BASE					= 2;
@@ -99,47 +92,28 @@ public class Editor /* extends I18NBase */{
 	public static String		SCHEDULER_ENCODING		= "";
 	public static String		DOCUMENTATION_ENCODING	= "utf-8";
 
-	private static MainWindow	window					= null;
-	private static Display		display					= null;
-
 	public static void main(String[] args) {
 		try {
-			display = Display.getDefault();
-			window = new MainWindow();
+			objLogger = new Log4JHelper("./JOE-log4j.properties");
+
+			logger = Logger.getRootLogger();
+			logger.debug(conSVNVersion);
+
+			Display display = Display.getDefault();
+			MainWindow window = new MainWindow();
 			window.createSShell();
-
-			final Shell shell = MainWindow.getSShell();
-
-			Method m = Editor.class.getMethod("openApplicationMainWnd", new Class[] { Shell.class });
-
-			SOSSplashScreen.showSplashScreen(shell, new Runnable() {
-				public void run() {
-					doSomeTimeconsumingOperation();
-				}
-			}, new Image(display, "./SplashScreenJOE.bmp"), m, 2000);
-
-			// MainWindow window = new MainWindow();
-			// window.createSShell();
-			// MainWindow.getSShell().open();
-			// MainWindow.getSShell().update();
-			// window.OpenLastFolder();
-			// objMainWindow = window;
+			MainWindow.getSShell().open();
+			MainWindow.getSShell().update();
+			window.OpenLastFolder();
 			// window.getSShell().pack(true);
-			// if (args.length > 0) {
-			// window.openFile(args[0]);
-			// }
-			// while (!MainWindow.getSShell().isDisposed()) {
-			// try {
-			// if (!display.readAndDispatch()) {
-			// display.sleep();
-			// }
-			// }
-			// catch (Exception e) {
-			// MainWindow.getSShell().redraw();
-			// // TODO: handle exception
-			// }
-			// }
-			// display.dispose();
+//			if (args.length > 0) {
+//				window.openFile(args[0]);
+//			}
+			while (!MainWindow.getSShell().isDisposed()) {
+				if (!display.readAndDispatch())
+					display.sleep();
+			}
+			display.dispose();
 		}
 		catch (Exception e) {
 			try {
@@ -152,55 +126,4 @@ public class Editor /* extends I18NBase */{
 			}
 		}
 	}
-
-	private static void doSomeTimeconsumingOperation() {
-		// System.out.println("Executing some importent initial environment checks...");
-		try {
-			objLogger = new Log4JHelper("./JOE-log4j.properties");
-
-			logger = Logger.getRootLogger();
-			logger.debug(conSVNVersion);
-
-			window.OpenLastFolder();
-
-			objMainWindow = window;
-
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		// System.out.println("finished");
-	}
-
-	public static void openApplicationMainWnd(Shell shell) {
-//		System.out.println("now let#s do the real hard work...");
-		// shell.open();
-		//
-		// Display d = shell.getDisplay();
-		//
-		// while (!shell.isDisposed()) {
-		// if (!d.readAndDispatch()) {
-		// d.sleep();
-		// }
-		// }
-
-		MainWindow.getSShell().open();
-		MainWindow.getSShell().update();
-
-		while (!MainWindow.getSShell().isDisposed()) {
-
-			try {
-				if (!display.readAndDispatch()) {
-					display.sleep();
-				}
-			}
-			catch (Exception e) {
-				MainWindow.getSShell().redraw();
-//				MainWindow.getSShell().layout();
-			}
-		}
-		display.dispose();
-
-	}
-
 }

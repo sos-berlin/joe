@@ -1,9 +1,5 @@
 package sos.scheduler.editor.app;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Event;
@@ -15,7 +11,9 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.JobChainsForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
@@ -36,15 +34,23 @@ public class TreeMenu {
 	private static int              _type                     = -1; 
 
 	private SchedulerForm           _gui                      = null;
-
+ 
 	private static final String     EDIT_XML                  = "Edit XML";
+
 	private static final String     SHOW_XML                  = "Show XML";
+
 	private static final String     SHOW_INFO                 = "Show Info";
+
 	private static final String     COPY                      = "Copy";
+
 	private static final String     COPY_TO_CLIPBOARD         = "Copy to Clipboard";
+
 	private static final String     PASTE                     = "Paste";
+
 	private static final String     DELETE_HOT_HOLDER_FILE    = "Delete Hot Folder File";
+
 	private static final String     NEW                       = "New";
+
 	private static final String     DELETE                    = "Delete";
 
 

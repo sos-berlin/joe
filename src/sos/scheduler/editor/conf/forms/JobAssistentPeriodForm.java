@@ -31,7 +31,7 @@ public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage
 
     private Label          label2           = null;
 
-    private Text           sBeginHours      = null;
+    private Text            sBeginHours      = null;
 
     private Label          label3           = null;
 
@@ -106,10 +106,10 @@ public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage
         gridLayout.numColumns = 7;
         gPeriod = new Group(this, SWT.NONE);
         gPeriod.setEnabled(true);
-        gPeriod.setText("Period");//TODO lang "Period"
+        gPeriod.setText("Period");
         gPeriod.setLayout(gridLayout);
         label2 = new Label(gPeriod, SWT.NONE);
-        label2.setText("Begin Time:");//TODO lang "Begin Time:"
+        label2.setText("Begin Time:");
         sBeginHours = new Text(gPeriod, SWT.BORDER);
 
         sBeginHours.addVerifyListener(new VerifyListener() {
@@ -180,10 +180,10 @@ public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage
             }
         });
         label5 = new Label(gPeriod, SWT.NONE);
-        label5.setText("hh:mm:ss");//TODO lang "hh:mm:ss"
+        label5.setText("hh:mm:ss");
         label5.setLayoutData(gridData2);
         label6 = new Label(gPeriod, SWT.NONE);
-        label6.setText("End Time:");//TODO lang "End Time:"
+        label6.setText("End Time:");
         sEndHours = new Text(gPeriod, SWT.BORDER);
         sEndHours.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
@@ -264,7 +264,7 @@ public class JobAssistentPeriodForm extends Composite implements IUpdateLanguage
         sEndSeconds.setLayoutData(gridData6);
 
         label9 = new Label(gPeriod, SWT.NONE);
-        label9.setText("hh:mm:ss");//TODO lang "hh:mm:ss"
+        label9.setText("hh:mm:ss");
         sEndSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 if (!beginBeforeAfter()) {

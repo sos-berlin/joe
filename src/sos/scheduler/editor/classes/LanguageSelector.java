@@ -10,9 +10,13 @@ import org.eclipse.swt.widgets.Composite;
 * 
 * \details
 *
+* \section LanguageSelector.java_intro_sec Introduction
+*
+* \section LanguageSelector.java_samples Some Samples
+*
 * \code
 *   .... code goes here ...
-* \endcode
+* \endcode 
 *
 * <p style="text-align:center">
 * <br />---------------------------------------------------------------------------
@@ -32,12 +36,8 @@ public class LanguageSelector extends Combo {
 	@SuppressWarnings("unused")
 	private final String	conClassName	= "LanguageSelector";
 
-	public LanguageSelector(Composite pobjComposite, int arg1) {
-		super(pobjComposite, arg1);
-	}
-	
-	public boolean isScriptLanguage () {
-		return !this.isShell() && !this.isJava();
+	public LanguageSelector(Composite arg0, int arg1) {
+		super(arg0, arg1);
 	}
 	
     public void selectLanguageItem(int languageId) {
@@ -48,9 +48,8 @@ public class LanguageSelector extends Combo {
 		return this.getText().equalsIgnoreCase("java");
 	}
 	
-	public boolean isShell () {
-		String strLang = this.getText();
-		return strLang.equalsIgnoreCase("shell");
+	public boolean isShell (){
+		return this.getText().equalsIgnoreCase("shell");
 	}
 	
 	protected void checkSubclass() {
