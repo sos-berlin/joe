@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
@@ -17,6 +18,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
@@ -29,6 +31,7 @@ import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.forms.ActionsForm;
+import sos.scheduler.editor.classes.WindowsSaver;
 import sos.scheduler.editor.conf.DetailDom;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.HotFolderDialog;
@@ -40,20 +43,19 @@ import sos.scheduler.editor.doc.forms.DocumentationForm;
 import sos.util.SOSString;
 
 import com.sos.JSHelper.Basics.JSVersionInfo;
-import com.sos.i18n.I18NBase;
 import com.sos.i18n.annotation.I18NMessage;
 import com.sos.i18n.annotation.I18NMessages;
 import com.sos.i18n.annotation.I18NResourceBundle;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
-public class MainWindow extends I18NBase {
+public class MainWindow {
+	private static final String	conNewlineTab							= "n\t";
 	private static final String	conPropertyNameEDITOR_JOB_SHOW_WIZARD	= "editor.job.show.wizard";
 	private static final String	conStringEDITOR							= "editor";
 	private static final String	conIconOPEN_HOT_FOLDER_GIF				= "/sos/scheduler/editor/icon_open_hot_folder.gif";
 	public static final String	conIconICON_OPEN_GIF					= "/sos/scheduler/editor/icon_open.gif";
 	public static final String	conIconEDITOR_PNG						= "/sos/scheduler/editor/editor.png";
 	private final String		conClassName							= "MainWindow";
-	@SuppressWarnings("unused")
 	private final String		conSVNVersion							= "$Id$";
 	private static final Logger	logger									= Logger.getLogger(MainWindow.class);
 	private static Shell		sShell									= null;													// @jve:decl-index=0:visual-constraint="3,1"
@@ -71,18 +73,17 @@ public class MainWindow extends I18NBase {
 	private static SOSString	sosString								= new SOSString();
 	/**  */
 	private static boolean		flag									= true;													// hilfsvariable
+	private final static String	EMPTY									= "";
+
+	private static Label		StatusLine								= null;
 
 	public MainWindow() {
-//		super("JOEMessages"); // , Options.getLanguage());
-		super("JOEMessages", Options.getLanguage());
 		logger.debug(conSVNVersion);
 	}
 
-	/**
-	 * This method initializes composite
-	 */
 	private void createContainer() {
 		container = new TabbedContainer(sShell);
+		// container = new TabbedContainer(groupmain);
 		sShell.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		// TODO: Ausserhalb des Job Editors veränderte Files sollten mit Hilfe einer "Aktualisieren" Funktion neu eingelesen werden können.
 		sShell.addShellListener(new ShellListener() {
@@ -91,6 +92,7 @@ public class MainWindow extends I18NBase {
 			}
 
 			public void shellClosed(ShellEvent arg0) {
+				saveWindowPosAndSize();
 				logger.debug("shellClosed");
 			}
 
@@ -128,11 +130,22 @@ public class MainWindow extends I18NBase {
 
 	public void OpenLastFolder() {
 		String strF = Options.getLastFolderName();
-		// String strF = "C:/Users/KB/sos-berlin.com/jobscheduler/scheduler/config/live";
 		if (strF != null && strF.trim().length() > 0) {
 			container.openDirectory(strF);
 		}
 	}
+
+	public void setStatusLine(final String pstrText, final int pintMsgType) {
+		StatusLine.setText(pstrText);
+		// StatusLine.setForeground(SWT.COLOR_BLUE);
+	}
+
+	public void setStatusLine(final String pstrText) {
+		StatusLine.setText(pstrText);
+		// StatusLine.setForeground(SWT.COLOR_BLUE);
+	}
+
+	private WindowsSaver objPersistenceStore;
 
 	/**
 	 * This method initializes sShell
@@ -140,11 +153,13 @@ public class MainWindow extends I18NBase {
 	 */
 	public void createSShell() {
 		sShell = new Shell();
+
 		final GridLayout gridLayout_1 = new GridLayout();
 		sShell.setLayout(gridLayout_1);
 		sShell.setImage(ResourceManager.getImageFromResource(conIconEDITOR_PNG));
 		groupmain = new Composite(sShell, SWT.NONE);
 		groupmain.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
+
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.verticalSpacing = 0;
 		gridLayout.marginWidth = 0;
@@ -153,8 +168,18 @@ public class MainWindow extends I18NBase {
 		groupmain.setLayout(gridLayout);
 		createToolBar();
 		createContainer();
+
+		StatusLine = new Label(sShell, SWT.BOTTOM);
+		GridData gridStatuslineLayout = new GridData();
+		gridStatuslineLayout.horizontalAlignment = GridData.FILL;
+		gridStatuslineLayout.grabExcessHorizontalSpace = true;
+		StatusLine.setLayoutData(gridStatuslineLayout);
+		// setStatusLine("Hey, Joe ...", 0);
+
 		listener = new MainListener(this, container);
-		sShell.setSize(new org.eclipse.swt.graphics.Point(940, 600));
+		objPersistenceStore = new WindowsSaver(this.getClass(), sShell, 940, 600);
+		objPersistenceStore.restoreWindowLocation();
+//		sShell.setSize(new org.eclipse.swt.graphics.Point(940, 600));
 		sShell.setMinimumSize(940, 600);
 		// load resources
 		listener.loadOptions();
@@ -163,7 +188,7 @@ public class MainWindow extends I18NBase {
 		listener.loadHolidaysTitel();
 		Options.loadWindow(sShell, conStringEDITOR);
 
-		String strT = this.getMsg(JOE_I_0010) + JSVersionInfo.conVersionNumber;
+		String strT = Messages.getLabel(JOE_I_0010) + JSVersionInfo.conVersionNumber;
 		container.setTitleText(strT);
 		sShell.setText(strT);
 		logger.debug(strT);
@@ -172,24 +197,25 @@ public class MainWindow extends I18NBase {
 
 		menuBar = new Menu(sShell, SWT.BAR);
 		MenuItem submenuItem2 = new MenuItem(menuBar, SWT.CASCADE);
-		submenuItem2.setText("&" + getMenuText(this.getMsg(MENU_File), ""));
+		submenuItem2.setText("&" + getMenuText(Messages.getLabel(MENU_File), EMPTY));
 		mFile = new Menu(submenuItem2);
 		MenuItem open = new MenuItem(mFile, SWT.PUSH);
 		open.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				if (container.openQuick() != null)
+				if (container.openQuick() != null) {
 					setSaveStatus();
+				}
 			}
 		});
-		open.setText(getMenuText(this.getMsg(MENU_OPEN), "O"));
+		open.setText(getMenuText(Messages.getLabel(MENU_OPEN), "O"));
 		open.setAccelerator(SWT.CTRL | 'O');
 		//
 		MenuItem mNew = new MenuItem(mFile, SWT.CASCADE);
-		mNew.setText(getMenuText(this.getMsg(MENU_New), ""));
-		//mNew.setAccelerator(SWT.CTRL | 'N');
+		mNew.setText(getMenuText(Messages.getLabel(MENU_New), EMPTY));
+		// mNew.setAccelerator(SWT.CTRL | 'N');
 		Menu pmNew = new Menu(mNew);
 		MenuItem pNew = new MenuItem(pmNew, SWT.PUSH);
-		pNew.setText(getMenuText(this.getMsg(MENU_Configuration), "I"));
+		pNew.setText(getMenuText(Messages.getLabel(MENU_Configuration), "I"));
 		pNew.setAccelerator(SWT.CTRL | 'I');
 		pNew.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -202,8 +228,8 @@ public class MainWindow extends I18NBase {
 		});
 		mNew.setMenu(pmNew);
 		MenuItem push1 = new MenuItem(pmNew, SWT.PUSH);
-		push1.setText(getMenuText(this.getMsg(MENU_Documentation), "P")); // Generated
-//		push1.setText(getMenuText("Modify Documentation", "P")); // Generated
+		push1.setText(getMenuText(Messages.getLabel(MENU_Documentation), "P")); // Generated
+		// push1.setText(getMenuText("Modify Documentation", "P")); // Generated
 		push1.setAccelerator(SWT.CTRL | 'P');
 		push1.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -216,7 +242,7 @@ public class MainWindow extends I18NBase {
 		});
 		// new event handler
 		MenuItem pNewActions = new MenuItem(pmNew, SWT.PUSH);
-		pNewActions.setText(getMenuText(this.getMsg(MENU_EventHandler), "H"));
+		pNewActions.setText(getMenuText(Messages.getLabel(MENU_EventHandler), "H"));
 		pNewActions.setAccelerator(SWT.CTRL | 'H');
 		pNewActions.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -232,8 +258,8 @@ public class MainWindow extends I18NBase {
 			public void widgetSelected(final SelectionEvent e) {
 			}
 		});
-		mpLife.setText(getMenuText(this.getMsg(MENU_HotFolderObject), ""));
-		//mpLife.setAccelerator(SWT.CTRL | 'L');
+		mpLife.setText(getMenuText(Messages.getLabel(MENU_HotFolderObject), EMPTY));
+		// mpLife.setAccelerator(SWT.CTRL | 'L');
 		Menu mLife = new Menu(mpLife);
 		MenuItem mLifeJob = new MenuItem(mLife, SWT.PUSH);
 		mLifeJob.addSelectionListener(new SelectionAdapter() {
@@ -242,7 +268,7 @@ public class MainWindow extends I18NBase {
 					setSaveStatus();
 			}
 		});
-		mLifeJob.setText(getMenuText(this.getMsg(MENU_Job), "J"));
+		mLifeJob.setText(getMenuText(Messages.getLabel(MENU_Job), "J"));
 		mLifeJob.setAccelerator(SWT.CTRL | 'J');
 		mpLife.setMenu(mLife);
 		MenuItem mLifeJobChain = new MenuItem(mLife, SWT.PUSH);
@@ -252,7 +278,7 @@ public class MainWindow extends I18NBase {
 					setSaveStatus();
 			}
 		});
-		mLifeJobChain.setText(getMenuText(this.getMsg(MENU_JobChain), "K"));
+		mLifeJobChain.setText(getMenuText(Messages.getLabel(MENU_JobChain), "K"));
 		mLifeJobChain.setAccelerator(SWT.CTRL | 'K');
 		MenuItem mLifeProcessClass = new MenuItem(mLife, SWT.PUSH);
 		mLifeProcessClass.addSelectionListener(new SelectionAdapter() {
@@ -261,7 +287,7 @@ public class MainWindow extends I18NBase {
 					setSaveStatus();
 			}
 		});
-		mLifeProcessClass.setText(getMenuText(this.getMsg(MENU_ProcessClass), "R"));
+		mLifeProcessClass.setText(getMenuText(Messages.getLabel(MENU_ProcessClass), "R"));
 		mLifeProcessClass.setAccelerator(SWT.CTRL | 'R');
 		MenuItem mLifeLock = new MenuItem(mLife, SWT.PUSH);
 		mLifeLock.addSelectionListener(new SelectionAdapter() {
@@ -270,7 +296,7 @@ public class MainWindow extends I18NBase {
 					setSaveStatus();
 			}
 		});
-		mLifeLock.setText(getMenuText(this.getMsg(MENU_Lock), "M"));
+		mLifeLock.setText(getMenuText(Messages.getLabel(MENU_Lock), "M"));
 		mLifeLock.setAccelerator(SWT.CTRL | 'M');
 		MenuItem mLifeOrder = new MenuItem(mLife, SWT.PUSH);
 		mLifeOrder.addSelectionListener(new SelectionAdapter() {
@@ -280,7 +306,7 @@ public class MainWindow extends I18NBase {
 			}
 		});
 
-		mLifeOrder.setText(getMenuText(this.getMsg(MENU_Order), "W"));
+		mLifeOrder.setText(getMenuText(Messages.getLabel(MENU_Order), "W"));
 		mLifeOrder.setAccelerator(SWT.CTRL | 'W');
 		MenuItem mLifeSchedule = new MenuItem(mLife, SWT.PUSH);
 		mLifeSchedule.addSelectionListener(new SelectionAdapter() {
@@ -289,11 +315,13 @@ public class MainWindow extends I18NBase {
 					setSaveStatus();
 			}
 		});
-		mLifeSchedule.setText("Schedule      \tCtrl+U");
+		mLifeSchedule.setText(getMenuText(Messages.getLabel("MENU_Schedule"), "U"));
+		// mLifeSchedule.setText("Schedule      \tCtrl+U");
 		mLifeSchedule.setAccelerator(SWT.CTRL | 'U');
 		new MenuItem(mFile, SWT.SEPARATOR);
 		MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
-		openDir.setText("Open Hot Folder               \tCtrl+D");
+		openDir.setText(getMenuText(Messages.getLabel("MENU_OpenHotFolder"), "D"));
+		// openDir.setText("Open Hot Folder               \tCtrl+D");
 		openDir.setAccelerator(SWT.CTRL | 'D');
 		openDir.setEnabled(true);
 		openDir.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -307,7 +335,8 @@ public class MainWindow extends I18NBase {
 		});
 		// open remote configuration
 		MenuItem mORC = new MenuItem(mFile, SWT.CASCADE);
-		mORC.setText("Open Remote Configuration");
+		mORC.setText(getMenuText(Messages.getLabel("MENU_OpenRemoteConfiguration"), EMPTY));
+		// mORC.setText("Open Remote Configuration");
 		Menu pMOpenGlobalScheduler = new Menu(mORC);
 		MenuItem pOpenGlobalScheduler = new MenuItem(pMOpenGlobalScheduler, SWT.PUSH);
 		pOpenGlobalScheduler.addSelectionListener(new SelectionAdapter() {
@@ -324,12 +353,15 @@ public class MainWindow extends I18NBase {
 						return;
 					}
 				}
-				if (container.openDirectory(globalSchedulerPath) != null)
+				if (container.openDirectory(globalSchedulerPath) != null) {
 					setSaveStatus();
+				}
 				Utils.stopCursor(getSShell());
 			}
 		});
-		pOpenGlobalScheduler.setText("Open Global Scheduler");
+
+		pOpenGlobalScheduler.setText(Messages.getLabel("MENU_OpenGlobalScheduler"));
+		// pOpenGlobalScheduler.setText("Open Global Scheduler");
 		MenuItem pOpenSchedulerCluster = new MenuItem(pMOpenGlobalScheduler, SWT.PUSH);
 		pOpenSchedulerCluster.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -337,7 +369,9 @@ public class MainWindow extends I18NBase {
 				dialog.showForm(HotFolderDialog.SCHEDULER_CLUSTER);
 			}
 		});
-		pOpenSchedulerCluster.setText("Open Cluster Configuration");
+
+		pOpenSchedulerCluster.setText(Messages.getLabel("MENU_OpenClusterConfiguration"));
+		// pOpenSchedulerCluster.setText("Open Cluster Configuration");
 		MenuItem pOpenSchedulerHost = new MenuItem(pMOpenGlobalScheduler, SWT.PUSH);
 		pOpenSchedulerHost.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -345,9 +379,11 @@ public class MainWindow extends I18NBase {
 				dialog.showForm(HotFolderDialog.SCHEDULER_HOST);
 			}
 		});
-		pOpenSchedulerHost.setText("Open Remote Scheduler Configuration");
+		pOpenSchedulerHost.setText(Messages.getLabel("MENU_OpenRemoteSchedulerConfiguration"));
+		// pOpenSchedulerHost.setText("Open Remote Scheduler Configuration");
 		mORC.setMenu(pMOpenGlobalScheduler);
 		new MenuItem(mFile, SWT.SEPARATOR);
+
 		MenuItem pSaveFile = new MenuItem(mFile, SWT.PUSH);
 		pSaveFile.setText("Save                                    \tCtrl+S");
 		pSaveFile.setAccelerator(SWT.CTRL | 'S');
@@ -442,6 +478,7 @@ public class MainWindow extends I18NBase {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+
 		new MenuItem(pmFTP, SWT.SEPARATOR);
 		MenuItem pSaveFTP = new MenuItem(pmFTP, SWT.PUSH);
 		pSaveFTP.setText("Save By FTP");
@@ -528,11 +565,13 @@ public class MainWindow extends I18NBase {
 		new MenuItem(mFile, SWT.SEPARATOR);
 		submenuItem2.setMenu(mFile);
 		MenuItem pExit = new MenuItem(mFile, SWT.PUSH);
-		pExit.setText("Exit\tCtrl+E");
+		// pExit.setText("Exit\tCtrl+E");
+		pExit.setText(getMenuText(sos.scheduler.editor.app.Messages.getLabel("MENU_Exit"), "E"));
 		pExit.setAccelerator(SWT.CTRL | 'E');
 		pExit.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				try {
+					saveWindowPosAndSize();
 					sShell.close();
 				}
 				catch (Exception es) {
@@ -549,14 +588,14 @@ public class MainWindow extends I18NBase {
 			}
 		});
 		MenuItem submenuItem = new MenuItem(menuBar, SWT.CASCADE);
-		submenuItem.setText(getMenuText(this.getMsg(MENU_Options), ""));
+		submenuItem.setText(getMenuText(Messages.getLabel(MENU_Options), EMPTY));
 		MenuItem submenuItem3 = new MenuItem(menuBar, SWT.CASCADE);
-		submenuItem3.setText("&" + getMenuText(this.getMsg(MENU_Help), ""));
+		submenuItem3.setText("&" + getMenuText(Messages.getLabel(MENU_Help), EMPTY));
 		submenu1 = new Menu(submenuItem3);
 		MenuItem pHelS = new MenuItem(submenu1, SWT.PUSH);
-		pHelS.setText("JOE " + getMenuText(this.getMsg(MENU_Help), ""));
-		pHelS.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		pHelS.setText("JOE " + getMenuText(Messages.getLabel(MENU_Help), EMPTY));
+		pHelS.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
 				listener.openHelp(Options.getHelpURL("index"));
 			}
 
@@ -564,15 +603,16 @@ public class MainWindow extends I18NBase {
 			}
 		});
 		MenuItem pHelp = new MenuItem(submenu1, SWT.PUSH);
-		pHelp.setText(getMenuText(this.getMsg(MENU_Help), "F1"));
-		pHelp.setAccelerator(SWT.F1);
+		pHelp.setText(getMenuText(Messages.getLabel(MENU_Help), "F1"));
+		// pHelp.setAccelerator(SWT.F1);
 		pHelp.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.getCurrentEditor() != null) {
 					listener.openHelp(container.getCurrentEditor().getHelpKey());
 				}
 				else {
-					String msg = "Help is available after documentation or configuration is opened";
+					// String msg = "Help is available after documentation or configuration is opened";
+					String msg = Messages.getString("help.info");
 					MainWindow.message(msg, SWT.ICON_INFORMATION);
 				}
 			}
@@ -580,8 +620,11 @@ public class MainWindow extends I18NBase {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+
+		// TODO FAQ, JIRA, Ticket-System, .... als Menu-Items
+
 		MenuItem pAbout = new MenuItem(submenu1, SWT.PUSH);
-		pAbout.setText(getMenuText(this.getMsg(MENU_About), "") + " JOE");
+		pAbout.setText(getMenuText(Messages.getLabel(MENU_About), EMPTY) + " JOE");
 		pAbout.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				listener.showAbout();
@@ -592,13 +635,13 @@ public class MainWindow extends I18NBase {
 		});
 		submenuItem3.setMenu(submenu1);
 		submenu = new Menu(submenuItem);
-		MenuItem submenuItem1 = new MenuItem(submenu, SWT.CASCADE);
-		submenuItem1.setText("Help Language");
-		menuLanguages = new Menu(submenuItem1);
+		MenuItem mnuLanguageSelection = new MenuItem(submenu, SWT.CASCADE);
+		mnuLanguageSelection.setText(Messages.getLabel("MENU_Language"));
+		menuLanguages = new Menu(mnuLanguageSelection);
 		// create languages menu
 		listener.setLanguages(menuLanguages);
 
-		submenuItem1.setMenu(menuLanguages);
+		mnuLanguageSelection.setMenu(menuLanguages);
 		submenuItem.setMenu(submenu);
 		MenuItem submenuItemInfo = new MenuItem(submenu, SWT.PUSH);
 		submenuItemInfo.addSelectionListener(new SelectionAdapter() {
@@ -608,13 +651,14 @@ public class MainWindow extends I18NBase {
 				Options.saveProperties();
 			}
 		});
-		submenuItemInfo.setText(getMenuText(this.getMsg(MENU_Reset_Dialog), ""));
+		submenuItemInfo.setText(getMenuText(Messages.getLabel(MENU_Reset_Dialog), EMPTY));
 		sShell.setMenuBar(menuBar);
 		sShell.addShellListener(new ShellAdapter() {
 			public void shellClosed(ShellEvent e) {
 				e.doit = container.closeAll();
 				setSaveStatus();
 				Options.saveWindow(sShell, conStringEDITOR);
+				saveWindowPosAndSize();
 				listener.saveOptions();
 				ResourceManager.dispose();
 			}
@@ -623,19 +667,26 @@ public class MainWindow extends I18NBase {
 				setSaveStatus();
 			}
 		});
+		objPersistenceStore.restoreWindowSize();
+
+	}
+
+	private void saveWindowPosAndSize() {
+ 		objPersistenceStore.saveWindow();
 	}
 
 	public static Shell getSShell() {
 		return sShell;
 	}
 
+	@SuppressWarnings("unused")
 	private String getMsg(final String pstrKey) {
 
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::getMsg";
-		super.setLocale(Options.getLanguage());
+		// super.setLocale(Options.getLanguage());
 
-		String strT = super.getMsg(pstrKey, "");
+		String strT = Messages.getString(pstrKey, EMPTY);
 
 		return strT;
 	} // private String getMsg
@@ -687,26 +738,50 @@ public class MainWindow extends I18NBase {
 		return saved;
 	}
 
+	public static int ErrMsg(final String pstrMessage) {
+		return message(pstrMessage, SWT.ICON_ERROR);
+	}
+
 	public static int message(String message, int style) {
 		return message(getSShell(), message, style);
 	}
 
-	public static int message(Shell shell, String message, int style) {
+	// /**
+	// * Erzeugt einen Confirm-Dialog, wenn der Button zum schließen des Fensters
+	// * betätigt wird.
+	// *
+	// * @see org.eclipse.jface.window.Window#handleShellCloseEvent()
+	// */
+	// @Override
+	// protected void handleShellCloseEvent () {
+	// if (MessageDialog.openConfirm(null, "Bestätigung",
+	// "Wollen Sie das Programm beenden?")) {
+	// super.handleShellCloseEvent();
+	// }
+	// }
+	public static int message(Shell shell, String pstrMessage, int style) {
 		MessageBox mb = new MessageBox(shell, style);
-		mb.setMessage(message);
-		String title = "Message";
+		if (mb == null) {
+			return -1;
+		}
+		if (pstrMessage == null) {
+			pstrMessage = "??????";
+		}
+		mb.setMessage(pstrMessage);
+		String title = Messages.getLabel("message");
 		if ((style & SWT.ICON_ERROR) != 0)
-			title = "Error";
-		else
+			title = Messages.getLabel("error");
+		else {
 			if ((style & SWT.ICON_INFORMATION) != 0)
-				title = "Information";
+				title = Messages.getLabel("information");
 			else
 				if ((style & SWT.ICON_QUESTION) != 0)
-					title = "Question";
+					title = Messages.getLabel("question");
 				else
 					if ((style & SWT.ICON_WARNING) != 0)
-						title = "Warning";
-		mb.setText(title);
+						title = Messages.getLabel("warning");
+		}
+		mb.setText("JOE: " + title);
 		return mb.open();
 	}
 
@@ -991,7 +1066,8 @@ public class MainWindow extends I18NBase {
 					listener.openHelp(container.getCurrentEditor().getHelpKey());
 				}
 				else {
-					String msg = "Help is available after documentation or configuration is opened";
+					// String msg = "Help is available after documentation or configuration is opened";
+					String msg = Messages.getString("help.info");
 					MainWindow.message(msg, SWT.ICON_INFORMATION);
 				}
 			}
@@ -1029,13 +1105,13 @@ public class MainWindow extends I18NBase {
 					File configFile = new File(configFilename);
 					if (configFile.exists()) {
 						String newConfigFilename = configFile.getParent();
-						newConfigFilename = newConfigFilename != null ? newConfigFilename : "";
+						newConfigFilename = newConfigFilename != null ? newConfigFilename : EMPTY;
 						newConfigFilename = new File(newConfigFilename, Utils.getAttributeValue("name", jobChain) + ".config.xml").getCanonicalPath();
 						File newConfigFile = new File(newConfigFilename);
 						// Attribute anpassem
 						DomParser currdom = getSpecifiedDom();
-						String oldname = configFile.getName().replaceAll(".config.xml", "");
-						String newName = newConfigFile.getName().replaceAll(".config.xml", "");
+						String oldname = configFile.getName().replaceAll(".config.xml", EMPTY);
+						String newName = newConfigFile.getName().replaceAll(".config.xml", EMPTY);
 						sos.scheduler.editor.conf.listeners.DetailsListener.changeDetailsJobChainname(newName, oldname, (SchedulerDom) currdom);
 						//
 						if (!newConfigFile.exists() && !configFile.renameTo(newConfigFile)) {
@@ -1081,16 +1157,16 @@ public class MainWindow extends I18NBase {
 						File source = new File(container.getCurrentTab().getData("ftp_details_parameter_file").toString());
 						String remoteDir_ = remoteDir; // remoteDir nicht verändern, da es unten weiterverarbeitet wird
 						remoteDir_ = new File(remoteDir_).getCanonicalPath().endsWith(".xml") ? new File(remoteDir_).getParent() : remoteDir_;
-						remoteDir_ = remoteDir_ != null ? remoteDir_.replaceAll("\\\\", "/") : "";
+						remoteDir_ = remoteDir_ != null ? remoteDir_.replaceAll("\\\\", "/") : EMPTY;
 						if (source.exists()) {
 							profile.saveAs(container.getCurrentTab().getData("ftp_details_parameter_file").toString(), remoteDir_ + "/" + source.getName());
 						}
-						container.getCurrentTab().setData("ftp_details_parameter_file", "");
+						container.getCurrentTab().setData("ftp_details_parameter_file", EMPTY);
 						if (sosString.parseToString(container.getCurrentTab().getData("ftp_details_parameter_remove_file")).length() > 0) {
 							// Alte Jobkettenname wurde gelöscht.. Deshalb den alten Job Node Parametern auch löschen.
 							String removeOldFilename = container.getCurrentTab().getData("ftp_details_parameter_remove_file").toString();
 							profile.removeFile(remoteDir_ + "/" + removeOldFilename);
-							container.getCurrentTab().setData("ftp_details_parameter_remove_file", "");
+							container.getCurrentTab().setData("ftp_details_parameter_remove_file", EMPTY);
 						}
 					}
 					if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isLifeElement()) {
@@ -1124,7 +1200,7 @@ public class MainWindow extends I18NBase {
 					MainWindow.message("could not save file on ftp Server", SWT.ICON_WARNING);
 				}
 				if (profile.hasError()) {
-					String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), getSShell(), false, "");
+					String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), getSShell(), false, EMPTY);
 					if (text != null)
 						txtLog.setText(text);
 				}
@@ -1180,7 +1256,7 @@ public class MainWindow extends I18NBase {
 					webdavListener.saveAs(container.getCurrentEditor().getFilename(), remoteDir);
 				}
 			if (webdavListener.hasError()) {
-				String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), getSShell(), false, "");
+				String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), getSShell(), false, EMPTY);
 				if (text != null)
 					txtLog.setText(text);
 			}
@@ -1280,36 +1356,30 @@ public class MainWindow extends I18NBase {
 		try {
 			Utils.startCursor(sShell);
 			SchedulerForm _scheduler = container.newScheduler(SchedulerDom.LIVE_JOB);
-			if (_scheduler != null)
+			if (_scheduler != null) {
 				setSaveStatus();
-			JobAssistentForm assitent = new JobAssistentForm(_scheduler.getDom(), _scheduler);
-			assitent.startJobAssistant();
+			}
+			JobAssistentForm assitant = new JobAssistentForm(_scheduler.getDom(), _scheduler);
+			assitant.startJobAssistant();
 			setSaveStatus();
 		}
 		catch (Exception ex) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not start assistent.", ex);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not start wizard.", ex);
 			}
 			catch (Exception ee) {
 				// tu nichts
 			}
-			System.out.println("..error " + ex.getMessage());
+			// System.out.println("..error " + ex.getMessage());
 		}
 		finally {
 			Utils.stopCursor(sShell);
 		}
 	}
 
-	/**
-	 * Überprüft beim wieder Aktivieren des Editor, ob sich eine 
-	 * im Editor geöffnete Konfigurationsdatei ausserhalb sich geändert hat.
-	 *  TODO:
-	 */
 	public static void shellActivated_() {
 		try {
-			// System.out.println("activated");
 			if (MainWindow.getContainer().getCurrentEditor() == null || !flag) {
-				// System.out.println("ignore");
 				return;
 			}
 			DomParser dom = getSpecifiedDom();
@@ -1374,49 +1444,49 @@ public class MainWindow extends I18NBase {
 				}
 				if (dom.getFilename() != null && lastmod != dom.getLastModifiedFile()) {
 					flag = false;
-					String msg = "";
+					String msg = EMPTY;
 					if (f.isDirectory()) {
-						msg = "This directory " + dom.getFilename() + " has been modified outside.";
+						msg = Messages.getString("directory.modified", dom.getFilename());
 						if (newFFiles.size() > 0) {
-							msg = msg + "\nNew Files: ";
+							msg = msg + "\n" + Messages.getString("files.new"); // "New Files:";
 							for (int i = 0; i < newFFiles.size(); i++) {
 								if (i == 0)
-									msg = msg + "n\t" + newFFiles.get(i).getName();
+									msg = msg + conNewlineTab + newFFiles.get(i).getName();
 								else
-									msg = msg + "\n\t" + newFFiles.get(i).getName();
+									msg = msg + conNewlineTab + newFFiles.get(i).getName();
 							}
 						}
 						if (changeFiles.size() > 0) {
-							msg = msg + "\nChange Files: ";
+							msg = msg + "\n" + Messages.getString("files.changed"); // "Changed Files:";
 							for (int i = 0; i < changeFiles.size(); i++) {
 								if (i == 0)
-									msg = msg + "n\t" + changeFiles.get(i);
+									msg = msg + conNewlineTab + changeFiles.get(i);
 								else
-									msg = msg + "\n\t" + changeFiles.get(i);
+									msg = msg + conNewlineTab + changeFiles.get(i);
 							}
 						}
 						if (delFFiles.size() > 0) {
-							msg = msg + "\nRemove Files: ";
+							msg = msg + "\n" + Messages.getString("files.removed"); // "Removed Files:";
 							for (int i = 0; i < delFFiles.size(); i++) {
 								if (i == 0)
-									msg = msg + "\n\t" + delFFiles.get(i);
+									msg = msg + conNewlineTab + delFFiles.get(i);
 								else
-									msg = msg + "\n\t" + delFFiles.get(i);
+									msg = msg + conNewlineTab + delFFiles.get(i);
 							}
 						}
-						msg = msg + "\nDo you want to reload it?";
+						msg = msg + "\n" + Messages.getString("reload.wanted");
 					}
 					else {
 						if (!new File(dom.getFilename()).exists()) {
-							msg = "This file " + dom.getFilename() + " has been deleted outside.\nDo you want to close the Editor?";
+							msg = Messages.getString("file.deleted.on.filesystem", dom.getFilename());
 							delFFiles.add(new File(dom.getFilename()));
 						}
-						else
-							msg = "This file " + dom.getFilename() + " has been modified outside.\nDo you want to reload it?";
+						else {
+							msg = Messages.getString("file.changed.on.filesystem", dom.getFilename());
+						}
 					}
 					int c = MainWindow.message(sShell, msg, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					if (c == SWT.YES) {
-						// System.out.println("hier neu laden");
 						try {
 							if (f.isDirectory()) {
 								for (int i = 0; i < changeFiles.size(); i++) {
@@ -1516,7 +1586,7 @@ public class MainWindow extends I18NBase {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog(Messages.getString("exception.raised", sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -1526,14 +1596,13 @@ public class MainWindow extends I18NBase {
 	}
 
 	/**
-
 	 * @param hFfile
 	 * @return
 	 */
 	private static String getXPathString(File hFfile, boolean onlyParentPath) {
-		String aName = "";
-		String eName = "";
-		String parentElementname = "";
+		String aName = EMPTY;
+		String eName = EMPTY;
+		String parentElementname = EMPTY;
 		String attributName = "name";
 		int pos1 = hFfile.getName().indexOf(".");
 		int pos2 = hFfile.getName().lastIndexOf(".");
@@ -1556,29 +1625,7 @@ public class MainWindow extends I18NBase {
 		else
 			return "//" + parentElementname + "/" + eName + "[@" + attributName + "='" + aName + "']";
 	}
-	@I18NMessages(value = { @I18NMessage("JOE (JobScheduler Object Editor) "), //
-			@I18NMessage(value = "JOE (JobScheduler Object Editor) ", //
-			locale = "en_UK", //
-			explanation = "JOE (JobScheduler Object Editor) " //
-			), //
-			@I18NMessage(value = "JOE (JobScheduler-Objekt-Editor) ", //
-			locale = "de", //
-			explanation = "JOE (JobScheduler Object Editor) " //
-			), //
-			@I18NMessage(value = "JOE (JobScheduler Object Editor) ", locale = "es", //
-			explanation = "JOE (JobScheduler Object Editor) " //
-			), //
-			@I18NMessage(value = "JOE (JobScheduler Object Editor) ", locale = "fr", //
-			explanation = "JOE (JobScheduler Object Editor) " //
-			), //
-			@I18NMessage(value = "JOE (JobScheduler Object Editor) ", locale = "it", //
-			explanation = "JOE (JobScheduler Object Editor) " //
-			) //
-	}, msgnum = "JOE_I_0010", msgurl = "JOE-I-0010")
-	/*!
-	 * \var JOE_I_0010
-	 * \brief JOE (JobScheduler Object Editor) 
-	 */
+
 	public static final String	JOE_I_0010				= "JOE_I_0010";
 	@I18NMessages(value = { @I18NMessage("Open"), //
 			@I18NMessage(value = "Open", //
@@ -1662,7 +1709,7 @@ public class MainWindow extends I18NBase {
 			explanation = "Dokumentation eines Job Templates bearbeiten" //
 			), //
 			@I18NMessage(value = "Modify Documentation", locale = "es", //
-					explanation = "Modify Documentation of a job template" //
+			explanation = "Modify Documentation of a job template" //
 			), //
 			@I18NMessage(value = "Modify Documentation", locale = "fr", //
 			explanation = "Modify Documentation of a job template" //
@@ -1918,56 +1965,35 @@ public class MainWindow extends I18NBase {
 	 */
 	public static final String	MENU_About				= "MENU_About";
 
-	@I18NMessages(value = { @I18NMessage("Reset Dialog"), //
-			@I18NMessage(value = "Reset Dialog", //
-			locale = "en_UK", //
-			explanation = "Reset Dialog" //
-			), //
-			@I18NMessage(value = "Einstellung zurücksetzen", //
-			locale = "de", //
-			explanation = "JOE wird neu initialisiert. Die Einstellungen werden neu geladen" //
-			), //
-			@I18NMessage(value = "Reset Dialog", locale = "es", //
-			explanation = "Reset Dialog" //
-			), //
-			@I18NMessage(value = "Reset Dialog", locale = "fr", //
-			explanation = "Reset Dialog" //
-			), //
-			@I18NMessage(value = "Reset Dialog", locale = "it", //
-			explanation = "Reset Dialog" //
-			) //
-	}, msgnum = "MENU_ResetDialog", msgurl = "Menu-ResetDialog")
-	/*!
-	 * \var MENU_Reset Dialog
-	 * \brief Reset Dialog
-	 */
+	// @I18NMessages(value = { @I18NMessage("Reset Dialog"), //
+	// @I18NMessage(value = "Reset Dialog", //
+	// locale = "en_UK", //
+	// explanation = "Reset Dialog" //
+	// ), //
+	// @I18NMessage(value = "Einstellung zurücksetzen", //
+	// locale = "de", //
+	// explanation = "JOE wird neu initialisiert. Die Einstellungen werden neu geladen" //
+	// ), //
+	// @I18NMessage(value = "Reset Dialog", locale = "es", //
+	// explanation = "Reset Dialog" //
+	// ), //
+	// @I18NMessage(value = "Reset Dialog", locale = "fr", //
+	// explanation = "Reset Dialog" //
+	// ), //
+	// @I18NMessage(value = "Reset Dialog", locale = "it", //
+	// explanation = "Reset Dialog" //
+	// ) //
+	// }, msgnum = "MENU_ResetDialog", msgurl = "Menu-ResetDialog")
+	// /*!
+	// * \var MENU_Reset Dialog
+	// * \brief Reset Dialog
+	// */
 	public static final String	MENU_Reset_Dialog		= "MENU_ResetDialog";
 
-	@I18NMessages(value = { @I18NMessage("Order"), //
-			@I18NMessage(value = "Order", //
-			locale = "en_UK", //
-			explanation = "Order" //
-			), //
-			@I18NMessage(value = "Auftrag", //
-			locale = "de", //
-			explanation = "Auftrag ...." //
-			), //
-			@I18NMessage(value = "Order", locale = "es", //
-			explanation = "Order" //
-			), //
-			@I18NMessage(value = "Order", locale = "fr", //
-			explanation = "Order" //
-			), //
-			@I18NMessage(value = "Order", locale = "it", //
-			explanation = "Order" //
-			) //
-	}, msgnum = "MENU_Order", msgurl = "MENU_ORDER")
-	/*!
-	 * \var MENU_Order
-	 * \brief Order
-	 */
+	// /*!
+	// * \var MENU_Order
+	// * \brief Order
+	// */
 	public static final String	MENU_Order				= "MENU_Order";
-	
-	
 
 }

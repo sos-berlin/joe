@@ -37,6 +37,7 @@ import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
@@ -297,7 +298,7 @@ public class JobAssistentImportJobsForm {
 							txtJobname.setText(" ");
 						}
 						else
-							txtJobname.setText(joblistener.getName());
+							txtJobname.setText(joblistener.getJobName());
 				}
 				else {
 					txtJobname.setText("");
@@ -424,8 +425,9 @@ public class JobAssistentImportJobsForm {
 								// assistentype = Editor.Job_Wizzard
 								Element job = joblistener.getJob();
 								job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
-								if (jobForm != null)// diese Zeile löschen
+								if (jobForm != null) {
 									jobForm.initForm();
+								}
 								if (jobDocForm != null)
 									jobDocForm.initForm();
 							}
@@ -942,6 +944,10 @@ public class JobAssistentImportJobsForm {
 
 	public void setJobForm(JobMainForm jobForm_) {
 		jobForm = jobForm_;
+	}
+
+	public void setJobForm(JobDocumentation jobForm_) {
+//		jobForm = jobForm_;
 	}
 
 	public void setJobForm(JobDocumentationForm jobDocForm_) {

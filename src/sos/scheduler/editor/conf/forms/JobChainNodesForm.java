@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.forms;
 
 import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -16,19 +18,17 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
-import com.swtdesigner.SWTResourceManager;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
@@ -46,107 +46,66 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
 
+import com.swtdesigner.SWTResourceManager;
+
 
 public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLanguage {
 
+	private final String		conClassName		= "JobChainNodesForm";
+	final String				conMethodName		= conClassName + "::enclosing_method";
+	@SuppressWarnings("unused")
+	private final String		conSVNVersion		= "$Id$";
+	private static final Logger	logger				= Logger.getLogger(JobChainNodesForm.class);
+
 	private Button              dumm2                       = null;
-
 	private Button              bNewNode                    = null;
-
 	private Table               tNodes                      = null;
-
 	private Button              bApplyNode                  = null;
-
 	private Text                tMoveTo                     = null;
-
 	private Button              bRemoveFile                 = null;
-
 	private Combo               cErrorState                 = null;
-
 	private Label               label9                      = null;
-
 	private Combo               cNextState                  = null;
-
 	private Label               label8                      = null;
-
 	private Button              bFileSink                   = null;
-
 	private Button              bEndNode                    = null;
-
 	private Button              bFullNode                   = null;
-
 	private Composite           cType                       = null;
-
 	private Combo               cJob                        = null;
-
 	private Label               label7                      = null;
-
 	private Text                tState                      = null;
-
 	private Label               label6                      = null;
-
 	private static final String GROUP_NODES_TITLE           = "Chain Nodes";
-
 	private static final String GROUP_FILEORDERSOURCE_TITLE = "File Order Sources"; 
-
 	private Group               gFileOrderSource            = null;
-
 	private JobChainListener    listener                    = null;
-
 	private Group               jobChainGroup               = null;
-
 	private Button              bNewFileOrderSource         = null;
-
 	private Button              bRemoveFileOrderSource      = null;
-
 	private Button              bApplyFileOrderSource       = null;
-
 	private Text                tDirectory                  = null;
-
 	private Text                tDelayAfterError            = null;
-
 	private Text                tMax                        = null;
-
 	private Text                tNextState                  = null;
-
 	private Text                tRegex                      = null;
-
 	private Text                tRepeat                     = null;
-
 	private Table               tFileOrderSource            = null;
-
 	private Button              bRemoveNode                 = null;
-
 	private Group               gNodes                      = null;
-
 	private Text                tDelay                      = null;
-
 	private Button              butImportJob                = null;
-
 	private boolean             refresh                     = false;
-
 	private Button              butDetailsJob               = null;
-
 	private Button              butBrowse                   = null;
-
 	private ISchedulerUpdate    update                      = null;
-
 	private Combo               cOnError                    = null;
-
 	private Button              butUp                       = null;
-
 	private Button              butDown                     = null;
-
 	private SchedulerDom        dom                         = null;
-
 	private Button              butGoto                     = null;
-
 	private Button              butInsert                   = null;
-
 	private boolean             isInsert                    = false;
-
 	private Button              reorderButton               = null; 
-
 	private Button              butAddMissingNodes          = null; 
 		
 	/**Hilfsvariable: Wenn Parameter Formular geöffnet wurde muss überprüft werden, ob der Checkbox in der Tabelle - State gesetzt werden soll.*/
@@ -157,10 +116,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 	//private Composite composite_2 = null;
 
 	public JobChainNodesForm(Composite parent, int style, SchedulerDom dom_, Element jobChain) {
-
 		super(parent, style);
-
-
 		dom = dom_;
 		listener = new JobChainListener(dom, jobChain);		
 		initialize();
@@ -171,22 +127,16 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 		if(existChainNodes)
 			fillChain(false, false);
 		this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
-
-
-
 	}
-
 
 	public void apply() {		
 		if (bApplyNode.isEnabled())
 			applyNode();
 	}
 
-
 	public boolean isUnsaved() {		
 		return bApplyNode.isEnabled();
 	}
-
 
 	private void initialize() {
 
@@ -208,7 +158,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			gNodes = new Group(jobChainGroup, SWT.NONE);
 			
 			gNodes.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-			gNodes.setText("Chain Node");		
+			gNodes.setText(Messages.getLabel("ChainNode"));		
 			final GridLayout gridLayout_3 = new GridLayout();
 			gridLayout_3.marginBottom = 5;
 			gridLayout_3.marginTop = 5;
@@ -217,7 +167,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 			label6 = new Label(gNodes, SWT.NONE);
 			label6.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
-			label6.setText("State:");
+			label6.setText(Messages.getLabel("State"));
 			new Label(gNodes, SWT.NONE);
 
 			tState = new Text(gNodes, SWT.BORDER);
@@ -246,11 +196,11 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			});
 			bApplyNode.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 			bApplyNode.setEnabled(false);
-			bApplyNode.setText("&Apply Chain Node");
+			bApplyNode.setText(Messages.getLabel("Apply Chain Node"));
 			//composite_2.setLayout(gridLayout_6);
 
 			label7 = new Label(gNodes, SWT.NONE);
-			label7.setText("Job:");
+			label7.setText(Messages.getLabel("Job"));
 
 			butGoto = new Button(gNodes, SWT.ARROW | SWT.DOWN);
 			butGoto.setVisible(listener.get_dom() != null && !listener.get_dom().isLifeElement());
@@ -319,7 +269,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 						cJob.setText(jobname);
 				}
 			});
-			butBrowse.setText("Browse");
+			butBrowse.setText(Messages.getLabel("Browse"));
 			new Label(composite, SWT.NONE);
 
 			if(!listener.get_dom().isLifeElement()) {
@@ -338,10 +288,10 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 					}
 				});
-				butImportJob.setText("Import Job");
+				butImportJob.setText(Messages.getLabel("ImportJob"));
 			}
 			label8 = new Label(gNodes, SWT.NONE);
-			label8.setText("Next State:");
+			label8.setText(Messages.getLabel("NextState:"));
 			new Label(gNodes, SWT.NONE);
 
 			/*composite_2 = new Composite(gNodes, SWT.NONE);
@@ -403,7 +353,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 			
 			final Label delayLabel = new Label(gNodes, SWT.NONE);
-			delayLabel.setText("Delay:");
+			delayLabel.setText(Messages.getLabel("Delay"));
 
 			tDelay = new Text(gNodes, SWT.BORDER);
 			tDelay.addModifyListener(new ModifyListener() {
@@ -444,10 +394,10 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 				}
 			});
 			bNewNode.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-			bNewNode.setText("New Chain &Node");
+			bNewNode.setText(Messages.getLabel("NewChainNode"));
 
 			label9 = new Label(gNodes, SWT.NONE);
-			label9.setText("Error State:");
+			label9.setText(Messages.getLabel("ErrorState"));
 			new Label(gNodes, SWT.NONE);
 
 			cErrorState = new Combo(gNodes, SWT.NONE);
@@ -473,7 +423,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			cErrorState.setLayoutData(gridData15);
 
 			final Label onErrorLabel = new Label(gNodes, SWT.NONE);
-			onErrorLabel.setText("On Error:");
+			onErrorLabel.setText(Messages.getLabel("On Error"));
 
 			cOnError = new Combo(gNodes, SWT.READ_ONLY);
 			cOnError.setItems(new String[] {"", "setback", "suspend"});
@@ -516,7 +466,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 				}
 			});
 			butInsert.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			butInsert.setText("Insert Chain Node");
+			butInsert.setText(Messages.getLabel("InsertChainNode"));
 
 			cType = new Composite(gNodes, SWT.NONE);
 			final GridLayout gridLayout_4 = new GridLayout();
@@ -535,7 +485,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 				}
 			});
 			bFullNode.setSelection(true);
-			bFullNode.setText("Full Node");
+			bFullNode.setText(Messages.getLabel("FullNode"));
 
 			bEndNode = new Button(cType, SWT.RADIO);
 			bEndNode.addSelectionListener(new SelectionAdapter() {
@@ -584,7 +534,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 				}
 			});
-			bEndNode.setText("End Node");
+			bEndNode.setText(Messages.getLabel("EndNode"));
 
 			bFileSink = new Button(cType, SWT.RADIO);
 			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
@@ -610,7 +560,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 				}
 			});
 			bFileSink.setEnabled(false);
-			bFileSink.setText("File Sink");
+			bFileSink.setText(Messages.getLabel("FileSink"));
 
 			final Composite composite_3 = new Composite(cType, SWT.NONE);
 			final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, true, false);
@@ -625,7 +575,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			composite_3.setLayout(gridLayout_7);
 
 			final Label removeFileLabel = new Label(composite_3, SWT.NONE);
-			removeFileLabel.setText("Remove File");
+			removeFileLabel.setText(Messages.getLabel("RemoveFile"));
 
 			bRemoveFile = new Button(composite_3, SWT.CHECK);
 			final GridData gridData_1 = new GridData();
@@ -650,7 +600,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			bRemoveFile.setEnabled(false);
 
 			final Label movweToLabel = new Label(composite_3, SWT.NONE);
-			movweToLabel.setText("Move to");
+			movweToLabel.setText(Messages.getLabel("Moveto"));
 
 			tMoveTo = new Text(composite_3, SWT.BORDER);
 			final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -678,7 +628,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			dumm2.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 			dumm2.setVisible(false);
 			dumm2.setEnabled(false);
-			dumm2.setText("Remove Order File Source");
+			dumm2.setText(Messages.getLabel("RemoveOrderFileSource"));
 
 			tNodes = new Table(gNodes, SWT.FULL_SELECTION | SWT.BORDER);		
 		
@@ -698,27 +648,27 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 			final TableColumn tableColumn3 = new TableColumn(tNodes, SWT.NONE);
 			tableColumn3.setWidth(90);
-			tableColumn3.setText("State");
+			tableColumn3.setText(Messages.getLabel("State"));
 
 			final TableColumn newColumnTableColumn_3 = new TableColumn(tNodes, SWT.NONE);
 			newColumnTableColumn_3.setWidth(100);
-			newColumnTableColumn_3.setText("Node");
+			newColumnTableColumn_3.setText(Messages.getLabel("Node"));
 
 			final TableColumn tableColumn4 = new TableColumn(tNodes, SWT.NONE);
 			tableColumn4.setWidth(200);
-			tableColumn4.setText("Job/Dir");
+			tableColumn4.setText(Messages.getLabel("JobDir"));
 
 			final TableColumn tableColumn5 = new TableColumn(tNodes, SWT.NONE);
 			tableColumn5.setWidth(90);
-			tableColumn5.setText("Next State");
+			tableColumn5.setText(Messages.getLabel("NextState"));
 
 			final TableColumn tableColumn6 = new TableColumn(tNodes, SWT.NONE);
 			tableColumn6.setWidth(90);
-			tableColumn6.setText("Error State");
+			tableColumn6.setText(Messages.getLabel("ErrorState"));
 
 			final TableColumn newColumnTableColumn_4 = new TableColumn(tNodes, SWT.NONE);
 			newColumnTableColumn_4.setWidth(100);
-			newColumnTableColumn_4.setText("On Error");
+			newColumnTableColumn_4.setText(Messages.getLabel("OnError"));
 
 			final Composite composite_1 = new Composite(gNodes, SWT.NONE);
 			composite_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -763,33 +713,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 			reorderButton = new Button(composite_1, SWT.CHECK);
 			reorderButton.setSelection(true);
-			reorderButton.setText("Reorder");
-
-			/*final Button butIUp = new Button(composite_1, SWT.NONE);
-		butIUp.setLayoutData(new GridData());
-		butIUp.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if (tNodes.getSelectionCount() > 0) {
-					int index = tNodes.getSelectionIndex();
-					if(index > 0) {											
-						listener.changeInsertUp(tNodes, 
-								true, 
-								bFullNode.getSelection() || bEndNode.getSelection(), 
-								tState.getText(), 
-								cJob.getText(), 
-								tDelay.getText(), 
-								cNextState.getText(),								
-								cErrorState.getText(),
-								bRemoveFile.getSelection(),
-								tMoveTo.getText(), 
-								index);
-						selectNodes();					
-					}
-				}
-			}
-		});
-		butIUp.setText("iup");
-			 */
+			reorderButton.setText(Messages.getLabel("Reorder"));
 
 			butDetailsJob = new Button(gNodes, SWT.NONE);
 			butDetailsJob.setEnabled(false);
@@ -808,7 +732,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 				}
 			});
 			butDetailsJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-			butDetailsJob.setText("Parameter");
+			butDetailsJob.setText(Messages.getLabel("Parameter"));
 			butDetailsJob.addFocusListener(new FocusAdapter() {
 				public void focusGained(final FocusEvent e) {
 					
@@ -856,7 +780,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			});
 			butAddMissingNodes.setEnabled(false);
 			butAddMissingNodes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			butAddMissingNodes.setText("Add Missing Nodes");
+			butAddMissingNodes.setText(Messages.getLabel("AddMissingNodes"));
 
 			bRemoveNode = new Button(gNodes, SWT.NONE);
 			bRemoveNode.setEnabled(false);
@@ -890,12 +814,12 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 				}
 			});
 			bRemoveNode.setLayoutData(new GridData(GridData.FILL, GridData.END, false, false));
-			bRemoveNode.setText("Remove Node");
+			bRemoveNode.setText(Messages.getLabel("RemoveNode"));
 			gFileOrderSource = new Group(jobChainGroup, SWT.NONE);
 			final GridData gridData_10 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 			gridData_10.heightHint = 169;
 			gFileOrderSource.setLayoutData(gridData_10);
-			gFileOrderSource.setText("File Order Source");
+			gFileOrderSource.setText(Messages.getLabel("FileOrderSource"));
 			final GridLayout gridLayout_1 = new GridLayout();
 			gridLayout_1.marginTop = 5;
 			gridLayout_1.marginBottom = 5;
@@ -904,7 +828,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 			final Label directoryLabel = new Label(gFileOrderSource, SWT.NONE);
 			directoryLabel.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-			directoryLabel.setText("Directory");
+			directoryLabel.setText(Messages.getLabel("Directory"));
 
 			tDirectory = new Text(gFileOrderSource, SWT.BORDER);
 			tDirectory.addFocusListener(new FocusAdapter() {
@@ -928,7 +852,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			tDirectory.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 			final Label delay_after_errorLabel = new Label(gFileOrderSource, SWT.NONE);
-			delay_after_errorLabel.setText("Delay after error");
+			delay_after_errorLabel.setText(Messages.getLabel("Delayaftererror"));
 
 
 			tDelayAfterError = new Text(gFileOrderSource, SWT.BORDER);
@@ -955,11 +879,11 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			});
 			bApplyFileOrderSource.setEnabled(false);
 			bApplyFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			bApplyFileOrderSource.setText("Apply File Order Source");
+			bApplyFileOrderSource.setText(Messages.getLabel("ApplyFileOrderSource"));
 
 			final Label regexLabel = new Label(gFileOrderSource, SWT.NONE);
 			regexLabel.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
-			regexLabel.setText("Regex");
+			regexLabel.setText(Messages.getLabel("Regex"));
 
 
 			tRegex = new Text(gFileOrderSource, SWT.BORDER);
@@ -978,7 +902,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			tRegex.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 			final Label repeatLabel = new Label(gFileOrderSource, SWT.NONE);
-			repeatLabel.setText("Repeat");
+			repeatLabel.setText(Messages.getLabel("Repeat"));
 
 			tRepeat = new Text(gFileOrderSource, SWT.BORDER);
 			tRepeat.addFocusListener(new FocusAdapter() {
@@ -998,7 +922,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			new Label(gFileOrderSource, SWT.NONE);
 
 			final Label maxLabel = new Label(gFileOrderSource, SWT.NONE);
-			maxLabel.setText("Max");
+			maxLabel.setText(Messages.getLabel("Max"));
 
 			tMax = new Text(gFileOrderSource, SWT.BORDER);
 			tMax.addFocusListener(new FocusAdapter() {
@@ -1017,7 +941,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			tMax.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 			final Label stateLabel = new Label(gFileOrderSource, SWT.NONE);
-			stateLabel.setText("Next state");
+			stateLabel.setText(Messages.getLabel("Next state"));
 
 			tNextState = new Text(gFileOrderSource, SWT.BORDER);
 			tNextState.addFocusListener(new FocusAdapter() {
@@ -1058,16 +982,16 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 			final TableColumn newColumnTableColumn = new TableColumn(tFileOrderSource, SWT.NONE);
 			newColumnTableColumn.setWidth(300);
-			newColumnTableColumn.setText("Directory");
+			newColumnTableColumn.setText(Messages.getLabel("Directory"));
 
 			final TableColumn newColumnTableColumn_1 = new TableColumn(tFileOrderSource, SWT.NONE);
 			newColumnTableColumn_1.setWidth(200);
-			newColumnTableColumn_1.setText("Regex");
+			newColumnTableColumn_1.setText(Messages.getLabel("Regex"));
 
 
 			final TableColumn newColumnTableColumn_2 = new TableColumn(tFileOrderSource, SWT.NONE);
 			newColumnTableColumn_2.setWidth(100);
-			newColumnTableColumn_2.setText("Next State");
+			newColumnTableColumn_2.setText(Messages.getLabel("Next State"));
 
 
 			bNewFileOrderSource = new Button(gFileOrderSource, SWT.NONE);
@@ -1083,7 +1007,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 				}
 			});
 			bNewFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			bNewFileOrderSource.setText("New File Order Source");
+			bNewFileOrderSource.setText(Messages.getLabel("NewFileOrderSource"));
 
 			bRemoveFileOrderSource = new Button(gFileOrderSource, SWT.NONE);
 			bRemoveFileOrderSource.addSelectionListener(new SelectionAdapter() {
@@ -1114,7 +1038,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 			});
 			bRemoveFileOrderSource.setEnabled(false);
 			bRemoveFileOrderSource.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, true));
-			bRemoveFileOrderSource.setText("Remove Order File Source");
+			bRemoveFileOrderSource.setText(Messages.getLabel("RemoveOrderFileSource"));
 		} catch (Exception e) {
 			try {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
@@ -1131,8 +1055,8 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
 
 			listener.fillFileOrderSource(tFileOrderSource);
 			listener.fillChain(tNodes);
-			gNodes.setText(GROUP_NODES_TITLE + " for: " + listener.getChainName());
-			gFileOrderSource.setText(GROUP_FILEORDERSOURCE_TITLE + " for: " + listener.getChainName());
+			gNodes.setText(Messages.getLabel(GROUP_NODES_TITLE) + Messages.getLabel("for") + listener.getChainName());
+			gFileOrderSource.setText(Messages.getLabel(GROUP_FILEORDERSOURCE_TITLE) + Messages.getLabel("for") + listener.getChainName());
 			bNewFileOrderSource.setEnabled(true);
 			bNewNode.setEnabled(true);
 			enableNode(false);

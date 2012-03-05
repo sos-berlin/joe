@@ -52,7 +52,7 @@ public class DatePicker extends Composite {
     public DatePicker(Composite parent, int style) {
         super(parent, style);
         initialize();
-
+ 
         initCalendar();
     }
 
@@ -86,13 +86,13 @@ public class DatePicker extends Composite {
             		org.eclipse.swt.widgets.Shell s = new org.eclipse.swt.widgets.Shell(getShell());
                     calendar = new PopupCalendar(s, PopupCalendar.SHOWALL, locale);
             	}
-                if (!calendar.isOpen()) {
+               if (!calendar.isOpen()) {
                 	
                     Control comp = (Control) e.getSource();
                     calendar.open(comp, SWT.RIGHT);
-                } else
-                    calendar.close();
-            }
+                 } else
+                     calendar.close();
+             }
         });
         
         

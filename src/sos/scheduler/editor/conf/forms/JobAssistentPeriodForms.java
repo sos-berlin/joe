@@ -161,7 +161,7 @@ public class JobAssistentPeriodForms {
 			gridLayout.numColumns = 3;
 			shell.setLayout(gridLayout);
 			shell.setSize(577, 714);
-			shell.setText("Run Time/ Periods"); 			
+			shell.setText("Run Time/ Periods"); //TODO lang "Run Time/ Periods"			
 
 			{
 				tabFolder = new TabFolder(shell, SWT.NONE);				
@@ -208,7 +208,7 @@ public class JobAssistentPeriodForms {
 								}
 							});
 							newPeriodButton.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
-							newPeriodButton.setText("New Period");
+							newPeriodButton.setText("New Period");//TODO lang "New Period"
 						}
 						createPeriodForm(JobAssistentPeriodForms.EVERY_DAY, group, everyDayTabItem);
 					}
@@ -329,7 +329,7 @@ public class JobAssistentPeriodForms {
 					apply();
 				}
 			});
-			addPeriodButton.setText("Add Period");			
+			addPeriodButton.setText("Add Period");	//TODO lang "Add Period"		
 
 			{
 				list = new List(shell, SWT.V_SCROLL | SWT.BORDER);
@@ -365,7 +365,7 @@ public class JobAssistentPeriodForms {
 						close();					
 					}
 				});
-				butCancel.setText("Close");
+				butCancel.setText("Close");//TODO lang "Close"
 			}
 
 			fillList();
@@ -393,7 +393,7 @@ public class JobAssistentPeriodForms {
 						shell.dispose();						
 					}								
 				});
-				butNext.setText("Apply");
+				butNext.setText("Apply");//TODO lang "Apply"
 				periodForm.setApplyButton(butNext);
 			}
 

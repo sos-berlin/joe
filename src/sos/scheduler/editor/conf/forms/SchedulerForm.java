@@ -82,16 +82,13 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	 */
 	private void createSashForm() {
 		sashForm = new SashForm(this, SWT.NONE);
-		// sashForm.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+//		 sashForm.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		createGTree();
 		createCMainForm();
 		sashForm.setWeights(new int[] { 176, 698 });
 		Options.loadSash("main", sashForm);
 	}
 
-	/**
-	 * This method initializes gTree
-	 */
 	private void createGTree() {
 		gTree = new Group(sashForm, SWT.NONE);
 		gTree.setLayout(new FillLayout());
@@ -120,12 +117,10 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 		});
 	}
 
-	/**
-	 * This method initializes cMainForm
-	 */
 	private void createCMainForm() {
 		cMainForm = new Composite(sashForm, SWT.NONE);
 		cMainForm.setLayout(new FillLayout());
+//		cMainForm.setLayout(new GridLayout());
 	}
 
 	public Shell getSShell() {
@@ -588,7 +583,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 			TreeItem item = tree.getSelection()[0];
 			TreeData data = (TreeData) item.getData();
 			org.jdom.Element elem = data.getElement();
-			listener.treeFillScripts(item, elem, false);
+			listener.treeFillMonitorScripts(item, elem, false);
 		}
 	}
 

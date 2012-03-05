@@ -63,7 +63,7 @@ public class JobAssistentInfoForms {
 		shell.setLayout(gridLayout);
 		shell.setSize(619, 431);		
 		
-		shell.setText("Job Wizard");
+		shell.setText("Job Wizard");//TODO lang "Job Wizard"
 
 		java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();		
 		shell.setBounds((screen.width - shell.getBounds().width) /2, 
@@ -75,7 +75,7 @@ public class JobAssistentInfoForms {
 
 		{
 			final Group jobGroup = new Group(shell, SWT.NONE);
-			jobGroup.setText( "Job ");
+			jobGroup.setText( "Job ");//TODO lang "Job "
 			final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false, 3, 1);
 			gridData.widthHint = 581;
 			gridData.heightHint = 329;
@@ -123,7 +123,7 @@ public class JobAssistentInfoForms {
 				shell.dispose();
 			}
 		});
-		cancelButton.setText("Cancel");
+		cancelButton.setText("Cancel");//TODO lang "Cancel"
 		{
 			butNext = new Button(shell, SWT.NONE);
 			butNext.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
@@ -138,7 +138,7 @@ public class JobAssistentInfoForms {
 					Utils.stopCursor(shell);
 				}
 			});
-			butNext.setText("Next");
+			butNext.setText("Next");//TODO lang "Next"
 		}
 		setToolTipText();
 		shell.layout();		

@@ -169,7 +169,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 1;
         group = new Group(this, SWT.NONE);
-        group.setText("Run Options");
+        group.setText("Run Options"); //TODO lang "Run Options"
         createGroup1();
         group.setLayout(gridLayout);
         createGroup3();
@@ -216,11 +216,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         gridData.grabExcessVerticalSpace = true;
         gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
         group1 = new Group(group, SWT.NONE);
-        group1.setText("Start When Directory Changed");
+        group1.setText("Start When Directory Changed"); //TODO lang "Start When Directory Changed"
         group1.setLayout(gridLayout1);
         group1.setLayoutData(gridData);
         label = new Label(group1, SWT.NONE);
-        label.setText("Watch Directory:");
+        label.setText("Watch Directory:"); //TODO lang "Watch Directory:"
         tDirectory = new Text(group1, SWT.BORDER);
         tDirectory.addFocusListener(new FocusAdapter() {
         	public void focusGained(final FocusEvent e) {
@@ -229,7 +229,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         });
         tDirectory.setLayoutData(gridData3);
         label11 = new Label(group1, SWT.NONE);
-        label11.setText("File Regex:");
+        label11.setText("File Regex:"); //TODO lang "File Regex:"
         tRegex = new Text(group1, SWT.BORDER);
         tRegex.addFocusListener(new FocusAdapter() {
         	public void focusGained(final FocusEvent e) {
@@ -238,7 +238,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         });
         tRegex.setLayoutData(gridData4);
         bApplyDirectory = new Button(group1, SWT.NONE);
-        bApplyDirectory.setText("Apply Dir");
+        bApplyDirectory.setText("Apply Dir"); //TODO lang "Apply Dir"
         bApplyDirectory.setEnabled(false);
         bApplyDirectory.setLayoutData(gridData51);
         bApplyDirectory.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -247,11 +247,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
         label1 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label1.setText("Label");
+        label1.setText("Label"); //TODO lang "Label"
         label1.setLayoutData(gridData110);
         createTable3();
         bNewDirectory = new Button(group1, SWT.NONE);
-        bNewDirectory.setText("New Dir");
+        bNewDirectory.setText("New Dir"); //TODO lang "New Dir"
         bNewDirectory.setLayoutData(gridData41);
         bNewDirectory.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -262,10 +262,10 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
         label21 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label21.setText("Label");
+        label21.setText("Label"); //TODO lang "Label"
         label21.setLayoutData(gridData210);
         bRemoveDirectory = new Button(group1, SWT.NONE);
-        bRemoveDirectory.setText("Remove Dir");
+        bRemoveDirectory.setText("Remove Dir"); //TODO lang "Remove Dir"
         bRemoveDirectory.setEnabled(false);
         bRemoveDirectory.setLayoutData(gridData31);
         bRemoveDirectory.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -340,11 +340,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         gridData1.grabExcessVerticalSpace = true;
         gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
         group2 = new Group(group, SWT.NONE);
-        group2.setText("Delay After Error");
+        group2.setText("Delay After Error"); //TODO lang "Delay After Error"
         group2.setLayoutData(gridData1);
         group2.setLayout(gridLayout3);
         label4 = new Label(group2, SWT.NONE);
-        label4.setText("Error count:");
+        label4.setText("Error count:"); //TODO lang "Error count:"
         sErrorCount = new Text(group2, SWT.BORDER);
         sErrorCount.addFocusListener(new FocusAdapter() {
         	public void focusGained(final FocusEvent e) {
@@ -361,7 +361,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         composite.setLayout(new RowLayout(SWT.HORIZONTAL));
         composite.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.END, GridData.CENTER, true, false));
         bStop = new Button(group2, SWT.RADIO);
-        bStop.setText("stop");
+        bStop.setText("stop"); //TODO lang "stop"
         bStop.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 getShell().setDefaultButton(bApply);
@@ -370,7 +370,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
         bDelay = new Button(group2, SWT.RADIO);
-        bDelay.setText("Delay:");
+        bDelay.setText("Delay:"); //TODO lang "Delay:"
         bDelay.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 bApply.setEnabled(true);
@@ -415,17 +415,17 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
         label8 = new Label(group2, SWT.NONE);
-        label8.setText("[hh:mm:]ss");
+        label8.setText("[hh:mm:]ss"); //TODO lang "[hh:mm:]ss"
         bApply = new Button(group2, SWT.NONE);
         label5 = new Label(group2, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label5.setText("Label");
+        label5.setText("Label"); //TODO lang "Label"
         label5.setLayoutData(gridData22);
         createTable();
         bNewDelay = new Button(group2, SWT.NONE);
-        bNewDelay.setText("&New Delay");
+        bNewDelay.setText("&New Delay"); //TODO lang "&New Delay"
         bNewDelay.setLayoutData(gridData13);
         label6 = new Label(group2, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label6.setText("Label");
+        label6.setText("Label"); //TODO lang "Label"
         label6.setLayoutData(gridData23);
         bNewDelay.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -438,7 +438,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
         bRemoveDelay = new Button(group2, SWT.NONE);
-        bRemoveDelay.setText("Remove Delay");
+        bRemoveDelay.setText("Remove Delay"); //TODO lang "Remove Delay"
         bRemoveDelay.setEnabled(false);
         bRemoveDelay.setLayoutData(gridData12);
         bRemoveDelay.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -497,7 +497,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
                 bApply.setEnabled(true);
             }
         });
-        bApply.setText("&Apply Delay");
+        bApply.setText("&Apply Delay"); //TODO lang "&Apply Delay"
         bApply.setLayoutData(gridData21);
         bApply.setEnabled(false);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -545,11 +545,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         gridData2.grabExcessVerticalSpace = true;
         gridData2.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
         group3 = new Group(group, SWT.NONE);
-        group3.setText("Delay Order After Set Back");
+        group3.setText("Delay Order After Set Back"); //TODO lang "Delay Order After Set Back"
         group3.setLayout(gridLayout2);
         group3.setLayoutData(gridData2);
         label2 = new Label(group3, SWT.NONE);
-        label2.setText("Set Back Count:");
+        label2.setText("Set Back Count:"); //TODO lang "Set Back Count:"
         sSetBackCount = new Text(group3, SWT.BORDER);
         sSetBackCount.addFocusListener(new FocusAdapter() {
         	public void focusGained(final FocusEvent e) {
@@ -565,7 +565,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         bIsMaximum = new Button(group3, SWT.CHECK);
 
         final Label delayLabel = new Label(group3, SWT.NONE);
-        delayLabel.setText("Delay:");
+        delayLabel.setText("Delay:"); //TODO lang "Delay:"
         sSetBackHours = new Text(group3, SWT.BORDER);
         sSetBackHours.addFocusListener(new FocusAdapter() {
         	public void focusGained(final FocusEvent e) {
@@ -585,7 +585,7 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
                 bApplySetback.setEnabled(true);
             }
         });
-        bIsMaximum.setText("Max");
+        bIsMaximum.setText("Max"); //TODO lang "Max"
         bIsMaximum.setLayoutData(gridData6);
         sSetBackMinutes = new Text(group3, SWT.BORDER);
         sSetBackMinutes.addFocusListener(new FocusAdapter() {
@@ -612,9 +612,9 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
         label10 = new Label(group3, SWT.NONE);
-        label10.setText("[hh:mm:]ss");
+        label10.setText("[hh:mm:]ss"); //TODO lang "[hh:mm:]ss"
         bApplySetback = new Button(group3, SWT.NONE);
-        bApplySetback.setText("Apply Delay");
+        bApplySetback.setText("Apply Delay"); //TODO lang "Apply Delay"
         bApplySetback.setEnabled(false);
         bApplySetback.setLayoutData(gridData29);
         bApplySetback.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -623,11 +623,11 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
         label31 = new Label(group3, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label31.setText("Label");
+        label31.setText("Label"); //TODO lang "Label"
         label31.setLayoutData(gridData25);
         createTable2();
         bNewSetback = new Button(group3, SWT.NONE);
-        bNewSetback.setText("New Delay");
+        bNewSetback.setText("New Delay"); //TODO lang "New Delay"
         bNewSetback.setEnabled(true);
         bNewSetback.setLayoutData(gridData28);
         bNewSetback.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -641,10 +641,10 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
             }
         });
         label30 = new Label(group3, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label30.setText("Label");
+        label30.setText("Label"); //TODO lang "Label"
         label30.setLayoutData(gridData26);
         bRemoveSetback = new Button(group3, SWT.NONE);
-        bRemoveSetback.setText("Remove Delay");
+        bRemoveSetback.setText("Remove Delay"); //TODO lang "Remove Delay"
         bRemoveSetback.setEnabled(false);
         bRemoveSetback.setLayoutData(gridData27);
         bRemoveSetback.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -733,10 +733,10 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         TableColumn tableColumn = new TableColumn(tErrorDelay, SWT.NONE);
         tErrorDelay.setSortColumn(tableColumn);
         tableColumn.setWidth(150);
-        tableColumn.setText("Error Count");
+        tableColumn.setText("Error Count"); //TODO lang "Error Count"
         TableColumn tableColumn1 = new TableColumn(tErrorDelay, SWT.NONE);
         tableColumn1.setWidth(250);
-        tableColumn1.setText("Delay [hh:mm:]ss");
+        tableColumn1.setText("Delay [hh:mm:]ss"); //TODO lang "Delay [hh:mm:]ss"
     }
 
 
@@ -770,13 +770,13 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         TableColumn tableColumn2 = new TableColumn(tSetback, SWT.NONE);
         tSetback.setSortColumn(tableColumn2);
         tableColumn2.setWidth(150);
-        tableColumn2.setText("Set Back Count");
+        tableColumn2.setText("Set Back Count"); //TODO lang "Set Back Count"
         TableColumn tableColumn3 = new TableColumn(tSetback, SWT.NONE);
         tableColumn3.setWidth(80);
-        tableColumn3.setText("Is Maximum");
+        tableColumn3.setText("Is Maximum"); //TODO lang "Is Maximum"
         TableColumn tableColumn4 = new TableColumn(tSetback, SWT.NONE);
         tableColumn4.setWidth(250);
-        tableColumn4.setText("Delay [hh:mm:]ss");
+        tableColumn4.setText("Delay [hh:mm:]ss"); //TODO lang "Delay [hh:mm:]ss"
 
     }
 
@@ -812,10 +812,10 @@ public class JobOptionsForm extends Composite implements IUnsaved, IUpdateLangua
         });
         TableColumn tableColumn5 = new TableColumn(tDirectories, SWT.NONE);
         tableColumn5.setWidth(300);
-        tableColumn5.setText("Directory");
+        tableColumn5.setText("Directory"); //TODO lang "Directory"
         TableColumn tableColumn6 = new TableColumn(tDirectories, SWT.NONE);
         tableColumn6.setWidth(250);
-        tableColumn6.setText("Regex");
+        tableColumn6.setText("Regex"); //TODO lang "Regex"
     }
 
 

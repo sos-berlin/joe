@@ -75,6 +75,11 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private String				xmlDetailsConfigFilename	= null;
 
 	private Button				butRemove					= null;
+	
+	final String JOE_L_JOB_CHAIN = "JOE_L_JOB_CHAIN"; // "Job chain";
+
+	final String JOE_L_Title_order = "JOE_L_Title_order"; // "Title";
+
 
 	public OrderForm(Composite parent, int style, SchedulerDom _dom, Element _order, ISchedulerUpdate _main) throws JDOMException, TransformerException {
 
@@ -124,12 +129,12 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		gridLayout3.numColumns = 7;
 		gOrder = new Group(group, SWT.NONE);
 		gOrder.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		gOrder.setText("Order");
+		gOrder.setText("Order"); //TODO lang "Order"		
+
 		gOrder.setLayout(gridLayout3);
 		label10 = new Label(gOrder, SWT.NONE);
 		label10.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		label10.setText("Order ID");
-
+		label10.setText("Order ID"); //TODO lang "Order ID"
 		tOrderId = new Text(gOrder, SWT.BORDER);
 		tOrderId.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent e) {
@@ -156,7 +161,8 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		tOrderId.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 5, 1));
 
 		final Label jobchainLabel = new Label(gOrder, SWT.NONE);
-		jobchainLabel.setText("Job chain");
+		
+		jobchainLabel.setText( Messages.getLabel(JOE_L_JOB_CHAIN) );
 
 		butGoto = new Button(gOrder, SWT.ARROW | SWT.DOWN);
 		butGoto.setVisible(dom != null && !dom.isLifeElement());
@@ -219,7 +225,8 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		final GridData gridData_6 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
 		gridData_6.widthHint = 47;
 		titleLabel.setLayoutData(gridData_6);
-		titleLabel.setText("Title");
+
+		titleLabel.setText(Messages.getLabel(JOE_L_Title_order));
 
 		tTitle = new Text(gOrder, SWT.BORDER);
 		tTitle.addFocusListener(new FocusAdapter() {
@@ -235,7 +242,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		});
 		tTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
 
-		final Label priorityLabel = new Label(gOrder, SWT.NONE);
+		final Label priorityLabel = new Label(gOrder, SWT.NONE); //TODO lang "Priority"
 		priorityLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		priorityLabel.setText("Priority");
 
@@ -258,7 +265,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		});
 		tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
 
-		final Label stateLabel = new Label(gOrder, SWT.NONE);
+		final Label stateLabel = new Label(gOrder, SWT.NONE);  //TODO lang "State"
 		stateLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		stateLabel.setText("State");
 
@@ -271,7 +278,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		});
 		tState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
 
-		final Label endStateLabel = new Label(gOrder, SWT.NONE);
+		final Label endStateLabel = new Label(gOrder, SWT.NONE);  //TODO lang "End State"
 		endStateLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		endStateLabel.setText("End State");
 
@@ -286,7 +293,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		new Label(gOrder, SWT.NONE);
 		new Label(gOrder, SWT.NONE);
 
-		final Label stateLabel_1 = new Label(gOrder, SWT.NONE);
+		final Label stateLabel_1 = new Label(gOrder, SWT.NONE);  //TODO lang "State:"
 		stateLabel_1.setText("State:");
 
 		cboStates = new Combo(gOrder, SWT.NONE);
@@ -335,7 +342,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 			}
 		});
 		butDetails.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-		butDetails.setText("Parameter");
+		butDetails.setText("Parameter");  //TODO lang "Parameter"
 
 		createSashForm();
 	}
@@ -405,7 +412,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		cboStates.setItems(listener.getStates());
 
 		cboStates.add("global");
-		cboStates.setText("global");
+		cboStates.setText("global");  //TODO lang "global"
 
 		butDetails.setEnabled(cJobchain.getText().length() > 0);
 		cboStates.setEnabled(cJobchain.getText().length() > 0);

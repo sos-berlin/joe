@@ -13,10 +13,6 @@ import org.eclipse.swt.widgets.TableColumn;
 * 
 * \details
 *
-* \section WindowsSaver.java_intro_sec Introduction
-*
-* \section WindowsSaver.java_samples Some Samples
-*
 * \code
 *   .... code goes here ...
 * \endcode
@@ -38,61 +34,67 @@ public class WindowsSaver {
 
 	@SuppressWarnings("unused")
 	private final String	conClassName	= "WindowsSaver";
-	private Shell shell;
-	private Preferences prefs;
-	private Point defaultSize;
-	private Point defaultLocation;
-	private String className;
- 
-	public WindowsSaver(Class c, Shell s,int x,int y) {
-        this.prefs = Preferences.userNodeForPackage(c);
- 		this.shell = s;
- 		className = c.getName();
-		defaultSize = new Point(x,y);
-		defaultLocation = new Point(100,100);
- 
+	private Shell			shell;
+	private Preferences		prefs;
+	private Point			defaultSize;
+	private Point			defaultLocation;
+	private String			className;
+
+	public WindowsSaver(Class c, Shell s, int x, int y) {
+		this.prefs = Preferences.userNodeForPackage(c);
+		this.shell = s;
+		className = c.getName();
+		defaultSize = new Point(x, y);
+		defaultLocation = new Point(100, 100);
+
 	}
-	
-	 
-	private int getInt(String s,int def) {
+
+	private int getInt(String s, int def) {
 		try {
-		  return Integer.parseInt(s);
-		}catch (NumberFormatException e) {return def;}
+			return Integer.parseInt(s);
+		}
+		catch (NumberFormatException e) {
+			return def;
+		}
 	}
-	
-    public void restoreWindow() {
-     	shell.setSize(getInt(prefs.get("win:sizeX:" + className , String.valueOf(defaultSize.x)),defaultSize.x),getInt(prefs.get("win:sizeY:" + className, String.valueOf(defaultSize.y)),defaultSize.y));
-    	shell.setLocation(getInt(prefs.get("win:locateX:" + className, String.valueOf(defaultLocation.x)),defaultLocation.x),getInt(prefs.get("win:locateY:" + className, String.valueOf(defaultLocation.y)),defaultLocation.y));
-    }
-    
-    public void restoreWindowLocation() {
-    	shell.setLocation(getInt(prefs.get("win:locateX:" + className, String.valueOf(defaultLocation.x)),defaultLocation.x),getInt(prefs.get("win:locateY:" + className, String.valueOf(defaultLocation.y)),defaultLocation.y));
-    }
 
-    public void restoreWindowSize() {
-     	shell.setSize(getInt(prefs.get("win:sizeX:" + className, String.valueOf(defaultSize.x)),defaultSize.x),getInt(prefs.get("win:sizeY:" + className, String.valueOf(defaultSize.y)),defaultSize.y));
-    }
+	public void restoreWindow() {
+		shell.setSize(getInt(prefs.get("win:sizeX:" + className, String.valueOf(defaultSize.x)), defaultSize.x),
+				getInt(prefs.get("win:sizeY:" + className, String.valueOf(defaultSize.y)), defaultSize.y));
+		shell.setLocation(getInt(prefs.get("win:locateX:" + className, String.valueOf(defaultLocation.x)), defaultLocation.x),
+				getInt(prefs.get("win:locateY:" + className, String.valueOf(defaultLocation.y)), defaultLocation.y));
+	}
 
-    public void saveWindow() {
-       prefs.put("win:sizeX:" + className,String.valueOf(shell.getSize().x));
-       prefs.put("win:sizeY:" + className,String.valueOf(shell.getSize().y));
-       prefs.put("win:locateX:" + className,String.valueOf(shell.getLocation().x));
-       prefs.put("win:locateY:" + className,String.valueOf(shell.getLocation().y));
-    }
-    
-    public void saveTableColumn(String tableName, TableColumn t) {
-      String name = "_" + t.getText();
-	  prefs.node(tableName + "/col/" + name).put("width", String.valueOf(t.getWidth()));
-    }
-    
-    public void restoreTableColumn(String tableName, TableColumn t,int def) {
-       String name = "_" + t.getText();
-	   try{
-		   t.setWidth(this.getInt(prefs.node(tableName + "/col/" + name).get("width", String.valueOf(def)), def));
-	   }catch (Exception e) {t.setWidth(def);}
-    }
+	public void restoreWindowLocation() {
+		shell.setLocation(getInt(prefs.get("win:locateX:" + className, String.valueOf(defaultLocation.x)), defaultLocation.x),
+				getInt(prefs.get("win:locateY:" + className, String.valueOf(defaultLocation.y)), defaultLocation.y));
+	}
 
+	public void restoreWindowSize() {
+		shell.setSize(getInt(prefs.get("win:sizeX:" + className, String.valueOf(defaultSize.x)), defaultSize.x),
+				getInt(prefs.get("win:sizeY:" + className, String.valueOf(defaultSize.y)), defaultSize.y));
+	}
 
+	public void saveWindow() {
+		prefs.put("win:sizeX:" + className, String.valueOf(shell.getSize().x));
+		prefs.put("win:sizeY:" + className, String.valueOf(shell.getSize().y));
+		prefs.put("win:locateX:" + className, String.valueOf(shell.getLocation().x));
+		prefs.put("win:locateY:" + className, String.valueOf(shell.getLocation().y));
+	}
 
-	 
+	public void saveTableColumn(String tableName, TableColumn t) {
+		String name = "_" + t.getText();
+		prefs.node(tableName + "/col/" + name).put("width", String.valueOf(t.getWidth()));
+	}
+
+	public void restoreTableColumn(String tableName, TableColumn t, int def) {
+		String name = "_" + t.getText();
+		try {
+			t.setWidth(this.getInt(prefs.node(tableName + "/col/" + name).get("width", String.valueOf(def)), def));
+		}
+		catch (Exception e) {
+			t.setWidth(def);
+		}
+	}
+
 }

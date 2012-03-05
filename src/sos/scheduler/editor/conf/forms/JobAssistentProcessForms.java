@@ -97,11 +97,11 @@ public class JobAssistentProcessForms {
 			step = step + " [Step 5 of 9]";
 		else 
 			step = step + " [Step 5 of 8]";
-		processShell.setText("Execute" + step);
+		processShell.setText("Execute" + step);//TODO lang "Execute"
 
 		{
 			final Group jobGroup = new Group(processShell, SWT.NONE);
-			jobGroup.setText(" Job: " + Utils.getAttributeValue("name", executeListener.getJob()));
+			jobGroup.setText(" Job: " + Utils.getAttributeValue("name", executeListener.getJob()));//TODO lang " Job: " ?
 			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
 			jobGroup.setLayoutData(gridData);
 			final GridLayout gridLayout_1 = new GridLayout();
@@ -116,7 +116,7 @@ public class JobAssistentProcessForms {
 
 			{
 				final Label lblFile = new Label(jobGroup, SWT.NONE);
-				lblFile.setText("File");
+				lblFile.setText("File");//TODO lang "File"
 			}
 			txtFile = new Text(jobGroup, SWT.BORDER);
 			txtFile.setFocus();
@@ -135,7 +135,7 @@ public class JobAssistentProcessForms {
 
 			{
 				final Label lblParameter = new Label(jobGroup, SWT.NONE);
-				lblParameter.setText("Parameter");
+				lblParameter.setText("Parameter");//TODO lang "Parameter"
 			}
 			txtParameter = new Text(jobGroup, SWT.BORDER);
 			txtParameter.addModifyListener(new ModifyListener() {
@@ -154,7 +154,7 @@ public class JobAssistentProcessForms {
 			{
 				final Label lblRessources = new Label(jobGroup, SWT.NONE);
 				lblRessources.setLayoutData(new GridData(SWT.DEFAULT, 17));
-				lblRessources.setText("Log File");
+				lblRessources.setText("Log File");//TODO lang "Log File"
 
 			}
 			txtLog = new Text(jobGroup, SWT.BORDER);
@@ -207,7 +207,7 @@ public class JobAssistentProcessForms {
 					close();
 				}
 			});
-			butCancel.setText("Cancel");
+			butCancel.setText("Cancel");//TODO lang "Cancel"
 		}
 
 		final Composite composite_1 = new Composite(processShell, SWT.NONE);
@@ -228,7 +228,7 @@ public class JobAssistentProcessForms {
 					txtFile.setFocus();
 				}
 			});
-			butShow.setText("Show");
+			butShow.setText("Show");//TODO lang "Show"
 		}
 
 		{
@@ -238,7 +238,7 @@ public class JobAssistentProcessForms {
 					doFinish();										
 				}
 			});
-			butFinish.setText("Finish");
+			butFinish.setText("Finish");//TODO lang "Finish"
 		}
 
 		butBack = new Button(composite_1, SWT.NONE);
@@ -251,7 +251,7 @@ public class JobAssistentProcessForms {
 		final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		gridData_1.widthHint = 47;
 		butBack.setLayoutData(gridData_1);
-		butBack.setText("Back");
+		butBack.setText("Back");//TODO lang "Back"
 		{
 			butNext = new Button(composite_1, SWT.NONE);
 			butNext.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -275,7 +275,7 @@ public class JobAssistentProcessForms {
 					processShell.dispose();					
 				}
 			});
-			butNext.setText("Next");
+			butNext.setText("Next");//TODO lang "Next"
 		}
 		{
 			Utils.createHelpButton(composite_1, "assistent.process", processShell);

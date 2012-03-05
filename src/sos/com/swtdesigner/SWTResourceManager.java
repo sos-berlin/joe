@@ -1,4 +1,4 @@
-package com.sos.swtdesigner;
+package sos.com.swtdesigner;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;

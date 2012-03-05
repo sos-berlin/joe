@@ -136,17 +136,17 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 		 GridLayout gridLayout = new GridLayout();
 		 gridLayout.numColumns = 5;
 		 locksGroup = new Group(this, SWT.NONE);
-		 locksGroup.setText("Locks");
+		 locksGroup.setText("Locks"); //TODO lang "Locks"
 		 locksGroup.setLayout(gridLayout);
 		 label1 = new Label(locksGroup, SWT.NONE);
-		 label1.setText("Lock");
+		 label1.setText("Lock"); //TODO lang "Lock"
 		 tLock = new Text(locksGroup, SWT.BORDER);
 		 bApply = new Button(locksGroup, SWT.NONE);
 		 label5 = new Label(locksGroup, SWT.NONE);
 		 final GridData gridData = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
 		 gridData.horizontalIndent = 5;
 		 label5.setLayoutData(gridData);
-		 label5.setText("Max Non Exclusive:");
+		 label5.setText("Max Non Exclusive:"); //TODO lang "Max Non Exclusive:"
 		 GridData gridData4 = new GridData(20, SWT.DEFAULT);
 
 		 butUnlimitedNonExclusive = new Button(locksGroup, SWT.CHECK);
@@ -157,7 +157,7 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 		 	}
 		 });
 		 butUnlimitedNonExclusive.setSelection(true);
-		 butUnlimitedNonExclusive.setText("unlimited");
+		 butUnlimitedNonExclusive.setText("unlimited"); //TODO lang "unlimited"
 		 butUnlimitedNonExclusive.setEnabled(false);
 		 sMaxNonExclusive = new Spinner(locksGroup, SWT.NONE);
 		 sMaxNonExclusive.setMaximum(99999999);
@@ -176,16 +176,16 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 		 });
 		 new Label(locksGroup, SWT.NONE);
 		 label = new Label(locksGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
-		 label.setText("Label");
+		 label.setText("Label"); //TODO lang "Label"
 		 label.setLayoutData(gridData7);
 		 createTable();
 		 bNew = new Button(locksGroup, SWT.NONE);
-		 bNew.setText("&New Lock");
+		 bNew.setText("&New Lock"); //TODO lang "&New Lock"
 		 bNew.setLayoutData(gridData1);
 		 getShell().setDefaultButton(bNew);
 
 		 label2 = new Label(locksGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
-		 label2.setText("Label");
+		 label2.setText("Label"); //TODO lang "Label"
 		 label2.setLayoutData(gridData8);
 		 bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			 public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -207,7 +207,7 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 			 }
 		 });
 		 bRemove = new Button(locksGroup, SWT.NONE);
-		 bRemove.setText("Remove Lock");
+		 bRemove.setText("Remove Lock"); //TODO lang "Remove Lock"
 		 bRemove.setEnabled(false);
 		 bRemove.setLayoutData(gridData2);
 		 bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -253,7 +253,7 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 				 bApply.setEnabled(valid);
 			 }
 		 });
-		 bApply.setText("Apply Lock");
+		 bApply.setText("Apply Lock"); //TODO lang "Apply Lock"
 		 bApply.setLayoutData(gridData3);
 		 bApply.setEnabled(false);
 		 bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -296,10 +296,10 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 		 });
 		 TableColumn lockTableColumn = new TableColumn(tableLocks, SWT.NONE);
 		 lockTableColumn.setWidth(200);
-		 lockTableColumn.setText("Lock");
+		 lockTableColumn.setText("Lock"); //TODO lang "Lock"
 		 TableColumn tableColumn1 = new TableColumn(tableLocks, SWT.NONE);
 		 tableColumn1.setWidth(150);
-		 tableColumn1.setText("Max Non Exclusive");
+		 tableColumn1.setText("Max Non Exclusive"); //TODO lang "Max Non Exclusive"
 	 }
 
 

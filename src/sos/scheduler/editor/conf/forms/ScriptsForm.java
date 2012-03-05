@@ -73,9 +73,6 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 		}
 	}
 
-	/**
-	 * This method initializes group
-	 */
 	private void createGroup() {
 		try {
 			GridLayout gridLayout = new GridLayout();

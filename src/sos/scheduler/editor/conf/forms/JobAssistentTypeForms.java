@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.Element;
-import com.swtdesigner.SWTResourceManager;
+
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
@@ -27,6 +27,8 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobListener;
+
+import com.swtdesigner.SWTResourceManager;
 
 /**
  * Job Wizzard.
@@ -44,7 +46,11 @@ import sos.scheduler.editor.conf.listeners.JobListener;
  *
  */
 public class JobAssistentTypeForms {
+	@SuppressWarnings("unused")
+	private final String conSVNVersion = "$Id$";
 	
+	private static final String	conTagNameJOB	= "job";
+
 	/** Parameter: isStandaloneJob = true -> Standalone Job, sonst Order Job*/
 	private boolean          isStandaloneJob  = true;	
 	
@@ -89,9 +95,7 @@ public class JobAssistentTypeForms {
 	
 	public void showTypeForms() {
 		try {
-			
 			jobTypeShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);			
-						
 			jobTypeShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 			
 			final GridLayout gridLayout = new GridLayout();
@@ -102,14 +106,11 @@ public class JobAssistentTypeForms {
 			gridLayout.numColumns = 2;
 			jobTypeShell.setLayout(gridLayout);			
 			String step = "  [Step 1]";
-			jobTypeShell.setText("Job Type" + step); 
-
-			
-			
+			jobTypeShell.setText("Job Type" + step);  //TODO lang "Job Type"
 			{
 				final Group jobGroup = new Group(jobTypeShell, SWT.NONE);
 				jobGroup.setCapture(true);
-				jobGroup.setText("Job");
+				jobGroup.setText("Job"); //TODO lang "Job"
 				final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, true, 2, 1);
 				gridData_1.heightHint = 99;
 				gridData_1.verticalIndent = -1;
@@ -120,14 +121,13 @@ public class JobAssistentTypeForms {
 				gridLayout_1.marginHeight = 0;
 				gridLayout_1.numColumns = 2;
 				jobGroup.setLayout(gridLayout_1);
-								
 				{
 					radOrderjob = new Button(jobGroup, SWT.RADIO);					
 					final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, true);
 					gridData.heightHint = 48;
 					radOrderjob.setLayoutData(gridData);
 					radOrderjob.setSelection(jobType != null && jobType.length() > 0 && jobType.equalsIgnoreCase("order"));
-					radOrderjob.setText(Messages.getString("assistent.order.orderjob"));
+					radOrderjob.setText(Messages.getLabel("assistent.order.orderjob"));
 				}
 				
 				{
@@ -135,7 +135,7 @@ public class JobAssistentTypeForms {
 					radStandalonejob.setSelection(jobType == null || jobType.length() == 0 || jobType.equalsIgnoreCase("standalonejob"));					
 					final GridData gridData = new GridData(GridData.CENTER, GridData.CENTER, true, true);					
 					radStandalonejob.setLayoutData(gridData);
-					radStandalonejob.setText(Messages.getString("assistent.type.standalonejob"));
+					radStandalonejob.setText(Messages.getLabel("assistent.type.standalonejob"));
 				}
 			}
 			
@@ -146,7 +146,7 @@ public class JobAssistentTypeForms {
 						close();							
 					}
 				});
-				butCancel.setText("Cancel");
+				butCancel.setText("Cancel"); //TODO lang "Cancel"
 			}			
 			
 			
@@ -167,12 +167,12 @@ public class JobAssistentTypeForms {
 					butShow.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
 							//dient nur für die Show Funktion 
-							Element job = new Element("job");
+							Element job = new Element(conTagNameJOB);
 							Utils.setAttribute("order", isStandaloneJob ? "yes" : "no", job);
 							MainWindow.message(jobTypeShell, Utils.getElementAsString(job), SWT.OK );
 						}
 					});
-					butShow.setText("Show");
+					butShow.setText(Messages.getLabel("show.wizard.job"));
 				}
 				{
 					butNext = new Button(composite, SWT.NONE);
@@ -191,7 +191,7 @@ public class JobAssistentTypeForms {
 							
 							
 							if(jobBackUp != null) {
-								int cont = MainWindow.message(jobTypeShell, sos.scheduler.editor.app.Messages.getString("assistent.discard_changes"), SWT.ICON_QUESTION | SWT.YES |SWT.NO |SWT.CANCEL );
+								int cont = MainWindow.message(jobTypeShell, Messages.getLabel("assistent.discard_changes"), SWT.ICON_QUESTION | SWT.YES |SWT.NO |SWT.CANCEL );
 								if(cont == SWT.CANCEL) {
 									return;
 								}else if(cont != SWT.YES) {											
@@ -209,7 +209,8 @@ public class JobAssistentTypeForms {
 							
 						}
 					});
-					butNext.setText("Next");
+					butNext.setText("Next"); //TODO lang "Next"
+					butNext.setText(Messages.getLabel("next.wizard"));
 				}
 
 				
@@ -248,7 +249,7 @@ public class JobAssistentTypeForms {
 	}
 	
 	private void close() {
-		int cont = MainWindow.message(jobTypeShell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		int cont = MainWindow.message(jobTypeShell, Messages.getLabel("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		if(cont == SWT.OK)
 			jobTypeShell.dispose();	
 	}
