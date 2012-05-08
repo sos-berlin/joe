@@ -117,16 +117,21 @@ public class SchedulerDom extends DomParser {
 			putDomOrder("schedule", RUNTIME_ELEMENTS);
 			putDomOrder("holidays", HOLIDAYS_ELEMENTS);
 			putDomOrder("settings", SETTINGS_ELEMENTS);
+			putDomOrder("start_job", ORDER_ELEMENTS);
+
 			isDirectory = true;
 			initScheduler();
 		}
 		else
 			if (type == LIVE_JOB) {
+				putDomOrder("commands", COMMANDS_ELEMENTS);
 				putDomOrder("job", JOB_ELEMENTS);
 				putDomOrder("run_time", RUNTIME_ELEMENTS);
 				putDomOrder("params", PARAMS_ELEMENTS);
 				putDomOrder("holidays", HOLIDAYS_ELEMENTS);
 				putDomOrder("settings", SETTINGS_ELEMENTS);
+
+				putDomOrder("start_job", ORDER_ELEMENTS);
 				initScheduler(type);
 			}
 			else
@@ -141,6 +146,8 @@ public class SchedulerDom extends DomParser {
 						putDomOrder("run_time", RUNTIME_ELEMENTS);
 						putDomOrder("params", PARAMS_ELEMENTS);
 						putDomOrder("holidays", HOLIDAYS_ELEMENTS);
+						putDomOrder("start_job", ORDER_ELEMENTS);
+
 						initScheduler(type);
 					}
 					else
@@ -247,7 +254,7 @@ public class SchedulerDom extends DomParser {
 		setDoc(doc);
 
 		// set comments as attributes
-		setComments(getDoc().getContent());
+		setComments(getDoc().getContent(), null);
 
 		setChanged(false);
 		setFilename(filename);
@@ -257,7 +264,7 @@ public class SchedulerDom extends DomParser {
 	public boolean readString(String str, boolean validate) throws JDOMException, IOException {
 
 		StringReader sr = new StringReader(str);
-		logger.debug(str);
+//		logger.debug(str);
 		Document doc = getBuilder(validate).build(sr);
 		
 
@@ -269,7 +276,7 @@ public class SchedulerDom extends DomParser {
 		setDoc(doc);
 
 		// set comments as attributes
-		setComments(getDoc().getContent());
+		setComments(getDoc().getContent(), null);
 
 		setChanged(false);
 		return true;
@@ -444,27 +451,34 @@ public class SchedulerDom extends DomParser {
 
 	}
 
-	private void setComments(List content) {
+	private void setComments(List content, Element plastElement) {
+		Element lastElement = plastElement;
 		if (content != null) {
 			String comment = null;
 			for (Iterator it = content.iterator(); it.hasNext();) {
 				Object o = it.next();
 				if (o instanceof Comment) {
 					comment = ((Comment) o).getText();
+					if (lastElement != null) {
+						lastElement.setAttribute("__comment__", comment.trim());
+					}
 				}
-				else
+				else {
 					if (o instanceof Element) {
 						Element e = (Element) o;
-						if (comment != null) { // set comment as value
-							e.setAttribute("__comment__", comment.trim());
-							comment = null;
-						}
-						setComments(e.getContent()); // recursion
+						lastElement = e;
+//						if (comment != null) { // set comment as value
+//							e.setAttribute("__comment__", comment.trim());
+//							comment = null;
+//						}
+						setComments(e.getContent(), lastElement); // recursion
 					}
-					else
+					else {
 						if (!(o instanceof Text)) {
 							comment = null;
 						}
+					}
+				}
 			}
 		}
 	}
