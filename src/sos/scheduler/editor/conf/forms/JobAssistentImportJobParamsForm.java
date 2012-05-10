@@ -191,7 +191,7 @@ public class JobAssistentImportJobParamsForm {
 				h.put(conParamAttributeREQUIRED, strIsRequired);
 				String strLanguage = Options.getLanguage();
 				// download : http://mirrors.ibiblio.org/pub/mirrors/maven2/com/sun/org/apache/jaxp-ri/1.4/jaxp-ri-1.4.jar
-				DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance("com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
+				DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl",
 						this.getClass().getClassLoader());
 				DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
 				org.w3c.dom.Document doc = docBuilder.newDocument();
