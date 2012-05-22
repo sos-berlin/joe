@@ -1,6 +1,8 @@
 package sos.scheduler.editor.conf.listeners;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -29,7 +31,7 @@ public class JobsListener {
 
 	private     Element               _jobs      = null;
 
-	private     List                  _list      = null;
+	private     List <Element>                 _list      = null;
 
 
 	public JobsListener(SchedulerDom dom, ISchedulerUpdate update) {
@@ -42,12 +44,15 @@ public class JobsListener {
 			_config = _dom.getRoot().getChild("config");
 			_jobs = _config.getChild("jobs");
 
-			if (_jobs != null)
+			if (_jobs != null) {
 				_list = _jobs.getChildren("job");
+			}
 		}
-
+ 	   
+ 
 	}
 
+	 
 
 	private void initJobs() {
 		if(!_dom.isLifeElement()) {
@@ -59,7 +64,8 @@ public class JobsListener {
 				_jobs = _config.getChild("jobs");
 				_list = _jobs.getChildren("job");
 			}
-		}
+ 		}
+
 	}
 
 
@@ -145,8 +151,12 @@ public class JobsListener {
 		if(attr.get("title") != null && attr.get("title").toString().length() > 0)
 			Utils.setAttribute("title", attr.get("title").toString(), job);
 
-		if(attr.get("order") != null && attr.get("order").toString().length() > 0)
+		if(attr.get("order") != null && attr.get("order").toString().length() > 0) {
 			Utils.setAttribute("order", attr.get("order").toString(), job);
+			if (attr.get("order").toString().equalsIgnoreCase("yes")) {
+    		Utils.setAttribute("stop_on_error", "no", job);
+			}
+		}
 
 		if((attr.get("tasks") != null && attr.get("tasks").toString().length() > 0 && !attr.get("tasks").equals("unbounded")))
 			Utils.setAttribute("tasks", attr.get("tasks").toString(), job);

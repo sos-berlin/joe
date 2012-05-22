@@ -451,6 +451,7 @@ public class JobAssistentImportJobsForm {
 									Element job = null;
 									if (flagBackUpJob) {
 										job = listener.createJobElement(h);
+										
 									}
 									else {
 										job = joblistener.getJob();
