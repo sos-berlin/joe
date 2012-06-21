@@ -31,13 +31,13 @@ public class  JobProcessFile extends FormBaseClass {
     private Button bIgnoreSignal = null;
     private Button bIgnoreError = null;
     
-    public JobProcessFile(Composite pParentComposite, JobListener pobjJobDataProvider,JobProcessFile that) {
+    public JobProcessFile(Composite pParentComposite, JobListener pobjJobDataProvider) {
         super(pParentComposite, pobjJobDataProvider);
         objJobDataProvider = pobjJobDataProvider;
         
         init = true;
         createGroup();
-        getValues(that);
+        initForm();
         init = false;
     }
 
@@ -53,17 +53,14 @@ public class  JobProcessFile extends FormBaseClass {
     public void refreshContent () {
     }
     
-    private void getValues(JobProcessFile that){
-        if (that == null){
-            return;
-        }
-        
-        this.tExecuteFile.setText(that.tExecuteFile.getText());
-        this.tParameter.setText(that.tParameter.getText());
-        this.tLogFile.setText(that.tLogFile.getText());
-        
-        this.bIgnoreSignal.setSelection(that.bIgnoreSignal.getSelection());
-        this.bIgnoreError.setSelection(that.bIgnoreError.getSelection());
+      
+    private void initForm(){
+            tExecuteFile.setText(objJobDataProvider.getFile());
+            tLogFile.setText(objJobDataProvider.getLogFile());
+            tParameter.setText(objJobDataProvider.getParam());
+            bIgnoreError.setSelection(objJobDataProvider.isIgnoreError());
+            bIgnoreSignal.setSelection(objJobDataProvider.isIgnoreSignal());
+            tExecuteFile.setFocus();
     }
     
     private void createGroup() {

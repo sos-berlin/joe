@@ -31,6 +31,8 @@ import org.eclipse.swt.events.KeyEvent;
 
 public class PeriodForm extends Composite implements IUpdateLanguage {
 
+    @SuppressWarnings("unused")
+    private final String            conSVNVersion       = "$Id$";
 
 	private Label lblOrSecond;
 	private Label label18_2;
@@ -49,10 +51,6 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 	private Composite         gPeriod                    = null;
 	private Label             label1                     = null;
 	private Button            bLetRun                    = null;
-<<<<<<< .mine
-=======
-
->>>>>>> .r17402
 	private Label             label2                     = null;
 	private Text              sBeginHours                = null;
 	private Label             label3                     = null;

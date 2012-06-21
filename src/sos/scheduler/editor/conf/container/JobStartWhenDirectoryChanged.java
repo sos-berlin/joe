@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.MainWindow;
@@ -43,16 +42,18 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
 
 	private JobListener			objJobDataProvider	= null;
 
-	public JobStartWhenDirectoryChanged(Composite pParentComposite, JobListener pobjDataProvider,JobStartWhenDirectoryChanged that) {
+	public JobStartWhenDirectoryChanged(Composite pParentComposite, JobListener pobjDataProvider) {
 		super(pParentComposite, pobjDataProvider);
+        showWaitCursor();
+
 		objJobDataProvider = pobjDataProvider;
 		createGroup();
-        getValues(that);
+        initForm();
+        restoreCursor();
 	}
 
 	 
 	private void createGroup() {
-		showWaitCursor();
 
 		GridData gridData51 = new org.eclipse.swt.layout.GridData();
 		gridData51.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -177,21 +178,17 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
 			}
 		});
 
-		RestoreCursor();
-	}
+ 	}
 
-	private void getValues(JobStartWhenDirectoryChanged that){
-	    if (that == null){
-	        return;
-	    }
-	    
-	   this.tRegex.setText(that.tRegex.getText());
+	private void initForm(){
+	objJobDataProvider.fillDirectories(tDirectories);
+	   /*this.tRegex.setText(that.tRegex.getText());
 	   this.tDirectory.setText(that.tDirectory.getText());
 	   
 	   for (int i= 0;i<that.tDirectories.getItemCount();i++){
 	       TableItem t = new TableItem(this.tDirectories, SWT.None);
 	       t.setText(that.tDirectories.getItems()[i].getText());
-  	   }
+  	   }*/
 	}
 	
 	private void initDirectory(boolean enabled) {

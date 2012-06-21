@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.classes.FolderNameSelector;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
@@ -28,7 +27,7 @@ public class JobJavaAPI extends FormBaseClass {
 
 	private boolean init = true;
 	private JobListener objJobDataProvider = null;
-	private FolderNameSelector tClasspath = null;
+	private Text tClasspath = null;
 	private Text txtJavaOptions = null;
 	private Text tbxClassName = null; 
 
@@ -121,13 +120,31 @@ public class JobJavaAPI extends FormBaseClass {
 		lblNewLabel_1.setLayoutData(labelGridData);
 		lblNewLabel_1.setText(Messages.getLabel("job.classpath"));
 
-		tClasspath = new FolderNameSelector(gScript_2, SWT.BORDER);
-		tClasspath.setParentForm(this);
-		tClasspath.setLayoutData(gd_tClass);
-		tClasspath.setI18NKey("job.classpath");
-		tClasspath.setDataProvider(objJobDataProvider);
+  
+		
+		tClasspath = new Text(gScript_2, SWT.BORDER);
+		tClasspath.setEnabled(true);
+		tClasspath.setText(objJobDataProvider.getClasspath());
 
+		tClasspath.addFocusListener(new FocusAdapter() {
+            public void focusGained(final FocusEvent e) {
+                tClasspath.selectAll();
+            }
+        });
  
+        GridData gd_tClasspath = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        gd_tClasspath.horizontalSpan = 8;
+        tClasspath.setLayoutData(gd_tClasspath);
+        tClasspath.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                if (!init) {
+                    if (objJobDataProvider.isJava()) {
+                        objJobDataProvider.setClasspath(tClasspath.getText());
+                    }
+                }
+            }
+        });
+		 
 		new Label(gScript_2, SWT.NONE);
 		new Label(gScript_2, SWT.NONE);
 		new Label(gScript_2, SWT.NONE);
@@ -149,21 +166,20 @@ public class JobJavaAPI extends FormBaseClass {
 		});
 		txtJavaOptions.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
-				if (init) {
-					return;
+				if (!init) {
+				   objJobDataProvider.setJavaOptions(txtJavaOptions.getText());
 				}
-				objJobDataProvider.setJavaOptions(txtJavaOptions.getText());
 			}
 		});
 		txtJavaOptions.setLayoutData(gd_tClass);
 
 		gScript_1.setVisible(true);
 		gScript_1.redraw();
-		RestoreCursor();
+		restoreCursor();
 		init = false;
 	}
 
-    public FolderNameSelector getTClasspath() {
+    public Text getTClasspath() {
         return tClasspath;
     }
 

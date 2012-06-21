@@ -26,42 +26,39 @@ import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.listeners.JobOptionsListener;
 
 public class JobDelayAfterError extends FormBaseClass {
-    
-    private JobOptionsListener objJobDataProvider         = null;
-    private Group              group            = null;
-  
-     
-    private Table              tErrorDelay      = null;
-    private Button             bNewDelay        = null;
-    private Label              label4           = null;
-    private Text               sErrorCount      = null;
-    private Text               sErrorHours      = null;
-    private Label              label14          = null;
-    private Text               sErrorMinutes    = null;
-    private Label              label17          = null;
-    private Text               sErrorSeconds    = null;
-    private Button             bRemoveDelay     = null;
-    private Button             bApply           = null;
-    private Composite          composite        = null;
-    private Button             bStop            = null;
-    private Button             bDelay           = null;
-    private Label              label8           = null;
-    private Label              label5           = null;
-    private Label              label6           = null;
-    
+
+    private JobOptionsListener objJobDataProvider = null;
+    private Group              group              = null;
+
+    private Table              tErrorDelay        = null;
+    private Button             bNewDelay          = null;
+    private Label              label4             = null;
+    private Text               sErrorCount        = null;
+    private Text               sErrorHours        = null;
+    private Label              label14            = null;
+    private Text               sErrorMinutes      = null;
+    private Label              label17            = null;
+    private Text               sErrorSeconds      = null;
+    private Button             bRemoveDelay       = null;
+    private Button             bApply             = null;
+    private Composite          composite          = null;
+    private Button             bStop              = null;
+    private Button             bDelay             = null;
+    private Label              label8             = null;
+    private Label              label5             = null;
+    private Label              label6             = null;
 
     @SuppressWarnings("unused")
-    private final String        conSVNVersion       = "$Id$";
+    private final String       conSVNVersion      = "$Id$";
 
-    public JobDelayAfterError(Composite pParentComposite, JobOptionsListener pobjDataProvider,JobDelayAfterError that) {
+    public JobDelayAfterError(Composite pParentComposite, JobOptionsListener pobjDataProvider) {
         super(pParentComposite, pobjDataProvider);
         objJobDataProvider = pobjDataProvider;
         createGroup();
         initErrorDelays(objJobDataProvider.isErrorDelay());
-        getValues(that);
+        initForm();
     }
 
-  
     private void createGroup() {
         GridData gridData23 = new org.eclipse.swt.layout.GridData();
         gridData23.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -95,11 +92,11 @@ public class JobDelayAfterError extends FormBaseClass {
         gridData1.grabExcessVerticalSpace = true;
         gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
         group = new Group(objParent, SWT.NONE);
-        group.setText("Delay After Error"); //TODO lang "Delay After Error"
+        group.setText("Delay After Error"); // TODO lang "Delay After Error"
         group.setLayoutData(gridData1);
         group.setLayout(gridLayout3);
         label4 = new Label(group, SWT.NONE);
-        label4.setText("Error count:"); //TODO lang "Error count:"
+        label4.setText("Error count:"); // TODO lang "Error count:"
         sErrorCount = new Text(group, SWT.BORDER);
         sErrorCount.addFocusListener(new FocusAdapter() {
             public void focusGained(final FocusEvent e) {
@@ -116,7 +113,7 @@ public class JobDelayAfterError extends FormBaseClass {
         composite.setLayout(new RowLayout(SWT.HORIZONTAL));
         composite.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.END, GridData.CENTER, true, false));
         bStop = new Button(group, SWT.RADIO);
-        bStop.setText("stop"); //TODO lang "stop"
+        bStop.setText("stop"); // TODO lang "stop"
         bStop.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 getShell().setDefaultButton(bApply);
@@ -125,7 +122,7 @@ public class JobDelayAfterError extends FormBaseClass {
             }
         });
         bDelay = new Button(group, SWT.RADIO);
-        bDelay.setText("Delay:"); //TODO lang "Delay:"
+        bDelay.setText("Delay:"); // TODO lang "Delay:"
         bDelay.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 bApply.setEnabled(true);
@@ -170,17 +167,17 @@ public class JobDelayAfterError extends FormBaseClass {
             }
         });
         label8 = new Label(group, SWT.NONE);
-        label8.setText("[hh:mm:]ss"); //TODO lang "[hh:mm:]ss"
+        label8.setText("[hh:mm:]ss"); // TODO lang "[hh:mm:]ss"
         bApply = new Button(group, SWT.NONE);
         label5 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label5.setText("Label"); //TODO lang "Label"
+        label5.setText("Label"); // TODO lang "Label"
         label5.setLayoutData(gridData22);
         createTable();
         bNewDelay = new Button(group, SWT.NONE);
-        bNewDelay.setText("&New Delay"); //TODO lang "&New Delay"
+        bNewDelay.setText("&New Delay"); // TODO lang "&New Delay"
         bNewDelay.setLayoutData(gridData13);
         label6 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label6.setText("Label"); //TODO lang "Label"
+        label6.setText("Label"); // TODO lang "Label"
         label6.setLayoutData(gridData23);
         bNewDelay.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -193,7 +190,7 @@ public class JobDelayAfterError extends FormBaseClass {
             }
         });
         bRemoveDelay = new Button(group, SWT.NONE);
-        bRemoveDelay.setText("Remove Delay"); //TODO lang "Remove Delay"
+        bRemoveDelay.setText("Remove Delay"); // TODO lang "Remove Delay"
         bRemoveDelay.setEnabled(false);
         bRemoveDelay.setLayoutData(gridData12);
         bRemoveDelay.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -208,7 +205,8 @@ public class JobDelayAfterError extends FormBaseClass {
                         tErrorDelay.setSelection(index);
                         objJobDataProvider.selectErrorDelay(index);
                         initErrorDelay(true);
-                    } else {
+                    }
+                    else {
                         initErrorDelay(false);
                         bRemoveDelay.setEnabled(false);
                     }
@@ -243,16 +241,17 @@ public class JobDelayAfterError extends FormBaseClass {
         sErrorSeconds.setLayoutData(gridData15);
         sErrorSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-               if ((Utils.str2int(sErrorHours.getText()) > 0) ||  (Utils.str2int(sErrorMinutes.getText()) > 0 )   ) {
-                  Utils.setBackground(0, 59, sErrorSeconds);
-               }else {
-                  sErrorSeconds.setBackground(null);
-               }
+                if ((Utils.str2int(sErrorHours.getText()) > 0) || (Utils.str2int(sErrorMinutes.getText()) > 0)) {
+                    Utils.setBackground(0, 59, sErrorSeconds);
+                }
+                else {
+                    sErrorSeconds.setBackground(null);
+                }
                 getShell().setDefaultButton(bApply);
                 bApply.setEnabled(true);
             }
         });
-        bApply.setText("&Apply Delay"); //TODO lang "&Apply Delay"
+        bApply.setText("&Apply Delay"); // TODO lang "&Apply Delay"
         bApply.setLayoutData(gridData21);
         bApply.setEnabled(false);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -261,7 +260,7 @@ public class JobDelayAfterError extends FormBaseClass {
             }
         });
     }
-    
+
     private void switchDelay(boolean enabled) {
         sErrorHours.setEnabled(enabled);
         sErrorMinutes.setEnabled(enabled);
@@ -276,13 +275,12 @@ public class JobDelayAfterError extends FormBaseClass {
         int maxErrorDelay = 0;
         int maxAktErrorDelay = 0;
 
- 
         for (int i = 0; i < errorDelay.length; i++) {
-          if (i != sel && !errorDelay[i].getText(1).equalsIgnoreCase("stop") && maxAktErrorDelay < Utils.str2int(errorDelay[i].getText(0))) {
-            maxAktErrorDelay = Utils.str2int(errorDelay[i].getText(0));
-          }
+            if (i != sel && !errorDelay[i].getText(1).equalsIgnoreCase("stop") && maxAktErrorDelay < Utils.str2int(errorDelay[i].getText(0))) {
+                maxAktErrorDelay = Utils.str2int(errorDelay[i].getText(0));
+            }
         }
-        
+
         for (int i = 0; i < errorDelay.length; i++) {
             if (i != sel && maxErrorDelay < Utils.str2int(errorDelay[i].getText(0)) && errorDelay[i].getText(1).equalsIgnoreCase("stop")) {
                 maxErrorDelay = Utils.str2int(errorDelay[i].getText(0));
@@ -305,34 +303,33 @@ public class JobDelayAfterError extends FormBaseClass {
             }
         }
 
-        if ( bStop.getSelection() && Utils.str2int(sErrorCount.getText()) > maxErrorDelay) {
+        if (bStop.getSelection() && Utils.str2int(sErrorCount.getText()) > maxErrorDelay) {
             maxErrorDelay = Utils.str2int(sErrorCount.getText());
         }
-        if (  Utils.str2int(sErrorCount.getText()) > maxAktErrorDelay) {
+        if (Utils.str2int(sErrorCount.getText()) > maxAktErrorDelay) {
             maxAktErrorDelay = Utils.str2int(sErrorCount.getText());
         }
-        
-      
-     
-        
+
         if (found) {
             MainWindow.message("Error-count already defined", SWT.ICON_INFORMATION);
             sErrorCount.setFocus();
-        } else {
-          if (maxErrorDelay > 0 && maxErrorDelay < Utils.str2int(sErrorCount.getText()) ||
-                maxAktErrorDelay > Utils.str2int(sErrorCount.getText()) && bStop.getSelection()) {
+        }
+        else {
+            if (maxErrorDelay > 0 && maxErrorDelay < Utils.str2int(sErrorCount.getText()) || maxAktErrorDelay > Utils.str2int(sErrorCount.getText()) && bStop.getSelection()) {
                 MainWindow.message("Error-count with stop must be highest error-count in list", SWT.ICON_INFORMATION);
                 sErrorCount.setFocus();
-            } else {
+            }
+            else {
                 if (maximum > 1) {
                     MainWindow.message("Only one item can have delay=stop", SWT.ICON_INFORMATION);
-                } else {
+                }
+                else {
                     if (sErrorCount.getText().equals("")) {
                         MainWindow.message("Error-count must not be empty", SWT.ICON_INFORMATION);
                         sErrorCount.setFocus();
-                    } else {
-                        String delay = Utils.getTime(sErrorHours.getText(), sErrorMinutes.getText(), sErrorSeconds
-                                .getText(), true);
+                    }
+                    else {
+                        String delay = Utils.getTime(sErrorHours.getText(), sErrorMinutes.getText(), sErrorSeconds.getText(), true);
                         if (bStop.getSelection())
                             delay = "stop";
 
@@ -360,7 +357,8 @@ public class JobDelayAfterError extends FormBaseClass {
                     objJobDataProvider.selectErrorDelay(tErrorDelay.getSelectionIndex());
                     initErrorDelay(true);
                     sErrorCount.selectAll();
-                } else
+                }
+                else
                     initErrorDelay(false);
                 bRemoveDelay.setEnabled(tErrorDelay.getSelectionCount() > 0);
             }
@@ -368,10 +366,11 @@ public class JobDelayAfterError extends FormBaseClass {
         TableColumn tableColumn = new TableColumn(tErrorDelay, SWT.NONE);
         tErrorDelay.setSortColumn(tableColumn);
         tableColumn.setWidth(150);
-        tableColumn.setText("Error Count"); //TODO lang "Error Count"
+        tableColumn.setText("Error Count"); // TODO lang "Error Count"
         TableColumn tableColumn1 = new TableColumn(tErrorDelay, SWT.NONE);
         tableColumn1.setWidth(250);
-        tableColumn1.setText("Delay [hh:mm:]ss"); //TODO lang "Delay [hh:mm:]ss"
+        tableColumn1.setText("Delay [hh:mm:]ss"); // TODO lang
+                                                  // "Delay [hh:mm:]ss"
     }
 
     private void sortTable(Table t) {
@@ -396,7 +395,7 @@ public class JobDelayAfterError extends FormBaseClass {
         }
 
     }
-    
+
     private void initErrorDelays(boolean enabled) {
         bNewDelay.setEnabled(true);
         bStop.setEnabled(enabled);
@@ -423,7 +422,8 @@ public class JobDelayAfterError extends FormBaseClass {
                 sErrorHours.setEnabled(false);
                 sErrorMinutes.setEnabled(false);
                 sErrorSeconds.setEnabled(false);
-            } else {
+            }
+            else {
                 sErrorHours.setText(Utils.fill(2, objJobDataProvider.getErrorCountHours()));
                 sErrorMinutes.setText(Utils.fill(2, objJobDataProvider.getErrorCountMinutes()));
                 sErrorSeconds.setText(Utils.fill(2, objJobDataProvider.getErrorCountSeconds()));
@@ -432,21 +432,11 @@ public class JobDelayAfterError extends FormBaseClass {
         }
         bApply.setEnabled(false);
     }
-    
-    private void getValues(JobDelayAfterError that){
-        if (that == null){
-            return;
-        }
-        
-        for (int i= 0;i<that.tErrorDelay.getItemCount();i++){
-            TableItem t = new TableItem(this.tErrorDelay, SWT.None);
-            t.setText(that.tErrorDelay.getItems()[i].getText());
-        }
-        
-        this.sErrorCount.setText(that.sErrorCount.getText());
-        this.sErrorHours.setText(that.sErrorHours.getText());
-        this.sErrorMinutes.setText(that.sErrorMinutes.getText());
-        this.sErrorSeconds.setText(that.sErrorSeconds.getText()); 
+
+    private void initForm() {
+
+        objJobDataProvider.fillTable(tErrorDelay);
+
     }
-     
+
 }

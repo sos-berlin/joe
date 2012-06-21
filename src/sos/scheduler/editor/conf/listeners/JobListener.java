@@ -27,8 +27,8 @@ public class JobListener extends JOEListener {
 
 	private static String			library				= "";
 
-	public final static String[]	_languagesJob		= { "shell", "java", "javascript", "VBScript", "perlScript", "javax.script:rhino", "" };
-	public final static String[]	_languagesMonitor	= { "java", "javascript", "VBScript", "perlScript", "javax.script:rhino", "" };
+	public final  String[]	_languagesJob		= { "shell", "java", "javascript", "VBScript", "perlScript", "javax.script:rhino", "" };
+	public final  String[]	_languagesMonitor	= { "java", "javascript", "VBScript", "perlScript", "javax.script:rhino", "" };
 	public String[]					_languages			= null;
 
 	private Element					_script				= null;
@@ -37,7 +37,6 @@ public class JobListener extends JOEListener {
 	private Element					_environment		= null;
 
 	private int						_type				= -1;
-	private ISchedulerUpdate		_update				= null;
 
 	private List<Element>			_directories		= null;
 	private Element					_directory			= null;
@@ -52,7 +51,7 @@ public class JobListener extends JOEListener {
 		_job = job;
 		_parent = _job;
 		objElement = _job;
-		_main = update;
+ 		_main = update;
 
 		_directories = _job.getChildren("start_when_directory_changed");
 		_setbacks = _job.getChildren("delay_order_after_setback");
@@ -163,9 +162,6 @@ public class JobListener extends JOEListener {
 	}
 
 	public String[] getLanguages() {
-		if (_languages == null) {
-			setType(Editor.SCRIPT);
-		}
 		return _languages;
 	}
 
@@ -587,16 +583,7 @@ public class JobListener extends JOEListener {
 		return Utils.getAttributeValue("warn_if_shorter_than", _job);
 	}
 
-	public void setType(final int pintType) {
-		_type = pintType;
-
-		if (_type == Editor.MONITOR) {
-			_languages = _languagesMonitor;
-		}
-		else {
-			_languages = _languagesJob;
-		}
-	}
+	
 
 	public int languageAsInt(String language) {
 		if (language != null) {
@@ -932,8 +919,8 @@ public class JobListener extends JOEListener {
 	//
 	public void setName(String name) {
 		Utils.setAttribute("name", name, _job);
-		if (_update != null)
-			_update.updateTreeItem(name);
+		if (_main != null)
+			_main.updateTreeItem(name);
 
 		_dom.setChanged(true);
 
@@ -982,6 +969,9 @@ public class JobListener extends JOEListener {
 	}
 
 	public void applyDirectory(String directory, String regex) {
+	    if (_directory == null){
+	        newDirectory();
+	    }
 		Utils.setAttribute("directory", directory, _directory, _dom);
 		Utils.setAttribute("regex", regex, _directory, _dom);
 		if (!_directories.contains(_directory))
@@ -1122,8 +1112,8 @@ public class JobListener extends JOEListener {
 
 	public void setMonitorName(String name) {
 		Utils.setAttribute("name", name, _parent);
-		if (_update != null)
-			_update.updateTreeItem(name);
+		if (_main != null)
+			_main.updateTreeItem(name);
 
 		_dom.setChanged(true);
 

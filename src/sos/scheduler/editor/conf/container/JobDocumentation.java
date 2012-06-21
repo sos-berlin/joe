@@ -14,7 +14,6 @@ import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.Editor;
@@ -30,30 +29,30 @@ import sos.scheduler.editor.conf.forms.JobAssistentImportJobsForm;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
 public class JobDocumentation extends FormBaseClass {
+    @SuppressWarnings("unused")
+    private final String            conSVNVersion       = "$Id$";
 
-    private Button only4width;
-
-    private Group group = null;
-    private Group gMain = null;
-    private Group gDescription = null;
-    private Text tFileName = null;
-    private StyledText tDescription = null;
-    private StyledText tComment = null;
-    private Button butShow = null;
-    private Button butOpen = null;
-    private Button butIsLiveFile = null;
-    private Button butWizard = null;
-    private boolean init = true;
+    private Group       group              = null;
+    private Group       gMain              = null;
+    private Group       gDescription       = null;
+    private Text        tFileName          = null;
+    private StyledText  tDescription       = null;
+    private StyledText  tComment           = null;
+    private Button      butShow            = null;
+    private Button      butOpen            = null;
+    private Button      butIsLiveFile      = null;
+    private Button      butWizard          = null;
+    private boolean     init               = true;
     private JobListener objJobDataProvider = null;
-    private TextArea txtAreaDescription = null;
+    private TextArea    txtAreaDescription = null;
 
-    public JobDocumentation(Composite pParentComposite, JobListener pobjDataProvider, JobDocumentation that) {
+    public JobDocumentation(Composite pParentComposite, JobListener pobjDataProvider) {
         super(pParentComposite, pobjDataProvider);
         objJobDataProvider = (JobListener) pobjDataProvider;
         showWaitCursor();
         createGroup(pParentComposite);
-        getValues(that);
-        RestoreCursor();
+        initForm();
+        restoreCursor();
     }
 
     public void apply() {
@@ -66,15 +65,10 @@ public class JobDocumentation extends FormBaseClass {
         return false;
     }
 
-    private void getValues(JobDocumentation that) {
-        if (that == null) {
-            return;
-        }
-        this.tFileName.setText(that.tFileName.getText());
-        this.tDescription.setText(that.tDescription.getText());
-        this.tComment.setText(that.tComment.getText());
-        this.butIsLiveFile.setSelection(that.butIsLiveFile.getSelection());
-        this.txtAreaDescription.setText(that.txtAreaDescription.getText());
+    private void initForm() {
+
+        this.tFileName.setText(objJobDataProvider.getInclude());
+        this.butIsLiveFile.setSelection(objJobDataProvider.isLiveFile());
     }
 
     private void createGroup(Composite objParent) {
@@ -86,7 +80,7 @@ public class JobDocumentation extends FormBaseClass {
 
         group.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         group.setLayout(gridLayout2);
-        
+
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
         gMain = new Group(group, SWT.NONE);
@@ -122,11 +116,12 @@ public class JobDocumentation extends FormBaseClass {
                         butOpen.setEnabled(true);
                     else
                         butOpen.setEnabled(false);
-                } else {
+                }
+                else {
                     butShow.setEnabled(false);
                     butOpen.setEnabled(false);
                 }
-                RestoreCursor();
+                restoreCursor();
             }
         });
 
@@ -145,11 +140,12 @@ public class JobDocumentation extends FormBaseClass {
                         butOpen.setEnabled(true);
                     else
                         butOpen.setEnabled(false);
-                } else {
+                }
+                else {
                     butShow.setEnabled(false);
                     butOpen.setEnabled(false);
                 }
-                RestoreCursor();
+                restoreCursor();
             }
         });
         butIsLiveFile.setText("in Live Folder");
@@ -186,14 +182,17 @@ public class JobDocumentation extends FormBaseClass {
                             Runtime.getRuntime().exec(Options.getBrowserExec(strFileName, Options.getLanguage()));
                         }
                     }
-                } catch (Exception ex) {
+                }
+                catch (Exception ex) {
                     try {
                         new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not open file " + tFileName.getText(), ex);
-                    } catch (Exception ee) {
+                    }
+                    catch (Exception ee) {
                     }
                     MainWindow.message(getShell(), "..could not open file " + tFileName.getText() + " " + ex.getMessage(), SWT.ICON_WARNING | SWT.OK);
-                } finally {
-                    RestoreCursor();
+                }
+                finally {
+                    restoreCursor();
                 }
             }
         });
@@ -215,12 +214,15 @@ public class JobDocumentation extends FormBaseClass {
                         IContainer con = getContainer();
                         con.openDocumentation(xmlPath);
                         con.setStatusInTitle();
-                    } else {
+                    }
+                    else {
                         MainWindow.message("There is no Documentation " + xmlPath, SWT.ICON_WARNING | SWT.OK);
                     }
-                } catch (Exception e1) {
-                } finally {
-                    RestoreCursor();
+                }
+                catch (Exception e1) {
+                }
+                finally {
+                    restoreCursor();
                 }
             }
         });
@@ -259,7 +261,8 @@ public class JobDocumentation extends FormBaseClass {
                 if (!onlyParams)
                     paramsForm.setJobForm(this);
                 paramsForm.showAllImportJobParams(objJobDataProvider.getInclude());
-            } else {
+            }
+            else {
                 JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(objJobDataProvider, Editor.JOB_WIZARD);
 
                 if (!onlyParams) {
@@ -271,11 +274,13 @@ public class JobDocumentation extends FormBaseClass {
             if (butWizard != null) {
                 butWizard.setToolTipText(Messages.getTooltip("jobs.assistent"));
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } finally {
-            RestoreCursor();
+        }
+        finally {
+            restoreCursor();
         }
     }
 
@@ -285,10 +290,12 @@ public class JobDocumentation extends FormBaseClass {
         if ((objJobDataProvider.get_dom().isDirectory() || objJobDataProvider.get_dom().isLifeElement()) && butIsLiveFile.getSelection()) {
             if (filename.startsWith("/") || filename.startsWith("\\")) {
                 data = Options.getSchedulerHotFolder();
-            } else if (objJobDataProvider.get_dom().getFilename() != null) {
+            }
+            else if (objJobDataProvider.get_dom().getFilename() != null) {
                 data = new File(objJobDataProvider.get_dom().getFilename()).getParent();
             }
-        } else {
+        }
+        else {
             if (butIsLiveFile.getSelection())
                 data = Options.getSchedulerHotFolder();
             else

@@ -36,11 +36,7 @@ import sos.scheduler.editor.conf.container.JobJavaAPI;
 import sos.scheduler.editor.conf.container.JobScript;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
-<<<<<<< .mine
 public abstract class ScriptForm extends   Composite  implements IUpdateLanguage {
-=======
-abstract class ScriptForm extends   Composite  implements IUpdateLanguage {
->>>>>>> .r17402
 
     @SuppressWarnings("unused")
     private final String conSVNVersion = "$Id$";

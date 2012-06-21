@@ -35,6 +35,8 @@ public class JobOptionsListener extends JOEListener{
     	
         _dom = dom;
         _job = job;
+        _setback = new Element("delay_order_after_setback");
+
         _directories = _job.getChildren("start_when_directory_changed");
         _setbacks = _job.getChildren("delay_order_after_setback");
         _errorDelays = _job.getChildren("delay_after_error");

@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.classes.FileNameSelector;
 import sos.scheduler.editor.classes.FormBaseClass;
@@ -30,44 +29,42 @@ import sos.scheduler.editor.conf.listeners.JobListener;
 
 public class JobIncludeFile extends FormBaseClass {
     @SuppressWarnings("unused")
-    private final String    conClassName            = "JobIncludeFile";
+    private final String conClassName       = "JobIncludeFile";
     @SuppressWarnings("unused")
-    private final String    conSVNVersion           = "$Id$";
+    private final String conSVNVersion      = "$Id$";
 
-     private Group group = null;
-    private JobListener objJobDataProvider = null;   
-    private boolean init = true;    
-    private Button bRemove = null;
-    private Text tbxFile2Include = null;
-    private Button bAdd = null;  
-    private Label label = null;
-    private Table tableIncludes = null;
-    private Button butIsLiveFile = null;
-     
-  
-    public JobIncludeFile(Composite pParentComposite, JobListener pobjJobDataProvider,JobIncludeFile that) {
+    private Group        group              = null;
+    private JobListener  objJobDataProvider = null;
+    private boolean      init               = true;
+    private Button       bRemove            = null;
+    private Text         tbxFile2Include    = null;
+    private Button       bAdd               = null;
+    private Label        label              = null;
+    private Table        tableIncludes      = null;
+    private Button       butIsLiveFile      = null;
+
+    public JobIncludeFile(Composite pParentComposite, JobListener pobjJobDataProvider, JobIncludeFile that) {
         super(pParentComposite, pobjJobDataProvider);
         objJobDataProvider = pobjJobDataProvider;
-        
+
         createGroup();
         getValues(that);
-     }
- 
-    private void getValues(JobIncludeFile that){
-        if (that == null){
+    }
+
+    private void getValues(JobIncludeFile that) {
+        if (that == null) {
             return;
         }
-  
 
-       this.tbxFile2Include.setText(that.tbxFile2Include.getText());
-       for (int i= 0;i<that.tableIncludes.getItemCount();i++){
-           TableItem t = new TableItem(this.tableIncludes, SWT.None);
-           t.setText(that.tableIncludes.getItems()[i].getText());
-       };
-       
-        
+        this.tbxFile2Include.setText(that.tbxFile2Include.getText());
+        for (int i = 0; i < that.tableIncludes.getItemCount(); i++) {
+            TableItem t = new TableItem(this.tableIncludes, SWT.None);
+            t.setText(that.tableIncludes.getItems()[i].getText());
+        }
+        ;
+
     }
-    
+
     private void createGroup() {
         int intNumColumns = 3;
 
@@ -206,8 +203,6 @@ public class JobIncludeFile extends FormBaseClass {
                 }
             }
         });
-
-       
     }
 
     private void applyFile2Include() {
@@ -216,25 +211,24 @@ public class JobIncludeFile extends FormBaseClass {
         File objF = null;
         if (flgIsLiveFile == true) {
             objF = new File(Options.getSchedulerHotFolder(), strFileName);
-        } else {
+        }
+        else {
             objF = new File(strFileName);
         }
-        if (objF.exists() == false || objF.canRead() == false) {
-            MainWindow.ErrMsg(String.format("File '%1$s' not found or is not readable", strFileName));
-            tbxFile2Include.setText("");
-        } else {
-            objJobDataProvider.addInclude(tableIncludes, strFileName, butIsLiveFile.getSelection());
-            tbxFile2Include.setText("");
-            tbxFile2Include.setEnabled(false);
-            butIsLiveFile.setEnabled(false);
-            tableIncludes.deselectAll();
-        }
+        //if (objF.exists() == false || objF.canRead() == false) {
+        //    MainWindow.ErrMsg(String.format("File '%1$s' not found or is not readable", strFileName));
+        //    tbxFile2Include.setText("");
+        //} else {
+        objJobDataProvider.addInclude(tableIncludes, strFileName, butIsLiveFile.getSelection());
+        tbxFile2Include.setText("");
+        tbxFile2Include.setEnabled(false);
+        butIsLiveFile.setEnabled(false);
+        tableIncludes.deselectAll();
+        //}
         tbxFile2Include.setFocus();
     }
 
     public Table getTableIncludes() {
         return tableIncludes;
     }
-  
-
 }

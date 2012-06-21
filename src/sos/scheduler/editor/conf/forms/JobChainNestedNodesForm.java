@@ -52,10 +52,6 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 	private Table                     tNodes                      = null;
 	private Button                    bApplyNode                  = null;
 	private Combo                     cErrorState                 = null;
-<<<<<<< .mine
-=======
-
->>>>>>> .r17402
 	private Label                     label9                      = null;
 	private Combo                     cNextState                  = null;
 	private Label                     label8                      = null;

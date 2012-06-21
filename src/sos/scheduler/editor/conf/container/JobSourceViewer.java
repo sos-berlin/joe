@@ -19,10 +19,9 @@ public class JobSourceViewer extends FormBaseClass {
 
 	private TextArea	txtArea4XMLSource	= null;
 
-	public JobSourceViewer(Composite pParentComposite, JobListener pobjDataProvider, JobSourceViewer that) {
+	public JobSourceViewer(Composite pParentComposite, JobListener pobjDataProvider) {
 		super(pParentComposite, pobjDataProvider);
 		createGroup();
-        getValues(that);
 	}
 
 	public void apply() {
@@ -53,17 +52,11 @@ public class JobSourceViewer extends FormBaseClass {
 		gSourceViewer.setText(Messages.getLabel("job.executable.label"));
 
 		txtArea4XMLSource = new TextArea(gSourceViewer, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL);
+		txtArea4XMLSource.setEditable(false);
 		txtArea4XMLSource.setDataProvider(objJobDataProvider, enuSourceTypes.xmlSource);
 
-		RestoreCursor();
+		restoreCursor();
 	}
 
-	private void getValues(JobSourceViewer that){
-	    if (that == null){
-	        return;
-	    }
-	    
-	    this.txtArea4XMLSource.setText(that.txtArea4XMLSource.getText());
-
-	}
+ 
 }

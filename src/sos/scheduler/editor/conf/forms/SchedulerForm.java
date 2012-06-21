@@ -83,11 +83,7 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	 */
 	private void createSashForm() {
 		sashForm = new SashForm(this, SWT.NONE);
-<<<<<<< .mine
  
-=======
-//		 sashForm.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
->>>>>>> .r17402
 		createGTree();
 		createCMainForm();
 		sashForm.setWeights(new int[] { 176, 698 });

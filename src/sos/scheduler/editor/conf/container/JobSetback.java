@@ -10,7 +10,6 @@ import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -43,10 +42,6 @@ public class JobSetback extends FormBaseClass {
     private Label              label31          = null;
     private Label              label10          = null;
 
-    private Text               sErrorCount      = null;
-    private Text               sErrorHours      = null;
-    private Text               sErrorMinutes    = null;
-    private Text               sErrorSeconds    = null;
     private Table              tSetback         = null;
     private Text               sSetBackCount    = null;
     private Button             bIsMaximum       = null;
@@ -57,31 +52,16 @@ public class JobSetback extends FormBaseClass {
     private Button             bRemoveSetback   = null;
     
     
-    public JobSetback(Composite pParentComposite, JobOptionsListener pobjJobDataProvider,JobSetback that) {
+    public JobSetback(Composite pParentComposite, JobOptionsListener pobjJobDataProvider) {
         super(pParentComposite, pobjJobDataProvider);
         objJobDataProvider = pobjJobDataProvider;
         
         createGroup();
-        getValues(that);
+        initForm();
      }
  
-    private void getValues(JobSetback that){
-        if (that == null){
-            return;
-        }
-   
-        for (int i= 0;i<that.tSetback.getItemCount();i++){
-            TableItem t = new TableItem(this.tSetback, SWT.None);
-            t.setText(that.tSetback.getItems()[i].getText());
-        }
-        
-       
-        this.sSetBackCount.setText(that.sSetBackCount.getText());
-        this.sSetBackHours.setText(that.sSetBackHours.getText());
-        this.sSetBackMinutes.setText(that.sSetBackMinutes.getText());
-        this.sSetBackSeconds.setText(that.sSetBackSeconds.getText());
-        this.bIsMaximum.setSelection(that.bIsMaximum.getSelection());     
-        
+    private void initForm(){     
+       objJobDataProvider.fillSetbacks(tSetback); 
     }
     
     private void createGroup() {

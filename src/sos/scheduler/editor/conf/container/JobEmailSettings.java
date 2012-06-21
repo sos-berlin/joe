@@ -22,6 +22,7 @@ import sos.scheduler.editor.conf.listeners.JobListener;
 
 public class JobEmailSettings extends FormBaseClass {
 
+    
     private Combo   mailOnDelayAfterError   = null;
     private Text    mailCC                  = null;
     private Text    mailBCC                 = null;
@@ -39,13 +40,13 @@ public class JobEmailSettings extends FormBaseClass {
     private boolean init = true;
     private JobListener objJobDataProvider = null;
 
-    public JobEmailSettings(Composite pParentComposite, JobListener pobjJobDataProvider,JobEmailSettings that) {
+    public JobEmailSettings(Composite pParentComposite, JobListener pobjJobDataProvider) {
         super(pParentComposite, pobjJobDataProvider);
         objJobDataProvider = pobjJobDataProvider;
         
         init = true;
         createGroup();
-        getValues(that);
+        initForm();
         init = false;
     }
 
@@ -84,6 +85,7 @@ public class JobEmailSettings extends FormBaseClass {
         labelMailOnError.setText(Messages.getLabel("MailOnError"));
 
         mailOnError = new Combo(group4EMail, intComboBoxStyle);
+        mailOnError.setItems(new String[]{"yes", "no", ""}); 
         mailOnError.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
                 mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
@@ -97,6 +99,7 @@ public class JobEmailSettings extends FormBaseClass {
         labelMailOnWarning.setText(Messages.getLabel("MailOnWarning"));
 
         mailOnWarning = new Combo(group4EMail, intComboBoxStyle);
+        mailOnWarning.setItems(new String[]{"yes", "no", ""}); 
         mailOnWarning.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
                 mailOnDelayAfterError.setEnabled(mailOnWarning.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
@@ -110,6 +113,7 @@ public class JobEmailSettings extends FormBaseClass {
         label3.setText(Messages.getLabel("MailOnSuccess"));
 
         mailOnSuccess = new Combo(group4EMail, intComboBoxStyle);
+        mailOnSuccess.setItems(new String[]{"yes", "no", ""});      
         mailOnSuccess.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
                 objJobDataProvider.setValue("mail_on_success", mailOnSuccess.getText(), "no");
@@ -123,6 +127,7 @@ public class JobEmailSettings extends FormBaseClass {
         mailOnProcessLabel.setText(Messages.getLabel("Mail On Process"));
 
         mailOnProcess = new Combo(group4EMail, intComboBoxStyle);
+        mailOnProcess.setItems(new String[]{"yes", "no", ""});
         mailOnProcess.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
                 objJobDataProvider.setValue("mail_on_process", mailOnProcess.getText(), "no");
@@ -136,6 +141,7 @@ public class JobEmailSettings extends FormBaseClass {
         mailOnDelayLabel.setText(Messages.getLabel("MailOnDelayAfterError"));
 
         mailOnDelayAfterError = new Combo(group4EMail, intComboBoxStyle);
+        mailOnDelayAfterError.setItems(new String[]{"all", "first_only", "last_only", "first_and_last_only", ""});        
         mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
         mailOnDelayAfterError.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
@@ -211,19 +217,21 @@ public class JobEmailSettings extends FormBaseClass {
         objParent.layout();
     }
      
-    private void getValues(JobEmailSettings that){
-        if (that == null){
-            return;
-        }
-
-        this.mailOnDelayAfterError.setText(that.mailOnDelayAfterError.getText());
-        this.mailOnError.setText(that.mailOnError.getText());
-        this.mailOnWarning.setText(that.mailOnWarning.getText());
-        this.mailOnSuccess.setText(that.mailOnSuccess.getText());
-        this.mailOnProcess.setText(that.mailOnProcess.getText());
+   
+    private void initForm(){
+         
+        mailOnError.setText(objJobDataProvider.getValue("mail_on_error")); 
+        mailOnWarning.setText(objJobDataProvider.getValue("mail_on_warning"));
+        mailOnSuccess.setText(objJobDataProvider.getValue("mail_on_success"));        
+        mailOnProcess.setText(objJobDataProvider.getValue("mail_on_process"));                
+        mailOnDelayAfterError.setText(objJobDataProvider.getValue("mail_on_delay_after_error"));
         
-        this.mailCC.setText(that.mailCC.getText());
-        this.mailBCC.setText(that.mailBCC.getText());
-        this.mailTo.setText(that.mailTo.getText());
+        mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
+        
+        mailTo.setText(objJobDataProvider.getValue("log_mail_to"));
+        mailCC.setText(objJobDataProvider.getValue("log_mail_cc"));
+        mailBCC.setText(objJobDataProvider.getValue("log_mail_bcc"));     
+         
+                
     }
 }
