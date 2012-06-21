@@ -29,7 +29,6 @@ import sos.scheduler.editor.doc.listeners.ReleaseListener;
 
 public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage {
 
-<<<<<<< .mine
     private ReleaseListener listener = null;
     private DocumentationDom dom = null;
     private Group group = null;
@@ -42,40 +41,6 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
     private SOSDateTime created = null;
     private SOSDateTime modified = null;
     private NoteForm fNote = null;
-    private NoteForm fChanges = null;
-=======
-    private ReleaseListener listener = null;
->>>>>>> .r17402
-
-<<<<<<< .mine
-=======
-    private DocumentationDom dom = null;
-
-    private Group group = null;
-
-    private Label label = null;
-
-    private Label label1 = null;
-
-    private Text tTitle = null;
-
-    private Text tID = null;
-
-    private Label label2 = null;
-
-    private Label label3 = null;
-
-    // private Button bNotes = null;
-
-    // private Button bChanges = null;
-
-    private SOSDateTime created = null;
-
-    private SOSDateTime modified = null;
-
->>>>>>> .r17402
-    private NoteForm fNote = null;
-
     private NoteForm fChanges = null;
 
     // private Text txtNotes = null;
@@ -104,7 +69,8 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
             setReleaseStatus(false);
             created.setDate(listener.getCreated());
             modified.setDate(listener.getModified());
-        } catch (ParseException e) {
+        }
+        catch (ParseException e) {
             e.printStackTrace();
         }
         fNote.setParams(dom, listener.getRelease(), "note", true, true);
