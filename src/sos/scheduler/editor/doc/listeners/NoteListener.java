@@ -5,24 +5,18 @@ import java.util.List;
 
 import org.jdom.Element;
 
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 
 public class NoteListener {
     private DocumentationDom _dom;
-
     private Element          _parent;
-
     private String           _name;
-
     private boolean          _optional;
-
-    private String[]         _languages  = { "de", "en" };
-
+    private String[]         _languages  = { "de", "en", "fr", "it", "es" };
     private String           _lang       = null;
-
     private boolean          _setChanged = true;
-
 
     public NoteListener(DocumentationDom dom, Element parent, String name, boolean optional, boolean changeStatus) {
         _dom = dom;
@@ -32,7 +26,7 @@ public class NoteListener {
         _setChanged = changeStatus;
         init();
     }
- 
+
 
     private void init() {
         if (_lang == null) {
@@ -50,12 +44,15 @@ public class NoteListener {
 
 
     public String[] getLanguages() {
+    	String strL = Options.getTemplateLanguageList();
+    	_languages = strL.split(";");
         return _languages;
     }
 
 
-    public void setLang(String lang) {
-        _lang = lang;
+    public void setLang(String pstrLang) {
+        _lang = pstrLang;
+        Options.setTemplateLanguage(pstrLang);
     }
 
 

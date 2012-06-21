@@ -18,6 +18,7 @@ import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
@@ -44,7 +45,7 @@ public class NoteForm extends Composite implements IUnsaved, IUpdateLanguage {
     private int              type             = -1;
 
     private Button           bClear           = null;
- 
+
 
     public NoteForm(Composite parent, int style) {
         super(parent, style);
@@ -67,8 +68,13 @@ public class NoteForm extends Composite implements IUnsaved, IUpdateLanguage {
     public void setParams(DocumentationDom dom, Element parent, String name, boolean optional, boolean changeStatus) {
         listener = new NoteListener(dom, parent, name, optional, changeStatus);
         cLang.setItems(listener.getLanguages());
-        if(listener.getLang() != null)
-        	cLang.select(cLang.indexOf(listener.getLang()));
+        String strTemplateLang = listener.getLang();
+        if (strTemplateLang == null) {
+        	strTemplateLang = Options.getTemplateLanguage();
+        }
+        if(strTemplateLang != null) {
+        	cLang.select(cLang.indexOf(strTemplateLang));
+        }
         text.setText(listener.getNote());
         bApply.setEnabled(false);
     }
@@ -235,8 +241,8 @@ public class NoteForm extends Composite implements IUnsaved, IUpdateLanguage {
     }
 
 
-    public void setSettingsListener(SettingsListener settingsListener) {
-        this.settingsListener = settingsListener;
+    public void setSettingsListener(SettingsListener settingsListener1) {
+        this.settingsListener = settingsListener1;
     }
 
 } // @jve:decl-index=0:visual-constraint="10,10"
