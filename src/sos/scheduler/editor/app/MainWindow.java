@@ -81,14 +81,9 @@ public class MainWindow {
 		logger.debug(conSVNVersion);
 	}
 
-<<<<<<< .mine
 	private void createContainer(Composite objParent) {
 		container = new TabbedContainer(objParent);
 		// container = new TabbedContainer(groupmain);
-=======
-	private void createContainer() {
-		container = new TabbedContainer(sShell);
->>>>>>> .r17402
 		// container = new TabbedContainer(groupmain);
 		sShell.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		// TODO: Ausserhalb des Job Editors veränderte Files sollten mit Hilfe einer "Aktualisieren" Funktion neu eingelesen werden können.
@@ -144,7 +139,6 @@ public class MainWindow {
 		}
 	}
 
-<<<<<<< .mine
 	public void setStatusLine(final String pstrText, final int pintMsgType) {
 		StatusLine.setText(pstrText);
 		// StatusLine.setForeground(SWT.COLOR_BLUE);
@@ -159,26 +153,11 @@ public class MainWindow {
 
 	
  	
-=======
-	public void setStatusLine(final String pstrText, final int pintMsgType) {
-		StatusLine.setText(pstrText);
-		// StatusLine.setForeground(SWT.COLOR_BLUE);
-	}
-
-	public void setStatusLine(final String pstrText) {
-		StatusLine.setText(pstrText);
-		// StatusLine.setForeground(SWT.COLOR_BLUE);
-	}
-
-	private WindowsSaver	objPersistenceStore;
-
->>>>>>> .r17402
 	/**
 	 * This method initializes sShell Will only be executed with JOE standalone
 	 * @wbp.parser.entryPoint
 	 */
 	public void createSShell() {
-<<<<<<< .mine
 	    
  
 		Shell shell = new Shell();
@@ -199,93 +178,15 @@ public class MainWindow {
 		createSShell(shell,groupmain);
 		
 		 Options.loadWindow(sShell, conStringEDITOR);
-=======
-		sShell = new Shell();
 
-		final GridLayout gridLayout_1 = new GridLayout();
-		sShell.setLayout(gridLayout_1);
-		sShell.setImage(ResourceManager.getImageFromResource(conIconEDITOR_PNG));
-		groupmain = new Composite(sShell, SWT.NONE);
-		groupmain.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
-
-		final GridLayout gridLayout = new GridLayout();
-		gridLayout.verticalSpacing = 0;
-		gridLayout.marginWidth = 0;
-		gridLayout.marginHeight = 0;
-		gridLayout.horizontalSpacing = 0;
-		groupmain.setLayout(gridLayout);
-		createToolBar();
-		createContainer();
-
-		StatusLine = new Label(sShell, SWT.BOTTOM);
-		GridData gridStatuslineLayout = new GridData();
-		gridStatuslineLayout.horizontalAlignment = GridData.FILL;
-		gridStatuslineLayout.grabExcessHorizontalSpace = true;
-		StatusLine.setLayoutData(gridStatuslineLayout);
-		// setStatusLine("Hey, Joe ...", 0);
-
-		listener = new MainListener(this, container);
-		objPersistenceStore = new WindowsSaver(this.getClass(), sShell, 940, 600);
-		objPersistenceStore.restoreWindowLocation();
-		// sShell.setSize(new org.eclipse.swt.graphics.Point(940, 600));
-		sShell.setMinimumSize(940, 600);
-		// load resources
-		listener.loadOptions();
-		listener.loadMessages();
-		listener.loadJobTitels();
-		listener.loadHolidaysTitel();
-		Options.loadWindow(sShell, conStringEDITOR);
->>>>>>> .r17402
-
-<<<<<<< .mine
 	        String strT = Messages.getLabel(JOE_I_0010) + JSVersionInfo.conVersionNumber;
 	        container.setTitleText(strT);
 	        sShell.setText(strT);
 	        logger.debug(strT);
 	        Options.conJOEGreeting = strT;
 	        sShell.setData(sShell.getText());
-=======
-		String strT = Messages.getLabel(JOE_I_0010) + JSVersionInfo.conVersionNumber;
-		container.setTitleText(strT);
-		sShell.setText(strT);
-		logger.debug(strT);
-		Options.conJOEGreeting = strT;
-		sShell.setData(sShell.getText());
->>>>>>> .r17402
-
-<<<<<<< .mine
 	}
-=======
-		menuBar = new Menu(sShell, SWT.BAR);
-		MenuItem submenuItem2 = new MenuItem(menuBar, SWT.CASCADE);
-		submenuItem2.setText("&" + getMenuText(Messages.getLabel(MENU_File), EMPTY));
-		mFile = new Menu(submenuItem2);
-		MenuItem open = new MenuItem(mFile, SWT.PUSH);
-		open.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if (container.openQuick() != null) {
-					setSaveStatus();
-				}
-			}
-		});
-		open.setText(getMenuText(Messages.getLabel(MENU_OPEN), "O"));
-		open.setAccelerator(SWT.CTRL | 'O');
-		//
-		MenuItem mNew = new MenuItem(mFile, SWT.CASCADE);
-		mNew.setText(getMenuText(Messages.getLabel(MENU_New), EMPTY));
-		// mNew.setAccelerator(SWT.CTRL | 'N');
-		Menu pmNew = new Menu(mNew);
-		MenuItem pNew = new MenuItem(pmNew, SWT.PUSH);
-		pNew.setText(getMenuText(Messages.getLabel(MENU_Configuration), "I"));
-		pNew.setAccelerator(SWT.CTRL | 'I');
-		pNew.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler() != null)
-					setSaveStatus();
-			}
->>>>>>> .r17402
 
-<<<<<<< .mine
     /**
      * This method initializes sShell Will only be executed with JOE using in Dashboard
      * @wbp.parser.entryPoint
@@ -293,44 +194,13 @@ public class MainWindow {
 	public void createSShell( Composite containerParent, Composite objParent) {
         sShell =objParent.getShell();
         
-=======
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		mNew.setMenu(pmNew);
-		MenuItem push1 = new MenuItem(pmNew, SWT.PUSH);
-		push1.setText(getMenuText(Messages.getLabel(MENU_Documentation), "P")); // Generated
-		// push1.setText(getMenuText("Modify Documentation", "P")); // Generated
-		push1.setAccelerator(SWT.CTRL | 'P');
-		push1.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newDocumentation() != null)
-					setSaveStatus();
-			}
->>>>>>> .r17402
 
-<<<<<<< .mine
       //  final GridLayout grdLayout_1 = new GridLayout();
       //  objParent.setLayout(grdLayout_1);
         
         groupmain = objParent;
         groupmain.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
-=======
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		// new event handler
-		MenuItem pNewActions = new MenuItem(pmNew, SWT.PUSH);
-		pNewActions.setText(getMenuText(Messages.getLabel(MENU_EventHandler), "H"));
-		pNewActions.setAccelerator(SWT.CTRL | 'H');
-		pNewActions.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newActions() != null)
-					setSaveStatus();
-			}
->>>>>>> .r17402
 
-<<<<<<< .mine
         createToolBar();
         createContainer(containerParent);
         
@@ -341,65 +211,7 @@ public class MainWindow {
         gridStatuslineLayout.grabExcessHorizontalSpace = true;
         StatusLine.setLayoutData(gridStatuslineLayout);
         // setStatusLine("Hey, Joe ...", 0);
-=======
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem mpLife = new MenuItem(pmNew, SWT.CASCADE);
-		mpLife.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-			}
-		});
-		mpLife.setText(getMenuText(Messages.getLabel(MENU_HotFolderObject), EMPTY));
-		// mpLife.setAccelerator(SWT.CTRL | 'L');
-		Menu mLife = new Menu(mpLife);
-		MenuItem mLifeJob = new MenuItem(mLife, SWT.PUSH);
-		mLifeJob.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIVE_JOB) != null)
-					setSaveStatus();
-			}
-		});
-		mLifeJob.setText(getMenuText(Messages.getLabel(MENU_Job), "J"));
-		mLifeJob.setAccelerator(SWT.CTRL | 'J');
-		mpLife.setMenu(mLife);
-		MenuItem mLifeJobChain = new MenuItem(mLife, SWT.PUSH);
-		mLifeJobChain.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIVE_JOB_CHAIN) != null)
-					setSaveStatus();
-			}
-		});
-		mLifeJobChain.setText(getMenuText(Messages.getLabel(MENU_JobChain), "K"));
-		mLifeJobChain.setAccelerator(SWT.CTRL | 'K');
-		MenuItem mLifeProcessClass = new MenuItem(mLife, SWT.PUSH);
-		mLifeProcessClass.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_PROCESS_CLASS) != null)
-					setSaveStatus();
-			}
-		});
-		mLifeProcessClass.setText(getMenuText(Messages.getLabel(MENU_ProcessClass), "R"));
-		mLifeProcessClass.setAccelerator(SWT.CTRL | 'R');
-		MenuItem mLifeLock = new MenuItem(mLife, SWT.PUSH);
-		mLifeLock.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_LOCK) != null)
-					setSaveStatus();
-			}
-		});
-		mLifeLock.setText(getMenuText(Messages.getLabel(MENU_Lock), "M"));
-		mLifeLock.setAccelerator(SWT.CTRL | 'M');
-		MenuItem mLifeOrder = new MenuItem(mLife, SWT.PUSH);
-		mLifeOrder.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_ORDER) != null)
-					setSaveStatus();
-			}
-		});
->>>>>>> .r17402
 
-<<<<<<< .mine
         listener = new MainListener(this, container);
         objPersistenceStore = new WindowsSaver(this.getClass(), sShell, 940, 600);
         objPersistenceStore.restoreWindowLocation();
@@ -410,33 +222,7 @@ public class MainWindow {
         listener.loadJobTitels();
         listener.loadHolidaysTitel();
       
-=======
-		mLifeOrder.setText(getMenuText(Messages.getLabel(MENU_Order), "W"));
-		mLifeOrder.setAccelerator(SWT.CTRL | 'W');
-		MenuItem mLifeSchedule = new MenuItem(mLife, SWT.PUSH);
-		mLifeSchedule.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_SCHEDULE) != null)
-					setSaveStatus();
-			}
-		});
-		mLifeSchedule.setText(getMenuText(Messages.getLabel("MENU_Schedule"), "U"));
-		// mLifeSchedule.setText("Schedule      \tCtrl+U");
-		mLifeSchedule.setAccelerator(SWT.CTRL | 'U');
-		new MenuItem(mFile, SWT.SEPARATOR);
-		MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
-		openDir.setText(getMenuText(Messages.getLabel("MENU_OpenHotFolder"), "D"));
-		// openDir.setText("Open Hot Folder               \tCtrl+D");
-		openDir.setAccelerator(SWT.CTRL | 'D');
-		openDir.setEnabled(true);
-		openDir.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.openDirectory(null) != null)
-					setSaveStatus();
-			}
->>>>>>> .r17402
 
-<<<<<<< .mine
         menuBar = new Menu(sShell, SWT.BAR);
         MenuItem submenuItem2 = new MenuItem(menuBar, SWT.CASCADE);
         submenuItem2.setText("&" + getMenuText(Messages.getLabel(MENU_File), EMPTY));
@@ -464,70 +250,6 @@ public class MainWindow {
                 if (container.newScheduler() != null)
                     setSaveStatus();
             }
-=======
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		// open remote configuration
-		MenuItem mORC = new MenuItem(mFile, SWT.CASCADE);
-		mORC.setText(getMenuText(Messages.getLabel("MENU_OpenRemoteConfiguration"), EMPTY));
-		// mORC.setText("Open Remote Configuration");
-		Menu pMOpenGlobalScheduler = new Menu(mORC);
-		MenuItem pOpenGlobalScheduler = new MenuItem(pMOpenGlobalScheduler, SWT.PUSH);
-		pOpenGlobalScheduler.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				Utils.startCursor(getSShell());
-				String globalSchedulerPath = Options.getSchedulerData().endsWith("/") || Options.getSchedulerData().endsWith("\\") ? Options.getSchedulerData()
-						: Options.getSchedulerData() + "/";
-				globalSchedulerPath = globalSchedulerPath + "config/remote/_all";
-				File f = new java.io.File(globalSchedulerPath);
-				if (!f.exists()) {
-					if (!f.mkdirs()) {
-						MainWindow.message("could not create Global Scheduler Configurations: " + globalSchedulerPath, SWT.ICON_WARNING);
-						Utils.stopCursor(getSShell());
-						return;
-					}
-				}
-				if (container.openDirectory(globalSchedulerPath) != null) {
-					setSaveStatus();
-				}
-				Utils.stopCursor(getSShell());
-			}
-		});
-
-		pOpenGlobalScheduler.setText(Messages.getLabel("MENU_OpenGlobalScheduler"));
-		// pOpenGlobalScheduler.setText("Open Global Scheduler");
-		MenuItem pOpenSchedulerCluster = new MenuItem(pMOpenGlobalScheduler, SWT.PUSH);
-		pOpenSchedulerCluster.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				HotFolderDialog dialog = new HotFolderDialog();
-				dialog.showForm(HotFolderDialog.SCHEDULER_CLUSTER);
-			}
-		});
-
-		pOpenSchedulerCluster.setText(Messages.getLabel("MENU_OpenClusterConfiguration"));
-		// pOpenSchedulerCluster.setText("Open Cluster Configuration");
-		MenuItem pOpenSchedulerHost = new MenuItem(pMOpenGlobalScheduler, SWT.PUSH);
-		pOpenSchedulerHost.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				HotFolderDialog dialog = new HotFolderDialog();
-				dialog.showForm(HotFolderDialog.SCHEDULER_HOST);
-			}
-		});
-		pOpenSchedulerHost.setText(Messages.getLabel("MENU_OpenRemoteSchedulerConfiguration"));
-		// pOpenSchedulerHost.setText("Open Remote Scheduler Configuration");
-		mORC.setMenu(pMOpenGlobalScheduler);
-		new MenuItem(mFile, SWT.SEPARATOR);
-
-		MenuItem pSaveFile = new MenuItem(mFile, SWT.PUSH);
-		pSaveFile.setText("Save                                    \tCtrl+S");
-		pSaveFile.setAccelerator(SWT.CTRL | 'S');
-		pSaveFile.setEnabled(false);
-		pSaveFile.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				save();
-			}
->>>>>>> .r17402
 
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
@@ -636,7 +358,6 @@ public class MainWindow {
                     setSaveStatus();
             }
 
-<<<<<<< .mine
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
         });
@@ -666,19 +387,6 @@ public class MainWindow {
                 Utils.stopCursor(getSShell());
             }
         });
-=======
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-
-		new MenuItem(pmFTP, SWT.SEPARATOR);
-		MenuItem pSaveFTP = new MenuItem(pmFTP, SWT.PUSH);
-		pSaveFTP.setText("Save By FTP");
-		pSaveFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				saveByFTP();
-			}
->>>>>>> .r17402
 
         pOpenGlobalScheduler.setText(Messages.getLabel("MENU_OpenGlobalScheduler"));
         // pOpenGlobalScheduler.setText("Open Global Scheduler");
@@ -713,7 +421,6 @@ public class MainWindow {
                 save();
             }
 
-<<<<<<< .mine
             @Override
             public void widgetDefaultSelected(SelectionEvent arg0) {
             }
@@ -735,35 +442,6 @@ public class MainWindow {
                     setSaveStatus();
                 }
             }
-=======
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		mWebDav.setMenu(pmWebDav);
-		new MenuItem(mFile, SWT.SEPARATOR);
-		submenuItem2.setMenu(mFile);
-		MenuItem pExit = new MenuItem(mFile, SWT.PUSH);
-		// pExit.setText("Exit\tCtrl+E");
-		pExit.setText(getMenuText(sos.scheduler.editor.app.Messages.getLabel("MENU_Exit"), "E"));
-		pExit.setAccelerator(SWT.CTRL | 'E');
-		pExit.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				try {
-					saveWindowPosAndSize();
-					sShell.close();
-				}
-				catch (Exception es) {
-					try {
-						new ErrorLog("error: " + sos.util.SOSClassUtil.getMethodName(), es);
-					}
-					catch (Exception ee) {
-						// tu nichts
-					}
-				}
-			}
->>>>>>> .r17402
-
-<<<<<<< .mine
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
         });
@@ -796,24 +474,6 @@ public class MainWindow {
                     setSaveStatus();
                 }
             }
-=======
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem submenuItem = new MenuItem(menuBar, SWT.CASCADE);
-		submenuItem.setText(getMenuText(Messages.getLabel(MENU_Options), EMPTY));
-		MenuItem submenuItem3 = new MenuItem(menuBar, SWT.CASCADE);
-		submenuItem3.setText("&" + getMenuText(Messages.getLabel(MENU_Help), EMPTY));
-		submenu1 = new Menu(submenuItem3);
-		MenuItem pHelS = new MenuItem(submenu1, SWT.PUSH);
-		pHelS.setText("JOE " + getMenuText(Messages.getLabel(MENU_Help), EMPTY));
-		pHelS.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
-				listener.openHelp(Options.getHelpURL("index"));
-			}
->>>>>>> .r17402
-
-<<<<<<< .mine
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
         });
@@ -829,27 +489,6 @@ public class MainWindow {
                 FTPDialog ftp = new FTPDialog(main);
                 ftp.showForm(FTPDialog.OPEN);
             }
-=======
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem pHelp = new MenuItem(submenu1, SWT.PUSH);
-		pHelp.setText(getMenuText(Messages.getLabel(MENU_Help), "F1"));
-		// pHelp.setAccelerator(SWT.F1);
-		pHelp.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.getCurrentEditor() != null) {
-					listener.openHelp(container.getCurrentEditor().getHelpKey());
-				}
-				else {
-					// String msg = "Help is available after documentation or configuration is opened";
-					String msg = Messages.getString("help.info");
-					MainWindow.message(msg, SWT.ICON_INFORMATION);
-				}
-			}
->>>>>>> .r17402
-
-<<<<<<< .mine
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
         });
@@ -860,39 +499,9 @@ public class MainWindow {
                 FTPDialog ftp = new FTPDialog(main);
                 ftp.showForm(FTPDialog.OPEN_HOT_FOLDER);
             }
-=======
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-
-		// TODO FAQ, JIRA, Ticket-System, .... als Menu-Items
-
-		MenuItem pAbout = new MenuItem(submenu1, SWT.PUSH);
-		pAbout.setText(getMenuText(Messages.getLabel(MENU_About), EMPTY) + " JOE");
-		pAbout.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				listener.showAbout();
-			}
->>>>>>> .r17402
-
-<<<<<<< .mine
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
         });
-=======
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		submenuItem3.setMenu(submenu1);
-		submenu = new Menu(submenuItem);
-		MenuItem mnuLanguageSelection = new MenuItem(submenu, SWT.CASCADE);
-		mnuLanguageSelection.setText(Messages.getLabel("MENU_Language"));
-		menuLanguages = new Menu(mnuLanguageSelection);
-		// create languages menu
-		listener.setLanguages(menuLanguages);
->>>>>>> .r17402
-
-<<<<<<< .mine
         new MenuItem(pmFTP, SWT.SEPARATOR);
         MenuItem pSaveFTP = new MenuItem(pmFTP, SWT.PUSH);
         pSaveFTP.setText("Save By FTP");
@@ -900,29 +509,6 @@ public class MainWindow {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 saveByFTP();
             }
-=======
-		mnuLanguageSelection.setMenu(menuLanguages);
-		submenuItem.setMenu(submenu);
-		MenuItem submenuItemInfo = new MenuItem(submenu, SWT.PUSH);
-		submenuItemInfo.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				listener.resetInfoDialog();
-				Options.setPropertyBoolean(conPropertyNameEDITOR_JOB_SHOW_WIZARD, true);
-				Options.saveProperties();
-			}
-		});
-		submenuItemInfo.setText(getMenuText(Messages.getLabel(MENU_Reset_Dialog), EMPTY));
-		sShell.setMenuBar(menuBar);
-		sShell.addShellListener(new ShellAdapter() {
-			public void shellClosed(ShellEvent e) {
-				e.doit = container.closeAll();
-				setSaveStatus();
-				Options.saveWindow(sShell, conStringEDITOR);
-				saveWindowPosAndSize();
-				listener.saveOptions();
-				ResourceManager.dispose();
-			}
->>>>>>> .r17402
 
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
@@ -1107,13 +693,13 @@ public class MainWindow {
         objPersistenceStore.restoreWindowSize();
 
     }
-
+/*
 	private void saveWindowPosAndSize() {
 		objPersistenceStore.saveWindow();
 		objPersistenceStore.restoreWindowSize();
-
 	}
-
+*/
+	
 	private void saveWindowPosAndSize() {
 		objPersistenceStore.saveWindow();
 	}

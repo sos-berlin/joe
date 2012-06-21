@@ -1,13 +1,8 @@
 package sos.scheduler.editor.app;
-<<<<<<< .mine
 
 import java.io.InputStream;
 import java.lang.reflect.Method;
 
-=======
-import java.lang.reflect.Method;
-
->>>>>>> .r17402
 import org.apache.log4j.Logger;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -18,8 +13,8 @@ import sos.scheduler.editor.classes.SOSSplashScreen;
 import com.sos.JSHelper.Logging.Log4JHelper;
 import com.sos.i18n.annotation.I18NResourceBundle;
 
-<<<<<<< .mine
-@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class Editor /*
+@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") 
+public class Editor /*
                                                                                          * extends
                                                                                          * I18NBase
                                                                                          */{
@@ -28,17 +23,6 @@ import com.sos.i18n.annotation.I18NResourceBundle;
     @SuppressWarnings("unused") private final String conClassName = "Editor";
     @SuppressWarnings("unused") private static Log4JHelper objLogger = null;
     public static MainWindow objMainWindow = null;
-=======
-@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
-public class Editor /* extends I18NBase */{
-	private final static String	conSVNVersion			= "$Id$";
-	private static Logger		logger					= Logger.getLogger(Editor.class);
-	@SuppressWarnings("unused")
-	private final String		conClassName			= "Editor";
-	@SuppressWarnings("unused")
-	private static Log4JHelper	objLogger				= null;
->>>>>>> .r17402
-	public static MainWindow	objMainWindow			= null;
 
     public final static int CONFIG = 1;
     public final static int BASE = 2;
@@ -118,31 +102,15 @@ public class Editor /* extends I18NBase */{
     public static String SCHEDULER_ENCODING = "";
     public static String DOCUMENTATION_ENCODING = "utf-8";
 
-<<<<<<< .mine
     private static MainWindow window = null;
     private static Display display = null;
-=======
-	private static MainWindow	window					= null;
-	private static Display		display					= null;
 
-	public static void main(String[] args) {
-		try {
-			display = Display.getDefault();
-			window = new MainWindow();
-			window.createSShell();
->>>>>>> .r17402
-
-<<<<<<< .mine
     public static void main(String[] args) {
         try {
             display = Display.getDefault();
             window = new MainWindow();
             window.createSShell();
-=======
-			final Shell shell = MainWindow.getSShell();
->>>>>>> .r17402
 
-<<<<<<< .mine
             final Shell shell = MainWindow.getSShell();
 
             Method objApplicationMainMethod = Editor.class.getMethod("openApplicationMainWnd", new Class[] { Shell.class });
@@ -175,71 +143,8 @@ public class Editor /* extends I18NBase */{
         }
     }
 
-    private static void doSomeTimeconsumingOperation() {
-        // System.out.println("Executing some importent initial environment checks...");
-        try {
-            objLogger = new Log4JHelper("./JOE-log4j.properties");
-
-            logger = Logger.getRootLogger();
-            logger.debug(conSVNVersion);
-
-            window.OpenLastFolder();
-
-            objMainWindow = window;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void openApplicationMainWnd(Shell shell) {
-        MainWindow.getSShell().open();
-        MainWindow.getSShell().update();
-
-        while (!MainWindow.getSShell().isDisposed()) {
-
-            try {
-                if (!display.readAndDispatch()) {
-                    display.sleep();
-                }
-            } catch (Exception e) {
-                MainWindow.getSShell().redraw();
-                // MainWindow.getSShell().layout();
-            }
-        }
-        display.dispose();
-
-    }
-
-=======
-			Method objApplicationMainMethod = Editor.class.getMethod("openApplicationMainWnd", new Class[] { Shell.class });
-
-			Image objImage4Splash = null;
-			if (Options.showSplashScreen() == true) {
-				objImage4Splash = new Image(display, Options.showSplashScreenPicture());
-			}
-			SOSSplashScreen.showSplashScreen(shell, new Runnable() {
-				public void run() {
-					doSomeTimeconsumingOperation();
-				}
-			}, objImage4Splash, objApplicationMainMethod, 2000);
-
-		}
-		catch (Exception e) {
-			try {
-				logger.fatal("sudden death", e);
-				e.printStackTrace();
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "cause: " + e.toString(), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-		}
-	}
->>>>>>> .r17402
 
 	private static void doSomeTimeconsumingOperation() {
-		// System.out.println("Executing some importent initial environment checks...");
 		try {
 			objLogger = new Log4JHelper("./JOE-log4j.properties");
 
@@ -255,6 +160,7 @@ public class Editor /* extends I18NBase */{
 			e.printStackTrace();
 		}
 	}
+
 
 	public static void openApplicationMainWnd(Shell shell) {
 		MainWindow.getSShell().open();
@@ -273,7 +179,8 @@ public class Editor /* extends I18NBase */{
 			}
 		}
 		display.dispose();
-
 	}
+
+
 
 }
