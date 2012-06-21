@@ -68,7 +68,7 @@ public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private Group				gInclude			= null;
 	private Button				bRemove				= null;
 	private Text				tInclude			= null;
-	private Button				bAdd				= null;
+	private Button				bAdd				= null;  // 
 	private Group				gSource				= null;
 	private Text				tSource				= null;
 	private Label				label14				= null;
