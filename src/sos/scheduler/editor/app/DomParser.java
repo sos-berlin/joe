@@ -370,6 +370,7 @@ public abstract class DomParser extends I18NBase {
 
 	public void setInit(boolean init) {
 		_init = init;
+		_changed = false;
 	}
 
 	private void escape(Element e) {

@@ -23,6 +23,20 @@ import com.sos.i18n.annotation.I18NResourceBundle;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class Options extends I18NBase {
+<<<<<<< .mine
+	private static final String	conLanguageEN								= "en";
+	private static final String	conEnvironmentVariableSOS_LOCALE			= "SOS_LOCALE";
+	public static final String	conPropertyEDITOR_OPTIONS_FILE				= "editor.options.file";
+	public static final String	conPropertyEDITOR_LANGUAGE					= "editor.language";
+	public static final String	conPropertyEDITOR_ShowSplashScreen			= "editor.ShowSplashScreen";
+	public static final String	conPropertyEDITOR_OpenLastFolder			= "editor.OpenLastFolder";
+	public static final String	conPropertyTEMPLATE_LANGUAGE				= "template.language";
+	public static final String	conPropertyTEMPLATE_LANGUAGE_LIST			= "template.language.list";
+	public static final String	conPropertyEDITOR_ShowSplashScreenPicture	= "editor.ShowSplashScreenPicture"; // "/SplashScreenJOE.bmp";
+	
+
+	private final static String	conClassName								= "Options";
+=======
 	private static final String	conLanguageEN								= "en";
 	private static final String	conEnvironmentVariableSOS_LOCALE			= "SOS_LOCALE";
 	public static final String	conPropertyEDITOR_OPTIONS_FILE				= "editor.options.file";
@@ -35,6 +49,7 @@ public class Options extends I18NBase {
 	
 
 	private final static String	conClassName								= "Options";
+>>>>>>> .r17402
 	@SuppressWarnings("unused")
 	private final String		conSVNVersion								= "$Id$";
 	private static final Logger	logger										= Logger.getLogger(Options.class);
@@ -173,6 +188,36 @@ public class Options extends I18NBase {
 		}
 	}
 
+<<<<<<< .mine
+	public static boolean showSplashScreen() {
+		return getBoolOption(conPropertyEDITOR_ShowSplashScreen);
+	}
+
+	public static boolean openLastFolder() {
+		return getBoolOption(conPropertyEDITOR_OpenLastFolder);
+	}
+
+	public static boolean checkBool(final String pstrText) {
+		boolean flgR = false;
+		if (pstrText != null && pstrText.equalsIgnoreCase("true")) {
+			flgR = true;
+		}
+		return flgR;
+	}
+
+	public static boolean getBoolOption (final String pstrPropertyName) {
+		getProperties();
+		String strT = _properties.getProperty(pstrPropertyName);
+		boolean flgR = checkBool(strT);
+		return flgR;		
+	}
+	public static String showSplashScreenPicture() {
+		getProperties();
+		String strT = _properties.getProperty(conPropertyEDITOR_ShowSplashScreenPicture, "/SplashScreenJOE.bmp");
+		return strT;
+	}
+
+=======
 	public static boolean showSplashScreen() {
 		return getBoolOption(conPropertyEDITOR_ShowSplashScreen);
 	}
@@ -201,6 +246,7 @@ public class Options extends I18NBase {
 		return strT;
 	}
 
+>>>>>>> .r17402
 	public static String getLanguage() {
 		getProperties();
 		String strT = Locale.getDefault().getLanguage();
@@ -431,6 +477,8 @@ public class Options extends I18NBase {
 	}
 
 	public static void loadWindow(Shell shell, String name) {
+        getProperties();
+
 		Point location = new Point(0, 0);
 		Point size = new Point(0, 0);
 		try {

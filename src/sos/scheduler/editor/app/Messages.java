@@ -46,6 +46,16 @@ public class Messages  {
 
 
     public static String getString(String key) {
+<<<<<<< .mine
+        return  getLabel(key);
+    	//strLastMsgKey = key;
+    	//return getMsgObj().getMsg(key);
+//        try {
+//            return RESOURCE_BUNDLE.getString(key);
+//        } catch (MissingResourceException e) {
+//            return '!' + key + '!';
+//        }
+=======
     	strLastMsgKey = key;
     	return getMsgObj().getMsg(key);
 //        try {
@@ -53,6 +63,7 @@ public class Messages  {
 //        } catch (MissingResourceException e) {
 //            return '!' + key + '!';
 //        }
+>>>>>>> .r17402
     }
 
 
