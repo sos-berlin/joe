@@ -51,7 +51,7 @@ public class JobAssistentRunOptionsForms {
 
 	private Element           jobBackUp       = null;
 
-	private JobMainForm           jobForm         = null;
+	private ScriptJobMainForm           jobForm         = null;
 
 	private Button            butPeriod       = null; 
 
@@ -278,7 +278,7 @@ public class JobAssistentRunOptionsForms {
 	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
-	public void setBackUpJob(Element backUpJob, JobMainForm jobForm_) {
+	public void setBackUpJob(Element backUpJob, ScriptJobMainForm jobForm_) {
 		if(backUpJob != null)
 			jobBackUp = (Element)backUpJob.clone();	
 		jobForm = jobForm_;

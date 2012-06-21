@@ -30,6 +30,27 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 
 public class JobsForm extends Composite implements IUpdateLanguage {
+<<<<<<< .mine
+
+	@SuppressWarnings("unused")
+	private final String		conSVNVersion	= "$Id$";
+
+	private static Logger		logger			= Logger.getLogger(JobsForm.class);
+	@SuppressWarnings("unused")
+	private final String		conClassName	= "JobsForm";
+
+	private JobsListener		listener		= null;
+	private Group				group			= null;
+	private static Table		table			= null;
+	private Button				bNewJob			= null;
+	private Button				bRemoveJob		= null;
+	private Label				label			= null;
+	private SchedulerDom		dom				= null;
+	private ISchedulerUpdate	update			= null;
+	private Button				butAssistent	= null;
+	private Button				newOrderJob		= null;
+	private Composite objParent = null;
+=======
 
 	@SuppressWarnings("unused")
 	private final String		conSVNVersion	= "$Id$";
@@ -49,6 +70,7 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 	private Button				butAssistent	= null;
 	private Button				newOrderJob		= null;
 	private Composite objParent = null;
+>>>>>>> .r17402
 	
 	public JobsForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) {
 		super(parent, style);

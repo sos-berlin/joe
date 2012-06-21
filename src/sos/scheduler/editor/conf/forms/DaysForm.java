@@ -68,11 +68,9 @@ public class DaysForm extends Composite implements IUpdateLanguage {
     private Button           butRemove    = null; 
     
     private Button           butApplyGroup = null; 
-    
-    private boolean          newGroup      = false;
-    
     private HashMap          listOfSameMonths = null;
-    
+    private boolean          newGroup      = false;
+        
     private Button           butNewGroup   = null; 
     
    // private Element          parent_        = null;

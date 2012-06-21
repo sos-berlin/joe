@@ -1,10 +1,15 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.layout.FillLayout;
+<<<<<<< .mine
+ import org.eclipse.swt.widgets.Composite;
+ 
+=======
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
+>>>>>>> .r17402
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
@@ -13,6 +18,9 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
+<<<<<<< .mine
+public class JobDocumentationForm extends Composite /* implements IUpdateLanguage */ {
+=======
 public class JobDocumentationForm extends Composite /* implements IUpdateLanguage */ {
 
 	/* Hilfsvariable: setzt die Breite fest*/
@@ -25,6 +33,12 @@ public class JobDocumentationForm extends Composite /* implements IUpdateLanguag
 	private Text		tFileName		= null;
 	private Text		tDescription	= null;
 	private Text		tComment		= null;
+>>>>>>> .r17402
+<<<<<<< .mine
+  private JobListener	objDataProvider		= null;
+ 
+ 	public JobDocumentationForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
+=======
 	private boolean		updateTree		= false;
 	private Button		butShow			= null;
 	private Button		butOpen			= null;
@@ -33,35 +47,46 @@ public class JobDocumentationForm extends Composite /* implements IUpdateLanguag
 	private boolean		init			= true;
 
 	public JobDocumentationForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
+>>>>>>> .r17402
 		super(parent, style);
+<<<<<<< .mine
+ 		dom.setInit(true);
+=======
 		init = true;
 		dom.setInit(true);
+>>>>>>> .r17402
 		this.setEnabled(Utils.isElementEnabled("job", dom, job));
 		objDataProvider = new JobListener(dom, job, main);
 		initialize();
+<<<<<<< .mine
+=======
 //		setToolTipText();
 		updateTree = false;
 //		initForm();
+>>>>>>> .r17402
 		dom.setInit(false);
-		init = false;
-	}
+ 	}
 
 	public void apply() {
-		// if (isUnsaved())
-		// addParam();
+;
 	}
 
 	public boolean isUnsaved() {
-		// return bApply.isEnabled();
 		return false;
 	}
 
 	private void initialize() {
 		this.setLayout(new FillLayout());
-		createGroup();
-		setSize(new org.eclipse.swt.graphics.Point(723, 566));
+	    new JobDocumentation(this, objDataProvider);		
+	    setSize(new org.eclipse.swt.graphics.Point(723, 566));
 	}
+  
+    public void initForm(){
+        
+    }
 
+<<<<<<< .mine
+=======
 	/**
 	 * This method initializes group
 	 */
@@ -74,7 +99,10 @@ public class JobDocumentationForm extends Composite /* implements IUpdateLanguag
 //		createSashForm();
 		JobDocumentation objJD = new JobDocumentation(this, objDataProvider,null);
 	}
+>>>>>>> .r17402
 
+<<<<<<< .mine
+=======
 //	private void createSashForm() {
 //		GridLayout gridLayout = new GridLayout();
 //		gridLayout.numColumns = 2;
@@ -375,4 +403,5 @@ public class JobDocumentationForm extends Composite /* implements IUpdateLanguag
 //
 //	}
 //
+>>>>>>> .r17402
 } // @jve:decl-index=0:visual-constraint="10,10"

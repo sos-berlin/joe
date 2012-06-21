@@ -9,6 +9,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
+
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -82,7 +83,11 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	 */
 	private void createSashForm() {
 		sashForm = new SashForm(this, SWT.NONE);
+<<<<<<< .mine
+ 
+=======
 //		 sashForm.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+>>>>>>> .r17402
 		createGTree();
 		createCMainForm();
 		sashForm.setWeights(new int[] { 176, 698 });

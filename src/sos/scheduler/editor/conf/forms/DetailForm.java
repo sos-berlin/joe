@@ -451,7 +451,7 @@ public class DetailForm extends Composite implements IUpdateLanguage {
 				public void widgetSelected(final SelectionEvent e) {
 					saveWindowPosAndSize();
 					if (butApply.getEnabled()) {
-						int count = MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("detailform.close"), SWT.ICON_WARNING | SWT.OK
+						int count = MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getLabel("detailform.close"), SWT.ICON_WARNING | SWT.OK
 								| SWT.CANCEL);
 						if (count != SWT.OK) {
 							return;

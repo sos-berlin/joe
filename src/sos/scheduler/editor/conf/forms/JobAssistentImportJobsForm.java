@@ -110,7 +110,7 @@ public class JobAssistentImportJobsForm {
 	private int														assistentType		= -1;
 	private Combo													jobname				= null;
 	private Element													jobBackUp			= null;
-	private JobMainForm												jobForm				= null;
+	private ScriptJobMainForm												jobForm				= null;
 	private sos.scheduler.editor.conf.listeners.ParameterListener	paramListener		= null;
 	private Text													refreshDetailsText	= null;
 	/** Hilfsvariable für das Schliessen des Dialogs. 
@@ -943,7 +943,7 @@ public class JobAssistentImportJobsForm {
 	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
-	public void setBackUpJob(Element backUpJob, JobMainForm jobForm_) {
+	public void setBackUpJob(Element backUpJob, ScriptJobMainForm jobForm_) {
 		if (backUpJob != null)
 			jobBackUp = (Element) backUpJob.clone();
 		if (jobForm_ != null)
@@ -952,7 +952,7 @@ public class JobAssistentImportJobsForm {
 			selectTree();
 	}
 
-	public void setJobForm(JobMainForm jobForm_) {
+	public void setJobForm(ScriptJobMainForm jobForm_) {
 		jobForm = jobForm_;
 	}
 

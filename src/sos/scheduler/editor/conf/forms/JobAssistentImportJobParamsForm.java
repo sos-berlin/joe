@@ -116,7 +116,7 @@ public class JobAssistentImportJobParamsForm {
 	private Button													butRemoveAll								= null;
 	private Combo													jobname										= null;
 	private Element													jobBackUp									= null;
-	private JobMainForm												jobForm										= null;
+	private ScriptJobMainForm												jobForm										= null;
 	private JobDocumentationForm									jobDocForm									= null;
 	/** Hilsvariable für das Schliessen des Dialogs. 
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
@@ -859,7 +859,7 @@ public class JobAssistentImportJobParamsForm {
 		this.jobname = jobname;
 	}
 
-	public void setJobForm(JobMainForm jobForm_) {
+	public void setJobForm(ScriptJobMainForm jobForm_) {
 		if (jobForm_ != null)
 			jobForm = jobForm_;
 	}
@@ -879,7 +879,7 @@ public class JobAssistentImportJobParamsForm {
 	 * Beim verlassen der Wizard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
-	public void setBackUpJob(Element backUpJob, JobMainForm jobForm_) {
+	public void setBackUpJob(Element backUpJob, ScriptJobMainForm jobForm_) {
 		if (backUpJob != null)
 			jobBackUp = (Element) backUpJob.clone();
 		if (jobForm_ != null)

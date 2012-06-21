@@ -49,63 +49,38 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 
 	private Button butAddMissingNodes;
 	private Button                    bNewNode                    = null;
-
 	private Table                     tNodes                      = null;
-
 	private Button                    bApplyNode                  = null;
-
 	private Combo                     cErrorState                 = null;
+<<<<<<< .mine
+=======
 
+>>>>>>> .r17402
 	private Label                     label9                      = null;
-
 	private Combo                     cNextState                  = null;
-
 	private Label                     label8                      = null;
-
 	private Button                    bEndNode                    = null;
-
 	private Button                    bFullNode                   = null;
-
 	private Composite                 cType                       = null;
-
 	private Combo                     cJobChain                   = null;
-
 	private Label                     label7                      = null;
-
 	private Text                      tState                      = null;
-
 	private Label                     label6                      = null;
-
 	private static final String       GROUP_NODES_TITLE           = "Nested Job Chain Nodes";
-
 	private JobChainNestedListener    listener                    = null;
-
 	private Group                     jobChainGroup               = null;
-
 	private Button                    bRemoveNode                 = null;
-
 	private Group                     gNodes                      = null;
-
 	private boolean                   refresh                     = false;
-
 	private Button                    butDetailsJob               = null;
-
 	private Button                    butBrowse                   = null;
-
-	private ISchedulerUpdate          update                      = null;
-
 	private Button                    butUp                       = null;
-
 	private Button                    butDown                     = null;
-
 	private SchedulerDom              dom                         = null;
-
 	private Button                    butGoto                     = null;
-	
-	private boolean                   isInsert                    = false;
-	
+    private boolean                   isInsert                    = false;
+    private ISchedulerUpdate          update                      = null;
 	private Button                    butInsert                   = null;
-	
 	private Button                    reorderButton               = null; 
 	
 	

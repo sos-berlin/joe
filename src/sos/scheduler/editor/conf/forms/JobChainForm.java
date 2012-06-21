@@ -40,6 +40,21 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 	private final String		conSVNVersion		= "$Id$";
 	private static final Logger	logger				= Logger.getLogger(JobChainForm.class);
 
+<<<<<<< .mine
+	private JobChainListener	listener			= null;
+	private Group				jobChainGroup		= null;
+	private Label				chainNameLabel		= null;
+	private Text				tName				= null;
+	private Button				bRecoverable		= null;
+	private Button				bVisible			= null;
+	private Button				butDetails			= null;
+	private ISchedulerUpdate	update				= null;
+	private Button				butDistributed		= null;
+	private Text				txtTitle			= null;
+	private boolean				init				= false;
+	private boolean				changeJobChainName	= true;
+	private Text				sMaxorders;
+=======
 	private JobChainListener	listener			= null;
 	private Group				jobChainGroup		= null;
 	private Label				chainNameLabel		= null;
@@ -54,6 +69,7 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 	private boolean				changeJobChainName	= true;
 	private Spinner				sMaxorder			= null;
 	private Text				sMaxorders;
+>>>>>>> .r17402
 
 	public JobChainForm(Composite parent, int style, SchedulerDom dom, Element jobChain) {
 		super(parent, style);
@@ -270,8 +286,11 @@ public class JobChainForm extends Composite implements IUnsaved, IUpdateLanguage
 			}
 		});
 		new Label(jobChainGroup, SWT.NONE);
+<<<<<<< .mine
+=======
 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
+>>>>>>> .r17402
 
 		if (!listener.get_dom().isLifeElement()) {
 		}

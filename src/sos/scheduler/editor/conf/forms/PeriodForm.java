@@ -45,77 +45,39 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 	public static String ABSOLUTE_TIME = "Intervall start/start"; 
 
 	private PeriodListener    listener                  = null;
-
 	private boolean           onOrder;
-
 	private Composite         gPeriod                    = null;
-
 	private Label             label1                     = null;
-
 	private Button            bLetRun                    = null;
+<<<<<<< .mine
+=======
 
+>>>>>>> .r17402
 	private Label             label2                     = null;
-
 	private Text              sBeginHours                = null;
-
 	private Label             label3                     = null;
-
 	private Text              sBeginMinutes              = null;
-
 	private Label             label4                     = null;
-
 	private Text              sBeginSeconds              = null;
-
 	private Label             label5                     = null;
-
 	private Label             label6                     = null;
-
 	private Text              sEndHours                  = null;
-
 	private Label             label7                     = null;
-
 	private Text              sEndMinutes                = null;
-
 	private Label             label8                     = null;
-
 	private Text              sEndSeconds                = null;
-
 	private Label             label9                     = null;
-
 	private Label             lRunOnce                   = null;
-
 	private Button            cRunOnce                   = null;
-
 	private boolean           event                      = true;
-
 	private Button            bApply                     = null;
-
 	private String            savBeginHours              = "";
-
 	private String            savBeginMinutes            = "";
-
 	private String            savBeginSeconds            = "";
-
 	private String            savEndHours                = "";
-
 	private String            savEndMinutes              = "";
-
 	private String            savEndSeconds              = "";
-
-	/*private String            savRepeatHours             = "";
-
-	private String            savRepeatMinutes           = "";
-
-	private String            savRepeatSeconds           = "";
-
-	private String            savAbsoluteHours           = "";
-
-	private String            savAbsoluteMinutes         = "";
-
-	private String            savAbsoluteSecounds        = "";
-	 */
 	private boolean           assistent                  = false;
-
 
 	private int               _type                      = Editor.PERIODS;
 
@@ -127,8 +89,7 @@ public class PeriodForm extends Composite implements IUpdateLanguage {
 
 	private Combo             cboStarttime               = null;
 	
-	//private PeriodsForm       periodsForm                = null;
-	
+ 	
 
 	/**
 	 * @wbp.parser.constructor
