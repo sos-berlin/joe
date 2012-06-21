@@ -55,7 +55,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 	private Button                    bApplyNode                  = null;
 
 	private Combo                     cErrorState                 = null;
- 
+
 	private Label                     label9                      = null;
 
 	private Combo                     cNextState                  = null;
@@ -159,7 +159,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true);
 		gridData_2.heightHint = 170;
 		gNodes.setLayoutData(gridData_2);
-		gNodes.setText("Chain Jain Node");
+		gNodes.setText("Chain Jain Node"); //TODO lang "Job Chain Node"
 		final GridLayout gridLayout_3 = new GridLayout();
 		gridLayout_3.marginBottom = 5;
 		gridLayout_3.marginTop = 5;
@@ -168,7 +168,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 
 		label6 = new Label(gNodes, SWT.NONE);
 		label6.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false, 2, 1));
-		label6.setText("State:");
+		label6.setText("State:"); //TODO lang "State:"
 
 		tState = new Text(gNodes, SWT.BORDER);
 		tState.addFocusListener(new FocusAdapter() {
@@ -202,11 +202,11 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		final GridData gridData7 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
 		bApplyNode.setLayoutData(gridData7);
 		bApplyNode.setEnabled(false);
-		bApplyNode.setText("&Apply Chain Node");
+		bApplyNode.setText("&Apply Chain Node"); //TODO lang "&Apply Chain Node"
 
 		label7 = new Label(gNodes, SWT.NONE);
 		label7.setLayoutData(new GridData());
-		label7.setText("Job Chain:");
+		label7.setText("Job Chain:"); //TODO lang "Job Chain:"
 
 		butGoto = new Button(gNodes, SWT.ARROW | SWT.DOWN);
 		butGoto.setVisible(listener.get_dom() != null && !listener.get_dom().isLifeElement());
@@ -267,13 +267,13 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 					cJobChain.setText(jobname);
 			}
 		});
-		butBrowse.setText("Browse");
+		butBrowse.setText("Browse"); //TODO lang "Browse"
 
 		if(!listener.get_dom().isLifeElement()) {
 		}
 		label8 = new Label(gNodes, SWT.NONE);
 		label8.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		label8.setText("Next State:");
+		label8.setText("Next State:"); //TODO lang "Next State:"
 
 		cNextState = new Combo(gNodes, SWT.BORDER);
 		cNextState.addModifyListener(new ModifyListener() {
@@ -309,11 +309,11 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 			}
 		});
 		bNewNode.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		bNewNode.setText("New Chain &Node");
+		bNewNode.setText("New Chain &Node"); //TODO lang "New Chain &Node"
 
 		label9 = new Label(gNodes, SWT.NONE);
 		label9.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		label9.setText("Error State:");
+		label9.setText("Error State:"); //TODO lang "Error State:"
 
 		cErrorState = new Combo(gNodes, SWT.BORDER);
 		cErrorState.addModifyListener(new ModifyListener() {
@@ -360,7 +360,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 			}
 		});
 		butInsert.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butInsert.setText("Insert Chain Node");
+		butInsert.setText("Insert Chain Node"); //TODO lang "Insert Chain Node"
 
 		cType = new Composite(gNodes, SWT.NONE);
 		final GridLayout gridLayout_4 = new GridLayout();
@@ -381,7 +381,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 			}
 		});
 		bFullNode.setSelection(true);
-		bFullNode.setText("Full Node");
+		bFullNode.setText("Full Node"); //TODO lang "Full Node"
 
 		bEndNode = new Button(cType, SWT.RADIO);
 		bEndNode.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
@@ -411,7 +411,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 
 			}
 		});
-		bEndNode.setText("End Node");
+		bEndNode.setText("End Node"); //TODO lang "End Node"
 		new Label(gNodes, SWT.NONE);
 
 		tNodes = new Table(gNodes, SWT.FULL_SELECTION | SWT.BORDER);		
@@ -428,27 +428,27 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 
 		final TableColumn tableColumn3 = new TableColumn(tNodes, SWT.NONE);
 		tableColumn3.setWidth(90);
-		tableColumn3.setText("State");
+		tableColumn3.setText("State"); //TODO lang "State"
 
 		final TableColumn newColumnTableColumn_3 = new TableColumn(tNodes, SWT.NONE);
 		newColumnTableColumn_3.setWidth(100);
-		newColumnTableColumn_3.setText("Node");
+		newColumnTableColumn_3.setText("Node"); //TODO lang "Node"
 
 		final TableColumn tableColumn4 = new TableColumn(tNodes, SWT.NONE);
 		tableColumn4.setWidth(200);
-		tableColumn4.setText("Job Chain");
+		tableColumn4.setText("Job Chain"); //TODO lang "Job Chain"
 
 		final TableColumn tableColumn5 = new TableColumn(tNodes, SWT.NONE);
 		tableColumn5.setWidth(90);
-		tableColumn5.setText("Next State");
+		tableColumn5.setText("Next State"); //TODO lang "Next State"
 
 		final TableColumn tableColumn6 = new TableColumn(tNodes, SWT.NONE);
 		tableColumn6.setWidth(90);
-		tableColumn6.setText("Error State");
+		tableColumn6.setText("Error State"); //TODO lang "Error State"
 
 		final TableColumn newColumnTableColumn_4 = new TableColumn(tNodes, SWT.NONE);
 		newColumnTableColumn_4.setWidth(100);
-		newColumnTableColumn_4.setText("On Error");
+		newColumnTableColumn_4.setText("On Error"); //TODO lang "On Error"
 
 		final Composite composite_1 = new Composite(gNodes, SWT.NONE);
 		composite_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -515,7 +515,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		butDown.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
 
 		reorderButton = new Button(composite_1, SWT.CHECK);
-		reorderButton.setText("Reorder");
+		reorderButton.setText("Reorder"); //TODO lang "Reorder"
 
 		butDetailsJob = new Button(gNodes, SWT.NONE);
 		butDetailsJob.setEnabled(false);
@@ -526,7 +526,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 			}
 		});
 		butDetailsJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		butDetailsJob.setText("Parameter");
+		butDetailsJob.setText("Parameter"); //TODO lang "Parameter"
 
 		butAddMissingNodes = new Button(gNodes, SWT.NONE);
 		butAddMissingNodes.addSelectionListener(new SelectionAdapter() {
@@ -567,7 +567,7 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 		});
 		butAddMissingNodes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butAddMissingNodes.setEnabled(false);
-		butAddMissingNodes.setText("Add Missing Nodes");
+		butAddMissingNodes.setText("Add Missing Nodes"); //TODO lang "Add Missing Nodes"
 
 		bRemoveNode = new Button(gNodes, SWT.NONE);
 		bRemoveNode.setEnabled(false);
@@ -600,14 +600,14 @@ public class JobChainNestedNodesForm extends Composite implements IUnsaved, IUpd
 			}
 		});
 		bRemoveNode.setLayoutData(new GridData(GridData.FILL, GridData.END, false, false));
-		bRemoveNode.setText("Remove Node");
+		bRemoveNode.setText("Remove Node"); //TODO lang "Remove Node"
 
 	}
 
 
 	private void fillChain(boolean enable, boolean isNew) {
 		listener.fillChain(tNodes);
-		gNodes.setText(GROUP_NODES_TITLE + " for: " + listener.getChainName());
+		gNodes.setText(GROUP_NODES_TITLE + " for: " + listener.getChainName()); //TODO lang ..."for:"...
 		bNewNode.setEnabled(true);
 		enableNode(false);		           
 	}

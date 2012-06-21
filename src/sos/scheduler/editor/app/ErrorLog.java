@@ -11,7 +11,7 @@ package sos.scheduler.editor.app;
 
 import sos.util.SOSClassUtil;
 import sos.util.SOSStandardLogger;
- 
+
 public class ErrorLog extends Exception {
 
 	/**
@@ -35,15 +35,11 @@ public class ErrorLog extends Exception {
 		super();		
 		
 		try {
-			
 			init();	
 			logger.info(msg);
 			
 			if(logger.getLogLevel() > 6)
 				logger.info(getErrorMessage(e));
-			
-			
-					
 		} catch(Exception ex){			
 			System.out.println(ex.getMessage());			
 		}
@@ -57,14 +53,9 @@ public class ErrorLog extends Exception {
 	public static void main(String[] args) throws ErrorLog{
 	
 		try {
-
 			throw new Exception("Testerror");
-
 		} catch(Exception e) {
-
-			
 			new ErrorLog("mein Testerror", e);
-
 		}
 	}
 	

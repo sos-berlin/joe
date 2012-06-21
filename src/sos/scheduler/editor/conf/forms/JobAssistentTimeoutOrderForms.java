@@ -35,7 +35,7 @@ public class JobAssistentTimeoutOrderForms {
 	private SchedulerDom      dom                    = null;
 
 	private ISchedulerUpdate  update                 = null;
- 
+
 	private JobListener       joblistener            = null;
 
 	private Button            butFinish              = null;
@@ -104,11 +104,11 @@ public class JobAssistentTimeoutOrderForms {
 			step = step + " [Step 6 of 9]";
 		else 
 			step = step + " [Step 6 of 8]";
-		shellTimeout.setText("Timeout" + step);				
+		shellTimeout.setText("Timeout" + step);	 //TODO lang "Timeout"			
 
 		{
 			final Group jobGroup = new Group(shellTimeout, SWT.NONE);
-			jobGroup.setText(" Job: " + Utils.getAttributeValue("name", joblistener.getJob()));
+			jobGroup.setText(" Job: " + Utils.getAttributeValue("name", joblistener.getJob())); //TODO lang " Job: "
 			final GridData gridData = new GridData(GridData.FILL, GridData.BEGINNING, true, false, 2, 1);
 			gridData.heightHint = 91;
 			jobGroup.setLayoutData(gridData);
@@ -124,7 +124,7 @@ public class JobAssistentTimeoutOrderForms {
 			{
 				lblTimeout = new Label(jobGroup, SWT.NONE);
 				lblTimeout.setLayoutData(new GridData());
-				lblTimeout.setText("Timeout");
+				lblTimeout.setText("Timeout"); //TODO lang "Timeout"
 			}
 			txtTimeout = new Text(jobGroup, SWT.BORDER);
 			txtTimeout.setFocus();
@@ -146,7 +146,7 @@ public class JobAssistentTimeoutOrderForms {
 				final GridData gridData_1 = new GridData(GridData.END, GridData.CENTER, false, false, 2, 1);
 				gridData_1.widthHint = 77;
 				lblIdleTimeout.setLayoutData(gridData_1);
-				lblIdleTimeout.setText("Idle Timeout");
+				lblIdleTimeout.setText("Idle Timeout"); //TODO lang "Idle Timeout"
 
 
 			}
@@ -167,7 +167,7 @@ public class JobAssistentTimeoutOrderForms {
 				lblForceIdleTimeout = new Label(jobGroup, SWT.NONE);
 				final GridData gridData_1 = new GridData(SWT.DEFAULT, 12);
 				lblForceIdleTimeout.setLayoutData(gridData_1);
-				lblForceIdleTimeout.setText("Force Idle Timeout");
+				lblForceIdleTimeout.setText("Force Idle Timeout"); //TODO lang "Force Idle Timeout"
 
 			}
 
@@ -180,7 +180,7 @@ public class JobAssistentTimeoutOrderForms {
 					joblistener.setForceIdletimeout(false);
 				}
 			});
-			noButton.setText("no");
+			noButton.setText("no"); //TODO lang "no"
 
 			final Button yesButton = new Button(jobGroup, SWT.RADIO);
 			yesButton.setSelection(joblistener.getForceIdletimeout());
@@ -191,7 +191,7 @@ public class JobAssistentTimeoutOrderForms {
 					joblistener.setForceIdletimeout(true);
 				}
 			});
-			yesButton.setText("yes");
+			yesButton.setText("yes"); //TODO lang "yes"
 			new Label(jobGroup, SWT.NONE);
 			new Label(jobGroup, SWT.NONE);
 
@@ -218,7 +218,7 @@ public class JobAssistentTimeoutOrderForms {
 						close();
 					}
 				});
-				butCancel.setText("Cancel");
+				butCancel.setText("Cancel"); //TODO lang "Cancel"
 			}
 		}
 
@@ -238,7 +238,7 @@ public class JobAssistentTimeoutOrderForms {
 						txtTimeout.setFocus();
 					}
 				});
-				butShow.setText("Show");
+				butShow.setText("Show"); //TODO lang "Show"
 			}
 
 			{
@@ -250,7 +250,7 @@ public class JobAssistentTimeoutOrderForms {
 
 					}
 				});
-				butFinish.setText("Finish");
+				butFinish.setText("Finish"); //TODO lang "Finish"
 			}
 
 			butBack = new Button(composite, SWT.NONE);
@@ -277,7 +277,7 @@ public class JobAssistentTimeoutOrderForms {
 					shellTimeout.dispose();
 				}
 			});
-			butBack.setText("Back");
+			butBack.setText("Back"); //TODO lang "Back"
 			{
 				butNext = new Button(composite, SWT.NONE);
 				butNext.setFocus();
@@ -297,7 +297,7 @@ public class JobAssistentTimeoutOrderForms {
 
 					}
 				});
-				butNext.setText("Next");
+				butNext.setText("Next"); //TODO lang "Next"
 			}
 
 			Utils.createHelpButton(composite, "assistent.timeout.order", shellTimeout);

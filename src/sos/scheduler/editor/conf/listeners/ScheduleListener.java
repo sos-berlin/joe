@@ -1,5 +1,10 @@
 package sos.scheduler.editor.conf.listeners;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.jdom.Element;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -14,6 +19,9 @@ public class ScheduleListener {
 	private    ISchedulerUpdate _main                  = null;
 	
 	private    Element          _schedule              = null;
+	
+    private    Date validFrom;
+    private    Date validTo;
 	
 	
 	public ScheduleListener(SchedulerDom dom, ISchedulerUpdate update, Element schedule) {
@@ -63,30 +71,25 @@ public class ScheduleListener {
 		
 	}
 	
-	public String getValidFrom() {
-		return Utils.getAttributeValue("valid_from", _schedule);
-	}
-
+	public String getValidFrom() throws ParseException  {
+		String sDate = Utils.getAttributeValue("valid_from", _schedule);
+        return sDate;
+   }
 	
-	public void setValidTo(String validTo) {
-		
-				/*if(!sos.util.SOSDate.isValidDate(validTo, DateFormat.MEDIUM, Locale.getDefault()))
-						System.out.println(validTo + " not a valid day");*/
-		/*try {
-			DateFormat formatter = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
-			formatter.parse(validTo.substring(0));
-		} catch(Exception e) {
-			System.out.println(validTo + " not a valid day" + e.getMessage());
-		}*/
+	   
+	
+	public void setValidTo(String validTo) throws ParseException {
+	    
 		Utils.setAttribute("valid_to", validTo, _schedule);
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.MODIFY);	
 		
 	}
 	
-	public String getValidTo() {
-		return Utils.getAttributeValue("valid_to", _schedule);
-	}
+	public String getValidTo() throws ParseException {
+        String sDate = Utils.getAttributeValue("valid_to", _schedule);
+        return sDate;	
+    }
 
 	
 	public void setSubstitut(String substitute) {		

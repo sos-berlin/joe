@@ -238,7 +238,7 @@ public abstract class DomParser extends I18NBase {
 	protected void reorderDOM(Element element, Namespace ns) {
 		// escape element Attributes
 		escape(element);
-
+		String strT = "huhu";
 		// check if an order list exists for this element
 		if (getDomOrders().containsKey(element.getName())) {
 			// get children names in right order of this element

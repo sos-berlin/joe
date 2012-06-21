@@ -1,24 +1,23 @@
 package sos.scheduler.editor.app;
 
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.xpath.XPath;
 
+import sos.scheduler.editor.actions.forms.ActionsForm;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
-
-import sos.scheduler.editor.actions.forms.ActionsForm;
 
 
 public class ContextMenu {
@@ -275,8 +274,9 @@ public class ContextMenu {
 	public static void goTo(String name, DomParser _dom, int type) {
 		try {
 
-			if(name == null || name.length() == 0)
+			if(name == null || name.length() == 0) {
 				return;
+			}
 
 			if(_dom instanceof sos.scheduler.editor.actions.ActionsDom)
 				_dom = (sos.scheduler.editor.actions.ActionsDom)_dom;
@@ -305,8 +305,11 @@ public class ContextMenu {
 							TreeItem[] jobsItem = item.getItems();
 							for(int j = 0; j < jobsItem.length; j++) {
 								TreeItem jItem = jobsItem[j];
-								//if(jItem.getText().equals("Job: "+ name)){
-								if(jItem.getText().endsWith("Job: "+ name)){
+								String strName = jItem.getText();
+								
+								// TODO get the name of the job from the Element, not from the description
+								
+								if(strName.startsWith(name)){
 									tree.setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("jobs");

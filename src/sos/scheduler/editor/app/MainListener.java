@@ -11,14 +11,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 import sos.connection.SOSConnection;
+import sos.scheduler.editor.conf.listeners.JOEListener;
 import sos.util.SOSString;
 
-public class MainListener {
+public class MainListener extends JOEListener {
 	private static final String	conPropertyEDITOR_LANGUAGE	= "editor.language";
 	// private MainWindow _gui = null;
 	@SuppressWarnings("unused")
@@ -35,50 +35,26 @@ public class MainListener {
 		// _gui = gui;
 		_container = container;
 	}
- 
-	public void openHelp(String helpKey) {
-		String lang = Options.getLanguage();
-		String url = helpKey;
-		try {
-			// TODO: überprüfen, ob Datei wirklich existiert
-			url = new File(url).toURL().toString();
-			Program prog = Program.findProgram("html");
-			if (prog != null)
-				prog.execute(url);
-			else {
-				Runtime.getRuntime().exec(Options.getBrowserExec(url, lang));
-				// Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler javascript:location.href='file://c:/scheduler/config/html/doc/en/xml/job.xml'");
-			}
-		}
-		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; "
-						+ Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			e.printStackTrace();
-			MainWindow.message(Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), SWT.ICON_ERROR | SWT.OK);
-		}
-	}
+
 
 	public void showAbout() {
-		TextDialog dialog = new TextDialog(MainWindow.getSShell());
-		dialog.setText("About JOE - JobScheduler Object Editor");
-		String message = Messages.getString("MainListener.aboutText", Options.getVersion() + "\nSchema-Version:\n\t" + Options.getSchemaVersion() + "\n"
+		TextDialog objAboutDialogBox = new TextDialog(MainWindow.getSShell());
+		objAboutDialogBox.setText("About JOE - JobScheduler Object Editor"); 
+//		objAboutDialogBox.setText(Messages.getString("JOE_I_0010"));
+		String message = sos.scheduler.editor.app.Messages.getString("MainListener.aboutText", Options.getVersion() + //
+				"\nSchema-Version:\n\t" + Options.getSchemaVersion() + "\n"
 				+ "SVN: \t" + getSVNVersion());
-		dialog.setContent(message, SWT.CENTER);
-		dialog.getStyledText().setEditable(false);
+		objAboutDialogBox.setContent(message, SWT.CENTER);
+		objAboutDialogBox.getStyledText().setEditable(false);
 		StyleRange bold = new StyleRange();
 		bold.start = 0;
 		bold.length = message.lastIndexOf("\n");
 		bold.fontStyle = SWT.BOLD;
 		// dialog.getStyledText().setStyleRange(bold);
-		dialog.setVisibleApplyButton(false);
-		dialog.setShowWizzardInfo(false);
+		objAboutDialogBox.setVisibleApplyButton(false);
+		objAboutDialogBox.setShowWizzardInfo(false);
 		// dialog.setSize(new org.eclipse.swt.graphics.Point(100, 200));
-		dialog.open(false);
+		objAboutDialogBox.open(false);
 	}
 
 	public String getSVNVersion() {
@@ -106,7 +82,7 @@ public class MainListener {
 			}
 		}
 		catch (Exception e) {
-			MainWindow.message("could not read SVN-Version ", SWT.ICON_WARNING | SWT.OK);
+//			MainWindow.message("could not read SVN-Version ", SWT.ICON_WARNING | SWT.OK);
 		}
 		return svnVersion;
 	}
@@ -126,14 +102,16 @@ public class MainListener {
 				found = true;
 				item.setSelection(true);
 			}
-			if (Options.getDefault(conPropertyEDITOR_LANGUAGE).equals(val))
+			if (Options.getDefault(conPropertyEDITOR_LANGUAGE).equals(val)) {
 				defaultItem = item;
+			}
 			item.addSelectionListener(new SelectionListener() {
 				public void widgetSelected(SelectionEvent e) {
 					MenuItem item = (MenuItem) e.widget;
 					if (item.getSelection()) {
 						String lang = (String) item.getData();
 						Options.setLanguage(lang);
+						sos.scheduler.editor.app.Messages.clearMsgObj();
 						loadMessages();
 					}
 				}
@@ -152,7 +130,7 @@ public class MainListener {
 	}
 
 	public void loadMessages() {
-		if (!Messages.setResource(new Locale(Options.getLanguage()))) {
+		if (!sos.scheduler.editor.app.Messages.setResource(new Locale(Options.getLanguage()))) {
 			MainWindow.message("The resource bundle " + Messages.getBundle() + " for the language " + Options.getLanguage() + " was not found!", SWT.ICON_ERROR
 					| SWT.OK);
 		}
@@ -171,8 +149,9 @@ public class MainListener {
 
 	public void saveOptions() {
 		String msg = Options.saveProperties();
-		if (msg != null)
+		if (msg != null) {
 			MainWindow.message("Options cannot be saved!\n" + msg, SWT.ICON_ERROR | SWT.OK);
+		}
 	}
 
 	public void loadJobTitels() {

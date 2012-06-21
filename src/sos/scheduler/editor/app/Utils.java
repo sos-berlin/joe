@@ -2,17 +2,24 @@ package sos.scheduler.editor.app;
 
 import java.io.StringWriter;
 import java.util.List;
+import java.util.regex.Pattern;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
@@ -20,17 +27,19 @@ import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
-import org.eclipse.swt.widgets.Shell;
+
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerEditorFontDialog;
 
-import java.util.regex.Pattern;
-
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.events.*;
-
 public class Utils {
+
+	final static String JOE_L_Object_In_Use = "JOE_L_Object_In_Use";
+	final static String JOE_L_Process_Class = "processclass";
+	final static String JOE_L_Job = "job";
+	final static String JOE_L_Job_chain = "job_chain";
+	final static String JOE_L_Lock = "lock";
+	final static String JOE_L_Schedule = "schedule";
+
 
 	// saving a default value results in removing the tag
 	private static final String       STR_DEFAULT     = "";
@@ -48,7 +57,7 @@ public class Utils {
 
 	private static       Element      resetElement    = null;
 
- 
+
 	public static String getIntegerAsString(int i) {
 		String s;
 		if (i == -999) {
@@ -102,8 +111,6 @@ public class Utils {
 
 	public static void setAttribute(String attribute, String value, String defaultValue, Element element, DomParser dom) {
 		value = value.trim();
-
-		//value = escape(value);
 
 		//System.out.println("attribute[" + attribute + " = " + value + "]  default: " + defaultValue);
 
@@ -923,40 +930,46 @@ public class Utils {
 		try {
 			if(which == null) which ="";				
 			if(type == Editor.JOB_CHAIN) {
+				String strObject = Messages.getLabel(JOE_L_Job_chain);
+				String strM = Messages.getLabel(JOE_L_Object_In_Use);
+				String strException = String.format(strM,strObject, name);
 
 				XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 
 				List<Element> listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty())
 					//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
 					//"Soll die Jobkette trotzdem umbennant werden");
-					throw new Exception ("The Jobchain [job_chain=" + name + "] is currently being used by an order. " +
-					"Do you want really rename the jobchain");				
+					throw new Exception (strException);				
 
 				XPath x4 = XPath.newInstance("//add_order[@job_chain='"+ name + "']");				 
 				List<Element> listOfElement_4 = x4.selectNodes(_dom.getDoc());
 				if(!listOfElement_4.isEmpty())
-					throw new Exception ("The Jobchain [job_chain=" + name + "] is currently being used by an order. " +
-					"Do you want really rename the jobchain");				
+					throw new Exception (strException);				
 
 			} else if(type == Editor.JOB_CHAINS) {
-
+				String strObject = Messages.getLabel(JOE_L_Job_chain);
+				String strM = Messages.getLabel(JOE_L_Object_In_Use);
+				String strException = String.format(strM,strObject, name);
+				
 				XPath x3 = XPath.newInstance("//order[@job_chain='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty())
 					//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
 					//"Soll die Jobkette trotzdem gelöscht werden");
-					throw new Exception ("The Jobchain [job_chain=" + name + "] is currently being used by an order. " +
-					"Do you want to delete the jobchain");
+					throw new Exception (strException);
 
 				XPath x4 = XPath.newInstance("//add_order[@job_chain='"+ name + "']");				 
 				List listOfElement_4 = x4.selectNodes(_dom.getDoc());
 				if(!listOfElement_4.isEmpty())
 					//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
 					//"Soll die Jobkette trotzdem gelöscht werden");
-					throw new Exception ("The Jobchain [job_chain=" + name + "] is currently being used by an order. " +
-					"Do you want to delete the jobchain");
+					throw new Exception (strException);
 
 			} else if(type==Editor.JOB) {
+				
+				String strObject = Messages.getLabel(JOE_L_Job);
+				String strM = Messages.getLabel(JOE_L_Object_In_Use);
+				String strException = String.format(strM,strObject, name);
 
 				if(which != null && which.equalsIgnoreCase("close")) {
 					onlyWarning = true;
@@ -968,8 +981,7 @@ public class Utils {
 						XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
 						List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 						if(!listOfElement_3.isEmpty())
-							//throw new Exception ("Der Standalone Job " + name + " ist in einer Jobkette definiert.");
-							throw new Exception   ("The Standalone Job " + name + " is currently being used by a job chain");
+							throw new Exception   (strException);
 					}
 				} else {
 
@@ -1002,9 +1014,9 @@ public class Utils {
 					List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 					if(!listOfElement_3.isEmpty()) {
 						if(which.equalsIgnoreCase("change_order")) {
-							throw new Exception   ("The Job " + name + " is currently being used by a job chain. Do you want really change to a standalone job?");
+							throw new Exception   (strException);
 						} else {
-							throw new Exception   ("The Job " + name + " is currently being used by a job chain. Do you want really rename the name?");
+							throw new Exception   (strException);
 						}
 					}
 
@@ -1012,32 +1024,45 @@ public class Utils {
 
 			} else if(type == Editor.JOBS) {
 
+				String strObject = Messages.getLabel(JOE_L_Job);
+				String strM = Messages.getLabel(JOE_L_Object_In_Use);
+				String strException = String.format(strM,strObject, name);
+				
 				XPath x3 = XPath.newInstance("//job_chain_node[@job='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty())					
-					throw new Exception ("The Job [name=" + name + "] is currently being used by a job chain. Do you want to delete?");
+					throw new Exception (strException);
 
 			} else if(type == Editor.LOCKS) {
+				String strObject = Messages.getLabel(JOE_L_Lock);
+				String strM = Messages.getLabel(JOE_L_Object_In_Use);
+				String strException = String.format(strM,strObject, name);
 
 				XPath x3 = XPath.newInstance("//lock.use[@lock='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty())					
-					throw new Exception ("The lock [lock=" + name + "] is currently	being used by a job. Do you want to continue?");				
+					throw new Exception (strException);				
 
 
 			} else if(type == Editor.PROCESS_CLASSES) {
-
+				String strObject = Messages.getLabel(JOE_L_Process_Class);
+				String strM = Messages.getLabel(JOE_L_Object_In_Use);
+				String strException = String.format(strM,strObject, name);
+				 				
 				XPath x3 = XPath.newInstance("//job[@process_class='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty())					
-					throw new Exception ("The process class [process_class=" + name + "] is currently being used by a job. Do you want to continue?");
+					throw new Exception (strException);
 
 			} else if(type == Editor.SCHEDULES || type == Editor.SCHEDULE) {
-
+				String strObject = Messages.getLabel(JOE_L_Schedule);
+				String strM = Messages.getLabel(JOE_L_Object_In_Use);
+				String strException = String.format(strM,strObject, name);
+				 				
 				XPath x3 = XPath.newInstance("//run_time[@schedule='"+ name + "']");				 
 				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if(!listOfElement_3.isEmpty())					
-					throw new Exception ("The Schedule [name=" + name + "] is currently being used by a Runtime. Do you want to continue?");
+					throw new Exception (strException);
 
 			}
 
@@ -1108,13 +1133,11 @@ public class Utils {
 		return false;
 	}
 
-	//setzt den Maus auf SandUhr
 	public static void startCursor(Shell shell){
 		if(!shell.isDisposed())
 			shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT));
 	}
 
-	//setzt den Maus auf Pfeil
 	public static void stopCursor(Shell shell){
 		if(!shell.isDisposed())
 			shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_ARROW));

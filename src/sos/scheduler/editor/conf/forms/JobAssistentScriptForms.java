@@ -41,7 +41,7 @@ public class JobAssistentScriptForms {
 	private ISchedulerUpdate  update         = null;
 
 	private ScriptListener    scriptlistener = null;	
- 
+
 	private Button            butFinish      = null;
 
 	private Button            butCancel      = null;
@@ -108,11 +108,11 @@ public class JobAssistentScriptForms {
 			step = step + " [Step 5 of 9]";
 		else 
 			step = step + " [Step 5 of 8]";
-		scriptShell.setText("Script" + step);
+		scriptShell.setText("Script" + step); //TODO lang "Script"
 
 		{
 			final Group jobGroup = new Group(scriptShell, SWT.NONE);
-			jobGroup.setText( "Job: " + Utils.getAttributeValue("name", scriptlistener.getParent()));
+			jobGroup.setText( "Job: " + Utils.getAttributeValue("name", scriptlistener.getParent())); //TODO lang "Job: " 
 			final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false, 3, 1);
 			gridData.widthHint = 490;
 			gridData.heightHint = 217;
@@ -132,7 +132,7 @@ public class JobAssistentScriptForms {
 
 			{
 				final Label lblLanguage = new Label(jobGroup, SWT.NONE);
-				lblLanguage.setText("Language");
+				lblLanguage.setText("Language"); //TODO lang "Language"
 			}
 			txtLanguage = new Text(jobGroup, SWT.BORDER);
 			txtLanguage.addFocusListener(new FocusAdapter() {
@@ -172,9 +172,9 @@ public class JobAssistentScriptForms {
 			}
 			{
 				lblClass = new Label(jobGroup, SWT.NONE);
-				lblClass.setText("Java Class");
+				lblClass.setText("Java Class"); //TODO lang "Java Class"
 				if (scriptlistener.getComClass() != null && scriptlistener.getComClass().length() > 0) {
-					lblClass.setText("Com Class");
+					lblClass.setText("Com Class"); //TODO lang "Com Class"
 				}
 			}
 			txtJavaClass = new Text(jobGroup, SWT.BORDER);
@@ -207,9 +207,9 @@ public class JobAssistentScriptForms {
 			{				
 				final Label lblRessources = new Label(jobGroup, SWT.NONE);
 				if(lblClass != null && lblClass.getText().equals("Com Class")) {
-					lblRessources.setText("Filename");
+					lblRessources.setText("Filename"); //TODO lang "Filename"
 				} else {
-					lblRessources.setText("Resource");
+					lblRessources.setText("Resource"); //TODO lang "Resource"
 				}
 
 
@@ -231,7 +231,7 @@ public class JobAssistentScriptForms {
 			{
 				final Label lblInclude = new Label(jobGroup, SWT.NONE);
 				lblInclude.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, true));
-				lblInclude.setText("Include");
+				lblInclude.setText("Include"); //TODO lang "Include"
 			}
 			tableInclude = new Table(jobGroup, SWT.BORDER);
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
@@ -271,7 +271,7 @@ public class JobAssistentScriptForms {
 						close();
 					}
 				});
-				butCancel.setText("Cancel");
+				butCancel.setText("Cancel"); //TODO lang "Cancel"
 			}
 		}
 
@@ -290,7 +290,7 @@ public class JobAssistentScriptForms {
 						Utils.showClipboard(Utils.getElementAsString(scriptlistener.getParent()), scriptShell, false, null, false, null, false); 
 					}
 				});
-				butShow.setText("Show");
+				butShow.setText("Show"); //TODO lang "Show"
 			}
 
 			{
@@ -300,7 +300,7 @@ public class JobAssistentScriptForms {
 						doFinish();											
 					}
 				});
-				butFinish.setText("Finish");
+				butFinish.setText("Finish"); //TODO lang "Finish"
 			}
 
 			butBack = new Button(composite, SWT.NONE);
@@ -309,7 +309,7 @@ public class JobAssistentScriptForms {
 					doBack();					
 				}
 			});
-			butBack.setText("Back");
+			butBack.setText("Back"); //TODO lang "Back"
 			{
 				butNext = new Button(composite, SWT.NONE);
 				butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
@@ -332,7 +332,7 @@ public class JobAssistentScriptForms {
 						scriptShell.dispose();
 					}
 				});
-				butNext.setText("Next");
+				butNext.setText("Next"); //TODO lang "Next"
 			}
 			Utils.createHelpButton(composite, "assistent.script.java", scriptShell);			
 		}

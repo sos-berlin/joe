@@ -23,12 +23,13 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import sos.scheduler.editor.app.DatePicker;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.jdom.Element;
+
+import com.sos.dialog.components.SOSDateTime;
 import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
@@ -36,7 +37,6 @@ import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.listeners.DaysListener;
 import sos.scheduler.editor.conf.listeners.*;
 
 
@@ -47,7 +47,7 @@ public class JobAssistentPeriodForms {
 	private Element                job                         = null;
 
 	private SchedulerDom           dom                         = null;
- 
+
 	private ISchedulerUpdate       update                      = null;
 
 	private Button                 butCancel                   = null;
@@ -88,7 +88,7 @@ public class JobAssistentPeriodForms {
 
 	private Combo                  comboMonth                  = null;		
 
-	private DatePicker             txtSpeDay                   = null;
+	private SOSDateTime            txtSpeDay                   = null;
 
 	private Element                jobBackUp                   = null;
 
@@ -161,7 +161,7 @@ public class JobAssistentPeriodForms {
 			gridLayout.numColumns = 3;
 			shell.setLayout(gridLayout);
 			shell.setSize(577, 714);
-			shell.setText("Run Time/ Periods"); 			
+			shell.setText("Run Time/ Periods"); //TODO lang "Run Time/ Periods"			
 
 			{
 				tabFolder = new TabFolder(shell, SWT.NONE);				
@@ -208,7 +208,7 @@ public class JobAssistentPeriodForms {
 								}
 							});
 							newPeriodButton.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
-							newPeriodButton.setText("New Period");
+							newPeriodButton.setText("New Period");//TODO lang "New Period"
 						}
 						createPeriodForm(JobAssistentPeriodForms.EVERY_DAY, group, everyDayTabItem);
 					}
@@ -280,33 +280,31 @@ public class JobAssistentPeriodForms {
 						final Group group = new Group(tabFolder, SWT.NONE);
 						group.setLayout(new GridLayout());
 						specificDayTabItem.setControl(group);
-						txtSpeDay = new DatePicker(group, SWT.NONE);
+						txtSpeDay = new SOSDateTime(group, SWT.NONE);
 						txtSpeDay.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, true, false));
-						txtSpeDay.addModifyListener(new ModifyListener() {
-							public void modifyText(final ModifyEvent e) {
-								discardChanges();
-								String date = txtSpeDay.getISODate();
-								if(date == null|| date.length()==0) {
-									MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.period.date"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-									return;
-								}
-								String[] tdate = date.split("-");
-								if (!speDateListener.exists(Utils.str2int(tdate[2]), Utils.str2int(tdate[1]), Utils.str2int(tdate[0])) ) {
-									speDateListener.addDate(Utils.str2int(tdate[0]), Utils.str2int(tdate[1]), Utils.str2int(tdate[2]));   
-								}
-								java.util.List lastDate = job.getChild("run_time").getChildren("date");
-								Element eDate =  (Element)lastDate.get(lastDate.size()-1);
+						txtSpeDay.addSelectionListener(new SelectionAdapter() {
+				                public void widgetSelected(SelectionEvent e) {
+	                                discardChanges();
+	                                 
+	                                 
+	                                if (!speDateListener.exists(txtSpeDay.getYear(), txtSpeDay.getMonth(),txtSpeDay.getDay()) ) {
+	                                    speDateListener.addDate(txtSpeDay.getYear(), txtSpeDay.getMonth(),txtSpeDay.getDay());   
+	                                }
+	                                java.util.List lastDate = job.getChild("run_time").getChildren("date");
+	                                Element eDate =  (Element)lastDate.get(lastDate.size()-1);
 
-								periodsListenerSpecDay = new PeriodsListener(dom, eDate);
-								Element period = periodsListenerSpecDay.getNewPeriod();										
-								periodFormSpecificDay.setPeriod(period);
+	                                periodsListenerSpecDay = new PeriodsListener(dom, eDate);
+	                                Element period = periodsListenerSpecDay.getNewPeriod();                                     
+	                                periodFormSpecificDay.setPeriod(period);
 
-								periodFormSpecificDay.setEnabled(true);
-								txtSpeDay.setEnabled(true);
-								addPeriodButton.setEnabled(true);
-								bApply=JobAssistentPeriodForms.SPECIFIC_DAY;
-							}
-						});
+	                                periodFormSpecificDay.setEnabled(true);
+	                                txtSpeDay.setEnabled(true);
+	                                addPeriodButton.setEnabled(true);
+	                                bApply=JobAssistentPeriodForms.SPECIFIC_DAY;				                }
+				            });
+
+						
+						 
 
 
 						createPeriodForm(JobAssistentPeriodForms.SPECIFIC_DAY, group, specificDayTabItem);
@@ -329,7 +327,7 @@ public class JobAssistentPeriodForms {
 					apply();
 				}
 			});
-			addPeriodButton.setText("Add Period");			
+			addPeriodButton.setText("Add Period");	//TODO lang "Add Period"		
 
 			{
 				list = new List(shell, SWT.V_SCROLL | SWT.BORDER);
@@ -365,7 +363,7 @@ public class JobAssistentPeriodForms {
 						close();					
 					}
 				});
-				butCancel.setText("Close");
+				butCancel.setText("Close");//TODO lang "Close"
 			}
 
 			fillList();
@@ -393,7 +391,7 @@ public class JobAssistentPeriodForms {
 						shell.dispose();						
 					}								
 				});
-				butNext.setText("Apply");
+				butNext.setText("Apply");//TODO lang "Apply"
 				periodForm.setApplyButton(butNext);
 			}
 

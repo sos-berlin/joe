@@ -31,7 +31,7 @@ import sos.scheduler.editor.conf.listeners.JobOptionsListener;
 public class JobAssistentMonitoringDirectoryForms {
 
 	private Element            job                      = null;
- 
+
 	private SchedulerDom       dom                      = null;
 
 	private JobOptionsListener optionlistener           = null;
@@ -85,10 +85,10 @@ public class JobAssistentMonitoringDirectoryForms {
 		gridLayout.numColumns = 2;
 		shellRunOptions.setLayout(gridLayout);
 		shellRunOptions.setSize(542, 377);
-		shellRunOptions.setText("Monitoring Directory");
+		shellRunOptions.setText("Monitoring Directory");//TODO lang "Monitoring Directory"
 
 		final Group jobGroup = new Group(shellRunOptions, SWT.NONE);
-		jobGroup.setText("Job");
+		jobGroup.setText("Job");//TODO lang "Job"
 		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1);
 		gridData_3.widthHint = 514;
 		gridData_3.heightHint = 283;
@@ -104,7 +104,7 @@ public class JobAssistentMonitoringDirectoryForms {
 		jobGroup.setLayout(gridLayout_1);		
 		final Label lblDirectory = new Label(jobGroup, SWT.NONE);
 		lblDirectory.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
-		lblDirectory.setText("Directory");
+		lblDirectory.setText("Directory");//TODO lang "Directory"
 
 		txtDirectory = new Text(jobGroup, SWT.BORDER);		
 		txtDirectory.addKeyListener(new KeyAdapter() {
@@ -135,7 +135,7 @@ public class JobAssistentMonitoringDirectoryForms {
 				apply();				
 			}
 		});
-		butApply.setText("Apply Dir");
+		butApply.setText("Apply Dir");//TODO lang "Apply Dir"
 
 		butNewDirectory = new Button(composite, SWT.NONE);
 		final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -151,10 +151,10 @@ public class JobAssistentMonitoringDirectoryForms {
 
 			}
 		});
-		butNewDirectory.setText("New");
+		butNewDirectory.setText("New");//TODO lang "New"
 
 		final Label lblRegExp = new Label(jobGroup, SWT.NONE);
-		lblRegExp.setText("Regular expression ");
+		lblRegExp.setText("Regular expression ");//TODO lang "Regular expression "
 
 		txtRegExp = new Text(jobGroup, SWT.BORDER);
 		txtRegExp.addKeyListener(new KeyAdapter() {
@@ -186,11 +186,11 @@ public class JobAssistentMonitoringDirectoryForms {
 
 		final TableColumn newColumnTableColumn = new TableColumn(tableWatchDirectory, SWT.NONE);
 		newColumnTableColumn.setWidth(156);
-		newColumnTableColumn.setText("Directory");
+		newColumnTableColumn.setText("Directory");//TODO lang "Directory"
 
 		final TableColumn newColumnTableColumn_1 = new TableColumn(tableWatchDirectory, SWT.NONE);
 		newColumnTableColumn_1.setWidth(186);
-		newColumnTableColumn_1.setText("Regular Expression");
+		newColumnTableColumn_1.setText("Regular Expression");//TODO lang "Regular Expression"
 
 		butRemoveDirectory = new Button(jobGroup, SWT.NONE);
 		butRemoveDirectory.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, true));
@@ -204,7 +204,7 @@ public class JobAssistentMonitoringDirectoryForms {
 
 			}
 		});
-		butRemoveDirectory.setText("Remove");
+		butRemoveDirectory.setText("Remove");//TODO lang "Remove"
 
 		java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();		
 		shellRunOptions.setBounds((screen.width - shellRunOptions.getBounds().width) /2, 
@@ -226,7 +226,7 @@ public class JobAssistentMonitoringDirectoryForms {
 					close();
 				}
 			});
-			butCancel.setText("Close");
+			butCancel.setText("Close");//TODO lang "Close"
 		}
 
 		final Composite composite_2 = new Composite(shellRunOptions, SWT.NONE);
@@ -247,7 +247,7 @@ public class JobAssistentMonitoringDirectoryForms {
 					shellRunOptions.dispose();
 				}
 			});
-			butFinish.setText("Finish");
+			butFinish.setText("Finish");//TODO lang "Finish"
 		}
 
 		Utils.createHelpButton(composite_2, "assistant.directory_monitoring", shellRunOptions).setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));;
@@ -263,7 +263,7 @@ public class JobAssistentMonitoringDirectoryForms {
 				shellRunOptions.dispose();								
 			}
 		});
-		butNext.setText("Apply");
+		butNext.setText("Apply");//TODO lang "Apply"
 		txtDirectory.setFocus();
 		setToolTipText();
 		shellRunOptions.layout();

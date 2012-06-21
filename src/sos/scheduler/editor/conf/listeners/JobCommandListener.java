@@ -418,7 +418,7 @@ public class JobCommandListener {
 			return new String[0];
 
 		Element element = null;
-		if(_job.getParentElement() != null && _job.getParentElement().getParentElement() != null)
+		if(_job != null && _job.getParentElement() != null && _job.getParentElement().getParentElement() != null)
 			element = _job.getParentElement().getParentElement().getChild("job_chains");
 
 		if (element != null) {

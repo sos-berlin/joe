@@ -11,7 +11,7 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 
-public class JobOptionsListener {
+public class JobOptionsListener extends JOEListener{
 	
 	
     private            SchedulerDom     _dom          = null;

@@ -4,16 +4,11 @@ import org.jdom.Element;
 
 public class TreeData {
     private int     _type;
-
     private Element _element;
-
     private String  _helpKey;
-
     private String  _child;
 
-
     public TreeData() {
-
     }
 
 

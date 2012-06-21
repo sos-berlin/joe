@@ -50,10 +50,9 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
-				// tu nichts
 			}
 			System.err.println("..error in ScriptsForm.init() " + e.getMessage());
-		} 
+		}
 	}
 
 	private void initialize() {
@@ -67,15 +66,11 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
-				// tu nichts
 			}
 			System.err.println("..error in ScriptsForm.initialize() " + e.getMessage());
 		}
 	}
 
-	/**
-	 * This method initializes group
-	 */
 	private void createGroup() {
 		try {
 			GridLayout gridLayout = new GridLayout();
@@ -115,15 +110,11 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
-				// tu nichts
 			}
 			System.err.println("..error in ScriptsForm.createGroup() " + e.getMessage());
 		}
 	}
 
-	/**
-	 * This method initializes table
-	 */
 	private void createTable() {
 		try {
 			GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
@@ -178,7 +169,6 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
-				// tu nichts
 			}
 			System.err.println("..error in ScriptsForm.createTable() " + e.getMessage());
 		}

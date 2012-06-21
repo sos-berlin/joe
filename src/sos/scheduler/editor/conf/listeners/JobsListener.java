@@ -24,15 +24,10 @@ public class JobsListener {
 
 
 	private     SchedulerDom          _dom       = null;
-
 	private     ISchedulerUpdate      _main      = null;
-
 	private     Element               _config    = null;
-
 	private     Element               _jobs      = null;
-
 	private     List <Element>                 _list      = null;
-
 
 	public JobsListener(SchedulerDom dom, ISchedulerUpdate update) {
 
@@ -117,6 +112,9 @@ public class JobsListener {
 	
 
 	public void newJob(Table table, boolean isOrder) {
+		
+		// TODO: enable usage of Template for job-definition
+		
 		Element job = new Element("job");
 		Utils.setAttribute("name", "job" + (table.getItemCount() + 1), job);
 		
@@ -138,6 +136,8 @@ public class JobsListener {
 		_dom.setChanged(true);
 		
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.NEW);
+		
+		// TODO: switch to job-editor form
 	}
 	
 	
@@ -332,13 +332,13 @@ public class JobsListener {
 	}
 
 	/**
-	 * Starten der Wizard für bestehende Job.
+	 * Starten des Wizard für bestehenden Job.
 	 * 
-	 * Einstellungen aus einer Jobbeschreibung werden den jobelement hinzugefügt,
-	 * soweit der Jobelement diese Einstellungen nicht hat.
+	 * Einstellungen aus einer Jobbeschreibung werden dem jobelement hinzugefügt,
+	 * soweit das Jobelement diese Einstellungen nicht hat.
 	 * 
 	 * @param attr -> Einstellungen aus einer Jobbeschreibung
-	 * @param job -> Job ist das bestehende Job
+	 * @param job -> Job ist der bestehende Job
 	 * @return
 	 */
 	public Element createJobElement(java.util.HashMap attr, Element job) {
@@ -573,6 +573,20 @@ public class JobsListener {
 				return true;
 			}
 		}
+		return false;
+	}
+
+	public boolean editJob(Table table) {
+		int index = table.getSelectionIndex();
+		if (index >= 0) {
+			TableItem item = table.getItem(index);
+			Element objElement = (Element) item.getData();
+
+//			new JobMainForm(c, SWT.NONE, _dom, objElement, objSchedulerForm);
+
+			return true;
+			}
+		
 		return false;
 	}
 

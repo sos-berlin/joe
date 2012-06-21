@@ -40,7 +40,7 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
     
     private SchedulerDom        _dom           = null;
 
- 
+
     public JobCommandsForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate update,
             SchedulerListener mainListener) {
     	
@@ -79,16 +79,16 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
         commandsGroup = new Group(this, SWT.NONE);
-        commandsGroup.setText("Commands");
+        commandsGroup.setText("Commands"); //TODO lang "Commands"
         commandsGroup.setLayout(gridLayout);
         createTable();
         bNewCommands = new Button(commandsGroup, SWT.NONE);
-        bNewCommands.setText("&New Command");
+        bNewCommands.setText("&New Command"); //TODO lang "&New Command"
         bNewCommands.setLayoutData(gridData);
         getShell().setDefaultButton(bNewCommands);
 
         label = new Label(commandsGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label.setText("Label");
+        label.setText("Label"); //TODO lang "Label"
         label.setLayoutData(gridData4);
         bNewCommands.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -97,7 +97,7 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
             }
         });
         bRemoveCommand = new Button(commandsGroup, SWT.NONE);
-        bRemoveCommand.setText("Remove Command");
+        bRemoveCommand.setText("Remove Command"); //TODO lang "Remove Command"
         bRemoveCommand.setEnabled(false);
         bRemoveCommand.setLayoutData(gridData1);
         bRemoveCommand.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -126,7 +126,7 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
         table.setLinesVisible(true);
         TableColumn tableColumn = new TableColumn(table, SWT.NONE);
         tableColumn.setWidth(240);
-        tableColumn.setText("Exitcode");
+        tableColumn.setText("Exitcode"); //TODO lang "Exitcode"
         table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 bRemoveCommand.setEnabled(true);

@@ -35,7 +35,7 @@ public class JobAssistentExecuteForms {
 	private SchedulerDom		dom				= null;
 
 	private ISchedulerUpdate	update			= null;
- 
+
 	private Button				butFinish		= null;
 
 	private Button				butCancel		= null;
@@ -101,10 +101,10 @@ public class JobAssistentExecuteForms {
 		shell.setLayout(gridLayout);
 		shell.setSize(411, 200);
 
-		shell.setText("Execute");
+		shell.setText("Execute");//TODO lang "Execute"
 		{
 			final Group jobGroup = new Group(shell, SWT.NONE);
-			jobGroup.setText("Job: " + Utils.getAttributeValue("name", job));
+			jobGroup.setText("Job: " + Utils.getAttributeValue("name", job));//TODO lang " Job: " ?
 			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, true, 3, 1);
 			jobGroup.setLayoutData(gridData);
 			final GridLayout gridLayout_1 = new GridLayout();
@@ -121,7 +121,7 @@ public class JobAssistentExecuteForms {
 
 			butProcess = new Button(jobGroup, SWT.RADIO);
 			butProcess.setLayoutData(new GridData());
-			butProcess.setText("Process");
+			butProcess.setText("Process");//TODO lang "Process"
 			butProcess.setSelection(job.getChild("process") != null);
 			new Label(jobGroup, SWT.NONE);
 			new Label(jobGroup, SWT.NONE);
@@ -143,12 +143,12 @@ public class JobAssistentExecuteForms {
 			final GridData gridData_3 = new GridData(GridData.BEGINNING, GridData.CENTER, false, true);
 			gridData_3.widthHint = 69;
 			butScript.setLayoutData(gridData_3);
-			butScript.setText("Script");
+			butScript.setText("Script");//TODO lang "Script"
 
 			{
 				final Label lblLanguage = new Label(jobGroup, SWT.NONE);
 				lblLanguage.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
-				lblLanguage.setText("Language");
+				lblLanguage.setText("Language");//TODO lang "Language"
 			}
 
 			comLanguage = new Combo(jobGroup, SWT.NONE);
@@ -195,7 +195,7 @@ public class JobAssistentExecuteForms {
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, true);
 			gridData_1.widthHint = 45;
 			includeLabel.setLayoutData(gridData_1);
-			includeLabel.setText("Include");
+			includeLabel.setText("Include");//TODO lang "Include"
 
 		}
 
@@ -218,7 +218,7 @@ public class JobAssistentExecuteForms {
 						close();
 					}
 				});
-				butCancel.setText("Cancel");
+				butCancel.setText("Cancel");//TODO lang "Cancel"
 			}
 		}
 
@@ -238,7 +238,7 @@ public class JobAssistentExecuteForms {
 						Utils.showClipboard(Utils.getElementAsString(job), shell, false, null, false, null, false);
 					}
 				});
-				butShow.setText("Show");
+				butShow.setText("Show");//TODO lang "Show"
 			}
 
 			{
@@ -250,7 +250,7 @@ public class JobAssistentExecuteForms {
 						shell.dispose();
 					}
 				});
-				butFinish.setText("Finish");
+				butFinish.setText("Finish");//TODO lang "Finish"
 			}
 
 			butBack = new Button(composite, SWT.NONE);
@@ -266,7 +266,7 @@ public class JobAssistentExecuteForms {
 					shell.dispose();
 				}
 			});
-			butBack.setText("Back");
+			butBack.setText("Back");//TODO lang "Back"
 			{
 				butNext = new Button(composite, SWT.NONE);
 				butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
@@ -277,7 +277,7 @@ public class JobAssistentExecuteForms {
 						shell.dispose();
 					}
 				});
-				butNext.setText("Next");
+				butNext.setText("Next");//TODO lang "Next"
 			}
 			Utils.createHelpButton(composite, "assistent.script_or_execute", shell);
 

@@ -55,7 +55,7 @@ public class SchedulerDom extends DomParser {
 	public static final int			CONFIGURATION				= 0;
 	private static final String[]	HTTP_SERVER					= { "web_service", "http.authentication", "http_directory" };
 	private String					styleSheet					= "";
- 
+
 	private static final String[]	COMMANDS_ELEMENTS			= { "add_order", "order", "start_job" };
 
 	private static final String[]	ORDER_ELEMENTS				= { "params", "environment" };

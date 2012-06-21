@@ -48,7 +48,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 	private Button              bNewChain         = null;  
 
 	private SashForm            sashForm          = null;
- 
+
 	private Button              butDetails        = null; 
 
 	private SchedulerDom        _dom              = null;
@@ -93,7 +93,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		sashForm.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 
 		final Group jobchainsGroup = new Group(sashForm, SWT.NONE);
-		jobchainsGroup.setText("Job Chains");
+		jobchainsGroup.setText("Job Chains"); //TODO lang "Job Chains"
 		final GridLayout gridLayout_2 = new GridLayout();
 		gridLayout_2.numColumns = 2;
 		jobchainsGroup.setLayout(gridLayout_2);
@@ -136,17 +136,17 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		TableColumn tableColumn1 = new TableColumn(tChains, SWT.NONE);
 		tableColumn1.setWidth(150);
 		
-		tableColumn1.setText("Name");
+		tableColumn1.setText("Name"); //TODO lang "Name"
 		
 		TableColumn ordersRecoverableTableColumn = new TableColumn(tChains, SWT.NONE);
 		ordersRecoverableTableColumn.setWidth(104);
-		ordersRecoverableTableColumn.setText("Orders Recoverable");
+		ordersRecoverableTableColumn.setText("Orders Recoverable"); //TODO lang "Orders Recoverable"
 		TableColumn tableColumn2 = new TableColumn(tChains, SWT.NONE);
 		tableColumn2.setWidth(90);
-		tableColumn2.setText("Visible");
+		tableColumn2.setText("Visible"); //TODO lang "Visible"
 		bNewChain = new Button(jobchainsGroup, SWT.NONE);
 		bNewChain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		bNewChain.setText("New Job &Chain");
+		bNewChain.setText("New Job &Chain"); //TODO lang "New Job &Chain"
 		getShell().setDefaultButton(bNewChain);
 		bNewChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -159,7 +159,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		});
 		bRemoveChain = new Button(jobchainsGroup, SWT.NONE);
 		bRemoveChain.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		bRemoveChain.setText("Remove Job Chain");
+		bRemoveChain.setText("Remove Job Chain"); //TODO lang "Remove Job Chain"
 		bRemoveChain.setEnabled(false);
 		bRemoveChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -193,7 +193,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		butDetails.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		butDetails.setText("Parameter");
+		butDetails.setText("Parameter"); //TODO lang "Parameter"
 
 	}
 

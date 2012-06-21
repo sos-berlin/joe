@@ -37,12 +37,13 @@ import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
 
 import com.swtdesigner.SWTResourceManager;
- 
+
 /**
  * Job Wizzard.
  * 
@@ -112,7 +113,7 @@ public class JobAssistentImportJobsForm {
 	private JobMainForm												jobForm				= null;
 	private sos.scheduler.editor.conf.listeners.ParameterListener	paramListener		= null;
 	private Text													refreshDetailsText	= null;
-	/** Hilsvariable für das Schliessen des Dialogs. 
+	/** Hilfsvariable für das Schliessen des Dialogs. 
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean													closeDialog			= false;
 	private boolean													flagBackUpJob		= true;
@@ -216,7 +217,7 @@ public class JobAssistentImportJobsForm {
 					}
 				}
 				catch (Exception e) {
-					 //Damit die nächste Datei verarbeitet wird, hier keine weitere Behandlung. Kaputte Dateien sind uns egal.
+					// Damit die nächste Datei verarbeitet wird, hier keine weitere Behandlung. Kaputte Dateien sind uns egal.
 				}
 			}
 		}
@@ -297,7 +298,7 @@ public class JobAssistentImportJobsForm {
 							txtJobname.setText(" ");
 						}
 						else
-							txtJobname.setText(joblistener.getName());
+							txtJobname.setText(joblistener.getJobName());
 				}
 				else {
 					txtJobname.setText("");
@@ -411,27 +412,37 @@ public class JobAssistentImportJobsForm {
 				butImport.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						try {
-							if (!check())
+							if (!check()) {
 								return;
+							}
 							HashMap h = getJobFromDescription();
-							if (jobname != null)
+							if (jobname != null) {
 								jobname.setText(txtJobname.getText());
+							}
 							JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
-							ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText(), "required");
-							h.put("params", listOfParams);
+							// OTRS: http://www.sos-berlin.com/otrs/index.pl?Action=AgentZoom&TicketID=76
+							// http://www.sos-berlin.com/jira/browse/JS-852
+							// If the user is pressing "finish" then no parameters should be copied/moved to the object.
+							// The Parameterlist should be empty in this case.
+							ArrayList listOfParams = new ArrayList<HashMap<String, Object>>();
+//							ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText(), "required");
+//							h.put("params", listOfParams);
 							if (assistentType == Editor.JOB_WIZARD) {
-								// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn
+								// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob
+								// wenn
 								// assistentype = Editor.Job_Wizzard
 								Element job = joblistener.getJob();
 								job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
-								if (jobForm != null)// diese Zeile löschen
+								if (jobForm != null) {
 									jobForm.initForm();
+								}
 								if (jobDocForm != null)
 									jobDocForm.initForm();
 							}
 							else
 								if (assistentType == Editor.PARAMETER) {
-									// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob
+									// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit
+									// backUpJob
 									// wenn assistentype = Editor.Job_Wizzard
 									// joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
 									Element job = joblistener.getJob();
@@ -616,7 +627,7 @@ public class JobAssistentImportJobsForm {
 				public void widgetSelected(final SelectionEvent e) {
 					String strT = txtTitle.getText();
 					if (strT.trim().equalsIgnoreCase("")) {
-					txtTitle.setText(tree.getSelection()[0].getText(1));
+						txtTitle.setText(tree.getSelection()[0].getText(1));
 					}
 					txtPath.setText(tree.getSelection()[0].getText(2));
 					txtJobname.setFocus();
@@ -675,9 +686,9 @@ public class JobAssistentImportJobsForm {
 			Element j = new Element("job");
 			Utils.setAttribute("order", (jobType.equals("order") ? "yes" : "no"), j);
 			newItemTreeItem_.setData(j);
-			
+
 			ArrayList listOfDoc = parseDocuments();
-			
+
 			String filename = "";
 			String lastParent = "";
 			TreeItem parentItemTreeItem = null;
@@ -762,7 +773,7 @@ public class JobAssistentImportJobsForm {
 	 * @return HashMap
 	 */
 	private HashMap getJobFromDescription() {
-		HashMap  h = new HashMap();
+		HashMap h = new HashMap();
 		try {
 			// elMain ist ein Job Element der Jobbeschreibung
 			if (tree.getSelection().length == 0)
@@ -775,11 +786,11 @@ public class JobAssistentImportJobsForm {
 			h.put("name", txtJobname.getText());
 			h.put("title", txtTitle.getText());
 			// relativen pfad bestimmen
-			File sData = new File (sos.scheduler.editor.app.Options.getSchedulerData());
-			File currPathFile = new File (txtPath.getText());
+			File sData = new File(sos.scheduler.editor.app.Options.getSchedulerData());
+			File currPathFile = new File(txtPath.getText());
 			File currPathParent = new File(currPathFile.getParent());
 			if (currPathFile.getPath().indexOf(sData.getPath()) > -1) {
-				h.put("filename", currPathParent.getName()+ "/" + currPathFile.getName());
+				h.put("filename", currPathParent.getName() + "/" + currPathFile.getName());
 			}
 			else {
 				h.put("filename", txtPath.getText());
@@ -943,6 +954,10 @@ public class JobAssistentImportJobsForm {
 
 	public void setJobForm(JobMainForm jobForm_) {
 		jobForm = jobForm_;
+	}
+
+	public void setJobForm(JobDocumentation jobForm_) {
+		// jobForm = jobForm_;
 	}
 
 	public void setJobForm(JobDocumentationForm jobDocForm_) {
