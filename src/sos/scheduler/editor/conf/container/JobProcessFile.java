@@ -12,29 +12,28 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import sos.scheduler.editor.app.Messages;
 
- 
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
-public class  JobProcessFile extends FormBaseClass {
+public class JobProcessFile extends FormBaseClass {
 
     @SuppressWarnings("unused")
-    private final String    conClassName            = "JobProcessFile";
+    private final String conClassName       = "JobProcessFile";
     @SuppressWarnings("unused")
-    private final String    conSVNVersion           = "$Id$";
+    private final String conSVNVersion      = "$Id$";
 
-    private boolean init = true;
-    private JobListener objJobDataProvider = null;
-    private Text tExecuteFile = null;
-    private Text tParameter = null;
-    private Text tLogFile = null;
-    private Button bIgnoreSignal = null;
-    private Button bIgnoreError = null;
-    
+    private boolean      init               = true;
+    private JobListener  objJobDataProvider = null;
+    private Text         tExecuteFile       = null;
+    private Text         tParameter         = null;
+    private Text         tLogFile           = null;
+    private Button       bIgnoreSignal      = null;
+    private Button       bIgnoreError       = null;
+
     public JobProcessFile(Composite pParentComposite, JobListener pobjJobDataProvider) {
         super(pParentComposite, pobjJobDataProvider);
         objJobDataProvider = pobjJobDataProvider;
-        
+
         init = true;
         createGroup();
         initForm();
@@ -50,19 +49,18 @@ public class  JobProcessFile extends FormBaseClass {
         return false;
     }
 
-    public void refreshContent () {
+    public void refreshContent() {
     }
-    
-      
-    private void initForm(){
-            tExecuteFile.setText(objJobDataProvider.getFile());
-            tLogFile.setText(objJobDataProvider.getLogFile());
-            tParameter.setText(objJobDataProvider.getParam());
-            bIgnoreError.setSelection(objJobDataProvider.isIgnoreError());
-            bIgnoreSignal.setSelection(objJobDataProvider.isIgnoreSignal());
-            tExecuteFile.setFocus();
+
+    private void initForm() {
+        tExecuteFile.setText(objJobDataProvider.getFile());
+        tLogFile.setText(objJobDataProvider.getLogFile());
+        tParameter.setText(objJobDataProvider.getParam());
+        bIgnoreError.setSelection(objJobDataProvider.isIgnoreError());
+        bIgnoreSignal.setSelection(objJobDataProvider.isIgnoreSignal());
+        tExecuteFile.setFocus();
     }
-    
+
     private void createGroup() {
         objParent.setLayout(new GridLayout());
 
@@ -178,7 +176,7 @@ public class  JobProcessFile extends FormBaseClass {
         bIgnoreSignal.setToolTipText(Messages.getTooltip("process.ignore_signal"));
         bIgnoreError.setToolTipText(Messages.getTooltip("process.ignore_error"));
 
-        objParent.layout();        
+        objParent.layout();
     }
-     
+
 }

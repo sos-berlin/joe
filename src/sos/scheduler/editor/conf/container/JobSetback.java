@@ -26,44 +26,43 @@ import sos.scheduler.editor.conf.listeners.JobOptionsListener;
 
 public class JobSetback extends FormBaseClass {
     @SuppressWarnings("unused")
-    private final String    conClassName            = "JobSetback";
+    private final String       conClassName       = "JobSetback";
     @SuppressWarnings("unused")
-    private final String    conSVNVersion           = "$Id$";
+    private final String       conSVNVersion      = "$Id$";
 
     private JobOptionsListener objJobDataProvider = null;
-    
-    private Group              group            = null;
 
-    private Label              label2           = null;
-    private Label              label7           = null;
-    private Label              label9           = null;
-    private Button             bNewSetback      = null;
-    private Label              label30          = null;
-    private Label              label31          = null;
-    private Label              label10          = null;
+    private Group              group              = null;
 
-    private Table              tSetback         = null;
-    private Text               sSetBackCount    = null;
-    private Button             bIsMaximum       = null;
-    private Text               sSetBackHours    = null;
-    private Text               sSetBackMinutes  = null;
-    private Text               sSetBackSeconds  = null;
-    private Button             bApplySetback    = null;
-    private Button             bRemoveSetback   = null;
-    
-    
+    private Label              label2             = null;
+    private Label              label7             = null;
+    private Label              label9             = null;
+    private Button             bNewSetback        = null;
+    private Label              label30            = null;
+    private Label              label31            = null;
+    private Label              label10            = null;
+
+    private Table              tSetback           = null;
+    private Text               sSetBackCount      = null;
+    private Button             bIsMaximum         = null;
+    private Text               sSetBackHours      = null;
+    private Text               sSetBackMinutes    = null;
+    private Text               sSetBackSeconds    = null;
+    private Button             bApplySetback      = null;
+    private Button             bRemoveSetback     = null;
+
     public JobSetback(Composite pParentComposite, JobOptionsListener pobjJobDataProvider) {
         super(pParentComposite, pobjJobDataProvider);
         objJobDataProvider = pobjJobDataProvider;
-        
+
         createGroup();
         initForm();
-     }
- 
-    private void initForm(){     
-       objJobDataProvider.fillSetbacks(tSetback); 
     }
-    
+
+    private void initForm() {
+        objJobDataProvider.fillSetbacks(tSetback);
+    }
+
     private void createGroup() {
         GridData gridData29 = new org.eclipse.swt.layout.GridData();
         gridData29.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -212,7 +211,8 @@ public class JobSetback extends FormBaseClass {
                         tSetback.setSelection(index);
                         objJobDataProvider.selectSetbackDelay(index);
                         initSetback(true);
-                    } else {
+                    }
+                    else {
                         initSetback(false);
                         bRemoveSetback.setEnabled(false);
                     }
@@ -251,14 +251,15 @@ public class JobSetback extends FormBaseClass {
         sSetBackSeconds.setLayoutData(gridData10);
         sSetBackSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                if ((Utils.str2int(sSetBackHours.getText()) > 0) ||  (Utils.str2int(sSetBackMinutes.getText()) > 0 )   ) {
+                if ((Utils.str2int(sSetBackHours.getText()) > 0) || (Utils.str2int(sSetBackMinutes.getText()) > 0)) {
                     Utils.setBackground(0, 59, sSetBackSeconds);
-                }else {
-                   sSetBackSeconds.setBackground(null);
+                }
+                else {
+                    sSetBackSeconds.setBackground(null);
                 }
                 getShell().setDefaultButton(bApplySetback);
                 bApplySetback.setEnabled(true);
-            }  
+            }
         });
     }
 
@@ -274,7 +275,8 @@ public class JobSetback extends FormBaseClass {
                     objJobDataProvider.selectSetbackDelay(tSetback.getSelectionIndex());
                     initSetback(true);
                     sSetBackCount.selectAll();
-                } else
+                }
+                else
                     initSetback(false);
                 bRemoveSetback.setEnabled(tSetback.getSelectionCount() > 0);
             }
@@ -291,7 +293,7 @@ public class JobSetback extends FormBaseClass {
         tableColumn4.setText("Delay [hh:mm:]ss"); //TODO lang "Delay [hh:mm:]ss"
 
     }
-    
+
     private void initSetback(boolean enabled) {
         sSetBackCount.setEnabled(enabled);
         bIsMaximum.setEnabled(enabled);
@@ -301,20 +303,21 @@ public class JobSetback extends FormBaseClass {
 
         if (enabled) {
             bIsMaximum.setSelection(objJobDataProvider.isMaximum());
-/*
-            if (bIsMaximum.getSelection()) {
-                sSetBackHours.setEnabled(false);
-                sSetBackMinutes.setEnabled(false);
-                sSetBackSeconds.setEnabled(false);
-            } else {*/
-                sSetBackHours.setText(Utils.fill(2, objJobDataProvider.getSetbackCountHours()));
-                sSetBackMinutes.setText(Utils.fill(2, objJobDataProvider.getSetbackCountMinutes()));
-                if (!(objJobDataProvider.getSetbackCountHours() + objJobDataProvider.getSetbackCountMinutes()).equals("")) {
-                    sSetBackSeconds.setText(Utils.fill(2, objJobDataProvider.getSetbackCountSeconds()));
-                } else {
-                    sSetBackSeconds.setText(objJobDataProvider.getSetbackCountSeconds());
-                }
-           // }
+            /*
+                        if (bIsMaximum.getSelection()) {
+                            sSetBackHours.setEnabled(false);
+                            sSetBackMinutes.setEnabled(false);
+                            sSetBackSeconds.setEnabled(false);
+                        } else {*/
+            sSetBackHours.setText(Utils.fill(2, objJobDataProvider.getSetbackCountHours()));
+            sSetBackMinutes.setText(Utils.fill(2, objJobDataProvider.getSetbackCountMinutes()));
+            if (!(objJobDataProvider.getSetbackCountHours() + objJobDataProvider.getSetbackCountMinutes()).equals("")) {
+                sSetBackSeconds.setText(Utils.fill(2, objJobDataProvider.getSetbackCountSeconds()));
+            }
+            else {
+                sSetBackSeconds.setText(objJobDataProvider.getSetbackCountSeconds());
+            }
+            // }
             sSetBackCount.setText(objJobDataProvider.getSetbackCount());
         }
 
@@ -347,7 +350,7 @@ public class JobSetback extends FormBaseClass {
     private void applySetback() {
         int maximum = 0;
         int maximumMax = 0;
-        int maxSetback=0;
+        int maxSetback = 0;
 
         int sel = tSetback.getSelectionIndex();
         TableItem[] setback = tSetback.getItems();
@@ -374,21 +377,21 @@ public class JobSetback extends FormBaseClass {
             }
 
             for (int i = 0; i < setback.length; i++) {
-                if ( i  != sel && maximumMax < Utils.str2int(setback[i].getText(0)) && setback[i].getText(1).equalsIgnoreCase("yes")) {
+                if (i != sel && maximumMax < Utils.str2int(setback[i].getText(0)) && setback[i].getText(1).equalsIgnoreCase("yes")) {
                     maximumMax = Utils.str2int(setback[i].getText(0));
                 }
             }
-            
+
             for (int i = 0; i < setback.length; i++) {
-              if (i != sel && !setback[i].getText(1).equalsIgnoreCase("yes") && maxSetback < Utils.str2int(setback[i].getText(0))) {
-                  maxSetback = Utils.str2int(setback[i].getText(0));
-              }
-          }
-            
-            if ( bIsMaximum.getSelection() && Utils.str2int(sSetBackCount.getText()) > maximumMax) {
+                if (i != sel && !setback[i].getText(1).equalsIgnoreCase("yes") && maxSetback < Utils.str2int(setback[i].getText(0))) {
+                    maxSetback = Utils.str2int(setback[i].getText(0));
+                }
+            }
+
+            if (bIsMaximum.getSelection() && Utils.str2int(sSetBackCount.getText()) > maximumMax) {
                 maximumMax = Utils.str2int(sSetBackCount.getText());
             }
-            
+
             if (Utils.str2int(sSetBackCount.getText()) > maxSetback) {
                 maxSetback = Utils.str2int(sSetBackCount.getText());
             }
@@ -396,25 +399,26 @@ public class JobSetback extends FormBaseClass {
             if (maximum > 1) {
                 MainWindow.message("Only one item can be set as maximum", SWT.ICON_INFORMATION);
                 sSetBackCount.setFocus();
-            } else {
+            }
+            else {
                 if (found) {
                     MainWindow.message("Setback-count already defined", SWT.ICON_INFORMATION);
                     sSetBackCount.setFocus();
-                } else {
+                }
+                else {
                     if (sSetBackCount.getText().equals("")) {
                         MainWindow.message("Setback-count must not be empty", SWT.ICON_INFORMATION);
                         sSetBackCount.setFocus();
-                    } else {
-                        if (maximumMax > 0 && maximumMax < Utils.str2int(sSetBackCount.getText()) ||
-                                maxSetback > Utils.str2int(sSetBackCount.getText()) && bIsMaximum.getSelection()) {
-                            MainWindow.message("Setback-count with maximum=yes must be highest setback-count in list",
-                                    SWT.ICON_INFORMATION);
+                    }
+                    else {
+                        if (maximumMax > 0 && maximumMax < Utils.str2int(sSetBackCount.getText()) || maxSetback > Utils.str2int(sSetBackCount.getText()) && bIsMaximum.getSelection()) {
+                            MainWindow.message("Setback-count with maximum=yes must be highest setback-count in list", SWT.ICON_INFORMATION);
                             sSetBackCount.setFocus();
-                        } else {
+                        }
+                        else {
                             String delay = sSetBackSeconds.getText();
                             if (!(sSetBackMinutes.getText() + sSetBackHours.getText()).equals("")) {
-                                delay = Utils.getTime(sSetBackHours.getText(), sSetBackMinutes.getText(),
-                                        sSetBackSeconds.getText(), true);
+                                delay = Utils.getTime(sSetBackHours.getText(), sSetBackMinutes.getText(), sSetBackSeconds.getText(), true);
 
                             }
 
@@ -434,8 +438,5 @@ public class JobSetback extends FormBaseClass {
 
         }
     }
-    
-
-   
 
 }
