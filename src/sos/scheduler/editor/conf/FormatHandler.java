@@ -105,15 +105,20 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 		StringBuffer attributes = new StringBuffer();
 		String sep = " ";
 
-		String sepStr = "\n" + _indent + strRepeat(" ", new String("<" + qName).length() + 1);
+		// String sepStr = "\n" + _indent + strRepeat(" ", new String("<" + qName).length() + 1);
 
 		String attrName = "";
 		String strComment = "";
 		for (int i = 0; i < atts.getLength(); i++) {
 			String name = atts.getQName(i);
 			String value = atts.getValue(i);
-			if (name.equals("__comment__")) { // build element comment
-				strComment = _indent + "<!-- " + value + " -->\n";
+			if (name.equals("__comment__")) { // build element comment 
+				if (qName.trim().equalsIgnoreCase("job")) {
+					strComment = _indent + "<!-- " + value + " -->\n";
+				}
+				else {
+					_sb.append(_indent + "<!-- " + value + " -->\n");
+				}
 			}
 			else { // add attribute
 				String uri = atts.getURI(i);
@@ -121,8 +126,8 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 					attributes.append(sep + "xmlns:xsi" + "=\"" + uri + "\"");
 				}
 				attributes.append(sep + name + "=\"" + value + "\"");
-				
-//				sep = sepStr;
+
+				// sep = sepStr;
 
 				if (name.equals("name")) {
 					attrName = value;
@@ -130,12 +135,14 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 			}
 		}
 
-		_sb.append(_indent + "<" + qName + " " + attributes.toString());
+		_sb.append(_indent + "<" + qName + " " + attributes.toString()); 
 		_isOpen = true;
-		if (strComment.length() > 0) {
-			_sb.append(">\n");
-			_isOpen = false;
-			_sb.append(strComment);
+		if (qName.trim().equalsIgnoreCase("job")) {
+			if (strComment.length() > 0) {
+				_sb.append(">\n");
+				_isOpen = false;
+				_sb.append(strComment);
+			}
 		}
 		_level++;
 	}
