@@ -379,13 +379,12 @@ public class DateForm extends Composite implements IUpdateLanguage {
 		newColumnTableColumn.setWidth(200);
 		newColumnTableColumn.setText("Name");
 
-		final TableColumn newColumnTableColumn_1 = new TableColumn(tableIncludes, SWT.NONE);
+	/*	Wir nehmen diese Spalte erstmal raus, weil nicht klar ist, wie die description zu stande kommt.ur20120723
+	 * final TableColumn newColumnTableColumn_1 = new TableColumn(tableIncludes, SWT.NONE);
 		newColumnTableColumn_1.setWidth(67);
 		newColumnTableColumn_1.setText("File/Life File");
-
-		final TableColumn newColumnTableColumn_2 = new TableColumn(tableIncludes, SWT.NONE);
-		newColumnTableColumn_2.setWidth(156);
-		newColumnTableColumn_2.setText("Description");
+    */
+	 
 
 		final Button butIncludeNew = new Button(gInclude, SWT.NONE);
 		butIncludeNew.addSelectionListener(new SelectionAdapter() {

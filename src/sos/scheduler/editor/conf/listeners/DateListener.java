@@ -362,13 +362,14 @@ public class DateListener implements Comparator {
     				item.setText(0, filename);
     				item.setText(1, "file");
     				String fname = new File(filename).getName();
-    				if(filename.endsWith("holidays.xml") && 
+    				/*Unklare Konfiguration. Wird in JOE auch nicht unterstützt.
+    				 * if(filename.endsWith("holidays.xml") && 
     						Options.getHolidaysDescription().values().contains(Options.getSchedulerNormalizedHotFolder() + fname)) {
     					//Object key = Options.getHolidaysDescription().get("holiday_id_" + filename.substring(0, filename.indexOf(".holidays.xml")));
     					Object key = Options.getHolidaysDescription().get("holiday_id_" + fname.substring(0, fname.indexOf(".holidays.xml")));
     					if(key != null)
     						item.setText(2, key.toString());
-    				}
+    				}*/
     			} else {
     				TableItem item = new TableItem(table, SWT.NONE);
     				
