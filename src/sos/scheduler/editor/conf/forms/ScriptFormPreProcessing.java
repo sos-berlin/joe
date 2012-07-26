@@ -38,7 +38,7 @@ public class ScriptFormPreProcessing extends ScriptForm implements IUpdateLangua
     private static Logger logger = Logger.getLogger(ScriptJobMainForm.class);
     @SuppressWarnings("unused")
     private final String conClassName = "PreProcessingForm";
-    private PreProcessingComposite headerComposite=null;
+    private PreProcessingComposite preProcessingHeader=null;
     private HashMap <String,String> favorites = null;
 
     public ScriptFormPreProcessing(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
@@ -61,11 +61,11 @@ public class ScriptFormPreProcessing extends ScriptForm implements IUpdateLangua
         gridLayout.marginHeight = 1;
         gridLayout.numColumns = 1;
 
-        headerComposite = new PreProcessingComposite(objMainOptionsGroup, SWT.NONE,objDataProvider);
-        headerComposite.setLayout(gridLayout);
-        headerComposite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
+        preProcessingHeader = new PreProcessingComposite(objMainOptionsGroup, SWT.NONE,objDataProvider);
+        preProcessingHeader.setLayout(gridLayout);
+        preProcessingHeader.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
         
-        createLanguageSelector(headerComposite.getgMain());
+        createLanguageSelector(preProcessingHeader.getgMain());
         if (objDataProvider.getLanguage() < 0){ 
           objDataProvider.setLanguage(0);
           languageSelector.selectLanguageItem(0);
@@ -74,15 +74,15 @@ public class ScriptFormPreProcessing extends ScriptForm implements IUpdateLangua
 
         getFavoriteNames();
 
-        headerComposite.getButFavorite().addSelectionListener(new SelectionAdapter() {
+        preProcessingHeader.getButFavorite().addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
-                Options.setProperty("monitor_favorite_" + objDataProvider.getLanguage(objDataProvider.getLanguage()) + "_" + headerComposite.getTxtName().getText(), getFavoriteValue());
+                Options.setProperty("monitor_favorite_" + objDataProvider.getLanguage(objDataProvider.getLanguage()) + "_" + preProcessingHeader.getTxtName().getText(), getFavoriteValue());
                 Options.saveProperties();
-                headerComposite.getCboFavorite().setItems(normalized(Options.getPropertiesWithPrefix("monitor_favorite_")));
+                preProcessingHeader.getCboFavorite().setItems(normalized(Options.getPropertiesWithPrefix("monitor_favorite_")));
             }
         });
         
-        headerComposite.getCboFavorite().addSelectionListener(new SelectionAdapter() {
+        preProcessingHeader.getCboFavorite().addSelectionListener(new SelectionAdapter() {
         public void widgetSelected(final SelectionEvent e) {
             getDataFromFavorite();
           }
@@ -98,8 +98,8 @@ public class ScriptFormPreProcessing extends ScriptForm implements IUpdateLangua
     }
     
     private void getFavoriteNames(){
-        headerComposite.getCboFavorite().setData("favorites", favorites);
-        headerComposite.getCboFavorite().setMenu(new ContextMenu(headerComposite.getCboFavorite(), objDataProvider.getDom(), Editor.SCRIPT).getMenu());
+        preProcessingHeader.getCboFavorite().setData("favorites", favorites);
+        preProcessingHeader.getCboFavorite().setMenu(new ContextMenu(preProcessingHeader.getCboFavorite(), objDataProvider.getDom(), Editor.SCRIPT).getMenu());
      }
 
     
@@ -114,8 +114,8 @@ public class ScriptFormPreProcessing extends ScriptForm implements IUpdateLangua
 
     
     private String getPrefix() {
-        if (favorites != null && headerComposite.getCboFavorite().getText().length() > 0 && favorites.get(headerComposite.getCboFavorite().getText()) != null)
-            return "monitor_favorite_" + favorites.get(headerComposite.getCboFavorite().getText()) + "_";
+        if (favorites != null && preProcessingHeader.getCboFavorite().getText().length() > 0 && favorites.get(preProcessingHeader.getCboFavorite().getText()) != null)
+            return "monitor_favorite_" + favorites.get(preProcessingHeader.getCboFavorite().getText()) + "_";
         if (objDataProvider.getLanguage() == 0)
             return "";
         return "monitor_favorite_" + objDataProvider.getLanguage(objDataProvider.getLanguage()) + "_";
@@ -161,9 +161,9 @@ public class ScriptFormPreProcessing extends ScriptForm implements IUpdateLangua
      
     private void getDataFromFavorite(){
         
-        if (headerComposite.getCboFavorite().getText().length() > 0) {
-            if (Options.getProperty(getPrefix() + headerComposite.getCboFavorite().getText()) != null) {
-
+        if (preProcessingHeader.getCboFavorite().getText().length() > 0) {
+            if (Options.getProperty(getPrefix() + preProcessingHeader.getCboFavorite().getText()) != null) {
+               
                 if (this.getObjJobJAPI() != null && this.getObjJobJAPI().getTbxClassName().getText().length() > 0 ||  this.getObjJobIncludeFile() != null  && this.getObjJobIncludeFile().getTableIncludes().isEnabled() && this.getObjJobIncludeFile().getTableIncludes().getItemCount() > 0) {
                     int c = MainWindow.message(getShell(), "Overwrite this Monitor?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
                     if (c != SWT.YES)
@@ -178,18 +178,20 @@ public class ScriptFormPreProcessing extends ScriptForm implements IUpdateLangua
                         objDataProvider.removeIncludes();
                     }
                 }
-
-                if (favorites != null && favorites.get(headerComposite.getCboFavorite().getText()) != null && favorites.get(headerComposite.getCboFavorite().getText()).toString().length() > 0) {
-
-                    objDataProvider.setLanguage(objDataProvider.languageAsInt(favorites.get(headerComposite.getCboFavorite().getText()).toString()));
+              
+                if (favorites != null && favorites.get(preProcessingHeader.getCboFavorite().getText()) != null && favorites.get(preProcessingHeader.getCboFavorite().getText()).toString().length() > 0) {
+                  
+                    preProcessingHeader.getTxtName().setText(preProcessingHeader.getCboFavorite().getText());
+                    objDataProvider.setMonitorName(preProcessingHeader.getCboFavorite().getText());
+                    objDataProvider.setLanguage(objDataProvider.languageAsInt(favorites.get(preProcessingHeader.getCboFavorite().getText()).toString()));
                     languageSelector.setText(objDataProvider.getLanguageAsString(objDataProvider.getLanguage()));
                     
                     if (objDataProvider.isJava()) {
-                        this.getObjJobJAPI().getTbxClassName().setText(Options.getProperty(getPrefix() + headerComposite.getCboFavorite().getText()));
+                        this.getObjJobJAPI().getTbxClassName().setText(Options.getProperty(getPrefix() + preProcessingHeader.getCboFavorite().getText()));
                     }
                     else {
                         tabFolder.setSelection(this.getTabItemIncludedFiles());
-                        String[] split = Options.getProperty(getPrefix() + headerComposite.getCboFavorite().getText()).split(";");
+                        String[] split = Options.getProperty(getPrefix() + preProcessingHeader.getCboFavorite().getText()).split(";");
                         for (int i = 0; i < split.length; i++) {
                             objDataProvider.addInclude(split[i]);
                         }
@@ -205,10 +207,10 @@ public class ScriptFormPreProcessing extends ScriptForm implements IUpdateLangua
 
     @Override protected void initForm() {
 
-        headerComposite.init();
+        preProcessingHeader.init();
         if (normalized(Options.getPropertiesWithPrefix("monitor_favorite_")) != null
                 && normalized(Options.getPropertiesWithPrefix("monitor_favorite_"))[0] != null) {
-            headerComposite.getCboFavorite().setItems(normalized(Options.getPropertiesWithPrefix("monitor_favorite_")));
+            preProcessingHeader.getCboFavorite().setItems(normalized(Options.getPropertiesWithPrefix("monitor_favorite_")));
         }
         
     }

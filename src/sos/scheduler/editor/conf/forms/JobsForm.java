@@ -208,13 +208,14 @@ public class JobsForm extends Composite implements IUpdateLanguage {
 					}
 					if (e.detail == SWT.CHECK) {
 						TableItem item = (TableItem) e.item;
-						if (!listener.hasJobComment((Element) item.getData())) {
+			//	if (!listener.hasJobComment((Element) item.getData())) {
 							listener.setJobEnabled((Element) item.getData(), !item.getChecked());
-						}
-						else {
+				//}
+				/*else {
 							MainWindow.message(Messages.getString("MainListener.cannotDisable"), SWT.ICON_INFORMATION | SWT.OK);
 							item.setChecked(false);
 						}
+						*/
 					}
 				}
 			});

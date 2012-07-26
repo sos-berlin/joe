@@ -361,7 +361,7 @@ public class DateListener implements Comparator {
     				TableItem item = new TableItem(table, SWT.NONE); 
     				item.setText(0, filename);
     				item.setText(1, "file");
-    				String fname = new File(filename).getName();
+     				String fname = new File(filename).getName();
     				/*Unklare Konfiguration. Wird in JOE auch nicht unterstützt.
     				 * if(filename.endsWith("holidays.xml") && 
     						Options.getHolidaysDescription().values().contains(Options.getSchedulerNormalizedHotFolder() + fname)) {

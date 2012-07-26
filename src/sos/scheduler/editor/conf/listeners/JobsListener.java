@@ -605,7 +605,7 @@ public class JobsListener {
 	}
 
 
-	public boolean hasJobComment(Element e) {
+	private boolean hasJobComment(Element e) {
 		if (e != null) {
 			for (Iterator it = e.getContent().iterator(); it.hasNext();) {
 				Object o = it.next();
