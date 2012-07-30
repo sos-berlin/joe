@@ -76,9 +76,7 @@ public class TextArea extends StyledText /* Text */{
 
     boolean flgInit = false;
 
-    // public Text getControl() {
-    // return this;
-    // }
+
 
     public StyledText getControl() {
         return this;
@@ -118,6 +116,7 @@ public class TextArea extends StyledText /* Text */{
          * itemReadFrom.addListener(SWT.Selection, getReadFileListener());
          * itemReadFrom.setText("Read from ...");
          */
+        
         MenuItem itemCopy = new MenuItem(objContextMenu, SWT.PUSH);
         itemCopy.addListener(SWT.Selection, getCopyListener());
         itemCopy.setText("Copy");
@@ -136,18 +135,16 @@ public class TextArea extends StyledText /* Text */{
 
         new MenuItem(objContextMenu, SWT.SEPARATOR);
 
-        MenuItem itemSelectFont = new MenuItem(objContextMenu, SWT.PUSH);
-        itemSelectFont.addListener(SWT.Selection, getSelectFontListener());
-        itemSelectFont.setText("Select Font");
-        /*
-         * MenuItem itemStartExternalEditor = new MenuItem(objContextMenu,
-         * SWT.PUSH); itemStartExternalEditor.addListener(SWT.Selection,
-         * getStartExternalEditorListener());
-         * itemStartExternalEditor.setText("Start external Editor");
-         */
-        setMenu(objContextMenu);
-        // objContextMenu.setVisible(true);
-    }
+       
+         MenuItem itemStartExternalEditor = new MenuItem(objContextMenu,SWT.PUSH); itemStartExternalEditor.addListener(SWT.Selection, getStartExternalEditorListener());
+         itemStartExternalEditor.setText("Start external Editor");
+         setMenu(objContextMenu);
+
+         MenuItem itemSelectFont = new MenuItem(objContextMenu, SWT.PUSH);
+         itemSelectFont.addListener(SWT.Selection, getSelectFontListener());
+         itemSelectFont.setText("Select Font");
+  
+   }
 
     @SuppressWarnings("unused")
     private Listener getSaveAsListener() {
@@ -165,13 +162,13 @@ public class TextArea extends StyledText /* Text */{
         return new Listener() {
             public void handleEvent(Event e) {
                 System.out.println("'External Editor' was pressed....");
-                StartExternalEditor();
+                startExternalEditor();
             }
 
         };
     }
 
-    public void StartExternalEditor() {
+    public void startExternalEditor() {
         String text = getText();
         if (enuWhatSourceType != enuSourceTypes.ScriptSource) {
             String strT = "job";
@@ -188,6 +185,8 @@ public class TextArea extends StyledText /* Text */{
             setText(text);
         }
     }
+
+ 
 
     private Listener getSelectFontListener() {
 
@@ -355,7 +354,7 @@ public class TextArea extends StyledText /* Text */{
 
             @Override
             public void mouseDoubleClick(MouseEvent arg0) {
-                // StartExternalEditor();
+                // startExternalEditor();
             }
         });
 
@@ -451,6 +450,8 @@ public class TextArea extends StyledText /* Text */{
         fd.show(getDisplay());
         setFont(fd.getFontData(), fd.getForeGround());
     }
+    
+    
 
     protected void checkSubclass() {
         // Disable the check that prevents subclassing of SWT components
