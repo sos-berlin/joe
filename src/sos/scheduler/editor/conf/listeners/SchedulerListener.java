@@ -1253,7 +1253,6 @@ public class SchedulerListener {
                 runTreeItem = new TreeItem(item, SWT.NONE);
             }
             runTreeItem.setData(conItemDataKeyMAX_OCCUR, "1");
-            runTreeItem.setText(run_time);
             runTreeItem.setImage(getImage("waiting.gif"));
 
             // run.setText(Messages.getLabel("treeitem." + run_time));
@@ -1264,6 +1263,7 @@ public class SchedulerListener {
             // run.setText(run_time);
             // }
             if (run_time.equals("run_time")) {
+                runTreeItem.setText("Run Time");
                 runTreeItem.setData(new TreeData(Editor.RUNTIME, job, Options.getHelpURL("job.run_time"), "run_time"));
                 runTreeItem.setData(conItemDataKeyKEY, "run_time");
                 runTreeItem.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
@@ -1275,6 +1275,7 @@ public class SchedulerListener {
                 objSchedulerForm.updateFont(runTreeItem);
             }
             else if (job.getName().equals("schedule")) {
+                runTreeItem.setText(run_time);
                 runTreeItem.setData(new TreeData(Editor.SCHEDULE, job, Options.getHelpURL("job.schedule"), "schedule"));
                 runTreeItem.setData(conItemDataKeyKEY, "schedules_@_schedule");
                 runTreeItem.setData(conItemDataKeyCOPY_ELEMENT, job);
