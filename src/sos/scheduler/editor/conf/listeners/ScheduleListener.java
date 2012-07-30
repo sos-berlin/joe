@@ -77,6 +77,12 @@ public class ScheduleListener {
    }
 	
 	   
+	private void clearValid() {
+	    Utils.setAttribute("valid_from", null, _schedule);
+	    Utils.setAttribute("valid_to", null, _schedule);
+       _dom.setChanged(true);
+       _dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.MODIFY);   
+	}
 	
 	public void setValidTo(String validTo) throws ParseException {
 	    
@@ -93,6 +99,9 @@ public class ScheduleListener {
 
 	
 	public void setSubstitut(String substitute) {		
+	    if (substitute.trim().equals("")){
+	        clearValid();
+	    }
 		Utils.setAttribute("substitute", substitute, _schedule);
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("schedule", Utils.getAttributeValue("name", _schedule), SchedulerDom.MODIFY);	
@@ -126,6 +135,7 @@ public class ScheduleListener {
 		s = schedules.getChildren("schedule");		
 		
 		java.util.ArrayList list = new java.util.ArrayList();
+		list.add("");
 		//int index = 0;
 		for(int i = 0; i < s.size(); i++) {
 			if(s.get(i) instanceof Element) {
@@ -138,7 +148,7 @@ public class ScheduleListener {
 		}
 				
 		String[] str = new String[list.size()];
-		for(int i = 0; i < list.size(); i++) {
+ 		for(int i = 0; i < list.size(); i++) {
 			str[i] = (String)list.get(i);
 		}
 		//convert in String[]
