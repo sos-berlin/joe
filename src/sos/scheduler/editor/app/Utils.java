@@ -110,18 +110,14 @@ public class Utils {
 
 
 	public static void setAttribute(String attribute, String value, String defaultValue, Element element, DomParser dom) {
-		value = value.trim();
 
-		//System.out.println("attribute[" + attribute + " = " + value + "]  default: " + defaultValue);
-
-		if (value == null || value.equals(defaultValue) ) {
-			//if(element.getName().equals("param") && attribute.equals("value")) {
+		if (value == null || value.trim().equals(defaultValue) ) {
 			element.removeAttribute(attribute);
 			if (dom != null)
 				dom.setChanged(true);
 			//}
-		} else if (!value.equals(element.getAttributeValue(attribute))) {
-			element.setAttribute(attribute, value);
+		} else if (!value.trim().equals(element.getAttributeValue(attribute))) {
+			element.setAttribute(attribute, value.trim());
 			if (dom != null) {
 				dom.setChanged(true);
 				if(dom instanceof SchedulerDom) {
