@@ -1267,7 +1267,7 @@ public class SchedulerListener {
                 runTreeItem.setData(new TreeData(Editor.RUNTIME, job, Options.getHelpURL("job.run_time"), "run_time"));
                 runTreeItem.setData(conItemDataKeyKEY, "run_time");
                 runTreeItem.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
-                runTreeItem.setData(conItemDataKeyMAX_OCCUR, "1");
+                runTreeItem.setData(conItemDataKeyMAX_OCCUR, "1"); 
                 runTreeItem.setData(conItemDataKeyCOPY_ELEMENT, job);
                 if (disable) {
                     runTreeItem.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
