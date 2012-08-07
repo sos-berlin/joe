@@ -208,6 +208,9 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	public void updateJob(String s) {
 		TreeItem item = tree.getSelection()[0];
 		String job = "Job: " + s;
+		TreeData data = (TreeData) item.getData();
+	    org.jdom.Element element = data.getElement();
+        listener.setColorOfJobTreeItem(element, item);
 		item.setText(job);
 	}
 
