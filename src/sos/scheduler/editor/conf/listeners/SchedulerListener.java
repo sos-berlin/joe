@@ -21,6 +21,7 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
+//import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -276,7 +277,7 @@ public class SchedulerListener {
         treeSelection(tree, c);
     }
 
-    private void setColorOfJobTreeItem(Element element, TreeItem item) {
+    public void setColorOfJobTreeItem(Element element, TreeItem item) {
 
         final String conMethodName = conClassName + "::setColorOfJobTreeItem";
 
@@ -288,13 +289,14 @@ public class SchedulerListener {
         else {
             String order = element.getAttributeValue("order");
             logger.debug(element.getAttribute("name") + ", Order = " + order);
-            if (order == null || order.equalsIgnoreCase("yes")) {
+            
+            if (order != null && order.equalsIgnoreCase("yes")) {
                 setEnabled(item);
                 item.setImage(getImage("17382.png"));
             }
             else {
                 item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLUE));
-                item.setImage(getImage("17379.png"));
+                item.setImage(getImage("standalone.png"));
             }
         }
     }
@@ -771,8 +773,7 @@ public class SchedulerListener {
         }
         return objI;
     }
-
-    public void treeFillOrder(TreeItem parent, Element order, boolean expand) {
+     public void treeFillOrder(TreeItem parent, Element order, boolean expand) {
         parent.removeAll();
         // Element runtime = order.getChild("run_time");
         TreeItem item = new TreeItem(parent, SWT.NONE);
@@ -1191,6 +1192,7 @@ public class SchedulerListener {
     }
 
     public void treeFillRunTimes(TreeItem item, Element job, boolean disable, String run_time) {
+//    	TODO SOSJOEMessageCodes.JOE_Msg_0001.label();
         Element runtime = null;
         Element _runtime = job.getChild("run_time");
         // create runtime tag
@@ -1235,12 +1237,14 @@ public class SchedulerListener {
         boolean hasSchedulesAttribut = Utils.getAttributeValue("schedule", _runtime).trim().length() > 0;
         if (hasSchedulesAttribut) {
             for (int i = 0; i < item.getItemCount(); i++) {
-                if (item.getItem(i).equals("Run Time")) {
+          	if (item.getItem(i).equals("Run Time")) {
+//ur            	if (item.getItem(i).equals(SOSJOEMessageCodes.JOE_Msg_0001.label())) {
                     runTreeItem = item.getItem(i);
                 }
             }
         }
         if (item.getText().equals("Run Time")) {
+//ur          if (item.getText().equals(SOSJOEMessageCodes.JOE_Msg_0001.label())) {
             runTreeItem = item;
         }
         // ende test
@@ -1263,7 +1267,8 @@ public class SchedulerListener {
             // run.setText(run_time);
             // }
             if (run_time.equals("run_time")) {
-                runTreeItem.setText("Run Time");
+              runTreeItem.setText("Run Time");
+//ur            	runTreeItem.setText(SOSJOEMessageCodes.JOE_Msg_0001.label());
                 runTreeItem.setData(new TreeData(Editor.RUNTIME, job, Options.getHelpURL("job.run_time"), "run_time"));
                 runTreeItem.setData(conItemDataKeyKEY, "run_time");
                 runTreeItem.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
