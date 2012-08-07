@@ -252,6 +252,8 @@ public class JobListener extends JOEListener {
 		String forceIdleTimeout = _job.getAttributeValue("force_idle_timeout");
 		return forceIdleTimeout == null ? false : forceIdleTimeout.equalsIgnoreCase("yes");
 	}
+	
+	
 
 	public void setOrder(boolean order) {
 		if (order) {
@@ -264,6 +266,10 @@ public class JobListener extends JOEListener {
 			_job.removeAttribute("order");
 		}
 		_dom.setChanged(true);
+		if (_main != null)
+            _main.updateJob(this.getJobName());
+
+	 
 		if (_dom.isDirectory() || _dom.isLifeElement())
 			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
 	}
