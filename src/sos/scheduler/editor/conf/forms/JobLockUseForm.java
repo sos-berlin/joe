@@ -21,12 +21,13 @@ import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobLockUseListener;
 
 
-public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
 
 	private           Combo                      tLockUse             = null;
@@ -96,13 +97,13 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
 		gridData51.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
 		GridLayout gridLayout1 = new GridLayout();
 		gridLayout1.numColumns = 5;
-		group1 = new Group(this, SWT.NONE);
-		group1.setText("Use");
+		
+		group1 = JOE_G_JobLockUseForm_Use.Control(new Group(this, SWT.NONE));
 		group1.setLayout(gridLayout1);
-		lockLabel = new Label(group1, SWT.NONE);
-		lockLabel.setText("Lock");
+		
+		lockLabel = JOE_L_JobLockUseForm_Lock.Control(new Label(group1, SWT.NONE));
 
-		tLockUse = new Combo(group1, SWT.NONE);
+		tLockUse = JOE_Cbo_JobLockUseForm_LockUse.Control(new Combo(group1, SWT.NONE));
 		tLockUse.setEnabled(false);
 		tLockUse.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
@@ -112,11 +113,11 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
 			}
 		});
 		tLockUse.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		label11 = new Label(group1, SWT.NONE);
+		
+		label11 = JOE_L_JobLockUseForm_Exclusive.Control(new Label(group1, SWT.NONE));
 		label11.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-		label11.setText("Exclusive"); //TODO lang "Exclusive"
 
-		bExclusive = new Button(group1, SWT.CHECK);
+		bExclusive = JOE_B_JobLockUseForm_Exclusive.Control(new Button(group1, SWT.CHECK));
 		bExclusive.setSelection(true);
 		bExclusive.setEnabled(true);
 		bExclusive.addSelectionListener(new SelectionAdapter() {
@@ -124,8 +125,8 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
 				bApplyLockUse.setEnabled(true);
 			}
 		});
-		bApplyLockUse = new Button(group1, SWT.NONE);
-		bApplyLockUse.setText("Apply Lock Use"); //TODO lang "Apply Lock Use"
+		
+		bApplyLockUse = JOE_B_JobLockUseForm_ApplyLockUse.Control(new Button(group1, SWT.NONE));
 		bApplyLockUse.setEnabled(false);
 		bApplyLockUse.setLayoutData(gridData51);
 		bApplyLockUse.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -133,9 +134,11 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
 				applyLockUse();
 			}
 		});
+		
 		new Label(group1, SWT.NONE);
+		
 		GridData gridData30 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 3, 3);
-		this.tLockUseTable = new Table(group1, SWT.BORDER | SWT.FULL_SELECTION);
+		this.tLockUseTable = JOE_Tbl_JobLockUseForm_LockUseTable.Control(new Table(group1, SWT.BORDER | SWT.FULL_SELECTION));
 		this.tLockUseTable.setHeaderVisible(true);
 		this.tLockUseTable.setLayoutData(gridData30);
 		this.tLockUseTable.setLinesVisible(true);
@@ -149,15 +152,15 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
 				bRemoveLockUse.setEnabled(tLockUseTable.getSelectionCount() > 0);
 			}
 		});
-		TableColumn tableColumn5 = new TableColumn(this.tLockUseTable, SWT.NONE);
+		
+		TableColumn tableColumn5 = JOE_TCl_JobLockUseForm_Lock.Control(new TableColumn(this.tLockUseTable, SWT.NONE));
 		tableColumn5.setWidth(300);
-		tableColumn5.setText("Lock"); //TODO lang "Lock"
-		TableColumn tableColumn6 = new TableColumn(this.tLockUseTable, SWT.NONE);
+		
+		TableColumn tableColumn6 = JOE_TCl_JobLockUseForm_Exclusive.Control(new TableColumn(this.tLockUseTable, SWT.NONE));
 		tableColumn6.setWidth(70);
-		tableColumn6.setText("Exclusive"); //TODO lang "Exclusive"
+
 		GridData gridData41 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
-		bNewLockUse = new Button(group1, SWT.NONE);
-		bNewLockUse.setText("New Lock Use"); //TODO lang "New Lock Use"
+		bNewLockUse = JOE_B_JobLockUseForm_NewLockUse.Control(new Button(group1, SWT.NONE));
 		bNewLockUse.setLayoutData(gridData41);
 		bNewLockUse.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -167,10 +170,11 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
 				tLockUse.setFocus();
 			}
 		});
+		
 		new Label(group1, SWT.NONE);
+		
 		GridData gridData31 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);
-		bRemoveLockUse = new Button(group1, SWT.NONE);
-		bRemoveLockUse.setText("Remove Lock Use"); //TODO lang "Remove Lock Use"
+		bRemoveLockUse = JOE_B_JobLockUseForm_RemoveLockUse.Control(new Button(group1, SWT.NONE));
 		bRemoveLockUse.setEnabled(false);
 		bRemoveLockUse.setLayoutData(gridData31);
 		bRemoveLockUse.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -192,9 +196,10 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
 				}
 			}
 		});
+		
 		new Label(group1, SWT.NONE);
 
-		butBrowse = new Button(group1, SWT.NONE);
+		butBrowse = JOE_B_JobLockUseForm_Browse.Control(new Button(group1, SWT.NONE));
 		butBrowse.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				String name = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_LOCK);
@@ -206,11 +211,9 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
 					tLockUse.setFocus();
 					tLockUse.setText(name);
 				}
-
 			}
 		});
 		butBrowse.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		butBrowse.setText("Browse"); //TODO lang "Browse"
 	}
 
 
@@ -253,13 +256,7 @@ public class JobLockUseForm extends Composite implements IUnsaved, IUpdateLangua
 
 
 	public void setToolTipText() {
-		bApplyLockUse.setToolTipText(Messages.getTooltip("lockuse.btn_apply"));
-		bNewLockUse.setToolTipText(Messages.getTooltip("lockuse.btn_new"));
-		bRemoveLockUse.setToolTipText(Messages.getTooltip("lockuse.btn_remove"));
-		tLockUseTable.setToolTipText(Messages.getTooltip("lockuse.table"));
-		tLockUse.setToolTipText(Messages.getTooltip("lockuse.lookuse"));
-		bExclusive.setToolTipText(Messages.getTooltip("lockuse.exclusive"));
-		butBrowse.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));
+//
 	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"

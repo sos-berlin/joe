@@ -21,7 +21,7 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
-//import sos.scheduler.editor.app.SOSJOEMessageCodes;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -1237,14 +1237,14 @@ public class SchedulerListener {
         boolean hasSchedulesAttribut = Utils.getAttributeValue("schedule", _runtime).trim().length() > 0;
         if (hasSchedulesAttribut) {
             for (int i = 0; i < item.getItemCount(); i++) {
-          	if (item.getItem(i).equals("Run Time")) {
-//ur            	if (item.getItem(i).equals(SOSJOEMessageCodes.JOE_Msg_0001.label())) {
+//          	if (item.getItem(i).equals("Run Time")) {
+            	if (item.getItem(i).equals(SOSJOEMessageCodes.JOE_Msg_0001.label())) {
                     runTreeItem = item.getItem(i);
                 }
             }
         }
-        if (item.getText().equals("Run Time")) {
-//ur          if (item.getText().equals(SOSJOEMessageCodes.JOE_Msg_0001.label())) {
+//        if (item.getText().equals("Run Time")) {
+        if (item.getText().equals(SOSJOEMessageCodes.JOE_Msg_0001.label())) {
             runTreeItem = item;
         }
         // ende test
@@ -1268,8 +1268,8 @@ public class SchedulerListener {
             // }
             if (run_time.equals("run_time")) {
               runTreeItem.setText("Run Time");
-//ur            	runTreeItem.setText(SOSJOEMessageCodes.JOE_Msg_0001.label());
-                runTreeItem.setData(new TreeData(Editor.RUNTIME, job, Options.getHelpURL("job.run_time"), "run_time"));
+            	runTreeItem.setText(SOSJOEMessageCodes.JOE_Msg_0001.label());
+//                runTreeItem.setData(new TreeData(Editor.RUNTIME, job, Options.getHelpURL("job.run_time"), "run_time"));
                 runTreeItem.setData(conItemDataKeyKEY, "run_time");
                 runTreeItem.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
                 runTreeItem.setData(conItemDataKeyMAX_OCCUR, "1"); 

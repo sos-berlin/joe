@@ -29,12 +29,13 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobCommandExitCodesListener;
 
-public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
 
 	private Table                         tCommands                    = null;
@@ -118,8 +119,12 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		gridLayout2.makeColumnsEqualWidth = true;
 		gridLayout2.numColumns = 1;
 		jobsAndOrdersGroup = new Group(this, SWT.NONE);
-		jobsAndOrdersGroup.setText("Commands for Job: " + listener.getName() + (listener.isDisabled() ? " (Disabled)" : "")); //TODO lang "Commands for Job: "...
+		String strT = JOE_M_JobAssistent_JobGroup.params_(listener.getName()) + " " + listener.getExitCode();
+		if (listener.isDisabled())
+			strT += " " + JOE_M_JobCommand_Disabled.label();
+		jobsAndOrdersGroup.setText(strT);
 		jobsAndOrdersGroup.setLayout(gridLayout2);
+		
 		GridData gridData18 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
 		sashForm = new SashForm(jobsAndOrdersGroup, SWT.NONE);
 		//sashForm.setWeights(new int[] { 1 });
@@ -179,17 +184,15 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		gridLayout.verticalSpacing = 0;
 		//gDescription =  new Composite(sashForm, SWT.NONE);
 		//gDescription.setText("Jobs and orders");
-		gMain = new Group(sashForm, SWT.NONE);
-		gMain.setText("Commands"); //TODO lang "Commands"
+		
+		gMain = JOE_G_JobCommands_Commands.Control(new Group(sashForm, SWT.NONE));
 		gMain.setLayout(gridLayout);
 
-		cExitcode = new Combo(gMain, SWT.NONE);
+		cExitcode = JOE_Cbo_JobCommands_Exitcode.Control(new Combo(gMain, SWT.NONE));
 		cExitcode.setItems(new String[] {"error", "success", "SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT", "SIGIOT", "SIGBUS", "SIGFPE", "SIGKILL", "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGPIPE", "SIGALRM", "SIGTERM", "SIGSTKFLT", "SIGCHLD", "SIGCONT", "SIGSTOP", "SIGTSTP", "SIGTTIN", "SIGTTOU", "SIGURG", "SIGXCPU", "SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH", "SIGPOLL", "SIGIO", "SIGPWR", "SIGSYS"});
 		cExitcode.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				listener.setExitCode(cExitcode.getText(), updateTree);
-				jobsAndOrdersGroup.setText("Job: " + listener.getName() + " " + listener.getExitCode() + " "
-						+ (listener.isDisabled() ? " (Disabled)" : "")); //TODO lang "Job: "...
 				if (event) {
 					listener.setExitCode(cExitcode.getText(), true);					
 				}
@@ -211,30 +214,28 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		gridLayout_1.marginWidth = 0;
 		composite.setLayout(gridLayout_1);
 
-		addJobButton = new Button(composite, SWT.NONE);
+		addJobButton = JOE_B_JobCommands_AddJob.Control(new Button(composite, SWT.NONE));
 		addJobButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				addJob();
 			}
 		});
 		addJobButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		addJobButton.setText("Add Job"); //TODO lang "Add Job"
 
-		addOrderButton = new Button(composite, SWT.NONE);
+		addOrderButton = JOE_B_JobCommands_AddOrder.Control(new Button(composite, SWT.NONE));
 		addOrderButton.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
 		addOrderButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				addOrder();
 			}
 		});
-		addOrderButton.setText("Add Order"); //TODO lang "Add Order"
 
-		final Label exitLabel = new Label(gMain, SWT.NONE);
+		final Label exitLabel = JOE_L_JobCommands_ExitCodes.Control(new Label(gMain, SWT.NONE));
 		exitLabel.setLayoutData(new GridData(73, SWT.DEFAULT));
-		exitLabel.setText("Exit  codes"); //TODO lang "Exit codes"
+		
 		new Label(gMain, SWT.NONE);
 
-		tCommands = new Table(gMain, SWT.FULL_SELECTION | SWT.BORDER);
+		tCommands = JOE_Tbl_JobCommands_Commands.Control(new Table(gMain, SWT.FULL_SELECTION | SWT.BORDER));
 		tCommands.addMouseListener(new MouseAdapter() {
 			public void mouseDoubleClick(final MouseEvent e) {
 				if(tCommands.getSelectionCount() > 0){
@@ -250,7 +251,6 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 					return;
 				bRemoveExitcode.setEnabled(tCommands.getSelectionCount() > 0);
 				cExitcode.setFocus();
-
 			}
 		});
 		tCommands.setLinesVisible(true);
@@ -260,23 +260,19 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		tCommands.setLayoutData(gridData9);
 		listener.fillCommands(tCommands);
 
-		final TableColumn tcJob = new TableColumn(tCommands, SWT.NONE);
+		final TableColumn tcJob = JOE_TCl_JobCommands_Command.Control(new TableColumn(tCommands, SWT.NONE));
 		tcJob.setWidth(167);
-		tcJob.setText("Command"); //TODO lang "Command"
 
-		final TableColumn tcCommand = new TableColumn(tCommands, SWT.NONE);
+		final TableColumn tcCommand = JOE_TCl_JobCommands_JobID.Control(new TableColumn(tCommands, SWT.NONE));
 		tcCommand.setWidth(154);
-		tcCommand.setText("Job/Id"); //TODO lang "Job/Id"
 
-		final TableColumn tcJobchain = new TableColumn(tCommands, SWT.NONE);
+		final TableColumn tcJobchain = JOE_TCl_JobCommands_JobChain.Control(new TableColumn(tCommands, SWT.NONE));
 		tcJobchain.setWidth(136);
-		tcJobchain.setText("Job Chain"); //TODO lang "Job Chain"
 
-		final TableColumn tcStartAt = new TableColumn(tCommands, SWT.NONE);
+		final TableColumn tcStartAt = JOE_TCl_JobCommands_StartAt.Control(new TableColumn(tCommands, SWT.NONE));
 		tcStartAt.setWidth(139);
-		tcStartAt.setText("Start At"); //TODO lang "Start At"
 
-		bRemoveExitcode = new Button(gMain, SWT.NONE);
+		bRemoveExitcode = JOE_B_JobCommands_Remove.Control(new Button(gMain, SWT.NONE));
 		final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
 		gridData.widthHint = 67;
 		bRemoveExitcode.setLayoutData(gridData);
@@ -284,14 +280,10 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 		bRemoveExitcode.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				listener.deleteCommand(tCommands);                
-
 				tCommands.deselectAll();
 				bRemoveExitcode.setEnabled(false);
-
 			}
 		});
-		bRemoveExitcode.setText("Remove"); //TODO lang "Remove"
-
 	}
 
 
@@ -355,11 +347,7 @@ public class JobCommandExitCodesForm extends Composite implements IUnsaved, IUpd
 
 
 	public void setToolTipText() {
-		cExitcode.setToolTipText(Messages.getTooltip("jobcommand.exitcode"));
-		addJobButton.setToolTipText(Messages.getTooltip("jobcommand.exitcode.but_add_job"));
-		addOrderButton.setToolTipText(Messages.getTooltip("jobcommand.exitcode.but_add_order"));
-		bRemoveExitcode.setToolTipText(Messages.getTooltip("jobcommand.exitcode.but_remove_exit_codes"));
-		tCommands.setToolTipText(Messages.getTooltip("jobcommand.exitcode.list"));
+//		
 	}
 
 

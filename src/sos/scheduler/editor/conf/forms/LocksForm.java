@@ -25,6 +25,7 @@ import org.jdom.JDOMException;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.LocksListener;
@@ -32,7 +33,7 @@ import sos.scheduler.editor.conf.listeners.LocksListener;
 /**
  * @author
  */
-public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class LocksForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
 
 
@@ -135,21 +136,23 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 		 gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
 		 GridLayout gridLayout = new GridLayout();
 		 gridLayout.numColumns = 5;
-		 locksGroup = new Group(this, SWT.NONE);
-		 locksGroup.setText("Locks"); //TODO lang "Locks"
+		 
+		 locksGroup = JOE_G_LocksForm_Locks.Control(new Group(this, SWT.NONE));
 		 locksGroup.setLayout(gridLayout);
-		 label1 = new Label(locksGroup, SWT.NONE);
-		 label1.setText("Lock"); //TODO lang "Lock"
-		 tLock = new Text(locksGroup, SWT.BORDER);
-		 bApply = new Button(locksGroup, SWT.NONE);
-		 label5 = new Label(locksGroup, SWT.NONE);
+		 
+		 label1 = JOE_L_LocksForm_Lock.Control(new Label(locksGroup, SWT.NONE));
+		 
+		 tLock = JOE_T_LocksForm_Lock.Control(new Text(locksGroup, SWT.BORDER));
+		 
+		 bApply = JOE_B_LocksForm_Apply.Control(new Button(locksGroup, SWT.NONE));
+		 
+		 label5 = JOE_L_LocksForm_MaxNonExclusive.Control(new Label(locksGroup, SWT.NONE));
 		 final GridData gridData = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
 		 gridData.horizontalIndent = 5;
 		 label5.setLayoutData(gridData);
-		 label5.setText("Max Non Exclusive:"); //TODO lang "Max Non Exclusive:"
+		 
 		 GridData gridData4 = new GridData(20, SWT.DEFAULT);
-
-		 butUnlimitedNonExclusive = new Button(locksGroup, SWT.CHECK);
+		 butUnlimitedNonExclusive = JOE_B_LocksForm_UnlimitedNonExclusive.Control(new Button(locksGroup, SWT.CHECK));
 		 butUnlimitedNonExclusive.addSelectionListener(new SelectionAdapter() {
 		 	public void widgetSelected(final SelectionEvent e) {
 		 		sMaxNonExclusive.setEnabled(!butUnlimitedNonExclusive.getSelection());
@@ -157,9 +160,9 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 		 	}
 		 });
 		 butUnlimitedNonExclusive.setSelection(true);
-		 butUnlimitedNonExclusive.setText("unlimited"); //TODO lang "unlimited"
 		 butUnlimitedNonExclusive.setEnabled(false);
-		 sMaxNonExclusive = new Spinner(locksGroup, SWT.NONE);
+		 
+		 sMaxNonExclusive = JOE_Sp_LocksForm_MaxNonExclusive.Control(new Spinner(locksGroup, SWT.NONE));
 		 sMaxNonExclusive.setMaximum(99999999);
 		 sMaxNonExclusive.setLayoutData(gridData4);
 		 sMaxNonExclusive.setEnabled(false);
@@ -174,19 +177,23 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 				 bApply.setEnabled(true);
 			 }
 		 });
+		 
 		 new Label(locksGroup, SWT.NONE);
+		 
 		 label = new Label(locksGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
-		 label.setText("Label"); //TODO lang "Label"
+//		 label.setText("Label");
 		 label.setLayoutData(gridData7);
+		 
 		 createTable();
-		 bNew = new Button(locksGroup, SWT.NONE);
-		 bNew.setText("&New Lock"); //TODO lang "&New Lock"
+		 
+		 bNew = JOE_B_LocksForm_NewLock.Control(new Button(locksGroup, SWT.NONE));
 		 bNew.setLayoutData(gridData1);
 		 getShell().setDefaultButton(bNew);
 
 		 label2 = new Label(locksGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
-		 label2.setText("Label"); //TODO lang "Label"
+//		 label2.setText("Label");
 		 label2.setLayoutData(gridData8);
+		 
 		 bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			 public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				 apply();
@@ -206,8 +213,8 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 				 bApply.setEnabled(listener.isValidLock(tLock.getText()));
 			 }
 		 });
-		 bRemove = new Button(locksGroup, SWT.NONE);
-		 bRemove.setText("Remove Lock"); //TODO lang "Remove Lock"
+		 
+		 bRemove = JOE_B_LocksForm_RemoveLock.Control(new Button(locksGroup, SWT.NONE));
 		 bRemove.setEnabled(false);
 		 bRemove.setLayoutData(gridData2);
 		 bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -231,6 +238,7 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 				 tLock.setBackground(null);
 			 }
 		 });
+		 
 		 tLock.setLayoutData(gridData5);
 		 tLock.setEnabled(false);
 		 tLock.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
@@ -253,7 +261,7 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 				 bApply.setEnabled(valid);
 			 }
 		 });
-		 bApply.setText("Apply Lock"); //TODO lang "Apply Lock"
+		 
 		 bApply.setLayoutData(gridData3);
 		 bApply.setEnabled(false);
 		 bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -269,7 +277,7 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 	  */
 	 private void createTable() {
 		 GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 4, 3);
-		 tableLocks = new Table(locksGroup, SWT.FULL_SELECTION | SWT.BORDER);
+		 tableLocks = JOE_Tbl_LocksForm_Table.Control(new Table(locksGroup, SWT.FULL_SELECTION | SWT.BORDER));
 		 tableLocks.setHeaderVisible(true);
 		 tableLocks.setLayoutData(gridData);
 		 tableLocks.setLinesVisible(true);
@@ -294,12 +302,12 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 				 }
 			 }
 		 });
-		 TableColumn lockTableColumn = new TableColumn(tableLocks, SWT.NONE);
+		 
+		 TableColumn lockTableColumn = JOE_TCl_LocksForm_Lock.Control(new TableColumn(tableLocks, SWT.NONE));
 		 lockTableColumn.setWidth(200);
-		 lockTableColumn.setText("Lock"); //TODO lang "Lock"
-		 TableColumn tableColumn1 = new TableColumn(tableLocks, SWT.NONE);
+		 
+		 TableColumn tableColumn1 = JOE_TCl_LocksForm_MaxNonExclusive.Control(new TableColumn(tableLocks, SWT.NONE));
 		 tableColumn1.setWidth(150);
-		 tableColumn1.setText("Max Non Exclusive"); //TODO lang "Max Non Exclusive"
 	 }
 
 
@@ -353,13 +361,7 @@ public class LocksForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
 	 public void setToolTipText() {
-		 bNew.setToolTipText(Messages.getTooltip("locks.btn_new"));
-		 bRemove.setToolTipText(Messages.getTooltip("locks.btn_remove"));
-		 bApply.setToolTipText(Messages.getTooltip("locks.btn_apply"));
-		 tLock.setToolTipText(Messages.getTooltip("locks.lock_entry"));
-		 sMaxNonExclusive.setToolTipText(Messages.getTooltip("locks.max_non_exclusive"));
-		 tableLocks.setToolTipText(Messages.getTooltip("locks.table"));
-
+//
 	 }
 	 
 	 public static Table getTable() {

@@ -25,13 +25,14 @@ import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainsListener;
 
 
-public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
 
 	private ISchedulerUpdate    update            = null;
@@ -91,20 +92,18 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 
 		sashForm.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 
-		final Group jobchainsGroup = new Group(sashForm, SWT.NONE);
-		jobchainsGroup.setText("Job Chains"); //TODO lang "Job Chains"
+		final Group jobchainsGroup = JOE_G_JobChainsForm_JobChains.Control(new Group(sashForm, SWT.NONE));
 		final GridLayout gridLayout_2 = new GridLayout();
 		gridLayout_2.numColumns = 2;
 		jobchainsGroup.setLayout(gridLayout_2);
-		tChains = new Table(jobchainsGroup, SWT.BORDER);
+		
+		tChains = JOE_Tbl_JobChainsForm_JobChains.Control(new Table(jobchainsGroup, SWT.BORDER));
 		tChains.addMouseListener(new MouseAdapter() {
 			public void mouseDoubleClick(final MouseEvent e) {
 				if(tChains.getSelectionCount() > 0)
 					ContextMenu.goTo(tChains.getSelection()[0].getText(0), _dom, Editor.JOB_CHAIN);
 			}
 		});
-		
-		
 		tChains.getHorizontalBar().setMaximum(0);
 		tChains.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 1, 3));
 		tChains.setHeaderVisible(true);
@@ -128,24 +127,20 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 				}
 				bRemoveChain.setEnabled(tChains.getSelectionCount() > 0 && enabled);
 			}
-
 		});
 		
 		
-		TableColumn tableColumn1 = new TableColumn(tChains, SWT.NONE);
+		TableColumn tableColumn1 = JOE_TCl_JobChainsForm_Name.Control(new TableColumn(tChains, SWT.NONE));
 		tableColumn1.setWidth(150);
 		
-		tableColumn1.setText("Name"); //TODO lang "Name"
-		
-		TableColumn ordersRecoverableTableColumn = new TableColumn(tChains, SWT.NONE);
+		TableColumn ordersRecoverableTableColumn = JOE_TCl_JobChainsForm_OrdersRecoverable.Control(new TableColumn(tChains, SWT.NONE));
 		ordersRecoverableTableColumn.setWidth(104);
-		ordersRecoverableTableColumn.setText("Orders Recoverable"); //TODO lang "Orders Recoverable"
-		TableColumn tableColumn2 = new TableColumn(tChains, SWT.NONE);
+		
+		TableColumn tableColumn2 = JOE_TCl_JobChainsForm_Visible.Control(new TableColumn(tChains, SWT.NONE));
 		tableColumn2.setWidth(90);
-		tableColumn2.setText("Visible"); //TODO lang "Visible"
-		bNewChain = new Button(jobchainsGroup, SWT.NONE);
+		
+		bNewChain = JOE_B_JobChainsForm_NewChain.Control(new Button(jobchainsGroup, SWT.NONE));
 		bNewChain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		bNewChain.setText("New Job &Chain"); //TODO lang "New Job &Chain"
 		getShell().setDefaultButton(bNewChain);
 		bNewChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -156,14 +151,14 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 				butDetails.setEnabled(false);*/
 			}
 		});
-		bRemoveChain = new Button(jobchainsGroup, SWT.NONE);
+		
+		bRemoveChain = JOE_B_JobChainsForm_RemoveChain.Control(new Button(jobchainsGroup, SWT.NONE));
 		bRemoveChain.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		bRemoveChain.setText("Remove Job Chain"); //TODO lang "Remove Job Chain"
 		bRemoveChain.setEnabled(false);
 		bRemoveChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				
-				int c = MainWindow.message(getShell(), "Do you want remove the jobchain?", SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+				int c = MainWindow.message(getShell(), JOE_M_JobChainsForm_RemoveChain.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO );
 				if(c != SWT.YES)
 					return;
 				
@@ -173,7 +168,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 
-		butDetails = new Button(jobchainsGroup, SWT.NONE);
+		butDetails = JOE_B_JobChainsForm_Details.Control(new Button(jobchainsGroup, SWT.NONE));
 		butDetails.setEnabled(false);
 		butDetails.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -183,16 +178,13 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 		});
 		butDetails.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent e) {
-				
 				if(checkParameter) {
 					listener.fillChains(tChains);
 					checkParameter = false;
 				}
-					
 			}
 		});
 		butDetails.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		butDetails.setText("Parameter"); //TODO lang "Parameter"
 
 	}
 
@@ -221,10 +213,12 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 	private void applyChain() {
 	
        int i = tChains.getItemCount() + 1;
-	   String newName = "job_chain" + i;
+//	   String newName = "job_chain" + i;
+       String newName = JOE_M_JobChain.label() + i;
  	   while (listener.indexOf(newName) >= 0) {
  		   i++;
-		   newName = "job_chain" + i;
+//		  newName = "job_chain" + i;
+ 		  newName = JOE_M_JobChain.label() + i;
 	   }
  	    
 	
@@ -250,12 +244,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 
 
 	public void setToolTipText() {
-
-		bNewChain.setToolTipText(Messages.getTooltip("job_chains.chain.btn_new"));
-		bRemoveChain.setToolTipText(Messages.getTooltip("job_chains.chain.btn_remove"));
-		tChains.setToolTipText(Messages.getTooltip("job_chains.table"));
-		butDetails.setToolTipText(Messages.getTooltip("job_chains.chain.details"));
-
+//
 	}
 
 	public void setISchedulerUpdate(ISchedulerUpdate update_) {
@@ -280,7 +269,7 @@ public class JobChainsForm extends Composite implements IUnsaved, IUpdateLanguag
 			} 
 
 		} else {
-			MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+			MainWindow.message(getShell(), JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		}
 
 	}

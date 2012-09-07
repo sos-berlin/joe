@@ -14,12 +14,13 @@ import org.eclipse.swt.widgets.Text;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.CommandsListener;
 
 
-public class CommandsForm extends Composite implements IUpdateLanguage {
+public class CommandsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
     private Text              tCommands;
 
@@ -55,12 +56,12 @@ public class CommandsForm extends Composite implements IUpdateLanguage {
     private void createGroup() {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        commandsGroup = new Group(this, SWT.NONE);
-        commandsGroup.setText("Commands");
+        commandsGroup = JOE_G_CommandsForm_Commands.Control(new Group(this, SWT.NONE));
+//        commandsGroup.setText("Commands");
         commandsGroup.setLayout(gridLayout);
         createTable();
 
-        tCommands = new Text(commandsGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL);
+        tCommands = JOE_T_CommandsForm_Commands.Control(new Text(commandsGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL));
         tCommands.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
         		if(e.keyCode==97 && e.stateMask == SWT.CTRL){
@@ -71,31 +72,26 @@ public class CommandsForm extends Composite implements IUpdateLanguage {
         tCommands.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
         final GridData gridData4_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
         tCommands.setLayoutData(gridData4_1);
+        
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);
-        bSave = new Button(commandsGroup, SWT.NONE);
-        bSave.setText("&Apply");
+        bSave = JOE_B_CommandsForm_Apply.Control(new Button(commandsGroup, SWT.NONE));
+//        bSave.setText("&Apply");
         bSave.setLayoutData(gridData);
         getShell().setDefaultButton(bSave);
         bSave.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 listener.saveCommands(tCommands.getText());
-
             }
         });
     }
-
-
     /**
      * This method initializes table
      */
     private void createTable() {
-
     }
-
-
+    
     public void setToolTipText() {
-        bSave.setToolTipText(Messages.getTooltip("commands.btn_save"));
-        tCommands.setToolTipText(Messages.getTooltip("commands.commands"));
+//        bSave.setToolTipText(Messages.getTooltip("commands.btn_save"));
+//        tCommands.setToolTipText(Messages.getTooltip("commands.commands"));
     }
-
 } // @jve:decl-index=0:visual-constraint="10,10"

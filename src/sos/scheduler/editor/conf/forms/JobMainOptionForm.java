@@ -21,13 +21,14 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
 
-public class JobMainOptionForm extends Composite implements IUpdateLanguage {
+public class JobMainOptionForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			
 	private Combo       sPriority         = null;
 	
@@ -131,8 +132,11 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 	private void createGroup() {
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.numColumns = 1;
-		group = new Group(this, SWT.NONE);		
-		group.setText("Job: " + listener.getJobName() + (listener.isDisabled() ? " (Disabled)" : "")); //TODO lang "Job: "....
+		group = new Group(this, SWT.NONE);	
+		String strT = JOE_M_JobAssistent_JobGroup.params_(listener.getJobName());
+		if(listener.isDisabled())
+			strT += " " + JOE_M_JobCommand_Disabled.label();
+		group.setText(strT);
 		group.setLayout(gridLayout2);
 		 
 	 
@@ -142,18 +146,14 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		final GridData gridData_12 = new GridData(SWT.FILL, GridData.FILL, true, true);
 		gridData_12.heightHint = 353;
 		gMain.setLayoutData(gridData_12);
-		gMain.setText("Main Options for Job: " + listener.getJobName()); //TODO lang "Main Options for Job: "
+		gMain.setText(JOE_M_JobMainOptionForm_MainOptions.params(listener.getJobName()));
 		gMain.setLayout(gridLayout);
-		label3 = new Label(gMain, SWT.NONE);
+		
+		label3 = JOE_L_JobMainOptionForm_SchedulerID.Control(new Label(gMain, SWT.NONE));
 		label3.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		label3.setText("Scheduler ID:"); //TODO lang "Scheduler ID:"
 		label3.setVisible(!listener.get_dom().isLifeElement() && !listener.get_dom().isDirectory());
-		tSpoolerID = new Text(gMain, SWT.BORDER);
-		tSpoolerID.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tSpoolerID.selectAll();
-			}
-		});
+		
+		tSpoolerID = JOE_T_JobMainOptionForm_SchedulerID.Control(new Text(gMain, SWT.BORDER));
 		tSpoolerID.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1));        
 		tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -161,19 +161,12 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 				listener.setSpoolerID(tSpoolerID.getText());
 			}
 		});
-		
 		tSpoolerID.setVisible(!listener.get_dom().isLifeElement() && !listener.get_dom().isDirectory());
 
-		final Label java_optionsLabel = new Label(gMain, SWT.NONE);
+		final Label java_optionsLabel = JOE_L_JobMainOptionForm_JavaOptions.Control(new Label(gMain, SWT.NONE));
 		java_optionsLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		java_optionsLabel.setText("Java Options:"); //TODO lang "Java Options"
 
-		txtJavaOptions = new Text(gMain, SWT.BORDER);
-		txtJavaOptions.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				txtJavaOptions.selectAll();
-			}
-		});
+		txtJavaOptions = JOE_T_JobMainOptionForm_JavaOptions.Control(new Text(gMain, SWT.BORDER));
 		txtJavaOptions.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if(init) return;
@@ -182,16 +175,10 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		});
 		txtJavaOptions.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1));
 		
-		final Label ignore_signalLabel = new Label(gMain, SWT.NONE);
+		final Label ignore_signalLabel = JOE_L_JobMainOptionForm_IgnoreSignals.Control(new Label(gMain, SWT.NONE));
 		ignore_signalLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		ignore_signalLabel.setText("Ignore Signals:"); //TODO lang "Ignore Signals:"
 		
-		tIgnoreSignals = new Text(gMain, SWT.BORDER);
-		tIgnoreSignals.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tIgnoreSignals.selectAll();
-			}
-		});
+		tIgnoreSignals = JOE_T_JobMainOptionForm_IgnoreSignals.Control(new Text(gMain, SWT.BORDER));
 		tIgnoreSignals.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if(init) return;
@@ -201,57 +188,54 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 //		gridData_3.widthHint = 48;
 		tIgnoreSignals.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, true, false));
 		
-		addButton = new Button(gMain, SWT.NONE);
+		addButton = JOE_B_JobMainOptionForm_Add.Control(new Button(gMain, SWT.NONE));
 		addButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if(init) return;
 				if (tIgnoreSignals.getText().equals("")){
 					tIgnoreSignals.setText(cSignals.getText());
-				}else {
+				} else {
 					tIgnoreSignals.setText( tIgnoreSignals.getText() + " " + cSignals.getText());
 				}
 			}
 		});
 		addButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		addButton.setText("<- Add <-"); //TODO lang "<- Add <-"
 		
-		cSignals = new Combo(gMain, SWT.NONE);	
+		cSignals = JOE_Cbo_JobMainOptionForm_Signals.Control(new Combo(gMain, SWT.NONE));	
 		cSignals.setItems(new String[] {"SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT", "SIGIOT", "SIGBUS", "SIGFPE", "SIGKILL", "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGPIPE", "SIGALRM", "SIGTERM", "SIGSTKFLT", "SIGCHLD", "SIGCONT", "SIGSTOP", "SIGTSTP", "SIGTTIN", "SIGTTOU", "SIGURG", "SIGXCPU", "SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH", "SIGPOLL", "SIGIO", "SIGPWR", "SIGSYS."});
 		cSignals.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, true, false));
-		label17 = new Label(gMain, SWT.NONE);
+		
+		label17 = JOE_L_JobMainOptionForm_Priority.Control(new Label(gMain, SWT.NONE));
 		final GridData gridData_7 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false);
 		gridData_7.widthHint = 41;
 		label17.setLayoutData(gridData_7);
-		label17.setText("Priority:"); //TODO lang "Priority:"
 		
-		sPriority = new Combo(gMain, SWT.NONE);
+		sPriority = JOE_Cbo_JobMainOptionForm_Priority.Control(new Combo(gMain, SWT.NONE));
 		sPriority.setItems(new String[] { "idle", "below_normal", "normal", "above_normal", "high" });
 		sPriority.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				e.doit = (Utils.isOnlyDigits(e.text) || e.text.equals("idle") || e.text.equals("below_normal")
 						|| e.text.equals("normal") || e.text.equals("above_normal") || e.text.equals("high"));
-				
 			}
 		});
 		final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_1.verticalIndent = -1;
 		sPriority.setLayoutData(gridData_1);
 		sPriority.addModifyListener(new ModifyListener() {
-			
 			public void modifyText(final ModifyEvent e) {
 				if(init) return;
 				Utils.setBackground(-20, 20, sPriority);
 				listener.setPriority(sPriority.getText());
 			}
 		});
+		
 		new Label(gMain, SWT.NONE);
 		new Label(gMain, SWT.NONE);
 
-		final Label visibleLabel = new Label(gMain, SWT.NONE);
+		final Label visibleLabel = JOE_L_JobMainOptionForm_Visible.Control(new Label(gMain, SWT.NONE));
 		visibleLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		visibleLabel.setText("Visible:"); //TODO lang "Visible:"
 
-		comVisible = new Combo(gMain, SWT.READ_ONLY);
+		comVisible = JOE_Cbo_JobMainOptionForm_Visible.Control(new Combo(gMain, SWT.READ_ONLY));
 		comVisible.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		comVisible.setItems(new String[] { "", "yes", "no", "never" });
 		comVisible.addModifyListener(new ModifyListener() {
@@ -260,20 +244,15 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 				listener.setVisible(comVisible.getText());
 			}
 		});
+		
 		new Label(gMain, SWT.NONE);
 		new Label(gMain, SWT.NONE);
 		//gridData_16.widthHint = 17;
 
-		final Label minMaskLabel = new Label(gMain, SWT.NONE);
+		final Label minMaskLabel = JOE_L_JobMainOptionForm_MinTasks.Control(new Label(gMain, SWT.NONE));
 		minMaskLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		minMaskLabel.setText("Min Tasks"); //TODO lang "Min Tasks"
 		
-		tMintasks = new Text(gMain, SWT.BORDER);
-		tMintasks.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tMintasks.selectAll();		
-			}
-		});
+		tMintasks = JOE_T_JobMainOptionForm_MinTasks.Control(new Text(gMain, SWT.BORDER));
 		tMintasks.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
@@ -286,19 +265,14 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 			}
 		});
 		tMintasks.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+		
 		new Label(gMain, SWT.NONE);
 		new Label(gMain, SWT.NONE);
 		
-		label15 = new Label(gMain, SWT.NONE);
+		label15 = JOE_L_JobMainOptionForm_Tasks.Control(new Label(gMain, SWT.NONE));
 		label15.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		label15.setText("Tasks:"); //TODO lang "Tasks:"
 		
-		sTasks = new Text(gMain, SWT.BORDER);
-		sTasks.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				sTasks.selectAll();		
-			}
-		});
+		sTasks = JOE_T_JobMainOptionForm_Tasks.Control(new Text(gMain, SWT.BORDER));
 		sTasks.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		sTasks.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
@@ -316,24 +290,19 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 				listener.setTasks(sTasks.getText());
 			}
 		});
-		new Label(gMain, SWT.NONE);
-		new Label(gMain, SWT.NONE);
-		label13 = new Label(gMain, SWT.NONE);
-		label13.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		label13.setText("Timeout:"); //TODO lang "Timeout:"
 		
-		sTimeout = new Text(gMain, SWT.BORDER);
-		sTimeout.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				sTimeout.selectAll();
-			}
-		});
+		new Label(gMain, SWT.NONE);
+		new Label(gMain, SWT.NONE);
+		
+		label13 = JOE_L_JobMainOptionForm_Timeout.Control(new Label(gMain, SWT.NONE));
+		label13.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
+		
+		sTimeout = JOE_T_JobMainOptionForm_Timeout.Control(new Text(gMain, SWT.BORDER));
 		sTimeout.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				//e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
-		
 		sTimeout.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if(init) return;
@@ -343,25 +312,17 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		//gridData_9.widthHint = 75;
 		sTimeout.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 
-		final Label hhmmssLabel = new Label(gMain, SWT.NONE);
+		final Label hhmmssLabel = JOE_L_JobAssistent_TimeFormat.Control(new Label(gMain, SWT.NONE));
 		hhmmssLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		hhmmssLabel.setText("HH:MM:SS "); //TODO lang "HH:MM:SS "
-		label11 = new Label(gMain, SWT.NONE);
+		
+		label11 = JOE_L_JobMainOptionForm_IdleTimeout.Control(new Label(gMain, SWT.NONE));
 		label11.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		label11.setText("Idle Timeout:"); //TODO lang "Idle Timeout:"
 		
-		sIdleTimeout = new Text(gMain, SWT.BORDER);
-		sIdleTimeout.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				sIdleTimeout.selectAll();
-			}
-		});
+		sIdleTimeout = JOE_T_JobMainOptionForm_IdleTimeout.Control(new Text(gMain, SWT.BORDER));
 		sIdleTimeout.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		
 		sIdleTimeout.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				//e.doit = Utils.isOnlyDigits(e.text);
-				
 			}
 		});
 		sIdleTimeout.addModifyListener(new ModifyListener() {
@@ -371,21 +332,15 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 			}
 		});
 
-		final Label hhmmssLabel_1 = new Label(gMain, SWT.NONE);
+		final Label hhmmssLabel_1 = JOE_L_JobMainOptionForm_IdleTimeoutFormat.Control(new Label(gMain, SWT.NONE));
 		hhmmssLabel_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		hhmmssLabel_1.setText("HH:MM:SS or HH:MM or SS never"); //TODO lang "HH:MM:SS or HH:MM or SS never"
 
-		final Label warnIfLongerLabel = new Label(gMain, SWT.NONE);
-		warnIfLongerLabel.setText("Warn if longer than:"); //TODO lang "Warn if longer than:"
+		@SuppressWarnings("unused")
+		final Label warnIfLongerLabel = JOE_L_JobMainOptionForm_WarnIfLonger.Control(new Label(gMain, SWT.NONE));
 
-		txtWarnIfLongerThan = new Text(gMain, SWT.BORDER);
+		txtWarnIfLongerThan = JOE_T_JobMainOptionForm_WarnIfLonger.Control(new Text(gMain, SWT.BORDER));
 		txtWarnIfLongerThan.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
-			}
-		});
-		txtWarnIfLongerThan.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				txtWarnIfLongerThan.selectAll();
 			}
 		});
 		txtWarnIfLongerThan.addModifyListener(new ModifyListener() {
@@ -396,19 +351,13 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		});
 		txtWarnIfLongerThan.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
-		final Label hhmmssLabel_1_1 = new Label(gMain, SWT.NONE);
+		final Label hhmmssLabel_1_1 = JOE_L_JobMainOptionForm_WarnIfLongerFormat.Control(new Label(gMain, SWT.NONE));
 		hhmmssLabel_1_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		hhmmssLabel_1_1.setText("HH:MM:SS or Percentage"); //TODO lang "HH:MM:SS or Percentage"
 
-		final Label warnIfShorterLabel = new Label(gMain, SWT.NONE);
-		warnIfShorterLabel.setText("Warn if shorter than:"); //TODO lang "Warn if shorter than:"
+		@SuppressWarnings("unused")
+		final Label warnIfShorterLabel = JOE_L_JobMainOptionForm_WarnIfShorter.Control(new Label(gMain, SWT.NONE));
 
-		txtWarnIfShorterThan = new Text(gMain, SWT.BORDER);
-		txtWarnIfShorterThan.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				txtWarnIfShorterThan.selectAll();
-			}
-		});
+		txtWarnIfShorterThan = JOE_T_JobMainOptionForm_WarnIfShorter.Control(new Text(gMain, SWT.BORDER));
 		txtWarnIfShorterThan.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if(init) return;
@@ -417,15 +366,13 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 		});
 		txtWarnIfShorterThan.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
-		final Label hhmmssOrPercentageLabel = new Label(gMain, SWT.NONE);
+		final Label hhmmssOrPercentageLabel = JOE_L_JobMainOptionForm_WarnIfShorterFormat.Control(new Label(gMain, SWT.NONE));
 		hhmmssOrPercentageLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		hhmmssOrPercentageLabel.setText("HH:MM:SS or Percentage"); //TODO lang "HH:MM:SS or Percentage"
 		
-		final Label force_idle_timeoutLabel = new Label(gMain, SWT.NONE);
+		final Label force_idle_timeoutLabel = JOE_L_JobMainOptionForm_ForceIdleTimeout.Control(new Label(gMain, SWT.NONE));
 		force_idle_timeoutLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		force_idle_timeoutLabel.setText("Force Idle Timeout"); //TODO lang "Force Idle Timeout"
 		
-		bForceIdletimeout = new Button(gMain, SWT.CHECK);
+		bForceIdletimeout = JOE_B_JobMainOptionForm_ForceIdleTimeout.Control(new Button(gMain, SWT.CHECK));
 		bForceIdletimeout.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 1));
 		bForceIdletimeout.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -472,20 +419,7 @@ public class JobMainOptionForm extends Composite implements IUpdateLanguage {
 	
 	
 	public void setToolTipText() {
-		sPriority.setToolTipText(Messages.getTooltip("job.priority"));
-		sTasks.setToolTipText(Messages.getTooltip("job.tasks"));
-		tIgnoreSignals.setToolTipText(Messages.getTooltip("job.ignore_signal"));
-		tMintasks.setToolTipText(Messages.getTooltip("job.mintasks"));
-		bForceIdletimeout.setToolTipText(Messages.getTooltip("job.forceIdleTimeout"));        
-		sTimeout.setToolTipText(Messages.getTooltip("job.timeout"));
-		sIdleTimeout.setToolTipText(Messages.getTooltip("job.idle_timeout"));
-		txtJavaOptions.setToolTipText(Messages.getTooltip("job.java_options"));		
-		comVisible.setToolTipText(Messages.getTooltip("job.visible"));
-		cSignals.setToolTipText(Messages.getTooltip("job.ignore_signal_list"));
-		addButton.setToolTipText(Messages.getTooltip("job.add_ignore_signal"));
-		tSpoolerID.setToolTipText(Messages.getTooltip("job.spooler_id"));
-		txtWarnIfLongerThan.setToolTipText(Messages.getTooltip("job.warn_if_longer_than"));
-		txtWarnIfShorterThan.setToolTipText(Messages.getTooltip("job.warn_if_shorter_than"));
+//
 	}
 	
 	

@@ -18,6 +18,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -89,15 +90,19 @@ public class JobAssistentRunOptionsForms {
 		gridLayout.numColumns = 2;
 		shellRunOptions.setLayout(gridLayout);
 		shellRunOptions.setSize(469, 170);
-		String step = "  ";
+		String step = " ";
 		if (Utils.getAttributeValue("order", job).equalsIgnoreCase("yes"))
-			step = step + " [Step 7 of 9]";
+//			step = step + " [Step 7 of 9]";
+			step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step7of9.label();
 		else 
-			step = step + " [Step 7 of 8]";
-		shellRunOptions.setText("Run Options" + step);//TODO lang "Run Options"
+//			step = step + " [Step 7 of 8]";
+			step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step7of8.label();
+//		shellRunOptions.setText("Run Options" + step);
+		shellRunOptions.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_RunOptions.params(step));
 
 		final Group jobGroup = new Group(shellRunOptions, SWT.NONE);
-		jobGroup.setText(" Job: " + Utils.getAttributeValue("name", job));//TODO lang " Job: " ?
+//		jobGroup.setText(" Job: " + Utils.getAttributeValue("name", job));
+		jobGroup.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobGroup.params(Utils.getAttributeValue("name", job)));
 		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
 		jobGroup.setLayoutData(gridData_3);
 		final GridLayout gridLayout_1 = new GridLayout();
@@ -110,7 +115,7 @@ public class JobAssistentRunOptionsForms {
 		gridLayout_4.numColumns = 3;
 		composite.setLayout(gridLayout_4);
 
-		butPeriod = new Button(composite, SWT.NONE);
+		butPeriod = SOSJOEMessageCodes.JOE_B_JobAssistent_Period.Control(new Button(composite, SWT.NONE));
 		butPeriod.setFocus();
 		butPeriod.addSelectionListener(new SelectionAdapter() {			
 			public void widgetSelected(final SelectionEvent e) {
@@ -123,24 +128,23 @@ public class JobAssistentRunOptionsForms {
 		gridData_4.horizontalIndent = 10;
 		gridData_4.minimumWidth = 100;
 		butPeriod.setLayoutData(gridData_4);
-		butPeriod.setText("Periods");
+//		butPeriod.setText("Periods");
 
-		butRunTime = new Button(composite, SWT.NONE);
+		butRunTime = SOSJOEMessageCodes.JOE_B_JobAssistent_RunTime.Control(new Button(composite, SWT.NONE));
 		butRunTime.setEnabled(Utils.getAttributeValue("order", job).equals("no"));
 		butRunTime.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				JobAssistentRunTimeForms runtime = new JobAssistentRunTimeForms(dom, update, job, assistentType);
 				runtime.showRunTimeForms();
-
 			}
 		});
 		final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_7.horizontalIndent = 10;
 		gridData_7.widthHint = 97;
 		butRunTime.setLayoutData(gridData_7);
-		butRunTime.setText("Single Starts");//TODO lang "Single Starts"
+//		butRunTime.setText("Single Starts");
 
-		butDirectoryMonitoring = new Button(composite, SWT.NONE);
+		butDirectoryMonitoring = SOSJOEMessageCodes.JOE_B_JobAssistent_DirectoryMonitoring.Control(new Button(composite, SWT.NONE));
 		butDirectoryMonitoring.setEnabled(Utils.getAttributeValue("order", job).equals("no"));
 		butDirectoryMonitoring.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -153,7 +157,7 @@ public class JobAssistentRunOptionsForms {
 		gridData_2.horizontalIndent = 10;
 		gridData_2.minimumHeight = 100;
 		butDirectoryMonitoring.setLayoutData(gridData_2);
-		butDirectoryMonitoring.setText("Directory Monitoring");				
+//		butDirectoryMonitoring.setText("Directory Monitoring");				
 
 		java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();		
 		shellRunOptions.setBounds((screen.width - shellRunOptions.getBounds().width) /2, 
@@ -168,13 +172,13 @@ public class JobAssistentRunOptionsForms {
 		gridLayout_2.marginWidth = 0;
 		composite_1.setLayout(gridLayout_2);
 		{
-			butCancel = new Button(composite_1, SWT.NONE);
+			butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite_1, SWT.NONE));
 			butCancel.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					close();
 				}
 			});
-			butCancel.setText("Cancel");//TODO lang "Cancel"
+//			butCancel.setText("Cancel");
 		}
 
 		final Composite composite_2 = new Composite(shellRunOptions, SWT.NONE);
@@ -185,26 +189,26 @@ public class JobAssistentRunOptionsForms {
 		composite_2.setLayout(gridLayout_3);
 
 		{
-			butShow = new Button(composite_2, SWT.NONE);
+			butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_2, SWT.NONE));
 			butShow.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {										
 					Utils.showClipboard(Utils.getElementAsString(job), shellRunOptions, false, null, false, null, false); 
 				}
 			});
-			butShow.setText("Show");
+//			butShow.setText("Show");
 		}
 
 		{
-			butFinish = new Button(composite_2, SWT.NONE);
+			butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_2, SWT.NONE));
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					doFinish();
 				}
 			});
-			butFinish.setText("Finish");//TODO lang "Finish"
+//			butFinish.setText("Finish");
 		}
 
-		butBack = new Button(composite_2, SWT.NONE);
+		butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_2, SWT.NONE));
 		butBack.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if(Utils.getAttributeValue("order", job).equals("yes")) {
@@ -222,8 +226,9 @@ public class JobAssistentRunOptionsForms {
 				shellRunOptions.dispose();
 			}
 		});
-		butBack.setText("Back");//TODO lang "Back"
-		butNext = new Button(composite_2, SWT.NONE);
+//		butBack.setText("Back");
+		
+		butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite_2, SWT.NONE));
 		butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 		final GridData gridData_6 = new GridData(47, SWT.DEFAULT);
 		butNext.setLayoutData(gridData_6);
@@ -240,28 +245,30 @@ public class JobAssistentRunOptionsForms {
 				shellRunOptions.dispose();								
 			}
 		});
-		butNext.setText("Next");//TODO lang "Next"
+//		butNext.setText("Next");
 
 
-		Utils.createHelpButton(composite_2, "assistent.run_options", shellRunOptions);
+//		Utils.createHelpButton(composite_2, "assistent.run_options", shellRunOptions);
+		Utils.createHelpButton(composite_2, "JOE_B_JobAssistentRunOptionsForm_Help.label", shellRunOptions);
 
 		setToolTipText();
 		shellRunOptions.layout();		
 	}
 
 	public void setToolTipText() {
-		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
-		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
-		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
-		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
-		butBack.setToolTipText(Messages.getTooltip("butBack"));
-		butPeriod.setToolTipText(Messages.getTooltip("assistent.run_options.periods"));
-		butRunTime.setToolTipText(Messages.getTooltip("assistent.run_options.single_starts"));
-		butDirectoryMonitoring.setToolTipText(Messages.getTooltip("assistent.run_options.directory_monitoring"));
+//		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
+//		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
+//		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
+//		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
+//		butBack.setToolTipText(Messages.getTooltip("butBack"));
+//		butPeriod.setToolTipText(Messages.getTooltip("assistent.run_options.periods"));
+//		butRunTime.setToolTipText(Messages.getTooltip("assistent.run_options.single_starts"));
+//		butDirectoryMonitoring.setToolTipText(Messages.getTooltip("assistent.run_options.directory_monitoring"));
 	}
 
 	private void close() {
-		int cont = MainWindow.message(shellRunOptions, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+//		int cont = MainWindow.message(shellRunOptions, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		int cont = MainWindow.message(shellRunOptions, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		if(cont == SWT.OK){
 			if(jobBackUp != null)
 				job.setContent(jobBackUp.cloneContent());
@@ -299,7 +306,8 @@ public class JobAssistentRunOptionsForms {
 
 		}
 		if(Options.getPropertyBoolean("editor.job.show.wizard"))
-			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shellRunOptions, false, null, false, null, true); 
+//			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shellRunOptions, false, null, false, null, true);
+			Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(job), shellRunOptions, false, null, false, null, true);
 
 		closeDialog = true;
 		shellRunOptions.dispose();

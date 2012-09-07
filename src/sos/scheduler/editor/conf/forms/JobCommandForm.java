@@ -24,12 +24,13 @@ import org.jdom.JDOMException;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobCommandListener;
 
-public class JobCommandForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
 	private JobCommandListener listener             = null;
 
@@ -120,62 +121,48 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		gridLayout2.makeColumnsEqualWidth = true;
 		gridLayout2.numColumns = 1;
 		jobsAndOrdersGroup = new Group(this, SWT.NONE);
-		jobsAndOrdersGroup.setText("Commands for Job: " + listener.getName() + (listener.isDisabled() ? " (Disabled)" : "")); //TODO lang "Commands for Job: "...
+		String strT = JOE_M_JobCommand_CommandsForJob.params(listener.getName());
+		if(listener.isDisabled())
+			strT += " " + JOE_M_JobCommand_Disabled.label();
+		jobsAndOrdersGroup.setText(strT);
 		jobsAndOrdersGroup.setLayout(gridLayout2);
+		
 		GridData gridData18 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
 		sashForm = new SashForm(jobsAndOrdersGroup, SWT.NONE);
 		sashForm.setOrientation(512);
 		sashForm.setLayoutData(gridData18);
 		GridLayout gridLayout3 = new GridLayout();
 		gridLayout3.numColumns = 2;
-		gDescription = new Group(sashForm, SWT.NONE);
-		gDescription.setText("Jobs and Orders"); //TODO lang "Jobs and Orders"
+		
+		gDescription = JOE_G_JobCommand_JobsAndOrders.Control(new Group(sashForm, SWT.NONE));
 		gDescription.setLayout(gridLayout3);
 		
 
-		jobchainLabel = new Label(gDescription, SWT.NONE);
+		jobchainLabel = JOE_L_JobCommand_JobChain.Control(new Label(gDescription, SWT.NONE));
 		final GridData gridData_10 = new GridData();
 		jobchainLabel.setLayoutData(gridData_10);
-		jobchainLabel.setText("Job chain"); //TODO lang "Job chain"
 
-		cJobchain = new Combo(gDescription, SWT.NONE);
+		cJobchain = JOE_Cbo_JobCommand_JobChain.Control(new Combo(gDescription, SWT.NONE));
 		cJobchain.setEnabled(false);
 		cJobchain.setItems(listener.getJobChains());		
 		cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if(!event)
 					return;
-				
 				listener.setJobChain(cJobchain.getText());	
-				
 				String curstate = Utils.getAttributeValue("state", listener.getCommand());
-
 					tState.setItems(listener.getStates());                		
 					tState.setText(curstate);
-
-                
                 String curEndstate =  Utils.getAttributeValue("end_state", listener.getCommand());
-
                 	cboEndstate.setItems(listener.getStates());
                 	cboEndstate.setText(curEndstate);
-
-				
 			}
 		});
-
 		final GridData gridData_8 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_8.widthHint = 114;
 		cJobchain.setLayoutData(gridData_8);
-		lblJob = new Label(gDescription, SWT.NONE);
-		lblJob.setLayoutData(new GridData(73, SWT.DEFAULT));
-		lblJob.setText("Job / Order ID"); //TODO lang "Job / Order ID"
-
-		tJob = new Text(gDescription, SWT.BORDER);
-		tJob.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tJob.selectAll();
-			}
-		});
+		
+		tJob = JOE_T_JobCommand_Job.Control(new Text(gDescription, SWT.BORDER));
 		tJob.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if(type == Editor.JOB){
@@ -183,61 +170,42 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 				} else {
 					listener.setOrderId(tJob.getText());
 				}
-
 			}
 		});
 		final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_3.widthHint = 150;
 		tJob.setLayoutData(gridData_3);
-		final Label startAtLabel = new Label(gDescription, SWT.NONE);
+		
+		final Label startAtLabel = JOE_L_JobCommand_StartAt.Control(new Label(gDescription, SWT.NONE));
 		startAtLabel.setLayoutData(new GridData());
-		startAtLabel.setText("Start at"); //TODO lang "Start at"
 
-		tStartAt = new Text(gDescription, SWT.BORDER);
-		tStartAt.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tStartAt.selectAll();
-			}
-		});
+		tStartAt = JOE_T_JobCommand_StartAt.Control(new Text(gDescription, SWT.BORDER));
 		tStartAt.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setAt(tStartAt.getText());
-
 			}
 		});		
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_4.widthHint = 150;
 		tStartAt.setLayoutData(gridData_4);
 
-		priorityLabel = new Label(gDescription, SWT.NONE);
+		priorityLabel = JOE_L_JobCommand_Priority.Control(new Label(gDescription, SWT.NONE));
 		final GridData gridData_11 = new GridData();
 		priorityLabel.setLayoutData(gridData_11);
-		priorityLabel.setText("Priority"); //TODO lang "Priority"
 
-		tPriority = new Text(gDescription, SWT.BORDER);
-		tPriority.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tPriority.selectAll();
-			}
-		});
+		tPriority = JOE_T_JobCommand_Priority.Control(new Text(gDescription, SWT.BORDER));
 		tPriority.setEnabled(false);
 		tPriority.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setPriority(tPriority.getText());
-
 			}
 		});
 		tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		titleLabel = new Label(gDescription, SWT.NONE);
+		
+		titleLabel = JOE_L_JobCommand_Title.Control(new Label(gDescription, SWT.NONE));
 		titleLabel.setLayoutData(new GridData());
-		titleLabel.setText("Title"); //TODO lang "Title"
 
-		tTitle = new Text(gDescription, SWT.BORDER);
-		tTitle.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tTitle.selectAll();		
-			}
-		});
+		tTitle = JOE_T_JobCommand_Title.Control(new Text(gDescription, SWT.BORDER));
 		tTitle.setEnabled(false);
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -245,33 +213,29 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 
 			}
 		});
-
 		final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_5.widthHint = 150;
 		tTitle.setLayoutData(gridData_5);
 
-		stateLabel = new Label(gDescription, SWT.NONE);
+		stateLabel = JOE_L_JobCommand_State.Control(new Label(gDescription, SWT.NONE));
 		stateLabel.setLayoutData(new GridData());
-		stateLabel.setText("State"); //TODO lang "State"
 
-		tState = new Combo(gDescription, SWT.BORDER);
+		tState = JOE_T_JobCommand_State.Control(new Combo(gDescription, SWT.BORDER));
 		tState.setEnabled(false);
 		tState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if(event)
 					listener.setState(tState.getText());
-				
 			}
 		});
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_2.widthHint = 150;
 		tState.setLayoutData(gridData_2);
 
-		endStateLabel = new Label(gDescription, SWT.NONE);
+		endStateLabel = JOE_L_JobCommand_EndState.Control(new Label(gDescription, SWT.NONE));
 		endStateLabel.setLayoutData(new GridData());
-		endStateLabel.setText("End State"); //TODO lang "End State"
 
-		cboEndstate = new Combo(gDescription, SWT.NONE);
+		cboEndstate = JOE_Cbo_JobCommand_EndState.Control(new Combo(gDescription, SWT.NONE));
 		cboEndstate.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if(event)
@@ -281,18 +245,16 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		cboEndstate.setEnabled(false);
 		cboEndstate.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
-		replaceLabel = new Label(gDescription, SWT.NONE);
+		replaceLabel = JOE_L_JobCommand_Replace.Control(new Label(gDescription, SWT.NONE));
 		final GridData gridData_12 = new GridData();
 		replaceLabel.setLayoutData(gridData_12);
-		replaceLabel.setText("Replace"); //TODO lang "Replace"
 
-		bReplace = new Button(gDescription, SWT.CHECK);
+		bReplace = JOE_B_JobCommand_Replace.Control(new Button(gDescription, SWT.CHECK));
 		bReplace.setSelection(true);
 		bReplace.setEnabled(true);
 		bReplace.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				listener.setReplace(bReplace.getSelection() ? "yes" : "no");
-				
 			}
 		});
 		bReplace.setLayoutData(new GridData());
@@ -322,8 +284,6 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		}
 		clearFields();
 		fillCommand();
-		
-
 	}
 
 
@@ -343,14 +303,15 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 			stateLabel.setVisible(false);
 			endStateLabel.setVisible(false);
 			replaceLabel.setVisible(false);
-			lblJob.setText("Job"); //TODO lang "Job"
+			lblJob = JOE_L_JobCommand_Job.Control(new Label(gDescription, SWT.NONE));
+			lblJob.setLayoutData(new GridData(73, SWT.DEFAULT));
 			tJob.setFocus();
 		} else {
-			lblJob.setText("Order Id"); //TODO lang "Order Id"
+			lblJob = JOE_L_JobCommand_OrderID.Control(new Label(gDescription, SWT.NONE));
+			lblJob.setLayoutData(new GridData(73, SWT.DEFAULT));
 			cJobchain.setFocus();
 		}
 		tJob.setVisible(true);
-		
 		tStartAt.setVisible(true);
 		
 	}
@@ -389,22 +350,12 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 			} else {
 				tJob.setText(Utils.getAttributeValue("job", listener.getCommand()));
 			}
-
 		}
 	}
 
 
 	public void setToolTipText() {
-		
-		tStartAt.setToolTipText(Messages.getTooltip("jobcommand.startat"));
-		tTitle.setToolTipText(Messages.getTooltip("jobcommand.title"));
-		tPriority.setToolTipText(Messages.getTooltip("jobcommand.priority"));
-		tState.setToolTipText(Messages.getTooltip("jobcommand.state"));		
-		cboEndstate.setToolTipText(Messages.getTooltip("jobcommand.end_state"));
-		bReplace.setToolTipText(Messages.getTooltip("jobcommand.replaceorder"));
-		cJobchain.setToolTipText(Messages.getTooltip("jobcommand.jobchain"));
-		tJob.setToolTipText(Messages.getTooltip("jobcommand.job_order_id"));
-		
+//		
 	}
 
 	

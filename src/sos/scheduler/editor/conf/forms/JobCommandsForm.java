@@ -18,13 +18,14 @@ import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobCommandsListener;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
-public class JobCommandsForm extends Composite implements IUpdateLanguage {
+public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
     private JobCommandsListener listener       = null;
 
@@ -78,26 +79,26 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
         gridData.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        commandsGroup = new Group(this, SWT.NONE);
-        commandsGroup.setText("Commands"); //TODO lang "Commands"
+        
+        commandsGroup = JOE_G_JobCommand_Commands.Control(new Group(this, SWT.NONE));
         commandsGroup.setLayout(gridLayout);
+        
         createTable();
-        bNewCommands = new Button(commandsGroup, SWT.NONE);
-        bNewCommands.setText("&New Command"); //TODO lang "&New Command"
+        
+        bNewCommands = JOE_B_JobCommand_NewCommand.Control(new Button(commandsGroup, SWT.NONE));
         bNewCommands.setLayoutData(gridData);
         getShell().setDefaultButton(bNewCommands);
-
-        label = new Label(commandsGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label.setText("Label"); //TODO lang "Label"
-        label.setLayoutData(gridData4);
         bNewCommands.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 listener.newCommands(table);
                 bRemoveCommand.setEnabled(true);
             }
         });
-        bRemoveCommand = new Button(commandsGroup, SWT.NONE);
-        bRemoveCommand.setText("Remove Command"); //TODO lang "Remove Command"
+
+        label = new Label(commandsGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
+        label.setLayoutData(gridData4);
+        
+        bRemoveCommand = JOE_B_JobCommand_RemoveCommand.Control(new Button(commandsGroup, SWT.NONE));
         bRemoveCommand.setEnabled(false);
         bRemoveCommand.setLayoutData(gridData1);
         bRemoveCommand.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -112,9 +113,10 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
      * This method initializes table
      */
     private void createTable() {
+    	
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
         gridData2.widthHint = 204;
-        table = new Table(commandsGroup, SWT.BORDER | SWT.FULL_SELECTION);
+        table = JOE_Tbl_JobCommand_Table.Control(new Table(commandsGroup, SWT.BORDER | SWT.FULL_SELECTION));
         table.addMouseListener(new MouseAdapter() {
         	public void mouseDoubleClick(final MouseEvent e) {
         		if(table.getSelectionCount() > 0)
@@ -124,9 +126,9 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
         table.setHeaderVisible(true);
         table.setLayoutData(gridData2);
         table.setLinesVisible(true);
-        TableColumn tableColumn = new TableColumn(table, SWT.NONE);
+        
+        TableColumn tableColumn = JOE_TCl_JobCommand_Exitcode.Control(new TableColumn(table, SWT.NONE));
         tableColumn.setWidth(240);
-        tableColumn.setText("Exitcode"); //TODO lang "Exitcode"
         table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 bRemoveCommand.setEnabled(true);
@@ -137,10 +139,7 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
 
 
     public void setToolTipText() {
-        bNewCommands.setToolTipText(Messages.getTooltip("jobcommands.btn_add_new"));
-        bRemoveCommand.setToolTipText(Messages.getTooltip("jobcommands.btn_remove"));
-        table.setToolTipText(Messages.getTooltip("jobcommands.table"));
-
+//
     }
 
 } // @jve:decl-index=0:visual-constraint="10,10"

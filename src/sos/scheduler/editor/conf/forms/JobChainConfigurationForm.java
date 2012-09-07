@@ -23,13 +23,14 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
 import sos.scheduler.editor.conf.DetailDom;
 import  sos.scheduler.editor.conf.IDetailUpdate;
 
-public class JobChainConfigurationForm extends Composite implements IDetailUpdate, IEditor {  
+public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDetailUpdate, IEditor {  
     
 
     private JobChainConfigurationListener listener;
@@ -90,9 +91,9 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
      * This method initializes gTree
      */
     private void createGTree() {
-        gTree = new Group(sashForm, SWT.NONE);
+        gTree = JOE_G_JobAssistent_JobChainConfiguration.Control(new Group(sashForm, SWT.NONE));
         gTree.setLayout(new FillLayout());
-        gTree.setText("Job Chain Configuration"); //TODO lang "Job Chain Configuration"
+//        gTree.setText("Job Chain Configuration");
         tree = new Tree(gTree, SWT.BORDER);
         //tree.setMenu(new TreeMenu(tree, dom, this).getMenu());
         tree.addListener(SWT.MenuDetect, new Listener() {
@@ -149,13 +150,15 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
     
     public void updateState(String state){
     	TreeItem item = tree.getSelection()[0];        
-        item.setText("State: " + state); //TODO lang "State: "
+//        item.setText("State: " + state);
+    	item.setText(JOE_M_JobAssistent_State.params(state));
         dom.setChanged(true);
     }
     
     public void updateJobChainname(String name){    	
     	TreeItem item = tree.getItem(0);
-    	item.setText("Job Chain: " + name); //TODO lang "Job Chain: "
+//    	item.setText("Job Chain: " + name);
+    	item.setText(JOE_JobAssistent_JobChain.params(name));
     	dom.setChanged(true);
     }
 
@@ -210,9 +213,9 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
     	 try {    		 
              // open file dialog
              if (filename == null || filename.equals("")) {
-                 FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
+                 FileDialog fdialog = JOE_FD_JobAssistent_OpenFile.Control(new FileDialog(MainWindow.getSShell(), SWT.OPEN));
                  fdialog.setFilterPath(Options.getLastDirectory());
-                 fdialog.setText("Open File"); //TODO lang "Open File"
+//                 fdialog.setText("Open File");
                  filename = fdialog.open();
              }
 
@@ -220,8 +223,8 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
              if (filenames != null) {
                  for (Iterator it = filenames.iterator(); it.hasNext();) {
                      if (((String) it.next()).equals(filename)) {
-                         MainWindow
-                                 .message(Messages.getString("MainListener.fileOpened"), SWT.ICON_INFORMATION | SWT.OK);
+//                         MainWindow.message(Messages.getString("MainListener.fileOpened"), SWT.ICON_INFORMATION | SWT.OK);
+                    	 MainWindow.message(JOE_M_JobAssistent_FileIsOpened.label(), SWT.ICON_INFORMATION | SWT.OK);
                          return "";
                      }
                  }
@@ -233,21 +236,27 @@ public class JobChainConfigurationForm extends Composite implements IDetailUpdat
                  // check the file
                  if (!file.exists()) {
                 	 //System.out.println("~~~~~~~~~~~~~~~~~not exist filename: " + filename);
-                     MainWindow.message(Messages.getString("MainListener.fileNotFound"), //$NON-NLS-1$
+//                     MainWindow.message(Messages.getString("MainListener.fileNotFound"), //$NON-NLS-1$
+//                             SWT.ICON_WARNING | SWT.OK);
+                     MainWindow.message(JOE_M_JobAssistent_FileNotFound.label(), //$NON-NLS-1$
                              SWT.ICON_WARNING | SWT.OK);
                  } else if (!file.canRead())
-                     MainWindow.message(Messages.getString("MainListener.fileReadProtected"), //$NON-NLS-1$
-                             SWT.ICON_WARNING | SWT.OK);                 
+//                     MainWindow.message(Messages.getString("MainListener.fileReadProtected"), //$NON-NLS-1$
+//                             SWT.ICON_WARNING | SWT.OK);
+                 MainWindow.message(JOE_M_JobAssistent_FileReadProtected.label(), //$NON-NLS-1$
+                         SWT.ICON_WARNING | SWT.OK);
              } else
                  return filename;
 
-             MainWindow.getSShell().setText("Job Details Editor [" + filename + "]"); //TODO lang "Job Details Editor []"
+//             MainWindow.getSShell().setText("Job Details Editor [" + filename + "]");
+             MainWindow.getSShell().setText(JOE_M_JobAssistent_JobDetailsEditor.params(filename));
 
              Options.setLastDirectory(new File(filename), dom);
              return filename;
          } catch (Exception e) {
         	 try {
- 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+// 				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+        		 new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) , e);
  			} catch(Exception ee) {
  				//tu nichts
  			}

@@ -22,6 +22,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -98,12 +99,13 @@ public class JobAssistentTasksForm {
 		tasksShell.setLayout(gridLayout);
 		tasksShell.setSize(473, 166);
 		tasksShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
-		String step = "  ";
+		String step = " ";
 		if (Utils.getAttributeValue("order", joblistener.getJob()).equalsIgnoreCase("yes"))
-			step = step + " [Step 4 of 9]";
+			step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step4of9.label();
 		else 
-			step = step + " [Step 4 of 8]";
-		tasksShell.setText("Tasks" + step); //TODO lang "Tasks"
+			step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step4of8.label();
+			
+		tasksShell.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_Tasks.params(step));
 
 		{
 			if(Utils.getAttributeValue("tasks", joblistener.getJob()) != null && 
@@ -114,7 +116,7 @@ public class JobAssistentTasksForm {
 
 		{
 			final Group jobGroup = new Group(tasksShell, SWT.NONE);
-			jobGroup.setText("Job " + Utils.getAttributeValue("name", joblistener.getJob())); //TODO lang "Job "
+			jobGroup.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobGroup.params(Utils.getAttributeValue("name", joblistener.getJob())));
 			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, true, 2, 1);
 			jobGroup.setLayoutData(gridData);
 			final GridLayout gridLayout_1 = new GridLayout();
@@ -134,13 +136,13 @@ public class JobAssistentTasksForm {
 			composite_1.setLayout(gridLayout_3);
 
 			{
-				final Label tasksLabel = new Label(composite_1, SWT.NONE);
+				final Label tasksLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_Tasks.Control(new Label(composite_1, SWT.NONE));
 				final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 				gridData_1.widthHint = 57;
 				tasksLabel.setLayoutData(gridData_1);
-				tasksLabel.setText("Tasks"); //TODO lang "Tasks"
 			}
-			txtTask = new Text(composite_1, SWT.BORDER);
+			
+			txtTask = SOSJOEMessageCodes.JOE_T_JobAssistent_Tasks.Control(new Text(composite_1, SWT.BORDER));
 			txtTask.setFocus();
 			txtTask.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
@@ -148,7 +150,7 @@ public class JobAssistentTasksForm {
 						if(Utils.isNumeric(txtTask.getText())) {
 							joblistener.setTasks(txtTask.getText());
 						} else {							
-							MainWindow.message(tasksShell, sos.scheduler.editor.app.Messages.getString("assistent.no_numeric"), SWT.ICON_WARNING | SWT.OK );
+							MainWindow.message(tasksShell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoNum.label(), SWT.ICON_WARNING | SWT.OK );
 						}
 						txtTask.setFocus();
 					}
@@ -161,13 +163,12 @@ public class JobAssistentTasksForm {
 			txtTask.setLayoutData(gridData_5);			
 			txtTask.setText(joblistener.getTasks());
 
-			final Label minimumTasksLabel = new Label(composite_1, SWT.RIGHT);
+			final Label minimumTasksLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_MinimumTasks.Control(new Label(composite_1, SWT.RIGHT));
 			final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData_3.widthHint = 95;
 			minimumTasksLabel.setLayoutData(gridData_3);
-			minimumTasksLabel.setText("Minimum Tasks"); //TODO lang "Minimum Tasks"
 
-			txtMinTasks = new Text(composite_1, SWT.BORDER);
+			txtMinTasks = SOSJOEMessageCodes.JOE_T_JobAssistent_MinimumTasks.Control(new Text(composite_1, SWT.BORDER));
 			txtMinTasks.setText(joblistener.getMintasks());
 			txtMinTasks.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
@@ -175,7 +176,7 @@ public class JobAssistentTasksForm {
 						if(Utils.isNumeric(txtMinTasks.getText())) {
 							joblistener.setMintasks(txtMinTasks.getText());
 						} else {							
-							MainWindow.message(tasksShell, sos.scheduler.editor.app.Messages.getString("assistent.no_numeric"), SWT.ICON_WARNING | SWT.OK );
+							MainWindow.message(tasksShell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoNum.label(), SWT.ICON_WARNING | SWT.OK );
 						}
 					}
 				}
@@ -192,13 +193,12 @@ public class JobAssistentTasksForm {
 			gridLayout_2.marginWidth = 0;
 			composite.setLayout(gridLayout_2);
 			{
-				butCancel = new Button(composite, SWT.NONE);
+				butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite, SWT.NONE));
 				butCancel.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						close();
 					}
 				});
-				butCancel.setText("Cancel"); //TODO lang "Cancel"
 			}
 		}
 
@@ -212,7 +212,7 @@ public class JobAssistentTasksForm {
 		composite_2.setLayout(gridLayout_4);
 
 		{
-			butShow = new Button(composite_2, SWT.NONE);
+			butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_2, SWT.NONE));
 			butShow.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			butShow.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
@@ -221,11 +221,10 @@ public class JobAssistentTasksForm {
 					txtTask.setFocus();
 				}
 			});
-			butShow.setText("Show"); //TODO lang "Show"
 		}
 
 		{
-			butFinish = new Button(composite_2, SWT.NONE);
+			butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_2, SWT.NONE));
 			butFinish.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
@@ -233,10 +232,9 @@ public class JobAssistentTasksForm {
 
 				}
 			});
-			butFinish.setText("Finish"); //TODO lang "Finish"
 		}
 
-		butBack = new Button(composite_2, SWT.NONE);
+		butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_2, SWT.NONE));
 		butBack.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(dom, update, joblistener.getJob(), assistentType);					
@@ -250,9 +248,8 @@ public class JobAssistentTasksForm {
 				tasksShell.dispose();
 			}
 		});
-		butBack.setText("Back"); //TODO lang "Back"
 		{
-			butNext = new Button(composite_2, SWT.NONE);
+			butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite_2, SWT.NONE));
 			butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			butNext.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			butNext.addSelectionListener(new SelectionAdapter() {
@@ -260,12 +257,10 @@ public class JobAssistentTasksForm {
 					doNext();					
 				}
 			});
-			butNext.setText("Next"); //TODO lang "Next"
 		}
 
-		Utils.createHelpButton(composite_2, "assistent.tasks", tasksShell);				
+		Utils.createHelpButton(composite_2, "JOE_M_JobAssistentTasksForm_Help.label", tasksShell);				
 		tasksShell.layout();
-		setToolTipText();
 		java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();		
 		tasksShell.setBounds((screen.width - tasksShell.getBounds().width) /2, 
 				(screen.height - tasksShell.getBounds().height) /2, 
@@ -275,13 +270,7 @@ public class JobAssistentTasksForm {
 	}
 
 	public void setToolTipText() {
-		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
-		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
-		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
-		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
-		txtTask.setToolTipText(Messages.getTooltip("assistent.task"));
-		txtMinTasks.setToolTipText(Messages.getTooltip("assistent.min_task"));
-		butBack.setToolTipText(Messages.getTooltip("butBack"));
+//		
 	}
 
 
@@ -293,7 +282,7 @@ public class JobAssistentTasksForm {
 		if((txtTask.getText() != null && txtTask.getText().trim().length() > 0) &&
 				(txtMinTasks.getText() != null && txtMinTasks.getText().trim().length() > 0)) {
 			if(Integer.parseInt(txtMinTasks.getText()) > Integer.parseInt(txtTask.getText())) {
-				MainWindow.message(tasksShell, sos.scheduler.editor.app.Messages.getString("assistent.error.min_task_too_large"), SWT.ICON_WARNING | SWT.OK );
+				MainWindow.message(tasksShell, SOSJOEMessageCodes.JOE_M_JobAssistent_MinTasksTooLarge.label(), SWT.ICON_WARNING | SWT.OK );
 				return false;
 			}			
 		}
@@ -301,16 +290,16 @@ public class JobAssistentTasksForm {
 		if((txtTask.getText() != null && txtTask.getText().trim().length() == 0) &&
 				(txtMinTasks.getText() != null && txtMinTasks.getText().trim().length() > 0)) {
 			if(Integer.parseInt(txtMinTasks.getText()) > 1) {
-				MainWindow.message(tasksShell, sos.scheduler.editor.app.Messages.getString("min_task_to_great"), SWT.ICON_WARNING | SWT.OK );
+//				MainWindow.message(tasksShell, sos.scheduler.editor.app.Messages.getString("min_task_to_great"), SWT.ICON_WARNING | SWT.OK );
+				MainWindow.message(tasksShell, SOSJOEMessageCodes.JOE_M_JobAssistent_MinTasksTooLarge.label(), SWT.ICON_WARNING | SWT.OK );
 				return false;
 			}
-
 		}
 		return true;
 	}
 
 	private void close() {
-		int cont = MainWindow.message(tasksShell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		int cont = MainWindow.message(tasksShell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		if(cont == SWT.OK) {
 			if(jobBackUp != null)
 				joblistener.getJob().setContent(jobBackUp.cloneContent());
@@ -392,7 +381,7 @@ public class JobAssistentTasksForm {
 		}
 
 		if(Options.getPropertyBoolean("editor.job.show.wizard"))
-			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(joblistener.getJob()), tasksShell, false, null, false, null, true); 
+			Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(joblistener.getJob()), tasksShell, false, null, false, null, true); 
 
 
 		if(jobname != null)

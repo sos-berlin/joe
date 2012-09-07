@@ -1,8 +1,6 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -23,12 +21,12 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.HttpDirectoriesListener;
 
 
-public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
 
 	private           HttpDirectoriesListener       listener                     = null;
@@ -51,7 +49,7 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 		super(parent, style);
 		listener = new HttpDirectoriesListener(dom, config);
 		initialize();
-		setToolTipText();
+//		setToolTipText();
 		listener.fillHttpDirectoryTable(tHttpDirectory);
 
 	}
@@ -70,14 +68,12 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 	 * This method initializes group
 	 */
 	private void createGroup() {
-
-		GridLayout gridLayout = new GridLayout();
-		httpDirectoriesGroup = new Group(this, SWT.NONE);
-		httpDirectoriesGroup.setText("HTTP Directories");
+		httpDirectoriesGroup = JOE_G_HttpDirectoriesForm_DirectoriesGroup.Control(new Group(this, SWT.NONE));
+//		httpDirectoriesGroup.setText("HTTP Directories");
 		createGroup1();
+		GridLayout gridLayout = new GridLayout();
 		httpDirectoriesGroup.setLayout(gridLayout);
 		new Label(httpDirectoriesGroup, SWT.NONE);
-
 	}
 
 
@@ -87,7 +83,7 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 	 */
 	private void createGroup1() {
 
-		final Group group_1 = new Group(httpDirectoriesGroup, SWT.NONE);
+		final Group group_1 = JOE_G_HttpDirectoriesForm_Group1.Control(new Group(httpDirectoriesGroup, SWT.NONE));
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
 		gridData_2.heightHint = 427;
 		gridData_2.widthHint = 525;
@@ -96,15 +92,16 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 		gridLayout.numColumns = 5;
 		group_1.setLayout(gridLayout);
 
-		final Label urlPathLabel = new Label(group_1, SWT.NONE);
-		urlPathLabel.setText("Url Path");
+		@SuppressWarnings("unused")
+		final Label urlPathLabel = JOE_L_HttpDirectoriesForm_URLPath.Control(new Label(group_1, SWT.NONE));
+//		urlPathLabel.setText("Url Path");
 
-		tUrlPath = new Text(group_1, SWT.BORDER);
-		tUrlPath.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tUrlPath.selectAll();
-			}
-		});
+		tUrlPath = JOE_T_HttpDirectoriesForm_URLPath.Control(new Text(group_1, SWT.BORDER));
+//		tUrlPath.addFocusListener(new FocusAdapter() {
+//			public void focusGained(final FocusEvent e) {
+//				tUrlPath.selectAll();
+//			}
+//		});
 		tUrlPath.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {     
 				if ((tUrlPath.getText().length() > 0) && (tUrlPath.getText().charAt(0) != '/')) {
@@ -123,15 +120,16 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 		});
 		tUrlPath.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
-		final Label pathLabel = new Label(group_1, SWT.NONE);
-		pathLabel.setText("Path");
+		@SuppressWarnings("unused")
+		final Label pathLabel = JOE_L_HttpDirectoriesForm_Path.Control(new Label(group_1, SWT.NONE));
+//		pathLabel.setText("Path");
 
-		tPath = new Text(group_1, SWT.BORDER);
-		tPath.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tPath.selectAll();
-			}
-		});
+		tPath = JOE_T_HttpDirectoriesForm_Path.Control(new Text(group_1, SWT.BORDER));
+//		tPath.addFocusListener(new FocusAdapter() {
+//			public void focusGained(final FocusEvent e) {
+//				tPath.selectAll();
+//			}
+//		});
 		tPath.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR && !tUrlPath.getText().equals(""))
@@ -147,7 +145,7 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 		});
 		tPath.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
-		bApplyHttpDirectory = new Button(group_1, SWT.NONE);
+		bApplyHttpDirectory = JOE_B_HttpDirectoriesForm_Apply.Control(new Button(group_1, SWT.NONE));
 		bApplyHttpDirectory.setEnabled(false);
 		bApplyHttpDirectory.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -155,9 +153,9 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 			}
 		});
 		bApplyHttpDirectory.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		bApplyHttpDirectory.setText("Apply");
+//		bApplyHttpDirectory.setText("Apply");
 
-		tHttpDirectory = new Table(group_1, SWT.FULL_SELECTION | SWT.BORDER);
+		tHttpDirectory = JOE_Tbl_HttpDirectoriesForm_DirectoriesTable.Control(new Table(group_1, SWT.FULL_SELECTION | SWT.BORDER));
 		tHttpDirectory.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if (tHttpDirectory.getSelectionCount() > 0) {
@@ -177,15 +175,15 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 		gridData_1.horizontalIndent = 4;
 		tHttpDirectory.setLayoutData(gridData_1);
 
-		final TableColumn urlPathTableColumn = new TableColumn(tHttpDirectory, SWT.NONE);
+		final TableColumn urlPathTableColumn = JOE_TCl_HttpDirectoriesForm_URLPath.Control(new TableColumn(tHttpDirectory, SWT.NONE));
 		urlPathTableColumn.setWidth(150);
-		urlPathTableColumn.setText("Url Path");
+//		urlPathTableColumn.setText("Url Path");
 
-		final TableColumn pathTableColumn = new TableColumn(tHttpDirectory, SWT.NONE);
+		final TableColumn pathTableColumn = JOE_TCl_HttpDirectoriesForm_Path.Control(new TableColumn(tHttpDirectory, SWT.NONE));
 		pathTableColumn.setWidth(250);
-		pathTableColumn.setText("Path");
+//		pathTableColumn.setText("Path");
 
-		bRemoveHttpDirectory = new Button(group_1, SWT.NONE);
+		bRemoveHttpDirectory = JOE_B_HttpDirectoriesForm_Remove.Control(new Button(group_1, SWT.NONE));
 		bRemoveHttpDirectory.setEnabled(false);
 		bRemoveHttpDirectory.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		bRemoveHttpDirectory.addSelectionListener(new SelectionAdapter() {
@@ -203,7 +201,7 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 				;
 			}
 		});
-		bRemoveHttpDirectory.setText("Remove");
+//		bRemoveHttpDirectory.setText("Remove");
 	}
 
 	private void applyHttpDirectory() {
@@ -243,12 +241,10 @@ public class HttpDirectoriesForm extends Composite implements IUnsaved, IUpdateL
 	}
 
 	public void setToolTipText() {
-
-		tUrlPath.setToolTipText(Messages.getTooltip("http_directory.url_path"));
-		tHttpDirectory.setToolTipText(Messages.getTooltip("http_directory.http_directory"));
-		tPath.setToolTipText(Messages.getTooltip("http_directory.http_directory"));
-		bApplyHttpDirectory.setToolTipText(Messages.getTooltip("http_directory.apply_button"));
-		bRemoveHttpDirectory.setToolTipText(Messages.getTooltip("http_directory.remove_button"));
-
+//		tUrlPath.setToolTipText(Messages.getTooltip("http_directory.url_path"));
+//		tHttpDirectory.setToolTipText(Messages.getTooltip("http_directory.http_directory"));
+//		tPath.setToolTipText(Messages.getTooltip("http_directory.http_directory"));
+//		bApplyHttpDirectory.setToolTipText(Messages.getTooltip("http_directory.apply_button"));
+//		bRemoveHttpDirectory.setToolTipText(Messages.getTooltip("http_directory.remove_button"));
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

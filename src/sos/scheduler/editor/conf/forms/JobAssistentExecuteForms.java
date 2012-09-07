@@ -21,6 +21,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -101,10 +102,12 @@ public class JobAssistentExecuteForms {
 		shell.setLayout(gridLayout);
 		shell.setSize(411, 200);
 
-		shell.setText("Execute");//TODO lang "Execute"
+//		shell.setText("Execute");
+		shell.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_Execute.label());
 		{
 			final Group jobGroup = new Group(shell, SWT.NONE);
-			jobGroup.setText("Job: " + Utils.getAttributeValue("name", job));//TODO lang " Job: " ?
+//			jobGroup.setText("Job: " + Utils.getAttributeValue("name", job));
+			jobGroup.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobGroup.params(Utils.getAttributeValue("name", job)));
 			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, true, 3, 1);
 			jobGroup.setLayoutData(gridData);
 			final GridLayout gridLayout_1 = new GridLayout();
@@ -119,16 +122,16 @@ public class JobAssistentExecuteForms {
 			gridLayout_1.numColumns = 5;
 			jobGroup.setLayout(gridLayout_1);
 
-			butProcess = new Button(jobGroup, SWT.RADIO);
+			butProcess = SOSJOEMessageCodes.JOE_B_JobAssistent_Process.Control(new Button(jobGroup, SWT.RADIO));
 			butProcess.setLayoutData(new GridData());
-			butProcess.setText("Process");//TODO lang "Process"
+//			butProcess.setText("Process");
 			butProcess.setSelection(job.getChild("process") != null);
 			new Label(jobGroup, SWT.NONE);
 			new Label(jobGroup, SWT.NONE);
 			new Label(jobGroup, SWT.NONE);
 			new Label(jobGroup, SWT.NONE);
 
-			butScript = new Button(jobGroup, SWT.RADIO);
+			butScript = SOSJOEMessageCodes.JOE_B_JobAssistent_Script.Control(new Button(jobGroup, SWT.RADIO));
 			butScript.setSelection(job.getChild("script") != null);
 			butScript.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
@@ -143,15 +146,15 @@ public class JobAssistentExecuteForms {
 			final GridData gridData_3 = new GridData(GridData.BEGINNING, GridData.CENTER, false, true);
 			gridData_3.widthHint = 69;
 			butScript.setLayoutData(gridData_3);
-			butScript.setText("Script");//TODO lang "Script"
+//			butScript.setText("Script");
 
 			{
-				final Label lblLanguage = new Label(jobGroup, SWT.NONE);
+				final Label lblLanguage = SOSJOEMessageCodes.JOE_L_JobAssistent_Language.Control(new Label(jobGroup, SWT.NONE));
 				lblLanguage.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
-				lblLanguage.setText("Language");//TODO lang "Language"
+//				lblLanguage.setText("Language");
 			}
 
-			comLanguage = new Combo(jobGroup, SWT.NONE);
+			comLanguage = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_Language.Control(new Combo(jobGroup, SWT.NONE));
 			comLanguage.setItems(ScriptListener._languagesJob);
 			comLanguage.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
@@ -164,7 +167,7 @@ public class JobAssistentExecuteForms {
 				}
 			});
 
-			txtInclude = new Text(jobGroup, SWT.BORDER);
+			txtInclude = SOSJOEMessageCodes.JOE_T_JobAssistent_Include.Control(new Text(jobGroup, SWT.BORDER));
 			txtInclude.setEditable(false);
 			final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, true);
 			txtInclude.setLayoutData(gridData_2);
@@ -191,11 +194,11 @@ public class JobAssistentExecuteForms {
 				comLanguage.setEnabled(false);
 			}
 
-			final Label includeLabel = new Label(jobGroup, SWT.NONE);
+			final Label includeLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_Include.Control(new Label(jobGroup, SWT.NONE));
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, true);
 			gridData_1.widthHint = 45;
 			includeLabel.setLayoutData(gridData_1);
-			includeLabel.setText("Include");//TODO lang "Include"
+//			includeLabel.setText("Include");
 
 		}
 
@@ -206,24 +209,24 @@ public class JobAssistentExecuteForms {
 		shell.open();
 
 		{
-			final Composite composite = new Composite(shell, SWT.NONE);
+			final Composite composite = SOSJOEMessageCodes.JOE_Composite1.Control(new Composite(shell, SWT.NONE));
 			final GridLayout gridLayout_2 = new GridLayout();
 			gridLayout_2.marginWidth = 0;
 			gridLayout_2.horizontalSpacing = 0;
 			composite.setLayout(gridLayout_2);
 			{
-				butCancel = new Button(composite, SWT.NONE);
+				butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite, SWT.NONE));
 				butCancel.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						close();
 					}
 				});
-				butCancel.setText("Cancel");//TODO lang "Cancel"
+//				butCancel.setText("Cancel");
 			}
 		}
 
 		{
-			final Composite composite = new Composite(shell, SWT.NONE);
+			final Composite composite = SOSJOEMessageCodes.JOE_Composite2.Control(new Composite(shell, SWT.NONE));
 			composite.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false, 2, 1));
 			final GridLayout gridLayout_2 = new GridLayout();
 			gridLayout_2.marginWidth = 0;
@@ -231,18 +234,18 @@ public class JobAssistentExecuteForms {
 			composite.setLayout(gridLayout_2);
 
 			{
-				butShow = new Button(composite, SWT.NONE);
+				butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite, SWT.NONE));
 				butShow.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						refreshJob();
 						Utils.showClipboard(Utils.getElementAsString(job), shell, false, null, false, null, false);
 					}
 				});
-				butShow.setText("Show");//TODO lang "Show"
+//				butShow.setText("Show");
 			}
 
 			{
-				butFinish = new Button(composite, SWT.NONE);
+				butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite, SWT.NONE));
 				butFinish.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						refreshElement(true);
@@ -250,10 +253,10 @@ public class JobAssistentExecuteForms {
 						shell.dispose();
 					}
 				});
-				butFinish.setText("Finish");//TODO lang "Finish"
+//				butFinish.setText("Finish");
 			}
 
-			butBack = new Button(composite, SWT.NONE);
+			butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite, SWT.NONE));
 			butBack.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					refreshJob();
@@ -266,9 +269,9 @@ public class JobAssistentExecuteForms {
 					shell.dispose();
 				}
 			});
-			butBack.setText("Back");//TODO lang "Back"
+//			butBack.setText("Back");
 			{
-				butNext = new Button(composite, SWT.NONE);
+				butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite, SWT.NONE));
 				butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 				butNext.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
@@ -277,29 +280,31 @@ public class JobAssistentExecuteForms {
 						shell.dispose();
 					}
 				});
-				butNext.setText("Next");//TODO lang "Next"
+//				butNext.setText("Next");
 			}
-			Utils.createHelpButton(composite, "assistent.script_or_execute", shell);
+//			Utils.createHelpButton(composite, "assistent.script_or_execute", shell);
+			Utils.createHelpButton(composite, "JOE_M_JobAssistentExecuteForm_Help.label", shell);
 
 		}
-		setToolTipText();
+//		setToolTipText();
 		shell.layout();
 	}
 
 	public void setToolTipText() {
-		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
-		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
-		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
-		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
-		butBack.setToolTipText(Messages.getTooltip("butBack"));
-		comLanguage.setToolTipText(Messages.getTooltip("assistent.script_or_execute.script"));
-		butProcess.setToolTipText(Messages.getTooltip("assistent.script_or_execute.process"));
-		butScript.setToolTipText(Messages.getTooltip("assistent.script_or_execute.language"));
-		txtInclude.setToolTipText(Messages.getTooltip("assistent.script_or_execute.include"));
+//		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
+//		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
+//		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
+//		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
+//		butBack.setToolTipText(Messages.getTooltip("butBack"));
+//		comLanguage.setToolTipText(Messages.getTooltip("assistent.script_or_execute.script"));
+//		butProcess.setToolTipText(Messages.getTooltip("assistent.script_or_execute.process"));
+//		butScript.setToolTipText(Messages.getTooltip("assistent.script_or_execute.language"));
+//		txtInclude.setToolTipText(Messages.getTooltip("assistent.script_or_execute.include"));
 	}
 
 	private void close() {
-		int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+//		int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+		int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		if (cont == SWT.OK) {
 			if (jobBackUp != null)
 				job.setContent(jobBackUp.cloneContent());
@@ -374,7 +379,8 @@ public class JobAssistentExecuteForms {
 				listener.newImportJob(job, assistentType);
 			}
 			if (Options.getPropertyBoolean("editor.job.show.wizard"))
-				Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shell, false, null, false, null, true);
+//				Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shell, false, null, false, null, true);
+				Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(job), shell, false, null, false, null, true);
 
 		}
 	}

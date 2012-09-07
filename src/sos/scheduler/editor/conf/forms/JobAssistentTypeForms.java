@@ -23,6 +23,7 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -105,12 +106,10 @@ public class JobAssistentTypeForms {
 			gridLayout.marginBottom = 5;
 			gridLayout.numColumns = 2;
 			jobTypeShell.setLayout(gridLayout);			
-			String step = "  [Step 1]";
-			jobTypeShell.setText("Job Type" + step);  //TODO lang "Job Type"
+			jobTypeShell.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobType.params(SOSJOEMessageCodes.JOE_M_JobAssistent_Step1.label()));
 			{
-				final Group jobGroup = new Group(jobTypeShell, SWT.NONE);
+				final Group jobGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobGroup.Control(new Group(jobTypeShell, SWT.NONE));
 				jobGroup.setCapture(true);
-				jobGroup.setText("Job"); //TODO lang "Job"
 				final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, true, 2, 1);
 				gridData_1.heightHint = 99;
 				gridData_1.verticalIndent = -1;
@@ -121,32 +120,30 @@ public class JobAssistentTypeForms {
 				gridLayout_1.marginHeight = 0;
 				gridLayout_1.numColumns = 2;
 				jobGroup.setLayout(gridLayout_1);
+				
 				{
-					radOrderjob = new Button(jobGroup, SWT.RADIO);					
+					radOrderjob = SOSJOEMessageCodes.JOE_B_JobAssistent_OrderJob.Control(new Button(jobGroup, SWT.RADIO));					
 					final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, true);
 					gridData.heightHint = 48;
 					radOrderjob.setLayoutData(gridData);
 					radOrderjob.setSelection(jobType != null && jobType.length() > 0 && jobType.equalsIgnoreCase("order"));
-					radOrderjob.setText(Messages.getLabel("assistent.order.orderjob"));
 				}
 				
 				{
-					radStandalonejob = new Button(jobGroup, SWT.RADIO);
+					radStandalonejob = SOSJOEMessageCodes.JOE_B_JobAssistent_StandaloneJob.Control(new Button(jobGroup, SWT.RADIO));
 					radStandalonejob.setSelection(jobType == null || jobType.length() == 0 || jobType.equalsIgnoreCase("standalonejob"));					
 					final GridData gridData = new GridData(GridData.CENTER, GridData.CENTER, true, true);					
 					radStandalonejob.setLayoutData(gridData);
-					radStandalonejob.setText(Messages.getLabel("assistent.type.standalonejob"));
 				}
 			}
 			
 			{
-				butCancel = new Button(jobTypeShell, SWT.NONE);
+				butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(jobTypeShell, SWT.NONE));
 				butCancel.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {						
 						close();							
 					}
 				});
-				butCancel.setText("Cancel"); //TODO lang "Cancel"
 			}			
 			
 			
@@ -161,7 +158,7 @@ public class JobAssistentTypeForms {
 				composite.setLayout(gridLayout_1);
 				
 				{
-					butShow = new Button(composite, SWT.NONE);
+					butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite, SWT.NONE));
 					butShow.setVisible(false);
 					butShow.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 					butShow.addSelectionListener(new SelectionAdapter() {
@@ -172,10 +169,9 @@ public class JobAssistentTypeForms {
 							MainWindow.message(jobTypeShell, Utils.getElementAsString(job), SWT.OK );
 						}
 					});
-					butShow.setText(Messages.getLabel("show.wizard.job"));
 				}
 				{
-					butNext = new Button(composite, SWT.NONE);
+					butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite, SWT.NONE));
 					butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 					final GridData gridData_1 = new GridData(GridData.END, GridData.CENTER, false, false);					
 					butNext.setLayoutData(gridData_1);
@@ -189,9 +185,8 @@ public class JobAssistentTypeForms {
 								isStandaloneJob = true;
 							}							
 							
-							
 							if(jobBackUp != null) {
-								int cont = MainWindow.message(jobTypeShell, Messages.getLabel("assistent.discard_changes"), SWT.ICON_QUESTION | SWT.YES |SWT.NO |SWT.CANCEL );
+								int cont = MainWindow.message(jobTypeShell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION | SWT.YES |SWT.NO |SWT.CANCEL );
 								if(cont == SWT.CANCEL) {
 									return;
 								}else if(cont != SWT.YES) {											
@@ -209,15 +204,11 @@ public class JobAssistentTypeForms {
 							
 						}
 					});
-					butNext.setText("Next"); //TODO lang "Next"
-					butNext.setText(Messages.getLabel("next.wizard"));
 				}
-
 				
-				Utils.createHelpButton(composite, "assistent.type", jobTypeShell);
+				Utils.createHelpButton(composite, "JOE_M_JobAssistentTypeForms_Help.label", jobTypeShell);
 			}
 			
-			setToolTipText();
 			java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 			
 			jobTypeShell.setBounds((screen.width - jobTypeShell.getBounds().width) /2, 
@@ -229,27 +220,22 @@ public class JobAssistentTypeForms {
 			jobTypeShell.pack();		
 		} catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+				new sos.scheduler.editor.app.ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			} catch(Exception ee) {
 				//tu nichts
 			}
-			System.err.println("..error in JobAssistentTypeForms.showTypeForm() " + e.getMessage());
+			System.err.println(SOSJOEMessageCodes.JOE_E_0002.params("JobAssistentTypeForms.showTypeForms()" ) + e.getMessage());
 		}
 	}
 	
 	
 	
 	private void setToolTipText() {
-		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
-		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
-		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
-		radOrderjob.setToolTipText(Messages.getTooltip("assistent.radio_order_job"));
-		radStandalonejob.setToolTipText(Messages.getTooltip("assistent.radio_standalone_job"));
-		
+//		
 	}
 	
 	private void close() {
-		int cont = MainWindow.message(jobTypeShell, Messages.getLabel("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		int cont = MainWindow.message(jobTypeShell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		if(cont == SWT.OK)
 			jobTypeShell.dispose();	
 	}

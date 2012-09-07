@@ -32,9 +32,9 @@ import org.jdom.Element;
 import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -124,13 +124,16 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		gridLayout.numColumns = 2;
 		shellSetBack.setLayout(gridLayout);
 		shellSetBack.setSize(598, 217);
-		String step = "  ";		
-		step = step + " [Step 9 of 9]";		
-		shellSetBack.setText("Delay Order After Setback" + step);//TODO lang "Delay Order After Setback"
+		String step = " ";		
+//		step = step + " [Step 9 of 9]";
+		step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step9of9.label();
+//		shellSetBack.setText("Delay Order After Setback" + step);
+		shellSetBack.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_OrderAfterSetback.params(step));
 
 
 		final Group jobGroup = new Group(shellSetBack, SWT.NONE);
-		jobGroup.setText(" Job: " + Utils.getAttributeValue("name", job));//TODO lang " Job: " ?
+//		jobGroup.setText(" Job: " + Utils.getAttributeValue("name", job));
+		jobGroup.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobGroup.params(Utils.getAttributeValue("name", job)));
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, true, 2, 1);
 		gridData_2.heightHint = 215;
 		gridData_2.widthHint = 507;
@@ -164,13 +167,13 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		}
 
 		{
-			lblLongWait = new Label(jobGroup, SWT.NONE);
+			lblLongWait = SOSJOEMessageCodes.JOE_L_JobAssistent_OrderWait.Control(new Label(jobGroup, SWT.NONE));
 			lblLongWait.setLayoutData(new GridData());
-			lblLongWait.setText(Messages.getString("assistent.delay_order_after_setback.time"));			
+//			lblLongWait.setText(Messages.getString("assistent.delay_order_after_setback.time"));		
 		}
 
 		{
-			txtHour = new Text(jobGroup, SWT.BORDER);
+			txtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_Hour.Control(new Text(jobGroup, SWT.BORDER));
 			txtHour.addVerifyListener(new VerifyListener() {
 				public void verifyText(final VerifyEvent e) {
 					e.doit = Utils.isOnlyDigits(e.text);
@@ -184,7 +187,8 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 				public void modifyText(final ModifyEvent e) {
 					Utils.setBackground(0, 23, txtHour);
 					if (!Utils.isNumeric( txtHour.getText())) {
-						MainWindow.message(shellSetBack, Messages.getString("assistent.no_numeric"), SWT.OK );
+//						MainWindow.message(shellSetBack, Messages.getString("assistent.no_numeric"), SWT.OK );
+						MainWindow.message(shellSetBack, SOSJOEMessageCodes.JOE_M_JobAssistent_NoNum.label(), SWT.OK );
 					}
 					modify = true;
 				}
@@ -192,7 +196,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		}
 
 		{
-			txtMin = new Text(jobGroup, SWT.BORDER);
+			txtMin = SOSJOEMessageCodes.JOE_T_JobAssistent_Min.Control(new Text(jobGroup, SWT.BORDER));
 			txtMin.addVerifyListener(new VerifyListener() {
 				public void verifyText(final VerifyEvent e) {
 					e.doit = Utils.isOnlyDigits(e.text);
@@ -206,7 +210,8 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 				public void modifyText(final ModifyEvent e) {
 					Utils.setBackground(0, 59, txtMin);		
 					if (!Utils.isNumeric( txtMin.getText())) {
-						MainWindow.message(shellSetBack, Messages.getString("assistent.no_numeric"), SWT.OK );
+//						MainWindow.message(shellSetBack, Messages.getString("assistent.no_numeric"), SWT.OK );
+						MainWindow.message(shellSetBack, SOSJOEMessageCodes.JOE_M_JobAssistent_NoNum.label(), SWT.OK );
 					}
 					modify = true;
 				}
@@ -214,7 +219,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		}
 
 		{
-			txtSecound = new Text(jobGroup, SWT.BORDER);
+			txtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_Sec.Control(new Text(jobGroup, SWT.BORDER));
 			txtSecound.addVerifyListener(new VerifyListener() {
 				public void verifyText(final VerifyEvent e) {
 					e.doit = Utils.isOnlyDigits(e.text);
@@ -229,7 +234,8 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 				public void modifyText(final ModifyEvent e) {
 					Utils.setBackground(0, 59, txtSecound);
 					if (!Utils.isNumeric( txtSecound.getText())) {
-						MainWindow.message(shellSetBack, Messages.getString("assistent.no_numeric"), SWT.OK );
+//						MainWindow.message(shellSetBack, Messages.getString("assistent.no_numeric"), SWT.OK );
+						MainWindow.message(shellSetBack, SOSJOEMessageCodes.JOE_M_JobAssistent_NoNum.label(), SWT.OK );
 					}
 					modify = true;
 				}
@@ -237,17 +243,17 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		}
 
 		{
-			final Label hhmmssLabel = new Label(jobGroup, SWT.NONE);
+			final Label hhmmssLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.Control(new Label(jobGroup, SWT.NONE));
 			hhmmssLabel.setLayoutData(new GridData(57, SWT.DEFAULT));
-			hhmmssLabel.setText("hh:mm:ss");//TODO lang "hh:mm:ss"
+//			hhmmssLabel.setText("hh:mm:ss");
 		}
 
 		{
-			lblOftenSetBack = new Label(jobGroup, SWT.NONE);
+			lblOftenSetBack = SOSJOEMessageCodes.JOE_L_JobAssistent_OftenSetback.Control(new Label(jobGroup, SWT.NONE));
 			lblOftenSetBack.setLayoutData(new GridData());
-			lblOftenSetBack.setText(Messages.getString("assistent.delay_order_after_setback.setback_count"));
+//			lblOftenSetBack.setText(Messages.getString("assistent.delay_order_after_setback.setback_count"));
 		}
-		txtSetBack = new Text(jobGroup, SWT.BORDER);
+		txtSetBack = SOSJOEMessageCodes.JOE_T_JobAssistent_SetBack.Control(new Text(jobGroup, SWT.BORDER));
 		txtSetBack.setText(setback!=null?setback:"");
 		txtSetBack.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
@@ -262,32 +268,30 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		txtSetBack.setFocus();
 
 		{
-			final Label lblNumberOfSetBack = new Label(jobGroup, SWT.NONE);
-			lblNumberOfSetBack.setText(Messages.getString("assistent.delay_order_after_setback.is_maximum"));
+			@SuppressWarnings("unused")
+			final Label lblNumberOfSetBack = SOSJOEMessageCodes.JOE_L_JobAssistent_NumOfSetback.Control(new Label(jobGroup, SWT.NONE));
+//			lblNumberOfSetBack.setText(Messages.getString("assistent.delay_order_after_setback.is_maximum"));
 		}
 
-		noButton = new Button(jobGroup, SWT.RADIO);
+		noButton = SOSJOEMessageCodes.JOE_B_JobAssistent_No.Control(new Button(jobGroup, SWT.RADIO));
 		noButton.setSelection(!ismax);
 		noButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				modify = true;
 			}
 		});
-
-
 		noButton.setLayoutData(new GridData());
-		noButton.setText("no");//TODO lang "no"
+//		noButton.setText("no");
 
-		yesButton = new Button(jobGroup, SWT.RADIO);
+		yesButton = SOSJOEMessageCodes.JOE_B_JobAssistent_Yes.Control(new Button(jobGroup, SWT.RADIO));
 		yesButton.setSelection(ismax);
 		yesButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				modify = true;
 			}
 		});
-
 		yesButton.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 1));
-		yesButton.setText("yes");//TODO lang "yes"
+//		yesButton.setText("yes");
 
 
 
@@ -297,25 +301,24 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 				shellSetBack.getBounds().width, 
 				shellSetBack.getBounds().height);
 
-
 		shellSetBack.open();
 
-		final Composite composite_1 = new Composite(shellSetBack, SWT.NONE);
+		final Composite composite_1 = SOSJOEMessageCodes.JOE_Composite1.Control(new Composite(shellSetBack, SWT.NONE));
 		composite_1.setLayoutData(new GridData());
 		final GridLayout gridLayout_3 = new GridLayout();
 		gridLayout_3.marginWidth = 0;
 		composite_1.setLayout(gridLayout_3);
 		{
-			butCancel = new Button(composite_1, SWT.NONE);
+			butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite_1, SWT.NONE));
 			butCancel.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					close();
 				}
 			});
-			butCancel.setText("Cancel");//TODO lang "Cancel"
+//			butCancel.setText("Cancel");
 		}
 
-		final Composite composite_2 = new Composite(shellSetBack, SWT.NONE);
+		final Composite composite_2 = SOSJOEMessageCodes.JOE_Composite2.Control(new Composite(shellSetBack, SWT.NONE));
 		final GridData gridData_3 = new GridData(GridData.END, GridData.CENTER, true, false);
 		composite_2.setLayoutData(gridData_3);
 		final GridLayout gridLayout_4 = new GridLayout();
@@ -324,7 +327,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		composite_2.setLayout(gridLayout_4);
 
 		{
-			butShow = new Button(composite_2, SWT.NONE);
+			butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_2, SWT.NONE));
 			butShow.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					refreshElement(false);
@@ -332,10 +335,10 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 					Utils.showClipboard(Utils.getElementAsString(job), shellSetBack, false, null, false, null, false); 
 				}
 			});
-			butShow.setText("Show");//TODO lang "Show"
+//			butShow.setText("Show");
 		}
 		{
-			butNext = new Button(composite_2, SWT.NONE);
+			butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite_2, SWT.NONE));
 			butNext.setVisible(false);			
 			butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			final GridData gridData = new GridData(GridData.END, GridData.CENTER, false, false);
@@ -347,10 +350,10 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 					shellSetBack.dispose();					
 				}
 			});
-			butNext.setText("Next");//TODO lang "Next"
+//			butNext.setText("Next");
 		}
 
-		butBack = new Button(composite_2, SWT.NONE);
+		butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_2, SWT.NONE));
 		butBack.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				refreshElement(false);
@@ -363,8 +366,9 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 				shellSetBack.dispose();				
 			}
 		});
-		butBack.setText("Back");//TODO lang "Back"
-		butFinish = new Button(composite_2, SWT.NONE);
+//		butBack.setText("Back");
+		
+		butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_2, SWT.NONE));
 		butFinish.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		butFinish.setLayoutData(gridData_4);
@@ -376,7 +380,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 					jobname.setText(Utils.getAttributeValue("name",job));					
 
 				if(Options.getPropertyBoolean("editor.job.show.wizard"))
-					Utils.showClipboard(Messages.getString("assistent.end") + "\n\n" + Utils.getElementAsString(job), shellSetBack, false, null, false, null, true); 
+					Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_EndWizard.label() + "\n\n" + Utils.getElementAsString(job), shellSetBack, false, null, false, null, true); 
 
 				closeDialog = true;
 				shellSetBack.dispose();
@@ -384,9 +388,10 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 
 			}
 		});
-		butFinish.setText("Finish");//TODO lang "Finish"
+//		butFinish.setText("Finish");
 
-		Utils.createHelpButton(composite_2, "assistent.delay_order_after_setback", shellSetBack);
+//		Utils.createHelpButton(composite_2, "assistent.delay_order_after_setback", shellSetBack);
+		Utils.createHelpButton(composite_2, "JOE_M_JobAssistentDelayOrderAfterSetbackForm_Help.label", shellSetBack);
 
 		setToolTipText();
 		shellSetBack.layout();
@@ -394,16 +399,15 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 	}
 
 	public void setToolTipText() {
-		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
-		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
-		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
-		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
-		txtSetBack.setToolTipText(Messages.getTooltip("assistent.delay_order_after_setback.setback_count"));
-		txtHour.setToolTipText(Messages.getTooltip("assistent.delay_order_after_setback.delay.hours"));
-		txtMin.setToolTipText(Messages.getTooltip("assistent.delay_order_after_setback.delay.minutes"));
-		txtSecound.setToolTipText(Messages.getTooltip("assistent.delay_order_after_setback.delay.seconds"));
-		butBack.setToolTipText(Messages.getTooltip("butBack"));
-
+//		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
+//		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
+//		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
+//		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
+//		txtSetBack.setToolTipText(Messages.getTooltip("assistent.delay_order_after_setback.setback_count"));
+//		txtHour.setToolTipText(Messages.getTooltip("assistent.delay_order_after_setback.delay.hours"));
+//		txtMin.setToolTipText(Messages.getTooltip("assistent.delay_order_after_setback.delay.minutes"));
+//		txtSecound.setToolTipText(Messages.getTooltip("assistent.delay_order_after_setback.delay.seconds"));
+//		butBack.setToolTipText(Messages.getTooltip("butBack"));
 	}
 
 	private void refreshElement(boolean apply) {
@@ -440,7 +444,8 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 	}
 
 	private void close() {
-		int cont = MainWindow.message(shellSetBack, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+//		int cont = MainWindow.message(shellSetBack, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		int cont = MainWindow.message(shellSetBack, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		if(cont == SWT.OK){
 			if(jobBackUp != null)
 				job.setContent(jobBackUp.cloneContent());

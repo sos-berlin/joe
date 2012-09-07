@@ -5,6 +5,7 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
 public class JobAssistentForm {
 	
@@ -30,11 +31,18 @@ public class JobAssistentForm {
 			
 		} catch (Exception e){
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e));
 			} catch(Exception ee) {
 				//tu nichts
 			}
-			System.out.println("error in JobAssistent.startJobAssistent: " + e.getMessage() );
+//			System.out.println("error in JobAssistent.startJobAssistent: " + e.getMessage() );
+			try {
+				System.out.println(SOSJOEMessageCodes.JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e));
+			}
+			catch (Exception e1) {
+				//tu nichts
+			}
 		}
 		
 		

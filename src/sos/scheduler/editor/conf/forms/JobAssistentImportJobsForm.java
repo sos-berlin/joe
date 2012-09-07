@@ -34,6 +34,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -110,7 +111,7 @@ public class JobAssistentImportJobsForm {
 	private int														assistentType		= -1;
 	private Combo													jobname				= null;
 	private Element													jobBackUp			= null;
-	private ScriptJobMainForm												jobForm				= null;
+	private ScriptJobMainForm										jobForm				= null;
 	private sos.scheduler.editor.conf.listeners.ParameterListener	paramListener		= null;
 	private Text													refreshDetailsText	= null;
 	/** Hilfsvariable für das Schliessen des Dialogs. 
@@ -191,7 +192,8 @@ public class JobAssistentImportJobsForm {
 		try {
 			listOfDoc = new ArrayList();
 			if (!new File(xmlPaths).exists()) {
-				MainWindow.message(shell, "Missing Directory for Job Description: " + xmlPaths, SWT.ICON_WARNING | SWT.OK);
+//				 MainWindow.message(shell, "Missing Directory for Job Description: " + xmlPaths, SWT.ICON_WARNING | SWT.OK);
+				MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_MissingDirectory.params(xmlPaths), SWT.ICON_WARNING | SWT.OK);
 				return listOfDoc;
 			}
 			java.util.Vector filelist = sos.util.SOSFile.getFilelist(xmlPaths, "^.*\\.xml$", java.util.regex.Pattern.CASE_INSENSITIVE, true);
@@ -223,7 +225,8 @@ public class JobAssistentImportJobsForm {
 		}
 		catch (Exception ex) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
+				// new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -259,14 +262,16 @@ public class JobAssistentImportJobsForm {
 			final GridLayout gridLayout = new GridLayout();
 			gridLayout.marginHeight = 0;
 			shell.setLayout(gridLayout);
-			String step = "";
+			String step = " ";
 			if (jobType.equalsIgnoreCase("order"))
-				step = "  [Step 2 of 9]";
+				step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step2of9.label();
 			else
-				step = "  [Step 2 of 8]";
-			shell.setText("Import Jobs" + step);
-			final Group jobGroup = new Group(shell, SWT.NONE);
-			jobGroup.setText("Job");
+				step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step2of8.label();
+
+			// shell.setText("Import Jobs" + step);
+			shell.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_ImportJobs.params(step));
+
+			final Group jobGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobGroup.Control(new Group(shell, SWT.NONE));
 			final GridLayout gridLayout_3 = new GridLayout();
 			gridLayout_3.marginWidth = 10;
 			gridLayout_3.marginTop = 5;
@@ -279,11 +284,12 @@ public class JobAssistentImportJobsForm {
 			gridData_6.minimumWidth = 400;
 			jobGroup.setLayoutData(gridData_6);
 			Composite composite;
-			final Label jobnameLabel_1 = new Label(jobGroup, SWT.NONE);
+
+			final Label jobnameLabel_1 = SOSJOEMessageCodes.JOE_L_JobAssistent_JobName.Control(new Label(jobGroup, SWT.NONE));
 			jobnameLabel_1.setLayoutData(new GridData());
-			jobnameLabel_1.setText("Jobname");
+
 			{
-				txtJobname = new Text(jobGroup, SWT.BORDER);
+				txtJobname = SOSJOEMessageCodes.JOE_T_JobAssistent_JobName.Control(new Text(jobGroup, SWT.BORDER));
 				txtJobname.setFocus();
 				final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
 				txtJobname.setLayoutData(gridData);
@@ -304,22 +310,26 @@ public class JobAssistentImportJobsForm {
 					txtJobname.setText("");
 				}
 			}
+
 			new Label(jobGroup, SWT.NONE);
-			final Label titelLabel = new Label(jobGroup, SWT.NONE);
+
+			final Label titelLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_Title.Control(new Label(jobGroup, SWT.NONE));
 			titelLabel.setLayoutData(new GridData());
-			titelLabel.setText("Titel");
-			txtTitle = new Text(jobGroup, SWT.BORDER);
+
+			txtTitle = SOSJOEMessageCodes.JOE_T_JobAssistent_Title.Control(new Text(jobGroup, SWT.BORDER));
 			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData.widthHint = 420;
 			txtTitle.setLayoutData(gridData);
 			if (joblistener != null) {
 				txtTitle.setText(joblistener.getTitle());
 			}
+
 			new Label(jobGroup, SWT.NONE);
-			final Label pathLabel = new Label(jobGroup, SWT.NONE);
+
+			final Label pathLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_PathLabel.Control(new Label(jobGroup, SWT.NONE));
 			pathLabel.setLayoutData(new GridData());
-			pathLabel.setText("Path");
-			txtPath = new Text(jobGroup, SWT.BORDER);
+
+			txtPath = SOSJOEMessageCodes.JOE_T_JobAssistent_Path.Control(new Text(jobGroup, SWT.BORDER));
 			txtPath.setEditable(false);
 			if (joblistener != null) {
 				txtPath.setText(joblistener.getInclude());
@@ -327,21 +337,24 @@ public class JobAssistentImportJobsForm {
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData_1.widthHint = 420;
 			txtPath.setLayoutData(gridData_1);
+
 			new Label(jobGroup, SWT.NONE);
-			final Composite composite_3 = new Composite(jobGroup, SWT.NONE);
+
+			final Composite composite_3 = SOSJOEMessageCodes.JOE_Composite1.Control(new Composite(jobGroup, SWT.NONE));
 			final GridData gridData_7 = new GridData(103, SWT.DEFAULT);
 			composite_3.setLayoutData(gridData_7);
 			final GridLayout gridLayout_4 = new GridLayout();
 			gridLayout_4.marginWidth = 0;
 			composite_3.setLayout(gridLayout_4);
-			butCancel = new Button(composite_3, SWT.NONE);
+
+			butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite_3, SWT.NONE));
 			butCancel.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					close();
 				}
 			});
-			butCancel.setText("Cancel");
-			composite = new Composite(jobGroup, SWT.NONE);
+
+			composite = SOSJOEMessageCodes.JOE_Composite2.Control(new Composite(jobGroup, SWT.NONE));
 			final GridData gridData_8 = new GridData(GridData.END, GridData.CENTER, false, false);
 			composite.setLayoutData(gridData_8);
 			final GridLayout gridLayout_2 = new GridLayout();
@@ -349,8 +362,9 @@ public class JobAssistentImportJobsForm {
 			gridLayout_2.verticalSpacing = 0;
 			gridLayout_2.numColumns = 6;
 			composite.setLayout(gridLayout_2);
+
 			{
-				butdescription = new Button(composite, SWT.NONE);
+				butdescription = SOSJOEMessageCodes.JOE_B_JobAssistent_Description.Control(new Button(composite, SWT.NONE));
 				butdescription.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						try {
@@ -363,23 +377,26 @@ public class JobAssistentImportJobsForm {
 								}
 							}
 							else {
-								MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("no_jobdescription"), SWT.ICON_WARNING | SWT.OK);
+								MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoJobDescription.label(), SWT.ICON_WARNING | SWT.OK);
 							}
 						}
 						catch (Exception ex) {
 							try {
-								new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not open description " + txtJobname.getText(), ex);
+								// new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not open description " +
+								// txtJobname.getText(), ex);
+								new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + " "
+										+ SOSJOEMessageCodes.JOE_E_0009.params(txtJobname.getText(), ex));
 							}
 							catch (Exception ee) {
 								// tu nichts
 							}
-							System.out.println("..could not open description " + txtJobname.getText() + " " + ex);
+							// System.out.println("..could not open description " + txtJobname.getText() + " " + ex);
+							System.out.println(SOSJOEMessageCodes.JOE_E_0009.params(txtJobname.getText(), ex));
 						}
 					}
 				});
-				butdescription.setText("Description");
 			}
-			butShow = new Button(composite, SWT.NONE);
+			butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite, SWT.NONE));
 			butShow.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			butShow.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
@@ -406,9 +423,9 @@ public class JobAssistentImportJobsForm {
 					job.removeChildren("param");
 				}
 			});
-			butShow.setText("Show");
+
 			{
-				butImport = new Button(composite, SWT.NONE);
+				butImport = SOSJOEMessageCodes.JOE_B_JobAssistent_Import.Control(new Button(composite, SWT.NONE));
 				butImport.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						try {
@@ -425,8 +442,8 @@ public class JobAssistentImportJobsForm {
 							// If the user is pressing "finish" then no parameters should be copied/moved to the object.
 							// The Parameterlist should be empty in this case.
 							ArrayList listOfParams = new ArrayList<HashMap<String, Object>>();
-//							ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText(), "required");
-//							h.put("params", listOfParams);
+							// ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText(), "required");
+							// h.put("params", listOfParams);
 							if (assistentType == Editor.JOB_WIZARD) {
 								// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob
 								// wenn
@@ -455,14 +472,14 @@ public class JobAssistentImportJobsForm {
 								}
 								else {
 									if (listener.existJobname(txtJobname.getText())) {
-										MainWindow.message(shell, Messages.getString("assistent.error.job_name_exist"), SWT.OK);
+										MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_JobNameExists.label(), SWT.OK);
 										txtJobname.setFocus();
 										return;
 									}
 									Element job = null;
 									if (flagBackUpJob) {
 										job = listener.createJobElement(h);
-										
+
 									}
 									else {
 										job = joblistener.getJob();
@@ -480,7 +497,8 @@ public class JobAssistentImportJobsForm {
 						}
 						catch (Exception ex) {
 							try {
-								new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
+								// new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
+								new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
 							}
 							catch (Exception ee) {
 								// tu nichts
@@ -490,8 +508,8 @@ public class JobAssistentImportJobsForm {
 					}
 				});
 			}
-			butImport.setText("Finish");
-			butBack = new Button(composite, SWT.NONE);
+
+			butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite, SWT.NONE));
 			butBack.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					JobAssistentTypeForms typeForms = new JobAssistentTypeForms(dom, update);
@@ -500,8 +518,8 @@ public class JobAssistentImportJobsForm {
 					shell.dispose();
 				}
 			});
-			butBack.setText("Back");
-			butParameters = new Button(composite, SWT.NONE);
+
+			butParameters = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite, SWT.NONE));
 			butParameters.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			butParameters.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			butParameters.addSelectionListener(new SelectionAdapter() {
@@ -526,15 +544,15 @@ public class JobAssistentImportJobsForm {
 						}
 						else {
 							if (assistentType != Editor.JOB_WIZARD && listener.existJobname(txtJobname.getText())) {
-								MainWindow.message(shell, Messages.getString("assistent.error.job_name_exist"), SWT.OK);
+								MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_JobNameExists.label(), SWT.OK);
 								txtJobname.setFocus();
 								return;
 							}
 							Element job = null;
 							if (flagBackUpJob) {
 								if (jobBackUp != null && assistentType != Editor.JOB_WIZARD) {
-									int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.discard_changes"),
-											SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
+									int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION
+											| SWT.YES | SWT.NO | SWT.CANCEL);
 									if (cont == SWT.CANCEL) {
 										return;
 									}
@@ -568,11 +586,11 @@ public class JobAssistentImportJobsForm {
 					shell.dispose();
 				}
 			});
-			butParameters.setText("Next");
-			Utils.createHelpButton(composite, "assistent.import_jobs", shell);
+
+			Utils.createHelpButton(composite, "JOE_M_JobAssistentImportJobsForm_Help.label", shell);
 			if (assistentType == Editor.JOB) {
 				this.butImport.setVisible(true);
-				butParameters.setText("Import Parameters");
+				butParameters.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_ImportParams.label());
 			}
 			if (assistentType == Editor.JOB_WIZARD) {
 				txtJobname.setEnabled(false);
@@ -609,26 +627,27 @@ public class JobAssistentImportJobsForm {
 			java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 			shell.setBounds((screen.width - shell.getBounds().width) / 2, (screen.height - shell.getBounds().height) / 2, shell.getBounds().width,
 					shell.getBounds().height);
-			final Group jobnamenGroup = new Group(shell, SWT.NONE);
+
+			final Group jobnamenGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobsGroup.Control(new Group(shell, SWT.NONE));
 			final GridLayout gridLayout_1 = new GridLayout();
 			gridLayout_1.marginTop = 5;
 			gridLayout_1.marginRight = 5;
 			gridLayout_1.marginLeft = 5;
 			jobnamenGroup.setLayout(gridLayout_1);
-			jobnamenGroup.setText("Jobs");
 			final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, true);
 			gridData_3.heightHint = 154;
 			jobnamenGroup.setLayoutData(gridData_3);
 			jobnamenGroup.getBounds().height = 100;
-			tree = new Tree(jobnamenGroup, SWT.FULL_SELECTION | SWT.BORDER);
+
+			tree = SOSJOEMessageCodes.JOE_JobAssistent_JobTree.Control(new Tree(jobnamenGroup, SWT.FULL_SELECTION | SWT.BORDER));
 			tree.setHeaderVisible(true);
 			tree.getBounds().height = 100;
 			tree.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					String strT = txtTitle.getText();
-					if (strT.trim().equalsIgnoreCase("")) {
+					//if (strT.trim().equalsIgnoreCase("")) {
 						txtTitle.setText(tree.getSelection()[0].getText(1));
-					}
+					//}
 					txtPath.setText(tree.getSelection()[0].getText(2));
 					txtJobname.setFocus();
 					flagBackUpJob = true;
@@ -636,21 +655,23 @@ public class JobAssistentImportJobsForm {
 			});
 			final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true);
 			tree.setLayoutData(gridData_2);
-			TreeColumn column1 = new TreeColumn(tree, SWT.LEFT);
-			column1.setText("Name");
+
+			TreeColumn column1 = SOSJOEMessageCodes.JOE_JobAssistent_NameTreeColumn.Control(new TreeColumn(tree, SWT.LEFT));
 			column1.setWidth(165);
-			TreeColumn column2 = new TreeColumn(tree, SWT.LEFT);
-			column2.setText("Title");
+
+			TreeColumn column2 = SOSJOEMessageCodes.JOE_JobAssistent_TitleTreeColumn.Control(new TreeColumn(tree, SWT.LEFT));
 			column2.setWidth(200);
-			TreeColumn column3 = new TreeColumn(tree, SWT.LEFT);
-			column3.setText("Filename");
+
+			TreeColumn column3 = SOSJOEMessageCodes.JOE_JobAssistent_FilenameTreeColumn.Control(new TreeColumn(tree, SWT.LEFT));
 			column3.setWidth(209);
+
 			try {
 				createTreeItems();
 			}
 			catch (Exception e) {
 				try {
-					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+					// new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+					new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 				}
 				catch (Exception ee) {
 					// tu nichts
@@ -667,20 +688,22 @@ public class JobAssistentImportJobsForm {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				// new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+				// System.err.println("error in JobAssistentImportJobsForm.showAllImportJobs(): " + e.getMessage());
+				System.err.println(SOSJOEMessageCodes.JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()));
 			}
 			catch (Exception ee) {
 				// tu nichts
 			}
-			System.err.println("error in JobAssistentImportJobsForm.showAllImportJob(): " + e.getMessage());
 		}
 	}
 
 	private void createTreeItems() throws Exception {
 		try {
-			// ermöglicht das Startet der Wizzard ohne Jobbeschreibung
+//			ermöglicht das Starten des Wizards ohne vorhandene Jobbeschreibung
 			final TreeItem newItemTreeItem_ = new TreeItem(tree, SWT.NONE);
-			newItemTreeItem_.setText(0, "no job description");
+			newItemTreeItem_.setText(0, SOSJOEMessageCodes.JOE_M_JobAssistent_NoJobDoc.label());
 			newItemTreeItem_.setText(1, "..");
 			newItemTreeItem_.setText(2, "..");
 			Element j = new Element("job");
@@ -744,28 +767,30 @@ public class JobAssistentImportJobsForm {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
 			}
-			System.out.println("error in JobAssistentImportJobsForm.createTreeIteam(): " + e.getMessage());
+//			System.out.println("error in JobAssistentImportJobsForm.createTreeItems(): " + e.getMessage());
+			System.out.println(SOSJOEMessageCodes.JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()));
 		}
 	}
 
 	public void setToolTipText() {
-		butImport.setToolTipText(Messages.getTooltip("butImport"));
-		butParameters.setToolTipText(Messages.getTooltip("butParameters"));
-		butdescription.setToolTipText(Messages.getTooltip("butdescription"));
-		tree.setToolTipText(Messages.getTooltip("tree"));
-		txtJobname.setToolTipText(Messages.getTooltip("jobname"));
-		txtTitle.setToolTipText(Messages.getTooltip("jobtitle"));
-		txtPath.setToolTipText(Messages.getTooltip("jobdescription"));
-		butBack.setToolTipText(Messages.getTooltip("butBack"));
-		if (butCancel != null)
-			butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
-		if (butShow != null)
-			butShow.setToolTipText(Messages.getTooltip("assistent.show"));
+		// butImport.setToolTipText(Messages.getTooltip("butImport"));
+		// butParameters.setToolTipText(Messages.getTooltip("butParameters"));
+		// butdescription.setToolTipText(Messages.getTooltip("butdescription"));
+		// tree.setToolTipText(Messages.getTooltip("tree"));
+		// txtJobname.setToolTipText(Messages.getTooltip("jobname"));
+		// txtTitle.setToolTipText(Messages.getTooltip("jobtitle"));
+		// txtPath.setToolTipText(Messages.getTooltip("jobdescription"));
+		// butBack.setToolTipText(Messages.getTooltip("butBack"));
+		// if (butCancel != null)
+		// butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
+		// if (butShow != null)
+		// butShow.setToolTipText(Messages.getTooltip("assistent.show"));
 	}
 
 	/**
@@ -894,18 +919,20 @@ public class JobAssistentImportJobsForm {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
 			}
-			System.out.println("..error in JobAssistentImportJobsForm.getJobFromDescription() " + e.getMessage());
+//			System.out.println("..error in JobAssistentImportJobsForm.getJobFromDescription() " + e.getMessage());
+			System.out.println(SOSJOEMessageCodes.JOE_M_0010.params("getJobFromDescription()", e.getMessage()));
 		}
 		return h;
 	}
 
 	private void close() {
-		int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+		int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		if (cont == SWT.OK) {
 			if (jobBackUp != null)
 				joblistener.getJob().setContent(jobBackUp.cloneContent());
@@ -966,21 +993,20 @@ public class JobAssistentImportJobsForm {
 
 	private boolean check() {
 		if (tree.getSelectionCount() == 0) {
-			MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_job_selected"), SWT.ICON_WARNING | SWT.OK);
+			MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoJobSelected.label(), SWT.ICON_WARNING | SWT.OK);
 			txtJobname.setFocus();
 			return false;
 		}
 		if (assistentType != Editor.JOB && (joblistener != null && !joblistener.getJob().getName().equals("config"))) {
 			if (txtJobname.isEnabled()) {
 				if (txtJobname.getText() == null || txtJobname.getText().length() == 0) {
-					MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.no_jobname"), SWT.ICON_WARNING | SWT.OK);
+					MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoJobName.label(), SWT.ICON_WARNING | SWT.OK);
 					txtJobname.setFocus();
 					return false;
 				}
 			}
 			if (txtJobname.getText().concat(".xml").equalsIgnoreCase(new File(txtPath.getText()).getName())) {
-				int cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.error.edit_jobname"), SWT.ICON_QUESTION | SWT.YES
-						| SWT.NO);
+				int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_EditJobName.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 				if (cont == SWT.YES) {
 					txtJobname.setFocus();
 					return false;

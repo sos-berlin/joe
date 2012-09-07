@@ -1,7 +1,7 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.layout.FillLayout;
- import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Composite;
  
 import org.jdom.Element;
 
@@ -25,7 +25,6 @@ public class JobDocumentationForm extends Composite /* implements IUpdateLanguag
  	}
 
 	public void apply() {
-;
 	}
 
 	public boolean isUnsaved() {

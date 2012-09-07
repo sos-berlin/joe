@@ -28,11 +28,12 @@ import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.HttpAuthenticationListener;
 import sos.util.SOSCrypt;
 
-public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 	
 	private HttpAuthenticationListener listener;
 	
@@ -80,8 +81,8 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 	private void createGroup() {
 		
 		GridLayout gridLayout = new GridLayout();
-		httpAuthenticationGroup = new Group(this, SWT.NONE);
-		httpAuthenticationGroup.setText("HTTP Authentication");
+		httpAuthenticationGroup = JOE_G_HttpAuthenticationForm_AuthGroup.Control(new Group(this, SWT.NONE));
+//		httpAuthenticationGroup.setText("HTTP Authentication");
 		createGroup1();
 		
 		httpAuthenticationGroup.setLayout(gridLayout);
@@ -97,7 +98,7 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 	 */
 	private void createGroup1() {
 		
-		final Group group_1 = new Group(httpAuthenticationGroup, SWT.NONE);
+		final Group group_1 = JOE_G_HttpAuthenticationForm_Group.Control(new Group(httpAuthenticationGroup, SWT.NONE));
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
 		gridData_2.heightHint = 427;
 		gridData_2.widthHint = 525;
@@ -106,10 +107,11 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 		gridLayout.numColumns = 5;
 		group_1.setLayout(gridLayout);
 		
-		final Label lblUsername = new Label(group_1, SWT.NONE);
-		lblUsername.setText("User Name");
+		@SuppressWarnings("unused")
+		final Label lblUsername = JOE_L_HttpAuthenticationForm_UserName.Control(new Label(group_1, SWT.NONE));
+//		lblUsername.setText("User Name");
 		
-		txtUsername = new Text(group_1, SWT.BORDER);
+		txtUsername = JOE_T_HttpAuthenticationForm_UserName.Control(new Text(group_1, SWT.BORDER));
 		txtUsername.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent e) {
 				txtUsername.setFocus();
@@ -134,15 +136,16 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 		});
 		txtUsername.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		
-		final Label lblPassword = new Label(group_1, SWT.NONE);
-		lblPassword.setText("Password");
+		@SuppressWarnings("unused")
+		final Label lblPassword = JOE_L_HttpAuthenticationForm_Password.Control(new Label(group_1, SWT.NONE));
+//		lblPassword.setText("Password");
 		
-		txtPassword = new Text(group_1, SWT.BORDER);
-		txtPassword.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				txtPassword.selectAll();
-			}
-		});
+		txtPassword = JOE_T_HttpAuthenticationForm_Password.Control(new Text(group_1, SWT.BORDER));
+//		txtPassword.addFocusListener(new FocusAdapter() {
+//			public void focusGained(final FocusEvent e) {
+//				txtPassword.selectAll();
+//			}
+//		});
 		txtPassword.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR && !txtPassword.getText().equals("")){
@@ -160,7 +163,7 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 		});
 		txtPassword.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		
-		butEncrypt = new Button(group_1, SWT.NONE);
+		butEncrypt = JOE_B_HttpAuthenticationForm_Encrypt.Control(new Button(group_1, SWT.NONE));
 		butEncrypt.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if(txtPassword.getText() != null && txtPassword.getText().length() > 0) {
@@ -171,19 +174,19 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 		});
 		butEncrypt.setEnabled(false);
 		butEncrypt.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butEncrypt.setText("Encrypt");
+//		butEncrypt.setText("Encrypt");
 		new Label(group_1, SWT.NONE);
 		new Label(group_1, SWT.NONE);
 		
-		final Label md5PasswordLabel = new Label(group_1, SWT.NONE);
-		md5PasswordLabel.setText("MD5 Password");
+		final Label md5PasswordLabel = JOE_L_HttpAuthenticationForm_MD5PW.Control(new Label(group_1, SWT.NONE));
+//		md5PasswordLabel.setText("MD5 Password");
 		
-		txtMD5Password = new Text(group_1, SWT.BORDER);
-		txtMD5Password.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				txtMD5Password.selectAll();
-			}
-		});
+		txtMD5Password = JOE_T_HttpAuthenticationForm_MD5PW.Control(new Text(group_1, SWT.BORDER));
+//		txtMD5Password.addFocusListener(new FocusAdapter() {
+//			public void focusGained(final FocusEvent e) {
+//				txtMD5Password.selectAll();
+//			}
+//		});
 		txtMD5Password.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR && !txtUsername.getText().equals("")){					
@@ -199,7 +202,7 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 		});
 		txtMD5Password.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		
-		butApplyHttpUser = new Button(group_1, SWT.NONE);
+		butApplyHttpUser = JOE_B_HttpAuthenticationForm_Apply.Control(new Button(group_1, SWT.NONE));
 		butApplyHttpUser.setEnabled(false);
 		butApplyHttpUser.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -207,9 +210,9 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 			}
 		});
 		butApplyHttpUser.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butApplyHttpUser.setText("Apply");
+//		butApplyHttpUser.setText("Apply");
 		
-		tableHttpUsers = new Table(group_1, SWT.FULL_SELECTION | SWT.BORDER);
+		tableHttpUsers = JOE_Tbl_HttpAuthenticationForm_Users.Control(new Table(group_1, SWT.FULL_SELECTION | SWT.BORDER));
 		tableHttpUsers.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if (tableHttpUsers.getSelectionCount() > 0) {
@@ -231,15 +234,15 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 		gridData_1.horizontalIndent = 4;
 		tableHttpUsers.setLayoutData(gridData_1);
 		
-		final TableColumn urlPathTableColumn = new TableColumn(tableHttpUsers, SWT.NONE);
+		final TableColumn urlPathTableColumn = JOE_TCl_HttpAuthenticationForm_NameColumn.Control(new TableColumn(tableHttpUsers, SWT.NONE));
 		urlPathTableColumn.setWidth(150);
-		urlPathTableColumn.setText("Name");
+//		urlPathTableColumn.setText("Name");
 		
-		final TableColumn pathTableColumn = new TableColumn(tableHttpUsers, SWT.NONE);
+		final TableColumn pathTableColumn = JOE_TCl_HttpAuthenticationForm_PWColumn.Control(new TableColumn(tableHttpUsers, SWT.NONE));
 		pathTableColumn.setWidth(250);
-		pathTableColumn.setText("Password");
+//		pathTableColumn.setText("Password");
 		
-		butRemoveHttpUser = new Button(group_1, SWT.NONE);
+		butRemoveHttpUser = JOE_B_HttpAuthenticationForm_Remove.Control(new Button(group_1, SWT.NONE));
 		butRemoveHttpUser.setEnabled(false);
 		butRemoveHttpUser.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		butRemoveHttpUser.addSelectionListener(new SelectionAdapter() {
@@ -259,7 +262,7 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 				;
 			}
 		});
-		butRemoveHttpUser.setText("Remove");
+//		butRemoveHttpUser.setText("Remove");
 	}
 	
 	private void applyHttpUser() {
@@ -293,15 +296,13 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 	
 	
 	public void setToolTipText() {
-		
-		txtUsername.setToolTipText(Messages.getTooltip("http_authentication.name"));
-		txtMD5Password.setToolTipText(Messages.getTooltip("http_authentication.md5_password"));
-		txtPassword.setToolTipText(Messages.getTooltip("http_authentication.password"));
-		tableHttpUsers.setToolTipText(Messages.getTooltip("http_authentication.http_authentication_table"));
-		butApplyHttpUser.setToolTipText(Messages.getTooltip("http_authentication.apply_button"));
-		butEncrypt.setToolTipText(Messages.getTooltip("http_authentication.encryt_button"));
-		butRemoveHttpUser.setToolTipText(Messages.getTooltip("http_authentication.remove_button"));
-				
+//		txtUsername.setToolTipText(Messages.getTooltip("http_authentication.name"));
+//		txtMD5Password.setToolTipText(Messages.getTooltip("http_authentication.md5_password"));
+//		txtPassword.setToolTipText(Messages.getTooltip("http_authentication.password"));
+//		tableHttpUsers.setToolTipText(Messages.getTooltip("http_authentication.http_authentication_table"));
+//		butApplyHttpUser.setToolTipText(Messages.getTooltip("http_authentication.apply_button"));
+//		butEncrypt.setToolTipText(Messages.getTooltip("http_authentication.encryt_button"));
+//		butRemoveHttpUser.setToolTipText(Messages.getTooltip("http_authentication.remove_button"));
 	}
 	
 	public boolean isUnsaved() {	
@@ -320,11 +321,12 @@ public class HttpAuthenticationForm extends Composite implements IUnsaved, IUpda
 			txtMD5Password.setText(_encrypt.toUpperCase());
 		} catch (Exception ex) {
 			try {
-    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() +  txtPassword.getText() + " could not encrypt.", ex);
+//    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() +  txtPassword.getText() + " could not encrypt.", ex);
+				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + JOE_M_0016.params(txtPassword.getText()), ex);
     		} catch(Exception ee) {
     			//tu nichts
     		}
-			MainWindow.message(getShell(), txtPassword.getText() + " could not encrypt." , SWT.ICON_WARNING | SWT.OK );
+			MainWindow.message(getShell(), JOE_M_0016.params(txtPassword.getText()), SWT.ICON_WARNING | SWT.OK );
 		}
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

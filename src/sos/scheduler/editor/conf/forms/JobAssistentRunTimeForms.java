@@ -33,6 +33,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -108,13 +109,17 @@ public class JobAssistentRunTimeForms {
 
 	private DateListener     speDateListener    = null;
 
-	private static String    EVERY_DAY          = "Every Day ";
+//	private static String    EVERY_DAY          = "Every Day ";
+	private static String    EVERY_DAY          = SOSJOEMessageCodes.JOE_M_JobAssistent_EveryDay.label();
 
-	private static String    SPECIFIC_DAY       = "Specific Day ";		
+//	private static String    SPECIFIC_DAY       = "Specific Day ";		
+	private static String    SPECIFIC_DAY       = SOSJOEMessageCodes.JOE_M_JobAssistent_SpecificDay.label();		
 
-	private static String    WEEK_DAY           = "Week Day ";
+//	private static String    WEEK_DAY           = "Week Day ";
+	private static String    WEEK_DAY           = SOSJOEMessageCodes.JOE_M_JobAssistent_Weekday.label();
 
-	private static String    MONTH_DAY          = "Month Day";
+//	private static String    MONTH_DAY          = "Month Day";
+	private static String    MONTH_DAY          = SOSJOEMessageCodes.JOE_M_JobAssistent_Monthday.label();
 
 	private Element          jobBackUp          = null;              		
 
@@ -166,11 +171,12 @@ public class JobAssistentRunTimeForms {
 			gridLayout.numColumns = 2;
 			runTimeSingleShell.setLayout(gridLayout);
 			runTimeSingleShell.setSize(553, 489);
-			runTimeSingleShell.setText("Run Time/ Single Starts"); //TODO lang "Run Time/ Single Starts"
+//			runTimeSingleShell.setText("Run Time/ Single Starts");
+			runTimeSingleShell.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_RunTimeSingleStarts.label());
 
 			{
-				final Group jobGroup = new Group(runTimeSingleShell, SWT.NONE);
-				jobGroup.setText("Job"); //TODO lang "Job"
+				final Group jobGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobGroup.Control(new Group(runTimeSingleShell, SWT.NONE));
+//				jobGroup.setText("Job");
 				final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, true, 2, 1);
 				gridData_1.heightHint = 390;
 				gridData_1.widthHint = 517;
@@ -186,7 +192,7 @@ public class JobAssistentRunTimeForms {
 				jobGroup.setLayout(gridLayout_1);
 
 				{
-					optEveryDay = new Button(jobGroup, SWT.CHECK);
+					optEveryDay = SOSJOEMessageCodes.JOE_B_JobAssistent_EveryDay.Control(new Button(jobGroup, SWT.CHECK));
 					optEveryDay.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
 							if(optEveryDay.getSelection()) {								
@@ -201,18 +207,17 @@ public class JobAssistentRunTimeForms {
 							}
 						}
 					});
-					optEveryDay.setText(EVERY_DAY);
 				}
+//				Format
 				new Label(jobGroup, SWT.NONE);
 
-				final Label atLabel = new Label(jobGroup, SWT.NONE);
+				final Label atLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_At.Control(new Label(jobGroup, SWT.NONE));
 				atLabel.setAlignment(SWT.RIGHT);
 				final GridData gridData_15 = new GridData(GridData.END, GridData.CENTER, false, false);
 				gridData_15.widthHint = 28;
 				atLabel.setLayoutData(gridData_15);
-				atLabel.setText("at"); //TODO lang "at"
 
-				txtDayAtHour = new Text(jobGroup, SWT.CENTER | SWT.BORDER);				
+				txtDayAtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtDayAtHour.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {
 						if(!checkTime(txtDayAtHour.getText(), "hour")) {
@@ -228,11 +233,10 @@ public class JobAssistentRunTimeForms {
 				gridData.minimumWidth = 25;
 				txtDayAtHour.setLayoutData(gridData);
 
-				final Label label = new Label(jobGroup, SWT.NONE);
+				final Label label = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
 				label.setLayoutData(new GridData());
-				label.setText(":");
 
-				txtDayAtMinutes = new Text(jobGroup, SWT.CENTER | SWT.BORDER);				
+				txtDayAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtDayAtMinutes.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {
 						if(!checkTime(txtDayAtMinutes.getText(), "minutes")) {
@@ -249,11 +253,11 @@ public class JobAssistentRunTimeForms {
 				gridData_3.minimumWidth = 25;
 				txtDayAtMinutes.setLayoutData(gridData_3);
 
-				final Label label_1 = new Label(jobGroup, SWT.NONE);
+				final Label label_1 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
 				label_1.setLayoutData(new GridData());
-				label_1.setText(":");
+//				label_1.setText(":");
 
-				txtDayAtSecound = new Text(jobGroup, SWT.CENTER | SWT.BORDER);				
+				txtDayAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtDayAtSecound.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {
 						if(!checkTime(txtDayAtSecound.getText(), "secound")) {
@@ -269,13 +273,12 @@ public class JobAssistentRunTimeForms {
 				txtDayAtSecound.setLayoutData(gridData_4);
 
 				{
-					final Label hhmmssLabel = new Label(jobGroup, SWT.NONE);
+					final Label hhmmssLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.Control(new Label(jobGroup, SWT.NONE));
 					hhmmssLabel.setLayoutData(new GridData());
-					hhmmssLabel.setText("hh:mm:ss"); //TODO lang "hh:mm:ss"
 				}
 
 				{
-					optSpecificDay = new Button(jobGroup, SWT.CHECK);
+					optSpecificDay = SOSJOEMessageCodes.JOE_B_JobAssistent_SpecificDay.Control(new Button(jobGroup, SWT.CHECK));
 					optSpecificDay.setLayoutData(new GridData());
 					optSpecificDay.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
@@ -293,20 +296,18 @@ public class JobAssistentRunTimeForms {
 							}
 						}
 					});
-					optSpecificDay.setText(SPECIFIC_DAY);
 				}
 
-				txtSpeDay = new SOSDateTime(jobGroup, SWT.NONE);
+				txtSpeDay = SOSJOEMessageCodes.JOE_JobAssistent_SpecificDayDateTime.Control(new SOSDateTime(jobGroup, SWT.NONE));
 				final GridData gridData_16 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 				gridData_16.widthHint = 131;
 				txtSpeDay.setLayoutData(gridData_16);
 				txtSpeDay.setEnabled(false);
 
-				final Label atLabel_1 = new Label(jobGroup, SWT.NONE);
+				final Label atLabel_1 = SOSJOEMessageCodes.JOE_L_JobAssistent_At.Control(new Label(jobGroup, SWT.NONE));
 				atLabel_1.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-				atLabel_1.setText("at"); //TODO lang "at"
 
-				txtSpeDayHour = new Text(jobGroup, SWT.CENTER | SWT.BORDER);
+				txtSpeDayHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtSpeDayHour.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {
 						if(!checkTime(txtSpeDayHour.getText(), "hour")) {
@@ -323,11 +324,10 @@ public class JobAssistentRunTimeForms {
 				gridData_5.widthHint = 0;
 				txtSpeDayHour.setLayoutData(gridData_5);
 
-				final Label label_2 = new Label(jobGroup, SWT.NONE);
+				final Label label_2 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
 				label_2.setLayoutData(new GridData());
-				label_2.setText(":");
 
-				txtSpeDayAtMinutes = new Text(jobGroup, SWT.CENTER | SWT.BORDER);				
+				txtSpeDayAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 
 				txtSpeDayAtMinutes.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {						
@@ -346,11 +346,10 @@ public class JobAssistentRunTimeForms {
 				gridData_3_1.minimumWidth = 25;
 				txtSpeDayAtMinutes.setLayoutData(gridData_3_1);
 
-				final Label label_1_1 = new Label(jobGroup, SWT.NONE);
+				final Label label_1_1 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
 				label_1_1.setLayoutData(new GridData());
-				label_1_1.setText(":");
 
-				txtSpeDayAtSecound = new Text(jobGroup, SWT.CENTER | SWT.BORDER);
+				txtSpeDayAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtSpeDayAtSecound.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {							
 						if(!checkTime(txtSpeDayAtSecound.getText(), "secound")) {
@@ -366,11 +365,11 @@ public class JobAssistentRunTimeForms {
 				gridData_4_1.minimumWidth = 25;
 				txtSpeDayAtSecound.setLayoutData(gridData_4_1);
 
-				final Label hhmmssLabel_1 = new Label(jobGroup, SWT.NONE);
+				final Label hhmmssLabel_1 = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.Control(new Label(jobGroup, SWT.NONE));
 				hhmmssLabel_1.setLayoutData(new GridData());
-				hhmmssLabel_1.setText("hh:mm:ss"); //TODO lang "hh:mm:ss"
-
-				optEveryWeeksdays = new Button(jobGroup, SWT.CHECK);
+//				hhmmssLabel_1.setText("hh:mm:ss");
+				
+				optEveryWeeksdays = SOSJOEMessageCodes.JOE_B_JobAssistent_WeekDay.Control(new Button(jobGroup, SWT.CHECK));
 				optEveryWeeksdays.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						if(optEveryWeeksdays.getSelection()) {
@@ -387,22 +386,21 @@ public class JobAssistentRunTimeForms {
 						}
 					}
 				});
-				optEveryWeeksdays.setText(WEEK_DAY);
 
-				comboEveryWeekdays = new Combo(jobGroup, SWT.NONE);				
+				comboEveryWeekdays = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_WeekDayCombo.Control(new Combo(jobGroup, SWT.NONE));				
 				comboEveryWeekdays.setItems(DaysListener.getWeekdays());
 				comboEveryWeekdays.select(0);
 				comboEveryWeekdays.setEnabled(false);
+				
 				final GridData gridData_17 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 				gridData_17.widthHint = 148;
 				comboEveryWeekdays.setLayoutData(gridData_17);
 
-				final Label atLabel_2 = new Label(jobGroup, SWT.NONE);
+				final Label atLabel_2 = SOSJOEMessageCodes.JOE_L_JobAssistent_At.Control(new Label(jobGroup, SWT.NONE));
 				atLabel_2.setLayoutData(new GridData(37, SWT.DEFAULT));
 				atLabel_2.setAlignment(SWT.RIGHT);
-				atLabel_2.setText("at"); //TODO lang "at"
 
-				txtWeekAtHour = new Text(jobGroup, SWT.CENTER | SWT.BORDER);				
+				txtWeekAtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));				
 				txtWeekAtHour.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {						
 						if(!checkTime(txtWeekAtHour.getText(), "hour")) {
@@ -418,11 +416,10 @@ public class JobAssistentRunTimeForms {
 				gridData_6.widthHint = 0;
 				txtWeekAtHour.setLayoutData(gridData_6);
 
-				final Label label_3 = new Label(jobGroup, SWT.NONE);
+				final Label label_3 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
 				label_3.setLayoutData(new GridData());
-				label_3.setText(":");
 
-				txtWeekAtMinutes = new Text(jobGroup, SWT.CENTER | SWT.BORDER);
+				txtWeekAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtWeekAtMinutes.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {						
 						if(!checkTime(txtWeekAtMinutes.getText(), "minutes")) {
@@ -444,11 +441,10 @@ public class JobAssistentRunTimeForms {
 				gridData_3_2.minimumWidth = 25;
 				txtWeekAtMinutes.setLayoutData(gridData_3_2);
 
-				final Label label_1_2 = new Label(jobGroup, SWT.NONE);
+				final Label label_1_2 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
 				label_1_2.setLayoutData(new GridData());
-				label_1_2.setText(":");
 
-				txtWeekAtSecound = new Text(jobGroup, SWT.CENTER | SWT.BORDER);
+				txtWeekAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtWeekAtSecound.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {						
 						if(!checkTime(txtWeekAtSecound.getText(), "secound")) {
@@ -470,12 +466,11 @@ public class JobAssistentRunTimeForms {
 				gridData_4_2.minimumWidth = 25;
 				txtWeekAtSecound.setLayoutData(gridData_4_2);
 
-				final Label hhmmssLabel_2 = new Label(jobGroup, SWT.NONE);
+				final Label hhmmssLabel_2 = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.Control(new Label(jobGroup, SWT.NONE));
 				hhmmssLabel_2.setLayoutData(new GridData());
-				hhmmssLabel_2.setText("hh:mm:ss"); //TODO lang "hh:mm:ss"
 
 				{
-					optEveryMonths = new Button(jobGroup, SWT.CHECK);
+					optEveryMonths = SOSJOEMessageCodes.JOE_B_JobAssistent_MonthDay.Control(new Button(jobGroup, SWT.CHECK));
 					optEveryMonths.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
 							if(optEveryMonths.getSelection()) {
@@ -492,11 +487,10 @@ public class JobAssistentRunTimeForms {
 							}
 						}
 					});
-					optEveryMonths.setText(MONTH_DAY);
 				}
 
 				{
-					comboMonth = new Combo(jobGroup, SWT.NONE);					
+					comboMonth = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_MonthCombo.Control(new Combo(jobGroup, SWT.NONE));					
 					comboMonth.setItems(DaysListener.getMonthdays());
 					comboMonth.select(0);
 					comboMonth.setEnabled(false);
@@ -504,12 +498,12 @@ public class JobAssistentRunTimeForms {
 					comboMonth.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 				}
 
-				final Label atLabel_3 = new Label(jobGroup, SWT.NONE);
+				final Label atLabel_3 = SOSJOEMessageCodes.JOE_L_JobAssistent_At.Control(new Label(jobGroup, SWT.NONE));
 				atLabel_3.setLayoutData(new GridData(37, SWT.DEFAULT));
 				atLabel_3.setAlignment(SWT.RIGHT);
-				atLabel_3.setText("at"); //TODO lang "at"
+//				atLabel_3.setText("at");
 
-				txtMonthAtHour = new Text(jobGroup, SWT.CENTER | SWT.BORDER);
+				txtMonthAtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtMonthAtHour.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {						
 						if(!checkTime(txtMonthAtHour.getText(), "hour")) {
@@ -532,11 +526,10 @@ public class JobAssistentRunTimeForms {
 				gridData_7.widthHint = 0;
 				txtMonthAtHour.setLayoutData(gridData_7);
 
-				final Label label_4 = new Label(jobGroup, SWT.NONE);
+				final Label label_4 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
 				label_4.setLayoutData(new GridData());
-				label_4.setText(":");
 
-				txtMonthAtMinutes = new Text(jobGroup, SWT.CENTER | SWT.BORDER);
+				txtMonthAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtMonthAtMinutes.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {						
 						if(!checkTime(txtMonthAtMinutes.getText(), "minutes")) {
@@ -556,11 +549,10 @@ public class JobAssistentRunTimeForms {
 				gridData_3_3.minimumWidth = 25;
 				txtMonthAtMinutes.setLayoutData(gridData_3_3);
 
-				final Label label_1_3 = new Label(jobGroup, SWT.NONE);
+				final Label label_1_3 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(jobGroup, SWT.NONE));
 				label_1_3.setLayoutData(new GridData());
-				label_1_3.setText(":");
 
-				txtMonthAtSecound = new Text(jobGroup, SWT.CENTER | SWT.BORDER);
+				txtMonthAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtMonthAtSecound.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {						
 						if(!checkTime(txtMonthAtSecound.getText(), "minutes")) {
@@ -576,9 +568,8 @@ public class JobAssistentRunTimeForms {
 				gridData_4_3.minimumWidth = 25;
 				txtMonthAtSecound.setLayoutData(gridData_4_3);
 
-				final Label hhmmssLabel_3 = new Label(jobGroup, SWT.NONE);
+				final Label hhmmssLabel_3 = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.Control(new Label(jobGroup, SWT.NONE));
 				hhmmssLabel_3.setLayoutData(new GridData());
-				hhmmssLabel_3.setText("hh:mm:ss"); //TODO lang "hh:mm:ss"
 
 				list = new List(jobGroup, SWT.BORDER);
 				list.addSelectionListener(new SelectionAdapter() {
@@ -592,17 +583,16 @@ public class JobAssistentRunTimeForms {
 				list.setLayoutData(gridData_2);
 
 				{
-					butAdd = new Button(jobGroup, SWT.NONE);
+					butAdd = SOSJOEMessageCodes.JOE_B_JobAssistentRunTimeForms_Add.Control(new Button(jobGroup, SWT.NONE));
 					butAdd.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
 							addPeriod();														
 						}
 					});
 					butAdd.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-					butAdd.setText("Add"); //TODO lang "Add"
 				}
 
-				butRemove = new Button(jobGroup, SWT.NONE);
+				butRemove = SOSJOEMessageCodes.JOE_B_JobAssistentRunTimeForms_Remove.Control(new Button(jobGroup, SWT.NONE));
 				butRemove.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						if(list.getSelectionCount() > 0) {
@@ -612,18 +602,16 @@ public class JobAssistentRunTimeForms {
 					}
 				});
 				butRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-				butRemove.setText("Remove"); //TODO lang "Remove"
 			}
 
 
 			{
-				butCancel = new Button(runTimeSingleShell, SWT.NONE);
+				butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Close.Control(new Button(runTimeSingleShell, SWT.NONE));
 				butCancel.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						close();
 					}
 				});
-				butCancel.setText("Close"); //TODO lang "Close"
 			}
 
 
@@ -638,7 +626,7 @@ public class JobAssistentRunTimeForms {
 				composite.setLayout(gridLayout_1);
 
 				{
-					butShow = new Button(composite, SWT.NONE);
+					butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite, SWT.NONE));
 					butShow.setVisible(false);
 					butShow.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 					butShow.addSelectionListener(new SelectionAdapter() {
@@ -646,13 +634,13 @@ public class JobAssistentRunTimeForms {
 							MainWindow.message(runTimeSingleShell, Utils.getElementAsString(job), SWT.OK );
 						}
 					});
-					butShow.setText("Show"); //TODO lang "Show"
 				}
 
-				Utils.createHelpButton(composite, "assistent.run_time", runTimeSingleShell);
+//				Utils.createHelpButton(composite, "assistent.run_time", runTimeSingleShell);
+				Utils.createHelpButton(composite, "JOE_M_JobAssistentRunTimeForms_Help.label", runTimeSingleShell);
 
 				{
-					butNext = new Button(composite, SWT.NONE);
+					butNext = SOSJOEMessageCodes.JOE_B_JobAssistentRunTimeForms_Apply.Control(new Button(composite, SWT.NONE));
 					butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 					final GridData gridData_1 = new GridData(GridData.END, GridData.CENTER, false, false);
 					gridData_1.widthHint = 57;
@@ -663,7 +651,6 @@ public class JobAssistentRunTimeForms {
 							runTimeSingleShell.dispose();														
 						}
 					});
-					butNext.setText("Apply"); //TODO lang "Apply"
 				}							
 			}
 
@@ -683,11 +670,13 @@ public class JobAssistentRunTimeForms {
 			runTimeSingleShell.pack();		
 		} catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+//				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+				new sos.scheduler.editor.app.ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) , e);
 			} catch(Exception ee) {
 				//tu nichts
 			}
-			System.err.println("..error in JobAssistentRuntimeForms.showRunTimeForms() " + e.getMessage());
+//			System.err.println("..error in JobAssistentRuntimeForms.showRunTimeForms() " + e.getMessage());
+			System.err.println(SOSJOEMessageCodes.JOE_E_0002.params("JobAssistentRunTimeForms.showRunTimeForms() ") + e.getMessage());
 		}
 	}
 
@@ -742,25 +731,6 @@ public class JobAssistentRunTimeForms {
 
 
 	public void setToolTipText() {
-		butCancel.setToolTipText(Messages.getTooltip("assistent.close"));
-		butNext.setToolTipText(Messages.getTooltip("assistent.apply"));
-		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
-		comboMonth.setToolTipText(Messages.getTooltip("assistent.run_time.month"));
-		txtSpeDay.setToolTipText(Messages.getTooltip("assistent.run_time.specific_day"));
-		comboEveryWeekdays.setToolTipText(Messages.getTooltip("assistent.run_time.week"));
-		butAdd.setToolTipText(Messages.getTooltip("assistent.run_time.add"));
-		txtDayAtHour.setToolTipText(Messages.getTooltip("assistent.run_time.hours"));
-		txtDayAtMinutes.setToolTipText(Messages.getTooltip("assistent.run_time.minutes"));
-		txtDayAtSecound.setToolTipText(Messages.getTooltip("assistent.run_time.secounds"));		
-		txtSpeDayHour.setToolTipText(Messages.getTooltip("assistent.run_time.hours"));      		
-		txtSpeDayAtMinutes.setToolTipText(Messages.getTooltip("assistent.run_time.minutes")); 		
-		txtSpeDayAtSecound.setToolTipText(Messages.getTooltip("assistent.run_time.secounds")); 		
-		txtWeekAtHour.setToolTipText(Messages.getTooltip("assistent.run_time.hours"));		
-		txtWeekAtMinutes.setToolTipText(Messages.getTooltip("assistent.run_time.minutes")); 		
-		txtWeekAtSecound.setToolTipText(Messages.getTooltip("assistent.run_time.secounds"));
-		txtMonthAtHour.setToolTipText(Messages.getTooltip("assistent.run_time.hours"));		
-		txtMonthAtMinutes.setToolTipText(Messages.getTooltip("assistent.run_time.minutes"));
-		txtMonthAtSecound.setToolTipText(Messages.getTooltip("assistent.run_time.secounds"));
 	}
 
 
@@ -769,7 +739,8 @@ public class JobAssistentRunTimeForms {
 
 		if(optEveryDay.getSelection()) {
 			if(txtDayAtHour.getText().concat(txtDayAtMinutes.getText()).concat(txtDayAtSecound.getText()).trim().length()>0)  {
-				String str = EVERY_DAY + "at " +  Utils.getTime(23, txtDayAtHour.getText(), txtDayAtMinutes.getText(), txtDayAtSecound.getText(), false);
+//				String str = EVERY_DAY + " at " +  Utils.getTime(23, txtDayAtHour.getText(), txtDayAtMinutes.getText(), txtDayAtSecound.getText(), false);
+				String str = EVERY_DAY + " " + SOSJOEMessageCodes.JOE_L_JobAssistent_At.label()+ " " +  Utils.getTime(23, txtDayAtHour.getText(), txtDayAtMinutes.getText(), txtDayAtSecound.getText(), false);
 				if(!periodExist(str)) {
 					savePeriod(EVERY_DAY);
 					list.add(str);
@@ -780,7 +751,8 @@ public class JobAssistentRunTimeForms {
 		if(optSpecificDay.getSelection()) {
 			if(txtSpeDay.getISODate() != null && txtSpeDay.getISODate().trim().length() > 0){				
 				savePeriod(SPECIFIC_DAY);
-				list.add(SPECIFIC_DAY + txtSpeDay.getISODate() + " at " +  Utils.getTime(23, txtSpeDayHour.getText(), txtSpeDayAtMinutes.getText(), txtSpeDayAtSecound.getText(), false));
+//				list.add(SPECIFIC_DAY + txtSpeDay.getISODate() + " at " +  Utils.getTime(23, txtSpeDayHour.getText(), txtSpeDayAtMinutes.getText(), txtSpeDayAtSecound.getText(), false));
+				list.add(SPECIFIC_DAY + txtSpeDay.getISODate() + " " + SOSJOEMessageCodes.JOE_L_JobAssistent_At.label()+ " " +  Utils.getTime(23, txtSpeDayHour.getText(), txtSpeDayAtMinutes.getText(), txtSpeDayAtSecound.getText(), false));
 			} 
 		}
 
@@ -788,14 +760,16 @@ public class JobAssistentRunTimeForms {
 			if(comboEveryWeekdays.getText()!= null && comboEveryWeekdays.getText().trim().length() >0){
 
 				savePeriod(WEEK_DAY);
-				list.add(WEEK_DAY + comboEveryWeekdays.getText() + " at " +  Utils.getTime(23, txtWeekAtHour.getText(), txtWeekAtMinutes.getText(), txtWeekAtSecound.getText(), false));
+//				list.add(WEEK_DAY + comboEveryWeekdays.getText() + " at " +  Utils.getTime(23, txtWeekAtHour.getText(), txtWeekAtMinutes.getText(), txtWeekAtSecound.getText(), false));
+				list.add(WEEK_DAY + comboEveryWeekdays.getText() + " " + SOSJOEMessageCodes.JOE_L_JobAssistent_At.label()+ " " +  Utils.getTime(23, txtWeekAtHour.getText(), txtWeekAtMinutes.getText(), txtWeekAtSecound.getText(), false));
 			}
 		}
 
 		if(optEveryMonths.getSelection()){
 			if(comboMonth.getText() !=null && comboMonth.getText().trim().length() > 0){				
 				savePeriod(MONTH_DAY);
-				list.add(MONTH_DAY + comboMonth.getText() + " at " +  Utils.getTime(23, txtMonthAtHour.getText(), txtMonthAtMinutes.getText(), txtMonthAtSecound.getText(), false));
+//				list.add(MONTH_DAY + comboMonth.getText() + " at " +  Utils.getTime(23, txtMonthAtHour.getText(), txtMonthAtMinutes.getText(), txtMonthAtSecound.getText(), false));
+				list.add(MONTH_DAY + comboMonth.getText() + " " + SOSJOEMessageCodes.JOE_L_JobAssistent_At.label()+ " " +  Utils.getTime(23, txtMonthAtHour.getText(), txtMonthAtMinutes.getText(), txtMonthAtSecound.getText(), false));
 			}
 		}
 		setEnabled(false);
@@ -806,7 +780,8 @@ public class JobAssistentRunTimeForms {
 		for(int i =0; i < list.getItemCount(); i++) {
 			String currStr = list.getItem(i);
 			if(currStr.equalsIgnoreCase(str)) {
-				MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.run_time.period_exist"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+//				MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.run_time.period_exist"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+				MainWindow.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_PeriodExists.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 				return true;
 			}
 		}
@@ -825,7 +800,8 @@ public class JobAssistentRunTimeForms {
 			PeriodListener p = new PeriodListener(dom);
 			p.setPeriod(period);
 			if(p.getBegin() == null || p.getBegin().trim().length() == 0) {
-				list.add(EVERY_DAY + "at " + p.getSingle() );
+//				list.add(EVERY_DAY + "at " + p.getSingle() );
+				list.add(EVERY_DAY + " " + SOSJOEMessageCodes.JOE_L_JobAssistent_At.label()+ " " + p.getSingle() );
 			}
 		}
 
@@ -840,7 +816,8 @@ public class JobAssistentRunTimeForms {
 				PeriodListener p = new PeriodListener(dom);
 				p.setPeriod(period);	
 				if(p.getBegin() == null || p.getBegin().trim().length() == 0) {
-					list.add(SPECIFIC_DAY + Utils.asStr(da[2]) + "-" + Utils.asStr(da[1]) + "-" + Utils.asStr(da[0])   +  " at " + p.getSingle() );
+//					list.add(SPECIFIC_DAY + Utils.asStr(da[2]) + "-" + Utils.asStr(da[1]) + "-" + Utils.asStr(da[0])   +  " at " + p.getSingle() );
+					list.add(SOSJOEMessageCodes.JOE_M_0029.params(SPECIFIC_DAY, Utils.asStr(da[2]), Utils.asStr(da[1]), Utils.asStr(da[0]), p.getSingle()));
 				}
 			}
 		}
@@ -856,7 +833,8 @@ public class JobAssistentRunTimeForms {
 				PeriodListener p = new PeriodListener(dom);
 				p.setPeriod(period);
 				if(p.getBegin() == null || p.getBegin().trim().length() == 0) {
-					list.add(WEEK_DAY + sWeek +  " at " + p.getSingle() );
+//					list.add(WEEK_DAY + sWeek +  " at " + p.getSingle());
+					list.add(SOSJOEMessageCodes.JOE_M_0031.params(WEEK_DAY, sWeek, p.getSingle()));
 				}
 			}	
 		}
@@ -872,7 +850,8 @@ public class JobAssistentRunTimeForms {
 				PeriodListener p = new PeriodListener(dom);
 				p.setPeriod(period);	
 				if(p.getBegin() == null || p.getBegin().trim().length() == 0) {
-					list.add(MONTH_DAY + sMonth +  " at " + p.getSingle() );
+//					list.add(MONTH_DAY + sMonth +  " at " + p.getSingle() );
+					list.add(SOSJOEMessageCodes.JOE_M_0031.params(MONTH_DAY, sMonth, p.getSingle()));
 				}
 			}	
 		}
@@ -908,7 +887,8 @@ public class JobAssistentRunTimeForms {
 			Element period = (Element)everyDay.get(i);
 			PeriodListener p = new PeriodListener(dom);
 			p.setPeriod(period);			
-			if(selectedStr.equals(EVERY_DAY + "at " + p.getSingle())) {		
+//			if(selectedStr.equals(EVERY_DAY + "at " + p.getSingle())) {	
+			if(selectedStr.equals(EVERY_DAY +" " + SOSJOEMessageCodes.JOE_L_JobAssistent_At + " " + p.getSingle())) {	
 				periodslistener.removePeriod(i);
 			}
 		}
@@ -931,7 +911,8 @@ public class JobAssistentRunTimeForms {
 					Element period = (Element)periods.get(j);
 					PeriodListener p = new PeriodListener(dom);
 					p.setPeriod(period);				
-					if(selectedStr.equals(SPECIFIC_DAY + Utils.asStr(da[2]) + "-" + Utils.asStr(da[1]) + "-" + Utils.asStr(da[0])   +  " at " + p.getSingle() )){
+//					if(selectedStr.equals(SPECIFIC_DAY + Utils.asStr(da[2]) + "-" + Utils.asStr(da[1]) + "-" + Utils.asStr(da[0])   +  " at " + p.getSingle() )){
+					if(selectedStr.equals(SOSJOEMessageCodes.JOE_M_0029.params(SPECIFIC_DAY, Utils.asStr(da[2]), Utils.asStr(da[1]), Utils.asStr(da[0]), p.getSingle()))){
 						PeriodsListener _pl = new PeriodsListener(dom, speElem );
 						_pl.removePeriod(j);
 					}
@@ -1101,26 +1082,30 @@ public class JobAssistentRunTimeForms {
 			return true;
 		}
 		if(!Utils.isOnlyDigits(time)) {
-			MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.no_numeric"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+//			MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.no_numeric"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+			MainWindow.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoNum.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 			retVal= false;
 		} else {
 			int itime = Utils.str2int(time);
 			if(which.equals("hour")) {
 				Utils.str2int(time);
 				if(itime < 0 || itime > 24) {
-					MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.no_time"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+//					MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.no_time"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+					MainWindow.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoTime.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 					retVal= false;
 				}
 			}else if(which.equals("minutes") || which.equals("secound")) {
 				Utils.str2int(time);
 				if(itime < 0 || itime > 60) {
-					MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.no_time"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+//					MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.no_time"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+					MainWindow.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoTime.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 					retVal= false;
 				}
 			} 
 
 			if(time.trim().length() > 2) {
-				MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.no_time"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+//				MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.no_time"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+				MainWindow.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoTime.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 				retVal= false;
 			}
 		}
@@ -1128,7 +1113,8 @@ public class JobAssistentRunTimeForms {
 	}
 
 	private void close() {
-		int cont = MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+//		int cont = MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		int cont = MainWindow.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_Close.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		if(cont == SWT.OK) {//Utils.getElementAsString((Element)jobBackUp);			
 			job.setContent(jobBackUp.cloneContent());
 			runTimeSingleShell.dispose();	

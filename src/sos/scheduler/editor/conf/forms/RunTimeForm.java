@@ -169,7 +169,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         			setEnabled();
             		listener.setSchedule(comSchedule.getText());
             		_gui.updateFont();
-            		if(!init) 
+           		if(!init) 
             			_gui.updateRunTime();
             		
         	}

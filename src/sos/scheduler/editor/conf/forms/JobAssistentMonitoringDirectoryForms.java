@@ -22,6 +22,7 @@ import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -85,10 +86,11 @@ public class JobAssistentMonitoringDirectoryForms {
 		gridLayout.numColumns = 2;
 		shellRunOptions.setLayout(gridLayout);
 		shellRunOptions.setSize(542, 377);
-		shellRunOptions.setText("Monitoring Directory");//TODO lang "Monitoring Directory"
+//		shellRunOptions.setText("Monitoring Directory");
+		shellRunOptions.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_MonitoringDirectory.label());
 
-		final Group jobGroup = new Group(shellRunOptions, SWT.NONE);
-		jobGroup.setText("Job");//TODO lang "Job"
+		final Group jobGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobGroup.Control(new Group(shellRunOptions, SWT.NONE));
+//		jobGroup.setText("Job");
 		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1);
 		gridData_3.widthHint = 514;
 		gridData_3.heightHint = 283;
@@ -101,12 +103,13 @@ public class JobAssistentMonitoringDirectoryForms {
 		gridLayout_1.marginHeight = 10;
 		gridLayout_1.marginBottom = 10;
 		gridLayout_1.numColumns = 3;
-		jobGroup.setLayout(gridLayout_1);		
-		final Label lblDirectory = new Label(jobGroup, SWT.NONE);
+		jobGroup.setLayout(gridLayout_1);
+		
+		final Label lblDirectory = SOSJOEMessageCodes.JOE_L_JobAssistent_Directory.Control(new Label(jobGroup, SWT.NONE));
 		lblDirectory.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
-		lblDirectory.setText("Directory");//TODO lang "Directory"
+//		lblDirectory.setText("Directory");
 
-		txtDirectory = new Text(jobGroup, SWT.BORDER);		
+		txtDirectory = SOSJOEMessageCodes.JOE_T_JobAssistent_Directory.Control(new Text(jobGroup, SWT.BORDER));		
 		txtDirectory.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR)
@@ -116,7 +119,7 @@ public class JobAssistentMonitoringDirectoryForms {
 		txtDirectory.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		txtDirectory.setFocus();
 
-		final Composite composite = new Composite(jobGroup, SWT.NONE);
+		final Composite composite = SOSJOEMessageCodes.JOE_Composite1.Control(new Composite(jobGroup, SWT.NONE));
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.FILL, false, false, 1, 2);
 		gridData_4.heightHint = 59;
 		gridData_4.widthHint = 72;
@@ -127,7 +130,7 @@ public class JobAssistentMonitoringDirectoryForms {
 		gridLayout_4.marginHeight = 0;
 		composite.setLayout(gridLayout_4);
 
-		butApply = new Button(composite, SWT.NONE);
+		butApply = SOSJOEMessageCodes.JOE_B_JobAssistent_ApplyDir.Control(new Button(composite, SWT.NONE));
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		butApply.setLayoutData(gridData_2);
 		butApply.addSelectionListener(new SelectionAdapter() {
@@ -135,9 +138,9 @@ public class JobAssistentMonitoringDirectoryForms {
 				apply();				
 			}
 		});
-		butApply.setText("Apply Dir");//TODO lang "Apply Dir"
+//		butApply.setText("Apply Dir");
 
-		butNewDirectory = new Button(composite, SWT.NONE);
+		butNewDirectory = SOSJOEMessageCodes.JOE_B_JobAssistent_NewDirectory.Control(new Button(composite, SWT.NONE));
 		final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData.widthHint = 47;
 		butNewDirectory.setLayoutData(gridData);
@@ -151,12 +154,13 @@ public class JobAssistentMonitoringDirectoryForms {
 
 			}
 		});
-		butNewDirectory.setText("New");//TODO lang "New"
+//		butNewDirectory.setText("New");
 
-		final Label lblRegExp = new Label(jobGroup, SWT.NONE);
-		lblRegExp.setText("Regular expression ");//TODO lang "Regular expression "
+		@SuppressWarnings("unused")
+		final Label lblRegExp = SOSJOEMessageCodes.JOE_L_JobAssistent_Regex.Control(new Label(jobGroup, SWT.NONE));
+//		lblRegExp.setText("Regular expression ");
 
-		txtRegExp = new Text(jobGroup, SWT.BORDER);
+		txtRegExp = SOSJOEMessageCodes.JOE_T_JobAssistent_Regex.Control(new Text(jobGroup, SWT.BORDER));
 		txtRegExp.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR)
@@ -165,7 +169,7 @@ public class JobAssistentMonitoringDirectoryForms {
 		});
 		txtRegExp.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 
-		tableWatchDirectory = new Table(jobGroup, SWT.FULL_SELECTION | SWT.BORDER);
+		tableWatchDirectory = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_WatchDirectory.Control(new Table(jobGroup, SWT.FULL_SELECTION | SWT.BORDER));
 		final GridData gridData_7 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
 		tableWatchDirectory.setLayoutData(gridData_7);
 		optionlistener.fillDirectories(tableWatchDirectory);
@@ -184,15 +188,15 @@ public class JobAssistentMonitoringDirectoryForms {
 		tableWatchDirectory.setLinesVisible(true);
 		tableWatchDirectory.setHeaderVisible(true);
 
-		final TableColumn newColumnTableColumn = new TableColumn(tableWatchDirectory, SWT.NONE);
+		final TableColumn newColumnTableColumn = SOSJOEMessageCodes.JOE_TCl_JobAssistent_DirectoryColumn.Control(new TableColumn(tableWatchDirectory, SWT.NONE));
 		newColumnTableColumn.setWidth(156);
-		newColumnTableColumn.setText("Directory");//TODO lang "Directory"
+//		newColumnTableColumn.setText("Directory");
 
-		final TableColumn newColumnTableColumn_1 = new TableColumn(tableWatchDirectory, SWT.NONE);
+		final TableColumn newColumnTableColumn_1 = SOSJOEMessageCodes.JOE_TCl_JobAssistent_RegexColumn.Control(new TableColumn(tableWatchDirectory, SWT.NONE));
 		newColumnTableColumn_1.setWidth(186);
-		newColumnTableColumn_1.setText("Regular Expression");//TODO lang "Regular Expression"
+//		newColumnTableColumn_1.setText("Regular Expression");
 
-		butRemoveDirectory = new Button(jobGroup, SWT.NONE);
+		butRemoveDirectory = SOSJOEMessageCodes.JOE_B_JobAssistent_RemoveDirectory.Control(new Button(jobGroup, SWT.NONE));
 		butRemoveDirectory.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, true));
 		butRemoveDirectory.setEnabled(false);
 		butRemoveDirectory.addSelectionListener(new SelectionAdapter() {
@@ -204,7 +208,7 @@ public class JobAssistentMonitoringDirectoryForms {
 
 			}
 		});
-		butRemoveDirectory.setText("Remove");//TODO lang "Remove"
+//		butRemoveDirectory.setText("Remove");
 
 		java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();		
 		shellRunOptions.setBounds((screen.width - shellRunOptions.getBounds().width) /2, 
@@ -214,22 +218,22 @@ public class JobAssistentMonitoringDirectoryForms {
 
 		shellRunOptions.open();
 
-		final Composite composite_1 = new Composite(shellRunOptions, SWT.NONE);
+		final Composite composite_1 = SOSJOEMessageCodes.JOE_Composite2.Control(new Composite(shellRunOptions, SWT.NONE));
 		final GridLayout gridLayout_2 = new GridLayout();
 		gridLayout_2.marginWidth = 0;
 		composite_1.setLayout(gridLayout_2);
 		{
-			butCancel = new Button(composite_1, SWT.NONE);
+			butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Close.Control(new Button(composite_1, SWT.NONE));
 			butCancel.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 
 					close();
 				}
 			});
-			butCancel.setText("Close");//TODO lang "Close"
+//			butCancel.setText("Close");
 		}
 
-		final Composite composite_2 = new Composite(shellRunOptions, SWT.NONE);
+		final Composite composite_2 = SOSJOEMessageCodes.JOE_Composite3.Control(new Composite(shellRunOptions, SWT.NONE));
 		composite_2.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
 		final GridLayout gridLayout_3 = new GridLayout();
 		gridLayout_3.marginRight = 10;
@@ -238,7 +242,7 @@ public class JobAssistentMonitoringDirectoryForms {
 		composite_2.setLayout(gridLayout_3);
 
 		{
-			butFinish = new Button(composite_2, SWT.NONE);
+			butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_2, SWT.NONE));
 			butFinish.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			butFinish.setVisible(false);
 			butFinish.addSelectionListener(new SelectionAdapter() {
@@ -247,12 +251,13 @@ public class JobAssistentMonitoringDirectoryForms {
 					shellRunOptions.dispose();
 				}
 			});
-			butFinish.setText("Finish");//TODO lang "Finish"
+//			butFinish.setText("Finish");
 		}
 
-		Utils.createHelpButton(composite_2, "assistant.directory_monitoring", shellRunOptions).setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));;
+//		Utils.createHelpButton(composite_2, "assistant.directory_monitoring", shellRunOptions).setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+		Utils.createHelpButton(composite_2, "JOE_M_JobAssistentMonitoringDirectoryForms_Help.label", shellRunOptions).setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 
-		butNext = new Button(composite_2, SWT.NONE);
+		butNext = SOSJOEMessageCodes.JOE_B_JobAssistentMonitoringDirectoryForms_Apply.Control(new Button(composite_2, SWT.NONE));
 		butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 		final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		gridData_6.widthHint = 54;
@@ -263,7 +268,7 @@ public class JobAssistentMonitoringDirectoryForms {
 				shellRunOptions.dispose();								
 			}
 		});
-		butNext.setText("Apply");//TODO lang "Apply"
+//		butNext.setText("Apply");
 		txtDirectory.setFocus();
 		setToolTipText();
 		shellRunOptions.layout();
@@ -271,19 +276,20 @@ public class JobAssistentMonitoringDirectoryForms {
 	}
 
 	public void setToolTipText() {
-		butCancel.setToolTipText(Messages.getTooltip("assistent.close"));
-		butNext.setToolTipText(Messages.getTooltip("assistent.apply"));		
-		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));			
-		txtDirectory.setToolTipText(Messages.getTooltip("assistent.directory"));
-		txtRegExp.setToolTipText(Messages.getTooltip("assistent.reg_exp"));
-		tableWatchDirectory.setToolTipText(Messages.getTooltip("assistent.table_watch_directory"));
-		butApply.setToolTipText(Messages.getTooltip("assistent.apply_directory"));
-		butNewDirectory.setToolTipText(Messages.getTooltip("assistent.new_directory"));
-		butRemoveDirectory.setToolTipText(Messages.getTooltip("assistent.remove_directory"));
+//		butCancel.setToolTipText(Messages.getTooltip("assistent.close"));
+//		butNext.setToolTipText(Messages.getTooltip("assistent.apply"));		
+//		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));			
+//		txtDirectory.setToolTipText(Messages.getTooltip("assistent.directory"));
+//		txtRegExp.setToolTipText(Messages.getTooltip("assistent.reg_exp"));
+//		tableWatchDirectory.setToolTipText(Messages.getTooltip("assistent.table_watch_directory"));
+//		butApply.setToolTipText(Messages.getTooltip("assistent.apply_directory"));
+//		butNewDirectory.setToolTipText(Messages.getTooltip("assistent.new_directory"));
+//		butRemoveDirectory.setToolTipText(Messages.getTooltip("assistent.remove_directory"));
 	}
 
 	private void close() {
-		int cont = MainWindow.message(shellRunOptions, sos.scheduler.editor.app.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+//		int cont = MainWindow.message(shellRunOptions, sos.scheduler.editor.app.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		int cont = MainWindow.message(shellRunOptions, SOSJOEMessageCodes.JOE_M_JobAssistent_Close.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		if(cont == SWT.OK) {Utils.getElementAsString((Element)jobBackUp);
 		job.setContent(jobBackUp.cloneContent());
 		shellRunOptions.dispose();	

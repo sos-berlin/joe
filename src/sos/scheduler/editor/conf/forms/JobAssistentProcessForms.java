@@ -21,6 +21,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -92,16 +93,20 @@ public class JobAssistentProcessForms {
 		gridLayout.numColumns = 2;
 		processShell.setLayout(gridLayout);
 		processShell.setSize(434, 207);
-		String step = "  ";
+		String step = " ";
 		if (Utils.getAttributeValue("order", executeListener.getJob()).equalsIgnoreCase("yes"))
-			step = step + " [Step 5 of 9]";
+//			step = step + " [Step 5 of 9]";
+			step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step5of9.label();
 		else 
-			step = step + " [Step 5 of 8]";
-		processShell.setText("Execute" + step);//TODO lang "Execute"
+//			step = step + " [Step 5 of 8]";
+			step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step5of8.label();
+//		processShell.setText("Execute" + step);
+		processShell.setText(SOSJOEMessageCodes.JOE_M_JobAssistentProcessForms_Execute.params(step));
 
 		{
 			final Group jobGroup = new Group(processShell, SWT.NONE);
-			jobGroup.setText(" Job: " + Utils.getAttributeValue("name", executeListener.getJob()));//TODO lang " Job: " ?
+//			jobGroup.setText(" Job: " + Utils.getAttributeValue("name", executeListener.getJob()));
+			jobGroup.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobGroup.params(Utils.getAttributeValue("name", executeListener.getJob())));
 			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
 			jobGroup.setLayoutData(gridData);
 			final GridLayout gridLayout_1 = new GridLayout();
@@ -115,10 +120,11 @@ public class JobAssistentProcessForms {
 			jobGroup.setLayout(gridLayout_1);
 
 			{
-				final Label lblFile = new Label(jobGroup, SWT.NONE);
-				lblFile.setText("File");//TODO lang "File"
+				@SuppressWarnings("unused")
+				final Label lblFile = SOSJOEMessageCodes.JOE_JobAssistent_FileLabel.Control(new Label(jobGroup, SWT.NONE));
 			}
-			txtFile = new Text(jobGroup, SWT.BORDER);
+			
+			txtFile = SOSJOEMessageCodes.JOE_JobAssistent_FileText.Control(new Text(jobGroup, SWT.BORDER));
 			txtFile.setFocus();
 			txtFile.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
@@ -130,14 +136,15 @@ public class JobAssistentProcessForms {
 			txtFile.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
 			txtFile.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			txtFile.setEnabled(false);
-
 			txtFile.setText(executeListener.getFile() );
 
 			{
-				final Label lblParameter = new Label(jobGroup, SWT.NONE);
-				lblParameter.setText("Parameter");//TODO lang "Parameter"
+				@SuppressWarnings("unused")
+				final Label lblParameter = SOSJOEMessageCodes.JOE_JobAssistent_ParameterLabel.Control(new Label(jobGroup, SWT.NONE));
+//				lblParameter.setText("Parameter");
 			}
-			txtParameter = new Text(jobGroup, SWT.BORDER);
+			
+			txtParameter = SOSJOEMessageCodes.JOE_JobAssistent_ParameterText.Control(new Text(jobGroup, SWT.BORDER));
 			txtParameter.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					if(txtParameter.getText() != null || txtParameter.getText().trim().length() > 0) {
@@ -148,16 +155,15 @@ public class JobAssistentProcessForms {
 			txtParameter.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 			txtParameter.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			txtParameter.setEnabled(false);
-
 			txtParameter.setText(executeListener.getParam());
 
 			{
-				final Label lblRessources = new Label(jobGroup, SWT.NONE);
+				final Label lblRessources = SOSJOEMessageCodes.JOE_JobAssistent_LogFileLabel.Control(new Label(jobGroup, SWT.NONE));
 				lblRessources.setLayoutData(new GridData(SWT.DEFAULT, 17));
-				lblRessources.setText("Log File");//TODO lang "Log File"
-
+//				lblRessources.setText("Log File");
 			}
-			txtLog = new Text(jobGroup, SWT.BORDER);
+			
+			txtLog = SOSJOEMessageCodes.JOE_JobAssistent_LogFileText.Control(new Text(jobGroup, SWT.BORDER));
 			txtLog.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
 					if(txtLog.getText() != null || txtLog.getText().trim().length() > 0) {
@@ -170,7 +176,6 @@ public class JobAssistentProcessForms {
 			txtLog.setLayoutData(gridData_1);
 			txtLog.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			txtLog.setEnabled(false);
-
 			txtLog.setText(executeListener.getLogFile());
 		}
 
@@ -200,14 +205,15 @@ public class JobAssistentProcessForms {
 		final GridLayout gridLayout_2 = new GridLayout();
 		gridLayout_2.marginWidth = 0;
 		composite.setLayout(gridLayout_2);
+		
 		{
-			butCancel = new Button(composite, SWT.NONE);
+			butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite, SWT.NONE));
 			butCancel.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					close();
 				}
 			});
-			butCancel.setText("Cancel");//TODO lang "Cancel"
+//			butCancel.setText("Cancel");
 		}
 
 		final Composite composite_1 = new Composite(processShell, SWT.NONE);
@@ -220,7 +226,7 @@ public class JobAssistentProcessForms {
 		composite_1.setLayout(gridLayout_3);
 
 		{
-			butShow = new Button(composite_1, SWT.NONE);
+			butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_1, SWT.NONE));
 			butShow.setLayoutData(new GridData());
 			butShow.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {										
@@ -228,32 +234,32 @@ public class JobAssistentProcessForms {
 					txtFile.setFocus();
 				}
 			});
-			butShow.setText("Show");//TODO lang "Show"
+//			butShow.setText("Show");
 		}
 
 		{
-			butFinish = new Button(composite_1, SWT.NONE);
+			butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_1, SWT.NONE));
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					doFinish();										
 				}
 			});
-			butFinish.setText("Finish");//TODO lang "Finish"
+//			butFinish.setText("Finish");
 		}
 
-		butBack = new Button(composite_1, SWT.NONE);
+		butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_1, SWT.NONE));
 		butBack.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				doBack();
-
 			}
 		});
 		final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		gridData_1.widthHint = 47;
 		butBack.setLayoutData(gridData_1);
-		butBack.setText("Back");//TODO lang "Back"
+//		butBack.setText("Back");
+		
 		{
-			butNext = new Button(composite_1, SWT.NONE);
+			butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite_1, SWT.NONE));
 			butNext.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			butNext.addSelectionListener(new SelectionAdapter() {
@@ -275,29 +281,31 @@ public class JobAssistentProcessForms {
 					processShell.dispose();					
 				}
 			});
-			butNext.setText("Next");//TODO lang "Next"
+//			butNext.setText("Next");
 		}
 		{
-			Utils.createHelpButton(composite_1, "assistent.process", processShell);
+//			Utils.createHelpButton(composite_1, "assistent.process", processShell);
+			Utils.createHelpButton(composite_1, "JOE_M_JobAssistentProcessForms_Help.label", processShell);
 
 		}
-		setToolTipText();
+//		setToolTipText();7
 		processShell.layout();		
 	}
 
 	public void setToolTipText() {
-		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
-		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
-		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
-		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
-		txtFile.setToolTipText(Messages.getTooltip("assistent.process_file"));
-		txtParameter.setToolTipText(Messages.getTooltip("assistent.process_parameter"));
-		txtLog.setToolTipText(Messages.getTooltip("assistent.process_log"));
-		butBack.setToolTipText(Messages.getTooltip("butBack"));
+//		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
+//		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
+//		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
+//		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
+//		txtFile.setToolTipText(Messages.getTooltip("assistent.process_file"));
+//		txtParameter.setToolTipText(Messages.getTooltip("assistent.process_parameter"));
+//		txtLog.setToolTipText(Messages.getTooltip("assistent.process_log"));
+//		butBack.setToolTipText(Messages.getTooltip("butBack"));
 	}
 
 	private void close() {
-		int cont = MainWindow.message(processShell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+//		int cont = MainWindow.message(processShell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		int cont = MainWindow.message(processShell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		if(cont == SWT.OK){
 			if(jobBackUp != null)
 				executeListener.getJob().setContent(jobBackUp.cloneContent());
@@ -348,8 +356,8 @@ public class JobAssistentProcessForms {
 		}
 
 		if(Options.getPropertyBoolean("editor.job.show.wizard"))
-			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(executeListener.getJob()), processShell, false, null, false, null, true); 
-
+//			Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(executeListener.getJob()), processShell, false, null, false, null, true);
+			Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(executeListener.getJob()), processShell, false, null, false, null, true);
 
 		if(jobname != null)
 			jobname.setText(Utils.getAttributeValue("name",executeListener.getJob()));	
