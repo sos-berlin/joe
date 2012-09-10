@@ -1566,18 +1566,6 @@ public class SOSJOEMessageCodes extends Composite {
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_TCl_JobsForm_Order						= new SOSMsgJOE("JOE_TCl_JobsForm_Order");
 
-//	OrdersForm
-	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_OrdersForm_Orders						= new SOSMsgJOE("JOE_G_OrdersForm_Orders");
-	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_OrdersForm_NewOrder						= new SOSMsgJOE("JOE_B_OrdersForm_NewOrder");
-	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_OrdersForm_RemoveOrder						= new SOSMsgJOE("JOE_B_OrdersForm_RemoveOrder");
-	@I18NMsg
-	public static final SOSMsgJOE	JOE_Tbl_OrdersForm_Table						= new SOSMsgJOE("JOE_Tbl_OrdersForm_Table");
-	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_OrdersForm_OrderNameID						= new SOSMsgJOE("JOE_TCl_OrdersForm_OrderNameID");
-	
 //	LocksForm
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_G_LocksForm_Locks						= new SOSMsgJOE("JOE_G_LocksForm_Locks");
@@ -1604,11 +1592,112 @@ public class SOSJOEMessageCodes extends Composite {
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_TCl_LocksForm_MaxNonExclusive						= new SOSMsgJOE("JOE_TCl_LocksForm_MaxNonExclusive");
 	
-	
-	
+//	MailForm
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_MailForm_Mail						= new SOSMsgJOE("JOE_G_MailForm_Mail");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_MailForm_MailOnError						= new SOSMsgJOE("JOE_L_MailForm_MailOnError");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_MailForm_MailOnError						= new SOSMsgJOE("JOE_Cbo_MailForm_MailOnError");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_MailForm_MailOnWarning						= new SOSMsgJOE("JOE_L_MailForm_MailOnWarning");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_MailForm_MailOnWarning						= new SOSMsgJOE("JOE_Cbo_MailForm_MailOnWarning");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_MailForm_MailOnSuccess						= new SOSMsgJOE("JOE_L_MailForm_MailOnSuccess");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_MailForm_MailOnSuccess						= new SOSMsgJOE("JOE_Cbo_MailForm_MailOnSuccess");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_MailForm_MailOnProcess						= new SOSMsgJOE("JOE_L_MailForm_MailOnProcess");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_MailForm_MailOnProcess						= new SOSMsgJOE("JOE_Cbo_MailForm_MailOnProcess");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_MailForm_MailOnDelayAfterError						= new SOSMsgJOE("JOE_L_MailForm_MailOnDelayAfterError");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_MailForm_MailOnDelayAfterError						= new SOSMsgJOE("JOE_Cbo_MailForm_MailOnDelayAfterError");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_MailForm_MailTo						= new SOSMsgJOE("JOE_L_MailForm_MailTo");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_MailForm_MailTo						= new SOSMsgJOE("JOE_T_MailForm_MailTo");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_MailForm_MailCC						= new SOSMsgJOE("JOE_L_MailForm_MailCC");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_MailForm_MailCC						= new SOSMsgJOE("JOE_T_MailForm_MailCC");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_MailForm_MailBCC						= new SOSMsgJOE("JOE_L_MailForm_MailBCC");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_MailForm_MailBCC						= new SOSMsgJOE("JOE_T_MailForm_MailBCC");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_MailForm_LogLevel						= new SOSMsgJOE("JOE_L_MailForm_LogLevel");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_MailForm_LogLevel						= new SOSMsgJOE("JOE_Cbo_MailForm_LogLevel");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_MailForm_History						= new SOSMsgJOE("JOE_L_MailForm_History");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_MailForm_History						= new SOSMsgJOE("JOE_Cbo_MailForm_History");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_MailForm_HistoryOnProcess						= new SOSMsgJOE("JOE_L_MailForm_HistoryOnProcess");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_MailForm_HistoryOnProcess						= new SOSMsgJOE("JOE_Cbo_MailForm_HistoryOnProcess");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_MailForm_HistoryWithLog						= new SOSMsgJOE("JOE_L_MailForm_HistoryWithLog");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_MailForm_HistoryWithLog						= new SOSMsgJOE("JOE_Cbo_MailForm_HistoryWithLog");
+
+//	OrderForm
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_OrderForm_Order						= new SOSMsgJOE("JOE_G_OrderForm_Order");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_OrderForm_OrderID						= new SOSMsgJOE("JOE_L_OrderForm_OrderID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_OrderForm_OrderID						= new SOSMsgJOE("JOE_T_OrderForm_OrderID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_OrderForm_JobChain						= new SOSMsgJOE("JOE_L_OrderForm_JobChain");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_OrderForm_JobChain						= new SOSMsgJOE("JOE_Cbo_OrderForm_JobChain");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_OrderForm_Title						= new SOSMsgJOE("JOE_L_OrderForm_Title");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_OrderForm_Title						= new SOSMsgJOE("JOE_T_OrderForm_Title");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_OrderForm_Priority						= new SOSMsgJOE("JOE_L_OrderForm_Priority");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_OrderForm_Priority						= new SOSMsgJOE("JOE_T_OrderForm_Priority");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_OrderForm_State						= new SOSMsgJOE("JOE_L_OrderForm_State");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_OrderForm_State						= new SOSMsgJOE("JOE_T_OrderForm_State");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_OrderForm_EndState						= new SOSMsgJOE("JOE_L_OrderForm_EndState");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_OrderForm_EndState						= new SOSMsgJOE("JOE_Cbo_OrderForm_EndState");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_OrderForm_State2						= new SOSMsgJOE("JOE_Cbo_OrderForm_State2");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_OrderForm_Remove						= new SOSMsgJOE("JOE_B_OrderForm_Remove");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_M_OrderForm_RemoveState						= new SOSMsgJOE("JOE_M_OrderForm_RemoveState");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_M_OrderForm_RemoveFailed						= new SOSMsgJOE("JOE_M_OrderForm_RemoveFailed");
+
 
 	
 	
+
+//	OrdersForm
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_OrdersForm_Orders						= new SOSMsgJOE("JOE_G_OrdersForm_Orders");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_OrdersForm_NewOrder						= new SOSMsgJOE("JOE_B_OrdersForm_NewOrder");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_OrdersForm_RemoveOrder						= new SOSMsgJOE("JOE_B_OrdersForm_RemoveOrder");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Tbl_OrdersForm_Table						= new SOSMsgJOE("JOE_Tbl_OrdersForm_Table");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_OrdersForm_OrderNameID						= new SOSMsgJOE("JOE_TCl_OrdersForm_OrderNameID");
+
+
+
 	// SchedulerListener
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_Msg_0001										= new SOSMsgJOE("JOE_Msg_0001");

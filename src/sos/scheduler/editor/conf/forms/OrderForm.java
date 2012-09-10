@@ -38,12 +38,13 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.OrderListener;
 
-public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
 	private Button				butDetails					= null;
 	private OrderListener		listener					= null;
@@ -128,25 +129,18 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private void createGroup() {
 		GridLayout gridLayout2 = new GridLayout();
 		group = new Group(this, SWT.NONE);
-
 		group.setLayout(gridLayout2);
 		GridLayout gridLayout3 = new GridLayout();
 		gridLayout3.numColumns = 7;
-		gOrder = new Group(group, SWT.NONE);
-		gOrder.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		
-		gOrder.setText(Messages.getLabel(JOE_L_Order)); 		
-
+		gOrder = JOE_G_OrderForm_Order.Control(new Group(group, SWT.NONE));
+		gOrder.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		gOrder.setLayout(gridLayout3);
-		label10 = new Label(gOrder, SWT.NONE);
+		
+		label10 = JOE_L_OrderForm_OrderID.Control(new Label(gOrder, SWT.NONE));
 		label10.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		label10.setText(Messages.getLabel(JOE_L_OrderId)); 
-		tOrderId = new Text(gOrder, SWT.BORDER);
-		tOrderId.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tOrderId.selectAll();
-			}
-		});
+		
+		tOrderId = JOE_T_OrderForm_OrderID.Control(new Text(gOrder, SWT.BORDER));
 		tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		tOrderId.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -155,7 +149,6 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 				    group.setText("Order: " + tOrderId.getText());
 				}
 				 */
-
 				if (event) {
 					if (checkName()) {
 						listener.setCommandAttribute("id", tOrderId.getText());
@@ -166,11 +159,10 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		});
 		tOrderId.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 5, 1));
 
-		final Label jobchainLabel = new Label(gOrder, SWT.NONE);
-		
-		jobchainLabel.setText( Messages.getLabel(JOE_L_JOB_CHAIN) );
+		@SuppressWarnings("unused")
+		final Label jobchainLabel = JOE_L_OrderForm_JobChain.Control(new Label(gOrder, SWT.NONE));
 
-		butGoto = new Button(gOrder, SWT.ARROW | SWT.DOWN);
+		butGoto = JOE_B_JobChainNodes_Goto.Control(new Button(gOrder, SWT.ARROW | SWT.DOWN));
 		butGoto.setVisible(dom != null && !dom.isLifeElement());
 		butGoto.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -188,8 +180,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		gridLayout.horizontalSpacing = 0;
 		composite.setLayout(gridLayout);
 
-		cJobchain = new Combo(composite, SWT.NONE);
-
+		cJobchain = JOE_Cbo_OrderForm_JobChain.Control(new Combo(composite, SWT.NONE));
 		cJobchain.setMenu(new sos.scheduler.editor.app.ContextMenu(cJobchain, dom, Editor.JOB_CHAIN).getMenu());
 		cJobchain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -227,19 +218,12 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		butBrowse.setText("Browse");
 		 */
 
-		final Label titleLabel = new Label(gOrder, SWT.NONE);
+		final Label titleLabel = JOE_L_OrderForm_Title.Control(new Label(gOrder, SWT.NONE));
 		final GridData gridData_6 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
 		gridData_6.widthHint = 47;
 		titleLabel.setLayoutData(gridData_6);
 
-		titleLabel.setText(Messages.getLabel(JOE_L_Title_order));
-
-		tTitle = new Text(gOrder, SWT.BORDER);
-		tTitle.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tTitle.selectAll();
-			}
-		});
+		tTitle = JOE_T_OrderForm_Title.Control(new Text(gOrder, SWT.BORDER));
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if (event)
@@ -248,16 +232,10 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		});
 		tTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
 
-		final Label priorityLabel = new Label(gOrder, SWT.NONE); //TODO lang "Priority"
+		final Label priorityLabel = JOE_L_OrderForm_Priority.Control(new Label(gOrder, SWT.NONE));
 		priorityLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		priorityLabel.setText("Priority");
 
-		tPriority = new Text(gOrder, SWT.BORDER);
-		tPriority.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tPriority.selectAll();
-			}
-		});
+		tPriority = JOE_T_OrderForm_Priority.Control(new Text(gOrder, SWT.BORDER));
 		tPriority.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
@@ -271,11 +249,10 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		});
 		tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
 
-		final Label stateLabel = new Label(gOrder, SWT.NONE);  //TODO lang "State"
+		final Label stateLabel = JOE_L_OrderForm_State.Control(new Label(gOrder, SWT.NONE));
 		stateLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		stateLabel.setText("State");
 
-		tState = new Combo(gOrder, SWT.BORDER);
+		tState = JOE_T_OrderForm_State.Control(new Combo(gOrder, SWT.BORDER));
 		tState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if (event)
@@ -284,11 +261,10 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		});
 		tState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
 
-		final Label endStateLabel = new Label(gOrder, SWT.NONE);  //TODO lang "End State"
+		final Label endStateLabel = JOE_L_OrderForm_EndState.Control(new Label(gOrder, SWT.NONE));
 		endStateLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
-		endStateLabel.setText("End State");
 
-		cboEndState = new Combo(gOrder, SWT.NONE);
+		cboEndState = JOE_Cbo_OrderForm_EndState.Control(new Combo(gOrder, SWT.NONE));
 		cboEndState.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if (event)
@@ -296,16 +272,17 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 			}
 		});
 		cboEndState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
+		
 		new Label(gOrder, SWT.NONE);
 		new Label(gOrder, SWT.NONE);
 
-		final Label stateLabel_1 = new Label(gOrder, SWT.NONE);  //TODO lang "State:"
-		stateLabel_1.setText("State:");
+		@SuppressWarnings("unused")
+		final Label stateLabel_1 = JOE_L_OrderForm_State.Control(new Label(gOrder, SWT.NONE));
 
-		cboStates = new Combo(gOrder, SWT.NONE);
+		cboStates = JOE_Cbo_OrderForm_State2.Control(new Combo(gOrder, SWT.NONE));
 		cboStates.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
-		butRemove = new Button(gOrder, SWT.NONE);
+		butRemove = JOE_B_OrderForm_Remove.Control(new Button(gOrder, SWT.NONE));
 		butRemove.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent e) {
 				existDetailsConfigurationsFile();
@@ -314,13 +291,12 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		butRemove.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if (xmlDetailsConfigFilename != null && xmlDetailsConfigFilename.length() > 0 && new File(xmlDetailsConfigFilename).exists()) {
-					int ok = MainWindow.message(Messages.getString("detailform.remove_state"), //$NON-NLS-1$
-							SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
-
+					
+//					int ok = MainWindow.message(Messages.getString("detailform.remove_state"), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
+					int ok = MainWindow.message(JOE_M_OrderForm_RemoveState.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
 					if (ok == SWT.YES) {
 						if (!new File(xmlDetailsConfigFilename).delete())
-							MainWindow.message("could not Remove Job Chain Node File " + xmlDetailsConfigFilename, SWT.ICON_INFORMATION);
-
+							MainWindow.message(JOE_M_OrderForm_RemoveFailed.params(xmlDetailsConfigFilename), SWT.ICON_INFORMATION);
 					}
 					existDetailsConfigurationsFile();
 				}
@@ -328,7 +304,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		});
 		butRemove.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_delete.gif"));
 
-		butDetails = new Button(gOrder, SWT.NONE);
+		butDetails = JOE_B_JobChainForm_Parameter.Control(new Button(gOrder, SWT.NONE));
 		butDetails.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent e) {
 				existDetailsConfigurationsFile();
@@ -348,7 +324,6 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 			}
 		});
 		butDetails.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-		butDetails.setText("Parameter");  //TODO lang "Parameter"
 
 		createSashForm();
 	}
@@ -418,7 +393,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		cboStates.setItems(listener.getStates());
 
 		cboStates.add("global");
-		cboStates.setText("global");  //TODO lang "global"
+		cboStates.setText("global");  //TODO lang "global" ?
 
 		butDetails.setEnabled(cJobchain.getText().length() > 0);
 		cboStates.setEnabled(cJobchain.getText().length() > 0);
@@ -427,14 +402,7 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 	}
 
 	public void setToolTipText() {
-		tTitle.setToolTipText(Messages.getTooltip("jobcommand.title"));
-		tPriority.setToolTipText(Messages.getTooltip("jobcommand.priority"));
-		tState.setToolTipText(Messages.getTooltip("jobcommand.state"));
-		cboEndState.setToolTipText(Messages.getTooltip("jobcommand.end_state"));
-		cJobchain.setToolTipText(Messages.getTooltip("jobcommand.jobchain"));
-		tOrderId.setToolTipText(Messages.getTooltip("order.order_id"));
-		butGoto.setToolTipText(Messages.getTooltip("goto"));
-		butRemove.setToolTipText(Messages.getTooltip("jobcommand.butRemove"));
+//		
 	}
 
 	private boolean checkName() {
@@ -507,8 +475,10 @@ public class OrderForm extends Composite implements IUnsaved, IUpdateLanguage {
 		}
 		catch (Exception e) {
 			try {
-				System.out.println("..error in " + sos.util.SOSClassUtil.getMethodName() + ": " + e.getMessage());
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+//				System.out.println("..error in " + sos.util.SOSClassUtil.getMethodName() + ": " + e.getMessage());
+				System.out.println(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + ": " + e.getMessage());
+//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 				// tu nichts

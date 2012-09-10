@@ -133,7 +133,7 @@ public class JobMainOptionForm extends SOSJOEMessageCodes implements IUpdateLang
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.numColumns = 1;
 		group = new Group(this, SWT.NONE);	
-		String strT = JOE_M_JobAssistent_JobGroup.params_(listener.getJobName());
+		String strT = JOE_M_JobAssistent_JobGroup.params(listener.getJobName());
 		if(listener.isDisabled())
 			strT += " " + JOE_M_JobCommand_Disabled.label();
 		group.setText(strT);

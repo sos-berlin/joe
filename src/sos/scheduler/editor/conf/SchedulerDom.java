@@ -38,7 +38,7 @@ public class SchedulerDom extends DomParser {
 	private final static String		conSVNVersion				= "$Id$";
 	private static Logger		logger					        = Logger.getLogger(SchedulerDom.class);
 
-	private static final String[]	CONFIG_ELEMENTS				= { "base", "params", "security", "cluster", "process_classes", "schedules", "locks", "script",
+	private static final String[]	CONFIG_ELEMENTS				= { "base", "params", "security", "plugins", "cluster", "process_classes", "schedules", "locks", "script",
 			"http_server", "holidays", "jobs", "job_chains", "orders", "commands" };
 	private static final String[]	JOB_ELEMENTS				= { "settings", "description", "lock.use", "params", "environment", "script", "process",
 			"monitor", "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };
