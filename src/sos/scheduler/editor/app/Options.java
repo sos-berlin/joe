@@ -285,7 +285,7 @@ public class Options extends I18NBase {
 				url = Options.getHelp("index", prefix).replaceAll("\\{lang\\}", getLanguage());
 			else
 				url = helpKey.replaceAll("\\{lang\\}}", getLanguage());
-			return (Options.getHelp("maindir", prefix) + url).replaceAll("\\{scheduler_home\\}", Options.getSchedulerHome()).replaceAll("\\{lang\\}",
+			return (Options.getHelp("maindir", prefix) + url).replaceAll("\\{scheduler_home\\}", Options.getSchedulerHome().replaceAll("\\\\","/")).replaceAll("\\{lang\\}",
 					getLanguage());
 		}
 		catch (Exception e) {

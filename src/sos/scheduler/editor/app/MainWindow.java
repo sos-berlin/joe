@@ -1087,7 +1087,10 @@ public class MainWindow {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-		final ToolItem butHelp = new ToolItem(toolBar, SWT.PUSH);
+	
+		
+		
+		 final ToolItem butHelp = new ToolItem(toolBar, SWT.PUSH);
 		butHelp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_help.gif"));
 		butHelp.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -1104,6 +1107,7 @@ public class MainWindow {
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+ 
 	}
 
 	private static void addDropDown(final ToolItem item, final Menu menu) {
