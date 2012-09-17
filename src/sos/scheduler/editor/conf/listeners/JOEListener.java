@@ -191,7 +191,7 @@ public class JOEListener extends JSToolBox {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; "
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; "  
 						+ sos.scheduler.editor.app.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
 			}
 			catch (Exception ee) {
