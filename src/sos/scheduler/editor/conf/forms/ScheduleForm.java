@@ -151,6 +151,10 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
             });
             txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
 
+            new Label(scheduleGroup, SWT.NONE);
+            new Label(scheduleGroup, SWT.NONE);
+            new Label(scheduleGroup, SWT.NONE);
+            
             final Label substitueLabel = new Label(scheduleGroup, SWT.NONE);
             substitueLabel.setText("Substitute");
 
@@ -165,7 +169,7 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 
             Label validFromLabel = new Label(scheduleGroup, SWT.NONE);
             validFromLabel.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-            validFromLabel.setText("Valid From");
+            validFromLabel.setText("Substitute is valid from");
 
             validFromDate = new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
 
@@ -182,12 +186,10 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
                     setValidDateFrom();
                 }
             });
-
-            
             
 
             final Label validToLabel = new Label(scheduleGroup, SWT.NONE);
-            validToLabel.setText("Valid To");
+            validToLabel.setText("Substitute is valid to");
 
             validToDate = new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
             validToDate.addSelectionListener(new SelectionAdapter() {
