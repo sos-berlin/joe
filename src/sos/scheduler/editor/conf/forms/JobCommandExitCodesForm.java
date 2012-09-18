@@ -119,7 +119,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 		gridLayout2.makeColumnsEqualWidth = true;
 		gridLayout2.numColumns = 1;
 		jobsAndOrdersGroup = new Group(this, SWT.NONE);
-		String strT = JOE_M_JobAssistent_JobGroup.params_(listener.getName()) + " " + listener.getExitCode();
+		String strT = JOE_M_JobAssistent_JobGroup.params(listener.getName()) + " " + listener.getExitCode();
 		if (listener.isDisabled())
 			strT += " " + JOE_M_JobCommand_Disabled.label();
 		jobsAndOrdersGroup.setText(strT);

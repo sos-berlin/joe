@@ -67,7 +67,7 @@ public class JobCommandExitCodesListener {
 	}
 
 	public boolean isDisabled() {
-	    boolean disabled = (!Utils.getAttributeValue("enabled", _job).equalsIgnoreCase("yes"));
+	    boolean disabled = (Utils.getAttributeValue("enabled", _job).equalsIgnoreCase("no"));
 		return disabled;
 	}
 
