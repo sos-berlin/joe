@@ -44,8 +44,8 @@ public class IOUtils {
 				return "";
 	}
 
-	public static String openDirectoryFile(String mask) {
-		return openDirectoryFile(mask, Options.getLastDirectory());
+	public static String getJobschedulerObjectPathName(String mask) {
+		return getJobSchedulerObjectPathFromFileSystem(mask,Options.getSchedulerHotFolder());
 	}
 
 	public static String openDirectoryFile(String mask, final String pstrDirectoryName) {
@@ -79,6 +79,34 @@ public class IOUtils {
 
 	}
 
+	   public static String getJobSchedulerObjectPathFromFileSystem(String mask, final String pstrDirectoryName) {
+
+	        String filename = "";
+	        FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
+	        
+	        fdialog.setFilterPath(pstrDirectoryName);
+	        String filterMask = mask.replaceAll("\\\\", "");
+	        filterMask = filterMask.replaceAll("\\^.", "");
+	        filterMask = filterMask.replaceAll("\\$", "");
+	        fdialog.setFilterExtensions(new String[] { filterMask });
+
+	        filename = fdialog.open();
+	        if (filename == null || filename.trim().length() == 0) {
+	            return filename;
+	        }
+	        String jobSchededulerObjectPath = filename.replaceAll("\\\\", "/");
+
+	        String hotFolderPath = Options.getSchedulerHotFolder().replaceAll("\\\\", "/");
+
+	        int pos = jobSchededulerObjectPath.toLowerCase().indexOf(hotFolderPath.toLowerCase().toLowerCase());
+	        if (pos >= 0) {
+  	          int add = (hotFolderPath.endsWith("/") ? -1 : 0);
+  	          jobSchededulerObjectPath = jobSchededulerObjectPath.substring(pos == -1 ? 0 : pos + hotFolderPath.length() + add);
+	        }
+	        jobSchededulerObjectPath = jobSchededulerObjectPath.substring(0, jobSchededulerObjectPath.length() - filterMask.length() + 1);
+	        return jobSchededulerObjectPath;
+
+	    }
 	/**
 	 * 
 	 * Es wird entweder eine Scheduler Konfigurationsdatei, eine Hot Folder Verzeichnis oder 

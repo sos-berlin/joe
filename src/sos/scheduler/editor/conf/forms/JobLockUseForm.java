@@ -202,7 +202,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		butBrowse = JOE_B_JobLockUseForm_Browse.Control(new Button(group1, SWT.NONE));
 		butBrowse.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				String name = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_LOCK);
+				String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_LOCK);
 				tLockUse.setEnabled(true);
 				if(name != null && name.length() > 0) {
 					tLockUseTable.deselectAll();

@@ -192,7 +192,7 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 		butBrowse = JOE_B_JobMainComposite_BrowseProcessClass.Control(new Button(gMain, SWT.NONE));
 		butBrowse.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				String name = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_PROCESS_CLASS);
+				String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_PROCESS_CLASS);
 				if (name != null && name.length() > 0)
 					cProcessClass.setText(name);
 			}

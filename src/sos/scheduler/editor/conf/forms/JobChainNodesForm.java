@@ -263,7 +263,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             butBrowse.setLayoutData(gd_butBrowse);
             butBrowse.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(final SelectionEvent e) {
-                    String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB);
+                    String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
                     if (jobname != null && jobname.length() > 0)
                         cJob.setText(jobname);
                 }

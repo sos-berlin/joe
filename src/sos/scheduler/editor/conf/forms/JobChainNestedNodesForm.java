@@ -223,7 +223,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
 		butBrowse.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		butBrowse.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB_CHAIN);
+				String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB_CHAIN);
 				if(jobname != null && jobname.length() > 0)
 					cJobChain.setText(jobname);
 			}

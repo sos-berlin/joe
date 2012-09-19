@@ -178,7 +178,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         butBrowse = new Button(groupSchedule, SWT.NONE);
         butBrowse.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
-        		String name = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_SCHEDULE);
+        		String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_SCHEDULE);
 				if(name != null && name.length() > 0)
 					comSchedule.setText(name);
         	}

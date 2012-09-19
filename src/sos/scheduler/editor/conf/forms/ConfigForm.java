@@ -365,7 +365,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		butBrowse.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butBrowse.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB);
+				String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
 				if (jobname != null && jobname.length() > 0) {
 					cConfigurationAddEvent.setText(jobname);
 				}
@@ -390,7 +390,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		butBrowse_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butBrowse_1.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB);
+				String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
 				if (jobname != null && jobname.length() > 0)
 					cConfigurationModifyEvent.setText(jobname);
 			}
@@ -414,7 +414,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		butBrowse_2.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butBrowse_2.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB);
+				String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
 				if (jobname != null && jobname.length() > 0)
 					cConfigurationDeleteEvent.setText(jobname);
 			}
