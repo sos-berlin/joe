@@ -1267,10 +1267,10 @@ public class SchedulerListener {
             // run.setText(run_time);
             // }
             if (run_time.equals("run_time")) {
-              runTreeItem.setText("Run Time");
+             // runTreeItem.setText("Run Time");
             	runTreeItem.setText(SOSJOEMessageCodes.JOE_Msg_0001.label());
-//                runTreeItem.setData(new TreeData(Editor.RUNTIME, job, Options.getHelpURL("job.run_time"), "run_time"));
-                runTreeItem.setData(conItemDataKeyKEY, "run_time");
+                runTreeItem.setData(new TreeData(Editor.RUNTIME, job, Options.getHelpURL("job.run_time"), "run_time"));
+               // runTreeItem.setData(conItemDataKeyKEY, "run_time");
                 runTreeItem.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
                 runTreeItem.setData(conItemDataKeyMAX_OCCUR, "1"); 
                 runTreeItem.setData(conItemDataKeyCOPY_ELEMENT, job);
