@@ -1270,7 +1270,7 @@ public class SchedulerListener {
              // runTreeItem.setText("Run Time");
             	runTreeItem.setText(SOSJOEMessageCodes.JOE_Msg_0001.label());
                 runTreeItem.setData(new TreeData(Editor.RUNTIME, job, Options.getHelpURL("job.run_time"), "run_time"));
-               // runTreeItem.setData(conItemDataKeyKEY, "run_time");
+                runTreeItem.setData(conItemDataKeyKEY, "run_time");
                 runTreeItem.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
                 runTreeItem.setData(conItemDataKeyMAX_OCCUR, "1"); 
                 runTreeItem.setData(conItemDataKeyCOPY_ELEMENT, job);
