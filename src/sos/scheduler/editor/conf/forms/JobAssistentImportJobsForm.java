@@ -1,11 +1,18 @@
 package sos.scheduler.editor.conf.forms;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
@@ -16,6 +23,7 @@ import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -42,6 +50,7 @@ import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
+import sos.scheduler.editor.conf.listeners.SortTreeListener;
 
 import com.swtdesigner.SWTResourceManager;
 
@@ -87,8 +96,16 @@ import com.swtdesigner.SWTResourceManager;
  *
  * @version $Id$
  */
+
+
 public class JobAssistentImportJobsForm {
 	private Shell													shell				= null;
+    private Display                                                 display             = null;
+    private static final String EMPTY_STRING    = "";
+    private Text                searchField     = null;
+    public Timer                inputTimer;
+
+
 	private Text													txtTitle			= null;
 	private Text													txtPath				= null;
 	private Tree													tree				= null;
@@ -129,6 +146,8 @@ public class JobAssistentImportJobsForm {
 	 */
 	public JobAssistentImportJobsForm(SchedulerDom dom_, ISchedulerUpdate update_, int assistentType_) {
 		dom = dom_;
+        inputTimer = new Timer();
+
 		update = update_;
 		assistentType = assistentType_;
 		listener = new JobsListener(dom, update);
@@ -144,6 +163,8 @@ public class JobAssistentImportJobsForm {
 		jobBackUp = (Element) listener_.getJob().clone();
 		joblistener = listener_;
 		dom = joblistener.get_dom();
+        inputTimer = new Timer();
+
 		update = joblistener.get_main();
 		listener = new JobsListener(dom, update);
 		assistentType = assistentType_;
@@ -161,12 +182,66 @@ public class JobAssistentImportJobsForm {
 		jobBackUp = (Element) listener_.getJob().clone();
 		joblistener = listener_;
 		dom = joblistener.get_dom();
+        inputTimer = new Timer();
+
 		update = joblistener.get_main();
 		listener = new JobsListener(dom, update);
 		tParameter = tParameter_;
 		assistentType = assistentType_;
 		paramListener = new ParameterListener(dom, joblistener.getJob(), update, assistentType);
 	}
+
+	class JobListComparator implements Comparator<Map<String, String>>
+	{
+	    private final String key;
+
+	    public JobListComparator(String key)
+	    {
+	        this.key = key;
+	    }
+
+	    public int compare(Map<String, String> first,
+	                       Map<String, String> second)
+	    {
+	        String firstValue = first.get(key);
+	        String secondValue = second.get(key);
+            if (firstValue == null) {
+                firstValue = "";
+            }
+            if (secondValue == null) {
+                secondValue = "";
+            }
+	        return firstValue.compareTo(secondValue);
+	    }
+	}
+
+ 
+	   public class InputTask extends TimerTask {
+	        public void run() {
+	            if (display == null) {
+	                display = Display.getDefault();
+	            }
+	            display.syncExec(new Runnable() {
+	                public void run() {
+	                    if (!searchField.equals(EMPTY_STRING)) {
+	                        try {
+                                createTreeItems();
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                            }
+	                        inputTimer.cancel();
+	                    }
+	                };
+	            });
+	        }
+	    }
+	   
+	    private void resetInputTimer() {
+	        inputTimer.cancel();
+	        inputTimer = new Timer();
+	        inputTimer.schedule(new InputTask(), 1 * 1000, 1 * 1000);
+	    }
 
 	/**
 	 * Jobname setzen
@@ -639,6 +714,16 @@ public class JobAssistentImportJobsForm {
 			jobnamenGroup.setLayoutData(gridData_3);
 			jobnamenGroup.getBounds().height = 100;
 
+			 searchField = new Text(jobnamenGroup, SWT.BORDER);
+		     searchField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		     searchField.addModifyListener(new ModifyListener() {
+		            public void modifyText(final ModifyEvent e) {
+		                if (searchField != null) {
+		                    resetInputTimer();
+		                }
+		            }
+		        });
+			
 			tree = SOSJOEMessageCodes.JOE_JobAssistent_JobTree.Control(new Tree(jobnamenGroup, SWT.FULL_SELECTION | SWT.BORDER));
 			tree.setHeaderVisible(true);
 			tree.getBounds().height = 100;
@@ -658,13 +743,16 @@ public class JobAssistentImportJobsForm {
 
 			TreeColumn column1 = SOSJOEMessageCodes.JOE_JobAssistent_NameTreeColumn.Control(new TreeColumn(tree, SWT.LEFT));
 			column1.setWidth(165);
-
+			column1.addSelectionListener(new SortTreeListener());
+			 
 			TreeColumn column2 = SOSJOEMessageCodes.JOE_JobAssistent_TitleTreeColumn.Control(new TreeColumn(tree, SWT.LEFT));
 			column2.setWidth(200);
-
+			column2.addSelectionListener(new SortTreeListener());
+			
 			TreeColumn column3 = SOSJOEMessageCodes.JOE_JobAssistent_FilenameTreeColumn.Control(new TreeColumn(tree, SWT.LEFT));
 			column3.setWidth(209);
-
+			column3.addSelectionListener(new SortTreeListener());
+			 
 			try {
 				createTreeItems();
 			}
@@ -701,38 +789,43 @@ public class JobAssistentImportJobsForm {
 
 	private void createTreeItems() throws Exception {
 		try {
-//			ermöglicht das Starten des Wizards ohne vorhandene Jobbeschreibung
+		    tree.removeAll();
+		    
 			final TreeItem newItemTreeItem_ = new TreeItem(tree, SWT.NONE);
-			newItemTreeItem_.setText(0, SOSJOEMessageCodes.JOE_M_JobAssistent_NoJobDoc.label());
+//          ermöglicht das Starten des Wizards ohne vorhandene Jobbeschreibung
+/*            newItemTreeItem_.setText(0, SOSJOEMessageCodes.JOE_M_JobAssistent_NoJobDoc.label());
 			newItemTreeItem_.setText(1, "..");
 			newItemTreeItem_.setText(2, "..");
 			Element j = new Element("job");
 			Utils.setAttribute("order", (jobType.equals("order") ? "yes" : "no"), j);
-			newItemTreeItem_.setData(j);
-
+			newItemTreeItem_.setData(j);*/
 			ArrayList listOfDoc = parseDocuments();
-
+			Collections.sort(listOfDoc , new JobListComparator("name"));
 			String filename = "";
 			String lastParent = "";
 			TreeItem parentItemTreeItem = null;
-			boolean loop = true;
+			boolean insertJobInTree = true;
 			for (int i = 0; i < listOfDoc.size(); i++) {
 				HashMap h = (HashMap) listOfDoc.get(i);
-				loop = true;
+                insertJobInTree = (searchField.getText().toLowerCase().equals(EMPTY_STRING)||
+                            (h.get("filename").toString().toLowerCase().contains(searchField.getText().toLowerCase())) ||                           
+                            (h.get("name").toString().toLowerCase().contains(searchField.getText().toLowerCase())) ||
+                            (h.get("title").toString().toLowerCase().contains(searchField.getText().toLowerCase())));
+				    
 				if (jobType != null && jobType.equals("order")) {
 					Element job = (Element) h.get("job");
 					if (!(Utils.getAttributeValue("order", job).equals("yes") || Utils.getAttributeValue("order", job).equals("both"))) {
-						loop = false;
+						insertJobInTree = false;
 					}
 				}
 				else
 					if (jobType != null && jobType.equals("standalonejob")) {
 						Element job = (Element) h.get("job");
 						if (!(Utils.getAttributeValue("order", job).equals("no") || Utils.getAttributeValue("order", job).equals("both"))) {
-							loop = false;
+							insertJobInTree = false;
 						}
 					}
-				if (loop) {
+				if (insertJobInTree) {
 					filename = h.get("filename").toString();
 					if (new File(filename).getParentFile().equals(new File(xmlPaths))) {
 						final TreeItem newItemTreeItem = new TreeItem(tree, SWT.NONE);
