@@ -1258,6 +1258,7 @@ public class SchedulerListener {
             }
             runTreeItem.setData(conItemDataKeyMAX_OCCUR, "1");
             runTreeItem.setImage(getImage("waiting.gif"));
+            runTreeItem.setText(run_time);
 
             // run.setText(Messages.getLabel("treeitem." + run_time));
             // if (run_time.equals("run_time")) {

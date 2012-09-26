@@ -447,11 +447,12 @@ public class DaysForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		setEnabledGroupElement(false);
 	}
 	
-	   
+	 
 
 	private void initMonth() {
-		String strM = JOE_L_Monthnames.label();
-		String strMN[] = strM.split(";");
+//        String strM = JOE_L_Monthnames.label().toLowerCase();
+		//String strMN[] = strM.split(";");
+        String strMN[] = DaysListener.getMonthdays();
 
 		for (int i = 0; i < strMN.length; i++) {
 			listOfSameMonths.put(strMN[i], String.valueOf(i + 1));
