@@ -446,9 +446,37 @@ public class DaysForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		read();
 		setEnabledGroupElement(false);
 	}
+	
+	  private void initMonth_() {       
+	        listOfSameMonths = new HashMap();
+	        listOfSameMonths.put("january", "1");
+	        listOfSameMonths.put("february", "2");
+	        listOfSameMonths.put("march", "3");
+	        listOfSameMonths.put("april", "4");
+	        listOfSameMonths.put("may", "5"); 
+	        listOfSameMonths.put("june", "6"); 
+	        listOfSameMonths.put("july", "7"); 
+	        listOfSameMonths.put("august", "8"); 
+	        listOfSameMonths.put("september", "9"); 
+	        listOfSameMonths.put("october", "10"); 
+	        listOfSameMonths.put("november", "11"); 
+	        listOfSameMonths.put("december", "12"); 
+	        listOfSameMonths.put("1", "january"); 
+	        listOfSameMonths.put("2", "february"); 
+	        listOfSameMonths.put("3", "march"); 
+	        listOfSameMonths.put("4", "april"); 
+	        listOfSameMonths.put("5", "may"); 
+	        listOfSameMonths.put("6", "june"); 
+	        listOfSameMonths.put("7", "july"); 
+	        listOfSameMonths.put("8", "august"); 
+	        listOfSameMonths.put("9", "september"); 
+	        listOfSameMonths.put("10", "october"); 
+	        listOfSameMonths.put("11", "november"); 
+	        listOfSameMonths.put("12", "december");
+	    }
 
 	private void initMonth() {
-		String strM = JOE_L_Monthnames.get();
+		String strM = JOE_L_Monthnames.label();
 		String strMN[] = strM.split(";");
 
 		for (int i = 0; i < strMN.length; i++) {

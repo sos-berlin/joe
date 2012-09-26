@@ -514,7 +514,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
                     }
                 }
             });
-            bFileSink.setEnabled(false);
+           // bFileSink.setEnabled(false);
 
             final Composite composite_3 = new Composite(cType, SWT.NONE);
             final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, true, false);
@@ -929,7 +929,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             bRemoveFileOrderSource.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(final SelectionEvent e) {
                     if (tFileOrderSource.getSelectionCount() > 0) {
-                        bFileSink.setEnabled(tFileOrderSource.getItemCount() > 0);
+                      //bFileSink.setEnabled(tFileOrderSource.getItemCount() > 0);
                         tMoveTo.setEnabled(tFileOrderSource.getItemCount() > 0);
                         bRemoveFile.setEnabled(tFileOrderSource.getItemCount() > 0);
 
@@ -980,7 +980,8 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
     private void enableNode(boolean enable) {
         bFullNode.setEnabled(enable);
         bEndNode.setEnabled(enable);
-        bFileSink.setEnabled(enable && tFileOrderSource.getItemCount() > 0);
+        //bFileSink.setEnabled(enable && tFileOrderSource.getItemCount() > 0);
+        bFileSink.setEnabled(enable);
 
         tState.setEnabled(enable);
         cJob.setEnabled(enable);

@@ -260,7 +260,8 @@ public class JobAssistentImportJobsForm {
 	 * Informationen wie Name, Title, Filename und Job Element
 	 */
 	public ArrayList parseDocuments() {
-		String xmlFilename = "";
+        String xmlFilePath = "";
+        String xmlFileName = "";
 		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData();
 		xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths.concat("jobs") : xmlPaths.concat("/jobs"));
 		ArrayList listOfDoc = null;
@@ -275,9 +276,10 @@ public class JobAssistentImportJobsForm {
 			Iterator fileIterator = filelist.iterator();
 			while (fileIterator.hasNext()) {
 				try {
-					xmlFilename = fileIterator.next().toString();
+					xmlFilePath = fileIterator.next().toString();
+					xmlFileName = new File(xmlFilePath).getName();
 					SAXBuilder builder = new SAXBuilder();
-					Document doc = builder.build(new File(xmlFilename));
+					Document doc = builder.build(new File(xmlFilePath));
 					Element root = doc.getRootElement();
 					List listMainElements = root.getChildren();
 					HashMap h = null;
@@ -287,8 +289,9 @@ public class JobAssistentImportJobsForm {
 							h = new HashMap();
 							h.put("name", elMain.getAttributeValue("name"));
 							h.put("title", elMain.getAttributeValue("title"));
-							h.put("filename", xmlFilename);
-							h.put("job", elMain);
+                            h.put("filepath", xmlFilePath);
+                            h.put("filename", xmlFileName);
+ 							h.put("job", elMain);
 							listOfDoc.add(h);
 						}
 					}
@@ -826,12 +829,12 @@ public class JobAssistentImportJobsForm {
 						}
 					}
 				if (insertJobInTree) {
-					filename = h.get("filename").toString();
+					filename = h.get("filepath").toString();
 					if (new File(filename).getParentFile().equals(new File(xmlPaths))) {
 						final TreeItem newItemTreeItem = new TreeItem(tree, SWT.NONE);
 						newItemTreeItem.setText(0, h.get("name").toString());
 						newItemTreeItem.setText(1, h.get("title").toString());
-						newItemTreeItem.setText(2, filename);
+						newItemTreeItem.setText(2, h.get("filename").toString());
 						newItemTreeItem.setData(h.get("job"));
 					}
 					else {
@@ -908,10 +911,10 @@ public class JobAssistentImportJobsForm {
 			File currPathFile = new File(txtPath.getText());
 			File currPathParent = new File(currPathFile.getParent());
 			if (currPathFile.getPath().indexOf(sData.getPath()) > -1) {
-				h.put("filename", currPathParent.getName() + "/" + currPathFile.getName());
+				h.put("filepath", currPathParent.getName() + "/" + currPathFile.getName());
 			}
 			else {
-				h.put("filename", txtPath.getText());
+				h.put("filepath", txtPath.getText());
 			}
 			// Element script
 			Element script = elMain.getChild("script", elMain.getNamespace());
@@ -924,8 +927,8 @@ public class JobAssistentImportJobsForm {
 					h.put("script_java_class", script.getAttributeValue("java_class"));
 				if (script.getAttributeValue("com_class") != null)
 					h.put("script_com_class", script.getAttributeValue("com_class"));
-				if (script.getAttributeValue("filename") != null)
-					h.put("script_filename", script.getAttributeValue("filename"));
+				if (script.getAttributeValue("filepath") != null)
+					h.put("script_filename", script.getAttributeValue("filepath"));
 				if (script.getAttributeValue("use_engine") != null)
 					h.put("script_use_engine", script.getAttributeValue("use_engine"));
 				// script includes bestimmen
@@ -970,8 +973,8 @@ public class JobAssistentImportJobsForm {
 						h.put("monitor_script_java_class", mon_script.getAttributeValue("java_class"));
 					if (mon_script.getAttributeValue("com_class") != null)
 						h.put("monitor_script_com_class", mon_script.getAttributeValue("com_class"));
-					if (mon_script.getAttributeValue("filename") != null)
-						h.put("monitor_script_filename", mon_script.getAttributeValue("filename"));
+					if (mon_script.getAttributeValue("filepath") != null)
+						h.put("monitor_script_filename", mon_script.getAttributeValue("filepath"));
 					if (mon_script.getAttributeValue("use_engine") != null)
 						h.put("monitor_script_use_engine", mon_script.getAttributeValue("use_engine"));
 					// script monitor includes bestimmen
