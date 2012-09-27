@@ -351,7 +351,7 @@ public class ContextMenu {
 					} else {
 						for(int i = 0; i < tree.getItemCount(); i++) {    				
 							TreeItem item = tree.getItem(i);
-							if(item.getText().equals(SchedulerListener.JOB + jobname)){
+							if(item.getText().equals(jobname)){
 								TreeItem[] jobsItem = item.getItems();
 								for(int j = 0; j < jobsItem.length; j++) {
 									TreeItem jItem = jobsItem[j];
@@ -391,10 +391,11 @@ public class ContextMenu {
 							for(int j = 0; j < jobsItem.length; j++) {
 								TreeItem jItem = jobsItem[j];
 								//if(jItem.getText().equals("Job Chain: "+ name)){
-								if(jItem.getText().endsWith("Job Chain: "+ name)){
+								if(jItem.getText().equals(name) || jItem.getText().equals("*"+name)){
 									tree.setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("");
+									jItem.setExpanded(true);
 									break;
 								}
 							}
@@ -473,7 +474,7 @@ public class ContextMenu {
 							for(int j = 0; j < items.length; j++) {
 								TreeItem jItem = items[j];
 								//if(jItem.getText().equals("Order: " + name)){
-								if(jItem.getText().endsWith("Order: " + name)){
+								if(jItem.getText().equals(name) ||  jItem.getText().equals("*"+name)){
 									tree.setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("");

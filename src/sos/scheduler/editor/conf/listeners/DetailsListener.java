@@ -1178,7 +1178,7 @@ public class DetailsListener {
 									if(currdom.isLifeElement())
 										form.getTree().setSelection(new org.eclipse.swt.widgets.TreeItem[] { form.getTree().getItem(0) });
 									else if(currdom.isDirectory())
-										form.selectTreeItem(SchedulerListener.JOBS , SchedulerListener.JOB + new File(jobname).getName());
+										form.selectTreeItem(SchedulerListener.JOBS , new File(jobname).getName());
 
 									currdom.setChanged(true);
 									if(form != null) {

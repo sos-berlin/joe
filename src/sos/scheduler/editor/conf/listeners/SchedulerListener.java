@@ -87,15 +87,14 @@ public class SchedulerListener {
     private SchedulerDom        objSchedulerDom                   = null;
     private SchedulerForm       objSchedulerForm                  = null;
     public static String        JOBS                              = "Jobs";
-    public static String        JOB                               = "Job: ";
-    public static String        JOB_CHAINS                        = "JobChains";
+    public static String        JOB_CHAINS                        = "Job Chains";
     public static String        HTTP_SERVER                       = "HttpServer";
     public static String        WEB_SERVICES                      = "WebServices";
-    public static String        SCHEDULES                         = "treeitem.Schedules";
-    public static String        ORDERS                            = "Orders";
+    public static String        SCHEDULES                         = "Schedules";
+    public static String        ORDERS                            = "Job Chain Orders";
     public static String        LOCKS                             = "Locks";
     public static String        PROCESS_CLASSES                   = "treeitem.ProcessClasses";
-    public static String        MONITOR                           = "treeitem.pre-postprocessing.label";
+    public static String        MONITOR                           = "Pre-/Post-Processing";
     /** Aufruf erfolgt durch open Directory oder open Configurations*/
     private int                 type                              = -1;
 
@@ -380,7 +379,7 @@ public class SchedulerListener {
         item.setData(new TreeData(Editor.SCHEDULES, config, Options.getHelpURL("schedules"), "schedules"));
         item.setData(conItemDataKeyKEY, "schedules_@_schedule");
         item.setData(conItemDataKeyCOPY_ELEMENT, config);
-        item.setText(Messages.getLabel(SCHEDULES));
+        item.setText(SCHEDULES);
         item.setImage(getImage("dates.gif"));
         treeFillSchedules(item);
 
@@ -689,7 +688,7 @@ public class SchedulerListener {
 
         // Monitor
         item = new TreeItem(parent, SWT.NONE);
-        item.setText(Messages.getLabel(MONITOR));
+        item.setText(MONITOR);
         item.setImage(getImage("source_attach_attrib.gif"));
 
         item.setData(new TreeData(Editor.MONITORS, job, Options.getHelpURL("job.monitor"), "monitor"));

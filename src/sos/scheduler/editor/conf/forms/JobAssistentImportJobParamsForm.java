@@ -158,7 +158,7 @@ public class JobAssistentImportJobParamsForm {
 		// Wizard ohne Jobbeschreibung starten
 		if (xmlFilename == null || xmlFilename.trim().length() == 0)
 			return new ArrayList<HashMap<String, Object>>();
-		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData();
+		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData()+"/jobs";
 		if (!xmlFilename.replaceAll("\\\\", "/").startsWith(xmlPaths.replaceAll("\\\\", "/")))
 			xmlFilename = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths.concat(xmlFilename) : xmlPaths.concat("\\").concat(xmlFilename));
 		xmlFilename = xmlFilename.replaceAll("\\\\", "/");

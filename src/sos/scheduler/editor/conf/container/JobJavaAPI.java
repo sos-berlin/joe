@@ -89,11 +89,11 @@ public class JobJavaAPI extends FormBaseClass {
 
 		tbxClassName.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
-				if (e.text.length() > 0 && objJobDataProvider.isJava() && objJobDataProvider.getSource().length() > 0) {
+				/*if (e.text.length() > 0 && objJobDataProvider.isJava() && objJobDataProvider.getSource().length() > 0) {
 					MsgWarning("Please remove Script-Code first.");
 					e.doit = false;
 					return;
-				}
+				}*/
 			}
 		});
 

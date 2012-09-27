@@ -94,7 +94,10 @@ public class DaysListener {
 		return _monthdays;
 	}
 
-
+    public static String[] getMonth() {
+        return _month;
+    }
+    
 	public static String[] getUltimos() {
 		return _ultimos;
 	}

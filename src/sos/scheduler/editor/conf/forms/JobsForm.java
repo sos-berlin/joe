@@ -49,14 +49,12 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private ISchedulerUpdate	update			= null;
 	private Button				butAssistent	= null;
 	private Button				newOrderJob		= null;
-	private Composite objParent = null;
 	
 	public JobsForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) {
 		super(parent, style);
 		try {
 			this.dom = dom;
 			this.update = update;
-			this.objParent = parent;
 			listener = new JobsListener(dom, update);
 			initialize();
 			setToolTipText();
@@ -244,12 +242,9 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				public void mouseDoubleClick(MouseEvent e) {
 					int index = table.getSelectionIndex();
 					if (index >= 0) {
-//						TableItem item = table.getItem(index);
-//						Element objElement = (Element) item.getData();
 
 						String strName = table.getSelection()[0].getText(1);
 						ContextMenu.goTo(strName, dom, Editor.JOB);
-//						new JobMainForm(objParent, SWT.NONE, dom, objElement, update);
 
 					}
 				}

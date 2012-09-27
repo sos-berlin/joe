@@ -250,6 +250,12 @@ public class JobAssistentImportJobsForm {
 	public void setJobname(Combo jobname) {
 		this.jobname = jobname;
 	}
+	
+	private String getJobsDirectoryName() {
+	    String s = sos.scheduler.editor.app.Options.getSchedulerData();
+        s = (s.endsWith("/") || s.endsWith("\\") ? s.concat("jobs") :s.concat("/jobs"));
+        return s;
+	}
 
 	/**
 	 * Alle vorhandenen Job Dokumentation aus der <SCHEDULER_DATA>/jobs/*.xml
@@ -262,8 +268,7 @@ public class JobAssistentImportJobsForm {
 	public ArrayList parseDocuments() {
         String xmlFilePath = "";
         String xmlFileName = "";
-		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData();
-		xmlPaths = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths.concat("jobs") : xmlPaths.concat("/jobs"));
+		xmlPaths = getJobsDirectoryName();
 		ArrayList listOfDoc = null;
 		try {
 			listOfDoc = new ArrayList();
@@ -735,9 +740,9 @@ public class JobAssistentImportJobsForm {
 					String strT = txtTitle.getText();
 					//if (strT.trim().equalsIgnoreCase("")) {
 						txtTitle.setText(tree.getSelection()[0].getText(1));
-					//}
-					txtPath.setText(tree.getSelection()[0].getText(2));
-					txtJobname.setFocus();
+    				//}
+	                txtPath.setText(getJobsDirectoryName() + "/" + tree.getSelection()[0].getText(2));
+    				txtJobname.setFocus();
 					flagBackUpJob = true;
 				}
 			});
@@ -911,7 +916,7 @@ public class JobAssistentImportJobsForm {
 			File currPathFile = new File(txtPath.getText());
 			File currPathParent = new File(currPathFile.getParent());
 			if (currPathFile.getPath().indexOf(sData.getPath()) > -1) {
-				h.put("filepath", currPathParent.getName() + "/" + currPathFile.getName());
+				h.put("filename", currPathParent.getName() + "/" + currPathFile.getName());
 			}
 			else {
 				h.put("filepath", txtPath.getText());

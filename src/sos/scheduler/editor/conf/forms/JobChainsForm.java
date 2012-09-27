@@ -7,6 +7,7 @@ import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -24,7 +25,6 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -36,23 +36,15 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 
 	private ISchedulerUpdate    update            = null;
-
 	private JobChainsListener   listener          = null;
-
 	private Group               group             = null;
-
 	private static Table        tChains           = null;
-
 	private Button              bRemoveChain      = null;
-
 	private Button              bNewChain         = null;  
-
 	private SashForm            sashForm          = null;
-
 	private Button              butDetails        = null; 
-
 	private SchedulerDom        _dom              = null;
-	
+
 	/**Hilfsvariable: Wenn Parameter Formular geöffnet wurde muss überprüft werden, ob der Checkbox in der Tabelle - State gesetzt werden soll.*/
 	private boolean             checkParameter             = false;
 
@@ -108,6 +100,32 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		tChains.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 1, 3));
 		tChains.setHeaderVisible(true);
 		tChains.setLinesVisible(true);
+		
+		
+		
+		tChains.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseUp(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseDown(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseDoubleClick(MouseEvent e) {
+                int index = tChains.getSelectionIndex();
+                if (index >= 0) {
+                    String strName = tChains.getSelection()[0].getText(0);
+                    ContextMenu.goTo(strName, _dom, Editor.JOB_CHAIN);
+                }
+            }
+        });		
+		
+		
+		
+		
 		tChains.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				

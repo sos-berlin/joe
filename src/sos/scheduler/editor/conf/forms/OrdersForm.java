@@ -3,6 +3,7 @@ package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -119,6 +120,31 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		table.setHeaderVisible(true);
 		table.setLayoutData(gridData2);
 		table.setLinesVisible(true);
+		
+		table.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseUp(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseDown(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseDoubleClick(MouseEvent e) {
+                int index = table.getSelectionIndex();
+                if (index >= 0) {
+                    String strName = table.getSelection()[0].getText(0);
+                    ContextMenu.goTo(strName, _dom, Editor.JOB_CHAIN);
+                }
+            }
+        });     
+        
+        
+        		
+		
+		
 		table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				boolean enabled = true;
