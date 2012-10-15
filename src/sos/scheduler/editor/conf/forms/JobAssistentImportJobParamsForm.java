@@ -159,9 +159,18 @@ public class JobAssistentImportJobParamsForm {
 		if (xmlFilename == null || xmlFilename.trim().length() == 0)
 			return new ArrayList<HashMap<String, Object>>();
 		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData()+"/jobs";
-		if (!xmlFilename.replaceAll("\\\\", "/").startsWith(xmlPaths.replaceAll("\\\\", "/")))
-			xmlFilename = (xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths.concat(xmlFilename) : xmlPaths.concat("\\").concat(xmlFilename));
+		xmlPaths = xmlPaths.replaceAll("\\\\", "/");
 		xmlFilename = xmlFilename.replaceAll("\\\\", "/");
+		
+	    
+
+		if (!xmlFilename.startsWith(xmlPaths)) {
+            String s[] = xmlFilename.split("/");
+            xmlFilename = s[s.length-1];
+			xmlFilename = (xmlPaths.endsWith("/") ? xmlPaths.concat(xmlFilename) : xmlPaths.concat("/").concat(xmlFilename));
+		}
+		
+		
 		ArrayList<HashMap<String, Object>> listOfParams1 = null;
 		try {
 			listOfParams1 = new ArrayList<HashMap<String, Object>>();

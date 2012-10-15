@@ -155,10 +155,12 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
         try {
             jobChainGroup = new Group(this, SWT.NONE);
             final GridLayout gridLayout = new GridLayout();
+            gridLayout.marginHeight = 0;
             jobChainGroup.setLayout(gridLayout);
             
             gNodes = new Group(jobChainGroup, SWT.NONE);
             GridData gd_gNodes = new GridData(SWT.FILL, GridData.FILL, true, true);
+            gd_gNodes.heightHint = 379;
             gd_gNodes.widthHint = 300;
             gNodes.setLayoutData(gd_gNodes);
             gNodes.setText(JOE_M_JCNodesForm_NodesGroup.params(listener.getChainName())); // Chain Nodes for 'CHAINNAME'
@@ -258,6 +260,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             composite.setLayout(gridLayout_2);
             
             butBrowse = JOE_B_JobChainNodes_Browse.Control(new Button(composite, SWT.NONE));
+            new Label(composite, SWT.NONE);
             GridData gd_butBrowse = new GridData(GridData.FILL, GridData.CENTER, true, false);
             gd_butBrowse.horizontalSpan = 2;
             butBrowse.setLayoutData(gd_butBrowse);
@@ -429,6 +432,10 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
                 }
             });
             bNewNode.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+            new Label(gNodes, SWT.NONE);
+            new Label(gNodes, SWT.NONE);
+            new Label(gNodes, SWT.NONE);
+            new Label(gNodes, SWT.NONE);
 
             cType = new Composite(gNodes, SWT.NONE);
             final GridLayout gridLayout_4 = new GridLayout();
@@ -610,7 +617,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             tNodes.setHeaderVisible(true);
             final GridData gridData4 = new GridData(SWT.FILL, GridData.FILL, false, true, 5, 4);
             gridData4.widthHint = 451;
-            gridData4.heightHint = 112;
+            //gridData4.heightHint = 112;
             tNodes.setLayoutData(gridData4);
 
             final TableColumn tableColumn3 = JOE_TCl_JCNodesForm_State.Control(new TableColumn(tNodes, SWT.NONE));
@@ -745,6 +752,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             butAddMissingNodes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 
             bRemoveNode = JOE_B_JCNodesForm_Remove.Control(new Button(gNodes, SWT.NONE));
+            new Label(gNodes, SWT.NONE);
             bRemoveNode.setEnabled(false);
             bRemoveNode.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(final SelectionEvent e) {
@@ -926,6 +934,8 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             bNewFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 
             bRemoveFileOrderSource = JOE_B_JCNodesForm_RemoveFileOrderSource.Control(new Button(gFileOrderSource, SWT.NONE));
+            new Label(gFileOrderSource, SWT.NONE);
+            new Label(gFileOrderSource, SWT.NONE);
             bRemoveFileOrderSource.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(final SelectionEvent e) {
                     if (tFileOrderSource.getSelectionCount() > 0) {
