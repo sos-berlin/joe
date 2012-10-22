@@ -227,28 +227,7 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 					}
 				}
 			});
-
-			table.addMouseListener(new MouseListener() {
-
-				@Override
-				public void mouseUp(MouseEvent e) {
-				}
-
-				@Override
-				public void mouseDown(MouseEvent e) {
-				}
-
-				@Override
-				public void mouseDoubleClick(MouseEvent e) {
-					int index = table.getSelectionIndex();
-					if (index >= 0) {
-
-						String strName = table.getSelection()[0].getText(1);
-						ContextMenu.goTo(strName, dom, Editor.JOB);
-
-					}
-				}
-			});
+ 
 
 			TableColumn tableColumn = JOE_TCl_JobsForm_Name.Control(new TableColumn(table, SWT.NONE));
 			tableColumn.setWidth(100);

@@ -100,31 +100,7 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		tChains.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 1, 3));
 		tChains.setHeaderVisible(true);
 		tChains.setLinesVisible(true);
-		
-		
-		
-		tChains.addMouseListener(new MouseListener() {
-
-            @Override
-            public void mouseUp(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseDown(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseDoubleClick(MouseEvent e) {
-                int index = tChains.getSelectionIndex();
-                if (index >= 0) {
-                    String strName = tChains.getSelection()[0].getText(0);
-                    ContextMenu.goTo(strName, _dom, Editor.JOB_CHAIN);
-                }
-            }
-        });		
-		
-		
-		
+ 	
 		
 		tChains.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {

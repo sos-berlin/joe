@@ -309,10 +309,10 @@ public class ContextMenu {
 								
 								// TODO get the name of the job from the Element, not from the description
 								
-								if(strName.startsWith(name)){
+                                if(strName.startsWith(name)){
 									tree.setSelection(new TreeItem [] {jItem});
-									f.updateTreeItem(jItem.getText());
-									f.updateTree("jobs");
+								 	f.updateTreeItem(jItem.getText());
+								    f.updateTree("jobs");
 									break;
 								}
 							}

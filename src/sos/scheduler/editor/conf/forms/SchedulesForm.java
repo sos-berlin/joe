@@ -154,27 +154,7 @@ public class SchedulesForm extends Composite implements IUpdateLanguage {
             tableColumn.setWidth(385);
             tableColumn.setText("Name");
             
-            table.addMouseListener(new MouseListener() {
-
-                @Override
-                public void mouseUp(MouseEvent e) {
-                }
-
-                @Override
-                public void mouseDown(MouseEvent e) {
-                }
-
-                @Override
-                public void mouseDoubleClick(MouseEvent e) {
-                    int index = table.getSelectionIndex();
-                    if (index >= 0) {
-
-                        String strName = table.getSelection()[0].getText(0);
-                        ContextMenu.goTo(strName, dom, Editor.SCHEDULE);
-
-                    }
-                }
-            });            
+                    
             
         } catch (Exception e) {
             try {
