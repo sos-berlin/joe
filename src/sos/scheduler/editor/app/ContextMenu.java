@@ -294,10 +294,7 @@ public class ContextMenu {
 			else 
 				_dom = (SchedulerDom)_dom;
 
-			if(name.startsWith("*")) {			
-				name = name.substring(1);
-			}
-
+		 
 			if(type==Editor.JOB) {
 
 				XPath x3 = XPath.newInstance("//job[@name='"+ name + "']");				 
@@ -322,6 +319,7 @@ public class ContextMenu {
 								// TODO get the name of the job from the Element, not from the description
 								
                                 if(strName.equals(name)){
+
 									tree.setSelection(new TreeItem [] {jItem});
 								 	f.updateTreeItem(jItem.getText());
 								    f.updateTree("jobs");
@@ -400,6 +398,7 @@ public class ContextMenu {
 					for(int i = 0; i < tree.getItemCount(); i++) {    				
 						TreeItem item = tree.getItem(i);
 						if(item.getText().equals(SchedulerListener.JOB_CHAINS)){
+//						if(item.getText().equals(SOSJOEMessageCodes.JOE_L_SchedulerListener_JobChains.label())){
 							TreeItem[] jobsItem = item.getItems();
 							for(int j = 0; j < jobsItem.length; j++) {
 								TreeItem jItem = jobsItem[j];
@@ -407,7 +406,7 @@ public class ContextMenu {
 	                            String strName = jItem.getText();
 	                            strName = removeTitle(strName);
 
- 								if(strName.equals(name) || strName.equals("*"+name)){
+ 								if(strName.equals(name)){
 									tree.setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("");
@@ -459,7 +458,7 @@ public class ContextMenu {
                                 String strName = jItem.getText();
                                 strName = removeTitle(strName);
 
-                                if(strName.equals(name) || strName.equals("*"+name)){
+                                if(strName.equals(name) ){
 									tree.setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("");
@@ -495,7 +494,7 @@ public class ContextMenu {
                                 String strName = jItem.getText();
                                 strName = removeTitle(strName);
 
-                                if(strName.equals(name) || strName.equals("*"+name)){
+                                if(strName.equals(name) ){
                                     tree.setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("");
