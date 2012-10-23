@@ -276,6 +276,9 @@ public class ContextMenu {
             int p = s.indexOf(" - ");
             s = s.substring(0,p);
         }
+        if (s.startsWith("*")) {
+            s=s.substring(1);
+        }
     return s;
 	}
 	
