@@ -271,6 +271,14 @@ public class ContextMenu {
 		return null;
 	}
 
+	private static String removeTitle(String s) {
+        if (s.contains(" - ")) {
+            int p = s.indexOf(" - ");
+            s = s.substring(0,p);
+        }
+    return s;
+	}
+	
 	public static void goTo(String name, DomParser _dom, int type) {
 		try {
 
@@ -306,10 +314,11 @@ public class ContextMenu {
 							for(int j = 0; j < jobsItem.length; j++) {
 								TreeItem jItem = jobsItem[j];
 								String strName = jItem.getText();
+								strName = removeTitle(strName);
 								
 								// TODO get the name of the job from the Element, not from the description
 								
-                                if(strName.startsWith(name)){
+                                if(strName.equals(name)){
 									tree.setSelection(new TreeItem [] {jItem});
 								 	f.updateTreeItem(jItem.getText());
 								    f.updateTree("jobs");
@@ -334,15 +343,16 @@ public class ContextMenu {
 					if(f == null)
 						return;
 					Tree tree = f.getTree(); 
-					//if(tree.getSelection()[0].getText().equals("Monitor")){
-					if(tree.getSelection()[0].getText().equals(SchedulerListener.MONITOR)){
+ 					if(tree.getSelection()[0].getText().equals(SchedulerListener.MONITOR)){
 						TreeItem[] monitorsItem = tree.getSelection()[0].getItems();
 						for(int k = 0; k < monitorsItem.length; k++) {
 							TreeItem monitor = monitorsItem[k];
 
-							if(monitor.getText().equals(monitorname)){
-								//if(jItem.getText().endsWith("Job: "+ name)){
-								tree.setSelection(new TreeItem [] {monitor});
+							String strName = monitor.getText();
+                            strName = removeTitle(strName);
+
+                            if(strName.equals(monitorname)){
+ 								tree.setSelection(new TreeItem [] {monitor});
 								f.updateTreeItem(monitorname);
 								f.updateTree("monitor");
 								break;
@@ -390,8 +400,11 @@ public class ContextMenu {
 							TreeItem[] jobsItem = item.getItems();
 							for(int j = 0; j < jobsItem.length; j++) {
 								TreeItem jItem = jobsItem[j];
-								//if(jItem.getText().equals("Job Chain: "+ name)){
-								if(jItem.getText().equals(name) || jItem.getText().equals("*"+name)){
+								
+	                            String strName = jItem.getText();
+	                            strName = removeTitle(strName);
+
+ 								if(strName.equals(name) || strName.equals("*"+name)){
 									tree.setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("");
@@ -439,8 +452,11 @@ public class ContextMenu {
 							TreeItem[] items = item.getItems();
 							for(int j = 0; j < items.length; j++) {
 								TreeItem jItem = items[j];
-								//if(jItem.getText().equals(name)){
-								if(jItem.getText().endsWith(name)){
+								
+                                String strName = jItem.getText();
+                                strName = removeTitle(strName);
+
+                                if(strName.equals(name) || strName.equals("*"+name)){
 									tree.setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("");
@@ -473,9 +489,11 @@ public class ContextMenu {
 							TreeItem[] items = item.getItems();
 							for(int j = 0; j < items.length; j++) {
 								TreeItem jItem = items[j];
-								//if(jItem.getText().equals("Order: " + name)){
-								if(jItem.getText().equals(name) ||  jItem.getText().equals("*"+name)){
-									tree.setSelection(new TreeItem [] {jItem});
+                                String strName = jItem.getText();
+                                strName = removeTitle(strName);
+
+                                if(strName.equals(name) || strName.equals("*"+name)){
+                                    tree.setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("");
 									break;
