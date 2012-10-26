@@ -255,6 +255,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), new JobListener(dom,
 					listener.getParent(), listener.get_main()), tParameter, Editor.PARAMETER);
 			paramsForm.showAllImportJobParams(includeFile);
+            listener.fillIncludeParams(tableIncludeParams);
 		}
 		else {
 			// Liste aller Jobdokumentation
