@@ -617,7 +617,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             tNodes.setHeaderVisible(true);
             final GridData gridData4 = new GridData(SWT.FILL, GridData.FILL, false, true, 5, 4);
             gridData4.widthHint = 451;
-            //gridData4.heightHint = 112;
+            gridData4.heightHint = 112;
             tNodes.setLayoutData(gridData4);
 
             final TableColumn tableColumn3 = JOE_TCl_JCNodesForm_State.Control(new TableColumn(tNodes, SWT.NONE));
@@ -646,7 +646,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             gridLayout_5.numColumns = 3;
             composite_1.setLayout(gridLayout_5);
 
-            butUp = JOE_B_JCNodesForm_Up.Control(new Button(composite_1, SWT.NONE));
+            butUp = JOE_B_Up.Control(new Button(composite_1, SWT.NONE));
             butUp.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(final SelectionEvent e) {
 
@@ -662,7 +662,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             });
             butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
 
-            butDown = JOE_B_JCNodesForm_Down.Control(new Button(composite_1, SWT.NONE));
+            butDown = JOE_B_Down.Control(new Button(composite_1, SWT.NONE));
             butDown.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(final SelectionEvent e) {
                     if (tNodes.getSelectionCount() > 0) {
@@ -786,10 +786,12 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             
             gFileOrderSource = new Group(jobChainGroup, SWT.NONE);
             final GridData gridData_10 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-            gridData_10.heightHint = 169;
+            gridData_10.heightHint = 220;
+            gridData_10.minimumHeight=150;
             gFileOrderSource.setLayoutData(gridData_10);
             gFileOrderSource.setText(JOE_G_JCNodesForm_FileOrderSources.params(listener.getChainName()));
             final GridLayout gridLayout_1 = new GridLayout();
+
             gridLayout_1.marginTop = 5;
             gridLayout_1.marginBottom = 5;
             gridLayout_1.numColumns = 5;
@@ -810,6 +812,10 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
                 public void widgetSelected(final SelectionEvent e) {
                 }
             });
+            
+            
+           
+            
             tDirectory.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
             @SuppressWarnings("unused")
