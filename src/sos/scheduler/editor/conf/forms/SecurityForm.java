@@ -21,14 +21,14 @@ import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.SecurityListener;
 
 /**
  * @author sky2000
  */
-public class SecurityForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 	
     private SecurityListener listener            = null;
 
@@ -38,11 +38,12 @@ public class SecurityForm extends Composite implements IUnsaved, IUpdateLanguage
 
     private Button           cIgnoreUnknownHosts = null;
 
-    private Label            label               = null;
+    private Label            lblHost               = null;
 
     private Text             tHost               = null;
 
-    private Label            label4              = null;
+	@SuppressWarnings("unused")
+	private Label            label4              = null;
 
     private Button           bApply              = null;
 
@@ -125,43 +126,86 @@ public class SecurityForm extends Composite implements IUnsaved, IUpdateLanguage
         gridData1.horizontalSpan = 5;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 5;
-        group = new Group(this, SWT.NONE);
-        group.setText("Security");
+        
+        group = JOE_G_SecurityForm_Security.Control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout);
-        cIgnoreUnknownHosts = new Button(group, SWT.CHECK);
-        cIgnoreUnknownHosts.setText("Ignore unknown hosts");
+        
+        cIgnoreUnknownHosts = JOE_B_SecurityForm_IgnoreUnkownHosts.Control(new Button(group, SWT.CHECK));
         cIgnoreUnknownHosts.setLayoutData(gridData1);
-        label = new Label(group, SWT.NONE);
-        tHost = new Text(group, SWT.BORDER);
-        label4 = new Label(group, SWT.NONE);
-        label4.setText("Access Level:");
-        cLevel = new CCombo(group, SWT.BORDER | SWT.READ_ONLY);
-        bApply = new Button(group, SWT.NONE);
-        label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label1.setText("Label");
-        label1.setLayoutData(gridData7);
         cIgnoreUnknownHosts.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 listener.setIgnoreUnknownHosts(cIgnoreUnknownHosts.getSelection());
             }
         });
+        
+        
+        lblHost = JOE_L_SecurityForm_Host.Control(new Label(group, SWT.NONE));
+        lblHost.setLayoutData(new org.eclipse.swt.layout.GridData());
+
+        tHost = JOE_T_SecurityForm_Host.Control(new Text(group, SWT.BORDER));
+        tHost.setEnabled(false);
+        tHost.setLayoutData(gridData5);
+        tHost.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
+            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
+                if (e.keyCode == SWT.CR && !tHost.getText().equals(""))
+                    applyHost();
+            }
+        });
+        tHost.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+                bApply.setEnabled(!tHost.getText().equals(""));
+            }
+        });
+        
+        label4 = JOE_L_SecurityForm_AccessLevel.Control(new Label(group, SWT.NONE));
+        
+        cLevel = JOE_Cbo_SecurityForm_AccessLevel.Control(new CCombo(group, SWT.BORDER | SWT.READ_ONLY));
+        cLevel.setEditable(false);
+        cLevel.setLayoutData(gridData6);
+        cLevel.setEnabled(false);
+        cLevel.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
+            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
+                if (e.keyCode == SWT.CR && !tHost.getText().equals(""))
+                    applyHost();
+            }
+        });
+        cLevel.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+                bApply.setEnabled(!tHost.getText().equals(""));
+            }
+        });
+        
+        bApply = JOE_B_SecurityForm_ApplyHost.Control(new Button(group, SWT.NONE));
+        bApply.setLayoutData(gridData3);
+        bApply.setEnabled(false);
+        bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                applyHost();
+            }
+        });
+
+        label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
+//      label1.setText("Label");
+        label1.setLayoutData(gridData7);
+        
         createTable();
-        bNew = new Button(group, SWT.NONE);
+        
+        bNew = JOE_B_SecurityForm_NewHost.Control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData2);
-        bNew.setText("&New Host");
         getShell().setDefaultButton(bNew);
-        label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label2.setText("Label");
-        label2.setLayoutData(gridData8);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 listener.newHost();
                 setInput(true);
             }
         });
-        bRemove = new Button(group, SWT.NONE);
+        
+        label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
+//      label2.setText("Label");
+        label2.setLayoutData(gridData8);
+        
+        bRemove = JOE_B_SecurityForm_RemoveHost.Control(new Button(group, SWT.NONE));
         bRemove.setEnabled(false);
-        bRemove.setText("Remove Host");
         bRemove.setLayoutData(gridData4);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -181,43 +225,6 @@ public class SecurityForm extends Composite implements IUnsaved, IUpdateLanguage
                 bRemove.setEnabled(table.getSelectionCount() > 0);
             }
         });
-        label.setText("Host:");
-        label.setLayoutData(new org.eclipse.swt.layout.GridData());
-        tHost.setEnabled(false);
-        tHost.setLayoutData(gridData5);
-        tHost.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tHost.getText().equals(""))
-                    applyHost();
-            }
-        });
-        tHost.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(!tHost.getText().equals(""));
-            }
-        });
-        cLevel.setEditable(false);
-        cLevel.setLayoutData(gridData6);
-        cLevel.setEnabled(false);
-        cLevel.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-            public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-                if (e.keyCode == SWT.CR && !tHost.getText().equals(""))
-                    applyHost();
-            }
-        });
-        cLevel.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bApply.setEnabled(!tHost.getText().equals(""));
-            }
-        });
-        bApply.setText("&Apply Host");
-        bApply.setLayoutData(gridData3);
-        bApply.setEnabled(false);
-        bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                applyHost();
-            }
-        });
     }
 
 
@@ -232,7 +239,8 @@ public class SecurityForm extends Composite implements IUnsaved, IUpdateLanguage
         gridData.horizontalSpan = 4;
         gridData.verticalSpan = 3;
         gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
+        
+        table = JOE_Tbl_SecurityForm_Hosts.Control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
         table.setHeaderVisible(true);
         table.setLayoutData(gridData);
         table.setLinesVisible(true);
@@ -246,12 +254,12 @@ public class SecurityForm extends Composite implements IUnsaved, IUpdateLanguage
                 }
             }
         });
-        TableColumn tableColumn = new TableColumn(table, SWT.NONE);
+        
+        TableColumn tableColumn = JOE_TCl_SecurityForm_Host.Control(new TableColumn(table, SWT.NONE));
         tableColumn.setWidth(250);
-        tableColumn.setText("Host");
-        TableColumn tableColumn1 = new TableColumn(table, SWT.NONE);
+        
+        TableColumn tableColumn1 = JOE_TCl_SecurityForm_AccessLevel.Control(new TableColumn(table, SWT.NONE));
         tableColumn1.setWidth(200);
-        tableColumn1.setText("Access Level");
     }
 
 
@@ -287,13 +295,6 @@ public class SecurityForm extends Composite implements IUnsaved, IUpdateLanguage
 
 
     public void setToolTipText() {
-        cIgnoreUnknownHosts.setToolTipText(Messages.getTooltip("security.ignore_unknown_hosts"));
-        bNew.setToolTipText(Messages.getTooltip("security.btn_new_host"));
-        bRemove.setToolTipText(Messages.getTooltip("security.btn_remove_host"));
-        tHost.setToolTipText(Messages.getTooltip("security.host_entry"));
-        cLevel.setToolTipText(Messages.getTooltip("security.level_choice"));
-        bApply.setToolTipText(Messages.getTooltip("security.btn_apply"));
-        table.setToolTipText(Messages.getTooltip("security.table"));
-
+//
     }
 } // @jve:decl-index=0:visual-constraint="10,10"

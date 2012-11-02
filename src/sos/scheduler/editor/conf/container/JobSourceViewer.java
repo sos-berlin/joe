@@ -6,7 +6,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.TextArea;
 import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
@@ -40,7 +40,7 @@ public class JobSourceViewer extends FormBaseClass {
 	private void createGroup() {
 		showWaitCursor();
 
-		Group gSourceViewer = new Group(objParent, SWT.NONE);
+		Group gSourceViewer = SOSJOEMessageCodes.JOE_G_JobSourceViewer_SourceViewer.Control(new Group(objParent, SWT.NONE));
 		final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, true, true, 13, 1);
 		gridData_5.heightHint = 100;
 		gridData_5.minimumHeight = 30;
@@ -49,7 +49,6 @@ public class JobSourceViewer extends FormBaseClass {
 		gridLayout_2.marginHeight = 0;
 		gridLayout_2.numColumns = 4;
 		gSourceViewer.setLayout(gridLayout_2);
-		gSourceViewer.setText(Messages.getLabel("job.executable.label"));
 
 		txtArea4XMLSource = new TextArea(gSourceViewer, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL);
 		txtArea4XMLSource.setEditable(false);

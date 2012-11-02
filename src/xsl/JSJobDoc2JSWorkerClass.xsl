@@ -151,6 +151,7 @@ public class <xsl:value-of select="$class_name" /> extends <xsl:value-of select=
 		catch (Exception e) {
 			e.printStackTrace(System.err);
 			logger.error(String.format(Messages.getMsg("JSJ-I-107"), conMethodName ), e);
+            throw e;			
 		}
 		finally {
 			logger.debug(String.format(Messages.getMsg("JSJ-I-111"), conMethodName ) );

@@ -16,12 +16,12 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.listeners.JobCommandsListener;
 
 
-public class JobCommandsForm extends Composite implements IUpdateLanguage {
+public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
     private JobCommandsListener listener       = null;
 
@@ -73,17 +73,18 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
         gridData.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        commandsGroup = new Group(this, SWT.NONE);
-        commandsGroup.setText("Commands");
+        
+        commandsGroup = JOE_G_ActionsJobCommandsForm_Commands.Control(new Group(this, SWT.NONE));
         commandsGroup.setLayout(gridLayout);
+        
         createTable();
-        bNewCommands = new Button(commandsGroup, SWT.NONE);
-        bNewCommands.setText("&New Command");
+        
+        bNewCommands = JOE_B_ActionsJobCommandsForm_NewCommand.Control(new Button(commandsGroup, SWT.NONE));
         bNewCommands.setLayoutData(gridData);
         getShell().setDefaultButton(bNewCommands);
 
         label = new Label(commandsGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label.setText("Label");
+//        label.setText("Label");
         label.setLayoutData(gridData4);
         bNewCommands.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -91,14 +92,14 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
                 bRemoveCommand.setEnabled(true);
             }
         });
-        bRemoveCommand = new Button(commandsGroup, SWT.NONE);
-        bRemoveCommand.setText("Remove Command");
+        
+        bRemoveCommand = JOE_B_ActionsJobCommandsForm_RemoveCommand.Control(new Button(commandsGroup, SWT.NONE));
         bRemoveCommand.setEnabled(false);
         bRemoveCommand.setLayoutData(gridData1);
         bRemoveCommand.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
         	public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
         		if(table != null && table.getSelectionCount() > 0)  {
-        			int cont = sos.scheduler.editor.app.MainWindow.message(getShell(), "If you really want to delete this command?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+        			int cont = sos.scheduler.editor.app.MainWindow.message(getShell(), JOE_M_EventForm_RemoveCommand.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 
         			if(cont == SWT.OK) {				        				
         				bRemoveCommand.setEnabled(listener.deleteCommands(table));        				
@@ -115,7 +116,8 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
     private void createTable() {
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
         gridData2.widthHint = 204;
-        table = new Table(commandsGroup, SWT.BORDER | SWT.FULL_SELECTION);
+        
+        table = JOE_Tbl_ActionsJobCommandsForm_Commands.Control(new Table(commandsGroup, SWT.BORDER | SWT.FULL_SELECTION));
         table.addMouseListener(new MouseAdapter() {
         	public void mouseDoubleClick(final MouseEvent e) {
         		ContextMenu.goTo(table.getSelection()[0].getText(0), _dom, Editor.ACTION_COMMANDS);
@@ -124,30 +126,27 @@ public class JobCommandsForm extends Composite implements IUpdateLanguage {
         table.setHeaderVisible(true);
         table.setLayoutData(gridData2);
         table.setLinesVisible(true);
-        TableColumn commandnameTableColumn = new TableColumn(table, SWT.NONE);
+        
+        TableColumn commandnameTableColumn = JOE_TCl_ActionsJobCommandsForm_Command.Control(new TableColumn(table, SWT.NONE));
         commandnameTableColumn.setWidth(151);
-        commandnameTableColumn.setText("Command");
 
-        final TableColumn newColumnTableColumn_1 = new TableColumn(table, SWT.NONE);
+        final TableColumn newColumnTableColumn_1 = JOE_TCl_ActionsJobCommandsForm_Host.Control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn_1.setWidth(100);
-        newColumnTableColumn_1.setText("Host");
+        
         table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 bRemoveCommand.setEnabled(true);
             }
         });
 
-        final TableColumn newColumnTableColumn = new TableColumn(table, SWT.NONE);
+        final TableColumn newColumnTableColumn = JOE_TCl_ActionsJobCommandsForm_Port.Control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn.setWidth(100);
-        newColumnTableColumn.setText("Port");
 
     }
 
 
     public void setToolTipText() {
-        bNewCommands.setToolTipText(Messages.getTooltip("jobcommands.btn_add_new"));
-        bRemoveCommand.setToolTipText(Messages.getTooltip("jobcommands.btn_remove"));
-        table.setToolTipText(Messages.getTooltip("jobcommands.table"));
+//    	
     }
 
 } // @jve:decl-index=0:visual-constraint="10,10"

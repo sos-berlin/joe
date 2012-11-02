@@ -45,6 +45,8 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 	private Combo          LogLevel                     = null; 
 	private boolean        init                         = true;
 	
+	private String[] comboItems = {"yes", "no", ""};
+	
 
 	public MailForm(Composite parent, int style, SchedulerDom dom, Element element) {
 
@@ -92,12 +94,12 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 		setSize(new org.eclipse.swt.graphics.Point(604, 427));
 
 		
-		mailOnError.setItems(new String[]{"yes", "no", ""}); 
-		mailOnWarning.setItems(new String[]{"yes", "no", ""}); 
-		mailOnSuccess.setItems(new String[]{"yes", "no", ""}); 		
-		mailOnProcess.setItems(new String[]{"yes", "no", ""});
+		mailOnError.setItems(comboItems); 
+		mailOnWarning.setItems(comboItems); 
+		mailOnSuccess.setItems(comboItems); 		
+		mailOnProcess.setItems(comboItems);
 		mailOnDelayAfterError.setItems(new String[]{"all", "first_only", "last_only", "first_and_last_only", ""});
-		cboHistory.setItems(new String[]{"yes", "no", ""});
+		cboHistory.setItems(comboItems);
 		cboHistoryOnProcess.setItems(new String[]{"0", "1", "2", "3", "4", ""});
 		cboHistoryWithLog.setItems(new String[]{"yes", "no", "gzip", ""});
 		

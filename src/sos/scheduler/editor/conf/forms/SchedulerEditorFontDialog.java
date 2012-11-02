@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
 import com.swtdesigner.SWTResourceManager;
 
@@ -100,7 +100,8 @@ public class SchedulerEditorFontDialog {
 			this.foreGround = new RGB(r, g, b);
 		}
 		catch (NumberFormatException e) {
-			System.out.println("Wrong colour in Profile");
+//			System.out.println("Wrong colour in Profile");
+			System.out.println(SOSJOEMessageCodes.JOE_M_WrongColour.label());
 			this.foreGround = new RGB(0, 0, 0);
 		}
 
@@ -135,13 +136,13 @@ public class SchedulerEditorFontDialog {
 		final RGB aktForeGround = this.foreGround;
 
 		s.setSize(302, 160);
-		s.setText(Messages.getLabel("FontDialog"));
+		s.setText(SOSJOEMessageCodes.JOE_M_FontDialog.label());
 		s.setLayout(new GridLayout(11, false));
 
 		new Label(s, SWT.NONE);
 		final Text t = new Text(s, SWT.BORDER | SWT.WRAP | SWT.MULTI);
 
-		t.setText(Messages.getLabel("blindtext"));  // The quick brown fox jumps over the lazy poddle.
+		t.setText(SOSJOEMessageCodes.JOE_M_Blindtext.label());  // The quick brown fox jumps over the lazy poddle.
 		t.setFont(SWTResourceManager.getFont(conDefaultfontName, 8, SWT.NORMAL));
 		t.setForeground(new Color(d, this.foreGround));
 
@@ -152,12 +153,11 @@ public class SchedulerEditorFontDialog {
 		gd_t.heightHint = 74;
 		t.setLayoutData(gd_t);
 		new Label(s, SWT.NONE);
-		final Button btnChange = new Button(s, SWT.PUSH | SWT.BORDER);
-		btnChange.setText(Messages.getLabel("ChangeFont"));
+		final Button btnChange = SOSJOEMessageCodes.JOE_B_FontDialog_Change.Control(new Button(s, SWT.PUSH | SWT.BORDER));
 		btnChange.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				FontDialog fd = new FontDialog(s, SWT.NONE);
-				fd.setText(Messages.getLabel("SelectFont"));
+				fd.setText(SOSJOEMessageCodes.JOE_M_SelectFont.label());
 				fd.setRGB(t.getForeground().getRGB());
 				fd.setFontList(t.getFont().getFontData());
 
@@ -169,7 +169,7 @@ public class SchedulerEditorFontDialog {
 			}
 		});
 
-		Button btnSave = new Button(s, SWT.NONE);
+		Button btnSave = SOSJOEMessageCodes.JOE_B_FontDialog_Save.Control(new Button(s, SWT.NONE));
 		btnSave.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -178,9 +178,7 @@ public class SchedulerEditorFontDialog {
 			}
 		});
 
-		btnSave.setText(Messages.getLabel("Save"));
-
-		Button btnReset = new Button(s, SWT.NONE);
+		Button btnReset = SOSJOEMessageCodes.JOE_B_FontDialog_Reset.Control(new Button(s, SWT.NONE));
 		btnReset.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -188,16 +186,14 @@ public class SchedulerEditorFontDialog {
 				t.setForeground(new Color(d, aktForeGround));
 			}
 		});
-		btnReset.setText(Messages.getLabel("Reset"));
 
-		Button btnCancel = new Button(s, SWT.NONE);
+		Button btnCancel = SOSJOEMessageCodes.JOE_B_FontDialog_Cancel.Control(new Button(s, SWT.NONE));
 		btnCancel.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				s.dispose();
 			}
 		});
-		btnCancel.setText(Messages.getLabel("Cancel"));
 
 		new Label(s, SWT.NONE);
 		s.open();
@@ -209,9 +205,9 @@ public class SchedulerEditorFontDialog {
 
 	}
 
-	// public static void main(String[] a) {
-	// SchedulerEditorFontDialog s = new SchedulerEditorFontDialog("Courier new", 12, SWT.BOLD);
-	// s.show();
-	//
-	// }
+//	 public static void main(String[] a) {
+//	 SchedulerEditorFontDialog s = new SchedulerEditorFontDialog("Courier new", 12, SWT.BOLD);
+//	 s.show();
+//	
+//	 }
 }

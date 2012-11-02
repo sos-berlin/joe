@@ -174,68 +174,51 @@ public class ScriptJobMainForm extends ScriptForm{
         objTabControlComposite.setLayout(new GridLayout());
         setResizableV(objTabControlComposite);
  
-        tabItemProcessFile = new CTabItem(tabFolder, SWT.NONE);
-        tabItemProcessFile.setToolTipText("Shell ProcessFiles (Unix or MS-Windows");
-        tabItemProcessFile.setText(Messages.getLabel("job.ProcessFile"));
-
+        tabItemProcessFile = JOE_TI_ScriptJobMainForm_ProcessFile.Control(new CTabItem(tabFolder, SWT.NONE));
         tabItemProcessFileComposite = new Composite(tabFolder, SWT.NONE);
         tabItemProcessFileComposite.setLayout(new GridLayout());
         setResizableV(tabItemProcessFileComposite);
         tabItemProcessFile.setControl(tabItemProcessFileComposite);
  
-        tabItemOptions = new CTabItem(tabFolder, SWT.NONE);
-        tabItemOptions.setToolTipText("Job Options");
-        tabItemOptions.setText(Messages.getLabel("options"));
+        tabItemOptions = JOE_TI_ScriptJobMainForm_Options.Control(new CTabItem(tabFolder, SWT.NONE));
         tabItemOptionsComposite = new Composite(tabFolder, SWT.NONE);
         tabItemOptionsComposite.setLayout(new GridLayout());
         setResizableV(tabItemOptionsComposite);
         tabItemOptions.setControl(tabItemOptionsComposite);
 
-        tabItemEMail = new CTabItem(tabFolder, SWT.NONE);
-        tabItemEMail.setToolTipText("eMail");
-        tabItemEMail.setText(Messages.getLabel("eMail"));
+        tabItemEMail = JOE_TI_ScriptJobMainForm_EMail.Control(new CTabItem(tabFolder, SWT.NONE));
         tabItemEMailComposite = new Composite(tabFolder, SWT.NONE);
         tabItemEMailComposite.setLayout(new GridLayout());
         setResizableV(tabItemEMailComposite);
         tabItemEMail.setControl(tabItemEMailComposite);
 
         if (objDataProvider.isOrderJob()) {
-            tabItemOrderSetBack = new CTabItem(tabFolder, SWT.NONE);
-            tabItemOrderSetBack.setToolTipText("Order SetBack");
-            tabItemOrderSetBack.setText(Messages.getLabel("SetBack"));
+            tabItemOrderSetBack = JOE_TI_ScriptJobMainForm_SetBack.Control(new CTabItem(tabFolder, SWT.NONE));
             tabItemOrderSetBackComposite = new Composite(tabFolder, SWT.NONE);
             tabItemOrderSetBackComposite.setLayout(new GridLayout());
             setResizableV(tabItemOrderSetBackComposite);
             tabItemOrderSetBack.setControl(tabItemOrderSetBackComposite);
         } else {
-            tabItemDelayAfterError = new CTabItem(tabFolder, SWT.NONE);
-            tabItemDelayAfterError.setToolTipText("on Error");
-            tabItemDelayAfterError.setText(Messages.getLabel("on Error"));
+            tabItemDelayAfterError = JOE_TI_ScriptJobMainForm_OnError.Control(new CTabItem(tabFolder, SWT.NONE));
             tabItemDelayAfterErrorComposite = new Composite(tabFolder, SWT.NONE);
             tabItemDelayAfterErrorComposite.setLayout(new GridLayout());
             setResizableV(tabItemDelayAfterErrorComposite);
             tabItemDelayAfterError.setControl(tabItemDelayAfterErrorComposite);
 
-            tabItemDirChanged = new CTabItem(tabFolder, SWT.NONE);
-            tabItemDirChanged.setToolTipText("File Watcher");
-            tabItemDirChanged.setText(Messages.getLabel("FileWatcher"));
+            tabItemDirChanged = JOE_TI_ScriptJobMainForm_FileWatcher.Control(new CTabItem(tabFolder, SWT.NONE));
             tabItemDirChangedComposite = new Composite(tabFolder, SWT.NONE);
             tabItemDirChangedComposite.setLayout(new GridLayout());
             setResizableV(tabItemDirChangedComposite);
             tabItemDirChanged.setControl(tabItemDirChangedComposite);
         }
 
-        tabItemDocumentation = new CTabItem(tabFolder, SWT.NONE);
-        tabItemDocumentation.setToolTipText("Documentation");
-        tabItemDocumentation.setText(Messages.getLabel("Docu"));
+        tabItemDocumentation = JOE_TI_ScriptJobMainForm_Doc.Control(new CTabItem(tabFolder, SWT.NONE));
         tabItemDocumentationComposite = new Composite(tabFolder, SWT.NONE);
         tabItemDocumentationComposite.setLayout(new GridLayout());
         setResizableV(tabItemDocumentationComposite);
         tabItemDocumentation.setControl(tabItemDocumentationComposite);
 
-        tabItemSourceViewer = new CTabItem(tabFolder, SWT.NONE);
-        tabItemSourceViewer.setToolTipText("SourceViewer");
-        tabItemSourceViewer.setText(Messages.getLabel("XML_CONFIG"));
+        tabItemSourceViewer = JOE_TI_ScriptJobMainForm_XML.Control(new CTabItem(tabFolder, SWT.NONE));
         tabItemSourceViewerComposite = new Composite(tabFolder, SWT.NONE);
         tabItemSourceViewerComposite.setLayout(new GridLayout());
         setResizableV(tabItemSourceViewerComposite);

@@ -41,13 +41,9 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 
 	private ProcessClassesListener	listener					= null;
 
-//	final String					JOE_L_ProcessClasses		= "JOE_L_ProcessClasses";		// "i18n_text";
-//	final String					JOE_L_Max_Processes			= "JOE_L_Max_Processes";		// "Max Processes";
-//	final String					JOE_L_Executed_on_Host		= "JOE_L_Executed_on_Host";	// "Executed by Scheduler on host";
-	final String					JOE_L_at_port				= "JOE_L_at_port";				// "at Port";
-	final String					JOE_L_Apply					= "JOE_L_Apply";				// "Apply";
-	final String					JOE_L_Remove_Process_Class	= "JOE_L_Remove_Process_Class"; // "Remove Process Class";
-//	final String					JOE_L_New_Process_Class		= "JOE_L_New_Process_Class";	// "&New Process Class";
+//	final String					JOE_L_at_port				= "JOE_L_at_port";				// "at Port";
+//	final String					JOE_L_Apply					= "JOE_L_Apply";				// "Apply";
+//	final String					JOE_L_Remove_Process_Class	= "JOE_L_Remove_Process_Class"; // "Remove Process Class";
 
 	private Group					group;
 
@@ -146,20 +142,12 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 		gridLayout.numColumns = 5;
 
 		group = JOE_G_ProcessClassesForm_ProcessClasses.Control(new Group(this, SWT.NONE));
-//		String strM = Messages.getLabel(JOE_L_ProcessClasses);
-//		group.setText(strM);
 		group.setLayout(gridLayout);
 		
 		label1 = JOE_L_ProcessClassesForm_ProcessClass.Control(new Label(group, SWT.NONE));
 		label1.setLayoutData(new GridData(86, SWT.DEFAULT));
-//		label1.setText(Messages.getLabel("processclass"));
 		
 		tProcessClass = JOE_T_ProcessClassesForm_ProcessClass.Control(new Text(group, SWT.BORDER));
-		tProcessClass.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				// tProcessClass.selectAll();
-			}
-		});
 		tProcessClass.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(final TraverseEvent e) {
 				if (!listener.isValidClass(tProcessClass.getText()) || dom.isLifeElement()) {
@@ -179,7 +167,6 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 		bApply = JOE_B_ProcessClassesForm_Apply.Control(new Button(group, SWT.NONE));
 
 		label5 = JOE_L_ProcessClassesForm_MaxProcesses.Control(new Label(group, SWT.NONE));
-//		label5.setText(Messages.getLabel(JOE_L_Max_Processes));
 		
 		GridData gridData4 = new GridData(GridData.FILL, SWT.FILL, false, false);
 		gridData4.widthHint = 20;
@@ -207,14 +194,12 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 			}
 		});
 		
-//		Format
 		new Label(group, SWT.NONE);
 		new Label(group, SWT.NONE);
 		new Label(group, SWT.NONE);
 
 		@SuppressWarnings("unused")
 		final Label remoteExecutionOnLabel = JOE_L_ProcessClassesForm_remoteExecution.Control(new Label(group, SWT.NONE));
-//		remoteExecutionOnLabel.setText(Messages.getLabel(JOE_L_Executed_on_Host));
 
 		tRemoteHost = JOE_T_ProcessClassesForm_remoteExecution.Control(new Text(group, SWT.BORDER));
 		tRemoteHost.addTraverseListener(new TraverseListener() {
@@ -227,11 +212,6 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 				}*/
 			}
 		});
-//		tRemoteHost.addFocusListener(new FocusAdapter() {
-//			public void focusGained(final FocusEvent e) {
-//				tRemoteHost.selectAll();
-//			}
-//		});
 		tRemoteHost.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				bApply.setEnabled(true);
@@ -244,7 +224,6 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 		final GridData gridData_1 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
 		gridData_1.horizontalIndent = 5;
 		portLabel.setLayoutData(gridData_1);
-//		portLabel.setText(Messages.getLabel(JOE_L_at_port));
 
 		tRemotePort = JOE_T_ProcessClassesForm_Port.Control(new IntegerField(group, SWT.BORDER));
 		tRemotePort.addTraverseListener(new TraverseListener() {
@@ -252,11 +231,6 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 				traversed(e);
 			}
 		});
-//		tRemotePort.addFocusListener(new FocusAdapter() {
-//			public void focusGained(final FocusEvent e) {
-//				tRemotePort.selectAll();
-//			}
-//		});
 		tRemotePort.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				bApply.setEnabled(true);
@@ -266,18 +240,15 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 		tRemotePort.setEnabled(false);
 		tRemotePort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		
-//		Format
 		new Label(group, SWT.NONE);
 		
-		label = JOE_Sep_ProcessClassesForm_S1.Control(new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL));
+		label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		// label.setText("Label");
 		label.setLayoutData(gridData7);
 		
 		createTable();
 		
 		bNew = JOE_B_ProcessClassesForm_NewProcessClass.Control(new Button(group, SWT.NONE));
-//		bNew.setText(Messages.getLabel(JOE_L_New_Process_Class));
-//		bNew.setToolTipText(Messages.getTooltip(JOE_L_New_Process_Class));
 		bNew.setLayoutData(gridData1);
 		getShell().setDefaultButton(bNew);
 		bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -291,12 +262,11 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 			}
 		});
 
-		label2 = JOE_Sep_ProcessClassesForm_S2.Control(new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL));
+		label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		// label2.setText("Label");
 		label2.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		
 		bRemove = JOE_B_ProcessClassesForm_RemoveProcessClass.Control(new Button(group, SWT.NONE));
-//		bRemove.setText(Messages.getLabel(JOE_L_Remove_Process_Class));
 		bRemove.setEnabled(false);
 		bRemove.setLayoutData(gridData2);
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -335,7 +305,6 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 				bApply.setEnabled(valid);
 			}
 		});
-//		bApply.setText(Messages.getLabel(JOE_L_Apply));
 		bApply.setLayoutData(gridData3);
 		bApply.setEnabled(false);
 
@@ -378,15 +347,12 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 		
 		TableColumn tableColumn = JOE_TCl_ProcessClassesForm_ProcessClass.Control(new TableColumn(table, SWT.NONE));
 		tableColumn.setWidth(104);
-//		tableColumn.setText(Messages.getLabel("processclass"));
 		
 		TableColumn tableColumn1 = JOE_TCl_ProcessClassesForm_MaxProcesses.Control(new TableColumn(table, SWT.NONE));
 		tableColumn1.setWidth(91);
-//		tableColumn1.setText(Messages.getLabel(JOE_L_Max_Processes));
 		
 		TableColumn tableColumn2 = JOE_TCl_ProcessClassesForm_RemoteExecution.Control(new TableColumn(table, SWT.NONE));
 		tableColumn2.setWidth(355);
-//		tableColumn2.setText(Messages.getLabel(JOE_L_Executed_on_Host));
 	}
 
 	private void applyClass() {
@@ -446,23 +412,17 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 	}
 
 	public void setToolTipText() {
-//		bRemove.setToolTipText(Messages.getTooltip("process_classes.btn_remove_class"));
-//		tProcessClass.setToolTipText(Messages.getTooltip("process_classes.class_entry"));
-//		tMaxProcesses.setToolTipText(Messages.getTooltip("process_classes.max_processes_entry"));
-//		bApply.setToolTipText(Messages.getTooltip("process_classes.btn_apply"));
-//		table.setToolTipText(Messages.getTooltip("process_classes.table"));
-//		tRemoteHost.setToolTipText(Messages.getTooltip("process_classes.RemoteHost"));
-//		tRemotePort.setToolTipText(Messages.getTooltip("process_classes.RemotePort"));
+//
 	}
 
 	private boolean checkRemote() {
 		if (tRemoteHost.getText().trim().length() > 0 && tRemotePort.getText().trim().length() == 0) {
-			MainWindow.message(getShell(), "Missing Scheduler Port.", SWT.ICON_WARNING | SWT.OK);
+			MainWindow.message(getShell(), JOE_M_ProcessClassesForm_MissingPort.label(), SWT.ICON_WARNING | SWT.OK);
 			return false;
 		}
 		else
 			if (tRemoteHost.getText().trim().length() == 0 && tRemotePort.getText().trim().length() > 0) {
-				MainWindow.message(getShell(), "Missing Scheduler Host.", SWT.ICON_WARNING | SWT.OK);
+				MainWindow.message(getShell(), JOE_M_ProcessClassesForm_MissingHost.label(), SWT.ICON_WARNING | SWT.OK);
 				return false;
 			}
 		return true;

@@ -27,14 +27,14 @@ import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.actions.forms.ActionsForm;
 import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.listeners.JobCommandListener;
 import sos.util.SOSDate;
 
-public class JobCommandForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
 	private JobCommandListener listener             = null;
 
@@ -142,16 +142,15 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.numColumns = 3;
 		jobsAndOrdersGroup = new Group(this, SWT.NONE);
-		jobsAndOrdersGroup.setText("Commands for Job: " + listener.getName() ); //+ (listener.isDisabled() ? " (Disabled)" : ""));
-		jobsAndOrdersGroup.setText("Command: " + listener.getCommandName() ); 
+//		jobsAndOrdersGroup.setText("Commands for Job: " + listener.getName() ); //+ (listener.isDisabled() ? " (Disabled)" : ""));
+		jobsAndOrdersGroup.setText(JOE_G_ActionsJobCommandForm_JobsOrders.params(listener.getCommandName())); 
 		jobsAndOrdersGroup.setLayout(gridLayout2);
 
-		jobchainLabel = new Label(jobsAndOrdersGroup, SWT.NONE);
+		jobchainLabel = JOE_L_ActionsJobCommandForm_JobChain.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
 		final GridData gridData_10 = new GridData();
 		jobchainLabel.setLayoutData(gridData_10);
-		jobchainLabel.setText("Job chain");
 
-		cJobchain = new Combo(jobsAndOrdersGroup, SWT.NONE);
+		cJobchain = JOE_Cbo_ActionsJobCommandForm_JobChain.Control(new Combo(jobsAndOrdersGroup, SWT.NONE));
 		cJobchain.setEnabled(false);
 		cJobchain.setItems(listener.getJobChains());		
 		cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -181,14 +180,9 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		cJobchain.setLayoutData(gridData_8);
 		lblJob = new Label(jobsAndOrdersGroup, SWT.NONE);
 		lblJob.setLayoutData(new GridData(73, SWT.DEFAULT));
-		lblJob.setText("Job / Order ID");
+		lblJob.setText("Job / Order ID"); //
 
-		tJob = new Text(jobsAndOrdersGroup, SWT.BORDER);
-		tJob.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tJob.selectAll();
-			}
-		});
+		tJob = JOE_T_ActionsJobCommandForm_Job.Control(new Text(jobsAndOrdersGroup, SWT.BORDER));
 		tJob.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if(type == Editor.JOB){
@@ -201,9 +195,9 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		});
 		final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
 		tJob.setLayoutData(gridData_3);
-		final Label startAtLabel = new Label(jobsAndOrdersGroup, SWT.NONE);
+		
+		final Label startAtLabel = JOE_L_ActionsJobCommandForm_StartAt.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
 		startAtLabel.setLayoutData(new GridData());
-		startAtLabel.setText("Start at");
 
 		final Composite composite = new Composite(jobsAndOrdersGroup, SWT.NONE);
 		final GridData gridData = new GridData(GridData.BEGINNING, GridData.FILL, false, false);
@@ -216,7 +210,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		gridLayout.horizontalSpacing = 0;
 		composite.setLayout(gridLayout);
 
-		txtYear = new Text(composite, SWT.BORDER);
+		txtYear = JOE_T_ActionsJobCommandForm_Year.Control(new Text(composite, SWT.BORDER));
 		txtYear.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if(!event)
@@ -235,10 +229,10 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		gridData_7.widthHint = 40;
 		txtYear.setLayoutData(gridData_7);
 
-		final Label label = new Label(composite, SWT.NONE);
-		label.setText("-");
+		@SuppressWarnings("unused")
+		final Label label = JOE_L_Hyphen.Control(new Label(composite, SWT.NONE));
 
-		txtMonth = new Text(composite, SWT.BORDER);
+		txtMonth = JOE_T_ActionsJobCommandForm_Year.Control(new Text(composite, SWT.BORDER));
 		txtMonth.addFocusListener(new FocusAdapter() {
 			public void focusLost(final FocusEvent e) {
 				txtMonth.setText(Utils.fill(2, txtMonth.getText()));		
@@ -264,10 +258,10 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		gridData_9.widthHint = 20;
 		txtMonth.setLayoutData(gridData_9);
 
-		final Label label_1 = new Label(composite, SWT.NONE);
-		label_1.setText("-");
+		@SuppressWarnings("unused")
+		final Label label_1 = JOE_L_Hyphen.Control(new Label(composite, SWT.NONE));
 
-		txtDay = new Text(composite, SWT.BORDER);
+		txtDay = JOE_T_ActionsJobCommandForm_Day.Control(new Text(composite, SWT.BORDER));
 		txtDay.addFocusListener(new FocusAdapter() {
 			public void focusLost(final FocusEvent e) {
 				txtDay.setText(Utils.fill(2, txtDay.getText()));
@@ -296,7 +290,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		final Label label_2 = new Label(composite, SWT.NONE);
 		label_2.setText("      ");
 
-		txtHour = new Text(composite, SWT.BORDER);
+		txtHour = JOE_T_ActionsJobCommandForm_Hour.Control(new Text(composite, SWT.BORDER));
 		txtHour.addFocusListener(new FocusAdapter() {
 			public void focusLost(final FocusEvent e) {
 				txtHour.setText(Utils.fill(2, txtHour.getText()));
@@ -322,10 +316,10 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		gridData_14.widthHint = 20;
 		txtHour.setLayoutData(gridData_14);
 
-		final Label label_3 = new Label(composite, SWT.NONE);
-		label_3.setText(":");
+		@SuppressWarnings("unused")
+		final Label label_3 = JOE_L_Colon.Control(new Label(composite, SWT.NONE));
 
-		txtMin = new Text(composite, SWT.BORDER);
+		txtMin = JOE_T_ActionsJobCommandForm_Min.Control(new Text(composite, SWT.BORDER));
 		txtMin.addFocusListener(new FocusAdapter() {
 			public void focusLost(final FocusEvent e) {
 				txtMin.setText(Utils.fill(2, txtMin.getText()));
@@ -351,10 +345,10 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		gridData_1.widthHint = 20;
 		txtMin.setLayoutData(gridData_1);
 
-		final Label label_4 = new Label(composite, SWT.NONE);
-		label_4.setText(":");
+		@SuppressWarnings("unused")
+		final Label label_4 = JOE_L_Colon.Control(new Label(composite, SWT.NONE));
 
-		txtSec = new Text(composite, SWT.BORDER);
+		txtSec = JOE_T_ActionsJobCommandForm_Sec.Control(new Text(composite, SWT.BORDER));
 		txtSec.addFocusListener(new FocusAdapter() {
 			public void focusLost(final FocusEvent e) {
 				txtSec.setText(Utils.fill(2, txtSec.getText()));
@@ -380,9 +374,8 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		gridData_6.widthHint = 20;
 		txtSec.setLayoutData(gridData_6);
 
-		cboTimes = new Combo(jobsAndOrdersGroup, SWT.READ_ONLY);
+		cboTimes = JOE_Cbo_ActionsJobCommandForm_Times.Control(new Combo(jobsAndOrdersGroup, SWT.READ_ONLY));
 		cboTimes.setVisibleItemCount(7);
-
 		cboTimes.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				normalized(cboTimes.getText());
@@ -391,17 +384,12 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 			}
 		});
 		cboTimes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		priorityLabel = new Label(jobsAndOrdersGroup, SWT.NONE);
+		
+		priorityLabel = JOE_L_ActionsJobCommandForm_Priority.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
 		final GridData gridData_11 = new GridData();
 		priorityLabel.setLayoutData(gridData_11);
-		priorityLabel.setText("Priority");
 
-		tPriority = new Text(jobsAndOrdersGroup, SWT.BORDER);
-		tPriority.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tPriority.selectAll();
-			}
-		});
+		tPriority = JOE_T_ActionsJobCommandForm_Priority.Control(new Text(jobsAndOrdersGroup, SWT.BORDER));
 		tPriority.setEnabled(false);
 		tPriority.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -410,48 +398,39 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 			}
 		});
 		tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
-		titleLabel = new Label(jobsAndOrdersGroup, SWT.NONE);
+		
+		titleLabel = JOE_L_ActionsJobCommandForm_Title.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
 		titleLabel.setLayoutData(new GridData());
-		titleLabel.setText("Title");
 
-		tTitle = new Text(jobsAndOrdersGroup, SWT.BORDER);
-		tTitle.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tTitle.selectAll();
-			}
-		});
+		tTitle = JOE_T_ActionsJobCommandForm_Title.Control(new Text(jobsAndOrdersGroup, SWT.BORDER));
 		tTitle.setEnabled(false);
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setTitle(tTitle.getText());
-
 			}
 		});
 
 		final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
 		tTitle.setLayoutData(gridData_5);
 
-		stateLabel = new Label(jobsAndOrdersGroup, SWT.NONE);
+		stateLabel = JOE_L_ActionsJobCommandForm_State.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
 		stateLabel.setLayoutData(new GridData());
-		stateLabel.setText("State");
 
-		tState = new Combo(jobsAndOrdersGroup, SWT.BORDER);
+		tState = JOE_T_ActionsJobCommandForm_State.Control(new Combo(jobsAndOrdersGroup, SWT.BORDER));
 		tState.setEnabled(false);
 		tState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if(event)
 					listener.setState(tState.getText());
-
 			}
 		});
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
 		tState.setLayoutData(gridData_2);
 
-		endStateLabel = new Label(jobsAndOrdersGroup, SWT.NONE);
+		endStateLabel = JOE_L_ActionsJobCommandForm_EndState.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
 		endStateLabel.setLayoutData(new GridData());
-		endStateLabel.setText("End State");
 
-		cboEndstate = new Combo(jobsAndOrdersGroup, SWT.NONE);
+		cboEndstate = JOE_Cbo_ActionsJobCommandForm_EndState.Control(new Combo(jobsAndOrdersGroup, SWT.NONE));
 		cboEndstate.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				if(event)
@@ -461,18 +440,16 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 		cboEndstate.setEnabled(false);
 		cboEndstate.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
 
-		replaceLabel = new Label(jobsAndOrdersGroup, SWT.NONE);
+		replaceLabel = JOE_L_ActionsJobCommandForm_Replace.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
 		final GridData gridData_12 = new GridData();
 		replaceLabel.setLayoutData(gridData_12);
-		replaceLabel.setText("Replace");
 
-		bReplace = new Button(jobsAndOrdersGroup, SWT.CHECK);
+		bReplace = JOE_B_ActionsJobCommandForm_Replace.Control(new Button(jobsAndOrdersGroup, SWT.CHECK));
 		bReplace.setSelection(true);
 		bReplace.setEnabled(true);
 		bReplace.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				listener.setReplace(bReplace.getSelection() ? "yes" : "no");
-
 			}
 		});
 		bReplace.setLayoutData(new GridData());
@@ -524,9 +501,9 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 			stateLabel.setVisible(false);
 			endStateLabel.setVisible(false);
 			replaceLabel.setVisible(false);
-			lblJob.setText("Job");
+			lblJob.setText(JOE_L_ActionsJobCommandForm_Job.label());
 		} else {
-			lblJob.setText("Order Id");			
+			lblJob.setText(JOE_L_ActionsJobCommandForm_OrderID.label());			
 		}
 		tJob.setVisible(true);
 
@@ -854,7 +831,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 
 		} catch(Exception e){
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			} catch (Exception ee){
 				//tu nichts
 			}
@@ -865,24 +842,7 @@ public class JobCommandForm extends Composite implements IUnsaved, IUpdateLangua
 	}
 
 	public void setToolTipText() {
-
 		//tStartAt.setToolTipText(Messages.getTooltip("jobcommand.startat"));
-		txtYear.setToolTipText(Messages.getTooltip("date.year"));
-		txtMonth.setToolTipText(Messages.getTooltip("date.month"));
-		txtDay.setToolTipText(Messages.getTooltip("date.day"));
-		txtHour.setToolTipText(Messages.getTooltip("period.begin.hours"));
-		txtMin.setToolTipText(Messages.getTooltip("period.begin.minutes"));
-		txtSec.setToolTipText(Messages.getTooltip("period.begin.secounds"));
-
-		tTitle.setToolTipText(Messages.getTooltip("jobcommand.title"));
-		tPriority.setToolTipText(Messages.getTooltip("jobcommand.priority"));
-		tState.setToolTipText(Messages.getTooltip("jobcommand.state"));		
-		cboEndstate.setToolTipText(Messages.getTooltip("jobcommand.end_state"));
-		bReplace.setToolTipText(Messages.getTooltip("jobcommand.replaceorder"));
-		cJobchain.setToolTipText(Messages.getTooltip("jobcommand.jobchain"));
-		tJob.setToolTipText(Messages.getTooltip("jobcommand.job_order_id"));
-		cboTimes.setToolTipText(Messages.getTooltip("jobcommand.startat"));
-
 	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"

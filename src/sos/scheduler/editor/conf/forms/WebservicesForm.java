@@ -18,11 +18,12 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.WebservicesListener;
 
-public class WebservicesForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
 
 	private        WebservicesListener listener          = null;
@@ -86,11 +87,11 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		gridData3.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
-		group = new Group(this, SWT.NONE);
-		group.setText("Web Services");
+		
+		group = JOE_G_WebservicesForm_WebServices.Control(new Group(this, SWT.NONE));
 		
 		GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
-		tServices = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
+		tServices = JOE_Tbl_WebservicesForm_Services.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
 		tServices.addMouseListener(new MouseAdapter() {
 			public void mouseDoubleClick(final MouseEvent e) {
 				if(tServices.getSelectionCount() > 0)
@@ -115,27 +116,26 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 				 }
 			 }
 		});
-		TableColumn tableColumn = new TableColumn(tServices, SWT.NONE);
+		
+		TableColumn tableColumn = JOE_TCl_WebservicesForm_Name.Control(new TableColumn(tServices, SWT.NONE));
 		tableColumn.setWidth(150);
-		tableColumn.setText("Name");
-		TableColumn tableColumn1 = new TableColumn(tServices, SWT.NONE);
+		
+		TableColumn tableColumn1 = JOE_TCl_WebservicesForm_URL.Control(new TableColumn(tServices, SWT.NONE));
 		tableColumn1.setWidth(150);
-		tableColumn1.setText("URL");
-		TableColumn tableColumn2 = new TableColumn(tServices, SWT.NONE);
+		
+		TableColumn tableColumn2 = JOE_TCl_WebservicesForm_JobChain.Control(new TableColumn(tServices, SWT.NONE));
 		tableColumn2.setWidth(100);
-		tableColumn2.setText("Job Chain");
+		
 		GridData gridData5 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);
-		bNew = new Button(group, SWT.NONE);
-		bNew.setText("&New Web Service");
+		
+		bNew = JOE_B_WebservicesForm_New.Control(new Button(group, SWT.NONE));
 		bNew.setLayoutData(gridData5);
 		getShell().setDefaultButton(bNew);
-
 		bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				listener.newService(tServices);
 				//setInput(true);
 				//tName.setFocus();
-
 			}
 		});
 		
@@ -143,7 +143,8 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		label8 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label8.setText("Label");
 		label8.setLayoutData(gridData19);
-		bRemove = new Button(group, SWT.NONE);
+		
+		bRemove = JOE_B_WebservicesForm_Remove.Control(new Button(group, SWT.NONE));
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (tServices.getSelectionCount() > 0) {
@@ -164,15 +165,11 @@ public class WebservicesForm extends Composite implements IUnsaved, IUpdateLangu
 		});
 		bRemove.setEnabled(false);
 		bRemove.setLayoutData(gridData3);
-		bRemove.setText("Remove Web Service");
 	 }
 
 	
 	 public void setToolTipText() {
-		 bRemove.setToolTipText(Messages.getTooltip("web_services.btn_remove"));
-		 bNew.setToolTipText(Messages.getTooltip("web_services.btn_new"));
-		 tServices.setToolTipText(Messages.getTooltip("web_services.table"));
-
+//
 	 }
 
 

@@ -194,8 +194,10 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
                         tState.setText(curstate);
 
                         cboStates.setItems(listener.getStates());
-                        cboStates.add("global");
-                        cboStates.setText("global");
+//                        cboStates.add("global");
+//                        cboStates.setText("global");
+                        cboStates.add(JOE_M_OrderForm_Global.label());
+                        cboStates.setText(JOE_M_OrderForm_Global.label());
 
                         String curEndstate = listener.getCommandAttribute("end_state");
                         cboEndState.setItems(listener.getStates());
@@ -393,8 +395,10 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 
         cboStates.setItems(listener.getStates());
 
-        cboStates.add("global");
-        cboStates.setText("global");  //TODO lang "global" ?
+//        cboStates.add("global");
+//        cboStates.setText("global");
+        cboStates.add(JOE_M_OrderForm_Global.label());
+        cboStates.setText(JOE_M_OrderForm_Global.label());
 
         butDetails.setEnabled(cJobchain.getText().length() > 0);
         cboStates.setEnabled(cJobchain.getText().length() > 0);

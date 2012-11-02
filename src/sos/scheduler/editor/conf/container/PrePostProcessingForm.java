@@ -27,12 +27,13 @@ import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.LanguageSelector;
 import sos.scheduler.editor.classes.TextArea;
 import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
 import sos.scheduler.editor.conf.listeners.JOEListener;
-import sos.scheduler.editor.conf.listeners.JobListener;
+//import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.ScriptListener;
 import sos.util.SOSString;
 
@@ -84,7 +85,8 @@ public class PrePostProcessingForm extends FormBaseClass {
 	private void createGroup() {
 //		 objParent.setLayout(new FillLayout());
 		showWaitCursor();
-		Group gMonitorGroup = new Group(objParentComposite, SWT.NONE);
+		
+		Group gMonitorGroup = new Group(objParentComposite, SWT.NONE); // TODO i18n
 		final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, true, true, 13, 1);
 		gridData_5.heightHint = 100;
 		gridData_5.minimumHeight = 30;
@@ -94,7 +96,6 @@ public class PrePostProcessingForm extends FormBaseClass {
 		gridLayout_2.numColumns = 4;
 		gridLayout_2.marginWidth = 0;
 		gridLayout_2.marginHeight = 0;
-
 		gMonitorGroup.setLayout(gridLayout_2);
 		gMonitorGroup.setText(Messages.getLabel("job.executable.label"));
 

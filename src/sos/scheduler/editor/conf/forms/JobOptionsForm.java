@@ -4,8 +4,6 @@ import java.text.Collator;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
@@ -26,7 +24,6 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -44,13 +41,15 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
     private Group              group3           = null;
 
-    private Label              label            = null;
+    @SuppressWarnings("unused")
+	private Label              label            = null;
 
     private Text               tDirectory       = null;
 
     private Text               tRegex           = null;
 
-    private Label              label2           = null;
+    @SuppressWarnings("unused")
+	private Label              label2           = null;
 
     private Text               sSetBackCount    = null;
 
@@ -62,25 +61,30 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
     private Text               sSetBackSeconds  = null;
 
-    private Label              label7           = null;
+    @SuppressWarnings("unused")
+	private Label              label7           = null;
 
-    private Label              label9           = null;
+    @SuppressWarnings("unused")
+	private Label              label9           = null;
 
     private Table              tErrorDelay      = null;
 
     private Button             bNewDelay        = null;
 
-    private Label              label4           = null;
+    @SuppressWarnings("unused")
+	private Label              label4           = null;
 
     private Text               sErrorCount      = null;
 
     private Text               sErrorHours      = null;
 
-    private Label              label14          = null;
+    @SuppressWarnings("unused")
+	private Label              label14          = null;
 
     private Text               sErrorMinutes    = null;
 
-    private Label              label17          = null;
+    @SuppressWarnings("unused")
+	private Label              label17          = null;
 
     private Text               sErrorSeconds    = null;
 
@@ -94,7 +98,8 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
     private Button             bDelay           = null;
 
-    private Label              label8           = null;
+    @SuppressWarnings("unused")
+	private Label              label8           = null;
 
     private Label              label5           = null;
 
@@ -112,9 +117,11 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
     private Label              label31          = null;
 
-    private Label              label10          = null;
+    @SuppressWarnings("unused")
+	private Label              label10          = null;
 
-    private Label              label11          = null;
+    @SuppressWarnings("unused")
+	private Label              label11          = null;
 
     private Button             bApplyDirectory  = null;
 

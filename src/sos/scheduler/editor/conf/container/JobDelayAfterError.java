@@ -4,8 +4,6 @@ import java.text.Collator;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
@@ -21,6 +19,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.listeners.JobOptionsListener;
@@ -32,19 +31,23 @@ public class JobDelayAfterError extends FormBaseClass {
 
     private Table              tErrorDelay        = null;
     private Button             bNewDelay          = null;
-    private Label              label4             = null;
+    @SuppressWarnings("unused")
+	private Label              label4             = null;
     private Text               sErrorCount        = null;
     private Text               sErrorHours        = null;
-    private Label              label14            = null;
+    @SuppressWarnings("unused")
+	private Label              label14            = null;
     private Text               sErrorMinutes      = null;
-    private Label              label17            = null;
+    @SuppressWarnings("unused")
+	private Label              label17            = null;
     private Text               sErrorSeconds      = null;
     private Button             bRemoveDelay       = null;
     private Button             bApply             = null;
     private Composite          composite          = null;
     private Button             bStop              = null;
     private Button             bDelay             = null;
-    private Label              label8             = null;
+    @SuppressWarnings("unused")
+	private Label              label8             = null;
     private Label              label5             = null;
     private Label              label6             = null;
 
@@ -91,18 +94,14 @@ public class JobDelayAfterError extends FormBaseClass {
         gridData1.grabExcessHorizontalSpace = true;
         gridData1.grabExcessVerticalSpace = true;
         gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        group = new Group(objParent, SWT.NONE);
-        group.setText("Delay After Error"); // TODO lang "Delay After Error"
+        
+        group = SOSJOEMessageCodes.JOE_G_JobOptionsForm_DelayAfterError.Control(new Group(objParent, SWT.NONE));
         group.setLayoutData(gridData1);
         group.setLayout(gridLayout3);
-        label4 = new Label(group, SWT.NONE);
-        label4.setText("Error count:"); // TODO lang "Error count:"
-        sErrorCount = new Text(group, SWT.BORDER);
-        sErrorCount.addFocusListener(new FocusAdapter() {
-            public void focusGained(final FocusEvent e) {
-                sErrorCount.selectAll();
-            }
-        });
+        
+        label4 = SOSJOEMessageCodes.JOE_L_JobOptionsForm_ErrorCount.Control(new Label(group, SWT.NONE));
+        
+        sErrorCount = SOSJOEMessageCodes.JOE_T_JobOptionsForm_ErrorCount.Control(new Text(group, SWT.BORDER));
         sErrorCount.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
@@ -112,8 +111,8 @@ public class JobDelayAfterError extends FormBaseClass {
         composite = new Composite(group, SWT.NONE);
         composite.setLayout(new RowLayout(SWT.HORIZONTAL));
         composite.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.END, GridData.CENTER, true, false));
-        bStop = new Button(group, SWT.RADIO);
-        bStop.setText("stop"); // TODO lang "stop"
+        
+        bStop = SOSJOEMessageCodes.JOE_B_JobOptionsForm_Stop.Control(new Button(group, SWT.RADIO));
         bStop.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 getShell().setDefaultButton(bApply);
@@ -121,64 +120,59 @@ public class JobDelayAfterError extends FormBaseClass {
                 switchDelay(!bStop.getSelection());
             }
         });
-        bDelay = new Button(group, SWT.RADIO);
-        bDelay.setText("Delay:"); // TODO lang "Delay:"
+        
+        bDelay = SOSJOEMessageCodes.JOE_B_JobOptionsForm_Delay.Control(new Button(group, SWT.RADIO));
         bDelay.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 bApply.setEnabled(true);
                 switchDelay(bDelay.getSelection());
             }
         });
-        sErrorHours = new Text(group, SWT.BORDER);
-        sErrorHours.addFocusListener(new FocusAdapter() {
-            public void focusGained(final FocusEvent e) {
-                sErrorHours.selectAll();
-            }
-        });
+        
+        sErrorHours = SOSJOEMessageCodes.JOE_T_JobOptionsForm_ErrorHours.Control(new Text(group, SWT.BORDER));
         sErrorHours.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
-        label14 = new Label(group, SWT.NONE);
-        label14.setText(":");
-        sErrorMinutes = new Text(group, SWT.BORDER);
-        sErrorMinutes.addFocusListener(new FocusAdapter() {
-            public void focusGained(final FocusEvent e) {
-                sErrorMinutes.selectAll();
-            }
-        });
+        
+        label14 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(group, SWT.NONE));
+        
+        sErrorMinutes = SOSJOEMessageCodes.JOE_T_JobOptionsForm_ErrorMinutes.Control(new Text(group, SWT.BORDER));
         sErrorMinutes.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
-        label17 = new Label(group, SWT.NONE);
-        label17.setText(":");
-        sErrorSeconds = new Text(group, SWT.BORDER);
-        sErrorSeconds.addFocusListener(new FocusAdapter() {
-            public void focusGained(final FocusEvent e) {
-                sErrorSeconds.selectAll();
-            }
-        });
+        
+        label17 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(group, SWT.NONE));
+
+        sErrorSeconds = SOSJOEMessageCodes.JOE_T_JobOptionsForm_ErrorSeconds.Control(new Text(group, SWT.BORDER));
         sErrorSeconds.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
-        label8 = new Label(group, SWT.NONE);
-        label8.setText("[hh:mm:]ss"); // TODO lang "[hh:mm:]ss"
-        bApply = new Button(group, SWT.NONE);
+        
+        label8 = SOSJOEMessageCodes.JOE_L_JobOptionsForm_DelayFormat.Control(new Label(group, SWT.NONE));
+        
+        bApply = SOSJOEMessageCodes.JOE_B_JobOptionsForm_ApplyDelay.Control(new Button(group, SWT.NONE));
+        bApply.setLayoutData(gridData21);
+        bApply.setEnabled(false);
+        bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                applyDelay();
+            }
+        });
+        
         label5 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label5.setText("Label"); // TODO lang "Label"
+//        label5.setText("Label");
         label5.setLayoutData(gridData22);
+        
         createTable();
-        bNewDelay = new Button(group, SWT.NONE);
-        bNewDelay.setText("&New Delay"); // TODO lang "&New Delay"
+        
+        bNewDelay = SOSJOEMessageCodes.JOE_B_JobOptionsForm_NewDelayAfterError.Control(new Button(group, SWT.NONE));
         bNewDelay.setLayoutData(gridData13);
-        label6 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label6.setText("Label"); // TODO lang "Label"
-        label6.setLayoutData(gridData23);
         bNewDelay.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 tErrorDelay.deselectAll();
@@ -189,8 +183,12 @@ public class JobDelayAfterError extends FormBaseClass {
                 sErrorCount.setFocus();
             }
         });
-        bRemoveDelay = new Button(group, SWT.NONE);
-        bRemoveDelay.setText("Remove Delay"); // TODO lang "Remove Delay"
+        
+        label6 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
+//        label6.setText("Label");
+        label6.setLayoutData(gridData23);
+        
+        bRemoveDelay = SOSJOEMessageCodes.JOE_B_JobOptionsForm_RemoveDelay.Control(new Button(group, SWT.NONE));
         bRemoveDelay.setEnabled(false);
         bRemoveDelay.setLayoutData(gridData12);
         bRemoveDelay.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -251,14 +249,6 @@ public class JobDelayAfterError extends FormBaseClass {
                 bApply.setEnabled(true);
             }
         });
-        bApply.setText("&Apply Delay"); // TODO lang "&Apply Delay"
-        bApply.setLayoutData(gridData21);
-        bApply.setEnabled(false);
-        bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                applyDelay();
-            }
-        });
     }
 
     private void switchDelay(boolean enabled) {
@@ -311,21 +301,21 @@ public class JobDelayAfterError extends FormBaseClass {
         }
 
         if (found) {
-            MainWindow.message("Error-count already defined", SWT.ICON_INFORMATION);
+            MainWindow.message(SOSJOEMessageCodes.JOE_M_0036.label(), SWT.ICON_INFORMATION);
             sErrorCount.setFocus();
         }
         else {
             if (maxErrorDelay > 0 && maxErrorDelay < Utils.str2int(sErrorCount.getText()) || maxAktErrorDelay > Utils.str2int(sErrorCount.getText()) && bStop.getSelection()) {
-                MainWindow.message("Error-count with stop must be highest error-count in list", SWT.ICON_INFORMATION);
+                MainWindow.message(SOSJOEMessageCodes.JOE_M_0037.label(), SWT.ICON_INFORMATION);
                 sErrorCount.setFocus();
             }
             else {
                 if (maximum > 1) {
-                    MainWindow.message("Only one item can have delay=stop", SWT.ICON_INFORMATION);
+                    MainWindow.message(SOSJOEMessageCodes.JOE_M_0038.label(), SWT.ICON_INFORMATION);
                 }
                 else {
                     if (sErrorCount.getText().equals("")) {
-                        MainWindow.message("Error-count must not be empty", SWT.ICON_INFORMATION);
+                        MainWindow.message(SOSJOEMessageCodes.JOE_M_0039.label(), SWT.ICON_INFORMATION);
                         sErrorCount.setFocus();
                     }
                     else {
@@ -346,7 +336,7 @@ public class JobDelayAfterError extends FormBaseClass {
     }
 
     private void createTable() {
-        tErrorDelay = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
+        tErrorDelay = SOSJOEMessageCodes.JOE_Tbl_JobOptionsForm_ErrorDelay.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
         tErrorDelay.setSortDirection(SWT.UP);
         tErrorDelay.setHeaderVisible(true);
         tErrorDelay.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 11, 3));
@@ -363,14 +353,13 @@ public class JobDelayAfterError extends FormBaseClass {
                 bRemoveDelay.setEnabled(tErrorDelay.getSelectionCount() > 0);
             }
         });
-        TableColumn tableColumn = new TableColumn(tErrorDelay, SWT.NONE);
+        
+        TableColumn tableColumn = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_ErrorCount.Control(new TableColumn(tErrorDelay, SWT.NONE));
         tErrorDelay.setSortColumn(tableColumn);
         tableColumn.setWidth(150);
-        tableColumn.setText("Error Count"); // TODO lang "Error Count"
-        TableColumn tableColumn1 = new TableColumn(tErrorDelay, SWT.NONE);
+        
+        TableColumn tableColumn1 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Delayhhmmss.Control(new TableColumn(tErrorDelay, SWT.NONE));
         tableColumn1.setWidth(250);
-        tableColumn1.setText("Delay [hh:mm:]ss"); // TODO lang
-                                                  // "Delay [hh:mm:]ss"
     }
 
     private void sortTable(Table t) {

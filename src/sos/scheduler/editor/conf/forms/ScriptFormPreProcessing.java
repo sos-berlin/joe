@@ -53,7 +53,6 @@ public class ScriptFormPreProcessing extends ScriptForm implements IUpdateLangua
         gridLayoutMainOptionsGroup.numColumns = 1;
         objMainOptionsGroup = new Group(this, SWT.NONE);
         objMainOptionsGroup.setText(objDataProvider.getJobNameAndTitle());
-
         objMainOptionsGroup.setLayout(gridLayoutMainOptionsGroup);
         objMainOptionsGroup.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         
@@ -149,7 +148,7 @@ public class ScriptFormPreProcessing extends ScriptForm implements IUpdateLangua
         catch (Exception e) {
             System.out.println(e.toString());
             try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+                new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
             }
             catch (Exception ee) {
               
@@ -165,7 +164,7 @@ public class ScriptFormPreProcessing extends ScriptForm implements IUpdateLangua
             if (Options.getProperty(getPrefix() + preProcessingHeader.getCboFavorite().getText()) != null) {
                
                 if (this.getObjJobJAPI() != null && this.getObjJobJAPI().getTbxClassName().getText().length() > 0 ||  this.getObjJobIncludeFile() != null  && this.getObjJobIncludeFile().getTableIncludes().isEnabled() && this.getObjJobIncludeFile().getTableIncludes().getItemCount() > 0) {
-                    int c = MainWindow.message(getShell(), "Overwrite this Monitor?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+                    int c = MainWindow.message(getShell(), JOE_M_ScriptFormPreProcessing_OverwriteMonitor.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
                     if (c != SWT.YES)
                         return;
                     else {

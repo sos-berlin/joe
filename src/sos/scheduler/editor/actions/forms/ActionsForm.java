@@ -23,11 +23,12 @@ import sos.scheduler.editor.app.IEditor;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 
 
-public class ActionsForm extends Composite implements IEditor, IActionsUpdate {	
+public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActionsUpdate {	
 
 	private ActionsListener listener    = null;
 
@@ -83,9 +84,8 @@ public class ActionsForm extends Composite implements IEditor, IActionsUpdate {
 	 * This method initializes group
 	 */
 	private void createGroup() {
-		group = new Group(sashForm, SWT.V_SCROLL | SWT.H_SCROLL);
+		group = JOE_G_ActionsForm_ActionsElements.Control(new Group(sashForm, SWT.V_SCROLL | SWT.H_SCROLL));
 		group.setLayout(new FillLayout()); // Generated
-		group.setText("Actions Elements"); // Generated
 		tree = new Tree(group, SWT.NONE);
 		//tree.addListener(SWT.Selection, new Listener() {
 		tree.addListener(SWT.Selection, new Listener() {

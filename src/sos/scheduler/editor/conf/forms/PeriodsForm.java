@@ -11,6 +11,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
+
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
@@ -19,7 +21,7 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.PeriodsListener;
 
-public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 	
 	
     private PeriodsListener      listener    = null;
@@ -101,43 +103,13 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         gridData5.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
-        group = new Group(this, SWT.NONE);
-        group.setText("Periods"); //TODO lang "Periods" gr
+        
+        group = JOE_G_PeriodsForm_Periods.Control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout);
+        
         createPeriodForm();
-        bApply = new Button(group, SWT.NONE);
-        label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label.setText("Label");
-        label.setLayoutData(gridData3);
-        createTable();
-        bNew = new Button(group, SWT.NONE);
-        bNew.setText("&New Period"); //TODO lang "&New Period" b
-        getShell().setDefaultButton(bNew);
-        bNew.setLayoutData(gridData5);
-        label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label1.setText("Label");
-        label1.setLayoutData(gridData7);
-        bRemove = new Button(group, SWT.NONE);
-        bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-            	            	
-            	//repeat bzw. repeat_absolute darf nur einmal  def. werden
-            	periodForm.hasRepeatTimes(listener.hasRepeatTimes());
-            		
-                tPeriods.deselectAll();
-                
-                getShell().setDefaultButton(bApply);
-                bApply.setEnabled(false);
-                fillPeriod(true);     
-                periodForm.setApplyButton(bApply);
-                
-                
-            }
-        });
-        bRemove.setText("Remove Period"); //TODO lang "Remove Period" b
-        bRemove.setEnabled(false);
-        bRemove.setLayoutData(gridData6);
-        bApply.setText("&Apply Period"); //TODO lang "&Apply Period" b
+        
+        bApply = JOE_B_PeriodsForm_ApplyPeriod.Control(new Button(group, SWT.NONE));
         bApply.setEnabled(false);
         bApply.setLayoutData(gridData1);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -145,6 +117,35 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
                 applyPeriod();
             }
         });
+        
+        label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
+//        label.setText("Label");
+        label.setLayoutData(gridData3);
+        
+        createTable();
+        
+        bNew = JOE_B_PeriodsForm_NewPeriod.Control(new Button(group, SWT.NONE));
+        getShell().setDefaultButton(bNew);
+        bNew.setLayoutData(gridData5);
+        bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            	//repeat bzw. repeat_absolute darf nur einmal  def. werden
+            	periodForm.hasRepeatTimes(listener.hasRepeatTimes());
+                tPeriods.deselectAll();
+                getShell().setDefaultButton(bApply);
+                bApply.setEnabled(false);
+                fillPeriod(true);     
+                periodForm.setApplyButton(bApply);
+            }
+        });
+        
+        label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
+//        label1.setText("Label");
+        label1.setLayoutData(gridData7);
+        
+        bRemove = JOE_B_PeriodsForm_RemovePeriod.Control(new Button(group, SWT.NONE));
+        bRemove.setEnabled(false);
+        bRemove.setLayoutData(gridData6);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
             	removePeriod();
@@ -183,39 +184,40 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
         gridData4.grabExcessVerticalSpace = true;
         gridData4.verticalSpan = 2;
         gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        tPeriods = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
+        
+        tPeriods = JOE_Tbl_PeriodsForm_Periods.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
         tPeriods.setHeaderVisible(true);
         tPeriods.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3));
         tPeriods.setLinesVisible(true);
         tPeriods.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
             	tPeriodSelect();
-                
             }
         });
-        TableColumn tableColumn = new TableColumn(tPeriods, SWT.NONE);
+
+        TableColumn tableColumn = JOE_TCl_PeriodsForm_LetRun.Control(new TableColumn(tPeriods, SWT.NONE));
         tableColumn.setWidth(59);
-        tableColumn.setText("Let Run"); //TODO lang "Let Run" tc
-        TableColumn tableColumn1 = new TableColumn(tPeriods, SWT.NONE);
+
+        TableColumn tableColumn1 = JOE_TCl_PeriodsForm_Begin.Control(new TableColumn(tPeriods, SWT.NONE));
         tableColumn1.setWidth(56);
-        tableColumn1.setText("Begin"); //TODO lang "Begin" tc
-        TableColumn tableColumn2 = new TableColumn(tPeriods, SWT.NONE);
+
+        TableColumn tableColumn2 = JOE_TCl_PeriodsForm_End.Control(new TableColumn(tPeriods, SWT.NONE));
         tableColumn2.setWidth(55);
-        tableColumn2.setText("End"); //TODO lang "End" tc
+
         TableColumn tableColumn3 = new TableColumn(tPeriods, SWT.NONE);
         tableColumn3.setWidth(59);
         tableColumn3.setText(PeriodForm.REPEAT_TIME);
+        
         TableColumn tableColumn4 = new TableColumn(tPeriods, SWT.NONE);
         tableColumn4.setWidth(80);
-        tableColumn4.setText("Single Start"); //TODO lang "Single Start" tc
+        tableColumn4.setText(PeriodForm.SINGLE_START);
 
         final TableColumn newColumnTableColumn = new TableColumn(tPeriods, SWT.NONE);
         newColumnTableColumn.setWidth(92);
         newColumnTableColumn.setText(PeriodForm.ABSOLUTE_TIME);
 
-        final TableColumn newColumnTableColumn_1 = new TableColumn(tPeriods, SWT.NONE);
+        final TableColumn newColumnTableColumn_1 = JOE_TCl_PeriodsForm_WhenHoliday.Control(new TableColumn(tPeriods, SWT.NONE));
         newColumnTableColumn_1.setWidth(100);
-        newColumnTableColumn_1.setText("When Holiday"); //TODO lang "When Holiday" tc
     }
 
 
@@ -279,18 +281,14 @@ public class PeriodsForm extends Composite implements IUnsaved, IUpdateLanguage 
     }
 
     public void setToolTipText() {
-        bNew.setToolTipText(Messages.getTooltip("periods.btn_new"));
-        bRemove.setToolTipText(Messages.getTooltip("periods.btn_remove"));
-        bApply.setToolTipText(Messages.getTooltip("periods.btn_apply"));
-        tPeriods.setToolTipText(Messages.getTooltip("periods.table"));
-
+//
     }
     
     private void tPeriodSelect(){
     	
     	if(bApply.isEnabled()) {
 			
-			int c = sos.scheduler.editor.app.MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("MainListener.apply_changes"), SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+			int c = sos.scheduler.editor.app.MainWindow.message(getShell(), JOE_M_ApplyChanges.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO );
 			if(c == SWT.YES){
 				applyPeriod();
 			}

@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ScheduleListener;
@@ -30,7 +31,7 @@ import com.sos.dialog.components.SOSDateTime;
 
 import sos.scheduler.editor.app.Utils;
 
-public class ScheduleForm extends Composite implements IUpdateLanguage {
+public class ScheduleForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
     private ScheduleListener listener = null;
     private Group scheduleGroup = null;
@@ -56,11 +57,11 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
 
         } catch (Exception e) {
             try {
-                new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+                new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
             } catch (Exception ee) {
                 // tu nichts
             }
-            System.err.println("..error in ScheduleForm.init() " + e.getMessage());
+            System.err.println(JOE_E_0002.params("ScheduleForm.init() ") + e.getMessage());
         }
     }
 
@@ -90,11 +91,11 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
             txtName.setFocus();
         } catch (Exception e) {
             try {
-                new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+                new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
             } catch (Exception ee) {
                 // tu nichts
             }
-            System.err.println("..error in ScheduleForm.initialize() " + e.getMessage());
+            System.err.println(JOE_E_0002.params("ScheduleForm.initialize() ") + e.getMessage());
         }
     }
 
@@ -105,19 +106,13 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
         try {
             GridLayout gridLayout = new GridLayout();
             gridLayout.numColumns = 3;
-            scheduleGroup = new Group(this, SWT.NONE);
-            scheduleGroup.setText("Schedule");
+            scheduleGroup = JOE_G_ScheduleForm_Schedule.Control(new Group(this, SWT.NONE));
             scheduleGroup.setLayout(gridLayout);
 
-            final Label nameLabel = new Label(scheduleGroup, SWT.NONE);
-            nameLabel.setText("Name");
+            @SuppressWarnings("unused")
+			final Label nameLabel = JOE_L_Name.Control(new Label(scheduleGroup, SWT.NONE));
 
-            txtName = new Text(scheduleGroup, SWT.BORDER);
-            txtName.addFocusListener(new FocusAdapter() {
-                public void focusGained(final FocusEvent e) {
-                    txtName.selectAll();
-                }
-            });
+            txtName = JOE_T_ScheduleForm_Name.Control(new Text(scheduleGroup, SWT.BORDER));
             txtName.addVerifyListener(new VerifyListener() {
                 public void verifyText(final VerifyEvent e) {
                     if (!init)// während der initialiserung sollen keine
@@ -133,16 +128,10 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
             });
             txtName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
 
-            final Label titleLabel = new Label(scheduleGroup, SWT.NONE);
+            final Label titleLabel = JOE_L_ScheduleForm_Title.Control(new Label(scheduleGroup, SWT.NONE));
             titleLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
-            titleLabel.setText("Title");
 
-            txtTitle = new Text(scheduleGroup, SWT.BORDER);
-            txtTitle.addFocusListener(new FocusAdapter() {
-                public void focusGained(final FocusEvent e) {
-                    txtTitle.selectAll();
-                }
-            });
+            txtTitle = JOE_T_ScheduleForm_Title.Control(new Text(scheduleGroup, SWT.BORDER));
             txtTitle.addModifyListener(new ModifyListener() {
                 public void modifyText(final ModifyEvent e) {
                     if (!init)
@@ -155,10 +144,10 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
             new Label(scheduleGroup, SWT.NONE);
             new Label(scheduleGroup, SWT.NONE);
             
-            final Label substitueLabel = new Label(scheduleGroup, SWT.NONE);
-            substitueLabel.setText("Substitute");
+            @SuppressWarnings("unused")
+			final Label substitueLabel = JOE_L_ScheduleForm_Substitute.Control(new Label(scheduleGroup, SWT.NONE));
 
-            cboCombo = new Combo(scheduleGroup, SWT.NONE);
+            cboCombo = JOE_Cbo_ScheduleForm_Substitute.Control(new Combo(scheduleGroup, SWT.NONE));
             cboCombo.addModifyListener(new ModifyListener() {
                 public void modifyText(final ModifyEvent e) {
                     if (!init)
@@ -167,38 +156,34 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
             });
             cboCombo.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
 
-            Label validFromLabel = new Label(scheduleGroup, SWT.NONE);
+            Label validFromLabel = JOE_L_ScheduleForm_ValidFrom.Control(new Label(scheduleGroup, SWT.NONE));
             validFromLabel.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-            validFromLabel.setText("Substitute is valid from");
 
-            validFromDate = new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
-
+            validFromDate = JOE_ScheduleForm_ValidFromDate.Control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN));
             validFromDate.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(SelectionEvent e) {
                     setValidDateFrom();
                 }
             });
 
-            validFromTime = new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.TIME | SWT.DROP_DOWN);
-
+            validFromTime = JOE_ScheduleForm_ValidFromTime.Control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.TIME | SWT.DROP_DOWN));
             validFromTime.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(SelectionEvent e) {
                     setValidDateFrom();
                 }
             });
-            
 
-            final Label validToLabel = new Label(scheduleGroup, SWT.NONE);
-            validToLabel.setText("Substitute is valid to");
+            @SuppressWarnings("unused")
+			final Label validToLabel = JOE_L_ScheduleForm_ValidTo.Control(new Label(scheduleGroup, SWT.NONE));
 
-            validToDate = new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
+            validToDate = JOE_ScheduleForm_ValidToDate.Control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN));
             validToDate.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(SelectionEvent e) {
                     setValidDateTo();
                 }
             });
             
-            validToTime = new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.TIME | SWT.DROP_DOWN);
+            validToTime = JOE_ScheduleForm_ValidToTime.Control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.TIME | SWT.DROP_DOWN));
             validToTime.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(SelectionEvent e) {
                     setValidDateTo();
@@ -208,20 +193,16 @@ public class ScheduleForm extends Composite implements IUpdateLanguage {
             
         } catch (Exception e) {
             try {
-                new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+                new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
             } catch (Exception ee) {
                 // tu nichts
             }
-            System.err.println("..error in ScheduleForm.createGroup() " + e.getMessage());
+            System.err.println(JOE_E_0002.params("ScheduleForm.createGroup() ") + e.getMessage());
         }
     }
 
     public void setToolTipText() {
-        txtName.setToolTipText(Messages.getTooltip("schedule.name"));
-        txtTitle.setToolTipText(Messages.getTooltip("schedule.title"));
-        validFromDate.setToolTipText(Messages.getTooltip("schedule.valid_from"));
-        validToDate.setToolTipText(Messages.getTooltip("schedule.valid_to"));
-        cboCombo.setToolTipText(Messages.getTooltip("schedule.subtitute"));
+//
     }
 
     private boolean existScheduleName() {

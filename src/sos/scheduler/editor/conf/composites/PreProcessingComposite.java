@@ -66,7 +66,7 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
 		gridLayout_1.numColumns = 13;
 		scriptcom.setLayout(gridLayout_1);
 
-		final Label nameLabel = JOE_L_PreProcessingComposite_PreProcessingName.Control(new Label(scriptcom, SWT.NONE));
+		final Label nameLabel = JOE_L_Name.Control(new Label(scriptcom, SWT.NONE));
 		GridData gd_nameLabel = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_nameLabel.widthHint = 60;
 		nameLabel.setLayoutData(gd_nameLabel);

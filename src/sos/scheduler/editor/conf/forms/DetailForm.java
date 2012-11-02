@@ -192,7 +192,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			parameterGroup.setLayout(gridLayout_2);
 			
 			@SuppressWarnings("unused")
-			final Label nameLabel = JOE_L_NameLabel.Control(new Label(parameterGroup, SWT.NONE));
+			final Label nameLabel = JOE_L_Name.Control(new Label(parameterGroup, SWT.NONE));
 //			nameLabel.setText("Name");
 			
 			txtName = JOE_T_DetailForm_Name.Control(new Text(parameterGroup, SWT.BORDER));

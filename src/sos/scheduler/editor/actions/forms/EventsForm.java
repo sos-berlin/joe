@@ -1,8 +1,6 @@
 package sos.scheduler.editor.actions.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import sos.scheduler.editor.app.IUnsaved;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -33,11 +31,12 @@ import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
+
 import java.util.ArrayList;
 
 
-public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  {
+public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage  {
     
 	
 	private EventsListener     listener                 = null;
@@ -84,7 +83,7 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         txtLogic.setText(listener.getLogic());
         listener.fillEvents(table);
         cboEventClass.setItems(listener.getEventClasses());
-        actionsGroup.setText("Action: " + listener.getActionname()); // Generated
+        actionsGroup.setText(JOE_G_EventsForm_Action.params(listener.getActionname())); // Generated
         butApply.setEnabled(false);
         txtLogic.setFocus();
     }
@@ -97,18 +96,12 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 3;
         actionsGroup = new Group(this, SWT.NONE);
-        actionsGroup.setText("Action"); 
         actionsGroup.setLayout(gridLayout); 
 
-        final Label lblLogic = new Label(actionsGroup, SWT.NONE);
-        lblLogic.setText("Logic:");
+        @SuppressWarnings("unused")
+		final Label lblLogic = JOE_L_EventsForm_Logic.Control(new Label(actionsGroup, SWT.NONE));
 
-        txtLogic = new Text(actionsGroup, SWT.BORDER);
-        txtLogic.addFocusListener(new FocusAdapter() {
-        	public void focusGained(final FocusEvent e) {
-        		txtLogic.selectAll();
-        	}
-        });
+        txtLogic = JOE_T_EventsForm_Logic.Control(new Text(actionsGroup, SWT.BORDER));
         txtLogic.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
         		listener.setLogic(txtLogic.getText());
@@ -116,7 +109,7 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         });
         txtLogic.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
-        butEventsOperation = new Button(actionsGroup, SWT.NONE);
+        butEventsOperation = JOE_B_EventsForm_Operation.Control(new Button(actionsGroup, SWT.NONE));
         butEventsOperation.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		ArrayList list = new ArrayList();
@@ -126,7 +119,6 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         		logicOperationDialog.open(txtLogic, list);
         	}
         });
-        butEventsOperation.setText("Operation");
 
         final Label label = new Label(actionsGroup, SWT.HORIZONTAL | SWT.SEPARATOR);
         final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
@@ -135,25 +127,18 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         label.setText("label");
         new Label(actionsGroup, SWT.NONE);
 
-        final Group group = new Group(actionsGroup, SWT.NONE);
-        group.setText("Events Group");
+        final Group group = JOE_G_EventsForm_EventsGroup.Control(new Group(actionsGroup, SWT.NONE));
         final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 3, 1);
         group.setLayoutData(gridData);
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.numColumns = 4;
         group.setLayout(gridLayout_1);
 
-        final Label groupLabel = new Label(group, SWT.NONE);
-        groupLabel.setText("Group: ");
+        @SuppressWarnings("unused")
+		final Label groupLabel = JOE_L_EventsForm_Group.Control(new Label(group, SWT.NONE));
 
-        txtGroup = new Text(group, SWT.BORDER);
-        txtGroup.addFocusListener(new FocusAdapter() {
-        	public void focusGained(final FocusEvent e) {
-        		txtGroup.selectAll();		
-        	}
-        });
+        txtGroup = JOE_T_EventsForm_Group.Control(new Text(group, SWT.BORDER));
         txtGroup.setBackground(SWTResourceManager.getColor(255, 255, 217));
-        
         txtGroup.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
         		if (e.keyCode == SWT.CR && !txtGroup.equals(""))
@@ -169,7 +154,7 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         });
         txtGroup.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 
-        butApply = new Button(group, SWT.NONE);
+        butApply = JOE_B_EventsForm_Apply.Control(new Button(group, SWT.NONE));
         butApply.setEnabled(false);
         butApply.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
@@ -177,17 +162,11 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         	}
         });
         butApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        butApply.setText("Apply");
 
-        final Label logicLabel = new Label(group, SWT.NONE);
-        logicLabel.setText("Logic: ");
+        @SuppressWarnings("unused")
+		final Label logicLabel = JOE_L_EventsForm_Logic.Control(new Label(group, SWT.NONE));
 
-        txtGroupLogic = new Text(group, SWT.BORDER);
-        txtGroupLogic.addFocusListener(new FocusAdapter() {
-        	public void focusGained(final FocusEvent e) {
-        		txtGroupLogic.selectAll();
-        	}
-        });
+        txtGroupLogic = JOE_T_EventsForm_LogicGroup.Control(new Text(group, SWT.BORDER));
         txtGroupLogic.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
         		butApply.setEnabled(true);
@@ -201,7 +180,7 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         });
         txtGroupLogic.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
-        butEventGroupOperation = new Button(group, SWT.NONE);
+        butEventGroupOperation = JOE_B_EventsForm_Operation.Control(new Button(group, SWT.NONE));
         butEventGroupOperation.setLayoutData(new GridData());
         butEventGroupOperation.setEnabled(false);
         butEventGroupOperation.addSelectionListener(new SelectionAdapter() {
@@ -213,9 +192,8 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         		logicOperationDialog.open(txtGroupLogic, list);
         	}
         });
-        butEventGroupOperation.setText("Operation");
 
-        butNew = new Button(group, SWT.NONE);
+        butNew = JOE_B_EventsForm_New.Control(new Button(group, SWT.NONE));
         butNew.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		    	
@@ -223,20 +201,17 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
                 txtGroupLogic.setText("");
                 cboEventClass.setText("");
                 table.deselectAll();                
-                butNew.setToolTipText(Messages.getTooltip("events.button_new"));
                 butApply.setEnabled(false);
                 butRemove.setEnabled(false);
                 txtGroup.setFocus();
         	}
         });
         butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        butNew.setText("New");
 
-        final Label eventClassLabel = new Label(group, SWT.NONE);
-        eventClassLabel.setText("Event Class");
+        @SuppressWarnings("unused")
+		final Label eventClassLabel = JOE_L_EventsForm_EventClass.Control(new Label(group, SWT.NONE));
 
-        cboEventClass = new Combo(group, SWT.BORDER);
-        
+        cboEventClass = JOE_Cbo_EventsForm_EventClass.Control(new Combo(group, SWT.BORDER));
         cboEventClass.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
         		butApply.setEnabled(true);
@@ -250,11 +225,11 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         });
         cboEventClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 
-        butRemove = new Button(group, SWT.NONE);
+        butRemove = JOE_B_EventsForm_Remove.Control(new Button(group, SWT.NONE));
         butRemove.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		if(table.getSelectionCount() > 0)  {
-        			int cont = MainWindow.message(actionsGroup.getShell(), "If you really want to delete this group?", SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+        			int cont = MainWindow.message(actionsGroup.getShell(), JOE_M_EventsForm_RemoveGroup.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
         			if(cont == SWT.OK) {				        				
         				listener.removeEvent(table);
         			} 
@@ -271,9 +246,8 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         	}
         });
         butRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-        butRemove.setText("Remove");
 
-        table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
+        table = JOE_Tbl_EventsForm_Groups.Control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
         table.addMouseListener(new MouseAdapter() {
         	public void mouseDoubleClick(final MouseEvent e) {
         		ContextMenu.goTo(table.getSelection()[0].getText(0), _dom, Editor.EVENTS);
@@ -297,33 +271,19 @@ public class EventsForm extends Composite implements IUnsaved, IUpdateLanguage  
         table.setHeaderVisible(true);
         table.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1));
 
-        final TableColumn newColumnTableColumn = new TableColumn(table, SWT.NONE);
+        final TableColumn newColumnTableColumn = JOE_TCl_EventsForm_Group.Control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn.setWidth(140);
-        newColumnTableColumn.setText("Group");
 
-        final TableColumn newColumnTableColumn_1 = new TableColumn(table, SWT.NONE);
+        final TableColumn newColumnTableColumn_1 = JOE_TCl_EventsForm_Logic.Control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn_1.setWidth(136);
-        newColumnTableColumn_1.setText("Logic");
 
-        final TableColumn newColumnTableColumn_2 = new TableColumn(table, SWT.NONE);
+        final TableColumn newColumnTableColumn_2 = JOE_TCl_EventsForm_EventClass.Control(new TableColumn(table, SWT.NONE));
         newColumnTableColumn_2.setWidth(189);
-        newColumnTableColumn_2.setText("Event Class");
     }
  
 
     public void setToolTipText() {
-    	txtLogic.setToolTipText(Messages.getTooltip("events.logic"));    	
-        txtGroup.setToolTipText(Messages.getTooltip("events.group"));
-        txtGroupLogic.setToolTipText(Messages.getTooltip("events.group_logic"));
-        cboEventClass.setToolTipText(Messages.getTooltip("events.event_class"));
-        table.setToolTipText(Messages.getTooltip("events.table"));
-        butApply.setToolTipText(Messages.getTooltip("events.button_apply"));
-        butNew.setToolTipText(Messages.getTooltip("events.button_new"));        
-        butRemove.setToolTipText(Messages.getTooltip("events.button_remove"));
-        butEventsOperation.setToolTipText(Messages.getTooltip("events.button_operation"));
-        butEventGroupOperation.setToolTipText(Messages.getTooltip("events.button_operation"));
-        
-        
+//        
     }
     
    

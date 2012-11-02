@@ -115,7 +115,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 /**
 	 * This method initializes group
 	 */
-	private void createGroup() {
+	private void createGroup_() {
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.makeColumnsEqualWidth = true;
 		gridLayout2.numColumns = 1;
@@ -137,6 +137,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		final GridData gridData_10 = new GridData();
 		jobchainLabel.setLayoutData(gridData_10);
 		jobchainLabel.setText("Job chain"); //TODO lang "Job chain"
+		
 
 		cJobchain = new Combo(gDescription, SWT.NONE);
 		cJobchain.setEnabled(false);
@@ -304,7 +305,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	/**
 	 * This method initializes group
 	 */
-	private void createGroup_() {
+	private void createGroup() {
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.makeColumnsEqualWidth = true;
 		gridLayout2.numColumns = 1;
@@ -349,6 +350,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		final GridData gridData_8 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_8.widthHint = 114;
 		cJobchain.setLayoutData(gridData_8);
+		
+		lblJob = JOE_L_JobCommand_JobOrderID.Control(new Label(gDescription, SWT.NONE));
+		lblJob.setLayoutData(new GridData(73, SWT.DEFAULT));
 		
 		tJob = JOE_T_JobCommand_Job.Control(new Text(gDescription, SWT.BORDER));
 		tJob.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -491,12 +495,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			stateLabel.setVisible(false);
 			endStateLabel.setVisible(false);
 			replaceLabel.setVisible(false);
-			lblJob = JOE_L_JobCommand_Job.Control(new Label(gDescription, SWT.NONE));
-			lblJob.setLayoutData(new GridData(73, SWT.DEFAULT));
 			tJob.setFocus();
 		} else {
-			lblJob = JOE_L_JobCommand_OrderID.Control(new Label(gDescription, SWT.NONE));
-			lblJob.setLayoutData(new GridData(73, SWT.DEFAULT));
 			cJobchain.setFocus();
 		}
 		tJob.setVisible(true);

@@ -21,10 +21,10 @@ import sos.scheduler.editor.actions.listeners.ActionsListListener;
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
 
-public class ActionsListForm extends Composite implements IUpdateLanguage {
+public class ActionsListForm extends SOSJOEMessageCodes implements IUpdateLanguage {
     
 	private ActionsListListener listener     = null;
 
@@ -66,11 +66,10 @@ public class ActionsListForm extends Composite implements IUpdateLanguage {
     private void createGroup() {
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2; // Generated
-        actionsGroup = new Group(this, SWT.NONE);
-        actionsGroup.setText("Actions"); // Generated
+        actionsGroup = JOE_G_ActionsListForm_Actions.Control(new Group(this, SWT.NONE));
         actionsGroup.setLayout(gridLayout); // Generated
 
-        list = new Table(actionsGroup, SWT.BORDER);
+        list = JOE_Tbl_ActionsListForm_ActionsList.Control(new Table(actionsGroup, SWT.BORDER));
         list.addMouseListener(new MouseAdapter() {
         	public void mouseDoubleClick(final MouseEvent e) {
         		ContextMenu.goTo(list.getSelection()[0].getText(0), _dom, Editor.ACTIONS);
@@ -83,22 +82,21 @@ public class ActionsListForm extends Composite implements IUpdateLanguage {
         });
         list.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 1, 3));
 
-        butNew = new Button(actionsGroup, SWT.NONE);
+        butNew = JOE_B_ActionsListForm_New.Control(new Button(actionsGroup, SWT.NONE));
         butNew.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		TableItem item = new TableItem(list, SWT.NONE);
-        		item.setText("New Action " + list.getItemCount());
-        		listener.newAction("New Action " + list.getItemCount());
+        		item.setText(JOE_M_ActionsListForm_NewAction.params(list.getItemCount()));
+//        		listener.newAction("New Action " + list.getItemCount());
+        		listener.newAction(JOE_M_ActionsListForm_NewAction.params(list.getItemCount()));
         		listener.fillActions(list);
         		butRemove.setEnabled(false);
         		gui.updateActions();
-        		
         	}
         });
         butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-        butNew.setText("New");
 
-        butRemove = new Button(actionsGroup, SWT.NONE);
+        butRemove = JOE_B_ActionsListForm_Remove.Control(new Button(actionsGroup, SWT.NONE));
         butRemove.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		listener.removeAction(list);
@@ -108,15 +106,12 @@ public class ActionsListForm extends Composite implements IUpdateLanguage {
         		
         	}
         });
-        butRemove.setText("Remove");
         new Label(actionsGroup, SWT.NONE);
     }
  
 
     public void setToolTipText() {
-        butNew.setToolTipText(Messages.getTooltip("actions.but_new"));
-        butRemove.setToolTipText(Messages.getTooltip("actions.but_remove"));
-        list.setToolTipText(Messages.getTooltip("actions.list"));
+//
     }
     
 

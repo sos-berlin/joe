@@ -27,6 +27,7 @@ import sos.scheduler.editor.app.IEditor;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.TreeMenu;
@@ -35,7 +36,7 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
-public class SchedulerForm extends Composite implements ISchedulerUpdate, IEditor {
+public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdate, IEditor {
 	@SuppressWarnings("unused")
 	private final String		conClsName		= "SchedulerForm";
 	@SuppressWarnings("unused")
@@ -91,9 +92,9 @@ public class SchedulerForm extends Composite implements ISchedulerUpdate, IEdito
 	}
 
 	private void createGTree() {
-		gTree = new Group(sashForm, SWT.NONE);
+		gTree = JOE_G_SchedulerForm_SchedulerElements.Control(new Group(sashForm, SWT.NONE));
 		gTree.setLayout(new FillLayout());
-		gTree.setText("Scheduler Elements");
+		
 		tree = new Tree(gTree, SWT.BORDER);
 		tree.setMenu(new TreeMenu(tree, dom, this).getMenu());
 		tree.addListener(SWT.MenuDetect, new Listener() {

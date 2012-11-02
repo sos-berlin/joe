@@ -1,8 +1,6 @@
 package sos.scheduler.editor.conf.container;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -10,7 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.listeners.JobListener;
@@ -91,18 +89,15 @@ public class JobProcessFile extends FormBaseClass {
         gridData2.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 4;
-        Group gExecutable = new Group(objParent, SWT.NONE);
+        
+        Group gExecutable = SOSJOEMessageCodes.JOE_G_JobProcessFile_RunExecutable.Control(new Group(objParent, SWT.NONE));
         gExecutable.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-        gExecutable.setText("Run Executable");
         gExecutable.setLayout(gridLayout);
-        Label label1 = new Label(gExecutable, SWT.NONE);
-        label1.setText("File");
-        tExecuteFile = new Text(gExecutable, SWT.BORDER);
-        tExecuteFile.addFocusListener(new FocusAdapter() {
-            public void focusGained(final FocusEvent e) {
-                tExecuteFile.selectAll();
-            }
-        });
+        
+        @SuppressWarnings("unused")
+		Label label1 = SOSJOEMessageCodes.JOE_L_JobProcessFile_File.Control(new Label(gExecutable, SWT.NONE));
+        
+        tExecuteFile = SOSJOEMessageCodes.JOE_T_JobProcessFile_File.Control(new Text(gExecutable, SWT.BORDER));
         tExecuteFile.setLayoutData(gridData12);
         tExecuteFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -111,14 +106,11 @@ public class JobProcessFile extends FormBaseClass {
                 }
             }
         });
-        Label label3 = new Label(gExecutable, SWT.NONE);
-        label3.setText("Parameter:   ");
-        tParameter = new Text(gExecutable, SWT.BORDER);
-        tParameter.addFocusListener(new FocusAdapter() {
-            public void focusGained(final FocusEvent e) {
-                tParameter.selectAll();
-            }
-        });
+        
+        @SuppressWarnings("unused")
+		Label label3 = SOSJOEMessageCodes.JOE_L_JobProcessFile_Parameter.Control(new Label(gExecutable, SWT.NONE));
+
+        tParameter = SOSJOEMessageCodes.JOE_T_JobProcessFile_Parameter.Control(new Text(gExecutable, SWT.BORDER));
         tParameter.setLayoutData(gridData2);
         tParameter.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -126,14 +118,11 @@ public class JobProcessFile extends FormBaseClass {
                     objJobDataProvider.setParam(tParameter.getText());
             }
         });
-        Label label4 = new Label(gExecutable, SWT.NONE);
-        label4.setText("Log file:");
-        tLogFile = new Text(gExecutable, SWT.BORDER);
-        tLogFile.addFocusListener(new FocusAdapter() {
-            public void focusGained(final FocusEvent e) {
-                tLogFile.selectAll();
-            }
-        });
+        
+        @SuppressWarnings("unused")
+		Label label4 = SOSJOEMessageCodes.JOE_L_JobProcessFile_LogFile.Control(new Label(gExecutable, SWT.NONE));
+
+        tLogFile = SOSJOEMessageCodes.JOE_T_JobProcessFile_LogFile.Control(new Text(gExecutable, SWT.BORDER));
         tLogFile.setLayoutData(gridData3);
         tLogFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -141,11 +130,11 @@ public class JobProcessFile extends FormBaseClass {
                     objJobDataProvider.setLogFile(tLogFile.getText());
             }
         });
-        Label label5 = new Label(gExecutable, SWT.NONE);
-        label5.setText("Ignore:");
+        
+        Label label5 = SOSJOEMessageCodes.JOE_L_JobProcessFile_Ignore.Control(new Label(gExecutable, SWT.NONE));
         label5.setLayoutData(gridData61);
-        bIgnoreSignal = new Button(gExecutable, SWT.CHECK);
-        bIgnoreSignal.setText("Signal");
+        
+        bIgnoreSignal = SOSJOEMessageCodes.JOE_B_JobProcessFile_IgnoreSignal.Control(new Button(gExecutable, SWT.CHECK));
         bIgnoreSignal.setLayoutData(gridData21);
         bIgnoreSignal.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -153,8 +142,8 @@ public class JobProcessFile extends FormBaseClass {
                     objJobDataProvider.setIgnoreSignal(bIgnoreSignal.getSelection());
             }
         });
-        bIgnoreError = new Button(gExecutable, SWT.CHECK);
-        bIgnoreError.setText("Error");
+        
+        bIgnoreError = SOSJOEMessageCodes.JOE_B_JobProcessFile_IgnoreError.Control(new Button(gExecutable, SWT.CHECK));
         bIgnoreError.setLayoutData(gridData41);
         bIgnoreError.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -169,12 +158,6 @@ public class JobProcessFile extends FormBaseClass {
         tParameter.setEnabled(enabled);
         bIgnoreError.setEnabled(enabled);
         bIgnoreSignal.setEnabled(enabled);
-
-        tExecuteFile.setToolTipText(Messages.getTooltip("process.file"));
-        tParameter.setToolTipText(Messages.getTooltip("process.param"));
-        tLogFile.setToolTipText(Messages.getTooltip("process.log_file"));
-        bIgnoreSignal.setToolTipText(Messages.getTooltip("process.ignore_signal"));
-        bIgnoreError.setToolTipText(Messages.getTooltip("process.ignore_error"));
 
         objParent.layout();
     }

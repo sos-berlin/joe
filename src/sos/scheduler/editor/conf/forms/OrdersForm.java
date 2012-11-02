@@ -95,7 +95,8 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		bRemoveOrder.setLayoutData(gridData1);
 		bRemoveOrder.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				int c = MainWindow.message(getShell(), "Do you want to remove the order?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+//				int c = MainWindow.message(getShell(), "Do you want to remove the order?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+				int c = MainWindow.message(getShell(), JOE_M_OrdersForm_RemoveOrder.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 				if (c != SWT.YES)
 					return;
 				bRemoveOrder.setEnabled(listener.deleteCommands(table));

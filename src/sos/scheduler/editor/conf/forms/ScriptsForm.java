@@ -21,13 +21,14 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ScriptsListener;
 
 ;
-public class ScriptsForm extends Composite implements IUpdateLanguage {
+public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private ScriptsListener	listener		= null;
 	private Group			scriptsGroup	= null;
 	private static Table	table			= null;
@@ -35,7 +36,7 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 	private Label			label			= null;
 	private SchedulerDom	dom				= null;
 	private Button			butNew			= null;
-	private static String	MONITOR			= "process";
+	private static String	MONITOR			= JOE_M_ScriptsForm_Monitor.label();
 
 	public ScriptsForm(Composite parent, int style, SchedulerDom pobjXMLDom, ISchedulerUpdate update, Element elem) {
 		super(parent, style);
@@ -48,11 +49,11 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 		}
 		catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 			}
-			System.err.println("..error in ScriptsForm.init() " + e.getMessage());
+			System.err.println(JOE_E_0002.params("ScriptsForm.init() ") + e.getMessage());
 		}
 	}
 
@@ -64,11 +65,11 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 		}
 		catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 			}
-			System.err.println("..error in ScriptsForm.initialize() " + e.getMessage());
+			System.err.println(JOE_E_0002.params("ScriptsForm.initialize() ") + e.getMessage());
 		}
 	}
 
@@ -77,7 +78,6 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 2;
 			scriptsGroup = new Group(this, SWT.NONE);
-			// scriptsGroup.setText("Monitors");
 			scriptsGroup.setText(sos.scheduler.editor.conf.listeners.SchedulerListener.MONITOR);
 			scriptsGroup.setLayout(gridLayout);
 			if (Utils.isElementEnabled("job", dom, listener.getParent())) {
@@ -87,12 +87,11 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 				scriptsGroup.setEnabled(false);
 			}
 			createTable();
-			butRemove = new Button(scriptsGroup, SWT.NONE);
-			butRemove.setText("Remove");
+			butRemove = JOE_B_ScriptsForm_Remove.Control(new Button(scriptsGroup, SWT.NONE));
 			butRemove.setEnabled(false);
 			butRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-					int c = MainWindow.message(getShell(), "Do you want remove the monitor?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+					int c = MainWindow.message(getShell(), JOE_M_ScriptsForm_RemoveMonitor.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					if (c != SWT.YES)
 						return;
 					butRemove.setEnabled(listener.delete(table));
@@ -102,17 +101,18 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 				}
 			});
 			butRemove.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+			
 			label = new Label(scriptsGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
 			label.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-			label.setText("Label");
+//			label.setText("Label");
 		}
 		catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 			}
-			System.err.println("..error in ScriptsForm.createGroup() " + e.getMessage());
+			System.err.println(JOE_E_0002.params("ScriptsForm.createGroup() ") + e.getMessage());
 		}
 	}
 
@@ -120,7 +120,7 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 		try {
 			GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
 			gridData2.widthHint = 425;
-			table = new Table(scriptsGroup, SWT.FULL_SELECTION | SWT.BORDER);
+			table = JOE_Tbl_ScriptsForm_PrePostProcessing.Control(new Table(scriptsGroup, SWT.FULL_SELECTION | SWT.BORDER));
 			table.addMouseListener(new MouseAdapter() {
 				public void mouseDoubleClick(final MouseEvent e) {
 					if (table.getSelectionCount() > 0)
@@ -174,35 +174,33 @@ public class ScriptsForm extends Composite implements IUpdateLanguage {
 					}
 				}
 			});
-			TableColumn tableColumn1 = new TableColumn(table, SWT.NONE);
+			
+			TableColumn tableColumn1 = JOE_TCl_ScriptsForm_Name.Control(new TableColumn(table, SWT.NONE));
 			tableColumn1.setWidth(281);
-			tableColumn1.setText("Name");
-			TableColumn tableColumn2 = new TableColumn(table, SWT.NONE);
+			
+			TableColumn tableColumn2 = JOE_TCl_ScriptsForm_Ordering.Control(new TableColumn(table, SWT.NONE));
 			tableColumn2.setWidth(205);
-			tableColumn2.setText("Ordering");
-			butNew = new Button(scriptsGroup, SWT.NONE);
+			
+			butNew = JOE_B_ScriptsForm_New.Control(new Button(scriptsGroup, SWT.NONE));
 			butNew.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					addMonitor();
 				}
 			});
 			butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			butNew.setText("New");
 		}
 		catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 			}
-			System.err.println("..error in ScriptsForm.createTable() " + e.getMessage());
+			System.err.println(JOE_E_0002.params("ScriptsForm.createTable() ") + e.getMessage());
 		}
 	}
 
 	public void setToolTipText() {
-		butRemove.setToolTipText(Messages.getTooltip("scripts.btn_remove"));
-		table.setToolTipText(Messages.getTooltip("scripts.table"));
-		butNew.setToolTipText(Messages.getTooltip("scripts.btn_add_new"));
+//
 	}
 
 	private void addMonitor() {

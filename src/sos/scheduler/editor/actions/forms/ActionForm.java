@@ -15,10 +15,10 @@ import org.jdom.Element;
 import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.listeners.ActionListener;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
 
-public class ActionForm extends Composite implements IUpdateLanguage {
+public class ActionForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 	private ActionListener listener     = null;
 
@@ -52,14 +52,13 @@ public class ActionForm extends Composite implements IUpdateLanguage {
 	private void createGroup() {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
-		actionsGroup = new Group(this, SWT.NONE);
-		actionsGroup.setText("Action"); // Generated
+		actionsGroup = JOE_G_ActionForm_Action.Control(new Group(this, SWT.NONE));
 		actionsGroup.setLayout(gridLayout); // Generated
 
-		final Label nameLabel = new Label(actionsGroup, SWT.NONE);
-		nameLabel.setText("Name: ");
+		@SuppressWarnings("unused")
+		final Label nameLabel = JOE_L_Name.Control(new Label(actionsGroup, SWT.NONE));
 
-		txtName = new Text(actionsGroup, SWT.BORDER);
+		txtName = JOE_T_ActionForm_Name.Control(new Text(actionsGroup, SWT.BORDER));
 		txtName.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				listener.setName(txtName.getText());
@@ -70,7 +69,7 @@ public class ActionForm extends Composite implements IUpdateLanguage {
 
 
 	public void setToolTipText() {
-		txtName.setToolTipText(Messages.getTooltip("action.name"));
+//
 	}
 
 

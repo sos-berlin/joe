@@ -48,6 +48,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -57,7 +58,7 @@ import sos.util.SOSString;
 
 import com.swtdesigner.SWTResourceManager;
 
-public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 	private Button				butDown_1				= null;
 	private Button				butUp_1					= null;
 	private Button				butImport_1				= null;
@@ -143,11 +144,12 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		this.setLayout(new GridLayout());
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.numColumns = 1;
-		gJobParameter = new Group(this, SWT.NONE);
-		gJobParameter.setText(Messages.getLabel("Parameter"));
+		
+		gJobParameter = JOE_G_ParameterForm_JobParameter.Control(new Group(this, SWT.NONE));
 		gJobParameter.setLayout(gridLayout2);
 		final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
 		gJobParameter.setLayoutData(gridData_1);
+		
 		createParameterGroup();
 		// dom.setInit(true);
 		getDescription();
@@ -304,7 +306,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				}
 			}
 			if (fNotExist) {
-				MainWindow.message("file not exist: " + f, SWT.ICON_WARNING);
+//				MainWindow.message("file not exist: " + f, SWT.ICON_WARNING);
+				MainWindow.message(JOE_M_ParameterForm_FileNotExist.params(f), SWT.ICON_WARNING);
 				return;
 			}
 			final String filename = f;
@@ -337,7 +340,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				// for(int i = 0; i < paramList.size(); i++) {
 				Element param = (Element) listOfElement.get(i);
 				if (hash.containsKey(Utils.getAttributeValue("name", param))) {
-					MainWindow.message("There is not a clearly Parameter: " + Utils.getAttributeValue("name", param), SWT.ICON_WARNING);
+//					MainWindow.message("There is not a clearly Parameter: " + Utils.getAttributeValue("name", param), SWT.ICON_WARNING);
+					MainWindow.message(JOE_M_ParameterForm_NoDistinctParam.params(Utils.getAttributeValue("name", param)), SWT.ICON_WARNING);
 					return;
 				}
 				hash.put(Utils.getAttributeValue("name", param), "");
@@ -364,54 +368,60 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			includeParameterTabItem.setData("doc", doc);
 			includeParameterTabItem.setData("params", listOfElement);
 			// --> bis hier alles in listener übernehmen
+			
 			final Group group_1 = new Group(tabFolder, SWT.NONE);
 			group_1.setText(txtIncludeFilename.getText());
 			final GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 5;
 			group_1.setLayout(gridLayout);
 			includeParameterTabItem.setControl(group_1);
-			label2 = new Label(group_1, SWT.NONE);
-			label2.setText(Messages.getLabel("Name"));
+			
+			label2 = JOE_L_Name.Control(new Label(group_1, SWT.NONE));
+			
 			final Text txtIncludeParameter = new Text(group_1, SWT.BORDER);
 			final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 			txtIncludeParameter.setLayoutData(gridData_4);
-			label6 = new Label(group_1, SWT.NONE);
-			label6.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-			label6.setText(Messages.getLabel("Value"));
-			final Text txtIncludeParameterValue = new Text(group_1, SWT.BORDER);
-			final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-			txtIncludeParameterValue.setLayoutData(gridData_9);
-			butoIncludeSave = new Button(group_1, SWT.NONE);
-			butoIncludeSave.setEnabled(false);
-			final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-			gridData_7.widthHint = 36;
-			butoIncludeSave.setLayoutData(gridData_7);
-			butoIncludeSave.setText(Messages.getLabel("Save"));
-			txtIncludeParameterValue.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-				public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-					butoIncludeSave.setEnabled(!txtIncludeParameter.getText().equals(""));
-				}
-			});
 			txtIncludeParameter.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 				public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 					butoIncludeSave.setEnabled(!txtIncludeParameter.getText().equals(""));
 				}
 			});
+			
+			label6 = JOE_L_ParameterForm_Value.Control(new Label(group_1, SWT.NONE));
+			label6.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+			
+			final Text txtIncludeParameterValue = new Text(group_1, SWT.BORDER);
+			final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+			txtIncludeParameterValue.setLayoutData(gridData_9);
+			txtIncludeParameterValue.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+				public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+					butoIncludeSave.setEnabled(!txtIncludeParameter.getText().equals(""));
+				}
+			});
+			
+			butoIncludeSave = JOE_B_ParameterForm_IncludeSave.Control(new Button(group_1, SWT.NONE));
+			butoIncludeSave.setEnabled(false);
+			final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+			gridData_7.widthHint = 36;
+			butoIncludeSave.setLayoutData(gridData_7);
+
 			label4 = new Label(group_1, SWT.SEPARATOR | SWT.HORIZONTAL);
 			label4.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1));
-			label4.setText(Messages.getLabel("Label"));
+//			label4.setText(Messages.getLabel("Label"));
+			
 			final Table tableIncludeParameter = new Table(group_1, SWT.BORDER | SWT.FULL_SELECTION);
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 3);
 			gridData_1.heightHint = 85;
 			tableIncludeParameter.setLayoutData(gridData_1);
 			tableIncludeParameter.setHeaderVisible(true);
 			tableIncludeParameter.setLinesVisible(true);
-			TableColumn tcName = new TableColumn(tableIncludeParameter, SWT.NONE);
+			
+			TableColumn tcName = JOE_TCl_ParameterForm_Name.Control(new TableColumn(tableIncludeParameter, SWT.NONE));
 			tcName.setWidth(132);
-			tcName.setText(Messages.getLabel("Name"));
-			TableColumn tcValue = new TableColumn(tableIncludeParameter, SWT.NONE);
+			
+			TableColumn tcValue = JOE_TCl_ParameterForm_Value.Control(new TableColumn(tableIncludeParameter, SWT.NONE));
 			tcValue.setWidth(450);
-			tcValue.setText("Value"); //TODO lang "Value" t
+
 			for (int i = 0; i < listOfElement.size(); i++) {
 				Element param = (Element) listOfElement.get(i);
 				TableItem item = new TableItem(tableIncludeParameter, SWT.NONE);
@@ -419,9 +429,10 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				item.setText(1, Utils.getAttributeValue("value", param));
 				item.setData("param", param);
 			}
-			final Button newButton = new Button(group_1, SWT.NONE);
+			
+			final Button newButton = JOE_B_ParameterForm_New.Control(new Button(group_1, SWT.NONE));
 			newButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			newButton.setText(Messages.getLabel("New"));
+			
 			// fill Include Params From External File
 			/*for(int j = 0; j < listOfElement.size(); j++) {
 				Element params_ = (Element)listOfElement.get(j);
@@ -434,10 +445,9 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 					item.setData("param", param);
 				}
 			}*/
-			final Button butIncludeRemove = new Button(group_1, SWT.NONE);
+			final Button butIncludeRemove = JOE_B_ParameterForm_IncludeRemove.Control(new Button(group_1, SWT.NONE));
 			final GridData gridData_8 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
 			butIncludeRemove.setLayoutData(gridData_8);
-			butIncludeRemove.setText(Messages.getLabel("Remove"));
 			butIncludeRemove.setEnabled(false);
 			butIncludeRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -445,7 +455,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				}
 			});
 			if (type == Editor.JOB) {
-				butImport = new Button(group_1, SWT.NONE);
+				butImport = JOE_B_ParameterForm_Wizard.Control(new Button(group_1, SWT.NONE));
 				butImport.setVisible(false);
 				butImport.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 				// butImport.setText("import");
@@ -456,8 +466,6 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 						importParameterForms.showAllImportJobs();
 					}
 				});
-				// butImport.setText("Import");
-				butImport.setText(Messages.getLabel(WIZARD));
 			}
 			txtIncludeParameterValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 				public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
@@ -500,7 +508,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 					txtIncludeParameter.setFocus();
 				}
 			});
-			// Speichern und löschen ist nicht im Xpath Ausdruck erlaubt. Grund: Parameter könne aus verschiedenen Paths geholt werden.
+			// Speichern und löschen ist nicht im Xpath Ausdruck erlaubt. Grund: Parameter können aus verschiedenen Paths geholt werden.
 			boolean hasXPathExpression = txtIncludeNode.getText().trim().length() == 0;
 			butoIncludeSave.setVisible(hasXPathExpression);
 			butIncludeRemove.setVisible(hasXPathExpression);
@@ -511,12 +519,14 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		}
 		catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+//				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
 			}
-			MainWindow.message("could not create Tabitem cause: " + e.getMessage(), SWT.ICON_WARNING);
+//			MainWindow.message("could not create Tabitem cause: " + e.getMessage(), SWT.ICON_WARNING);
+			MainWindow.message(JOE_E_0010.label() + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}
 
@@ -526,7 +536,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		String filename = (String) includeParameterTabItem.getData("filename");
 		java.util.List listOfElement = (java.util.List) includeParameterTabItem.getData("params");
 		if (add) {
-			// neue Parameter bzw. editieren vorhandene Parameter
+			// neue Parameter bzw. editieren vorhandener Parameter
 			boolean found = false;
 			for (int i = 0; i < tableIncludeParameter.getItemCount(); i++) {
 				TableItem item = tableIncludeParameter.getItem(i);
@@ -582,21 +592,17 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 	private void createParameter() {
 		// Parameter
-		parameterTabItem = new CTabItem(tabFolder, SWT.BORDER);
-		parameterTabItem.setText(Messages.getLabel("Parameter"));
+		parameterTabItem = JOE_TI_ParameterForm_TabItemParameter.Control(new CTabItem(tabFolder, SWT.BORDER));
+		
 		final Group Group = new Group(tabFolder, SWT.NONE);
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 6;
 		Group.setLayout(gridLayout);
 		parameterTabItem.setControl(Group);
-		label2 = new Label(Group, SWT.NONE);
-		label2.setText(Messages.getLabel("Name"));
-		tParaName = new Text(Group, SWT.BORDER);
-		tParaName.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tParaName.selectAll();
-			}
-		});
+		
+		label2 = JOE_L_Name.Control(new Label(Group, SWT.NONE));
+		
+		tParaName = JOE_T_ParameterForm_ParamName.Control(new Text(Group, SWT.BORDER));
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		tParaName.setLayoutData(gridData_4);
 		tParaName.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
@@ -610,15 +616,10 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				bApply.setEnabled(!tParaName.getText().trim().equals(""));
 			}
 		});
-		label6 = new Label(Group, SWT.NONE);
+		label6 = JOE_L_ParameterForm_Value.Control(new Label(Group, SWT.NONE));
 		label6.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-		label6.setText(Messages.getLabel("Value"));
-		tParaValue = new Text(Group, SWT.BORDER);
-		tParaValue.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tParaValue.selectAll();
-			}
-		});
+		
+		tParaValue = JOE_T_ParameterForm_ParamValue.Control(new Text(Group, SWT.BORDER));
 		final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		tParaValue.setLayoutData(gridData_9);
 		tParaValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
@@ -632,7 +633,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				bApply.setEnabled(!tParaName.getText().equals(""));
 			}
 		});
-		final Button button = new Button(Group, SWT.NONE);
+		
+		final Button button = JOE_B_ParameterForm_Comment.Control(new Button(Group, SWT.NONE));
 		final GridData gridDatax = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
 		gridDatax.widthHint = 28;
 		button.setLayoutData(gridDatax);
@@ -644,21 +646,23 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
-		bApply = new Button(Group, SWT.NONE);
+		
+		bApply = JOE_B_ParameterForm_Apply.Control(new Button(Group, SWT.NONE));
 		bApply.setEnabled(false);
 		final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		gridData_7.widthHint = 36;
 		bApply.setLayoutData(gridData_7);
-		bApply.setText(Messages.getLabel("Apply"));
 		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				addParam();
 			}
 		});
+		
 		label4 = new Label(Group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label4.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 6, 1));
-		label4.setText(Messages.getLabel("Label"));
-		tParameter = new Table(Group, SWT.FULL_SELECTION | SWT.BORDER);
+//		label4.setText(Messages.getLabel("Label"));
+		
+		tParameter = JOE_Tbl_ParameterForm_Parameter.Control(new Table(Group, SWT.FULL_SELECTION | SWT.BORDER));
 		tParameter.setLinesVisible(true);
 		final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 4);
 		tParameter.setLayoutData(gridData_1);
@@ -666,7 +670,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		tParameter.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (bApply.isEnabled()) {
-					int ok = MainWindow.message(Messages.getString("MainListener.apply_changes"), //$NON-NLS-1$
+					int ok = MainWindow.message(JOE_M_ApplyChanges.label(), //$NON-NLS-1$
 							SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
 					if (ok == SWT.YES) {
 						addParam();
@@ -690,13 +694,14 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				bApply.setEnabled(false);
 			}
 		});
-		TableColumn tcName = new TableColumn(tParameter, SWT.NONE);
+		
+		TableColumn tcName = JOE_TCl_ParameterForm_Name.Control(new TableColumn(tParameter, SWT.NONE));
 		tcName.setWidth(262);
-		tcName.setText(Messages.getLabel("Name"));
-		TableColumn tcValue = new TableColumn(tParameter, SWT.NONE);
+		
+		TableColumn tcValue = JOE_TCl_ParameterForm_Value.Control(new TableColumn(tParameter, SWT.NONE));
 		tcValue.setWidth(500);
-		tcValue.setText("Value"); //TODO lang "Value" t
-		butNewParam = new Button(Group, SWT.NONE);
+
+		butNewParam = JOE_B_ParameterForm_NewParam.Control(new Button(Group, SWT.NONE));
 		butNewParam.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText("");
@@ -707,47 +712,44 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		butNewParam.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butNewParam.setText("New"); //TODO lang "New" b
+		
 		final Composite composite = new Composite(Group, SWT.NONE);
 		final GridData gridData_2 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
 		gridData_2.heightHint = 67;
 		composite.setLayoutData(gridData_2);
 		composite.setLayout(new GridLayout());
-		butUp = new Button(composite, SWT.NONE);
+		
+		butUp = JOE_B_Up.Control(new Button(composite, SWT.NONE));
 		butUp.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				// selektierte Datensatz wird eine Zeile nach oben verschoben
+				// selektierter Datensatz wird eine Zeile nach oben verschoben
 				listener.changeUp(tParameter);
 			}
 		});
 		butUp.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		// butUp.setText("Up");
 		butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
-		butDown = new Button(composite, SWT.NONE);
+		
+		butDown = JOE_B_Down.Control(new Button(composite, SWT.NONE));
 		butDown.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				listener.changeDown(tParameter);
 			}
 		});
 		butDown.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
-		// butDown.setText("Down");
 		butDown.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
-		butImport = new Button(Group, SWT.NONE);
+		
+		butImport = JOE_B_ParameterForm_Wizard.Control(new Button(Group, SWT.NONE));
 		butImport.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		// butImport.setText("import");
-		butImport.setText(WIZARD);
 		butImport.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				startWizzard();
 				tParaName.setFocus();
 			}
 		});
-		// butImport.setText("Import");
-		butImport.setText(WIZARD);
-		bRemove = new Button(Group, SWT.NONE);
+
+		bRemove = JOE_B_ParameterForm_Remove.Control(new Button(Group, SWT.NONE));
 		final GridData gridData_8 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
 		bRemove.setLayoutData(gridData_8);
-		bRemove.setText("Remove"); //TODO lang "Remove" b
 		bRemove.setEnabled(false);
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -767,8 +769,9 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				}
 			}
 		});
+		
 		if (type == Editor.JOB) {
-			txtParameterDescription = new Text(Group, SWT.V_SCROLL | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
+			txtParameterDescription = JOE_T_ParameterForm_ParamDescription.Control(new Text(Group, SWT.V_SCROLL | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL));
 			final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 1);
 			gridData.minimumHeight = 100;
 			txtParameterDescription.setLayoutData(gridData);
@@ -779,27 +782,26 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			});
 			txtParameterDescription.setEditable(false);
 			txtParameterDescription.setBackground(SWTResourceManager.getColor(247, 247, 247));
+			
 			new Label(Group, SWT.NONE);
+			
 			tParaName.setFocus();
 		}
 	}
 
 	private void createEnvironment() {
-		environmentTabItem = new CTabItem(tabFolder, SWT.BORDER);
-		environmentTabItem.setText("Environment"); //TODO lang "Environment" t
+		environmentTabItem = JOE_TI_ParameterForm_TabItemEnvironment.Control(new CTabItem(tabFolder, SWT.BORDER));
+		
 		final Group group_2 = new Group(tabFolder, SWT.NONE);
 		final GridLayout gridLayout_1 = new GridLayout();
 		gridLayout_1.numColumns = 5;
 		group_2.setLayout(gridLayout_1);
 		environmentTabItem.setControl(group_2);
-		final Label nameLabel = new Label(group_2, SWT.NONE);
-		nameLabel.setText("Name: "); //TODO lang "Name: " l
-		txtEnvName = new Text(group_2, SWT.BORDER);
-		txtEnvName.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				txtEnvName.selectAll();
-			}
-		});
+		
+		@SuppressWarnings("unused")
+		final Label nameLabel = JOE_L_Name.Control(new Label(group_2, SWT.NONE));
+		
+		txtEnvName = JOE_T_ParameterForm_EnvName.Control(new Text(group_2, SWT.BORDER));
 		txtEnvName.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				butEnvApply.setEnabled(!txtEnvName.getText().trim().equals(""));
@@ -813,15 +815,11 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		});
 		final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		txtEnvName.setLayoutData(gridData_5);
-		final Label valueLabel = new Label(group_2, SWT.NONE);
+		
+		final Label valueLabel = JOE_L_ParameterForm_Value.Control(new Label(group_2, SWT.NONE));
 		valueLabel.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-		valueLabel.setText("Value: "); //TODO lang "Value" l
-		txtEnvValue = new Text(group_2, SWT.BORDER);
-		txtEnvValue.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				txtEnvValue.selectAll();
-			}
-		});
+		
+		txtEnvValue = JOE_T_ParameterForm_EnvValue.Control(new Text(group_2, SWT.BORDER));
 		txtEnvValue.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				butEnvApply.setEnabled(!txtEnvName.getText().trim().equals(""));
@@ -834,7 +832,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		txtEnvValue.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		butEnvApply = new Button(group_2, SWT.NONE);
+		
+		butEnvApply = JOE_B_ParameterForm_EnvApply.Control(new Button(group_2, SWT.NONE));
 		butEnvApply.setEnabled(false);
 		butEnvApply.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -843,11 +842,12 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		});
 		final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		butEnvApply.setLayoutData(gridData_6);
-		butEnvApply.setText("Apply"); //TODO lang "Apply" b
+		
 		label4_1 = new Label(group_2, SWT.HORIZONTAL | SWT.SEPARATOR);
 		label4_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1));
-		label4_1.setText("Label");
-		tableEnvironment = new Table(group_2, SWT.FULL_SELECTION | SWT.BORDER);
+//		label4_1.setText("Label");
+		
+		tableEnvironment = JOE_Tbl_ParameterForm_Environment.Control(new Table(group_2, SWT.FULL_SELECTION | SWT.BORDER));
 		tableEnvironment.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				TableItem item = (TableItem) e.item;
@@ -864,13 +864,14 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		tableEnvironment.setLinesVisible(true);
 		tableEnvironment.setHeaderVisible(true);
 		tableEnvironment.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2));
-		final TableColumn colEnvName = new TableColumn(tableEnvironment, SWT.NONE);
+		
+		final TableColumn colEnvName = JOE_TCl_ParameterForm_Name.Control(new TableColumn(tableEnvironment, SWT.NONE));
 		colEnvName.setWidth(250);
-		colEnvName.setText("Name"); //TODO lang "Name" tc
-		final TableColumn colEnvValue = new TableColumn(tableEnvironment, SWT.NONE);
+		
+		final TableColumn colEnvValue = JOE_TCl_ParameterForm_Value.Control(new TableColumn(tableEnvironment, SWT.NONE));
 		colEnvValue.setWidth(522);
-		colEnvValue.setText("Value"); //TODO lang "Value" tc
-		butNewEnvironment = new Button(group_2, SWT.NONE);
+
+		butNewEnvironment = JOE_B_ParameterForm_NewEnv.Control(new Button(group_2, SWT.NONE));
 		butNewEnvironment.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				txtEnvName.setText("");
@@ -881,8 +882,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		butNewEnvironment.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butNewEnvironment.setText("New"); //TODO lang "New" b
-		butEnvRemove = new Button(group_2, SWT.NONE);
+		
+		butEnvRemove = JOE_B_ParameterForm_RemoveEnv.Control(new Button(group_2, SWT.NONE));
 		butEnvRemove.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				int index = tableEnvironment.getSelectionIndex();
@@ -904,37 +905,29 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		});
 		final GridData gridData_3 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
 		butEnvRemove.setLayoutData(gridData_3);
-		butEnvRemove.setText("Remove"); //TODO lang "Remove" b
 		txtEnvName.setFocus();
 	}
 
-	private void createIncludes() {
-		final CTabItem includesTabItem = new CTabItem(tabFolder, SWT.BORDER);
-		includesTabItem.setText("Includes"); //TODO lang "Includes" ti
+	private void createIncludes() { 
+		final CTabItem includesTabItem = JOE_TI_ParameterForm_TabItemIncludes.Control(new CTabItem(tabFolder, SWT.BORDER));
 		final Group group_3 = new Group(tabFolder, SWT.NONE);
 		final GridLayout gridLayout_2 = new GridLayout();
 		gridLayout_2.numColumns = 5;
 		group_3.setLayout(gridLayout_2);
 		includesTabItem.setControl(group_3);
 		if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS) {
-			butIsLifeFile = new Button(group_3, SWT.CHECK);
+			butIsLifeFile = JOE_B_ParameterForm_LifeFile.Control(new Button(group_3, SWT.CHECK));
 			butIsLifeFile.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
 				}
 			});
-			butIsLifeFile.setText("from Hot Folder"); //TODO lang "from Hot Folder" b
 		}
 		else {
-			final Label lblNode_ = new Label(group_3, SWT.NONE);
-			lblNode_.setText("File:"); //TODO lang "File:" l
+			@SuppressWarnings("unused")
+			final Label lblNode_ = JOE_L_ParameterForm_File.Control(new Label(group_3, SWT.NONE));
 		}
-		txtIncludeFilename = new Text(group_3, SWT.BORDER);
-		txtIncludeFilename.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				txtIncludeFilename.selectAll();
-			}
-		});
+		txtIncludeFilename = JOE_T_ParameterForm_IncludeFilename.Control(new Text(group_3, SWT.BORDER));
 		txtIncludeFilename.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
@@ -949,14 +942,11 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		txtIncludeFilename.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		final Label lblNode = new Label(group_3, SWT.NONE);
-		lblNode.setText("Node:"); //TODO lang "Node:" l
-		txtIncludeNode = new Text(group_3, SWT.BORDER);
-		txtIncludeNode.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				txtIncludeNode.selectAll();
-			}
-		});
+		
+		@SuppressWarnings("unused")
+		final Label lblNode = JOE_L_ParameterForm_Node.Control(new Label(group_3, SWT.NONE));
+		
+		txtIncludeNode = JOE_T_ParameterForm_IncludeNode.Control(new Text(group_3, SWT.BORDER));
 		txtIncludeNode.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
@@ -971,7 +961,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		txtIncludeNode.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		butIncludesApply = new Button(group_3, SWT.NONE);
+		
+		butIncludesApply = JOE_B_ParameterForm_IncludesApply.Control(new Button(group_3, SWT.NONE));
 		butIncludesApply.setEnabled(false);
 		butIncludesApply.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -979,11 +970,12 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		butIncludesApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butIncludesApply.setText("Apply"); //TODO lang "Apply" b
+		
 		label4_3 = new Label(group_3, SWT.HORIZONTAL | SWT.SEPARATOR);
 		label4_3.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1));
-		label4_3.setText("Label");
-		tableIncludeParams = new Table(group_3, SWT.FULL_SELECTION | SWT.BORDER);
+//		label4_3.setText("Label");
+		
+		tableIncludeParams = JOE_Tbl_ParameterForm_IncludeParams.Control(new Table(group_3, SWT.FULL_SELECTION | SWT.BORDER));
 		tableIncludeParams.addMouseListener(new MouseAdapter() {
 			public void mouseDoubleClick(final MouseEvent e) {
 				if (!isRemoteConnection)
@@ -1011,20 +1003,21 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		tableIncludeParams.setLinesVisible(true);
 		tableIncludeParams.setHeaderVisible(true);
 		tableIncludeParams.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 3));
-		final TableColumn colParamColums = new TableColumn(tableIncludeParams, SWT.NONE);
+		
+		final TableColumn colParamColums = JOE_TCl_ParameterForm_File.Control(new TableColumn(tableIncludeParams, SWT.NONE));
 		colParamColums.setWidth(250);
-		colParamColums.setText("File"); //TODO lang "File" tc
-		final TableColumn newColumnTableColumn_1 = new TableColumn(tableIncludeParams, SWT.NONE);
+		
+		final TableColumn newColumnTableColumn_1 = JOE_TCl_ParameterForm_Node.Control(new TableColumn(tableIncludeParams, SWT.NONE));
 		newColumnTableColumn_1.setWidth(400);
-		newColumnTableColumn_1.setText("Node"); //TODO lang "Node" tc
-		final TableColumn newColumnTableColumn = new TableColumn(tableIncludeParams, SWT.NONE);
+		
+		final TableColumn newColumnTableColumn = JOE_TCl_ParameterForm_LiveFile.Control(new TableColumn(tableIncludeParams, SWT.NONE));
 		newColumnTableColumn.setWidth(100);
-		newColumnTableColumn.setText("File/Live_File"); //TODO lang "File/Live File" tc
+		
 		if (type != Editor.JOB && type != Editor.COMMANDS && type != Editor.JOB_COMMANDS) {
 			newColumnTableColumn.setWidth(200);
 			newColumnTableColumn.setResizable(false);
 		}
-		butNewIncludes = new Button(group_3, SWT.NONE);
+		butNewIncludes = JOE_B_ParameterForm_NewIncludes.Control(new Button(group_3, SWT.NONE));
 		butNewIncludes.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				tableIncludeParams.deselectAll();
@@ -1039,8 +1032,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		butNewIncludes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butNewIncludes.setText("New"); //TODO lang "New" b
-		butOpenInclude = new Button(group_3, SWT.NONE);
+		
+		butOpenInclude = JOE_B_ParameterForm_OpenInclude.Control(new Button(group_3, SWT.NONE));
 		butOpenInclude.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				createParameterTabItem();
@@ -1048,8 +1041,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		});
 		butOpenInclude.setEnabled(false);
 		butOpenInclude.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butOpenInclude.setText("Open"); //TODO lang "Open" b
-		butRemoveInclude = new Button(group_3, SWT.NONE);
+		
+		butRemoveInclude = JOE_B_ParameterForm_RemoveInclude.Control(new Button(group_3, SWT.NONE));
 		butRemoveInclude.setEnabled(false);
 		butRemoveInclude.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -1070,7 +1063,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		butRemoveInclude.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		butRemoveInclude.setText("Remove"); //TODO lang "Remove" b
+		
 		tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
 			public void close(final CTabFolderEvent e) {
 				if (e.item.equals(parameterTabItem) || e.item.equals(environmentTabItem) || e.item.equals(includesTabItem)) {
@@ -1084,22 +1077,18 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 
 	public void createJobCommandParameter() {
 		// parameterJobCmdTabItem = new CTabItem(tabFolder, SWT.BORDER | SWT.CLOSE);
-		parameterJobCmdTabItem = new CTabItem(tabFolder, SWT.BORDER);
-		parameterJobCmdTabItem.setText("Parameter"); //TODO lang "Parameter" ti
+		parameterJobCmdTabItem = JOE_TI_ParameterForm_Parameter.Control(new CTabItem(tabFolder, SWT.BORDER));
+
 		group = new Group(tabFolder, SWT.NONE);
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 6;
 		group.setLayout(gridLayout);
 		parameterJobCmdTabItem.setControl(group);
-		label2 = new Label(group, SWT.NONE);
+		
+		label2 = JOE_L_Name.Control(new Label(group, SWT.NONE));
 		label2.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		label2.setText("Name: "); //TODO lang "Name:" l
-		tParaName = new Text(group, SWT.BORDER);
-		tParaName.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tParaName.selectAll();
-			}
-		});
+		
+		tParaName = JOE_T_ParameterForm_ParaName.Control(new Text(group, SWT.BORDER));
 		final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_9.widthHint = 200;
 		tParaName.setLayoutData(gridData_9);
@@ -1122,9 +1111,10 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				}
 			}
 		});
-		label6 = new Label(group, SWT.NONE);
+		
+		label6 = JOE_L_Value.Control(new Label(group, SWT.NONE));
 		label6.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		label6.setText("Value: "); //TODO lang "Value:" l
+		
 		final Composite composite = new Composite(group, SWT.NONE);
 		composite.addControlListener(new ControlAdapter() {
 			public void controlResized(final ControlEvent e) {
@@ -1133,6 +1123,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
+		
 		cSource = new Combo(composite, SWT.READ_ONLY);
 		cSource.setItems(new String[] { "order", "task" });
 		cSource.setBounds(0, 0, 250, 21);
@@ -1142,12 +1133,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		cSource.setVisible(false);
-		tParaValue = new Text(composite, SWT.BORDER);
-		tParaValue.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tParaValue.selectAll();
-			}
-		});
+		
+		tParaValue = JOE_T_ParameterForm_ParaValue.Control(new Text(composite, SWT.BORDER));
 		tParaValue.setBounds(0, 0, 250, 21);
 		tParaValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
 			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
@@ -1160,7 +1147,8 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				bApply.setEnabled(!tParaName.getText().equals(""));
 			}
 		});
-		final Button button = new Button(group, SWT.NONE);
+		
+		final Button button = JOE_B_ParameterForm_Comment.Control(new Button(group, SWT.NONE));
 		final GridData gridDatax = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
 		gridDatax.widthHint = 28;
 		button.setLayoutData(gridDatax);
@@ -1172,16 +1160,17 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
-		bApply = new Button(group, SWT.NONE);
+		
+		bApply = JOE_B_ParameterForm_Apply.Control(new Button(group, SWT.NONE));
 		final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		bApply.setLayoutData(gridData_5);
-		bApply.setText("&Apply"); //TODO lang "&Apply" b
 		bApply.setEnabled(false);
 		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				addParam();
 			}
 		});
+		
 		tParameter = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
 		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, false, true, 5, 5);
 		gridData_3.widthHint = 342;
@@ -1210,13 +1199,13 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				*/
 			}
 		});
-		TableColumn tcName = new TableColumn(tParameter, SWT.NONE);
+		TableColumn tcName = JOE_TCl_ParameterForm_Name.Control(new TableColumn(tParameter, SWT.NONE));
 		tcName.setWidth(252);
-		tcName.setText("Name"); //TODO lang "Name" tc
-		TableColumn tcValue = new TableColumn(tParameter, SWT.NONE);
+
+		TableColumn tcValue = JOE_TCl_ParameterForm_Value.Control(new TableColumn(tParameter, SWT.NONE));
 		tcValue.setWidth(500);
-		tcValue.setText("Value"); //TODO lang "Value" tc
-		butNewParam = new Button(group, SWT.NONE);
+
+		butNewParam = JOE_B_ParameterForm_NewParam.Control(new Button(group, SWT.NONE));
 		butNewParam.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText("");
@@ -1227,22 +1216,23 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		butNewParam.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		butNewParam.setText("New"); //TODO lang "New" b
+		
 		final Composite composite_2 = new Composite(group, SWT.NONE);
 		final GridData gridData_2_1 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
 		gridData_2_1.heightHint = 67;
 		composite_2.setLayoutData(gridData_2_1);
 		composite_2.setLayout(new GridLayout());
-		butUp_1 = new Button(composite_2, SWT.NONE);
+		
+		butUp_1 = JOE_B_Up.Control(new Button(composite_2, SWT.NONE));
 		butUp_1.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				listener.changeUp(tParameter);
 			}
 		});
 		butUp_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		// butUp_1.setText("Up");
 		butUp_1.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
-		butDown_1 = new Button(composite_2, SWT.NONE);
+		
+		butDown_1 = JOE_B_Down.Control(new Button(composite_2, SWT.NONE));
 		butDown_1.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				listener.changeDown(tParameter);
@@ -1250,18 +1240,17 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 		});
 		butDown_1.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
 		butDown_1.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
-		butImport_1 = new Button(group, SWT.NONE);
+		
+		butImport_1 = JOE_B_ParameterForm_Wizard.Control(new Button(group, SWT.NONE));
 		butImport_1.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				startWizzard();
 			}
 		});
 		butImport_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		// butImport_1.setText("Import");
-		butImport_1.setText(WIZARD);
-		bRemove = new Button(group, SWT.NONE);
+		
+		bRemove = JOE_B_ParameterForm_Remove.Control(new Button(group, SWT.NONE));
 		bRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-		bRemove.setText("Remove"); //TODO lang "Remove" b
 		bRemove.setEnabled(false);
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -1282,12 +1271,14 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 				}
 			}
 		});
+		
 		final Composite composite_1 = new Composite(group, SWT.NONE);
 		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, false, true);
 		gridData.widthHint = 87;
 		composite_1.setLayoutData(gridData);
 		composite_1.setLayout(new GridLayout());
-		final Button paramButton = new Button(composite_1, SWT.RADIO);
+		
+		final Button paramButton = JOE_B_ParameterForm_Param.Control(new Button(composite_1, SWT.RADIO));
 		paramButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		paramButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -1297,28 +1288,27 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 			}
 		});
 		paramButton.setSelection(true);
-		paramButton.setText("Parameter"); //TODO lang "Parameter" b
-		final Button fromTaskButton = new Button(composite_1, SWT.RADIO);
+		
+		final Button fromTaskButton = JOE_B_ParameterForm_FromTask.Control(new Button(composite_1, SWT.RADIO));
 		fromTaskButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		fromTaskButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				tParaName.setText("<from>"); //TODO lang "<from>" 
-				cSource.setText("task"); //TODO lang "task"
+				tParaName.setText(JOE_M_ParameterForm_From.label());
+				cSource.setText(JOE_M_ParameterForm_Task.label());
 				bApply.setFocus();
 			}
 		});
-		fromTaskButton.setText("from task"); //TODO lang "from task" b
-		final Button fromOrderButton = new Button(composite_1, SWT.RADIO);
+		
+		final Button fromOrderButton = JOE_B_ParameterForm_FromOrder.Control(new Button(composite_1, SWT.RADIO));
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
 		fromOrderButton.setLayoutData(gridData_2);
 		fromOrderButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				tParaName.setText("<from>"); //TODO lang "<from>"
-				cSource.setText("order"); //TODO lang "order"
+				tParaName.setText(JOE_M_ParameterForm_From.label());
+				cSource.setText(JOE_M_ParameterForm_Order.label());
 				bApply.setFocus();
 			}
 		});
-		fromOrderButton.setText("from order"); //TODO lang "from order" b
 	}
 
 	private void getDescription() {
@@ -1330,38 +1320,7 @@ public class ParameterForm extends Composite implements IUnsaved, IUpdateLanguag
 	}
 
 	public void setToolTipText() {
-		tParaName.setToolTipText(Messages.getTooltip("job.param.name"));
-		tParaValue.setToolTipText(Messages.getTooltip("job.param.value"));
-		bRemove.setToolTipText(Messages.getTooltip("job.param.btn_remove"));
-		bApply.setToolTipText(Messages.getTooltip("job.param.btn_add"));
-		tParameter.setToolTipText(Messages.getTooltip("job.param.table"));
-		butNewParam.setToolTipText(Messages.getTooltip("job.param.new"));
-		if (butDown != null)
-			butDown.setToolTipText(Messages.getTooltip("button_down"));
-		if (butUp != null)
-			butUp.setToolTipText(Messages.getTooltip("button_up"));
-		if (txtParameterDescription != null) {
-			txtParameterDescription.setToolTipText(Messages.getTooltip("job.param.description"));
-		}
-		if (txtEnvName != null) {
-			tableEnvironment.setToolTipText(Messages.getTooltip("job.environment.table"));
-			txtEnvName.setToolTipText(Messages.getTooltip("job.environment.name"));
-			txtEnvValue.setToolTipText(Messages.getTooltip("job.environment.value"));
-			butEnvApply.setToolTipText(Messages.getTooltip("job.environment.btn_apply"));
-			butEnvRemove.setToolTipText(Messages.getTooltip("job.environment.btn_remove"));
-			butNewEnvironment.setToolTipText(Messages.getTooltip("job.environment.new"));
-		}
-		if (txtIncludeFilename != null) {
-			txtIncludeFilename.setToolTipText(Messages.getTooltip("parameter.includefile.name"));
-			txtIncludeNode.setToolTipText(Messages.getTooltip("parameter.includenode.name"));
-			tableIncludeParams.setToolTipText(Messages.getTooltip("parameter.include.table.name"));
-			butIncludesApply.setToolTipText(Messages.getTooltip("parameter.include.but_apply.name"));
-			butRemoveInclude.setToolTipText(Messages.getTooltip("parameter.include.but_remove.name"));
-			butOpenInclude.setToolTipText(Messages.getTooltip("parameter.includetable_open.name"));
-			butNewIncludes.setToolTipText(Messages.getTooltip("parameter.includetable_new.name"));
-			if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
-				butIsLifeFile.setToolTipText(Messages.getTooltip("is_live_file"));
-		}
+//
 	}
 
 	private void setParams(TableItem item) {

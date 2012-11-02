@@ -28,7 +28,6 @@ import org.jdom.JDOMException;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
@@ -46,6 +45,7 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 
 	private BaseListener		listener				= null;
 	private Group				group					= null;
+	@SuppressWarnings("unused")
 	private Label				label1					= null;
 	private Text				tFile					= null;
 	private Button				bApply					= null;
@@ -115,7 +115,6 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 		group.setLayout(gridLayout);
 
 		label1 = JOE_L_BaseForm_BaseFile.Control(new Label(group, SWT.NONE));
-//		label1.setText(Messages.getLabel("BaseFile"));
 		
 		tFile = JOE_T_BaseForm_BaseFile.Control(new Text(group, SWT.BORDER));
 

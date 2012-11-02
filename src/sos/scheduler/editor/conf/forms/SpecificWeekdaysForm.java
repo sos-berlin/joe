@@ -14,12 +14,14 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.listeners.DaysListener;
 import sos.scheduler.editor.conf.listeners.SpecificWeekdaysListener;
 
-public class SpecificWeekdaysForm extends Composite implements IUpdateLanguage {
+public class SpecificWeekdaysForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	
 	
     private SpecificWeekdaysListener     listener        = null;
@@ -75,19 +77,18 @@ public class SpecificWeekdaysForm extends Composite implements IUpdateLanguage {
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 3;
-        group = new Group(this, SWT.NONE);
-        group.setText("Monthdays");
+        
+        group = JOE_G_SpecificWeekdaysForm_Monthdays.Control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout);
  
 
         createCombo();
+        
         GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData2.widthHint = 90;
-        bAdd = new Button(group, SWT.NONE);
-        bAdd.setText("Add Weekday");
+        bAdd = JOE_B_SpecificWeekdaysForm_AddWeekday.Control(new Button(group, SWT.NONE));
         bAdd.setLayoutData(gridData2);
         getShell().setDefaultButton(bAdd);
-
         bAdd.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 listener.addDay(cWeekdays.getText() ,cWeekdayNumber.getText());
@@ -96,22 +97,22 @@ public class SpecificWeekdaysForm extends Composite implements IUpdateLanguage {
                 String s = cWeekdayNumber.getText() + "." + cWeekdays.getText();
                 if (lUsedDays.indexOf(s) == -1) lUsedDays.add(s);
                 bRemove.setEnabled(lUsedDays.getSelectionCount() > 0);
-
             }
         });
 
         label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label2.setText("Label");
+//      label2.setText("Label");
         label2.setLayoutData(gridData5);
-        lUsedDays = new List(group, SWT.BORDER);
+        
+        lUsedDays = JOE_Lst_SpecificWeekdaysForm_UsedDays.Control(new List(group, SWT.BORDER));
         lUsedDays.setLayoutData(gridData);
         lUsedDays.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 bRemove.setEnabled(lUsedDays.getSelectionCount() > 0);
             }
         });
-        bRemove = new Button(group, SWT.NONE);
-        bRemove.setText("Remove Weekday");
+        
+        bRemove = JOE_B_SpecificWeekdaysForm_RemoveWeekday.Control(new Button(group, SWT.NONE));
         bRemove.setEnabled(false);
         bRemove.setLayoutData(gridData3);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -121,7 +122,6 @@ public class SpecificWeekdaysForm extends Composite implements IUpdateLanguage {
                 lUsedDays.remove(lUsedDays.getSelectionIndex());
                 _main.updateSpecificWeekdays();
                 bRemove.setEnabled(lUsedDays.getSelectionCount() > 0);
-
             }
         });
     }
@@ -134,14 +134,17 @@ public class SpecificWeekdaysForm extends Composite implements IUpdateLanguage {
         GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
         gridData4.widthHint = 300;
 
-        cWeekdayNumber = new Combo(group, SWT.NONE);
+        cWeekdayNumber = JOE_Cbo_SpecificWeekdaysForm_Daynames.Control(new Combo(group, SWT.NONE));
         cWeekdayNumber.setItems(SpecificWeekdaysListener._daynames);
         cWeekdayNumber.setVisibleItemCount(8);
         cWeekdayNumber.select(0);
         cWeekdayNumber.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        cWeekdays = new Combo(group, SWT.READ_ONLY);
-        cWeekdays.setItems(new String[] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"});
-        cWeekdays.setText("Monday");
+        
+//        String[] strWeekdays = JOE_M_SpecificWeekdaysForm_Weekdays.label().split(";");
+        String[] strWeekdays = DaysListener.getWeekdays();
+        cWeekdays = JOE_Cbo_SpecificWeekdaysForm_Weekdays.Control(new Combo(group, SWT.READ_ONLY));
+        cWeekdays.setItems(strWeekdays);
+        cWeekdays.setText(strWeekdays[0]);
         cWeekdays.setVisibleItemCount(7);
         cWeekdays.setLayoutData(gridData4);
     }
@@ -150,11 +153,7 @@ public class SpecificWeekdaysForm extends Composite implements IUpdateLanguage {
 
 
     public void setToolTipText() {
-        bAdd.setToolTipText(Messages.getTooltip("days.btn_add"));
-        lUsedDays.setToolTipText(Messages.getTooltip("days.used_days"));
-        bRemove.setToolTipText(Messages.getTooltip("days.btn_remove"));
-        cWeekdays.setToolTipText(Messages.getTooltip("days.unused_days"));
-
+//
     }
 
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -4,8 +4,6 @@ import java.text.Collator;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
@@ -20,6 +18,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.listeners.JobOptionsListener;
@@ -34,13 +33,17 @@ public class JobSetback extends FormBaseClass {
 
     private Group              group              = null;
 
-    private Label              label2             = null;
-    private Label              label7             = null;
-    private Label              label9             = null;
+    @SuppressWarnings("unused")
+	private Label              label2             = null;
+    @SuppressWarnings("unused")
+	private Label              label7             = null;
+    @SuppressWarnings("unused")
+	private Label              label9             = null;
     private Button             bNewSetback        = null;
     private Label              label30            = null;
     private Label              label31            = null;
-    private Label              label10            = null;
+    @SuppressWarnings("unused")
+	private Label              label10            = null;
 
     private Table              tSetback           = null;
     private Text               sSetBackCount      = null;
@@ -96,77 +99,71 @@ public class JobSetback extends FormBaseClass {
         gridData2.grabExcessHorizontalSpace = true;
         gridData2.grabExcessVerticalSpace = true;
         gridData2.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-        group = new Group(objParent, SWT.NONE);
-        group.setText("Delay Order After Set Back"); //TODO lang "Delay Order After Set Back"
+        
+        group = SOSJOEMessageCodes.JOE_G_JobOptionsForm_DelayOrderAfterSetBack.Control(new Group(objParent, SWT.NONE));
         group.setLayout(gridLayout2);
         group.setLayoutData(gridData2);
-        label2 = new Label(group, SWT.NONE);
-        label2.setText("Set Back Count:"); //TODO lang "Set Back Count:"
-        sSetBackCount = new Text(group, SWT.BORDER);
-        sSetBackCount.addFocusListener(new FocusAdapter() {
-            public void focusGained(final FocusEvent e) {
-                sSetBackCount.selectAll();
-            }
-        });
+        
+        label2 = SOSJOEMessageCodes.JOE_L_JobOptionsForm_SetBackCount.Control(new Label(group, SWT.NONE));
+
+        sSetBackCount = SOSJOEMessageCodes.JOE_T_JobOptionsForm_SetBackCount.Control(new Text(group, SWT.BORDER));
         sSetBackCount.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
         sSetBackCount.setLayoutData(new GridData(48, SWT.DEFAULT));
-        bIsMaximum = new Button(group, SWT.CHECK);
-
-        final Label delayLabel = new Label(group, SWT.NONE);
-        delayLabel.setText("Delay:"); //TODO lang "Delay:"
-        sSetBackHours = new Text(group, SWT.BORDER);
-        sSetBackHours.addFocusListener(new FocusAdapter() {
-            public void focusGained(final FocusEvent e) {
-                sSetBackHours.selectAll();
+        
+        bIsMaximum = SOSJOEMessageCodes.JOE_B_JobOptionsForm_IsMax.Control(new Button(group, SWT.CHECK));
+        bIsMaximum.setLayoutData(gridData6);
+        bIsMaximum.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                getShell().setDefaultButton(bApplySetback);
+                /*sSetBackHours.setEnabled(!bIsMaximum.getSelection());
+                sSetBackMinutes.setEnabled(!bIsMaximum.getSelection());
+                sSetBackSeconds.setEnabled(!bIsMaximum.getSelection());
+                */
+                bApplySetback.setEnabled(true);
             }
         });
+
+        @SuppressWarnings("unused")
+		final Label delayLabel = SOSJOEMessageCodes.JOE_L_JobOptionsForm_Delay.Control(new Label(group, SWT.NONE));
+
+        sSetBackHours = SOSJOEMessageCodes.JOE_T_JobOptionsForm_SetBackHours.Control(new Text(group, SWT.BORDER));
         sSetBackHours.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
-        label7 = new Label(group, SWT.NONE);
-        label7.setText(":");
+        
+        label7 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(group, SWT.NONE));
+
         sSetBackCount.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 getShell().setDefaultButton(bApplySetback);
                 bApplySetback.setEnabled(true);
             }
         });
-        bIsMaximum.setText("Max"); //TODO lang "Max"
-        bIsMaximum.setLayoutData(gridData6);
-        sSetBackMinutes = new Text(group, SWT.BORDER);
-        sSetBackMinutes.addFocusListener(new FocusAdapter() {
-            public void focusGained(final FocusEvent e) {
-                sSetBackMinutes.selectAll();
-            }
-        });
+        
+        sSetBackMinutes = SOSJOEMessageCodes.JOE_T_JobOptionsForm_SetBackMinutes.Control(new Text(group, SWT.BORDER));
         sSetBackMinutes.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
-        label9 = new Label(group, SWT.NONE);
-        label9.setText(":");
-        sSetBackSeconds = new Text(group, SWT.BORDER);
-        sSetBackSeconds.addFocusListener(new FocusAdapter() {
-            public void focusGained(final FocusEvent e) {
-                sSetBackSeconds.selectAll();
-            }
-        });
+        label9 = SOSJOEMessageCodes.JOE_L_Colon.Control(new Label(group, SWT.NONE));
+
+        sSetBackSeconds = SOSJOEMessageCodes.JOE_T_JobOptionsForm_SetBackMinutes.Control(new Text(group, SWT.BORDER));
         sSetBackSeconds.addVerifyListener(new VerifyListener() {
             public void verifyText(final VerifyEvent e) {
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
-        label10 = new Label(group, SWT.NONE);
-        label10.setText("[hh:mm:]ss"); //TODO lang "[hh:mm:]ss"
-        bApplySetback = new Button(group, SWT.NONE);
-        bApplySetback.setText("Apply Delay"); //TODO lang "Apply Delay"
+        
+        label10 = SOSJOEMessageCodes.JOE_L_JobSetback_TimeFormat.Control(new Label(group, SWT.NONE));
+
+        bApplySetback = SOSJOEMessageCodes.JOE_B_JobOptionsForm_ApplyDelay.Control(new Button(group, SWT.NONE));
         bApplySetback.setEnabled(false);
         bApplySetback.setLayoutData(gridData29);
         bApplySetback.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -174,12 +171,14 @@ public class JobSetback extends FormBaseClass {
                 applySetback();
             }
         });
+        
         label31 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label31.setText("Label"); //TODO lang "Label"
+//        label31.setText("Label");
         label31.setLayoutData(gridData25);
+        
         createTable();
-        bNewSetback = new Button(group, SWT.NONE);
-        bNewSetback.setText("New Delay"); //TODO lang "New Delay"
+        
+        bNewSetback = SOSJOEMessageCodes.JOE_B_JobOptionsForm_NewSetBack.Control(new Button(group, SWT.NONE));
         bNewSetback.setEnabled(true);
         bNewSetback.setLayoutData(gridData28);
         bNewSetback.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -192,11 +191,12 @@ public class JobSetback extends FormBaseClass {
                 sSetBackCount.setFocus();
             }
         });
+        
         label30 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label30.setText("Label"); //TODO lang "Label"
+//        label30.setText("Label");
         label30.setLayoutData(gridData26);
-        bRemoveSetback = new Button(group, SWT.NONE);
-        bRemoveSetback.setText("Remove Delay"); //TODO lang "Remove Delay"
+        
+        bRemoveSetback = SOSJOEMessageCodes.JOE_B_JobOptionsForm_RemoveSetback.Control(new Button(group, SWT.NONE));
         bRemoveSetback.setEnabled(false);
         bRemoveSetback.setLayoutData(gridData27);
         bRemoveSetback.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -217,16 +217,6 @@ public class JobSetback extends FormBaseClass {
                         bRemoveSetback.setEnabled(false);
                     }
                 }
-            }
-        });
-        bIsMaximum.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                getShell().setDefaultButton(bApplySetback);
-                /*sSetBackHours.setEnabled(!bIsMaximum.getSelection());
-                sSetBackMinutes.setEnabled(!bIsMaximum.getSelection());
-                sSetBackSeconds.setEnabled(!bIsMaximum.getSelection());
-                */
-                bApplySetback.setEnabled(true);
             }
         });
 
@@ -264,7 +254,7 @@ public class JobSetback extends FormBaseClass {
     }
 
     private void createTable() {
-        tSetback = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
+        tSetback = SOSJOEMessageCodes.JOE_Tbl_JobOptionsForm_ErrorDelay.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
         tSetback.setSortDirection(SWT.UP);
         tSetback.setHeaderVisible(true);
         tSetback.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 10, 3));
@@ -281,17 +271,16 @@ public class JobSetback extends FormBaseClass {
                 bRemoveSetback.setEnabled(tSetback.getSelectionCount() > 0);
             }
         });
-        TableColumn tableColumn2 = new TableColumn(tSetback, SWT.NONE);
+        
+        TableColumn tableColumn2 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_SetBackCount.Control(new TableColumn(tSetback, SWT.NONE));
         tSetback.setSortColumn(tableColumn2);
         tableColumn2.setWidth(150);
-        tableColumn2.setText("Set Back Count"); //TODO lang "Set Back Count"
-        TableColumn tableColumn3 = new TableColumn(tSetback, SWT.NONE);
+        
+        TableColumn tableColumn3 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_IsMax.Control(new TableColumn(tSetback, SWT.NONE));
         tableColumn3.setWidth(80);
-        tableColumn3.setText("Is Maximum"); //TODO lang "Is Maximum"
-        TableColumn tableColumn4 = new TableColumn(tSetback, SWT.NONE);
+        
+        TableColumn tableColumn4 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Delayhhmmss.Control(new TableColumn(tSetback, SWT.NONE));
         tableColumn4.setWidth(250);
-        tableColumn4.setText("Delay [hh:mm:]ss"); //TODO lang "Delay [hh:mm:]ss"
-
     }
 
     private void initSetback(boolean enabled) {
@@ -356,7 +345,7 @@ public class JobSetback extends FormBaseClass {
         TableItem[] setback = tSetback.getItems();
 
         if (sSetBackCount.getText().equals("0"))
-            MainWindow.message("0 is not allowed", SWT.ICON_INFORMATION);
+            MainWindow.message(SOSJOEMessageCodes.JOE_M_ZeroNotAllowed.label(), SWT.ICON_INFORMATION);
         else {
 
             for (int i = 0; i < setback.length; i++) {
@@ -397,22 +386,22 @@ public class JobSetback extends FormBaseClass {
             }
 
             if (maximum > 1) {
-                MainWindow.message("Only one item can be set as maximum", SWT.ICON_INFORMATION);
+                MainWindow.message(SOSJOEMessageCodes.JOE_M_0032.label(), SWT.ICON_INFORMATION);
                 sSetBackCount.setFocus();
             }
             else {
                 if (found) {
-                    MainWindow.message("Setback-count already defined", SWT.ICON_INFORMATION);
+                    MainWindow.message(SOSJOEMessageCodes.JOE_M_0033.label(), SWT.ICON_INFORMATION);
                     sSetBackCount.setFocus();
                 }
                 else {
                     if (sSetBackCount.getText().equals("")) {
-                        MainWindow.message("Setback-count must not be empty", SWT.ICON_INFORMATION);
+                        MainWindow.message(SOSJOEMessageCodes.JOE_M_0034.label(), SWT.ICON_INFORMATION);
                         sSetBackCount.setFocus();
                     }
                     else {
                         if (maximumMax > 0 && maximumMax < Utils.str2int(sSetBackCount.getText()) || maxSetback > Utils.str2int(sSetBackCount.getText()) && bIsMaximum.getSelection()) {
-                            MainWindow.message("Setback-count with maximum=yes must be highest setback-count in list", SWT.ICON_INFORMATION);
+                            MainWindow.message(SOSJOEMessageCodes.JOE_M_0035.label(), SWT.ICON_INFORMATION);
                             sSetBackCount.setFocus();
                         }
                         else {

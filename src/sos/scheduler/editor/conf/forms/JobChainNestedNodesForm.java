@@ -408,7 +408,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
 		gridLayout_5.numColumns = 3;
 		composite_1.setLayout(gridLayout_5);
 
-		butUp = JOE_B_JCNestedNodesForm_Up.Control(new Button(composite_1, SWT.NONE));
+		butUp = JOE_B_Up.Control(new Button(composite_1, SWT.NONE));
 		butUp.setLayoutData(new GridData());
 		butUp.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -434,7 +434,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
 
 		butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
 
-		butDown = JOE_B_JCNestedNodesForm_Down.Control(new Button(composite_1, SWT.NONE));
+		butDown = JOE_B_Down.Control(new Button(composite_1, SWT.NONE));
 		butDown.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if (tNodes.getSelectionCount() > 0) {

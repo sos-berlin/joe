@@ -22,12 +22,13 @@ import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.WebserviceListener;
 
-public class WebserviceForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
 	private WebserviceListener	listener	= null;
 
@@ -109,25 +110,25 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 	private void createGroup() {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
-		group_1 = new Group(this, SWT.NONE);
-		group_1.setText("Web Services");
-		createGroup1();
-		bApply = new Button(group_1, SWT.NONE);
-		new Label(group_1, SWT.NONE);
-		new Label(group_1, SWT.NONE);
-		createTable();
+		group_1 = JOE_G_WeberviceForm_WebServices.Control(new Group(this, SWT.NONE));
 		group_1.setLayout(gridLayout);
-		bApply.setText("&Apply Web Service");
+
+		createGroup1();
+		
+		bApply = JOE_B_WebserviceForm_Apply.Control(new Button(group_1, SWT.NONE));
 		bApply.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		bApply.setEnabled(false);
 		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-
 				applyService();
-
 			}
 		});
-
+		
+		new Label(group_1, SWT.NONE);
+		new Label(group_1, SWT.NONE);
+		
+		createTable();
+		
 		new Label(group_1, SWT.NONE);
 	}
 
@@ -167,17 +168,14 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 		gridData6.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		GridLayout gridLayout1 = new GridLayout();
 		gridLayout1.numColumns = 6;
+		
 		gWebService = new Composite(group_1, SWT.NONE);
 		gWebService.setLayout(gridLayout1);
 		gWebService.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false, 1, 3));
-		label = new Label(gWebService, SWT.NONE);
-		label.setText("Name:");
-		tName = new Text(gWebService, SWT.BORDER);
-		tName.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tName.selectAll();
-			}
-		});
+		
+		label = JOE_L_Name.Control(new Label(gWebService, SWT.NONE));
+		
+		tName = JOE_T_WebserviceForm_Name.Control(new Text(gWebService, SWT.BORDER));
 		tName.setLayoutData(gridData9);
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -200,14 +198,10 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 
 			}
 		});
-		label1 = new Label(gWebService, SWT.NONE);
-		label1.setText("URL:");
-		tURL = new Text(gWebService, SWT.BORDER);
-		tURL.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tURL.selectAll();
-			}
-		});
+		
+		label1 = JOE_L_WebserviceForm_URL.Control(new Label(gWebService, SWT.NONE));
+		
+		tURL = JOE_T_WebserviceForm_URL.Control(new Text(gWebService, SWT.BORDER));
 		tURL.addSelectionListener(new SelectionAdapter() {
 			public void widgetDefaultSelected(final SelectionEvent e) {
 			}
@@ -229,9 +223,10 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 				bApply.setEnabled(valid);
 			}
 		});
-		label2 = new Label(gWebService, SWT.NONE);
-		label2.setText("Job Chain:");
-		cChain = new CCombo(gWebService, SWT.BORDER);
+		
+		label2 = JOE_L_WebserviceForm_JobChain.Control(new Label(gWebService, SWT.NONE));
+		
+		cChain = JOE_Cbo_WebserviceForm_JobChain.Control(new CCombo(gWebService, SWT.BORDER));
 		cChain.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 			}
@@ -253,14 +248,10 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 				*/
 			}
 		});
-		label3 = new Label(gWebService, SWT.NONE);
-		label3.setText("Timeout:");
-		sTimeout = new Text(gWebService, SWT.BORDER);
-		sTimeout.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				sTimeout.selectAll();
-			}
-		});
+		
+		label3 = JOE_L_WebserviceForm_Timeout.Control(new Label(gWebService, SWT.NONE));
+		
+		sTimeout = JOE_T_WebserviceForm_Timeout.Control(new Text(gWebService, SWT.BORDER));
 		sTimeout.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
@@ -276,9 +267,10 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 				bApply.setEnabled(valid);
 			}
 		});
-		label5 = new Label(gWebService, SWT.NONE);
-		label5.setText("Debug:");
-		bDebug = new Button(gWebService, SWT.CHECK);
+		
+		label5 = JOE_L_WebserviceForm_Debug.Control(new Label(gWebService, SWT.NONE));
+		
+		bDebug = JOE_B_WebserviceForm_Debug.Control(new Button(gWebService, SWT.CHECK));
 		bDebug.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				boolean valid = (!tName.getText().equals(""));
@@ -288,14 +280,10 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 				bApply.setEnabled(valid);
 			}
 		});
-		label7 = new Label(gWebService, SWT.NONE);
-		label7.setText("Request XSLT:");
-		tRequest = new Text(gWebService, SWT.BORDER);
-		tRequest.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tRequest.selectAll();
-			}
-		});
+		
+		label7 = JOE_L_WebserviceForm_RequestXSLT.Control(new Label(gWebService, SWT.NONE));
+
+		tRequest = JOE_T_WebserviceForm_RequestXSLT.Control(new Text(gWebService, SWT.BORDER));
 		tRequest.setLayoutData(gridData8);
 		tRequest.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -309,14 +297,10 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 				*/
 			}
 		});
-		label19 = new Label(gWebService, SWT.NONE);
-		label19.setText("Response XSLT:");
-		tResponse = new Text(gWebService, SWT.BORDER);
-		tResponse.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tResponse.selectAll();
-			}
-		});
+		
+		label19 = JOE_L_WebserviceForm_ResponseXSLT.Control(new Label(gWebService, SWT.NONE));
+
+		tResponse = JOE_T_WebserviceForm_ResponseXSLT.Control(new Text(gWebService, SWT.BORDER));
 		tResponse.setLayoutData(gridData6);
 		tResponse.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -330,14 +314,10 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 				*/
 			}
 		});
-		label13 = new Label(gWebService, SWT.NONE);
-		label13.setText("Forward XSLT:");
-		tForward = new Text(gWebService, SWT.BORDER);
-		tForward.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tForward.selectAll();
-			}
-		});
+		
+		label13 = JOE_L_WebserviceForm_ForwardXSLT.Control(new Label(gWebService, SWT.NONE));
+		
+		tForward = JOE_T_WebserviceForm_ForwardXSLT.Control(new Text(gWebService, SWT.BORDER));
 		tForward.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
 		tForward.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -367,34 +347,34 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 		}
 		*/
 		if (found) {
-			MainWindow.message("URL-path already defined", SWT.ICON_INFORMATION);
+			MainWindow.message(JOE_M_0041.label(), SWT.ICON_INFORMATION);
 			tURL.setFocus();
 		}
 		else {
 
 			if (!tRequest.getText().equals("") && tResponse.getText().equals("")) {
-				MainWindow.message("Please set value for Response XSLT", SWT.ICON_INFORMATION);
+				MainWindow.message(JOE_M_0042.label(), SWT.ICON_INFORMATION);
 				tResponse.setFocus();
 			}
 			else {
 				if (tRequest.getText().equals("") && !tResponse.getText().equals("")) {
-					MainWindow.message("Please set value for Request XSLT", SWT.ICON_INFORMATION);
+					MainWindow.message(JOE_M_0043.label(), SWT.ICON_INFORMATION);
 					tRequest.setFocus();
 				}
 				else {
 					if (exist) {
-						MainWindow.message(tName.getText() + " already exists", SWT.ICON_INFORMATION);
+						MainWindow.message(JOE_M_0044.params(tName.getText()), SWT.ICON_INFORMATION);
 						tName.setFocus();
 					}
 					else {
 						if (tURL.getText().equals("")) {
-							MainWindow.message("Url-Path must not be empty", SWT.ICON_INFORMATION);
+							MainWindow.message(JOE_M_0045.label(), SWT.ICON_INFORMATION);
 							tURL.setFocus();
 
 						}
 						else {
 							if (Utils.str2int(sTimeout.getText()) == 0 && sTimeout.getText().length() > 0) {
-								MainWindow.message("Timeout must not be 0", SWT.ICON_INFORMATION);
+								MainWindow.message(JOE_M_0046.label(), SWT.ICON_INFORMATION);
 
 							}
 							else {
@@ -456,16 +436,7 @@ public class WebserviceForm extends Composite implements IUnsaved, IUpdateLangua
 	}
 
 	public void setToolTipText() {
-		bApply.setToolTipText(Messages.getTooltip("web_services.btn_apply"));
-		tName.setToolTipText(Messages.getTooltip("web_services.name"));
-		tURL.setToolTipText(Messages.getTooltip("web_services.url"));
-		cChain.setToolTipText(Messages.getTooltip("web_services.job_chain"));
-		sTimeout.setToolTipText(Messages.getTooltip("web_services.timeout"));
-		bDebug.setToolTipText(Messages.getTooltip("web_services.debug"));
-		tRequest.setToolTipText(Messages.getTooltip("web_services.request_xslt"));
-		tForward.setToolTipText(Messages.getTooltip("web_services.forward_xslt"));
-		tResponse.setToolTipText(Messages.getTooltip("web_services.response_xslt"));
-
+//
 	}
 
 	private void setEnabledComponent() {

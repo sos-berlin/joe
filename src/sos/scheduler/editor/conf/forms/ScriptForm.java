@@ -27,6 +27,7 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.LanguageSelector;
 
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -36,13 +37,12 @@ import sos.scheduler.editor.conf.container.JobJavaAPI;
 import sos.scheduler.editor.conf.container.JobScript;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
-public abstract class ScriptForm extends   Composite  implements IUpdateLanguage {
+public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
     @SuppressWarnings("unused")
     private final String conSVNVersion = "$Id$";
     private int intNoOfLabelColumns = 2;
 
-    @SuppressWarnings("unused")
     private static Logger logger = Logger.getLogger(ScriptJobMainForm.class);
     @SuppressWarnings("unused")
     private final String conClassName = "ScriptForm";
@@ -166,7 +166,8 @@ public abstract class ScriptForm extends   Composite  implements IUpdateLanguage
             public void widgetSelected(SelectionEvent e) {
                 int intIndex = tabFolder.getSelectionIndex();
                 Options.setLastTabItemIndex(intIndex);
-                logger.debug("Selected item index = " + tabFolder.getSelectionIndex());
+//                logger.debug("Selected item index = " + tabFolder.getSelectionIndex());
+                logger.debug(JOE_M_ScriptForm_ItemIndex.params(tabFolder.getSelectionIndex()));
             }
 
             public void widgetDefaultSelected(SelectionEvent e) {
@@ -188,9 +189,7 @@ public abstract class ScriptForm extends   Composite  implements IUpdateLanguage
         objTabControlComposite.setLayout(new GridLayout());
         setResizableV(objTabControlComposite);
 
-        tabItemScript = new CTabItem(tabFolder, SWT.NONE);
-        tabItemScript.setToolTipText("Shell scripts (Unix or MS-Windows");
-        tabItemScript.setText(Messages.getLabel("script"));
+        tabItemScript = JOE_ScriptForm_TabItemScript.Control(new CTabItem(tabFolder, SWT.NONE));
 
         tabItemScriptComposite = new Composite(tabFolder, SWT.NONE);
         tabItemScriptComposite.setLayout(new GridLayout());
@@ -199,9 +198,7 @@ public abstract class ScriptForm extends   Composite  implements IUpdateLanguage
 
 
         if (objDataProvider.isJava()) {
-            tabItemJavaAPI = new CTabItem(tabFolder, SWT.NONE);
-            tabItemJavaAPI.setToolTipText("internal Java-API definition");
-            tabItemJavaAPI.setText(Messages.getLabel("job.javaapi"));
+            tabItemJavaAPI = JOE_ScriptForm_TabItemJavaAPI.Control(new CTabItem(tabFolder, SWT.NONE));
 
             tabItemJavaAPIComposite = new Composite(tabFolder, SWT.NONE);
             tabItemJavaAPIComposite.setLayout(new GridLayout());
@@ -209,9 +206,7 @@ public abstract class ScriptForm extends   Composite  implements IUpdateLanguage
             tabItemJavaAPI.setControl(tabItemJavaAPIComposite);
         }
 
-        tabItemIncludedFiles = new CTabItem(tabFolder, SWT.NONE);
-        tabItemIncludedFiles.setText(Messages.getLabel("job.includedfiles"));
-        tabItemIncludedFiles.setToolTipText("Additional Files to include for Shell-Scripts");
+        tabItemIncludedFiles = JOE_ScriptForm_TabItemIncludes.Control(new CTabItem(tabFolder, SWT.NONE));
         tabItemIncludedFilesComposite = new Composite(tabFolder, SWT.NONE);
         tabItemIncludedFilesComposite.setLayout(new GridLayout());
         setResizableV(tabItemIncludedFilesComposite);
@@ -255,9 +250,8 @@ public abstract class ScriptForm extends   Composite  implements IUpdateLanguage
 
 
     protected void createLanguageSelector(Composite pobjComposite) {
-        Label labelLanguageSelector = new Label(pobjComposite, SWT.NONE);
+        Label labelLanguageSelector = JOE_L_ScriptForm_Language.Control(new Label(pobjComposite, SWT.NONE));
         labelLanguageSelector.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false, intNoOfLabelColumns, 1));
-        labelLanguageSelector.setText(Messages.getLabel("Language.Monitor"));
 
         languageSelector = new LanguageSelector(pobjComposite, SWT.NONE);
         languageSelector.addModifyListener(new ModifyListener() {
@@ -342,7 +336,7 @@ public abstract class ScriptForm extends   Composite  implements IUpdateLanguage
 
     @Override
     public void setToolTipText() {
- 
+// 
     }
     public JobJavaAPI getObjJobJAPI() {
         return objJobJAPI;
@@ -350,7 +344,6 @@ public abstract class ScriptForm extends   Composite  implements IUpdateLanguage
     public JobIncludeFile getObjJobIncludeFile() {
         return objJobIncludeFile;
     }
- 
    
     public CTabItem getTabItemIncludedFiles() {
         return tabItemIncludedFiles;

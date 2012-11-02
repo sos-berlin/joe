@@ -24,13 +24,14 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.RunTimeListener;
 
 
-public class RunTimeForm extends Composite implements IUpdateLanguage {
+public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
     
 	
 	private Text            tFunction                = null;
@@ -108,27 +109,20 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
     private void createGroup() {
     	
         GridLayout gridLayout3 = new GridLayout();
-        gRunTime = new Group(this, SWT.NONE);
-        gRunTime.setText("Run Time");
+        gRunTime = JOE_G_RunTimeForm_RunTime.Control(new Group(this, SWT.NONE));
+        gRunTime.setLayout(gridLayout3);
                 
         createPeriodForm();
-        gRunTime.setLayout(gridLayout3);
-        GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, true);
-        gridData4.heightHint = 348;
+        
+//        GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, true);
+//        gridData4.heightHint = 348;
 
-        groupStartTimeFuction = new Group(gRunTime, SWT.NONE);
-        groupStartTimeFuction.setText("Start Time Function:");
+        groupStartTimeFuction = JOE_G_RunTimeForm_StartTimeFunction.Control(new Group(gRunTime, SWT.NONE));
         groupStartTimeFuction.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         final GridLayout gridLayout = new GridLayout();
         groupStartTimeFuction.setLayout(gridLayout);
 
-        tFunction = new Text(groupStartTimeFuction, SWT.BORDER);
-        tFunction.addFocusListener(new FocusAdapter() {
-        	
-        	public void focusGained(final FocusEvent e) {
-        		tFunction.selectAll();
-        	}
-        });
+        tFunction = JOE_T_RunTimeForm_StartTimeFunction.Control(new Text(groupStartTimeFuction, SWT.BORDER));
         tFunction.addModifyListener(new ModifyListener() {
         	public void modifyText(final ModifyEvent e) {
         		if(init) return;
@@ -137,21 +131,19 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
         			_gui.updateFont();
         			if(!init) 
             			_gui.updateRunTime();
-        		
         	}
         });
         final GridData gridData10_1_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
         gridData10_1_1.widthHint = 243;
         tFunction.setLayoutData(gridData10_1_1);
 
-        groupSchedule = new Group(gRunTime, SWT.NONE);
-        groupSchedule.setText("Schedule");
+        groupSchedule = JOE_G_RunTimeForm_Schedule.Control(new Group(gRunTime, SWT.NONE));
         groupSchedule.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
         final GridLayout gridLayout_2 = new GridLayout();
         gridLayout_2.numColumns = 2;
         groupSchedule.setLayout(gridLayout_2);
 
-        comSchedule = new Combo(groupSchedule, SWT.NONE);
+        comSchedule = JOE_Cbo_RunTimeForm_Schedule.Control(new Combo(groupSchedule, SWT.NONE));
         comSchedule.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {        		
         		//listener.setSchedule(comSchedule.getText());
@@ -171,11 +163,10 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
             		_gui.updateFont();
            		if(!init) 
             			_gui.updateRunTime();
-            		
         	}
         });
 
-        butBrowse = new Button(groupSchedule, SWT.NONE);
+        butBrowse = JOE_B_RunTimeForm_Browse.Control(new Button(groupSchedule, SWT.NONE));
         butBrowse.addSelectionListener(new SelectionAdapter() {
         	public void widgetSelected(final SelectionEvent e) {
         		String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_SCHEDULE);
@@ -183,14 +174,14 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
 					comSchedule.setText(name);
         	}
         });
-        butBrowse.setText("Browse");
-        gComment = new Group(gRunTime, SWT.NONE);
-        gComment.setText("Comment");
+        
+        gComment = JOE_G_RunTimeForm_Comment.Control(new Group(gRunTime, SWT.NONE));
         gComment.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true));
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.numColumns = 2;
         gComment.setLayout(gridLayout_1);
-        tComment = new Text(gComment, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
+        
+        tComment = JOE_T_RunTimeForm_Comment.Control(new Text(gComment, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL));
         tComment.addKeyListener(new KeyAdapter() {
         	public void keyPressed(final KeyEvent e) {
         		if(e.keyCode==97 && e.stateMask == SWT.CTRL){
@@ -207,7 +198,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
             }
         });
 
-        final Button button = new Button(gComment, SWT.NONE);
+        final Button button = JOE_B_RunTimeForm_Comment.Control(new Button(gComment, SWT.NONE));
         button.setAlignment(SWT.UP);
         final GridData gridData_1 = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, true);
         gridData_1.widthHint = 29;
@@ -244,12 +235,7 @@ public class RunTimeForm extends Composite implements IUpdateLanguage {
 
 
     public void setToolTipText() {
-
-        tComment.setToolTipText(Messages.getTooltip("run_time.comment"));
-        butBrowse.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));        
-        tFunction.setToolTipText(Messages.getTooltip("run_time.start_time_function"));
-        comSchedule.setToolTipText(Messages.getTooltip("run_time.combo_schedule"));
-        
+//        
     }
     
     private void setEnabled() {

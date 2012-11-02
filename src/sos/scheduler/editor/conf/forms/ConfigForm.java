@@ -1,8 +1,6 @@
 package sos.scheduler.editor.conf.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -22,7 +20,6 @@ import org.eclipse.swt.widgets.Text;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
@@ -39,12 +36,14 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 	private Combo			cConfigurationDeleteEvent	= null;
 
+	@SuppressWarnings("unused")
 	private Label			label12_3					= null;
 
 	private Button			butBrowse_1					= null;
 
 	private Combo			cConfigurationModifyEvent	= null;
 
+	@SuppressWarnings("unused")
 	private Label			label12_2					= null;
 
 	private Button			butBrowse					= null;
@@ -57,22 +56,27 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 	private Group			gConfig						= null;
 
+	@SuppressWarnings("unused")
 	private Label			label						= null;
 
 	private Text			tSpoolerID					= null;
 
+	@SuppressWarnings("unused")
 	private Label			label7						= null;
 
 	private Text			tParameter					= null;
 
+	@SuppressWarnings("unused")
 	private Label			label10						= null;
 
 	private Text			tIncludePath				= null;
 
+	@SuppressWarnings("unused")
 	private Label			label11						= null;
 
 	private Text			tLogDir						= null;
 
+	@SuppressWarnings("unused")
 	private Label			label12						= null;
 
 	private Text			tMailXSLTStylesheet			= null;
@@ -87,6 +91,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 	private Text			sTcpPort					= null;
 
+	@SuppressWarnings("unused")
 	private Label			label4						= null;
 
 	private Text			sUdpPort					= null;
@@ -103,10 +108,12 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 	private Group			gJavaOptions				= null;
 
+	@SuppressWarnings("unused")
 	private Label			label8						= null;
 
 	private Text			tJavaClassPath				= null;
 
+	@SuppressWarnings("unused")
 	private Label			label9						= null;
 
 	private Text			tJavaOptions				= null;
@@ -207,7 +214,6 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		group_1.setLayout(gridLayout_1);
 
 		label = JOE_L_ConfigForm_SchedulerID.Control(new Label(group_1, SWT.NONE));
-		// label.setText("Scheduler ID:");
 
 		tSpoolerID = JOE_T_ConfigForm_SchedulerID.Control(new Text(group_1, SWT.BORDER));
 		// tSpoolerID.addFocusListener(new FocusAdapter() {
@@ -223,7 +229,6 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		});
 
 		label7 = JOE_L_ConfigForm_Params.Control(new Label(group_1, SWT.NONE));
-		// label7.setText("Parameter:");
 
 		tParameter = JOE_T_ConfigForm_Params.Control(new Text(group_1, SWT.BORDER));
 		// tParameter.addFocusListener(new FocusAdapter() {
@@ -239,7 +244,6 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		});
 
 		label10 = JOE_L_ConfigForm_IncludePath.Control(new Label(group_1, SWT.NONE));
-		// label10.setText("Include Path:");
 
 		tIncludePath = JOE_T_ConfigForm_IncludePath.Control(new Text(group_1, SWT.BORDER));
 		// tIncludePath.addFocusListener(new FocusAdapter() {
@@ -272,7 +276,6 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tIpAddress.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 		label11 = JOE_L_ConfigForm_LogDir.Control(new Label(group_1, SWT.NONE));
-		// label11.setText("Log Dir:");
 
 		tLogDir = JOE_T_ConfigForm_LogDir.Control(new Text(group_1, SWT.BORDER));
 		// tLogDir.addFocusListener(new FocusAdapter() {
@@ -288,7 +291,6 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		});
 
 		label12 = JOE_L_ConfigForm_MailXSLT.Control(new Label(group_1, SWT.NONE));
-		// label12.setText("Mail XSLT:");
 
 		tMailXSLTStylesheet = JOE_T_ConfigForm_MailXSLT.Control(new Text(group_1, SWT.BORDER));
 		// tMailXSLTStylesheet.addFocusListener(new FocusAdapter() {
@@ -374,7 +376,6 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		// butBrowse.setText("Browse");
 
 		label12_2 = JOE_L_ConfigForm_ConfigModifyEvent.Control(new Label(eventGroup, SWT.NONE));
-		// label12_2.setText("Configuration Modify Event:");
 
 		cConfigurationModifyEvent = JOE_Cbo_ConfigForm_ConfigModifyEvent.Control(new Combo(eventGroup, SWT.NONE));
 		cConfigurationModifyEvent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -398,7 +399,6 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		// butBrowse_1.setText("Browse");
 
 		label12_3 = JOE_L_ConfigForm_ConfigDeleteEvent.Control(new Label(eventGroup, SWT.NONE));
-		// label12_3.setText("Configuration Delete Event:");
 
 		cConfigurationDeleteEvent = JOE_Cbo_ConfigForm_ConfigDeleteEvent.Control(new Combo(eventGroup, SWT.NONE));
 		cConfigurationDeleteEvent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -532,7 +532,6 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		});
 
 		label4 = JOE_L_ConfigForm_UDP.Control(new Label(gPorts, SWT.NONE));
-		// label4.setText("UDP:");
 
 		sUdpPort = JOE_T_ConfigForm_UDP.Control(new Text(gPorts, SWT.BORDER));
 		// sUdpPort.addFocusListener(new FocusAdapter() {
@@ -584,7 +583,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		GridData gridData11 = new GridData(GridData.FILL, GridData.CENTER, false, true);
 		gridData11.widthHint = 47;
 
-		sMainSchedulerPort = JOE_L_ConfigForm_SupervisorPort.Control(new Text(gMainScheduler, SWT.BORDER));
+		sMainSchedulerPort = JOE_T_ConfigForm_SupervisorPort.Control(new Text(gMainScheduler, SWT.BORDER));
 		// sMainSchedulerPort.addFocusListener(new FocusAdapter() {
 		// @Override
 		// public void focusGained(FocusEvent arg0) {
@@ -607,7 +606,6 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		gJavaOptions.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 		label8 = JOE_L_ConfigForm_ClassPath.Control(new Label(gJavaOptions, SWT.NONE));
-		// label8.setText("Class Path:");
 
 		tJavaClassPath = JOE_T_ConfigForm_ClassPath.Control(new Text(gJavaOptions, SWT.BORDER));
 		// tJavaClassPath.addFocusListener(new FocusAdapter() {
@@ -623,7 +621,6 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		});
 
 		label9 = JOE_L_ConfigForm_Options.Control(new Label(gJavaOptions, SWT.NONE));
-		// label9.setText("Options:");
 
 		tJavaOptions = JOE_T_ConfigForm_Options.Control(new Text(gJavaOptions, SWT.BORDER));
 		// tJavaOptions.addFocusListener(new FocusAdapter() {
@@ -679,34 +676,6 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	public void setToolTipText() {
-		// tSpoolerID.setToolTipText(Messages.getTooltip("config.spooler_id"));
-		// tParameter.setToolTipText(Messages.getTooltip("config.param"));
-		// tIncludePath.setToolTipText(Messages.getTooltip("config.include_path"));
-		// tLogDir.setToolTipText(Messages.getTooltip("config.log_dir"));
-		// tMailXSLTStylesheet.setToolTipText(Messages.getTooltip("config.mail_xslt_stylesheet"));
-		// txtCentralConfigDir.setToolTipText(Messages.getTooltip("config.central_configuration_directory"));
-		//
-		// cSamePorts.setToolTipText(Messages.getTooltip("config.use_same_port"));
-		// sPort.setToolTipText(Messages.getTooltip("config.port"));
-		// sTcpPort.setToolTipText(Messages.getTooltip("config.tcp_port"));
-		// sUdpPort.setToolTipText(Messages.getTooltip("config.udp_port"));
-		//
-		// tMainSchedulerHost.setToolTipText(Messages.getTooltip("config.main_scheduler_host"));
-		// tIpAddress.setToolTipText(Messages.getTooltip("config.main_scheduler_ip_address"));
-		//
-		// sMainSchedulerPort.setToolTipText(Messages.getTooltip("config.main_scheduler_port"));
-		// tJavaClassPath.setToolTipText(Messages.getTooltip("config.java_class_path"));
-		// tComment.setToolTipText(Messages.getTooltip("config.comment"));
-		// tJavaOptions.setToolTipText(Messages.getTooltip("config.java_options"));
-		//
-		// cConfigurationAddEvent.setToolTipText(Messages.getTooltip("config.configuration_add_event"));
-		// cConfigurationModifyEvent.setToolTipText(Messages.getTooltip("config.configuration_modify_event"));
-		// cConfigurationDeleteEvent.setToolTipText(Messages.getTooltip("config.configuration_delete_event"));
-		//
-		// butBrowse.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));
-		// butBrowse_1.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));
-		// butBrowse_2.setToolTipText(Messages.getTooltip("job_chains.node.Browse"));
-		//
-		// button.setToolTipText(Messages.getTooltip("button.comment"));
+//
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

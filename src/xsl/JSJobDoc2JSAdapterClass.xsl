@@ -101,8 +101,8 @@ public class <xsl:value-of select="$class_name" /> extends JobSchedulerJobAdapte
 			doProcessing();
 		}
 		catch (Exception e) {
-			return false;
-		}
+		     throw e;
+   		}
 		finally {
 		} // finally
 		// return value for classic and order driven processing
@@ -124,7 +124,7 @@ public class <xsl:value-of select="$class_name" /> extends JobSchedulerJobAdapte
 
 		<xsl:value-of select="$WorkerClassName" /> objR = new <xsl:value-of select="$WorkerClassName" />();
 		<xsl:value-of select="$WorkerClassName" />Options objO = objR.Options();
-		objO.setAllOptions(getSchedulerParameterAsProperties(getParameters()));
+		objO.setAllOptions(getSchedulerParameterAsProperties(getJobOrOrderParameters()));
 		objO.CheckMandatory(); 
         objR.setJSJobUtilites(this);		
 		objR.Execute();
