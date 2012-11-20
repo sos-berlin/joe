@@ -309,7 +309,7 @@ public class JobListener extends JOEListener {
 	}
 
 	public void setTimeout(String timeout) {
-		Utils.setAttribute("timeout", Utils.getIntegerAsString(Utils.str2int(timeout)), _job, _dom);
+		Utils.setAttribute("timeout", timeout, _job, _dom);
 		if (_dom.isDirectory() || _dom.isLifeElement())
 			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
 	}
@@ -321,7 +321,7 @@ public class JobListener extends JOEListener {
 	public void setIdleTimeout(String idleTimeout) {
 		if (_dom.isDirectory() || _dom.isLifeElement())
 			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
-		Utils.setAttribute("idle_timeout", Utils.getIntegerAsString(Utils.str2int(idleTimeout)), _job, _dom);
+		Utils.setAttribute("idle_timeout", idleTimeout, _job, _dom);
 	}
 
 	public void setForceIdletimeout(boolean forceIdleTimeout) {
