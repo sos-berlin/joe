@@ -26,15 +26,15 @@ public class IOUtils {
 	private final String		conSVNVersion	= "$Id$";
 	private static final Logger	logger			= Logger.getLogger(IOUtils.class);
 
-	public static boolean openFile(DomParser dom) {
+	public static boolean openFile(final DomParser dom) {
 		return openFile(null, null, dom);
 	}
 
-	public static boolean openFile(Collection filenames, DomParser dom) {
+	public static boolean openFile(final Collection filenames, final DomParser dom) {
 		return openFile(null, filenames, dom);
 	}
 
-	private static String getDomInstance(DomParser dom) {
+	private static String getDomInstance(final DomParser dom) {
 		if (dom instanceof SchedulerDom)
 			return " Scheduler";
 		else
@@ -44,15 +44,15 @@ public class IOUtils {
 				return "";
 	}
 
-	public static String getJobschedulerObjectPathName(String mask) {
+	public static String getJobschedulerObjectPathName(final String mask) {
 		return getJobSchedulerObjectPathFromFileSystem(mask,Options.getSchedulerHotFolder());
 	}
 
-	public static String openDirectoryFile(String mask, final String pstrDirectoryName) {
+	public static String openDirectoryFile(final String mask, final String pstrDirectoryName) {
 
 		String filename = "";
 		FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
-		
+
 		fdialog.setFilterPath(pstrDirectoryName);
 		String filterMask = mask.replaceAll("\\\\", "");
 		filterMask = filterMask.replaceAll("\\^.", "");
@@ -79,11 +79,11 @@ public class IOUtils {
 
 	}
 
-	   public static String getJobSchedulerObjectPathFromFileSystem(String mask, final String pstrDirectoryName) {
+	   public static String getJobSchedulerObjectPathFromFileSystem(final String mask, final String pstrDirectoryName) {
 
 	        String filename = "";
 	        FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
-	        
+
 	        fdialog.setFilterPath(pstrDirectoryName);
 	        String filterMask = mask.replaceAll("\\\\", "");
 	        filterMask = filterMask.replaceAll("\\^.", "");
@@ -100,7 +100,7 @@ public class IOUtils {
 
 	        int pos = jobSchededulerObjectPath.toLowerCase().indexOf(hotFolderPath.toLowerCase().toLowerCase());
 	        if (pos >= 0) {
-  	          int add = (hotFolderPath.endsWith("/") ? -1 : 0);
+  	          int add = hotFolderPath.endsWith("/") ? -1 : 0;
   	          jobSchededulerObjectPath = jobSchededulerObjectPath.substring(pos == -1 ? 0 : pos + hotFolderPath.length() + add);
 	        }
 	        jobSchededulerObjectPath = jobSchededulerObjectPath.substring(0, jobSchededulerObjectPath.length() - filterMask.length() + 1);
@@ -108,20 +108,20 @@ public class IOUtils {
 
 	    }
 	/**
-	 * 
-	 * Es wird entweder eine Scheduler Konfigurationsdatei, eine Hot Folder Verzeichnis oder 
-	 * ein Hot Folder Datei geöffnet. 
-	 * 
+	 *
+	 * Es wird entweder eine Scheduler Konfigurationsdatei, eine Hot Folder Verzeichnis oder
+	 * ein Hot Folder Datei geöffnet.
+	 *
 	 * Beim erfolgreichen Öffnet wird true, sansonsten flase geliefert.
-	 * 
+	 *
 	 * @param filename String
 	 * @param filenames java.util.Collection
 	 * @param dom DomParser
-	 * @return boolean 
-	 * 
-	 * 
+	 * @return boolean
+	 *
+	 *
 	 */
-	public static boolean openFile(String filename, Collection filenames, DomParser dom) {
+	public static boolean openFile(String filename, final Collection filenames, final DomParser dom) {
 		try {
 			boolean isDirectory = dom instanceof SchedulerDom && ((SchedulerDom) dom).isDirectory();
 			String xml = null;
@@ -253,7 +253,7 @@ public class IOUtils {
 		return false;
 	}
 
-	public static boolean saveFile(DomParser dom, boolean saveas) {
+	public static boolean saveFile(final DomParser dom, boolean saveas) {
 		String filename = dom.getFilename();
 		String originFilename = null;
 		boolean overrideOriFile = saveas;
@@ -347,7 +347,7 @@ public class IOUtils {
 		}
 	}
 
-	public static boolean continueAnyway(DomParser dom) {
+	public static boolean continueAnyway(final DomParser dom) {
 		if (dom.isChanged()) {
 			int ok = MainWindow.message(Messages.getString("MainListener.contentChanged"), //$NON-NLS-1$
 					SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
@@ -360,7 +360,7 @@ public class IOUtils {
 		return true;
 	}
 
-	public static void createBackup(String filename) {
+	public static void createBackup(final String filename) {
 		String f;
 		File outFile = null;
 		if (filename == null) {
@@ -401,7 +401,7 @@ public class IOUtils {
 		}
 	}
 
-	public static boolean saveAction(DomParser dom, boolean saveas) {
+	public static boolean saveAction(final DomParser dom, final boolean saveas) {
 		try {
 			if (dom.getFilename() == null || saveas) {
 				// sos.scheduler.editor.actions.forms.SaveEventsDialogForm d= new sos.scheduler.editor.actions.forms.SaveEventsDialogForm();
@@ -425,7 +425,7 @@ public class IOUtils {
 	/**
 	 * Speichert das Dokument in die einzelnen Dateien (als HOT FOLDER ELEMENT) wieder zurück
 	 */
-	public static boolean saveDirectory(DomParser dom, boolean saveas, int type, String nameOfElement, IContainer container) {
+	public static boolean saveDirectory(final DomParser dom, final boolean saveas, final int type, final String nameOfElement, final IContainer container) {
 		Document currDoc = dom.getDoc();
 		File configFile = null;
 		try {
@@ -468,14 +468,14 @@ public class IOUtils {
 			else {// sonst life element
 				org.jdom.Element elem = null;
 				if (type == SchedulerDom.LIFE_LOCK) {
-					sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) (MainWindow.getContainer().getCurrentEditor());
+					sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) MainWindow.getContainer().getCurrentEditor();
 					org.eclipse.swt.widgets.Tree tree = form.getTree();
 					TreeData data = (TreeData) tree.getSelection()[0].getData();
 					elem = data.getElement().getChild("locks").getChild("lock");
 				}
 				else
 					if (type == SchedulerDom.LIFE_PROCESS_CLASS) {
-						sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) (MainWindow.getContainer().getCurrentEditor());
+						sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) MainWindow.getContainer().getCurrentEditor();
 						org.eclipse.swt.widgets.Tree tree = form.getTree();
 						TreeData data = (TreeData) tree.getSelection()[0].getData();
 						elem = data.getElement().getChild("process_classes").getChild("process_class");
@@ -507,7 +507,7 @@ public class IOUtils {
 		return true;
 	}
 
-	public static void saveXML(Document doc, String filename) {
+	public static void saveXML(final Document doc, final String filename) {
 		try {
 			// system.out.println("********************************************************************");
 			JDOMSource in = new JDOMSource(doc);
@@ -530,7 +530,7 @@ public class IOUtils {
 		}
 	}
 
-	public static void saveXML(String xml, String filename) {
+	public static void saveXML(final String xml, final String filename) {
 		try {
 			org.jdom.input.SAXBuilder builder = new org.jdom.input.SAXBuilder();
 			org.jdom.Document doc = builder.build(new java.io.StringReader(xml));

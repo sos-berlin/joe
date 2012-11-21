@@ -32,7 +32,7 @@ public class Options extends I18NBase {
 	public static final String	conPropertyTEMPLATE_LANGUAGE				= "template.language";
 	public static final String	conPropertyTEMPLATE_LANGUAGE_LIST			= "template.language.list";
 	public static final String	conPropertyEDITOR_ShowSplashScreenPicture	= "editor.ShowSplashScreenPicture"; // "/SplashScreenJOE.bmp";
-	
+
 
 	private final static String	conClassName								= "Options";
 	@SuppressWarnings("unused")
@@ -56,7 +56,7 @@ public class Options extends I18NBase {
 		if (strR == null || strR == "") {
 			return -1;
 		}
-		return (int) new Integer(strR);
+		return new Integer(strR);
 	}
 
 	public static void setLastTabItemIndex(final int pintLastTabItemIndex) {
@@ -94,6 +94,7 @@ public class Options extends I18NBase {
 		String strKey = conPropertyEDITOR_OPTIONS_FILE;
 		String strF = getDefault(strKey);
 		String strRet = strF.replaceAll("\\{scheduler_data\\}", strSD);
+		logger.info("getDefaultOptionFilename = " + strRet);
 		return strRet;
 	}
 
@@ -105,7 +106,7 @@ public class Options extends I18NBase {
 		}
 	} // private void getProperties
 
-	public static String loadOptions(Class cl) {
+	public static String loadOptions(final Class cl) {
 		String fName = "";
 		try {
 			_defaults = new Properties();
@@ -157,7 +158,6 @@ public class Options extends I18NBase {
 					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 				}
 				catch (Exception ee) {
-					// tu nichts
 				}
 				e.printStackTrace();
 				return e.getMessage();
@@ -166,7 +166,7 @@ public class Options extends I18NBase {
 		return null;
 	}
 
-	public static void setProperty(String key, String value) {
+	public static void setProperty(final String key, final String value) {
 		if (_properties != null) {
 			_properties.setProperty(key, value);
 			_changed = true;
@@ -193,7 +193,7 @@ public class Options extends I18NBase {
 		getProperties();
 		String strT = _properties.getProperty(pstrPropertyName);
 		boolean flgR = checkBool(strT);
-		return flgR;		
+		return flgR;
 	}
 	public static String showSplashScreenPicture() {
 		getProperties();
@@ -251,23 +251,23 @@ public class Options extends I18NBase {
 		return strT;
 	}
 
-	public static String getDefault(String key) {
+	public static String getDefault(final String key) {
 		if (_defaults == null) {
 			_defaults = new Properties();
 		}
 		return _defaults.getProperty(key);
 	}
 
-	public static void setLanguage(String language) {
+	public static void setLanguage(final String language) {
 		SOSOptionLocale.i18nLocale = new Locale(language);
 		setProperty(conPropertyEDITOR_LANGUAGE, language);
 	}
 
-	public static void setTemplateLanguage(String language) {
+	public static void setTemplateLanguage(final String language) {
 		setProperty(conPropertyTEMPLATE_LANGUAGE, language);
 	}
 
-	private static String getHelp(String key, String prefix) {
+	private static String getHelp(final String key, final String prefix) {
 		try {
 			String url = _properties.getProperty(prefix + ".help.url." + key);
 			return url != null && !url.equals("") ? url : null;
@@ -277,7 +277,7 @@ public class Options extends I18NBase {
 		}
 	}
 
-	public static String getHelpURL(String key, String prefix) {
+	public static String getHelpURL(final String key, final String prefix) {
 		try {
 			String helpKey = getHelp(key, prefix);
 			String url = null;
@@ -293,15 +293,15 @@ public class Options extends I18NBase {
 		}
 	}
 
-	public static String getDocHelpURL(String key) {
+	public static String getDocHelpURL(final String key) {
 		return getHelpURL(key, "doc");
 	}
 
-	public static String getHelpURL(String key) {
+	public static String getHelpURL(final String key) {
 		return getHelpURL(key, "editor");
 	}
 
-	public static String[] getBrowserExec(String url, String lang) {
+	public static String[] getBrowserExec(String url, final String lang) {
 		String os = System.getProperty("os.name").toLowerCase();
 		String value = "";
 		if (os.indexOf("windows") > -1)
@@ -403,7 +403,7 @@ public class Options extends I18NBase {
 	}
 
 	public static boolean getBackupEnabled() {
-		return (_properties.getProperty("editor.backup.enabled", "false").equalsIgnoreCase("true"));
+		return _properties.getProperty("editor.backup.enabled", "false").equalsIgnoreCase("true");
 	}
 
 	public static String getLastDirectory() {
@@ -411,7 +411,7 @@ public class Options extends I18NBase {
 		// return (_properties.getProperty("editor.file.lastopendir", ""));
 	}
 
-	public static void setLastDirectory(File f, sos.scheduler.editor.app.DomParser dom) {
+	public static void setLastDirectory(final File f, final sos.scheduler.editor.app.DomParser dom) {
 		if (f != null && f.getParent() != null) {
 			if (dom instanceof sos.scheduler.editor.conf.SchedulerDom && ((sos.scheduler.editor.conf.SchedulerDom) dom).isDirectory()) {
 				setProperty("editor.file.lastopendir", f.getPath());
@@ -422,7 +422,7 @@ public class Options extends I18NBase {
 		}
 	}
 
-	public static void saveWindow(Shell shell, String name) {
+	public static void saveWindow(final Shell shell, final String name) {
 		setProperty(name + ".window.left", String.valueOf(shell.getLocation().x));
 		setProperty(name + ".window.top", String.valueOf(shell.getLocation().y));
 		setProperty(name + ".window.width", String.valueOf(shell.getSize().x));
@@ -430,7 +430,7 @@ public class Options extends I18NBase {
 		setProperty(name + ".window.status", String.valueOf(shell.getMaximized()));
 	}
 
-	public static void loadWindow(Shell shell, String name) {
+	public static void loadWindow(final Shell shell, final String name) {
         getProperties();
 
 		Point location = new Point(0, 0);
@@ -486,11 +486,11 @@ public class Options extends I18NBase {
 		}
 	}
 
-	public static void saveSash(String name, int[] sash) {
+	public static void saveSash(final String name, final int[] sash) {
 		setProperty(name + ".sash.layout", sash[0] + "," + sash[1]);
 	}
 
-	public static void loadSash(String name, SashForm sash) {
+	public static void loadSash(final String name, final SashForm sash) {
 		try {
 			String value = _properties.getProperty(name + ".sash.layout");
 			if (value != null) {
@@ -533,11 +533,15 @@ public class Options extends I18NBase {
 	}
 
 	public static String getSchedulerHome() {
-		return getProp("SCHEDULER_HOME", "");
+		String strT = getProp("SCHEDULER_HOME", "");
+		logger.info("getSchedulerHome = " + strT);
+		return strT;
 	}
 
 	public static String getSchedulerData() {
-		return getProp("SCHEDULER_DATA", getSchedulerHome());
+		String strT = getProp("SCHEDULER_DATA", getSchedulerHome());
+		logger.info("getSchedulerData = " + strT);
+		return strT;
 	}
 
 	public static String getSchedulerNormalizedHome() {
@@ -688,19 +692,19 @@ public class Options extends I18NBase {
 		return _showWizardInfo;
 	}
 
-	public static void setShowWizardInfo(boolean wizardInfo) {
+	public static void setShowWizardInfo(final boolean wizardInfo) {
 		_showWizardInfo = wizardInfo;
 		_properties.setProperty("editor.job.wizard.info.show", wizardInfo ? "true" : "false");
 	}
 
-	public static boolean getPropertyBoolean(String name) {
+	public static boolean getPropertyBoolean(final String name) {
 		String s = _properties.getProperty(name);
 		if (s == null)
 			return true;
 		return s.equalsIgnoreCase("true");
 	}
 
-	public static void setPropertyBoolean(String name, boolean value) {
+	public static void setPropertyBoolean(final String name, final boolean value) {
 		_properties.setProperty(name, value ? "true" : "false");
 	}
 
@@ -708,7 +712,7 @@ public class Options extends I18NBase {
 		return _properties.getProperty("detail.editor.xslt");
 	}
 
-	public static String getProperty(String key) {
+	public static String getProperty(final String key) {
 		return _properties.getProperty(key);
 	}
 
@@ -719,7 +723,7 @@ public class Options extends I18NBase {
 			return new String[] {};
 	}
 
-	public static void setJobTitleList(String[] jobTitleList) {
+	public static void setJobTitleList(final String[] jobTitleList) {
 		Options.jobTitleList = jobTitleList;
 	}
 
@@ -730,11 +734,11 @@ public class Options extends I18NBase {
 			return new HashMap();
 	}
 
-	public static void setHolidaysDescription(HashMap holidaysDescription) {
+	public static void setHolidaysDescription(final HashMap holidaysDescription) {
 		Options.holidaysDescription = holidaysDescription;
 	}
 
-	public static String[] getPropertiesWithPrefix(String prefix) {
+	public static String[] getPropertiesWithPrefix(final String prefix) {
 		String[] retVal = null;
 		String s = "";
 		Properties p = new Properties();
@@ -763,7 +767,7 @@ public class Options extends I18NBase {
 		return retVal;
 	}
 
-	public static void removeProperty(String name) {
+	public static void removeProperty(final String name) {
 		if (name != null && name.length() > 0) {
 			_properties.remove(name);
 			saveProperties();

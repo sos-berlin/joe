@@ -12,10 +12,11 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.JobScriptListener;
 
-public class JobScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class JobScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
     private JobScriptListener listener   = null;
 
     private Button            cUseScript = null;
@@ -42,7 +43,7 @@ public class JobScriptForm extends Composite implements IUnsaved, IUpdateLanguag
 
 
     private void initialize() {
-        cUseScript = new Button(this, SWT.RADIO);
+        cUseScript = new Button(this, SWT.RADIO); //TODO i18n
         cUseScript.setText("Use script (this will disable the process element and delete its content!)"); // Generated
         cUseScript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {

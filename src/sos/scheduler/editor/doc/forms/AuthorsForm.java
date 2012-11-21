@@ -1,8 +1,6 @@
 package sos.scheduler.editor.doc.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -19,7 +17,7 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.ReleaseAuthorsListener;
@@ -27,8 +25,9 @@ import sos.scheduler.editor.doc.listeners.ReleaseAuthorsListener;
 import com.sos.i18n.annotation.I18NResourceBundle;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
-public class AuthorsForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
+	@SuppressWarnings("unused")
 	private final static String	conSVNVersion			= "$Id$";
 	private ReleaseAuthorsListener	listener		= null;
 
@@ -62,9 +61,10 @@ public class AuthorsForm extends Composite implements IUnsaved, IUpdateLanguage 
 	private void createGroup() {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 5; // Generated
-		authorsGroup = new Group(this, SWT.NONE);
-		authorsGroup.setText("Authors"); // Generated
+		
+		authorsGroup = JOE_G_AuthorsForm_Authors.Control(new Group(this, SWT.NONE));
 		authorsGroup.setLayout(gridLayout); // Generated
+		
 		createCreated();
 		createModified();
 		createComposite();
@@ -80,22 +80,18 @@ public class AuthorsForm extends Composite implements IUnsaved, IUpdateLanguage 
 		GridData gridData12 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
 		GridLayout gridLayout1 = new GridLayout();
 		gridLayout1.numColumns = 5; // Generated
+		
 		// group1 = new Group(group, SWT.NONE);
 		// group1.setText("Authors"); // Generated
 		// group1.setLayoutData(gridData5); // Generated
 		// group1.setLayout(gridLayout1); // Generated
-		label4 = new Label(authorsGroup, SWT.NONE);
+		
+		label4 = JOE_L_Name.Control(new Label(authorsGroup, SWT.NONE));
 		label4.setLayoutData(new GridData());
-		label4.setText("Name:"); // Generated
+		
 		GridData gridData7 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData7.widthHint = 121;
-		tName = new Text(authorsGroup, SWT.BORDER);
-		tName.addFocusListener(new FocusAdapter() {
-
-			public void focusGained(final FocusEvent e) {
-				tName.selectAll();
-			}
-		});
+		tName = JOE_T_AuthorsForm_Name.Control(new Text(authorsGroup, SWT.BORDER));
 		tName.setLayoutData(gridData7); // Generated
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -106,17 +102,13 @@ public class AuthorsForm extends Composite implements IUnsaved, IUpdateLanguage 
 				Utils.setBackground(tName, bApplyAuthor.isEnabled());
 			}
 		});
-		label5 = new Label(authorsGroup, SWT.NONE);
+		
+		label5 = JOE_L_AuthorsForm_EMail.Control(new Label(authorsGroup, SWT.NONE));
 		label5.setLayoutData(new GridData());
-		label5.setText("eMail:"); // Generated
 		GridData gridData8 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData8.widthHint = 183;
-		tEmail = new Text(authorsGroup, SWT.BORDER);
-		tEmail.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				tEmail.selectAll();
-			}
-		});
+		
+		tEmail = JOE_T_AuthorsForm_EMail.Control(new Text(authorsGroup, SWT.BORDER));
 		tEmail.setLayoutData(gridData8); // Generated
 		tEmail.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -127,9 +119,9 @@ public class AuthorsForm extends Composite implements IUnsaved, IUpdateLanguage 
 				Utils.setBackground(tEmail, bApplyAuthor.isEnabled());
 			}
 		});
+		
 		GridData gridData9 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-		bApplyAuthor = new Button(authorsGroup, SWT.NONE);
-		bApplyAuthor.setText("Apply"); // Generated
+		bApplyAuthor = JOE_B_AuthorsForm_Apply.Control(new Button(authorsGroup, SWT.NONE));
 		bApplyAuthor.setLayoutData(gridData9); // Generated
 		bApplyAuthor.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -142,8 +134,9 @@ public class AuthorsForm extends Composite implements IUnsaved, IUpdateLanguage 
 
 			}
 		});
+		
 		GridData gridData11 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
-		tAuthors = new Table(authorsGroup, SWT.FULL_SELECTION | SWT.BORDER);
+		tAuthors = JOE_Tbl_AuthorsForm_Authors.Control(new Table(authorsGroup, SWT.FULL_SELECTION | SWT.BORDER));
 		tAuthors.setHeaderVisible(true); // Generated
 		tAuthors.setLinesVisible(true); // Generated
 		tAuthors.setLayoutData(gridData11); // Generated
@@ -159,14 +152,14 @@ public class AuthorsForm extends Composite implements IUnsaved, IUpdateLanguage 
 				bApplyAuthor.setEnabled(false);
 			}
 		});
-		TableColumn tableColumn2 = new TableColumn(tAuthors, SWT.NONE);
-		tableColumn2.setText("Name"); // Generated
+		
+		TableColumn tableColumn2 = JOE_TCl_AuthorsForm_Name.Control(new TableColumn(tAuthors, SWT.NONE));
 		tableColumn2.setWidth(250); // Generated
-		TableColumn tableColumn11 = new TableColumn(tAuthors, SWT.NONE);
-		tableColumn11.setText("eMail"); // Generated
+		
+		TableColumn tableColumn11 = JOE_TCl_AuthorsForm_EMail.Control(new TableColumn(tAuthors, SWT.NONE));
 		tableColumn11.setWidth(60); // Generated
-		bRemoveAutho = new Button(authorsGroup, SWT.NONE);
-		bRemoveAutho.setText("Remove"); // Generated
+		
+		bRemoveAutho = JOE_B_AuthorsForm_Remove.Control(new Button(authorsGroup, SWT.NONE));
 		bRemoveAutho.setLayoutData(gridData12); // Generated
 		bRemoveAutho.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -212,12 +205,7 @@ public class AuthorsForm extends Composite implements IUnsaved, IUpdateLanguage 
 	}
 
 	public void setToolTipText() {
-		tName.setToolTipText(Messages.getTooltip("doc.releases.author.name"));
-		tEmail.setToolTipText(Messages.getTooltip("doc.releases.author.email"));
-		bApplyAuthor.setToolTipText(Messages.getTooltip("doc.releases.author.apply"));
-		tAuthors.setToolTipText(Messages.getTooltip("doc.releases.author.list"));
-		bRemoveAutho.setToolTipText(Messages.getTooltip("doc.releases.author.remove"));
-
+//
 	}
 
 	private void setReleaseStatus(boolean enabled) {

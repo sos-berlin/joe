@@ -29,6 +29,7 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
 
 	private Group				group1				= null;
 	private FolderNameSelector	tDirectory			= null;
+	//private Text tDirectory=null;
 	private Text				tRegex				= null;
 	@SuppressWarnings("unused")
 	private Label				label11				= null;
@@ -96,6 +97,8 @@ public class JobStartWhenDirectoryChanged extends FormBaseClass {
 		tDirectory.setParentForm(this);
 		tDirectory.setDataProvider(objJobDataProvider);
 
+	//	tDirectory = new Text(group1,SWT.BORDER);
+		
 		label11 = SOSJOEMessageCodes.JOE_L_JobOptionsForm_FileRegex.Control(new Label(group1, SWT.NONE));
 
 		tRegex = SOSJOEMessageCodes.JOE_T_JobOptionsForm_FileRegex.Control(new Text(group1, SWT.BORDER));

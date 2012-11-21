@@ -20,6 +20,7 @@ import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
@@ -29,7 +30,7 @@ import sos.scheduler.editor.doc.listeners.DocumentationListener;
 
 // TODO doppelte einträge verhindern
 
-public class DocumentationForm extends Composite implements IEditor, IDocumentationUpdate {
+public class DocumentationForm extends SOSJOEMessageCodes implements IEditor, IDocumentationUpdate {
 	
     private DocumentationListener listener    = null;
 
@@ -83,9 +84,9 @@ public class DocumentationForm extends Composite implements IEditor, IDocumentat
      * This method initializes group
      */
     private void createGroup() {
-        group = new Group(sashForm, SWT.V_SCROLL | SWT.H_SCROLL);
+        group = JOE_G_DocumentationForm_DocElements.Control(new Group(sashForm, SWT.V_SCROLL | SWT.H_SCROLL));
         group.setLayout(new FillLayout()); // Generated
-        group.setText("Documentation Elements"); // Generated
+        
         docTree = new Tree(group, SWT.NONE);
         docTree.addListener(SWT.Selection, new Listener() {
             public void handleEvent(Event e) {

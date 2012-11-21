@@ -15,16 +15,17 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.IncludeFilesListener;
 
-public class IncludeFilesForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class IncludeFilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
     private IncludeFilesListener listener = null; // @jve:decl-index=0:
 
     private Group                group    = null;
 
-    private Label                label    = null;
+    @SuppressWarnings("unused")
+	private Label                label    = null;
 
     private Text                 tFile    = null;
 
@@ -92,12 +93,13 @@ public class IncludeFilesForm extends Composite implements IUnsaved, IUpdateLang
         gridData.verticalAlignment = GridData.CENTER; // Generated
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 3; // Generated
-        group = new Group(this, SWT.NONE);
-        group.setText("Include Files"); // Generated
+        
+        group = JOE_G_IncludeFilesForm_IncludeFiles.Control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout); // Generated
-        label = new Label(group, SWT.NONE);
-        label.setText("File:"); // Generated
-        tFile = new Text(group, SWT.BORDER);
+        
+        label = JOE_L_IncludeFilesForm_File.Control(new Label(group, SWT.NONE));
+        
+        tFile = JOE_T_IncludeFilesForm_File.Control(new Text(group, SWT.BORDER));
         tFile.setLayoutData(gridData); // Generated
         tFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -105,22 +107,24 @@ public class IncludeFilesForm extends Composite implements IUnsaved, IUpdateLang
                 getShell().setDefaultButton(bAdd);
             }
         });
-        bAdd = new Button(group, SWT.NONE);
-        bAdd.setText("Add File"); // Generated
+        
+        bAdd = JOE_B_IncludeFilesForm_Add.Control(new Button(group, SWT.NONE));
         bAdd.setLayoutData(gridData4); // Generated
         bAdd.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 addFile();
             }
         });
+        
         label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label1.setText("Label"); // Generated
         label1.setLayoutData(gridData1); // Generated
-        label51 = new Label(group, SWT.NONE);
+        
+        label51 = JOE_L_IncludeFilesForm_Parameter.Control(new Label(group, SWT.NONE));
         label51.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
         label51.setVisible(false); // Generated
-        label51.setText("Parameter:"); // Generated
-        fileList = new List(group, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+        
+        fileList = JOE_Lst_IncludeFilesForm_Files.Control(new List(group, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL));
         fileList.setLayoutData(gridData2); // Generated
         fileList.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -131,8 +135,8 @@ public class IncludeFilesForm extends Composite implements IUnsaved, IUpdateLang
                 bRemove.setEnabled(selection);
             }
         });
-        bRemove = new Button(group, SWT.NONE);
-        bRemove.setText("Remove File"); // Generated
+        
+        bRemove = JOE_B_IncludeFilesForm_Remove.Control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(gridData3); // Generated
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -157,10 +161,7 @@ public class IncludeFilesForm extends Composite implements IUnsaved, IUpdateLang
 
 
     public void setToolTipText() {
-        tFile.setToolTipText(Messages.getTooltip("doc.include.file"));
-        bAdd.setToolTipText(Messages.getTooltip("doc.include.add"));
-        fileList.setToolTipText(Messages.getTooltip("doc.include.list"));
-        bRemove.setToolTipText(Messages.getTooltip("doc.include.remove"));
+//    	
     }
 
 

@@ -16,12 +16,12 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.IUpdateTree;
 import sos.scheduler.editor.doc.listeners.ConnectionsListener;
 
-public class ConnectionsForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class ConnectionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
     private ConnectionsListener listener     = null;
 
     private IUpdateTree         treeHandler  = null;
@@ -30,7 +30,8 @@ public class ConnectionsForm extends Composite implements IUnsaved, IUpdateLangu
 
     private Group               group        = null;
 
-    private Label               label        = null;
+    @SuppressWarnings("unused")
+	private Label               label        = null;
 
     private Text                tName        = null;
 
@@ -104,12 +105,13 @@ public class ConnectionsForm extends Composite implements IUnsaved, IUpdateLangu
         gridData.verticalAlignment = GridData.CENTER; // Generated
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 4; // Generated
-        group = new Group(this, SWT.NONE);
-        group.setText("Connections"); // Generated
+        
+        group = JOE_G_ConnectionsForm_Connections.Control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout); // Generated
-        label = new Label(group, SWT.NONE);
-        label.setText("Name:"); // Generated
-        tName = new Text(group, SWT.BORDER);
+        
+        label = JOE_L_Name.Control(new Label(group, SWT.NONE));
+        
+        tName = JOE_T_ConnectionsForm_Name.Control(new Text(group, SWT.BORDER));
         tName.setLayoutData(gridData); // Generated
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -117,27 +119,28 @@ public class ConnectionsForm extends Composite implements IUnsaved, IUpdateLangu
                 getShell().setDefaultButton(bApply);
             }
         });
-        bNotes = new Button(group, SWT.NONE);
-        bNotes.setText("Connection Note..."); // Generated
+        
+        bNotes = JOE_B_ConnectionsForm_Notes.Control(new Button(group, SWT.NONE));
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                String tip = Messages.getTooltip("doc.note.text.connection");
-                DocumentationForm.openNoteDialog(dom, listener.getConnectionElement(), "note", tip, true, !listener
-                        .isNewConnection(),"Connection Note");
+                DocumentationForm.openNoteDialog(dom, listener.getConnectionElement(), "note", null, true, !listener
+                        .isNewConnection(), JOE_B_ConnectionsForm_Notes.label());
             }
         });
-        bApply = new Button(group, SWT.NONE);
-        bApply.setText("Apply Connection"); // Generated
+        
+        bApply = JOE_B_ConnectionsForm_Apply.Control(new Button(group, SWT.NONE));
         bApply.setLayoutData(gridData2); // Generated
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 applyConnection();
             }
         });
+        
         label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label1.setText("Label"); // Generated
+//        label1.setText("Label"); // Generated
         label1.setLayoutData(gridData3); // Generated
-        tConnections = new Table(group, SWT.BORDER);
+        
+        tConnections = JOE_Tbl_ConnectionsForm_Connections.Control(new Table(group, SWT.BORDER));
         tConnections.setHeaderVisible(true); // Generated
         tConnections.setLayoutData(gridData1); // Generated
         tConnections.setLinesVisible(true); // Generated
@@ -151,11 +154,11 @@ public class ConnectionsForm extends Composite implements IUnsaved, IUpdateLangu
                 }
             }
         });
-        TableColumn tableColumn = new TableColumn(tConnections, SWT.NONE);
+        
+        TableColumn tableColumn = JOE_TCl_ConnectionsForm_Name.Control(new TableColumn(tConnections, SWT.NONE));
         tableColumn.setWidth(400); // Generated
-        tableColumn.setText("Name"); // Generated
-        bNew = new Button(group, SWT.NONE);
-        bNew.setText("New Connection"); // Generated
+        
+        bNew = JOE_B_ConnectionsForm_New.Control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData4); // Generated
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -166,11 +169,12 @@ public class ConnectionsForm extends Composite implements IUnsaved, IUpdateLangu
                 getShell().setDefaultButton(bApply);
             }
         });
+        
         label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label2.setText("Label"); // Generated
+//        label2.setText("Label"); // Generated
         label2.setLayoutData(gridData5); // Generated
-        bRemove = new Button(group, SWT.NONE);
-        bRemove.setText("Remove Connection"); // Generated
+        
+        bRemove = JOE_B_ConnectionsForm_Remove.Control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(gridData6); // Generated
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -201,12 +205,7 @@ public class ConnectionsForm extends Composite implements IUnsaved, IUpdateLangu
 
 
     public void setToolTipText() {
-        tName.setToolTipText(Messages.getTooltip("doc.connections.name"));
-        bNotes.setToolTipText(Messages.getTooltip("doc.connections.notes"));
-        bApply.setToolTipText(Messages.getTooltip("doc.connections.apply"));
-        tConnections.setToolTipText(Messages.getTooltip("doc.connections.table"));
-        bNew.setToolTipText(Messages.getTooltip("doc.connections.new"));
-        bRemove.setToolTipText(Messages.getTooltip("doc.connections.remove"));
+//
     }
 
 

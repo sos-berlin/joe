@@ -72,7 +72,7 @@ public class ProcessForm extends Composite implements IUnsaved, IUpdateLanguage 
 
     private void initialize() {
         cUseProcess = new Button(this, SWT.RADIO);
-        cUseProcess.setText("Use process (this will disable the script element and delete its content!)"); // Generated
+        cUseProcess.setText("Use process (this will disable the script element and delete its content!)"); // TODO i18n siehe JobScriptForm
         cUseProcess.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 if (cUseProcess.getSelection() != listener.isProcess()) {

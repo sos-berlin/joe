@@ -58,7 +58,7 @@ public class FolderNameSelector extends Text {
     public FolderNameSelector(Composite pobjComposite, int arg1) {
         super(pobjComposite, arg1);
 
-        addFocusListener(getFocusAdapter());
+       addFocusListener(getFocusAdapter());
         setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         addMouseListener(getMouseListener());
         addContextMenue();

@@ -1,8 +1,6 @@
 package sos.scheduler.editor.doc.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -19,31 +17,35 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.FilesListener;
 
-public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class FilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
     private FilesListener    listener;
 
     private DocumentationDom dom;
 
     private Group            group   = null;
 
-    private Label            label6  = null;
+    @SuppressWarnings("unused")
+	private Label            label6  = null;
 
     private Text             tFile   = null;
 
-    private Label            label9  = null;
+    @SuppressWarnings("unused")
+	private Label            label9  = null;
 
     private Combo            cOS     = null;
 
-    private Label            label10 = null;
+    @SuppressWarnings("unused")
+	private Label            label10 = null;
 
     private Combo            cType   = null;
 
-    private Label            label11 = null;
+    @SuppressWarnings("unused")
+	private Label            label11 = null;
 
     private Text             tID     = null;
 
@@ -105,15 +107,13 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
         GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
         GridLayout gridLayout2 = new GridLayout();
         gridLayout2.numColumns = 5; // Generated
-        group = new Group(this, SWT.NONE);
-        label6 = new Label(group, SWT.NONE);
-        label6.setText("File:"); // Generated
-        tFile = new Text(group, SWT.BORDER);
-        tFile.addFocusListener(new FocusAdapter() {
-        	public void focusGained(final FocusEvent e) {
-        		tFile.selectAll();
-        	}
-        });
+        
+        group = JOE_G_FilesForm_Files.Control(new Group(this, SWT.NONE));
+        group.setLayout(gridLayout2); // Generated
+        
+        label6 = JOE_L_FilesForm_File.Control(new Label(group, SWT.NONE));
+
+        tFile = JOE_T_FilesForm_File.Control(new Text(group, SWT.BORDER));
         tFile.setLayoutData(gridData); // Generated
         tFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -121,52 +121,53 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
                 setApplyStatus();
             }
         });
-        bApply = new Button(group, SWT.NONE);
-        bApply.setText("Apply File"); // Generated
+
+        bApply = JOE_B_FilesForm_Apply.Control(new Button(group, SWT.NONE));
         bApply.setLayoutData(gridData4); // Generated
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 applyFile();
             }
         });
-        label9 = new Label(group, SWT.NONE);
-        label9.setText("OS:"); // Generated
+        
+        label9 = JOE_L_FilesForm_OS.Control(new Label(group, SWT.NONE));
+        
         createCOS();
-        label10 = new Label(group, SWT.NONE);
-        label10.setText("Type:"); // Generated
+        
+        label10 = JOE_L_FilesForm_Type.Control(new Label(group, SWT.NONE));
+        
         createCType();
-        group.setLayout(gridLayout2); // Generated
-        group.setText("Files"); // Generated
+        
         GridData gridData11 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
-        bNotes = new Button(group, SWT.NONE);
-        bNotes.setText("Note..."); // Generated
+        bNotes = JOE_B_FilesForm_Notes.Control(new Button(group, SWT.NONE));
         bNotes.setLayoutData(gridData11); // Generated
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                String tip = Messages.getTooltip("doc.note.text.files");
-                DocumentationForm.openNoteDialog(dom, listener.getFileElement(), "note", tip, true, !listener
-                        .isNewFile(),"File Note");
+//                String tip = Messages.getTooltip("doc.note.text.files");
+//                DocumentationForm.openNoteDialog(dom, listener.getFileElement(), "note", tip, true, !listener
+//                        .isNewFile(),"File Note");
+            	  DocumentationForm.openNoteDialog(dom, listener.getFileElement(), "note", null, true, !listener
+                          .isNewFile(),JOE_B_FilesForm_Notes.label());
             }
         });
-        label11 = new Label(group, SWT.NONE);
-        label11.setText("ID:"); // Generated
-        tID = new Text(group, SWT.BORDER);
-        tID.addFocusListener(new FocusAdapter() {
-        	public void focusGained(final FocusEvent e) {
-        		tID.selectAll();
-        	}
-        });
+        
+        label11 = JOE_L_FilesForm_ID.Control(new Label(group, SWT.NONE));
+        
+        tID = JOE_T_FilesForm_ID.Control(new Text(group, SWT.BORDER));
         tID.setLayoutData(gridData1); // Generated
         tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 setApplyStatus();
             }
         });
+        
         new Label(group, SWT.NONE);
+        
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setText("Label"); // Generated
         label.setLayoutData(gridData5); // Generated
-        table = new Table(group, SWT.BORDER);
+        
+        table = JOE_Tbl_FilesForm_Files.Control(new Table(group, SWT.BORDER));
         table.setHeaderVisible(true); // Generated
         table.setLayoutData(gridData6); // Generated
         table.setLinesVisible(true); // Generated
@@ -179,20 +180,20 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
                 }
             }
         });
-        TableColumn tableColumn = new TableColumn(table, SWT.NONE);
+        
+        TableColumn tableColumn = JOE_TCl_FilesForm_File.Control(new TableColumn(table, SWT.NONE));
         tableColumn.setWidth(300); // Generated
-        tableColumn.setText("File"); // Generated
-        TableColumn tableColumn3 = new TableColumn(table, SWT.NONE);
-        TableColumn tableColumn2 = new TableColumn(table, SWT.NONE);
-        TableColumn tableColumn1 = new TableColumn(table, SWT.NONE);
-        tableColumn1.setWidth(150); // Generated
-        tableColumn1.setText("ID"); // Generated
-        tableColumn3.setWidth(80); // Generated
-        tableColumn3.setText("OS"); // Generated
+        
+        @SuppressWarnings("unused")
+        TableColumn tableColumn3 = JOE_TCl_FilesForm_OS.Control(new TableColumn(table, SWT.NONE));
+        
+        TableColumn tableColumn2 = JOE_TCl_FilesForm_Type.Control(new TableColumn(table, SWT.NONE));
         tableColumn2.setWidth(80); // Generated
-        tableColumn2.setText("Type"); // Generated
-        bNew = new Button(group, SWT.NONE);
-        bNew.setText("New File"); // Generated
+        
+        TableColumn tableColumn1 = JOE_TCl_FilesForm_ID.Control(new TableColumn(table, SWT.NONE));
+        tableColumn1.setWidth(150); // Generated
+        
+        bNew = JOE_B_FilesForm_New.Control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData7); // Generated
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -201,11 +202,12 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
                 table.deselectAll();
             }
         });
+        
         label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label1.setText("Label"); // Generated
         label1.setLayoutData(gridData8); // Generated
-        bRemove = new Button(group, SWT.NONE);
-        bRemove.setText("Remove File"); // Generated
+        
+        bRemove = JOE_B_FilesForm_Remove.Control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(gridData9); // Generated
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -228,13 +230,12 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
         gridData2.horizontalAlignment = GridData.FILL; // Generated
         gridData2.grabExcessHorizontalSpace = true; // Generated
         gridData2.verticalAlignment = GridData.CENTER; // Generated
-        cOS = new Combo(group, SWT.READ_ONLY);
+        cOS = JOE_Cbo_FilesForm_OS.Control(new Combo(group, SWT.READ_ONLY));
         cOS.setLayoutData(gridData2); // Generated
         cOS.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 setApplyStatus();
             }
-
 
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
@@ -250,13 +251,12 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
         gridData3.horizontalAlignment = GridData.FILL; // Generated
         gridData3.grabExcessHorizontalSpace = true; // Generated
         gridData3.verticalAlignment = GridData.CENTER; // Generated
-        cType = new Combo(group, SWT.READ_ONLY);
+        cType = JOE_Cbo_FilesForm_Type.Control(new Combo(group, SWT.READ_ONLY));
         cType.setLayoutData(gridData3); // Generated
         cType.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 setApplyStatus();
             }
-
 
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
@@ -276,15 +276,7 @@ public class FilesForm extends Composite implements IUnsaved, IUpdateLanguage {
 
 
     public void setToolTipText() {
-        tFile.setToolTipText(Messages.getTooltip("doc.files.file"));
-        bApply.setToolTipText(Messages.getTooltip("doc.files.apply"));
-        tID.setToolTipText(Messages.getTooltip("doc.files.id"));
-        cOS.setToolTipText(Messages.getTooltip("doc.files.os"));
-        cType.setToolTipText(Messages.getTooltip("doc.files.type"));
-        bNotes.setToolTipText(Messages.getTooltip("doc.files.notes"));
-        table.setToolTipText(Messages.getTooltip("doc.files.table"));
-        bNew.setToolTipText(Messages.getTooltip("doc.files.new"));
-        bRemove.setToolTipText(Messages.getTooltip("doc.files.remove"));
+//
     }
 
 

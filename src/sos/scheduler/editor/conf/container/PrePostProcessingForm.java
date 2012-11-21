@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -25,7 +23,6 @@ import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
@@ -86,7 +83,7 @@ public class PrePostProcessingForm extends FormBaseClass {
 //		 objParent.setLayout(new FillLayout());
 		showWaitCursor();
 		
-		Group gMonitorGroup = new Group(objParentComposite, SWT.NONE); // TODO i18n
+		Group gMonitorGroup = SOSJOEMessageCodes.JOE_G_PrePostProcessingForm_Executable.Control(new Group(objParentComposite, SWT.NONE));
 		final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, true, true, 13, 1);
 		gridData_5.heightHint = 100;
 		gridData_5.minimumHeight = 30;
@@ -97,20 +94,13 @@ public class PrePostProcessingForm extends FormBaseClass {
 		gridLayout_2.marginWidth = 0;
 		gridLayout_2.marginHeight = 0;
 		gMonitorGroup.setLayout(gridLayout_2);
-		gMonitorGroup.setText(Messages.getLabel("job.executable.label"));
 
 		GridData gd_Label = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 
-		final Label nameLabel = new Label(gMonitorGroup, SWT.NONE);
+		final Label nameLabel = SOSJOEMessageCodes.JOE_L_Name.Control(new Label(gMonitorGroup, SWT.NONE));
 		nameLabel.setLayoutData(gd_Label);
-		nameLabel.setText("Name");
 
-		txtMonitorName = new Text(gMonitorGroup, SWT.BORDER);
-		txtMonitorName.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				txtMonitorName.selectAll();
-			}
-		});
+		txtMonitorName = SOSJOEMessageCodes.JOE_T_PreProcessingComposite_PreProcessingName.Control(new Text(gMonitorGroup, SWT.BORDER));
 		GridData gd_txtName = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gd_txtName.widthHint = 135;
 		txtMonitorName.setLayoutData(gd_txtName);
@@ -122,11 +112,10 @@ public class PrePostProcessingForm extends FormBaseClass {
 			}
 		});
 
-		final Label orderingLabel = new Label(gMonitorGroup, SWT.NONE);
-		orderingLabel.setText("Ordering");
+		final Label orderingLabel = SOSJOEMessageCodes.JOE_L_PreProcessingComposite_Ordering.Control(new Label(gMonitorGroup, SWT.NONE));
 		orderingLabel.setLayoutData(gd_Label);
 
-		spinner = new Spinner(gMonitorGroup, SWT.BORDER);
+		spinner = SOSJOEMessageCodes.JOE_Sp_PreProcessingComposite_Ordering.Control(new Spinner(gMonitorGroup, SWT.BORDER));
 		GridData gd_spinner = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_spinner.widthHint = 106;
 		spinner.setLayoutData(gd_spinner);
@@ -139,9 +128,8 @@ public class PrePostProcessingForm extends FormBaseClass {
 		spinner.setSelection(-1);
 		spinner.setMaximum(999);
 
-		Label labelLanguageSelector = new Label(gMonitorGroup, SWT.NONE);
+		Label labelLanguageSelector = SOSJOEMessageCodes.JOE_L_PrePostProcessingForm_Language.Control(new Label(gMonitorGroup, SWT.NONE));
 		labelLanguageSelector.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false, 1, 1));
-		labelLanguageSelector.setText(Messages.getLabel("Language.Monitor"));
 
 		languageSelector4Monitor = new LanguageSelector(gMonitorGroup, SWT.NONE);
 		languageSelector4Monitor.addModifyListener(new ModifyListener() {
@@ -163,13 +151,11 @@ public class PrePostProcessingForm extends FormBaseClass {
 		languageSelector4Monitor.select(0);
 		languageSelector4Monitor.setItems(ScriptListener._languagesMonitor);
 
-		Button butFavorite = new Button(gMonitorGroup, SWT.NONE);
-
+		Button butFavorite = SOSJOEMessageCodes.JOE_B_PreProcessingComposite_Favourites.Control(new Button(gMonitorGroup, SWT.NONE));
 		butFavorite.setEnabled(true);
 		butFavorite.setVisible(true);
-		butFavorite.setText("Favorites"); // TODO lang "Favorites"
 
-		cboFavorite = new Combo(gMonitorGroup, intComboBoxStyle);
+		cboFavorite = SOSJOEMessageCodes.JOE_Cbo_PreProcessingComposite_Favourites.Control(new Combo(gMonitorGroup, intComboBoxStyle));
 		GridData gd_cboFavorite = new GridData(SWT.LEFT, SWT.CENTER, true, false);
 		gd_cboFavorite.widthHint = 153;
 		cboFavorite.setLayoutData(gd_cboFavorite);
@@ -192,7 +178,7 @@ public class PrePostProcessingForm extends FormBaseClass {
 					if (Options.getProperty(getPrefix(strFavText) + cboFavorite.getText()) != null) {
 						if ((tbxClassName.isEnabled() && tbxClassName.getText().length() > 0)
 								|| (tableIncludes.isEnabled() && tableIncludes.getItemCount() > 0)) {
-							int c = MainWindow.message(getShell(), "Overwrite this Monitor?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+							int c = MainWindow.message(getShell(), SOSJOEMessageCodes.JOE_M_ScriptFormPreProcessing_OverwriteMonitor.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 							if (c != SWT.YES)
 								return;
 							else {
@@ -257,7 +243,7 @@ public class PrePostProcessingForm extends FormBaseClass {
 		languageSelector4Monitor.selectLanguageItem(language);
 
 		if (!languageSelector4Monitor.isShell() && !languageSelector4Monitor.isJava()) {
-			// TODO muﬂﬂ aus dem Dataprovider kommen ...
+			// TODO muss aus dem Dataprovider kommen ...
 			String[] lan = new String[] { "spooler_task_before", "spooler_task_after", "spooler_process_before", "spooler_process_after" };
 			cboPrefunction.setItems(lan);
 			cboPrefunction.setEnabled(true);
@@ -273,8 +259,8 @@ public class PrePostProcessingForm extends FormBaseClass {
 	private void createScriptTab2(Composite pParentComposite, final enuSourceTypes penuSourceType) {
 		init = true;
 
-		Label lblPrefunction1 = new Label(pParentComposite, SWT.NONE);
-		lblPrefunction1.setText(Messages.getLabel("job.selectpredefinedfunctions"));
+		@SuppressWarnings("unused")
+		Label lblPrefunction1 = SOSJOEMessageCodes.JOE_L_JobScript_PredefinedFunctions.Control(new Label(pParentComposite, SWT.NONE));
 		cboPrefunction = new Combo(pParentComposite, intComboBoxStyle);
 		cboPrefunction.setVisibleItemCount(7);
 
@@ -390,7 +376,7 @@ public class PrePostProcessingForm extends FormBaseClass {
 		catch (Exception e) {
 			System.out.println(e.toString());
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 				// tu nichts

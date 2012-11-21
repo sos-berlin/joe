@@ -1,8 +1,6 @@
 package sos.scheduler.editor.doc.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
@@ -22,14 +20,14 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.IUpdateTree;
 import sos.scheduler.editor.doc.listeners.ApplicationsListener;
 import sos.scheduler.editor.doc.listeners.DocumentationListener;
 
-public class ApplicationsForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class ApplicationsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
     private ApplicationsListener listener      = null;
 
     private IUpdateTree          treeHandler   = null;
@@ -40,15 +38,18 @@ public class ApplicationsForm extends Composite implements IUnsaved, IUpdateLang
 
     private Group                group         = null;
 
-    private Label                label         = null;
+    @SuppressWarnings("unused")
+	private Label                label         = null;
 
     private Text                 tName         = null;
 
-    private Label                label1        = null;
+    @SuppressWarnings("unused")
+	private Label                label1        = null;
 
     private Text                 tID           = null;
 
-    private Label                label2        = null;
+    @SuppressWarnings("unused")
+	private Label                label2        = null;
 
     private Combo                cReference    = null;
 
@@ -128,51 +129,47 @@ public class ApplicationsForm extends Composite implements IUnsaved, IUpdateLang
         gridData.horizontalAlignment = GridData.FILL; // Generated
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 5; // Generated
-        group = new Group(this, SWT.NONE);
-        group.setText("Applications"); // Generated
+        
+        group = JOE_G_ApplicationsForm_Applications.Control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout); // Generated
-        label = new Label(group, SWT.NONE);
-        label.setText("Name:"); // Generated
-        tName = new Text(group, SWT.BORDER);
-        tName.addFocusListener(new FocusAdapter() {
-        	public void focusGained(final FocusEvent e) {
-        		tName.selectAll();
-        	}
-        });
+        
+        label = JOE_L_Name.Control(new Label(group, SWT.NONE));
+        
+        tName = JOE_T_ApplicationsForm_Name.Control(new Text(group, SWT.BORDER));
         tName.setLayoutData(gridData); // Generated
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 setApplyStatus();
             }
         });
-        bApply = new Button(group, SWT.NONE);
-        bApply.setText("Apply Application"); // Generated
+        
+        bApply = JOE_B_ApplicationsForm_ApplyApplication.Control(new Button(group, SWT.NONE));
         bApply.setLayoutData(gridData2); // Generated
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 applyApp();
             }
         });
-        label1 = new Label(group, SWT.NONE);
-        label1.setText("ID:"); // Generated
-        tID = new Text(group, SWT.BORDER);
-        tID.addFocusListener(new FocusAdapter() {
-        	public void focusGained(final FocusEvent e) {
-        	}
-        });
+        
+        label1 = JOE_L_ApplicationsForm_ID.Control(new Label(group, SWT.NONE));
+        
+        tID = JOE_T_ApplicationsForm_ID.Control(new Text(group, SWT.BORDER));
         tID.setLayoutData(gridData4); // Generated
         tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 setApplyStatus();
             }
         });
-        label2 = new Label(group, SWT.NONE);
-        label2.setText("Reference:"); // Generated
+        
+        label2 = JOE_L_ApplicationsForm_Reference.Control(new Label(group, SWT.NONE));
+        
         createCReference();
+        
         label3 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label3.setText("Label"); // Generated
+//        label3.setText("Label"); // Generated
         label3.setLayoutData(gridData3); // Generated
-        table = new Table(group, SWT.BORDER);
+        
+        table = JOE_Tbl_ApplicationsForm_Applications.Control(new Table(group, SWT.BORDER));
         table.setHeaderVisible(true); // Generated
         table.setLayoutData(gridData1); // Generated
         table.setLinesVisible(true); // Generated
@@ -186,17 +183,17 @@ public class ApplicationsForm extends Composite implements IUnsaved, IUpdateLang
                 }
             }
         });
-        TableColumn tableColumn = new TableColumn(table, SWT.NONE);
+        
+        TableColumn tableColumn = JOE_TCl_ApplicationsForm_Name.Control(new TableColumn(table, SWT.NONE));
         tableColumn.setWidth(200); // Generated
-        tableColumn.setText("Name"); // Generated
-        TableColumn tableColumn1 = new TableColumn(table, SWT.NONE);
+        
+        TableColumn tableColumn1 = JOE_TCl_ApplicationsForm_ID.Control(new TableColumn(table, SWT.NONE));
         tableColumn1.setWidth(180); // Generated
-        tableColumn1.setText("ID"); // Generated
-        TableColumn tableColumn2 = new TableColumn(table, SWT.NONE);
+        
+        TableColumn tableColumn2 = JOE_TCl_ApplicationsForm_Reference.Control(new TableColumn(table, SWT.NONE));
         tableColumn2.setWidth(180); // Generated
-        tableColumn2.setText("Reference"); // Generated
-        bNew = new Button(group, SWT.NONE);
-        bNew.setText("New Application"); // Generated
+        
+        bNew = JOE_B_ApplicationsForm_NewApplication.Control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData6); // Generated
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -206,11 +203,12 @@ public class ApplicationsForm extends Composite implements IUnsaved, IUpdateLang
                 table.deselectAll();
             }
         });
+        
         label4 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label4.setText("Label"); // Generated
+//        label4.setText("Label"); // Generated
         label4.setLayoutData(gridData7); // Generated
-        bRemove = new Button(group, SWT.NONE);
-        bRemove.setText("Remove"); // Generated
+        
+        bRemove = JOE_B_ApplicationsForm_RemoveApplication.Control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(gridData8); // Generated
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -225,7 +223,6 @@ public class ApplicationsForm extends Composite implements IUnsaved, IUpdateLang
         });
     }
 
-
     /**
      * This method initializes cReference
      */
@@ -234,7 +231,8 @@ public class ApplicationsForm extends Composite implements IUnsaved, IUpdateLang
         gridData5.horizontalAlignment = GridData.FILL; // Generated
         gridData5.grabExcessHorizontalSpace = true; // Generated
         gridData5.verticalAlignment = GridData.CENTER; // Generated
-        cReference = new Combo(group, SWT.NONE);
+        
+        cReference = JOE_Cbo_ApplicationsForm_Reference.Control(new Combo(group, SWT.NONE));
         cReference.setLayoutData(gridData5); // Generated
         cReference.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
@@ -256,13 +254,7 @@ public class ApplicationsForm extends Composite implements IUnsaved, IUpdateLang
 
 
     public void setToolTipText() {
-        tName.setToolTipText(Messages.getTooltip("doc.applications.name"));
-        bApply.setToolTipText(Messages.getTooltip("doc.applications.apply"));
-        tID.setToolTipText(Messages.getTooltip("doc.applications.id"));
-        cReference.setToolTipText(Messages.getTooltip("doc.applications.reference"));
-        table.setToolTipText(Messages.getTooltip("doc.applications.table"));
-        bNew.setToolTipText(Messages.getTooltip("doc.applications.new"));
-        bRemove.setToolTipText(Messages.getTooltip("doc.applications.remove"));
+//
     }
 
 

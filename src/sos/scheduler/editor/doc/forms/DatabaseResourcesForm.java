@@ -18,12 +18,12 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.DatabaseResourceListener;
 
-public class DatabaseResourcesForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class DatabaseResourcesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 	
     private DatabaseResourceListener listener   = null;
 
@@ -33,23 +33,14 @@ public class DatabaseResourcesForm extends Composite implements IUnsaved, IUpdat
 
     private Group             group1     = null;
 
-    private Label             label1     = null;
+    @SuppressWarnings("unused")
+	private Label             label1     = null;
 
     private Text              tName      = null;
 
     private Label             label2     = null;
 
     private Combo             cType      = null;
-
-
-
-
-
-
-
-
-
-
 
     private Button            bNotes     = null;
 
@@ -64,7 +55,6 @@ public class DatabaseResourcesForm extends Composite implements IUnsaved, IUpdat
     private Label             label4     = null;
 
     private Label             label5     = null;
-
 
     private NoteForm         fNote        = null;
 
@@ -92,7 +82,6 @@ public class DatabaseResourcesForm extends Composite implements IUnsaved, IUpdat
         cType.setItems(listener.getTypes());
        // bRemove.setEnabled(false);
         setDatabaseStatus(true);
-        
         
         setToolTipText();
     }
@@ -133,14 +122,14 @@ public class DatabaseResourcesForm extends Composite implements IUnsaved, IUpdat
         gridData3.verticalAlignment = GridData.CENTER; // Generated
         GridLayout gridLayout1 = new GridLayout();
         gridLayout1.numColumns = 5; // Generated
-        group1 = new Group(this, SWT.NONE);        
-        group1.setLayout(gridLayout1); // Generated
         
+        group1 = JOE_G_DBResources_Resources.Control(new Group(this, SWT.NONE));        
+        group1.setLayout(gridLayout1); // Generated
         group1.setLayoutData(gridData11); // Generated
-        group1.setText("Resources"); // Generated
-        label1 = new Label(group1, SWT.NONE);
-        label1.setText("Name:"); // Generated
-        tName = new Text(group1, SWT.BORDER);
+        
+        label1 = JOE_L_Name.Control(new Label(group1, SWT.NONE));
+        
+        tName = JOE_T_DBResources_Name.Control(new Text(group1, SWT.BORDER));
         tName.setLayoutData(gridData3); // Generated
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -148,19 +137,22 @@ public class DatabaseResourcesForm extends Composite implements IUnsaved, IUpdat
                 setApplyResStatus();
             }
         });
+        
         createCType();
-        bApplyRes = new Button(group1, SWT.NONE);
-        bApplyRes.setText("Apply"); // Generated
+        
+        bApplyRes = JOE_B_DBResources_Apply.Control(new Button(group1, SWT.NONE));
         bApplyRes.setLayoutData(gridData12); // Generated
         bApplyRes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 applyResource();
             }
         });
+        
         label5 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label5.setText("Label"); // Generated
+//        label5.setText("Label"); // Generated
         label5.setLayoutData(gridData5); // Generated
-        tResources = new Table(group1, SWT.FULL_SELECTION | SWT.BORDER);
+        
+        tResources = JOE_Tbl_DBResources_Resources.Control(new Table(group1, SWT.FULL_SELECTION | SWT.BORDER));
         tResources.setHeaderVisible(true); // Generated
         tResources.setLayoutData(gridData10); // Generated
         tResources.setLinesVisible(true); // Generated
@@ -170,8 +162,7 @@ public class DatabaseResourcesForm extends Composite implements IUnsaved, IUpdat
                     listener.setResource(tResources.getSelectionIndex());
                     
                     if(fNote.isUnsaved()){
-                    	
-            				int ok = MainWindow.message(Messages.getString("MainListener.apply_changes"), //$NON-NLS-1$
+            				int ok = MainWindow.message(JOE_M_ApplyChanges.label(), //$NON-NLS-1$
             						SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
             				if (ok == SWT.CANCEL)
             					return ;
@@ -180,29 +171,24 @@ public class DatabaseResourcesForm extends Composite implements IUnsaved, IUpdat
             				else if (ok == SWT.YES) {
             					fNote.apply();
             					//return false;
-            				
             			}
-                    	
                     }
-                    
                     
                     fNote.setEnabled(true);
                     fNote.setParams(dom, listener.getResource(), "note", true, true);
                     fNote.setTitle("Note");
-                    
                     setResourceStatus(true);
                     bRemoveRes.setEnabled(true);
                 }
             }
         });
-        TableColumn tableColumn = new TableColumn(tResources, SWT.NONE);
-        tableColumn.setWidth(250); // Generated
-        tableColumn.setText("Name"); // Generated
-        TableColumn tableColumn1 = new TableColumn(tResources, SWT.NONE);
-        tableColumn1.setWidth(60); // Generated
-        tableColumn1.setText("Type"); // Generated
-        bNewRes = new Button(group1, SWT.NONE);
-        bNewRes.setText("New"); // Generated
+        
+        TableColumn tableColumn = JOE_TCl_DBResources_Name.Control(new TableColumn(tResources, SWT.NONE));
+        tableColumn.setWidth(250);
+        TableColumn tableColumn1 = JOE_TCl_DBResources_Type.Control(new TableColumn(tResources, SWT.NONE));
+        tableColumn1.setWidth(60);
+
+        bNewRes = JOE_B_DBResources_New.Control(new Button(group1, SWT.NONE));
         bNewRes.setLayoutData(gridData13); // Generated
         bNewRes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -214,11 +200,12 @@ public class DatabaseResourcesForm extends Composite implements IUnsaved, IUpdat
                 tResources.deselectAll();
             }
         });
+        
         label4 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-        label4.setText("Label"); // Generated
+//        label4.setText("Label"); // Generated
         label4.setLayoutData(gridData9); // Generated
-        bRemoveRes = new Button(group1, SWT.NONE);
-        bRemoveRes.setText("Remove"); // Generated
+        
+        bRemoveRes = JOE_B_DBResources_Remove.Control(new Button(group1, SWT.NONE));
         bRemoveRes.setLayoutData(gridData14); // Generated
         bRemoveRes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -230,14 +217,16 @@ public class DatabaseResourcesForm extends Composite implements IUnsaved, IUpdat
                 bRemoveRes.setEnabled(false);
             }
         });
-        bNotes = new Button(group1, SWT.NONE);
+        
+        bNotes = JOE_B_DBResources_Notes.Control(new Button(group1, SWT.NONE));
         bNotes.setLayoutData(new GridData());
-        bNotes.setText("Note..."); // Generated
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                String tip = Messages.getTooltip("doc.note.text.databases");
-                DocumentationForm.openNoteDialog(dom, listener.getResource(), "note", tip, true, !listener
-                        .isNewDatabase(),"Resource Note");
+//                String tip = Messages.getTooltip("doc.note.text.databases");
+//                DocumentationForm.openNoteDialog(dom, listener.getResource(), "note", tip, true, !listener
+//                        .isNewDatabase(),"Resource Note");
+                DocumentationForm.openNoteDialog(dom, listener.getResource(), "note", null, true, !listener
+                        .isNewDatabase(), JOE_B_DBResources_Notes.label());
             }
         });
 
@@ -247,7 +236,8 @@ public class DatabaseResourcesForm extends Composite implements IUnsaved, IUpdat
         
         
         fNote = new NoteForm(group1, SWT.NONE);       
-        fNote.setTitle("Note");
+//        fNote.setTitle("Note");
+        fNote.setTitle(JOE_B_DBResources_Notes.label());
         fNote.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 5, 1));
         fNote.setEnabled(false);
     }
@@ -259,16 +249,16 @@ public class DatabaseResourcesForm extends Composite implements IUnsaved, IUpdat
     private void createCType() {
         GridData gridData4 = new GridData();
         gridData4.widthHint = 100; // Generated
-        label2 = new Label(group1, SWT.NONE);
+        
+        label2 = JOE_L_DBResources_Type.Control(new Label(group1, SWT.NONE));
         label2.setLayoutData(new GridData());
-        label2.setText("Type:"); // Generated
-        cType = new Combo(group1, SWT.READ_ONLY);
+        
+        cType = JOE_Cbo_DBResources_Type.Control(new Combo(group1, SWT.READ_ONLY));
         cType.setLayoutData(gridData4); // Generated
         cType.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 setApplyResStatus();
             }
-
 
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
@@ -313,13 +303,7 @@ public class DatabaseResourcesForm extends Composite implements IUnsaved, IUpdat
 
 
     public void setToolTipText() {
-        tName.setToolTipText(Messages.getTooltip("doc.databases.resources.name"));
-        cType.setToolTipText(Messages.getTooltip("doc.databases.resources.type"));
-        bNotes.setToolTipText(Messages.getTooltip("doc.databases.resources.notes"));
-        bApplyRes.setToolTipText(Messages.getTooltip("doc.databases.resources.apply"));
-        tResources.setToolTipText(Messages.getTooltip("doc.databases.resources.table"));
-        bNewRes.setToolTipText(Messages.getTooltip("doc.databases.resources.new"));
-        bRemoveRes.setToolTipText(Messages.getTooltip("doc.databases.resources.remove"));
+//
     }
 
 
