@@ -236,7 +236,7 @@ public class DocumentationForm extends SOSJOEMessageCodes implements IEditor, ID
     public static void openNoteDialog(DocumentationDom dom, Element parentElement, String name, String tooltip,
             boolean optional, boolean changeStatus, String title) {
         NoteDialog dialog = new NoteDialog(MainWindow.getSShell(),title);
-        dialog.setText("Note Editor");
+        dialog.setText("Note Editor"); // TODO i18n
         dialog.setTooltip(tooltip);
         
         dialog.setParams(dom, parentElement, name, optional, changeStatus);
@@ -247,8 +247,8 @@ public class DocumentationForm extends SOSJOEMessageCodes implements IEditor, ID
     public static void openNoteDialog(DocumentationDom dom, Element parentElement, String name, String tooltip,
             boolean optional, boolean changeStatus, String title, org.eclipse.swt.widgets.Text txt) {
         NoteDialog dialog = new NoteDialog(MainWindow.getSShell(),title);
-        dialog.setText("Note Editor");
-        //dialog.setUpdateText(txt); //Textfeld soll beim verklassen des Dialogs aktualisert werden
+        dialog.setText("Note Editor"); // TODO i18n
+        //dialog.setUpdateText(txt); //Textfeld soll beim verlassen des Dialogs aktualisert werden
         dialog.setTooltip(tooltip);
         
         dialog.setParams(dom, parentElement, name, optional, changeStatus);

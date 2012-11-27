@@ -153,7 +153,7 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
         final GridLayout gridLayout = new GridLayout();
         composite.setLayout(gridLayout);
 
-        fNote = new NoteForm(composite, SWT.NONE);
+        fNote = new NoteForm(composite, SWT.NONE); // TODO i18n JOE_B_DBResources_Notes.label()
         fNote.setTitle("Note");
         fNote.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 
@@ -178,7 +178,7 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
          * txtChanges.setEditable(false); txtChanges.setLayoutData(new
          * GridData(GridData.FILL, GridData.FILL, true, true));
          */
-        fChanges = new NoteForm(composite, SWT.NONE);
+        fChanges = new NoteForm(composite, SWT.NONE); // TODO i18n
         fChanges.setTitle("Changes");
         fChanges.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 

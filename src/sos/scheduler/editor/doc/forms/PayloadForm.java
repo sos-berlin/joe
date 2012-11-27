@@ -13,10 +13,11 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.PayloadListener;
 
-public class PayloadForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class PayloadForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
     private PayloadListener  listener      = null;
 
     private DocumentationDom dom           = null;
@@ -55,7 +56,7 @@ public class PayloadForm extends Composite implements IUnsaved, IUpdateLanguage 
     /**
      * This method initializes group
      */
-    private void createGroup() {
+    private void createGroup() { //TODO i18n
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2; // Generated
         group = new Group(this, SWT.NONE);

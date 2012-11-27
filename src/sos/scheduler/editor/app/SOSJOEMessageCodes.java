@@ -2773,11 +2773,119 @@ public class SOSJOEMessageCodes extends Composite {
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_B_JobScriptForm_UseScript						= new SOSMsgJOE("JOE_B_JobScriptForm_UseScript");	
 	
+//	NoteForm
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_NoteForm_Documentation						= new SOSMsgJOE("JOE_G_NoteForm_Documentation");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_NoteForm_Language						= new SOSMsgJOE("JOE_L_NoteForm_Language");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_NoteForm_Clear						= new SOSMsgJOE("JOE_B_NoteForm_Clear");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_NoteForm_Apply						= new SOSMsgJOE("JOE_B_NoteForm_Apply");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_NoteForm_Language						= new SOSMsgJOE("JOE_Cbo_NoteForm_Language");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_M_NoteForm_Config						= new SOSMsgJOE("JOE_M_NoteForm_Config");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_M_NoteForm_Settings						= new SOSMsgJOE("JOE_M_NoteForm_Settings");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_M_NoteForm_Doc						= new SOSMsgJOE("JOE_M_NoteForm_SettingDoc");
 	
-			
-			
-			
-			
+//	ParamsForm
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_ParamsForm_Parameter						= new SOSMsgJOE("JOE_G_ParamsForm_Parameter");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ParamsForm_ID						= new SOSMsgJOE("JOE_L_ParamsForm_ID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ParamsForm_ID						= new SOSMsgJOE("JOE_T_ParamsForm_ID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ParamsForm_Reference						= new SOSMsgJOE("JOE_L_ParamsForm_Reference");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ParamsForm_ParamsNote						= new SOSMsgJOE("JOE_B_ParamsForm_ParamsNote");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_ParamsForm_Reference						= new SOSMsgJOE("JOE_Cbo_ParamsForm_Reference");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_ParamsForm_ParamValues						= new SOSMsgJOE("JOE_G_ParamsForm_ParamValues");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ParamsForm_Name						= new SOSMsgJOE("JOE_T_ParamsForm_Name");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ParamsForm_Apply						= new SOSMsgJOE("JOE_B_ParamsForm_Apply");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ParamsForm_DefaultValue						= new SOSMsgJOE("JOE_L_ParamsForm_DefaultValue");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ParamsForm_DefaultValue						= new SOSMsgJOE("JOE_T_ParamsForm_DefaultValue");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ParamsForm_Required						= new SOSMsgJOE("JOE_L_ParamsForm_Required");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ParamsForm_Required						= new SOSMsgJOE("JOE_B_ParamsForm_Required");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ParamsForm_ID2						= new SOSMsgJOE("JOE_T_ParamsForm_ID2");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ParamsForm_Notes						= new SOSMsgJOE("JOE_B_ParamsForm_Notes");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Tbl_ParamsForm_Params						= new SOSMsgJOE("JOE_Tbl_ParamsForm_Params");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_ParamsForm_Name						= new SOSMsgJOE("JOE_TCl_ParamsForm_Name");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_ParamsForm_Default						= new SOSMsgJOE("JOE_TCl_ParamsForm_Default");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_ParamsForm_Required						= new SOSMsgJOE("JOE_TCl_ParamsForm_Required");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_ParamsForm_Reference						= new SOSMsgJOE("JOE_TCl_ParamsForm_Reference");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_ParamsForm_ID						= new SOSMsgJOE("JOE_TCl_ParamsForm_ID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ParamsForm_NewParam						= new SOSMsgJOE("JOE_B_ParamsForm_NewParam");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ParamsForm_RemoveParam						= new SOSMsgJOE("JOE_B_ParamsForm_RemoveParam");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_ParamsForm_Reference2						= new SOSMsgJOE("JOE_Cbo_ParamsForm_Reference2");
+
+	
+	
+	
+//	ProcessForm
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ProcessForm_UseProcess						= new SOSMsgJOE("JOE_B_ProcessForm_UseProcess");	
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_ProcessForm_Process						= new SOSMsgJOE("JOE_G_ProcessForm_Process");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ProcessForm_File						= new SOSMsgJOE("JOE_L_ProcessForm_File");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ProcessForm_File						= new SOSMsgJOE("JOE_T_ProcessForm_File");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ProcessForm_Parameter						= new SOSMsgJOE("JOE_L_ProcessForm_Parameter");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ProcessForm_Parameter						= new SOSMsgJOE("JOE_T_ProcessForm_Parameter");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ProcessForm_Log						= new SOSMsgJOE("JOE_L_ProcessForm_Log");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ProcessForm_Log						= new SOSMsgJOE("JOE_T_ProcessForm_Log");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_ProcessForm_EnvironmentVariables						= new SOSMsgJOE("JOE_G_ProcessForm_EnvironmentVariables");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ProcessForm_Name						= new SOSMsgJOE("JOE_T_ProcessForm_Name");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ProcessForm_Value						= new SOSMsgJOE("JOE_L_ProcessForm_Value");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ProcessForm_Value						= new SOSMsgJOE("JOE_T_ProcessForm_Value");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ProcessForm_Apply						= new SOSMsgJOE("JOE_B_ProcessForm_Apply");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Tbl_ProcessForm_Variables						= new SOSMsgJOE("JOE_Tbl_ProcessForm_Variables");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ProcessForm_Remove						= new SOSMsgJOE("JOE_B_ProcessForm_Remove");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_ProcessForm_Name						= new SOSMsgJOE("JOE_TCl_ProcessForm_Name");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_ProcessForm_Value						= new SOSMsgJOE("JOE_TCl_ProcessForm_Value");
+	
+	
+	
+	
+
+	
+	
 	// SchedulerListener
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_M_SchedulerListener_RunTime										= new SOSMsgJOE("JOE_M_SchedulerListener_RunTime");

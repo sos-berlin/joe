@@ -43,8 +43,7 @@ public class JobScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 
     private void initialize() {
-        cUseScript = new Button(this, SWT.RADIO); //TODO i18n
-        cUseScript.setText("Use script (this will disable the process element and delete its content!)"); // Generated
+        cUseScript = JOE_B_JobScriptForm_UseScript.Control(new Button(this, SWT.RADIO));
         cUseScript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 if (cUseScript.getSelection() != listener.isScript()) {
@@ -76,7 +75,7 @@ public class JobScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 
     public void setToolTipText() {
-        cUseScript.setToolTipText(Messages.getTooltip("doc.script.useScript"));
+//        cUseScript.setToolTipText(Messages.getTooltip("doc.script.useScript"));
     }
 
 

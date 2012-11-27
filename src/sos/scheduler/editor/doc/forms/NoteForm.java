@@ -17,232 +17,206 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.NoteListener;
 import sos.scheduler.editor.doc.listeners.SettingsListener;
 
-public class NoteForm extends Composite implements IUnsaved, IUpdateLanguage {
-	
-	
-    private SettingsListener settingsListener = null;
+public class NoteForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
-    private Group            group            = null;
+	private SettingsListener	settingsListener	= null;
 
-    private Label            label            = null;
+	private Group				group				= null;
 
-    private Combo            cLang            = null;
+	@SuppressWarnings("unused")
+	private Label				label				= null;
 
-    private Text             text             = null;
+	private Combo				cLang				= null;
 
-    private NoteListener     listener         = null; // @jve:decl-index=0:
+	private Text				text				= null;
 
-    private Button           bApply           = null;
+	private NoteListener		listener			= null; // @jve:decl-index=0:
 
-    private int              type             = -1;
+	private Button				bApply				= null;
 
-    private Button           bClear           = null;
+	private int					type				= -1;
 
+	private Button				bClear				= null;
 
-    public NoteForm(Composite parent, int style) {
-        super(parent, style);
-        initialize();
-    }
+	public NoteForm(Composite parent, int style) {
+		super(parent, style);
+		initialize();
+	}
 
+	public NoteForm(Composite parent, int style, int type) {
+		super(parent, style);
+		this.type = type;
+		initialize();
+	}
 
-    public NoteForm(Composite parent, int style, int type) {
-        super(parent, style);
-        this.type = type;
-        initialize();
-    }
+	public void setParams(DocumentationDom dom, Element parent, String name, boolean optional) {
+		setParams(dom, parent, name, optional, true);
+	}
 
+	public void setParams(DocumentationDom dom, Element parent, String name, boolean optional, boolean changeStatus) {
+		listener = new NoteListener(dom, parent, name, optional, changeStatus);
+		cLang.setItems(listener.getLanguages());
+		String strTemplateLang = listener.getLang();
+		if (strTemplateLang == null) {
+			strTemplateLang = Options.getTemplateLanguage();
+		}
+		if (strTemplateLang != null) {
+			cLang.select(cLang.indexOf(strTemplateLang));
+		}
+		text.setText(listener.getNote());
+		bApply.setEnabled(false);
+	}
 
-    public void setParams(DocumentationDom dom, Element parent, String name, boolean optional) {
-        setParams(dom, parent, name, optional, true);
-    }
+	public void setTitle(String title) {
+		group.setText(title);
+	}
 
+	private void initialize() {
+		createGroup();
+		setSize(new Point(650, 446));
+		setLayout(new FillLayout());
 
-    public void setParams(DocumentationDom dom, Element parent, String name, boolean optional, boolean changeStatus) {
-        listener = new NoteListener(dom, parent, name, optional, changeStatus);
-        cLang.setItems(listener.getLanguages());
-        String strTemplateLang = listener.getLang();
-        if (strTemplateLang == null) {
-        	strTemplateLang = Options.getTemplateLanguage();
-        }
-        if(strTemplateLang != null) {
-        	cLang.select(cLang.indexOf(strTemplateLang));
-        }
-        text.setText(listener.getNote());
-        bApply.setEnabled(false);
-    }
+		bApply.setEnabled(false);
+		setToolTipText();
+	}
 
+	/**
+	 * This method initializes group
+	 */
+	private void createGroup() {
+		GridData gridData8 = new GridData(GridData.END, GridData.CENTER, true, false);
 
-    public void setTitle(String title) {
-        group.setText(title);
-    }
+		GridData gridData11 = new GridData(GridData.END, GridData.CENTER, false, false);
+		gridData11.widthHint = 150; // Generated
+		gridData11.horizontalIndent = 10; // Generated
 
+		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
 
-    private void initialize() {
-        createGroup();
-        setSize(new Point(650, 446));
-        setLayout(new FillLayout());
+		GridLayout gridLayout = new GridLayout(4, false);
 
-        bApply.setEnabled(false);
-        setToolTipText();
-    }
+		group = JOE_G_NoteForm_Documentation.Control(new Group(this, SWT.NONE));
+		group.setLayout(gridLayout); // Generated
 
+		label = JOE_L_NoteForm_Language.Control(new Label(group, SWT.NONE));
 
-    /**
-     * This method initializes group
-     */
-    private void createGroup() {
-        GridData gridData8 = new GridData();
-        gridData8.horizontalAlignment = GridData.END; // Generated
-        gridData8.grabExcessHorizontalSpace = true; // Generated
-        gridData8.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData11 = new GridData();
-        gridData11.horizontalAlignment = GridData.END; // Generated
-        gridData11.widthHint = 150; // Generated
-        gridData11.horizontalIndent = 10; // Generated
-        gridData11.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData = new GridData();
-        gridData.horizontalSpan = 4; // Generated
-        gridData.verticalAlignment = GridData.FILL; // Generated
-        gridData.grabExcessHorizontalSpace = true; // Generated
-        gridData.grabExcessVerticalSpace = true; // Generated
-        gridData.horizontalAlignment = GridData.FILL; // Generated
-        GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 4; // Generated
-        group = new Group(this, SWT.NONE);
-        group.setText("Documentation"); // Generated
-        group.setLayout(gridLayout); // Generated
-        label = new Label(group, SWT.NONE);
-        label.setText("Language:"); // Generated
-        createCLang();
-        bClear = new Button(group, SWT.NONE);
-        bClear.setText("Clear"); // Generated
-        bClear.setLayoutData(gridData8); // Generated
-        bClear.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                text.setText("");
-            }
-        });
-        bApply = new Button(group, SWT.NONE);
-        bApply.setText("Apply"); // Generated
-        bApply.setLayoutData(gridData11); // Generated
-        bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-              if (isUnsaved())
-                    apply();
-                bApply.setEnabled(false);
-                if(!getShell().equals(MainWindow.getSShell()))
-                	getShell().dispose();
-            }
-        });
-        text = new Text(group, SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.V_SCROLL |  SWT.CANCEL | SWT.MULTI);
-        text.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
-        text.setLayoutData(gridData); // Generated
-        text.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                bClear.setEnabled(text.getText().length() > 0);
-                if (listener != null) {
-                    bApply.setEnabled(true);
-                }
-            }
-        });
-    }
+		createCLang();
 
+		bClear = JOE_B_NoteForm_Clear.Control(new Button(group, SWT.NONE));
+		bClear.setLayoutData(gridData8); // Generated
+		bClear.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				text.setText("");
+			}
+		});
 
-    /**
-     * This method initializes cLang
-     */
-    private void createCLang() {
-        GridData gridData1 = new GridData();
-        gridData1.widthHint = 100; // Generated
-        cLang = new Combo(group, SWT.BORDER | SWT.READ_ONLY);
-        cLang.setLayoutData(gridData1); // Generated
-        cLang.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-        	
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                changeLang();
-            }
+		bApply = JOE_B_NoteForm_Apply.Control(new Button(group, SWT.NONE));
+		bApply.setLayoutData(gridData11); // Generated
+		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (isUnsaved())
+					apply();
+				bApply.setEnabled(false);
+				if (!getShell().equals(MainWindow.getSShell()))
+					getShell().dispose();
+			}
+		});
 
-            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-            }
-            
-        });
-    }
+		text = new Text(group, SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.MULTI);
+		text.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
+		text.setLayoutData(gridData); // Generated
+		text.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				bClear.setEnabled(text.getText().length() > 0);
+				if (listener != null) {
+					bApply.setEnabled(true);
+				}
+			}
+		});
+	}
 
+	/**
+	 * This method initializes cLang
+	 */
+	private void createCLang() {
+		GridData gridData1 = new GridData();
+		gridData1.widthHint = 100; // Generated
 
-    public void setToolTipText() {
-        cLang.setToolTipText(Messages.getTooltip("doc.note.language"));
-        bClear.setToolTipText(Messages.getTooltip("doc.note.clear"));
-        bApply.setToolTipText(Messages.getTooltip("doc.note.apply"));
+		cLang = JOE_Cbo_NoteForm_Language.Control(new Combo(group, SWT.BORDER | SWT.READ_ONLY));
+		cLang.setLayoutData(gridData1); // Generated
+		cLang.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				changeLang();
+			}
 
-        switch (type) {
-            case Editor.DOC_CONFIGURATION:
-                setToolTipText(Messages.getTooltip("doc.note.text.configuration"));
-                break;
-            case Editor.DOC_SETTINGS:
-                setToolTipText(Messages.getTooltip("doc.note.text.settings"));
-                break;
-            case Editor.DOC_DOCUMENTATION:
-                setToolTipText(Messages.getTooltip("doc.note.text.documentation"));
-                break;
-        }
-    }
+			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			}
+		});
+	}
 
+	public void setToolTipText() {
 
-    public void setToolTipText(String string) {
-        super.setToolTipText(string);
-        text.setToolTipText(string);
-    }
+		switch (type) {
+			case Editor.DOC_CONFIGURATION:
+				setToolTipText(JOE_M_NoteForm_Config.label());
+				break;
+			case Editor.DOC_SETTINGS:
+				setToolTipText(JOE_M_NoteForm_Settings.label());
+				break;
+			case Editor.DOC_DOCUMENTATION:
+				setToolTipText(JOE_M_NoteForm_Doc.label());
+				break;
+		}
+	}
 
+	public void setToolTipText(String string) {
+		super.setToolTipText(string);
+		text.setToolTipText(string);
+	}
 
-    public void apply() {
-        if (listener != null) {
-            listener.setNote(text.getText());
-            listener.createDefault();
-           
-            
-        }
-    }
+	public void apply() {
+		if (listener != null) {
+			listener.setNote(text.getText());
+			listener.createDefault();
 
+		}
+	}
 
-    public boolean isUnsaved() {
-        if (listener != null)
-            listener.createDefault();
+	public boolean isUnsaved() {
+		if (listener != null)
+			listener.createDefault();
 
-        if (settingsListener != null)
-            settingsListener.checkSettings();
+		if (settingsListener != null)
+			settingsListener.checkSettings();
 
-        return listener != null ? bApply.getEnabled() : false;
-    }
+		return listener != null ? bApply.getEnabled() : false;
+	}
 
+	private void changeLang() {
+		if (listener != null) {
+			if (Utils.applyFormChanges(this)) {
+				listener.setLang(cLang.getText());
+				text.setText(listener.getNote());
+				bApply.setEnabled(false);
+			}
+		}
+		text.setFocus();
+	}
 
-    private void changeLang() {
-        if (listener != null) {
-            if (Utils.applyFormChanges(this)) {
-                listener.setLang(cLang.getText());
-                text.setText(listener.getNote());
-                bApply.setEnabled(false);
-            }
-        }
-        text.setFocus();
-    }
+	public boolean setFocus() {
+		text.setFocus();
+		return super.setFocus();
+	}
 
-
-    public boolean setFocus() {
-        text.setFocus();
-        return super.setFocus();
-    }
-
-
-    public void setSettingsListener(SettingsListener settingsListener1) {
-        this.settingsListener = settingsListener1;
-    }
+	public void setSettingsListener(SettingsListener settingsListener1) {
+		this.settingsListener = settingsListener1;
+	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"
