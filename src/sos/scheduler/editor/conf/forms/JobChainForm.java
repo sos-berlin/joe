@@ -126,6 +126,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
         });
         final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, true, false, 1, 1);
         gridData_4.widthHint = 273;
+        
         tName.setLayoutData(gridData_4);
         tName.setText(listener.getChainName());
         tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));

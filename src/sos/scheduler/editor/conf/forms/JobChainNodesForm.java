@@ -156,12 +156,14 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             jobChainGroup = new Group(this, SWT.NONE);
             final GridLayout gridLayout = new GridLayout();
             gridLayout.marginHeight = 0;
+            
             jobChainGroup.setLayout(gridLayout);
             
             gNodes = new Group(jobChainGroup, SWT.NONE);
             GridData gd_gNodes = new GridData(SWT.FILL, GridData.FILL, true, true);
             gd_gNodes.heightHint = 379;
             gd_gNodes.widthHint = 300;
+            gd_gNodes.minimumHeight = 379;
             gNodes.setLayoutData(gd_gNodes);
             gNodes.setText(JOE_M_JCNodesForm_NodesGroup.params(listener.getChainName())); // Chain Nodes for 'CHAINNAME'
             final GridLayout gridLayout_3 = new GridLayout();
