@@ -74,6 +74,7 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
 		txtName = JOE_T_PreProcessingComposite_PreProcessingName.Control(new Text(scriptcom, SWT.BORDER));
 		GridData gd_txtName = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gd_txtName.widthHint = 135;
+		txtName.setText(objDataProvider.getMonitorName());
 		txtName.setLayoutData(gd_txtName);
 		txtName.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
