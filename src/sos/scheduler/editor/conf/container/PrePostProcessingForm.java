@@ -103,6 +103,7 @@ public class PrePostProcessingForm extends FormBaseClass {
 		txtMonitorName = SOSJOEMessageCodes.JOE_T_PreProcessingComposite_PreProcessingName.Control(new Text(gMonitorGroup, SWT.BORDER));
 		GridData gd_txtName = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gd_txtName.widthHint = 135;
+		txtMonitorName.setText(objScriptDataProvider.getName());
 		txtMonitorName.setLayoutData(gd_txtName);
 		txtMonitorName.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {

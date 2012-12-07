@@ -520,7 +520,7 @@ public class JobsListener {
 				_main.updateJobs();	
 			}
 
-			_main.expandItem("Job: "+Utils.getAttributeValue("name", job));
+			_main.expandItem(Utils.getAttributeValue("name", job));
 		} catch (Exception e) {
 			System.err.print(e);
 			try {

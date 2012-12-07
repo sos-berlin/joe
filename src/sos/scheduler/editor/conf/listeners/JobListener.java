@@ -153,7 +153,7 @@ public class JobListener extends JOEListener {
 	}
 
 	public String getJobNameAndTitle() {
-		String strT = "Job: " + this.getJobName();
+		String strT =  this.getJobName();
 		if (this.isDisabled()== true) {
 			strT += " (" + sos.scheduler.editor.app.Messages.getLabel("disabled") + ")";
 		}

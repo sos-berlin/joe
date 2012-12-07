@@ -195,7 +195,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	public void updateJob(Element elem) {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
-			String job = "Job: " + Utils.getAttributeValue("name", elem);
+			String job = Utils.getAttributeValue("name", elem);
 			item.setText(job);
 			TreeData data = (TreeData) item.getData();
 			data.setElement(elem);
@@ -208,7 +208,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 
 	public void updateJob(String s) {
 		TreeItem item = tree.getSelection()[0];
-		String job = "Job: " + s;
+		String job =  s;
 		TreeData data = (TreeData) item.getData();
 	    org.jdom.Element element = data.getElement();
         listener.setColorOfJobTreeItem(element, item);
@@ -245,8 +245,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 
 	public void updateOrder(String s) {
 		TreeItem item = tree.getSelection()[0];
-		String order = "Order: " + s;
-		item.setText(order);
+		item.setText(s);
 	}
 
 	public void updateOrders() {
@@ -495,15 +494,15 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 			return;
 		if (dom.isLifeElement()) {
 			TreeItem item = tree.getSelection()[0];
-			item.setText("Job Chain: " + newName);
+			item.setText(newName);
 		}
 		TreeItem item = tree.getSelection()[0];
 		if (item.getText().equals("Job Chains")) {
 			TreeItem[] items = item.getItems();
 			for (int i = 0; i < items.length; i++) {
 				TreeItem it = items[i];
-				if (it.getText().equals("Job Chain: " + oldName))
-					it.setText("Job Chain: " + newName);
+				if (it.getText().equals(oldName))
+					it.setText(newName);
 			}
 		}
 		else {
@@ -513,8 +512,8 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 					TreeItem[] items = parent[i].getItems();
 					for (int j = 0; j < items.length; j++) {
 						TreeItem it = items[j];
-						if (it.getText().equals("Job Chain: " + oldName))
-							it.setText("Job Chain: " + newName);
+						if (it.getText().equals(oldName))
+							it.setText(newName);
 					}
 				}
 			}
@@ -535,7 +534,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		}
 		else
 			if (elem.getName().equals("job_chain")) {
-				updateJobChain(item.getText(0).substring("Job Chain: ".length()), Utils.getAttributeValue("name", elem));
+				updateJobChain(item.getText(0), Utils.getAttributeValue("name", elem));
 			}
 			else
 				if (elem.getName().equals("add_order") || elem.getName().equals("order")) {

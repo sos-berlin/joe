@@ -55,7 +55,7 @@ public class JobChainConfigurationListener{
 		TreeItem item = new TreeItem(tree, SWT.NONE);
 
 		treeFillState(item);
-		item.setText("Job Chain: " + (jobChainname != null? jobChainname:""));
+		item.setText((jobChainname != null? jobChainname:""));
 		item.setExpanded(true);
 
 		tree.setSelection(new TreeItem[] { tree.getItem(0) });
@@ -137,7 +137,7 @@ public class JobChainConfigurationListener{
 		if (parent.getText().equals("Jobs")) {
 
 			for (int i = 0; i < parent.getItemCount(); i++)
-				if (parent.getItem(i).getText().equals("Job: "+job)) {
+				if (parent.getItem(i).getText().equals(job)) {
 					parent.getItem(i).setExpanded(true);
 				}
 
