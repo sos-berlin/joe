@@ -1,8 +1,6 @@
 package sos.scheduler.editor.doc.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
@@ -21,40 +19,46 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.DocumentationListener;
 import sos.scheduler.editor.doc.listeners.SettingListener;
 
-public class SettingForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class SettingForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
     private SettingListener  listener    = null;
 
     private DocumentationDom dom         = null;
 
     private Group            group1      = null;
 
-    private Label            label6      = null;
+    @SuppressWarnings("unused")
+	private Label            label6      = null;
 
-    private Label            label7      = null;
+    @SuppressWarnings("unused")
+	private Label            label7      = null;
 
     private Text             tName       = null;
 
     private Text             tDefault    = null;
 
-    private Label            label8      = null;
+    @SuppressWarnings("unused")
+	private Label            label8      = null;
 
     private Text             tID         = null;
 
-    private Label            label9      = null;
+    @SuppressWarnings("unused")
+	private Label            label9      = null;
 
     private Combo            cReference = null;
 
-    private Label            label10     = null;
+    @SuppressWarnings("unused")
+	private Label            label10     = null;
 
     private Button           cRequired   = null;
 
-    private Label            label13     = null;
+    @SuppressWarnings("unused")
+	private Label            label13     = null;
 
     private Button           bNotes      = null;
 
@@ -99,111 +103,82 @@ public class SettingForm extends Composite implements IUnsaved, IUpdateLanguage 
      * This method initializes group1
      */
     private void createGroup1() {
-        GridData gridData6 = new GridData();
-        gridData6.horizontalAlignment = GridData.FILL; // Generated
-        gridData6.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData5 = new GridData();
-        gridData5.horizontalAlignment = GridData.FILL; // Generated
-        gridData5.verticalAlignment = GridData.BEGINNING; // Generated
-        GridData gridData4 = new GridData();
-        gridData4.horizontalAlignment = GridData.FILL; // Generated
-        gridData4.verticalAlignment = GridData.BEGINNING; // Generated
-        GridData gridData2 = new GridData();
-        gridData2.horizontalSpan = 5; // Generated
-        gridData2.horizontalAlignment = GridData.FILL; // Generated
-        gridData2.verticalAlignment = GridData.FILL; // Generated
-        gridData2.grabExcessHorizontalSpace = true; // Generated
-        gridData2.grabExcessVerticalSpace = true; // Generated
-        gridData2.verticalSpan = 3; // Generated
-        GridData gridData1 = new GridData();
-        gridData1.horizontalSpan = 6; // Generated
-        gridData1.verticalAlignment = GridData.CENTER; // Generated
-        gridData1.horizontalAlignment = GridData.FILL; // Generated
-        GridData gridData = new GridData();
-        gridData.verticalSpan = 4; // Generated
-        gridData.verticalAlignment = GridData.BEGINNING; // Generated
-        gridData.horizontalAlignment = GridData.FILL; // Generated
-        GridData gridData14 = new GridData();
-        gridData14.verticalAlignment = GridData.CENTER; // Generated
-        gridData14.horizontalAlignment = GridData.END; // Generated
-        GridData gridData12 = new GridData();
-        gridData12.horizontalAlignment = GridData.FILL; // Generated
-        gridData12.grabExcessHorizontalSpace = true; // Generated
-        gridData12.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData11 = new GridData();
-        gridData11.horizontalAlignment = GridData.FILL; // Generated
-        gridData11.grabExcessHorizontalSpace = true; // Generated
-        gridData11.horizontalSpan = 4; // Generated
-        gridData11.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData3 = new GridData();
-        gridData3.horizontalAlignment = GridData.FILL; // Generated
-        gridData3.grabExcessHorizontalSpace = true; // Generated
-        gridData3.horizontalSpan = 4; // Generated
-        gridData3.verticalAlignment = GridData.CENTER; // Generated
-        GridLayout gridLayout1 = new GridLayout();
-        gridLayout1.numColumns = 6; // Generated
-        group1 = new Group(this, SWT.NONE);
-        group1.setText("Settings"); // Generated
+        GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        
+        GridData gridData5 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
+        
+        GridData gridData4 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
+        
+        GridData gridData2 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 3);
+        
+        GridData gridData1 = new GridData(GridData.FILL, GridData.CENTER, false, false, 6, 1);
+        
+        GridData gridData = new GridData(GridData.FILL, GridData.BEGINNING, false, false, 1, 4);
+        
+        GridData gridData14 = new GridData(GridData.END,GridData.CENTER, false, false);
+        
+        GridData gridData12 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        
+        GridData gridData11 = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
+        
+        GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
+        
+        GridLayout gridLayout1 = new GridLayout(6, false);
+        
+        group1 = JOE_G_SettingForm_Settings.Control(new Group(this, SWT.NONE));
         group1.setLayout(gridLayout1); // Generated
-        label6 = new Label(group1, SWT.NONE);
-        label6.setText("Name:"); // Generated
-        tName = new Text(group1, SWT.BORDER);
-        tName.addFocusListener(new FocusAdapter() {
-        	public void focusGained(final FocusEvent e) {
-        		tName.selectAll();
-        	}
-        });
+        
+        label6 = JOE_L_Name.Control(new Label(group1, SWT.NONE));
+        
+        tName = JOE_T_SettingForm_Name.Control(new Text(group1, SWT.BORDER));
         tName.setLayoutData(gridData3); // Generated
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 applySettingStatus();
             }
         });
-        bApply = new Button(group1, SWT.NONE);
-        bApply.setText("Apply Setting"); // Generated
+        
+        bApply = JOE_B_SettingForm_Apply.Control(new Button(group1, SWT.NONE));
         bApply.setLayoutData(gridData); // Generated
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 applySetting();
             }
         });
-        label7 = new Label(group1, SWT.NONE);
-        label7.setText("Default Value:"); // Generated
-        tDefault = new Text(group1, SWT.BORDER);
-        tDefault.addFocusListener(new FocusAdapter() {
-        	public void focusGained(final FocusEvent e) {
-        		tDefault.selectAll();		
-        	}
-        });
+        
+        label7 = JOE_L_SettingForm_DefaultValue.Control(new Label(group1, SWT.NONE));
+        
+        tDefault = JOE_T_SettingForm_DefaultValue.Control(new Text(group1, SWT.BORDER));
         tDefault.setLayoutData(gridData11); // Generated
-        label13 = new Label(group1, SWT.NONE);
-        label13.setText("Type:"); // Generated
-        createCType();
-        label9 = new Label(group1, SWT.NONE);
-        label9.setText("Reference:"); // Generated
-        createCReference();
         tDefault.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 applySettingStatus();
             }
         });
-        label8 = new Label(group1, SWT.NONE);
-        label8.setText("ID:"); // Generated
-        tID = new Text(group1, SWT.BORDER);
-        tID.addFocusListener(new FocusAdapter() {
-        	public void focusGained(final FocusEvent e) {
-        		tID.selectAll();
-        	}
-        });
+        
+        label13 = JOE_L_SettingForm_Type.Control(new Label(group1, SWT.NONE));
+        
+        createCType();
+        
+        label9 = JOE_L_SettingForm_Reference.Control(new Label(group1, SWT.NONE));
+
+        createCReference();
+        
+        label8 = JOE_L_SettingForm_ID.Control(new Label(group1, SWT.NONE));
+
+        tID = JOE_T_SettingForm_ID.Control(new Text(group1, SWT.BORDER));
         tID.setLayoutData(gridData12); // Generated
-        label10 = new Label(group1, SWT.NONE);
-        label10.setText("Required:"); // Generated
-        cRequired = new Button(group1, SWT.CHECK);
-        bNotes = new Button(group1, SWT.NONE);
-        bNotes.setText("Note..."); // Generated
-        bNotes.setLayoutData(gridData14); // Generated
         tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+                applySettingStatus();
+            }
+        });
+        
+        label10 = JOE_L_SettingForm_Required.Control(new Label(group1, SWT.NONE));
+        
+        cRequired = JOE_B_SettingForm_Required.Control(new Button(group1, SWT.CHECK));
+        cRequired.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 applySettingStatus();
             }
         });
@@ -212,18 +187,26 @@ public class SettingForm extends Composite implements IUnsaved, IUpdateLanguage 
                 applySettingStatus();
             }
         });
+        
+        bNotes = JOE_B_SettingForm_Notes.Control(new Button(group1, SWT.NONE));
+        bNotes.setLayoutData(gridData14); // Generated
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                String tip = Messages.getTooltip("doc.note.text.setting");
+//                String tip = Messages.getTooltip("doc.note.text.setting");
+            	String tip = "";
+//                DocumentationForm.openNoteDialog(dom, listener.getSettingElement(), "note", tip, true, !listener
+//                        .isNewSetting(),"Settings Note");
                 DocumentationForm.openNoteDialog(dom, listener.getSettingElement(), "note", tip, true, !listener
-                        .isNewSetting(),"Settings Note");
+                        .isNewSetting(), JOE_B_SettingForm_Notes.label());
             }
 
         });
+        
         label = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setText("Label"); // Generated
         label.setLayoutData(gridData1); // Generated
-        tSettings = new Table(group1, SWT.BORDER);
+        
+        tSettings = JOE_Tbl_SettingForm_Settings.Control(new Table(group1, SWT.BORDER));
         tSettings.setHeaderVisible(true); // Generated
         tSettings.setLayoutData(gridData2); // Generated
         tSettings.setLinesVisible(true); // Generated
@@ -237,26 +220,26 @@ public class SettingForm extends Composite implements IUnsaved, IUpdateLanguage 
                 }
             }
         });
-        TableColumn tableColumn = new TableColumn(tSettings, SWT.NONE);
+        
+        TableColumn tableColumn = JOE_TCl_SettingForm_Name.Control(new TableColumn(tSettings, SWT.NONE));
         tableColumn.setWidth(150); // Generated
-        tableColumn.setText("Name"); // Generated
-        TableColumn tableColumn31 = new TableColumn(tSettings, SWT.NONE);
+        
+        TableColumn tableColumn31 = JOE_TCl_SettingForm_Default.Control(new TableColumn(tSettings, SWT.NONE));
         tableColumn31.setWidth(120); // Generated
-        tableColumn31.setText("Default"); // Generated
-        TableColumn tableColumn3 = new TableColumn(tSettings, SWT.NONE);
-        TableColumn tableColumn4 = new TableColumn(tSettings, SWT.NONE);
-        tableColumn4.setWidth(70); // Generated
-        tableColumn4.setText("Required"); // Generated
-        TableColumn tableColumn2 = new TableColumn(tSettings, SWT.NONE);
-        TableColumn tableColumn1 = new TableColumn(tSettings, SWT.NONE);
-        tableColumn1.setWidth(120); // Generated
-        tableColumn1.setText("ID"); // Generated
-        tableColumn2.setWidth(120); // Generated
-        tableColumn2.setText("Reference"); // Generated
+        
+        TableColumn tableColumn3 = JOE_TCl_SettingForm_Type.Control(new TableColumn(tSettings, SWT.NONE));
         tableColumn3.setWidth(80); // Generated
-        tableColumn3.setText("Type"); // Generated
-        bNew = new Button(group1, SWT.NONE);
-        bNew.setText("New Setting"); // Generated
+        
+        TableColumn tableColumn4 = JOE_TCl_SettingForm_Required.Control(new TableColumn(tSettings, SWT.NONE));
+        tableColumn4.setWidth(70); // Generated
+        
+        TableColumn tableColumn2 = JOE_TCl_SettingForm_Reference.Control(new TableColumn(tSettings, SWT.NONE));
+        tableColumn2.setWidth(110); // Generated
+        
+        TableColumn tableColumn1 = JOE_TCl_SettingForm_ID.Control(new TableColumn(tSettings, SWT.NONE));
+        tableColumn1.setWidth(120); // Generated
+        
+        bNew = JOE_B_SettingForm_New.Control(new Button(group1, SWT.NONE));
         bNew.setLayoutData(gridData5); // Generated
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -266,11 +249,12 @@ public class SettingForm extends Composite implements IUnsaved, IUpdateLanguage 
                 tSettings.deselectAll();
             }
         });
+        
         label1 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
         label1.setText("Label"); // Generated
         label1.setLayoutData(gridData6); // Generated
-        bRemove = new Button(group1, SWT.NONE);
-        bRemove.setText("Remove Setting"); // Generated
+        
+        bRemove = JOE_B_SettingForm_Remove.Control(new Button(group1, SWT.NONE));
         bRemove.setLayoutData(gridData4); // Generated
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -291,12 +275,9 @@ public class SettingForm extends Composite implements IUnsaved, IUpdateLanguage 
      * This method initializes cReference
      */
     private void createCReference() {
-        GridData gridData13 = new GridData();
-        gridData13.horizontalAlignment = GridData.FILL; // Generated
-        gridData13.grabExcessHorizontalSpace = true; // Generated
-        gridData13.horizontalSpan = 2;  // Generated
-        gridData13.verticalAlignment = GridData.CENTER; // Generated
-        cReference = new Combo(group1, SWT.NONE);
+        GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
+
+        cReference = JOE_Cbo_SettingForm_Reference.Control(new Combo(group1, SWT.NONE));
         cReference.setLayoutData(gridData13); // Generated
         cReference.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
@@ -310,18 +291,14 @@ public class SettingForm extends Composite implements IUnsaved, IUpdateLanguage 
      * This method initializes cType
      */
     private void createCType() {
-        GridData gridData15 = new GridData();
-        gridData15.horizontalAlignment = GridData.FILL; // Generated
-        gridData15.grabExcessHorizontalSpace = true; // Generated
-        gridData15.verticalAlignment = GridData.CENTER; // Generated
-        cType = new Combo(group1, SWT.READ_ONLY);
+        GridData gridData15 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+
+        cType = JOE_Cbo_SettingForm_Type.Control(new Combo(group1, SWT.READ_ONLY));
         cType.setLayoutData(gridData15); // Generated
         cType.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 applySettingStatus();
             }
-
-
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
         });
@@ -340,17 +317,7 @@ public class SettingForm extends Composite implements IUnsaved, IUpdateLanguage 
 
 
     public void setToolTipText() {
-        tName.setToolTipText(Messages.getTooltip("doc.setting.name"));
-        bApply.setToolTipText(Messages.getTooltip("doc.setting.apply"));
-        tDefault.setToolTipText(Messages.getTooltip("doc.setting.default"));
-        tID.setToolTipText(Messages.getTooltip("doc.setting.id"));
-        cRequired.setToolTipText(Messages.getTooltip("doc.setting.required"));
-        cReference.setToolTipText(Messages.getTooltip("doc.setting.reference"));
-        cType.setToolTipText(Messages.getTooltip("doc.setting.type"));
-        bNotes.setToolTipText(Messages.getTooltip("doc.setting.notes"));
-        tSettings.setToolTipText(Messages.getTooltip("doc.setting.table"));
-        bNew.setToolTipText(Messages.getTooltip("doc.setting.new"));
-        bRemove.setToolTipText(Messages.getTooltip("doc.setting.remove"));
+//
     }
 
 

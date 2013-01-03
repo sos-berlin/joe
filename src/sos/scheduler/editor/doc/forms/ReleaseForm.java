@@ -4,8 +4,6 @@ import java.text.ParseException;
 import java.util.Date;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -22,12 +20,12 @@ import com.sos.dialog.components.SOSDateTime;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.ReleaseListener;
 
-public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class ReleaseForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
     private ReleaseListener listener = null;
     private DocumentationDom dom = null;
@@ -36,7 +34,8 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
     private Label label1 = null;
     private Text tTitle = null;
     private Text tID = null;
-    private Label label2 = null;
+    @SuppressWarnings("unused")
+	private Label label2 = null;
     private Label label3 = null;
     private SOSDateTime created = null;
     private SOSDateTime modified = null;
@@ -74,10 +73,10 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
             e.printStackTrace();
         }
         fNote.setParams(dom, listener.getRelease(), "note", true, true);
-        fNote.setTitle("Note");
+        fNote.setTitle(JOE_B_DBResources_Notes.label());
 
         fChanges.setParams(dom, listener.getRelease(), "changes", true, true);
-        fChanges.setTitle("Changes");
+        fChanges.setTitle(JOE_M_ReleaseForm_Changes.label());
 
         tID.setText(listener.getID());
         tTitle.setText(listener.getTitle());
@@ -88,21 +87,17 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
      * This method initializes group
      */
     private void createGroup() {
-        GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 4; // Generated
-        group = new Group(this, SWT.NONE);
-        group.setText("Releases"); // Generated
+        GridLayout gridLayout = new GridLayout(4, false);
+        
+        group = JOE_G_ReleaseForm_Releases.Control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout); // Generated
-        label1 = new Label(group, SWT.NONE);
+        
+        label1 = JOE_L_ReleaseForm_ID.Control(new Label(group, SWT.NONE));
         label1.setLayoutData(new GridData());
-        label1.setText("ID:"); // Generated
+        
         GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        tID = new Text(group, SWT.BORDER);
-        tID.addFocusListener(new FocusAdapter() {
-            public void focusGained(final FocusEvent e) {
-                tID.selectAll();
-            }
-        });
+        
+        tID = JOE_T_ReleaseForm_ID.Control(new Text(group, SWT.BORDER));
         tID.setLayoutData(gridData3); // Generated
         tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -110,19 +105,17 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
                 listener.setId(tID.getText());
             }
         });
-        label2 = new Label(group, SWT.NONE);
-        label2.setText("Created:"); // Generated
+        
+        label2 = JOE_L_ReleaseForm_Created.Control(new Label(group, SWT.NONE));
+        
         createCreated();
-        label = new Label(group, SWT.NONE);
+        
+        label = JOE_L_ReleaseForm_Title.Control(new Label(group, SWT.NONE));
         label.setLayoutData(new GridData());
-        label.setText("Title:"); // Generated
+        
         GridData gridData21 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-        tTitle = new Text(group, SWT.BORDER);
-        tTitle.addFocusListener(new FocusAdapter() {
-            public void focusGained(final FocusEvent e) {
-                tTitle.selectAll();
-            }
-        });
+        
+        tTitle = JOE_T_ReleaseForm_Title.Control(new Text(group, SWT.BORDER));
         tTitle.setLayoutData(gridData21); // Generated
         tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -130,9 +123,10 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
                 listener.setTitle(tTitle.getText());
             }
         });
-        label3 = new Label(group, SWT.NONE);
+        
+        label3 = JOE_L_ReleaseForm_Modified.Control(new Label(group, SWT.NONE));
         label3.setLayoutData(new GridData());
-        label3.setText("Modified:"); // Generated
+        
         createModified();
         // Label filler = new Label(group, SWT.NONE);
         createComposite();
@@ -145,16 +139,16 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
     private void createGroup1() {
         GridData gridData5 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2);
         gridData5.widthHint = 486;
-        GridLayout gridLayout1 = new GridLayout();
-        gridLayout1.numColumns = 5; // Generated
+        
+//        GridLayout gridLayout1 = new GridLayout(5, false);
 
         final Composite composite = new Composite(group, SWT.NONE);
         composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1));
         final GridLayout gridLayout = new GridLayout();
         composite.setLayout(gridLayout);
 
-        fNote = new NoteForm(composite, SWT.NONE); // TODO i18n JOE_B_DBResources_Notes.label()
-        fNote.setTitle("Note");
+        fNote = new NoteForm(composite, SWT.NONE);
+        fNote.setTitle(JOE_B_DBResources_Notes.label());
         fNote.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 
         /*
@@ -178,8 +172,8 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
          * txtChanges.setEditable(false); txtChanges.setLayoutData(new
          * GridData(GridData.FILL, GridData.FILL, true, true));
          */
-        fChanges = new NoteForm(composite, SWT.NONE); // TODO i18n
-        fChanges.setTitle("Changes");
+        fChanges = new NoteForm(composite, SWT.NONE);
+        fChanges.setTitle(JOE_M_ReleaseForm_Changes.label());
         fChanges.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 
         /*
@@ -209,12 +203,9 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
      * This method initializes created
      */
     private void createCreated() {
-        GridData gridData6 = new GridData();
-        gridData6.horizontalAlignment = GridData.FILL; // Generated
-        gridData6.grabExcessHorizontalSpace = false; // Generated
-        gridData6.verticalAlignment = GridData.CENTER; // Generated
-        created = new SOSDateTime(group, SWT.NONE);
+        GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 
+        created = JOE_ReleaseForm_Created.Control(new SOSDateTime(group, SWT.NONE));
         created.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 listener.setCreated(created.getISODate());
@@ -228,13 +219,13 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
      */
     private void createModified() {
         GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-        modified = new SOSDateTime(group, SWT.NONE);
+        
+        modified = JOE_ReleaseForm_Modified.Control(new SOSDateTime(group, SWT.NONE));
         modified.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 listener.setModified(modified.getISODate());
             }
         });
-
         modified.setLayoutData(gridData13); // Generated
     }
 
@@ -247,10 +238,6 @@ public class ReleaseForm extends Composite implements IUnsaved, IUpdateLanguage 
     }
 
     public void setToolTipText() {
-        tTitle.setToolTipText(Messages.getTooltip("doc.releases.title"));
-        created.setToolTipText(Messages.getTooltip("doc.releases.created"));
-        tID.setToolTipText(Messages.getTooltip("doc.releases.id"));
-        modified.setToolTipText(Messages.getTooltip("doc.releases.modified"));
         // bNotes.setToolTipText(Messages.getTooltip("doc.releases.notes"));
         // bChanges.setToolTipText(Messages.getTooltip("doc.releases.changes"));
 

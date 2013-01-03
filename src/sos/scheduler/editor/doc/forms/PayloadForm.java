@@ -12,7 +12,6 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.PayloadListener;
@@ -56,29 +55,32 @@ public class PayloadForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
     /**
      * This method initializes group
      */
-    private void createGroup() { //TODO i18n
-        GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 2; // Generated
-        group = new Group(this, SWT.NONE);
-        bNotes = new Button(group, SWT.NONE);
-        bNotes.setText("Payload Note..."); // Generated
+    private void createGroup() {
+        GridLayout gridLayout = new GridLayout(2, false);
+        
+        group = JOE_G_PayloadForm_Payload.Control(new Group(this, SWT.NONE));
+        group.setLayout(gridLayout);
+        
+        bNotes = JOE_B_PayloadForm_PayloadNote.Control(new Button(group, SWT.NONE));
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                String tip = Messages.getTooltip("doc.note.text.payload");
-                DocumentationForm.openNoteDialog(dom, listener.getPayloadElement(), "note", tip, true,"Payload Note");
+//                String tip = Messages.getTooltip("doc.note.text.payload");
+            	String tip = "";
+//                DocumentationForm.openNoteDialog(dom, listener.getPayloadElement(), "note", tip, true,"Payload Note");
+            	DocumentationForm.openNoteDialog(dom, listener.getPayloadElement(), "note", tip, true, JOE_B_PayloadForm_PayloadNote.label());
             }
         });
-        bDocNotes = new Button(group, SWT.NONE);
-        bDocNotes.setText("Payload Document Note..."); // Generated
+        
+        bDocNotes = JOE_B_PayloadForm_DocNote.Control(new Button(group, SWT.NONE));
         bDocNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                String tip = Messages.getTooltip("doc.note.text.payload.document");
-                DocumentationForm.openNoteDialog(dom, listener.getDocumentationElement(), "note", tip, true,"Payload Document Note");
+//                String tip = Messages.getTooltip("doc.note.text.payload.document");
+            	String tip = "";
+//                DocumentationForm.openNoteDialog(dom, listener.getDocumentationElement(), "note", tip, true,"Payload Document Note");
+                DocumentationForm.openNoteDialog(dom, listener.getDocumentationElement(), "note", tip, true, JOE_B_PayloadForm_DocNote.label());
             }
         });
         createFParams();
-        group.setLayout(gridLayout); // Generated
-        group.setText("Payload"); // Generated
     }
 
 
@@ -86,20 +88,15 @@ public class PayloadForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
      * This method initializes fParams
      */
     private void createFParams() {
-        GridData gridData = new GridData();
-        gridData.horizontalSpan = 2; // Generated
-        gridData.verticalAlignment = GridData.FILL; // Generated
-        gridData.grabExcessHorizontalSpace = true; // Generated
-        gridData.grabExcessVerticalSpace = true; // Generated
-        gridData.horizontalAlignment = GridData.FILL; // Generated
+        GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
+        
         fParams = new ParamsForm(group, SWT.NONE);
         fParams.setLayoutData(gridData); // Generated
     }
 
 
     public void setToolTipText() {
-        bNotes.setToolTipText(Messages.getTooltip("doc.payload.notes"));
-        bDocNotes.setToolTipText(Messages.getTooltip("doc.payload.document"));
+//    	
     }
 
 

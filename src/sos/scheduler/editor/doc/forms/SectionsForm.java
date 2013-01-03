@@ -1,8 +1,6 @@
 package sos.scheduler.editor.doc.forms;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
@@ -22,14 +20,14 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.IUpdateTree;
 import sos.scheduler.editor.doc.listeners.DocumentationListener;
 import sos.scheduler.editor.doc.listeners.SectionsListener;
 
-public class SectionsForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class SectionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
     private SectionsListener listener      = null;
 
     IUpdateTree              treeHandler   = null;
@@ -40,9 +38,11 @@ public class SectionsForm extends Composite implements IUnsaved, IUpdateLanguage
 
     private Group            group         = null;
 
-    private Label            label5        = null;
+    @SuppressWarnings("unused")
+	private Label            label5        = null;
 
-    private Label            label6        = null;
+    @SuppressWarnings("unused")
+	private Label            label6        = null;
 
     private Label            label7        = null;
 
@@ -52,7 +52,8 @@ public class SectionsForm extends Composite implements IUnsaved, IUpdateLanguage
 
     private Text             tID           = null;
 
-    private Label            label8        = null;
+    @SuppressWarnings("unused")
+	private Label            label8        = null;
 
     private Combo            cReference    = null;
 
@@ -94,85 +95,64 @@ public class SectionsForm extends Composite implements IUnsaved, IUpdateLanguage
      * This method initializes group
      */
     private void createGroup() {
-        GridData gridData8 = new GridData();
-        gridData8.horizontalAlignment = GridData.FILL; // Generated
-        gridData8.verticalAlignment = GridData.BEGINNING; // Generated
-        GridData gridData7 = new GridData();
-        gridData7.horizontalAlignment = GridData.FILL; // Generated
-        gridData7.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData6 = new GridData();
-        gridData6.horizontalAlignment = GridData.FILL; // Generated
-        gridData6.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData5 = new GridData();
-        gridData5.verticalSpan = 2; // Generated
-        gridData5.verticalAlignment = GridData.BEGINNING; // Generated
-        gridData5.horizontalAlignment = GridData.FILL; // Generated
-        GridData gridData4 = new GridData();
-        gridData4.horizontalSpan = 5; // Generated
-        gridData4.verticalAlignment = GridData.CENTER; // Generated
-        gridData4.horizontalAlignment = GridData.FILL; // Generated
-        GridData gridData2 = new GridData();
-        gridData2.horizontalAlignment = GridData.FILL; // Generated
-        gridData2.grabExcessHorizontalSpace = true; // Generated
-        gridData2.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData1 = new GridData();
-        gridData1.verticalSpan = 3; // Generated
-        gridData1.horizontalAlignment = GridData.FILL; // Generated
-        gridData1.verticalAlignment = GridData.FILL; // Generated
-        gridData1.grabExcessHorizontalSpace = true; // Generated
-        gridData1.grabExcessVerticalSpace = true; // Generated
-        gridData1.horizontalSpan = 4; // Generated
-        GridData gridData = new GridData();
-        gridData.horizontalSpan = 3; // Generated
-        gridData.verticalAlignment = GridData.CENTER; // Generated
-        gridData.grabExcessHorizontalSpace = true; // Generated
-        gridData.horizontalAlignment = GridData.FILL; // Generated
-        GridLayout gridLayout1 = new GridLayout();
-        gridLayout1.numColumns = 5; // Generated
-        group = new Group(this, SWT.NONE);
-        label5 = new Label(group, SWT.NONE);
-        label5.setText("Name:"); // Generated
-        tName = new Text(group, SWT.BORDER);
-        tName.addFocusListener(new FocusAdapter() {
-        	public void focusGained(final FocusEvent e) {
-        		tName.selectAll();
-        	}
-        });
+        GridData gridData8 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
+        
+        GridData gridData7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        
+        GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        
+        GridData gridData5 = new GridData(GridData.FILL, GridData.BEGINNING, false, false, 1, 2);
+        
+        GridData gridData4 = new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
+        
+        GridData gridData2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        
+        GridData gridData1 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 3);
+        
+        GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
+        
+        GridLayout gridLayout1 = new GridLayout(5, false);
+        
+        group = JOE_G_SectionsForm_Sections.Control(new Group(this, SWT.NONE));
+        group.setLayout(gridLayout1); // Generated
+        
+        label5 = JOE_L_Name.Control(new Label(group, SWT.NONE));
+
+        tName = JOE_T_SectionsForm_Name.Control(new Text(group, SWT.BORDER));
         tName.setLayoutData(gridData); // Generated
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 setApplyStatus();
             }
         });
-        bApply = new Button(group, SWT.NONE);
-        bApply.setText("Apply Section"); // Generated
+        
+        bApply = JOE_B_SectionsForm_Apply.Control(new Button(group, SWT.NONE));
         bApply.setLayoutData(gridData5); // Generated
-        label8 = new Label(group, SWT.NONE);
-        label8.setText("Reference:"); // Generated
-        createCReference();
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 applySection();
             }
         });
-        label6 = new Label(group, SWT.NONE);
-        label6.setText("ID:"); // Generated
-        tID = new Text(group, SWT.BORDER);
-        tID.addFocusListener(new FocusAdapter() {
-        	public void focusGained(final FocusEvent e) {
-        		tID.selectAll();
-        	}
-        });
+        
+        label8 = JOE_L_SectionsForm_Reference.Control(new Label(group, SWT.NONE));
+        
+        createCReference();
+        
+        label6 = JOE_L_SectionsForm_ID.Control(new Label(group, SWT.NONE));
+        
+        tID = JOE_T_SectionsForm_ID.Control(new Text(group, SWT.BORDER));
         tID.setLayoutData(gridData2); // Generated
         tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 setApplyStatus();
             }
         });
+        
         label7 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label7.setText("Label"); // Generated
         label7.setLayoutData(gridData4); // Generated
-        tSections = new Table(group, SWT.BORDER);
+        
+        tSections = JOE_Tbl_SectionsForm_Sections.Control(new Table(group, SWT.BORDER));
         tSections.setHeaderVisible(true); // Generated
         tSections.setLayoutData(gridData1); // Generated
         tSections.setLinesVisible(true); // Generated
@@ -186,8 +166,8 @@ public class SectionsForm extends Composite implements IUnsaved, IUpdateLanguage
                 }
             }
         });
-        bNew = new Button(group, SWT.NONE);
-        bNew.setText("New Section"); // Generated
+        
+        bNew = JOE_B_SectionsForm_New.Control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData6); // Generated
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -197,11 +177,12 @@ public class SectionsForm extends Composite implements IUnsaved, IUpdateLanguage
                 tSections.deselectAll();
             }
         });
+        
         label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label.setText("Label"); // Generated
         label.setLayoutData(gridData7); // Generated
-        bRemove = new Button(group, SWT.NONE);
-        bRemove.setText("Remove Section"); // Generated
+        
+        bRemove = JOE_B_SectionsForm_Remove.Control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(gridData8); // Generated
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -213,17 +194,15 @@ public class SectionsForm extends Composite implements IUnsaved, IUpdateLanguage
                 }
             }
         });
-        TableColumn tableColumn3 = new TableColumn(tSections, SWT.NONE);
+        
+        TableColumn tableColumn3 = JOE_TCl_SectionsForm_Name.Control(new TableColumn(tSections, SWT.NONE));
         tableColumn3.setWidth(200); // Generated
-        tableColumn3.setText("Name"); // Generated
-        TableColumn tableColumn5 = new TableColumn(tSections, SWT.NONE);
-        TableColumn tableColumn4 = new TableColumn(tSections, SWT.NONE);
-        tableColumn4.setWidth(180); // Generated
-        tableColumn4.setText("ID"); // Generated
+        
+        TableColumn tableColumn5 = JOE_TCl_SectionsForm_Reference.Control(new TableColumn(tSections, SWT.NONE));
         tableColumn5.setWidth(180); // Generated
-        tableColumn5.setText("Reference"); // Generated
-        group.setLayout(gridLayout1); // Generated
-        group.setText("Sections"); // Generated
+        
+        TableColumn tableColumn4 = JOE_TCl_SectionsForm_ID.Control(new TableColumn(tSections, SWT.NONE));
+        tableColumn4.setWidth(180); // Generated
     }
 
 
@@ -231,11 +210,9 @@ public class SectionsForm extends Composite implements IUnsaved, IUpdateLanguage
      * This method initializes cReference
      */
     private void createCReference() {
-        GridData gridData3 = new GridData();
-        gridData3.horizontalAlignment = GridData.FILL; // Generated
-        gridData3.grabExcessHorizontalSpace = true; // Generated
-        gridData3.verticalAlignment = GridData.CENTER; // Generated
-        cReference = new Combo(group, SWT.NONE);
+        GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+
+        cReference = JOE_Cbo_SectionsForm_Reference.Control(new Combo(group, SWT.NONE));
         cReference.setLayoutData(gridData3); // Generated
         cReference.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
@@ -257,13 +234,7 @@ public class SectionsForm extends Composite implements IUnsaved, IUpdateLanguage
 
 
     public void setToolTipText() {
-        tName.setToolTipText(Messages.getTooltip("doc.sections.name"));
-        bApply.setToolTipText(Messages.getTooltip("doc.sections.apply"));
-        tID.setToolTipText(Messages.getTooltip("doc.sections.id"));
-        cReference.setToolTipText(Messages.getTooltip("doc.sections.reference"));
-        tSections.setToolTipText(Messages.getTooltip("doc.sections.table"));
-        bNew.setToolTipText(Messages.getTooltip("doc.sections.new"));
-        bRemove.setToolTipText(Messages.getTooltip("doc.sections.remove"));
+//
     }
 
 

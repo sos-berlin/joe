@@ -15,12 +15,12 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.ResourcesListener;
 
-public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class ResourcesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
     private ResourcesListener listener     = null;
 
     private DocumentationDom  dom          = null;
@@ -35,9 +35,11 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
 
     private Group             group2       = null;
 
-    private Label             label        = null;
+    @SuppressWarnings("unused")
+	private Label             label        = null;
 
-    private Label             label1       = null;
+    @SuppressWarnings("unused")
+	private Label             label1       = null;
 
     private Text              tMemory      = null;
 
@@ -47,9 +49,11 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
 
     private Text              tSpace       = null;
 
-    private Label             label2       = null;
+    @SuppressWarnings("unused")
+	private Label             label2       = null;
 
-    private Label             label3       = null;
+    @SuppressWarnings("unused")
+	private Label             label3       = null;
 
     private Button            bMemoryNotes = null;
 
@@ -74,7 +78,6 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
         cbSpace.setItems(listener.getUnits());
         setSpaceStatus(listener.isSpace());
         setMemoryStatus(listener.isMemory());
-
     }
 
 
@@ -82,18 +85,16 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
      * This method initializes group
      */
     private void createGroup() {
-        GridData gridData3 = new GridData();
-        gridData3.horizontalAlignment = GridData.CENTER; // Generated
-        gridData3.verticalAlignment = GridData.BEGINNING; // Generated
-        GridData gridData2 = new GridData();
-        gridData2.horizontalAlignment = GridData.CENTER; // Generated
-        gridData2.verticalAlignment = GridData.BEGINNING; // Generated
-        GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 2; // Generated
-        group = new Group(this, SWT.NONE);
-        group.setText("Resources"); // Generated
+        GridData gridData3 = new GridData(GridData.CENTER, GridData.BEGINNING, false, false);
+        
+        GridData gridData2 = new GridData(GridData.CENTER, GridData.BEGINNING, false, false);
+        
+        GridLayout gridLayout = new GridLayout(2, false);
+        
+        group = JOE_G_ResourcesForm_Resources.Control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout); // Generated
-        cMemory = new Button(group, SWT.CHECK);
+        
+        cMemory = JOE_B_ResourcesForm_Memory.Control(new Button(group, SWT.CHECK));
         cMemory.setLayoutData(gridData2); // Generated
         cMemory.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -101,8 +102,10 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
                 setMemoryStatus(cMemory.getSelection());
             }
         });
+        
         createGroup1();
-        cSpace = new Button(group, SWT.CHECK);
+        
+        cSpace = JOE_B_ResourcesForm_Space.Control(new Button(group, SWT.CHECK));
         cSpace.setLayoutData(gridData3); // Generated
         cSpace.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -110,6 +113,7 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
                 setSpaceStatus(cSpace.getSelection());
             }
         });
+        
         createGroup2();
     }
 
@@ -118,29 +122,22 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
      * This method initializes group1
      */
     private void createGroup1() {
-        GridData gridData11 = new GridData();
-        gridData11.horizontalAlignment = GridData.FILL; // Generated
-        gridData11.grabExcessHorizontalSpace = true; // Generated
-        gridData11.verticalAlignment = GridData.CENTER; // Generated
+        GridData gridData11 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        
         GridData gridData10 = new GridData();
         gridData10.widthHint = 150; // Generated
-        GridLayout gridLayout1 = new GridLayout();
-        gridLayout1.numColumns = 5; // Generated
-        GridData gridData = new GridData();
-        gridData.horizontalAlignment = GridData.FILL; // Generated
-        gridData.grabExcessHorizontalSpace = true; // Generated
-        gridData.verticalAlignment = GridData.CENTER; // Generated
-        gridData.horizontalAlignment = GridData.FILL; // Generated
-        gridData.grabExcessHorizontalSpace = true; // Generated
-        gridData.grabExcessVerticalSpace = false; // Generated
-        gridData.verticalAlignment = GridData.FILL; // Generated
-        group1 = new Group(group, SWT.NONE);
+        
+        GridLayout gridLayout1 = new GridLayout(5, false);
+        
+        GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
+        
+        group1 = JOE_G_ResourcesForm_Memory.Control(new Group(group, SWT.NONE));
         group1.setLayoutData(gridData); // Generated
         group1.setLayout(gridLayout1); // Generated
-        group1.setText("Memory"); // Generated
-        label = new Label(group1, SWT.NONE);
-        label.setText("Minimum:"); // Generated
-        tMemory = new Text(group1, SWT.BORDER);
+        
+        label = JOE_L_ResourcesForm_Minimum.Control(new Label(group1, SWT.NONE));
+        
+        tMemory = JOE_T_ResourcesForm_Memory.Control(new Text(group1, SWT.BORDER));
         tMemory.setLayoutData(gridData11); // Generated
         tMemory.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -153,16 +150,19 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
-        label2 = new Label(group1, SWT.NONE);
-        label2.setText("Unit:"); // Generated
+        
+        label2 = JOE_L_ResourcesForm_Unit.Control(new Label(group1, SWT.NONE));
+        
         createCbMemory();
-        bMemoryNotes = new Button(group1, SWT.NONE);
-        bMemoryNotes.setText("Memory Note..."); // Generated
+        
+        bMemoryNotes = JOE_B_ResourcesForm_MemoryNotes.Control(new Button(group1, SWT.NONE));
         bMemoryNotes.setLayoutData(gridData10); // Generated
         bMemoryNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                String tip = Messages.getTooltip("doc.note.text.memory");
-                DocumentationForm.openNoteDialog(dom, listener.getMemoryElement(), "note", tip, true,"Memory Note");
+//                String tip = Messages.getTooltip("doc.note.text.memory");
+            	String tip = "";
+//                DocumentationForm.openNoteDialog(dom, listener.getMemoryElement(), "note", tip, true,"Memory Note");
+            	DocumentationForm.openNoteDialog(dom, listener.getMemoryElement(), "note", tip, true, JOE_B_ResourcesForm_MemoryNotes.label());
             }
         });
     }
@@ -174,27 +174,20 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
     private void createGroup2() {
         GridData gridData6 = new GridData();
         gridData6.widthHint = 150; // Generated
-        GridData gridData9 = new GridData();
-        gridData9.horizontalAlignment = GridData.FILL; // Generated
-        gridData9.grabExcessHorizontalSpace = true; // Generated
-        gridData9.verticalAlignment = GridData.CENTER; // Generated
-        GridLayout gridLayout2 = new GridLayout();
-        gridLayout2.numColumns = 5; // Generated
-        GridData gridData1 = new GridData();
-        gridData1.horizontalAlignment = GridData.FILL; // Generated
-        gridData1.grabExcessHorizontalSpace = true; // Generated
-        gridData1.verticalAlignment = GridData.CENTER; // Generated
-        gridData1.horizontalAlignment = GridData.FILL; // Generated
-        gridData1.grabExcessHorizontalSpace = true; // Generated
-        gridData1.grabExcessVerticalSpace = false; // Generated
-        gridData1.verticalAlignment = GridData.FILL; // Generated
-        group2 = new Group(group, SWT.NONE);
+        
+        GridData gridData9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        
+        GridLayout gridLayout2 = new GridLayout(5, false);
+        
+        GridData gridData1 = new GridData(GridData.FILL, GridData.FILL, true, false);
+        
+        group2 = JOE_G_ResourcesForm_Space.Control(new Group(group, SWT.NONE));
         group2.setLayoutData(gridData1); // Generated
         group2.setLayout(gridLayout2); // Generated
-        group2.setText("Space"); // Generated
-        label1 = new Label(group2, SWT.NONE);
-        label1.setText("Minimum:"); // Generated
-        tSpace = new Text(group2, SWT.BORDER);
+        
+        label1 = JOE_L_ResourcesForm_Minimum.Control(new Label(group2, SWT.NONE));
+
+        tSpace = JOE_T_ResourcesForm_Space.Control(new Text(group2, SWT.BORDER));
         tSpace.setLayoutData(gridData9); // Generated
         tSpace.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -207,16 +200,19 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
                 e.doit = Utils.isOnlyDigits(e.text);
             }
         });
-        label3 = new Label(group2, SWT.NONE);
-        label3.setText("Unit:"); // Generated
+        
+        label3 = JOE_L_ResourcesForm_Unit.Control(new Label(group2, SWT.NONE));
+
         createCbSpace();
-        bSpaceNotes = new Button(group2, SWT.NONE);
-        bSpaceNotes.setText("Space Note..."); // Generated
+        
+        bSpaceNotes = JOE_B_ResourcesForm_SpaceNotes.Control(new Button(group2, SWT.NONE));
         bSpaceNotes.setLayoutData(gridData6); // Generated
         bSpaceNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                String tip = Messages.getTooltip("doc.note.text.space");
-                DocumentationForm.openNoteDialog(dom, listener.getSpaceElement(), "note", tip, true,"Space Note");
+//            	String tip = Messages.getTooltip("doc.note.text.space");
+            	String tip = "";
+//                DocumentationForm.openNoteDialog(dom, listener.getSpaceElement(), "note", tip, true,"Space Note");
+            	DocumentationForm.openNoteDialog(dom, listener.getSpaceElement(), "note", tip, true, JOE_B_ResourcesForm_SpaceNotes.label());
             }
         });
     }
@@ -228,15 +224,13 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
     private void createCbMemory() {
         GridData gridData4 = new GridData();
         gridData4.widthHint = 90; // Generated
-        gridData4.widthHint = 90; // Generated
-        cbMemory = new Combo(group1, SWT.NONE);
+        
+        cbMemory = JOE_Cbo_ResourcesForm_Memory.Control(new Combo(group1, SWT.NONE));
         cbMemory.setLayoutData(gridData4); // Generated
         cbMemory.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 listener.setMemoryUnit(cbMemory.getText());
             }
-
-
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
         });
@@ -249,15 +243,13 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
     private void createCbSpace() {
         GridData gridData5 = new GridData();
         gridData5.widthHint = 90; // Generated
-        gridData5.widthHint = 90; // Generated
-        cbSpace = new Combo(group2, SWT.NONE);
+        
+        cbSpace = JOE_Cbo_ResourcesForm_Space.Control(new Combo(group2, SWT.NONE));
         cbSpace.setLayoutData(gridData5); // Generated
         cbSpace.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 listener.setSpaceUnit(cbSpace.getText());
             }
-
-
             public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
         });
@@ -274,14 +266,7 @@ public class ResourcesForm extends Composite implements IUnsaved, IUpdateLanguag
 
 
     public void setToolTipText() {
-        cMemory.setToolTipText(Messages.getTooltip("doc.resources.memory.useit"));
-        tMemory.setToolTipText(Messages.getTooltip("doc.resources.memory.minimum"));
-        cbMemory.setToolTipText(Messages.getTooltip("doc.resources.unit"));
-        bMemoryNotes.setToolTipText(Messages.getTooltip("doc.resources.memory.notes"));
-        cSpace.setToolTipText(Messages.getTooltip("doc.resources.space.useit"));
-        tSpace.setToolTipText(Messages.getTooltip("doc.resources.space.minimum"));
-        cbSpace.setToolTipText(Messages.getTooltip("doc.resources.unit"));
-        bSpaceNotes.setToolTipText(Messages.getTooltip("doc.resources.space.notes"));
+//
     }
 
 

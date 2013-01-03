@@ -378,8 +378,8 @@ public class SOSJOEMessageCodes extends Composite {
 	public static final SOSMsgJOE	JOE_G_DetailForm_MainGroup							= new SOSMsgJOE("JOE_G_DetailForm_MainGroup");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_G_DetailForm_ParameterGroup						= new SOSMsgJOE("JOE_G_DetailForm_ParameterGroup");
-//	@I18NMsg
-//	public static final SOSMsgJOE	JOE_L_NameLabel										= new SOSMsgJOE("JOE_L_NameLabel");
+	// @I18NMsg
+	// public static final SOSMsgJOE JOE_L_NameLabel = new SOSMsgJOE("JOE_L_NameLabel");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_DetailForm_Name								= new SOSMsgJOE("JOE_T_DetailForm_Name");
 	@I18NMsg
@@ -2117,420 +2117,419 @@ public class SOSJOEMessageCodes extends Composite {
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_B_WebservicesForm_Remove						= new SOSMsgJOE("JOE_B_WebservicesForm_Remove");
 
-	
-//	ActionForm
+	// ActionForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_ActionForm_Action						= new SOSMsgJOE("JOE_G_ActionForm_Action");
+	public static final SOSMsgJOE	JOE_G_ActionForm_Action								= new SOSMsgJOE("JOE_G_ActionForm_Action");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ActionForm_Name						= new SOSMsgJOE("JOE_T_ActionForm_Name");
-	
-//	ActionsForm
+	public static final SOSMsgJOE	JOE_T_ActionForm_Name								= new SOSMsgJOE("JOE_T_ActionForm_Name");
+
+	// ActionsForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_ActionsForm_ActionsElements						= new SOSMsgJOE("JOE_G_ActionsForm_ActionsElements");
-	
-//	ActionsListForm
+	public static final SOSMsgJOE	JOE_G_ActionsForm_ActionsElements					= new SOSMsgJOE("JOE_G_ActionsForm_ActionsElements");
+
+	// ActionsListForm
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_G_ActionsListForm_Actions						= new SOSMsgJOE("JOE_G_ActionsListForm_Actions");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Tbl_ActionsListForm_ActionsList						= new SOSMsgJOE("JOE_Tbl_ActionsListForm_ActionsList");
+	public static final SOSMsgJOE	JOE_Tbl_ActionsListForm_ActionsList					= new SOSMsgJOE("JOE_Tbl_ActionsListForm_ActionsList");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ActionsListForm_New						= new SOSMsgJOE("JOE_B_ActionsListForm_New");
+	public static final SOSMsgJOE	JOE_B_ActionsListForm_New							= new SOSMsgJOE("JOE_B_ActionsListForm_New");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_M_ActionsListForm_NewAction						= new SOSMsgJOE("JOE_M_ActionsListForm_NewAction");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_B_ActionsListForm_Remove						= new SOSMsgJOE("JOE_B_ActionsListForm_Remove");
-	
-//	EventForm
+
+	// EventForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_EventForm_ActionGroup						= new SOSMsgJOE("JOE_G_EventForm_ActionGroup");
+	public static final SOSMsgJOE	JOE_G_EventForm_ActionGroup							= new SOSMsgJOE("JOE_G_EventForm_ActionGroup");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_EventForm_ActionRemoveEvent						= new SOSMsgJOE("JOE_G_EventForm_ActionRemoveEvent");
+	public static final SOSMsgJOE	JOE_G_EventForm_ActionRemoveEvent					= new SOSMsgJOE("JOE_G_EventForm_ActionRemoveEvent");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_G_EventForm_ActionAddEvent						= new SOSMsgJOE("JOE_G_EventForm_ActionAddEvent");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_EventForm_EventName						= new SOSMsgJOE("JOE_L_EventForm_EventName");
+	public static final SOSMsgJOE	JOE_L_EventForm_EventName							= new SOSMsgJOE("JOE_L_EventForm_EventName");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventForm_EventName						= new SOSMsgJOE("JOE_T_EventForm_EventName");
+	public static final SOSMsgJOE	JOE_T_EventForm_EventName							= new SOSMsgJOE("JOE_T_EventForm_EventName");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_EventForm_Apply						= new SOSMsgJOE("JOE_B_EventForm_Apply");
+	public static final SOSMsgJOE	JOE_B_EventForm_Apply								= new SOSMsgJOE("JOE_B_EventForm_Apply");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_EventForm_EventTitle						= new SOSMsgJOE("JOE_L_EventForm_EventTitle");
+	public static final SOSMsgJOE	JOE_L_EventForm_EventTitle							= new SOSMsgJOE("JOE_L_EventForm_EventTitle");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventForm_EventTitle						= new SOSMsgJOE("JOE_T_EventForm_EventTitle");
+	public static final SOSMsgJOE	JOE_T_EventForm_EventTitle							= new SOSMsgJOE("JOE_T_EventForm_EventTitle");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_EventForm_New						= new SOSMsgJOE("JOE_B_EventForm_New");
+	public static final SOSMsgJOE	JOE_B_EventForm_New									= new SOSMsgJOE("JOE_B_EventForm_New");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_EventForm_MatchingAttributes						= new SOSMsgJOE("JOE_G_EventForm_MatchingAttributes");
+	public static final SOSMsgJOE	JOE_G_EventForm_MatchingAttributes					= new SOSMsgJOE("JOE_G_EventForm_MatchingAttributes");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_EventForm_EventClass						= new SOSMsgJOE("JOE_L_EventForm_EventClass");
+	public static final SOSMsgJOE	JOE_L_EventForm_EventClass							= new SOSMsgJOE("JOE_L_EventForm_EventClass");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_Cbo_EventForm_EventClass						= new SOSMsgJOE("JOE_Cbo_EventForm_EventClass");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_EventForm_EventID						= new SOSMsgJOE("JOE_L_EventForm_EventID");
+	public static final SOSMsgJOE	JOE_L_EventForm_EventID								= new SOSMsgJOE("JOE_L_EventForm_EventID");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventForm_EventID						= new SOSMsgJOE("JOE_T_EventForm_EventID");
+	public static final SOSMsgJOE	JOE_T_EventForm_EventID								= new SOSMsgJOE("JOE_T_EventForm_EventID");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_EventForm_JobName						= new SOSMsgJOE("JOE_L_EventForm_JobName");
+	public static final SOSMsgJOE	JOE_L_EventForm_JobName								= new SOSMsgJOE("JOE_L_EventForm_JobName");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventForm_JobName						= new SOSMsgJOE("JOE_T_EventForm_JobName");
+	public static final SOSMsgJOE	JOE_T_EventForm_JobName								= new SOSMsgJOE("JOE_T_EventForm_JobName");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_EventForm_JobChain						= new SOSMsgJOE("JOE_L_EventForm_JobChain");
+	public static final SOSMsgJOE	JOE_L_EventForm_JobChain							= new SOSMsgJOE("JOE_L_EventForm_JobChain");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventForm_JobChain						= new SOSMsgJOE("JOE_T_EventForm_JobChain");
+	public static final SOSMsgJOE	JOE_T_EventForm_JobChain							= new SOSMsgJOE("JOE_T_EventForm_JobChain");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_EventForm_OrderID						= new SOSMsgJOE("JOE_L_EventForm_OrderID");
+	public static final SOSMsgJOE	JOE_L_EventForm_OrderID								= new SOSMsgJOE("JOE_L_EventForm_OrderID");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventForm_OrderID						= new SOSMsgJOE("JOE_T_EventForm_OrderID");
+	public static final SOSMsgJOE	JOE_T_EventForm_OrderID								= new SOSMsgJOE("JOE_T_EventForm_OrderID");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_EventForm_ExitCode						= new SOSMsgJOE("JOE_L_EventForm_ExitCode");
+	public static final SOSMsgJOE	JOE_L_EventForm_ExitCode							= new SOSMsgJOE("JOE_L_EventForm_ExitCode");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventForm_ExitCode						= new SOSMsgJOE("JOE_T_EventForm_ExitCode");
+	public static final SOSMsgJOE	JOE_T_EventForm_ExitCode							= new SOSMsgJOE("JOE_T_EventForm_ExitCode");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_EventForm_Comment						= new SOSMsgJOE("JOE_L_EventForm_Comment");
+	public static final SOSMsgJOE	JOE_L_EventForm_Comment								= new SOSMsgJOE("JOE_L_EventForm_Comment");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventForm_Comment						= new SOSMsgJOE("JOE_T_EventForm_Comment");
+	public static final SOSMsgJOE	JOE_T_EventForm_Comment								= new SOSMsgJOE("JOE_T_EventForm_Comment");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Tbl_EventForm_Events						= new SOSMsgJOE("JOE_Tbl_EventForm_Events");
+	public static final SOSMsgJOE	JOE_Tbl_EventForm_Events							= new SOSMsgJOE("JOE_Tbl_EventForm_Events");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_EventForm_ExpirationPeriod						= new SOSMsgJOE("JOE_L_EventForm_ExpirationPeriod");
+	public static final SOSMsgJOE	JOE_L_EventForm_ExpirationPeriod					= new SOSMsgJOE("JOE_L_EventForm_ExpirationPeriod");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_EventForm_ExpirationCycle						= new SOSMsgJOE("JOE_L_EventForm_ExpirationCycle");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_EventForm_Remove						= new SOSMsgJOE("JOE_B_EventForm_Remove");
+	public static final SOSMsgJOE	JOE_B_EventForm_Remove								= new SOSMsgJOE("JOE_B_EventForm_Remove");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_EventForm_RemoveGroup						= new SOSMsgJOE("JOE_M_EventForm_RemoveGroup");
+	public static final SOSMsgJOE	JOE_M_EventForm_RemoveGroup							= new SOSMsgJOE("JOE_M_EventForm_RemoveGroup");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_M_EventForm_RemoveCommand						= new SOSMsgJOE("JOE_M_EventForm_RemoveCommand");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventForm_HourExpirationPeriod						= new SOSMsgJOE("JOE_T_EventForm_HourExpirationPeriod");
+	public static final SOSMsgJOE	JOE_T_EventForm_HourExpirationPeriod				= new SOSMsgJOE("JOE_T_EventForm_HourExpirationPeriod");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventForm_MinExpirationPeriod						= new SOSMsgJOE("JOE_T_EventForm_MinExpirationPeriod");
+	public static final SOSMsgJOE	JOE_T_EventForm_MinExpirationPeriod					= new SOSMsgJOE("JOE_T_EventForm_MinExpirationPeriod");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventForm_SecExpirationPeriod						= new SOSMsgJOE("JOE_T_EventForm_SecExpirationPeriod");
+	public static final SOSMsgJOE	JOE_T_EventForm_SecExpirationPeriod					= new SOSMsgJOE("JOE_T_EventForm_SecExpirationPeriod");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventForm_HourExpirationCycle						= new SOSMsgJOE("JOE_T_EventForm_HourExpirationCycle");
+	public static final SOSMsgJOE	JOE_T_EventForm_HourExpirationCycle					= new SOSMsgJOE("JOE_T_EventForm_HourExpirationCycle");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventForm_MinExpirationCycle						= new SOSMsgJOE("JOE_T_EventForm_MinExpirationCycle");
+	public static final SOSMsgJOE	JOE_T_EventForm_MinExpirationCycle					= new SOSMsgJOE("JOE_T_EventForm_MinExpirationCycle");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventForm_SecExpirationCycle						= new SOSMsgJOE("JOE_T_EventForm_SecExpirationCycle");
-	
-//	EventsForm
+	public static final SOSMsgJOE	JOE_T_EventForm_SecExpirationCycle					= new SOSMsgJOE("JOE_T_EventForm_SecExpirationCycle");
+
+	// EventsForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_EventsForm_Action						= new SOSMsgJOE("JOE_G_EventsForm_Action");
+	public static final SOSMsgJOE	JOE_G_EventsForm_Action								= new SOSMsgJOE("JOE_G_EventsForm_Action");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_EventsForm_Logic						= new SOSMsgJOE("JOE_L_EventsForm_Logic");
+	public static final SOSMsgJOE	JOE_L_EventsForm_Logic								= new SOSMsgJOE("JOE_L_EventsForm_Logic");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventsForm_Logic						= new SOSMsgJOE("JOE_T_EventsForm_Logic");
+	public static final SOSMsgJOE	JOE_T_EventsForm_Logic								= new SOSMsgJOE("JOE_T_EventsForm_Logic");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_EventsForm_Operation						= new SOSMsgJOE("JOE_B_EventsForm_Operation");
+	public static final SOSMsgJOE	JOE_B_EventsForm_Operation							= new SOSMsgJOE("JOE_B_EventsForm_Operation");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_G_EventsForm_EventsGroup						= new SOSMsgJOE("JOE_G_EventsForm_EventsGroup");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_EventsForm_Group						= new SOSMsgJOE("JOE_L_EventsForm_Group");
+	public static final SOSMsgJOE	JOE_L_EventsForm_Group								= new SOSMsgJOE("JOE_L_EventsForm_Group");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventsForm_Group						= new SOSMsgJOE("JOE_T_EventsForm_Group");
+	public static final SOSMsgJOE	JOE_T_EventsForm_Group								= new SOSMsgJOE("JOE_T_EventsForm_Group");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_EventsForm_Apply						= new SOSMsgJOE("JOE_B_EventsForm_Apply");
+	public static final SOSMsgJOE	JOE_B_EventsForm_Apply								= new SOSMsgJOE("JOE_B_EventsForm_Apply");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_EventsForm_LogicGroup						= new SOSMsgJOE("JOE_T_EventsForm_LogicGroup");
+	public static final SOSMsgJOE	JOE_T_EventsForm_LogicGroup							= new SOSMsgJOE("JOE_T_EventsForm_LogicGroup");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_EventsForm_New						= new SOSMsgJOE("JOE_B_EventsForm_New");
+	public static final SOSMsgJOE	JOE_B_EventsForm_New								= new SOSMsgJOE("JOE_B_EventsForm_New");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_EventsForm_EventClass						= new SOSMsgJOE("JOE_L_EventsForm_EventClass");
+	public static final SOSMsgJOE	JOE_L_EventsForm_EventClass							= new SOSMsgJOE("JOE_L_EventsForm_EventClass");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_Cbo_EventsForm_EventClass						= new SOSMsgJOE("JOE_Cbo_EventsForm_EventClass");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_EventsForm_Remove						= new SOSMsgJOE("JOE_B_EventsForm_Remove");
+	public static final SOSMsgJOE	JOE_B_EventsForm_Remove								= new SOSMsgJOE("JOE_B_EventsForm_Remove");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_M_EventsForm_RemoveGroup						= new SOSMsgJOE("JOE_M_EventsForm_RemoveGroup");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Tbl_EventsForm_Groups						= new SOSMsgJOE("JOE_Tbl_EventsForm_Groups");
+	public static final SOSMsgJOE	JOE_Tbl_EventsForm_Groups							= new SOSMsgJOE("JOE_Tbl_EventsForm_Groups");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_EventsForm_Group						= new SOSMsgJOE("JOE_TCl_EventsForm_Group");
+	public static final SOSMsgJOE	JOE_TCl_EventsForm_Group							= new SOSMsgJOE("JOE_TCl_EventsForm_Group");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_EventsForm_Logic						= new SOSMsgJOE("JOE_TCl_EventsForm_Logic");
+	public static final SOSMsgJOE	JOE_TCl_EventsForm_Logic							= new SOSMsgJOE("JOE_TCl_EventsForm_Logic");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_TCl_EventsForm_EventClass						= new SOSMsgJOE("JOE_TCl_EventsForm_EventClass");
-	
-//	Actions JobCommandForm
+
+	// Actions JobCommandForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_ActionsJobCommandForm_JobsOrders						= new SOSMsgJOE("JOE_G_ActionsJobCommandForm_JobsOrders");
+	public static final SOSMsgJOE	JOE_G_ActionsJobCommandForm_JobsOrders				= new SOSMsgJOE("JOE_G_ActionsJobCommandForm_JobsOrders");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_JobChain						= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_JobChain");
+	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_JobChain				= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_JobChain");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Cbo_ActionsJobCommandForm_JobChain						= new SOSMsgJOE("JOE_Cbo_ActionsJobCommandForm_JobChain");
+	public static final SOSMsgJOE	JOE_Cbo_ActionsJobCommandForm_JobChain				= new SOSMsgJOE("JOE_Cbo_ActionsJobCommandForm_JobChain");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_Job						= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_Job");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_StartAt						= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_StartAt");
+	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_StartAt					= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_StartAt");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_Year						= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_Year");
+	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_Year					= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_Year");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_Hyphen						= new SOSMsgJOE("JOE_L_Hyphen");
+	public static final SOSMsgJOE	JOE_L_Hyphen										= new SOSMsgJOE("JOE_L_Hyphen");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_Month						= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_Month");
+	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_Month					= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_Month");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_Day						= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_Day");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_Hour						= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_Hour");
+	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_Hour					= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_Hour");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_Min						= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_Min");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_Sec						= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_Sec");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Cbo_ActionsJobCommandForm_Times						= new SOSMsgJOE("JOE_Cbo_ActionsJobCommandForm_Times");
+	public static final SOSMsgJOE	JOE_Cbo_ActionsJobCommandForm_Times					= new SOSMsgJOE("JOE_Cbo_ActionsJobCommandForm_Times");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_Priority						= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_Priority");
+	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_Priority				= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_Priority");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_Priority						= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_Priority");
+	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_Priority				= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_Priority");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_Title						= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_Title");
+	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_Title					= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_Title");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_Title						= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_Title");
+	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_Title					= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_Title");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_State						= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_State");
+	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_State					= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_State");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_State						= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_State");
+	public static final SOSMsgJOE	JOE_T_ActionsJobCommandForm_State					= new SOSMsgJOE("JOE_T_ActionsJobCommandForm_State");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_EndState						= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_EndState");
+	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_EndState				= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_EndState");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Cbo_ActionsJobCommandForm_EndState						= new SOSMsgJOE("JOE_Cbo_ActionsJobCommandForm_EndState");
+	public static final SOSMsgJOE	JOE_Cbo_ActionsJobCommandForm_EndState				= new SOSMsgJOE("JOE_Cbo_ActionsJobCommandForm_EndState");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_Replace						= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_Replace");
+	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_Replace					= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_Replace");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ActionsJobCommandForm_Replace						= new SOSMsgJOE("JOE_B_ActionsJobCommandForm_Replace");
+	public static final SOSMsgJOE	JOE_B_ActionsJobCommandForm_Replace					= new SOSMsgJOE("JOE_B_ActionsJobCommandForm_Replace");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_Job						= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_Job");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_OrderID						= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_OrderID");
-	
-//	JobCommandNamesForm
+	public static final SOSMsgJOE	JOE_L_ActionsJobCommandForm_OrderID					= new SOSMsgJOE("JOE_L_ActionsJobCommandForm_OrderID");
+
+	// JobCommandNamesForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_JobCommandNamesForm_Command						= new SOSMsgJOE("JOE_G_JobCommandNamesForm_Command");
+	public static final SOSMsgJOE	JOE_G_JobCommandNamesForm_Command					= new SOSMsgJOE("JOE_G_JobCommandNamesForm_Command");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_JobCommandNamesForm_Name						= new SOSMsgJOE("JOE_L_JobCommandNamesForm_Name");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_JobCommandNamesForm_Name						= new SOSMsgJOE("JOE_T_JobCommandNamesForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobCommandNamesForm_AddJob						= new SOSMsgJOE("JOE_B_JobCommandNamesForm_AddJob");
+	public static final SOSMsgJOE	JOE_B_JobCommandNamesForm_AddJob					= new SOSMsgJOE("JOE_B_JobCommandNamesForm_AddJob");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobCommandNamesForm_SchedulerHost						= new SOSMsgJOE("JOE_L_JobCommandNamesForm_SchedulerHost");
+	public static final SOSMsgJOE	JOE_L_JobCommandNamesForm_SchedulerHost				= new SOSMsgJOE("JOE_L_JobCommandNamesForm_SchedulerHost");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_JobCommandNamesForm_SchedulerHost						= new SOSMsgJOE("JOE_T_JobCommandNamesForm_SchedulerHost");
+	public static final SOSMsgJOE	JOE_T_JobCommandNamesForm_SchedulerHost				= new SOSMsgJOE("JOE_T_JobCommandNamesForm_SchedulerHost");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobCommandNamesForm_AddOrder						= new SOSMsgJOE("JOE_B_JobCommandNamesForm_AddOrder");
+	public static final SOSMsgJOE	JOE_B_JobCommandNamesForm_AddOrder					= new SOSMsgJOE("JOE_B_JobCommandNamesForm_AddOrder");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobCommandNamesForm_SchedulerPort						= new SOSMsgJOE("JOE_L_JobCommandNamesForm_SchedulerPort");
+	public static final SOSMsgJOE	JOE_L_JobCommandNamesForm_SchedulerPort				= new SOSMsgJOE("JOE_L_JobCommandNamesForm_SchedulerPort");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_JobCommandNamesForm_SchedulerPort						= new SOSMsgJOE("JOE_T_JobCommandNamesForm_SchedulerPort");
+	public static final SOSMsgJOE	JOE_T_JobCommandNamesForm_SchedulerPort				= new SOSMsgJOE("JOE_T_JobCommandNamesForm_SchedulerPort");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Tbl_JobCommandNamesForm_Commands						= new SOSMsgJOE("JOE_Tbl_JobCommandNamesForm_Commands");
+	public static final SOSMsgJOE	JOE_Tbl_JobCommandNamesForm_Commands				= new SOSMsgJOE("JOE_Tbl_JobCommandNamesForm_Commands");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_JobCommandNamesForm_Command						= new SOSMsgJOE("JOE_TCl_JobCommandNamesForm_Command");
+	public static final SOSMsgJOE	JOE_TCl_JobCommandNamesForm_Command					= new SOSMsgJOE("JOE_TCl_JobCommandNamesForm_Command");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_JobCommandNamesForm_JobID						= new SOSMsgJOE("JOE_TCl_JobCommandNamesForm_JobID");
+	public static final SOSMsgJOE	JOE_TCl_JobCommandNamesForm_JobID					= new SOSMsgJOE("JOE_TCl_JobCommandNamesForm_JobID");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_JobCommandNamesForm_JobChain						= new SOSMsgJOE("JOE_TCl_JobCommandNamesForm_JobChain");
+	public static final SOSMsgJOE	JOE_TCl_JobCommandNamesForm_JobChain				= new SOSMsgJOE("JOE_TCl_JobCommandNamesForm_JobChain");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_JobCommandNamesForm_StartAt						= new SOSMsgJOE("JOE_TCl_JobCommandNamesForm_StartAt");
+	public static final SOSMsgJOE	JOE_TCl_JobCommandNamesForm_StartAt					= new SOSMsgJOE("JOE_TCl_JobCommandNamesForm_StartAt");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobCommandNamesForm_RemoveExitCode						= new SOSMsgJOE("JOE_B_JobCommandNamesForm_RemoveExitCode");
-	
-//	ActionsJobCommandsForm
+	public static final SOSMsgJOE	JOE_B_JobCommandNamesForm_RemoveExitCode			= new SOSMsgJOE("JOE_B_JobCommandNamesForm_RemoveExitCode");
+
+	// ActionsJobCommandsForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_ActionsJobCommandsForm_Commands						= new SOSMsgJOE("JOE_G_ActionsJobCommandsForm_Commands");
+	public static final SOSMsgJOE	JOE_G_ActionsJobCommandsForm_Commands				= new SOSMsgJOE("JOE_G_ActionsJobCommandsForm_Commands");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ActionsJobCommandsForm_NewCommand						= new SOSMsgJOE("JOE_B_ActionsJobCommandsForm_NewCommand");
+	public static final SOSMsgJOE	JOE_B_ActionsJobCommandsForm_NewCommand				= new SOSMsgJOE("JOE_B_ActionsJobCommandsForm_NewCommand");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ActionsJobCommandsForm_RemoveCommand						= new SOSMsgJOE("JOE_B_ActionsJobCommandsForm_RemoveCommand");
+	public static final SOSMsgJOE	JOE_B_ActionsJobCommandsForm_RemoveCommand			= new SOSMsgJOE("JOE_B_ActionsJobCommandsForm_RemoveCommand");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Tbl_ActionsJobCommandsForm_Commands						= new SOSMsgJOE("JOE_Tbl_ActionsJobCommandsForm_Commands");
+	public static final SOSMsgJOE	JOE_Tbl_ActionsJobCommandsForm_Commands				= new SOSMsgJOE("JOE_Tbl_ActionsJobCommandsForm_Commands");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ActionsJobCommandsForm_Command						= new SOSMsgJOE("JOE_TCl_ActionsJobCommandsForm_Command");
+	public static final SOSMsgJOE	JOE_TCl_ActionsJobCommandsForm_Command				= new SOSMsgJOE("JOE_TCl_ActionsJobCommandsForm_Command");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ActionsJobCommandsForm_Host						= new SOSMsgJOE("JOE_TCl_ActionsJobCommandsForm_Host");
+	public static final SOSMsgJOE	JOE_TCl_ActionsJobCommandsForm_Host					= new SOSMsgJOE("JOE_TCl_ActionsJobCommandsForm_Host");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ActionsJobCommandsForm_Port						= new SOSMsgJOE("JOE_TCl_ActionsJobCommandsForm_Port");
-	
-//	LogicOperationDialog
+	public static final SOSMsgJOE	JOE_TCl_ActionsJobCommandsForm_Port					= new SOSMsgJOE("JOE_TCl_ActionsJobCommandsForm_Port");
+
+	// LogicOperationDialog
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_LogicOperationDialog_LogicalOperation						= new SOSMsgJOE("JOE_M_LogicOperationDialog_LogicalOperation");
+	public static final SOSMsgJOE	JOE_M_LogicOperationDialog_LogicalOperation			= new SOSMsgJOE("JOE_M_LogicOperationDialog_LogicalOperation");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_LogicOperationDialog_Expression						= new SOSMsgJOE("JOE_T_LogicOperationDialog_Expression");
+	public static final SOSMsgJOE	JOE_T_LogicOperationDialog_Expression				= new SOSMsgJOE("JOE_T_LogicOperationDialog_Expression");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Lst_LogicOperationDialog_Operators						= new SOSMsgJOE("JOE_Lst_LogicOperationDialog_Operators");
+	public static final SOSMsgJOE	JOE_Lst_LogicOperationDialog_Operators				= new SOSMsgJOE("JOE_Lst_LogicOperationDialog_Operators");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Lst_LogicOperationDialog_Group						= new SOSMsgJOE("JOE_Lst_LogicOperationDialog_Group");
+	public static final SOSMsgJOE	JOE_Lst_LogicOperationDialog_Group					= new SOSMsgJOE("JOE_Lst_LogicOperationDialog_Group");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_LogicOperationDialog_Cancel						= new SOSMsgJOE("JOE_B_LogicOperationDialog_Cancel");
+	public static final SOSMsgJOE	JOE_B_LogicOperationDialog_Cancel					= new SOSMsgJOE("JOE_B_LogicOperationDialog_Cancel");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_LogicOperationDialog_Restore						= new SOSMsgJOE("JOE_B_LogicOperationDialog_Restore");
+	public static final SOSMsgJOE	JOE_B_LogicOperationDialog_Restore					= new SOSMsgJOE("JOE_B_LogicOperationDialog_Restore");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_LogicOperationDialog_Clear						= new SOSMsgJOE("JOE_B_LogicOperationDialog_Clear");
+	public static final SOSMsgJOE	JOE_B_LogicOperationDialog_Clear					= new SOSMsgJOE("JOE_B_LogicOperationDialog_Clear");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_LogicOperationDialog_Apply						= new SOSMsgJOE("JOE_B_LogicOperationDialog_Apply");
-	
-//	ActionsParameterForm
+	public static final SOSMsgJOE	JOE_B_LogicOperationDialog_Apply					= new SOSMsgJOE("JOE_B_LogicOperationDialog_Apply");
+
+	// ActionsParameterForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_ActionsParameterForm_Parameter						= new SOSMsgJOE("JOE_G_ActionsParameterForm_Parameter");
+	public static final SOSMsgJOE	JOE_G_ActionsParameterForm_Parameter				= new SOSMsgJOE("JOE_G_ActionsParameterForm_Parameter");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TI_ActionsParameterForm_Includes						= new SOSMsgJOE("JOE_TI_ActionsParameterForm_Includes");
+	public static final SOSMsgJOE	JOE_TI_ActionsParameterForm_Includes				= new SOSMsgJOE("JOE_TI_ActionsParameterForm_Includes");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_IsLifeFile						= new SOSMsgJOE("JOE_B_ActionsParameterForm_IsLifeFile");
+	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_IsLifeFile				= new SOSMsgJOE("JOE_B_ActionsParameterForm_IsLifeFile");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_ActionsParameterForm_File						= new SOSMsgJOE("JOE_L_ActionsParameterForm_File");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ActionsParameterForm_IncludeFilename						= new SOSMsgJOE("JOE_T_ActionsParameterForm_IncludeFilename");
+	public static final SOSMsgJOE	JOE_T_ActionsParameterForm_IncludeFilename			= new SOSMsgJOE("JOE_T_ActionsParameterForm_IncludeFilename");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_ActionsParameterForm_Node						= new SOSMsgJOE("JOE_L_ActionsParameterForm_Node");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ActionsParameterForm_IncludeNode						= new SOSMsgJOE("JOE_T_ActionsParameterForm_IncludeNode");
+	public static final SOSMsgJOE	JOE_T_ActionsParameterForm_IncludeNode				= new SOSMsgJOE("JOE_T_ActionsParameterForm_IncludeNode");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_IncludesApply						= new SOSMsgJOE("JOE_B_ActionsParameterForm_IncludesApply");
+	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_IncludesApply			= new SOSMsgJOE("JOE_B_ActionsParameterForm_IncludesApply");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Tbl_ActionsParameterForm_IncludeParams						= new SOSMsgJOE("JOE_Tbl_ActionsParameterForm_IncludeParams");
+	public static final SOSMsgJOE	JOE_Tbl_ActionsParameterForm_IncludeParams			= new SOSMsgJOE("JOE_Tbl_ActionsParameterForm_IncludeParams");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ActionsParameterForm_File						= new SOSMsgJOE("JOE_TCl_ActionsParameterForm_File");
+	public static final SOSMsgJOE	JOE_TCl_ActionsParameterForm_File					= new SOSMsgJOE("JOE_TCl_ActionsParameterForm_File");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ActionsParameterForm_Node						= new SOSMsgJOE("JOE_TCl_ActionsParameterForm_Node");
+	public static final SOSMsgJOE	JOE_TCl_ActionsParameterForm_Node					= new SOSMsgJOE("JOE_TCl_ActionsParameterForm_Node");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ActionsParameterForm_FileLifeFile						= new SOSMsgJOE("JOE_TCl_ActionsParameterForm_FileLifeFile");
+	public static final SOSMsgJOE	JOE_TCl_ActionsParameterForm_FileLifeFile			= new SOSMsgJOE("JOE_TCl_ActionsParameterForm_FileLifeFile");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_NewIncludes						= new SOSMsgJOE("JOE_B_ActionsParameterForm_NewIncludes");
+	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_NewIncludes				= new SOSMsgJOE("JOE_B_ActionsParameterForm_NewIncludes");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_RemoveInclude						= new SOSMsgJOE("JOE_B_ActionsParameterForm_RemoveInclude");
+	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_RemoveInclude			= new SOSMsgJOE("JOE_B_ActionsParameterForm_RemoveInclude");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TI_ActionsParameterForm_Parameter						= new SOSMsgJOE("JOE_TI_ActionsParameterForm_Parameter");
+	public static final SOSMsgJOE	JOE_TI_ActionsParameterForm_Parameter				= new SOSMsgJOE("JOE_TI_ActionsParameterForm_Parameter");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_ActionsParameterForm_Name						= new SOSMsgJOE("JOE_L_ActionsParameterForm_Name");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_ActionsParameterForm_Name						= new SOSMsgJOE("JOE_T_ActionsParameterForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ActionsParameterForm_Value						= new SOSMsgJOE("JOE_L_ActionsParameterForm_Value");
+	public static final SOSMsgJOE	JOE_L_ActionsParameterForm_Value					= new SOSMsgJOE("JOE_L_ActionsParameterForm_Value");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Cbo_ActionsParameterForm_Source						= new SOSMsgJOE("JOE_Cbo_ActionsParameterForm_Source");
+	public static final SOSMsgJOE	JOE_Cbo_ActionsParameterForm_Source					= new SOSMsgJOE("JOE_Cbo_ActionsParameterForm_Source");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ActionsParameterForm_Value						= new SOSMsgJOE("JOE_T_ActionsParameterForm_Value");
+	public static final SOSMsgJOE	JOE_T_ActionsParameterForm_Value					= new SOSMsgJOE("JOE_T_ActionsParameterForm_Value");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_Apply						= new SOSMsgJOE("JOE_B_ActionsParameterForm_Apply");
+	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_Apply					= new SOSMsgJOE("JOE_B_ActionsParameterForm_Apply");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Tbl_ActionsParameterForm_Parameter						= new SOSMsgJOE("JOE_Tbl_ActionsParameterForm_Parameter");
+	public static final SOSMsgJOE	JOE_Tbl_ActionsParameterForm_Parameter				= new SOSMsgJOE("JOE_Tbl_ActionsParameterForm_Parameter");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ActionsParameterForm_Name						= new SOSMsgJOE("JOE_TCl_ActionsParameterForm_Name");
+	public static final SOSMsgJOE	JOE_TCl_ActionsParameterForm_Name					= new SOSMsgJOE("JOE_TCl_ActionsParameterForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ActionsParameterForm_Value						= new SOSMsgJOE("JOE_TCl_ActionsParameterForm_Value");
+	public static final SOSMsgJOE	JOE_TCl_ActionsParameterForm_Value					= new SOSMsgJOE("JOE_TCl_ActionsParameterForm_Value");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_NewParam						= new SOSMsgJOE("JOE_B_ActionsParameterForm_NewParam");
+	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_NewParam					= new SOSMsgJOE("JOE_B_ActionsParameterForm_NewParam");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_Remove						= new SOSMsgJOE("JOE_B_ActionsParameterForm_Remove");
+	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_Remove					= new SOSMsgJOE("JOE_B_ActionsParameterForm_Remove");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_Parameter						= new SOSMsgJOE("JOE_B_ActionsParameterForm_Parameter");
+	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_Parameter				= new SOSMsgJOE("JOE_B_ActionsParameterForm_Parameter");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_FromTask						= new SOSMsgJOE("JOE_B_ActionsParameterForm_FromTask");
+	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_FromTask					= new SOSMsgJOE("JOE_B_ActionsParameterForm_FromTask");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_FromOrder						= new SOSMsgJOE("JOE_B_ActionsParameterForm_FromOrder");
-	
-//	SaveEventsDialogForm
+	public static final SOSMsgJOE	JOE_B_ActionsParameterForm_FromOrder				= new SOSMsgJOE("JOE_B_ActionsParameterForm_FromOrder");
+
+	// SaveEventsDialogForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_SaveEventhandler						= new SOSMsgJOE("JOE_M_SaveEventhandler");
+	public static final SOSMsgJOE	JOE_M_SaveEventhandler								= new SOSMsgJOE("JOE_M_SaveEventhandler");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_SaveEventsDialogForm_NameSpec						= new SOSMsgJOE("JOE_G_SaveEventsDialogForm_NameSpec");
+	public static final SOSMsgJOE	JOE_G_SaveEventsDialogForm_NameSpec					= new SOSMsgJOE("JOE_G_SaveEventsDialogForm_NameSpec");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_SaveEventsDialogForm_Name						= new SOSMsgJOE("JOE_T_SaveEventsDialogForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SaveEventsDialogForm_JobChain						= new SOSMsgJOE("JOE_L_SaveEventsDialogForm_JobChain");
+	public static final SOSMsgJOE	JOE_L_SaveEventsDialogForm_JobChain					= new SOSMsgJOE("JOE_L_SaveEventsDialogForm_JobChain");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_SaveEventsDialogForm_JobChain						= new SOSMsgJOE("JOE_T_SaveEventsDialogForm_JobChain");
+	public static final SOSMsgJOE	JOE_T_SaveEventsDialogForm_JobChain					= new SOSMsgJOE("JOE_T_SaveEventsDialogForm_JobChain");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_SaveEventsDialogForm_Job						= new SOSMsgJOE("JOE_L_SaveEventsDialogForm_Job");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_SaveEventsDialogForm_Job						= new SOSMsgJOE("JOE_T_SaveEventsDialogForm_Job");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SaveEventsDialogForm_EventClass						= new SOSMsgJOE("JOE_L_SaveEventsDialogForm_EventClass");
+	public static final SOSMsgJOE	JOE_L_SaveEventsDialogForm_EventClass				= new SOSMsgJOE("JOE_L_SaveEventsDialogForm_EventClass");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_SaveEventsDialogForm_EventClass						= new SOSMsgJOE("JOE_T_SaveEventsDialogForm_EventClass");
+	public static final SOSMsgJOE	JOE_T_SaveEventsDialogForm_EventClass				= new SOSMsgJOE("JOE_T_SaveEventsDialogForm_EventClass");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_SaveEventsDialogForm_Directory						= new SOSMsgJOE("JOE_B_SaveEventsDialogForm_Directory");
+	public static final SOSMsgJOE	JOE_B_SaveEventsDialogForm_Directory				= new SOSMsgJOE("JOE_B_SaveEventsDialogForm_Directory");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_B_SaveEventsDialogForm_Save						= new SOSMsgJOE("JOE_B_SaveEventsDialogForm_Save");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_OverwriteFile						= new SOSMsgJOE("JOE_M_OverwriteFile");
+	public static final SOSMsgJOE	JOE_M_OverwriteFile									= new SOSMsgJOE("JOE_M_OverwriteFile");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_SaveEventsDialogForm_Cancel						= new SOSMsgJOE("JOE_B_SaveEventsDialogForm_Cancel");
-	
-//	JobDocumentation
+	public static final SOSMsgJOE	JOE_B_SaveEventsDialogForm_Cancel					= new SOSMsgJOE("JOE_B_SaveEventsDialogForm_Cancel");
+
+	// JobDocumentation
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_JobDocumentation_JobDescription						= new SOSMsgJOE("JOE_G_JobDocumentation_JobDescription");
+	public static final SOSMsgJOE	JOE_G_JobDocumentation_JobDescription				= new SOSMsgJOE("JOE_G_JobDocumentation_JobDescription");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_JobDocumentation_FileName						= new SOSMsgJOE("JOE_T_JobDocumentation_FileName");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobDocumentation_IsLiveFile						= new SOSMsgJOE("JOE_B_JobDocumentation_IsLiveFile");
+	public static final SOSMsgJOE	JOE_B_JobDocumentation_IsLiveFile					= new SOSMsgJOE("JOE_B_JobDocumentation_IsLiveFile");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_0050						= new SOSMsgJOE("JOE_M_0050");
+	public static final SOSMsgJOE	JOE_M_0050											= new SOSMsgJOE("JOE_M_0050");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_0051						= new SOSMsgJOE("JOE_M_0051");
+	public static final SOSMsgJOE	JOE_M_0051											= new SOSMsgJOE("JOE_M_0051");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobDocumentation_Show						= new SOSMsgJOE("JOE_B_JobDocumentation_Show");
+	public static final SOSMsgJOE	JOE_B_JobDocumentation_Show							= new SOSMsgJOE("JOE_B_JobDocumentation_Show");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobDocumentation_Open						= new SOSMsgJOE("JOE_B_JobDocumentation_Open");
+	public static final SOSMsgJOE	JOE_B_JobDocumentation_Open							= new SOSMsgJOE("JOE_B_JobDocumentation_Open");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_M_JobDocumentation_NoDoc						= new SOSMsgJOE("JOE_M_JobDocumentation_NoDoc");
-	
-//	JobEmailSettings
+
+	// JobEmailSettings
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_JobEmailSettings_Notifications						= new SOSMsgJOE("JOE_G_JobEmailSettings_Notifications");	
-	
-//	JobIncludeFile
+	public static final SOSMsgJOE	JOE_G_JobEmailSettings_Notifications				= new SOSMsgJOE("JOE_G_JobEmailSettings_Notifications");
+
+	// JobIncludeFile
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_JobIncludeFile_IncludeFiles						= new SOSMsgJOE("JOE_G_JobIncludeFile_IncludeFiles");	
+	public static final SOSMsgJOE	JOE_G_JobIncludeFile_IncludeFiles					= new SOSMsgJOE("JOE_G_JobIncludeFile_IncludeFiles");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobIncludeFile_Add						= new SOSMsgJOE("JOE_B_JobIncludeFile_Add");
+	public static final SOSMsgJOE	JOE_B_JobIncludeFile_Add							= new SOSMsgJOE("JOE_B_JobIncludeFile_Add");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_Tbl_JobIncludeFile_Includes						= new SOSMsgJOE("JOE_Tbl_JobIncludeFile_Includes");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_JobIncludeFile_Name						= new SOSMsgJOE("JOE_TCl_JobIncludeFile_Name");
+	public static final SOSMsgJOE	JOE_TCl_JobIncludeFile_Name							= new SOSMsgJOE("JOE_TCl_JobIncludeFile_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_JobIncludeFile_FileLiveFile						= new SOSMsgJOE("JOE_TCl_JobIncludeFile_FileLiveFile");
+	public static final SOSMsgJOE	JOE_TCl_JobIncludeFile_FileLiveFile					= new SOSMsgJOE("JOE_TCl_JobIncludeFile_FileLiveFile");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobIncludeFile_New						= new SOSMsgJOE("JOE_B_JobIncludeFile_New");
+	public static final SOSMsgJOE	JOE_B_JobIncludeFile_New							= new SOSMsgJOE("JOE_B_JobIncludeFile_New");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobIncludeFile_Remove						= new SOSMsgJOE("JOE_B_JobIncludeFile_Remove");
+	public static final SOSMsgJOE	JOE_B_JobIncludeFile_Remove							= new SOSMsgJOE("JOE_B_JobIncludeFile_Remove");
 
-//	JobJavaAPI
+	// JobJavaAPI
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobJavaAPI_Classname						= new SOSMsgJOE("JOE_L_JobJavaAPI_Classname");
+	public static final SOSMsgJOE	JOE_L_JobJavaAPI_Classname							= new SOSMsgJOE("JOE_L_JobJavaAPI_Classname");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_JobJavaAPI_Classname						= new SOSMsgJOE("JOE_T_JobJavaAPI_Classname");
+	public static final SOSMsgJOE	JOE_T_JobJavaAPI_Classname							= new SOSMsgJOE("JOE_T_JobJavaAPI_Classname");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobJavaAPI_Classpath						= new SOSMsgJOE("JOE_L_JobJavaAPI_Classpath");
+	public static final SOSMsgJOE	JOE_L_JobJavaAPI_Classpath							= new SOSMsgJOE("JOE_L_JobJavaAPI_Classpath");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_JobJavaAPI_Classpath						= new SOSMsgJOE("JOE_T_JobJavaAPI_Classpath");
+	public static final SOSMsgJOE	JOE_T_JobJavaAPI_Classpath							= new SOSMsgJOE("JOE_T_JobJavaAPI_Classpath");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobJavaAPI_Options						= new SOSMsgJOE("JOE_L_JobJavaAPI_Options");
+	public static final SOSMsgJOE	JOE_L_JobJavaAPI_Options							= new SOSMsgJOE("JOE_L_JobJavaAPI_Options");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_JobJavaAPI_Options						= new SOSMsgJOE("JOE_T_JobJavaAPI_Options");
-	
-//	JobOptions
+	public static final SOSMsgJOE	JOE_T_JobJavaAPI_Options							= new SOSMsgJOE("JOE_T_JobJavaAPI_Options");
+
+	// JobOptions
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_JobOptions_Options						= new SOSMsgJOE("JOE_G_JobOptions_Options");
+	public static final SOSMsgJOE	JOE_G_JobOptions_Options							= new SOSMsgJOE("JOE_G_JobOptions_Options");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_JobOptions_JobChainJob						= new SOSMsgJOE("JOE_L_JobOptions_JobChainJob");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobOptions_OrderYes						= new SOSMsgJOE("JOE_B_JobOptions_OrderYes");
+	public static final SOSMsgJOE	JOE_B_JobOptions_OrderYes							= new SOSMsgJOE("JOE_B_JobOptions_OrderYes");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobOptions_OrderNo						= new SOSMsgJOE("JOE_B_JobOptions_OrderNo");
+	public static final SOSMsgJOE	JOE_B_JobOptions_OrderNo							= new SOSMsgJOE("JOE_B_JobOptions_OrderNo");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_JobOptions_StopOnError						= new SOSMsgJOE("JOE_L_JobOptions_StopOnError");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_B_JobOptions_StopOnError						= new SOSMsgJOE("JOE_B_JobOptions_StopOnError");
-	
-//	JobProcessFile
+
+	// JobProcessFile
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_JobProcessFile_RunExecutable						= new SOSMsgJOE("JOE_G_JobProcessFile_RunExecutable");	
+	public static final SOSMsgJOE	JOE_G_JobProcessFile_RunExecutable					= new SOSMsgJOE("JOE_G_JobProcessFile_RunExecutable");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobProcessFile_File						= new SOSMsgJOE("JOE_L_JobProcessFile_File");
+	public static final SOSMsgJOE	JOE_L_JobProcessFile_File							= new SOSMsgJOE("JOE_L_JobProcessFile_File");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_JobProcessFile_File						= new SOSMsgJOE("JOE_T_JobProcessFile_File");
+	public static final SOSMsgJOE	JOE_T_JobProcessFile_File							= new SOSMsgJOE("JOE_T_JobProcessFile_File");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_JobProcessFile_Parameter						= new SOSMsgJOE("JOE_L_JobProcessFile_Parameter");
 	@I18NMsg
@@ -2540,439 +2539,622 @@ public class SOSJOEMessageCodes extends Composite {
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_JobProcessFile_LogFile						= new SOSMsgJOE("JOE_T_JobProcessFile_LogFile");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobProcessFile_Ignore						= new SOSMsgJOE("JOE_L_JobProcessFile_Ignore");
+	public static final SOSMsgJOE	JOE_L_JobProcessFile_Ignore							= new SOSMsgJOE("JOE_L_JobProcessFile_Ignore");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobProcessFile_IgnoreSignal						= new SOSMsgJOE("JOE_B_JobProcessFile_IgnoreSignal");
+	public static final SOSMsgJOE	JOE_B_JobProcessFile_IgnoreSignal					= new SOSMsgJOE("JOE_B_JobProcessFile_IgnoreSignal");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobProcessFile_IgnoreError						= new SOSMsgJOE("JOE_B_JobProcessFile_IgnoreError");
-	
-//	JobScript
+	public static final SOSMsgJOE	JOE_B_JobProcessFile_IgnoreError					= new SOSMsgJOE("JOE_B_JobProcessFile_IgnoreError");
+
+	// JobScript
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_JobScript_Executable						= new SOSMsgJOE("JOE_G_JobScript_Executable");
+	public static final SOSMsgJOE	JOE_G_JobScript_Executable							= new SOSMsgJOE("JOE_G_JobScript_Executable");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobScript_PredefinedFunctions						= new SOSMsgJOE("JOE_L_JobScript_PredefinedFunctions");
+	public static final SOSMsgJOE	JOE_L_JobScript_PredefinedFunctions					= new SOSMsgJOE("JOE_L_JobScript_PredefinedFunctions");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Cbo_JobScript_PredefinedFunctions						= new SOSMsgJOE("JOE_Cbo_JobScript_PredefinedFunctions");
+	public static final SOSMsgJOE	JOE_Cbo_JobScript_PredefinedFunctions				= new SOSMsgJOE("JOE_Cbo_JobScript_PredefinedFunctions");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobSetback_TimeFormat						= new SOSMsgJOE("JOE_L_JobSetback_TimeFormat");
-	
-//	JobSourceViewer
+	public static final SOSMsgJOE	JOE_L_JobSetback_TimeFormat							= new SOSMsgJOE("JOE_L_JobSetback_TimeFormat");
+
+	// JobSourceViewer
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_JobSourceViewer_SourceViewer						= new SOSMsgJOE("JOE_G_JobSourceViewer_SourceViewer");
-	
-//	PrePostProcessingForm
+	public static final SOSMsgJOE	JOE_G_JobSourceViewer_SourceViewer					= new SOSMsgJOE("JOE_G_JobSourceViewer_SourceViewer");
+
+	// PrePostProcessingForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_PrePostProcessingForm_Executable						= new SOSMsgJOE("JOE_G_PrePostProcessingForm_Executable");
+	public static final SOSMsgJOE	JOE_G_PrePostProcessingForm_Executable				= new SOSMsgJOE("JOE_G_PrePostProcessingForm_Executable");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_PrePostProcessingForm_Language						= new SOSMsgJOE("JOE_L_PrePostProcessingForm_Language");
-//	ApplicationsForm
+	public static final SOSMsgJOE	JOE_L_PrePostProcessingForm_Language				= new SOSMsgJOE("JOE_L_PrePostProcessingForm_Language");
+	// ApplicationsForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_ApplicationsForm_Applications						= new SOSMsgJOE("JOE_G_ApplicationsForm_Applications");
+	public static final SOSMsgJOE	JOE_G_ApplicationsForm_Applications					= new SOSMsgJOE("JOE_G_ApplicationsForm_Applications");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ApplicationsForm_Name						= new SOSMsgJOE("JOE_T_ApplicationsForm_Name");
+	public static final SOSMsgJOE	JOE_T_ApplicationsForm_Name							= new SOSMsgJOE("JOE_T_ApplicationsForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ApplicationsForm_ApplyApplication						= new SOSMsgJOE("JOE_B_ApplicationsForm_ApplyApplication");
+	public static final SOSMsgJOE	JOE_B_ApplicationsForm_ApplyApplication				= new SOSMsgJOE("JOE_B_ApplicationsForm_ApplyApplication");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ApplicationsForm_ID						= new SOSMsgJOE("JOE_L_ApplicationsForm_ID");
+	public static final SOSMsgJOE	JOE_L_ApplicationsForm_ID							= new SOSMsgJOE("JOE_L_ApplicationsForm_ID");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ApplicationsForm_ID						= new SOSMsgJOE("JOE_T_ApplicationsForm_ID");
+	public static final SOSMsgJOE	JOE_T_ApplicationsForm_ID							= new SOSMsgJOE("JOE_T_ApplicationsForm_ID");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ApplicationsForm_Reference						= new SOSMsgJOE("JOE_L_ApplicationsForm_Reference");
+	public static final SOSMsgJOE	JOE_L_ApplicationsForm_Reference					= new SOSMsgJOE("JOE_L_ApplicationsForm_Reference");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Cbo_ApplicationsForm_Reference						= new SOSMsgJOE("JOE_Cbo_ApplicationsForm_Reference");
+	public static final SOSMsgJOE	JOE_Cbo_ApplicationsForm_Reference					= new SOSMsgJOE("JOE_Cbo_ApplicationsForm_Reference");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Tbl_ApplicationsForm_Applications						= new SOSMsgJOE("JOE_Tbl_ApplicationsForm_Applications");
+	public static final SOSMsgJOE	JOE_Tbl_ApplicationsForm_Applications				= new SOSMsgJOE("JOE_Tbl_ApplicationsForm_Applications");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_TCl_ApplicationsForm_Name						= new SOSMsgJOE("JOE_TCl_ApplicationsForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ApplicationsForm_ID						= new SOSMsgJOE("JOE_TCl_ApplicationsForm_ID");
+	public static final SOSMsgJOE	JOE_TCl_ApplicationsForm_ID							= new SOSMsgJOE("JOE_TCl_ApplicationsForm_ID");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ApplicationsForm_Reference						= new SOSMsgJOE("JOE_TCl_ApplicationsForm_Reference");
+	public static final SOSMsgJOE	JOE_TCl_ApplicationsForm_Reference					= new SOSMsgJOE("JOE_TCl_ApplicationsForm_Reference");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ApplicationsForm_NewApplication						= new SOSMsgJOE("JOE_B_ApplicationsForm_NewApplication");
+	public static final SOSMsgJOE	JOE_B_ApplicationsForm_NewApplication				= new SOSMsgJOE("JOE_B_ApplicationsForm_NewApplication");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ApplicationsForm_RemoveApplication						= new SOSMsgJOE("JOE_B_ApplicationsForm_RemoveApplication");
-	
-//	AuthorsForm
+	public static final SOSMsgJOE	JOE_B_ApplicationsForm_RemoveApplication			= new SOSMsgJOE("JOE_B_ApplicationsForm_RemoveApplication");
+
+	// AuthorsForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_AuthorsForm_Authors						= new SOSMsgJOE("JOE_G_AuthorsForm_Authors");
+	public static final SOSMsgJOE	JOE_G_AuthorsForm_Authors							= new SOSMsgJOE("JOE_G_AuthorsForm_Authors");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_AuthorsForm_Name						= new SOSMsgJOE("JOE_T_AuthorsForm_Name");
+	public static final SOSMsgJOE	JOE_T_AuthorsForm_Name								= new SOSMsgJOE("JOE_T_AuthorsForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_AuthorsForm_EMail						= new SOSMsgJOE("JOE_L_AuthorsForm_EMail");
+	public static final SOSMsgJOE	JOE_L_AuthorsForm_EMail								= new SOSMsgJOE("JOE_L_AuthorsForm_EMail");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_AuthorsForm_EMail						= new SOSMsgJOE("JOE_T_AuthorsForm_EMail");
+	public static final SOSMsgJOE	JOE_T_AuthorsForm_EMail								= new SOSMsgJOE("JOE_T_AuthorsForm_EMail");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_AuthorsForm_Apply						= new SOSMsgJOE("JOE_B_AuthorsForm_Apply");
+	public static final SOSMsgJOE	JOE_B_AuthorsForm_Apply								= new SOSMsgJOE("JOE_B_AuthorsForm_Apply");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Tbl_AuthorsForm_Authors						= new SOSMsgJOE("JOE_Tbl_AuthorsForm_Authors");
+	public static final SOSMsgJOE	JOE_Tbl_AuthorsForm_Authors							= new SOSMsgJOE("JOE_Tbl_AuthorsForm_Authors");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_AuthorsForm_Name						= new SOSMsgJOE("JOE_TCl_AuthorsForm_Name");
+	public static final SOSMsgJOE	JOE_TCl_AuthorsForm_Name							= new SOSMsgJOE("JOE_TCl_AuthorsForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_AuthorsForm_EMail						= new SOSMsgJOE("JOE_TCl_AuthorsForm_EMail");
+	public static final SOSMsgJOE	JOE_TCl_AuthorsForm_EMail							= new SOSMsgJOE("JOE_TCl_AuthorsForm_EMail");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_AuthorsForm_Remove						= new SOSMsgJOE("JOE_B_AuthorsForm_Remove");
-	
-//	ConnectionsForm
+	public static final SOSMsgJOE	JOE_B_AuthorsForm_Remove							= new SOSMsgJOE("JOE_B_AuthorsForm_Remove");
+
+	// ConnectionsForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_ConnectionsForm_Connections						= new SOSMsgJOE("JOE_G_ConnectionsForm_Connections");
+	public static final SOSMsgJOE	JOE_G_ConnectionsForm_Connections					= new SOSMsgJOE("JOE_G_ConnectionsForm_Connections");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ConnectionsForm_Name						= new SOSMsgJOE("JOE_T_ConnectionsForm_Name");
+	public static final SOSMsgJOE	JOE_T_ConnectionsForm_Name							= new SOSMsgJOE("JOE_T_ConnectionsForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ConnectionsForm_Notes						= new SOSMsgJOE("JOE_B_ConnectionsForm_Notes");
+	public static final SOSMsgJOE	JOE_B_ConnectionsForm_Notes							= new SOSMsgJOE("JOE_B_ConnectionsForm_Notes");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ConnectionsForm_Apply						= new SOSMsgJOE("JOE_B_ConnectionsForm_Apply");
+	public static final SOSMsgJOE	JOE_B_ConnectionsForm_Apply							= new SOSMsgJOE("JOE_B_ConnectionsForm_Apply");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Tbl_ConnectionsForm_Connections						= new SOSMsgJOE("JOE_Tbl_ConnectionsForm_Connections");
+	public static final SOSMsgJOE	JOE_Tbl_ConnectionsForm_Connections					= new SOSMsgJOE("JOE_Tbl_ConnectionsForm_Connections");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_TCl_ConnectionsForm_Name						= new SOSMsgJOE("JOE_TCl_ConnectionsForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ConnectionsForm_New						= new SOSMsgJOE("JOE_B_ConnectionsForm_New");
+	public static final SOSMsgJOE	JOE_B_ConnectionsForm_New							= new SOSMsgJOE("JOE_B_ConnectionsForm_New");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_B_ConnectionsForm_Remove						= new SOSMsgJOE("JOE_B_ConnectionsForm_Remove");
-	
-//	DatabaseResourcesForm
+
+	// DatabaseResourcesForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_DBResources_Resources						= new SOSMsgJOE("JOE_G_DBResources_Resources");
+	public static final SOSMsgJOE	JOE_G_DBResources_Resources							= new SOSMsgJOE("JOE_G_DBResources_Resources");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_DBResources_Name						= new SOSMsgJOE("JOE_T_DBResources_Name");
+	public static final SOSMsgJOE	JOE_T_DBResources_Name								= new SOSMsgJOE("JOE_T_DBResources_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_DBResources_Apply						= new SOSMsgJOE("JOE_B_DBResources_Apply");
+	public static final SOSMsgJOE	JOE_B_DBResources_Apply								= new SOSMsgJOE("JOE_B_DBResources_Apply");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_Tbl_DBResources_Resources						= new SOSMsgJOE("JOE_Tbl_DBResources_Resources");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_DBResources_Name						= new SOSMsgJOE("JOE_TCl_DBResources_Name");
+	public static final SOSMsgJOE	JOE_TCl_DBResources_Name							= new SOSMsgJOE("JOE_TCl_DBResources_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_DBResources_Type						= new SOSMsgJOE("JOE_TCl_DBResources_Type");
+	public static final SOSMsgJOE	JOE_TCl_DBResources_Type							= new SOSMsgJOE("JOE_TCl_DBResources_Type");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_DBResources_New						= new SOSMsgJOE("JOE_B_DBResources_New");
+	public static final SOSMsgJOE	JOE_B_DBResources_New								= new SOSMsgJOE("JOE_B_DBResources_New");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_DBResources_Remove						= new SOSMsgJOE("JOE_B_DBResources_Remove");
+	public static final SOSMsgJOE	JOE_B_DBResources_Remove							= new SOSMsgJOE("JOE_B_DBResources_Remove");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_DBResources_Notes						= new SOSMsgJOE("JOE_B_DBResources_Notes");
+	public static final SOSMsgJOE	JOE_B_DBResources_Notes								= new SOSMsgJOE("JOE_B_DBResources_Notes");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_DBResources_Type						= new SOSMsgJOE("JOE_L_DBResources_Type");
+	public static final SOSMsgJOE	JOE_L_DBResources_Type								= new SOSMsgJOE("JOE_L_DBResources_Type");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Cbo_DBResources_Type						= new SOSMsgJOE("JOE_L_DBResources_Type");
-	
-//	DatabasesForm
+	public static final SOSMsgJOE	JOE_Cbo_DBResources_Type							= new SOSMsgJOE("JOE_L_DBResources_Type");
+
+	// DatabasesForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_DBForm_Databases						= new SOSMsgJOE("JOE_G_DBForm_Databases");
+	public static final SOSMsgJOE	JOE_G_DBForm_Databases								= new SOSMsgJOE("JOE_G_DBForm_Databases");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_DBForm_Database						= new SOSMsgJOE("JOE_T_DBForm_Database");
+	public static final SOSMsgJOE	JOE_T_DBForm_Database								= new SOSMsgJOE("JOE_T_DBForm_Database");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_DBForm_Required						= new SOSMsgJOE("JOE_B_DBForm_Required");
+	public static final SOSMsgJOE	JOE_B_DBForm_Required								= new SOSMsgJOE("JOE_B_DBForm_Required");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_DBForm_Apply						= new SOSMsgJOE("JOE_B_DBForm_Apply");
+	public static final SOSMsgJOE	JOE_B_DBForm_Apply									= new SOSMsgJOE("JOE_B_DBForm_Apply");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Tbl_DBForm_Databases						= new SOSMsgJOE("JOE_Tbl_DBForm_Databases");
+	public static final SOSMsgJOE	JOE_Tbl_DBForm_Databases							= new SOSMsgJOE("JOE_Tbl_DBForm_Databases");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_DBForm_Name						= new SOSMsgJOE("JOE_TCl_DBForm_Name");
+	public static final SOSMsgJOE	JOE_TCl_DBForm_Name									= new SOSMsgJOE("JOE_TCl_DBForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_DBForm_Required						= new SOSMsgJOE("JOE_TCl_DBForm_Required");
+	public static final SOSMsgJOE	JOE_TCl_DBForm_Required								= new SOSMsgJOE("JOE_TCl_DBForm_Required");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_DBForm_New						= new SOSMsgJOE("JOE_B_DBForm_New");
+	public static final SOSMsgJOE	JOE_B_DBForm_New									= new SOSMsgJOE("JOE_B_DBForm_New");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_DBForm_Remove						= new SOSMsgJOE("JOE_B_DBForm_Remove");
-	
-//	DocumentationForm
+	public static final SOSMsgJOE	JOE_B_DBForm_Remove									= new SOSMsgJOE("JOE_B_DBForm_Remove");
+
+	// DocumentationForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_DocumentationForm_DocElements						= new SOSMsgJOE("JOE_G_DocumentationForm_DocElements");
-	
-//	FilesForm
+	public static final SOSMsgJOE	JOE_G_DocumentationForm_DocElements					= new SOSMsgJOE("JOE_G_DocumentationForm_DocElements");
+
+	// FilesForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_FilesForm_Files						= new SOSMsgJOE("JOE_G_FilesForm_Files");
+	public static final SOSMsgJOE	JOE_G_FilesForm_Files								= new SOSMsgJOE("JOE_G_FilesForm_Files");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_FilesForm_File						= new SOSMsgJOE("JOE_L_FilesForm_File");
+	public static final SOSMsgJOE	JOE_L_FilesForm_File								= new SOSMsgJOE("JOE_L_FilesForm_File");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_FilesForm_File						= new SOSMsgJOE("JOE_T_FilesForm_File");
+	public static final SOSMsgJOE	JOE_T_FilesForm_File								= new SOSMsgJOE("JOE_T_FilesForm_File");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_FilesForm_Apply						= new SOSMsgJOE("JOE_B_FilesForm_Apply");
+	public static final SOSMsgJOE	JOE_B_FilesForm_Apply								= new SOSMsgJOE("JOE_B_FilesForm_Apply");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_FilesForm_OS						= new SOSMsgJOE("JOE_L_FilesForm_OS");
+	public static final SOSMsgJOE	JOE_L_FilesForm_OS									= new SOSMsgJOE("JOE_L_FilesForm_OS");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_FilesForm_Type						= new SOSMsgJOE("JOE_L_FilesForm_Type");
+	public static final SOSMsgJOE	JOE_L_FilesForm_Type								= new SOSMsgJOE("JOE_L_FilesForm_Type");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_FilesForm_Notes						= new SOSMsgJOE("JOE_B_FilesForm_Notes");
+	public static final SOSMsgJOE	JOE_B_FilesForm_Notes								= new SOSMsgJOE("JOE_B_FilesForm_Notes");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_FilesForm_ID						= new SOSMsgJOE("JOE_L_FilesForm_ID");
+	public static final SOSMsgJOE	JOE_L_FilesForm_ID									= new SOSMsgJOE("JOE_L_FilesForm_ID");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_FilesForm_ID						= new SOSMsgJOE("JOE_T_FilesForm_ID");
+	public static final SOSMsgJOE	JOE_T_FilesForm_ID									= new SOSMsgJOE("JOE_T_FilesForm_ID");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Tbl_FilesForm_Files						= new SOSMsgJOE("JOE_Tbl_FilesForm_Files");
+	public static final SOSMsgJOE	JOE_Tbl_FilesForm_Files								= new SOSMsgJOE("JOE_Tbl_FilesForm_Files");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_FilesForm_ID						= new SOSMsgJOE("JOE_TCl_FilesForm_ID");
+	public static final SOSMsgJOE	JOE_TCl_FilesForm_ID								= new SOSMsgJOE("JOE_TCl_FilesForm_ID");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_FilesForm_Type						= new SOSMsgJOE("JOE_TCl_FilesForm_Type");
+	public static final SOSMsgJOE	JOE_TCl_FilesForm_Type								= new SOSMsgJOE("JOE_TCl_FilesForm_Type");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_FilesForm_OS						= new SOSMsgJOE("JOE_TCl_FilesForm_OS");
+	public static final SOSMsgJOE	JOE_TCl_FilesForm_OS								= new SOSMsgJOE("JOE_TCl_FilesForm_OS");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_FilesForm_File						= new SOSMsgJOE("JOE_TCl_FilesForm_File");
+	public static final SOSMsgJOE	JOE_TCl_FilesForm_File								= new SOSMsgJOE("JOE_TCl_FilesForm_File");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_FilesForm_New						= new SOSMsgJOE("JOE_B_FilesForm_New");
+	public static final SOSMsgJOE	JOE_B_FilesForm_New									= new SOSMsgJOE("JOE_B_FilesForm_New");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_FilesForm_Remove						= new SOSMsgJOE("JOE_B_FilesForm_Remove");
+	public static final SOSMsgJOE	JOE_B_FilesForm_Remove								= new SOSMsgJOE("JOE_B_FilesForm_Remove");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Cbo_FilesForm_OS						= new SOSMsgJOE("JOE_Cbo_FilesForm_OS");
+	public static final SOSMsgJOE	JOE_Cbo_FilesForm_OS								= new SOSMsgJOE("JOE_Cbo_FilesForm_OS");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Cbo_FilesForm_Type						= new SOSMsgJOE("JOE_Cbo_FilesForm_Type");
-	
-//	IncludeFilesForm
+	public static final SOSMsgJOE	JOE_Cbo_FilesForm_Type								= new SOSMsgJOE("JOE_Cbo_FilesForm_Type");
+
+	// IncludeFilesForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_IncludeFilesForm_IncludeFiles						= new SOSMsgJOE("JOE_G_IncludeFilesForm_IncludeFiles");
+	public static final SOSMsgJOE	JOE_G_IncludeFilesForm_IncludeFiles					= new SOSMsgJOE("JOE_G_IncludeFilesForm_IncludeFiles");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_IncludeFilesForm_File						= new SOSMsgJOE("JOE_L_IncludeFilesForm_File");
+	public static final SOSMsgJOE	JOE_L_IncludeFilesForm_File							= new SOSMsgJOE("JOE_L_IncludeFilesForm_File");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_IncludeFilesForm_File						= new SOSMsgJOE("JOE_T_IncludeFilesForm_File");
+	public static final SOSMsgJOE	JOE_T_IncludeFilesForm_File							= new SOSMsgJOE("JOE_T_IncludeFilesForm_File");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_IncludeFilesForm_Add						= new SOSMsgJOE("JOE_B_IncludeFilesForm_Add");
+	public static final SOSMsgJOE	JOE_B_IncludeFilesForm_Add							= new SOSMsgJOE("JOE_B_IncludeFilesForm_Add");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_IncludeFilesForm_Parameter						= new SOSMsgJOE("JOE_L_IncludeFilesForm_Parameter");
+	public static final SOSMsgJOE	JOE_L_IncludeFilesForm_Parameter					= new SOSMsgJOE("JOE_L_IncludeFilesForm_Parameter");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_Lst_IncludeFilesForm_Files						= new SOSMsgJOE("JOE_Lst_IncludeFilesForm_Files");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_B_IncludeFilesForm_Remove						= new SOSMsgJOE("JOE_B_IncludeFilesForm_Remove");
-	
-//	JobForm
+
+	// JobForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_JobForm_Job						= new SOSMsgJOE("JOE_G_JobForm_Job");
+	public static final SOSMsgJOE	JOE_G_JobForm_Job									= new SOSMsgJOE("JOE_G_JobForm_Job");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_JobForm_Name						= new SOSMsgJOE("JOE_T_JobForm_Name");
+	public static final SOSMsgJOE	JOE_T_JobForm_Name									= new SOSMsgJOE("JOE_T_JobForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobForm_Title						= new SOSMsgJOE("JOE_L_JobForm_Title");
+	public static final SOSMsgJOE	JOE_L_JobForm_Title									= new SOSMsgJOE("JOE_L_JobForm_Title");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_JobForm_Title						= new SOSMsgJOE("JOE_T_JobForm_Title");
+	public static final SOSMsgJOE	JOE_T_JobForm_Title									= new SOSMsgJOE("JOE_T_JobForm_Title");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobForm_Order						= new SOSMsgJOE("JOE_L_JobForm_Order");
+	public static final SOSMsgJOE	JOE_L_JobForm_Order									= new SOSMsgJOE("JOE_L_JobForm_Order");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobForm_Tasks						= new SOSMsgJOE("JOE_L_JobForm_Tasks");
+	public static final SOSMsgJOE	JOE_L_JobForm_Tasks									= new SOSMsgJOE("JOE_L_JobForm_Tasks");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Cbo_JobForm_Tasks						= new SOSMsgJOE("JOE_Cbo_JobForm_Tasks");
+	public static final SOSMsgJOE	JOE_Cbo_JobForm_Tasks								= new SOSMsgJOE("JOE_Cbo_JobForm_Tasks");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobForm_Preview						= new SOSMsgJOE("JOE_B_JobForm_Preview");
+	public static final SOSMsgJOE	JOE_B_JobForm_Preview								= new SOSMsgJOE("JOE_B_JobForm_Preview");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobForm_OutputPath						= new SOSMsgJOE("JOE_L_JobForm_OutputPath");
+	public static final SOSMsgJOE	JOE_L_JobForm_OutputPath							= new SOSMsgJOE("JOE_L_JobForm_OutputPath");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_JobForm_OutputPath						= new SOSMsgJOE("JOE_T_JobForm_OutputPath");
+	public static final SOSMsgJOE	JOE_T_JobForm_OutputPath							= new SOSMsgJOE("JOE_T_JobForm_OutputPath");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobForm_PackageName						= new SOSMsgJOE("JOE_L_JobForm_PackageName");
+	public static final SOSMsgJOE	JOE_L_JobForm_PackageName							= new SOSMsgJOE("JOE_L_JobForm_PackageName");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_JobForm_PackageName						= new SOSMsgJOE("JOE_T_JobForm_PackageName");
+	public static final SOSMsgJOE	JOE_T_JobForm_PackageName							= new SOSMsgJOE("JOE_T_JobForm_PackageName");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobForm_JobType						= new SOSMsgJOE("JOE_L_JobForm_JobType");
+	public static final SOSMsgJOE	JOE_L_JobForm_JobType								= new SOSMsgJOE("JOE_L_JobForm_JobType");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Cbo_JobForm_JobType						= new SOSMsgJOE("JOE_Cbo_JobForm_JobType");
+	public static final SOSMsgJOE	JOE_Cbo_JobForm_JobType								= new SOSMsgJOE("JOE_Cbo_JobForm_JobType");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_B_JobForm_GenerateSource						= new SOSMsgJOE("JOE_B_JobForm_GenerateSource");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_FileNotFound						= new SOSMsgJOE("JOE_M_FileNotFound");
+	public static final SOSMsgJOE	JOE_M_FileNotFound									= new SOSMsgJOE("JOE_M_FileNotFound");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Cbo_JobForm_Order						= new SOSMsgJOE("JOE_Cbo_JobForm_Order");
-	
-//	JobScriptForm
+	public static final SOSMsgJOE	JOE_Cbo_JobForm_Order								= new SOSMsgJOE("JOE_Cbo_JobForm_Order");
+
+	// JobScriptForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JobScriptForm_UseScript						= new SOSMsgJOE("JOE_B_JobScriptForm_UseScript");	
-	
-//	NoteForm
+	public static final SOSMsgJOE	JOE_B_JobScriptForm_UseScript						= new SOSMsgJOE("JOE_B_JobScriptForm_UseScript");
+
+	// NoteForm
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_G_NoteForm_Documentation						= new SOSMsgJOE("JOE_G_NoteForm_Documentation");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_NoteForm_Language						= new SOSMsgJOE("JOE_L_NoteForm_Language");
+	public static final SOSMsgJOE	JOE_L_NoteForm_Language								= new SOSMsgJOE("JOE_L_NoteForm_Language");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_NoteForm_Clear						= new SOSMsgJOE("JOE_B_NoteForm_Clear");
+	public static final SOSMsgJOE	JOE_B_NoteForm_Clear								= new SOSMsgJOE("JOE_B_NoteForm_Clear");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_NoteForm_Apply						= new SOSMsgJOE("JOE_B_NoteForm_Apply");
+	public static final SOSMsgJOE	JOE_B_NoteForm_Apply								= new SOSMsgJOE("JOE_B_NoteForm_Apply");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Cbo_NoteForm_Language						= new SOSMsgJOE("JOE_Cbo_NoteForm_Language");
+	public static final SOSMsgJOE	JOE_Cbo_NoteForm_Language							= new SOSMsgJOE("JOE_Cbo_NoteForm_Language");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_NoteForm_Config						= new SOSMsgJOE("JOE_M_NoteForm_Config");
+	public static final SOSMsgJOE	JOE_M_NoteForm_Config								= new SOSMsgJOE("JOE_M_NoteForm_Config");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_NoteForm_Settings						= new SOSMsgJOE("JOE_M_NoteForm_Settings");
+	public static final SOSMsgJOE	JOE_M_NoteForm_Settings								= new SOSMsgJOE("JOE_M_NoteForm_Settings");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_NoteForm_Doc						= new SOSMsgJOE("JOE_M_NoteForm_SettingDoc");
-	
-//	ParamsForm
+	public static final SOSMsgJOE	JOE_M_NoteForm_Doc									= new SOSMsgJOE("JOE_M_NoteForm_Doc");
+
+	// ParamsForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_ParamsForm_Parameter						= new SOSMsgJOE("JOE_G_ParamsForm_Parameter");
+	public static final SOSMsgJOE	JOE_G_ParamsForm_Parameter							= new SOSMsgJOE("JOE_G_ParamsForm_Parameter");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ParamsForm_ID						= new SOSMsgJOE("JOE_L_ParamsForm_ID");
+	public static final SOSMsgJOE	JOE_L_ParamsForm_ID									= new SOSMsgJOE("JOE_L_ParamsForm_ID");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ParamsForm_ID						= new SOSMsgJOE("JOE_T_ParamsForm_ID");
+	public static final SOSMsgJOE	JOE_T_ParamsForm_ID									= new SOSMsgJOE("JOE_T_ParamsForm_ID");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ParamsForm_Reference						= new SOSMsgJOE("JOE_L_ParamsForm_Reference");
+	public static final SOSMsgJOE	JOE_L_ParamsForm_Reference							= new SOSMsgJOE("JOE_L_ParamsForm_Reference");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ParamsForm_ParamsNote						= new SOSMsgJOE("JOE_B_ParamsForm_ParamsNote");
+	public static final SOSMsgJOE	JOE_B_ParamsForm_ParamsNote							= new SOSMsgJOE("JOE_B_ParamsForm_ParamsNote");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_Cbo_ParamsForm_Reference						= new SOSMsgJOE("JOE_Cbo_ParamsForm_Reference");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_G_ParamsForm_ParamValues						= new SOSMsgJOE("JOE_G_ParamsForm_ParamValues");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ParamsForm_Name						= new SOSMsgJOE("JOE_T_ParamsForm_Name");
+	public static final SOSMsgJOE	JOE_T_ParamsForm_Name								= new SOSMsgJOE("JOE_T_ParamsForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ParamsForm_Apply						= new SOSMsgJOE("JOE_B_ParamsForm_Apply");
+	public static final SOSMsgJOE	JOE_B_ParamsForm_Apply								= new SOSMsgJOE("JOE_B_ParamsForm_Apply");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_ParamsForm_DefaultValue						= new SOSMsgJOE("JOE_L_ParamsForm_DefaultValue");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_ParamsForm_DefaultValue						= new SOSMsgJOE("JOE_T_ParamsForm_DefaultValue");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ParamsForm_Required						= new SOSMsgJOE("JOE_L_ParamsForm_Required");
+	public static final SOSMsgJOE	JOE_L_ParamsForm_Required							= new SOSMsgJOE("JOE_L_ParamsForm_Required");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ParamsForm_Required						= new SOSMsgJOE("JOE_B_ParamsForm_Required");
+	public static final SOSMsgJOE	JOE_B_ParamsForm_Required							= new SOSMsgJOE("JOE_B_ParamsForm_Required");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ParamsForm_ID2						= new SOSMsgJOE("JOE_T_ParamsForm_ID2");
+	public static final SOSMsgJOE	JOE_T_ParamsForm_ID2								= new SOSMsgJOE("JOE_T_ParamsForm_ID2");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ParamsForm_Notes						= new SOSMsgJOE("JOE_B_ParamsForm_Notes");
+	public static final SOSMsgJOE	JOE_B_ParamsForm_Notes								= new SOSMsgJOE("JOE_B_ParamsForm_Notes");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_Tbl_ParamsForm_Params						= new SOSMsgJOE("JOE_Tbl_ParamsForm_Params");
+	public static final SOSMsgJOE	JOE_Tbl_ParamsForm_Params							= new SOSMsgJOE("JOE_Tbl_ParamsForm_Params");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ParamsForm_Name						= new SOSMsgJOE("JOE_TCl_ParamsForm_Name");
+	public static final SOSMsgJOE	JOE_TCl_ParamsForm_Name								= new SOSMsgJOE("JOE_TCl_ParamsForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ParamsForm_Default						= new SOSMsgJOE("JOE_TCl_ParamsForm_Default");
+	public static final SOSMsgJOE	JOE_TCl_ParamsForm_Default							= new SOSMsgJOE("JOE_TCl_ParamsForm_Default");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ParamsForm_Required						= new SOSMsgJOE("JOE_TCl_ParamsForm_Required");
+	public static final SOSMsgJOE	JOE_TCl_ParamsForm_Required							= new SOSMsgJOE("JOE_TCl_ParamsForm_Required");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_TCl_ParamsForm_Reference						= new SOSMsgJOE("JOE_TCl_ParamsForm_Reference");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ParamsForm_ID						= new SOSMsgJOE("JOE_TCl_ParamsForm_ID");
+	public static final SOSMsgJOE	JOE_TCl_ParamsForm_ID								= new SOSMsgJOE("JOE_TCl_ParamsForm_ID");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ParamsForm_NewParam						= new SOSMsgJOE("JOE_B_ParamsForm_NewParam");
+	public static final SOSMsgJOE	JOE_B_ParamsForm_NewParam							= new SOSMsgJOE("JOE_B_ParamsForm_NewParam");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_B_ParamsForm_RemoveParam						= new SOSMsgJOE("JOE_B_ParamsForm_RemoveParam");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_Cbo_ParamsForm_Reference2						= new SOSMsgJOE("JOE_Cbo_ParamsForm_Reference2");
 
-	
-	
-	
-//	ProcessForm
+	// PayloadForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ProcessForm_UseProcess						= new SOSMsgJOE("JOE_B_ProcessForm_UseProcess");	
+	public static final SOSMsgJOE	JOE_G_PayloadForm_Payload							= new SOSMsgJOE("JOE_G_PayloadForm_Payload");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_ProcessForm_Process						= new SOSMsgJOE("JOE_G_ProcessForm_Process");
+	public static final SOSMsgJOE	JOE_B_PayloadForm_PayloadNote						= new SOSMsgJOE("JOE_B_PayloadForm_PayloadNote");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ProcessForm_File						= new SOSMsgJOE("JOE_L_ProcessForm_File");
+	public static final SOSMsgJOE	JOE_B_PayloadForm_DocNote							= new SOSMsgJOE("JOE_B_PayloadForm_DocNote");
+
+	// ProcessForm
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ProcessForm_File						= new SOSMsgJOE("JOE_T_ProcessForm_File");
+	public static final SOSMsgJOE	JOE_B_ProcessForm_UseProcess						= new SOSMsgJOE("JOE_B_ProcessForm_UseProcess");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ProcessForm_Parameter						= new SOSMsgJOE("JOE_L_ProcessForm_Parameter");
+	public static final SOSMsgJOE	JOE_G_ProcessForm_Process							= new SOSMsgJOE("JOE_G_ProcessForm_Process");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ProcessForm_Parameter						= new SOSMsgJOE("JOE_T_ProcessForm_Parameter");
+	public static final SOSMsgJOE	JOE_L_ProcessForm_File								= new SOSMsgJOE("JOE_L_ProcessForm_File");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ProcessForm_Log						= new SOSMsgJOE("JOE_L_ProcessForm_Log");
+	public static final SOSMsgJOE	JOE_T_ProcessForm_File								= new SOSMsgJOE("JOE_T_ProcessForm_File");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ProcessForm_Log						= new SOSMsgJOE("JOE_T_ProcessForm_Log");
+	public static final SOSMsgJOE	JOE_L_ProcessForm_Parameter							= new SOSMsgJOE("JOE_L_ProcessForm_Parameter");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_G_ProcessForm_EnvironmentVariables						= new SOSMsgJOE("JOE_G_ProcessForm_EnvironmentVariables");
+	public static final SOSMsgJOE	JOE_T_ProcessForm_Parameter							= new SOSMsgJOE("JOE_T_ProcessForm_Parameter");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ProcessForm_Name						= new SOSMsgJOE("JOE_T_ProcessForm_Name");
+	public static final SOSMsgJOE	JOE_L_ProcessForm_Log								= new SOSMsgJOE("JOE_L_ProcessForm_Log");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_ProcessForm_Value						= new SOSMsgJOE("JOE_L_ProcessForm_Value");
+	public static final SOSMsgJOE	JOE_T_ProcessForm_Log								= new SOSMsgJOE("JOE_T_ProcessForm_Log");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_ProcessForm_Value						= new SOSMsgJOE("JOE_T_ProcessForm_Value");
+	public static final SOSMsgJOE	JOE_G_ProcessForm_EnvironmentVariables				= new SOSMsgJOE("JOE_G_ProcessForm_EnvironmentVariables");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ProcessForm_Apply						= new SOSMsgJOE("JOE_B_ProcessForm_Apply");
+	public static final SOSMsgJOE	JOE_T_ProcessForm_Name								= new SOSMsgJOE("JOE_T_ProcessForm_Name");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ProcessForm_Value								= new SOSMsgJOE("JOE_L_ProcessForm_Value");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ProcessForm_Value								= new SOSMsgJOE("JOE_T_ProcessForm_Value");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ProcessForm_Apply								= new SOSMsgJOE("JOE_B_ProcessForm_Apply");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_Tbl_ProcessForm_Variables						= new SOSMsgJOE("JOE_Tbl_ProcessForm_Variables");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_ProcessForm_Remove						= new SOSMsgJOE("JOE_B_ProcessForm_Remove");
+	public static final SOSMsgJOE	JOE_B_ProcessForm_Remove							= new SOSMsgJOE("JOE_B_ProcessForm_Remove");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ProcessForm_Name						= new SOSMsgJOE("JOE_TCl_ProcessForm_Name");
+	public static final SOSMsgJOE	JOE_TCl_ProcessForm_Name							= new SOSMsgJOE("JOE_TCl_ProcessForm_Name");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_TCl_ProcessForm_Value						= new SOSMsgJOE("JOE_TCl_ProcessForm_Value");
-	
-	
-	
-	
+	public static final SOSMsgJOE	JOE_TCl_ProcessForm_Value							= new SOSMsgJOE("JOE_TCl_ProcessForm_Value");
 
+	// ProfilesForm
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_ProfilesForm_Profiles							= new SOSMsgJOE("JOE_G_ProfilesForm_Profiles");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ProfilesForm_Name								= new SOSMsgJOE("JOE_T_ProfilesForm_Name");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ProfilesForm_ProfileNotes						= new SOSMsgJOE("JOE_B_ProfilesForm_ProfileNotes");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ProfilesForm_ApplyProfile						= new SOSMsgJOE("JOE_B_ProfilesForm_ApplyProfile");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Tbl_ProfilesForm_Profiles						= new SOSMsgJOE("JOE_Tbl_ProfilesForm_Profiles");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_ProfilesForm_Name							= new SOSMsgJOE("JOE_TCl_ProfilesForm_Name");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ProfilesForm_NewProfile						= new SOSMsgJOE("JOE_B_ProfilesForm_NewProfile");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ProfilesForm_RemoveProfile					= new SOSMsgJOE("JOE_B_ProfilesForm_RemoveProfile");
+
+	// ReleaseForm
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_M_ReleaseForm_Changes							= new SOSMsgJOE("JOE_M_ReleaseForm_Changes");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_ReleaseForm_Releases							= new SOSMsgJOE("JOE_G_ReleaseForm_Releases");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ReleaseForm_ID								= new SOSMsgJOE("JOE_L_ReleaseForm_ID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ReleaseForm_ID								= new SOSMsgJOE("JOE_T_ReleaseForm_ID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ReleaseForm_Created							= new SOSMsgJOE("JOE_L_ReleaseForm_Created");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ReleaseForm_Title								= new SOSMsgJOE("JOE_L_ReleaseForm_Title");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ReleaseForm_Title								= new SOSMsgJOE("JOE_T_ReleaseForm_Title");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ReleaseForm_Modified							= new SOSMsgJOE("JOE_L_ReleaseForm_Modified");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_ReleaseForm_Created								= new SOSMsgJOE("JOE_ReleaseForm_Created");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_ReleaseForm_Modified							= new SOSMsgJOE("JOE_ReleaseForm_Modified");
+
+	// ReleasesForm
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_ReleasesForm_Releases							= new SOSMsgJOE("JOE_G_ReleasesForm_Releases");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Tbl_ReleasesForm_Releases							= new SOSMsgJOE("JOE_Tbl_ReleasesForm_Releases");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_ReleasesForm_ID							= new SOSMsgJOE("JOE_TCl_ReleasesForm_ID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_ReleasesForm_Title							= new SOSMsgJOE("JOE_TCl_ReleasesForm_Title");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_ReleasesForm_Created							= new SOSMsgJOE("JOE_TCl_ReleasesForm_Created");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_ReleasesForm_Modified							= new SOSMsgJOE("JOE_TCl_ReleasesForm_Modified");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ReleasesForm_NewRelease							= new SOSMsgJOE("JOE_B_ReleasesForm_NewRelease");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ReleasesForm_RemoveRelease							= new SOSMsgJOE("JOE_B_ReleasesForm_RemoveRelease");
+	
+//	ResourcesForm
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_ResourcesForm_Resources							= new SOSMsgJOE("JOE_G_ResourcesForm_Resources");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ResourcesForm_Memory							= new SOSMsgJOE("JOE_B_ResourcesForm_Memory");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ResourcesForm_Space							= new SOSMsgJOE("JOE_B_ResourcesForm_Space");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_ResourcesForm_Memory							= new SOSMsgJOE("JOE_G_ResourcesForm_Memory");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ResourcesForm_Minimum							= new SOSMsgJOE("JOE_L_ResourcesForm_Minimum");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ResourcesForm_Memory							= new SOSMsgJOE("JOE_T_ResourcesForm_Memory");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ResourcesForm_Unit							= new SOSMsgJOE("JOE_L_ResourcesForm_Unit");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ResourcesForm_MemoryNotes							= new SOSMsgJOE("JOE_B_ResourcesForm_MemoryNotes");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_ResourcesForm_Space							= new SOSMsgJOE("JOE_G_ResourcesForm_Space");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ResourcesForm_Space							= new SOSMsgJOE("JOE_T_ResourcesForm_Space");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ResourcesForm_SpaceNotes							= new SOSMsgJOE("JOE_B_ResourcesForm_SpaceNotes");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_ResourcesForm_Memory							= new SOSMsgJOE("JOE_Cbo_ResourcesForm_Memory");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_ResourcesForm_Space							= new SOSMsgJOE("JOE_Cbo_ResourcesForm_Space");
+
+//	ScriptForm
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_ScriptForm_Script							= new SOSMsgJOE("JOE_G_ScriptForm_Script");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ScriptForm_JavaClass							= new SOSMsgJOE("JOE_L_ScriptForm_JavaClass");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ScriptForm_JavaClass							= new SOSMsgJOE("JOE_T_ScriptForm_JavaClass");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ScriptForm_ResourceID							= new SOSMsgJOE("JOE_L_ScriptForm_ResourceID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ScriptForm_JavaRB							= new SOSMsgJOE("JOE_B_ScriptForm_JavaRB");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ScriptForm_JavaScriptRB							= new SOSMsgJOE("JOE_B_ScriptForm_JavaScriptRB");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ScriptForm_PerlScriptRB							= new SOSMsgJOE("JOE_B_ScriptForm_PerlScriptRB");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ScriptForm_VBScriptRB							= new SOSMsgJOE("JOE_B_ScriptForm_VBScriptRB");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ScriptForm_ShellRB							= new SOSMsgJOE("JOE_B_ScriptForm_ShellRB");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_ScriptForm_NoneRB							= new SOSMsgJOE("JOE_B_ScriptForm_NoneRB");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_ScriptForm_Resource							= new SOSMsgJOE("JOE_Cbo_ScriptForm_Resource");
+	
+//	SectionsForm
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_SectionsForm_Sections							= new SOSMsgJOE("JOE_G_SectionsForm_Sections");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_SectionsForm_Name							= new SOSMsgJOE("JOE_T_SectionsForm_Name");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_SectionsForm_Apply							= new SOSMsgJOE("JOE_B_SectionsForm_Apply");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_SectionsForm_Reference							= new SOSMsgJOE("JOE_L_SectionsForm_Reference");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_SectionsForm_ID							= new SOSMsgJOE("JOE_L_SectionsForm_ID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_SectionsForm_ID							= new SOSMsgJOE("JOE_T_SectionsForm_ID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Tbl_SectionsForm_Sections							= new SOSMsgJOE("JOE_Tbl_SectionsForm_Sections");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_SectionsForm_New							= new SOSMsgJOE("JOE_B_SectionsForm_New");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_SectionsForm_Remove							= new SOSMsgJOE("JOE_B_SectionsForm_Remove");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_SectionsForm_Name							= new SOSMsgJOE("JOE_TCl_SectionsForm_Name");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_SectionsForm_Reference							= new SOSMsgJOE("JOE_TCl_SectionsForm_Reference");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_SectionsForm_ID							= new SOSMsgJOE("JOE_TCl_SectionsForm_ID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_SectionsForm_Reference							= new SOSMsgJOE("JOE_Cbo_SectionsForm_Reference");
+	
+//	SettingForm
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_G_SettingForm_Settings							= new SOSMsgJOE("JOE_G_SettingForm_Settings");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_SettingForm_Name							= new SOSMsgJOE("JOE_T_SettingForm_Name");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_SettingForm_Apply							= new SOSMsgJOE("JOE_B_SettingForm_Apply");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_SettingForm_DefaultValue							= new SOSMsgJOE("JOE_L_SettingForm_DefaultValue");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_SettingForm_DefaultValue							= new SOSMsgJOE("JOE_T_SettingForm_DefaultValue");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_SettingForm_Type							= new SOSMsgJOE("JOE_L_SettingForm_Type");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_SettingForm_Reference							= new SOSMsgJOE("JOE_L_SettingForm_Reference");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_SettingForm_ID							= new SOSMsgJOE("JOE_L_SettingForm_ID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_SettingForm_ID							= new SOSMsgJOE("JOE_T_SettingForm_ID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_SettingForm_Required							= new SOSMsgJOE("JOE_L_SettingForm_Required");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_SettingForm_Required							= new SOSMsgJOE("JOE_B_SettingForm_Required");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_SettingForm_Notes							= new SOSMsgJOE("JOE_B_SettingForm_Notes");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Tbl_SettingForm_Settings							= new SOSMsgJOE("JOE_Tbl_SettingForm_Settings");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_SettingForm_Name							= new SOSMsgJOE("JOE_TCl_SettingForm_Name");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_SettingForm_Default							= new SOSMsgJOE("JOE_TCl_SettingForm_Default");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_SettingForm_Type							= new SOSMsgJOE("JOE_TCl_SettingForm_Type");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_SettingForm_Required							= new SOSMsgJOE("JOE_TCl_SettingForm_Required");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_SettingForm_Reference							= new SOSMsgJOE("JOE_TCl_SettingForm_Reference");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_TCl_SettingForm_ID							= new SOSMsgJOE("JOE_TCl_SettingForm_ID");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_SettingForm_New							= new SOSMsgJOE("JOE_B_SettingForm_New");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_B_SettingForm_Remove							= new SOSMsgJOE("JOE_B_SettingForm_Remove");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_SettingForm_Reference							= new SOSMsgJOE("JOE_Cbo_SettingForm_Reference");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_SettingForm_Type							= new SOSMsgJOE("JOE_Cbo_SettingForm_Type");
 	
 	
 	// SchedulerListener
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_SchedulerListener_RunTime										= new SOSMsgJOE("JOE_M_SchedulerListener_RunTime");
+	public static final SOSMsgJOE	JOE_M_SchedulerListener_RunTime						= new SOSMsgJOE("JOE_M_SchedulerListener_RunTime");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_M_SchedulerListener_PrePostProcessing			= new SOSMsgJOE("JOE_M_SchedulerListener_PrePostProcessing");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_JobChains			= new SOSMsgJOE("JOE_L_SchedulerListener_JobChains");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_JobChains					= new SOSMsgJOE("JOE_L_SchedulerListener_JobChains");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_ProcessClasses			= new SOSMsgJOE("JOE_L_SchedulerListener_ProcessClasses");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_ProcessClasses				= new SOSMsgJOE("JOE_L_SchedulerListener_ProcessClasses");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_Jobs			= new SOSMsgJOE("JOE_L_SchedulerListener_Jobs");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_Jobs						= new SOSMsgJOE("JOE_L_SchedulerListener_Jobs");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_HTTPServer			= new SOSMsgJOE("JOE_L_SchedulerListener_HTTPServer");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_HTTPServer					= new SOSMsgJOE("JOE_L_SchedulerListener_HTTPServer");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_Webservices			= new SOSMsgJOE("JOE_L_SchedulerListener_Webservices");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_Webservices					= new SOSMsgJOE("JOE_L_SchedulerListener_Webservices");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_Schedules			= new SOSMsgJOE("JOE_L_SchedulerListener_Schedules");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_Schedules					= new SOSMsgJOE("JOE_L_SchedulerListener_Schedules");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_JobChainOrders			= new SOSMsgJOE("JOE_L_SchedulerListener_JobChainOrders");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_JobChainOrders				= new SOSMsgJOE("JOE_L_SchedulerListener_JobChainOrders");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_Locks			= new SOSMsgJOE("JOE_L_SchedulerListener_Locks");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_Locks						= new SOSMsgJOE("JOE_L_SchedulerListener_Locks");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_0047			= new SOSMsgJOE("JOE_M_0047");
+	public static final SOSMsgJOE	JOE_M_0047											= new SOSMsgJOE("JOE_M_0047");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_StepsNodes			= new SOSMsgJOE("JOE_L_SchedulerListener_StepsNodes");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_StepsNodes					= new SOSMsgJOE("JOE_L_SchedulerListener_StepsNodes");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_NestedJobChains			= new SOSMsgJOE("JOE_L_SchedulerListener_NestedJobChains");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_NestedJobChains				= new SOSMsgJOE("JOE_L_SchedulerListener_NestedJobChains");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_BaseConfig			= new SOSMsgJOE("JOE_L_SchedulerListener_BaseConfig");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_BaseConfig					= new SOSMsgJOE("JOE_L_SchedulerListener_BaseConfig");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_BaseFiles			= new SOSMsgJOE("JOE_L_SchedulerListener_BaseFiles");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_BaseFiles					= new SOSMsgJOE("JOE_L_SchedulerListener_BaseFiles");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_Parameter			= new SOSMsgJOE("JOE_L_SchedulerListener_Parameter");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_Parameter					= new SOSMsgJOE("JOE_L_SchedulerListener_Parameter");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_AccessControl			= new SOSMsgJOE("JOE_L_SchedulerListener_AccessControl");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_AccessControl				= new SOSMsgJOE("JOE_L_SchedulerListener_AccessControl");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_ClusterConfig			= new SOSMsgJOE("JOE_L_SchedulerListener_ClusterConfig");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_ClusterConfig				= new SOSMsgJOE("JOE_L_SchedulerListener_ClusterConfig");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_StartScript			= new SOSMsgJOE("JOE_L_SchedulerListener_StartScript");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_StartScript					= new SOSMsgJOE("JOE_L_SchedulerListener_StartScript");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_SchedulerListener_HTTPAuthentication			= new SOSMsgJOE("JOE_L_SchedulerListener_HTTPAuthentication");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_HTTPDirectories			= new SOSMsgJOE("JOE_L_SchedulerListener_HTTPDirectories");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_HTTPDirectories				= new SOSMsgJOE("JOE_L_SchedulerListener_HTTPDirectories");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_Holidays			= new SOSMsgJOE("JOE_L_SchedulerListener_Holidays");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_Holidays					= new SOSMsgJOE("JOE_L_SchedulerListener_Holidays");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_Commands			= new SOSMsgJOE("JOE_L_SchedulerListener_Commands");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_Commands					= new SOSMsgJOE("JOE_L_SchedulerListener_Commands");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_Options			= new SOSMsgJOE("JOE_L_SchedulerListener_Options");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_Options						= new SOSMsgJOE("JOE_L_SchedulerListener_Options");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_JobSettings			= new SOSMsgJOE("JOE_L_SchedulerListener_JobSettings");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_JobSettings					= new SOSMsgJOE("JOE_L_SchedulerListener_JobSettings");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_RunOptions			= new SOSMsgJOE("JOE_L_SchedulerListener_RunOptions");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_RunOptions					= new SOSMsgJOE("JOE_L_SchedulerListener_RunOptions");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_Documentation			= new SOSMsgJOE("JOE_L_SchedulerListener_Documentation");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_Documentation				= new SOSMsgJOE("JOE_L_SchedulerListener_Documentation");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_Weekdays			= new SOSMsgJOE("JOE_L_SchedulerListener_Weekdays");
+	public static final SOSMsgJOE	JOE_L_SchedulerListener_Weekdays					= new SOSMsgJOE("JOE_L_SchedulerListener_Weekdays");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_0048			= new SOSMsgJOE("JOE_M_0048");
+	public static final SOSMsgJOE	JOE_M_0048											= new SOSMsgJOE("JOE_M_0048");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_0049			= new SOSMsgJOE("JOE_M_0049");
+	public static final SOSMsgJOE	JOE_M_0049											= new SOSMsgJOE("JOE_M_0049");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_SchedulerListener_EveryDay			= new SOSMsgJOE("JOE_M_SchedulerListener_EveryDay");
+	public static final SOSMsgJOE	JOE_M_SchedulerListener_EveryDay					= new SOSMsgJOE("JOE_M_SchedulerListener_EveryDay");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_SchedulerListener_Weekdays			= new SOSMsgJOE("JOE_M_SchedulerListener_Weekdays");
+	public static final SOSMsgJOE	JOE_M_SchedulerListener_Weekdays					= new SOSMsgJOE("JOE_M_SchedulerListener_Weekdays");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_SchedulerListener_Monthdays			= new SOSMsgJOE("JOE_M_SchedulerListener_Monthdays");
+	public static final SOSMsgJOE	JOE_M_SchedulerListener_Monthdays					= new SOSMsgJOE("JOE_M_SchedulerListener_Monthdays");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_SchedulerListener_Ultimos			= new SOSMsgJOE("JOE_M_SchedulerListener_Ultimos");
+	public static final SOSMsgJOE	JOE_M_SchedulerListener_Ultimos						= new SOSMsgJOE("JOE_M_SchedulerListener_Ultimos");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_M_SchedulerListener_SpecificWeekdays			= new SOSMsgJOE("JOE_M_SchedulerListener_SpecificWeekdays");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_SchedulerListener_SpecificDays			= new SOSMsgJOE("JOE_M_SchedulerListener_SpecificDays");
+	public static final SOSMsgJOE	JOE_M_SchedulerListener_SpecificDays				= new SOSMsgJOE("JOE_M_SchedulerListener_SpecificDays");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_SchedulerListener_SpecificMonth			= new SOSMsgJOE("JOE_M_SchedulerListener_SpecificMonth");
+	public static final SOSMsgJOE	JOE_M_SchedulerListener_SpecificMonth				= new SOSMsgJOE("JOE_M_SchedulerListener_SpecificMonth");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_SchedulerListener_Holidays			= new SOSMsgJOE("JOE_M_SchedulerListener_Holidays");
+	public static final SOSMsgJOE	JOE_M_SchedulerListener_Holidays					= new SOSMsgJOE("JOE_M_SchedulerListener_Holidays");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_SchedulerListener_Webservice			= new SOSMsgJOE("JOE_M_SchedulerListener_Webservice");
+	public static final SOSMsgJOE	JOE_M_SchedulerListener_Webservice					= new SOSMsgJOE("JOE_M_SchedulerListener_Webservice");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_SchedulerListener_Parameter			= new SOSMsgJOE("JOE_M_SchedulerListener_Parameter");
+	public static final SOSMsgJOE	JOE_M_SchedulerListener_Parameter					= new SOSMsgJOE("JOE_M_SchedulerListener_Parameter");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_SchedulerListener_Empty			= new SOSMsgJOE("JOE_M_SchedulerListener_Empty");
-	
+	public static final SOSMsgJOE	JOE_M_SchedulerListener_Empty						= new SOSMsgJOE("JOE_M_SchedulerListener_Empty");
 
-			
-	
 	// @I18NMsg
 	// public static final SOSMsgJOE JOE_Comment = new SOSMsgJOE("Comment"); // "Comment";
 

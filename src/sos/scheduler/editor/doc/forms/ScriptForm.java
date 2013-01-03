@@ -17,314 +17,279 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.DocumentationListener;
 import sos.scheduler.editor.doc.listeners.ScriptListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 
-public class ScriptForm extends Composite implements IUnsaved, IUpdateLanguage {
-    private ScriptListener   listener         = null;
+public class ScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+	private ScriptListener		listener			= null;
 
-    private Group group;
+	private Group				group;
 
-    private Label            label            = null;
+	@SuppressWarnings("unused")
+	private Label				label				= null;
 
-    private Composite composite;
+	private Composite			composite;
 
-    private Button           rbJava           = null;
+	private Button				rbJava				= null;
 
-    private Button           rbJavascript     = null;
+	private Button				rbJavascript		= null;
 
-    private Button           rbPerlscript     = null;
+	private Button				rbPerlscript		= null;
 
-    private Button           rbVBScript       = null;
+	private Button				rbVBScript			= null;
 
+	@SuppressWarnings("unused")
+	private Label				label1				= null;
 
-    private Label            label1           = null;
+	private Text				tJavaClass			= null;
 
+	private Label				label3				= null;
 
-    private Text             tJavaClass       = null;
+	private Combo				cResource			= null;
 
-    private Label            label3           = null;
+	private IncludeFilesForm	includeFilesForm	= null;
 
-    private Combo            cResource        = null;
+	private Button				rbShell				= null;
+	private Button				rbNone				= null;
 
-    private IncludeFilesForm includeFilesForm = null;
+	public ScriptForm(Composite parent, int style) {
+		super(parent, style);
+		initialize();
+		setToolTipText();
+	}
 
-    private Button           rbShell            = null;
-    private Button           rbNone           = null;
+	public void setParams(DocumentationDom dom, Element parent, int type) {
+		listener = new ScriptListener(dom, parent, type);
+		includeFilesForm.setParams(dom, listener.getScript());
+		// cResource.setItems(listener.getResources(null));
+	}
 
+	public void setTitle(String title) {
+		group.setText(title);
+	}
 
-    public ScriptForm(Composite parent, int style) {
-        super(parent, style);
-        initialize();
-        setToolTipText();
-    }
+	public void setScriptNone(boolean enable) {
+		rbNone.setVisible(enable);
+	}
 
+	private void initialize() {
+		createGroup();
+		setSize(new Point(743, 447));
+		setLayout(new FillLayout());
 
-    public void setParams(DocumentationDom dom, Element parent, int type) {
-        listener = new ScriptListener(dom, parent, type);
-        includeFilesForm.setParams(dom, listener.getScript());
-        //cResource.setItems(listener.getResources(null));
-    }
+		includeFilesForm.setSeparator(label3.getText());
+	}
 
+	/**
+	 * This method initializes group
+	 */
+	private void createGroup() {
+		GridData gridData1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
+		gridData1.horizontalIndent = 7; // Generated
 
-    public void setTitle(String title) {
-        group.setText(title);
-    }
+		GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
+		gridData.horizontalIndent = 7; // Generated
 
+		GridLayout gl_group = new GridLayout(2, false);
 
-    public void setScriptNone(boolean enable) {
-        rbNone.setVisible(enable);
-    }
+		group = JOE_G_ScriptForm_Script.Control(new Group(this, SWT.NONE));
+		group.setLayout(gl_group); // Generated
 
+		label = JOE_L_ScriptForm_Language.Control(new Label(group, SWT.NONE));
 
-    private void initialize() {
-        createGroup();
-        setSize(new Point(743, 447));
-        setLayout(new FillLayout());
-        
-       
+		createComposite();
 
-        includeFilesForm.setSeparator(label3.getText());
-    }
+		label1 = JOE_L_ScriptForm_JavaClass.Control(new Label(group, SWT.NONE));
 
+		tJavaClass = JOE_T_ScriptForm_JavaClass.Control(new Text(group, SWT.BORDER));
+		tJavaClass.setLayoutData(gridData); // Generated
+		tJavaClass.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+				listener.setJavaClass(tJavaClass.getText());
+			}
+		});
 
-    /**
-     * This method initializes group
-     */
-    private void createGroup() {
-        GridData gridData1 = new GridData();
-        gridData1.horizontalAlignment = GridData.FILL; // Generated
-        gridData1.grabExcessVerticalSpace = false; // Generated
-        gridData1.grabExcessHorizontalSpace = true; // Generated
-        gridData1.horizontalIndent = 7; // Generated
-        gridData1.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData = new GridData();
-        gridData.horizontalAlignment = GridData.FILL; // Generated
-        gridData.grabExcessHorizontalSpace = true; // Generated
-        gridData.horizontalIndent = 7; // Generated
-        gridData.verticalAlignment = GridData.CENTER; // Generated
-        GridLayout gl_group = new GridLayout();
-        gl_group.numColumns = 2; // Generated
-        group = new Group(this, SWT.NONE);
-        group.setText("Script"); // Generated
-        group.setLayout(gl_group); // Generated
-        label = new Label(group, SWT.NONE);
-        label.setText("Language:"); // Generated
-        createComposite();
-        label1 = new Label(group, SWT.NONE);
-        label1.setText("Java Class:"); // Generated
-        tJavaClass = new Text(group, SWT.BORDER);
-        tJavaClass.setLayoutData(gridData); // Generated
-        tJavaClass.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-                listener.setJavaClass(tJavaClass.getText());
-            }
-        });
-        label3 = new Label(group, SWT.NONE);
-        label3.setText("Resource ID:");
-        createCResource();
-        createIncludeFilesForm();
-    }
+		label3 = JOE_L_ScriptForm_ResourceID.Control(new Label(group, SWT.NONE));
 
+		createCResource();
 
-    /**
-     * This method initializes composite
-     */
-    private void createComposite() {
-        GridLayout gl_composite = new GridLayout();
-        gl_composite.numColumns = 7; // Generated
-        composite = new Composite(group, SWT.NONE);
-        composite.setLayout(gl_composite); // Generated
-        rbJava = new Button(composite, SWT.RADIO);
-        rbJava.setText("Java"); // Generated
-        rbJava.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (rbJava.getSelection()) {
-                    listener.setLanguage(ScriptListener.JAVA);
-                    fillForm();
-                }
-            }
-        });
-        rbJavascript = new Button(composite, SWT.RADIO);
-        rbJavascript.setText("Javascript"); // Generated
-        rbJavascript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (rbJavascript.getSelection()) {
-                    listener.setLanguage(ScriptListener.JAVA_SCRIPT);
-                    fillForm();
-                }
-            }
-        });
-        rbPerlscript = new Button(composite, SWT.RADIO);
-        rbPerlscript.setText("PerlScript"); // Generated
-        rbPerlscript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (rbPerlscript.getSelection()) {
-                    listener.setLanguage(ScriptListener.PERL);
-                    fillForm();
-                }
-            }
-        });
-        rbVBScript = new Button(composite, SWT.RADIO);
-        rbVBScript.setText("VBScript"); // Generated
-        rbVBScript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (rbVBScript.getSelection()) {
-                    listener.setLanguage(ScriptListener.VB_SCRIPT);
-                    fillForm();
-                }
-            }
-        });
-        
-        rbShell = new Button(composite, SWT.RADIO);
-        rbShell.setText("Shell");
-        rbShell.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-           public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-               if (rbShell.getSelection()) {
-                  listener.setLanguage(ScriptListener.SHELL);
-                  fillForm();
-              }
+		createIncludeFilesForm();
+	}
 
-        	}
-        });
-        
-        rbNone = new Button(composite, SWT.RADIO);
-        rbNone.setText("None"); // Generated
-        rbNone.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (rbNone.getSelection()) {
-                    listener.setLanguage(ScriptListener.NONE);
-                    fillForm();
-                }
-            }
-        });
-   
-    }
+	/**
+	 * This method initializes composite
+	 */
+	private void createComposite() {
+		GridLayout gl_composite = new GridLayout(7, false);
 
+		composite = new Composite(group, SWT.NONE);
+		composite.setLayout(gl_composite); // Generated
 
-    /**
-     * This method initializes cResource
-     */
-    private void createCResource() {
-        GridData gridData2 = new GridData();
-        gridData2.horizontalAlignment = GridData.FILL; // Generated
-        gridData2.horizontalIndent = 7; // Generated
-        gridData2.verticalAlignment = GridData.CENTER; // Generated
-        cResource = new Combo(group, SWT.NONE);
-        cResource.setLayoutData(gridData2); // Generated
-        cResource.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-                listener.setResource(cResource.getText());
-            }
-        });
-    }
+		rbJava = JOE_B_ScriptForm_JavaRB.Control(new Button(composite, SWT.RADIO));
+		rbJava.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (rbJava.getSelection()) {
+					listener.setLanguage(ScriptListener.JAVA);
+					fillForm();
+				}
+			}
+		});
 
+		rbJavascript = JOE_B_ScriptForm_JavaScriptRB.Control(new Button(composite, SWT.RADIO));
+		rbJavascript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (rbJavascript.getSelection()) {
+					listener.setLanguage(ScriptListener.JAVA_SCRIPT);
+					fillForm();
+				}
+			}
+		});
 
-    /**
-     * This method initializes includeFilesForm
-     */
-    private void createIncludeFilesForm() {
-        new Label(group, SWT.NONE);
-        new Label(group, SWT.NONE);
-         
-        GridData gridData3 = new GridData();
-        gridData3.horizontalSpan = 2; // Generated
-        gridData3.verticalAlignment = GridData.FILL; // Generated
-        gridData3.grabExcessHorizontalSpace = true; // Generated
-        gridData3.grabExcessVerticalSpace = true; // Generated
-        gridData3.horizontalAlignment = GridData.FILL; // Generated
-        includeFilesForm = new IncludeFilesForm(group, SWT.NONE);
-        includeFilesForm.setLayoutData(gridData3); // Generated
-    }
+		rbPerlscript = JOE_B_ScriptForm_PerlScriptRB.Control(new Button(composite, SWT.RADIO));
+		rbPerlscript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (rbPerlscript.getSelection()) {
+					listener.setLanguage(ScriptListener.PERL);
+					fillForm();
+				}
+			}
+		});
 
+		rbVBScript = JOE_B_ScriptForm_VBScriptRB.Control(new Button(composite, SWT.RADIO));
+		rbVBScript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (rbVBScript.getSelection()) {
+					listener.setLanguage(ScriptListener.VB_SCRIPT);
+					fillForm();
+				}
+			}
+		});
 
-    public void setToolTipText() {
-        rbJava.setToolTipText(Messages.getTooltip("doc.script.java"));
-        rbJavascript.setToolTipText(Messages.getTooltip("doc.script.javascript"));
-        rbPerlscript.setToolTipText(Messages.getTooltip("doc.script.perlscript"));
-        rbVBScript.setToolTipText(Messages.getTooltip("doc.script.vbscript"));
-        rbShell.setToolTipText(Messages.getTooltip("doc.script.shellscript"));
-        rbNone.setToolTipText(Messages.getTooltip("doc.script.none"));
-        tJavaClass.setToolTipText(Messages.getTooltip("doc.script.javaclass"));
-        cResource.setToolTipText(Messages.getTooltip("doc.script.resource"));
-    }
+		rbShell = JOE_B_ScriptForm_ShellRB.Control(new Button(composite, SWT.RADIO));
+		rbShell.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (rbShell.getSelection()) {
+					listener.setLanguage(ScriptListener.SHELL);
+					fillForm();
+				}
 
+			}
+		});
 
-    public void apply() {
-        includeFilesForm.apply();
-        if (listener != null)
-            listener.checkScript();
-    }
+		rbNone = JOE_B_ScriptForm_NoneRB.Control(new Button(composite, SWT.RADIO));
+		rbNone.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				if (rbNone.getSelection()) {
+					listener.setLanguage(ScriptListener.NONE);
+					fillForm();
+				}
+			}
+		});
 
+	}
 
-    public boolean isUnsaved() {
-        boolean status = includeFilesForm.isUnsaved();
-        if (listener != null)
-            listener.checkScript();
-        return status;
-    }
+	/**
+	 * This method initializes cResource
+	 */
+	private void createCResource() {
+		GridData gridData2 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+		gridData2.horizontalIndent = 7; // Generated
 
+		cResource = JOE_Cbo_ScriptForm_Resource.Control(new Combo(group, SWT.NONE));
+		cResource.setLayoutData(gridData2); // Generated
+		cResource.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				listener.setResource(cResource.getText());
+			}
+		});
+	}
 
-    public void init(boolean enabled, boolean btnNoneVisible) {
-        rbNone.setVisible(btnNoneVisible);
+	/**
+	 * This method initializes includeFilesForm
+	 */
+	private void createIncludeFilesForm() {
+		new Label(group, SWT.NONE);
+		new Label(group, SWT.NONE);
 
-        rbJava.setEnabled(enabled);
-        rbJavascript.setEnabled(enabled);
-        rbPerlscript.setEnabled(enabled);
-        rbVBScript.setEnabled(enabled);
-        rbShell.setEnabled(enabled);
-        rbNone.setEnabled(enabled);
-        tJavaClass.setEnabled(enabled);
-        cResource.setEnabled(enabled);
-        includeFilesForm.setEnabled(enabled);
+		GridData gridData3 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
+		includeFilesForm = new IncludeFilesForm(group, SWT.NONE);
+		includeFilesForm.setLayoutData(gridData3); // Generated
+	}
 
-        if (enabled) {
-            fillForm();
-        }
-    }
+	public void setToolTipText() {
+		//
+	}
 
+	public void apply() {
+		includeFilesForm.apply();
+		if (listener != null)
+			listener.checkScript();
+	}
 
-    private void fillForm() {
-        DocumentationListener.setCheckbox(cResource, listener.getResources(null), listener.getResource());
+	public boolean isUnsaved() {
+		boolean status = includeFilesForm.isUnsaved();
+		if (listener != null)
+			listener.checkScript();
+		return status;
+	}
 
-        int language = listener.getLanguage();
+	public void init(boolean enabled, boolean btnNoneVisible) {
+		rbNone.setVisible(btnNoneVisible);
 
-        tJavaClass.setEnabled(false);
+		rbJava.setEnabled(enabled);
+		rbJavascript.setEnabled(enabled);
+		rbPerlscript.setEnabled(enabled);
+		rbVBScript.setEnabled(enabled);
+		rbShell.setEnabled(enabled);
+		rbNone.setEnabled(enabled);
+		tJavaClass.setEnabled(enabled);
+		cResource.setEnabled(enabled);
+		includeFilesForm.setEnabled(enabled);
 
-        switch (language) {
-            case ScriptListener.NONE:
-                rbNone.setSelection(true);
-                break;
-            case ScriptListener.JAVA:
-                rbJava.setSelection(true);
-                tJavaClass.setEnabled(true);
-                tJavaClass.setFocus();
-                if (!tJavaClass.getText().equals("") && listener.getJavaClass().equals(""))
-                    listener.setJavaClass(tJavaClass.getText());
-                tJavaClass.setText(listener.getJavaClass());
-                break;
-            case ScriptListener.JAVA_SCRIPT:
-                rbJavascript.setSelection(true);
- 
-                break;
-            case ScriptListener.PERL:
-                rbPerlscript.setSelection(true);
- 
-                break;
-            case ScriptListener.VB_SCRIPT:
-               rbVBScript.setSelection(true);
+		if (enabled) {
+			fillForm();
+		}
+	}
 
-               break;
-            case ScriptListener.SHELL:
-               rbShell.setSelection(true);
+	private void fillForm() {
+		DocumentationListener.setCheckbox(cResource, listener.getResources(null), listener.getResource());
 
-               break;
-        }
+		int language = listener.getLanguage();
 
-    }
+		tJavaClass.setEnabled(false);
+
+		switch (language) {
+			case ScriptListener.NONE:
+				rbNone.setSelection(true);
+				break;
+			case ScriptListener.JAVA:
+				rbJava.setSelection(true);
+				tJavaClass.setEnabled(true);
+				tJavaClass.setFocus();
+				if (!tJavaClass.getText().equals("") && listener.getJavaClass().equals(""))
+					listener.setJavaClass(tJavaClass.getText());
+				tJavaClass.setText(listener.getJavaClass());
+				break;
+			case ScriptListener.JAVA_SCRIPT:
+				rbJavascript.setSelection(true);
+
+				break;
+			case ScriptListener.PERL:
+				rbPerlscript.setSelection(true);
+
+				break;
+			case ScriptListener.VB_SCRIPT:
+				rbVBScript.setSelection(true);
+
+				break;
+			case ScriptListener.SHELL:
+				rbShell.setSelection(true);
+
+				break;
+		}
+
+	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -13,12 +13,12 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.ReleasesListener;
 
-public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class ReleasesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 	
 	
     private ReleasesListener listener     = null;
@@ -70,16 +70,15 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
         GridData gridData2 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
         GridData gridData1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
         GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
-        GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 2; // Generated
-        group = new Group(this, SWT.NONE);
-        group.setText("Releases"); // Generated
+        GridLayout gridLayout = new GridLayout(2, false);
+        
+        group = JOE_G_ReleaseForm_Releases.Control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout); // Generated
        
-        //Label filler = new Label(group, SWT.NONE);
         createComposite();
         createGroup1();
-        tReleases = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
+        
+        tReleases = JOE_Tbl_ReleasesForm_Releases.Control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
         tReleases.setHeaderVisible(true); // Generated
         tReleases.setLayoutData(gridData); // Generated
         tReleases.setLinesVisible(true); // Generated
@@ -93,31 +92,36 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
                 }
             }
         });
-        TableColumn idTableColumn = new TableColumn(tReleases, SWT.NONE);
+        
+        TableColumn idTableColumn = JOE_TCl_ReleasesForm_ID.Control(new TableColumn(tReleases, SWT.NONE));
         idTableColumn.setWidth(250); // Generated
-        idTableColumn.setText("ID"); // Generated
-        TableColumn tableColumn5 = new TableColumn(tReleases, SWT.NONE);
+        
+        TableColumn tableColumn5 = JOE_TCl_ReleasesForm_Title.Control(new TableColumn(tReleases, SWT.NONE));
         tableColumn5.setWidth(90); // Generated
-        tableColumn5.setText("Title"); // Generated
-        TableColumn tableColumn6 = new TableColumn(tReleases, SWT.NONE);
+        
+        TableColumn tableColumn6 = JOE_TCl_ReleasesForm_Created.Control(new TableColumn(tReleases, SWT.NONE));
         tableColumn6.setWidth(90); // Generated
-        tableColumn6.setText("Created"); // Generated
-        TableColumn tableColumn1 = new TableColumn(tReleases, SWT.NONE);
-        tableColumn1.setWidth(60); // Generated
-        tableColumn1.setText("Modified"); // Generated
-        bNew = new Button(group, SWT.NONE);
-        bNew.setText("New Release"); // Generated
+        
+        TableColumn tableColumn1 = JOE_TCl_ReleasesForm_Modified.Control(new TableColumn(tReleases, SWT.NONE));
+        tableColumn1.setWidth(60);
+        
+        bNew = JOE_B_ReleasesForm_NewRelease.Control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData1); // Generated
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 listener.newRelease();                                
                 tReleases.deselectAll();
                 try{
-                listener.applyRelease("New Realease", 
-                		String.valueOf((listener.getRelease().getParentElement().getChildren("release", dom.getNamespace()).size()))
-                		, sos.util.SOSDate.getCurrentDateAsString("yyyy-mm-dd")
-                		, sos.util.SOSDate.getCurrentDateAsString("yyyy-mm-dd"), 
-                		null);
+//                listener.applyRelease("New Realease", 
+//                		String.valueOf((listener.getRelease().getParentElement().getChildren("release", dom.getNamespace()).size()))
+//                		, sos.util.SOSDate.getCurrentDateAsString("yyyy-mm-dd")
+//                		, sos.util.SOSDate.getCurrentDateAsString("yyyy-mm-dd"), 
+//                		null);
+                    listener.applyRelease(JOE_B_ReleasesForm_NewRelease.label(), 
+                    		String.valueOf((listener.getRelease().getParentElement().getChildren("release", dom.getNamespace()).size()))
+                    		, sos.util.SOSDate.getCurrentDateAsString("yyyy-mm-dd")
+                    		, sos.util.SOSDate.getCurrentDateAsString("yyyy-mm-dd"), 
+                    		null);
                 listener.fillReleases(tReleases);
                 _gui.updateReleases();
                 } catch (Exception ex){
@@ -125,8 +129,8 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
                 }
             }
         });
-        bRemove = new Button(group, SWT.NONE);
-        bRemove.setText("Remove Release"); // Generated
+        
+        bRemove = JOE_B_ReleasesForm_RemoveRelease.Control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(gridData2); // Generated
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -152,8 +156,7 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
     private void createGroup1() {
         GridData gridData5 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2);
         gridData5.widthHint = 486;
-        GridLayout gridLayout1 = new GridLayout();
-        gridLayout1.numColumns = 5; // Generated        
+//        GridLayout gridLayout1 = new GridLayout(5, false);
     }
 
 
@@ -174,10 +177,7 @@ public class ReleasesForm extends Composite implements IUnsaved, IUpdateLanguage
     }
 
     public void setToolTipText() {
-        tReleases.setToolTipText(Messages.getTooltip("doc.releases.list"));
-        bNew.setToolTipText(Messages.getTooltip("doc.releases.new"));
-        bRemove.setToolTipText(Messages.getTooltip("doc.releases.remove"));
-
+//
     }
 
 

@@ -16,12 +16,12 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.IUpdateTree;
 import sos.scheduler.editor.doc.listeners.ProfilesListener;
 
-public class ProfilesForm extends Composite implements IUnsaved, IUpdateLanguage {
+public class ProfilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
     private ProfilesListener listener    = null;
 
     private DocumentationDom dom         = null;
@@ -30,7 +30,8 @@ public class ProfilesForm extends Composite implements IUnsaved, IUpdateLanguage
 
     private Group            group       = null;
 
-    private Label            label3      = null;
+    @SuppressWarnings("unused")
+	private Label            label3      = null;
 
     private Text             tName       = null;
 
@@ -71,45 +72,30 @@ public class ProfilesForm extends Composite implements IUnsaved, IUpdateLanguage
     }
 
 
-    /**
-     * This method initializes group
-     */
     private void createGroup() {
-        GridData gridData11 = new GridData();
-        gridData11.horizontalSpan = 3; // Generated
-        gridData11.horizontalAlignment = GridData.FILL; // Generated
-        gridData11.verticalAlignment = GridData.FILL; // Generated
-        gridData11.grabExcessHorizontalSpace = true; // Generated
-        gridData11.grabExcessVerticalSpace = true; // Generated
-        gridData11.verticalSpan = 3; // Generated
-        GridData gridData6 = new GridData();
-        gridData6.horizontalAlignment = GridData.FILL; // Generated
-        gridData6.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData5 = new GridData();
-        gridData5.horizontalAlignment = GridData.FILL; // Generated
-        gridData5.verticalAlignment = GridData.BEGINNING; // Generated
-        GridData gridData4 = new GridData();
-        gridData4.horizontalAlignment = GridData.FILL; // Generated
-        gridData4.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData3 = new GridData();
-        gridData3.horizontalAlignment = GridData.FILL; // Generated
-        gridData3.verticalAlignment = GridData.CENTER; // Generated
-        GridData gridData1 = new GridData();
-        gridData1.horizontalSpan = 4; // Generated
-        gridData1.verticalAlignment = GridData.CENTER; // Generated
-        gridData1.horizontalAlignment = GridData.FILL; // Generated
-        GridData gridData = new GridData();
-        gridData.horizontalAlignment = GridData.FILL; // Generated
-        gridData.grabExcessHorizontalSpace = true; // Generated
-        gridData.verticalAlignment = GridData.CENTER; // Generated
-        GridLayout gridLayout2 = new GridLayout();
-        gridLayout2.numColumns = 4; // Generated
-        group = new Group(this, SWT.NONE);
-        group.setText("Profiles"); // Generated
+
+        GridData gridData11 = new GridData(GridData.FILL, GridData.FILL, true, true, 3, 3);
+        
+        GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        
+        GridData gridData5 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
+        
+        GridData gridData4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        
+        GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, false, false);
+        
+        GridData gridData1 = new GridData(GridData.FILL, GridData.CENTER, false, false, 4, 1);
+        
+        GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
+        
+        GridLayout gridLayout2 = new GridLayout(4, false);
+        
+        group = JOE_G_ProfilesForm_Profiles.Control(new Group(this, SWT.NONE));
         group.setLayout(gridLayout2); // Generated
-        label3 = new Label(group, SWT.NONE);
-        label3.setText("Name:"); // Generated
-        tName = new Text(group, SWT.BORDER);
+        
+        label3 = JOE_L_Name.Control(new Label(group, SWT.NONE));
+        
+        tName = JOE_T_ProfilesForm_Name.Control(new Text(group, SWT.BORDER));
         tName.setLayoutData(gridData); // Generated
         tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -117,27 +103,32 @@ public class ProfilesForm extends Composite implements IUnsaved, IUpdateLanguage
                 getShell().setDefaultButton(bApply);
             }
         });
-        bNotes = new Button(group, SWT.NONE);
-        bNotes.setText("Profile Note..."); // Generated
+        
+        bNotes = JOE_B_ProfilesForm_ProfileNotes.Control(new Button(group, SWT.NONE));
         bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                String tip = Messages.getTooltip("doc.note.text.profile");
+//                String tip = Messages.getTooltip("doc.note.text.profile");
+            	String tip = "";
+//                DocumentationForm.openNoteDialog(dom, listener.getProfileElement(), "note", tip, true, !listener
+//                        .isNewProfile(),"Profile Note");
                 DocumentationForm.openNoteDialog(dom, listener.getProfileElement(), "note", tip, true, !listener
-                        .isNewProfile(),"Profile Note");
+                        .isNewProfile(), JOE_B_ProfilesForm_ProfileNotes.label());
             }
         });
-        bApply = new Button(group, SWT.NONE);
-        bApply.setText("Apply Profile"); // Generated
-        bApply.setLayoutData(gridData3); // Generated
+        
+        bApply = JOE_B_ProfilesForm_ApplyProfile.Control(new Button(group, SWT.NONE));
+        bApply.setLayoutData(gridData3);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 applyProfile();
             }
         });
+        
         label4 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label4.setText("Label"); // Generated
         label4.setLayoutData(gridData1); // Generated
-        tProfiles = new Table(group, SWT.BORDER);
+        
+        tProfiles = JOE_Tbl_ProfilesForm_Profiles.Control(new Table(group, SWT.BORDER));
         tProfiles.setHeaderVisible(true); // Generated
         tProfiles.setLayoutData(gridData11); // Generated
         tProfiles.setLinesVisible(true); // Generated
@@ -151,11 +142,11 @@ public class ProfilesForm extends Composite implements IUnsaved, IUpdateLanguage
                 }
             }
         });
-        TableColumn tableColumn = new TableColumn(tProfiles, SWT.NONE);
+        
+        TableColumn tableColumn = JOE_TCl_ProfilesForm_Name.Control(new TableColumn(tProfiles, SWT.NONE));
         tableColumn.setWidth(450); // Generated
-        tableColumn.setText("Name"); // Generated
-        bNew = new Button(group, SWT.NONE);
-        bNew.setText("New Profile"); // Generated
+        
+        bNew = JOE_B_ProfilesForm_NewProfile.Control(new Button(group, SWT.NONE));
         bNew.setLayoutData(gridData4); // Generated
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -166,11 +157,12 @@ public class ProfilesForm extends Composite implements IUnsaved, IUpdateLanguage
                 getShell().setDefaultButton(bApply);
             }
         });
+        
         label5 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
         label5.setText("Label"); // Generated
         label5.setLayoutData(gridData6); // Generated
-        bRemove = new Button(group, SWT.NONE);
-        bRemove.setText("Remove Profile"); // Generated
+        
+        bRemove = JOE_B_ProfilesForm_RemoveProfile.Control(new Button(group, SWT.NONE));
         bRemove.setLayoutData(gridData5); // Generated
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -201,12 +193,7 @@ public class ProfilesForm extends Composite implements IUnsaved, IUpdateLanguage
 
 
     public void setToolTipText() {
-        tName.setToolTipText(Messages.getTooltip("doc.profiles.name"));
-        bNotes.setToolTipText(Messages.getTooltip("doc.profiles.notes"));
-        bApply.setToolTipText(Messages.getTooltip("doc.profiles.apply"));
-        tProfiles.setToolTipText(Messages.getTooltip("doc.profiles.table"));
-        bNew.setToolTipText(Messages.getTooltip("doc.profiles.new"));
-        bRemove.setToolTipText(Messages.getTooltip("doc.profiles.remove"));
+//
     }
 
 

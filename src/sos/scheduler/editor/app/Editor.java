@@ -13,7 +13,7 @@ import sos.scheduler.editor.classes.SOSSplashScreen;
 import com.sos.JSHelper.Logging.Log4JHelper;
 import com.sos.i18n.annotation.I18NResourceBundle;
 
-@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") 
+@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class Editor /*
                                                                                          * extends
                                                                                          * I18NBase
@@ -105,7 +105,7 @@ public class Editor /*
     private static MainWindow window = null;
     private static Display display = null;
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try {
             display = Display.getDefault();
             window = new MainWindow();
@@ -127,7 +127,8 @@ public class Editor /*
 
             }
             SOSSplashScreen.startJOEExecuteLoop(shell, new Runnable() {
-                public void run() {
+                @Override
+				public void run() {
                     doSomeTimeconsumingOperation();
                 }
             }, objImage4Splash, objApplicationMainMethod, 2000);
@@ -162,7 +163,7 @@ public class Editor /*
 	}
 
 
-	public static void openApplicationMainWnd(Shell shell) {
+	public static void openApplicationMainWnd(final Shell shell) {
 		MainWindow.getSShell().open();
 		MainWindow.getSShell().update();
 
