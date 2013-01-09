@@ -172,7 +172,7 @@
 	<xsd:element name="remove_event">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element ref="event"/>
+				<xsd:element ref="event"  maxOccurs="unbounded"/>
 			</xsd:sequence>
 			<xsd:attribute name="debug" type="xsd:anySimpleType" use="optional"/>
 		</xsd:complexType>
@@ -180,7 +180,7 @@
 	<xsd:element name="add_event">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element ref="event"/>
+				<xsd:element ref="event"  maxOccurs="unbounded"/>
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>

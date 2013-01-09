@@ -1043,7 +1043,6 @@ public class SchedulerListener {
 
 					// Job Chain Nested Nodes
 					TreeItem iNestedNodes = new TreeItem(i, SWT.NONE);
-					//                    iNestedNodes.setText(Messages.getLabel("treeitem.nestedjobchains"));
 					iNestedNodes.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_NestedJobChains.label());
 					iNestedNodes.setImage(getImage("jobchain.gif"));
 					iNestedNodes.setData(new TreeData(Editor.JOB_CHAIN_NESTED_NODES, element, Options.getHelpURL("job_chain")));
@@ -1061,6 +1060,16 @@ public class SchedulerListener {
 						iNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
 						iNestedNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
 					}
+
+					TreeItem objOrders4JobChain = new TreeItem(i, SWT.NONE);
+					objOrders4JobChain.setText("Orders");
+					iNestedNodes.setImage(getImage("orders.gif"));
+					iNestedNodes.setData(new TreeData(Editor.ORDERS, element, Options.getHelpURL("orders")));
+					// iNestedNodes.setData("key", "job_chain_node.job_chain");
+					iNestedNodes.setData(conItemDataKeyKEY, "orders.job_chain");
+					iNestedNodes.setData(conItemDataKeyCOPY_ELEMENT, element);
+					iNestedNodes.setExpanded(true);
+
 				}
 			}
 		}
