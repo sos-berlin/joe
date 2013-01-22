@@ -159,7 +159,7 @@ public class SOSJOEMessageCodes extends Composite {
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_B_CommandsForm_Apply							= new SOSMsgJOE("JOE_B_CommandsForm_Apply");
 
-	// TODO ConfigForm
+	// ConfigForm
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_G_ConfigForm_Config								= new SOSMsgJOE("JOE_G_ConfigForm_Config");
 	@I18NMsg
@@ -257,7 +257,7 @@ public class SOSJOEMessageCodes extends Composite {
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_ConfigForm_Comment							= new SOSMsgJOE("JOE_T_ConfigForm_Comment");
 
-	// TODO DateForm
+	// DateForm
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_G_DateForm_Holiday								= new SOSMsgJOE("JOE_G_DateForm_Holiday");
 	@I18NMsg
@@ -3155,8 +3155,6 @@ public class SOSJOEMessageCodes extends Composite {
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_M_SchedulerListener_Empty						= new SOSMsgJOE("JOE_M_SchedulerListener_Empty");
 
-	// @I18NMsg
-	// public static final SOSMsgJOE JOE_Comment = new SOSMsgJOE("Comment"); // "Comment";
 
 	// public SOSJOEMessageCodes() {
 	// // TODO Auto-generated constructor stub

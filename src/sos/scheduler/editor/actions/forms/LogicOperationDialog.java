@@ -1,5 +1,7 @@
 package sos.scheduler.editor.actions.forms;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -16,61 +18,57 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import java.util.ArrayList;
+
 import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.util.SOSString;
 
 class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
-	
-	
-	private Object          result                = null;
-	
-	private Text            txt                   = null;
-	
-	private Text            txtExpression         = null; 
 
-	private Button          butCancel             = null; 
-	
-	private Button          butApply              = null;
-		
-	private ArrayList       operator              = null;
-	
-	private SOSString       sosString             = new SOSString();
-	
-	private ArrayList       undo                  = new ArrayList();
-	
-	private List            listOfIds             = null;
-	
-	private List            list                  = null;
-	
-	private Button          restoreButton         = null;
-	
-	private Button          butClear              = null;
-	
-	
-	public LogicOperationDialog(int style) {
+	private final Object		result			= null;
+
+	private Text		txt				= null;
+
+	private Text		txtExpression	= null;
+
+	private Button		butCancel		= null;
+
+	private Button		butApply		= null;
+
+	private ArrayList	operator		= null;
+
+	private final SOSString	sosString		= new SOSString();
+
+	private final ArrayList	undo			= new ArrayList();
+
+	private List		listOfIds		= null;
+
+	private List		list			= null;
+
+	private Button		restoreButton	= null;
+
+	private Button		butClear		= null;
+
+	public LogicOperationDialog(final int style) {
 		super(new Shell(), style);
 	}
-	
-	
-	public Object open(Text txt_, ArrayList operator_) {
-	
+
+	public Object open(final Text txt_, final ArrayList operator_) {
+
 		txt = txt_;
 		operator = operator_;
 		Shell parent = getParent();
-		final Shell newFolderShell =
-			new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-		
+		final Shell newFolderShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+
 		newFolderShell.addTraverseListener(new TraverseListener() {
-			public void keyTraversed(final TraverseEvent e) {				
-				if(e.detail == SWT.TRAVERSE_ESCAPE) {
+			@Override
+			public void keyTraversed(final TraverseEvent e) {
+				if (e.detail == SWT.TRAVERSE_ESCAPE) {
 					close();
 				}
 			}
 		});
-		
+
 		newFolderShell.setImage(sos.scheduler.editor.app.ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.verticalSpacing = 10;
@@ -81,11 +79,12 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 		gridLayout.numColumns = 2;
 		newFolderShell.setLayout(gridLayout);
 		newFolderShell.setText(SOSJOEMessageCodes.JOE_M_LogicOperationDialog_LogicalOperation.label());
-		
+
 		newFolderShell.pack();
-		
+
 		txtExpression = SOSJOEMessageCodes.JOE_T_LogicOperationDialog_Expression.Control(new Text(newFolderShell, SWT.MULTI | SWT.BORDER | SWT.WRAP));
 		txtExpression.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR)
 					doSomethings();
@@ -97,8 +96,9 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 
 		list = SOSJOEMessageCodes.JOE_Lst_LogicOperationDialog_Operators.Control(new List(newFolderShell, SWT.BORDER));
 		list.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseDoubleClick(final MouseEvent e) {
-				if(list.getSelectionCount() > 0) {
+				if (list.getSelectionCount() > 0) {
 					String sel = list.getSelection()[0];
 					txtExpression.insert(sel);
 				}
@@ -109,8 +109,9 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 
 		listOfIds = SOSJOEMessageCodes.JOE_Lst_LogicOperationDialog_Group.Control(new List(newFolderShell, SWT.BORDER));
 		listOfIds.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseDoubleClick(final MouseEvent e) {
-				if(listOfIds.getSelectionCount() > 0) {
+				if (listOfIds.getSelectionCount() > 0) {
 					String sel = listOfIds.getSelection()[0] + " ";
 					txtExpression.insert(sel);
 				}
@@ -130,6 +131,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 		butCancel = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Cancel.Control(new Button(composite_1, SWT.NONE));
 		butCancel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
 		butCancel.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				close();
 			}
@@ -147,15 +149,17 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 		restoreButton = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Restore.Control(new Button(composite, SWT.NONE));
 		restoreButton.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
 		restoreButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				try {
-					if(undo.size() > 0) {
+					if (undo.size() > 0) {
 						undo.add(0, txtExpression.getText());
-						txtExpression.setText(sosString.parseToString(undo.get(undo.size()-1)));
-						undo.remove(undo.size()-1);
+						txtExpression.setText(sosString.parseToString(undo.get(undo.size() - 1)));
+						undo.remove(undo.size() - 1);
 						txtExpression.setFocus();
 					}
-				} catch(Exception es) {
+				}
+				catch (Exception es) {
 					System.out.print(e.toString());
 					//tu nichts
 				}
@@ -165,6 +169,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 		butClear = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Clear.Control(new Button(composite, SWT.NONE));
 		butClear.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		butClear.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				undo.add(txtExpression.getText());
 				txtExpression.setText("");
@@ -175,63 +180,62 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 		butApply = SOSJOEMessageCodes.JOE_B_LogicOperationDialog_Apply.Control(new Button(composite, SWT.NONE));
 		butApply.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		butApply.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				doSomethings();
 			}
 		});
-		newFolderShell.open();		
-		
+		newFolderShell.open();
+
 		//org.eclipse.swt.graphics.Rectangle rect = image.getBounds();
 		newFolderShell.setSize(476, 406);
 
 		init();
-		
-		
+
 		org.eclipse.swt.widgets.Display display = parent.getDisplay();
 		while (!newFolderShell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
-		
+
 		return result;
-		
+
 	}
-	
 
 	private void init() {
 		try {
-			
+
 			txtExpression.setText(txt.getText());
-			
+
 			ArrayList _list = new ArrayList();
-    		_list.add("or ");
-    		_list.add("and ");
-    		_list.add("not ");    
-    		_list.add("(<key1> or <key2>) and (<key3> or <key4>)");
-    		
-			for(int i =0; i < _list.size(); i++) {
+			_list.add("or ");
+			_list.add("and ");
+			_list.add("not ");
+			_list.add("(<key1> or <key2>) and (<key3> or <key4>)");
+
+			for (int i = 0; i < _list.size(); i++) {
 				list.add(sosString.parseToString(_list.get(i)));
 			}
-			
-			for(int i =0; i < operator.size(); i++) {
+
+			for (int i = 0; i < operator.size(); i++) {
 				listOfIds.add(sosString.parseToString(operator.get(i)));
 			}
 			setToolTipText();
-			
-		} catch(Exception e){
+
+		}
+		catch (Exception e) {
 			try {
 				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			} catch(Exception ee) {
+			}
+			catch (Exception ee) {
 				//tu nichts
 			}
 		}
 	}
 
-	public static void main(String[] args) {
-		final Shell shell =
-			new Shell();
+	public static void main(final String[] args) {
+		final Shell shell = new Shell();
 		shell.pack();
-		
 
 		LogicOperationDialog logicOperationDialog = new LogicOperationDialog(SWT.NONE);
 		Text text = new Text(shell, SWT.NONE);
@@ -241,18 +245,18 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 		l.add("group2");
 		logicOperationDialog.open(text, l);
 	}
-	
+
 	private void close() {
 		getParent().close();
 	}
-	
+
 	public void doSomethings() {
 		txt.setText(txtExpression.getText());
 		close();
 	}
-	
+
 	public void setToolTipText() {
-//        
-    }
-	
+		//
+	}
+
 }

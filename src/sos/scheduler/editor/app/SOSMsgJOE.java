@@ -44,7 +44,7 @@ public class SOSMsgJOE extends SOSMsg {
 		else {
 			super.Messages = this.Messages;
 		}
-	}
+	} // public SOSMsgJOE
 
 	public Text Control(final Text pobjC) {
 		@SuppressWarnings("unused")
@@ -63,7 +63,7 @@ public class SOSMsgJOE extends SOSMsg {
 			}
 		});
 		return pobjC;
-	} // private void Control
+	} // public Text Control
 
 	public Label Control(final Label pobjC) {
 		@SuppressWarnings("unused")
@@ -72,7 +72,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(this.tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
-	} // private void Control
+	} // public Label Control
 
 	public Group Control(final Group pobjC) {
 		@SuppressWarnings("unused")
@@ -81,7 +81,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
-	} // private void Control
+	} // public Group Control
 
 	public Button Control(final Button pobjC) {
 		@SuppressWarnings("unused")
@@ -90,7 +90,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
-	} // private void Control
+	} // public Button Control
 
 	public Combo Control(final Combo pobjC) {
 		@SuppressWarnings("unused")
@@ -99,7 +99,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
-	} // private void Control
+	} // public Combo Control
 
 	public Composite Control(final Composite pobjC) {
 		@SuppressWarnings("unused")
@@ -107,7 +107,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
-	} // private void Control
+	} // public Composite Control
 	
 	public CCombo Control(final CCombo pobjC) {
 		@SuppressWarnings("unused")
@@ -115,7 +115,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
-	} // private void Control
+	} // public CCombo Control
 
 	public TableColumn Control(final TableColumn pobjC) {
 		@SuppressWarnings("unused")
@@ -123,7 +123,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setText(label());
 		pobjC.setToolTipText(tooltip());
 		return pobjC;
-	} // private void Control
+	} // public TableColumn Control
 
 	public Table Control(final Table pobjC) {
 		@SuppressWarnings("unused")
@@ -131,14 +131,14 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
-	} // private void Control
+	} // public Table Control
 
 	public FileDialog Control(final FileDialog pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setText(label());
 		return pobjC;
-	} // private void Control
+	} // public FileDialog Control
 
 	public Spinner Control(final Spinner pobjC) {
 		@SuppressWarnings("unused")
@@ -146,14 +146,14 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
-	} // private void Control
+	} // public Spinner Control
 	
 	public MessageBox Control(final MessageBox pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setMessage(this.label());
 		return pobjC;
-	} // private void Control
+	} // public MessageBox Control
 	
 	public List Control(final List pobjC) {
 		@SuppressWarnings("unused")
@@ -161,7 +161,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
-	} // private void Control
+	} // public List Control
 	
 	public Tree Control(final Tree pobjC) {
 		@SuppressWarnings("unused")
@@ -169,7 +169,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(this.tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
-	} // private void Control
+	} // public Tree Control
 	
 	public Browser Control(final Browser pobjC) {
 		@SuppressWarnings("unused")
@@ -178,7 +178,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
-	} // private void Control
+	} // public Browser Control
 	
 	public TreeColumn Control(final TreeColumn pobjC) {
 		@SuppressWarnings("unused")
@@ -186,7 +186,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setText(label());
 		pobjC.setToolTipText(tooltip());
 		return pobjC;
-	} // private void Control
+	} // public TreeColumn Control
 	
 	public TabItem Control(final TabItem pobjC) {
 		@SuppressWarnings("unused")
@@ -194,7 +194,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setText(label());
 		pobjC.setToolTipText(this.tooltip());
 		return pobjC;
-	} // private void Control
+	} // public TabItem Control
 	
 	public CTabItem Control(final CTabItem pobjC) {
 		@SuppressWarnings("unused")
@@ -202,14 +202,14 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setText(label());
 		pobjC.setToolTipText(this.tooltip());
 		return pobjC;
-	} // private void Control
+	} // public CTabItem Control
 	
 	public SOSDateTime Control(final SOSDateTime pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setToolTipText(this.tooltip());
 		return pobjC;
-	} // private void Control
+	} // public SOSDateTime Control
 	
 	
 
@@ -229,7 +229,7 @@ public class SOSMsgJOE extends SOSMsg {
 			}
 		});
 
-	}
+	} // private void setKeyListener
 
 	public void openHelp(String helpKey) {
 		String lang = Options.getLanguage();
@@ -260,6 +260,6 @@ public class SOSMsgJOE extends SOSMsg {
 			MainWindow.message(sos.scheduler.editor.app.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }),
 					SWT.ICON_ERROR | SWT.OK);
 		}
-	}
+	} // public void openHelp
 
 }

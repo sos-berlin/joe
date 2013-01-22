@@ -141,7 +141,6 @@ public class Editor {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "cause: " + e.toString(), e);
 			}
 			catch (Exception ee) {
-				// tu nichts
 			}
 		}
 	}
@@ -176,7 +175,6 @@ public class Editor {
 			}
 			catch (Exception e) {
 				MainWindow.getSShell().redraw();
-				// MainWindow.getSShell().layout();
 			}
 		}
 		display.dispose();

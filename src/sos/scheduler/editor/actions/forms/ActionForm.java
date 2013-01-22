@@ -12,30 +12,26 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+
 import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.listeners.ActionListener;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
-
 public class ActionForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
-	private ActionListener listener     = null;
+	private ActionListener	listener		= null;
+	private Group			actionsGroup	= null;
+	private Text			txtName			= null;
 
-	private Group       actionsGroup         = null;
-
-	private Text        txtName              = null; 
-
-
-	public ActionForm(Composite parent, int style, ActionsDom dom, Element action, ActionsForm _gui) {
-		super(parent, style);           
+	public ActionForm(final Composite parent, final int style, final ActionsDom dom, final Element action, final ActionsForm _gui) {
+		super(parent, style);
 		//gui = _gui;
 		listener = new ActionListener(dom, action, _gui);
 		initialize();
 		setToolTipText();
 
 	}
-
 
 	private void initialize() {
 		createGroup();
@@ -44,7 +40,6 @@ public class ActionForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		txtName.setText(listener.getName());
 		txtName.setFocus();
 	}
-
 
 	/**
 	 * This method initializes group
@@ -60,6 +55,7 @@ public class ActionForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 		txtName = JOE_T_ActionForm_Name.Control(new Text(actionsGroup, SWT.BORDER));
 		txtName.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				listener.setName(txtName.getText());
 			}
@@ -67,11 +63,10 @@ public class ActionForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		txtName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 	}
 
-
+	@Override
 	public void setToolTipText() {
-//
+		//
 	}
-
 
 } // @jve:decl-index=0:visual-constraint="10,10"
 

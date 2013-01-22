@@ -1,7 +1,7 @@
 package sos.scheduler.editor.actions.forms;
 
 import javax.xml.transform.TransformerException;
-import sos.scheduler.editor.app.Editor;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -22,16 +22,16 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import sos.scheduler.editor.app.Options;
 
+import sos.scheduler.editor.actions.ActionsDom;
+import sos.scheduler.editor.actions.listeners.JobCommandListener;
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
+import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.actions.forms.ActionsForm;
-import sos.scheduler.editor.actions.ActionsDom;
-import sos.scheduler.editor.actions.listeners.JobCommandListener;
 import sos.util.SOSDate;
 
 public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
@@ -68,13 +68,13 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 	private Label              replaceLabel         = null;
 
-	private Combo              cboEndstate          = null; 
+	private Combo              cboEndstate          = null;
 
 	private Label              endStateLabel        = null;
 
 	private boolean            event                = false;
 
-	private Text               txtYear              = null; 
+	private Text               txtYear              = null;
 
 	private Text               txtMonth             = null;
 
@@ -91,25 +91,26 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 
 
-	public JobCommandForm(Composite parent, int style, ActionsDom dom, Element command, ActionsForm main)
+	public JobCommandForm(final Composite parent, final int style, final ActionsDom dom, final Element command, final ActionsForm main)
 	throws JDOMException, TransformerException {
 		super(parent, style);
 
 		listener = new JobCommandListener(dom, command, main);
 		if(command.getName().equalsIgnoreCase("start_job")) {
-			type = Editor.JOB;		
+			type = Editor.JOB;
 		} else {
 			type = Editor.COMMANDS;
 		}
 
 		initialize();
 
-		
-		setToolTipText();			
+
+		setToolTipText();
 		event = true;
 	}
 
 
+	@Override
 	public void apply() {
 		//if (isUnsaved())
 		//addParam();
@@ -117,6 +118,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	}
 
 
+	@Override
 	public boolean isUnsaved() {
 		return false;
 	}
@@ -125,9 +127,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	private void initialize() {
 		this.setLayout(new FillLayout());
 		createGroup();
-		if(type == Editor.JOB) {			
+		if(type == Editor.JOB) {
 			tJob.setFocus();
-		} else {			
+		} else {
 			if(cJobchain != null)
 				cJobchain.setFocus();
 		}
@@ -143,7 +145,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		gridLayout2.numColumns = 3;
 		jobsAndOrdersGroup = new Group(this, SWT.NONE);
 //		jobsAndOrdersGroup.setText("Commands for Job: " + listener.getName() ); //+ (listener.isDisabled() ? " (Disabled)" : ""));
-		jobsAndOrdersGroup.setText(JOE_G_ActionsJobCommandForm_JobsOrders.params(listener.getCommandName())); 
+		jobsAndOrdersGroup.setText(JOE_G_ActionsJobCommandForm_JobsOrders.params(listener.getCommandName()));
 		jobsAndOrdersGroup.setLayout(gridLayout2);
 
 		jobchainLabel = JOE_L_ActionsJobCommandForm_JobChain.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
@@ -152,17 +154,18 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		cJobchain = JOE_Cbo_ActionsJobCommandForm_JobChain.Control(new Combo(jobsAndOrdersGroup, SWT.NONE));
 		cJobchain.setEnabled(false);
-		cJobchain.setItems(listener.getJobChains());		
+		cJobchain.setItems(listener.getJobChains());
 		cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(!event)
 					return;
 
-				listener.setJobChain(cJobchain.getText());	
+				listener.setJobChain(cJobchain.getText());
 
 				String curstate = Utils.getAttributeValue("state", listener.getCommand());
 
-				tState.setItems(listener.getStates());                		
+				tState.setItems(listener.getStates());
 				tState.setText(curstate);
 
 
@@ -184,7 +187,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		tJob = JOE_T_ActionsJobCommandForm_Job.Control(new Text(jobsAndOrdersGroup, SWT.BORDER));
 		tJob.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(type == Editor.JOB){
 					listener.setJob(tJob.getText());
 				} else {
@@ -195,7 +199,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		});
 		final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1);
 		tJob.setLayoutData(gridData_3);
-		
+
 		final Label startAtLabel = JOE_L_ActionsJobCommandForm_StartAt.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
 		startAtLabel.setLayoutData(new GridData());
 
@@ -212,6 +216,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		txtYear = JOE_T_ActionsJobCommandForm_Year.Control(new Text(composite, SWT.BORDER));
 		txtYear.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				if(!event)
 					return;
@@ -220,8 +225,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		});
 		txtYear.setEnabled(false);
 		txtYear.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
-				e.doit = Utils.isOnlyDigits(e.text); 
+				e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
 		txtYear.setTextLimit(4);
@@ -234,13 +240,15 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		txtMonth = JOE_T_ActionsJobCommandForm_Year.Control(new Text(composite, SWT.BORDER));
 		txtMonth.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusLost(final FocusEvent e) {
-				txtMonth.setText(Utils.fill(2, txtMonth.getText()));		
+				txtMonth.setText(Utils.fill(2, txtMonth.getText()));
 			}
 		});
 		txtMonth.setEnabled(false);
 		txtMonth.addModifyListener(new ModifyListener() {
-			public void modifyText(final ModifyEvent e) {	
+			@Override
+			public void modifyText(final ModifyEvent e) {
 				if(!event)
 					return;
 				Utils.setBackground(1, 12, txtMonth);
@@ -249,8 +257,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			}
 		});
 		txtMonth.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
-				e.doit = Utils.isOnlyDigits(e.text); 
+				e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
 		txtMonth.setTextLimit(2);
@@ -263,12 +272,14 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		txtDay = JOE_T_ActionsJobCommandForm_Day.Control(new Text(composite, SWT.BORDER));
 		txtDay.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusLost(final FocusEvent e) {
 				txtDay.setText(Utils.fill(2, txtDay.getText()));
 			}
 		});
 		txtDay.setEnabled(false);
 		txtDay.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				if(!event)
 					return;
@@ -278,8 +289,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			}
 		});
 		txtDay.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
-				e.doit = Utils.isOnlyDigits(e.text); 
+				e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
 		txtDay.setTextLimit(2);
@@ -292,14 +304,16 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		txtHour = JOE_T_ActionsJobCommandForm_Hour.Control(new Text(composite, SWT.BORDER));
 		txtHour.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusLost(final FocusEvent e) {
 				txtHour.setText(Utils.fill(2, txtHour.getText()));
 			}
 		});
 		txtHour.setEnabled(false);
 		txtHour.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
-				if(!event) 
+				if(!event)
 					return;
 				Utils.setBackground(0, 24, txtHour);
 				if(!txtHour.getBackground().equals(Options.getRequiredColor()))
@@ -307,8 +321,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			}
 		});
 		txtHour.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
-				e.doit = Utils.isOnlyDigits(e.text); 
+				e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
 		txtHour.setTextLimit(2);
@@ -321,12 +336,14 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		txtMin = JOE_T_ActionsJobCommandForm_Min.Control(new Text(composite, SWT.BORDER));
 		txtMin.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusLost(final FocusEvent e) {
 				txtMin.setText(Utils.fill(2, txtMin.getText()));
 			}
 		});
 		txtMin.setEnabled(false);
 		txtMin.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				if(!event)
 					return;
@@ -336,8 +353,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			}
 		});
 		txtMin.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
-				e.doit = Utils.isOnlyDigits(e.text); 
+				e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
 		txtMin.setTextLimit(2);
@@ -350,12 +368,14 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		txtSec = JOE_T_ActionsJobCommandForm_Sec.Control(new Text(composite, SWT.BORDER));
 		txtSec.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusLost(final FocusEvent e) {
 				txtSec.setText(Utils.fill(2, txtSec.getText()));
 			}
 		});
 		txtSec.setEnabled(false);
 		txtSec.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				if(!event)
 					return;
@@ -365,8 +385,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			}
 		});
 		txtSec.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
-				e.doit = Utils.isOnlyDigits(e.text); 
+				e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
 		txtSec.setTextLimit(2);
@@ -377,6 +398,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		cboTimes = JOE_Cbo_ActionsJobCommandForm_Times.Control(new Combo(jobsAndOrdersGroup, SWT.READ_ONLY));
 		cboTimes.setVisibleItemCount(7);
 		cboTimes.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				normalized(cboTimes.getText());
 				setTime();
@@ -384,7 +406,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			}
 		});
 		cboTimes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		
+
 		priorityLabel = JOE_L_ActionsJobCommandForm_Priority.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
 		final GridData gridData_11 = new GridData();
 		priorityLabel.setLayoutData(gridData_11);
@@ -392,20 +414,22 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		tPriority = JOE_T_ActionsJobCommandForm_Priority.Control(new Text(jobsAndOrdersGroup, SWT.BORDER));
 		tPriority.setEnabled(false);
 		tPriority.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setPriority(tPriority.getText());
 
 			}
 		});
 		tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
-		
+
 		titleLabel = JOE_L_ActionsJobCommandForm_Title.Control(new Label(jobsAndOrdersGroup, SWT.NONE));
 		titleLabel.setLayoutData(new GridData());
 
 		tTitle = JOE_T_ActionsJobCommandForm_Title.Control(new Text(jobsAndOrdersGroup, SWT.BORDER));
 		tTitle.setEnabled(false);
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setTitle(tTitle.getText());
 			}
 		});
@@ -419,7 +443,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		tState = JOE_T_ActionsJobCommandForm_State.Control(new Combo(jobsAndOrdersGroup, SWT.BORDER));
 		tState.setEnabled(false);
 		tState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(event)
 					listener.setState(tState.getText());
 			}
@@ -432,6 +457,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		cboEndstate = JOE_Cbo_ActionsJobCommandForm_EndState.Control(new Combo(jobsAndOrdersGroup, SWT.NONE));
 		cboEndstate.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				if(event)
 					listener.setEndState(cboEndstate.getText());
@@ -448,6 +474,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		bReplace.setSelection(true);
 		bReplace.setEnabled(true);
 		bReplace.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				listener.setReplace(bReplace.getSelection() ? "yes" : "no");
 			}
@@ -474,8 +501,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	 */
 	private void createGroup2() {
 		if(type == Editor.JOB){
-			setCommandsEnabled(false);			
-		} else {			
+			setCommandsEnabled(false);
+		} else {
 			setCommandsEnabled(true);
 		}
 		clearFields();
@@ -497,20 +524,20 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			bReplace.setVisible(false);
 			jobchainLabel.setVisible(false);
 			priorityLabel.setVisible(false);
-			titleLabel.setVisible(false);			
+			titleLabel.setVisible(false);
 			stateLabel.setVisible(false);
 			endStateLabel.setVisible(false);
 			replaceLabel.setVisible(false);
 			lblJob.setText(JOE_L_ActionsJobCommandForm_Job.label());
 		} else {
-			lblJob.setText(JOE_L_ActionsJobCommandForm_OrderID.label());			
+			lblJob.setText(JOE_L_ActionsJobCommandForm_OrderID.label());
 		}
 		tJob.setVisible(true);
 
 	}
 
 
-	private void setCommandsEnabled(boolean b) {
+	private void setCommandsEnabled(final boolean b) {
 		tState.setEnabled(b);
 		cboEndstate.setEnabled(b);
 		tPriority.setEnabled(b);
@@ -564,10 +591,10 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		String sec    = txtSec.getText();
 
 		//boolean havesec     = false;
-		boolean haveTime    = false;		
+		boolean haveTime    = false;
 		//boolean havenow     = false;
 		//boolean haveperiod  = false;
-		int whichtime = 0; 
+		int whichtime = 0;
 
 
 
@@ -585,12 +612,12 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			String[] split = startAt.split("\\+");
 			if(split.length == 2) {
 				String[] time = split[1].split(":");
-				if(time.length == 3) {     
+				if(time.length == 3) {
 					whichtime = 3;
 					hour = time[0] != null && time[0].length() > 0 ? Utils.fill(2, time[0]) : "00";
 					min = time[1] != null && time[1].length() > 0 ? Utils.fill(2, time[1]) : "00";
 					sec = time[2] != null && time[2].length() > 0 ? Utils.fill(2, time[2]) : "00";
-					//havesec = true;	
+					//havesec = true;
 				} else if(time.length == 2) {
 					/*hour = "00";
 					min = time[0] != null && time[0].length() > 0 ? Utils.fill(2, time[0]) : "00";
@@ -599,9 +626,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 					whichtime = 4;
 					hour = time[0] != null && time[0].length() > 0 ? Utils.fill(2, time[0]) : "00";
 					min = time[1] != null && time[1].length() > 0 ? Utils.fill(2, time[1]) : "00";
-					//havesec = false;	
+					//havesec = false;
 				} else if(time.length == 1) {
-					//havesec = true;		
+					//havesec = true;
 					whichtime = 5;
 					sec = time[0] != null && time[0].length() > 0 ? Utils.fill(2, time[0]) : "00";
 				}
@@ -614,7 +641,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			//yyyy-MM-dd HH:mm:ss
 			if (startAt.indexOf("-") > -1 && startAt.indexOf(":") > -1) {
 				//hat date und time
-				String[] dt = startAt.split(" ");			
+				String[] dt = startAt.split(" ");
 				String[] date = dt[0].split("-");
 				String[] time = dt[1].split(":");
 
@@ -627,7 +654,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 				sec = time.length > 2 && time[2] != null && time[2].length() > 0 ? Utils.fill(2, time[2]) : "00";
 
 
-			} else if((startAt.indexOf("-") > -1)) {
+			} else if(startAt.indexOf("-") > -1) {
 				//hat nur date
 				String[] date = startAt.split("-");
 
@@ -635,7 +662,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 				month= date[1] != null && date[1].length() > 0 ? Utils.fill(2, date[1]) : "01";
 				day  = date[2] != null && date[2].length() > 0 ? Utils.fill(2, date[2]) : "01";
 
-			} else if((startAt.indexOf(":") > -1)) {
+			} else if(startAt.indexOf(":") > -1) {
 				//hat nur time
 				String[] time = startAt.split(";");
 				hour = time[0] != null && time[0].length() > 0 ? Utils.fill(2, time[0]) : "00";
@@ -655,23 +682,23 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			txtMin.setText(min.trim());
 			txtSec.setText(sec.trim());
 		}
-		
+
 		if(!event) {
 			switch (whichtime) {
 			case 1: cboTimes.setText("now");
 			        break;
-			        
+
 			case 2: cboTimes.setText("period");
 			        break;
-			        
+
 			case 3: cboTimes.setText("now + HH:mm:ss");
 			        txtHour.setFocus();
 			        break;
-			
+
 			case 4: cboTimes.setText("now + HH:mm");
 			        txtHour.setFocus();
 			        break;
-			        
+
 			case 5: cboTimes.setText("now + SECONDS");
 			        txtSec.setFocus();
 			        break;
@@ -680,21 +707,21 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
  			        txtYear.setFocus();
 			        break;
 			default: cboTimes.setText("now");
-			
+
 			}
 		}
-		
+
 		normalized(cboTimes.getText());
 	}
 
 		private String setTime() {
 
 		//event = false;
-		
+
 		String retVal = "";
-		if(cboTimes.getText().equals("period")) {		
+		if(cboTimes.getText().equals("period")) {
 			retVal =  "period";
-		}else if(cboTimes.getText().equals("now")) {			
+		}else if(cboTimes.getText().equals("now")) {
 			retVal =  "now";
 		} else if(cboTimes.getText().startsWith("now ")) {
 			retVal = "now + ";
@@ -713,22 +740,21 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			}
 
 			if(txtSec.getEnabled()) {
-				//retVal = retVal + Utils.fill(2, txtSec.getText().length() == 0? "00" : txtSec.getText());				
+				//retVal = retVal + Utils.fill(2, txtSec.getText().length() == 0? "00" : txtSec.getText());
 				retVal = retVal + Utils.fill(2, txtSec.getText());
 			    //retVal = retVal + "00";
 			}
 
 		} else {
 
-			retVal  = Utils.fill(4, txtYear.getText()) + "-" + 
-			Utils.fill(2, txtMonth.getText())+ "-" +	
+			retVal  = Utils.fill(4, txtYear.getText()) + "-" +
+			Utils.fill(2, txtMonth.getText())+ "-" +
 			Utils.fill(2, txtDay.getText()) + " " +
-			Utils.fill(2, txtHour.getText()) + ":" + 
-			Utils.fill(2, txtMin.getText()) + ":" + 
+			Utils.fill(2, txtHour.getText()) + ":" +
+			Utils.fill(2, txtMin.getText()) + ":" +
 			Utils.fill(2, txtSec.getText());
 
 		}
-		//System.out.println("test: " + retVal);
 
 		listener.setAt(retVal);
 		//event = false;
@@ -736,7 +762,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	}
 
 
-	private String normalized(String format) {
+	private String normalized(final String format) {
 		//now + HH:MM
 		//now + HH:MM:SS
 		//now + SECOUNDS
@@ -785,11 +811,11 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 			if(format.indexOf("HH") > -1) {
 				txtHour.setEnabled(true);
-				if(!txtYear.isEnabled()) txtHour.setFocus();					
+				if(!txtYear.isEnabled()) txtHour.setFocus();
 			}
 
 			if(format.indexOf("mm") > -1) {
-				txtMin.setEnabled(true);					
+				txtMin.setEnabled(true);
 			}
 
 			if(format.indexOf("ss") > -1 || format.indexOf("SECONDS") > -1) {
@@ -802,7 +828,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 					if(!txtYear.isEnabled()) txtHour.setFocus();
 					if(txtHour.getText().length() == 0) {
 						if(txtYear.getEnabled())
-							txtHour.setText(String.valueOf(SOSDate.getCurrentDateAsString("HH")));						
+							txtHour.setText(String.valueOf(SOSDate.getCurrentDateAsString("HH")));
 						else {
 							txtHour.setText("00");
 						}
@@ -841,6 +867,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 	}
 
+	@Override
 	public void setToolTipText() {
 		//tStartAt.setToolTipText(Messages.getTooltip("jobcommand.startat"));
 	}

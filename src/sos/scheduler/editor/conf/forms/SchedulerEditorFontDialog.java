@@ -48,43 +48,43 @@ public class SchedulerEditorFontDialog {
 		objParentShell = pobjParentShell;
 	}
 
-	public SchedulerEditorFontDialog(String fontName_, int fontSize_, int fontStyle_, RGB foreGround_) {
+	public SchedulerEditorFontDialog(final String fontName_, final int fontSize_, final int fontStyle_, final RGB foreGround_) {
 		super();
-		this.fontData = new FontData(fontName_, fontSize_, fontStyle_);
-		this.foreGround = foreGround_;
+		fontData = new FontData(fontName_, fontSize_, fontStyle_);
+		foreGround = foreGround_;
 	}
 
-	public SchedulerEditorFontDialog(String fontName_, int fontSize_, int fontType_) {
+	public SchedulerEditorFontDialog(final String fontName_, final int fontSize_, final int fontType_) {
 		super();
-		this.fontData = new FontData(fontName_, fontSize_, SWT.NORMAL);
-		this.foreGround = new RGB(0, 0, 0);
+		fontData = new FontData(fontName_, fontSize_, SWT.NORMAL);
+		foreGround = new RGB(0, 0, 0);
 	}
 
-	public SchedulerEditorFontDialog(FontData fontData_, RGB foreGround_) {
+	public SchedulerEditorFontDialog(final FontData fontData_, final RGB foreGround_) {
 		super();
-		this.foreGround = foreGround_;
-		this.fontData = fontData_;
+		foreGround = foreGround_;
+		fontData = fontData_;
 	}
 
-	public SchedulerEditorFontDialog(FontData fontData_) {
+	public SchedulerEditorFontDialog(final FontData fontData_) {
 		super();
-		this.foreGround = new RGB(0, 0, 0);
-		this.fontData = fontData_;
+		foreGround = new RGB(0, 0, 0);
+		fontData = fontData_;
 	}
 
-	public SchedulerEditorFontDialog(String fontData_) {
+	public SchedulerEditorFontDialog(final String fontData_) {
 		super();
-		this.foreGround = new RGB(0, 0, 0);
-		this.fontData = new FontData(fontData_);
+		foreGround = new RGB(0, 0, 0);
+		fontData = new FontData(fontData_);
 	}
 
 	public void readFontData() {
 		String s = Options.getProperty(conSCRIPT_EDITOR_FONT);
 		if (s == null) {
-			this.fontData = new FontData(conDefaultfontName, 8, SWT.NORMAL);
+			fontData = new FontData(conDefaultfontName, 8, SWT.NORMAL);
 		}
 		else {
-			this.fontData = new FontData(s);
+			fontData = new FontData(s);
 		}
 
 		s = Options.getProperty(conSCRIPT_EDITOR_FONT_COLOR);
@@ -97,21 +97,21 @@ public class SchedulerEditorFontDialog {
 			int r = Integer.parseInt(colours[0].trim());
 			int g = Integer.parseInt(colours[1].trim());
 			int b = Integer.parseInt(colours[2].trim());
-			this.foreGround = new RGB(r, g, b);
+			foreGround = new RGB(r, g, b);
 		}
 		catch (NumberFormatException e) {
 //			System.out.println("Wrong colour in Profile");
-			System.out.println(SOSJOEMessageCodes.JOE_M_WrongColour.label());
-			this.foreGround = new RGB(0, 0, 0);
+//			System.out.println(SOSJOEMessageCodes.JOE_M_WrongColour.label());
+			foreGround = new RGB(0, 0, 0);
 		}
 
 	}
 
-	private void saveFontData(FontData f, RGB foreGround) {
+	private void saveFontData(final FontData f, final RGB foreGround) {
 		Options.setProperty(conSCRIPT_EDITOR_FONT, f.toString());
 		Options.setProperty(conSCRIPT_EDITOR_FONT_COLOR, foreGround.toString());
 		Options.saveProperties();
-		this.fontData = f;
+		fontData = f;
 		this.foreGround = foreGround;
 	}
 
@@ -121,19 +121,19 @@ public class SchedulerEditorFontDialog {
 	}
 
 	public FontData getFontData() {
-		return this.fontData;
+		return fontData;
 	}
 
 	public RGB getForeGround() {
-		return this.foreGround;
+		return foreGround;
 	}
 
-	public void show(Display pobjDisplay) {
+	public void show(final Display pobjDisplay) {
 
 		final Display d = pobjDisplay;
 		// final Shell s1 = new Shell(d);
 		final Shell s = new Shell(objParentShell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
-		final RGB aktForeGround = this.foreGround;
+		final RGB aktForeGround = foreGround;
 
 		s.setSize(302, 160);
 		s.setText(SOSJOEMessageCodes.JOE_M_FontDialog.label());
@@ -144,10 +144,10 @@ public class SchedulerEditorFontDialog {
 
 		t.setText(SOSJOEMessageCodes.JOE_M_Blindtext.label());  // The quick brown fox jumps over the lazy poddle.
 		t.setFont(SWTResourceManager.getFont(conDefaultfontName, 8, SWT.NORMAL));
-		t.setForeground(new Color(d, this.foreGround));
+		t.setForeground(new Color(d, foreGround));
 
-		t.setFont(new Font(d, this.fontData));
-		t.setForeground(new Color(d, this.foreGround));
+		t.setFont(new Font(d, fontData));
+		t.setForeground(new Color(d, foreGround));
 
 		GridData gd_t = new GridData(SWT.FILL, SWT.FILL, false, false, 10, 1);
 		gd_t.heightHint = 74;
@@ -155,7 +155,8 @@ public class SchedulerEditorFontDialog {
 		new Label(s, SWT.NONE);
 		final Button btnChange = SOSJOEMessageCodes.JOE_B_FontDialog_Change.Control(new Button(s, SWT.PUSH | SWT.BORDER));
 		btnChange.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
 				FontDialog fd = new FontDialog(s, SWT.NONE);
 				fd.setText(SOSJOEMessageCodes.JOE_M_SelectFont.label());
 				fd.setRGB(t.getForeground().getRGB());
@@ -172,7 +173,7 @@ public class SchedulerEditorFontDialog {
 		Button btnSave = SOSJOEMessageCodes.JOE_B_FontDialog_Save.Control(new Button(s, SWT.NONE));
 		btnSave.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(final SelectionEvent e) {
 				saveFontData(t.getFont().getFontData()[0], t.getForeground().getRGB());
 				s.dispose();
 			}
@@ -181,7 +182,7 @@ public class SchedulerEditorFontDialog {
 		Button btnReset = SOSJOEMessageCodes.JOE_B_FontDialog_Reset.Control(new Button(s, SWT.NONE));
 		btnReset.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(final SelectionEvent e) {
 				t.setFont(new Font(d, fontData));
 				t.setForeground(new Color(d, aktForeGround));
 			}
@@ -190,7 +191,7 @@ public class SchedulerEditorFontDialog {
 		Button btnCancel = SOSJOEMessageCodes.JOE_B_FontDialog_Cancel.Control(new Button(s, SWT.NONE));
 		btnCancel.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(final SelectionEvent e) {
 				s.dispose();
 			}
 		});
@@ -208,6 +209,6 @@ public class SchedulerEditorFontDialog {
 //	 public static void main(String[] a) {
 //	 SchedulerEditorFontDialog s = new SchedulerEditorFontDialog("Courier new", 12, SWT.BOLD);
 //	 s.show();
-//	
+//
 //	 }
 }
