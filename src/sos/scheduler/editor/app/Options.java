@@ -23,6 +23,9 @@ import com.sos.i18n.annotation.I18NResourceBundle;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class Options extends I18NBase {
+	private static final String	conEnvVarSOS_JOE_HOME	= "SOS_JOE_HOME";
+	private static final String	conEnvVarSCHEDULER_HOME						= "SCHEDULER_HOME";
+	public static final String	conEnvVarSCHEDULER_DATA						= "SCHEDULER_DATA";
 	private static final String	conLanguageEN								= "en";
 	private static final String	conEnvironmentVariableSOS_LOCALE			= "SOS_LOCALE";
 	public static final String	conPropertyEDITOR_OPTIONS_FILE				= "editor.options.file";
@@ -31,15 +34,14 @@ public class Options extends I18NBase {
 	public static final String	conPropertyEDITOR_OpenLastFolder			= "editor.OpenLastFolder";
 	public static final String	conPropertyTEMPLATE_LANGUAGE				= "template.language";
 	public static final String	conPropertyTEMPLATE_LANGUAGE_LIST			= "template.language.list";
-	public static final String	conPropertyEDITOR_ShowSplashScreenPicture	= "editor.ShowSplashScreenPicture"; // "/SplashScreenJOE.bmp";
-
+	public static final String	conPropertyEDITOR_ShowSplashScreenPicture	= "editor.ShowSplashScreenPicture";					// "/SplashScreenJOE.bmp";
 
 	private final static String	conClassName								= "Options";
 	@SuppressWarnings("unused")
 	private final String		conSVNVersion								= "$Id$";
 	private static final Logger	logger										= Logger.getLogger(Options.class);
 	public static final String	DEFAULT_OPTIONS								= "/sos/scheduler/editor/options.properties";
-	private static Properties	_defaults									= null;
+	private static Properties	JOESettingsDefaults									= null;
 	private static Properties	_properties									= null;
 	private static boolean		_changed									= false;
 	private static boolean		_showWizardInfo								= true;
@@ -90,10 +92,11 @@ public class Options extends I18NBase {
 	public static String getDefaultOptionFilename() {
 		getProperties();
 		// return getDefault("editor.options.file").replaceAll("\\{scheduler_home\\}", getSchedulerHome());
-		String strSD = getSchedulerData().replaceAll("\\\\", "/");
+		String strSD = getJOEHomeDir().replaceAll("\\\\", "/");
 		String strKey = conPropertyEDITOR_OPTIONS_FILE;
 		String strF = getDefault(strKey);
 		String strRet = strF.replaceAll("\\{scheduler_data\\}", strSD);
+		strRet = strRet.replaceAll("\\{joe_home_dir\\}", strSD);
 		logger.info("getDefaultOptionFilename = " + strRet);
 		return strRet;
 	}
@@ -102,19 +105,17 @@ public class Options extends I18NBase {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::getProperties";
 		if (_properties == null) {
-			_properties = new Properties(_defaults);
+			_properties = new Properties(JOESettingsDefaults);
 		}
 	} // private void getProperties
 
 	public static String loadOptions(final Class cl) {
 		String fName = "";
 		try {
-			_defaults = new Properties();
+			JOESettingsDefaults = new Properties();
 			logger.debug(String.format("load Options from file: %1$s", DEFAULT_OPTIONS));
-			_defaults.load(cl.getResourceAsStream(DEFAULT_OPTIONS));
-			_properties = new Properties(_defaults);
-			// _properties = new Properties();
-			// _properties.putAll(_defaults);
+			JOESettingsDefaults.load(cl.getResourceAsStream(DEFAULT_OPTIONS));
+			_properties = new Properties(JOESettingsDefaults);
 		}
 		catch (Exception e) {
 			try {
@@ -189,12 +190,13 @@ public class Options extends I18NBase {
 		return flgR;
 	}
 
-	public static boolean getBoolOption (final String pstrPropertyName) {
+	public static boolean getBoolOption(final String pstrPropertyName) {
 		getProperties();
 		String strT = _properties.getProperty(pstrPropertyName);
 		boolean flgR = checkBool(strT);
 		return flgR;
 	}
+
 	public static String showSplashScreenPicture() {
 		getProperties();
 		String strT = _properties.getProperty(conPropertyEDITOR_ShowSplashScreenPicture, "/SplashScreenJOE.bmp");
@@ -252,10 +254,10 @@ public class Options extends I18NBase {
 	}
 
 	public static String getDefault(final String key) {
-		if (_defaults == null) {
-			_defaults = new Properties();
+		if (JOESettingsDefaults == null) {
+			JOESettingsDefaults = new Properties();
 		}
-		return _defaults.getProperty(key);
+		return JOESettingsDefaults.getProperty(key);
 	}
 
 	public static void setLanguage(final String language) {
@@ -285,8 +287,8 @@ public class Options extends I18NBase {
 				url = Options.getHelp("index", prefix).replaceAll("\\{lang\\}", getLanguage());
 			else
 				url = helpKey.replaceAll("\\{lang\\}}", getLanguage());
-			return (Options.getHelp("maindir", prefix) + url).replaceAll("\\{scheduler_home\\}", Options.getSchedulerHome().replaceAll("\\\\","/")).replaceAll("\\{lang\\}",
-					getLanguage());
+			return (Options.getHelp("maindir", prefix) + url).replaceAll("\\{scheduler_home\\}", Options.getSchedulerHome().replaceAll("\\\\", "/"))
+					.replaceAll("\\{lang\\}", getLanguage());
 		}
 		catch (Exception e) {
 			return null;
@@ -431,7 +433,7 @@ public class Options extends I18NBase {
 	}
 
 	public static void loadWindow(final Shell shell, final String name) {
-        getProperties();
+		getProperties();
 
 		Point location = new Point(0, 0);
 		Point size = new Point(0, 0);
@@ -532,15 +534,29 @@ public class Options extends I18NBase {
 		return strT;
 	}
 
+	public static String getJOEHomeDir() {
+		String strT = getProp(conEnvVarSOS_JOE_HOME, "");
+		if (strT.length() <= 0) {
+			strT = getProp(conEnvVarSCHEDULER_DATA, "");
+			if (strT.length() <= 0) {
+				strT = getProp(conEnvVarSCHEDULER_HOME, "");
+			}
+		}
+
+		logger.debug("getSchedulerHome = " + strT);
+		return strT;
+	}
+
 	public static String getSchedulerHome() {
-		String strT = getProp("SCHEDULER_HOME", "");
-		logger.info("getSchedulerHome = " + strT);
+		String strT = getProp(conEnvVarSCHEDULER_HOME, "");
+
+		logger.debug("getSchedulerHome = " + strT);
 		return strT;
 	}
 
 	public static String getSchedulerData() {
-		String strT = getProp("SCHEDULER_DATA", getSchedulerHome());
-		logger.info("getSchedulerData = " + strT);
+		String strT = getProp(conEnvVarSCHEDULER_DATA, getSchedulerHome());
+		logger.debug("getSchedulerData = " + strT);
 		return strT;
 	}
 
@@ -742,7 +758,7 @@ public class Options extends I18NBase {
 		String[] retVal = null;
 		String s = "";
 		Properties p = new Properties();
-		p.putAll(_defaults);
+		p.putAll(JOESettingsDefaults);
 		p.putAll(_properties);
 		// 9. Folgende Monitore sollen in der Auslieferung im Lieferumfang sein
 		// configuration_monitor -->sos.scheduler.managed.configuration.ConfigurationOrderMonitor

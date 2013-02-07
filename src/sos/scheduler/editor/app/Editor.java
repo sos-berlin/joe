@@ -118,7 +118,7 @@ public class Editor {
 			if (Options.showSplashScreen() == true) {
 				InputStream img = Editor.class.getResourceAsStream("/SplashScreenJOE.bmp");
 				if (img == null) {
-					System.out.println("/SplashScreenJOE.bmp could not be found.");
+					System.out.println("'/SplashScreenJOE.bmp' not found in resources.");
 				}
 				else {
 					objImage4Splash = new Image(display, img);

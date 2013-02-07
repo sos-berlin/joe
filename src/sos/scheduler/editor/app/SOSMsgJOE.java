@@ -49,7 +49,9 @@ public class SOSMsgJOE extends SOSMsg {
 	public Text Control(final Text pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-		pobjC.setText(label());
+	// Text kommt im Normalfall nicht aus einer Propertie-Datei. Deswegen ergibt es keinen Sinn	
+	//	pobjC.setText(label());
+		
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		pobjC.addFocusListener(new FocusAdapter() {
