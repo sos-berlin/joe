@@ -88,7 +88,9 @@ public class SOSMsgJOE extends SOSMsg {
 	public Button Control(final Button pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-		pobjC.setText(label());
+		// Es gibt Buttons ohne Text. Die sollen keine Vorbelegung haben.
+
+		//pobjC.setText(label());
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
@@ -97,7 +99,7 @@ public class SOSMsgJOE extends SOSMsg {
 	public Combo Control(final Combo pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-		pobjC.setText(label());
+		//pobjC.setText(label());
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;

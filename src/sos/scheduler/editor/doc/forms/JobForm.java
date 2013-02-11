@@ -49,7 +49,7 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private Text				sourceOutputPath;
 	private Text				packageName;
 
-	public JobForm(Composite parent, int style, DocumentationDom dom, Element job) {
+	public JobForm(final Composite parent, final int style, final DocumentationDom dom, final Element job) {
 		super(parent, style);
 		initialize();
 		setToolTipText();
@@ -81,7 +81,8 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tName = JOE_T_JobForm_Name.Control(new Text(group, SWT.BORDER));
 		tName.setLayoutData(gridData); // Generated
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setName(tName.getText());
 				Utils.setBackground(tName, true);
 			}
@@ -92,7 +93,8 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tTitle = JOE_T_JobForm_Title.Control(new Text(group, SWT.BORDER));
 		tTitle.setLayoutData(gridData1); // Generated
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setTitle(tTitle.getText());
 				Utils.setBackground(tTitle, true);
 			}
@@ -107,11 +109,13 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		cTasks = JOE_Cbo_JobForm_Tasks.Control(new Combo(group, SWT.BORDER | SWT.READ_ONLY));
 		cTasks.setLayoutData(new GridData(200, SWT.DEFAULT)); // Generated
 		cTasks.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				listener.setTasks(cTasks.getText());
 			}
 
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetDefaultSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				//
 			}
 		});
@@ -120,6 +124,7 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 		final Button vorschauButton = JOE_B_JobForm_Preview.Control(new Button(group, SWT.NONE));
 		vorschauButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				listener.preview();
 			}
@@ -156,49 +161,10 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		Button btnNewButton = JOE_B_JobForm_GenerateSource.Control(new Button(group, SWT.NONE));
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
+			public void widgetSelected(final SelectionEvent arg0) {
 
 				generateJavaSource();
 
-/*
-				SourceGenerator s = new SourceGenerator();
-				File documentation;
-				try {
-
-					documentation = listener.writeToFile();
-					s.setDefaultLang("en");
-					s.setJavaClassName(tName.getText());
-					s.setJobdocFile(documentation);
-					if (sourceOutputPath.getText().trim().equals("")) {
-						File tmp = File.createTempFile(Options.getXSLTFilePrefix(), Options.getXSLTFileSuffix());
-						tmp.deleteOnExit();
-						sourceOutputPath.setText(tmp.getParent());
-					}
-					s.setOutputDir(new File(sourceOutputPath.getText()));
-					s.setPackageName(packageName.getText());
-					File f = new File(Options.getSchedulerData(), "config/JOETemplates/java/xsl");
-					s.setTemplatePath(f);
-					if (!f.exists()) {
-						MessageBox mb = new MessageBox(getShell(), SWT.ICON_INFORMATION);
-						mb.setMessage(String.format("File %1$s does not exist",f.getAbsolutePath()));
-						mb.open();
-					}else {
-						if ((cOrder.getText().equalsIgnoreCase("no")) && cbJobType.getText().equalsIgnoreCase("Standalone Job")) {
-							s.setStandAlone(true);
-						}
-						else {
-							s.setStandAlone(false);
-						}
-						s.execute();
-					}
-					}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-				catch (JDOMException e) {
-					e.printStackTrace();
-				}
-*/
 			}
 
 		});
@@ -221,6 +187,8 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			}
 			s.setOutputDir(new File(sourceOutputPath.getText()));
 			s.setPackageName(packageName.getText());
+
+			// TODO Migrate Template path to JOE_HOME Folder
 			File f = new File(Options.getSchedulerData(), "config/JOETemplates/java/xsl");
 			s.setTemplatePath(f);
 			if (!f.exists()) {
@@ -229,7 +197,7 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				mb.open();
 			}
 			else {
-				if ((cOrder.getText().equalsIgnoreCase("no")) && cbJobType.getText().equalsIgnoreCase("Standalone Job")) {
+				if (cOrder.getText().equalsIgnoreCase("no") && cbJobType.getText().equalsIgnoreCase("Standalone Job")) {
 					s.setStandAlone(true);
 				}
 				else {
@@ -256,15 +224,17 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private void createCOrder() {
 		GridData gridData2 = new GridData(GridData.BEGINNING, GridData.CENTER);
 		gridData2.widthHint = 200;
-		
+
 		cOrder = JOE_Cbo_JobForm_Order.Control(new Combo(group, SWT.BORDER | SWT.READ_ONLY));
 		cOrder.setLayoutData(gridData2); // Generated
 		cOrder.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				listener.setOrder(cOrder.getText());
 			}
 
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetDefaultSelected(final org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 	}
@@ -273,7 +243,7 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	 * This method initializes cTasks
 	 */
 	private void createCTasks() {
-//		
+//
 	}
 
 	private void initValues() {
@@ -287,6 +257,7 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tName.setFocus();
 	}
 
+	@Override
 	public void setToolTipText() {
 //
 	}

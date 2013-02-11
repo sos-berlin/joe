@@ -39,7 +39,6 @@ import org.jdom.input.SAXBuilder;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
@@ -56,42 +55,42 @@ import com.swtdesigner.SWTResourceManager;
 
 /**
  * Job Wizzard.
- * 
+ *
  * Liste der Standalone Jobs bzw. Auftragsgesteuerte Jobs.
- * 
+ *
  * Es werden alle Standalone Jobs oder Auftragsgesteuerte Jobs zur Auswahl gestellt.
- * 
+ *
  * Die Kriterien stehen in der Job Dokumentation.
  * Das bedeutet alle Job Dokumentationen aus der Verzeichnis <SCHEDULER_DATA>/jobs/*.xml werden parsiert.
- * 
+ *
  * Folgen Funktionen können hier ausgeführt werden:
- * 
- * 
- * show: 
+ *
+ *
+ * show:
  * 		zeigt den Job mit den Informationen aus der ausgewählten Jobdokumentation aus der Liste im seperaten Fenster als XML.
- * 
- * next: 
- * 		geht in das nächste Wizzard Formular Parameter. 
+ *
+ * next:
+ * 		geht in das nächste Wizzard Formular Parameter.
  * 		Hier werden alle Parameter der ausgewählten Jobdokumentation aus der Liste übergeben.
- * 
- * finish: 
- * 		Generiert einen Job. Übernimmt die Einstellungen der ausgewählten Job aus der Liste. 
+ *
+ * finish:
+ * 		Generiert einen Job. Übernimmt die Einstellungen der ausgewählten Job aus der Liste.
  *      Alle Defaulteinstellungen des Jobs werden hier mit übernommen.
- * 
- * Help Button: 
+ *
+ * Help Button:
  * 		Öffnet einen Dialog mit Hilfetext
- * 
- * Description: 
+ *
+ * Description:
  * 		Öffnet einen neuen IE mit der ausgewählten JobDocumentation
- * 
- * Back: 
+ *
+ * Back:
  * 		geht einen Formular zurück
- * 
- * Cancel: 
+ *
+ * Cancel:
  * 		beendet den Wizzard
- * 
- * Der Aufbau eines Jobs kann aus der Dokumentation <SCHEDULER_>\config\html\doc\de\xml.xml entnommen werden. 
- * 
+ *
+ * Der Aufbau eines Jobs kann aus der Dokumentation <SCHEDULER_>\config\html\doc\de\xml.xml entnommen werden.
+ *
  * @author mueruevet.oeksuez@sos-berlin.com
  *
  * @version $Id$
@@ -131,20 +130,20 @@ public class JobAssistentImportJobsForm {
 	private ScriptJobMainForm										jobForm				= null;
 	private sos.scheduler.editor.conf.listeners.ParameterListener	paramListener		= null;
 	private Text													refreshDetailsText	= null;
-	/** Hilfsvariable für das Schliessen des Dialogs. 
+	/** Hilfsvariable für das Schliessen des Dialogs.
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean													closeDialog			= false;
 	private boolean													flagBackUpJob		= true;
-	private JobDocumentationForm									jobDocForm			= null;
+	private final JobDocumentationForm									jobDocForm			= null;
 
 	/**
 	 * Konstruktor
-	 * 
+	 *
 	 * @param dom_ SchedulerDom
 	 * @param update_ ISchedulerUpdate
 	 * @param assistentType_ int
 	 */
-	public JobAssistentImportJobsForm(SchedulerDom dom_, ISchedulerUpdate update_, int assistentType_) {
+	public JobAssistentImportJobsForm(final SchedulerDom dom_, final ISchedulerUpdate update_, final int assistentType_) {
 		dom = dom_;
         inputTimer = new Timer();
 
@@ -155,11 +154,11 @@ public class JobAssistentImportJobsForm {
 
 	/**
 	 * Konstruktor
-	 * 
+	 *
 	 * @param listener_
 	 * @param assistentType_
 	 */
-	public JobAssistentImportJobsForm(JobListener listener_, int assistentType_) {
+	public JobAssistentImportJobsForm(final JobListener listener_, final int assistentType_) {
 		jobBackUp = (Element) listener_.getJob().clone();
 		joblistener = listener_;
 		dom = joblistener.get_dom();
@@ -173,12 +172,12 @@ public class JobAssistentImportJobsForm {
 
 	/**
 	 * Konstruktor
-	 * 
+	 *
 	 * @param listener_
 	 * @param tParameter_
 	 * @param assistentType_
 	 */
-	public JobAssistentImportJobsForm(JobListener listener_, Table tParameter_, int assistentType_) {
+	public JobAssistentImportJobsForm(final JobListener listener_, final Table tParameter_, final int assistentType_) {
 		jobBackUp = (Element) listener_.getJob().clone();
 		joblistener = listener_;
 		dom = joblistener.get_dom();
@@ -195,13 +194,14 @@ public class JobAssistentImportJobsForm {
 	{
 	    private final String key;
 
-	    public JobListComparator(String key)
+	    public JobListComparator(final String key)
 	    {
 	        this.key = key;
 	    }
 
-	    public int compare(Map<String, String> first,
-	                       Map<String, String> second)
+	    @Override
+		public int compare(final Map<String, String> first,
+	                       final Map<String, String> second)
 	    {
 	        String firstValue = first.get(key);
 	        String secondValue = second.get(key);
@@ -215,14 +215,16 @@ public class JobAssistentImportJobsForm {
 	    }
 	}
 
- 
+
 	   public class InputTask extends TimerTask {
-	        public void run() {
+	        @Override
+			public void run() {
 	            if (display == null) {
 	                display = Display.getDefault();
 	            }
 	            display.syncExec(new Runnable() {
-	                public void run() {
+	                @Override
+					public void run() {
 	                    if (!searchField.equals(EMPTY_STRING)) {
 	                        try {
                                 createTreeItems();
@@ -236,7 +238,7 @@ public class JobAssistentImportJobsForm {
 	            });
 	        }
 	    }
-	   
+
 	    private void resetInputTimer() {
 	        inputTimer.cancel();
 	        inputTimer = new Timer();
@@ -247,13 +249,14 @@ public class JobAssistentImportJobsForm {
 	 * Jobname setzen
 	 * @param jobname
 	 */
-	public void setJobname(Combo jobname) {
+	public void setJobname(final Combo jobname) {
 		this.jobname = jobname;
 	}
-	
+
 	private String getJobsDirectoryName() {
 	    String s = sos.scheduler.editor.app.Options.getSchedulerData();
-        s = (s.endsWith("/") || s.endsWith("\\") ? s.concat("jobs") :s.concat("/jobs"));
+	    // TODO jobs customizable
+        s = s.endsWith("/") || s.endsWith("\\") ? s.concat("jobs") :s.concat("/jobs");
         return s;
 	}
 
@@ -261,8 +264,8 @@ public class JobAssistentImportJobsForm {
 	 * Alle vorhandenen Job Dokumentation aus der <SCHEDULER_DATA>/jobs/*.xml
 	 * parsieren und in die Tabelle Schreiben. Folgende Informationen werden bei der Parsierung ausgelesen:
 	 * Name, Title, Filename, Job-Meta-Element
-	 * 
-	 * @return ArrayList - Liste aller Jobs. EIn Eintrag der Liste entspricht einen HashMap. Der HasMap hat die 
+	 *
+	 * @return ArrayList - Liste aller Jobs. EIn Eintrag der Liste entspricht einen HashMap. Der HasMap hat die
 	 * Informationen wie Name, Title, Filename und Job Element
 	 */
 	public ArrayList parseDocuments() {
@@ -289,7 +292,7 @@ public class JobAssistentImportJobsForm {
 					List listMainElements = root.getChildren();
 					HashMap h = null;
 					for (int i = 0; i < listMainElements.size(); i++) {
-						Element elMain = (Element) (listMainElements.get(i));
+						Element elMain = (Element) listMainElements.get(i);
 						if (elMain.getName().equalsIgnoreCase("job")) {
 							h = new HashMap();
 							h.put("name", elMain.getAttributeValue("name"));
@@ -319,15 +322,15 @@ public class JobAssistentImportJobsForm {
 		return listOfDoc;
 	}
 
-	public void showAllImportJobs(String type_) {
+	public void showAllImportJobs(final String type_) {
 		jobType = type_;
 		showAllImportJobs();
 	}
 
-	public void showAllImportJobs(JobListener joblistener_) {
+	public void showAllImportJobs(final JobListener joblistener_) {
 		joblistener = joblistener_;
 		jobBackUp = (Element) joblistener_.getJob().clone();
-		jobType = (joblistener.getOrder() ? "order" : "standalonejob");
+		jobType = joblistener.getOrder() ? "order" : "standalonejob";
 		showAllImportJobs();
 	}
 
@@ -335,6 +338,7 @@ public class JobAssistentImportJobsForm {
 		try {
 			shell = new Shell(MainWindow.getSShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
 			shell.addShellListener(new ShellAdapter() {
+				@Override
 				public void shellClosed(final ShellEvent e) {
 					if (!closeDialog)
 						close();
@@ -432,6 +436,7 @@ public class JobAssistentImportJobsForm {
 
 			butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite_3, SWT.NONE));
 			butCancel.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					close();
 				}
@@ -449,6 +454,7 @@ public class JobAssistentImportJobsForm {
 			{
 				butdescription = SOSJOEMessageCodes.JOE_B_JobAssistent_Description.Control(new Button(composite, SWT.NONE));
 				butdescription.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(final SelectionEvent e) {
 						try {
 							if (txtPath.getText() != null && txtPath.getText().length() > 0) {
@@ -482,6 +488,7 @@ public class JobAssistentImportJobsForm {
 			butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite, SWT.NONE));
 			butShow.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			butShow.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					HashMap attr = getJobFromDescription();
 					JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
@@ -492,7 +499,7 @@ public class JobAssistentImportJobsForm {
 						if (assistentType == Editor.JOB_WIZARD) {
 							// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn
 							// assistentype = Editor.Job_Wizzard
-							Element currJob = (Element) (joblistener.getJob().clone());
+							Element currJob = (Element) joblistener.getJob().clone();
 							job = listener.createJobElement(attr, currJob);
 						}
 						else {
@@ -500,7 +507,7 @@ public class JobAssistentImportJobsForm {
 						}
 					}
 					else {
-						job = (Element) (jobBackUp.clone());
+						job = (Element) jobBackUp.clone();
 					}
 					Utils.showClipboard(Utils.getElementAsString(job), shell, false, null, false, null, false);
 					job.removeChildren("param");
@@ -510,6 +517,7 @@ public class JobAssistentImportJobsForm {
 			{
 				butImport = SOSJOEMessageCodes.JOE_B_JobAssistent_Import.Control(new Button(composite, SWT.NONE));
 				butImport.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(final SelectionEvent e) {
 						try {
 							if (!check()) {
@@ -594,6 +602,7 @@ public class JobAssistentImportJobsForm {
 
 			butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite, SWT.NONE));
 			butBack.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					JobAssistentTypeForms typeForms = new JobAssistentTypeForms(dom, update);
 					typeForms.showTypeForms(jobType, jobBackUp, assistentType);
@@ -606,6 +615,7 @@ public class JobAssistentImportJobsForm {
 			butParameters.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			butParameters.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			butParameters.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					Utils.startCursor(shell);
 					if (!check())
@@ -672,7 +682,7 @@ public class JobAssistentImportJobsForm {
 
 			Utils.createHelpButton(composite, "JOE_M_JobAssistentImportJobsForm_Help.label", shell);
 			if (assistentType == Editor.JOB) {
-				this.butImport.setVisible(true);
+				butImport.setVisible(true);
 				butParameters.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_ImportParams.label());
 			}
 			if (assistentType == Editor.JOB_WIZARD) {
@@ -725,17 +735,19 @@ public class JobAssistentImportJobsForm {
 			 searchField = new Text(jobnamenGroup, SWT.BORDER);
 		     searchField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		     searchField.addModifyListener(new ModifyListener() {
-		            public void modifyText(final ModifyEvent e) {
+		            @Override
+					public void modifyText(final ModifyEvent e) {
 		                if (searchField != null) {
 		                    resetInputTimer();
 		                }
 		            }
 		        });
-			
+
 			tree = SOSJOEMessageCodes.JOE_JobAssistent_JobTree.Control(new Tree(jobnamenGroup, SWT.FULL_SELECTION | SWT.BORDER));
 			tree.setHeaderVisible(true);
 			tree.getBounds().height = 100;
 			tree.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					String strT = txtTitle.getText();
 					//if (strT.trim().equalsIgnoreCase("")) {
@@ -752,15 +764,15 @@ public class JobAssistentImportJobsForm {
 			TreeColumn column1 = SOSJOEMessageCodes.JOE_JobAssistent_NameTreeColumn.Control(new TreeColumn(tree, SWT.LEFT));
 			column1.setWidth(165);
 			column1.addSelectionListener(new SortTreeListener());
-			 
+
 			TreeColumn column2 = SOSJOEMessageCodes.JOE_JobAssistent_TitleTreeColumn.Control(new TreeColumn(tree, SWT.LEFT));
 			column2.setWidth(200);
 			column2.addSelectionListener(new SortTreeListener());
-			
+
 			TreeColumn column3 = SOSJOEMessageCodes.JOE_JobAssistent_FilenameTreeColumn.Control(new TreeColumn(tree, SWT.LEFT));
 			column3.setWidth(209);
 			column3.addSelectionListener(new SortTreeListener());
-			 
+
 			try {
 				createTreeItems();
 			}
@@ -798,7 +810,7 @@ public class JobAssistentImportJobsForm {
 	private void createTreeItems() throws Exception {
 		try {
 		    tree.removeAll();
-		    
+
 			final TreeItem newItemTreeItem_ = new TreeItem(tree, SWT.NONE);
 //          ermöglicht das Starten des Wizards ohne vorhandene Jobbeschreibung
 /*            newItemTreeItem_.setText(0, SOSJOEMessageCodes.JOE_M_JobAssistent_NoJobDoc.label());
@@ -815,11 +827,11 @@ public class JobAssistentImportJobsForm {
 			boolean insertJobInTree = true;
 			for (int i = 0; i < listOfDoc.size(); i++) {
 				HashMap h = (HashMap) listOfDoc.get(i);
-                insertJobInTree = (searchField.getText().toLowerCase().equals(EMPTY_STRING)||
-                            (h.get("filename").toString().toLowerCase().contains(searchField.getText().toLowerCase())) ||                           
-                            (h.get("name").toString().toLowerCase().contains(searchField.getText().toLowerCase())) ||
-                            (h.get("title").toString().toLowerCase().contains(searchField.getText().toLowerCase())));
-				    
+                insertJobInTree = searchField.getText().toLowerCase().equals(EMPTY_STRING)||
+                            h.get("filename").toString().toLowerCase().contains(searchField.getText().toLowerCase()) ||
+                            h.get("name").toString().toLowerCase().contains(searchField.getText().toLowerCase()) ||
+                            h.get("title").toString().toLowerCase().contains(searchField.getText().toLowerCase());
+
 				if (jobType != null && jobType.equals("order")) {
 					Element job = (Element) h.get("job");
 					if (!(Utils.getAttributeValue("order", job).equals("yes") || Utils.getAttributeValue("order", job).equals("both"))) {
@@ -1010,8 +1022,8 @@ public class JobAssistentImportJobsForm {
 					for (int i = 0; i < listOfEnvironment.size(); i++) {
 						HashMap hEnv = new HashMap();
 						Element env = (Element) listOfEnvironment.get(i);
-						hEnv.put("name", (env.getAttribute("name") != null ? env.getAttribute("name").getValue() : ""));
-						hEnv.put("value", (env.getAttribute("value") != null ? env.getAttribute("value").getValue() : ""));
+						hEnv.put("name", env.getAttribute("name") != null ? env.getAttribute("name").getValue() : "");
+						hEnv.put("value", env.getAttribute("value") != null ? env.getAttribute("value").getValue() : "");
 						listOfIncludeFilename.add(hEnv);
 					}
 					h.put("process_environment", listOfIncludeFilename);
@@ -1067,11 +1079,11 @@ public class JobAssistentImportJobsForm {
 	}
 
 	/**
-	 * Der Wizzard wurde für ein bestehende Job gestartet. 
+	 * Der Wizzard wurde für ein bestehende Job gestartet.
 	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
-	public void setBackUpJob(Element backUpJob, ScriptJobMainForm jobForm_) {
+	public void setBackUpJob(final Element backUpJob, final ScriptJobMainForm jobForm_) {
 		if (backUpJob != null)
 			jobBackUp = (Element) backUpJob.clone();
 		if (jobForm_ != null)
@@ -1080,11 +1092,11 @@ public class JobAssistentImportJobsForm {
 			selectTree();
 	}
 
-	public void setJobForm(ScriptJobMainForm jobForm_) {
+	public void setJobForm(final ScriptJobMainForm jobForm_) {
 		jobForm = jobForm_;
 	}
 
-	public void setJobForm(JobDocumentation jobForm_) {
+	public void setJobForm(final JobDocumentation jobForm_) {
 		// jobForm = jobForm_;
 	}
 
@@ -1098,7 +1110,7 @@ public class JobAssistentImportJobsForm {
 			txtJobname.setFocus();
 			return false;
 		}
-		if (assistentType != Editor.JOB && (joblistener != null && !joblistener.getJob().getName().equals("config"))) {
+		if (assistentType != Editor.JOB && joblistener != null && !joblistener.getJob().getName().equals("config")) {
 			if (txtJobname.isEnabled()) {
 				if (txtJobname.getText() == null || txtJobname.getText().length() == 0) {
 					MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoJobName.label(), SWT.ICON_WARNING | SWT.OK);
@@ -1119,7 +1131,7 @@ public class JobAssistentImportJobsForm {
 
 	// Details hat einen anderen Aufbau der Parameter Description.
 	// Beim generieren der Parameter mit Wizzard müssen die Parameterdescriptchen anders aufgebaut werden.
-	public void setDetailsRefresh(Text refreshDetailsText_) {
+	public void setDetailsRefresh(final Text refreshDetailsText_) {
 		refreshDetailsText = refreshDetailsText_;
 	}
 }

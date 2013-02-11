@@ -310,13 +310,7 @@ public class BaseForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 	}
 
 	public void setToolTipText() {
-//		bNew.setToolTipText(Messages.getTooltip("base.btn_new_file"));
-//		tComment.setToolTipText(Messages.getTooltip("base.comment"));
-//		bRemove.setToolTipText(Messages.getTooltip("base.btn_remove_file"));
-//		bApply.setToolTipText(Messages.getTooltip("base.btn_apply"));
-//		table.setToolTipText(Messages.getTooltip("base.table"));
-//		tFile.setToolTipText(Messages.getTooltip("base.file_input"));
-//		butOpen.setToolTipText(Messages.getTooltip("base.file_open"));
+//
 	}
 
 	// öffnet das File Dialog um ein Basefile auszuwählen

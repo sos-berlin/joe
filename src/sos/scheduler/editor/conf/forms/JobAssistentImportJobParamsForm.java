@@ -127,7 +127,7 @@ public class JobAssistentImportJobParamsForm {
 	public JobAssistentImportJobParamsForm() {
 	}
 
-	public JobAssistentImportJobParamsForm(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
+	public JobAssistentImportJobParamsForm(final SchedulerDom dom_, final ISchedulerUpdate update_, final Element job_, final int assistentType_) {
 		dom = dom_;
 		update = update_;
 		assistentType = assistentType_;
@@ -135,29 +135,31 @@ public class JobAssistentImportJobParamsForm {
 		paramListener = new ParameterListener(dom, job_, update_, assistentType);
 	}
 
-	public JobAssistentImportJobParamsForm(SchedulerDom dom_, ISchedulerUpdate update_, JobListener joblistener_, int assistentType_) {
+	public JobAssistentImportJobParamsForm(final SchedulerDom dom_, final ISchedulerUpdate update_, final JobListener joblistener_, final int assistentType_) {
 		dom = dom_;
 		update = update_;
 		joblistener = joblistener_;
 		jobBackUp = (Element) joblistener.getJob().clone();
-		this.assistentType = assistentType_;
+		assistentType = assistentType_;
 		paramListener = new ParameterListener(dom, joblistener_.getJob(), update_, assistentType);
 	}
 
-	public JobAssistentImportJobParamsForm(SchedulerDom dom_, ISchedulerUpdate update_, JobListener joblistener_, Table tParameter_, int assistentType_) {
+	public JobAssistentImportJobParamsForm(final SchedulerDom dom_, final ISchedulerUpdate update_, final JobListener joblistener_, final Table tParameter_, final int assistentType_) {
 		dom = dom_;
 		update = update_;
 		joblistener = joblistener_;
 		jobBackUp = (Element) joblistener.getJob().clone();
 		tParameter = tParameter_;
-		this.assistentType = assistentType_;
+		assistentType = assistentType_;
 		paramListener = new ParameterListener(dom, joblistener_.getJob(), update_, assistentType);
 	}
 
-	public ArrayList<HashMap<String, Object>> parseDocuments(String xmlFilename, String type) {
+	public ArrayList<HashMap<String, Object>> parseDocuments(String xmlFilename, final String type) {
 		// Wizard ohne Jobbeschreibung starten
 		if (xmlFilename == null || xmlFilename.trim().length() == 0)
 			return new ArrayList<HashMap<String, Object>>();
+		
+		// TODO /jobs als Option
 		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData()+"/jobs";
 		xmlPaths = xmlPaths.replaceAll("\\\\", "/");
 		xmlFilename = xmlFilename.replaceAll("\\\\", "/");
@@ -167,7 +169,7 @@ public class JobAssistentImportJobParamsForm {
 		if (!xmlFilename.startsWith(xmlPaths)) {
             String s[] = xmlFilename.split("/");
             xmlFilename = s[s.length-1];
-			xmlFilename = (xmlPaths.endsWith("/") ? xmlPaths.concat(xmlFilename) : xmlPaths.concat("/").concat(xmlFilename));
+			xmlFilename = xmlPaths.endsWith("/") ? xmlPaths.concat(xmlFilename) : xmlPaths.concat("/").concat(xmlFilename);
 		}
 		
 		
@@ -291,10 +293,11 @@ public class JobAssistentImportJobParamsForm {
 	 * 
 	 * @param xmlFilename -> Job Dokumentation
 	 */
-	public void showAllImportJobParams(String xmlFilename) {
+	public void showAllImportJobParams(final String xmlFilename) {
 		try {
 			jobParameterShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 			jobParameterShell.addShellListener(new ShellAdapter() {
+				@Override
 				public void shellClosed(final ShellEvent e) {
 					if (!closeDialog)
 						close();
@@ -351,6 +354,7 @@ public class JobAssistentImportJobParamsForm {
 			butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite, SWT.NONE));
 			butCancel.setLayoutData(new GridData());
 			butCancel.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					close();
 				}
@@ -366,6 +370,7 @@ public class JobAssistentImportJobParamsForm {
 			showButton = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_1, SWT.NONE));
 			showButton.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			showButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell, false, null, false, null, false);
 				}
@@ -376,6 +381,7 @@ public class JobAssistentImportJobParamsForm {
 			butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_1, SWT.NONE));
 			butFinish.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			butFinish.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					if (assistentType == Editor.PARAMETER) {
 						tParameter.removeAll();
@@ -408,6 +414,7 @@ public class JobAssistentImportJobParamsForm {
 			butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_3, SWT.NONE));
 			butBack.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
 			butBack.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(dom, update, assistentType);
 					if (jobname != null)
@@ -425,6 +432,7 @@ public class JobAssistentImportJobParamsForm {
 			butNext.setFocus();
 			butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			butNext.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					Utils.startCursor(jobParameterShell);
 					if (assistentType != Editor.JOB) {
@@ -462,12 +470,14 @@ public class JobAssistentImportJobParamsForm {
 			{
 				txtName = SOSJOEMessageCodes.JOE_T_JobAssistent_Name.Control(new Text(textParameterGroup, SWT.BORDER));
 				txtName.addModifyListener(new ModifyListener() {
+					@Override
 					public void modifyText(final ModifyEvent e) {
 						if (butApply != null)
 							butApply.setEnabled(txtName.getText().length() > 0);
 					}
 				});
 				txtName.addKeyListener(new KeyAdapter() {
+					@Override
 					public void keyPressed(final KeyEvent e) {
 						if (e.keyCode == SWT.CR && !txtName.getText().equals("")) {
 							addParam();
@@ -489,11 +499,13 @@ public class JobAssistentImportJobParamsForm {
 			
 			txtValue = SOSJOEMessageCodes.JOE_T_JobAssistent_Value.Control(new Text(textParameterGroup, SWT.BORDER));
 			txtValue.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					butApply.setEnabled(txtName.getText().length() > 0);
 				}
 			});
 			txtValue.addKeyListener(new KeyAdapter() {
+				@Override
 				public void keyPressed(final KeyEvent e) {
 					if (e.keyCode == SWT.CR && !txtName.getText().trim().equals(""))
 						addParam();
@@ -508,6 +520,7 @@ public class JobAssistentImportJobParamsForm {
 				butApply.setEnabled(false);
 				butApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 				butApply.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(final SelectionEvent e) {
 						addParam();
 					}
@@ -516,17 +529,19 @@ public class JobAssistentImportJobParamsForm {
 			
 			tableDescParameters = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_DescParams.Control(new Table(textParameterGroup, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER));
 			tableDescParameters.addMouseListener(new MouseAdapter() {
+				@Override
 				public void mouseDoubleClick(final MouseEvent e) {
 					addParams();
 				}
 			});
 			tableDescParameters.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					if (tableDescParameters.getSelectionCount() > -1) {
-						txtDescription.setText((tableDescParameters.getSelection()[0].getData(conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage()) != null ? tableDescParameters.getSelection()[0].getData(
+						txtDescription.setText(tableDescParameters.getSelection()[0].getData(conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage()) != null ? tableDescParameters.getSelection()[0].getData(
 								conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage())
 								.toString()
-								: ""));
+								: "");
 					}
 				}
 			});
@@ -550,6 +565,7 @@ public class JobAssistentImportJobParamsForm {
 			
 			butPut = SOSJOEMessageCodes.JOE_B_JobAssistent_Put.Control(new Button(composite_2, SWT.NONE));
 			butPut.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					addParams();
 				}
@@ -560,18 +576,19 @@ public class JobAssistentImportJobParamsForm {
 			
 			butPutAll = SOSJOEMessageCodes.JOE_B_JobAssistent_PutAll.Control(new Button(composite_2, SWT.NONE));
 			butPutAll.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					for (int i = 0; i < tableDescParameters.getItemCount(); i++) {
 						paramListener.saveParameter(
 								tblSelectedParams,
 								tableDescParameters.getItem(i).getText(0),
 								tableDescParameters.getItem(i).getText(1),
-								(tableDescParameters.getItem(i).getData(conKeyPARAMETER_DESCRIPTION_DE) != null ? tableDescParameters.getItem(i)
+								tableDescParameters.getItem(i).getData(conKeyPARAMETER_DESCRIPTION_DE) != null ? tableDescParameters.getItem(i)
 										.getData(conKeyPARAMETER_DESCRIPTION_DE)
-										.toString() : ""),
-								(tableDescParameters.getItem(i).getData(conKeyPARAMETER_DESCRIPTION_EN) != null ? tableDescParameters.getItem(i)
+										.toString() : "",
+								tableDescParameters.getItem(i).getData(conKeyPARAMETER_DESCRIPTION_EN) != null ? tableDescParameters.getItem(i)
 										.getData(conKeyPARAMETER_DESCRIPTION_EN)
-										.toString() : ""), tableDescParameters.getItem(i).getBackground().equals(Options.getRequiredColor()));
+										.toString() : "", tableDescParameters.getItem(i).getBackground().equals(Options.getRequiredColor()));
 					}
 					tableDescParameters.removeAll();
 					butApply.setEnabled(false);
@@ -581,6 +598,7 @@ public class JobAssistentImportJobParamsForm {
 			
 			butRemove = SOSJOEMessageCodes.JOE_B_JobAssistent_Remove.Control(new Button(composite_2, SWT.NONE));
 			butRemove.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					removeParams();
 				}
@@ -591,6 +609,7 @@ public class JobAssistentImportJobParamsForm {
 			
 			butRemoveAll = SOSJOEMessageCodes.JOE_B_JobAssistent_RemoveAll.Control(new Button(composite_2, SWT.NONE));
 			butRemoveAll.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					String remItem = null;
 					ArrayList<HashMap<String, Object>> listOfParams = new ArrayList<HashMap<String, Object>>();
@@ -601,12 +620,12 @@ public class JobAssistentImportJobParamsForm {
 							// merke die Parameter, die nicht gelöscht werden sollen, weil sie required sind
 							HashMap<String, Object> h = new HashMap<String, Object>();
 							h.put(conParamNAME, item.getText(0));
-							h.put(conParamAttributeDEFAULT_VALUE, (item.getText(1) != null ? item.getText(1) : ""));
+							h.put(conParamAttributeDEFAULT_VALUE, item.getText(1) != null ? item.getText(1) : "");
 							h.put(conParamAttributeREQUIRED, conTRUE);
 							h.put(conKeyPARAMETER_DESCRIPTION_DE,
-									(item.getData(conKeyPARAMETER_DESCRIPTION_DE) != null ? item.getData(conKeyPARAMETER_DESCRIPTION_DE) : ""));
+									item.getData(conKeyPARAMETER_DESCRIPTION_DE) != null ? item.getData(conKeyPARAMETER_DESCRIPTION_DE) : "");
 							h.put(conKeyPARAMETER_DESCRIPTION_EN,
-									(item.getData(conKeyPARAMETER_DESCRIPTION_EN) != null ? item.getData(conKeyPARAMETER_DESCRIPTION_EN) : ""));
+									item.getData(conKeyPARAMETER_DESCRIPTION_EN) != null ? item.getData(conKeyPARAMETER_DESCRIPTION_EN) : "");
 							listOfParams.add(h);
 						}
 						else {
@@ -631,6 +650,7 @@ public class JobAssistentImportJobParamsForm {
 			
 			tblSelectedParams = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_SelectedParams.Control(new Table(textParameterGroup, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER));
 			tblSelectedParams.addMouseListener(new MouseAdapter() {
+				@Override
 				public void mouseDoubleClick(final MouseEvent e) {
 					removeParams();
 				}
@@ -640,7 +660,8 @@ public class JobAssistentImportJobParamsForm {
 			gridData_1.widthHint = 185;
 			tblSelectedParams.setLayoutData(gridData_1);
 			tblSelectedParams.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				@Override
+				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 					if (butApply.isEnabled()) {
 						int ok = MainWindow.message(SOSJOEMessageCodes.JOE_M_ApplyChanges.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
 						if (ok == SWT.YES) {
@@ -651,9 +672,9 @@ public class JobAssistentImportJobParamsForm {
 					if (tblSelectedParams.getSelectionCount() > -1) {
 						txtName.setText(tblSelectedParams.getSelection()[0].getText(0));
 						txtValue.setText(tblSelectedParams.getSelection()[0].getText(1));
-						txtDescription.setText((tblSelectedParams.getSelection()[0].getData(conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage()) != null ? tblSelectedParams.getSelection()[0].getData(conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage())
+						txtDescription.setText(tblSelectedParams.getSelection()[0].getData(conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage()) != null ? tblSelectedParams.getSelection()[0].getData(conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage())
 								.toString()
-								: ""));
+								: "");
 						// txtName.setFocus();
 						txtValue.setFocus();
 						butApply.setEnabled(false);
@@ -706,7 +727,7 @@ public class JobAssistentImportJobParamsForm {
 		}
 	}
 
-	private boolean isInList(HashMap item, ArrayList list) {
+	private boolean isInList(final HashMap item, final ArrayList list) {
 		for (int i = 0; i < list.size(); i++) {
 			HashMap h = (HashMap) list.get(i);
 			if (h.get("name").equals(item.get("name"))) {
@@ -716,7 +737,7 @@ public class JobAssistentImportJobParamsForm {
 		return false;
 	}
 
-	public void fillTable(ArrayList list) throws Exception {
+	public void fillTable(final ArrayList list) throws Exception {
 		ArrayList<HashMap<String, Object>> listOfRequired = new ArrayList<HashMap<String, Object>>();
 		try {
 			HashMap h = new HashMap();
@@ -728,7 +749,7 @@ public class JobAssistentImportJobParamsForm {
 					h = (HashMap) list.get(i);
 
 					if (!isInList(h, jobP)) {
-						if (h.get(conParamAttributeREQUIRED) != null && (h.get(conParamAttributeREQUIRED).equals(conTRUE))) {
+						if (h.get(conParamAttributeREQUIRED) != null && h.get(conParamAttributeREQUIRED).equals(conTRUE)) {
 							listOfRequired.add(h);
 						}
 					}
@@ -739,17 +760,17 @@ public class JobAssistentImportJobParamsForm {
 			paramListener.fillParams(jobP, tblSelectedParams, true);
 
 			for (int i = 0; i < listOfRequired.size(); i++) {
-				h = (HashMap) listOfRequired.get(i);
+				h = listOfRequired.get(i);
 
 				if (h.get(conParamNAME) != null && paramListener.existsParams(h.get(conParamNAME).toString(), tblSelectedParams, null) == null) {
 					TableItem item = new TableItem(tableDescParameters, SWT.NONE);
 					item.setBackground(Options.getRequiredColor());
 					item.setChecked(true);
-					item.setText(0, (h.get(conParamNAME) != null ? h.get(conParamNAME).toString() : ""));
-					item.setText(1, (h.get(conParamAttributeDEFAULT_VALUE) != null ? h.get(conParamAttributeDEFAULT_VALUE).toString() : ""));
-					String desc_de = (h.get(conKeyPARAMETER_DESCRIPTION_DE) != null ? h.get(conKeyPARAMETER_DESCRIPTION_DE).toString() : "");
+					item.setText(0, h.get(conParamNAME) != null ? h.get(conParamNAME).toString() : "");
+					item.setText(1, h.get(conParamAttributeDEFAULT_VALUE) != null ? h.get(conParamAttributeDEFAULT_VALUE).toString() : "");
+					String desc_de = h.get(conKeyPARAMETER_DESCRIPTION_DE) != null ? h.get(conKeyPARAMETER_DESCRIPTION_DE).toString() : "";
 					item.setData(conKeyPARAMETER_DESCRIPTION_DE, desc_de);
-					String desc_en = (h.get(conKeyPARAMETER_DESCRIPTION_EN) != null ? h.get(conKeyPARAMETER_DESCRIPTION_EN).toString() : "");
+					String desc_en = h.get(conKeyPARAMETER_DESCRIPTION_EN) != null ? h.get(conKeyPARAMETER_DESCRIPTION_EN).toString() : "";
 					item.setData(conKeyPARAMETER_DESCRIPTION_EN, desc_en);
 				}
 
@@ -759,17 +780,17 @@ public class JobAssistentImportJobParamsForm {
 				for (int i = 0; i < list.size(); i++) {
 					h = (HashMap) list.get(i);
 
-					if (h.get(conParamAttributeREQUIRED) == null || (h.get("required").equals("false"))) {
+					if (h.get(conParamAttributeREQUIRED) == null || h.get("required").equals("false")) {
 						if (h.get(conParamNAME) != null && paramListener.existsParams(h.get("name").toString(), tblSelectedParams, null) == null) {
 							TableItem item = new TableItem(tableDescParameters, SWT.NONE);
 							item.setBackground(null);
 
 							item.setChecked(true);
-							item.setText(0, (h.get(conParamNAME) != null ? h.get(conParamNAME).toString() : ""));
-							item.setText(1, (h.get(conParamAttributeDEFAULT_VALUE) != null ? h.get(conParamAttributeDEFAULT_VALUE).toString() : ""));
-							String desc_de = (h.get(conKeyPARAMETER_DESCRIPTION_DE) != null ? h.get(conKeyPARAMETER_DESCRIPTION_DE).toString() : "");
+							item.setText(0, h.get(conParamNAME) != null ? h.get(conParamNAME).toString() : "");
+							item.setText(1, h.get(conParamAttributeDEFAULT_VALUE) != null ? h.get(conParamAttributeDEFAULT_VALUE).toString() : "");
+							String desc_de = h.get(conKeyPARAMETER_DESCRIPTION_DE) != null ? h.get(conKeyPARAMETER_DESCRIPTION_DE).toString() : "";
 							item.setData(conKeyPARAMETER_DESCRIPTION_DE, desc_de);
-							String desc_en = (String) (h.get(conKeyPARAMETER_DESCRIPTION_EN) != null ? h.get(conKeyPARAMETER_DESCRIPTION_EN).toString() : "");
+							String desc_en = h.get(conKeyPARAMETER_DESCRIPTION_EN) != null ? h.get(conKeyPARAMETER_DESCRIPTION_EN).toString() : "";
 							item.setData(conKeyPARAMETER_DESCRIPTION_EN, desc_en);
 
 						}
@@ -815,7 +836,7 @@ public class JobAssistentImportJobParamsForm {
 		return listOfParams;
 	}
 
-	private boolean existItem(String name, Table tab) {
+	private boolean existItem(final String name, final Table tab) {
 		for (int i = 0; tab != null && i < tab.getItemCount(); i++) {
 			TableItem item = tab.getItem(i);
 			if (item.getText(0) != null && item.getText(0).equals(name)) {
@@ -830,7 +851,7 @@ public class JobAssistentImportJobParamsForm {
 		if (cont == SWT.OK) {
 			if (jobBackUp != null) {
 				joblistener.getJob().setContent(jobBackUp.cloneContent());
-				List attr = ((Element) (jobBackUp.clone())).getAttributes();
+				List attr = ((Element) jobBackUp.clone()).getAttributes();
 				joblistener.getJob().getAttributes().clear();
 				for (int i = 0; i < attr.size(); i++) {
 					org.jdom.Attribute at = (org.jdom.Attribute) attr.get(i);
@@ -855,21 +876,21 @@ public class JobAssistentImportJobParamsForm {
 		txtName.setFocus();
 	}
 
-	public void setJobname(Combo jobname) {
+	public void setJobname(final Combo jobname) {
 		this.jobname = jobname;
 	}
 
-	public void setJobForm(ScriptJobMainForm jobForm_) {
+	public void setJobForm(final ScriptJobMainForm jobForm_) {
 		if (jobForm_ != null)
 			jobForm = jobForm_;
 	}
 
-	public void setJobForm(JobDocumentationForm jobDocForm_) {
+	public void setJobForm(final JobDocumentationForm jobDocForm_) {
 		if (jobDocForm_ != null)
 			jobDocForm = jobDocForm_;
 	}
 
-	public void setJobForm(JobDocumentation jobDocForm_) {
+	public void setJobForm(final JobDocumentation jobDocForm_) {
 //		if (jobDocForm_ != null)
 //			jobDocForm = jobDocForm_;
 	}
@@ -879,7 +900,7 @@ public class JobAssistentImportJobParamsForm {
 	 * Beim verlassen der Wizard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
-	public void setBackUpJob(Element backUpJob, ScriptJobMainForm jobForm_) {
+	public void setBackUpJob(final Element backUpJob, final ScriptJobMainForm jobForm_) {
 		if (backUpJob != null)
 			jobBackUp = (Element) backUpJob.clone();
 		if (jobForm_ != null)
@@ -898,8 +919,8 @@ public class JobAssistentImportJobParamsForm {
 					strParamName = item.getText(0);
 					strParamDefaultValue = item.getText(1);
 					paramListener.saveParameter(tblSelectedParams, strParamName, strParamDefaultValue,
-							(item.getData(conKeyPARAMETER_DESCRIPTION_DE) != null ? item.getData(conKeyPARAMETER_DESCRIPTION_DE).toString() : ""),
-							(item.getData(conKeyPARAMETER_DESCRIPTION_EN) != null ? item.getData(conKeyPARAMETER_DESCRIPTION_EN).toString() : ""),
+							item.getData(conKeyPARAMETER_DESCRIPTION_DE) != null ? item.getData(conKeyPARAMETER_DESCRIPTION_DE).toString() : "",
+							item.getData(conKeyPARAMETER_DESCRIPTION_EN) != null ? item.getData(conKeyPARAMETER_DESCRIPTION_EN).toString() : "",
 							item.getBackground().equals(Options.getRequiredColor()));
 				}
 				else {
@@ -958,7 +979,7 @@ public class JobAssistentImportJobParamsForm {
 
 	// Details hat einen anderen Aufbau der Parameter Description.
 	// Beim generieren der Parameter mit Wizard müssen die Parameterdescriptchen anders aufgebaut werden.
-	public void setDetailsRefresh(Text refreshDetailsText_) {
+	public void setDetailsRefresh(final Text refreshDetailsText_) {
 		refreshDetailsText = refreshDetailsText_;
 	}
 }
