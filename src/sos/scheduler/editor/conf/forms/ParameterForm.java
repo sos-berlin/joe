@@ -720,6 +720,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		composite.setLayout(new GridLayout());
 		
 		butUp = JOE_B_Up.Control(new Button(composite, SWT.NONE));
+		butUp.setText("");
 		butUp.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				// selektierter Datensatz wird eine Zeile nach oben verschoben
@@ -736,6 +737,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 			}
 		});
 		butDown.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
+		butDown.setText("");
 		butDown.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
 		
 		butImport = JOE_B_ParameterForm_Wizard.Control(new Button(Group, SWT.NONE));

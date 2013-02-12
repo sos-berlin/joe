@@ -649,6 +649,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             composite_1.setLayout(gridLayout_5);
 
             butUp = JOE_B_Up.Control(new Button(composite_1, SWT.NONE));
+            butUp.setText("");
             butUp.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(final SelectionEvent e) {
 
@@ -665,6 +666,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
 
             butDown = JOE_B_Down.Control(new Button(composite_1, SWT.NONE));
+            butDown.setText("");
             butDown.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(final SelectionEvent e) {
                     if (tNodes.getSelectionCount() > 0) {

@@ -88,9 +88,8 @@ public class SOSMsgJOE extends SOSMsg {
 	public Button Control(final Button pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-		// Es gibt Buttons ohne Text. Die sollen keine Vorbelegung haben.
-
-		//pobjC.setText(label());
+		
+		pobjC.setText(label());
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
