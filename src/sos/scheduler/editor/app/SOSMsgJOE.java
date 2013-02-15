@@ -79,7 +79,7 @@ public class SOSMsgJOE extends SOSMsg {
 	public Group Control(final Group pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-		pobjC.setText(label());
+		pobjC.setText(caption());
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
@@ -89,7 +89,7 @@ public class SOSMsgJOE extends SOSMsg {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		
-		pobjC.setText(label());
+		pobjC.setText(caption());
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
@@ -98,7 +98,7 @@ public class SOSMsgJOE extends SOSMsg {
 	public Combo Control(final Combo pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-		//pobjC.setText(label());
+		pobjC.setText(caption());
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
@@ -123,7 +123,7 @@ public class SOSMsgJOE extends SOSMsg {
 	public TableColumn Control(final TableColumn pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-		pobjC.setText(label());
+		pobjC.setText(caption());
 		pobjC.setToolTipText(tooltip());
 		return pobjC;
 	} // public TableColumn Control
@@ -139,7 +139,7 @@ public class SOSMsgJOE extends SOSMsg {
 	public FileDialog Control(final FileDialog pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-		pobjC.setText(label());
+		pobjC.setText(caption());
 		return pobjC;
 	} // public FileDialog Control
 
@@ -154,7 +154,7 @@ public class SOSMsgJOE extends SOSMsg {
 	public MessageBox Control(final MessageBox pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-		pobjC.setMessage(this.label());
+		pobjC.setMessage(this.caption());
 		return pobjC;
 	} // public MessageBox Control
 	
@@ -177,7 +177,7 @@ public class SOSMsgJOE extends SOSMsg {
 	public Browser Control(final Browser pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-		pobjC.setText(label());
+		pobjC.setText(caption());
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		return pobjC;
@@ -186,7 +186,7 @@ public class SOSMsgJOE extends SOSMsg {
 	public TreeColumn Control(final TreeColumn pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-		pobjC.setText(label());
+		pobjC.setText(caption());
 		pobjC.setToolTipText(tooltip());
 		return pobjC;
 	} // public TreeColumn Control
@@ -194,7 +194,7 @@ public class SOSMsgJOE extends SOSMsg {
 	public TabItem Control(final TabItem pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-		pobjC.setText(label());
+		pobjC.setText(caption());
 		pobjC.setToolTipText(this.tooltip());
 		return pobjC;
 	} // public TabItem Control
@@ -202,7 +202,7 @@ public class SOSMsgJOE extends SOSMsg {
 	public CTabItem Control(final CTabItem pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-		pobjC.setText(label());
+		pobjC.setText(caption());
 		pobjC.setToolTipText(this.tooltip());
 		return pobjC;
 	} // public CTabItem Control
