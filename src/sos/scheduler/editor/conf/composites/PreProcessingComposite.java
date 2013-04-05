@@ -52,28 +52,28 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
 	private void createGroup(final Group parent) {
 
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 13;
+		gridLayout.numColumns = 4;
 		gMain = JOE_G_PreProcessingComposite_Script.Control(new Group(this, SWT.NONE));
 		gMain.setLayout(gridLayout);
 
 		final Composite scriptcom = JOE_Cmp_PreProcessingComposite_NameOrdering.Control(new Composite(gMain, SWT.NONE));
-		scriptcom.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 13, 1));
+		scriptcom.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1));
 		final GridLayout gridLayout_1 = new GridLayout();
 		gridLayout_1.verticalSpacing = 0;
-		gridLayout_1.marginWidth = 0;
+		gridLayout_1.marginWidth = 10;
 		gridLayout_1.marginHeight = 0;
-		gridLayout_1.horizontalSpacing = 0;
-		gridLayout_1.numColumns = 13;
+		gridLayout_1.horizontalSpacing = 10;
+		gridLayout_1.numColumns = 4;
 		scriptcom.setLayout(gridLayout_1);
 
 		final Label nameLabel = JOE_L_Name.Control(new Label(scriptcom, SWT.NONE));
-		GridData gd_nameLabel = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_nameLabel.widthHint = 60;
+		GridData gd_nameLabel = new GridData(SWT.LEFT, SWT.CENTER, false, false);
+		gd_nameLabel.widthHint = 85;
 		nameLabel.setLayoutData(gd_nameLabel);
 
 		txtName = JOE_T_PreProcessingComposite_PreProcessingName.Control(new Text(scriptcom, SWT.BORDER));
 		GridData gd_txtName = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		gd_txtName.widthHint = 135;
+		gd_txtName.widthHint = 160;
 		txtName.setText(objDataProvider.getMonitorName());
 		txtName.setLayoutData(gd_txtName);
 		txtName.addModifyListener(new ModifyListener() {
@@ -85,7 +85,10 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
 
 		@SuppressWarnings("unused")
 		final Label orderingLabel = JOE_L_PreProcessingComposite_Ordering.Control(new Label(scriptcom, SWT.NONE));
-
+		GridData gd_orderingLabel = new GridData(SWT.CENTER, SWT.CENTER, true, false);
+		gd_orderingLabel.widthHint = 60;
+		orderingLabel.setLayoutData(gd_orderingLabel);
+		
 		spinner = JOE_Sp_PreProcessingComposite_Ordering.Control(new Spinner(scriptcom, SWT.BORDER));
 		GridData gd_spinner = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_spinner.widthHint = 106;
@@ -101,10 +104,13 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
 
 		butFavorite = JOE_B_PreProcessingComposite_Favourites.Control(new Button(gMain, SWT.NONE));
 		butFavorite.setEnabled(true);
+		GridData gd_butFavorite = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
+		gd_butFavorite.widthHint = 100;
+		butFavorite.setLayoutData(gd_butFavorite);
 
 		cboFavorite = JOE_Cbo_PreProcessingComposite_Favourites.Control(new Combo(gMain, SWT.NONE));
 		GridData gd_cboFavorite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
-		gd_cboFavorite.widthHint = 153;
+		gd_cboFavorite.widthHint = 145;
 		cboFavorite.setLayoutData(gd_cboFavorite);
 	}
 
