@@ -939,6 +939,7 @@ public class JobListener extends JOEListener {
 
 	public void setOrdering(String ordering) {
 		Utils.setAttribute("ordering", ordering, "0", _job);
+		_dom.setChanged(true);
 		setChangedForDirectory();
 	}
 
