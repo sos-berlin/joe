@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import sos.scheduler.editor.classes.SOSSplashScreen;
+import sos.util.SOSClassUtil;
 
 import com.sos.JSHelper.Logging.Log4JHelper;
 import com.sos.i18n.annotation.I18NResourceBundle;
@@ -24,7 +25,7 @@ public class Editor {
 	public static MainWindow	objMainWindow			= null;
 
 	public final static int		CONFIG					= 1;
-	public final static int		BASE					= 2;
+	public final static int		BASEFILE					= 2;
 	public final static int		SECURITY				= 3;
 	public final static int		CLUSTER					= 4;
 	public final static int		PROCESS_CLASSES			= 5;
@@ -138,7 +139,7 @@ public class Editor {
 			try {
 				logger.fatal("sudden death", e);
 				e.printStackTrace();
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "cause: " + e.toString(), e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + "cause: " + e.toString(), e);
 			}
 			catch (Exception ee) {
 			}
@@ -177,7 +178,9 @@ public class Editor {
 				MainWindow.getSShell().redraw();
 			}
 		}
-		display.dispose();
+		if (display.isDisposed() == false) {
+			display.dispose();
+		}
 	}
 
 }
