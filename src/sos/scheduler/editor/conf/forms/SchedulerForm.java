@@ -17,7 +17,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
@@ -41,13 +40,15 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
+import com.swtdesigner.SWTResourceManager;
+
 public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdate, IEditor {
 	@SuppressWarnings("unused")
-	private final String		conClsName		= "SchedulerForm";
+	private final String conClassName = this.getClass().getSimpleName();
+	@SuppressWarnings("unused")
+	private final Logger logger = Logger.getLogger(this.getClass());
 	@SuppressWarnings("unused")
 	private final String		conSVNVersion	= "$Id$";
-	@SuppressWarnings("unused")
-	private static final Logger	logger			= Logger.getLogger(SchedulerForm.class);
 	private SchedulerDom		dom				= null;
 	private SchedulerListener	listener		= null;
 	private IContainer			container		= null;
@@ -197,7 +198,6 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	private void createCMainForm() {
 		cMainForm = new Composite(sashForm, SWT.NONE);
 		cMainForm.setLayout(new FillLayout());
-		//		cMainForm.setLayout(new GridLayout());
 	}
 
 	public Shell getSShell() {
@@ -474,7 +474,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 			if (fontChange){
 				FontData fontDatas[] = tree.getFont().getFontData();
 				FontData fdata = fontDatas[0];
-				Font font = new Font(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.NORMAL);
+				Font font = new Fo nt(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.NORMAL);
 				tree.setFont(font);
 				for(int i = 0; i < tree.getItemCount(); i++) {
 					TreeItem item = tree.getItem(i);
@@ -492,7 +492,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	private void setChangedFont(TreeItem item ) {
 		FontData fontDatas[] = tree.getFont().getFontData();
 		FontData fdata = fontDatas[0];
-		Font font = new Font(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.NORMAL);
+		Font font = new Fo nt(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.NORMAL);
 
 		item.setFont(font);
 		for(int j = 0; j < item.getItemCount(); j++) {
@@ -511,7 +511,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 			TreeData data = (TreeData) item.getData();
 			FontData fontDatas[] = item.getFont().getFontData();
 			FontData fdata = fontDatas[0];
-			Font font = new Font(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.ITALIC);
+			Font font = new F ont(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.ITALIC);
 			item.setFont(font);
 			while(item.getParentItem() != null) {
 				item = item.getParentItem();
@@ -712,6 +712,9 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		}
 	}
 
+	private static Font	fontBold	= null;
+	private static Font	fontRegular	= null;
+
 	@Override
 	public void updateFont(final TreeItem item) {
 		FontData fontDatas[] = item.getFont().getFontData();
@@ -767,24 +770,16 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 									if (type == Editor.RUNTIME) {
 										elem = elem.getChild("run_time");
 										if (elem != null) {
-											/*int hasAttribute = Utils.getAttributeValue("begin", elem).length() + Utils.getAttributeValue("end", elem).length() +
-											(Utils.getAttributeValue("let_run", elem).equals("yes") ? 1 : 0) +
-											(Utils.getAttributeValue("once", elem).equals("yes") ? 1 : 0);
-
-											if(hasAttribute > 0)
-											*/
 											if (elem.getAttributes().size() > 0)
 												isBold = true;
 										}
 									}
-		Font font = null;
+		int intStyle = SWT.NONE;
 		if (isBold) {
-			font = new Font(Display.getCurrent(), data.getName(), data.getHeight(), SWT.BOLD);
+			intStyle = SWT.BOLD;
+			Font f = SWTResourceManager.getFont(data.getName(), data.getHeight(), intStyle);
+			item.setFont(f);
 		}
-		else {
-			font = new Font(Display.getCurrent(), data.getName(), data.getHeight(), SWT.NONE);
-		}
-		item.setFont(font);
 	}
 
 	public SchedulerListener getListener() {
@@ -812,7 +807,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 			/*TreeData data = (TreeData) item.getData();
 			FontData fontDatas[] = item.getFont().getFontData();
 			FontData fdata = fontDatas[0];
-			Font font = new Font(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.ITALIC);
+			Font font = new Fo nt(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.ITALIC);
 			item.setFont(font);
 			*/
 			if (!dom.isDirectory())
@@ -826,7 +821,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 			else
 				key1 = elem.getName() + "_" + Utils.getAttributeValue("name", elem);
 			*/
-			if (!dom.getChangedJob().containsKey(key1))
+			if (!dom.getListOfChangedObjects().containsKey(key1))
 				return;
 			if (item.getText().endsWith(SchedulerListener.LOCKS) || item.getText().endsWith(SchedulerListener.PROCESS_CLASSES)) {
 				if (!item.getText().startsWith("*")) {
@@ -834,7 +829,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 				}
 				return;
 			}
-			if (dom.getChangedJob().get(key1).equals(SchedulerDom.NEW) && !key1.startsWith("process_class")) {
+			if (dom.getListOfChangedObjects().get(key1).equals(SchedulerDom.NEW) && !key1.startsWith("process_class")) {
 				int i = item.getItemCount() - 1;
 				if (i < 0)
 					i = 0;
