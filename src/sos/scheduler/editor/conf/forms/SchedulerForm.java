@@ -712,6 +712,9 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		}
 	}
 
+	private static Font	fontBold	= null;
+	private static Font	fontRegular	= null;
+
 	@Override
 	public void updateFont(final TreeItem item) {
 		FontData fontDatas[] = item.getFont().getFontData();
@@ -777,14 +780,12 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 												isBold = true;
 										}
 									}
-		Font font = null;
+		int intStyle = SWT.NONE;
 		if (isBold) {
-			font = new Font(Display.getCurrent(), data.getName(), data.getHeight(), SWT.BOLD);
+			intStyle = SWT.BOLD;
+			Font f = SWTResourceManager.getFont(data.getName(), data.getHeight(), intStyle);
+			item.setFont(f);
 		}
-		else {
-			font = new Font(Display.getCurrent(), data.getName(), data.getHeight(), SWT.NONE);
-		}
-		item.setFont(font);
 	}
 
 	public SchedulerListener getListener() {
