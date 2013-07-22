@@ -16,10 +16,10 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
 /**
-* \class FormBaseClass 
-* 
-* \brief FormBaseClass - 
-* 
+* \class FormBaseClass
+*
+* \brief FormBaseClass -
+*
 * \details
 *
 *
@@ -47,44 +47,71 @@ import sos.scheduler.editor.conf.listeners.JOEListener;
 public class FormBaseClass {
 
 	@SuppressWarnings("unused")
-	private final String		conClassName	= "FormBaseClass";
-	@SuppressWarnings("unused") private static final String	conSVNVersion	= "$Id$";
-	private static final Logger	logger			= Logger.getLogger(FormBaseClass.class);
+	private final String		conClassName		= "FormBaseClass";
+	@SuppressWarnings("unused")
+	private static final String	conSVNVersion		= "$Id$";
+	private static final Logger	logger				= Logger.getLogger(FormBaseClass.class);
 
 	protected JOEListener		objJobDataProvider	= null;
-	protected Composite			objParent		= null;
-	protected Shell				shell			= null;
-	protected Cursor			objLastCursor	= null;
-	protected FormBaseClass		objParentForm	= this;
+	protected Composite			objParent			= null;
+	protected Shell				shell				= null;
+	protected Cursor			objLastCursor		= null;
+	protected FormBaseClass		objParentForm		= this;
 
-	protected final int						intComboBoxStyle	= SWT.NONE;
+//	protected CSSEngine			engine				= null;
 
-	protected FormBaseClass(Composite parent, int style) {
-        shell = parent.getShell();
+	protected final int			intComboBoxStyle	= SWT.NONE;
+
+	public FormBaseClass(final Composite parent, final int style) {
+		//		super(parent, style);
+		shell = parent.getShell();
+		//		Display dis = shell.getDisplay();
+		//		engine = new CSSSWTEngineImpl(dis);
+		//		try {
+		//			engine.parseStyleSheet(new StringReader("Label { color: blue }"));
+		//		}
+		//		catch (IOException e1) {
+		//			// TODO Auto-generated catch block
+		//			e1.printStackTrace();
+		//		}
+		//		engine.setErrorHandler(new CSSErrorHandler() {
+		//		  @Override
+		//		public void error(final Exception e) {
+		//		    e.printStackTrace();
+		//		  }
+		//		});
 	}
 
-	public FormBaseClass(Composite pParentComposite, JOEListener pobjDataProvider) {
-        super();
+//	public CSSEngine CSSEngine() {
+//		return engine;
+//	}
+//
+//	public void applyStyle() {
+//		if (engine != null) {
+//			engine.applyStyles(shell, /* applyStylesToChildNodes */true);
+//		}
+//	}
+
+	public FormBaseClass(final Composite pParentComposite, final JOEListener pobjDataProvider) {
+		//		super(pParentComposite, SWT.NONE);
 		objParent = pParentComposite;
 		shell = pParentComposite.getShell();
 		objJobDataProvider = pobjDataProvider;
 		GridLayout grdL = new GridLayout();
-		pParentComposite.setLayout(new GridLayout( ));
+		pParentComposite.setLayout(grdL);
 		setResizableV(pParentComposite);
-		// createGroup();
-		// objParent.setSize(new org.eclipse.swt.graphics.Point(723, 566));
 	}
 
-	protected void setResizableV(Control objControl) {
+	protected void setResizableV(final Control objControl) {
 		boolean flgGrapVerticalspace = true;
 		objControl.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, flgGrapVerticalspace));
 	}
 
 	protected void setStatusLine(final String pstrText) {
-		// Editor.objMainWindow.setStatusLine(pstrText);
 		final int delay = 2000;
 		final Display display = shell.getDisplay();
 		display.asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				Editor.objMainWindow.setStatusLine(pstrText);
 				try {
@@ -121,20 +148,18 @@ public class FormBaseClass {
 		return MainWindow.getContainer();
 	}
 
-
 	protected void MsgWarning(final String pstrMsgText) {
 		MainWindow.message(pstrMsgText, SWT.ICON_WARNING);
 		this.setStatusLine(pstrMsgText);
 	}
 
-	protected void Enable(Control objC, boolean flgStatus) {
+	protected void Enable(final Control objC, final boolean flgStatus) {
 		if (objC != null) {
 			objC.setEnabled(flgStatus);
 		}
 	}
 
-    protected Shell getShell() {
-        return shell;
-    }
-
+	public Shell getShell() {
+		return shell;
+	}
 }

@@ -73,7 +73,8 @@ public class FileNameSelector extends Text {
 	private Listener getSaveAsListener() {
 
 		return new Listener() {
-			public void handleEvent(Event e) {
+			@Override
+			public void handleEvent(final Event e) {
 
 			}
 		};
@@ -94,19 +95,17 @@ public class FileNameSelector extends Text {
 	}
 
 	private MouseListener getMouseListener() {
-		return (new MouseListener() {
+		return new MouseListener() {
 			@Override
-			public void mouseUp(MouseEvent arg0) {
-				// TODO Auto-generated method stub
+			public void mouseUp(final MouseEvent arg0) {
 			}
 
 			@Override
-			public void mouseDown(MouseEvent arg0) {
-				// TODO Auto-generated method stub
+			public void mouseDown(final MouseEvent arg0) {
 			}
 
 			@Override
-			public void mouseDoubleClick(MouseEvent arg0) {
+			public void mouseDoubleClick(final MouseEvent arg0) {
 				String strT = "";
 				strFileName = strT;
 				if (flgIsFileFromLiveFolder) {
@@ -139,7 +138,7 @@ public class FileNameSelector extends Text {
 					}
 				}
 			}
-		});
+		};
 
 	}
 
@@ -163,7 +162,7 @@ public class FileNameSelector extends Text {
 
 	}
 
-	public FileNameSelector(Composite pobjComposite, int arg1) {
+	public FileNameSelector(final Composite pobjComposite, final int arg1) {
 		super(pobjComposite, arg1);
 
 		addFocusListener(getFocusAdapter());
@@ -171,6 +170,7 @@ public class FileNameSelector extends Text {
 		addMouseListener(getMouseListener());
 	}
 
+	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
 	}
