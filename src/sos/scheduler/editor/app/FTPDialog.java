@@ -1,5 +1,9 @@
 package sos.scheduler.editor.app;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -18,23 +22,19 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.util.SOSString;
-import com.swtdesigner.SWTResourceManager;
-import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.forms.SchedulerForm;
-import java.io.File;
-import java.util.HashMap;
-import java.util.ArrayList;
-
-import sos.ftp.profiles.FTPProfilePicker;
 import sos.ftp.profiles.FTPDialogListener;
 import sos.ftp.profiles.FTPProfile;
+import sos.ftp.profiles.FTPProfilePicker;
+import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.forms.SchedulerForm;
+import sos.util.SOSClassUtil;
+import sos.util.SOSString;
+
+import com.swtdesigner.SWTResourceManager;
 
 public class FTPDialog {
 
@@ -50,7 +50,7 @@ public class FTPDialog {
 
     private Text txtDir = null;
 
-    private SOSString sosString = new SOSString();
+    private final SOSString sosString = new SOSString();
 
     private Text txtFilename = null;
 
@@ -86,7 +86,7 @@ public class FTPDialog {
 
     private TableColumn newColumnTableColumn_2 = null;
 
-    public FTPDialog(MainWindow main_) {
+    public FTPDialog(final MainWindow main_) {
         // main = main_;
     }
 
@@ -94,14 +94,15 @@ public class FTPDialog {
      * @wbp.parser.entryPoint
      */
 
-    public void showForm(String type_) {
+    public void showForm(final String type_) {
         try {
             type = type_;
             schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
             schedulerConfigurationShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 
             schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
-                public void keyTraversed(final TraverseEvent e) {
+                @Override
+				public void keyTraversed(final TraverseEvent e) {
                     if (e.detail == SWT.TRAVERSE_ESCAPE) {
                         try {
                             listener.getCurrProfile().disconnect();
@@ -109,10 +110,9 @@ public class FTPDialog {
                         }
                         catch (Exception r) {
                             try {
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                                new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
                             }
                             catch (Exception ee) {
-                                // tu nichts
                             }
                         }
                     }
@@ -158,8 +158,9 @@ public class FTPDialog {
                 }
 
                 // Hier: wenn ein neuer Profile im Combobox ausgewählt wird
-                ftpProfilePicker.addSelectionListener((new SelectionAdapter() {
-                    public void widgetSelected(final SelectionEvent e) {
+                ftpProfilePicker.addSelectionListener(new SelectionAdapter() {
+                    @Override
+					public void widgetSelected(final SelectionEvent e) {
                         try {
 
                             txtDir.setText("");
@@ -173,7 +174,7 @@ public class FTPDialog {
                         catch (Exception r) {
                             MainWindow.message("error while choice Profilename: " + e.toString(), SWT.ICON_WARNING);
                             try {
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                                new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
                             }
                             catch (Exception ee) {
                                 // tu nichts
@@ -181,12 +182,13 @@ public class FTPDialog {
                         }
                     }
 
-                }));
+                });
 
                 butSite = new Button(schedulerGroup, SWT.NONE);
                 butSite.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
                 butSite.addSelectionListener(new SelectionAdapter() {
-                    public void widgetSelected(final SelectionEvent e) {
+                    @Override
+					public void widgetSelected(final SelectionEvent e) {
 
                         Utils.startCursor(schedulerConfigurationShell);
                         try {
@@ -215,7 +217,7 @@ public class FTPDialog {
                             try {
 
                                 MainWindow.message("error while connecting: " + ex.toString(), SWT.ICON_WARNING);
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
+                                new ErrorLog("error in " + SOSClassUtil.getMethodName(), ex);
                             }
                             catch (Exception ee) {
                                 // tu nichts
@@ -241,7 +243,8 @@ public class FTPDialog {
 
                 txtDir = new Text(schedulerGroup, SWT.BORDER);
                 txtDir.addKeyListener(new KeyAdapter() {
-                    public void keyPressed(final KeyEvent e) {
+                    @Override
+					public void keyPressed(final KeyEvent e) {
                         try {
                             if (e.keyCode == SWT.CR) {
                                 FTPProfile profile = listener.getCurrProfile();
@@ -252,7 +255,7 @@ public class FTPDialog {
                         catch (Exception r) {
                             MainWindow.message("error while change Directory: " + e.toString(), SWT.ICON_WARNING);
                             try {
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                                new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
                             }
                             catch (Exception ee) {
                                 // tu nichts
@@ -264,7 +267,8 @@ public class FTPDialog {
 
                 butChangeDir = new Button(schedulerGroup, SWT.NONE);
                 butChangeDir.addSelectionListener(new SelectionAdapter() {
-                    public void widgetSelected(final SelectionEvent e) {
+                    @Override
+					public void widgetSelected(final SelectionEvent e) {
                         try {
                             Utils.startCursor(schedulerConfigurationShell);
 
@@ -277,7 +281,7 @@ public class FTPDialog {
                         catch (Exception r) {
                             MainWindow.message("error: " + e.toString(), SWT.ICON_WARNING);
                             try {
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                                new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
                             }
                             catch (Exception ee) {
                                 // tu nichts
@@ -291,7 +295,8 @@ public class FTPDialog {
                 table = new Table(schedulerGroup, SWT.FULL_SELECTION | SWT.BORDER);
                 table.setSortDirection(SWT.DOWN);
                 table.addSelectionListener(new SelectionAdapter() {
-                    public void widgetSelected(final SelectionEvent e) {
+                    @Override
+					public void widgetSelected(final SelectionEvent e) {
                         try {
                             if (table.getSelectionCount() > 0) {
                                 TableItem item = table.getSelection()[0];
@@ -312,7 +317,8 @@ public class FTPDialog {
                 });
 
                 table.addMouseListener(new MouseAdapter() {
-                    public void mouseDoubleClick(final MouseEvent e) {
+                    @Override
+					public void mouseDoubleClick(final MouseEvent e) {
                         try {
                             if (table.getSelectionCount() > 0) {
                                 TableItem item = table.getSelection()[0];
@@ -339,7 +345,7 @@ public class FTPDialog {
                         }
                         catch (Exception r) {
                             try {
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                                new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
                             }
                             catch (Exception ee) {
                                 // tu nichts
@@ -352,7 +358,8 @@ public class FTPDialog {
 
                 newColumnTableColumn_2 = new TableColumn(table, SWT.NONE);
                 newColumnTableColumn_2.addSelectionListener(new SelectionAdapter() {
-                    public void widgetSelected(final SelectionEvent e) {
+                    @Override
+					public void widgetSelected(final SelectionEvent e) {
                         sort(newColumnTableColumn_2);
                     }
                 });
@@ -363,7 +370,8 @@ public class FTPDialog {
 
                 final TableColumn newColumnTableColumn = new TableColumn(table, SWT.NONE);
                 newColumnTableColumn.addSelectionListener(new SelectionAdapter() {
-                    public void widgetSelected(final SelectionEvent e) {
+                    @Override
+					public void widgetSelected(final SelectionEvent e) {
 
                         sort(newColumnTableColumn);
 
@@ -374,7 +382,8 @@ public class FTPDialog {
 
                 newColumnTableColumn_1 = new TableColumn(table, SWT.NONE);
                 newColumnTableColumn_1.addSelectionListener(new SelectionAdapter() {
-                    public void widgetSelected(final SelectionEvent e) {
+                    @Override
+					public void widgetSelected(final SelectionEvent e) {
                         sort(newColumnTableColumn_1);
                     }
                 });
@@ -383,7 +392,8 @@ public class FTPDialog {
 
                 butRefresh = new Button(schedulerGroup, SWT.NONE);
                 butRefresh.addSelectionListener(new SelectionAdapter() {
-                    public void widgetSelected(final SelectionEvent e) {
+                    @Override
+					public void widgetSelected(final SelectionEvent e) {
 
                         refresh();
                     }
@@ -393,7 +403,8 @@ public class FTPDialog {
 
                 butNewFolder = new Button(schedulerGroup, SWT.NONE);
                 butNewFolder.addSelectionListener(new SelectionAdapter() {
-                    public void widgetSelected(final SelectionEvent e) {
+                    @Override
+					public void widgetSelected(final SelectionEvent e) {
                         openDialog();
                     }
                 });
@@ -402,7 +413,8 @@ public class FTPDialog {
 
                 butRemove = new Button(schedulerGroup, SWT.NONE);
                 butRemove.addSelectionListener(new SelectionAdapter() {
-                    public void widgetSelected(final SelectionEvent e) {
+                    @Override
+					public void widgetSelected(final SelectionEvent e) {
                         if (txtFilename.getText() != null) {
                             Utils.startCursor(schedulerConfigurationShell);
                             try {
@@ -413,7 +425,7 @@ public class FTPDialog {
                             }
                             catch (Exception r) {
                                 try {
-                                    new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                                    new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
                                 }
                                 catch (Exception ee) {
                                     // tu nichts
@@ -436,7 +448,8 @@ public class FTPDialog {
 
                 txtFilename = new Text(schedulerGroup, SWT.BORDER);
                 txtFilename.addModifyListener(new ModifyListener() {
-                    public void modifyText(final ModifyEvent e) {
+                    @Override
+					public void modifyText(final ModifyEvent e) {
                         if (listener == null)
                             listener = ftpProfilePicker.getListener();
                         butOpenOrSave.setEnabled(listener.getCurrProfile().isLoggedIn() && txtFilename.getText().length() > 0);
@@ -450,7 +463,8 @@ public class FTPDialog {
                     butOpenOrSave.setEnabled(false);
                     butOpenOrSave.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
                     butOpenOrSave.addSelectionListener(new SelectionAdapter() {
-                        public void widgetSelected(final SelectionEvent e) {
+                        @Override
+						public void widgetSelected(final SelectionEvent e) {
                             openOrSave();
                         }
                     });
@@ -462,14 +476,15 @@ public class FTPDialog {
 
                 butClose = new Button(schedulerGroup, SWT.NONE);
                 butClose.addSelectionListener(new SelectionAdapter() {
-                    public void widgetSelected(final SelectionEvent e) {
+                    @Override
+					public void widgetSelected(final SelectionEvent e) {
                         try {
                             listener.getCurrProfile().disconnect();
                             schedulerConfigurationShell.dispose();
                         }
                         catch (Exception r) {
                             try {
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                                new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
                             }
                             catch (Exception ee) {
                                 // tu nichts
@@ -489,7 +504,8 @@ public class FTPDialog {
 
             final Button butLog = new Button(schedulerConfigurationShell, SWT.NONE);
             butLog.addSelectionListener(new SelectionAdapter() {
-                public void widgetSelected(final SelectionEvent e) {
+                @Override
+				public void widgetSelected(final SelectionEvent e) {
 
                     String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), schedulerConfigurationShell, false, null, false, null, false);
 
@@ -518,7 +534,7 @@ public class FTPDialog {
         }
         catch (Exception e) {
             try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+                new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
             }
             catch (Exception ee) {
                 // tu nichts
@@ -543,7 +559,7 @@ public class FTPDialog {
         }
         catch (Exception e) {
             try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+                new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
             }
             catch (Exception ee) {
                 // tu nichts
@@ -552,7 +568,7 @@ public class FTPDialog {
         }
     }
 
-    private void fillTable(HashMap h) {
+    private void fillTable(final HashMap h) {
         try {
             table.removeAll();
             java.util.Iterator it = h.keySet().iterator();
@@ -598,7 +614,7 @@ public class FTPDialog {
         catch (Exception e) {
 
             try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+                new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
             }
             catch (Exception ee) {
                 // tu nichts
@@ -651,7 +667,7 @@ public class FTPDialog {
                 currdom.setFilename(new java.io.File(newFilename).getCanonicalPath());
 
                 sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
-                SchedulerForm sf = (SchedulerForm) (con.getCurrentEditor());
+                SchedulerForm sf = (SchedulerForm) con.getCurrentEditor();
                 sf.updateTree("jobs");
                 String name = currdom.getRoot().getName();
                 name = name.substring(0, 1).toUpperCase() + name.substring(1);
@@ -688,7 +704,7 @@ public class FTPDialog {
         }
         catch (Exception e) {
             try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not save File", e);
+                new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; could not save File", e);
             }
             catch (Exception ee) {
                 // tu nichts
@@ -701,7 +717,7 @@ public class FTPDialog {
             }
             catch (Exception r) {
                 try {
-                    new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                    new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
                 }
                 catch (Exception ee) {
                     // tu nichts
@@ -731,17 +747,17 @@ public class FTPDialog {
             String targetfile = sosString.parseToString(listener.getCurrProfile().getLocaldirectory());
             targetfile = targetfile.replaceAll("\\\\", "/");
             targetfile = new File(targetfile, strSubFolderRoot + tempSubHotFolder).getCanonicalPath();
-            targetfile = (targetfile.endsWith("/") || targetfile.endsWith("\\") ? targetfile : targetfile + "/");
+            targetfile = targetfile.endsWith("/") || targetfile.endsWith("\\") ? targetfile : targetfile + "/";
 
             File f = new File(targetfile);
             ArrayList l = new ArrayList();
             if (f.exists() && f.list().length > 0) {
                 String[] list = f.list();
-                for (int i = 0; i < list.length; i++) {
-                    if (list[i] != null
-                            && (list[i].endsWith(".job.xml") || list[i].endsWith(".job_chain.xml") || list[i].endsWith(".order.xml") || list[i].endsWith(".lock.xml") || list[i].endsWith(".process_class.xml")
-                                    || list[i].endsWith(".config.xml") || list[i].endsWith(".schedule.xml"))) {
-                        l.add(list[i]);
+                for (String element : list) {
+                    if (element != null
+                            && (element.endsWith(".job.xml") || element.endsWith(".job_chain.xml") || element.endsWith(".order.xml") || element.endsWith(".lock.xml") || element.endsWith(".process_class.xml")
+                                    || element.endsWith(".config.xml") || element.endsWith(".schedule.xml"))) {
+                        l.add(element);
 
                     }
                 }
@@ -801,7 +817,7 @@ public class FTPDialog {
         }
         catch (Exception e) {
             try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not Open Hot Folder.", e);
+                new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; could not Open Hot Folder.", e);
             }
             catch (Exception ee) {
             }
@@ -811,8 +827,8 @@ public class FTPDialog {
 
     /**
      * Öffnet das ausgewählte Datei.
-     * 
-     * 
+     *
+     *
      * Wenn eine
      */
     public void openFile() {
@@ -857,7 +873,7 @@ public class FTPDialog {
         catch (Exception r) {
             try {
                 MainWindow.message("could not open File: " + file + ", cause: " + r.toString(), SWT.ICON_WARNING);
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
             }
             catch (Exception ee) {
                 // tu nichts
@@ -879,7 +895,7 @@ public class FTPDialog {
         catch (Exception r) {
             try {
                 MainWindow.message("could not refersh Table, cause: " + r.toString(), SWT.ICON_WARNING);
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
+                new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
             }
             catch (Exception ee) {
                 // tu nichts
@@ -896,7 +912,7 @@ public class FTPDialog {
         dialog.open(this);
     }
 
-    private void _setEnabled(boolean enabled) {
+    private void _setEnabled(final boolean enabled) {
         txtDir.setEnabled(enabled);
         butChangeDir.setEnabled(enabled);
         butRefresh.setEnabled(enabled);
@@ -904,7 +920,7 @@ public class FTPDialog {
         butRemove.setEnabled(enabled);
     }
 
-    private void sort(TableColumn col) {
+    private void sort(final TableColumn col) {
         try {
 
             if (table.getSortDirection() == SWT.DOWN)
@@ -1017,7 +1033,7 @@ public class FTPDialog {
         }
         catch (Exception e) {
             try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+                new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
             }
             catch (Exception ee) {
                 // tu nichts
@@ -1028,39 +1044,39 @@ public class FTPDialog {
 
     /*
      * private void sort(TableColumn col) { try {
-     * 
+     *
      * if(table.getSortDirection() == SWT.DOWN) table.setSortDirection(SWT.UP);
      * else table.setSortDirection(SWT.DOWN);
-     * 
+     *
      * table.setSortColumn(col);
-     * 
+     *
      * ArrayList listOfSortData = new ArrayList();
-     * 
+     *
      * for(int i = 0; i < table.getItemCount(); i++) { TableItem item =
      * table.getItem(i); if(!item.getData("type").equals("dir_up")) { HashMap
      * hash = new HashMap(); for(int j = 0; j < table.getColumnCount(); j++) {
      * hash.put(table.getColumn(j).getText(), item.getText(j)); }
-     * 
+     *
      * hash.put("type", item.getData("type"));
-     * 
+     *
      * listOfSortData.add(hash); } }
-     * 
+     *
      * listOfSortData = sos.util.SOSSort.sortArrayList(listOfSortData,
      * col.getText());
-     * 
+     *
      * table.removeAll();
-     * 
+     *
      * TableItem item_ = new TableItem(table, SWT.NONE);
      * item_.setData("type","dir_up");
      * item_.setImage(ResourceManager.getImageFromResource
      * ("/sos/scheduler/editor/icon_directory_up.gif"));
-     * 
-     * 
+     *
+     *
      * TableItem item = null;
-     * 
+     *
      * if(table.getSortDirection() == SWT.DOWN) { for(int i = 0; i <
      * listOfSortData.size(); i++) {
-     * 
+     *
      * item = new TableItem(table, SWT.NONE); HashMap hash =
      * (HashMap)listOfSortData.get(i); item.setData("type", hash.get("type"));
      * if(hash.get("type").equals("file"))
@@ -1072,16 +1088,16 @@ public class FTPDialog {
      * if(hash.get("type").equals("dir_up"))
      * item.setImage(ResourceManager.getImageFromResource
      * ("/sos/scheduler/editor/icon_directory_up.gif"));
-     * 
+     *
      * for(int j = 0; j < table.getColumnCount(); j++) { item.setText(j,
      * sosString.parseToString(hash.get(table.getColumn(j).getText()))); }
-     * 
+     *
      * }
-     * 
+     *
      * } else {
-     * 
+     *
      * for(int i = listOfSortData.size() - 1; i >= 0; i--) {
-     * 
+     *
      * item = new TableItem(table, SWT.NONE); HashMap hash =
      * (HashMap)listOfSortData.get(i); item.setData("type", hash.get("type"));
      * if(hash.get("type").equals("file"))
@@ -1093,19 +1109,19 @@ public class FTPDialog {
      * if(hash.get("type").equals("dir_up"))
      * item.setImage(ResourceManager.getImageFromResource
      * ("/sos/scheduler/editor/icon_directory_up.gif"));
-     * 
+     *
      * for(int j = 0; j < table.getColumnCount(); j++) { item.setText(j,
      * sosString.parseToString(hash.get(table.getColumn(j).getText()))); }
-     * 
+     *
      * }
-     * 
-     * 
+     *
+     *
      * }
-     * 
+     *
      * } catch(Exception e) { try { new ErrorLog("error in " +
-     * sos.util.SOSClassUtil.getMethodName(), e); } catch(Exception ee) { //tu
+     * SOSClassUtil.getMethodName(), e); } catch(Exception ee) { //tu
      * nichts }
-     * 
+     *
      * } }
      */
     public void setToolTipText() {
@@ -1134,7 +1150,7 @@ public class FTPDialog {
         butClose.setToolTipText(Messages.getTooltip("ftpdialog.close"));
     }
 
-    private boolean isLifeElement(String filename) {
+    private boolean isLifeElement(final String filename) {
 
         if (filename.endsWith(".job.xml") || filename.endsWith(".schedule.xml") || filename.endsWith(".job_chain.xml") || filename.endsWith(".lock.xml") || filename.endsWith(".process_class.xml") || filename.endsWith(".order.xml")) {
             return true;

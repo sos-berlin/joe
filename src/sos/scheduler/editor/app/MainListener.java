@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.MenuItem;
 
 import sos.connection.SOSConnection;
 import sos.scheduler.editor.conf.listeners.JOEListener;
+import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
 public class MainListener extends JOEListener {
@@ -28,10 +29,10 @@ public class MainListener extends JOEListener {
 	private static final Logger logger = Logger.getLogger(MainListener.class);
 
 	private IContainer		_container		= null;
-	private SOSString		sosString		= new SOSString();
+	private final SOSString		sosString		= new SOSString();
 	private SOSConnection	sosConnection	= null;
 
-	public MainListener(MainWindow gui, IContainer container) {
+	public MainListener(final MainWindow gui, final IContainer container) {
 		// _gui = gui;
 		_container = container;
 	}
@@ -39,7 +40,7 @@ public class MainListener extends JOEListener {
 
 	public void showAbout() {
 		TextDialog objAboutDialogBox = new TextDialog(MainWindow.getSShell());
-		objAboutDialogBox.setText("About JOE - JobScheduler Object Editor"); 
+		objAboutDialogBox.setText("About JOE - JobScheduler Object Editor");
 //		objAboutDialogBox.setText(Messages.getString("JOE_I_0010"));
 		String message = sos.scheduler.editor.app.Messages.getString("MainListener.aboutText", Options.getVersion() + //
 				"\nSchema-Version:\n\t" + Options.getSchemaVersion() + "\n"
@@ -87,7 +88,7 @@ public class MainListener extends JOEListener {
 		return svnVersion;
 	}
 
-	public void setLanguages(Menu menu) {
+	public void setLanguages(final Menu menu) {
 		boolean found = false;
 		MenuItem defaultItem = null;
 		HashMap langs = Languages.getLanguages();
@@ -106,7 +107,8 @@ public class MainListener extends JOEListener {
 				defaultItem = item;
 			}
 			item.addSelectionListener(new SelectionListener() {
-				public void widgetSelected(SelectionEvent e) {
+				@Override
+				public void widgetSelected(final SelectionEvent e) {
 					MenuItem item = (MenuItem) e.widget;
 					if (item.getSelection()) {
 						String lang = (String) item.getData();
@@ -116,7 +118,8 @@ public class MainListener extends JOEListener {
 					}
 				}
 
-				public void widgetDefaultSelected(SelectionEvent e) {
+				@Override
+				public void widgetDefaultSelected(final SelectionEvent e) {
 				}
 			});
 		}
@@ -180,11 +183,10 @@ public class MainListener extends JOEListener {
 		}
 		catch (Exception e) {
 			try {
-				System.out.println("error while read job descrition " + sos.util.SOSClassUtil.getMethodName());
-				new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
+				System.out.println("error while read job descrition " + SOSClassUtil.getMethodName());
+				new ErrorLog("error while read job descrition " + SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
-				// tu nichts
 			}
 			return;
 		}
@@ -220,8 +222,8 @@ public class MainListener extends JOEListener {
 		}
 		catch (Exception e) {
 			try {
-				System.out.println("error while read holidays description " + sos.util.SOSClassUtil.getMethodName());
-				new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
+				System.out.println("error while read holidays description " + SOSClassUtil.getMethodName());
+				new ErrorLog("error while read job descrition " + SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -232,7 +234,7 @@ public class MainListener extends JOEListener {
 		}
 	}
 
-	public HashMap loadHolidaysDescription(String propertyName) {
+	public HashMap loadHolidaysDescription(final String propertyName) {
 		HashMap holidaysDescription = new HashMap();
 		String holidayDescriptionFile = Options.getProperty(propertyName);
 		String iniFile = Options.getProperty("ini_file");
@@ -277,8 +279,8 @@ public class MainListener extends JOEListener {
 		}
 		catch (Exception e) {
 			try {
-				System.out.println("error while read holidays description " + sos.util.SOSClassUtil.getMethodName());
-				new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
+				System.out.println("error while read holidays description " + SOSClassUtil.getMethodName());
+				new ErrorLog("error while read job descrition " + SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -290,7 +292,7 @@ public class MainListener extends JOEListener {
 	/**
 	 * DB Initialisierung
 	 */
-	private void getConnection(String iniFile) throws Exception {
+	private void getConnection(final String iniFile) throws Exception {
 		try {
 			if (sosConnection != null)
 				return;
@@ -300,8 +302,8 @@ public class MainListener extends JOEListener {
 		}
 		catch (Exception e) {
 			try {
-				System.out.println("error while read job descrition " + sos.util.SOSClassUtil.getMethodName());
-				new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
+				System.out.println("error while read job descrition " + SOSClassUtil.getMethodName());
+				new ErrorLog("error while read job descrition " + SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts

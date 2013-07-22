@@ -17,6 +17,7 @@ import org.jdom.transform.JDOMSource;
 
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.doc.DocumentationDom;
+import sos.util.SOSClassUtil;
 import sos.util.SOSFile;
 
 public class IOUtils {
@@ -206,10 +207,9 @@ public class IOUtils {
 						}
 						catch (IOException e) {
 							try {
-								new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+								new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 							}
 							catch (Exception ee) {
-								// tu nichts
 							}
 							MainWindow.message(Messages.getString("MainListener.errorReadingFile", new String[] { file.getAbsolutePath(), e.getMessage() }),
 									SWT.ICON_ERROR | SWT.OK);
@@ -237,7 +237,7 @@ public class IOUtils {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -336,7 +336,7 @@ public class IOUtils {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -391,7 +391,7 @@ public class IOUtils {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -413,7 +413,7 @@ public class IOUtils {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " could not save directory.", e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " could not save directory.", e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -463,7 +463,7 @@ public class IOUtils {
 			else
 				save = new MergeAllXMLinDirectory(configFile.getPath());
 			if (type == SchedulerDom.DIRECTORY) {
-				save.saveXMLDirectory(currDoc, ((SchedulerDom) dom).getChangedJob());
+				save.saveXMLDirectory(currDoc, ((SchedulerDom) dom).getListOfChangedObjects());
 			}
 			else {// sonst life element
 				org.jdom.Element elem = null;
@@ -483,7 +483,7 @@ public class IOUtils {
 					else {
 						elem = currDoc.getRootElement();
 					}
-				String name = save.saveLifeElement(nameOfElement, elem, ((SchedulerDom) dom).getChangedJob(),
+				String name = save.saveLifeElement(nameOfElement, elem, ((SchedulerDom) dom).getListOfChangedObjects(),
 						((SchedulerDom) dom).getListOfChangeElementNames());
 				Options.setLastDirectory(new File(name), dom);
 				try {
@@ -498,7 +498,7 @@ public class IOUtils {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " could not save directory.", e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " could not save directory.", e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -521,7 +521,7 @@ public class IOUtils {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " .Could not save file " + filename, e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " .Could not save file " + filename, e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -538,7 +538,7 @@ public class IOUtils {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " .Could not save file " + filename, e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " .Could not save file " + filename, e);
 			}
 			catch (Exception ee) {
 				// tu nichts

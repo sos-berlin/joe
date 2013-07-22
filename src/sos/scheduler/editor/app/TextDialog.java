@@ -104,7 +104,7 @@ public class TextDialog extends Dialog {
 			try {
 				new ErrorLog("error in TextDilalog.setContent()" , e);
 			} catch(Exception ee) {
-				//tu nichts
+				
 			}
 		}
 	}
@@ -165,7 +165,7 @@ public class TextDialog extends Dialog {
 			try {
 				new ErrorLog("error in TextDilalog.init()" , e);
 			} catch(Exception ee) {
-				//tu nichts
+				
 			}
 			e.printStackTrace();
 			return;
@@ -203,7 +203,7 @@ public class TextDialog extends Dialog {
 			try {
 				new ErrorLog("error in TextDialog.open , cause: " + ex.getMessage() , ex);
 			} catch(Exception ee) {
-				//tu nichts
+				
 			}
 			return "";
 
@@ -212,7 +212,7 @@ public class TextDialog extends Dialog {
 			try {
 				new ErrorLog("error in TextDialog.open() , cause: " + e.getMessage() , e);
 			} catch(Exception ee) {
-				//tu nichts
+				
 			}
 			return "";
 		}

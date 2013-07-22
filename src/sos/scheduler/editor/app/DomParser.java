@@ -1,4 +1,4 @@
-package sos.scheduler.editor.app;
+ package sos.scheduler.editor.app;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -26,6 +26,8 @@ import org.jdom.output.XMLOutputter;
 import org.jdom.transform.JDOMResult;
 import org.jdom.transform.JDOMSource;
 
+import sos.util.SOSClassUtil;
+
 import com.sos.i18n.I18NBase;
 import com.sos.i18n.annotation.I18NResourceBundle;
 
@@ -41,22 +43,22 @@ public abstract class DomParser extends I18NBase {
 	private boolean						_changed			= false;
 	private boolean						_init				= false;
 	private IDataChanged				_changedListener;
-	private HashMap<String, String[]>	_orders				= new HashMap<String, String[]>();
+	private final HashMap<String, String[]>	_orders				= new HashMap<String, String[]>();
 	// private String[] _schemaTmpFile;
 	// private String[] _schemaResource;
 
 	private String						_xslt;
 	private String						_filename			= null;
 
-	/** wann wurde die Konfigurationsdatei zuletzt geändert. Dieser parameter soll dazu dienen, mitzubekommen, ob die 
+	/** wann wurde die Konfigurationsdatei zuletzt geändert. Dieser parameter soll dazu dienen, mitzubekommen, ob die
 	 * Konfigurationsdatei von einem anderen Process verändert wurde*/
 	private long						_lastModifiedFile	= 0;
-	public DomParser(String[] schemaTmp, String[] schemaResource, String xslt) {
+	public DomParser(final String[] schemaTmp, final String[] schemaResource, final String xslt) {
 		super("JOEMessages"); // , Options.getLanguage());
 		_xslt = xslt;
 	}
 
-	protected void putDomOrder(String parentElement, String[] orderedElements) {
+	protected void putDomOrder(final String parentElement, final String[] orderedElements) {
 		_orders.put(parentElement, orderedElements);
 	}
 
@@ -64,7 +66,7 @@ public abstract class DomParser extends I18NBase {
 		return _orders;
 	}
 
-	public void setFilename(String filename) {
+	public void setFilename(final String filename) {
 		_filename = filename;
 		readFileLastModified();
 		// readFileMD5encrypt();
@@ -77,7 +79,7 @@ public abstract class DomParser extends I18NBase {
 	/**
 	 * Liest den letzten Änderungszeitpunkt (in long) der Konfigurationsdatei.
 	 * Wurde ausserhalb vom Editor etwas verändert?
-	 * 
+	 *
 	 */
 	public void readFileLastModified() {
 
@@ -94,7 +96,7 @@ public abstract class DomParser extends I18NBase {
 
 	}
 
-	public void setXSLT(String xslt) {
+	public void setXSLT(final String xslt) {
 		_xslt = xslt;
 	}
 
@@ -102,7 +104,7 @@ public abstract class DomParser extends I18NBase {
 		return _xslt;
 	}
 
-	public void setDataChangedListener(IDataChanged listener) {
+	public void setDataChangedListener(final IDataChanged listener) {
 		_changedListener = listener;
 	}
 
@@ -118,7 +120,7 @@ public abstract class DomParser extends I18NBase {
 		return _doc;
 	}
 
-	public void setDoc(Document doc) {
+	public void setDoc(final Document doc) {
 		_doc = doc;
 	}
 
@@ -126,7 +128,7 @@ public abstract class DomParser extends I18NBase {
 		return getRoot().getNamespace();
 	}
 
-	public Namespace getNamespace(String name) {
+	public Namespace getNamespace(final String name) {
 		return getRoot().getNamespace(name);
 	}
 
@@ -160,11 +162,9 @@ public abstract class DomParser extends I18NBase {
 		catch (Exception e) {
 			String strM = this.getMsg("JOE-E-1100: Schema file '%1$s' not found, but required. check editor.properties.\n Execption is %2$s", strT, e.toString());
 			try {
-				e.printStackTrace(System.err);
 				new ErrorLog(strM, e);
 			}
 			catch (Exception ee) {
-				// tu nichts
 			}
 			throw new IOException("error in writeSchemaFile(). could get schema " + e.toString());
 		}
@@ -198,19 +198,14 @@ public abstract class DomParser extends I18NBase {
 	 }
 
 	*/
-	protected SAXBuilder getBuilder(boolean validate) throws IOException {
+	protected SAXBuilder getBuilder(final boolean validate) throws IOException {
 
 		SAXBuilder builder = new SAXBuilder(validate);
 		if (validate) {
-
 			builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
-
 			builder.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", writeSchemaFile());
-
 		}
-
 		return builder;
-
 	}
 
 	public SAXBuilder getBuilder() throws IOException {
@@ -231,26 +226,26 @@ public abstract class DomParser extends I18NBase {
 		reorderDOM(getDoc().getRootElement());
 	}
 
-	protected void reorderDOM(Element element) {
+	protected void reorderDOM(final Element element) {
 		reorderDOM(element, null);
 	}
 
-	protected void reorderDOM(Element element, Namespace ns) {
+	protected void reorderDOM(final Element element, final Namespace ns) {
 		// escape element Attributes
 		escape(element);
 		String strT = "huhu";
 		// check if an order list exists for this element
 		if (getDomOrders().containsKey(element.getName())) {
 			// get children names in right order of this element
-			String[] order = (String[]) getDomOrders().get(element.getName());
+			String[] order = getDomOrders().get(element.getName());
 
 			// iterate children names
-			for (int i = 0; i < order.length; i++) {
+			for (String element2 : order) {
 				// get _new_ list of the children
-				List list = new ArrayList(element.getChildren(order[i], ns));
+				List list = new ArrayList(element.getChildren(element2, ns));
 				if (list.size() > 0) {
 					// remove them all
-					element.removeChildren(order[i], ns);
+					element.removeChildren(element2, ns);
 
 					// iterate children list
 					for (Iterator it2 = list.iterator(); it2.hasNext();) {
@@ -277,26 +272,26 @@ public abstract class DomParser extends I18NBase {
 		deorderDOM(getDoc().getRootElement());
 	}
 
-	protected void deorderDOM(Element element) {
+	protected void deorderDOM(final Element element) {
 		deorderDOM(element, null);
 	}
 
-	protected void deorderDOM(Element element, Namespace ns) {
+	protected void deorderDOM(final Element element, final Namespace ns) {
 		// escape element Attributes
 		deEscape(element);
 
 		// check if an order list exists for this element
 		if (getDomOrders().containsKey(element.getName())) {
 			// get children names in right order of this element
-			String[] order = (String[]) getDomOrders().get(element.getName());
+			String[] order = getDomOrders().get(element.getName());
 
 			// iterate children names
-			for (int i = 0; i < order.length; i++) {
+			for (String element2 : order) {
 				// get _new_ list of the children
-				List list = new ArrayList(element.getChildren(order[i], ns));
+				List list = new ArrayList(element.getChildren(element2, ns));
 				if (list.size() > 0) {
 					// remove them all
-					element.removeChildren(order[i], ns);
+					element.removeChildren(element2, ns);
 
 					// iterate children list
 					for (Iterator it2 = list.iterator(); it2.hasNext();) {
@@ -319,7 +314,7 @@ public abstract class DomParser extends I18NBase {
 		}
 	}
 
-	public String transform(Element element) throws TransformerFactoryConfigurationError, TransformerException, IOException {
+	public String transform(final Element element) throws TransformerFactoryConfigurationError, TransformerException, IOException {
 
 		File tmp = null;
 		try {
@@ -345,7 +340,7 @@ public abstract class DomParser extends I18NBase {
 		catch (Exception e) {
 			// System.err.println("error in DomParser.transform: " + (tmp != null ? tmp.getCanonicalPath() : "")+ e.getMessage());
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -360,7 +355,7 @@ public abstract class DomParser extends I18NBase {
 		return _changed;
 	}
 
-	public void setChanged(boolean changed) {
+	public void setChanged(final boolean changed) {
 		if (!_init) {
 			_changed = changed;
 			if (_changedListener != null)
@@ -368,12 +363,12 @@ public abstract class DomParser extends I18NBase {
 		}
 	}
 
-	public void setInit(boolean init) {
+	public void setInit(final boolean init) {
 		_init = init;
 		_changed = false;
 	}
 
-	private void escape(Element e) {
+	private void escape(final Element e) {
 		List listOfAtrributes = e.getAttributes();
 		for (int i = 0; i < listOfAtrributes.size(); i++) {
 			// System.out.println(listOfAtrributes.get(i));
@@ -393,7 +388,7 @@ public abstract class DomParser extends I18NBase {
 		}
 	}
 
-	private void deEscape(Element e) {
+	private void deEscape(final Element e) {
 		List listOfAtrributes = e.getAttributes();
 		for (int i = 0; i < listOfAtrributes.size(); i++) {
 			// System.out.println(listOfAtrributes.get(i));
@@ -437,7 +432,7 @@ public abstract class DomParser extends I18NBase {
 	/**
 	 * @return the _lastModifiedFile
 	 */
-	public void setLastModifiedFile(long lastModifiedFile) {
+	public void setLastModifiedFile(final long lastModifiedFile) {
 		_lastModifiedFile = lastModifiedFile;
 	}
 

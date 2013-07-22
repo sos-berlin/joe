@@ -1,6 +1,8 @@
 package sos.scheduler.editor.app;
 
 
+import java.util.Properties;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -20,10 +22,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
-import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.ResourceManager;
+
+import sos.util.SOSClassUtil;
 import sos.util.SOSString;
-import java.util.*;
+
 import com.swtdesigner.SWTResourceManager;
 
 
@@ -58,40 +60,40 @@ public class FTPDialogProfiles {
 
 	private              boolean             newProfile                    = false;
 
-	private              Button              butSavePassword               = null; 
+	private              Button              butSavePassword               = null;
 
 	private              FTPDialogListener   listener                      = null;
 
-	private              Button              useProxyButton                = null; 
+	private              Button              useProxyButton                = null;
 
-	private              Text                txtProxyServer                = null;  
+	private              Text                txtProxyServer                = null;
 
-	private              Text                txtProxyPort                  = null; 
+	private              Text                txtProxyPort                  = null;
 
 	private              Button              butApply                      = null;
-	
+
 	private              boolean             saveSettings                  = false;
 
-    private              Combo               cboProtokol                   = null; 
-    
-    private              TabItem             sshTabItem                    = null; 
-	
+    private              Combo               cboProtokol                   = null;
+
+    private              TabItem             sshTabItem                    = null;
+
     private              Group               groupAuthenticationMethods    = null;
-    
+
     private              Button              butPublicKey                  = null;
 
     private              Button              butAuthPassword               = null;
-    
+
     private              Button              butPasswordAndPublic          = null;
-    
+
     private              Text                txtDirPublicKey               = null;
-    
-    private              boolean             saved                         = false; //hilsvariable            
-    
-    private              boolean             init                          = false;   
+
+    private              boolean             saved                         = false; //hilsvariable
+
+    private              boolean             init                          = false;
     private 			 Label               lbErrorMessage                = null;
-    
-	public FTPDialogProfiles(FTPDialogListener listener_) {
+
+	public FTPDialogProfiles(final FTPDialogListener listener_) {
 		listener = listener_;
 		sosString = new SOSString();
 
@@ -105,9 +107,10 @@ public class FTPDialogProfiles {
 
 		schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE
 				| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
-		
+
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
-			public void keyTraversed(final TraverseEvent e) {				
+			@Override
+			public void keyTraversed(final TraverseEvent e) {
 				if(e.detail == SWT.TRAVERSE_ESCAPE) {
 					close();
 					saved = true;
@@ -115,8 +118,9 @@ public class FTPDialogProfiles {
 				}
 			}
 		});
-		
+
 		schedulerConfigurationShell.addDisposeListener(new DisposeListener() {
+			@Override
 			public void widgetDisposed(final DisposeEvent e) {
 				close();
 
@@ -138,14 +142,14 @@ public class FTPDialogProfiles {
 		{
 			schedulerGroup = new Group(schedulerConfigurationShell, SWT.NONE);
 			/*schedulerGroup.addTraverseListener(new TraverseListener() {
-				public void keyTraversed(final TraverseEvent e) {					
+				public void keyTraversed(final TraverseEvent e) {
 					if(e.detail == SWT.TRAVERSE_ESCAPE) {
 						close();
 						saved = true;
 						schedulerConfigurationShell.dispose();
 					}
-					
-					
+
+
 				}
 			});*/
 			schedulerGroup.setText("Profiles");
@@ -182,9 +186,10 @@ public class FTPDialogProfiles {
 			lblName.setText("Name");
 
 			cboConnectname = new Combo(group, SWT.NONE);
-			
+
 			cboConnectname.setItems(listener.getProfileNames());
 			cboConnectname.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 
@@ -192,6 +197,7 @@ public class FTPDialogProfiles {
 			});
 			cboConnectname.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 			cboConnectname.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					if( !cboConnectname.getText().equals(currProfile.get("name")))
 						initForm();
@@ -205,7 +211,7 @@ public class FTPDialogProfiles {
 			cboProtokol = new Combo(group, SWT.NONE);
 			cboProtokol.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 			cboProtokol.setItems(new String[] {"FTP", "SFTP"});
-			
+
 			cboProtokol.select(0);
 
 			final Label hostnameOrIpLabel = new Label(group, SWT.NONE);
@@ -213,6 +219,7 @@ public class FTPDialogProfiles {
 
 			txtHost = new Text(group, SWT.BORDER);
 			txtHost.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 				}
@@ -224,6 +231,7 @@ public class FTPDialogProfiles {
 
 			txtPort = new Text(group, SWT.BORDER);
 			txtPort.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 				}
@@ -235,6 +243,7 @@ public class FTPDialogProfiles {
 
 			txtUsername = new Text(group, SWT.BORDER);
 			txtUsername.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 				}
@@ -243,10 +252,11 @@ public class FTPDialogProfiles {
 			//txtUsername.setText(currProfile.get("user") != null ? currProfile.get("user").toString() : "");
 
 			final Label passwordLabel = new Label(group, SWT.NONE);
-			passwordLabel.setText("Password");			
+			passwordLabel.setText("Password");
 
 			txtPassword = new Text(group, SWT.PASSWORD | SWT.BORDER);
 			txtPassword.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					if(init) {
 						try {
@@ -279,6 +289,7 @@ public class FTPDialogProfiles {
 
 			txtRoot = new Text(group, SWT.BORDER);
 			txtRoot.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 				}
@@ -291,6 +302,7 @@ public class FTPDialogProfiles {
 
 			txtLocalDirectory = new Text(group, SWT.BORDER);
 			txtLocalDirectory.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 				}
@@ -305,9 +317,11 @@ public class FTPDialogProfiles {
 
 			butSavePassword = new Button(group, SWT.CHECK);
 			butSavePassword.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetDefaultSelected(final SelectionEvent e) {
-					
+
 				}
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					setEnabled();
 				}
@@ -323,6 +337,7 @@ public class FTPDialogProfiles {
 
 			butAscii = new Button(group, SWT.RADIO);
 			butAscii.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					setEnabled();
 				}
@@ -332,6 +347,7 @@ public class FTPDialogProfiles {
 
 			butbinary = new Button(group, SWT.RADIO);
 			butbinary.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					setEnabled();
 				}
@@ -349,6 +365,7 @@ public class FTPDialogProfiles {
 
 			useProxyButton = new Button(group_1, SWT.CHECK);
 			useProxyButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					txtProxyServer.setEnabled(useProxyButton.getSelection());
 					txtProxyPort.setEnabled(useProxyButton.getSelection());
@@ -364,6 +381,7 @@ public class FTPDialogProfiles {
 
 			txtProxyServer = new Text(group_1, SWT.BORDER);
 			txtProxyServer.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 				}
@@ -375,6 +393,7 @@ public class FTPDialogProfiles {
 
 			txtProxyPort = new Text(group_1, SWT.BORDER);
 			txtProxyPort.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 				}
@@ -396,6 +415,7 @@ public class FTPDialogProfiles {
 
 			butPublicKey = new Button(groupAuthenticationMethods, SWT.RADIO);
 			butPublicKey.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					setEnabled();
 				}
@@ -405,6 +425,7 @@ public class FTPDialogProfiles {
 
 			butAuthPassword = new Button(groupAuthenticationMethods, SWT.RADIO);
 			butAuthPassword.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					setEnabled();
 				}
@@ -414,6 +435,7 @@ public class FTPDialogProfiles {
 
 			butPasswordAndPublic = new Button(groupAuthenticationMethods, SWT.RADIO);
 			butPasswordAndPublic.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					setEnabled();
 				}
@@ -427,6 +449,7 @@ public class FTPDialogProfiles {
 
 			txtDirPublicKey = new Text(groupAuthenticationMethods, SWT.BORDER);
 			txtDirPublicKey.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 				}
@@ -436,6 +459,7 @@ public class FTPDialogProfiles {
 			final Button button_4 = new Button(groupAuthenticationMethods, SWT.NONE);
 			button_4.setVisible(false);
 			button_4.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 				}
 			});
@@ -445,6 +469,7 @@ public class FTPDialogProfiles {
 			butApply = new Button(schedulerGroup, SWT.NONE);
 			butApply.setEnabled(false);
 			butApply.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					apply();
 
@@ -456,6 +481,7 @@ public class FTPDialogProfiles {
 
 			final Button butNewProfile = new Button(schedulerGroup, SWT.NONE);
 			butNewProfile.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					newProfile = true;
 					cboConnectname.setText("");
@@ -482,11 +508,12 @@ public class FTPDialogProfiles {
 
 			final Button butRemove = new Button(schedulerGroup, SWT.NONE);
 			butRemove.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					if(cboConnectname.getText().length() == 0)
 						return;
-					
-					listener.removeProfile(cboConnectname.getText());					
+
+					listener.removeProfile(cboConnectname.getText());
 					if(cboConnectname.getItemCount() > 0)
 						cboConnectname.select(0);
 					initForm();
@@ -510,7 +537,7 @@ public class FTPDialogProfiles {
 
 
 		}
-		
+
 		lbErrorMessage = new Label(schedulerConfigurationShell, SWT.NONE);
 		lbErrorMessage.setText("xxxxxxxxxxxxxxxxxxxx");
 		lbErrorMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
@@ -518,10 +545,11 @@ public class FTPDialogProfiles {
 
 		final Button butClose = new Button(schedulerConfigurationShell, SWT.NONE);
 		butClose.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				
+
 				close();
-				
+
 				saved = true;
 				schedulerConfigurationShell.dispose();
 			}
@@ -529,13 +557,14 @@ public class FTPDialogProfiles {
 		butClose.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		butClose.setText("Close");
 		cboProtokol.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
-				
+
 				if(cboProtokol.getText().equalsIgnoreCase("FTP"))
 					groupAuthenticationMethods.setEnabled(false);
 				else
 					groupAuthenticationMethods.setEnabled(true);
-				
+
 				setEnabled();
 			}
 		});
@@ -543,11 +572,11 @@ public class FTPDialogProfiles {
 		//setToolTipText();
 		cboConnectname.setText(listener.getCurrProfileName());
 		initForm();
-		
+
 		schedulerConfigurationShell.layout();
 		schedulerConfigurationShell.open();
 	}
-	
+
 
 	private void initForm() {
 		try {
@@ -556,7 +585,7 @@ public class FTPDialogProfiles {
 			String s = cboConnectname.getText();
 			cboConnectname.setItems(listener.getProfileNames());//löscht den Eintrag, daher mit s merken und wieder zurückschreiben
 			cboConnectname.setText(s);
-			
+
 			currProfile = listener.getProfiles().get(cboConnectname.getText()) != null ? (Properties)listener.getProfiles().get(cboConnectname.getText()) : new Properties();
 
 			listener.setCurrProfile(currProfile);
@@ -581,11 +610,11 @@ public class FTPDialogProfiles {
 				txtProxyServer.setEnabled(false);
 				txtProxyPort.setEnabled(false);
 				txtProxyServer.setText("");
-				txtProxyPort.setText("");						
+				txtProxyPort.setText("");
 			}
 
-			
-			if(currProfile.get("transfermode") != null && currProfile.get("transfermode").toString().equalsIgnoreCase("binary")) {						
+
+			if(currProfile.get("transfermode") != null && currProfile.get("transfermode").toString().equalsIgnoreCase("binary")) {
 				butbinary.setSelection(true);
 				butAscii.setSelection(false);
 			} else {
@@ -595,30 +624,30 @@ public class FTPDialogProfiles {
 			String protocol = sosString.parseToString(currProfile.get("protocol"));
 			if(protocol.length() == 0)
 				protocol = "FTP";
-			
-			
+
+
 			cboProtokol.setText(protocol);
-			
-			
+
+
 			if(protocol.equalsIgnoreCase("SFTP")) {
 				groupAuthenticationMethods.setEnabled(true);
 				txtDirPublicKey.setText(sosString.parseToString(currProfile.get("auth_file")));
 				String method = sosString.parseToString(currProfile.get("auth_method"));
 				if(method.equalsIgnoreCase("publickey")) {
-					butPublicKey.setSelection(true);	
+					butPublicKey.setSelection(true);
 					butAuthPassword.setSelection(false);
 					butPasswordAndPublic.setSelection(false);
 				} else if(method.equalsIgnoreCase("password")) {
 					butAuthPassword.setSelection(true);
-					butPublicKey.setSelection(false);	
+					butPublicKey.setSelection(false);
 					butPasswordAndPublic.setSelection(false);
 				} else if(method.equalsIgnoreCase("both")) {
 					butPasswordAndPublic.setSelection(true);
 					butAuthPassword.setSelection(false);
-					butPublicKey.setSelection(false);	
+					butPublicKey.setSelection(false);
 				}
-					
-				
+
+
 			} else {
 				groupAuthenticationMethods.setEnabled(false);
 				txtDirPublicKey.setText("");
@@ -626,19 +655,18 @@ public class FTPDialogProfiles {
 				butAuthPassword.setSelection(false);
 				butPasswordAndPublic.setSelection(false);
 			}
-			
-			
+
+
 			butApply.setEnabled(false);
-			
-			
-			
+
+
+
 			newProfile = false;
 			init = false;
 		} catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not reaad FTP Profiles", e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ;could not reaad FTP Profiles", e);
 			} catch(Exception ee) {
-				//tu nichts
 			}
 			MainWindow.message("could not reaad FTP Profiles:" + e.getMessage()  , SWT.ICON_WARNING);
 		}
@@ -648,7 +676,7 @@ public class FTPDialogProfiles {
 	private void setEnabled() {
 		if(butApply != null)
 			butApply.setEnabled(cboConnectname.getText().length() > 0);
-				
+
 	}
 
 	private boolean plausi() {
@@ -660,7 +688,7 @@ public class FTPDialogProfiles {
 	       return true;
 	    }
 	}
-	
+
    private void apply() {
 	  if (plausi()) {
 		 Properties prop = new Properties();
@@ -675,7 +703,7 @@ public class FTPDialogProfiles {
 			new java.io.File(txtLocalDirectory.getText()).mkdirs();
 		 prop.put("localdirectory", txtLocalDirectory.getText());
 		 prop.put("transfermode", butbinary.getSelection() ? "binary" : "ASCII");
-		 prop.put("save_password", (butSavePassword.getSelection() ? "yes" : "no"));
+		 prop.put("save_password", butSavePassword.getSelection() ? "yes" : "no");
 		 prop.put("protocol", cboProtokol.getText());
 		 if (useProxyButton.getSelection()) {
 			prop.put("use_proxy", "yes");
@@ -718,36 +746,36 @@ public class FTPDialogProfiles {
 			authMethod = "password";
 		else if(butPasswordAndPublic.getSelection())
 			authMethod = "both";
-		
+
 		return authMethod;
 	}
-	
+
 	private void close() {
-		
+
 		Utils.startCursor(schedulerConfigurationShell);
 		listener.refresh();
-		
+
 		if(saved)
 			return;
-		
+
 		if (butApply.getEnabled()) {
 			int cont = MainWindow.message(schedulerConfigurationShell, sos.scheduler.editor.app.Messages.getString("MainListener.apply_changes"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-			if(cont == SWT.OK) {				
+			if(cont == SWT.OK) {
 				apply();
-			} 
+			}
 		}
 		if(saveSettings) {
 			//listener.saveSettings();
-			listener.saveProfile(butSavePassword.getSelection());			
+			listener.saveProfile(butSavePassword.getSelection());
 		}
 		Utils.stopCursor(schedulerConfigurationShell);
 
-		
-		
-		
+
+
+
 	}
-	
-	
+
+
 	private void setToolTip() {
 		cboConnectname.setToolTipText(Messages.getTooltip("ftp_profile_dialog.profilename"));
 		cboProtokol.setToolTipText(Messages.getTooltip("ftp_profile_dialog.protocol"));
@@ -757,17 +785,17 @@ public class FTPDialogProfiles {
 		txtPassword.setToolTipText(Messages.getTooltip("ftp_profile_dialog.password"));
 		txtRoot.setToolTipText(Messages.getTooltip("ftp_profile_dialog.root"));
 		txtLocalDirectory.setToolTipText(Messages.getTooltip("ftp_profile_dialog.local_directory"));
-		butSavePassword.setToolTipText(Messages.getTooltip("ftp_profile_dialog.save_password"));		
+		butSavePassword.setToolTipText(Messages.getTooltip("ftp_profile_dialog.save_password"));
 		butAscii.setToolTipText(Messages.getTooltip("ftp_profile_dialog.ascii"));
 		butbinary.setToolTipText(Messages.getTooltip("ftp_profile_dialog.binary"));
-		
-		useProxyButton.setToolTipText(Messages.getTooltip("ftp_profile_dialog.use_proxy")); 
-		txtProxyServer.setToolTipText(Messages.getTooltip("ftp_profile_dialog.proxy_server")); 
+
+		useProxyButton.setToolTipText(Messages.getTooltip("ftp_profile_dialog.use_proxy"));
+		txtProxyServer.setToolTipText(Messages.getTooltip("ftp_profile_dialog.proxy_server"));
 		txtProxyPort.setToolTipText(Messages.getTooltip("ftp_profile_dialog.proxy_port"));
-		
+
 		butPublicKey.setToolTipText(Messages.getTooltip("ftp_profile_dialog.public_key"));
-	    butAuthPassword.setToolTipText(Messages.getTooltip("ftp_profile_dialog.auth_password"));	    
-	    butPasswordAndPublic.setToolTipText(Messages.getTooltip("ftp_profile_dialog.password_and_public"));	    
+	    butAuthPassword.setToolTipText(Messages.getTooltip("ftp_profile_dialog.auth_password"));
+	    butPasswordAndPublic.setToolTipText(Messages.getTooltip("ftp_profile_dialog.password_and_public"));
 	    txtDirPublicKey.setToolTipText(Messages.getTooltip("ftp_profile_dialog.directory_of_public_key"));
 
 	}

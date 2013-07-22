@@ -1,26 +1,28 @@
 package sos.scheduler.editor.app;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Properties;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Properties;
+import java.util.Vector;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+
 import sos.net.SOSFTP;
 import sos.net.SOSFTPS;
 import sos.net.SOSFileTransfer;
 import sos.settings.SOSProfileSettings;
+import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 import sos.util.SOSUniqueID;
-import java.util.Vector;
-
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Shell;
 
 //import com.trilead.ssh2.SFTPv3DirectoryEntry;
 
@@ -38,7 +40,7 @@ public class FTPDialogListener {
 
 	private              SOSProfileSettings     settings                      = null;
 
-	private              String                 prefix                        = "profile ";
+	private final              String                 prefix                        = "profile ";
 
 	private              File                 configFile                    = null;
 
@@ -46,7 +48,7 @@ public class FTPDialogListener {
 
 	private              boolean                isLoggedIn                    = false;
 
-	private final        int                    ERROR_CODE                    = 300; 
+	private final        int                    ERROR_CODE                    = 300;
 
 	//private              SOSFTP                 sosftp                        = null;
 
@@ -54,7 +56,7 @@ public class FTPDialogListener {
 
 	private              Text                   logtext                       = null;
 
-	private              String                 workingDirectory              = "";       
+	private              String                 workingDirectory              = "";
 
 	private              String                 password                      = "";
 
@@ -62,14 +64,14 @@ public class FTPDialogListener {
 
 	//sFTP mit publickey und Passphares hat nicht geklappt, Rückfall auf nur Password
 	private              boolean                tryAgain                      = false;
-	
+
 	private              Text                   txtPath                       = null;
 
-	
-	public FTPDialogListener(java.util.Properties profile, String profilename) {
+
+	public FTPDialogListener(final java.util.Properties profile, final String profilename) {
 		sosString = new SOSString();
 		currProfile = profile;
-		currProfileName = profilename; 
+		currProfileName = profilename;
 		profiles = new HashMap();
 		profiles.put(profilename,profile);
 	}
@@ -77,10 +79,10 @@ public class FTPDialogListener {
 	public FTPDialogListener() {
 
 		sosString = new SOSString();
- 		try {		
+ 		try {
 
 			configFile = new File(Options.getSchedulerData(), "factory.ini");
- 			 
+
 			if(!configFile.exists()) {
 				configFile.createNewFile();
 			}
@@ -108,31 +110,31 @@ public class FTPDialogListener {
 
 		} catch(Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() +  "; could not read Profiles from " + configFile, e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() +  "; could not read Profiles from " + configFile, e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
-			hasError = true; 
+			hasError = true;
 			MainWindow.message("could not read Profiles from " + configFile, SWT.ICON_WARNING);
 		}
 	}
 
-	private void init(String profile) {
+	private void init(final String profile) {
 
 		currProfileName = profile;
 		currProfile = (Properties)profiles.get(profile);
 
-		
-		
+
+
 	}
 
-	private String[] convert(Object[] obj) {
+	private String[] convert(final Object[] obj) {
 		ArrayList str = new ArrayList();
 		String[] retVal = null;
-		try {						
-			for(int i = 0; i < obj.length; i++) {
-				if(sosString.parseToString(obj[i]).startsWith(prefix)) {
-					str.add(sosString.parseToString(obj[i]).substring(prefix.length()));
+		try {
+			for (Object element : obj) {
+				if(sosString.parseToString(element).startsWith(prefix)) {
+					str.add(sosString.parseToString(element).substring(prefix.length()));
 				}
 			}
 			retVal = new String[str.size()];
@@ -142,9 +144,9 @@ public class FTPDialogListener {
 
 		} catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 			//System.out.println("..error in FTPDilagProfiles: " + e.getMessage());
 			hasError = true;
@@ -154,19 +156,18 @@ public class FTPDialogListener {
 
 	public String[] getProfileNames() {
 		try {
-			profileNames = convert(settings.getSections().toArray());		
+			profileNames = convert(settings.getSections().toArray());
 		} catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			} catch(Exception ee) {
-				//tu nichts
 			}
 			//System.out.println(e.getMessage());
 		}
 		return profileNames;
 	}
 
-	public void setProfileNames(String[] profileNames) {
+	public void setProfileNames(final String[] profileNames) {
 		this.profileNames = profileNames;
 	}
 
@@ -174,15 +175,15 @@ public class FTPDialogListener {
 		return profiles;
 	}
 
-	public void setProfiles(String key, Properties profile) {
+	public void setProfiles(final String key, final Properties profile) {
 		try {
 			settings.getSections().add(prefix + key);
-			this.profiles.put(key, profile);
+			profiles.put(key, profile);
 		} catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 			System.out.println("error in FTPDialoListener: " + e.getMessage());
 		}
@@ -192,7 +193,7 @@ public class FTPDialogListener {
 		return currProfile;
 	}
 
-	public void setCurrProfile(Properties currProfile) {
+	public void setCurrProfile(final Properties currProfile) {
 		this.currProfile = currProfile;
 	}
 
@@ -200,13 +201,13 @@ public class FTPDialogListener {
 		return currProfileName;
 	}
 
-	public void setCurrProfileName(String currProfileName) {
+	public void setCurrProfileName(final String currProfileName) {
 		this.currProfileName = currProfileName;
 		init(currProfileName);
 	}
 
 
-	public void removeProfile(String profilename) {
+	public void removeProfile(final String profilename) {
 		try {
 			deleteProfile(profilename);
 			getProfiles().remove(profilename);
@@ -216,9 +217,9 @@ public class FTPDialogListener {
 			currProfileName = "";
 		} catch(Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "could not remove Profile: " + profilename, e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + "could not remove Profile: " + profilename, e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 			MainWindow.message("could not remove Profile: " + profilename + ": cause:\n" + e.getMessage(), SWT.ICON_WARNING);
 		}
@@ -227,13 +228,13 @@ public class FTPDialogListener {
 
 
 
-	public HashMap changeDirectory(String profile, String directory) {
+	public HashMap changeDirectory(final String profile, final String directory) {
 
 		try {
 			if(isLoggedIn && !currProfileName.equals(profile))
 				disconnect();
 
-			if(!isLoggedIn)				
+			if(!isLoggedIn)
 				connect(profile);
 
 			if(!isLoggedIn)//connect war nicht erfolgreich
@@ -244,9 +245,9 @@ public class FTPDialogListener {
 			//ftpClient.changeWorkingDirectory(directory));
 		} catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not change Directory [" + directory + "] ", e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; could not change Directory [" + directory + "] ", e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 			hasError = true;
 			MainWindow.message("could not change Directory [" + directory + "] cause:" + e.getMessage() ,  SWT.ICON_WARNING);
@@ -258,42 +259,42 @@ public class FTPDialogListener {
 	}
 
 
-	public String getFile(String filename, String subFolder) {
+	public String getFile(String filename, final String subFolder) {
 		String targetfile = null;
 		boolean deleteTmpFile = false;//wenn locahdirectory nicht angegeben ist, dann temp Verzeichnis bilden und diese anschliessend löschen
-		try { 			
+		try {
 
 			targetfile = sosString.parseToString(currProfile.get("localdirectory" ));
-			if(targetfile.length() == 0){				
+			if(targetfile.length() == 0){
 				targetfile = System.getProperty("java.io.tmpdir");
 				deleteTmpFile = true;
 			}
-				
+
 			targetfile = targetfile.replaceAll("\\\\", "/");
 			if(subFolder != null)
-				targetfile = (targetfile.endsWith("/") ||  targetfile.endsWith("\\") ? targetfile + subFolder:  targetfile + "/" + subFolder);
-			
-			File file = new File(targetfile); 
+				targetfile = targetfile.endsWith("/") ||  targetfile.endsWith("\\") ? targetfile + subFolder:  targetfile + "/" + subFolder;
+
+			File file = new File(targetfile);
 			if(!file.exists()) {
-				file.mkdirs();				
+				file.mkdirs();
 			}
-			
+
 			if(deleteTmpFile)
 				file.deleteOnExit();
-			
+
 			targetfile = (targetfile.endsWith("/") ||  targetfile.endsWith("\\") ? targetfile :  targetfile + "/")+ new java.io.File(filename).getName();
 
 			if(ftpClient instanceof SOSFTP) {
-				if(filename.startsWith("./")) {					 
-					filename = "./" + filename.substring(workingDirectory.length());					
+				if(filename.startsWith("./")) {
+					filename = "./" + filename.substring(workingDirectory.length());
 				}
 			}
 
 			long l = ftpClient.getFile(filename, targetfile, false);
-			
-			
-				
-			
+
+
+
+
 			if (l == -1)
 				throw new Exception (" could not get file [filename=" + filename+"], [target=" + targetfile+"], cause " + ftpClient.getReplyString());
 
@@ -301,9 +302,9 @@ public class FTPDialogListener {
 
 		} catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not get File [" + filename + "]", e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ;could not get File [" + filename + "]", e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 			if(logtext != null)  logtext.append("could not get File [" + filename + "] :" + e.getMessage() );
 			hasError = true;
@@ -311,31 +312,31 @@ public class FTPDialogListener {
 		return targetfile;
 	}
 
-	public HashMap cdUP() {		
-		return changeDirectory("..");		
+	public HashMap cdUP() {
+		return changeDirectory("..");
 	}
 
-	public void removeFile(String file) {		
+	public void removeFile(final String file) {
 		try   {
-			if(ftpClient != null && ftpClient.delete(file)) {			
-				if(logtext != null)  logtext.append("..ftp server reply [delete] [file=" + file+"]: "  + ftpClient.getReplyString() );					
+			if(ftpClient != null && ftpClient.delete(file)) {
+				if(logtext != null)  logtext.append("..ftp server reply [delete] [file=" + file+"]: "  + ftpClient.getReplyString() );
 			} else {
 				if(logtext != null)  logtext.append("..ftp server reply [could not delete] [file=" + file+"]: "  + ftpClient.getReplyString() );
 				hasError = true;
 			}
 		} catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not delete file [" + file+ "]", e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; could not delete file [" + file+ "]", e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
-			if(logtext != null)  
+			if(logtext != null)
 				logtext.append("could not delete file [" + file+ "] cause:" + e.getMessage() );
 			hasError = true;
 		}
 	}
 
-	public HashMap changeDirectory(String directory) {	
+	public HashMap changeDirectory(String directory) {
 
 		HashMap listnames = new HashMap();
 		//String curWD = workingDirectory; //hilsvariable. Um im Fehlerfall wird dieser zurückgesetzt
@@ -344,7 +345,7 @@ public class FTPDialogListener {
 			directory = directory.replaceAll("\\\\", "/");
 
 			if(directory == null || directory.length() == 0)
-				directory = (sosString.parseToString(currProfile.get("root")).length() > 0 ? sosString.parseToString(currProfile.get("root")) : ".");			
+				directory = sosString.parseToString(currProfile.get("root")).length() > 0 ? sosString.parseToString(currProfile.get("root")) : ".";
 
 			if(!(directory.startsWith(".") || directory.startsWith("/")))
 				directory = "./"+ directory;
@@ -354,43 +355,43 @@ public class FTPDialogListener {
 				if(directory.startsWith("./")) {
 
 					if(workingDirectory.length() >= 0 && workingDirectory.equalsIgnoreCase(directory)) {
-						directory = ".";						
+						directory = ".";
 					}else if(workingDirectory.length() >= directory.length() && workingDirectory.startsWith(directory)) {
 
 						String curWorkingDirectory = workingDirectory.substring(directory.length());
 						curWorkingDirectory = curWorkingDirectory.endsWith("/") ? curWorkingDirectory.substring(0, curWorkingDirectory.length()) : curWorkingDirectory;
 						int countOfcdUP = curWorkingDirectory.split("/").length;
-						for(int i = 0; i < countOfcdUP; i++) 
-							cdUP();								
+						for(int i = 0; i < countOfcdUP; i++)
+							cdUP();
 
 					} else if (directory.startsWith(workingDirectory) || workingDirectory.length()==0 ){
 
-						String curWorkingDirectory = directory; 
+						String curWorkingDirectory = directory;
 						directory =  "./" + directory.substring(workingDirectory.length());
 						workingDirectory = curWorkingDirectory;
 
-					} else {						
+					} else {
 
 						String curWorkingDirectory = workingDirectory;
 						int countOfcdUP = curWorkingDirectory.split("/").length;
-						if(curWorkingDirectory.endsWith("/") || 
-								curWorkingDirectory.startsWith("./")|| 
-								curWorkingDirectory.startsWith("/")); 
-						countOfcdUP--;						
-						for(int i = 0; i < countOfcdUP; i++) { 
-							cdUP();		
+						if(curWorkingDirectory.endsWith("/") ||
+								curWorkingDirectory.startsWith("./")||
+								curWorkingDirectory.startsWith("/"));
+						countOfcdUP--;
+						for(int i = 0; i < countOfcdUP; i++) {
+							cdUP();
 						}
 
-						workingDirectory = directory;						
+						workingDirectory = directory;
 
 					}
 				} else if(directory.equals("..")) {
 
 
 					int pos = workingDirectory.endsWith("/") ? workingDirectory.lastIndexOf("/", 1) : workingDirectory.lastIndexOf("/");
-					if(pos == -1) 
+					if(pos == -1)
 						pos = directory.length();
-					if(!workingDirectory.equals("") && workingDirectory.length() >= pos)						
+					if(!workingDirectory.equals("") && workingDirectory.length() >= pos)
 						workingDirectory = workingDirectory.substring(0, pos);
 					else
 						workingDirectory = "";
@@ -404,7 +405,7 @@ public class FTPDialogListener {
 
 			if(ftpClient.changeWorkingDirectory(directory)) {
 
-				if(logtext != null)  logtext.append("..ftp server reply [cd] [directory ftp_file_path=" + directory +"]: "  + ftpClient.getReplyString() );				
+				if(logtext != null)  logtext.append("..ftp server reply [cd] [directory ftp_file_path=" + directory +"]: "  + ftpClient.getReplyString() );
 
 
 
@@ -413,8 +414,8 @@ public class FTPDialogListener {
 
 				//String[] filesAndDirs = ftpClient.listNames("../..");
 
-				for(int i = 0; i < filesAndDirs.length; i++) {
-					String fd = filesAndDirs[i];					
+				for (String filesAndDir : filesAndDirs) {
+					String fd = filesAndDir;
 					if(onlyfiles.contains(fd)){
 						listnames.put(fd, "file");
 						listnames.put(fd + "_size", String.valueOf(ftpClient.size(fd)));
@@ -431,21 +432,21 @@ public class FTPDialogListener {
 
 					} else {
 						if(!fd.equals(".") && !fd.equals(".."))
-							listnames.put(fd, "dir");						
+							listnames.put(fd, "dir");
 					}
 				}
 				hasError = false;
 			} else {
-				throw new Exception("..ftp server reply [cd] [directory ftp_file_path=" + directory + "]: "  + ftpClient.getReplyString());				
+				throw new Exception("..ftp server reply [cd] [directory ftp_file_path=" + directory + "]: "  + ftpClient.getReplyString());
 			}
 		} catch (Exception e) {
 
 			MainWindow.message("could not change Directory [" + directory + "] cause:" + e.getMessage(), SWT.ICON_WARNING);
 
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not change Directory [" + directory + "]", e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; could not change Directory [" + directory + "]", e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 			hasError = true;
 			if(logtext != null)  logtext.append("could not change Directory [" + directory + "] cause:" + e.getMessage() );
@@ -456,18 +457,18 @@ public class FTPDialogListener {
 	public void disconnect() {
 		if(isLoggedIn && ftpClient != null) {
 			try {
-				workingDirectory = "";	
+				workingDirectory = "";
 				if(ftpClient.isConnected())
 					ftpClient.disconnect();
 			} catch(Exception e) {
 
 				try {
-					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not disconnect FTP Server cause.", e);
+					new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; could not disconnect FTP Server cause.", e);
 				} catch(Exception ee) {
-					//tu nichts
+
 				}
 
-				if(logtext != null) {  
+				if(logtext != null) {
 					logtext.append("could not disconnect FTP Server cause: " + e.getMessage());
 				}
 
@@ -485,11 +486,11 @@ public class FTPDialogListener {
 			return false;
 	}
 
-	public void connect(String profile) {
+	public void connect(final String profile) {
 
 
 		hasError = false;
-		workingDirectory = "";	
+		workingDirectory = "";
 		setPassword("");
 
 		if(profile == null || profile.length() == 0 )
@@ -510,7 +511,7 @@ public class FTPDialogListener {
 		String user = "";
 		String password = "";
 
-		/** The FTP server will always reply the ftp error codes, 
+		/** The FTP server will always reply the ftp error codes,
 		 * see http://www.the-eggman.com/seminars/ftp_error_codes.html */
 
 		String account= "";
@@ -533,14 +534,14 @@ public class FTPDialogListener {
 			String sPort           = sosString.parseToString(prop.get("port"));
 			if(sPort.length() > 0)
 				port = Integer.parseInt(sosString.parseToString(prop.get("port")));
-			
+
 			if(authenticationMethod.length() > 0 && authenticationMethod.equals("both"))
 				authenticationMethod = "publickey";
 
 
 			authenticationFilename = sosString.parseToString(prop.get("auth_file")).length() > 0 ?   sosString.parseToString(prop.get("auth_file")) : "";
 
-			if (host == null || host.length() == 0) throw new Exception("no host was specified");						
+			if (host == null || host.length() == 0) throw new Exception("no host was specified");
 			if (user == null || user.length() == 0) throw new Exception("no user was specified");
 
 
@@ -553,32 +554,32 @@ public class FTPDialogListener {
 
 				//Options.setProperty("profile.timestamp." + profilename, pass);
 				//Options.saveProperties();
-				
+
 				if(key != null && key.length() > 8) {
 					key = key.substring(key.length()-8);
 				}
-				
+
 				if(password.length() > 0 && sosString.parseToString(key).length() > 0) {
 
 					password = SOSCrypt.decrypt(key, password);
 
 				}
-			} catch(Exception e) {				
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..could not encrypt.", e);
+			} catch(Exception e) {
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; ..could not encrypt.", e);
 				throw e;
 			}
 
 			if(tryAgain) {
-				authenticationMethod = "password";	
+				authenticationMethod = "password";
 				authenticationFilename = "";
 			}
 
 
-			if(password.length() == 0 && !protocol.equalsIgnoreCase("sftp") || 
-					(tryAgain && sosString.parseToString(password).length() == 0)) {
+			if(password.length() == 0 && !protocol.equalsIgnoreCase("sftp") ||
+					tryAgain && sosString.parseToString(password).length() == 0) {
 				Shell shell = new Shell();
-				shell.pack();					
-				Dialog dialog = new Dialog(shell);		
+				shell.pack();
+				Dialog dialog = new Dialog(shell);
 				dialog.setText("Password");
 				dialog.open(this);
 
@@ -588,7 +589,7 @@ public class FTPDialogListener {
 				}
 				//shell.getDisplay().dispose();
 				//shell.dispose();
-				password = getPassword();	
+				password = getPassword();
 			}
 
 
@@ -597,7 +598,7 @@ public class FTPDialogListener {
 				transferMode  = sosString.parseToString(prop.get("transfermode"));
 
 			if (protocol.equalsIgnoreCase("ftp")){
-				//SOSFTP sosftp = new SOSFTP(host, port); 
+				//SOSFTP sosftp = new SOSFTP(host, port);
 				sosftp = new SOSFTP(host);
 
 				ftpClient = sosftp;
@@ -605,12 +606,12 @@ public class FTPDialogListener {
 
 
 				if (account != null && account.length() > 0) {
-					isLoggedIn = sosftp.login(user, password, account);						
-					if(logtext != null)  logtext.append("..ftp server reply [login] [user=" + user + "], [account=" + account + "]: " + ftpClient.getReplyString() );						
+					isLoggedIn = sosftp.login(user, password, account);
+					if(logtext != null)  logtext.append("..ftp server reply [login] [user=" + user + "], [account=" + account + "]: " + ftpClient.getReplyString() );
 				} else {
 
 					isLoggedIn = sosftp.login(user, password);
-					if(logtext != null)  logtext.append("..ftp server reply [login] [user=" + user + "]: " + ftpClient.getReplyString());						
+					if(logtext != null)  logtext.append("..ftp server reply [login] [user=" + user + "]: " + ftpClient.getReplyString());
 				}
 
 				if (!isLoggedIn || sosftp.getReplyCode() > ERROR_CODE) {
@@ -624,13 +625,13 @@ public class FTPDialogListener {
 						//sftpClass = Class.forName("sos.stacks.ganymed.SOSSFTP");
 						sftpClass = Class.forName("sos.net.SOSSFTP");
 						Constructor con = sftpClass.getConstructor(new Class[]{String.class,int.class});
-						ftpClient = (SOSFileTransfer) con.newInstance(new Object[]{host, new Integer(port)});									
+						ftpClient = (SOSFileTransfer) con.newInstance(new Object[]{host, new Integer(port)});
 					} catch (Exception e){
 						//if(logtext != null)  logtext.append("Failed to initialize SOSSFTP class, need recent sos.stacks.jar and trilead jar. "+e);
 						//throw new Exception("Failed to initialize SOSSFTP class, need recent sos.stacks.jar and trilead jar. "+e,e);
 						if(logtext != null)  logtext.append("Failed to initialize SOSSFTP class, need recent sos.net.jar and trilead jar. "+e);
 						throw new Exception("Failed to initialize SOSSFTP class, need recent sos.net.jar and trilead jar. "+e,e);
-						
+
 					}
 					Class[] stringParam = new Class[]{String.class};
 					Method method= sftpClass.getMethod("setAuthenticationFilename", stringParam);
@@ -658,13 +659,13 @@ public class FTPDialogListener {
 
 					//}catch (Exception e){
 					//	throw new Exception("..sftp server login failed [user=" + user + "], [host=" + host + "]: " + e );
-					//}	
-					//System.out.println("sftp hat geklappt?" + ftpClient.isConnected());				
-				} catch(Exception e1){				
+					//}
+					//System.out.println("sftp hat geklappt?" + ftpClient.isConnected());
+				} catch(Exception e1){
 					//System.out.println("sftp hat nicht geklappt?, weil: " + e1.toString());
 					if(sosString.parseToString(prop.get("auth_method")).equalsIgnoreCase("both") && tryAgain == false)
 						tryAgain = true;
-					else 
+					else
 						tryAgain = false;
 					throw new Exception("..sftp server login failed [user=" + user + "], [host=" + host + "]: " + e1, e1 );
 
@@ -685,7 +686,7 @@ public class FTPDialogListener {
 					ftpClient = sosftps;
 					if(logtext != null)  logtext.append("..ftp server reply [init] [host=" + host + "], [port="+ port + "]: " + ftpClient.getReplyString() );
 					isLoggedIn = sosftps.login(user, password);
-					if(logtext != null)  logtext.append("..ftp server reply [login] [user=" + user + "]: " + ftpClient.getReplyString());						
+					if(logtext != null)  logtext.append("..ftp server reply [login] [user=" + user + "]: " + ftpClient.getReplyString());
 
 					if (!isLoggedIn || sosftps.getReplyCode() > ERROR_CODE) {
 						throw new Exception("..ftp server reply [login failed] [user=" + user + "], [account=" + account + "]: " + ftpClient.getReplyString() );
@@ -693,7 +694,7 @@ public class FTPDialogListener {
 					isLoggedIn = true;
 				}catch (Exception e){
 					throw new Exception("..ftps server login failed [user=" + user + "], [host=" + host + "]: " + e );
-				}								
+				}
 
 			} else{
 				throw new Exception("Unknown protocol: "+protocol);
@@ -707,8 +708,8 @@ public class FTPDialogListener {
 						throw new Exception("..ftp server reply [passive]: "  + ftpClient.getReplyString());
 					} else {
 						this.getLogger().debug("..ftp server reply [passive]: "  + ftpClient.getReplyString());
-					}					
-				}	*/		    			
+					}
+				}	*/
 
 
 				if (transferMode.equalsIgnoreCase("ascii")) {
@@ -719,7 +720,7 @@ public class FTPDialogListener {
 						throw new Exception(".. could not switch to ASCII mode for file transfer ..ftp server reply [ascii]: "  + ftpClient.getReplyString());
 					}
 				} else {
-					if (sosftp.binary()) {			        	
+					if (sosftp.binary()) {
 						if(logtext != null)  logtext.append("using binary mode for file transfers.");
 						if(logtext != null)  logtext.append("..ftp server reply [binary]: "  + ftpClient.getReplyString());
 					} else {
@@ -727,7 +728,7 @@ public class FTPDialogListener {
 					}
 				}
 			}
-			
+
 			Options.setProperty("last_profile" , profile);
 			Options.saveProperties();
 
@@ -737,25 +738,25 @@ public class FTPDialogListener {
 			hasError = true;
 
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; error in ftp server init with [host=" + host + "], [port="+ port + "].", ex);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; error in ftp server init with [host=" + host + "], [port="+ port + "].", ex);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 
 			if(logtext != null)  logtext.append("..error in ftp server init with [host=" + host + "], [port="+ port + "], cause: " + getErrorMessage(ex) + "\n");
 			if(tryAgain)  {
-				if(logtext != null)  logtext.append("..try connect with Authentication Method=password." + "\n");				
+				if(logtext != null)  logtext.append("..try connect with Authentication Method=password." + "\n");
 				connect(profile);
 				tryAgain = false;
 			}
 		}
 	}
 
-	public void setLogText(org.eclipse.swt.widgets.Text text) {
+	public void setLogText(final org.eclipse.swt.widgets.Text text) {
 		logtext = text;
 	}
 
-	public void saveAs(String source, String target) {
+	public void saveAs(final String source, String target) {
 		try {
 
 			if(ftpClient instanceof SOSFTP)//change to Parent directory
@@ -768,25 +769,25 @@ public class FTPDialogListener {
 			if(logtext != null)  logtext.append(source + " transfer to " + target + "[bytes=" + bytesSend + "]");
 		} catch(Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..ftp server reply: "  + ftpClient.getReplyString(), e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; ..ftp server reply: "  + ftpClient.getReplyString(), e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 			if(logtext != null)  logtext.append("..ftp server reply: "  + ftpClient.getReplyString());
 			hasError = true;
 		}
 	}
 
-	public void saveHotFolderAs(String source, String target, ArrayList listOfHotFolderElements, HashMap changes) {
+	public void saveHotFolderAs(String source, String target, final ArrayList listOfHotFolderElements, final HashMap changes) {
 		try {
-			Vector listOfExistFiles = new Vector(); //überprüft ob das HotFolderElement existiert. das kann passieren, wenn ein Element neu angelegt wird und ohne zwischespeichern der Name verändert wird. 
+			Vector listOfExistFiles = new Vector(); //überprüft ob das HotFolderElement existiert. das kann passieren, wenn ein Element neu angelegt wird und ohne zwischespeichern der Name verändert wird.
 			if(ftpClient != null) {
 				listOfExistFiles = ftpClient.nList(target);
 			}
-			
+
 			ArrayList listOfRemovedFiles = new ArrayList(); // hilfsvariable: verhindert das zweimal löschen der Hot Folder Element
 
-			source = source.endsWith("/") ? source : source + "/"; 
+			source = source.endsWith("/") ? source : source + "/";
 			target = target.endsWith("/") ? target : target + "/";
 
 			if(listOfHotFolderElements != null) {
@@ -794,28 +795,28 @@ public class FTPDialogListener {
 					String filename = sosString.parseToString(listOfHotFolderElements.get(i));
 					filename = new File(filename).getName();
 
-					String hotElementname = "";					
-					String attrname = "";					
+					String hotElementname = "";
+					String attrname = "";
 					hotElementname = filename.substring(0, filename.lastIndexOf(".xml"));
-					hotElementname = hotElementname.substring(hotElementname.lastIndexOf(".")+1);					
+					hotElementname = hotElementname.substring(hotElementname.lastIndexOf(".")+1);
 					attrname = filename.substring(0, filename.indexOf("." + hotElementname  + ".xml"));
 
-					
+
 					if(changes.containsKey(hotElementname + "_" + attrname) && changes.get(hotElementname + "_" + attrname).equals("delete")) {
 						if(listOfExistFiles.contains(filename)){
 							removeFile(target + filename);
 							listOfRemovedFiles.add(target + filename);
 						}
-						
+
 					}
 				}
 			}
 
-			
+
 			if(changes != null && changes.keySet() != null) {
 				java.util.Iterator c = changes.keySet().iterator();
 				while(c.hasNext()) {
-					String remFile = c.next().toString();					
+					String remFile = c.next().toString();
 					if(changes.get(remFile) != null && changes.get(remFile).equals("delete")) {
 						String prefix = "";
 						if(remFile.startsWith("job_chain"))
@@ -832,11 +833,11 @@ public class FTPDialogListener {
 							prefix = "lock";
 						else if(remFile.startsWith("schedule") )
 							prefix = "schedule";
-						 
+
 						remFile = remFile.substring(prefix.length() + 1) + "." + remFile.substring(0, prefix.length()) + ".xml";
 						if(!listOfRemovedFiles.contains(target + remFile)) {
 							if(listOfExistFiles.contains(remFile)){
-								removeFile(target + remFile);	
+								removeFile(target + remFile);
 							}
 						}
 					}
@@ -850,28 +851,28 @@ public class FTPDialogListener {
 				throw new Exception (source + " is not a directory." );
 
 			String[] files =  fSource.list();
-			for(int i = 0; i < files.length; i++) {
-				String sourcefile = source + files[i];
+			for (String file : files) {
+				String sourcefile = source + file;
 				String targetFile = target + new File(sourcefile).getName();
 
-				String hotElementname = "";					
-				String attrname = "";				
+				String hotElementname = "";
+				String attrname = "";
 				hotElementname = new File(sourcefile).getName().substring(0, new File(sourcefile).getName().lastIndexOf(".xml"));
-				hotElementname = hotElementname.substring(hotElementname.lastIndexOf(".")+1);				
+				hotElementname = hotElementname.substring(hotElementname.lastIndexOf(".")+1);
 				attrname = new File(sourcefile).getName().substring(0, new File(sourcefile).getName().indexOf("." + hotElementname  + ".xml"));
 
-				if(changes.containsKey(hotElementname + "_" + attrname) && 
+				if(changes.containsKey(hotElementname + "_" + attrname) &&
 						(changes.get(hotElementname + "_" + attrname).equals("modify") ||
-								changes.get(hotElementname + "_" + attrname).equals("new"))) 
+								changes.get(hotElementname + "_" + attrname).equals("new")))
 					saveAs(sourcefile, targetFile);
 			}
 
 
 		} catch(Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..ftp server reply: "  + ftpClient.getReplyString(), e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; ..ftp server reply: "  + ftpClient.getReplyString(), e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 			hasError = true;
 			if(logtext != null)  logtext.append("..ftp server reply: "  + ftpClient.getReplyString());
@@ -888,7 +889,7 @@ public class FTPDialogListener {
 		ArrayList list = new ArrayList();
 		try {
 
-			source = source.endsWith("/") ? source : source + "/"; 
+			source = source.endsWith("/") ? source : source + "/";
 			target = target.endsWith("/") ? target : target + "/";
 
 
@@ -900,13 +901,13 @@ public class FTPDialogListener {
 				throw new Exception (source + " is not a directory." );
 
 			if(ftpClient instanceof SOSFTP)
-				changeDirectory("./");//change to Parent Directory	
+				changeDirectory("./");//change to Parent Directory
 
 			String[] files =  fSource.list();
-			for(int i = 0; i < files.length; i++) {
-				String sourcefile = source + files[i];
+			for (String file : files) {
+				String sourcefile = source + file;
 				//String targetFile = new File(sourcefile).getName();
-				String targetFile = target + new File(sourcefile).getName();	
+				String targetFile = target + new File(sourcefile).getName();
 				//System.out.println("source: " + sourcefile + ", target: " + targetFile);
 				saveAs(sourcefile, targetFile);
 				//list.add(target +targetFile);
@@ -916,16 +917,16 @@ public class FTPDialogListener {
 
 		} catch(Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..ftp server reply: "  + ftpClient.getReplyString(), e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; ..ftp server reply: "  + ftpClient.getReplyString(), e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 			hasError = true;
 			if(logtext != null)  logtext.append("..ftp server reply: "  + ftpClient.getReplyString());
 		}
 		return list;
 	}
-	public static byte[] getBytesFromFile(File file) throws IOException {
+	public static byte[] getBytesFromFile(final File file) throws IOException {
 
 		byte[] bytes = null;
 		try {
@@ -944,24 +945,24 @@ public class FTPDialogListener {
 
 			if (offset < bytes.length) {
 				throw new IOException("Could not completely read file "+file.getName());
-			}        
+			}
 			is.close();
 
 		} catch(Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 		}
 		return bytes;
 	}
 
-	public void deleteProfile(String profilename) throws Exception {
+	public void deleteProfile(final String profilename) throws Exception {
 		try {
 			setCurrProfileName(profilename);
 			//java.util.Properties profile = getCurrProfile();
-			 
+
 
 
 			byte[] b = getBytesFromFile(configFile);
@@ -997,9 +998,9 @@ public class FTPDialogListener {
 		} catch (java.io.IOException e) {
 
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not delete profile=" + profilename, e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; could not delete profile=" + profilename, e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 			hasError = true;
 			throw new Exception (e.getMessage());
@@ -1009,17 +1010,17 @@ public class FTPDialogListener {
 			cboConnectname.setItems(getProfileNames());
 			cboConnectname.setText(currProfileName);
 			txtPath.setText(currProfile.getProperty("root"));
-			
+
 		}
 
 
 	}
 
-	public void saveProfile(boolean savePassword) {
+	public void saveProfile(final boolean savePassword) {
 		try {
 
 			java.util.Properties profile = getCurrProfile();
-			 
+
 			String profilename = currProfileName;
 
 			byte[] b = getBytesFromFile(configFile);
@@ -1046,33 +1047,33 @@ public class FTPDialogListener {
 			s2 = s2 + "port=" + sosString.parseToString(profile.get("port")) + "\n";
 			s2 = s2 + "user=" + sosString.parseToString(profile.get("user")) + "\n";
 			try {
-				if(savePassword && sosString.parseToString(profile.get("password")).length() > 0) {				
+				if(savePassword && sosString.parseToString(profile.get("password")).length() > 0) {
 					String pass = String.valueOf(SOSUniqueID.get());
-					
+
 					Options.setProperty("profile.timestamp." + profilename, pass);
 					Options.saveProperties();
-					
+
 					if(pass.length() > 8) {
 						pass = pass.substring(pass.length()-8);
 					}
 
-					
+
 					String encrypt =  SOSCrypt.encrypt(pass , sosString.parseToString(profile.get("password")));
 					s2 = s2 + "password=" +encrypt + "\n";
 
 					profile.put("password", encrypt);
 
-					this.password =encrypt;
+					password =encrypt;
 
 					getProfiles().put(profilename, profile);
 				}
 			} catch(Exception e) {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; ..could not encrypt.", e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; ..could not encrypt.", e);
 				throw e;
-			}			
+			}
 			s2 = s2 + "root=" + sosString.parseToString(profile.get("root")) + "\n";
 			s2 = s2 + "localdirectory=" + sosString.parseToString(profile.get("localdirectory")) + "\n";
-			s2 = s2 + "transfermode=" + sosString.parseToString(profile.get("transfermode")) + "\n";    		 
+			s2 = s2 + "transfermode=" + sosString.parseToString(profile.get("transfermode")) + "\n";
 			s2 = s2 + "save_password=" + sosString.parseToString(profile.get("save_password")) + "\n";
 			s2 = s2 + "protocol=" + sosString.parseToString(profile.get("protocol")) + "\n";
 			s2 = s2 + "use_proxy=" + sosString.parseToString(profile.get("use_proxy")) + "\n";
@@ -1080,19 +1081,19 @@ public class FTPDialogListener {
 			s2 = s2 + "proxy_port=" + sosString.parseToString(profile.get("proxy_port")) + "\n";
 			//auth_method=publickey oder password oder both
 			s2 = s2 + "auth_method=" + sosString.parseToString(profile.get("auth_method")) + "\n";
-			s2 = s2 + "auth_file=" + sosString.parseToString(profile.get("auth_file")) + "\n";    		     		 
-			s2 = s2 + "\n\n";	
+			s2 = s2 + "auth_file=" + sosString.parseToString(profile.get("auth_file")) + "\n";
+			s2 = s2 + "\n\n";
 
 			s2 = s2 + s.substring(pos2);
 
-			// System.out.println("+++++++++++++++++++++++++++++++++++");			
+			// System.out.println("+++++++++++++++++++++++++++++++++++");
 			// System.out.println(s2);
 			// System.out.println("+++++++++++++++++++++++++++++++++++");
 
 			java.nio.ByteBuffer bbuf = java.nio.ByteBuffer.wrap(s2.getBytes());
 
 
- 
+
 			boolean append = false;
 
 			java.nio.channels.FileChannel wChannel = new java.io.FileOutputStream(configFile, append).getChannel();
@@ -1107,12 +1108,12 @@ public class FTPDialogListener {
 			 */
 		} catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not save configurations File: " + configFile , e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; could not save configurations File: " + configFile , e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 			hasError = true;
-			MainWindow.message("could not save configurations File: " + configFile + ": cause:\n" + e.getMessage(), SWT.ICON_WARNING);    		 
+			MainWindow.message("could not save configurations File: " + configFile + ": cause:\n" + e.getMessage(), SWT.ICON_WARNING);
 		} finally {
 
 			cboConnectname.setItems(getProfileNames());
@@ -1121,19 +1122,19 @@ public class FTPDialogListener {
 		}
 
 
-	}	
+	}
 
-	public void setConnectionsname(Combo cboConnectname_) {
+	public void setConnectionsname(final Combo cboConnectname_) {
 		cboConnectname = cboConnectname_;
 	}
-	
-	public void setRemoteDirectory(Text txtPath) {
+
+	public void setRemoteDirectory(final Text txtPath) {
 		this.txtPath = txtPath;
 	}
-	
 
-	public void removeFromProfilenames(String profileName) {
-		ArrayList l = new ArrayList() ;		 
+
+	public void removeFromProfilenames(final String profileName) {
+		ArrayList l = new ArrayList() ;
 		for(int i = 0; i < profileNames.length ; i++) {
 			if(!profileNames[i].equalsIgnoreCase(profileName)) {
 				l.add(prefix + profileNames[i]);
@@ -1148,13 +1149,13 @@ public class FTPDialogListener {
 	}
 
 
-	public boolean mkDirs(String path) {
-		try {		
+	public boolean mkDirs(final String path) {
+		try {
 
 			if(ftpClient.mkdir(path)) {
 				if(logtext != null)  logtext.append("..ftp server reply [mkdir] [path=" + path + "]: " + ftpClient.getReplyString() );
 			} else {
-				throw new Exception("..ftp server reply [mkdir failed] [path=" + path+ "]: " + ftpClient.getReplyString() );				
+				throw new Exception("..ftp server reply [mkdir failed] [path=" + path+ "]: " + ftpClient.getReplyString() );
 			}
 
 
@@ -1170,7 +1171,7 @@ public class FTPDialogListener {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 
@@ -1178,7 +1179,7 @@ public class FTPDialogListener {
 		return hasError;
 	}
 
-	public String getErrorMessage(Exception ex) {
+	public String getErrorMessage(final Exception ex) {
 		Throwable tr = ex.getCause();
 
 		String s = "";
@@ -1193,15 +1194,15 @@ public class FTPDialogListener {
 		}
 		return s;
 	}
-	
+
 	public void refresh() {
-		
+
 		if(cboConnectname != null && cboConnectname.getText().length() > 0 && currProfile != null ) {
 			cboConnectname.setItems(getProfileNames());
 			cboConnectname.setText(currProfileName);
 			txtPath.setText(currProfile.getProperty("root"));
 		}
 	}
-	
+
 }
 
