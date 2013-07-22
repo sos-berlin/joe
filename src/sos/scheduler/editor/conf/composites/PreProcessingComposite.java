@@ -1,5 +1,14 @@
 package sos.scheduler.editor.conf.composites;
 
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_PreProcessingComposite_Favourites;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_PreProcessingComposite_Favourites;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cmp_PreProcessingComposite_NameOrdering;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_G_PreProcessingComposite_Script;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_Name;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_PreProcessingComposite_Ordering;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Sp_PreProcessingComposite_Ordering;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_PreProcessingComposite_PreProcessingName;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -9,17 +18,18 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
+import sos.scheduler.editor.app.ErrorLog;
+import sos.scheduler.editor.classes.CompositeBaseClass;
+import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
-public class PreProcessingComposite extends SOSJOEMessageCodes {
+public class PreProcessingComposite extends CompositeBaseClass {
 	@SuppressWarnings("unused")
 	private final String	conSVNVersion	= "$Id$";
 
@@ -35,25 +45,35 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
 	private Group			gMain;
 	private Text			txtName			= null;
 	private Spinner			spinner			= null;
-	private boolean			init			= false;
-	private Combo			cboFavorite		= null;
+	private SOSComboBox			cboFavorite		= null;
 
 	/**
 	 * Create the composite.
 	 * @param parent
 	 * @param style
 	 */
-	public PreProcessingComposite(Group parent, int style, JobListener objDataProvider_) {
+	public PreProcessingComposite(final Group parent, final int style, final JobListener objDataProvider_) {
 		super(parent, style);
-		objDataProvider = objDataProvider_;
-		createGroup(parent);
+		try {
+			parent.setRedraw(false);
+			objDataProvider = objDataProvider_;
+			objParent = parent;
+			createGroup(parent);
+		}
+		catch (Exception e) {
+			new ErrorLog (e.getLocalizedMessage(), e);
+		}
+		finally {
+			parent.setRedraw(true);
+			parent.layout();
+		}
 	}
 
 	private void createGroup(final Group parent) {
 
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 4;
-		gMain = JOE_G_PreProcessingComposite_Script.Control(new Group(this, SWT.NONE));
+		gMain = JOE_G_PreProcessingComposite_Script.Control(new Group(parent, SWT.NONE));
 		gMain.setLayout(gridLayout);
 
 		final Composite scriptcom = JOE_Cmp_PreProcessingComposite_NameOrdering.Control(new Composite(gMain, SWT.NONE));
@@ -77,23 +97,24 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
 		txtName.setText(objDataProvider.getMonitorName());
 		txtName.setLayoutData(gd_txtName);
 		txtName.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				if (!init)
 					objDataProvider.setMonitorName(txtName.getText());
 			}
 		});
 
-		@SuppressWarnings("unused")
 		final Label orderingLabel = JOE_L_PreProcessingComposite_Ordering.Control(new Label(scriptcom, SWT.NONE));
 		GridData gd_orderingLabel = new GridData(SWT.CENTER, SWT.CENTER, true, false);
 		gd_orderingLabel.widthHint = 60;
 		orderingLabel.setLayoutData(gd_orderingLabel);
-		
+
 		spinner = JOE_Sp_PreProcessingComposite_Ordering.Control(new Spinner(scriptcom, SWT.BORDER));
 		GridData gd_spinner = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_spinner.widthHint = 106;
 		spinner.setLayoutData(gd_spinner);
 		spinner.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				if (!init)
 					objDataProvider.setOrdering(String.valueOf(spinner.getSelection()));
@@ -108,7 +129,7 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
 		gd_butFavorite.widthHint = 100;
 		butFavorite.setLayoutData(gd_butFavorite);
 
-		cboFavorite = JOE_Cbo_PreProcessingComposite_Favourites.Control(new Combo(gMain, SWT.NONE));
+		cboFavorite = new SOSComboBox(gMain, JOE_Cbo_PreProcessingComposite_Favourites);
 		GridData gd_cboFavorite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
 		gd_cboFavorite.widthHint = 145;
 		cboFavorite.setLayoutData(gd_cboFavorite);
@@ -121,21 +142,16 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
 			language = 0;
 		}
 
-		spinner.setSelection((objDataProvider.getOrdering().length() == 0 ? 0 : Integer.parseInt(objDataProvider.getOrdering())));
+		spinner.setSelection(objDataProvider.getOrdering().length() == 0 ? 0 : Integer.parseInt(objDataProvider.getOrdering()));
 
 		init = false;
-	}
-
-	@Override
-	protected void checkSubclass() {
-		// Disable the check that prevents subclassing of SWT components
 	}
 
 	public Group getgMain() {
 		return gMain;
 	}
 
-	public Combo getCboFavorite() {
+	public SOSComboBox getCboFavorite() {
 		return cboFavorite;
 	}
 
@@ -145,6 +161,10 @@ public class PreProcessingComposite extends SOSJOEMessageCodes {
 
 	public Text getTxtName() {
 		return txtName;
+	}
+
+	@Override
+	protected void applyInputFields(final boolean flgT) {
 	}
 
 }

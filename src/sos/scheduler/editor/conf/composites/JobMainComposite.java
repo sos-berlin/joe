@@ -1,5 +1,15 @@
 package sos.scheduler.editor.conf.composites;
 
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobMainComposite_BrowseProcessClass;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobMainComposite_ShowProcessClass;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JobMainComposite_ProcessClass;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_G_JobMainComposite_MainOptions;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobMainComposite_JobName;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobMainComposite_JobTitle;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobMainComposite_ProcessClass;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JobMainComposite_JobName;
+import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JobMainComposite_JobTitle;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -15,7 +25,6 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -23,13 +32,15 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.classes.CompositeBaseClass;
+import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.conf.listeners.JobListener;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
-public class JobMainComposite extends SOSJOEMessageCodes {
+public class JobMainComposite extends CompositeBaseClass {
 	@SuppressWarnings("unused")
 	private final String	conSVNVersion		= "$Id$";
 
@@ -47,12 +58,11 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 	@SuppressWarnings("unused")
 	private Label			lblProcessClass		= null;
 	private Text			tbxJobTitle			= null;
-	private Combo			cProcessClass		= null;
+	private SOSComboBox		cProcessClass		= null;
 	private Button			butBrowse			= null;
-	private boolean			init				= true;
 	private Button			butShowProcessClass	= null;
 	private Label			label				= null;
-	private int				intComboBoxStyle	= SWT.NONE;
+//	private final int		intComboBoxStyle	= SWT.NONE;
 	private GridLayout		gridLayout			= null;
 
 	/**
@@ -60,10 +70,21 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 	 * @param parent
 	 * @param style
 	 */
-	public JobMainComposite(Group parent, int style, JobListener objDataProvider_) {
+	public JobMainComposite(final Group parent, final int style, final JobListener objDataProvider_) {
 		super(parent, style);
-		objDataProvider = objDataProvider_;
-		createGroup(parent);
+		try {
+			parent.setRedraw(false);
+			objDataProvider = objDataProvider_;
+			objParent = parent;
+			createGroup(parent);
+		}
+		catch (Exception e) {
+			new ErrorLog(e.getLocalizedMessage(), e);
+		}
+		finally {
+			parent.setRedraw(true);
+			parent.layout();
+		}
 	}
 
 	private void createGroup(final Group parent) {
@@ -81,6 +102,7 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 
 		tbxJobName = JOE_T_JobMainComposite_JobName.Control(new Text(gMain, SWT.BORDER));
 		tbxJobName.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
 				if (!init) {
 					e.doit = Utils.checkElement(objDataProvider.getJobName(), objDataProvider.get_dom(), Editor.JOB, null);
@@ -89,7 +111,8 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 		});
 		tbxJobName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1));
 		tbxJobName.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
+			@Override
+			public void modifyText(final ModifyEvent e) {
 				if (init) {
 					return;
 				}
@@ -105,7 +128,8 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 		tbxJobTitle = JOE_T_JobMainComposite_JobTitle.Control(new Text(gMain, SWT.BORDER));
 		tbxJobTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 4, 1));
 		tbxJobTitle.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
+			@Override
+			public void modifyText(final ModifyEvent e) {
 				if (init)
 					return;
 				objDataProvider.setTitle(tbxJobTitle.getText());
@@ -120,6 +144,7 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 		butShowProcessClass = JOE_B_JobMainComposite_ShowProcessClass.Control(new Button(gMain, SWT.ARROW | SWT.DOWN));
 		butShowProcessClass.setVisible(objDataProvider.get_dom() != null && !objDataProvider.get_dom().isLifeElement());
 		butShowProcessClass.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				String strT = cProcessClass.getText();
 				if (strT.length() > 0) {
@@ -130,10 +155,12 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 		butShowProcessClass.setAlignment(SWT.RIGHT);
 		butShowProcessClass.setVisible(true);
 
-		cProcessClass = JOE_Cbo_JobMainComposite_ProcessClass.Control(new Combo(gMain, intComboBoxStyle));
+		cProcessClass = new SOSComboBox(gMain, JOE_Cbo_JobMainComposite_ProcessClass);
+		cProcessClass.setEditable(false);
 		cProcessClass.setMenu(new ContextMenu(cProcessClass, objDataProvider.get_dom(), Editor.PROCESS_CLASSES).getMenu());
 
 		cProcessClass.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 
 				if (init) {
@@ -145,7 +172,8 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 		});
 		cProcessClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1));
 		cProcessClass.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
 
 				if (init) {
 					return;
@@ -156,7 +184,7 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 
 		cProcessClass.addKeyListener(new KeyListener() {
 			@Override
-			public void keyPressed(KeyEvent event) {
+			public void keyPressed(final KeyEvent event) {
 				if (event.keyCode == SWT.F1) {
 					objDataProvider.openXMLAttributeDoc("job", "process_class");
 				}
@@ -166,22 +194,22 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 			}
 
 			@Override
-			public void keyReleased(KeyEvent arg0) {
+			public void keyReleased(final KeyEvent arg0) {
 			}
 		});
 
 		cProcessClass.addMouseListener(new MouseListener() {
 
 			@Override
-			public void mouseUp(MouseEvent arg0) {
+			public void mouseUp(final MouseEvent arg0) {
 			}
 
 			@Override
-			public void mouseDown(MouseEvent arg0) {
+			public void mouseDown(final MouseEvent arg0) {
 			}
 
 			@Override
-			public void mouseDoubleClick(MouseEvent arg0) {
+			public void mouseDoubleClick(final MouseEvent arg0) {
 				String strT = cProcessClass.getText();
 				if (strT.length() > 0) {
 					ContextMenu.goTo(strT, objDataProvider.get_dom(), Editor.PROCESS_CLASSES);
@@ -191,24 +219,24 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 
 		butBrowse = JOE_B_JobMainComposite_BrowseProcessClass.Control(new Button(gMain, SWT.NONE));
 		butBrowse.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_PROCESS_CLASS);
 				if (name != null && name.length() > 0)
 					cProcessClass.setText(name);
 			}
 		});
-
 	}
 
 	public void init() {
 		init = true;
 		tbxJobName.setText(objDataProvider.getJobName());
 		tbxJobTitle.setText(objDataProvider.getTitle());
-		tbxJobName.setFocus();
-		String process_class = objDataProvider.getProcessClass();
 		cProcessClass.setItems(objDataProvider.getProcessClasses());
+		String process_class = objDataProvider.getProcessClass();
 		cProcessClass.setText(process_class);
 		init = false;
+		tbxJobName.setFocus();
 	}
 
 	private void checkName() {
@@ -220,12 +248,12 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 		}
 	}
 
-	@Override
-	protected void checkSubclass() {
-	}
-
 	public Group getgMain() {
 		return gMain;
+	}
+
+	@Override
+	protected void applyInputFields(final boolean flgT) {
 	}
 
 }
