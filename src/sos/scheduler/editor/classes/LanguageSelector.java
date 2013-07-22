@@ -1,12 +1,13 @@
 package sos.scheduler.editor.classes;
 
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 /**
-* \class LanguageSelector
-*
-* \brief LanguageSelector -
-*
+* \class LanguageSelector 
+* 
+* \brief LanguageSelector - 
+* 
 * \details
 *
 * \code
@@ -26,92 +27,33 @@ import org.eclipse.swt.widgets.Composite;
 * Created on 25.08.2011 13:54:32
  */
 
-public class LanguageSelector extends SOSComboBox {
-
-	// TODO das muß alles in den Script-Tag im JSModel
-	//	public static final String		conLanguagePL_SQL		= "pl/sql";
-	//	public static final String		conLanguagePERL_SCRIPT	= "perlScript";
-	//	public static final String		conLanguageVB_SCRIPT	= "VBScript";
-	//	public static final String		conLanguageJAVASCRIPT	= "javascript";
-	//	public static final String		conLanguageSHELL		= "shell";
-	//	public static final String		conLanguageJAVA			= "java";
-	//	public static final String		conLanguageSQL_PLUS		= "sql*plus";
-	//	public static final String		conLanguageSSH			= "ssh";
+public class LanguageSelector extends Combo {
 
 	@SuppressWarnings("unused")
-	private final String			conClassName		= "LanguageSelector";
+	private final String	conClassName	= "LanguageSelector";
 
-	//	private static final String[]	_languagesJob			= { conLanguageSHELL, conLanguageJAVA, conLanguageJAVASCRIPT, conLanguageVB_SCRIPT,
-	//			conLanguagePERL_SCRIPT, "javax.script:rhino", conLanguagePL_SQL, conLanguageSQL_PLUS, conLanguageSSH, "" };
-//	public static final String[]	_languagesMonitor	= { LanguageDescriptorList.conLanguageJAVA, LanguageDescriptorList.conLanguageJAVASCRIPT,
-//			LanguageDescriptorList.conLanguageVB_SCRIPT, LanguageDescriptorList.conLanguagePERL_SCRIPT, "javax.script:rhino", "" };
-
-	public LanguageSelector(final Composite pobjComposite, final int arg1) {
+	public LanguageSelector(Composite pobjComposite, int arg1) {
 		super(pobjComposite, arg1);
 	}
-
-	public boolean isScriptLanguage() {
+	
+	public boolean isScriptLanguage () {
 		return !this.isShell() && !this.isJava();
 	}
-
-	public LanguageDescriptor getLanguageDescriptor() {
-		String strT = getText();
-		LanguageDescriptor objLD = LanguageDescriptorList.getLanguageDescriptor(strT);
-		return objLD;
+	
+    public void selectLanguageItem(int languageId) {
+    	this.select(languageId);
+    }
+	
+	public boolean isJava (){
+		return this.getText().equalsIgnoreCase("java");
 	}
-	public void selectLanguageItem(final int languageId) {
-		LanguageDescriptor objLD = LanguageDescriptorList.getLanguageDescriptor(languageId);
-		if (objLD != null) {
-			this.select(objLD.getLanguageName());
-		}
-	}
-
-	public void selectLanguageItem(final LanguageDescriptor pobjLD) {
-		if (pobjLD != null) {
-			this.select(pobjLD.getLanguageName());
-		}
-	}
-
-	/**
-	 * Das sind jobs, die mit einerJava-Klasse ausgeführt werden (API), aber im JOE wie ein Job mit einem Script dargestellt werden können.
-	 * Damit ist für den Nutzer nicht ersichtlich, das das Script von einer Java-Klasse ausgeführt wird.
-	*
-	* \brief isHiddenJavaAPIJob
-	*
-	* \details
-	*
-	* \return boolean
-	*
-	 */
-	public boolean isHiddenJavaAPIJob() {
-		boolean flgR = false;
-		flgR = isSSH() | isSqlPlus() | isPlSql();
-		return flgR;
-	}
-
-	public boolean isSSH() {
-		return this.getText().equalsIgnoreCase(LanguageDescriptorList.conLanguageSSH);
-	}
-
-	public boolean isSqlPlus() {
-		return this.getText().equalsIgnoreCase(LanguageDescriptorList.conLanguageSQL_PLUS);
-	}
-
-	public boolean isPlSql() {
-		return this.getText().equalsIgnoreCase(LanguageDescriptorList.conLanguagePL_SQL);
-	}
-
-	public boolean isJava() {
-		return this.getText().equalsIgnoreCase(LanguageDescriptorList.conLanguageJAVA);
-	}
-
-	public boolean isShell() {
+	
+	public boolean isShell () {
 		String strLang = this.getText();
-		return strLang.equalsIgnoreCase(LanguageDescriptorList.conLanguageSHELL);
+		return strLang.equalsIgnoreCase("shell");
 	}
-
-	@Override
+	
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
-	}
+		} 
 }

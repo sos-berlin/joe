@@ -16,7 +16,6 @@ import com.sos.i18n.annotation.I18NResourceBundle;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class Editor {
-
 	private final static String	conSVNVersion			= "$Id$";
 	private static Logger		logger					= Logger.getLogger(Editor.class);
 	@SuppressWarnings("unused")

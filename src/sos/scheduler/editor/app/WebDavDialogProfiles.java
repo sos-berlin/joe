@@ -1,8 +1,6 @@
 package sos.scheduler.editor.app;
 
 
-import java.util.Properties;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -22,20 +20,21 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
-
-import sos.util.SOSClassUtil;
+import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.ResourceManager;
 import sos.util.SOSString;
+import java.util.*;
 
 
 public class WebDavDialogProfiles {
 
 
 	private              Text                   txtProxyPort                  = null;
-
+	
 	private              Text                   txtProxyServer                = null;
-
+	
 	private              Button                 useProxyButton                = null;
-
+	
 	private              Group                  schedulerGroup                = null;
 
 	private              SOSString              sosString                     = null;
@@ -53,25 +52,25 @@ public class WebDavDialogProfiles {
 	private              Text                   txtURL                       = null;
 
 	private              Text                   txtLocalDirectory             = null;
-
+ 
 	private              boolean                newProfile                    = false;
 
-	private              Button                 butSavePassword               = null;
+	private              Button                 butSavePassword               = null; 
 
 	private              WebDavDialogListener   listener                      = null;
 
-	private              boolean                init                          = false;
+	private              boolean                init                          = false;       
 
 	private              Button                 butApply                      = null;
-
+	
 	private              boolean                saveSettings                  = false;
 
-    private              Combo                  cboProtokol                   = null;
-
+    private              Combo                  cboProtokol                   = null; 
+        
     private              boolean                saved                         = false; //hilsvariable
-
-
-	public WebDavDialogProfiles(final WebDavDialogListener listener_) {
+    
+        
+	public WebDavDialogProfiles(WebDavDialogListener listener_) {
 		listener = listener_;
 		sosString = new SOSString();
 
@@ -81,10 +80,9 @@ public class WebDavDialogProfiles {
 
 		schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE
 				| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
-
+		
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
-			@Override
-			public void keyTraversed(final TraverseEvent e) {
+			public void keyTraversed(final TraverseEvent e) {				
 				if(e.detail == SWT.TRAVERSE_ESCAPE) {
 					close();
 					saved = true;
@@ -92,9 +90,8 @@ public class WebDavDialogProfiles {
 				}
 			}
 		});
-
+		
 		schedulerConfigurationShell.addDisposeListener(new DisposeListener() {
-			@Override
 			public void widgetDisposed(final DisposeEvent e) {
 				close();
 
@@ -116,14 +113,14 @@ public class WebDavDialogProfiles {
 		{
 			schedulerGroup = new Group(schedulerConfigurationShell, SWT.NONE);
 			/*schedulerGroup.addTraverseListener(new TraverseListener() {
-				public void keyTraversed(final TraverseEvent e) {
+				public void keyTraversed(final TraverseEvent e) {					
 					if(e.detail == SWT.TRAVERSE_ESCAPE) {
 						close();
 						saved = true;
 						schedulerConfigurationShell.dispose();
 					}
-
-
+					
+					
 				}
 			});*/
 			schedulerGroup.setText("Profiles");
@@ -160,10 +157,9 @@ public class WebDavDialogProfiles {
 			lblName.setText("Name");
 
 			cboConnectname = new Combo(group, SWT.NONE);
-
+			
 			cboConnectname.setItems(listener.getProfileNames());
 			cboConnectname.addModifyListener(new ModifyListener() {
-				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 
@@ -172,7 +168,6 @@ public class WebDavDialogProfiles {
 			final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 			cboConnectname.setLayoutData(gridData_2);
 			cboConnectname.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					initForm();
 				}
@@ -185,7 +180,7 @@ public class WebDavDialogProfiles {
 			cboProtokol = new Combo(group, SWT.NONE);
 			cboProtokol.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 			cboProtokol.setItems(new String[] {"WebDav", "SWebDav"});
-
+			
 			cboProtokol.select(0);
 
 			final Label userNameLabel = new Label(group, SWT.NONE);
@@ -193,7 +188,6 @@ public class WebDavDialogProfiles {
 
 			txtUsername = new Text(group, SWT.BORDER);
 			txtUsername.addModifyListener(new ModifyListener() {
-				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 				}
@@ -202,11 +196,10 @@ public class WebDavDialogProfiles {
 			//txtUsername.setText(currProfile.get("user") != null ? currProfile.get("user").toString() : "");
 
 			final Label passwordLabel = new Label(group, SWT.NONE);
-			passwordLabel.setText("Password");
+			passwordLabel.setText("Password");			
 
 			txtPassword = new Text(group, SWT.PASSWORD | SWT.BORDER);
 			txtPassword.addModifyListener(new ModifyListener() {
-				@Override
 				public void modifyText(final ModifyEvent e) {
 					if(init) {
 						try {
@@ -240,7 +233,6 @@ public class WebDavDialogProfiles {
 
 			txtURL = new Text(group, SWT.BORDER);
 			txtURL.addModifyListener(new ModifyListener() {
-				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 				}
@@ -253,7 +245,6 @@ public class WebDavDialogProfiles {
 
 			txtLocalDirectory = new Text(group, SWT.BORDER);
 			txtLocalDirectory.addModifyListener(new ModifyListener() {
-				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 				}
@@ -268,11 +259,9 @@ public class WebDavDialogProfiles {
 
 			butSavePassword = new Button(group, SWT.CHECK);
 			butSavePassword.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetDefaultSelected(final SelectionEvent e) {
-
+					
 				}
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					setEnabled();
 				}
@@ -290,7 +279,6 @@ public class WebDavDialogProfiles {
 
 			useProxyButton = new Button(group_1, SWT.CHECK);
 			useProxyButton.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					txtProxyServer.setEnabled(useProxyButton.getSelection());
 					txtProxyPort.setEnabled(useProxyButton.getSelection());
@@ -306,7 +294,6 @@ public class WebDavDialogProfiles {
 
 			txtProxyServer = new Text(group_1, SWT.BORDER);
 			txtProxyServer.addModifyListener(new ModifyListener() {
-				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 				}
@@ -318,7 +305,6 @@ public class WebDavDialogProfiles {
 
 			txtProxyPort = new Text(group_1, SWT.BORDER);
 			txtProxyPort.addModifyListener(new ModifyListener() {
-				@Override
 				public void modifyText(final ModifyEvent e) {
 					setEnabled();
 				}
@@ -330,7 +316,6 @@ public class WebDavDialogProfiles {
 			butApply = new Button(schedulerGroup, SWT.NONE);
 			butApply.setEnabled(false);
 			butApply.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					apply();
 
@@ -342,21 +327,20 @@ public class WebDavDialogProfiles {
 
 			final Button butNewProfile = new Button(schedulerGroup, SWT.NONE);
 			butNewProfile.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					newProfile = true;
-					cboConnectname.setText("");
+					cboConnectname.setText("");					
 					txtUsername.setText("");
 					txtPassword.setText("");
 					txtURL.setText("");
 					txtLocalDirectory.setText("");
-					butSavePassword.setSelection(false);
+					butSavePassword.setSelection(false);					
 					txtProxyPort.setText("");
 					txtProxyServer.setText("");
 					txtProxyPort.setEnabled(false);
 					txtProxyServer.setEnabled(false);
 					useProxyButton.setSelection(false);
-
+					
 					cboProtokol.select(0);
 				}
 			});
@@ -366,9 +350,8 @@ public class WebDavDialogProfiles {
 
 			final Button butRemove = new Button(schedulerGroup, SWT.NONE);
 			butRemove.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
-					listener.removeProfile(cboConnectname.getText());
+					listener.removeProfile(cboConnectname.getText());					
 					if(cboConnectname.getItemCount() > 0)
 						cboConnectname.select(0);
 					initForm();
@@ -395,9 +378,8 @@ public class WebDavDialogProfiles {
 
 		final Button butClose = new Button(schedulerConfigurationShell, SWT.NONE);
 		butClose.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(final SelectionEvent e) {
-
+				
 				close();
 				saved = true;
 				schedulerConfigurationShell.dispose();
@@ -406,9 +388,8 @@ public class WebDavDialogProfiles {
 		butClose.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		butClose.setText("Close");
 		cboProtokol.addModifyListener(new ModifyListener() {
-			@Override
 			public void modifyText(final ModifyEvent e) {
-
+								
 				setEnabled();
 			}
 		});
@@ -419,7 +400,7 @@ public class WebDavDialogProfiles {
 		schedulerConfigurationShell.open();
 	}
 
-
+	
 	private void initForm() {
 		try {
 			init = true;
@@ -427,7 +408,7 @@ public class WebDavDialogProfiles {
 			String s = cboConnectname.getText();
 			cboConnectname.setItems(listener.getProfileNames());//löscht den Eintrag, daher mit s merken und wieder zurückschreiben
 			cboConnectname.setText(s);
-
+			
 			currProfile = listener.getProfiles().get(cboConnectname.getText()) != null ? (Properties)listener.getProfiles().get(cboConnectname.getText()) : new Properties();
 
 			listener.setCurrProfile(currProfile);
@@ -449,23 +430,24 @@ public class WebDavDialogProfiles {
 				txtProxyServer.setEnabled(false);
 				txtProxyPort.setEnabled(false);
 				txtProxyServer.setText("");
-				txtProxyPort.setText("");
+				txtProxyPort.setText("");						
 			}
 
-
+			
 			String protocol = sosString.parseToString(currProfile.get("protocol"));
 			if(protocol.length() == 0)
 				protocol = "WebDav";
-
-
-			cboProtokol.setText(protocol);
+			
+			
+			cboProtokol.setText(protocol);			
 			butApply.setEnabled(false);
 			newProfile = false;
 			init = false;
 		} catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ;could not reaad WebDav Profiles", e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not reaad WebDav Profiles", e);
 			} catch(Exception ee) {
+				//tu nichts
 			}
 			MainWindow.message("could not reaad WebDav Profiles:" + e.getMessage()  , SWT.ICON_WARNING);
 		}
@@ -475,7 +457,7 @@ public class WebDavDialogProfiles {
 	private void setEnabled() {
 		if(butApply != null)
 			butApply.setEnabled(cboConnectname.getText().length() > 0);
-
+				
 	}
 
 	private void apply() {
@@ -484,7 +466,7 @@ public class WebDavDialogProfiles {
 			String pName = cboConnectname.getText();
 			prop.put("name", pName);
 			prop.put("user", txtUsername.getText());
-
+			
 
 			prop.put("password", txtPassword.getText());
 			prop.put("url", txtURL.getText());
@@ -495,20 +477,20 @@ public class WebDavDialogProfiles {
 
 			prop.put("localdirectory", txtLocalDirectory.getText());
 
-			prop.put("save_password", butSavePassword.getSelection() ? "yes" : "no");
+			prop.put("save_password", (butSavePassword.getSelection() ? "yes" : "no"));
 			prop.put("protocol", cboProtokol.getText());
 
 			if(useProxyButton.getSelection()) {
 				prop.put("use_proxy", "yes");
 				prop.put("proxy_server", txtProxyServer.getText());
 				prop.put("proxy_port", txtProxyPort.getText());
-			}
+			}	
 
 
-			if(newProfile && !listener.getProfiles().containsKey(cboConnectname.getText()) ||
+			if((newProfile && !listener.getProfiles().containsKey(cboConnectname.getText())) ||
 					listener.getProfiles().isEmpty()) {
 				//neuer Eintrag
-				listener.getProfiles().put(pName, prop);
+				listener.getProfiles().put(pName, prop);	
 
 			} else {
 				listener.removeProfile(pName);
@@ -531,32 +513,32 @@ public class WebDavDialogProfiles {
 			butApply.setEnabled(false);
 		} catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ;could not save Profile " + cboConnectname.getText(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not save Profile " + cboConnectname.getText(), e);
 			} catch(Exception ee) {
-
+				//tu nichts
 			}
 			MainWindow.message("could not save WebDav Profile " + cboConnectname.getText() + ": "  + e.getMessage()  , SWT.ICON_WARNING);
 		}
 	}
 
-
+	
 	private void close() {
 		if(saved)
 			return;
-
+		
 		if (butApply.getEnabled()) {
 			int cont = MainWindow.message(schedulerConfigurationShell, sos.scheduler.editor.app.Messages.getString("MainListener.apply_changes"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-			if(cont == SWT.OK) {
+			if(cont == SWT.OK) {				
 				apply();
-			}
+			} 
 		}
 		if(saveSettings) {
 			//listener.saveSettings();
 			listener.saveProfile(butSavePassword.getSelection());
 		}
 	}
-
-
+	
+	
 	private void setToolTip() {
 		cboConnectname.setToolTipText(Messages.getTooltip("webdav_profile_dialog.profilename"));
 		cboProtokol.setToolTipText(Messages.getTooltip("webdav_profile_dialog.protocol"));
@@ -564,7 +546,7 @@ public class WebDavDialogProfiles {
 		txtPassword.setToolTipText(Messages.getTooltip("webdav_profile_dialog.password"));
 		txtURL.setToolTipText(Messages.getTooltip("webdav_profile_dialog.url"));
 		txtLocalDirectory.setToolTipText(Messages.getTooltip("webdav_profile_dialog.local_directory"));
-		butSavePassword.setToolTipText(Messages.getTooltip("webdav_profile_dialog.save_password"));
+		butSavePassword.setToolTipText(Messages.getTooltip("webdav_profile_dialog.save_password"));		
 
 	}
 

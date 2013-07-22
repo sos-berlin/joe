@@ -3,24 +3,20 @@ package sos.scheduler.editor.conf.listeners;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.DetailDom;
-import sos.scheduler.editor.conf.forms.DetailForm;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
-import sos.util.SOSClassUtil;
+import sos.scheduler.editor.conf.forms.DetailForm;
+import org.jdom.Document;
+import sos.scheduler.editor.conf.DetailDom;
 
 
 public class JobChainConfigurationListener{
@@ -31,20 +27,20 @@ public class JobChainConfigurationListener{
 
 	private String                    filename        = null;
 
-	private String                    jobChainname    = null;
+	private String                    jobChainname    = null; 
 
-	public JobChainConfigurationListener(final JobChainConfigurationForm gui, final DetailDom dom) {
+	public JobChainConfigurationListener(JobChainConfigurationForm gui, DetailDom dom) {
 		_gui = gui;
 		_dom = dom;
-	}
+	} 
 
 
-	public void treeFillMain(final Tree tree, final Composite c, final String jobChainname_) {
+	public void treeFillMain(Tree tree, Composite c, String jobChainname_) {
 		jobChainname = jobChainname_;
 		treeFillMain(tree, c);
 	}
 
-	public void treeFillMain(final Tree tree, final Composite c) {
+	public void treeFillMain(Tree tree, Composite c) {
 		tree.removeAll();
 
 		if(_dom.getDoc() != null) {
@@ -59,7 +55,7 @@ public class JobChainConfigurationListener{
 		TreeItem item = new TreeItem(tree, SWT.NONE);
 
 		treeFillState(item);
-		item.setText(jobChainname != null? jobChainname:"");
+		item.setText((jobChainname != null? jobChainname:""));
 		item.setExpanded(true);
 
 		tree.setSelection(new TreeItem[] { tree.getItem(0) });
@@ -67,18 +63,18 @@ public class JobChainConfigurationListener{
 
 	}
 
-	public void setFilename(final String filename_) {
+	public void setFilename(String filename_) {
 		filename = filename_;
 	}
 
-	public void treeFillState(final TreeItem parent) {
+	public void treeFillState(TreeItem parent) {
 		parent.removeAll();
-		ArrayList listOfState = getAllDetailState();
+		ArrayList listOfState = getAllDetailState(); 
 
 		for (int i =0; i < listOfState.size(); i++) {
 			TreeItem item = new TreeItem(parent, SWT.NONE);
 			item.setData(listOfState.get(i));
-			item.setText("State: " + listOfState.get(i).toString());
+			item.setText("State: " + listOfState.get(i).toString());        	
 		}
 
 		parent.setExpanded(true);
@@ -88,8 +84,8 @@ public class JobChainConfigurationListener{
 		ArrayList list = new ArrayList();
 
 
-		Element root        = null;
-		Element order       = null;
+		Element root        = null;					
+		Element order       = null;  
 		//Element params_     = null;
 		List process     = null;
 
@@ -115,7 +111,7 @@ public class JobChainConfigurationListener{
 
 
 			if(order != null) {
-				process = order.getChildren("process");
+				process = order.getChildren("process");		
 			}
 
 			for (int i = 0; i < process.size(); i++) {
@@ -125,9 +121,9 @@ public class JobChainConfigurationListener{
 
 		} catch(Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			} catch(Exception ee) {
-
+				//tu nichts
 			}
 
 			System.err.println("..error im JobChainConfigurationListener.getAllDetailState(): " + e.getMessage());
@@ -136,7 +132,7 @@ public class JobChainConfigurationListener{
 		return list;
 	}
 
-	public void treeExpandJob(final TreeItem parent, final String job) {
+	public void treeExpandJob(TreeItem parent, String job) {
 
 		if (parent.getText().equals("Jobs")) {
 
@@ -149,7 +145,7 @@ public class JobChainConfigurationListener{
 
 	}
 
-	public boolean treeSelection(final Tree tree, final Composite c) {
+	public boolean treeSelection(Tree tree, Composite c) {
 		try {
 			if (tree.getSelectionCount() > 0) {
 
@@ -166,14 +162,14 @@ public class JobChainConfigurationListener{
 				DetailForm df = null;
 				try {
 					if(jobChainname == null) {
-
+						
 						df = new DetailForm(c, SWT.NONE, Editor.DETAILS, _dom, _gui, false, null);
 						df.setLayout(new org.eclipse.swt.layout.FillLayout());
-
-					} else {
-						Composite composite = new Composite(c.getShell(), SWT.NONE);
+						
+					} else {                
+						Composite composite = new Composite(c.getShell(), SWT.NONE);						
 						composite.setLayout(new org.eclipse.swt.layout.FillLayout());
-						df = new DetailForm(composite, SWT.NONE, jobChainname, item.getData() != null && !(item.getData() instanceof sos.scheduler.editor.app.TreeData)? item.getData().toString(): null, null, Editor.DETAILS, _dom, _gui, false, null);
+						df = new DetailForm(composite, SWT.NONE, jobChainname, item.getData() != null && !(item.getData() instanceof sos.scheduler.editor.app.TreeData)? item.getData().toString(): null, null, Editor.DETAILS, _dom, _gui, false, null);						
 						df.setLayout(new org.eclipse.swt.layout.FillLayout());
 					}
 					df.setTree(tree);
@@ -188,15 +184,15 @@ public class JobChainConfigurationListener{
 						return false;
 					}
 
-				} catch (Exception e) {
+				} catch (Exception e) {	
 
 					try {
-						new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+						new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 					} catch(Exception ee) {
-
+						//tu nichts
 					}
 
-					MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
+					MainWindow.message(e.getMessage(), SWT.ICON_ERROR);	
 					df.dispose();
 
 					_gui.close();
@@ -210,9 +206,9 @@ public class JobChainConfigurationListener{
 		} catch (Exception e) {
 			c.layout();
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			} catch(Exception ee) {
-
+				//tu nichts
 			}
 
 			e.printStackTrace();
@@ -222,8 +218,8 @@ public class JobChainConfigurationListener{
 		return true;
 	}
 
-	public void setJobChainname(final String jobChainname) {
-		this.jobChainname = jobChainname;
+	public void setJobChainname(String jobChainname) {
+		this.jobChainname = jobChainname;		
 	}
 
 
@@ -232,22 +228,22 @@ public class JobChainConfigurationListener{
 	}
 
 
-	public void setDom(final DetailDom _dom) {
+	public void setDom(DetailDom _dom) {
 		this._dom = _dom;
 	}
 
-	public void deleteState(final String state, final TreeItem parent) {
-		parent.removeAll();
+	public void deleteState(String state, TreeItem parent) {
+		parent.removeAll();        
 		Element jobChain = _dom.getRoot().getChild("job_chain");
 		if (jobChain != null) {
 			//Iterator it = jobChain.getChildren().iterator();
 			Element order = jobChain.getChild("order");
 			List  pList = order.getChildren("process");
-			for(int i = 0; i< pList.size(); i++) {
+			for(int i = 0; i< pList.size(); i++) {            
 				Object o = pList.get(i);
 				if (o instanceof Element) {
 					Element element = (Element) o;
-					TreeItem item = new TreeItem(parent, SWT.NONE);
+					TreeItem item = new TreeItem(parent, SWT.NONE);                   
 					item.setText("State: " + Utils.getAttributeValue("state", element));
 					item.setData(Utils.getAttributeValue("state", element));
 

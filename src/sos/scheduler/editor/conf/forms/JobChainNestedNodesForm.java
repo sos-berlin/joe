@@ -1,39 +1,9 @@
 package sos.scheduler.editor.conf.forms;
 
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_Down;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_AddMissingNodes;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_EndNode;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_FullNode;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_Insert;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_NewNode;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_RemoveNode;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_Reorder;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobChainForm_Parameter;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobChainNodes_ApplyNode;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobChainNodes_Browse;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobChainNodes_Goto;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_Up;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JCNestedNodesForm_JobChain;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JobChainNodes_ErrorState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JobChainNodes_NextState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_E_0002;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNestedNodesForm_JobChain;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainNodes_ErrorState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainNodes_NextState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainNodes_State;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_JCNestedNodesForm_NestedNodes;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_JCNestedNodesForm_RemoveNode;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_JobChain_StateAlreadyDefined;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_ErrorState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_JobChain;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_NextState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_Node;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_OnError;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_State;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JobChainNodes_State;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Tbl_JCNestedNodesForm_Nodes;
-
+import java.util.List;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -47,14 +17,16 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
@@ -64,121 +36,123 @@ import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
+import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.classes.CompositeBaseClass;
-import sos.scheduler.editor.classes.ISOSTableMenueListeners;
-import sos.scheduler.editor.classes.SOSComboBox;
-import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainNestedListener;
-import sos.util.SOSClassUtil;
 
-public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes */ implements ISOSTableMenueListeners, IUnsaved, IUpdateLanguage {
 
-	private final String			conClassName	= "JobChainNodesForm";
-	@SuppressWarnings("unused")
-	private final String			conSVNVersion	= "$Id$";
+public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
-	private Button					butAddMissingNodes;
-	private Button					bNewNode		= null;
-	private SOSTable					tNodes			= null;
-	private Button					bApplyNode		= null;
-	private SOSComboBox				cErrorState		= null;
-	private Label					label9			= null;
-	private SOSComboBox				cNextState		= null;
-	private Label					label8			= null;
-	private Button					bEndNode		= null;
-	private Button					bFullNode		= null;
-	private Composite				cType			= null;
-	private SOSComboBox				cJobChain		= null;
-	private Label					label7			= null;
-	private Text					tState			= null;
-	private Label					label6			= null;
-	private JobChainNestedListener	listener		= null;
-	private Group					jobChainGroup	= null;
-	private Button					bRemoveNode		= null;
-	private Group					gNodes			= null;
-	private boolean					refresh			= false;
-	private Button					butDetailsJob	= null;
-	private Button					butBrowse		= null;
-	private Button					butUp			= null;
-	private Button					butDown			= null;
-	private SchedulerDom			dom				= null;
-	private Button					butGoto			= null;
-	private boolean					isInsert		= false;
-	private ISchedulerUpdate		update			= null;
-	private Button					butInsert		= null;
-	private Button					reorderButton	= null;
 
-	public JobChainNestedNodesForm(final Composite parent, final int style, final SchedulerDom dom_, final Element jobChain) {
+	private Button butAddMissingNodes;
+	private Button                    bNewNode                    = null;
+	private Table                     tNodes                      = null;
+	private Button                    bApplyNode                  = null;
+	private Combo                     cErrorState                 = null;
+	private Label                     label9                      = null;
+	private Combo                     cNextState                  = null;
+	private Label                     label8                      = null;
+	private Button                    bEndNode                    = null;
+	private Button                    bFullNode                   = null;
+	private Composite                 cType                       = null;
+	private Combo                     cJobChain                   = null;
+	private Label                     label7                      = null;
+	private Text                      tState                      = null;
+	private Label                     label6                      = null;
+	private JobChainNestedListener    listener                    = null;
+	private Group                     jobChainGroup               = null;
+	private Button                    bRemoveNode                 = null;
+	private Group                     gNodes                      = null;
+	private boolean                   refresh                     = false;
+	private Button                    butDetailsJob               = null;
+	private Button                    butBrowse                   = null;
+	private Button                    butUp                       = null;
+	private Button                    butDown                     = null;
+	private SchedulerDom              dom                         = null;
+	private Button                    butGoto                     = null;
+    private boolean                   isInsert                    = false;
+    private ISchedulerUpdate          update                      = null;
+	private Button                    butInsert                   = null;
+	private Button                    reorderButton               = null; 
+	
+	
+	public JobChainNestedNodesForm(Composite parent, int style, SchedulerDom dom_, Element jobChain) {
+
 		super(parent, style);
-		try {
-			objParent.setRedraw(false);
-			objParent = parent;
-			dom = dom_;
-			listener = new JobChainNestedListener(dom, jobChain);
-			initialize();
-
-			boolean existChainNodes = listener.hasNodesOrChains();
-			jobChainGroup.setEnabled(existChainNodes);
-			bNewNode.setEnabled(existChainNodes);
-			if (existChainNodes)
-				fillChain(false, false);
-			objParent.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
-		}
-		catch (Exception e) {
-			new ErrorLog(JOE_E_0002.params(conClassName), e);
-		}
-		finally {
-			objParent.setRedraw(true);
-			objParent.layout(true, true);
-		}
+		dom = dom_;
+		listener = new JobChainNestedListener(dom, jobChain);
+		initialize();
+		setToolTipText();
+		
+		boolean existChainNodes = check();
+		jobChainGroup.setEnabled(existChainNodes);
+		bNewNode.setEnabled(existChainNodes);
+		if(existChainNodes)
+			fillChain(false, false);
+		this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
+		
 
 	}
 
-	@Override
-	public void apply() {
+
+	public void apply() {		
 		if (bApplyNode.isEnabled())
-			applyNode();
+			applyNode();		
 	}
 
-	@Override
-	public boolean isUnsaved() {
-		return bApplyNode.isEnabled();
+
+	public boolean isUnsaved() {		
+		return bApplyNode.isEnabled();		
 	}
+
 
 	private void initialize() {
-		objParent.setLayout(new FillLayout());
+		this.setLayout(new FillLayout());
 		createGroup();
+		setSize(new org.eclipse.swt.graphics.Point(676, 464));
 	}
 
+
+	/**
+	 * This method initializes group
+	 */
 	private void createGroup() {
 
-		jobChainGroup = new Group(objParent, SWT.NONE);
+		jobChainGroup = new Group(this, SWT.NONE);        
 		final GridLayout gridLayout = new GridLayout();
-		jobChainGroup.setLayout(gridLayout);
+		jobChainGroup.setLayout(gridLayout);		
 
-		gNodes = getGroup(jobChainGroup, 4);
+		gNodes = new Group(jobChainGroup, SWT.NONE);
+		final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true);
+		gridData_2.heightHint = 170;
+		gNodes.setLayoutData(gridData_2);
+//		gNodes.setText(GROUP_NODES_TITLE + " for: " + listener.getChainName());
 		gNodes.setText(JOE_M_JCNestedNodesForm_NestedNodes.params(listener.getChainName()));
+		final GridLayout gridLayout_3 = new GridLayout();
+		gridLayout_3.marginBottom = 5;
+		gridLayout_3.marginTop = 5;
+		gridLayout_3.numColumns = 4;
+		gNodes.setLayout(gridLayout_3);
 
 		label6 = JOE_L_JobChainNodes_State.Control(new Label(gNodes, SWT.NONE));
 		label6.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false, 2, 1));
 
 		tState = JOE_T_JobChainNodes_State.Control(new Text(gNodes, SWT.BORDER));
 		tState.addModifyListener(new ModifyListener() {
-			@Override
 			public void modifyText(final ModifyEvent e) {
 				boolean valid = listener.isValidState(tState.getText());
 				if (!valid)
 					tState.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
 				else
 					tState.setBackground(null);
-				bApplyNode.setEnabled(isValidNode() && valid);
+				bApplyNode.setEnabled(isValidNode()&& valid);
 				if (bApplyNode.getEnabled())
-					getShell().setDefaultButton(bApplyNode);
-			}
+					getShell().setDefaultButton(bApplyNode);				
+			}			
 		});
 
 		final GridData gridData18 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -187,11 +161,10 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 
 		bApplyNode = JOE_B_JobChainNodes_ApplyNode.Control(new Button(gNodes, SWT.NONE));
 		bApplyNode.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				applyNode();
 			}
-		});
+		});		
 		final GridData gridData7 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
 		bApplyNode.setLayoutData(gridData7);
 		bApplyNode.setEnabled(false);
@@ -202,20 +175,18 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		butGoto = JOE_B_JobChainNodes_Goto.Control(new Button(gNodes, SWT.ARROW | SWT.DOWN));
 		butGoto.setVisible(listener.get_dom() != null && !listener.get_dom().isLifeElement());
 		butGoto.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				ContextMenu.goTo(cJobChain.getText(), dom, Editor.JOB_CHAIN);
 			}
 		});
 		butGoto.setAlignment(SWT.RIGHT);
-
-		cJobChain = new SOSComboBox(gNodes, JOE_Cbo_JCNestedNodesForm_JobChain);
-		cJobChain.setMenu(new ContextMenu(cJobChain, dom, sos.scheduler.editor.app.Editor.JOB_CHAIN).getMenu());
+		
+		cJobChain = JOE_Cbo_JCNestedNodesForm_JobChain.Control(new Combo(gNodes, SWT.BORDER));
+		cJobChain.setMenu(new sos.scheduler.editor.app.ContextMenu(cJobChain, dom, sos.scheduler.editor.app.Editor.JOB_CHAIN).getMenu());
 		cJobChain.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(final MouseEvent e) {
-				if (refresh) {
-					if (listener.getJobChains() != null) {
+			public void mouseDown(final MouseEvent e) {        		
+				if(refresh) {
+					if(listener.getJobChains() != null) {
 						cJobChain.setItems(listener.getJobChains());
 						refresh = false;
 					}
@@ -224,7 +195,6 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		});
 
 		cJobChain.addModifyListener(new ModifyListener() {
-			@Override
 			public void modifyText(final ModifyEvent e) {
 				bApplyNode.setEnabled(isValidNode());
 				if (bApplyNode.getEnabled())
@@ -232,8 +202,7 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 			}
 		});
 		cJobChain.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
+			public void keyPressed(final KeyEvent e) {        		
 				if (e.keyCode == SWT.CR) {
 					applyNode();
 				}
@@ -253,23 +222,21 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		butBrowse = JOE_B_JobChainNodes_Browse.Control(new Button(composite, SWT.NONE));
 		butBrowse.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		butBrowse.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB_CHAIN);
-				if (jobname != null && jobname.length() > 0)
+				if(jobname != null && jobname.length() > 0)
 					cJobChain.setText(jobname);
 			}
 		});
 
-		//		if(!listener.get_dom().isLifeElement()) {
-		//		}
-
+//		if(!listener.get_dom().isLifeElement()) {
+//		}
+		
 		label8 = JOE_L_JobChainNodes_NextState.Control(new Label(gNodes, SWT.NONE));
 		label8.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 
-		cNextState = new SOSComboBox(gNodes, JOE_Cbo_JobChainNodes_NextState);
+		cNextState = JOE_Cbo_JobChainNodes_NextState.Control(new Combo(gNodes, SWT.BORDER));
 		cNextState.addModifyListener(new ModifyListener() {
-			@Override
 			public void modifyText(final ModifyEvent e) {
 				bApplyNode.setEnabled(isValidNode());
 				if (bApplyNode.getEnabled())
@@ -277,7 +244,6 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 			}
 		});
 		cNextState.addKeyListener(new KeyAdapter() {
-			@Override
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR) {
 					applyNode();
@@ -290,7 +256,6 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 
 		bNewNode = JOE_B_JCNestedNodesForm_NewNode.Control(new Button(gNodes, SWT.NONE));
 		bNewNode.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				isInsert = false;
 				getShell().setDefaultButton(null);
@@ -308,9 +273,8 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		label9 = JOE_L_JobChainNodes_ErrorState.Control(new Label(gNodes, SWT.NONE));
 		label9.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 
-		cErrorState = new SOSComboBox(gNodes, JOE_Cbo_JobChainNodes_ErrorState);
+		cErrorState = JOE_Cbo_JobChainNodes_ErrorState.Control(new Combo(gNodes, SWT.BORDER));
 		cErrorState.addModifyListener(new ModifyListener() {
-			@Override
 			public void modifyText(final ModifyEvent e) {
 				bApplyNode.setEnabled(isValidNode());
 				if (bApplyNode.getEnabled())
@@ -318,7 +282,6 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 			}
 		});
 		cErrorState.addKeyListener(new KeyAdapter() {
-			@Override
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR) {
 					applyNode();
@@ -331,7 +294,6 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 
 		butInsert = JOE_B_JCNestedNodesForm_Insert.Control(new Button(gNodes, SWT.NONE));
 		butInsert.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				isInsert = true;
 				String state = tState.getText();
@@ -340,7 +302,7 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 
 				//listener.selectNode(null);
 
-				//tDelay.setText("");
+				//tDelay.setText("");				
 				cErrorState.setText("");
 				//cOnError.setText("");
 				cJobChain.setText("");
@@ -358,7 +320,7 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 
 		cType = new Composite(gNodes, SWT.NONE);
 		final GridLayout gridLayout_4 = new GridLayout();
-		gridLayout_4.marginBottom = 0;
+		gridLayout_4.marginBottom = 2;
 		gridLayout_4.marginHeight = 0;
 		gridLayout_4.marginWidth = 0;
 		gridLayout_4.numColumns = 2;
@@ -371,7 +333,6 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		bFullNode = JOE_B_JCNestedNodesForm_FullNode.Control(new Button(cType, SWT.RADIO));
 		bFullNode.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
 		bFullNode.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetDefaultSelected(final SelectionEvent e) {
 			}
 		});
@@ -380,7 +341,6 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		bEndNode = JOE_B_JCNestedNodesForm_EndNode.Control(new Button(cType, SWT.RADIO));
 		bEndNode.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
 		bEndNode.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(final SelectionEvent e) {
 
 				if (bEndNode.getSelection()) {
@@ -392,6 +352,7 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 					cErrorState.setText("");
 				}
 
+
 				if (bFullNode.getSelection()) {
 					cNextState.setEnabled(true);
 					cErrorState.setEnabled(true);
@@ -401,17 +362,18 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 				}
 				bApplyNode.setEnabled(isValidNode());
 
+
+
 			}
 		});
-
-		//		Format
+		
+//		Format
 		new Label(gNodes, SWT.NONE);
 
-		tNodes = JOE_Tbl_JCNestedNodesForm_Nodes.Control(new SOSTable(gNodes, SWT.FULL_SELECTION | SWT.BORDER, this));
+		tNodes = JOE_Tbl_JCNestedNodesForm_Nodes.Control(new Table(gNodes, SWT.FULL_SELECTION | SWT.BORDER));		
 		tNodes.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				selectNodes();
+				selectNodes();				
 			}
 		});
 		tNodes.setLinesVisible(true);
@@ -449,11 +411,10 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		butUp = JOE_B_Up.Control(new Button(composite_1, SWT.NONE));
 		butUp.setLayoutData(new GridData());
 		butUp.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				if (tNodes.getSelectionCount() > 0) {
 					int index = tNodes.getSelectionIndex();
-					if (index > 0) {
+					if(index > 0) {		 					
 						//es ist nur erlaubt zwischen fullnode oder zwischen endnode zu wechseln
 						/*if(tNodes.getItemCount() > index){
 							String select = tNodes.getSelection()[0].getText(1);
@@ -463,10 +424,9 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 								//System.out.println("up:    " +select + "   " + up);
 							}
 						}*/
-
-						listener.MoveNodeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), "",
-								cNextState.getText(), cErrorState.getText(), index, bFullNode.getSelection(), reorderButton.getSelection());
-						selectNodes();
+						
+						listener.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), "", cNextState.getText(), cErrorState.getText(), index,  bFullNode.getSelection(), reorderButton.getSelection());
+						selectNodes();					
 					}
 				}
 			}
@@ -476,27 +436,23 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 
 		butDown = JOE_B_Down.Control(new Button(composite_1, SWT.NONE));
 		butDown.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				if (tNodes.getSelectionCount() > 0) {
 					int index = tNodes.getSelectionIndex();
-					if (index == tNodes.getItemCount() - 1) {
+					if(index == tNodes.getItemCount()-1) {
 						//System.out.println("Datensatz ist bereits ganz unten.");
-					}
-					else
-						if (index >= 0) {
-
+					} else if(index >= 0) {
+						
 							/*String select = tNodes.getSelection()[0].getText(1);
 							String up = tNodes.getItem(index+1).getText(1);
 							if(!select.equals(up)) {
 								//System.out.println("down: " + select + "   " + up);
 								return;
 							}*/
-
-							listener.MoveNodeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), "",
-									cNextState.getText(), cErrorState.getText(), index, bFullNode.getSelection(), reorderButton.getSelection());
-							selectNodes();
-						}
+						
+						listener.changeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), "", cNextState.getText(), cErrorState.getText(), index,  bFullNode.getSelection(), reorderButton.getSelection());
+						selectNodes();						
+					}
 				}
 			}
 		});
@@ -508,9 +464,8 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		butDetailsJob = JOE_B_JobChainForm_Parameter.Control(new Button(gNodes, SWT.NONE));
 		butDetailsJob.setEnabled(false);
 		butDetailsJob.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				if (tNodes.getSelectionCount() > 0)
+				if(tNodes.getSelectionCount() > 0)
 					showDetails(tNodes.getSelection()[0].getText(0));
 			}
 		});
@@ -518,36 +473,34 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 
 		butAddMissingNodes = JOE_B_JCNestedNodesForm_AddMissingNodes.Control(new Button(gNodes, SWT.NONE));
 		butAddMissingNodes.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				try {
-					if (tNodes.getSelectionCount() > 0) {
+					if(tNodes.getSelectionCount() > 0) {
 						TableItem item = tNodes.getSelection()[0];
-						if (!listener.checkForState(item.getText(3))) {
+						if(!listener.checkForState(item.getText(3))) {
 							listener.selectNode(null);
 							listener.applyNode(true, item.getText(3), "", "", "", false);
 						}
 
-						if (!listener.checkForState(item.getText(4))) {
+						if(!listener.checkForState(item.getText(4))) {
 							listener.selectNode(null);
-							listener.applyNode(true, item.getText(4), "", "", "", false);
+							listener.applyNode(true, item.getText(4), "", "", "", false);						
 						}
 
 						listener.fillChain(tNodes);
 						bApplyNode.setEnabled(false);
-						bRemoveNode.setEnabled(false);
-						listener.selectNode(null);
+						bRemoveNode.setEnabled(false);            
+						listener.selectNode(null);			
 						fillNode(true);
 						enableNode(false);
 						//listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(), cOnError.getText());
 					}
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					try {
-						new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()), ex);
-					}
-					catch (Exception ee) {
-					}
+						new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) , ex);
+					} catch(Exception ee) {
+						//tu nichts
+					}	
 				}
 			}
 		});
@@ -557,14 +510,13 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		bRemoveNode = JOE_B_JCNestedNodesForm_RemoveNode.Control(new Button(gNodes, SWT.NONE));
 		bRemoveNode.setEnabled(false);
 		bRemoveNode.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				if (tNodes.getSelectionCount() > 0) {
-
-					int c = MainWindow.message(getShell(), JOE_M_JCNestedNodesForm_RemoveNode.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-					if (c != SWT.YES)
+					
+					int c = MainWindow.message(getShell(), JOE_M_JCNestedNodesForm_RemoveNode.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+					if(c != SWT.YES)
 						return;
-
+					
 					int index = tNodes.getSelectionIndex();
 					listener.deleteNode(tNodes);
 					tNodes.remove(index);
@@ -578,24 +530,25 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 					if (!empty) {
 						tNodes.select(index);
 						listener.selectNode(tNodes);
-					}
-					else {
+					} else {
 						listener.selectNode(null);
 					}
 				}
 			}
 		});
 		bRemoveNode.setLayoutData(new GridData(GridData.FILL, GridData.END, false, false));
-
+		
 	} // private void createGroup()
 
-	private void fillChain(final boolean enable, final boolean isNew) {
+
+	private void fillChain(boolean enable, boolean isNew) {
 		listener.fillChain(tNodes);
 		bNewNode.setEnabled(true);
-		enableNode(false);
+		enableNode(false);		           
 	}
 
-	private void enableNode(final boolean enable) {
+
+	private void enableNode(boolean enable) {
 		bFullNode.setEnabled(enable);
 		bEndNode.setEnabled(enable);
 		tState.setEnabled(enable);
@@ -606,7 +559,8 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		bApplyNode.setEnabled(false);
 	}
 
-	private void fillNode(final boolean clear) {
+
+	private void fillNode(boolean clear) {
 
 		boolean fullNode = listener.isFullNode();
 		//boolean fileSinkNode = listener.isFileSinkNode();
@@ -622,14 +576,14 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		tState.setText(clear ? "" : listener.getState());
 
 		cJobChain.setItems(listener.getJobChains());
-		if (listener.getStates().length > 0)
+		if (listener.getStates().length > 0) 
 			cNextState.setItems(listener.getStates());
 		if (listener.getStates().length > 0)
 			cErrorState.setItems(listener.getStates());
 
-		int job = cJobChain.indexOf(listener.getNestedJobChain());
+		int job = cJobChain.indexOf(listener.getJobChain());
 		if (clear || job == -1)
-			cJobChain.setText(listener.getNestedJobChain());
+			cJobChain.setText(listener.getJobChain());
 		else
 			cJobChain.select(job);
 
@@ -645,15 +599,13 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		else
 			cErrorState.select(error);
 
+
 		bApplyNode.setEnabled(false);
 
 	}
 
-	private void applyNode () {
-		applyInputFields(false);
-	}
-	@Override
-	public void applyInputFields(final boolean flgT) {
+
+	private void applyNode() {
 
 		String msg = "";
 		if (!listener.isValidState(tState.getText()))
@@ -662,110 +614,104 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 			MainWindow.message(msg, SWT.ICON_INFORMATION);
 		else {
 			//listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(), cOnError.getText());
-			if (isInsert)
-				listener.applyInsertNode(tState.getText(), cJobChain.getText(), cNextState.getText(), cErrorState.getText(), bFullNode.getSelection());
+			if(isInsert)
+				listener.applyInsertNode(tState.getText(), 
+						cJobChain.getText(), 
+						cNextState.getText(), 
+						cErrorState.getText(),
+						bFullNode.getSelection()
+				);
 			else
-				listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), cNextState.getText(),
-						cErrorState.getText(), bFullNode.getSelection());
+				listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), 			
+					tState.getText(), 
+					cJobChain.getText(), 
+					cNextState.getText(), 
+					cErrorState.getText(),
+					bFullNode.getSelection()
+			);
 			isInsert = false;
 			listener.fillChain(tNodes);
 			bApplyNode.setEnabled(false);
-			bRemoveNode.setEnabled(false);
-			listener.selectNode(null);
+			bRemoveNode.setEnabled(false);            
+			listener.selectNode(null);			
 			fillNode(true);
 			enableNode(false);
 		}
 
 	}
 
+
 	private boolean isValidNode() {
 		if (tState.getText().equals("") || bFullNode.getSelection() && cJobChain.getText().equals("")) {
 			return false;
-		}
-		else {
+		} else {
 			return true;
 		}
 	}
 
-	public void setISchedulerUpdate(final ISchedulerUpdate update_) {
-		update = update_;
+
+	public void setISchedulerUpdate(ISchedulerUpdate update_) {
+		update = update_;		
 	}
 
-	private void showDetails(final String state) {
+
+	private void showDetails(String state) {
 
 		//OrdersListener ordersListener =  new OrdersListener(listener.get_dom(), update);
 		//String[] listOfOrders = ordersListener.getOrderIds();
-		boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory();
+		boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory(); 
 
-		if (state == null) {
-			DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), isLifeElement, listener.get_dom().getFilename());
+		if(state == null) {
+			DetailDialogForm detail = new  DetailDialogForm(listener.getChainName(), isLifeElement, listener.get_dom().getFilename());
 			detail.showDetails();
-		}
-		else {
+		} else {
 			//DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), state, listOfOrders, isLifeElement, listener.get_dom().getFilename());
 			DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), state, null, isLifeElement, listener.get_dom().getFilename());
 			detail.showDetails();
-		}
+		} 
+
 	}
+
 
 	private void selectNodes() {
 
-		if (tNodes.getSelectionCount() > 0) {
+		if (tNodes.getSelectionCount() > 0) {        			
 			listener.selectNode(tNodes);
 			enableNode(true);
 			fillNode(false);
 			butDetailsJob.setEnabled(true);
-		}
-		else
+		} else
 			butDetailsJob.setEnabled(false);
 		bRemoveNode.setEnabled(tNodes.getSelectionCount() > 0);
 
 	}
 
-	@Override
-	public void setToolTipText() {
+
+	public void setToolTipText() {	
 	}
 
-	@Override
-	public Listener getNewListener() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	//ein Job Chain hat entweder job_chain_node ODER job_chain_node.job_chain Kindknoten. 
+	private boolean check() {
+		try {
+			XPath x3 = XPath.newInstance("//job_chain[@name='"+ listener.getChainName() + "']/job_chain_node");				 
+			List listOfElement_3 = x3.selectNodes(dom.getDoc());
+			XPath x4 = XPath.newInstance("//job_chain[@name='"+ listener.getChainName() + "']/file_order_sink");				 
+			List listOfElement_4 = x4.selectNodes(dom.getDoc());
+			if(listOfElement_3.isEmpty() && listOfElement_4.isEmpty())
+				return true;
+			else 
+				return false;
+			
+		} catch (Exception e) {
+			try {
+				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
+			return true;
+		}
 
-	@Override
-	public Listener getDeleteListener() {
-		// TODO Auto-generated method stub
-		return null;
 	}
-
-	@Override
-	public Listener getCopyListener() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Listener getPasteListener() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Listener getInsertListener() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Listener getCutListener() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Listener getEditListener() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -2,9 +2,9 @@
  * Created on 06.03.2007
  *
  * Wizzard: Typ des Schedulers wird angegeben. Standalone Job oder Order Job
- *
+ * 
  *  @author mo
- *
+ * 
  */
 package sos.scheduler.editor.conf.forms;
 
@@ -27,22 +27,17 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.ErrorLog;
+import com.sos.dialog.components.SOSDateTime;
+import com.swtdesigner.SWTResourceManager;
 import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.listeners.DateListener;
-import sos.scheduler.editor.conf.listeners.DaysListener;
-import sos.scheduler.editor.conf.listeners.PeriodListener;
-import sos.scheduler.editor.conf.listeners.PeriodsListener;
-import sos.util.SOSClassUtil;
-
-import com.sos.dialog.components.SOSDateTime;
-import com.swtdesigner.SWTResourceManager;
+import sos.scheduler.editor.conf.listeners.*;
 
 public class JobAssistentRunTimeForms {
 
@@ -56,7 +51,7 @@ public class JobAssistentRunTimeForms {
 
 	private Button           butShow            = null;
 
-	private Button           butNext            = null;
+	private Button           butNext            = null;		
 
 	private Shell            runTimeSingleShell = null;
 
@@ -74,17 +69,17 @@ public class JobAssistentRunTimeForms {
 
 	private Button           optSpecificDay     = null;
 
-	private List             list               = null;
+	private List             list               = null; 
 
 	private Button           butAdd             = null;
 
-	private Button           butRemove          = null;
+	private Button           butRemove          = null; 
 
 	private Text             txtDayAtHour       = null;
 
 	private Text             txtDayAtMinutes    = null;
 
-	private Text             txtDayAtSecound    = null;
+	private Text             txtDayAtSecound    = null; 
 
 	private Text             txtSpeDayHour      = null;
 
@@ -106,7 +101,7 @@ public class JobAssistentRunTimeForms {
 
 	private PeriodsListener  periodslistener    = null;
 
-	private PeriodListener   periodlistener     = null;
+	private PeriodListener   periodlistener     = null;	
 
 	private DaysListener     weekDayListener    = null;
 
@@ -117,8 +112,8 @@ public class JobAssistentRunTimeForms {
 //	private static String    EVERY_DAY          = "Every Day ";
 	private static String    EVERY_DAY          = SOSJOEMessageCodes.JOE_M_JobAssistent_EveryDay.label();
 
-//	private static String    SPECIFIC_DAY       = "Specific Day ";
-	private static String    SPECIFIC_DAY       = SOSJOEMessageCodes.JOE_M_JobAssistent_SpecificDay.label();
+//	private static String    SPECIFIC_DAY       = "Specific Day ";		
+	private static String    SPECIFIC_DAY       = SOSJOEMessageCodes.JOE_M_JobAssistent_SpecificDay.label();		
 
 //	private static String    WEEK_DAY           = "Week Day ";
 	private static String    WEEK_DAY           = SOSJOEMessageCodes.JOE_M_JobAssistent_Weekday.label();
@@ -126,22 +121,22 @@ public class JobAssistentRunTimeForms {
 //	private static String    MONTH_DAY          = "Month Day";
 	private static String    MONTH_DAY          = SOSJOEMessageCodes.JOE_M_JobAssistent_Monthday.label();
 
-	private Element          jobBackUp          = null;
+	private Element          jobBackUp          = null;              		
 
-	/** Hilsvariable für das Schliessen des Dialogs.
+	/** Hilsvariable für das Schliessen des Dialogs. 
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
-	private boolean               closeDialog   = false;
+	private boolean               closeDialog   = false;         
 
 
 	/**
-	 * Konstruktor
-	 * @param dom_ - Type SchedulerDom
+	 * Konstruktor 
+	 * @param dom_ - Type SchedulerDom 
 	 * @param update_ - Type ISchedulerUpdate
 	 */
-	public JobAssistentRunTimeForms(final SchedulerDom dom_, final ISchedulerUpdate update_, final Element job_, final int assistentType_) {
+	public JobAssistentRunTimeForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
 		dom = dom_;
 		update = update_;
-		job = job_;
+		job = job_;		
 		//assistentType = assistentType_;
 		jobBackUp = (Element)job_.clone();
 		init();
@@ -160,7 +155,6 @@ public class JobAssistentRunTimeForms {
 
 			runTimeSingleShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 			runTimeSingleShell.addShellListener(new ShellAdapter() {
-				@Override
 				public void shellClosed(final ShellEvent e) {
 					if(!closeDialog)
 						close();
@@ -200,14 +194,13 @@ public class JobAssistentRunTimeForms {
 				{
 					optEveryDay = SOSJOEMessageCodes.JOE_B_JobAssistent_EveryDay.Control(new Button(jobGroup, SWT.CHECK));
 					optEveryDay.addSelectionListener(new SelectionAdapter() {
-						@Override
 						public void widgetSelected(final SelectionEvent e) {
-							if(optEveryDay.getSelection()) {
+							if(optEveryDay.getSelection()) {								
 								txtDayAtHour.setEnabled(true);
 								txtDayAtMinutes.setEnabled(true);
 								txtDayAtSecound.setEnabled(true);
 								butAdd.setEnabled(true);
-							} else {
+							} else {								
 								txtDayAtHour.setEnabled(false);
 								txtDayAtMinutes.setEnabled(false);
 								txtDayAtSecound.setEnabled(false);
@@ -226,7 +219,6 @@ public class JobAssistentRunTimeForms {
 
 				txtDayAtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtDayAtHour.addModifyListener(new ModifyListener() {
-					@Override
 					public void modifyText(final ModifyEvent e) {
 						if(!checkTime(txtDayAtHour.getText(), "hour")) {
 							txtDayAtHour.setBackground(Options.getRequiredColor());
@@ -246,7 +238,6 @@ public class JobAssistentRunTimeForms {
 
 				txtDayAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtDayAtMinutes.addModifyListener(new ModifyListener() {
-					@Override
 					public void modifyText(final ModifyEvent e) {
 						if(!checkTime(txtDayAtMinutes.getText(), "minutes")) {
 							txtDayAtMinutes.setBackground(Options.getRequiredColor());
@@ -268,7 +259,6 @@ public class JobAssistentRunTimeForms {
 
 				txtDayAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtDayAtSecound.addModifyListener(new ModifyListener() {
-					@Override
 					public void modifyText(final ModifyEvent e) {
 						if(!checkTime(txtDayAtSecound.getText(), "secound")) {
 							txtDayAtSecound.setBackground(Options.getRequiredColor());
@@ -291,7 +281,6 @@ public class JobAssistentRunTimeForms {
 					optSpecificDay = SOSJOEMessageCodes.JOE_B_JobAssistent_SpecificDay.Control(new Button(jobGroup, SWT.CHECK));
 					optSpecificDay.setLayoutData(new GridData());
 					optSpecificDay.addSelectionListener(new SelectionAdapter() {
-						@Override
 						public void widgetSelected(final SelectionEvent e) {
 							if(optSpecificDay.getSelection()) {
 								txtSpeDay.setEnabled(true);
@@ -320,7 +309,6 @@ public class JobAssistentRunTimeForms {
 
 				txtSpeDayHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtSpeDayHour.addModifyListener(new ModifyListener() {
-					@Override
 					public void modifyText(final ModifyEvent e) {
 						if(!checkTime(txtSpeDayHour.getText(), "hour")) {
 							txtSpeDayHour.setBackground(Options.getRequiredColor());
@@ -342,8 +330,7 @@ public class JobAssistentRunTimeForms {
 				txtSpeDayAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 
 				txtSpeDayAtMinutes.addModifyListener(new ModifyListener() {
-					@Override
-					public void modifyText(final ModifyEvent e) {
+					public void modifyText(final ModifyEvent e) {						
 
 						if(!checkTime(txtSpeDayHour.getText(), "minutes")) {
 							txtSpeDayAtMinutes.setBackground(Options.getRequiredColor());
@@ -364,8 +351,7 @@ public class JobAssistentRunTimeForms {
 
 				txtSpeDayAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtSpeDayAtSecound.addModifyListener(new ModifyListener() {
-					@Override
-					public void modifyText(final ModifyEvent e) {
+					public void modifyText(final ModifyEvent e) {							
 						if(!checkTime(txtSpeDayAtSecound.getText(), "secound")) {
 							txtSpeDayAtSecound.setBackground(Options.getRequiredColor());
 							txtSpeDayAtSecound.setFocus();
@@ -382,10 +368,9 @@ public class JobAssistentRunTimeForms {
 				final Label hhmmssLabel_1 = SOSJOEMessageCodes.JOE_L_JobAssistent_TimeFormat.Control(new Label(jobGroup, SWT.NONE));
 				hhmmssLabel_1.setLayoutData(new GridData());
 //				hhmmssLabel_1.setText("hh:mm:ss");
-
+				
 				optEveryWeeksdays = SOSJOEMessageCodes.JOE_B_JobAssistent_WeekDay.Control(new Button(jobGroup, SWT.CHECK));
 				optEveryWeeksdays.addSelectionListener(new SelectionAdapter() {
-					@Override
 					public void widgetSelected(final SelectionEvent e) {
 						if(optEveryWeeksdays.getSelection()) {
 							butAdd.setEnabled(true);
@@ -402,11 +387,11 @@ public class JobAssistentRunTimeForms {
 					}
 				});
 
-				comboEveryWeekdays = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_WeekDayCombo.Control(new Combo(jobGroup, SWT.NONE));
+				comboEveryWeekdays = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_WeekDayCombo.Control(new Combo(jobGroup, SWT.NONE));				
 				comboEveryWeekdays.setItems(DaysListener.getWeekdays());
 				comboEveryWeekdays.select(0);
 				comboEveryWeekdays.setEnabled(false);
-
+				
 				final GridData gridData_17 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 				gridData_17.widthHint = 148;
 				comboEveryWeekdays.setLayoutData(gridData_17);
@@ -415,10 +400,9 @@ public class JobAssistentRunTimeForms {
 				atLabel_2.setLayoutData(new GridData(37, SWT.DEFAULT));
 				atLabel_2.setAlignment(SWT.RIGHT);
 
-				txtWeekAtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
+				txtWeekAtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));				
 				txtWeekAtHour.addModifyListener(new ModifyListener() {
-					@Override
-					public void modifyText(final ModifyEvent e) {
+					public void modifyText(final ModifyEvent e) {						
 						if(!checkTime(txtWeekAtHour.getText(), "hour")) {
 							txtWeekAtHour.setBackground(Options.getRequiredColor());
 							txtWeekAtHour.setFocus();
@@ -437,8 +421,7 @@ public class JobAssistentRunTimeForms {
 
 				txtWeekAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtWeekAtMinutes.addModifyListener(new ModifyListener() {
-					@Override
-					public void modifyText(final ModifyEvent e) {
+					public void modifyText(final ModifyEvent e) {						
 						if(!checkTime(txtWeekAtMinutes.getText(), "minutes")) {
 							txtWeekAtMinutes.setBackground(Options.getRequiredColor());
 							txtWeekAtMinutes.setFocus();
@@ -463,8 +446,7 @@ public class JobAssistentRunTimeForms {
 
 				txtWeekAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtWeekAtSecound.addModifyListener(new ModifyListener() {
-					@Override
-					public void modifyText(final ModifyEvent e) {
+					public void modifyText(final ModifyEvent e) {						
 						if(!checkTime(txtWeekAtSecound.getText(), "secound")) {
 							txtWeekAtSecound.setBackground(Options.getRequiredColor());
 							txtWeekAtSecound.setFocus();
@@ -490,7 +472,6 @@ public class JobAssistentRunTimeForms {
 				{
 					optEveryMonths = SOSJOEMessageCodes.JOE_B_JobAssistent_MonthDay.Control(new Button(jobGroup, SWT.CHECK));
 					optEveryMonths.addSelectionListener(new SelectionAdapter() {
-						@Override
 						public void widgetSelected(final SelectionEvent e) {
 							if(optEveryMonths.getSelection()) {
 								butAdd.setEnabled(true);
@@ -509,7 +490,7 @@ public class JobAssistentRunTimeForms {
 				}
 
 				{
-					comboMonth = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_MonthCombo.Control(new Combo(jobGroup, SWT.NONE));
+					comboMonth = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_MonthCombo.Control(new Combo(jobGroup, SWT.NONE));					
 					comboMonth.setItems(DaysListener.getMonthdays());
 					comboMonth.select(0);
 					comboMonth.setEnabled(false);
@@ -524,8 +505,7 @@ public class JobAssistentRunTimeForms {
 
 				txtMonthAtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_AtHour.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtMonthAtHour.addModifyListener(new ModifyListener() {
-					@Override
-					public void modifyText(final ModifyEvent e) {
+					public void modifyText(final ModifyEvent e) {						
 						if(!checkTime(txtMonthAtHour.getText(), "hour")) {
 							txtMonthAtHour.setBackground(Options.getRequiredColor());
 							txtMonthAtHour.setFocus();
@@ -551,8 +531,7 @@ public class JobAssistentRunTimeForms {
 
 				txtMonthAtMinutes = SOSJOEMessageCodes.JOE_T_JobAssistent_AtMinute.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtMonthAtMinutes.addModifyListener(new ModifyListener() {
-					@Override
-					public void modifyText(final ModifyEvent e) {
+					public void modifyText(final ModifyEvent e) {						
 						if(!checkTime(txtMonthAtMinutes.getText(), "minutes")) {
 							txtMonthAtMinutes.setBackground(Options.getRequiredColor());
 							txtMonthAtMinutes.setFocus();
@@ -575,8 +554,7 @@ public class JobAssistentRunTimeForms {
 
 				txtMonthAtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_AtSecond.Control(new Text(jobGroup, SWT.CENTER | SWT.BORDER));
 				txtMonthAtSecound.addModifyListener(new ModifyListener() {
-					@Override
-					public void modifyText(final ModifyEvent e) {
+					public void modifyText(final ModifyEvent e) {						
 						if(!checkTime(txtMonthAtSecound.getText(), "minutes")) {
 							txtMonthAtSecound.setBackground(Options.getRequiredColor());
 							txtMonthAtSecound.setFocus();
@@ -595,7 +573,6 @@ public class JobAssistentRunTimeForms {
 
 				list = new List(jobGroup, SWT.BORDER);
 				list.addSelectionListener(new SelectionAdapter() {
-					@Override
 					public void widgetSelected(final SelectionEvent e) {
 						if(list.getSelectionIndex()> 0) {
 							butRemove.setEnabled(true);
@@ -608,9 +585,8 @@ public class JobAssistentRunTimeForms {
 				{
 					butAdd = SOSJOEMessageCodes.JOE_B_JobAssistentRunTimeForms_Add.Control(new Button(jobGroup, SWT.NONE));
 					butAdd.addSelectionListener(new SelectionAdapter() {
-						@Override
 						public void widgetSelected(final SelectionEvent e) {
-							addPeriod();
+							addPeriod();														
 						}
 					});
 					butAdd.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -618,11 +594,10 @@ public class JobAssistentRunTimeForms {
 
 				butRemove = SOSJOEMessageCodes.JOE_B_JobAssistentRunTimeForms_Remove.Control(new Button(jobGroup, SWT.NONE));
 				butRemove.addSelectionListener(new SelectionAdapter() {
-					@Override
 					public void widgetSelected(final SelectionEvent e) {
 						if(list.getSelectionCount() > 0) {
-							delete();
-							list.remove(list.getSelectionIndex());
+							delete();														
+							list.remove(list.getSelectionIndex());																					
 						}
 					}
 				});
@@ -633,7 +608,6 @@ public class JobAssistentRunTimeForms {
 			{
 				butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Close.Control(new Button(runTimeSingleShell, SWT.NONE));
 				butCancel.addSelectionListener(new SelectionAdapter() {
-					@Override
 					public void widgetSelected(final SelectionEvent e) {
 						close();
 					}
@@ -656,7 +630,6 @@ public class JobAssistentRunTimeForms {
 					butShow.setVisible(false);
 					butShow.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 					butShow.addSelectionListener(new SelectionAdapter() {
-						@Override
 						public void widgetSelected(final SelectionEvent e) {
 							MainWindow.message(runTimeSingleShell, Utils.getElementAsString(job), SWT.OK );
 						}
@@ -673,41 +646,41 @@ public class JobAssistentRunTimeForms {
 					gridData_1.widthHint = 57;
 					butNext.setLayoutData(gridData_1);
 					butNext.addSelectionListener(new SelectionAdapter() {
-						@Override
 						public void widgetSelected(final SelectionEvent e) {
 							closeDialog = true;
-							runTimeSingleShell.dispose();
+							runTimeSingleShell.dispose();														
 						}
 					});
-				}
+				}							
 			}
 
 			setEnabled(false);
-			setToolTipText();
+			setToolTipText();						
 
 			fillList();
 
 			java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 
-			runTimeSingleShell.setBounds((screen.width - runTimeSingleShell.getBounds().width) /2,
-					(screen.height - runTimeSingleShell.getBounds().height) /2,
-					runTimeSingleShell.getBounds().width,
+			runTimeSingleShell.setBounds((screen.width - runTimeSingleShell.getBounds().width) /2, 
+					(screen.height - runTimeSingleShell.getBounds().height) /2, 
+					runTimeSingleShell.getBounds().width, 
 					runTimeSingleShell.getBounds().height);
 			runTimeSingleShell.open();
 			runTimeSingleShell.layout();
-			runTimeSingleShell.pack();
+			runTimeSingleShell.pack();		
 		} catch (Exception e) {
 			try {
-//				new ErrorLog("error in " + SOSClassUtil.getMethodName() , e);
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()) , e);
+//				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+				new sos.scheduler.editor.app.ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) , e);
 			} catch(Exception ee) {
+				//tu nichts
 			}
 //			System.err.println("..error in JobAssistentRuntimeForms.showRunTimeForms() " + e.getMessage());
 			System.err.println(SOSJOEMessageCodes.JOE_E_0002.params("JobAssistentRunTimeForms.showRunTimeForms() ") + e.getMessage());
 		}
 	}
 
-	private void setEnabled(final boolean enabled ) {
+	private void setEnabled(boolean enabled ) {
 		optEveryDay.setSelection(false);
 		optSpecificDay.setSelection(false);
 		optEveryWeeksdays.setSelection(false);
@@ -743,12 +716,12 @@ public class JobAssistentRunTimeForms {
 
 		txtDayAtHour.setText("");
 		txtDayAtMinutes.setText("");
-		txtDayAtSecound.setText("");
-		txtSpeDayHour.setText("");
-		txtSpeDayAtMinutes.setText("");
-		txtSpeDayAtSecound.setText("");
-		txtWeekAtHour.setText("");
-		txtWeekAtMinutes.setText("");
+		txtDayAtSecound.setText("");		
+		txtSpeDayHour.setText("");      		
+		txtSpeDayAtMinutes.setText(""); 		
+		txtSpeDayAtSecound.setText(""); 		
+		txtWeekAtHour.setText("");		
+		txtWeekAtMinutes.setText(""); 		
 		txtWeekAtSecound.setText("");
 		txtMonthAtHour.setText("");
 		txtMonthAtMinutes.setText("");
@@ -772,15 +745,15 @@ public class JobAssistentRunTimeForms {
 					savePeriod(EVERY_DAY);
 					list.add(str);
 				}
-			}
+			}								
 		}
 
 		if(optSpecificDay.getSelection()) {
-			if(txtSpeDay.getISODate() != null && txtSpeDay.getISODate().trim().length() > 0){
+			if(txtSpeDay.getISODate() != null && txtSpeDay.getISODate().trim().length() > 0){				
 				savePeriod(SPECIFIC_DAY);
 //				list.add(SPECIFIC_DAY + txtSpeDay.getISODate() + " at " +  Utils.getTime(23, txtSpeDayHour.getText(), txtSpeDayAtMinutes.getText(), txtSpeDayAtSecound.getText(), false));
 				list.add(SPECIFIC_DAY + txtSpeDay.getISODate() + " " + SOSJOEMessageCodes.JOE_L_JobAssistent_At.label()+ " " +  Utils.getTime(23, txtSpeDayHour.getText(), txtSpeDayAtMinutes.getText(), txtSpeDayAtSecound.getText(), false));
-			}
+			} 
 		}
 
 		if(optEveryWeeksdays.getSelection()){
@@ -793,7 +766,7 @@ public class JobAssistentRunTimeForms {
 		}
 
 		if(optEveryMonths.getSelection()){
-			if(comboMonth.getText() !=null && comboMonth.getText().trim().length() > 0){
+			if(comboMonth.getText() !=null && comboMonth.getText().trim().length() > 0){				
 				savePeriod(MONTH_DAY);
 //				list.add(MONTH_DAY + comboMonth.getText() + " at " +  Utils.getTime(23, txtMonthAtHour.getText(), txtMonthAtMinutes.getText(), txtMonthAtSecound.getText(), false));
 				list.add(MONTH_DAY + comboMonth.getText() + " " + SOSJOEMessageCodes.JOE_L_JobAssistent_At.label()+ " " +  Utils.getTime(23, txtMonthAtHour.getText(), txtMonthAtMinutes.getText(), txtMonthAtSecound.getText(), false));
@@ -801,9 +774,9 @@ public class JobAssistentRunTimeForms {
 		}
 		setEnabled(false);
 
-	}
+	}	
 
-	private boolean periodExist(final String str) {
+	private boolean periodExist(String str) {
 		for(int i =0; i < list.getItemCount(); i++) {
 			String currStr = list.getItem(i);
 			if(currStr.equalsIgnoreCase(str)) {
@@ -832,16 +805,16 @@ public class JobAssistentRunTimeForms {
 			}
 		}
 
-		//specific day
+		//specific day		
 		java.util.List speDays = speDateListener.get_list();
 		for(int i =0; speDays != null && i < speDays.size(); i++) {
 			Element speElem = (Element)speDays.get(i);
 			int[] da = speDateListener.getDate(i);
-			java.util.List periods = speElem.getChildren("period");
+			java.util.List periods = speElem.getChildren("period");			
 			for (int j =0; periods != null && j < periods.size(); j++) {
 				Element period = (Element)periods.get(j);
 				PeriodListener p = new PeriodListener(dom);
-				p.setPeriod(period);
+				p.setPeriod(period);	
 				if(p.getBegin() == null || p.getBegin().trim().length() == 0) {
 //					list.add(SPECIFIC_DAY + Utils.asStr(da[2]) + "-" + Utils.asStr(da[1]) + "-" + Utils.asStr(da[0])   +  " at " + p.getSingle() );
 					list.add(SOSJOEMessageCodes.JOE_M_0029.params(SPECIFIC_DAY, Utils.asStr(da[2]), Utils.asStr(da[1]), Utils.asStr(da[0]), p.getSingle()));
@@ -849,12 +822,12 @@ public class JobAssistentRunTimeForms {
 			}
 		}
 
-		//Week day
+		//Week day				
 		Element[] weekDays = weekDayListener.getDayElements();
 		for(int i =0; weekDays!=null&& i < weekDays.length; i++) {
 			Element elWeek = weekDays[i];
 			String sWeek = comboEveryWeekdays.getItem(Utils.str2int(Utils.getAttributeValue("day", elWeek)) -1);
-			java.util.List periods = elWeek.getChildren("period");
+			java.util.List periods = elWeek.getChildren("period");			
 			for (int j =0; periods != null && j < periods.size(); j++) {
 				Element period = (Element)periods.get(j);
 				PeriodListener p = new PeriodListener(dom);
@@ -863,24 +836,24 @@ public class JobAssistentRunTimeForms {
 //					list.add(WEEK_DAY + sWeek +  " at " + p.getSingle());
 					list.add(SOSJOEMessageCodes.JOE_M_0031.params(WEEK_DAY, sWeek, p.getSingle()));
 				}
-			}
+			}	
 		}
 
-		//Month day
+		//Month day		
 		Element[] monthDays = monthListener.getDayElements();
 		for(int i =0; monthDays!=null&& i < monthDays.length; i++) {
 			Element elMonth = monthDays[i];
 			String sMonth = comboMonth.getItem(Utils.str2int(Utils.getAttributeValue("day", elMonth)) -1);
-			java.util.List periods = elMonth.getChildren("period");
+			java.util.List periods = elMonth.getChildren("period");			
 			for (int j =0; periods != null && j < periods.size(); j++) {
 				Element period = (Element)periods.get(j);
 				PeriodListener p = new PeriodListener(dom);
-				p.setPeriod(period);
+				p.setPeriod(period);	
 				if(p.getBegin() == null || p.getBegin().trim().length() == 0) {
 //					list.add(MONTH_DAY + sMonth +  " at " + p.getSingle() );
 					list.add(SOSJOEMessageCodes.JOE_M_0031.params(MONTH_DAY, sMonth, p.getSingle()));
 				}
-			}
+			}	
 		}
 
 
@@ -907,15 +880,15 @@ public class JobAssistentRunTimeForms {
 
 	}
 
-	private void deleteEveryDay(final String selectedStr) {
+	private void deleteEveryDay(String selectedStr) {
 		java.util.List everyDay = periodslistener.get_list();
 
 		for(int i =0; everyDay != null && i < everyDay.size(); i++) {
 			Element period = (Element)everyDay.get(i);
 			PeriodListener p = new PeriodListener(dom);
-			p.setPeriod(period);
-//			if(selectedStr.equals(EVERY_DAY + "at " + p.getSingle())) {
-			if(selectedStr.equals(EVERY_DAY +" " + SOSJOEMessageCodes.JOE_L_JobAssistent_At + " " + p.getSingle())) {
+			p.setPeriod(period);			
+//			if(selectedStr.equals(EVERY_DAY + "at " + p.getSingle())) {	
+			if(selectedStr.equals(EVERY_DAY +" " + SOSJOEMessageCodes.JOE_L_JobAssistent_At + " " + p.getSingle())) {	
 				periodslistener.removePeriod(i);
 			}
 		}
@@ -923,7 +896,7 @@ public class JobAssistentRunTimeForms {
 	}
 
 
-	private void deleteSpeDay(final String selectedStr) {
+	private void deleteSpeDay(String selectedStr) {
 		java.util.List speDays = speDateListener.get_list();
 		for(int i =0; speDays != null && i < speDays.size(); i++) {
 			Element speElem = (Element)speDays.get(i);
@@ -937,7 +910,7 @@ public class JobAssistentRunTimeForms {
 				for (int j =0; periods != null && j < periods.size(); j++) {
 					Element period = (Element)periods.get(j);
 					PeriodListener p = new PeriodListener(dom);
-					p.setPeriod(period);
+					p.setPeriod(period);				
 //					if(selectedStr.equals(SPECIFIC_DAY + Utils.asStr(da[2]) + "-" + Utils.asStr(da[1]) + "-" + Utils.asStr(da[0])   +  " at " + p.getSingle() )){
 					if(selectedStr.equals(SOSJOEMessageCodes.JOE_M_0029.params(SPECIFIC_DAY, Utils.asStr(da[2]), Utils.asStr(da[1]), Utils.asStr(da[0]), p.getSingle()))){
 						PeriodsListener _pl = new PeriodsListener(dom, speElem );
@@ -949,7 +922,7 @@ public class JobAssistentRunTimeForms {
 		update.updateDays(DaysListener.SPECIFIC_DAY);
 	}
 
-	private void deleteWeek(final String selectedStr) {
+	private void deleteWeek(String selectedStr) {
 		Element[] weekDays = weekDayListener.getDayElements();
 		for(int i =0; weekDays!=null&& i < weekDays.length; i++) {
 			Element elWeek = weekDays[i];
@@ -964,22 +937,22 @@ public class JobAssistentRunTimeForms {
 					for (int j =0; periods != null && j < periods.size(); j++) {
 						Element period = (Element)periods.get(j);
 						PeriodListener p = new PeriodListener(dom);
-						p.setPeriod(period);
+						p.setPeriod(period);	
 						String time = selectedStr.substring(selectedStr.indexOf("at ") + 3);
 						if(p.getSingle().endsWith(time)) {
 							PeriodsListener _pl = new PeriodsListener(dom, elWeek );
 							_pl.removePeriod(j);
-						}
-					}
+						}							
+					}	
 				}
 
 			}
 
 		}
 		update.updateDays(DaysListener.WEEKDAYS);
-	}
+	} 
 
-	private void deleteMonth(final String selectedStr) {
+	private void deleteMonth(String selectedStr) {
 		Element[] monthDays = monthListener.getDayElements();
 		for(int i =0; monthDays!=null&& i < monthDays.length; i++) {
 			Element elMonth = monthDays[i];
@@ -994,28 +967,28 @@ public class JobAssistentRunTimeForms {
 					for (int j =0; periods != null && j < periods.size(); j++) {
 						Element period = (Element)periods.get(j);
 						PeriodListener p = new PeriodListener(dom);
-						p.setPeriod(period);
+						p.setPeriod(period);	
 						String time = selectedStr.substring(selectedStr.indexOf("at ") + 3);
 						if(p.getSingle().endsWith(time)) {
 							PeriodsListener _pl = new PeriodsListener(dom, elMonth );
 							_pl.removePeriod(j);
-						}
-					}
+						}							
+					}	
 				}
 
 			}
 
 		}
 		update.updateDays(DaysListener.MONTHDAYS);
-	}
+	} 
 
 
 
-	private void savePeriod(final String which ) {
+	private void savePeriod(String which ) {
 
 
 		if(which.equals(EVERY_DAY)){
-			Element period = periodslistener.getNewPeriod();
+			Element period = periodslistener.getNewPeriod();		
 			periodlistener.setPeriod(period);
 			periodlistener.setPeriodTime(23, null, "single_start", txtDayAtHour.getText(), txtDayAtMinutes.getText(), txtDayAtSecound.getText());
 			periodslistener.applyPeriod(period);
@@ -1029,12 +1002,12 @@ public class JobAssistentRunTimeForms {
 
 
 			if (!speDateListener.exists(Utils.str2int(tdate[2]), Utils.str2int(tdate[1]), Utils.str2int(tdate[0])) ) {
-				speDateListener.addDate(Utils.str2int(tdate[2]), Utils.str2int(tdate[1]), Utils.str2int(tdate[0]));
+				speDateListener.addDate(Utils.str2int(tdate[2]), Utils.str2int(tdate[1]), Utils.str2int(tdate[0]));   
 			}
 			java.util.List lastDate = job.getChild("run_time").getChildren("date");
 			Element eDate =  (Element)lastDate.get(lastDate.size()-1);
 			PeriodsListener p = new PeriodsListener(dom, eDate);
-			Element period = p.getNewPeriod();
+			Element period = p.getNewPeriod();		
 			periodlistener.setPeriod(period);
 			periodlistener.setPeriodTime(23, null, "single_start", txtSpeDayHour.getText(), txtSpeDayAtMinutes.getText(), txtSpeDayAtSecound.getText());
 			p.applyPeriod(period);
@@ -1045,43 +1018,43 @@ public class JobAssistentRunTimeForms {
 		}
 
 		if(which.equals(WEEK_DAY)){
-			String week = comboEveryWeekdays.getText();
-			Element day = null;
-			Element[] days =  weekDayListener.getDayElements();
+			String week = comboEveryWeekdays.getText();									
+			Element day = null;						
+			Element[] days =  weekDayListener.getDayElements();			
 			if(days != null &&days.length > 0) {//gleich 1 bedeutet, das day Element gerade generiert wurde
 				//überprüfe, ob der Wochentag bereits ausgewählt wurde
-				for (Element day2 : days) {
-					Element eday = day2;
-					if(Utils.str2int(Utils.getAttributeValue("day",eday)) == comboEveryWeekdays.getSelectionIndex()+1){
-						day = eday;
+				for (int i =0; i < days.length; i++) {
+					Element eday = (Element)days[i];
+					if(Utils.str2int(Utils.getAttributeValue("day",eday)) == (comboEveryWeekdays.getSelectionIndex()+1)){
+						day = eday;		
 						break;
 					}
 				}
-			}
+			}			
 			if(day == null) {
 				weekDayListener.addDay(week);
-				day = weekDayListener.getDayElements()[weekDayListener.getDayElements().length - 1];//letzte Element
-			}
+				day = weekDayListener.getDayElements()[weekDayListener.getDayElements().length - 1];//letzte Element				
+			}			
 			PeriodsListener p = new PeriodsListener(dom, day);
-			Element period = p.getNewPeriod();
+			Element period = p.getNewPeriod();			
 			periodlistener.setPeriod(period);
 			periodlistener.setPeriodTime(23, null, "single_start", txtWeekAtHour.getText(), txtWeekAtMinutes.getText(), txtWeekAtSecound.getText());
 			p.applyPeriod(period);
-			update.updateDays(DaysListener.WEEKDAYS);
+			update.updateDays(DaysListener.WEEKDAYS);			
 		}
 
 		if(which.equals(MONTH_DAY)){
 			String month = comboMonth.getText();
 
-			Element day = null;
+			Element day = null;			
 
 			Element[] days =  monthListener.getDayElements();
 			if(days != null && days.length > 0) {//gleich 1 bedeutet, das day Element gerade generiert wurde
 				//überprüfe, ob der Wochentag bereits ausgewählt wurde
-				for (Element day2 : days) {
-					Element eday = day2;
-					if(Utils.str2int(Utils.getAttributeValue("day",eday)) == comboMonth.getSelectionIndex()+1){
-						day = eday;
+				for (int i =0; i < days.length; i++) {
+					Element eday = (Element)days[i];
+					if(Utils.str2int(Utils.getAttributeValue("day",eday)) == (comboMonth.getSelectionIndex()+1)){
+						day = eday;		
 						break;
 					}
 				}
@@ -1103,7 +1076,7 @@ public class JobAssistentRunTimeForms {
 
 	}
 
-	private boolean checkTime(final String time, final String which ) {
+	private boolean checkTime(String time, String which ) {
 		boolean retVal = true;
 		if(time == null || time.trim().length()==0){
 			return true;
@@ -1128,7 +1101,7 @@ public class JobAssistentRunTimeForms {
 					MainWindow.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoTime.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 					retVal= false;
 				}
-			}
+			} 
 
 			if(time.trim().length() > 2) {
 //				MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.no_time"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
@@ -1142,9 +1115,9 @@ public class JobAssistentRunTimeForms {
 	private void close() {
 //		int cont = MainWindow.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		int cont = MainWindow.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_Close.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-		if(cont == SWT.OK) {//Utils.getElementAsString((Element)jobBackUp);
+		if(cont == SWT.OK) {//Utils.getElementAsString((Element)jobBackUp);			
 			job.setContent(jobBackUp.cloneContent());
-			runTimeSingleShell.dispose();
+			runTimeSingleShell.dispose();	
 		}
 	}
 

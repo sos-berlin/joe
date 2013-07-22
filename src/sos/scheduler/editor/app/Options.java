@@ -17,8 +17,6 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
-import sos.util.SOSClassUtil;
-
 import com.sos.JSHelper.Options.SOSOptionLocale;
 import com.sos.i18n.I18NBase;
 import com.sos.i18n.annotation.I18NResourceBundle;
@@ -121,7 +119,7 @@ public class Options extends I18NBase {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() + "; Error reading default options from " + DEFAULT_OPTIONS, e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; Error reading default options from " + DEFAULT_OPTIONS, e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -139,7 +137,7 @@ public class Options extends I18NBase {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() + ". Error reading custom options from " + fName, e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + ". Error reading custom options from " + fName, e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -158,7 +156,7 @@ public class Options extends I18NBase {
 			}
 			catch (Exception e) {
 				try {
-					new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 				}
 				catch (Exception ee) {
 				}
@@ -170,7 +168,7 @@ public class Options extends I18NBase {
 	}
 
 	public static void setProperty(final String key, final String value) {
-		if (_properties != null && key != null && value != null) {
+		if (_properties != null) {
 			_properties.setProperty(key, value);
 			_changed = true;
 		}
@@ -341,7 +339,7 @@ public class Options extends I18NBase {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() + ". could not read schema version from ", e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + ". could not read schema version from ", e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -450,7 +448,7 @@ public class Options extends I18NBase {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -463,7 +461,7 @@ public class Options extends I18NBase {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -481,7 +479,7 @@ public class Options extends I18NBase {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -505,7 +503,7 @@ public class Options extends I18NBase {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -552,7 +550,7 @@ public class Options extends I18NBase {
 	public static String getSchedulerHome() {
 		String strT = getProp(conEnvVarSCHEDULER_HOME, "");
 
-//		logger.debug("getSchedulerHome = " + strT);
+		logger.debug("getSchedulerHome = " + strT);
 		return strT;
 	}
 
@@ -600,7 +598,7 @@ public class Options extends I18NBase {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -616,7 +614,7 @@ public class Options extends I18NBase {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -635,7 +633,7 @@ public class Options extends I18NBase {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -654,7 +652,7 @@ public class Options extends I18NBase {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -673,7 +671,7 @@ public class Options extends I18NBase {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -692,7 +690,7 @@ public class Options extends I18NBase {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts

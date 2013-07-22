@@ -27,13 +27,11 @@ import org.jdom.Element;
 import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.listeners.EventListener;
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.util.SOSClassUtil;
 
 
 public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage  {
@@ -168,13 +166,11 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 
 		txtTitle = JOE_T_EventForm_EventTitle.Control(new Text(group, SWT.BORDER));
 		txtTitle.addModifyListener(new ModifyListener() {
-			@Override
 			public void modifyText(final ModifyEvent e) {
 				butApply.setEnabled(true);
 			}
 		});
 		txtTitle.addKeyListener(new KeyAdapter() {
-			@Override
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR )
 					apply();
@@ -454,11 +450,11 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 			}
 		} catch(Exception e) {
 			try {
-				new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
+				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			} catch(Exception ee) {
-
+				//tu nichts
 			}
-			MainWindow.message(JOE_E_0002.params("'save Event'") + e.getMessage(), SWT.ICON_WARNING);
+			MainWindow.message((JOE_E_0002.params("'save Event'") + e.getMessage()), SWT.ICON_WARNING);
 
 		}
 
@@ -494,11 +490,11 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 
 	@Override
 	public void setToolTipText() {
-//
+//		
 	}
 
 	private void createExpirationTime(final Group matchingAttributesGroup) {
-
+		
 		@SuppressWarnings("unused")
 		final Label expirationPeriodLabel = JOE_L_EventForm_ExpirationPeriod.Control(new Label(matchingAttributesGroup, SWT.NONE));
 

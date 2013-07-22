@@ -818,7 +818,7 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 
     private void applyDirectory() {
-    	if(Utils.isValidRegExpression(tRegex.getText())) {
+    	if(Utils.isRegExpressions(tRegex.getText())) {
     		listener.applyDirectory(tDirectory.getText(), tRegex.getText());
     		listener.fillDirectories(tDirectories);
     		initDirectory(false);

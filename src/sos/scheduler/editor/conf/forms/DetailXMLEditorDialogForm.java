@@ -27,21 +27,30 @@ import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.conf.DetailDom;
 import sos.scheduler.editor.conf.listeners.DetailXMLEditorListener;
 import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
+import sos.scheduler.editor.conf.DetailDom;
 
 public class DetailXMLEditorDialogForm {
 	
 	private String                  xmlFilename     = null;
+	
 	private Text                    txtXML          = null; 
+	
 	private DetailXMLEditorListener listener        = null;
+	
 	private Button                  butApply        = null;
+	
 	private Shell                   shell           = null; 
+	
 	private String                  state           = null;
+	 
 	private String                  jobChainname    = null;
+	
 	//private String[]                listOfOrderIds  = null;
+	
 	private String                  orderId         = null;    
+	
 	private DetailDom               dom             = null;
 		
 	/** wer hat ihn aufgerufen*/
@@ -70,13 +79,13 @@ public class DetailXMLEditorDialogForm {
 			                         boolean isLifeElement_,
 			                         String path_) {
 		*/
-	public DetailXMLEditorDialogForm(final String xmlFilename_, 
-            final String jobChainname_, 
-            final String state_,            
-            final String orderId_, 
-            final int type_, 
-            final boolean isLifeElement_,
-            final String path_) {
+	public DetailXMLEditorDialogForm(String xmlFilename_, 
+            String jobChainname_, 
+            String state_,            
+            String orderId_, 
+            int type_, 
+            boolean isLifeElement_,
+            String path_) {
 
 		jobChainname = jobChainname_;
 		state = state_;
@@ -88,7 +97,7 @@ public class DetailXMLEditorDialogForm {
 		path = path_;
 	}
 	
-	public DetailXMLEditorDialogForm(final DetailDom dom_, final int type_, final boolean isLifeElement_, final String path_) {
+	public DetailXMLEditorDialogForm(DetailDom dom_, int type_, boolean isLifeElement_, String path_) {
 		dom = dom_;
 		xmlFilename = dom.getFilename();
 		type = type_;
@@ -100,7 +109,6 @@ public class DetailXMLEditorDialogForm {
 		
 		shell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shell.addShellListener(new ShellAdapter() {
-			@Override
 			public void shellClosed(final ShellEvent e) {
 				close();
 				e.doit = shell.isDisposed();
@@ -142,7 +150,6 @@ public class DetailXMLEditorDialogForm {
 			
 			txtXML = SOSJOEMessageCodes.JOE_T_DetailXMLEditorDialogForm_XML.Control(new Text(jobGroup, SWT.V_SCROLL | SWT.MULTI | SWT.WRAP | SWT.H_SCROLL));
 			txtXML.addModifyListener(new ModifyListener() {
-				@Override
 				public void modifyText(final ModifyEvent e) {
 					butApply.setEnabled(true);
 				}
@@ -157,7 +164,6 @@ public class DetailXMLEditorDialogForm {
 			butApply = SOSJOEMessageCodes.JOE_B_DetailXMLEditorDialogForm_Apply.Control(new Button(jobGroup, SWT.NONE));
 			butApply.setEnabled(false);
 			butApply.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 						listener.saveXML(txtXML.getText());
 						if(type == Editor.DETAILS) {
@@ -175,7 +181,6 @@ public class DetailXMLEditorDialogForm {
 
 			final Button butClose = SOSJOEMessageCodes.JOE_B_DetailXMLEditorDialogForm_Close.Control(new Button(jobGroup, SWT.NONE));
 			butClose.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					close();					
 				}
@@ -194,10 +199,10 @@ public class DetailXMLEditorDialogForm {
 		} catch (Exception e) {
 			try {
 				System.err.println(SOSJOEMessageCodes.JOE_E_0002.params("showXMLEditor", e.toString()));						
-//    			new ErrorLog("error in " + SOSClassUtil.getMethodName() , e);
+//    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
     			new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params("showXMLEditor", e.toString()));
     		} catch(Exception ee) {
-    			
+    			//tu nichts
     		}
 			
 		}
@@ -252,7 +257,7 @@ public class DetailXMLEditorDialogForm {
 		
 	}
 	
-	public void setConfigurationData(final JobChainConfigurationListener confListener_, final Tree tree_, final Composite parent_) {
+	public void setConfigurationData(JobChainConfigurationListener confListener_, Tree tree_, Composite parent_) {
 		confListener = confListener_;
 		tree = tree_;
 		parent = parent_;

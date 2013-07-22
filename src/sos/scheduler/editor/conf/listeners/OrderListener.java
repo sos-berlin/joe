@@ -1,9 +1,9 @@
 package sos.scheduler.editor.conf.listeners;
 
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
@@ -16,32 +16,31 @@ import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.util.SOSClassUtil;
 
 
 public class OrderListener {
+	
+	
+    private ISchedulerUpdate _main;
 
-
-    private final ISchedulerUpdate _main;
-
-    private final SchedulerDom     _dom;
+    private SchedulerDom     _dom;
 
     private String[]         _chains = new String[0];
 
     private List             _params;
 
-    private final Element          _order;
+    private Element          _order;
 
-    private final Element          _config;
+    private Element          _config;
 
 
-    public OrderListener(final SchedulerDom dom, final Element order, final ISchedulerUpdate update) {
-
+    public OrderListener(SchedulerDom dom, Element order, ISchedulerUpdate update) {
+    	
         _dom = dom;
         _config = _dom.getRoot().getChild("config");
         _order = order;
         _main = update;
-
+        
     }
 
 
@@ -63,7 +62,7 @@ public class OrderListener {
     }
 
 
-    public void fillParams(final Table tableParameters) {
+    public void fillParams(Table tableParameters) {
         clearParams();
         tableParameters.removeAll();
         initParams();
@@ -86,7 +85,7 @@ public class OrderListener {
     }
 
 
-    public void deleteParameter(final Table table, final int index) {
+    public void deleteParameter(Table table, int index) {
         if (_params != null) {
             _params.remove(index);
             _dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.MODIFY);
@@ -96,7 +95,7 @@ public class OrderListener {
     }
 
 
-    public void saveParameter(final Table table, final String name, final String value) {
+    public void saveParameter(Table table, String name, String value) {
         boolean found = false;
         //String value2 = value.replaceAll("\"", "&quot;");
 
@@ -143,55 +142,56 @@ public class OrderListener {
     }
 
 
-    public String getCommandAttribute(final String attribute) {
+    public String getCommandAttribute(String attribute) {
         return Utils.getAttributeValue(attribute, _order);
     }
 
-
+    
     public String[] getStates() {
     	String[] retVal = new String[]{""};
     	ArrayList<String> stateList = new ArrayList<String>();
-
+    	
     	try {
-    		String jobChainname = getCommandAttribute("job_chain");
+    		String jobChainname = getCommandAttribute("job_chain");    		
     		XPath x3 = XPath.newInstance("//job_chain[@name='"+ jobChainname + "']");
     		Element jobChain = (Element)x3.selectSingleNode(_dom.getDoc());
-
+    		
     		if(jobChain == null) {
     			jobChainname = getCommandAttribute("job_chain_node.job_chain");
     			x3 = XPath.newInstance("//job_chain_node.job_chain[@name='"+ jobChainname + "']");
         		jobChain = (Element)x3.selectSingleNode(_dom.getDoc());
-
+        			
     		}
     		if(jobChain == null)
     			return retVal;
-
-
+    		
+    		
     		List<Element> l = jobChain.getChildren();
     		for(int i = 0; i < l.size(); i++) {
-    			Element e = l.get(i);
+    			Element e = (Element)l.get(i);    			
     			String state = Utils.getAttributeValue("state", e);
     			if(state.length() > 0)
-					stateList.add(state);
+					stateList.add(state);    			
     		}
 
     		if(stateList.size() > 0) {
     			retVal = new String[stateList.size()];
     			for(int i = 0; i < stateList.size(); i++)
     				retVal[i] = stateList.get(i).toString();
-    		}
+    		} 
     		//if(!listOfElement_3.isEmpty())
     	} catch (Exception e){
     		try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() , e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
 			} catch(Exception ee) {
+				//tu nichts
 			}
     	}
     	return retVal;
 
     }
-
-    public void setCommandAttribute(final String name, final String value) {
+    
+    public void setCommandAttribute(String name, String value) {
     	_dom.setChanged(true);
     	_dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.DELETE);
         Utils.setAttribute(name, value, _order, _dom);
@@ -201,16 +201,16 @@ public class OrderListener {
     }
 
 
-    public void setOrderId(final String id, final boolean updateTree, final boolean rem) {
-
+    public void setOrderId(String id, boolean updateTree, boolean rem) {
+    	
     	String removename = Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order);
-    	Utils.setAttribute("id", id, _order, _dom);
+    	Utils.setAttribute("id", id, _order, _dom);    	    	
     	if(rem)
-    		_dom.setChangedForDirectory("order", removename, SchedulerDom.DELETE);
-
+    		_dom.setChangedForDirectory("order", removename, SchedulerDom.DELETE);    	
+    	    	
         if (updateTree)
             _main.updateOrder(id);
-
+        
         _dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order), SchedulerDom.MODIFY);
     }
 
@@ -226,31 +226,31 @@ public class OrderListener {
     			try {
     			java.io.File f = new java.io.File(_dom.getFilename());
     			java.util.Vector filelist = sos.util.SOSFile.getFilelist(f.getParent(), MergeAllXMLinDirectory.MASK_JOB_CHAIN,java.util.regex.Pattern.CASE_INSENSITIVE,true);
-
+    			 
     			Object[] o = filelist.toArray();
     			_chains= new String[o.length];
     			for(int i= 0; i < o.length; i++) {
     				String n = ((java.io.File)o[i]).getName();
     				n = n.substring(0, n.indexOf(".job_chain.xml"));
-    				_chains[i] = n;
+    				_chains[i] = n;    			
     			}
     			return _chains;
     			//_chains = new java.io.File(_dom.getFilename());
     			} catch(Exception e) {
     				try {
-						new ErrorLog("error in " + SOSClassUtil.getMethodName() , e);
+						new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
 					} catch(Exception ee) {
-
+						//tu nichts
 					}
     				System.out.println(e.getMessage());
-
-    			}
+    				
+    			} //Tu nichts
     		}
-
+    			
     		_chains = new String[0];
-    		return _chains;
+    		return _chains;		
     	}
-
+    		
         Element element = _config.getChild("job_chains");
         if (element != null) {
             List chains = element.getChildren("job_chain");
@@ -271,9 +271,9 @@ public class OrderListener {
 	public Element getOrder() {
 		return _order;
 	}
-
-	 public boolean existName(final String removename){
-
+	
+	 public boolean existName(String removename){
+ 
 	    	if(_dom.isDirectory()) {
 	    		java.util.List l = getOrder().getParentElement().getChildren("order");
 	    		for(int i = 0; i < l.size(); i++) {
@@ -282,13 +282,13 @@ public class OrderListener {
 	    			if(!e.equals(_order) && removename != null && name.equals(removename))
 	    				return true;
 	    			/*if(!h.containsKey(name)) {
-	    				h.put(name, "");
-	    			} else {
+	    				h.put(name, "");	    				
+	    			} else {	    				
 	    				return true;
 	    			}*/
 	    		}
 	    	}
-
+	    
 	    	return false;
 	    }
 }

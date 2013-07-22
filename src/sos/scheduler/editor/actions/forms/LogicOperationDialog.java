@@ -21,7 +21,6 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
 class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
@@ -162,7 +161,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 				}
 				catch (Exception es) {
 					System.out.print(e.toString());
-
+					//tu nichts
 				}
 			}
 		});
@@ -226,9 +225,10 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
+				//tu nichts
 			}
 		}
 	}

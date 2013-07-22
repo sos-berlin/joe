@@ -14,63 +14,54 @@ import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 
-import sos.scheduler.editor.classes.FolderNameSelector;
-import sos.scheduler.editor.classes.SOSTable;
-import sos.util.SOSClassUtil;
-
 import com.sos.dialog.components.SOSDateTime;
 import com.sos.localization.SOSMsg;
+import org.eclipse.swt.widgets.Text;
 
 public class SOSMsgJOE extends SOSMsg {
 
 	private static String	conClassName	= "SOSMsgJOE";
 
-	public SOSMsgJOE(final String pstrMessageCode) {
+	public SOSMsgJOE(String pstrMessageCode) {
 		super(pstrMessageCode);
-		if (Messages == null) {
+		if (this.Messages == null) {
 			super.setMessageResource("JOEMessages");
-			Messages = super.Messages;
+			this.Messages = super.Messages;
 		}
 		else {
-			super.Messages = Messages;
+			super.Messages = this.Messages;
 		}
 	} // public SOSMsgJOE
-
-	final FolderNameSelector Control (final FolderNameSelector pobjC) {
-		FolderNameSelector pobjF = Control(pobjC);
-		return pobjF;
-	}
 
 	public Text Control(final Text pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-	// Text kommt im Normalfall nicht aus einer Propertie-Datei. Deswegen ergibt es keinen Sinn
+	// Text kommt im Normalfall nicht aus einer Propertie-Datei. Deswegen ergibt es keinen Sinn	
 	//	pobjC.setText(label());
-
+		
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		pobjC.addFocusListener(new FocusAdapter() {
-			@Override
 			public void focusGained(final FocusEvent e) {
 				pobjC.selectAll();
+				// pobjC.setBackground(new Color(SWT.BLACK));
 			}
 
 			@Override
-			public void focusLost(final FocusEvent e) {
+			public void focusLost(FocusEvent e) {
 			}
 		});
 		return pobjC;
@@ -97,7 +88,7 @@ public class SOSMsgJOE extends SOSMsg {
 	public Button Control(final Button pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
-
+		
 		pobjC.setText(caption());
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
@@ -120,7 +111,7 @@ public class SOSMsgJOE extends SOSMsg {
 		setKeyListener(pobjC);
 		return pobjC;
 	} // public Composite Control
-
+	
 	public CCombo Control(final CCombo pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
@@ -137,32 +128,11 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public TableColumn Control
 
-	public TableColumn Control(final TableColumn pobjC, final int intDefaultSize) {
-		@SuppressWarnings("unused")
-		final String conMethodName = conClassName + "::Control";
-		pobjC.setText(caption());
-		pobjC.setToolTipText(tooltip());
-
-		return pobjC;
-	} // public TableColumn Control
-
 	public Table Control(final Table pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
-		pobjC.setLinesVisible(true);
-		pobjC.setHeaderVisible(true);
-
-		return pobjC;
-	} // public Table Control
-
-	public SOSTable Control(final SOSTable pobjC) {
-		@SuppressWarnings("unused")
-		final String conMethodName = conClassName + "::Control";
-		pobjC.setToolTipText(tooltip());
-		setKeyListener(pobjC);
-
 		return pobjC;
 	} // public Table Control
 
@@ -180,14 +150,14 @@ public class SOSMsgJOE extends SOSMsg {
 		setKeyListener(pobjC);
 		return pobjC;
 	} // public Spinner Control
-
+	
 	public MessageBox Control(final MessageBox pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setMessage(this.caption());
 		return pobjC;
 	} // public MessageBox Control
-
+	
 	public List Control(final List pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
@@ -195,7 +165,7 @@ public class SOSMsgJOE extends SOSMsg {
 		setKeyListener(pobjC);
 		return pobjC;
 	} // public List Control
-
+	
 	public Tree Control(final Tree pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
@@ -203,7 +173,7 @@ public class SOSMsgJOE extends SOSMsg {
 		setKeyListener(pobjC);
 		return pobjC;
 	} // public Tree Control
-
+	
 	public Browser Control(final Browser pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
@@ -212,7 +182,7 @@ public class SOSMsgJOE extends SOSMsg {
 		setKeyListener(pobjC);
 		return pobjC;
 	} // public Browser Control
-
+	
 	public TreeColumn Control(final TreeColumn pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
@@ -220,7 +190,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(tooltip());
 		return pobjC;
 	} // public TreeColumn Control
-
+	
 	public TabItem Control(final TabItem pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
@@ -228,7 +198,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(this.tooltip());
 		return pobjC;
 	} // public TabItem Control
-
+	
 	public CTabItem Control(final CTabItem pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
@@ -236,21 +206,21 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(this.tooltip());
 		return pobjC;
 	} // public CTabItem Control
-
+	
 	public SOSDateTime Control(final SOSDateTime pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setToolTipText(this.tooltip());
 		return pobjC;
 	} // public SOSDateTime Control
-
-
+	
+	
 
 	private void setKeyListener(final Control pobjC) {
 //		strControlName = pobjC.
 		pobjC.addKeyListener(new KeyListener() {
 			@Override
-			public void keyPressed(final KeyEvent event) {
+			public void keyPressed(KeyEvent event) {
 				if (event.keyCode == SWT.F1) {
 					// MainWindow.message("F1 gedrückt", SWT.ICON_INFORMATION);
 					openHelp(getF1()); // "http:www.sos-berlin.com/doc/en/scheduler.doc/xml/job.xml");
@@ -258,13 +228,13 @@ public class SOSMsgJOE extends SOSMsg {
 			}
 
 			@Override
-			public void keyReleased(final KeyEvent arg0) {
+			public void keyReleased(KeyEvent arg0) {
 			}
 		});
 
 	} // private void setKeyListener
 
-	public void openHelp(final String helpKey) {
+	public void openHelp(String helpKey) {
 		String lang = Options.getLanguage();
 		String url = helpKey;
 		try {
@@ -272,13 +242,7 @@ public class SOSMsgJOE extends SOSMsg {
 			if (url.contains("http:")) {
 			}
 			else {
-				File fleF = new File(url);
-				if (fleF.exists() == false) {
-					MainWindow.message(sos.scheduler.editor.app.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, "not found" }),
-							SWT.ICON_ERROR | SWT.OK);
-					return;  // sorry, no help found
-				}
-				url = fleF.toURI().toURL().toString();
+				url = new File(url).toURL().toString();
 			}
 			Program prog = Program.findProgram("html");
 			if (prog != null)
@@ -289,10 +253,11 @@ public class SOSMsgJOE extends SOSMsg {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() + "; "
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; "
 						+ sos.scheduler.editor.app.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
 			}
- 			catch (Exception ee) {
+			catch (Exception ee) {
+				// tu nichts
 			}
 			e.printStackTrace();
 			MainWindow.message(sos.scheduler.editor.app.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }),

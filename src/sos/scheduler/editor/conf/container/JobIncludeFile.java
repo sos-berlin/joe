@@ -182,7 +182,7 @@ public class JobIncludeFile extends FormBaseClass {
 			public void keyPressed(KeyEvent e) {
 				if (e.keyCode == SWT.CR && objJobDataProvider.isNotEmpty(tbxFile2Include.getText())) {
 					objJobDataProvider.addInclude(tableIncludes, tbxFile2Include.getText(), butIsLiveFile.getSelection());
-					objJobDataProvider.fillIncludesTable(tableIncludes);
+					objJobDataProvider.fillTable(tableIncludes);
 					tbxFile2Include.setText("");
 				}
 			}
@@ -195,7 +195,7 @@ public class JobIncludeFile extends FormBaseClass {
 				if (tableIncludes.getSelectionCount() > 0) {
 					int index = tableIncludes.getSelectionIndex();
 					objJobDataProvider.removeInclude(index);
-					objJobDataProvider.fillIncludesTable(tableIncludes);
+					objJobDataProvider.fillTable(tableIncludes);
 					if (index >= tableIncludes.getItemCount())
 						index--;
 					// if (tableIncludes.getItemCount() > 0)

@@ -1,9 +1,5 @@
 package sos.scheduler.editor.app;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.apache.webdav.lib.WebdavResource;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -24,18 +20,24 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
-
+import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.ResourceManager;
+import sos.util.SOSString;
+import com.swtdesigner.SWTResourceManager;
+import sos.scheduler.editor.app.WebDavDialogListener;
+import sos.scheduler.editor.conf.DetailDom;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
+import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
-import sos.util.SOSClassUtil;
-import sos.util.SOSString;
 
-import com.swtdesigner.SWTResourceManager;
+import java.io.File; 
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 
@@ -52,13 +54,13 @@ public class WebDavDialog {
 
 	private              Combo                   cboConnectname                = null;
 
-	private              Table                   table                         = null;
+	private              Table                   table                         = null;		
 
 	private              Text                    txtUrl                        = null;
 
-	private final              SOSString               sosString                     = new SOSString();
+	private              SOSString               sosString                     = new SOSString();
 
-	private              Text                    txtFilename                   = null;
+	private              Text                    txtFilename                   = null;	
 
 	private              Text                    txtLog                        = null;
 
@@ -84,20 +86,20 @@ public class WebDavDialog {
 
 	private              Button                  butSite                       = null;
 
-	private              Button                  butProfiles                   = null;
+	private              Button                  butProfiles                   = null; 
 
-	private              Button                  butClose                      = null;
+	private              Button                  butClose                      = null; 
 
 
 
-	//public WebDavDialog(MainWindow  main_) {
+	//public WebDavDialog(MainWindow  main_) {		
 	public WebDavDialog() {
-		//main = main_;
-		listener = new WebDavDialogListener();
+		//main = main_;		 
+		listener = new WebDavDialogListener();						
 	}
 
 
-	public void showForm(final String type_) {
+	public void showForm(String type_) {
 
 		type = type_;
 		schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE
@@ -106,8 +108,7 @@ public class WebDavDialog {
 				.getImageFromResource("/sos/scheduler/editor/editor.png"));
 
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
-			@Override
-			public void keyTraversed(final TraverseEvent e) {
+			public void keyTraversed(final TraverseEvent e) {				
 				if(e.detail == SWT.TRAVERSE_ESCAPE) {
 					//listener.disconnect();
 					schedulerConfigurationShell.dispose();
@@ -145,7 +146,6 @@ public class WebDavDialog {
 
 			cboConnectname = new Combo(schedulerGroup, SWT.NONE);
 			cboConnectname.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					if(!cboConnectname.getText().equalsIgnoreCase(listener.getCurrProfileName()) ) {
 						//listener.disconnect();
@@ -164,12 +164,11 @@ public class WebDavDialog {
 
 			butSite = new Button(schedulerGroup, SWT.NONE);
 			butSite.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 
 					Utils.startCursor(schedulerConfigurationShell);
 
-					HashMap h = listener.changeDirectory(cboConnectname.getText(), txtUrl.getText());
+					HashMap h = listener.changeDirectory(cboConnectname.getText(), txtUrl.getText());					
 					butOpenOrSave.setEnabled(txtFilename.getText().length() > 0);
 					fillTable(h);
 					_setEnabled(true);
@@ -182,7 +181,6 @@ public class WebDavDialog {
 
 			butProfiles = new Button(schedulerGroup, SWT.NONE);
 			butProfiles.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					Utils.startCursor(schedulerConfigurationShell);
 					WebDavDialogProfiles profiles = new WebDavDialogProfiles (listener);
@@ -197,7 +195,6 @@ public class WebDavDialog {
 
 			txtUrl = new Text(schedulerGroup, SWT.BORDER);
 			txtUrl.addKeyListener(new KeyAdapter() {
-				@Override
 				public void keyPressed(final KeyEvent e) {
 					if (e.keyCode == SWT.CR) {
 						if(!txtUrl.getText().endsWith("/"))
@@ -213,7 +210,6 @@ public class WebDavDialog {
 
 			butChangeDir = new Button(schedulerGroup, SWT.NONE);
 			butChangeDir.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					Utils.startCursor(schedulerConfigurationShell);
 					if(!txtUrl.getText().endsWith("/"))
@@ -229,14 +225,13 @@ public class WebDavDialog {
 			table = new Table(schedulerGroup, SWT.FULL_SELECTION | SWT.BORDER);
 			table.setSortDirection(SWT.DOWN);
 			table.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 
 					if(table.getSelectionCount() > 0) {
 						TableItem item = table.getSelection()[0];
 
-						if(item.getData("type").equals("file") ||
-								type.equalsIgnoreCase(OPEN_HOT_FOLDER) ||
+						if(item.getData("type").equals("file") || 
+								type.equalsIgnoreCase(OPEN_HOT_FOLDER) ||								
 								type.equalsIgnoreCase(SAVE_AS_HOT_FOLDER))
 							txtFilename.setText(item.getText(0));
 						else
@@ -247,12 +242,11 @@ public class WebDavDialog {
 			});
 
 			table.addMouseListener(new MouseAdapter() {
-				@Override
 				public void mouseDoubleClick(final MouseEvent e) {
 					if(table.getSelectionCount() > 0) {
 
 						TableItem item = table.getSelection()[0];
-						if(item.getData("type").equals("dir")) {
+						if(item.getData("type").equals("dir")) {	
 
 							txtUrl.setText((txtUrl.getText().endsWith("/") ? txtUrl.getText() :txtUrl.getText() + "/") + item.getText() + "/");
 							fillTable(listener.changeDirectory(txtUrl.getText()));
@@ -280,14 +274,13 @@ public class WebDavDialog {
 
 			final TableColumn newColumnTableColumn_2 = new TableColumn(table, SWT.NONE);
 			newColumnTableColumn_2.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					sort(newColumnTableColumn_2);
 					/*table.setSortColumn(newColumnTableColumn_2);
 
 					if(table.getSortDirection() == SWT.DOWN)
 						table.setSortDirection(SWT.UP);
-					else
+					else 
 						table.setSortDirection(SWT.DOWN);
 					 */
 
@@ -300,7 +293,6 @@ public class WebDavDialog {
 
 			final TableColumn newColumnTableColumn = new TableColumn(table, SWT.NONE);
 			newColumnTableColumn.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 
 					sort(newColumnTableColumn);
@@ -315,7 +307,6 @@ public class WebDavDialog {
 
 			newColumnTableColumn_1 = new TableColumn(table, SWT.NONE);
 			newColumnTableColumn_1.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					sort(newColumnTableColumn_1);
 				}
@@ -326,7 +317,6 @@ public class WebDavDialog {
 
 			butRefresh = new Button(schedulerGroup, SWT.NONE);
 			butRefresh.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					refresh();
 					//HashMap h = listener.changeDirectory(txtDir.getText());
@@ -339,11 +329,10 @@ public class WebDavDialog {
 
 			butNewFolder = new Button(schedulerGroup, SWT.NONE);
 			butNewFolder.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					openDialog();
 					/*final Shell shell = new Shell();
-					shell.pack();
+					shell.pack();					
 					Dialog dialog = new Dialog(shell);
 					dialog.open(this);
 					dialog.setText("Create New Folder");
@@ -358,7 +347,6 @@ public class WebDavDialog {
 
 			butRemove = new Button(schedulerGroup, SWT.NONE);
 			butRemove.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					if(txtFilename.getText() != null) {
 						listener.removeFile(txtFilename.getText());
@@ -377,9 +365,8 @@ public class WebDavDialog {
 				filenameLabel.setText("Filename");
 			}
 
-			txtFilename = new Text(schedulerGroup, SWT.BORDER);
+			txtFilename = new Text(schedulerGroup, SWT.BORDER);						
 			txtFilename.addModifyListener(new ModifyListener() {
-				@Override
 				public void modifyText(final ModifyEvent e) {
 					butOpenOrSave.setEnabled(txtFilename.getText().length() > 0);
 				}
@@ -393,7 +380,6 @@ public class WebDavDialog {
 				butOpenOrSave.setEnabled(false);
 				butOpenOrSave.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 				butOpenOrSave.addSelectionListener(new SelectionAdapter() {
-					@Override
 					public void widgetSelected(final SelectionEvent e) {
 
 						Utils.startCursor(schedulerConfigurationShell);
@@ -405,7 +391,7 @@ public class WebDavDialog {
 								//Konfiguratoionsdatei oder HOT Folder Element
 								openFile();
 							}
-						} else {
+						} else {							
 							String file = txtUrl.getText() + "/" + txtFilename.getText();
 							saveas(file);
 						}
@@ -424,7 +410,6 @@ public class WebDavDialog {
 
 			butClose = new Button(schedulerGroup, SWT.NONE);
 			butClose.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					//listener.disconnect();
 					schedulerConfigurationShell.dispose();
@@ -448,7 +433,6 @@ public class WebDavDialog {
 
 		final Button butLog = new Button(schedulerConfigurationShell, SWT.NONE);
 		butLog.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), schedulerConfigurationShell, false, "");
 				if(text != null)
@@ -461,8 +445,8 @@ public class WebDavDialog {
 		String selectProfile = Options.getProperty("last_webdav_profile");
 		if(selectProfile != null && selectProfile.length() > 0) {
 			cboConnectname.setText(selectProfile);
-			listener.setCurrProfileName(selectProfile);
-		}
+			listener.setCurrProfileName(selectProfile);		
+		}		
 
 		initForm();
 		schedulerConfigurationShell.layout();
@@ -491,19 +475,23 @@ public class WebDavDialog {
 			_setEnabled(false);
 
 		} catch (Exception e) {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+			try {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+			} catch(Exception ee) {
+				//tu nichts
+			}
 			MainWindow.message("could not int WebDav Profiles:" + e.getMessage()  , SWT.ICON_WARNING);
 		}
 	}
 
-	private void fillTable(final HashMap h ) {
+	private void fillTable(HashMap h ) {
 		try {
 			table.removeAll();
 			java.util.Iterator it = h.keySet().iterator();
 			ArrayList files = new ArrayList();
 
 
-			TableItem item_ = new TableItem(table, SWT.NONE);
+			TableItem item_ = new TableItem(table, SWT.NONE);			
 			item_.setData("type","dir_up");
 			item_.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory_up.gif"));
 
@@ -517,7 +505,7 @@ public class WebDavDialog {
 
 				if(h.get(keys).equals("dir")) {
 					TableItem item = new TableItem(table, SWT.NONE);
-					item.setText(0, key);
+					item.setText(0, key);					
 					item.setText(1, "");
 					item.setText(2, "Folder");
 					item.setData("type","dir");
@@ -527,7 +515,7 @@ public class WebDavDialog {
 				} else {
 					if(!key.endsWith("_size"))
 						files.add(key);
-				}
+				}									
 			}
 
 			//files
@@ -547,9 +535,9 @@ public class WebDavDialog {
 		} catch(Exception e) {
 
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			} catch(Exception ee) {
-
+				//tu nichts
 			}
 			System.out.println("..error in WebDavDialog " + e.getMessage());
 		}
@@ -564,24 +552,24 @@ public class WebDavDialog {
 			String newFilename = "";
 			if(localfilename != null)
 				newFilename = new File(localfilename).getParent() + "/" + new File(file).getName();
-			else
+			else 
 				newFilename = sosString.parseToString(listener.getCurrProfile().get("localdirectory")) + "/" + new File(file).getName();
 
 			/*sos.scheduler.editor.conf.forms.SchedulerForm form =
-				(sos.scheduler.editor.conf.forms.SchedulerForm)MainWindow.getContainer().getCurrentEditor();
+				(sos.scheduler.editor.conf.forms.SchedulerForm)MainWindow.getContainer().getCurrentEditor();			
 			SchedulerDom currdom = (SchedulerDom)form.getDom();
 			 */
 
 			DomParser currdom = null;
 			if(MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
-				SchedulerForm form =(SchedulerForm)MainWindow.getContainer().getCurrentEditor();
-				currdom = form.getDom();
+				SchedulerForm form =(SchedulerForm)MainWindow.getContainer().getCurrentEditor();			
+				currdom = (SchedulerDom)form.getDom();
 			} else if(MainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm) {
-				DocumentationForm form =(DocumentationForm)MainWindow.getContainer().getCurrentEditor();
-				currdom = form.getDom();
+				DocumentationForm form =(DocumentationForm)MainWindow.getContainer().getCurrentEditor();			
+				currdom = (DocumentationDom)form.getDom();
 			} else if(MainWindow.getContainer().getCurrentEditor() instanceof JobChainConfigurationForm) {
 				JobChainConfigurationForm form =(JobChainConfigurationForm)MainWindow.getContainer().getCurrentEditor();
-				currdom = form.getDom();
+				currdom = (DetailDom)form.getDom();
 			}
 
 			//if(currdom.getFilename() != null && !new File(currdom.getFilename()).delete())
@@ -606,17 +594,17 @@ public class WebDavDialog {
 				}
 				if (MainWindow.getContainer().getCurrentEditor().save()) {
 					MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
-					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
+					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
 					MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
-					MainWindow.setSaveStatus();
+					MainWindow.setSaveStatus();	
 
 				}
 
 				currdom.setFilename(new java.io.File(newFilename).getCanonicalPath());
 
-				sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
-				SchedulerForm sf = (SchedulerForm)con.getCurrentEditor();
+				sos.scheduler.editor.app.IContainer con = MainWindow.getContainer(); 
+				SchedulerForm sf = (SchedulerForm)(con.getCurrentEditor());
 				sf.updateTree("jobs");
 				String name = currdom.getRoot().getName();
 				name = name.substring(0, 1).toUpperCase() + name.substring(1);
@@ -635,7 +623,7 @@ public class WebDavDialog {
 					//MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", file);
 
 					MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
-					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
+					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
 					MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
 				}
@@ -645,19 +633,19 @@ public class WebDavDialog {
 				currdom.setFilename(newFilename);
 				if (MainWindow.getContainer().getCurrentEditor().save()) {
 					MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
-					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
+					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
 					MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
 					MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
-					MainWindow.setSaveStatus();
+					MainWindow.setSaveStatus();		
 				}
 			}
 			listener.saveAs(localfilename, file);
 
 		} catch (Exception e)  {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; could not save File", e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not save File", e);
 			} catch(Exception ee) {
-
+				//tu nichts
 			}
 			MainWindow.message("could not save File: cause: "+  e.getMessage(), SWT.ICON_WARNING);
 		} finally {
@@ -669,13 +657,13 @@ public class WebDavDialog {
 	public void openHotFolder() {
 		try {
 			HashMap h = listener.changeDirectory(txtUrl.getText() + "/" + txtFilename.getText() + "/");
-			if(listener.hasError()) {
+			if(listener.hasError()) {				
 				return;
 			}
 
 
 			java.util.Iterator it = h.keySet().iterator();
-			//Alle Hot Folder Dateinamen merken: Grund: Beim Speichern werden alle Dateien gelöscht und anschliessend
+			//Alle Hot Folder Dateinamen merken: Grund: Beim Speichern werden alle Dateien gelöscht und anschliessend 
 			//neu zurückgeschrieben
 			ArrayList nameOfLifeElement = new ArrayList();
 			String tempSubHotFolder = txtFilename.getText();
@@ -702,7 +690,7 @@ public class WebDavDialog {
 						//nameOfLifeElement.add(File);
 						nameOfLifeElement.add(slocalFile);
 					}
-				}
+				} 								
 			}
 
 			//if(ok) {
@@ -716,23 +704,23 @@ public class WebDavDialog {
 
 			if (MainWindow.getContainer().openDirectory(localFile) != null) {
 				MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
-				MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
+				MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
 				MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
 				MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
 				MainWindow.getContainer().getCurrentTab().setData("webdav_hot_folder_elements", nameOfLifeElement);
 
-				MainWindow.setSaveStatus();
+				MainWindow.setSaveStatus();	
 			}
-			//}
+			//} 
 
 
 			//listener.disconnect();
 			schedulerConfigurationShell.dispose();
 		} catch(Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; could not Open Hot Folder.", e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not Open Hot Folder.", e);
 			} catch(Exception ee) {
-
+				//tu nichts
 			}
 			MainWindow.message("could not Open Hot Folder: cause: "+  e.getMessage(), SWT.ICON_WARNING);
 		}
@@ -746,10 +734,10 @@ public class WebDavDialog {
 		if(!listener.hasError()) {
 			if (MainWindow.getContainer().openQuick(file) != null) {
 				MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
-				MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
+				MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());			
 				MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::"+listener.getCurrProfileName()+"]");
 				MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
-				MainWindow.setSaveStatus();
+				MainWindow.setSaveStatus();		
 			}
 
 			//listener.disconnect();
@@ -774,41 +762,41 @@ public class WebDavDialog {
 
 	public void openDialog() {
 		final Shell shell = new Shell();
-		shell.pack();
-		Dialog dialog = new Dialog(shell);
+		shell.pack();					
+		Dialog dialog = new Dialog(shell);		
 		dialog.setText("Create New Folder");
 		dialog.open(this);
 	}
 
-	private void _setEnabled(final boolean enabled) {
+	private void _setEnabled(boolean enabled) {
 		txtUrl.setEnabled(enabled);
-		butChangeDir.setEnabled(enabled);
-		butRefresh.setEnabled(enabled);
-		butNewFolder.setEnabled(enabled);
-		butRemove.setEnabled(enabled);
+		butChangeDir.setEnabled(enabled);		
+		butRefresh.setEnabled(enabled);	
+		butNewFolder.setEnabled(enabled);		
+		butRemove.setEnabled(enabled); 
 	}
 
-	private void sort(final TableColumn col) {
-		try {
+	private void sort(TableColumn col) {
+		try {			
 
 			if(table.getSortDirection() == SWT.DOWN)
 				table.setSortDirection(SWT.UP);
-			else
+			else 
 				table.setSortDirection(SWT.DOWN);
 
 			table.setSortColumn(col);
 
 			ArrayList listOfSortData = new ArrayList();
 
-			for(int i = 0; i < table.getItemCount(); i++) {
-				TableItem item = table.getItem(i);
+			for(int i = 0; i < table.getItemCount(); i++) {				
+				TableItem item = table.getItem(i);				
 				if(!item.getData("type").equals("dir_up")) {
 					HashMap hash = new HashMap();
-					for(int j = 0; j < table.getColumnCount(); j++) {
-						hash.put(table.getColumn(j).getText(), item.getText(j));
+					for(int j = 0; j < table.getColumnCount(); j++) {					
+						hash.put(table.getColumn(j).getText(), item.getText(j));					
 					}
 
-					hash.put("type", item.getData("type"));
+					hash.put("type", item.getData("type"));					
 
 					listOfSortData.add(hash);
 				}
@@ -818,29 +806,29 @@ public class WebDavDialog {
 
 			table.removeAll();
 
-			TableItem item_ = new TableItem(table, SWT.NONE);
+			TableItem item_ = new TableItem(table, SWT.NONE);			
 			item_.setData("type","dir_up");
 			item_.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory_up.gif"));
 
 
 			TableItem item = null;
 
-			if(table.getSortDirection() == SWT.DOWN) {
+			if(table.getSortDirection() == SWT.DOWN) {							
 				for(int i = 0; i < listOfSortData.size(); i++) {
 
-					item = new TableItem(table, SWT.NONE);
+					item = new TableItem(table, SWT.NONE);				
 					HashMap hash = (HashMap)listOfSortData.get(i);
 					item.setData("type", hash.get("type"));
-					if(hash.get("type").equals("file"))
+					if(hash.get("type").equals("file")) 
 						item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_file.gif"));
-					else if(hash.get("type").equals("dir"))
+					else if(hash.get("type").equals("dir")) 
 						item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory.gif"));
-					else if(hash.get("type").equals("dir_up"))
+					else if(hash.get("type").equals("dir_up"))					
 						item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory_up.gif"));
 
-					for(int j = 0; j < table.getColumnCount(); j++) {
+					for(int j = 0; j < table.getColumnCount(); j++) {					
 						item.setText(j, sosString.parseToString(hash.get(table.getColumn(j).getText())));
-					}
+					}										
 
 				}
 
@@ -848,17 +836,17 @@ public class WebDavDialog {
 
 				for(int i = listOfSortData.size() - 1; i >= 0; i--) {
 
-					item = new TableItem(table, SWT.NONE);
+					item = new TableItem(table, SWT.NONE);				
 					HashMap hash = (HashMap)listOfSortData.get(i);
 					item.setData("type", hash.get("type"));
-					if(hash.get("type").equals("file"))
+					if(hash.get("type").equals("file")) 
 						item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_file.gif"));
-					else if(hash.get("type").equals("dir"))
+					else if(hash.get("type").equals("dir")) 
 						item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory.gif"));
-					else if(hash.get("type").equals("dir_up"))
+					else if(hash.get("type").equals("dir_up"))					
 						item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory_up.gif"));
 
-					for(int j = 0; j < table.getColumnCount(); j++) {
+					for(int j = 0; j < table.getColumnCount(); j++) {					
 						item.setText(j, sosString.parseToString(hash.get(table.getColumn(j).getText())));
 					}
 
@@ -869,9 +857,9 @@ public class WebDavDialog {
 
 		} catch(Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			} catch(Exception ee) {
-
+				//tu nichts
 			}
 
 		}
@@ -899,24 +887,24 @@ public class WebDavDialog {
 		table.setToolTipText(Messages.getTooltip("webdavdialog.table"));
 		txtUrl.setToolTipText(Messages.getTooltip("webdavdialog.directory"));
 
-		txtLog.setToolTipText(Messages.getTooltip("webdavdialog.log"));
+		txtLog.setToolTipText(Messages.getTooltip("webdavdialog.log"));   
 		butChangeDir.setToolTipText(Messages.getTooltip("webdavdialog.change_directory"));
-		butRefresh.setToolTipText(Messages.getTooltip("webdavdialog.refresh"));
-		butNewFolder.setToolTipText(Messages.getTooltip("webdavdialog.new_folder"));
-		butRemove.setToolTipText(Messages.getTooltip("webdavdialog.remove"));
+		butRefresh.setToolTipText(Messages.getTooltip("webdavdialog.refresh"));  	
+		butNewFolder.setToolTipText(Messages.getTooltip("webdavdialog.new_folder"));	
+		butRemove.setToolTipText(Messages.getTooltip("webdavdialog.remove"));  
 		butSite.setToolTipText(Messages.getTooltip("webdavdialog.connect"));
 		butClose.setToolTipText(Messages.getTooltip("webdavdialog.close"));
 		butProfiles.setToolTipText(Messages.getTooltip("webdavdialog.profiles"));
 	}
 
-	private boolean isLifeElement(final String filename){
+	private boolean isLifeElement(String filename){
 
-		if(filename.endsWith(".job.xml") ||
-				filename.endsWith(".schedule.xml") ||
+		if(filename.endsWith(".job.xml") || 
+				filename.endsWith(".schedule.xml") ||	
 				filename.endsWith(".job_chain.xml") ||
 				filename.endsWith(".lock.xml") ||
 				filename.endsWith(".process_class.xml") ||
-				filename.endsWith(".order.xml")) {
+				filename.endsWith(".order.xml")) { 
 			return true;
 		} else {
 

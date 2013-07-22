@@ -2,29 +2,26 @@ package sos.scheduler.editor.conf.listeners;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.util.SOSClassUtil;
 
 public class CommandsListener {
 
-	private final SchedulerDom     _dom;
+	private SchedulerDom     _dom;
 
-	private final Element          _config;
+	private Element          _config;
 
-	private final ISchedulerUpdate _main;
+	private ISchedulerUpdate _main;
 
-	private final Element          _commands;
+	private Element          _commands;
 
 
-	public CommandsListener(final SchedulerDom dom, final ISchedulerUpdate update) {
+	public CommandsListener(SchedulerDom dom, ISchedulerUpdate update) {
 		_dom = dom;
 		_config = _dom.getRoot().getChild("config");
 		_commands = _config.getChild("commands");
@@ -50,11 +47,11 @@ public class CommandsListener {
                 }*/
 			} catch (JDOMException ex) {
 				try {
-					new ErrorLog("error in " + SOSClassUtil.getMethodName() , ex);
+					new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , ex);
 				} catch(Exception ee) {
-
+					//tu nichts
 				}
-				throw new Exception("error in " + SOSClassUtil.getMethodName() + " : " + ex.getMessage());
+				throw new Exception("error in " + sos.util.SOSClassUtil.getMethodName() + " : " + ex.getMessage());
 
 			}
 		}
@@ -67,7 +64,7 @@ public class CommandsListener {
 	}
 
 
-	public void saveCommands(final String commands) {
+	public void saveCommands(String commands) {
 		_config.removeChild("commands");
 		ByteArrayInputStream bai;
 		try {
@@ -84,17 +81,17 @@ public class CommandsListener {
 			_main.updateOrders();
 		} catch (JDOMException e1) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() , e1);
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e1);
 			} catch(Exception ee) {
-
+				//tu nichts
 			}
 
 			e1.printStackTrace();
 		} catch (IOException e1) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() , e1);
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e1);
 			} catch(Exception ee) {
-
+				//tu nichts
 			}
 
 			e1.printStackTrace();

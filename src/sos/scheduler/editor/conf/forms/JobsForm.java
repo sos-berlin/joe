@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -20,15 +21,14 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobsListener;
-import sos.util.SOSClassUtil;
 
 public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
@@ -41,7 +41,7 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 	private JobsListener		listener		= null;
 	private Group				group			= null;
-	private Table		table			= null;
+	private static Table		table			= null;
 	private Button				bNewJob			= null;
 	private Button				bRemoveJob		= null;
 	private Label				label			= null;
@@ -49,8 +49,8 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private ISchedulerUpdate	update			= null;
 	private Button				butAssistent	= null;
 	private Button				newOrderJob		= null;
-
-	public JobsForm(final Composite parent, final int style, final SchedulerDom dom, final ISchedulerUpdate update) {
+	
+	public JobsForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) {
 		super(parent, style);
 		try {
 			this.dom = dom;
@@ -58,14 +58,17 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			listener = new JobsListener(dom, update);
 			initialize();
 			setToolTipText();
-			listener.populateJobsTable(table);
+			listener.fillTable(table);
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
+//				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
+				// tu nichts
 			}
+//			System.err.println("..error in JobsForm.init() " + e.getMessage());
 			System.err.println(JOE_E_0002.params("JobsForm.init()") + e.getMessage());
 		}
 	}
@@ -78,10 +81,13 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
+//				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
+				// tu nichts
 			}
+//			System.err.println("..error in JobsForm.initialize() " + e.getMessage());
 			System.err.println(JOE_E_0002.params("JobsForm.initialize()") + e.getMessage());
 		}
 	}
@@ -93,28 +99,26 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		try {
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 2;
-
+			
 			group = JOE_G_JobsForm_Jobs.Control(new Group(this, SWT.NONE));
 			group.setLayout(gridLayout);
-
+			
 			createTable();
-
+			
 			bNewJob = JOE_B_JobsForm_NewStandaloneJob.Control(new Button(group, SWT.NONE));
 			bNewJob.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false));
 			getShell().setDefaultButton(bNewJob);
 			bNewJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-				@Override
-				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
-					listener.newJob(false);
+				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+					listener.newJob(table, false);
 					bRemoveJob.setEnabled(true);
 				}
 			});
 
 			newOrderJob = JOE_B_JobsForm_NewOrderJob.Control(new Button(group, SWT.NONE));
 			newOrderJob.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
-					listener.newJob(true);
+					listener.newJob(table, true);
 					bRemoveJob.setEnabled(true);
 				}
 			});
@@ -122,7 +126,6 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 			butAssistent = JOE_B_JobsForm_JobWizard.Control(new Button(group, SWT.NONE));
 			butAssistent.addSelectionListener(new SelectionAdapter() {
-				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					try {
 						Utils.startCursor(getShell());
@@ -131,8 +134,8 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 					}
 					catch (Exception ex) {
 						try {
-//							new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; could not start assistent.", ex);
-							new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()) + " ; " + JOE_M_0040.label(), ex);
+//							new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not start assistent.", ex);
+							new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + " ; " + JOE_M_0040.label(), ex);
 						}
 						catch (Exception ee) {
 							// tu nichts
@@ -146,12 +149,11 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				}
 			});
 			butAssistent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
+			
 			bRemoveJob = JOE_B_JobsForm_RemoveJob.Control(new Button(group, SWT.NONE));
 			bRemoveJob.setEnabled(false);
 			bRemoveJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-				@Override
-				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 
 //					int c = MainWindow.message(getShell(), "Do you want remove the job?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					int c = MainWindow.message(getShell(), JOE_M_RemoveJob.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
@@ -173,8 +175,8 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		}
 		catch (Exception e) {
 			try {
-//				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
-				new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
+//				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -191,7 +193,6 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		try {
 			table = JOE_Tbl_JobsForm_Table.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION | SWT.CHECK));
 			table.addMouseListener(new MouseAdapter() {
-				@Override
 				public void mouseDoubleClick(final MouseEvent e) {
 					if (table.getSelectionCount() > 0)
 						ContextMenu.goTo(table.getSelection()[0].getText(1), dom, Editor.JOB);
@@ -200,13 +201,12 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			table.setHeaderVisible(true);
 			table.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 5));
 			table.setLinesVisible(true);
-
+			
 			TableColumn tableColumn5 = JOE_TCl_JobsForm_Disabled.Control(new TableColumn(table, SWT.NONE));
 			tableColumn5.setWidth(60);
-
+			
 			table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-				@Override
-				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					if (Utils.isElementEnabled("job", dom, (Element) e.item.getData())) {
 						bRemoveJob.setEnabled(true);
 					}
@@ -227,42 +227,42 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 					}
 				}
 			});
-
+ 
 
 			TableColumn tableColumn = JOE_TCl_JobsForm_Name.Control(new TableColumn(table, SWT.NONE));
 			tableColumn.setWidth(100);
-
+			
 			TableColumn tableColumn1 = JOE_TCl_JobsForm_Title.Control(new TableColumn(table, SWT.NONE));
 			tableColumn1.setWidth(200);
-
+			
 			TableColumn tableColumn2 = JOE_TCl_JobsForm_SchedulerID.Control(new TableColumn(table, SWT.NONE));
 			tableColumn2.setWidth(100);
-
+			
 			TableColumn tableColumn3 = JOE_TCl_JobsForm_ProcessClass.Control(new TableColumn(table, SWT.NONE));
 			tableColumn3.setWidth(100);
-
+			
 			TableColumn tableColumn4 = JOE_TCl_JobsForm_Order.Control(new TableColumn(table, SWT.NONE));
 			tableColumn4.setWidth(40);
 		}
 		catch (Exception e) {
 			try {
-//				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
-				new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
+//				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
 			}
+//			System.err.println("..error in JobsForm.createTable() " + e.getMessage());
 			System.err.println(JOE_E_0002.params("JobsForm.createTable() ") + e.getMessage());
 		}
 	}
 
-	@Override
 	public void setToolTipText() {
 //
 	}
 
-//	public static Table getTable() {
-//		return table;
-//	}
+	public static Table getTable() {
+		return table;
+	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"

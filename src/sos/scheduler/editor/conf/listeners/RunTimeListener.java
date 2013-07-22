@@ -10,12 +10,14 @@ public class RunTimeListener {
 
 
 	private       SchedulerDom    _dom        = null;
+
 	private       Element         _job        = null;
+
 	private       Element         _runtime    = null;
 
 	//private       ISchedulerUpdate _gui        = null;
 
-	public RunTimeListener(final SchedulerDom dom, final Element job, final ISchedulerUpdate gui) {
+	public RunTimeListener(SchedulerDom dom, Element job, ISchedulerUpdate gui) {
 		_dom = dom;
 		//_gui = gui;
 		_job = job;
@@ -37,7 +39,7 @@ public class RunTimeListener {
 	}
 
 
-	public void setComment(final String comment) {
+	public void setComment(String comment) {
 		Utils.setAttribute("__comment__", comment, _runtime, _dom);
 	}
 
@@ -56,7 +58,7 @@ public class RunTimeListener {
 		return _runtime;
 	}
 
-	public void setFunction(final String function_name) {
+	public void setFunction(String function_name) {
 		if (_runtime != null) {
 
 			Utils.setAttribute("start_time_function",function_name, _runtime, _dom);
@@ -93,7 +95,7 @@ public class RunTimeListener {
 	}
 
 
-	public void setSchedule(final String schedule) {
+	public void setSchedule(String schedule) {
 		if(_runtime != null) {
 			Utils.setAttribute("schedule", schedule, _runtime, _dom);
 			//_gui.updateRunTime();

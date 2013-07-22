@@ -32,58 +32,57 @@ import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
-import sos.util.SOSClassUtil;
 import sos.util.SOSFile;
 
 public class SchedulerDom extends DomParser {
-	private final static String				conSVNVersion				= "$Id$";
-	private static Logger					logger						= Logger.getLogger(SchedulerDom.class);
+	private final static String		conSVNVersion				= "$Id$";
+	private static Logger		logger					        = Logger.getLogger(SchedulerDom.class);
 
-	private static final String[]			CONFIG_ELEMENTS				= { "base", "params", "security", "plugins", "cluster", "process_classes", "schedules",
-			"locks", "script", "http_server", "holidays", "jobs", "job_chains", "orders", "commands" };
-	private static final String[]			JOB_ELEMENTS				= { "settings", "description", "lock.use", "params", "environment", "script",
-			"process", "monitor", "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };
-	private static final String[]			RUNTIME_ELEMENTS			= { "period", "at", "date", "weekdays", "monthdays", "ultimos", "month", "holidays" };
-	private static final String[]			JOBCHAIN_ELEMENTS			= { "file_order_source", "job_chain_node", "job_chain_node.job_chain",
-			"job_chain_node.end", "file_order_sink"					};
-	private static final String[]			HOLIDAYS_ELEMENTS			= { "include", "weekdays", "holiday" };
-	private static final String[]			PARAMS_ELEMENTS				= { "param", "copy_params", "include" };
-	private final HashMap<String, String>	changedForDirectory			= new HashMap<String, String>();
-	public static final String				MODIFY						= "modify";
-	public static final String				DELETE						= "delete";
-	public static final String				NEW							= "new";
-	private static final String[]			CONFIG_ELEMENTS_DIRECTORY	= { "process_classes", "schedules", "locks", "jobs", "job_chains", "commands" };
-	public static final int					CONFIGURATION				= 0;
-	private static final String[]			HTTP_SERVER					= { "web_service", "http.authentication", "http_directory" };
-	private String							styleSheet					= "";
+	private static final String[]	CONFIG_ELEMENTS				= { "base", "params", "security", "plugins", "cluster", "process_classes", "schedules", "locks", "script",
+			"http_server", "holidays", "jobs", "job_chains", "orders", "commands" };
+	private static final String[]	JOB_ELEMENTS				= { "settings", "description", "lock.use", "params", "environment", "script", "process",
+			"monitor", "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };
+	private static final String[]	RUNTIME_ELEMENTS			= { "period", "at", "date", "weekdays", "monthdays", "ultimos", "month", "holidays" };
+	private static final String[]	JOBCHAIN_ELEMENTS			= { "file_order_source", "job_chain_node", "job_chain_node.job_chain", "job_chain_node.end",
+			"file_order_sink"									};
+	private static final String[]	HOLIDAYS_ELEMENTS			= { "include", "weekdays", "holiday" };
+	private static final String[]	PARAMS_ELEMENTS				= { "param", "copy_params", "include" };
+	private HashMap<String, String>	changedForDirectory			= new HashMap<String, String>();
+	public static final String		MODIFY						= "modify";
+	public static final String		DELETE						= "delete";
+	public static final String		NEW							= "new";
+	private static final String[]	CONFIG_ELEMENTS_DIRECTORY	= { "process_classes", "schedules", "locks", "jobs", "job_chains", "commands" };
+	public static final int			CONFIGURATION				= 0;
+	private static final String[]	HTTP_SERVER					= { "web_service", "http.authentication", "http_directory" };
+	private String					styleSheet					= "";
 
-	private static final String[]			COMMANDS_ELEMENTS			= { "add_order", "order", "start_job" };
+	private static final String[]	COMMANDS_ELEMENTS			= { "add_order", "order", "start_job" };
 
-	private static final String[]			ORDER_ELEMENTS				= { "params", "environment" };
+	private static final String[]	ORDER_ELEMENTS				= { "params", "environment" };
 
-	private static final String[]			SETTINGS_ELEMENTS			= { "mail_on_error", "mail_on_warning", "mail_on_success", "mail_on_process",
+	private static final String[]	SETTINGS_ELEMENTS			= { "mail_on_error", "mail_on_warning", "mail_on_success", "mail_on_process",
 			"mail_on_delay_after_error", "log_mail_to", "log_mail_cc", "log_mail_bcc", "log_level", "history", "history_on_process", "history_with_log" };
 
 	/** live Dateien: Schreibheschützte Dateien*/
-	private ArrayList<String>				listOfReadOnlyFiles			= null;
+	private ArrayList<String>		listOfReadOnlyFiles			= null;
 
 	/** live Dateien: Wenn dateiname ungleich der Element Attribute Name ist, dann wird der Dateiname als Element name-Attribut gesetzt*/
-	private ArrayList<String>				listOfChangeElementNames	= null;
+	private ArrayList<String>		listOfChangeElementNames	= null;
 
 	/** Typen der Hot Folder Dateien */
-	public static final int					DIRECTORY					= 1;
-	public static final int					LIVE_JOB					= 2;
-	public static final int					LIVE_JOB_CHAIN				= 3;
-	public static final int					LIFE_PROCESS_CLASS			= 4;
-	public static final int					LIFE_LOCK					= 5;
-	public static final int					LIFE_ORDER					= 6;
-	public static final int					LIFE_ADD_ORDER				= 7;
-	public static final int					LIFE_SCHEDULE				= 8;
+	public static final int			DIRECTORY					= 1;
+	public static final int			LIVE_JOB					= 2;
+	public static final int			LIVE_JOB_CHAIN				= 3;
+	public static final int			LIFE_PROCESS_CLASS			= 4;
+	public static final int			LIFE_LOCK					= 5;
+	public static final int			LIFE_ORDER					= 6;
+	public static final int			LIFE_ADD_ORDER				= 7;
+	public static final int			LIFE_SCHEDULE				= 8;
 
-	private boolean							isDirectory					= false;
+	private boolean					isDirectory					= false;
 
 	/** Gilt nur für Hot Folder: Dient zur Überprüfeng ob ausserhalb einer der Hot Folder Dateien von einem  anderen Process verändert wurde*/
-	private HashMap<String, Long>			hotFolderFiles				= null;
+	private HashMap<String, Long>	hotFolderFiles				= null;
 
 	public SchedulerDom() {
 
@@ -104,7 +103,7 @@ public class SchedulerDom extends DomParser {
 
 	}
 
-	public SchedulerDom(final int type) {
+	public SchedulerDom(int type) {
 
 		super(new String[] { conSchema_SCHEDULER_EDITOR_SCHEMA }, new String[] { Options.getSchema() }, Options.getXSLT());
 
@@ -184,7 +183,7 @@ public class SchedulerDom extends DomParser {
 		config.addContent(processClasses.addContent(defaultClass));
 	}
 
-	public void initScheduler(final int type) {
+	public void initScheduler(int type) {
 		if (type == LIFE_ORDER) {
 			Element order = new Element("order");
 			order.setAttribute("job_chain", "job_chain1");
@@ -231,13 +230,11 @@ public class SchedulerDom extends DomParser {
 
 	}
 
-	@Override
-	public boolean read(final String filename) throws JDOMException, IOException {
+	public boolean read(String filename) throws JDOMException, IOException {
 		return read(filename, Options.isValidate());
 	}
 
-	@Override
-	public boolean read(final String filename, final boolean validate) throws JDOMException, IOException {
+	public boolean read(String filename, boolean validate) throws JDOMException, IOException {
 
 		StringReader sr = new StringReader(readFile(filename));
 
@@ -264,12 +261,12 @@ public class SchedulerDom extends DomParser {
 		return true;
 	}
 
-	@Override
-	public boolean readString(final String str, final boolean validate) throws JDOMException, IOException {
+	public boolean readString(String str, boolean validate) throws JDOMException, IOException {
 
 		StringReader sr = new StringReader(str);
-		//		logger.debug(str);
+//		logger.debug(str);
 		Document doc = getBuilder(validate).build(sr);
+		
 
 		sr.close();
 
@@ -301,13 +298,13 @@ public class SchedulerDom extends DomParser {
 	    return true;
 	}*/
 
-	public boolean isEnabled(final Element e) {
+	public boolean isEnabled(Element e) {
 		String enabledAttr = Utils.getAttributeValue("enabled", e);
 		boolean enabled = enabledAttr.equalsIgnoreCase("yes") || enabledAttr.length() == 0;
 		return enabled;
 	}
 
-	private String readFile(final String filename) throws IOException {
+	private String readFile(String filename) throws IOException {
 
 		String encoding = DEFAULT_ENCODING;
 		String line = null;
@@ -340,8 +337,7 @@ public class SchedulerDom extends DomParser {
 
 	}
 
-	@Override
-	public void write(final String filename) throws IOException, JDOMException {
+	public void write(String filename) throws IOException, JDOMException {
 
 		String encoding = Editor.SCHEDULER_ENCODING;
 		if (encoding.equals(""))
@@ -362,7 +358,7 @@ public class SchedulerDom extends DomParser {
 		}
 		catch (JDOMException e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -391,7 +387,7 @@ public class SchedulerDom extends DomParser {
 
 	}
 
-	public void writeElement(final String filename, final Document doc) throws IOException, JDOMException {
+	public void writeElement(String filename, Document doc) throws IOException, JDOMException {
 
 		String encoding = Editor.SCHEDULER_ENCODING;
 		if (encoding.equals(""))
@@ -411,15 +407,15 @@ public class SchedulerDom extends DomParser {
 		}
 		catch (JDOMException e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
 			}
 
 			//int res = MainWindow.message(Messages.getMsg(conMessage_MAIN_LISTENER_OUTPUT_INVALID, e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-			int res = MainWindow.message("Element is not valid. Should it still be saved?" + "\n" + e.getMessage(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-
+			int res = MainWindow.message( "Element is not valid. Should it still be saved?" + "\n" + e.getMessage(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+			
 			if (res == SWT.NO)
 				return;
 		}
@@ -440,8 +436,7 @@ public class SchedulerDom extends DomParser {
 		deorderDOM();
 	}
 
-	@Override
-	public String getXML(final Element element) throws JDOMException {
+	public String getXML(Element element) throws JDOMException {
 
 		reorderDOM(element);
 
@@ -456,7 +451,7 @@ public class SchedulerDom extends DomParser {
 
 	}
 
-	private void setComments(final List content, final Element plastElement) {
+	private void setComments(List content, Element plastElement) {
 		Element lastElement = plastElement;
 		if (content != null) {
 			String comment = null;
@@ -472,10 +467,10 @@ public class SchedulerDom extends DomParser {
 					if (o instanceof Element) {
 						Element e = (Element) o;
 						lastElement = e;
-						//						if (comment != null) { // set comment as value
-						//							e.setAttribute("__comment__", comment.trim());
-						//							comment = null;
-						//						}
+//						if (comment != null) { // set comment as value
+//							e.setAttribute("__comment__", comment.trim());
+//							comment = null;
+//						}
 						setComments(e.getContent(), lastElement); // recursion
 					}
 					else {
@@ -488,7 +483,7 @@ public class SchedulerDom extends DomParser {
 		}
 	}
 
-	public void setChangedForDirectory(final Element _parent, final String what) {
+	public void setChangedForDirectory(Element _parent, String what) {
 		Element parent = Utils.getRunTimeParentElement(_parent);
 		if (parent != null) {
 			if (parent.getName().equals("order") || parent.getName().equals("add_order")) {
@@ -497,34 +492,47 @@ public class SchedulerDom extends DomParser {
 			else {
 				setChangedForDirectory(parent.getName(), Utils.getAttributeValue("name", parent), what);
 			}
+
 		}
+		/*if(_parent != null) {
+			if(_parent.getName().equals("schedule")){
+				setChangedForDirectory(_parent.getName(), Utils.getAttributeValue("name",_parent), what);
+			} else if(_parent.getParentElement().getName().equals("order")) {
+				setChangedForDirectory("order", Utils.getAttributeValue("job_chain",_parent.getParentElement())+","+Utils.getAttributeValue("id",_parent.getParentElement()), what);
+			} else {
+				setChangedForDirectory(_parent.getParentElement().getName(), Utils.getAttributeValue("name",_parent.getParentElement()), what);
+			}
+		}*/
 	}
 
 	/*
 	 * what is: NEW or MODIFY or DELETE
 	 */
-	public void setChangedForDirectory(final String which, final String name, final String what) {
-		if (isChanged() == true) {
-			String strT = which + "_" + name;
-			changedForDirectory.put(strT, what);
-			String filename = strT + ".xml";
+	public void setChangedForDirectory(String which, String name, String what) {
+		if (!isChanged())
+			return;
 
-			if (what.equals(DELETE) == false) {
-				SchedulerForm form = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
-				form.setChangedTreeItemText(strT);
-			}
-		}
+		changedForDirectory.put(which + "_" + name, what);
+
+		String filename = which + "." + name + ".xml";
+
+		if (what.equals(DELETE))
+			return;
+
+		SchedulerForm form = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
+		form.setChangedTreeItemText(which + "_" + name);
+
 	}
 
-	public HashMap <String, String> getListOfChangedObjects() {
+	public HashMap getChangedJob() {
 		return changedForDirectory;
 	}
 
-	public void clearListOfChangedObjects() {
+	public void clearChangedJob() {
 		changedForDirectory.clear();
 	}
 
-	private void findStyleSheet(final Iterator descendants) {
+	private void findStyleSheet(Iterator descendants) {
 		while (descendants != null && descendants.hasNext()) {
 			Object o = descendants.next();
 			if (o instanceof ProcessingInstruction) {
@@ -534,13 +542,13 @@ public class SchedulerDom extends DomParser {
 				}
 				catch (Exception e) {
 					try {
-						new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 					}
 					catch (Exception ee) {
 						// tu nichts
 					}
 
-					//					System.out.println("error in SchedulerDom write: " + e.getMessage());
+//					System.out.println("error in SchedulerDom write: " + e.getMessage());
 				}
 			}
 		}
@@ -550,7 +558,7 @@ public class SchedulerDom extends DomParser {
 		return listOfReadOnlyFiles;
 	}
 
-	public void setListOfReadOnlyFiles(final ArrayList<String> listOfReadOnlyFiles) {
+	public void setListOfReadOnlyFiles(ArrayList<String> listOfReadOnlyFiles) {
 		this.listOfReadOnlyFiles = listOfReadOnlyFiles;
 
 	}
@@ -559,7 +567,7 @@ public class SchedulerDom extends DomParser {
 		return listOfChangeElementNames;
 	}
 
-	public void setListOfChangeElementNames(final ArrayList<String> listOfChangeElementNames) {
+	public void setListOfChangeElementNames(ArrayList<String> listOfChangeElementNames) {
 		this.listOfChangeElementNames = listOfChangeElementNames;
 		for (int i = 0; i < listOfChangeElementNames.size(); i++) {
 			changedForDirectory.put(listOfChangeElementNames.get(i), MODIFY);
@@ -578,14 +586,13 @@ public class SchedulerDom extends DomParser {
 	/**
 	 * Liest den letzten Änderungszeitpunkt (in long) der Konfigurationsdatei.
 	 * Wurde ausserhalb vom Editor etwas verändert?
-	 *
+	 * 
 	 */
-	@Override
 	public void readFileLastModified() {
 		try {
 
 			/*
-			  if(!isDirectory) {
+			  if(!isDirectory) {    		 
 				super.readFileLastModified();
 			}
 			 */
@@ -627,7 +634,7 @@ public class SchedulerDom extends DomParser {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -642,7 +649,7 @@ public class SchedulerDom extends DomParser {
 	 * @param java.io.File entspricht das Hot Folder Verzeichnis
 	 * @return Liste der Dateinamen. Ein Listeneintrag entspricht einen File Object
 	 */
-	public ArrayList<File> getHoltFolderFiles(final File f) {
+	public ArrayList<File> getHoltFolderFiles(File f) {
 		ArrayList<File> listOfhotFolderFiles = new ArrayList<File>();
 		try {
 
@@ -660,7 +667,7 @@ public class SchedulerDom extends DomParser {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
