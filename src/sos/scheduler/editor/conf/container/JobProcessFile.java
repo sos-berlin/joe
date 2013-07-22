@@ -8,8 +8,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
@@ -28,7 +28,7 @@ public class JobProcessFile extends FormBaseClass {
     private Button       bIgnoreSignal      = null;
     private Button       bIgnoreError       = null;
 
-    public JobProcessFile(Composite pParentComposite, JobListener pobjJobDataProvider) {
+    public JobProcessFile(final Composite pParentComposite, final JobListener pobjJobDataProvider) {
         super(pParentComposite, pobjJobDataProvider);
         objJobDataProvider = pobjJobDataProvider;
 
@@ -89,64 +89,69 @@ public class JobProcessFile extends FormBaseClass {
         gridData2.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 4;
-        
+
         Group gExecutable = SOSJOEMessageCodes.JOE_G_JobProcessFile_RunExecutable.Control(new Group(objParent, SWT.NONE));
         gExecutable.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
         gExecutable.setLayout(gridLayout);
-        
+
         @SuppressWarnings("unused")
 		Label label1 = SOSJOEMessageCodes.JOE_L_JobProcessFile_File.Control(new Label(gExecutable, SWT.NONE));
-        
+
         tExecuteFile = SOSJOEMessageCodes.JOE_T_JobProcessFile_File.Control(new Text(gExecutable, SWT.BORDER));
         tExecuteFile.setLayoutData(gridData12);
         tExecuteFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+            @Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
                 if (!init) {
                     objJobDataProvider.setFile(tExecuteFile.getText());
                 }
             }
         });
-        
+
         @SuppressWarnings("unused")
 		Label label3 = SOSJOEMessageCodes.JOE_L_JobProcessFile_Parameter.Control(new Label(gExecutable, SWT.NONE));
 
         tParameter = SOSJOEMessageCodes.JOE_T_JobProcessFile_Parameter.Control(new Text(gExecutable, SWT.BORDER));
         tParameter.setLayoutData(gridData2);
         tParameter.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+            @Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
                 if (!init)
                     objJobDataProvider.setParam(tParameter.getText());
             }
         });
-        
+
         @SuppressWarnings("unused")
 		Label label4 = SOSJOEMessageCodes.JOE_L_JobProcessFile_LogFile.Control(new Label(gExecutable, SWT.NONE));
 
         tLogFile = SOSJOEMessageCodes.JOE_T_JobProcessFile_LogFile.Control(new Text(gExecutable, SWT.BORDER));
         tLogFile.setLayoutData(gridData3);
         tLogFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+            @Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
                 if (!init)
                     objJobDataProvider.setLogFile(tLogFile.getText());
             }
         });
-        
+
         Label label5 = SOSJOEMessageCodes.JOE_L_JobProcessFile_Ignore.Control(new Label(gExecutable, SWT.NONE));
         label5.setLayoutData(gridData61);
-        
+
         bIgnoreSignal = SOSJOEMessageCodes.JOE_B_JobProcessFile_IgnoreSignal.Control(new Button(gExecutable, SWT.CHECK));
         bIgnoreSignal.setLayoutData(gridData21);
         bIgnoreSignal.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                 if (!init)
                     objJobDataProvider.setIgnoreSignal(bIgnoreSignal.getSelection());
             }
         });
-        
+
         bIgnoreError = SOSJOEMessageCodes.JOE_B_JobProcessFile_IgnoreError.Control(new Button(gExecutable, SWT.CHECK));
         bIgnoreError.setLayoutData(gridData41);
         bIgnoreError.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                 if (!init)
                     objJobDataProvider.setIgnoreError(bIgnoreError.getSelection());
             }
@@ -161,5 +166,4 @@ public class JobProcessFile extends FormBaseClass {
 
         objParent.layout();
     }
-
 }

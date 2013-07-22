@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
@@ -27,6 +28,7 @@ import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
 import sos.scheduler.editor.conf.forms.JobAssistentImportJobParamsForm;
 import sos.scheduler.editor.conf.forms.JobAssistentImportJobsForm;
 import sos.scheduler.editor.conf.listeners.JobListener;
+import sos.util.SOSClassUtil;
 
 public class JobDocumentation extends FormBaseClass {
 	@SuppressWarnings("unused")
@@ -46,9 +48,9 @@ public class JobDocumentation extends FormBaseClass {
 	private JobListener		objJobDataProvider	= null;
 	private TextArea		txtAreaDescription	= null;
 
-	public JobDocumentation(Composite pParentComposite, JobListener pobjDataProvider) {
+	public JobDocumentation(final Composite pParentComposite, final JobListener pobjDataProvider) {
 		super(pParentComposite, pobjDataProvider);
-		objJobDataProvider = (JobListener) pobjDataProvider;
+		objJobDataProvider = pobjDataProvider;
 		init = true;
 		showWaitCursor();
 		createGroup(pParentComposite);
@@ -69,14 +71,14 @@ public class JobDocumentation extends FormBaseClass {
 
 	private void initForm() {
 
-		this.tFileName.setText(objJobDataProvider.getInclude());
-		this.butIsLiveFile.setSelection(objJobDataProvider.isLiveFile());
+		tFileName.setText(objJobDataProvider.getInclude());
+		butIsLiveFile.setSelection(objJobDataProvider.isLiveFile());
 	}
 
-	private void createGroup(Composite objParent) {
+	private void createGroup(final Composite objParent1) {
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.numColumns = 1;
-		group = new Group(objParent, SWT.NONE);
+		group = new Group(objParent1, SWT.NONE);
 		String strM = SOSJOEMessageCodes.JOE_M_JobAssistent_JobGroup.params(objJobDataProvider.getJobName())
 				+ (objJobDataProvider.isDisabled() ? SOSJOEMessageCodes.JOE_M_JobCommand_Disabled.label() : "");
 		group.setText(strM);
@@ -107,7 +109,8 @@ public class JobDocumentation extends FormBaseClass {
 		tFileName = SOSJOEMessageCodes.JOE_T_JobDocumentation_FileName.Control(new Text(gDescription, SWT.BORDER));
 		tFileName.setLayoutData(gridData12);
 		tFileName.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
+			@Override
+			public void modifyText(final ModifyEvent e) {
 				if (init)
 					return;
 
@@ -130,6 +133,7 @@ public class JobDocumentation extends FormBaseClass {
 
 		butIsLiveFile = SOSJOEMessageCodes.JOE_B_JobDocumentation_IsLiveFile.Control(new Button(gDescription, SWT.CHECK));
 		butIsLiveFile.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				if (init)
 					return;
@@ -169,6 +173,7 @@ public class JobDocumentation extends FormBaseClass {
 		butShow.setEnabled(false);
 		butShow.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		butShow.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 
 				try {
@@ -178,7 +183,7 @@ public class JobDocumentation extends FormBaseClass {
 
 						Program prog = Program.findProgram("html");
 
-						String strFileName = new File((sData).concat(tFileName.getText())).toURI().toURL().toString();
+						String strFileName = new File(sData.concat(tFileName.getText())).toURI().toURL().toString();
 						if (prog != null)
 							prog.execute(strFileName);
 						else {
@@ -188,7 +193,7 @@ public class JobDocumentation extends FormBaseClass {
 				}
 				catch (Exception ex) {
 					try {
-						new sos.scheduler.editor.app.ErrorLog(SOSJOEMessageCodes.JOE_M_0011.params(sos.util.SOSClassUtil.getMethodName(), tFileName.getText(),
+						new ErrorLog(SOSJOEMessageCodes.JOE_M_0011.params(SOSClassUtil.getMethodName(), tFileName.getText(),
 								ex));
 					}
 					catch (Exception ee) {
@@ -206,14 +211,15 @@ public class JobDocumentation extends FormBaseClass {
 		butOpen = SOSJOEMessageCodes.JOE_B_JobDocumentation_Open.Control(new Button(gDescription, SWT.NONE));
 		butOpen.setEnabled(false);
 		butOpen.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				String xmlPath = "";
 				try {
 					showWaitCursor();
 					if (tFileName.getText() != null && tFileName.getText().length() > 0) {
 						xmlPath = sos.scheduler.editor.app.Options.getSchedulerData();
-						xmlPath = (xmlPath.endsWith("/") || xmlPath.endsWith("\\") ? xmlPath.concat(tFileName.getText()) : xmlPath.concat("/").concat(
-								tFileName.getText()));
+						xmlPath = xmlPath.endsWith("/") || xmlPath.endsWith("\\") ? xmlPath.concat(tFileName.getText()) : xmlPath.concat("/").concat(
+								tFileName.getText());
 
 						IContainer con = getContainer();
 						con.openDocumentation(xmlPath);
@@ -240,6 +246,7 @@ public class JobDocumentation extends FormBaseClass {
 
 		butWizard = SOSJOEMessageCodes.JOE_B_ParameterForm_Wizard.Control(new Button(gDescription, SWT.NONE));
 		butWizard.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				startWizzard(false);
 			}
@@ -249,7 +256,7 @@ public class JobDocumentation extends FormBaseClass {
 		tComment.setText(objJobDataProvider.getComment());
 	}
 
-	public void startWizzard(boolean onlyParams) {
+	public void startWizzard(final boolean onlyParams) {
 		try {
 			showWaitCursor();
 			if (objJobDataProvider.getInclude() != null && objJobDataProvider.getInclude().trim().length() > 0) {
@@ -281,7 +288,7 @@ public class JobDocumentation extends FormBaseClass {
 		}
 	}
 
-	public String getData(String filename) {
+	public String getData(final String filename) {
 
 		String data = ".";
 		if ((objJobDataProvider.get_dom().isDirectory() || objJobDataProvider.get_dom().isLifeElement()) && butIsLiveFile.getSelection()) {

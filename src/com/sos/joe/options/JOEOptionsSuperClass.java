@@ -70,7 +70,7 @@ public class JOEOptionsSuperClass extends JSOptionsClass {
 	 *
 	 */
 	@JSOptionDefinition(name = "JOEHomeDir", description = "", key = "JOEHomeDir", type = "SOSOptionString", mandatory = false)
-	public SOSOptionFolderName		JOEHomeDir			= new SOSOptionFolderName(this, conClassName + ".JOEHomeDir", // HashMap-Key
+	public SOSOptionFolderName	JOEHomeDir			= new SOSOptionFolderName(this, conClassName + ".JOEHomeDir", // HashMap-Key
 															"", // Titel
 															"env:SOS_JOE_HOME", // InitValue
 															"env:SOS_JOE_HOME", // DefaultValue
@@ -109,11 +109,11 @@ public class JOEOptionsSuperClass extends JSOptionsClass {
 	 */
 	@JSOptionDefinition(name = "JOEJobDocDir", description = "", key = "JOEJobDocDir", type = "SOSOptionString", mandatory = false)
 	public SOSOptionFolderName	JOEJobDocDir	= new SOSOptionFolderName(this, conClassName + ".JOEJobDocDir", // HashMap-Key
-													"", // Titel
-													"env:SOS_JOBDOC_DIR", // InitValue
-													"env:SOS_JOBDOC_DIR", // DefaultValue
-													false // isMandatory
-											);
+														"", // Titel
+														"env:SOS_JOBDOC_DIR", // InitValue
+														"env:SOS_JOBDOC_DIR", // DefaultValue
+														false // isMandatory
+												);
 
 	/**
 	 * \brief getJOEJobDocDir :

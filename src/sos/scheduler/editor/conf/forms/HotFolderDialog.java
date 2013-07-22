@@ -3,6 +3,7 @@ package sos.scheduler.editor.conf.forms;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -29,6 +30,7 @@ import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
+import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
 import com.swtdesigner.SWTResourceManager;
@@ -66,9 +68,9 @@ public class HotFolderDialog{
 
 	private              Button           butAdd                        = null;
 
-	private              String           SCHEDULER_CLUSTER_MASK        = "^[^#]+$";
+	private final              String           SCHEDULER_CLUSTER_MASK        = "^[^#]+$";
 
-	private              String           SCHEDULER_HOST_MASK           = "^[^#]+#\\d{1,5}$";
+	private final              String           SCHEDULER_HOST_MASK           = "^[^#]+#\\d{1,5}$";
 
 	//public HotFolderDialog(MainWindow mainwindow_) {
 	public HotFolderDialog() {
@@ -79,15 +81,16 @@ public class HotFolderDialog{
 	 * @wbp.parser.entryPoint
 	 */
 
-	public void showForm(int type_) {
+	public void showForm(final int type_) {
 
 		type = type_;
 		schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE
 				| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
-			public void keyTraversed(final TraverseEvent e) {				
-				if(e.detail == SWT.TRAVERSE_ESCAPE) {					
+			@Override
+			public void keyTraversed(final TraverseEvent e) {
+				if(e.detail == SWT.TRAVERSE_ESCAPE) {
 					schedulerConfigurationShell.dispose();
 				}
 			}
@@ -147,6 +150,7 @@ public class HotFolderDialog{
 
 		cancelButton = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Cancel.Control(new Button(schedulerConfigurationShell, SWT.NONE));
 		cancelButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				schedulerConfigurationShell.dispose();
 			}
@@ -155,11 +159,13 @@ public class HotFolderDialog{
 
 		txtName = SOSJOEMessageCodes.JOE_T_HotFolderDialog_Name.Control(new Text(schedulerConfigurationShell, SWT.BORDER));
 		txtName.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
-				e.doit = (e.text.indexOf("#") == -1);
+				e.doit = e.text.indexOf("#") == -1;
 			}
 		});
 		txtName.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				setButtonRenameEnable();
 			}
@@ -169,14 +175,16 @@ public class HotFolderDialog{
 		if(type == SCHEDULER_HOST) {
 			txtPort = SOSJOEMessageCodes.JOE_T_HotFolderDialog_Port.Control(new Text(schedulerConfigurationShell, SWT.BORDER));
 			txtPort.addVerifyListener(new VerifyListener() {
+				@Override
 				public void verifyText(final VerifyEvent e) {
 					if(type == SCHEDULER_CLUSTER)
 						e.doit = e.text.indexOf("#") == -1;
 					else
-						e.doit = (e.text.indexOf("#") == -1) && Utils.isOnlyDigits(e.text);;
+						e.doit = e.text.indexOf("#") == -1 && Utils.isOnlyDigits(e.text);;
 				}
 			});
 			txtPort.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					setButtonRenameEnable();
 				}
@@ -186,8 +194,9 @@ public class HotFolderDialog{
 
 		butAdd = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Add.Control(new Button(schedulerConfigurationShell, SWT.NONE));
 		butAdd.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				addItem();				
+				addItem();
 			}
 		});
 		butAdd.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
@@ -197,22 +206,23 @@ public class HotFolderDialog{
 
 		butRename = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Rename.Control(new Button(schedulerConfigurationShell, SWT.NONE));
 		butRename.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				try {
-					if(tree.getSelectionCount() > 0 
-							&& !tree.getSelection()[0].getText().equals(sType) 
+					if(tree.getSelectionCount() > 0
+							&& !tree.getSelection()[0].getText().equals(sType)
 							&& txtName.getText().trim().length() > 0) {
 
-						String changeName = sosString.parseToString(tree.getSelection()[0].getData()); 
+						String changeName = sosString.parseToString(tree.getSelection()[0].getData());
 						File f = new File( sosString.parseToString(tree.getSelection()[0].getData()));
 						//String path = f.getParent().endsWith("/") || f.getParent().endsWith("\\")  ?  f.getParent() : f.getParent() + "/";
 						String path = f.getParent();
-						
+
 						if(type == SCHEDULER_HOST && txtName.getText().length() > 0 && txtPort.getText().length() == 0) {
 //							host ändern
-							changeHost(path);														
-							return;	
-						} else if(type == SCHEDULER_HOST && txtName.getText().length() > 0 && txtPort.getText().length() > 0 
+							changeHost(path);
+							return;
+						} else if(type == SCHEDULER_HOST && txtName.getText().length() > 0 && txtPort.getText().length() > 0
 								&& tree.getSelection()[0].getParentItem().getText().equals(sType) ) {
 							//ein host wurde selektiert und ein neuer port wurde eingegeben
 							//dann soll diese neu hinzugefügt werden
@@ -225,16 +235,16 @@ public class HotFolderDialog{
 						if(type == SCHEDULER_HOST)
 							path = new File(path, "#" + txtPort.getText()).getCanonicalPath();
 
-						if(f.renameTo(new File(path))) {	
+						if(f.renameTo(new File(path))) {
 							if(type == SCHEDULER_HOST) {
 								//port ändern
 								tree.getSelection()[0].getParentItem().setText(txtName.getText());
-								tree.getSelection()[0].setText(txtPort.getText());											
+								tree.getSelection()[0].setText(txtPort.getText());
 								tree.getSelection()[0].setData( path);
 							} else {
 								//scheduler id ändern
-								//String changeName = tree.getSelection()[0].getText(); 
-								tree.getSelection()[0].setText(txtName.getText());											
+								//String changeName = tree.getSelection()[0].getText();
+								tree.getSelection()[0].setText(txtName.getText());
 								tree.getSelection()[0].setData( path);
 
 
@@ -262,10 +272,9 @@ public class HotFolderDialog{
 					}
 				} catch (Exception ex) {
 					try {
-//						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not rename configuration.", ex);
-						new ErrorLog(SOSJOEMessageCodes.JOE_E_0007.params(sos.util.SOSClassUtil.getMethodName()), ex);
+//						new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; could not rename configuration.", ex);
+						new ErrorLog(SOSJOEMessageCodes.JOE_E_0007.params(SOSClassUtil.getMethodName()), ex);
 					} catch(Exception ee) {
-						//tu nichts
 					}
 //					MainWindow.message("could not rename configuration: " + ex.getMessage(), SWT.ICON_ERROR);
 					MainWindow.message(SOSJOEMessageCodes.JOE_M_0005.params(ex.getMessage()), SWT.ICON_ERROR);
@@ -279,7 +288,8 @@ public class HotFolderDialog{
 		{
 			butOK = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Open.Control(new Button(schedulerConfigurationShell, SWT.NONE));
 			butOK.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {					
+				@Override
+				public void widgetSelected(final SelectionEvent e) {
 					openDirectory();
 				}
 			});
@@ -304,6 +314,7 @@ public class HotFolderDialog{
 			tree = 	SOSJOEMessageCodes.JOE_HotFolderDialog_Tree.Control(new Tree(schedulerGroup, SWT.BORDER));
 
 			tree.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 
 					if (tree.getSelectionCount() > 0 && !tree.getSelection()[0].getText().equals(sType)) {
@@ -334,13 +345,14 @@ public class HotFolderDialog{
 				}
 			});
 			tree.addMouseListener(new MouseAdapter() {
+				@Override
 				public void mouseDoubleClick(final MouseEvent e) {
 					openDirectory();
 				}
 			});
 
 			tree.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true,true));
-			if (type == SCHEDULER_CLUSTER) {				
+			if (type == SCHEDULER_CLUSTER) {
 				mask = SCHEDULER_CLUSTER_MASK;
 			} else if (type == SCHEDULER_HOST) {
 				mask = SCHEDULER_HOST_MASK;
@@ -348,7 +360,7 @@ public class HotFolderDialog{
 
 			String path = new File(Options.getSchedulerData(), "config/remote").getCanonicalPath();
 
-			File p = new File(path); 
+			File p = new File(path);
 			if(!p.exists()) {
 				p.mkdirs();
 			}
@@ -366,10 +378,10 @@ public class HotFolderDialog{
 		} catch (Exception e) {
 			try {
 //				JOE_E_0002
-//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+//				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 //			MainWindow.message("..error in create tree for Open Scheduler Cluster/Host " + e.getMessage(), SWT.ICON_ERROR);
 			MainWindow.message(SOSJOEMessageCodes.JOE_E_0003.params(e.getMessage()), SWT.ICON_ERROR);
@@ -378,8 +390,8 @@ public class HotFolderDialog{
 
 	}
 
-	private void createTreeItem(TreeItem parentItem, java.util.Vector filelist,
-			boolean sub) {
+	private void createTreeItem(final TreeItem parentItem, final java.util.Vector filelist,
+			final boolean sub) {
 		try {
 			Iterator fileIterator = filelist.iterator();
 			String filename = "";
@@ -391,7 +403,7 @@ public class HotFolderDialog{
 				if(!f.isDirectory())
 					continue;
 
-				if(f.getName().equals("_all")) 
+				if(f.getName().equals("_all"))
 					continue;
 
 				String name = f.getName();
@@ -399,7 +411,7 @@ public class HotFolderDialog{
 				if (type == SCHEDULER_CLUSTER) {
 					TreeItem item = new TreeItem(parentItem, SWT.NONE);
 
-					name = f.getName(); 
+					name = f.getName();
 					item.setText(name);
 					item.setData(filename);
 					item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/folder.png"));
@@ -440,7 +452,7 @@ public class HotFolderDialog{
 							newItem.setText(sname);
 							//newItem.setData(sname);
 							newItem.setData(new File(path, sname).getCanonicalPath());//test
-							
+
 							newItem.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/folder.png"));
 							//String mask = "^" + sname + ".*\\.scheduler$";
 							String mask = "^" + sname + "#";
@@ -459,10 +471,10 @@ public class HotFolderDialog{
 			}
 		} catch (Exception e) {
 			try {
-//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+//				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 //			MainWindow.message(
 //					"..error in create tree for Open Scheduler Cluster/Host "
@@ -478,7 +490,7 @@ public class HotFolderDialog{
 			Utils.startCursor(schedulerConfigurationShell);
 			if (tree.getSelectionCount() > 0) {
 				String path = sosString.parseToString(tree.getSelection()[0].getData());
-				if((tree.getSelection()[0].getItemCount() > 0 && type == SCHEDULER_HOST && !tree.getSelection()[0].getText().equals(sType))
+				if(tree.getSelection()[0].getItemCount() > 0 && type == SCHEDULER_HOST && !tree.getSelection()[0].getText().equals(sType)
 						|| type == SCHEDULER_CLUSTER && tree.getSelection()[0].getText().equals(sType)) {
 					//host wurde ausgewählt -> enzsprechende Ports öffnen
 					for (int i = 0; i < tree.getSelection()[0].getItemCount(); i++) {
@@ -495,10 +507,10 @@ public class HotFolderDialog{
 			}
 		} catch (Exception e) {
 			try {
-//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+//				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 //			MainWindow.message(
 //					"..error in create tree for Open Scheduler Cluster/Host "
@@ -511,7 +523,7 @@ public class HotFolderDialog{
 
 	}
 
-	private void setButtonRenameEnable() {		
+	private void setButtonRenameEnable() {
 		if(tree.getSelectionCount() > 0 && !tree.getSelection()[0].getText().equals(sType)) {
 			if(type == SCHEDULER_HOST) {
 				butRename.setEnabled(true);
@@ -519,7 +531,7 @@ public class HotFolderDialog{
 					txtName.setEditable(false);
 				} else {
 					txtName.setEditable(true);
-				}	
+				}
 			} else {
 				if(txtName.getText().length() > 0) {
 					butRename.setEnabled(true);
@@ -533,7 +545,7 @@ public class HotFolderDialog{
 		butAdd.setEnabled(txtName.getText().length() > 0);
 	}
 
-	private void changeHost(String path) {
+	private void changeHost(final String path) {
 		//host ändern
 		try {
 
@@ -553,17 +565,17 @@ public class HotFolderDialog{
 				if(!_f.renameTo(_newF)) {
 //					MainWindow.message("could not rename configuration: " + filename + " in " + newFilename, SWT.ICON_INFORMATION);
 					MainWindow.message(SOSJOEMessageCodes.JOE_E_0004.params(filename, newFilename), SWT.ICON_INFORMATION);
-				}				
+				}
 				item.setData(newFilename);
 			}
 
 		} catch (Exception e) {
 
 			try {
-//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " could not change host.", e);
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + " " + SOSJOEMessageCodes.JOE_E_0005.label(), e);
+//				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " could not change host.", e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()) + " " + SOSJOEMessageCodes.JOE_E_0005.label(), e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 //			MainWindow.message(
 //					"..could not Change Host "
@@ -596,7 +608,7 @@ public class HotFolderDialog{
 			/*if (tree.getSelectionCount() > 0 && tree.getSelection()[0].getData() != null)
 				path = 	sosString.parseToString(tree.getSelection()[0].getData()) ;
 			else
-			*/ 
+			*/
 				path = new File(Options.getSchedulerData(),"config/remote/").getCanonicalPath();
 
 			//path = (path.endsWith("/") || path.endsWith("\\") ? path : path + "/")   + name;
@@ -607,22 +619,22 @@ public class HotFolderDialog{
 //				MainWindow.message("could not create remote Directory, cause Directory exist", SWT.NONE);
 				MainWindow.message(SOSJOEMessageCodes.JOE_M_0002.label(), SWT.NONE);
 				schedulerConfigurationShell.setFocus();
-				return;						
-			} 
+				return;
+			}
 
-			TreeItem item = null;						
+			TreeItem item = null;
 
-			if(type == SCHEDULER_CLUSTER) {		
+			if(type == SCHEDULER_CLUSTER) {
 				if (tree.getSelectionCount() > 0)
 					item = new TreeItem(tree.getSelection()[0], SWT.NONE);
 				else
 					item = new TreeItem(tree.getItems()[0], SWT.NONE);
 				item.setData(path);
 				item.setExpanded(true);
-			} 
+			}
 
 			if (type == SCHEDULER_HOST ) {
-				//herausfinden, ob bereits ein host mit der selben Namen existiert				
+				//herausfinden, ob bereits ein host mit der selben Namen existiert
 				for(int i = 0; i < tree.getItem(0).getItemCount(); i++) {
 					if(tree.getItem(0).getItem(i).getText().equalsIgnoreCase(txtName.getText())) {
 						item = tree.getItem(0).getItem(i);
@@ -643,7 +655,7 @@ public class HotFolderDialog{
 			item.setText(txtName.getText());
 
 			item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/folder.png"));
-			item.setExpanded(true);								
+			item.setExpanded(true);
 
 			txtName.setFocus();
 			txtName.setSelection(0, txtName.getText().length());
@@ -661,10 +673,10 @@ public class HotFolderDialog{
 			txtName.setText("");
 		} catch(Exception ex) {
 			try {
-//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() +  " ; Error while creating new " + sType + " Configuration. ", ex);
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) +  " " + SOSJOEMessageCodes.JOE_M_0004.params(sType), ex);
+//				new ErrorLog("error in " + SOSClassUtil.getMethodName() +  " ; Error while creating new " + sType + " Configuration. ", ex);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()) +  " " + SOSJOEMessageCodes.JOE_M_0004.params(sType), ex);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 			MainWindow.message(SOSJOEMessageCodes.JOE_M_0004.params(sType) + ex.getMessage(), SWT.ICON_ERROR);
 			schedulerConfigurationShell.setFocus();
@@ -689,7 +701,7 @@ public class HotFolderDialog{
 //		if(butRename != null) butRename.setToolTipText(Messages.getTooltip(""));
 	}
 
-	private void changeSubTreedata(String path, TreeItem _item, String changeName) throws Exception{
+	private void changeSubTreedata(final String path, final TreeItem _item, final String changeName) throws Exception{
 
 		try {
 			for(int i = 0; i < _item.getItemCount(); i++) {
@@ -698,7 +710,7 @@ public class HotFolderDialog{
 				//hier data ändern
 				//data = data.replaceAll(changeName, path);
 				data = data.substring(changeName.length());
-				data = path + data;	
+				data = path + data;
 				cItem.setData(data);
 				if(cItem.getItemCount() > 0)
 					changeSubTreedata(path, cItem, changeName);
@@ -709,5 +721,5 @@ public class HotFolderDialog{
 		}
 	}
 
-	
+
 }

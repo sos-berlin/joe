@@ -12,10 +12,12 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.util.SOSClassUtil;
 
 class Weekday {
 	protected String day;
@@ -41,7 +43,7 @@ public class SpecificWeekdaysListener {
 	private             Element           _runtime     = null;
 
 
-	public SpecificWeekdaysListener(SchedulerDom dom, Element runtime) {
+	public SpecificWeekdaysListener(final SchedulerDom dom, final Element runtime) {
 
 		_dom = dom;
 		_runtime = runtime;
@@ -49,13 +51,13 @@ public class SpecificWeekdaysListener {
 	}
 
 
-	public void addDay(String day, String which) {
+	public void addDay(final String day, String which) {
 		boolean found=false;
 		int index=0;
 		for (int i = 0;i<_daynames.length;i++) {
 			if (_daynames[i].equals(which)) index=i+1;
 		}
-		if (index>4)index=(-1)*(index-4);
+		if (index>4)index=-1*(index-4);
 		which = String.valueOf(index);
 		Element daylist = _runtime.getChild("monthdays");
 		if (daylist == null) {
@@ -69,7 +71,7 @@ public class SpecificWeekdaysListener {
 			Iterator it = list.iterator();
 			while (it.hasNext()) {
 				Element e = (Element) it.next();
-				if (e.getAttributeValue("day") != null && e.getAttributeValue("day").equalsIgnoreCase(day) && 
+				if (e.getAttributeValue("day") != null && e.getAttributeValue("day").equalsIgnoreCase(day) &&
 						e.getAttributeValue("which") != null && e.getAttributeValue("which").equalsIgnoreCase(which)) {
 					found=true;
 				}
@@ -90,7 +92,7 @@ public class SpecificWeekdaysListener {
 
 
 
-	public void deleteDay(String day_string) {
+	public void deleteDay(final String day_string) {
 		String day = "";
 		String which = "";
 		int index=0;
@@ -113,9 +115,9 @@ public class SpecificWeekdaysListener {
      	 Last       -1=4  5
      	 <--Second  -2=5  6
      	 <--Third=  -3=6  7
-     	 <--Fourth  -4=7  8    */          	 
+     	 <--Fourth  -4=7  8    */
 
-		if (index > 4)index = (index-4)*(-1); 
+		if (index > 4)index = (index-4)*-1;
 
 		which = String.valueOf(index);
 
@@ -125,7 +127,7 @@ public class SpecificWeekdaysListener {
 			Iterator it = list.iterator();
 			while (it.hasNext()) {
 				Element e = (Element) it.next();
-				if (e.getAttributeValue("day") != null && e.getAttributeValue("day").equalsIgnoreCase(day) && 
+				if (e.getAttributeValue("day") != null && e.getAttributeValue("day").equalsIgnoreCase(day) &&
 						e.getAttributeValue("which") != null && e.getAttributeValue("which").equals(which)) {
 					e.detach();
 
@@ -141,7 +143,7 @@ public class SpecificWeekdaysListener {
 						}
 					}
 
-					if (list.size() == 0 && isEmpty) 
+					if (list.size() == 0 && isEmpty)
 						_runtime.removeChild("monthdays");
 					_dom.setChanged(true);
 					if(_runtime != null && _runtime.getParentElement() != null )
@@ -158,7 +160,7 @@ public class SpecificWeekdaysListener {
 
 
 		TreeMap days = new TreeMap();
-		String day = "";   
+		String day = "";
 		String which = "";
 		Weekday w = null;
 		if (_runtime != null && _runtime.getChild("monthdays") != null) {
@@ -186,9 +188,8 @@ public class SpecificWeekdaysListener {
 					days.put(day,w);
 				} catch (Exception ex) {
 					try {
-						new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;Invalid weekday element in monthdays" , ex);
+						new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ;Invalid weekday element in monthdays" , ex);
 					} catch(Exception ee) {
-						//tu nichts
 					}
 
 					System.out.println("Invalid weekday element in monthdays:"+ex.getMessage());
@@ -217,9 +218,9 @@ public class SpecificWeekdaysListener {
                 	 Last       -1=4
                 	 <--Second  -2=5
                 	 <--Third=  -3=6
-                	 <--Fourth  -4=7     */          	 
+                	 <--Fourth  -4=7     */
 
-						if (i < 0) i = 3 + (-1)*(i+1);
+						if (i < 0) i = 3 + -1*(i+1);
 						_usedDays[index] = _daynames[i] + "." + w.day;
 						index++;
 					}
@@ -231,18 +232,18 @@ public class SpecificWeekdaysListener {
 		return _usedDays;
 	}
 
-	public void fillTreeDays(TreeItem parent, boolean expand) {
+	public void fillTreeDays(final TreeItem parent, final boolean expand) {
 
 		//1.Reading Node "monthdays"
 		//2.for each day making instance
 		//3.             setting which (e.g. 1,3,-4)
-		//4.Iterate all found days 
+		//4.Iterate all found days
 		//5.Create nodes for tree (parsing with tokenizer)
 
 		parent.removeAll();
 
 		TreeMap days = new TreeMap();
-		String day = "";   
+		String day = "";
 		String which = "";
 		Weekday w = null;
 		if (_runtime != null && _runtime.getChild("monthdays") != null) {
@@ -270,9 +271,9 @@ public class SpecificWeekdaysListener {
 					days.put(day,w);
 				} catch (Exception ex) {
 					try {
-						new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;Invalid weekday element in monthdays" , ex);
+						new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ;Invalid weekday element in monthdays" , ex);
 					} catch(Exception ee) {
-						//tu nichts
+
 					}
 
 					System.out.println("Invalid weekday element in monthdays:"+ex.getMessage());
@@ -286,8 +287,8 @@ public class SpecificWeekdaysListener {
 				itemDay.setText(w.day);
 				//itemDay.setData("max_occur", "1");
 				//itemDay.setData("key", w.getName());
-				
-				
+
+
 				if(!Utils.isElementEnabled("job", _dom, _runtime)) {
 					itemDay.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 				}
@@ -301,7 +302,7 @@ public class SpecificWeekdaysListener {
 					if (!token.equals("") && token != null && !token.equals("null")) {
 						TreeItem item = new TreeItem(itemDay, SWT.NONE);
 						i = Integer.parseInt(token)-1;
-						if (i < 0) i = (i+1)*(-1) + 3;
+						if (i < 0) i = (i+1)*-1 + 3;
                         Element e = (Element)w.elements.get(token);
 						item.setText(_daynames[i]);
 

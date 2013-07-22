@@ -27,45 +27,52 @@ import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.LanguageSelector;
+import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.TextArea;
 import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
+import sos.scheduler.editor.classes.WindowsSaver;
 import sos.scheduler.editor.conf.listeners.JOEListener;
-//import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.ScriptListener;
+import sos.util.SOSClassUtil;
 import sos.util.SOSString;
+//import sos.scheduler.editor.conf.listeners.JobListener;
 
 public class PrePostProcessingForm extends FormBaseClass {
 
+	private final String conClassName = "PrePostProcessingForm";
 	private static final String		conMONITOR_FAVORITE				= "monitor_favorite_";
 
 	private boolean					init							= true;
 
-	private Composite				tabItemJavaAPIComposite			= null;
-	private Composite				tabItemIncludedFilesComposite	= null;
+	private final Composite				tabItemJavaAPIComposite			= null;
+	private final Composite				tabItemIncludedFilesComposite	= null;
 	private Composite				objParentComposite				= null;
 	private Combo					cboPrefunction					= null;
 
 	private HashMap<String, String>	favorites						= null;
 
-	private Text					tbxClassName					= null;
-	private Table					tableIncludes					= null;
+	private final Text					tbxClassName					= null;
+	private final Table					tableIncludes					= null;
 	private LanguageSelector		languageSelector4Monitor		= null;
 
 	private ScriptListener			objScriptDataProvider			= null;
-	private Combo				    cboFavorite						= null;
-	private Text txtMonitorName = null;
-	private Spinner spinner = null;
-	private TextArea txtPrePostProcessingScriptCode = null;
-	private StyledText tSource = null;
-	
-	public PrePostProcessingForm(Composite pParentComposite, JOEListener pobjDataProvider,PrePostProcessingForm that) {
+	private SOSComboBox					cboFavorite						= null;
+	private Text					txtMonitorName					= null;
+	private Spinner					spinner							= null;
+	private TextArea				txtPrePostProcessingScriptCode	= null;
+	private StyledText				tSource							= null;
+
+	private WindowsSaver			objFormPosSizeHandler			= null;
+
+	public PrePostProcessingForm(final Composite pParentComposite, final JOEListener pobjDataProvider, final PrePostProcessingForm that) {
 		super(pParentComposite, pobjDataProvider);
 		objParentComposite = pParentComposite;
 		objJobDataProvider = pobjDataProvider;
-
+		objFormPosSizeHandler = new WindowsSaver(this.getClass(), getShell(), 643, 600);
+		objFormPosSizeHandler.setKey(conClassName);
 		objScriptDataProvider = (ScriptListener) pobjDataProvider;
 		createGroup();
-        getValues(that);
+		getValues(that);
 		FillForm();
 	}
 
@@ -80,9 +87,9 @@ public class PrePostProcessingForm extends FormBaseClass {
 	}
 
 	private void createGroup() {
-//		 objParent.setLayout(new FillLayout());
+		//		 objParent.setLayout(new FillLayout());
 		showWaitCursor();
-		
+
 		Group gMonitorGroup = SOSJOEMessageCodes.JOE_G_PrePostProcessingForm_Executable.Control(new Group(objParentComposite, SWT.NONE));
 		final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, true, true, 13, 1);
 		gridData_5.heightHint = 100;
@@ -106,6 +113,7 @@ public class PrePostProcessingForm extends FormBaseClass {
 		txtMonitorName.setText(objScriptDataProvider.getName());
 		txtMonitorName.setLayoutData(gd_txtName);
 		txtMonitorName.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				if (!init) {
 					objScriptDataProvider.setMonitorName(txtMonitorName.getText());
@@ -121,6 +129,7 @@ public class PrePostProcessingForm extends FormBaseClass {
 		gd_spinner.widthHint = 106;
 		spinner.setLayoutData(gd_spinner);
 		spinner.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				if (!init)
 					objScriptDataProvider.setOrdering(String.valueOf(spinner.getSelection()));
@@ -134,7 +143,8 @@ public class PrePostProcessingForm extends FormBaseClass {
 
 		languageSelector4Monitor = new LanguageSelector(gMonitorGroup, SWT.NONE);
 		languageSelector4Monitor.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent arg0) {
+			@Override
+			public void modifyText(final ModifyEvent arg0) {
 				if (objScriptDataProvider != null && init == false) {
 					String strT = languageSelector4Monitor.getText();
 					objScriptDataProvider.setLanguage(strT);
@@ -156,13 +166,14 @@ public class PrePostProcessingForm extends FormBaseClass {
 		butFavorite.setEnabled(true);
 		butFavorite.setVisible(true);
 
-		cboFavorite = SOSJOEMessageCodes.JOE_Cbo_PreProcessingComposite_Favourites.Control(new Combo(gMonitorGroup, intComboBoxStyle));
+		cboFavorite = new SOSComboBox(gMonitorGroup, SOSJOEMessageCodes.JOE_Cbo_PreProcessingComposite_Favourites);
 		GridData gd_cboFavorite = new GridData(SWT.LEFT, SWT.CENTER, true, false);
 		gd_cboFavorite.widthHint = 153;
 		cboFavorite.setLayoutData(gd_cboFavorite);
 		cboFavorite.setVisible(true);
 
 		butFavorite.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				Options.setProperty(
 						conMONITOR_FAVORITE + objScriptDataProvider.getLanguage(objScriptDataProvider.getLanguage()) + "_" + txtMonitorName.getText(),
@@ -173,13 +184,15 @@ public class PrePostProcessingForm extends FormBaseClass {
 		});
 
 		cboFavorite.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				String strFavText = cboFavorite.getText();
 				if (strFavText.length() > 0) {
 					if (Options.getProperty(getPrefix(strFavText) + cboFavorite.getText()) != null) {
-						if ((tbxClassName.isEnabled() && tbxClassName.getText().length() > 0)
-								|| (tableIncludes.isEnabled() && tableIncludes.getItemCount() > 0)) {
-							int c = MainWindow.message(getShell(), SOSJOEMessageCodes.JOE_M_ScriptFormPreProcessing_OverwriteMonitor.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+						if (tbxClassName.isEnabled() && tbxClassName.getText().length() > 0
+								|| tableIncludes.isEnabled() && tableIncludes.getItemCount() > 0) {
+							int c = MainWindow.message(getShell(), SOSJOEMessageCodes.JOE_M_ScriptFormPreProcessing_OverwriteMonitor.label(), SWT.ICON_QUESTION
+									| SWT.YES | SWT.NO);
 							if (c != SWT.YES)
 								return;
 							else {
@@ -197,8 +210,8 @@ public class PrePostProcessingForm extends FormBaseClass {
 							}
 							else {
 								String[] split = Options.getProperty(getPrefix(strFavText) + cboFavorite.getText()).split(";");
-								for (int i = 0; i < split.length; i++) {
-									objScriptDataProvider.addInclude(split[i]);
+								for (String element : split) {
+									objScriptDataProvider.addInclude(element);
 								}
 							}
 						}
@@ -217,17 +230,17 @@ public class PrePostProcessingForm extends FormBaseClass {
 		objParentComposite.layout();
 
 		restoreCursor();
-		
+
 	}
-	
-	private void getValues(PrePostProcessingForm that){
-	    
+
+	private void getValues(final PrePostProcessingForm that) {
+
 	}
 
 	private void FillForm() {
-		
-     	txtMonitorName.setText(objScriptDataProvider.getName());
-		spinner.setSelection((objScriptDataProvider.getOrdering().length() == 0 ? 0 : Integer.parseInt(objScriptDataProvider.getOrdering())));
+
+		txtMonitorName.setText(objScriptDataProvider.getName());
+		spinner.setSelection(objScriptDataProvider.getOrdering().length() == 0 ? 0 : Integer.parseInt(objScriptDataProvider.getOrdering()));
 
 		int language = objScriptDataProvider.getLanguage();
 
@@ -250,14 +263,14 @@ public class PrePostProcessingForm extends FormBaseClass {
 			cboPrefunction.setEnabled(true);
 		}
 		else {
-			cboPrefunction.setItems(new String [] {""});
+			cboPrefunction.setItems(new String[] { "" });
 			cboPrefunction.setEnabled(false);
 		}
 		cboFavorite.setData("favorites", favorites);
 		cboFavorite.setMenu(new ContextMenu(cboFavorite, objScriptDataProvider.getDom(), Editor.SCRIPT).getMenu());
 	}
 
-	private void createScriptTab2(Composite pParentComposite, final enuSourceTypes penuSourceType) {
+	private void createScriptTab2(final Composite pParentComposite, final enuSourceTypes penuSourceType) {
 		init = true;
 
 		@SuppressWarnings("unused")
@@ -278,6 +291,7 @@ public class PrePostProcessingForm extends FormBaseClass {
 
 		txtPrePostProcessingScriptCode = new TextArea(pParentComposite, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL);
 		txtPrePostProcessingScriptCode.setDataProvider(objScriptDataProvider, penuSourceType);
+		txtPrePostProcessingScriptCode.setFormHandler(objFormPosSizeHandler);
 		tSource = txtPrePostProcessingScriptCode.getControl();
 
 		// btnFont.addSelectionListener(new SelectionAdapter() {
@@ -295,6 +309,7 @@ public class PrePostProcessingForm extends FormBaseClass {
 		//
 
 		cboPrefunction.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				if (cboPrefunction.getText().length() > 0) {
 					String lan = "function_" + "monitor" + "_" + objScriptDataProvider.getLanguage(objScriptDataProvider.getLanguage()) + "_";
@@ -332,7 +347,7 @@ public class PrePostProcessingForm extends FormBaseClass {
 		return conMONITOR_FAVORITE + objScriptDataProvider.getLanguage(objScriptDataProvider.getLanguage()) + "_";
 	}
 
-	public String getData(String filename) {
+	public String getData(final String filename) {
 
 		String data = ".";
 		return data;
@@ -347,7 +362,7 @@ public class PrePostProcessingForm extends FormBaseClass {
 		}
 	}
 
-	private String[] normalized(String[] str) {
+	private String[] normalized(final String[] str) {
 		String[] retVal = new String[] { "" };
 		SOSString sosString = new SOSString();
 		try {
@@ -357,8 +372,8 @@ public class PrePostProcessingForm extends FormBaseClass {
 
 			String newstr = "";
 			retVal = new String[str.length];
-			for (int i = 0; i < str.length; i++) {
-				String s = sosString.parseToString(str[i]);
+			for (String element : str) {
+				String s = sosString.parseToString(element);
 				int idx = s.indexOf("_");
 				if (idx > -1) {
 					String lan = s.substring(0, idx);
@@ -376,12 +391,7 @@ public class PrePostProcessingForm extends FormBaseClass {
 		}
 		catch (Exception e) {
 			System.out.println(e.toString());
-			try {
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 			return retVal;
 		}
 	}

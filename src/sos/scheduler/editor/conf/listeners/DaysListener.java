@@ -4,17 +4,21 @@ package sos.scheduler.editor.conf.listeners;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.swt.widgets.Tree;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
+
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.forms.SchedulerForm;;
+import sos.scheduler.editor.conf.forms.SchedulerForm;
+import sos.util.SOSClassUtil;
 
 
 public class DaysListener {
@@ -28,9 +32,9 @@ public class DaysListener {
 
 	public static final int   SPECIFIC_MONTHS    = 3;
 
-	public static final int   SPECIFIC_DAY    = 6;        
+	public static final int   SPECIFIC_DAY    = 6;
 
-	private SchedulerDom      _dom;
+	private final SchedulerDom      _dom;
 
 	private Element           _runtime;
 
@@ -52,7 +56,7 @@ public class DaysListener {
 		"26 days", "27 days", "28 days", "29 days", "30 days" };
 
 
-	private static String[]   _month       = { "january", "february", "march", "april", "may", "june", "july", "august", "september", 
+	private static String[]   _month       = { "january", "february", "march", "april", "may", "june", "july", "august", "september",
 		"october", "november", "december", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
 
 	private static String[][] _days        = { _weekdays, _monthdays, _ultimos, _month };
@@ -66,20 +70,20 @@ public class DaysListener {
 
 	private boolean          _isWeekdaysHoliday = false;
 
-	public DaysListener(SchedulerDom dom, Element runtime, int type,  boolean isWeekdaysHoliday) {
+	public DaysListener(final SchedulerDom dom, final Element runtime, final int type,  final boolean isWeekdaysHoliday) {
 		if (type != WEEKDAYS && type != MONTHDAYS && type != ULTIMOS && type != SPECIFIC_MONTHS)
 			throw new IllegalArgumentException("type must be 0, 1 or 6!");
-		
+
 		_isWeekdaysHoliday = isWeekdaysHoliday;
 		_dom = dom;
 		_type = type;
 		_runtime = runtime;
 
-		/*if(_runtime.getName().equals("config")){    		
+		/*if(_runtime.getName().equals("config")){
 			if(_runtime.getChild("holidays") != null)
-				_runtime = _runtime.getChild("holidays");    	
-		} 
-		*/       
+				_runtime = _runtime.getChild("holidays");
+		}
+		*/
 
 		setUsedDays();
 	}
@@ -97,7 +101,7 @@ public class DaysListener {
     public static String[] getMonth() {
         return _month;
     }
-    
+
 	public static String[] getUltimos() {
 		return _ultimos;
 	}
@@ -110,8 +114,8 @@ public class DaysListener {
 		ArrayList unused = new ArrayList();
 		for (int i = 0; i < _days[_type].length; i++) {
 			boolean found = false;
-			for (int j = 0; j < _usedDays.length; j++) {
-				if (_days[_type][i].equalsIgnoreCase(_usedDays[j])) {
+			for (String _usedDay : _usedDays) {
+				if (_days[_type][i].equalsIgnoreCase(_usedDay)) {
 					found = true;
 				}
 			}
@@ -138,21 +142,22 @@ public class DaysListener {
 			String[] groupUsedDay = used[i].split(" ");
 			if(groupUsedDay.length == 1) {
 				a = groupUsedDay[0];
-			} else
-				for(int j = 0; j < groupUsedDay.length; j++) {
+			}
+			else
+				for (String element : groupUsedDay) {
 					try {
 						//if(_type == 0)
 						//a = (a.length() == 0? a : a + " ") + getAllDays()[Integer.parseInt(groupUsedDay[j])];
 						//a = (a.length() == 0? a : a + " ") + groupUsedDay[j];
 						//else
-						a = (a.length() == 0? a : a + " ") + getAllDays()[Integer.parseInt(groupUsedDay[j])- _offset[_type]];
+						a = (a.length() == 0? a : a + " ") + getAllDays()[Integer.parseInt(element)- _offset[_type]];
 						//a = (a.length() == 0? a : a + " ") + getAllDays()[Integer.parseInt(groupUsedDay[j])];
 					} catch (Exception e) {
 						//falls groupUsedDay[j] bereits in STring konvertiert ist
-						a = (a.length() == 0? a : a + " ") + groupUsedDay[j];
+						a = (a.length() == 0? a : a + " ") + element;
 					}
 				}
-			used[i] = a;    		
+			used[i] = a;
 			//System.out.println(a);
 
 		}
@@ -170,11 +175,12 @@ public class DaysListener {
 				String[] group = Utils.getAttributeValue("day", e).split(" ");
 				if(group.length == 1) {
 					str = _days[_type][Integer.parseInt(group[0]) - _offset[_type]];
-				} else
-					for (int j = 0; j < group.length; j++) {
-						str = (str.length() == 0 ? str : str + " ") + _days[_type][Integer.parseInt(group[j]) - _offset[_type]]; 
+				}
+				else
+					for (String element : group) {
+						str = (str.length() == 0 ? str : str + " ") + _days[_type][Integer.parseInt(element) - _offset[_type]];
 					}
-				used[i] = str;    	
+				used[i] = str;
 			}
 		}
 
@@ -202,34 +208,34 @@ public class DaysListener {
 	public String[] getUnUsedMonth() {
 
 		String[] usedMonth = getUsedMonth();
-		ArrayList unused = new ArrayList(); 
+		ArrayList unused = new ArrayList();
 
 		if(_type == SPECIFIC_MONTHS) {
 			for (int i = 0; i < _days[_type].length; i++) {
 				boolean found = false;
-				for (int j = 0; j < usedMonth.length; j++) {
-					if (_days[_type][i].equalsIgnoreCase(usedMonth[j])) {
+				for (String element : usedMonth) {
+					if (_days[_type][i].equalsIgnoreCase(element)) {
 						found = true;
 					}
 				}
 				if (!found)
-					unused.add(_days[_type][i]);    			    			
+					unused.add(_days[_type][i]);
 			}
 		}
 		return (String[]) unused.toArray(new String[0]);
 	}
 
 	private void setUsedDays() {
-		
+
 		if(_runtime.getChild("holidays") != null || _isWeekdaysHoliday)
 			isHolidayWeeksdayParent();
-		
+
 		if (_runtime != null && _runtime.getChild(_elementName[_type]) != null) {
-			
+
 			Element daylist = _runtime.getChild(_elementName[_type]);
 
-			List list = daylist.getChildren("day"); 
-			int size = list.size();   
+			List list = daylist.getChildren("day");
+			int size = list.size();
 			String[] days = new String[size];
 			Element[] elements = new Element[size];
 			Iterator it = list.iterator();
@@ -237,7 +243,7 @@ public class DaysListener {
 			while (it.hasNext()) {
 				Element e = (Element) it.next();
 				try {
-					if(Utils.getAttributeValue("day",e).indexOf(" ") == -1) {                		
+					if(Utils.getAttributeValue("day",e).indexOf(" ") == -1) {
 						int day = 0;
 						if(!Utils.isNumeric(e.getAttributeValue("day"))) {
 							day = getDayNumber(e.getAttributeValue("day"));
@@ -249,37 +255,37 @@ public class DaysListener {
 							day = 7; //0 und 7 werden als Sonntag interpretiert
 							e.setAttribute("day", String.valueOf(day));
 						}
-						days[i] = _days[_type][day - _offset[_type]];  
-						elements[i++] = e;                		
+						days[i] = _days[_type][day - _offset[_type]];
+						elements[i++] = e;
 					} else {
-						String[] split = Utils.getAttributeValue("day",e).split(" ");                		
+						String[] split = Utils.getAttributeValue("day",e).split(" ");
 						String attr = "";
 						for(int j = 0; j < split.length ; j++) {
 							int day = 0;
 							if(!Utils.isNumeric(split[j])) {
-								day =  getDayNumber(split[j]); 
+								day =  getDayNumber(split[j]);
 							} else {
 								day = new Integer(split[j]).intValue();
 							}
 							if(_type == WEEKDAYS && day == 0) {
 								day = 7; //0 und 7 werden als Sonntag interpretiert
 							}
-							attr = (attr == null || attr.length() == 0? "" : attr + " ") + day;                			
+							attr = (attr == null || attr.length() == 0? "" : attr + " ") + day;
 						}
 
 						e.setAttribute("day", attr);
 						elements[i++] = e;
 
-					}                	
+					}
 				} catch (Exception ex) {
 					try {
-						new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;Invalid day element in " + _elementName[_type], ex);
+						new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ;Invalid day element in " + _elementName[_type], ex);
 					} catch(Exception ee) {
-						//tu nichts
+
 					}
 
 					System.out.println("Invalid day element in " + _elementName[_type]);
-				}               
+				}
 			}
 			_usedDays = sort(days, elements);
 
@@ -288,7 +294,7 @@ public class DaysListener {
 	}
 
 
-	private String[] sort(String[] daylist, Element[] elements) {
+	private String[] sort(final String[] daylist, final Element[] elements) {
 		int size = elements.length;
 
 		String[] sorted = new String[size];
@@ -301,14 +307,13 @@ public class DaysListener {
 					if (_days[_type][i].equalsIgnoreCase(daylist[j])) {
 						sorted[index] = _days[_type][i];
 						_dayElements[index++] = elements[j];
-					}    			
+					}
 				}
 			}
-			for (int j = 0; j < elements.length ; j++) {
-				Element e = elements[j];
+			for (Element e : elements) {
 				if(Utils.getAttributeValue("day", e).indexOf(" ") > -1) {
 					sorted[index] = e.getAttributeValue("day") ;
-					_dayElements[index++] = elements[j];
+					_dayElements[index++] = e;
 				}
 			}
 
@@ -316,9 +321,9 @@ public class DaysListener {
 			return sorted;
 		} catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() , e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
 			System.err.println("error in daysListener.sort: " + e.getMessage());
 			return sorted;
@@ -327,13 +332,13 @@ public class DaysListener {
 	}
 
 
-	private int getDayNumber(String day) {
+	private int getDayNumber(final String day) {
 
 
 		for (int i = 0; i < _days[_type].length; i++) {
 			if (_days[_type][i].equalsIgnoreCase(day))
 				return i + _offset[_type];
-		}                  
+		}
 
 		return -1;
 	}
@@ -342,7 +347,7 @@ public class DaysListener {
     	return _days[_type][day];
     }*/
 
-	private String getDayGroupNumbers (String day) {
+	private String getDayGroupNumbers (final String day) {
 		String retVal = "";
 		String[] group = null;
 		if(_type == ULTIMOS) {
@@ -350,17 +355,17 @@ public class DaysListener {
 		} else {
 			group = day.split(" ");
 		}
-		for (int j = 0; j < group.length; j++) {
+		for (String element : group) {
 			for (int i = 0; i < _days[_type].length; i++) {
-				if (_days[_type][i].equalsIgnoreCase(group[j]))
+				if (_days[_type][i].equalsIgnoreCase(element))
 					retVal = (retVal.length() == 0 ? retVal : retVal + " ") +  (i + _offset[_type]);
-			}   
+			}
 		}
 		return retVal;
 	}
 
 
-	public void addDay(String day) {
+	public void addDay(final String day) {
 
 		//Wenn Vaterknoten holidays ist
 		isHolidayWeeksdayParent();
@@ -377,14 +382,14 @@ public class DaysListener {
 			for(int i = 0; i < l.size(); i++) {
 				Element e = (Element)l.get(i);
 				if(Utils.getAttributeValue("month", e).equals(day) )
-					found = true;        		
+					found = true;
 			}
 			if(!found) {
 				daylist = new Element(_elementName[_type]);
 				_runtime.addContent(daylist);
 				Utils.setAttribute("month", day, daylist);
 			}
-		} else { 
+		} else {
 			daylist.addContent(new Element("day").setAttribute("day", "" + getDayNumber(day)));
 		}
 
@@ -397,11 +402,11 @@ public class DaysListener {
 		setUsedDays();
 	}
 
-	public void addGroup (String group) {
+	public void addGroup (final String group) {
 		String[] split = null;
 		//Wenn Vaterknoten holidays ist
 		isHolidayWeeksdayParent();
-		
+
 		Element daylist = _runtime.getChild(_elementName[_type]);
 		if (daylist == null && _type != SPECIFIC_MONTHS) {
 			daylist = new Element(_elementName[_type]);
@@ -413,7 +418,7 @@ public class DaysListener {
 			for(int i = 0; i < l.size(); i++) {
 				Element e = (Element)l.get(i);
 				if(Utils.getAttributeValue("month", e).equals(group) )
-					found = true;        		
+					found = true;
 			}
 			if(!found) {
 				daylist = new Element(_elementName[_type]);
@@ -423,22 +428,22 @@ public class DaysListener {
 		} else {
 
 			if(_type == ULTIMOS) {
-				split= getNormalizedUltimos(group);        	        	
+				split= getNormalizedUltimos(group);
 			} else {
 				split = group.split(" ");
 			}
 			String attr = "";
-			for(int i = 0; i < split.length; i++) {
-				attr = (attr.length() == 0 ? "" : attr + " ") + getDayNumber(split[i]);
+			for (String element : split) {
+				attr = (attr.length() == 0 ? "" : attr + " ") + getDayNumber(element);
 			}
-			daylist.addContent(new Element("day").setAttribute("day", attr));	
+			daylist.addContent(new Element("day").setAttribute("day", attr));
 		}
 
 		_dom.setChangedForDirectory(_runtime, SchedulerDom.MODIFY);
 		setUsedDays();
 	}
 
-	public void updateGroup (String newGroup, String oldGroup) {
+	public void updateGroup (final String newGroup, final String oldGroup) {
 		String[] split = null;
 		Element daylist = _runtime.getChild(_elementName[_type]);
 
@@ -453,7 +458,7 @@ public class DaysListener {
 			for(int i = 0; i < l.size(); i++) {
 				Element e = (Element)l.get(i);
 				if(Utils.getAttributeValue("month", e).equals(oldGroup) ) {
-					found = true;        		
+					found = true;
 					e.setAttribute("month", newGroup);
 				}
 			}
@@ -461,7 +466,7 @@ public class DaysListener {
 				daylist = new Element(_elementName[_type]);
 				_runtime.addContent(daylist);
 				Utils.setAttribute("month", newGroup, daylist);
-			}    		
+			}
 
 		} else {
 
@@ -475,20 +480,21 @@ public class DaysListener {
 					String[] group = Utils.getAttributeValue("day", e).split(" ");
 					if(group.length == 1) {
 						str = _days[_type][Integer.parseInt(group[0]) - _offset[_type]];
-					} else
-						for (int j = 0; j < group.length; j++) {
-							str = (str.length() == 0 ? str : str + " ") + _days[_type][Integer.parseInt(group[j]) - _offset[_type]]; 
+					}
+					else
+						for (String element : group) {
+							str = (str.length() == 0 ? str : str + " ") + _days[_type][Integer.parseInt(element) - _offset[_type]];
 						}
-					if(str.equals(oldGroup)) {    	    			    	
+					if(str.equals(oldGroup)) {
 						e.setAttribute("day", getDayGroupNumbers(newGroup));
 						found = true;
-					}    	    			
+					}
 				}
 				if(!found) {
-					split= getNormalizedUltimos(newGroup); 
+					split= getNormalizedUltimos(newGroup);
 					String attr = "";
-					for(int i = 0; i < split.length; i++) {
-						attr = (attr.length() == 0 ? "" : attr + " ") + getDayNumber(split[i]);
+					for (String element : split) {
+						attr = (attr.length() == 0 ? "" : attr + " ") + getDayNumber(element);
 					}
 					daylist.addContent(new Element("day").setAttribute("day", attr));
 				}
@@ -501,7 +507,7 @@ public class DaysListener {
 		setUsedDays();
 	}
 
-	public void deleteMonth(String month) {
+	public void deleteMonth(final String month) {
 		Element daylist = _runtime.getChild(_elementName[_type]);
 		if (daylist != null) {
 			List list = _runtime.getChildren(_elementName[_type]);;
@@ -526,7 +532,7 @@ public class DaysListener {
 		}
 	}
 
-	public void deleteDay(String day) {
+	public void deleteDay(final String day) {
 		if(_type == SPECIFIC_MONTHS) {
 			deleteMonth(day);
 			return;
@@ -537,12 +543,12 @@ public class DaysListener {
 			List list = daylist.getChildren("day");
 			Iterator it = list.iterator();
 			while (it.hasNext()) {
-				Element e = (Element) it.next(); 
+				Element e = (Element) it.next();
 
 				//if(e.getName().equals("day")) {
-				if (e.getName().equals("day") && 
-						(e.getAttributeValue("day") != null && (e.getAttributeValue("day").equals("" + getDayNumber(day))
-								|| e.getAttributeValue("day").equals(day) || e.getAttributeValue("day").equals(getDayGroupNumbers(day))))) { 
+				if (e.getName().equals("day") &&
+						e.getAttributeValue("day") != null && (e.getAttributeValue("day").equals("" + getDayNumber(day))
+								|| e.getAttributeValue("day").equals(day) || e.getAttributeValue("day").equals(getDayGroupNumbers(day)))) {
 					e.detach();
 
 
@@ -559,8 +565,8 @@ public class DaysListener {
 						}
 					}
 
-					if (list.size() == 0 && isEmpty) 
-						//((Element)_runtime.getChildren(_elementName[_type]).get(0)).getChildren().size() == 0)                    
+					if (list.size() == 0 && isEmpty)
+						//((Element)_runtime.getChildren(_elementName[_type]).get(0)).getChildren().size() == 0)
 						_runtime.removeChild(_elementName[_type]);
 
 					_dom.setChanged(true);
@@ -576,7 +582,7 @@ public class DaysListener {
 
 
 	//test
-	public void updateDay(String newDay, String oldDay) {
+	public void updateDay(final String newDay, final String oldDay) {
 
 
 		Element daylist = _runtime.getChild(_elementName[_type]);
@@ -584,10 +590,10 @@ public class DaysListener {
 			List list = daylist.getChildren("day");
 			Iterator it = list.iterator();
 			while (it.hasNext()) {
-				Element e = (Element) it.next(); 
+				Element e = (Element) it.next();
 
 				if (e.getAttributeValue("day") != null && (e.getAttributeValue("day").equals("" + getDayNumber(oldDay))
-						|| e.getAttributeValue("day").equals(oldDay) || e.getAttributeValue("day").equals(getDayGroupNumbers(oldDay)))) { 
+						|| e.getAttributeValue("day").equals(oldDay) || e.getAttributeValue("day").equals(getDayGroupNumbers(oldDay)))) {
 					e.setAttribute("day", getDayGroupNumbers(newDay));
 
 
@@ -606,7 +612,7 @@ public class DaysListener {
 		}
 	}
 
-	public void fillTreeDays(TreeItem parent, boolean expand) {
+	public void fillTreeDays(final TreeItem parent, final boolean expand) {
 		try {
 		String[] used = null;
 		parent.removeAll();
@@ -615,16 +621,16 @@ public class DaysListener {
 			setUsedDays();
 
 
-		used = getUsedDays(); 
+		used = getUsedDays();
 
 		for (int i = 0; used!= null && i < used.length; i++) {
 			TreeItem item = new TreeItem(parent, SWT.NONE);
-			item.setText(used[i]); 
-			
+			item.setText(used[i]);
+
 			item.setData("max_occur", "1");
 			item.setData("key",  used[i] +"_@_"+ _dayElements[i].getName());
 			item.setData("copy_element", _dayElements[i]);
-			
+
 			item.setData(new TreeData(Editor.PERIODS, _dayElements[i], Options.getHelpURL("periods")));
 			if(_runtime != null && !Utils.isElementEnabled("job", _dom, _runtime)) {
 				item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
@@ -633,11 +639,11 @@ public class DaysListener {
 		parent.setExpanded(expand);
 		} catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not open file on Webdav Server", e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; could not open file on Webdav Server", e);
 			} catch(Exception ee) {
-				//tu nichts
+
 			}
-			
+
 		}
 	}
 
@@ -645,16 +651,16 @@ public class DaysListener {
 		return _days[_type];
 	}
 
-	
+
 	public static java.util.HashMap getDays() {
 		java.util.HashMap l = new java.util.HashMap();
-		l.put("weekdays",_weekdays); 
+		l.put("weekdays",_weekdays);
 		l.put("monthdays", _monthdays);
 		l.put("ultimos", _ultimos);
 		l.put("month", _month);
 		return l;
 	}
-	
+
 	/*public String[] getNormalizedUltimos(String group) {
     	String[] allUltimos =  getUltimos();
     	ArrayList l = new ArrayList();
@@ -673,13 +679,13 @@ public class DaysListener {
     }
 	 */
 
-	public String[] getNormalizedUltimos(String group) {
+	public String[] getNormalizedUltimos(final String group) {
 		String[] allUltimos =  getUltimos();
 		ArrayList l = new ArrayList();
-		for (int i = 0; i < allUltimos.length; i++) {
+		for (String allUltimo : allUltimos) {
 			//if(group.indexOf(allUltimos[i].concat(" ")) > -1 || group.endsWith(" ".concat(allUltimos[i]))) {
-			if(group.startsWith(allUltimos[i]) || group.indexOf(" " + allUltimos[i].concat(" ")) > -1 || group.endsWith(" ".concat(allUltimos[i]))) {
-				l.add(allUltimos[i]);
+			if(group.startsWith(allUltimo) || group.indexOf(" " + allUltimo.concat(" ")) > -1 || group.endsWith(" ".concat(allUltimo))) {
+				l.add(allUltimo);
 			}
 		}
 		String[] split = new String[l.size()];
@@ -688,26 +694,26 @@ public class DaysListener {
 		return split;
 	}
 
-	
+
 	//wenn Vaterknoten holiday ist
 	private void isHolidayWeeksdayParent() {
 
 		if(_runtime.getName().equals("holidays"))
 			return;
-		
+
 		if(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor() instanceof sos.scheduler.editor.doc.forms.DocumentationForm)
 			return;
-			
-		SchedulerForm f = (SchedulerForm)(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
-		
+
+		SchedulerForm f = (SchedulerForm)sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+
 		if(f == null)
 			return;
-		
+
 		Tree tree = f.getTree();
 		if(tree != null && tree.getSelectionCount() > 0) {
 			TreeItem item = f.getTree().getSelection()[0];
             if(item.getParentItem() != null && (item.getParentItem().getText().equalsIgnoreCase("Holidays") ||
-            		(item.getParentItem().getData("key") != null && item.getParentItem().getData("key").equals("holidays")))) {
+            		item.getParentItem().getData("key") != null && item.getParentItem().getData("key").equals("holidays"))) {
 			//if(_runtime.getName().equals("config")){
 				if(_runtime.getChild("holidays") != null)
 					_runtime = _runtime.getChild("holidays");

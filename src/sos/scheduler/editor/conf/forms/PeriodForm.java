@@ -3,6 +3,8 @@ package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -19,16 +21,14 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.PeriodListener;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 
 public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
@@ -84,16 +84,16 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 	private Combo             cboWhenHoliday             = null;
 
-	private Group             startTimePeriodGroup       = null; 
+	private Group             startTimePeriodGroup       = null;
 
 	private Combo             cboStarttime               = null;
-	
- 	
+
+
 
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public PeriodForm(Composite parent, int style, int type) {
+	public PeriodForm(final Composite parent, final int style, final int type) {
 		super(parent, style);
 		_type = type;
 		initialize();
@@ -103,12 +103,12 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 	}
 
-	public PeriodForm(Composite parent, int style, boolean assistent_) {		
+	public PeriodForm(final Composite parent, final int style, final boolean assistent_) {
 		this(parent, style, Editor.JOB_WIZARD);
 		assistent = assistent_;
 	}
 
-	public void setParams(SchedulerDom dom, boolean onOrder) {
+	public void setParams(final SchedulerDom dom, final boolean onOrder) {
 		this.onOrder = onOrder;
 		if(onOrder && startTimePeriodGroup != null)
 			startTimePeriodGroup.setText(JOE_M_PeriodForm_StartTimeNA.label());
@@ -119,7 +119,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 	private void initialize() {
 
-		this.setLayout(new FillLayout());				
+		this.setLayout(new FillLayout());
 
 		createTimeSlotGroup();
 
@@ -165,17 +165,17 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 					int har = listener.getAbsoluteRepeatHours().length() == 0 ? 0 : Integer.parseInt(listener.getAbsoluteRepeatHours());
 					int mar = listener.getAbsoluteRepeatMinutes().length() == 0 ? 0 : Integer.parseInt(listener.getAbsoluteRepeatMinutes());
 					int sar = listener.getAbsoluteRepeatSeconds().length() == 0 ? 0 : Integer.parseInt(listener.getAbsoluteRepeatSeconds());
-					boolean isAbsoluteRepeat = (har + mar + sar ) > 0; 
+					boolean isAbsoluteRepeat = har + mar + sar > 0;
 
 					int hrt = listener.getRepeatHours().length() == 0 ? 0 : Integer.parseInt(listener.getRepeatHours());
 					int mrt = listener.getRepeatMinutes().length() == 0 ? 0 : Integer.parseInt(listener.getRepeatMinutes());
 					int srt = listener.getRepeatSeconds().length() == 0 ? 0 : Integer.parseInt(listener.getRepeatSeconds());
-					boolean isRepeatTime = (hrt + mrt + srt ) > 0; 
+					boolean isRepeatTime = hrt + mrt + srt > 0;
 
 					int hst = listener.getSingleHours().length() == 0 ? 0 : Integer.parseInt(listener.getSingleHours());
 					int mst = listener.getSingleMinutes().length() == 0 ? 0 : Integer.parseInt(listener.getSingleMinutes());
 					int sst = listener.getSingleSeconds().length() == 0 ? 0 : Integer.parseInt(listener.getSingleSeconds());
-					boolean isSingleStart = (hst + mst + sst ) > 0;
+					boolean isSingleStart = hst + mst + sst > 0;
 
 					if(isSingleStart) {
 
@@ -226,7 +226,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				listener.setPeriod(listener.getAtElement());
 				/*
 				sSingleHours.setText(Utils.fill(2, String.valueOf(listener.getSingleHours())));
-				sSingleMinutes.setText(Utils.fill(2, String.valueOf(listener.getSingleMinutes())));				
+				sSingleMinutes.setText(Utils.fill(2, String.valueOf(listener.getSingleMinutes())));
 				sSingleSeconds.setText(Utils.fill(2, String.valueOf(listener.getSingleSeconds())));
 				 */
 				stHour.setText(Utils.fill(2, String.valueOf(listener.getSingleHours())));
@@ -244,13 +244,13 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 
 
-	public void setPeriod(Element period) {
+	public void setPeriod(final Element period) {
 
 		listener.setPeriod(period);
 		fillPeriod();
 	}
 
-	public void setAtElement(Element at) {
+	public void setAtElement(final Element at) {
 		listener.setAtElement(at);
 		fillPeriod();
 
@@ -262,14 +262,15 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 
 
-	public void setEnabled(boolean enabled) {
+	@Override
+	public void setEnabled(final boolean enabled) {
 		event = false;
 		boolean singleStart = false;
 
 		if(_type != Editor.RUNTIME) {
-			
+
 			if(listener.getPeriod() != null)
-				singleStart = isSingleStart();			
+				singleStart = isSingleStart();
 		}
 
 		if(!enabled){
@@ -303,7 +304,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		if(_type != Editor.RUNTIME) {
 			//START TIME
 
-			if(!cboStarttime.getText().equals(SINGLE_START) && cboStarttime.getText().length() > 0) {						
+			if(!cboStarttime.getText().equals(SINGLE_START) && cboStarttime.getText().length() > 0) {
 				cboStarttime.setEnabled(enabled  && !onOrder && !singleStart);
 				stHour.setEnabled(enabled  && !onOrder && !singleStart);
 				stMinutes.setEnabled(enabled  && !onOrder && !singleStart);
@@ -342,19 +343,19 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			sEndMinutes.setText("");
 			sEndSeconds.setText("");
 			if(_type != Editor.RUNTIME) {
-				if(!cboStarttime.getText().equals(SINGLE_START)) {						
+				if(!cboStarttime.getText().equals(SINGLE_START)) {
 					cboStarttime.setText("");
 					stHour.setText("");
 					stMinutes.setText("");
-					stSeconds.setText("");					
-				} 
+					stSeconds.setText("");
+				}
 			}
 		} else {
 			event = false;
-			if (savEndHours.equals("") || (savEndHours.equals("00") && savEndMinutes.equals("00") &&  savEndSeconds.equals("00"))) {
+			if (savEndHours.equals("") || savEndHours.equals("00") && savEndMinutes.equals("00") &&  savEndSeconds.equals("00")) {
 			   savEndHours = "24";
 			}
-			
+
 			if (!savBeginHours.equals(""))
 				sBeginHours.setText(savBeginHours);
 			if (!savBeginMinutes.equals(""))
@@ -367,13 +368,13 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				sEndMinutes.setText(savEndMinutes);
 			if (!savEndSeconds.equals(""))
 				sEndSeconds.setText(savEndSeconds);
-			
+
 		}
 		event = true;
 	}
 
 
-	public void setRunOnce(boolean visible) {
+	public void setRunOnce(final boolean visible) {
 		lRunOnce.setVisible(visible);
 		cRunOnce.setVisible(visible);
 	}
@@ -386,8 +387,8 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		int eh = Utils.str2int(0, sEndHours.getText());
 		int em = Utils.str2int(0, sEndMinutes.getText());
 		int es = Utils.str2int(0, sEndSeconds.getText());
-		int gbs = bs + (bm * 60) + (bh * 60 * 60);
-		int ges = es + (em * 60) + (eh * 60 * 60);
+		int gbs = bs + bm * 60 + bh * 60 * 60;
+		int ges = es + em * 60 + eh * 60 * 60;
 		if (gbs > ges && gbs != 0 && ges != 0 && bh < 24 && bm < 60 && bs < 60 && eh < 24 && em < 60 && es < 60) {
 			Utils.setBackground(99, 0, sBeginHours);
 			Utils.setBackground(99, 0, sBeginMinutes);
@@ -410,10 +411,11 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 //	TODO TOOLTIPS
+	@Override
 	public void setToolTipText() {
 		setStarttimeToolTip();
 	}
-	
+
 	private void setStarttimeToolTip() {
 		if(_type != Editor.RUNTIME) {
 			if(cboStarttime.getText().equals(SINGLE_START)) {
@@ -430,11 +432,11 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				stSeconds.setToolTipText(JOE_Tooltip_PeriodForm_RepeatSeconds.label());
 			}
 		}
-	
+
 	}
 
 
-	public void setApplyButton(Button b) {
+	public void setApplyButton(final Button b) {
 		bApply = b;
 		getShell().setDefaultButton(bApply);
 	}
@@ -462,29 +464,31 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		final GridLayout gridLayout_1 = new GridLayout();
 		gridLayout_1.numColumns = 8;
 		groupSlottime.setLayout(gridLayout_1);
-		
+
 		label1 = JOE_L_PeriodForm_LetRun.Control(new Label(groupSlottime, SWT.NONE));
-		
+
 		bLetRun = JOE_B_PeriodForm_LetRun.Control(new Button(groupSlottime, SWT.CHECK));
 		bLetRun.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				listener.setLetRun(bLetRun.getSelection());
 				updateFont();
 				if (bApply != null) {
-					bApply.setEnabled(true);					
+					bApply.setEnabled(true);
 				}
 			}
 		});
-		
+
 		new Label(groupSlottime, SWT.NONE);
-		
+
 		lRunOnce = JOE_L_PeriodForm_RunOnce.Control(new Label(groupSlottime, SWT.NONE));
 		lRunOnce.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 3, 1));
-		
+
 		cRunOnce = JOE_B_PeriodForm_RunOnce.Control(new Button(groupSlottime, SWT.CHECK));
 		cRunOnce.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 		cRunOnce.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				listener.setRunOnce(cRunOnce.getSelection());
 				updateFont();
 				if (bApply != null) {
@@ -492,60 +496,67 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				}
 			}
 		});
-		
+
 		label2 = JOE_L_PeriodForm_BeginTime.Control(new Label(groupSlottime, SWT.NONE));
 		label2.setLayoutData(new GridData(86, SWT.DEFAULT));
-		
+
 		sBeginHours = JOE_T_PeriodForm_BeginHours.Control(new Text(groupSlottime, SWT.BORDER));
 		sBeginHours.setTextLimit(2);
 		sBeginHours.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
 			}
 		});
 		sBeginHours.setLayoutData(new GridData(24, SWT.DEFAULT));
 		sBeginHours.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
 		sBeginHours.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(_type != Editor.RUNTIME)
 					return;
 				setBeginHours();
 			}
 		});
-		
+
 		label3 = JOE_L_Colon.Control(new Label(groupSlottime, SWT.NONE));
-		
+
 		sBeginMinutes = JOE_T_PeriodForm_BeginMinutes.Control(new Text(groupSlottime, SWT.BORDER));
 		sBeginMinutes.setTextLimit(2);
 		sBeginMinutes.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
 			}
 		});
 		sBeginMinutes.setLayoutData(new GridData(24, SWT.DEFAULT));
 		sBeginMinutes.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
 
 		sBeginMinutes.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(_type != Editor.RUNTIME)
 					return;
 				setBeginminutes();
 			}
 		});
-		
+
 		label4 = JOE_L_Colon.Control(new Label(groupSlottime, SWT.NONE));
 
 		sBeginSeconds = JOE_T_PeriodForm_BeginSeconds.Control(new Text(groupSlottime, SWT.BORDER));
 		sBeginSeconds.setTextLimit(2);
 		sBeginSeconds.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
 			}
@@ -554,73 +565,82 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		gridData_2.widthHint = 24;
 		sBeginSeconds.setLayoutData(gridData_2);
 		sBeginSeconds.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
 		sBeginSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(_type != Editor.RUNTIME)
 					return;
 				setBeginSeconds();
 			}
 		});
-		
+
 		label5 = JOE_L_JobAssistent_TimeFormat.Control(new Label(groupSlottime, SWT.NONE));
 		label5.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
 		label6 = JOE_L_PeriodForm_EndTime.Control(new Label(groupSlottime, SWT.NONE));
 		label6.setLayoutData(new GridData(86, SWT.DEFAULT));
-		
+
 		sEndHours = JOE_T_PeriodForm_EndHours.Control(new Text(groupSlottime, SWT.BORDER));
 		sEndHours.setTextLimit(2);
 		sEndHours.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
 			}
 		});
 		sEndHours.setLayoutData(new GridData(24, SWT.DEFAULT));
 		sEndHours.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
 		sEndHours.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(_type != Editor.RUNTIME)
 					return;
 				setEndHours();
 			}
 		});
-		
+
 		label7 = JOE_L_Colon.Control(new Label(groupSlottime, SWT.NONE));
-		
+
 		sEndMinutes = JOE_T_PeriodForm_EndMinutes.Control(new Text(groupSlottime, SWT.BORDER));
 		sEndMinutes.setTextLimit(2);
 		sEndMinutes.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
 			}
 		});
 		sEndMinutes.setLayoutData(new GridData(24, SWT.DEFAULT));
 		sEndMinutes.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
 		sEndMinutes.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(_type != Editor.RUNTIME)
 					return;
 				setEndMinutes();
 			}
 		});
-		
+
 		label8 = JOE_L_Colon.Control(new Label(groupSlottime, SWT.NONE));
 
 		sEndSeconds = JOE_T_PeriodForm_EndSeconds.Control(new Text(groupSlottime, SWT.BORDER));
 		sEndSeconds.setTextLimit(2);
 		sEndSeconds.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
 			}
@@ -629,12 +649,14 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		gridData_3.widthHint = 24;
 		sEndSeconds.setLayoutData(gridData_3);
 		sEndSeconds.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
 		sEndSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(_type != Editor.RUNTIME)
 					return;
 				setEndSeconds();
@@ -666,26 +688,28 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		cboStarttime.setLayoutData(gridData_3);
 		cboStarttime.setItems(new String[] {SINGLE_START, REPEAT_TIME, ABSOLUTE_TIME });
 		cboStarttime.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
 
 			}
 		});
 		cboStarttime.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				if (bApply != null && event) {
-					boolean hasTime = (stHour.getText().concat(stMinutes.getText()).concat(stSeconds.getText()).trim()).replaceAll("0", "").length() > 0;
-					bApply.setEnabled(hasTime);					
+					boolean hasTime = stHour.getText().concat(stMinutes.getText()).concat(stSeconds.getText()).trim().replaceAll("0", "").length() > 0;
+					bApply.setEnabled(hasTime);
 				}
 				if(cboStarttime.getText().equalsIgnoreCase(SINGLE_START)) {
 					lblOrSecond.setVisible(false);
 				} else {
 					lblOrSecond.setVisible(true);
-				} 
+				}
 				listener.clearNONSingleStartAttributes();
 				listener.clearSingleStartAttributes();
 
 				setHours();
-				
+
 				if(!cboStarttime.getText().equalsIgnoreCase(SINGLE_START)) {
 					setBeginHours();
 					setBeginminutes();
@@ -696,7 +720,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 					setEndSeconds();
 				}
 				setEnabled(true);
-								
+
 				setStarttimeToolTip();
 			}
 		});
@@ -705,6 +729,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		stHour = new Text(composite, SWT.BORDER);
 		stHour.setTextLimit(2);
 		stHour.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				if(_type != Editor.RUNTIME)
 					return;
@@ -712,16 +737,19 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			}
 		});
 		stHour.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusGained(final FocusEvent e) {
 				stHour.selectAll();
 			}
 		});
 		stHour.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
 			}
 		});
 		stHour.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
 			}
@@ -733,11 +761,13 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		stMinutes = new Text(composite, SWT.BORDER);
 		stMinutes.setTextLimit(2);
 		stMinutes.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
 			}
 		});
 		stMinutes.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				if(_type != Editor.RUNTIME)
 					return;
@@ -745,15 +775,18 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			}
 		});
 		stMinutes.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 			}
 		});
 		stMinutes.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusGained(final FocusEvent e) {
 				stMinutes.selectAll();
 			}
 		});
 		stMinutes.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
 			}
@@ -766,23 +799,27 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		stSeconds = new Text(composite, SWT.BORDER);
 		stSeconds.setTextLimit(2);
 		stSeconds.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				refreshPeriodsTable(e);
 			}
 		});
 		stSeconds.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				if(_type != Editor.RUNTIME)
 					return;
-				setSecound();				
+				setSecound();
 			}
 		});
 		stSeconds.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusGained(final FocusEvent e) {
 				stSeconds.selectAll();
 			}
 		});
 		stSeconds.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Utils.isOnlyDigits(e.text);
 			}
@@ -798,7 +835,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 	}
 
-	public void setSchedulerUpdate(ISchedulerUpdate gui) {
+	public void setSchedulerUpdate(final ISchedulerUpdate gui) {
 		_gui = gui;
 	}
 
@@ -816,8 +853,9 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 		cboWhenHoliday = JOE_Cbo_PeriodForm_WhenHoliday.Control(new Combo(whenHolidayGroup, SWT.READ_ONLY));
 		cboWhenHoliday.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				listener.setWhenHoliday(cboWhenHoliday.getText(), bApply);				
+				listener.setWhenHoliday(cboWhenHoliday.getText(), bApply);
 			}
 		});
 		cboWhenHoliday.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -838,7 +876,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	/**
 	 * @param event the event to set
 	 */
-	public void setEvent(boolean event) {
+	public void setEvent(final boolean event) {
 		this.event = event;
 	}
 
@@ -846,7 +884,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	 * Period darf nur einmal repeat oder absolute_repeat haben
 	 * @param hasIt
 	 */
-	public void hasRepeatTimes(boolean hasRepeatIntervall) {
+	public void hasRepeatTimes(final boolean hasRepeatIntervall) {
 		if(hasRepeatIntervall) {
 			cboStarttime.setItems(new String[] {SINGLE_START});
 
@@ -856,15 +894,15 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	/**
-	 * Stunde für Start Time setzen. 
+	 * Stunde für Start Time setzen.
 	 */
 	private void setHours() {
-		
+
 		Utils.setBackground(0, 23, stHour);
 		if (event){
 			if(bApply != null)
 				bApply.setEnabled(true);
-			
+
 			if(cboStarttime.getText().equals(REPEAT_TIME)) {
 
 				if (!(stMinutes.getText() + stHour.getText()).equals("")) {
@@ -886,12 +924,12 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				listener.setPeriodTime(23, bApply, "single_start", stHour.getText(), stMinutes.getText(), stSeconds.getText());
 
 			}
-			
-		}		
+
+		}
 	}
 
 	private void  setMinutes() {
-		
+
 		if(event) {
 			if(bApply != null)
 				bApply.setEnabled(true);
@@ -908,7 +946,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 			} else if(cboStarttime.getText().equals(ABSOLUTE_TIME)) {
 
-				//Utils.setBackground(0, 23, stHour);				
+				//Utils.setBackground(0, 23, stHour);
 				listener.setPeriodTime(23, bApply, "absolute_repeat", stHour.getText(), stMinutes.getText(), stSeconds.getText());
 
 			} else if(cboStarttime.getText().equals(SINGLE_START)) {
@@ -921,8 +959,8 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	private void setSecound() {
-		
-		
+
+
 		if(event) {
 			if(bApply != null)
 				bApply.setEnabled(true);
@@ -948,35 +986,35 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				listener.setPeriodTime(23, bApply, "absolute_repeat", stHour.getText(),stMinutes.getText(), stSeconds.getText());
 
 			} else if(cboStarttime.getText().equals(SINGLE_START)) {
-				
+
 				if(isSingleStart())
 					listener.clearNONSingleStartAttributes();
 				listener.setPeriodTime(23, bApply, "single_start", stHour.getText(),
-						stMinutes.getText(), stSeconds.getText());						
+						stMinutes.getText(), stSeconds.getText());
 			}
 		}
 	}
 
 	private void setBeginHours() {
-		
-		
+
+
 		if (!beginBeforeAfter()) {
 			Utils.setBackground(0, 23, sBeginHours);
 		}
-		if (event)  {        
+		if (event)  {
 
 			listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
 					sBeginSeconds.getText());
-			if(listener.get_dom() != null &&  _type == Editor.RUNTIME) 
+			if(listener.get_dom() != null &&  _type == Editor.RUNTIME)
 				listener.get_dom().setChanged(true);
 			updateFont();
-			
+
 		}
 	}
-	
+
 	private void setBeginminutes() {
-		
-		
+
+
 		if (!beginBeforeAfter()) {
 			Utils.setBackground(0, 59, sBeginMinutes);
 		}
@@ -992,12 +1030,12 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	private void setBeginSeconds() {
-	
-		
+
+
 		if (!beginBeforeAfter()) {
 			Utils.setBackground(0, 59, sBeginSeconds);
 		}
-		if (event)  {   
+		if (event)  {
 
 			listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
 					sBeginSeconds.getText());
@@ -1009,7 +1047,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	private void setEndHours() {
-		
+
 		if (!beginBeforeAfter()) {
 			Utils.setBackground(0, 24, sEndHours);
 		}
@@ -1022,7 +1060,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	private void setEndMinutes() {
-		
+
 		if (!beginBeforeAfter()) {
 			Utils.setBackground(0, 59, sEndMinutes);
 		}
@@ -1036,7 +1074,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	private void setEndSeconds() {
-		
+
 		if (!beginBeforeAfter()) {
 			Utils.setBackground(0, 59, sEndSeconds);
 		}
@@ -1053,11 +1091,11 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	/*public void setPeriodsForm(PeriodsForm periodsForm_) {
 		periodsForm = periodsForm_;
 	}*/
-	
-	private void refreshPeriodsTable(KeyEvent e) {
+
+	private void refreshPeriodsTable(final KeyEvent e) {
 		if(bApply != null) {
 			bApply.setEnabled(true);
-						
+
 		}
 		//System.out.println((e.keyCode == SWT.CR) + " " + e.keyCode );
 		/*
@@ -1071,43 +1109,43 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			}
 		}
 		//periodsForm.refreshPeriodsTable();
-		 * 
+		 *
 		 */
 	}
 
 	public void savePeriod(){
 
-		
+
 		int hB = sBeginHours.getText().length() == 0 ? 0 : Integer.parseInt(sBeginHours.getText());
 		int mB = sBeginMinutes.getText().length() == 0 ? 0 : Integer.parseInt(sBeginMinutes.getText());
 		int sB = sBeginSeconds.getText().length() == 0 ? 0 : Integer.parseInt(sBeginSeconds.getText());
-		boolean begin = (hB + mB + sB ) > 0; 
-		
+		boolean begin = hB + mB + sB > 0;
+
 		if(begin)
 			setBeginHours();
 
 		int hE = sEndHours.getText().length() == 0 ? 0 : Integer.parseInt(sEndHours.getText());
 		int mE = sEndMinutes.getText().length() == 0 ? 0 : Integer.parseInt(sEndMinutes.getText());
 		int sE = sEndSeconds.getText().length() == 0 ? 0 : Integer.parseInt(sEndSeconds.getText());
-		boolean end = (hE + mE + sE ) > 0; 
+		boolean end = hE + mE + sE > 0;
 
 		if(end)
 			setEndHours();
-		
+
 		int hs = stHour.getText().length() == 0 ? 0 : Integer.parseInt(stHour.getText());
 		int ms = stMinutes.getText().length() == 0 ? 0 : Integer.parseInt(stMinutes.getText());
 		int ss = stSeconds.getText().length() == 0 ? 0 : Integer.parseInt(stSeconds.getText());
 
-		boolean isCbo = (hs + ms + ss) > 0;
+		boolean isCbo = hs + ms + ss > 0;
 
 		//
 		if(isCbo) {
-			
+
 			//SINGLE Start
 			if(cboStarttime.getText().equals(SINGLE_START) && cboStarttime.getText().length() > 0) {
 				listener.clearNONSingleStartAttributes();
 			}
-			setHours();			
+			setHours();
 		}
 
 

@@ -3,7 +3,6 @@ package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -16,14 +15,15 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
+import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.SchedulesListener;
+import sos.util.SOSClassUtil;
 
 public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
@@ -36,7 +36,7 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
 
     private SchedulerDom dom = null;
 
-    public SchedulesForm(Composite parent, int style, SchedulerDom dom_, ISchedulerUpdate update) {
+    public SchedulesForm(final Composite parent, final int style, final SchedulerDom dom_, final ISchedulerUpdate update) {
 
         super(parent, style);
         try {
@@ -48,9 +48,8 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
 
         } catch (Exception e) {
             try {
-                new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+                new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
             } catch (Exception ee) {
-                // tu nichts
             }
             System.err.println(JOE_E_0002.params("SchedulesForm.init() ") + e.getMessage());
         }
@@ -64,7 +63,7 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
             setSize(new org.eclipse.swt.graphics.Point(656, 400));
         } catch (Exception e) {
             try {
-                new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+                new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
             } catch (Exception ee) {
                 // tu nichts
             }
@@ -82,23 +81,25 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
             gridLayout.numColumns = 2;
             schedulesGroup = JOE_G_SchedulesForm_Schedules.Control(new Group(this, SWT.NONE));
             schedulesGroup.setLayout(gridLayout);
-            
+
             createTable();
-            
+
             bNewSchedule = JOE_B_SchedulesForm_NewSchedule.Control(new Button(schedulesGroup, SWT.NONE));
             bNewSchedule.setLayoutData(gridData);
             getShell().setDefaultButton(bNewSchedule);
             bNewSchedule.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-                public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                @Override
+				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                     listener.newScheduler(table);
                     butRemove.setEnabled(true);
                 }
             });
-            
+
             butRemove = JOE_B_SchedulesForm_Remove.Control(new Button(schedulesGroup, SWT.NONE));
             butRemove.setEnabled(false);
             butRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-                public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                @Override
+				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                     int c = MainWindow.message(getShell(), JOE_M_SchedulesForm_RemoveSchedule.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
                     if (c != SWT.YES)
                         return;
@@ -115,10 +116,10 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
             label = new Label(schedulesGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
             label.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 //            label.setText("Label");
-            
+
         } catch (Exception e) {
             try {
-                new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+                new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
             } catch (Exception ee) {
                 // tu nichts
             }
@@ -134,7 +135,8 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
             GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
             table = JOE_Tbl_SchedulesForm_Schedules.Control(new Table(schedulesGroup, SWT.FULL_SELECTION | SWT.BORDER));
             table.addMouseListener(new MouseAdapter() {
-                public void mouseDoubleClick(final MouseEvent e) {
+                @Override
+				public void mouseDoubleClick(final MouseEvent e) {
                     if (table.getSelectionCount() > 0)
                         ContextMenu.goTo(table.getSelection()[0].getText(0), dom, Editor.SCHEDULE);
                 }
@@ -143,7 +145,8 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
             table.setLayoutData(gridData2);
             table.setLinesVisible(true);
             table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-                public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                @Override
+				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                     if (table.getSelectionCount() > 0)
                         butRemove.setEnabled(true);
                     else
@@ -153,12 +156,12 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
             });
             TableColumn tableColumn = JOE_TCl_SchedulesForm_Name.Control(new TableColumn(table, SWT.NONE));
             tableColumn.setWidth(385);
-            
-                    
-            
+
+
+
         } catch (Exception e) {
             try {
-                new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+                new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
             } catch (Exception ee) {
                 // tu nichts
             }
@@ -166,7 +169,8 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
         }
     }
 
-    public void setToolTipText() {
+    @Override
+	public void setToolTipText() {
 //
     }
 

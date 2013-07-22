@@ -15,24 +15,25 @@ import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.util.SOSClassUtil;
 
 public class JobCommandListener {
-	private ISchedulerUpdate _main;
+	private final ISchedulerUpdate _main;
 
-	private SchedulerDom     _dom;
+	private final SchedulerDom     _dom;
 
 	private String[]         _chains = new String[0];
 
 	private List             _params;
 
-	private List             _environments;	
+	private List             _environments;
 
-	private Element          _command;
+	private final Element          _command;
 
 	private Element          _job;
 
 
-	public JobCommandListener(SchedulerDom dom, Element command, ISchedulerUpdate update) {
+	public JobCommandListener(final SchedulerDom dom, final Element command, final ISchedulerUpdate update) {
 		_dom = dom;
 		_command = command;
 		_main = update;
@@ -40,7 +41,7 @@ public class JobCommandListener {
 			_job = _command.getParentElement().getParentElement();
 	}
 
-	private void initParams(Table table) {
+	private void initParams(final Table table) {
 		int j = 0;
 
 		j = getActCommand(table);
@@ -60,14 +61,14 @@ public class JobCommandListener {
 
 	}
 
-	private void initEnvironment(Table table) {
+	private void initEnvironment(final Table table) {
 		int j = 0;
 
 		j = getActCommand(table);
 		if (j >= 0) {
 			List l = _command.getChildren();
 			if (l != null) {
-				Element e = (Element) l.get(j);        
+				Element e = (Element) l.get(j);
 				if (e.getChild("environment") != null) {
 					_environments = e.getChild("environment").getChildren();
 				}
@@ -85,12 +86,12 @@ public class JobCommandListener {
 		_params = null;
 	}
 
-	public void clearEnvironment() {        	
+	public void clearEnvironment() {
 		_environments = null;
 	}
 
 	public boolean isDisabled() {
-	    boolean disabled = (Utils.getAttributeValue("enabled", _job).equalsIgnoreCase("no"));
+	    boolean disabled = Utils.getAttributeValue("enabled", _job).equalsIgnoreCase("no");
 		return disabled;
 	}
 
@@ -105,7 +106,7 @@ public class JobCommandListener {
 	}
 
 
-	public void fillEnvironment(Table tableCommand, Table tableEnvironment) {
+	public void fillEnvironment(final Table tableCommand, final Table tableEnvironment) {
 		_environments = null;
 		initEnvironment(tableCommand);
 		tableEnvironment.removeAll();
@@ -120,14 +121,14 @@ public class JobCommandListener {
 						TableItem item = new TableItem(tableEnvironment, SWT.NONE);
 						item.setText(0, ((Element) o).getAttributeValue("name"));
 						item.setText(1, ((Element) o).getAttributeValue("value"));
-					}                    
+					}
 				}
 			}
 		}
 	}
 
 
-	public void fillParams(Table tableCommand, Table tableParameters) {
+	public void fillParams(final Table tableCommand, final Table tableParameters) {
 		clearParams();
 		initParams(tableCommand);
 		tableParameters.removeAll();
@@ -154,7 +155,7 @@ public class JobCommandListener {
 	}
 
 
-	public void deleteParameter(Table table, int index) {
+	public void deleteParameter(final Table table, final int index) {
 		if (_params != null) {
 			_params.remove(index);
 			_dom.setChanged(true);
@@ -163,25 +164,25 @@ public class JobCommandListener {
 		table.remove(index);
 	}
 
-	public void deleteEnvironment(Table table, int index) {    	
+	public void deleteEnvironment(final Table table, final int index) {
 
 		if (_environments != null) {
 			_environments.remove(index);
 			_dom.setChanged(true);
-			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);			
+			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 		}
 		table.remove(index);
 
-	}	
+	}
 
-	public void addCommand(Element e) {
+	public void addCommand(final Element e) {
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 		_command.addContent(e);
 	}
 
 
-	private int getActCommand(Table table) {
+	private int getActCommand(final Table table) {
 		int index = table.getSelectionIndex();
 
 		int j = index;
@@ -194,7 +195,7 @@ public class JobCommandListener {
 			Element e2 = (Element) it2.next();
 
 			if (!e2.getName().equals("start_job") && !e2.getName().equals("add_order") && !e2.getName().equals("order")) {
-				ignore++;                                     
+				ignore++;
 			} else {
 				j--;
 			}
@@ -204,7 +205,7 @@ public class JobCommandListener {
 	}
 
 
-	public void deleteCommand(Table table) {
+	public void deleteCommand(final Table table) {
 		int j = 0;
 		int index = table.getSelectionIndex();
 
@@ -220,7 +221,7 @@ public class JobCommandListener {
 	}
 
 
-	public void saveEnvironment(Table table, String name, String value) {
+	public void saveEnvironment(final Table table, final String name, final String value) {
 
 		boolean found = false;
 		String value2 = value.replaceAll("\"", "&quot;");
@@ -233,8 +234,8 @@ public class JobCommandListener {
 				if (o instanceof Element) {
 					Element e = (Element) o;
 					if (name.equals(e.getAttributeValue("name"))) {
-						found = true;												
-						e.setAttribute("value", value2);						
+						found = true;
+						e.setAttribute("value", value2);
 						_dom.setChanged(true);
 						_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 						table.getItem(index).setText(1, value);
@@ -257,15 +258,15 @@ public class JobCommandListener {
 			TableItem item = new TableItem(table, SWT.NONE);
 			item.setText(new String[] { name, value });
 
-		}			
+		}
 	}
 
-	public void saveParameter(Table table, String name, String value) {
+	public void saveParameter(final Table table, final String name, final String value) {
 		boolean found = false;
 		if (_params != null) {
 
 			if (name.equals("<from>")) {
-				found = (table.getSelectionIndex() > -1);
+				found = table.getSelectionIndex() > -1;
 			} else {
 				int index = 0;
 				Iterator it = _params.iterator();
@@ -324,7 +325,7 @@ public class JobCommandListener {
 
 	}
 
-	public void setCommandName(Button bApply, String cmd, String value, Table table) {
+	public void setCommandName(final Button bApply, final String cmd, final String value, final Table table) {
 		if (_command != null) {
 			_dom.setChanged(true);
 			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
@@ -354,7 +355,7 @@ public class JobCommandListener {
 	}
 
 
-	public boolean getCommandReplace(Table table) {
+	public boolean getCommandReplace(final Table table) {
 		int i = getActCommand(table);
 		List l = _command.getChildren();
 		Element e = (Element) l.get(i);
@@ -369,7 +370,7 @@ public class JobCommandListener {
 	}
 
 
-	public void setExitCode(String value, boolean updateTree) {
+	public void setExitCode(final String value, final boolean updateTree) {
 		Utils.setAttribute("on_exit_code", value, _command, _dom);
 		if (updateTree)
 			_main.updateTreeItem(value);
@@ -381,7 +382,7 @@ public class JobCommandListener {
 	}
 
 
-	public void fillCommands(Table table) {
+	public void fillCommands(final Table table) {
 		boolean created;
 		TableItem item = null;
 
@@ -442,51 +443,51 @@ public class JobCommandListener {
 	}
 
 
-	public void setJob(String job) {
+	public void setJob(final String job) {
 		Utils.setAttribute("job", job, _command, _dom);
 		_main.updateTreeItem(_command.getName() + ": " +job);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 
-	public void setAt(String at) {
+	public void setAt(final String at) {
 		Utils.setAttribute("at", at, _command, _dom);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 
-	public void setOrderId(String orderId) {
+	public void setOrderId(final String orderId) {
 		Utils.setAttribute("id", orderId, _command, _dom);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 
-	public void setPriority(String priority) {
+	public void setPriority(final String priority) {
 		Utils.setAttribute("priority", priority, _command, _dom);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 
-	public void setReplace(String replace) {
+	public void setReplace(final String replace) {
 		Utils.setAttribute("replace", replace, _command, _dom);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 
-	public void setState(String state) {
+	public void setState(final String state) {
 		Utils.setAttribute("state", state, _command, _dom);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 
-	public void setJobChain(String jobChain) {
+	public void setJobChain(final String jobChain) {
 		Utils.setAttribute("job_chain", jobChain, _command, _dom);
 		_main.updateTreeItem(_command.getName() + ": " +jobChain);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
-	
-	
-	public void setEndState(String state) {
+
+
+	public void setEndState(final String state) {
 		Utils.setAttribute("end_state", state, _command, _dom);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
 
-	
-	public void setTitle(String title) {
+
+	public void setTitle(final String title) {
 		Utils.setAttribute("title", title, _command, _dom);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
 	}
@@ -494,22 +495,22 @@ public class JobCommandListener {
 	public String[] getStates() {
     	String[] retVal = new String[]{""};
     	ArrayList stateList = new ArrayList();
-    	
+
     	try {
-    		String jobChainname = Utils.getAttributeValue("job_chain", getCommand());    		
+    		String jobChainname = Utils.getAttributeValue("job_chain", getCommand());
     		XPath x3 = XPath.newInstance("//job_chain[@name='"+ jobChainname + "']");
     		Element jobChain = (Element)x3.selectSingleNode(_dom.getDoc());
-    		
+
     		if(jobChain == null) {
-    			jobChainname = Utils.getAttributeValue("job_chain_node.job_chain", getCommand()); 
+    			jobChainname = Utils.getAttributeValue("job_chain_node.job_chain", getCommand());
     			x3 = XPath.newInstance("//job_chain_node.job_chain[@name='"+ jobChainname + "']");
         		jobChain = (Element)x3.selectSingleNode(_dom.getDoc());
-        		
+
     		}
     		if(jobChain == null)
     			return retVal;
-    		
-    		
+
+
     		List l = jobChain.getChildren();
     		for(int i = 0; i < l.size(); i++) {
     			Element e = (Element)l.get(i);
@@ -517,7 +518,7 @@ public class JobCommandListener {
     			String state = Utils.getAttributeValue("state", e);
     			if(state.length() > 0)
     				stateList.add(state);
-    			/*if(whichState.equals("state") && !endstate) {    				
+    			/*if(whichState.equals("state") && !endstate) {
 
     				if(state.length() > 0)
     					stateList.add(state);
@@ -533,13 +534,12 @@ public class JobCommandListener {
     			retVal = new String[stateList.size()];
     			for(int i = 0; i < stateList.size(); i++)
     				retVal[i] = stateList.get(i).toString();
-    		} 
+    		}
     		//if(!listOfElement_3.isEmpty())
     	} catch (Exception e){
     		try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() , e);
 			} catch(Exception ee) {
-				//tu nichts
 			}
     	}
     	return retVal;

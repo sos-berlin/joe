@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<job_chain  orders_recoverable="yes" visible="yes" title="${title}" name="${jobchainname}">
+    <job_chain_node  state="JobchainStart" job="/JobChainStart" next_state="step100" error_state="!error"/>
+    <job_chain_node  state="step100" job="changeme" next_state="JobChainEnd" error_state="!error"/>
+    <job_chain_node  state="JobChainEnd" job="/JobChainEnd" next_state="finish" error_state="!error"/>
+    <job_chain_node  state="finish"/>
+    <job_chain_node  state="!error"/>
+</job_chain>

@@ -32,6 +32,7 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
+import sos.util.SOSClassUtil;
 import sos.util.SOSDate;
 
 public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
@@ -857,9 +858,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		} catch(Exception e){
 			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+				new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 			} catch (Exception ee){
-				//tu nichts
 			}
 		}
 

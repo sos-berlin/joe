@@ -50,6 +50,7 @@ import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
 import sos.scheduler.editor.conf.listeners.SortTreeListener;
+import sos.util.SOSClassUtil;
 
 import com.swtdesigner.SWTResourceManager;
 
@@ -311,11 +312,10 @@ public class JobAssistentImportJobsForm {
 		}
 		catch (Exception ex) {
 			try {
-				// new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
+				// new ErrorLog("error in " + SOSClassUtil.getMethodName(), ex);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), ex);
 			}
 			catch (Exception ee) {
-				// tu nichts
 			}
 			ex.printStackTrace();
 		}
@@ -471,9 +471,9 @@ public class JobAssistentImportJobsForm {
 						}
 						catch (Exception ex) {
 							try {
-								// new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not open description " +
+								// new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ;could not open description " +
 								// txtJobname.getText(), ex);
-								new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + " "
+								new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()) + " "
 										+ SOSJOEMessageCodes.JOE_E_0009.params(txtJobname.getText(), ex));
 							}
 							catch (Exception ee) {
@@ -588,8 +588,8 @@ public class JobAssistentImportJobsForm {
 						}
 						catch (Exception ex) {
 							try {
-								// new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
-								new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
+								// new ErrorLog("error in " + SOSClassUtil.getMethodName(), ex);
+								new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), ex);
 							}
 							catch (Exception ee) {
 								// tu nichts
@@ -778,8 +778,8 @@ public class JobAssistentImportJobsForm {
 			}
 			catch (Exception e) {
 				try {
-					// new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-					new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+					// new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+					new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 				}
 				catch (Exception ee) {
 					// tu nichts
@@ -796,10 +796,10 @@ public class JobAssistentImportJobsForm {
 		}
 		catch (Exception e) {
 			try {
-				// new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+				// new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 				// System.err.println("error in JobAssistentImportJobsForm.showAllImportJobs(): " + e.getMessage());
-				System.err.println(SOSJOEMessageCodes.JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()));
+				System.err.println(SOSJOEMessageCodes.JOE_M_0010.params(SOSClassUtil.getMethodName(), e.getMessage()));
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -880,14 +880,14 @@ public class JobAssistentImportJobsForm {
 		}
 		catch (Exception e) {
 			try {
-//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+//				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
 			}
 //			System.out.println("error in JobAssistentImportJobsForm.createTreeItems(): " + e.getMessage());
-			System.out.println(SOSJOEMessageCodes.JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()));
+			System.out.println(SOSJOEMessageCodes.JOE_M_0010.params(SOSClassUtil.getMethodName(), e.getMessage()));
 		}
 	}
 
@@ -1032,8 +1032,8 @@ public class JobAssistentImportJobsForm {
 		}
 		catch (Exception e) {
 			try {
-//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+//				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 				// tu nichts

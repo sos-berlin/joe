@@ -63,12 +63,10 @@ import com.swtdesigner.SWTResourceManager;
  */
 
 public class TextArea extends StyledText /* Text */{
-
 	@SuppressWarnings("unused")
-	private final String	conClassName			= "TextArea";
-
+	private final String	conClassName			= this.getClass().getSimpleName();
 	@SuppressWarnings("unused")
-	private static Logger	logger					= Logger.getLogger(TextArea.class);
+	private final Logger	logger					= Logger.getLogger(this.getClass());
 	@SuppressWarnings("unused")
 	private final String	conSVNVersion			= "$Id$";
 
@@ -503,7 +501,7 @@ public class TextArea extends StyledText /* Text */{
 		SWTResourceManager.getFont(f.getLocale(), f.getHeight(), f.getStyle());
 		//		setFont(new Fon t(this.getDisplay(), f));
 		setFont(SWTResourceManager.getFont(f.getLocale(), f.getHeight(), f.getStyle()));
-//		setForeground(new Co lor(this.getDisplay(), foreGround));
+		//		setForeground(new Co lor(this.getDisplay(), foreGround));
 		setForeground(SWTResourceManager.getColor(foreGround));
 	}
 

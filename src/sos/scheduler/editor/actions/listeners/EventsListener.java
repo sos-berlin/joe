@@ -59,7 +59,7 @@ public class EventsListener {
 				}
 			}
 		} catch (Exception e) {
-           //tu nichts
+           
 			System.out.println(e.toString());
 		}
 		return retVal;
@@ -91,7 +91,7 @@ public class EventsListener {
 				
 			}
 		} catch (Exception e) {
-           //tu nichts
+           
 			System.out.println(e.toString());
 		}
 		return list;
@@ -112,7 +112,7 @@ public class EventsListener {
 				
 			}
 		} catch (Exception e) {
-           //tu nichts
+           
 			System.out.println(e.toString());
 		}
 		return list;

@@ -76,12 +76,14 @@ public class ActionsDom extends DomParser {
     }
 */
 
-	public boolean read(String filename) throws JDOMException, IOException {
+	@Override
+	public boolean read(final String filename) throws JDOMException, IOException {
 		return read(filename, Options.isDocValidate());
 
 	}
 
-	public boolean read(String filename, boolean validate) throws JDOMException, IOException {
+	@Override
+	public boolean read(final String filename, final boolean validate) throws JDOMException, IOException {
 		// TODO warum false?
 		Document doc = getBuilder(true).build(filename);
 
@@ -105,7 +107,8 @@ public class ActionsDom extends DomParser {
 		return true;
 	}
 
-	public boolean readString(String str, boolean validate) throws JDOMException, IOException {
+	@Override
+	public boolean readString(final String str, final boolean validate) throws JDOMException, IOException {
 
 		StringReader sr = new StringReader(str);
 		Document doc = getBuilder(true).build(sr);
@@ -133,11 +136,12 @@ public class ActionsDom extends DomParser {
 		return true;
 	}
 
-	public void write(String filename) throws IOException, JDOMException {
+	@Override
+	public void write(final String filename) throws IOException, JDOMException {
 		writeWithDom(filename);
 	}
 
-	public void writeWithDom(String filename) throws IOException, JDOMException {
+	public void writeWithDom(final String filename) throws IOException, JDOMException {
 		String encoding = Editor.SCHEDULER_ENCODING;
 		if (encoding.equals(""))
 			encoding = DEFAULT_ENCODING;
@@ -157,8 +161,9 @@ public class ActionsDom extends DomParser {
 		}
 		catch (JDOMException e) {
 			int res = MainWindow.message(Messages.getMsg(conMessage_MAIN_LISTENER_OUTPUT_INVALID, e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-			if (res == SWT.NO)
+			if (res == SWT.NO) {
 				return;
+			}
 		}
 
 		OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
@@ -170,7 +175,7 @@ public class ActionsDom extends DomParser {
 		setChanged(false);
 	}
 
-	public void writeWithHandler(String filename) throws IOException, JDOMException {
+	public void writeWithHandler(final String filename) throws IOException, JDOMException {
 
 		String encoding = Editor.SCHEDULER_ENCODING;
 		if (encoding.equals(""))
@@ -200,7 +205,8 @@ public class ActionsDom extends DomParser {
 		setChanged(false);
 	}
 
-	public String getXML(Element element) throws JDOMException {
+	@Override
+	public String getXML(final Element element) throws JDOMException {
 		String encoding = Editor.SCHEDULER_ENCODING;
 		if (encoding.equals(""))
 			encoding = DEFAULT_ENCODING;
@@ -230,7 +236,7 @@ public class ActionsDom extends DomParser {
 		return div;
 	}
 
-	public String noteAsStr(Element element) {
+	public String noteAsStr(final Element element) {
 		StringWriter stream = new StringWriter();
 		XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
 		try {

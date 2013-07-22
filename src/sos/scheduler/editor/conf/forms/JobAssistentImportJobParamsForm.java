@@ -56,6 +56,7 @@ import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
+import sos.util.SOSClassUtil;
 
 import com.sos.JSHelper.io.Files.JSXMLFile;
 import com.sos.i18n.annotation.I18NResourceBundle;
@@ -118,7 +119,7 @@ public class JobAssistentImportJobParamsForm {
 	private Element													jobBackUp									= null;
 	private ScriptJobMainForm												jobForm										= null;
 	private JobDocumentationForm									jobDocForm									= null;
-	/** Hilsvariable für das Schliessen des Dialogs. 
+	/** Hilsvariable für das Schliessen des Dialogs.
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean													closeDialog									= false;
 	private sos.scheduler.editor.conf.listeners.ParameterListener	paramListener								= null;
@@ -158,21 +159,21 @@ public class JobAssistentImportJobParamsForm {
 		// Wizard ohne Jobbeschreibung starten
 		if (xmlFilename == null || xmlFilename.trim().length() == 0)
 			return new ArrayList<HashMap<String, Object>>();
-		
+
 		// TODO /jobs als Option
 		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData()+"/jobs";
 		xmlPaths = xmlPaths.replaceAll("\\\\", "/");
 		xmlFilename = xmlFilename.replaceAll("\\\\", "/");
-		
-	    
+
+
 
 		if (!xmlFilename.startsWith(xmlPaths)) {
             String s[] = xmlFilename.split("/");
             xmlFilename = s[s.length-1];
 			xmlFilename = xmlPaths.endsWith("/") ? xmlPaths.concat(xmlFilename) : xmlPaths.concat("/").concat(xmlFilename);
 		}
-		
-		
+
+
 		ArrayList<HashMap<String, Object>> listOfParams1 = null;
 		try {
 			listOfParams1 = new ArrayList<HashMap<String, Object>>();
@@ -243,8 +244,8 @@ public class JobAssistentImportJobParamsForm {
 		}
 		catch (Exception ex) {
 			try {
-				MainWindow.message(jobParameterShell, SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) +" "+ ex.getLocalizedMessage(), SWT.OK);
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
+				MainWindow.message(jobParameterShell, SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()) +" "+ ex.getLocalizedMessage(), SWT.OK);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), ex);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -287,10 +288,10 @@ public class JobAssistentImportJobParamsForm {
 		return objParams;
 	} // private void getParamList
 
-	
+
 
 	/**
-	 * 
+	 *
 	 * @param xmlFilename -> Job Dokumentation
 	 */
 	public void showAllImportJobParams(final String xmlFilename) {
@@ -311,7 +312,7 @@ public class JobAssistentImportJobParamsForm {
 	//		jobParameterShell.setSize(MainWindow.getSShell().getSize().x,MainWindow.getSShell().getSize().y);
 
 			final GridLayout gridLayout = new GridLayout();
-			
+
 			jobParameterShell.setLayout(gridLayout);
 			String step = " ";
 			if (Utils.getAttributeValue("order", joblistener.getJob()).equalsIgnoreCase("yes")) {
@@ -336,7 +337,7 @@ public class JobAssistentImportJobParamsForm {
 			gridLayout_3.marginBottom = 10;
 			gridLayout_3.numColumns = 5;
 			textParameterGroup.setLayout(gridLayout_3);
-			
+
 			final Composite composite_3 = SOSJOEMessageCodes.JOE_Composite1.Control(new Composite(textParameterGroup, SWT.NONE));
 			final GridData gridData_4 = new GridData(GridData.FILL, GridData.END, true, false, 5, 1);
 			gridData_4.minimumHeight = 30;
@@ -344,13 +345,13 @@ public class JobAssistentImportJobParamsForm {
 			final GridLayout gridLayout_1 = new GridLayout();
 			gridLayout_1.numColumns = 5;
 			composite_3.setLayout(gridLayout_1);
-			
+
 			final Composite composite = SOSJOEMessageCodes.JOE_Composite2.Control(new Composite(composite_3, SWT.NONE));
 			composite.setLayoutData(new GridData(GridData.BEGINNING, GridData.FILL, true, true));
 			final GridLayout gridLayout_4 = new GridLayout();
 			gridLayout_4.marginWidth = 0;
 			composite.setLayout(gridLayout_4);
-			
+
 			butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite, SWT.NONE));
 			butCancel.setLayoutData(new GridData());
 			butCancel.addSelectionListener(new SelectionAdapter() {
@@ -359,14 +360,14 @@ public class JobAssistentImportJobParamsForm {
 					close();
 				}
 			});
-			
+
 			final Composite composite_1 = SOSJOEMessageCodes.JOE_Composite3.Control(new Composite(composite_3, SWT.NONE));
 			composite_1.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
 			final GridLayout gridLayout_2 = new GridLayout();
 			gridLayout_2.numColumns = 2;
 			gridLayout_2.marginWidth = 0;
 			composite_1.setLayout(gridLayout_2);
-			
+
 			showButton = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_1, SWT.NONE));
 			showButton.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			showButton.addSelectionListener(new SelectionAdapter() {
@@ -377,7 +378,7 @@ public class JobAssistentImportJobParamsForm {
 			});
 			if (assistentType == Editor.JOB)
 				showButton.setVisible(false);
-			
+
 			butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_1, SWT.NONE));
 			butFinish.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			butFinish.addSelectionListener(new SelectionAdapter() {
@@ -410,7 +411,7 @@ public class JobAssistentImportJobParamsForm {
 					jobParameterShell.dispose();
 				}
 			});
-			
+
 			butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_3, SWT.NONE));
 			butBack.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
 			butBack.addSelectionListener(new SelectionAdapter() {
@@ -426,7 +427,7 @@ public class JobAssistentImportJobParamsForm {
 				}
 			});
 			butBack.setEnabled(false);
-			
+
 			butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite_3, SWT.NONE));
 			butNext.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
 			butNext.setFocus();
@@ -448,7 +449,7 @@ public class JobAssistentImportJobParamsForm {
 				}
 			});
 			butNext.setEnabled(false);
-			
+
 			if (assistentType == Editor.JOB || assistentType == Editor.PARAMETER) {
 				butNext.setEnabled(false);
 				butBack.setEnabled(false);
@@ -466,7 +467,7 @@ public class JobAssistentImportJobParamsForm {
 				nameLabel = SOSJOEMessageCodes.JOE_L_Name.Control(new Label(textParameterGroup, SWT.NONE));
 				nameLabel.setLayoutData(new GridData());
 			}
-			
+
 			{
 				txtName = SOSJOEMessageCodes.JOE_T_JobAssistent_Name.Control(new Text(textParameterGroup, SWT.BORDER));
 				txtName.addModifyListener(new ModifyListener() {
@@ -490,13 +491,13 @@ public class JobAssistentImportJobParamsForm {
 				txtName.setText("");
 				txtName.setFocus();
 			}
-			
+
 			final Label lblTitle = SOSJOEMessageCodes.JOE_L_Value.Control(new Label(textParameterGroup, SWT.NONE));
 			final GridData gridData_6 = new GridData(GridData.END, GridData.CENTER, false, false);
 			gridData_6.widthHint = 41;
 			lblTitle.setLayoutData(gridData_6);
 			lblTitle.setAlignment(SWT.RIGHT);
-			
+
 			txtValue = SOSJOEMessageCodes.JOE_T_JobAssistent_Value.Control(new Text(textParameterGroup, SWT.BORDER));
 			txtValue.addModifyListener(new ModifyListener() {
 				@Override
@@ -514,7 +515,7 @@ public class JobAssistentImportJobParamsForm {
 			final GridData gridData_10 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 			gridData_10.widthHint = 175;
 			txtValue.setLayoutData(gridData_10);
-			
+
 			{
 				butApply = SOSJOEMessageCodes.JOE_B_JobAssistent_Apply.Control(new Button(textParameterGroup, SWT.NONE));
 				butApply.setEnabled(false);
@@ -526,7 +527,7 @@ public class JobAssistentImportJobParamsForm {
 					}
 				});
 			}
-			
+
 			tableDescParameters = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_DescParams.Control(new Table(textParameterGroup, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER));
 			tableDescParameters.addMouseListener(new MouseAdapter() {
 				@Override
@@ -550,19 +551,19 @@ public class JobAssistentImportJobParamsForm {
 			final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
 			gridData.widthHint = 245;
 			tableDescParameters.setLayoutData(gridData);
-			
+
 			final TableColumn newColumnTableColumn = SOSJOEMessageCodes.JOE_TCl_JobAssistent_NameColumn.Control(new TableColumn(tableDescParameters, SWT.NONE));
 			newColumnTableColumn.setWidth(122);
-			
+
 			final TableColumn newColumnTableColumn_1 = SOSJOEMessageCodes.JOE_TCl_JobAssistent_ValueColumn.Control(new TableColumn(tableDescParameters, SWT.NONE));
 			newColumnTableColumn_1.setWidth(145);
-			
+
 			final Composite composite_2 = SOSJOEMessageCodes.JOE_Composite4.Control(new Composite(textParameterGroup, SWT.NONE));
 			final GridData gridData_11 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
 			gridData_11.widthHint = 49;
 			composite_2.setLayoutData(gridData_11);
 			composite_2.setLayout(new GridLayout());
-			
+
 			butPut = SOSJOEMessageCodes.JOE_B_JobAssistent_Put.Control(new Button(composite_2, SWT.NONE));
 			butPut.addSelectionListener(new SelectionAdapter() {
 				@Override
@@ -573,7 +574,7 @@ public class JobAssistentImportJobParamsForm {
 			final GridData gridData_13 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData_13.widthHint = 33;
 			butPut.setLayoutData(gridData_13);
-			
+
 			butPutAll = SOSJOEMessageCodes.JOE_B_JobAssistent_PutAll.Control(new Button(composite_2, SWT.NONE));
 			butPutAll.addSelectionListener(new SelectionAdapter() {
 				@Override
@@ -595,7 +596,7 @@ public class JobAssistentImportJobParamsForm {
 				}
 			});
 			butPutAll.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			
+
 			butRemove = SOSJOEMessageCodes.JOE_B_JobAssistent_Remove.Control(new Button(composite_2, SWT.NONE));
 			butRemove.addSelectionListener(new SelectionAdapter() {
 				@Override
@@ -606,7 +607,7 @@ public class JobAssistentImportJobParamsForm {
 			final GridData gridData_12 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData_12.widthHint = 29;
 			butRemove.setLayoutData(gridData_12);
-			
+
 			butRemoveAll = SOSJOEMessageCodes.JOE_B_JobAssistent_RemoveAll.Control(new Button(composite_2, SWT.NONE));
 			butRemoveAll.addSelectionListener(new SelectionAdapter() {
 				@Override
@@ -647,7 +648,7 @@ public class JobAssistentImportJobParamsForm {
 				}
 			});
 			butRemoveAll.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			
+
 			tblSelectedParams = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_SelectedParams.Control(new Table(textParameterGroup, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER));
 			tblSelectedParams.addMouseListener(new MouseAdapter() {
 				@Override
@@ -684,13 +685,13 @@ public class JobAssistentImportJobParamsForm {
 			tblSelectedParams.setLayoutDeferred(true);
 			tblSelectedParams.setLinesVisible(true);
 			tblSelectedParams.setHeaderVisible(true);
-			
+
 			final TableColumn colName = SOSJOEMessageCodes.JOE_TCl_JobAssistent_NameColumn.Control(new TableColumn(tblSelectedParams, SWT.NONE));
 			colName.setWidth(119);
-			
+
 			final TableColumn colValue = SOSJOEMessageCodes.JOE_TCl_JobAssistent_ValueColumn.Control(new TableColumn(tblSelectedParams, SWT.NONE));
 			colValue.setWidth(212);
-			
+
 			// txtDescription = new Text(textParameterGroup, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.H_SCROLL);
 			try {
 			txtDescription = SOSJOEMessageCodes.JOE_DescriptionBrowser.Control(new Browser(textParameterGroup, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.H_SCROLL));
@@ -699,7 +700,7 @@ public class JobAssistentImportJobParamsForm {
 			    final Label txtDescriptionLabel = SOSJOEMessageCodes.JOE_L_Value.Control(new Label(textParameterGroup, SWT.NONE));
 			    txtDescriptionLabel.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobParameter.label());
 			}
-			
+
 			final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
 			gridData_2.heightHint = 108;
 			txtDescription.setLayoutData(gridData_2);
@@ -711,15 +712,15 @@ public class JobAssistentImportJobParamsForm {
 			}
 			fillTable(listOfParams);
 //			setToolTipText();
-			
+
 			jobParameterShell.layout();
 			jobParameterShell.pack();
 			jobParameterShell.open();
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			System.out.println(SOSJOEMessageCodes.JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()));
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
+			System.out.println(SOSJOEMessageCodes.JOE_M_0010.params(SOSClassUtil.getMethodName(), e.getMessage()));
 		}
 		catch (Exception ee) {
 			// tu nichts
@@ -756,7 +757,7 @@ public class JobAssistentImportJobParamsForm {
 				}
 			}
 
-			//			eventuell vorhandene Parameters aus der Job Editor hinzufügen								
+			//			eventuell vorhandene Parameters aus der Job Editor hinzufügen
 			paramListener.fillParams(jobP, tblSelectedParams, true);
 
 			for (int i = 0; i < listOfRequired.size(); i++) {
@@ -801,10 +802,10 @@ public class JobAssistentImportJobParamsForm {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
-				//tu nichts
+
 			}
 
 			throw new Exception(SOSJOEMessageCodes.JOE_M_0010.params(e.toString()));
@@ -896,7 +897,7 @@ public class JobAssistentImportJobParamsForm {
 	}
 
 	/**
-	 * Der Wizard wurde für ein bestehende Job gestartet. 
+	 * Der Wizard wurde für ein bestehende Job gestartet.
 	 * Beim verlassen der Wizard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */

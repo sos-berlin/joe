@@ -1,5 +1,7 @@
 package sos.scheduler.editor.actions.forms;
 
+import java.io.File;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -15,18 +17,17 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import com.swtdesigner.SWTResourceManager;
 
+import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
+import sos.util.SOSClassUtil;
 import sos.util.SOSString;
-import sos.scheduler.editor.actions.forms.ActionsForm;
-import sos.scheduler.editor.actions.ActionsDom;
 
-import java.io.File;
+import com.swtdesigner.SWTResourceManager;
 
 public class SaveEventsDialogForm {
 
@@ -72,10 +73,9 @@ public class SaveEventsDialogForm {
 		catch (Exception e) {
 
 			try {
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
-				// tu nichts
 			}
 		}
 	}
@@ -126,7 +126,7 @@ public class SaveEventsDialogForm {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -141,6 +141,7 @@ public class SaveEventsDialogForm {
 		_shell = new Shell(MainWindow.getSShell(), SWT.TITLE | SWT.CLOSE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 
 		_shell.addTraverseListener(new TraverseListener() {
+			@Override
 			public void keyTraversed(final TraverseEvent e) {
 				if (e.detail == SWT.TRAVERSE_ESCAPE) {
 					_shell.dispose();
@@ -185,6 +186,7 @@ public class SaveEventsDialogForm {
 			txtName = SOSJOEMessageCodes.JOE_T_SaveEventsDialogForm_Name.Control(new Text(eventgroup, SWT.BORDER));
 			txtName.setBackground(SWTResourceManager.getColor(255, 255, 217));
 			txtName.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					refresh();
 				}
@@ -196,6 +198,7 @@ public class SaveEventsDialogForm {
 
 			txtJobChain = SOSJOEMessageCodes.JOE_T_SaveEventsDialogForm_JobChain.Control(new Text(eventgroup, SWT.BORDER));
 			txtJobChain.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					refresh();
 				}
@@ -207,6 +210,7 @@ public class SaveEventsDialogForm {
 
 			txtJob = SOSJOEMessageCodes.JOE_T_SaveEventsDialogForm_Job.Control(new Text(eventgroup, SWT.BORDER));
 			txtJob.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					refresh();
 				}
@@ -218,6 +222,7 @@ public class SaveEventsDialogForm {
 
 			txtEventClass = SOSJOEMessageCodes.JOE_T_SaveEventsDialogForm_EventClass.Control(new Text(eventgroup, SWT.BORDER));
 			txtEventClass.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					refresh();
 				}
@@ -236,6 +241,7 @@ public class SaveEventsDialogForm {
 
 			butDirectory = SOSJOEMessageCodes.JOE_B_SaveEventsDialogForm_Directory.Control(new Button(eventgroup, SWT.NONE));
 			butDirectory.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					DirectoryDialog fdialog = new DirectoryDialog(MainWindow.getSShell(), SWT.MULTI);
 					fdialog.setFilterPath(Options.getLastDirectory());
@@ -253,9 +259,10 @@ public class SaveEventsDialogForm {
 			butApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			butApply.setEnabled(false);
 			butApply.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					if (txtJob.getEnabled() && txtJobChain.getEnabled() && txtEventClass.getEnabled()
-							&& (txtJob.getText().length() + txtJobChain.getText().length() + txtEventClass.getText().length()) == 0) {
+							&& txtJob.getText().length() + txtJobChain.getText().length() + txtEventClass.getText().length() == 0) {
 						filename = txtName.getText() + ".actions.xml";
 					}
 					else
@@ -275,7 +282,7 @@ public class SaveEventsDialogForm {
 					File _file = new File(filename);
 					boolean ok_ = true;
 					if (_file.exists()) {
-						int ok = MainWindow.message(SOSJOEMessageCodes.JOE_M_OverwriteFile.label(), //$NON-NLS-1$
+						int ok = MainWindow.message(SOSJOEMessageCodes.JOE_M_OverwriteFile.label(), 
 								SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 						if (ok == SWT.NO) {
 							ok_ = false;
@@ -291,6 +298,7 @@ public class SaveEventsDialogForm {
 			final Button cancelButton = SOSJOEMessageCodes.JOE_B_SaveEventsDialogForm_Cancel.Control(new Button(eventgroup, SWT.NONE));
 			cancelButton.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false, 2, 1));
 			cancelButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					_shell.dispose();
 				}
@@ -307,9 +315,9 @@ public class SaveEventsDialogForm {
 	private void refresh() {
 
 		butApply.setEnabled(txtName.getText().length() > 0);
-		txtJobChain.setEnabled((txtJob.getText().length() + txtEventClass.getText().length()) == 0);
-		txtJob.setEnabled((txtJobChain.getText().length() + txtEventClass.getText().length()) == 0);
-		txtEventClass.setEnabled((txtJob.getText().length() + txtJobChain.getText().length()) == 0);
+		txtJobChain.setEnabled(txtJob.getText().length() + txtEventClass.getText().length() == 0);
+		txtJob.setEnabled(txtJobChain.getText().length() + txtEventClass.getText().length() == 0);
+		txtEventClass.setEnabled(txtJob.getText().length() + txtJobChain.getText().length() == 0);
 
 	}
 
@@ -327,7 +335,7 @@ public class SaveEventsDialogForm {
 	/**
 	 * @param filename the filename to set
 	 */
-	public void setFilename(String filename) {
+	public void setFilename(final String filename) {
 		this.filename = filename;
 	}
 
