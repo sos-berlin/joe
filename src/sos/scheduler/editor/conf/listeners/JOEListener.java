@@ -4,8 +4,10 @@ import java.io.File;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.program.Program;
+import org.eclipse.swt.widgets.Display;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
@@ -16,14 +18,22 @@ import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.util.SOSClassUtil;
 
 import com.sos.JSHelper.Basics.JSToolBox;
+import com.sos.VirtualFileSystem.FTP.SOSFTPOptions;
+import com.sos.VirtualFileSystem.Factory.VFSFactory;
+import com.sos.VirtualFileSystem.Interfaces.ISOSVFSHandler;
+import com.sos.VirtualFileSystem.Interfaces.ISOSVfsFileTransfer;
+import com.sos.scheduler.model.SchedulerObjectFactory;
+import com.sos.scheduler.model.objects.JSObjJobChain;
+import com.sos.scheduler.model.objects.Spooler;
 
 /**
-* \class JOEListener 
-* 
-* \brief JOEListener - 
-* 
+* \class JOEListener
+*
+* \brief JOEListener -
+*
 * \details
 *
 *
@@ -49,37 +59,76 @@ import com.sos.JSHelper.Basics.JSToolBox;
  *
  */
 public class JOEListener extends JSToolBox {
-
 	@SuppressWarnings("unused")
-	private final String		conClassName	= "JOEListener";
-	private static final String	conSVNVersion	= "$Id$";
-	private static final Logger	logger			= Logger.getLogger(JOEListener.class);
+	private final String		conClassName			= this.getClass().getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String	conSVNVersion			= "$Id$";
+	@SuppressWarnings("unused")
+	private final Logger		logger					= Logger.getLogger(this.getClass());
+	protected SchedulerDom		_dom					= null;
 
-	protected SchedulerDom		_dom			= null;
+	protected ISchedulerUpdate	_main					= null;
+	protected Element			_job					= null;
+	protected Element			_parent					= null;
+	protected Element			objElement				= null;
 
-	protected ISchedulerUpdate	_main			= null;
-	protected Element			_job			= null;
-	protected Element			_parent			= null;
-	protected Element			objElement		= null;
+	protected ISchedulerUpdate	update					= null;
 
-	public final static int		NONE			= -1;
+	public final static int		NONE					= -1;
+	protected String			strUpdateElementName	= "";
+	protected String			strUpdateObjectType		= "";
 
 	public JOEListener() {
 		//
+	}
+
+	public void setISchedulerUpdate(final ISchedulerUpdate update_) {
+		update = update_;
 	}
 
 	public int getLanguage() {
 		return NONE;
 	}
 
-	public String getLanguageAsString(int language) {
+	public Color getColor4InvalidValues() {
+		Color objC = Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW);
+		return objC;
+	}
+
+	public Color getColor4MandatoryValue() {
+		Color objC = Options.getRequiredColor();
+		return objC;
+	}
+
+	public Color getColor4Background() {
+		Color objC = Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
+		return objC;
+	}
+
+	public Color getColor4DisabledElements() {
+		Color objC = Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
+		return objC;
+	}
+
+	public Color getColor4NodeParameter() {
+		Color objC = Options.getLightBlueColor();
+		return objC;
+	}
+
+	public Color getColor4hasParameter() {
+		Color objC = Display.getCurrent().getSystemColor(SWT.COLOR_GREEN);
+		return objC;
+	}
+
+	public String getLanguageAsString() {
 		return "";
 	}
 
-	public String getLanguage(int language) {
-		return "";
-	}
-
+	/**
+		public String getLanguage(final int language) {
+			return "";
+		}
+	**/
 	public String getComment() {
 		return "";
 	}
@@ -92,23 +141,23 @@ public class JOEListener extends JSToolBox {
 		return "";
 	}
 
-	public String getPrePostProcessingScriptSource () {
+	public String getPrePostProcessingScriptSource() {
 		String strT = "";
 		return strT;
 	}
 
-	public void setSource (final String pstrS) {
-		
+	public void setSource(final String pstrS) {
+
 	}
 
-	public void setComment (final String pstrS) {
-		
+	public void setComment(final String pstrS) {
+
 	}
 
-	public void setDescription (final String pstrD) {
-		
+	public void setDescription(final String pstrD) {
+
 	}
-	
+
 	public void setLanguage(final String pstrLanguage) {
 	}
 
@@ -120,9 +169,8 @@ public class JOEListener extends JSToolBox {
 		return false;
 	}
 
-
 	public SchedulerDom get_dom() {
- 		return _dom;
+		return _dom;
 	}
 
 	public Image getImage(final String pstrImageFileName) {
@@ -163,16 +211,17 @@ public class JOEListener extends JSToolBox {
 	}
 
 	public boolean isHelpKey(final int pintKeyCode) {
-		boolean flgRet = (pintKeyCode == SWT.F1);
+		boolean flgRet = pintKeyCode == SWT.F1;
 		return flgRet;
 	}
 
 	public boolean isGlobalHelpKey(final int pintKeyCode) {
-		boolean flgRet = (pintKeyCode == SWT.F10);
+		boolean flgRet = pintKeyCode == SWT.F10;
 		return flgRet;
 	}
 
-	public void openHelp(String helpKey) {
+	@SuppressWarnings("deprecation")
+	public void openHelp(final String helpKey) {
 		String lang = Options.getLanguage();
 		String url = helpKey;
 		try {
@@ -191,7 +240,7 @@ public class JOEListener extends JSToolBox {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; "  
+				new ErrorLog("error in " + SOSClassUtil.getMethodName() + "; "
 						+ sos.scheduler.editor.app.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
 			}
 			catch (Exception ee) {
@@ -205,7 +254,7 @@ public class JOEListener extends JSToolBox {
 
 	public String getXML() {
 
-		String strXmlText = "";
+		String strXmlText = "no xml source found. Element = null";
 		if (objElement != null) {
 			strXmlText = getXML(objElement);
 
@@ -220,12 +269,12 @@ public class JOEListener extends JSToolBox {
 		return strXmlText;
 	}
 
-	private String getXML(Element element) {
+	private String getXML(final Element element) {
 
 		String xml = "";
 		if (element != null) {
 			try {
-				if (_dom instanceof SchedulerDom && ((SchedulerDom) _dom).isDirectory()) {
+				if (_dom instanceof SchedulerDom && _dom.isDirectory()) {
 
 					xml = _dom.getXML(Utils.getHotFolderParentElement(element));
 				}
@@ -236,7 +285,7 @@ public class JOEListener extends JSToolBox {
 			}
 			catch (JDOMException ex) {
 				try {
-					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
+					new ErrorLog("error in " + SOSClassUtil.getMethodName(), ex);
 				}
 				catch (Exception ee) {
 					// tu nichts
@@ -247,6 +296,45 @@ public class JOEListener extends JSToolBox {
 
 		}
 		return xml;
+	}
+
+	protected void setDirty() {
+		_dom.setChanged(true);
+		if (_dom.isDirectory() || _dom.isLifeElement()) {
+			_dom.setChangedForDirectory(strUpdateObjectType, strUpdateElementName, SchedulerDom.MODIFY);
+		}
+	}
+
+	protected String getBoolYesNo(final boolean pflgValue) {
+		String strR = "no";
+		if (pflgValue == true) {
+			strR = "yes";
+		}
+		return strR;
+	}
+
+	public static SchedulerObjectFactory	JobSchedulerObjectFactory	= null;
+	public JSObjJobChain					objJSJobChain				= null;
+
+	public static ISOSVFSHandler			objVFS						= null;
+	public static ISOSVfsFileTransfer		objFileSystemHandler		= null;
+	public final SOSFTPOptions				objOptions					= null;
+
+	protected SchedulerObjectFactory getJobSchedulerObjectFactory() {
+		if (JobSchedulerObjectFactory == null) {
+			//			JobSchedulerObjectFactory = new SchedulerObjectFactory("localhost", 4444);
+			JobSchedulerObjectFactory = new SchedulerObjectFactory();
+			JobSchedulerObjectFactory.initMarshaller(Spooler.class);
+			try {
+				// TODO das kommt von aussen aus dem Workspace
+				objVFS = VFSFactory.getHandler("local");
+				objFileSystemHandler = (ISOSVfsFileTransfer) objVFS;
+			}
+			catch (Exception e) {
+				new ErrorLog(e.getLocalizedMessage(), e);
+			}
+		}
+		return JobSchedulerObjectFactory;
 	}
 
 }
