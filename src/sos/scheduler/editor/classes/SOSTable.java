@@ -4,7 +4,6 @@
 package sos.scheduler.editor.classes;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
@@ -33,8 +32,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import sos.scheduler.editor.app.ResourceManager;
-
-import com.sos.dialog.classes.FormBase;
+//import org.eclipse.jface.layout.TableColumnLayout;
 
 /**
  * @author KB
@@ -43,9 +41,11 @@ import com.sos.dialog.classes.FormBase;
 public class SOSTable extends Table implements ISOSTableMenueListeners {
 
 	@SuppressWarnings("unused")
-	private final String			conClassName			= "SOSTable";
-	private static final String		conSVNVersion			= "$Id$";
-	private static final Logger		logger					= Logger.getLogger(FormBase.class);
+	private final String conClassName = this.getClass().getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String conSVNVersion = "$Id$";
+	@SuppressWarnings("unused")
+	private final Logger logger = Logger.getLogger(this.getClass());
 	public ISOSTableMenueListeners	objListener				= this;
 
 	public String					strTableName			= "";
@@ -53,7 +53,7 @@ public class SOSTable extends Table implements ISOSTableMenueListeners {
 	private WindowsSaver			objFormPosSizeHandler	= null;
 	public Menu						objContextMenu			= null;
 	private Composite				objParent				= null;
-	private final TableColumnLayout	objTableLayout			= new TableColumnLayout();
+//	private final TableColumnLayout	objTableLayout			= new TableColumnLayout();
 	private Table					objTable				= null;
 
 	public SOSTable(final Composite parent, final int style, final ISOSTableMenueListeners pobjListener) {
