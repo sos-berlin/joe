@@ -43,26 +43,27 @@ import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.JobChainListListener;
 
 public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpdateLanguage, ISOSTableMenueListeners {
-	private final String		conClassName					= "JobChainsForm";
+	private final String			conClassName					= "JobChainsForm";
 	@SuppressWarnings("unused")
-	private final String		conSVNVersion					= "$Id$";
-	private static final Logger	logger							= Logger.getLogger(JobChainsForm.class);
+	private final String			conSVNVersion					= "$Id$";
+	private static final Logger		logger							= Logger.getLogger(JobChainsForm.class);
 
-	private ISchedulerUpdate	update							= null;
-	private JobChainListListener	objDataProvider						= null;
+	private ISchedulerUpdate		update							= null;
+	private JobChainListListener	objDataProvider					= null;
 	private final Group				group							= null;
-	private static SOSTable		tblJobChainList					= null;
-	private Button				bRemoveChain					= null;
-	private Button				bNewChain						= null;
-	private SashForm			sashForm						= null;
-	private Button				butMaintainJobChainParameter	= null;
-	private SchedulerDom		_dom							= null;
+	private static SOSTable			tblJobChainList					= null;
+	private Button					bRemoveChain					= null;
+	private Button					bNewChain						= null;
+	private SashForm				sashForm						= null;
+	private Button					butMaintainJobChainParameter	= null;
+	private SchedulerDom			_dom							= null;
 
 	/**Hilfsvariable: Wenn Parameter Formular geöffnet wurde muss überprüft werden, ob der Checkbox in der Tabelle - State gesetzt werden soll.*/
-	private boolean				checkParameter					= false;
+	private boolean					checkParameter					= false;
 
 	public JobChainsForm(final Composite parent, final int style, final SchedulerDom dom, final Element config, final ISchedulerUpdate update_) {
 		super(parent, style);
@@ -75,17 +76,10 @@ public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpda
 	}
 
 	private void initialize() {
-//		this.setLayout(new FillLayout());
 		createGroup();
 	}
 
 	private void createGroup() {
-//		group = new Group(this, SWT.NONE);
-//
-//		final GridLayout gridLayout = new GridLayout();
-//		group.setLayout(gridLayout);
-//
-//		sashForm = new SashForm(group, SWT.VERTICAL);
 		sashForm = new SashForm(objParent, SWT.VERTICAL);
 		sashForm.setLayout(new GridLayout());
 
@@ -101,8 +95,10 @@ public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpda
 		tblJobChainList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(final MouseEvent e) {
-				if (tblJobChainList.getSelectionCount() > 0)
-					ContextMenu.goTo(tblJobChainList.getSelection()[0].getText(0), objDataProvider.get_dom(), Editor.JOB_CHAIN);
+				if (tblJobChainList.getSelectionCount() > 0) {
+					String strName = tblJobChainList.getSelection()[0].getText(0);
+					ContextMenu.goTo(strName, objDataProvider.get_dom(), Editor.JOB_CHAIN);
+				}
 			}
 		});
 		tblJobChainList.getHorizontalBar().setMaximum(0);
@@ -114,15 +110,10 @@ public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpda
 			@Override
 			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 
-				/*if (e.detail == SWT.CHECK) {
-					e.doit = false;
-					return;
-				}*/
 				boolean enabled = true;
 				if (tblJobChainList.getSelectionCount() > 0) {
 					objDataProvider.selectChain(tblJobChainList.getSelectionIndex());
-					Element currElem = objDataProvider.getChain();
-					if (currElem != null && !Utils.isElementEnabled("job_chain", objDataProvider.get_dom(), currElem)) {
+					if (objDataProvider.getJSObject().isEnabled() == false) {
 						enabled = false;
 					}
 
@@ -137,11 +128,11 @@ public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpda
 		final TableColumn tableTitle = JOE_L_JobChainForm_Title.Control(tblJobChainList.newTableColumn("tableTitle", 150));
 		final TableColumn tableMaxOrders = JOE_L_JobChainForm_MaxOrders.Control(tblJobChainList.newTableColumn("maxOrders", 50));
 		tableMaxOrders.setAlignment(SWT.CENTER);
-		final TableColumn ordersRecoverableTableColumn = JOE_TCl_JobChainsForm_OrdersRecoverable.Control(tblJobChainList.newTableColumn("ordersRecoverableTableColumn", 100));
+		final TableColumn ordersRecoverableTableColumn = JOE_TCl_JobChainsForm_OrdersRecoverable.Control(tblJobChainList.newTableColumn(
+				"ordersRecoverableTableColumn", 100));
 		ordersRecoverableTableColumn.setAlignment(SWT.CENTER);
 		final TableColumn tableJobChainIsVisible = JOE_TCl_JobChainsForm_Visible.Control(tblJobChainList.newTableColumn("tableJobChainIsVisible", 90));
 		tableJobChainIsVisible.setAlignment(SWT.CENTER);
-
 
 		bNewChain = JOE_B_JobChainsForm_NewChain.Control(new Button(jobchainsGroup, SWT.NONE));
 		bNewChain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -165,8 +156,9 @@ public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpda
 					return;
 				}
 
-				if (Utils.checkElement(tblJobChainList.getSelection()[0].getText(0), objDataProvider.get_dom(), sos.scheduler.editor.app.Editor.JOB_CHAINS, null))
-					//wird der Job woandes verwendet?
+				if (Utils.checkElement(tblJobChainList.getSelection()[0].getText(0), objDataProvider.get_dom(), Editor.JOB_CHAINS,
+						null))
+					//wird der Job woanders verwendet?
 					deleteChain();
 			}
 		});
@@ -210,13 +202,12 @@ public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpda
 		bRemoveChain.setEnabled(selection);
 	}
 
-	private String getName4NewChain () {
+	private String getName4NewChain() {
 
 		int i = tblJobChainList.getItemCount() + 1;
 		String newName = JOE_M_JobChain.label() + i;
 		while (objDataProvider.indexOf(newName) >= 0) {
 			i++;
-			//		  newName = "job_chain" + i;
 			newName = JOE_M_JobChain.label() + i;
 		}
 
@@ -258,20 +249,16 @@ public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpda
 	private void MaintainJobChainParameter(final String state) {
 		String name = tblJobChainList.getSelection()[0].getText(0);
 		if (name != null && name.length() > 0) {
-			//OrdersListener ordersListener =  new OrdersListener(listener.get_dom(), update);
-			//String[] listOfOrders = ordersListener.getOrderIds();
-			boolean isLifeElement = objDataProvider.get_dom().isLifeElement() || objDataProvider.get_dom().isDirectory();
-
+			boolean isLiveFolderElement = objDataProvider.isLiveFolderElement();
+			DetailDialogForm detail = null;
 			if (state == null) {
-				DetailDialogForm detail = new DetailDialogForm(name, isLifeElement, objDataProvider.get_dom().getFilename());
-				detail.showDetails();
-				detail.getDialogForm().setParamsForWizzard(objDataProvider.get_dom(), update);
+				detail = new DetailDialogForm(name, isLiveFolderElement, objDataProvider.getFileName());
 			}
 			else {
-				DetailDialogForm detail = new DetailDialogForm(name, state, null, isLifeElement, objDataProvider.get_dom().getFilename());
-				detail.showDetails();
-				detail.getDialogForm().setParamsForWizzard(objDataProvider.get_dom(), update);
+				detail = new DetailDialogForm(name, state, null, isLiveFolderElement, objDataProvider.getFileName());
 			}
+			detail.showDetails();
+			detail.getDialogForm().setParamsForWizzard(objDataProvider.get_dom(), update);
 		}
 		else {
 			MainWindow.message(getShell(), JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
@@ -330,14 +317,11 @@ public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpda
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgT) {
-		// TODO Auto-generated method stub
-
+	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode1) {
 	}
 
 	@Override
 	public Listener getEditListener() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

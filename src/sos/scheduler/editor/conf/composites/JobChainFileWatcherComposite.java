@@ -50,6 +50,7 @@ import sos.scheduler.editor.classes.FolderNameSelector;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
 
 //public class JobChainFileWatcherComposite extends FormBaseClass implements ISOSTableMenueListeners {
@@ -218,14 +219,16 @@ public class JobChainFileWatcherComposite extends CompositeBaseClass /* SOSJOEMe
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgT) {
+	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
 		if (Utils.isValidRegExpression(tRegex.getText())) {
 			objDataProvider.applyFileOrderSource(tbxFileOrderSourceDirectory.getText(), tRegex.getText(), cbxNextState.getText(), tMax.getText(),
 					tRepeat.getText(), tDelayAfterError.getText());
 
 			objDataProvider.objJobChainNodesTable = tFileOrderSource;
 			objDataProvider.populateTable4FileOrderSource();
-//			objDataProvider.setFileOrderSink(bFileSinkRemoveFile.getSelection(), tbxFileSinkMoveFileTo.getText());
+			// TODO state must be overwritten, or if exists ignore this two statements
+			objDataProvider.setFileOrderSink("success", true, "");
+			objDataProvider.setFileOrderSink("!error", false, tbxFileSinkMoveFileTo.getText());
 			clearInputFields();
 			enableInputFields(false);
 		}

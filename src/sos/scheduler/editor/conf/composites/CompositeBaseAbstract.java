@@ -21,7 +21,7 @@ public abstract class CompositeBaseAbstract<T> extends CompositeBaseClass  {
 	public static enum enuOperationMode  {
 		New, Edit, Delete, Browse, Insert
 	};
-	public enuOperationMode	OperationMode	= enuOperationMode.Edit;
+
 
 	protected Composite		objMainControl;
 
@@ -92,5 +92,5 @@ public abstract class CompositeBaseAbstract<T> extends CompositeBaseClass  {
 	public abstract void init();
 
 	@Override
-	protected abstract void applyInputFields(final boolean flgT) ;
+	protected abstract void applyInputFields(final boolean flgT, enuOperationMode OperationMode) ;
 }

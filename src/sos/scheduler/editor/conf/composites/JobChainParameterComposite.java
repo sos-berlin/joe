@@ -931,9 +931,9 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgT) {
+	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Text;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.SOSComboBox;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
 public class PreProcessingComposite extends CompositeBaseClass {
@@ -164,7 +165,7 @@ public class PreProcessingComposite extends CompositeBaseClass {
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgT) {
+	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
 	}
 
 }

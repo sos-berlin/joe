@@ -99,15 +99,18 @@ public class JobChainListListener extends JOEJobChainDataProvider {
 
 	public void selectChain(final int index) {
 
-		if (index >= 0)
+		if (index >= 0) {
 			objJobChain = getJobChainList().get(index);
-		else
+		}
+		else {
 			objJobChain = null;
+		}
 	}
 
 	public void newChain(final String pstrNewChainName) {
 		try {
-			JSXMLFile objTemplateFile = new JSXMLFile("R:/backup/sos/java/development/com.sos.scheduler.editor/src/sos/scheduler/editor/jobchain-template.xml");
+			// TODO create Template Folder
+			JSXMLFile objTemplateFile = new JSXMLFile("R:/backup/sos/java/development/com.sos.scheduler.editor.sandbox/src/sos/scheduler/editor/jobchain-template.xml");
 			System.out.println(objTemplateFile.getPath());
 			if (objTemplateFile.exists() == true) {
 				String strContent = objTemplateFile.getContent();

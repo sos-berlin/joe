@@ -72,6 +72,7 @@ import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.JobChainNestedListener;
 import sos.util.SOSClassUtil;
 
@@ -650,10 +651,10 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 	}
 
 	private void applyNode () {
-		applyInputFields(false);
+		applyInputFields(false, OperationMode);
 	}
 	@Override
-	public void applyInputFields(final boolean flgT) {
+	public void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
 
 		String msg = "";
 		if (!listener.isValidState(tState.getText()))

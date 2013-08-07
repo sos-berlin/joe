@@ -23,6 +23,7 @@ import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
 /**
@@ -72,6 +73,8 @@ public abstract class CompositeBaseClass /* extends Composite */ implements IUns
 	protected Cursor				objLastCursor			= null;
 	protected CompositeBaseClass	objParentForm			= this;
 
+	public enuOperationMode	OperationMode	= enuOperationMode.Edit;
+
 	//	protected CSSEngine			engine				= null;
 
 	protected final int				intComboBoxStyle		= SWT.NONE;
@@ -90,7 +93,7 @@ public abstract class CompositeBaseClass /* extends Composite */ implements IUns
 		@Override
 		public void keyPressed(final KeyEvent e) {
 			if (e.keyCode == SWT.CR) {
-				applyInputFields(false);
+				applyInputFields(false, OperationMode);
 			}
 		}
 	}
@@ -206,7 +209,7 @@ public abstract class CompositeBaseClass /* extends Composite */ implements IUns
 	@Override
 	public void apply() {
 		if (isDirty() == true) {
-			applyInputFields(false);
+			applyInputFields(false, OperationMode);
 		}
 	}
 
@@ -215,7 +218,7 @@ public abstract class CompositeBaseClass /* extends Composite */ implements IUns
 		return isDirty();
 	}
 
-	protected abstract void applyInputFields(final boolean flgT);
+	protected abstract void applyInputFields(final boolean flgT, enuOperationMode OperationMode);
 
 	public boolean	flgIsDirty	= false;
 	public boolean	init		= false;

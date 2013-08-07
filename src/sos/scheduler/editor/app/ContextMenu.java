@@ -22,9 +22,9 @@ import sos.scheduler.editor.conf.listeners.SchedulerListener;
 public class ContextMenu {
 
 	private SchedulerDom		_dom	= null;
-	private SOSComboBox				_combo	= null;
+	private SOSComboBox			_combo	= null;
 	private Menu				_menu	= null;
-// TODO I18N
+	// TODO I18N
 	private static final String	GOTO	= "Goto";
 	private static final String	DELETE	= "Delete";
 	private static int			_type	= -1;
@@ -270,6 +270,46 @@ public class ContextMenu {
 		return s;
 	}
 
+	private static void selectTreeItem(final DomParser _dom, final String pstrTagName, final String pstrObjectName, final int pintType) {
+
+		try {
+//			XPath x3 = XPath.newInstance("//" + pstrTagName + "[@name='" + pstrObjectName + "']");
+//			List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+//			if (!listOfElement_3.isEmpty()) {
+				SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+				if (f == null) {
+					return;
+				}
+				Tree tree = f.getTree();
+				TreeItem objRootItem = tree.getItem(0);
+
+				int intItemCount = objRootItem.getItemCount();
+				for (int i = 0; i < intItemCount; i++) {
+					TreeItem item = objRootItem.getItem(i);
+					TreeData objTD = (TreeData) item.getData();
+					String strText = item.getText();
+					if (objTD.TypeEqualTo(pintType )) {
+						TreeItem[] jobsItem = item.getItems();
+						for (TreeItem jItem : jobsItem) {
+							TreeData objTd = (TreeData) jItem.getData();
+							if (objTd.NameEqualTo(pstrObjectName)) {
+								tree.setSelection(new TreeItem[] { jItem });
+								f.updateTreeItem(jItem.getText());
+								f.updateTree("");
+								jItem.setExpanded(true);
+								break;
+							}
+						}
+					}
+				}
+//			}
+		}
+		catch (Exception e) {
+			new ErrorLog(e.getLocalizedMessage(), e);
+		}
+
+	}
+
 	public static void goTo(final String name, DomParser _dom, final int type) {
 		try {
 
@@ -283,35 +323,37 @@ public class ContextMenu {
 				_dom = _dom;
 
 			if (type == Editor.JOB) {
-				XPath x3 = XPath.newInstance("//job[@name='" + name + "']");
-				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+				selectTreeItem(_dom, "job", name, Editor.JOBS);
 
-				if (!listOfElement_3.isEmpty()) {
-					SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-					if (f == null) {
-						return;
-					}
-					Tree tree = f.getTree();
-					for (int i = 0; i < tree.getItemCount(); i++) {
-						TreeItem item = tree.getItem(i);
-						if (item.getText().equals(SchedulerListener.JOBS)) {
-							TreeItem[] jobsItem = item.getItems();
-							for (TreeItem jItem : jobsItem) {
-								String strName = jItem.getText();
-								strName = removeTitle(strName);
-
-								// TODO get the name of the job from the Element, not from the description
-
-								if (strName.equals(name)) {
-									tree.setSelection(new TreeItem[] { jItem });
-									f.updateTreeItem(jItem.getText());
-									f.updateTree("jobs");
-									break;
-								}
-							}
-						}
-					}
-				}
+//				XPath x3 = XPath.newInstance("//job[@name='" + name + "']");
+//				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+//
+//				if (!listOfElement_3.isEmpty()) {
+//					SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+//					if (f == null) {
+//						return;
+//					}
+//					Tree tree = f.getTree();
+//					for (int i = 0; i < tree.getItemCount(); i++) {
+//						TreeItem item = tree.getItem(i);
+//						if (item.getText().equals(SchedulerListener.JOBS)) {
+//							TreeItem[] jobsItem = item.getItems();
+//							for (TreeItem jItem : jobsItem) {
+//								String strName = jItem.getText();
+//								strName = removeTitle(strName);
+//
+//								// TODO get the name of the job from the Element, not from the description
+//
+//								if (strName.equals(name)) {
+//									tree.setSelection(new TreeItem[] { jItem });
+//									f.updateTreeItem(jItem.getText());
+//									f.updateTree("jobs");
+//									break;
+//								}
+//							}
+//						}
+//					}
+//				}
 			}
 			else
 				if (type == Editor.MONITOR) {
@@ -370,86 +412,93 @@ public class ContextMenu {
 				}
 				else
 					if (type == Editor.JOB_CHAIN) {
-						XPath x3 = XPath.newInstance("//job_chain[@name='" + name + "']");
-						List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-						if (!listOfElement_3.isEmpty()) {
-							SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-							if (f == null) {
-								return;
-							}
-							Tree tree = f.getTree();
-							for (int i = 0; i < tree.getItemCount(); i++) {
-								TreeItem item = tree.getItem(i);
-								if (item.getText().equals(SchedulerListener.JOB_CHAINS)) {
-									TreeItem[] jobsItem = item.getItems();
-									for (TreeItem jItem : jobsItem) {
-										String strName = jItem.getText();
-										strName = removeTitle(strName);
-
-										if (strName.equals(name)) {
-											tree.setSelection(new TreeItem[] { jItem });
-											f.updateTreeItem(jItem.getText());
-											f.updateTree("");
-											jItem.setExpanded(true);
-											break;
-										}
-									}
-								}
-							}
-						}
-
+						selectTreeItem(_dom, "job_chain", name, Editor.JOB_CHAINS);
+//						XPath x3 = XPath.newInstance("//job_chain[@name='" + name + "']");
+//						List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+//						if (!listOfElement_3.isEmpty()) {
+//							SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+//							if (f == null) {
+//								return;
+//							}
+//							Tree tree = f.getTree();
+//							TreeItem objRootItem = tree.getItem(0);
+//
+//							int intItemCount = objRootItem.getItemCount();
+//							for (int i = 0; i < intItemCount; i++) {
+//								TreeItem item = objRootItem.getItem(i);
+//								String strText = item.getText();
+//								if (strText.equals(SchedulerListener.JOB_CHAINS)) {
+//									TreeItem[] jobsItem = item.getItems();
+//									for (TreeItem jItem : jobsItem) {
+//										String strName = jItem.getText();
+//										strName = removeTitle(strName);
+//
+//										if (strName.equals(name)) {
+//											tree.setSelection(new TreeItem[] { jItem });
+//											f.updateTreeItem(jItem.getText());
+//											f.updateTree("");
+//											jItem.setExpanded(true);
+//											break;
+//										}
+//									}
+//								}
+//							}
+//						}
+//
 					}
 					else
 						if (type == Editor.PROCESS_CLASSES) {
+							selectTreeItem(_dom, "process_class", name, Editor.PROCESS_CLASSES);
 
-							XPath x3 = XPath.newInstance("//process_class[@name='" + name + "']");
-							List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-							if (!listOfElement_3.isEmpty()) {
-								SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-								if (f == null)
-									return;
-								Tree tree = f.getTree();
-								for (int i = 0; i < tree.getItemCount(); i++) {
-									TreeItem item = tree.getItem(i);
-									//if(item.getText().equals("Process Classes")){
-									if (item.getText().endsWith("Process Classes")) {
-										tree.setSelection(new TreeItem[] { item });
-										f.updateTreeItem(item.getText());
-										f.updateTree("");
-										break;
-									}
-								}
-							}
+//							XPath x3 = XPath.newInstance("//process_class[@name='" + name + "']");
+//							List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+//							if (!listOfElement_3.isEmpty()) {
+//								SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+//								if (f == null)
+//									return;
+//								Tree tree = f.getTree();
+//								for (int i = 0; i < tree.getItemCount(); i++) {
+//									TreeItem item = tree.getItem(i);
+//									//if(item.getText().equals("Process Classes")){
+//									if (item.getText().endsWith("Process Classes")) {
+//										tree.setSelection(new TreeItem[] { item });
+//										f.updateTreeItem(item.getText());
+//										f.updateTree("");
+//										break;
+//									}
+//								}
+//							}
 						}
 						else
 							if (type == Editor.SCHEDULE) {
+								selectTreeItem(_dom, "schedule", name, Editor.SCHEDULES);
 
-								XPath x3 = XPath.newInstance("//schedule[@name='" + name + "']");
-								List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-								if (!listOfElement_3.isEmpty()) {
-									SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
-									if (f == null)
-										return;
-									Tree tree = f.getTree();
-									for (int i = 0; i < tree.getItemCount(); i++) {
-										TreeItem item = tree.getItem(i);
-										if (item.getText().equals(SchedulerListener.SCHEDULES)) {
-
-											TreeItem[] items = item.getItems();
-											for (TreeItem jItem : items) {
-												String strName = jItem.getText();
-												strName = removeTitle(strName);
-
-												if (strName.equals(name)) {
-													tree.setSelection(new TreeItem[] { jItem });
-													f.updateTreeItem(jItem.getText());
-													f.updateTree("");
-													break;
-												}
-											}
-										}
-									}
-								}
+//								XPath x3 = XPath.newInstance("//schedule[@name='" + name + "']");
+//								List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+//								if (!listOfElement_3.isEmpty()) {
+//									SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+//									if (f == null)
+//										return;
+//									Tree tree = f.getTree();
+//									for (int i = 0; i < tree.getItemCount(); i++) {
+//										TreeItem item = tree.getItem(i);
+//										if (item.getText().equals(SchedulerListener.SCHEDULES)) {
+//
+//											TreeItem[] items = item.getItems();
+//											for (TreeItem jItem : items) {
+//												String strName = jItem.getText();
+//												strName = removeTitle(strName);
+//
+//												if (strName.equals(name)) {
+//													tree.setSelection(new TreeItem[] { jItem });
+//													f.updateTreeItem(jItem.getText());
+//													f.updateTree("");
+//													break;
+//												}
+//											}
+//										}
+//									}
+//								}
 
 							}
 							else
@@ -704,7 +753,7 @@ public class ContextMenu {
 															}
 		}
 		catch (Exception e) {
-			System.out.println(e.toString());
+			new ErrorLog(e.toString(), e);
 		}
 	}
 
@@ -725,7 +774,7 @@ public class ContextMenu {
 			}
 		}
 		catch (Exception e) {
-			System.out.println(e.toString());
+			new ErrorLog(e.toString(), e);
 		}
 	}
 

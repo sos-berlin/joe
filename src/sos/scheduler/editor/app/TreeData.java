@@ -1,51 +1,37 @@
 package sos.scheduler.editor.app;
 
+import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
-public class TreeData {
-    private int     _type;
-    private Element _element;
+public class TreeData extends JSObjectElement {
     private String  _helpKey;
     private String  _child;
+
+    private TreeItem objTreeItem = null;
+
+	private static final String	conItemDataKeyCOPY_ELEMENT			= "copy_element";
 
     public TreeData() {
     }
 
 
-    public TreeData(int type, Element element, String helpKey, String child) {
-        _type = type;
-        _element = element;
+    public TreeData(final int type, final Element element, final String helpKey, final String child) {
+    	super(type, element);
         _helpKey = helpKey;
         _child = child;
     }
 
-
-    public TreeData(int type, Element element, String helpKey) {
+    public TreeData(final int type, final Element element, final String helpKey) {
         this(type, element, helpKey, null);
     }
 
+    public TreeData(final TreeItem pobjTreeItem, final int type, final Element element, final String helpKey) {
+        this(type, element, helpKey, null);
 
-    // public TreeData(int type, Element element) {
-    // this(type, element, null);
-    // }
-
-    public int getType() {
-        return _type;
-    }
-
-
-    public void setType(int type) {
-        _type = type;
-    }
-
- 
-    public Element getElement() {
-        return _element;
-    }
-
-
-    public void setElement(Element element) {
-        _element = element;
+        objTreeItem = pobjTreeItem;
+        pobjTreeItem.setData(this);
+        pobjTreeItem.setText(getNameAndTitle());
+        pobjTreeItem.setData(conItemDataKeyCOPY_ELEMENT, element);
     }
 
 
@@ -54,7 +40,7 @@ public class TreeData {
     }
 
 
-    public void setHelpKey(String helpKey) {
+    public void setHelpKey(final String helpKey) {
         _helpKey = helpKey;
     }
 
@@ -64,12 +50,7 @@ public class TreeData {
     }
 
 
-    public void setChild(String child) {
+    public void setChild(final String child) {
         _child = child;
-    }
-
-
-    public boolean equals(int type) {
-        return _type == type;
     }
 }

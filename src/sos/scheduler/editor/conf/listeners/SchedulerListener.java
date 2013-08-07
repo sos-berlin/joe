@@ -22,6 +22,7 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
+import sos.scheduler.editor.app.JSObjectElement;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
@@ -37,7 +38,6 @@ import sos.scheduler.editor.conf.forms.DateForm;
 import sos.scheduler.editor.conf.forms.DaysForm;
 import sos.scheduler.editor.conf.forms.HttpAuthenticationForm;
 import sos.scheduler.editor.conf.forms.HttpDirectoriesForm;
-import sos.scheduler.editor.conf.forms.JobChainForm;
 import sos.scheduler.editor.conf.forms.JobChainNestedNodesForm;
 import sos.scheduler.editor.conf.forms.JobChainNodesForm;
 import sos.scheduler.editor.conf.forms.JobChainsForm;
@@ -115,7 +115,7 @@ public class SchedulerListener {
 	/** Aufruf erfolgt durch open Directory oder open Configurations*/
 	private int					type								= -1;
 
-	public class MyElementComparator implements Comparator<Element> {
+	public class CompareNameAndTitle implements Comparator<Element> {
 
 		@Override
 		public int compare(final Element o1, final Element o2) {
@@ -123,8 +123,8 @@ public class SchedulerListener {
 			Element element1 = o1;
 			Element element2 = o2;
 
-			String e1 = getNameAndTitle(element1, "");
-			String e2 = getNameAndTitle(element2, "");
+			String e1 = new JSObjectElement(0, element1).getNameAndTitle();
+			String e2 = new JSObjectElement(0, element2).getNameAndTitle();
 			// JIRA  http://www.sos-berlin.com/jira/browse/JOE-25
 			return e1.toLowerCase().compareTo(e2.toLowerCase());
 		}
@@ -171,20 +171,18 @@ public class SchedulerListener {
 				name = Utils.getAttributeValue("name", element);
 			}
 
-			item.setText(getNameAndTitle(element, "job"));
-			item.setData(new TreeData(Editor.JOB, element, Options.getHelpURL("job")));
+			TreeData objTD = new TreeData(item, Editor.JOB, element, Options.getHelpURL("job"));
 			item.setData(conItemDataKeyKEY, "job");
-			item.setData(conItemDataKeyCOPY_ELEMENT, element);
 
 			setColorOfJobTreeItem(element, item);
 
-			treeFillJob(item, element, false);
+			treeFillJobChilds(item, element, false);
 			item.setExpanded(true);
 		}
 		else
 			if (type == SchedulerDom.LIVE_JOB_CHAIN) {
 				String name = "";
-				if (objSchedulerDom.getFilename() != null && new java.io.File(objSchedulerDom.getFilename()).exists()) {
+				if (objSchedulerDom.getFilename() != null && new File(objSchedulerDom.getFilename()).exists()) {
 					name = new java.io.File(objSchedulerDom.getFilename()).getName();
 					name = name.substring(0, name.indexOf(".job_chain.xml"));
 					checkLifeAttributes(element, name);
@@ -193,11 +191,10 @@ public class SchedulerListener {
 				else {
 					name = Utils.getAttributeValue("name", element);
 				}
-				item.setText(getNameAndTitle(element, "treeitem.jobchain"));
 				item.setImage(getImage("jobchain.gif"));
-				item.setData(new TreeData(Editor.JOB_CHAIN, element, Options.getHelpURL("job_chain")));
+				TreeData objTD = new TreeData(item, Editor.JOB_CHAIN, element, Options.getHelpURL("job_chain"));
 				item.setData(conItemDataKeyKEY, "job_chain");
-				item.setData(conItemDataKeyCOPY_ELEMENT, element);
+
 				Utils.setAttribute(conItemDataKeyORDERS_RECOVERABLE, true, element);
 				Utils.setAttribute(conItemDataKeyVISIBLE, true, element);
 				if (!Utils.isElementEnabled("job_chain", objSchedulerDom, element)) {
@@ -237,11 +234,10 @@ public class SchedulerListener {
 					Element process_classes = new Element("process_classes");
 					config.addContent(process_classes);
 					process_classes.addContent((Element) element.clone());
-					item.setData(new TreeData(Editor.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"), "process_classes"));
+					TreeData objTD = new TreeData(item, Editor.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"));
 					item.setData(conItemDataKeyKEY, "process_classes");
 					item.setData(conItemDataKeyCOPY_ELEMENT, element);
 					item.setData(conItemDataKeyMAX_OCCUR, "1");
-					//            item.setText(Messages.getLabel(PROCESS_CLASSES));
 					item.setText(PROCESS_CLASSES);
 				}
 				else
@@ -262,7 +258,6 @@ public class SchedulerListener {
 						item.setData(new TreeData(Editor.LOCKS, config, Options.getHelpURL("locks"), "locks"));
 						item.setData(conItemDataKeyKEY, "locks");
 						item.setData(conItemDataKeyCOPY_ELEMENT, element);
-						//            item.setText(Messages.getLabel(LOCKS));
 						item.setText(LOCKS);
 					}
 					else
@@ -275,11 +270,8 @@ public class SchedulerListener {
 								Utils.setAttribute("job_chain", name.substring(0, name.indexOf(",")), element);
 								Utils.setAttribute("id", name.substring(name.indexOf(",") + 1), element);
 							}
-							String strT = getNameAndTitle(element, "order");
-							item.setText(strT);
-							item.setData(new TreeData(Editor.ORDER, element, Options.getHelpURL("orders")));
+							TreeData objTD = new TreeData(item, Editor.ORDER, element, Options.getHelpURL("orders"));
 							item.setData(conItemDataKeyKEY, "commands_@_order");
-							item.setData(conItemDataKeyCOPY_ELEMENT, element);
 							if (!Utils.isElementEnabled("commands", objSchedulerDom, element)) {
 								setDisabled(item); // item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 							}
@@ -429,29 +421,29 @@ public class SchedulerListener {
 		item.setImage(getImage("hierarchical.gif"));
 		treeFillJobChains(item);
 
-		//if (hasOrders(objSchedulerDom) != null) {
 		item = new TreeItem(objTreeObjects, SWT.NONE);
-		item.setData(new TreeData(Editor.ORDERS, config, Options.getHelpURL("orders"), "orders"));
+		TreeData objTD = new TreeData(item, Editor.ORDERS, config, Options.getHelpURL("orders"));
 		item.setData(conItemDataKeyKEY, "commands_@_order");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
-		//        item.setText(Messages.getLabel(ORDERS));
 		item.setText(ORDERS);
 		item.setImage(getImage("orders.gif"));
 
 		treeFillOrders(item, true);
-		//}
 
 		item = new TreeItem(objTreeObjects, SWT.NONE);
-		item.setData(new TreeData(Editor.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"), "process_classes"));
-		item.setData(conItemDataKeyKEY, "process_classes");
-		item.setData(conItemDataKeyMAX_OCCUR, "1");
-		item.setData(conItemDataKeyCOPY_ELEMENT, config);
-		item.setImage(getImage("10360.gif"));
-		//        item.setText(Messages.getLabel("treeitem.ProcessClasses"));
-		item.setText(PROCESS_CLASSES);
+		{
+			objTD = new TreeData(item, Editor.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"));
+			item.setData(conItemDataKeyKEY, "process_classes");
+			item.setData(conItemDataKeyMAX_OCCUR, "1");
+			item.setData(conItemDataKeyCOPY_ELEMENT, config);
+			item.setImage(getImage("10360.gif"));
+			item.setText(PROCESS_CLASSES);
+
+
+		}
 
 		item = new TreeItem(objTreeObjects, SWT.NONE);
-		item.setData(new TreeData(Editor.SCHEDULES, config, Options.getHelpURL("schedules"), "schedules"));
+		objTD = new TreeData(item, Editor.SCHEDULES, config, Options.getHelpURL("schedules"));
 		item.setData(conItemDataKeyKEY, "schedules_@_schedule");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(SCHEDULES);
@@ -459,10 +451,9 @@ public class SchedulerListener {
 		treeFillSchedules(item);
 
 		item = new TreeItem(objTreeObjects, SWT.NONE);
-		item.setData(new TreeData(Editor.LOCKS, config, Options.getHelpURL("locks"), "locks"));
+		objTD = new TreeData(item, Editor.LOCKS, config, Options.getHelpURL("locks"));
 		item.setData(conItemDataKeyKEY, "locks");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
-		//        item.setText(Messages.getLabel("Locks"));
 		item.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_Locks.label());
 		item.setImage(getImage("lockedstate.gif"));
 
@@ -543,29 +534,33 @@ public class SchedulerListener {
 		treeSelection(tree, c);
 	}
 
-	private List<Element> hasOrders(final SchedulerDom pobjSchedulerDom) {
-		Element commands = objSchedulerDom.getRoot().getChild("config").getChild("commands");
-		if (commands != null) {
-			List<Element> lstOfOrders = commands.getChildren("add_order");
-			if (lstOfOrders != null) {
-				return lstOfOrders;
-			}
-			List<Element> lOrder = commands.getChildren("order");
-			if (lOrder != null) {
-				return lOrder;
-			}
-		}
-		return null;
-	}
+//	private List<Element> hasOrders(final SchedulerDom pobjSchedulerDom) {
+//		Element commands = objSchedulerDom.getRoot().getChild("config").getChild("commands");
+//		if (commands != null) {
+//			List<Element> lstOfOrders = commands.getChildren("add_order");
+//			if (lstOfOrders != null) {
+//				return lstOfOrders;
+//			}
+//			List<Element> lOrder = commands.getChildren("order");
+//			if (lOrder != null) {
+//				return lOrder;
+//			}
+//		}
+//		return null;
+//	}
 
 	public void treeFillOrders(final TreeItem parent, final boolean expand) {
 		TreeItem orders = parent;
-		if (!parent.getText().equals("Orders")) {
+		TreeData objTD = (TreeData) parent.getData();
+		if (objTD.TypeEqualTo(Editor.ORDERS) == false) {
 			Tree t = parent.getParent();
-			for (int i = 0; i < t.getItemCount(); i++)
-				if (t.getItem(i).getText().equals("Orders")) {
+			for (int i = 0; i < t.getItemCount(); i++) {
+				TreeData objT = (TreeData) t.getData();
+				if (objT.TypeEqualTo(Editor.ORDERS) == true) {
 					orders = t.getItem(i);
+					break;
 				}
+			}
 		}
 		if (orders != null) {
 			orders.removeAll();
@@ -573,39 +568,35 @@ public class SchedulerListener {
 			if (commands != null) {
 				List lstOfOrders = commands.getChildren("add_order");
 				if (lstOfOrders != null) {
-					Iterator it = getSortedIterator(lstOfOrders, new MyElementComparator());
+					Iterator it = getSortedIterator(lstOfOrders, new CompareNameAndTitle());
 					while (it.hasNext()) {
 						Element objOrderElement = (Element) it.next();
 						if (objOrderElement.getName().equals("add_order") && objOrderElement.getAttributeValue("id") != null) {
-							TreeItem item = new TreeItem(orders, SWT.NONE);
-							String strT = getNameAndTitle(objOrderElement, "treeitem.Order");
-							item.setText(strT);
-							item.setImage(getImage("order.gif"));
-
-							item.setData(new TreeData(Editor.ORDER, objOrderElement, Options.getHelpURL("orders")));
-							item.setData(conItemDataKeyKEY, "commands_@_order");
-							item.setData(conItemDataKeyCOPY_ELEMENT, commands);
-							if (!Utils.isElementEnabled("commands", objSchedulerDom, objOrderElement)) {
-								setDisabled(item); // item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+							{
+								TreeItem item = new TreeItem(orders, SWT.NONE);
+								item.setImage(getImage("order.gif"));
+								objTD = new TreeData(item, Editor.ORDER, objOrderElement, Options.getHelpURL("orders"));
+								item.setData(conItemDataKeyKEY, "commands_@_order");
+								if (!Utils.isElementEnabled("commands", objSchedulerDom, objOrderElement)) {
+									setDisabled(item); // item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+								}
+								else {
+									item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+								}
+								treeFillOrder(item, objOrderElement, false);
 							}
-							else {
-								item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
-							}
-							treeFillOrder(item, objOrderElement, false);
 						}
 					}
 				}
 				List lOrder = commands.getChildren("order");
 				if (lOrder != null) {
-					Iterator it = getSortedIterator(lOrder, new MyElementComparator());
+					Iterator it = getSortedIterator(lOrder, new CompareNameAndTitle());
 					while (it.hasNext()) {
 						Element e = (Element) it.next();
 						if (e.getName().equals("order") && e.getAttributeValue("id") != null) {
 							TreeItem item = new TreeItem(orders, SWT.NONE);
-							String strT = getNameAndTitle(e, "treeitem.Order");
 							item.setImage(getImage("order.gif"));
-							item.setText(strT);
-							item.setData(new TreeData(Editor.ORDER, e, Options.getHelpURL("orders")));
+							objTD = new TreeData(item, Editor.ORDER, e, Options.getHelpURL("orders"));
 							item.setData(conItemDataKeyKEY, "commands_@_order");
 							item.setData(conItemDataKeyCOPY_ELEMENT, e);
 							if (!Utils.isElementEnabled("commands", objSchedulerDom, e)) {
@@ -623,7 +614,7 @@ public class SchedulerListener {
 		orders.setExpanded(expand);
 	}
 
-	private Iterator<Element> getSortedIterator(final List<Object> l, final MyElementComparator myElementComparator) {
+	private Iterator<Element> getSortedIterator(final List<Object> l, final CompareNameAndTitle myElementComparator) {
 		ArrayList<Element> al = new ArrayList();
 		Iterator it = l.iterator();
 
@@ -649,7 +640,7 @@ public class SchedulerListener {
 			jobs = data.getElement().getChild("jobs");
 		}
 		if (jobs != null) {
-			Iterator<Element> it = getSortedIterator(jobs.getChildren(), new MyElementComparator());
+			Iterator<Element> it = getSortedIterator(jobs.getChildren(), new CompareNameAndTitle());
 			while (it.hasNext()) {
 				Element element = it.next();
 				createJobItem(parent, element, "");
@@ -663,14 +654,11 @@ public class SchedulerListener {
 			checkLifeAttributes(element, Utils.getAttributeValue("name", element));
 		}
 		TreeItem objTreeItem = new TreeItem(parent, SWT.NONE);
-		String job = getNameAndTitle(element, "Job");
-		job = strPrefix + job;
-		objTreeItem.setText(job);
-		objTreeItem.setData(new TreeData(Editor.JOB, element, Options.getHelpURL("job")));
-		objTreeItem.setData(conItemDataKeyCOPY_ELEMENT, element);
+		TreeData objTD = new TreeData(objTreeItem, Editor.JOB, element, Options.getHelpURL("job"));
+		objTreeItem.setText(strPrefix + objTD.getNameAndTitle());
 		objTreeItem.setData(conItemDataKeyKEY, "jobs_@_job");
 		setColorOfJobTreeItem(element, objTreeItem);
-		treeFillJob(objTreeItem, element, false);
+		treeFillJobChilds(objTreeItem, element, false);
 	}
 
 	private Element getJobs(final SchedulerDom pobjSchedulerDom) {
@@ -713,7 +701,7 @@ public class SchedulerListener {
 			}
 	}
 
-	public void treeFillJob(final TreeItem parent, final Element job, final boolean expand) {
+	public void treeFillJobChilds(final TreeItem parent, final Element job, final boolean expand) {
 		boolean flgIsReadOnlyFile = !Utils.isElementEnabled("job", objSchedulerDom, job);
 		parent.removeAll();
 		ArrayList<String> l = new ArrayList<String>();
@@ -840,21 +828,6 @@ public class SchedulerListener {
 
 	private Image getImage(final String pstrImageFileName) {
 		Image objI = ResourceManager.getImageFromResource("/sos/scheduler/editor/icons/" + pstrImageFileName);
-
-		//		try {
-		//			objI = hshImages.get(pstrImageFileName);
-		//			if (objI == null) {
-		//				objI = new Im age(Display.getCurrent(), getClass().getResourceAsStream("/sos/scheduler/editor/icons/" + pstrImageFileName));
-		//				hshImages.put(pstrImageFileName, objI);
-		//			}
-		//		}
-		//		catch (Exception e) {
-		//			objI = hshImages.get("help.gif");
-		//			if (objI == null) {
-		//				objI = new Ima ge(Display.getCurrent(), getClass().getResourceAsStream("/sos/scheduler/editor/icons/" + "help.gif"));
-		//				hshImages.put("help.gif", objI);
-		//			}
-		//		}
 		return objI;
 	}
 
@@ -1004,26 +977,25 @@ public class SchedulerListener {
 		parent.removeAll();
 		Element jobChains = getJobChains(objSchedulerDom);
 		if (jobChains != null) {
-			Iterator it = getSortedIterator(jobChains.getChildren(), new MyElementComparator());
+			Iterator it = getSortedIterator(jobChains.getChildren(), new CompareNameAndTitle());
 			while (it.hasNext()) {
 				Object o = it.next();
 				if (o instanceof Element) {
 					Element element = (Element) o;
 					TreeItem i = new TreeItem(parent, SWT.NONE);
-					i.setText(getNameAndTitle(element, "treeitem.jobchain"));
-					i.setImage(getImage("jobchain.gif"));
-
-					i.setData(new TreeData(Editor.JOB_CHAIN, element, Options.getHelpURL("job_chain")));
-					i.setData(conItemDataKeyKEY, "job_chains_@_job_chain");
-					i.setData(conItemDataKeyCOPY_ELEMENT, element);
+					{
+						i.setImage(getImage("jobchain.gif"));
+						TreeData objTD = new TreeData(i, Editor.JOB_CHAIN, element, Options.getHelpURL("job_chain"));
+						i.setData(conItemDataKeyKEY, "job_chains_@_job_chain");
+					}
 					// Job Chain Nodes
 					TreeItem iNodes = new TreeItem(i, SWT.NONE);
-					iNodes.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_StepsNodes.label());
-					iNodes.setImage(getImage("jobchain.gif"));
-					iNodes.setData(new TreeData(Editor.JOB_CHAIN_NODES, element, Options.getHelpURL("job_chain")));
-					iNodes.setData(conItemDataKeyKEY, "job_chain_node");
-					iNodes.setData(conItemDataKeyCOPY_ELEMENT, element);
-
+					{
+						iNodes.setImage(getImage("jobchain.gif"));
+						TreeData objTD = new TreeData(iNodes, Editor.JOB_CHAIN_NODES, element, Options.getHelpURL("job_chain"));
+						iNodes.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_StepsNodes.label());
+						iNodes.setData(conItemDataKeyKEY, "job_chain_node");
+					}
 					Iterator objNodesIt = element.getChildren().iterator();
 
 					while (objNodesIt.hasNext()) {
@@ -1037,7 +1009,7 @@ public class SchedulerListener {
 							for (int k = 0; k < objRootItem.getItemCount(); k++) {
 								TreeItem item = objRootItem.getItem(k);
 								TreeData objTreeData = (TreeData) item.getData();
-								if (objTreeData != null && objTreeData.getType() == Editor.JOBS) { // Jobs node
+								if (objTreeData != null && objTreeData.TypeEqualTo(Editor.JOBS)) { // Jobs node
 									/*
 									 * Loop over all Jobs in the Tree. Attention: not all Jobs are in the tree due to subfolders
 									 */
@@ -1045,9 +1017,7 @@ public class SchedulerListener {
 									for (TreeItem jItem : item.getItems()) {
 										objTreeData = (TreeData) jItem.getData();
 										Element objJob2Insert = objTreeData.getElement();
-										String strName = objJob2Insert.getAttributeValue("name");
-
-										// TODO get the name of the job from the Element, not from the description
+										String strName = objTreeData.getName();
 
 										if (strJobName.equals(strName)) {
 											createJobItem(iNodes, objJob2Insert, strState + " - ");
@@ -1066,7 +1036,6 @@ public class SchedulerListener {
 					iNestedNodes.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_NestedJobChains.label());
 					iNestedNodes.setImage(getImage("jobchain.gif"));
 					iNestedNodes.setData(new TreeData(Editor.JOB_CHAIN_NESTED_NODES, element, Options.getHelpURL("job_chain")));
-					// iNestedNodes.setData("key", "job_chain_node.job_chain");
 					iNestedNodes.setData(conItemDataKeyKEY, "job_chain_node.job_chain");
 					iNestedNodes.setData(conItemDataKeyCOPY_ELEMENT, element);
 					iNestedNodes.setExpanded(true);
@@ -1085,7 +1054,6 @@ public class SchedulerListener {
 					objOrders4JobChain.setText("Orders");
 					objOrders4JobChain.setImage(getImage("orders.gif"));
 					objOrders4JobChain.setData(new TreeData(Editor.ORDERS, element, Options.getHelpURL("orders")));
-					// objOrders4JobChain.setData("key", "job_chain_node.job_chain");
 					objOrders4JobChain.setData(conItemDataKeyKEY, "orders.job_chain");
 					objOrders4JobChain.setData(conItemDataKeyCOPY_ELEMENT, element);
 					objOrders4JobChain.setExpanded(true);
@@ -1095,25 +1063,25 @@ public class SchedulerListener {
 		parent.setExpanded(true);
 	}
 
-	private String getNameAndTitle(final Element element, final String pstrI18NKey) {
-		String name = Utils.getAttributeValue("name", element);
-		if (name == null || name.length() <= 0) {
-			name = element.getAttributeValue("id");
-		}
-		if (name == null) {
-			name = "???";
-		}
-		String strTitle = Utils.getAttributeValue("title", element);
-		String jobChainName = name;
-
-		jobChainName += !objSchedulerDom.isEnabled(element) ? SOSJOEMessageCodes.JOE_M_JobCommand_Disabled.label() : "";
-
-		if (strTitle != null && strTitle.trim().length() > 0) {
-			jobChainName += " - " + strTitle;
-		}
-		return jobChainName;
-	}
-
+	//	private String getNameAndTitle(final Element element, final String pstrI18NKey) {
+	//		String name = Utils.getAttributeValue("name", element);
+	//		if (name == null || name.length() <= 0) {
+	//			name = element.getAttributeValue("id");
+	//		}
+	//		if (name == null) {
+	//			name = "???";
+	//		}
+	//		String strTitle = Utils.getAttributeValue("title", element);
+	//		String jobChainName = name;
+	//
+	//		jobChainName += !objSchedulerDom.isEnabled(element) ? SOSJOEMessageCodes.JOE_M_JobCommand_Disabled.label() : "";
+	//
+	//		if (strTitle != null && strTitle.trim().length() > 0) {
+	//			jobChainName += " - " + strTitle;
+	//		}
+	//		return jobChainName;
+	//	}
+	//
 	public boolean treeSelection(final Tree tree, final Composite c) {
 		try {
 			if (tree.getSelectionCount() > 0) {
@@ -1254,13 +1222,17 @@ public class SchedulerListener {
 						case Editor.JOB_CHAINS:
 							new JobChainsForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
-						case Editor.JOB_CHAIN:
-							JobChainForm jc_ = new JobChainForm(c, SWT.NONE, objSchedulerDom, objElement);
-							jc_.setISchedulerUpdate(objSchedulerForm);
-							break;
-						case Editor.JOB_CHAIN_NODES:
+						case Editor.JOB_CHAIN: {
+							//							JobChainForm jc_ = new JobChainForm(c, SWT.NONE, objSchedulerDom, objElement);
+							//							jc_.setISchedulerUpdate(objSchedulerForm);
 							JobChainNodesForm jcn_ = new JobChainNodesForm(c, SWT.NONE, objSchedulerDom, objElement);
 							jcn_.setISchedulerUpdate(objSchedulerForm);
+						}
+							break;
+						case Editor.JOB_CHAIN_NODES: {
+							JobChainNodesForm jcn_ = new JobChainNodesForm(c, SWT.NONE, objSchedulerDom, objElement);
+							jcn_.setISchedulerUpdate(objSchedulerForm);
+						}
 							break;
 						case Editor.JOB_CHAIN_NESTED_NODES:
 							JobChainNestedNodesForm j = new JobChainNestedNodesForm(c, SWT.NONE, objSchedulerDom, objElement);
@@ -1598,7 +1570,7 @@ public class SchedulerListener {
 		if (config != null)
 			httpServer = objSchedulerDom.getRoot().getChild("config").getChild("http_server");
 		if (httpServer != null) {
-			Iterator it = getSortedIterator(httpServer.getChildren("web_service"), new MyElementComparator());
+			Iterator it = getSortedIterator(httpServer.getChildren("web_service"), new CompareNameAndTitle());
 
 			while (it.hasNext()) {
 				Object o = it.next();
@@ -1627,7 +1599,7 @@ public class SchedulerListener {
 		parent.removeAll();
 		Element schedules = objSchedulerDom.getRoot().getChild("config").getChild("schedules");
 		if (schedules != null) {
-			Iterator it = getSortedIterator(schedules.getChildren(), new MyElementComparator());
+			Iterator it = getSortedIterator(schedules.getChildren(), new CompareNameAndTitle());
 
 			while (it.hasNext()) {
 				Object o = it.next();

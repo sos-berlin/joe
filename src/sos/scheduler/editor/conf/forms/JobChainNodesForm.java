@@ -60,7 +60,6 @@ import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.FolderNameSelector;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
@@ -70,6 +69,8 @@ import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
+import sos.scheduler.editor.conf.composites.JobChainFileSinkComposite;
 import sos.scheduler.editor.conf.composites.JobChainFileWatcherComposite;
 import sos.scheduler.editor.conf.composites.JobChainMainComposite;
 import sos.scheduler.editor.conf.composites.JobChainNodeComposite;
@@ -84,8 +85,9 @@ import sos.util.SOSClassUtil;
 import com.sos.dialog.classes.DialogAdapter;
 
 public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes */implements IUpdateLanguage, ISOSTableMenueListeners {
-	//	public class JobChainNodesForm extends SOSJOEMessageCodes implements IUpdateLanguage, ISOSTableMenueListeners {
 
+	private final String		conClassName			= this.getClass().getSimpleName();
+	private final Logger		logger					= Logger.getLogger(this.getClass());
 	/**
 	 * TODO Rename via Menu-Function and special form
 	 * TODO Edit Cell Content directly
@@ -93,10 +95,8 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 	 * TODO Job-Title in die Tabelle übernehmen
 	 * TODO Parameter (global/Nodes) als Tab einbauen
 	 */
-	private final String		conClassName			= "JobChainNodesForm";
 	@SuppressWarnings("unused")
 	private final String		conSVNVersion			= "$Id$";
-	private static final Logger	logger					= Logger.getLogger(JobChainNodesForm.class);
 
 	private SOSTable			tblJobChainStates		= null;
 	private JobChainListener	objDataProvider			= null;
@@ -136,7 +136,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 			if (existChainNodes) {
 				populateNodesTable(false, false);
 			}
-			objParent.setEnabled(Utils.isElementEnabled("job_chain", objDataProvider.get_dom(), objJobChainDOMElement));
+			objParent.setEnabled(objDataProvider.getJSObject().isEnabled());
 		}
 		catch (Exception e) {
 			new ErrorLog(JOE_E_0002.params(conClassName), e);
@@ -176,8 +176,6 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 
 	protected void createGroup() {
 
-		//		objParent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
 		GridLayout gridLayoutMainOptionsGroup = new GridLayout();
 		gridLayoutMainOptionsGroup.numColumns = 1;
 		gridLayoutMainOptionsGroup.marginHeight = 0;
@@ -185,10 +183,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 		gridLayoutMainOptionsGroup.horizontalSpacing = 2;
 		gridLayoutMainOptionsGroup.verticalSpacing = 3;
 
-		//		objParent.setLayout(gridLayoutMainOptionsGroup);
-		//		objParent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		objMainOptionsComposite = new Composite(objParent, SWT.None | SWT.RESIZE);
-		//		objMainOptionsComposite.setToolTipText(conClassName);
 		objMainOptionsComposite.addKeyListener(objHelpKeyListener);
 		setStatusLine(String.format("JobChain '%1$s' selected", objDataProvider.getChainName()));
 
@@ -196,8 +191,6 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 		objMainOptionsComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		jobMainComposite = new JobChainMainComposite(objMainOptionsComposite, objDataProvider);
-		//		jobMainComposite.setLayout(gridLayoutMainOptionsGroup);
-		//		jobMainComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		createScriptTabForm(objMainOptionsComposite);
 	}
@@ -238,7 +231,6 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 		}
 
 		disposeChilds(pParentComposite);
-		//		new JobChainParameterNodesComposite(pParentComposite, objDataProvider, Editor.JOB_CHAIN_NODES);
 		new JobChainParameterNodesComposite(pParentComposite, objDataProvider);
 		pParentComposite.layout();
 	}
@@ -453,8 +445,8 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				int index = tabFolder.getSelectionIndex();
-				logger.debug("Selected item index = " + index);
-				logger.debug("Selected item = " + (tabFolder.getSelection() == null ? "null" : tabFolder.getItem(index).getText()));
+//				logger.debug("Selected item index = " + index);
+//				logger.debug("Selected item = " + (tabFolder.getSelection() == null ? "null" : tabFolder.getItem(index).getText()));
 			}
 
 			@Override
@@ -466,66 +458,67 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 		tabFolder.setSelection(0);
 	}
 
-	private Composite			grpJobChainStates1		= null;
+	private Composite					grpJobChainStates1		= null;
 
 	private final Button				bFileSinkRemoveFile		= null;
 	private final Button				bFileSinkActive			= null;
 	private final FolderNameSelector	tbxFileSinkMoveFileTo	= null;
-//	private Group				gFileOrderSink			= null;
 
-//	private void createFileSinkControls(final Composite pobjMainControl) {
-//
-//		gFileOrderSink = new Group(pobjMainControl, SWT.NONE);
-//		final GridData gridData_10 = new GridData(SWT.FILL, SWT.FILL, true, false);
-//		gFileOrderSink.setLayoutData(gridData_10);
-//		gFileOrderSink.setText(JOE_G_JCNodesForm_FileOrderSink.params(objDataProvider.getChainName()));
-//		final GridLayout gridLayout_1 = new GridLayout();
-//		gridLayout_1.numColumns = 4;
-//		gFileOrderSink.setLayout(gridLayout_1);
-//
-//		JOE_L_JCNodesForm_RemoveFile.Control(new Label(gFileOrderSink, SWT.NONE));
-//		bFileSinkActive = JOE_B_JCNodesForm_RemoveFile.Control(new Button(gFileOrderSink, SWT.RADIO));
-//		bFileSinkActive.setText("");
-//		final GridData gridData_1 = new GridData();
-//		bFileSinkActive.setLayoutData(gridData_1);
-//		bFileSinkActive.setEnabled(true);
-//
-//		new Label(gFileOrderSink, SWT.NONE);
-//		new Label(gFileOrderSink, SWT.None);
-//
-//		JOE_L_JCNodesForm_RemoveFile.Control(new Label(gFileOrderSink, SWT.NONE));
-//		bFileSinkRemoveFile = JOE_B_JCNodesForm_RemoveFile.Control(new Button(gFileOrderSink, SWT.CHECK));
-//		bFileSinkRemoveFile.setLayoutData(gridData_1);
-//		bFileSinkRemoveFile.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(final SelectionEvent e) {
-//				if (bFileSinkRemoveFile.getSelection()) {
-//					tbxFileSinkMoveFileTo.setText("");
-//					tbxFileSinkMoveFileTo.setEnabled(true);
-//				}
-//			}
-//		});
-//		bFileSinkRemoveFile.addKeyListener(objLocalKeyListener);
-//
-//		bFileSinkRemoveFile.setEnabled(true);
-//
-//		//		new Label(gFileOrderSink, SWT.NONE);
-//		//		new Label(gFileOrderSink, SWT.None);
-//
-//		JOE_L_JCNodesForm_MoveTo.Control(new Label(gFileOrderSink, SWT.NONE));
-//		tbxFileSinkMoveFileTo = (FolderNameSelector) JOE_T_JCNodesForm_MoveTo.Control(new FolderNameSelector(gFileOrderSink, gconFieldBorderConstant));
-//		tbxFileSinkMoveFileTo.setParentForm(this);
-//
-//		tbxFileSinkMoveFileTo.addModifyListener(new ModifyListener() {
-//			@Override
-//			public void modifyText(final ModifyEvent e) {
-//				if (!tbxFileSinkMoveFileTo.getText().equals(""))
-//					bFileSinkRemoveFile.setSelection(false);
-//			}
-//		});
-//		tbxFileSinkMoveFileTo.addKeyListener(objLocalKeyListener);
-//	}
-//
+	//	private Group				gFileOrderSink			= null;
+
+	//	private void createFileSinkControls(final Composite pobjMainControl) {
+	//
+	//		gFileOrderSink = new Group(pobjMainControl, SWT.NONE);
+	//		final GridData gridData_10 = new GridData(SWT.FILL, SWT.FILL, true, false);
+	//		gFileOrderSink.setLayoutData(gridData_10);
+	//		gFileOrderSink.setText(JOE_G_JCNodesForm_FileOrderSink.params(objDataProvider.getChainName()));
+	//		final GridLayout gridLayout_1 = new GridLayout();
+	//		gridLayout_1.numColumns = 4;
+	//		gFileOrderSink.setLayout(gridLayout_1);
+	//
+	//		JOE_L_JCNodesForm_RemoveFile.Control(new Label(gFileOrderSink, SWT.NONE));
+	//		bFileSinkActive = JOE_B_JCNodesForm_RemoveFile.Control(new Button(gFileOrderSink, SWT.RADIO));
+	//		bFileSinkActive.setText("");
+	//		final GridData gridData_1 = new GridData();
+	//		bFileSinkActive.setLayoutData(gridData_1);
+	//		bFileSinkActive.setEnabled(true);
+	//
+	//		new Label(gFileOrderSink, SWT.NONE);
+	//		new Label(gFileOrderSink, SWT.None);
+	//
+	//		JOE_L_JCNodesForm_RemoveFile.Control(new Label(gFileOrderSink, SWT.NONE));
+	//		bFileSinkRemoveFile = JOE_B_JCNodesForm_RemoveFile.Control(new Button(gFileOrderSink, SWT.CHECK));
+	//		bFileSinkRemoveFile.setLayoutData(gridData_1);
+	//		bFileSinkRemoveFile.addSelectionListener(new SelectionAdapter() {
+	//			@Override
+	//			public void widgetSelected(final SelectionEvent e) {
+	//				if (bFileSinkRemoveFile.getSelection()) {
+	//					tbxFileSinkMoveFileTo.setText("");
+	//					tbxFileSinkMoveFileTo.setEnabled(true);
+	//				}
+	//			}
+	//		});
+	//		bFileSinkRemoveFile.addKeyListener(objLocalKeyListener);
+	//
+	//		bFileSinkRemoveFile.setEnabled(true);
+	//
+	//		//		new Label(gFileOrderSink, SWT.NONE);
+	//		//		new Label(gFileOrderSink, SWT.None);
+	//
+	//		JOE_L_JCNodesForm_MoveTo.Control(new Label(gFileOrderSink, SWT.NONE));
+	//		tbxFileSinkMoveFileTo = (FolderNameSelector) JOE_T_JCNodesForm_MoveTo.Control(new FolderNameSelector(gFileOrderSink, gconFieldBorderConstant));
+	//		tbxFileSinkMoveFileTo.setParentForm(this);
+	//
+	//		tbxFileSinkMoveFileTo.addModifyListener(new ModifyListener() {
+	//			@Override
+	//			public void modifyText(final ModifyEvent e) {
+	//				if (!tbxFileSinkMoveFileTo.getText().equals(""))
+	//					bFileSinkRemoveFile.setSelection(false);
+	//			}
+	//		});
+	//		tbxFileSinkMoveFileTo.addKeyListener(objLocalKeyListener);
+	//	}
+	//
 	@SuppressWarnings("unused")
 	private void createGroup2() {
 		try {
@@ -625,12 +618,6 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 			final TableColumn tcolRemoveFile = JOE_L_JCNodesForm_RemoveFile.Control(tblJobChainStates.newTableColumn("tcolRemoveFile", 100));
 			final TableColumn tcolMoveFileTo = JOE_L_JCNodesForm_MoveTo.Control(tblJobChainStates.newTableColumn("tcolMoveFileTo", 250));
 
-			//			final Composite composite_1 = new Composite(grpJobChainStates1, SWT.NONE);
-			//			composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-			//			final GridLayout gridLayout_5 = new GridLayout();
-			//			gridLayout_5.numColumns = 3;
-			//			composite_1.setLayout(gridLayout_5);
-
 			Menu objContextMenuJobChainStates = tblJobChainStates.objContextMenu;
 			MenuItem itemUp = new MenuItem(objContextMenuJobChainStates, SWT.PUSH);
 			tblJobChainStates.setMenuItemText(itemUp, "Up", "F5", SWT.F5, false);
@@ -657,9 +644,6 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 
 			tblJobChainStates.addMenueSeparator();
 
-			//			MenuItem itemCreateDiagram = new MenuItem(objContextMenuJobChainStates, SWT.PUSH);
-			//			itemCreateDiagram.setText("Create Diagram");
-			//
 			MenuItem itemInsertFileSink = new MenuItem(objContextMenuJobChainStates, SWT.PUSH);
 			itemInsertFileSink.setText("insert FileSink");
 			itemInsertFileSink.addListener(SWT.Selection, getInsertFileSinkListener());
@@ -705,97 +689,24 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 		}
 	}
 
-	//	private void setCursorToFirstField() {
-	//		cboJob.setFocus();
-	//	}
-	//
-	//	private void createControl4JobName(final Composite pobjParent) {
-	//		JOE_L_JCNodesForm_Job.Control(new Label(pobjParent, SWT.NONE));
-	//		cboJob = new SOSComboBox(pobjParent, JOE_Cbo_JCNodesForm_Job);
-	//		cboJob.setVisibleItemCount(9);
-	//		cboJob.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 2, 1));
-	//		cboJob.setMenu(new ContextMenu(cboJob, objDataProvider.get_dom(), Editor.JOB).getMenu());
-	//		cboJob.addMouseListener(new MouseAdapter() {
-	//			@Override
-	//			public void mouseDoubleClick(final MouseEvent arg0) {
-	//				ContextMenu.goTo(cboJob.getText(), objDataProvider.get_dom(), Editor.JOB);
-	//			}
-	//
-	//			@Override
-	//			public void mouseDown(final MouseEvent e) {
-	//				if (refresh) {
-	//					if (objDataProvider.getJobs() != null) {
-	//						cboJob.setItems(objDataProvider.getJobs());
-	//						refresh = false;
-	//					}
-	//				}
-	//			}
-	//		});
-	//		cboJob.addModifyListener(objLocalModifyListener);
-	//		cboJob.addKeyListener(objLocalKeyListener);
-	//	}
-
 	private void populateNodesTable(final boolean enable, final boolean isNew) {
 		objDataProvider.populateNodesTable();
 	}
 
-	//	private void changeState4NodeFields(final boolean pflgEnabledState) {
-	//
-	//		tbxState.setEnabled(pflgEnabledState);
-	//		cboJob.setEnabled(pflgEnabledState);
-	//		cboNextState.setEnabled(pflgEnabledState);
-	//		cboErrorState.setEnabled(pflgEnabledState);
-	//		cboOnError.setEnabled(pflgEnabledState);
-	//		tDelay.setEnabled(pflgEnabledState);
-	//	}
-	//
-	//	private void clearNodeFields() {
-	//
-	//		cboJob.setText("");
-	//		cboNextState.setText("");
-	//		cboErrorState.setText("");
-	//		cboOnError.setText("");
-	//		tbxState.setText("");
-	//		tDelay.setText("");
-	//
-	//		objDataProvider.selectNode(null);
-	//
-	//		if (cboJob.getItemCount() <= 0) {
-	//			cboJob.setItems(objDataProvider.getJobs());
-	//		}
-	//
-	//		if (cboNextState.getItemCount() <= 0) {
-	//			cboNextState.setItems(objDataProvider.getStates());
-	//		}
-	//		if (cboErrorState.getItemCount() <= 0) {
-	//			cboErrorState.setItems(objDataProvider.getAllStates());
-	//		}
-	//
-	//		changeState4NodeFields(false);
-	//		setCursorToFirstField();
-	//		flgIsDirty = false;
-	//	}
-
 	int	intStepIncr	= 100;
+	private final int	intCopyCnt	= 0;
 
-	private void applyAutomaticNode() {
-		//		String strState = "step" + intStepIncr;
-		//		tbxState.setText(strState);
-		//		intStepIncr += 100;
-		//		cboNextState.setText("step" + intStepIncr);
-		//		cboErrorState.setText("!" + strState);
-		//		applyInputFields(false);
-		//		buttonNewNodePressed();
-	}
-
-	int	intDialogStyle	= SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.RESIZE | SWT.BORDER | SWT.APPLICATION_MODAL;
+//	private void applyAutomaticNode() {
+//	}
+//
+	int	intDialogStyle	= SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE;
 
 	private void buttonNewNodePressed() {
 		tblJobChainStates.deselectAll();
 		showJobChainNodeComposite(CompositeBaseAbstract.enuOperationMode.New);
 	}
 
-	private void showJobChainNodeComposite (final CompositeBaseAbstract.enuOperationMode enuMode) {
+	private void showJobChainNodeComposite(final CompositeBaseAbstract.enuOperationMode enuMode) {
 		DialogAdapter objDA = new DialogAdapter(new Shell(MainWindow.getSShell()), intDialogStyle);
 		JobChainNodeComposite objNodeC = new JobChainNodeComposite(objDataProvider, enuMode);
 
@@ -803,7 +714,11 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 		//		objDA.setEditCallback(this);
 		objDA.open(objNodeC);
 	}
-	private final int	intCopyCnt	= 0;
+	private void showJobChainFileSinkComposite(final CompositeBaseAbstract.enuOperationMode enuMode) {
+		DialogAdapter objDA = new DialogAdapter(new Shell(MainWindow.getSShell()), intDialogStyle);
+		JobChainFileSinkComposite objNodeC = new JobChainFileSinkComposite(objDataProvider, enuMode);
+		objDA.open(objNodeC);
+	}
 
 	public void setISchedulerUpdate(final ISchedulerUpdate update_) {
 		update = update_;
@@ -812,15 +727,15 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 
 	private void editJobChainOrNodeParameter(final String state, final String jobname) {
 
-		boolean isLifeElement = objDataProvider.get_dom().isLifeElement() || objDataProvider.get_dom().isDirectory();
+		boolean isLifeFolderElement = objDataProvider.isLiveFolderElement();
 
 		try {
 			DetailDialogForm detail = null;
 			if (state == null) {
-				detail = new DetailDialogForm(objDataProvider.getChainName(), isLifeElement, objDataProvider.get_dom().getFilename());
+				detail = new DetailDialogForm(objDataProvider.getChainName(), isLifeFolderElement, objDataProvider.get_dom().getFilename());
 			}
 			else {
-				detail = new DetailDialogForm(objDataProvider.getChainName(), state, null, isLifeElement, objDataProvider.get_dom().getFilename());
+				detail = new DetailDialogForm(objDataProvider.getChainName(), state, null, isLifeFolderElement, objDataProvider.get_dom().getFilename());
 			}
 			detail.showDetails();
 			detail.getDialogForm().setParamsForWizzard(objDataProvider.get_dom(), update, jobname);
@@ -831,12 +746,6 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 	}
 
 	private void selectNodes() {
-		//		if (isDirty() == true) {
-		//			int c = MainWindow.message(getShell(), JOE_M_ApplyChanges.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-		//			if (c == SWT.YES) {
-		//				applyInputFields(false);
-		//			}
-		//		}
 		if (tblJobChainStates.getSelectionCount() > 0) {
 			objDataProvider.selectNode();
 		}
@@ -856,7 +765,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 				if (strState.isEmpty() == false) {
 					tblJobChainStates.setSelection(index - 1);
 					selectNodes();
-					MainWindow.setStatusLine(String.format("moveed Node '%1$s' one line up", strState));
+					MainWindow.setStatusLine(String.format("moved Node '%1$s' one line up", strState));
 				}
 			}
 		}
@@ -874,7 +783,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 					if (strState.isEmpty() == false) {
 						tblJobChainStates.setSelection(index + 1);
 						selectNodes();
-						MainWindow.setStatusLine(String.format("moveed Node '%1$s' one line down", strState));
+						MainWindow.setStatusLine(String.format("moved Node '%1$s' one line down", strState));
 					}
 				}
 		}
@@ -938,7 +847,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 				tblJobChainStates.remove(index);
 			}
 
-			boolean empty = tblJobChainStates.getItemCount() == 0;
+//			boolean empty = tblJobChainStates.getItemCount() == 0;
 		}
 	}
 
@@ -988,9 +897,9 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 
 	private void pasteNode() {
 		if (objCopyNodeStore != null) {
-//			flgInsertNewNode = true;
-			applyInputFields(true);
-//			flgInsertNewNode = false;
+			//			flgInsertNewNode = true;
+			applyInputFields(true, enuOperationMode.Insert);
+			//			flgInsertNewNode = false;
 		}
 	}
 
@@ -1026,16 +935,16 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 
 	private void insertNode() {
 		showJobChainNodeComposite(CompositeBaseAbstract.enuOperationMode.Insert);
-//		flgInsertNewNode = true;
-//		String state = tbxState.getText();
-//		tbxState.setText("");
-//		tDelay.setText("");
-//		cboErrorState.setText("");
-//		cboOnError.setText("");
-//		cboJob.setText("");
-//		changeState4NodeFields(true);
-//		cboNextState.setText(state);
-//		setCursorToFirstField();
+		//		flgInsertNewNode = true;
+		//		String state = tbxState.getText();
+		//		tbxState.setText("");
+		//		tDelay.setText("");
+		//		cboErrorState.setText("");
+		//		cboOnError.setText("");
+		//		cboJob.setText("");
+		//		changeState4NodeFields(true);
+		//		cboNextState.setText(state);
+		//		setCursorToFirstField();
 		flgIsDirty = false;
 	}
 
@@ -1051,21 +960,17 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 	}
 
 	private void editNode() {
-		objDataProvider.selectNode();
-		showJobChainNodeComposite(CompositeBaseAbstract.enuOperationMode.Edit);
-//		flgInsertNewNode = true;
-//		String state = tbxState.getText();
-//		tbxState.setText("");
-//		tDelay.setText("");
-//		cboErrorState.setText("");
-//		cboOnError.setText("");
-//		cboJob.setText("");
-//		changeState4NodeFields(true);
-//		cboNextState.setText(state);
-//		setCursorToFirstField();
-		flgIsDirty = false;
+		try {
+			objDataProvider.selectNode();
+			showJobChainNodeComposite(CompositeBaseAbstract.enuOperationMode.Edit);
+		}
+		catch (Exception e) {
+			new ErrorLog(JOE_E_0002.params(conClassName, e));
+		}
+		finally {
+			flgIsDirty = false;
+		}
 	}
-
 
 	private Listener getInsertFileSinkListener() {
 		return new Listener() {
@@ -1078,9 +983,10 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 	}
 
 	private void insertFileSink() {
-//		flgInsertNewNode = true;
+		//		flgInsertNewNode = true;
 		flgInsertFileSink = true;
-//		gFileOrderSink.setVisible(true);
+		showJobChainFileSinkComposite(CompositeBaseAbstract.enuOperationMode.New);
+		//		gFileOrderSink.setVisible(true);
 		//		String state = tbxState.getText();
 		//		tbxState.setText("");
 		//		tDelay.setText("");
@@ -1162,7 +1068,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 		return new Listener() {
 			@Override
 			public void handleEvent(final Event e) {
-				flgDoReorderStates = ! flgDoReorderStates;
+				flgDoReorderStates = !flgDoReorderStates;
 				MenuItem objMI = (MenuItem) e.widget;
 				objMI.setSelection(flgDoReorderStates);
 			}
@@ -1170,8 +1076,8 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgT) {
+	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
 		// TODO Auto-generated method stub
-
 	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"

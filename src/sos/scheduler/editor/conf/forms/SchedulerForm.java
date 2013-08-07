@@ -270,7 +270,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			TreeData data = (TreeData) item.getData();
-			listener.treeFillJob(item, data.getElement(), true);
+			listener.treeFillJobChilds(item, data.getElement(), true);
 		}
 	}
 
@@ -278,14 +278,11 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	public void updateJob(final Element elem) {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
-			String job = Utils.getAttributeValue("name", elem);
-			item.setText(job);
 			TreeData data = (TreeData) item.getData();
 			data.setElement(elem);
-			// listener.treeFillMain(tree, this, SchedulerDom.LIVE_JOB);
-			listener.treeFillJob(item, data.getElement(), true);
+			item.setText(data.getNameAndTitle());
+			listener.treeFillJobChilds(item, data.getElement(), true);
 			listener.treeSelection(tree, cMainForm);
-			// listener.treeFillJobs(tree.getParentItem());
 		}
 	}
 

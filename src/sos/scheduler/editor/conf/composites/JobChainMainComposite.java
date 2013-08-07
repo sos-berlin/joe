@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Text;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
 
 public class JobChainMainComposite extends CompositeBaseClass {
@@ -107,7 +108,7 @@ public class JobChainMainComposite extends CompositeBaseClass {
 					return;
 				}
 				String newName = tbxName.getText().trim();
-				boolean existname = Utils.existName(newName, objDataProvider.getChain(), "job_chain");
+				boolean existname = Utils.existName(newName, objDataProvider.getChainElement(), "job_chain");
 				if (existname)
 					tbxName.setBackground(objDataProvider.getColor4InvalidValues());
 				else {
@@ -153,7 +154,7 @@ public class JobChainMainComposite extends CompositeBaseClass {
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgT) {
+	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
 		// TODO Auto-generated method stub
 
 	}

@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 import sos.scheduler.editor.classes.CompositeBaseClass;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
 
 public class JobChainParameterNodesComposite extends CompositeBaseClass {
@@ -60,6 +61,6 @@ public class JobChainParameterNodesComposite extends CompositeBaseClass {
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgT) {
+	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
 	}
 }

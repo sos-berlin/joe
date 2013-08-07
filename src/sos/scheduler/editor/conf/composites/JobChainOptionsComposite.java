@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.classes.CompositeBaseClass;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
 
 public class JobChainOptionsComposite extends CompositeBaseClass {
@@ -153,7 +154,7 @@ public class JobChainOptionsComposite extends CompositeBaseClass {
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgT) {
+	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
 		// TODO Auto-generated method stub
 
 	}

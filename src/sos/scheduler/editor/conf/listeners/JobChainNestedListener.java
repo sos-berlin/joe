@@ -316,9 +316,9 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 			node = (Element) _node.getDOMElement().clone();
 
 			if (reorder) {
-				Filter elementFilter2 = new ElementFilter("job_chain_node.job_chain", getChain().getNamespace());
+				Filter elementFilter2 = new ElementFilter("job_chain_node.job_chain", getChainElement().getNamespace());
 				// gets all element nodes under the rootElement
-				List elements = getChain().getContent(elementFilter2);
+				List elements = getChainElement().getContent(elementFilter2);
 				// cycle through all immediate elements under the rootElement
 				//for( java.util.Iterator it = elements.iterator(); it.hasNext(); ) {
 				int size = elements.size();

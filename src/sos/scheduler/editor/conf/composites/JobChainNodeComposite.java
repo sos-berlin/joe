@@ -106,10 +106,12 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 
 			Composite grpJobChainStates1 = new Composite(composite, SWT.NONE);
 			final GridLayout gridLayout_3 = new GridLayout();
-			gridLayout_3.numColumns = 6;
+//			gridLayout_3.numColumns = 6;
+			gridLayout_3.numColumns = 3;
 			gridLayout_3.makeColumnsEqualWidth = true;
 			grpJobChainStates1.setLayout(gridLayout_3);
-			GridData gd_gNodes = new GridData(SWT.FILL, SWT.FILL, true, true, 6, 6);
+//			GridData gd_gNodes = new GridData(SWT.FILL, SWT.FILL, true, true, 6, 6);
+			GridData gd_gNodes = new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3);
 			grpJobChainStates1.setLayoutData(gd_gNodes);
 
 			createControl4JobName(grpJobChainStates1);
@@ -145,7 +147,7 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 			JOE_L_JobChainNodes_NextState.Control(new Label(grpJobChainStates1, SWT.NONE));
 			cboNextState = new SOSComboBox(grpJobChainStates1, JOE_Cbo_JobChainNodes_NextState);
 			cboNextState.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 2, 1));
-			cboNextState.addModifyListener(objLocalModifyListener);
+			cboNextState.addModifyListener(objNextStateModifyListener);
 			cboNextState.addKeyListener(objLocalKeyListener);
 			{
 				JOE_L_JobChainNodes_ErrorState.Control(new Label(grpJobChainStates1, SWT.NONE));
@@ -185,49 +187,77 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 		}
 	}
 
+	class localNextStateModifyListener implements ModifyListener {
+		@Override
+		public void modifyText(final ModifyEvent e) {
+			setDirty();
+			if (OperationMode == enuOperationMode.New || OperationMode == enuOperationMode.Insert) {
+				String strT = cboNextState.getText();
+				if (strT.trim().length() > 0) {
+//					String strL = cboErrorState.getText();
+//					if (strL.trim().length() <= 0) {
+						cboErrorState.setText("!" + strT);
+//					}
+				}
+			}
+		}
+	}
+
+	ModifyListener objNextStateModifyListener = new localNextStateModifyListener();
+
 	@Override
 	public void init() {
-		init = true;
-		flgInsertNewNode = false;
-		switch (OperationMode) {
-			case New:
-				clearNodeFields();
-				changeState4NodeFields(true);
-				setCursorToFirstField();
-				break;
 
-			case Insert:
-				flgInsertNewNode = true;
-				clearNodeFields();
-				changeState4NodeFields(true);
-				setCursorToFirstField();
-				break;
+		try {
+			init = true;
+			flgInsertNewNode = false;
+			switch (OperationMode) {
+				case New:
+					clearNodeFields();
+					changeState4NodeFields(true);
+					setCursorToFirstField();
+					break;
 
-			case Edit:
-				clearNodeFields();
-				populateNodeFields();
-				changeState4NodeFields(true);
-				setCursorToFirstField();
-				break;
+				case Insert:
+					flgInsertNewNode = true;
+					clearNodeFields();
+					changeState4NodeFields(true);
+					setCursorToFirstField();
+					break;
 
-			case Delete:
-				clearNodeFields();
-				populateNodeFields();
-				changeState4NodeFields(false);
-				break;
+				case Edit:
+					clearNodeFields();
+					populateNodeFields();
+					changeState4NodeFields(true);
+					setCursorToFirstField();
+					break;
 
-			case Browse:
-				clearNodeFields();
-				populateNodeFields();
-				changeState4NodeFields(false);
-				setCursorToFirstField();
-				break;
+				case Delete:
+					clearNodeFields();
+					populateNodeFields();
+					changeState4NodeFields(false);
+					break;
 
-			default:
-				break;
+				case Browse:
+					clearNodeFields();
+					populateNodeFields();
+					changeState4NodeFields(false);
+					setCursorToFirstField();
+					break;
+
+				default:
+					break;
+			}
+
+		}
+		catch (Exception e) {
+			new ErrorLog(e.getLocalizedMessage(), e);
 		}
 
-		init = false;
+		finally {
+			init = false;
+
+		}
 	}
 
 	private void createControl4JobName(final Composite pobjParent) {
@@ -260,15 +290,14 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 		cboJob.addKeyListener(objLocalKeyListener);
 	}
 
-	int	intStepIncr	= 100;
 
 	private void applyAutomaticNode() {
-		String strState = "step" + intStepIncr;
+		String strState = "step" + objDataProvider.intStepIncr;
 		tbxState.setText(strState);
-		intStepIncr += 100;
-		cboNextState.setText("step" + intStepIncr);
+		objDataProvider.intStepIncr += 100;
+		cboNextState.setText("step" + objDataProvider.intStepIncr);
 		cboErrorState.setText("!" + strState);
-		applyInputFields(false);
+		applyInputFields(false, OperationMode);
 	}
 
 	private void changeState4NodeFields(final boolean pflgEnabledState) {
@@ -291,17 +320,12 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 			tbxState.setText("");
 			tDelay.setText("");
 
-			//		if (OperationMode == New) {  // hier völlig falsch
-			//		objDataProvider.clearNode();
-			//		}
-
 			cboJob.setItems(objDataProvider.getJobs());
 			cboNextState.setItems(objDataProvider.getStates());
-//			cboErrorState.setItems(objDataProvider.getAllStates());
-
+			cboErrorState.setItems(objDataProvider.getAllStates());
 		}
 		catch (Exception e) {
-
+			e.printStackTrace();
 		}
 		finally {
 			changeState4NodeFields(true);
@@ -321,6 +345,9 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 			cboJob.setItems(objDataProvider.getJobs());
 		}
 
+		cboNextState.setItems(objDataProvider.getStates());
+		cboErrorState.setItems(objDataProvider.getAllStates());
+
 		cboJob.setText(objDataProvider.getJob());
 		tbxState.setText(objDataProvider.getState());
 		tDelay.setText(objDataProvider.getDelay());
@@ -330,11 +357,12 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 		cboOnError.setText(objDataProvider.getOnError());
 		changeState4NodeFields(true);
 		init = false;
+
 		flgIsDirty = false;
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgFromCopyStore) {
+	protected void applyInputFields(final boolean flgFromCopyStore, final enuOperationMode OperationMode) {
 		try {
 			//			cboNextState.setVisibleItemCount(20);
 			// TODO use class JobChainNodesWrapper
@@ -365,10 +393,13 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 				MainWindow.message(msg, SWT.ICON_INFORMATION);
 			}
 			else {
-				if (flgInsertNewNode == true) {
+				if (flgInsertNewNode == true || OperationMode == enuOperationMode.Insert) {
 					objDataProvider.applyInsertNode(true, strState, strJob, strDelay, strNextState, strErrorState, false, "", strOnError);
 				}
 				else {
+					if (OperationMode == enuOperationMode.New) {
+						objDataProvider.clearNode();  // horrible hack
+					}
 					objDataProvider.applyNode(true, strState, strJob, strDelay, strNextState, strErrorState, false, "", strOnError);
 				}
 				//				DetailsListener.checkGlobalJobChainParameter(strState, objDataProvider.getChainName(), strJob, objDataProvider.get_dom(), update);

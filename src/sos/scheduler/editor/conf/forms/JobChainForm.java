@@ -134,7 +134,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
                 if (init)
                     return;
                 String newName = tName.getText().trim();
-                boolean existname = Utils.existName(newName, listener.getChain(), "job_chain");
+                boolean existname = Utils.existName(newName, listener.getChainElement(), "job_chain");
                 if (existname)
                     tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
                 else {

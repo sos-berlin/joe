@@ -20,6 +20,7 @@ import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.FolderNameSelector;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
 public class JobStartWhenDirectoryChanged extends CompositeBaseClass {
@@ -109,7 +110,7 @@ public class JobStartWhenDirectoryChanged extends CompositeBaseClass {
 		bApplyDirectory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				applyInputFields(false);
+				applyInputFields(false, OperationMode);
 			}
 		});
 
@@ -207,7 +208,7 @@ public class JobStartWhenDirectoryChanged extends CompositeBaseClass {
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgT) {
+	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
 		String strRegExp = tRegex.getText();
 		if (Utils.isValidRegExpression(strRegExp)) {
 			objJobDataProvider.applyDirectory(tDirectory.getText(), strRegExp);

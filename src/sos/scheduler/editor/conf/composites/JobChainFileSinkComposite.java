@@ -1,12 +1,10 @@
 package sos.scheduler.editor.conf.composites;
 
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JCNodesForm_Job;
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JCNodesForm_OnError;
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JobChainNodes_ErrorState;
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JobChainNodes_NextState;
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_E_0002;
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_Delay;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_Job;
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_OnError;
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainNodes_ErrorState;
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainNodes_NextState;
@@ -26,8 +24,6 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -35,8 +31,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.classes.SOSComboBox;
@@ -56,10 +50,10 @@ public class JobChainFileSinkComposite extends CompositeBaseAbstract<JobChainLis
 
 	private SOSComboBox			cboErrorState		= null;
 	private SOSComboBox			cboNextState		= null;
-	private SOSComboBox			cboJob				= null;
+//	private SOSComboBox			cboJob				= null;
 	private Text				tbxState			= null;
 	private Text				tDelay				= null;
-	private boolean				refresh				= false;
+	private final boolean				refresh				= false;
 	private SOSComboBox			cboOnError			= null;
 
 	private boolean				flgInsertNewNode	= false;
@@ -106,10 +100,12 @@ public class JobChainFileSinkComposite extends CompositeBaseAbstract<JobChainLis
 
 			Composite grpJobChainStates1 = new Composite(composite, SWT.NONE);
 			final GridLayout gridLayout_3 = new GridLayout();
-			gridLayout_3.numColumns = 6;
+//			gridLayout_3.numColumns = 6;
+			gridLayout_3.numColumns = 3;
 			gridLayout_3.makeColumnsEqualWidth = true;
 			grpJobChainStates1.setLayout(gridLayout_3);
-			GridData gd_gNodes = new GridData(SWT.FILL, SWT.FILL, true, true, 6, 6);
+//			GridData gd_gNodes = new GridData(SWT.FILL, SWT.FILL, true, true, 6, 6);
+			GridData gd_gNodes = new GridData(SWT.FILL, SWT.FILL, true, true, 3, 3);
 			grpJobChainStates1.setLayoutData(gd_gNodes);
 
 			JOE_L_JobChainNodes_State.Control(new Label(grpJobChainStates1, SWT.NONE));
@@ -228,35 +224,6 @@ public class JobChainFileSinkComposite extends CompositeBaseAbstract<JobChainLis
 		init = false;
 	}
 
-	private void createControl4JobName(final Composite pobjParent) {
-		JOE_L_JCNodesForm_Job.Control(new Label(pobjParent, SWT.NONE));
-		cboJob = new SOSComboBox(pobjParent, JOE_Cbo_JCNodesForm_Job);
-		cboJob.setVisibleItemCount(9);
-		cboJob.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 2, 1));
-		ContextMenu objM = new ContextMenu(cboJob, objDataProvider.get_dom(), Editor.JOB);
-		if (objM != null) {
-			cboJob.setMenu(objM.getMenu());
-		}
-		cboJob.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDoubleClick(final MouseEvent arg0) {
-				ContextMenu.goTo(cboJob.getText(), objDataProvider.get_dom(), Editor.JOB);
-				objParent.getShell().close();
-			}
-
-			@Override
-			public void mouseDown(final MouseEvent e) {
-				if (refresh) {
-					if (objDataProvider.getJobs() != null) {
-						cboJob.setItems(objDataProvider.getJobs());
-						refresh = false;
-					}
-				}
-			}
-		});
-		cboJob.addModifyListener(objLocalModifyListener);
-		cboJob.addKeyListener(objLocalKeyListener);
-	}
 
 	int	intStepIncr	= 100;
 
@@ -266,13 +233,12 @@ public class JobChainFileSinkComposite extends CompositeBaseAbstract<JobChainLis
 		intStepIncr += 100;
 		cboNextState.setText("step" + intStepIncr);
 		cboErrorState.setText("!" + strState);
-		applyInputFields(false);
+		applyInputFields(false, enuOperationMode.New);
 	}
 
 	private void changeState4NodeFields(final boolean pflgEnabledState) {
 
 		tbxState.setEnabled(pflgEnabledState);
-		cboJob.setEnabled(pflgEnabledState);
 		cboNextState.setEnabled(pflgEnabledState);
 		cboErrorState.setEnabled(pflgEnabledState);
 		cboOnError.setEnabled(pflgEnabledState);
@@ -282,7 +248,6 @@ public class JobChainFileSinkComposite extends CompositeBaseAbstract<JobChainLis
 	private void clearNodeFields() {
 
 		try {
-			cboJob.setText("");
 			cboNextState.setText("");
 			cboErrorState.setText("");
 			cboOnError.setText("");
@@ -293,7 +258,6 @@ public class JobChainFileSinkComposite extends CompositeBaseAbstract<JobChainLis
 			//		objDataProvider.clearNode();
 			//		}
 
-			cboJob.setItems(objDataProvider.getJobs());
 			cboNextState.setItems(objDataProvider.getStates());
 //			cboErrorState.setItems(objDataProvider.getAllStates());
 
@@ -309,17 +273,12 @@ public class JobChainFileSinkComposite extends CompositeBaseAbstract<JobChainLis
 	}
 
 	private void setCursorToFirstField() {
-		cboJob.setFocus();
+//		cboJob.setFocus();
 	}
 
 	private void populateNodeFields() {
 
 		init = true;
-		if (cboJob.getItemCount() <= 0) {
-			cboJob.setItems(objDataProvider.getJobs());
-		}
-
-		cboJob.setText(objDataProvider.getJob());
 		tbxState.setText(objDataProvider.getState());
 		tDelay.setText(objDataProvider.getDelay());
 		String strNextState = objDataProvider.getNextState();
@@ -332,12 +291,11 @@ public class JobChainFileSinkComposite extends CompositeBaseAbstract<JobChainLis
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgFromCopyStore) {
+	protected void applyInputFields(final boolean flgFromCopyStore, final enuOperationMode OperationMode) {
 		try {
 			//			cboNextState.setVisibleItemCount(20);
 			// TODO use class JobChainNodesWrapper
 			String strState = tbxState.getText();
-			String strJob = cboJob.getText();
 			String strDelay = tDelay.getText();
 			String strNextState = cboNextState.getText();
 			String strErrorState = cboErrorState.getText();
@@ -364,10 +322,10 @@ public class JobChainFileSinkComposite extends CompositeBaseAbstract<JobChainLis
 			}
 			else {
 				if (flgInsertNewNode == true) {
-					objDataProvider.applyInsertNode(true, strState, strJob, strDelay, strNextState, strErrorState, false, "", strOnError);
+//					objDataProvider.applyInsertNode(true, strState, strJob, strDelay, strNextState, strErrorState, false, "", strOnError);
 				}
 				else {
-					objDataProvider.applyNode(true, strState, strJob, strDelay, strNextState, strErrorState, false, "", strOnError);
+//					objDataProvider.applyNode(true, strState, strJob, strDelay, strNextState, strErrorState, false, "", strOnError);
 				}
 				//				DetailsListener.checkGlobalJobChainParameter(strState, objDataProvider.getChainName(), strJob, objDataProvider.get_dom(), update);
 				objDataProvider.populateNodesTable();

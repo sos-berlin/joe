@@ -173,6 +173,13 @@ public class JOEListener extends JSToolBox {
 		return _dom;
 	}
 
+	public String getFileName () {
+		return get_dom().getFilename();
+	}
+	public boolean isLiveFolderElement () {
+		return get_dom().isLifeElement() || get_dom().isDirectory();
+	}
+
 	public Image getImage(final String pstrImageFileName) {
 		return ResourceManager.getImageFromResource("/sos/scheduler/editor/" + pstrImageFileName);
 	}

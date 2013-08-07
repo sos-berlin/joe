@@ -31,7 +31,6 @@ import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_ParameterForm_No
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_ParameterForm_Value;
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_Value;
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_ApplyChanges;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_ParameterForm_FileNotExist;
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_ParameterForm_From;
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_ParameterForm_NoDistinctParam;
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_ParameterForm_Order;
@@ -115,9 +114,11 @@ import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
 
+import com.sos.JSHelper.io.Files.JSFile;
 import com.swtdesigner.SWTResourceManager;
 
 public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */implements IUnsaved, IUpdateLanguage, ISOSTableMenueListeners {
@@ -359,50 +360,62 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		Element params = null;
 		final String node = txtIncludeNode.getText();
 		try {
-			String f = txtIncludeFilename.getText();
+			String strParameterIncludeFileName = txtIncludeFilename.getText();
 			boolean fNotExist = false;
-			if (!new File(f).exists()) {
-				String data = ".";
+			if (!new File(strParameterIncludeFileName).exists()) {
+				String strLiveFolderName = ".";
 				if ((dom.isDirectory() || dom.isLifeElement()) && butIsLifeFile.getSelection()) {
-					if (f.startsWith("/") || f.startsWith("\\")) {
-						data = Options.getSchedulerHotFolder();
+					if (strParameterIncludeFileName.startsWith("/") || strParameterIncludeFileName.startsWith("\\")) {
+						strLiveFolderName = Options.getSchedulerHotFolder();
 					}
 					else
 						if (dom.getFilename() != null) {
 							if (dom.isLifeElement())
-								data = new File(dom.getFilename()).getParent();
+								strLiveFolderName = new File(dom.getFilename()).getParent();
 							else
 								// iddirectory
-								data = new File(dom.getFilename()).getPath();
+								strLiveFolderName = new File(dom.getFilename()).getPath();
 						}
 				}
 				else {
 					// normale Konfiguration
 					if (butIsLifeFile != null && butIsLifeFile.getSelection())
-						data = Options.getSchedulerHotFolder();
+						strLiveFolderName = Options.getSchedulerHotFolder();
 					else
-						data = Options.getSchedulerData();
+						strLiveFolderName = Options.getSchedulerData();
 				}
-				f = (data.endsWith("/") || data.endsWith("\\") ? data : data + "/") + f;
-				if (!new File(f).exists()) {
+				strParameterIncludeFileName = (strLiveFolderName.endsWith("/") || strLiveFolderName.endsWith("\\") ? strLiveFolderName : strLiveFolderName
+						+ "/")
+						+ strParameterIncludeFileName;
+				if (!new File(strParameterIncludeFileName).exists()) {
 					fNotExist = true;
 				}
 			}
+
 			if (fNotExist) {
-				//				MainWindow.message("file not exist: " + f, SWT.ICON_WARNING);
-				MainWindow.message(JOE_M_ParameterForm_FileNotExist.params(f), SWT.ICON_WARNING);
-				return;
+				JSFile objNewFile = new JSFile(strParameterIncludeFileName);
+				objNewFile.WriteLine("<parameter></parameter>");
+				objNewFile.close();
+				//				MainWindow.message(JOE_M_ParameterForm_FileNotExist.params(strParameterIncludeFileName), SWT.ICON_WARNING);
+				//				return;
 			}
-			final String filename = f;
+
+			final String filename = strParameterIncludeFileName;
 			for (int i = 0; i < tabFolder.getItemCount(); i++) {
 				String strT = (String) tabFolder.getItem(i).getData("filename");
 				String strN = (String) tabFolder.getItem(i).getData("node");
 
-				if (strT.equals(filename) && strN.equals(node)) {
-					tabFolder.setSelection(tabFolder.getItem(i));
-					return;
+				if (strT != null && strN != null) {
+					if (strT.equals(filename) && strN.equals(node)) {
+						tabFolder.setSelection(tabFolder.getItem(i));
+						return;
+					}
+				}
+					else {
+//						return;
 				}
 			}
+
 			SAXBuilder builder = new SAXBuilder();
 			final Document doc = builder.build(filename);
 			java.util.List listOfElement = null;
@@ -417,7 +430,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				if (params != null)
 					listOfElement = params.getChildren("param");
 			}
-			java.util.HashMap hash = new java.util.HashMap(); // hilfsvariable
+			java.util.HashMap hash = new java.util.HashMap();
 			for (int i = 0; i < listOfElement.size(); i++) {
 				// Parametername in unterschiedlichen XPaths darf nur einmal vorkommen
 				// Element params_ = (Element)listOfElement.get(j);
@@ -431,6 +444,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				}
 				hash.put(Utils.getAttributeValue("name", param), "");
 			}
+
 			includeParameterTabItem = new CTabItem(tabFolder, SWT.CLOSE);
 			includeParameterTabItem.setText(new File(filename).getName());
 			includeParameterTabItem.setData("filename", filename);
@@ -784,7 +798,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		tParameter.setMenuItemText(itemUp, "Up", "F5", SWT.F5, false);
 		itemUp.addListener(SWT.Selection, getMoveNodeUpListener());
 		itemUp.setImage(getImage("icon_up.gif"));
-//		itemUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icons/17379.png"));
+		//		itemUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icons/17379.png"));
 
 		MenuItem itemDown = new MenuItem(objContextMenuJobChainStates, SWT.PUSH);
 		itemDown.addListener(SWT.Selection, getMoveNodeDownListener());
@@ -1132,6 +1146,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				txtIncludeNode.setText("");
 				if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
 					butIsLifeFile.setSelection(false);
+				butIsLifeFile.setEnabled(true);
 				butIncludesApply.setEnabled(false);
 				butOpenInclude.setEnabled(false);
 				butRemoveInclude.setEnabled(false);
@@ -1541,7 +1556,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgT) {
+	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
 		// TODO Auto-generated method stub
 
 	}

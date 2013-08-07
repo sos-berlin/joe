@@ -104,7 +104,13 @@ public class SOSComboBox extends CCombo {
 	public void setItems(final String[] pstrValList) {
 		if (pstrValList.length > 1) {
 			String[] objL = pstrValList;
-			Arrays.sort(objL, Collator.getInstance());
+			// if an element of objL is null: argument exception raised by Arrays
+			try {
+				Arrays.sort(objL, Collator.getInstance());
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 			super.setItems(objL);
 		}
 	}

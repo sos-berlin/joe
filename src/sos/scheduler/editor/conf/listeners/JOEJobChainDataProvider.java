@@ -8,7 +8,9 @@ import org.apache.log4j.Logger;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
+import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
+import sos.scheduler.editor.app.JSObjectElement;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.JobChainNodeWrapper;
 import sos.util.SOSClassUtil;
@@ -47,13 +49,13 @@ import com.sos.scheduler.model.objects.JSObjJobChain;
  */
 public class JOEJobChainDataProvider extends JOEListener {
 
-	public static final String		conTagFILE_ORDER_SINK		= "file_order_sink";
 	@SuppressWarnings("unused")
-	private final String			conClassName				= "JOEJobChainDataProvider";
+	private final String			conClassName				= this.getClass().getSimpleName();
 	@SuppressWarnings("unused")
 	private static final String		conSVNVersion				= "$Id$";
 	@SuppressWarnings("unused")
-	private static final Logger		logger						= Logger.getLogger(JOEJobChainDataProvider.class);
+	private final Logger			logger						= Logger.getLogger(this.getClass());
+	public static final String		conTagFILE_ORDER_SINK		= "file_order_sink";
 
 	protected Element				objJobChain					= null;
 
@@ -72,16 +74,23 @@ public class JOEJobChainDataProvider extends JOEListener {
 	public static final String		conAttrDELAY_AFTER_ERROR	= "delay_after_error";
 
 	protected Element				_config						= null;
-	//	protected Element			_node						= null;
 	protected JobChainNodeWrapper	_node						= null;
 	protected String[]				_states						= null;
+	protected JSObjectElement		objJSObjectElement			= null;
 
 	public JOEJobChainDataProvider() {
 		strUpdateObjectType = "job_chain";
 		strUpdateElementName = getChainName();
 	}
 
-	public Element getChain() {
+	public JSObjectElement getJSObject() {
+		if (objJSObjectElement == null) {
+			objJSObjectElement = new JSObjectElement(Editor.JOB_CHAIN, objJobChain);
+		}
+		return objJSObjectElement;
+	}
+
+	public Element getChainElement() {
 		return objJobChain;
 	}
 
@@ -128,7 +137,7 @@ public class JOEJobChainDataProvider extends JOEListener {
 		return objN;
 	}
 
-	public JobChainNodeWrapper getNewFileOrderSink() {
+	public JobChainNodeWrapper getNewFileOrderSinkNode() {
 		Element node = new Element(conTagFILE_ORDER_SINK);
 		JobChainNodeWrapper objN = getJobChainNodeWrapper(node);
 		objJobChain.addContent(node);
@@ -141,7 +150,7 @@ public class JOEJobChainDataProvider extends JOEListener {
 		return objN;
 	}
 
-	public JobChainNodeWrapper getAFileOrderSink() {
+	public JobChainNodeWrapper getAFileOrderSinkNode() {
 		Element node = new Element(conTagFILE_ORDER_SINK);
 		JobChainNodeWrapper objN = getJobChainNodeWrapper(node);
 		return objN;
@@ -363,7 +372,7 @@ public class JOEJobChainDataProvider extends JOEListener {
 		}
 	}
 
-	protected void getJOMJobChain() {
+	public void getJOMJobChain() {
 		getJobSchedulerObjectFactory();
 		if (objJSJobChain == null) {
 			String strFileName = _dom.getFilename();
@@ -379,8 +388,36 @@ public class JOEJobChainDataProvider extends JOEListener {
 		}
 	}
 
+	public JobChainNodeWrapper getNode() {
+		return _node;
+	}
+
+	public void clearNode() {
+		logger.debug("_node set to null");
+		_node = null;
+	}
+
+	public JobChainNodeWrapper setNode(final JobChainNodeWrapper pobjNode) {
+		_node = pobjNode;
+		return _node;
+	}
+
+	public JobChainNodeWrapper setNodeIfNull(final JobChainNodeWrapper pobjNode) {
+		if (_node == null) {
+			setNode(pobjNode);
+		}
+		//		logger.debug("_node set to null");
+		return _node;
+	}
+
+	public JobChainNodeWrapper setNode(final Object pobjNode) {
+		//		logger.debug("_node set to null");
+		_node = (JobChainNodeWrapper) pobjNode;
+		return _node;
+	}
+
 	@Override
-	protected void setDirty () {
+	protected void setDirty() {
 		super.setDirty();
 		/**
 		 * reload the content of the jobchain, this must be performed until the JOM is used only.
@@ -388,4 +425,24 @@ public class JOEJobChainDataProvider extends JOEListener {
 		objJSJobChain = null;
 		getJOMJobChain();
 	}
+
+	public boolean isFullNode() {
+		return getNode().isJobNode();
+	}
+
+	public boolean isFileSinkNode() {
+		return getNode().isFileSinkNode();
+	}
+
+	public boolean isValidState(final String state) {
+		if (_states != null) {
+			for (int i = 0; i < _states.length; i++) {
+				if (_states[i].equalsIgnoreCase(state) && !_states[i].equals(getState())) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 }
