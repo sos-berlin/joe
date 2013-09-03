@@ -1512,7 +1512,7 @@ public class MainWindow {
 
 	public static void shellActivated_() {
 		try {
-			if (MainWindow.getContainer().getCurrentEditor() == null || !flag) {
+            if ( !(MainWindow.container.getCurrentEditor() instanceof SchedulerForm) || MainWindow.getContainer().getCurrentEditor() == null || !flag) {
 				return;
 			}
 			DomParser dom = getSpecifiedDom();
