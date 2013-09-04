@@ -11,9 +11,10 @@ import org.eclipse.swt.widgets.Group;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.classes.LanguageDescriptorList;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+
+import com.sos.scheduler.model.LanguageDescriptorList;
 
 public class ScriptFormSchedulerStartScript extends ScriptForm implements IUpdateLanguage {
 

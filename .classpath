@@ -21,12 +21,13 @@
 	<classpathentry kind="var" path="SOS_LIB/com.sos.connection.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/com.sos.net.jar" sourcepath="/SOS_JavaSource/com.sos.net"/>
 	<classpathentry kind="var" path="SOS_LIB/com.sos.settings.jar"/>
-	<classpathentry kind="var" path="SOS_LIB/com.sos.util.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.sos.dialog"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.sos.ftp.profiles"/>
 	<classpathentry kind="var" path="SOS_LIB/xerces-2_11_0-xml-schema-1.1-beta/org.eclipse.wst.xml.xpath2.processor_1.1.0.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/xalan.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/xercesImpl.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/xml-apis.jar"/>
+	<classpathentry kind="src" path="/com.sos.VirtualFileSystem"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.sos.util"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

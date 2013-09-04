@@ -16,7 +16,6 @@ import org.eclipse.swt.widgets.Group;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.classes.LanguageDescriptorList;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.composites.JobMainComposite;
@@ -29,6 +28,8 @@ import sos.scheduler.editor.conf.container.JobSetback;
 import sos.scheduler.editor.conf.container.JobSourceViewer;
 import sos.scheduler.editor.conf.container.JobStartWhenDirectoryChanged;
 import sos.scheduler.editor.conf.listeners.JobOptionsListener;
+
+import com.sos.scheduler.model.LanguageDescriptorList;
 
 public class ScriptJobMainForm extends ScriptForm {
 

@@ -17,21 +17,23 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.util.SOSClassUtil;
 
+import com.sos.scheduler.model.LanguageDescriptorList;
+
 public class ScriptListener extends JOEListener {
 
 	public final static int			NONE				= -1;
-	public final static String[]	_languagesJob		= { "shell", "java", "javascript", "VBScript", "perlScript", "" };
-	public final static String[]	_languagesMonitor	= { "java", "javascript", "VBScript", "perlScript", "" };
+	public final static String[]	_languagesJob		= LanguageDescriptorList.getLanguages4APIJobs();
+	public final static String[]	_languagesMonitor	= LanguageDescriptorList.getLanguages4Monitor();
+
+
+//	public final static String[]	_languagesJob		= { "shell", "java", "javascript", "VBScript", "perlScript", "" };
+//	public final static String[]	_languagesMonitor	= { "java", "javascript", "VBScript", "perlScript", "" };
 
 	public String[]					_languages			= null;
-	private SchedulerDom			_dom				= null;
-
-	private Element					_parent				= null;
-
+//	private SchedulerDom			_dom				= null;
+//	private Element					_parent				= null;
 	private Element					_script				= null;
-
 	private int						_type				= -1;
-
 	private ISchedulerUpdate		_update				= null;
 
 	public ScriptListener(final SchedulerDom dom, final Element parent, final int type, final ISchedulerUpdate update) {

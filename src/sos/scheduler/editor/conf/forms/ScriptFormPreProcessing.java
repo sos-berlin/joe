@@ -20,12 +20,13 @@ import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.classes.LanguageDescriptor;
-import sos.scheduler.editor.classes.LanguageDescriptorList;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.composites.PreProcessingComposite;
 import sos.util.SOSClassUtil;
+
+import com.sos.scheduler.model.LanguageDescriptor;
+import com.sos.scheduler.model.LanguageDescriptorList;
 
 public class ScriptFormPreProcessing extends ScriptForm implements IUpdateLanguage {
 	@SuppressWarnings("unused")

@@ -13,12 +13,12 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.classes.LanguageDescriptorList;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.util.SOSClassUtil;
 import sos.util.SOSDate;
 
+import com.sos.scheduler.model.LanguageDescriptorList;
 public class JobsListener extends JOEListener {
 
 //	private SchedulerDom		_dom	= null;

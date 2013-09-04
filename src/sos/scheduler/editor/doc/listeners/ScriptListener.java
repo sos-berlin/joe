@@ -9,10 +9,12 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 
-public class ScriptListener {
-    private DocumentationDom     _dom;
+import com.sos.scheduler.model.LanguageDescriptorList;
 
-    private Element              _parent;
+public class ScriptListener {
+    private final DocumentationDom     _dom;
+
+    private final Element              _parent;
 
     private Element              _script;
 
@@ -32,11 +34,11 @@ public class ScriptListener {
 
     public final static int      COM         = 99;
 
-    
-    public final static String[] _languages  = { "", "java", "javascript", "perlscript", "vbscript", "shell",  "" };
 
+//    public final static String[] _languages  = { "", "java", "javascript", "perlscript", "vbscript", "shell",  "" };
+    public final static String[] _languages  = LanguageDescriptorList.getLanguages4APIJobs();
 
-    public ScriptListener(DocumentationDom dom, Element parent, int type) {
+    public ScriptListener(final DocumentationDom dom, final Element parent, final int type) {
         _dom = dom;
         _parent = parent;
         _type = type;
@@ -97,7 +99,7 @@ public class ScriptListener {
     }
 
 
-    private int languageAsInt(String language) {
+    private int languageAsInt(final String language) {
         for (int i = 0; i < _languages.length; i++) {
             if (_languages[i].equalsIgnoreCase(language))
                 return i;
@@ -110,12 +112,12 @@ public class ScriptListener {
     }
 
 
-    private String languageAsString(int language) {
+    private String languageAsString(final int language) {
         return _languages[language];
     }
 
 
-    public void setLanguage(int language) {
+    public void setLanguage(final int language) {
         setScript();
 
         if (_script != null) {
@@ -157,7 +159,7 @@ public class ScriptListener {
     }
 
 
-    public void setComClass(String com) {
+    public void setComClass(final String com) {
         setScript();
         Utils.setAttribute("com_class", com, "", _script, _dom);
     }
@@ -168,23 +170,23 @@ public class ScriptListener {
     }
 
 
-    public void setJavaClass(String java) {
+    public void setJavaClass(final String java) {
         setScript();
         Utils.setAttribute("java_class", java, "", _script, _dom);
     }
 
 
-    public String[] getResources(String ownID) {
+    public String[] getResources(final String ownID) {
         return DocumentationListener.getIDs(_dom, ownID);
     }
 
 
     public String getResource() {
-        return (Utils.getAttributeValue("resource", _script));
+        return Utils.getAttributeValue("resource", _script);
     }
 
 
-    public void setResource(String resource) {
+    public void setResource(final String resource) {
         setScript();
         Utils.setAttribute("resource", DocumentationListener.getID(resource), _script, _dom);
     }

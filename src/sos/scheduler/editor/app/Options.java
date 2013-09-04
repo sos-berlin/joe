@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
@@ -491,16 +492,25 @@ public class Options extends I18NBase {
 	}
 
 	public static void saveSash(final String name, final int[] sash) {
+		// TODO move it to the formHelper
 		setProperty(name + ".sash.layout", sash[0] + "," + sash[1]);
 	}
 
 	public static void loadSash(final String name, final SashForm sash) {
+		// TODO move it to the formHelper
 		try {
 			String value = _properties.getProperty(name + ".sash.layout");
 			if (value != null) {
 				String[] values = value.split(",");
 				int[] weights = { new Integer(values[0].trim()).intValue(), new Integer(values[1].trim()).intValue() };
 				sash.setWeights(weights);
+				sash.setSashWidth(10);
+				if (sash.getOrientation() == SWT.HORIZONTAL) {
+
+				}
+				else {
+
+				}
 			}
 		}
 		catch (Exception e) {

@@ -15,11 +15,12 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.classes.LanguageDescriptor;
-import sos.scheduler.editor.classes.LanguageDescriptorList;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.util.SOSClassUtil;
+
+import com.sos.scheduler.model.LanguageDescriptor;
+import com.sos.scheduler.model.LanguageDescriptorList;
 
 public class JobListener extends JOEListener {
 

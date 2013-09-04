@@ -21,8 +21,6 @@ import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.classes.LanguageDescriptor;
-import sos.scheduler.editor.classes.LanguageDescriptorList;
 import sos.scheduler.editor.classes.LanguageSelector;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -30,6 +28,9 @@ import sos.scheduler.editor.conf.container.JobIncludeFile;
 import sos.scheduler.editor.conf.container.JobJavaAPI;
 import sos.scheduler.editor.conf.container.JobScript;
 import sos.scheduler.editor.conf.listeners.JobListener;
+
+import com.sos.scheduler.model.LanguageDescriptor;
+import com.sos.scheduler.model.LanguageDescriptorList;
 
 public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 

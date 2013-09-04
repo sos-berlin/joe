@@ -19,6 +19,8 @@ import org.eclipse.swt.widgets.Composite;
 import sos.scheduler.editor.app.SOSMsgJOE;
 import sos.scheduler.editor.conf.forms.JobChainNodesForm;
 
+import com.sos.JSHelper.interfaces.ISOSComboItem;
+
 /**
  * @author KB
  * for more information on CCombo see http://help.eclipse.org/helios/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fswt%2Fcustom%2FCCombo.html

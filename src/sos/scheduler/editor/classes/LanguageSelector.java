@@ -2,6 +2,8 @@ package sos.scheduler.editor.classes;
 
 import org.eclipse.swt.widgets.Composite;
 
+import com.sos.scheduler.model.LanguageDescriptor;
+import com.sos.scheduler.model.LanguageDescriptorList;
 /**
 * \class LanguageSelector
 *
@@ -27,16 +29,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 
 public class LanguageSelector extends SOSComboBox {
-
-	// TODO das muﬂ alles in den Script-Tag im JSModel
-	//	public static final String		conLanguagePL_SQL		= "pl/sql";
-	//	public static final String		conLanguagePERL_SCRIPT	= "perlScript";
-	//	public static final String		conLanguageVB_SCRIPT	= "VBScript";
-	//	public static final String		conLanguageJAVASCRIPT	= "javascript";
-	//	public static final String		conLanguageSHELL		= "shell";
-	//	public static final String		conLanguageJAVA			= "java";
-	//	public static final String		conLanguageSQL_PLUS		= "sql*plus";
-	//	public static final String		conLanguageSSH			= "ssh";
 
 	@SuppressWarnings("unused")
 	private final String			conClassName		= "LanguageSelector";
