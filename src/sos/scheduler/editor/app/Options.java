@@ -333,9 +333,9 @@ public class Options extends I18NBase {
 			if (!listOfElement.isEmpty()) {
 				Element e = listOfElement.get(0);
 				String version = e.getText();
-				int pos1 = version.indexOf("$") + "$Id: ".length();
-				int pos2 = version.indexOf("jz $");
-				version = version.substring(pos1, pos2);
+				//int pos1 = version.indexOf("$") + "$Id: ".length();
+				//int pos2 = version.indexOf("jz $");
+				//version = version.substring(pos1, pos2);
 				_properties.put("editor.schemaversion", version);
 			}
 		}

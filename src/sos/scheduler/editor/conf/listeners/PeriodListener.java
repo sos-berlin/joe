@@ -80,8 +80,8 @@ public class PeriodListener {
 		return Utils.getIntegerAsString(Utils.getHours(_period.getAttributeValue("begin"), -999));
 	}
 
-		public void setPeriodTime(final int maxHour, final Button bApply, final String node, final String hours, final String minutes, final String seconds) {
-
+		public void setPeriodTime(int maxHour, final Button bApply, final String node, final String hours, final String minutes, final String seconds) {
+		maxHour=24;
 		if (_period != null ){
 			if (node.equals("single_start") && _period.getName().equals("at")) {
 				Utils.setAttribute("at", Utils.getAttributeValue("at", _period).substring(0, 10) + " " + Utils.getTime(maxHour, hours, minutes, seconds, false), _period, _dom);
