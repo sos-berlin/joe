@@ -134,7 +134,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 	public void fillPeriod() {
 		event = false;
-		if (listener.getPeriod() != null) {
+		if (listener.getPeriod() != null ) {
 
 			//event = false;
 			sBeginHours.setText(Utils.fill(2, String.valueOf(listener.getBeginHours())));
@@ -352,7 +352,8 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		} else {
 			event = false;
 			if (savEndHours.equals("") || (savEndHours.equals("00") && savEndMinutes.equals("00") &&  savEndSeconds.equals("00"))) {
-			   savEndHours = "24";
+			  // savEndHours = "24"; 
+		      // Wegen JS-790 auskommentiert. 
 			}
 			
 			if (!savBeginHours.equals(""))
@@ -361,8 +362,8 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				sBeginMinutes.setText(savBeginMinutes);
 			if (!savBeginSeconds.equals(""))
 				sBeginSeconds.setText(savBeginSeconds);
-			if (!savEndHours.equals(""))
-				sEndHours.setText(savEndHours);
+			if (!savEndHours.equals("") )
+			 	sEndHours.setText(savEndHours);
 			if (!savEndMinutes.equals(""))
 				sEndMinutes.setText(savEndMinutes);
 			if (!savEndSeconds.equals(""))
@@ -576,7 +577,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		sEndHours.setTextLimit(2);
 		sEndHours.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
-				refreshPeriodsTable(e);
+				//refreshPeriodsTable(e);
 			}
 		});
 		sEndHours.setLayoutData(new GridData(24, SWT.DEFAULT));
@@ -589,7 +590,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if(_type != Editor.RUNTIME)
 					return;
-				setEndHours();
+				//setEndHours();
 			}
 		});
 		
@@ -672,6 +673,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		});
 		cboStarttime.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
+				 
 				if (bApply != null && event) {
 					boolean hasTime = (stHour.getText().concat(stMinutes.getText()).concat(stSeconds.getText()).trim()).replaceAll("0", "").length() > 0;
 					bApply.setEnabled(hasTime);					
@@ -999,7 +1001,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		}
 		if (event)  {   
 
-			listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
+			listener.setPeriodTime(24, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
 					sBeginSeconds.getText());
 
 			updateFont();

@@ -775,6 +775,9 @@ public class MainWindow {
 		return message(getSShell(), message, style);
 	}
 
+	public static int message(String application, String message, int style) {
+        return message(getSShell(), application, message, style);
+    }
 	// /**
 	// * Erzeugt einen Confirm-Dialog, wenn der Button zum schlieﬂen des Fensters
 	// * bet‰tigt wird.
@@ -813,7 +816,32 @@ public class MainWindow {
 		mb.setText("JOE: " + title);
 		return mb.open();
 	}
-
+ 
+	public static int message(Shell shell, String application, String pstrMessage, int style) {
+        MessageBox mb = new MessageBox(shell, style);
+        if (mb == null) {
+            return -1;
+        }
+        if (pstrMessage == null) {
+            pstrMessage = "??????";
+        }
+        mb.setMessage(pstrMessage);
+        String title = Messages.getLabel("message");
+        if ((style & SWT.ICON_ERROR) != 0)
+            title = Messages.getLabel("error");
+        else {
+            if ((style & SWT.ICON_INFORMATION) != 0)
+                title = Messages.getLabel("information");
+            else
+                if ((style & SWT.ICON_QUESTION) != 0)
+                    title = Messages.getLabel("question");
+                else
+                    if ((style & SWT.ICON_WARNING) != 0)
+                        title = Messages.getLabel("warning");
+        }
+        mb.setText(application + ": "  + title);
+        return mb.open();
+    }
 	public static IContainer getContainer() {
 		return container;
 	}

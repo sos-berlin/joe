@@ -50,6 +50,21 @@ public class ErrorLog extends Exception {
 
 	}
 
+    public ErrorLog(final String application, String msg, final Exception e) {
+        super();
+
+        try {
+            init();
+            JobSchedulerException objJSE = new JobSchedulerException(msg, e);
+            String strMsg = msg + "\n" + objJSE.ExceptionText();
+            MainWindow.message(application, strMsg, SWT.ERROR);
+            logger.error(strMsg);
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+    }
 	//	/**
 	//	 * @param args
 	//	 */

@@ -44,6 +44,7 @@ public class MainListener extends JOEListener {
 		String message = sos.scheduler.editor.app.Messages.getString("MainListener.aboutText", Options.getVersion() + //
 				"\nSchema-Version:\n\t" + Options.getSchemaVersion() + "\n"
 				+ "SVN: \t" + getSVNVersion());
+
 		objAboutDialogBox.setContent(message, SWT.CENTER);
 		objAboutDialogBox.getStyledText().setEditable(false);
 		StyleRange bold = new StyleRange();

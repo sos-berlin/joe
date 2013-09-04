@@ -225,6 +225,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
         final GridData gridData_6 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
         gridData_6.widthHint = 47;
         titleLabel.setLayoutData(gridData_6);
+        
 
         tTitle = JOE_T_OrderForm_Title.Control(new Text(gOrder, SWT.BORDER));
         tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {

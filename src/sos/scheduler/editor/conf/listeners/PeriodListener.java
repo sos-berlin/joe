@@ -82,6 +82,7 @@ public class PeriodListener {
 	}
 
 		public void setPeriodTime(int maxHour, Button bApply, String node, String hours, String minutes, String seconds) {
+			maxHour=24;
 
 		if (_period != null ){
 			if (node.equals("single_start") && _period.getName().equals("at")) {
