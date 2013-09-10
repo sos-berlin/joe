@@ -145,11 +145,13 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
                 @Override
                 public void mouseDoubleClick(MouseEvent e) {
-                    int index = table.getSelectionIndex();
-                    if (index >= 0) {
+                    if (!table.isDisposed()) {
+                       int index = table.getSelectionIndex();
+                        if (index >= 0) {
 
                         String strName = table.getSelection()[0].getText(0);
                         ContextMenu.goTo(strName, dom, Editor.MONITOR);
+                      }
 
                     }
                 }
