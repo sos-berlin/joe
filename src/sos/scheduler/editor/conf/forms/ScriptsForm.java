@@ -142,16 +142,18 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				@Override
 				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
-					if (table.getSelectionCount() > 0) {
-
-						if (Utils.isElementEnabled("job", dom, (Element) e.item.getData())) {
-							butRemove.setEnabled(true);
-						}
-						else {
-							butRemove.setEnabled(false);
-							return;
-						}
-					}
+				    if (!table.isDisposed()) {
+    					if (table.getSelectionCount() > 0) {
+    
+    						if (Utils.isElementEnabled("job", dom, (Element) e.item.getData())) {
+    							butRemove.setEnabled(true);
+    						}
+    						else {
+    							butRemove.setEnabled(false);
+    							return;
+    						}
+    					}
+				    }
 				}
 			});
 
