@@ -205,6 +205,8 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			TableColumn tableColumn5 = JOE_TCl_JobsForm_Disabled.Control(new TableColumn(table, SWT.NONE));
 			tableColumn5.setWidth(60);
 			
+			   
+			
 			table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					if (Utils.isElementEnabled("job", dom, (Element) e.item.getData())) {

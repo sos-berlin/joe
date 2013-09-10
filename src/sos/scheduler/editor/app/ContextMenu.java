@@ -306,7 +306,7 @@ public class ContextMenu {
 					SchedulerForm f = (SchedulerForm)sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
 					if(f == null)
 						return;
-					Tree tree = f.getTree();
+					TreeItem tree = f.getTree().getItems()[0];
 					for(int i = 0; i < tree.getItemCount(); i++) {
 						TreeItem item = tree.getItem(i);
 						if(item.getText().equals(SchedulerListener.JOBS)){
@@ -318,7 +318,7 @@ public class ContextMenu {
 								// TODO get the name of the job from the Element, not from the description
 
                                 if(strName.equals(name)){
-									tree.setSelection(new TreeItem [] {jItem});
+									tree.getParent().setSelection(new TreeItem [] {jItem});
 								 	f.updateTreeItem(jItem.getText());
 								    f.updateTree("jobs");
 									break;
@@ -387,7 +387,7 @@ public class ContextMenu {
 					SchedulerForm f = (SchedulerForm)sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
 					if(f == null)
 						return;
-					Tree tree = f.getTree();
+                    TreeItem tree = f.getTree().getItems()[0];
 					for(int i = 0; i < tree.getItemCount(); i++) {
 						TreeItem item = tree.getItem(i);
 						if(item.getText().equals(SchedulerListener.JOB_CHAINS)){
@@ -398,7 +398,7 @@ public class ContextMenu {
 	                            strName = removeTitle(strName);
 
  								if(strName.equals(name)){
-									tree.setSelection(new TreeItem [] {jItem});
+									tree.getParent().setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("");
 									jItem.setExpanded(true);
@@ -417,12 +417,12 @@ public class ContextMenu {
 					SchedulerForm f = (SchedulerForm)sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
 					if(f == null)
 						return;
-					Tree tree = f.getTree();
+                    TreeItem tree = f.getTree().getItems()[0];
 					for(int i = 0; i < tree.getItemCount(); i++) {
 						TreeItem item = tree.getItem(i);
 						//if(item.getText().equals("Process Classes")){
 						if(item.getText().endsWith("Process Classes")){
-							tree.setSelection(new TreeItem [] {item});
+							tree.getParent().setSelection(new TreeItem [] {item});
 							f.updateTreeItem(item.getText());
 							f.updateTree("");
 							break;
@@ -437,7 +437,7 @@ public class ContextMenu {
 					SchedulerForm f = (SchedulerForm)sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
 					if(f == null)
 						return;
-					Tree tree = f.getTree();
+                    TreeItem tree = f.getTree().getItems()[0];
 					for(int i = 0; i < tree.getItemCount(); i++) {
 						TreeItem item = tree.getItem(i);
 						if(item.getText().equals(SchedulerListener.SCHEDULES)){
@@ -448,7 +448,7 @@ public class ContextMenu {
                                 strName = removeTitle(strName);
 
                                 if(strName.equals(name) ){
-									tree.setSelection(new TreeItem [] {jItem});
+									tree.getParent().setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("");
 									break;
@@ -472,7 +472,7 @@ public class ContextMenu {
 					SchedulerForm f = (SchedulerForm)sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
 					if(f == null)
 						return;
-					Tree tree = f.getTree();
+                    TreeItem tree = f.getTree().getItems()[0];
 					for(int i = 0; i < tree.getItemCount(); i++) {
 						TreeItem item = tree.getItem(i);
 						if(item.getText().equals(SchedulerListener.ORDERS)){
@@ -483,7 +483,7 @@ public class ContextMenu {
                                 strName = removeTitle(strName);
 
                                 if(strName.equals(name) ){
-                                    tree.setSelection(new TreeItem [] {jItem});
+                                    tree.getParent().setSelection(new TreeItem [] {jItem});
 									f.updateTreeItem(jItem.getText());
 									f.updateTree("");
 									break;
