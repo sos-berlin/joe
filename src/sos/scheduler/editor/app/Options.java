@@ -504,12 +504,12 @@ public class Options extends I18NBase {
 				String[] values = value.split(",");
 				int[] weights = { new Integer(values[0].trim()).intValue(), new Integer(values[1].trim()).intValue() };
 				sash.setWeights(weights);
-				sash.setSashWidth(10);
+				sash.setSashWidth(5);
 				if (sash.getOrientation() == SWT.HORIZONTAL) {
-
+//					sash.setCursor(new Cursor(sash.getDisplay(), SWT.CURSOR_SIZEWE));
 				}
 				else {
-
+//					sash.setCursor(new Cursor(sash.getDisplay(), SWT.CURSOR_SIZENE));
 				}
 			}
 		}
