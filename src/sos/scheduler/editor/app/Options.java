@@ -550,7 +550,7 @@ public class Options extends I18NBase {
 	public static String getSchedulerHome() {
 		String strT = getProp(conEnvVarSCHEDULER_HOME, "");
 
-		logger.debug("getSchedulerHome = " + strT);
+		logger.trace("getSchedulerHome = " + strT);
 		return strT;
 	}
 
