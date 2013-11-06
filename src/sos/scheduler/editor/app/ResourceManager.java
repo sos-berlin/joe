@@ -35,6 +35,7 @@ public class ResourceManager extends SWTResourceManager {
 			try {
 				InputStream is = key.getClass().getResourceAsStream(path);
 				image = getImage(is);
+			 
 				m_ClassImageMap.put(key, image);
 				is.close();
 			}

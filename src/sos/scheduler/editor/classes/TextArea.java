@@ -136,7 +136,8 @@ public class TextArea extends StyledText /* Text */{
         new MenuItem(objContextMenu, SWT.SEPARATOR);
 
        
-         MenuItem itemStartExternalEditor = new MenuItem(objContextMenu,SWT.PUSH); itemStartExternalEditor.addListener(SWT.Selection, getStartExternalEditorListener());
+         MenuItem itemStartExternalEditor = new MenuItem(objContextMenu,SWT.PUSH); 
+         itemStartExternalEditor.addListener(SWT.Selection, getStartExternalEditorListener());
          itemStartExternalEditor.setText("Start external Editor");
          setMenu(objContextMenu);
 

@@ -90,6 +90,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
         dom.setInit(true);
         objDataProvider = new JobListener(dom, job, main);
         objDataProvider._languages = objDataProvider._languagesJob;
+         
         dom.setInit(false);
     }
 
