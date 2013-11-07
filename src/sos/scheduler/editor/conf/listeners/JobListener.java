@@ -59,7 +59,7 @@ public class JobListener extends JOEListener {
 		objElement = _job;
 		_main = update;
 
-		_process = _job.getChild("process");
+		//_process = _job.getChild("process");
         _directories = _job.getChildren("start_when_directory_changed");
 		_setbacks = _job.getChildren("delay_order_after_setback");
 		_errorDelays = _job.getChildren("delay_after_error");
