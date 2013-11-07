@@ -119,6 +119,8 @@ import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
 
 import com.sos.JSHelper.io.Files.JSFile;
+import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
+import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
 import com.swtdesigner.SWTResourceManager;
 
 public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */implements IUnsaved, IUpdateLanguage, ISOSTableMenueListeners {

@@ -25,12 +25,13 @@ import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.TextArea;
 import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
-import sos.scheduler.editor.conf.forms.JobAssistentImportJobParamsForm;
-import sos.scheduler.editor.conf.forms.JobAssistentImportJobsForm;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.util.SOSClassUtil;
 
-public class JobDocumentation extends FormBaseClass {
+import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
+import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
+
+public class JobDocumentation extends FormBaseClass <JobListener> {
 	@SuppressWarnings("unused")
 	private final String	conSVNVersion		= "$Id$";
 
@@ -45,12 +46,13 @@ public class JobDocumentation extends FormBaseClass {
 	private Button			butIsLiveFile		= null;
 	private Button			butWizard			= null;
 	private boolean			init				= true;
-	private JobListener		objJobDataProvider	= null;
+//	private JobListener		objJobDataProvider	= null;
 	private TextArea		txtAreaDescription	= null;
 
 	public JobDocumentation(final Composite pParentComposite, final JobListener pobjDataProvider) {
 		super(pParentComposite, pobjDataProvider);
 		objJobDataProvider = pobjDataProvider;
+		objParent = pParentComposite;
 		init = true;
 		showWaitCursor();
 		createGroup(pParentComposite);
@@ -59,20 +61,15 @@ public class JobDocumentation extends FormBaseClass {
 		restoreCursor();
 	}
 
-	public void apply() {
-		// if (isUnsaved())
-		// addParam();
-	}
-
-	public boolean isUnsaved() {
-		// return bApply.isEnabled();
-		return false;
-	}
-
 	private void initForm() {
 
 		tFileName.setText(objJobDataProvider.getInclude());
 		butIsLiveFile.setSelection(objJobDataProvider.isLiveFile());
+	}
+
+	@Override
+	public void createGroup () {
+		createGroup (objParent);
 	}
 
 	private void createGroup(final Composite objParent1) {
@@ -314,5 +311,6 @@ public class JobDocumentation extends FormBaseClass {
 
 		return data;
 	}
+
 
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -13,7 +13,8 @@ import org.eclipse.swt.widgets.Shell;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.conf.listeners.JOEListener;
+
+import com.sos.dialog.classes.WindowsSaver;
 
 /**
 * \class FormBaseClass
@@ -44,23 +45,30 @@ import sos.scheduler.editor.conf.listeners.JOEListener;
  * @author KB
  *
  */
-public class FormBaseClass {
+public abstract class FormBaseClass  <DataProviderClass> {
 
 	@SuppressWarnings("unused")
-	private final String		conClassName		= "FormBaseClass";
+	private final String		conClassName			= this.getClass().getSimpleName();
 	@SuppressWarnings("unused")
-	private static final String	conSVNVersion		= "$Id$";
-	private static final Logger	logger				= Logger.getLogger(FormBaseClass.class);
+	private final Logger		logger					= Logger.getLogger(this.getClass());
 
-	protected JOEListener		objJobDataProvider	= null;
-	protected Composite			objParent			= null;
-	protected Shell				shell				= null;
-	protected Cursor			objLastCursor		= null;
-	protected FormBaseClass		objParentForm		= this;
+	@SuppressWarnings("unused")
+	private static final String	conSVNVersion			= "$Id$";
 
-//	protected CSSEngine			engine				= null;
+	protected WindowsSaver		objFormPosSizeHandler	= null;
 
-	protected final int			intComboBoxStyle	= SWT.NONE;
+	protected DataProviderClass		objJobDataProvider		= null;
+	protected Composite			objParent				= null;
+	protected Shell				shell					= null;
+	protected Cursor			objLastCursor			= null;
+	protected FormBaseClass		objParentForm			= this;
+
+	//	protected CSSEngine			engine				= null;
+
+	protected final int			intComboBoxStyle		= SWT.NONE;
+
+	public FormBaseClass() {
+	}
 
 	public FormBaseClass(final Composite parent, final int style) {
 		//		super(parent, style);
@@ -82,24 +90,27 @@ public class FormBaseClass {
 		//		});
 	}
 
-//	public CSSEngine CSSEngine() {
-//		return engine;
-//	}
-//
-//	public void applyStyle() {
-//		if (engine != null) {
-//			engine.applyStyles(shell, /* applyStylesToChildNodes */true);
-//		}
-//	}
+	//	public CSSEngine CSSEngine() {
+	//		return engine;
+	//	}
+	//
+	//	public void applyStyle() {
+	//		if (engine != null) {
+	//			engine.applyStyles(shell, /* applyStylesToChildNodes */true);
+	//		}
+	//	}
 
-	public FormBaseClass(final Composite pParentComposite, final JOEListener pobjDataProvider) {
-		//		super(pParentComposite, SWT.NONE);
+	public void setParentComposite(final Composite pParentComposite, final DataProviderClass pobjDataProvider) {
 		objParent = pParentComposite;
 		shell = pParentComposite.getShell();
-		objJobDataProvider = pobjDataProvider;
 		GridLayout grdL = new GridLayout();
 		pParentComposite.setLayout(grdL);
 		setResizableV(pParentComposite);
+		objJobDataProvider = pobjDataProvider;
+	}
+
+	public FormBaseClass(final Composite pParentComposite, final DataProviderClass pobjDataProvider) {
+		setParentComposite(pParentComposite, pobjDataProvider);
 	}
 
 	protected void setResizableV(final Control objControl) {
@@ -162,4 +173,24 @@ public class FormBaseClass {
 	public Shell getShell() {
 		return shell;
 	}
+
+	public void apply() {
+		// if (isUnsaved())
+		// addParam();
+	}
+
+	public boolean isUnsaved() {
+		return false;
+	}
+
+	public void refreshContent() {
+	}
+
+
+	protected void saveWindowPosAndSize() {
+		objFormPosSizeHandler.saveWindow();
+	}
+
+
+	public abstract void createGroup();
 }

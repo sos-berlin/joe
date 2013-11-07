@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.forms;
+package com.sos.joe.job.wizard;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +10,10 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -43,15 +46,19 @@ import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.container.JobDocumentation;
+import sos.scheduler.editor.conf.forms.JobDocumentationForm;
+import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
 import sos.scheduler.editor.conf.listeners.SortTreeListener;
 import sos.util.SOSClassUtil;
 
+import com.sos.dialog.classes.WindowsSaver;
 import com.swtdesigner.SWTResourceManager;
 
 /**
@@ -92,50 +99,50 @@ import com.swtdesigner.SWTResourceManager;
  *
  * Der Aufbau eines Jobs kann aus der Dokumentation <SCHEDULER_>\config\html\doc\de\xml.xml entnommen werden.
  *
- * @author mueruevet.oeksuez@sos-berlin.com
- *
- * @version $Id$
+ * @version $Id: JobAssistentImportJobsForm.java 20744 2013-07-22 10:26:13Z kb $
  */
 
+public class JobAssistentImportJobsForm extends FormBaseClass<JobListener> {
+	private final String				conClassName		= this.getClass().getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String			conSVNVersion		= "$Id$";
+	@SuppressWarnings("unused")
+	private final Logger				logger				= Logger.getLogger(this.getClass());
 
-public class JobAssistentImportJobsForm {
-	private Shell													shell				= null;
-    private Display                                                 display             = null;
-    private static final String EMPTY_STRING    = "";
-    private Text                searchField     = null;
-    public Timer                inputTimer;
+	private Display						display				= null;
+	private static final String			EMPTY_STRING		= "";
+	private Text						searchField			= null;
+	public Timer						inputTimer;
 
-
-	private Text													txtTitle			= null;
-	private Text													txtPath				= null;
-	private Tree													tree				= null;
-	private String													xmlPaths			= null;
-	private Text													txtJobname			= null;
-	private JobsListener											listener			= null;
-	private JobListener												joblistener			= null;
-	private SchedulerDom											dom					= null;
-	private ISchedulerUpdate										update				= null;
-	/** Parameter: Tabelle aus der JobForm*/
-	private Table													tParameter			= null;
-	private Button													butImport			= null;
-	private Button													butParameters		= null;
-	private Button													butdescription		= null;
-	private Button													butCancel			= null;
-	private Button													butShow				= null;
-	private Button													butBack				= null;
-	private String													jobType				= "";
+	private Text						txtTitle			= null;
+	private Text						txtPath				= null;
+	private Tree						objJitlJobList				= null;
+	private String						xmlPaths			= null;
+	private Text						txtJobname			= null;
+	private JobsListener				objJobsListener		= null;
+	private SchedulerDom				dom					= null;
+	private ISchedulerUpdate			update				= null;
+	/** Parameter: Tabelle aus der JobForm */
+	private Table						tParameter			= null;
+	private Button						butFinish			= null;
+	private Button						butParameters		= null;
+	private Button						butdescription		= null;
+	private Button						butCancel			= null;
+	private Button						butShow				= null;
+	private Button						butBack				= null;
+	private String						jobType				= "";
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
-	private int														assistentType		= -1;
-	private Combo													jobname				= null;
-	private Element													jobBackUp			= null;
-	private ScriptJobMainForm										jobForm				= null;
-	private sos.scheduler.editor.conf.listeners.ParameterListener	paramListener		= null;
-	private Text													refreshDetailsText	= null;
+	private int							assistentType		= -1;
+	private Combo						jobname				= null;
+	private Element						jobBackUp			= null;
+	private ScriptJobMainForm			jobForm				= null;
+	private ParameterListener			paramListener		= null;
+	private Text						refreshDetailsText	= null;
 	/** Hilfsvariable für das Schliessen des Dialogs.
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
-	private boolean													closeDialog			= false;
-	private boolean													flagBackUpJob		= true;
-	private final JobDocumentationForm									jobDocForm			= null;
+	private boolean						closeDialog			= false;
+	private boolean						flagBackUpJob		= true;
+	private final JobDocumentationForm	jobDocForm			= null;
 
 	/**
 	 * Konstruktor
@@ -146,105 +153,81 @@ public class JobAssistentImportJobsForm {
 	 */
 	public JobAssistentImportJobsForm(final SchedulerDom dom_, final ISchedulerUpdate update_, final int assistentType_) {
 		dom = dom_;
-        inputTimer = new Timer();
+		inputTimer = new Timer();
 
 		update = update_;
 		assistentType = assistentType_;
-		listener = new JobsListener(dom, update);
+		objJobsListener = new JobsListener(dom, update);
 	}
 
-	/**
-	 * Konstruktor
-	 *
-	 * @param listener_
-	 * @param assistentType_
-	 */
 	public JobAssistentImportJobsForm(final JobListener listener_, final int assistentType_) {
 		jobBackUp = (Element) listener_.getJob().clone();
-		joblistener = listener_;
-		dom = joblistener.get_dom();
-        inputTimer = new Timer();
+		objJobDataProvider = listener_;
+		dom = objJobDataProvider.get_dom();
+		inputTimer = new Timer();
 
-		update = joblistener.get_main();
-		listener = new JobsListener(dom, update);
+		update = objJobDataProvider.get_main();
+		objJobsListener = new JobsListener(dom, update);
 		assistentType = assistentType_;
-		paramListener = new ParameterListener(dom, joblistener.getJob(), update, assistentType);
+		paramListener = new ParameterListener(dom, objJobDataProvider.getJob(), update, assistentType);
+		objFormPosSizeHandler = new WindowsSaver(this.getClass(), getShell(), 643, 600);
+		objFormPosSizeHandler.setKey(conClassName);
 	}
 
-	/**
-	 * Konstruktor
-	 *
-	 * @param listener_
-	 * @param tParameter_
-	 * @param assistentType_
-	 */
 	public JobAssistentImportJobsForm(final JobListener listener_, final Table tParameter_, final int assistentType_) {
-		jobBackUp = (Element) listener_.getJob().clone();
-		joblistener = listener_;
-		dom = joblistener.get_dom();
-        inputTimer = new Timer();
-
-		update = joblistener.get_main();
-		listener = new JobsListener(dom, update);
+		this(listener_, assistentType_);
 		tParameter = tParameter_;
-		assistentType = assistentType_;
-		paramListener = new ParameterListener(dom, joblistener.getJob(), update, assistentType);
 	}
 
-	class JobListComparator implements Comparator<Map<String, String>>
-	{
-	    private final String key;
+	class JobListComparator implements Comparator<Map<String, String>> {
+		private final String	key;
 
-	    public JobListComparator(final String key)
-	    {
-	        this.key = key;
-	    }
+		public JobListComparator(final String key) {
+			this.key = key;
+		}
 
-	    @Override
-		public int compare(final Map<String, String> first,
-	                       final Map<String, String> second)
-	    {
-	        String firstValue = first.get(key);
-	        String secondValue = second.get(key);
-            if (firstValue == null) {
-                firstValue = "";
-            }
-            if (secondValue == null) {
-                secondValue = "";
-            }
-	        return firstValue.compareTo(secondValue);
-	    }
+		@Override
+		public int compare(final Map<String, String> first, final Map<String, String> second) {
+			String firstValue = first.get(key);
+			String secondValue = second.get(key);
+			if (firstValue == null) {
+				firstValue = "";
+			}
+			if (secondValue == null) {
+				secondValue = "";
+			}
+			return firstValue.compareTo(secondValue);
+		}
 	}
 
+	public class InputTask extends TimerTask {
+		@Override
+		public void run() {
+			if (display == null) {
+				display = Display.getDefault();
+			}
+			display.syncExec(new Runnable() {
+				@Override
+				public void run() {
+					if (!searchField.equals(EMPTY_STRING)) {
+						try {
+							createTreeItems();
+						}
+						catch (Exception e) {
+							e.printStackTrace();
+						}
+						inputTimer.cancel();
+					}
+				};
+			});
+		}
+	}
 
-	   public class InputTask extends TimerTask {
-	        @Override
-			public void run() {
-	            if (display == null) {
-	                display = Display.getDefault();
-	            }
-	            display.syncExec(new Runnable() {
-	                @Override
-					public void run() {
-	                    if (!searchField.equals(EMPTY_STRING)) {
-	                        try {
-                                createTreeItems();
-                            }
-                            catch (Exception e) {
-                                e.printStackTrace();
-                            }
-	                        inputTimer.cancel();
-	                    }
-	                };
-	            });
-	        }
-	    }
-
-	    private void resetInputTimer() {
-	        inputTimer.cancel();
-	        inputTimer = new Timer();
-	        inputTimer.schedule(new InputTask(), 1 * 1000, 1 * 1000);
-	    }
+	private void resetInputTimer() {
+		inputTimer.cancel();
+		inputTimer = new Timer();
+		inputTimer.schedule(new InputTask(), 1 * 1000, 1 * 1000);
+	}
 
 	/**
 	 * Jobname setzen
@@ -255,10 +238,10 @@ public class JobAssistentImportJobsForm {
 	}
 
 	private String getJobsDirectoryName() {
-	    String s = sos.scheduler.editor.app.Options.getSchedulerData();
-	    // TODO jobs customizable
-        s = s.endsWith("/") || s.endsWith("\\") ? s.concat("jobs") :s.concat("/jobs");
-        return s;
+		String s = sos.scheduler.editor.app.Options.getSchedulerData();
+		// TODO jobs customizable
+		s = s.endsWith("/") || s.endsWith("\\") ? s.concat("jobs") : s.concat("/jobs");
+		return s;
 	}
 
 	/**
@@ -270,14 +253,14 @@ public class JobAssistentImportJobsForm {
 	 * Informationen wie Name, Title, Filename und Job Element
 	 */
 	public ArrayList parseDocuments() {
-        String xmlFilePath = "";
-        String xmlFileName = "";
+		String xmlFilePath = "";
+		String xmlFileName = "";
 		xmlPaths = getJobsDirectoryName();
 		ArrayList listOfDoc = null;
 		try {
 			listOfDoc = new ArrayList();
 			if (!new File(xmlPaths).exists()) {
-//				 MainWindow.message(shell, "Missing Directory for Job Description: " + xmlPaths, SWT.ICON_WARNING | SWT.OK);
+				//				 MainWindow.message(shell, "Missing Directory for Job Description: " + xmlPaths, SWT.ICON_WARNING | SWT.OK);
 				MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_MissingDirectory.params(xmlPaths), SWT.ICON_WARNING | SWT.OK);
 				return listOfDoc;
 			}
@@ -298,9 +281,9 @@ public class JobAssistentImportJobsForm {
 							h = new HashMap();
 							h.put("name", elMain.getAttributeValue("name"));
 							h.put("title", elMain.getAttributeValue("title"));
-                            h.put("filepath", xmlFilePath);
-                            h.put("filename", xmlFileName);
- 							h.put("job", elMain);
+							h.put("filepath", xmlFilePath);
+							h.put("filename", xmlFileName);
+							h.put("job", elMain);
 							listOfDoc.add(h);
 						}
 					}
@@ -328,23 +311,42 @@ public class JobAssistentImportJobsForm {
 	}
 
 	public void showAllImportJobs(final JobListener joblistener_) {
-		joblistener = joblistener_;
+		objJobDataProvider = joblistener_;
 		jobBackUp = (Element) joblistener_.getJob().clone();
-		jobType = joblistener.getOrder() ? "order" : "standalonejob";
+		jobType = objJobDataProvider.getOrder() ? "order" : "standalonejob";
 		showAllImportJobs();
 	}
 
 	public void showAllImportJobs() {
 		try {
 			shell = new Shell(MainWindow.getSShell(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
+			objFormPosSizeHandler = new WindowsSaver(this.getClass(), shell, 400, 200);
+			objFormPosSizeHandler.setKey(conClassName);
+			objFormPosSizeHandler.restoreWindow();
+
 			shell.addShellListener(new ShellAdapter() {
 				@Override
 				public void shellClosed(final ShellEvent e) {
-					if (!closeDialog)
+					if (!closeDialog) {
+						saveWindowPosAndSize();
 						close();
+					}
 					e.doit = shell.isDisposed();
 				}
 			});
+
+			shell.addControlListener(new ControlAdapter() {
+				@Override
+				public void controlMoved(final ControlEvent e) {
+					saveWindowPosAndSize();
+				}
+
+				@Override
+				public void controlResized(final ControlEvent e) {
+					saveWindowPosAndSize();
+				}
+			});
+
 			shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 			final GridLayout gridLayout = new GridLayout();
 			gridLayout.marginHeight = 0;
@@ -380,18 +382,18 @@ public class JobAssistentImportJobsForm {
 				txtJobname.setFocus();
 				final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
 				txtJobname.setLayoutData(gridData);
-				if (listener != null)
+				if (objJobsListener != null)
 					txtJobname.setBackground(Options.getRequiredColor());
-				if (joblistener != null) {
-					if (joblistener.getJob().getName().equals("start_job")) {
-						txtJobname.setText(Utils.getAttributeValue("job", joblistener.getJob()));
+				if (objJobDataProvider != null) {
+					if (objJobDataProvider.getJob().getName().equals("start_job")) {
+						txtJobname.setText(Utils.getAttributeValue("job", objJobDataProvider.getJob()));
 					}
 					else
-						if (joblistener.getJob().getName().equals("order")) {
+						if (objJobDataProvider.getJob().getName().equals("order")) {
 							txtJobname.setText(" ");
 						}
 						else
-							txtJobname.setText(joblistener.getJobName());
+							txtJobname.setText(objJobDataProvider.getJobName());
 				}
 				else {
 					txtJobname.setText("");
@@ -407,8 +409,8 @@ public class JobAssistentImportJobsForm {
 			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData.widthHint = 420;
 			txtTitle.setLayoutData(gridData);
-			if (joblistener != null) {
-				txtTitle.setText(joblistener.getTitle());
+			if (objJobDataProvider != null) {
+				txtTitle.setText(objJobDataProvider.getTitle());
 			}
 
 			new Label(jobGroup, SWT.NONE);
@@ -418,8 +420,8 @@ public class JobAssistentImportJobsForm {
 
 			txtPath = SOSJOEMessageCodes.JOE_T_JobAssistent_Path.Control(new Text(jobGroup, SWT.BORDER));
 			txtPath.setEditable(false);
-			if (joblistener != null) {
-				txtPath.setText(joblistener.getInclude());
+			if (objJobDataProvider != null) {
+				txtPath.setText(objJobDataProvider.getInclude());
 			}
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData_1.widthHint = 420;
@@ -499,11 +501,11 @@ public class JobAssistentImportJobsForm {
 						if (assistentType == Editor.JOB_WIZARD) {
 							// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn
 							// assistentype = Editor.Job_Wizzard
-							Element currJob = (Element) joblistener.getJob().clone();
-							job = listener.createJobElement(attr, currJob);
+							Element currJob = (Element) objJobDataProvider.getJob().clone();
+							job = objJobsListener.createJobElement(attr, currJob);
 						}
 						else {
-							job = listener.createJobElement(attr);
+							job = objJobsListener.createJobElement(attr);
 						}
 					}
 					else {
@@ -515,8 +517,8 @@ public class JobAssistentImportJobsForm {
 			});
 
 			{
-				butImport = SOSJOEMessageCodes.JOE_B_JobAssistent_Import.Control(new Button(composite, SWT.NONE));
-				butImport.addSelectionListener(new SelectionAdapter() {
+				butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Import.Control(new Button(composite, SWT.NONE));
+				butFinish.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(final SelectionEvent e) {
 						try {
@@ -539,8 +541,8 @@ public class JobAssistentImportJobsForm {
 								// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob
 								// wenn
 								// assistentype = Editor.Job_Wizzard
-								Element job = joblistener.getJob();
-								job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+								Element job = objJobDataProvider.getJob();
+								job = job.setContent(objJobsListener.createJobElement(h, objJobDataProvider.getJob()).cloneContent());
 								if (jobForm != null) {
 									jobForm.initForm();
 								}
@@ -553,30 +555,30 @@ public class JobAssistentImportJobsForm {
 									// backUpJob
 									// wenn assistentype = Editor.Job_Wizzard
 									// joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
-									Element job = joblistener.getJob();
+									Element job = objJobDataProvider.getJob();
 									if (job.getName().equals("job")) {
-										job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
+										job = job.setContent(objJobsListener.createJobElement(h, objJobDataProvider.getJob()).cloneContent());
 										paramListener.fillParams(tParameter);
 									}
 									else
 										paramListener.fillParams(listOfParams, tParameter, false);
 								}
 								else {
-									if (listener.existJobname(txtJobname.getText())) {
+									if (objJobsListener.existJobname(txtJobname.getText())) {
 										MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_JobNameExists.label(), SWT.OK);
 										txtJobname.setFocus();
 										return;
 									}
 									Element job = null;
 									if (flagBackUpJob) {
-										job = listener.createJobElement(h);
+										job = objJobsListener.createJobElement(h);
 
 									}
 									else {
-										job = joblistener.getJob();
+										job = objJobDataProvider.getJob();
 										job = job.setContent(jobBackUp.cloneContent());
 									}
-									listener.newImportJob(job, assistentType);
+									objJobsListener.newImportJob(job, assistentType);
 									if (Options.getPropertyBoolean("editor.job.show.wizard"))
 										Utils.showClipboard(Utils.getElementAsString(job), shell, false, null, false, null, true);
 								}
@@ -617,72 +619,83 @@ public class JobAssistentImportJobsForm {
 			butParameters.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(final SelectionEvent e) {
-					Utils.startCursor(shell);
-					if (!check())
-						return;
-					HashMap attr = getJobFromDescription();
-					if (assistentType == Editor.JOB_WIZARD || assistentType == Editor.JOB) {
-						Element job = listener.createJobElement(attr, joblistener.getJob());
-						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), job,
-								assistentType);
-						paramsForm.setBackUpJob(jobBackUp, jobForm);
-						paramsForm.setJobForm(jobForm);
-						paramsForm.showAllImportJobParams(txtPath.getText());
-					}
-					else
-						if (assistentType == Editor.PARAMETER) {
-							JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(),
-									joblistener, tParameter, assistentType);
+					try {
+						Utils.startCursor(shell);
+						if (!check()) {
+							return;
+						}
+						HashMap attr = getJobFromDescription();
+						if (assistentType == Editor.JOB_WIZARD || assistentType == Editor.JOB) {
+							Element job = objJobsListener.createJobElement(attr, objJobDataProvider.getJob());
+							JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objJobDataProvider.get_dom(),
+									objJobDataProvider.get_main(), job, assistentType);
+							paramsForm.setBackUpJob(jobBackUp, jobForm);
+							paramsForm.setJobForm(jobForm);
 							paramsForm.showAllImportJobParams(txtPath.getText());
 						}
 						else {
-							if (assistentType != Editor.JOB_WIZARD && listener.existJobname(txtJobname.getText())) {
-								MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_JobNameExists.label(), SWT.OK);
-								txtJobname.setFocus();
-								return;
+							if (assistentType == Editor.PARAMETER) {
+								JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objJobDataProvider.get_dom(),
+										objJobDataProvider.get_main(), objJobDataProvider, tParameter, assistentType);
+								paramsForm.showAllImportJobParams(txtPath.getText());
 							}
-							Element job = null;
-							if (flagBackUpJob) {
-								if (jobBackUp != null && assistentType != Editor.JOB_WIZARD) {
-									int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION
-											| SWT.YES | SWT.NO | SWT.CANCEL);
-									if (cont == SWT.CANCEL) {
-										return;
-									}
-									else
-										if (cont != SWT.YES) {
-											job = joblistener.getJob().setContent(jobBackUp.cloneContent());
-										}
+							else {
+								if (assistentType != Editor.JOB_WIZARD && objJobsListener.existJobname(txtJobname.getText())) {
+									MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_JobNameExists.label(), SWT.OK);
+									txtJobname.setFocus();
+									return;
 								}
+								Element job = null;
+								if (flagBackUpJob) {
+									if (jobBackUp != null && assistentType != Editor.JOB_WIZARD) {
+										int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION
+												| SWT.YES | SWT.NO | SWT.CANCEL);
+										if (cont == SWT.CANCEL) {
+											return;
+										}
+										else
+											if (cont != SWT.YES) {
+												job = objJobDataProvider.getJob().setContent(jobBackUp.cloneContent());
+											}
+									}
+								}
+								else {
+									// der backUpJob wurde nicht verändert
+									job = objJobDataProvider.getJob().setContent(jobBackUp.cloneContent());
+								}
+								if (job == null) {
+									job = objJobsListener.createJobElement(attr);
+								}
+								JobAssistentImportJobParamsForm paramsForm = null;
+								if (assistentType == Editor.JOB_WIZARD) {
+									paramsForm = new JobAssistentImportJobParamsForm(dom, update, objJobDataProvider, assistentType);
+								}
+								else {
+									paramsForm = new JobAssistentImportJobParamsForm(dom, update, job, assistentType);
+								}
+								paramsForm.showAllImportJobParams(txtPath.getText());
+								if (jobname != null)
+									paramsForm.setJobname(jobname);
+								paramsForm.setBackUpJob(jobBackUp, jobForm);
 							}
-							else {
-								// der backUpJob wurde nicht verändert
-								job = joblistener.getJob().setContent(jobBackUp.cloneContent());
-							}
-							if (job == null) {
-								job = listener.createJobElement(attr);
-							}
-							JobAssistentImportJobParamsForm paramsForm = null;
-							if (assistentType == Editor.JOB_WIZARD) {
-								paramsForm = new JobAssistentImportJobParamsForm(dom, update, joblistener, assistentType);
-							}
-							else {
-								paramsForm = new JobAssistentImportJobParamsForm(dom, update, job, assistentType);
-							}
-							paramsForm.showAllImportJobParams(txtPath.getText());
-							if (jobname != null)
-								paramsForm.setJobname(jobname);
-							paramsForm.setBackUpJob(jobBackUp, jobForm);
 						}
-					closeDialog = true;
-					Utils.stopCursor(shell);
-					shell.dispose();
+						closeDialog = true;
+						shell.dispose();
+					}
+					catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					finally {
+						Utils.stopCursor(shell);
+					}
 				}
 			});
 
+			shell.setDefaultButton(butParameters);
 			Utils.createHelpButton(composite, "JOE_M_JobAssistentImportJobsForm_Help.label", shell);
 			if (assistentType == Editor.JOB) {
-				butImport.setVisible(true);
+				butFinish.setVisible(true);
 				butParameters.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_ImportParams.label());
 			}
 			if (assistentType == Editor.JOB_WIZARD) {
@@ -711,15 +724,12 @@ public class JobAssistentImportJobsForm {
 						butShow.setEnabled(true);
 						butBack.setEnabled(true);
 					}
-			if (joblistener != null) {
-				if (joblistener.getJob().getName().equals("start_job") || joblistener.getJob().getName().equals("process")
-						|| joblistener.getJob().getName().equals("order") || joblistener.getJob().getName().equals("config")) {
+			if (objJobDataProvider != null) {
+				if (objJobDataProvider.getJob().getName().equals("start_job") || objJobDataProvider.getJob().getName().equals("process")
+						|| objJobDataProvider.getJob().getName().equals("order") || objJobDataProvider.getJob().getName().equals("config")) {
 					txtJobname.setEnabled(false);
 				}
 			}
-			java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-			shell.setBounds((screen.width - shell.getBounds().width) / 2, (screen.height - shell.getBounds().height) / 2, shell.getBounds().width,
-					shell.getBounds().height);
 
 			final Group jobnamenGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobsGroup.Control(new Group(shell, SWT.NONE));
 			final GridLayout gridLayout_1 = new GridLayout();
@@ -732,44 +742,44 @@ public class JobAssistentImportJobsForm {
 			jobnamenGroup.setLayoutData(gridData_3);
 			jobnamenGroup.getBounds().height = 100;
 
-			 searchField = new Text(jobnamenGroup, SWT.BORDER);
-		     searchField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		     searchField.addModifyListener(new ModifyListener() {
-		            @Override
-					public void modifyText(final ModifyEvent e) {
-		                if (searchField != null) {
-		                    resetInputTimer();
-		                }
-		            }
-		        });
+			searchField = new Text(jobnamenGroup, SWT.BORDER);
+			searchField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+			searchField.addModifyListener(new ModifyListener() {
+				@Override
+				public void modifyText(final ModifyEvent e) {
+					if (searchField != null) {
+						resetInputTimer();
+					}
+				}
+			});
 
-			tree = SOSJOEMessageCodes.JOE_JobAssistent_JobTree.Control(new Tree(jobnamenGroup, SWT.FULL_SELECTION | SWT.BORDER));
-			tree.setHeaderVisible(true);
-			tree.getBounds().height = 100;
-			tree.addSelectionListener(new SelectionAdapter() {
+			objJitlJobList = SOSJOEMessageCodes.JOE_JobAssistent_JobTree.Control(new Tree(jobnamenGroup, SWT.FULL_SELECTION | SWT.BORDER));
+			objJitlJobList.setHeaderVisible(true);
+			objJitlJobList.getBounds().height = 100;
+			objJitlJobList.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					String strT = txtTitle.getText();
 					//if (strT.trim().equalsIgnoreCase("")) {
-						txtTitle.setText(tree.getSelection()[0].getText(1));
-    				//}
-	                txtPath.setText(getJobsDirectoryName() + "/" + tree.getSelection()[0].getText(2));
-    				txtJobname.setFocus();
+					txtTitle.setText(objJitlJobList.getSelection()[0].getText(1));
+					//}
+					txtPath.setText(getJobsDirectoryName() + "/" + objJitlJobList.getSelection()[0].getText(2));
+					txtJobname.setFocus();
 					flagBackUpJob = true;
 				}
 			});
 			final GridData gridData_2 = new GridData(GridData.FILL, GridData.FILL, true, true);
-			tree.setLayoutData(gridData_2);
+			objJitlJobList.setLayoutData(gridData_2);
 
-			TreeColumn column1 = SOSJOEMessageCodes.JOE_JobAssistent_NameTreeColumn.Control(new TreeColumn(tree, SWT.LEFT));
+			TreeColumn column1 = SOSJOEMessageCodes.JOE_JobAssistent_NameTreeColumn.Control(new TreeColumn(objJitlJobList, SWT.LEFT));
 			column1.setWidth(165);
 			column1.addSelectionListener(new SortTreeListener());
 
-			TreeColumn column2 = SOSJOEMessageCodes.JOE_JobAssistent_TitleTreeColumn.Control(new TreeColumn(tree, SWT.LEFT));
+			TreeColumn column2 = SOSJOEMessageCodes.JOE_JobAssistent_TitleTreeColumn.Control(new TreeColumn(objJitlJobList, SWT.LEFT));
 			column2.setWidth(200);
 			column2.addSelectionListener(new SortTreeListener());
 
-			TreeColumn column3 = SOSJOEMessageCodes.JOE_JobAssistent_FilenameTreeColumn.Control(new TreeColumn(tree, SWT.LEFT));
+			TreeColumn column3 = SOSJOEMessageCodes.JOE_JobAssistent_FilenameTreeColumn.Control(new TreeColumn(objJitlJobList, SWT.LEFT));
 			column3.setWidth(209);
 			column3.addSelectionListener(new SortTreeListener());
 
@@ -778,7 +788,6 @@ public class JobAssistentImportJobsForm {
 			}
 			catch (Exception e) {
 				try {
-					// new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 					new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 				}
 				catch (Exception ee) {
@@ -786,51 +795,42 @@ public class JobAssistentImportJobsForm {
 				}
 				System.err.print(e.getMessage());
 			}
-			if (joblistener != null) {
+			if (objJobDataProvider != null) {
 				selectTree();
 			}
 			setToolTipText();
 			shell.layout();
-			shell.pack();
+			//			shell.pack();
+			objFormPosSizeHandler.restoreWindow();
 			shell.open();
 		}
 		catch (Exception e) {
 			try {
-				// new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
-				// System.err.println("error in JobAssistentImportJobsForm.showAllImportJobs(): " + e.getMessage());
 				System.err.println(SOSJOEMessageCodes.JOE_M_0010.params(SOSClassUtil.getMethodName(), e.getMessage()));
 			}
 			catch (Exception ee) {
-				// tu nichts
 			}
 		}
 	}
 
 	private void createTreeItems() throws Exception {
 		try {
-		    tree.removeAll();
+			objJitlJobList.removeAll();
 
-			final TreeItem newItemTreeItem_ = new TreeItem(tree, SWT.NONE);
-//          ermöglicht das Starten des Wizards ohne vorhandene Jobbeschreibung
-/*            newItemTreeItem_.setText(0, SOSJOEMessageCodes.JOE_M_JobAssistent_NoJobDoc.label());
-			newItemTreeItem_.setText(1, "..");
-			newItemTreeItem_.setText(2, "..");
-			Element j = new Element("job");
-			Utils.setAttribute("order", (jobType.equals("order") ? "yes" : "no"), j);
-			newItemTreeItem_.setData(j);*/
+			final TreeItem newItemTreeItem_ = new TreeItem(objJitlJobList, SWT.NONE);
 			ArrayList listOfDoc = parseDocuments();
-			Collections.sort(listOfDoc , new JobListComparator("name"));
+			Collections.sort(listOfDoc, new JobListComparator("name"));
 			String filename = "";
 			String lastParent = "";
 			TreeItem parentItemTreeItem = null;
 			boolean insertJobInTree = true;
 			for (int i = 0; i < listOfDoc.size(); i++) {
 				HashMap h = (HashMap) listOfDoc.get(i);
-                insertJobInTree = searchField.getText().toLowerCase().equals(EMPTY_STRING)||
-                            h.get("filename").toString().toLowerCase().contains(searchField.getText().toLowerCase()) ||
-                            h.get("name").toString().toLowerCase().contains(searchField.getText().toLowerCase()) ||
-                            h.get("title").toString().toLowerCase().contains(searchField.getText().toLowerCase());
+				insertJobInTree = searchField.getText().toLowerCase().equals(EMPTY_STRING)
+						|| h.get("filename").toString().toLowerCase().contains(searchField.getText().toLowerCase())
+						|| h.get("name").toString().toLowerCase().contains(searchField.getText().toLowerCase())
+						|| h.get("title").toString().toLowerCase().contains(searchField.getText().toLowerCase());
 
 				if (jobType != null && jobType.equals("order")) {
 					Element job = (Element) h.get("job");
@@ -848,7 +848,7 @@ public class JobAssistentImportJobsForm {
 				if (insertJobInTree) {
 					filename = h.get("filepath").toString();
 					if (new File(filename).getParentFile().equals(new File(xmlPaths))) {
-						final TreeItem newItemTreeItem = new TreeItem(tree, SWT.NONE);
+						final TreeItem newItemTreeItem = new TreeItem(objJitlJobList, SWT.NONE);
 						newItemTreeItem.setText(0, h.get("name").toString());
 						newItemTreeItem.setText(1, h.get("title").toString());
 						newItemTreeItem.setText(2, h.get("filename").toString());
@@ -856,8 +856,8 @@ public class JobAssistentImportJobsForm {
 					}
 					else {
 						if (!lastParent.equalsIgnoreCase(new File(filename).getParentFile().getPath())) {
-							if (!new File(lastParent).getName().equals(tree.getItems()[tree.getItems().length - 1].getText())) {
-								parentItemTreeItem = new TreeItem(tree, SWT.NONE);
+							if (!new File(lastParent).getName().equals(objJitlJobList.getItems()[objJitlJobList.getItems().length - 1].getText())) {
+								parentItemTreeItem = new TreeItem(objJitlJobList, SWT.NONE);
 								parentItemTreeItem.setText(0, new File(filename).getParentFile().getName());
 								parentItemTreeItem.setData(h.get("job"));
 								lastParent = new File(filename).getParentFile().getPath();
@@ -880,13 +880,10 @@ public class JobAssistentImportJobsForm {
 		}
 		catch (Exception e) {
 			try {
-//				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
-				// tu nichts
 			}
-//			System.out.println("error in JobAssistentImportJobsForm.createTreeItems(): " + e.getMessage());
 			System.out.println(SOSJOEMessageCodes.JOE_M_0010.params(SOSClassUtil.getMethodName(), e.getMessage()));
 		}
 	}
@@ -910,13 +907,14 @@ public class JobAssistentImportJobsForm {
 	 * Felder und Attribute werden aus der Jobdokumnetation genommen und in eine hashMap gepackt.
 	 * @return HashMap
 	 */
-	private HashMap getJobFromDescription() {
-		HashMap h = new HashMap();
+	@SuppressWarnings("unchecked")
+	private HashMap <String, Object> getJobFromDescription() {
+		HashMap <String, Object> h = new HashMap <String, Object>();
 		try {
 			// elMain ist ein Job Element der Jobbeschreibung
-			if (tree.getSelection().length == 0)
+			if (objJitlJobList.getSelection().length == 0)
 				return h;
-			Element elMain = (Element) tree.getSelection()[0].getData();
+			Element elMain = (Element) objJitlJobList.getSelection()[0].getData();
 			// Attribute der Job bestimmen
 			if (jobType != null && jobType.trim().length() > 0)
 				h.put("order", jobType.equalsIgnoreCase("order") ? "yes" : "no");
@@ -949,10 +947,11 @@ public class JobAssistentImportJobsForm {
 				if (script.getAttributeValue("use_engine") != null)
 					h.put("script_use_engine", script.getAttributeValue("use_engine"));
 				// script includes bestimmen
-				List comClassInclude = script.getChildren("include", elMain.getNamespace());
-				ArrayList listOfIncludeFilename = new ArrayList();
+				@SuppressWarnings("unchecked")
+				List <Element> comClassInclude = script.getChildren("include", elMain.getNamespace());
+				ArrayList <String>listOfIncludeFilename = new ArrayList <String>();
 				for (int i = 0; i < comClassInclude.size(); i++) {
-					Element inc = (Element) comClassInclude.get(i);
+					Element inc = comClassInclude.get(i);
 					listOfIncludeFilename.add(inc.getAttribute("file").getValue());
 				}
 				h.put("script_include_file", listOfIncludeFilename);
@@ -1017,11 +1016,11 @@ public class JobAssistentImportJobsForm {
 				// environment Variablen bestimmen
 				Element environment = process.getChild("environment", elMain.getNamespace());
 				if (environment != null) {
-					List listOfEnvironment = environment.getChildren("variable", elMain.getNamespace());
-					ArrayList listOfIncludeFilename = new ArrayList();
+					List <Element> listOfEnvironment = environment.getChildren("variable", elMain.getNamespace());
+					ArrayList<HashMap <String, String> >listOfIncludeFilename = new ArrayList();
 					for (int i = 0; i < listOfEnvironment.size(); i++) {
-						HashMap hEnv = new HashMap();
-						Element env = (Element) listOfEnvironment.get(i);
+						HashMap <String, String> hEnv = new HashMap <String, String>();
+						Element env = listOfEnvironment.get(i);
 						hEnv.put("name", env.getAttribute("name") != null ? env.getAttribute("name").getValue() : "");
 						hEnv.put("value", env.getAttribute("value") != null ? env.getAttribute("value").getValue() : "");
 						listOfIncludeFilename.add(hEnv);
@@ -1032,44 +1031,42 @@ public class JobAssistentImportJobsForm {
 		}
 		catch (Exception e) {
 			try {
-//				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
-				// tu nichts
 			}
-//			System.out.println("..error in JobAssistentImportJobsForm.getJobFromDescription() " + e.getMessage());
 			System.out.println(SOSJOEMessageCodes.JOE_M_0010.params("getJobFromDescription()", e.getMessage()));
 		}
 		return h;
 	}
 
 	private void close() {
-		int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+		int cont = SWT.OK;
+		//		int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		if (cont == SWT.OK) {
 			if (jobBackUp != null)
-				joblistener.getJob().setContent(jobBackUp.cloneContent());
+				objJobDataProvider.getJob().setContent(jobBackUp.cloneContent());
 			shell.dispose();
 		}
 	}
 
 	private void selectTree() {
-		if (joblistener != null && (joblistener.getInclude() == null || joblistener.getInclude().length() == 0)) {
+		if (objJobDataProvider != null && (objJobDataProvider.getInclude() == null || objJobDataProvider.getInclude().length() == 0)) {
 			TreeItem[] si = new TreeItem[1];
-			si[0] = tree.getItem(0);
-			tree.setSelection(si);
+			si[0] = objJitlJobList.getItem(0);
+			objJitlJobList.setSelection(si);
 			return;
 		}
-		if (tree != null) {
-			for (int i = 0; i < tree.getItemCount(); i++) {
-				TreeItem item = tree.getItem(i);
+		if (objJitlJobList != null) {
+			for (int i = 0; i < objJitlJobList.getItemCount(); i++) {
+				TreeItem item = objJitlJobList.getItem(i);
 				if (item.getText(2) != null) {
 					String it = new File(item.getText(2)).getName();
-					String in = new File(joblistener.getInclude()).getName();
+					String in = new File(objJobDataProvider.getInclude()).getName();
 					if (it.endsWith(in)) {
 						TreeItem[] si = new TreeItem[1];
 						si[0] = item;
-						tree.setSelection(si);
+						objJitlJobList.setSelection(si);
 						flagBackUpJob = false;
 						break;
 					}
@@ -1105,18 +1102,17 @@ public class JobAssistentImportJobsForm {
 	}
 
 	private boolean check() {
-		if (tree.getSelectionCount() == 0) {
+		if (objJitlJobList.getSelectionCount() == 0) {
 			MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoJobSelected.label(), SWT.ICON_WARNING | SWT.OK);
 			txtJobname.setFocus();
 			return false;
 		}
-		if (assistentType != Editor.JOB && joblistener != null && !joblistener.getJob().getName().equals("config")) {
-			if (txtJobname.isEnabled()) {
-				if (txtJobname.getText() == null || txtJobname.getText().length() == 0) {
-					MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoJobName.label(), SWT.ICON_WARNING | SWT.OK);
-					txtJobname.setFocus();
-					return false;
-				}
+		//		if (assistentType != Editor.JOB && objJobDataProvider != null && !objJobDataProvider.getJob().getName().equals("config")) {
+		if (txtJobname.isEnabled()) {
+			if (txtJobname.getText() == null || txtJobname.getText().length() == 0) {
+				MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoJobName.label(), SWT.ICON_WARNING | SWT.OK);
+				txtJobname.setFocus();
+				return false;
 			}
 			if (txtJobname.getText().concat(".xml").equalsIgnoreCase(new File(txtPath.getText()).getName())) {
 				int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_EditJobName.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
@@ -1126,6 +1122,7 @@ public class JobAssistentImportJobsForm {
 				}
 			}
 		}
+		//		}
 		return true;
 	}
 
@@ -1133,5 +1130,11 @@ public class JobAssistentImportJobsForm {
 	// Beim generieren der Parameter mit Wizzard müssen die Parameterdescriptchen anders aufgebaut werden.
 	public void setDetailsRefresh(final Text refreshDetailsText_) {
 		refreshDetailsText = refreshDetailsText_;
+	}
+
+	@Override
+	public void createGroup() {
+		// TODO Auto-generated method stub
+
 	}
 }

@@ -4,7 +4,7 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Generation - Code and Comments
  */
-package sos.scheduler.editor.conf.forms;
+package com.sos.joe.job.wizard;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;

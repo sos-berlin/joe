@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.forms;
+package com.sos.joe.job.wizard;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -31,6 +31,7 @@ import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ScriptListener;
@@ -43,7 +44,7 @@ public class JobAssistentScriptForms {
 	@SuppressWarnings("unused")
 	private final String conClassName = this.getClass().getSimpleName();
 	@SuppressWarnings("unused")
-	private static final String conSVNVersion = "$Id$";
+	private static final String conSVNVersion = "$Id: JobAssistentScriptForms.java 20989 2013-09-04 17:43:27Z kb $";
 	@SuppressWarnings("unused")
 	private final Logger logger = Logger.getLogger(this.getClass());
 

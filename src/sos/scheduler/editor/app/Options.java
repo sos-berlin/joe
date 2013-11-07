@@ -69,7 +69,11 @@ public class Options extends I18NBase {
 	}
 
 	public static String getLastFolderName() {
-		return _properties.getProperty("LastFolderName");
+		String strF = _properties.getProperty("LastFolderName");
+		if (strF == null) {
+			strF = "";
+		}
+		return strF.trim();
 	}
 
 	public static void setLastFolderName(final String pstrLastFolderName) {

@@ -35,6 +35,7 @@ import sos.scheduler.editor.conf.listeners.JOEListener;
 import com.sos.JSHelper.Exceptions.JobSchedulerException;
 import com.sos.JSHelper.io.Files.JSFile;
 import com.sos.VirtualFileSystem.shell.cmdShell;
+import com.sos.dialog.classes.WindowsSaver;
 import com.swtdesigner.SWTResourceManager;
 
 /**
@@ -65,7 +66,6 @@ import com.swtdesigner.SWTResourceManager;
 public class TextArea extends StyledText /* Text */{
 	@SuppressWarnings("unused")
 	private final String	conClassName			= this.getClass().getSimpleName();
-	@SuppressWarnings("unused")
 	private final Logger	logger					= Logger.getLogger(this.getClass());
 	@SuppressWarnings("unused")
 	private final String	conSVNVersion			= "$Id$";
@@ -80,7 +80,6 @@ public class TextArea extends StyledText /* Text */{
 	private String			strAttributeName	= "";
 
 	private enuSourceTypes	enuWhatSourceType	= TextArea.enuSourceTypes.ScriptSource;
-	// private Clipboard cb = null;
 
 	boolean					flgInit				= false;
 
@@ -134,38 +133,42 @@ public class TextArea extends StyledText /* Text */{
 
 		MenuItem itemSelectAll = new MenuItem(objContextMenu, SWT.PUSH);
 		itemSelectAll.addListener(SWT.Selection, getSelectAllListener());
-		itemSelectAll.setText("Select all");
+		itemSelectAll.setText("Select &All\tCtrl+A");
+		itemSelectAll.setAccelerator(SWT.MOD1 + 'A');
 
 		new MenuItem(objContextMenu, SWT.SEPARATOR);
 
 		MenuItem itemStartExternalEditor = new MenuItem(objContextMenu, SWT.PUSH);
 		itemStartExternalEditor.addListener(SWT.Selection, getStartExternalEditorListener());
-		itemStartExternalEditor.setText("Start external Editor");
+		itemStartExternalEditor.setText("Start external Editor\tCtrl+X");
+		itemSelectAll.setAccelerator(SWT.MOD1 + 'X');
 		setMenu(objContextMenu);
 
 		MenuItem itemSelectFont = new MenuItem(objContextMenu, SWT.PUSH);
 		itemSelectFont.addListener(SWT.Selection, getSelectFontListener());
-		itemSelectFont.setText("Select Font");
+		itemSelectFont.setText("Select Font\tCtrl+F");
+		itemSelectAll.setAccelerator(SWT.MOD1 + 'F');
 
 		new MenuItem(objContextMenu, SWT.SEPARATOR);
 
 		MenuItem itemSaveAs = new MenuItem(objContextMenu, SWT.PUSH);
 		itemSaveAs.addListener(SWT.Selection, getSaveAsListener());
-		itemSaveAs.setText("Save as ...");
-
+		itemSaveAs.setText("Save as ...\tCtrl+Alt+S");
+		itemSelectAll.setAccelerator(SWT.MOD1 + SWT.ALT + 'S');
 		if (flgIsEditable) {
 			// TODO die letzten 10 Files als Submenue
 			MenuItem itemReadFrom = new MenuItem(objContextMenu, SWT.PUSH);
 			itemReadFrom.addListener(SWT.Selection, getReadFileListener());
-			itemReadFrom.setText("Read from ...");
+			itemReadFrom.setText("Read from ...\tCtrl+R");
+			itemSelectAll.setAccelerator(SWT.MOD1 + 'R');
 
 			MenuItem itemInsertFrom = new MenuItem(objContextMenu, SWT.PUSH);
 			itemInsertFrom.addListener(SWT.Selection, getInsertFileListener());
-			itemInsertFrom.setText("Insert from ...");
+			itemInsertFrom.setText("Insert from ...\tCtrl+I");
+			itemSelectAll.setAccelerator(SWT.MOD1 + 'I');
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private Listener getSaveAsListener() {
 
 		return new Listener() {
@@ -184,7 +187,6 @@ public class TextArea extends StyledText /* Text */{
 			public void handleEvent(final Event e) {
 				startExternalEditor();
 			}
-
 		};
 	}
 
@@ -196,7 +198,7 @@ public class TextArea extends StyledText /* Text */{
 					JSFile objTempF = new JSFile(File.createTempFile("SOS-JOE", ".xml").getAbsolutePath());
 					objTempF.Write(text);
 					cmdShell objShell = new cmdShell();
-					// TODO Option for external Editor
+					// TODO Option for external Editor, e.g. notepadd++
 					String strCommandString = String.format("uedit32.exe \"%1$s\"", objTempF);
 					objShell.setCommand(strCommandString);
 					objShell.run();
@@ -425,9 +427,43 @@ public class TextArea extends StyledText /* Text */{
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(final KeyEvent e) {
+				e.doit = false;
 				if (objDataProvider.Check4HelpKey(e.keyCode, strTagName, strAttributeName)) {
-					e.doit = false;
 					return;
+				}
+
+				if ((e.stateMask & SWT.MOD1) == SWT.MOD1) {
+					switch (e.keyCode) {
+						case 'a':
+							_selectAll();
+							return;
+
+						case 'i':
+							doInsertFile();
+							return;
+
+						case 'r':
+							doReadFile();
+							return;
+
+						case 'f':
+							changeFont();
+							return;
+
+						case 'x':
+							startExternalEditor();
+							return;
+
+						default:
+							break;
+					}
+				}
+
+				if ((e.stateMask & SWT.MOD1 & SWT.ALT) == (SWT.MOD1 & SWT.ALT)) {
+					if (e.keyCode == 's') { // caution: lower case letters
+						saveFile();
+						return;
+					}
 				}
 
 				/*
@@ -499,9 +535,7 @@ public class TextArea extends StyledText /* Text */{
 	 */
 	public void setFont(final FontData f, final RGB foreGround) {
 		SWTResourceManager.getFont(f.getLocale(), f.getHeight(), f.getStyle());
-		//		setFont(new Fon t(this.getDisplay(), f));
 		setFont(SWTResourceManager.getFont(f.getLocale(), f.getHeight(), f.getStyle()));
-		//		setForeground(new Co lor(this.getDisplay(), foreGround));
 		setForeground(SWTResourceManager.getColor(foreGround));
 	}
 

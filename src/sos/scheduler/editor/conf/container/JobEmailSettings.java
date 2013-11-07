@@ -1,5 +1,6 @@
 package sos.scheduler.editor.conf.container;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -12,12 +13,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
+import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
-public class JobEmailSettings extends FormBaseClass {
+public class JobEmailSettings extends FormBaseClass<JobListener> {
+
+	private final String conClassName = this.getClass().getSimpleName();
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private Combo			mailOnDelayAfterError	= null;
 	private Text			mailCC					= null;
@@ -28,39 +32,24 @@ public class JobEmailSettings extends FormBaseClass {
 	private Combo			mailOnProcess			= null;
 	private Text			mailTo					= null;
 
-	private String[]		comboItems			= { "yes", "no", "" };
+	private final String[]		comboItems			= { "yes", "no", "" };
 
-	@SuppressWarnings("unused")
-	private final String	conClassName			= "JobEmailSettings";
-	@SuppressWarnings("unused")
 	private final String	conSVNVersion			= "$Id$";
 
-	// private boolean init = true;
-	private JobListener		objJobDataProvider		= null;
 
-	public JobEmailSettings(Composite pParentComposite, JobListener pobjJobDataProvider) {
+	public JobEmailSettings(final Composite pParentComposite, final JobListener pobjJobDataProvider) {
 		super(pParentComposite, pobjJobDataProvider);
 		objJobDataProvider = pobjJobDataProvider;
 
-		// init = true;
+		logger.debug(conClassName + "\n" + conSVNVersion);
+
 		createGroup();
 		initForm();
-		// init = false;
+
 	}
 
-	public void apply() {
-		// if (isUnsaved())
-		// addParam();
-	}
-
-	public boolean isUnsaved() {
-		return false;
-	}
-
-	public void refreshContent() {
-	}
-
-	private void createGroup() {
+	@Override
+	public void createGroup() {
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -86,6 +75,7 @@ public class JobEmailSettings extends FormBaseClass {
 		// mailOnError.setItems(new String[]{"yes", "no", ""});
 		mailOnError.setItems(comboItems);
 		mailOnError.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
 				objJobDataProvider.setValue("mail_on_error", mailOnError.getText(), "no");
@@ -103,6 +93,7 @@ public class JobEmailSettings extends FormBaseClass {
 		// mailOnWarning.setItems(new String[]{"yes", "no", ""});
 		mailOnWarning.setItems(comboItems);
 		mailOnWarning.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				mailOnDelayAfterError.setEnabled(mailOnWarning.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
 				objJobDataProvider.setValue("mail_on_warning", mailOnWarning.getText(), "no");
@@ -120,6 +111,7 @@ public class JobEmailSettings extends FormBaseClass {
 		// mailOnSuccess.setItems(new String[]{"yes", "no", ""});
 		mailOnSuccess.setItems(comboItems);
 		mailOnSuccess.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				objJobDataProvider.setValue("mail_on_success", mailOnSuccess.getText(), "no");
 			}
@@ -136,6 +128,7 @@ public class JobEmailSettings extends FormBaseClass {
 		// mailOnProcess.setItems(new String[]{"yes", "no", ""});
 		mailOnProcess.setItems(comboItems);
 		mailOnProcess.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				objJobDataProvider.setValue("mail_on_process", mailOnProcess.getText(), "no");
 			}
@@ -152,6 +145,7 @@ public class JobEmailSettings extends FormBaseClass {
 		mailOnDelayAfterError.setItems(new String[] { "all", "first_only", "last_only", "first_and_last_only", "" });
 		mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
 		mailOnDelayAfterError.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				objJobDataProvider.setValue("mail_on_delay_after_error", mailOnDelayAfterError.getText(), "no");
 			}
@@ -168,6 +162,7 @@ public class JobEmailSettings extends FormBaseClass {
 
 		mailTo = SOSJOEMessageCodes.JOE_T_MailForm_MailTo.Control(new Text(group4EMail, SWT.BORDER));
 		mailTo.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				objJobDataProvider.setValue("log_mail_to", mailTo.getText());
 			}
@@ -179,6 +174,7 @@ public class JobEmailSettings extends FormBaseClass {
 
 		mailCC = SOSJOEMessageCodes.JOE_T_MailForm_MailCC.Control(new Text(group4EMail, SWT.BORDER));
 		mailCC.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				objJobDataProvider.setValue("log_mail_cc", mailCC.getText());
 			}
@@ -196,7 +192,7 @@ public class JobEmailSettings extends FormBaseClass {
 		mailBCC.setLayoutData(gridData);
 		mailBCC.addModifyListener(new ModifyListener() {
 			@Override
-			public void modifyText(ModifyEvent e) {
+			public void modifyText(final ModifyEvent e) {
 				objJobDataProvider.setValue("log_mail_bcc", mailBCC.getText());
 			}
 		});

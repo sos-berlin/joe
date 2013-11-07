@@ -1,4 +1,5 @@
 package sos.scheduler.editor.conf.forms;
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -22,14 +23,21 @@ import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.classes.WindowsSaver;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.PreProstProcessingListener;
 import sos.util.SOSClassUtil;
 
+import com.sos.dialog.classes.WindowsSaver;
+
 ;
 public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+	@SuppressWarnings("unused")
+	private final String conClassName = this.getClass().getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String conSVNVersion = "$Id$";
+	private final Logger logger = Logger.getLogger(this.getClass());
+
 	private PreProstProcessingListener	listener		= null;
 	private Group			scriptsGroup	= null;
 	private Table	        table			= null;
@@ -58,7 +66,7 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			}
 			catch (Exception ee) {
 			}
-			System.err.println(JOE_E_0002.params("ScriptsForm.init() ") + e.getMessage());
+			logger.error(JOE_E_0002.params("ScriptsForm.init() ") + e.getMessage());
 		}
 	}
 
@@ -144,7 +152,7 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				    if (!table.isDisposed()) {
     					if (table.getSelectionCount() > 0) {
-    
+
     						if (Utils.isElementEnabled("job", dom, (Element) e.item.getData())) {
     							butRemove.setEnabled(true);
     						}

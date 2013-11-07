@@ -2,6 +2,7 @@ package sos.scheduler.editor.conf.container;
 
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ModifyEvent;
@@ -30,39 +31,42 @@ import sos.scheduler.editor.classes.LanguageSelector;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.TextArea;
 import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
-import sos.scheduler.editor.classes.WindowsSaver;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 import sos.scheduler.editor.conf.listeners.ScriptListener;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
+
+import com.sos.dialog.classes.WindowsSaver;
+
 //import sos.scheduler.editor.conf.listeners.JobListener;
 
-public class PrePostProcessingForm extends FormBaseClass {
+public class PrePostProcessingForm extends FormBaseClass<JOEListener> {
 
-	private final String conClassName = "PrePostProcessingForm";
+	private final String			conClassName					= this.getClass().getSimpleName();
+	private static final String		conSVNVersion					= "$Id$";
+	private final Logger			logger							= Logger.getLogger(this.getClass());
+
 	private static final String		conMONITOR_FAVORITE				= "monitor_favorite_";
 
 	private boolean					init							= true;
 
-	private final Composite				tabItemJavaAPIComposite			= null;
-	private final Composite				tabItemIncludedFilesComposite	= null;
+//	private final Composite			tabItemJavaAPIComposite			= null;
+//	private final Composite			tabItemIncludedFilesComposite	= null;
 	private Composite				objParentComposite				= null;
 	private Combo					cboPrefunction					= null;
 
 	private HashMap<String, String>	favorites						= null;
 
-	private final Text					tbxClassName					= null;
-	private final Table					tableIncludes					= null;
+	private final Text				tbxClassName					= null;
+	private final Table				tableIncludes					= null;
 	private LanguageSelector		languageSelector4Monitor		= null;
 
 	private ScriptListener			objScriptDataProvider			= null;
-	private SOSComboBox					cboFavorite						= null;
+	private SOSComboBox				cboFavorite						= null;
 	private Text					txtMonitorName					= null;
 	private Spinner					spinner							= null;
 	private TextArea				txtPrePostProcessingScriptCode	= null;
 	private StyledText				tSource							= null;
-
-	private WindowsSaver			objFormPosSizeHandler			= null;
 
 	public PrePostProcessingForm(final Composite pParentComposite, final JOEListener pobjDataProvider, final PrePostProcessingForm that) {
 		super(pParentComposite, pobjDataProvider);
@@ -71,22 +75,15 @@ public class PrePostProcessingForm extends FormBaseClass {
 		objFormPosSizeHandler = new WindowsSaver(this.getClass(), getShell(), 643, 600);
 		objFormPosSizeHandler.setKey(conClassName);
 		objScriptDataProvider = (ScriptListener) pobjDataProvider;
+		logger.debug(conClassName + "\n" + conSVNVersion);
+
 		createGroup();
 		getValues(that);
 		FillForm();
 	}
 
-	public void apply() {
-		// if (isUnsaved())
-		// addParam();
-	}
-
-	public boolean isUnsaved() {
-		// return bApply.isEnabled();
-		return false;
-	}
-
-	private void createGroup() {
+	@Override
+	public void createGroup() {
 		//		 objParent.setLayout(new FillLayout());
 		showWaitCursor();
 
@@ -189,8 +186,7 @@ public class PrePostProcessingForm extends FormBaseClass {
 				String strFavText = cboFavorite.getText();
 				if (strFavText.length() > 0) {
 					if (Options.getProperty(getPrefix(strFavText) + cboFavorite.getText()) != null) {
-						if (tbxClassName.isEnabled() && tbxClassName.getText().length() > 0
-								|| tableIncludes.isEnabled() && tableIncludes.getItemCount() > 0) {
+						if (tbxClassName.isEnabled() && tbxClassName.getText().length() > 0 || tableIncludes.isEnabled() && tableIncludes.getItemCount() > 0) {
 							int c = MainWindow.message(getShell(), SOSJOEMessageCodes.JOE_M_ScriptFormPreProcessing_OverwriteMonitor.label(), SWT.ICON_QUESTION
 									| SWT.YES | SWT.NO);
 							if (c != SWT.YES)
@@ -391,7 +387,7 @@ public class PrePostProcessingForm extends FormBaseClass {
 		}
 		catch (Exception e) {
 			System.out.println(e.toString());
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
+			new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
 			return retVal;
 		}
 	}

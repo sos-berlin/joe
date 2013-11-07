@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
 import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
@@ -19,6 +20,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -31,10 +33,8 @@ import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.actions.forms.ActionsForm;
-import sos.scheduler.editor.classes.WindowsSaver;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.HotFolderDialog;
-import sos.scheduler.editor.conf.forms.JobAssistentForm;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
@@ -42,9 +42,11 @@ import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
 import com.sos.JSHelper.Basics.JSVersionInfo;
+import com.sos.dialog.classes.WindowsSaver;
 import com.sos.i18n.annotation.I18NMessage;
 import com.sos.i18n.annotation.I18NMessages;
 import com.sos.i18n.annotation.I18NResourceBundle;
+import com.sos.joe.job.wizard.JobAssistentForm;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class MainWindow {
@@ -134,9 +136,10 @@ public class MainWindow {
 	public void OpenLastFolder() {
 		if (Options.openLastFolder() == true) {
 			String strF = Options.getLastFolderName();
-			if (strF != null && strF.trim().length() > 0) {
+			if (strF.length() > 0) {
 				setStatusLine(String.format("Open last Folder '%1$s'", strF));
 				container.openDirectory(strF);
+
 			}
 		}
 	}
@@ -154,19 +157,19 @@ public class MainWindow {
 
 	public static void setStatusLine(final String pstrText) {
 		StatusLine.setText(pstrText);
-//		Timer objT = new Timer();
-//		objT.schedule(new TimerTask() {
-//			@Override
-//			public void run() {
-//
-//			       display.asyncExec(new Runnable() {
-//			    	    @Override
-//						public void run() {
-//							StatusLine.setText("");
-//	                    }
-//	                });
-//			};
-//		}, 3000);
+		Timer objT = new Timer();
+		objT.schedule(new TimerTask() {
+			@Override
+			public void run() {
+
+			       display.asyncExec(new Runnable() {
+			    	    @Override
+						public void run() {
+							StatusLine.setText("");
+	                    }
+	                });
+			};
+		}, 3000);
 	}
 	private WindowsSaver	objPersistenceStore;
 
@@ -175,11 +178,11 @@ public class MainWindow {
 	 * @wbp.parser.entryPoint
 	 */
 
-//	public static Display display = null;
+	public static Display display = null;
 
 	public void createSShell() {
-//		display = new Display();
 		Shell shell = new Shell();
+		display = shell.getDisplay();
 
 		final GridLayout gridLayout_1 = new GridLayout();
 		shell.setLayout(gridLayout_1);
@@ -842,7 +845,7 @@ public class MainWindow {
 		return message(getSShell(), message, style);
 	}
 
-	   public static int message(String application, String message, int style) {
+	   public static int message(final String application, final String message, final int style) {
 	        return message(getSShell(), application, message, style);
 	    }
 	// /**
@@ -883,8 +886,8 @@ public class MainWindow {
 		mb.setText("JOE: " + title);
 		return mb.open();
 	}
-	
-    public static int message(Shell shell, String application, String pstrMessage, int style) {
+
+    public static int message(final Shell shell, final String application, String pstrMessage, final int style) {
         MessageBox mb = new MessageBox(shell, style);
         if (mb == null) {
             return -1;

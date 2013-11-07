@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.forms;
+package com.sos.joe.job.wizard;
 
 
 import sos.scheduler.editor.app.ErrorLog;

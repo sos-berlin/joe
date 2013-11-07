@@ -35,12 +35,14 @@ import com.sos.scheduler.model.LanguageDescriptorList;
 public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 	@SuppressWarnings("unused")
+	private final String conClassName = this.getClass().getSimpleName();
+	@SuppressWarnings("unused")
+	private final Logger logger = Logger.getLogger(this.getClass());
+
+	@SuppressWarnings("unused")
 	private final String		conSVNVersion					= "$Id$";
 	private final int			intNoOfLabelColumns				= 2;
 
-	private static Logger		logger							= Logger.getLogger(ScriptJobMainForm.class);
-	@SuppressWarnings("unused")
-	private final String		conClassName					= "ScriptForm";
 
 	protected JobListener		objDataProvider					= null;
 

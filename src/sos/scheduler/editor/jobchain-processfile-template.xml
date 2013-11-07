@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <job_chain  orders_recoverable="yes" visible="yes" title="${title}" name="${jobchainname}">
-    <job_chain_node  state="JobchainStart" job="sos/JobChainStart" next_state="Wait4File" error_state="!error"/>
-    <job_chain_node  state="Wait4File" job="sos/jitl/ExistsFile" next_state="ProcessFile" error_state="!Wait4File"/>
-    <job_chain_node  state="ProcessFile" job="changeme" next_state="DeleteFile" error_state="!ProcessFile"/>
-    <job_chain_node  state="DeleteFile" job="sos/jitl/DeleteFile" next_state="JobChainEnd" error_state="!DeleteFile"/>
-    <job_chain_node  state="JobChainEnd" job="sos/JobChainEnd" next_state="finish" error_state="!error"/>
+    <job_chain_node  state="JobchainStart" job="/sos/JobChainStart" next_state="Wait4File" error_state="!error"/>
+    <job_chain_node  state="Wait4File" job="/sos/jitl/ExistsFile" next_state="ProcessFile" error_state="!Wait4File"/>
+    <job_chain_node  state="ProcessFile" job="/sos/dummyjob" next_state="DeleteFile" error_state="!ProcessFile"/>
+    <job_chain_node  state="DeleteFile" job="/sos/jitl/DeleteFile" next_state="JobChainEnd" error_state="!DeleteFile"/>
+    <job_chain_node  state="JobChainEnd" job="/sos/JobChainEnd" next_state="finish" error_state="!error"/>
     <job_chain_node  state="finish"/>
     <job_chain_node  state="!error"/>
 </job_chain>

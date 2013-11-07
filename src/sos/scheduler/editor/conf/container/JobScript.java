@@ -1,5 +1,6 @@
 package sos.scheduler.editor.conf.container;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -16,23 +17,20 @@ import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.TextArea;
 import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
-import sos.scheduler.editor.classes.WindowsSaver;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
-public class JobScript extends FormBaseClass {
+import com.sos.dialog.classes.WindowsSaver;
 
-	@SuppressWarnings("unused")
-	private final String	conClassName			= "JobScript";
-	@SuppressWarnings("unused")
-	private final String	conSVNVersion			= "$Id$";
-	private Group			group					= null;
-	private SOSComboBox		cboPrefunction			= null;
-	@SuppressWarnings("unused")
-	private boolean			init					= true;
-	private JobListener		objJobDataProvider		= null;
-	private StyledText		tSource					= null;
+public class JobScript extends FormBaseClass<JobListener> {
 
-	private WindowsSaver	objFormPosSizeHandler	= null;
+	private final String		conClassName	= this.getClass().getSimpleName();
+	private static final String	conSVNVersion	= "$Id$";
+	private final Logger		logger			= Logger.getLogger(this.getClass());
+	private Group				group			= null;
+	private SOSComboBox			cboPrefunction	= null;
+	@SuppressWarnings("unused")
+	private boolean				init			= true;
+	private StyledText			tSource			= null;
 
 	public JobScript(final Composite pParentComposite, final JobListener pobjJobDataProvider) {
 		super(pParentComposite, pobjJobDataProvider);
@@ -41,10 +39,13 @@ public class JobScript extends FormBaseClass {
 		objFormPosSizeHandler.setKey(conClassName);
 		init = true;
 		createGroup();
+
+		logger.debug(conClassName + "\n" + conSVNVersion);
 		init = false;
 	}
 
-	private void createGroup() {
+	@Override
+	public void createGroup() {
 		group = SOSJOEMessageCodes.JOE_G_JobScript_Executable.Control(new Group(objParent, SWT.NONE));
 		final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, true, true, 13, 20);
 		gridData_5.heightHint = 500;

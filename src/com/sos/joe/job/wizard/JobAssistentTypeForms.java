@@ -6,8 +6,9 @@
  *  @author mo
  *
  */
-package sos.scheduler.editor.conf.forms;
+package com.sos.joe.job.wizard;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -25,11 +26,13 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.util.SOSClassUtil;
 
+import com.sos.dialog.classes.WindowsSaver;
 import com.swtdesigner.SWTResourceManager;
 
 /**
@@ -44,38 +47,29 @@ import com.swtdesigner.SWTResourceManager;
  * Das bedeutet alle Job Dokumentationen aus der Verzeichnis <SCHEDULER_HOME>/jobs/*.xml werden parsiert.
  *
  *
- * @author mueruevet.oeksuez@sos-berlin.com
- *
  */
-public class JobAssistentTypeForms {
+public class JobAssistentTypeForms extends FormBaseClass <JobListener>{
 	@SuppressWarnings("unused")
-	private final String conSVNVersion = "$Id$";
+	private final String conClassName = this.getClass().getSimpleName();
+	@SuppressWarnings("unused")
+	private final Logger logger = Logger.getLogger(this.getClass());
+	@SuppressWarnings("unused")
+	private final String conSVNVersion = "$Id: JobAssistentTypeForms.java 20744 2013-07-22 10:26:13Z kb $";
 
 	private static final String	conTagNameJOB	= "job";
 
 	/** Parameter: isStandaloneJob = true -> Standalone Job, sonst Order Job*/
 	private boolean          isStandaloneJob  = true;
-
 	private Button           radStandalonejob = null;
-
 	private Button           radOrderjob      = null;
-
 	private SchedulerDom     dom              = null;
-
 	private ISchedulerUpdate update           = null;
-
 	private Button           butCancel        = null;
-
 	private Button           butShow          = null;
-
 	private Button           butNext          = null;
-
-	private Shell            jobTypeShell     = null;
-
+	private Shell            shell     = null;
 	private String           jobType          = "";
-
 	private Element          jobBackUp        = null;
-
 	private int              assistentType    = Editor.JOBS;
 
 	/**
@@ -97,8 +91,12 @@ public class JobAssistentTypeForms {
 
 	public void showTypeForms() {
 		try {
-			jobTypeShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
-			jobTypeShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
+			shell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+			shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
+
+			objFormPosSizeHandler = new WindowsSaver(this.getClass(), shell, 400, 200);
+			objFormPosSizeHandler.setKey(conClassName);
+			objFormPosSizeHandler.restoreWindow();
 
 			final GridLayout gridLayout = new GridLayout();
 			gridLayout.marginTop = 5;
@@ -106,10 +104,10 @@ public class JobAssistentTypeForms {
 			gridLayout.marginLeft = 5;
 			gridLayout.marginBottom = 5;
 			gridLayout.numColumns = 2;
-			jobTypeShell.setLayout(gridLayout);
-			jobTypeShell.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobType.params(SOSJOEMessageCodes.JOE_M_JobAssistent_Step1.label()));
+			shell.setLayout(gridLayout);
+			shell.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobType.params(SOSJOEMessageCodes.JOE_M_JobAssistent_Step1.label()));
 			{
-				final Group jobGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobGroup.Control(new Group(jobTypeShell, SWT.NONE));
+				final Group jobGroup = SOSJOEMessageCodes.JOE_G_JobAssistent_JobGroup.Control(new Group(shell, SWT.NONE));
 				jobGroup.setCapture(true);
 				final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, true, true, 2, 1);
 				gridData_1.heightHint = 99;
@@ -139,7 +137,7 @@ public class JobAssistentTypeForms {
 			}
 
 			{
-				butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(jobTypeShell, SWT.NONE));
+				butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(shell, SWT.NONE));
 				butCancel.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(final SelectionEvent e) {
@@ -150,7 +148,7 @@ public class JobAssistentTypeForms {
 
 
 			{
-				final Composite composite = new Composite(jobTypeShell, SWT.NONE);
+				final Composite composite = new Composite(shell, SWT.NONE);
 				final GridData gridData = new GridData(GridData.END, GridData.CENTER, false, false);
 				composite.setLayoutData(gridData);
 				final GridLayout gridLayout_1 = new GridLayout();
@@ -169,7 +167,7 @@ public class JobAssistentTypeForms {
 							//dient nur für die Show Funktion
 							Element job = new Element(conTagNameJOB);
 							Utils.setAttribute("order", isStandaloneJob ? "yes" : "no", job);
-							MainWindow.message(jobTypeShell, Utils.getElementAsString(job), SWT.OK );
+							MainWindow.message(shell, Utils.getElementAsString(job), SWT.OK );
 						}
 					});
 				}
@@ -181,7 +179,7 @@ public class JobAssistentTypeForms {
 					butNext.addSelectionListener(new SelectionAdapter() {
 						@Override
 						public void widgetSelected(final SelectionEvent e) {
-							Utils.startCursor(jobTypeShell);
+							Utils.startCursor(shell);
 
 							if(radOrderjob.getSelection()) {
 								isStandaloneJob = false;
@@ -190,38 +188,40 @@ public class JobAssistentTypeForms {
 							}
 
 							if(jobBackUp != null) {
-								int cont = MainWindow.message(jobTypeShell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION | SWT.YES |SWT.NO |SWT.CANCEL );
+								int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION | SWT.YES |SWT.NO |SWT.CANCEL );
 								if(cont == SWT.CANCEL) {
 									return;
 								}else if(cont != SWT.YES) {
 									JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm( new JobListener(dom, jobBackUp, update) ,null,assistentType);
 									importJobs.showAllImportJobs(Utils.getAttributeValue("order", jobBackUp).equals("yes")?"order":"standalonejob") ;
-									jobTypeShell.dispose();
+									shell.dispose();
 									return;
 								}
 							}
 							JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(dom, update, assistentType);
 							importJobs.showAllImportJobs(isStandaloneJob ? "standalonejob" : "order");
-							Utils.stopCursor(jobTypeShell);
+							Utils.stopCursor(shell);
 
-							jobTypeShell.dispose();
+							shell.dispose();
 
 						}
 					});
 				}
 
-				Utils.createHelpButton(composite, "JOE_M_JobAssistentTypeForms_Help.label", jobTypeShell);
+				Utils.createHelpButton(composite, "JOE_M_JobAssistentTypeForms_Help.label", shell);
 			}
 
-			java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-
-			jobTypeShell.setBounds((screen.width - jobTypeShell.getBounds().width) /2,
-					(screen.height - jobTypeShell.getBounds().height) /2,
-					jobTypeShell.getBounds().width,
-					jobTypeShell.getBounds().height);
-			jobTypeShell.open();
-			jobTypeShell.layout();
-			jobTypeShell.pack();
+			shell.setDefaultButton(butNext);
+//			java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+//
+//			shell.setBounds((screen.width - shell.getBounds().width) /2,
+//					(screen.height - shell.getBounds().height) /2,
+//					shell.getBounds().width,
+//					shell.getBounds().height);
+			shell.open();
+			shell.layout();
+			objFormPosSizeHandler.restoreWindow();
+//			shell.pack();
 		} catch (Exception e) {
 			try {
 				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
@@ -238,8 +238,14 @@ public class JobAssistentTypeForms {
 	}
 
 	private void close() {
-		int cont = MainWindow.message(jobTypeShell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		if(cont == SWT.OK)
-			jobTypeShell.dispose();
+			shell.dispose();
+	}
+
+	@Override
+	public void createGroup() {
+		// TODO Auto-generated method stub
+
 	}
 }

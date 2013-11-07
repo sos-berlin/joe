@@ -54,28 +54,19 @@ public class HotFolderDialog{
 
 	private              String           sType                         = "";
 
-	//private              MainWindow       mainwindow                    = null;
-
-	private              SOSString        sosString                     = null;
-
+	private               SOSString        sosString                     = null;
 	private              Shell            schedulerConfigurationShell   = null;
-
 	private              Button           butRename                     = null;
-
 	private              Text             txtName                       = null;
-
 	private              Text             txtPort                       = null;
-
 	private              Button           butAdd                        = null;
 
 	private final              String           SCHEDULER_CLUSTER_MASK        = "^[^#]+$";
 
 	private final              String           SCHEDULER_HOST_MASK           = "^[^#]+#\\d{1,5}$";
 
-	//public HotFolderDialog(MainWindow mainwindow_) {
 	public HotFolderDialog() {
 		sosString = new SOSString();
-		//mainwindow = mainwindow_;
 	}
 	/**
 	 * @wbp.parser.entryPoint

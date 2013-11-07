@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.forms;
+package com.sos.joe.job.wizard;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
@@ -50,15 +50,19 @@ import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.container.JobDocumentation;
+import sos.scheduler.editor.conf.forms.JobDocumentationForm;
+import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.JSHelper.io.Files.JSXMLFile;
+import com.sos.dialog.classes.WindowsSaver;
 import com.sos.i18n.annotation.I18NResourceBundle;
 import com.sos.scheduler.model.xmldoc.Description;
 import com.sos.scheduler.model.xmldoc.Description.Configuration.Params;
@@ -67,63 +71,63 @@ import com.sos.scheduler.model.xmldoc.Param;
 import com.swtdesigner.SWTResourceManager;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
-public class JobAssistentImportJobParamsForm {
+public class JobAssistentImportJobParamsForm extends FormBaseClass<JobListener> {
 	@SuppressWarnings("unused")
-	private final String											conClsName									= "JobAssistentImportJobParamsForm";
+	private final String											conClsName						= "JobAssistentImportJobParamsForm";
 	@SuppressWarnings("unused")
-	private final String											conSVNVersion								= "$Id$";
-	private static final Logger										logger										= Logger.getLogger(JobAssistentImportJobParamsForm.class);
-//	private static final String										conMsgKeyASSISTENT_JOBPARAMETER_NO_SELECTED	= "assistent.jobparameter.no_selected";
-//	private static final String										conMsgKeyASSISTENT_JOBPARAMETER_EXIST		= "assistent.jobparameter.exist";
-//	private static final String										conMsgKeyMAIN_LISTENER_APPLY_CHANGES		= "MainListener.apply_changes";
-//	private static final String										conMsgKeyASSISTENT_JOBPARAMETER_REQUIRED	= "assistent.jobparameter.required";
-	private static final String										conKeyPARAMETER_DESCRIPTION_				= "parameter_description_";
-	private static final String										conKeyPARAMETER_DESCRIPTION_EN				= "parameter_description_en";
-	private static final String										conKeyPARAMETER_DESCRIPTION_DE				= "parameter_description_de";
-	public static final String										conSystemPropertyUSER_DIR					= "user.dir";
-	private static final String										conStringFALSE								= "false";
-	private static final String										conParamAttributeDEFAULT_VALUE				= "default_value";
-	private static final String										conParamAttributeREQUIRED					= "required";
-	private static final String										conParamNAME								= "name";
-	private static final String										conTRUE										= "true";
-	private final static String										conClassName								= "JobAssistentImportJobParamsForm";
-	private static JAXBContext										context										= null;
-	private static Unmarshaller										unmarshaller								= null;
+	private final String											conSVNVersion					= "$Id: JobAssistentImportJobParamsForm.java 20744 2013-07-22 10:26:13Z kb $";
+	private static final Logger										logger							= Logger.getLogger(JobAssistentImportJobParamsForm.class);
+	//	private static final String										conMsgKeyASSISTENT_JOBPARAMETER_NO_SELECTED	= "assistent.jobparameter.no_selected";
+	//	private static final String										conMsgKeyASSISTENT_JOBPARAMETER_EXIST		= "assistent.jobparameter.exist";
+	//	private static final String										conMsgKeyMAIN_LISTENER_APPLY_CHANGES		= "MainListener.apply_changes";
+	//	private static final String										conMsgKeyASSISTENT_JOBPARAMETER_REQUIRED	= "assistent.jobparameter.required";
+	private static final String										conKeyPARAMETER_DESCRIPTION_	= "parameter_description_";
+	private static final String										conKeyPARAMETER_DESCRIPTION_EN	= "parameter_description_en";
+	private static final String										conKeyPARAMETER_DESCRIPTION_DE	= "parameter_description_de";
+	public static final String										conSystemPropertyUSER_DIR		= "user.dir";
+	private static final String										conStringFALSE					= "false";
+	private static final String										conParamAttributeDEFAULT_VALUE	= "default_value";
+	private static final String										conParamAttributeREQUIRED		= "required";
+	private static final String										conParamNAME					= "name";
+	private static final String										conTRUE							= "true";
+	private final static String										conClassName					= "JobAssistentImportJobParamsForm";
+	private static JAXBContext										context							= null;
+	private static Unmarshaller										unmarshaller					= null;
 	// private Text txtDescription = null;
-	private Browser													txtDescription								= null;
-	private Table													tblSelectedParams							= null;
-	private Table													tableDescParameters							= null;
-	private Shell													jobParameterShell							= null;
-	private Text													txtValue									= null;
-	private String													xmlPaths									= null;
-	private Text													txtName										= null;
-	private JobListener												joblistener									= null;
+	private Browser													txtDescription					= null;
+	private Table													tblSelectedParams				= null;
+	private Table													tableDescParameters				= null;
+//	private Shell													shell				= null;
+	private Text													txtValue						= null;
+	private String													xmlPaths						= null;
+	private Text													txtName							= null;
+	private JobListener												joblistener						= null;
 	// Tabelle aus der JobForm: Falls die Klasse über den Import Button vom JobFrom erfolgte
-	private Table													tParameter									= null;
-	private Button													butFinish									= null;
-	private Button													butApply									= null;
-	private Button													butNext										= null;
-	private Button													butBack										= null;
-	private ArrayList<HashMap<String, Object>>						listOfParams								= new ArrayList<HashMap<String, Object>>();
-	private SchedulerDom											dom											= null;
-	private ISchedulerUpdate										update										= null;
-	private Button													butCancel									= null;
-	private Button													showButton									= null;
+	private Table													tParameter						= null;
+	private Button													butFinish						= null;
+	private Button													butApply						= null;
+	private Button													butNext							= null;
+	private Button													butBack							= null;
+	private ArrayList<HashMap<String, Object>>						listOfParams					= new ArrayList<HashMap<String, Object>>();
+	private SchedulerDom											dom								= null;
+	private ISchedulerUpdate										update							= null;
+	private Button													butCancel						= null;
+	private Button													showButton						= null;
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
-	private int														assistentType								= -1;
-	private Button													butPut										= null;
-	private Button													butPutAll									= null;
-	private Button													butRemove									= null;
-	private Button													butRemoveAll								= null;
-	private Combo													jobname										= null;
-	private Element													jobBackUp									= null;
-	private ScriptJobMainForm												jobForm										= null;
-	private JobDocumentationForm									jobDocForm									= null;
+	private int														assistentType					= -1;
+	private Button													butPut							= null;
+	private Button													butPutAll						= null;
+	private Button													butRemove						= null;
+	private Button													butRemoveAll					= null;
+	private Combo													jobname							= null;
+	private Element													jobBackUp						= null;
+	private ScriptJobMainForm										jobForm							= null;
+	private JobDocumentationForm									jobDocForm						= null;
 	/** Hilsvariable für das Schliessen des Dialogs.
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
-	private boolean													closeDialog									= false;
-	private sos.scheduler.editor.conf.listeners.ParameterListener	paramListener								= null;
-	private Text													refreshDetailsText							= null;
+	private boolean													closeDialog						= false;
+	private sos.scheduler.editor.conf.listeners.ParameterListener	paramListener					= null;
+	private Text													refreshDetailsText				= null;
 
 	public JobAssistentImportJobParamsForm() {
 	}
@@ -145,7 +149,8 @@ public class JobAssistentImportJobParamsForm {
 		paramListener = new ParameterListener(dom, joblistener_.getJob(), update_, assistentType);
 	}
 
-	public JobAssistentImportJobParamsForm(final SchedulerDom dom_, final ISchedulerUpdate update_, final JobListener joblistener_, final Table tParameter_, final int assistentType_) {
+	public JobAssistentImportJobParamsForm(final SchedulerDom dom_, final ISchedulerUpdate update_, final JobListener joblistener_, final Table tParameter_,
+			final int assistentType_) {
 		dom = dom_;
 		update = update_;
 		joblistener = joblistener_;
@@ -161,24 +166,21 @@ public class JobAssistentImportJobParamsForm {
 			return new ArrayList<HashMap<String, Object>>();
 
 		// TODO /jobs als Option
-		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData()+"/jobs";
+		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData() + "/jobs";
 		xmlPaths = xmlPaths.replaceAll("\\\\", "/");
 		xmlFilename = xmlFilename.replaceAll("\\\\", "/");
 
-
-
 		if (!xmlFilename.startsWith(xmlPaths)) {
-            String s[] = xmlFilename.split("/");
-            xmlFilename = s[s.length-1];
+			String s[] = xmlFilename.split("/");
+			xmlFilename = s[s.length - 1];
 			xmlFilename = xmlPaths.endsWith("/") ? xmlPaths.concat(xmlFilename) : xmlPaths.concat("/").concat(xmlFilename);
 		}
-
 
 		ArrayList<HashMap<String, Object>> listOfParams1 = null;
 		try {
 			listOfParams1 = new ArrayList<HashMap<String, Object>>();
 			if (!new File(xmlFilename).exists()) {
-				MainWindow.message(jobParameterShell, SOSJOEMessageCodes.JOE_M_0025.params(xmlFilename), SWT.OK);
+				MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_0025.params(xmlFilename), SWT.OK);
 				return listOfParams1;
 			}
 			Params objParams = getParamList(xmlFilename);
@@ -204,8 +206,8 @@ public class JobAssistentImportJobParamsForm {
 				h.put(conParamAttributeREQUIRED, strIsRequired);
 				String strLanguage = Options.getLanguage();
 				// download : http://mirrors.ibiblio.org/pub/mirrors/maven2/com/sun/org/apache/jaxp-ri/1.4/jaxp-ri-1.4.jar
-				DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl",
-						this.getClass().getClassLoader());
+				DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl", this.getClass()
+						.getClassLoader());
 				DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
 				org.w3c.dom.Document doc = docBuilder.newDocument();
 				// //////////////////////
@@ -244,7 +246,8 @@ public class JobAssistentImportJobParamsForm {
 		}
 		catch (Exception ex) {
 			try {
-				MainWindow.message(jobParameterShell, SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()) +" "+ ex.getLocalizedMessage(), SWT.OK);
+				MainWindow.message(shell, SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()) + " " + ex.getLocalizedMessage(),
+						SWT.OK);
 				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), ex);
 			}
 			catch (Exception ee) {
@@ -273,7 +276,7 @@ public class JobAssistentImportJobParamsForm {
 			objTempFile.deleteOnExit();
 			String strTempFileName = objTempFile.getAbsolutePath();
 			fleFile.writeDocument(strTempFileName);
-//			Description objDescr = (Description) unmarshaller.unmarshal(objTempFile);
+			//			Description objDescr = (Description) unmarshaller.unmarshal(objTempFile);
 			Description objDescr = (Description) unmarshaller.unmarshal(new File(pstrDocuFileName));
 
 			objParams = objDescr.getConfiguration().getParams();
@@ -288,42 +291,56 @@ public class JobAssistentImportJobParamsForm {
 		return objParams;
 	} // private void getParamList
 
-
-
 	/**
 	 *
 	 * @param xmlFilename -> Job Dokumentation
 	 */
 	public void showAllImportJobParams(final String xmlFilename) {
 		try {
-			jobParameterShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
-			jobParameterShell.addShellListener(new ShellAdapter() {
+			shell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
+			objFormPosSizeHandler = new WindowsSaver(this.getClass(), shell, 400, 200);
+			objFormPosSizeHandler.setKey(conClassName);
+			objFormPosSizeHandler.restoreWindow();
+
+			shell.addShellListener(new ShellAdapter() {
 				@Override
 				public void shellClosed(final ShellEvent e) {
-					if (!closeDialog)
+					if (!closeDialog) {
+						saveWindowPosAndSize();
 						close();
-					e.doit = jobParameterShell.isDisposed();
+					}
+					e.doit = shell.isDisposed();
 				}
 			});
-			jobParameterShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
-			java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-			jobParameterShell.setBounds((screen.width - jobParameterShell.getBounds().width) / 2, (screen.height - jobParameterShell.getBounds().height) / 2, 1,
-					jobParameterShell.getBounds().height);
-	//		jobParameterShell.setSize(MainWindow.getSShell().getSize().x,MainWindow.getSShell().getSize().y);
+
+//			shell.addControlListener(new ControlAdapter() {
+//				@Override
+//				public void controlMoved(final ControlEvent e) {
+//					saveWindowPosAndSize();
+//				}
+//
+//				@Override
+//				public void controlResized(final ControlEvent e) {
+//					saveWindowPosAndSize();
+//				}
+//			});
+//
+
+			shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 
 			final GridLayout gridLayout = new GridLayout();
 
-			jobParameterShell.setLayout(gridLayout);
+			shell.setLayout(gridLayout);
 			String step = " ";
 			if (Utils.getAttributeValue("order", joblistener.getJob()).equalsIgnoreCase("yes")) {
-				step +=  SOSJOEMessageCodes.JOE_M_JobAssistent_Step3of9.label();
+				step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step3of9.label();
 			}
 			else {
 				step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step3of8.label();
 			}
-			jobParameterShell.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobParameter.label() + step);
+			shell.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobParameter.label() + step);
 			Label nameLabel;
-			final Group textParameterGroup = new Group(jobParameterShell, SWT.NONE);
+			final Group textParameterGroup = new Group(shell, SWT.NONE);
 			textParameterGroup.setText(SOSJOEMessageCodes.JOE_G_JobAssistent_ParamGroup.params(Utils.getAttributeValue(conParamNAME, joblistener.getJob())));
 			final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, true, true);
 			gridData_3.minimumWidth = -1;
@@ -373,7 +390,7 @@ public class JobAssistentImportJobParamsForm {
 			showButton.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(final SelectionEvent e) {
-					Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell, false, null, false, null, false);
+					Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), shell, false, null, false, null, false);
 				}
 			});
 			if (assistentType == Editor.JOB)
@@ -403,12 +420,12 @@ public class JobAssistentImportJobParamsForm {
 								listener.newImportJob(joblistener.getJob(), assistentType);
 							}
 					if (Options.getPropertyBoolean("editor.job.show.wizard"))
-						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell, false, null, false, null, true);
+						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), shell, false, null, false, null, true);
 					// Event auslösen
-//					if (refreshDetailsText != null)
-//ur 2011-11-09						refreshDetailsText.setText("X");
-//					closeDialog = true;
-					jobParameterShell.dispose();
+					//					if (refreshDetailsText != null)
+					//ur 2011-11-09						refreshDetailsText.setText("X");
+					//					closeDialog = true;
+					shell.dispose();
 				}
 			});
 
@@ -423,7 +440,7 @@ public class JobAssistentImportJobParamsForm {
 					importJobs.setBackUpJob(jobBackUp, jobForm);
 					importJobs.showAllImportJobs(joblistener);
 					closeDialog = true;
-					jobParameterShell.dispose();
+					shell.dispose();
 				}
 			});
 			butBack.setEnabled(false);
@@ -435,7 +452,7 @@ public class JobAssistentImportJobParamsForm {
 			butNext.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(final SelectionEvent e) {
-					Utils.startCursor(jobParameterShell);
+					Utils.startCursor(shell);
 					if (assistentType != Editor.JOB) {
 						JobAssistentTasksForm tasks = new JobAssistentTasksForm(dom, update, joblistener.getJob(), assistentType);
 						tasks.showTasksForm();
@@ -444,12 +461,12 @@ public class JobAssistentImportJobParamsForm {
 						tasks.setBackUpJob(jobBackUp, jobForm);
 					}
 					closeDialog = true;
-					Utils.startCursor(jobParameterShell);
-					jobParameterShell.dispose();
+					Utils.startCursor(shell);
+					shell.dispose();
 				}
 			});
 			butNext.setEnabled(false);
-
+			shell.setDefaultButton(butNext);
 			if (assistentType == Editor.JOB || assistentType == Editor.PARAMETER) {
 				butNext.setEnabled(false);
 				butBack.setEnabled(false);
@@ -458,7 +475,7 @@ public class JobAssistentImportJobParamsForm {
 				butNext.setEnabled(true);
 				butBack.setEnabled(true);
 			}
-			Utils.createHelpButton(composite_3, "JOE_M_JobAssistentImportJobParamsForm_Help.label", jobParameterShell);
+			Utils.createHelpButton(composite_3, "JOE_M_JobAssistentImportJobParamsForm_Help.label", shell);
 			final Label label_1 = new Label(textParameterGroup, SWT.BORDER);
 			final GridData gridData_6_1 = new GridData(GridData.FILL, GridData.BEGINNING, false, false, 5, 1);
 			gridData_6_1.heightHint = 0;
@@ -528,7 +545,8 @@ public class JobAssistentImportJobParamsForm {
 				});
 			}
 
-			tableDescParameters = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_DescParams.Control(new Table(textParameterGroup, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER));
+			tableDescParameters = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_DescParams.Control(new Table(textParameterGroup, SWT.MULTI | SWT.FULL_SELECTION
+					| SWT.BORDER));
 			tableDescParameters.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseDoubleClick(final MouseEvent e) {
@@ -555,7 +573,8 @@ public class JobAssistentImportJobParamsForm {
 			final TableColumn newColumnTableColumn = SOSJOEMessageCodes.JOE_TCl_JobAssistent_NameColumn.Control(new TableColumn(tableDescParameters, SWT.NONE));
 			newColumnTableColumn.setWidth(122);
 
-			final TableColumn newColumnTableColumn_1 = SOSJOEMessageCodes.JOE_TCl_JobAssistent_ValueColumn.Control(new TableColumn(tableDescParameters, SWT.NONE));
+			final TableColumn newColumnTableColumn_1 = SOSJOEMessageCodes.JOE_TCl_JobAssistent_ValueColumn.Control(new TableColumn(tableDescParameters,
+					SWT.NONE));
 			newColumnTableColumn_1.setWidth(145);
 
 			final Composite composite_2 = SOSJOEMessageCodes.JOE_Composite4.Control(new Composite(textParameterGroup, SWT.NONE));
@@ -640,7 +659,7 @@ public class JobAssistentImportJobParamsForm {
 					txtName.setFocus();
 					paramListener.fillParams(listOfParams, tblSelectedParams, true);
 					if (remItem != null) {
-						MainWindow.message(jobParameterShell, SOSJOEMessageCodes.JOE_M_JobAssistent_ParamsRequired.params(remItem), SWT.ICON_WARNING | SWT.OK);
+						MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_ParamsRequired.params(remItem), SWT.ICON_WARNING | SWT.OK);
 					}
 					tblSelectedParams.redraw();
 					tblSelectedParams.deselectAll();
@@ -649,7 +668,8 @@ public class JobAssistentImportJobParamsForm {
 			});
 			butRemoveAll.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 
-			tblSelectedParams = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_SelectedParams.Control(new Table(textParameterGroup, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER));
+			tblSelectedParams = SOSJOEMessageCodes.JOE_Tbl_JobAssistent_SelectedParams.Control(new Table(textParameterGroup, SWT.MULTI | SWT.FULL_SELECTION
+					| SWT.BORDER));
 			tblSelectedParams.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseDoubleClick(final MouseEvent e) {
@@ -673,7 +693,8 @@ public class JobAssistentImportJobParamsForm {
 					if (tblSelectedParams.getSelectionCount() > -1) {
 						txtName.setText(tblSelectedParams.getSelection()[0].getText(0));
 						txtValue.setText(tblSelectedParams.getSelection()[0].getText(1));
-						txtDescription.setText(tblSelectedParams.getSelection()[0].getData(conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage()) != null ? tblSelectedParams.getSelection()[0].getData(conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage())
+						txtDescription.setText(tblSelectedParams.getSelection()[0].getData(conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage()) != null ? tblSelectedParams.getSelection()[0].getData(
+								conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage())
 								.toString()
 								: "");
 						// txtName.setFocus();
@@ -694,11 +715,13 @@ public class JobAssistentImportJobParamsForm {
 
 			// txtDescription = new Text(textParameterGroup, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.H_SCROLL);
 			try {
-			txtDescription = SOSJOEMessageCodes.JOE_DescriptionBrowser.Control(new Browser(textParameterGroup, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.H_SCROLL));
-			}catch (Exception e) {
-			    txtDescription = null;
-			    final Label txtDescriptionLabel = SOSJOEMessageCodes.JOE_L_Value.Control(new Label(textParameterGroup, SWT.NONE));
-			    txtDescriptionLabel.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobParameter.label());
+				txtDescription = SOSJOEMessageCodes.JOE_DescriptionBrowser.Control(new Browser(textParameterGroup, SWT.MULTI | SWT.BORDER | SWT.WRAP
+						| SWT.H_SCROLL | SWT.H_SCROLL));
+			}
+			catch (Exception e) {
+				txtDescription = null;
+				final Label txtDescriptionLabel = SOSJOEMessageCodes.JOE_L_Value.Control(new Label(textParameterGroup, SWT.NONE));
+				txtDescriptionLabel.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobParameter.label());
 			}
 
 			final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
@@ -711,20 +734,21 @@ public class JobAssistentImportJobParamsForm {
 				listOfParams = this.parseDocuments(xmlFilename, "");
 			}
 			fillTable(listOfParams);
-//			setToolTipText();
+			//			setToolTipText();
 
-			jobParameterShell.layout();
-			jobParameterShell.pack();
-			jobParameterShell.open();
+			shell.layout();
+//			shell.pack();
+			objFormPosSizeHandler.restoreWindow();
+			shell.open();
 		}
 		catch (Exception e) {
 			try {
 				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
-			System.out.println(SOSJOEMessageCodes.JOE_M_0010.params(SOSClassUtil.getMethodName(), e.getMessage()));
-		}
-		catch (Exception ee) {
-			// tu nichts
-		}
+				System.out.println(SOSJOEMessageCodes.JOE_M_0010.params(SOSClassUtil.getMethodName(), e.getMessage()));
+			}
+			catch (Exception ee) {
+				// tu nichts
+			}
 		}
 	}
 
@@ -813,7 +837,7 @@ public class JobAssistentImportJobParamsForm {
 	}
 
 	public void setToolTipText() {
-//
+		//
 	}
 
 	public ArrayList<HashMap<String, Object>> getParameters() {
@@ -848,7 +872,7 @@ public class JobAssistentImportJobParamsForm {
 	}
 
 	private void close() {
-		int cont = MainWindow.message(jobParameterShell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+		int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		if (cont == SWT.OK) {
 			if (jobBackUp != null) {
 				joblistener.getJob().setContent(jobBackUp.cloneContent());
@@ -859,13 +883,13 @@ public class JobAssistentImportJobParamsForm {
 					joblistener.getJob().setAttribute(at.getName(), at.getValue());
 				}
 			}
-			jobParameterShell.dispose();
+			shell.dispose();
 		}
 	}
 
 	private void addParam() {
 		if (txtName.getText() != null && txtName.getText().trim().length() == 0) {
-			MainWindow.message(jobParameterShell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoParamName.label(), SWT.ICON_WARNING | SWT.OK);
+			MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoParamName.label(), SWT.ICON_WARNING | SWT.OK);
 			txtName.setFocus();
 			return;
 		}
@@ -892,8 +916,8 @@ public class JobAssistentImportJobParamsForm {
 	}
 
 	public void setJobForm(final JobDocumentation jobDocForm_) {
-//		if (jobDocForm_ != null)
-//			jobDocForm = jobDocForm_;
+		//		if (jobDocForm_ != null)
+		//			jobDocForm = jobDocForm_;
 	}
 
 	/**
@@ -928,12 +952,12 @@ public class JobAssistentImportJobParamsForm {
 					existParams = existParams + strParamName + "\n";
 				}
 				if (existParams.length() > 0)
-					MainWindow.message(jobParameterShell, SOSJOEMessageCodes.JOE_M_JobAssistent_ParamsExist.params(existParams), SWT.ICON_WARNING | SWT.OK);
+					MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_ParamsExist.params(existParams), SWT.ICON_WARNING | SWT.OK);
 			}
 			tableDescParameters.remove(tableDescParameters.getSelectionIndices());
 		}
 		else {
-			MainWindow.message(jobParameterShell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoParamsSelected.label(), SWT.ICON_WARNING | SWT.OK);
+			MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoParamsSelected.label(), SWT.ICON_WARNING | SWT.OK);
 		}
 		tableDescParameters.deselectAll();
 		tblSelectedParams.deselectAll();
@@ -964,11 +988,11 @@ public class JobAssistentImportJobParamsForm {
 				}
 			}
 			if (remItem.length() > 0)
-				MainWindow.message(jobParameterShell, SOSJOEMessageCodes.JOE_M_JobAssistent_ParamsRequired.params(remItem), SWT.ICON_WARNING | SWT.OK);
+				MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_ParamsRequired.params(remItem), SWT.ICON_WARNING | SWT.OK);
 			tblSelectedParams.remove(tblSelectedParams.getSelectionIndices());
 		}
 		else {
-			MainWindow.message(jobParameterShell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoRemParamsSelected.label(), SWT.ICON_WARNING | SWT.OK);
+			MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoRemParamsSelected.label(), SWT.ICON_WARNING | SWT.OK);
 		}
 		tblSelectedParams.deselectAll();
 		tableDescParameters.deselectAll();
@@ -982,5 +1006,11 @@ public class JobAssistentImportJobParamsForm {
 	// Beim generieren der Parameter mit Wizard müssen die Parameterdescriptchen anders aufgebaut werden.
 	public void setDetailsRefresh(final Text refreshDetailsText_) {
 		refreshDetailsText = refreshDetailsText_;
+	}
+
+	@Override
+	public void createGroup() {
+		// TODO Auto-generated method stub
+
 	}
 }

@@ -46,7 +46,7 @@ public class IOUtils {
 	}
 
 	public static String getJobschedulerObjectPathName(final String mask) {
-		return getJobSchedulerObjectPathFromFileSystem(mask,Options.getSchedulerHotFolder());
+		return getJobSchedulerObjectPathFromFileSystem(mask, Options.getSchedulerHotFolder());
 	}
 
 	public static String openDirectoryFile(final String mask, final String pstrDirectoryName) {
@@ -70,44 +70,45 @@ public class IOUtils {
 
 		int pos = filename.toLowerCase().indexOf(env.toLowerCase().toLowerCase());
 		if (pos >= 0) {
-			File fleT = new File (filename);
+			File fleT = new File(filename);
 			filename = fleT.getName();
-//			int add = (env.endsWith("/") ? -1 : 0);
-//			filename = filename.substring(pos == -1 ? 0 : pos + env.length() + add);
-//			filename = filename.substring(0, filename.length() - filterMask.length() + 1);
+			//			int add = (env.endsWith("/") ? -1 : 0);
+			//			filename = filename.substring(pos == -1 ? 0 : pos + env.length() + add);
+			//			filename = filename.substring(0, filename.length() - filterMask.length() + 1);
 		}
 		return filename;
 
 	}
 
-	   public static String getJobSchedulerObjectPathFromFileSystem(final String mask, final String pstrDirectoryName) {
+	public static String getJobSchedulerObjectPathFromFileSystem(final String mask, final String pstrDirectoryName) {
 
-	        String filename = "";
-	        FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
+		String filename = "";
+		FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
 
-	        fdialog.setFilterPath(pstrDirectoryName);
-	        String filterMask = mask.replaceAll("\\\\", "");
-	        filterMask = filterMask.replaceAll("\\^.", "");
-	        filterMask = filterMask.replaceAll("\\$", "");
-	        fdialog.setFilterExtensions(new String[] { filterMask });
+		fdialog.setFilterPath(pstrDirectoryName);
+		String filterMask = mask.replaceAll("\\\\", "");
+		filterMask = filterMask.replaceAll("\\^.", "");
+		filterMask = filterMask.replaceAll("\\$", "");
+		fdialog.setFilterExtensions(new String[] { filterMask });
 
-	        filename = fdialog.open();
-	        if (filename == null || filename.trim().length() == 0) {
-	            return filename;
-	        }
-	        String jobSchededulerObjectPath = filename.replaceAll("\\\\", "/");
+		filename = fdialog.open();
+		if (filename == null || filename.trim().length() == 0) {
+			return filename;
+		}
+		String jobSchededulerObjectPath = filename.replaceAll("\\\\", "/");
 
-	        String hotFolderPath = Options.getSchedulerHotFolder().replaceAll("\\\\", "/");
+		String hotFolderPath = Options.getSchedulerHotFolder().replaceAll("\\\\", "/");
 
-	        int pos = jobSchededulerObjectPath.toLowerCase().indexOf(hotFolderPath.toLowerCase().toLowerCase());
-	        if (pos >= 0) {
-  	          int add = hotFolderPath.endsWith("/") ? -1 : 0;
-  	          jobSchededulerObjectPath = jobSchededulerObjectPath.substring(pos == -1 ? 0 : pos + hotFolderPath.length() + add);
-	        }
-	        jobSchededulerObjectPath = jobSchededulerObjectPath.substring(0, jobSchededulerObjectPath.length() - filterMask.length() + 1);
-	        return jobSchededulerObjectPath;
+		int pos = jobSchededulerObjectPath.toLowerCase().indexOf(hotFolderPath.toLowerCase().toLowerCase());
+		if (pos >= 0) {
+			int add = hotFolderPath.endsWith("/") ? -1 : 0;
+			jobSchededulerObjectPath = jobSchededulerObjectPath.substring(pos == -1 ? 0 : pos + hotFolderPath.length() + add);
+		}
+		jobSchededulerObjectPath = jobSchededulerObjectPath.substring(0, jobSchededulerObjectPath.length() - filterMask.length() + 1);
+		return jobSchededulerObjectPath;
 
-	    }
+	}
+
 	/**
 	 *
 	 * Es wird entweder eine Scheduler Konfigurationsdatei, eine Hot Folder Verzeichnis oder
@@ -175,22 +176,16 @@ public class IOUtils {
 			}
 			if (filename != null && !filename.equals("")) { //$NON-NLS-1$
 				File file = new File(filename);
-				// //System.out.println("~~~~~~~~~~~~~~~~~filename ioutils: " + filename);
-				// check the file
 				if (!file.exists()) {
-					// //System.out.println("~~~~~~~~~~~~~~~~~filename ioutils not exist: " + file.getCanonicalPath());
-					MainWindow.message(Messages.getString("MainListener.fileNotFound"), //$NON-NLS-1$
-							SWT.ICON_WARNING | SWT.OK);
+					MainWindow.message(Messages.getString("MainListener.fileNotFound"), SWT.ICON_WARNING | SWT.OK);
 					return false;
 				}
 				else
 					if (!file.canRead())
-						MainWindow.message(Messages.getString("MainListener.fileReadProtected"), //$NON-NLS-1$
-								SWT.ICON_WARNING | SWT.OK);
-					else { // open it...
+						MainWindow.message(Messages.getString("MainListener.fileReadProtected"), SWT.ICON_WARNING | SWT.OK);
+					else { // open it ...
 						int cont = SWT.NO;
 						try {
-							// read and validate
 							if (isDirectory) {
 								dom.readString(xml, true);
 								dom.setFilename(filename);
@@ -199,8 +194,7 @@ public class IOUtils {
 								dom.read(filename);
 						}
 						catch (JDOMException e) {
-							cont = MainWindow.message(
-									Messages.getString("MainListener.validationError", new String[] { file.getAbsolutePath(), e.getMessage() }),
+							cont = MainWindow.message(Messages.getString("MainListener.validationError", new String[] { filename, e.getMessage() }),
 									SWT.ICON_WARNING | SWT.YES | SWT.NO);
 							if (cont == SWT.NO)
 								return false;
@@ -211,8 +205,8 @@ public class IOUtils {
 							}
 							catch (Exception ee) {
 							}
-							MainWindow.message(Messages.getString("MainListener.errorReadingFile", new String[] { file.getAbsolutePath(), e.getMessage() }),
-									SWT.ICON_ERROR | SWT.OK);
+							MainWindow.message(Messages.getString("MainListener.errorReadingFile", new String[] { filename, e.getMessage() }), SWT.ICON_ERROR
+									| SWT.OK);
 							return false;
 						}
 						if (cont == SWT.YES) { // validation error, continue
@@ -468,14 +462,16 @@ public class IOUtils {
 			else {// sonst life element
 				org.jdom.Element elem = null;
 				if (type == SchedulerDom.LIFE_LOCK) {
-					sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) MainWindow.getContainer().getCurrentEditor();
+					sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) MainWindow.getContainer()
+							.getCurrentEditor();
 					org.eclipse.swt.widgets.Tree tree = form.getTree();
 					TreeData data = (TreeData) tree.getSelection()[0].getData();
 					elem = data.getElement().getChild("locks").getChild("lock");
 				}
 				else
 					if (type == SchedulerDom.LIFE_PROCESS_CLASS) {
-						sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) MainWindow.getContainer().getCurrentEditor();
+						sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) MainWindow.getContainer()
+								.getCurrentEditor();
 						org.eclipse.swt.widgets.Tree tree = form.getTree();
 						TreeData data = (TreeData) tree.getSelection()[0].getData();
 						elem = data.getElement().getChild("process_classes").getChild("process_class");

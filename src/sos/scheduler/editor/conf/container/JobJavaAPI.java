@@ -1,10 +1,9 @@
 package sos.scheduler.editor.conf.container;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-//import org.eclipse.swt.events.VerifyEvent;
-//import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -15,53 +14,43 @@ import org.eclipse.swt.widgets.Text;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.listeners.JobListener;
+//import org.eclipse.swt.events.VerifyEvent;
+//import org.eclipse.swt.events.VerifyListener;
 
-public class JobJavaAPI extends FormBaseClass {
+public class JobJavaAPI extends FormBaseClass<JobListener> {
 
-	@SuppressWarnings("unused")
-	private final String	conClassName			= "JobJavaAPI";
-	@SuppressWarnings("unused")
+	private final String conClassName = this.getClass().getSimpleName();
+	private final Logger logger = Logger.getLogger(this.getClass());
 	private final String	conSVNVersion			= "$Id$";
 
 	private boolean init = true;
-	private JobListener objJobDataProvider = null;
 	private Text tClasspath = null;
 	private Text txtJavaOptions = null;
-	private Text tbxClassName = null; 
+	private Text tbxClassName = null;
 
-	public JobJavaAPI(Composite pParentComposite, JobListener pobjJobDataProvider,JobJavaAPI that) {
+	public JobJavaAPI(final Composite pParentComposite, final JobListener pobjJobDataProvider,final JobJavaAPI that) {
 		super(pParentComposite, pobjJobDataProvider);
 		objJobDataProvider = pobjJobDataProvider;
 		init = true;
 		createGroup();
 		init = false;
 		getValues(that);
+		logger.debug(conClassName + "\n" + conSVNVersion);
 	}
 
-	public void apply() {
-		// if (isUnsaved())
-		// addParam();
-	}
-
-	public boolean isUnsaved() {
-		return false;
-	}
-
-	public void refreshContent () {
-	}
-	
-	private void getValues(JobJavaAPI that){
+	private void getValues(final JobJavaAPI that){
 	    if (that == null){
 	        return;
 	    }
-	    
-        this.tClasspath.setText(that.tClasspath.getText());
-        this.txtJavaOptions.setText(that.txtJavaOptions.getText());
-        this.tbxClassName.setText(that.tbxClassName.getText());
- 
+
+        tClasspath.setText(that.tClasspath.getText());
+        txtJavaOptions.setText(that.txtJavaOptions.getText());
+        tbxClassName.setText(that.tbxClassName.getText());
+
 	}
-	
-	private void createGroup() {
+
+	@Override
+	public void createGroup() {
 		showWaitCursor();
 
 		Group gScript_2 = new Group(objParent, SWT.NONE);
@@ -90,7 +79,8 @@ public class JobJavaAPI extends FormBaseClass {
 		gd_tClass.horizontalSpan = 8;
 		tbxClassName.setLayoutData(gd_tClass);
 		tbxClassName.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
+			@Override
+			public void modifyText(final ModifyEvent e) {
 				if (!init) {
 					if (objJobDataProvider.isJava()) {
 						objJobDataProvider.setJavaClass(tbxClassName.getText());
@@ -99,6 +89,8 @@ public class JobJavaAPI extends FormBaseClass {
 			}
 		});
 
+		// TODO Jobdoc für die JAva-Klasse anzeigen ...
+		// TODO die verfügbaren Java-Klassen in einer combobox auswählbar machen ...
 		Group gScript_1 = gScript_2;
 		new Label(gScript_1, SWT.NONE);
 		new Label(gScript_1, SWT.NONE);
@@ -108,8 +100,6 @@ public class JobJavaAPI extends FormBaseClass {
 		Label lblNewLabel_1 = SOSJOEMessageCodes.JOE_L_JobJavaAPI_Classpath.Control(new Label(gScript_2, SWT.NONE));
 		lblNewLabel_1.setLayoutData(labelGridData);
 
-  
-		
 		tClasspath = SOSJOEMessageCodes.JOE_T_JobJavaAPI_Classpath.Control(new Text(gScript_2, SWT.BORDER));
 		tClasspath.setEnabled(true);
 		tClasspath.setText(objJobDataProvider.getClasspath());
@@ -117,7 +107,8 @@ public class JobJavaAPI extends FormBaseClass {
         gd_tClasspath.horizontalSpan = 8;
         tClasspath.setLayoutData(gd_tClasspath);
         tClasspath.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
+            @Override
+			public void modifyText(final ModifyEvent e) {
                 if (!init) {
                     if (objJobDataProvider.isJava()) {
                         objJobDataProvider.setClasspath(tClasspath.getText());
@@ -125,7 +116,7 @@ public class JobJavaAPI extends FormBaseClass {
                 }
             }
         });
-		 
+
 		new Label(gScript_2, SWT.NONE);
 		new Label(gScript_2, SWT.NONE);
 		new Label(gScript_2, SWT.NONE);
@@ -137,6 +128,7 @@ public class JobJavaAPI extends FormBaseClass {
 		txtJavaOptions = SOSJOEMessageCodes.JOE_T_JobJavaAPI_Options.Control(new Text(gScript_2, SWT.BORDER));
 		txtJavaOptions.setText(objJobDataProvider.getJavaOptions());
 		txtJavaOptions.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				if (!init) {
 				   objJobDataProvider.setJavaOptions(txtJavaOptions.getText());

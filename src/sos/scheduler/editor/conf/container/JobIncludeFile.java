@@ -1,7 +1,6 @@
 package sos.scheduler.editor.conf.container;
 
-//import java.io.File;
-
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -22,20 +21,17 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-//import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FileNameSelector;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
-public class JobIncludeFile extends FormBaseClass {
-	@SuppressWarnings("unused")
-	private final String	conClassName		= "JobIncludeFile";
-	@SuppressWarnings("unused")
-	private final String	conSVNVersion		= "$Id$";
+public class JobIncludeFile extends FormBaseClass <JobListener> {
+	private final String conClassName = this.getClass().getSimpleName();
+	private static final String conSVNVersion = "$Id$";
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private Group			group				= null;
-	private JobListener		objJobDataProvider	= null;
 	private boolean			init				= true;
 	private Button			bRemove				= null;
 	private Text			tbxFile2Include		= null;
@@ -44,29 +40,31 @@ public class JobIncludeFile extends FormBaseClass {
 	private Table			tableIncludes		= null;
 	private Button			butIsLiveFile		= null;
 
-	public JobIncludeFile(Composite pParentComposite, JobListener pobjJobDataProvider, JobIncludeFile that) {
+	public JobIncludeFile(final Composite pParentComposite, final JobListener pobjJobDataProvider, final JobIncludeFile that) {
 		super(pParentComposite, pobjJobDataProvider);
 		objJobDataProvider = pobjJobDataProvider;
 		init = true;
 		createGroup();
 		init = false;
 		getValues(that);
+
+		logger.debug(conClassName + "\n" + conSVNVersion);
 	}
 
-	private void getValues(JobIncludeFile that) {
+	private void getValues(final JobIncludeFile that) {
 		if (that == null) {
 			return;
 		}
 
-		this.tbxFile2Include.setText(that.tbxFile2Include.getText());
+		tbxFile2Include.setText(that.tbxFile2Include.getText());
 		for (int i = 0; i < that.tableIncludes.getItemCount(); i++) {
-			TableItem t = new TableItem(this.tableIncludes, SWT.None);
+			TableItem t = new TableItem(tableIncludes, SWT.None);
 			t.setText(that.tableIncludes.getItems()[i].getText());
 		}
-		;
 	}
 
-	private void createGroup() {
+	@Override
+	public void createGroup() {
 		int intNumColumns = 3;
 
 		GridLayout gridLayout1 = new GridLayout();
@@ -80,6 +78,7 @@ public class JobIncludeFile extends FormBaseClass {
 
 		butIsLiveFile = SOSJOEMessageCodes.JOE_B_ParameterForm_LifeFile.Control(new Button(group, SWT.CHECK));
 
+		// TODO File ansehen und/oder editieren können wollen ...
 		final FileNameSelector fleFile2Include = new FileNameSelector(group, SWT.BORDER);
 		fleFile2Include.setDataProvider(objJobDataProvider);
 		tbxFile2Include = fleFile2Include;
@@ -104,7 +103,8 @@ public class JobIncludeFile extends FormBaseClass {
 		// });
 
 		tbxFile2Include.addMouseListener(new MouseAdapter() {
-			public void mouseDoubleClick(MouseEvent arg0) {
+			@Override
+			public void mouseDoubleClick(final MouseEvent arg0) {
 				String strT = fleFile2Include.getFileName();
 				if (strT.trim().length() > 0) {
 					applyFile2Include();
@@ -113,6 +113,7 @@ public class JobIncludeFile extends FormBaseClass {
 		});
 
 		butIsLiveFile.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				if (init) {
 					return;
@@ -125,7 +126,8 @@ public class JobIncludeFile extends FormBaseClass {
 		bAdd.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		bAdd.setEnabled(false);
 		bAdd.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
 				applyFile2Include();
 			}
 		});
@@ -136,6 +138,7 @@ public class JobIncludeFile extends FormBaseClass {
 
 		tableIncludes = SOSJOEMessageCodes.JOE_Tbl_JobIncludeFile_Includes.Control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
 		tableIncludes.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				if (tableIncludes.getSelectionCount() > 0) {
 					tbxFile2Include.setText(tableIncludes.getSelection()[0].getText(0));
@@ -162,6 +165,7 @@ public class JobIncludeFile extends FormBaseClass {
 
 		final Button butNew = SOSJOEMessageCodes.JOE_B_JobIncludeFile_New.Control(new Button(group, SWT.NONE));
 		butNew.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				tableIncludes.deselectAll();
 				tbxFile2Include.setText("");
@@ -174,12 +178,14 @@ public class JobIncludeFile extends FormBaseClass {
 		butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 
 		tbxFile2Include.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
+			@Override
+			public void modifyText(final ModifyEvent e) {
 				bAdd.setEnabled(objJobDataProvider.isNotEmpty(tbxFile2Include.getText()));
 			}
 		});
 		tbxFile2Include.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
+			@Override
+			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR && objJobDataProvider.isNotEmpty(tbxFile2Include.getText())) {
 					objJobDataProvider.addInclude(tableIncludes, tbxFile2Include.getText(), butIsLiveFile.getSelection());
 					objJobDataProvider.fillIncludesTable(tableIncludes);
@@ -191,7 +197,8 @@ public class JobIncludeFile extends FormBaseClass {
 		bRemove.setEnabled(false);
 		bRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		bRemove.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
 				if (tableIncludes.getSelectionCount() > 0) {
 					int index = tableIncludes.getSelectionIndex();
 					objJobDataProvider.removeInclude(index);

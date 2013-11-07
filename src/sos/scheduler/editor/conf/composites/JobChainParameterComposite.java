@@ -87,14 +87,14 @@ import sos.scheduler.editor.conf.IDetailUpdate;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.DetailXMLEditorDialogForm;
-import sos.scheduler.editor.conf.forms.JobAssistentImportJobParamsForm;
-import sos.scheduler.editor.conf.forms.JobAssistentImportJobsForm;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.util.SOSClassUtil;
 
+import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
+import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
 import com.swtdesigner.SWTResourceManager;
 
 public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainListener> implements ISOSTableMenueListeners {

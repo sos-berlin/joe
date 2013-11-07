@@ -32,6 +32,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import sos.scheduler.editor.app.ResourceManager;
+
+import com.sos.dialog.classes.WindowsSaver;
 //import org.eclipse.jface.layout.TableColumnLayout;
 
 /**
@@ -147,6 +149,8 @@ public class SOSTable extends Table implements ISOSTableMenueListeners {
 		itemNew.addListener(SWT.Selection, objListener.getNewListener());
 		setMenuItemText(itemNew, "New", "N", 'N', true);
 		itemNew.setImage(getImage("new_text.gif"));
+		itemNew.setAccelerator(SWT.MOD1 + 'X');
+
 		new MenuItem(objContextMenu, SWT.SEPARATOR);
 
 		{
@@ -240,7 +244,9 @@ public class SOSTable extends Table implements ISOSTableMenueListeners {
 					objListener.getDeleteListener();
 				}
 
-				if (e.keyCode == 'N' && e.stateMask == SWT.MOD1) {
+//				if ((e.stateMask & SWT.MOD1) == SWT.MOD1) {
+
+				if (e.keyCode == 'N' && (e.stateMask & SWT.MOD1) == SWT.MOD1) {
 					objListener.getNewListener();
 				}
 
@@ -252,7 +258,7 @@ public class SOSTable extends Table implements ISOSTableMenueListeners {
 					objContextMenu.setVisible(flgSetVisible);
 				}
 
-				if (e.keyCode == 'A' && e.stateMask == SWT.MOD1) {
+				if (e.keyCode == 'A' && (e.stateMask & SWT.MOD1) == SWT.MOD1) {
 					objContextMenu.setVisible(true);
 				}
 

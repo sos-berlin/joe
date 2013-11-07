@@ -4,11 +4,11 @@ package com.sos.joe.options;
 
 import java.util.HashMap;
 
-import com.sos.JSHelper.Annotations.JSOptionClass;
+import org.apache.log4j.Logger;
 
+import com.sos.JSHelper.Annotations.JSOptionClass;
 import com.sos.JSHelper.Exceptions.JSExceptionMandatoryOptionMissing;
 import com.sos.JSHelper.Listener.JSListener;
-import org.apache.log4j.Logger;
 
 /**
  * \class 		JOEOptionsOptions - JOEOptions
@@ -29,10 +29,16 @@ import org.apache.log4j.Logger;
  */
 @JSOptionClass(name = "JOEOptionsOptions", description = "JOEOptions")
 public class JOEOptions extends JOEOptionsSuperClass {
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -4279093863551793544L;
 	@SuppressWarnings("unused")
-	private final String					conClassName						= "JOEOptionsOptions";
+	private final String conClassName = this.getClass().getSimpleName();
 	@SuppressWarnings("unused")
-	private static Logger		logger			= Logger.getLogger(JOEOptions.class);
+	private static final String conSVNVersion = "$Id$";
+	@SuppressWarnings("unused")
+	private final Logger logger = Logger.getLogger(this.getClass());
 
     /**
     * constructors
@@ -41,14 +47,14 @@ public class JOEOptions extends JOEOptionsSuperClass {
 	public JOEOptions() {
 	} // public JOEOptionsOptions
 
-	public JOEOptions(JSListener pobjListener) {
+	public JOEOptions(final JSListener pobjListener) {
 		this();
 		this.registerMessageListener(pobjListener);
 	} // public JOEOptionsOptions
 
 		//
 
-	public JOEOptions (HashMap <String, String> JSSettings) throws Exception {
+	public JOEOptions (final HashMap <String, String> JSSettings) throws Exception {
 		super(JSSettings);
 	} // public JOEOptionsOptions (HashMap JSSettings)
 /**

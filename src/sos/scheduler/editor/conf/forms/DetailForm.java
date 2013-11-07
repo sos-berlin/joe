@@ -46,7 +46,6 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
-import sos.scheduler.editor.classes.WindowsSaver;
 import sos.scheduler.editor.conf.DetailDom;
 import sos.scheduler.editor.conf.IDetailUpdate;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
@@ -56,6 +55,9 @@ import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.util.SOSClassUtil;
 
+import com.sos.dialog.classes.WindowsSaver;
+import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
+import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
 import com.swtdesigner.SWTResourceManager;
 
 public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, ISOSTableMenueListeners {

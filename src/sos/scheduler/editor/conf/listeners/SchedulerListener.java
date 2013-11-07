@@ -439,7 +439,6 @@ public class SchedulerListener {
 			item.setImage(getImage("10360.gif"));
 			item.setText(PROCESS_CLASSES);
 
-
 		}
 
 		item = new TreeItem(objTreeObjects, SWT.NONE);
@@ -534,20 +533,20 @@ public class SchedulerListener {
 		treeSelection(tree, c);
 	}
 
-//	private List<Element> hasOrders(final SchedulerDom pobjSchedulerDom) {
-//		Element commands = objSchedulerDom.getRoot().getChild("config").getChild("commands");
-//		if (commands != null) {
-//			List<Element> lstOfOrders = commands.getChildren("add_order");
-//			if (lstOfOrders != null) {
-//				return lstOfOrders;
-//			}
-//			List<Element> lOrder = commands.getChildren("order");
-//			if (lOrder != null) {
-//				return lOrder;
-//			}
-//		}
-//		return null;
-//	}
+	//	private List<Element> hasOrders(final SchedulerDom pobjSchedulerDom) {
+	//		Element commands = objSchedulerDom.getRoot().getChild("config").getChild("commands");
+	//		if (commands != null) {
+	//			List<Element> lstOfOrders = commands.getChildren("add_order");
+	//			if (lstOfOrders != null) {
+	//				return lstOfOrders;
+	//			}
+	//			List<Element> lOrder = commands.getChildren("order");
+	//			if (lOrder != null) {
+	//				return lOrder;
+	//			}
+	//		}
+	//		return null;
+	//	}
 
 	public void treeFillOrders(final TreeItem parent, final boolean expand) {
 		TreeItem orders = parent;
@@ -556,9 +555,11 @@ public class SchedulerListener {
 			Tree t = parent.getParent();
 			for (int i = 0; i < t.getItemCount(); i++) {
 				TreeData objT = (TreeData) t.getData();
-				if (objT.TypeEqualTo(Editor.ORDERS) == true) {
-					orders = t.getItem(i);
-					break;
+				if (objT != null) {
+					if (objT.TypeEqualTo(Editor.ORDERS) == true) {
+						orders = t.getItem(i);
+						break;
+					}
 				}
 			}
 		}

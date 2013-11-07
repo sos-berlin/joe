@@ -8,6 +8,7 @@ package sos.scheduler.editor.conf.forms;
 
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -32,6 +33,13 @@ import com.swtdesigner.SWTResourceManager;
 
 public class SchedulerEditorFontDialog {
 
+	@SuppressWarnings("unused")
+	private final String conClassName = this.getClass().getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String conSVNVersion = "$Id$";
+	@SuppressWarnings("unused")
+	private final Logger logger = Logger.getLogger(this.getClass());
+	
 	private static final String	conDefaultfontName			= "Courier New";
 	private static final String	conSCRIPT_EDITOR_FONT_COLOR	= "script_editor_font_color";
 	private static final String	conSCRIPT_EDITOR_FONT		= "script_editor_font";

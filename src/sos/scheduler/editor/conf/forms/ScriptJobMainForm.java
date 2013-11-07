@@ -12,6 +12,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.jdom.Element;
 
@@ -34,12 +35,11 @@ import com.sos.scheduler.model.LanguageDescriptorList;
 public class ScriptJobMainForm extends ScriptForm {
 
 	@SuppressWarnings("unused")
-	private final String				conSVNVersion					= "$Id$";
-
+	private final String				conClassName					= this.getClass().getSimpleName();
 	@SuppressWarnings("unused")
-	private static Logger				logger							= Logger.getLogger(ScriptJobMainForm.class);
+	private static final String			conSVNVersion					= "$Id$";
 	@SuppressWarnings("unused")
-	private final String				conClassName					= "ScriptJobMainForm";
+	private final Logger				logger							= Logger.getLogger(this.getClass());
 
 	private final JobOptionsListener	objDataOptionsProvider;
 
@@ -109,8 +109,8 @@ public class ScriptJobMainForm extends ScriptForm {
 			gridLayout.numColumns = 1;
 
 			jobMainComposite = new JobMainComposite(objMainOptionsGroup1, SWT.NONE, objDataProvider);
-//			jobMainComposite.setLayout(gridLayout);
-//			jobMainComposite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
+			//			jobMainComposite.setLayout(gridLayout);
+			//			jobMainComposite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
 			createLanguageSelector(jobMainComposite.getgMain());
 			createScriptTabForm(objMainOptionsGroup1);
 			createJobMainTabPages();
@@ -129,6 +129,12 @@ public class ScriptJobMainForm extends ScriptForm {
 		finally {
 			objMainOptionsGroup1.setRedraw(true);
 			this.setRedraw(true);
+		}
+	}
+
+	private void doDispose(final Control pobjC) {
+		if (pobjC != null) {
+			pobjC.dispose();
 		}
 	}
 
@@ -227,11 +233,21 @@ public class ScriptJobMainForm extends ScriptForm {
 		tabItemDocumentation.setControl(tabItemDocumentationComposite);
 
 		tabItemSourceViewer = JOE_TI_ScriptJobMainForm_XML.Control(new CTabItem(tabFolder, SWT.NONE));
-		tabItemSourceViewerComposite = new Composite(tabFolder, SWT.NONE);
-		tabItemSourceViewerComposite.setLayout(new GridLayout());
-		setResizableV(tabItemSourceViewerComposite);
-		tabItemSourceViewer.setControl(tabItemSourceViewerComposite);
+		tabItemSourceViewer.setData("type", "xml");
 
+		tabFolder.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent event) {
+				CTabItem objSelectedItem = tabFolder.getSelection();
+				System.out.println(objSelectedItem.getText() + " selected");
+				String strData = (String) objSelectedItem.getData("type");
+				if (strData != null) {
+					if (strData.equalsIgnoreCase("xml")) {
+						tabItemSourceViewerComposite = createSourceViewerTab(tabItemSourceViewer, tabItemSourceViewerComposite);
+					}
+				}
+			}
+		});
 		createSetbackTab(tabItemOrderSetBackComposite);
 		createDelayAfterErrorTab(tabItemDelayAfterErrorComposite);
 		createDirChangedTab(tabItemDirChangedComposite);
@@ -240,15 +256,21 @@ public class ScriptJobMainForm extends ScriptForm {
 		createProcessFileTab(tabItemProcessFileComposite);
 		createDocumentationTab(tabItemDocumentationComposite);
 		createOptionsTab(tabItemOptionsComposite);
-		createSourceViewerTab(tabItemSourceViewerComposite);
 	}
 
-	private void createSourceViewerTab(final Composite pParentComposite) {
-		if (pParentComposite == null) {
-			return;
+	private Composite createSourceViewerTab(final CTabItem pobjTabItem, Composite pParentComposite) {
+		if (pParentComposite != null) {
+			pParentComposite.dispose();
 		}
+
+		pParentComposite = new Composite(tabFolder, SWT.NONE);
+		pParentComposite.setLayout(new GridLayout());
+		setResizableV(pParentComposite);
+		pobjTabItem.setControl(pParentComposite);
+
 		new JobSourceViewer(pParentComposite, objDataProvider);
 		pParentComposite.layout();
+		return pParentComposite;
 	}
 
 	private void createDocumentationTab(final Composite pParentComposite) {
@@ -318,6 +340,7 @@ public class ScriptJobMainForm extends ScriptForm {
 		if (pParentComposite == null) {
 			return;
 		}
+		
 		new JobEmailSettings(pParentComposite, objDataProvider);
 		pParentComposite.layout();
 	}

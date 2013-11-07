@@ -10,6 +10,7 @@ import com.sos.JSHelper.Exceptions.JSExceptionMandatoryOptionMissing;
 import com.sos.JSHelper.Listener.JSListener;
 import com.sos.JSHelper.Options.JSOptionsClass;
 import com.sos.JSHelper.Options.SOSOptionFolderName;
+import com.sos.JSHelper.Options.SOSOptionInteger;
 
 /**
  * \class 		JOEOptionsOptionsSuperClass - JOEOptions
@@ -59,10 +60,49 @@ public class JOEOptionsSuperClass extends JSOptionsClass {
 	/**
 	 *
 	 */
-	private static final long	serialVersionUID	= -49615551365204939L;
-	private final String		conClassName		= "JOEOptionsOptionsSuperClass";
+	private static final long	serialVersionUID	= -344851070737644820L;
+	private final String		conClassName		= this.getClass().getSimpleName();
 	@SuppressWarnings("unused")
-	private static Logger		logger				= Logger.getLogger(JOEOptionsSuperClass.class);
+	private static final String	conSVNVersion		= "$Id$";
+	@SuppressWarnings("unused")
+	private final Logger		logger				= Logger.getLogger(this.getClass());
+
+	/**
+	 * \option ShowMessageDelay
+	 * \type SOSOptionInteger
+	 * \brief ShowMessageDelay - Define the number of seconds a message will be shown
+	 *
+	 * \details
+	 * Defines the number of seconds a message will be shown
+	 *
+	 * \mandatory: f
+	 *
+	 * \created 01.11.2013 14:48:59 by KB
+	 */
+	@JSOptionDefinition(name = "ShowMessageDelay", description = "Defines the number of seconds a message will be shown", key = "ShowMessageDelay", type = "SOSOptionInteger", mandatory = true)
+	public SOSOptionInteger		ShowMessageDelay	= new SOSOptionInteger( // ...
+															this, // ....
+															conClassName + ".ShowMessageDelay", // ...
+															"Defines the number of seconds a message will be shown", // ...
+															"3", // ...
+															"3", // ...
+															true);
+
+	public String getShowMessageDelay() {
+
+		@SuppressWarnings("unused")
+		final String conMethodName = conClassName + "::getShowMessageDelay";
+
+		return ShowMessageDelay.Value();
+	} // public String getShowMessageDelay
+
+	public JOEOptionsSuperClass setShowMessageDelay(final String pstrValue) {
+
+		@SuppressWarnings("unused")
+		final String conMethodName = conClassName + "::setShowMessageDelay";
+		ShowMessageDelay.Value(pstrValue);
+		return this;
+	} // public JOEOptionsSuperClass setShowMessageDelay
 
 	/**
 	 * \var JOEHomeDir :
@@ -70,12 +110,12 @@ public class JOEOptionsSuperClass extends JSOptionsClass {
 	 *
 	 */
 	@JSOptionDefinition(name = "JOEHomeDir", description = "", key = "JOEHomeDir", type = "SOSOptionString", mandatory = false)
-	public SOSOptionFolderName	JOEHomeDir			= new SOSOptionFolderName(this, conClassName + ".JOEHomeDir", // HashMap-Key
-															"", // Titel
-															"env:SOS_JOE_HOME", // InitValue
-															"env:SOS_JOE_HOME", // DefaultValue
-															false // isMandatory
-													);
+	public SOSOptionFolderName	JOEHomeDir	= new SOSOptionFolderName(this, conClassName + ".JOEHomeDir", // HashMap-Key
+													"", // Titel
+													"env:SOS_JOE_HOME", // InitValue
+													"env:SOS_JOE_HOME", // DefaultValue
+													false // isMandatory
+											);
 
 	/**
 	 * \brief getJOEHomeDir :
