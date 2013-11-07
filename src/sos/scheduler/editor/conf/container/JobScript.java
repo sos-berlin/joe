@@ -59,6 +59,7 @@ public class JobScript extends FormBaseClass {
             public void widgetSelected(final SelectionEvent e) {
                 if (cboPrefunction.getText().length() > 0) {
                     String lan = "function_" + objJobDataProvider.getLanguage(objJobDataProvider.getLanguage()) + "_";
+                    lan = lan.replaceAll(":", "_");
                     String sourceTemplate = Options.getProperty(lan.toLowerCase() + cboPrefunction.getText());
                     if (sourceTemplate != null) {
                         tSource.append(Options.getProperty(lan.toLowerCase() + cboPrefunction.getText()));

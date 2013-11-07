@@ -55,14 +55,14 @@ public class JobListener extends JOEListener {
 		objElement = _job;
 		_main = update;
 
-        _process = _job.getChild("process");
-        _directories = _job.getChildren("start_when_directory_changed");
+		_directories = _job.getChildren("start_when_directory_changed");
 		_setbacks = _job.getChildren("delay_order_after_setback");
 		_errorDelays = _job.getChildren("delay_after_error");
 
 		_settings = _job.getChild("settings");
 
 		setScript();
+        setProcess();
 
 	}
 
@@ -122,12 +122,14 @@ public class JobListener extends JOEListener {
 		Utils.setChangedForDirectory(_job, _dom);
 	}
 
-	private void setProcess() {
-		_process = _job.getChild("process");
 
-		_environment = _process != null ? _process.getChild("environment") : null;
-
-	}
+    private void setProcess() {
+        _process = _job.getChild("process");
+        if (_process != null) {
+            _script = null;
+            _environment =  _process.getChild("environment");
+        }
+    }
 
 	private void initProcess() {
 		if (_process == null) {
