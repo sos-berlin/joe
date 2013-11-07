@@ -589,8 +589,8 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		sEndHours.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if(_type != Editor.RUNTIME)
-					return;
-				//setEndHours();
+				    return;
+ 				setEndHours();
 			}
 		});
 		
