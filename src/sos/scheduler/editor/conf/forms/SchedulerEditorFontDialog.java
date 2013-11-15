@@ -35,6 +35,7 @@ public class SchedulerEditorFontDialog {
 	private static final String	conDefaultfontName			= "Courier New";
 	private static final String	conSCRIPT_EDITOR_FONT_COLOR	= "script_editor_font_color";
 	private static final String	conSCRIPT_EDITOR_FONT		= "script_editor_font";
+	private String context="";
 	private FontData			fontData;
 	private RGB					foreGround;
 	private Shell				objParentShell				= null;
@@ -79,15 +80,15 @@ public class SchedulerEditorFontDialog {
 	}
 
 	public void readFontData() {
-		String s = Options.getProperty(conSCRIPT_EDITOR_FONT);
+		String s = Options.getProperty(conSCRIPT_EDITOR_FONT+context);
 		if (s == null) {
-			fontData = new FontData(conDefaultfontName, 8, SWT.NORMAL);
+			fontData = new FontData(conDefaultfontName+context, 8, SWT.NORMAL);
 		}
 		else {
 			fontData = new FontData(s);
 		}
 
-		s = Options.getProperty(conSCRIPT_EDITOR_FONT_COLOR);
+		s = Options.getProperty(conSCRIPT_EDITOR_FONT_COLOR+context);
 		if (s == null) {
 			s = "";
 		}
@@ -108,8 +109,8 @@ public class SchedulerEditorFontDialog {
 	}
 
 	private void saveFontData(final FontData f, final RGB foreGround) {
-		Options.setProperty(conSCRIPT_EDITOR_FONT, f.toString());
-		Options.setProperty(conSCRIPT_EDITOR_FONT_COLOR, foreGround.toString());
+		Options.setProperty(conSCRIPT_EDITOR_FONT+context, f.toString());
+		Options.setProperty(conSCRIPT_EDITOR_FONT_COLOR+context, foreGround.toString());
 		Options.saveProperties();
 		fontData = f;
 		this.foreGround = foreGround;
@@ -205,6 +206,10 @@ public class SchedulerEditorFontDialog {
 		}
 
 	}
+
+    public void setContext(String context) {
+        this.context = context;
+    }
 
 //	 public static void main(String[] a) {
 //	 SchedulerEditorFontDialog s = new SchedulerEditorFontDialog("Courier new", 12, SWT.BOLD);
