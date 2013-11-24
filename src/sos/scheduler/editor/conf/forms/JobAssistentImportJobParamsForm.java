@@ -235,7 +235,7 @@ public class JobAssistentImportJobParamsForm {
 					transformer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
 					transformer.transform(source, result);
 					String strTempXML = bout.toString();
-					logger.debug(strTempXML);
+					logger.trace(strTempXML);
 					h.put(conKeyPARAMETER_DESCRIPTION_ + strLanguage, strTempXML);
 				}
 				listOfParams1.add(h);
