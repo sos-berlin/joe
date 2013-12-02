@@ -80,7 +80,7 @@ public class SchedulerEditorFontDialog {
 	}
 
 	public void readFontData() {
-		String s = Options.getProperty(conSCRIPT_EDITOR_FONT+context);
+ 		String s = Options.getProperty(conSCRIPT_EDITOR_FONT+context);
 		if (s == null) {
 			fontData = new FontData(conDefaultfontName+context, 8, SWT.NORMAL);
 		}

@@ -729,6 +729,7 @@ public class Options extends I18NBase {
 	}
 
 	public static String getProperty(final String key) {
+	    getProperties();
 		return _properties.getProperty(key);
 	}
 
