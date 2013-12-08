@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
@@ -34,6 +35,13 @@ import sos.util.SOSClassUtil;
 
 public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDetailUpdate, IEditor {
 
+
+	@SuppressWarnings("unused")
+	private final String conClassName = this.getClass().getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String conSVNVersion = "$Id$";
+	@SuppressWarnings("unused")
+	private final Logger logger = Logger.getLogger(this.getClass());
 
     private final JobChainConfigurationListener listener;
 
@@ -187,7 +195,8 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
 
     @Override
 	public boolean open(final Collection files) {
-        boolean res = IOUtils.openFile(files, dom);
+    	assert false;
+        boolean res = false; // IOUtils.openFile(files, dom);
         if (res) {
             initialize();
             listener.setFilename(filename);
@@ -198,7 +207,8 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
     }
 
     public boolean open(final String filename, final Collection files) {
-        boolean res = IOUtils.openFile(filename, files, dom);
+    	assert false;
+        boolean res = false; // IOUtils.openFile(filename, files, dom);
         if (res) {
             initialize();
             listener.setFilename(filename);

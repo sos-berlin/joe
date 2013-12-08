@@ -3,6 +3,7 @@ package sos.scheduler.editor.app;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -20,6 +21,13 @@ import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
 public class ContextMenu {
+
+	@SuppressWarnings("unused")
+	private final String conClassName = this.getClass().getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String conSVNVersion = "$Id$";
+	@SuppressWarnings("unused")
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private SchedulerDom		_dom	= null;
 	private SOSComboBox			_combo	= null;

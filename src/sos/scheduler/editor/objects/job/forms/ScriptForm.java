@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.forms;
+package sos.scheduler.editor.objects.job.forms;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -31,6 +31,7 @@ import sos.scheduler.editor.conf.listeners.JobListener;
 
 import com.sos.scheduler.model.LanguageDescriptor;
 import com.sos.scheduler.model.LanguageDescriptorList;
+import com.sos.scheduler.model.objects.JSObjJob;
 
 public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
@@ -40,7 +41,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 	private final Logger logger = Logger.getLogger(this.getClass());
 
 	@SuppressWarnings("unused")
-	private final String		conSVNVersion					= "$Id$";
+	private final String		conSVNVersion					= "$Id: ScriptForm.java 21297 2013-11-07 12:02:28Z ur $";
 	private final int			intNoOfLabelColumns				= 2;
 
 
@@ -87,7 +88,17 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 		dom.setInit(true);
 		objDataProvider = new JobListener(dom, job, main);
 		objDataProvider._languages = LanguageDescriptorList.getLanguages4APIJobs();
+		objDataProvider._languages = JSObjJob.ValidLanguages4Job;
 		dom.setInit(false);
+	}
+
+	public ScriptForm(final Composite parent, final int style, final JSObjJob pobjJob, final ISchedulerUpdate main) {
+		super(parent, style);
+		dom = null;
+		update = main;
+		objDataProvider = new JobListener(pobjJob, main);
+		objDataProvider._languages = JSObjJob.ValidLanguages4Job;
+		//        dom.setInit(false);
 	}
 
 	public void apply() {
@@ -122,6 +133,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 			this.setLayout(new GridLayout());
 			createGroup();
 			fillForm();
+		setSize(new org.eclipse.swt.graphics.Point(723, 566));
 			initForm();
 			init = false;
 			dom.setInit(false);

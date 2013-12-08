@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.forms;
+package sos.scheduler.editor.objects.job.forms;
 
 //import org.eclipse.draw2d.*;
 
@@ -30,7 +30,7 @@ import sos.scheduler.editor.conf.container.JobSourceViewer;
 import sos.scheduler.editor.conf.container.JobStartWhenDirectoryChanged;
 import sos.scheduler.editor.conf.listeners.JobOptionsListener;
 
-import com.sos.scheduler.model.LanguageDescriptorList;
+import com.sos.scheduler.model.objects.JSObjJob;
 
 public class ScriptJobMainForm extends ScriptForm {
 
@@ -76,19 +76,31 @@ public class ScriptJobMainForm extends ScriptForm {
 		restoreCursor();
 	}
 
+    public ScriptJobMainForm(final Composite parent, final int style, final JSObjJob pobjJob, final ISchedulerUpdate main) {
+        super(parent, style, pobjJob, main);
+        
+        showWaitCursor();
+        objDataOptionsProvider = new JobOptionsListener(pobjJob);
+        initialize();
+        restoreCursor();
+    }
+    
 	@Override
 	public void initForm() {
 		jobMainComposite.init();
 	}
 
 	@Override
+	@Deprecated // use JSObjJob instead
 	protected String[] getScriptLanguages() {
-		return LanguageDescriptorList.getLanguages4APIJobs();
-	}
+//		return LanguageDescriptorList.getLanguages4APIJobs();
+	        return JSObjJob.ValidLanguages4Job;
+}
 
 	@Override
+	@Deprecated // use JSObjJob instead
 	protected String getPredefinedFunctionNames() {
-		return "spooler_init;spooler_open;spooler_process;spooler_close;spooler_exit;spooler_on_error;spooler_on_success";
+        return JSObjJob.InternalAPIMethodNames;
 	}
 
 	@Override

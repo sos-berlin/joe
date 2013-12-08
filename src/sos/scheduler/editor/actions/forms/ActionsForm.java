@@ -2,6 +2,7 @@ package sos.scheduler.editor.actions.forms;
 
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Point;
@@ -15,8 +16,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.actions.IActionsUpdate;
 import sos.scheduler.editor.actions.ActionsDom;
+import sos.scheduler.editor.actions.IActionsUpdate;
 import sos.scheduler.editor.actions.listeners.ActionsListener;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.IEditor;
@@ -28,28 +29,27 @@ import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 
 
-public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActionsUpdate {	
+public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActionsUpdate {
+
+	@SuppressWarnings("unused")
+	private final String conClassName = this.getClass().getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String conSVNVersion = "$Id$";
+	@SuppressWarnings("unused")
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private ActionsListener listener    = null;
-
 	private ActionsDom      dom         = null;
-
 	private IContainer            container   = null;
-
 	private SashForm              sashForm    = null;
-
 	private Group                 group       = null;
-
 	private Composite             docMainForm = null;
-
 	private Tree                  tree     = null;
-
 	private TreeItem              selection   = null;
 
 
 
-
-	public ActionsForm(IContainer container, Composite parent, int style) {
+	public ActionsForm(final IContainer container, final Composite parent, final int style) {
 		super(parent, style);
 		this.container = container;
 
@@ -89,7 +89,8 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 		tree = new Tree(group, SWT.NONE);
 		//tree.addListener(SWT.Selection, new Listener() {
 		tree.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {            	
+			@Override
+			public void handleEvent(final Event e) {
 				if (tree.getSelectionCount() > 0) {
 					if (selection == null)
 						selection = tree.getItem(0);
@@ -118,17 +119,20 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 	}
 
 
+	@Override
 	public boolean applyChanges() {
 		Control[] c = docMainForm.getChildren();
 		return c.length == 0 || Utils.applyFormChanges(c[0]);
 	}
 
 
+	@Override
 	public boolean close() {
 		return applyChanges() && IOUtils.continueAnyway(dom);
 	}
 
 
+	@Override
 	public boolean hasChanges() {
 		Options.saveSash("test", sashForm.getWeights());
 
@@ -136,8 +140,10 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 	}
 
 
-	public boolean open(Collection files) {
-		boolean res = IOUtils.openFile(files, dom);
+	@Override
+	public boolean open(final Collection files) {
+		// TODO activate
+		boolean res = true; // IOUtils.openFile(files, dom);
 		if (res) {
 			initialize();
 			listener.fillTree(tree);
@@ -148,8 +154,9 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 		return res;
 	}
 
-	public boolean open(String filename, Collection files) {
-		boolean res = IOUtils.openFile(filename ,files, dom);
+	public boolean open(final String filename, final Collection files) {
+		// TODO activate
+		boolean res = true; // IOUtils.openFile(filename ,files, dom);
 		if (res) {
 			initialize();
 			listener.fillTree(tree);
@@ -160,6 +167,7 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 		return res;
 	}
 
+	@Override
 	public void openBlank() {
 		initialize();
 		listener.fillTree(tree);
@@ -167,19 +175,20 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 		listener.treeSelection(tree, docMainForm);
 	}
 
-
+	@Override
 	public boolean save() {
 		//boolean res = IOUtils.saveFile(dom, false);
 		boolean res = IOUtils.saveAction(dom, false);
 		if (res)
 			container.setNewFilename(null);
-		
+
 		Utils.setResetElement(dom.getRoot());
-		
+
 		return res;
 	}
 
 
+	@Override
 	public boolean saveAs() {
 		String old = dom.getFilename();
 		boolean res = IOUtils.saveAction(dom, true);
@@ -189,6 +198,7 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 	}
 
 
+	@Override
 	public void updateLanguage() {
 		if (docMainForm.getChildren().length > 0) {
 			if (docMainForm.getChildren()[0] instanceof IUpdateLanguage) {
@@ -198,6 +208,7 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 	}
 
 
+	@Override
 	public String getHelpKey() {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
@@ -209,11 +220,13 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 	}
 
 
+	@Override
 	public String getFilename() {
 		return dom.getFilename();
 	}
 
 
+	@Override
 	public void dataChanged() {
 		container.setStatusInTitle();
 	}
@@ -223,16 +236,18 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 		return dom;
 	}
 
-	public void updateAction(String name) {
+	@Override
+	public void updateAction(final String name) {
 		if(tree.getSelectionCount() > 0)
 			tree.getSelection()[0].setText(ActionsListener.ACTION_PREFIX + name);
 	}
 
+	@Override
 	public void updateActions() {
-		listener.treeFillAction(tree.getTopItem());		
+		listener.treeFillAction(tree.getTopItem());
 	}
 
-	public void updateEvents(Element action) {
+	public void updateEvents(final Element action) {
 		TreeItem item = tree.getTopItem();
 		for(int i = 0; i < item.getItemCount(); i++) {
 			TreeItem it = item.getItem(i);
@@ -242,10 +257,11 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 				it.setExpanded(true);
 				break;
 			}
-		}	
+		}
 	}
 
 
+	@Override
 	public void updateCommands() {
 
 		if (tree.getSelectionCount() > 0) {
@@ -256,13 +272,15 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 		}
 	}
 
-	public void updateTreeItem(String s) {
+	@Override
+	public void updateTreeItem(final String s) {
         if(tree.getSelectionCount() > 0) {
-			TreeItem item = tree.getSelection()[0];			
-			item.setText(s);		
+			TreeItem item = tree.getSelection()[0];
+			item.setText(s);
 		}
 	}
 
+	@Override
 	public void updateCommand() {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
@@ -276,13 +294,14 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 		}
 	}
 
-	
-	
+
+
 	public Tree getTree() {
 		return tree;
 	}
 
-	public void updateTree(String which) {		
+	@Override
+	public void updateTree(final String which) {
 		if(which.equals("main")) {
 			//neu zeichnen und das erste Element markieren
 			listener.fillTree(tree);

@@ -27,6 +27,8 @@ public class Editor {
 
 	public final static int		CONFIG					= 1;
 	public final static int		BASEFILE					= 2;
+	   public final static int BASE = 2;
+
 	public final static int		SECURITY				= 3;
 	public final static int		CLUSTER					= 4;
 	public final static int		PROCESS_CLASSES			= 5;
@@ -102,6 +104,12 @@ public class Editor {
 	public final static int		JOB_DOCUMENTATION		= 96;
 	public static String		SCHEDULER_ENCODING		= "";
 	public static String		DOCUMENTATION_ENCODING	= "utf-8";
+    public final static int SUB_FOLDER = 101;
+    public final static int ROOT_FOLDER = 102;
+
+    public final static int JOB_PARAMETER = 103;
+    public final static int ORDER_PARAMETER = 10;
+
 
 	private static MainWindow	window					= null;
 	private static Display		display					= null;

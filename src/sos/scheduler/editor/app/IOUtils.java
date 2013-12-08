@@ -1,24 +1,27 @@
 package sos.scheduler.editor.app;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.jdom.Document;
-import org.jdom.JDOMException;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.transform.JDOMSource;
 
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.doc.DocumentationDom;
-import sos.util.SOSClassUtil;
 import sos.util.SOSFile;
+
+import com.sos.VirtualFileSystem.Factory.VFSFactory;
+import com.sos.VirtualFileSystem.Interfaces.ISOSVFSHandler;
+import com.sos.VirtualFileSystem.Interfaces.ISOSVfsFileTransfer;
+import com.sos.VirtualFileSystem.Interfaces.ISOSVirtualFile;
+import com.sos.scheduler.model.SchedulerHotFolder;
+import com.sos.scheduler.model.SchedulerHotFolderFileList;
+import com.sos.scheduler.model.SchedulerObjectFactory;
 
 public class IOUtils {
 	@SuppressWarnings("unused")
@@ -27,57 +30,16 @@ public class IOUtils {
 	private final String		conSVNVersion	= "$Id$";
 	private static final Logger	logger			= Logger.getLogger(IOUtils.class);
 
-	public static boolean openFile(final DomParser dom) {
-		return openFile(null, null, dom);
-	}
-
-	public static boolean openFile(final Collection filenames, final DomParser dom) {
-		return openFile(null, filenames, dom);
-	}
-
-	private static String getDomInstance(final DomParser dom) {
-		if (dom instanceof SchedulerDom)
-			return " Scheduler";
-		else
-			if (dom instanceof DocumentationDom)
-				return " Documentation";
-			else
-				return "";
-	}
+//	public static boolean openFile(DomParser dom) {
+//		return openFile(null, null, dom);
+//	}
+//
+//	public static boolean openFile(Collection filenames, DomParser dom) {
+//		return openFile(null, filenames, dom);
+//	}
 
 	public static String getJobschedulerObjectPathName(final String mask) {
 		return getJobSchedulerObjectPathFromFileSystem(mask, Options.getSchedulerHotFolder());
-	}
-
-	public static String openDirectoryFile(final String mask, final String pstrDirectoryName) {
-
-		String filename = "";
-		FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
-
-		fdialog.setFilterPath(pstrDirectoryName);
-		String filterMask = mask.replaceAll("\\\\", "");
-		filterMask = filterMask.replaceAll("\\^.", "");
-		filterMask = filterMask.replaceAll("\\$", "");
-		fdialog.setFilterExtensions(new String[] { filterMask });
-
-		filename = fdialog.open();
-		if (filename == null || filename.trim().length() == 0) {
-			return filename;
-		}
-		filename = filename.replaceAll("\\\\", "/");
-
-		String env = Options.getSchedulerHotFolder().replaceAll("\\\\", "/");
-
-		int pos = filename.toLowerCase().indexOf(env.toLowerCase().toLowerCase());
-		if (pos >= 0) {
-			File fleT = new File(filename);
-			filename = fleT.getName();
-			//			int add = (env.endsWith("/") ? -1 : 0);
-			//			filename = filename.substring(pos == -1 ? 0 : pos + env.length() + add);
-			//			filename = filename.substring(0, filename.length() - filterMask.length() + 1);
-		}
-		return filename;
-
 	}
 
 	public static String getJobSchedulerObjectPathFromFileSystem(final String mask, final String pstrDirectoryName) {
@@ -109,6 +71,52 @@ public class IOUtils {
 
 	}
 
+
+	private static String getDomInstance(final DomParser dom) {
+		if (dom instanceof SchedulerDom)
+			return " Scheduler";
+		else
+			if (dom instanceof DocumentationDom)
+				return " Documentation";
+			else
+				return "";
+	}
+
+	public static String openDirectoryFile(final String mask) {
+		return openDirectoryFile(mask, Options.getLastDirectory());
+	}
+
+	public static String openDirectoryFile(final String mask, final String pstrDirectoryName) {
+
+		String filename = "";
+		FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
+
+		fdialog.setFilterPath(pstrDirectoryName);
+		String filterMask = mask.replaceAll("\\\\", "");
+		filterMask = filterMask.replaceAll("\\^.", "");
+		filterMask = filterMask.replaceAll("\\$", "");
+		fdialog.setFilterExtensions(new String[] { filterMask });
+
+		filename = fdialog.open();
+		if (filename == null || filename.trim().length() == 0) {
+			return filename;
+		}
+		filename = filename.replaceAll("\\\\", "/");
+
+		String env = Options.getSchedulerHotFolder().replaceAll("\\\\", "/");
+
+		int pos = filename.toLowerCase().indexOf(env.toLowerCase().toLowerCase());
+		if (pos >= 0) {
+			File fleT = new File (filename);
+			filename = fleT.getName();
+//			int add = (env.endsWith("/") ? -1 : 0);
+//			filename = filename.substring(pos == -1 ? 0 : pos + env.length() + add);
+//			filename = filename.substring(0, filename.length() - filterMask.length() + 1);
+		}
+		return filename;
+
+	}
+
 	/**
 	 *
 	 * Es wird entweder eine Scheduler Konfigurationsdatei, eine Hot Folder Verzeichnis oder
@@ -123,128 +131,130 @@ public class IOUtils {
 	 *
 	 *
 	 */
-	public static boolean openFile(String filename, final Collection filenames, final DomParser dom) {
+	public static boolean openFile(String filename, SchedulerHotFolder pobjHotFolder) {
 		try {
-			boolean isDirectory = dom instanceof SchedulerDom && ((SchedulerDom) dom).isDirectory();
-			String xml = null;
-			// open file dialog
+			boolean isDirectory = true;
 			if (!isDirectory && (filename == null || filename.equals(""))) {
 				FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
 				fdialog.setFilterPath(Options.getLastDirectory());
-				fdialog.setText("Open" + getDomInstance(dom) + " File");
 				filename = fdialog.open();
 			}
-			// open Directory
-			// if (filename != null && filename.equals("#xml#")) {
 			if (isDirectory) {
-				String path = filename;
+				pobjHotFolder = null;
+				String strHotFolderPathName = filename;
 				if (filename == null || filename.length() == 0) {
 					DirectoryDialog fdialog = new DirectoryDialog(MainWindow.getSShell(), SWT.MULTI);
 					fdialog.setFilterPath(Options.getLastDirectory());
 					fdialog.setText("Open HotFolder directory ...");
 					String fname = fdialog.open();
-					if (fname == null)
-						return false;
-					// path = fdialog.getFilterPath();
-					path = fname;
-				}
-				// File tempFile = File.createTempFile("#xml#.config.", ".xml~", new File(path) );
-				// tempFile.deleteOnExit();
-				// temporäre config.xml bilden
-				MergeAllXMLinDirectory allJob = new MergeAllXMLinDirectory(path);
-				xml = allJob.parseDocuments();
-				// schreibgeschützte Dateien merken. Diese Elemente werden anders farbig dargestellt und können nicht verändert werden
-				((SchedulerDom) dom).setListOfReadOnlyFiles(allJob.getListOfReadOnly());
-				// life Dateiname und Element-Attribute-name sind nicht gleich. Attributname wird automatisch
-				// verändert und das Dokument auf geändert markiert
-				if (allJob.getListOfChangeElementNames() != null && allJob.getListOfChangeElementNames().size() > 0)
-					((SchedulerDom) dom).setListOfChangeElementNames(allJob.getListOfChangeElementNames());
-				// tempFile.delete();
-				// filename= tempFile.getCanonicalPath();
-				filename = path;
-				if (filename == null)
-					return false;
-			}
-			// check for opened file
-			if (filenames != null) {
-				for (Iterator it = filenames.iterator(); it.hasNext();) {
-					if (((String) it.next()).equals(filename)) {
-						MainWindow.message(Messages.getString("MainListener.fileOpened"), SWT.ICON_INFORMATION | SWT.OK);
+					if (fname == null) {
 						return false;
 					}
+					strHotFolderPathName = fname;
 				}
-			}
-			if (filename != null && !filename.equals("")) { //$NON-NLS-1$
-				File file = new File(filename);
-				if (!file.exists()) {
-					MainWindow.message(Messages.getString("MainListener.fileNotFound"), SWT.ICON_WARNING | SWT.OK);
+
+				ISOSVFSHandler					objVFS					= null;
+				ISOSVfsFileTransfer				objFileSystemHandler	= null;
+
+				try {
+					objVFS = VFSFactory.getHandler("local");
+					objFileSystemHandler = (ISOSVfsFileTransfer) objVFS;
+				}
+				catch (Exception e) {
+					logger.error(e);
 					return false;
 				}
-				else
-					if (!file.canRead())
-						MainWindow.message(Messages.getString("MainListener.fileReadProtected"), SWT.ICON_WARNING | SWT.OK);
-					else { // open it ...
-						int cont = SWT.NO;
-						try {
-							if (isDirectory) {
-								dom.readString(xml, true);
-								dom.setFilename(filename);
-							}
-							else
-								dom.read(filename);
-						}
-						catch (JDOMException e) {
-							cont = MainWindow.message(Messages.getString("MainListener.validationError", new String[] { filename, e.getMessage() }),
-									SWT.ICON_WARNING | SWT.YES | SWT.NO);
-							if (cont == SWT.NO)
-								return false;
-						}
-						catch (IOException e) {
-							try {
-								new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
-							}
-							catch (Exception ee) {
-							}
-							MainWindow.message(Messages.getString("MainListener.errorReadingFile", new String[] { filename, e.getMessage() }), SWT.ICON_ERROR
-									| SWT.OK);
-							return false;
-						}
-						if (cont == SWT.YES) { // validation error, continue
-							// anyway...
-							if (isDirectory) {
-								dom.readString(xml, false);
-								dom.setFilename(filename);
-							}
-							else
-								if (!dom.read(filename, false)) { // unknown file
-									MainWindow.message(Messages.getString("MainListener.unknownXML"), SWT.ICON_WARNING | SWT.OK);
-									return false;
-								}
-						}
-					}
+
+				SchedulerObjectFactory	objFactory				= null;
+				objFactory = new SchedulerObjectFactory();
+
+				ISOSVirtualFile objHotFolder = objFileSystemHandler.getFileHandle(strHotFolderPathName);
+				SchedulerHotFolder objSchedulerHotFolder = objFactory.createSchedulerHotFolder(objHotFolder);
+				logger.info(String.format("... load %1$s", strHotFolderPathName));
+				SchedulerHotFolderFileList objSchedulerHotFolderFileList = objSchedulerHotFolder.load();
+				objSchedulerHotFolderFileList.getFolderList();
+				objSchedulerHotFolderFileList.getJobList();
+				objSchedulerHotFolderFileList.getJobChainList();
+				objSchedulerHotFolderFileList.getOrderList();
+				objSchedulerHotFolderFileList.getProcessClassList();
+				objSchedulerHotFolderFileList.getLockList();
+				objSchedulerHotFolderFileList.getScheduleList();
+				objSchedulerHotFolderFileList.getParamsList();
+
+				pobjHotFolder = objSchedulerHotFolder;
 			}
-			else
-				return false;
-			MainWindow.getSShell().setText("Job Scheduler Editor [" + filename + "]");
-			Options.setLastDirectory(new File(filename), dom);
+			MainWindow.getSShell().setText("JOE (JobScheduler Object Editor) [" + filename + "]");
 			return true;
 		}
 		catch (Exception e) {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+		}
+		finally {
+		}
+		return false;
+	}
+
+
+//	@Deprecated
+	public static SchedulerHotFolder openHotFolder(final String filename) {
+		SchedulerHotFolder objSchedulerHotFolder = null;
+		try {
+			boolean isDirectory = true;
+
+			if (isDirectory) {
+				String strHotFolderPathName = filename;
+				if (filename == null || filename.length() == 0) {
+					DirectoryDialog fdialog = new DirectoryDialog(MainWindow.getSShell(), SWT.MULTI);
+					fdialog.setFilterPath(Options.getLastDirectory());
+					fdialog.setText("Open HotFolder directory ...");
+					String fname = fdialog.open();
+					if (fname == null) {
+						return null;
+					}
+					strHotFolderPathName = fname;
+				}
+
+				ISOSVFSHandler					objVFS					= null;
+				ISOSVfsFileTransfer				objFileSystemHandler	= null;
+
+				try {
+					objVFS = VFSFactory.getHandler("local");
+					objFileSystemHandler = (ISOSVfsFileTransfer) objVFS;
+				}
+				catch (Exception e) {
+					logger.error(e);
+					return null;
+				}
+
+				SchedulerObjectFactory	objFactory				= null;
+				objFactory = new SchedulerObjectFactory();
+
+				ISOSVirtualFile objHotFolder = objFileSystemHandler.getFileHandle(strHotFolderPathName);
+				objSchedulerHotFolder = objFactory.createSchedulerHotFolder(objHotFolder);
+				logger.info(String.format("... load %1$s", strHotFolderPathName));
+				SchedulerHotFolderFileList objSchedulerHotFolderFileList = objSchedulerHotFolder.load();
+				objSchedulerHotFolderFileList.getFolderList();
+				objSchedulerHotFolderFileList.getJobList();
+				objSchedulerHotFolderFileList.getJobChainList();
+				objSchedulerHotFolderFileList.getOrderList();
+				objSchedulerHotFolderFileList.getProcessClassList();
+				objSchedulerHotFolderFileList.getLockList();
+				objSchedulerHotFolderFileList.getScheduleList();
+				objSchedulerHotFolderFileList.getParamsList();
+			}
+		}
+		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
-				// tu nichts
 			}
 			e.printStackTrace();
 			MainWindow.message(e.getMessage(), SWT.ICON_ERROR | SWT.OK);
 		}
 		finally {
-			if (filename != null && new File(filename).getName().startsWith("#xml#.config.")) {
-				new java.io.File(filename).delete();
-			}
 		}
-		return false;
+		return objSchedulerHotFolder;
 	}
 
 	public static boolean saveFile(final DomParser dom, boolean saveas) {
@@ -324,13 +334,13 @@ public class IOUtils {
 					}
 				}
 				dom.readFileLastModified();
-				MainWindow.getSShell().setText("Job Scheduler Editor [" + originFilename + "]");
+				MainWindow.getSShell().setText("JOE (JobScheduler Object Editor) [" + originFilename + "]");
 			}
 			return true;
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -385,7 +395,7 @@ public class IOUtils {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -407,7 +417,7 @@ public class IOUtils {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " could not save directory.", e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " could not save directory.", e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -457,21 +467,19 @@ public class IOUtils {
 			else
 				save = new MergeAllXMLinDirectory(configFile.getPath());
 			if (type == SchedulerDom.DIRECTORY) {
-				save.saveXMLDirectory(currDoc, ((SchedulerDom) dom).getListOfChangedObjects());
+				save.saveXMLDirectory(currDoc, ((SchedulerDom) dom).getChangedJob());
 			}
 			else {// sonst life element
 				org.jdom.Element elem = null;
 				if (type == SchedulerDom.LIFE_LOCK) {
-					sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) MainWindow.getContainer()
-							.getCurrentEditor();
+					sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) MainWindow.getContainer().getCurrentEditor();
 					org.eclipse.swt.widgets.Tree tree = form.getTree();
 					TreeData data = (TreeData) tree.getSelection()[0].getData();
 					elem = data.getElement().getChild("locks").getChild("lock");
 				}
 				else
 					if (type == SchedulerDom.LIFE_PROCESS_CLASS) {
-						sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) MainWindow.getContainer()
-								.getCurrentEditor();
+						sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) MainWindow.getContainer().getCurrentEditor();
 						org.eclipse.swt.widgets.Tree tree = form.getTree();
 						TreeData data = (TreeData) tree.getSelection()[0].getData();
 						elem = data.getElement().getChild("process_classes").getChild("process_class");
@@ -479,7 +487,7 @@ public class IOUtils {
 					else {
 						elem = currDoc.getRootElement();
 					}
-				String name = save.saveLifeElement(nameOfElement, elem, ((SchedulerDom) dom).getListOfChangedObjects(),
+				String name = save.saveLifeElement(nameOfElement, elem, ((SchedulerDom) dom).getChangedJob(),
 						((SchedulerDom) dom).getListOfChangeElementNames());
 				Options.setLastDirectory(new File(name), dom);
 				try {
@@ -494,7 +502,7 @@ public class IOUtils {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " could not save directory.", e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " could not save directory.", e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -517,7 +525,7 @@ public class IOUtils {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " .Could not save file " + filename, e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " .Could not save file " + filename, e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -534,7 +542,7 @@ public class IOUtils {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " .Could not save file " + filename, e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " .Could not save file " + filename, e);
 			}
 			catch (Exception ee) {
 				// tu nichts

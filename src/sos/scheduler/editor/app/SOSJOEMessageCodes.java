@@ -5,15 +5,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 import com.sos.i18n.annotation.I18NMsg;
-/*import sos.scheduler.editor.conf.forms.already;
-import sos.scheduler.editor.conf.forms.be;
-import sos.scheduler.editor.conf.forms.must;
-import sos.scheduler.editor.conf.forms.with;
-import sos.scheduler.editor.conf.forms.Timeout;
-import sos.scheduler.editor.conf.forms.not;
-import sos.scheduler.editor.conf.forms.Executed;
-import sos.scheduler.editor.conf.forms.on;
-*/
 
 public class SOSJOEMessageCodes extends Composite {
 

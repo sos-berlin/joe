@@ -48,6 +48,7 @@ public class SchedulerDom extends DomParser {
 			"job_chain_node.end", "file_order_sink"					};
 	private static final String[]			HOLIDAYS_ELEMENTS			= { "include", "weekdays", "holiday" };
 	private static final String[]			PARAMS_ELEMENTS				= { "param", "copy_params", "include" };
+
 	private final HashMap<String, String>	changedForDirectory			= new HashMap<String, String>();
 	public static final String				MODIFY						= "modify";
 	public static final String				DELETE						= "delete";
@@ -338,6 +339,14 @@ public class SchedulerDom extends DomParser {
 			br.close();
 		}
 
+	}
+
+	public HashMap getChangedJob() {
+		return changedForDirectory;
+	}
+
+	public void clearChangedJob() {
+		changedForDirectory.clear();
 	}
 
 	@Override

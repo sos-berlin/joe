@@ -8,16 +8,17 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
+import com.sos.scheduler.model.objects.JSObjJob;
+import com.sos.scheduler.model.objects.Job.DelayOrderAfterSetback;
+
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class JobOptionsListener extends JOEListener{
 	
 	
-    private            SchedulerDom     _dom          = null;
-
-    private            Element          _job          = null;
-
+//    private            SchedulerDom     _dom          = null;
+//    private            Element          _job          = null;
     private            List             _directories  = null;
 
     private            Element          _directory    = null;
@@ -30,6 +31,7 @@ public class JobOptionsListener extends JOEListener{
 
     private            Element          _errorDelay   = null;
 
+    private JSObjJob objJSJob = null;
 
     public JobOptionsListener(SchedulerDom dom, Element job) {
     	
@@ -43,11 +45,13 @@ public class JobOptionsListener extends JOEListener{
         
     }
 
-
-    // directory trigger
+    public JobOptionsListener (JSObjJob pobjJob) {
+    	objJSJob = pobjJob;
+    }
 
     public boolean isDirectoryTrigger() {
-        return _directories.size() > 0;
+    	return objJSJob.getStartWhenDirectoryChanged().size() > 0;
+//        return _directories.size() > 0;
     }
 
 
@@ -108,19 +112,17 @@ public class JobOptionsListener extends JOEListener{
     // setbacks
 
     public boolean isSetbackDelay() {
-        return _setbacks.size() > 0;
+        return objJSJob.getDelayOrderAfterSetback().size() > 0;
     }
 
 
     public void fillSetbacks(Table table) {
         table.removeAll();
-        Iterator it = _setbacks.iterator();
-        while (it.hasNext()) {
-            Element e = (Element) it.next();
+        for (DelayOrderAfterSetback objItem : objJSJob.getDelayOrderAfterSetback()) {
             TableItem item = new TableItem(table, SWT.NONE);
-            item.setText(0, "" + Utils.getIntValue("setback_count", e));
-            item.setText(1, Utils.isAttributeValue("is_maximum", e) ? "Yes" : "No");
-            String s = getDelay(e);
+            item.setText(0, "" + objItem.getSetbackCount());
+            item.setText(1, objItem.getIsMaximum());
+            String s = objItem.getDelay();
             if (s.equals("00")) {
                 s = "0";
             }
@@ -130,105 +132,116 @@ public class JobOptionsListener extends JOEListener{
 
 
     public void newErrorDelays(Table errorDelays) {
-        TableItem[] items = errorDelays.getItems();
-        for (int i = items.length; i >= 0; i--) {
-            deleteErrorDelay(i);
-        }
-
-        for (int i = 0; i < items.length; i++) {
-            newErrorDelay();
-            applyErrorDelay(items[i].getText(0), items[i].getText(1));
-        }
+//        TableItem[] items = errorDelays.getItems();
+//        for (int i = items.length; i >= 0; i--) {
+//            deleteErrorDelay(i);
+//        }
+//
+//        for (int i = 0; i < items.length; i++) {
+//            newErrorDelay();
+//            applyErrorDelay(items[i].getText(0), items[i].getText(1));
+//        }
     }
 
 
     public void newSetbacks(Table setback) {
-        TableItem[] items = setback.getItems();
-        for (int i = items.length; i >= 0; i--) {
-            deleteSetbackDelay(i);
-        }
-
-        for (int i = 0; i < items.length; i++) {
-            newSetbackDelay();
-            applySetbackDelay(items[i].getText(0), items[i].getText(1).equalsIgnoreCase("yes"), items[i].getText(2));
-        }
-        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+//        TableItem[] items = setback.getItems();
+//        for (int i = items.length; i >= 0; i--) {
+//            deleteSetbackDelay(i);
+//        }
+//
+//        for (int i = 0; i < items.length; i++) {
+//            newSetbackDelay();
+//            applySetbackDelay(items[i].getText(0), items[i].getText(1).equalsIgnoreCase("yes"), items[i].getText(2));
+//        }
+//        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
     }
 
 
     public void newSetbackDelay() {
-        _setback = new Element("delay_order_after_setback");
-        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+//        _setback = new Element("delay_order_after_setback");
+//        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
     }
 
 
     public void selectSetbackDelay(int index) {
-        if (index >= 0 && index < _setbacks.size())
-            _setback = (Element) _setbacks.get(index);
+//        if (index >= 0 && index < _setbacks.size())
+//            _setback = (Element) _setbacks.get(index);
     }
 
 
     public void applySetbackDelay(String setbackCount, boolean maximum, String delay) {
-        Utils.setAttribute("setback_count", setbackCount, _setback, _dom);
-        Utils.setAttribute("is_maximum", maximum, _setback, _dom);
-        Utils.setAttribute("delay", delay, _setback, _dom);
-        if (!_setbacks.contains(_setback))
-            _setbacks.add(_setback);
-        _dom.setChanged(true);
-        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+//        Utils.setAttribute("setback_count", setbackCount, _setback, _dom);
+//        Utils.setAttribute("is_maximum", maximum, _setback, _dom);
+//        Utils.setAttribute("delay", delay, _setback, _dom);
+//        if (!_setbacks.contains(_setback))
+//            _setbacks.add(_setback);
+//        _dom.setChanged(true);
+//        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
     }
 
 
     public void deleteSetbackDelay(int index) {
-        if (index >= 0 && index < _setbacks.size()) {
-            _setbacks.remove(index);
-            _setback = null;
-            _dom.setChanged(true);
-            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
-        }
+//        if (index >= 0 && index < _setbacks.size()) {
+//            _setbacks.remove(index);
+//            _setback = null;
+//            _dom.setChanged(true);
+//            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+//        }
     }
 
 
     public String getSetbackCount() {
-        return Utils.getIntegerAsString(Utils.getIntValue("setback_count", -999, _setback));
+    	return "0";
+//        return Utils.getIntegerAsString(Utils.getIntValue("setback_count", -999, _setback));
     }
 
 
     public boolean isMaximum() {
-        return Utils.isAttributeValue("is_maximum", _setback);
+//        return Utils.isAttributeValue("is_maximum", _setback);
+    	return false;
     }
 
 
     public String getSetbackCountHours() {
-        return Utils.getIntegerAsString(Utils.getHours(_setback.getAttributeValue("delay"), -999));
+    	return "";
+//        return Utils.getIntegerAsString(Utils.getHours(_setback.getAttributeValue("delay"), -999));
     }
 
 
     public String getSetbackCountMinutes() {
-        return Utils.getIntegerAsString(Utils.getMinutes(_setback.getAttributeValue("delay"), -999));
+    	return "";
+//        return Utils.getIntegerAsString(Utils.getMinutes(_setback.getAttributeValue("delay"), -999));
     }
 
 
     public String getSetbackCountSeconds() {
-        return Utils.getIntegerAsString(Utils.getSeconds(_setback.getAttributeValue("delay"), -999));
+    	return "";
+//        return Utils.getIntegerAsString(Utils.getSeconds(_setback.getAttributeValue("delay"), -999));
     }
 
 
     // error count
 
     public boolean isErrorDelay() {
+    	// TODO complete implemenatation
+    	if (_errorDelays != null) {
         return _errorDelays.size() > 0;
+    }
+    	return false;
     }
 
 
     public void fillTable(Table table) {
         table.removeAll();
+        if (_errorDelays != null) {
         Iterator it = _errorDelays.iterator();
         while (it.hasNext()) {
             Element e = (Element) it.next();
             TableItem item = new TableItem(table, SWT.NONE);
             item.setText(0, "" + Utils.getIntValue("error_count", e));
             item.setText(1, getDelay(e));
+        }
         }
     }
 

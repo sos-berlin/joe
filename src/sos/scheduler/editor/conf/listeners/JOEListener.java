@@ -319,6 +319,22 @@ public class JOEListener extends JSToolBox {
 		}
 		return strR;
 	}
+	public boolean getYesOrNo(final String yesOrNo) {
+		if (yesOrNo == null) {
+			return false;
+		}
+		String work = yesOrNo.toLowerCase();
+		return work.equals("1") || work.equals("yes") || work.equals("true") || work.equals("ja");
+	}
+
+	public String setYesOrNo(final boolean pflgV) {
+		if (pflgV == true) {
+			return "yes";
+		}
+		else {
+			return "no";
+		}
+	}
 
 	public static SchedulerObjectFactory	JobSchedulerObjectFactory	= null;
 	public JSObjJobChain					objJSJobChain				= null;
