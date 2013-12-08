@@ -1,4 +1,4 @@
-package sos.scheduler.editor.objects.job.forms;
+package com.sos.joe.objects.job.forms;
 
 //import org.eclipse.draw2d.*;
 
@@ -28,8 +28,8 @@ import sos.scheduler.editor.conf.container.JobProcessFile;
 import sos.scheduler.editor.conf.container.JobSetback;
 import sos.scheduler.editor.conf.container.JobSourceViewer;
 import sos.scheduler.editor.conf.container.JobStartWhenDirectoryChanged;
-import sos.scheduler.editor.conf.listeners.JobOptionsListener;
 
+import com.sos.joe.objects.job.JobOptionsListener;
 import com.sos.scheduler.model.objects.JSObjJob;
 
 public class ScriptJobMainForm extends ScriptForm {
@@ -78,13 +78,13 @@ public class ScriptJobMainForm extends ScriptForm {
 
     public ScriptJobMainForm(final Composite parent, final int style, final JSObjJob pobjJob, final ISchedulerUpdate main) {
         super(parent, style, pobjJob, main);
-        
+
         showWaitCursor();
         objDataOptionsProvider = new JobOptionsListener(pobjJob);
         initialize();
         restoreCursor();
     }
-    
+
 	@Override
 	public void initForm() {
 		jobMainComposite.init();
@@ -352,7 +352,7 @@ public class ScriptJobMainForm extends ScriptForm {
 		if (pParentComposite == null) {
 			return;
 		}
-		
+
 		new JobEmailSettings(pParentComposite, objDataProvider);
 		pParentComposite.layout();
 	}

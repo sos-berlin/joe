@@ -1,4 +1,4 @@
-package sos.scheduler.editor.objects.job.forms;
+package com.sos.joe.objects.job.forms;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -27,8 +27,8 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.container.JobIncludeFile;
 import sos.scheduler.editor.conf.container.JobJavaAPI;
 import sos.scheduler.editor.conf.container.JobScript;
-import sos.scheduler.editor.conf.listeners.JobListener;
 
+import com.sos.joe.objects.job.JobListener;
 import com.sos.scheduler.model.LanguageDescriptor;
 import com.sos.scheduler.model.LanguageDescriptorList;
 import com.sos.scheduler.model.objects.JSObjJob;
