@@ -22,9 +22,10 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.classes.FileNameSelector;
 import sos.scheduler.editor.classes.FormBaseClass;
-import sos.scheduler.editor.conf.listeners.JobListener;
+
+import com.sos.dialog.components.FileNameSelector;
+import com.sos.joe.objects.job.JobListener;
 
 public class JobIncludeFile extends FormBaseClass <JobListener> {
 	private final String conClassName = this.getClass().getSimpleName();

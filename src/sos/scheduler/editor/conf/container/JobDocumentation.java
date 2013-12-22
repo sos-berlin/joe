@@ -25,11 +25,11 @@ import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.TextArea;
 import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
-import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
 import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
+import com.sos.joe.objects.job.JobListener;
 
 public class JobDocumentation extends FormBaseClass <JobListener> {
 	@SuppressWarnings("unused")

@@ -115,20 +115,18 @@ import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
-import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
 
 import com.sos.JSHelper.io.Files.JSFile;
 import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
 import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
+import com.sos.joe.objects.job.JobListener;
 import com.swtdesigner.SWTResourceManager;
 
 public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */implements IUnsaved, IUpdateLanguage, ISOSTableMenueListeners {
-
 	private final Logger		logger					= Logger.getLogger(ParameterForm.class);
 	public final String			conSVNVersion			= "$Id$";
 	private final String		conClassName			= "ParameterForm";
-
 	private Button				butDown_1				= null;
 	private Button				butUp_1					= null;
 	private Button				butImport_1				= null;
@@ -176,7 +174,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 	private Button				butNewEnvironment		= null;
 	private Button				butoIncludeSave			= null;
 	private boolean				isRemoteConnection		= false;
-
 	public static String		WIZARD					= "Wizard";
 
 	/**
@@ -209,10 +206,8 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 
 	private void initialize() {
 		try {
-
 			objParent.setRedraw(false);
 			logger.debug(conClassName);
-
 			//			sosString = new SOSString();
 			try {
 				String strT = (String) MainWindow.getContainer().getCurrentTab().getData("ftp_title");
@@ -223,12 +218,10 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			objParent.setLayout(new GridLayout());
 			GridLayout gridLayout2 = new GridLayout();
 			gridLayout2.numColumns = 1;
-
 			gJobParameter = JOE_G_ParameterForm_JobParameter.Control(new Group(objParent, SWT.NONE));
 			gJobParameter.setLayout(gridLayout2);
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true);
 			gJobParameter.setLayoutData(gridData_1);
-
 			createParameterGroup();
 			// dom.setInit(true);
 			getDescription();
@@ -393,7 +386,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 					fNotExist = true;
 				}
 			}
-
 			if (fNotExist) {
 				JSFile objNewFile = new JSFile(strParameterIncludeFileName);
 				objNewFile.WriteLine("<parameter></parameter>");
@@ -401,23 +393,20 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				//				MainWindow.message(JOE_M_ParameterForm_FileNotExist.params(strParameterIncludeFileName), SWT.ICON_WARNING);
 				//				return;
 			}
-
 			final String filename = strParameterIncludeFileName;
 			for (int i = 0; i < tabFolder.getItemCount(); i++) {
 				String strT = (String) tabFolder.getItem(i).getData("filename");
 				String strN = (String) tabFolder.getItem(i).getData("node");
-
 				if (strT != null && strN != null) {
 					if (strT.equals(filename) && strN.equals(node)) {
 						tabFolder.setSelection(tabFolder.getItem(i));
 						return;
 					}
 				}
-					else {
-//						return;
+				else {
+					//						return;
 				}
 			}
-
 			SAXBuilder builder = new SAXBuilder();
 			final Document doc = builder.build(filename);
 			java.util.List listOfElement = null;
@@ -446,7 +435,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				}
 				hash.put(Utils.getAttributeValue("name", param), "");
 			}
-
 			includeParameterTabItem = new CTabItem(tabFolder, SWT.CLOSE);
 			includeParameterTabItem.setText(new File(filename).getName());
 			includeParameterTabItem.setData("filename", filename);
@@ -454,16 +442,13 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			includeParameterTabItem.setData("doc", doc);
 			includeParameterTabItem.setData("params", listOfElement);
 			// --> bis hier alles in listener übernehmen
-
 			final Group group_1 = new Group(tabFolder, SWT.NONE);
 			group_1.setText(txtIncludeFilename.getText());
 			final GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 5;
 			group_1.setLayout(gridLayout);
 			includeParameterTabItem.setControl(group_1);
-
 			label2 = JOE_L_Name.Control(new Label(group_1, SWT.NONE));
-
 			final Text txtIncludeParameter = new Text(group_1, SWT.BORDER);
 			final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 			txtIncludeParameter.setLayoutData(gridData_4);
@@ -473,10 +458,8 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 					butoIncludeSave.setEnabled(!txtIncludeParameter.getText().equals(""));
 				}
 			});
-
 			label6 = JOE_L_ParameterForm_Value.Control(new Label(group_1, SWT.NONE));
 			label6.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-
 			final Text txtIncludeParameterValue = new Text(group_1, SWT.BORDER);
 			final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 			txtIncludeParameterValue.setLayoutData(gridData_9);
@@ -486,30 +469,24 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 					butoIncludeSave.setEnabled(!txtIncludeParameter.getText().equals(""));
 				}
 			});
-
 			butoIncludeSave = JOE_B_ParameterForm_IncludeSave.Control(new Button(group_1, SWT.NONE));
 			butoIncludeSave.setEnabled(false);
 			final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData_7.widthHint = 36;
 			butoIncludeSave.setLayoutData(gridData_7);
-
 			label4 = new Label(group_1, SWT.SEPARATOR | SWT.HORIZONTAL);
 			label4.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1));
 			//			label4.setText(Messages.getLabel("Label"));
-
 			final Table tableIncludeParameter = new Table(group_1, SWT.BORDER | SWT.FULL_SELECTION);
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 3);
 			gridData_1.heightHint = 85;
 			tableIncludeParameter.setLayoutData(gridData_1);
 			tableIncludeParameter.setHeaderVisible(true);
 			tableIncludeParameter.setLinesVisible(true);
-
 			TableColumn tcName = JOE_TCl_ParameterForm_Name.Control(new TableColumn(tableIncludeParameter, SWT.NONE));
 			tcName.setWidth(132);
-
 			TableColumn tcValue = JOE_TCl_ParameterForm_Value.Control(new TableColumn(tableIncludeParameter, SWT.NONE));
 			tcValue.setWidth(450);
-
 			for (int i = 0; i < listOfElement.size(); i++) {
 				Element param = (Element) listOfElement.get(i);
 				TableItem item = new TableItem(tableIncludeParameter, SWT.NONE);
@@ -517,10 +494,8 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				item.setText(1, Utils.getAttributeValue("value", param));
 				item.setData("param", param);
 			}
-
 			final Button newButton = JOE_B_ParameterForm_New.Control(new Button(group_1, SWT.NONE));
 			newButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
 			final Button butIncludeRemove = JOE_B_ParameterForm_IncludeRemove.Control(new Button(group_1, SWT.NONE));
 			final GridData gridData_8 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
 			butIncludeRemove.setLayoutData(gridData_8);
@@ -672,15 +647,12 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 	private void createParameter() {
 		// Parameter
 		parameterTabItem = JOE_TI_ParameterForm_TabItemParameter.Control(new CTabItem(tabFolder, SWT.BORDER));
-
 		final Group Group = new Group(tabFolder, SWT.NONE);
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 6;
 		Group.setLayout(gridLayout);
 		parameterTabItem.setControl(Group);
-
 		label2 = JOE_L_Name.Control(new Label(Group, SWT.NONE));
-
 		tParaName = JOE_T_ParameterForm_ParamName.Control(new Text(Group, SWT.BORDER));
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		tParaName.setLayoutData(gridData_4);
@@ -699,7 +671,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		});
 		label6 = JOE_L_ParameterForm_Value.Control(new Label(Group, SWT.NONE));
 		label6.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-
 		tbxParameterValue = JOE_T_ParameterForm_ParamValue.Control(new Text(Group, SWT.BORDER));
 		final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		tbxParameterValue.setLayoutData(gridData_9);
@@ -716,7 +687,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				bApply.setEnabled(!tParaName.getText().equals(""));
 			}
 		});
-
 		final Button button = JOE_B_ParameterForm_Comment.Control(new Button(Group, SWT.NONE));
 		final GridData gridDatax = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
 		gridDatax.widthHint = 28;
@@ -730,7 +700,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		button.setImage(getImage("icon_edit.gif"));
-
 		bApply = JOE_B_ParameterForm_Apply.Control(new Button(Group, SWT.NONE));
 		bApply.setEnabled(false);
 		final GridData gridData_7 = new GridData(GridData.FILL, GridData.CENTER, false, false);
@@ -742,11 +711,9 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				addParam();
 			}
 		});
-
 		label4 = new Label(Group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label4.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 6, 1));
 		//		label4.setText(Messages.getLabel("Label"));
-
 		tParameter = JOE_Tbl_JCNodesForm_Nodes.Control(new SOSTable(Group, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER | SWT.RESIZE, this));
 		tParameter.initialize();
 		tParameter.setData("caption", "tblParameter");
@@ -756,7 +723,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				//				selectNodes();
 			}
 		});
-
 		final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 4);
 		tParameter.setLayoutData(gridData_1);
 		tParameter.addSelectionListener(new SelectionAdapter() {
@@ -790,23 +756,19 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				bApply.setEnabled(false);
 			}
 		});
-
 		tParameter.strTableName = conClassName + "." + "tParameter";
 		final TableColumn tcolStateName = JOE_TCl_ParameterForm_Name.Control(tParameter.newTableColumn("tcolParameterName", 262));
 		final TableColumn tcolStateType = JOE_TCl_ParameterForm_Value.Control(tParameter.newTableColumn("tcolParameterValue", 500));
-
 		Menu objContextMenuJobChainStates = tParameter.objContextMenu;
 		MenuItem itemUp = new MenuItem(objContextMenuJobChainStates, SWT.NONE);
 		tParameter.setMenuItemText(itemUp, "Up", "F5", SWT.F5, false);
 		itemUp.addListener(SWT.Selection, getMoveNodeUpListener());
 		itemUp.setImage(getImage("icon_up.gif"));
 		//		itemUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icons/17379.png"));
-
 		MenuItem itemDown = new MenuItem(objContextMenuJobChainStates, SWT.PUSH);
 		itemDown.addListener(SWT.Selection, getMoveNodeDownListener());
 		itemDown.setImage(getImage("icon_down.gif"));
 		tParameter.setMenuItemText(itemDown, "Down", "F6", SWT.F6, false);
-
 		butNewParam = JOE_B_ParameterForm_NewParam.Control(new Button(Group, SWT.NONE));
 		butNewParam.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -815,13 +777,11 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		butNewParam.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
 		final Composite composite = new Composite(Group, SWT.NONE);
 		final GridData gridData_2 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
 		gridData_2.heightHint = 67;
 		composite.setLayoutData(gridData_2);
 		composite.setLayout(new GridLayout());
-
 		butUp = JOE_B_Up.Control(new Button(composite, SWT.NONE));
 		butUp.setText("");
 		butUp.addSelectionListener(new SelectionAdapter() {
@@ -833,7 +793,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		});
 		butUp.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butUp.setImage(getImage("icon_up.gif"));
-
 		butDown = JOE_B_Down.Control(new Button(composite, SWT.NONE));
 		butDown.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -844,7 +803,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		butDown.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
 		butDown.setText("");
 		butDown.setImage(getImage("icon_down.gif"));
-
 		butImport = JOE_B_ParameterForm_Wizard.Control(new Button(Group, SWT.NONE));
 		butImport.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butImport.addSelectionListener(new SelectionAdapter() {
@@ -854,7 +812,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				tParaName.setFocus();
 			}
 		});
-
 		bRemove = JOE_B_ParameterForm_Remove.Control(new Button(Group, SWT.NONE));
 		final GridData gridData_8 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
 		bRemove.setLayoutData(gridData_8);
@@ -878,7 +835,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				}
 			}
 		});
-
 		if (type == Editor.JOB) {
 			txtParameterDescription = JOE_T_ParameterForm_ParamDescription.Control(new Text(Group, SWT.V_SCROLL | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER
 					| SWT.WRAP | SWT.H_SCROLL));
@@ -893,25 +849,20 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			});
 			txtParameterDescription.setEditable(false);
 			txtParameterDescription.setBackground(SWTResourceManager.getColor(247, 247, 247));
-
 			new Label(Group, SWT.NONE);
-
 			tParaName.setFocus();
 		}
 	}
 
 	private void createEnvironment() {
 		environmentTabItem = JOE_TI_ParameterForm_TabItemEnvironment.Control(new CTabItem(tabFolder, SWT.BORDER));
-
 		final Group group_2 = new Group(tabFolder, SWT.NONE);
 		final GridLayout gridLayout_1 = new GridLayout();
 		gridLayout_1.numColumns = 5;
 		group_2.setLayout(gridLayout_1);
 		environmentTabItem.setControl(group_2);
-
 		@SuppressWarnings("unused")
 		final Label nameLabel = JOE_L_Name.Control(new Label(group_2, SWT.NONE));
-
 		txtEnvName = JOE_T_ParameterForm_EnvName.Control(new Text(group_2, SWT.BORDER));
 		txtEnvName.addModifyListener(new ModifyListener() {
 			@Override
@@ -928,10 +879,8 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		});
 		final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		txtEnvName.setLayoutData(gridData_5);
-
 		final Label valueLabel = JOE_L_ParameterForm_Value.Control(new Label(group_2, SWT.NONE));
 		valueLabel.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-
 		txtEnvValue = JOE_T_ParameterForm_EnvValue.Control(new Text(group_2, SWT.BORDER));
 		txtEnvValue.addModifyListener(new ModifyListener() {
 			@Override
@@ -947,7 +896,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		txtEnvValue.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-
 		butEnvApply = JOE_B_ParameterForm_EnvApply.Control(new Button(group_2, SWT.NONE));
 		butEnvApply.setEnabled(false);
 		butEnvApply.addSelectionListener(new SelectionAdapter() {
@@ -958,11 +906,9 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		});
 		final GridData gridData_6 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		butEnvApply.setLayoutData(gridData_6);
-
 		label4_1 = new Label(group_2, SWT.HORIZONTAL | SWT.SEPARATOR);
 		label4_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1));
 		//		label4_1.setText("Label");
-
 		tableEnvironment = JOE_Tbl_ParameterForm_Environment.Control(new Table(group_2, SWT.FULL_SELECTION | SWT.BORDER));
 		tableEnvironment.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -976,13 +922,10 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		tableEnvironment.setLinesVisible(true);
 		tableEnvironment.setHeaderVisible(true);
 		tableEnvironment.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2));
-
 		final TableColumn colEnvName = JOE_TCl_ParameterForm_Name.Control(new TableColumn(tableEnvironment, SWT.NONE));
 		colEnvName.setWidth(250);
-
 		final TableColumn colEnvValue = JOE_TCl_ParameterForm_Value.Control(new TableColumn(tableEnvironment, SWT.NONE));
 		colEnvValue.setWidth(522);
-
 		butNewEnvironment = JOE_B_ParameterForm_NewEnv.Control(new Button(group_2, SWT.NONE));
 		butNewEnvironment.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -995,7 +938,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		butNewEnvironment.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
 		butEnvRemove = JOE_B_ParameterForm_RemoveEnv.Control(new Button(group_2, SWT.NONE));
 		butEnvRemove.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -1059,10 +1001,8 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		txtIncludeFilename.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-
 		@SuppressWarnings("unused")
 		final Label lblNode = JOE_L_ParameterForm_Node.Control(new Label(group_3, SWT.NONE));
-
 		txtIncludeNode = JOE_T_ParameterForm_IncludeNode.Control(new Text(group_3, SWT.BORDER));
 		txtIncludeNode.addModifyListener(new ModifyListener() {
 			@Override
@@ -1080,7 +1020,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		txtIncludeNode.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-
 		butIncludesApply = JOE_B_ParameterForm_IncludesApply.Control(new Button(group_3, SWT.NONE));
 		butIncludesApply.setEnabled(false);
 		butIncludesApply.addSelectionListener(new SelectionAdapter() {
@@ -1090,11 +1029,9 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		butIncludesApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
 		label4_3 = new Label(group_3, SWT.HORIZONTAL | SWT.SEPARATOR);
 		label4_3.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1));
 		//		label4_3.setText("Label");
-
 		tableIncludeParams = JOE_Tbl_ParameterForm_IncludeParams.Control(new Table(group_3, SWT.FULL_SELECTION | SWT.BORDER));
 		tableIncludeParams.addMouseListener(new MouseAdapter() {
 			@Override
@@ -1125,16 +1062,12 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		tableIncludeParams.setLinesVisible(true);
 		tableIncludeParams.setHeaderVisible(true);
 		tableIncludeParams.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 4, 3));
-
 		final TableColumn colParamColums = JOE_TCl_ParameterForm_File.Control(new TableColumn(tableIncludeParams, SWT.NONE));
 		colParamColums.setWidth(250);
-
 		final TableColumn newColumnTableColumn_1 = JOE_TCl_ParameterForm_Node.Control(new TableColumn(tableIncludeParams, SWT.NONE));
 		newColumnTableColumn_1.setWidth(400);
-
 		final TableColumn newColumnTableColumn = JOE_TCl_ParameterForm_LiveFile.Control(new TableColumn(tableIncludeParams, SWT.NONE));
 		newColumnTableColumn.setWidth(100);
-
 		if (type != Editor.JOB && type != Editor.COMMANDS && type != Editor.JOB_COMMANDS) {
 			newColumnTableColumn.setWidth(200);
 			newColumnTableColumn.setResizable(false);
@@ -1156,7 +1089,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		butNewIncludes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
 		butOpenInclude = JOE_B_ParameterForm_OpenInclude.Control(new Button(group_3, SWT.NONE));
 		butOpenInclude.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -1166,7 +1098,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		});
 		butOpenInclude.setEnabled(false);
 		butOpenInclude.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
 		butRemoveInclude = JOE_B_ParameterForm_RemoveInclude.Control(new Button(group_3, SWT.NONE));
 		butRemoveInclude.setEnabled(false);
 		butRemoveInclude.addSelectionListener(new SelectionAdapter() {
@@ -1189,7 +1120,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		butRemoveInclude.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-
 		tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
 			@Override
 			public void close(final CTabFolderEvent e) {
@@ -1205,16 +1135,13 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 	public void createJobCommandParameter() {
 		// parameterJobCmdTabItem = new CTabItem(tabFolder, SWT.BORDER | SWT.CLOSE);
 		parameterJobCmdTabItem = JOE_TI_ParameterForm_Parameter.Control(new CTabItem(tabFolder, SWT.BORDER));
-
 		group = new Group(tabFolder, SWT.NONE);
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 6;
 		group.setLayout(gridLayout);
 		parameterJobCmdTabItem.setControl(group);
-
 		label2 = JOE_L_Name.Control(new Label(group, SWT.NONE));
 		label2.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
 		tParaName = JOE_T_ParameterForm_ParaName.Control(new Text(group, SWT.BORDER));
 		final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData_9.widthHint = 200;
@@ -1240,10 +1167,8 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				}
 			}
 		});
-
 		label6 = JOE_L_Value.Control(new Label(group, SWT.NONE));
 		label6.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
 		final Composite composite = new Composite(group, SWT.NONE);
 		composite.addControlListener(new ControlAdapter() {
 			@Override
@@ -1253,7 +1178,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
-
 		cboCopyParameterFrom = new Combo(composite, SWT.READ_ONLY);
 		cboCopyParameterFrom.setItems(new String[] { "order", "task" });
 		cboCopyParameterFrom.setBounds(0, 0, 250, 21);
@@ -1264,7 +1188,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		cboCopyParameterFrom.setVisible(false);
-
 		Rectangle objRectangle = cboCopyParameterFrom.getBounds();
 		tbxParameterValue = JOE_T_ParameterForm_ParaValue.Control(new Text(composite, SWT.BORDER));
 		//		tbxParameterValue.setBounds(0, 0, 250, 21);
@@ -1282,7 +1205,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				bApply.setEnabled(!tParaName.getText().equals(""));
 			}
 		});
-
 		final Button button = JOE_B_ParameterForm_Comment.Control(new Button(group, SWT.NONE));
 		final GridData gridDatax = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
 		gridDatax.widthHint = 28;
@@ -1296,7 +1218,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		button.setImage(getImage("icon_edit.gif"));
-
 		bApply = JOE_B_ParameterForm_Apply.Control(new Button(group, SWT.NONE));
 		final GridData gridData_5 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		bApply.setLayoutData(gridData_5);
@@ -1307,7 +1228,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				addParam();
 			}
 		});
-
 		tParameter = JOE_Tbl_JCNodesForm_Nodes.Control(new SOSTable(group, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER | SWT.RESIZE, this));
 		tParameter.initialize();
 		tParameter.setData("caption", "tblParameter");
@@ -1317,7 +1237,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				//				selectNodes();
 			}
 		});
-
 		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, false, true, 5, 5);
 		tParameter.setLayoutData(gridData_3);
 		tParameter.addPaintListener(new PaintListener() {
@@ -1334,22 +1253,18 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				setParams(item);
 			}
 		});
-
 		Menu objContextMenuJobChainStates = tParameter.objContextMenu;
 		MenuItem itemUp = new MenuItem(objContextMenuJobChainStates, SWT.PUSH);
 		tParameter.setMenuItemText(itemUp, "Up", "F5", SWT.F5, false);
 		itemUp.addListener(SWT.Selection, getMoveNodeUpListener());
 		itemUp.setImage(getImage("icon_up.gif"));
-
 		MenuItem itemDown = new MenuItem(objContextMenuJobChainStates, SWT.PUSH);
 		tParameter.setMenuItemText(itemDown, "Down", "F6", SWT.F6, false);
 		itemDown.addListener(SWT.Selection, getMoveNodeDownListener());
 		itemDown.setImage(getImage("icon_down.gif"));
-
 		tParameter.strTableName = conClassName + "." + "tParameter";
 		final TableColumn tcName = JOE_TCl_ParameterForm_Name.Control(tParameter.newTableColumn("tcolParameterName", 252));
 		final TableColumn tcValue = JOE_TCl_ParameterForm_Value.Control(tParameter.newTableColumn("tcolParameterValue", 500));
-
 		butNewParam = JOE_B_ParameterForm_NewParam.Control(new Button(group, SWT.NONE));
 		butNewParam.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -1362,13 +1277,11 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		butNewParam.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
 		final Composite composite_2 = new Composite(group, SWT.NONE);
 		final GridData gridData_2_1 = new GridData(GridData.CENTER, GridData.CENTER, false, false);
 		gridData_2_1.heightHint = 67;
 		composite_2.setLayoutData(gridData_2_1);
 		composite_2.setLayout(new GridLayout());
-
 		butUp_1 = JOE_B_Up.Control(new Button(composite_2, SWT.NONE));
 		butUp_1.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -1378,7 +1291,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		});
 		butUp_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butUp_1.setImage(getImage("icon_up.gif"));
-
 		butDown_1 = JOE_B_Down.Control(new Button(composite_2, SWT.NONE));
 		butDown_1.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -1388,7 +1300,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		});
 		butDown_1.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, false, false));
 		butDown_1.setImage(getImage("icon_down.gif"));
-
 		butImport_1 = JOE_B_ParameterForm_Wizard.Control(new Button(group, SWT.NONE));
 		butImport_1.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -1397,7 +1308,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		butImport_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-
 		bRemove = JOE_B_ParameterForm_Remove.Control(new Button(group, SWT.NONE));
 		bRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		bRemove.setEnabled(false);
@@ -1421,13 +1331,11 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				}
 			}
 		});
-
 		final Composite composite_1 = new Composite(group, SWT.NONE);
 		final GridData gridData = new GridData(GridData.FILL, GridData.FILL, false, true);
 		gridData.widthHint = 87;
 		composite_1.setLayoutData(gridData);
 		composite_1.setLayout(new GridLayout());
-
 		final Button paramButton = JOE_B_ParameterForm_Param.Control(new Button(composite_1, SWT.RADIO));
 		paramButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		paramButton.addSelectionListener(new SelectionAdapter() {
@@ -1439,7 +1347,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			}
 		});
 		paramButton.setSelection(true);
-
 		final Button fromTaskButton = JOE_B_ParameterForm_FromTask.Control(new Button(composite_1, SWT.RADIO));
 		fromTaskButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		fromTaskButton.addSelectionListener(new SelectionAdapter() {
@@ -1450,7 +1357,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				bApply.setFocus();
 			}
 		});
-
 		final Button fromOrderButton = JOE_B_ParameterForm_FromOrder.Control(new Button(composite_1, SWT.RADIO));
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
 		fromOrderButton.setLayoutData(gridData_2);
@@ -1530,7 +1436,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			tParameter.setSelection(index);
 			setParams(tParameter.getItem(index));
 		}
-
 	}
 
 	@Override
@@ -1560,7 +1465,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 	@Override
 	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
 		// TODO Auto-generated method stub
-
 	}
 
 	private Listener getMoveNodeUpListener() {
@@ -1604,7 +1508,6 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 	}
 
 	private void MoveNodeUp() {
-
 		if (tParameter.getSelectionCount() > 0) {
 			int index = tParameter.getSelectionIndex();
 			if (index > 0) {
@@ -1632,5 +1535,4 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 } // @jve:decl-index=0:visual-constraint="10,10"

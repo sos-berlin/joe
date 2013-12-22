@@ -25,7 +25,6 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -39,17 +38,17 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
-import sos.scheduler.editor.conf.listeners.JobListener;
+
+import com.sos.joe.objects.job.JobListener;
 
 public class JobMainComposite extends CompositeBaseClass {
 	@SuppressWarnings("unused")
-	private final String	conSVNVersion		= "$Id$";
-
+	private final String conClassName = this.getClass().getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String conSVNVersion = "$Id$";
+	@SuppressWarnings("unused")
+	private final Logger logger = Logger.getLogger(this.getClass());
 	private final int		intNoOfLabelColumns	= 2;
-	@SuppressWarnings("unused")
-	private static Logger	logger				= Logger.getLogger(JobMainComposite.class);
-	@SuppressWarnings("unused")
-	private final String	conClassName		= "JobMainForm";
 
 	private JobListener		objDataProvider		= null;
 	private Group			gMain				= null;
@@ -241,12 +240,13 @@ public class JobMainComposite extends CompositeBaseClass {
 	}
 
 	private void checkName() {
-		if (Utils.existName(tbxJobName.getText(), objDataProvider.getJob(), "job")) {
-			tbxJobName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-		}
-		else {
-			tbxJobName.setBackground(null);
-		}
+		// TODO exist name in model/hotfolder
+//		if (Utils.existName(tbxJobName.getText(), objDataProvider.getJob(), "job")) {
+//			tbxJobName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+//		}
+//		else {
+//			tbxJobName.setBackground(null);
+//		}
 	}
 
 	public Group getgMain() {
@@ -254,7 +254,7 @@ public class JobMainComposite extends CompositeBaseClass {
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
+	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode1) {
 	}
 
 }

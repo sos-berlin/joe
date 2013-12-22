@@ -51,14 +51,14 @@ import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.forms.JobDocumentationForm;
-import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
-import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
 import sos.scheduler.editor.conf.listeners.SortTreeListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.WindowsSaver;
+import com.sos.joe.objects.job.JobListener;
+import com.sos.joe.objects.job.forms.ScriptJobMainForm;
 import com.swtdesigner.SWTResourceManager;
 
 /**

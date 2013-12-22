@@ -29,5 +29,6 @@
 	<classpathentry kind="var" path="SOS_LIB/xml-apis.jar"/>
 	<classpathentry kind="src" path="/com.sos.VirtualFileSystem"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.sos.util"/>
+	<classpathentry kind="var" path="SOS_LIB/com.sos.util.jar" sourcepath="/SOS_SRC/com.sos.util"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

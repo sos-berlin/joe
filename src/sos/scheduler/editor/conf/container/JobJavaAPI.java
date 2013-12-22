@@ -13,11 +13,12 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
-import sos.scheduler.editor.conf.listeners.JobListener;
+
+import com.sos.joe.objects.job.JobListener;
 //import org.eclipse.swt.events.VerifyEvent;
 //import org.eclipse.swt.events.VerifyListener;
 
-public class JobJavaAPI extends FormBaseClass<JobListener> {
+public class JobJavaAPI extends FormBaseClass<JobListener>  {
 
 	private final String conClassName = this.getClass().getSimpleName();
 	private final Logger logger = Logger.getLogger(this.getClass());

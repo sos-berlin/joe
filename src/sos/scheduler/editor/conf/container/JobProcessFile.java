@@ -12,7 +12,8 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
-import sos.scheduler.editor.conf.listeners.JobListener;
+
+import com.sos.joe.objects.job.JobListener;
 
 public class JobProcessFile extends FormBaseClass<JobListener> {
 
@@ -27,7 +28,7 @@ public class JobProcessFile extends FormBaseClass<JobListener> {
 	private Button			bIgnoreSignal	= null;
 	private Button			bIgnoreError	= null;
 
-	public JobProcessFile(final Composite pParentComposite, final JobListener pobjJobDataProvider) {
+	public JobProcessFile(final Composite pParentComposite, final JobListener  pobjJobDataProvider) {
 		super(pParentComposite, pobjJobDataProvider);
 		objJobDataProvider = pobjJobDataProvider;
 

@@ -21,7 +21,8 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.FolderNameSelector;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
-import sos.scheduler.editor.conf.listeners.JobListener;
+
+import com.sos.joe.objects.job.JobListener;
 
 public class JobStartWhenDirectoryChanged extends CompositeBaseClass {
 
@@ -40,7 +41,8 @@ public class JobStartWhenDirectoryChanged extends CompositeBaseClass {
 	private Label				label21				= null;
 	private Button				bRemoveDirectory	= null;
 
-	private JobListener			objJobDataProvider	= null;
+	@SuppressWarnings("hiding")
+	private JobListener		 	objJobDataProvider	= null;
 
 	public JobStartWhenDirectoryChanged(final Composite pParentComposite, final JobListener pobjDataProvider) {
 		super(pParentComposite, pobjDataProvider);

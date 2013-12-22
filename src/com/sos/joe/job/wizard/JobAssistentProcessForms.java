@@ -10,26 +10,26 @@ import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
-import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ExecuteListener;
-import org.eclipse.swt.widgets.Combo;
+import sos.scheduler.editor.conf.listeners.JobsListener;
 
+import com.sos.joe.objects.job.forms.ScriptJobMainForm;
 import com.swtdesigner.SWTResourceManager;
 
 public class JobAssistentProcessForms {
@@ -72,7 +72,7 @@ public class JobAssistentProcessForms {
 	private boolean               closeDialog   = false;         
 
 
-	public JobAssistentProcessForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
+	public JobAssistentProcessForms(final SchedulerDom dom_, final ISchedulerUpdate update_, final Element job_, final int assistentType_) {
 		dom = dom_;
 		update = update_;
 		assistentType = assistentType_;
@@ -83,6 +83,7 @@ public class JobAssistentProcessForms {
 
 		processShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		processShell.addShellListener(new ShellAdapter() {
+			@Override
 			public void shellClosed(final ShellEvent e) {
 				if(!closeDialog)
 					close();
@@ -128,6 +129,7 @@ public class JobAssistentProcessForms {
 			txtFile = SOSJOEMessageCodes.JOE_JobAssistent_FileText.Control(new Text(jobGroup, SWT.BORDER));
 			txtFile.setFocus();
 			txtFile.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					if(txtFile.getText() != null || txtFile.getText().trim().length() > 0) {
 						executeListener.setFile(txtFile.getText());
@@ -147,6 +149,7 @@ public class JobAssistentProcessForms {
 			
 			txtParameter = SOSJOEMessageCodes.JOE_JobAssistent_ParameterText.Control(new Text(jobGroup, SWT.BORDER));
 			txtParameter.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					if(txtParameter.getText() != null || txtParameter.getText().trim().length() > 0) {
 						executeListener.setParam(txtParameter.getText());
@@ -166,6 +169,7 @@ public class JobAssistentProcessForms {
 			
 			txtLog = SOSJOEMessageCodes.JOE_JobAssistent_LogFileText.Control(new Text(jobGroup, SWT.BORDER));
 			txtLog.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					if(txtLog.getText() != null || txtLog.getText().trim().length() > 0) {
 						executeListener.setLogFile(txtLog.getText());
@@ -210,6 +214,7 @@ public class JobAssistentProcessForms {
 		{
 			butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite, SWT.NONE));
 			butCancel.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					close();
 				}
@@ -230,6 +235,7 @@ public class JobAssistentProcessForms {
 			butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_1, SWT.NONE));
 			butShow.setLayoutData(new GridData());
 			butShow.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {										
 					Utils.showClipboard(Utils.getElementAsString(executeListener.getJob()), processShell, false, null, false, null, false); 
 					txtFile.setFocus();
@@ -241,6 +247,7 @@ public class JobAssistentProcessForms {
 		{
 			butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_1, SWT.NONE));
 			butFinish.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					doFinish();										
 				}
@@ -250,6 +257,7 @@ public class JobAssistentProcessForms {
 
 		butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_1, SWT.NONE));
 		butBack.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				doBack();
 			}
@@ -264,6 +272,7 @@ public class JobAssistentProcessForms {
 			butNext.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			butNext.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					Utils.startCursor(processShell);
 					if(Utils.getAttributeValue("order", executeListener.getJob()).equals("yes")) {
@@ -314,7 +323,7 @@ public class JobAssistentProcessForms {
 		}
 	}
 
-	public void setJobname(Combo jobname) {
+	public void setJobname(final Combo jobname) {
 		this.jobname = jobname;
 	}
 
@@ -342,7 +351,7 @@ public class JobAssistentProcessForms {
 	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
-	public void setBackUpJob(Element backUpJob, ScriptJobMainForm jobForm_) {
+	public void setBackUpJob(final Element backUpJob, final ScriptJobMainForm jobForm_) {
 		if(backUpJob != null)
 			jobBackUp = (Element)backUpJob.clone();	
 		jobForm = jobForm_;

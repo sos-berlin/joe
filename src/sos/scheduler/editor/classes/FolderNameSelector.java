@@ -20,9 +20,9 @@ import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.conf.listeners.JobListener;
 
 import com.sos.JSHelper.Exceptions.JobSchedulerException;
+import com.sos.joe.objects.job.JobListener;
 
 /**
  * \class FileNameSelector

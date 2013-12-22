@@ -48,6 +48,18 @@ public class JobChainListener extends JOEJobChainDataProvider {
 	private ArrayList<String>	listOfAllState		= null;
 	public int					intStepIncr			= 100;
 
+	public JobChainListener(final JSObjJobChain pobjJobChain) {
+		objJSJobChain = pobjJobChain;
+//		_dom = dom;
+//		objJobChain = jobChain;
+//		objElement = jobChain;
+//		getJOMJobChain();
+//		if (objJobChain.getParentElement() != null)
+//			_config = objJobChain.getParentElement().getParentElement();
+	}
+
+
+	@Deprecated
 	public JobChainListener(final SchedulerDom dom, final Element jobChain) {
 		_dom = dom;
 		objJobChain = jobChain;
@@ -57,7 +69,7 @@ public class JobChainListener extends JOEJobChainDataProvider {
 			_config = objJobChain.getParentElement().getParentElement();
 	}
 
-	/**
+/**
 	 * This Method seems to be used to modify the name of the jobChain
 	*
 	* \brief setChainName

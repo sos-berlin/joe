@@ -28,7 +28,8 @@ import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
-import sos.scheduler.editor.conf.listeners.JobListener;
+
+import com.sos.joe.objects.job.JobListener;
 
 public class PreProcessingComposite extends CompositeBaseClass {
 	@SuppressWarnings("unused")
@@ -39,7 +40,7 @@ public class PreProcessingComposite extends CompositeBaseClass {
 	@SuppressWarnings("unused")
 	private final String	conClassName	= "PreProcessingComposite";
 
-	private JobListener		objDataProvider	= null;
+	private JobListener	 	objDataProvider	= null;
 
 	private Button			butFavorite		= null;
 	// private String groupTitle = "Script";
@@ -165,7 +166,7 @@ public class PreProcessingComposite extends CompositeBaseClass {
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
+	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode1) {
 	}
 
 }

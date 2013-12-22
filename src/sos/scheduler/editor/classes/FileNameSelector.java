@@ -18,13 +18,14 @@ import org.eclipse.swt.widgets.Text;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.conf.listeners.JobListener;
+
+import com.sos.joe.objects.job.JobListener;
 
 /**
-* \class FileNameSelector 
-* 
-* \brief FileNameSelector - 
-* 
+* \class FileNameSelector
+*
+* \brief FileNameSelector -
+*
 * \details
 *
 * \code
@@ -47,6 +48,7 @@ public class FileNameSelector extends Text {
 	private final String	conClassName			= "FileNameSelector";
 
 	private JobListener		objDataProvider			= null;
+	@SuppressWarnings("unused")
 	private boolean			flgInit					= false;
 	public boolean			flgIsFileFromLiveFolder	= false;
 

@@ -17,11 +17,11 @@ import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.TextArea;
 import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
-import sos.scheduler.editor.conf.listeners.JobListener;
 
 import com.sos.dialog.classes.WindowsSaver;
+import com.sos.joe.objects.job.JobListener;
 
-public class JobScript extends FormBaseClass<JobListener> {
+public class JobScript extends FormBaseClass<JobListener>  {
 
 	private final String		conClassName	= this.getClass().getSimpleName();
 	private static final String	conSVNVersion	= "$Id$";

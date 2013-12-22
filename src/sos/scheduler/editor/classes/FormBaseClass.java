@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.MainWindow;
 
@@ -61,7 +60,7 @@ public abstract class FormBaseClass  <DataProviderClass> {
 	protected Composite			objParent				= null;
 	protected Shell				shell					= null;
 	protected Cursor			objLastCursor			= null;
-	protected FormBaseClass		objParentForm			= this;
+	protected FormBaseClass<DataProviderClass>		objParentForm			= this;
 
 	//	protected CSSEngine			engine				= null;
 
@@ -124,15 +123,14 @@ public abstract class FormBaseClass  <DataProviderClass> {
 		display.asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				Editor.objMainWindow.setStatusLine(pstrText);
+				MainWindow.setStatusLine(pstrText);
 				try {
 					Thread.sleep(delay);
 				}
 				catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				Editor.objMainWindow.setStatusLine("");
+				MainWindow.setStatusLine("");
 			}
 		});
 

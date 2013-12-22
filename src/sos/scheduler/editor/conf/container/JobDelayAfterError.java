@@ -22,7 +22,8 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.FormBaseClass;
-import sos.scheduler.editor.conf.listeners.JobOptionsListener;
+
+import com.sos.joe.objects.job.JobOptionsListener;
 
 public class JobDelayAfterError extends FormBaseClass <JobOptionsListener>{
 

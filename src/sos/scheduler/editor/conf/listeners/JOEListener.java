@@ -15,6 +15,7 @@ import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -26,6 +27,7 @@ import com.sos.VirtualFileSystem.Factory.VFSFactory;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVFSHandler;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVfsFileTransfer;
 import com.sos.scheduler.model.SchedulerObjectFactory;
+import com.sos.scheduler.model.objects.JSObjJob;
 import com.sos.scheduler.model.objects.JSObjJobChain;
 import com.sos.scheduler.model.objects.Spooler;
 
@@ -65,11 +67,15 @@ public class JOEListener extends JSToolBox {
 	private static final String	conSVNVersion			= "$Id$";
 	@SuppressWarnings("unused")
 	private final Logger		logger					= Logger.getLogger(this.getClass());
+	@Deprecated
 	protected SchedulerDom		_dom					= null;
 
 	protected ISchedulerUpdate	_main					= null;
+	@Deprecated
 	protected Element			_job					= null;
+	@Deprecated
 	protected Element			_parent					= null;
+	@Deprecated
 	protected Element			objElement				= null;
 
 	protected ISchedulerUpdate	update					= null;
@@ -261,18 +267,32 @@ public class JOEListener extends JSToolBox {
 
 	public String getXML() {
 
-		String strXmlText = "no xml source found. Element = null";
-		if (objElement != null) {
-			strXmlText = getXML(objElement);
 
-			if (strXmlText != null) {
+		String strXmlText = "no xml source found. TreeData = null";
 
-				// newXML ist null, wenn Änderungen nicht übernommen werden sollen
-				// if (newXML != null)
-				// applyXMLChange(newXML);
-
+		Object objO = objTreeData.getObject();
+		if (objO instanceof JSObjJob) {
+			JSObjJob objJ = (JSObjJob) objO;
+			strXmlText = objJ.marshal();
+		}
+		else {
+			if (objO instanceof JSObjJobChain) {
+				JSObjJobChain objJ = (JSObjJobChain) objO;
+				strXmlText = objJ.marshal();
 			}
 		}
+
+//		if (objElement != null) {
+//			strXmlText = getXML(objElement);
+//
+//			if (strXmlText != null) {
+//
+//				// newXML ist null, wenn Änderungen nicht übernommen werden sollen
+//				// if (newXML != null)
+//				// applyXMLChange(newXML);
+//
+//			}
+//		}
 		return strXmlText;
 	}
 
@@ -336,8 +356,12 @@ public class JOEListener extends JSToolBox {
 		}
 	}
 
+	public void setTreeData (final TreeData pobjTreeData) {
+		objTreeData = pobjTreeData;
+	}
 	public static SchedulerObjectFactory	JobSchedulerObjectFactory	= null;
 	public JSObjJobChain					objJSJobChain				= null;
+	protected  TreeData			objTreeData							= null;
 
 	public static ISOSVFSHandler			objVFS						= null;
 	public static ISOSVfsFileTransfer		objFileSystemHandler		= null;

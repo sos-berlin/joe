@@ -26,12 +26,13 @@ import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.SourceGenerator;
-import sos.scheduler.editor.doc.listeners.JobListener;
+
+import com.sos.joe.objects.job.JobListener;
 
 public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	@SuppressWarnings("unused")
 	private final static String	conSVNVersion	= "$Id$";
-	private JobListener			listener		= null;
+	private JobListener	 		listener		= null;
 	private Group				group			= null;
 	@SuppressWarnings("unused")
 	private Label				label			= null;
@@ -247,7 +248,7 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	private void initValues() {
-		tName.setText(listener.getName());
+		tName.setText(listener.getJobName());
 		tTitle.setText(listener.getTitle());
 		cOrder.setItems(listener.getOrderValues());
 		cOrder.select(cOrder.indexOf(listener.getOrder()));

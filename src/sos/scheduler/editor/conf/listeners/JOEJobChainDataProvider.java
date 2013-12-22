@@ -1,19 +1,14 @@
 package sos.scheduler.editor.conf.listeners;
 
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_E_0002;
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.jdom.Element;
-import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.JSObjectElement;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.JobChainNodeWrapper;
-import sos.util.SOSClassUtil;
 
 import com.sos.VirtualFileSystem.Interfaces.ISOSVirtualFile;
 import com.sos.scheduler.model.objects.JSObjJobChain;
@@ -353,23 +348,29 @@ public class JOEJobChainDataProvider extends JOEListener {
 	// ein Job Chain hat entweder job_chain_node ODER job_chain_node.job_chain
 	// Kindknoten.
 	public boolean hasNodesOrChains() {
-		try {
-
-			XPath x3 = XPath.newInstance("//job_chain[@name='" + getChainName() + "']/job_chain_node");
-			List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-			XPath x4 = XPath.newInstance("//job_chain[@name='" + getChainName() + "']/file_order_sink");
-			List listOfElement_4 = x4.selectNodes(_dom.getDoc());
-			if (listOfElement_3.isEmpty() && listOfElement_4.isEmpty()) {
-				return false;
-			}
-			else {
-				return true;
-			}
-		}
-		catch (Exception e) {
-			new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
+		if (objJSJobChain.getJobChainNodeList().size() > 0) {
 			return true;
 		}
+		else {
+			return false;
+		}
+//		try {
+//
+//			XPath x3 = XPath.newInstance("//job_chain[@name='" + getChainName() + "']/job_chain_node");
+//			List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+//			XPath x4 = XPath.newInstance("//job_chain[@name='" + getChainName() + "']/file_order_sink");
+//			List listOfElement_4 = x4.selectNodes(_dom.getDoc());
+//			if (listOfElement_3.isEmpty() && listOfElement_4.isEmpty()) {
+//				return false;
+//			}
+//			else {
+//				return true;
+//			}
+//		}
+//		catch (Exception e) {
+//			new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
+//			return true;
+//		}
 	}
 
 	public void getJOMJobChain() {

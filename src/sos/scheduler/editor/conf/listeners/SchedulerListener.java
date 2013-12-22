@@ -16,13 +16,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.jdom.Attribute;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.JSObjectElement;
-import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
@@ -30,6 +28,7 @@ import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.forms.BaseForm;
 import sos.scheduler.editor.conf.forms.ClusterForm;
 import sos.scheduler.editor.conf.forms.CommandsForm;
 import sos.scheduler.editor.conf.forms.ConfigForm;
@@ -37,7 +36,6 @@ import sos.scheduler.editor.conf.forms.DateForm;
 import sos.scheduler.editor.conf.forms.DaysForm;
 import sos.scheduler.editor.conf.forms.HttpAuthenticationForm;
 import sos.scheduler.editor.conf.forms.HttpDirectoriesForm;
-import sos.scheduler.editor.conf.forms.JobChainForm;
 import sos.scheduler.editor.conf.forms.JobChainNestedNodesForm;
 import sos.scheduler.editor.conf.forms.JobChainNodesForm;
 import sos.scheduler.editor.conf.forms.JobChainsForm;
@@ -57,11 +55,11 @@ import sos.scheduler.editor.conf.forms.ParameterForm;
 import sos.scheduler.editor.conf.forms.PeriodsForm;
 import sos.scheduler.editor.conf.forms.ProcessClassesForm;
 import sos.scheduler.editor.conf.forms.RunTimeForm;
-import sos.scheduler.editor.conf.forms.SchedulerBaseFileForm;
+import sos.scheduler.editor.conf.forms.ScheduleForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
+import sos.scheduler.editor.conf.forms.SchedulesForm;
 import sos.scheduler.editor.conf.forms.ScriptFormPreProcessing;
 import sos.scheduler.editor.conf.forms.ScriptFormSchedulerStartScript;
-import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
 import sos.scheduler.editor.conf.forms.ScriptsForm;
 import sos.scheduler.editor.conf.forms.SecurityForm;
 import sos.scheduler.editor.conf.forms.SpecificWeekdaysForm;
@@ -70,6 +68,7 @@ import sos.scheduler.editor.conf.forms.WebservicesForm;
 import sos.util.SOSClassUtil;
 
 import com.sos.JSHelper.Exceptions.JobSchedulerException;
+import com.sos.joe.objects.job.forms.ScriptJobMainForm;
 import com.sos.scheduler.model.SchedulerHotFolder;
 import com.sos.scheduler.model.commands.AddJobs;
 import com.sos.scheduler.model.commands.CheckFolders;
@@ -319,7 +318,7 @@ public class SchedulerListener {
 //		treeSelection(tree, c);
 //	}
 
-	public void treeFillMain(final SchedulerHotFolder pobjHotFolder, final Object pobjTreeViewControl, final Composite c) {
+	public void treeFillMain2(final SchedulerHotFolder pobjHotFolder, final Object pobjTreeViewControl, final Composite c) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::treeFillMain";
 
@@ -563,7 +562,7 @@ public class SchedulerListener {
 	@SuppressWarnings("unused")
 	private static final String	conImageEDITOR_SMALL_PNG	= "/sos/scheduler/editor/editor-small.png";
 
-	private final Tree				objTree						= null;
+	private Tree				objTree						= null;
 
 //	public void treeFillMain(final Tree tree, final Composite c, final int type_) {
 //
@@ -594,7 +593,7 @@ public class SchedulerListener {
 		// createTreeNodes4HotFolderElements(tree, c, pobjHotFolder);
 		// }
 		// else {
-		treeFillMain(pobjHotFolder, tree, c);
+		treeFillMain2(pobjHotFolder, tree, c);
 		// }
 	}
 
@@ -604,7 +603,7 @@ public class SchedulerListener {
 
 		Display d = Display.getCurrent();
 
-		Tree objTree = null;
+		objTree = null;
 		if (pobjTreeViewControl instanceof Tree) {
 			objTree = (Tree) pobjTreeViewControl;
 			objTree.removeAll();
@@ -635,6 +634,31 @@ public class SchedulerListener {
 			}
 		}
 		objRootNode = item;
+
+		item = new TreeItem(objRootNode, SWT.NONE);
+		item.setData(new TreeData(Editor.JOBS, null, Options.getHelpURL("jobs"), "jobs"));
+		item.setData(conItemDataKeyKEY, "jobs_@_job");
+		item.setText(Messages.getLabel(JOBS));
+		item.setImage(getImage("jobs.gif"));
+
+		createTreeNodes4Jobs(item, pobjHotFolder);
+
+		item = new TreeItem(objRootNode, SWT.NONE);
+		item.setData(new TreeData(Editor.JOB_CHAINS, null, Options.getHelpURL("job_chains"), "job_chains"));
+		item.setData(conItemDataKeyKEY, "job_chains_@_job_chain");
+		item.setText(Messages.getLabel(JOB_CHAINS));
+		item.setImage(getImage("hierarchical.gif"));
+
+		createTreeNodes4JobChains(item, pobjHotFolder);
+
+		item = new TreeItem(objRootNode, SWT.NONE);
+		item.setData(new TreeData(Editor.ORDERS, null, Options.getHelpURL("orders"), "orders"));
+		item.setData(conItemDataKeyKEY, "commands_@_order");
+		item.setText(Messages.getLabel(ORDERS));
+		item.setImage(getImage("orders.gif"));
+
+		createTreeNodes4Orders(item, pobjHotFolder);
+
 
 		Element config = objSchedulerDom.getRoot().getChild("config");
 		item = new TreeItem(objRootNode, SWT.NONE);
@@ -713,17 +737,14 @@ public class SchedulerListener {
 		item.setText(Messages.getLabel("Locks"));
 		item.setImage(getImage("lockedstate.gif"));
 
-		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.SCRIPT, config, Options.getHelpURL("start_script"), "script"));
-		item.setData(conItemDataKeyKEY, "script");
-		item.setData(conItemDataKeyCOPY_ELEMENT, config);
-		item.setText(Messages.getLabel("treeitem.StartScript"));
-		item.setImage(getImage("help.gif"));
-
-		if (type == SchedulerDom.DIRECTORY)
-			item.dispose();
-
 		if (type != SchedulerDom.DIRECTORY) {
+			item = new TreeItem(objRootNode, SWT.NONE);
+			item.setData(new TreeData(Editor.SCRIPT, config, Options.getHelpURL("start_script"), "script"));
+			item.setData(conItemDataKeyKEY, "script");
+			item.setData(conItemDataKeyCOPY_ELEMENT, config);
+			item.setText(Messages.getLabel("treeitem.StartScript"));
+			item.setImage(getImage("help.gif"));
+
 			TreeItem http_server = new TreeItem(objRootNode, SWT.NONE);
 			// http_server.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
 			http_server.setData(new TreeData(Editor.HTTP_SERVER, config, Options.getHelpURL("http_server"), "http_server"));
@@ -769,33 +790,6 @@ public class SchedulerListener {
 			// TODO implement
 			//			treeFillHolidays(item, config);
 		}
-
-		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.JOBS, null, Options.getHelpURL("jobs"), "jobs"));
-		item.setData(conItemDataKeyKEY, "jobs_@_job");
-		item.setData(conItemDataKeyCOPY_ELEMENT, config);
-		item.setText(Messages.getLabel(JOBS));
-		item.setImage(getImage("jobs.gif"));
-
-		createTreeNodes4Jobs(item, pobjHotFolder);
-
-		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.JOB_CHAINS, null, Options.getHelpURL("job_chains"), "job_chains"));
-		item.setData(conItemDataKeyKEY, "job_chains_@_job_chain");
-		item.setData(conItemDataKeyCOPY_ELEMENT, config);
-		item.setText(Messages.getLabel(JOB_CHAINS));
-		item.setImage(getImage("hierarchical.gif"));
-
-		createTreeNodes4JobChains(item, pobjHotFolder);
-
-		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.ORDERS, config, Options.getHelpURL("orders"), "orders"));
-		item.setData(conItemDataKeyKEY, "commands_@_order");
-		item.setData(conItemDataKeyCOPY_ELEMENT, config);
-		item.setText(Messages.getLabel(ORDERS));
-		item.setImage(getImage("orders.gif"));
-
-		createTreeNodes4Orders(item, pobjHotFolder);
 
 		item = new TreeItem(objRootNode, SWT.NONE);
 		item.setData(new TreeData(Editor.COMMANDS, config, Options.getHelpURL("commands"), "commands"));
@@ -876,7 +870,6 @@ public class SchedulerListener {
 		item.setText(Messages.getLabel("treeitem.parameter"));
 		setItemData(item, Editor.ORDER_PARAMETER, pobjJobOrder, "treeitem.order.parameter");
 		item.setImage(getImage("parameter.gif"));
-
 	}
 
 	public void createTreeNodes4HotFolderElements1(final Tree pobjTreeViewControl, final Composite c, final SchedulerHotFolder pobjHotFolder) {
@@ -1968,12 +1961,12 @@ public class SchedulerListener {
 	//		}
 	//		return jobChainName;
 	//	}
-	//
-	public boolean treeSelection(final Tree tree, final Composite c) {
+
+	public boolean treeSelection(final Tree tree, final Composite pobjParentComposite) {
 		try {
 			if (tree.getSelectionCount() > 0) {
 				// dispose the old form
-				Control[] children = c.getChildren();
+				Control[] children = pobjParentComposite.getChildren();
 				for (int i = 0; i < children.length; i++) {
 					if (!Utils.applyFormChanges(children[i]))
 						return false;
@@ -1983,156 +1976,173 @@ public class SchedulerListener {
 				TreeData objTreeItemUserdata = (TreeData) objSelectedTreeItem.getData();
 				if (objTreeItemUserdata != null) {
 					objSchedulerDom.setInit(true);
-					if (c.getChildren().length > 0) {
+					if (pobjParentComposite.getChildren().length > 0) {
 					}
 					Element objElement = objTreeItemUserdata.getElement();
 					int intType = objTreeItemUserdata.getType();
-					c.setLayout(new FillLayout());
+					pobjParentComposite.setLayout(new FillLayout());
 					switch (intType) {
-						case Editor.CONFIG:
-							new ConfigForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm);
+						case Editor.ROOT_FOLDER:
+
 							break;
-						case Editor.PARAMETER:
-							int type = getType(objElement);
-							Attribute a = Utils.getJobElement(objElement).getAttribute("name");
-							if (a == null) {
-								new sos.scheduler.editor.conf.forms.ParameterForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, type);
+						case Editor.SUB_FOLDER:
+							if (objSelectedTreeItem.getItemCount() > 0) {
+
+
 							}
 							else {
-								String jobname = a.getValue();
-								new sos.scheduler.editor.conf.forms.ParameterForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, type, jobname);
+								SchedulerHotFolder objFolder = (SchedulerHotFolder) objTreeItemUserdata.getObject();
+								objFolder.load();
+								treeFillMain1(objFolder, objSelectedTreeItem, pobjParentComposite);
 							}
+							objSelectedTreeItem.setExpanded(true);
+							break;
+
+						case Editor.CONFIG:
+							new ConfigForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objSchedulerForm);
+							break;
+						case Editor.PARAMETER:
+							type = objTreeItemUserdata.getType();
+							new ParameterForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, type);
+							break;
+						case Editor.JOB_PARAMETER:
+							type = objTreeItemUserdata.getType();
+							JSObjJob objJSJob = objTreeItemUserdata.getJob();
+							String jobname = objJSJob.getJobName();
+							new JobParameterForm(pobjParentComposite, SWT.NONE, objTreeItemUserdata.getJob(), objSchedulerForm, type, jobname);
 							break;
 						case Editor.SECURITY:
-							new SecurityForm(c, SWT.NONE, objSchedulerDom, objElement);
+							new SecurityForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							break;
 						case Editor.CLUSTER:
-							new ClusterForm(c, SWT.NONE, objSchedulerDom, objElement);
+							new ClusterForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							break;
-						case Editor.BASEFILE:
-							new SchedulerBaseFileForm(c, SWT.NONE, objSchedulerDom);
+						case Editor.BASE:
+							new BaseForm(pobjParentComposite, SWT.NONE, objSchedulerDom);
 							break;
 						case Editor.PROCESS_CLASSES:
-							new ProcessClassesForm(c, SWT.NONE, objSchedulerDom, objElement);
+							new ProcessClassesForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							break;
 						case Editor.LOCKS:
-							new LocksForm(c, SWT.NONE, objSchedulerDom, objElement);
+							new LocksForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							break;
 						case Editor.MONITORS:
-							new ScriptsForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm, objElement);
+							new ScriptsForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objSchedulerForm, objElement);
 							break;
 						case Editor.MONITOR:
-							new ScriptFormPreProcessing(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							new ScriptFormPreProcessing(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
 						case Editor.SCRIPT:
-							new ScriptFormSchedulerStartScript(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							new ScriptFormSchedulerStartScript(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
 						case Editor.JOB:
-							new ScriptJobMainForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							//							new ScriptJobMainForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							new ScriptJobMainForm(pobjParentComposite, SWT.NONE, objTreeItemUserdata.getJob(), objSchedulerForm);
 							break;
 						case Editor.JOB_OPTION:
-							new JobMainOptionForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							//							new JobMainOptionForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							type = objTreeItemUserdata.getType();
+							objJSJob = objTreeItemUserdata.getJob();
+							jobname = objJSJob.getJobName();
+							new JobMainOptionForm(pobjParentComposite, SWT.NONE, objJSJob, objSchedulerForm);
 							break;
 						case Editor.JOB_DOCUMENTATION:
-							new JobDocumentationForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							new JobDocumentationForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
 
 						case Editor.SETTINGS:
-							new MailForm(c, SWT.NONE, objSchedulerDom, objElement);
+							new MailForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							break;
 						case Editor.ORDERS:
-							new OrdersForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm);
+							new OrdersForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objSchedulerForm);
 							break;
 						case Editor.ORDER:
-							new OrderForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							new OrderForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
 						case Editor.JOB_COMMAND_EXIT_CODES:
-							new sos.scheduler.editor.conf.forms.JobCommandExitCodesForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							new sos.scheduler.editor.conf.forms.JobCommandExitCodesForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement,
+									objSchedulerForm);
 							break;
 						case Editor.JOB_COMMAND:
-							new JobCommandForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							new JobCommandForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
 						case Editor.JOB_COMMANDS:
-							new JobCommandsForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, this);
+							new JobCommandsForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, this);
 							break;
 						case Editor.RUNTIME:
-							new RunTimeForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							new RunTimeForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
 						case Editor.WEEKDAYS:
-							new DaysForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.WEEKDAYS,
+							new DaysForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.WEEKDAYS,
 									objSelectedTreeItem.getData(conItemDataKeyKEY) != null
 											&& objSelectedTreeItem.getData(conItemDataKeyKEY).equals("holidays_@_weekdays"));
 							break;
 						case Editor.MONTHDAYS:
-							new DaysForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.MONTHDAYS, false);
+							new DaysForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.MONTHDAYS, false);
 							break;
 						case Editor.SPECIFIC_MONTHS:
-							new DaysForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.SPECIFIC_MONTHS, false);
+							new DaysForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.SPECIFIC_MONTHS, false);
 							break;
 						case Editor.ULTIMOS:
-							new DaysForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.ULTIMOS, false);
+							new DaysForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.ULTIMOS, false);
 							break;
 						case Editor.EVERYDAY:
 						case Editor.PERIODS:
-							new PeriodsForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							new PeriodsForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
 						case Editor.JOBS:
-							new JobsForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm);
+							new JobsForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objSchedulerForm);
 							break;
 						case Editor.HOLIDAYS:
-							new DateForm(c, SWT.NONE, DateListener.HOLIDAY, objSchedulerDom, objElement, objSchedulerForm);
+							new DateForm(pobjParentComposite, SWT.NONE, DateListener.HOLIDAY, objSchedulerDom, objElement, objSchedulerForm);
 							break;
 						case Editor.DAYS:
-							new DateForm(c, SWT.NONE, DateListener.DATE, objSchedulerDom, objElement, objSchedulerForm);
+							new DateForm(pobjParentComposite, SWT.NONE, DateListener.DATE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
 						case Editor.SPECIFIC_WEEKDAYS:
-							new SpecificWeekdaysForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.MONTHDAYS);
+							new SpecificWeekdaysForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.MONTHDAYS);
 							break;
 						case Editor.WEBSERVICES:
-							new WebservicesForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							new WebservicesForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
 						case Editor.WEBSERVICE:
-							new WebserviceForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							new WebserviceForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
 						case Editor.HTTPDIRECTORIES:
-							new HttpDirectoriesForm(c, SWT.NONE, objSchedulerDom, objElement);
+							new HttpDirectoriesForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							break;
 						case Editor.HTTP_AUTHENTICATION:
-							new HttpAuthenticationForm(c, SWT.NONE, objSchedulerDom, objElement);
+							new HttpAuthenticationForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							break;
 						case Editor.OPTIONS:
-							new JobOptionsForm(c, SWT.NONE, objSchedulerDom, objElement);
+							new JobOptionsForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							break;
 						case Editor.LOCKUSE:
-							new JobLockUseForm(c, SWT.NONE, objSchedulerDom, objElement);
+							new JobLockUseForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							break;
 						case Editor.JOB_CHAINS:
-							new JobChainsForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							new JobChainsForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
-						case Editor.JOB_CHAIN: {
-							//							JobChainForm jc_ = new JobChainForm(c, SWT.NONE, objSchedulerDom, objElement);
-							//							jc_.setISchedulerUpdate(objSchedulerForm);
-							JobChainNodesForm jcn_ = new JobChainNodesForm(c, SWT.NONE, objSchedulerDom, objElement);
+
+						case Editor.JOB_CHAIN:
+//							JobChainForm jc_ = new JobChainForm(pobjParentComposite, SWT.NONE, objTreeItemUserdata);
+//							break;
+						case Editor.JOB_CHAIN_NODES:
+							JobChainNodesForm jcn_ = new JobChainNodesForm(pobjParentComposite, SWT.NONE, objTreeItemUserdata);
 							jcn_.setISchedulerUpdate(objSchedulerForm);
-						}
-							break;
-						case Editor.JOB_CHAIN_NODES: {
-							JobChainNodesForm jcn_ = new JobChainNodesForm(c, SWT.NONE, objSchedulerDom, objElement);
-							jcn_.setISchedulerUpdate(objSchedulerForm);
-						}
 							break;
 						case Editor.JOB_CHAIN_NESTED_NODES:
-							JobChainNestedNodesForm j = new JobChainNestedNodesForm(c, SWT.NONE, objSchedulerDom, objElement);
+							JobChainNestedNodesForm j = new JobChainNestedNodesForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							j.setISchedulerUpdate(objSchedulerForm);
 							break;
 						case Editor.COMMANDS:
-							new CommandsForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm);
+							new CommandsForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objSchedulerForm);
 							break;
 						case Editor.SCHEDULES:
-							new sos.scheduler.editor.conf.forms.SchedulesForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm);
+							new SchedulesForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objSchedulerForm);
 							break;
 						case Editor.SCHEDULE:
-							new sos.scheduler.editor.conf.forms.ScheduleForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+							new ScheduleForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
 						case Editor.HTTP_SERVER:
 							break;
@@ -2142,17 +2152,11 @@ public class SchedulerListener {
 					}
 				}
 				// c.setLayout(new FillLayout());
-				c.layout();
+				pobjParentComposite.layout();
 			}
 		}
 		catch (Exception e) {
-			try {
 				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-			}
-			e.printStackTrace();
-			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
 		}
 		objSchedulerDom.setInit(false);
 		return true;

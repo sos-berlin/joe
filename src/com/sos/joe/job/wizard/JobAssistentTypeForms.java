@@ -29,10 +29,10 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.WindowsSaver;
+import com.sos.joe.objects.job.JobListener;
 import com.swtdesigner.SWTResourceManager;
 
 /**
@@ -48,29 +48,29 @@ import com.swtdesigner.SWTResourceManager;
  *
  *
  */
-public class JobAssistentTypeForms extends FormBaseClass <JobListener>{
+public class JobAssistentTypeForms extends FormBaseClass<JobListener> {
+	private final String		conClassName		= this.getClass().getSimpleName();
 	@SuppressWarnings("unused")
-	private final String conClassName = this.getClass().getSimpleName();
+	private final Logger		logger				= Logger.getLogger(this.getClass());
 	@SuppressWarnings("unused")
-	private final Logger logger = Logger.getLogger(this.getClass());
-	@SuppressWarnings("unused")
-	private final String conSVNVersion = "$Id: JobAssistentTypeForms.java 20744 2013-07-22 10:26:13Z kb $";
+	private final String		conSVNVersion		= "$Id: JobAssistentTypeForms.java 20744 2013-07-22 10:26:13Z kb $";
 
-	private static final String	conTagNameJOB	= "job";
+	private static final String	conTagNameJOB		= "job";
 
 	/** Parameter: isStandaloneJob = true -> Standalone Job, sonst Order Job*/
-	private boolean          isStandaloneJob  = true;
-	private Button           radStandalonejob = null;
-	private Button           radOrderjob      = null;
-	private SchedulerDom     dom              = null;
-	private ISchedulerUpdate update           = null;
-	private Button           butCancel        = null;
-	private Button           butShow          = null;
-	private Button           butNext          = null;
-	private Shell            shell     = null;
-	private String           jobType          = "";
-	private Element          jobBackUp        = null;
-	private int              assistentType    = Editor.JOBS;
+	private boolean				isStandaloneJob		= true;
+	private Button				radStandalonejob	= null;
+	private Button				radOrderjob			= null;
+	private SchedulerDom		dom					= null;
+	private ISchedulerUpdate	update				= null;
+	private Button				butCancel			= null;
+	private Button				butShow				= null;
+	private Button				butNext				= null;
+	@SuppressWarnings("hiding")
+	private Shell				shell				= null;
+	private String				jobType				= "";
+	private Element				jobBackUp			= null;
+	private int					assistentType		= Editor.JOBS;
 
 	/**
 	 * Konstruktor
@@ -146,7 +146,6 @@ public class JobAssistentTypeForms extends FormBaseClass <JobListener>{
 				});
 			}
 
-
 			{
 				final Composite composite = new Composite(shell, SWT.NONE);
 				final GridData gridData = new GridData(GridData.END, GridData.CENTER, false, false);
@@ -167,7 +166,7 @@ public class JobAssistentTypeForms extends FormBaseClass <JobListener>{
 							//dient nur für die Show Funktion
 							Element job = new Element(conTagNameJOB);
 							Utils.setAttribute("order", isStandaloneJob ? "yes" : "no", job);
-							MainWindow.message(shell, Utils.getElementAsString(job), SWT.OK );
+							MainWindow.message(shell, Utils.getElementAsString(job), SWT.OK);
 						}
 					});
 				}
@@ -181,22 +180,27 @@ public class JobAssistentTypeForms extends FormBaseClass <JobListener>{
 						public void widgetSelected(final SelectionEvent e) {
 							Utils.startCursor(shell);
 
-							if(radOrderjob.getSelection()) {
+							if (radOrderjob.getSelection()) {
 								isStandaloneJob = false;
-							} else {
+							}
+							else {
 								isStandaloneJob = true;
 							}
 
-							if(jobBackUp != null) {
-								int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION | SWT.YES |SWT.NO |SWT.CANCEL );
-								if(cont == SWT.CANCEL) {
-									return;
-								}else if(cont != SWT.YES) {
-									JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm( new JobListener(dom, jobBackUp, update) ,null,assistentType);
-									importJobs.showAllImportJobs(Utils.getAttributeValue("order", jobBackUp).equals("yes")?"order":"standalonejob") ;
-									shell.dispose();
+							if (jobBackUp != null) {
+								int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION | SWT.YES
+										| SWT.NO | SWT.CANCEL);
+								if (cont == SWT.CANCEL) {
 									return;
 								}
+								else
+									if (cont != SWT.YES) {
+										JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(new JobListener(dom, jobBackUp, update), null,
+												assistentType);
+										importJobs.showAllImportJobs(Utils.getAttributeValue("order", jobBackUp).equals("yes") ? "order" : "standalonejob");
+										shell.dispose();
+										return;
+									}
 							}
 							JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(dom, update, assistentType);
 							importJobs.showAllImportJobs(isStandaloneJob ? "standalonejob" : "order");
@@ -212,34 +216,35 @@ public class JobAssistentTypeForms extends FormBaseClass <JobListener>{
 			}
 
 			shell.setDefaultButton(butNext);
-//			java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-//
-//			shell.setBounds((screen.width - shell.getBounds().width) /2,
-//					(screen.height - shell.getBounds().height) /2,
-//					shell.getBounds().width,
-//					shell.getBounds().height);
+			//			java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+			//
+			//			shell.setBounds((screen.width - shell.getBounds().width) /2,
+			//					(screen.height - shell.getBounds().height) /2,
+			//					shell.getBounds().width,
+			//					shell.getBounds().height);
 			shell.open();
 			shell.layout();
 			objFormPosSizeHandler.restoreWindow();
-//			shell.pack();
-		} catch (Exception e) {
+			//			shell.pack();
+		}
+		catch (Exception e) {
 			try {
 				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
-			} catch(Exception ee) {
 			}
-			System.err.println(SOSJOEMessageCodes.JOE_E_0002.params("JobAssistentTypeForms.showTypeForms()" ) + e.getMessage());
+			catch (Exception ee) {
+			}
+			System.err.println(SOSJOEMessageCodes.JOE_E_0002.params("JobAssistentTypeForms.showTypeForms()") + e.getMessage());
 		}
 	}
 
-
-
+	@SuppressWarnings("unused")
 	private void setToolTipText() {
-//
+		//
 	}
 
 	private void close() {
-		int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-		if(cont == SWT.OK)
+		int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+		if (cont == SWT.OK)
 			shell.dispose();
 	}
 

@@ -26,10 +26,13 @@ import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
+import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
+
+import com.sos.scheduler.model.objects.JSObjJobChain;
 
 public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
@@ -53,6 +56,22 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
     private boolean             changeJobChainName = true;
     private Text                sMaxorders;
 
+	private JSObjJobChain		objJobChain							= null;
+	@SuppressWarnings("unused")
+	private TreeData			objTreeData							= null;
+
+	public JobChainForm(final Composite parent, final int style, final TreeData pobjTreeData) {
+		super(parent, style);
+		objTreeData = pobjTreeData;
+		objJobChain = (JSObjJobChain) pobjTreeData.getObject();
+		objJobChain.setInit(true);
+		initialize();
+		setToolTipText();
+		InitializeAllFormControls(false, false);
+		objJobChain.setInit(false);
+	}
+
+@Deprecated
     public JobChainForm(final Composite parent, final int style, final SchedulerDom dom, final Element jobChain) {
         super(parent, style);
         init = true;
@@ -62,6 +81,18 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
         this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
         init = false;
     }
+
+	private void InitializeAllFormControls(final boolean enable, final boolean isNew) {
+//		tbxJobChainName.setEnabled(true);
+//		chkJobChainIsRecoverable.setEnabled(true);
+//		chkJobChainIsVisible.setEnabled(true);
+//		tbxJobChainName.setText(objJobChain.getObjectName());
+//		tbxJobChainTitle.setText(objJobChain.getTitle());
+//		chkJobChainIsRecoverable.setSelection(objJobChain.isRecoverable());
+//		chkJobChainIsVisible.setSelection(objJobChain.isVisible());
+//		tbxJobChainName.setBackground(null);
+//		sMaxorders.setText(objJobChain.getMaxOrders());
+	}
 
     @Override
 	public void apply() {
