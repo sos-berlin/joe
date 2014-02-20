@@ -36,10 +36,10 @@ import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.TreeMenu;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
+import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.scheduler.model.SchedulerHotFolder;
 import com.swtdesigner.SWTResourceManager;
 

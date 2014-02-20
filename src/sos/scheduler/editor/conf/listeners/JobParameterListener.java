@@ -16,9 +16,9 @@ import org.jdom.input.SAXBuilder;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 
+import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.scheduler.model.objects.JSObjJob;
 import com.sos.scheduler.model.objects.JSObjParams;
 import com.sos.scheduler.model.objects.Param;
@@ -36,6 +36,7 @@ public class JobParameterListener {
 	private final Element				_parent					= null;
 //	private List				_params					= null;
 	private JSObjParams				objParamList					= null;
+//	private Params				objParamList					= null;
 
 	private List				_environments			= null;
 	private List				_includeParams			= null;
@@ -52,7 +53,7 @@ public class JobParameterListener {
 		objJSJob = pobjJob;
 		type = Editor.JOB_PARAMETER;
 
-		objParamList = objJSJob.getParams();
+		initParams();
 	}
 
 
@@ -89,11 +90,12 @@ public class JobParameterListener {
 		}
 	}
 
+	@Deprecated
 	public void fillParams(final ArrayList listOfParams, final Table table, final boolean refreshTable) {
 
 		if (refreshTable) {
 			if (objParamList != null)
-				objParamList.clear();
+//				objParamList.clear();
 			table.removeAll();
 		}
 
@@ -186,14 +188,14 @@ public class JobParameterListener {
 	public void deleteParameter(final Table table, final int index) {
 
 		if (objParamList != null) {
-			objParamList.remove(index);
+// TODO			objParamList.remove(index);
 			_dom.setChanged(true);
 			//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 			Utils.setChangedForDirectory(_parent, _dom);
 		}
-		if (objParamList.size() == 0) {
-			_parent.removeChild("params");
-		}
+//		if (objParamList.size() == 0) {
+//			_parent.removeChild("params");
+//		}
 
 		table.remove(index);
 
@@ -235,13 +237,14 @@ public class JobParameterListener {
 
 		if ((_dom.isLifeElement() || _dom.isDirectory()) && objParamList == null) {
 			Element params = _parent.getChild("params");
-			if (params != null)
-				objParamList = params.getChildren();
+			if (params != null) {
+// TODO				objParamList = params.getChildren();
+			}
 		}
 
 		if (objParamList == null)
 			initParams();
-		objParamList.add(e);
+// TODO		objParamList.add(e); 
 
 		TableItem item = new TableItem(table, SWT.NONE);
 		item.setText(new String[] { name, value });
@@ -372,98 +375,102 @@ public class JobParameterListener {
 	}
 
 	public void saveParameter(final Table table, final String name, final String value) {
-		boolean found = false;
-		Element params = _parent.getChild("params");
-		if (params != null) {
-			objParamList = params.getChildren();
-		}
-		if (objParamList != null) {
-
-			//if (name.equals("<from>") && type == Editor.COMMANDS) {
-			if (name.equals("<from>")) {
-				found = table.getSelectionIndex() > -1;
-			}
-			else {
-				int index = 0;
-				Iterator it = objParamList.iterator();
-				while (it.hasNext()) {
-					Object o = it.next();
-					if (o instanceof Element) {
-						Element e = (Element) o;
-
-						if (e.getName().equals("param")) {
-							if (name.equals(e.getAttributeValue("name"))) {
-								found = true;
-								e.setAttribute("value", value);
-
-								_dom.setChanged(true);
-								//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
-								Utils.setChangedForDirectory(_parent, _dom);
-								table.getItem(index).setText(1, value);
-
-								if (isParameterRequired(table.getItem(index).getText())) {
-									if (value != null && value.length() > 0) {
-										table.getItem(index).setBackground(SWTResourceManager.getColor(247, 247, 247));
-
-									}
-									else {
-										table.getItem(index).setBackground(Options.getRequiredColor());
-									}
-
-								}
-
-							}
-
-							index++;
-						}
-					}
-				}
-			}
-
-			//if (name.equals("<from>") && found && type == Editor.COMMANDS) {
-			if (name.equals("<from>") && found) {
-				int index = table.getSelectionIndex();
-				table.getItem(index).setText(0, name);
-				table.getItem(index).setText(1, value);
-				Element e = (Element) objParamList.get(index);
-				e.setName("copy_params");
-				e.setAttribute("from", value);
-				e.removeAttribute("name");
-				e.removeAttribute("value");
-				_dom.setChanged(true);
-				//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
-			}
-
-		}
-
-		if (!found) {
-			Element e = new Element("param");
-			if (!name.equals("<from>")) {
-				e.setAttribute("name", name);
-				e.setAttribute("value", value);
-			}
-			else {
-				e.setName("copy_params");
-				e.setAttribute("from", value);
-			}
-
-			_dom.setChanged(true);
-
-			if (type == Editor.JOB)
-				_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _parent), SchedulerDom.MODIFY);
-			if (objParamList == null)
-				initParams();
-			if (objParamList != null)
-				objParamList.add(e);
-
-			TableItem item = new TableItem(table, SWT.NONE);
-			item.setText(new String[] { name, value });
-
-		}
-		if (type == Editor.JOB_COMMANDS)
-			_dom.setChangedForDirectory("job", jobname, SchedulerDom.MODIFY);
-		Utils.setChangedForDirectory(_parent, _dom);
-
+		objParamList.add(name, value);
+//		boolean found = false;
+//		Element params = _parent.getChild("params");
+//		if (params != null) {
+////  TODO			objParamList = params.getChildren();
+//		}
+//		if (objParamList != null) {
+//
+//			//if (name.equals("<from>") && type == Editor.COMMANDS) {
+//			if (name.equals("<from>")) {
+//				found = table.getSelectionIndex() > -1;
+//			}
+//			else {
+//				int index = 0;
+//				Iterator it = objParamList.iterator()
+//						objParamList.values();
+//				while (it.hasNext()) {
+//					Object o = it.next();
+//					if (o instanceof Element) {
+//						Element e = (Element) o;
+//
+//						if (e.getName().equals("param")) {
+//							if (name.equals(e.getAttributeValue("name"))) {
+//								found = true;
+//								e.setAttribute("value", value);
+//
+//								_dom.setChanged(true);
+//								//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+//								Utils.setChangedForDirectory(_parent, _dom);
+//								table.getItem(index).setText(1, value);
+//
+//								if (isParameterRequired(table.getItem(index).getText())) {
+//									if (value != null && value.length() > 0) {
+//										table.getItem(index).setBackground(SWTResourceManager.getColor(247, 247, 247));
+//
+//									}
+//									else {
+//										table.getItem(index).setBackground(Options.getRequiredColor());
+//									}
+//
+//								}
+//
+//							}
+//
+//							index++;
+//						}
+//					}
+//				}
+//			}
+//
+//			//if (name.equals("<from>") && found && type == Editor.COMMANDS) {
+//			if (name.equals("<from>") && found) {
+//				int index = table.getSelectionIndex();
+//				table.getItem(index).setText(0, name);
+//				table.getItem(index).setText(1, value);
+////		TODO		Element e = (Element) objParamList.get(index);
+//				e.setName("copy_params");
+//				e.setAttribute("from", value);
+//				e.removeAttribute("name");
+//				e.removeAttribute("value");
+//				_dom.setChanged(true);
+//				//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+//			}
+//
+//		}
+//
+//		if (!found) {
+//			Element e = new Element("param");
+//			if (!name.equals("<from>")) {
+//				e.setAttribute("name", name);
+//				e.setAttribute("value", value);
+//			}
+//			else {
+//				e.setName("copy_params");
+//				e.setAttribute("from", value);
+//			}
+//
+//			_dom.setChanged(true);
+//
+//			if (type == Editor.JOB) {
+//				_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _parent), SchedulerDom.MODIFY);
+//			}
+//			if (objParamList == null) {
+//				initParams();
+//			}
+//			else {
+//				objParamList.add(name, value);
+//				TableItem item = new TableItem(table, SWT.NONE);
+//				item.setText(new String[] { name, value });
+//			}
+//
+//		}
+//		if (type == Editor.JOB_COMMANDS)
+//			_dom.setChangedForDirectory("job", jobname, SchedulerDom.MODIFY);
+//		Utils.setChangedForDirectory(_parent, _dom);
+//
 	}
 
 	public SchedulerDom get_dom() {
@@ -579,14 +586,14 @@ public class JobParameterListener {
 		_dom.reorderDOM();
 		Element params = _parent.getChild("params");
 		if (params != null) {
-			objParamList = params.getChildren();
+//			objParamList = params.getChildren();
 			_includeParams = params.getChildren("include");
 		}
 
-		Element elem = (Element) objParamList.get(index);
-		Object obj = elem.clone();
-		objParamList.remove(elem);
-		objParamList.add(index - 1, obj);
+//	TODO	Element elem = (Element) objParamList.get(index);
+//		Object obj = elem.clone();
+//		objParamList.remove(elem);
+//		objParamList.add(index - 1, obj);
 
 		table.removeAll();
 		fillParams(table);
@@ -608,10 +615,10 @@ public class JobParameterListener {
 		if (objParamList == null)
 			initParams();
 
-		Element elem = (Element) objParamList.get(index);
-		Object obj = elem.clone();
-		objParamList.remove(elem);
-		objParamList.add(index + 1, obj);
+//	TODO	Element elem = (Element) objParamList.get(index);
+//		Object obj = elem.clone();
+//		objParamList.remove(elem);
+//		objParamList.add(index + 1, obj);
 
 		table.removeAll();
 		fillParams(table);

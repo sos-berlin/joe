@@ -17,19 +17,20 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-import com.swtdesigner.SWTResourceManager;
+
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
-import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
+
+import com.sos.jobdoc.listeners.JobdocListener;
+import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.objects.job.forms.ScriptJobMainForm;
+import com.swtdesigner.SWTResourceManager;
 
 
 public class JobAssistentTimeoutOrderForms {
@@ -38,7 +39,7 @@ public class JobAssistentTimeoutOrderForms {
 
 	private ISchedulerUpdate  update                 = null;
 
-	private JobListener       joblistener            = null;
+	private JobdocListener       joblistener            = null;
 
 	private Button            butFinish              = null;
 
@@ -76,11 +77,11 @@ public class JobAssistentTimeoutOrderForms {
 	private boolean               closeDialog   = false;      
 
 	
-	public JobAssistentTimeoutOrderForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
+	public JobAssistentTimeoutOrderForms(final SchedulerDom dom_, final ISchedulerUpdate update_, final Element job_, final int assistentType_) {
 		dom = dom_;
 		update = update_;
 		assistentType = assistentType_;		
-		joblistener = new JobListener(dom, job_, update);			
+		joblistener = new JobdocListener(dom, job_, update);			
 	}
 
 
@@ -88,6 +89,7 @@ public class JobAssistentTimeoutOrderForms {
 
 		shellTimeout = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shellTimeout.addShellListener(new ShellAdapter() {
+			@Override
 			public void shellClosed(final ShellEvent e) {
 				if(!closeDialog)
 					close();
@@ -132,6 +134,7 @@ public class JobAssistentTimeoutOrderForms {
 			txtTimeout = SOSJOEMessageCodes.JOE_T_JobAssistent_Timeout.Control(new Text(jobGroup, SWT.BORDER));
 			txtTimeout.setFocus();
 			txtTimeout.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					if(txtTimeout.getText()!= null && txtTimeout.getText().trim().length() > 0) {
 						joblistener.setTimeout(txtTimeout.getText());
@@ -154,6 +157,7 @@ public class JobAssistentTimeoutOrderForms {
 			}
 			txtIdleTimeout = SOSJOEMessageCodes.JOE_T_JobAssistent_IdleTimeout.Control(new Text(jobGroup, SWT.BORDER));
 			txtIdleTimeout.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {					
 					if(txtIdleTimeout.getText()!= null && txtIdleTimeout.getText().trim().length() > 0 ) {
 						joblistener.setIdleTimeout(txtIdleTimeout.getText());
@@ -177,6 +181,7 @@ public class JobAssistentTimeoutOrderForms {
 			noButton.setSelection(!joblistener.getForceIdletimeout());			
 			noButton.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, true, false));
 			noButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					joblistener.setForceIdletimeout(false);
 				}
@@ -187,6 +192,7 @@ public class JobAssistentTimeoutOrderForms {
 			yesButton.setEnabled(joblistener.getMintasks()!=null && joblistener.getMintasks().trim().length() > 0);
 			yesButton.setLayoutData(new GridData());
 			yesButton.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					joblistener.setForceIdletimeout(true);
 				}
@@ -213,6 +219,7 @@ public class JobAssistentTimeoutOrderForms {
 			{
 				butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite, SWT.NONE));
 				butCancel.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(final SelectionEvent e) {
 						close();
 					}
@@ -231,6 +238,7 @@ public class JobAssistentTimeoutOrderForms {
 			{
 				butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite, SWT.NONE));
 				butShow.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(final SelectionEvent e) {												
 						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), shellTimeout, false, null, false, null, false); 
 						txtTimeout.setFocus();
@@ -241,6 +249,7 @@ public class JobAssistentTimeoutOrderForms {
 			{
 				butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite, SWT.NONE));
 				butFinish.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(final SelectionEvent e) {
 						doFinish();
 					}
@@ -249,6 +258,7 @@ public class JobAssistentTimeoutOrderForms {
 
 			butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite, SWT.NONE));
 			butBack.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					Element job = joblistener.getJob();
 					if(job.getChild("process") != null) {
@@ -277,6 +287,7 @@ public class JobAssistentTimeoutOrderForms {
 				butNext.setFocus();
 				butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 				butNext.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(final SelectionEvent e) {
 						Utils.startCursor(shellTimeout);
 						JobAssistentRunOptionsForms runOP = new JobAssistentRunOptionsForms(dom, update, joblistener.getJob(), assistentType);
@@ -313,7 +324,7 @@ public class JobAssistentTimeoutOrderForms {
 		}
 	}
 
-	public void setJobname(Combo jobname) {
+	public void setJobname(final Combo jobname) {
 		this.jobname = jobname;
 	}
 	/**
@@ -321,7 +332,7 @@ public class JobAssistentTimeoutOrderForms {
 	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
-	public void setBackUpJob(Element backUpJob, ScriptJobMainForm jobForm_) {
+	public void setBackUpJob(final Element backUpJob, final ScriptJobMainForm jobForm_) {
 		if(backUpJob != null)
 			jobBackUp = (Element)backUpJob.clone();	
 		jobForm = jobForm_;

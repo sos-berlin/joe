@@ -18,15 +18,16 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-import com.swtdesigner.SWTResourceManager;
+
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.listeners.JobOptionsListener;
+
+import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.objects.job.JobOptionsListener;
+import com.swtdesigner.SWTResourceManager;
 
 
 public class JobAssistentMonitoringDirectoryForms {
@@ -64,7 +65,7 @@ public class JobAssistentMonitoringDirectoryForms {
 	private boolean            closeDialog              = false;
 
 
-	public JobAssistentMonitoringDirectoryForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
+	public JobAssistentMonitoringDirectoryForms(final SchedulerDom dom_, final ISchedulerUpdate update_, final Element job_, final int assistentType_) {
 		dom = dom_;
 		optionlistener = new JobOptionsListener(dom, job_);
 		job = job_;
@@ -75,6 +76,7 @@ public class JobAssistentMonitoringDirectoryForms {
 
 		shellRunOptions = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shellRunOptions.addShellListener(new ShellAdapter() {
+			@Override
 			public void shellClosed(final ShellEvent e) {
 				if(!closeDialog)
 					close();
@@ -111,6 +113,7 @@ public class JobAssistentMonitoringDirectoryForms {
 
 		txtDirectory = SOSJOEMessageCodes.JOE_T_JobAssistent_Directory.Control(new Text(jobGroup, SWT.BORDER));		
 		txtDirectory.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR)
 					apply();
@@ -134,6 +137,7 @@ public class JobAssistentMonitoringDirectoryForms {
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		butApply.setLayoutData(gridData_2);
 		butApply.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				apply();				
 			}
@@ -145,6 +149,7 @@ public class JobAssistentMonitoringDirectoryForms {
 		gridData.widthHint = 47;
 		butNewDirectory.setLayoutData(gridData);
 		butNewDirectory.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 
 				txtDirectory.setText("");
@@ -162,6 +167,7 @@ public class JobAssistentMonitoringDirectoryForms {
 
 		txtRegExp = SOSJOEMessageCodes.JOE_T_JobAssistent_Regex.Control(new Text(jobGroup, SWT.BORDER));
 		txtRegExp.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR)
 					apply();
@@ -174,6 +180,7 @@ public class JobAssistentMonitoringDirectoryForms {
 		tableWatchDirectory.setLayoutData(gridData_7);
 		optionlistener.fillDirectories(tableWatchDirectory);
 		tableWatchDirectory.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 
 				if(tableWatchDirectory.getSelectionCount() > 0){
@@ -200,6 +207,7 @@ public class JobAssistentMonitoringDirectoryForms {
 		butRemoveDirectory.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, true));
 		butRemoveDirectory.setEnabled(false);
 		butRemoveDirectory.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 
 				if(tableWatchDirectory.getSelectionCount()>0) {
@@ -225,6 +233,7 @@ public class JobAssistentMonitoringDirectoryForms {
 		{
 			butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Close.Control(new Button(composite_1, SWT.NONE));
 			butCancel.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 
 					close();
@@ -246,6 +255,7 @@ public class JobAssistentMonitoringDirectoryForms {
 			butFinish.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			butFinish.setVisible(false);
 			butFinish.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {					
 					closeDialog = true;
 					shellRunOptions.dispose();
@@ -263,6 +273,7 @@ public class JobAssistentMonitoringDirectoryForms {
 		gridData_6.widthHint = 54;
 		butNext.setLayoutData(gridData_6);
 		butNext.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				closeDialog = true;
 				shellRunOptions.dispose();								
@@ -290,7 +301,7 @@ public class JobAssistentMonitoringDirectoryForms {
 	private void close() {
 //		int cont = MainWindow.message(shellRunOptions, sos.scheduler.editor.app.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		int cont = MainWindow.message(shellRunOptions, SOSJOEMessageCodes.JOE_M_JobAssistent_Close.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-		if(cont == SWT.OK) {Utils.getElementAsString((Element)jobBackUp);
+		if(cont == SWT.OK) {Utils.getElementAsString(jobBackUp);
 		job.setContent(jobBackUp.cloneContent());
 		shellRunOptions.dispose();	
 		}

@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Group;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.composites.JobMainComposite;
 import sos.scheduler.editor.conf.container.JobDelayAfterError;
@@ -29,6 +28,7 @@ import sos.scheduler.editor.conf.container.JobSetback;
 import sos.scheduler.editor.conf.container.JobSourceViewer;
 import sos.scheduler.editor.conf.container.JobStartWhenDirectoryChanged;
 
+import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.joe.objects.job.JobOptionsListener;
 import com.sos.scheduler.model.objects.JSObjJob;
 

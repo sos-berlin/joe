@@ -27,11 +27,11 @@ import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.FormBaseClass;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.WindowsSaver;
+import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.joe.objects.job.JobListener;
 import com.swtdesigner.SWTResourceManager;
 

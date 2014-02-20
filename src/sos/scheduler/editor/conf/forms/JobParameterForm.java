@@ -49,14 +49,14 @@ import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobParameterListener;
 import sos.util.SOSString;
 
+import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
 import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
+import com.sos.joe.objects.job.JobListener;
 import com.sos.scheduler.model.objects.JSObjJob;
 import com.swtdesigner.SWTResourceManager;
 

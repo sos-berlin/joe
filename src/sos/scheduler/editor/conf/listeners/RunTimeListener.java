@@ -2,8 +2,9 @@ package sos.scheduler.editor.conf.listeners;
 
 import org.jdom.Element;
 
+import com.sos.joe.interfaces.ISchedulerUpdate;
+
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 
 public class RunTimeListener {

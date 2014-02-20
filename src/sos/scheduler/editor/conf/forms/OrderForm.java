@@ -39,12 +39,12 @@ import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.SOSComboBox;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.OrderListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.i18n.annotation.I18NMsg;
+import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.swtdesigner.SWTResourceManager;
 
 public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {

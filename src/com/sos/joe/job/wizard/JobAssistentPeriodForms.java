@@ -32,7 +32,6 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.PeriodForm;
 import sos.scheduler.editor.conf.listeners.DateListener;
@@ -42,6 +41,7 @@ import sos.scheduler.editor.conf.listeners.PeriodsListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.components.SOSDateTime;
+import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.swtdesigner.SWTResourceManager;
 
 public class JobAssistentPeriodForms {

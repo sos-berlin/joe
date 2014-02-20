@@ -35,9 +35,7 @@ import org.jdom.xpath.XPath;
 import sos.scheduler.editor.actions.forms.ActionsForm;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.HotFolderDialog;
-import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
-import sos.scheduler.editor.doc.forms.DocumentationForm;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
@@ -46,7 +44,9 @@ import com.sos.dialog.classes.WindowsSaver;
 import com.sos.i18n.annotation.I18NMessage;
 import com.sos.i18n.annotation.I18NMessages;
 import com.sos.i18n.annotation.I18NResourceBundle;
+import com.sos.jobdoc.forms.DocumentationForm;
 import com.sos.joe.job.wizard.JobAssistentForm;
+import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class MainWindow {
@@ -1193,9 +1193,9 @@ public class MainWindow {
 						sos.scheduler.editor.app.Utils.reset(currdom.getRoot(), form, currdom);
 					}
 					else
-						if (container.getCurrentEditor() instanceof sos.scheduler.editor.doc.forms.DocumentationForm) {
-							sos.scheduler.editor.doc.forms.DocumentationForm form = (sos.scheduler.editor.doc.forms.DocumentationForm) container.getCurrentEditor();
-							sos.scheduler.editor.doc.DocumentationDom currdom = form.getDom();
+						if (container.getCurrentEditor() instanceof com.sos.jobdoc.forms.DocumentationForm) {
+							com.sos.jobdoc.forms.DocumentationForm form = (com.sos.jobdoc.forms.DocumentationForm) container.getCurrentEditor();
+							com.sos.jobdoc.DocumentationDom currdom = form.getDom();
 							sos.scheduler.editor.app.Utils.reset(currdom.getRoot(), form, currdom);
 						}
 			}

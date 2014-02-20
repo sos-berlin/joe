@@ -12,6 +12,8 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
+import com.sos.joe.interfaces.ISchedulerUpdate;
+
 import sos.ftp.profiles.FTPProfile;
 import sos.scheduler.editor.app.DomParser;
 import sos.scheduler.editor.app.Editor;
@@ -20,7 +22,6 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.DetailDom;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.util.SOSClassUtil;

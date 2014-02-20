@@ -24,11 +24,11 @@ import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ExecuteListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 
+import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.joe.objects.job.forms.ScriptJobMainForm;
 import com.swtdesigner.SWTResourceManager;
 
@@ -284,7 +284,7 @@ public class JobAssistentProcessForms {
 					} else {
 						JobAssistentTimeoutForms timeout = new JobAssistentTimeoutForms(dom, update, executeListener.getJob(), assistentType);
 						timeout.showTimeOutForm();						
-						timeout.setBackUpJob(jobBackUp, jobForm);
+						timeout.setBackUpJob(jobBackUp, jobForm); 
 					}
 					closeDialog = true;
 					Utils.stopCursor(processShell);

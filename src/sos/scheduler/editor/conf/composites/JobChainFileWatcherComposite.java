@@ -41,6 +41,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
+import com.sos.joe.objects.jobchain.JobChainListener;
+
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
@@ -51,7 +53,6 @@ import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
-import sos.scheduler.editor.conf.listeners.JobChainListener;
 
 //public class JobChainFileWatcherComposite extends FormBaseClass implements ISOSTableMenueListeners {
 public class JobChainFileWatcherComposite extends CompositeBaseClass /* SOSJOEMessageCodes */ implements ISOSTableMenueListeners {

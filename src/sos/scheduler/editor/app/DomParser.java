@@ -144,7 +144,7 @@ public abstract class DomParser extends I18NBase {
 			if (this instanceof sos.scheduler.editor.actions.ActionsDom)
 				s[0] = getClass().getResource(Options.getActionSchema()).toString();
 			else
-				if (this instanceof sos.scheduler.editor.doc.DocumentationDom) {
+				if (this instanceof com.sos.jobdoc.DocumentationDom) {
 					// s[0] = getClass().getResource(Options.getDocSchema()).toString();
 					strT = Options.getDocSchema();
 					if (strT != null) {

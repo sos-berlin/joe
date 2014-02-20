@@ -16,8 +16,9 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
+import com.sos.joe.objects.jobchain.forms.JobChainsForm;
+
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.forms.JobChainsForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.PreProstProcessingListener;
@@ -566,7 +567,7 @@ public class TreeMenu {
 					else
 						if (name.equals(SchedulerListener.JOB_CHAINS)) {
 							TreeData data = (TreeData) _tree.getSelection()[0].getData();
-							sos.scheduler.editor.conf.listeners.JobChainListListener listeners = new sos.scheduler.editor.conf.listeners.JobChainListListener(
+							com.sos.joe.objects.jobchain.JobChainListListener listeners = new com.sos.joe.objects.jobchain.JobChainListListener(
 									(SchedulerDom) _dom, data.getElement(), objSchedulerForm);
 							listeners.newChain("newChain");
 							int i = 1;

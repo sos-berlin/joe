@@ -11,20 +11,19 @@ import org.eclipse.swt.widgets.Group;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 
+import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.objects.job.forms.ScriptForm;
 import com.sos.scheduler.model.LanguageDescriptorList;
 
 public class ScriptFormSchedulerStartScript extends ScriptForm implements IUpdateLanguage {
 
-	@SuppressWarnings("unused")
-	private final String	conSVNVersion	= "$Id$";
+	@SuppressWarnings("unused") private final String conClassName = this.getClass().getSimpleName();
+	@SuppressWarnings("unused") private static final String conSVNVersion = "$Id$";
+	@SuppressWarnings("unused") private final Logger logger = Logger.getLogger(this.getClass());
+	
 
-	@SuppressWarnings("unused")
-	private static Logger	logger			= Logger.getLogger(ScriptJobMainForm.class);
-	@SuppressWarnings("unused")
-	private final String	conClassName	= "ScriptFormSchedulerStartScript";
 	private Group			headerComposite	= null;
 
 	public ScriptFormSchedulerStartScript(final Composite parent, final int style, final SchedulerDom dom, final Element job, final ISchedulerUpdate main) {
@@ -67,5 +66,10 @@ public class ScriptFormSchedulerStartScript extends ScriptForm implements IUpdat
 
 		createLanguageSelector(headerComposite);
 		createScriptTabForm(objMainOptionsGroup);
+	}
+
+	@Override public void setToolTipText() {
+		// TODO Auto-generated method stub
+		
 	}
 }

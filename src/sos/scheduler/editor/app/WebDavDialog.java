@@ -29,12 +29,12 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
-import sos.scheduler.editor.doc.forms.DocumentationForm;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
+import com.sos.jobdoc.forms.DocumentationForm;
+import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
 import com.swtdesigner.SWTResourceManager;
 
 

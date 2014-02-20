@@ -83,18 +83,18 @@ import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.DetailDom;
-import sos.scheduler.editor.conf.IDetailUpdate;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.DetailXMLEditorDialogForm;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
-import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
-import sos.scheduler.editor.conf.listeners.JobChainListener;
 import sos.util.SOSClassUtil;
 
+import com.sos.joe.interfaces.IDetailUpdate;
+import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
 import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
 import com.sos.joe.objects.job.JobListener;
+import com.sos.joe.objects.jobchain.JobChainConfigurationListener;
+import com.sos.joe.objects.jobchain.JobChainListener;
 import com.swtdesigner.SWTResourceManager;
 
 public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainListener> implements ISOSTableMenueListeners {

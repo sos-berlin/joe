@@ -13,10 +13,10 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.util.SOSClassUtil;
 
+import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.scheduler.model.LanguageDescriptorList;
 
 public class ScriptListener extends JOEListener {

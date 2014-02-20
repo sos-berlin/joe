@@ -20,9 +20,10 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import com.sos.joe.objects.jobchain.JobChainListener;
+
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
-import sos.scheduler.editor.conf.listeners.JobChainListener;
 
 public class JobChainOptionsComposite extends CompositeBaseClass {
 	@SuppressWarnings("unused")

@@ -5,10 +5,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.container.JobDocumentation;
 
+import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.joe.objects.job.JobListener;
 
 public class JobDocumentationForm extends Composite /* implements IUpdateLanguage */ {

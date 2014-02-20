@@ -12,13 +12,13 @@ import org.jdom.output.XMLOutputter;
 import org.jdom.transform.JDOMSource;
 
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.doc.DocumentationDom;
 import sos.util.SOSFile;
 
 import com.sos.VirtualFileSystem.Factory.VFSFactory;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVFSHandler;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVfsFileTransfer;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVirtualFile;
+import com.sos.jobdoc.DocumentationDom;
 import com.sos.scheduler.model.SchedulerHotFolder;
 import com.sos.scheduler.model.SchedulerHotFolderFileList;
 import com.sos.scheduler.model.SchedulerObjectFactory;

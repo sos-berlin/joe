@@ -34,10 +34,10 @@ import org.eclipse.swt.widgets.Text;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.classes.SOSComboBox;
-import sos.scheduler.editor.conf.listeners.JobChainListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.interfaces.ICompositeBaseAbstract;
+import com.sos.joe.objects.jobchain.JobChainListener;
 
 public class JobChainFileSinkComposite extends CompositeBaseAbstract<JobChainListener> implements ICompositeBaseAbstract {
 	@SuppressWarnings("unused")

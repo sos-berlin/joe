@@ -7,9 +7,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
+import com.sos.joe.objects.jobchain.JobChainListener;
+
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
-import sos.scheduler.editor.conf.listeners.JobChainListener;
 
 public class JobChainParameterNodesComposite extends CompositeBaseClass {
 	@SuppressWarnings("unused")

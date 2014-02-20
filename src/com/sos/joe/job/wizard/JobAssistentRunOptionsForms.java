@@ -8,23 +8,24 @@ import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.Element;
-import com.swtdesigner.SWTResourceManager;
+
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
 import sos.scheduler.editor.conf.listeners.JobsListener;
-import org.eclipse.swt.widgets.Combo;
+
+import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.objects.job.forms.ScriptJobMainForm;
+import com.swtdesigner.SWTResourceManager;
 
 public class JobAssistentRunOptionsForms {
 
@@ -66,7 +67,7 @@ public class JobAssistentRunOptionsForms {
 	private boolean           closeDialog     = false;         
 
 
-	public JobAssistentRunOptionsForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
+	public JobAssistentRunOptionsForms(final SchedulerDom dom_, final ISchedulerUpdate update_, final Element job_, final int assistentType_) {
 		dom = dom_;
 		update = update_;
 		assistentType = assistentType_;
@@ -78,6 +79,7 @@ public class JobAssistentRunOptionsForms {
 
 		shellRunOptions = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shellRunOptions.addShellListener(new ShellAdapter() {
+			@Override
 			public void shellClosed(final ShellEvent e) {
 				if(!closeDialog)
 					close();
@@ -119,6 +121,7 @@ public class JobAssistentRunOptionsForms {
 		butPeriod = SOSJOEMessageCodes.JOE_B_JobAssistent_Period.Control(new Button(composite, SWT.NONE));
 		butPeriod.setFocus();
 		butPeriod.addSelectionListener(new SelectionAdapter() {			
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				JobAssistentPeriodForms periodF = new JobAssistentPeriodForms(dom, update, job, assistentType);
 				periodF.showPeriodeForms();
@@ -134,6 +137,7 @@ public class JobAssistentRunOptionsForms {
 		butRunTime = SOSJOEMessageCodes.JOE_B_JobAssistent_RunTime.Control(new Button(composite, SWT.NONE));
 		butRunTime.setEnabled(Utils.getAttributeValue("order", job).equals("no"));
 		butRunTime.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				JobAssistentRunTimeForms runtime = new JobAssistentRunTimeForms(dom, update, job, assistentType);
 				runtime.showRunTimeForms();
@@ -148,6 +152,7 @@ public class JobAssistentRunOptionsForms {
 		butDirectoryMonitoring = SOSJOEMessageCodes.JOE_B_JobAssistent_DirectoryMonitoring.Control(new Button(composite, SWT.NONE));
 		butDirectoryMonitoring.setEnabled(Utils.getAttributeValue("order", job).equals("no"));
 		butDirectoryMonitoring.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				JobAssistentMonitoringDirectoryForms monDir = new JobAssistentMonitoringDirectoryForms(dom, update, job, assistentType);
 				monDir.showMonitoringDirectoryForm();
@@ -175,6 +180,7 @@ public class JobAssistentRunOptionsForms {
 		{
 			butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite_1, SWT.NONE));
 			butCancel.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					close();
 				}
@@ -192,6 +198,7 @@ public class JobAssistentRunOptionsForms {
 		{
 			butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_2, SWT.NONE));
 			butShow.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {										
 					Utils.showClipboard(Utils.getElementAsString(job), shellRunOptions, false, null, false, null, false); 
 				}
@@ -202,6 +209,7 @@ public class JobAssistentRunOptionsForms {
 		{
 			butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_2, SWT.NONE));
 			butFinish.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					doFinish();
 				}
@@ -211,6 +219,7 @@ public class JobAssistentRunOptionsForms {
 
 		butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_2, SWT.NONE));
 		butBack.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				if(Utils.getAttributeValue("order", job).equals("yes")) {
 					JobAssistentTimeoutOrderForms timeout = new JobAssistentTimeoutOrderForms(dom, update, job, assistentType);
@@ -234,6 +243,7 @@ public class JobAssistentRunOptionsForms {
 		final GridData gridData_6 = new GridData(47, SWT.DEFAULT);
 		butNext.setLayoutData(gridData_6);
 		butNext.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				Utils.startCursor(shellRunOptions);
 				JobAssistentDelayAfterErrorForm derror = new JobAssistentDelayAfterErrorForm(dom, update, job, assistentType);
@@ -277,7 +287,7 @@ public class JobAssistentRunOptionsForms {
 		}
 	}
 
-	public void setJobname(Combo jobname) {
+	public void setJobname(final Combo jobname) {
 		this.jobname = jobname;
 	}
 
@@ -286,7 +296,7 @@ public class JobAssistentRunOptionsForms {
 	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
-	public void setBackUpJob(Element backUpJob, ScriptJobMainForm jobForm_) {
+	public void setBackUpJob(final Element backUpJob, final ScriptJobMainForm jobForm_) {
 		if(backUpJob != null)
 			jobBackUp = (Element)backUpJob.clone();	
 		jobForm = jobForm_;

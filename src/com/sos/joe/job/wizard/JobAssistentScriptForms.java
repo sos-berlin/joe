@@ -29,13 +29,13 @@ import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ScriptListener;
 
+import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.scheduler.model.LanguageDescriptorList;
 import com.swtdesigner.SWTResourceManager;
 
@@ -225,8 +225,8 @@ public class JobAssistentScriptForms {
 			txtResource.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			txtResource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 			if (lblClass != null && lblClass.getText().equals("Java Class")) {
-				if (JobListener.getLibrary() != null && JobListener.getLibrary().length() > 0) {
-					txtResource.setText(JobListener.getLibrary());
+				if (JobdocListener.getLibrary() != null && JobdocListener.getLibrary().length() > 0) {
+					txtResource.setText(JobdocListener.getLibrary());
 				}
 			}
 			else {

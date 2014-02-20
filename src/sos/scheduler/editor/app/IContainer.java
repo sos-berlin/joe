@@ -2,10 +2,11 @@ package sos.scheduler.editor.app;
 
 import org.eclipse.swt.custom.CTabItem;
 
+import com.sos.jobdoc.forms.DocumentationForm;
+import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
+
 import sos.scheduler.editor.actions.forms.ActionsForm;
-import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
-import sos.scheduler.editor.doc.forms.DocumentationForm;
 
 public interface IContainer {
 	

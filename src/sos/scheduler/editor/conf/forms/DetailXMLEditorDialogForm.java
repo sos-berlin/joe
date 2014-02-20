@@ -22,6 +22,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 
+import com.sos.joe.objects.jobchain.JobChainConfigurationListener;
+
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
@@ -29,7 +31,6 @@ import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.conf.DetailDom;
 import sos.scheduler.editor.conf.listeners.DetailXMLEditorListener;
-import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
 
 public class DetailXMLEditorDialogForm {
 	

@@ -12,13 +12,13 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-import com.swtdesigner.SWTResourceManager;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
@@ -26,12 +26,13 @@ import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
-import sos.scheduler.editor.conf.listeners.JobOptionsListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
-import org.eclipse.swt.widgets.Combo;
+
+import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.objects.job.JobOptionsListener;
+import com.sos.joe.objects.job.forms.ScriptJobMainForm;
+import com.swtdesigner.SWTResourceManager;
 
 public class JobAssistentDelayAfterErrorForm {
 
@@ -89,7 +90,7 @@ public class JobAssistentDelayAfterErrorForm {
 	private boolean               closeDialog   = false;   
 
 
-	public JobAssistentDelayAfterErrorForm(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
+	public JobAssistentDelayAfterErrorForm(final SchedulerDom dom_, final ISchedulerUpdate update_, final Element job_, final int assistentType_) {
 		dom = dom_;
 		update = update_;		
 		optionlistener = new JobOptionsListener(dom, job_);
@@ -100,6 +101,7 @@ public class JobAssistentDelayAfterErrorForm {
 	public void showDelayAfterErrorForm() {
 		shellSetBack = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shellSetBack.addShellListener(new ShellAdapter() {
+			@Override
 			public void shellClosed(final ShellEvent e) {
 				if(!closeDialog)
 					close();
@@ -168,7 +170,7 @@ public class JobAssistentDelayAfterErrorForm {
 		//die Letzen delayafterError holen
 		for (int i = 0; i < 2; i++) {
 			if(sizeOfErrorDelays != 0 && sizeOfErrorDelays >= sizeOfErrorDelays-i) {
-				Element e1 = (Element)(l.get(sizeOfErrorDelays-i-1));
+				Element e1 = (Element)l.get(sizeOfErrorDelays-i-1);
 				String delayOrStop = optionlistener.getDelay(e1);
 				if(delayOrStop.equals("stop")) {
 					stopCount = Utils.getAttributeValue("error_count", e1);			
@@ -185,6 +187,7 @@ public class JobAssistentDelayAfterErrorForm {
 		{
 			txtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_Hour.Control(new Text(composite, SWT.BORDER));
 			txtHour.addVerifyListener(new VerifyListener() {
+				@Override
 				public void verifyText(final VerifyEvent e) {
 					e.doit = Utils.isOnlyDigits(e.text);
 				}
@@ -193,6 +196,7 @@ public class JobAssistentDelayAfterErrorForm {
 			txtHour.setText(hour == 0? "" : Utils.getIntegerAsString(hour));
 			txtHour.addModifyListener(new ModifyListener() {
 
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					Utils.setBackground(0, 23, txtHour);
 					if (!Utils.isNumeric( txtHour.getText())) {
@@ -207,6 +211,7 @@ public class JobAssistentDelayAfterErrorForm {
 		{
 			txtMin = SOSJOEMessageCodes.JOE_T_JobAssistent_Min.Control(new Text(composite, SWT.BORDER));
 			txtMin.addVerifyListener(new VerifyListener() {
+				@Override
 				public void verifyText(final VerifyEvent e) {
 					e.doit = Utils.isOnlyDigits(e.text);
 				}
@@ -214,6 +219,7 @@ public class JobAssistentDelayAfterErrorForm {
 			txtMin.setLayoutData(new GridData(17, SWT.DEFAULT));
 			txtMin.setText(min == 0? "" : Utils.getIntegerAsString(min));
 			txtMin.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					Utils.setBackground(0, 59, txtMin);					
 					if (!Utils.isNumeric( txtMin.getText())) {
@@ -228,6 +234,7 @@ public class JobAssistentDelayAfterErrorForm {
 		{
 			txtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_Sec.Control(new Text(composite, SWT.BORDER));
 			txtSecound.addVerifyListener(new VerifyListener() {
+				@Override
 				public void verifyText(final VerifyEvent e) {
 					e.doit = Utils.isOnlyDigits(e.text);
 				}
@@ -235,6 +242,7 @@ public class JobAssistentDelayAfterErrorForm {
 			txtSecound.setLayoutData(new GridData(16, SWT.DEFAULT));
 			txtSecound.setText(sec==0? "" : Utils.getIntegerAsString(sec));
 			txtSecound.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					Utils.setBackground(0, 59, txtSecound);
 					if (!Utils.isNumeric( txtSecound.getText())) {
@@ -260,6 +268,7 @@ public class JobAssistentDelayAfterErrorForm {
 		txtErrorCount = SOSJOEMessageCodes.JOE_T_JobAssistent_ErrorCount.Control(new Text(jobGroup, SWT.BORDER));
 		txtErrorCount.setText(errorCount!=null?errorCount:"");
 		txtErrorCount.addModifyListener(new ModifyListener() {			
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				modify = true;
 			}
@@ -279,6 +288,7 @@ public class JobAssistentDelayAfterErrorForm {
 		txtStop = SOSJOEMessageCodes.JOE_T_JobAssistent_MaxErrors.Control(new Text(jobGroup, SWT.BORDER));
 		txtStop.setText(stopCount!=null?stopCount:"");
 		txtStop.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				modify = true;
 			}
@@ -306,6 +316,7 @@ public class JobAssistentDelayAfterErrorForm {
 		{
 			butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite_1, SWT.NONE));
 			butCancel.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					close();
 				}
@@ -323,6 +334,7 @@ public class JobAssistentDelayAfterErrorForm {
 		{
 			butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_2, SWT.NONE));
 			butShow.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					if(!check()) return;
 					refreshElement(false);	
@@ -338,6 +350,7 @@ public class JobAssistentDelayAfterErrorForm {
 			butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_2, SWT.NONE));
 			butFinish.setLayoutData(new GridData(40, SWT.DEFAULT));
 			butFinish.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 
 					if(!check()) return;
@@ -368,6 +381,7 @@ public class JobAssistentDelayAfterErrorForm {
 
 		butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_2, SWT.NONE));
 		butBack.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				refreshElement(false);
 				JobAssistentRunOptionsForms runOP = new JobAssistentRunOptionsForms(dom, update, job, assistentType);
@@ -390,6 +404,7 @@ public class JobAssistentDelayAfterErrorForm {
 			butNext.setEnabled(Utils.getAttributeValue("order", job).equals("yes"));
 			butNext.addSelectionListener(new SelectionAdapter() {				
 
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					Utils.startCursor(shellSetBack);
 					refreshElement(false);
@@ -429,7 +444,7 @@ public class JobAssistentDelayAfterErrorForm {
 //		butBack.setToolTipText(Messages.getTooltip("butBack"));
 	}
 
-	private void refreshElement(boolean apply) {
+	private void refreshElement(final boolean apply) {
 
 		if(modify) {
 			if(optionlistener.getErrorDelays().size() > 0 ) {
@@ -469,7 +484,7 @@ public class JobAssistentDelayAfterErrorForm {
 		.concat(txtMin.getText() != null && !txtMin.getText().equals("00")? txtMin.getText() : "")
 		.concat(txtSecound.getText() != null && !txtSecound.getText().equals("00")? txtSecound.getText() : "");
 
-		String errorCount = (txtErrorCount.getText() != null ? txtErrorCount.getText() : "");
+		String errorCount = txtErrorCount.getText() != null ? txtErrorCount.getText() : "";
 
 		if(sTime.length() == 0 && errorCount.length() > 0 ) {
 //			MainWindow.message(shellSetBack, Messages.getString("assistent.delay_after_error.time.missing"), SWT.OK );
@@ -495,7 +510,7 @@ public class JobAssistentDelayAfterErrorForm {
 		}
 	}
 
-	public void setJobname(Combo jobname) {
+	public void setJobname(final Combo jobname) {
 		this.jobname = jobname;
 	}
 
@@ -504,7 +519,7 @@ public class JobAssistentDelayAfterErrorForm {
 	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
-	public void setBackUpJob(Element backUpJob, ScriptJobMainForm jobForm_) {
+	public void setBackUpJob(final Element backUpJob, final ScriptJobMainForm jobForm_) {
 		if(backUpJob != null)
 			jobBackUp = (Element)backUpJob.clone();	
 		jobForm = jobForm_;

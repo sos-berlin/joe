@@ -1147,8 +1147,8 @@ public class Utils {
 				if (currdom instanceof sos.scheduler.editor.actions.ActionsDom)
 					((sos.scheduler.editor.actions.forms.ActionsForm) update).updateTree("main");
 				else
-					if (currdom instanceof sos.scheduler.editor.doc.DocumentationDom)
-						((sos.scheduler.editor.doc.forms.DocumentationForm) update).updateTree("main");
+					if (currdom instanceof com.sos.jobdoc.DocumentationDom)
+						((com.sos.jobdoc.forms.DocumentationForm) update).updateTree("main");
 
 		}
 		catch (Exception e) {

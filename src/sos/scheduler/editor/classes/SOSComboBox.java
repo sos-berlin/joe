@@ -17,9 +17,9 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 
 import sos.scheduler.editor.app.SOSMsgJOE;
-import sos.scheduler.editor.conf.forms.JobChainNodesForm;
 
 import com.sos.JSHelper.interfaces.ISOSComboItem;
+import com.sos.joe.objects.jobchain.forms.JobChainNodesForm;
 
 /**
  * @author KB
