@@ -7,7 +7,7 @@
         <version>1.6.4064</version>
     </parent>
 
-    <groupId>com.sos.sos-products</groupId>
+    <groupId>com.sos-berlin.products</groupId>
     <artifactId>joe</artifactId>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
@@ -19,7 +19,7 @@
     </scm>
 
     <modules>
-        <module>job-editor</module>
+        <module>joe-cockpit</module>
         <module>ftp-profiles</module>
     </modules>
 
