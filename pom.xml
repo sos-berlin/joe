@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>com.sos-berlin.products.joe</groupId>
-    <artifactId>job-editor</artifactId>
+    <artifactId>joe-cockpit</artifactId>
     <name>${project.artifactId}</name>
 
     <build>
@@ -89,7 +89,7 @@
     <dependencies>
 
         <dependency>
-				    <groupId>com.sos.sos-products.joe</groupId>
+				    <groupId>com.sos-berlin.products.joe</groupId>
 				    <artifactId>ftp-profiles</artifactId>
             <version>${project.version}</version>
         </dependency>
