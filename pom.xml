@@ -14,9 +14,9 @@
     <name>${project.artifactId}</name>
 
     <scm>
-        <connection>scm:svn:http://subversion.sos/svn/sos/java.sources/tags/sos-products/joe</connection>
-        <developerConnection>scm:svn:http://subversion.sos/svn/sos/java.sources/trunk/sos-products/joe</developerConnection>
-        <url>http://subversion.sos/svn/sos/java.sources/trunk/sos-products/joe</url>
+        <connection>scm:svn:http://subversion.sos/svn/sos/java.sources/tags/products/joe</connection>
+        <developerConnection>scm:svn:http://subversion.sos/svn/sos/java.sources/trunk/products/joe</developerConnection>
+        <url>http://subversion.sos/svn/sos/java.sources/trunk/products/joe</url>
     </scm>
 
     <modules>
