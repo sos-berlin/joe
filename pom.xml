@@ -45,6 +45,12 @@
                                     <targetPath>.</targetPath>
                                     <includes>
                                         <include>**/*.properties</include>
+                                        <include>**/*.xml</include>
+                                        <include>**/*.xsd</include>
+                                        <include>**/*.gif</include>
+                                        <include>**/*.GIF</include>
+                                        <include>**/*.png</include>
+                                        <include>**/*.bmp</include>
                                     </includes>
                                 </resource>
                             </resources>
