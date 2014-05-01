@@ -21,13 +21,13 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.objects.job.JobOptionsListener;
 
 public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {

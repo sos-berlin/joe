@@ -19,12 +19,12 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import com.sos.joe.objects.jobchain.JobChainListener;
-
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
+
+import com.sos.joe.objects.jobchain.JobChainListener;
 
 public class JobChainMainComposite extends CompositeBaseClass {
 	@SuppressWarnings("unused")
@@ -109,7 +109,8 @@ public class JobChainMainComposite extends CompositeBaseClass {
 					return;
 				}
 				String newName = tbxName.getText().trim();
-				boolean existname = Utils.existName(newName, objDataProvider.getChainElement(), "job_chain");
+//				boolean existname = Utils.existName(newName, objDataProvider.getChainElement(), "job_chain");
+				boolean existname =  objDataProvider.isUniqueState(newName);
 				if (existname)
 					tbxName.setBackground(objDataProvider.getColor4InvalidValues());
 				else {

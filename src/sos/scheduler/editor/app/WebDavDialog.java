@@ -615,7 +615,7 @@ public class WebDavDialog {
 
 				currdom.setFilename(new java.io.File(newFilename).getCanonicalPath());
 
-				sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
+				com.sos.joe.interfaces.IContainer con = MainWindow.getContainer();
 				SchedulerForm sf = (SchedulerForm)con.getCurrentEditor();
 				sf.updateTree("jobs");
 				String name = currdom.getRoot().getName();

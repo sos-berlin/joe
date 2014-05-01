@@ -13,6 +13,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
+import com.sos.joe.objects.jobchain.forms.DetailForm;
 import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
 
 import sos.scheduler.editor.app.Editor;
@@ -20,7 +21,6 @@ import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.DetailDom;
-import sos.scheduler.editor.conf.forms.DetailForm;
 import sos.util.SOSClassUtil;
 
 

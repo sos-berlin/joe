@@ -247,7 +247,7 @@ public class JobAssistentTasksForm {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(dom, update, joblistener.getJob(), assistentType);
-				paramsForm.showAllImportJobParams(joblistener.getInclude());
+				paramsForm.showAllImportJobParams(joblistener.getInclude4JobDescription());
 				if(jobname != null)
 					paramsForm.setJobname(jobname);
 				//if(jobBackUp != null)

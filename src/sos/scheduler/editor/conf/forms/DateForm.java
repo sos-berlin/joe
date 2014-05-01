@@ -27,8 +27,8 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
 import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.interfaces.IUpdateLanguage;
 
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;

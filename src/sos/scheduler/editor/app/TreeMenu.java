@@ -785,7 +785,7 @@ public class TreeMenu {
 					MainWindow.message("could not remove live file", SWT.ICON_WARNING | SWT.OK);
 				}
 				if (_dom instanceof SchedulerDom && ((SchedulerDom) _dom).isLifeElement()) {
-					sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
+					com.sos.joe.interfaces.IContainer con = MainWindow.getContainer();
 					con.getCurrentTab().dispose();
 				}
 
@@ -945,7 +945,7 @@ public class TreeMenu {
 
 	private void refreshTree(final String whichItem) {
 
-		sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
+		com.sos.joe.interfaces.IContainer con = MainWindow.getContainer();
 		SchedulerForm sf = (SchedulerForm) con.getCurrentEditor();
 		sf.updateTree(whichItem);
 

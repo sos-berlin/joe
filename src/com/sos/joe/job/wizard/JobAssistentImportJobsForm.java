@@ -49,7 +49,6 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.container.JobDocumentation;
-import sos.scheduler.editor.conf.forms.JobDocumentationForm;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
 import sos.scheduler.editor.conf.listeners.SortTreeListener;
@@ -58,6 +57,7 @@ import sos.util.SOSClassUtil;
 import com.sos.dialog.classes.WindowsSaver;
 import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.joe.objects.job.JobListener;
+import com.sos.joe.objects.job.forms.JobDocumentationForm;
 import com.sos.joe.objects.job.forms.ScriptJobMainForm;
 import com.swtdesigner.SWTResourceManager;
 
@@ -209,7 +209,7 @@ public class JobAssistentImportJobsForm extends FormBaseClass<JobListener> {
 			display.syncExec(new Runnable() {
 				@Override
 				public void run() {
-					if (!searchField.equals(EMPTY_STRING)) {
+					if (hasText(searchField)) {
 						try {
 							createTreeItems();
 						}
@@ -421,7 +421,7 @@ public class JobAssistentImportJobsForm extends FormBaseClass<JobListener> {
 			txtPath = SOSJOEMessageCodes.JOE_T_JobAssistent_Path.Control(new Text(jobGroup, SWT.BORDER));
 			txtPath.setEditable(false);
 			if (objJobDataProvider != null) {
-				txtPath.setText(objJobDataProvider.getInclude());
+				txtPath.setText(objJobDataProvider.getInclude4JobDescription());
 			}
 			final GridData gridData_1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 			gridData_1.widthHint = 420;
@@ -1051,7 +1051,7 @@ public class JobAssistentImportJobsForm extends FormBaseClass<JobListener> {
 	}
 
 	private void selectTree() {
-		if (objJobDataProvider != null && (objJobDataProvider.getInclude() == null || objJobDataProvider.getInclude().length() == 0)) {
+		if (objJobDataProvider != null && (objJobDataProvider.getInclude4JobDescription() == null || objJobDataProvider.getInclude4JobDescription().length() == 0)) {
 			TreeItem[] si = new TreeItem[1];
 			si[0] = objJitlJobList.getItem(0);
 			objJitlJobList.setSelection(si);
@@ -1062,7 +1062,7 @@ public class JobAssistentImportJobsForm extends FormBaseClass<JobListener> {
 				TreeItem item = objJitlJobList.getItem(i);
 				if (item.getText(2) != null) {
 					String it = new File(item.getText(2)).getName();
-					String in = new File(objJobDataProvider.getInclude()).getName();
+					String in = new File(objJobDataProvider.getInclude4JobDescription()).getName();
 					if (it.endsWith(in)) {
 						TreeItem[] si = new TreeItem[1];
 						si[0] = item;

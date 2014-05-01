@@ -33,12 +33,12 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
 import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.objects.jobchain.JobChainListListener;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
@@ -46,7 +46,6 @@ import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
-import sos.scheduler.editor.conf.forms.DetailDialogForm;
 
 public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpdateLanguage, ISOSTableMenueListeners {
 	private final String			conClassName					= "JobChainsForm";

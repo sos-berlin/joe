@@ -9,11 +9,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.MainWindow;
 
 import com.sos.dialog.classes.WindowsSaver;
+import com.sos.joe.interfaces.IContainer;
 
 /**
 * \class FormBaseClass
@@ -115,6 +116,11 @@ public abstract class FormBaseClass  <DataProviderClass> {
 	protected void setResizableV(final Control objControl) {
 		boolean flgGrapVerticalspace = true;
 		objControl.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, flgGrapVerticalspace));
+	}
+
+	protected boolean hasText (final Text pobjText) {
+		String strT = pobjText.getText().trim();
+		return strT.length() > 0;
 	}
 
 	protected void setStatusLine(final String pstrText) {

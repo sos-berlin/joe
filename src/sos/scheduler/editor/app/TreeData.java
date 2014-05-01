@@ -150,7 +150,7 @@ public class TreeData {
 		return pintType == _type;
 	}
 	public  boolean NameEqualTo (final String pstrName) {
-//		return pstrName.equalsIgnoreCase(objHotFolderObject.ge);
+//	TODO	return pstrName.equalsIgnoreCase(objHotFolderObject.ge);
 		return false;
 	}
 }

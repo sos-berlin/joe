@@ -29,10 +29,10 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 	@SuppressWarnings("unused")
 	private static final Logger	logger			= Logger.getLogger(JobChainNestedListener.class);
 
-	public JobChainNestedListener(final SchedulerDom dom, final Element jobChain) {
+@Deprecated	public JobChainNestedListener(final SchedulerDom dom, final Element jobChain) {
 		_dom = dom;
 		objJobChain = jobChain;
-		getJOMJobChain();
+//		getJOMJobChain();
 
 		if (objJobChain.getParentElement() != null) {
 			_config = objJobChain.getParentElement().getParentElement();
@@ -117,7 +117,7 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 
 	public boolean checkForState(final String state) {
 
-		for (String _state : _states) {
+		for (String _state : strCurrentStates) {
 			if (_state.equals(state))
 				return true;
 		}
@@ -126,66 +126,67 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 
 	public void selectNode(final Table tableNodes) {
 		if (tableNodes == null) {
-			_node = null;
+			objJobChainNode = null;
 		}
 		else {
 			int index = getIndexOfNode(tableNodes.getItem(tableNodes.getSelectionIndex()));
-			_node = getJobChainNodeWrapper((Element) objJobChain.getChildren().get(index));
-			if (_states == null) {
+			objJobChainNode = getJobChainNodeWrapper((Element) objJobChain.getChildren().get(index));
+			if (strCurrentStates == null) {
 				setStates();
 			}
 		}
 	}
 
+	@Override
 	public boolean isFullNode() {
-		if (_node.getDOMElement() != null)
-			return _node.getDOMElement().getAttributeValue("job_chain") != null;
+		if (objJobChainNode.getDOMElement() != null)
+			return objJobChainNode.getDOMElement().getAttributeValue("job_chain") != null;
 		else
 			return true;
 	}
 
 	public String getNestedJobChain() {
-		return Utils.getAttributeValue("job_chain", _node.getDOMElement());
+		return Utils.getAttributeValue("job_chain", objJobChainNode.getDOMElement());
 	}
 
 	public void setNestedJobChain(final String jobChain) {
-		Utils.setAttribute("job_chain", jobChain, _node.getDOMElement(), _dom);
+		Utils.setAttribute("job_chain", jobChain, objJobChainNode.getDOMElement(), _dom);
 		setDirty();
 		//		_dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
 	}
 
 	@Override
 	public String getMoveTo() {
-		return Utils.getAttributeValue("move_to", _node.getDOMElement());
+		return Utils.getAttributeValue("move_to", objJobChainNode.getDOMElement());
 	}
 
 	@Override
 	public boolean getRemoveFile() {
-		return Utils.getAttributeValue("remove", _node.getDOMElement()).equals("yes");
+		return Utils.getAttributeValue("remove", objJobChainNode.getDOMElement()).equals("yes");
 	}
 
 	public void applyNode(final boolean isJobchainNode, final String state, final String job, final String next, final String error, final boolean isFullnode) {
 
 		JobChainNodeWrapper node = null;
-		if (_node.getDOMElement() != null) {
+		if (objJobChainNode.getDOMElement() != null) {
 			//System.out.println("node != null, old state=" + Utils.getAttributeValue("state", _node.getDOMElement()) + ", new state=" + state);
-			String oldState = Utils.getAttributeValue("state", _node.getDOMElement());
+			String oldState = Utils.getAttributeValue("state", objJobChainNode.getDOMElement());
 
 			if (oldState != null && state != null && !oldState.equals(state)) {
 				//state hat sicg geändert. ggf die Details state auch ändern
 				DetailsListener.changeNodeParameters(oldState, state, Utils.getAttributeValue("name", objJobChain), _dom);
 			}
 
-			if (isJobchainNode && _node.getDOMElement().getName().equals("job_chain_node.end")) {
-				_node.getDOMElement().detach();
-				_node = null;
+			if (isJobchainNode && objJobChainNode.getDOMElement().getName().equals("job_chain_node.end")) {
+				objJobChainNode.getDOMElement().detach();
+				objJobChainNode = null;
 			}
 		}
 
-		if (_node.getDOMElement() != null) {
+		if (objJobChainNode.getDOMElement() != null) {
 			if (isJobchainNode) {
 				node.setState(state);
-				Utils.setAttribute("job_chain", job, _node.getDOMElement(), _dom);
+				Utils.setAttribute("job_chain", job, objJobChainNode.getDOMElement(), _dom);
 				node.setNextState(next);
 				node.setErrorState(error);
 			}
@@ -207,7 +208,7 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 			}
 
 			objJobChain.addContent(node.getDOMElement());
-			_node = node;
+			objJobChainNode = node;
 
 		}
 
@@ -231,9 +232,9 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 
 		boolean found = false;
 		List list = objJobChain.getChildren();
-		if (list.size() > 0 && _node.getDOMElement() != null) {
+		if (list.size() > 0 && objJobChainNode.getDOMElement() != null) {
 			for (int i = 0; i < list.size(); i++) {
-				if (list.get(i).equals(_node.getDOMElement())) {
+				if (list.get(i).equals(objJobChainNode.getDOMElement())) {
 					if (i > 0) {
 						Element previosNode = (Element) list.get(i - 1);
 						Utils.setAttribute("next_state", state, previosNode, _dom);
@@ -249,7 +250,7 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 			objJobChain.addContent(0, node.getDOMElement());
 		}
 
-		_node = node;
+		objJobChainNode = node;
 		setDirty();
 		setStates();
 	}
@@ -261,8 +262,8 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 			Element node = null;
 
 			if (reorder) {
-				if (Utils.getAttributeValue("job_chain", _node.getDOMElement()).length() == 0 || _node.getDOMElement() != null
-						&& _node.getDOMElement().getName().equals("job_chain_node.end")) {
+				if (Utils.getAttributeValue("job_chain", objJobChainNode.getDOMElement()).length() == 0 || objJobChainNode.getDOMElement() != null
+						&& objJobChainNode.getDOMElement().getName().equals("job_chain_node.end")) {
 					sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
 					return;
 				}
@@ -290,7 +291,7 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 				if (l.get(i) instanceof Element) {
 					Element elem_ = (Element) l.get(i);
 					if (up) {
-						if (elem_.equals(_node.getDOMElement())) {
+						if (elem_.equals(objJobChainNode.getDOMElement())) {
 							break;
 						}
 						else {
@@ -302,7 +303,7 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 					}
 					else {
 						//down
-						if (elem_.equals(_node.getDOMElement())) {
+						if (elem_.equals(objJobChainNode.getDOMElement())) {
 							found = true;
 						}
 						else
@@ -313,7 +314,7 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 					}
 				}
 			}
-			node = (Element) _node.getDOMElement().clone();
+			node = (Element) objJobChainNode.getDOMElement().clone();
 
 			if (reorder) {
 				Filter elementFilter2 = new ElementFilter("job_chain_node.job_chain", getChainElement().getNamespace());
@@ -339,7 +340,7 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 					//String nextState     = "";//only for down
 					String nextNextState = "";
 
-					if (currElement.equals(_node.getDOMElement())) {
+					if (currElement.equals(objJobChainNode.getDOMElement())) {
 
 						if (i >= 2) {
 							prev2Element = (Element) elements.get(i - 2);
@@ -393,7 +394,7 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 							if (curState != null && nextNextState.length() > 0) {
 								Utils.setAttribute("next_state", nextNextState, currElement);
 								Utils.setAttribute("next_state", nextNextState, node);
-								Utils.setAttribute("next_state", nextNextState, _node.getDOMElement());
+								Utils.setAttribute("next_state", nextNextState, objJobChainNode.getDOMElement());
 							}
 						}
 
@@ -404,12 +405,12 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 				}
 			}
 
-			if (objJobChain.getChildren().contains(_node.getDOMElement())) {
-				objJobChain.removeContent(_node.getDOMElement());
+			if (objJobChain.getChildren().contains(objJobChainNode.getDOMElement())) {
+				objJobChain.removeContent(objJobChainNode.getDOMElement());
 			}
 
 			objJobChain.addContent(cIndex, node);
-			_node = new JobChainNodeWrapper(node);
+			objJobChainNode = new JobChainNodeWrapper(node);
 			_dom.setChanged(true);
 			_dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", objJobChain), SchedulerDom.MODIFY);
 
@@ -450,7 +451,7 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 
 		DetailsListener.deleteDetailsState(tableNodes.getSelection()[0].getText(0), Utils.getAttributeValue("name", objJobChain), _dom);
 		nodes.remove(index);
-		_node = null;
+		objJobChainNode = null;
 		setDirty();
 		setStates();
 	}
@@ -492,46 +493,47 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 		List nodes = objJobChain.getChildren("job_chain_node.job_chain");
 		List endNodes = objJobChain.getChildren("job_chain_node.end");
 		Iterator it = nodes.iterator();
-		_states = new String[nodes.size() + endNodes.size()];
+		strCurrentStates = new String[nodes.size() + endNodes.size()];
 		int index = 0;
 		while (it.hasNext()) {
 			String state = ((Element) it.next()).getAttributeValue("state");
-			_states[index++] = state != null ? state : "";
+			strCurrentStates[index++] = state != null ? state : "";
 		}
 
 		it = endNodes.iterator();
 
 		while (it.hasNext()) {
 			String state = ((Element) it.next()).getAttributeValue("state");
-			_states[index++] = state != null ? state : "";
+			strCurrentStates[index++] = state != null ? state : "";
 		}
 
 	}
 
 	public String[] getStates() {
-		if (_states == null)
+		if (strCurrentStates == null)
 			return new String[0];
 		else
-			if (_node.getDOMElement() != null) {
+			if (objJobChainNode.getDOMElement() != null) {
 				String state = getState();
 				int index = 0;
-				String[] states = new String[_states.length - 1];
-				for (int i = 0; i < _states.length; i++) {
-					if (!_states[i].equals(state))
-						states[index++] = _states[i];
+				String[] states = new String[strCurrentStates.length - 1];
+				for (int i = 0; i < strCurrentStates.length; i++) {
+					if (!strCurrentStates[i].equals(state))
+						states[index++] = strCurrentStates[i];
 				}
 				return states;
 			}
 			else
-				return _states;
+				return strCurrentStates;
 	}
 
-	public boolean isValidState(final String state) {
-		if (_states == null)
+	@Override
+	public boolean isUniqueState(final String state) {
+		if (strCurrentStates == null)
 			return true;
 
-		for (int i = 0; i < _states.length; i++) {
-			if (_states[i].equalsIgnoreCase(state) && !_states[i].equals(getState()))
+		for (int i = 0; i < strCurrentStates.length; i++) {
+			if (strCurrentStates[i].equalsIgnoreCase(state) && !strCurrentStates[i].equals(getState()))
 				return false;
 		}
 		return true;

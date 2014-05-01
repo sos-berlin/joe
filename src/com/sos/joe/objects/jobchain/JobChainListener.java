@@ -1,5 +1,4 @@
 package com.sos.joe.objects.jobchain;
-
 import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_E_0002;
 
 import java.io.File;
@@ -12,11 +11,10 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.filter.ElementFilter;
-import org.jdom.filter.Filter;
 import org.jdom.input.SAXBuilder;
 import org.xml.sax.InputSource;
 
@@ -26,17 +24,20 @@ import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.SOSTable;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.JSHelper.io.Files.JSFile;
 import com.sos.JSHelper.io.Files.JSXMLFile;
+import com.sos.scheduler.model.objects.JSObjBase;
 import com.sos.scheduler.model.objects.JSObjJob;
 import com.sos.scheduler.model.objects.JSObjJobChain;
+import com.sos.scheduler.model.objects.JobChain.FileOrderSink;
+import com.sos.scheduler.model.objects.JobChain.FileOrderSource;
+import com.sos.scheduler.model.objects.JobChain.JobChainNode;
+import com.sos.scheduler.model.objects.JobChainNodeEnd;
 
 public class JobChainListener extends JOEJobChainDataProvider {
-
 	@SuppressWarnings("unused")
 	private final String		conClassName		= this.getClass().getSimpleName();
 	@SuppressWarnings("unused")
@@ -44,52 +45,41 @@ public class JobChainListener extends JOEJobChainDataProvider {
 	private final Logger		logger				= Logger.getLogger(this.getClass());
 	private Element				_objFileOrderSource	= null;
 	//	private final SOSString	sosString			= new SOSString();
-
 	private ArrayList<String>	listOfAllState		= null;
 	public int					intStepIncr			= 100;
 
 	public JobChainListener(final JSObjJobChain pobjJobChain) {
+		super(pobjJobChain);
 		objJSJobChain = pobjJobChain;
+	}
+
+//	@Deprecated public JobChainListener(final SchedulerDom dom, final Element jobChain) {
 //		_dom = dom;
 //		objJobChain = jobChain;
 //		objElement = jobChain;
-//		getJOMJobChain();
+//		//		getJOMJobChain();
 //		if (objJobChain.getParentElement() != null)
 //			_config = objJobChain.getParentElement().getParentElement();
-	}
-
-
-	@Deprecated
-	public JobChainListener(final SchedulerDom dom, final Element jobChain) {
-		_dom = dom;
-		objJobChain = jobChain;
-		objElement = jobChain;
-		getJOMJobChain();
-		if (objJobChain.getParentElement() != null)
-			_config = objJobChain.getParentElement().getParentElement();
-	}
-
-/**
-	 * This Method seems to be used to modify the name of the jobChain
-	*
-	* \brief setChainName
-	*
-	* \details
-	*
-	* \return void
-	*
-	 */
-	@Override
-	public void setChainName(final String name) {
-
-		_dom.setChanged(true);
-
+//	}
+//
+	/**
+		 * This Method seems to be used to modify the name of the jobChain
+		*
+		* \brief setChainName
+		*
+		* \details
+		*
+		* \return void
+		*
+		 */
+	@Override public void setChainName(final String name) {
+		//		_dom.setChanged(true);
 		String oldjobChainName = getChainName();
-
+		objJSJobChain.setName(name);
 		//Für job_chain node Parameter
+		// TODO create separate Method or Class for JobChain Node Parameter handling
 		if (objJobChain != null && _dom.getFilename() != null) {
 			CTabItem currentTab = MainWindow.getContainer().getCurrentTab();
-
 			String path = _dom.isDirectory() ? _dom.getFilename() : new java.io.File(_dom.getFilename()).getParent();
 			try {
 				if (currentTab.getData("details_parameter") != null) {
@@ -103,7 +93,6 @@ public class JobChainListener extends JOEJobChainDataProvider {
 					HashMap<Element, String> h = new HashMap<Element, String>();
 					h.put(objJobChain, new java.io.File(path, oldjobChainName + JSObjJobChain.conFileNameExtension4NodeParameterFile).getCanonicalPath());
 					currentTab.setData("details_parameter", h);
-
 				}
 				// für das Speicher per FTP
 				String filename = _dom.isLifeElement() ? new File(_dom.getFilename()).getParent() : _dom.getFilename();
@@ -112,33 +101,29 @@ public class JobChainListener extends JOEJobChainDataProvider {
 						&& new File(filename + "/" + oldjobChainName + JSObjJobChain.conFileNameExtension4NodeParameterFile).exists()) {
 					currentTab.setData("ftp_details_parameter_remove_file", oldjobChainName + JSObjJobChain.conFileNameExtension4NodeParameterFile);
 				}
-
 			}
 			catch (Exception e) {
 				new ErrorLog("error in setChainName, cause: " + e.toString(), e);
 			}
 		}
-
-		if (oldjobChainName != null && oldjobChainName.length() > 0) {
-			if (_dom.isChanged() && (_dom.isDirectory() && !Utils.existName(oldjobChainName, objJobChain, "job_chain") || _dom.isLifeElement())) {
-				_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
-			}
-		}
-
-		Utils.setAttribute("name", name, objJobChain);
-		objJSJobChain.setName(name);
-
-		if (_dom.isDirectory() || _dom.isLifeElement())
-			_dom.setChangedForDirectory("job_chain", name, SchedulerDom.MODIFY);
+		//		if (oldjobChainName != null && oldjobChainName.length() > 0) {
+		//			if (_dom.isChanged() && (_dom.isDirectory() && !Utils.existName(oldjobChainName, objJobChain, "job_chain") || _dom.isLifeElement())) {
+		//				_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
+		//			}
+		//		}
+		//		Utils.setAttribute("name", name, objJobChain);
+		//		objJSJobChain.setName(name);
+		//		if (_dom.isDirectory() || _dom.isLifeElement())
+		//			_dom.setChangedForDirectory("job_chain", name, SchedulerDom.MODIFY);
 	}
 
 	public void applyChain(final String name, final boolean ordersRecoverable, final boolean visible, final boolean distributed, final String title) {
-		String oldjobChainName = getChainName();
-		if (oldjobChainName != null && oldjobChainName.length() > 0) {
-			if (_dom.isDirectory() || _dom.isLifeElement()) {
-				_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
-			}
-		}
+		//		String oldjobChainName = getChainName();
+		//		if (oldjobChainName != null && oldjobChainName.length() > 0) {
+		//			if (_dom.isDirectory() || _dom.isLifeElement()) {
+		//				_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
+		//			}
+		//		}
 		setName(name);
 		setOrdersRecoverable(ordersRecoverable);
 		setVisible(visible);
@@ -150,200 +135,176 @@ public class JobChainListener extends JOEJobChainDataProvider {
 		if (objJobChainNodesTable == null | objJSJobChain == null) {
 			return;
 		}
-
 		objJobChainNodesTable.removeAll();
-
-		//		for (FileOrderSource objNode : objJSJobChain.getFileOrderSourceList()) {
-		//			TableItem item = new TableItem(table, SWT.NONE);
-		//			item.setData("Element", objNode);
-		//			String directory = objNode.getDirectory();
-		//			String regex = objNode.getRegex();
-		//			String next_state = objNode.getNextState();
-		//
-		//			String strDelayAfterError = BigInt2String(objNode.getDelayAfterError());
-		//			String strRepeat = objNode.getRepeat();
-		//			String strMaxFiles = BigInt2String(objNode.getMax());
-		//
-		//			item.setText(new String[] { directory, regex, next_state, strDelayAfterError, strRepeat, strMaxFiles });
-		//		}
-		//
-		if (objJobChain != null) {
-			// TODO create class FileOrderSourceWrapper
-
-			for (Object object : objJobChain.getChildren()) {
-				Element node = (Element) object;
-				if (node.getName() == conTagFILE_ORDER_SOURCE) {
-					String directory = Utils.getAttributeValue(conAttrDIRECTORY, node);
-					String regex = Utils.getAttributeValue(conAttrREGEX, node);
-					String next_state = Utils.getAttributeValue(conAttrNEXT_STATE, node);
-
-					String strDelayAfterError = Utils.getAttributeValue(conAttrDELAY_AFTER_ERROR, node);
-					String strRepeat = Utils.getAttributeValue(conAttrREPEAT, node);
-					String strMaxFiles = Utils.getAttributeValue(conAttrMAX, node);
-
-					TableItem item = new TableItem(objJobChainNodesTable, SWT.NONE);
-					item.setData("Element", node);
-					item.setText(new String[] { directory, regex, next_state, strDelayAfterError, strRepeat, strMaxFiles });
-				}
-			}
+		for (FileOrderSource objNode : objJSJobChain.getFileOrderSourceList()) {
+			TableItem item = new TableItem(objJobChainNodesTable, SWT.NONE);
+			item.setData("Element", objNode);
+			String directory = objNode.getDirectory();
+			String regex = objNode.getRegex();
+			String next_state = objNode.getNextState();
+			String strDelayAfterError = BigInt2String(objNode.getDelayAfterError());
+			String strRepeat = objNode.getRepeat();
+			String strMaxFiles = BigInt2String(objNode.getMax());
+			item.setText(new String[] { directory, regex, next_state, strDelayAfterError, strRepeat, strMaxFiles });
 		}
+		//		if (objJobChain != null) {
+		//			// TODO create class FileOrderSourceWrapper
+		//
+		//			for (Object object : objJobChain.getChildren()) {
+		//				Element node = (Element) object;
+		//				if (node.getName() == conTagFILE_ORDER_SOURCE) {
+		//					String directory = Utils.getAttributeValue(conAttrDIRECTORY, node);
+		//					String regex = Utils.getAttributeValue(conAttrREGEX, node);
+		//					String next_state = Utils.getAttributeValue(conAttrNEXT_STATE, node);
+		//
+		//					String strDelayAfterError = Utils.getAttributeValue(conAttrDELAY_AFTER_ERROR, node);
+		//					String strRepeat = Utils.getAttributeValue(conAttrREPEAT, node);
+		//					String strMaxFiles = Utils.getAttributeValue(conAttrMAX, node);
+		//
+		//					TableItem item = new TableItem(objJobChainNodesTable, SWT.NONE);
+		//					item.setData("Element", node);
+		//					item.setText(new String[] { directory, regex, next_state, strDelayAfterError, strRepeat, strMaxFiles });
+		//				}
+		//			}
+		//		}
 	}
 
-	//	public void fillFileOrderSink(final SOSTable table) {
-	//
-	//		if (table == null | objJSJobChain == null) {
-	//			return;
-	//		}
-	//		table.removeAll();
-	//
-	//		//		for (FileOrderSink objNode : objJSJobChain.getFileOrderSinkList()) {
-	//		//			TableItem item = new TableItem(table, SWT.NONE);
-	//		//			item.setData("Element", objNode);
-	//		//			String state = objNode.getState();
-	//		//			String moveFileTo = objNode.getMoveTo();
-	//		//			String remove = objNode.getRemove();
-	//		//			item.setText(new String[] { state, moveFileTo, remove });
-	//		//		}
-	//		//
-	//		if (objJobChain != null) {
-	//			Iterator it = objJobChain.getChildren().iterator();
-	//			while (it.hasNext()) {
-	//				Element node = (Element) it.next();
-	//				if (node.getName() == "file_order_sink") {
-	//					String state = Utils.getAttributeValue(conAttrSTATE, node);
-	//					String moveFileTo = Utils.getAttributeValue("move_to", node);
-	//					String remove = Utils.getAttributeValue("remove", node);
-	//					TableItem item = new TableItem(table, SWT.NONE);
-	//					item.setText(new String[] { state, moveFileTo, remove });
-	//				}
-	//			}
-	//		}
-	//	}
-
-	//	public void populateNodesTable2(final Table table) {
-	//
-	//		if (table == null) {
-	//			return;
-	//		}
-	//
-	//		table.removeAll();
-	//
-	//		String state = "";
-	//		String nodetype = "";
-	//		String strJobName = "";
-	//		String next = "";
-	//		String error = "";
-	//		String onError = "";
-	//		String strDelayOnStart = "";
-	//
-	//		setStates();
-	//
-	//		for (JobChainNode objNode : objJSJobChain.getJobChainNodeList()) {
-	//			strJobName = objNode.getJob();
-	//			if (strJobName.length() <= 0) { // Ein EndNode
-	//				nodetype = "Endnode";
-	//			}
-	//			else {
-	//				nodetype = "Job";
-	//			}
-	//			state = objNode.getState();
-	//			String strHasParameters = "";
-	//			nodetype = "Job";
-	//			next = objNode.getNextState();
-	//			error = objNode.getErrorState();
-	//			strDelayOnStart = BigInt2String(objNode.getDelay());
-	//
-	//			int conItemIndexHasParams = 7;
-	//			TableItem item = new TableItem(table, SWT.NONE);
-	//			item.setData("element", objNode);
-	//			item.setData("elementtype", nodetype);
-	//			if (DetailsListener.existDetailsParameter(state, getChainName(), strJobName, _dom, update, false, null)) {
-	//				item.setBackground(getColor4NodeParameter());
-	//				strHasParameters = "yes";
-	//			}
-	//			else {
-	//				item.setBackground(null);
-	//			}
-	//			item.setText(new String[] { state, nodetype, strJobName, next, error, onError, strDelayOnStart, strHasParameters });
-	//
-	//			int conItemIndexNext = 3;
-	//			int conItemIndexError = 4;
-	//			if (!next.equals("") && !isStateDefined(next))
-	//				item.setBackground(conItemIndexNext, getColor4InvalidValues());
-	//
-	//			if (!error.equals("") && !isStateDefined(error)) {
-	//				item.setBackground(conItemIndexError, getColor4InvalidValues());
-	//			}
-	//			if (strHasParameters.length() > 0) {
-	//				item.setBackground(conItemIndexHasParams, getColor4hasParameter());
-	//			}
-	//		}
-	//
-	//		state = "";
-	//		strJobName = "";
-	//		next = "";
-	//		error = "";
-	//		onError = "";
-	//		strDelayOnStart = "";
-	//
-	//		for (JobChainNodeEnd objNode : objJSJobChain.getJobChainNodeEndList()) {
-	//			state = objNode.getState();
-	//			nodetype = "Endnode";
-	//
-	//			TableItem item = new TableItem(table, SWT.NONE);
-	//			item.setData("element", objNode);
-	//			item.setData("elementtype", nodetype);
-	//
-	//			item.setText(new String[] { state, nodetype, strJobName, next, error, onError, strDelayOnStart, "" });
-	//		}
-	//
-	//	}
-	//
-
-	public SOSTable	objJobChainNodesTable	= null;
+	public void fillFileOrderSink(final SOSTable table) {
+		if (table == null | objJSJobChain == null) {
+			return;
+		}
+		table.removeAll();
+		for (FileOrderSink objNode : objJSJobChain.getFileOrderSinkList()) {
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setData("Element", objNode);
+			String state = objNode.getState();
+			String moveFileTo = objNode.getMoveTo();
+			String remove = objNode.getRemove();
+			item.setText(new String[] { state, moveFileTo, remove });
+		}
+		//			if (objJobChain != null) {
+		//				Iterator it = objJobChain.getChildren().iterator();
+		//				while (it.hasNext()) {
+		//					Element node = (Element) it.next();
+		//					if (node.getName() == "file_order_sink") {
+		//						String state = Utils.getAttributeValue(conAttrSTATE, node);
+		//						String moveFileTo = Utils.getAttributeValue("move_to", node);
+		//						String remove = Utils.getAttributeValue("remove", node);
+		//						TableItem item = new TableItem(table, SWT.NONE);
+		//						item.setText(new String[] { state, moveFileTo, remove });
+		//					}
+		//				}
+		//			}
+	}
 
 	public void populateNodesTable() {
-
-		assert objJobChainNodesTable != null;
-		assert objJobChain != null;
-
-		objJobChainNodesTable.removeAll();
-
-		setStates();
-		int intIndex = 0;
-		for (Object eleNode : objJobChain.getChildren()) {
-			JobChainNodeWrapper objJobChainNode = getJobChainNodeWrapper((Element) eleNode);
-			objJobChainNode.setIndex(++intIndex);
-			if (objJobChainNode.isNode4NodesTable() == true) {
-				String strJobName = objJobChainNode.getJobName();
-				if (objJobChainNode.isJobNode() == true && getJobFile(strJobName).exists() == false) {
-					objJobChainNode.setJobIsMissing(true);
-				}
-
-				if (DetailsListener.existJobChainNodesParameter(objJobChainNode.getState(), getChainName(), strJobName, get_dom(), update, false, null)) {
-					objJobChainNode.setHasNodeParameter(true);
-				}
-
-				String next = objJobChainNode.getNextState();
-				if (!next.equals("") && !isStateDefined(next)) {
-					objJobChainNode.setNextStateIsInvalid(true);
-				}
-
-				String error = objJobChainNode.getErrorState();
-				if (!error.equals("") && !isStateDefined(error)) {
-					objJobChainNode.setErrorStateIsInvalid(true);
-				}
-
-				TableItem objTI = new TableItem(objJobChainNodesTable, SWT.NONE);
-				objTI.setData(objJobChainNode);
-				objJobChainNode.populateTableItem(objTI);
-			}
-		}
+		populateNodesTable(objJobChainNodesTable);
 	}
 
-	public boolean isStateDefined(final String state) {
+	//
+	public void populateNodesTable(final Table table) {
+		if (table == null) {
+			return;
+		}
+		table.removeAll();
+		String state = "";
+		String nodetype = "";
+		String strJobName = "";
+		String next = "";
+		String error = "";
+		String onError = "";
+		String strDelayOnStart = "";
+		setStates();
+		for (JobChainNode objNode : objJSJobChain.getJobChainNodeList()) {
+			strJobName = objNode.getJob();
+			if (strJobName.length() <= 0) { // Ein EndNode
+				nodetype = "Endnode";
+			}
+			else {
+				nodetype = "Job";
+			}
+			state = objNode.getState();
+			String strHasParameters = "";
+			nodetype = "Job";
+			next = objNode.getNextState();
+			error = objNode.getErrorState();
+			strDelayOnStart = BigInt2String(objNode.getDelay());
+			int conItemIndexHasParams = 7;
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setData("element", objNode);
+			item.setData("elementtype", nodetype);
+			//		TODO		if (DetailsListener.existDetailsParameter(state, getChainName(), strJobName, _dom, update, false, null)) {
+			//					item.setBackground(getColor4NodeParameter());
+			//					strHasParameters = "yes";
+			//				}
+			//				else {
+			//					item.setBackground(null);
+			//				}
+			item.setText(new String[] { state, nodetype, strJobName, next, error, onError, strDelayOnStart, strHasParameters });
+			int conItemIndexNext = 3;
+			int conItemIndexError = 4;
+			if (!next.equals("") && !isStateDefined(next))
+				item.setBackground(conItemIndexNext, getColor4InvalidValues());
+			if (!error.equals("") && !isStateDefined(error)) {
+				item.setBackground(conItemIndexError, getColor4InvalidValues());
+			}
+			if (strHasParameters.length() > 0) {
+				item.setBackground(conItemIndexHasParams, getColor4hasParameter());
+			}
+		}
+		state = "";
+		strJobName = "";
+		next = "";
+		error = "";
+		onError = "";
+		strDelayOnStart = "";
+		for (JobChainNodeEnd objNode : objJSJobChain.getJobChainNodeEndList()) {
+			state = objNode.getState();
+			nodetype = "Endnode";
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setData("element", objNode);
+			item.setData("elementtype", nodetype);
+			item.setText(new String[] { state, nodetype, strJobName, next, error, onError, strDelayOnStart, "" });
+		}
+	}
+	//
+	public SOSTable	objJobChainNodesTable	= null;
 
-		for (String _state : _states) {
+	//	public void populateNodesTable() {
+	//		assert objJobChainNodesTable != null;
+	//		assert objJobChain != null;
+	//		objJobChainNodesTable.removeAll();
+	//		setStates();
+	//		int intIndex = 0;
+	//		for (Object eleNode : objJobChain.getChildren()) {
+	//			JobChainNodeWrapper objJobChainNode = getJobChainNodeWrapper((Element) eleNode);
+	//			objJobChainNode.setIndex(++intIndex);
+	//			if (objJobChainNode.isNode4NodesTable() == true) {
+	//				String strJobName = objJobChainNode.getJobName();
+	//				if (objJobChainNode.isJobNode() == true && getJobFile(strJobName).exists() == false) {
+	//					objJobChainNode.setJobIsMissing(true);
+	//				}
+	//				if (DetailsListener.existJobChainNodesParameter(objJobChainNode.getState(), getChainName(), strJobName, get_dom(), update, false, null)) {
+	//					objJobChainNode.setHasNodeParameter(true);
+	//				}
+	//				String next = objJobChainNode.getNextState();
+	//				if (!next.equals("") && !isStateDefined(next)) {
+	//					objJobChainNode.setNextStateIsInvalid(true);
+	//				}
+	//				String error = objJobChainNode.getErrorState();
+	//				if (!error.equals("") && !isStateDefined(error)) {
+	//					objJobChainNode.setErrorStateIsInvalid(true);
+	//				}
+	//				TableItem objTI = new TableItem(objJobChainNodesTable, SWT.NONE);
+	//				objTI.setData(objJobChainNode);
+	//				objJobChainNode.populateTableItem(objTI);
+	//			}
+	//		}
+	//	}
+	//
+	// TODO implement in JSObjJobChain
+	public boolean isStateDefined(final String state) {
+		for (String _state : strCurrentStates) {
 			if (_state.equals(state)) {
 				return true;
 			}
@@ -362,7 +323,7 @@ public class JobChainListener extends JOEJobChainDataProvider {
 				if (intSelectionIndex != -1) {
 					TableItem objTi = objJobChainNodesTable.getItem(intSelectionIndex);
 					setNode(objTi.getData());
-					if (_states == null) {
+					if (strCurrentStates == null) {
 						setStates();
 					}
 				}
@@ -374,7 +335,7 @@ public class JobChainListener extends JOEJobChainDataProvider {
 	}
 
 	public void clearFileOrderSource() {
-		_objFileOrderSource = null;
+		//	TODO	_objFileOrderSource = null;
 	}
 
 	public int getSelectionIndex() {
@@ -399,18 +360,16 @@ public class JobChainListener extends JOEJobChainDataProvider {
 	public void applyNode(final boolean isJobchainNode, final String state, final String job, final String delay, final String next, final String error,
 			final boolean removeFile, final String moveTo, final String onError) throws Exception {
 		try {
-			if (_node != null) {//Wenn der Knotentyp geändert wird, alten löschen und einen neuen anlegen.
+			if (objJobChainNode != null) {//Wenn der Knotentyp geändert wird, alten löschen und einen neuen anlegen.
 				if (getState().equals(state) == false) {
 					DetailsListener.changeNodeParameters(getState(), state, getChainName(), _dom);
 				}
-
 				if (isJobchainNode && getNode().isFileSinkNode() || !isJobchainNode && getNode().isJobNode()) {
-					getNode().detach();
+					//			  TODO		getNode().detach();
 					clearNode();
 				}
 			}
-
-			if (_node == null) {
+			if (objJobChainNode == null) {
 				if (isJobchainNode) {
 					setNode(getNewJobChainNode());
 				}
@@ -449,13 +408,12 @@ public class JobChainListener extends JOEJobChainDataProvider {
 	public void setFileOrderSink(final String state, final boolean removeFile, final String moveTo) {
 		try {
 			clearNode();
-			for (Element element : getFileOrderSinkList()) {
-				if (element.getAttribute(conAttrSTATE).toString().equalsIgnoreCase(state)) {
+			for (FileOrderSink element : getFileOrderSinkList()) {
+				if (element.getState().equalsIgnoreCase(state)) {
 					setNode(getJobChainNodeWrapper(element));
 					break;
 				}
 			}
-
 			setNodeIfNull(getNewFileOrderSinkNode());
 			getNode().setState(state).setMoveTo(moveTo).setRemoveFileB(removeFile);
 		}
@@ -466,207 +424,185 @@ public class JobChainListener extends JOEJobChainDataProvider {
 
 	public void applyInsertNode(final boolean isJobchainNode, final String state, final String job, final String delay, final String next, final String error,
 			final boolean removeFile, final String moveTo, final String onError) {
-
-		JobChainNodeWrapper objCurrentNode = getNode();
-
-		JobChainNodeWrapper objNode2Insert = null;
-		if (isJobchainNode) {
-			objNode2Insert = getAJobChainNode().setJobName(job).setDelay(delay).setNextState(next).setErrorState(error).setOnError(onError);
-		}
-		else {
-			objNode2Insert = getAFileOrderSinkNode().setMoveTo(moveTo).setRemoveFileB(removeFile).setState(state);
-		}
-
-		objNode2Insert.setState(state);
-
-		boolean found = false;
-		List<Element> list = objJobChain.getChildren();
-		if (list.size() > 0 && objCurrentNode != null) {
-			// TODO Attribut "index" einführen. Damit entfällt die umsortiererei und die Reihenfolge ist nicht länger relevant
-
-			for (int i = 0; i <= list.size(); i++) {
-				if (list.get(i).equals(objCurrentNode.getDOMElement())) {
-					JobChainNodeWrapper objPreviousNode = getJobChainNodeWrapper(list.get(i - 1));
-					objPreviousNode.setNextState(state);
-					objNode2Insert.setNextState(objCurrentNode.getState());
-					objJobChain.addContent(i + 1, objNode2Insert.getDOMElement());
-					found = true;
-					break;
-				}
-			}
-		}
-
-		if (found == false) {
-			objJobChain.addContent(0, objNode2Insert.getDOMElement());
-		}
-
-		setNode(objCurrentNode);
-		setDirty();
-		setStates();
+		//		JobChainNodeWrapper objCurrentNode = getNode();
+		//		JobChainNodeWrapper objNode2Insert = null;
+		//		if (isJobchainNode) {
+		//			objNode2Insert = getAJobChainNode().setJobName(job).setDelay(delay).setNextState(next).setErrorState(error).setOnError(onError);
+		//		}
+		//		else {
+		//			objNode2Insert = getAFileOrderSinkNode().setMoveTo(moveTo).setRemoveFileB(removeFile).setState(state);
+		//		}
+		//		objNode2Insert.setState(state);
+		//		boolean found = false;
+		//		List<Element> list = objJobChain.getChildren();
+		//		if (list.size() > 0 && objCurrentNode != null) {
+		//			// TODO Attribut "index" einführen. Damit entfällt die umsortiererei und die Reihenfolge ist nicht länger relevant
+		//			for (int i = 0; i <= list.size(); i++) {
+		//				if (list.get(i).equals(objCurrentNode.getDOMElement())) {
+		//					JobChainNodeWrapper objPreviousNode = getJobChainNodeWrapper(list.get(i - 1));
+		//					objPreviousNode.setNextState(state);
+		//					objNode2Insert.setNextState(objCurrentNode.getState());
+		//					objJobChain.addContent(i + 1, objNode2Insert.getDOMElement());
+		//					found = true;
+		//					break;
+		//				}
+		//			}
+		//		}
+		//		if (found == false) {
+		//			objJobChain.addContent(0, objNode2Insert.getDOMElement());
+		//		}
+		//		setNode(objCurrentNode);
+		//		setDirty();
+		//		setStates();
 	}
 
-	public String changeNodeSequence(final boolean flgDirectionIsUpwards, final boolean isJobchainNode, final int intSelectedTabItem,
-			final boolean flgDoReorderStates) {
-
-		String state = getNode().getState();
-		String job = getNode().getJobName();
-		String delay = getNode().getDelay();
-		String next = getNode().getNextState();
-		String error = getNode().getErrorState();
-		boolean removeFile = false; // TODO implement in NodeWrapper,
-		String moveTo = ""; // TODO implement in NodeWrapper
-
-		try {
-			if (flgDoReorderStates) {
-				// TODO I18N
-				String msg = "The node " + state + " is an Endnode and cannot be changed with Node due to reorder is activated";
-
-				if (getNode().isEndNode() == true) {
-					MainWindow.message(msg, SWT.ICON_INFORMATION);
-					return "";
-				}
-
-				int intSelectionIndex = getSelectionIndex();
-				if (intSelectionIndex != -1) {
-					if (flgDirectionIsUpwards) {
-						JobChainNodeWrapper objN = (JobChainNodeWrapper) objJobChainNodesTable.getItem(intSelectionIndex - 1).getData();
-						if (objN.isEndNode()) {
-							MainWindow.message(msg, SWT.ICON_INFORMATION);
-							return "";
-						}
-					}
-					else {
-						if (intSelectionIndex < objJobChainNodesTable.getItemCount() - 1) {
-							JobChainNodeWrapper objN = (JobChainNodeWrapper) objJobChainNodesTable.getItem(intSelectionIndex + 1).getData();
-							if (objN.isEndNode()) {
-								MainWindow.message(msg, SWT.ICON_INFORMATION);
-								return "";
-							}
-						}
-					}
-				}
-			}
-
-			List l = objJobChain.getContent();
-			int cIndex = -1;
-			boolean found = false;
-
-			for (int i = 0; i < objJobChain.getContentSize(); i++) {
-				Object objI = l.get(i);
-				if (objI instanceof Element) {
-					Element elem_ = (Element) objI;
-					if (flgDirectionIsUpwards) {
-						if (elem_.equals(getNode().getDOMElement())) {
-							break;
-						}
-						else {
-							cIndex = i;
-							if (cIndex == -1) {
-								cIndex = 0;
-							}
-						}
-					}
-					else {
-						if (elem_.equals(getNode().getDOMElement())) {
-							found = true;
-						}
-						else {
-							if (found) {
-								cIndex = i;
-								break;
-							}
-						}
-					}
-				}
-			}
-
-			JobChainNodeWrapper objSelectedNode = getJobChainNodeWrapper((Element) getNode().getDOMElement().clone());
-			boolean flgSwapped = false;
-			if (flgDoReorderStates == false) {
-				flgSwapped = true;
-			}
-			else {
-				Filter elementFilter2 = new ElementFilter(conTagJOB_CHAIN_NODE, getChainElement().getNamespace());
-				List elements = getChainElement().getContent(elementFilter2);
-				int size = elements.size();
-				for (int i = 0; i < size; ++i) {
-					JobChainNodeWrapper objPredecessorNode = null;
-					JobChainNodeWrapper prev2Element = null;
-					JobChainNodeWrapper objSuccessorNode = null;
-
-					if (elements.get(i).equals(getNode().getDOMElement())) {
-						if (i >= 2) {
-							prev2Element = getJobChainNodeWrapper((Element) elements.get(i - 2));
-						}
-
-						if (i >= 1) {
-							objPredecessorNode = getJobChainNodeWrapper((Element) elements.get(i - 1));
-						}
-
-						if (size > i + 1) {
-							objSuccessorNode = getJobChainNodeWrapper((Element) elements.get(i + 1));
-						}
-
-						// TODO move to JobChain class
-						if (flgDirectionIsUpwards) { // what if the next-state are not in a row?
-							if (objSelectedNode.CanSwap(objPredecessorNode) == true) {
-								flgSwapped = true;
-								String strN = objSelectedNode.getNextState();
-								objSelectedNode.SwapNextState(objPredecessorNode);
-								objPredecessorNode.setNextState(strN);
-								if (prev2Element != null) {
-									prev2Element.SwapNextState(objSelectedNode);
-								}
-							}
-						}
-						else { // what if the next-state are not in a row?
-							if (objSuccessorNode != null && objSuccessorNode.CanSwap(objSelectedNode) == true) {
-								flgSwapped = true;
-								String strN = objSuccessorNode.getNextState();
-								objSuccessorNode.SwapNextState(objSelectedNode);
-								objSelectedNode.setNextState(strN);
-								if (objPredecessorNode != null) {
-									objPredecessorNode.SwapNextState(objSuccessorNode);
-								}
-							}
-						}
-						break;
-					}
-				}
-			}
-
-			if (flgSwapped == true) {
-				if (objJobChain.getChildren().contains(getNode().getDOMElement())) {
-					objJobChain.removeContent(getNode().getDOMElement());
-				}
-				objJobChain.addContent(cIndex, objSelectedNode.getDOMElement());
-				setNode(objSelectedNode);
-				setDirty();
-
-				//			setStates();
-				//			populateNodesTable(table);
-				objJobChainNodesTable.getItem(intSelectedTabItem).dispose();
-				int intNewIndex = intSelectedTabItem;
-				if (flgDirectionIsUpwards) {
-					intNewIndex--;
-				}
-				else {
-					intNewIndex++;
-				}
-				objSelectedNode.populateTableItem(new TableItem(objJobChainNodesTable, SWT.None, intNewIndex));
-				objJobChainNodesTable.setSelection(intNewIndex);
-			}
-		}
-		catch (Exception e) {
-			new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
-		}
-
-		return state;
-	}
-
+	//	public String changeNodeSequence(final boolean flgDirectionIsUpwards, final boolean isJobchainNode, final int intSelectedTabItem,
+	//			final boolean flgDoReorderStates) {
+	//		String state = getNode().getState();
+	//		String job = getNode().getJobName();
+	//		String delay = getNode().getDelay();
+	//		String next = getNode().getNextState();
+	//		String error = getNode().getErrorState();
+	//		boolean removeFile = false; // TODO implement in NodeWrapper,
+	//		String moveTo = ""; // TODO implement in NodeWrapper
+	//		try {
+	//			if (flgDoReorderStates) {
+	//				// TODO I18N
+	//				String msg = "The node " + state + " is an Endnode and cannot be changed with Node due to reorder is activated";
+	//				if (getNode().isEndNode() == true) {
+	//					MainWindow.message(msg, SWT.ICON_INFORMATION);
+	//					return "";
+	//				}
+	//				int intSelectionIndex = getSelectionIndex();
+	//				if (intSelectionIndex != -1) {
+	//					if (flgDirectionIsUpwards) {
+	//						JobChainNodeWrapper objN = (JobChainNodeWrapper) objJobChainNodesTable.getItem(intSelectionIndex - 1).getData();
+	//						if (objN.isEndNode()) {
+	//							MainWindow.message(msg, SWT.ICON_INFORMATION);
+	//							return "";
+	//						}
+	//					}
+	//					else {
+	//						if (intSelectionIndex < objJobChainNodesTable.getItemCount() - 1) {
+	//							JobChainNodeWrapper objN = (JobChainNodeWrapper) objJobChainNodesTable.getItem(intSelectionIndex + 1).getData();
+	//							if (objN.isEndNode()) {
+	//								MainWindow.message(msg, SWT.ICON_INFORMATION);
+	//								return "";
+	//							}
+	//						}
+	//					}
+	//				}
+	//			}
+	//			List l = objJobChain.getContent();
+	//			int cIndex = -1;
+	//			boolean found = false;
+	//			for (int i = 0; i < objJobChain.getContentSize(); i++) {
+	//				Object objI = l.get(i);
+	//				if (objI instanceof Element) {
+	//					Element elem_ = (Element) objI;
+	//					if (flgDirectionIsUpwards) {
+	//						if (elem_.equals(getNode().getDOMElement())) {
+	//							break;
+	//						}
+	//						else {
+	//							cIndex = i;
+	//							if (cIndex == -1) {
+	//								cIndex = 0;
+	//							}
+	//						}
+	//					}
+	//					else {
+	//						if (elem_.equals(getNode().getDOMElement())) {
+	//							found = true;
+	//						}
+	//						else {
+	//							if (found) {
+	//								cIndex = i;
+	//								break;
+	//							}
+	//						}
+	//					}
+	//				}
+	//			}
+	//			JobChainNodeWrapper objSelectedNode = getJobChainNodeWrapper((Element) getNode().getDOMElement().clone());
+	//			boolean flgSwapped = false;
+	//			if (flgDoReorderStates == false) {
+	//				flgSwapped = true;
+	//			}
+	//			else {
+	//				Filter elementFilter2 = new ElementFilter(conTagJOB_CHAIN_NODE, getChainElement().getNamespace());
+	//				List elements = getChainElement().getContent(elementFilter2);
+	//				int size = elements.size();
+	//				for (int i = 0; i < size; ++i) {
+	//					JobChainNodeWrapper objPredecessorNode = null;
+	//					JobChainNodeWrapper prev2Element = null;
+	//					JobChainNodeWrapper objSuccessorNode = null;
+	//					if (elements.get(i).equals(getNode().getDOMElement())) {
+	//						if (i >= 2) {
+	//							prev2Element = getJobChainNodeWrapper((Element) elements.get(i - 2));
+	//						}
+	//						if (i >= 1) {
+	//							objPredecessorNode = getJobChainNodeWrapper((Element) elements.get(i - 1));
+	//						}
+	//						if (size > i + 1) {
+	//							objSuccessorNode = getJobChainNodeWrapper((Element) elements.get(i + 1));
+	//						}
+	//						// TODO move to JobChain class
+	//						if (flgDirectionIsUpwards) { // what if the next-state are not in a row?
+	//							if (objSelectedNode.CanSwap(objPredecessorNode) == true) {
+	//								flgSwapped = true;
+	//								String strN = objSelectedNode.getNextState();
+	//								objSelectedNode.SwapNextState(objPredecessorNode);
+	//								objPredecessorNode.setNextState(strN);
+	//								if (prev2Element != null) {
+	//									prev2Element.SwapNextState(objSelectedNode);
+	//								}
+	//							}
+	//						}
+	//						else { // what if the next-state are not in a row?
+	//							if (objSuccessorNode != null && objSuccessorNode.CanSwap(objSelectedNode) == true) {
+	//								flgSwapped = true;
+	//								String strN = objSuccessorNode.getNextState();
+	//								objSuccessorNode.SwapNextState(objSelectedNode);
+	//								objSelectedNode.setNextState(strN);
+	//								if (objPredecessorNode != null) {
+	//									objPredecessorNode.SwapNextState(objSuccessorNode);
+	//								}
+	//							}
+	//						}
+	//						break;
+	//					}
+	//				}
+	//			}
+	//			if (flgSwapped == true) {
+	//				if (objJobChain.getChildren().contains(getNode().getDOMElement())) {
+	//					objJobChain.removeContent(getNode().getDOMElement());
+	//				}
+	//				objJobChain.addContent(cIndex, objSelectedNode.getDOMElement());
+	//				setNode(objSelectedNode);
+	//				setDirty();
+	//				//			setStates();
+	//				//			populateNodesTable(table);
+	//				objJobChainNodesTable.getItem(intSelectedTabItem).dispose();
+	//				int intNewIndex = intSelectedTabItem;
+	//				if (flgDirectionIsUpwards) {
+	//					intNewIndex--;
+	//				}
+	//				else {
+	//					intNewIndex++;
+	//				}
+	//				objSelectedNode.populateTableItem(new TableItem(objJobChainNodesTable, SWT.None, intNewIndex));
+	//				objJobChainNodesTable.setSelection(intNewIndex);
+	//			}
+	//		}
+	//		catch (Exception e) {
+	//			new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+	//		}
+	//		return state;
+	//	}
+	//
 	public void applyFileOrderSource(final String directory, final String regex, final String next_state, final String max, final String repeat,
 			final String delay_after_error) {
-
 		if (_objFileOrderSource == null) {
 			Element eleFileSorderSource = new Element(conTagFILE_ORDER_SOURCE);
 			objJobChain.addContent(eleFileSorderSource);
@@ -718,17 +654,17 @@ public class JobChainListener extends JOEJobChainDataProvider {
 	public void deleteNode() {
 		int intSelectionIndex = getSelectionIndex(); // starting with index 0
 		if (intSelectionIndex >= 0) {
-			List<Element> nodes = objJobChain.getChildren();
 			int index = getIndexOfNode(objJobChainNodesTable.getItem(intSelectionIndex));
 			if (index > 0) {
 				try {
-					JobChainNodeWrapper objPredecessor = getJobChainNodeWrapper(nodes.get(index - 1));
-					JobChainNodeWrapper objSuccessor = getJobChainNodeWrapper(nodes.get(index + 1));
-					if (checkNodesAreChained(objPredecessor, _node, objSuccessor)) {
+					JobChainNodeWrapper objCurrentNode = getJobChainNodeWrapper((JSObjBase) objJobChainNodesTable.getItem(intSelectionIndex).getData());
+					JobChainNodeWrapper objPredecessor = getJobChainNodeWrapper((JSObjBase) objJobChainNodesTable.getItem(intSelectionIndex - 1).getData());
+					JobChainNodeWrapper objSuccessor = getJobChainNodeWrapper((JSObjBase) objJobChainNodesTable.getItem(intSelectionIndex + 1).getData());
+					if (checkNodesAreChained(objPredecessor, objJobChainNode, objSuccessor)) {
 						objPredecessor.setNextState(objSuccessor.getState());
 					}
-					DetailsListener.deleteDetailsState(objJobChainNodesTable.getSelection()[0].getText(0), getChainName(), _dom);
-					nodes.remove(index);
+					//		TODO			DetailsListener.deleteDetailsState(objJobChainNodesTable.getSelection()[0].getText(0), getChainName(), _dom);
+					//		TODO			objJSJobChain.remove(objCurrentNode);
 					clearNode();
 					setDirty();
 					setStates();
@@ -750,7 +686,6 @@ public class JobChainListener extends JOEJobChainDataProvider {
 						createNewJobChainNode(strNextState, "", "", "", "", "");
 						objN.setNextStateIsInvalid(false);
 					}
-
 					String strErrorState = objN.getErrorState();
 					if (isStateDefined(strErrorState) == false) {
 						createNewJobChainNode(strErrorState, "", "", "", "", "");
@@ -763,7 +698,7 @@ public class JobChainListener extends JOEJobChainDataProvider {
 			new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()), ex);
 		}
 		finally {
-			populateNodesTable();
+			populateNodesTable(objJobChainNodesTable);
 		}
 	}
 
@@ -795,6 +730,7 @@ public class JobChainListener extends JOEJobChainDataProvider {
 	* \return String[]
 	*
 	 */
+	@Deprecated// TODO  implement in JSObjJobChain
 	public String[] getJobs() {
 		if (_config == null) {
 			return new String[0];
@@ -813,7 +749,6 @@ public class JobChainListener extends JOEJobChainDataProvider {
 				}
 			}
 			String[] names = new String[size];
-
 			it = jobs.iterator();
 			while (it.hasNext()) {
 				Element e = (Element) it.next();
@@ -829,101 +764,123 @@ public class JobChainListener extends JOEJobChainDataProvider {
 			return new String[0];
 	}
 
-	@SuppressWarnings("rawtypes")
 	private void setStates() {
-		List nodes = objJobChain.getChildren(conTagJOB_CHAIN_NODE);
-		List sinks = objJobChain.getChildren("file_order_sink");
-		List endNodes = objJobChain.getChildren("job_chain_node.end");
-
-		_states = new String[sinks.size() + nodes.size() + endNodes.size()];
-
+		String strState = "";
+		String strErrorState = "";
 		listOfAllState = new ArrayList<String>();
-
-		int index = 0;
-		Iterator it = nodes.iterator();
-		while (it.hasNext()) {
-			Element el = (Element) it.next();
-			String state = el.getAttributeValue(conAttrSTATE);
-			if (state == null) {
-				state = "";
+		for (Object objBaseNode : objJSJobChain.getJobChainNodeOrFileOrderSinkOrJobChainNodeEnd()) {
+			strState = "???";
+			strErrorState = null;
+			if (objBaseNode instanceof JobChainNode) {
+				strState = ((JobChainNode) objBaseNode).getState();
+				strErrorState = ((JobChainNode) objBaseNode).getErrorState();
 			}
-			_states[index++] = state;
-			if (!listOfAllState.contains(state))
-				listOfAllState.add(state);
-			String errorState = el.getAttributeValue(conAttrERROR_STATE);
-			if (errorState == null) {
-				errorState = "";
+			else {
+				if (objBaseNode instanceof FileOrderSink) {
+					strState = ((FileOrderSink) objBaseNode).getState();
+				}
+				else {
+					if (objBaseNode instanceof JobChainNodeEnd) {
+						strState = ((JobChainNodeEnd) objBaseNode).getState();
+					}
+					else {
+						strState = null;
+						strErrorState = null;
+					}
+				}
 			}
-			if (!listOfAllState.contains(errorState))
-				listOfAllState.add(errorState);
+			if (strState != null && listOfAllState.contains(strState) == false) {
+				listOfAllState.add(strState);
+			}
+			if (strErrorState != null && listOfAllState.contains(strErrorState) == false) {
+				listOfAllState.add(strErrorState);
+			}
 		}
-
-		it = sinks.iterator();
-		while (it.hasNext()) {
-			String state = ((Element) it.next()).getAttributeValue(conAttrSTATE);
-			if (state == null) {
-				state = "";
-			}
-			_states[index++] = state;
-			if (!listOfAllState.contains(state))
-				listOfAllState.add(state);
-		}
-
-		it = endNodes.iterator();
-		while (it.hasNext()) {
-			Element el = (Element) it.next();
-			String state = el.getAttributeValue(conAttrSTATE);
-			if (state == null) {
-				state = "";
-			}
-			_states[index++] = state;
-			if (!listOfAllState.contains(state))
-				listOfAllState.add(state);
-		}
+		strCurrentStates = listOfAllState.toArray(new String[listOfAllState.size()]);
+		//		return _states;
+		//		
+		//		List nodes = objJobChain.getChildren(conTagJOB_CHAIN_NODE);
+		//		List sinks = objJobChain.getChildren("file_order_sink");
+		//		List endNodes = objJobChain.getChildren("job_chain_node.end");
+		//		_states = new String[sinks.size() + nodes.size() + endNodes.size()];
+		//		listOfAllState = new ArrayList<String>();
+		//		int index = 0;
+		//		Iterator it = nodes.iterator();
+		//		while (it.hasNext()) {
+		//			Element el = (Element) it.next();
+		//			String state = el.getAttributeValue(conAttrSTATE);
+		//			if (state == null) {
+		//				state = "";
+		//			}
+		//			_states[index++] = state;
+		//			if (!listOfAllState.contains(state))
+		//				listOfAllState.add(state);
+		//			String errorState = el.getAttributeValue(conAttrERROR_STATE);
+		//			if (errorState == null) {
+		//				errorState = "";
+		//			}
+		//			if (!listOfAllState.contains(errorState))
+		//				listOfAllState.add(errorState);
+		//		}
+		//		it = sinks.iterator();
+		//		while (it.hasNext()) {
+		//			String state = ((Element) it.next()).getAttributeValue(conAttrSTATE);
+		//			if (state == null) {
+		//				state = "";
+		//			}
+		//			_states[index++] = state;
+		//			if (!listOfAllState.contains(state))
+		//				listOfAllState.add(state);
+		//		}
+		//		it = endNodes.iterator();
+		//		while (it.hasNext()) {
+		//			Element el = (Element) it.next();
+		//			String state = el.getAttributeValue(conAttrSTATE);
+		//			if (state == null) {
+		//				state = "";
+		//			}
+		//			_states[index++] = state;
+		//			if (!listOfAllState.contains(state))
+		//				listOfAllState.add(state);
+		//		}
 	}
 
-	public String[] emptyStringArray () {
+	public String[] emptyStringArray() {
 		String[] strT = new String[0];
 		strT[0] = "";
 		return strT;
-
 	}
+
+	// TODO implement JSObjJobChain
 	public String[] getStates() {
-		if (_states == null) {
-			return emptyStringArray();
+		if (strCurrentStates == null) {
+			setStates();
 		}
 		else {
-			if (_node != null) {
+			if (objJobChainNode != null) {
 				String state = getState();
-				int intLength = _states.length;
-				ArrayList <String> arrL = new ArrayList <String> () ;
-
+				int intLength = strCurrentStates.length;
+				ArrayList<String> arrL = new ArrayList<String>();
 				for (int i = 0; i < intLength; i++) {
-					if (!_states[i].equals(state)) {
-						arrL.add(_states[i]);
+					if (!strCurrentStates[i].equals(state)) {
+						arrL.add(strCurrentStates[i]);
 					}
 				}
 				String[] states = arrL.toArray(new String[arrL.size()]);
 				return states;
 			}
-			else {
-				return _states;
-			}
 		}
+		return strCurrentStates;
 	}
 
+	// TODO implement JSObjJobChain
 	public String[] getAllStates() {
 		try {
 			if (listOfAllState == null)
 				return emptyStringArray();
 			else {
-				if (_node == null) {
-					int index = 0;
-					String[] states = new String[listOfAllState.size()];
-					for (int i = 0; i < listOfAllState.size(); i++) {
-						states[index++] = listOfAllState.get(i);
-					}
-					return states;
+				if (objJobChainNode == null) {
+					return listOfAllState.toArray(new String[listOfAllState.size()]);
 				}
 				else {
 					String errorState = getErrorState();
@@ -931,21 +888,17 @@ public class JobChainListener extends JOEJobChainDataProvider {
 					int i_ = 0;
 					if (state.length() > 0)
 						i_++;
-
 					if (errorState.length() > 0)
 						i_++;
-
 					int index = 0;
 					if (listOfAllState.size() - i_ < -1)
 						i_ = 0;
-
 					String[] states = new String[listOfAllState.size() - i_];
 					for (int i = 0; i < listOfAllState.size(); i++) {
 						if (!listOfAllState.get(i).equals(state) && !listOfAllState.get(i).equals(errorState))
 							states[index++] = listOfAllState.get(i) != null ? listOfAllState.get(i).toString() : "";
 					}
-
-					ArrayList <String> arrL = new ArrayList <String> () ;
+					ArrayList<String> arrL = new ArrayList<String>();
 					for (String state2 : states) {
 						if (state2 != null) {
 							arrL.add(state2);
@@ -963,11 +916,8 @@ public class JobChainListener extends JOEJobChainDataProvider {
 	}
 
 	public String getDiagramFileName() {
-
 		String strR = null;
 		try {
-			objJSJobChain = null;
-			getJOMJobChain();
 			strR = objJSJobChain.createDOTFile();
 		}
 		catch (Exception e) {
@@ -977,11 +927,10 @@ public class JobChainListener extends JOEJobChainDataProvider {
 	}
 
 	public void createMissingJobs() {
-
 		try {
 			int intIndex = 0;
-			for (Object eleNode : objJobChain.getChildren()) {
-				JobChainNodeWrapper objJobChainNode = getJobChainNodeWrapper((Element) eleNode);
+			for (JobChainNode objNode : objJSJobChain.getJobChainNodeList()) {
+				JobChainNodeWrapper objJobChainNode = getJobChainNodeWrapper(objNode);
 				objJobChainNode.setIndex(++intIndex);
 				String strJobName = objJobChainNode.getJobName();
 				if (objJobChainNode.isNode4NodesTable() == true && isNotEmpty(strJobName)) {
@@ -1001,21 +950,12 @@ public class JobChainListener extends JOEJobChainDataProvider {
 							objF.WriteLine(strContent);
 							objF.close();
 						}
-						//					else {
-						//						objJobChain = new Element("job");
-						//						setName("new job ");
-						//						setTitle("new job");
-						//						setVisible(true);
-						//					}
 					}
 				}
 			}
 		}
 		catch (Exception e) {
 			new ErrorLog(e.getLocalizedMessage(), e);
-		}
-		finally {
-
 		}
 	}
 

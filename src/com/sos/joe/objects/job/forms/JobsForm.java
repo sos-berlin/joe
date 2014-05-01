@@ -19,12 +19,12 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.job.wizard.JobAssistentForm;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;

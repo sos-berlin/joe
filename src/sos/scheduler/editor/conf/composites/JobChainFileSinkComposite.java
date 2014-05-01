@@ -115,7 +115,7 @@ public class JobChainFileSinkComposite extends CompositeBaseAbstract<JobChainLis
 			tbxState.addModifyListener(new ModifyListener() {
 				@Override
 				public void modifyText(final ModifyEvent e) {
-					boolean valid = objDataProvider.isValidState(tbxState.getText());
+					boolean valid = objDataProvider.isUniqueState(tbxState.getText());
 					if (!valid) {
 						tbxState.setBackground(objDataProvider.getColor4InvalidValues());
 					}
@@ -312,7 +312,7 @@ public class JobChainFileSinkComposite extends CompositeBaseAbstract<JobChainLis
 
 			String msg = "";
 			if (flgFromCopyStore == false) {
-				if (!objDataProvider.isValidState(strState)) {
+				if (!objDataProvider.isUniqueState(strState)) {
 					msg = JOE_M_JobChain_StateAlreadyDefined.label();
 				}
 			}

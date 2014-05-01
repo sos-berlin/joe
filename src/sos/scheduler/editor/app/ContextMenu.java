@@ -318,18 +318,18 @@ public class ContextMenu {
 
 	}
 
-	public static void goTo(final String name, DomParser _dom, final int type) {
+	public static void goTo(final String name, final DomParser _dom, final int type) {
 		try {
 
 			if (name == null || name.length() == 0) {
 				return;
 			}
-
-			if (_dom instanceof sos.scheduler.editor.actions.ActionsDom)
-				_dom = _dom;
-			else
-				_dom = _dom;
-
+//			Self assignment of _dom in sos.scheduler.editor.app.ContextMenu.goTo(String, DomParser, int) [Of Concern(15), High confidence]	ContextMenu.java	/com.sos.scheduler.editor.sandbox/src/sos/scheduler/editor/app	line 329	FindBugs Problem (Of concern)
+//			if (_dom instanceof sos.scheduler.editor.actions.ActionsDom)
+//				_dom = _dom;
+//			else
+//				_dom = _dom;
+//
 			if (type == Editor.JOB) {
 				selectTreeItem(_dom, "job", name, Editor.JOBS);
 

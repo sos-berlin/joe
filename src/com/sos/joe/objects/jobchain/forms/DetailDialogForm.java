@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.forms;
+package com.sos.joe.objects.jobchain.forms;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;

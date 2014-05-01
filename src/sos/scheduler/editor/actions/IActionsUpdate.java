@@ -1,6 +1,6 @@
 package sos.scheduler.editor.actions;
 
-import sos.scheduler.editor.app.IDataChanged;
+import com.sos.joe.interfaces.IDataChanged;
 
 public interface IActionsUpdate extends IDataChanged {
 	 

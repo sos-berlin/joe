@@ -1,4 +1,4 @@
-package sos.scheduler.editor.app;
+package com.sos.joe.interfaces;
 
 import org.eclipse.swt.custom.CTabItem;
 

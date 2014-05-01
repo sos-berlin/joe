@@ -1,6 +1,6 @@
 package com.sos.jobdoc;
 
-import sos.scheduler.editor.app.IDataChanged;
+import com.sos.joe.interfaces.IDataChanged;
 
 public interface IDocumentationUpdate extends IDataChanged {
 	

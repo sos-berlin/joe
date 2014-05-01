@@ -18,14 +18,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.sos.joe.interfaces.IContainer;
 import com.sos.joe.interfaces.IDetailUpdate;
+import com.sos.joe.interfaces.IEditor;
+import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.objects.jobchain.JobChainConfigurationListener;
 
 import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.IContainer;
-import sos.scheduler.editor.app.IEditor;
 import sos.scheduler.editor.app.IOUtils;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;

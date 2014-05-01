@@ -16,9 +16,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
+
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
+
 import sos.scheduler.editor.app.IOUtils;
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;

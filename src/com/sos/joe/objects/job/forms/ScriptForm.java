@@ -9,6 +9,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -18,22 +19,20 @@ import org.eclipse.swt.widgets.Label;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
+import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.classes.LanguageSelector;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.container.JobIncludeFile;
 import sos.scheduler.editor.conf.container.JobJavaAPI;
 import sos.scheduler.editor.conf.container.JobScript;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.joe.objects.job.JobListener;
 import com.sos.scheduler.model.LanguageDescriptor;
 import com.sos.scheduler.model.LanguageDescriptorList;
 import com.sos.scheduler.model.objects.JSObjJob;
 
-public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public abstract class ScriptForm extends SOSJOEMessageCodes {
 
 	@SuppressWarnings("unused")
 	private final String conClassName = this.getClass().getSimpleName();
@@ -49,7 +48,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 	private Cursor				objLastCursor					= null;
 	private boolean				init							= true;
 
-	protected ISchedulerUpdate	update;
+//	protected ISchedulerUpdate	update;
 	protected Element			job;
 
 	protected LanguageSelector	languageSelector				= null;
@@ -67,8 +66,8 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 	protected JobScript			objJobScript					= null;
 	private JobJavaAPI			objJobJAPI						= null;
 	private JobIncludeFile		objJobIncludeFile				= null;
-	@Deprecated
-	private final SchedulerDom	dom;
+//	@Deprecated
+//	private final SchedulerDom	dom;
 
 	protected Group				objMainOptionsGroup				= null;
 
@@ -80,25 +79,14 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 
 	protected abstract String[] getScriptLanguages();
 
-	@Deprecated
-	public ScriptForm(final Composite parent, final int style, final SchedulerDom dom_, final Element job_, final ISchedulerUpdate main) {
-		super(parent, style);
-		job = job_;
-		dom = dom_;
-		update = main;
-		dom.setInit(true);
-		objDataProvider = new JobListener(dom, job, main);
-		objDataProvider._languages = LanguageDescriptorList.getLanguages4APIJobs();
+	private TreeData objTreeData = null;
+	
+	public ScriptForm(final Composite parent, final TreeData pobjTreeData) {
+		super(parent, SWT.None);
+//		update = main;
+		objDataProvider = new JobListener(pobjTreeData);
 		objDataProvider._languages = JSObjJob.ValidLanguages4Job;
-		dom.setInit(false);
-	}
-
-	public ScriptForm(final Composite parent, final int style, final JSObjJob pobjJob, final ISchedulerUpdate main) {
-		super(parent, style);
-		dom = null;
-		update = main;
-		objDataProvider = new JobListener(pobjJob, main);
-		objDataProvider._languages = JSObjJob.ValidLanguages4Job;
+		objTreeData = pobjTreeData;
 		//        dom.setInit(false);
 	}
 
@@ -129,15 +117,13 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 
 	protected void initialize() {
 		try {
-//			dom.setInit(true);
 			init = true;
 			this.setLayout(new GridLayout());
 			createGroup();
 			fillForm();
-		setSize(new org.eclipse.swt.graphics.Point(723, 566));
+		setSize(new Point(723, 566));
 			initForm();
 			init = false;
-//			dom.setInit(false);
 		}
 		catch (Exception e) {
 			new ErrorLog(e.getLocalizedMessage(), e);
@@ -341,11 +327,6 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 		}
 
 		init = false;
-	}
-
-	@Override
-	public void setToolTipText() {
-		//
 	}
 
 	public JobJavaAPI getObjJobJAPI() {

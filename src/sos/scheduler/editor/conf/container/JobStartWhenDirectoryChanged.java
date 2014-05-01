@@ -185,7 +185,7 @@ public class JobStartWhenDirectoryChanged extends CompositeBaseClass {
 	}
 
 	private void initForm() {
-		objJobDataProvider.fillDirectories(tDirectories);
+		objJobDataProvider.fillDirectories$StartWhenDirectoryChanged(tDirectories);
 		/*this.tRegex.setText(that.tRegex.getText());
 		this.tDirectory.setText(that.tDirectory.getText());
 
@@ -200,7 +200,7 @@ public class JobStartWhenDirectoryChanged extends CompositeBaseClass {
 		tRegex.setEnabled(enabled);
 		if (enabled) {
 			tDirectory.setText(objJobDataProvider.getDirectory());
-			tRegex.setText(objJobDataProvider.getRegex());
+			tRegex.setText(objJobDataProvider.getRegex$StartWhenDirectoryChanged());
 		}
 		else {
 			tDirectory.setText("");
@@ -214,7 +214,7 @@ public class JobStartWhenDirectoryChanged extends CompositeBaseClass {
 		String strRegExp = tRegex.getText();
 		if (Utils.isValidRegExpression(strRegExp)) {
 			objJobDataProvider.applyDirectory(tDirectory.getText(), strRegExp);
-			objJobDataProvider.fillDirectories(tDirectories);
+			objJobDataProvider.fillDirectories$StartWhenDirectoryChanged(tDirectories);
 			initDirectory(false);
 			getShell().setDefaultButton(null);
 		}

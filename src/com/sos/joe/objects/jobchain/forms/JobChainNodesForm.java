@@ -56,7 +56,6 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
@@ -65,7 +64,6 @@ import sos.scheduler.editor.classes.FolderNameSelector;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSTabItemCreator;
 import sos.scheduler.editor.classes.SOSTable;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.composites.JobChainFileSinkComposite;
@@ -77,11 +75,11 @@ import sos.scheduler.editor.conf.composites.JobChainParameterComposite;
 import sos.scheduler.editor.conf.composites.JobChainParameterNodesComposite;
 import sos.scheduler.editor.conf.container.JobScript;
 import sos.scheduler.editor.conf.container.JobSourceViewer;
-import sos.scheduler.editor.conf.forms.DetailDialogForm;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.DialogAdapter;
 import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.objects.jobchain.JobChainListener;
 import com.sos.joe.objects.jobchain.JobChainNodeWrapper;
 import com.sos.scheduler.model.objects.JSObjJobChain;
@@ -104,7 +102,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 	private boolean				flgInsertFileSink		= false;
 	private boolean				flgDoReorderStates		= false;
 	private boolean				checkParameter			= false;
-	private Element				objJobChainDOMElement	= null;
+	private final Element				objJobChainDOMElement	= null;
 	class HelpKeyListener extends KeyAdapter {
 		@Override
 		public void keyPressed(final KeyEvent e) {
@@ -114,28 +112,28 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 		}
 	}
 	private final HelpKeyListener	objHelpKeyListener	= new HelpKeyListener();
-	private JSObjJobChain			objJobChain			= null;
+	private JSObjJobChain			objJSJobChain			= null;
 
 	public JobChainNodesForm(final Composite parent, final int style, final TreeData pobjTreeData) {
 		super(parent, style);
-		objJobChain = (JSObjJobChain) pobjTreeData.getObject();
-		objDataProvider = new JobChainListener(objJobChain);
+		objJSJobChain = (JSObjJobChain) pobjTreeData.getObject();
+				objDataProvider = new JobChainListener(objJSJobChain);
 		objDataProvider.setTreeData(pobjTreeData);
-		objJobChain.setInit(true);
+		objJSJobChain.setInit(true);
 		initialize();
 		setToolTipText();
 		//		InitializeAllFormControls(false, false);
-		objJobChain.setInit(false);
+		objJSJobChain.setInit(false);
 	}
 
-	@Deprecated
-	public JobChainNodesForm(final Composite objParentComposite, final int style, final SchedulerDom dom_, final Element jobChain) {
-		super(objParentComposite, style);
-		objParent = objParentComposite;
-		objDataProvider = new JobChainListener(dom_, jobChain);
-		objJobChainDOMElement = jobChain;
-		initialize();
-	}
+//	@Deprecated
+//	public JobChainNodesForm(final Composite objParentComposite, final int style, final SchedulerDom dom_, final Element jobChain) {
+//		super(objParentComposite, style);
+//		objParent = objParentComposite;
+//		objDataProvider = new JobChainListener(dom_, jobChain);
+//		objJobChainDOMElement = jobChain;
+//		initialize();
+//	}
 
 	private void initialize() {
 		try {
@@ -146,7 +144,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 			if (existChainNodes) {
 				populateNodesTable(false, false);
 			}
-			objParent.setEnabled(objDataProvider.getJSObject().isEnabled());
+// TODO unclear			objParent.setEnabled(objDataProvider.getJSObject().isEnabled());
 		}
 		catch (Exception e) {
 			new ErrorLog(JOE_E_0002.params(conClassName), e);
@@ -642,7 +640,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 	}
 
 	private void populateNodesTable(final boolean enable, final boolean isNew) {
-		objDataProvider.populateNodesTable();
+		objDataProvider.populateNodesTable(tblJobChainStates);
 	}
 	int					intStepIncr		= 100;
 	private final int	intCopyCnt		= 0;
@@ -706,35 +704,35 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 	}
 
 	private void MoveNodeUp() {
-		if (tblJobChainStates.getSelectionCount() > 0) {
-			int index = tblJobChainStates.getSelectionIndex();
-			if (index > 0) {
-				String strState = objDataProvider.changeNodeSequence(true, true, index, flgDoReorderStates);
-				if (strState.isEmpty() == false) {
-					tblJobChainStates.setSelection(index - 1);
-					selectNodes();
-					MainWindow.setStatusLine(String.format("moved Node '%1$s' one line up", strState));
-				}
-			}
-		}
+//	TODO	if (tblJobChainStates.getSelectionCount() > 0) {
+//			int index = tblJobChainStates.getSelectionIndex();
+//			if (index > 0) {
+//				String strState = objDataProvider.changeNodeSequence(true, true, index, flgDoReorderStates);
+//				if (strState.isEmpty() == false) {
+//					tblJobChainStates.setSelection(index - 1);
+//					selectNodes();
+//					MainWindow.setStatusLine(String.format("moved Node '%1$s' one line up", strState));
+//				}
+//			}
+//		}
 	}
 
 	private void MoveNodeDown() {
-		if (tblJobChainStates.getSelectionCount() > 0) {
-			int index = tblJobChainStates.getSelectionIndex();
-			if (index == tblJobChainStates.getItemCount() - 1) {
-				// System.out.println("Datensatz ist bereits ganz unten.");
-			}
-			else
-				if (index >= 0) {
-					String strState = objDataProvider.changeNodeSequence(false, true, index, flgDoReorderStates);
-					if (strState.isEmpty() == false) {
-						tblJobChainStates.setSelection(index + 1);
-						selectNodes();
-						MainWindow.setStatusLine(String.format("moved Node '%1$s' one line down", strState));
-					}
-				}
-		}
+//	TODO	if (tblJobChainStates.getSelectionCount() > 0) {
+//			int index = tblJobChainStates.getSelectionIndex();
+//			if (index == tblJobChainStates.getItemCount() - 1) {
+//				// System.out.println("Datensatz ist bereits ganz unten.");
+//			}
+//			else
+//				if (index >= 0) {
+//					String strState = objDataProvider.changeNodeSequence(false, true, index, flgDoReorderStates);
+//					if (strState.isEmpty() == false) {
+//						tblJobChainStates.setSelection(index + 1);
+//						selectNodes();
+//						MainWindow.setStatusLine(String.format("moved Node '%1$s' one line down", strState));
+//					}
+//				}
+//		}
 	}
 
 	private Listener getMoveNodeUpListener() {

@@ -100,7 +100,7 @@ public class JobChainNodeWrapper extends JSToolBox {
 	 * @param strState the strState to set
 	 */
 	public JobChainNodeWrapper setState(final String pstrState) {
-		objNode.setState(pstrState);
+		getJCN().setState(pstrState);
 		return this;
 	}
 
@@ -120,7 +120,7 @@ public class JobChainNodeWrapper extends JSToolBox {
 //		//		_dom.setChanged(true);
 //		//		_dom.setChangedForDirectory("job_chain", strJobChainName, SchedulerDom.MODIFY);
 //	}
-	private JobChainNode	objNode	= null;
+	private JSObjBase	objNode	= null;
 
 	public JobChainNodeWrapper setNode(final JobChainNode pobjNode) {
 		objNode = pobjNode;
@@ -131,7 +131,7 @@ public class JobChainNodeWrapper extends JSToolBox {
 	 * @param strNextState the strNextState to set
 	 */
 	public JobChainNodeWrapper setNextState(final String strNextState) {
-		objNode.setNextState(strNextState);
+		getJCN().setNextState(strNextState);
 		return this;
 	}
 
@@ -139,7 +139,7 @@ public class JobChainNodeWrapper extends JSToolBox {
 	 * @param strErrorState the strErrorState to set
 	 */
 	public JobChainNodeWrapper setErrorState(final String strErrorState) {
-		objNode.setErrorState(strErrorState);
+		getJCN().setErrorState(strErrorState);
 		return this;
 	}
 
@@ -147,7 +147,7 @@ public class JobChainNodeWrapper extends JSToolBox {
 	 * @param strOnError the strOnError to set
 	 */
 	public JobChainNodeWrapper setOnError(final String strOnError) {
-		objNode.setOnError(strOnError);
+		getJCN().setOnError(strOnError);
 		return this;
 	}
 
@@ -155,7 +155,7 @@ public class JobChainNodeWrapper extends JSToolBox {
 	 * @param strDelay the strDelay to set
 	 */
 	public JobChainNodeWrapper setDelay(final String strDelay) {
-		objNode.setDelay(BigInteger.valueOf(Integer.valueOf(strDelay)));
+		getJCN().setDelay(BigInteger.valueOf(Integer.valueOf(strDelay)));
 		return this;
 	}
 
@@ -163,7 +163,7 @@ public class JobChainNodeWrapper extends JSToolBox {
 	 * @param strJobName the strJobName to set
 	 */
 	public JobChainNodeWrapper setJobName(final String strJobName) {
-		objNode.setJob(strJobName);
+		getJCN().setJob(strJobName);
 		this.strJobName = strJobName;
 		return this;
 	}
@@ -199,7 +199,12 @@ public class JobChainNodeWrapper extends JSToolBox {
 //	}
 //
 	public String getState() {
-		return objNode.getState();
+		String strR = getJCN().getState();
+		if (strR == null) {
+			strR = "";
+		}
+
+		return strR;
 	}
 
 //	private String getAttr(final String pstrAttributeName) {
@@ -208,25 +213,25 @@ public class JobChainNodeWrapper extends JSToolBox {
 //	}
 
 	public String getNextState() {
-		return objNode.getNextState();
+		return getJCN().getNextState();
 	}
 
 	public String getErrorState() {
-		return objNode.getErrorState();
+		return getJCN().getErrorState();
 	}
 
 	public String getOnError() {
-		strOnError = objNode.getOnError();
+		strOnError = getJCN().getOnError();
 		return strOnError;
 	}
 
 	public String getDelay() {
-		strDelay = objNode.getDelay().toString();
+		strDelay = getJCN().getDelay().toString();
 		return strDelay;
 	}
 
 	public String getJobName() {
-		strJobName = objNode.getJob();
+		strJobName = getJCN().getJob();
 		return strJobName;
 	}
 
@@ -244,8 +249,16 @@ public class JobChainNodeWrapper extends JSToolBox {
 		return (FileOrderSink) pobjNode;
 	}
 
+	public JobChainNode getJCN(final JSObjBase pobjNode) {
+		return (JobChainNode) pobjNode;
+	}
+
 	public FileOrderSink getFOS() {
 		return getFOS(objNode);
+	}
+
+	public JobChainNode getJCN() {
+		return getJCN(objNode);
 	}
 
 	public boolean getRemoveFileB() {
@@ -262,8 +275,12 @@ public class JobChainNodeWrapper extends JSToolBox {
 		objNode = pobjNode;
 	}
 
+	public JobChainNodeWrapper(final JSObjBase pobjNode) {
+		objNode = pobjNode;
+	}
+
 	public String getNodeName() {
-		String strR = objNode.getState();
+		String strR = getJCN().getState();
 		return strR;
 	}
 
@@ -326,7 +343,7 @@ public class JobChainNodeWrapper extends JSToolBox {
 
 	public boolean isJobNode() {
 		boolean flgR = true;
-		if (isEmpty(objNode.getJob())) {
+		if (isEmpty(getJCN().getJob())) {
 			flgR = false;
 		}
 		return flgR;

@@ -1,7 +1,5 @@
 package com.sos.joe.objects.job;
-
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -12,85 +10,61 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
+import com.sos.JSHelper.Exceptions.JobSchedulerException;
 import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.scheduler.model.LanguageDescriptor;
 import com.sos.scheduler.model.LanguageDescriptorList;
+import com.sos.scheduler.model.objects.Include;
 import com.sos.scheduler.model.objects.JSObjJob;
+import com.sos.scheduler.model.objects.Job.DelayOrderAfterSetback;
+import com.sos.scheduler.model.objects.Job.Description;
+import com.sos.scheduler.model.objects.Job.Monitor;
 import com.sos.scheduler.model.objects.Job.StartWhenDirectoryChanged;
+import com.sos.scheduler.model.objects.JobSettings;
 import com.sos.scheduler.model.objects.RunTime;
 import com.sos.scheduler.model.objects.Script;
 
 public class JobListener extends JOEListener {
-
-	public static final String	conTagSCRIPT	= "script";
-
-	private final String conClassName = this.getClass().getSimpleName();
-	private final Logger logger = Logger.getLogger(this.getClass());
+	public static final String				conTagSCRIPT						= "script";
+	private final String					conClassName						= this.getClass().getSimpleName();
+	private final Logger					logger								= Logger.getLogger(this.getClass());
 	@SuppressWarnings("unused")
-	private final String		conSVNVersion	= "$Id: JobListener.java 21531 2013-12-08 14:59:54Z kb $";
-
+	private final String					conSVNVersion						= "$Id: JobListener.java 21531 2013-12-08 14:59:54Z kb $";
 	private List<StartWhenDirectoryChanged>	objStartWhenDirectoryChangedList	= null;
 	private StartWhenDirectoryChanged		objStartWhenDirectoryChangedEntry	= null;
-
-	private static String		library			= "";
-
-	public String[]				_languages		= null;
-
-	private Element				_script			= null;
-	private Element				_settings		= null;
-	private Element				_process		= null;
-	private final Element				_environment	= null;
-
-	private final int			_type			= -1;
-
-	private final List<Element>		_directories	= null;
-	private final Element				_directory		= null;
-	private final List				_setbacks		= null;
-	private final Element		_setback		= null;
-	private final List				_errorDelays	= null;
-	private final Element		_errorDelay		= null;
-
+	private static String					library								= "";
+	public String[]							_languages							= null;
+	private final Element					_settings							= null;
+	private final Element					_process							= null;
+	private final Element					_environment						= null;
+	private int								intJSObjectType						= -1;
+	private final List<Element>				_directories						= null;
+	private final Element					_directory							= null;
+	private final List						_setbacks							= null;
+	private final Element					_setback							= null;
+	private final List						_errorDelays						= null;
+	private final Element					_errorDelay							= null;
 	private JSObjJob						objJSJob							= null;
 
-	public JobListener(final SchedulerDom dom, final Element job, final ISchedulerUpdate update) {
-
-		_dom = dom;
-		// _job = job;
-		// _parent = _job;
-		// objElement = _job;
-		_main = update;
-
-		// _directories = _job.getChildren("start_when_directory_changed");
-		// _setbacks = _job.getChildren("delay_order_after_setback");
-		// _errorDelays = _job.getChildren("delay_after_error");
-		//
-		// _settings = _job.getChild("settings");
-
-		setScript();
-		_main = update;
-
+	public JobListener(final TreeData pobjTreeData, final ISchedulerUpdate update) {
+		objJSJob = pobjTreeData.getJob();
+		objTreeData = pobjTreeData;
+		intJSObjectType = objTreeData.getType();
 	}
 
+	public JobListener(final TreeData pobjTreeData) {
+		objJSJob = pobjTreeData.getJob();
+		objTreeData = pobjTreeData;
+		intJSObjectType = objTreeData.getType();
+	}
 
-	public JobListener(final JSObjJob pobjJob, final ISchedulerUpdate update) {
+	public JobListener(final JSObjJob pobjJob) {
 		objJSJob = pobjJob;
 	}
-
-	private void setScript() {
-		// if (_type == Editor.MONITOR) {
-		// Element monitor = _job;
-		// if (monitor != null) {
-		// _script = monitor.getChild("script");
-		// }
-		// }
-		// else
-		// _script = _job.getChild("script");
-	}
-
 
 	public String getFile() {
 		String strT = objJSJob.getProcess().getFile();
@@ -111,14 +85,9 @@ public class JobListener extends JOEListener {
 		setDirty();
 	}
 
-	@Override
-	public void setDirty() {
-
-		@SuppressWarnings("unused")
-		final String conMethodName = conClassName + "::setDirty";
-
+	@Override public void setDirty() {
+		@SuppressWarnings("unused") final String conMethodName = conClassName + "::setDirty";
 		objJSJob.setDirty(true);
-
 	} // private void setDirty
 
 	public String getLogFile() {
@@ -126,15 +95,13 @@ public class JobListener extends JOEListener {
 	}
 
 	public String getLogLevel() {
-		// TODO Auto-generated method stub
-		return "";
+		return avoidNull(objJSJob.getLogLevel());
 	}
 
 	public void setLogLevel(final String text) {
-		// TODO Auto-generated method stub
-
+		// TODO		objJSJob.getSettings().setLogLevel(text);
+		setDirty();
 	}
-
 
 	private String avoidNull(final String pstrV) {
 		if (pstrV == null) {
@@ -170,36 +137,32 @@ public class JobListener extends JOEListener {
 		return getLanguage() == 0;
 	}
 
-	@Deprecated
-	public String[] getLanguages() {
+	@Deprecated public String[] getLanguages() {
 		return _languages;
 	}
 
-	@Override
-	public String getComment() {
+	@Override public String getComment() {
 		// return Utils.getAttributeValue("__comment__", _job);
 		return "";
 	}
 
-	@Override
-	public void setComment(final String comment) {
+	// TODO in Documentation unterbringen
+	@Override public void setComment(final String comment) {
 		// if (_dom.isDirectory() || _dom.isLifeElement())
 		// _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
 		// Utils.setAttribute("__comment__", comment, _job, _dom);
 	}
 
-	@Override
-	public boolean isDisabled() {
+	@Override public boolean isDisabled() {
 		return objJSJob.isDisabled();
 	}
 
-	@Override
-	public String getJobName() {
+	@Override public String getJobName() {
 		return avoidNull(objJSJob.getJobName());
 	}
 
 	public void setJobName(final String name, final boolean updateTree) {
-
+		// TODO how to handle rename?
 		objJSJob.setName(name);
 		setDirty();
 	}
@@ -248,17 +211,15 @@ public class JobListener extends JOEListener {
 	}
 
 	public String getJobNameAndTitle() {
-
-		@SuppressWarnings("unused")
-		final String conMethodName = conClassName + "::getJobNameAndTitle";
-
+		@SuppressWarnings("unused") final String conMethodName = conClassName + "::getJobNameAndTitle";
 		return avoidNull(objJSJob.getJobNameAndTitle());
-
 	} // private String getJobNameAndTitle
 
 	public void setOrder(final boolean order) {
 		objJSJob.setOrder(setYesOrNo(order));
 		if (order) {
+			// TODO an attribute on the run_time: active=yes|no
+			// TODO ignore run_Time on orderjobs by the engine
 			// _job.removeAttribute("priority");
 			RunTime objR = objJSJob.getRunTime();
 			// if (_job.getChild("run_time") == null)
@@ -342,7 +303,6 @@ public class JobListener extends JOEListener {
 
 	public boolean getTemporary() {
 		return objJSJob.isTemporary();
-
 	}
 
 	public void setMintasks(final String mintasks) {
@@ -361,141 +321,91 @@ public class JobListener extends JOEListener {
 		return avoidNull(objJSJob.getVisible());
 	}
 
-
-//	private void setProcess() {
-//		_process = _job.getChild("process");
-//		if (_process != null) {
-//			_script = null;
-//			_environment =  _process.getChild("environment");
-//		}
-//	}
-
-//	private void initProcess() {
-//		_process = _job.getChild("process");
-//		if (_process == null) {
-//			_process = new Element("process");
-//			_environment = new Element("environment");
-//			_job.addContent(_process);
-//			_job.removeChild(conTagSCRIPT);
-//			setProcess();
-//			_dom.setChanged(true);
-//		}
-//	}
-
-	private void getScript() {
-		if (_type == Editor.MONITOR) {
-			Element monitor = _job;
-			if (monitor != null) {
-				_script = monitor.getChild(conTagSCRIPT);
-			}
-		}
-		else {
-			if (_process == null) {
-				_script = _job.getChild(conTagSCRIPT);
-				_process = null;
-			}
-			else {
-				_script = null;
-			}
-		}
-	}
-
-
-//	@Override
-//	public void setDirty() {
-//		if (_dom.isDirectory() || _dom.isLifeElement()) {
-//			_dom.setChangedForDirectory("job", getJobName(), SchedulerDom.MODIFY);
-//		}
-//	}
-
-
-
-	@Override
-	public String getDescription() {
+	//	private void setProcess() {
+	//		_process = _job.getChild("process");
+	//		if (_process != null) {
+	//			_script = null;
+	//			_environment =  _process.getChild("environment");
+	//		}
+	//	}
+	//	private void initProcess() {
+	//		_process = _job.getChild("process");
+	//		if (_process == null) {
+	//			_process = new Element("process");
+	//			_environment = new Element("environment");
+	//			_job.addContent(_process);
+	//			_job.removeChild(conTagSCRIPT);
+	//			setProcess();
+	//			_dom.setChanged(true);
+	//		}
+	//	}
+	//	private void getScript() {
+	//		if (_type == Editor.MONITOR) {
+	//			Element monitor = _job;
+	//			if (monitor != null) {
+	//				_script = monitor.getChild(conTagSCRIPT);
+	//			}
+	//		}
+	//		else {
+	//			if (_process == null) {
+	//				_script = _job.getChild(conTagSCRIPT);
+	//				_process = null;
+	//			}
+	//			else {
+	//				_script = null;
+	//			}
+	//		}
+	//	}
+	@Override public String getDescription() {
 		return objJSJob.getDescription().getContent().toString();
 	}
 
-	@Override
-	public void setDescription(final String description) {
-		// TODO set Description
-		// Element desc = _job.getChild("description");
-		// String f = getInclude();
-		//
-		// if (desc == null && !description.equals("")) {
-		// desc = new Element("description");
-		// _job.addContent(0, desc);
-		// }
-		//
-		// if (desc != null) {
-		// if (description.equals("") && (f == null || f.equals(""))) {
-		// _job.removeChild("description");
-		// _dom.setChanged(true);
-		// if (_dom.isDirectory() || _dom.isLifeElement())
-		// _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
-		// return;
-		// }
-		//
-		// desc.removeContent();
-		// if (!(f == null || f.equals(""))) {
-		// setInclude(f);
-		// }
-		// desc.addContent(new CDATA(description));
-		// _dom.setChanged(true);
-		// if (_dom.isDirectory() || _dom.isLifeElement())
-		// _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
-		// }
+	@Override public void setDescription(final String description) {
+		Description objDescription = objJSJob.getDescription();
+		List<Object> objL = objDescription.getContent();
+		for (Object object : objL) {
+			if (object instanceof String) {
+				object = description;
+				setDirty();
+				break;
+			}
+		}
 	}
 
-	public String getInclude() {
-		// TODO implement getInclude
-		// Element desc = _job.getChild("description");
-		// if (desc != null) {
-		// Element inc = desc.getChild("include");
-		// if (inc != null)
-		// return Utils.getAttributeValue("file", inc) + Utils.getAttributeValue("live_file", inc);
-		// }
-		return "";
+	public String getInclude4JobDescription() {
+		String strR = "";
+		Include objI = getJobDescriptionInclude();
+		if (objI != null) {
+			strR = objI.getFile();
+		}
+		return strR;
 	}
 
-	public boolean isLiveFile() {
+	public Include getJobDescriptionInclude() {
+		Description objDescription = objJSJob.getDescription();
+		List<Object> objD = objDescription.getContent();
+		for (Object object : objD) {
+			if (object instanceof Include) {
+				return (Include) object;
+			}
+		}
+		return null;
+	}
+
+	public boolean isDescriptionALiveFile() {
 		// TODO implement
 		List<Object> objL = objJSJob.getDescription().getContent();
-		// Element desc = _job.getChild("description");
-		// if (desc != null) {
-		// Element inc = desc.getChild("include");
-		// if (inc != null)
-		// return Utils.getAttributeValue("live_file", inc).length() > 0;
-		// }
+		for (Object object : objL) {
+			if (object instanceof Include) {
+				Include objI = (Include) object;
+				return isNotEmpty(objI.getLiveFile());
+			}
+		}
 		return false;
 	}
 
 	public void setInclude(final String file) {
 		setInclude(file, false);
-		// Element desc = _job.getChild("description");
-		// if (desc == null && !file.equals("")) {
-		// desc = new Element("description");
-		// _job.addContent(desc);
-		// }
-		//
-		// if (desc != null) {
-		// if (!file.equals("")) {
-		// Element incl = desc.getChild("include");
-		// if (incl == null)
-		// desc.addContent(0, new Element("include").setAttribute("file", file));
-		// else
-		// incl.setAttribute("file", file);
-		//
-		// }
-		// else {
-		// desc.removeChild("include");
-		// if (getDescription().equals(""))
-		// _job.removeChild("description");
-		// }
-		//
-		// _dom.setChanged(true);
-		// if (_dom.isDirectory() || _dom.isLifeElement())
-		// _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
-		// }
 	}
 
 	public void setInclude(final String file, final boolean isLifeFileFile) {
@@ -531,6 +441,7 @@ public class JobListener extends JOEListener {
 	}
 
 	public String getIgnoreSignal() {
+		//		String strR = objJSJob.getIgnoreSignals()
 		// TODO result is a list. what is expected here?
 		// objJSJob.getIgnoreSignals().
 		// return Utils.getAttributeValue("ignore_signals", _job);
@@ -544,39 +455,38 @@ public class JobListener extends JOEListener {
 		// _dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
 	}
 
-	@Deprecated
-	public ISchedulerUpdate get_main() {
-		return _main;
-	}
-
+	//	@Deprecated public ISchedulerUpdate get_main() {
+	//		return _main;
+	//	}
+	//
 	public JSObjJob getJSJob() {
 		return objJSJob;
 	}
 
-
 	public String[] getProcessClasses() {
+		// TODO Implement global list in objFactory / Hotfolder
 		String[] names = null;
-		if (_dom == null) {
-			return new String[] {};
-		}
-		if (_dom.getRoot().getName().equalsIgnoreCase("spooler")) {
-			Element classes = _dom.getRoot().getChild("config").getChild("process_classes");
-			if (classes != null) {
-				List list = classes.getChildren("process_class");
-				names = new String[list.size()];
-				int i = 0;
-				Iterator it = list.iterator();
-				while (it.hasNext()) {
-					Object o = it.next();
-					if (o instanceof Element) {
-						String name = ((Element) o).getAttributeValue("name");
-						if (name == null)
-							name = "";
-						names[i++] = name;
-					}
-				}
-			}
-		}
+		//		if (_dom == null) {
+		//			return new String[] {};
+		//		}
+		//		if (_dom.getRoot().getName().equalsIgnoreCase("spooler")) {
+		//			Element classes = _dom.getRoot().getChild("config").getChild("process_classes");
+		//			if (classes != null) {
+		//				List list = classes.getChildren("process_class");
+		//				names = new String[list.size()];
+		//				int i = 0;
+		//				Iterator it = list.iterator();
+		//				while (it.hasNext()) {
+		//					Object o = it.next();
+		//					if (o instanceof Element) {
+		//						String name = ((Element) o).getAttributeValue("name");
+		//						if (name == null)
+		//							name = "";
+		//						names[i++] = name;
+		//					}
+		//				}
+		//			}
+		//		}
 		if (names == null) {
 			names = new String[] { "" };
 		}
@@ -611,8 +521,7 @@ public class JobListener extends JOEListener {
 		return objJSJob.languageAsInt(language);
 	}
 
-	@Override
-	public int getLanguage() {
+	@Override public int getLanguage() {
 		return objJSJob.getLanguage();
 	}
 
@@ -649,38 +558,34 @@ public class JobListener extends JOEListener {
 		String s = objJSJob.getScript().getJavaClassPath();
 		return avoidNull(s);
 	}
-
-
-	//	private String languageAsString(int language) {
-	//		String strR = "";
-	//		if (language >= 0) {
-	//			strR = _languages[language];
-	//		}
-	//		return strR;
-	//	}
-
-//	private String languageAsString(final int language) {
-//		// TODO in die Klasse LanguageDescriptorList
-//		String strR = "";
-//		if (language >= 0) {
-//			strR = _languages[language];
-//		}
-//		return strR;
-//	}
-
-	//	public String getLanguage(final int language) {
-	//		// TODO in die Klasse LanguageDescriptorList
-	//		return _languages[language];
-	//	}
-	//
 	LanguageDescriptor	objL	= null;
+
+	private Script getScript() {
+		Script objS = null;
+		if (intJSObjectType == Editor.MONITOR) {
+			List<Monitor> lstM = objJSJob.getMonitor();
+			if (lstM != null) {
+				// TODO select right monitor, 0 is not always the correct choice
+				objS = lstM.get(0).getScript();
+			}
+		}
+		else {
+			if (_process == null) {
+				objS = objJSJob.getScript();
+			}
+			else {
+			}
+		}
+		return objS;
+	}
 
 	public LanguageDescriptor getLanguageDescriptor() {
 		String strJavaClass = getJavaClass().toLowerCase();
 		objL = LanguageDescriptorList.getLanguageDescriptor4Class(strJavaClass);
 		if (objL == null) {
-			if (_script != null) {
-				objL = LanguageDescriptorList.getLanguageDescriptor(_script.getAttributeValue("language"));
+			Script objS = getScript();
+			if (objS != null) {
+				objL = LanguageDescriptorList.getLanguageDescriptor(objS.getLanguage());
 			}
 		}
 		if (objL == null) {
@@ -690,8 +595,7 @@ public class JobListener extends JOEListener {
 		return objL;
 	}
 
-	@Override
-	public String getLanguageAsString() {
+	@Override public String getLanguageAsString() {
 		String strT = "";
 		if (objL != null) {
 			strT = objL.getLanguageName();
@@ -704,28 +608,27 @@ public class JobListener extends JOEListener {
 		objL = pobjLD;
 	}
 
-	@Override
-	public void setLanguage(final String pstrLanguage) {
+	@Override public void setLanguage(final String pstrLanguage) {
 		this.setLanguage(languageAsInt(pstrLanguage));
 	}
 
-	@Deprecated
 	public void fillIncludesTable(final Table table) {
-		if (_script != null && table != null) {
+		Script objS = getScript();
+		if (objS != null && table != null) {
 			table.removeAll();
-			List includeList = _script.getChildren("include");
-			for (int i = 0; i < includeList.size(); i++) {
-				Element include = (Element) includeList.get(i);
-
-				if (include.getAttributeValue("file") != null) {
+			List<Object> includeList = objS.getContent();
+			for (Object object : includeList) {
+				if (object instanceof Include) {
+					Include objIncl = (Include) object;
 					TableItem item = new TableItem(table, SWT.NONE);
-					item.setText(0, Utils.getAttributeValue("file", include));
-					item.setText(1, "file");
-				}
-				else {
-					TableItem item = new TableItem(table, SWT.NONE);
-					item.setText(0, Utils.getAttributeValue("live_file", include));
-					item.setText(1, "live_file");
+					if (objIncl.getLiveFile() != null) {
+						item.setText(0, objIncl.getLiveFile());
+						item.setText(1, "live_file");
+					}
+					else {
+						item.setText(0, objIncl.getFile());
+						item.setText(1, "file");
+					}
 				}
 			}
 		}
@@ -733,78 +636,72 @@ public class JobListener extends JOEListener {
 
 	public String getIncludesAsString() {
 		String retVal = "";
-		String[] inc = getIncludes();
-		for (String element : inc) {
+		List<Include> inc = getIncludes();
+		for (Include element : inc) {
 			if (element != null)
-				retVal = element + ";" + retVal;
+				retVal = element.getFile() + element.getLiveFile() + ";" + retVal;
 		}
 		return retVal;
 	}
 
-	public String[] getIncludes() {
-		if (_script != null) {
-			List includeList = _script.getChildren("include");
-			String[] includes = new String[includeList.size()];
-			Iterator it = includeList.iterator();
-			int i = 0;
-			while (it.hasNext()) {
-				Element include = (Element) it.next();
-				String file = "";
-				if (include.getAttribute("live_file") != null)
-					file = include.getAttributeValue("live_file");
-				else
-					file = include.getAttributeValue("file");
-
-				includes[i++] = file == null ? "" : file;
-			}
-			return includes;
-		}
-		else
-			return new String[0];
-	}
-
-	// Aus der Tabelle werden die includes für die Scripte generiert-
-	public void addIncludesFromTable(final Table table, final HashMap inc) {
-		if (_script != null) {
-			Iterator it = inc.keySet().iterator();
-			while (it.hasNext()) {
-				String key = it.next().toString();
-				String val = inc.get(key) != null && inc.get(key).equals("live_file") ? "live_file" : "file";
-				Element include = new Element("include");
-				include.setAttribute(val, key);
-				_script.addContent(include);
+	// TODO move to JSobjJob -> JSObjScript
+	public List<Include> getIncludes() {
+		Script objS = getScript();
+		List<Include> lstIncludeList = new ArrayList<Include>();
+		if (objS != null) {
+			List<Object> includeList = objS.getContent();
+			for (Object object : includeList) {
+				if (object instanceof Include) {
+					Include objIncl = (Include) object;
+					lstIncludeList.add(objIncl);
+				}
 			}
 		}
-
+		return lstIncludeList;
 	}
 
-	public void addInclude(final Table table, final String filename, final boolean isLife) {
-		if (_script != null) {
-			List includes = _script.getChildren("include");
-			if (table.getSelectionCount() > 0) {
-				Element in = (Element) _script.getChildren("include").get(table.getSelectionIndex());
-
-				in.setAttribute(isLife ? "live_file" : "file", filename);
+	// TODO move to JSObjJob -> JSObjScript
+	public boolean addInclude(final String filename, final boolean isLife) {
+		Script objS = getScript();
+		if (objS != null) {
+			List<Include> includes = getIncludes();
+			for (Include objInclude : includes) {
+				if (objInclude.getFile().equalsIgnoreCase(filename)) {
+					return false;
+				}
+				if (objInclude.getLiveFile().equalsIgnoreCase(filename)) {
+					return false;
+				}
+			}
+			List<Object> includeList = objS.getContent();
+			Include objI = new Include();
+			if (isLife == false) {
+				objI.setFile(filename);
+				objI.setLiveFile(EMPTY_STRING);
 			}
 			else {
-				_script.addContent(includes.size(), new Element("include").setAttribute(isLife ? "live_file" : "file", filename));
+				objI.setLiveFile(filename);
+				objI.setFile(EMPTY_STRING);
 			}
-			_dom.setChanged(true);
-			fillIncludesTable(table);
-			setChangedForDirectory();
-
+			includeList.add(objI);
+			setDirty();
 		}
 		else {
-			MainWindow.ErrMsg("No script element defined!");
+			MainWindow.message("No script element defined!", SWT.ICON_ERROR);
+			logger.debug("no script element defined!");
 		}
+		return true;
 	}
 
-	public void addInclude(final String filename) {
-		if (_script != null) {
-			List includes = _script.getChildren("include");
-			_script.addContent(includes.size(), new Element("include").setAttribute("file", filename));
-			_dom.setChanged(true);
-			setChangedForDirectory();
+	// TODO Move to JSObjScript
+	public void removeInclude(final int index) {
+		Script objS = getScript();
+		if (objS != null) {
+			List<Include> includes = getIncludes();
+			if (index >= 0 && index <= includes.size()) {
+				includes.remove(index);
+				setDirty();
+			}
 		}
 		else {
 			MainWindow.message("No script element defined!", SWT.ICON_ERROR);
@@ -812,99 +709,45 @@ public class JobListener extends JOEListener {
 		}
 	}
 
-	public void removeInclude(final int index) {
-		objJSJob.getScript().getContent();
-	}
-
-
-//	public void removeInclude(final int index) {
-//		if (_script != null) {
-//			List includeList = _script.getChildren("include");
-//			if (index >= 0 && index < includeList.size()) {
-//				includeList.remove(index);
-//				_dom.setChanged(true);
-//				setChangedForDirectory();
-//			}
-//			else
-//				System.out.println("index " + index + " is out of range for include!");
-//		}
-//		else {
-//			MainWindow.message("No script element defined!", SWT.ICON_ERROR);
-//			logger.info("no script element defined!");
-//		}
-//	}
-
+	// TODO move to jsobjjob. Delete not on the getIncludes but on the getScriptList
 	public void removeIncludes() {
-		if (_script != null) {
-			_script.removeChildren("include");
+		Script objS = getScript();
+		if (objS != null) {
+			List<Include> includes = getIncludes();
+			if (includes != null) {
+				objS.getContent().removeAll(includes);
+				setDirty();
+			}
+			// TODO 
+			objJSJob.setDirty();
+		}
+		else {
+			MainWindow.message("No script element defined!", SWT.ICON_ERROR);
+			logger.debug("no script element defined!");
 		}
 	}
 
-	@Override
-	public String getPrePostProcessingScriptSource() {
+	@Override public String getPrePostProcessingScriptSource() {
+		// TODO implement
 		String strT = "";
 		return strT;
 	}
 
-	@Override
-	public String getSource() {
+	@Override public String getSource() {
 		Script objS = objJSJob.getScript();
-		if (objS.getContent().size() > 0) {
-			return (String) objS.getContent().get(0);
+		List<Object> lstS = objS.getContent();
+		if (lstS.size() > 0) {
+			String strS = (String) objS.getContent().get(0);
+			return strS.trim();
 		}
 		else {
 			return "";
 		}
 	}
 
-	@Override
-	public void setSource(final String source) {
+	@Override public void setSource(final String source) {
 		objJSJob.getScript().getContent().add(source);
-		//		objJSJob.getScript().setContent(source);
 		setDirty();
-		//		try {
-		//
-		//			if (_script != null) {
-		//				List l = _script.getContent();
-		//				for (int i = 0; i < l.size(); i++) {
-		//					if (l.get(i) instanceof CDATA)
-		//						l.remove(i);
-		//				}
-		//				if (!source.equals("")) {
-		//
-		//					_script.addContent(new CDATA(source));
-		//				}
-		//
-		//				_dom.setChanged(true);
-		//				setChangedForDirectory();
-		//			}
-		//			else {
-		//				MainWindow.message("No script element defined!", SWT.ICON_ERROR);
-		//				// System.out.println("no script element defined!");
-		//			}
-		//
-		//		}
-		//		catch (org.jdom.IllegalDataException jdom) {
-		//			try {
-		//				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), jdom);
-		//			}
-		//			catch (Exception ee) {
-		//				// tu nichts
-		//			}
-		//
-		//			MainWindow.message(jdom.getMessage(), SWT.ICON_ERROR);
-		//		}
-		//		catch (Exception e) {
-		//			try {
-		//				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-		//			}
-		//			catch (Exception ee) {
-		//				// tu nichts
-		//			}
-		//
-		//			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
-		//			System.out.println(e);
-		//		}
 	}
 
 	public JSObjJob getParent() {
@@ -921,25 +764,6 @@ public class JobListener extends JOEListener {
 
 	public void setOrdering(final String ordering) {
 		objJSJob.setOrdering(ordering);
-	}
-
-
-
-	// public String getName() {
-	// return Utils.getAttributeValue("name", _job);
-	// }
-	//
-
-	private void setChangedForDirectory() {
-		setDirty();
-		{
-			if (_job != null) {
-				Element job = _job;
-				if (!job.getName().equals(_job))
-					job = Utils.getJobElement(_job);
-				_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.MODIFY);
-			}
-		}
 	}
 
 	public boolean isJava() {
@@ -985,7 +809,7 @@ public class JobListener extends JOEListener {
 		return objStartWhenDirectoryChangedList.size() > 0;
 	}
 
-	public void fillDirectories(final Table table) {
+	public void fillDirectories$StartWhenDirectoryChanged(final Table table) {
 		table.removeAll();
 		objStartWhenDirectoryChangedList = objJSJob.getStartWhenDirectoryChanged();
 		if (objStartWhenDirectoryChangedList != null) {
@@ -997,7 +821,7 @@ public class JobListener extends JOEListener {
 		}
 	}
 
-	public String getRegex() {
+	public String getRegex$StartWhenDirectoryChanged() {
 		return avoidNull(objStartWhenDirectoryChangedEntry.getRegex());
 	}
 
@@ -1005,10 +829,9 @@ public class JobListener extends JOEListener {
 	// setProcess();
 	// return _process != null;
 	// }
-
 	public String getHistoryWithLog() {
 		if (objJSJob.getSettings() != null) {
-			return avoidNull(objJSJob.getSettings().getHistoryWithLog());
+			return avoidNull(objJSJob.getHistoryWithLog());
 		}
 		return "";
 	}
@@ -1019,7 +842,7 @@ public class JobListener extends JOEListener {
 
 	public String getHistory() {
 		if (objJSJob.getSettings() != null) {
-			return avoidNull(avoidNull(objJSJob.getSettings().getHistory()));
+			return avoidNull(avoidNull(objJSJob.getHistory()));
 		}
 		return "";
 	}
@@ -1030,7 +853,7 @@ public class JobListener extends JOEListener {
 
 	public String getHistoryOnProcess() {
 		if (objJSJob.getSettings() != null) {
-			return avoidNull(objJSJob.getSettings().getHistoryOnProcess());
+			return avoidNull(objJSJob.getHistoryOnProcess());
 		}
 		return "";
 	}
@@ -1040,73 +863,278 @@ public class JobListener extends JOEListener {
 	}
 
 	public String getMonitorName() {
-		//		return Utils.getAttributeValue("name", _parent);
+		//	todo	return Utils.getAttributeValue("name", _parent);
 		return "";
 	}
 
 	public void setMonitorName(final String name) {
-		//		Utils.setAttribute("name", name, _parent);
+		//	TODO	Utils.setAttribute("name", name, _parent);
 	}
 
-	/**
-	 * @return the _dom
-	 */
-	@Deprecated
-	public SchedulerDom getDom() {
-		return _dom;
+	public void setMailOnError(final String pstrValue, final String pstrDefaultValue) {
+		objJSJob.setMailOnError(OneOfUs(pstrValue, pstrDefaultValue));
 	}
+	JobSettings	objSettings	= null;
 
-	@Deprecated
-	public void setValue(final String name, final String value) {
-		setValue(name, value, "");
-	}
-
-	@Deprecated
-	public void setValue(final String name, final String value, final String default_) {
-		if (value == null || value.length() == 0) {
-			if (_settings != null) {
-				// return;
-				_settings.removeChild(name);
-				if (_settings.getContentSize() == 0 && _job != null) {
-					_job.removeContent(_settings);
-				}
-				_dom.setChanged(true);
-				setDirty();
-			}
-			return;
+	public JobSettings getSettings() {
+		JobSettings objS = objJSJob.getSettings();
+		if (objS == null) {
+			throw new JobSchedulerException("is null");
 		}
+		return objS;
+	}
 
-		setMail();
-		Element elem = null;
-		if (_settings.getChild(name) == null) {
-			elem = new Element(name);
-			_settings.addContent(elem);
-		}
-		else
-			elem = _settings.getChild(name);
+	public String getMailOnError() {
+			return objJSJob.getMailOnError();
+	}
 
-		elem.setText(value);
+	public void setMailOnWarning(final String pstrValue, final String pstrDefaultValue) {
+		objJSJob.setMailOnWarning(OneOfUs(pstrValue, pstrDefaultValue));
+	}
 
-		_dom.setChanged(true);
+	public String getMailOnWarning() {
+		return objJSJob.getMailOnWarning();
+	}
+
+	public void setMailOnProcess(final String pstrValue, final String pstrDefaultValue) {
+		objJSJob.setMailOnProcess(OneOfUs(pstrValue, pstrDefaultValue));
 		setDirty();
 	}
 
-	private void setMail() {
-		_settings = _parent.getChild("settings");
-		if (_settings == null) {
-			_settings = new Element("settings");
-			_parent.addContent(_settings);
+	public String getMailOnProcess() {
+		return objJSJob.getMailOnProcess();
+	}
+
+	public void setMailOnSuccess(final String pstrValue, final String pstrDefaultValue) {
+		objJSJob.setMailOnSuccess(OneOfUs(pstrValue, pstrDefaultValue));
+	}
+
+	public String getMailOnSuccess() {
+		return objJSJob.getMailOnSuccess();
+	}
+
+	public void setMailOnDelayAfterError(final String pstrValue, final String pstrDefaultValue) {
+		objJSJob.setMailOnDelayAfterError(OneOfUs(pstrValue, pstrDefaultValue));
+	}
+
+	public String getMailOnDelayAfterError() {
+		return objJSJob.getMailOnDelayAfterError();
+	}
+
+	public void setLogMailTo(final String pstrValue, final String pstrDefaultValue) {
+		objJSJob.setLogMailTo(OneOfUs(pstrValue, pstrDefaultValue));
+	}
+
+	public String getLogMailTo() {
+		return objJSJob.getLogMailTo();
+	}
+
+	public void setLogMailCC(final String pstrValue, final String pstrDefaultValue) {
+		objJSJob.setLogMailCc(OneOfUs(pstrValue, pstrDefaultValue));
+	}
+
+	public String getLogMailCC() {
+		return objJSJob.getLogMailCC();
+	}
+
+	public void setLogMailBcc(final String pstrValue, final String pstrDefaultValue) {
+		objJSJob.setLogMailBcc(OneOfUs(pstrValue, pstrDefaultValue));
+	}
+
+	public String getLogMailBCC() {
+		return objJSJob.getLogMailBCC();
+	}
+
+	public String OneOfUs(final String pstrValue, final String pstrDefaultValue) {
+		if (isNotEmpty(pstrValue)) {
+			return pstrValue;
+		}
+		return pstrDefaultValue;
+	}
+
+	public boolean isSetbackDelay() {
+		return objJSJob.getDelayOrderAfterSetback().size() > 0;
+	}
+
+	public void fillSetbacks(final Table table) {
+		table.removeAll();
+		for (DelayOrderAfterSetback objItem : objJSJob.getDelayOrderAfterSetback()) {
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setText(0, "" + objItem.getSetbackCount());
+			item.setText(1, objItem.getIsMaximum());
+			String s = objItem.getDelay();
+			if (s.equals("00")) {
+				s = "0";
+			}
+			item.setText(2, s);
 		}
 	}
 
-	@Deprecated
-	public String getValue(final String name) {
-		if (_settings == null)
-			return "";
-		Element elem = _settings.getChild(name);
-		if (elem == null)
-			return "";
+	public void newErrorDelays(final Table errorDelays) {
+		//	   TODO     TableItem[] items = errorDelays.getItems();
+		//	        for (int i = items.length; i >= 0; i--) {
+		//	            deleteErrorDelay(i);
+		//	        }
+		//
+		//	        for (int i = 0; i < items.length; i++) {
+		//	            newErrorDelay();
+		//	            applyErrorDelay(items[i].getText(0), items[i].getText(1));
+		//	        }
+	}
 
-		return elem.getTextNormalize();
+	public void newSetbacks(final Table setback) {
+		//	 TODO       TableItem[] items = setback.getItems();
+		//	        for (int i = items.length; i >= 0; i--) {
+		//	            deleteSetbackDelay(i);
+		//	        }
+		//
+		//	        for (int i = 0; i < items.length; i++) {
+		//	            newSetbackDelay();
+		//	            applySetbackDelay(items[i].getText(0), items[i].getText(1).equalsIgnoreCase("yes"), items[i].getText(2));
+		//	        }
+		//	        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+	}
+
+	public void newSetbackDelay() {
+		//	 TODO       _setback = new Element("delay_order_after_setback");
+		//	        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+	}
+
+	public void selectSetbackDelay(final int index) {
+		//	 TODO       if (index >= 0 && index < _setbacks.size())
+		//	            _setback = (Element) _setbacks.get(index);
+	}
+
+	public void applySetbackDelay(final String setbackCount, final boolean maximum, final String delay) {
+		//	 TODO       Utils.setAttribute("setback_count", setbackCount, _setback, _dom);
+		//	        Utils.setAttribute("is_maximum", maximum, _setback, _dom);
+		//	        Utils.setAttribute("delay", delay, _setback, _dom);
+		//	        if (!_setbacks.contains(_setback))
+		//	            _setbacks.add(_setback);
+		//	        _dom.setChanged(true);
+		//	        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+	}
+
+	public void deleteSetbackDelay(final int index) {
+		//	 TODO       if (index >= 0 && index < _setbacks.size()) {
+		//	            _setbacks.remove(index);
+		//	            _setback = null;
+		//	            _dom.setChanged(true);
+		//	            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		//	        }
+	}
+
+	public String getSetbackCount() {
+		return "0";
+		//	 TODO       return Utils.getIntegerAsString(Utils.getIntValue("setback_count", -999, _setback));
+	}
+
+	public boolean isMaximum() {
+		//	        return Utils.isAttributeValue("is_maximum", _setback);
+		return false;
+	}
+
+	public String getSetbackCountHours() {
+		return "";
+		//	        return Utils.getIntegerAsString(Utils.getHours(_setback.getAttributeValue("delay"), -999));
+	}
+
+	public String getSetbackCountMinutes() {
+		return "";
+		//	        return Utils.getIntegerAsString(Utils.getMinutes(_setback.getAttributeValue("delay"), -999));
+	}
+
+	public String getSetbackCountSeconds() {
+		return "";
+		//	        return Utils.getIntegerAsString(Utils.getSeconds(_setback.getAttributeValue("delay"), -999));
+	}
+
+	// error count
+	public boolean isErrorDelay() {
+		// TODO complete implemenatation
+		//		if (_errorDelays != null) {
+		//			return _errorDelays.size() > 0;
+		//		}
+		return false;
+	}
+
+	public String getDelay(final Element e) {
+		String delay = e.getAttributeValue("delay");
+		if (delay == null || delay.equals(""))
+			delay = "00:00";
+		if (delay.equalsIgnoreCase("stop"))
+			return "stop";
+		else {
+			int hours = Utils.getHours(delay, 0);
+			int minutes = Utils.getMinutes(delay, 0);
+			int seconds = Utils.getSeconds(delay, 0);
+			return Utils.getTime(hours, minutes, seconds, true);
+		}
+	}
+
+	public void newErrorDelay() {
+		//	 TODO       _errorDelay = new Element("delay_after_error");
+		//	        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+	}
+
+	public void selectErrorDelay(final int index) {
+		//	        if (index >= 0 && index < _errorDelays.size())
+		//	            _errorDelay = (Element) _errorDelays.get(index);
+	}
+
+	public void applyErrorDelay(final String errorCount, final String delay) {
+		//	        Utils.setAttribute("error_count", errorCount, _errorDelay, _dom);
+		//	        Utils.setAttribute("delay", delay, _errorDelay, _dom);
+		//	        if (!_errorDelays.contains(_errorDelay))
+		//	            _errorDelays.add(_errorDelay);
+		//	        _dom.setChanged(true);
+		//	        _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+	}
+
+	public void deleteErrorDelay(final int index) {
+		//	        if (index >= 0 && index < _errorDelays.size()) {
+		//	            _errorDelays.remove(index);
+		//	            _errorDelay = null;
+		//	            _dom.setChanged(true);
+		//	            _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		//	        }
+	}
+
+	public String getErrorCount() {
+		//	        return Utils.getIntegerAsString(Utils.getIntValue("error_count", -999, _errorDelay));
+		return "";
+	}
+
+	public boolean isStop() {
+		//	        if (_errorDelay != null && _errorDelay.getAttributeValue("delay") != null)
+		//	            return _errorDelay.getAttributeValue("delay").equalsIgnoreCase("stop");
+		//	        else
+		//	            return false;
+		return false;
+	}
+
+	public String getErrorCountHours() {
+		return "00"; // Utils.getIntegerAsString(Utils.getHours(_errorDelay.getAttributeValue("delay"), -999));
+	}
+
+	public String getErrorCountMinutes() {
+		return "00"; //  Utils.getIntegerAsString(Utils.getMinutes(_errorDelay.getAttributeValue("delay"), -999));
+	}
+
+	public String getErrorCountSeconds() {
+		return "00"; //  Utils.getIntegerAsString(Utils.getSeconds(_errorDelay.getAttributeValue("delay"), -999));
+	}
+
+	public void fillErrorDelayTable(final Table table) {
+		//		table.removeAll();
+		//		if (_errorDelays != null) {
+		//			Iterator it = _errorDelays.iterator();
+		//			while (it.hasNext()) {
+		//				Element e = (Element) it.next();
+		//				TableItem item = new TableItem(table, SWT.NONE);
+		//				item.setText(0, "" + Utils.getIntValue("error_count", e));
+		//				item.setText(1, getDelay(e));
+		//			}
+		//		}
 	}
 }

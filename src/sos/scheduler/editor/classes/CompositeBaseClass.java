@@ -17,14 +17,16 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IContainer;
-import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.JOEListener;
+
+import com.sos.joe.interfaces.IContainer;
+import com.sos.joe.interfaces.IUnsaved;
 
 /**
 * \class FormBaseClass
@@ -142,6 +144,11 @@ public abstract class CompositeBaseClass /* extends Composite */ implements IUns
 		GridLayout grdL = new GridLayout();
 		pParentComposite.setLayout(grdL);
 		setResizableV(pParentComposite);
+	}
+
+	protected boolean hasText (final Text pobjText) {
+		String strT = pobjText.getText().trim();
+		return strT.length() > 0;
 	}
 
 	protected void setResizableV(final Control objControl) {

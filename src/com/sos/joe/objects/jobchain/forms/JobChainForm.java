@@ -19,19 +19,16 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.jdom.Element;
 
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.forms.DetailDialogForm;
 
 import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.objects.jobchain.JobChainListener;
 import com.sos.scheduler.model.objects.JSObjJobChain;
 
@@ -43,7 +40,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
     private final String        conSVNVersion      = "$Id$";
     private static final Logger logger             = Logger.getLogger(JobChainForm.class);
 
-    private JobChainListener    listener           = null;
+    private final JobChainListener    listener           = null;
     private Group               jobChainGroup      = null;
     private Label               chainNameLabel     = null;
     private Text                tName              = null;
@@ -53,7 +50,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
     private ISchedulerUpdate    update             = null;
     private Button              butDistributed     = null;
     private Text                txtTitle           = null;
-    private boolean             init               = false;
+    private final boolean             init               = false;
     private boolean             changeJobChainName = true;
     private Text                sMaxorders;
 
@@ -72,16 +69,16 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		objJobChain.setInit(false);
 	}
 
-@Deprecated
-    public JobChainForm(final Composite parent, final int style, final SchedulerDom dom, final Element jobChain) {
-        super(parent, style);
-        init = true;
-        listener = new JobChainListener(dom, jobChain);
-        initialize();
-        fillChain(false, false);
-        this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
-        init = false;
-    }
+//@Deprecated
+//    public JobChainForm(final Composite parent, final int style, final SchedulerDom dom, final Element jobChain) {
+//        super(parent, style);
+//        init = true;
+//        listener = new JobChainListener(dom, jobChain);
+//        initialize();
+//        fillChain(false, false);
+//        this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
+//        init = false;
+//    }
 
 	private void InitializeAllFormControls(final boolean enable, final boolean isNew) {
 //		tbxJobChainName.setEnabled(true);
@@ -166,7 +163,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
                 if (init)
                     return;
                 String newName = tName.getText().trim();
-                boolean existname = Utils.existName(newName, listener.getChainElement(), "job_chain");
+                boolean existname = listener.isUniqueState(newName);
                 if (existname)
                     tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
                 else {

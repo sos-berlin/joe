@@ -29,6 +29,8 @@ import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.util.SOSClassUtil;
 
 import com.sos.jobdoc.forms.DocumentationForm;
+import com.sos.joe.interfaces.IContainer;
+import com.sos.joe.interfaces.IEditor;
 import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
 
 public class TabbedContainer implements IContainer {

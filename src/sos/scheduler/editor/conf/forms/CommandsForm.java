@@ -12,8 +12,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
 import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.interfaces.IUpdateLanguage;
 
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;

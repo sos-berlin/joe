@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 
+import sos.scheduler.editor.classes.FileNameSelector;
 import sos.scheduler.editor.classes.FolderNameSelector;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.util.SOSClassUtil;
@@ -51,9 +52,42 @@ public class SOSMsgJOE extends SOSMsg {
 	} // public SOSMsgJOE
 
 	final FolderNameSelector Control (final FolderNameSelector pobjC) {
-		FolderNameSelector pobjF = Control(pobjC);
-		return pobjF;
+		pobjC.setToolTipText(tooltip());
+		setKeyListener(pobjC);
+		pobjC.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(final FocusEvent e) {
+				pobjC.selectAll();
+			}
+
+			@Override
+			public void focusLost(final FocusEvent e) {
+			}
+		});
+		return pobjC;
 	}
+
+	public FileNameSelector Control(final FileNameSelector pobjC) {
+		@SuppressWarnings("unused")
+		final String conMethodName = conClassName + "::Control";
+	// Text kommt im Normalfall nicht aus einer Propertie-Datei. Deswegen ergibt es keinen Sinn
+	//	pobjC.setText(label());
+
+		pobjC.setToolTipText(tooltip());
+		setKeyListener(pobjC);
+		pobjC.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(final FocusEvent e) {
+				pobjC.selectAll();
+			}
+
+			@Override
+			public void focusLost(final FocusEvent e) {
+			}
+		});
+		return pobjC;
+	} // public Text Control
+
 
 	public Text Control(final Text pobjC) {
 		@SuppressWarnings("unused")

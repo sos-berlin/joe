@@ -16,10 +16,10 @@ import org.jdom.Element;
 import com.sos.jobdoc.DocumentationDom;
 import com.sos.jobdoc.listeners.NoteListener;
 import com.sos.jobdoc.listeners.SettingsListener;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
 
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;

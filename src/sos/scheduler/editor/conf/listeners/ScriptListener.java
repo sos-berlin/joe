@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.listeners;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,18 +19,14 @@ import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.scheduler.model.LanguageDescriptorList;
 
 public class ScriptListener extends JOEListener {
-
 	public final static int			NONE				= -1;
 	public final static String[]	_languagesJob		= LanguageDescriptorList.getLanguages4APIJobs();
 	public final static String[]	_languagesMonitor	= LanguageDescriptorList.getLanguages4Monitor();
-
-
-//	public final static String[]	_languagesJob		= { "shell", "java", "javascript", "VBScript", "perlScript", "" };
-//	public final static String[]	_languagesMonitor	= { "java", "javascript", "VBScript", "perlScript", "" };
-
+	//	public final static String[]	_languagesJob		= { "shell", "java", "javascript", "VBScript", "perlScript", "" };
+	//	public final static String[]	_languagesMonitor	= { "java", "javascript", "VBScript", "perlScript", "" };
 	public String[]					_languages			= null;
-//	private SchedulerDom			_dom				= null;
-//	private Element					_parent				= null;
+	//	private SchedulerDom			_dom				= null;
+	//	private Element					_parent				= null;
 	private Element					_script				= null;
 	private int						_type				= -1;
 	private ISchedulerUpdate		_update				= null;
@@ -68,7 +63,6 @@ public class ScriptListener extends JOEListener {
 			if (_languages[i].equalsIgnoreCase(language))
 				return i;
 		}
-
 		if (_script != null)
 			_script.setAttribute("language", "java");
 		return 0;
@@ -82,8 +76,7 @@ public class ScriptListener extends JOEListener {
 		return _languages[language];
 	}
 
-	@Override
-	public int getLanguage() {
+	@Override public int getLanguage() {
 		if (_script != null)
 			return languageAsInt(_script.getAttributeValue("language"));
 		else
@@ -98,8 +91,7 @@ public class ScriptListener extends JOEListener {
 		}
 	}
 
-	@Override
-	public void setLanguage(final String pstrLanguage) {
+	@Override public void setLanguage(final String pstrLanguage) {
 		this.setLanguage(languageAsInt(pstrLanguage));
 	}
 
@@ -120,18 +112,14 @@ public class ScriptListener extends JOEListener {
 			else
 				_parent.addContent(_script);
 		}
-
 		if (_script != null) {
 			if (!isJava()) {
 				_script.removeAttribute("java_class");
 				_script.removeAttribute("java_class_path");
 			}
-
 			if (language != NONE)
 				Utils.setAttribute("language", languageAsString(language), _script, _dom);
-
 			_dom.setChanged(true);
-
 			setChangedForDirectory();
 		}
 	}
@@ -176,7 +164,6 @@ public class ScriptListener extends JOEListener {
 			List includeList = _script.getChildren("include");
 			for (int i = 0; i < includeList.size(); i++) {
 				Element include = (Element) includeList.get(i);
-
 				if (include.getAttributeValue("file") != null) {
 					TableItem item = new TableItem(table, SWT.NONE);
 					item.setText(0, Utils.getAttributeValue("file", include));
@@ -214,7 +201,6 @@ public class ScriptListener extends JOEListener {
 					file = include.getAttributeValue("live_file");
 				else
 					file = include.getAttributeValue("file");
-
 				includes[i++] = file == null ? "" : file;
 			}
 			return includes;
@@ -235,7 +221,6 @@ public class ScriptListener extends JOEListener {
 				_script.addContent(include);
 			}
 		}
-
 	}
 
 	public void addInclude(final Table table, final String filename, final boolean isLife) {
@@ -243,7 +228,6 @@ public class ScriptListener extends JOEListener {
 			List includes = _script.getChildren("include");
 			if (table.getSelectionCount() > 0) {
 				Element in = (Element) _script.getChildren("include").get(table.getSelectionIndex());
-
 				in.setAttribute(isLife ? "live_file" : "file", filename);
 			}
 			else {
@@ -252,7 +236,6 @@ public class ScriptListener extends JOEListener {
 			_dom.setChanged(true);
 			fillTable(table);
 			setChangedForDirectory();
-
 		}
 		else {
 			MainWindow.message("No script element defined!", SWT.ICON_ERROR);
@@ -306,8 +289,7 @@ public class ScriptListener extends JOEListener {
 		}
 	}
 
-	@Override
-	public String getSource() {
+	@Override public String getSource() {
 		if (_script != null) {
 			return _script.getTextTrim();
 		}
@@ -319,12 +301,8 @@ public class ScriptListener extends JOEListener {
 	  //    if (_script != null) 	_script.removeContent();
 	  if (_script != null) 	removeScriptSource();
 	}*/
-
-	@Override
-	public void setSource(final String source) {
-
+	@Override public void setSource(final String source) {
 		try {
-
 			if (_script != null) {
 				List l = _script.getContent();
 				for (int i = 0; i < l.size(); i++) {
@@ -332,10 +310,8 @@ public class ScriptListener extends JOEListener {
 						l.remove(i);
 				}
 				if (!source.equals("")) {
-
 					_script.addContent(new CDATA(source));
 				}
-
 				_dom.setChanged(true);
 				setChangedForDirectory();
 			}
@@ -343,7 +319,6 @@ public class ScriptListener extends JOEListener {
 				MainWindow.message("No script element defined!", SWT.ICON_ERROR);
 				System.out.println("no script element defined!");
 			}
-
 		}
 		catch (org.jdom.IllegalDataException jdom) {
 			try {
@@ -351,7 +326,6 @@ public class ScriptListener extends JOEListener {
 			}
 			catch (Exception ee) {
 			}
-
 			MainWindow.message(jdom.getMessage(), SWT.ICON_ERROR);
 		}
 		catch (Exception e) {
@@ -360,7 +334,6 @@ public class ScriptListener extends JOEListener {
 			}
 			catch (Exception ee) {
 			}
-
 			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
 			System.out.println(e);
 		}
@@ -378,20 +351,16 @@ public class ScriptListener extends JOEListener {
 		this.setName(name);
 	}
 
-	@Override
-	public String getPrePostProcessingScriptSource() {
+	@Override public String getPrePostProcessingScriptSource() {
 		String strT = "";
 		return strT;
-
 	}
 
 	public void setName(final String name) {
 		Utils.setAttribute("name", name, _parent);
 		if (_update != null)
 			_update.updateTreeItem(name);
-
 		_dom.setChanged(true);
-
 		setChangedForDirectory();
 	}
 
@@ -408,7 +377,7 @@ public class ScriptListener extends JOEListener {
 		if (_dom.isDirectory() || _dom.isLifeElement()) {
 			if (_parent != null) {
 				Element job = _parent;
-				if (!job.getName().equals(_parent))
+				if (!job.getName().equals(_parent.getName()))
 					job = Utils.getJobElement(_parent);
 				_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.MODIFY);
 			}

@@ -7,22 +7,20 @@ import org.eclipse.swt.program.Program;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import com.sos.jobdoc.DocumentationDom;
-
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
 
+import com.sos.jobdoc.DocumentationDom;
+
 public class JobdocListener {
-    private DocumentationDom      _dom;
-
-    private Element               _job;
-
+    private final DocumentationDom      _dom;
+    private final Element               _job;
     private static final String[] _orderValues = { "yes", "no", "both" };
 
     private static final String[] _tasksValues = { "", "1", "unbounded" };
 
 
-    public JobdocListener(DocumentationDom dom, Element job) {
+    public JobdocListener(final DocumentationDom dom, final Element job) {
         _dom = dom;
         _job = job;
     }
@@ -55,12 +53,15 @@ public class JobdocListener {
        }
     }
       
+    public String getJobName () {
+    	return getName();
+    }
     public String getName() {
         return Utils.getAttributeValue("name", _job);
     }
 
 
-    public void setName(String name) {
+    public void setName(final String name) {
         Utils.setAttribute("name", name, _job, _dom);
     }
 
@@ -70,7 +71,7 @@ public class JobdocListener {
     }
 
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         Utils.setAttribute("title", title, _job, _dom);
     }
 
@@ -88,7 +89,7 @@ public class JobdocListener {
     }
 
 
-    public void setOrder(String order) {
+    public void setOrder(final String order) {
         Utils.setAttribute("order", order, _job, _dom);
     }
 
@@ -103,7 +104,7 @@ public class JobdocListener {
   }
 
 
-    public void setTasks(String tasks) {
+    public void setTasks(final String tasks) {
         Utils.setAttribute("tasks", tasks, _job, _dom);
     }
 

@@ -25,12 +25,14 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.JDOMException;
 
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
+
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
+import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.BaseListener;
 
@@ -58,13 +60,19 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     private Button       butOpen  = null; 
     private Button       button   = null;
     private Button       butOpenFileDialog = null; 
+	private TreeData			objTreeData		= null;
+
+	public BaseForm(final Composite parent, final TreeData pobjTreeData) {
+		super(parent, SWT.None);
+		objTreeData = pobjTreeData;
+	}
 
     /**
      * @param parent
      * @param style
      * @throws JDOMException
      */
-    public BaseForm(Composite parent, int style, SchedulerDom dom) throws JDOMException {
+  @Deprecated  public BaseForm(final Composite parent, final int style, final SchedulerDom dom) throws JDOMException {
         super(parent, style);
         listener = new BaseListener(dom);
 
@@ -73,11 +81,13 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         listener.fillTable(table);
     }
 
-    public boolean isUnsaved() {
+    @Override
+	public boolean isUnsaved() {
         return bApply.isEnabled();
     }
 
-    public void apply() {
+    @Override
+	public void apply() {
         if (isUnsaved())
             applyFile();
     }
@@ -116,7 +126,8 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         label1.setText(Messages.getLabel("BaseFile"));
         tFile = new Text(group, SWT.BORDER);
         tFile.addFocusListener(new FocusAdapter() {
-        	public void focusGained(final FocusEvent e) {
+        	@Override
+			public void focusGained(final FocusEvent e) {
         		tFile.selectAll();
         	}
         });
@@ -130,7 +141,8 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         
         tComment = new Text(group, SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL);
         tComment.addKeyListener(new KeyAdapter() {
-        	public void keyPressed(final KeyEvent e) {
+        	@Override
+			public void keyPressed(final KeyEvent e) {
         		if(e.keyCode==97 && e.stateMask == SWT.CTRL){
 					tComment.setSelection(0, tComment.getText().length());
 				}
@@ -140,7 +152,8 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
         tComment.setEnabled(false);
         tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+            @Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
                 bApply.setEnabled(!tFile.getText().equals(""));
                 button.setEnabled(!tFile.getText().equals(""));
             }
@@ -159,6 +172,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         button.setLayoutData(gridData);
         button.setEnabled(false);
         button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
 				if(text != null)
@@ -171,7 +185,8 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         butOpenFileDialog.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, true, true));
         butOpenFileDialog.setEnabled(false);
         butOpenFileDialog.addSelectionListener(new SelectionAdapter() {
-        	public void widgetSelected(final SelectionEvent e) {
+        	@Override
+			public void widgetSelected(final SelectionEvent e) {
         		openFileDialog();
         	}
         	
@@ -189,7 +204,8 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
 
         butOpen = new Button(group, SWT.NONE);
         butOpen.addSelectionListener(new SelectionAdapter() {
-        	public void widgetSelected(final SelectionEvent e) {
+        	@Override
+			public void widgetSelected(final SelectionEvent e) {
         		openBaseElement();
         		
         	}
@@ -201,7 +217,8 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         label2.setText(Messages.getLabel("Label"));
         label2.setLayoutData(gridData21);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                 listener.newBaseFile();
                 setInput(true);
             }
@@ -211,7 +228,8 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         bRemove.setText(Messages.getLabel("RemoveBaseFile"));
         bRemove.setLayoutData(gridData2);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                 if (table.getSelectionCount() > 0) {
                     int index = table.getSelectionIndex();
                     listener.removeBaseFile(index);
@@ -231,14 +249,16 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         tFile.setEnabled(false);
         tFile.setLayoutData(gridData4);
         tFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+            @Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
                 getShell().setDefaultButton(bApply);
                 bApply.setEnabled(!tFile.getText().equals(""));
                 button.setEnabled(!tFile.getText().equals(""));
             }
         });
         tFile.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-            public void keyReleased(org.eclipse.swt.events.KeyEvent e) {
+            @Override
+			public void keyReleased(final org.eclipse.swt.events.KeyEvent e) {
                 if (e.keyCode == SWT.CR && !tFile.getText().equals(""))
                     applyFile();
             }
@@ -247,7 +267,8 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         bApply.setText(Messages.getLabel("ApplyBaseFile"));
         bApply.setEnabled(false);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                 applyFile();
             }
         });
@@ -261,7 +282,8 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 2, 4);
         table = new Table(group, SWT.BORDER | SWT.FULL_SELECTION);
         table.addMouseListener(new MouseAdapter() {
-        	public void mouseDoubleClick(final MouseEvent e) {
+        	@Override
+			public void mouseDoubleClick(final MouseEvent e) {
         		openBaseElement();
         	}
         });
@@ -269,7 +291,8 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         table.setLayoutData(gridData);
         table.setLinesVisible(true);
         table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                 if (table.getSelectionCount() > 0) {
                     listener.selectBaseFile(table.getSelectionIndex());
                     setInput(true);
@@ -294,7 +317,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     }
 
 
-    private void setInput(boolean enabled) {
+    private void setInput(final boolean enabled) {
         tFile.setEnabled(enabled);
         tComment.setEnabled(enabled);
         butOpenFileDialog.setEnabled(enabled);
@@ -312,7 +335,8 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     }
 
 
-    public void setToolTipText() {
+    @Override
+	public void setToolTipText() {
         bNew.setToolTipText(Messages.getTooltip("base.btn_new_file"));
         tComment.setToolTipText(Messages.getTooltip("base.comment"));
         bRemove.setToolTipText(Messages.getTooltip("base.btn_remove_file"));
@@ -326,7 +350,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     
     //öffnet das File Dialog um ein Basefile auszuwählen    
     private void openFileDialog() {
-    	sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
+    	com.sos.joe.interfaces.IContainer con = MainWindow.getContainer();
     	String currPath = "";
     	String sep = System.getProperty("file.separator");
     	if(con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
@@ -367,7 +391,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     	String sep = System.getProperty("file.separator");
     	if(tFile.getText() != null && tFile.getText().length() > 0) {
     		
-    		sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
+    		com.sos.joe.interfaces.IContainer con = MainWindow.getContainer();
     		
     		if(con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
     			currPath = new java.io.File(con.getCurrentEditor().getFilename()).getParent();    			

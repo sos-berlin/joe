@@ -14,11 +14,11 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.interfaces.IUpdateLanguage;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;

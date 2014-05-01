@@ -19,9 +19,9 @@ import org.jdom.Element;
 import com.sos.dialog.components.SOSDateTime;
 import com.sos.jobdoc.DocumentationDom;
 import com.sos.jobdoc.listeners.ReleaseListener;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
 
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 

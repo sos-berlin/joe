@@ -14,10 +14,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
-import org.jdom.Element;
 
 import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.conf.composites.JobMainComposite;
 import sos.scheduler.editor.conf.container.JobDelayAfterError;
 import sos.scheduler.editor.conf.container.JobDocumentation;
@@ -28,8 +27,7 @@ import sos.scheduler.editor.conf.container.JobSetback;
 import sos.scheduler.editor.conf.container.JobSourceViewer;
 import sos.scheduler.editor.conf.container.JobStartWhenDirectoryChanged;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
-import com.sos.joe.objects.job.JobOptionsListener;
+import com.sos.joe.objects.job.JobListener;
 import com.sos.scheduler.model.objects.JSObjJob;
 
 public class ScriptJobMainForm extends ScriptForm {
@@ -41,7 +39,7 @@ public class ScriptJobMainForm extends ScriptForm {
 	@SuppressWarnings("unused")
 	private final Logger				logger							= Logger.getLogger(this.getClass());
 
-	private final JobOptionsListener	objDataOptionsProvider;
+	private final JobListener	objDataOptionsProvider;
 
 	private Composite					tabItemOptionsComposite			= null;
 	private Composite					tabItemDirChangedComposite		= null;
@@ -68,19 +66,20 @@ public class ScriptJobMainForm extends ScriptForm {
 
 	private Group						objMainOptionsGroup1			= null;
 
-	public ScriptJobMainForm(final Composite parent, final int style, final SchedulerDom dom, final Element job, final ISchedulerUpdate main) {
-		super(parent, style, dom, job, main);
-		showWaitCursor();
-		objDataOptionsProvider = new JobOptionsListener(dom, job);
-		initialize();
-		restoreCursor();
-	}
+//	public ScriptJobMainForm(final Composite parent, final int style, final SchedulerDom dom, final Element job, final ISchedulerUpdate main) {
+//		super(parent, style, dom, job, main);
+//		showWaitCursor();
+//		objDataOptionsProvider = new JobOptionsListener(dom, job);
+//		initialize();
+//		restoreCursor();
+//	}
 
-    public ScriptJobMainForm(final Composite parent, final int style, final JSObjJob pobjJob, final ISchedulerUpdate main) {
-        super(parent, style, pobjJob, main);
+    public ScriptJobMainForm(final Composite parent,  final TreeData pobjTreeData) {
+        super(parent, pobjTreeData);
 
         showWaitCursor();
-        objDataOptionsProvider = new JobOptionsListener(pobjJob);
+
+        objDataOptionsProvider = new JobListener(pobjTreeData);
         initialize();
         restoreCursor();
     }

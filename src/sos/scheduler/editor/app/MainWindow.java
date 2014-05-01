@@ -45,6 +45,7 @@ import com.sos.i18n.annotation.I18NMessage;
 import com.sos.i18n.annotation.I18NMessages;
 import com.sos.i18n.annotation.I18NResourceBundle;
 import com.sos.jobdoc.forms.DocumentationForm;
+import com.sos.joe.interfaces.IContainer;
 import com.sos.joe.job.wizard.JobAssistentForm;
 import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
 

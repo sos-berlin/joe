@@ -1,7 +1,7 @@
 /**
  * 
  */
-package sos.scheduler.editor.conf.forms;
+package com.sos.joe.objects.job.forms;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
@@ -36,14 +36,11 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IOUtils;
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
@@ -54,6 +51,8 @@ import sos.scheduler.editor.conf.listeners.JobParameterListener;
 import sos.util.SOSString;
 
 import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
 import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
 import com.sos.joe.objects.job.JobListener;
@@ -91,7 +90,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 	private Button					butRemoveInclude		= null;
 	private CTabFolder				tabFolder				= null;
 	private SOSString				sosString				= null;
-	private final SchedulerDom			dom						= null;
+	private final SchedulerDom		dom						= null;
 	private CTabItem				includeParameterTabItem	= null;
 	private CTabItem				parameterTabItem		= null;
 	private CTabItem				environmentTabItem		= null;
@@ -109,13 +108,15 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 	private Button					butoIncludeSave			= null;
 	private boolean					isRemoteConnection		= false;
 	public static String			WIZARD					= "Wizard";
+	private JSObjJob				objJSJob				= null;
 
-	public JobParameterForm(final Composite parent, final int style, final JSObjJob pobjJSJob, final ISchedulerUpdate main, final int type_, final String jobname) throws JDOMException {
-		super(parent, style);
+	public JobParameterForm(final Composite parent, final JSObjJob pobjJSJob, final ISchedulerUpdate main, final int type_)  {
+		super(parent, SWT.NONE);
 		//		dom = _dom;
 		type = type_;
+		objJSJob = pobjJSJob;
 		objDataProvider = new JobParameterListener(pobjJSJob, main);
-		objDataProvider.setJobname(jobname);
+		objDataProvider.setJobname(objJSJob.getJobName());
 		initialize();
 		setToolTipText();
 	}
@@ -141,14 +142,12 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		initForm();
 	}
 
-	@Override
-	public void apply() {
+	@Override public void apply() {
 		if (isUnsaved())
 			addParam();
 	}
 
-	@Override
-	public boolean isUnsaved() {
+	@Override public boolean isUnsaved() {
 		return bApply.isEnabled();
 	}
 
@@ -226,16 +225,19 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 			// JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), new
 			// JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? Editor.JOB : Editor.JOB_WIZARD);
 			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objDataProvider.get_dom(), objDataProvider.get_main(),
-					new JobListener(dom, objDataProvider.getParent(), objDataProvider.get_main()), tParameter, Editor.PARAMETER);
+					getJobListener(), getTParameter(), Editor.PARAMETER);
 			paramsForm.showAllImportJobParams(includeFile);
 		}
 		else {
 			// Liste aller Jobdokumentation
-			JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(new JobListener(dom, objDataProvider.getParent(),
-					objDataProvider.get_main()), tParameter, Editor.PARAMETER);
+			JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(getJobListener(), getTParameter(), Editor.PARAMETER);
 			importParameterForms.showAllImportJobs();
 		}
 		Utils.stopCursor(getShell());
+	}
+
+	private JobListener getJobListener() {
+		return new JobListener(objJSJob);
 	}
 
 	public Table getTParameter() {
@@ -314,7 +316,6 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 				}
 				hash.put(Utils.getAttributeValue("name", param), "");
 			}
-
 			includeParameterTabItem = new CTabItem(tabFolder, SWT.CLOSE);
 			includeParameterTabItem.setText(new File(filename).getName());
 			includeParameterTabItem.setData("filename", filename);
@@ -322,7 +323,6 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 			includeParameterTabItem.setData("doc", doc);
 			includeParameterTabItem.setData("params", listOfElement);
 			// --> bis hier alles in listener übernehmen
-			
 			final Group group_1 = new Group(tabFolder, SWT.NONE);
 			group_1.setText(txtIncludeFilename.getText());
 			final GridLayout gridLayout = new GridLayout();
@@ -347,14 +347,12 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 			butoIncludeSave.setLayoutData(gridData_7);
 			butoIncludeSave.setText(Messages.getLabel("Save"));
 			txtIncludeParameterValue.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-				@Override
-				public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
+				@Override public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 					butoIncludeSave.setEnabled(!txtIncludeParameter.getText().equals(""));
 				}
 			});
 			txtIncludeParameter.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-				@Override
-				public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
+				@Override public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 					butoIncludeSave.setEnabled(!txtIncludeParameter.getText().equals(""));
 				}
 			});
@@ -401,8 +399,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 			butIncludeRemove.setText(Messages.getLabel("Remove"));
 			butIncludeRemove.setEnabled(false);
 			butIncludeRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-				@Override
-				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+				@Override public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 					updateIncludeParam(includeParameterTabItem, false, tableIncludeParameter, txtIncludeParameter, txtIncludeParameterValue, butIncludeRemove);
 				}
 			});
@@ -412,10 +409,8 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 				butImport.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 				// butImport.setText("import");
 				butImport.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(final SelectionEvent e) {
-						JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(new JobListener(dom, objDataProvider.getParent(),
-								objDataProvider.get_main()), tableIncludeParameter, Editor.JOB);
+					@Override public void widgetSelected(final SelectionEvent e) {
+						JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(getJobListener(), tableIncludeParameter, Editor.JOB);
 						importParameterForms.showAllImportJobs();
 					}
 				});
@@ -423,8 +418,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 				butImport.setText(Messages.getLabel(WIZARD));
 			}
 			txtIncludeParameterValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-				@Override
-				public void keyPressed(final org.eclipse.swt.events.KeyEvent e) {
+				@Override public void keyPressed(final org.eclipse.swt.events.KeyEvent e) {
 					if (e.keyCode == SWT.CR && !txtIncludeParameter.getText().trim().equals("")) {
 						updateIncludeParam(includeParameterTabItem, true, tableIncludeParameter, txtIncludeParameter, txtIncludeParameterValue,
 								butIncludeRemove);
@@ -432,23 +426,20 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 				}
 			});
 			txtIncludeParameter.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-				@Override
-				public void keyPressed(final org.eclipse.swt.events.KeyEvent e) {
-					if (e.keyCode == SWT.CR && !txtIncludeParameter.equals("")) {
+				@Override public void keyPressed(final org.eclipse.swt.events.KeyEvent e) {
+					if (e.keyCode == SWT.CR && hasText(txtIncludeParameter)) {
 						updateIncludeParam(includeParameterTabItem, true, tableIncludeParameter, txtIncludeParameter, txtIncludeParameterValue,
 								butIncludeRemove);
 					}
 				}
 			});
 			butoIncludeSave.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-				@Override
-				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+				@Override public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 					updateIncludeParam(includeParameterTabItem, true, tableIncludeParameter, txtIncludeParameter, txtIncludeParameterValue, butIncludeRemove);
 				}
 			});
 			tableIncludeParameter.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-				@Override
-				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+				@Override public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 					TableItem item = (TableItem) e.item;
 					if (item == null)
 						return;
@@ -459,8 +450,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 				}
 			});
 			newButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					txtIncludeParameter.setText("");
 					txtIncludeParameterValue.setText("");
 					butIncludeRemove.setEnabled(false);
@@ -488,8 +478,8 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		}
 	}
 
-	private void updateIncludeParam(final CTabItem includeParameterTabItem, final boolean add, final Table tableIncludeParameter, final Text txtIncludeParameter,
-			final Text txtIncludeParameterValue, final Button butIncludeRemove) {
+	private void updateIncludeParam(final CTabItem includeParameterTabItem, final boolean add, final Table tableIncludeParameter,
+			final Text txtIncludeParameter, final Text txtIncludeParameterValue, final Button butIncludeRemove) {
 		Document doc = (Document) includeParameterTabItem.getData("doc");
 		String filename = (String) includeParameterTabItem.getData("filename");
 		java.util.List listOfElement = (java.util.List) includeParameterTabItem.getData("params");
@@ -561,23 +551,20 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		label2.setText(Messages.getLabel("Name"));
 		tParaName = new Text(Group, SWT.BORDER);
 		tParaName.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(final FocusEvent e) {
+			@Override public void focusGained(final FocusEvent e) {
 				tParaName.selectAll();
 			}
 		});
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		tParaName.setLayoutData(gridData_4);
 		tParaName.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-			@Override
-			public void keyPressed(final org.eclipse.swt.events.KeyEvent e) {
+			@Override public void keyPressed(final org.eclipse.swt.events.KeyEvent e) {
 				if (e.keyCode == SWT.CR && !tParaName.getText().equals(""))
 					addParam();
 			}
 		});
 		tParaName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override
-			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
+			@Override public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				bApply.setEnabled(!tParaName.getText().trim().equals(""));
 			}
 		});
@@ -586,23 +573,20 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		label6.setText(Messages.getLabel("Value"));
 		tParaValue = new Text(Group, SWT.BORDER);
 		tParaValue.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(final FocusEvent e) {
+			@Override public void focusGained(final FocusEvent e) {
 				tParaValue.selectAll();
 			}
 		});
 		final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		tParaValue.setLayoutData(gridData_9);
 		tParaValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-			@Override
-			public void keyPressed(final org.eclipse.swt.events.KeyEvent e) {
+			@Override public void keyPressed(final org.eclipse.swt.events.KeyEvent e) {
 				if (e.keyCode == SWT.CR && !tParaName.getText().trim().equals(""))
 					addParam();
 			}
 		});
 		tParaValue.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override
-			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
+			@Override public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				bApply.setEnabled(!tParaName.getText().equals(""));
 			}
 		});
@@ -611,8 +595,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		gridDatax.widthHint = 28;
 		button.setLayoutData(gridDatax);
 		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				String text = sos.scheduler.editor.app.Utils.showClipboard(tParaValue.getText(), getShell(), true, "");
 				if (text != null)
 					tParaValue.setText(text);
@@ -626,8 +609,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		bApply.setLayoutData(gridData_7);
 		bApply.setText(Messages.getLabel("Apply"));
 		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override
-			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+			@Override public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				addParam();
 			}
 		});
@@ -640,8 +622,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		tParameter.setLayoutData(gridData_1);
 		tParameter.setHeaderVisible(true);
 		tParameter.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override
-			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+			@Override public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				if (bApply.isEnabled()) {
 					int ok = MainWindow.message(Messages.getString("MainListener.apply_changes"), //$NON-NLS-1$
 							SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
@@ -675,8 +656,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		tcValue.setText("Value"); //TODO lang "Value" t
 		butNewParam = new Button(Group, SWT.NONE);
 		butNewParam.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText("");
 				tParaValue.setText("");
 				bRemove.setEnabled(false);
@@ -693,8 +673,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		composite.setLayout(new GridLayout());
 		butUp = new Button(composite, SWT.NONE);
 		butUp.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				// selektierte Datensatz wird eine Zeile nach oben verschoben
 				objDataProvider.changeUp(tParameter);
 			}
@@ -704,8 +683,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
 		butDown = new Button(composite, SWT.NONE);
 		butDown.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				objDataProvider.changeDown(tParameter);
 			}
 		});
@@ -717,8 +695,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		// butImport.setText("import");
 		butImport.setText(WIZARD);
 		butImport.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				startWizzard();
 				tParaName.setFocus();
 			}
@@ -731,8 +708,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		bRemove.setText("Remove"); //TODO lang "Remove" b
 		bRemove.setEnabled(false);
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override
-			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+			@Override public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				int index = tParameter.getSelectionIndex();
 				objDataProvider.deleteParameter(tParameter, index);
 				tParaName.setText("");
@@ -755,8 +731,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 			gridData.minimumHeight = 100;
 			txtParameterDescription.setLayoutData(gridData);
 			txtParameterDescription.addFocusListener(new FocusAdapter() {
-				@Override
-				public void focusGained(final FocusEvent e) {
+				@Override public void focusGained(final FocusEvent e) {
 					tParaName.setFocus();
 				}
 			});
@@ -779,21 +754,18 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		nameLabel.setText("Name: "); //TODO lang "Name: " l
 		txtEnvName = new Text(group_2, SWT.BORDER);
 		txtEnvName.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(final FocusEvent e) {
+			@Override public void focusGained(final FocusEvent e) {
 				txtEnvName.selectAll();
 			}
 		});
 		txtEnvName.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				butEnvApply.setEnabled(!txtEnvName.getText().trim().equals(""));
 			}
 		});
 		txtEnvName.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR && !txtEnvName.equals(""))
+			@Override public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR && hasText(txtEnvName))
 					addEnvironment();
 			}
 		});
@@ -804,21 +776,18 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		valueLabel.setText("Value: "); //TODO lang "Value" l
 		txtEnvValue = new Text(group_2, SWT.BORDER);
 		txtEnvValue.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(final FocusEvent e) {
+			@Override public void focusGained(final FocusEvent e) {
 				txtEnvValue.selectAll();
 			}
 		});
 		txtEnvValue.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				butEnvApply.setEnabled(!txtEnvName.getText().trim().equals(""));
 			}
 		});
 		txtEnvValue.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR && !txtEnvName.equals(""))
+			@Override public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR && hasText(txtEnvName))
 					addEnvironment();
 			}
 		});
@@ -826,8 +795,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		butEnvApply = new Button(group_2, SWT.NONE);
 		butEnvApply.setEnabled(false);
 		butEnvApply.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				addEnvironment();
 			}
 		});
@@ -839,8 +807,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		label4_1.setText("Label");
 		tableEnvironment = new Table(group_2, SWT.FULL_SELECTION | SWT.BORDER);
 		tableEnvironment.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				TableItem item = (TableItem) e.item;
 				if (item == null)
 					return;
@@ -863,8 +830,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		colEnvValue.setText("Value"); //TODO lang "Value" tc
 		butNewEnvironment = new Button(group_2, SWT.NONE);
 		butNewEnvironment.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				txtEnvName.setText("");
 				txtEnvValue.setText("");
 				butEnvRemove.setEnabled(false);
@@ -876,8 +842,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		butNewEnvironment.setText("New"); //TODO lang "New" b
 		butEnvRemove = new Button(group_2, SWT.NONE);
 		butEnvRemove.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				int index = tableEnvironment.getSelectionIndex();
 				objDataProvider.deleteEnvironment(tableEnvironment, index);
 				txtEnvName.setText("");
@@ -901,6 +866,11 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		txtEnvName.setFocus();
 	}
 
+	private boolean hasText (final Text pobjText) {
+		String strT = pobjText.getText().trim();
+		return strT.length() > 0;
+	}
+
 	private void createIncludes() {
 		final CTabItem includesTabItem = new CTabItem(tabFolder, SWT.BORDER);
 		includesTabItem.setText("Includes"); //TODO lang "Includes" ti
@@ -912,8 +882,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS) {
 			butIsLifeFile = new Button(group_3, SWT.CHECK);
 			butIsLifeFile.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
 				}
 			});
@@ -925,23 +894,20 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		}
 		txtIncludeFilename = new Text(group_3, SWT.BORDER);
 		txtIncludeFilename.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(final FocusEvent e) {
+			@Override public void focusGained(final FocusEvent e) {
 				txtIncludeFilename.selectAll();
 			}
 		});
 		txtIncludeFilename.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
 				if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
-					butIsLifeFile.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
+					butIsLifeFile.setEnabled(hasText(txtIncludeFilename));
 			}
 		});
 		txtIncludeFilename.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR && !txtIncludeFilename.equals(""))
+			@Override public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR && hasText(txtIncludeFilename))
 					addInclude();
 			}
 		});
@@ -950,23 +916,20 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		lblNode.setText("Node:"); //TODO lang "Node:" l
 		txtIncludeNode = new Text(group_3, SWT.BORDER);
 		txtIncludeNode.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(final FocusEvent e) {
+			@Override public void focusGained(final FocusEvent e) {
 				txtIncludeNode.selectAll();
 			}
 		});
 		txtIncludeNode.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
 				if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
-					butIsLifeFile.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
+					butIsLifeFile.setEnabled(hasText(txtIncludeFilename));
 			}
 		});
 		txtIncludeNode.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR && !txtIncludeFilename.equals(""))
+			@Override public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR && hasText(txtIncludeFilename))
 					addInclude();
 			}
 		});
@@ -974,8 +937,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		butIncludesApply = new Button(group_3, SWT.NONE);
 		butIncludesApply.setEnabled(false);
 		butIncludesApply.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				addInclude();
 			}
 		});
@@ -986,15 +948,13 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		label4_3.setText("Label");
 		tableIncludeParams = new Table(group_3, SWT.FULL_SELECTION | SWT.BORDER);
 		tableIncludeParams.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDoubleClick(final MouseEvent e) {
+			@Override public void mouseDoubleClick(final MouseEvent e) {
 				if (!isRemoteConnection)
 					createParameterTabItem();
 			}
 		});
 		tableIncludeParams.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				TableItem item = (TableItem) e.item;
 				if (item == null)
 					return;
@@ -1019,8 +979,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		}
 		butNewIncludes = new Button(group_3, SWT.NONE);
 		butNewIncludes.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				tableIncludeParams.deselectAll();
 				txtIncludeFilename.setText("");
 				txtIncludeNode.setText("");
@@ -1036,8 +995,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		butNewIncludes.setText("New"); //TODO lang "New" b
 		butOpenInclude = new Button(group_3, SWT.NONE);
 		butOpenInclude.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				createParameterTabItem();
 			}
 		});
@@ -1047,8 +1005,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		butRemoveInclude = new Button(group_3, SWT.NONE);
 		butRemoveInclude.setEnabled(false);
 		butRemoveInclude.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				int index = tableIncludeParams.getSelectionIndex();
 				objDataProvider.deleteIncludeParams(tableIncludeParams, tableIncludeParams.getSelectionIndex());
 				txtIncludeFilename.setText("");
@@ -1068,8 +1025,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		butRemoveInclude.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		butRemoveInclude.setText("Remove"); //TODO lang "Remove" b
 		tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
-			@Override
-			public void close(final CTabFolderEvent e) {
+			@Override public void close(final CTabFolderEvent e) {
 				if (e.item.equals(parameterTabItem) || e.item.equals(environmentTabItem) || e.item.equals(includesTabItem)) {
 					e.doit = false;
 				}
@@ -1093,8 +1049,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		label2.setText("Name: "); //TODO lang "Name:" l
 		tParaName = new Text(group, SWT.BORDER);
 		tParaName.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(final FocusEvent e) {
+			@Override public void focusGained(final FocusEvent e) {
 				tParaName.selectAll();
 			}
 		});
@@ -1102,15 +1057,13 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		gridData_9.widthHint = 200;
 		tParaName.setLayoutData(gridData_9);
 		tParaName.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-			@Override
-			public void keyPressed(final org.eclipse.swt.events.KeyEvent e) {
-				if (e.keyCode == SWT.CR && !tParaName.equals(""))
+			@Override public void keyPressed(final org.eclipse.swt.events.KeyEvent e) {
+				if (e.keyCode == SWT.CR && hasText(tParaName))
 					addParam();
 			}
 		});
 		tParaName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override
-			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
+			@Override public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				bApply.setEnabled(!tParaName.getText().equals(""));
 				if (tParaName.getText().equals("<from>")) {
 					cSource.setVisible(true);
@@ -1127,8 +1080,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		label6.setText("Value: "); //TODO lang "Value:" l
 		final Composite composite = new Composite(group, SWT.NONE);
 		composite.addControlListener(new ControlAdapter() {
-			@Override
-			public void controlResized(final ControlEvent e) {
+			@Override public void controlResized(final ControlEvent e) {
 				cSource.setBounds(0, 2, composite.getBounds().width, tParaName.getBounds().height);
 				tParaValue.setBounds(0, 2, composite.getBounds().width, tParaName.getBounds().height);
 			}
@@ -1138,30 +1090,26 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		cSource.setItems(new String[] { "order", "task" });
 		cSource.setBounds(0, 0, 250, 21);
 		cSource.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				tParaValue.setText(cSource.getText());
 			}
 		});
 		cSource.setVisible(false);
 		tParaValue = new Text(composite, SWT.BORDER);
 		tParaValue.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(final FocusEvent e) {
+			@Override public void focusGained(final FocusEvent e) {
 				tParaValue.selectAll();
 			}
 		});
 		tParaValue.setBounds(0, 0, 250, 21);
 		tParaValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-			@Override
-			public void keyPressed(final org.eclipse.swt.events.KeyEvent e) {
-				if (e.keyCode == SWT.CR && !tParaName.equals(""))
+			@Override public void keyPressed(final org.eclipse.swt.events.KeyEvent e) {
+				if (e.keyCode == SWT.CR && hasText(tParaName))
 					addParam();
 			}
 		});
 		tParaValue.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override
-			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
+			@Override public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				bApply.setEnabled(!tParaName.getText().equals(""));
 			}
 		});
@@ -1170,8 +1118,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		gridDatax.widthHint = 28;
 		button.setLayoutData(gridDatax);
 		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				String text = sos.scheduler.editor.app.Utils.showClipboard(tParaValue.getText(), getShell(), true, "");
 				if (text != null)
 					tParaValue.setText(text);
@@ -1184,8 +1131,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		bApply.setText("&Apply"); //TODO lang "&Apply" b
 		bApply.setEnabled(false);
 		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override
-			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+			@Override public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				addParam();
 			}
 		});
@@ -1195,15 +1141,13 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		gridData_3.heightHint = 140;
 		tParameter.setLayoutData(gridData_3);
 		tParameter.addPaintListener(new PaintListener() {
-			@Override
-			public void paintControl(final PaintEvent e) {
+			@Override public void paintControl(final PaintEvent e) {
 			}
 		});
 		tParameter.setHeaderVisible(true);
 		tParameter.setLinesVisible(true);
 		tParameter.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override
-			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+			@Override public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				TableItem item = (TableItem) e.item;
 				if (item == null)
 					return;
@@ -1227,8 +1171,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		tcValue.setText("Value"); //TODO lang "Value" tc
 		butNewParam = new Button(group, SWT.NONE);
 		butNewParam.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText("");
 				tParaValue.setText("");
 				bRemove.setEnabled(false);
@@ -1245,8 +1188,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		composite_2.setLayout(new GridLayout());
 		butUp_1 = new Button(composite_2, SWT.NONE);
 		butUp_1.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				objDataProvider.changeUp(tParameter);
 			}
 		});
@@ -1255,8 +1197,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		butUp_1.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
 		butDown_1 = new Button(composite_2, SWT.NONE);
 		butDown_1.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				objDataProvider.changeDown(tParameter);
 			}
 		});
@@ -1264,8 +1205,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		butDown_1.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
 		butImport_1 = new Button(group, SWT.NONE);
 		butImport_1.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				startWizzard();
 			}
 		});
@@ -1277,8 +1217,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		bRemove.setText("Remove"); //TODO lang "Remove" b
 		bRemove.setEnabled(false);
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override
-			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+			@Override public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				int index = tParameter.getSelectionIndex();
 				objDataProvider.deleteParameter(tParameter, index);
 				tParaName.setText("");
@@ -1304,8 +1243,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		final Button paramButton = new Button(composite_1, SWT.RADIO);
 		paramButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		paramButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText("");
 				tParaValue.setText("");
 				tParaName.setFocus();
@@ -1316,8 +1254,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		final Button fromTaskButton = new Button(composite_1, SWT.RADIO);
 		fromTaskButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		fromTaskButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText("<from>"); //TODO lang "<from>" 
 				cSource.setText("task"); //TODO lang "task"
 				bApply.setFocus();
@@ -1328,8 +1265,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
 		fromOrderButton.setLayoutData(gridData_2);
 		fromOrderButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText("<from>"); //TODO lang "<from>"
 				cSource.setText("order"); //TODO lang "order"
 				bApply.setFocus();
@@ -1346,8 +1282,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		}
 	}
 
-	@Override
-	public void setToolTipText() {
+	@Override public void setToolTipText() {
 		tParaName.setToolTipText(Messages.getTooltip("job.param.name"));
 		tParaValue.setToolTipText(Messages.getTooltip("job.param.value"));
 		bRemove.setToolTipText(Messages.getTooltip("job.param.btn_remove"));

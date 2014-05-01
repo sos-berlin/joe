@@ -1,11 +1,10 @@
-package sos.scheduler.editor.conf.forms;
+package com.sos.joe.objects.jobchain.forms;
 
 import java.io.File;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.DisposeEvent;
@@ -37,7 +36,6 @@ import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
@@ -48,13 +46,14 @@ import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.DetailDom;
 import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.conf.forms.DetailXMLEditorDialogForm;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.WindowsSaver;
 import com.sos.joe.interfaces.IDetailUpdate;
 import com.sos.joe.interfaces.ISchedulerUpdate;
-import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
+import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
 import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.objects.jobchain.JobChainConfigurationListener;
@@ -109,7 +108,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 	private SchedulerDom					schedulerDom				= null;
 	// Verwendung in Wizzard
 	private Text							butRefreshWizzardNoteParam	= null;
-	private JobListener						joblistener					= null;
+	private final JobListener						joblistener					= null;
 	private String							jobname						= "";
 	private final String							jobDocumentation			= null;
 	private final WindowsSaver				w;
@@ -925,10 +924,10 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 		if (schedulerDom == null) {
 			schedulerDom = new SchedulerDom();
 		}
-		CTabFolder folder = new CTabFolder(parent, SWT.TOP | SWT.CLOSE);
+//		CTabFolder folder = new CTabFolder(parent, SWT.TOP | SWT.CLOSE);
 		// Sonst Nullpointer Exception wenn Parameter aus Wizzard eingetragen werden.
 		// update = new SchedulerForm(MainWindow.getContainer(), folder, SWT.NONE);
-		joblistener = new JobListener(schedulerDom, detailListener.getParams().getParentElement(), update);
+		// TODO joblistener = new JobListener(schedulerDom, detailListener.getParams().getParentElement(), update);
 	}
 
 	private void startWizzard() {
@@ -944,10 +943,10 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 				// JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(),
 				// new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? Editor.JOB :
 				// Editor.JOB_WIZARD);
-				JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(schedulerDom, joblistener.get_main(), joblistener,
-						tableParams, Editor.PARAMETER);
-				paramsForm.showAllImportJobParams(jobDocumentation);
-				paramsForm.setDetailsRefresh(butRefreshWizzardNoteParam);
+//	TODO			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(schedulerDom, joblistener.get_main(), joblistener,
+//						tableParams, Editor.PARAMETER);
+//				paramsForm.showAllImportJobParams(jobDocumentation);
+//				paramsForm.setDetailsRefresh(butRefreshWizzardNoteParam);
 			}
 			else {
 				JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(joblistener, tableParams, Editor.PARAMETER);

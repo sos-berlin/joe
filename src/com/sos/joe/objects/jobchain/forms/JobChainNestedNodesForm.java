@@ -57,14 +57,14 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
 import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.objects.jobchain.JobChainNestedListener;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IOUtils;
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.ResourceManager;
@@ -75,7 +75,6 @@ import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
-import sos.scheduler.editor.conf.forms.DetailDialogForm;
 import sos.util.SOSClassUtil;
 
 public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes */ implements ISOSTableMenueListeners, IUnsaved, IUpdateLanguage {
@@ -173,7 +172,7 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		tState.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(final ModifyEvent e) {
-				boolean valid = listener.isValidState(tState.getText());
+				boolean valid = listener.isUniqueState(tState.getText());
 				if (!valid)
 					tState.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
 				else
@@ -659,7 +658,7 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 	public void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
 
 		String msg = "";
-		if (!listener.isValidState(tState.getText()))
+		if (!listener.isUniqueState(tState.getText()))
 			msg = JOE_M_JobChain_StateAlreadyDefined.label();
 		if (!msg.equals(""))
 			MainWindow.message(msg, SWT.ICON_INFORMATION);

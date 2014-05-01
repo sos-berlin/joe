@@ -1,7 +1,8 @@
 package sos.scheduler.editor.actions.forms;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
-import sos.scheduler.editor.app.IUnsaved;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -11,10 +12,11 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -22,18 +24,18 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Combo;
 import org.jdom.Element;
-import com.swtdesigner.SWTResourceManager;
+
 import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.listeners.EventsListener;
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
-import java.util.ArrayList;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
+import com.swtdesigner.SWTResourceManager;
 
 
 public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage  {
@@ -65,7 +67,7 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
     
     private Button             butEventsOperation       = null; 
     
-    public EventsForm(Composite parent, int style, ActionsDom dom, Element action, ActionsForm _gui) {
+    public EventsForm(final Composite parent, final int style, final ActionsDom dom, final Element action, final ActionsForm _gui) {
     	
         super(parent, style);           
         listener = new EventsListener(dom, action, _gui);
@@ -103,7 +105,8 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 
         txtLogic = JOE_T_EventsForm_Logic.Control(new Text(actionsGroup, SWT.BORDER));
         txtLogic.addModifyListener(new ModifyListener() {
-        	public void modifyText(final ModifyEvent e) {
+        	@Override
+			public void modifyText(final ModifyEvent e) {
         		listener.setLogic(txtLogic.getText());
         	}
         });
@@ -111,7 +114,8 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 
         butEventsOperation = JOE_B_EventsForm_Operation.Control(new Button(actionsGroup, SWT.NONE));
         butEventsOperation.addSelectionListener(new SelectionAdapter() {
-        	public void widgetSelected(final SelectionEvent e) {
+        	@Override
+			public void widgetSelected(final SelectionEvent e) {
         		ArrayList list = new ArrayList();
         		list.addAll(listener.getGroups());
         		
@@ -140,13 +144,15 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
         txtGroup = JOE_T_EventsForm_Group.Control(new Text(group, SWT.BORDER));
         txtGroup.setBackground(SWTResourceManager.getColor(255, 255, 217));
         txtGroup.addKeyListener(new KeyAdapter() {
-        	public void keyPressed(final KeyEvent e) {
-        		if (e.keyCode == SWT.CR && !txtGroup.equals(""))
+        	@Override
+			public void keyPressed(final KeyEvent e) {
+        		if (e.keyCode == SWT.CR && hasText(txtGroup))
         			apply();
         	}
         });
         txtGroup.addModifyListener(new ModifyListener() {
-        	public void modifyText(final ModifyEvent e) {
+        	@Override
+			public void modifyText(final ModifyEvent e) {
         		butApply.setEnabled(true);
         		butEventGroupOperation.setEnabled(txtGroup.getText().length() > 0);
                 
@@ -157,7 +163,8 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
         butApply = JOE_B_EventsForm_Apply.Control(new Button(group, SWT.NONE));
         butApply.setEnabled(false);
         butApply.addSelectionListener(new SelectionAdapter() {
-        	public void widgetSelected(final SelectionEvent e) {
+        	@Override
+			public void widgetSelected(final SelectionEvent e) {
         		apply();
         	}
         });
@@ -168,13 +175,15 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 
         txtGroupLogic = JOE_T_EventsForm_LogicGroup.Control(new Text(group, SWT.BORDER));
         txtGroupLogic.addModifyListener(new ModifyListener() {
-        	public void modifyText(final ModifyEvent e) {
+        	@Override
+			public void modifyText(final ModifyEvent e) {
         		butApply.setEnabled(true);
         	}
         });
         txtGroupLogic.addKeyListener(new KeyAdapter() {
-        	public void keyPressed(final KeyEvent e) {
-        		if (e.keyCode == SWT.CR && !txtGroup.equals(""))
+        	@Override
+			public void keyPressed(final KeyEvent e) {
+        		if (e.keyCode == SWT.CR && hasText(txtGroup))
         			apply();
         	}
         });
@@ -184,7 +193,8 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
         butEventGroupOperation.setLayoutData(new GridData());
         butEventGroupOperation.setEnabled(false);
         butEventGroupOperation.addSelectionListener(new SelectionAdapter() {
-        	public void widgetSelected(final SelectionEvent e) {
+        	@Override
+			public void widgetSelected(final SelectionEvent e) {
         		ArrayList list = new ArrayList();        		
         		list.addAll(listener.getEventClassAndId(txtGroup.getText()));
         		
@@ -195,7 +205,8 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 
         butNew = JOE_B_EventsForm_New.Control(new Button(group, SWT.NONE));
         butNew.addSelectionListener(new SelectionAdapter() {
-        	public void widgetSelected(final SelectionEvent e) {
+        	@Override
+			public void widgetSelected(final SelectionEvent e) {
         		    	
                 txtGroup.setText("");
                 txtGroupLogic.setText("");
@@ -213,13 +224,15 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 
         cboEventClass = JOE_Cbo_EventsForm_EventClass.Control(new Combo(group, SWT.BORDER));
         cboEventClass.addModifyListener(new ModifyListener() {
-        	public void modifyText(final ModifyEvent e) {
+        	@Override
+			public void modifyText(final ModifyEvent e) {
         		butApply.setEnabled(true);
         	}
         });
         cboEventClass.addKeyListener(new KeyAdapter() {
-        	public void keyPressed(final KeyEvent e) {
-        		if (e.keyCode == SWT.CR && !txtGroup.equals(""))
+        	@Override
+			public void keyPressed(final KeyEvent e) {
+        		if (e.keyCode == SWT.CR && hasText(txtGroup))
         			apply();
         	}
         });
@@ -227,7 +240,8 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 
         butRemove = JOE_B_EventsForm_Remove.Control(new Button(group, SWT.NONE));
         butRemove.addSelectionListener(new SelectionAdapter() {
-        	public void widgetSelected(final SelectionEvent e) {
+        	@Override
+			public void widgetSelected(final SelectionEvent e) {
         		if(table.getSelectionCount() > 0)  {
         			int cont = MainWindow.message(actionsGroup.getShell(), JOE_M_EventsForm_RemoveGroup.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
         			if(cont == SWT.OK) {				        				
@@ -249,12 +263,14 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 
         table = JOE_Tbl_EventsForm_Groups.Control(new Table(group, SWT.FULL_SELECTION | SWT.BORDER));
         table.addMouseListener(new MouseAdapter() {
-        	public void mouseDoubleClick(final MouseEvent e) {
+        	@Override
+			public void mouseDoubleClick(final MouseEvent e) {
         		ContextMenu.goTo(table.getSelection()[0].getText(0), _dom, Editor.EVENTS);
         	}
         });
         table.addSelectionListener(new SelectionAdapter() {
-        	public void widgetSelected(final SelectionEvent e) {
+        	@Override
+			public void widgetSelected(final SelectionEvent e) {
         		if(table.getSelectionCount() > 0) {
         			TableItem item = table.getSelection()[0];        			
         			txtGroup.setText(item.getText(0));
@@ -281,17 +297,22 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
         newColumnTableColumn_2.setWidth(189);
     }
  
-
-    public void setToolTipText() {
+    @Override
+	public void setToolTipText() {
 //        
     }
     
-   
+	private boolean hasText (final Text pobjText) {
+		String strT = pobjText.getText().trim();
+		return strT.length() > 0;
+	}
 
+	@Override
 	public boolean isUnsaved() {		
 		return butApply.isEnabled();		
 	}
 	
+	@Override
 	public void apply() {		
 		if (butApply.isEnabled()) {
 			if(txtGroup.getText().length() > 0)

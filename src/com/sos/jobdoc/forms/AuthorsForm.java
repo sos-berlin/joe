@@ -15,14 +15,14 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 
 import com.sos.i18n.annotation.I18NResourceBundle;
 import com.sos.jobdoc.DocumentationDom;
 import com.sos.jobdoc.listeners.ReleaseAuthorsListener;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {

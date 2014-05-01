@@ -79,7 +79,7 @@ public class JobEmailSettings extends FormBaseClass<JobListener> {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
-				objJobDataProvider.setValue("mail_on_error", mailOnError.getText(), "no");
+				objJobDataProvider.setMailOnError( mailOnError.getText(), "no");
 			}
 		});
 		GridData gd_mailOnError = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
@@ -97,7 +97,7 @@ public class JobEmailSettings extends FormBaseClass<JobListener> {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				mailOnDelayAfterError.setEnabled(mailOnWarning.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
-				objJobDataProvider.setValue("mail_on_warning", mailOnWarning.getText(), "no");
+				objJobDataProvider.setMailOnWarning(mailOnWarning.getText(), "no");
 			}
 		});
 		GridData gd_mailOnWarning = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
@@ -114,7 +114,7 @@ public class JobEmailSettings extends FormBaseClass<JobListener> {
 		mailOnSuccess.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				objJobDataProvider.setValue("mail_on_success", mailOnSuccess.getText(), "no");
+				objJobDataProvider.setMailOnSuccess(mailOnSuccess.getText(), "no");
 			}
 		});
 		GridData gd_mailOnSuccess = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
@@ -131,7 +131,7 @@ public class JobEmailSettings extends FormBaseClass<JobListener> {
 		mailOnProcess.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				objJobDataProvider.setValue("mail_on_process", mailOnProcess.getText(), "no");
+				objJobDataProvider.setMailOnProcess(mailOnProcess.getText(), "no");
 			}
 		});
 		GridData gd_mailOnProcess = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
@@ -148,7 +148,7 @@ public class JobEmailSettings extends FormBaseClass<JobListener> {
 		mailOnDelayAfterError.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				objJobDataProvider.setValue("mail_on_delay_after_error", mailOnDelayAfterError.getText(), "no");
+				objJobDataProvider.setMailOnDelayAfterError(mailOnDelayAfterError.getText(), "no");
 			}
 		});
 		mailOnDelayAfterError.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));
@@ -165,7 +165,7 @@ public class JobEmailSettings extends FormBaseClass<JobListener> {
 		mailTo.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(final ModifyEvent e) {
-				objJobDataProvider.setValue("log_mail_to", mailTo.getText());
+				objJobDataProvider.setLogMailTo(mailTo.getText(), "");
 			}
 		});
 		mailTo.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
@@ -177,7 +177,7 @@ public class JobEmailSettings extends FormBaseClass<JobListener> {
 		mailCC.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(final ModifyEvent e) {
-				objJobDataProvider.setValue("log_mail_cc", mailCC.getText());
+				objJobDataProvider.setLogMailCC(mailCC.getText(), "");
 			}
 		});
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -194,7 +194,7 @@ public class JobEmailSettings extends FormBaseClass<JobListener> {
 		mailBCC.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(final ModifyEvent e) {
-				objJobDataProvider.setValue("log_mail_bcc", mailBCC.getText());
+				objJobDataProvider.setLogMailBcc(mailBCC.getText(), "");
 			}
 		});
 
@@ -208,17 +208,17 @@ public class JobEmailSettings extends FormBaseClass<JobListener> {
 
 	private void initForm() {
 
-		mailOnError.setText(objJobDataProvider.getValue("mail_on_error"));
-		mailOnWarning.setText(objJobDataProvider.getValue("mail_on_warning"));
-		mailOnSuccess.setText(objJobDataProvider.getValue("mail_on_success"));
-		mailOnProcess.setText(objJobDataProvider.getValue("mail_on_process"));
-		mailOnDelayAfterError.setText(objJobDataProvider.getValue("mail_on_delay_after_error"));
+		mailOnError.setText(objJobDataProvider.getMailOnError());
+		mailOnWarning.setText(objJobDataProvider.getMailOnWarning());
+		mailOnSuccess.setText(objJobDataProvider.getMailOnSuccess());
+		mailOnProcess.setText(objJobDataProvider.getMailOnProcess());
+		mailOnDelayAfterError.setText(objJobDataProvider.getMailOnDelayAfterError());
 
 		mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
 
-		mailTo.setText(objJobDataProvider.getValue("log_mail_to"));
-		mailCC.setText(objJobDataProvider.getValue("log_mail_cc"));
-		mailBCC.setText(objJobDataProvider.getValue("log_mail_bcc"));
+		mailTo.setText(objJobDataProvider.getLogMailTo());
+		mailCC.setText(objJobDataProvider.getLogMailCC());
+		mailBCC.setText(objJobDataProvider.getLogMailBCC());
 
 	}
 }

@@ -23,9 +23,9 @@ import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.FormBaseClass;
 
-import com.sos.joe.objects.job.JobOptionsListener;
+import com.sos.joe.objects.job.JobListener;
 
-public class JobSetback extends FormBaseClass <JobOptionsListener>  {
+public class JobSetback extends FormBaseClass <JobListener>  {
 
 	private final String conClassName = this.getClass().getSimpleName();
 	private static final String conSVNVersion = "$Id$";
@@ -54,7 +54,7 @@ public class JobSetback extends FormBaseClass <JobOptionsListener>  {
     private Button             bApplySetback      = null;
     private Button             bRemoveSetback     = null;
 
-    public JobSetback(final Composite pParentComposite, final JobOptionsListener pobjJobDataProvider) {
+    public JobSetback(final Composite pParentComposite, final JobListener pobjJobDataProvider) {
         super(pParentComposite, pobjJobDataProvider);
         objJobDataProvider = pobjJobDataProvider;
 

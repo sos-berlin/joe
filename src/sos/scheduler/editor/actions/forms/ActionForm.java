@@ -13,9 +13,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
+import com.sos.joe.interfaces.IUpdateLanguage;
+
 import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.listeners.ActionListener;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
 public class ActionForm extends SOSJOEMessageCodes implements IUpdateLanguage {

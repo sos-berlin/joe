@@ -1,4 +1,4 @@
-package sos.scheduler.editor.app;
+package com.sos.joe.interfaces;
 
 import java.util.Collection;
 

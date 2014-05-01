@@ -2,8 +2,6 @@ package com.sos.joe.interfaces;
 
 import org.eclipse.swt.widgets.TreeItem;
 
-import sos.scheduler.editor.app.IDataChanged;
-
 public interface ISchedulerUpdate extends IDataChanged {
 
 

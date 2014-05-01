@@ -43,6 +43,7 @@ public class ErrorLog extends Exception {
 			String strMsg = msg + "\n" + objJSE.ExceptionText();
 			MainWindow.message(strMsg, SWT.ERROR);
 			logger.error(strMsg);
+			// TODO write exception to separate logifle via log4j
 		}
 		catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -50,7 +51,7 @@ public class ErrorLog extends Exception {
 
 	}
 
-	   public ErrorLog(final String application, String msg, final Exception e) {
+	   public ErrorLog(final String application, final String msg, final Exception e) {
 	        super();
 
 	        try {

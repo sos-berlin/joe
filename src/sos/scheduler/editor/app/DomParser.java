@@ -30,6 +30,7 @@ import sos.util.SOSClassUtil;
 
 import com.sos.i18n.I18NBase;
 import com.sos.i18n.annotation.I18NResourceBundle;
+import com.sos.joe.interfaces.IDataChanged;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public abstract class DomParser extends I18NBase {

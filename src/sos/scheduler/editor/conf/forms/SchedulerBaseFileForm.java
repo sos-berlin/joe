@@ -26,8 +26,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.JDOMException;
 
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
+
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
@@ -333,7 +334,7 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 
 	// öffnet das File Dialog um ein Basefile auszuwählen
 	private void openFileDialog() {
-		sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
+		com.sos.joe.interfaces.IContainer con = MainWindow.getContainer();
 		String currPath = "";
 		String sep = System.getProperty("file.separator");
 		if (con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
@@ -373,7 +374,7 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 		String sep = System.getProperty("file.separator");
 		if (tFile.getText() != null && tFile.getText().length() > 0) {
 
-			sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
+			com.sos.joe.interfaces.IContainer con = MainWindow.getContainer();
 
 			if (con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
 				currPath = new java.io.File(con.getCurrentEditor().getFilename()).getParent();

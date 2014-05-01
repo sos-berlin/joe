@@ -19,6 +19,7 @@ import com.sos.VirtualFileSystem.Interfaces.ISOSVFSHandler;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVfsFileTransfer;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVirtualFile;
 import com.sos.jobdoc.DocumentationDom;
+import com.sos.joe.interfaces.IContainer;
 import com.sos.scheduler.model.SchedulerHotFolder;
 import com.sos.scheduler.model.SchedulerHotFolderFileList;
 import com.sos.scheduler.model.SchedulerObjectFactory;
@@ -181,7 +182,7 @@ public class IOUtils {
 				objSchedulerHotFolderFileList.getScheduleList();
 				objSchedulerHotFolderFileList.getParamsList();
 
-				pobjHotFolder = objSchedulerHotFolder;
+//				pobjHotFolder = objSchedulerHotFolder;
 			}
 			MainWindow.getSShell().setText("JOE (JobScheduler Object Editor) [" + filename + "]");
 			return true;

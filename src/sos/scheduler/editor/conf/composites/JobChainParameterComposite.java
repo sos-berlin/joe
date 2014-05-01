@@ -90,7 +90,6 @@ import sos.util.SOSClassUtil;
 
 import com.sos.joe.interfaces.IDetailUpdate;
 import com.sos.joe.interfaces.ISchedulerUpdate;
-import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
 import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
 import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.objects.jobchain.JobChainConfigurationListener;
@@ -148,7 +147,7 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 	private SchedulerDom						schedulerDom				= null;
 	// Verwendung in Wizzard
 	private Text								butRefreshWizzardNoteParam	= null;
-	private JobListener							joblistener					= null;
+	private final JobListener							joblistener					= null;
 	private final String						jobname						= "";
 	private String								jobDocumentation			= null;
 
@@ -768,10 +767,10 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 				// JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(),
 				// new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? Editor.JOB :
 				// Editor.JOB_WIZARD);
-				JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(schedulerDom, joblistener.get_main(), joblistener,
-						tableParams, Editor.PARAMETER);
-				paramsForm.showAllImportJobParams(jobDocumentation);
-				paramsForm.setDetailsRefresh(butRefreshWizzardNoteParam);
+			// TODO	JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(schedulerDom, joblistener.get_main(), joblistener,
+//						tableParams, Editor.PARAMETER);
+//				paramsForm.showAllImportJobParams(jobDocumentation);
+//				paramsForm.setDetailsRefresh(butRefreshWizzardNoteParam);
 			}
 			else {
 				JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(joblistener, tableParams, Editor.PARAMETER);
@@ -900,7 +899,7 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 		CTabFolder folder = new CTabFolder(objParent, SWT.TOP | SWT.CLOSE);
 		// Sonst Nullpointer Exception wenn Parameter aus Wizzard eingetragen werden.
 		// update = new SchedulerForm(MainWindow.getContainer(), folder, SWT.NONE);
-		joblistener = new JobListener(schedulerDom, detailListener.getParams().getParentElement(), update);
+// TODO		joblistener = new JobListener(schedulerDom, detailListener.getParams().getParentElement(), update);
 	}
 
 	private void getJobDocumentation() {

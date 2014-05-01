@@ -2,6 +2,7 @@ package sos.scheduler.editor.app;
 
 import org.jdom.Element;
 
+@Deprecated
 public class JSObjectElement {
     protected int     _type;
     protected Element _element;

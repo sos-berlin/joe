@@ -28,6 +28,9 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 
+import com.sos.joe.interfaces.IDataChanged;
+import com.sos.joe.interfaces.IUnsaved;
+
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerEditorFontDialog;
 import sos.util.SOSClassUtil;

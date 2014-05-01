@@ -22,9 +22,9 @@ import com.sos.jobdoc.DocumentationDom;
 import com.sos.jobdoc.IUpdateTree;
 import com.sos.jobdoc.listeners.DocumentationListener;
 import com.sos.jobdoc.listeners.SectionsListener;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
 
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 

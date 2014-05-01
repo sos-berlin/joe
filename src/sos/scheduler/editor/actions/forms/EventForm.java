@@ -24,12 +24,13 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
+
 import sos.scheduler.editor.actions.ActionsDom;
 import sos.scheduler.editor.actions.listeners.EventListener;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;

@@ -14,20 +14,19 @@ import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
+import sos.scheduler.editor.classes.FileNameSelector;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.TextArea;
 import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
 import sos.util.SOSClassUtil;
 
-import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
+import com.sos.joe.interfaces.IContainer;
 import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
 import com.sos.joe.objects.job.JobListener;
 
@@ -38,7 +37,7 @@ public class JobDocumentation extends FormBaseClass <JobListener> {
 	private Group			group				= null;
 	private Group			gMain				= null;
 	private Group			gDescription		= null;
-	private Text			tFileName			= null;
+	private FileNameSelector			tFileName			= null;
 	private StyledText		tDescription		= null;
 	private StyledText		tComment			= null;
 	private Button			butShow				= null;
@@ -63,8 +62,8 @@ public class JobDocumentation extends FormBaseClass <JobListener> {
 
 	private void initForm() {
 
-		tFileName.setText(objJobDataProvider.getInclude());
-		butIsLiveFile.setSelection(objJobDataProvider.isLiveFile());
+		tFileName.setText(objJobDataProvider.getInclude4JobDescription());
+		butIsLiveFile.setSelection(objJobDataProvider.isDescriptionALiveFile());
 	}
 
 	@Override
@@ -103,7 +102,7 @@ public class JobDocumentation extends FormBaseClass <JobListener> {
 		GridData gridData12 = new GridData(SWT.FILL, GridData.CENTER, true, false);
 		gridData12.horizontalIndent = -1;
 
-		tFileName = SOSJOEMessageCodes.JOE_T_JobDocumentation_FileName.Control(new Text(gDescription, SWT.BORDER));
+		tFileName = SOSJOEMessageCodes.JOE_T_JobDocumentation_FileName.Control(new FileNameSelector(gDescription, SWT.BORDER));
 		tFileName.setLayoutData(gridData12);
 		tFileName.addModifyListener(new ModifyListener() {
 			@Override
@@ -238,8 +237,8 @@ public class JobDocumentation extends FormBaseClass <JobListener> {
 
 		tComment.setToolTipText(SOSJOEMessageCodes.JOE_M_0051.label());
 
-		butIsLiveFile.setSelection(objJobDataProvider.isLiveFile());
-		tFileName.setText(objJobDataProvider.getInclude());
+		butIsLiveFile.setSelection(objJobDataProvider.isDescriptionALiveFile());
+		tFileName.setText(objJobDataProvider.getInclude4JobDescription());
 
 		butWizard = SOSJOEMessageCodes.JOE_B_ParameterForm_Wizard.Control(new Button(gDescription, SWT.NONE));
 		butWizard.addSelectionListener(new SelectionAdapter() {
@@ -256,15 +255,15 @@ public class JobDocumentation extends FormBaseClass <JobListener> {
 	public void startWizzard(final boolean onlyParams) {
 		try {
 			showWaitCursor();
-			if (objJobDataProvider.getInclude() != null && objJobDataProvider.getInclude().trim().length() > 0) {
+			if (objJobDataProvider.getInclude4JobDescription() != null && objJobDataProvider.getInclude4JobDescription().trim().length() > 0) {
 				// JobDokumentation ist bekannt -> d.h Parameter aus dieser
 				// Jobdoku extrahieren
-				JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objJobDataProvider.get_dom(), objJobDataProvider.get_main(),
-						objJobDataProvider, onlyParams ? Editor.JOB : Editor.JOB_WIZARD);
-
-				if (!onlyParams)
-					paramsForm.setJobForm(this);
-				paramsForm.showAllImportJobParams(objJobDataProvider.getInclude());
+//	TODO			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objJobDataProvider.get_dom(), objJobDataProvider.get_main(),
+//						objJobDataProvider, onlyParams ? Editor.JOB : Editor.JOB_WIZARD);
+//
+//				if (!onlyParams)
+//					paramsForm.setJobForm(this);
+//				paramsForm.showAllImportJobParams(objJobDataProvider.getInclude4JobDescription());
 			}
 			else {
 				JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(objJobDataProvider, Editor.JOB_WIZARD);

@@ -16,17 +16,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.jdom.Element;
 
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
+import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.container.JobOptions;
 
 import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.objects.job.JobListener;
-import com.sos.scheduler.model.objects.JSObjJob;
 
 public class JobMainOptionForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	@SuppressWarnings("unused")
@@ -40,7 +38,7 @@ public class JobMainOptionForm extends SOSJOEMessageCodes implements IUpdateLang
 	private Text		sTimeout				= null;
 	private Text		sTasks					= null;
 	private Text		tIgnoreSignals			= null;
-	private JobListener	listener				= null;
+	private final JobListener	listener				= null;
 	private Group		group					= null;
 	private Group		gMain					= null;
 	private Label		label3					= null;
@@ -57,7 +55,7 @@ public class JobMainOptionForm extends SOSJOEMessageCodes implements IUpdateLang
 	private Text		txtJavaOptions			= null;
 	private Combo		comVisible				= null;
 	private Button		addButton				= null;
-	private boolean		init					= true;
+	private final boolean		init					= true;
 	private Text		txtWarnIfLongerThan		= null;
 	private Text		txtWarnIfShorterThan	= null;
 
@@ -69,24 +67,24 @@ public class JobMainOptionForm extends SOSJOEMessageCodes implements IUpdateLang
 	private final JobOptions objJobOptions = null;
 
 
-	public JobMainOptionForm(final Composite parent, final int style, final SchedulerDom dom, final Element job, final ISchedulerUpdate main) {
-		super(parent, style);
-		init = true;
-		dom.setInit(true);
-		this.setEnabled(Utils.isElementEnabled("job", dom, job));
-		listener = new JobListener(dom, job, main);
-		initialize();
-		setToolTipText();
-		updateTree = false;
-		initForm();
-		dom.setInit(false);
-		init = false;
-	}
-	public JobMainOptionForm(final Composite parent, final int style, final JSObjJob pobjJob, final ISchedulerUpdate main) {
+//	public JobMainOptionForm(final Composite parent, final int style, final SchedulerDom dom, final Element job, final ISchedulerUpdate main) {
+//		super(parent, style);
+//		init = true;
+//		dom.setInit(true);
+//		this.setEnabled(Utils.isElementEnabled("job", dom, job));
+//		listener = new JobListener(dom, job, main);
+//		initialize();
+//		setToolTipText();
+//		updateTree = false;
+//		initForm();
+//		dom.setInit(false);
+//		init = false;
+//	}
+	public JobMainOptionForm(final Composite parent, final int style, final TreeData pobjTreeData, final ISchedulerUpdate main) {
 		super(parent, style);
 		objParentComposite = parent;
 //		showWaitCursor();
-		objDataOptionsProvider = new JobListener(pobjJob, main);
+		objDataOptionsProvider = new JobListener(pobjTreeData, main);
 		initialize();
 //		restoreCursor();
 	}

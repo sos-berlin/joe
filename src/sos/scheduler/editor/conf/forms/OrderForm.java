@@ -32,8 +32,6 @@ import org.jdom.JDOMException;
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
@@ -45,6 +43,9 @@ import sos.util.SOSClassUtil;
 
 import com.sos.i18n.annotation.I18NMsg;
 import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
+import com.sos.joe.objects.jobchain.forms.DetailDialogForm;
 import com.swtdesigner.SWTResourceManager;
 
 public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {

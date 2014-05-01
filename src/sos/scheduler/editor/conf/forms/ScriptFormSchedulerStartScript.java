@@ -8,16 +8,15 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.jdom.Element;
 
-import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.conf.SchedulerDom;
+import sos.scheduler.editor.app.TreeData;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.objects.job.forms.ScriptForm;
 import com.sos.scheduler.model.LanguageDescriptorList;
+import com.sos.scheduler.model.objects.JSObjJob;
 
-public class ScriptFormSchedulerStartScript extends ScriptForm implements IUpdateLanguage {
+public class ScriptFormSchedulerStartScript extends ScriptForm  {
 
 	@SuppressWarnings("unused") private final String conClassName = this.getClass().getSimpleName();
 	@SuppressWarnings("unused") private static final String conSVNVersion = "$Id$";
@@ -26,11 +25,23 @@ public class ScriptFormSchedulerStartScript extends ScriptForm implements IUpdat
 
 	private Group			headerComposite	= null;
 
-	public ScriptFormSchedulerStartScript(final Composite parent, final int style, final SchedulerDom dom, final Element job, final ISchedulerUpdate main) {
-		super(parent, style, dom, job, main);
+	private TreeData				objTreeData			= null;
+
+	public ScriptFormSchedulerStartScript(final Composite parent, final TreeData pobjTreeData) {
+		super(parent, pobjTreeData);
+		objDataProvider = new JobListener(pobjTreeData);
+		objDataProvider._languages = JSObjJob.ValidLanguages4Job;
+		objTreeData = pobjTreeData;
+		objDataProvider._languages = LanguageDescriptorList.getLanguages4Monitor();
 		initialize();
 	}
 
+
+//	public ScriptFormSchedulerStartScript(final Composite parent, final int style, final SchedulerDom dom, final Element job, final ISchedulerUpdate main) {
+//		super(parent, style, dom, job, main);
+//		initialize();
+//	}
+//
 	@Override
 	public void initForm() {
 	}
@@ -68,8 +79,4 @@ public class ScriptFormSchedulerStartScript extends ScriptForm implements IUpdat
 		createScriptTabForm(objMainOptionsGroup);
 	}
 
-	@Override public void setToolTipText() {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -2,6 +2,7 @@ package sos.scheduler.editor.classes;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -43,10 +44,12 @@ import com.sos.joe.objects.job.JobListener;
  */
 
 public class FileNameSelector extends Text {
-
-	@SuppressWarnings("unused")
-	private final String	conClassName			= "FileNameSelector";
-
+	@SuppressWarnings("unused") private final String conClassName = this.getClass().getSimpleName();
+	@SuppressWarnings("unused") private static final String conSVNVersion = "$Id$";
+	@SuppressWarnings("unused") private final Logger logger = Logger.getLogger(this.getClass());
+	
+// TODO consolidate with SOSDialog
+	
 	private JobListener		objDataProvider			= null;
 	@SuppressWarnings("unused")
 	private boolean			flgInit					= false;
@@ -70,9 +73,22 @@ public class FileNameSelector extends Text {
 		MenuItem item = new MenuItem(objContextMenu, SWT.PUSH);
 		item.addListener(SWT.Selection, getSaveAsListener());
 		item.setText("Save as ...");
+		MenuItem item2 = new MenuItem(objContextMenu, SWT.PUSH);
+		item2.addListener(SWT.Selection, getOpenListener());
+		item2.setText("Open File");
 	}
 
 	private Listener getSaveAsListener() {
+
+		return new Listener() {
+			@Override
+			public void handleEvent(final Event e) {
+
+			}
+		};
+	}
+
+	private Listener getOpenListener() {
 
 		return new Listener() {
 			@Override
@@ -174,6 +190,7 @@ public class FileNameSelector extends Text {
 
 	@Override
 	protected void checkSubclass() {
+		
 		// Disable the check that prevents subclassing of SWT components
 	}
 }

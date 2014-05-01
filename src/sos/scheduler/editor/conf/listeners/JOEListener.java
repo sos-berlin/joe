@@ -20,8 +20,8 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.util.SOSClassUtil;
 
+import com.sos.DataExchange.Options.SOSFTPOptions;
 import com.sos.JSHelper.Basics.JSToolBox;
-import com.sos.VirtualFileSystem.FTP.SOSFTPOptions;
 import com.sos.VirtualFileSystem.Factory.VFSFactory;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVFSHandler;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVfsFileTransfer;

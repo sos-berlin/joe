@@ -20,19 +20,19 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 
 import com.sos.jobdoc.DocumentationDom;
 import com.sos.jobdoc.SourceGenerator;
-import com.sos.joe.objects.job.JobListener;
+import com.sos.jobdoc.listeners.JobdocListener;
+import com.sos.joe.interfaces.IUpdateLanguage;
 
 public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	@SuppressWarnings("unused")
 	private final static String	conSVNVersion	= "$Id$";
-	private JobListener	 		listener		= null;
+	private JobdocListener	 		listener		= null;
 	private Group				group			= null;
 	@SuppressWarnings("unused")
 	private Label				label			= null;
@@ -55,7 +55,7 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		initialize();
 		setToolTipText();
 
-		listener = new JobListener(dom, job);
+		listener = new JobdocListener(dom, job);
 		initValues();
 	}
 
@@ -248,7 +248,7 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	private void initValues() {
-		tName.setText(listener.getJobName());
+		tName.setText(listener.getJobName()); 
 		tTitle.setText(listener.getTitle());
 		cOrder.setItems(listener.getOrderValues());
 		cOrder.select(cOrder.indexOf(listener.getOrder()));

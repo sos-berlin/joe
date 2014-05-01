@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 
 import com.sos.joe.objects.jobchain.JobChainConfigurationListener;
+import com.sos.joe.objects.jobchain.forms.DetailDialogForm;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;

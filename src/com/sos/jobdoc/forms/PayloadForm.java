@@ -12,9 +12,9 @@ import org.jdom.Element;
 
 import com.sos.jobdoc.DocumentationDom;
 import com.sos.jobdoc.listeners.PayloadListener;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
 
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
 public class PayloadForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {

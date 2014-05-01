@@ -14,6 +14,8 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
+import com.sos.joe.interfaces.IContainer;
+
 import sos.connection.SOSConnection;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 import sos.util.SOSClassUtil;

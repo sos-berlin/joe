@@ -17,7 +17,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.IUpdateLanguage;
+import com.sos.joe.interfaces.IUpdateLanguage;
+
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;

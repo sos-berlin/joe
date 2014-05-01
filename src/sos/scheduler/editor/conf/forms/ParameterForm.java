@@ -104,10 +104,9 @@ import org.jdom.xpath.XPath;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IOUtils;
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
@@ -118,9 +117,12 @@ import sos.scheduler.editor.conf.listeners.ParameterListener;
 
 import com.sos.JSHelper.io.Files.JSFile;
 import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
 import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
 import com.sos.joe.objects.job.JobListener;
+import com.sos.scheduler.model.objects.JSObjJob;
 import com.swtdesigner.SWTResourceManager;
 
 public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */implements IUnsaved, IUpdateLanguage, ISOSTableMenueListeners {
@@ -175,6 +177,26 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 	private Button				butoIncludeSave			= null;
 	private boolean				isRemoteConnection		= false;
 	public static String		WIZARD					= "Wizard";
+	private JSObjJob			objJSJob				= null;
+	private TreeData			objTreeData				= null;
+
+	public ParameterForm(final Composite parent, final TreeData pobjTreeData) {
+		super(parent, SWT.None);
+		objTreeData = pobjTreeData;
+		type = pobjTreeData.getType();
+		objJSJob = objTreeData.getJob();
+	}
+
+	public ParameterForm(final Composite parent, final int style, final JSObjJob pobjJSJob, final ISchedulerUpdate main, final int type_) throws JDOMException {
+		super(parent, style);
+		//		dom = _dom;
+		type = type_;
+		//		objJSJob = pobjJSJob;
+		//		objDataProvider = new JobParameterListener(pobjJSJob, main);
+		//		objDataProvider.setJobname(jobname);
+		initialize();
+		setToolTipText();
+	}
 
 	/**
 	 * @param parent
@@ -237,14 +259,12 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		}
 	}
 
-	@Override
-	public void apply() {
+	@Override public void apply() {
 		if (isUnsaved())
 			addParam();
 	}
 
-	@Override
-	public boolean isUnsaved() {
+	@Override public boolean isUnsaved() {
 		return bApply.isEnabled();
 		/*||
 		       (butEnvApply != null && butEnvApply.isEnabled()) ||
@@ -333,18 +353,21 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			// JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren
 			// JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), new
 			// JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? Editor.JOB : Editor.JOB_WIZARD);
-			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), new JobListener(dom,
-					listener.getParent(), listener.get_main()), tParameter, Editor.PARAMETER);
+			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), getJobListener(),
+					tParameter, Editor.PARAMETER);
 			paramsForm.showAllImportJobParams(includeFile);
 			listener.fillIncludeParams(tableIncludeParams);
 		}
 		else {
 			// Liste aller Jobdokumentation
-			JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(new JobListener(dom, listener.getParent(), listener.get_main()),
-					tParameter, Editor.PARAMETER);
+			JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(getJobListener(), tParameter, Editor.PARAMETER);
 			importParameterForms.showAllImportJobs();
 		}
 		Utils.stopCursor(getShell());
+	}
+
+	private JobListener getJobListener() {
+		return new JobListener(objJSJob);
 	}
 
 	public Table getTParameter() {
@@ -453,8 +476,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 			txtIncludeParameter.setLayoutData(gridData_4);
 			txtIncludeParameter.addModifyListener(new ModifyListener() {
-				@Override
-				public void modifyText(final ModifyEvent e) {
+				@Override public void modifyText(final ModifyEvent e) {
 					butoIncludeSave.setEnabled(!txtIncludeParameter.getText().equals(""));
 				}
 			});
@@ -464,8 +486,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 			txtIncludeParameterValue.setLayoutData(gridData_9);
 			txtIncludeParameterValue.addModifyListener(new ModifyListener() {
-				@Override
-				public void modifyText(final ModifyEvent e) {
+				@Override public void modifyText(final ModifyEvent e) {
 					butoIncludeSave.setEnabled(!txtIncludeParameter.getText().equals(""));
 				}
 			});
@@ -501,8 +522,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			butIncludeRemove.setLayoutData(gridData_8);
 			butIncludeRemove.setEnabled(false);
 			butIncludeRemove.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					updateIncludeParam(includeParameterTabItem, false, tableIncludeParameter, txtIncludeParameter, txtIncludeParameterValue, butIncludeRemove);
 				}
 			});
@@ -512,17 +532,14 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				butImport.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 				// butImport.setText("import");
 				butImport.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(final SelectionEvent e) {
-						JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(new JobListener(dom, listener.getParent(),
-								listener.get_main()), tableIncludeParameter, Editor.JOB);
+					@Override public void widgetSelected(final SelectionEvent e) {
+						JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(getJobListener(), tableIncludeParameter, Editor.JOB);
 						importParameterForms.showAllImportJobs();
 					}
 				});
 			}
 			txtIncludeParameterValue.addKeyListener(new KeyAdapter() {
-				@Override
-				public void keyPressed(final KeyEvent e) {
+				@Override public void keyPressed(final KeyEvent e) {
 					if (e.keyCode == SWT.CR && !txtIncludeParameter.getText().trim().equals("")) {
 						updateIncludeParam(includeParameterTabItem, true, tableIncludeParameter, txtIncludeParameter, txtIncludeParameterValue,
 								butIncludeRemove);
@@ -530,23 +547,20 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				}
 			});
 			txtIncludeParameter.addKeyListener(new KeyAdapter() {
-				@Override
-				public void keyPressed(final KeyEvent e) {
-					if (e.keyCode == SWT.CR && !txtIncludeParameter.equals("")) {
+				@Override public void keyPressed(final KeyEvent e) {
+					if (e.keyCode == SWT.CR && hasText(txtIncludeParameter)) {
 						updateIncludeParam(includeParameterTabItem, true, tableIncludeParameter, txtIncludeParameter, txtIncludeParameterValue,
 								butIncludeRemove);
 					}
 				}
 			});
 			butoIncludeSave.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					updateIncludeParam(includeParameterTabItem, true, tableIncludeParameter, txtIncludeParameter, txtIncludeParameterValue, butIncludeRemove);
 				}
 			});
 			tableIncludeParameter.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					TableItem item = (TableItem) e.item;
 					if (item == null)
 						return;
@@ -557,8 +571,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				}
 			});
 			newButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					txtIncludeParameter.setText("");
 					txtIncludeParameterValue.setText("");
 					butIncludeRemove.setEnabled(false);
@@ -657,15 +670,13 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		tParaName.setLayoutData(gridData_4);
 		tParaName.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
+			@Override public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR && !tParaName.getText().equals(""))
 					addParam();
 			}
 		});
 		tParaName.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				bApply.setEnabled(!tParaName.getText().trim().equals(""));
 			}
 		});
@@ -675,15 +686,13 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		final GridData gridData_9 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		tbxParameterValue.setLayoutData(gridData_9);
 		tbxParameterValue.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
+			@Override public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR && !tParaName.getText().trim().equals(""))
 					addParam();
 			}
 		});
 		tbxParameterValue.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				bApply.setEnabled(!tParaName.getText().equals(""));
 			}
 		});
@@ -692,8 +701,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		gridDatax.widthHint = 28;
 		button.setLayoutData(gridDatax);
 		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				String text = sos.scheduler.editor.app.Utils.showClipboard(tbxParameterValue.getText(), getShell(), true, "");
 				if (text != null)
 					tbxParameterValue.setText(text);
@@ -706,8 +714,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		gridData_7.widthHint = 36;
 		bApply.setLayoutData(gridData_7);
 		bApply.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				addParam();
 			}
 		});
@@ -718,16 +725,14 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		tParameter.initialize();
 		tParameter.setData("caption", "tblParameter");
 		tParameter.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				//				selectNodes();
 			}
 		});
 		final GridData gridData_1 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 4);
 		tParameter.setLayoutData(gridData_1);
 		tParameter.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				if (bApply.isEnabled()) {
 					int ok = MainWindow.message(JOE_M_ApplyChanges.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
 					if (ok == SWT.YES) {
@@ -771,8 +776,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		tParameter.setMenuItemText(itemDown, "Down", "F6", SWT.F6, false);
 		butNewParam = JOE_B_ParameterForm_NewParam.Control(new Button(Group, SWT.NONE));
 		butNewParam.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				buttonNewNodePressed();
 			}
 		});
@@ -785,8 +789,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		butUp = JOE_B_Up.Control(new Button(composite, SWT.NONE));
 		butUp.setText("");
 		butUp.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				// selektierter Datensatz wird eine Zeile nach oben verschoben
 				listener.changeUp(tParameter);
 			}
@@ -795,8 +798,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		butUp.setImage(getImage("icon_up.gif"));
 		butDown = JOE_B_Down.Control(new Button(composite, SWT.NONE));
 		butDown.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				listener.changeDown(tParameter);
 			}
 		});
@@ -806,8 +808,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		butImport = JOE_B_ParameterForm_Wizard.Control(new Button(Group, SWT.NONE));
 		butImport.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butImport.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				startWizzard();
 				tParaName.setFocus();
 			}
@@ -817,8 +818,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		bRemove.setLayoutData(gridData_8);
 		bRemove.setEnabled(false);
 		bRemove.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				int index = tParameter.getSelectionIndex();
 				listener.deleteParameter(tParameter, index);
 				tParaName.setText("");
@@ -842,8 +842,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			gridData.minimumHeight = 100;
 			txtParameterDescription.setLayoutData(gridData);
 			txtParameterDescription.addFocusListener(new FocusAdapter() {
-				@Override
-				public void focusGained(final FocusEvent e) {
+				@Override public void focusGained(final FocusEvent e) {
 					tParaName.setFocus();
 				}
 			});
@@ -861,19 +860,16 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		gridLayout_1.numColumns = 5;
 		group_2.setLayout(gridLayout_1);
 		environmentTabItem.setControl(group_2);
-		@SuppressWarnings("unused")
-		final Label nameLabel = JOE_L_Name.Control(new Label(group_2, SWT.NONE));
+		@SuppressWarnings("unused") final Label nameLabel = JOE_L_Name.Control(new Label(group_2, SWT.NONE));
 		txtEnvName = JOE_T_ParameterForm_EnvName.Control(new Text(group_2, SWT.BORDER));
 		txtEnvName.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				butEnvApply.setEnabled(!txtEnvName.getText().trim().equals(""));
 			}
 		});
 		txtEnvName.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR && !txtEnvName.equals(""))
+			@Override public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR && hasText(txtEnvName))
 					addEnvironment();
 			}
 		});
@@ -883,15 +879,13 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		valueLabel.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		txtEnvValue = JOE_T_ParameterForm_EnvValue.Control(new Text(group_2, SWT.BORDER));
 		txtEnvValue.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
-				butEnvApply.setEnabled(!txtEnvName.getText().trim().equals(""));
+			@Override public void modifyText(final ModifyEvent e) {
+				butEnvApply.setEnabled(hasText(txtEnvName));
 			}
 		});
 		txtEnvValue.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR && !txtEnvName.equals(""))
+			@Override public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR && hasText(txtEnvName))
 					addEnvironment();
 			}
 		});
@@ -899,8 +893,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		butEnvApply = JOE_B_ParameterForm_EnvApply.Control(new Button(group_2, SWT.NONE));
 		butEnvApply.setEnabled(false);
 		butEnvApply.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				addEnvironment();
 			}
 		});
@@ -911,8 +904,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		//		label4_1.setText("Label");
 		tableEnvironment = JOE_Tbl_ParameterForm_Environment.Control(new Table(group_2, SWT.FULL_SELECTION | SWT.BORDER));
 		tableEnvironment.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				TableItem item = (TableItem) e.item;
 				if (item == null)
 					return;
@@ -928,8 +920,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		colEnvValue.setWidth(522);
 		butNewEnvironment = JOE_B_ParameterForm_NewEnv.Control(new Button(group_2, SWT.NONE));
 		butNewEnvironment.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				txtEnvName.setText("");
 				txtEnvValue.setText("");
 				butEnvRemove.setEnabled(false);
@@ -940,8 +931,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		butNewEnvironment.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butEnvRemove = JOE_B_ParameterForm_RemoveEnv.Control(new Button(group_2, SWT.NONE));
 		butEnvRemove.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				int index = tableEnvironment.getSelectionIndex();
 				listener.deleteEnvironment(tableEnvironment, index);
 				txtEnvName.setText("");
@@ -974,48 +964,41 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS) {
 			butIsLifeFile = JOE_B_ParameterForm_LifeFile.Control(new Button(group_3, SWT.CHECK));
 			butIsLifeFile.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
 				}
 			});
 		}
 		else {
-			@SuppressWarnings("unused")
-			final Label lblNode_ = JOE_L_ParameterForm_File.Control(new Label(group_3, SWT.NONE));
+			@SuppressWarnings("unused") final Label lblNode_ = JOE_L_ParameterForm_File.Control(new Label(group_3, SWT.NONE));
 		}
 		txtIncludeFilename = JOE_T_ParameterForm_IncludeFilename.Control(new Text(group_3, SWT.BORDER));
 		txtIncludeFilename.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
 				if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
 					butIsLifeFile.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
 			}
 		});
 		txtIncludeFilename.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR && !txtIncludeFilename.equals(""))
+			@Override public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR && hasText(txtIncludeFilename))
 					addInclude();
 			}
 		});
 		txtIncludeFilename.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		@SuppressWarnings("unused")
-		final Label lblNode = JOE_L_ParameterForm_Node.Control(new Label(group_3, SWT.NONE));
+		@SuppressWarnings("unused") final Label lblNode = JOE_L_ParameterForm_Node.Control(new Label(group_3, SWT.NONE));
 		txtIncludeNode = JOE_T_ParameterForm_IncludeNode.Control(new Text(group_3, SWT.BORDER));
 		txtIncludeNode.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
 				if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
-					butIsLifeFile.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
+					butIsLifeFile.setEnabled(hasText(txtIncludeFilename));
 			}
 		});
 		txtIncludeNode.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR && !txtIncludeFilename.equals(""))
+			@Override public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR && hasText(txtIncludeFilename))
 					addInclude();
 			}
 		});
@@ -1023,8 +1006,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		butIncludesApply = JOE_B_ParameterForm_IncludesApply.Control(new Button(group_3, SWT.NONE));
 		butIncludesApply.setEnabled(false);
 		butIncludesApply.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				addInclude();
 			}
 		});
@@ -1034,15 +1016,13 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		//		label4_3.setText("Label");
 		tableIncludeParams = JOE_Tbl_ParameterForm_IncludeParams.Control(new Table(group_3, SWT.FULL_SELECTION | SWT.BORDER));
 		tableIncludeParams.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDoubleClick(final MouseEvent e) {
+			@Override public void mouseDoubleClick(final MouseEvent e) {
 				if (!isRemoteConnection)
 					createParameterTabItem();
 			}
 		});
 		tableIncludeParams.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				TableItem item = (TableItem) e.item;
 				if (item == null)
 					return;
@@ -1074,8 +1054,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		}
 		butNewIncludes = JOE_B_ParameterForm_NewIncludes.Control(new Button(group_3, SWT.NONE));
 		butNewIncludes.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				tableIncludeParams.deselectAll();
 				txtIncludeFilename.setText("");
 				txtIncludeNode.setText("");
@@ -1091,8 +1070,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		butNewIncludes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butOpenInclude = JOE_B_ParameterForm_OpenInclude.Control(new Button(group_3, SWT.NONE));
 		butOpenInclude.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				createParameterTabItem();
 			}
 		});
@@ -1101,8 +1079,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		butRemoveInclude = JOE_B_ParameterForm_RemoveInclude.Control(new Button(group_3, SWT.NONE));
 		butRemoveInclude.setEnabled(false);
 		butRemoveInclude.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				int index = tableIncludeParams.getSelectionIndex();
 				listener.deleteIncludeParams(tableIncludeParams, tableIncludeParams.getSelectionIndex());
 				txtIncludeFilename.setText("");
@@ -1121,8 +1098,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		});
 		butRemoveInclude.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
-			@Override
-			public void close(final CTabFolderEvent e) {
+			@Override public void close(final CTabFolderEvent e) {
 				if (e.item.equals(parameterTabItem) || e.item.equals(environmentTabItem) || e.item.equals(includesTabItem)) {
 					e.doit = false;
 				}
@@ -1147,15 +1123,13 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		gridData_9.widthHint = 200;
 		tParaName.setLayoutData(gridData_9);
 		tParaName.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR && !tParaName.equals(""))
+			@Override public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR && hasText(tParaName))
 					addParam();
 			}
 		});
 		tParaName.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				bApply.setEnabled(!tParaName.getText().equals(""));
 				if (tParaName.getText().equals("<from>")) {
 					cboCopyParameterFrom.setVisible(true);
@@ -1171,8 +1145,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		label6.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		final Composite composite = new Composite(group, SWT.NONE);
 		composite.addControlListener(new ControlAdapter() {
-			@Override
-			public void controlResized(final ControlEvent e) {
+			@Override public void controlResized(final ControlEvent e) {
 				cboCopyParameterFrom.setBounds(0, 2, composite.getBounds().width, tParaName.getBounds().height);
 				tbxParameterValue.setBounds(0, 2, composite.getBounds().width, tParaName.getBounds().height);
 			}
@@ -1182,8 +1155,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		cboCopyParameterFrom.setItems(new String[] { "order", "task" });
 		cboCopyParameterFrom.setBounds(0, 0, 250, 21);
 		cboCopyParameterFrom.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				tbxParameterValue.setText(cboCopyParameterFrom.getText());
 			}
 		});
@@ -1193,15 +1165,13 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		//		tbxParameterValue.setBounds(0, 0, 250, 21);
 		tbxParameterValue.setBounds(objRectangle);
 		tbxParameterValue.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR && !tParaName.equals(""))
+			@Override public void keyPressed(final KeyEvent e) {
+				if (e.keyCode == SWT.CR && hasText(tParaName))
 					addParam();
 			}
 		});
 		tbxParameterValue.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				bApply.setEnabled(!tParaName.getText().equals(""));
 			}
 		});
@@ -1210,8 +1180,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		gridDatax.widthHint = 28;
 		button.setLayoutData(gridDatax);
 		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				String text = sos.scheduler.editor.app.Utils.showClipboard(tbxParameterValue.getText(), getShell(), true, "");
 				if (text != null)
 					tbxParameterValue.setText(text);
@@ -1223,8 +1192,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		bApply.setLayoutData(gridData_5);
 		bApply.setEnabled(false);
 		bApply.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				addParam();
 			}
 		});
@@ -1232,21 +1200,18 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		tParameter.initialize();
 		tParameter.setData("caption", "tblParameter");
 		tParameter.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				//				selectNodes();
 			}
 		});
 		final GridData gridData_3 = new GridData(GridData.FILL, GridData.FILL, false, true, 5, 5);
 		tParameter.setLayoutData(gridData_3);
 		tParameter.addPaintListener(new PaintListener() {
-			@Override
-			public void paintControl(final PaintEvent e) {
+			@Override public void paintControl(final PaintEvent e) {
 			}
 		});
 		tParameter.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				TableItem item = (TableItem) e.item;
 				if (item == null)
 					return;
@@ -1267,8 +1232,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		final TableColumn tcValue = JOE_TCl_ParameterForm_Value.Control(tParameter.newTableColumn("tcolParameterValue", 500));
 		butNewParam = JOE_B_ParameterForm_NewParam.Control(new Button(group, SWT.NONE));
 		butNewParam.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText("");
 				tbxParameterValue.setText("");
 				bRemove.setEnabled(false);
@@ -1284,8 +1248,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		composite_2.setLayout(new GridLayout());
 		butUp_1 = JOE_B_Up.Control(new Button(composite_2, SWT.NONE));
 		butUp_1.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				listener.changeUp(tParameter);
 			}
 		});
@@ -1293,8 +1256,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		butUp_1.setImage(getImage("icon_up.gif"));
 		butDown_1 = JOE_B_Down.Control(new Button(composite_2, SWT.NONE));
 		butDown_1.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				listener.changeDown(tParameter);
 			}
 		});
@@ -1302,8 +1264,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		butDown_1.setImage(getImage("icon_down.gif"));
 		butImport_1 = JOE_B_ParameterForm_Wizard.Control(new Button(group, SWT.NONE));
 		butImport_1.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				startWizzard();
 			}
 		});
@@ -1312,8 +1273,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		bRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		bRemove.setEnabled(false);
 		bRemove.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				int index = tParameter.getSelectionIndex();
 				listener.deleteParameter(tParameter, index);
 				tParaName.setText("");
@@ -1339,8 +1299,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		final Button paramButton = JOE_B_ParameterForm_Param.Control(new Button(composite_1, SWT.RADIO));
 		paramButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		paramButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText("");
 				tbxParameterValue.setText("");
 				tParaName.setFocus();
@@ -1350,8 +1309,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		final Button fromTaskButton = JOE_B_ParameterForm_FromTask.Control(new Button(composite_1, SWT.RADIO));
 		fromTaskButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		fromTaskButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText(JOE_M_ParameterForm_From.label());
 				cboCopyParameterFrom.setText(JOE_M_ParameterForm_Task.label());
 				bApply.setFocus();
@@ -1361,8 +1319,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
 		fromOrderButton.setLayoutData(gridData_2);
 		fromOrderButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText(JOE_M_ParameterForm_From.label());
 				cboCopyParameterFrom.setText(JOE_M_ParameterForm_Order.label());
 				bApply.setFocus();
@@ -1378,8 +1335,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		}
 	}
 
-	@Override
-	public void setToolTipText() {
+	@Override public void setToolTipText() {
 		//
 	}
 
@@ -1410,11 +1366,9 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		butOpenInclude.setEnabled(true && !isRemoteConnection);
 	}
 
-	@Override
-	public Listener getDeleteListener() {
+	@Override public Listener getDeleteListener() {
 		return new Listener() {
-			@Override
-			public void handleEvent(final Event e) {
+			@Override public void handleEvent(final Event e) {
 				logger.debug("getDeleteListener");
 				deleteNode();
 			}
@@ -1438,39 +1392,33 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		}
 	}
 
-	@Override
-	public Listener getCopyListener() {
+	@Override public Listener getCopyListener() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Listener getPasteListener() {
+	@Override public Listener getPasteListener() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Listener getInsertListener() {
+	@Override public Listener getInsertListener() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Listener getCutListener() {
+	@Override public Listener getCutListener() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
+	@Override protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
 		// TODO Auto-generated method stub
 	}
 
 	private Listener getMoveNodeUpListener() {
 		return new Listener() {
-			@Override
-			public void handleEvent(final Event e) {
+			@Override public void handleEvent(final Event e) {
 				logger.debug("MoveNodeUpListener");
 				MoveNodeUp();
 			}
@@ -1479,19 +1427,16 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 
 	private Listener getMoveNodeDownListener() {
 		return new Listener() {
-			@Override
-			public void handleEvent(final Event e) {
+			@Override public void handleEvent(final Event e) {
 				logger.debug("MoveNodeDownListener");
 				MoveNodeDown();
 			}
 		};
 	}
 
-	@Override
-	public Listener getNewListener() {
+	@Override public Listener getNewListener() {
 		return new Listener() {
-			@Override
-			public void handleEvent(final Event e) {
+			@Override public void handleEvent(final Event e) {
 				logger.debug("getNewListener");
 				buttonNewNodePressed();
 			}
@@ -1530,8 +1475,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		}
 	}
 
-	@Override
-	public Listener getEditListener() {
+	@Override public Listener getEditListener() {
 		// TODO Auto-generated method stub
 		return null;
 	}

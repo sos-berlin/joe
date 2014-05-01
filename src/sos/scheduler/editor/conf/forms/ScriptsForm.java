@@ -19,9 +19,9 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
+import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.PreProstProcessingListener;
@@ -29,6 +29,7 @@ import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.WindowsSaver;
 import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.interfaces.IUpdateLanguage;
 
 ;
 public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
@@ -50,7 +51,15 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private WindowsSaver			objFormPosSizeHandler	= null;
 //	objFormPosSizeHandler = new WindowsSaver(this.getClass(), getShell(), 643, 600);
 
-	public ScriptsForm(final Composite parent, final int style, final SchedulerDom pobjXMLDom, final ISchedulerUpdate update, final Element elem) {
+	private TreeData			objTreeData		= null;
+
+	public ScriptsForm(final Composite parent, final TreeData pobjTreeData) {
+		super(parent, SWT.None);
+		objTreeData = pobjTreeData;
+	}
+
+
+@Deprecated	public ScriptsForm(final Composite parent, final int style, final SchedulerDom pobjXMLDom, final ISchedulerUpdate update, final Element elem) {
 		super(parent, style);
 		try {
 			dom = pobjXMLDom;

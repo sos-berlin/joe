@@ -20,11 +20,11 @@ import com.sos.jobdoc.DocumentationDom;
 import com.sos.jobdoc.IDocumentationUpdate;
 import com.sos.jobdoc.NoteDialog;
 import com.sos.jobdoc.listeners.DocumentationListener;
+import com.sos.joe.interfaces.IContainer;
+import com.sos.joe.interfaces.IEditor;
+import com.sos.joe.interfaces.IUpdateLanguage;
 
-import sos.scheduler.editor.app.IContainer;
-import sos.scheduler.editor.app.IEditor;
 import sos.scheduler.editor.app.IOUtils;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;

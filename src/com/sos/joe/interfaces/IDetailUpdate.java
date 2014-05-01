@@ -1,6 +1,5 @@
 package com.sos.joe.interfaces;
 
-import sos.scheduler.editor.app.IDataChanged;
 
 public interface IDetailUpdate extends IDataChanged {
 	

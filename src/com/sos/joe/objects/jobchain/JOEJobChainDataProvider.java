@@ -10,7 +10,10 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
 import com.sos.VirtualFileSystem.Interfaces.ISOSVirtualFile;
+import com.sos.scheduler.model.objects.JSObjBase;
 import com.sos.scheduler.model.objects.JSObjJobChain;
+import com.sos.scheduler.model.objects.JobChain.FileOrderSink;
+import com.sos.scheduler.model.objects.JobChain.JobChainNode;
 
 /**
 * \class JOEListener
@@ -62,8 +65,8 @@ public class JOEJobChainDataProvider extends JOEListener {
 	public static final String		conAttrREPEAT				= "repeat";
 	public static final String		conAttrDELAY_AFTER_ERROR	= "delay_after_error";
 	protected Element				_config						= null;
-	protected JobChainNodeWrapper	_node						= null;
-	protected String[]				_states						= null;
+	protected JobChainNodeWrapper	objJobChainNode						= null;
+	protected String[]				strCurrentStates						= null;
 	protected JSObjectElement		objJSObjectElement			= null;
 
 	public JOEJobChainDataProvider() {
@@ -71,6 +74,13 @@ public class JOEJobChainDataProvider extends JOEListener {
 		strUpdateElementName = getChainName();
 	}
 
+	public JOEJobChainDataProvider(final JSObjJobChain pobjJobChain) {
+		objJSJobChain = pobjJobChain;
+		strUpdateObjectType = "job_chain";
+		strUpdateElementName = getChainName();
+	}
+
+	@Deprecated
 	public JSObjectElement getJSObject() {
 		if (objJSObjectElement == null) {
 			objJSObjectElement = new JSObjectElement(Editor.JOB_CHAIN, objJobChain);
@@ -78,31 +88,30 @@ public class JOEJobChainDataProvider extends JOEListener {
 		return objJSObjectElement;
 	}
 
-	public Element getChainElement() {
-		return objJobChain;
-	}
-
-	private void setAttrYesNo(final String pstrAttr, final boolean pflgValue) {
-		setAttr(pstrAttr, getBoolYesNo(pflgValue));
-	}
+//	public Element getChainElement() {
+//		return objJobChain;
+//	}
+//
+//	private void setAttrYesNo(final String pstrAttr, final boolean pflgValue) {
+//		setAttr(pstrAttr, getBoolYesNo(pflgValue));
+//	}
 
 	public boolean getRecoverable() {
 		return objJSJobChain.isRecoverable();
 	}
 
-	@Deprecated private void setAttr(final String pstrAttr, final String pstrVal) {
-		Utils.setAttribute(pstrAttr, pstrVal, objJobChain);
-		setDirty();
-	}
+//	@Deprecated private void setAttr(final String pstrAttr, final String pstrVal) {
+//		Utils.setAttribute(pstrAttr, pstrVal, objJobChain);
+//		setDirty();
+//	}
 
-	@Deprecated private String getAttr(final String pstrAttr) {
-		String strValue = Utils.getAttributeValue(pstrAttr, objJobChain);
-		return strValue;
-	}
-
+//	@Deprecated private String getAttr(final String pstrAttr) {
+//		String strValue = Utils.getAttributeValue(pstrAttr, objJobChain);
+//		return strValue;
+//	}
+//
 	public JOEJobChainDataProvider setTitle(final String pstrTitle) {
 		objJSJobChain.setTitle(pstrTitle);
-		//		setAttr("title", pstrTitle);
 		return this;
 	}
 
@@ -111,117 +120,111 @@ public class JOEJobChainDataProvider extends JOEListener {
 	}
 
 	public String getState() {
-		String strR = _node.getState();
-		if (strR == null) {
-			strR = "";
-		}
-		return strR;
+		return objJobChainNode.getState();
 	}
 
 	public JobChainNodeWrapper getNewJobChainNode() {
-		Element node = new Element(conTagJOB_CHAIN_NODE);
+		JobChainNode node = new JobChainNode();
 		JobChainNodeWrapper objN = getJobChainNodeWrapper(node);
-		objJobChain.addContent(node);
+		objJSJobChain.getJobChainNodeList().add(node);
 		return objN;
 	}
 
 	public JobChainNodeWrapper getNewFileOrderSinkNode() {
-		Element node = new Element(conTagFILE_ORDER_SINK);
+		FileOrderSink node = new FileOrderSink();
 		JobChainNodeWrapper objN = getJobChainNodeWrapper(node);
-		objJobChain.addContent(node);
+		objJSJobChain.getFileOrderSinkList().add(node);
 		return objN;
 	}
 
 	public JobChainNodeWrapper getAJobChainNode() {
-		Element node = new Element(conTagJOB_CHAIN_NODE);
+		JobChainNode node = new JobChainNode();
 		JobChainNodeWrapper objN = getJobChainNodeWrapper(node);
 		return objN;
 	}
 
 	public JobChainNodeWrapper getAFileOrderSinkNode() {
-		Element node = new Element(conTagFILE_ORDER_SINK);
+		FileOrderSink node = new FileOrderSink();
 		JobChainNodeWrapper objN = getJobChainNodeWrapper(node);
 		return objN;
 	}
 
-	public List<Element> getFileOrderSinkList() {
-		List<Element> lstFileSinks = objJobChain.getChildren(conTagFILE_ORDER_SINK);
-		return lstFileSinks;
+	public List<FileOrderSink> getFileOrderSinkList() {
+		return objJSJobChain.getFileOrderSinkList();
 	}
 
 	public String getDelay() {
-		return _node.getDelay();
+		return objJobChainNode.getDelay();
 	}
 
 	public void setState(final String state) {
-		_node.setState(state);
+		objJobChainNode.setState(state);
 	}
 
 	public void setDelay(final String strDelay) {
-		_node.setDelay(strDelay);
+		objJobChainNode.setDelay(strDelay);
 	}
 
 	public String getJob() {
-		return _node.getJobName();
+		return objJobChainNode.getJobName();
 	}
 
 	public void setJob(final String strJobName) {
-		_node.setJobName(strJobName);
+		objJobChainNode.setJobName(strJobName);
 	}
 
 	public String getNextState() {
-		return _node.getNextState();
+		return objJobChainNode.getNextState();
 	}
 
 	public void setNextState(final String state) {
-		_node.setNextState(state);
+		objJobChainNode.setNextState(state);
 	}
 
 	public String getErrorState() {
 		String strR = "";
-		if (_node != null) {
-			strR = _node.getErrorState();
+		if (objJobChainNode != null) {
+			strR = objJobChainNode.getErrorState();
 		}
 		return strR;
 	}
 
 	public void setErrorState(final String state) {
-		_node.setErrorState(state);
+		objJobChainNode.setErrorState(state);
 	}
 
 	public String getOnError() {
-		return _node.getOnError();
+		return objJobChainNode.getOnError();
 	}
 
 	public void setOnError(final String strOnError) {
-		_node.setOnError(strOnError);
+		objJobChainNode.setOnError(strOnError);
 	}
 
-	public JobChainNodeWrapper getJobChainNodeWrapper(final Element pobjNode) {
+	public JobChainNodeWrapper getJobChainNodeWrapper(final JSObjBase pobjNode) {
 		JobChainNodeWrapper objN = new JobChainNodeWrapper(pobjNode);
-		objN.setDom(get_dom());
 		objN.setChainName(getJobChainName());
 		return objN;
 	}
 
 	public String getMoveTo() {
-		return _node.getMoveTo();
+		return objJobChainNode.getMoveTo();
 	}
 
 	public boolean getRemoveFile() {
-		return _node.getRemoveFileB();
+		return objJobChainNode.getRemoveFileB();
 	}
 
 	public void setMoveTo(final String moveTo) {
-		_node.setMoveTo(moveTo);
+		objJobChainNode.setMoveTo(moveTo);
 	}
 
 	public void setRemoveFile(final String removeFile) {
-		_node.setRemoveFile(removeFile);
+		objJobChainNode.setRemoveFile(removeFile);
 	}
 
 	public void setRemoveFile(final boolean pflgRemoveFile) {
-		setAttrYesNo("remove", pflgRemoveFile);
+		objJobChainNode.setRemoveFileB(pflgRemoveFile);
 		setDirty();
 	}
 
@@ -238,6 +241,7 @@ public class JOEJobChainDataProvider extends JOEListener {
 		return objJSJobChain.getTitle();
 	}
 
+	// TODO in JSJobChain implementieren
 	public String getJobChainNameAndTitle() {
 		String strT = getChainName() + " - " + getTitle();
 		return strT;
@@ -258,12 +262,9 @@ public class JOEJobChainDataProvider extends JOEListener {
 
 	public void setRecoverable(final boolean pflgIsOrdersRecoverable) {
 		objJSJobChain.setOrdersRecoverable(pflgIsOrdersRecoverable);
-		setDirty();
 	}
 
 	public int intMaxOrders() {
-		//		int i = 0;
-		//		i = new Integer(getAttr("MaxOrders"));
 		int i = objJSJobChain.getmaxOrders();
 		return i;
 	}
@@ -327,7 +328,7 @@ public class JOEJobChainDataProvider extends JOEListener {
 		}
 	}
 
-	public void getJOMJobChain() {
+	public void getJOMxJobChain() {
 		getJobSchedulerObjectFactory();
 		if (objJSJobChain == null) {
 			String strFileName = _dom.getFilename();
@@ -343,31 +344,31 @@ public class JOEJobChainDataProvider extends JOEListener {
 	}
 
 	public JobChainNodeWrapper getNode() {
-		return _node;
+		return objJobChainNode;
 	}
 
 	public void clearNode() {
 		logger.debug("_node set to null");
-		_node = null;
+		objJobChainNode = null;
 	}
 
 	public JobChainNodeWrapper setNode(final JobChainNodeWrapper pobjNode) {
-		_node = pobjNode;
-		return _node;
+		objJobChainNode = pobjNode;
+		return objJobChainNode;
 	}
 
 	public JobChainNodeWrapper setNodeIfNull(final JobChainNodeWrapper pobjNode) {
-		if (_node == null) {
+		if (objJobChainNode == null) {
 			setNode(pobjNode);
 		}
 		//		logger.debug("_node set to null");
-		return _node;
+		return objJobChainNode;
 	}
 
 	public JobChainNodeWrapper setNode(final Object pobjNode) {
 		//		logger.debug("_node set to null");
-		_node = (JobChainNodeWrapper) pobjNode;
-		return _node;
+		objJobChainNode = (JobChainNodeWrapper) pobjNode;
+		return objJobChainNode;
 	}
 
 	@Override protected void setDirty() {
@@ -375,8 +376,8 @@ public class JOEJobChainDataProvider extends JOEListener {
 		/**
 		 * reload the content of the jobchain, this must be performed until the JOM is used only.
 		 */
-		objJSJobChain = null;
-		getJOMJobChain();
+//		objJSJobChain = null;
+//		getJOMJobChain();
 	}
 
 	public boolean isFullNode() {
@@ -387,10 +388,11 @@ public class JOEJobChainDataProvider extends JOEListener {
 		return getNode().isFileSinkNode();
 	}
 
-	public boolean isValidState(final String state) {
-		if (_states != null) {
-			for (int i = 0; i < _states.length; i++) {
-				if (_states[i].equalsIgnoreCase(state) && !_states[i].equals(getState())) {
+	// TODO implement in JSObjJobChain
+	public boolean isUniqueState(final String state) {
+		if (strCurrentStates != null) {
+			for (int i = 0; i < strCurrentStates.length; i++) {
+				if (strCurrentStates[i].equalsIgnoreCase(state) && !strCurrentStates[i].equals(getState())) {
 					return false;
 				}
 			}

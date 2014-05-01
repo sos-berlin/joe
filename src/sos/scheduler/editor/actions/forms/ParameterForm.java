@@ -10,17 +10,22 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -30,24 +35,20 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+
+import sos.scheduler.editor.actions.ActionsDom;
+import sos.scheduler.editor.actions.listeners.ParameterListener;
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.actions.ActionsDom;
-import sos.scheduler.editor.actions.forms.ActionsForm;
-import sos.scheduler.editor.actions.listeners.ParameterListener;
 import sos.util.SOSString;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.ControlEvent;
+
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
 
 /**
  * @author mo
@@ -78,17 +79,17 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 	private Button				bApply					= null;
 
-	private Text				txtParameterDescription	= null;
+	private final Text				txtParameterDescription	= null;
 
-	private Table				tableEnvironment		= null;
+	private final Table				tableEnvironment		= null;
 
-	private Text				txtEnvName				= null;
+	private final Text				txtEnvName				= null;
 
-	private Text				txtEnvValue				= null;
+	private final Text				txtEnvValue				= null;
 
-	private Button				butEnvApply				= null;
+	private final Button				butEnvApply				= null;
 
-	private Button				butEnvRemove			= null;
+	private final Button				butEnvRemove			= null;
 
 	private Text				txtIncludeFilename		= null;
 
@@ -98,7 +99,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 	private Button				butIncludesApply		= null;
 
-	private Button				butOpenInclude			= null;
+	private final Button				butOpenInclude			= null;
 
 	private Button				butRemoveInclude		= null;
 
@@ -108,9 +109,9 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 	private ActionsDom			dom						= null;
 
-	private CTabItem			parameterTabItem		= null;
+	private final CTabItem			parameterTabItem		= null;
 
-	private CTabItem			environmentTabItem		= null;
+	private final CTabItem			environmentTabItem		= null;
 
 	private int					type					= -1;
 
@@ -132,7 +133,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 	private Button				butNewParam				= null;
 
-	private Button				butNewEnvironment		= null;
+	private final Button				butNewEnvironment		= null;
 
 	private boolean				isRemoteConnection		= false;
 
@@ -141,7 +142,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 	 * @param style
 	 * @throws JDOMException
 	 */
-	public ParameterForm(Composite parent, int style, ActionsDom _dom, Element parentElem, ActionsForm main, int type_) throws JDOMException {
+	public ParameterForm(final Composite parent, final int style, final ActionsDom _dom, final Element parentElem, final ActionsForm main, final int type_) throws JDOMException {
 
 		super(parent, style);
 		dom = _dom;
@@ -175,11 +176,13 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		initForm();
 	}
 
+	@Override
 	public void apply() {
 		if (isUnsaved())
 			addParam();
 	}
 
+	@Override
 	public boolean isUnsaved() {
 		return bApply.isEnabled();
 	}
@@ -222,8 +225,8 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 	}
 
 	private void addInclude() {
-		listener.saveIncludeParams(tableIncludeParams, txtIncludeFilename.getText().trim(), txtIncludeNode.getText(), (type == Editor.JOB
-				|| type == Editor.COMMANDS || type == Editor.JOB_COMMANDS && butIsLifeFile.getSelection() ? butIsLifeFile.getSelection() : false));
+		listener.saveIncludeParams(tableIncludeParams, txtIncludeFilename.getText().trim(), txtIncludeNode.getText(), type == Editor.JOB
+				|| type == Editor.COMMANDS || type == Editor.JOB_COMMANDS && butIsLifeFile.getSelection() ? butIsLifeFile.getSelection() : false);
 		txtIncludeFilename.setText("");
 		txtIncludeNode.setText("");
 		butIncludesApply.setEnabled(false);
@@ -264,6 +267,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS) {
 			butIsLifeFile = JOE_B_ActionsParameterForm_IsLifeFile.Control(new Button(group_3, SWT.CHECK));
 			butIsLifeFile.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
 				}
@@ -276,6 +280,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 		txtIncludeFilename = JOE_T_ActionsParameterForm_IncludeFilename.Control(new Text(group_3, SWT.BORDER));
 		txtIncludeFilename.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
 				if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
@@ -283,8 +288,9 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 			}
 		});
 		txtIncludeFilename.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR && !txtIncludeFilename.equals(""))
+				if (e.keyCode == SWT.CR && hasText(txtIncludeFilename))
 					addInclude();
 			}
 		});
@@ -295,6 +301,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 		txtIncludeNode = JOE_T_ActionsParameterForm_IncludeNode.Control(new Text(group_3, SWT.BORDER));
 		txtIncludeNode.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
 				if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
@@ -302,8 +309,9 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 			}
 		});
 		txtIncludeNode.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
-				if (e.keyCode == SWT.CR && !txtIncludeFilename.equals(""))
+				if (e.keyCode == SWT.CR && hasText(txtIncludeFilename))
 					addInclude();
 			}
 		});
@@ -312,6 +320,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		butIncludesApply = JOE_B_ActionsParameterForm_IncludesApply.Control(new Button(group_3, SWT.NONE));
 		butIncludesApply.setEnabled(false);
 		butIncludesApply.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				addInclude();
 			}
@@ -324,10 +333,12 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 		tableIncludeParams = JOE_Tbl_ActionsParameterForm_IncludeParams.Control(new Table(group_3, SWT.FULL_SELECTION | SWT.BORDER));
 		tableIncludeParams.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseDoubleClick(final MouseEvent e) {
 			}
 		});
 		tableIncludeParams.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				TableItem item = (TableItem) e.item;
 				if (item == null)
@@ -361,6 +372,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 		butNewIncludes = JOE_B_ActionsParameterForm_NewIncludes.Control(new Button(group_3, SWT.NONE));
 		butNewIncludes.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				tableIncludeParams.deselectAll();
 				txtIncludeFilename.setText("");
@@ -389,6 +401,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		butRemoveInclude = JOE_B_ActionsParameterForm_RemoveInclude.Control(new Button(group_3, SWT.NONE));
 		butRemoveInclude.setEnabled(false);
 		butRemoveInclude.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				listener.deleteIncludeParams(tableIncludeParams, tableIncludeParams.getSelectionIndex());
 				txtIncludeFilename.setText("");
@@ -402,6 +415,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		butRemoveInclude.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 
 		tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
+			@Override
 			public void close(final CTabFolderEvent e) {
 
 				if (e.item.equals(parameterTabItem) || e.item.equals(environmentTabItem) || e.item.equals(includesTabItem)) {
@@ -433,13 +447,15 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		gridData_9.widthHint = 200;
 		tParaName.setLayoutData(gridData_9);
 		tParaName.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-				if (e.keyCode == SWT.CR && !tParaName.equals(""))
+			@Override
+			public void keyPressed(final org.eclipse.swt.events.KeyEvent e) {
+				if (e.keyCode == SWT.CR && hasText(tParaName))
 					addParam();
 			}
 		});
 		tParaName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				bApply.setEnabled(!tParaName.getText().equals(""));
 				if (tParaName.getText().equals("<from>")) {
 					cSource.setVisible(true);
@@ -457,6 +473,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 		final Composite composite = new Composite(group, SWT.NONE);
 		composite.addControlListener(new ControlAdapter() {
+			@Override
 			public void controlResized(final ControlEvent e) {
 				cSource.setBounds(0, 2, composite.getBounds().width, tParaName.getBounds().height);
 				tParaValue.setBounds(0, 2, composite.getBounds().width, tParaName.getBounds().height);
@@ -468,6 +485,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		cSource.setItems(new String[] { "order", "task" });
 		cSource.setBounds(0, 0, 250, 21);
 		cSource.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				tParaValue.setText(cSource.getText());
 			}
@@ -477,13 +495,15 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		tParaValue = JOE_T_ActionsParameterForm_Value.Control(new Text(composite, SWT.BORDER));
 		tParaValue.setBounds(0, 0, 250, 21);
 		tParaValue.addKeyListener(new org.eclipse.swt.events.KeyAdapter() {
-			public void keyPressed(org.eclipse.swt.events.KeyEvent e) {
-				if (e.keyCode == SWT.CR && !tParaName.equals(""))
+			@Override
+			public void keyPressed(final org.eclipse.swt.events.KeyEvent e) {
+				if (e.keyCode == SWT.CR && hasText(tParaName))
 					addParam();
 			}
 		});
 		tParaValue.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				bApply.setEnabled(!tParaName.getText().equals(""));
 			}
 		});
@@ -493,7 +513,8 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		bApply.setLayoutData(gridData_5);
 		bApply.setEnabled(false);
 		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				addParam();
 			}
 		});
@@ -504,13 +525,15 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		gridData_3.heightHint = 140;
 		tParameter.setLayoutData(gridData_3);
 		tParameter.addPaintListener(new PaintListener() {
+			@Override
 			public void paintControl(final PaintEvent e) {
 			}
 		});
 		tParameter.setHeaderVisible(true);
 		tParameter.setLinesVisible(true);
 		tParameter.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				TableItem item = (TableItem) e.item;
 				if (item == null)
 					return;
@@ -532,6 +555,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 		butNewParam = JOE_B_ActionsParameterForm_NewParam.Control(new Button(group, SWT.NONE));
 		butNewParam.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText("");
 				tParaValue.setText("");
@@ -550,6 +574,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 		butUp_1 = JOE_B_Up.Control(new Button(composite_2, SWT.NONE));
 		butUp_1.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				listener.changeUp(tParameter);
 			}
@@ -559,6 +584,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 
 		butDown_1 = JOE_B_Down.Control(new Button(composite_2, SWT.NONE));
 		butDown_1.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				listener.changeDown(tParameter);
 			}
@@ -570,7 +596,8 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		bRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		bRemove.setEnabled(false);
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				listener.deleteParameter(tParameter, tParameter.getSelectionIndex());
 				tParaName.setText("");
 				tParaValue.setText("");
@@ -590,6 +617,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		final Button paramButton = JOE_B_ActionsParameterForm_Parameter.Control(new Button(composite_1, SWT.RADIO));
 		paramButton.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		paramButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText("");
 				tParaValue.setText("");
@@ -601,6 +629,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		final Button fromTaskButton = JOE_B_ActionsParameterForm_FromTask.Control(new Button(composite_1, SWT.RADIO));
 		fromTaskButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		fromTaskButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText("<from>");
 				cSource.setText("task");
@@ -612,6 +641,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		final GridData gridData_2 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
 		fromOrderButton.setLayoutData(gridData_2);
 		fromOrderButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				tParaName.setText("<from>");
 				cSource.setText("order");
@@ -619,6 +649,12 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 			}
 		});
 	}
+
+	private boolean hasText (final Text pobjText) {
+		String strT = pobjText.getText().trim();
+		return strT.length() > 0;
+	}
+
 
 	private void getDescription() {
 		Element desc = listener.getParent().getChild("description");
@@ -628,6 +664,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		}
 	}
 
+	@Override
 	public void setToolTipText() {
 		if (txtParameterDescription != null) {
 			txtParameterDescription.setToolTipText(Messages.getTooltip("job.param.description"));
