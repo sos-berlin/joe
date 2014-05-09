@@ -21,6 +21,7 @@
     <modules>
         <module>joe-cockpit</module>
         <module>ftp-profiles</module>
+        <module>joe-all</module>
     </modules>
 
 </project>
