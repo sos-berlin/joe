@@ -7,7 +7,6 @@
 	<classpathentry kind="var" path="SOS_LIB/commons-httpclient-3.0.1.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/commons-logging.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/jce-jdk13-129.jar"/>
-	<classpathentry kind="var" path="SOS_LIB/swt.jar" sourcepath="/SOS_LIB/swt-3.6.2/src.zip"/>
 	<classpathentry kind="var" path="SOS_LIB/trilead-ssh2-build211.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/webdavclient4j-core-0.92.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/commons-net-2.2/commons-net-2.2.jar" sourcepath="/SOS_LIB/commons-net-2.2-src"/>
@@ -16,7 +15,6 @@
 	<classpathentry kind="var" path="SOS_LIB/jaxen-1.1.1.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/jdom/build/jdom.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/jdom/lib/jaxen.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/JobSchedulerLocalization"/>
 	<classpathentry kind="var" path="SOS_LIB/jface_3.7.0/org.eclipse.jface_3.7.0.I20110522-1430.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/com.sos.connection.jar"/>
 	<classpathentry kind="var" path="SOS_LIB/com.sos.net.jar" sourcepath="/SOS_JavaSource/com.sos.net"/>
@@ -30,5 +28,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/com.sos.util"/>
 	<classpathentry kind="var" path="SOS_LIB/com.sos.util.jar" sourcepath="/SOS_SRC/com.sos.util"/>
 	<classpathentry kind="var" path="SOS_LIB/com.sos.ftp.profiles.jar"/>
+	<classpathentry kind="var" path="SOS_LIB/swt64.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
