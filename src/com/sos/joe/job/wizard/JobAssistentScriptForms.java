@@ -33,7 +33,6 @@ import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ScriptListener;
 
-import com.sos.jobdoc.JobdocListener;
 import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.joe.objects.job.forms.ScriptJobMainForm;
 import com.sos.scheduler.model.LanguageDescriptorList;
@@ -225,9 +224,9 @@ public class JobAssistentScriptForms {
 			txtResource.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			txtResource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 			if (lblClass != null && lblClass.getText().equals("Java Class")) {
-				if (JobdocListener.getLibrary() != null && JobdocListener.getLibrary().length() > 0) {
-					txtResource.setText(JobdocListener.getLibrary());
-				}
+//				if (JobdocListener.getLibrary() != null && JobdocListener.getLibrary().length() > 0) {
+//					txtResource.setText(JobdocListener.getLibrary());
+//				}
 			}
 			else {
 				if (scriptlistener.getFilename() != null && scriptlistener.getFilename().trim().length() > 0)

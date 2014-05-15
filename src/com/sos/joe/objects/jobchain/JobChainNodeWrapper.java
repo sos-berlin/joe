@@ -9,7 +9,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TableItem;
-//import org.jdom.Element;
+import org.jdom.Element;
 
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.conf.SchedulerDom;
@@ -188,6 +188,9 @@ public class JobChainNodeWrapper extends JSToolBox {
 	 *
 	 */
 	public JobChainNodeWrapper() {
+	}
+
+	public JobChainNodeWrapper(final Element objE) {
 	}
 
 //	public Element getObjElement() {

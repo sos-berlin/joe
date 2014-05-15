@@ -12,6 +12,7 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
 import com.sos.JSHelper.Exceptions.JobSchedulerException;
@@ -50,6 +51,11 @@ public class JobListener extends JOEListener {
 	private final Element					_errorDelay							= null;
 	private JSObjJob						objJSJob							= null;
 
+	@Deprecated
+	public JobListener(final SchedulerDom dom_, final Element objElement, final ISchedulerUpdate update) {
+	}
+
+
 	public JobListener(final TreeData pobjTreeData, final ISchedulerUpdate update) {
 		objJSJob = pobjTreeData.getJob();
 		objTreeData = pobjTreeData;
@@ -71,10 +77,10 @@ public class JobListener extends JOEListener {
 		return avoidNull(strT);
 	}
 
-	public String getJob() {
+	@Deprecated
+	public Element getJob() {
 		@SuppressWarnings("unused") final String conMethodName = conClassName + "::getJob";
-		String strT = objJSJob.getJobName();
-		return strT;
+		return new Element("job");
 	} // private String getJob
 
 	public void setFile(final String file) {
