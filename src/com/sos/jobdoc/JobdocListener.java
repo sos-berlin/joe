@@ -1,4 +1,4 @@
-package com.sos.jobdoc.listeners;
+package com.sos.jobdoc;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,8 +9,6 @@ import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
-
-import com.sos.jobdoc.DocumentationDom;
 
 public class JobdocListener {
     private final DocumentationDom      _dom;
@@ -25,6 +23,13 @@ public class JobdocListener {
         _job = job;
     }
 
+    public String getLibrary() {
+		
+		
+		String strT = "tdb";
+		
+	return strT;
+	} // private String getLibrary
     
     public File writeToFile() throws IOException, JDOMException {
     	File tmp = File.createTempFile(Options.getXSLTFilePrefix(), Options.getXSLTFileSuffix());

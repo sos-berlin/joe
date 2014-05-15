@@ -25,8 +25,8 @@ import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 
 import com.sos.jobdoc.DocumentationDom;
+import com.sos.jobdoc.JobdocListener;
 import com.sos.jobdoc.SourceGenerator;
-import com.sos.jobdoc.listeners.JobdocListener;
 import com.sos.joe.interfaces.IUpdateLanguage;
 
 public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {

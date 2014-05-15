@@ -237,7 +237,7 @@ public class JOEOptionsSuperClass extends JSOptionsClass {
 	 * @throws Exception
 	 */
 	@Override
-	public void setAllOptions(final HashMap<String, String> pobjJSSettings) throws Exception {
+	public void setAllOptions(final HashMap<String, String> pobjJSSettings)  {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::setAllOptions";
 		flgSetAllOptions = true;
@@ -282,7 +282,7 @@ public class JOEOptionsSuperClass extends JSOptionsClass {
 	 * @throws Exception
 	 */
 	@Override
-	public void CommandLineArgs(final String[] pstrArgs) throws Exception {
+	public void CommandLineArgs(final String[] pstrArgs) {
 		super.CommandLineArgs(pstrArgs);
 		this.setAllOptions(super.objSettings);
 	}

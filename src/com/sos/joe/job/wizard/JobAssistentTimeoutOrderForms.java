@@ -27,7 +27,7 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 
-import com.sos.jobdoc.listeners.JobdocListener;
+import com.sos.jobdoc.JobdocListener;
 import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.joe.objects.job.forms.ScriptJobMainForm;
 import com.swtdesigner.SWTResourceManager;

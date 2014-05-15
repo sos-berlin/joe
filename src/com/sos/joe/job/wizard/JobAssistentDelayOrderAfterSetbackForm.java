@@ -30,9 +30,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
-import com.swtdesigner.SWTResourceManager;
-
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
@@ -40,9 +37,12 @@ import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
-import sos.scheduler.editor.conf.listeners.JobOptionsListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
+
+import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.objects.job.JobOptionsListener;
+import com.sos.joe.objects.job.forms.ScriptJobMainForm;
+import com.swtdesigner.SWTResourceManager;
 
 public class JobAssistentDelayOrderAfterSetbackForm {
 
@@ -101,7 +101,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 	private boolean               closeDialog   = false;      
 
 
-	public JobAssistentDelayOrderAfterSetbackForm(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
+	public JobAssistentDelayOrderAfterSetbackForm(final SchedulerDom dom_, final ISchedulerUpdate update_, final Element job_, final int assistentType_) {
 		dom = dom_;
 		update = update_;
 
@@ -116,6 +116,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 
 		shellSetBack = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shellSetBack.addShellListener(new ShellAdapter() {
+			@Override
 			public void shellClosed(final ShellEvent e) {
 				if(!closeDialog)
 					close();
@@ -178,6 +179,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		{
 			txtHour = SOSJOEMessageCodes.JOE_T_JobAssistent_Hour.Control(new Text(jobGroup, SWT.BORDER));
 			txtHour.addVerifyListener(new VerifyListener() {
+				@Override
 				public void verifyText(final VerifyEvent e) {
 					e.doit = Utils.isOnlyDigits(e.text);
 				}
@@ -187,6 +189,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 			gridData.minimumWidth = 17;
 			txtHour.setLayoutData(gridData);
 			txtHour.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					Utils.setBackground(0, 23, txtHour);
 					if (!Utils.isNumeric( txtHour.getText())) {
@@ -201,6 +204,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		{
 			txtMin = SOSJOEMessageCodes.JOE_T_JobAssistent_Min.Control(new Text(jobGroup, SWT.BORDER));
 			txtMin.addVerifyListener(new VerifyListener() {
+				@Override
 				public void verifyText(final VerifyEvent e) {
 					e.doit = Utils.isOnlyDigits(e.text);
 				}
@@ -210,6 +214,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 			gridData.minimumWidth = 17;
 			txtMin.setLayoutData(gridData);
 			txtMin.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					Utils.setBackground(0, 59, txtMin);		
 					if (!Utils.isNumeric( txtMin.getText())) {
@@ -224,6 +229,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		{
 			txtSecound = SOSJOEMessageCodes.JOE_T_JobAssistent_Sec.Control(new Text(jobGroup, SWT.BORDER));
 			txtSecound.addVerifyListener(new VerifyListener() {
+				@Override
 				public void verifyText(final VerifyEvent e) {
 					e.doit = Utils.isOnlyDigits(e.text);
 				}
@@ -234,6 +240,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 			txtSecound.setLayoutData(gridData);
 			txtSecound.setText(sec==0? "" : Utils.getIntegerAsString(sec));
 			txtSecound.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					Utils.setBackground(0, 59, txtSecound);
 					if (!Utils.isNumeric( txtSecound.getText())) {
@@ -259,6 +266,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		txtSetBack = SOSJOEMessageCodes.JOE_T_JobAssistent_SetBack.Control(new Text(jobGroup, SWT.BORDER));
 		txtSetBack.setText(setback!=null?setback:"");
 		txtSetBack.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				modify = true;
 			}
@@ -279,6 +287,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		noButton = SOSJOEMessageCodes.JOE_B_JobAssistent_No.Control(new Button(jobGroup, SWT.RADIO));
 		noButton.setSelection(!ismax);
 		noButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				modify = true;
 			}
@@ -289,6 +298,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		yesButton = SOSJOEMessageCodes.JOE_B_JobAssistent_Yes.Control(new Button(jobGroup, SWT.RADIO));
 		yesButton.setSelection(ismax);
 		yesButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				modify = true;
 			}
@@ -314,6 +324,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		{
 			butCancel = SOSJOEMessageCodes.JOE_B_JobAssistent_Cancel.Control(new Button(composite_1, SWT.NONE));
 			butCancel.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					close();
 				}
@@ -332,6 +343,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		{
 			butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite_2, SWT.NONE));
 			butShow.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					refreshElement(false);
 					txtSetBack.setFocus();					
@@ -348,6 +360,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 			gridData.widthHint = 3;
 			butNext.setLayoutData(gridData);
 			butNext.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					refreshElement(false);
 					shellSetBack.dispose();					
@@ -358,6 +371,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 
 		butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_2, SWT.NONE));
 		butBack.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				refreshElement(false);
 				JobAssistentDelayAfterErrorForm derror = new JobAssistentDelayAfterErrorForm(dom, update, job, assistentType);
@@ -376,6 +390,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		butFinish.setLayoutData(gridData_4);
 		butFinish.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 
 				refreshElement(true);
@@ -413,7 +428,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 //		butBack.setToolTipText(Messages.getTooltip("butBack"));
 	}
 
-	private void refreshElement(boolean apply) {
+	private void refreshElement(final boolean apply) {
 		Utils.startCursor(shellSetBack);
 		if(modify) {
 
@@ -456,7 +471,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		}
 	}
 
-	public void setJobname(Combo jobname) {
+	public void setJobname(final Combo jobname) {
 		this.jobname = jobname;
 	}
 
@@ -466,7 +481,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
-	public void setBackUpJob(Element backUpJob, ScriptJobMainForm jobForm_) {
+	public void setBackUpJob(final Element backUpJob, final ScriptJobMainForm jobForm_) {
 		if(backUpJob != null)
 			jobBackUp = (Element)backUpJob.clone();	
 		jobForm = jobForm_;

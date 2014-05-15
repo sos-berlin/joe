@@ -30,12 +30,12 @@ import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
-import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ScriptListener;
 
+import com.sos.jobdoc.JobdocListener;
 import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.objects.job.forms.ScriptJobMainForm;
 import com.sos.scheduler.model.LanguageDescriptorList;
 import com.swtdesigner.SWTResourceManager;
 

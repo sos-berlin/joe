@@ -20,11 +20,11 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.SchedulerDom;
 import sos.util.SOSClassUtil;
 
-import com.sos.DataExchange.Options.SOSFTPOptions;
 import com.sos.JSHelper.Basics.JSToolBox;
 import com.sos.VirtualFileSystem.Factory.VFSFactory;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVFSHandler;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVfsFileTransfer;
+import com.sos.VirtualFileSystem.Options.SOSFTPOptions;
 import com.sos.joe.interfaces.ISchedulerUpdate;
 import com.sos.scheduler.model.SchedulerObjectFactory;
 import com.sos.scheduler.model.objects.JSObjJob;

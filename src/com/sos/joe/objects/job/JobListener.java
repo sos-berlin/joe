@@ -71,6 +71,12 @@ public class JobListener extends JOEListener {
 		return avoidNull(strT);
 	}
 
+	public String getJob() {
+		@SuppressWarnings("unused") final String conMethodName = conClassName + "::getJob";
+		String strT = objJSJob.getJobName();
+		return strT;
+	} // private String getJob
+
 	public void setFile(final String file) {
 		objJSJob.setFile(file);
 	}
@@ -885,7 +891,7 @@ public class JobListener extends JOEListener {
 	}
 
 	public String getMailOnError() {
-			return objJSJob.getMailOnError();
+		return objJSJob.getMailOnError();
 	}
 
 	public void setMailOnWarning(final String pstrValue, final String pstrDefaultValue) {
