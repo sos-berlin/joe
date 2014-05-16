@@ -12,12 +12,6 @@
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
-    <scm>
-        <connection>scm:svn:http://subversion.sos/svn/sos/java.sources/tags/products/joe</connection>
-        <developerConnection>scm:svn:http://subversion.sos/svn/sos/java.sources/trunk/products/joe</developerConnection>
-        <url>http://subversion.sos/svn/sos/java.sources/trunk/products/joe</url>
-    </scm>
-
     <modules>
         <module>joe-cockpit</module>
         <module>ftp-profiles</module>
