@@ -16,6 +16,8 @@
         <module>joe-cockpit</module>
         <module>ftp-profiles</module>
         <module>joe-all</module>
+        <!-- sandbox project! not for release build!  -->
+        <!-- module>joe-cockpit-sandbox</module -->
     </modules>
 
 </project>
