@@ -69,12 +69,6 @@
             <version>${project.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.sos-berlin.products.jobscheduler</groupId>
-            <artifactId>data-exchange</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <!-- these are dependencies for third party libraries -->
         <dependency>
             <groupId>log4j</groupId>
