@@ -51,6 +51,12 @@
             <version>${project.version}</version>
         </dependency>
         
+        <dependency>
+            <groupId>com.sos-berlin.products.joe</groupId>
+            <artifactId>joe-cockpit-sandbox</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
     </dependencies>
 
 </project>
