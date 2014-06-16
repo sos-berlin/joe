@@ -1,7 +1,6 @@
-package sos.scheduler.editor.actions.forms;
+package com.sos.event.service.forms;
 
 import org.eclipse.swt.SWT;
-import sos.scheduler.editor.app.IUnsaved;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;

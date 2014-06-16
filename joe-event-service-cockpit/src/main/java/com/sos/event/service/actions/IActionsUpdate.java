@@ -1,4 +1,4 @@
-package sos.scheduler.editor.actions;
+package com.sos.event.service.actions;
 
 import sos.scheduler.editor.app.IDataChanged;
 

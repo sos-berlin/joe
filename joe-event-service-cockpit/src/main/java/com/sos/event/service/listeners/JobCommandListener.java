@@ -1,4 +1,4 @@
-package sos.scheduler.editor.actions.listeners;
+package com.sos.event.service.listeners;
 
 import java.util.ArrayList;
 import java.util.Iterator;

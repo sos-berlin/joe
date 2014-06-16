@@ -1,4 +1,4 @@
-package sos.scheduler.editor.actions.forms;
+package com.sos.event.service.forms;
 
 import javax.xml.transform.TransformerException;
 

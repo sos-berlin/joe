@@ -1,4 +1,4 @@
-package sos.scheduler.editor.actions.forms;
+package com.sos.event.service.forms;
 
 import java.util.Collection;
 
@@ -15,17 +15,9 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.actions.IActionsUpdate;
-import sos.scheduler.editor.actions.ActionsDom;
-import sos.scheduler.editor.actions.listeners.ActionsListener;
-import sos.scheduler.editor.app.IContainer;
-import sos.scheduler.editor.app.IEditor;
-import sos.scheduler.editor.app.IOUtils;
-import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.TreeData;
-import sos.scheduler.editor.app.Utils;
+import com.sos.event.service.actions.ActionsDom;
+import com.sos.event.service.listeners.ActionsListener;
+
 
 
 public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActionsUpdate {	

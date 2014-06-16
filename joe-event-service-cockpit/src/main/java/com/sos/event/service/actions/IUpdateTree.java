@@ -1,4 +1,4 @@
-package sos.scheduler.editor.actions;
+package com.sos.event.service.actions;
 
 import org.eclipse.swt.widgets.TreeItem;
 

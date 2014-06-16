@@ -18,6 +18,7 @@
         <module>joe-all</module>
         <!-- sandbox project! not for release build! contains errors, build will be broken -->
         <!-- module>joe-cockpit-sandbox</module -->
+        <module>event-service-cockpit</module>
     </modules>
 
 </project>
