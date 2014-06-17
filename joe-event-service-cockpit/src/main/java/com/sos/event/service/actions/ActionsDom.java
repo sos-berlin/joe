@@ -14,10 +14,7 @@ import org.jdom.output.Format;
 import org.jdom.output.SAXOutputter;
 import org.jdom.output.XMLOutputter;
 
-import sos.scheduler.editor.app.DomParser;
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
+import com.sos.joe.globals.options.Options;
 
 public class ActionsDom extends DomParser {
 

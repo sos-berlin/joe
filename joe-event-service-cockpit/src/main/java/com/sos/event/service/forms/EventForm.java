@@ -24,14 +24,12 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.actions.ActionsDom;
-import sos.scheduler.editor.actions.listeners.EventListener;
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.Utils;
+
+import com.sos.event.service.actions.ActionsDom;
+import com.sos.event.service.listeners.EventListener;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 
 
 public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage  {

@@ -1,12 +1,12 @@
 package com.sos.event.service.listeners;
 
 
-import org.jdom.Element;
-import sos.scheduler.editor.actions.ActionsDom;
-import sos.scheduler.editor.app.Utils;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.SWT;
+import org.jdom.Element;
+
+import com.sos.event.service.actions.ActionsDom;
 
 public class ActionsListListener {
    

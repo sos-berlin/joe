@@ -23,16 +23,14 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import sos.scheduler.editor.actions.ActionsDom;
-import sos.scheduler.editor.actions.listeners.JobCommandListener;
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.IUnsaved;
 import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.Utils;
 import sos.util.SOSDate;
+
+import com.sos.event.service.actions.ActionsDom;
+import com.sos.event.service.listeners.JobCommandListener;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 
 public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 

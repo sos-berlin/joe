@@ -13,11 +13,8 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.actions.forms.ActionsForm;
-import sos.scheduler.editor.actions.ActionsDom;
-import sos.scheduler.editor.app.Options;
+import com.sos.event.service.actions.ActionsDom;
+import com.sos.event.service.forms.ActionsForm;
 
 public class ParameterListener {
 

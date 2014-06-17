@@ -1,19 +1,16 @@
 package com.sos.event.service.listeners;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
-import sos.scheduler.editor.actions.ActionsDom;
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Utils;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.SWT;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.sos.event.service.actions.ActionsDom;
 
 public class EventListener {
    
