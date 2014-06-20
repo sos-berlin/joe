@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.listeners;
-
 import java.io.File;
 
 import org.apache.log4j.Logger;
@@ -9,15 +8,15 @@ import org.eclipse.swt.program.Program;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
 
 import com.sos.JSHelper.Basics.JSToolBox;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 /**
 * \class JOEListener 
@@ -43,26 +42,20 @@ import com.sos.JSHelper.Basics.JSToolBox;
 *
 * Created on 16.11.2011 15:25:39
  */
-
 /**
  * @author KB
  *
  */
 public class JOEListener extends JSToolBox {
-
-	@SuppressWarnings("unused")
-	private final String		conClassName	= "JOEListener";
-	private static final String	conSVNVersion	= "$Id$";
-	private static final Logger	logger			= Logger.getLogger(JOEListener.class);
-
-	protected SchedulerDom		_dom			= null;
-
-	protected ISchedulerUpdate	_main			= null;
-	protected Element			_job			= null;
-	protected Element			_parent			= null;
-	protected Element			objElement		= null;
-
-	public final static int		NONE			= -1;
+	@SuppressWarnings("unused") private final String	conClassName	= "JOEListener";
+	private static final String							conSVNVersion	= "$Id$";
+	private static final Logger							logger			= Logger.getLogger(JOEListener.class);
+	protected com.sos.joe.xml.jobscheduler.SchedulerDom								_dom			= null;
+	protected ISchedulerUpdate							_main			= null;
+	protected Element									_job			= null;
+	protected Element									_parent			= null;
+	protected Element									objElement		= null;
+	public final static int								NONE			= -1;
 
 	public JOEListener() {
 		//
@@ -92,23 +85,20 @@ public class JOEListener extends JSToolBox {
 		return "";
 	}
 
-	public String getPrePostProcessingScriptSource () {
+	public String getPrePostProcessingScriptSource() {
 		String strT = "";
 		return strT;
 	}
 
-	public void setSource (final String pstrS) {
-		
+	public void setSource(final String pstrS) {
 	}
 
-	public void setComment (final String pstrS) {
-		
+	public void setComment(final String pstrS) {
 	}
 
-	public void setDescription (final String pstrD) {
-		
+	public void setDescription(final String pstrD) {
 	}
-	
+
 	public void setLanguage(final String pstrLanguage) {
 	}
 
@@ -120,9 +110,8 @@ public class JOEListener extends JSToolBox {
 		return false;
 	}
 
-
 	public SchedulerDom get_dom() {
- 		return _dom;
+		return _dom;
 	}
 
 	public Image getImage(final String pstrImageFileName) {
@@ -130,22 +119,17 @@ public class JOEListener extends JSToolBox {
 	}
 
 	// "http://www.sos-berlin.com/doc/en/scheduler.doc/xml/job.xml"
-
 	public void openXMLDoc(final String pstrTagName) {
-
 		String lang = Options.getLanguage();
 		String strHelpUrl = "http://www.sos-berlin.com/doc/" + lang + "/scheduler.doc/xml/" + pstrTagName + ".xml";
 		openHelp(strHelpUrl);
 	}
 
 	// http://www.sos-berlin.com/doc/en/scheduler.doc/xml/job.xml#attribute_stop_on_error
-
 	public void openXMLAttributeDoc(final String pstrTagName, final String pstrAttributeName) {
-
 		String lang = Options.getLanguage();
 		String strHelpUrl = "http://www.sos-berlin.com/doc/" + lang + "/scheduler.doc/xml/" + pstrTagName + ".xml#attribute_" + pstrAttributeName;
 		openHelp(strHelpUrl);
-
 	}
 
 	public boolean Check4HelpKey(final int pintKeyCode, final String pstrTagName, final String pstrAttribute) {
@@ -157,9 +141,7 @@ public class JOEListener extends JSToolBox {
 			openXMLDoc(pstrTagName);
 			return true;
 		}
-
 		return false;
-
 	}
 
 	public boolean isHelpKey(final int pintKeyCode) {
@@ -191,52 +173,45 @@ public class JOEListener extends JSToolBox {
 		}
 		catch (Exception e) {
 			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; "  
-						+ sos.scheduler.editor.app.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
+				new ErrorLog("error in " + getMethodName() + "; "
+						+ com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
 			}
 			e.printStackTrace();
-			MainWindow.message(sos.scheduler.editor.app.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }),
+			MainWindow.message(com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }),
 					SWT.ICON_ERROR | SWT.OK);
 		}
 	}
 
 	public String getXML() {
-
 		String strXmlText = "";
 		if (objElement != null) {
 			strXmlText = getXML(objElement);
-
 			if (strXmlText != null) {
-
 				// newXML ist null, wenn Änderungen nicht übernommen werden sollen
 				// if (newXML != null)
 				// applyXMLChange(newXML);
-
 			}
 		}
 		return strXmlText;
 	}
 
 	private String getXML(Element element) {
-
 		String xml = "";
 		if (element != null) {
 			try {
 				if (_dom instanceof SchedulerDom && ((SchedulerDom) _dom).isDirectory()) {
-
 					xml = _dom.getXML(Utils.getHotFolderParentElement(element));
 				}
 				else {
 					xml = _dom.getXML(element);
 				}
-
 			}
 			catch (JDOMException ex) {
 				try {
-					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
+					new ErrorLog("error in " + getMethodName(), ex);
 				}
 				catch (Exception ee) {
 					// tu nichts
@@ -244,9 +219,7 @@ public class JOEListener extends JSToolBox {
 				// message("Error: " + ex.getMessage(), SWT.ICON_ERROR | SWT.OK);
 				return null;
 			}
-
 		}
 		return xml;
 	}
-
 }

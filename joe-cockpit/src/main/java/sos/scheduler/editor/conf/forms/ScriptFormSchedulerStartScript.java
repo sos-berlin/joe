@@ -14,10 +14,10 @@ import org.eclipse.swt.widgets.Group;
  
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.IUpdateLanguage;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
  
 public class ScriptFormSchedulerStartScript extends ScriptForm implements IUpdateLanguage {
 

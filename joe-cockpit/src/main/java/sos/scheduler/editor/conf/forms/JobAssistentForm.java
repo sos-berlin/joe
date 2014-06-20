@@ -2,12 +2,13 @@ package sos.scheduler.editor.conf.forms;
 
 
 import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
-public class JobAssistentForm {
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
+
+public class JobAssistentForm { 
 	
 	private SchedulerDom dom = null;
 	private ISchedulerUpdate update = null;

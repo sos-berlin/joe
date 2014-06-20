@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.listeners;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,30 +8,22 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobLockUseListener {
-
-
-	private        SchedulerDom      _dom               = null;
-
-	private        Element           _job               = null;
-
-	private        List              _lockUseList       = null;
-
-	private        Element           _lockUse           = null;
-
+	private SchedulerDom	_dom			= null;
+	private Element			_job			= null;
+	private List			_lockUseList	= null;
+	private Element			_lockUse		= null;
 
 	public JobLockUseListener(SchedulerDom dom, Element job) {
-
 		_dom = dom;
 		_job = job;
 		_lockUseList = _job.getChildren("lock.use");
-
 	}
 
 	public void fillLockUse(Table table) {
-
 		table.removeAll();
 		Iterator it = _lockUseList.iterator();
 		while (it.hasNext()) {
@@ -41,57 +32,53 @@ public class JobLockUseListener {
 			item.setText(0, Utils.getAttributeValue("lock", e));
 			item.setText(1, Utils.getAttributeValue("exclusive", e));
 		}
-
 	}
-
 
 	public void newLockUse() {
-		_lockUse = new Element("lock.use");    	
+		_lockUse = new Element("lock.use");
 	}
-
 
 	public void selectLockUse(int index) {
 		if (index >= 0 && index < _lockUseList.size())
 			_lockUse = (Element) _lockUseList.get(index);
 	}
 
-
 	public void applyLockUse(String lockUse, boolean exclusive) {
-		if (_lockUse == null)newLockUse();
+		if (_lockUse == null)
+			newLockUse();
 		Utils.setAttribute("lock", lockUse, _lockUse, _dom);
 		Utils.setAttribute("exclusive", exclusive, _lockUse, _dom);
 		if (!_lockUseList.contains(_lockUse))
 			_lockUseList.add(_lockUse);
 		_dom.setChanged(true);
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
 	}
-
 
 	public void deleteLockUse(int index) {
 		if (index >= 0 && index < _lockUseList.size()) {
 			_lockUseList.remove(index);
 			_lockUse = null;
 			_dom.setChanged(true);
-			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
+			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
 		}
 	}
-
 
 	public String getLockUse() {
 		return Utils.getAttributeValue("lock", _lockUse);
 	}
 
-
 	public boolean getExclusive() {
-		if (Utils.getAttributeValue("exclusive", _lockUse) == null || Utils.getAttributeValue("exclusive", _lockUse).length()==0) {
+		if (Utils.getAttributeValue("exclusive", _lockUse) == null || Utils.getAttributeValue("exclusive", _lockUse).length() == 0) {
 			return true;
-		}else {
+		}
+		else {
 			return (Utils.getAttributeValue("exclusive", _lockUse).equals("yes"));
 		}
 	}
 
 	public boolean isValidLock(String lock) {
-		if (lock.equals("")) return false;
+		if (lock.equals(""))
+			return false;
 		if (_lockUseList != null) {
 			for (Iterator it = _lockUseList.iterator(); it.hasNext();) {
 				Element e = (Element) it.next();
@@ -104,7 +91,7 @@ public class JobLockUseListener {
 
 	public String[] getLocks() {
 		String[] names = null;
-		if(_dom.isLifeElement()) { 
+		if (_dom.isLifeElement()) {
 			names = new String[0];
 			return names;
 		}

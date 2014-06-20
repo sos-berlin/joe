@@ -1,5 +1,4 @@
 package sos.scheduler.editor.doc.forms;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
@@ -15,30 +14,26 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.ReleaseAuthorsListener;
 
 import com.sos.i18n.annotation.I18NResourceBundle;
-
-@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
-public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
-
-	@SuppressWarnings("unused")
-	private final static String	conSVNVersion			= "$Id$";
-	private ReleaseAuthorsListener	listener		= null;
-
-	private Group					authorsGroup	= null;
-	private Label					label4			= null;
-	private Text					tName			= null;
-	private Label					label5			= null;
-	private Text					tEmail			= null;
-	private Button					bApplyAuthor	= null;
-	private Table					tAuthors		= null;
-	private Button					bRemoveAutho	= null;
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.jobdoc.DocumentationDom;
+ 
+@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+	@SuppressWarnings("unused") private final static String	conSVNVersion	= "$Id$";
+	private ReleaseAuthorsListener							listener		= null;
+	private Group											authorsGroup	= null;
+	private Label											label4			= null;
+	private Text											tName			= null;
+	private Label											label5			= null;
+	private Text											tEmail			= null;
+	private Button											bApplyAuthor	= null;
+	private Table											tAuthors		= null;
+	private Button											bRemoveAutho	= null;
 
 	public AuthorsForm(Composite parent, int style, DocumentationDom dom, Element parentElement) {
 		super(parent, style);
@@ -61,10 +56,8 @@ public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 	private void createGroup() {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 5; // Generated
-		
 		authorsGroup = JOE_G_AuthorsForm_Authors.Control(new Group(this, SWT.NONE));
 		authorsGroup.setLayout(gridLayout); // Generated
-		
 		createCreated();
 		createModified();
 		createComposite();
@@ -80,15 +73,12 @@ public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		GridData gridData12 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
 		GridLayout gridLayout1 = new GridLayout();
 		gridLayout1.numColumns = 5; // Generated
-		
 		// group1 = new Group(group, SWT.NONE);
 		// group1.setText("Authors"); // Generated
 		// group1.setLayoutData(gridData5); // Generated
 		// group1.setLayout(gridLayout1); // Generated
-		
 		label4 = JOE_L_Name.Control(new Label(authorsGroup, SWT.NONE));
 		label4.setLayoutData(new GridData());
-		
 		GridData gridData7 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData7.widthHint = 121;
 		tName = JOE_T_AuthorsForm_Name.Control(new Text(authorsGroup, SWT.BORDER));
@@ -102,12 +92,10 @@ public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 				Utils.setBackground(tName, bApplyAuthor.isEnabled());
 			}
 		});
-		
 		label5 = JOE_L_AuthorsForm_EMail.Control(new Label(authorsGroup, SWT.NONE));
 		label5.setLayoutData(new GridData());
 		GridData gridData8 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData8.widthHint = 183;
-		
 		tEmail = JOE_T_AuthorsForm_EMail.Control(new Text(authorsGroup, SWT.BORDER));
 		tEmail.setLayoutData(gridData8); // Generated
 		tEmail.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -119,7 +107,6 @@ public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 				Utils.setBackground(tEmail, bApplyAuthor.isEnabled());
 			}
 		});
-		
 		GridData gridData9 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		bApplyAuthor = JOE_B_AuthorsForm_Apply.Control(new Button(authorsGroup, SWT.NONE));
 		bApplyAuthor.setLayoutData(gridData9); // Generated
@@ -131,10 +118,8 @@ public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 				tEmail.setText("");
 				tAuthors.deselectAll();
 				tName.setFocus();
-
 			}
 		});
-		
 		GridData gridData11 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
 		tAuthors = JOE_Tbl_AuthorsForm_Authors.Control(new Table(authorsGroup, SWT.FULL_SELECTION | SWT.BORDER));
 		tAuthors.setHeaderVisible(true); // Generated
@@ -152,13 +137,10 @@ public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 				bApplyAuthor.setEnabled(false);
 			}
 		});
-		
 		TableColumn tableColumn2 = JOE_TCl_AuthorsForm_Name.Control(new TableColumn(tAuthors, SWT.NONE));
 		tableColumn2.setWidth(250); // Generated
-		
 		TableColumn tableColumn11 = JOE_TCl_AuthorsForm_EMail.Control(new TableColumn(tAuthors, SWT.NONE));
 		tableColumn11.setWidth(60); // Generated
-		
 		bRemoveAutho = JOE_B_AuthorsForm_Remove.Control(new Button(authorsGroup, SWT.NONE));
 		bRemoveAutho.setLayoutData(gridData12); // Generated
 		bRemoveAutho.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -205,7 +187,7 @@ public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 	}
 
 	public void setToolTipText() {
-//
+		//
 	}
 
 	private void setReleaseStatus(boolean enabled) {
@@ -213,7 +195,6 @@ public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		bApplyAuthor.setEnabled(false);
 		// tAuthors.setEnabled(enabled);
 		bRemoveAutho.setEnabled(false);
-
 		if (enabled) {
 			listener.fillAuthors(tAuthors);
 		}
@@ -238,7 +219,6 @@ public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 	    author.setText(1, email);
 	    Utils.setBackground(tAuthors, true);
 	}*/
-
 	private void applyAuthor(String name, String email) {
 		name = name.trim();
 		email = email.trim();
@@ -251,7 +231,6 @@ public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 				return;
 			}
 		}
-
 		// else new item
 		TableItem author = new TableItem(tAuthors, SWT.NONE);
 		author.setText(0, name);
@@ -264,5 +243,4 @@ public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		tName.setText("");
 		tEmail.setText("");
 	}
-
 } // @jve:decl-index=0:visual-constraint="10,10"

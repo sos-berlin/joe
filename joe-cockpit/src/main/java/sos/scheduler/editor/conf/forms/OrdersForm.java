@@ -1,9 +1,7 @@
 package sos.scheduler.editor.conf.forms;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -16,23 +14,20 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.OrdersListener;
 
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
+
 //import sos.scheduler.editor.conf.listeners.SchedulerListener;
-
 public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
-
 	private OrdersListener	listener;
-
 	// private SchedulerListener mainListener;
-
 	private Group			ordersGroup		= null;
 	private static Table	table			= null;
 	private Button			bNewOrder		= null;
@@ -49,7 +44,6 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		initialize();
 		setToolTipText();
 		listener.fillTable(table);
-
 	}
 
 	private void initialize() {
@@ -70,12 +64,9 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		gridData.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
-		
 		ordersGroup = JOE_G_OrdersForm_Orders.Control(new Group(this, SWT.NONE));
 		ordersGroup.setLayout(gridLayout);
-		
 		createTable();
-		
 		bNewOrder = JOE_B_OrdersForm_NewOrder.Control(new Button(ordersGroup, SWT.NONE));
 		bNewOrder.setLayoutData(gridData);
 		getShell().setDefaultButton(bNewOrder);
@@ -85,17 +76,15 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				bRemoveOrder.setEnabled(true);
 			}
 		});
-		
 		label = new Label(ordersGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
-//		label.setText("Label");
+		//		label.setText("Label");
 		label.setLayoutData(gridData4);
-		
 		bRemoveOrder = JOE_B_OrdersForm_RemoveOrder.Control(new Button(ordersGroup, SWT.NONE));
 		bRemoveOrder.setEnabled(false);
 		bRemoveOrder.setLayoutData(gridData1);
 		bRemoveOrder.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-//				int c = MainWindow.message(getShell(), "Do you want to remove the order?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+				//				int c = MainWindow.message(getShell(), "Do you want to remove the order?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 				int c = MainWindow.message(getShell(), JOE_M_OrdersForm_RemoveOrder.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 				if (c != SWT.YES)
 					return;
@@ -110,18 +99,16 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private void createTable() {
 		GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
 		gridData2.widthHint = 204;
-		
 		table = JOE_Tbl_OrdersForm_Table.Control(new Table(ordersGroup, SWT.BORDER | SWT.FULL_SELECTION));
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseDoubleClick(final MouseEvent e) {
 				if (table.getSelectionCount() > 0)
-					ContextMenu.goTo(table.getSelection()[0].getText(0), _dom, Editor.ORDER);
+					ContextMenu.goTo(table.getSelection()[0].getText(0), _dom, JOEConstants.ORDER);
 			}
 		});
 		table.setHeaderVisible(true);
 		table.setLayoutData(gridData2);
 		table.setLinesVisible(true);
-		
 		table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				boolean enabled = true;
@@ -134,18 +121,15 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				}
 			}
 		});
-		
 		TableColumn tableColumn = JOE_TCl_OrdersForm_OrderNameID.Control(new TableColumn(table, SWT.NONE));
 		tableColumn.setWidth(240);
-		
 	}
 
 	public void setToolTipText() {
-//
+		//
 	}
 
 	public static Table getTable() {
 		return table;
 	}
-
 } // @jve:decl-index=0:visual-constraint="10,10"

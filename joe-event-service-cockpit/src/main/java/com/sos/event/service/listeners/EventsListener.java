@@ -9,8 +9,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
-import com.sos.event.service.actions.ActionsDom;
 import com.sos.event.service.forms.ActionsForm;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.Events.ActionsDom;
 
 public class EventsListener {
    

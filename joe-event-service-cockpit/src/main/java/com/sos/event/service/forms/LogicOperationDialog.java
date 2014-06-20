@@ -19,9 +19,11 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.util.SOSString;
+
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.ResourceManager;
 
 class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 
@@ -69,7 +71,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 			}
 		});
 
-		newFolderShell.setImage(sos.scheduler.editor.app.ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
+		newFolderShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.verticalSpacing = 10;
 		gridLayout.horizontalSpacing = 10;

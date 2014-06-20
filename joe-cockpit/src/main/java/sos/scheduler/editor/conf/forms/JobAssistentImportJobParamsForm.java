@@ -42,16 +42,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import org.w3c.dom.Document;
 
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
@@ -59,6 +54,12 @@ import sos.scheduler.editor.conf.listeners.ParameterListener;
 
 import com.sos.JSHelper.io.Files.JSXMLFile;
 import com.sos.i18n.annotation.I18NResourceBundle;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.xmldoc.Description;
 import com.sos.scheduler.model.xmldoc.Description.Configuration.Params;
 import com.sos.scheduler.model.xmldoc.Note;
@@ -157,7 +158,7 @@ import com.swtdesigner.SWTResourceManager;
 		if (xmlFilename == null || xmlFilename.trim().length() == 0)
 			return new ArrayList<HashMap<String, Object>>();
 		// TODO /jobs als Option
-		xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData() + "/jobs";
+		xmlPaths = Options.getSchedulerData() + "/jobs";
 		xmlPaths = xmlPaths.replaceAll("\\\\", "/");
 		xmlFilename = xmlFilename.replaceAll("\\\\", "/");
 		if (!xmlFilename.startsWith(xmlPaths)) {
@@ -195,15 +196,14 @@ import com.swtdesigner.SWTResourceManager;
 				h.put(conParamAttributeREQUIRED, strIsRequired);
 				String strLanguage = Options.getLanguage();
 				// download : http://mirrors.ibiblio.org/pub/mirrors/maven2/com/sun/org/apache/jaxp-ri/1.4/jaxp-ri-1.4.jar
-				DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl", this.getClass()
-						.getClassLoader());
+				DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
 				DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
-				org.w3c.dom.Document doc = docBuilder.newDocument();
+				Document doc = docBuilder.newDocument();
 				// //////////////////////
 				// Creating the XML tree
 				// create the root element and add it to the document
-				doc.setXmlStandalone(true);
-				doc.setXmlVersion("1.0");
+//				doc.setXmlStandalone(true);
+//				doc.setXmlVersion("1.0");
 				org.w3c.dom.Element root = doc.createElement("param");
 				doc.appendChild(root);
 				//
@@ -354,25 +354,25 @@ import com.swtdesigner.SWTResourceManager;
 					Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell, false, null, false, null, false);
 				}
 			});
-			if (assistentType == Editor.JOB)
+			if (assistentType == JOEConstants.JOB)
 				showButton.setVisible(false);
 			butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_1, SWT.NONE));
 			butFinish.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent e) {
-					if (assistentType == Editor.PARAMETER) {
+					if (assistentType == JOEConstants.PARAMETER) {
 						tParameter.removeAll();
 						paramListener.fillParams(tParameter);
 					}
 					else
-						if (assistentType == Editor.JOB || assistentType == Editor.JOB_WIZARD) {
+						if (assistentType == JOEConstants.JOB || assistentType == JOEConstants.JOB_WIZARD) {
 							if (jobForm != null)
 								jobForm.initForm();
 							if (jobDocForm != null)
 								jobDocForm.initForm();
 						}
 						else
-							if (assistentType == Editor.JOB_CHAINS || assistentType == Editor.JOBS) {
+							if (assistentType == JOEConstants.JOB_CHAINS || assistentType == JOEConstants.JOBS) {
 								if (jobname != null)
 									jobname.setText(Utils.getAttributeValue(conParamNAME, joblistener.getJob()));
 								JobsListener listener = new JobsListener(dom, update);
@@ -408,7 +408,7 @@ import com.swtdesigner.SWTResourceManager;
 			butNext.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent e) {
 					Utils.startCursor(jobParameterShell);
-					if (assistentType != Editor.JOB) {
+					if (assistentType != JOEConstants.JOB) {
 						JobAssistentTasksForm tasks = new JobAssistentTasksForm(dom, update, joblistener.getJob(), assistentType);
 						tasks.showTasksForm();
 						if (jobname != null)
@@ -421,7 +421,7 @@ import com.swtdesigner.SWTResourceManager;
 				}
 			});
 			butNext.setEnabled(false);
-			if (assistentType == Editor.JOB || assistentType == Editor.PARAMETER) {
+			if (assistentType == JOEConstants.JOB || assistentType == JOEConstants.PARAMETER) {
 				butNext.setEnabled(false);
 				butBack.setEnabled(false);
 			}

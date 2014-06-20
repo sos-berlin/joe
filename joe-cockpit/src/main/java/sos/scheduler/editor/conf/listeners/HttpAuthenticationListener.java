@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.listeners;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,46 +9,36 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class HttpAuthenticationListener {
-
-
-	private     SchedulerDom    _dom              = null;
-
-	private     Element         _config           = null;
-
-	private     Element         _http_server      = null;
-
-	private     List            _httpUsers        = new ArrayList();
-
+	private SchedulerDom	_dom			= null;
+	private Element			_config			= null;
+	private Element			_http_server	= null;
+	private List			_httpUsers		= new ArrayList();
 
 	public HttpAuthenticationListener(SchedulerDom dom, Element config) {
-
 		_dom = dom;
 		_config = config;
 		initAuthentication();
-
 	}
 
 	private void initAuthentication() {
-
 		_http_server = _config.getChild("http_server");
 		if (_http_server != null) {
 			Element httpAuthentication = _http_server.getChild("http.authentication");
-			if(httpAuthentication != null) {
+			if (httpAuthentication != null) {
 				Element httpUsers = httpAuthentication.getChild("http.users");
-				if(httpUsers != null) {
-					_httpUsers = httpUsers.getChildren("http.user");  
+				if (httpUsers != null) {
+					_httpUsers = httpUsers.getChildren("http.user");
 				}
-			}    	      
+			}
 		}
-
 	}
 
 	public void fillAuthentication(Table table) {
-
-		table.removeAll();   
+		table.removeAll();
 		for (Iterator it = _httpUsers.iterator(); it.hasNext();) {
 			Element http_user = (Element) it.next();
 			TableItem item = new TableItem(table, SWT.NONE);
@@ -62,24 +51,24 @@ public class HttpAuthenticationListener {
 		Element auth = null;
 		Element users = null;
 		if (_http_server != null) {
-			if(_http_server.getChild("http.authentication") == null) {
+			if (_http_server.getChild("http.authentication") == null) {
 				auth = new Element("http.authentication");
 				_http_server.addContent(auth);
-			} else {
+			}
+			else {
 				auth = _http_server.getChild("http.authentication");
-			}    		
-			if(auth != null) {
-				if(auth.getChild("http.users") != null) {
+			}
+			if (auth != null) {
+				if (auth.getChild("http.users") != null) {
 					users = auth.getChild("http.users");
-				} else {
+				}
+				else {
 					users = new Element("http.users");
 					auth.addContent(users);
-				}    			
-			}   		
+				}
+			}
 			users.removeChildren("http.user");
 		}
-
-
 		if (httpUser.length > 0) {
 			if (_http_server == null && _config.getAttribute("http_server") == null) {
 				_http_server = new Element("http_server");
@@ -89,8 +78,6 @@ public class HttpAuthenticationListener {
 				users = new Element("http.users");
 				auth.addContent(users);
 			}
-
-
 			for (int i = 0; i < httpUser.length; i++) {
 				Element user = new Element("http.user");
 				Utils.setAttribute("name", httpUser[i].getText(0), user);
@@ -100,12 +87,12 @@ public class HttpAuthenticationListener {
 				}
 			}
 			_dom.setChanged(true);
-		} else {
+		}
+		else {
 			_config.removeChild(_http_server.getName());
 			_dom.setChanged(true);
 		}
 	}
-
 
 	public void fillHttpAuthenticationTable(Table table) {
 		table.removeAll();
@@ -118,6 +105,4 @@ public class HttpAuthenticationListener {
 			}
 		}
 	}
-
-
 }

@@ -11,12 +11,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
-import sos.scheduler.editor.classes.TextArea;
-import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
+import sos.scheduler.editor.conf.composites.TextArea;
+import sos.scheduler.editor.conf.composites.TextArea.enuSourceTypes;
 import sos.scheduler.editor.conf.listeners.JobListener;
+
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.options.Options;
 
 public class JobScript extends FormBaseClass {
 

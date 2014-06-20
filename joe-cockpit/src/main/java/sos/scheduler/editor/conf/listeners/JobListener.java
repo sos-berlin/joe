@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.listeners;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,60 +9,47 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.CDATA;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
 
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.LanguageDescriptorList;
 
 public class JobListener extends JOEListener {
-
-	@SuppressWarnings("unused")
-	private final String	conClassName		= this.getClass().getSimpleName();
-	@SuppressWarnings("unused")
-	private final Logger	logger				= Logger.getLogger(this.getClass());
-	@SuppressWarnings("unused")
-	private final String	conSVNVersion		= "$Id$";
-
-	private static String	library				= "";
-
-	public final String[]	_languagesJob		= LanguageDescriptorList.getLanguages4APIJobs();
-	public final String[]	_languagesMonitor	= LanguageDescriptorList.getLanguages4Monitor();
-	public String[]			_languages			= null;
-
-	private Element			_script				= null;
-	private Element			_settings			= null;
-	private Element			_process			= null;
-	private Element			_environment		= null;
-
-	private final int		_type				= -1;
-
-	private List<Element>	_directories		= null;
-	private Element			_directory			= null;
-	private List			_setbacks			= null;
-	private final Element	_setback			= null;
-	private List			_errorDelays		= null;
-	private final Element	_errorDelay			= null;
+	@SuppressWarnings("unused") private final String	conClassName		= this.getClass().getSimpleName();
+	@SuppressWarnings("unused") private final Logger	logger				= Logger.getLogger(this.getClass());
+	@SuppressWarnings("unused") private final String	conSVNVersion		= "$Id$";
+	private static String								library				= "";
+	public final String[]								_languagesJob		= LanguageDescriptorList.getLanguages4APIJobs();
+	public final String[]								_languagesMonitor	= LanguageDescriptorList.getLanguages4Monitor();
+	public String[]										_languages			= null;
+	private Element										_script				= null;
+	private Element										_settings			= null;
+	private Element										_process			= null;
+	private Element										_environment		= null;
+	private final int									_type				= -1;
+	private List<Element>								_directories		= null;
+	private Element										_directory			= null;
+	private List										_setbacks			= null;
+	private final Element								_setback			= null;
+	private List										_errorDelays		= null;
+	private final Element								_errorDelay			= null;
 
 	public JobListener(final SchedulerDom dom, final Element job, final ISchedulerUpdate update) {
-
 		_dom = dom;
 		_job = job;
 		_parent = _job;
 		objElement = _job;
 		_main = update;
-
 		_directories = _job.getChildren("start_when_directory_changed");
 		_setbacks = _job.getChildren("delay_order_after_setback");
 		_errorDelays = _job.getChildren("delay_after_error");
-
 		_settings = _job.getChild("settings");
-
 		setScript();
-        setProcess();
-
+		setProcess();
 	}
 
 	public String getFile() {
@@ -76,9 +62,7 @@ public class JobListener extends JOEListener {
 					| SWT.ICON_WARNING);
 			if (c != SWT.YES)
 				return;
-
 		}
-
 		initProcess();
 		Utils.setAttribute("file", file, _process, _dom);
 		Utils.setChangedForDirectory(_job, _dom);
@@ -122,14 +106,13 @@ public class JobListener extends JOEListener {
 		Utils.setChangedForDirectory(_job, _dom);
 	}
 
-
-    private void setProcess() {
-        _process = _job.getChild("process");
-        if (_process != null) {
-            _script = null;
-            _environment =  _process.getChild("environment");
-        }
-    }
+	private void setProcess() {
+		_process = _job.getChild("process");
+		if (_process != null) {
+			_script = null;
+			_environment = _process.getChild("environment");
+		}
+	}
 
 	private void initProcess() {
 		if (_process == null) {
@@ -147,7 +130,7 @@ public class JobListener extends JOEListener {
 	}
 
 	private void setScript() {
-		if (_type == Editor.MONITOR) {
+		if (_type == JOEConstants.MONITOR) {
 			Element monitor = _job;
 			if (monitor != null) {
 				_script = monitor.getChild("script");
@@ -160,7 +143,7 @@ public class JobListener extends JOEListener {
 	public String getJobNameAndTitle() {
 		String strT = this.getJobName();
 		if (this.isDisabled() == true) {
-			strT += " (" + sos.scheduler.editor.app.Messages.getLabel("disabled") + ")";
+			strT += " (" + Messages.getLabel("disabled") + ")";
 		}
 		strT += " - " + this.getTitle();
 		return strT;
@@ -170,42 +153,34 @@ public class JobListener extends JOEListener {
 		return _languages;
 	}
 
-	@Override
-	public String getComment() {
+	@Override public String getComment() {
 		return Utils.getAttributeValue("__comment__", _job);
 	}
 
-	@Override
-	public void setComment(final String comment) {
+	@Override public void setComment(final String comment) {
 		if (_dom.isDirectory() || _dom.isLifeElement())
 			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
 		Utils.setAttribute("__comment__", comment, _job, _dom);
 	}
 
-	@Override
-	public boolean isDisabled() {
+	@Override public boolean isDisabled() {
 		boolean disabled = !Utils.getAttributeValue("enabled", _job).equalsIgnoreCase("yes") && !Utils.getAttributeValue("enabled", _job).equalsIgnoreCase("");
 		return disabled;
 	}
 
-	@Override
-	public String getJobName() {
+	@Override public String getJobName() {
 		return Utils.getAttributeValue("name", _job);
 	}
 
 	public void setJobName(final String name, final boolean updateTree) {
-
 		String removename = Utils.getAttributeValue("name", _job);
 		Utils.setAttribute("name", name, _job, _dom);
 		if (_dom.isChanged() && (_dom.isDirectory() && !Utils.existName(removename, _job, "job") || _dom.isLifeElement()))
 			_dom.setChangedForDirectory("job", removename, SchedulerDom.DELETE);
-
 		if (updateTree)
 			_main.updateJob(name);
-
 		if (_dom.isDirectory() || _dom.isLifeElement())
 			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
-
 	}
 
 	public String getTitle() {
@@ -274,7 +249,6 @@ public class JobListener extends JOEListener {
 		_dom.setChanged(true);
 		if (_main != null)
 			_main.updateJob(this.getJobName());
-
 		if (_dom.isDirectory() || _dom.isLifeElement())
 			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
 	}
@@ -381,7 +355,6 @@ public class JobListener extends JOEListener {
 	public boolean getTemporary() {
 		String temporary = _job.getAttributeValue("temporary");
 		return temporary == null ? false : temporary.equalsIgnoreCase("yes");
-
 	}
 
 	public void setMintasks(final String mintasks) {
@@ -430,8 +403,7 @@ public class JobListener extends JOEListener {
 		return names;
 	}
 
-	@Override
-	public String getDescription() {
+	@Override public String getDescription() {
 		Element desc = _job.getChild("description");
 		if (desc != null) {
 			return desc.getTextTrim();
@@ -440,16 +412,13 @@ public class JobListener extends JOEListener {
 			return "";
 	}
 
-	@Override
-	public void setDescription(final String description) {
+	@Override public void setDescription(final String description) {
 		Element desc = _job.getChild("description");
 		String f = getInclude();
-
 		if (desc == null && !description.equals("")) {
 			desc = new Element("description");
 			_job.addContent(0, desc);
 		}
-
 		if (desc != null) {
 			if (description.equals("") && (f == null || f.equals(""))) {
 				_job.removeChild("description");
@@ -458,7 +427,6 @@ public class JobListener extends JOEListener {
 					_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
 				return;
 			}
-
 			desc.removeContent();
 			if (!(f == null || f.equals(""))) {
 				setInclude(f);
@@ -471,7 +439,6 @@ public class JobListener extends JOEListener {
 	}
 
 	public String getInclude() {
-
 		Element desc = _job.getChild("description");
 		if (desc != null) {
 			Element inc = desc.getChild("include");
@@ -497,7 +464,6 @@ public class JobListener extends JOEListener {
 			desc = new Element("description");
 			_job.addContent(desc);
 		}
-
 		if (desc != null) {
 			if (!file.equals("")) {
 				Element incl = desc.getChild("include");
@@ -505,14 +471,12 @@ public class JobListener extends JOEListener {
 					desc.addContent(0, new Element("include").setAttribute("file", file));
 				else
 					incl.setAttribute("file", file);
-
 			}
 			else {
 				desc.removeChild("include");
 				if (getDescription().equals(""))
 					_job.removeChild("description");
 			}
-
 			_dom.setChanged(true);
 			if (_dom.isDirectory() || _dom.isLifeElement())
 				_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
@@ -525,7 +489,6 @@ public class JobListener extends JOEListener {
 			desc = new Element("description");
 			_job.addContent(desc);
 		}
-
 		if (desc != null) {
 			if (!file.equals("")) {
 				Element incl = desc.getChild("include");
@@ -536,14 +499,12 @@ public class JobListener extends JOEListener {
 					incl.removeAttribute("live_file");
 					incl.setAttribute(isLifeFileFile ? "live_file" : "file", file);
 				}
-
 			}
 			else {
 				desc.removeChild("include");
 				if (getDescription().equals(""))
 					_job.removeChild("description");
 			}
-
 			_dom.setChanged(true);
 			if (_dom.isDirectory() || _dom.isLifeElement())
 				_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
@@ -606,7 +567,6 @@ public class JobListener extends JOEListener {
 				if (_languages[i].equalsIgnoreCase(strT))
 					return i;
 			}
-
 			if (_script != null) {
 				_script.setAttribute("language", "shell");
 			}
@@ -622,13 +582,11 @@ public class JobListener extends JOEListener {
 		return strR;
 	}
 
-	@Override
-	public String getLanguage(final int language) {
+	@Override public String getLanguage(final int language) {
 		return _languages[language];
 	}
 
-	@Override
-	public int getLanguage() {
+	@Override public int getLanguage() {
 		if (_script != null) {
 			int intT = languageAsInt(_script.getAttributeValue("language"));
 			if (intT < 0) {
@@ -640,8 +598,7 @@ public class JobListener extends JOEListener {
 			return NONE;
 	}
 
-	@Override
-	public String getLanguageAsString(final int language) {
+	@Override public String getLanguageAsString(final int language) {
 		if (_script != null)
 			return languageAsString(language);
 		else {
@@ -649,8 +606,7 @@ public class JobListener extends JOEListener {
 		}
 	}
 
-	@Override
-	public void setLanguage(final String pstrLanguage) {
+	@Override public void setLanguage(final String pstrLanguage) {
 		this.setLanguage(languageAsInt(pstrLanguage));
 	}
 
@@ -659,7 +615,7 @@ public class JobListener extends JOEListener {
 		if (_script == null && language != NONE) {
 			// init script element
 			_script = new Element("script");
-			if (_type == Editor.MONITOR) {
+			if (_type == JOEConstants.MONITOR) {
 				// Element monitor = _job.getChild("monitor");
 				Element monitor = _job;
 				if (monitor == null) {
@@ -671,19 +627,14 @@ public class JobListener extends JOEListener {
 			else
 				_job.addContent(_script);
 		}
-
 		if (_script != null) {
-
 			if (!isJava()) {
 				_script.removeAttribute("java_class");
 				_script.removeAttribute("java_class_path");
 			}
-
 			if (language != NONE)
 				Utils.setAttribute("language", languageAsString(language), _script, _dom);
-
 			_dom.setChanged(true);
-
 			setChangedForDirectory();
 		}
 	}
@@ -728,7 +679,6 @@ public class JobListener extends JOEListener {
 			List includeList = _script.getChildren("include");
 			for (int i = 0; i < includeList.size(); i++) {
 				Element include = (Element) includeList.get(i);
-
 				if (include.getAttributeValue("file") != null) {
 					TableItem item = new TableItem(table, SWT.NONE);
 					item.setText(0, Utils.getAttributeValue("file", include));
@@ -766,7 +716,6 @@ public class JobListener extends JOEListener {
 					file = include.getAttributeValue("live_file");
 				else
 					file = include.getAttributeValue("file");
-
 				includes[i++] = file == null ? "" : file;
 			}
 			return includes;
@@ -787,7 +736,6 @@ public class JobListener extends JOEListener {
 				_script.addContent(include);
 			}
 		}
-
 	}
 
 	public void addInclude(final Table table, final String filename, final boolean isLife) {
@@ -795,7 +743,6 @@ public class JobListener extends JOEListener {
 			List includes = _script.getChildren("include");
 			if (table.getSelectionCount() > 0) {
 				Element in = (Element) _script.getChildren("include").get(table.getSelectionIndex());
-
 				in.setAttribute(isLife ? "live_file" : "file", filename);
 			}
 			else {
@@ -804,7 +751,6 @@ public class JobListener extends JOEListener {
 			_dom.setChanged(true);
 			fillTable(table);
 			setChangedForDirectory();
-
 		}
 		else {
 			MainWindow.ErrMsg("No script element defined!");
@@ -857,15 +803,12 @@ public class JobListener extends JOEListener {
 		}
 	}
 
-	@Override
-	public String getPrePostProcessingScriptSource() {
+	@Override public String getPrePostProcessingScriptSource() {
 		String strT = "";
 		return strT;
-
 	}
 
-	@Override
-	public String getSource() {
+	@Override public String getSource() {
 		if (_script != null) {
 			return _script.getTextTrim();
 		}
@@ -877,12 +820,8 @@ public class JobListener extends JOEListener {
 	  //    if (_script != null) 	_script.removeContent();
 	  if (_script != null) 	removeScriptSource();
 	}*/
-
-	@Override
-	public void setSource(final String source) {
-
+	@Override public void setSource(final String source) {
 		try {
-
 			if (_script != null) {
 				List l = _script.getContent();
 				for (int i = 0; i < l.size(); i++) {
@@ -890,10 +829,8 @@ public class JobListener extends JOEListener {
 						l.remove(i);
 				}
 				if (!source.equals("")) {
-
 					_script.addContent(new CDATA(source));
 				}
-
 				_dom.setChanged(true);
 				setChangedForDirectory();
 			}
@@ -901,26 +838,23 @@ public class JobListener extends JOEListener {
 				MainWindow.message("No script element defined!", SWT.ICON_ERROR);
 				// System.out.println("no script element defined!");
 			}
-
 		}
 		catch (org.jdom.IllegalDataException jdom) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), jdom);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), jdom);
 			}
 			catch (Exception ee) {
 				// tu nichts
 			}
-
 			MainWindow.message(jdom.getMessage(), SWT.ICON_ERROR);
 		}
 		catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
 			}
-
 			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
 			System.out.println(e);
 		}
@@ -938,9 +872,7 @@ public class JobListener extends JOEListener {
 		Utils.setAttribute("name", name, _job);
 		if (_main != null)
 			_main.updateTreeItem(name);
-
 		_dom.setChanged(true);
-
 		setChangedForDirectory();
 	}
 
@@ -1055,11 +987,8 @@ public class JobListener extends JOEListener {
 				return;
 			}
 		}
-
 		setMail();
-
 		// Utils.setAttribute(name, value, default_, _settings, _dom);
-
 		Element elem = null;
 		if (_settings.getChild(name) == null) {
 			elem = new Element(name);
@@ -1067,17 +996,13 @@ public class JobListener extends JOEListener {
 		}
 		else
 			elem = _settings.getChild(name);
-
 		elem.setText(value);
-
 		_dom.setChanged(true);
 		if (_dom.isDirectory() || _dom.isLifeElement())
 			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
-
 	}
 
 	private void setMail() {
-
 		_settings = _parent.getChild("settings");
 		if (_settings == null) {
 			_settings = new Element("settings");
@@ -1120,7 +1045,6 @@ public class JobListener extends JOEListener {
 		Element elem = _settings.getChild(name);
 		if (elem == null)
 			return "";
-
 		return elem.getTextNormalize();
 	}
 
@@ -1132,10 +1056,7 @@ public class JobListener extends JOEListener {
 		Utils.setAttribute("name", name, _parent);
 		if (_main != null)
 			_main.updateTreeItem(name);
-
 		_dom.setChanged(true);
-
 		setChangedForDirectory();
 	}
-
 }

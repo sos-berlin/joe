@@ -10,9 +10,10 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
-import com.sos.event.service.actions.ActionsDom;
 import com.sos.event.service.forms.ActionsForm;
 import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.Events.ActionsDom;
 
 public class JobCommandListener {
 	private ActionsForm		_main;

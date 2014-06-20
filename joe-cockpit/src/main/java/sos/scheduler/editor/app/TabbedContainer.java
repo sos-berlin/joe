@@ -24,25 +24,27 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.input.SAXBuilder;
 
-import sos.scheduler.editor.actions.forms.ActionsForm;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.doc.forms.DocumentationForm;
 
+import com.sos.event.service.forms.ActionsForm;
+import com.sos.joe.globals.interfaces.IEditor;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
+ 
 public class TabbedContainer implements IContainer {
-
-	private static final String	conImageEDITOR_SMALL_PNG	= "/sos/scheduler/editor/editor-small.png";
-	@SuppressWarnings("unused")
-	private final String		conClassName				= "TabbedContainer";
-	@SuppressWarnings("unused")
-	private final String		conSVNVersion				= "$Id$";
-	private static final Logger	logger						= Logger.getLogger(TabbedContainer.class);
-	private static final String	NEW_SCHEDULER_TITLE			= "Unknown";
-	private static final String	NEW_DOCUMENTATION_TITLE		= "Unknown";
-	private static final String	NEW_DETAIL_TITLE			= "Unknown";
-	private CTabFolder			folder						= null;
-	private ArrayList			filelist					= new ArrayList();
+	private static final String							conImageEDITOR_SMALL_PNG	= "/sos/scheduler/editor/editor-small.png";
+	@SuppressWarnings("unused") private final String	conClassName				= "TabbedContainer";
+	@SuppressWarnings("unused") private final String	conSVNVersion				= "$Id$";
+	private static final Logger							logger						= Logger.getLogger(TabbedContainer.class);
+	private static final String							NEW_SCHEDULER_TITLE			= "Unknown";
+	private static final String							NEW_DOCUMENTATION_TITLE		= "Unknown";
+	private static final String							NEW_DETAIL_TITLE			= "Unknown";
+	private CTabFolder									folder						= null;
+	private final ArrayList									filelist					= new ArrayList();
 	class TabData {
 		protected String	title	= "";
 		protected String	caption	= "";
@@ -68,19 +70,19 @@ public class TabbedContainer implements IContainer {
 		folder.setLayout(new FillLayout());
 		// on tab selection
 		folder.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
+			@Override public void widgetSelected(SelectionEvent e) {
 				setWindowTitle();
 				MainWindow.setMenuStatus();
 				MainWindow.shellActivated_();
 			}
 
-			public void widgetDefaultSelected(SelectionEvent e) {
+			@Override public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
 		});
 		// on tab close
 		folder.addCTabFolder2Listener(new CTabFolder2Adapter() {
-			public void close(CTabFolderEvent event) {
+			@Override public void close(CTabFolderEvent event) {
 				// IEditor editor = getCurrentEditor();
 				IEditor editor = (IEditor) ((CTabItem) (event.item)).getControl();
 				if (editor.hasChanges()) {
@@ -91,7 +93,7 @@ public class TabbedContainer implements IContainer {
 			}
 		});
 		folder.addTraverseListener(new TraverseListener() {
-			public void keyTraversed(final TraverseEvent e) {
+			@Override public void keyTraversed(final TraverseEvent e) {
 				/*if(e.detail == SWT.TRAVERSE_ESCAPE) {		
 					System.out.println(folder.getChildren().length);
 					IEditor editor = (IEditor)folder.getSelection().getControl();
@@ -104,7 +106,7 @@ public class TabbedContainer implements IContainer {
 		});
 	}
 
-	public SchedulerForm newScheduler() {
+	@Override public SchedulerForm newScheduler() {
 		SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE);
 		scheduler.openBlank();
 		CTabItem tab = newItem(scheduler, NEW_SCHEDULER_TITLE);
@@ -112,7 +114,7 @@ public class TabbedContainer implements IContainer {
 		return scheduler;
 	}
 
-	public SchedulerForm newScheduler(int type) {
+	@Override public SchedulerForm newScheduler(int type) {
 		SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE, type);
 		scheduler.openBlank(type);
 		CTabItem tab = newItem(scheduler, NEW_SCHEDULER_TITLE);
@@ -120,7 +122,7 @@ public class TabbedContainer implements IContainer {
 		return scheduler;
 	}
 
-	public JobChainConfigurationForm newDetails() {
+	@Override public JobChainConfigurationForm newDetails() {
 		JobChainConfigurationForm detailForm = new JobChainConfigurationForm(this, folder, SWT.NONE);
 		detailForm.openBlank();
 		CTabItem tab = newItem(detailForm, NEW_DETAIL_TITLE);
@@ -128,7 +130,7 @@ public class TabbedContainer implements IContainer {
 		return detailForm;
 	}
 
-	public JobChainConfigurationForm openDetails() {
+	@Override public JobChainConfigurationForm openDetails() {
 		JobChainConfigurationForm detailForm = new JobChainConfigurationForm(this, folder, SWT.NONE);
 		if (detailForm.open(filelist)) {
 			CTabItem tab = newItem(detailForm, detailForm.getFilename());
@@ -161,7 +163,7 @@ public class TabbedContainer implements IContainer {
 			return null;
 	}
 
-	public SchedulerForm openScheduler() {
+	@Override public SchedulerForm openScheduler() {
 		SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE);
 		if (scheduler.open(filelist)) {
 			CTabItem tab = newItem(scheduler, scheduler.getFilename());
@@ -172,7 +174,7 @@ public class TabbedContainer implements IContainer {
 			return null;
 	}
 
-	public SchedulerForm openScheduler(String filename) {
+	@Override public SchedulerForm openScheduler(String filename) {
 		SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE);
 		if (scheduler.open(filename, filelist)) {
 			CTabItem tab = newItem(scheduler, scheduler.getFilename());
@@ -183,14 +185,14 @@ public class TabbedContainer implements IContainer {
 			return null;
 	}
 
-	public DocumentationForm newDocumentation() {
+	@Override public DocumentationForm newDocumentation() {
 		DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
 		doc.openBlank();
 		newItem(doc, NEW_DOCUMENTATION_TITLE);
 		return doc;
 	}
 
-	public DocumentationForm openDocumentation() {
+	@Override public DocumentationForm openDocumentation() {
 		try {
 			DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
 			if (doc.open(filelist)) {
@@ -213,7 +215,7 @@ public class TabbedContainer implements IContainer {
 		}
 	}
 
-	public DocumentationForm openDocumentation(String filename) {
+	@Override public DocumentationForm openDocumentation(String filename) {
 		try {
 			DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
 			if (doc.open(filename, filelist)) {
@@ -237,7 +239,7 @@ public class TabbedContainer implements IContainer {
 		}
 	}
 
-	public String openDocumentationName() {
+	@Override public String openDocumentationName() {
 		try {
 			DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
 			if (doc.open(filelist)) {
@@ -275,17 +277,16 @@ public class TabbedContainer implements IContainer {
 			return caption;
 		}
 	}
-
 	private String	strTitleText	= "";
 
-	public void setTitleText(final String pstrTitle) {
+	@Override public void setTitleText(final String pstrTitle) {
 		strTitleText = pstrTitle;
 	}
 
 	private CTabItem newItem(Control control, String filename) {
 		CTabItem tab = new CTabItem(folder, SWT.NONE);
 		tab.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(final DisposeEvent e) {
+			@Override public void widgetDisposed(final DisposeEvent e) {
 				MainWindow.getSShell().setText(strTitleText /* "Job Scheduler Editor" */);
 				MainWindow.setSaveStatus();
 			}
@@ -304,7 +305,7 @@ public class TabbedContainer implements IContainer {
 		return tab;
 	}
 
-	public CTabItem getCurrentTab() {
+	@Override public CTabItem getCurrentTab() {
 		if (folder.getItemCount() == 0)
 			return null;
 		else
@@ -323,7 +324,7 @@ public class TabbedContainer implements IContainer {
 		}
 	}
 
-	public IEditor getCurrentEditor() {
+	@Override public IEditor getCurrentEditor() {
 		if (folder.getItemCount() == 0)
 			return null;
 		else
@@ -334,11 +335,11 @@ public class TabbedContainer implements IContainer {
 		if (folder.getItemCount() == 0)
 			return null;
 		else
-			return ((SchedulerForm) (IEditor) getFolderTab(filename).getControl());
+			return ((IEditor) getFolderTab(filename).getControl());
 		// SchedulerForm f = ((SchedulerForm)(IEditor) folder.getItem(0).getControl()).getDom().getFilename()
 	}
 
-	public void setStatusInTitle() {
+	@Override public void setStatusInTitle() {
 		if (folder.getItemCount() == 0)
 			return;
 		CTabItem tab = getCurrentTab();
@@ -371,7 +372,7 @@ public class TabbedContainer implements IContainer {
 		MainWindow.setMenuStatus();
 	}
 
-	public void setNewFilename(String oldFilename) {
+	@Override public void setNewFilename(String oldFilename) {
 		if (folder.getItemCount() == 0)
 			return;
 		String filename = getCurrentEditor().getFilename();
@@ -456,7 +457,7 @@ public class TabbedContainer implements IContainer {
 		return cnt;
 	}
 
-	public boolean closeAll() {
+	@Override public boolean closeAll() {
 		boolean doit = true;
 		for (int i = 0; i < folder.getItemCount(); i++) {
 			CTabItem tab = folder.getItem(i);
@@ -482,7 +483,7 @@ public class TabbedContainer implements IContainer {
 		}
 	}
 
-	public void updateLanguages() {
+	@Override public void updateLanguages() {
 		for (int i = 0; i < folder.getItemCount(); i++) {
 			CTabItem tab = folder.getItem(i);
 			((IEditor) tab.getControl()).updateLanguage();
@@ -499,7 +500,7 @@ public class TabbedContainer implements IContainer {
 	    } else
 	        return null;
 	}*/
-	public SchedulerForm openDirectory(String filename) {
+	@Override public SchedulerForm openDirectory(String filename) {
 		SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE, SchedulerDom.DIRECTORY);
 		if (scheduler.openDirectory(filename, filelist)) {
 			CTabItem tab = newItem(scheduler, scheduler.getFilename());
@@ -522,19 +523,15 @@ public class TabbedContainer implements IContainer {
 			return null;
 	}
 
-	public Composite openQuick(String xmlFilename) {
-
+	@Override public Composite openQuick(String xmlFilename) {
 		final String conMethodName = conClassName + "::openQuick";
-
 		logger.trace(String.format("Enter procedure %1$s ", conMethodName));
-
 		try {
 			if (xmlFilename != null && xmlFilename.length() > 0) {
 				SAXBuilder builder = new SAXBuilder();
 				org.jdom.Document doc = builder.build(new File(xmlFilename));
 				org.jdom.Element root = doc.getRootElement();
 				String strRootName = root.getName();
-				
 				if (strRootName.equalsIgnoreCase("description")) {
 					return openDocumentation(xmlFilename);
 				}
@@ -562,7 +559,6 @@ public class TabbedContainer implements IContainer {
 				if (strRootName.equalsIgnoreCase("schedule")) {
 					return openLiveElement(xmlFilename, SchedulerDom.LIFE_SCHEDULE);
 				}
-				
 				MainWindow.message("Unknown root Element: " + root.getName() + " from filename " + xmlFilename, SWT.NONE);
 			}
 		}
@@ -578,12 +574,9 @@ public class TabbedContainer implements IContainer {
 		return null;
 	}
 
-	public org.eclipse.swt.widgets.Composite openQuick() {
+	@Override public org.eclipse.swt.widgets.Composite openQuick() {
 		final String conMethodName = conClassName + "::openQuick";
-
 		logger.trace(String.format("Enter procedure %1$s ", conMethodName));
-
-		
 		String xmlFilename = "";
 		try {
 			FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
@@ -605,7 +598,7 @@ public class TabbedContainer implements IContainer {
 		return null;
 	}
 
-	public ActionsForm newActions() {
+	@Override public ActionsForm newActions() {
 		ActionsForm actions = new ActionsForm(this, folder, SWT.NONE);
 		actions.openBlank();
 		newItem(actions, NEW_DOCUMENTATION_TITLE);

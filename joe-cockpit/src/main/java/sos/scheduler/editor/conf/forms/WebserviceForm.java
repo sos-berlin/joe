@@ -1,9 +1,6 @@
 package sos.scheduler.editor.conf.forms;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
@@ -18,79 +15,55 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
+
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.WebserviceListener;
 
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
+
 public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
-
 	private WebserviceListener	listener	= null;
-
 	private Group				group		= null;
 	private Group				group_1;
-
 	private Composite			gWebService	= null;
-
 	private Button				bApply		= null;
-
 	private Label				label		= null;
-
 	private Text				tName		= null;
-
 	private Label				label1		= null;
-
 	private Text				tURL		= null;
-
 	private Label				label2		= null;
-
 	private CCombo				cChain		= null;
-
 	private Label				label3		= null;
-
 	private Text				sTimeout	= null;
-
 	private Label				label5		= null;
-
 	private Button				bDebug		= null;
-
 	private Label				label7		= null;
-
 	private Label				label13		= null;
-
 	private Label				label19		= null;
-
 	private Text				tRequest	= null;
-
 	private Text				tForward	= null;
-
 	private Text				tResponse	= null;
 
 	public WebserviceForm(Composite parent, int style, SchedulerDom dom, Element element, ISchedulerUpdate main) {
-
 		super(parent, style);
-
 		listener = new WebserviceListener(dom, element, main);
 		initialize();
 		setToolTipText();
 		cChain.setItems(listener.getJobChains());
 		setInput(true);
 		setEnabledComponent();
-
 		bApply.setEnabled(false);
 		new Label(group_1, SWT.NONE);
 	}
 
 	public void apply() {
 		if (isUnsaved())
-
 			applyService();
-
 	}
 
 	public boolean isUnsaved() {
@@ -112,9 +85,7 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		gridLayout.numColumns = 2;
 		group_1 = JOE_G_WeberviceForm_WebServices.Control(new Group(this, SWT.NONE));
 		group_1.setLayout(gridLayout);
-
 		createGroup1();
-		
 		bApply = JOE_B_WebserviceForm_Apply.Control(new Button(group_1, SWT.NONE));
 		bApply.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		bApply.setEnabled(false);
@@ -123,12 +94,9 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 				applyService();
 			}
 		});
-		
 		new Label(group_1, SWT.NONE);
 		new Label(group_1, SWT.NONE);
-		
 		createTable();
-		
 		new Label(group_1, SWT.NONE);
 	}
 
@@ -168,39 +136,29 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		gridData6.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		GridLayout gridLayout1 = new GridLayout();
 		gridLayout1.numColumns = 6;
-		
 		gWebService = new Composite(group_1, SWT.NONE);
 		gWebService.setLayout(gridLayout1);
 		gWebService.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false, 1, 3));
-		
 		label = JOE_L_Name.Control(new Label(gWebService, SWT.NONE));
-		
 		tName = JOE_T_WebserviceForm_Name.Control(new Text(gWebService, SWT.BORDER));
 		tName.setLayoutData(gridData9);
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-
 				getShell().setDefaultButton(null);
-
 				boolean valid = listener.isValid(tName.getText());
 				if (valid)
 					tName.setBackground(null);
 				else
 					tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-
 				valid = (valid && !tName.getText().equals("") && !tURL.getText().equals(""));
 				if (valid) {
 					getShell().setDefaultButton(bApply);
 				}
 				bApply.setEnabled(valid);
-
 				// gWebService.setText(GROUP_WEB_SERVICE + ": " + tName.getText());
-
 			}
 		});
-		
 		label1 = JOE_L_WebserviceForm_URL.Control(new Label(gWebService, SWT.NONE));
-		
 		tURL = JOE_T_WebserviceForm_URL.Control(new Text(gWebService, SWT.BORDER));
 		tURL.addSelectionListener(new SelectionAdapter() {
 			public void widgetDefaultSelected(final SelectionEvent e) {
@@ -223,9 +181,7 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 				bApply.setEnabled(valid);
 			}
 		});
-		
 		label2 = JOE_L_WebserviceForm_JobChain.Control(new Label(gWebService, SWT.NONE));
-		
 		cChain = JOE_Cbo_WebserviceForm_JobChain.Control(new CCombo(gWebService, SWT.BORDER));
 		cChain.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -248,9 +204,7 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 				*/
 			}
 		});
-		
 		label3 = JOE_L_WebserviceForm_Timeout.Control(new Label(gWebService, SWT.NONE));
-		
 		sTimeout = JOE_T_WebserviceForm_Timeout.Control(new Text(gWebService, SWT.BORDER));
 		sTimeout.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
@@ -267,9 +221,7 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 				bApply.setEnabled(valid);
 			}
 		});
-		
 		label5 = JOE_L_WebserviceForm_Debug.Control(new Label(gWebService, SWT.NONE));
-		
 		bDebug = JOE_B_WebserviceForm_Debug.Control(new Button(gWebService, SWT.CHECK));
 		bDebug.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -280,9 +232,7 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 				bApply.setEnabled(valid);
 			}
 		});
-		
 		label7 = JOE_L_WebserviceForm_RequestXSLT.Control(new Label(gWebService, SWT.NONE));
-
 		tRequest = JOE_T_WebserviceForm_RequestXSLT.Control(new Text(gWebService, SWT.BORDER));
 		tRequest.setLayoutData(gridData8);
 		tRequest.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -297,9 +247,7 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 				*/
 			}
 		});
-		
 		label19 = JOE_L_WebserviceForm_ResponseXSLT.Control(new Label(gWebService, SWT.NONE));
-
 		tResponse = JOE_T_WebserviceForm_ResponseXSLT.Control(new Text(gWebService, SWT.BORDER));
 		tResponse.setLayoutData(gridData6);
 		tResponse.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -314,9 +262,7 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 				*/
 			}
 		});
-		
 		label13 = JOE_L_WebserviceForm_ForwardXSLT.Control(new Label(gWebService, SWT.NONE));
-		
 		tForward = JOE_T_WebserviceForm_ForwardXSLT.Control(new Text(gWebService, SWT.BORDER));
 		tForward.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
 		tForward.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -351,7 +297,6 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			tURL.setFocus();
 		}
 		else {
-
 			if (!tRequest.getText().equals("") && tResponse.getText().equals("")) {
 				MainWindow.message(JOE_M_0042.label(), SWT.ICON_INFORMATION);
 				tResponse.setFocus();
@@ -370,12 +315,10 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 						if (tURL.getText().equals("")) {
 							MainWindow.message(JOE_M_0045.label(), SWT.ICON_INFORMATION);
 							tURL.setFocus();
-
 						}
 						else {
 							if (Utils.str2int(sTimeout.getText()) == 0 && sTimeout.getText().length() > 0) {
 								MainWindow.message(JOE_M_0046.label(), SWT.ICON_INFORMATION);
-
 							}
 							else {
 								listener.applyService(bDebug.getSelection(), cChain.getText(), tName.getText(), tForward.getText(), tRequest.getText(),
@@ -395,7 +338,6 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	}
 
 	private void setInput(boolean enabled) {
-
 		if (enabled) {
 			bDebug.setSelection(listener.getDebug());
 			int index = listener.getChainIndex(listener.getJobChain());
@@ -431,12 +373,11 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		sTimeout.setEnabled(enabled);
 		tURL.setEnabled(enabled);
 		bApply.setEnabled(false);
-
 		tName.setBackground(null);
 	}
 
 	public void setToolTipText() {
-//
+		//
 	}
 
 	private void setEnabledComponent() {
@@ -451,8 +392,7 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		tForward.setEnabled(!sTimeout.getEnabled());
 		bApply.setEnabled(valid);
 		cChain.setEnabled(tRequest.getText().equals(""));
-
-		/*if(Editor.JOB_CHAIN == type) {
+		/*if(JOEConstants.JOB_CHAIN == type) {
 		 
 		 boolean valid = (!tName.getText().equals(""));
 		 bApply.setEnabled(valid);
@@ -476,5 +416,4 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		}
 		*/
 	}
-
 } // @jve:decl-index=0:visual-constraint="10,10"

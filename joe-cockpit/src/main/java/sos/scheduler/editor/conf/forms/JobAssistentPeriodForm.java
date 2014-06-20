@@ -17,12 +17,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
-import sos.scheduler.editor.conf.listeners.*;
+import sos.scheduler.editor.conf.listeners.PeriodListener;
+import sos.scheduler.editor.conf.listeners.PeriodsListener;
+
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobAssistentPeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 

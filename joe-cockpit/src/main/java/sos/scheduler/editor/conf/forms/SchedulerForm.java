@@ -25,38 +25,35 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IContainer;
-import sos.scheduler.editor.app.IEditor;
-import sos.scheduler.editor.app.IOUtils;
-import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TabbedContainer;
-import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.TreeMenu;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.IEditor;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.TreeData;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.IOUtils;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.swtdesigner.SWTResourceManager;
 
 public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdate, IEditor {
-	@SuppressWarnings("unused")
-	private final String		conClsName		= "SchedulerForm";
-	@SuppressWarnings("unused")
-	private final String		conSVNVersion	= "$Id$";
-	@SuppressWarnings("unused")
-	private static final Logger	logger			= Logger.getLogger(SchedulerForm.class);
-	private SchedulerDom		dom				= null;
-	private SchedulerListener	listener		= null;
-	private IContainer			container		= null;
-	private TreeItem			selection		= null;
-	private SashForm			sashForm		= null;
-	private Group				gTree			= null;
-	private Tree				tree			= null;
-	private Composite			cMainForm		= null;
+	@SuppressWarnings("unused") private final String		conClsName		= "SchedulerForm";
+	@SuppressWarnings("unused") private final String		conSVNVersion	= "$Id$";
+	@SuppressWarnings("unused") private static final Logger	logger			= Logger.getLogger(SchedulerForm.class);
+	private SchedulerDom									dom				= null;
+	private SchedulerListener								listener		= null;
+	private IContainer										container		= null;
+	private TreeItem										selection		= null;
+	private SashForm										sashForm		= null;
+	private Group											gTree			= null;
+	private Tree											tree			= null;
+	private Composite										cMainForm		= null;
 
 	// private static boolean fontChange = false;
 	public SchedulerForm(final IContainer container1, final Composite parent, final int style) {
@@ -90,7 +87,6 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	 */
 	private void createSashForm() {
 		sashForm = new SashForm(this, SWT.NONE);
-
 		createGTree();
 		createCMainForm();
 		sashForm.setWeights(new int[] { 176, 698 });
@@ -100,20 +96,15 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	private void createGTree() {
 		gTree = JOE_G_SchedulerForm_SchedulerElements.Control(new Group(sashForm, SWT.NONE));
 		gTree.setLayout(new FillLayout());
-
 		tree = new Tree(gTree, SWT.BORDER);
 		tree.setMenu(new TreeMenu(tree, dom, this).getMenu());
-
 		tree.addListener(SWT.MenuDetect, new Listener() {
-			@Override
-			public void handleEvent(final Event e) {
+			@Override public void handleEvent(final Event e) {
 				e.doit = tree.getSelectionCount() > 0;
 			}
 		});
-
 		tree.addListener(SWT.MouseDown, new Listener() {
-			@Override
-			public void handleEvent(final Event event) {
+			@Override public void handleEvent(final Event event) {
 				Point point = new Point(event.x, event.y);
 				TreeItem item = tree.getItem(point);
 				if (item != null) {
@@ -121,17 +112,14 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 				}
 			}
 		});
-
 		// see http://www.java2s.com/Code/Java/SWT-JFace-Eclipse/DragandDropexamplesnippetdragleafitemsinatree.htm
 		Transfer[] types = new Transfer[] { TextTransfer.getInstance() };
 		int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
-
 		final DragSource source = new DragSource(tree, operations);
 		source.setTransfer(types);
 		final TreeItem[] dragSourceItem = new TreeItem[1];
 		source.addDragListener(new DragSourceListener() {
-			@Override
-			public void dragStart(final DragSourceEvent event) {
+			@Override public void dragStart(final DragSourceEvent event) {
 				TreeItem[] selection = tree.getSelection();
 				if (selection.length > 0 && selection[0].getItemCount() == 0) {
 					event.doit = true;
@@ -142,25 +130,21 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 				}
 			};
 
-			@Override
-			public void dragSetData(final DragSourceEvent event) {
+			@Override public void dragSetData(final DragSourceEvent event) {
 				event.data = dragSourceItem[0].getText();
 			}
 
-			@Override
-			public void dragFinished(final DragSourceEvent event) {
+			@Override public void dragFinished(final DragSourceEvent event) {
 				if (event.detail == DND.DROP_MOVE)
 					dragSourceItem[0].dispose();
 				dragSourceItem[0] = null;
 			}
 		});
 		tree.addListener(SWT.MouseUp, new Listener() {
-			@Override
-			public void handleEvent(final Event event) {
+			@Override public void handleEvent(final Event event) {
 				if (event.button == 1) { // left mouse button
 					Point point = new Point(event.x, event.y);
 					TreeItem item = tree.getItem(point);
-
 					if (item != null) {
 						selection = item;
 						event.doit = listener.treeSelection(tree, cMainForm);
@@ -174,7 +158,6 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 				}
 			}
 		});
-
 		/*
 		 *
 		tree.addListener(SWT.Selection, new Listener() {
@@ -205,8 +188,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		return this.getShell();
 	}
 
-	@Override
-	public void updateLanguage() {
+	@Override public void updateLanguage() {
 		if (cMainForm.getChildren().length > 0) {
 			if (cMainForm.getChildren()[0] instanceof IUpdateLanguage) {
 				((IUpdateLanguage) cMainForm.getChildren()[0]).setToolTipText();
@@ -214,8 +196,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		}
 	}
 
-	@Override
-	public void dataChanged() {
+	@Override public void dataChanged() {
 		container.setStatusInTitle();
 	}
 
@@ -223,8 +204,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		((TabbedContainer) container).setStatusInTitle(tab);
 	}
 
-	@Override
-	public void updateExitCodesCommand() {
+	@Override public void updateExitCodesCommand() {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			TreeData data = (TreeData) item.getData();
@@ -237,8 +217,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		}
 	}
 
-	@Override
-	public void updateCommands() {
+	@Override public void updateCommands() {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			TreeData data = (TreeData) item.getData();
@@ -246,8 +225,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		}
 	}
 
-	@Override
-	public void updateDays(final int type) {
+	@Override public void updateDays(final int type) {
 		updateDays(type, null);
 		/*if (tree.getSelectionCount() > 0) {
 		 TreeItem item = tree.getSelection()[0];
@@ -256,8 +234,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		 }*/
 	}
 
-	@Override
-	public void updateDays(final int type, final String name) {
+	@Override public void updateDays(final int type, final String name) {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			TreeData data = (TreeData) item.getData();
@@ -266,8 +243,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		}
 	}
 
-	@Override
-	public void updateJob() {
+	@Override public void updateJob() {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			TreeData data = (TreeData) item.getData();
@@ -275,8 +251,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		}
 	}
 
-	@Override
-	public void updateJob(final Element elem) {
+	@Override public void updateJob(final Element elem) {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			String job = Utils.getAttributeValue("name", elem);
@@ -290,8 +265,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		}
 	}
 
-	@Override
-	public void updateJob(final String s) {
+	@Override public void updateJob(final String s) {
 		TreeItem item = tree.getSelection()[0];
 		String job = s;
 		TreeData data = (TreeData) item.getData();
@@ -300,8 +274,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		item.setText(job);
 	}
 
-	@Override
-	public void updateJobs() {
+	@Override public void updateJobs() {
 		// if(tree.getSelection()[0].getText().startsWith("Job Chain")) {
 		if (!tree.getSelection()[0].getText().startsWith("Jobs")) {
 			// Assistent: Der Aufruf erfolgte über den Assistenten. Hier ist nicht das Element "Jobs" im Tree selektiert
@@ -313,8 +286,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 				listener.treeFillJobs(tree.getSelection()[0]);
 	}
 
-	@Override
-	public void expandItem(final String name) {
+	@Override public void expandItem(final String name) {
 		listener.treeExpandJob(tree.getSelection()[0], name);
 	}
 
@@ -330,27 +302,23 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		}
 	}
 
-	@Override
-	public void updateOrder(final String s) {
+	@Override public void updateOrder(final String s) {
 		TreeItem item = tree.getSelection()[0];
 		item.setText(s);
 	}
 
-	@Override
-	public void updateOrders() {
+	@Override public void updateOrders() {
 		if (tree.getSelectionCount() > 0) {
 			listener.treeFillOrders(tree.getSelection()[0], true);
 		}
 	}
 
-	@Override
-	public boolean applyChanges() {
+	@Override public boolean applyChanges() {
 		Control[] c = cMainForm.getChildren();
 		return c.length == 0 || Utils.applyFormChanges(c[0]);
 	}
 
-	@Override
-	public void openBlank() {
+	@Override public void openBlank() {
 		initialize();
 		// dom.initScheduler();
 		listener.treeFillMain(tree, cMainForm);
@@ -376,8 +344,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		return res;
 	}
 
-	@Override
-	public boolean open(final Collection files) {
+	@Override public boolean open(final Collection files) {
 		boolean res = IOUtils.openFile(files, dom);
 		if (res) {
 			initialize();
@@ -404,8 +371,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		return res;
 	}
 
-	@Override
-	public boolean save() {
+	@Override public boolean save() {
 		boolean res = true;
 		// if(dom.getFilename() != null && new java.io.File(dom.getFilename()).getName().startsWith("#xml#.config.") &&
 		// dom.getFilename().endsWith(".xml~")) {
@@ -443,8 +409,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		return res;
 	}
 
-	@Override
-	public boolean saveAs() {
+	@Override public boolean saveAs() {
 		String old = dom.getFilename();
 		boolean res = IOUtils.saveFile(dom, true);
 		if (dom.isLifeElement()) {
@@ -457,13 +422,11 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		return res;
 	}
 
-	@Override
-	public boolean close() {
+	@Override public boolean close() {
 		return applyChanges() && IOUtils.continueAnyway(dom);
 	}
 
-	@Override
-	public boolean hasChanges() {
+	@Override public boolean hasChanges() {
 		Options.saveSash("main", sashForm.getWeights());
 		// System.out.println(dom.isChanged() + " isLife: " + (dom.isDirectory() || dom.isLifeElement()));
 		// if(dom.isDirectory()) {
@@ -522,8 +485,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		}
 	}
 	*/
-	@Override
-	public String getHelpKey() {
+	@Override public String getHelpKey() {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			if (item.getData("key") != null) {
@@ -538,13 +500,11 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		return null;
 	}
 
-	@Override
-	public String getFilename() {
+	@Override public String getFilename() {
 		return dom.getFilename();
 	}
 
-	@Override
-	public void updateTree(final String which) {
+	@Override public void updateTree(final String which) {
 		// String mar = getTreeSelection();
 		if (which.equalsIgnoreCase("main")) {
 			if (dom.isLifeElement()) {
@@ -581,15 +541,13 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 			return "Config";
 	}
 
-	@Override
-	public void updateJobChains() {
+	@Override public void updateJobChains() {
 		listener.treeFillJobChains(tree.getSelection()[0]);
 		if (tree.getSelection()[0].getItemCount() > 0)
 			tree.getSelection()[0].getItems()[tree.getSelection()[0].getItemCount() - 1].setExpanded(true);
 	}
 
-	@Override
-	public void updateJobChain(final String newName, final String oldName) {
+	@Override public void updateJobChain(final String newName, final String oldName) {
 		// listener.treeFillJobChains(tree.getSelection()[0]);
 		if (newName.equals(oldName))
 			return;
@@ -655,8 +613,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		listener.treeSelection(tree, cMainForm);
 	}
 
-	@Override
-	public void updateSpecificWeekdays() {
+	@Override public void updateSpecificWeekdays() {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			TreeData data = (TreeData) item.getData();
@@ -672,20 +629,17 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		return dom;
 	}
 
-	@Override
-	public void updateSchedules() {
+	@Override public void updateSchedules() {
 		if (tree.getSelectionCount() > 0)
 			listener.treeFillSchedules(tree.getSelection()[0]);
 	}
 
-	@Override
-	public void updateWebServices() {
+	@Override public void updateWebServices() {
 		if (tree.getSelectionCount() > 0)
 			listener.treeFillWebServices(tree.getSelection()[0]);
 	}
 
-	@Override
-	public void updateScripts() {
+	@Override public void updateScripts() {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			TreeData data = (TreeData) item.getData();
@@ -694,8 +648,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		}
 	}
 
-	@Override
-	public void updateTreeItem(final String s) {
+	@Override public void updateTreeItem(final String s) {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			if (item.getParentItem() != null && item.getParentItem().getText().equals("Monitor") && s.equals(""))
@@ -705,19 +658,16 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		}
 	}
 
-	@Override
-	public void updateFont() {
+	@Override public void updateFont() {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			updateFont(item);
 		}
 	}
-
 	private static Font	fontBold	= null;
 	private static Font	fontRegular	= null;
 
-	@Override
-	public void updateFont(final TreeItem item) {
+	@Override public void updateFont(final TreeItem item) {
 		FontData fontDatas[] = item.getFont().getFontData();
 		FontData data = fontDatas[0];
 		boolean isBold = false;
@@ -726,17 +676,17 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 			return;
 		int type = data_.getType();
 		Element elem = data_.getElement();
-		if (type == Editor.EVERYDAY) {
+		if (type == JOEConstants.EVERYDAY) {
 			if (!elem.getChildren("period").isEmpty() || !elem.getChildren("at").isEmpty())
 				isBold = true;
 		}
 		else
-			if (type == Editor.DAYS) {
+			if (type == JOEConstants.DAYS) {
 				if (!elem.getChildren("date").isEmpty())
 					isBold = true;
 			}
 			else
-				if (type == Editor.WEEKDAYS) {
+				if (type == JOEConstants.WEEKDAYS) {
 					if (item.getData("key") != null && item.getData("key").equals("holidays_@_weekdays")) {
 						if (elem.getChild("holidays") != null && !elem.getChild("holidays").getChildren("weekdays").isEmpty()) {
 							isBold = true;
@@ -748,27 +698,27 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 					}
 				}
 				else
-					if (type == Editor.MONTHDAYS) {
+					if (type == JOEConstants.MONTHDAYS) {
 						if (!elem.getChildren("monthdays").isEmpty() && !elem.getChild("monthdays").getChildren("day").isEmpty())
 							isBold = true;
 					}
 					else
-						if (type == Editor.ULTIMOS) {
+						if (type == JOEConstants.ULTIMOS) {
 							if (!elem.getChildren("ultimos").isEmpty())
 								isBold = true;
 						}
 						else
-							if (type == Editor.SPECIFIC_WEEKDAYS) {
+							if (type == JOEConstants.SPECIFIC_WEEKDAYS) {
 								if (!elem.getChildren("monthdays").isEmpty() && !elem.getChild("monthdays").getChildren("weekday").isEmpty())
 									isBold = true;
 							}
 							else
-								if (type == Editor.SPECIFIC_MONTHS) {
+								if (type == JOEConstants.SPECIFIC_MONTHS) {
 									if (!elem.getChildren("month").isEmpty())
 										isBold = true;
 								}
 								else
-									if (type == Editor.RUNTIME) {
+									if (type == JOEConstants.RUNTIME) {
 										elem = elem.getChild("run_time");
 										if (elem != null) {
 											/*int hasAttribute = Utils.getAttributeValue("begin", elem).length() + Utils.getAttributeValue("end", elem).length() +
@@ -794,8 +744,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	}
 
 	// hasRuntimeChild = false, wenn der Runtime ELement Attribute wie schedule oder runtime_function hat
-	@Override
-	public void updateRunTime() {
+	@Override public void updateRunTime() {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			item.removeAll();

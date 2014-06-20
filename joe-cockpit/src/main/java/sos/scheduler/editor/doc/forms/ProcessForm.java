@@ -1,5 +1,4 @@
 package sos.scheduler.editor.doc.forms;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -14,55 +13,33 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.ProcessListener;
 
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.jobdoc.DocumentationDom;
+ 
 public class ProcessForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
-
-	private ProcessListener	listener	= null;
-
-	private Group			group		= null;
-
-	@SuppressWarnings("unused")
-	private Label			label		= null;
-
-	@SuppressWarnings("unused")
-	private Label			label1		= null;
-
-	@SuppressWarnings("unused")
-	private Label			label2		= null;
-
-	private Text			tFile		= null;
-
-	private Text			tParameter	= null;
-
-	private Text			tLog		= null;
-
-	private Button			cUseProcess	= null;
-
-	private Group			group1		= null;
-
-	@SuppressWarnings("unused")
-	private Label			label3		= null;
-
-	private Text			tName		= null;
-
-	@SuppressWarnings("unused")
-	private Label			label4		= null;
-
-	private Text			tValue		= null;
-
-	private Button			bApply		= null;
-
-	private Label			label5		= null;
-
-	private Table			tVariables	= null;
-
-	private Button			bRemove		= null;
+	private ProcessListener						listener	= null;
+	private Group								group		= null;
+	@SuppressWarnings("unused") private Label	label		= null;
+	@SuppressWarnings("unused") private Label	label1		= null;
+	@SuppressWarnings("unused") private Label	label2		= null;
+	private Text								tFile		= null;
+	private Text								tParameter	= null;
+	private Text								tLog		= null;
+	private Button								cUseProcess	= null;
+	private Group								group1		= null;
+	@SuppressWarnings("unused") private Label	label3		= null;
+	private Text								tName		= null;
+	@SuppressWarnings("unused") private Label	label4		= null;
+	private Text								tValue		= null;
+	private Button								bApply		= null;
+	private Label								label5		= null;
+	private Table								tVariables	= null;
+	private Button								bRemove		= null;
 
 	public ProcessForm(Composite parent, int style, DocumentationDom dom, Element job) {
 		super(parent, style);
@@ -84,7 +61,6 @@ public class ProcessForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 				}
 			}
 		});
-
 		createGroup();
 		setSize(new Point(623, 421));
 		setLayout(new GridLayout());
@@ -95,25 +71,18 @@ public class ProcessForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 	 */
 	private void createGroup() {
 		GridData gridData11 = new GridData(GridData.FILL, GridData.FILL, true, true);
-
 		GridData gridData2 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData2.horizontalIndent = 7; // Generated
-
 		GridData gridData1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData1.horizontalIndent = 7; // Generated
-
 		GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData.horizontalIndent = 7; // Generated
-
 		GridLayout gridLayout = new GridLayout(2, false);
 		// gridLayout.numColumns = 2; // Generated
-
 		group = JOE_G_ProcessForm_Process.Control(new Group(this, SWT.NONE));
 		group.setLayoutData(gridData11); // Generated
 		group.setLayout(gridLayout); // Generated
-
 		label = JOE_L_ProcessForm_File.Control(new Label(group, SWT.NONE));
-
 		tFile = JOE_T_ProcessForm_File.Control(new Text(group, SWT.BORDER));
 		tFile.setLayoutData(gridData); // Generated
 		tFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -123,9 +92,7 @@ public class ProcessForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 					Utils.setBackground(tFile, true);
 			}
 		});
-
 		label1 = JOE_L_ProcessForm_Parameter.Control(new Label(group, SWT.NONE));
-
 		tParameter = JOE_T_ProcessForm_Parameter.Control(new Text(group, SWT.BORDER));
 		tParameter.setLayoutData(gridData1); // Generated
 		tParameter.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -133,9 +100,7 @@ public class ProcessForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 				listener.setParam(tParameter.getText());
 			}
 		});
-
 		label2 = JOE_L_ProcessForm_Log.Control(new Label(group, SWT.NONE));
-
 		tLog = JOE_T_ProcessForm_Log.Control(new Text(group, SWT.BORDER));
 		tLog.setLayoutData(gridData2); // Generated
 		tLog.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -143,7 +108,6 @@ public class ProcessForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 				listener.setLog(tLog.getText());
 			}
 		});
-
 		createGroup1();
 	}
 
@@ -152,27 +116,17 @@ public class ProcessForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 	 */
 	private void createGroup1() {
 		GridData gridData9 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-
 		GridData gridData8 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
-
 		GridData gridData7 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
-
 		GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
-
 		GridData gridData5 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-
 		GridData gridData4 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-
 		GridData gridData3 = new GridData(GridData.FILL, GridData.FILL, true, true, 2, 1);
-
 		GridLayout gridLayout1 = new GridLayout(5, false);
-
 		group1 = JOE_G_ProcessForm_EnvironmentVariables.Control(new Group(group, SWT.NONE));
 		group1.setLayout(gridLayout1); // Generated
 		group1.setLayoutData(gridData3); // Generated
-
 		label3 = JOE_L_Name.Control(new Label(group1, SWT.NONE));
-
 		tName = JOE_T_ProcessForm_Name.Control(new Text(group1, SWT.BORDER));
 		tName.setLayoutData(gridData4); // Generated
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -181,9 +135,7 @@ public class ProcessForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 				getShell().setDefaultButton(bApply);
 			}
 		});
-
 		label4 = JOE_L_ProcessForm_Value.Control(new Label(group1, SWT.NONE));
-
 		tValue = JOE_T_ProcessForm_Value.Control(new Text(group1, SWT.BORDER));
 		tValue.setLayoutData(gridData5); // Generated
 		tValue.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -192,7 +144,6 @@ public class ProcessForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 				getShell().setDefaultButton(bApply);
 			}
 		});
-
 		bApply = JOE_B_ProcessForm_Apply.Control(new Button(group1, SWT.NONE));
 		bApply.setLayoutData(gridData9); // Generated
 		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -200,11 +151,9 @@ public class ProcessForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 				applyParam();
 			}
 		});
-
 		label5 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label5.setText("Label"); // Generated
 		label5.setLayoutData(gridData6); // Generated
-
 		tVariables = JOE_Tbl_ProcessForm_Variables.Control(new Table(group1, SWT.BORDER));
 		tVariables.setHeaderVisible(true); // Generated
 		tVariables.setLayoutData(gridData7); // Generated
@@ -221,7 +170,6 @@ public class ProcessForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 				bRemove.setEnabled(tVariables.getSelectionCount() > 0);
 			}
 		});
-
 		bRemove = JOE_B_ProcessForm_Remove.Control(new Button(group1, SWT.NONE));
 		bRemove.setLayoutData(gridData8); // Generated
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -241,10 +189,8 @@ public class ProcessForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 				bApply.setEnabled(valid);
 			}
 		});
-
 		TableColumn tableColumn = JOE_TCl_ProcessForm_Name.Control(new TableColumn(tVariables, SWT.NONE));
 		tableColumn.setWidth(150); // Generated
-
 		TableColumn tableColumn1 = JOE_TCl_ProcessForm_Value.Control(new TableColumn(tVariables, SWT.NONE));
 		tableColumn1.setWidth(60); // Generated
 	}
@@ -271,7 +217,6 @@ public class ProcessForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		tValue.setEnabled(enabled);
 		bApply.setEnabled(enabled);
 		bRemove.setEnabled(false);
-
 		if (enabled) {
 			tFile.setText(listener.getFile());
 			tParameter.setText(listener.getParam());
@@ -293,5 +238,4 @@ public class ProcessForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		bRemove.setEnabled(false);
 		tName.setFocus();
 	}
-
 } // @jve:decl-index=0:visual-constraint="10,10"

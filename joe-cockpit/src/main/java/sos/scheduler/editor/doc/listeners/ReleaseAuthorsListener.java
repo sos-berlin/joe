@@ -1,5 +1,4 @@
 package sos.scheduler.editor.doc.listeners;
-
 import java.util.Iterator;
 
 import org.eclipse.swt.SWT;
@@ -8,14 +7,11 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.doc.DocumentationDom;
 
-public class ReleaseAuthorsListener {
+import com.sos.joe.xml.jobdoc.DocumentationDom;
 
-	private DocumentationDom _dom;    
-
-	private Element          _release;
-
+public class ReleaseAuthorsListener extends JobDocBaseListener<DocumentationDom> {
+	private Element				_release;
 
 	public ReleaseAuthorsListener(DocumentationDom dom, Element release) {
 		_dom = dom;
@@ -23,16 +19,14 @@ public class ReleaseAuthorsListener {
 	}
 
 	public void removeAuthor(Element elem) {
-		if (_release != null) {        	
+		if (_release != null) {
 			_release.getContent().remove(elem);
 			_dom.setChanged(true);
 		}
-	} 
+	}
 
 	public void fillAuthors(Table table) {
-
 		table.removeAll();
-
 		if (_release != null) {
 			for (Iterator it = _release.getChildren("author", _dom.getNamespace()).iterator(); it.hasNext();) {
 				Element author = (Element) it.next();
@@ -45,7 +39,6 @@ public class ReleaseAuthorsListener {
 		Utils.setBackground(table, true);
 	}
 
-
 	public void applyRelease(Table table) {
 		TableItem[] authors = table.getItems();
 		_release.removeChildren("author", _dom.getNamespace());
@@ -55,9 +48,7 @@ public class ReleaseAuthorsListener {
 			Utils.setAttribute("email", authors[i].getText(1), author);
 			_release.addContent(author);
 		}
-
 		fillAuthors(table);
 		_dom.setChanged(true);
 	}
-
 }

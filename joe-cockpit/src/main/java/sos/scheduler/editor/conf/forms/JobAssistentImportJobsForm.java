@@ -36,26 +36,26 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
 import sos.scheduler.editor.conf.listeners.SortTreeListener;
 
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.swtdesigner.SWTResourceManager;
 
 /**
  * Job Wizzard.
- *
+ * 
  * Liste der Standalone Jobs bzw. Auftragsgesteuerte Jobs.
  *
  * Es werden alle Standalone Jobs oder Auftragsgesteuerte Jobs zur Auswahl gestellt.
@@ -95,7 +95,7 @@ import com.swtdesigner.SWTResourceManager;
  *
  * @version $Id$
  */
-public class JobAssistentImportJobsForm {
+public class JobAssistentImportJobsForm { 
 	private Shell													shell				= null;
 	private Display													display				= null;
 	private static final String										EMPTY_STRING		= "";
@@ -237,7 +237,7 @@ public class JobAssistentImportJobsForm {
 	}
 
 	private String getJobsDirectoryName() {
-		String s = sos.scheduler.editor.app.Options.getSchedulerData();
+		String s = Options.getSchedulerData();
 		// TODO jobs customizable
 		s = s.endsWith("/") || s.endsWith("\\") ? s.concat("jobs") : s.concat("/jobs");
 		return s;
@@ -460,9 +460,9 @@ public class JobAssistentImportJobsForm {
 					attr.put("params", listOfParams);
 					Element job = null;
 					if (flagBackUpJob) {
-						if (assistentType == Editor.JOB_WIZARD) {
+						if (assistentType == JOEConstants.JOB_WIZARD) {
 							// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob wenn
-							// assistentype = Editor.Job_Wizzard
+							// assistentype = JOEConstants.Job_Wizzard
 							Element currJob = (Element) joblistener.getJob().clone();
 							job = listener.createJobElement(attr, currJob);
 						}
@@ -497,10 +497,10 @@ public class JobAssistentImportJobsForm {
 							ArrayList listOfParams = new ArrayList<HashMap<String, Object>>();
 							// ArrayList listOfParams = defaultParams.parseDocuments(txtPath.getText(), "required");
 							// h.put("params", listOfParams);
-							if (assistentType == Editor.JOB_WIZARD) {
+							if (assistentType == JOEConstants.JOB_WIZARD) {
 								// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit backUpJob
 								// wenn
-								// assistentype = Editor.Job_Wizzard
+								// assistentype = JOEConstants.Job_Wizzard
 								Element job = joblistener.getJob();
 								job = job.setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
 								if (jobForm != null) {
@@ -510,10 +510,10 @@ public class JobAssistentImportJobsForm {
 									jobDocForm.initForm();
 							}
 							else
-								if (assistentType == Editor.PARAMETER) {
+								if (assistentType == JOEConstants.PARAMETER) {
 									// Starten des Wizzards für bestehenden Job. Die Einstzellungen im Jobbeschreibungen mergen mit
 									// backUpJob
-									// wenn assistentype = Editor.Job_Wizzard
+									// wenn assistentype = JOEConstants.Job_Wizzard
 									// joblistener.getJob().setContent(listener.createJobElement(h, joblistener.getJob()).cloneContent());
 									Element job = joblistener.getJob();
 									if (job.getName().equals("job")) {
@@ -578,7 +578,7 @@ public class JobAssistentImportJobsForm {
 					if (!check())
 						return;
 					HashMap attr = getJobFromDescription();
-					if (assistentType == Editor.JOB_WIZARD || assistentType == Editor.JOB) {
+					if (assistentType == JOEConstants.JOB_WIZARD || assistentType == JOEConstants.JOB) {
 						Element job = listener.createJobElement(attr, joblistener.getJob());
 						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), job,
 								assistentType);
@@ -587,20 +587,20 @@ public class JobAssistentImportJobsForm {
 						paramsForm.showAllImportJobParams(txtPath.getText());
 					}
 					else
-						if (assistentType == Editor.PARAMETER) {
+						if (assistentType == JOEConstants.PARAMETER) {
 							JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(),
 									joblistener, tParameter, assistentType);
 							paramsForm.showAllImportJobParams(txtPath.getText());
 						}
 						else {
-							if (assistentType != Editor.JOB_WIZARD && listener.existJobname(txtJobname.getText())) {
+							if (assistentType != JOEConstants.JOB_WIZARD && listener.existJobname(txtJobname.getText())) {
 								MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_JobNameExists.label(), SWT.OK);
 								txtJobname.setFocus();
 								return;
 							}
 							Element job = null;
 							if (flagBackUpJob) {
-								if (jobBackUp != null && assistentType != Editor.JOB_WIZARD) {
+								if (jobBackUp != null && assistentType != JOEConstants.JOB_WIZARD) {
 									int cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_DiscardChanges.label(), SWT.ICON_QUESTION
 											| SWT.YES | SWT.NO | SWT.CANCEL);
 									if (cont == SWT.CANCEL) {
@@ -620,7 +620,7 @@ public class JobAssistentImportJobsForm {
 								job = listener.createJobElement(attr);
 							}
 							JobAssistentImportJobParamsForm paramsForm = null;
-							if (assistentType == Editor.JOB_WIZARD) {
+							if (assistentType == JOEConstants.JOB_WIZARD) {
 								paramsForm = new JobAssistentImportJobParamsForm(dom, update, joblistener, assistentType);
 							}
 							else {
@@ -637,25 +637,25 @@ public class JobAssistentImportJobsForm {
 				}
 			});
 			Utils.createHelpButton(composite, "JOE_M_JobAssistentImportJobsForm_Help.label", shell);
-			if (assistentType == Editor.JOB) {
+			if (assistentType == JOEConstants.JOB) {
 				butImport.setVisible(true);
 				butParameters.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_ImportParams.label());
 			}
-			if (assistentType == Editor.JOB_WIZARD) {
+			if (assistentType == JOEConstants.JOB_WIZARD) {
 				txtJobname.setEnabled(false);
 				txtTitle.setEnabled(true);
 				butShow.setEnabled(true);
 				butBack.setEnabled(true);
 			}
 			else
-				if (assistentType == Editor.JOB) {
+				if (assistentType == JOEConstants.JOB) {
 					txtJobname.setEnabled(false);
 					txtTitle.setEnabled(false);
 					butShow.setEnabled(false);
 					butBack.setEnabled(false);
 				}
 				else
-					if (assistentType == Editor.JOB_CHAINS) {
+					if (assistentType == JOEConstants.JOB_CHAINS) {
 						txtJobname.setEnabled(true);
 						txtTitle.setEnabled(true);
 						butShow.setEnabled(true);
@@ -869,7 +869,7 @@ public class JobAssistentImportJobsForm {
 			h.put("name", txtJobname.getText());
 			h.put("title", txtTitle.getText());
 			// relativen pfad bestimmen
-			File sData = new File(sos.scheduler.editor.app.Options.getSchedulerData());
+			File sData = new File(Options.getSchedulerData());
 			File currPathFile = new File(txtPath.getText());
 			File currPathParent = new File(currPathFile.getParent());
 			if (currPathFile.getPath().indexOf(sData.getPath()) > -1) {
@@ -1055,7 +1055,7 @@ public class JobAssistentImportJobsForm {
 			txtJobname.setFocus();
 			return false;
 		}
-		if (assistentType != Editor.JOB && joblistener != null && !joblistener.getJob().getName().equals("config")) {
+		if (assistentType != JOEConstants.JOB && joblistener != null && !joblistener.getJob().getName().equals("config")) {
 			if (txtJobname.isEnabled()) {
 				if (txtJobname.getText() == null || txtJobname.getText().length() == 0) {
 					MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoJobName.label(), SWT.ICON_WARNING | SWT.OK);

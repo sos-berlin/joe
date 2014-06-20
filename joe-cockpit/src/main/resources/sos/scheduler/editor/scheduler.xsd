@@ -215,7 +215,7 @@
             <xsd:element ref="remote_scheduler.start_remote_task"/>
             <xsd:element ref="remote_scheduler.remote_task.close"/>
             <xsd:element ref="terminate"/>
-            <!-- Nicht für den Scheduler, sondern für Mürüvet Öksüzs Konfigurations-Editor. 2007-10-04 -->
+            <!-- Nicht für den Scheduler, sondern für Mürüvet Öksüzs Konfigurations-JOEConstants. 2007-10-04 -->
             <!--xsd:element ref="signal_object"/-->
         </xsd:choice>
         <xsd:attribute name="on_exit_code">

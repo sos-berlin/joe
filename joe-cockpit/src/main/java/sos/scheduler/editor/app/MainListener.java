@@ -1,4 +1,10 @@
 package sos.scheduler.editor.app;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.Messages;
+import com.sos.joe.globals.misc.TextDialog;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.IOUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,32 +25,26 @@ import sos.scheduler.editor.conf.listeners.JOEListener;
 import sos.util.SOSString;
 
 public class MainListener extends JOEListener {
-	private static final String	conPropertyEDITOR_LANGUAGE	= "editor.language";
+	private static final String							conPropertyEDITOR_LANGUAGE	= "editor.language";
 	// private MainWindow _gui = null;
-	@SuppressWarnings("unused")
-	private final String conClsName = "MainListener";
-	@SuppressWarnings("unused")
-	private final String conSVNVersion = "$Id$";
-	private static final Logger logger = Logger.getLogger(MainListener.class);
-
-	private IContainer		_container		= null;
-	private SOSString		sosString		= new SOSString();
-	private SOSConnection	sosConnection	= null;
+	@SuppressWarnings("unused") private final String	conClsName					= "MainListener";
+	@SuppressWarnings("unused") private final String	conSVNVersion				= "$Id$";
+	private static final Logger							logger						= Logger.getLogger(MainListener.class);
+	private IContainer									_container					= null;
+	private SOSString									sosString					= new SOSString();
+	private SOSConnection								sosConnection				= null;
 
 	public MainListener(MainWindow gui, IContainer container) {
 		// _gui = gui;
 		_container = container;
 	}
 
-
 	public void showAbout() {
 		TextDialog objAboutDialogBox = new TextDialog(MainWindow.getSShell());
-		objAboutDialogBox.setText("About JOE - JobScheduler Object Editor"); 
-//		objAboutDialogBox.setText(Messages.getString("JOE_I_0010"));
-		String message = sos.scheduler.editor.app.Messages.getString("MainListener.aboutText", Options.getVersion() + //
-				"\nSchema-Version:\n\t" + Options.getSchemaVersion() + "\n"
-				+ "SVN: \t" + getSVNVersion());
-
+		objAboutDialogBox.setText("About JOE - JobScheduler Object Editor");
+		//		objAboutDialogBox.setText(Messages.getString("JOE_I_0010"));
+		String message = com.sos.joe.globals.messages.Messages.getString("MainListener.aboutText", Options.getVersion() + //
+				"\nSchema-Version:\n\t" + Options.getSchemaVersion() + "\n" + "SVN: \t" + getSVNVersion());
 		objAboutDialogBox.setContent(message, SWT.CENTER);
 		objAboutDialogBox.getStyledText().setEditable(false);
 		StyleRange bold = new StyleRange();
@@ -83,7 +83,7 @@ public class MainListener extends JOEListener {
 			}
 		}
 		catch (Exception e) {
-//			MainWindow.message("could not read SVN-Version ", SWT.ICON_WARNING | SWT.OK);
+			//			MainWindow.message("could not read SVN-Version ", SWT.ICON_WARNING | SWT.OK);
 		}
 		return svnVersion;
 	}
@@ -112,7 +112,7 @@ public class MainListener extends JOEListener {
 					if (item.getSelection()) {
 						String lang = (String) item.getData();
 						Options.setLanguage(lang);
-						sos.scheduler.editor.app.Messages.clearMsgObj();
+						com.sos.joe.globals.messages.Messages.clearMsgObj();
 						loadMessages();
 					}
 				}
@@ -131,7 +131,7 @@ public class MainListener extends JOEListener {
 	}
 
 	public void loadMessages() {
-		if (!sos.scheduler.editor.app.Messages.setResource(new Locale(Options.getLanguage()))) {
+		if (!com.sos.joe.globals.messages.Messages.setResource(new Locale(Options.getLanguage()))) {
 			MainWindow.message("The resource bundle " + Messages.getBundle() + " for the language " + Options.getLanguage() + " was not found!", SWT.ICON_ERROR
 					| SWT.OK);
 		}

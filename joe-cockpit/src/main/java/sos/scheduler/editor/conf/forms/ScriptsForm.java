@@ -17,15 +17,16 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ScriptsListener;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 ;
 public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
@@ -49,7 +50,7 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		}
 		catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 			}
@@ -65,7 +66,7 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		}
 		catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 			}
@@ -101,14 +102,13 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				}
 			});
 			butRemove.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-			
 			label = new Label(scriptsGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
 			label.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-//			label.setText("Label");
+			//			label.setText("Label");
 		}
 		catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 			}
@@ -125,38 +125,29 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				public void mouseDoubleClick(final MouseEvent e) {
 					if (table.getSelectionCount() > 0)
 						ContextMenu.goTo(Utils.getAttributeValue("name", listener.getParent()) + "_@_" + table.getSelection()[0].getText(0), dom,
-								Editor.MONITOR);
+								JOEConstants.MONITOR);
 				}
 			});
 			table.setHeaderVisible(true);
 			table.setLayoutData(gridData2);
 			table.setLinesVisible(true);
-			
-			
 			table.addMouseListener(new MouseListener() {
+				@Override public void mouseUp(MouseEvent e) {
+				}
 
-                @Override
-                public void mouseUp(MouseEvent e) {
-                }
+				@Override public void mouseDown(MouseEvent e) {
+				}
 
-                @Override
-                public void mouseDown(MouseEvent e) {
-                }
-
-                @Override
-                public void mouseDoubleClick(MouseEvent e) {
-                    if (!table.isDisposed()) {
-                       int index = table.getSelectionIndex();
-                        if (index >= 0) {
-
-                        String strName = table.getSelection()[0].getText(0);
-                        ContextMenu.goTo(strName, dom, Editor.MONITOR);
-                      }
-
-                    }
-                }
-            });
-			
+				@Override public void mouseDoubleClick(MouseEvent e) {
+					if (!table.isDisposed()) {
+						int index = table.getSelectionIndex();
+						if (index >= 0) {
+							String strName = table.getSelection()[0].getText(0);
+							ContextMenu.goTo(strName, dom, JOEConstants.MONITOR);
+						}
+					}
+				}
+			});
 			table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					if (table.getSelectionCount() > 0) {
@@ -176,13 +167,10 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 					}
 				}
 			});
-			
 			TableColumn tableColumn1 = JOE_TCl_ScriptsForm_Name.Control(new TableColumn(table, SWT.NONE));
 			tableColumn1.setWidth(281);
-			
 			TableColumn tableColumn2 = JOE_TCl_ScriptsForm_Ordering.Control(new TableColumn(table, SWT.NONE));
 			tableColumn2.setWidth(205);
-			
 			butNew = JOE_B_ScriptsForm_New.Control(new Button(scriptsGroup, SWT.NONE));
 			butNew.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
@@ -193,7 +181,7 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		}
 		catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 			}
@@ -202,7 +190,7 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	public void setToolTipText() {
-//
+		//
 	}
 
 	private void addMonitor() {

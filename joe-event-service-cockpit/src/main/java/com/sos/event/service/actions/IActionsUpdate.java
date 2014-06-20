@@ -1,6 +1,7 @@
 package com.sos.event.service.actions;
 
-import sos.scheduler.editor.app.IDataChanged;
+import com.sos.joe.globals.interfaces.IDataChanged;
+
 
 public interface IActionsUpdate extends IDataChanged {
 	 

@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.forms;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -16,69 +15,52 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-import com.swtdesigner.SWTResourceManager;
-import sos.scheduler.editor.app.Editor;
+
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
+import com.swtdesigner.SWTResourceManager;
 
 public class JobAssistentTimeoutForms {
-
-	private SchedulerDom      dom          = null;
-
-	private ISchedulerUpdate  update       = null;
-
-	private JobListener       joblistener  = null;
-
-	private Button            butFinish    = null;
-
-	private Button            butCancel    = null;
-
-	private Button            butNext      = null;
-
-	private Button            butShow      = null;				
-
-	private Text              txtTimeout   = null;
-
-	private Label             lblTimeout   = null; 
-
+	private SchedulerDom		dom				= null;
+	private ISchedulerUpdate	update			= null;
+	private JobListener			joblistener		= null;
+	private Button				butFinish		= null;
+	private Button				butCancel		= null;
+	private Button				butNext			= null; 
+	private Button				butShow			= null;
+	private Text				txtTimeout		= null;
+	private Label				lblTimeout		= null;
 	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
-	private int               assistentType= -1; 
-
-	private Shell             shellTimeout = null;
-
-	private Button            butBack      = null; 
-
-	private Element           jobBackUp    = null;  
-
-	private ScriptJobMainForm           jobForm      = null;
-
+	private int					assistentType	= -1;
+	private Shell				shellTimeout	= null;
+	private Button				butBack			= null;
+	private Element				jobBackUp		= null;
+	private ScriptJobMainForm	jobForm			= null;
 	/** Hilsvariable für das Schliessen des Dialogs. 
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
-	private boolean           closeDialog  = false;        
+	private boolean				closeDialog		= false;
 
 	public JobAssistentTimeoutForms(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
 		dom = dom_;
 		update = update_;
-		assistentType = assistentType_;		
-		joblistener = new JobListener(dom, job_, update);			
+		assistentType = assistentType_;
+		joblistener = new JobListener(dom, job_, update);
 	}
 
-
 	public void showTimeOutForm() {
-
 		shellTimeout = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shellTimeout.addShellListener(new ShellAdapter() {
 			public void shellClosed(final ShellEvent e) {
-				if(!closeDialog)
+				if (!closeDialog)
 					close();
 				e.doit = shellTimeout.isDisposed();
 			}
@@ -91,11 +73,9 @@ public class JobAssistentTimeoutForms {
 		String step = " ";
 		if (Utils.getAttributeValue("order", joblistener.getJob()).equalsIgnoreCase("yes"))
 			step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step6of9.label();
-		else 
+		else
 			step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step6of8.label();
-		
 		shellTimeout.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_Timeout.params(step));
-
 		{
 			final Group jobGroup = new Group(shellTimeout, SWT.NONE);
 			jobGroup.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobGroup.params(Utils.getAttributeValue("name", joblistener.getJob())));
@@ -116,7 +96,7 @@ public class JobAssistentTimeoutForms {
 			txtTimeout = SOSJOEMessageCodes.JOE_T_JobAssistent_Timeout.Control(new Text(jobGroup, SWT.BORDER));
 			txtTimeout.addModifyListener(new ModifyListener() {
 				public void modifyText(final ModifyEvent e) {
-					if(txtTimeout.getText()!= null && txtTimeout.getText().trim().length() > 0) {
+					if (txtTimeout.getText() != null && txtTimeout.getText().trim().length() > 0) {
 						joblistener.setTimeout(txtTimeout.getText());
 					}
 				}
@@ -126,15 +106,10 @@ public class JobAssistentTimeoutForms {
 			txtTimeout.setLayoutData(gridData_1);
 			txtTimeout.setText(joblistener.getTimeout());
 		}
-
-		java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();		
-		shellTimeout.setBounds((screen.width - shellTimeout.getBounds().width) /2, 
-				(screen.height - shellTimeout.getBounds().height) /2, 
-				shellTimeout.getBounds().width, 
-				shellTimeout.getBounds().height);
-
+		java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+		shellTimeout.setBounds((screen.width - shellTimeout.getBounds().width) / 2, (screen.height - shellTimeout.getBounds().height) / 2,
+				shellTimeout.getBounds().width, shellTimeout.getBounds().height);
 		shellTimeout.open();
-
 		{
 			final Composite composite = new Composite(shellTimeout, SWT.NONE);
 			final GridLayout gridLayout_2 = new GridLayout();
@@ -149,7 +124,6 @@ public class JobAssistentTimeoutForms {
 				});
 			}
 		}
-
 		{
 			final Composite composite = new Composite(shellTimeout, SWT.NONE);
 			composite.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
@@ -157,38 +131,35 @@ public class JobAssistentTimeoutForms {
 			gridLayout_2.marginWidth = 0;
 			gridLayout_2.numColumns = 5;
 			composite.setLayout(gridLayout_2);
-
 			{
 				butShow = SOSJOEMessageCodes.JOE_B_JobAssistent_Show.Control(new Button(composite, SWT.NONE));
 				butShow.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
-						txtTimeout.setFocus();						
-						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), shellTimeout, false, null, false, null, false); 
+						txtTimeout.setFocus();
+						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), shellTimeout, false, null, false, null, false);
 					}
 				});
 			}
-
 			{
 				butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite, SWT.NONE));
 				butFinish.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(final SelectionEvent e) {	
-						doFinish();						
+					public void widgetSelected(final SelectionEvent e) {
+						doFinish();
 					}
 				});
 			}
-
 			butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite, SWT.NONE));
 			butBack.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					Element job = joblistener.getJob();
-					if(job.getChild("process") != null) {
+					if (job.getChild("process") != null) {
 						JobAssistentProcessForms process = new JobAssistentProcessForms(dom, update, job, assistentType);
-						process.showProcessForm();							
-						process.setBackUpJob(jobBackUp, jobForm);	
-					} else {
+						process.showProcessForm();
+						process.setBackUpJob(jobBackUp, jobForm);
+					}
+					else {
 						JobAssistentScriptForms script = new JobAssistentScriptForms(dom, update, job, assistentType);
-						script.showScriptForm();	
-
+						script.showScriptForm();
 						script.setBackUpJob(jobBackUp, jobForm);
 					}
 					closeDialog = true;
@@ -203,7 +174,7 @@ public class JobAssistentTimeoutForms {
 					public void widgetSelected(final SelectionEvent e) {
 						Utils.startCursor(shellTimeout);
 						JobAssistentRunOptionsForms runOP = new JobAssistentRunOptionsForms(dom, update, joblistener.getJob(), assistentType);
-						runOP.showRunOptionsForm();	
+						runOP.showRunOptionsForm();
 						runOP.setBackUpJob(jobBackUp, jobForm);
 						closeDialog = true;
 						Utils.stopCursor(shellTimeout);
@@ -211,22 +182,20 @@ public class JobAssistentTimeoutForms {
 					}
 				});
 			}
-
 			Utils.createHelpButton(composite, "JOE_M_JobAssistentTimeoutForms_Help.label", shellTimeout);
-
 		}
 		txtTimeout.setFocus();
-		shellTimeout.layout();		
+		shellTimeout.layout();
 	}
 
 	public void setToolTipText() {
-//
+		//
 	}
 
 	private void close() {
-		int cont = MainWindow.message(shellTimeout, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-		if(cont == SWT.OK){
-			if(jobBackUp != null)
+		int cont = MainWindow.message(shellTimeout, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+		if (cont == SWT.OK) {
+			if (jobBackUp != null)
 				joblistener.getJob().setContent(jobBackUp.cloneContent());
 			shellTimeout.dispose();
 		}
@@ -238,25 +207,23 @@ public class JobAssistentTimeoutForms {
 	 * @param backUpJob
 	 */
 	public void setBackUpJob(Element backUpJob, ScriptJobMainForm jobForm_) {
-		if(backUpJob != null)
-			jobBackUp = (Element)backUpJob.clone();	
+		if (backUpJob != null)
+			jobBackUp = (Element) backUpJob.clone();
 		jobForm = jobForm_;
 	}
 
 	private void doFinish() {
-
-		if(assistentType == Editor.JOB_WIZARD) {															
-			jobForm.initForm();	
-		} else {
+		if (assistentType == JOEConstants.JOB_WIZARD) {
+			jobForm.initForm();
+		}
+		else {
 			JobsListener listener = new JobsListener(dom, update);
 			listener.newImportJob(joblistener.getJob(), assistentType);
 		}
-
-		if(Options.getPropertyBoolean("editor.job.show.wizard"))
-			Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(joblistener.getJob()), shellTimeout, false, null, false, null, true); 
-
+		if (Options.getPropertyBoolean("editor.job.show.wizard"))
+			Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(joblistener.getJob()), shellTimeout,
+					false, null, false, null, true);
 		closeDialog = true;
 		shellTimeout.dispose();
-
 	}
 }

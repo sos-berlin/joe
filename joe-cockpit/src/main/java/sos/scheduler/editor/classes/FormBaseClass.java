@@ -81,7 +81,6 @@ public class FormBaseClass {
 	}
 
 	protected void setStatusLine(final String pstrText) {
-		// Editor.objMainWindow.setStatusLine(pstrText);
 		final int delay = 2000;
 		final Display display = shell.getDisplay();
 		display.asyncExec(new Runnable() {
@@ -89,7 +88,7 @@ public class FormBaseClass {
 				Editor.objMainWindow.setStatusLine(pstrText);
 				try {
 					Thread.sleep(delay);
-				}
+				} 
 				catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

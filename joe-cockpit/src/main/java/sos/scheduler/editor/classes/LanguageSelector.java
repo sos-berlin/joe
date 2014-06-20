@@ -1,5 +1,4 @@
 package sos.scheduler.editor.classes;
-
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
@@ -26,34 +25,31 @@ import org.eclipse.swt.widgets.Composite;
 *
 * Created on 25.08.2011 13:54:32
  */
-
 public class LanguageSelector extends Combo {
-
-	@SuppressWarnings("unused")
-	private final String	conClassName	= "LanguageSelector";
+	@SuppressWarnings("unused") private final String	conClassName	= "LanguageSelector";
 
 	public LanguageSelector(Composite pobjComposite, int arg1) {
 		super(pobjComposite, arg1);
 	}
-	
-	public boolean isScriptLanguage () {
+
+	public boolean isScriptLanguage() {
 		return !this.isShell() && !this.isJava();
 	}
-	
-    public void selectLanguageItem(int languageId) {
-    	this.select(languageId);
-    }
-	
-	public boolean isJava (){
+
+	public void selectLanguageItem(int languageId) {
+		this.select(languageId);
+	}
+
+	public boolean isJava() {
 		return this.getText().equalsIgnoreCase("java");
 	}
-	
-	public boolean isShell () {
+
+	public boolean isShell() {
 		String strLang = this.getText();
 		return strLang.equalsIgnoreCase("shell");
 	}
-	
+
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
-		} 
+	}
 }

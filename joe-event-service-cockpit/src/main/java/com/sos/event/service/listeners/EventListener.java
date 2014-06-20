@@ -10,7 +10,10 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
-import com.sos.event.service.actions.ActionsDom;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.Events.ActionsDom;
 
 public class EventListener {
    
@@ -36,10 +39,10 @@ public class EventListener {
 		List l = null;
 		//if(_eventGroup.getName().equals("commands")) {
 		try {
-			if(type == Editor.ADD_EVENT_GROUP) {		
+			if(type == JOEConstants.ADD_EVENT_GROUP) {		
 				XPath x3 = XPath.newInstance("add_event/event");
 				l = x3.selectNodes(_eventGroup);
-			} else if(type == Editor.REMOVE_EVENT_GROUP) {
+			} else if(type == JOEConstants.REMOVE_EVENT_GROUP) {
 			
 				XPath x3 = XPath.newInstance("remove_event/event");				 
 				l = x3.selectNodes(_eventGroup);			
@@ -50,7 +53,7 @@ public class EventListener {
 				l = _eventGroup.getChildren("event");		
 			}
 		} catch(Exception e) {
-			MainWindow.message(e.getMessage(), SWT.ICON_WARNING);	
+			ErrorLog.message(e.getMessage(), SWT.ICON_WARNING);	
 		}
 		//}
 		
@@ -90,13 +93,13 @@ public class EventListener {
 		} else {					
 			event = new Element("event");
 			
-			if(type == Editor.ADD_EVENT_GROUP) {
+			if(type == JOEConstants.ADD_EVENT_GROUP) {
 			
 				Element addEvent = new Element("add_event");
 				addEvent.addContent(event);
 				_eventGroup.addContent(addEvent);   
 			
-			}else if(type == Editor.REMOVE_EVENT_GROUP){
+			}else if(type == JOEConstants.REMOVE_EVENT_GROUP){
 			
 					Element removeEvent = new Element("remove_event");
 					removeEvent.addContent(event);
@@ -128,7 +131,7 @@ public class EventListener {
 	        if(table.getSelectionCount() > 0) {
 	        	TableItem item = table.getSelection()[0];
 	        	Element elem = (Element)item.getData();
-	        	if(type == Editor.REMOVE_EVENT_GROUP || type == Editor.ADD_EVENT_GROUP) {
+	        	if(type == JOEConstants.REMOVE_EVENT_GROUP || type == JOEConstants.ADD_EVENT_GROUP) {
         			if(elem.getParentElement() != null)
         			elem.getParentElement().detach();
         		} else
@@ -140,7 +143,7 @@ public class EventListener {
 	        	fillEvent(table);
 
 	        	//if(table.getItemCount() == 0 && _eventGroup != null) {
-	        		if(type == Editor.REMOVE_EVENT_GROUP || type == Editor.ADD_EVENT_GROUP) {
+	        		if(type == JOEConstants.REMOVE_EVENT_GROUP || type == JOEConstants.ADD_EVENT_GROUP) {
 	        			if(elem.getParentElement() != null)
 	        			elem.getParentElement().detach();
 	        		}

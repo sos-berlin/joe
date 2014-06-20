@@ -1,69 +1,56 @@
 package com.sos.event.service.listeners;
-
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
-import com.sos.event.service.actions.ActionsDom;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.Events.ActionsDom;
 
 public class ActionsListListener {
-   
-	private ActionsDom           _dom                 = null;
+	private ActionsDom	_dom		= null;
+	private Element		_actions	= null;
 
-    private Element              _actions             = null;
+	public ActionsListListener(ActionsDom dom, Element actions) {
+		_dom = dom;
+		_actions = actions;
+	}
 
-   
-    public ActionsListListener(ActionsDom dom, Element actions) {
-        _dom = dom;
-        _actions = actions;
-    }
-   
-    public String getActions() {
-        return Utils.getAttributeValue("name", _actions);
-    }
-    
-    public void newAction(String name) {
-    	if(_actions == null)
-    		_actions = _dom.getRoot();
-    	
-    	Element action = new Element("action");
-    	Utils.setAttribute("name", name, action);
-    	
-    	_actions.addContent(action);
-    	_dom.setChanged(true);
-    }
+	public String getActions() {
+		return Utils.getAttributeValue("name", _actions);
+	}
 
+	public void newAction(String name) {
+		if (_actions == null)
+			_actions = _dom.getRoot();
+		Element action = new Element("action");
+		Utils.setAttribute("name", name, action);
+		_actions.addContent(action);
+		_dom.setChanged(true);
+	}
 
-    public void fillActions(Table table) {  
-    	
-    	if(_actions == null)
-    		_actions = _dom.getRoot();
-    	
-        if(table != null) {
-        	table.removeAll();
-        	
-        	java.util.List l = _actions.getChildren("action");
-        	for(int i = 0; i < l.size(); i++) {
-        		Element action = (Element)l.get(i);
-        		TableItem item = new TableItem(table, SWT.NONE);        		
-        		item.setText(Utils.getAttributeValue("name", action));
-        		item.setData(action);
-        		
-        	}
-        }
-    }
+	public void fillActions(Table table) {
+		if (_actions == null)
+			_actions = _dom.getRoot();
+		if (table != null) {
+			table.removeAll();
+			java.util.List l = _actions.getChildren("action");
+			for (int i = 0; i < l.size(); i++) {
+				Element action = (Element) l.get(i);
+				TableItem item = new TableItem(table, SWT.NONE);
+				item.setText(Utils.getAttributeValue("name", action));
+				item.setData(action);
+			}
+		}
+	}
 
-    public void removeAction(Table table) {
-    	if(table.getSelectionCount() > 0) {
-    		TableItem item = table.getSelection()[0];
-    		Element e = (Element) item.getData();
-    		e.detach();
-    		fillActions(table);
-    		_dom.setChanged(true);
-    	}
-    }
-   
-
+	public void removeAction(Table table) {
+		if (table.getSelectionCount() > 0) {
+			TableItem item = table.getSelection()[0];
+			Element e = (Element) item.getData();
+			e.detach();
+			fillActions(table);
+			_dom.setChanged(true);
+		}
+	}
 }

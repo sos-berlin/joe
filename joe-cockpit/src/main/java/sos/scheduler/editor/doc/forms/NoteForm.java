@@ -1,5 +1,4 @@
 package sos.scheduler.editor.doc.forms;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
@@ -13,38 +12,29 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.listeners.NoteListener;
 import sos.scheduler.editor.doc.listeners.SettingsListener;
 
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.jobdoc.DocumentationDom;
+
 public class NoteForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
-
-	private SettingsListener	settingsListener	= null;
-
-	private Group				group				= null;
-
-	@SuppressWarnings("unused")
-	private Label				label				= null;
-
-	private Combo				cLang				= null;
-
-	private Text				text				= null;
-
-	private NoteListener		listener			= null; // @jve:decl-index=0:
-
-	private Button				bApply				= null;
-
-	private int					type				= -1;
-
-	private Button				bClear				= null;
+	private SettingsListener					settingsListener	= null;
+	private Group								group				= null;
+	@SuppressWarnings("unused") private Label	label				= null;
+	private Combo								cLang				= null;
+	private Text								text				= null;
+	private NoteListener						listener			= null; // @jve:decl-index=0:
+	private Button								bApply				= null;
+	private int									type				= -1;
+	private Button								bClear				= null;
 
 	public NoteForm(Composite parent, int style) {
 		super(parent, style);
@@ -83,7 +73,6 @@ public class NoteForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 		createGroup();
 		setSize(new Point(650, 446));
 		setLayout(new FillLayout());
-
 		bApply.setEnabled(false);
 		setToolTipText();
 	}
@@ -93,22 +82,15 @@ public class NoteForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 	 */
 	private void createGroup() {
 		GridData gridData8 = new GridData(GridData.END, GridData.CENTER, true, false);
-
 		GridData gridData11 = new GridData(GridData.END, GridData.CENTER, false, false);
 		gridData11.widthHint = 150; // Generated
 		gridData11.horizontalIndent = 10; // Generated
-
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 1);
-
 		GridLayout gridLayout = new GridLayout(4, false);
-
 		group = JOE_G_NoteForm_Documentation.Control(new Group(this, SWT.NONE));
 		group.setLayout(gridLayout); // Generated
-
 		label = JOE_L_NoteForm_Language.Control(new Label(group, SWT.NONE));
-
 		createCLang();
-
 		bClear = JOE_B_NoteForm_Clear.Control(new Button(group, SWT.NONE));
 		bClear.setLayoutData(gridData8); // Generated
 		bClear.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -116,7 +98,6 @@ public class NoteForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 				text.setText("");
 			}
 		});
-
 		bApply = JOE_B_NoteForm_Apply.Control(new Button(group, SWT.NONE));
 		bApply.setLayoutData(gridData11); // Generated
 		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -128,7 +109,6 @@ public class NoteForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 					getShell().dispose();
 			}
 		});
-
 		text = new Text(group, SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.MULTI);
 		text.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
 		text.setLayoutData(gridData); // Generated
@@ -148,7 +128,6 @@ public class NoteForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 	private void createCLang() {
 		GridData gridData1 = new GridData();
 		gridData1.widthHint = 100; // Generated
-
 		cLang = JOE_Cbo_NoteForm_Language.Control(new Combo(group, SWT.BORDER | SWT.READ_ONLY));
 		cLang.setLayoutData(gridData1); // Generated
 		cLang.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -162,15 +141,14 @@ public class NoteForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 	}
 
 	public void setToolTipText() {
-
 		switch (type) {
-			case Editor.DOC_CONFIGURATION:
+			case JOEConstants.DOC_CONFIGURATION:
 				setToolTipText(JOE_M_NoteForm_Config.label());
 				break;
-			case Editor.DOC_SETTINGS:
+			case JOEConstants.DOC_SETTINGS:
 				setToolTipText(JOE_M_NoteForm_Settings.label());
 				break;
-			case Editor.DOC_DOCUMENTATION:
+			case JOEConstants.DOC_DOCUMENTATION:
 				setToolTipText(JOE_M_NoteForm_Doc.label());
 				break;
 		}
@@ -185,17 +163,14 @@ public class NoteForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 		if (listener != null) {
 			listener.setNote(text.getText());
 			listener.createDefault();
-
 		}
 	}
 
 	public boolean isUnsaved() {
 		if (listener != null)
 			listener.createDefault();
-
 		if (settingsListener != null)
 			settingsListener.checkSettings();
-
 		return listener != null ? bApply.getEnabled() : false;
 	}
 
@@ -218,5 +193,4 @@ public class NoteForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 	public void setSettingsListener(SettingsListener settingsListener1) {
 		this.settingsListener = settingsListener1;
 	}
-
 } // @jve:decl-index=0:visual-constraint="10,10"

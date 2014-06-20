@@ -8,10 +8,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.listeners.JobListener;
+
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 
 public class JobProcessFile extends FormBaseClass {
 

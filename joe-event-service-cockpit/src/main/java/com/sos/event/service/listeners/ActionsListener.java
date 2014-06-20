@@ -9,13 +9,22 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
-import com.sos.event.service.actions.ActionsDom;
 import com.sos.event.service.actions.IUpdateTree;
+import com.sos.event.service.forms.ActionForm;
 import com.sos.event.service.forms.ActionsForm;
+import com.sos.event.service.forms.ActionsListForm;
 import com.sos.event.service.forms.EventForm;
 import com.sos.event.service.forms.EventsForm;
 import com.sos.event.service.forms.JobCommandForm;
+import com.sos.event.service.forms.JobCommandNamesForm;
 import com.sos.event.service.forms.JobCommandsForm;
+import com.sos.event.service.forms.ParameterForm;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.misc.TreeData;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.Events.ActionsDom;
 
 public class ActionsListener implements IUpdateTree {
 	private ActionsDom		_dom;
@@ -32,10 +41,10 @@ public class ActionsListener implements IUpdateTree {
 	public void fillTree(Tree tree) {
 		tree.removeAll();
 		Element desc = _dom.getRoot();
-		sos.scheduler.editor.app.Utils.setResetElement(_dom.getRoot());
+		Utils.setResetElement(_dom.getRoot());
 		TreeItem item = new TreeItem(tree, SWT.NONE);
 		item.setText("Actions");
-		item.setData(new TreeData(Editor.ACTIONS, desc, Options.getDocHelpURL("actions")));
+		item.setData(new TreeData(JOEConstants.ACTIONS, desc, Options.getDocHelpURL("actions")));
 		treeFillAction(item);
 	}
 
@@ -57,37 +66,37 @@ public class ActionsListener implements IUpdateTree {
 				//System.out.println("test: "  + item.getText());
 				_dom.setInit(true);
 				switch (data.getType()) {
-					case Editor.ACTIONS:
-						new sos.scheduler.editor.actions.forms.ActionsListForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+					case JOEConstants.ACTIONS:
+						new ActionsListForm(c, SWT.NONE, _dom, data.getElement(), _gui);
 						break;
-					case Editor.ACTION:
-						new sos.scheduler.editor.actions.forms.ActionForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+					case JOEConstants.ACTION:
+						new ActionForm(c, SWT.NONE, _dom, data.getElement(), _gui);
 						break;
-					case Editor.EVENTS:
+					case JOEConstants.EVENTS:
 						new EventsForm(c, SWT.NONE, _dom, data.getElement(), _gui);
 						break;
-					case Editor.EVENT_GROUP:
-						new EventForm(c, SWT.NONE, _dom, data.getElement(), Editor.EVENT_GROUP);
+					case JOEConstants.EVENT_GROUP:
+						new EventForm(c, SWT.NONE, _dom, data.getElement(), JOEConstants.EVENT_GROUP);
 						break;
-					case Editor.ADD_EVENT_GROUP:
-						new EventForm(c, SWT.NONE, _dom, data.getElement(), Editor.ADD_EVENT_GROUP);
+					case JOEConstants.ADD_EVENT_GROUP:
+						new EventForm(c, SWT.NONE, _dom, data.getElement(), JOEConstants.ADD_EVENT_GROUP);
 						break;
-					case Editor.REMOVE_EVENT_GROUP:
-						new EventForm(c, SWT.NONE, _dom, data.getElement(), Editor.REMOVE_EVENT_GROUP);
+					case JOEConstants.REMOVE_EVENT_GROUP:
+						new EventForm(c, SWT.NONE, _dom, data.getElement(), JOEConstants.REMOVE_EVENT_GROUP);
 						break;
-					case Editor.ACTION_COMMANDS:
+					case JOEConstants.ACTION_COMMANDS:
 						//new JobCommandsForm(c, SWT.NONE, _dom, data.getElement(), _gui, this);
 						new JobCommandsForm(c, SWT.NONE, _dom, data.getElement(), _gui);
 						break;
-					case Editor.JOB_COMMAND_EXIT_CODES:
-						new sos.scheduler.editor.actions.forms.JobCommandNamesForm(c, SWT.NONE, _dom, data.getElement(), _gui);
+					case JOEConstants.JOB_COMMAND_EXIT_CODES:
+						new JobCommandNamesForm(c, SWT.NONE, _dom, data.getElement(), _gui);
 						break;
-					case Editor.JOB_COMMAND:
+					case JOEConstants.JOB_COMMAND:
 						new JobCommandForm(c, SWT.NONE, _dom, data.getElement(), _gui);
 						break;
-					case Editor.PARAMETER:
+					case JOEConstants.PARAMETER:
 						//int type = getType(data.getElement());
-						new sos.scheduler.editor.actions.forms.ParameterForm(c, SWT.NONE, _dom, data.getElement(), _gui, Editor.JOB_COMMANDS);
+						new ParameterForm(c, SWT.NONE, _dom, data.getElement(), _gui, JOEConstants.JOB_COMMANDS);
 						break;
 					default:
 						System.out.println("no form found for " + item.getText());
@@ -97,7 +106,7 @@ public class ActionsListener implements IUpdateTree {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
+			ErrorLog.message(e.getMessage(), SWT.ICON_ERROR);
 		}
 		_dom.setInit(false);
 		return true;
@@ -111,7 +120,7 @@ public class ActionsListener implements IUpdateTree {
 			Element action = (Element) list.get(i);
 			TreeItem item = new TreeItem(parent, SWT.NONE);
 			item.setText(ACTION_PREFIX + Utils.getAttributeValue("name", action));
-			item.setData(new TreeData(Editor.ACTION, action, Options.getDocHelpURL("action")));
+			item.setData(new TreeData(JOEConstants.ACTION, action, Options.getDocHelpURL("action")));
 			fillEvents(item, action);
 			fillCommands(item, action);
 			item.setExpanded(true);
@@ -122,7 +131,7 @@ public class ActionsListener implements IUpdateTree {
 	public void fillCommands(TreeItem parent, Element action) {
 		TreeItem item = new TreeItem(parent, SWT.NONE);
 		item.setText("Commands");
-		item.setData(new TreeData(Editor.ACTION_COMMANDS, action, Options.getDocHelpURL("commands")));
+		item.setData(new TreeData(JOEConstants.ACTION_COMMANDS, action, Options.getDocHelpURL("commands")));
 		treeFillCommands(item, action, true);
 	}
 
@@ -130,7 +139,7 @@ public class ActionsListener implements IUpdateTree {
 		parent.removeAll();
 		TreeItem item = new TreeItem(parent, SWT.NONE);
 		item.setText("Events");
-		item.setData(new TreeData(Editor.EVENTS, action, Options.getDocHelpURL("events")));
+		item.setData(new TreeData(JOEConstants.EVENTS, action, Options.getDocHelpURL("events")));
 		fillEventGroup(item, action);
 	}
 
@@ -143,7 +152,7 @@ public class ActionsListener implements IUpdateTree {
 				Element eventGroup = (Element) l.get(i);
 				TreeItem item2 = new TreeItem(parent, SWT.NONE);
 				item2.setText(GROUP_PREFIX + Utils.getAttributeValue("group", eventGroup));
-				item2.setData(new TreeData(Editor.EVENT_GROUP, eventGroup, Options.getDocHelpURL("event_group")));
+				item2.setData(new TreeData(JOEConstants.EVENT_GROUP, eventGroup, Options.getDocHelpURL("event_group")));
 				//item.setExpanded(true);	
 			}
 		}
@@ -162,7 +171,7 @@ public class ActionsListener implements IUpdateTree {
 					if (e.getAttributeValue("name") != null) {
 						item = new TreeItem(parent, SWT.NONE);
 						item.setText(COMMAND_PREFIX + e.getAttributeValue("name"));
-						item.setData(new TreeData(Editor.JOB_COMMAND_EXIT_CODES, e, Options.getHelpURL("job.commands")));
+						item.setData(new TreeData(JOEConstants.JOB_COMMAND_EXIT_CODES, e, Options.getHelpURL("job.commands")));
 						item.setData("key", "commands_@_order");
 						item.setData("copy_element", e);
 						treeFillCommand(item, e, false);
@@ -176,12 +185,12 @@ public class ActionsListener implements IUpdateTree {
 	public void treeFillAddRemoveEvent(TreeItem parent, Element eCommands) {
 		TreeItem item1 = new TreeItem(parent, SWT.NONE);
 		item1.setText("add event");
-		item1.setData(new TreeData(Editor.ADD_EVENT_GROUP, eCommands, Options.getHelpURL("job.commands")));
+		item1.setData(new TreeData(JOEConstants.ADD_EVENT_GROUP, eCommands, Options.getHelpURL("job.commands")));
 		item1.setData("key", "commands_@_add_event");
 		item1.setData("copy_element", eCommands);
 		TreeItem item2 = new TreeItem(parent, SWT.NONE);
 		item2.setText("remove event");
-		item2.setData(new TreeData(Editor.REMOVE_EVENT_GROUP, eCommands, Options.getHelpURL("job.commands")));
+		item2.setData(new TreeData(JOEConstants.REMOVE_EVENT_GROUP, eCommands, Options.getHelpURL("job.commands")));
 		item2.setData("key", "commands_@_remove_event");
 		item2.setData("copy_element", eCommands);
 	}
@@ -200,11 +209,11 @@ public class ActionsListener implements IUpdateTree {
 			String name = Utils.getAttributeValue("job_chain", cmdElem) != null && Utils.getAttributeValue("job_chain", cmdElem).length() > 0 ? Utils.getAttributeValue(
 					"job_chain", cmdElem) : Utils.getAttributeValue("job", cmdElem);
 			item.setText(cmdElem.getName() + ": " + name);
-			item.setData(new TreeData(Editor.JOB_COMMAND, cmdElem, Options.getHelpURL("job.commands")));
+			item.setData(new TreeData(JOEConstants.JOB_COMMAND, cmdElem, Options.getHelpURL("job.commands")));
 			item.setExpanded(false);
 			//PARAMETER
 			item = new TreeItem(item, SWT.NONE);
-			item.setData(new TreeData(Editor.PARAMETER, cmdElem, Options.getHelpURL("parameter")));
+			item.setData(new TreeData(JOEConstants.PARAMETER, cmdElem, Options.getHelpURL("parameter")));
 			item.setData("key", "params_@_param");
 			item.setData("copy_element", cmdElem);
 			item.setText("Parameter");

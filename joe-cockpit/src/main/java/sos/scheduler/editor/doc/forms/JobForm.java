@@ -1,5 +1,4 @@
 package sos.scheduler.editor.doc.forms;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -20,40 +19,35 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import sos.scheduler.editor.app.IUpdateLanguage;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.doc.DocumentationDom;
 import sos.scheduler.editor.doc.SourceGenerator;
 import sos.scheduler.editor.doc.listeners.JobListener;
 
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.jobdoc.DocumentationDom;
+ 
 public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
-	@SuppressWarnings("unused")
-	private final static String	conSVNVersion	= "$Id$";
-	private JobListener			listener		= null;
-	private Group				group			= null;
-	@SuppressWarnings("unused")
-	private Label				label			= null;
-	private Text				tName			= null;
-	@SuppressWarnings("unused")
-	private Label				label1			= null;
-	private Text				tTitle			= null;
-	@SuppressWarnings("unused")
-	private Label				label2			= null;
-	@SuppressWarnings("unused")
-	private Label				label3			= null;
-	private Combo				cOrder			= null;
-	private Combo				cTasks			= null;
-	private Combo				cbJobType;
-	private Text				sourceOutputPath;
-	private Text				packageName;
+	@SuppressWarnings("unused") private final static String	conSVNVersion	= "$Id$";
+	private JobListener										listener		= null;
+	private Group											group			= null;
+	@SuppressWarnings("unused") private Label				label			= null;
+	private Text											tName			= null;
+	@SuppressWarnings("unused") private Label				label1			= null;
+	private Text											tTitle			= null;
+	@SuppressWarnings("unused") private Label				label2			= null;
+	@SuppressWarnings("unused") private Label				label3			= null;
+	private Combo											cOrder			= null;
+	private Combo											cTasks			= null;
+	private Combo											cbJobType;
+	private Text											sourceOutputPath;
+	private Text											packageName;
 
 	public JobForm(final Composite parent, final int style, final DocumentationDom dom, final Element job) {
 		super(parent, style);
 		initialize();
 		setToolTipText();
-
 		listener = new JobListener(dom, job);
 		initValues();
 	}
@@ -62,7 +56,6 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		createGroup();
 		setSize(new Point(696, 462));
 		setLayout(new FillLayout());
-
 	}
 
 	/**
@@ -72,82 +65,58 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		GridData gridData1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		GridLayout gridLayout = new GridLayout(2, false);
-
 		group = JOE_G_JobForm_Job.Control(new Group(this, SWT.NONE));
 		group.setLayout(gridLayout);
-
 		label = JOE_L_Name.Control(new Label(group, SWT.NONE));
-
 		tName = JOE_T_JobForm_Name.Control(new Text(group, SWT.BORDER));
 		tName.setLayoutData(gridData); // Generated
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override
-			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
+			@Override public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setName(tName.getText());
 				Utils.setBackground(tName, true);
 			}
 		});
-
 		label1 = JOE_L_JobForm_Title.Control(new Label(group, SWT.NONE));
-
 		tTitle = JOE_T_JobForm_Title.Control(new Text(group, SWT.BORDER));
 		tTitle.setLayoutData(gridData1); // Generated
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override
-			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
+			@Override public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setTitle(tTitle.getText());
 				Utils.setBackground(tTitle, true);
 			}
 		});
-
 		label2 = JOE_L_JobForm_Order.Control(new Label(group, SWT.NONE));
-
 		createCOrder();
-
 		label3 = JOE_L_JobForm_Tasks.Control(new Label(group, SWT.NONE));
-
 		cTasks = JOE_Cbo_JobForm_Tasks.Control(new Combo(group, SWT.BORDER | SWT.READ_ONLY));
 		cTasks.setLayoutData(new GridData(200, SWT.DEFAULT)); // Generated
 		cTasks.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override
-			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+			@Override public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				listener.setTasks(cTasks.getText());
 			}
 
-			@Override
-			public void widgetDefaultSelected(final org.eclipse.swt.events.SelectionEvent e) {
+			@Override public void widgetDefaultSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				//
 			}
 		});
-
 		new Label(group, SWT.NONE);
-
 		final Button vorschauButton = JOE_B_JobForm_Preview.Control(new Button(group, SWT.NONE));
 		vorschauButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				listener.preview();
 			}
 		});
-
 		new Label(group, SWT.NONE);
 		new Label(group, SWT.NONE);
-
 		Label lblO = JOE_L_JobForm_OutputPath.Control(new Label(group, SWT.NONE));
 		lblO.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-
 		sourceOutputPath = JOE_T_JobForm_OutputPath.Control(new Text(group, SWT.BORDER));
 		sourceOutputPath.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
-		@SuppressWarnings("unused")
-		Label lblPackageName = JOE_L_JobForm_PackageName.Control(new Label(group, SWT.NONE));
-
+		@SuppressWarnings("unused") Label lblPackageName = JOE_L_JobForm_PackageName.Control(new Label(group, SWT.NONE));
 		packageName = JOE_T_JobForm_PackageName.Control(new Text(group, SWT.BORDER));
 		packageName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-
 		Label lblJobType = JOE_L_JobForm_JobType.Control(new Label(group, SWT.NONE));
 		lblJobType.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-
 		cbJobType = JOE_Cbo_JobForm_JobType.Control(new Combo(group, SWT.NONE));
 		cbJobType.setItems(new String[] { "Job in a Job Chain", "Standalone Job" });
 		GridData gd_cbJobType = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -155,18 +124,12 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		cbJobType.setLayoutData(gd_cbJobType);
 		// cbJobType.setText("Standalone Job");
 		cbJobType.setText(cbJobType.getItem(1));
-
 		new Label(group, SWT.NONE);
-
 		Button btnNewButton = JOE_B_JobForm_GenerateSource.Control(new Button(group, SWT.NONE));
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent arg0) {
-
+			@Override public void widgetSelected(final SelectionEvent arg0) {
 				generateJavaSource();
-
 			}
-
 		});
 		createCTasks();
 	}
@@ -175,7 +138,6 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		SourceGenerator s = new SourceGenerator();
 		File documentation;
 		try {
-
 			documentation = listener.writeToFile();
 			s.setDefaultLang("en");
 			s.setJavaClassName(tName.getText());
@@ -187,7 +149,6 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			}
 			s.setOutputDir(new File(sourceOutputPath.getText()));
 			s.setPackageName(packageName.getText());
-
 			// TODO Migrate Template path to JOE_HOME Folder
 			File f = new File(Options.getSchedulerData(), "config/JOETemplates/java/xsl");
 			s.setTemplatePath(f);
@@ -203,11 +164,8 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				else {
 					s.setStandAlone(false);
 				}
-
 				s.execute();
-
 			}
-
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -215,7 +173,6 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		catch (JDOMException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -224,17 +181,14 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private void createCOrder() {
 		GridData gridData2 = new GridData(GridData.BEGINNING, GridData.CENTER);
 		gridData2.widthHint = 200;
-
 		cOrder = JOE_Cbo_JobForm_Order.Control(new Combo(group, SWT.BORDER | SWT.READ_ONLY));
 		cOrder.setLayoutData(gridData2); // Generated
 		cOrder.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override
-			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+			@Override public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				listener.setOrder(cOrder.getText());
 			}
 
-			@Override
-			public void widgetDefaultSelected(final org.eclipse.swt.events.SelectionEvent e) {
+			@Override public void widgetDefaultSelected(final org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 	}
@@ -243,7 +197,7 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	 * This method initializes cTasks
 	 */
 	private void createCTasks() {
-//
+		//
 	}
 
 	private void initValues() {
@@ -253,13 +207,10 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		cOrder.select(cOrder.indexOf(listener.getOrder()));
 		cTasks.setItems(listener.getTasksValues());
 		cTasks.select(cTasks.indexOf(listener.getTasks()));
-
 		tName.setFocus();
 	}
 
-	@Override
-	public void setToolTipText() {
-//
+	@Override public void setToolTipText() {
+		//
 	}
-
 } // @jve:decl-index=0:visual-constraint="10,10"

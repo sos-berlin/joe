@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.listeners;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,29 +10,19 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.ISchedulerUpdate;
-import sos.scheduler.editor.conf.SchedulerDom;
 
-public class WebservicesListener {
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-
-	private SchedulerDom _dom           = null;
-
-	private Element      _config        = null;
-
-	private Element      _http_server   = null;
-
-	private Element      _service       = null;
-
-	private String[]     _chains        = new String[0];
-
-	private List         _list          = new ArrayList();
-
-	private ISchedulerUpdate main       = null;
-	
-	
+public class WebservicesListener { 
+	private SchedulerDom		_dom			= null;
+	private Element				_config			= null;
+	private Element				_http_server	= null;
+	private Element				_service		= null;
+	private String[]			_chains			= new String[0];
+	private List				_list			= new ArrayList();
+	private ISchedulerUpdate	main			= null;
 
 	public WebservicesListener(SchedulerDom dom, Element config, ISchedulerUpdate main_) {
-
 		_dom = dom;
 		_config = config;
 		main = main_;
@@ -41,30 +30,25 @@ public class WebservicesListener {
 		if (_http_server != null) {
 			_list = _http_server.getChildren("web_service");
 		}
-
 	}
 
 	private void init() {
-		
 		//if (_http_server == null && _config.getAttribute("http_server") == null) {
 		if (_http_server == null && _config.getChild("http_server") == null) {
 			_http_server = new Element("http_server");
 			_config.addContent(_http_server);
 			_list = _http_server.getChildren("web_service");
-		} else {
+		}
+		else {
 			_http_server = _config.getChild("http_server");
 			_list = _http_server.getChildren("web_service");
 		}
-
 		if (_service != null && !_list.contains(_service))
 			_list.add(_service);
-
 		_dom.setChanged(true);
 	}
-	
-	
-	public void fillTable(Table table) {
 
+	public void fillTable(Table table) {
 		table.removeAll();
 		for (Iterator it = _list.iterator(); it.hasNext();) {
 			Element service = (Element) it.next();
@@ -75,9 +59,6 @@ public class WebservicesListener {
 		}
 	}
 
-
-
-
 	public void selectService(int index) {
 		if (index >= 0 && index < _list.size())
 			_service = (Element) _list.get(index);
@@ -85,82 +66,65 @@ public class WebservicesListener {
 			_service = null;
 	}
 
-
 	public boolean getDebug() {
 		return Utils.isAttributeValue("debug", _service);
 	}
-
 
 	public String getForwardXSLT() {
 		return Utils.getAttributeValue("forward_xslt_stylesheet", _service);
 	}
 
-
 	public String getRequestXSLT() {
 		return Utils.getAttributeValue("request_xslt_stylesheet", _service);
 	}
-
 
 	public String getResponseXSLT() {
 		return Utils.getAttributeValue("response_xslt_stylesheet", _service);
 	}
 
-
 	public String getJobChain() {
 		return Utils.getAttributeValue("job_chain", _service);
 	}
-
 
 	public String getName() {
 		return Utils.getAttributeValue("name", _service);
 	}
 
-
 	public String getTimeout() {
 		return Utils.getAttributeValue("timeout", _service);
 	}
-
 
 	public String getURL() {
 		return Utils.getAttributeValue("url_path", _service);
 	}
 
-
 	public void removeService(int index) {
 		if (index >= 0 && index < _list.size()) {
 			_list.remove(index);
 			_service = null;
-
 			if (_list.size() == 0) {
 				_config.removeChild("http_server");
 				_http_server = null;
 				_list = new ArrayList();
 			}
-
 			_dom.setChanged(true);
 			main.updateWebServices();
 		}
-		
 	}
 
-
 	public void newService(Table table) {
-
 		if (_http_server == null)
 			init();
-
 		_service = new Element("web_service");
 		String name = "web_service_" + (table.getItemCount() + 1);
-		_service.setAttribute("name", name);				
+		_service.setAttribute("name", name);
 		_http_server.addContent(_service);
 		fillTable(table);
 		main.updateWebServices();
-		
 	}
 
-
-	public void applyService(boolean debug, String chain, String name, String forward, String request, String response,
-			String timeout, String url, TableItem[] params) {
+	public void applyService(boolean debug, String chain, String name, String forward, String request, String response, String timeout, String url,
+			TableItem[] params) {
 		Utils.setAttribute("debug", debug, _service, _dom);
 		Utils.setAttribute("job_chain", chain, _service, _dom);
 		Utils.setAttribute("name", name, _service, _dom);
@@ -169,7 +133,6 @@ public class WebservicesListener {
 		Utils.setAttribute("response_xslt_stylesheet", response, _service, _dom);
 		Utils.setAttribute("timeout", timeout, _service, _dom);
 		Utils.setAttribute("url_path", url, _service, _dom);
-
 		// params
 		_service.removeChild("params");
 		Element parameters = params.length > 0 ? new Element("params") : null;
@@ -181,7 +144,6 @@ public class WebservicesListener {
 		}
 		if (parameters != null)
 			_service.addContent(parameters);
-
 		init();
 		/*if (_http_server == null && _config.getAttribute("http_server") == null) {
 			_http_server = new Element("http_server");
@@ -191,12 +153,9 @@ public class WebservicesListener {
 
 		if (!_list.contains(_service))
 			_list.add(_service);
-*/
+		*/
 		_dom.setChanged(true);
 	}
-
-
-
 
 	public String[] getJobChains() {
 		Element element = _config.getChild("job_chains");
@@ -209,12 +168,11 @@ public class WebservicesListener {
 				String name = ((Element) it.next()).getAttributeValue("name");
 				_chains[index++] = name != null ? name : "";
 			}
-		} else
+		}
+		else
 			_chains = new String[0];
-
 		return _chains;
 	}
-
 
 	public int getChainIndex(String jobChain) {
 		for (int i = 0; i < _chains.length; i++) {
@@ -223,7 +181,6 @@ public class WebservicesListener {
 		}
 		return -1;
 	}
-
 
 	public void fillParams(Table table) {
 		table.removeAll();
@@ -239,7 +196,6 @@ public class WebservicesListener {
 			}
 		}
 	}
-
 
 	public boolean isValid(String name) {
 		if (_list != null) {

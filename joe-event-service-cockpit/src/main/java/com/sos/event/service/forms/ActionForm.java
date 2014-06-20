@@ -13,11 +13,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.IUpdateLanguage;
-
-import com.sos.event.service.actions.ActionsDom;
 import com.sos.event.service.listeners.ActionListener;
+import com.sos.joe.globals.interfaces.IActionForm;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.Events.ActionsDom;
 
 public class ActionForm extends SOSJOEMessageCodes implements IActionForm,  IUpdateLanguage {
 
@@ -62,6 +62,11 @@ public class ActionForm extends SOSJOEMessageCodes implements IActionForm,  IUpd
 			}
 		});
 		txtName.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+	}
+
+	@Override public void setToolTipText() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

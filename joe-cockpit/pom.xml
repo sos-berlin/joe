@@ -12,14 +12,25 @@
     <artifactId>joe-cockpit</artifactId>
     <name>${project.artifactId}</name>
 
-    <!-- Bewirkt die Kopie in lib_release_unversioned_jar und lib_release_jar -->
-    <properties>
-        <setup.do.not.deploy>false</setup.do.not.deploy>
-        <setup.target.name>com.sos.scheduler.editor</setup.target.name>
-    </properties>
-
     <dependencies>
 
+        <dependency>
+  <groupId>com.sos-berlin.products.joe</groupId>
+  <artifactId>joe-globals</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+  
+        <dependency>
+  <groupId>com.sos-berlin.products.joe</groupId>
+  <artifactId>joe-xml</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+  
+<dependency>
+    <groupId>com.sos-berlin.products.joe</groupId>
+    <artifactId>joe-event-service-cockpit</artifactId>
+            <version>${project.version}</version>
+</dependency>
         <dependency>
 		    <groupId>com.sos-berlin.products.joe</groupId>
 		    <artifactId>ftp-profiles</artifactId>
@@ -132,8 +143,9 @@
 		<dependency>
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
-			<!-- set to newer version than the managed one (in company.pom) -->
+			<!-- set to newer version than the managed one (in company.pom) 
 			<version>2.0.2</version>
+			-->
 		</dependency>
 
 		<dependency>

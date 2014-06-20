@@ -1,6 +1,11 @@
 package sos.scheduler.editor.app;
 
 import java.util.ArrayList;
+
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.Messages;
+import com.sos.joe.globals.options.Options;
+
 import java.util.HashMap;
 import java.util.Properties;
 import java.io.File;
@@ -9,13 +14,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+
 import org.eclipse.swt.SWT;
+
 import sos.net.SOSFTP;
 import sos.net.SOSFTPS;
 import sos.net.SOSFileTransfer;
 import sos.settings.SOSProfileSettings;
 import sos.util.SOSString;
 import sos.util.SOSUniqueID;
+
 import java.util.Vector;
 
 import org.eclipse.swt.widgets.Combo;

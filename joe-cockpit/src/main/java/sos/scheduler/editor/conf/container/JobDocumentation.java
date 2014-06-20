@@ -16,17 +16,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
-import sos.scheduler.editor.classes.TextArea;
-import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
+import sos.scheduler.editor.conf.composites.TextArea;
+import sos.scheduler.editor.conf.composites.TextArea.enuSourceTypes;
 import sos.scheduler.editor.conf.forms.JobAssistentImportJobParamsForm;
 import sos.scheduler.editor.conf.forms.JobAssistentImportJobsForm;
 import sos.scheduler.editor.conf.listeners.JobListener;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.options.Options;
 
 public class JobDocumentation extends FormBaseClass {
 	@SuppressWarnings("unused")
@@ -188,7 +190,7 @@ public class JobDocumentation extends FormBaseClass {
 				}
 				catch (Exception ex) {
 					try {
-						new sos.scheduler.editor.app.ErrorLog(SOSJOEMessageCodes.JOE_M_0011.params(sos.util.SOSClassUtil.getMethodName(), tFileName.getText(),
+						new ErrorLog(SOSJOEMessageCodes.JOE_M_0011.params(sos.util.SOSClassUtil.getMethodName(), tFileName.getText(),
 								ex));
 					}
 					catch (Exception ee) {
@@ -211,7 +213,7 @@ public class JobDocumentation extends FormBaseClass {
 				try {
 					showWaitCursor();
 					if (tFileName.getText() != null && tFileName.getText().length() > 0) {
-						xmlPath = sos.scheduler.editor.app.Options.getSchedulerData();
+						xmlPath = Options.getSchedulerData();
 						xmlPath = (xmlPath.endsWith("/") || xmlPath.endsWith("\\") ? xmlPath.concat(tFileName.getText()) : xmlPath.concat("/").concat(
 								tFileName.getText()));
 
@@ -256,14 +258,14 @@ public class JobDocumentation extends FormBaseClass {
 				// JobDokumentation ist bekannt -> d.h Parameter aus dieser
 				// Jobdoku extrahieren
 				JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objJobDataProvider.get_dom(), objJobDataProvider.get_main(),
-						objJobDataProvider, onlyParams ? Editor.JOB : Editor.JOB_WIZARD);
+						objJobDataProvider, onlyParams ? JOEConstants.JOB : JOEConstants.JOB_WIZARD);
 
 				if (!onlyParams)
 					paramsForm.setJobForm(this);
 				paramsForm.showAllImportJobParams(objJobDataProvider.getInclude());
 			}
 			else {
-				JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(objJobDataProvider, Editor.JOB_WIZARD);
+				JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(objJobDataProvider, JOEConstants.JOB_WIZARD);
 
 				if (!onlyParams) {
 					importJobForms.setJobForm(this);

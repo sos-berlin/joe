@@ -18,10 +18,11 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.listeners.JobOptionsListener;
+
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 
 public class JobSetback extends FormBaseClass {
     @SuppressWarnings("unused")

@@ -24,12 +24,14 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.IUnsaved;
-import sos.scheduler.editor.app.IUpdateLanguage;
-
-import com.sos.event.service.actions.ActionsDom;
 import com.sos.event.service.listeners.EventListener;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.Events.ActionsDom;
 
 
 public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage  {
@@ -97,9 +99,9 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		setLayout(new FillLayout());
 
 		listener.fillEvent(table);
-		if(type == Editor.EVENT_GROUP)
+		if(type == JOEConstants.EVENT_GROUP)
 			group.setText(JOE_G_EventForm_ActionGroup.params(listener.getActionName(), listener.getEventGroupName()));
-		else if(type == Editor.REMOVE_EVENT_GROUP)
+		else if(type == JOEConstants.REMOVE_EVENT_GROUP)
 //			group.setText(" Action: " + listener.getActionName() + " Remove Event " );
 			group.setText(JOE_G_EventForm_ActionRemoveEvent.params(listener.getActionName()));
 		else
@@ -306,7 +308,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		});
 		txtExitCode.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1));
 
-		if(type == Editor.ADD_EVENT_GROUP)
+		if(type == JOEConstants.ADD_EVENT_GROUP)
 			createExpirationTime(matchingAttributesGroup);
 
 		final Label commentLabel = JOE_L_EventForm_Comment.Control(new Label(group, SWT.NONE));
@@ -338,7 +340,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 					txtOrderId.setText(item.getText(6));
 					txtComment.setText(item.getText(7));
 					txtExitCode.setText(item.getText(8));
-					if(type==Editor.ADD_EVENT_GROUP) {
+					if(type==JOEConstants.ADD_EVENT_GROUP) {
 						int hour = Utils.getHours(item.getText(9), 0);
 						int min = Utils.getMinutes(item.getText(9), 0);
 						int sec = Utils.getSeconds(item.getText(9), 0);
@@ -396,10 +398,10 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		newColumnTableColumn_8.setWidth(50);
 
 		final TableColumn expiration_period = JOE_L_EventForm_ExpirationPeriod.Control(new TableColumn(table, SWT.NONE));
-		expiration_period.setWidth(type==Editor.ADD_EVENT_GROUP ? 100 : 0);
+		expiration_period.setWidth(type==JOEConstants.ADD_EVENT_GROUP ? 100 : 0);
 
 		final TableColumn newColumnTableColumn_10 = JOE_L_EventForm_ExpirationCycle.Control(new TableColumn(table, SWT.NONE));
-		newColumnTableColumn_10.setWidth(type==Editor.ADD_EVENT_GROUP ? 100 : 0);
+		newColumnTableColumn_10.setWidth(type==JOEConstants.ADD_EVENT_GROUP ? 100 : 0);
 
 
 		butRemove = JOE_B_EventForm_Remove.Control(new Button(group, SWT.NONE));
@@ -408,10 +410,10 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 			public void widgetSelected(final SelectionEvent e) {
 				if(table != null && table.getSelectionCount() > 0)  {
 					int cont = 0;
-					if(type == Editor.EVENT_GROUP)
-						cont = MainWindow.message(getShell(), JOE_M_EventForm_RemoveGroup.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+					if(type == JOEConstants.EVENT_GROUP)
+						cont = ErrorLog.message(getShell(), JOE_M_EventForm_RemoveGroup.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 					else {
-						cont = MainWindow.message(getShell(), JOE_M_EventForm_RemoveCommand.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+						cont = ErrorLog.message(getShell(), JOE_M_EventForm_RemoveCommand.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 					}
 					if(cont == SWT.OK) {
 						listener.removeEvent(table);
@@ -448,11 +450,11 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 			}
 		} catch(Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			} catch(Exception ee) {
 				//tu nichts
 			}
-			MainWindow.message((JOE_E_0002.params("'save Event'") + e.getMessage()), SWT.ICON_WARNING);
+			ErrorLog.message((JOE_E_0002.params("'save Event'") + e.getMessage()), SWT.ICON_WARNING);
 
 		}
 
@@ -472,7 +474,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		butApply.setEnabled(false);
 		butRemove.setEnabled(false);
 
-		if(type == Editor.ADD_EVENT_GROUP) {
+		if(type == JOEConstants.ADD_EVENT_GROUP) {
 			txtHourExpirationPeriod.setText("");
 			txtMinExpirationPeriod.setText("");
 			txtSecExpirationPeriod.setText("");
@@ -655,7 +657,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 
 	private String getExpirationPeriod() {
 
-		if(type != Editor.ADD_EVENT_GROUP)
+		if(type != JOEConstants.ADD_EVENT_GROUP)
 			return "";
 
 		return Utils.getTime(txtHourExpirationPeriod.getText(), txtMinExpirationPeriod.getText(), txtSecExpirationPeriod.getText(), false);
@@ -664,7 +666,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 
    private String getExpirationCycle() {
 
-		if(type != Editor.ADD_EVENT_GROUP)
+		if(type != JOEConstants.ADD_EVENT_GROUP)
 			return "";
 
 		return Utils.getTime(txtHourExpirationCycle.getText(), txtMinExpirationCycle.getText(), txtSecExpirationCycle.getText(), false);
