@@ -1,4 +1,6 @@
 package sos.scheduler.editor.conf.listeners;
+import static sos.util.SOSClassUtil.getMethodName;
+
 import java.io.File;
 
 import org.apache.log4j.Logger;
@@ -10,9 +12,9 @@ import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 
 import com.sos.JSHelper.Basics.JSToolBox;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
@@ -202,7 +204,7 @@ public class JOEListener extends JSToolBox {
 		String xml = "";
 		if (element != null) {
 			try {
-				if (_dom instanceof SchedulerDom && ((SchedulerDom) _dom).isDirectory()) {
+				if (_dom instanceof SchedulerDom && _dom.isDirectory()) {
 					xml = _dom.getXML(Utils.getHotFolderParentElement(element));
 				}
 				else {
@@ -222,4 +224,5 @@ public class JOEListener extends JSToolBox {
 		}
 		return xml;
 	}
+	
 }

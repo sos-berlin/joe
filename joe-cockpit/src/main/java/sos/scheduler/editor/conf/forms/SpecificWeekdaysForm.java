@@ -12,10 +12,10 @@ import org.eclipse.swt.widgets.List;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.listeners.DaysListener;
 import sos.scheduler.editor.conf.listeners.SpecificWeekdaysListener;
 
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;

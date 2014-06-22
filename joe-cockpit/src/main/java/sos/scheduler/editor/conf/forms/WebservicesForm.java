@@ -14,10 +14,10 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.listeners.WebservicesListener;
 
 import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;

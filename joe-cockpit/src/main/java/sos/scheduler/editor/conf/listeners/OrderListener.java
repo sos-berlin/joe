@@ -10,8 +10,8 @@ import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;

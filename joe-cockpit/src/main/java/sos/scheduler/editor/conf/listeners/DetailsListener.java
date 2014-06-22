@@ -15,10 +15,10 @@ import org.jdom.xpath.XPath;
 import sos.ftp.profiles.FTPProfile;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 
 import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.options.Options;

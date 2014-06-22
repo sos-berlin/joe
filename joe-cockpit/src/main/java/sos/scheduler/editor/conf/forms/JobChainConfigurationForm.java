@@ -3,7 +3,6 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.poi.util.IOUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
@@ -20,20 +19,21 @@ import org.eclipse.swt.widgets.TreeItem;
 import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.IDetailUpdate;
 import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
 
+import com.sos.joe.globals.interfaces.IDetailUpdate;
 import com.sos.joe.globals.interfaces.IEditor;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.DetailDom;
 
 public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDetailUpdate, IEditor {
-	private JobChainConfigurationListener	listener;
-	private IContainer						container;
+	private final JobChainConfigurationListener	listener;
+	private final IContainer						container;
 	private TreeItem						selection;
 	private SashForm						sashForm	= null;
 	private Group							gTree		= null;
@@ -81,12 +81,12 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
 		tree = new Tree(gTree, SWT.BORDER);
 		//tree.setMenu(new TreeMenu(tree, dom, this).getMenu());
 		tree.addListener(SWT.MenuDetect, new Listener() {
-			public void handleEvent(Event e) {
+			@Override public void handleEvent(Event e) {
 				e.doit = tree.getSelectionCount() > 0;
 			}
 		});
 		tree.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
+			@Override public void handleEvent(Event e) {
 				if (tree.getSelectionCount() > 0) {
 					selection = tree.getSelection()[0];
 					//if (selection == null)  selection = tree.getItem(0);
@@ -114,7 +114,7 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
 		return this.getShell();
 	}
 
-	public void updateLanguage() {
+	@Override public void updateLanguage() {
 		if (cMainForm.getChildren().length > 0) {
 			if (cMainForm.getChildren()[0] instanceof IUpdateLanguage) {
 				((IUpdateLanguage) cMainForm.getChildren()[0]).setToolTipText();
@@ -122,47 +122,47 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
 		}
 	}
 
-	public void dataChanged() {
+	@Override public void dataChanged() {
 		container.setStatusInTitle();
 	}
 
-	public void updateState(String state) {
+	@Override public void updateState(String state) {
 		TreeItem item = tree.getSelection()[0];
 		//        item.setText("State: " + state);
 		item.setText(JOE_M_JobAssistent_State.params(state));
 		dom.setChanged(true);
 	}
 
-	public void updateJobChainname(String name) {
+	@Override public void updateJobChainname(String name) {
 		TreeItem item = tree.getItem(0);
 		//    	item.setText("Job Chain: " + name);
 		item.setText(JOE_JobAssistent_JobChain.params(name));
 		dom.setChanged(true);
 	}
 
-	public void updateNote() {
+	@Override public void updateNote() {
 		dom.setChanged(true);
 	}
 
-	public void updateParamNote() {
+	@Override public void updateParamNote() {
 		dom.setChanged(true);
 	}
 
-	public void updateParam() {
+	@Override public void updateParam() {
 		dom.setChanged(true);
 	}
 
-	public boolean applyChanges() {
+	@Override public boolean applyChanges() {
 		Control[] c = cMainForm.getChildren();
 		return c.length == 0 || Utils.applyFormChanges(c[0]);
 	}
 
-	public void openBlank() {
+	@Override public void openBlank() {
 		initialize();
 		listener.treeFillMain(tree, cMainForm);
 	}
 
-	public boolean open(Collection files) {
+	@Override public boolean open(Collection files) {
 		boolean res = IOUtils.openFile(files, dom);
 		if (res) {
 			initialize();
@@ -240,14 +240,14 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
 		return filename;
 	}
 
-	public boolean save() {
+	@Override public boolean save() {
 		boolean res = IOUtils.saveFile(dom, false);
 		if (res)
 			container.setNewFilename(null);
 		return res;
 	}
 
-	public boolean saveAs() {
+	@Override public boolean saveAs() {
 		String old = dom.getFilename();
 		boolean res = IOUtils.saveFile(dom, true);
 		if (res)
@@ -255,16 +255,16 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
 		return res;
 	}
 
-	public boolean close() {
+	@Override public boolean close() {
 		return applyChanges() && IOUtils.continueAnyway(dom);
 	}
 
-	public boolean hasChanges() {
+	@Override public boolean hasChanges() {
 		Options.saveSash("main", sashForm.getWeights());
 		return dom.isChanged();
 	}
 
-	public String getHelpKey() {
+	@Override public String getHelpKey() {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
 			TreeData data = (TreeData) item.getData();
@@ -274,7 +274,7 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
 		return null;
 	}
 
-	public String getFilename() {
+	@Override public String getFilename() {
 		return dom.getFilename();
 	}
 

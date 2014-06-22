@@ -18,12 +18,12 @@ import org.eclipse.swt.widgets.Label;
 import org.jdom.Element;
 
 import sos.scheduler.editor.classes.LanguageSelector;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.container.JobIncludeFile;
 import sos.scheduler.editor.conf.container.JobJavaAPI;
 import sos.scheduler.editor.conf.container.JobScript;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.options.Options;

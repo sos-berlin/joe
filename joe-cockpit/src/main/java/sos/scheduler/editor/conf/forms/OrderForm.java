@@ -30,11 +30,11 @@ import org.jdom.JDOMException;
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.listeners.OrderListener;
 
 import com.sos.i18n.annotation.I18NMsg;
 import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;

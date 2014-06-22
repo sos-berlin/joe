@@ -9,8 +9,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class PeriodsListener {

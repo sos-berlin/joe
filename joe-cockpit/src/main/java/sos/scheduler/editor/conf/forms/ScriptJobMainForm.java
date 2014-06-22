@@ -13,9 +13,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.jdom.Element;
 
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.composites.JobMainComposite;
 import sos.scheduler.editor.conf.container.JobDelayAfterError;
 import sos.scheduler.editor.conf.container.JobDocumentation;

@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 
@@ -16,6 +17,7 @@ import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
  
 ;
@@ -25,7 +27,7 @@ public class DaysListener {
 	public static final int		ULTIMOS				= 2;
 	public static final int		SPECIFIC_MONTHS		= 3;
 	public static final int		SPECIFIC_DAY		= 6;
-	private SchedulerDom		_dom;
+	private final SchedulerDom		_dom;
 	private Element				_runtime;
 	/** 0 = weekdays 1 = monthdays 2 = ultimos */
 	private int					_type				= 0;
@@ -90,7 +92,7 @@ public class DaysListener {
 			if (!found)
 				unused.add(_days[_type][i]);
 		}
-		return (String[]) unused.toArray(new String[0]);
+		return unused.toArray(new String[0]);
 	}
 
 	public String[] getUsedDays() {
@@ -613,7 +615,7 @@ public class DaysListener {
 	private void isHolidayWeeksdayParent() {
 		if (_runtime.getName().equals("holidays"))
 			return;
-		if (sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor() instanceof sos.scheduler.editor.doc.forms.DocumentationForm)
+		if (MainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm)
 			return;
 		SchedulerForm f = (SchedulerForm) (sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor());
 		if (f == null)

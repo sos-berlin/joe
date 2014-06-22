@@ -37,7 +37,7 @@ import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.DomParser;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
-import com.swtdesigner.SWTResourceManager;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public class FTPDialog {
 	private Button				butOpenOrSave				= null;

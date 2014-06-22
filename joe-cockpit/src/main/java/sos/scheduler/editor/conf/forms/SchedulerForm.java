@@ -26,21 +26,22 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.IContainer;
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.app.TreeMenu;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IEditor;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
-import com.swtdesigner.SWTResourceManager;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdate, IEditor {
 	@SuppressWarnings("unused") private final String		conClsName		= "SchedulerForm";
@@ -376,7 +377,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		// if(dom.getFilename() != null && new java.io.File(dom.getFilename()).getName().startsWith("#xml#.config.") &&
 		// dom.getFilename().endsWith(".xml~")) {
 		if (dom.isDirectory()) {
-			res = IOUtils.saveDirectory(dom, false, SchedulerDom.DIRECTORY, null, container);
+			res = MainWindow.saveDirectory(dom, false, SchedulerDom.DIRECTORY, null, container);
 		}
 		else
 			if (dom.isLifeElement()) {
@@ -393,7 +394,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 					type = SchedulerDom.LIFE_ORDER;
 				if (dom.getRoot().getName().equals("add_order"))
 					type = SchedulerDom.LIFE_ADD_ORDER;
-				res = IOUtils.saveDirectory(dom, false, type, dom.getRoot().getName(), container);
+				res = MainWindow.saveDirectory(dom, false, type, dom.getRoot().getName(), container);
 			}
 			else {
 				res = IOUtils.saveFile(dom, false);

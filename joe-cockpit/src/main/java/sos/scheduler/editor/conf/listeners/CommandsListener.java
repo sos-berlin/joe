@@ -7,8 +7,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import sos.scheduler.editor.conf.ISchedulerUpdate;
-
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
  

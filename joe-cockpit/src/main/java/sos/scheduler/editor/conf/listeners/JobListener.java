@@ -11,9 +11,9 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 
 import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.LanguageDescriptorList;
@@ -870,7 +870,7 @@ public class JobListener extends JOEListener {
 	//
 	public void setName(final String name) {
 		Utils.setAttribute("name", name, _job);
-		if (_main != null)
+		if (_main != null) 
 			_main.updateTreeItem(name);
 		_dom.setChanged(true);
 		setChangedForDirectory();

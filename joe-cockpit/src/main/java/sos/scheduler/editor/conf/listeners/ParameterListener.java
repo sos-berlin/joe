@@ -13,13 +13,13 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 
 import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
-import com.swtdesigner.SWTResourceManager;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public class ParameterListener {
 	public void setJobname(final String jobname) {

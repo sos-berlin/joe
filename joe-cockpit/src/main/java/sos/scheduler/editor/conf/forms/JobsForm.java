@@ -20,13 +20,14 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 
 import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.wizard.forms.JobAssistentForm;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
@@ -39,7 +40,7 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private Button										bNewJob			= null;
 	private Button										bRemoveJob		= null;
 	private Label										label			= null;
-	private SchedulerDom								dom				= null;
+	private SchedulerDom					 			dom				= null;
 	private ISchedulerUpdate							update			= null;
 	private Button										butAssistent	= null;
 	private Button										newOrderJob		= null;
@@ -100,14 +101,14 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			bNewJob.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false));
 			getShell().setDefaultButton(bNewJob);
 			bNewJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					listener.newJob(table, false);
 					bRemoveJob.setEnabled(true);
 				}
 			});
 			newOrderJob = JOE_B_JobsForm_NewOrderJob.Control(new Button(group, SWT.NONE));
 			newOrderJob.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					listener.newJob(table, true);
 					bRemoveJob.setEnabled(true);
 				}
@@ -115,7 +116,7 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			newOrderJob.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			butAssistent = JOE_B_JobsForm_JobWizard.Control(new Button(group, SWT.NONE));
 			butAssistent.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					try {
 						Utils.startCursor(getShell());
 						JobAssistentForm assitent = new JobAssistentForm(dom, update);
@@ -141,7 +142,7 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			bRemoveJob = JOE_B_JobsForm_RemoveJob.Control(new Button(group, SWT.NONE));
 			bRemoveJob.setEnabled(false);
 			bRemoveJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					//					int c = MainWindow.message(getShell(), "Do you want remove the job?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					int c = MainWindow.message(getShell(), JOE_M_RemoveJob.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					if (c != SWT.YES)
@@ -178,7 +179,7 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		try {
 			table = JOE_Tbl_JobsForm_Table.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION | SWT.CHECK));
 			table.addMouseListener(new MouseAdapter() {
-				public void mouseDoubleClick(final MouseEvent e) {
+				@Override public void mouseDoubleClick(final MouseEvent e) {
 					if (table.getSelectionCount() > 0)
 						ContextMenu.goTo(table.getSelection()[0].getText(1), dom, JOEConstants.JOB);
 				}
@@ -189,7 +190,7 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			TableColumn tableColumn5 = JOE_TCl_JobsForm_Disabled.Control(new TableColumn(table, SWT.NONE));
 			tableColumn5.setWidth(60);
 			table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					if (Utils.isElementEnabled("job", dom, (Element) e.item.getData())) {
 						bRemoveJob.setEnabled(true);
 					}
@@ -234,7 +235,7 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		}
 	}
 
-	public void setToolTipText() {
+	@Override public void setToolTipText() {
 		//
 	}
 

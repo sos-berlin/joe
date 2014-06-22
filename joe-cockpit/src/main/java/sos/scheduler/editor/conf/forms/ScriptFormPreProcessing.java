@@ -14,10 +14,10 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.composites.PreProcessingComposite;
 
 import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.options.Options;

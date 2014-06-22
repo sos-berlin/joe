@@ -29,7 +29,7 @@ import sos.util.SOSString;
 import java.util.*;
 
 import com.sos.joe.globals.misc.ResourceManager;
-import com.swtdesigner.SWTResourceManager;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public class FTPDialogProfiles {
 	private Group				schedulerGroup				= null;

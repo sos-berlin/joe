@@ -1,4 +1,6 @@
 package sos.scheduler.editor.conf.listeners;
+import static sos.util.SOSClassUtil.getMethodName;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,10 +13,10 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.forms.JobsForm;
 
 import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
@@ -525,7 +527,7 @@ public class JobsListener extends JOEListener {
 		if (name == null || name.length() == 0)
 			return false;
 		for (int i = 0; _list != null && i < _list.size(); i++) {
-			Element currJob = (Element) _list.get(i);
+			Element currJob = _list.get(i);
 			String jobName = Utils.getAttributeValue("name", currJob);
 			if (jobName.equalsIgnoreCase(name)) {
 				return true;

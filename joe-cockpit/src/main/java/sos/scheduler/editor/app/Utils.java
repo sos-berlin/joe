@@ -36,6 +36,7 @@ import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.misc.TextDialog;
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
 import com.sos.joe.xml.DomParser;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
@@ -1074,7 +1075,7 @@ public class Utils {
 					((ActionsForm) update).updateTree("main");
 				else
 					if (currdom instanceof com.sos.joe.xml.jobdoc.DocumentationDom)
-						((sos.scheduler.editor.doc.forms.DocumentationForm) update).updateTree("main");
+						((DocumentationForm) update).updateTree("main");
 		}
 		catch (Exception e) {
 			try {

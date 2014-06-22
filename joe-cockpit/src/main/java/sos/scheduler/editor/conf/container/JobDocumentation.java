@@ -21,14 +21,14 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.conf.composites.TextArea;
 import sos.scheduler.editor.conf.composites.TextArea.enuSourceTypes;
-import sos.scheduler.editor.conf.forms.JobAssistentImportJobParamsForm;
-import sos.scheduler.editor.conf.forms.JobAssistentImportJobsForm;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.wizard.forms.JobAssistentImportJobParamsForm;
+import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
 
 public class JobDocumentation extends FormBaseClass {
 	@SuppressWarnings("unused")
@@ -50,7 +50,7 @@ public class JobDocumentation extends FormBaseClass {
 
 	public JobDocumentation(Composite pParentComposite, JobListener pobjDataProvider) {
 		super(pParentComposite, pobjDataProvider);
-		objJobDataProvider = (JobListener) pobjDataProvider;
+		objJobDataProvider = pobjDataProvider;
 		init = true;
 		showWaitCursor();
 		createGroup(pParentComposite);
@@ -109,7 +109,7 @@ public class JobDocumentation extends FormBaseClass {
 		tFileName = SOSJOEMessageCodes.JOE_T_JobDocumentation_FileName.Control(new Text(gDescription, SWT.BORDER));
 		tFileName.setLayoutData(gridData12);
 		tFileName.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
+			@Override public void modifyText(ModifyEvent e) {
 				if (init)
 					return;
 
@@ -132,7 +132,7 @@ public class JobDocumentation extends FormBaseClass {
 
 		butIsLiveFile = SOSJOEMessageCodes.JOE_B_JobDocumentation_IsLiveFile.Control(new Button(gDescription, SWT.CHECK));
 		butIsLiveFile.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				if (init)
 					return;
 
@@ -171,7 +171,7 @@ public class JobDocumentation extends FormBaseClass {
 		butShow.setEnabled(false);
 		butShow.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		butShow.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 
 				try {
 					showWaitCursor();
@@ -208,7 +208,7 @@ public class JobDocumentation extends FormBaseClass {
 		butOpen = SOSJOEMessageCodes.JOE_B_JobDocumentation_Open.Control(new Button(gDescription, SWT.NONE));
 		butOpen.setEnabled(false);
 		butOpen.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				String xmlPath = "";
 				try {
 					showWaitCursor();
@@ -242,7 +242,7 @@ public class JobDocumentation extends FormBaseClass {
 
 		butWizard = SOSJOEMessageCodes.JOE_B_ParameterForm_Wizard.Control(new Button(gDescription, SWT.NONE));
 		butWizard.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				startWizzard(false);
 			}
 		});

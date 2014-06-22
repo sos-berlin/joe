@@ -4,10 +4,10 @@ import org.eclipse.swt.custom.CTabItem;
 //import sos.scheduler.editor.actions.forms.ActionsForm;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
-import sos.scheduler.editor.doc.forms.DocumentationForm;
 
 import com.sos.event.service.forms.ActionsForm;
 import com.sos.joe.globals.interfaces.IEditor;
+import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
 
 public interface IContainer {
 	public SchedulerForm newScheduler();
@@ -15,6 +15,9 @@ public interface IContainer {
 	public SchedulerForm newScheduler(int type);
 
 	public DocumentationForm newDocumentation();
+	// public SchedulerForm reOpenScheduler(String filename);
+	public DocumentationForm openDocumentation();
+	public DocumentationForm openDocumentation(String filename);
 
 	public SchedulerForm openScheduler();
 
@@ -24,10 +27,7 @@ public interface IContainer {
 
 	public SchedulerForm openScheduler(String filename);
 
-	// public SchedulerForm reOpenScheduler(String filename);
-	public DocumentationForm openDocumentation();
 
-	public DocumentationForm openDocumentation(String filename);
 
 	public String openDocumentationName();
 

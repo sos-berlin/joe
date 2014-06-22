@@ -1,13 +1,12 @@
 package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-
 import org.jdom.Element;
 
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.listeners.JobListener;
 

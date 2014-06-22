@@ -28,11 +28,11 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.util.SOSString;
 
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
-import com.swtdesigner.SWTResourceManager;
 
 public class HotFolderDialog{
 
@@ -67,9 +67,9 @@ public class HotFolderDialog{
 
 	private              Button           butAdd                        = null;
 
-	private              String           SCHEDULER_CLUSTER_MASK        = "^[^#]+$";
+	private final              String           SCHEDULER_CLUSTER_MASK        = "^[^#]+$";
 
-	private              String           SCHEDULER_HOST_MASK           = "^[^#]+#\\d{1,5}$";
+	private final              String           SCHEDULER_HOST_MASK           = "^[^#]+#\\d{1,5}$";
 
 	//public HotFolderDialog(MainWindow mainwindow_) {
 	public HotFolderDialog() {
@@ -87,7 +87,7 @@ public class HotFolderDialog{
 				| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
-			public void keyTraversed(final TraverseEvent e) {				
+			@Override public void keyTraversed(final TraverseEvent e) {				
 				if(e.detail == SWT.TRAVERSE_ESCAPE) {					
 					schedulerConfigurationShell.dispose();
 				}
@@ -148,7 +148,7 @@ public class HotFolderDialog{
 
 		cancelButton = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Cancel.Control(new Button(schedulerConfigurationShell, SWT.NONE));
 		cancelButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				schedulerConfigurationShell.dispose();
 			}
 		});
@@ -156,12 +156,12 @@ public class HotFolderDialog{
 
 		txtName = SOSJOEMessageCodes.JOE_T_HotFolderDialog_Name.Control(new Text(schedulerConfigurationShell, SWT.BORDER));
 		txtName.addVerifyListener(new VerifyListener() {
-			public void verifyText(final VerifyEvent e) {
+			@Override public void verifyText(final VerifyEvent e) {
 				e.doit = (e.text.indexOf("#") == -1);
 			}
 		});
 		txtName.addModifyListener(new ModifyListener() {
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				setButtonRenameEnable();
 			}
 		});
@@ -170,7 +170,7 @@ public class HotFolderDialog{
 		if(type == SCHEDULER_HOST) {
 			txtPort = SOSJOEMessageCodes.JOE_T_HotFolderDialog_Port.Control(new Text(schedulerConfigurationShell, SWT.BORDER));
 			txtPort.addVerifyListener(new VerifyListener() {
-				public void verifyText(final VerifyEvent e) {
+				@Override public void verifyText(final VerifyEvent e) {
 					if(type == SCHEDULER_CLUSTER)
 						e.doit = e.text.indexOf("#") == -1;
 					else
@@ -178,7 +178,7 @@ public class HotFolderDialog{
 				}
 			});
 			txtPort.addModifyListener(new ModifyListener() {
-				public void modifyText(final ModifyEvent e) {
+				@Override public void modifyText(final ModifyEvent e) {
 					setButtonRenameEnable();
 				}
 			});
@@ -187,7 +187,7 @@ public class HotFolderDialog{
 
 		butAdd = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Add.Control(new Button(schedulerConfigurationShell, SWT.NONE));
 		butAdd.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				addItem();				
 			}
 		});
@@ -198,7 +198,7 @@ public class HotFolderDialog{
 
 		butRename = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Rename.Control(new Button(schedulerConfigurationShell, SWT.NONE));
 		butRename.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				try {
 					if(tree.getSelectionCount() > 0 
 							&& !tree.getSelection()[0].getText().equals(sType) 
@@ -280,7 +280,7 @@ public class HotFolderDialog{
 		{
 			butOK = SOSJOEMessageCodes.JOE_B_HotFolderDialog_Open.Control(new Button(schedulerConfigurationShell, SWT.NONE));
 			butOK.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {					
+				@Override public void widgetSelected(final SelectionEvent e) {					
 					openDirectory();
 				}
 			});
@@ -305,7 +305,7 @@ public class HotFolderDialog{
 			tree = 	SOSJOEMessageCodes.JOE_HotFolderDialog_Tree.Control(new Tree(schedulerGroup, SWT.BORDER));
 
 			tree.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 
 					if (tree.getSelectionCount() > 0 && !tree.getSelection()[0].getText().equals(sType)) {
 						if(type ==SCHEDULER_CLUSTER) {
@@ -335,7 +335,7 @@ public class HotFolderDialog{
 				}
 			});
 			tree.addMouseListener(new MouseAdapter() {
-				public void mouseDoubleClick(final MouseEvent e) {
+				@Override public void mouseDoubleClick(final MouseEvent e) {
 					openDirectory();
 				}
 			});

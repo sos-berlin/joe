@@ -19,6 +19,7 @@
         <!-- sandbox project! not for release build! contains errors, build will be broken -->
         <!-- module>joe-cockpit-sandbox</module -->
         <module>joe-event-service-cockpit</module>
+        <module>joe-jobdoc-editor</module>
         <module>joe-globals</module>
         <module>joe-xml</module>
     </modules>

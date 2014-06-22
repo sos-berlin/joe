@@ -10,9 +10,9 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 
 import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;

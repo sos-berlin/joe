@@ -39,18 +39,20 @@ import org.jdom.xpath.XPath;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.WindowsSaver;
-import sos.scheduler.editor.conf.IDetailUpdate;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
 import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.IDetailUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.wizard.forms.JobAssistentImportJobParamsForm;
+import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
 import com.sos.joe.xml.jobscheduler.DetailDom;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
@@ -101,7 +103,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private JobListener						joblistener					= null;
 	private String							jobname						= "";
 	private String							jobDocumentation			= null;
-	private WindowsSaver					w;
+	private final WindowsSaver					w;
 
 	public DetailForm(Composite parent_, int style, int type_, DetailDom dom_, IDetailUpdate gui_, boolean isLifeElement_, String path_) {
 		super(parent_, style);
@@ -165,7 +167,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			gridLayout_3.numColumns = 3;
 			final Group composite = JOE_G_DetailForm_MainGroup.Control(new Group(this, SWT.NONE));
 			composite.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(final DisposeEvent e) {
+				@Override public void widgetDisposed(final DisposeEvent e) {
 					if (butApply.isEnabled()) {
 						save();
 					}
@@ -193,7 +195,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			//				}
 			//			});
 			txtName.addModifyListener(new ModifyListener() {
-				public void modifyText(final ModifyEvent e) {
+				@Override public void modifyText(final ModifyEvent e) {
 					if (!txtName.getText().equals("")
 							&& (tableParams.getSelectionCount() == 0 || (tableParams.getSelectionCount() > 0 && !tableParams.getSelection()[0].getText(0)
 									.equalsIgnoreCase(txtName.getText())))) {
@@ -210,7 +212,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				}
 			});
 			txtName.addKeyListener(new KeyAdapter() {
-				public void keyPressed(final KeyEvent e) {
+				@Override public void keyPressed(final KeyEvent e) {
 					if (e.keyCode == SWT.CR && !txtName.getText().equals("")) {
 						addParam();
 					}
@@ -227,14 +229,14 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			//				}
 			//			});
 			txtValue.addKeyListener(new KeyAdapter() {
-				public void keyPressed(final KeyEvent e) {
+				@Override public void keyPressed(final KeyEvent e) {
 					if (e.keyCode == SWT.CR && !txtName.getText().equals("")) {
 						addParam();
 					}
 				}
 			});
 			txtValue.addModifyListener(new ModifyListener() {
-				public void modifyText(final ModifyEvent e) {
+				@Override public void modifyText(final ModifyEvent e) {
 					if (!txtName.getText().equals("")
 							&& (tableParams.getSelectionCount() == 0 || (tableParams.getSelectionCount() > 0 && !tableParams.getSelection()[0].getText(1)
 									.equalsIgnoreCase(txtValue.getText())))) {
@@ -251,7 +253,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			butText = JOE_B_DetailForm_Text.Control(new Button(parameterGroup, SWT.NONE));
 			butText.setEnabled(false);
 			butText.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					String ntext = "";
 					if (tableParams.getSelectionCount() > 0) {
 						TableItem item = tableParams.getSelection()[0];
@@ -281,7 +283,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			butApplyParam = JOE_B_DetailForm_ApplyParam.Control(new Button(parameterGroup, SWT.NONE));
 			butApplyParam.setEnabled(isEditableParam);
 			butApplyParam.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					addParam();
 				}
 			});
@@ -291,7 +293,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			tableParams = JOE_Tbl_DetailForm_Params.Control(new Table(parameterGroup, SWT.FULL_SELECTION | SWT.BORDER));
 			tableParams.setEnabled(false);
 			tableParams.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					if (tableParams.getSelectionCount() > 0) {
 						TableItem item = tableParams.getSelection()[0];
 						txtName.setText(item.getText(0));
@@ -333,7 +335,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			//			newColumnTableColumn.setText("Name");
 			newColumnTableColumn.setWidth(118);
 			newColumnTableColumn.addControlListener(new ControlAdapter() {
-				public void controlResized(final ControlEvent e) {
+				@Override public void controlResized(final ControlEvent e) {
 					w.saveTableColumn("tableParams", newColumnTableColumn);
 				}
 			});
@@ -342,7 +344,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			//			newColumnTableColumn_1.setText("Value");
 			newColumnTableColumn_1.setWidth(150);
 			newColumnTableColumn_1.addControlListener(new ControlAdapter() {
-				public void controlResized(final ControlEvent e) {
+				@Override public void controlResized(final ControlEvent e) {
 					w.saveTableColumn("tableParams", newColumnTableColumn_1);
 				}
 			});
@@ -351,14 +353,14 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			//			newColumnTableColumn_2.setText("Text");
 			newColumnTableColumn_2.setWidth(100);
 			newColumnTableColumn_2.addControlListener(new ControlAdapter() {
-				public void controlResized(final ControlEvent e) {
+				@Override public void controlResized(final ControlEvent e) {
 					w.saveTableColumn("tableParams", newColumnTableColumn_2);
 				}
 			});
 			w.restoreTableColumn("tableParams", newColumnTableColumn_2, 100);
 			final Button butNew = JOE_B_DetailForm_New.Control(new Button(parameterGroup, SWT.NONE));
 			butNew.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					txtName.setText("");
 					txtValue.setText("");
 					paramText.setText("");
@@ -377,7 +379,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			composite_2.setLayout(new GridLayout());
 			butUp = JOE_B_DetailForm_Up.Control(new Button(composite_2, SWT.NONE));
 			butUp.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					detailListener.changeUp(tableParams);
 				}
 			});
@@ -385,7 +387,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			butUp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_up.gif"));
 			butDown = JOE_B_DetailForm_Down.Control(new Button(composite_2, SWT.NONE));
 			butDown.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					detailListener.changeDown(tableParams);
 				}
 			});
@@ -393,7 +395,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			butDown.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_down.gif"));
 			final Button parameterButton = JOE_B_DetailForm_Wizard.Control(new Button(parameterGroup, SWT.NONE));
 			parameterButton.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					startWizzard();
 				}
 			});
@@ -402,7 +404,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			//			parameterButton.setText("Wizard");
 			butRemove = JOE_B_DetailForm_Remove.Control(new Button(parameterGroup, SWT.NONE));
 			butRemove.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					if (tableParams.getSelectionCount() > 0) {
 						detailListener.deleteParameter(tableParams, tableParams.getSelectionIndex());
 						txtParamNote.setText("");
@@ -436,7 +438,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			FontData data = fontDatas[0];
 			butApply.setFont(new Font(Display.getCurrent(), data.getName(), data.getHeight(), SWT.BOLD));
 			butApply.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					save();
 				}
 			});
@@ -444,7 +446,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			cancelButton = JOE_B_DetailForm_Cancel.Control(new Button(parameterGroup, SWT.NONE));
 			cancelButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			cancelButton.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					saveWindowPosAndSize();
 					if (butApply.getEnabled()) {
 						//						int count = MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getLabel("detailform.close"), SWT.ICON_WARNING | SWT.OK
@@ -460,7 +462,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			txtParamNote = JOE_T_DetailForm_JobChainNote.Control(new Text(parameterGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL));
 			txtParamNote.setEnabled(false);
 			txtParamNote.addVerifyListener(new VerifyListener() {
-				public void verifyText(final VerifyEvent e) {
+				@Override public void verifyText(final VerifyEvent e) {
 					if (e.keyCode == 8 || e.keyCode == 127) {
 						isEditableParam = true;
 						butApplyParam.setEnabled(isEditableParam);
@@ -468,7 +470,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				}
 			});
 			txtParamNote.addModifyListener(new ModifyListener() {
-				public void modifyText(final ModifyEvent e) {
+				@Override public void modifyText(final ModifyEvent e) {
 					changeParameNote();
 				}
 			});
@@ -480,7 +482,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			final GridData gridData_7 = new GridData(GridData.FILL, GridData.BEGINNING, false, true);
 			comboLanguage.setLayoutData(gridData_7);
 			comboLanguage.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					txtJobchainNote.setText(detailListener.getNote(comboLanguage.getText()));
 					if (tableParams.getSelectionCount() > 0) {
 						TableItem item = tableParams.getSelection()[0];
@@ -504,7 +506,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			comboLanguage.select(0);
 			butRefreshWizzardNoteParam = JOE_B_DetailForm_RefreshWizardNoteParam.Control(new Text(parameterGroup, SWT.CHECK));
 			butRefreshWizzardNoteParam.addModifyListener(new ModifyListener() {
-				public void modifyText(final ModifyEvent e) {
+				@Override public void modifyText(final ModifyEvent e) {
 					refreshTable();
 				}
 			});
@@ -526,7 +528,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			jobChainGroup.setLayoutData(gridData);
 			txtJobchainNote = JOE_T_DetailForm_JobChainNote.Control(new Text(jobChainGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL));
 			txtJobchainNote.addModifyListener(new ModifyListener() {
-				public void modifyText(final ModifyEvent e) {
+				@Override public void modifyText(final ModifyEvent e) {
 					if (detailListener != null) {
 						isEditable = true;
 						if (gui != null)
@@ -542,7 +544,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			butXML.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			butXML.setEnabled(false);
 			butXML.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					try {
 						if (dom != null && dom.isChanged()) {
 							//							MainWindow.message("Please save jobchain configuration file before opening XML JOEConstants.", SWT.ICON_ERROR);
@@ -590,7 +592,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			butDocumentation = JOE_B_DetailForm_Documentation.Control(new Button(jobChainGroup, SWT.NONE));
 			butDocumentation.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 			butDocumentation.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
+				@Override public void widgetSelected(final SelectionEvent e) {
 					String filename = null;
 					try {
 						if (type == JOEConstants.JOB_CHAINS) {
@@ -645,7 +647,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			//				}
 			//			});
 			txtParamsFile.addModifyListener(new ModifyListener() {
-				public void modifyText(final ModifyEvent e) {
+				@Override public void modifyText(final ModifyEvent e) {
 					detailListener.setParamsFileName(txtParamsFile.getText());
 					if (gui != null)
 						gui.updateNote();
@@ -812,7 +814,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		}
 	}
 
-	public void setToolTipText() {
+	@Override public void setToolTipText() {
 		//		comboLanguage.setToolTipText(Messages.getTooltip("detail.language"));
 		//		txtJobchainNote.setToolTipText(Messages.getTooltip("detail.detail_note"));
 		//		butApply.setToolTipText(Messages.getTooltip("detail.apply"));

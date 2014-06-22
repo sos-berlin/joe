@@ -7,10 +7,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import sos.scheduler.editor.classes.SOSSplashScreen;
 import sos.util.SOSClassUtil;
 
 import com.sos.JSHelper.Logging.Log4JHelper;
+import com.sos.dialog.SOSSplashScreen;
 import com.sos.i18n.annotation.I18NResourceBundle;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.messages.ErrorLog;
@@ -108,7 +108,8 @@ import com.sos.joe.globals.options.Options;
 			window = new MainWindow();
 			window.createSShell();
 			final Shell shell = MainWindow.getSShell();
-			Method objApplicationMainMethod = JOEConstants.class.getMethod("openApplicationMainWnd", new Class[] { Shell.class });
+			ErrorLog.setSShell(shell);
+			Method objApplicationMainMethod = SOSSplashScreen.class.getMethod("openApplicationMainWnd", new Class[] { Shell.class });
 			Image objImage4Splash = null;
 			if (Options.showSplashScreen() == true) {
 				InputStream img = JOEConstants.class.getResourceAsStream("/SplashScreenJOE.bmp");
@@ -119,7 +120,7 @@ import com.sos.joe.globals.options.Options;
 					objImage4Splash = new Image(display, img);
 				}
 			}
-			SOSSplashScreen.startJOEExecuteLoop(shell, new Runnable() {
+			SOSSplashScreen.startDialogExecuteLoop(shell, new Runnable() {
 				@Override public void run() {
 					doSomeTimeconsumingOperation();
 				}

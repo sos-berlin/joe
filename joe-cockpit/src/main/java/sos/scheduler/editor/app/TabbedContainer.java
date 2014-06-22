@@ -26,13 +26,13 @@ import org.jdom.input.SAXBuilder;
 
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
-import sos.scheduler.editor.doc.forms.DocumentationForm;
 
 import com.sos.event.service.forms.ActionsForm;
 import com.sos.joe.globals.interfaces.IEditor;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
  
 public class TabbedContainer implements IContainer {
@@ -44,7 +44,7 @@ public class TabbedContainer implements IContainer {
 	private static final String							NEW_DOCUMENTATION_TITLE		= "Unknown";
 	private static final String							NEW_DETAIL_TITLE			= "Unknown";
 	private CTabFolder									folder						= null;
-	private final ArrayList									filelist					= new ArrayList();
+	private final ArrayList			<String>						filelist					= new ArrayList <String>();
 	class TabData {
 		protected String	title	= "";
 		protected String	caption	= "";
@@ -153,7 +153,7 @@ public class TabbedContainer implements IContainer {
 	}
 
 	public ActionsForm openActions(String filename) {
-		ActionsForm actionsForm = new ActionsForm(this, folder, SWT.NONE);
+		ActionsForm actionsForm = new ActionsForm(folder, SWT.NONE);
 		if (actionsForm.open(filename, filelist)) {
 			CTabItem tab = newItem(actionsForm, actionsForm.getFilename());
 			tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(conImageEDITOR_SMALL_PNG)));
@@ -186,7 +186,7 @@ public class TabbedContainer implements IContainer {
 	}
 
 	@Override public DocumentationForm newDocumentation() {
-		DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
+		DocumentationForm doc = new DocumentationForm(folder, SWT.NONE);
 		doc.openBlank();
 		newItem(doc, NEW_DOCUMENTATION_TITLE);
 		return doc;
@@ -194,7 +194,7 @@ public class TabbedContainer implements IContainer {
 
 	@Override public DocumentationForm openDocumentation() {
 		try {
-			DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
+			DocumentationForm doc = new DocumentationForm(folder, SWT.NONE);
 			if (doc.open(filelist)) {
 				// CTabItem tab = newItem(doc, doc.getFilename());
 				newItem(doc, doc.getFilename());
@@ -217,7 +217,7 @@ public class TabbedContainer implements IContainer {
 
 	@Override public DocumentationForm openDocumentation(String filename) {
 		try {
-			DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
+			DocumentationForm doc = new DocumentationForm(folder, SWT.NONE);
 			if (doc.open(filename, filelist)) {
 				// CTabItem tab = newItem(doc, doc.getFilename());
 				newItem(doc, doc.getFilename());
@@ -241,7 +241,7 @@ public class TabbedContainer implements IContainer {
 
 	@Override public String openDocumentationName() {
 		try {
-			DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
+			DocumentationForm doc = new DocumentationForm(folder, SWT.NONE);
 			if (doc.open(filelist)) {
 				// CTabItem tab = newItem(doc, doc.getFilename());
 				// tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
@@ -599,7 +599,7 @@ public class TabbedContainer implements IContainer {
 	}
 
 	@Override public ActionsForm newActions() {
-		ActionsForm actions = new ActionsForm(this, folder, SWT.NONE);
+		ActionsForm actions = new ActionsForm(folder, SWT.NONE);
 		actions.openBlank();
 		newItem(actions, NEW_DOCUMENTATION_TITLE);
 		return actions;

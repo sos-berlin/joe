@@ -15,9 +15,9 @@ import org.jdom.filter.Filter;
 
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.ISchedulerUpdate;
 import sos.util.SOSString;
 
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
