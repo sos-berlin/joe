@@ -25,10 +25,10 @@ import org.jdom.Element;
 import com.sos.joe.interfaces.IUnsaved;
 import com.sos.joe.interfaces.IUpdateLanguage;
 
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.HttpAuthenticationListener;
 import sos.util.SOSClassUtil;
 import sos.util.SOSCrypt;

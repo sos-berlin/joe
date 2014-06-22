@@ -11,13 +11,9 @@ import org.eclipse.swt.widgets.Display;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.util.SOSClassUtil;
 
 import com.sos.JSHelper.Basics.JSToolBox;
@@ -25,13 +21,17 @@ import com.sos.VirtualFileSystem.Factory.VFSFactory;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVFSHandler;
 import com.sos.VirtualFileSystem.Interfaces.ISOSVfsFileTransfer;
 import com.sos.VirtualFileSystem.Options.SOSFTPOptions;
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.SchedulerObjectFactory;
 import com.sos.scheduler.model.objects.JSObjJob;
 import com.sos.scheduler.model.objects.JSObjJobChain;
 import com.sos.scheduler.model.objects.Spooler;
-
 /**
+ * 
 * \class JOEListener
 *
 * \brief JOEListener -
@@ -58,7 +58,7 @@ import com.sos.scheduler.model.objects.Spooler;
 
 /**
  * @author KB
- *
+ * 
  */
 public class JOEListener extends JSToolBox {
 	@SuppressWarnings("unused")
@@ -254,13 +254,13 @@ public class JOEListener extends JSToolBox {
 		catch (Exception e) {
 			try {
 				new ErrorLog("error in " + SOSClassUtil.getMethodName() + "; "
-						+ sos.scheduler.editor.app.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
+						+ com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
 			}
 			e.printStackTrace();
-			MainWindow.message(sos.scheduler.editor.app.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }),
+			MainWindow.message(com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }),
 					SWT.ICON_ERROR | SWT.OK);
 		}
 	}

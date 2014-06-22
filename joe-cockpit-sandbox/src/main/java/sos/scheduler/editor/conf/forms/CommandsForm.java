@@ -11,13 +11,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUpdateLanguage;
 
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.CommandsListener;
 
 

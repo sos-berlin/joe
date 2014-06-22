@@ -12,22 +12,24 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.objects.JSObjJob;
 import com.sos.scheduler.model.objects.JSObjParams;
 import com.sos.scheduler.model.objects.Param;
 import com.sos.scheduler.model.objects.Params.CopyParams;
-import com.swtdesigner.SWTResourceManager;
 
 public class JobParameterListener {
 	public void setJobname(final String jobname) {
 		this.jobname = jobname;
 	}
+	 
 	private final ISchedulerUpdate	_main					= null;
 	private final SchedulerDom		_dom					= null;
 	private final Element			_parent					= null;
@@ -40,12 +42,12 @@ public class JobParameterListener {
 	private static HashMap			parameterDescription	= new HashMap();
 	private static HashMap			parameterRequired		= new HashMap();
 	//default ist config
-	private int						type					= Editor.CONFIG;
+	private int						type					= JOEConstants.CONFIG;
 	private JSObjJob				objJSJob				= null;
 
 	public JobParameterListener(final JSObjJob pobjJob, final ISchedulerUpdate update) {
 		objJSJob = pobjJob;
-		type = Editor.JOB_PARAMETER;
+		type = JOEConstants.JOB_PARAMETER;  
 		initParams();
 	}
 
@@ -157,12 +159,7 @@ public class JobParameterListener {
 			}
 		}
 		catch (Exception e) {
-			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			System.out.println("error in ParameterListener.existsParams " + e.getMessage());
 		}
 		return null;
@@ -172,7 +169,7 @@ public class JobParameterListener {
 		if (objParamList != null) {
 			// TODO			objParamList.remove(index);
 			_dom.setChanged(true);
-			//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			//if(type == JOEConstants.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 			Utils.setChangedForDirectory(_parent, _dom);
 		}
 		//		if (objParamList.size() == 0) {
@@ -187,7 +184,7 @@ public class JobParameterListener {
 			_dom.setChanged(true);
 			//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 			Utils.setChangedForDirectory(_parent, _dom);
-			//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			//if(type == JOEConstants.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 		}
 		table.remove(index);
 	}
@@ -196,7 +193,7 @@ public class JobParameterListener {
 		if (_includeParams != null) {
 			_includeParams.remove(index);
 			_dom.setChanged(true);
-			//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			//if(type == JOEConstants.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 			Utils.setChangedForDirectory(_parent, _dom);
 		}
 		table.remove(index);
@@ -237,9 +234,9 @@ public class JobParameterListener {
 			}
 		}
 		_dom.setChanged(true);
-		if (type == Editor.JOB_COMMANDS)
+		if (type == JOEConstants.JOB_COMMANDS)
 			_dom.setChangedForDirectory("job", jobname, SchedulerDom.MODIFY);
-		//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+		//if(type == JOEConstants.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 		Utils.setChangedForDirectory(_parent, _dom);
 	}
 
@@ -263,7 +260,7 @@ public class JobParameterListener {
 							e.setAttribute("file", file);
 						Utils.setAttribute("node", node, e);
 						_dom.setChanged(true);
-						//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+						//if(type == JOEConstants.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 						Utils.setChangedForDirectory(_parent, _dom);
 						table.getItem(index).setText(1, node);
 						table.getItem(index).setText(2, isLive ? "live_file" : "file");
@@ -281,7 +278,7 @@ public class JobParameterListener {
 				e.setAttribute("file", file);
 			e.setAttribute("node", node);
 			_dom.setChanged(true);
-			//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			//if(type == JOEConstants.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 			Utils.setChangedForDirectory(_parent, _dom);
 			if (_includeParams == null)
 				initParams();
@@ -305,7 +302,7 @@ public class JobParameterListener {
 						//Utils.setAttribute("value", value, e);
 						e.setAttribute("value", value);
 						_dom.setChanged(true);
-						if (type == Editor.JOB)
+						if (type == JOEConstants.JOB)
 							_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _parent), SchedulerDom.MODIFY);
 						Utils.setChangedForDirectory(_parent, _dom);
 						table.getItem(index).setText(1, value);
@@ -320,7 +317,7 @@ public class JobParameterListener {
 			e.setAttribute("name", name);
 			e.setAttribute("value", value);
 			_dom.setChanged(true);
-			//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+			//if(type == JOEConstants.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 			Utils.setChangedForDirectory(_parent, _dom);
 			if (_environments == null)
 				initEnvironment();
@@ -339,7 +336,7 @@ public class JobParameterListener {
 		//		}
 		//		if (objParamList != null) {
 		//
-		//			//if (name.equals("<from>") && type == Editor.COMMANDS) {
+		//			//if (name.equals("<from>") && type == JOEConstants.COMMANDS) {
 		//			if (name.equals("<from>")) {
 		//				found = table.getSelectionIndex() > -1;
 		//			}
@@ -358,7 +355,7 @@ public class JobParameterListener {
 		//								e.setAttribute("value", value);
 		//
 		//								_dom.setChanged(true);
-		//								//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+		//								//if(type == JOEConstants.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 		//								Utils.setChangedForDirectory(_parent, _dom);
 		//								table.getItem(index).setText(1, value);
 		//
@@ -381,7 +378,7 @@ public class JobParameterListener {
 		//				}
 		//			}
 		//
-		//			//if (name.equals("<from>") && found && type == Editor.COMMANDS) {
+		//			//if (name.equals("<from>") && found && type == JOEConstants.COMMANDS) {
 		//			if (name.equals("<from>") && found) {
 		//				int index = table.getSelectionIndex();
 		//				table.getItem(index).setText(0, name);
@@ -392,7 +389,7 @@ public class JobParameterListener {
 		//				e.removeAttribute("name");
 		//				e.removeAttribute("value");
 		//				_dom.setChanged(true);
-		//				//if(type == Editor.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
+		//				//if(type == JOEConstants.JOB) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
 		//			}
 		//
 		//		}
@@ -410,7 +407,7 @@ public class JobParameterListener {
 		//
 		//			_dom.setChanged(true);
 		//
-		//			if (type == Editor.JOB) {
+		//			if (type == JOEConstants.JOB) {
 		//				_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _parent), SchedulerDom.MODIFY);
 		//			}
 		//			if (objParamList == null) {
@@ -423,7 +420,7 @@ public class JobParameterListener {
 		//			}
 		//
 		//		}
-		//		if (type == Editor.JOB_COMMANDS)
+		//		if (type == JOEConstants.JOB_COMMANDS)
 		//			_dom.setChangedForDirectory("job", jobname, SchedulerDom.MODIFY);
 		//		Utils.setChangedForDirectory(_parent, _dom);
 		//
@@ -442,7 +439,7 @@ public class JobParameterListener {
 	}
 
 	public void getAllParameterDescription() {
-		String xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData();
+		String xmlPaths = Options.getSchedulerData();
 		String include = "";
 		Element desc = _parent.getChild("description");
 		if (desc != null) {
@@ -482,7 +479,7 @@ public class JobParameterListener {
 		}
 		catch (Exception ex) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
 			}
 			catch (Exception ee) {
 				//tu nichts

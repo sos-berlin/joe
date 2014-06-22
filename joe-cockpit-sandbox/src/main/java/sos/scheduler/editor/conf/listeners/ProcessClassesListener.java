@@ -11,7 +11,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 import com.sos.scheduler.model.objects.JSObjProcessClass;
 

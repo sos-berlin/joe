@@ -5,7 +5,7 @@ import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_E_0002;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.TextArea;
 import sos.scheduler.editor.classes.TextArea.enuSourceTypes;

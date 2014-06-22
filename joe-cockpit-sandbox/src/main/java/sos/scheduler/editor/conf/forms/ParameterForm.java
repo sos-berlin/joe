@@ -102,7 +102,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
@@ -111,19 +111,19 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSTable;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
 
 import com.sos.JSHelper.io.Files.JSFile;
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUnsaved;
 import com.sos.joe.interfaces.IUpdateLanguage;
-import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
-import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
 import com.sos.joe.objects.job.JobListener;
+import com.sos.joe.wizard.forms.JobAssistentImportJobParamsForm;
+import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
 import com.sos.scheduler.model.objects.JSObjJob;
-import com.swtdesigner.SWTResourceManager;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */implements IUnsaved, IUpdateLanguage, ISOSTableMenueListeners {
 	private final Logger		logger					= Logger.getLogger(ParameterForm.class);
@@ -281,16 +281,16 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		gridData_2.widthHint = 760;
 		tabFolder.setLayoutData(gridData_2);
 		// Parameter
-		if (type == Editor.JOB_COMMANDS)
+		if (type == JOEConstants.JOB_COMMANDS)
 			createJobCommandParameter();
 		else {
 			createParameter();
 		}
 		// Environment
-		if (type == Editor.JOB || type == Editor.JOB_COMMANDS)
+		if (type == JOEConstants.JOB || type == JOEConstants.JOB_COMMANDS)
 			createEnvironment();
 		// Includes
-		if (type != Editor.WEBSERVICE)
+		if (type != JOEConstants.WEBSERVICE)
 			createIncludes();
 		// test
 		// createParameterTabItem();
@@ -322,8 +322,8 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 	}
 
 	private void addInclude() {
-		listener.saveIncludeParams(tableIncludeParams, txtIncludeFilename.getText().trim(), txtIncludeNode.getText(), type == Editor.JOB
-				|| type == Editor.COMMANDS || type == Editor.JOB_COMMANDS && butIsLifeFile.getSelection() ? butIsLifeFile.getSelection() : false);
+		listener.saveIncludeParams(tableIncludeParams, txtIncludeFilename.getText().trim(), txtIncludeNode.getText(), type == JOEConstants.JOB
+				|| type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS && butIsLifeFile.getSelection() ? butIsLifeFile.getSelection() : false);
 		txtIncludeFilename.setText("");
 		txtIncludeNode.setText("");
 		butIncludesApply.setEnabled(false);
@@ -331,7 +331,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		butOpenInclude.setEnabled(false);
 		tableIncludeParams.deselectAll();
 		txtIncludeFilename.setFocus();
-		if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
+		if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
 			butIsLifeFile.setSelection(false);
 	}
 
@@ -352,15 +352,15 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		if (includeFile != null && includeFile.trim().length() > 0) {
 			// JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren
 			// JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), new
-			// JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? Editor.JOB : Editor.JOB_WIZARD);
+			// JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? JOEConstants.JOB : JOEConstants.JOB_WIZARD);
 			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), getJobListener(),
-					tParameter, Editor.PARAMETER);
+					tParameter, JOEConstants.PARAMETER);
 			paramsForm.showAllImportJobParams(includeFile);
 			listener.fillIncludeParams(tableIncludeParams);
 		}
 		else {
 			// Liste aller Jobdokumentation
-			JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(getJobListener(), tParameter, Editor.PARAMETER);
+			JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(getJobListener(), tParameter, JOEConstants.PARAMETER);
 			importParameterForms.showAllImportJobs();
 		}
 		Utils.stopCursor(getShell());
@@ -526,14 +526,14 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 					updateIncludeParam(includeParameterTabItem, false, tableIncludeParameter, txtIncludeParameter, txtIncludeParameterValue, butIncludeRemove);
 				}
 			});
-			if (type == Editor.JOB) {
+			if (type == JOEConstants.JOB) {
 				butImport = JOE_B_ParameterForm_Wizard.Control(new Button(group_1, SWT.NONE));
 				butImport.setVisible(false);
 				butImport.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 				// butImport.setText("import");
 				butImport.addSelectionListener(new SelectionAdapter() {
 					@Override public void widgetSelected(final SelectionEvent e) {
-						JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(getJobListener(), tableIncludeParameter, Editor.JOB);
+						JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(getJobListener(), tableIncludeParameter, JOEConstants.JOB);
 						importParameterForms.showAllImportJobs();
 					}
 				});
@@ -747,7 +747,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				tParaName.setText(item.getText(0));
 				tbxParameterValue.setText(item.getText(1));
 				bRemove.setEnabled(tParameter.getSelectionCount() > 0);
-				if (type == Editor.JOB) {
+				if (type == JOEConstants.JOB) {
 					try {
 						String strT = (String) item.getData("parameter_description_" + Options.getLanguage());
 						if (strT == null) {
@@ -835,7 +835,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				}
 			}
 		});
-		if (type == Editor.JOB) {
+		if (type == JOEConstants.JOB) {
 			txtParameterDescription = JOE_T_ParameterForm_ParamDescription.Control(new Text(Group, SWT.V_SCROLL | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER
 					| SWT.WRAP | SWT.H_SCROLL));
 			final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 1);
@@ -961,7 +961,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		gridLayout_2.numColumns = 5;
 		group_3.setLayout(gridLayout_2);
 		includesTabItem.setControl(group_3);
-		if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS) {
+		if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS) {
 			butIsLifeFile = JOE_B_ParameterForm_LifeFile.Control(new Button(group_3, SWT.CHECK));
 			butIsLifeFile.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent e) {
@@ -976,7 +976,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		txtIncludeFilename.addModifyListener(new ModifyListener() {
 			@Override public void modifyText(final ModifyEvent e) {
 				butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
-				if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
+				if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
 					butIsLifeFile.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
 			}
 		});
@@ -992,7 +992,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		txtIncludeNode.addModifyListener(new ModifyListener() {
 			@Override public void modifyText(final ModifyEvent e) {
 				butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
-				if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
+				if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
 					butIsLifeFile.setEnabled(hasText(txtIncludeFilename));
 			}
 		});
@@ -1030,7 +1030,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				/*
 				txtIncludeFilename.setText(item.getText(0));
 				txtIncludeNode.setText(item.getText(1));
-				if(type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
+				if(type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
 					butIsLifeFile.setSelection(item.getText(2).equalsIgnoreCase("live_file"));
 				butRemoveInclude.setEnabled(tableIncludeParams.getSelectionCount() > 0);
 				butIncludesApply.setEnabled(false);
@@ -1048,7 +1048,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		newColumnTableColumn_1.setWidth(400);
 		final TableColumn newColumnTableColumn = JOE_TCl_ParameterForm_LiveFile.Control(new TableColumn(tableIncludeParams, SWT.NONE));
 		newColumnTableColumn.setWidth(100);
-		if (type != Editor.JOB && type != Editor.COMMANDS && type != Editor.JOB_COMMANDS) {
+		if (type != JOEConstants.JOB && type != JOEConstants.COMMANDS && type != JOEConstants.JOB_COMMANDS) {
 			newColumnTableColumn.setWidth(200);
 			newColumnTableColumn.setResizable(false);
 		}
@@ -1058,7 +1058,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				tableIncludeParams.deselectAll();
 				txtIncludeFilename.setText("");
 				txtIncludeNode.setText("");
-				if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
+				if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
 					butIsLifeFile.setSelection(false);
 				butIsLifeFile.setEnabled(true);
 				butIncludesApply.setEnabled(false);
@@ -1359,7 +1359,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 	private void setInclude(final TableItem item) {
 		txtIncludeFilename.setText(item.getText(0));
 		txtIncludeNode.setText(item.getText(1));
-		if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
+		if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
 			butIsLifeFile.setSelection(item.getText(2).equalsIgnoreCase("live_file"));
 		butRemoveInclude.setEnabled(tableIncludeParams.getSelectionCount() > 0);
 		butIncludesApply.setEnabled(false);

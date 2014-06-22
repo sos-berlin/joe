@@ -35,7 +35,7 @@ import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
@@ -45,19 +45,19 @@ import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.DetailDom;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.forms.DetailXMLEditorDialogForm;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.WindowsSaver;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.interfaces.IDetailUpdate;
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUpdateLanguage;
-import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
 import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.objects.jobchain.JobChainConfigurationListener;
-import com.swtdesigner.SWTResourceManager;
+import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
 
 public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, ISOSTableMenueListeners {
 
@@ -158,7 +158,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 	private void initialize() {
 		this.setLayout(new FillLayout());
 		createGroup();
-		if (type == Editor.JOB_CHAINS) {
+		if (type == JOEConstants.JOB_CHAINS) {
 			getShell().layout();
 			getShell().open();
 		}
@@ -443,7 +443,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 				}
 			});
 
-			// parameterButton.setVisible(type != Editor.DETAILS);
+			// parameterButton.setVisible(type != JOEConstants.DETAILS);
 			parameterButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 
 			butRemove = JOE_B_DetailForm_Remove.Control(new Button(parameterGroup, SWT.NONE));
@@ -609,7 +609,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 				public void widgetSelected(final SelectionEvent e) {
 					try {
 						if (dom != null && dom.isChanged()) {
-							//							MainWindow.message("Please save jobchain configuration file before opening XML Editor.", SWT.ICON_ERROR);
+							//							MainWindow.message("Please save jobchain configuration file before opening XML JOEConstants.", SWT.ICON_ERROR);
 							MainWindow.message(JOE_M_0020.label(), SWT.ICON_ERROR);
 							return;
 						}
@@ -620,7 +620,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 							if (c == SWT.YES)
 								detailListener.save();
 						}
-						if (type == Editor.JOB_CHAINS) {
+						if (type == JOEConstants.JOB_CHAINS) {
 							DetailXMLEditorDialogForm dialog = new DetailXMLEditorDialogForm(detailListener.getConfigurationFilename(), jobChainname, state,
 									_orderId, type, isLifeElement, path);
 							dialog.showXMLEditor();
@@ -633,7 +633,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 								dialog.showXMLEditor();
 							}
 							else {
-								//								MainWindow.message("Please save jobchain configuration file before opening XML Editor.", SWT.ICON_ERROR);
+								//								MainWindow.message("Please save jobchain configuration file before opening XML JOEConstants.", SWT.ICON_ERROR);
 								MainWindow.message(JOE_M_0020.label(), SWT.ICON_ERROR);
 							}
 						}
@@ -659,7 +659,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 				public void widgetSelected(final SelectionEvent e) {
 					String filename = null;
 					try {
-						if (type == Editor.JOB_CHAINS) {
+						if (type == JOEConstants.JOB_CHAINS) {
 							filename = detailListener.getConfigurationFilename();
 						}
 						else {
@@ -727,7 +727,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 			statusBar.setLayoutData(gridData_11);
 			//			statusBar.setText("Configurations File:");
 			setToolTipText();
-			if (type == Editor.JOB_CHAINS)
+			if (type == JOEConstants.JOB_CHAINS)
 				setEnabled_(false);
 			setVisibility();
 		}
@@ -742,7 +742,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 	}
 
 	private void setVisibility() {
-		if (type == Editor.DETAILS) {
+		if (type == JOEConstants.DETAILS) {
 			cancelButton.setVisible(false);
 			statusBar.setVisible(false);
 			butApply.setVisible(false);
@@ -814,7 +814,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 		txtValue.setText("");
 		detailListener = new DetailsListener(jobChainname, state, _orderId, type, dom, isLifeElement, path);
 		if (detailListener != null && detailListener.hasError()) {
-			if (type == Editor.DETAILS)
+			if (type == JOEConstants.DETAILS)
 				dispose();
 			getShell().dispose();
 			return false;
@@ -897,7 +897,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 			MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", detailListener.getConfigurationFilename());
 			MainWindow.saveFTP(new java.util.HashMap());
 		}
-		if (type == Editor.JOB_CHAINS) {
+		if (type == JOEConstants.JOB_CHAINS) {
 			isEditable = false;
 			butApply.setEnabled(isEditable);
 			getShell().dispose();
@@ -941,15 +941,15 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 			if (jobDocumentation != null && jobDocumentation.trim().length() > 0) {
 				// JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren
 				// JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(),
-				// new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? Editor.JOB :
-				// Editor.JOB_WIZARD);
+				// new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? JOEConstants.JOB :
+				// JOEConstants.JOB_WIZARD);
 //	TODO			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(schedulerDom, joblistener.get_main(), joblistener,
-//						tableParams, Editor.PARAMETER);
+//						tableParams, JOEConstants.PARAMETER);
 //				paramsForm.showAllImportJobParams(jobDocumentation);
 //				paramsForm.setDetailsRefresh(butRefreshWizzardNoteParam);
 			}
 			else {
-				JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(joblistener, tableParams, Editor.PARAMETER);
+				JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(joblistener, tableParams, JOEConstants.PARAMETER);
 				importParameterForms.showAllImportJobs();
 				importParameterForms.setDetailsRefresh(butRefreshWizzardNoteParam);
 			}

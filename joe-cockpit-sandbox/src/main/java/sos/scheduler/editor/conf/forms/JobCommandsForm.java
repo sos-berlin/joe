@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUpdateLanguage;
 
 import sos.scheduler.editor.app.ContextMenu;
@@ -22,7 +22,7 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobCommandsListener;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
@@ -116,7 +116,7 @@ public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLangua
         table.addMouseListener(new MouseAdapter() {
             public void mouseDoubleClick(final MouseEvent e) {
                 if (table.getSelectionCount() > 0)
-                    ContextMenu.goTo(table.getSelection()[0].getText(0), _dom, Editor.JOB_COMMAND);
+                    ContextMenu.goTo(table.getSelection()[0].getText(0), _dom, JOEConstants.JOB_COMMAND);
             }
         });
         table.setHeaderVisible(true);

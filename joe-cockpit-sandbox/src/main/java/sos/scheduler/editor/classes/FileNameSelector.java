@@ -16,11 +16,11 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
 
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.objects.job.JobListener;
+import com.sos.joe.xml.IOUtils;
 
 /**
 * \class FileNameSelector

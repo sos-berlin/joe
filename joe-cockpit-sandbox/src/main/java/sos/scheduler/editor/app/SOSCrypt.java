@@ -12,6 +12,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import sos.util.SOSClassUtil;
 
+import com.sos.joe.globals.messages.ErrorLog;
+
 /**
  * @author re
  *

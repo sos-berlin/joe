@@ -12,15 +12,15 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.xml.sax.InputSource;
 
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.SOSTable;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 
 import com.sos.JSHelper.io.Files.JSFile;
 import com.sos.JSHelper.io.Files.JSXMLFile;
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.scheduler.model.objects.JSObjJobChain;
 
 public class JobChainListListener extends JOEJobChainDataProvider {
@@ -111,7 +111,7 @@ public class JobChainListListener extends JOEJobChainDataProvider {
 	public void newChain(final String pstrNewChainName) {
 		try {
 			// TODO create Template Folder
-			JSXMLFile objTemplateFile = new JSXMLFile("R:/backup/sos/java/development/com.sos.scheduler.editor.sandbox/src/sos/scheduler/editor/jobchain-template.xml");
+			JSXMLFile objTemplateFile = new JSXMLFile("R:/backup/sos/java/development/com.sos.scheduler.JOEConstants.sandbox/src/sos/scheduler/editor/jobchain-template.xml");
 			System.out.println(objTemplateFile.getPath());
 			if (objTemplateFile.exists() == true) {
 				String strContent = objTemplateFile.getContent();

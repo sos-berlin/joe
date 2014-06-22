@@ -16,15 +16,17 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import com.sos.joe.objects.jobchain.forms.JobChainsForm;
-
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.PreProstProcessingListener;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 import sos.scheduler.editor.conf.listeners.SchedulesListener;
 import sos.util.SOSClassUtil;
+
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.objects.jobchain.forms.JobChainsForm;
+import com.sos.joe.xml.DomParser;
 
 public class TreeMenu {
 
@@ -111,8 +113,8 @@ public class TreeMenu {
 		item.setText(TreeMenu.DELETE);
 		item.setEnabled(false);
 
-		if (_dom instanceof sos.scheduler.editor.conf.SchedulerDom) {
-			if (((sos.scheduler.editor.conf.SchedulerDom) _dom).isLifeElement()) {
+		if (_dom instanceof SchedulerDom) {
+			if (((sos.scheduler.JOEConstants.conf.SchedulerDom) _dom).isLifeElement()) {
 				item = new MenuItem(_menu, SWT.PUSH);
 				item.addListener(SWT.Selection, getDeleteHoltFolderFileListener());
 				item.setText(TreeMenu.DELETE_HOT_HOLDER_FILE);
@@ -193,7 +195,7 @@ public class TreeMenu {
 							getItem(TreeMenu.NEW).setEnabled(true);
 						}
 
-						if (_dom instanceof sos.scheduler.editor.conf.SchedulerDom && !((SchedulerDom) _dom).isLifeElement()) {
+						if (_dom instanceof SchedulerDom && !((SchedulerDom) _dom).isLifeElement()) {
 							if (getItemElement() != null) {
 								getItem(TreeMenu.DELETE).setEnabled(true);
 							}
@@ -324,8 +326,8 @@ public class TreeMenu {
 				Element element = null;
 				String xml = null;
 				if (i.getText().equalsIgnoreCase(TreeMenu.EDIT_XML)) {
-					if (_dom instanceof sos.scheduler.editor.conf.SchedulerDom
-							&& (((sos.scheduler.editor.conf.SchedulerDom) _dom).isLifeElement() || ((sos.scheduler.editor.conf.SchedulerDom) _dom).isDirectory())) {
+					if (_dom instanceof SchedulerDom
+							&& (((sos.scheduler.JOEConstants.conf.SchedulerDom) _dom).isLifeElement() || ((sos.scheduler.JOEConstants.conf.SchedulerDom) _dom).isDirectory())) {
 						element = getElement();
 
 					}
@@ -374,7 +376,7 @@ public class TreeMenu {
 
 				newName = getHotFolderName(newXML);
 
-				if (((sos.scheduler.editor.conf.SchedulerDom) _dom).isDirectory() || ((SchedulerDom) _dom).isLifeElement()) {
+				if (((SchedulerDom) _dom).isDirectory() || ((SchedulerDom) _dom).isLifeElement()) {
 					String enco = " ";
 					if (newXML.indexOf("?>") > -1) {
 						enco = newXML.substring(0, newXML.indexOf("?>") + "?>".length());
@@ -429,18 +431,18 @@ public class TreeMenu {
 						newXML = enco + "<spooler>" + newXML + "</spooler>";
 					/*
 					 * if(!oldname.equals(newName))
-					 * ((sos.scheduler.editor.conf.SchedulerDom
+					 * ((sos.scheduler.JOEConstants.conf.SchedulerDom
 					 * )_dom).setChangedForDirectory("job", oldname,
 					 * SchedulerDom.DELETE);
 					 *
-					 * ((sos.scheduler.editor.conf.SchedulerDom)_dom).
+					 * ((sos.scheduler.JOEConstants.conf.SchedulerDom)_dom).
 					 * setChangedForDirectory("job", newName,
 					 * SchedulerDom.MODIFY);
 					 */
 					// System.out.println(newXML);
 				}
 				else
-					if (!((sos.scheduler.editor.conf.SchedulerDom) _dom).isLifeElement()) {
+					if (!((sos.scheduler.JOEConstants.conf.SchedulerDom) _dom).isLifeElement()) {
 						newXML = newXML.replaceAll("\\?>", "?><spooler>") + "</spooler>";
 					}
 
@@ -580,33 +582,33 @@ public class TreeMenu {
 						else
 							if (name.equals(SchedulerListener.SCHEDULES)) {
 								SchedulesListener listener = new SchedulesListener((SchedulerDom) _dom, objSchedulerForm);
-								listener.newScheduler(sos.scheduler.editor.conf.forms.SchedulesForm.getTable());
+								listener.newScheduler(sos.scheduler.JOEConstants.conf.forms.SchedulesForm.getTable());
 							}
 							else
 								if (name.equals(SchedulerListener.ORDERS)) {
-									sos.scheduler.editor.conf.listeners.OrdersListener listener = new sos.scheduler.editor.conf.listeners.OrdersListener(
+									sos.scheduler.JOEConstants.conf.listeners.OrdersListener listener = new sos.scheduler.editor.conf.listeners.OrdersListener(
 											(SchedulerDom) _dom, objSchedulerForm);
-									listener.newCommands(sos.scheduler.editor.conf.forms.OrdersForm.getTable());
+									listener.newCommands(sos.scheduler.JOEConstants.conf.forms.OrdersForm.getTable());
 								}
 								else
 									if (name.equals(SchedulerListener.WEB_SERVICES)) {
 										TreeData data = (TreeData) _tree.getSelection()[0].getData();
-										sos.scheduler.editor.conf.listeners.WebservicesListener listener = new sos.scheduler.editor.conf.listeners.WebservicesListener(
+										sos.scheduler.JOEConstants.conf.listeners.WebservicesListener listener = new sos.scheduler.editor.conf.listeners.WebservicesListener(
 												(SchedulerDom) _dom, data.getElement(), objSchedulerForm);
-										listener.newService(sos.scheduler.editor.conf.forms.WebservicesForm.getTable());
+										listener.newService(sos.scheduler.JOEConstants.conf.forms.WebservicesForm.getTable());
 									}
 									else
 										if (name.equals(SchedulerListener.LOCKS)) {
 											try {
 												TreeData data = (TreeData) _tree.getSelection()[0].getData();
-												sos.scheduler.editor.conf.listeners.LocksListener listener = new sos.scheduler.editor.conf.listeners.LocksListener(
+												sos.scheduler.JOEConstants.conf.listeners.LocksListener listener = new sos.scheduler.editor.conf.listeners.LocksListener(
 														(SchedulerDom) _dom, data.getElement());
 												listener.newLock();
 												int i = 1;
 												if (data.getElement().getChild("locks") != null)
 													i = data.getElement().getChild("locks").getChildren("lock").size() + 1;
 												listener.applyLock("lock_" + i, 0, true);
-												listener.fillTable(sos.scheduler.editor.conf.forms.LocksForm.getTable());
+												listener.fillTable(sos.scheduler.JOEConstants.conf.forms.LocksForm.getTable());
 												listener.selectLock(i - 1);
 											}
 											catch (Exception es) {
@@ -617,14 +619,14 @@ public class TreeMenu {
 											if (name.equals(SchedulerListener.PROCESS_CLASSES)) {
 												TreeData data = (TreeData) _tree.getSelection()[0].getData();
 												try {
-													sos.scheduler.editor.conf.listeners.ProcessClassesListener listener = new sos.scheduler.editor.conf.listeners.ProcessClassesListener(
+													sos.scheduler.JOEConstants.conf.listeners.ProcessClassesListener listener = new sos.scheduler.editor.conf.listeners.ProcessClassesListener(
 															(SchedulerDom) _dom, data.getElement());
 													listener.newProcessClass();
 													int i = 1;
 													if (data.getElement().getChild("process_classes") != null)
 														i = data.getElement().getChild("process_classes").getChildren("process_class").size() + 1;
 													listener.applyProcessClass("processClass_" + i, "", "", 0);
-													listener.fillTable(sos.scheduler.editor.conf.forms.ProcessClassesForm.getTable());
+													listener.fillTable(sos.scheduler.JOEConstants.conf.forms.ProcessClassesForm.getTable());
 													listener.selectProcessClass(i - 1);
 
 												}
@@ -973,9 +975,9 @@ public class TreeMenu {
 			s = _dom.getDomOrders().get(key);
 
 		else
-			if (sos.scheduler.editor.conf.listeners.DaysListener.getDays().get(key) != null)
+			if (sos.scheduler.JOEConstants.conf.listeners.DaysListener.getDays().get(key) != null)
 				// s =
-				// (String[])sos.scheduler.editor.conf.listeners.DaysListener.getDays().get(key);
+				// (String[])sos.scheduler.JOEConstants.conf.listeners.DaysListener.getDays().get(key);
 				return true; // group sind nicht definiert
 			else
 				s = getPossibleParent(key);
@@ -1207,7 +1209,7 @@ public class TreeMenu {
 		// unpdate der Formular
 		// String currItemString = _tree.getSelection()[0].getText();
 
-		if (_type == Editor.SPECIFIC_WEEKDAYS)
+		if (_type == JOEConstants.SPECIFIC_WEEKDAYS)
 			objSchedulerForm.updateSpecificWeekdays();
 
 		// if (_dom instanceof SchedulerDom &&
@@ -1225,16 +1227,16 @@ public class TreeMenu {
 			objSchedulerForm.updateJobs();
 
 		// if(_copy.getName().equals("job"))
-		if (_type == Editor.JOB && !_tree.getSelection()[0].getText().endsWith("Jobs"))
+		if (_type == JOEConstants.JOB && !_tree.getSelection()[0].getText().endsWith("Jobs"))
 			objSchedulerForm.updateJob();
 
-		if (_type == Editor.SCHEDULES)
+		if (_type == JOEConstants.SCHEDULES)
 			objSchedulerForm.updateSchedules();
 
-		if (_type == Editor.ORDERS)
+		if (_type == JOEConstants.ORDERS)
 			objSchedulerForm.updateOrders();
 
-		if (_type == Editor.JOB_CHAINS || _type == Editor.JOB_CHAIN)
+		if (_type == JOEConstants.JOB_CHAINS || _type == JOEConstants.JOB_CHAIN)
 			objSchedulerForm.updateJobChains();
 
 		objSchedulerForm.expandItem(_tree.getSelection()[0].getText());
@@ -1259,7 +1261,7 @@ public class TreeMenu {
 				return name;
 			}
 
-			if (_dom instanceof sos.scheduler.editor.conf.SchedulerDom && !((SchedulerDom) _dom).isLifeElement()
+			if (_dom instanceof SchedulerDom && !((SchedulerDom) _dom).isLifeElement()
 					&& (name.equals(SchedulerListener.LOCKS) || name.equals(SchedulerListener.PROCESS_CLASSES)))
 				return name;
 		}

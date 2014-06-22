@@ -26,7 +26,7 @@ import com.sos.joe.objects.jobchain.JobChainConfigurationListener;
 import com.sos.joe.objects.jobchain.forms.DetailDialogForm;
 
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
@@ -49,13 +49,13 @@ public class DetailXMLEditorDialogForm {
 	/** wer hat ihn aufgerufen*/
 	private int                     type            = -1;
 	
-	/** falls type = Editor.Details*/
+	/** falls type = JOEConstants.Details*/
 	private Composite        parent                 = null;
 	
-	/** falls type = Editor.Details*/
+	/** falls type = JOEConstants.Details*/
 	private JobChainConfigurationListener confListener = null;
 	
-	/** falls type = Editor.Details*/
+	/** falls type = JOEConstants.Details*/
 	private Tree             tree                   = null;
 	
 	private boolean                  isLifeElement   = false;
@@ -109,7 +109,7 @@ public class DetailXMLEditorDialogForm {
 			}
 		});
 		
-		shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
+		shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/JOEConstants.png"));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.marginTop = 5;
 		gridLayout.marginRight = 5;
@@ -162,7 +162,7 @@ public class DetailXMLEditorDialogForm {
 				@Override
 				public void widgetSelected(final SelectionEvent e) {
 						listener.saveXML(txtXML.getText());
-						if(type == Editor.DETAILS) {
+						if(type == JOEConstants.DETAILS) {
 							confListener.treeFillMain(tree, parent);
 							shell.setFocus();
 						}
@@ -186,7 +186,7 @@ public class DetailXMLEditorDialogForm {
 //			butClose.setText("Cancel");
 			
 		}
-		if(type == Editor.JOB_CHAINS) {
+		if(type == JOEConstants.JOB_CHAINS) {
 			listener = new DetailXMLEditorListener(xmlFilename);
 		} else {
 			listener = new DetailXMLEditorListener(dom);
@@ -211,8 +211,8 @@ public class DetailXMLEditorDialogForm {
 	}
 	
 	public void setToolTipText() {
-//		butApply.setToolTipText(Messages.getTooltip("detail.xml_Editor.apply"));
-//		txtXML.setToolTipText(Messages.getTooltip("detail.xml_Editor.xml"));
+//		butApply.setToolTipText(Messages.getTooltip("detail.xml_JOEConstants.apply"));
+//		txtXML.setToolTipText(Messages.getTooltip("detail.xml_JOEConstants.xml"));
 	}
 
 	private boolean closeDialog() {
@@ -242,9 +242,9 @@ public class DetailXMLEditorDialogForm {
 	
 	private void close() {
 		if (closeDialog() ) {
-			if(type == Editor.JOB_CHAINS)
+			if(type == JOEConstants.JOB_CHAINS)
 				openDetailForm();
-			else if(type == Editor.DETAILS) {
+			else if(type == JOEConstants.DETAILS) {
 				confListener.treeSelection(tree, parent);
 				dom.setChanged(true);
 			}

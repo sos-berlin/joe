@@ -13,16 +13,16 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUpdateLanguage;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.SchedulesListener;
 import sos.util.SOSClassUtil;
 
@@ -104,7 +104,7 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
                     int c = MainWindow.message(getShell(), JOE_M_SchedulesForm_RemoveSchedule.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
                     if (c != SWT.YES)
                         return;
-                    if (Utils.checkElement(table.getSelection()[0].getText(0), dom, sos.scheduler.editor.app.Editor.SCHEDULES, null))// wird
+                    if (Utils.checkElement(table.getSelection()[0].getText(0), dom, JOEConstants.SCHEDULES, null))// wird
                                                                                                                                      // der
                                                                                                                                      // Job
                                                                                                                                      // woandes
@@ -139,7 +139,7 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
                 @Override
 				public void mouseDoubleClick(final MouseEvent e) {
                     if (table.getSelectionCount() > 0)
-                        ContextMenu.goTo(table.getSelection()[0].getText(0), dom, Editor.SCHEDULE);
+                        ContextMenu.goTo(table.getSelection()[0].getText(0), dom, JOEConstants.SCHEDULE);
                 }
             });
             table.setHeaderVisible(true);

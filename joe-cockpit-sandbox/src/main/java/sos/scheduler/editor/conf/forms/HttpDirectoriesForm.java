@@ -24,7 +24,7 @@ import com.sos.joe.interfaces.IUnsaved;
 import com.sos.joe.interfaces.IUpdateLanguage;
 
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.HttpDirectoriesListener;
 
 

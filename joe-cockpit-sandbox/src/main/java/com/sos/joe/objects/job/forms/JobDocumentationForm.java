@@ -3,11 +3,11 @@ package com.sos.joe.objects.job.forms;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.conf.container.JobDocumentation;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.objects.job.JobListener;
 
 public class JobDocumentationForm extends SOSJOEMessageCodes /* implements IUpdateLanguage */ {

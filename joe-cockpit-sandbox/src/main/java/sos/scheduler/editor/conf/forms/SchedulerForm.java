@@ -25,23 +25,21 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IOUtils;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.TreeMenu;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
+import com.sos.dialog.swtdesigner.SWTResourceManager;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.IEditor;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.interfaces.IContainer;
-import com.sos.joe.interfaces.IEditor;
-import com.sos.joe.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUpdateLanguage;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.SchedulerHotFolder;
-import com.swtdesigner.SWTResourceManager;
 
 public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdate, IEditor {
 	@SuppressWarnings("unused")
@@ -655,7 +653,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	}
 
 	public Tree getTree() {
-		return tree;
+		return tree; 
 	}
 
 	public SchedulerDom getDom() {
@@ -717,17 +715,17 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 			return;
 		int type = data_.getType();
 		Element elem = data_.getElement();
-		if (type == Editor.EVERYDAY) {
+		if (type == JOEConstants.EVERYDAY) {
 			if (!elem.getChildren("period").isEmpty() || !elem.getChildren("at").isEmpty())
 				isBold = true;
 		}
 		else
-			if (type == Editor.DAYS) {
+			if (type == JOEConstants.DAYS) {
 				if (!elem.getChildren("date").isEmpty())
 					isBold = true;
 			}
 			else
-				if (type == Editor.WEEKDAYS) {
+				if (type == JOEConstants.WEEKDAYS) {
 					if (item.getData("key") != null && item.getData("key").equals("holidays_@_weekdays")) {
 						if (elem.getChild("holidays") != null && !elem.getChild("holidays").getChildren("weekdays").isEmpty()) {
 							isBold = true;
@@ -739,27 +737,27 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 					}
 				}
 				else
-					if (type == Editor.MONTHDAYS) {
+					if (type == JOEConstants.MONTHDAYS) {
 						if (!elem.getChildren("monthdays").isEmpty() && !elem.getChild("monthdays").getChildren("day").isEmpty())
 							isBold = true;
 					}
 					else
-						if (type == Editor.ULTIMOS) {
+						if (type == JOEConstants.ULTIMOS) {
 							if (!elem.getChildren("ultimos").isEmpty())
 								isBold = true;
 						}
 						else
-							if (type == Editor.SPECIFIC_WEEKDAYS) {
+							if (type == JOEConstants.SPECIFIC_WEEKDAYS) {
 								if (!elem.getChildren("monthdays").isEmpty() && !elem.getChild("monthdays").getChildren("weekday").isEmpty())
 									isBold = true;
 							}
 							else
-								if (type == Editor.SPECIFIC_MONTHS) {
+								if (type == JOEConstants.SPECIFIC_MONTHS) {
 									if (!elem.getChildren("month").isEmpty())
 										isBold = true;
 								}
 								else
-									if (type == Editor.RUNTIME) {
+									if (type == JOEConstants.RUNTIME) {
 										elem = elem.getChild("run_time");
 										if (elem != null) {
 											if (elem.getAttributes().size() > 0)

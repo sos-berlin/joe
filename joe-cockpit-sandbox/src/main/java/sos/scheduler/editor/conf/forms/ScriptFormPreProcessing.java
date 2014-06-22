@@ -11,7 +11,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
@@ -92,7 +92,7 @@ public class ScriptFormPreProcessing extends ScriptForm {
 
 	private void getFavoriteNames() {
 		preProcessingHeader.getCboFavorite().setData("favorites", favorites);
-//	 TODO	preProcessingHeader.getCboFavorite().setMenu(new ContextMenu(preProcessingHeader.getCboFavorite(), objDataProvider.getDom(), Editor.SCRIPT).getMenu());
+//	 TODO	preProcessingHeader.getCboFavorite().setMenu(new ContextMenu(preProcessingHeader.getCboFavorite(), objDataProvider.getDom(), JOEConstants.SCRIPT).getMenu());
 	}
 
 	private String getFavoriteValue() {

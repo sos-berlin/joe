@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.listeners;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -7,16 +6,13 @@ import org.eclipse.swt.SWT;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class ExecuteListener {
-
 	private SchedulerDom	_dom			= null;
-
 	private Element			_job			= null;
-
 	private Element			_process		= null;
-
 	private Element			_environment	= null;
 
 	public SchedulerDom getDom() {
@@ -24,11 +20,9 @@ public class ExecuteListener {
 	}
 
 	public ExecuteListener(final SchedulerDom dom, final Element job) {
-
 		_dom = dom;
 		_job = job;
 		setProcess();
-
 	}
 
 	public boolean isExecutable() {
@@ -44,7 +38,6 @@ public class ExecuteListener {
 		_job.removeChild("script");
 		Utils.setChangedForDirectory(_job, _dom);
 		_dom.setChanged(true);
-
 	}
 
 	public void setExecutable(final boolean executable) {
@@ -83,7 +76,6 @@ public class ExecuteListener {
 			if (c != SWT.YES)
 				return;
 		}
-
 		initProcess();
 		Utils.setAttribute("file", file, _process, _dom);
 		Utils.setChangedForDirectory(_job, _dom);

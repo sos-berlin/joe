@@ -11,7 +11,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import sos.scheduler.editor.app.SOSMsgJOE;
+import com.sos.joe.globals.messages.SOSMsgJOE;
+
 
 /**
  * @author KB

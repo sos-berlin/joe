@@ -13,10 +13,10 @@ import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
 import org.jdom.xpath.XPath;
 
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.SOSTable;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.util.SOSClassUtil;
 
@@ -264,21 +264,21 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 			if (reorder) {
 				if (Utils.getAttributeValue("job_chain", objJobChainNode.getDOMElement()).length() == 0 || objJobChainNode.getDOMElement() != null
 						&& objJobChainNode.getDOMElement().getName().equals("job_chain_node.end")) {
-					sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
+					sos.scheduler.JOEConstants.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
 					return;
 				}
 
 				//der Austausch darf nicht mit einem EndNode stattfinden
 				if (up) {
 					if (table.getSelectionIndex() > 0 && table.getItem(table.getSelectionIndex() - 1).getText(1).equals("Endnode")) {
-						sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
+						sos.scheduler.JOEConstants.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
 						return;
 					}
 
 				}
 				else {
 					if (table.getSelectionIndex() < table.getItemCount() - 1 && table.getItem(table.getSelectionIndex() + 1).getText(1).equals("Endnode")) {
-						sos.scheduler.editor.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
+						sos.scheduler.JOEConstants.app.MainWindow.message("Only Job Chain Node could be Reorder", SWT.ICON_INFORMATION);
 						return;
 					}
 				}

@@ -17,15 +17,15 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.container.JobOptions;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.objects.job.JobListener;
-
+ 
 public class JobMainOptionForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	@SuppressWarnings("unused")
 	private final String conClassName = this.getClass().getSimpleName();

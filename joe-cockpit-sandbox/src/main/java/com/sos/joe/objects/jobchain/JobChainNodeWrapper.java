@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 import com.sos.JSHelper.Basics.JSToolBox;
 import com.sos.scheduler.model.objects.JSObjBase;

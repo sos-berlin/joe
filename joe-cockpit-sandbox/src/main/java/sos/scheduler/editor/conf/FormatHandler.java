@@ -7,12 +7,13 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class FormatHandler extends DefaultHandler implements ContentHandler {
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
+  class FormatHandler extends DefaultHandler implements ContentHandler {
 
 	private SchedulerDom			_dom						= null;
-	private StringBuffer			_sb							= new StringBuffer();
+	private final StringBuffer			_sb							= new StringBuffer();
 	private String					_encoding					= "ISO-8859-1";
-	private String					_indentStr					= "    ";
+	private final String					_indentStr					= "    ";
 	private String					_indent						= "    ";
 	private StringBuffer			_text						= new StringBuffer();
 	private int						_level						= 0;
@@ -45,17 +46,17 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 		return _sb.toString();
 	}
 
-	public void startDocument() {
+	@Override public void startDocument() {
 		_sb.append("<?xml version=\"1.0\" encoding=\"" + _encoding + "\"?>\n\n");
 		if (_stylesheet != null && _stylesheet.length() > 0)
 			_sb.append(_stylesheet + "\n");
 	}
 
-	public void characters(char[] ch, int start, int length) throws SAXException {
+	@Override public void characters(char[] ch, int start, int length) throws SAXException {
 		_text.append(new String(ch, start, length));
 	}
 
-	public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
+	@Override public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
 		_level--;
 		_indent = strRepeat(_indentStr, _level);
 
@@ -91,7 +92,7 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 		_isOpen = false;
 	}
 
-	public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
+	@Override public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
 		if (_isOpen)
 			_sb.append(">\n");
 		else

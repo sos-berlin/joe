@@ -22,13 +22,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUpdateLanguage;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.PeriodListener;
 
 public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
@@ -79,7 +79,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private String            savEndSeconds              = "";
 	private boolean           assistent                  = false;
 
-	private int               _type                      = Editor.PERIODS;
+	private int               _type                      = JOEConstants.PERIODS;
 
 	private ISchedulerUpdate  _gui                       = null;
 
@@ -105,7 +105,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	public PeriodForm(final Composite parent, final int style, final boolean assistent_) {
-		this(parent, style, Editor.JOB_WIZARD);
+		this(parent, style, JOEConstants.JOB_WIZARD);
 		assistent = assistent_;
 	}
 
@@ -124,7 +124,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 		createTimeSlotGroup();
 
-		if(_type != Editor.RUNTIME) {
+		if(_type != JOEConstants.RUNTIME) {
 			createStartTimeGroup();
 			createWhenHoliday();
 		}
@@ -150,7 +150,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			sEndSeconds.setText(Utils.fill(2, String.valueOf(listener.getEndSeconds())));
 
 			/*
-			if(_type != Editor.RUNTIME) {
+			if(_type != JOEConstants.RUNTIME) {
 				//event = false;
 				sAbsoluteRepeatHours.setText(Utils.fill(2, String.valueOf(listener.getAbsoluteRepeatHours())));
 				sAbsoluteRepeatMinutes.setText(Utils.fill(2, String.valueOf(listener.getAbsoluteRepeatMinutes())));
@@ -160,7 +160,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			}
 			 */
 			if (!onOrder) {
-				if(_type != Editor.RUNTIME) {
+				if(_type != JOEConstants.RUNTIME) {
 
 					//
 					int har = listener.getAbsoluteRepeatHours().length() == 0 ? 0 : Integer.parseInt(listener.getAbsoluteRepeatHours());
@@ -222,7 +222,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			}
 
 		}else if(listener.getAtElement() != null) {
-			if(_type != Editor.RUNTIME) {
+			if(_type != JOEConstants.RUNTIME) {
 				//event = false;
 				listener.setPeriod(listener.getAtElement());
 				/*
@@ -268,7 +268,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		event = false;
 		boolean singleStart = false;
 
-		if(_type != Editor.RUNTIME) {
+		if(_type != JOEConstants.RUNTIME) {
 
 			if(listener.getPeriod() != null)
 				singleStart = isSingleStart();
@@ -302,7 +302,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		sEndSeconds.setEnabled(enabled && !singleStart);
 
 
-		if(_type != Editor.RUNTIME) {
+		if(_type != JOEConstants.RUNTIME) {
 			//START TIME
 
 			if(!cboStarttime.getText().equals(SINGLE_START) && cboStarttime.getText().length() > 0) {
@@ -334,7 +334,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			if (!sEndSeconds.getText().equals(""))
 				savEndSeconds = sEndSeconds.getText();
 
-			if(_type != Editor.RUNTIME) {
+			if(_type != JOEConstants.RUNTIME) {
 			}
 
 			sBeginHours.setText("");
@@ -343,7 +343,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			sEndHours.setText("");
 			sEndMinutes.setText("");
 			sEndSeconds.setText("");
-			if(_type != Editor.RUNTIME) {
+			if(_type != JOEConstants.RUNTIME) {
 				if(!cboStarttime.getText().equals(SINGLE_START)) {
 					cboStarttime.setText("");
 					stHour.setText("");
@@ -419,7 +419,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	private void setStarttimeToolTip() {
-		if(_type != Editor.RUNTIME) {
+		if(_type != JOEConstants.RUNTIME) {
 			if(cboStarttime.getText().equals(SINGLE_START)) {
 				stHour.setToolTipText(JOE_Tooltip_PeriodForm_SingleStartHours.label());
 				stMinutes.setToolTipText(JOE_Tooltip_PeriodForm_SingleStartMinutes.label());
@@ -520,7 +520,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		sBeginHours.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			@Override
 			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
-				if(_type != Editor.RUNTIME)
+				if(_type != JOEConstants.RUNTIME)
 					return;
 				setBeginHours();
 			}
@@ -547,7 +547,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		sBeginMinutes.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			@Override
 			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
-				if(_type != Editor.RUNTIME)
+				if(_type != JOEConstants.RUNTIME)
 					return;
 				setBeginminutes();
 			}
@@ -575,7 +575,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		sBeginSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			@Override
 			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
-				if(_type != Editor.RUNTIME)
+				if(_type != JOEConstants.RUNTIME)
 					return;
 				setBeginSeconds();
 			}
@@ -605,7 +605,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		sEndHours.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			@Override
 			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
-				if(_type != Editor.RUNTIME)
+				if(_type != JOEConstants.RUNTIME)
 					return;
 			//	setEndHours();
 			}
@@ -631,7 +631,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		sEndMinutes.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			@Override
 			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
-				if(_type != Editor.RUNTIME)
+				if(_type != JOEConstants.RUNTIME)
 					return;
 				setEndMinutes();
 			}
@@ -659,7 +659,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		sEndSeconds.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			@Override
 			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
-				if(_type != Editor.RUNTIME)
+				if(_type != JOEConstants.RUNTIME)
 					return;
 				setEndSeconds();
 			}
@@ -733,7 +733,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		stHour.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(final ModifyEvent e) {
-				if(_type != Editor.RUNTIME)
+				if(_type != JOEConstants.RUNTIME)
 					return;
 				setHours();
 			}
@@ -771,7 +771,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		stMinutes.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(final ModifyEvent e) {
-				if(_type != Editor.RUNTIME)
+				if(_type != JOEConstants.RUNTIME)
 					return;
 				setMinutes();
 			}
@@ -809,7 +809,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		stSeconds.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(final ModifyEvent e) {
-				if(_type != Editor.RUNTIME)
+				if(_type != JOEConstants.RUNTIME)
 					return;
 				setSecound();
 			}
@@ -842,7 +842,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	private void updateFont() {
-		if(_type == Editor.RUNTIME && _gui != null)
+		if(_type == JOEConstants.RUNTIME && _gui != null)
 			_gui.updateFont();
 	}
 
@@ -1007,7 +1007,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 			listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
 					sBeginSeconds.getText());
-			if(listener.get_dom() != null &&  _type == Editor.RUNTIME)
+			if(listener.get_dom() != null &&  _type == JOEConstants.RUNTIME)
 				listener.get_dom().setChanged(true);
 			updateFont();
 
@@ -1026,7 +1026,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			listener.setPeriodTime(23, bApply, "begin", sBeginHours.getText(), sBeginMinutes.getText(),
 					sBeginSeconds.getText());
 			updateFont();
-			if(listener.get_dom() != null &&  _type == Editor.RUNTIME) listener.get_dom().setChanged(true);
+			if(listener.get_dom() != null &&  _type == JOEConstants.RUNTIME) listener.get_dom().setChanged(true);
 
 		}
 	}
@@ -1043,7 +1043,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 					sBeginSeconds.getText());
 
 			updateFont();
-			if(listener.get_dom() != null &&  _type == Editor.RUNTIME) listener.get_dom().setChanged(true);
+			if(listener.get_dom() != null &&  _type == JOEConstants.RUNTIME) listener.get_dom().setChanged(true);
 
 		}
 	}
@@ -1056,7 +1056,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		if (event){
 			listener.setPeriodTime(24, bApply, "end", sEndHours.getText(), sEndMinutes.getText(), sEndSeconds
 					.getText());
-			if(listener.get_dom() != null &&  _type == Editor.RUNTIME) listener.get_dom().setChanged(true);
+			if(listener.get_dom() != null &&  _type == JOEConstants.RUNTIME) listener.get_dom().setChanged(true);
 			updateFont();
 		}
 	}
@@ -1071,7 +1071,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			listener.setPeriodTime(24, bApply, "end", sEndHours.getText(), sEndMinutes.getText(), sEndSeconds
 					.getText());
 			updateFont();
-			if(listener.get_dom() != null &&  _type == Editor.RUNTIME) listener.get_dom().setChanged(true);
+			if(listener.get_dom() != null &&  _type == JOEConstants.RUNTIME) listener.get_dom().setChanged(true);
 		}
 	}
 
@@ -1086,7 +1086,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 					.getText());
 			updateFont();
 
-			if(listener.get_dom() != null &&  _type == Editor.RUNTIME &&  _type == Editor.RUNTIME) listener.get_dom().setChanged(true);
+			if(listener.get_dom() != null &&  _type == JOEConstants.RUNTIME &&  _type == JOEConstants.RUNTIME) listener.get_dom().setChanged(true);
 		}
 	}
 

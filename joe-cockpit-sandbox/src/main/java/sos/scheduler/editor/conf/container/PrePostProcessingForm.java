@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
@@ -263,7 +263,7 @@ public class PrePostProcessingForm extends FormBaseClass<JOEListener> {
 			cboPrefunction.setEnabled(false);
 		}
 		cboFavorite.setData("favorites", favorites);
-		cboFavorite.setMenu(new ContextMenu(cboFavorite, objScriptDataProvider.getDom(), Editor.SCRIPT).getMenu());
+		cboFavorite.setMenu(new ContextMenu(cboFavorite, objScriptDataProvider.getDom(), JOEConstants.SCRIPT).getMenu());
 	}
 
 	private void createScriptTab2(final Composite pParentComposite, final enuSourceTypes penuSourceType) {

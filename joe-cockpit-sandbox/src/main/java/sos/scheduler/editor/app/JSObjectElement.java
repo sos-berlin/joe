@@ -2,6 +2,8 @@ package sos.scheduler.editor.app;
 
 import org.jdom.Element;
 
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+
 @Deprecated
 public class JSObjectElement {
     protected int     _type;

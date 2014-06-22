@@ -69,10 +69,10 @@ public class DetailDialogForm {
 
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
-		shell = new Shell(sos.scheduler.editor.app.MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
+		shell = new Shell(sos.scheduler.JOEConstants.app.MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 		shell.setLayout(new FillLayout());
 
-		shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
+		shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/JOEConstants.png"));
 		//		 shell.setText("Details for JobChain: " + jobChainname +
 		//		 (state != null && state.length()> 0 ? "  State: " + state : "") +
 		//		 (orderId != null && orderId.length() > 0 ? "  Order Id: " + orderId : ""));
@@ -87,9 +87,9 @@ public class DetailDialogForm {
 		gridData_6.widthHint = 500;
 		gridData_6.heightHint = 500;
 
-		// dialogForm =new DetailForm(composite, SWT.NONE, jobChainname, state, listOfOrderIds, Editor.JOB_CHAINS, null, null,
+		// dialogForm =new DetailForm(composite, SWT.NONE, jobChainname, state, listOfOrderIds, JOEConstants.JOB_CHAINS, null, null,
 		// isLifeElement, path);
-		dialogForm = new DetailForm(composite, SWT.NONE, jobChainname, state, orderId, Editor.JOB_CHAINS, null, null, isLiveFolderElement, path);
+		dialogForm = new DetailForm(composite, SWT.NONE, jobChainname, state, orderId, JOEConstants.JOB_CHAINS, null, null, isLiveFolderElement, path);
 
 		if (!dialogForm.hasErrors())// im fehlerfall
 			dialogForm.setLayout(new FillLayout());

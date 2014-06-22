@@ -8,17 +8,17 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.CDATA;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.util.SOSClassUtil;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.LanguageDescriptorList;
 
-public class ScriptListener extends JOEListener {
+public class ScriptListener extends JOEListener { 
 	public final static int			NONE				= -1;
 	public final static String[]	_languagesJob		= LanguageDescriptorList.getLanguages4APIJobs();
 	public final static String[]	_languagesMonitor	= LanguageDescriptorList.getLanguages4Monitor();
@@ -35,7 +35,7 @@ public class ScriptListener extends JOEListener {
 		_dom = dom;
 		_parent = parent;
 		_type = type;
-		if (type == Editor.MONITOR) {
+		if (type == JOEConstants.MONITOR) {
 			_languages = _languagesMonitor;
 		}
 		else {
@@ -46,7 +46,7 @@ public class ScriptListener extends JOEListener {
 	}
 
 	private void setScript() {
-		if (_type == Editor.MONITOR) {
+		if (_type == JOEConstants.MONITOR) {
 			// Element monitor = _parent.getChild("monitor");
 			Element monitor = _parent;
 			if (monitor != null) {
@@ -100,7 +100,7 @@ public class ScriptListener extends JOEListener {
 		if (_script == null && language != NONE) {
 			// init script element
 			_script = new Element("script");
-			if (_type == Editor.MONITOR) {
+			if (_type == JOEConstants.MONITOR) {
 				// Element monitor = _parent.getChild("monitor");
 				Element monitor = _parent;
 				if (monitor == null) {

@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;

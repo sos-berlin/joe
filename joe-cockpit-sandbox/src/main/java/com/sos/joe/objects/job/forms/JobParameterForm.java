@@ -39,26 +39,22 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobParameterListener;
 import sos.util.SOSString;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUnsaved;
-import com.sos.joe.interfaces.IUpdateLanguage;
-import com.sos.joe.job.wizard.JobAssistentImportJobParamsForm;
-import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.objects.job.JobListener;
+import com.sos.joe.wizard.forms.JobAssistentImportJobParamsForm;
+import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
 import com.sos.scheduler.model.objects.JSObjJob;
-import com.swtdesigner.SWTResourceManager;
-
+ 
 public class JobParameterForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private Button					butDown_1				= null;
 	private Button					butUp_1					= null;
@@ -193,8 +189,8 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 	}
 
 	private void addInclude() {
-		objDataProvider.saveIncludeParams(tableIncludeParams, txtIncludeFilename.getText().trim(), txtIncludeNode.getText(), type == Editor.JOB
-				|| type == Editor.COMMANDS || type == Editor.JOB_COMMANDS && butIsLifeFile.getSelection() ? butIsLifeFile.getSelection() : false);
+		objDataProvider.saveIncludeParams(tableIncludeParams, txtIncludeFilename.getText().trim(), txtIncludeNode.getText(), type == JOEConstants.JOB
+				|| type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS && butIsLifeFile.getSelection() ? butIsLifeFile.getSelection() : false);
 		txtIncludeFilename.setText("");
 		txtIncludeNode.setText("");
 		butIncludesApply.setEnabled(false);
@@ -202,7 +198,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		butOpenInclude.setEnabled(false);
 		tableIncludeParams.deselectAll();
 		txtIncludeFilename.setFocus();
-		if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
+		if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
 			butIsLifeFile.setSelection(false);
 	}
 
@@ -223,14 +219,14 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		if (includeFile != null && includeFile.trim().length() > 0) {
 			// JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren
 			// JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(), new
-			// JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? Editor.JOB : Editor.JOB_WIZARD);
+			// JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? JOEConstants.JOB : JOEConstants.JOB_WIZARD);
 			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objDataProvider.get_dom(), objDataProvider.get_main(),
-					getJobListener(), getTParameter(), Editor.PARAMETER);
+					getJobListener(), getTParameter(), JOEConstants.PARAMETER);
 			paramsForm.showAllImportJobParams(includeFile);
 		}
 		else {
 			// Liste aller Jobdokumentation
-			JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(getJobListener(), getTParameter(), Editor.PARAMETER);
+			JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(getJobListener(), getTParameter(), JOEConstants.PARAMETER);
 			importParameterForms.showAllImportJobs();
 		}
 		Utils.stopCursor(getShell());
@@ -403,14 +399,14 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 					updateIncludeParam(includeParameterTabItem, false, tableIncludeParameter, txtIncludeParameter, txtIncludeParameterValue, butIncludeRemove);
 				}
 			});
-			if (type == Editor.JOB) {
+			if (type == JOEConstants.JOB) {
 				butImport = new Button(group_1, SWT.NONE);
 				butImport.setVisible(false);
 				butImport.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 				// butImport.setText("import");
 				butImport.addSelectionListener(new SelectionAdapter() {
 					@Override public void widgetSelected(final SelectionEvent e) {
-						JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(getJobListener(), tableIncludeParameter, Editor.JOB);
+						JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(getJobListener(), tableIncludeParameter, JOEConstants.JOB);
 						importParameterForms.showAllImportJobs();
 					}
 				});
@@ -469,7 +465,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		}
 		catch (Exception e) {
 			try {
-				new sos.scheduler.editor.app.ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
@@ -637,7 +633,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 				tParaName.setText(item.getText(0));
 				tParaValue.setText(item.getText(1));
 				bRemove.setEnabled(tParameter.getSelectionCount() > 0);
-				if (type == Editor.JOB) {
+				if (type == JOEConstants.JOB) {
 					// txtParameterDescription.setText(listener.getParameterDescription(item.getText(0)));
 					try {
 						txtParameterDescription.setText(sosString.parseToString(item.getData("parameter_description_" + Options.getLanguage())));
@@ -725,7 +721,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 				}
 			}
 		});
-		if (type == Editor.JOB) {
+		if (type == JOEConstants.JOB) {
 			txtParameterDescription = new Text(Group, SWT.V_SCROLL | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
 			final GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 1);
 			gridData.minimumHeight = 100;
@@ -879,7 +875,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		gridLayout_2.numColumns = 5;
 		group_3.setLayout(gridLayout_2);
 		includesTabItem.setControl(group_3);
-		if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS) {
+		if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS) {
 			butIsLifeFile = new Button(group_3, SWT.CHECK);
 			butIsLifeFile.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent e) {
@@ -901,7 +897,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		txtIncludeFilename.addModifyListener(new ModifyListener() {
 			@Override public void modifyText(final ModifyEvent e) {
 				butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
-				if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
+				if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
 					butIsLifeFile.setEnabled(hasText(txtIncludeFilename));
 			}
 		});
@@ -923,7 +919,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		txtIncludeNode.addModifyListener(new ModifyListener() {
 			@Override public void modifyText(final ModifyEvent e) {
 				butIncludesApply.setEnabled(!txtIncludeFilename.getText().trim().equals(""));
-				if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
+				if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
 					butIsLifeFile.setEnabled(hasText(txtIncludeFilename));
 			}
 		});
@@ -973,7 +969,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		final TableColumn newColumnTableColumn = new TableColumn(tableIncludeParams, SWT.NONE);
 		newColumnTableColumn.setWidth(100);
 		newColumnTableColumn.setText("File/Live_File"); //TODO lang "File/Live File" tc
-		if (type != Editor.JOB && type != Editor.COMMANDS && type != Editor.JOB_COMMANDS) {
+		if (type != JOEConstants.JOB && type != JOEConstants.COMMANDS && type != JOEConstants.JOB_COMMANDS) {
 			newColumnTableColumn.setWidth(200);
 			newColumnTableColumn.setResizable(false);
 		}
@@ -983,7 +979,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 				tableIncludeParams.deselectAll();
 				txtIncludeFilename.setText("");
 				txtIncludeNode.setText("");
-				if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
+				if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
 					butIsLifeFile.setSelection(false);
 				butIncludesApply.setEnabled(false);
 				butOpenInclude.setEnabled(false);
@@ -1312,7 +1308,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 			butRemoveInclude.setToolTipText(Messages.getTooltip("parameter.include.but_remove.name"));
 			butOpenInclude.setToolTipText(Messages.getTooltip("parameter.includetable_open.name"));
 			butNewIncludes.setToolTipText(Messages.getTooltip("parameter.includetable_new.name"));
-			if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
+			if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
 				butIsLifeFile.setToolTipText(Messages.getTooltip("is_live_file"));
 		}
 	}
@@ -1337,7 +1333,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 	private void setInclude(final TableItem item) {
 		txtIncludeFilename.setText(item.getText(0));
 		txtIncludeNode.setText(item.getText(1));
-		if (type == Editor.JOB || type == Editor.COMMANDS || type == Editor.JOB_COMMANDS)
+		if (type == JOEConstants.JOB || type == JOEConstants.COMMANDS || type == JOEConstants.JOB_COMMANDS)
 			butIsLifeFile.setSelection(item.getText(2).equalsIgnoreCase("live_file"));
 		butRemoveInclude.setEnabled(tableIncludeParams.getSelectionCount() > 0);
 		butIncludesApply.setEnabled(false);

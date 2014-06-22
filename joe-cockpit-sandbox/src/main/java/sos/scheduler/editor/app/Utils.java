@@ -28,12 +28,23 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 
-import com.sos.joe.interfaces.IDataChanged;
-import com.sos.joe.interfaces.IUnsaved;
-
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerEditorFontDialog;
+import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.util.SOSClassUtil;
+
+import com.sos.event.service.forms.ActionsForm;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.IDataChanged;
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.Messages;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
+import com.sos.joe.xml.DomParser;
+import com.sos.joe.xml.Events.ActionsDom;
+import com.sos.joe.xml.jobdoc.DocumentationDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class Utils {
 
@@ -673,7 +684,7 @@ public class Utils {
 	 * @param elem
 	 * @return
 	 */
-	public static boolean isElementEnabled(final String which, final sos.scheduler.editor.conf.SchedulerDom dom, Element elem) {
+	public static boolean isElementEnabled(final String which, final SchedulerDom dom, Element elem) {
 
 		if (which.equals("job") && elem != null && !elem.getName().equals("job")) {
 			elem = getJobElement(elem);
@@ -912,7 +923,7 @@ public class Utils {
 		try {
 			if (which == null)
 				which = "";
-			if (type == Editor.JOB_CHAIN) {
+			if (type == JOEConstants.JOB_CHAIN) {
 				String strObject = Messages.getLabel(JOE_L_Job_chain);
 				String strM = Messages.getLabel(JOE_L_Object_In_Use);
 				String strException = String.format(strM, strObject, name);
@@ -930,7 +941,7 @@ public class Utils {
 					throw new Exception(strException);
 			}
 			else
-				if (type == Editor.JOB_CHAINS) {
+				if (type == JOEConstants.JOB_CHAINS) {
 					String strObject = Messages.getLabel(JOE_L_Job_chain);
 					String strM = Messages.getLabel(JOE_L_Object_In_Use);
 					String strException = String.format(strM, strObject, name);
@@ -950,7 +961,7 @@ public class Utils {
 						throw new Exception(strException);
 				}
 				else
-					if (type == Editor.JOB) {
+					if (type == JOEConstants.JOB) {
 						String strObject = Messages.getLabel(JOE_L_Job);
 						String strM = Messages.getLabel(JOE_L_Object_In_Use);
 						String strException = String.format(strM, strObject, name);
@@ -1003,7 +1014,7 @@ public class Utils {
 						}
 					}
 					else
-						if (type == Editor.JOBS) {
+						if (type == JOEConstants.JOBS) {
 							String strObject = Messages.getLabel(JOE_L_Job);
 							String strM = Messages.getLabel(JOE_L_Object_In_Use);
 							String strException = String.format(strM, strObject, name);
@@ -1014,7 +1025,7 @@ public class Utils {
 								throw new Exception(strException);
 						}
 						else
-							if (type == Editor.LOCKS) {
+							if (type == JOEConstants.LOCKS) {
 								String strObject = Messages.getLabel(JOE_L_Lock);
 								String strM = Messages.getLabel(JOE_L_Object_In_Use);
 								String strException = String.format(strM, strObject, name);
@@ -1026,7 +1037,7 @@ public class Utils {
 
 							}
 							else
-								if (type == Editor.PROCESS_CLASSES) {
+								if (type == JOEConstants.PROCESS_CLASSES) {
 									String strObject = Messages.getLabel(JOE_L_Process_Class);
 									String strM = Messages.getLabel(JOE_L_Object_In_Use);
 									String strException = String.format(strM, strObject, name);
@@ -1038,7 +1049,7 @@ public class Utils {
 
 								}
 								else
-									if (type == Editor.SCHEDULES || type == Editor.SCHEDULE) {
+									if (type == JOEConstants.SCHEDULES || type == JOEConstants.SCHEDULE) {
 										String strObject = Messages.getLabel(JOE_L_Schedule);
 										String strM = Messages.getLabel(JOE_L_Object_In_Use);
 										String strException = String.format(strM, strObject, name);
@@ -1145,22 +1156,17 @@ public class Utils {
 			elem.setContent(resetElement.cloneContent());
 
 			if (currdom instanceof SchedulerDom)
-				((sos.scheduler.editor.conf.forms.SchedulerForm) update).updateTree("main");
+				((SchedulerForm) update).updateTree("main");
 			else
-				if (currdom instanceof sos.scheduler.editor.actions.ActionsDom)
-					((sos.scheduler.editor.actions.forms.ActionsForm) update).updateTree("main");
+				if (currdom instanceof ActionsDom)
+					((ActionsForm) update).updateTree("main");
 				else
-					if (currdom instanceof com.sos.jobdoc.DocumentationDom)
-						((com.sos.jobdoc.forms.DocumentationForm) update).updateTree("main");
+					if (currdom instanceof DocumentationDom)
+						((DocumentationForm) update).updateTree("main");
 
 		}
 		catch (Exception e) {
-			try {
 				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-
-			}
 		}
 	}
 

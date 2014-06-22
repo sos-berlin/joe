@@ -31,22 +31,22 @@ import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.SOSComboBox;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.OrderListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.i18n.annotation.I18NMsg;
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUnsaved;
 import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.objects.jobchain.forms.DetailDialogForm;
-import com.swtdesigner.SWTResourceManager;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
@@ -164,7 +164,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
         butGoto.addSelectionListener(new SelectionAdapter() {
             @Override
 			public void widgetSelected(final SelectionEvent e) {
-                ContextMenu.goTo(cJobchain.getText(), dom, Editor.JOB_CHAIN);
+                ContextMenu.goTo(cJobchain.getText(), dom, JOEConstants.JOB_CHAIN);
             }
         });
         butGoto.setAlignment(SWT.RIGHT);
@@ -179,7 +179,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
         composite.setLayout(gridLayout);
 
         cJobchain = new SOSComboBox(composite, JOE_Cbo_OrderForm_JobChain);
-        cJobchain.setMenu(new ContextMenu(cJobchain, dom, Editor.JOB_CHAIN).getMenu());
+        cJobchain.setMenu(new ContextMenu(cJobchain, dom, JOEConstants.JOB_CHAIN).getMenu());
         cJobchain.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             @Override
@@ -323,7 +323,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
             @Override
 			public void widgetSelected(final SelectionEvent e) {
                 // DetailForm dialogForm =new DetailForm(composite, SWT.NONE, cJobchain.getText(), tState.getText(), null,
-                // Editor.JOB_CHAINS, null, null, dom.isLifeElement(), dom.getFilename());
+                // JOEConstants.JOB_CHAINS, null, null, dom.isLifeElement(), dom.getFilename());
                 // DetailDialogForm detail = new DetailDialogForm(cJobchain.getText(), tState.getText(), tOrderId.getText(),
                 // dom.isLifeElement() || dom.isDirectory(), dom.getFilename());
                 String state = cboStates.getText().length() == 0 || cboStates.getText().equals("global") ? null : cboStates.getText();
@@ -361,7 +361,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
         if (!dom.isLifeElement()) {
         }
 
-        // new ParameterForm(dom, order, main, group, Editor.ORDER);
+        // new ParameterForm(dom, order, main, group, JOEConstants.ORDER);
 
         createGroup1();
         createGroup2();
@@ -440,11 +440,11 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 
     private void existDetailsConfigurationsFile() {
 
-        /*sos.scheduler.editor.conf.listeners.DetailsListener detailListener =
+        /*sos.scheduler.JOEConstants.conf.listeners.DetailsListener detailListener =
             new sos.scheduler.editor.conf.listeners.DetailsListener(cJobchain.getText(),
                     cboStates.getText(),
                     tOrderId.getText(),
-                    Editor.JOB_CHAINS,
+                    JOEConstants.JOB_CHAINS,
                     null,
                     dom.isLifeElement() || dom.isDirectory(),
                     dom.getFilename());

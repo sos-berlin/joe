@@ -8,10 +8,10 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 
-import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.conf.SchedulerDom;
+import ErrorLog;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.util.SOSClassUtil;
 
 public class CommandsListener {

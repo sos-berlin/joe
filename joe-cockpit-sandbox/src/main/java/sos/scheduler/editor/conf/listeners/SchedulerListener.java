@@ -17,16 +17,9 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.JSObjectElement;
-import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.BaseForm;
 import sos.scheduler.editor.conf.forms.ClusterForm;
 import sos.scheduler.editor.conf.forms.CommandsForm;
@@ -59,6 +52,12 @@ import sos.scheduler.editor.conf.forms.WebservicesForm;
 import sos.util.SOSClassUtil;
 
 import com.sos.JSHelper.Exceptions.JobSchedulerException;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.Messages;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.objects.job.forms.JobDocumentationForm;
 import com.sos.joe.objects.job.forms.JobMainOptionForm;
 import com.sos.joe.objects.job.forms.JobOptionsForm;
@@ -68,6 +67,7 @@ import com.sos.joe.objects.job.forms.ScriptJobMainForm;
 import com.sos.joe.objects.jobchain.forms.JobChainNestedNodesForm;
 import com.sos.joe.objects.jobchain.forms.JobChainNodesForm;
 import com.sos.joe.objects.jobchain.forms.JobChainsForm;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.SchedulerHotFolder;
 import com.sos.scheduler.model.commands.AddJobs;
 import com.sos.scheduler.model.commands.CheckFolders;
@@ -87,7 +87,7 @@ import com.sos.scheduler.model.objects.Job;
  * item.setData("max_occur", "1"); -> Das Element darf max. einmal vorkommen: z.B. process_classes.
  *
  */
-public class SchedulerListener {
+public class SchedulerListener { 
 	private static final String	conItemDataKeyVISIBLE				= "visible";
 	private static final String	conItemDataKeyORDERS_RECOVERABLE	= "orders_recoverable";
 	private static final String	conItemDataKeyOVERRIDE_ATTRIBUTES	= "override_attributes";
@@ -172,7 +172,7 @@ public class SchedulerListener {
 	//				name = Utils.getAttributeValue("name", element);
 	//			}
 	//
-	//			TreeData objTD = new TreeData(item, Editor.JOB, element, Options.getHelpURL("job"));
+	//			TreeData objTD = new TreeData(item, JOEConstants.JOB, element, Options.getHelpURL("job"));
 	//			item.setData(conItemDataKeyKEY, "job");
 	//
 	//			setColorOfJobTreeItem(element, item);
@@ -193,7 +193,7 @@ public class SchedulerListener {
 	//					name = Utils.getAttributeValue("name", element);
 	//				}
 	//				item.setImage(getImage("jobchain.gif"));
-	//				TreeData objTD = new TreeData(item, Editor.JOB_CHAIN, element, Options.getHelpURL("job_chain"));
+	//				TreeData objTD = new TreeData(item, JOEConstants.JOB_CHAIN, element, Options.getHelpURL("job_chain"));
 	//				item.setData(conItemDataKeyKEY, "job_chain");
 	//
 	//				Utils.setAttribute(conItemDataKeyORDERS_RECOVERABLE, true, element);
@@ -208,14 +208,14 @@ public class SchedulerListener {
 	//				TreeItem in = new TreeItem(item, SWT.NONE);
 	//				in.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_StepsNodes.label());
 	//				in.setImage(getImage("jobchain.gif"));
-	//				in.setData(new TreeData(Editor.JOB_CHAIN_NODES, element, Options.getHelpURL("job_chain")));
+	//				in.setData(new TreeData(JOEConstants.JOB_CHAIN_NODES, element, Options.getHelpURL("job_chain")));
 	//				in.setData(conItemDataKeyKEY, "job_chain_node");
 	//				in.setData(conItemDataKeyCOPY_ELEMENT, element);
 	//				// Job Chain Nested Nodes
 	//				TreeItem iNestedNodes = new TreeItem(item, SWT.NONE);
 	//				iNestedNodes.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_NestedJobChains.label());
 	//				iNestedNodes.setImage(getImage("jobchain.gif"));
-	//				iNestedNodes.setData(new TreeData(Editor.JOB_CHAIN_NESTED_NODES, element, Options.getHelpURL("job_chain")));
+	//				iNestedNodes.setData(new TreeData(JOEConstants.JOB_CHAIN_NESTED_NODES, element, Options.getHelpURL("job_chain")));
 	//				iNestedNodes.setData(conItemDataKeyKEY, "job_chain_node.job_chain");
 	//				iNestedNodes.setData(conItemDataKeyCOPY_ELEMENT, element);
 	//				iNestedNodes.setExpanded(true);
@@ -235,7 +235,7 @@ public class SchedulerListener {
 	//					Element process_classes = new Element("process_classes");
 	//					config.addContent(process_classes);
 	//					process_classes.addContent((Element) element.clone());
-	//					TreeData objTD = new TreeData(item, Editor.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"));
+	//					TreeData objTD = new TreeData(item, JOEConstants.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"));
 	//					item.setData(conItemDataKeyKEY, "process_classes");
 	//					item.setData(conItemDataKeyCOPY_ELEMENT, element);
 	//					item.setData(conItemDataKeyMAX_OCCUR, "1");
@@ -256,7 +256,7 @@ public class SchedulerListener {
 	//						Element locks = new Element("locks");
 	//						config.addContent(locks);
 	//						locks.addContent((Element) element.clone());
-	//						item.setData(new TreeData(Editor.LOCKS, config, Options.getHelpURL("locks"), "locks"));
+	//						item.setData(new TreeData(JOEConstants.LOCKS, config, Options.getHelpURL("locks"), "locks"));
 	//						item.setData(conItemDataKeyKEY, "locks");
 	//						item.setData(conItemDataKeyCOPY_ELEMENT, element);
 	//						item.setText(LOCKS);
@@ -271,7 +271,7 @@ public class SchedulerListener {
 	//								Utils.setAttribute("job_chain", name.substring(0, name.indexOf(",")), element);
 	//								Utils.setAttribute("id", name.substring(name.indexOf(",") + 1), element);
 	//							}
-	//							TreeData objTD = new TreeData(item, Editor.ORDER, element, Options.getHelpURL("orders"));
+	//							TreeData objTD = new TreeData(item, JOEConstants.ORDER, element, Options.getHelpURL("orders"));
 	//							item.setData(conItemDataKeyKEY, "commands_@_order");
 	//							if (!Utils.isElementEnabled("commands", objSchedulerDom, element)) {
 	//								setDisabled(item); // item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
@@ -323,7 +323,7 @@ public class SchedulerListener {
 				item = new TreeItem(objTree, SWT.NONE);
 				item.setText(name);
 				item.setImage(getImage("folder.gif"));
-				item.setData(new TreeData(Editor.ROOT_FOLDER, pobjHotFolder, Options.getHelpURL("rootfolder")));
+				item.setData(new TreeData(JOEConstants.ROOT_FOLDER, pobjHotFolder, Options.getHelpURL("rootfolder")));
 				item.setData(conItemDataKeyKEY, "rootfolder");
 				item.setData(conItemDataKeyCOPY_ELEMENT, pobjHotFolder);
 			}
@@ -339,7 +339,7 @@ public class SchedulerListener {
 		objRootNode = item;
 		Element config = objSchedulerDom.getRoot().getChild("config");
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.CONFIG, config, Options.getHelpURL("config")));
+		item.setData(new TreeData(JOEConstants.CONFIG, config, Options.getHelpURL("config")));
 		item.setData(conItemDataKeyKEY, "config");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel("treeitem.Config"));
@@ -348,7 +348,7 @@ public class SchedulerListener {
 			item.dispose();
 		}
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.BASE, config, Options.getHelpURL("base")));
+		item.setData(new TreeData(JOEConstants.BASE, config, Options.getHelpURL("base")));
 		item.setData(conItemDataKeyKEY, "base");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel("treeitem.BaseFiles"));
@@ -356,7 +356,7 @@ public class SchedulerListener {
 		if (type == SchedulerDom.DIRECTORY)
 			item.dispose();
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.PARAMETER, config, Options.getHelpURL("parameter")));
+		item.setData(new TreeData(JOEConstants.PARAMETER, config, Options.getHelpURL("parameter")));
 		item.setData(conItemDataKeyKEY, "params_@_param");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel("treeitem.parameter"));
@@ -364,7 +364,7 @@ public class SchedulerListener {
 		if (type == SchedulerDom.DIRECTORY)
 			item.dispose();
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.SECURITY, config, Options.getHelpURL("security"), "security"));
+		item.setData(new TreeData(JOEConstants.SECURITY, config, Options.getHelpURL("security"), "security"));
 		item.setData(conItemDataKeyKEY, "security");
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
@@ -373,7 +373,7 @@ public class SchedulerListener {
 		if (type == SchedulerDom.DIRECTORY)
 			item.dispose();
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.CLUSTER, config, Options.getHelpURL("cluster"), "cluster"));
+		item.setData(new TreeData(JOEConstants.CLUSTER, config, Options.getHelpURL("cluster"), "cluster"));
 		item.setData(conItemDataKeyKEY, "cluster");
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
@@ -382,27 +382,27 @@ public class SchedulerListener {
 		if (type == SchedulerDom.DIRECTORY)
 			item.dispose();
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"), "process_classes"));
+		item.setData(new TreeData(JOEConstants.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"), "process_classes"));
 		item.setData(conItemDataKeyKEY, "process_classes");
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setImage(getImage("10360.gif"));
 		item.setText(Messages.getLabel("treeitem.ProcessClasses"));
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.SCHEDULES, config, Options.getHelpURL("schedules"), "schedules"));
+		item.setData(new TreeData(JOEConstants.SCHEDULES, config, Options.getHelpURL("schedules"), "schedules"));
 		item.setData(conItemDataKeyKEY, "schedules_@_schedule");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel(SCHEDULES));
 		item.setImage(getImage("dates.gif"));
 		treeFillSchedules(item);
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.LOCKS, config, Options.getHelpURL("locks"), "locks"));
+		item.setData(new TreeData(JOEConstants.LOCKS, config, Options.getHelpURL("locks"), "locks"));
 		item.setData(conItemDataKeyKEY, "locks");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel("Locks"));
 		item.setImage(getImage("lockedstate.gif"));
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.SCRIPT, config, Options.getHelpURL("start_script"), "script"));
+		item.setData(new TreeData(JOEConstants.SCRIPT, config, Options.getHelpURL("start_script"), "script"));
 		item.setData(conItemDataKeyKEY, "script");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel("treeitem.StartScript"));
@@ -411,8 +411,8 @@ public class SchedulerListener {
 			item.dispose();
 		if (type != SchedulerDom.DIRECTORY) {
 			TreeItem http_server = new TreeItem(objRootNode, SWT.NONE);
-			// http_server.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
-			http_server.setData(new TreeData(Editor.HTTP_SERVER, config, Options.getHelpURL("http_server"), "http_server"));
+			// http_server.setData(new TreeData(JOEConstants.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
+			http_server.setData(new TreeData(JOEConstants.HTTP_SERVER, config, Options.getHelpURL("http_server"), "http_server"));
 			// http_server.setData("key", "http_server");
 			ArrayList l = new ArrayList();
 			l.add("http_server_@_web_service");
@@ -423,26 +423,26 @@ public class SchedulerListener {
 			http_server.setText(Messages.getLabel(HTTP_SERVER));
 			http_server.setImage(getImage("web.gif"));
 			item = new TreeItem(http_server, SWT.NONE);
-			item.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
+			item.setData(new TreeData(JOEConstants.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
 			item.setData(conItemDataKeyKEY, "http_server_@_web_service");
 			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 			item.setText(Messages.getLabel(WEB_SERVICES));
 			item.setImage(getImage("lockedstate.gif"));
 			treeFillWebServices(item);
 			item = new TreeItem(http_server, SWT.NONE);
-			item.setData(new TreeData(Editor.HTTP_AUTHENTICATION, config, Options.getHelpURL("http_authentication"), "http_server"));
+			item.setData(new TreeData(JOEConstants.HTTP_AUTHENTICATION, config, Options.getHelpURL("http_authentication"), "http_server"));
 			item.setData(conItemDataKeyKEY, "http_server_@_http.authentication");
 			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 			item.setText(Messages.getLabel("treeitem.HttpAuthentication"));
 			item.setImage(getImage("12126.gif"));
 			item = new TreeItem(http_server, SWT.NONE);
-			item.setData(new TreeData(Editor.HTTPDIRECTORIES, config, Options.getHelpURL("http_directories"), "http_server"));
+			item.setData(new TreeData(JOEConstants.HTTPDIRECTORIES, config, Options.getHelpURL("http_directories"), "http_server"));
 			item.setData(conItemDataKeyKEY, "http_server_@_http_directory");
 			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 			item.setText(Messages.getLabel("treeitem.HttpDirectories"));
 			item.setImage(getImage("httpdirectory.gif"));
 			item = new TreeItem(objRootNode, SWT.NONE);
-			item.setData(new TreeData(Editor.HOLIDAYS, config, Options.getHelpURL("holidays"), "holidays"));
+			item.setData(new TreeData(JOEConstants.HOLIDAYS, config, Options.getHelpURL("holidays"), "holidays"));
 			item.setData(conItemDataKeyKEY, "holidays");
 			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 			item.setText(Messages.getLabel("treeitem.Holidays"));
@@ -451,28 +451,28 @@ public class SchedulerListener {
 			//			treeFillHolidays(item, config);
 		}
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.JOBS, null, Options.getHelpURL("jobs"), "jobs"));
+		item.setData(new TreeData(JOEConstants.JOBS, null, Options.getHelpURL("jobs"), "jobs"));
 		item.setData(conItemDataKeyKEY, "jobs_@_job");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel(JOBS));
 		item.setImage(getImage("jobs.gif"));
 		createTreeNodes4Jobs(item, pobjHotFolder);
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.JOB_CHAINS, null, Options.getHelpURL("job_chains"), "job_chains"));
+		item.setData(new TreeData(JOEConstants.JOB_CHAINS, null, Options.getHelpURL("job_chains"), "job_chains"));
 		item.setData(conItemDataKeyKEY, "job_chains_@_job_chain");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel(JOB_CHAINS));
 		item.setImage(getImage("hierarchical.gif"));
 		createTreeNodes4JobChains(item, pobjHotFolder);
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.ORDERS, config, Options.getHelpURL("orders"), "orders"));
+		item.setData(new TreeData(JOEConstants.ORDERS, config, Options.getHelpURL("orders"), "orders"));
 		item.setData(conItemDataKeyKEY, "commands_@_order");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel(ORDERS));
 		item.setImage(getImage("orders.gif"));
 		createTreeNodes4Orders(item, pobjHotFolder);
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.COMMANDS, config, Options.getHelpURL("commands"), "commands"));
+		item.setData(new TreeData(JOEConstants.COMMANDS, config, Options.getHelpURL("commands"), "commands"));
 		item.setData(conItemDataKeyKEY, "commands");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel("treeitem.Commands"));
@@ -557,11 +557,11 @@ public class SchedulerListener {
 				item = new TreeItem(objTree, SWT.NONE);
 				item.setText(name);
 				item.setImage(getImage("folder.gif"));
-				item.setData(new TreeData(Editor.ROOT_FOLDER, pobjHotFolder, Options.getHelpURL("rootfolder")));
+				item.setData(new TreeData(JOEConstants.ROOT_FOLDER, pobjHotFolder, Options.getHelpURL("rootfolder")));
 				item.setData(conItemDataKeyKEY, "rootfolder");
 				item.setData(conItemDataKeyCOPY_ELEMENT, pobjHotFolder);
 			}
-			else {
+			else { 
 				item = (TreeItem) pobjTreeViewControl;
 			}
 			int intNoOfNodes = createTreeNodes4SubFolders(item, pobjHotFolder);
@@ -572,26 +572,26 @@ public class SchedulerListener {
 		}
 		objRootNode = item;
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.JOBS, null, Options.getHelpURL("jobs"), "jobs"));
+		item.setData(new TreeData(JOEConstants.JOBS, null, Options.getHelpURL("jobs"), "jobs"));
 		item.setData(conItemDataKeyKEY, "jobs_@_job");
 		item.setText(Messages.getLabel(JOBS));
 		item.setImage(getImage("jobs.gif"));
 		createTreeNodes4Jobs(item, pobjHotFolder);
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.JOB_CHAINS, null, Options.getHelpURL("job_chains"), "job_chains"));
+		item.setData(new TreeData(JOEConstants.JOB_CHAINS, null, Options.getHelpURL("job_chains"), "job_chains"));
 		item.setData(conItemDataKeyKEY, "job_chains_@_job_chain");
 		item.setText(Messages.getLabel(JOB_CHAINS));
 		item.setImage(getImage("hierarchical.gif"));
 		createTreeNodes4JobChains(item, pobjHotFolder);
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.ORDERS, null, Options.getHelpURL("orders"), "orders"));
+		item.setData(new TreeData(JOEConstants.ORDERS, null, Options.getHelpURL("orders"), "orders"));
 		item.setData(conItemDataKeyKEY, "commands_@_order");
 		item.setText(Messages.getLabel(ORDERS));
 		item.setImage(getImage("orders.gif"));
 		createTreeNodes4Orders(item, pobjHotFolder);
 		Element config = objSchedulerDom.getRoot().getChild("config");
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.CONFIG, config, Options.getHelpURL("config")));
+		item.setData(new TreeData(JOEConstants.CONFIG, config, Options.getHelpURL("config")));
 		item.setData(conItemDataKeyKEY, "config");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel("treeitem.Config"));
@@ -600,7 +600,7 @@ public class SchedulerListener {
 			item.dispose();
 		}
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.BASE, config, Options.getHelpURL("base")));
+		item.setData(new TreeData(JOEConstants.BASE, config, Options.getHelpURL("base")));
 		item.setData(conItemDataKeyKEY, "base");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel("treeitem.BaseFiles"));
@@ -608,7 +608,7 @@ public class SchedulerListener {
 		if (type == SchedulerDom.DIRECTORY)
 			item.dispose();
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.PARAMETER, config, Options.getHelpURL("parameter")));
+		item.setData(new TreeData(JOEConstants.PARAMETER, config, Options.getHelpURL("parameter")));
 		item.setData(conItemDataKeyKEY, "params_@_param");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel("treeitem.parameter"));
@@ -616,7 +616,7 @@ public class SchedulerListener {
 		if (type == SchedulerDom.DIRECTORY)
 			item.dispose();
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.SECURITY, config, Options.getHelpURL("security"), "security"));
+		item.setData(new TreeData(JOEConstants.SECURITY, config, Options.getHelpURL("security"), "security"));
 		item.setData(conItemDataKeyKEY, "security");
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
@@ -625,7 +625,7 @@ public class SchedulerListener {
 		if (type == SchedulerDom.DIRECTORY)
 			item.dispose();
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.CLUSTER, config, Options.getHelpURL("cluster"), "cluster"));
+		item.setData(new TreeData(JOEConstants.CLUSTER, config, Options.getHelpURL("cluster"), "cluster"));
 		item.setData(conItemDataKeyKEY, "cluster");
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
@@ -634,35 +634,35 @@ public class SchedulerListener {
 		if (type == SchedulerDom.DIRECTORY)
 			item.dispose();
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"), "process_classes"));
+		item.setData(new TreeData(JOEConstants.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"), "process_classes"));
 		item.setData(conItemDataKeyKEY, "process_classes");
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setImage(getImage("10360.gif"));
 		item.setText(Messages.getLabel("treeitem.ProcessClasses"));
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.SCHEDULES, config, Options.getHelpURL("schedules"), "schedules"));
+		item.setData(new TreeData(JOEConstants.SCHEDULES, config, Options.getHelpURL("schedules"), "schedules"));
 		item.setData(conItemDataKeyKEY, "schedules_@_schedule");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel(SCHEDULES));
 		item.setImage(getImage("dates.gif"));
 		treeFillSchedules(item);
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.LOCKS, config, Options.getHelpURL("locks"), "locks"));
+		item.setData(new TreeData(JOEConstants.LOCKS, config, Options.getHelpURL("locks"), "locks"));
 		item.setData(conItemDataKeyKEY, "locks");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel("Locks"));
 		item.setImage(getImage("lockedstate.gif"));
 		if (type != SchedulerDom.DIRECTORY) {
 			item = new TreeItem(objRootNode, SWT.NONE);
-			item.setData(new TreeData(Editor.SCRIPT, config, Options.getHelpURL("start_script"), "script"));
+			item.setData(new TreeData(JOEConstants.SCRIPT, config, Options.getHelpURL("start_script"), "script"));
 			item.setData(conItemDataKeyKEY, "script");
 			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 			item.setText(Messages.getLabel("treeitem.StartScript"));
 			item.setImage(getImage("help.gif"));
 			TreeItem http_server = new TreeItem(objRootNode, SWT.NONE);
-			// http_server.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
-			http_server.setData(new TreeData(Editor.HTTP_SERVER, config, Options.getHelpURL("http_server"), "http_server"));
+			// http_server.setData(new TreeData(JOEConstants.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
+			http_server.setData(new TreeData(JOEConstants.HTTP_SERVER, config, Options.getHelpURL("http_server"), "http_server"));
 			// http_server.setData("key", "http_server");
 			ArrayList l = new ArrayList();
 			l.add("http_server_@_web_service");
@@ -673,26 +673,26 @@ public class SchedulerListener {
 			http_server.setText(Messages.getLabel(HTTP_SERVER));
 			http_server.setImage(getImage("web.gif"));
 			item = new TreeItem(http_server, SWT.NONE);
-			item.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
+			item.setData(new TreeData(JOEConstants.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
 			item.setData(conItemDataKeyKEY, "http_server_@_web_service");
 			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 			item.setText(Messages.getLabel(WEB_SERVICES));
 			item.setImage(getImage("lockedstate.gif"));
 			treeFillWebServices(item);
 			item = new TreeItem(http_server, SWT.NONE);
-			item.setData(new TreeData(Editor.HTTP_AUTHENTICATION, config, Options.getHelpURL("http_authentication"), "http_server"));
+			item.setData(new TreeData(JOEConstants.HTTP_AUTHENTICATION, config, Options.getHelpURL("http_authentication"), "http_server"));
 			item.setData(conItemDataKeyKEY, "http_server_@_http.authentication");
 			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 			item.setText(Messages.getLabel("treeitem.HttpAuthentication"));
 			item.setImage(getImage("12126.gif"));
 			item = new TreeItem(http_server, SWT.NONE);
-			item.setData(new TreeData(Editor.HTTPDIRECTORIES, config, Options.getHelpURL("http_directories"), "http_server"));
+			item.setData(new TreeData(JOEConstants.HTTPDIRECTORIES, config, Options.getHelpURL("http_directories"), "http_server"));
 			item.setData(conItemDataKeyKEY, "http_server_@_http_directory");
 			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 			item.setText(Messages.getLabel("treeitem.HttpDirectories"));
 			item.setImage(getImage("httpdirectory.gif"));
 			item = new TreeItem(objRootNode, SWT.NONE);
-			item.setData(new TreeData(Editor.HOLIDAYS, config, Options.getHelpURL("holidays"), "holidays"));
+			item.setData(new TreeData(JOEConstants.HOLIDAYS, config, Options.getHelpURL("holidays"), "holidays"));
 			item.setData(conItemDataKeyKEY, "holidays");
 			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 			item.setText(Messages.getLabel("treeitem.Holidays"));
@@ -701,7 +701,7 @@ public class SchedulerListener {
 			//			treeFillHolidays(item, config);
 		}
 		item = new TreeItem(objRootNode, SWT.NONE);
-		item.setData(new TreeData(Editor.COMMANDS, config, Options.getHelpURL("commands"), "commands"));
+		item.setData(new TreeData(JOEConstants.COMMANDS, config, Options.getHelpURL("commands"), "commands"));
 		item.setData(conItemDataKeyKEY, "commands");
 		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 		item.setText(Messages.getLabel("treeitem.Commands"));
@@ -727,7 +727,7 @@ public class SchedulerListener {
 				TreeItem item = new TreeItem(pobjParentTreeNode, SWT.NONE);
 				item.setText(strNodeText);
 				item.setImage(getImage("folder.gif"));
-				setItemData(item, Editor.SUB_FOLDER, objFolder, "folder");
+				setItemData(item, JOEConstants.SUB_FOLDER, objFolder, "folder");
 			}
 		}
 		pobjParentTreeNode.setExpanded(true);
@@ -744,7 +744,7 @@ public class SchedulerListener {
 				TreeItem item = new TreeItem(pobjTree, SWT.NONE);
 				item.setText(name);
 				item.setImage(getImage("folder.gif"));
-				setItemData(item, Editor.SUB_FOLDER, objFolder, "folder");
+				setItemData(item, JOEConstants.SUB_FOLDER, objFolder, "folder");
 			}
 		}
 	}
@@ -756,7 +756,7 @@ public class SchedulerListener {
 		if (intSize > 0) {
 			for (JSObjOrder objOrder : pobjHotFolder.getHotFolderFileList().getOrderList()) {
 				TreeItem item = new TreeItem(pobjParentTreeNode, SWT.NONE);
-				setItemData(item, Editor.ORDER, objOrder, "order");
+				setItemData(item, JOEConstants.ORDER, objOrder, "order");
 				item.setText(objOrder.getObjectNameAndTitle());
 				item.setImage(getImage("order.gif"));
 				createSubTreeNodes4Order(pobjHotFolder, item, objOrder);
@@ -767,7 +767,7 @@ public class SchedulerListener {
 	private void createSubTreeNodes4Order(final SchedulerHotFolder pobjHotFolder, final TreeItem pobjParentItem, final JSObjOrder pobjJobOrder) {
 		TreeItem item = new TreeItem(pobjParentItem, SWT.NONE);
 		item.setText(Messages.getLabel("treeitem.parameter"));
-		setItemData(item, Editor.ORDER_PARAMETER, pobjJobOrder, "treeitem.order.parameter");
+		setItemData(item, JOEConstants.ORDER_PARAMETER, pobjJobOrder, "treeitem.order.parameter");
 		item.setImage(getImage("parameter.gif"));
 	}
 
@@ -794,7 +794,7 @@ public class SchedulerListener {
 					name = objJob.getHotFolderSrc().getName();
 					name = name.substring(0, name.indexOf(JSObjJob.fileNameExtension));
 					item.setText(objJob.getName() + " - " + objJob.getTitle());
-					item.setData(new TreeData(Editor.JOB, objJob, Options.getHelpURL("job")));
+					item.setData(new TreeData(JOEConstants.JOB, objJob, Options.getHelpURL("job")));
 					item.setData(conItemDataKeyKEY, "job");
 					item.setData(conItemDataKeyCOPY_ELEMENT, objJob);
 					setColorOfJobTreeItem(objJob, item);
@@ -836,7 +836,7 @@ public class SchedulerListener {
 	//		Element config = objSchedulerDom.getRoot().getChild("config");
 	//		if (type != SchedulerDom.DIRECTORY) {
 	//			item = new TreeItem(tree, SWT.NONE);
-	//			item.setData(new TreeData(Editor.CONFIG, config, Options.getHelpURL("config")));
+	//			item.setData(new TreeData(JOEConstants.CONFIG, config, Options.getHelpURL("config")));
 	//			item.setData(conItemDataKeyKEY, "config");
 	//			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 	//			//        item.setText(Messages.getLabel("treeitem.Config"));
@@ -844,7 +844,7 @@ public class SchedulerListener {
 	//			item.setImage(getImage("config.gif"));
 	//
 	//			item = new TreeItem(tree, SWT.NONE);
-	//			item.setData(new TreeData(Editor.BASEFILE, config, Options.getHelpURL("base")));
+	//			item.setData(new TreeData(JOEConstants.BASEFILE, config, Options.getHelpURL("base")));
 	//			item.setData(conItemDataKeyKEY, "base");
 	//			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 	//			//        item.setText(Messages.getLabel("treeitem.BaseFiles"));
@@ -852,7 +852,7 @@ public class SchedulerListener {
 	//			item.setImage(getImage("import_wiz.gif"));
 	//
 	//			item = new TreeItem(tree, SWT.NONE);
-	//			item.setData(new TreeData(Editor.PARAMETER, config, Options.getHelpURL("parameter")));
+	//			item.setData(new TreeData(JOEConstants.PARAMETER, config, Options.getHelpURL("parameter")));
 	//			item.setData(conItemDataKeyKEY, "params_@_param");
 	//			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 	//			//        item.setText(Messages.getLabel("treeitem.parameter"));
@@ -860,7 +860,7 @@ public class SchedulerListener {
 	//			item.setImage(getImage("parameter.gif"));
 	//
 	//			item = new TreeItem(tree, SWT.NONE);
-	//			item.setData(new TreeData(Editor.SECURITY, config, Options.getHelpURL("security"), "security"));
+	//			item.setData(new TreeData(JOEConstants.SECURITY, config, Options.getHelpURL("security"), "security"));
 	//			item.setData(conItemDataKeyKEY, "security");
 	//			item.setData(conItemDataKeyMAX_OCCUR, "1");
 	//			item.setData(conItemDataKeyCOPY_ELEMENT, config);
@@ -869,7 +869,7 @@ public class SchedulerListener {
 	//			item.setImage(getImage("10682.gif"));
 	//
 	//			item = new TreeItem(tree, SWT.NONE);
-	//			item.setData(new TreeData(Editor.CLUSTER, config, Options.getHelpURL("cluster"), "cluster"));
+	//			item.setData(new TreeData(JOEConstants.CLUSTER, config, Options.getHelpURL("cluster"), "cluster"));
 	//			item.setData(conItemDataKeyKEY, "cluster");
 	//			item.setData(conItemDataKeyMAX_OCCUR, "1");
 	//			item.setData(conItemDataKeyCOPY_ELEMENT, config);
@@ -879,7 +879,7 @@ public class SchedulerListener {
 	//		}
 	//
 	//		item = new TreeItem(objTreeObjects, SWT.NONE);
-	//		item.setData(new TreeData(Editor.JOBS, config, Options.getHelpURL("jobs"), "jobs"));
+	//		item.setData(new TreeData(JOEConstants.JOBS, config, Options.getHelpURL("jobs"), "jobs"));
 	//		item.setData(conItemDataKeyKEY, "jobs_@_job");
 	//		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 	//		item.setText(JOBS);
@@ -888,7 +888,7 @@ public class SchedulerListener {
 	//		item.setExpanded(true);
 	//
 	//		item = new TreeItem(objTreeObjects, SWT.NONE);
-	//		item.setData(new TreeData(Editor.JOB_CHAINS, config, Options.getHelpURL("job_chains"), "job_chains"));
+	//		item.setData(new TreeData(JOEConstants.JOB_CHAINS, config, Options.getHelpURL("job_chains"), "job_chains"));
 	//		item.setData(conItemDataKeyKEY, "job_chains_@_job_chain");
 	//		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 	//		item.setText(JOB_CHAINS);
@@ -896,7 +896,7 @@ public class SchedulerListener {
 	//		treeFillJobChains(item);
 	//
 	//		item = new TreeItem(objTreeObjects, SWT.NONE);
-	//		TreeData objTD = new TreeData(item, Editor.ORDERS, config, Options.getHelpURL("orders"));
+	//		TreeData objTD = new TreeData(item, JOEConstants.ORDERS, config, Options.getHelpURL("orders"));
 	//		item.setData(conItemDataKeyKEY, "commands_@_order");
 	//		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 	//		item.setText(ORDERS);
@@ -906,7 +906,7 @@ public class SchedulerListener {
 	//
 	//		item = new TreeItem(objTreeObjects, SWT.NONE);
 	//		{
-	//			objTD = new TreeData(item, Editor.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"));
+	//			objTD = new TreeData(item, JOEConstants.PROCESS_CLASSES, config, Options.getHelpURL("process_classes"));
 	//			item.setData(conItemDataKeyKEY, "process_classes");
 	//			item.setData(conItemDataKeyMAX_OCCUR, "1");
 	//			item.setData(conItemDataKeyCOPY_ELEMENT, config);
@@ -916,7 +916,7 @@ public class SchedulerListener {
 	//		}
 	//
 	//		item = new TreeItem(objTreeObjects, SWT.NONE);
-	//		objTD = new TreeData(item, Editor.SCHEDULES, config, Options.getHelpURL("schedules"));
+	//		objTD = new TreeData(item, JOEConstants.SCHEDULES, config, Options.getHelpURL("schedules"));
 	//		item.setData(conItemDataKeyKEY, "schedules_@_schedule");
 	//		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 	//		item.setText(SCHEDULES);
@@ -924,7 +924,7 @@ public class SchedulerListener {
 	//		treeFillSchedules(item);
 	//
 	//		item = new TreeItem(objTreeObjects, SWT.NONE);
-	//		objTD = new TreeData(item, Editor.LOCKS, config, Options.getHelpURL("locks"));
+	//		objTD = new TreeData(item, JOEConstants.LOCKS, config, Options.getHelpURL("locks"));
 	//		item.setData(conItemDataKeyKEY, "locks");
 	//		item.setData(conItemDataKeyCOPY_ELEMENT, config);
 	//		item.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_Locks.label());
@@ -932,7 +932,7 @@ public class SchedulerListener {
 	//
 	//		if (type != SchedulerDom.DIRECTORY) {
 	//			item = new TreeItem(tree, SWT.NONE);
-	//			item.setData(new TreeData(Editor.SCRIPT, config, Options.getHelpURL("start_script"), "script"));
+	//			item.setData(new TreeData(JOEConstants.SCRIPT, config, Options.getHelpURL("start_script"), "script"));
 	//			item.setData(conItemDataKeyKEY, "script");
 	//			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 	//			//        item.setText(Messages.getLabel("treeitem.StartScript"));
@@ -942,8 +942,8 @@ public class SchedulerListener {
 	//				item.dispose();
 	//
 	//			TreeItem http_server = new TreeItem(tree, SWT.NONE);
-	//			// http_server.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
-	//			http_server.setData(new TreeData(Editor.HTTP_SERVER, config, Options.getHelpURL("http_server"), "http_server"));
+	//			// http_server.setData(new TreeData(JOEConstants.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
+	//			http_server.setData(new TreeData(JOEConstants.HTTP_SERVER, config, Options.getHelpURL("http_server"), "http_server"));
 	//			// http_server.setData("key", "http_server");
 	//			ArrayList l = new ArrayList();
 	//			l.add("http_server_@_web_service");
@@ -956,7 +956,7 @@ public class SchedulerListener {
 	//			http_server.setImage(getImage("web.gif"));
 	//
 	//			item = new TreeItem(http_server, SWT.NONE);
-	//			item.setData(new TreeData(Editor.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
+	//			item.setData(new TreeData(JOEConstants.WEBSERVICES, config, Options.getHelpURL("http_server"), "http_server"));
 	//			item.setData(conItemDataKeyKEY, "http_server_@_web_service");
 	//			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 	//			item.setText(Messages.getLabel(WEB_SERVICES));
@@ -965,7 +965,7 @@ public class SchedulerListener {
 	//			treeFillWebServices(item);
 	//
 	//			item = new TreeItem(http_server, SWT.NONE);
-	//			item.setData(new TreeData(Editor.HTTP_AUTHENTICATION, config, Options.getHelpURL("http_authentication"), "http_server"));
+	//			item.setData(new TreeData(JOEConstants.HTTP_AUTHENTICATION, config, Options.getHelpURL("http_authentication"), "http_server"));
 	//			item.setData(conItemDataKeyKEY, "http_server_@_http.authentication");
 	//			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 	//			//            item.setText(Messages.getLabel("treeitem.HttpAuthentication"));
@@ -973,7 +973,7 @@ public class SchedulerListener {
 	//			item.setImage(getImage("12126.gif"));
 	//
 	//			item = new TreeItem(http_server, SWT.NONE);
-	//			item.setData(new TreeData(Editor.HTTPDIRECTORIES, config, Options.getHelpURL("http_directories"), "http_server"));
+	//			item.setData(new TreeData(JOEConstants.HTTPDIRECTORIES, config, Options.getHelpURL("http_directories"), "http_server"));
 	//			item.setData(conItemDataKeyKEY, "http_server_@_http_directory");
 	//			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 	//			//            item.setText(Messages.getLabel("treeitem.HttpDirectories"));
@@ -981,7 +981,7 @@ public class SchedulerListener {
 	//			item.setImage(getImage("httpdirectory.gif"));
 	//
 	//			item = new TreeItem(tree, SWT.NONE);
-	//			item.setData(new TreeData(Editor.HOLIDAYS, config, Options.getHelpURL("holidays"), "holidays"));
+	//			item.setData(new TreeData(JOEConstants.HOLIDAYS, config, Options.getHelpURL("holidays"), "holidays"));
 	//			item.setData(conItemDataKeyKEY, "holidays");
 	//			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 	//			//            item.setText(Messages.getLabel("treeitem.Holidays"));
@@ -990,7 +990,7 @@ public class SchedulerListener {
 	//			treeFillHolidays(item, config);
 	//
 	//			item = new TreeItem(tree, SWT.NONE);
-	//			item.setData(new TreeData(Editor.COMMANDS, config, Options.getHelpURL("commands"), "commands"));
+	//			item.setData(new TreeData(JOEConstants.COMMANDS, config, Options.getHelpURL("commands"), "commands"));
 	//			item.setData(conItemDataKeyKEY, "commands");
 	//			item.setData(conItemDataKeyCOPY_ELEMENT, config);
 	//			//        item.setText(Messages.getLabel("treeitem.Commands"));
@@ -1023,12 +1023,12 @@ public class SchedulerListener {
 	//	public void treeFillOrders(final TreeItem parent, final boolean expand) {
 	//		TreeItem orders = parent;
 	//		TreeData objTD = (TreeData) parent.getData();
-	//		if (objTD.TypeEqualTo(Editor.ORDERS) == false) {
+	//		if (objTD.TypeEqualTo(JOEConstants.ORDERS) == false) {
 	//			Tree t = parent.getParent();
 	//			for (int i = 0; i < t.getItemCount(); i++) {
 	//				TreeData objT = (TreeData) t.getData();
 	//				if (objT != null) {
-	//					if (objT.TypeEqualTo(Editor.ORDERS) == true) {
+	//					if (objT.TypeEqualTo(JOEConstants.ORDERS) == true) {
 	//						orders = t.getItem(i);
 	//						break;
 	//					}
@@ -1048,7 +1048,7 @@ public class SchedulerListener {
 	//							{
 	//								TreeItem item = new TreeItem(orders, SWT.NONE);
 	//								item.setImage(getImage("order.gif"));
-	//								objTD = new TreeData(item, Editor.ORDER, objOrderElement, Options.getHelpURL("orders"));
+	//								objTD = new TreeData(item, JOEConstants.ORDER, objOrderElement, Options.getHelpURL("orders"));
 	//								item.setData(conItemDataKeyKEY, "commands_@_order");
 	//								if (!Utils.isElementEnabled("commands", objSchedulerDom, objOrderElement)) {
 	//									setDisabled(item); // item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
@@ -1069,7 +1069,7 @@ public class SchedulerListener {
 	//						if (e.getName().equals("order") && e.getAttributeValue("id") != null) {
 	//							TreeItem item = new TreeItem(orders, SWT.NONE);
 	//							item.setImage(getImage("order.gif"));
-	//							objTD = new TreeData(item, Editor.ORDER, e, Options.getHelpURL("orders"));
+	//							objTD = new TreeData(item, JOEConstants.ORDER, e, Options.getHelpURL("orders"));
 	//							item.setData(conItemDataKeyKEY, "commands_@_order");
 	//							item.setData(conItemDataKeyCOPY_ELEMENT, e);
 	//							if (!Utils.isElementEnabled("commands", objSchedulerDom, e)) {
@@ -1125,7 +1125,7 @@ public class SchedulerListener {
 	//			checkLifeAttributes(element, Utils.getAttributeValue("name", element));
 	//		}
 	//		TreeItem objTreeItem = new TreeItem(parent, SWT.NONE);
-	//		TreeData objTD = new TreeData(objTreeItem, Editor.JOB, element, Options.getHelpURL("job"));
+	//		TreeData objTD = new TreeData(objTreeItem, JOEConstants.JOB, element, Options.getHelpURL("job"));
 	//		objTreeItem.setText(strPrefix + objTD.getNameAndTitle());
 	//		objTreeItem.setData(conItemDataKeyKEY, "jobs_@_job");
 	//		setColorOfJobTreeItem(element, objTreeItem);
@@ -1178,7 +1178,7 @@ public class SchedulerListener {
 	//		item.setImage(getImage("options.gif"));
 	//
 	//		item.setData(conItemDataKeyMAX_OCCUR, "1");
-	//		item.setData(new TreeData(Editor.JOB_OPTION, job, Options.getHelpURL("job")));
+	//		item.setData(new TreeData(JOEConstants.JOB_OPTION, job, Options.getHelpURL("job")));
 	//		item.setData(conItemDataKeyKEY, "job");
 	//		item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 	//		item.setData(conItemDataKeyCOPY_ELEMENT, job);
@@ -1188,7 +1188,7 @@ public class SchedulerListener {
 	//
 	//		// Parameter
 	//		item = new TreeItem(parent, SWT.NONE);
-	//		item.setData(new TreeData(Editor.PARAMETER, job, Options.getHelpURL("parameter")));
+	//		item.setData(new TreeData(JOEConstants.PARAMETER, job, Options.getHelpURL("parameter")));
 	//		item.setData(conItemDataKeyKEY, "params_@_param");
 	//		ArrayList ll = new ArrayList();
 	//		ll.add("params_@_param");
@@ -1202,7 +1202,7 @@ public class SchedulerListener {
 	//
 	//		// Mail
 	//		item = new TreeItem(parent, SWT.NONE);
-	//		item.setData(new TreeData(Editor.SETTINGS, job, Options.getHelpURL("settings")));
+	//		item.setData(new TreeData(JOEConstants.SETTINGS, job, Options.getHelpURL("settings")));
 	//		item.setData(conItemDataKeyKEY, "settings");
 	//		item.setData(conItemDataKeyCOPY_ELEMENT, job);
 	//		//        item.setText(Messages.getLabel("treeitem.jobsettings"));
@@ -1214,7 +1214,7 @@ public class SchedulerListener {
 	//		item = new TreeItem(parent, SWT.NONE);
 	//		item.setText(MONITOR);
 	//		item.setImage(getImage("source_attach_attrib.gif"));
-	//		item.setData(new TreeData(Editor.MONITORS, job, Options.getHelpURL("job.monitor"), "monitor"));
+	//		item.setData(new TreeData(JOEConstants.MONITORS, job, Options.getHelpURL("job.monitor"), "monitor"));
 	//		item.setData(conItemDataKeyKEY, "monitor");
 	//		item.setData(conItemDataKeyCOPY_ELEMENT, job);
 	//		if (flgIsReadOnlyFile) {
@@ -1226,7 +1226,7 @@ public class SchedulerListener {
 	//		item = new TreeItem(parent, SWT.NONE);
 	//		//        item.setText(Messages.getLabel("treeitem.runoptions"));
 	//		item.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_RunOptions.label());
-	//		item.setData(new TreeData(Editor.OPTIONS, job, Options.getHelpURL("job.options")));
+	//		item.setData(new TreeData(JOEConstants.OPTIONS, job, Options.getHelpURL("job.options")));
 	//		l = new ArrayList<String>();
 	//		l.add("start_when_directory_changed");
 	//		l.add("delay_after_error");
@@ -1242,7 +1242,7 @@ public class SchedulerListener {
 	//		item = new TreeItem(parent, SWT.NONE);
 	//		//        item.setText(Messages.getLabel("locks"));
 	//		item.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_Locks.label());
-	//		item.setData(new TreeData(Editor.LOCKUSE, job, Options.getHelpURL("job.locks")));
+	//		item.setData(new TreeData(JOEConstants.LOCKUSE, job, Options.getHelpURL("job.locks")));
 	//		item.setData(conItemDataKeyKEY, "lock.use");
 	//		item.setData(conItemDataKeyCOPY_ELEMENT, job);
 	//		item.setImage(getImage("lockedstate.gif"));
@@ -1264,7 +1264,7 @@ public class SchedulerListener {
 	//		if (commands != null) {
 	////			treeFillCommands(item, job, false);
 	//		}
-	//		item.setData(new TreeData(Editor.JOB_COMMANDS, job, Options.getHelpURL("job.commands")));
+	//		item.setData(new TreeData(JOEConstants.JOB_COMMANDS, job, Options.getHelpURL("job.commands")));
 	//		// item.setData("key", "job_@_commands");
 	//		item.setData(conItemDataKeyKEY, "commands");
 	//		item.setData(conItemDataKeyCOPY_ELEMENT, job);
@@ -1277,7 +1277,7 @@ public class SchedulerListener {
 	//		item.setImage(getImage("11020.gif"));
 	//
 	//		item.setData(conItemDataKeyMAX_OCCUR, "1");
-	//		item.setData(new TreeData(Editor.JOB_DOCUMENTATION, job, Options.getHelpURL("job")));
+	//		item.setData(new TreeData(JOEConstants.JOB_DOCUMENTATION, job, Options.getHelpURL("job")));
 	//		// ArrayList l = new ArrayList();
 	//		// l.add("process");
 	//		// l.add("script");
@@ -1297,7 +1297,7 @@ public class SchedulerListener {
 		parent.removeAll();
 		// Element runtime = order.getChild("run_time");
 		TreeItem item = new TreeItem(parent, SWT.NONE);
-		item.setData(new TreeData(Editor.PARAMETER, order, Options.getHelpURL("parameter")));
+		item.setData(new TreeData(JOEConstants.PARAMETER, order, Options.getHelpURL("parameter")));
 		item.setData(conItemDataKeyKEY, "params_@_param");
 		item.setData(conItemDataKeyCOPY_ELEMENT, order);
 		//        item.setText(Messages.getLabel("treeitem.parameter"));
@@ -1317,7 +1317,7 @@ public class SchedulerListener {
 		item = new TreeItem(item, SWT.NONE);
 		//        item.setText(Messages.getLabel("treeitem.weekdays"));
 		item.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_Weekdays.label());
-		item.setData(new TreeData(Editor.WEEKDAYS, elem, Options.getHelpURL("job.run_time.weekdays"), "weekdays"));
+		item.setData(new TreeData(JOEConstants.WEEKDAYS, elem, Options.getHelpURL("job.run_time.weekdays"), "weekdays"));
 		item.setData(conItemDataKeyKEY, "holidays_@_weekdays");
 		item.setData(conItemDataKeyCOPY_ELEMENT, elem);
 		if (elem.getChild("holidays") != null) {
@@ -1340,11 +1340,11 @@ public class SchedulerListener {
 	//					"job_chain", cmdElem) : Utils.getAttributeValue("job", cmdElem);
 	//			item.setText(cmdElem.getName() + ": " + name);
 	//			item.setImage(getImage("commands.gif"));
-	//			item.setData(new TreeData(Editor.JOB_COMMAND, cmdElem, Options.getHelpURL("job.commands")));
+	//			item.setData(new TreeData(JOEConstants.JOB_COMMAND, cmdElem, Options.getHelpURL("job.commands")));
 	//			item.setExpanded(false);
 	//			// PARAMETER
 	//			item = new TreeItem(item, SWT.NONE);
-	//			item.setData(new TreeData(Editor.PARAMETER, cmdElem, Options.getHelpURL("parameter")));
+	//			item.setData(new TreeData(JOEConstants.PARAMETER, cmdElem, Options.getHelpURL("parameter")));
 	//			item.setData(conItemDataKeyKEY, "params_@_param");
 	//			item.setData(conItemDataKeyCOPY_ELEMENT, cmdElem);
 	//			//            item.setText(Messages.getLabel("treeitem.parameter"));
@@ -1367,7 +1367,7 @@ public class SchedulerListener {
 	//					TreeItem item = new TreeItem(parent, SWT.NONE);
 	//					//                    item.setText(e.getAttributeValue("on_exit_code"));
 	//					item.setText(e.getAttributeValue("on_exit_code"));
-	//					item.setData(new TreeData(Editor.JOB_COMMAND_EXIT_CODES, e, Options.getHelpURL("job.commands")));
+	//					item.setData(new TreeData(JOEConstants.JOB_COMMAND_EXIT_CODES, e, Options.getHelpURL("job.commands")));
 	//					item.setData(conItemDataKeyKEY, "commands_@_order");
 	//					item.setData(conItemDataKeyCOPY_ELEMENT, e);
 	//					if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {
@@ -1444,7 +1444,7 @@ public class SchedulerListener {
 					name = objJob.getHotFolderSrc().getName();
 					name = name.substring(0, name.indexOf(JSObjJob.fileNameExtension));
 					item.setText(objJob.getName() + " - " + objJob.getTitle());
-					item.setData(new TreeData(Editor.JOB, objJob, Options.getHelpURL("job")));
+					item.setData(new TreeData(JOEConstants.JOB, objJob, Options.getHelpURL("job")));
 					item.setData(conItemDataKeyKEY, "job");
 					item.setData(conItemDataKeyCOPY_ELEMENT, objJob);
 					setColorOfJobTreeItem(objJob, item);
@@ -1469,7 +1469,7 @@ public class SchedulerListener {
 				TreeItem item = new TreeItem(parent, SWT.NONE);
 				// TODO I18N
 				item.setText("on_exit_code");
-				item.setData(new TreeData(Editor.JOB_COMMAND_EXIT_CODES, objCommand, Options.getHelpURL("job.commands")));
+				item.setData(new TreeData(JOEConstants.JOB_COMMAND_EXIT_CODES, objCommand, Options.getHelpURL("job.commands")));
 				item.setData(conItemDataKeyKEY, "commands_@_order");
 				item.setData(conItemDataKeyCOPY_ELEMENT, objCommand);
 				// if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", pobjJob))) {
@@ -1547,7 +1547,7 @@ public class SchedulerListener {
 		TreeItem item = new TreeItem(parent, SWT.NONE);
 		item.setText(Messages.getLabel("treeitem.options"));
 		item.setImage(getImage("options.gif"));
-		setItemData(item, Editor.JOB_OPTION, pobjJob, "job");
+		setItemData(item, JOEConstants.JOB_OPTION, pobjJob, "job");
 		item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
 		// TODO gehört eigentlich an den JobKnoten
@@ -1558,7 +1558,7 @@ public class SchedulerListener {
 		item = new TreeItem(parent, SWT.NONE);
 		item.setText(Messages.getLabel("treeitem.parameter"));
 		item.setImage(getImage("parameter.gif"));
-		item.setData(new TreeData(Editor.JOB_PARAMETER, pobjJob, Options.getHelpURL("parameter")));
+		item.setData(new TreeData(JOEConstants.JOB_PARAMETER, pobjJob, Options.getHelpURL("parameter")));
 		item.setData(conItemDataKeyKEY, "params_@_param");
 		ArrayList ll = new ArrayList();
 		ll.add("params_@_param");
@@ -1570,7 +1570,7 @@ public class SchedulerListener {
 		item = new TreeItem(parent, SWT.NONE);
 		item.setText(Messages.getLabel("treeitem.jobsettings"));
 		item.setImage(getImage("10036.gif"));
-		item.setData(new TreeData(Editor.SETTINGS, pobjJob, Options.getHelpURL("settings")));
+		item.setData(new TreeData(JOEConstants.SETTINGS, pobjJob, Options.getHelpURL("settings")));
 		item.setData(conItemDataKeyKEY, "settings");
 		item.setData(conItemDataKeyCOPY_ELEMENT, pobjJob);
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
@@ -1578,7 +1578,7 @@ public class SchedulerListener {
 		item = new TreeItem(parent, SWT.NONE);
 		item.setText(Messages.getLabel(MONITOR));
 		item.setImage(getImage("source_attach_attrib.gif"));
-		item.setData(new TreeData(Editor.MONITORS, pobjJob, Options.getHelpURL("job.monitor"), "monitor"));
+		item.setData(new TreeData(JOEConstants.MONITORS, pobjJob, Options.getHelpURL("job.monitor"), "monitor"));
 		item.setData(conItemDataKeyKEY, "monitor");
 		item.setData(conItemDataKeyCOPY_ELEMENT, pobjJob);
 		if (flgIsReadOnlyFile) {
@@ -1589,7 +1589,7 @@ public class SchedulerListener {
 		item = new TreeItem(parent, SWT.NONE);
 		item.setText(Messages.getLabel("treeitem.runoptions"));
 		item.setImage(getImage("properties.gif"));
-		item.setData(new TreeData(Editor.OPTIONS, pobjJob, Options.getHelpURL("job.options")));
+		item.setData(new TreeData(JOEConstants.OPTIONS, pobjJob, Options.getHelpURL("job.options")));
 		l = new ArrayList<String>();
 		// TODO knoten?
 		l.add("start_when_directory_changed");
@@ -1603,7 +1603,7 @@ public class SchedulerListener {
 		item = new TreeItem(parent, SWT.NONE);
 		item.setText(Messages.getLabel("locks"));
 		item.setImage(getImage("lockedstate.gif"));
-		item.setData(new TreeData(Editor.LOCKUSE, pobjJob, Options.getHelpURL("job.locks")));
+		item.setData(new TreeData(JOEConstants.LOCKUSE, pobjJob, Options.getHelpURL("job.locks")));
 		item.setData(conItemDataKeyKEY, "lock.use");
 		item.setData(conItemDataKeyCOPY_ELEMENT, pobjJob);
 		if (flgIsReadOnlyFile) {
@@ -1620,7 +1620,7 @@ public class SchedulerListener {
 		if (commands != null) {
 			createTreeNodes4Commands(item, pobjJob, false);
 		}
-		item.setData(new TreeData(Editor.JOB_COMMANDS, pobjJob, Options.getHelpURL("job.commands")));
+		item.setData(new TreeData(JOEConstants.JOB_COMMANDS, pobjJob, Options.getHelpURL("job.commands")));
 		item.setData(conItemDataKeyKEY, "commands");
 		item.setData(conItemDataKeyCOPY_ELEMENT, pobjJob);
 		parent.setExpanded(expand);
@@ -1629,7 +1629,7 @@ public class SchedulerListener {
 		item.setText(Messages.getLabel("treeitem.documentation"));
 		item.setImage(getImage("11020.gif"));
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
-		item.setData(new TreeData(Editor.JOB_DOCUMENTATION, pobjJob, Options.getHelpURL("job")));
+		item.setData(new TreeData(JOEConstants.JOB_DOCUMENTATION, pobjJob, Options.getHelpURL("job")));
 		// ArrayList l = new ArrayList();
 		// l.add("process");
 		// l.add("script");
@@ -1658,7 +1658,7 @@ public class SchedulerListener {
 		if (intSize > 0) {
 			for (JSObjJobChain objJobChain : pobjHotFolder.getHotFolderFileList().getJobChainList()) {
 				TreeItem item = new TreeItem(pobjParentTreeNode, SWT.NONE);
-				setItemData(item, Editor.JOB_CHAIN, objJobChain, "treeitem.jobchain");
+				setItemData(item, JOEConstants.JOB_CHAIN, objJobChain, "treeitem.jobchain");
 				item.setText(objJobChain.getObjectNameAndTitle());
 				item.setImage(getImage("jobchain.gif"));
 				if (objJobChain.isEnabled() == false) {
@@ -1677,12 +1677,12 @@ public class SchedulerListener {
 		TreeItem iNodes = new TreeItem(pobjParentItem, SWT.NONE);
 		iNodes.setText(Messages.getLabel("treeitem.nodes"));
 		iNodes.setImage(getImage("jobchain.gif"));
-		setItemData(iNodes, Editor.JOB_CHAIN_NODES, pobjJobChain, "job_chain_node");
+		setItemData(iNodes, JOEConstants.JOB_CHAIN_NODES, pobjJobChain, "job_chain_node");
 		// Job Chain Nested Nodes
 		TreeItem iNestedNodes = new TreeItem(pobjParentItem, SWT.NONE);
 		iNestedNodes.setText(Messages.getLabel("treeitem.nestedjobchains"));
 		iNestedNodes.setImage(getImage("jobchain.gif"));
-		setItemData(iNodes, Editor.JOB_CHAIN_NESTED_NODES, pobjJobChain, "nestedjobchains");
+		setItemData(iNodes, JOEConstants.JOB_CHAIN_NESTED_NODES, pobjJobChain, "nestedjobchains");
 		if (pobjJobChain.isEnabled() == false) {
 			setDisabled(iNodes);
 			setDisabled(iNestedNodes);
@@ -1706,14 +1706,14 @@ public class SchedulerListener {
 	//					TreeItem i = new TreeItem(parent, SWT.NONE);
 	//					{
 	//						i.setImage(getImage("jobchain.gif"));
-	//						TreeData objTD = new TreeData(i, Editor.JOB_CHAIN, element, Options.getHelpURL("job_chain"));
+	//						TreeData objTD = new TreeData(i, JOEConstants.JOB_CHAIN, element, Options.getHelpURL("job_chain"));
 	//						i.setData(conItemDataKeyKEY, "job_chains_@_job_chain");
 	//					}
 	//					// Job Chain Nodes
 	//					TreeItem iNodes = new TreeItem(i, SWT.NONE);
 	//					{
 	//						iNodes.setImage(getImage("jobchain.gif"));
-	//						TreeData objTD = new TreeData(iNodes, Editor.JOB_CHAIN_NODES, element, Options.getHelpURL("job_chain"));
+	//						TreeData objTD = new TreeData(iNodes, JOEConstants.JOB_CHAIN_NODES, element, Options.getHelpURL("job_chain"));
 	//						iNodes.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_StepsNodes.label());
 	//						iNodes.setData(conItemDataKeyKEY, "job_chain_node");
 	//					}
@@ -1730,7 +1730,7 @@ public class SchedulerListener {
 	//							for (int k = 0; k < objRootItem.getItemCount(); k++) {
 	//								TreeItem item = objRootItem.getItem(k);
 	//								TreeData objTreeData = (TreeData) item.getData();
-	//								if (objTreeData != null && objTreeData.TypeEqualTo(Editor.JOBS)) { // Jobs node
+	//								if (objTreeData != null && objTreeData.TypeEqualTo(JOEConstants.JOBS)) { // Jobs node
 	//									/*
 	//									 * Loop over all Jobs in the Tree. Attention: not all Jobs are in the tree due to subfolders
 	//									 */
@@ -1756,7 +1756,7 @@ public class SchedulerListener {
 	//					TreeItem iNestedNodes = new TreeItem(i, SWT.NONE);
 	//					iNestedNodes.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_NestedJobChains.label());
 	//					iNestedNodes.setImage(getImage("jobchain.gif"));
-	//					iNestedNodes.setData(new TreeData(Editor.JOB_CHAIN_NESTED_NODES, element, Options.getHelpURL("job_chain")));
+	//					iNestedNodes.setData(new TreeData(JOEConstants.JOB_CHAIN_NESTED_NODES, element, Options.getHelpURL("job_chain")));
 	//					iNestedNodes.setData(conItemDataKeyKEY, "job_chain_node.job_chain");
 	//					iNestedNodes.setData(conItemDataKeyCOPY_ELEMENT, element);
 	//					iNestedNodes.setExpanded(true);
@@ -1774,7 +1774,7 @@ public class SchedulerListener {
 	//					TreeItem objOrders4JobChain = new TreeItem(i, SWT.NONE);
 	//					objOrders4JobChain.setText("Orders");
 	//					objOrders4JobChain.setImage(getImage("orders.gif"));
-	//					objOrders4JobChain.setData(new TreeData(Editor.ORDERS, element, Options.getHelpURL("orders")));
+	//					objOrders4JobChain.setData(new TreeData(JOEConstants.ORDERS, element, Options.getHelpURL("orders")));
 	//					objOrders4JobChain.setData(conItemDataKeyKEY, "orders.job_chain");
 	//					objOrders4JobChain.setData(conItemDataKeyCOPY_ELEMENT, element);
 	//					objOrders4JobChain.setExpanded(true);
@@ -1822,9 +1822,9 @@ public class SchedulerListener {
 					int intType = objTreeItemUserdata.getType();
 					pobjParentComposite.setLayout(new FillLayout());
 					switch (intType) {
-						case Editor.ROOT_FOLDER:
+						case JOEConstants.ROOT_FOLDER:
 							break;
-						case Editor.SUB_FOLDER:
+						case JOEConstants.SUB_FOLDER:
 							if (objSelectedTreeItem.getItemCount() > 0) {
 							}
 							else {
@@ -1834,151 +1834,151 @@ public class SchedulerListener {
 							}
 							objSelectedTreeItem.setExpanded(true);
 							break;
-						case Editor.CONFIG:  // JobScheduler Configuration
+						case JOEConstants.CONFIG:  // JobScheduler Configuration
 							new ConfigForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objSchedulerForm);
 							break;
-						case Editor.PARAMETER:  // global JobScheduler Parameter
+						case JOEConstants.PARAMETER:  // global JobScheduler Parameter
 							type = objTreeItemUserdata.getType();
 							new ParameterForm(pobjParentComposite, objTreeItemUserdata);
 							break;
-						case Editor.JOB_PARAMETER:
+						case JOEConstants.JOB_PARAMETER:
 							type = objTreeItemUserdata.getType();
 							JSObjJob objJSJob = objTreeItemUserdata.getJob();
 							String jobname = objJSJob.getJobName();
 							new JobParameterForm(pobjParentComposite, objTreeItemUserdata.getJob(), objSchedulerForm, type);
 							break;
-						case Editor.SECURITY:  // JobScheduler Configuration
+						case JOEConstants.SECURITY:  // JobScheduler Configuration
 							new SecurityForm(pobjParentComposite, objTreeItemUserdata);
 							break;
-						case Editor.CLUSTER:  // JobScheduler Configuration
+						case JOEConstants.CLUSTER:  // JobScheduler Configuration
 							new ClusterForm(pobjParentComposite, objTreeItemUserdata);
 							break;
-						case Editor.BASE:  // JobScheduler Configuration
+						case JOEConstants.BASE:  // JobScheduler Configuration
 							new BaseForm(pobjParentComposite, objTreeItemUserdata);
 							break;
-						case Editor.PROCESS_CLASSES:
+						case JOEConstants.PROCESS_CLASSES:
 							new ProcessClassesForm(pobjParentComposite, objTreeItemUserdata);
 							break;
-						case Editor.LOCKS:
+						case JOEConstants.LOCKS:
 							new LocksForm(pobjParentComposite, objTreeItemUserdata);
 							break;
-						case Editor.MONITORS:
+						case JOEConstants.MONITORS:
 							new ScriptsForm(pobjParentComposite,  objTreeItemUserdata);
 							break;
-						case Editor.MONITOR:
+						case JOEConstants.MONITOR:
 							new ScriptFormPreProcessing(pobjParentComposite,   objTreeItemUserdata);
 							break;
-						case Editor.SCRIPT:   // JobScheduler Configuration
+						case JOEConstants.SCRIPT:   // JobScheduler Configuration
 							new ScriptFormSchedulerStartScript(pobjParentComposite,   objTreeItemUserdata);
 							break;
-						case Editor.JOB:
+						case JOEConstants.JOB:
 							//							new ScriptJobMainForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							new ScriptJobMainForm(pobjParentComposite, objTreeItemUserdata);
 							break;
-						case Editor.JOB_OPTION:
+						case JOEConstants.JOB_OPTION:
 							//							new JobMainOptionForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							type = objTreeItemUserdata.getType();
 							objJSJob = objTreeItemUserdata.getJob();
 							jobname = objJSJob.getJobName();
 							new JobMainOptionForm(pobjParentComposite, SWT.NONE, objTreeItemUserdata, objSchedulerForm);
 							break;
-						case Editor.JOB_DOCUMENTATION:
+						case JOEConstants.JOB_DOCUMENTATION:
 							new JobDocumentationForm(pobjParentComposite, SWT.NONE, objTreeItemUserdata, objSchedulerForm);
 							break;
-						case Editor.SETTINGS:
+						case JOEConstants.SETTINGS:
 							new MailForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							break;
-						case Editor.ORDERS:
+						case JOEConstants.ORDERS:
 							new OrdersForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objSchedulerForm);
 							break;
-						case Editor.ORDER:
+						case JOEConstants.ORDER:
 							new OrderForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
-						case Editor.JOB_COMMAND_EXIT_CODES:
+						case JOEConstants.JOB_COMMAND_EXIT_CODES:
 							new sos.scheduler.editor.conf.forms.JobCommandExitCodesForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement,
 									objSchedulerForm);
 							break;
-						case Editor.JOB_COMMAND:
+						case JOEConstants.JOB_COMMAND:
 							new JobCommandForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
-						case Editor.JOB_COMMANDS:
+						case JOEConstants.JOB_COMMANDS:
 							new JobCommandsForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, this);
 							break;
-						case Editor.RUNTIME:
+						case JOEConstants.RUNTIME:
 							new RunTimeForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
-						case Editor.WEEKDAYS:
+						case JOEConstants.WEEKDAYS:
 							new DaysForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.WEEKDAYS,
 									objSelectedTreeItem.getData(conItemDataKeyKEY) != null
 											&& objSelectedTreeItem.getData(conItemDataKeyKEY).equals("holidays_@_weekdays"));
 							break;
-						case Editor.MONTHDAYS:
+						case JOEConstants.MONTHDAYS:
 							new DaysForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.MONTHDAYS, false);
 							break;
-						case Editor.SPECIFIC_MONTHS:
+						case JOEConstants.SPECIFIC_MONTHS:
 							new DaysForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.SPECIFIC_MONTHS, false);
 							break;
-						case Editor.ULTIMOS:
+						case JOEConstants.ULTIMOS:
 							new DaysForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.ULTIMOS, false);
 							break;
-						case Editor.EVERYDAY:
-						case Editor.PERIODS:
+						case JOEConstants.EVERYDAY:
+						case JOEConstants.PERIODS:
 							new PeriodsForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
-						case Editor.JOBS:
+						case JOEConstants.JOBS:
 							new JobsForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objSchedulerForm);
 							break;
-						case Editor.HOLIDAYS:
+						case JOEConstants.HOLIDAYS:
 							new DateForm(pobjParentComposite, SWT.NONE, DateListener.HOLIDAY, objSchedulerDom, objElement, objSchedulerForm);
 							break;
-						case Editor.DAYS:
+						case JOEConstants.DAYS:
 							new DateForm(pobjParentComposite, SWT.NONE, DateListener.DATE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
-						case Editor.SPECIFIC_WEEKDAYS:
+						case JOEConstants.SPECIFIC_WEEKDAYS:
 							new SpecificWeekdaysForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, DaysListener.MONTHDAYS);
 							break;
-						case Editor.WEBSERVICES:
+						case JOEConstants.WEBSERVICES:
 							new WebservicesForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
-						case Editor.WEBSERVICE:
+						case JOEConstants.WEBSERVICE:
 							new WebserviceForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
-						case Editor.HTTPDIRECTORIES:
+						case JOEConstants.HTTPDIRECTORIES:
 							new HttpDirectoriesForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							break;
-						case Editor.HTTP_AUTHENTICATION:
+						case JOEConstants.HTTP_AUTHENTICATION:
 							new HttpAuthenticationForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							break;
-						case Editor.OPTIONS:
+						case JOEConstants.OPTIONS:
 							new JobOptionsForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							break;
-						case Editor.LOCKUSE:
+						case JOEConstants.LOCKUSE:
 							new JobLockUseForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							break;
-						case Editor.JOB_CHAINS:
+						case JOEConstants.JOB_CHAINS:
 							new JobChainsForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
-						case Editor.JOB_CHAIN:
+						case JOEConstants.JOB_CHAIN:
 							//							JobChainForm jc_ = new JobChainForm(pobjParentComposite, SWT.NONE, objTreeItemUserdata);
 							//							break;
-						case Editor.JOB_CHAIN_NODES:
+						case JOEConstants.JOB_CHAIN_NODES:
 							JobChainNodesForm jcn_ = new JobChainNodesForm(pobjParentComposite, SWT.NONE, objTreeItemUserdata);
 							jcn_.setISchedulerUpdate(objSchedulerForm);
 							break;
-						case Editor.JOB_CHAIN_NESTED_NODES:
+						case JOEConstants.JOB_CHAIN_NESTED_NODES:
 							JobChainNestedNodesForm j = new JobChainNestedNodesForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement);
 							j.setISchedulerUpdate(objSchedulerForm);
 							break;
-						case Editor.COMMANDS:
+						case JOEConstants.COMMANDS:
 							new CommandsForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objSchedulerForm);
 							break;
-						case Editor.SCHEDULES:
+						case JOEConstants.SCHEDULES:
 							new SchedulesForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objSchedulerForm);
 							break;
-						case Editor.SCHEDULE:
+						case JOEConstants.SCHEDULE:
 							new ScheduleForm(pobjParentComposite, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
 							break;
-						case Editor.HTTP_SERVER:
+						case JOEConstants.HTTP_SERVER:
 							break;
 						default:
 							//                        System.out.println("no form found for " + objSelectedTreeItem.getText());
@@ -2109,7 +2109,7 @@ public class SchedulerListener {
 			if (run_time.equals("run_time")) {
 				// runTreeItem.setText("Run Time");
 				runTreeItem.setText(SOSJOEMessageCodes.JOE_M_SchedulerListener_RunTime.label());
-				runTreeItem.setData(new TreeData(Editor.RUNTIME, job, Options.getHelpURL("job.run_time"), "run_time"));
+				runTreeItem.setData(new TreeData(JOEConstants.RUNTIME, job, Options.getHelpURL("job.run_time"), "run_time"));
 				runTreeItem.setData(conItemDataKeyKEY, "run_time");
 				runTreeItem.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 				runTreeItem.setData(conItemDataKeyMAX_OCCUR, "1");
@@ -2122,14 +2122,14 @@ public class SchedulerListener {
 			else
 				if (job.getName().equals("schedule")) {
 					runTreeItem.setText(run_time);
-					runTreeItem.setData(new TreeData(Editor.SCHEDULE, job, Options.getHelpURL("job.schedule"), "schedule"));
+					runTreeItem.setData(new TreeData(JOEConstants.SCHEDULE, job, Options.getHelpURL("job.schedule"), "schedule"));
 					runTreeItem.setData(conItemDataKeyKEY, "schedules_@_schedule");
 					runTreeItem.setData(conItemDataKeyCOPY_ELEMENT, job);
 				}
 			item = new TreeItem(runTreeItem, SWT.NONE);
 			//            item.setText(Messages.getLabel("treeitem.everyday"));
 			item.setText(SOSJOEMessageCodes.JOE_M_SchedulerListener_EveryDay.label());
-			item.setData(new TreeData(Editor.EVERYDAY, runtime, Options.getHelpURL("job.run_time.everyday")));
+			item.setData(new TreeData(JOEConstants.EVERYDAY, runtime, Options.getHelpURL("job.run_time.everyday")));
 			item.setData(conItemDataKeyKEY, "period");
 			item.setData(conItemDataKeyCOPY_ELEMENT, job.getChild("run_time"));
 			if (disable) {
@@ -2139,7 +2139,7 @@ public class SchedulerListener {
 			item = new TreeItem(runTreeItem, SWT.NONE);
 			//            item.setText(Messages.getLabel("treeitem.weekdays"));
 			item.setText(SOSJOEMessageCodes.JOE_M_SchedulerListener_Weekdays.label());
-			item.setData(new TreeData(Editor.WEEKDAYS, runtime, Options.getHelpURL("job.run_time.weekdays"), "weekdays"));
+			item.setData(new TreeData(JOEConstants.WEEKDAYS, runtime, Options.getHelpURL("job.run_time.weekdays"), "weekdays"));
 			item.setData(conItemDataKeyKEY, "weekdays");
 			item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 			item.setData(conItemDataKeyMAX_OCCUR, "1");
@@ -2152,7 +2152,7 @@ public class SchedulerListener {
 			item = new TreeItem(runTreeItem, SWT.NONE);
 			//            item.setText(Messages.getLabel("treeitem.monthdays"));
 			item.setText(SOSJOEMessageCodes.JOE_M_SchedulerListener_Monthdays.label());
-			item.setData(new TreeData(Editor.MONTHDAYS, runtime, Options.getHelpURL("job.run_time.monthdays"), "monthdays"));
+			item.setData(new TreeData(JOEConstants.MONTHDAYS, runtime, Options.getHelpURL("job.run_time.monthdays"), "monthdays"));
 			item.setData(conItemDataKeyKEY, "monthdays");
 			item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 			item.setData(conItemDataKeyMAX_OCCUR, "1");
@@ -2165,7 +2165,7 @@ public class SchedulerListener {
 			item = new TreeItem(runTreeItem, SWT.NONE);
 			//            item.setText(Messages.getLabel("treeitem.ultimos"));
 			item.setText(SOSJOEMessageCodes.JOE_M_SchedulerListener_Ultimos.label());
-			item.setData(new TreeData(Editor.ULTIMOS, runtime, Options.getHelpURL("job.run_time.ultimos"), "ultimos"));
+			item.setData(new TreeData(JOEConstants.ULTIMOS, runtime, Options.getHelpURL("job.run_time.ultimos"), "ultimos"));
 			item.setData(conItemDataKeyKEY, "ultimos");
 			item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 			item.setData(conItemDataKeyMAX_OCCUR, "1");
@@ -2178,7 +2178,7 @@ public class SchedulerListener {
 			item = new TreeItem(runTreeItem, SWT.NONE);
 			//            item.setText(Messages.getLabel("treeitem.specificweekdays"));
 			item.setText(SOSJOEMessageCodes.JOE_M_SchedulerListener_SpecificWeekdays.label());
-			item.setData(new TreeData(Editor.SPECIFIC_WEEKDAYS, runtime, Options.getHelpURL("job.run_time.monthdays"), "monthdays"));
+			item.setData(new TreeData(JOEConstants.SPECIFIC_WEEKDAYS, runtime, Options.getHelpURL("job.run_time.monthdays"), "monthdays"));
 			item.setData(conItemDataKeyKEY, "monthdays");
 			item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 			item.setData(conItemDataKeyMAX_OCCUR, "1");
@@ -2193,7 +2193,7 @@ public class SchedulerListener {
 				item = new TreeItem(runTreeItem, SWT.NONE);
 				//                item.setText(Messages.getLabel("treeitem.specificdays"));
 				item.setText(SOSJOEMessageCodes.JOE_M_SchedulerListener_SpecificDays.label());
-				item.setData(new TreeData(Editor.DAYS, runtime, Options.getHelpURL("job.run_time.specific_days")));
+				item.setData(new TreeData(JOEConstants.DAYS, runtime, Options.getHelpURL("job.run_time.specific_days")));
 				item.setData(conItemDataKeyKEY, "specific_days");
 				item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 				item.setData(conItemDataKeyMAX_OCCUR, "1");
@@ -2209,7 +2209,7 @@ public class SchedulerListener {
 				item = new TreeItem(runTreeItem, SWT.NONE);
 				//                item.setText(Messages.getLabel("treeitem.specificmonth"));
 				item.setText(SOSJOEMessageCodes.JOE_M_SchedulerListener_SpecificMonth.label());
-				item.setData(new TreeData(Editor.SPECIFIC_MONTHS, runtime, Options.getHelpURL("job.run_time.monthdays"), "month"));
+				item.setData(new TreeData(JOEConstants.SPECIFIC_MONTHS, runtime, Options.getHelpURL("job.run_time.monthdays"), "month"));
 				item.setData(conItemDataKeyKEY, "specific_monthdays");
 				item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 				item.setData(conItemDataKeyMAX_OCCUR, "1");
@@ -2223,7 +2223,7 @@ public class SchedulerListener {
 			// holidays
 			if (run_time.equals("run_time") || job.getName().equals("schedule")) {
 				item = new TreeItem(runTreeItem, SWT.NONE);
-				item.setData(new TreeData(Editor.HOLIDAYS, runtime, Options.getHelpURL("holidays"), "holidays"));
+				item.setData(new TreeData(JOEConstants.HOLIDAYS, runtime, Options.getHelpURL("holidays"), "holidays"));
 				item.setData(conItemDataKeyKEY, "holidays");
 				item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 				item.setData(conItemDataKeyMAX_OCCUR, "1");
@@ -2251,7 +2251,7 @@ public class SchedulerListener {
 	            if (e.getAttributeValue("on_exit_code") != null) {
 	                TreeItem item = new TreeItem(parent, SWT.NONE);
 	                item.setText(e.getAttributeValue("on_exit_code"));
-	                item.setData(new TreeData(Editor.JOB_COMMAND, e, Options.getHelpURL("job.commands")));
+	                item.setData(new TreeData(JOEConstants.JOB_COMMAND, e, Options.getHelpURL("job.commands")));
 
 	                if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {
 	                	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
@@ -2267,23 +2267,23 @@ public class SchedulerListener {
 	 */
 	private int getType(final Element elem) {
 		if (elem.getName().equals("job"))
-			return Editor.JOB;
+			return JOEConstants.JOB;
 		else
 			if ((elem.getName().equals("order") || elem.getName().equals("add_order") || elem.getName().equals("start_job"))
 					&& Utils.getJobElement(elem).getName().equals("job"))
-				return Editor.JOB_COMMANDS;
+				return JOEConstants.JOB_COMMANDS;
 			else
 				if ((elem.getName().equals("order") || elem.getName().equals("add_order"))
 						&& (objSchedulerDom.isLifeElement() || elem.getParentElement() != null && elem.getParentElement().getName().equals("commands")))
-					return Editor.COMMANDS;
+					return JOEConstants.COMMANDS;
 				/*else if( (elem.getName().equals("order") || elem.getName().equals("add_order") || elem.getName().equals("start_job")) )
-					return Editor.JOB_COMMANDS;
+					return JOEConstants.JOB_COMMANDS;
 					*/
 				else
 					if (elem.getName().equals("web_service"))
-						return Editor.WEBSERVICE;
+						return JOEConstants.WEBSERVICE;
 					else
-						return Editor.CONFIG;
+						return JOEConstants.CONFIG;
 	}
 
 	public void treeFillWebServices(final TreeItem parent) {
@@ -2299,13 +2299,13 @@ public class SchedulerListener {
 				if (o instanceof Element) {
 					Element element = (Element) o;
 					TreeItem item = new TreeItem(parent, SWT.NONE);
-					item.setData(new TreeData(Editor.WEBSERVICE, element, Options.getHelpURL("http_server"), "http_server"));
+					item.setData(new TreeData(JOEConstants.WEBSERVICE, element, Options.getHelpURL("http_server"), "http_server"));
 					item.setData(conItemDataKeyKEY, "http_server_@_web_service");
 					item.setData(conItemDataKeyCOPY_ELEMENT, element);
 					//                    item.setText(Messages.getLabel("treeitem.webservice") + ": " + element.getAttributeValue("name"));
 					item.setText(SOSJOEMessageCodes.JOE_M_SchedulerListener_Webservice.params(": " + element.getAttributeValue("name")));
 					TreeItem itemParam = new TreeItem(item, SWT.NONE);
-					itemParam.setData(new TreeData(Editor.PARAMETER, element, Options.getHelpURL("parameter")));
+					itemParam.setData(new TreeData(JOEConstants.PARAMETER, element, Options.getHelpURL("parameter")));
 					itemParam.setData(conItemDataKeyKEY, "params_@_param");
 					item.setData(conItemDataKeyCOPY_ELEMENT, element);
 					//                    itemParam.setText(Messages.getLabel("treeitem.parameter"));
@@ -2347,7 +2347,7 @@ public class SchedulerListener {
 				item.setText(monitor.getName());
 			}
 			item.setImage(getImage("source_attach_attrib.gif"));
-			item.setData(new TreeData(Editor.MONITOR, monitor, Options.getHelpURL("job.monitor"), "monitor"));
+			item.setData(new TreeData(JOEConstants.MONITOR, monitor, Options.getHelpURL("job.monitor"), "monitor"));
 			item.setData(conItemDataKeyKEY, "monitor");
 			item.setData(conItemDataKeyCOPY_ELEMENT, monitor);
 			if (disable) {
@@ -2373,17 +2373,17 @@ public class SchedulerListener {
 		runTreeItem.setData(conItemDataKeyMAX_OCCUR, "1");
 		runTreeItem.setImage(getImage("waiting.gif"));
 		runTreeItem.setText(Messages.getLabel("treeitem." + pstrTreeNodeLabelText));
-		TreeData objTreeData = setItemData(runTreeItem, Editor.RUNTIME, pobjRunTime, "treeitem." + pstrTreeNodeLabelText);
+		TreeData objTreeData = setItemData(runTreeItem, JOEConstants.RUNTIME, pobjRunTime, "treeitem." + pstrTreeNodeLabelText);
 		// SubNodes of run_time
 		item = new TreeItem(runTreeItem, SWT.NONE);
 		item.setText(Messages.getLabel("treeitem.everyday"));
-		objTreeData = setItemData(item, Editor.EVERYDAY, pobjRunTime, "treeitem.everyday");
+		objTreeData = setItemData(item, JOEConstants.EVERYDAY, pobjRunTime, "treeitem.everyday");
 		item.setData(conItemDataKeyKEY, "period");
 		setDisabled(item, disable);
 		objTreeData.UpdateFont(pobjRunTime.hasPeriod() || pobjRunTime.hasAt());
 		item = new TreeItem(runTreeItem, SWT.NONE);
 		item.setText(Messages.getLabel("treeitem.weekdays"));
-		objTreeData = setItemData(item, Editor.WEEKDAYS, pobjRunTime, "treeitem.job.run_time.weekdays");
+		objTreeData = setItemData(item, JOEConstants.WEEKDAYS, pobjRunTime, "treeitem.job.run_time.weekdays");
 		item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
 		setDisabled(item, disable);
@@ -2391,7 +2391,7 @@ public class SchedulerListener {
 		objTreeData.UpdateFont(pobjRunTime.hasWeekdays());
 		item = new TreeItem(runTreeItem, SWT.NONE);
 		item.setText(Messages.getLabel("treeitem.monthdays"));
-		objTreeData = setItemData(item, Editor.MONTHDAYS, pobjRunTime, "treeitem.job.run_time.monthdays");
+		objTreeData = setItemData(item, JOEConstants.MONTHDAYS, pobjRunTime, "treeitem.job.run_time.monthdays");
 		item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
 		setDisabled(item, disable);
@@ -2399,7 +2399,7 @@ public class SchedulerListener {
 		objTreeData.UpdateFont(pobjRunTime.hasMonthdays());
 		item = new TreeItem(runTreeItem, SWT.NONE);
 		item.setText(Messages.getLabel("treeitem.ultimos"));
-		objTreeData = setItemData(item, Editor.ULTIMOS, pobjRunTime, "treeitem.job.run_time.ultimos");
+		objTreeData = setItemData(item, JOEConstants.ULTIMOS, pobjRunTime, "treeitem.job.run_time.ultimos");
 		item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
 		setDisabled(item, disable); // item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
@@ -2407,7 +2407,7 @@ public class SchedulerListener {
 		objTreeData.UpdateFont(pobjRunTime.hasUltimos());
 		item = new TreeItem(runTreeItem, SWT.NONE);
 		item.setText(Messages.getLabel("treeitem.specificweekdays"));
-		objTreeData = setItemData(item, Editor.SPECIFIC_WEEKDAYS, pobjRunTime, "treeitem.job.run_time.monthdays");
+		objTreeData = setItemData(item, JOEConstants.SPECIFIC_WEEKDAYS, pobjRunTime, "treeitem.job.run_time.monthdays");
 		item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
 		setDisabled(item, disable);
@@ -2416,7 +2416,7 @@ public class SchedulerListener {
 		// Specific Days
 		item = new TreeItem(runTreeItem, SWT.NONE);
 		item.setText(Messages.getLabel("treeitem.specificdays"));
-		objTreeData = setItemData(item, Editor.DAYS, pobjRunTime, "treeitem.job.run_time.specific_days");
+		objTreeData = setItemData(item, JOEConstants.DAYS, pobjRunTime, "treeitem.job.run_time.specific_days");
 		item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
 		treeFillDays(item, pobjRunTime, 6, false);
@@ -2425,7 +2425,7 @@ public class SchedulerListener {
 		// Specific Monthdays
 		item = new TreeItem(runTreeItem, SWT.NONE);
 		item.setText(Messages.getLabel("treeitem.specificmonth"));
-		objTreeData = setItemData(item, Editor.MONTHDAYS, pobjRunTime, "treeitem.job.run_time.monthdays");
+		objTreeData = setItemData(item, JOEConstants.MONTHDAYS, pobjRunTime, "treeitem.job.run_time.monthdays");
 		item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
 		setDisabled(item, disable);
@@ -2435,7 +2435,7 @@ public class SchedulerListener {
 		item = new TreeItem(runTreeItem, SWT.NONE);
 		item.setText(Messages.getLabel("treeitem.holidays"));
 		item.setImage(getImage("holidays.gif"));
-		objTreeData = setItemData(item, Editor.HOLIDAYS, pobjRunTime, "treeitem.job.run_time.holidays");
+		objTreeData = setItemData(item, JOEConstants.HOLIDAYS, pobjRunTime, "treeitem.job.run_time.holidays");
 		item.setData(conItemDataKeyOVERRIDE_ATTRIBUTES, "true");
 		item.setData(conItemDataKeyMAX_OCCUR, "1");
 		treeFillHolidays(item, pobjRunTime);
@@ -2456,12 +2456,12 @@ public class SchedulerListener {
 	//				if (o instanceof Element) {
 	//					Element element = (Element) o;
 	//					TreeItem item = new TreeItem(parent, SWT.NONE);
-	//					item.setData(new TreeData(Editor.WEBSERVICE, element, Options.getHelpURL("http_server"), "http_server"));
+	//					item.setData(new TreeData(JOEConstants.WEBSERVICE, element, Options.getHelpURL("http_server"), "http_server"));
 	//					item.setData(conItemDataKeyKEY, "http_server_@_web_service");
 	//					item.setData(conItemDataKeyCOPY_ELEMENT, element);
 	//					item.setText(Messages.getLabel("treeitem.webservice") + ": " + element.getAttributeValue("name"));
 	//					TreeItem itemParam = new TreeItem(item, SWT.NONE);
-	//					itemParam.setData(new TreeData(Editor.PARAMETER, element, Options.getHelpURL("parameter")));
+	//					itemParam.setData(new TreeData(JOEConstants.PARAMETER, element, Options.getHelpURL("parameter")));
 	//					itemParam.setData(conItemDataKeyKEY, "params_@_param");
 	//					item.setData(conItemDataKeyCOPY_ELEMENT, element);
 	//					itemParam.setText(Messages.getLabel("treeitem.parameter"));
@@ -2478,7 +2478,7 @@ public class SchedulerListener {
 	public void treeFillHolidays(TreeItem item, final JSObjRunTime pobjRunTime) {
 		item = new TreeItem(item, SWT.NONE);
 		item.setText(Messages.getLabel("treeitem.weekdays"));
-		TreeData objTreeData = setItemData(item, Editor.WEEKDAYS, pobjRunTime, "job.run_time.weekdays");
+		TreeData objTreeData = setItemData(item, JOEConstants.WEEKDAYS, pobjRunTime, "job.run_time.weekdays");
 		if (pobjRunTime != null && pobjRunTime.hasHolidays()) {
 			treeFillDays(item, pobjRunTime, 0, false);
 			objTreeData.UpdateFont(true);
@@ -2516,7 +2516,7 @@ public class SchedulerListener {
 				TreeItem item = new TreeItem(pobjTree, SWT.NONE);
 				item.setText(name);
 				item.setImage(getImage("folder.gif"));
-				setItemData(item, Editor.SUB_FOLDER, objFolder, "folder");
+				setItemData(item, JOEConstants.SUB_FOLDER, objFolder, "folder");
 			}
 		}
 	}
@@ -2528,7 +2528,7 @@ public class SchedulerListener {
 		if (intSize > 0) {
 			for (JSObjJob objJob : pobjHotFolder.getHotFolderFileList().getJobList()) {
 				TreeItem item = new TreeItem(pobjParentTreeNode, SWT.NONE);
-				setItemData(item, Editor.JOB, objJob, "job");
+				setItemData(item, JOEConstants.JOB, objJob, "job");
 				item.setText(objJob.getJobNameAndTitle());
 				setColorOfJobTreeItem(objJob, item);
 				createSubTreeNodes4Job(pobjHotFolder, item, objJob, false);

@@ -29,7 +29,7 @@ import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.IntegerField;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ProcessClassesListener;
 
 /**
@@ -233,7 +233,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			@Override public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				if (table.getSelectionCount() > 0) {
-					if (Utils.checkElement(table.getSelection()[0].getText(0), dom, sos.scheduler.editor.app.Editor.PROCESS_CLASSES, null)) {
+					if (Utils.checkElement(table.getSelection()[0].getText(0), dom, JOEConstants.PROCESS_CLASSES, null)) {
 						int index = table.getSelectionIndex();
 						listener.removeProcessClass(index);
 						table.remove(index);
@@ -315,7 +315,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 			return;
 		boolean _continue = true;
 		if (listener.getProcessClass().length() > 0 && !listener.getProcessClass().equals(tProcessClass.getText())
-				&& !Utils.checkElement(listener.getProcessClass(), dom, sos.scheduler.editor.app.Editor.PROCESS_CLASSES, null))
+				&& !Utils.checkElement(listener.getProcessClass(), dom, JOEConstants.PROCESS_CLASSES, null))
 			_continue = false;
 		if (_continue)
 			try {

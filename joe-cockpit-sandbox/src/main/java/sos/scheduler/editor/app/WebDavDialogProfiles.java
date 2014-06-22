@@ -101,7 +101,7 @@ public class WebDavDialogProfiles {
 			}
 		});
 		schedulerConfigurationShell.setImage(ResourceManager
-				.getImageFromResource("/sos/scheduler/editor/editor.png"));
+				.getImageFromResource("/sos/scheduler/editor/JOEConstants.png"));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.marginTop = 5;
 		gridLayout.marginRight = 5;

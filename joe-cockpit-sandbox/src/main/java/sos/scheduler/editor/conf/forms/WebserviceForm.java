@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUnsaved;
 import com.sos.joe.interfaces.IUpdateLanguage;
 
@@ -27,7 +27,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.WebserviceListener;
 
 public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
@@ -454,7 +454,7 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		bApply.setEnabled(valid);
 		cChain.setEnabled(tRequest.getText().equals(""));
 
-		/*if(Editor.JOB_CHAIN == type) {
+		/*if(JOEConstants.JOB_CHAIN == type) {
 		 
 		 boolean valid = (!tName.getText().equals(""));
 		 bApply.setEnabled(valid);

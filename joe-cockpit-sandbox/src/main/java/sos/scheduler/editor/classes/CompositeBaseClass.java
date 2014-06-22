@@ -21,10 +21,10 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
+import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.interfaces.IContainer;
 import com.sos.joe.interfaces.IUnsaved;
 
@@ -162,7 +162,7 @@ public abstract class CompositeBaseClass /* extends Composite */ implements IUns
 		display.asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				Editor.objMainWindow.setStatusLine(pstrText);
+				JOEConstants.objMainWindow.setStatusLine(pstrText);
 				try {
 					Thread.sleep(delay);
 				}
@@ -170,7 +170,7 @@ public abstract class CompositeBaseClass /* extends Composite */ implements IUns
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				Editor.objMainWindow.setStatusLine("");
+				JOEConstants.objMainWindow.setStatusLine("");
 			}
 		});
 

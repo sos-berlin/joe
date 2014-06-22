@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUpdateLanguage;
 
 import sos.scheduler.editor.app.Editor;
@@ -26,7 +26,7 @@ import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.RunTimeListener;
 
 public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
@@ -220,7 +220,7 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, false);
 		gridData2.widthHint = 151;
 
-		periodForm = new PeriodForm(gRunTime, SWT.NONE, Editor.RUNTIME);
+		periodForm = new PeriodForm(gRunTime, SWT.NONE, JOEConstants.RUNTIME);
 		periodForm.setLayoutData(gridData2);
 		periodForm.setSchedulerUpdate(_gui);
 

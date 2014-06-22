@@ -33,7 +33,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.BaseListener;
 
 public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {

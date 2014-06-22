@@ -20,13 +20,13 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUnsaved;
 import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.objects.jobchain.JobChainListener;
@@ -132,7 +132,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 			public void verifyText(final VerifyEvent e) {
                 if (!init) {// während der initialiserung sollen keine überprüfungen stattfinden
                     // String name = listener.getChainName();
-                    e.doit = Utils.checkElement(listener.getChainName(), listener.get_dom(), Editor.JOB_CHAIN, null);
+                    e.doit = Utils.checkElement(listener.getChainName(), listener.get_dom(), JOEConstants.JOB_CHAIN, null);
                     /*System.out.println(e.doit);
                     if(e.doit) {
                     	init = true;

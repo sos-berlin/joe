@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Text;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
-import com.swtdesigner.SWTResourceManager;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 
 public class FTPDialogProfiles {
@@ -127,7 +127,7 @@ public class FTPDialogProfiles {
 			}
 		});
 		schedulerConfigurationShell.setImage(ResourceManager
-				.getImageFromResource("/sos/scheduler/editor/editor.png"));
+				.getImageFromResource("/sos/scheduler/editor/JOEConstants.png"));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.marginTop = 5;
 		gridLayout.marginRight = 5;

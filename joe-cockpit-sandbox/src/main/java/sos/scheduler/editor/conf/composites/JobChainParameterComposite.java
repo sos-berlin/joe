@@ -74,7 +74,7 @@ import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
@@ -83,18 +83,18 @@ import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.DetailDom;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.forms.DetailXMLEditorDialogForm;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.joe.interfaces.IDetailUpdate;
-import com.sos.joe.interfaces.ISchedulerUpdate;
-import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.objects.jobchain.JobChainConfigurationListener;
 import com.sos.joe.objects.jobchain.JobChainListener;
-import com.swtdesigner.SWTResourceManager;
+import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainListener> implements ISOSTableMenueListeners {
 	@SuppressWarnings("unused")
@@ -129,7 +129,7 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 	private boolean								isEditableParam				= false;
 	private Label								statusBar					= null;
 	/** wer hat ihn aufgerufen*/
-	private int									type						= Editor.JOB_CHAIN;
+	private int									type						= JOEConstants.JOB_CHAIN;
 	private final Tree							tree						= null;
 	private final JobChainConfigurationListener	confListener				= null;
 	private final DetailDom						dom							= null;
@@ -410,7 +410,7 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 				}
 			});
 
-			// parameterButton.setVisible(type != Editor.DETAILS);
+			// parameterButton.setVisible(type != JOEConstants.DETAILS);
 			parameterButton.setLayoutData(new GridData(SWT.FILL, GridData.CENTER, false, false));
 
 			butRemove = JOE_B_DetailForm_Remove.Control(new Button(parameterGroup, SWT.NONE));
@@ -575,7 +575,7 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 				public void widgetSelected(final SelectionEvent e) {
 					try {
 						if (dom != null && dom.isChanged()) {
-							//							MainWindow.message("Please save jobchain configuration file before opening XML Editor.", SWT.ICON_ERROR);
+							//							MainWindow.message("Please save jobchain configuration file before opening XML JOEConstants.", SWT.ICON_ERROR);
 							MainWindow.message(JOE_M_0020.label(), SWT.ICON_ERROR);
 							return;
 						}
@@ -586,7 +586,7 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 							if (c == SWT.YES)
 								detailListener.save();
 						}
-						if (type == Editor.JOB_CHAINS) {
+						if (type == JOEConstants.JOB_CHAINS) {
 							DetailXMLEditorDialogForm dialog = new DetailXMLEditorDialogForm(detailListener.getConfigurationFilename(), jobChainname, state,
 									_orderId, type, isLifeElement, path);
 							dialog.showXMLEditor();
@@ -622,7 +622,7 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 				public void widgetSelected(final SelectionEvent e) {
 					String filename = null;
 					try {
-						if (type == Editor.JOB_CHAINS) {
+						if (type == JOEConstants.JOB_CHAINS) {
 							filename = detailListener.getConfigurationFilename();
 						}
 						else {
@@ -686,7 +686,7 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 			gridData_11.widthHint = 496;
 			gridData_11.heightHint = 18;
 			statusBar.setLayoutData(gridData_11);
-			if (type == Editor.JOB_CHAINS) {
+			if (type == JOEConstants.JOB_CHAINS) {
 				setEnabled_(false);
 			}
 			setVisibility();
@@ -734,7 +734,7 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 	}
 
 	private void setVisibility() {
-		if (type == Editor.DETAILS) {
+		if (type == JOEConstants.DETAILS) {
 			cancelButton.setVisible(false);
 			statusBar.setVisible(false);
 			butApply.setVisible(false);
@@ -765,15 +765,15 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 			if (jobDocumentation != null && jobDocumentation.trim().length() > 0) {
 				// JobDokumentation ist bekannt -> d.h Parameter aus dieser Jobdoku extrahieren
 				// JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(listener.get_dom(), listener.get_main(),
-				// new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? Editor.JOB :
-				// Editor.JOB_WIZARD);
+				// new JobListener(dom, listener.getParent(), listener.get_main()), tParameter, onlyParams ? JOEConstants.JOB :
+				// JOEConstants.JOB_WIZARD);
 			// TODO	JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(schedulerDom, joblistener.get_main(), joblistener,
-//						tableParams, Editor.PARAMETER);
+//						tableParams, JOEConstants.PARAMETER);
 //				paramsForm.showAllImportJobParams(jobDocumentation);
 //				paramsForm.setDetailsRefresh(butRefreshWizzardNoteParam);
 			}
 			else {
-				JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(joblistener, tableParams, Editor.PARAMETER);
+				JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(joblistener, tableParams, JOEConstants.PARAMETER);
 				importParameterForms.showAllImportJobs();
 				importParameterForms.setDetailsRefresh(butRefreshWizzardNoteParam);
 			}
@@ -841,7 +841,7 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 			MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", detailListener.getConfigurationFilename());
 			MainWindow.saveFTP(new java.util.HashMap());
 		}
-		if (type == Editor.JOB_CHAINS) {
+		if (type == JOEConstants.JOB_CHAINS) {
 			isEditable = false;
 			butApply.setEnabled(isEditable);
 			getShell().dispose();

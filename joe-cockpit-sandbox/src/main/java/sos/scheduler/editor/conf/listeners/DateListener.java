@@ -15,7 +15,7 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
@@ -246,7 +246,7 @@ public class DateListener implements Comparator {
                 if (e.getAttributeValue("date") != null) {
                     TreeItem item = new TreeItem(parent, SWT.NONE);
                     item.setText(e.getAttributeValue("date"));
-                    item.setData(new TreeData(Editor.PERIODS, e, Options.getHelpURL("periods")));
+                    item.setData(new TreeData(JOEConstants.PERIODS, e, Options.getHelpURL("periods")));
                     if(!Utils.isElementEnabled("job", _dom, e)) {
                     	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
                     }
@@ -279,7 +279,7 @@ public class DateListener implements Comparator {
         		TreeItem item = new TreeItem(parent, SWT.NONE);
         		item.setText(e.getAttributeValue("date"));    
         		
-        		item.setData(new TreeData(Editor.PERIODS, (Element)l.get(i), Options.getHelpURL("periods")));
+        		item.setData(new TreeData(JOEConstants.PERIODS, (Element)l.get(i), Options.getHelpURL("periods")));
         		if(!Utils.isElementEnabled("job", _dom, e)) {
                 	item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
                 }

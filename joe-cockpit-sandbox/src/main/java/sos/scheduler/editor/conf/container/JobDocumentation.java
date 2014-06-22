@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
@@ -27,8 +27,8 @@ import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
 import sos.util.SOSClassUtil;
 
 import com.sos.joe.interfaces.IContainer;
-import com.sos.joe.job.wizard.JobAssistentImportJobsForm;
 import com.sos.joe.objects.job.JobListener;
+import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
 
 public class JobDocumentation extends FormBaseClass <JobListener> {
 	@SuppressWarnings("unused")
@@ -259,14 +259,14 @@ public class JobDocumentation extends FormBaseClass <JobListener> {
 				// JobDokumentation ist bekannt -> d.h Parameter aus dieser
 				// Jobdoku extrahieren
 //	TODO			JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objJobDataProvider.get_dom(), objJobDataProvider.get_main(),
-//						objJobDataProvider, onlyParams ? Editor.JOB : Editor.JOB_WIZARD);
+//						objJobDataProvider, onlyParams ? JOEConstants.JOB : JOEConstants.JOB_WIZARD);
 //
 //				if (!onlyParams)
 //					paramsForm.setJobForm(this);
 //				paramsForm.showAllImportJobParams(objJobDataProvider.getInclude4JobDescription());
 			}
 			else {
-				JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(objJobDataProvider, Editor.JOB_WIZARD);
+				JobAssistentImportJobsForm importJobForms = new JobAssistentImportJobsForm(objJobDataProvider, JOEConstants.JOB_WIZARD);
 
 				if (!onlyParams) {
 					importJobForms.setJobForm(this);

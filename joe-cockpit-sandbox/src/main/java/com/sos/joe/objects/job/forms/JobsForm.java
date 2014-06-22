@@ -18,20 +18,20 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUpdateLanguage;
-import com.sos.joe.job.wizard.JobAssistentForm;
-
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.util.SOSClassUtil;
 
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.wizard.forms.JobAssistentForm;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
+  
 public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 	@SuppressWarnings("unused")
@@ -160,7 +160,7 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 					if (c != SWT.YES)
 						return;
 
-					if (Utils.checkElement(table.getSelection()[0].getText(1), dom, sos.scheduler.editor.app.Editor.JOBS, null))// wird der
+					if (Utils.checkElement(table.getSelection()[0].getText(1), dom, JOEConstants.JOBS, null))// wird der
 																																// Job
 																																// woandes
 																																// verwendet?
@@ -196,7 +196,7 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				@Override
 				public void mouseDoubleClick(final MouseEvent e) {
 					if (table.getSelectionCount() > 0)
-						ContextMenu.goTo(table.getSelection()[0].getText(1), dom, Editor.JOB);
+						ContextMenu.goTo(table.getSelection()[0].getText(1), dom, JOEConstants.JOB);
 				}
 			});
 			table.setHeaderVisible(true);

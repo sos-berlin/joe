@@ -5,4 +5,4 @@
  * @author KB
  *
  */
-package com.sos.joe.job.wizard;
+package com.sos.joe.wizard.forms;

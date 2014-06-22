@@ -5,14 +5,16 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import sos.scheduler.editor.app.Options;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.jobscheduler.DetailDom;
+
 
 public class FormatDetailHandler extends DefaultHandler implements ContentHandler {
 	
 	
-    private    StringBuffer    _sb          = new StringBuffer();
+    private final    StringBuffer    _sb          = new StringBuffer();
     private    String          _encoding    = "ISO-8859-1";
-    private    String          _indentStr   = "    ";
+    private final    String          _indentStr   = "    ";
     private    String          _indent      = "    ";
     private    StringBuffer    _text        = new StringBuffer();
     private    int             _level       = 0;
@@ -32,7 +34,7 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
     }
 
 
-    public void startDocument() {
+    @Override public void startDocument() {
         _sb.append("<?xml version=\"1.0\" encoding=\"" + _encoding + "\"?>\n\n");
         if(Options.getDetailXSLT() != null && Options.getDetailXSLT().length() > 0) {
         	_sb.append("<?xml-stylesheet type=\"text/xsl\" href=\""+ Options.getDetailXSLT() + "\"?> ");
@@ -40,13 +42,13 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
     }
 
 
-    public void characters(char[] ch, int start, int length) throws SAXException {
+    @Override public void characters(char[] ch, int start, int length) throws SAXException {
     	//System.out.println("ch:" + new String(ch, start, length));
         _text.append(new String(ch, start, length));
     }
 
 
-    public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
+    @Override public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
     	//System.out.println("endelement:" + qName);
         _level--;
         _indent = strRepeat(_indentStr, _level);
@@ -78,7 +80,7 @@ public class FormatDetailHandler extends DefaultHandler implements ContentHandle
     }
 
 
-    public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
+    @Override public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
     	//System.out.println("startelement:" + qName);
         if (_isOpen)
             _sb.append(">\n");        

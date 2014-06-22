@@ -24,14 +24,14 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUnsaved;
 import com.sos.joe.interfaces.IUpdateLanguage;
 
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobCommandListener;
 
 public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
@@ -85,9 +85,9 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		listener = new JobCommandListener(dom, command, main);
 		if(command.getName().equalsIgnoreCase("start_job")) {
-			type = Editor.JOB;
+			type = JOEConstants.JOB;
 		} else {
-			type = Editor.COMMANDS;
+			type = JOEConstants.COMMANDS;
 		}
 		initialize();
 		setToolTipText();			
@@ -183,7 +183,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		});
 		tJob.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				if(type == Editor.JOB){
+				if(type == JOEConstants.JOB){
 					listener.setJob(tJob.getText());
 				} else {
 					listener.setOrderId(tJob.getText());
@@ -361,7 +361,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		tJob = JOE_T_JobCommand_Job.Control(new Text(gDescription, SWT.BORDER));
 		tJob.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				if(type == Editor.JOB){
+				if(type == JOEConstants.JOB){
 					listener.setJob(tJob.getText());
 				} else {
 					listener.setOrderId(tJob.getText());
@@ -473,7 +473,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	 * This method initializes group2
 	 */
 	private void createGroup2() {
-		if(type == Editor.JOB){
+		if(type == JOEConstants.JOB){
 			setCommandsEnabled(false);			
 		} else {			
 			setCommandsEnabled(true);
@@ -485,7 +485,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 
 	private void clearFields() {
-		if(type == Editor.JOB){
+		if(type == JOEConstants.JOB){
 			
 			tState.setVisible(false);
 			cboEndstate.setVisible(false);
@@ -528,7 +528,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		if (listener.getCommand() !=  null) {
 
 			tStartAt.setText(Utils.getAttributeValue("at", listener.getCommand()));
-			if (type == Editor.COMMANDS) {
+			if (type == JOEConstants.COMMANDS) {
 				cJobchain.setText(Utils.getAttributeValue("job_chain", listener.getCommand()));
 				tJob.setText(Utils.getAttributeValue("id", listener.getCommand()));
 				tTitle.setText(Utils.getAttributeValue("title", listener.getCommand()));

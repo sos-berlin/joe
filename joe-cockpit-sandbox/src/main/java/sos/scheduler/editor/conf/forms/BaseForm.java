@@ -33,7 +33,7 @@ import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.TreeData;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.BaseListener;
 
 public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {

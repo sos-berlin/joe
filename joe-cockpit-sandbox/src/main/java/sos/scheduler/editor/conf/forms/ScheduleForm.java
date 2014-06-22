@@ -18,15 +18,15 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ScheduleListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.components.SOSDateTime;
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUpdateLanguage;
 
 public class ScheduleForm extends SOSJOEMessageCodes implements IUpdateLanguage {
@@ -119,7 +119,7 @@ public class ScheduleForm extends SOSJOEMessageCodes implements IUpdateLanguage 
 				public void verifyText(final VerifyEvent e) {
 					if (!init)// während der initialiserung sollen keine
 								// überprüfungen stattfinden
-						e.doit = Utils.checkElement(txtName.getText(), dom, sos.scheduler.editor.app.Editor.SCHEDULE, null);
+						e.doit = Utils.checkElement(txtName.getText(), dom, JOEConstants.SCHEDULE, null);
 				}
 			});
 			txtName.addModifyListener(new ModifyListener() {

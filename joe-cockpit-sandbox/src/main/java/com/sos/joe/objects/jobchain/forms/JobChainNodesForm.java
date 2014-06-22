@@ -1,26 +1,20 @@
 package com.sos.joe.objects.jobchain.forms;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_E_0002;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_JobChain_TabItemNodes;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_MoveTo;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_RemoveFile;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_JCNodesForm_Remove;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_ScriptForm_ItemIndex;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_Delay;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_ErrorState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_HasParams;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_JobDir;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_NextState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_Node;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_OnError;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_State;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TI_DiagramViewer;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TI_JobChainNodeParameter;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TI_JobChainParameter;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TI_ScriptJobMainForm_Doc;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TI_ScriptJobMainForm_FileWatcher;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TI_ScriptJobMainForm_Options;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TI_ScriptJobMainForm_XML;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Tbl_JCNodesForm_Nodes;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_E_0002;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNodesForm_MoveTo;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNodesForm_RemoveFile;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JCNodesForm_Remove;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_ScriptForm_ItemIndex;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_ErrorState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_JobDir;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_NextState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_Node;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_OnError;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_State;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TI_ScriptJobMainForm_Doc;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TI_ScriptJobMainForm_FileWatcher;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TI_ScriptJobMainForm_Options;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TI_ScriptJobMainForm_XML;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_JCNodesForm_Nodes;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -54,10 +48,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.FolderNameSelector;
@@ -78,7 +69,9 @@ import sos.scheduler.editor.conf.container.JobSourceViewer;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.DialogAdapter;
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.objects.jobchain.JobChainListener;
 import com.sos.joe.objects.jobchain.JobChainNodeWrapper;
@@ -215,7 +208,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 			return;
 		}
 		disposeChilds(pParentComposite);
-		new JobChainParameterComposite(pParentComposite, objDataProvider, Editor.JOB_CHAIN);
+		new JobChainParameterComposite(pParentComposite, objDataProvider, JOEConstants.JOB_CHAIN);
 		pParentComposite.layout();
 	}
 

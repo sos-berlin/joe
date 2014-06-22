@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 
 public class Languages {
 
-    private static final String   BUNDLE_NAME     = "sos.scheduler.editor.languages";                    //$NON-NLS-1$
+    private static final String   BUNDLE_NAME     = "sos.scheduler.JOEConstants.languages";                    //$NON-NLS-1$
 
     private static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, Locale.GERMAN);
 

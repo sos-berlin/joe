@@ -18,17 +18,17 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.PreProstProcessingListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.WindowsSaver;
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUpdateLanguage;
 
 ;
@@ -100,7 +100,7 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 2;
 			scriptsGroup = new Group(this, SWT.NONE);
-			scriptsGroup.setText(sos.scheduler.editor.conf.listeners.SchedulerListener.MONITOR);
+			scriptsGroup.setText(sos.scheduler.JOEConstants.conf.listeners.SchedulerListener.MONITOR);
 			scriptsGroup.setLayout(gridLayout);
 			if (Utils.isElementEnabled("job", dom, listener.getParent())) {
 				scriptsGroup.setEnabled(true);
@@ -149,7 +149,7 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				public void mouseDoubleClick(final MouseEvent e) {
 					if (table.getSelectionCount() > 0)
 						ContextMenu.goTo(Utils.getAttributeValue("name", listener.getParent()) + "_@_" + table.getSelection()[0].getText(0), dom,
-								Editor.MONITOR);
+								JOEConstants.MONITOR);
 				}
 			});
 			table.setHeaderVisible(true);

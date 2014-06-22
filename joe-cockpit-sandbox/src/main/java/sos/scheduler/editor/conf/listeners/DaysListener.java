@@ -12,11 +12,11 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.util.SOSClassUtil;
 
@@ -631,7 +631,7 @@ public class DaysListener {
 			item.setData("key",  used[i] +"_@_"+ _dayElements[i].getName());
 			item.setData("copy_element", _dayElements[i]);
 
-			item.setData(new TreeData(Editor.PERIODS, _dayElements[i], Options.getHelpURL("periods")));
+			item.setData(new TreeData(JOEConstants.PERIODS, _dayElements[i], Options.getHelpURL("periods")));
 			if(_runtime != null && !Utils.isElementEnabled("job", _dom, _runtime)) {
 				item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 			}
@@ -701,10 +701,10 @@ public class DaysListener {
 		if(_runtime.getName().equals("holidays"))
 			return;
 
-		if(sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor() instanceof com.sos.jobdoc.forms.DocumentationForm)
+		if(sos.scheduler.JOEConstants.app.MainWindow.getContainer().getCurrentEditor() instanceof com.sos.jobdoc.forms.DocumentationForm)
 			return;
 
-		SchedulerForm f = (SchedulerForm)sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+		SchedulerForm f = (SchedulerForm)sos.scheduler.JOEConstants.app.MainWindow.getContainer().getCurrentEditor();
 
 		if(f == null)
 			return;

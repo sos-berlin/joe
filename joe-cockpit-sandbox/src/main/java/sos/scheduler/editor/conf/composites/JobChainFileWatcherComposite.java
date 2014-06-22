@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.sos.joe.objects.jobchain.JobChainListener;
 
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;

@@ -14,13 +14,13 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
-
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class ParameterListener extends JOEListener {
 
@@ -35,7 +35,7 @@ public class ParameterListener extends JOEListener {
 	private static HashMap	parameterDescription	= new HashMap();
 	private static HashMap	parameterRequired		= new HashMap();
 	//default ist config
-	private int				type					= Editor.CONFIG;
+	private int				type					= JOEConstants.CONFIG;
 
 	public void setJobname(final String jobname) {
 		this.jobname = jobname;
@@ -89,7 +89,7 @@ public class ParameterListener extends JOEListener {
 				Object o = it.next();
 				if (o instanceof Element) {
 					Element e = (Element) o;
-					//if (e.getName().equals("copy_params") && type == Editor.COMMANDS) {
+					//if (e.getName().equals("copy_params") && type == JOEConstants.COMMANDS) {
 					if (e.getName().equals("copy_params")) {
 						TableItem item = new TableItem(table, SWT.NONE);
 						item.setText(0, "<from>");

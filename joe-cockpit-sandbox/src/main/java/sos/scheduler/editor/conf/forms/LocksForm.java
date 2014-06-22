@@ -27,7 +27,7 @@ import com.sos.joe.interfaces.IUpdateLanguage;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.LocksListener;
 
 /**
@@ -191,7 +191,7 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			@Override public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				if (tableLocks.getSelectionCount() > 0) {
-					if (Utils.checkElement(tableLocks.getSelection()[0].getText(0), dom, sos.scheduler.editor.app.Editor.LOCKS, null)) {
+					if (Utils.checkElement(tableLocks.getSelection()[0].getText(0), dom, JOEConstants.LOCKS, null)) {
 						int index = tableLocks.getSelectionIndex();
 						listener.removeLock(index);
 						tableLocks.remove(index);
@@ -277,7 +277,7 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 
 	private void applyLock() {
 		boolean _continue = true;
-		if (listener.getLock().length() > 0 && !Utils.checkElement(listener.getLock(), dom, sos.scheduler.editor.app.Editor.LOCKS, null))
+		if (listener.getLock().length() > 0 && !Utils.checkElement(listener.getLock(), dom, JOEConstants.LOCKS, null))
 			_continue = false;
 		if (tableLocks.getSelectionCount() > 0)
 			listener.selectLock(tableLocks.getSelectionIndex());

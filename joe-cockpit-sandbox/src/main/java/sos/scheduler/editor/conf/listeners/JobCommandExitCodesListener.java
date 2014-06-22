@@ -10,13 +10,13 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 
 import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobCommandExitCodesListener {
 
@@ -53,7 +53,7 @@ public class JobCommandExitCodesListener {
 				if (e.getAttributeValue("on_exit_code") != null) {
 					TreeItem item = new TreeItem(parent, SWT.NONE);
 					item.setText(e.getAttributeValue("on_exit_code"));
-					item.setData(new TreeData(Editor.JOB_COMMAND, e, Options.getHelpURL("job.commands")));
+					item.setData(new TreeData(JOEConstants.JOB_COMMAND, e, Options.getHelpURL("job.commands")));
 
 					if (listOfReadOnly != null && listOfReadOnly.contains(Utils.getAttributeValue("name", job))) {
 						item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));

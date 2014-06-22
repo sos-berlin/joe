@@ -25,9 +25,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.forms.SchedulerEditorFontDialog;
 import sos.scheduler.editor.conf.listeners.JOEListener;
@@ -36,7 +34,9 @@ import com.sos.JSHelper.Exceptions.JobSchedulerException;
 import com.sos.JSHelper.io.Files.JSFile;
 import com.sos.VirtualFileSystem.shell.cmdShell;
 import com.sos.dialog.classes.WindowsSaver;
-import com.swtdesigner.SWTResourceManager;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.Messages;
 
 /**
  * \class LanguageSelector
@@ -139,8 +139,8 @@ public class TextArea extends StyledText /* Text */{
 		new MenuItem(objContextMenu, SWT.SEPARATOR);
 
 		MenuItem itemStartExternalEditor = new MenuItem(objContextMenu, SWT.PUSH);
-		itemStartExternalEditor.addListener(SWT.Selection, getStartExternalEditorListener());
-		itemStartExternalEditor.setText("Start external Editor\tCtrl+X");
+		itemStartExternalJOEConstants.addListener(SWT.Selection, getStartExternalEditorListener());
+		itemStartExternalJOEConstants.setText("Start external Editor\tCtrl+X");
 		itemSelectAll.setAccelerator(SWT.MOD1 + 'X');
 		setMenu(objContextMenu);
 

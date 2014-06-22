@@ -6,7 +6,8 @@ import org.eclipse.swt.widgets.Button;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class PeriodListener {
 

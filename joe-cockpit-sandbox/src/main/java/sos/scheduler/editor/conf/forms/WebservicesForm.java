@@ -14,16 +14,15 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUnsaved;
-import com.sos.joe.interfaces.IUpdateLanguage;
-
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.WebservicesListener;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
@@ -95,16 +94,16 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 		GridData gridData1 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
 		tServices = JOE_Tbl_WebservicesForm_Services.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
 		tServices.addMouseListener(new MouseAdapter() {
-			public void mouseDoubleClick(final MouseEvent e) {
+			@Override public void mouseDoubleClick(final MouseEvent e) {
 				if(tServices.getSelectionCount() > 0)
-					ContextMenu.goTo(tServices.getSelection()[0].getText(0), _dom, Editor.WEBSERVICE);
+					ContextMenu.goTo(tServices.getSelection()[0].getText(0), _dom, JOEConstants.WEBSERVICE);
 			}
 		});
 		tServices.setHeaderVisible(true);
 		tServices.setLayoutData(gridData1);
 		tServices.setLinesVisible(true);
 		tServices.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			 public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			 @Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				 boolean selection = tServices.getSelectionCount() > 0;
 				 bRemove.setEnabled(selection);
 				 if (selection) {
@@ -134,7 +133,7 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 		bNew.setLayoutData(gridData5);
 		getShell().setDefaultButton(bNew);
 		bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				listener.newService(tServices);
 				//setInput(true);
 				//tName.setFocus();
@@ -148,7 +147,7 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 		
 		bRemove = JOE_B_WebservicesForm_Remove.Control(new Button(group, SWT.NONE));
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (tServices.getSelectionCount() > 0) {
 					int index = tServices.getSelectionIndex();
 					listener.removeService(index);

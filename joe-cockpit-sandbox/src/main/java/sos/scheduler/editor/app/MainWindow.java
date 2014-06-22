@@ -32,8 +32,6 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
-import sos.scheduler.editor.actions.forms.ActionsForm;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.forms.HotFolderDialog;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.util.SOSClassUtil;
@@ -41,22 +39,27 @@ import sos.util.SOSString;
 
 import com.sos.JSHelper.Basics.JSVersionInfo;
 import com.sos.dialog.classes.WindowsSaver;
+import com.sos.event.service.forms.ActionsForm;
 import com.sos.i18n.annotation.I18NMessage;
 import com.sos.i18n.annotation.I18NMessages;
 import com.sos.i18n.annotation.I18NResourceBundle;
-import com.sos.jobdoc.forms.DocumentationForm;
+import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.interfaces.IContainer;
-import com.sos.joe.job.wizard.JobAssistentForm;
+import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
 import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
+import com.sos.joe.wizard.forms.JobAssistentForm;
+import com.sos.joe.xml.DomParser;
+import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
 public class MainWindow {
 	private static final String	conNewlineTab							= "n\t";
-	private static final String	conPropertyNameEDITOR_JOB_SHOW_WIZARD	= "editor.job.show.wizard";
+	private static final String	conPropertyNameEDITOR_JOB_SHOW_WIZARD	= "JOEConstants.job.show.wizard";
 	private static final String	conStringEDITOR							= "editor";
 	private static final String	conIconOPEN_HOT_FOLDER_GIF				= "/sos/scheduler/editor/icon_open_hot_folder.gif";
 	public static final String	conIconICON_OPEN_GIF					= "/sos/scheduler/editor/icon_open.gif";
-	public static final String	conIconEDITOR_PNG						= "/sos/scheduler/editor/editor.png";
+	public static final String	conIconEDITOR_PNG						= "/sos/scheduler/editor/JOEConstants.png";
 	private final String		conClassName							= "MainWindow";
 	private final String		conSVNVersion							= "$Id$";
 	private static final Logger	logger									= Logger.getLogger(MainWindow.class);
@@ -648,7 +651,7 @@ public class MainWindow {
 		submenuItem2.setMenu(mFile);
 		MenuItem pExit = new MenuItem(mFile, SWT.PUSH);
 		// pExit.setText("Exit\tCtrl+E");
-		pExit.setText(getMenuText(sos.scheduler.editor.app.Messages.getLabel("MENU_Exit"), "E"));
+		pExit.setText(getMenuText(sos.scheduler.JOEConstants.app.Messages.getLabel("MENU_Exit"), "E"));
 //		pExit.setAccelerator(SWT.CTRL | 'E');
 		pExit.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			@Override
@@ -819,7 +822,7 @@ public class MainWindow {
 		items[index].setEnabled(container.getCurrentEditor() != null);
 		items[index + 1].setEnabled(container.getCurrentEditor() != null);
 		if (container.getCurrentEditor() instanceof sos.scheduler.editor.conf.forms.SchedulerForm) {
-			sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) container.getCurrentEditor();
+			sos.scheduler.JOEConstants.conf.forms.SchedulerForm form = (sos.scheduler.JOEConstants.conf.forms.SchedulerForm) container.getCurrentEditor();
 			SchedulerDom dom = form.getDom();
 			if (dom.isDirectory()) {
 				items[index + 1].setEnabled(false);
@@ -921,7 +924,7 @@ public class MainWindow {
 		Utils.startCursor(getSShell());
 		HashMap changes = new HashMap();
 		if (container.getCurrentEditor() instanceof sos.scheduler.editor.conf.forms.SchedulerForm) {
-			sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) container.getCurrentEditor();
+			sos.scheduler.JOEConstants.conf.forms.SchedulerForm form = (sos.scheduler.JOEConstants.conf.forms.SchedulerForm) container.getCurrentEditor();
 			SchedulerDom currdom = form.getDom();
 			changes = (java.util.HashMap) currdom.getListOfChangedObjects().clone();
 		}
@@ -1183,21 +1186,21 @@ public class MainWindow {
 					SchedulerForm form = (SchedulerForm) container.getCurrentEditor();
 					SchedulerDom currdom = form.getDom();
 					if (currdom.isLifeElement())
-						sos.scheduler.editor.app.Utils.reset(currdom.getRoot(), form, currdom);
+						sos.scheduler.JOEConstants.app.Utils.reset(currdom.getRoot(), form, currdom);
 					else
-						sos.scheduler.editor.app.Utils.reset(currdom.getRoot().getChild("config"), form, currdom);
+						sos.scheduler.JOEConstants.app.Utils.reset(currdom.getRoot().getChild("config"), form, currdom);
 				}
 				else
 					if (container.getCurrentEditor() instanceof sos.scheduler.editor.actions.forms.ActionsForm) {
-						sos.scheduler.editor.actions.forms.ActionsForm form = (sos.scheduler.editor.actions.forms.ActionsForm) container.getCurrentEditor();
-						sos.scheduler.editor.actions.ActionsDom currdom = form.getDom();
-						sos.scheduler.editor.app.Utils.reset(currdom.getRoot(), form, currdom);
+						sos.scheduler.JOEConstants.actions.forms.ActionsForm form = (sos.scheduler.JOEConstants.actions.forms.ActionsForm) container.getCurrentEditor();
+						sos.scheduler.JOEConstants.actions.ActionsDom currdom = form.getDom();
+						sos.scheduler.JOEConstants.app.Utils.reset(currdom.getRoot(), form, currdom);
 					}
 					else
 						if (container.getCurrentEditor() instanceof com.sos.jobdoc.forms.DocumentationForm) {
 							com.sos.jobdoc.forms.DocumentationForm form = (com.sos.jobdoc.forms.DocumentationForm) container.getCurrentEditor();
 							com.sos.jobdoc.DocumentationDom currdom = form.getDom();
-							sos.scheduler.editor.app.Utils.reset(currdom.getRoot(), form, currdom);
+							sos.scheduler.JOEConstants.app.Utils.reset(currdom.getRoot(), form, currdom);
 						}
 			}
 
@@ -1277,7 +1280,7 @@ public class MainWindow {
 						DomParser currdom = getSpecifiedDom();
 						String oldname = configFile.getName().replaceAll(".config.xml", EMPTY);
 						String newName = newConfigFile.getName().replaceAll(".config.xml", EMPTY);
-						sos.scheduler.editor.conf.listeners.DetailsListener.changeJobChainName4NodeParameter(newName, oldname, (SchedulerDom) currdom);
+						sos.scheduler.JOEConstants.conf.listeners.DetailsListener.changeJobChainName4NodeParameter(newName, oldname, (SchedulerDom) currdom);
 						//
 						if (!newConfigFile.exists() && !configFile.renameTo(newConfigFile)) {
 							MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename + "].\n"
@@ -1495,7 +1498,7 @@ public class MainWindow {
 		if (MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
 			SchedulerForm form = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
 			currdom = form.getDom();
-		}
+		} 
 		else
 			if (MainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm) {
 				DocumentationForm form = (DocumentationForm) MainWindow.getContainer().getCurrentEditor();

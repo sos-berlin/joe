@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.ResourceManager;
@@ -33,7 +33,7 @@ import sos.scheduler.editor.app.Utils;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
-import com.swtdesigner.SWTResourceManager;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public class HotFolderDialog {
 	@SuppressWarnings("unused")
@@ -76,7 +76,7 @@ public class HotFolderDialog {
 				}
 			}
 		});
-		schedulerConfigurationShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
+		schedulerConfigurationShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/JOEConstants.png"));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.marginTop = 5;
 		gridLayout.marginRight = 5;

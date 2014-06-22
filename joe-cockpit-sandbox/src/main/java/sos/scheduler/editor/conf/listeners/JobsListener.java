@@ -11,16 +11,16 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.ErrorLog;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.util.SOSClassUtil;
 import sos.util.SOSDate;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.LanguageDescriptorList;
 public class JobsListener extends JOEListener {
-
+ 
 //	private SchedulerDom		_dom	= null;
 //	private ISchedulerUpdate	_main	= null;
 	private Element				_config	= null;
@@ -471,7 +471,7 @@ public class JobsListener extends JOEListener {
 			}
 			_dom.setChanged(true);
 
-//			if (Editor.JOB_CHAINS != assistentType && JobsForm.getTable() != null) {
+//			if (JOEConstants.JOB_CHAINS != assistentType && JobsForm.getTable() != null) {
 //				populateJobsTable(JobsForm.getTable());
 //				JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);
 //			}

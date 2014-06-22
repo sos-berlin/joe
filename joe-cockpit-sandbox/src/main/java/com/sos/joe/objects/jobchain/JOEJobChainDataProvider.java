@@ -83,7 +83,7 @@ public class JOEJobChainDataProvider extends JOEListener {
 	@Deprecated
 	public JSObjectElement getJSObject() {
 		if (objJSObjectElement == null) {
-			objJSObjectElement = new JSObjectElement(Editor.JOB_CHAIN, objJobChain);
+			objJSObjectElement = new JSObjectElement(JOEConstants.JOB_CHAIN, objJobChain);
 		}
 		return objJSObjectElement;
 	}

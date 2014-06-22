@@ -31,10 +31,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import sos.scheduler.editor.app.ResourceManager;
-
 import com.sos.dialog.classes.WindowsSaver;
 //import org.eclipse.jface.layout.TableColumnLayout;
+import com.sos.joe.globals.misc.ResourceManager;
 
 /**
  * @author KB

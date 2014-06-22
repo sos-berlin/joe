@@ -14,22 +14,19 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.util.SOSClassUtil;
 
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.misc.ResourceManager;
 
-class Dialog extends org.eclipse.swt.widgets.Dialog {
-
-
-	Object result;
-
+public class Dialog extends org.eclipse.swt.widgets.Dialog {
+	Object			result;
 	//private FTPDialogListener listener = null;
 	//FTPDialog ftpDialog = null;
-	private Object obj = null;
-
-	private Text text = null;
+	private Object	obj		= null;
+	private Text	text	= null;
 
 	public Dialog(final Shell parent, final int style) {
 		super(parent, style);
 	}
-
 
 	public Dialog(final Shell parent) {
 		this(parent, 0);
@@ -40,7 +37,6 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 		ftpDialog = ftpDialog_;
 		return open();
 	}*/
-
 	public Object open(final Object obj_) {
 		//listener = listener_;
 		obj = obj_;
@@ -49,19 +45,15 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 
 	public Object open() {
 		Shell parent = getParent();
-		final Shell newFolderShell =
-			new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-
+		final Shell newFolderShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		newFolderShell.addTraverseListener(new TraverseListener() {
-			@Override
-			public void keyTraversed(final TraverseEvent e) {
-				if(e.detail == SWT.TRAVERSE_ESCAPE) {
+			@Override public void keyTraversed(final TraverseEvent e) {
+				if (e.detail == SWT.TRAVERSE_ESCAPE) {
 					close();
 				}
 			}
 		});
-
-		newFolderShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
+		newFolderShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/JOEConstants.png"));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.verticalSpacing = 10;
 		gridLayout.horizontalSpacing = 10;
@@ -73,49 +65,36 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 		newFolderShell.setText("Create New Folder");
 		newFolderShell.setText(getText());
 		newFolderShell.pack();
-
 		/*if (obj instanceof FTPDialogListener)
 			text = new Text(newFolderShell, SWT.PASSWORD | SWT.BORDER);
 		else
 		*/
-			text = new Text(newFolderShell, SWT.BORDER);
-
+		text = new Text(newFolderShell, SWT.BORDER);
 		text.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
+			@Override public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR)
 					doSomethings();
 			}
 		});
 		text.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
-
 		final Button butOK = new Button(newFolderShell, SWT.NONE);
 		butOK.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-
-
+			@Override public void widgetSelected(final SelectionEvent e) {
 				doSomethings();
-
 			}
 		});
 		butOK.setText("OK");
-
 		final Button butCancel = new Button(newFolderShell, SWT.NONE);
 		butCancel.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				close();
 			}
 		});
 		butCancel.setLayoutData(new GridData(GridData.END, GridData.CENTER, true, false));
 		butCancel.setText("Cancel");
 		newFolderShell.open();
-
 		//org.eclipse.swt.graphics.Rectangle rect = image.getBounds();
 		newFolderShell.setSize(241, 107);
-
-
 		org.eclipse.swt.widgets.Display display = parent.getDisplay();
 		while (!newFolderShell.isDisposed()) {
 			if (!display.readAndDispatch())
@@ -123,18 +102,12 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 		}
 		//image.dispose();
 		return result;
-
 	}
 
-
 	public static void main(final String[] args) {
-		final Shell shell =
-			new Shell();
+		final Shell shell = new Shell();
 		shell.pack();
-
-
 		Dialog dialog = new Dialog(shell);
-
 		dialog.open();
 	}
 
@@ -144,40 +117,37 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 
 	public void doSomethings() {
 		try {
-		if(obj instanceof FTPDialog) {
+			if (obj instanceof FTPDialog) {
+				FTPDialog ftpDialog = (FTPDialog) obj;
+				ftpDialog.getListener().getCurrProfile().mkDirs(text.getText());
+				ftpDialog.refresh();
+				/*} else if (obj instanceof FTPDialogListener) {
 
-			FTPDialog ftpDialog = (FTPDialog)obj;
-
-			ftpDialog.getListener().getCurrProfile().mkDirs(text.getText());
-			ftpDialog.refresh();
-
-		/*} else if (obj instanceof FTPDialogListener) {
-
-			FTPDialogListener listener = (FTPDialogListener)obj;
-			listener.setPassword(text.getText());
-			*/
-		} else if(obj instanceof WebDavDialog) {
-
-				WebDavDialog webdavDialog = (WebDavDialog)obj;
-				String parentPath = webdavDialog.getTxtUrl().getText();
-				if(!parentPath.endsWith("/"))
-					parentPath = parentPath + "/";
-
-				webdavDialog.getListener().mkDirs(parentPath + text.getText());
-				webdavDialog.refresh();
-
-		} else if (obj instanceof WebDavDialogListener) {
-
-			WebDavDialogListener listener = (WebDavDialogListener)obj;
-			listener.setPassword(text.getText());
-
+					FTPDialogListener listener = (FTPDialogListener)obj;
+					listener.setPassword(text.getText());
+					*/
+			}
+			else
+				if (obj instanceof WebDavDialog) {
+					WebDavDialog webdavDialog = (WebDavDialog) obj;
+					String parentPath = webdavDialog.getTxtUrl().getText();
+					if (!parentPath.endsWith("/"))
+						parentPath = parentPath + "/";
+					webdavDialog.getListener().mkDirs(parentPath + text.getText());
+					webdavDialog.refresh();
+				}
+				else
+					if (obj instanceof WebDavDialogListener) {
+						WebDavDialogListener listener = (WebDavDialogListener) obj;
+						listener.setPassword(text.getText());
+					}
 		}
-		} catch (Exception e) {
+		catch (Exception e) {
 			try {
-  			new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
-  		} catch(Exception ee) {
-
-  		}
+				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+			}
+			catch (Exception ee) {
+			}
 		}
 		close();
 	}

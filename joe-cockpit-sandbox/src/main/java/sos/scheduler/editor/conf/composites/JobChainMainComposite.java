@@ -83,7 +83,7 @@ public class JobChainMainComposite extends CompositeBaseClass {
 			@Override
 			public void verifyText(final VerifyEvent e) {
 				if (!init) {
-					e.doit = Utils.checkElement(objDataProvider.getChainName(), objDataProvider.get_dom(), Editor.JOB_CHAIN, null);
+					e.doit = Utils.checkElement(objDataProvider.getChainName(), objDataProvider.get_dom(), JOEConstants.JOB_CHAIN, null);
 					/*System.out.println(e.doit);
 					if(e.doit) {
 						init = true;

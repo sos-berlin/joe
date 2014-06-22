@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.MergeAllXMLinDirectory;
 import sos.scheduler.editor.app.Utils;
@@ -105,7 +105,7 @@ public class JobMainComposite extends CompositeBaseClass {
 			@Override
 			public void verifyText(final VerifyEvent e) {
 				if (!init) {
-					e.doit = Utils.checkElement(objDataProvider.getJobName(), objDataProvider.get_dom(), Editor.JOB, null);
+					e.doit = Utils.checkElement(objDataProvider.getJobName(), objDataProvider.get_dom(), JOEConstants.JOB, null);
 				}
 			}
 		});
@@ -148,7 +148,7 @@ public class JobMainComposite extends CompositeBaseClass {
 			public void widgetSelected(final SelectionEvent e) {
 				String strT = cProcessClass.getText();
 				if (strT.length() > 0) {
-					ContextMenu.goTo(strT, objDataProvider.get_dom(), Editor.PROCESS_CLASSES);
+					ContextMenu.goTo(strT, objDataProvider.get_dom(), JOEConstants.PROCESS_CLASSES);
 				}
 			}
 		});
@@ -157,7 +157,7 @@ public class JobMainComposite extends CompositeBaseClass {
 
 		cProcessClass = new SOSComboBox(gMain, JOE_Cbo_JobMainComposite_ProcessClass);
 		cProcessClass.setEditable(false);
-		cProcessClass.setMenu(new ContextMenu(cProcessClass, objDataProvider.get_dom(), Editor.PROCESS_CLASSES).getMenu());
+		cProcessClass.setMenu(new ContextMenu(cProcessClass, objDataProvider.get_dom(), JOEConstants.PROCESS_CLASSES).getMenu());
 
 		cProcessClass.addModifyListener(new ModifyListener() {
 			@Override
@@ -212,7 +212,7 @@ public class JobMainComposite extends CompositeBaseClass {
 			public void mouseDoubleClick(final MouseEvent arg0) {
 				String strT = cProcessClass.getText();
 				if (strT.length() > 0) {
-					ContextMenu.goTo(strT, objDataProvider.get_dom(), Editor.PROCESS_CLASSES);
+					ContextMenu.goTo(strT, objDataProvider.get_dom(), JOEConstants.PROCESS_CLASSES);
 				}
 			}
 		});

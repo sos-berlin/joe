@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUnsaved;
 import com.sos.joe.interfaces.IUpdateLanguage;
 
@@ -33,7 +33,7 @@ import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.Messages;
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobCommandExitCodesListener;
 
 public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
@@ -241,7 +241,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 			public void mouseDoubleClick(final MouseEvent e) {
 				if(tCommands.getSelectionCount() > 0){
 					String name = tCommands.getSelection()[0].getText(0) +": " + tCommands.getSelection()[0].getText(1) + tCommands.getSelection()[0].getText(2);
-					ContextMenu.goTo(name, _dom, Editor.JOB_COMMAND_EXIT_CODES);
+					ContextMenu.goTo(name, _dom, JOEConstants.JOB_COMMAND_EXIT_CODES);
 				}
 			}
 		});

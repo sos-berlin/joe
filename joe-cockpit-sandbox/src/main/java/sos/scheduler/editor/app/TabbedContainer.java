@@ -23,16 +23,18 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.input.SAXBuilder;
 
-import sos.scheduler.editor.actions.forms.ActionsForm;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.util.SOSClassUtil;
 
-import com.sos.jobdoc.forms.DocumentationForm;
+import com.sos.event.service.forms.ActionsForm;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.interfaces.IContainer;
 import com.sos.joe.interfaces.IEditor;
+import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
 import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
-
+ 
 public class TabbedContainer implements IContainer {
 	private static final String	conImageEDITOR_SMALL_PNG	= "/sos/scheduler/editor/editor-small.png";
 	private final String		conClassName				= "TabbedContainer";
@@ -84,12 +86,12 @@ public class TabbedContainer implements IContainer {
 		folder.addCTabFolder2Listener(new CTabFolder2Adapter() {
 			@Override public void close(final CTabFolderEvent event) {
 				// IEditor editor = getCurrentEditor();
-				IEditor editor = (IEditor) ((CTabItem) event.item).getControl();
-				if (editor.hasChanges()) {
-					event.doit = editor.close();
+				IEditor objEditor = (IEditor) ((CTabItem) event.item).getControl();
+				if (objEditor.hasChanges()) {
+					event.doit = objEditor.close();
 				}
 				if (event.doit)
-					filelist.remove(editor.getFilename());
+					filelist.remove(objEditor.getFilename());
 			}
 		});
 		folder.addTraverseListener(new TraverseListener() {
@@ -97,8 +99,8 @@ public class TabbedContainer implements IContainer {
 				/*if(e.detail == SWT.TRAVERSE_ESCAPE) {
 					System.out.println(folder.getChildren().length);
 					IEditor editor = (IEditor)folder.getSelection().getControl();
-					filelist.remove(editor.getFilename());
-					editor.close();
+					filelist.remove(JOEConstants.getFilename());
+					JOEConstants.close();
 					folder.getSelection().dispose();
 					folder.removeControlListener(listener)
 				}*/

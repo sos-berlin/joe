@@ -2,11 +2,12 @@ package com.sos.joe.interfaces;
 
 import org.eclipse.swt.custom.CTabItem;
 
-import com.sos.jobdoc.forms.DocumentationForm;
-import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
-
-import sos.scheduler.editor.actions.forms.ActionsForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
+
+import com.sos.event.service.forms.ActionsForm;
+import com.sos.joe.globals.interfaces.IEditor;
+import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
+import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
 
 public interface IContainer {
 	
@@ -33,7 +34,7 @@ public interface IContainer {
     public String openDocumentationName();
 
     public IEditor getCurrentEditor();
-
+ 
     public void setStatusInTitle();
 
     public void setNewFilename(String oldFilename);       

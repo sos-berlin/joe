@@ -14,11 +14,17 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.xpath.XPath;
 
-import sos.scheduler.editor.actions.forms.ActionsForm;
 import sos.scheduler.editor.classes.SOSComboBox;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
+
+import com.sos.event.service.forms.ActionsForm;
+import com.sos.event.service.listeners.ActionsListener;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.DomParser;
 
 public class ContextMenu {
 
@@ -57,7 +63,7 @@ public class ContextMenu {
 		MenuItem item = new MenuItem(_menu, SWT.PUSH);
 		item.addListener(SWT.Selection, getListener());
 
-		if (_type == Editor.SCRIPT)
+		if (_type == JOEConstants.SCRIPT)
 			item.setText(ContextMenu.DELETE);
 		else
 			item.setText(ContextMenu.GOTO);
@@ -66,7 +72,7 @@ public class ContextMenu {
 			@Override
 			public void handleEvent(final Event e) {
 				MenuItem item = null;
-				if (_type == Editor.SCRIPT) {
+				if (_type == JOEConstants.SCRIPT) {
 					item = getItem(ContextMenu.DELETE);
 				}
 				else
@@ -87,7 +93,7 @@ public class ContextMenu {
 		return new Listener() {
 			@Override
 			public void handleEvent(final Event e) {
-				if (_type == Editor.SCRIPT)
+				if (_type == JOEConstants.SCRIPT)
 					delete(_combo, _dom, _type);
 				else
 					goTo(_combo.getText(), _dom, _type);
@@ -100,7 +106,7 @@ public class ContextMenu {
 	/*private void applyXMLChange(String newXML){
 
 		if(_dom instanceof SchedulerDom) {
-			if(!((sos.scheduler.editor.conf.SchedulerDom)_dom).isLifeElement())
+			if(!((sos.scheduler.JOEConstants.conf.SchedulerDom)_dom).isLifeElement())
 				newXML = newXML.replaceAll("\\?>", "?><spooler>" )+ "</spooler>";
 		}
 
@@ -148,7 +154,7 @@ public class ContextMenu {
 				if(!new java.io.File(_dom.getFilename()).delete()) {
 					MainWindow.message("could not remove life file", SWT.ICON_WARNING | SWT.OK);
 				}
-				sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
+				sos.scheduler.JOEConstants.app.IContainer con = MainWindow.getContainer();
 				con.getCurrentTab().dispose();
 
 			}
@@ -324,14 +330,14 @@ public class ContextMenu {
 			if (name == null || name.length() == 0) {
 				return;
 			}
-//			Self assignment of _dom in sos.scheduler.editor.app.ContextMenu.goTo(String, DomParser, int) [Of Concern(15), High confidence]	ContextMenu.java	/com.sos.scheduler.editor.sandbox/src/sos/scheduler/editor/app	line 329	FindBugs Problem (Of concern)
+//			Self assignment of _dom in sos.scheduler.editor.app.ContextMenu.goTo(String, DomParser, int) [Of Concern(15), High confidence]	ContextMenu.java	/com.sos.scheduler.JOEConstants.sandbox/src/sos/scheduler/editor/app	line 329	FindBugs Problem (Of concern)
 //			if (_dom instanceof sos.scheduler.editor.actions.ActionsDom)
 //				_dom = _dom;
 //			else
 //				_dom = _dom;
 //
-			if (type == Editor.JOB) {
-				selectTreeItem(_dom, "job", name, Editor.JOBS);
+			if (type == JOEConstants.JOB) {
+				selectTreeItem(_dom, "job", name, JOEConstants.JOBS);
 
 //				XPath x3 = XPath.newInstance("//job[@name='" + name + "']");
 //				List listOfElement_3 = x3.selectNodes(_dom.getDoc());
@@ -364,7 +370,7 @@ public class ContextMenu {
 //				}
 			}
 			else
-				if (type == Editor.MONITOR) {
+				if (type == JOEConstants.MONITOR) {
 
 					String[] split = name.split("_@_");
 					String jobname = split[0];
@@ -419,8 +425,8 @@ public class ContextMenu {
 
 				}
 				else
-					if (type == Editor.JOB_CHAIN) {
-						selectTreeItem(_dom, "job_chain", name, Editor.JOB_CHAINS);
+					if (type == JOEConstants.JOB_CHAIN) {
+						selectTreeItem(_dom, "job_chain", name, JOEConstants.JOB_CHAINS);
 //						XPath x3 = XPath.newInstance("//job_chain[@name='" + name + "']");
 //						List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 //						if (!listOfElement_3.isEmpty()) {
@@ -455,8 +461,8 @@ public class ContextMenu {
 //
 					}
 					else
-						if (type == Editor.PROCESS_CLASSES) {
-							selectTreeItem(_dom, "process_class", name, Editor.PROCESS_CLASSES);
+						if (type == JOEConstants.PROCESS_CLASSES) {
+							selectTreeItem(_dom, "process_class", name, JOEConstants.PROCESS_CLASSES);
 
 //							XPath x3 = XPath.newInstance("//process_class[@name='" + name + "']");
 //							List listOfElement_3 = x3.selectNodes(_dom.getDoc());
@@ -478,8 +484,8 @@ public class ContextMenu {
 //							}
 						}
 						else
-							if (type == Editor.SCHEDULE) {
-								selectTreeItem(_dom, "schedule", name, Editor.SCHEDULES);
+							if (type == JOEConstants.SCHEDULE) {
+								selectTreeItem(_dom, "schedule", name, JOEConstants.SCHEDULES);
 
 //								XPath x3 = XPath.newInstance("//schedule[@name='" + name + "']");
 //								List listOfElement_3 = x3.selectNodes(_dom.getDoc());
@@ -510,7 +516,7 @@ public class ContextMenu {
 
 							}
 							else
-								if (type == Editor.ORDER) {
+								if (type == JOEConstants.ORDER) {
 
 									XPath x3 = XPath.newInstance("//order[@id='" + name + "']");
 									List listOfElement_3 = x3.selectNodes(_dom.getDoc());
@@ -547,7 +553,7 @@ public class ContextMenu {
 
 								}
 								else
-									if (type == Editor.WEBSERVICE) {
+									if (type == JOEConstants.WEBSERVICE) {
 
 										XPath x3 = XPath.newInstance("//web_service[@name='" + name + "']");
 										List listOfElement_3 = x3.selectNodes(_dom.getDoc());
@@ -581,7 +587,7 @@ public class ContextMenu {
 										}
 									}
 									else
-										if (type == Editor.ACTIONS) {
+										if (type == JOEConstants.ACTIONS) {
 
 											XPath x3 = XPath.newInstance("//action[@name='" + name + "']");
 											List listOfElement_3 = x3.selectNodes(_dom.getDoc());
@@ -597,7 +603,7 @@ public class ContextMenu {
 														for (TreeItem jItem : jobsItem) {
 															//if(jItem.getText().equals("Job Chain: "+ name)){
 															if (jItem.getText().endsWith(
-																	sos.scheduler.editor.actions.listeners.ActionsListener.ACTION_PREFIX + name)) {
+																	ActionsListener.ACTION_PREFIX + name)) {
 																tree.setSelection(new TreeItem[] { jItem });
 																f.updateTreeItem(jItem.getText());
 																f.updateTree("");
@@ -609,7 +615,7 @@ public class ContextMenu {
 											}
 										}
 										else
-											if (type == Editor.EVENTS) {
+											if (type == JOEConstants.EVENTS) {
 												//<event_group logic="or" group="1">
 												XPath x3 = XPath.newInstance("//event_group[@group='" + name + "']");
 
@@ -624,7 +630,7 @@ public class ContextMenu {
 														for (int i = 0; i < itemp.getItemCount(); i++) {
 															TreeItem item = itemp.getItem(i);
 															if (item.getText().endsWith(
-																	sos.scheduler.editor.actions.listeners.ActionsListener.GROUP_PREFIX + name)) {
+																	ActionsListener.GROUP_PREFIX + name)) {
 																tree.setSelection(new TreeItem[] { item });
 																f.updateTreeItem(item.getText());
 																f.updateTree("");
@@ -635,12 +641,12 @@ public class ContextMenu {
 												}
 											}
 											else
-												if (type == Editor.ACTION_COMMANDS) {
+												if (type == JOEConstants.ACTION_COMMANDS) {
 													XPath x3 = XPath.newInstance("//command[@name='" + name + "']");
 
 													List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 													if (!listOfElement_3.isEmpty()) {
-														ActionsForm f = (ActionsForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+														ActionsForm f = (ActionsForm) MainWindow.getContainer().getCurrentEditor();
 														if (f == null)
 															return;
 														Tree tree = f.getTree();
@@ -649,7 +655,7 @@ public class ContextMenu {
 															for (int i = 0; i < itemp.getItemCount(); i++) {
 																TreeItem item = itemp.getItem(i);
 																if (item.getText().endsWith(
-																		sos.scheduler.editor.actions.listeners.ActionsListener.COMMAND_PREFIX + name)) {
+																		ActionsListener.COMMAND_PREFIX + name)) {
 																	tree.setSelection(new TreeItem[] { item });
 																	f.updateTreeItem(item.getText());
 																	f.updateTree("");
@@ -660,7 +666,7 @@ public class ContextMenu {
 													}
 												}
 												else
-													if (type == Editor.JOB_COMMAND_EXIT_CODES
+													if (type == JOEConstants.JOB_COMMAND_EXIT_CODES
 															&& sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor() instanceof ActionsForm) {
 
 														XPath x3 = null;
@@ -698,7 +704,7 @@ public class ContextMenu {
 														}
 													}
 													else
-														if (type == Editor.JOB_COMMAND_EXIT_CODES
+														if (type == JOEConstants.JOB_COMMAND_EXIT_CODES
 																&& sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
 
 															XPath x3 = null;
@@ -738,7 +744,7 @@ public class ContextMenu {
 
 														}
 														else
-															if (type == Editor.JOB_COMMAND) {
+															if (type == JOEConstants.JOB_COMMAND) {
 																SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer()
 																		.getCurrentEditor();
 																if (f == null)
@@ -770,7 +776,7 @@ public class ContextMenu {
 			//favoriten löschen
 			if (combo.getData("favorites") == null)
 				return;
-			if (type == Editor.SCRIPT) {
+			if (type == JOEConstants.SCRIPT) {
 				String prefix = "monitor_favorite_";
 				String name = combo.getText();
 				String lan = "";

@@ -28,14 +28,14 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
 import com.sos.jobdoc.forms.DocumentationForm;
 import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
-import com.swtdesigner.SWTResourceManager;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 
 
@@ -103,7 +103,7 @@ public class WebDavDialog {
 		schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE
 				| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 		schedulerConfigurationShell.setImage(ResourceManager
-				.getImageFromResource("/sos/scheduler/editor/editor.png"));
+				.getImageFromResource("/sos/scheduler/editor/JOEConstants.png"));
 
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
 			@Override
@@ -567,8 +567,8 @@ public class WebDavDialog {
 			else
 				newFilename = sosString.parseToString(listener.getCurrProfile().get("localdirectory")) + "/" + new File(file).getName();
 
-			/*sos.scheduler.editor.conf.forms.SchedulerForm form =
-				(sos.scheduler.editor.conf.forms.SchedulerForm)MainWindow.getContainer().getCurrentEditor();
+			/*sos.scheduler.JOEConstants.conf.forms.SchedulerForm form =
+				(sos.scheduler.JOEConstants.conf.forms.SchedulerForm)MainWindow.getContainer().getCurrentEditor();
 			SchedulerDom currdom = (SchedulerDom)form.getDom();
 			 */
 

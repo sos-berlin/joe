@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.util.SOSClassUtil;
@@ -265,14 +265,14 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 		cboJob = new SOSComboBox(pobjParent, JOE_Cbo_JCNodesForm_Job);
 		cboJob.setVisibleItemCount(9);
 		cboJob.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 2, 1));
-		ContextMenu objM = new ContextMenu(cboJob, objDataProvider.get_dom(), Editor.JOB);
+		ContextMenu objM = new ContextMenu(cboJob, objDataProvider.get_dom(), JOEConstants.JOB);
 		if (objM != null) {
 			cboJob.setMenu(objM.getMenu());
 		}
 		cboJob.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(final MouseEvent arg0) {
-				ContextMenu.goTo(cboJob.getText(), objDataProvider.get_dom(), Editor.JOB);
+				ContextMenu.goTo(cboJob.getText(), objDataProvider.get_dom(), JOEConstants.JOB);
 				objParent.getShell().close();
 			}
 

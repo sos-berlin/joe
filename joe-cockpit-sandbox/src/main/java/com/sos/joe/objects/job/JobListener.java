@@ -8,15 +8,15 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
 import com.sos.JSHelper.Exceptions.JobSchedulerException;
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.LanguageDescriptor;
 import com.sos.scheduler.model.LanguageDescriptorList;
 import com.sos.scheduler.model.objects.Include;
@@ -44,13 +44,13 @@ public class JobListener extends JOEListener {
 	private final Element					_environment						= null;
 	private int								intJSObjectType						= -1;
 	private final List<Element>				_directories						= null;
-	private final Element					_directory							= null;
+	private final Element		 			_directory							= null;
 	private final List						_setbacks							= null;
 	private final Element					_setback							= null;
 	private final List						_errorDelays						= null;
 	private final Element					_errorDelay							= null;
 	private JSObjJob						objJSJob							= null;
-
+ 
 	@Deprecated
 	public JobListener(final SchedulerDom dom_, final Element objElement, final ISchedulerUpdate update) {
 	}
@@ -352,7 +352,7 @@ public class JobListener extends JOEListener {
 	//		}
 	//	}
 	//	private void getScript() {
-	//		if (_type == Editor.MONITOR) {
+	//		if (_type == JOEConstants.MONITOR) {
 	//			Element monitor = _job;
 	//			if (monitor != null) {
 	//				_script = monitor.getChild(conTagSCRIPT);
@@ -574,7 +574,7 @@ public class JobListener extends JOEListener {
 
 	private Script getScript() {
 		Script objS = null;
-		if (intJSObjectType == Editor.MONITOR) {
+		if (intJSObjectType == JOEConstants.MONITOR) {
 			List<Monitor> lstM = objJSJob.getMonitor();
 			if (lstM != null) {
 				// TODO select right monitor, 0 is not always the correct choice

@@ -11,13 +11,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.Options;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.SchedulerDom;
 import sos.util.SOSClassUtil;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 class Weekday {
 	protected String day;
@@ -310,8 +311,8 @@ public class SpecificWeekdaysListener {
 						item.setData("key", e.getName() +"_@_");
 						item.setData("copy_element", e);
 
-						//item.setData(new TreeData(Editor.PERIODS, (Element)w.elements.get(token), Options.getHelpURL("periods")));
-						item.setData(new TreeData(Editor.PERIODS, e, Options.getHelpURL("periods")));
+						//item.setData(new TreeData(JOEConstants.PERIODS, (Element)w.elements.get(token), Options.getHelpURL("periods")));
+						item.setData(new TreeData(JOEConstants.PERIODS, e, Options.getHelpURL("periods")));
 
 						if(!Utils.isElementEnabled("job", _dom, _runtime)) {
 							item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));

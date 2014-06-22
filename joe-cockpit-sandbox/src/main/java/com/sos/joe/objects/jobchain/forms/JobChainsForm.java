@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUnsaved;
 import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.objects.jobchain.JobChainListListener;
@@ -44,7 +44,7 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSTable;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 
 public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpdateLanguage, ISOSTableMenueListeners {
@@ -98,7 +98,7 @@ public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpda
 			public void mouseDoubleClick(final MouseEvent e) {
 				if (tblJobChainList.getSelectionCount() > 0) {
 					String strName = tblJobChainList.getSelection()[0].getText(0);
-					ContextMenu.goTo(strName, objDataProvider.get_dom(), Editor.JOB_CHAIN);
+					ContextMenu.goTo(strName, objDataProvider.get_dom(), JOEConstants.JOB_CHAIN);
 				}
 			}
 		});
@@ -157,7 +157,7 @@ public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpda
 					return;
 				}
 
-				if (Utils.checkElement(tblJobChainList.getSelection()[0].getText(0), objDataProvider.get_dom(), Editor.JOB_CHAINS,
+				if (Utils.checkElement(tblJobChainList.getSelection()[0].getText(0), objDataProvider.get_dom(), JOEConstants.JOB_CHAINS,
 						null))
 					//wird der Job woanders verwendet?
 					deleteChain();

@@ -17,7 +17,7 @@ import com.sos.joe.objects.jobchain.forms.DetailForm;
 import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
 
 import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.DetailDom;
@@ -168,13 +168,13 @@ public class JobChainConfigurationListener{
 				try {
 					if(jobChainname == null) {
 
-						df = new DetailForm(c, SWT.NONE, Editor.DETAILS, _dom, _gui, false, null);
+						df = new DetailForm(c, SWT.NONE, JOEConstants.DETAILS, _dom, _gui, false, null);
 						df.setLayout(new org.eclipse.swt.layout.FillLayout());
 
 					} else {
 						Composite composite = new Composite(c.getShell(), SWT.NONE);
 						composite.setLayout(new org.eclipse.swt.layout.FillLayout());
-						df = new DetailForm(composite, SWT.NONE, jobChainname, item.getData() != null && !(item.getData() instanceof sos.scheduler.editor.app.TreeData)? item.getData().toString(): null, null, Editor.DETAILS, _dom, _gui, false, null);
+						df = new DetailForm(composite, SWT.NONE, jobChainname, item.getData() != null && !(item.getData() instanceof sos.scheduler.editor.app.TreeData)? item.getData().toString(): null, null, JOEConstants.DETAILS, _dom, _gui, false, null);
 						df.setLayout(new org.eclipse.swt.layout.FillLayout());
 					}
 					df.setTree(tree);

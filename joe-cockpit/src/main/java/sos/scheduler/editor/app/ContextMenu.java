@@ -22,7 +22,7 @@ import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.Events.ActionsDom;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
-
+ 
 public class ContextMenu {
 	private SchedulerDom		_dom	= null;
 	private Combo				_combo	= null;

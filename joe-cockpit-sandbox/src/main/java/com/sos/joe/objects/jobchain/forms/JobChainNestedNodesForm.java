@@ -1,37 +1,37 @@
 package com.sos.joe.objects.jobchain.forms;
-
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_Down;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_AddMissingNodes;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_EndNode;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_FullNode;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_Insert;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_NewNode;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_RemoveNode;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_Reorder;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobChainForm_Parameter;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobChainNodes_ApplyNode;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobChainNodes_Browse;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobChainNodes_Goto;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_Up;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JCNestedNodesForm_JobChain;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JobChainNodes_ErrorState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JobChainNodes_NextState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_E_0002;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNestedNodesForm_JobChain;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainNodes_ErrorState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainNodes_NextState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainNodes_State;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_JCNestedNodesForm_NestedNodes;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_JCNestedNodesForm_RemoveNode;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_JobChain_StateAlreadyDefined;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_ErrorState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_JobChain;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_NextState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_Node;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_OnError;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_State;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JobChainNodes_State;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Tbl_JCNestedNodesForm_Nodes;
+ 
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_Down;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_AddMissingNodes;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_EndNode;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_FullNode;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_Insert;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_NewNode;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_RemoveNode;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JCNestedNodesForm_Reorder;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JobChainForm_Parameter;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JobChainNodes_ApplyNode;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JobChainNodes_Browse;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JobChainNodes_Goto;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_Up;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_JCNestedNodesForm_JobChain;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_JobChainNodes_ErrorState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_JobChainNodes_NextState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_E_0002;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNestedNodesForm_JobChain;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobChainNodes_ErrorState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobChainNodes_NextState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobChainNodes_State;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JCNestedNodesForm_NestedNodes;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JCNestedNodesForm_RemoveNode;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JobChain_StateAlreadyDefined;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_ErrorState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_JobChain;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_NextState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_Node;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_OnError;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNestedNodesForm_State;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JobChainNodes_State;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_JCNestedNodesForm_Nodes;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -56,26 +56,26 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUnsaved;
-import com.sos.joe.interfaces.IUpdateLanguage;
-import com.sos.joe.objects.jobchain.JobChainNestedListener;
-
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ErrorLog;
-import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.MergeAllXMLinDirectory;
-import sos.scheduler.editor.app.ResourceManager;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.util.SOSClassUtil;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.interfaces.IUnsaved;
+import com.sos.joe.interfaces.IUpdateLanguage;
+import com.sos.joe.objects.jobchain.JobChainNestedListener;
+import com.sos.joe.xml.IOUtils;
+import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 
 public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes */ implements ISOSTableMenueListeners, IUnsaved, IUpdateLanguage {
 
@@ -206,13 +206,13 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		butGoto.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				ContextMenu.goTo(cJobChain.getText(), dom, Editor.JOB_CHAIN);
+				ContextMenu.goTo(cJobChain.getText(), dom, JOEConstants.JOB_CHAIN);
 			}
 		});
 		butGoto.setAlignment(SWT.RIGHT);
 
 		cJobChain = new SOSComboBox(gNodes, JOE_Cbo_JCNestedNodesForm_JobChain);
-		cJobChain.setMenu(new ContextMenu(cJobChain, dom, sos.scheduler.editor.app.Editor.JOB_CHAIN).getMenu());
+		cJobChain.setMenu(new ContextMenu(cJobChain, dom, JOEConstants.JOB_CHAIN).getMenu());
 		cJobChain.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(final MouseEvent e) {
@@ -409,7 +409,7 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		//		Format
 		new Label(gNodes, SWT.NONE);
 
-		tNodes = JOE_Tbl_JCNestedNodesForm_Nodes.Control(new SOSTable(gNodes, SWT.FULL_SELECTION | SWT.BORDER, this));
+		tNodes = (SOSTable) JOE_Tbl_JCNestedNodesForm_Nodes.Control(new SOSTable(gNodes, SWT.FULL_SELECTION | SWT.BORDER, this));
 		tNodes.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {

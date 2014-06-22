@@ -22,7 +22,7 @@ import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
 public class MainListener extends JOEListener {
-	private static final String	conPropertyEDITOR_LANGUAGE	= "editor.language";
+	private static final String	conPropertyEDITOR_LANGUAGE	= "JOEConstants.language";
 	// private MainWindow _gui = null;
 	@SuppressWarnings("unused")
 	private final String conClsName = "MainListener";
@@ -115,7 +115,7 @@ public class MainListener extends JOEListener {
 					if (item.getSelection()) {
 						String lang = (String) item.getData();
 						Options.setLanguage(lang);
-						sos.scheduler.editor.app.Messages.clearMsgObj();
+						sos.scheduler.JOEConstants.app.Messages.clearMsgObj();
 						loadMessages();
 					}
 				}
@@ -135,7 +135,7 @@ public class MainListener extends JOEListener {
 	}
 
 	public void loadMessages() {
-		if (!sos.scheduler.editor.app.Messages.setResource(new Locale(Options.getLanguage()))) {
+		if (!sos.scheduler.JOEConstants.app.Messages.setResource(new Locale(Options.getLanguage()))) {
 			MainWindow.message("The resource bundle " + Messages.getBundle() + " for the language " + Options.getLanguage() + " was not found!", SWT.ICON_ERROR
 					| SWT.OK);
 		}

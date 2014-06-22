@@ -148,7 +148,7 @@ public class JobOptions extends FormBaseClass<JobListener> {
 					if (objRunTime.hasSingleStart() == true || objRunTime.isLetRun() == true || objRunTime.isOnce() == true) {
 
 						//						if (bOrderYes.isVisible()) {
-						//							_deleteRuntimeAttribute = Utils.checkElement(objJobDataProvider.getJobName(), objJobDataProvider.get_dom(), Editor.JOB,
+						//							_deleteRuntimeAttribute = Utils.checkElement(objJobDataProvider.getJobName(), objJobDataProvider.get_dom(), JOEConstants.JOB,
 						//									"change_order");
 						//						}
 
@@ -173,7 +173,7 @@ public class JobOptions extends FormBaseClass<JobListener> {
 					return;
 
 				if (objJobDataProvider.getOrder()
-						&& !Utils.checkElement(objJobDataProvider.getJobName(), objJobDataProvider.get_dom(), Editor.JOB, "change_order")) {
+						&& !Utils.checkElement(objJobDataProvider.getJobName(), objJobDataProvider.get_dom(), JOEConstants.JOB, "change_order")) {
 					init = true;
 					bOrderNo.setSelection(false);
 					bOrderYes.setSelection(true);

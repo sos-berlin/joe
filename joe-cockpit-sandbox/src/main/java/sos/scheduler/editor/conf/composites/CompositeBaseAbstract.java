@@ -8,7 +8,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import sos.scheduler.editor.app.ErrorLog;
+import ErrorLog;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 
 public abstract class CompositeBaseAbstract<T> extends CompositeBaseClass  {

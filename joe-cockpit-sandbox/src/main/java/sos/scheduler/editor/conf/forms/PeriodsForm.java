@@ -12,14 +12,14 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
-import com.sos.joe.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.interfaces.IUnsaved;
 import com.sos.joe.interfaces.IUpdateLanguage;
 
 import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.conf.SchedulerDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.PeriodsListener;
 
 public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
@@ -229,7 +229,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
         GridData gridData = new org.eclipse.swt.layout.GridData();
         gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        periodForm = new PeriodForm(group, SWT.NONE, sos.scheduler.editor.app.Editor.PERIODS);
+        periodForm = new PeriodForm(group, SWT.NONE, JOEConstants.PERIODS);
         periodForm.setParams(dom, listener.isOnOrder());
         periodForm.setLayoutData(gridData);
         //periodForm.setPeriodsForm(this);//um die Tabelle zu aktualisieren
