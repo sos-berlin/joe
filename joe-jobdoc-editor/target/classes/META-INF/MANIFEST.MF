@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: KB
+Build-Jdk: 1.7.0_51
+Implementation-Title: joe-jobdoc-editor
+Implementation-Version: 1.7-SNAPSHOT
+Implementation-Vendor-Id: com.sos-berlin.products.joe
+Implementation-Vendor: SOS Software GmbH, Berlin
+Created-By: Maven Integration for Eclipse
+CreatedAt: 22.06.2014 at 13:17:09 Greenwich Mean Time
+
