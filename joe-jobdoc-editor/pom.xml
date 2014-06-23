@@ -8,7 +8,6 @@
 	</parent>
 	<groupId>com.sos-berlin.products.joe</groupId>
 	<artifactId>joe-jobdoc-editor</artifactId>
-	<name>joe-jobdoc-editor</name>
 	<description>joe-jobdoc-editor	</description>
 
 	<dependencies>
