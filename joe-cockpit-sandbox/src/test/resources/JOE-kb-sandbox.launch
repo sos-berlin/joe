@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/com.sos.scheduler.JOEConstants.sandbox/src/sos/scheduler/editor/app/JOEConstants.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<mapAttribute key="org.eclipse.debug.core.environmentVariables">
+<mapEntry key="SCHEDULER_DATA" value="C:\ProgramData\sos-berlin.com\jobscheduler\latestscheduler_4446\"/>
+<mapEntry key="SCHEDULER_HOME" value="C:\Program Files (x86)\sos-berlin.com\jobscheduler\latestscheduler_4446"/>
+<mapEntry key="SCHEDULER_HOT_FOLDER" value="C:\ProgramData\sos-berlin.com\jobscheduler\latestscheduler_4446\config\live\"/>
+<mapEntry key="SOS_LOCALE" value="en"/>
+</mapAttribute>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="sos.scheduler.JOEConstants.app.Editor"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-DSCHEDULER_DATA=C:\Users\KB\sos-berlin.com\jobscheduler\scheduler -DSCHEDULER_HOT_FOLDER=C:\Users\KB\sos-berlin.com\jobscheduler\scheduler\config\live -DSCHEDULER_HOME=&quot;C:\Program Files\sos-berlin.com\jobscheduler\scheduler&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="com.sos.scheduler.JOEConstants.sandbox"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DSCHEDULER_DATA=C:\Users\KB\sos-berlin.com\jobscheduler\scheduler -DSCHEDULER_HOT_FOLDER=C:\Users\KB\sos-berlin.com\jobscheduler\scheduler\config\live -DSCHEDULER_HOME=&quot;C:\Program Files\sos-berlin.com\jobscheduler\scheduler&quot;"/>
+</launchConfiguration>

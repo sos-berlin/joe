@@ -1,0 +1,92 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.sos-berlin.products</groupId>
+    <artifactId>joe</artifactId>
+    <version>1.7-SNAPSHOT</version>
+  </parent>
+  <groupId>com.sos-berlin.products.joe</groupId>
+  <artifactId>joe-all</artifactId>
+  <packaging>pom</packaging>
+  <name>${project.artifactId}</name>
+  <description>Collects all jade jar files in a fat jar.</description>
+
+  <properties>
+      <common.groupid>com.sos-berlin.products.joe</common.groupid>
+  </properties>
+
+    <build>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>package-all</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptors>
+                                <descriptor>src/assembly/complete.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    
+    <!-- Artefakte, deren Jars in einem Jar zusammengefasst werden. -->
+    <dependencies>
+        
+        <dependency>
+            <groupId>${common.groupid}</groupId>
+            <artifactId>ftp-profiles</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>${common.groupid}</groupId>
+            <artifactId>joe-cockpit</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${common.groupid}</groupId>
+            <artifactId>joe-event-service-cockpit</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${common.groupid}</groupId>
+            <artifactId>joe-globals</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${common.groupid}</groupId>
+            <artifactId>joe-jobdoc-editor</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${common.groupid}</groupId>
+            <artifactId>joe-xml</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!--
+        <dependency>
+            <groupId>${common.groupid}</groupId>
+            <artifactId>joe-cockpit-sandbox</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        -->
+        
+    </dependencies>
+
+</project>
