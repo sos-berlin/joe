@@ -10,9 +10,9 @@ package com.sos.joe.globals;
 public class JOEConstants {
 	
 	public final static int		CONFIG					= 1;
-	public final static int		BASEFILE					= 2;
-	   public final static int BASE = 2;
- final static int		SECURITY				= 3;
+	public final static int		BASEFILE				= 2;
+    public final static int 	BASE 					= 2;
+    public final static int		SECURITY				= 3;
 	public final static int		CLUSTER					= 4;
 	public final static int		PROCESS_CLASSES			= 5;
 	public final static int		LOCKS					= 6;
