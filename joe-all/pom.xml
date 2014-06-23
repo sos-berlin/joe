@@ -79,12 +79,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>${common.groupid}</groupId>
             <artifactId>joe-cockpit-sandbox</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!--
         -->
         
     </dependencies>
