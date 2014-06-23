@@ -320,7 +320,7 @@ public class IOUtils {
 					}
 				}
 				dom.readFileLastModified();
-				ErrorLog.getSShell().setText("Job Scheduler Editor [" + originFilename + "]");
+			    ErrorLog.getSShell().setText("Job Scheduler Editor [" + originFilename + "]");
 			}
 			return true;
 		}
