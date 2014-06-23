@@ -11,6 +11,10 @@
   <name>${project.artifactId}</name>
   <description>Collects all jade jar files in a fat jar.</description>
 
+  <properties>
+      <common.groupid>com.sos-berlin.products.joe</common.groupid>
+  </properties>
+
     <build>
 
         <plugins>
@@ -40,23 +44,47 @@
     <dependencies>
         
         <dependency>
-            <groupId>com.sos-berlin.products.joe</groupId>
+            <groupId>${common.groupid}</groupId>
             <artifactId>ftp-profiles</artifactId>
             <version>${project.version}</version>
         </dependency>
         
         <dependency>
-            <groupId>com.sos-berlin.products.joe</groupId>
+            <groupId>${common.groupid}</groupId>
             <artifactId>joe-cockpit</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
-        <!--
+
         <dependency>
-            <groupId>com.sos-berlin.products.joe</groupId>
+            <groupId>${common.groupid}</groupId>
+            <artifactId>joe-event-service-cockpit</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${common.groupid}</groupId>
+            <artifactId>joe-globals</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${common.groupid}</groupId>
+            <artifactId>joe-jobdoc-editor</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${common.groupid}</groupId>
+            <artifactId>joe-xml</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${common.groupid}</groupId>
             <artifactId>joe-cockpit-sandbox</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!--
         -->
         
     </dependencies>
