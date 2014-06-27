@@ -21,16 +21,18 @@ import org.eclipse.swt.widgets.TreeItem;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.DetailDom;
 import sos.util.SOSClassUtil;
 
+import com.sos.joe.globals.interfaces.IDetailUpdate;
+import com.sos.joe.globals.interfaces.IEditor;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.interfaces.IContainer;
-import com.sos.joe.interfaces.IDetailUpdate;
-import com.sos.joe.interfaces.IEditor;
-import com.sos.joe.interfaces.IUpdateLanguage;
 import com.sos.joe.objects.jobchain.JobChainConfigurationListener;
+import com.sos.joe.xml.IOUtils;
+import com.sos.joe.xml.jobscheduler.DetailDom;
 
 public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDetailUpdate, IEditor {
 
@@ -258,7 +260,7 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
                  return filename;
 
 //             MainWindow.getSShell().setText("Job Details Editor [" + filename + "]");
-             MainWindow.getSShell().setText(JOE_M_JobAssistent_JobDetailsJOEConstants.params(filename));
+             MainWindow.getSShell().setText(JOE_M_JobAssistent_JobDetailsEditor.params(filename));
 
              Options.setLastDirectory(new File(filename), dom);
              return filename;

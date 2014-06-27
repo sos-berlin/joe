@@ -11,14 +11,13 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Options;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
-
 import com.sos.JSHelper.Basics.JSToolBox;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.objects.JSObjBase;
 import com.sos.scheduler.model.objects.JobChain.FileOrderSink;
 import com.sos.scheduler.model.objects.JobChain.JobChainNode;
-
+ 
 /**
  * @author KB
  *

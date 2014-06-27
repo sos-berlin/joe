@@ -20,6 +20,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
@@ -34,6 +35,7 @@ import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.conf.forms.HotFolderDialog;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
+import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
@@ -44,11 +46,16 @@ import com.sos.i18n.annotation.I18NMessage;
 import com.sos.i18n.annotation.I18NMessages;
 import com.sos.i18n.annotation.I18NResourceBundle;
 import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.Messages;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.interfaces.IContainer;
 import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
 import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
 import com.sos.joe.wizard.forms.JobAssistentForm;
 import com.sos.joe.xml.DomParser;
+import com.sos.joe.xml.Events.ActionsDom;
+import com.sos.joe.xml.jobdoc.DocumentationDom;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
@@ -501,7 +508,7 @@ public class MainWindow {
 				if (container.getCurrentEditor() != null && container.getCurrentEditor().applyChanges()) {
 					SchedulerForm form = (SchedulerForm) container.getCurrentEditor();
 					SchedulerDom currdom = form.getDom();
-					if (IOUtils.saveDirectory(currdom, true, SchedulerDom.DIRECTORY, null, container)) {
+					if (saveDirectory(currdom, true, SchedulerDom.DIRECTORY, null, container)) {
 						Element root = currdom.getRoot();
 						if (root != null) {
 							Element config = root.getChild("config");
@@ -651,7 +658,7 @@ public class MainWindow {
 		submenuItem2.setMenu(mFile);
 		MenuItem pExit = new MenuItem(mFile, SWT.PUSH);
 		// pExit.setText("Exit\tCtrl+E");
-		pExit.setText(getMenuText(sos.scheduler.JOEConstants.app.Messages.getLabel("MENU_Exit"), "E"));
+		pExit.setText(getMenuText(Messages.getLabel("MENU_Exit"), "E"));
 //		pExit.setAccelerator(SWT.CTRL | 'E');
 		pExit.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			@Override
@@ -661,12 +668,7 @@ public class MainWindow {
 					sShell.close();
 				}
 				catch (Exception es) {
-					try {
 						new ErrorLog("error: " + SOSClassUtil.getMethodName(), es);
-					}
-					catch (Exception ee) {
-						// tu nichts
-					}
 				}
 			}
 
@@ -822,7 +824,7 @@ public class MainWindow {
 		items[index].setEnabled(container.getCurrentEditor() != null);
 		items[index + 1].setEnabled(container.getCurrentEditor() != null);
 		if (container.getCurrentEditor() instanceof sos.scheduler.editor.conf.forms.SchedulerForm) {
-			sos.scheduler.JOEConstants.conf.forms.SchedulerForm form = (sos.scheduler.JOEConstants.conf.forms.SchedulerForm) container.getCurrentEditor();
+			SchedulerForm form = (SchedulerForm) container.getCurrentEditor();
 			SchedulerDom dom = form.getDom();
 			if (dom.isDirectory()) {
 				items[index + 1].setEnabled(false);
@@ -924,7 +926,7 @@ public class MainWindow {
 		Utils.startCursor(getSShell());
 		HashMap changes = new HashMap();
 		if (container.getCurrentEditor() instanceof sos.scheduler.editor.conf.forms.SchedulerForm) {
-			sos.scheduler.JOEConstants.conf.forms.SchedulerForm form = (sos.scheduler.JOEConstants.conf.forms.SchedulerForm) container.getCurrentEditor();
+			SchedulerForm form = (SchedulerForm) container.getCurrentEditor();
 			SchedulerDom currdom = form.getDom();
 			changes = (java.util.HashMap) currdom.getListOfChangedObjects().clone();
 		}
@@ -1186,21 +1188,21 @@ public class MainWindow {
 					SchedulerForm form = (SchedulerForm) container.getCurrentEditor();
 					SchedulerDom currdom = form.getDom();
 					if (currdom.isLifeElement())
-						sos.scheduler.JOEConstants.app.Utils.reset(currdom.getRoot(), form, currdom);
+						Utils.reset(currdom.getRoot(), form, currdom);
 					else
-						sos.scheduler.JOEConstants.app.Utils.reset(currdom.getRoot().getChild("config"), form, currdom);
+						Utils.reset(currdom.getRoot().getChild("config"), form, currdom);
 				}
 				else
-					if (container.getCurrentEditor() instanceof sos.scheduler.editor.actions.forms.ActionsForm) {
-						sos.scheduler.JOEConstants.actions.forms.ActionsForm form = (sos.scheduler.JOEConstants.actions.forms.ActionsForm) container.getCurrentEditor();
-						sos.scheduler.JOEConstants.actions.ActionsDom currdom = form.getDom();
-						sos.scheduler.JOEConstants.app.Utils.reset(currdom.getRoot(), form, currdom);
+					if (container.getCurrentEditor() instanceof ActionsForm) {
+						ActionsForm form = (ActionsForm) container.getCurrentEditor();
+						ActionsDom currdom = form.getDom();
+						Utils.reset(currdom.getRoot(), form, currdom);
 					}
 					else
-						if (container.getCurrentEditor() instanceof com.sos.jobdoc.forms.DocumentationForm) {
-							com.sos.jobdoc.forms.DocumentationForm form = (com.sos.jobdoc.forms.DocumentationForm) container.getCurrentEditor();
-							com.sos.jobdoc.DocumentationDom currdom = form.getDom();
-							sos.scheduler.JOEConstants.app.Utils.reset(currdom.getRoot(), form, currdom);
+						if (container.getCurrentEditor() instanceof DocumentationForm) {
+							DocumentationForm form = (DocumentationForm) container.getCurrentEditor();
+							DocumentationDom currdom = form.getDom();
+							Utils.reset(currdom.getRoot(), form, currdom);
 						}
 			}
 
@@ -1280,7 +1282,7 @@ public class MainWindow {
 						DomParser currdom = getSpecifiedDom();
 						String oldname = configFile.getName().replaceAll(".config.xml", EMPTY);
 						String newName = newConfigFile.getName().replaceAll(".config.xml", EMPTY);
-						sos.scheduler.JOEConstants.conf.listeners.DetailsListener.changeJobChainName4NodeParameter(newName, oldname, (SchedulerDom) currdom);
+						DetailsListener.changeJobChainName4NodeParameter(newName, oldname, (SchedulerDom) currdom);
 						//
 						if (!newConfigFile.exists() && !configFile.renameTo(newConfigFile)) {
 							MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename + "].\n"
@@ -1789,6 +1791,83 @@ public class MainWindow {
 			return "//" + parentElementname;
 		else
 			return "//" + parentElementname + "/" + eName + "[@" + attributName + "='" + aName + "']";
+	}
+
+	public static boolean saveDirectory(final DomParser dom, final boolean saveas, final int type, final String nameOfElement, final IContainer container) {
+		Document currDoc = dom.getDoc();
+		File configFile = null;
+		try {
+			if (dom.getFilename() == null || saveas) {
+				DirectoryDialog fdialog = new DirectoryDialog(ErrorLog.getSShell(), SWT.MULTI);
+				fdialog.setFilterPath(Options.getLastDirectory());
+				fdialog.setText("Save object to hot folder ...");
+				String path = fdialog.open();
+				if (path == null) {
+					return false;
+				}
+				File _file = null;
+				// existiert der Hot Folder Element
+				if (dom.getRoot().getName().equals("order") || dom.getRoot().getName().equals("add_order")) {
+					_file = new File(path + "//" + Utils.getAttributeValue("job_chain", dom.getRoot()) + "," + Utils.getAttributeValue("id", dom.getRoot())
+							+ ".order.xml");
+				}
+				else {
+					_file = new File(path + "//" + Utils.getAttributeValue("name", dom.getRoot()) + "." + dom.getRoot().getName() + ".xml");
+				}
+				if (_file.exists()) {
+					int ok = ErrorLog.message(Messages.getString("MainListener.doFileOverwrite"), //$NON-NLS-1$
+							SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+					if (ok == SWT.NO)
+						return false;
+				}
+				configFile = new File(path);
+			}
+			else {
+				configFile = new File(dom.getFilename());
+			}
+			MergeAllXMLinDirectory save = null;
+			if (dom instanceof SchedulerDom && ((SchedulerDom) dom).isLifeElement() && configFile.isFile())
+				save = new MergeAllXMLinDirectory(configFile.getParent());
+			else
+				save = new MergeAllXMLinDirectory(configFile.getPath());
+			if (type == SchedulerDom.DIRECTORY) {
+				save.saveXMLDirectory(currDoc, ((SchedulerDom) dom).getChangedJob());
+			}
+			else {// sonst life element
+				org.jdom.Element elem = null;
+				if (type == SchedulerDom.LIFE_LOCK) {
+					SchedulerForm form = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
+					org.eclipse.swt.widgets.Tree tree = form.getTree();
+					TreeData data = (TreeData) tree.getSelection()[0].getData();
+					elem = data.getElement().getChild("locks").getChild("lock");
+				}
+				else
+					if (type == SchedulerDom.LIFE_PROCESS_CLASS) {
+						SchedulerForm form = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
+						org.eclipse.swt.widgets.Tree tree = form.getTree();
+						TreeData data = (TreeData) tree.getSelection()[0].getData();
+						elem = data.getElement().getChild("process_classes").getChild("process_class");
+					}
+					else {
+						elem = currDoc.getRootElement();
+					}
+				String name = save.saveLifeElement(nameOfElement, elem, ((SchedulerDom) dom).getChangedJob(),
+						((SchedulerDom) dom).getListOfChangeElementNames());
+				Options.setLastDirectory(new File(name), dom);
+				try {
+					dom.setFilename(new java.io.File(name).getCanonicalPath());
+				}
+				catch (Exception e) {
+				}
+				dom.setChanged(true);
+			}
+			dom.readFileLastModified();
+			dom.setChanged(false);
+		}
+		catch (Exception e) {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " could not save directory.", e);
+		}
+		return true;
 	}
 
 	public static final String	JOE_I_0010				= "JOE_I_0010";

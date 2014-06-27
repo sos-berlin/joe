@@ -1,19 +1,5 @@
 package com.sos.joe.objects.jobchain.forms;
 
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobChainsForm_Details;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobChainsForm_NewChain;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobChainsForm_RemoveChain;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_G_JobChainsForm_JobChains;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainForm_MaxOrders;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainForm_Title;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_JobChain;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_JobChainsForm_RemoveChain;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JobChainsForm_Name;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JobChainsForm_OrdersRecoverable;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JobChainsForm_Visible;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Tbl_JobChainsForm_JobChains;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -32,21 +18,21 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
-import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUnsaved;
-import com.sos.joe.interfaces.IUpdateLanguage;
-import com.sos.joe.objects.jobchain.JobChainListListener;
-
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSTable;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.objects.jobchain.JobChainListListener;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
+ 
 public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpdateLanguage, ISOSTableMenueListeners {
 	private final String			conClassName					= "JobChainsForm";
 	@SuppressWarnings("unused")

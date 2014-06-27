@@ -10,12 +10,13 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.conf.DetailDom;
 import sos.util.SOSClassUtil;
 
-public class DetailXMLEditorListener {
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.xml.jobscheduler.DetailDom;
+
+public class DetailXMLEditorListener { 
 
     private DetailDom        _dom        = null;
 

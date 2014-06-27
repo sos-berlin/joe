@@ -13,15 +13,15 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
-import com.sos.joe.objects.jobchain.forms.DetailForm;
-import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
-
-import sos.scheduler.editor.app.Editor;
-import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.DetailDom;
 import sos.util.SOSClassUtil;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.objects.jobchain.forms.DetailForm;
+import com.sos.joe.objects.jobchain.forms.JobChainConfigurationForm;
+import com.sos.joe.xml.jobscheduler.DetailDom;
 
 
 public class JobChainConfigurationListener{

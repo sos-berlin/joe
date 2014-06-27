@@ -41,7 +41,6 @@ import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobParameterListener;
 import sos.util.SOSString;
 
@@ -50,11 +49,15 @@ import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.Messages;
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.wizard.forms.JobAssistentImportJobParamsForm;
 import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.objects.JSObjJob;
- 
+  
 public class JobParameterForm extends Composite implements IUnsaved, IUpdateLanguage {
 	private Button					butDown_1				= null;
 	private Button					butUp_1					= null;

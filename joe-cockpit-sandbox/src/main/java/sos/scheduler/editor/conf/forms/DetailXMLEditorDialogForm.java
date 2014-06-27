@@ -22,16 +22,16 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 
+import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.conf.listeners.DetailXMLEditorListener;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.objects.jobchain.JobChainConfigurationListener;
 import com.sos.joe.objects.jobchain.forms.DetailDialogForm;
-
-import sos.scheduler.editor.app.Editor;
-import ErrorLog;
-import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.conf.DetailDom;
-import sos.scheduler.editor.conf.listeners.DetailXMLEditorListener;
+import com.sos.joe.xml.jobscheduler.DetailDom;
 
 public class DetailXMLEditorDialogForm {
 	
@@ -46,7 +46,7 @@ public class DetailXMLEditorDialogForm {
 	private String                  orderId         = null;    
 	private DetailDom               dom             = null;
 		
-	/** wer hat ihn aufgerufen*/
+	/** wer hat ihn aufgerufen*/ 
 	private int                     type            = -1;
 	
 	/** falls type = JOEConstants.Details*/

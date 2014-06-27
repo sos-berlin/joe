@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 
-import ErrorLog;
 import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.conf.composites.JobMainComposite;
 import sos.scheduler.editor.conf.container.JobDelayAfterError;
@@ -27,9 +26,10 @@ import sos.scheduler.editor.conf.container.JobSetback;
 import sos.scheduler.editor.conf.container.JobSourceViewer;
 import sos.scheduler.editor.conf.container.JobStartWhenDirectoryChanged;
 
+import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.objects.job.JobListener;
 import com.sos.scheduler.model.objects.JSObjJob;
-
+ 
 public class ScriptJobMainForm extends ScriptForm {
 
 	@SuppressWarnings("unused")
