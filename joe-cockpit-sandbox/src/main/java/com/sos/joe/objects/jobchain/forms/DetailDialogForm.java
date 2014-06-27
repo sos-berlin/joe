@@ -8,10 +8,11 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.ResourceManager;
+ 
 public class DetailDialogForm {
 
 	@SuppressWarnings("unused")
@@ -69,7 +70,7 @@ public class DetailDialogForm {
 
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
-		shell = new Shell(sos.scheduler.JOEConstants.app.MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
+		shell = new Shell(ErrorLog.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 		shell.setLayout(new FillLayout());
 
 		shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/JOEConstants.png"));

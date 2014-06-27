@@ -70,13 +70,13 @@ import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.DialogAdapter;
 import com.sos.joe.globals.JOEConstants;
-import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.objects.jobchain.JobChainListener;
 import com.sos.joe.objects.jobchain.JobChainNodeWrapper;
 import com.sos.scheduler.model.objects.JSObjJobChain;
-
+ 
 public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes */implements IUpdateLanguage, ISOSTableMenueListeners {
 	private final String		conClassName			= this.getClass().getSimpleName();
 	private final Logger		logger					= Logger.getLogger(this.getClass());

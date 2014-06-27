@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.listeners;
-
 import java.io.File;
 import java.io.StringReader;
 import java.util.List;
@@ -12,19 +11,21 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
-import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-
 import sos.ftp.profiles.FTPProfile;
-import sos.scheduler.editor.app.DomParser;
-import sos.scheduler.editor.app.Editor;
-import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
+import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.conf.DetailDom;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.util.SOSClassUtil;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.Messages;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.DomParser;
+import com.sos.joe.xml.jobscheduler.DetailDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 /**
  * DetailsListener.java
@@ -32,9 +33,7 @@ import sos.util.SOSClassUtil;
  * @author mo
  *
  */
-
 public class DetailsListener {
-
 	private String			jobChainname				= null;
 	private String			state						= null;
 	private Element			noteEN						= null;
@@ -44,10 +43,8 @@ public class DetailsListener {
 	private Document		doc							= null;
 	private String			strConfigurationFileName	= null;
 	private String			orderId						= null;
-
 	/** Wer hat ihn aufgerufen? */
 	private int				type						= -1;
-
 	/** Falls Konfigurationsdatei neu generiert wird */
 	private final String	encoding					= "ISO-8859-1";
 	private DetailDom		dom							= null;
@@ -58,43 +55,34 @@ public class DetailsListener {
 
 	public DetailsListener(final String jobChainname_, final String state_, final String orderId_, final int type_, final DetailDom dom_,
 			final boolean isLifeElement_, final String path_) {
-
 		dom = dom_;
 		if (dom != null)
 			doc = dom.getDoc();
-
 		jobChainname = jobChainname_;
 		state = state_;
 		orderId = orderId_;
 		type = type_;
 		isLifeElement = isLifeElement_;
 		path = path_;
-
 		init();
-
 	}
 
 	private void init() {
 		noteEN = null;
 		noteDE = null;
 		params = null;
-
 		parseDocuments();
-
 	}
 
 	public static void openFilePerFTP(final String xmlFilename) {
 		String file = "";
 		try {
-
 			org.eclipse.swt.custom.CTabItem currentTab = MainWindow.getContainer().getCurrentTab();
 			if (currentTab != null && currentTab.getData("ftp_title") != null && currentTab.getData("ftp_title").toString().length() > 0) {
-
 				String remoteDir = currentTab.getData("ftp_remote_directory").toString();
 				DomParser currdom = MainWindow.getSpecifiedDom();
 				if (currdom == null)
 					return;
-
 				if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isDirectory()) {
 					remoteDir = remoteDir + "/" + new File(xmlFilename).getName();
 				}
@@ -104,21 +92,16 @@ public class DetailsListener {
 					remoteDir = p + new File(xmlFilename).getName();
 					remoteDir = remoteDir.replaceAll("\\\\", "/");
 				}
-
 				FTPProfile profile = (sos.ftp.profiles.FTPProfile) currentTab.getData("ftp_profile");
-
 				profile.setLogText(null);
 				//String a = profile.openFile(remoteDir, xmlFilename);
 				profile.connect();
 				//String parent = new File(remoteDir).getParent() != null ? new File(remoteDir).getParent() : ".";
 				//if(profile.getList(parent).contains(new File(remoteDir))) {
-
 				profile.getFile(remoteDir, xmlFilename);
 				//long l = profile.getFile(remoteDir, xmlFilename);
 				//}
-
 				profile.disconnect();
-
 			}
 		}
 		catch (Exception r) {
@@ -127,7 +110,6 @@ public class DetailsListener {
 				new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
 			}
 			catch (Exception ee) {
-
 			}
 		}
 	}
@@ -135,10 +117,8 @@ public class DetailsListener {
 	public void parseDocuments() {
 		String xmlPaths = "";
 		try {
-
 			if (isLifeElement || MainWindow.getContainer().getCurrentTab().getData("ftp_title") != null
 					&& MainWindow.getContainer().getCurrentTab().getData("ftp_title").toString().length() > 0) {
-
 				if (path != null && path.length() > 0) {
 					File f = new File(path);
 					if (f.isFile())
@@ -147,11 +127,9 @@ public class DetailsListener {
 						xmlPaths = path;
 				}
 				else {
-					xmlPaths = sos.scheduler.editor.app.Options.getSchedulerHotFolder();
+					xmlPaths = Options.getSchedulerHotFolder();
 				}
-
 				xmlPaths = xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths : xmlPaths + "/";
-
 			}
 			else {
 				if (path != null && path.length() > 0) {
@@ -162,14 +140,12 @@ public class DetailsListener {
 						xmlPaths = path;
 				}
 				else {
-					xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData();
+					xmlPaths = Options.getSchedulerData();
 					xmlPaths = xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths + "config/" : xmlPaths.concat("/config/");
 				}
 			}
-
 			String _currOrderId = orderId != null && orderId.length() > 0 ? "," + orderId : "";
 			strConfigurationFileName = new File(xmlPaths, jobChainname + _currOrderId + ".config.xml").getCanonicalPath();
-
 			if (_currOrderId != null && _currOrderId.length() > 0) {
 				File jobChainConfig = new File(xmlPaths + jobChainname + ".config.xml");
 				if (jobChainConfig.exists() && !new File(strConfigurationFileName).exists()) {
@@ -182,11 +158,9 @@ public class DetailsListener {
 					}
 				}
 			}
-
 			//hier
 			//if(xmlFilename.endsWith(".config.xml"))
 			//	openFilePerFTP(xmlFilename);
-
 		}
 		catch (Exception e) {
 			try {
@@ -195,15 +169,11 @@ public class DetailsListener {
 			catch (Exception ee) {
 			}
 			hasError = true;
-
 			System.err.println("..error im DetailsListener.parseDocuments(): " + e.getMessage());
 		}
-
 		Element root = null;
 		Element order = null;
-
 		try {
-
 			SAXBuilder builder = new SAXBuilder();
 			if (doc == null) {
 				File f = null;
@@ -211,7 +181,6 @@ public class DetailsListener {
 					f = new File(strConfigurationFileName);
 				if (f == null || !f.exists()) {
 					String xml = createConfigurationFile();
-
 					doc = builder.build(new StringReader(xml));
 					if (type == JOEConstants.DETAILS) {
 						if (f != null)
@@ -226,19 +195,14 @@ public class DetailsListener {
 					}
 				}
 			}
-
 			root = doc.getRootElement();
-
 			application = root.getChild("job_chain");
-
 			if (application == null) {
 				application = root.getChild("application");
 			}
-
 			if (application == null) {
-				MainWindow.message(new org.eclipse.swt.widgets.Shell(SWT.NONE),
-						sos.scheduler.JOEConstants.app.Messages.getString("details.listener.missing_job_chain_node"), SWT.OK);
-				System.out.println("error: " + sos.scheduler.editor.app.Messages.getString("details.listener.missing_job_chain_node"));
+				MainWindow.message(new org.eclipse.swt.widgets.Shell(SWT.NONE), Messages.getString("details.listener.missing_job_chain_node"), SWT.OK);
+				System.out.println("error: " + Messages.getString("details.listener.missing_job_chain_node"));
 				hasError = true;
 				return;
 			}
@@ -247,10 +211,8 @@ public class DetailsListener {
 				List note = application.getChildren("note");
 				setGlobaleNote(note);
 			}
-
 			if (application != null)
 				order = application.getChild("order");
-
 			if (order != null) {
 				if (state != null && state.length() > 0) {
 					//					Parameter der Job mit der state.. bestimmen
@@ -261,12 +223,10 @@ public class DetailsListener {
 					params_ = order.getChild("params");
 				}
 			}
-
 			if (params_ != null)
 				params = params_.getChildren();
 			else
 				params = new java.util.ArrayList();
-
 		}
 		catch (Exception e) {
 			hasError = true;
@@ -274,13 +234,10 @@ public class DetailsListener {
 				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
-
 			}
 			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
 			System.err.println("..error im DetailsListener.parseDocuments(): " + e.getMessage());
-
 		}
-
 	}
 
 	public String getNote(final String language) {
@@ -290,7 +247,6 @@ public class DetailsListener {
 			return getNoteText(noteDE);
 		else
 			return getNoteText(noteEN);
-
 	}
 
 	public void setNote(final String noteText, final String language) {
@@ -299,16 +255,13 @@ public class DetailsListener {
 				noteDE = createNote(language);
 			}
 			setNoteText(noteDE, noteText);
-
 		}
 		else {
 			if (noteEN == null) {
 				noteEN = createNote(language);
 			}
 			setNoteText(noteEN, noteText);
-
 		}
-
 	}
 
 	private Element createNote(final String language) {
@@ -338,23 +291,18 @@ public class DetailsListener {
 				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
-
 			}
 			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
-
 		}
 		return newNote;
 	}
 
 	private void setNoteText(final Element note, final String text) {
-
 		Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
-
 		if (div == null) {
 			div = new Element("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
 			note.addContent(div);
 		}
-
 		if (text.indexOf("<") == -1) {
 			div.setText(text);
 		}
@@ -380,7 +328,6 @@ public class DetailsListener {
 	}
 
 	public void fillParams(final Table tableParams) {
-
 		String name = "";
 		String value = "";
 		String text = "";
@@ -395,29 +342,23 @@ public class DetailsListener {
 				item.setText(1, value);
 				item.setText(2, text);
 				item.setData(param);
-
 			}
 		}
-
 	}
 
 	public String save() {
 		File f = new File(strConfigurationFileName);
 		try {
-
 			if (dom == null) {
 				dom = new DetailDom();
 			}
-
 			dom.writeElement(strConfigurationFileName, doc);
-
 		}
 		catch (Exception e) {
 			try {
 				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
-
 			}
 			MainWindow.message("Could not save file, cause: " + e.toString(), SWT.ICON_WARNING);
 			System.out.println("..error in DetailsListener.save. Could not save file " + e.getMessage());
@@ -448,7 +389,6 @@ public class DetailsListener {
 			}
 		}
 		return "";
-
 	}
 
 	public String getParamsFileName() {
@@ -461,7 +401,6 @@ public class DetailsListener {
 	public void setParamsFileName(final String filename) {
 		if (params_ != null)
 			Utils.setAttribute("file", filename, params_);
-
 	}
 
 	public void setParam(final String name, final String value, final String note, final String noteText, final String language) {
@@ -485,7 +424,6 @@ public class DetailsListener {
 					if (params.size() > i + 1) {
 						for (int j = 1; j < 3; j++) {
 							Element elNote = (Element) params.get(i + j);
-
 							if (elNote.getName().equals("param")) {
 								noNote = true;
 								break;//die nächsten beiden Knoten der param Elemente sind nicht die note Elemente
@@ -547,10 +485,8 @@ public class DetailsListener {
 		try {
 			java.util.ArrayList list = new java.util.ArrayList();
 			for (int i = 0; i < table.getItemCount(); i++) {
-
 				TableItem item = table.getItem(i);
 				Element param = (Element) item.getData();
-
 				if (param == null) {
 					param = new Element("param");
 					Utils.setAttribute("name", item.getText(0), param);
@@ -561,17 +497,14 @@ public class DetailsListener {
 					String paramNoteDE = item.getData("parameter_description_de") != null ? item.getData("parameter_description_de").toString() : "";
 					setNoteText(notede, paramNoteDE);
 					list.add(notede);
-
 					Element noteen = new Element("note");
 					Utils.setAttribute("language", "en", noteen);
 					String paramNoteEN = item.getData("parameter_description_en") != null ? item.getData("parameter_description_en").toString() : "";
 					setNoteText(noteen, paramNoteEN);
 					list.add(noteen);
-
 					//params.set(i, param);
 					//params.set(i+1, notede);
 					//params.set(i+2, noteen);
-
 				}
 				else {
 					list.add(param);
@@ -586,7 +519,6 @@ public class DetailsListener {
 						if (noteen.getName().equals("note") && Utils.getAttributeValue("language", noteen).equals("en"))
 							list.add(noteen);
 					}
-
 				}
 				//list.add(param);
 				/*list.add(param);
@@ -624,9 +556,7 @@ public class DetailsListener {
 				setParam(name, value, paramNoteEN, "", "en");
 
 				 */
-
 			}
-
 			params.removeAll(params);
 			//params.addAll(list);
 			params.addAll((java.util.ArrayList) list.clone());
@@ -638,7 +568,6 @@ public class DetailsListener {
 				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
-
 			}
 			System.out.println("..error in DetailsListener.refreshParams(). : " + e.getMessage());
 		}
@@ -668,19 +597,14 @@ public class DetailsListener {
 		else
 			setNoteText(newNoteEN, note);
 	}*/
-
 	public void deleteParameter(final Table table, final int index) {
-
 		String name = table.getItem(index).getText(0);
 		for (int i = 0; i < params.size(); i++) {
 			Element p = (Element) params.get(i);
-
 			if (Utils.getAttributeValue("name", p).equalsIgnoreCase(name)) {
 				params.remove(i);
-
 				if (i == params.size())//i ist der letze Element un hat keinen node knoten
 					break;
-
 				Element pnde = (Element) params.get(i);
 				if (pnde.getName().equals("note")) {
 					params.remove(i);//note de
@@ -688,17 +612,13 @@ public class DetailsListener {
 				else {
 					break;//das nächste Element ist param, daher abbrechen-> dh. es ex. kein engl. Note
 				}
-
 				Element pnen = (Element) params.get(i);
 				if (pnen.getName().equals("note")) {
 					params.remove(i);//note en
 				}
-
 			}
 		}
-
 		table.remove(index);
-
 	}
 
 	private void setGlobaleNote(final List note) {
@@ -714,21 +634,18 @@ public class DetailsListener {
 
 	private String createConfigurationFile() {
 		String xml = "<?xml version=\"1.0\" encoding=\"" + encoding + "\"?> ";
-
 		try {
 			if (Options.getDetailXSLT() != null && Options.getDetailXSLT().length() > 0) {
 				xml = xml + "<?xml-stylesheet type=\"text/xsl\" href=\"" + Options.getDetailXSLT() + "\"?> ";
 			}
 			xml = xml + "<settings>" + "  <job_chain name=\"" + jobChainname + "\"> " + "    <note language=\"de\"/> " + "    <note language=\"en\"/> "
 					+ "    <order> " + "      <params/> " + "    </order> " + "  </job_chain> " + "</settings> ";
-
 		}
 		catch (Exception e) {
 			try {
 				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			}
 			catch (Exception ee) {
-
 			}
 			System.out.println("..error in DetailsListener.createConfigurationFile(). Could not create a new configuration file: " + e.getMessage());
 		}
@@ -737,7 +654,6 @@ public class DetailsListener {
 
 	private Element getStateParams(final Element order) {
 		Element params_ = null;
-
 		//Parameter der Job mit der state.. bestimmen
 		List processList = order.getChildren("process");
 		for (int i = 0; i < processList.size(); i++) {
@@ -754,27 +670,21 @@ public class DetailsListener {
 				params_ = process.getChild("params");
 			}
 		}
-
 		if (params_ == null) {
 			//configurationsdatei hat keinen process element mit dieser Zustand
 			Element process = new Element("process");
 			Utils.setAttribute("state", state, process);
-
 			Element notede = new Element("note");
 			Utils.setAttribute("language", "de", notede);
 			process.addContent(notede);
-
 			Element noteen = new Element("note");
 			Utils.setAttribute("language", "en", noteen);
 			process.addContent(noteen);
-
 			List note = process.getChildren("note");
 			setGlobaleNote(note);
-
 			params_ = new Element("params");
 			process.addContent(params_);
 			order.addContent(process);
-
 		}
 		return params_;
 	}
@@ -803,7 +713,6 @@ public class DetailsListener {
 
 	public void updateState(final String oldState, final String newState) {
 		Element order = null;
-
 		state = newState;
 		if (application != null) {
 			order = application.getChild("order");
@@ -816,14 +725,12 @@ public class DetailsListener {
 					Utils.setAttribute("state", newState, process);
 					state = newState;
 				}
-
 			}
 		}
 	}
 
 	public void deleteState(final String state) {
 		Element order = null;
-
 		if (application != null) {
 			order = application.getChild("order");
 		}
@@ -834,14 +741,12 @@ public class DetailsListener {
 				if (Utils.getAttributeValue("state", process).equalsIgnoreCase(state)) {
 					pList.remove(i);
 				}
-
 			}
 		}
 	}
 
 	public boolean isValidState(final String state) {
 		Element order = null;
-
 		if (application != null) {
 			order = application.getChild("order");
 		}
@@ -852,7 +757,6 @@ public class DetailsListener {
 				if (Utils.getAttributeValue("state", process).equalsIgnoreCase(state)) {
 					return false;
 				}
-
 			}
 		}
 		return true;
@@ -881,21 +785,16 @@ public class DetailsListener {
 
 	//selektierte Datensatz wird eine Zeile nach oben verschoben
 	public void changeUp(final Table table) {
-
 		int index = table.getSelectionIndex();
-
 		if (index < 0)//nichts ist selektiert
 			return;
-
 		if (index == 0)//ist bereits ganz oben
 			return;
-
 		TableItem item = table.getSelection()[0];
 		String name = item.getText(0);
 		String value = item.getText(1);
 		String text = item.getText(2);
 		Element param = (Element) item.getData();
-
 		table.remove(index);
 		TableItem newItem = new TableItem(table, SWT.NONE, index - 1);
 		newItem.setText(0, name);
@@ -909,19 +808,15 @@ public class DetailsListener {
 	//selektierte Datensatz wird eine Zeile unten  verschoben
 	public void changeDown(final Table table) {
 		int index = table.getSelectionIndex();
-
 		if (index < 0)//nichts ist selektiert
 			return;
-
 		if (index == table.getItemCount() - 1)//ist bereits ganz oben
 			return;
-
 		TableItem item = table.getSelection()[0];
 		String name = item.getText(0);
 		String value = item.getText(1);
 		String text = item.getText(2);
 		Element param = (Element) item.getData();
-
 		table.remove(index);
 		TableItem newItem = new TableItem(table, SWT.NONE, index + 1);
 		newItem.setText(0, name);
@@ -933,15 +828,12 @@ public class DetailsListener {
 	}
 
 	//////////////////////////////////////////////////////////ab hier Aufrufe von Job Chain
-
 	public static void changeNodeParameters(final String oldstate, final String newstate, final String jobchainname, final SchedulerDom _dom) {
 		try {
 			DetailsListener detailListener = new DetailsListener(jobchainname, oldstate, null, JOEConstants.JOB_CHAINS, null, _dom.isLifeElement()
 					|| _dom.isDirectory(), _dom.getFilename());
-
 			XPath x = XPath.newInstance("//process[@state='" + oldstate + "']");
 			List listOfElement = x.selectNodes(detailListener.getDoc());
-
 			XPath xnew = XPath.newInstance("//process[@state='" + newstate + "']");
 			List listOfElementnew = xnew.selectNodes(detailListener.getDoc());
 			if (listOfElementnew.isEmpty()) {
@@ -960,15 +852,14 @@ public class DetailsListener {
 			}
 			catch (Exception ee) {
 			}
-//			sos.scheduler.JOEConstants.app.MainWindow.message("Parameter note could not change, cause: " + e.getMessage(), SWT.ICON_ERROR);
+			//			sos.scheduler.JOEConstants.app.MainWindow.message("Parameter note could not change, cause: " + e.getMessage(), SWT.ICON_ERROR);
 		}
 	}
 
 	public static void changeJobChainName4NodeParameter(final String jobChainNewName, final String jobchainName, final SchedulerDom _dom) {
 		try {
-			DetailsListener detailListener = new DetailsListener(jobchainName, null, null, JOEConstants.JOB_CHAINS, null, _dom.isLifeElement() || _dom.isDirectory(),
-					_dom.getFilename());
-
+			DetailsListener detailListener = new DetailsListener(jobchainName, null, null, JOEConstants.JOB_CHAINS, null, _dom.isLifeElement()
+					|| _dom.isDirectory(), _dom.getFilename());
 			XPath x = XPath.newInstance("settings/job_chain[@name='" + jobchainName + "']");
 			List listOfElement = x.selectNodes(detailListener.getDoc());
 			if (!listOfElement.isEmpty()) {
@@ -977,24 +868,16 @@ public class DetailsListener {
 				detailListener.save();
 				//MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", detailListener.getConfigurationFilename());
 				//MainWindow.saveFTP(new java.util.HashMap());
-
 			}
 		}
 		catch (Exception e) {
-
-			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-
-			}
-			sos.scheduler.JOEConstants.app.MainWindow.message("Parameter note could not change, cause: " + e.getMessage(), SWT.ICON_ERROR);
+			new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+			ErrorLog.message("Parameter note could not change, cause: " + e.getMessage(), SWT.ICON_ERROR);
 		}
 	}
 
 	public static void deleteDetailsState(final String state, final String jobchainname, final SchedulerDom dom) {
 		try {
-
 			String parent = "";
 			if (dom.isDirectory()) {
 				parent = dom.getFilename() != null && new File(dom.getFilename()).getParent() != null ? new File(dom.getFilename()).getParent()
@@ -1006,32 +889,21 @@ public class DetailsListener {
 			}
 			if (!new File(parent, jobchainname + ".config.xml").exists())
 				return;
-
 			if (state == null || state.length() == 0)
 				return;
-
-			DetailsListener detailListener = new DetailsListener(jobchainname, state, null, JOEConstants.JOB_CHAINS, null, dom.isLifeElement() || dom.isDirectory(),
-					dom.getFilename());
-
+			DetailsListener detailListener = new DetailsListener(jobchainname, state, null, JOEConstants.JOB_CHAINS, null, dom.isLifeElement()
+					|| dom.isDirectory(), dom.getFilename());
 			XPath x = XPath.newInstance("//process[@state='" + state + "']");
 			List listOfElement = x.selectNodes(detailListener.getDoc());
-
 			if (!listOfElement.isEmpty()) {
-
 				Element process = (Element) listOfElement.get(0);
 				process.detach();
 				detailListener.save();
 			}
 		}
 		catch (Exception e) {
-
-			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-
-			}
-			sos.scheduler.JOEConstants.app.MainWindow.message("Parameter note could not change, cause: " + e.getMessage(), SWT.ICON_ERROR);
+			new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+			ErrorLog.message("Parameter note could not change, cause: " + e.getMessage(), SWT.ICON_ERROR);
 		}
 	}
 
@@ -1041,72 +913,58 @@ public class DetailsListener {
 		Element monitor = new Element("monitor");
 		Utils.setAttribute("name", "configuration_monitor", monitor);
 		Utils.setAttribute("ordering", "0", monitor);
-
 		Element script = new Element("script");
 		Utils.setAttribute("java_class", "sos.scheduler.managed.configuration.ConfigurationOrderMonitor", script);
 		Utils.setAttribute("language", "java", script);
-
 		monitor.addContent(script);
 		job.addContent(monitor);
 		dom.setChanged(true);
 		if (dom.isDirectory() || dom.isLifeElement())
 			dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.MODIFY);
-
 	}
 
 	public static void addMonitoring2Job(final String jobChainname, final String state, final SchedulerDom dom, final ISchedulerUpdate update) {
 		try {
-
 			//FAll 1: Es existiert eine globale Details Parameter. D.h. alle jobs in der Jobkette bekommen einen Monitoring
 			String sel = "//job_chain[@name='" + jobChainname + "']/job_chain_node[@job!='']";
 			if (state != null) {
 				//FAll 2: Es gibt eine Details Parameter. D.h. nur der eine job in der Jobkette mit der state bekommt einen Monitoring
 				sel = "//job_chain[@name='" + jobChainname + "']/job_chain_node[@state='" + state + "']";
-
 			}
 			XPath x = XPath.newInstance(sel);
 			List listOfElement = x.selectNodes(dom.getDoc());
-
 			if (!listOfElement.isEmpty()) {
 				for (int i = 0; i < listOfElement.size(); i++) {
-
 					Element jobChainNode = (Element) listOfElement.get(i);
 					//jobname in der Jobkette ermitteln
 					String jobname = Utils.getAttributeValue("job", jobChainNode);
 					String hotFolderfilename = "";
 					File hotFolderfile = null;
-
 					if (new File(Options.getSchedulerHotFolder(), jobname + ".job.xml").exists()) {
 						hotFolderfile = new File(Options.getSchedulerHotFolder(), jobname + ".job.xml");
 					}
 					else {
 						hotFolderfile = new File(new File(dom.getFilename()).getParent(), new File(jobname).getName() + ".job.xml");
 					}
-
 					hotFolderfilename = hotFolderfile.getCanonicalPath();
 					//Unterscheiden, ob Hot Folder Element. Wenn ja, dann Hot Folder Datei öffnen. Wenn das Hot Folder Element bereits offen ist, dann verändern
 					List listOfElement2 = null;
-
 					if (dom.isLifeElement() || new File(jobname).getParent() != null) {
-
 						if (!hotFolderfile.exists()) {
 							openFilePerFTP(hotFolderfilename);
 							if (!new File(hotFolderfilename).exists()) {
-								sos.scheduler.JOEConstants.app.MainWindow.message("Could not add Monitoring Job, cause Hot Folder File " + hotFolderfilename
-										+ " not exist.", SWT.ICON_WARNING);
+								ErrorLog.message("Could not add Monitoring Job, cause Hot Folder File " + hotFolderfilename + " not exist.", SWT.ICON_WARNING);
 								continue;
 							}
 						}
-
 						XPath x2 = null;
 						//Es ist ein Hot Folder oder der Job ist woanders abgelegt
-						sos.scheduler.JOEConstants.app.TabbedContainer tab = (sos.scheduler.JOEConstants.app.TabbedContainer) MainWindow.getContainer();
+						TabbedContainer tab = (TabbedContainer) MainWindow.getContainer();
 						String pathFromHotFolderDirectory = new File(hotFolderfilename).getParent();
 						if (tab.getFilelist() != null
 								&& (tab.getFilelist().contains(hotFolderfilename) || tab.getFilelist().contains(pathFromHotFolderDirectory))) {
 							//Hot Folder oder Hot Folder Element ist in einem Tabraiter offen oder
 							SchedulerForm form = null;
-
 							if (tab.getFilelist().contains(hotFolderfilename)) {
 								form = (SchedulerForm) tab.getEditor(hotFolderfilename);//hot folder element
 								x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
@@ -1116,9 +974,7 @@ public class DetailsListener {
 								x2 = XPath.newInstance("//job[@name='" + new File(jobname).getName()
 										+ "']/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
 							}
-
 							SchedulerDom currdom = form.getDom();
-
 							listOfElement2 = x2.selectNodes(currdom.getDoc());
 							if (listOfElement2.isEmpty()) {
 								XPath x3 = null;
@@ -1138,16 +994,13 @@ public class DetailsListener {
 									List listOfElement4 = x4.selectNodes(currdom.getDoc());
 									Element job = (Element) listOfElement4.get(0);
 									addMonitoring(job, currdom);
-
 									if (currdom.isLifeElement())
 										form.getTree().setSelection(new org.eclipse.swt.widgets.TreeItem[] { form.getTree().getItem(0) });
 									else
 										if (currdom.isDirectory())
 											form.selectTreeItem(SchedulerListener.JOBS, new File(jobname).getName());
-
 									currdom.setChanged(true);
 									if (form != null) {
-
 										form.updateJob(job);
 										form.updateJob();
 										form.update();
@@ -1155,26 +1008,21 @@ public class DetailsListener {
 									currdom.setChanged(true);
 									form.dataChanged();
 									dom.setChanged(true);
-
 									if (tab.getFilelist().contains(hotFolderfilename)) {
 										form.dataChanged(tab.getFolderTab(hotFolderfilename));
 									}
 									else {
 										form.dataChanged(tab.getFolderTab(pathFromHotFolderDirectory));
 									}
-
 								}
 							}
-
 						}
 						else {
 							//							Hot Folder Element ist nicht offen in einem Tabraiter
 							SchedulerDom currDom = new SchedulerDom(SchedulerDom.LIVE_JOB);
 							currDom.read(hotFolderfilename);
-
 							if (x2 == null)
 								x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
-
 							listOfElement2 = x2.selectNodes(currDom.getDoc());
 							if (listOfElement2.isEmpty()) {
 								XPath x3 = XPath.newInstance("//job");
@@ -1186,7 +1034,6 @@ public class DetailsListener {
 									MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", hotFolderfilename);
 									MainWindow.saveFTP(new java.util.HashMap());
 								}
-
 							}
 						}
 					}
@@ -1200,7 +1047,6 @@ public class DetailsListener {
 							if (!listOfElement3.isEmpty()) {
 								Element job = (Element) listOfElement3.get(0);
 								addMonitoring(job, dom);
-
 								if (update != null) {
 									update.updateJobs();
 									//update.updateJob(jobname);
@@ -1211,18 +1057,10 @@ public class DetailsListener {
 					}
 				}
 			}
-
 		}
 		catch (Exception e) {
-
-			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-
-			}
-			sos.scheduler.JOEConstants.app.MainWindow.message("Could not to be add Monitoring Job to Jobchain " + jobChainname + ", cause: " + e.getMessage(),
-					SWT.ICON_ERROR);
+			new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
+			ErrorLog.message("Could not to be add Monitoring Job to Jobchain " + jobChainname + ", cause: " + e.getMessage(), SWT.ICON_ERROR);
 		}
 	}
 
@@ -1231,34 +1069,22 @@ public class DetailsListener {
 	 * globale Parameter hat. Wenn ja, dann wird diesem Job monitoring hinzugefügt
 	 * Details der state geändert.
 	 */
-
 	public static boolean existJobChainNodesParameter(final String state, final String jobchainname, final String jobname, final SchedulerDom dom,
 			final ISchedulerUpdate update, final boolean global, final String orderid) {
 		try {
 			DetailsListener detailListener = new DetailsListener(jobchainname, state, orderid, JOEConstants.JOB_CHAINS, null, dom.isLifeElement()
 					|| dom.isDirectory(), dom.getFilename());
-
 			//Document d = detailListener.getDoc();
 			XPath x = null;
 			if (global)
 				x = XPath.newInstance("//order/params/param");
 			else
 				x = XPath.newInstance("//process[@state='" + state + "']/params/param");
-
 			List listOfElement = x.selectNodes(detailListener.getDoc());
-
 			return !listOfElement.isEmpty();
-
 		}
 		catch (Exception e) {
-
-			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-
-			}
-			sos.scheduler.JOEConstants.app.MainWindow.message("error in DetailsListener.existDetailsParameter, cause: " + e.getMessage(), SWT.ICON_ERROR);
+			ErrorLog.message("error in DetailsListener.existDetailsParameter, cause: " + e.getMessage(), SWT.ICON_ERROR);
 			return false;
 		}
 	}
@@ -1268,40 +1094,32 @@ public class DetailsListener {
 	 * globale Parameter hat. Wenn ja, dann wird diesem Job monitoring hinzugefügt
 	 * Details der state geändert.
 	 */
-
 	public static void checkGlobalJobChainParameter(final String state, final String jobchainname, final String jobname, final SchedulerDom dom,
 			final ISchedulerUpdate update) {
 		try {
-			DetailsListener detailListener = new DetailsListener(jobchainname, state, null, JOEConstants.JOB_CHAINS, null, dom.isLifeElement() || dom.isDirectory(),
-					dom.getFilename());
-
+			DetailsListener detailListener = new DetailsListener(jobchainname, state, null, JOEConstants.JOB_CHAINS, null, dom.isLifeElement()
+					|| dom.isDirectory(), dom.getFilename());
 			//Document d = detailListener.getDoc();
 			XPath x = XPath.newInstance("//order/params/param");
 			List listOfElement = x.selectNodes(detailListener.getDoc());
-
 			if (!listOfElement.isEmpty()) {
-
 				String hotFolderfilename = new File(Options.getSchedulerHotFolder(), jobname + ".job.xml").getCanonicalPath();
 				//Unterscheiden, ob Hot Folder Element. Wenn ja, dann Hot Folder Datei öffnen. Wenn der Hot Folder Element bereits offen ist, dann verändern
 				List listOfElement2 = null;
-
 				if (dom.isLifeElement() || new File(jobname).getParent() != null) {
-
 					if (!new File(hotFolderfilename).exists()) {
-						sos.scheduler.JOEConstants.app.MainWindow.message("Could not add Monitoring Job, cause Hot Folder File " + hotFolderfilename + " not exist.",
-								SWT.ICON_WARNING);
+						ErrorLog.message("Could not add Monitoring Job, cause Hot Folder File " + hotFolderfilename
+								+ " not exist.", SWT.ICON_WARNING);
 						return;
 					}
-
 					XPath x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
 					//Es ist ein Hot Folder oder der Job ist woanders abgelegt
-					sos.scheduler.JOEConstants.app.TabbedContainer tab = (sos.scheduler.JOEConstants.app.TabbedContainer) MainWindow.getContainer();
+					TabbedContainer tab = (TabbedContainer) MainWindow.getContainer();
 					if (tab.getFilelist() != null && tab.getFilelist().contains(hotFolderfilename)) {
 						//Hot Folder Element ist in einem Tabraiter offen
 						//org.eclipse.swt.custom.CTabItem f = tab.getFolderTab(hotFolderfilename);
 						SchedulerForm form = (SchedulerForm) tab.getEditor(hotFolderfilename);
 						SchedulerDom currdom = form.getDom();
-
 						listOfElement2 = x2.selectNodes(currdom.getDoc());
 						if (listOfElement2.isEmpty()) {
 							XPath x3 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
@@ -1311,24 +1129,18 @@ public class DetailsListener {
 								listOfElement3 = x3.selectNodes(currdom.getDoc());
 								Element job = (Element) listOfElement3.get(0);
 								addMonitoring(job, currdom);
-
 								form.getTree().setSelection(new org.eclipse.swt.widgets.TreeItem[] { form.getTree().getItem(0) });
-
 								currdom.setChanged(true);
 								if (form != null) {
-
 									form.updateJob();
 									form.update();
 								}
 								currdom.setChanged(true);
 								form.dataChanged();
 								dom.setChanged(true);
-
 								form.dataChanged(tab.getFolderTab(hotFolderfilename));
-
 							}
 						}
-
 					}
 					else {
 						//						Hot Folder Element ist nicht offen in einem Tabraiter
@@ -1345,7 +1157,6 @@ public class DetailsListener {
 								addMonitoring(job, currDom);
 								currDom.writeElement(currDom.getFilename(), currDom.getDoc());
 							}
-
 						}
 					}
 				}
@@ -1359,26 +1170,15 @@ public class DetailsListener {
 						if (!listOfElement3.isEmpty()) {
 							Element job = (Element) listOfElement3.get(0);
 							addMonitoring(job, dom);
-
 							if (update != null)
 								update.updateJobs();
 						}
 					}
 				}
-
 			}
 		}
 		catch (Exception e) {
-
-			try {
-				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-
-			}
-			sos.scheduler.JOEConstants.app.MainWindow.message("Parameter note could not change, cause: " + e.getMessage(), SWT.ICON_ERROR);
+			ErrorLog.message("Parameter note could not change, cause: " + e.getMessage(), SWT.ICON_ERROR);
 		}
-
 	}
-
 }

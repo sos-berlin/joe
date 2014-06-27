@@ -1,5 +1,5 @@
-package com.sos.joe.objects.jobchain;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_E_0002;
+package com.sos.joe.objects.jobchain; 
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_E_0002;
 
 import java.io.File;
 import java.io.StringReader;
@@ -18,10 +18,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.xml.sax.InputSource;
 
-import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
@@ -29,6 +26,9 @@ import sos.util.SOSClassUtil;
 
 import com.sos.JSHelper.io.Files.JSFile;
 import com.sos.JSHelper.io.Files.JSXMLFile;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.options.Options;
 import com.sos.scheduler.model.objects.JSObjBase;
 import com.sos.scheduler.model.objects.JSObjJob;
 import com.sos.scheduler.model.objects.JSObjJobChain;

@@ -13,12 +13,13 @@ import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
 import org.jdom.xpath.XPath;
 
-import ErrorLog;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.SOSTable;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.util.SOSClassUtil;
+
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobChainNestedListener extends JOEJobChainDataProvider {
 

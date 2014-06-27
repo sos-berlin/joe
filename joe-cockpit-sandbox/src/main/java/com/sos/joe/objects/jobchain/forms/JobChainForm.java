@@ -25,10 +25,10 @@ import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.Utils;
 
 import com.sos.joe.globals.JOEConstants;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUnsaved;
-import com.sos.joe.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.objects.jobchain.JobChainListener;
 import com.sos.scheduler.model.objects.JSObjJobChain;
 
