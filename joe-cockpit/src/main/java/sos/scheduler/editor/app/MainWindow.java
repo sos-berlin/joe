@@ -250,70 +250,72 @@ import java.util.List;
 			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-		MenuItem mpLife = new MenuItem(pmNew, SWT.CASCADE);
-		mpLife.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
-			}
-		});
-		mpLife.setText(getMenuText(Messages.getLabel(MENU_HotFolderObject), EMPTY));
-		// mpLife.setAccelerator(SWT.CTRL | 'L');
-		Menu mLife = new Menu(mpLife);
-		MenuItem mLifeJob = new MenuItem(mLife, SWT.PUSH);
-		mLifeJob.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIVE_JOB) != null)
-					setSaveStatus();
-			}
-		});
-		mLifeJob.setText(getMenuText(Messages.getLabel(MENU_Job), "J"));
-		mLifeJob.setAccelerator(SWT.CTRL | 'J');
-		mpLife.setMenu(mLife);
-		MenuItem mLifeJobChain = new MenuItem(mLife, SWT.PUSH);
-		mLifeJobChain.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIVE_JOB_CHAIN) != null)
-					setSaveStatus();
-			}
-		});
-		mLifeJobChain.setText(getMenuText(Messages.getLabel(MENU_JobChain), "K"));
-		mLifeJobChain.setAccelerator(SWT.CTRL | 'K');
-		MenuItem mLifeProcessClass = new MenuItem(mLife, SWT.PUSH);
-		mLifeProcessClass.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_PROCESS_CLASS) != null)
-					setSaveStatus();
-			}
-		});
-		mLifeProcessClass.setText(getMenuText(Messages.getLabel(MENU_ProcessClass), "R"));
-		mLifeProcessClass.setAccelerator(SWT.CTRL | 'R');
-		MenuItem mLifeLock = new MenuItem(mLife, SWT.PUSH);
-		mLifeLock.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_LOCK) != null)
-					setSaveStatus();
-			}
-		});
-		mLifeLock.setText(getMenuText(Messages.getLabel(MENU_Lock), "M"));
-		mLifeLock.setAccelerator(SWT.CTRL | 'M');
-		MenuItem mLifeOrder = new MenuItem(mLife, SWT.PUSH);
-		mLifeOrder.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_ORDER) != null)
-					setSaveStatus();
-			}
-		});
-		mLifeOrder.setText(getMenuText(Messages.getLabel(MENU_Order), "W"));
-		mLifeOrder.setAccelerator(SWT.CTRL | 'W');
-		MenuItem mLifeSchedule = new MenuItem(mLife, SWT.PUSH);
-		mLifeSchedule.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_SCHEDULE) != null)
-					setSaveStatus();
-			}
-		});
-		mLifeSchedule.setText(getMenuText(Messages.getLabel("MENU_Schedule"), "U"));
-		// mLifeSchedule.setText("Schedule      \tCtrl+U");
-		mLifeSchedule.setAccelerator(SWT.CTRL | 'U');
+		if (1 == 0) {
+			MenuItem mpLife = new MenuItem(pmNew, SWT.CASCADE);
+			mpLife.addSelectionListener(new SelectionAdapter() {
+				@Override public void widgetSelected(final SelectionEvent e) {
+				}
+			});
+			mpLife.setText(getMenuText(Messages.getLabel(MENU_HotFolderObject), EMPTY));
+			// mpLife.setAccelerator(SWT.CTRL | 'L');
+			Menu mLife = new Menu(mpLife);
+			MenuItem mLifeJob = new MenuItem(mLife, SWT.PUSH);
+			mLifeJob.addSelectionListener(new SelectionAdapter() {
+				@Override public void widgetSelected(final SelectionEvent e) {
+					if (container.newScheduler(SchedulerDom.LIVE_JOB) != null)
+						setSaveStatus();
+				}
+			});
+			mLifeJob.setText(getMenuText(Messages.getLabel(MENU_Job), "J"));
+			mLifeJob.setAccelerator(SWT.CTRL | 'J');
+			mpLife.setMenu(mLife);
+			MenuItem mLifeJobChain = new MenuItem(mLife, SWT.PUSH);
+			mLifeJobChain.addSelectionListener(new SelectionAdapter() {
+				@Override public void widgetSelected(final SelectionEvent e) {
+					if (container.newScheduler(SchedulerDom.LIVE_JOB_CHAIN) != null)
+						setSaveStatus();
+				}
+			});
+			mLifeJobChain.setText(getMenuText(Messages.getLabel(MENU_JobChain), "K"));
+			mLifeJobChain.setAccelerator(SWT.CTRL | 'K');
+			MenuItem mLifeProcessClass = new MenuItem(mLife, SWT.PUSH);
+			mLifeProcessClass.addSelectionListener(new SelectionAdapter() {
+				@Override public void widgetSelected(final SelectionEvent e) {
+					if (container.newScheduler(SchedulerDom.LIFE_PROCESS_CLASS) != null)
+						setSaveStatus();
+				}
+			});
+			mLifeProcessClass.setText(getMenuText(Messages.getLabel(MENU_ProcessClass), "R"));
+			mLifeProcessClass.setAccelerator(SWT.CTRL | 'R');
+			MenuItem mLifeLock = new MenuItem(mLife, SWT.PUSH);
+			mLifeLock.addSelectionListener(new SelectionAdapter() {
+				@Override public void widgetSelected(final SelectionEvent e) {
+					if (container.newScheduler(SchedulerDom.LIFE_LOCK) != null)
+						setSaveStatus();
+				}
+			});
+			mLifeLock.setText(getMenuText(Messages.getLabel(MENU_Lock), "M"));
+			mLifeLock.setAccelerator(SWT.CTRL | 'M');
+			MenuItem mLifeOrder = new MenuItem(mLife, SWT.PUSH);
+			mLifeOrder.addSelectionListener(new SelectionAdapter() {
+				@Override public void widgetSelected(final SelectionEvent e) {
+					if (container.newScheduler(SchedulerDom.LIFE_ORDER) != null)
+						setSaveStatus();
+				}
+			});
+			mLifeOrder.setText(getMenuText(Messages.getLabel(MENU_Order), "W"));
+			mLifeOrder.setAccelerator(SWT.CTRL | 'W');
+			MenuItem mLifeSchedule = new MenuItem(mLife, SWT.PUSH);
+			mLifeSchedule.addSelectionListener(new SelectionAdapter() {
+				@Override public void widgetSelected(final SelectionEvent e) {
+					if (container.newScheduler(SchedulerDom.LIFE_SCHEDULE) != null)
+						setSaveStatus();
+				}
+			});
+			mLifeSchedule.setText(getMenuText(Messages.getLabel("MENU_Schedule"), "U"));
+			// mLifeSchedule.setText("Schedule      \tCtrl+U");
+			mLifeSchedule.setAccelerator(SWT.CTRL | 'U');
+		}
 		new MenuItem(mFile, SWT.SEPARATOR);
 		MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
 		openDir.setText(getMenuText(Messages.getLabel("MENU_OpenHotFolder"), "D"));
