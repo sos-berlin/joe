@@ -4,45 +4,45 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.sos-berlin.products</groupId>
+        <groupId>com.sos-berlin</groupId>
         <artifactId>joe</artifactId> 
         <version>1.8-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.sos-berlin.products.joe</groupId>
+    <groupId>com.sos-berlin.joe</groupId>
     <artifactId>joe-cockpit-sandbox</artifactId>
     <name>${project.artifactId}</name>
 
     <dependencies>
     
     		<dependency>
-			<groupId>com.sos-berlin.products.joe</groupId>
+			<groupId>com.sos-berlin.joe</groupId>
 			<artifactId>joe-globals</artifactId>
 			<version>${project.version}</version>
 		</dependency>
  
 <!-- 
 		<dependency>
-			<groupId>com.sos-berlin.products.joe</groupId>
+			<groupId>com.sos-berlin.joe</groupId>
 			<artifactId>joe-wizzard</artifactId>
 			<version>${project.version}</version>
 		</dependency>
  -->
 
 		<dependency>
-			<groupId>com.sos-berlin.products.joe</groupId>
+			<groupId>com.sos-berlin.joe</groupId>
 			<artifactId>joe-xml</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.sos-berlin.products.joe</groupId>
+			<groupId>com.sos-berlin.joe</groupId>
 			<artifactId>joe-event-service-cockpit</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.sos-berlin.products.joe</groupId>
+			<groupId>com.sos-berlin.joe</groupId>
 			<artifactId>joe-jobdoc-editor</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -57,55 +57,55 @@
 
         <!-- these are the dependencies for projects already moved to maven  -->
         <dependency>
-            <groupId>com.sos-berlin.products.jobscheduler</groupId>
+            <groupId>com.sos-berlin.jobscheduler</groupId>
             <artifactId>jobscheduler-helper</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.sos-berlin.products.jobscheduler</groupId>
+            <groupId>com.sos-berlin.jobscheduler</groupId>
             <artifactId>jobscheduler-object-model</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.sos-berlin.products.jobscheduler</groupId>
+            <groupId>com.sos-berlin.jobscheduler</groupId>
             <artifactId>virtual-file-system</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.sos-berlin.products.commons</groupId>
+            <groupId>com.sos-berlin.commons</groupId>
             <artifactId>sos-util</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.sos-berlin.products.joe</groupId>
+            <groupId>com.sos-berlin.joe</groupId>
             <artifactId>ftp-profiles</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.sos-berlin.products.commons</groupId>
+            <groupId>com.sos-berlin.commons</groupId>
             <artifactId>sos-connection</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.sos-berlin.products.commons</groupId>
+            <groupId>com.sos-berlin.commons</groupId>
             <artifactId>sos-settings</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.sos-berlin.products.jobscheduler</groupId>
+            <groupId>com.sos-berlin.jobscheduler</groupId>
             <artifactId>sos-net</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.sos-berlin.products.jobscheduler</groupId>
+            <groupId>com.sos-berlin.jobscheduler</groupId>
             <artifactId>sos-dialog</artifactId>
             <version>${project.version}</version>
         </dependency>
