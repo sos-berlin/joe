@@ -1,18 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.sos-berlin.products</groupId>
+    <groupId>com.sos-berlin</groupId>
     <artifactId>joe</artifactId>
     <version>1.8-SNAPSHOT</version>
   </parent>
-  <groupId>com.sos-berlin.products.joe</groupId>
+  <groupId>com.sos-berlin.joe</groupId>
   <artifactId>joe-all</artifactId>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <description>Collects all jade jar files in a fat jar.</description>
 
   <properties>
-      <common.groupid>com.sos-berlin.products.joe</common.groupid>
+      <common.groupid>com.sos-berlin.joe</common.groupid>
   </properties>
 
     <build>
