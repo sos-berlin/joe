@@ -252,7 +252,7 @@ import com.sos.resources.SOSResource;
 		if (JOESettingsDefaults == null) {
 			JOESettingsDefaults = new Properties();
 		}
-		return JOESettingsDefaults.getProperty(key);
+		return JOESettingsDefaults.getProperty(key.toLowerCase());
 	}
 
 	public static void setLanguage(final String language) {
@@ -481,7 +481,7 @@ import com.sos.resources.SOSResource;
 		}
 	}
 
-	public static boolean isNumeric(String str) {
+	public static boolean isNumeric(final String str) {
 		boolean retVal = true;
 		char[] c = null;
 		if (str == null)

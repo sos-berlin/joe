@@ -2,7 +2,6 @@ package com.sos.joe.globals.messages;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-
 /*import sos.scheduler.editor.conf.forms.already;
 import sos.scheduler.editor.conf.forms.be;
 import sos.scheduler.editor.conf.forms.must;
@@ -12,7 +11,6 @@ import sos.scheduler.editor.conf.forms.not;
 import sos.scheduler.editor.conf.forms.Executed;
 import sos.scheduler.editor.conf.forms.on;
 */
-
 import com.sos.i18n.annotation.I18NMsg;
 
 public class SOSJOEMessageCodes extends Composite {
@@ -1724,6 +1722,13 @@ public class SOSJOEMessageCodes extends Composite {
 	public static final SOSMsgJOE	JOE_E_0010											= new SOSMsgJOE("JOE_E_0010");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_TI_ParameterForm_TabItemParameter				= new SOSMsgJOE("JOE_TI_ParameterForm_TabItemParameter");
+	
+	public static final SOSMsgJOE	JOE_TI_DiagramViewer						= new SOSMsgJOE("JOE_TI_DiagramViewer");
+	public static final SOSMsgJOE	JOE_TI_JobChainParameter						= new SOSMsgJOE("JOE_TI_JobChainParameter");
+
+	public static final SOSMsgJOE	JOE_TI_JobChainNodeParameter						= new SOSMsgJOE("JOE_TI_JobChainNodeParameter");
+
+
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_ParameterForm_ParamName						= new SOSMsgJOE("JOE_T_ParameterForm_ParamName");
 	@I18NMsg
@@ -3160,11 +3165,11 @@ public class SOSJOEMessageCodes extends Composite {
 	// // TODO Auto-generated constructor stub
 	// }
 
-	public SOSJOEMessageCodes(Group parent, int style) {
+	public SOSJOEMessageCodes(final Group parent, final int style) {
 		super(parent, style);
 	}
 
-	public SOSJOEMessageCodes(Composite parent, int style) {
+	public SOSJOEMessageCodes(final Composite parent, final int style) {
 		super(parent, style);
 	}
 }
