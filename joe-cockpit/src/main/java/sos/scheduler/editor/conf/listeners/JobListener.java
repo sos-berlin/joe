@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.jdom.CDATA;
 import org.jdom.Element;
 
@@ -56,15 +57,18 @@ public class JobListener extends JOEListener {
 		return Utils.getAttributeValue("file", _process);
 	}
 
-	public void setFile(final String file) {
-		if (_job.getChild("script") != null) {
-			int c = sos.scheduler.editor.app.MainWindow.message("Do you want really remove script and put new Run Executable File?", SWT.YES | SWT.NO
+	public void setFile(final Text file) {
+		Element objScript = _job.getChild("script");
+		if (objScript != null && objScript.getText().trim().length() > 0) {
+			int c = sos.scheduler.editor.app.MainWindow.message("JobListener: Do you want to remove the existing script and create a process instead?\n(Remember: <process> is a deprecated feature, use script)", SWT.YES | SWT.NO
 					| SWT.ICON_WARNING);
-			if (c != SWT.YES)
+			if (c != SWT.YES) {
+				file.setText("");
 				return;
+			}
 		}
 		initProcess();
-		Utils.setAttribute("file", file, _process, _dom);
+		Utils.setAttribute("file", file.getText(), _process, _dom);
 		Utils.setChangedForDirectory(_job, _dom);
 	}
 

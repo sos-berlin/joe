@@ -19,7 +19,7 @@ public class ExecuteListener {
 		return _dom;
 	}
 
-	public ExecuteListener(SchedulerDom dom, Element job) {
+	public ExecuteListener(final SchedulerDom dom, final Element job) {
 		_dom = dom;
 		_job = job;
 		setProcess();
@@ -40,7 +40,7 @@ public class ExecuteListener {
 		_dom.setChanged(true);
 	}
 
-	public void setExecutable(boolean executable) {
+	public void setExecutable(final boolean executable) {
 		if (executable) {
 			initProcess();
 		}
@@ -69,9 +69,9 @@ public class ExecuteListener {
 		return Utils.getAttributeValue("file", _process);
 	}
 
-	public void setFile(String file) {
+	public void setFile(final String file) {
 		if (_job.getChild("script") != null) {
-			int c = sos.scheduler.editor.app.MainWindow.message("Do you want really remove script and put new Run Executable File?", SWT.YES | SWT.NO
+			int c = sos.scheduler.editor.app.MainWindow.message("ExecuteListener: Do you want really remove script and put new Run Executable File?", SWT.YES | SWT.NO
 					| SWT.ICON_WARNING);
 			if (c != SWT.YES)
 				return;
@@ -85,7 +85,7 @@ public class ExecuteListener {
 		return Utils.getAttributeValue("param", _process);
 	}
 
-	public void setParam(String param) {
+	public void setParam(final String param) {
 		initProcess();
 		Utils.setAttribute("param", param, _process, _dom);
 		Utils.setChangedForDirectory(_job, _dom);
@@ -95,7 +95,7 @@ public class ExecuteListener {
 		return Utils.getAttributeValue("log_file", _process);
 	}
 
-	public void setLogFile(String file) {
+	public void setLogFile(final String file) {
 		initProcess();
 		Utils.setAttribute("log_file", file, _process, _dom);
 		Utils.setChangedForDirectory(_job, _dom);
@@ -105,7 +105,7 @@ public class ExecuteListener {
 		return Utils.isAttributeValue("ignore_signal", _process);
 	}
 
-	public void setIgnoreSignal(boolean ignore) {
+	public void setIgnoreSignal(final boolean ignore) {
 		Utils.setAttribute("ignore_signal", ignore, _process, _dom);
 		Utils.setChangedForDirectory(_job, _dom);
 	}
@@ -114,12 +114,12 @@ public class ExecuteListener {
 		return Utils.isAttributeValue("ignore_error", _process);
 	}
 
-	public void setIgnoreError(boolean ignore) {
+	public void setIgnoreError(final boolean ignore) {
 		Utils.setAttribute("ignore_error", ignore, _process, _dom);
 		Utils.setChangedForDirectory(_job, _dom);
 	}
 
-	public void applyVariable(String name, String value) {
+	public void applyVariable(final String name, final String value) {
 		List variables = _environment.getChildren("variable");
 		Iterator it = variables.iterator();
 		boolean found = false;
@@ -140,7 +140,7 @@ public class ExecuteListener {
 		_dom.setChanged(true);
 	}
 
-	public void removeVariable(String name) {
+	public void removeVariable(final String name) {
 		List variables = _environment.getChildren("variable");
 		Iterator it = variables.iterator();
 		boolean found = false;
