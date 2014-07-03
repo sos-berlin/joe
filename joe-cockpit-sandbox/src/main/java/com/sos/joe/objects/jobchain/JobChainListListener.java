@@ -12,7 +12,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.xml.sax.InputSource;
 
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 

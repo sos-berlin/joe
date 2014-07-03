@@ -17,38 +17,39 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.objects.JSObjBase;
 import com.sos.scheduler.model.objects.JobChain.FileOrderSink;
 import com.sos.scheduler.model.objects.JobChain.JobChainNode;
- 
+
 /**
  * @author KB
  *
  */
 public class JobChainNodeWrapper extends JSToolBox {
-	@SuppressWarnings("unused") private final String conClassName = this.getClass().getSimpleName();
-	@SuppressWarnings("unused") private static final String conSVNVersion = "$Id$";
-	@SuppressWarnings("unused") private final Logger logger = Logger.getLogger(this.getClass());
-	
-
+	@SuppressWarnings("unused")
+	private final String		conClassName				= this.getClass().getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String	conSVNVersion				= "$Id$";
+	@SuppressWarnings("unused")
+	private final Logger		logger						= Logger.getLogger(this.getClass());
 	// TODO NodeType "split" and "sync"
 	private static final String	conTagFILE_ORDER_SINK		= "file_order_sink";
 	public static final String	conTagJOB_CHAIN_NODE_END	= "job_chain_node.end";
 	public static final String	conTagJOB_CHAIN_NODE		= "job_chain_node";
 	public static final String	conTagFILE_ORDER_SOURCE		= "file_order_source";
-//	public static final String	conAttrSTATE				= "state";
-//	public static final String	conAttrJOB					= "job";
-//	public static final String	conAttrMOVETO				= "move_to";
-//	public static final String	conAttrREMOVE				= "remove";
-//	public static final String	conAttrON_ERROR				= "on_error";
-//	public static final String	conAttrERROR_STATE			= "error_state";
-//	public static final String	conAttrDIRECTORY			= "directory";
-//	public static final String	conAttrREGEX				= "regex";
-//	public static final String	conAttrNEXT_STATE			= "next_state";
-//	public static final String	conAttrREPEAT				= "repeat";
-//	public static final String	conAttrDELAY				= "delay";
+	//	public static final String	conAttrSTATE				= "state";
+	//	public static final String	conAttrJOB					= "job";
+	//	public static final String	conAttrMOVETO				= "move_to";
+	//	public static final String	conAttrREMOVE				= "remove";
+	//	public static final String	conAttrON_ERROR				= "on_error";
+	//	public static final String	conAttrERROR_STATE			= "error_state";
+	//	public static final String	conAttrDIRECTORY			= "directory";
+	//	public static final String	conAttrREGEX				= "regex";
+	//	public static final String	conAttrNEXT_STATE			= "next_state";
+	//	public static final String	conAttrREPEAT				= "repeat";
+	//	public static final String	conAttrDELAY				= "delay";
 	private int					intIndex					= -1;
 	private boolean				flgHasNodeParameter			= false;
 	private boolean				flgJobIsMissing				= false;
 	private String				strJobChainName				= "";
-	private final String				strErrorState				= "";
+	private final String		strErrorState				= "";
 	private String				strOnError					= "";
 	private String				strDelay					= "";
 	private String				strJobName					= "";
@@ -60,6 +61,10 @@ public class JobChainNodeWrapper extends JSToolBox {
 	@Deprecated public SchedulerDom getDom() {
 		//		return _dom;
 		return null;
+	}
+
+	@Deprecated public Element getDOMElement() {
+		return new Element("dummy");
 	}
 
 	@Deprecated public void setDom(final SchedulerDom _dom) {
@@ -102,23 +107,21 @@ public class JobChainNodeWrapper extends JSToolBox {
 		getJCN().setState(pstrState);
 		return this;
 	}
-
-//	@Deprecated public Element getDOMElement() {
-//		//		return objElement;
-//		return null;
-//	}
-
-//	@Deprecated private void setAttr(final String pstrAttributeName, final String pstrAttributValue) {
-//		Utils.setAttribute(pstrAttributeName, pstrAttributValue, objElement, _dom);
-//		//		_dom.setChanged(true);
-//		//		_dom.setChangedForDirectory("job_chain", strJobChainName, SchedulerDom.MODIFY);
-//	}
-//
-//	@Deprecated private void setAttr(final String pstrAttributeName, final boolean pflgValue) {
-//		//		Utils.setAttribute(pstrAttributeName, boolean2String(pflgValue), objElement, _dom);
-//		//		_dom.setChanged(true);
-//		//		_dom.setChangedForDirectory("job_chain", strJobChainName, SchedulerDom.MODIFY);
-//	}
+	//	@Deprecated public Element getDOMElement() {
+	//		//		return objElement;
+	//		return null;
+	//	}
+	//	@Deprecated private void setAttr(final String pstrAttributeName, final String pstrAttributValue) {
+	//		Utils.setAttribute(pstrAttributeName, pstrAttributValue, objElement, _dom);
+	//		//		_dom.setChanged(true);
+	//		//		_dom.setChangedForDirectory("job_chain", strJobChainName, SchedulerDom.MODIFY);
+	//	}
+	//
+	//	@Deprecated private void setAttr(final String pstrAttributeName, final boolean pflgValue) {
+	//		//		Utils.setAttribute(pstrAttributeName, boolean2String(pflgValue), objElement, _dom);
+	//		//		_dom.setChanged(true);
+	//		//		_dom.setChangedForDirectory("job_chain", strJobChainName, SchedulerDom.MODIFY);
+	//	}
 	private JSObjBase	objNode	= null;
 
 	public JobChainNodeWrapper setNode(final JobChainNode pobjNode) {
@@ -192,28 +195,26 @@ public class JobChainNodeWrapper extends JSToolBox {
 	public JobChainNodeWrapper(final Element objE) {
 	}
 
-//	public Element getObjElement() {
-//		return objElement;
-//	}
-//
-//	public void setObjElement(final Element objElement) {
-//		this.objElement = objElement;
-//	}
-//
+	//	public Element getObjElement() {
+	//		return objElement;
+	//	}
+	//
+	//	public void setObjElement(final Element objElement) {
+	//		this.objElement = objElement;
+	//	}
+	//
 	public String getState() {
 		String strR = getJCN().getState();
 		if (strR == null) {
 			strR = "";
 		}
-
 		return strR;
 	}
 
-//	private String getAttr(final String pstrAttributeName) {
-//		String strR = Utils.getAttributeValue(pstrAttributeName, objElement);
-//		return strR;
-//	}
-
+	//	private String getAttr(final String pstrAttributeName) {
+	//		String strR = Utils.getAttributeValue(pstrAttributeName, objElement);
+	//		return strR;
+	//	}
 	public String getNextState() {
 		return getJCN().getNextState();
 	}

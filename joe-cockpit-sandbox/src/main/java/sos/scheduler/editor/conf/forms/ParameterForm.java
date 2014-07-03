@@ -2,60 +2,60 @@
  *
  */
 package sos.scheduler.editor.conf.forms;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_Down;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_Apply;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_Comment;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_EnvApply;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_FromOrder;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_FromTask;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_IncludeRemove;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_IncludeSave;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_IncludesApply;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_LifeFile;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_New;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_NewEnv;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_NewIncludes;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_NewParam;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_OpenInclude;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_Param;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_Remove;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_RemoveEnv;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_RemoveInclude;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_ParameterForm_Wizard;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_Up;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_E_0002;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_G_ParameterForm_JobParameter;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_Name;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_ParameterForm_File;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_ParameterForm_Node;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_ParameterForm_Value;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_Value;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_ApplyChanges;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_ParameterForm_From;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_ParameterForm_NoDistinctParam;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_ParameterForm_Order;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_ParameterForm_Task;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_ParameterForm_File;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_ParameterForm_LiveFile;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_ParameterForm_Name;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_ParameterForm_Node;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_ParameterForm_Value;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TI_ParameterForm_Parameter;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TI_ParameterForm_TabItemEnvironment;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TI_ParameterForm_TabItemIncludes;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TI_ParameterForm_TabItemParameter;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_ParameterForm_EnvName;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_ParameterForm_EnvValue;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_ParameterForm_IncludeFilename;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_ParameterForm_IncludeNode;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_ParameterForm_ParaName;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_ParameterForm_ParaValue;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_ParameterForm_ParamDescription;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_ParameterForm_ParamName;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_ParameterForm_ParamValue;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Tbl_JCNodesForm_Nodes;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Tbl_ParameterForm_Environment;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Tbl_ParameterForm_IncludeParams;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_Down;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_Apply;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_Comment;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_EnvApply;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_FromOrder;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_FromTask;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_IncludeRemove;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_IncludeSave;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_IncludesApply;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_LifeFile;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_New;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_NewEnv;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_NewIncludes;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_NewParam;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_OpenInclude;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_Param;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_Remove;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_RemoveEnv;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_RemoveInclude;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ParameterForm_Wizard;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_Up;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_E_0002;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_ParameterForm_JobParameter;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_ParameterForm_File;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_ParameterForm_Node;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_ParameterForm_Value;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_Value;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_ApplyChanges;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_ParameterForm_From;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_ParameterForm_NoDistinctParam;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_ParameterForm_Order;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_ParameterForm_Task;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ParameterForm_File;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ParameterForm_LiveFile;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ParameterForm_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ParameterForm_Node;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ParameterForm_Value;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TI_ParameterForm_Parameter;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TI_ParameterForm_TabItemEnvironment;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TI_ParameterForm_TabItemIncludes;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TI_ParameterForm_TabItemParameter;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ParameterForm_EnvName;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ParameterForm_EnvValue;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ParameterForm_IncludeFilename;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ParameterForm_IncludeNode;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ParameterForm_ParaName;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ParameterForm_ParaValue;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ParameterForm_ParamDescription;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ParameterForm_ParamName;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ParameterForm_ParamValue;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_JCNodesForm_Nodes;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_ParameterForm_Environment;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_ParameterForm_IncludeParams;
 
 import java.io.File;
 
@@ -101,29 +101,29 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
-import sos.scheduler.editor.app.Editor;
-import ErrorLog;
-import sos.scheduler.editor.app.IOUtils;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.TreeData;
-import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSTable;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
 
 import com.sos.JSHelper.io.Files.JSFile;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
+import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUnsaved;
-import com.sos.joe.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.misc.TreeData;
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.wizard.forms.JobAssistentImportJobParamsForm;
 import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
+import com.sos.joe.xml.IOUtils;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.objects.JSObjJob;
-import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */implements IUnsaved, IUpdateLanguage, ISOSTableMenueListeners {
 	private final Logger		logger					= Logger.getLogger(ParameterForm.class);
@@ -702,7 +702,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		button.setLayoutData(gridDatax);
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override public void widgetSelected(final SelectionEvent e) {
-				String text = sos.scheduler.editor.app.Utils.showClipboard(tbxParameterValue.getText(), getShell(), true, "");
+				String text = com.sos.joe.xml.Utils.showClipboard(tbxParameterValue.getText(), getShell(), true, "");
 				if (text != null)
 					tbxParameterValue.setText(text);
 			}
@@ -721,7 +721,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		label4 = new Label(Group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label4.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 6, 1));
 		//		label4.setText(Messages.getLabel("Label"));
-		tParameter = JOE_Tbl_JCNodesForm_Nodes.Control(new SOSTable(Group, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER | SWT.RESIZE, this));
+		tParameter = (SOSTable) JOE_Tbl_JCNodesForm_Nodes.Control(new SOSTable(Group, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER | SWT.RESIZE, this));
 		tParameter.initialize();
 		tParameter.setData("caption", "tblParameter");
 		tParameter.addSelectionListener(new SelectionAdapter() {
@@ -1181,7 +1181,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		button.setLayoutData(gridDatax);
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override public void widgetSelected(final SelectionEvent e) {
-				String text = sos.scheduler.editor.app.Utils.showClipboard(tbxParameterValue.getText(), getShell(), true, "");
+				String text = com.sos.joe.xml.Utils.showClipboard(tbxParameterValue.getText(), getShell(), true, "");
 				if (text != null)
 					tbxParameterValue.setText(text);
 			}
@@ -1196,7 +1196,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				addParam();
 			}
 		});
-		tParameter = JOE_Tbl_JCNodesForm_Nodes.Control(new SOSTable(group, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER | SWT.RESIZE, this));
+		tParameter = (SOSTable) JOE_Tbl_JCNodesForm_Nodes.Control(new SOSTable(group, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER | SWT.RESIZE, this));
 		tParameter.initialize();
 		tParameter.setData("caption", "tblParameter");
 		tParameter.addSelectionListener(new SelectionAdapter() {

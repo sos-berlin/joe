@@ -9,7 +9,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import sos.scheduler.editor.app.TreeData;
+import com.sos.joe.globals.misc.TreeData;
 
 import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.objects.job.forms.ScriptForm;

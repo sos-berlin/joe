@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 
 import com.sos.dialog.swtdesigner.SWTResourceManager;
@@ -254,7 +254,7 @@ public class JobAssistentTasksForm {
 		if ((txtTask.getText() != null && txtTask.getText().trim().length() == 0)
 				&& (txtMinTasks.getText() != null && txtMinTasks.getText().trim().length() > 0)) {
 			if (Integer.parseInt(txtMinTasks.getText()) > 1) {
-				//				ErrorLog.message(tasksShell, sos.scheduler.editor.app.Messages.getString("min_task_to_great"), SWT.ICON_WARNING | SWT.OK );
+				//				ErrorLog.message(tasksShell, com.sos.joe.globals.messages.Messages.getString("min_task_to_great"), SWT.ICON_WARNING | SWT.OK );
 				ErrorLog.message(tasksShell, SOSJOEMessageCodes.JOE_M_JobAssistent_MinTasksTooLarge.label(), SWT.ICON_WARNING | SWT.OK);
 				return false;
 			}

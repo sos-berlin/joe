@@ -3,7 +3,6 @@ package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -15,22 +14,22 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
-import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUpdateLanguage;
-
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.Utils;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.OrdersListener;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 //import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
 public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
-	private OrdersListener	listener;
+	private final OrdersListener	listener;
 
 	// private SchedulerListener mainListener;
 
@@ -42,7 +41,7 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private SchedulerDom	_dom			= null;
 
 	// public OrdersForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update, SchedulerListener mainListener) {
-	public OrdersForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) {
+	public OrdersForm(final Composite parent, final int style, final SchedulerDom dom, final ISchedulerUpdate update) {
 		super(parent, style);
 		_dom = dom;
 		// this.mainListener = mainListener;
@@ -81,7 +80,8 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		bNewOrder.setLayoutData(gridData);
 		getShell().setDefaultButton(bNewOrder);
 		bNewOrder.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				listener.newCommands(table);
 				bRemoveOrder.setEnabled(true);
 			}
@@ -95,7 +95,8 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		bRemoveOrder.setEnabled(false);
 		bRemoveOrder.setLayoutData(gridData1);
 		bRemoveOrder.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 //				int c = MainWindow.message(getShell(), "Do you want to remove the order?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 				int c = MainWindow.message(getShell(), JOE_M_OrdersForm_RemoveOrder.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 				if (c != SWT.YES)
@@ -114,6 +115,7 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		
 		table = JOE_Tbl_OrdersForm_Table.Control(new Table(ordersGroup, SWT.BORDER | SWT.FULL_SELECTION));
 		table.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseDoubleClick(final MouseEvent e) {
 				if (table.getSelectionCount() > 0)
 					ContextMenu.goTo(table.getSelection()[0].getText(0), _dom, JOEConstants.ORDER);
@@ -124,7 +126,8 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		table.setLinesVisible(true);
 		
 		table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				boolean enabled = true;
 				if (table.getSelectionIndex() > -1) {
 					Element currElem = (Element) table.getSelection()[0].getData();
@@ -141,6 +144,7 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		
 	}
 
+	@Override
 	public void setToolTipText() {
 //
 	}

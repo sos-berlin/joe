@@ -6,11 +6,12 @@ import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.TreeData;
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.globals.misc.TreeData;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
 import com.sos.JSHelper.Exceptions.JobSchedulerException;
@@ -50,9 +51,11 @@ public class JobListener extends JOEListener {
 	private final List						_errorDelays						= null;
 	private final Element					_errorDelay							= null;
 	private JSObjJob						objJSJob							= null;
+	private ISchedulerUpdate objUpdate = null;
  
 	@Deprecated
 	public JobListener(final SchedulerDom dom_, final Element objElement, final ISchedulerUpdate update) {
+		objUpdate = update;
 	}
 
 
@@ -60,17 +63,36 @@ public class JobListener extends JOEListener {
 		objJSJob = pobjTreeData.getJob();
 		objTreeData = pobjTreeData;
 		intJSObjectType = objTreeData.getType();
-	}
+		objUpdate = update;
+		}
 
 	public JobListener(final TreeData pobjTreeData) {
 		objJSJob = pobjTreeData.getJob();
 		objTreeData = pobjTreeData;
 		intJSObjectType = objTreeData.getType();
+		objUpdate = update;
 	}
 
+	public ISchedulerUpdate get_main() {
+		return objUpdate;
+	}
+	
 	public JobListener(final JSObjJob pobjJob) {
 		objJSJob = pobjJob;
 	}
+
+	public String getInclude() {
+		if (objJSJob.hasDescription()) {
+			List <Object> objDescr = objJSJob.getDescription().getContent();
+			for (Object objL : objDescr) {
+				if (objL instanceof Include) {
+					return ((Include) objL).getFile();
+				}
+			}
+		}
+		return "";
+	}
+
 
 	public String getFile() {
 		String strT = objJSJob.getProcess().getFile();
@@ -83,7 +105,20 @@ public class JobListener extends JOEListener {
 		return new Element("job");
 	} // private String getJob
 
-	public void setFile(final String file) {
+	public void setFileAttribute4ProcessTag(final Text file) {
+		if (objJSJob.isScriptEmpty() == false) {
+			int c = MainWindow.message("JobListener: Do you want to remove the existing script and create a process instead?\n(Remember: <process> is a deprecated feature, use script)", SWT.YES | SWT.NO
+					| SWT.ICON_WARNING);
+			if (c != SWT.YES) {
+				file.setText("");
+				return;
+			}
+			objJSJob.setScript(null);
+		}
+		setFileAttribute4ProcessTag(file.getText());;
+	}
+
+	private void setFileAttribute4ProcessTag(final String file) {
 		objJSJob.setFile(file);
 	}
 

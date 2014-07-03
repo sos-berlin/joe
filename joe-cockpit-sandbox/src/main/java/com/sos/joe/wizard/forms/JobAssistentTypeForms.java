@@ -18,14 +18,13 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.Element;
 
-import sos.scheduler.editor.conf.listeners.JobListener;
-
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
@@ -45,31 +44,32 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
  *
  */
 public class JobAssistentTypeForms extends JobWizardBaseForm {
-	@SuppressWarnings("unused") private final String	conSVNVersion		= "$Id: JobAssistentTypeForms.java 25898 2014-06-20 14:36:54Z kb $";
-	private static final String							conTagNameJOB		= "job";
+	@SuppressWarnings("unused")
+	private final String		conSVNVersion		= "$Id: JobAssistentTypeForms.java 25898 2014-06-20 14:36:54Z kb $";
+	private static final String	conTagNameJOB		= "job";
 	/** Parameter: isStandaloneJob = true -> Standalone Job, sonst Order Job*/
-	private boolean										isStandaloneJob		= true;
-	private Button										radStandalonejob	= null;
-	private Button										radOrderjob			= null;
+	private boolean				isStandaloneJob		= true;
+	private Button				radStandalonejob	= null;
+	private Button				radOrderjob			= null;
 	//	private Button										butCancel			= null;
 	//	private Button										butShow				= null;
 	//	private Button										butNext				= null;
-	private Shell										jobTypeShell		= null;
-	private String										jobType				= "";
-	private Element										jobBackUp			= null;
-	private int											assistentType		= JOEConstants.JOBS;
+	private Shell				jobTypeShell		= null;
+	private String				jobType				= "";
+	private Element				jobBackUp			= null;
+	private int					assistentType		= JOEConstants.JOBS;
 
 	/**
 	 * Konstruktor 
 	 * @param dom_ - Type SchedulerDom 
 	 * @param update_ - Type ISchedulerUpdate
 	 */
-	public JobAssistentTypeForms(SchedulerDom dom_, ISchedulerUpdate update_) {
+	public JobAssistentTypeForms(final SchedulerDom dom_, final ISchedulerUpdate update_) {
 		dom = dom_;
 		update = update_;
 	}
 
-	public void showTypeForms(String type, Element job, int assistentType_) {
+	public void showTypeForms(final String type, final Element job, final int assistentType_) {
 		jobType = type;
 		jobBackUp = job;
 		assistentType = assistentType_;
@@ -169,13 +169,13 @@ public class JobAssistentTypeForms extends JobWizardBaseForm {
 									if (cont != SWT.YES) {
 										JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(new JobListener(dom, jobBackUp, update), null,
 												assistentType);
-										importJobs.showAllImportJobs((Utils.getAttributeValue("order", jobBackUp).equals("yes") ? "order" : "standalonejob"));
+										importJobs.showAllImportJobs(Utils.getAttributeValue("order", jobBackUp).equals("yes") ? "order" : "standalonejob");
 										jobTypeShell.dispose();
 										return;
 									}
 							}
 							JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(dom, update, assistentType);
-							importJobs.showAllImportJobs((isStandaloneJob ? "standalonejob" : "order"));
+							importJobs.showAllImportJobs(isStandaloneJob ? "standalonejob" : "order");
 							Utils.stopCursor(jobTypeShell);
 							jobTypeShell.dispose();
 						}

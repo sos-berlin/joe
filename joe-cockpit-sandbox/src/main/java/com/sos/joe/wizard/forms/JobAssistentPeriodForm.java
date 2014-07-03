@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.conf.listeners.PeriodListener;
 import sos.scheduler.editor.conf.listeners.PeriodsListener;
 

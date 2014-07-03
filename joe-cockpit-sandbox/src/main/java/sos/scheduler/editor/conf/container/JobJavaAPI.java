@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.container;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -11,9 +10,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
 
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.objects.job.JobListener;
 //import org.eclipse.swt.events.VerifyEvent;
 //import org.eclipse.swt.events.VerifyListener;

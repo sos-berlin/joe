@@ -18,16 +18,17 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import ErrorLog;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.Utils;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ScheduleListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.components.SOSDateTime;
+import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class ScheduleForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 

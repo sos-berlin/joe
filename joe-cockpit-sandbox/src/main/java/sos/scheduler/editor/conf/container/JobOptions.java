@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.container;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -23,18 +22,18 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.FormBaseClass;
 
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.objects.job.JobListener;
 import com.sos.scheduler.model.objects.JSObjJob;
 import com.sos.scheduler.model.objects.JSObjRunTime;
 //import org.eclipse.swt.events.HelpEvent;
 //import org.eclipse.swt.events.HelpListener;
-//import sos.scheduler.editor.app.Messages;
+//import com.sos.joe.globals.messages.Messages;
 
 public class JobOptions extends FormBaseClass<JobListener> {
 

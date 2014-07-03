@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.container;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -11,14 +10,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.TextArea;
 import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
 
 import com.sos.dialog.classes.WindowsSaver;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.objects.job.JobListener;
 
 public class JobScript extends FormBaseClass<JobListener>  {

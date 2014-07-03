@@ -19,11 +19,11 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import com.sos.joe.interfaces.IUnsaved;
-import com.sos.joe.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
 
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.TreeData;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.SecurityListener;
 

@@ -17,17 +17,17 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUpdateLanguage;
-
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.IOUtils;
-import sos.scheduler.editor.app.MergeAllXMLinDirectory;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.Utils;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.RunTimeListener;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.xml.IOUtils;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
@@ -203,7 +203,7 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
+				String text = com.sos.joe.xml.Utils.showClipboard(tComment.getText(), getShell(), true, "");
 				if (text != null)
 					tComment.setText(text);
 			}

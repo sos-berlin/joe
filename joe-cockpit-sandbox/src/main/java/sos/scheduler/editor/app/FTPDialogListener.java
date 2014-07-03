@@ -23,6 +23,9 @@ import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 import sos.util.SOSUniqueID;
 
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.options.Options;
+
 //import com.trilead.ssh2.SFTPv3DirectoryEntry;
 public class FTPDialogListener {
 	private SOSString			sosString			= null;

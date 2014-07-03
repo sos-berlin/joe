@@ -5,11 +5,11 @@ import org.apache.log4j.Logger;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.JSObjectElement;
-import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
 import com.sos.VirtualFileSystem.Interfaces.ISOSVirtualFile;
 import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.xml.Utils;
 import com.sos.scheduler.model.objects.JSObjBase;
 import com.sos.scheduler.model.objects.JSObjJobChain;
 import com.sos.scheduler.model.objects.JobChain.FileOrderSink;

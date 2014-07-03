@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.conf.listeners.JobOptionsListener;
 
 import com.sos.dialog.swtdesigner.SWTResourceManager;
@@ -241,7 +241,7 @@ public class JobAssistentMonitoringDirectoryForms extends JobWizardBaseForm {
 	}
 
 	private void close() {
-		//		int cont = ErrorLog.message(shellRunOptions, sos.scheduler.editor.app.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		//		int cont = ErrorLog.message(shellRunOptions, com.sos.joe.globals.messages.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		int cont = ErrorLog.message(shellRunOptions, SOSJOEMessageCodes.JOE_M_JobAssistent_Close.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		if (cont == SWT.OK) {
 			Utils.getElementAsString(jobBackUp);

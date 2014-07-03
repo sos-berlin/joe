@@ -25,16 +25,18 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.JDOMException;
 
-import com.sos.joe.interfaces.IUnsaved;
-import com.sos.joe.interfaces.IUpdateLanguage;
-
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.TreeData;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.BaseListener;
+
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.Messages;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.misc.TreeData;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.interfaces.IContainer;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     
@@ -174,7 +176,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
         button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
+				String text = Utils.showClipboard(tComment.getText(), getShell(), true, "");
 				if(text != null)
 					tComment.setText(text);
 			}
@@ -350,7 +352,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     
     //öffnet das File Dialog um ein Basefile auszuwählen    
     private void openFileDialog() {
-    	com.sos.joe.interfaces.IContainer con = MainWindow.getContainer();
+    	IContainer con = MainWindow.getContainer();
     	String currPath = "";
     	String sep = System.getProperty("file.separator");
     	if(con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
@@ -391,12 +393,12 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
     	String sep = System.getProperty("file.separator");
     	if(tFile.getText() != null && tFile.getText().length() > 0) {
     		
-    		com.sos.joe.interfaces.IContainer con = MainWindow.getContainer();
+    		IContainer con = MainWindow.getContainer();
     		
     		if(con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
     			currPath = new java.io.File(con.getCurrentEditor().getFilename()).getParent();    			
     		} else {
-    			currPath = sos.scheduler.editor.app.Options.getSchedulerData() + sep + "config";
+    			currPath = Options.getSchedulerData() + sep + "config";
     		}
     		if(!(currPath.endsWith("/") || currPath.endsWith("\\")))
 				currPath = currPath.concat(sep);

@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
@@ -39,7 +40,6 @@ import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
-import com.sos.JSHelper.Basics.JSVersionInfo;
 import com.sos.dialog.classes.WindowsSaver;
 import com.sos.event.service.forms.ActionsForm;
 import com.sos.i18n.annotation.I18NMessage;
@@ -212,7 +212,7 @@ public class MainWindow {
 
 		Options.loadWindow(sShell, conStringEDITOR);
 
-		String strT = Messages.getLabel(JOE_I_0010) + JSVersionInfo.conVersionNumber;
+		String strT = Messages.getLabel(JOE_I_0010); // + JSVersionInfo.conVersionNumber;
 		container.setTitleText(strT);
 		sShell.setText(strT);
 		logger.debug(strT);
@@ -928,7 +928,7 @@ public class MainWindow {
 		if (container.getCurrentEditor() instanceof sos.scheduler.editor.conf.forms.SchedulerForm) {
 			SchedulerForm form = (SchedulerForm) container.getCurrentEditor();
 			SchedulerDom currdom = form.getDom();
-			changes = (java.util.HashMap) currdom.getListOfChangedObjects().clone();
+//			changes = (java.util.HashMap) currdom.getListOfChangedObjects().clone();
 		}
 		if (container.getCurrentEditor().applyChanges()) {
 			container.getCurrentEditor().save();
@@ -1370,7 +1370,7 @@ public class MainWindow {
 					MainWindow.message("could not save file on ftp Server", SWT.ICON_WARNING);
 				}
 				if (profile.hasError()) {
-					String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), getSShell(), false, EMPTY);
+					String text = com.sos.joe.xml.Utils.showClipboard(txtLog.getText(), getSShell(), false, EMPTY);
 					if (text != null)
 						txtLog.setText(text);
 				}
@@ -1426,7 +1426,7 @@ public class MainWindow {
 					webdavListener.saveAs(container.getCurrentEditor().getFilename(), remoteDir);
 				}
 			if (webdavListener.hasError()) {
-				String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), getSShell(), false, EMPTY);
+				String text = com.sos.joe.xml.Utils.showClipboard(txtLog.getText(), getSShell(), false, EMPTY);
 				if (text != null)
 					txtLog.setText(text);
 			}
@@ -1582,10 +1582,10 @@ public class MainWindow {
 									int pos1 = fName.indexOf(".");
 									int pos2 = fName.lastIndexOf(".");
 									String n = fName.substring(pos1, pos2) + "_" + fName.substring(0, pos1);
-									if (!(((SchedulerDom) dom).getListOfChangedObjects().get(n) != null && ((SchedulerDom) dom).getListOfChangedObjects()
-											.get(n)
-											.equals(SchedulerDom.DELETE)))
-										newFFiles.add(fFile);
+//									if (!(((SchedulerDom) dom).getListOfChangedObjects().get(n) != null && ((SchedulerDom) dom).getListOfChangedObjects()
+//											.get(n)
+//											.equals(SchedulerDom.DELETE)))
+//										newFFiles.add(fFile);
 								}
 							}
 							catch (Exception e) {

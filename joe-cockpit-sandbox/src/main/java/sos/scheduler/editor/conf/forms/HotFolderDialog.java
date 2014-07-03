@@ -24,16 +24,16 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.Utils;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
 import com.sos.dialog.swtdesigner.SWTResourceManager;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.Utils;
 
 public class HotFolderDialog {
 	@SuppressWarnings("unused")

@@ -1,21 +1,21 @@
 package sos.scheduler.editor.conf.composites;
 
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JCNodesForm_Job;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JCNodesForm_OnError;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JobChainNodes_ErrorState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JobChainNodes_NextState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_E_0002;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_Delay;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_Job;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_OnError;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainNodes_ErrorState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainNodes_NextState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainNodes_State;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_JCNodesForm_Setback;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_JCNodesForm_Suspend;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_JobChain_StateAlreadyDefined;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JCNodesForm_Delay;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JobChainNodes_State;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_JCNodesForm_Job;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_JCNodesForm_OnError;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_JobChainNodes_ErrorState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_JobChainNodes_NextState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_E_0002;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNodesForm_Delay;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNodesForm_Job;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNodesForm_OnError;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobChainNodes_ErrorState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobChainNodes_NextState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobChainNodes_State;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JCNodesForm_Setback;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JCNodesForm_Suspend;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JobChain_StateAlreadyDefined;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JCNodesForm_Delay;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JobChainNodes_State;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -36,13 +36,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
-import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.interfaces.ICompositeBaseAbstract;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.objects.jobchain.JobChainListener;
 
 public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListener> implements ICompositeBaseAbstract {

@@ -30,23 +30,24 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
-import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.SOSComboBox;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.OrderListener;
 import sos.util.SOSClassUtil;
 
-import com.sos.i18n.annotation.I18NMsg;
-import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUnsaved;
-import com.sos.joe.interfaces.IUpdateLanguage;
-import com.sos.joe.objects.jobchain.forms.DetailDialogForm;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
+import com.sos.i18n.annotation.I18NMsg;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.objects.jobchain.forms.DetailDialogForm;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
@@ -462,7 +463,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
                     xmlPaths = path;
             }
             else {
-                xmlPaths = sos.scheduler.editor.app.Options.getSchedulerData();
+                xmlPaths = Options.getSchedulerData();
                 xmlPaths = xmlPaths.endsWith("/") || xmlPaths.endsWith("\\") ? xmlPaths + "config/" : xmlPaths.concat("/config/");
             }
 

@@ -5,7 +5,7 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 

@@ -12,15 +12,15 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
-import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUnsaved;
-import com.sos.joe.interfaces.IUpdateLanguage;
-
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.app.Messages;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.PeriodsListener;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 	
@@ -46,7 +46,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
     private Label                label1      = null;
 
     
-    public PeriodsForm(Composite parent, int style, SchedulerDom dom, Element element, ISchedulerUpdate _main) {
+    public PeriodsForm(final Composite parent, final int style, final SchedulerDom dom, final Element element, final ISchedulerUpdate _main) {
         super(parent, style);
         listener = new PeriodsListener(dom, element, _main);
         this.dom = dom;        
@@ -57,19 +57,21 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
         periodForm.setEnabled(false);
         periodForm.hasRepeatTimes(listener.hasRepeatTimes());
         //periodForm.setEnabled(!Utils.hasSchedulesElement(dom, element));
-        this.group.setEnabled(Utils.isElementEnabled("job", dom, element)&& !Utils.hasSchedulesElement(dom, element));
+        group.setEnabled(Utils.isElementEnabled("job", dom, element)&& !Utils.hasSchedulesElement(dom, element));
         
         //this.group.setEnabled(Utils.isElementEnabled("job", dom, element));
     }
 
 
-    public void apply() {
+    @Override
+	public void apply() {
         if (isUnsaved())
             applyPeriod();
     }
 
 
-    public boolean isUnsaved() {
+    @Override
+	public boolean isUnsaved() {
         return bApply.isEnabled();
     }
 
@@ -114,7 +116,8 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
         bApply.setEnabled(false);
         bApply.setLayoutData(gridData1);
         bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                 applyPeriod();
             }
         });
@@ -129,7 +132,8 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
         getShell().setDefaultButton(bNew);
         bNew.setLayoutData(gridData5);
         bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
             	//repeat bzw. repeat_absolute darf nur einmal  def. werden
             	periodForm.hasRepeatTimes(listener.hasRepeatTimes());
                 tPeriods.deselectAll();
@@ -148,7 +152,8 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
         bRemove.setEnabled(false);
         bRemove.setLayoutData(gridData6);
         bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
             	removePeriod();
                /* if (tPeriods.getSelectionCount() > 0) {
                     int index = tPeriods.getSelectionIndex();
@@ -191,7 +196,8 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
         tPeriods.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3));
         tPeriods.setLinesVisible(true);
         tPeriods.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
             	tPeriodSelect();
             }
         });
@@ -229,14 +235,14 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
         GridData gridData = new org.eclipse.swt.layout.GridData();
         gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
         gridData.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-        periodForm = new PeriodForm(group, SWT.NONE, JOEConstants.PERIODS);
+		periodForm = new PeriodForm(group, SWT.NONE, JOEConstants.PERIODS);
         periodForm.setParams(dom, listener.isOnOrder());
         periodForm.setLayoutData(gridData);
         //periodForm.setPeriodsForm(this);//um die Tabelle zu aktualisieren
     }
 
 
-    private void fillPeriod(boolean newPeriod) {
+    private void fillPeriod(final boolean newPeriod) {
         int index = tPeriods.getSelectionIndex();
         periodForm.setEnabled(index != -1 || newPeriod);
         
@@ -281,7 +287,8 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
         
     }
 
-    public void setToolTipText() {
+    @Override
+	public void setToolTipText() {
 //
     }
     

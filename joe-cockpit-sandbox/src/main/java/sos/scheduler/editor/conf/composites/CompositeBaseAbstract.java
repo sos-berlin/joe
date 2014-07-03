@@ -1,6 +1,6 @@
 package sos.scheduler.editor.conf.composites;
 
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_E_0002;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_E_0002;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -8,8 +8,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import ErrorLog;
 import sos.scheduler.editor.classes.CompositeBaseClass;
+
+import com.sos.joe.globals.messages.ErrorLog;
 
 public abstract class CompositeBaseAbstract<T> extends CompositeBaseClass  {
 	@SuppressWarnings("unused")

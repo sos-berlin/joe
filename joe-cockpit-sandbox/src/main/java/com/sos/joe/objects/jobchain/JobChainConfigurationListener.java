@@ -14,7 +14,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.util.SOSClassUtil;
 
 import com.sos.joe.globals.JOEConstants;
@@ -174,7 +174,7 @@ public class JobChainConfigurationListener{
 					} else {
 						Composite composite = new Composite(c.getShell(), SWT.NONE);
 						composite.setLayout(new org.eclipse.swt.layout.FillLayout());
-						df = new DetailForm(composite, SWT.NONE, jobChainname, item.getData() != null && !(item.getData() instanceof sos.scheduler.editor.app.TreeData)? item.getData().toString(): null, null, JOEConstants.DETAILS, _dom, _gui, false, null);
+						df = new DetailForm(composite, SWT.NONE, jobChainname, item.getData() != null && !(item.getData() instanceof com.sos.joe.globals.misc.TreeData)? item.getData().toString(): null, null, JOEConstants.DETAILS, _dom, _gui, false, null);
 						df.setLayout(new org.eclipse.swt.layout.FillLayout());
 					}
 					df.setTree(tree);

@@ -11,7 +11,7 @@ import org.jdom.Element;
 
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class PreProstProcessingListener extends JOEListener {

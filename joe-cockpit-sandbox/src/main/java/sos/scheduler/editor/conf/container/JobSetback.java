@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.container;
-
 import java.text.Collator;
 import java.util.Locale;
 
@@ -19,10 +18,10 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.FormBaseClass;
 
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.objects.job.JobListener;
 
 public class JobSetback extends FormBaseClass <JobListener>  {

@@ -23,12 +23,12 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 import com.sos.joe.globals.interfaces.IUnsaved;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.objects.job.JobOptionsListener;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
  
 public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 	@SuppressWarnings("unused")

@@ -34,7 +34,7 @@ import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
@@ -264,7 +264,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 						TableItem item = tableParams.getSelection()[0];
 						ntext = item.getText(2);
 					}
-					String text = sos.scheduler.editor.app.Utils.showClipboard(ntext, getShell(), true, "");
+					String text = com.sos.joe.xml.Utils.showClipboard(ntext, getShell(), true, "");
 					if (text != null && !text.trim().equalsIgnoreCase(ntext)) {
 						paramText.setText(text);
 						txtValue.setText("");
@@ -451,7 +451,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 				@Override public void widgetSelected(final SelectionEvent e) {
 					saveWindowPosAndSize();
 					if (butApply.getEnabled()) {
-						//						int count = MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getLabel("detailform.close"), SWT.ICON_WARNING | SWT.OK
+						//						int count = MainWindow.message(getShell(), com.sos.joe.globals.messages.Messages.getLabel("detailform.close"), SWT.ICON_WARNING | SWT.OK
 						int count = MainWindow.message(getShell(), JOE_M_0008.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 						if (count != SWT.OK) {
 							return;
@@ -706,7 +706,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 
 	private boolean discardChanges() {
 		if (butApply.getEnabled()) {
-			//			int count = MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("detailform.open"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+			//			int count = MainWindow.message(getShell(), com.sos.joe.globals.messages.Messages.getString("detailform.open"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 			int count = MainWindow.message(getShell(), JOE_M_0022.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 			if (count != SWT.OK) {
 				return false;
@@ -791,7 +791,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 		if (txtParamNote.getText() != null && txtParamNote.getText().length() == 0)
 			return;
 		if (txtName.getText() != null && txtName.getText().length() == 0) {
-			//			MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getString("tooltip.detail.param.missing_param_name_for_note"), SWT.ICON_WARNING
+			//			MainWindow.message(getShell(), com.sos.joe.globals.messages.Messages.getString("tooltip.detail.param.missing_param_name_for_note"), SWT.ICON_WARNING
 			MainWindow.message(getShell(), JOE_M_0024.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 			return;
 		}

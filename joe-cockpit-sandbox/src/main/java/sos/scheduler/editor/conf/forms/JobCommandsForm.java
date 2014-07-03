@@ -14,17 +14,16 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
-import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUpdateLanguage;
-
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.Utils;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobCommandsListener;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
@@ -42,7 +41,7 @@ public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLangua
 
     private SchedulerDom        _dom           = null;
 
-    public JobCommandsForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate update, SchedulerListener mainListener) {
+    public JobCommandsForm(final Composite parent, final int style, final SchedulerDom dom, final Element job, final ISchedulerUpdate update, final SchedulerListener mainListener) {
 
         super(parent, style);
         _dom = dom;
@@ -86,7 +85,8 @@ public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLangua
         bNewCommands.setLayoutData(gridData);
         getShell().setDefaultButton(bNewCommands);
         bNewCommands.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                 listener.newCommands(table);
                 bRemoveCommand.setEnabled(true);
             }
@@ -99,7 +99,8 @@ public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLangua
         bRemoveCommand.setEnabled(false);
         bRemoveCommand.setLayoutData(gridData1);
         bRemoveCommand.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                 bRemoveCommand.setEnabled(listener.deleteCommands(table));
             }
         });
@@ -114,7 +115,8 @@ public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLangua
         gridData2.widthHint = 204;
         table = JOE_Tbl_JobCommand_Table.Control(new Table(commandsGroup, SWT.BORDER | SWT.FULL_SELECTION));
         table.addMouseListener(new MouseAdapter() {
-            public void mouseDoubleClick(final MouseEvent e) {
+            @Override
+			public void mouseDoubleClick(final MouseEvent e) {
                 if (table.getSelectionCount() > 0)
                     ContextMenu.goTo(table.getSelection()[0].getText(0), _dom, JOEConstants.JOB_COMMAND);
             }
@@ -126,14 +128,16 @@ public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLangua
         TableColumn tableColumn = JOE_TCl_JobCommand_Exitcode.Control(new TableColumn(table, SWT.NONE));
         tableColumn.setWidth(240);
         table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                 bRemoveCommand.setEnabled(true);
             }
         });
 
     }
 
-    public void setToolTipText() {
+    @Override
+	public void setToolTipText() {
         //
     }
 

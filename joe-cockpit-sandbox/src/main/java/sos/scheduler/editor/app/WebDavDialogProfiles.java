@@ -26,6 +26,11 @@ import org.eclipse.swt.widgets.Text;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.Messages;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
+
 
 public class WebDavDialogProfiles {
 
@@ -545,7 +550,7 @@ public class WebDavDialogProfiles {
 			return;
 
 		if (butApply.getEnabled()) {
-			int cont = MainWindow.message(schedulerConfigurationShell, sos.scheduler.editor.app.Messages.getString("MainListener.apply_changes"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+			int cont = MainWindow.message(schedulerConfigurationShell, Messages.getString("MainListener.apply_changes"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 			if(cont == SWT.OK) {
 				apply();
 			}

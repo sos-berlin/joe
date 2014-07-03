@@ -19,8 +19,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.TreeData;
-import sos.scheduler.editor.app.Utils;
 import sos.util.SOSClassUtil;
 
 import com.sos.joe.globals.interfaces.IDetailUpdate;
@@ -28,10 +26,12 @@ import com.sos.joe.globals.interfaces.IEditor;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.interfaces.IContainer;
 import com.sos.joe.objects.jobchain.JobChainConfigurationListener;
 import com.sos.joe.xml.IOUtils;
+import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobscheduler.DetailDom;
 
 public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDetailUpdate, IEditor {
@@ -334,6 +334,12 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
 
 	public DetailDom getDom() {
 		return dom;
+	}
+
+
+	@Override public void updateTree(final String string) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

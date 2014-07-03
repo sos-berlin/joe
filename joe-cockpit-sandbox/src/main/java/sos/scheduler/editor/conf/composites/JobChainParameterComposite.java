@@ -1,45 +1,45 @@
 package sos.scheduler.editor.conf.composites;
 
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_DetailForm_ApplyDetails;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_DetailForm_ApplyParam;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_DetailForm_Cancel;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_DetailForm_Documentation;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_DetailForm_Down;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_DetailForm_New;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_DetailForm_RefreshWizardNoteParam;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_DetailForm_Remove;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_DetailForm_TempDocumentation;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_DetailForm_Text;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_DetailForm_Up;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_DetailForm_Wizard;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_DetailForm_XML;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_DetailForm_Language;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Composite1;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_G_DetailForm_MainGroup;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_G_DetailForm_NoteGroup;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_G_DetailForm_ParameterGroup;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_DetailForm_ConfigFile;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_DetailForm_JobDocumentation;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_Name;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_Value;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_0002;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_0008;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_0010;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_0011;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_0012;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_0013;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_0020;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_0021;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_0024;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_DetailForm_NameColumn;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_DetailForm_TextColumn;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_DetailForm_ValueColumn;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_DetailForm_JobChainNote;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_DetailForm_Name;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_DetailForm_Param;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_DetailForm_ParamsFile;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_DetailForm_Value;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Tbl_DetailForm_Params;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_ApplyDetails;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_ApplyParam;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_Cancel;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_Documentation;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_Down;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_New;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_RefreshWizardNoteParam;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_Remove;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_TempDocumentation;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_Text;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_Up;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_Wizard;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_XML;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_DetailForm_Language;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Composite1;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_DetailForm_MainGroup;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_DetailForm_NoteGroup;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_DetailForm_ParameterGroup;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_DetailForm_ConfigFile;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_DetailForm_JobDocumentation;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_Value;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_0002;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_0008;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_0010;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_0011;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_0012;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_0013;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_0020;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_0021;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_0024;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_DetailForm_NameColumn;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_DetailForm_TextColumn;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_DetailForm_ValueColumn;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_DetailForm_JobChainNote;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_DetailForm_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_DetailForm_Param;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_DetailForm_ParamsFile;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_DetailForm_Value;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_DetailForm_Params;
 
 import java.io.File;
 import java.util.List;
@@ -73,28 +73,28 @@ import org.eclipse.swt.widgets.Tree;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
-import sos.scheduler.editor.app.Editor;
-import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
-import sos.scheduler.editor.conf.DetailDom;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.forms.DetailXMLEditorDialogForm;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.util.SOSClassUtil;
 
-import com.sos.joe.interfaces.IDetailUpdate;
+import com.sos.dialog.swtdesigner.SWTResourceManager;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.IDetailUpdate;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.objects.jobchain.JobChainConfigurationListener;
 import com.sos.joe.objects.jobchain.JobChainListener;
 import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
-import com.sos.dialog.swtdesigner.SWTResourceManager;
+import com.sos.joe.xml.jobscheduler.DetailDom;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainListener> implements ISOSTableMenueListeners {
 	@SuppressWarnings("unused")
@@ -272,7 +272,7 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 						TableItem item = tableParams.getSelection()[0];
 						ntext = item.getText(2);
 					}
-					String text = sos.scheduler.editor.app.Utils.showClipboard(ntext, getShell(), true, "");
+					String text = com.sos.joe.xml.Utils.showClipboard(ntext, getShell(), true, "");
 					if (text != null && !text.trim().equalsIgnoreCase(ntext)) {
 						paramText.setText(text);
 						txtValue.setText("");
@@ -306,7 +306,7 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 			butApplyParam.setLayoutData(gridData_9);
 			//			butApplyParam.setText("Apply");
 
-			tableParams = JOE_Tbl_DetailForm_Params.Control(new SOSTable(parameterGroup, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER, this));
+			tableParams = (SOSTable) JOE_Tbl_DetailForm_Params.Control(new SOSTable(parameterGroup, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER, this));
 			tableParams.setEnabled(false);
 			tableParams.addSelectionListener(new SelectionAdapter() {
 				@Override
@@ -464,7 +464,7 @@ public class JobChainParameterComposite extends CompositeBaseAbstract<JobChainLi
 				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					if (butApply.getEnabled()) {
-						//						int count = MainWindow.message(getShell(), sos.scheduler.editor.app.Messages.getLabel("detailform.close"), SWT.ICON_WARNING | SWT.OK
+						//						int count = MainWindow.message(getShell(), com.sos.joe.globals.messages.Messages.getLabel("detailform.close"), SWT.ICON_WARNING | SWT.OK
 						int count = MainWindow.message(getShell(), JOE_M_0008.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 						if (count != SWT.OK) {
 							return;

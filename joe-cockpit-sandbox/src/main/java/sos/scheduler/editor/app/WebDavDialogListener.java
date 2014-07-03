@@ -21,6 +21,9 @@ import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 import sos.util.SOSUniqueID;
 
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.options.Options;
+
 
 public class WebDavDialogListener {
 

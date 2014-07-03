@@ -34,8 +34,10 @@ import sos.util.SOSString;
 
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.interfaces.IContainer;
 import com.sos.joe.xml.DomParser;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
@@ -424,7 +426,7 @@ public class FTPDialog {
 			final Button butLog = new Button(schedulerConfigurationShell, SWT.NONE);
 			butLog.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent e) {
-					String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), schedulerConfigurationShell, false, null, false, null, false);
+					String text = com.sos.joe.xml.Utils.showClipboard(txtLog.getText(), schedulerConfigurationShell, false, null, false, null, false);
 					if (text != null)
 						txtLog.setText(text);
 				}
@@ -561,7 +563,7 @@ public class FTPDialog {
 					MainWindow.setSaveStatus();
 				}
 				currdom.setFilename(new java.io.File(newFilename).getCanonicalPath());
-				com.sos.joe.interfaces.IContainer con = MainWindow.getContainer();
+				IContainer con = MainWindow.getContainer();
 				SchedulerForm sf = (SchedulerForm) con.getCurrentEditor();
 				sf.updateTree("jobs");
 				String name = currdom.getRoot().getName();

@@ -17,16 +17,15 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
-import com.sos.joe.interfaces.IUnsaved;
-import com.sos.joe.interfaces.IUpdateLanguage;
-
-import sos.scheduler.editor.app.IOUtils;
-import sos.scheduler.editor.app.MergeAllXMLinDirectory;
-import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.Utils;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobLockUseListener;
+
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.IOUtils;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 
 public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
@@ -55,7 +54,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	private           Button                     butBrowse            = null;
 
 
-	public JobLockUseForm(Composite parent, int style, SchedulerDom dom, Element job) {
+	public JobLockUseForm(final Composite parent, final int style, final SchedulerDom dom, final Element job) {
 
 		super(parent, style);
 		listener = new JobLockUseListener(dom, job);
@@ -67,6 +66,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	}
 
 
+	@Override
 	public void apply() {
 
 		if (isUnsaved())
@@ -75,6 +75,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	}
 
 
+	@Override
 	public boolean isUnsaved() {
 		return bApplyLockUse.isEnabled();
 	}
@@ -108,6 +109,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		tLockUse = JOE_Cbo_JobLockUseForm_LockUse.Control(new Combo(group1, SWT.NONE));
 		tLockUse.setEnabled(false);
 		tLockUse.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				if (!tLockUse.getText().equals(""))
 					getShell().setDefaultButton(bApplyLockUse);
@@ -123,6 +125,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		bExclusive.setSelection(true);
 		bExclusive.setEnabled(true);
 		bExclusive.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				bApplyLockUse.setEnabled(true);
 			}
@@ -132,7 +135,8 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		bApplyLockUse.setEnabled(false);
 		bApplyLockUse.setLayoutData(gridData51);
 		bApplyLockUse.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				applyLockUse();
 			}
 		});
@@ -140,12 +144,13 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		new Label(group1, SWT.NONE);
 		
 		GridData gridData30 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 3, 3);
-		this.tLockUseTable = JOE_Tbl_JobLockUseForm_LockUseTable.Control(new Table(group1, SWT.BORDER | SWT.FULL_SELECTION));
-		this.tLockUseTable.setHeaderVisible(true);
-		this.tLockUseTable.setLayoutData(gridData30);
-		this.tLockUseTable.setLinesVisible(true);
-		this.tLockUseTable.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		tLockUseTable = JOE_Tbl_JobLockUseForm_LockUseTable.Control(new Table(group1, SWT.BORDER | SWT.FULL_SELECTION));
+		tLockUseTable.setHeaderVisible(true);
+		tLockUseTable.setLayoutData(gridData30);
+		tLockUseTable.setLinesVisible(true);
+		tLockUseTable.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				if (tLockUseTable.getSelectionCount() > 0) {
 					listener.selectLockUse(tLockUseTable.getSelectionIndex());
 					initLockUse(true);
@@ -155,17 +160,18 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			}
 		});
 		
-		TableColumn tableColumn5 = JOE_TCl_JobLockUseForm_Lock.Control(new TableColumn(this.tLockUseTable, SWT.NONE));
+		TableColumn tableColumn5 = JOE_TCl_JobLockUseForm_Lock.Control(new TableColumn(tLockUseTable, SWT.NONE));
 		tableColumn5.setWidth(300);
 		
-		TableColumn tableColumn6 = JOE_TCl_JobLockUseForm_Exclusive.Control(new TableColumn(this.tLockUseTable, SWT.NONE));
+		TableColumn tableColumn6 = JOE_TCl_JobLockUseForm_Exclusive.Control(new TableColumn(tLockUseTable, SWT.NONE));
 		tableColumn6.setWidth(70);
 
 		GridData gridData41 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
 		bNewLockUse = JOE_B_JobLockUseForm_NewLockUse.Control(new Button(group1, SWT.NONE));
 		bNewLockUse.setLayoutData(gridData41);
 		bNewLockUse.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				tLockUseTable.deselectAll();
 				listener.newLockUse();
 				initLockUse(true);
@@ -180,7 +186,8 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		bRemoveLockUse.setEnabled(false);
 		bRemoveLockUse.setLayoutData(gridData31);
 		bRemoveLockUse.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				if (tLockUseTable.getSelectionCount() > 0) {
 					int index = tLockUseTable.getSelectionIndex();
 					listener.deleteLockUse(index);
@@ -203,6 +210,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		butBrowse = JOE_B_JobLockUseForm_Browse.Control(new Button(group1, SWT.NONE));
 		butBrowse.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_LOCK);
 				tLockUse.setEnabled(true);
@@ -222,7 +230,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 	// lock.use
 
-	private void initLockUseTable(boolean enabled) {
+	private void initLockUseTable(final boolean enabled) {
 		tLockUseTable.setEnabled(enabled);
 		bNewLockUse.setEnabled(true);
 		initLockUse(false);
@@ -233,7 +241,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	}
 
 
-	private void initLockUse(boolean enabled) {
+	private void initLockUse(final boolean enabled) {
 		tLockUse.setEnabled(enabled);
 		bExclusive.setEnabled(enabled);
 		if (enabled) {
@@ -249,7 +257,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 	private void applyLockUse() {
 		listener.applyLockUse(tLockUse.getText(), bExclusive.getSelection());
-		listener.fillLockUse(this.tLockUseTable);
+		listener.fillLockUse(tLockUseTable);
 		initLockUse(false);
 		getShell().setDefaultButton(null);
 	}
@@ -257,6 +265,7 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 
 
+	@Override
 	public void setToolTipText() {
 //
 	}

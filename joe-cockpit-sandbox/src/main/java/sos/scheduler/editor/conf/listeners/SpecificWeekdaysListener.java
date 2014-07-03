@@ -11,8 +11,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.TreeData;
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.globals.misc.TreeData;
+import com.sos.joe.xml.Utils;
 import sos.util.SOSClassUtil;
 
 import com.sos.joe.globals.JOEConstants;

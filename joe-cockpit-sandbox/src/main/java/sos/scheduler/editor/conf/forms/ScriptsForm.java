@@ -17,19 +17,20 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
-import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.TreeData;
-import sos.scheduler.editor.app.Utils;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.PreProstProcessingListener;
+import sos.scheduler.editor.conf.listeners.SchedulerListener;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.WindowsSaver;
+import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.TreeData;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 ;
 public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
@@ -100,7 +101,7 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 2;
 			scriptsGroup = new Group(this, SWT.NONE);
-			scriptsGroup.setText(sos.scheduler.JOEConstants.conf.listeners.SchedulerListener.MONITOR);
+			scriptsGroup.setText(SchedulerListener.MONITOR);
 			scriptsGroup.setLayout(gridLayout);
 			if (Utils.isElementEnabled("job", dom, listener.getParent())) {
 				scriptsGroup.setEnabled(true);
