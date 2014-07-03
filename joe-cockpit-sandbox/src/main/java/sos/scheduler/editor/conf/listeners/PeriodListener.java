@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.eclipse.swt.widgets.Button;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 

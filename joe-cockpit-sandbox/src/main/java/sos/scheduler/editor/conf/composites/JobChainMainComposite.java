@@ -1,10 +1,10 @@
 package sos.scheduler.editor.conf.composites;
 
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainForm_ChainName;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainForm_Title;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_JobChainForm_JobChain;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JobChainForm_ChainName;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JobChainForm_Title;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobChainForm_ChainName;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobChainForm_Title;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JobChainForm_JobChain;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JobChainForm_ChainName;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JobChainForm_Title;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -19,11 +19,11 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 
+import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.objects.jobchain.JobChainListener;
 
 public class JobChainMainComposite extends CompositeBaseClass {

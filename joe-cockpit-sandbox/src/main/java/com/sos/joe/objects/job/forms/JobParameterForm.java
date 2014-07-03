@@ -40,7 +40,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.conf.listeners.JobParameterListener;
 import sos.util.SOSString;
 
@@ -51,10 +51,12 @@ import com.sos.joe.globals.interfaces.IUnsaved;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
+import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.wizard.forms.JobAssistentImportJobParamsForm;
 import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
+import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.objects.JSObjJob;
   
@@ -595,7 +597,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		button.setLayoutData(gridDatax);
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override public void widgetSelected(final SelectionEvent e) {
-				String text = sos.scheduler.editor.app.Utils.showClipboard(tParaValue.getText(), getShell(), true, "");
+				String text = com.sos.joe.xml.Utils.showClipboard(tParaValue.getText(), getShell(), true, "");
 				if (text != null)
 					tParaValue.setText(text);
 			}
@@ -1118,7 +1120,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		button.setLayoutData(gridDatax);
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override public void widgetSelected(final SelectionEvent e) {
-				String text = sos.scheduler.editor.app.Utils.showClipboard(tParaValue.getText(), getShell(), true, "");
+				String text = com.sos.joe.xml.Utils.showClipboard(tParaValue.getText(), getShell(), true, "");
 				if (text != null)
 					tParaValue.setText(text);
 			}

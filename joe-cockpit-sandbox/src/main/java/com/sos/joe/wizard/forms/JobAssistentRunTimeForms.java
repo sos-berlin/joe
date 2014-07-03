@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.conf.listeners.DateListener;
 import sos.scheduler.editor.conf.listeners.DaysListener;
 import sos.scheduler.editor.conf.listeners.PeriodListener;
@@ -665,7 +665,7 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
 		for (int i = 0; i < list.getItemCount(); i++) {
 			String currStr = list.getItem(i);
 			if (currStr.equalsIgnoreCase(str)) {
-				//				ErrorLog.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.run_time.period_exist"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+				//				ErrorLog.message(runTimeSingleShell, com.sos.joe.globals.messages.Messages.getString("assistent.run_time.period_exist"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 				ErrorLog.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_PeriodExists.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 				return true;
 			}
@@ -941,7 +941,7 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
 			return true;
 		}
 		if (!Utils.isOnlyDigits(time)) {
-			//			ErrorLog.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.no_numeric"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+			//			ErrorLog.message(runTimeSingleShell, com.sos.joe.globals.messages.Messages.getString("assistent.no_numeric"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 			ErrorLog.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoNum.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 			retVal = false;
 		}
@@ -950,7 +950,7 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
 			if (which.equals("hour")) {
 				Utils.str2int(time);
 				if (itime < 0 || itime > 24) {
-					//					ErrorLog.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.no_time"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+					//					ErrorLog.message(runTimeSingleShell, com.sos.joe.globals.messages.Messages.getString("assistent.no_time"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 					ErrorLog.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoTime.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 					retVal = false;
 				}
@@ -959,13 +959,13 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
 				if (which.equals("minutes") || which.equals("secound")) {
 					Utils.str2int(time);
 					if (itime < 0 || itime > 60) {
-						//					ErrorLog.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.no_time"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+						//					ErrorLog.message(runTimeSingleShell, com.sos.joe.globals.messages.Messages.getString("assistent.no_time"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 						ErrorLog.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoTime.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 						retVal = false;
 					}
 				}
 			if (time.trim().length() > 2) {
-				//				ErrorLog.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.no_time"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+				//				ErrorLog.message(runTimeSingleShell, com.sos.joe.globals.messages.Messages.getString("assistent.no_time"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 				ErrorLog.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoTime.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 				retVal = false;
 			}
@@ -974,7 +974,7 @@ public class JobAssistentRunTimeForms extends JobWizardBaseForm {
 	}
 
 	private void close() {
-		//		int cont = ErrorLog.message(runTimeSingleShell, sos.scheduler.editor.app.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		//		int cont = ErrorLog.message(runTimeSingleShell, com.sos.joe.globals.messages.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		int cont = ErrorLog.message(runTimeSingleShell, SOSJOEMessageCodes.JOE_M_JobAssistent_Close.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		if (cont == SWT.OK) {//Utils.getElementAsString((Element)jobBackUp);			
 			job.setContent(jobBackUp.cloneContent());

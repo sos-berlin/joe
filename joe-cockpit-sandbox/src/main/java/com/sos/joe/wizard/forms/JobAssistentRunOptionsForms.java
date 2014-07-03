@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 
 import com.sos.dialog.swtdesigner.SWTResourceManager;
@@ -229,7 +229,7 @@ public class JobAssistentRunOptionsForms {
 	}
 
 	private void close() {
-		//		int cont = ErrorLog.message(shellRunOptions, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		//		int cont = ErrorLog.message(shellRunOptions, com.sos.joe.globals.messages.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		int cont = ErrorLog.message(shellRunOptions, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		if (cont == SWT.OK) {
 			if (jobBackUp != null)

@@ -19,14 +19,13 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.Editor;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
+import com.sos.joe.globals.interfaces.IUnsaved;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.interfaces.IContainer;
-import com.sos.joe.interfaces.IUnsaved;
 
 /**
 * \class FormBaseClass
@@ -162,15 +161,14 @@ public abstract class CompositeBaseClass /* extends Composite */ implements IUns
 		display.asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				JOEConstants.objMainWindow.setStatusLine(pstrText);
+				MainWindow.setStatusLine(pstrText);
 				try {
 					Thread.sleep(delay);
 				}
 				catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				JOEConstants.objMainWindow.setStatusLine("");
+				MainWindow.setStatusLine("");
 			}
 		});
 

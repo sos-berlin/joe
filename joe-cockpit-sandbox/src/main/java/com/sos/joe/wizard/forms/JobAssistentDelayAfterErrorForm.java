@@ -417,7 +417,7 @@ public class JobAssistentDelayAfterErrorForm extends JobWizardBaseForm {
 	}
 
 	private void close() {
-		//		int cont = ErrorLog.message(shellSetBack, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		//		int cont = ErrorLog.message(shellSetBack, com.sos.joe.globals.messages.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		int cont = ErrorLog.message(shellSetBack, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		if (cont == SWT.OK) {
 			if (jobBackUp != null)

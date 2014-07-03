@@ -2,6 +2,7 @@
  *
  */
 package sos.scheduler.editor.conf.forms;
+import java.io.File;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -26,27 +27,26 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.JDOMException;
 
-import com.sos.joe.interfaces.IUnsaved;
-import com.sos.joe.interfaces.IUpdateLanguage;
-
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.BaseListener;
 
-public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.interfaces.IContainer;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-	private final String conClassName = this.getClass().getSimpleName();
+public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+	private final String		conClassName			= this.getClass().getSimpleName();
 	@SuppressWarnings("unused")
-	private final Logger logger = Logger.getLogger(this.getClass());
+	private final Logger		logger					= Logger.getLogger(this.getClass());
 	private static final String	conImageICON_OPEN_GIF	= "/sos/scheduler/editor/icon_open.gif";
 	private static final String	conImageICON_EDIT_GIF	= "/sos/scheduler/editor/icon_edit.gif";
 	final String				conMethodName			= conClassName + "::enclosing_method";
 	@SuppressWarnings("unused")
 	private final String		conSVNVersion			= "$Id: BaseForm.java 19102 2013-02-11 09:35:38Z ur $";
-
 	private BaseListener		listener				= null;
 	private Group				group					= null;
 	@SuppressWarnings("unused")
@@ -72,19 +72,16 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 	public SchedulerBaseFileForm(final Composite parent, final int style, final SchedulerDom dom) throws JDOMException {
 		super(parent, style);
 		listener = new BaseListener(dom);
-
 		initialize();
 		setToolTipText();
 		listener.fillTable(table);
 	}
 
-	@Override
-	public boolean isUnsaved() {
+	@Override public boolean isUnsaved() {
 		return bApply.isEnabled();
 	}
 
-	@Override
-	public void apply() {
+	@Override public void apply() {
 		if (isUnsaved())
 			applyFile();
 	}
@@ -116,51 +113,40 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 		gridLayout.numColumns = 3;
 		gridLayout.verticalSpacing = 5;
 		gridLayout.horizontalSpacing = 5;
-
 		group = JOE_G_BaseForm_BaseFiles.Control(new Group(this, SWT.NONE));
 		group.setLayout(gridLayout);
-
 		label1 = JOE_L_BaseForm_BaseFile.Control(new Label(group, SWT.NONE));
-
 		tFile = JOE_T_BaseForm_BaseFile.Control(new Text(group, SWT.BORDER));
-
 		bApply = JOE_B_BaseForm_Apply.Control(new Button(group, SWT.NONE));
 		bApply.setLayoutData(gridData1);
 		bApply.setEnabled(false);
 		bApply.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				applyFile();
 			}
 		});
-
 		GridData gridData8 = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
 		label3 = JOE_L_BaseForm_BaseComment.Control(new Label(group, SWT.NONE));
 		label3.setLayoutData(gridData8);
-
 		GridData gridData9 = new GridData(GridData.FILL, GridData.FILL, false, false);
 		gridData9.heightHint = 80;
-
 		tComment = JOE_T_BaseForm_BaseComment.Control(new Text(group, SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL));
 		tComment.setLayoutData(gridData9);
 		tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
 		tComment.setEnabled(false);
 		tComment.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent e) {
+			@Override public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == 97 && e.stateMask == SWT.CTRL) {
 					tComment.setSelection(0, tComment.getText().length());
 				}
 			}
 		});
 		tComment.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				bApply.setEnabled(!tFile.getText().equals(""));
 				button.setEnabled(!tFile.getText().equals(""));
 			}
 		});
-
 		final Composite composite = JOE_Cmp_BaseForm_CommentOpen.Control(new Composite(group, SWT.NONE));
 		composite.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		final GridLayout gridLayout_1 = new GridLayout();
@@ -168,68 +154,53 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 		gridLayout_1.marginHeight = 0;
 		gridLayout_1.horizontalSpacing = 0;
 		composite.setLayout(gridLayout_1);
-
 		button = JOE_B_BaseForm_Comment.Control(new Button(composite, SWT.NONE));
 		final GridData gridData = new GridData(GridData.BEGINNING, GridData.CENTER, true, true);
 		button.setLayoutData(gridData);
 		button.setEnabled(false);
 		button.setImage(ResourceManager.getImageFromResource(conImageICON_EDIT_GIF));
 		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
+			@Override public void widgetSelected(final SelectionEvent e) {
+				String text = com.sos.joe.xml.Utils.showClipboard(tComment.getText(), getShell(), true, "");
 				if (text != null)
 					tComment.setText(text);
 			}
 		});
-
 		butOpenFileDialog = JOE_B_BaseForm_OpenFileDialog.Control(new Button(composite, SWT.NONE));
 		butOpenFileDialog.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, true, true));
 		butOpenFileDialog.setEnabled(false);
 		butOpenFileDialog.setImage(ResourceManager.getImageFromResource(conImageICON_OPEN_GIF));
 		butOpenFileDialog.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				openFileDialog();
 			}
-
 		});
-
 		label = JOE_Sep_BaseForm_S1.Control(new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.SHADOW_OUT));
 		label.setLayoutData(gridData11);
-
 		createTable();
-
 		bNew = JOE_B_BaseForm_NewBaseFile.Control(new Button(group, SWT.NONE));
 		bNew.setLayoutData(gridData3);
 		bNew.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				listener.newBaseFile();
 				setInput(true);
 			}
 		});
 		getShell().setDefaultButton(bNew);
-
 		butOpen = JOE_B_BaseForm_OpenBaseFile.Control(new Button(group, SWT.NONE));
 		butOpen.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butOpen.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				openBaseElement();
-
 			}
 		});
-
 		label2 = JOE_Sep_BaseForm_S2.Control(new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL));
 		label2.setLayoutData(gridData21);
-
 		bRemove = JOE_B_BaseForm_RemoveBaseFile.Control(new Button(group, SWT.NONE));
 		bRemove.setEnabled(false);
 		bRemove.setLayoutData(gridData2);
 		bRemove.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				if (table.getSelectionCount() > 0) {
 					int index = table.getSelectionIndex();
 					listener.removeBaseFile(index);
@@ -247,25 +218,21 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 				bRemove.setEnabled(table.getSelectionCount() > 0);
 			}
 		});
-
 		tFile.setEnabled(false);
 		tFile.setLayoutData(gridData4);
 		tFile.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(final ModifyEvent e) {
+			@Override public void modifyText(final ModifyEvent e) {
 				getShell().setDefaultButton(bApply);
 				bApply.setEnabled(!tFile.getText().equals(""));
 				button.setEnabled(!tFile.getText().equals(""));
 			}
 		});
 		tFile.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(final KeyEvent e) {
+			@Override public void keyReleased(final KeyEvent e) {
 				if (e.keyCode == SWT.CR && !tFile.getText().equals(""))
 					applyFile();
 			}
 		});
-
 	}
 
 	/**
@@ -275,8 +242,7 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 2, 4);
 		table = JOE_Tbl_BaseForm_BaseTable.Control(new Table(group, SWT.BORDER | SWT.FULL_SELECTION));
 		table.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDoubleClick(final MouseEvent e) {
+			@Override public void mouseDoubleClick(final MouseEvent e) {
 				openBaseElement();
 			}
 		});
@@ -284,8 +250,7 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 		table.setLayoutData(gridData);
 		table.setLinesVisible(true);
 		table.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				if (table.getSelectionCount() > 0) {
 					listener.selectBaseFile(table.getSelectionIndex());
 					setInput(true);
@@ -294,12 +259,11 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 		});
 		TableColumn tableColumn = JOE_TCl_BaseForm_BaseFiles.Control(new TableColumn(table, SWT.NONE));
 		tableColumn.setWidth(300);
-//		tableColumn.setText(Messages.getLabel("BaseFile"));
-
+		//		tableColumn.setText(Messages.getLabel("BaseFile"));
 		TableColumn tableColumn1 = JOE_TCl_BaseForm_BaseComment.Control(new TableColumn(table, SWT.NONE));
 		table.setSortColumn(tableColumn1);
 		tableColumn1.setWidth(300);
-//		tableColumn1.setText(Messages.getLabel("Comment"));
+		//		tableColumn1.setText(Messages.getLabel("Comment"));
 	}
 
 	private void applyFile() {
@@ -327,14 +291,13 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 		bRemove.setEnabled(table.getSelectionCount() > 0);
 	}
 
-	@Override
-	public void setToolTipText() {
-//
+	@Override public void setToolTipText() {
+		//
 	}
 
 	// öffnet das File Dialog um ein Basefile auszuwählen
 	private void openFileDialog() {
-		com.sos.joe.interfaces.IContainer con = MainWindow.getContainer();
+		IContainer con = MainWindow.getContainer();
 		String currPath = "";
 		String sep = System.getProperty("file.separator");
 		if (con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
@@ -343,28 +306,21 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 		else {
 			currPath = Options.getSchedulerData() + sep + "config";
 		}
-
 		currPath = currPath.replace("/".toCharArray()[0], sep.toCharArray()[0]);
 		currPath = currPath.replace("\\".toCharArray()[0], sep.toCharArray()[0]);
-
 		FileDialog fdialog = JOE_FD_BaseForm_OpenBaseFile.Control(new FileDialog(MainWindow.getSShell(), SWT.OPEN));
 		fdialog.setFilterPath(currPath);
 		fdialog.setFilterExtensions(new String[] { "*.xml", "*.sosdoc", "*.*" });
-//		fdialog.setText(Messages.getLabel("OpenBaseFile"));
-
+		//		fdialog.setText(Messages.getLabel("OpenBaseFile"));
 		String fname = fdialog.open();
 		if (fname == null)
 			return;
-
 		// fname = fname.substring(currPath.length()+1);
 		fname = fname.replaceAll("/", sep);
 		// fname = fname.replaceAll("\\\\", sep);
-
 		if (fname.toLowerCase().startsWith(currPath.toLowerCase()))
 			fname = fname.substring(currPath.length() + 1);
-
 		tFile.setText(fname);
-
 		// path = fdialog.getFilterPath();
 	}
 
@@ -373,27 +329,21 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 		String currPath = "";
 		String sep = System.getProperty("file.separator");
 		if (tFile.getText() != null && tFile.getText().length() > 0) {
-
-			com.sos.joe.interfaces.IContainer con = MainWindow.getContainer();
-
+			IContainer con = MainWindow.getContainer();
 			if (con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
-				currPath = new java.io.File(con.getCurrentEditor().getFilename()).getParent();
+				currPath = new File(con.getCurrentEditor().getFilename()).getParent();
 			}
 			else {
-				currPath = sos.scheduler.editor.app.Options.getSchedulerData() + sep + "config";
+				currPath = Options.getSchedulerData() + sep + "config";
 			}
 			if (!(currPath.endsWith("/") || currPath.endsWith("\\")))
 				currPath = currPath.concat(sep);
-
 			if (tFile.getText().toLowerCase().startsWith(currPath.toLowerCase()))
 				currPath = tFile.getText();
 			else
 				currPath = currPath.concat(tFile.getText());
-
 			con.openScheduler(currPath);
-
 			con.setStatusInTitle();
-
 		}
 		else {
 			MainWindow.message("There is no Basefile defined.", SWT.ICON_WARNING | SWT.OK);

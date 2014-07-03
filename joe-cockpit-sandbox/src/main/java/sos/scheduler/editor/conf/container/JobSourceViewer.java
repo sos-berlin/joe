@@ -1,17 +1,17 @@
 package sos.scheduler.editor.conf.container;
 
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_E_0002;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_E_0002;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-import ErrorLog;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.TextArea;
 import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
 import com.sos.dialog.classes.WindowsSaver;
+import com.sos.joe.globals.messages.ErrorLog;
 
 public class JobSourceViewer extends FormBaseClass <JOEListener> {
 

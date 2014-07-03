@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.container;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -10,9 +9,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
 
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.objects.job.JobListener;
 
 public class JobProcessFile extends FormBaseClass<JobListener> {
@@ -93,13 +92,14 @@ public class JobProcessFile extends FormBaseClass<JobListener> {
 			@Override
 			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if (!init) {
-					objJobDataProvider.setFile(tExecuteFile.getText());
+					init = true;  // avoid endless loop
+					objJobDataProvider.setFileAttribute4ProcessTag(tExecuteFile);
+					init = false;
 				}
 			}
 		});
 
-		@SuppressWarnings("unused")
-		Label label3 = SOSJOEMessageCodes.JOE_L_JobProcessFile_Parameter.Control(new Label(gExecutable, SWT.NONE));
+		SOSJOEMessageCodes.JOE_L_JobProcessFile_Parameter.Control(new Label(gExecutable, SWT.NONE));
 
 		tParameter = SOSJOEMessageCodes.JOE_T_JobProcessFile_Parameter.Control(new Text(gExecutable, SWT.BORDER));
 		tParameter.setLayoutData(gridData2);
@@ -111,8 +111,7 @@ public class JobProcessFile extends FormBaseClass<JobListener> {
 			}
 		});
 
-		@SuppressWarnings("unused")
-		Label label4 = SOSJOEMessageCodes.JOE_L_JobProcessFile_LogFile.Control(new Label(gExecutable, SWT.NONE));
+		SOSJOEMessageCodes.JOE_L_JobProcessFile_LogFile.Control(new Label(gExecutable, SWT.NONE));
 
 		tLogFile = SOSJOEMessageCodes.JOE_T_JobProcessFile_LogFile.Control(new Text(gExecutable, SWT.BORDER));
 		tLogFile.setLayoutData(gridData3);

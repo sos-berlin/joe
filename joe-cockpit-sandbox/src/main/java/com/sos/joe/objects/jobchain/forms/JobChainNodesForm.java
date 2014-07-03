@@ -10,6 +10,9 @@ import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNodesFor
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_Node;
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_OnError;
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_State;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TI_DiagramViewer;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TI_JobChainNodeParameter;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TI_JobChainParameter;
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TI_ScriptJobMainForm_Doc;
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TI_ScriptJobMainForm_FileWatcher;
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TI_ScriptJobMainForm_Options;
@@ -49,7 +52,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.TreeData;
+import com.sos.joe.globals.misc.TreeData;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.FolderNameSelector;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
@@ -69,15 +72,31 @@ import sos.scheduler.editor.conf.container.JobSourceViewer;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.DialogAdapter;
+import com.sos.i18n.annotation.I18NMsg;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSMsgJOE;
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.objects.jobchain.JobChainListener;
 import com.sos.joe.objects.jobchain.JobChainNodeWrapper;
 import com.sos.scheduler.model.objects.JSObjJobChain;
- 
+
 public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes */implements IUpdateLanguage, ISOSTableMenueListeners {
+	
+	public static final SOSMsgJOE	JOE_TCl_JCNodesForm_Delay							= new SOSMsgJOE("JOE_TCl_JCNodesForm_Delay");
+	public static final SOSMsgJOE	JOE_TCl_JCNodesForm_HasParams							= new SOSMsgJOE("JOE_TCl_JCNodesForm_HasParams");
+
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_JobChain_TabItemNodes						= new SOSMsgJOE("JOE_JobChain_TabItemNodes");
+
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_JCNodesForm_Delay								= new SOSMsgJOE("JOE_L_JCNodesForm_Delay");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_JCNodesForm_Delay								= new SOSMsgJOE("JOE_T_JCNodesForm_Delay");
+	@I18NMsg
+
 	private final String		conClassName			= this.getClass().getSimpleName();
 	private final Logger		logger					= Logger.getLogger(this.getClass());
 	/**
@@ -550,7 +569,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 			/**
 			 * Table with all nodes/states/steps
 			 */
-			tblJobChainStates = JOE_Tbl_JCNodesForm_Nodes.Control(new SOSTable(grpJobChainStates1, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER | SWT.RESIZE,
+			tblJobChainStates = (SOSTable) JOE_Tbl_JCNodesForm_Nodes.Control(new SOSTable(grpJobChainStates1, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER | SWT.RESIZE,
 					this));
 			tblJobChainStates.initialize();
 			tblJobChainStates.setData("caption", "tblJobChainStates");

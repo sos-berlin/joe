@@ -14,15 +14,18 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
-import com.sos.joe.interfaces.IContainer;
-
 import sos.connection.SOSConnection;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.interfaces.IContainer;
+import com.sos.joe.xml.IOUtils;
+
 public class MainListener extends JOEListener {
-	private static final String	conPropertyEDITOR_LANGUAGE	= "JOEConstants.language";
+	private static final String	conPropertyEDITOR_LANGUAGE	= "Editor.language";
 	// private MainWindow _gui = null;
 	@SuppressWarnings("unused")
 	private final String conClsName = "MainListener";
@@ -44,7 +47,7 @@ public class MainListener extends JOEListener {
 		TextDialog objAboutDialogBox = new TextDialog(MainWindow.getSShell());
 		objAboutDialogBox.setText("About JOE - JobScheduler Object Editor");
 //		objAboutDialogBox.setText(Messages.getString("JOE_I_0010"));
-		String message = sos.scheduler.editor.app.Messages.getString("MainListener.aboutText", Options.getVersion() + //
+		String message = com.sos.joe.globals.messages.Messages.getString("MainListener.aboutText", Options.getVersion() + //
 				"\nSchema-Version:\n\t" + Options.getSchemaVersion() + "\n"
 				+ "SVN: \t" + getSVNVersion());
 		objAboutDialogBox.setContent(message, SWT.CENTER);
@@ -115,7 +118,7 @@ public class MainListener extends JOEListener {
 					if (item.getSelection()) {
 						String lang = (String) item.getData();
 						Options.setLanguage(lang);
-						sos.scheduler.JOEConstants.app.Messages.clearMsgObj();
+						com.sos.joe.globals.messages.Messages.clearMsgObj();
 						loadMessages();
 					}
 				}
@@ -135,7 +138,7 @@ public class MainListener extends JOEListener {
 	}
 
 	public void loadMessages() {
-		if (!sos.scheduler.JOEConstants.app.Messages.setResource(new Locale(Options.getLanguage()))) {
+		if (!com.sos.joe.globals.messages.Messages.setResource(new Locale(Options.getLanguage()))) {
 			MainWindow.message("The resource bundle " + Messages.getBundle() + " for the language " + Options.getLanguage() + " was not found!", SWT.ICON_ERROR
 					| SWT.OK);
 		}

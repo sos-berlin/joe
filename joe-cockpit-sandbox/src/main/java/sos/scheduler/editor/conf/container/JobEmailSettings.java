@@ -14,9 +14,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
 
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.objects.job.JobListener;
 
 public class JobEmailSettings extends FormBaseClass<JobListener> {

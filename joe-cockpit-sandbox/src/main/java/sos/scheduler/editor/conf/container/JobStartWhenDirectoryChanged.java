@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.container;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -16,12 +15,12 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.FolderNameSelector;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.objects.job.JobListener;
 
 public class JobStartWhenDirectoryChanged extends CompositeBaseClass {
@@ -210,7 +209,7 @@ public class JobStartWhenDirectoryChanged extends CompositeBaseClass {
 	}
 
 	@Override
-	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
+	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode1) {
 		String strRegExp = tRegex.getText();
 		if (Utils.isValidRegExpression(strRegExp)) {
 			objJobDataProvider.applyDirectory(tDirectory.getText(), strRegExp);

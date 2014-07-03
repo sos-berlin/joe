@@ -12,8 +12,8 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.TreeData;
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.globals.misc.TreeData;
+import com.sos.joe.xml.Utils;
 import sos.util.SOSClassUtil;
 
 import com.sos.JSHelper.Basics.JSToolBox;

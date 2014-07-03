@@ -2,8 +2,6 @@ package sos.scheduler.editor.conf.forms;
 
 import javax.xml.transform.TransformerException;
 
-import sos.scheduler.editor.app.Editor;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.FocusAdapter;
@@ -24,15 +22,15 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUnsaved;
-import com.sos.joe.interfaces.IUpdateLanguage;
-
-import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.Utils;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobCommandListener;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
@@ -79,7 +77,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	private boolean            event                = false;
 	
 
-	public JobCommandForm(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main)
+	public JobCommandForm(final Composite parent, final int style, final SchedulerDom dom, final Element command, final ISchedulerUpdate main)
 	throws JDOMException, TransformerException {
 		super(parent, style);
 
@@ -93,12 +91,13 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		setToolTipText();			
 		event = true;
  		if (command.getParentElement() != null ){        	
-			this.jobsAndOrdersGroup.setEnabled(Utils.isElementEnabled("job", dom, command.getParentElement()));        	
+			jobsAndOrdersGroup.setEnabled(Utils.isElementEnabled("job", dom, command.getParentElement()));        	
 		}
 
 	}
 
 
+	@Override
 	public void apply() {
 		//if (isUnsaved())
 			//addParam();
@@ -106,6 +105,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	}
 
 
+	@Override
 	public boolean isUnsaved() {
 		return false;
 	}
@@ -147,7 +147,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		cJobchain.setEnabled(false);
 		cJobchain.setItems(listener.getJobChains());		
 		cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(!event)
 					return;
 				
@@ -177,12 +178,14 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		tJob = new Text(gDescription, SWT.BORDER);
 		tJob.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusGained(final FocusEvent e) {
 				tJob.selectAll();
 			}
 		});
 		tJob.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(type == JOEConstants.JOB){
 					listener.setJob(tJob.getText());
 				} else {
@@ -200,12 +203,14 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		tStartAt = new Text(gDescription, SWT.BORDER);
 		tStartAt.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusGained(final FocusEvent e) {
 				tStartAt.selectAll();
 			}
 		});
 		tStartAt.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setAt(tStartAt.getText());
 
 			}
@@ -221,13 +226,15 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		tPriority = new Text(gDescription, SWT.BORDER);
 		tPriority.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusGained(final FocusEvent e) {
 				tPriority.selectAll();
 			}
 		});
 		tPriority.setEnabled(false);
 		tPriority.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setPriority(tPriority.getText());
 
 			}
@@ -239,13 +246,15 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		tTitle = new Text(gDescription, SWT.BORDER);
 		tTitle.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusGained(final FocusEvent e) {
 				tTitle.selectAll();		
 			}
 		});
 		tTitle.setEnabled(false);
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setTitle(tTitle.getText());
 
 			}
@@ -262,7 +271,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		tState = new Combo(gDescription, SWT.BORDER);
 		tState.setEnabled(false);
 		tState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(event)
 					listener.setState(tState.getText());
 				
@@ -278,6 +288,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		cboEndstate = new Combo(gDescription, SWT.NONE);
 		cboEndstate.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				if(event)
 					listener.setEndState(cboEndstate.getText());
@@ -295,6 +306,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		bReplace.setSelection(true);
 		bReplace.setEnabled(true);
 		bReplace.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				listener.setReplace(bReplace.getSelection() ? "yes" : "no");
 				
@@ -339,7 +351,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		cJobchain.setEnabled(false);
 		cJobchain.setItems(listener.getJobChains());		
 		cJobchain.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(!event)
 					return;
 				listener.setJobChain(cJobchain.getText());	
@@ -360,7 +373,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		
 		tJob = JOE_T_JobCommand_Job.Control(new Text(gDescription, SWT.BORDER));
 		tJob.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(type == JOEConstants.JOB){
 					listener.setJob(tJob.getText());
 				} else {
@@ -377,7 +391,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		tStartAt = JOE_T_JobCommand_StartAt.Control(new Text(gDescription, SWT.BORDER));
 		tStartAt.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setAt(tStartAt.getText());
 			}
 		});		
@@ -392,7 +407,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		tPriority = JOE_T_JobCommand_Priority.Control(new Text(gDescription, SWT.BORDER));
 		tPriority.setEnabled(false);
 		tPriority.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setPriority(tPriority.getText());
 			}
 		});
@@ -404,7 +420,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		tTitle = JOE_T_JobCommand_Title.Control(new Text(gDescription, SWT.BORDER));
 		tTitle.setEnabled(false);
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setTitle(tTitle.getText());
 
 			}
@@ -419,7 +436,8 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		tState = JOE_T_JobCommand_State.Control(new Combo(gDescription, SWT.BORDER));
 		tState.setEnabled(false);
 		tState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if(event)
 					listener.setState(tState.getText());
 			}
@@ -433,6 +451,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 		cboEndstate = JOE_Cbo_JobCommand_EndState.Control(new Combo(gDescription, SWT.NONE));
 		cboEndstate.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				if(event)
 					listener.setEndState(cboEndstate.getText());
@@ -449,6 +468,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		bReplace.setSelection(true);
 		bReplace.setEnabled(true);
 		bReplace.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				listener.setReplace(bReplace.getSelection() ? "yes" : "no");
 			}
@@ -509,7 +529,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	}
 
 
-	private void setCommandsEnabled(boolean b) {
+	private void setCommandsEnabled(final boolean b) {
 		tState.setEnabled(b);
 		cboEndstate.setEnabled(b);
 		tPriority.setEnabled(b);
@@ -546,6 +566,7 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	}
 
 
+	@Override
 	public void setToolTipText() {
 //		
 	}

@@ -27,8 +27,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
-import sos.scheduler.editor.conf.listeners.JobOptionsListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 
 import com.sos.dialog.swtdesigner.SWTResourceManager;
@@ -38,6 +36,8 @@ import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.objects.job.JobOptionsListener;
+import com.sos.joe.objects.job.forms.ScriptJobMainForm;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
@@ -72,7 +72,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean				closeDialog		= false;
 
-	public JobAssistentDelayOrderAfterSetbackForm(SchedulerDom dom_, ISchedulerUpdate update_, Element job_, int assistentType_) {
+	public JobAssistentDelayOrderAfterSetbackForm(final SchedulerDom dom_, final ISchedulerUpdate update_, final Element job_, final int assistentType_) {
 		dom = dom_;
 		update = update_;
 		optionlistener = new JobOptionsListener(dom, job_);
@@ -348,7 +348,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		//		butBack.setToolTipText(Messages.getTooltip("butBack"));
 	}
 
-	private void refreshElement(boolean apply) {
+	private void refreshElement(final boolean apply) {
 		Utils.startCursor(shellSetBack);
 		if (modify) {
 			if (optionlistener.getSetbacks().size() > 0) {
@@ -376,7 +376,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 	}
 
 	private void close() {
-		//		int cont = ErrorLog.message(shellSetBack, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+		//		int cont = ErrorLog.message(shellSetBack, com.sos.joe.globals.messages.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 		int cont = ErrorLog.message(shellSetBack, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		if (cont == SWT.OK) {
 			if (jobBackUp != null)
@@ -385,7 +385,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 		}
 	}
 
-	public void setJobname(Combo jobname) {
+	public void setJobname(final Combo jobname) {
 		this.jobname = jobname;
 	}
 
@@ -394,7 +394,7 @@ public class JobAssistentDelayOrderAfterSetbackForm {
 	 * Beim verlassen der Wizzard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
 	 * @param backUpJob
 	 */
-	public void setBackUpJob(Element backUpJob, ScriptJobMainForm jobForm_) {
+	public void setBackUpJob(final Element backUpJob, final ScriptJobMainForm jobForm_) {
 		if (backUpJob != null)
 			jobBackUp = (Element) backUpJob.clone();
 		jobForm = jobForm_;

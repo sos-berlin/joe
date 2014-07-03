@@ -26,10 +26,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 
 import com.sos.dialog.swtdesigner.SWTResourceManager;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.options.Options;
 
 public class SchedulerEditorFontDialog {
 

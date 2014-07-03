@@ -21,11 +21,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
-import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.LanguageSelector;
 import sos.scheduler.editor.classes.SOSComboBox;
@@ -37,6 +33,10 @@ import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
 import com.sos.dialog.classes.WindowsSaver;
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.options.Options;
 
 //import sos.scheduler.editor.conf.listeners.JobListener;
 

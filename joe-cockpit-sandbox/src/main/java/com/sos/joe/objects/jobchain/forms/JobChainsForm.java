@@ -1,5 +1,19 @@
 package com.sos.joe.objects.jobchain.forms;
 
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JobChainsForm_Details;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JobChainsForm_NewChain;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JobChainsForm_RemoveChain;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_JobChainsForm_JobChains;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobChainForm_MaxOrders;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobChainForm_Title;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JobChain;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JobChainsForm_RemoveChain;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JobChainsForm_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JobChainsForm_OrdersRecoverable;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JobChainsForm_Visible;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_JobChainsForm_JobChains;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -20,7 +34,7 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSTable;
@@ -77,7 +91,7 @@ public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpda
 		gridLayout_2.numColumns = 2;
 		jobchainsGroup.setLayout(gridLayout_2);
 
-		tblJobChainList = JOE_Tbl_JobChainsForm_JobChains.Control(new SOSTable(jobchainsGroup, SWT.BORDER, this));
+		tblJobChainList = (SOSTable) JOE_Tbl_JobChainsForm_JobChains.Control(new SOSTable(jobchainsGroup, SWT.BORDER, this));
 		tblJobChainList.initialize();
 		tblJobChainList.addMouseListener(new MouseAdapter() {
 			@Override

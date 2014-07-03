@@ -24,17 +24,16 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUnsaved;
-import com.sos.joe.interfaces.IUpdateLanguage;
-
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import sos.scheduler.editor.app.Utils;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.JobCommandExitCodesListener;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUnsaved;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 
@@ -64,7 +63,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 	private SchedulerDom                  _dom                         = null;
 	
 
-	public JobCommandExitCodesForm(Composite parent, int style, SchedulerDom dom, Element command, ISchedulerUpdate main)	
+	public JobCommandExitCodesForm(final Composite parent, final int style, final SchedulerDom dom, final Element command, final ISchedulerUpdate main)	
 	throws JDOMException, TransformerException {
 		super(parent, style);
 
@@ -86,12 +85,13 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 
 
 		if (command.getParentElement() != null ){        	
-			this.jobsAndOrdersGroup.setEnabled(Utils.isElementEnabled("job", dom, command.getParentElement()));        	
+			jobsAndOrdersGroup.setEnabled(Utils.isElementEnabled("job", dom, command.getParentElement()));        	
 		}
 
 	}
 
 
+	@Override
 	public void apply() {
 		if (isUnsaved())
 			addParam();
@@ -99,6 +99,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 	}
 
 
+	@Override
 	public boolean isUnsaved() {
 		return false;
 	}
@@ -192,6 +193,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 		cExitcode = JOE_Cbo_JobCommands_Exitcode.Control(new Combo(gMain, SWT.NONE));
 		cExitcode.setItems(new String[] {"error", "success", "SIGHUP", "SIGINT", "SIGQUIT", "SIGILL", "SIGTRAP", "SIGABRT", "SIGIOT", "SIGBUS", "SIGFPE", "SIGKILL", "SIGUSR1", "SIGSEGV", "SIGUSR2", "SIGPIPE", "SIGALRM", "SIGTERM", "SIGSTKFLT", "SIGCHLD", "SIGCONT", "SIGSTOP", "SIGTSTP", "SIGTTIN", "SIGTTOU", "SIGURG", "SIGXCPU", "SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH", "SIGPOLL", "SIGIO", "SIGPWR", "SIGSYS"});
 		cExitcode.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				listener.setExitCode(cExitcode.getText(), updateTree);
 				if (event) {
@@ -217,6 +219,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 
 		addJobButton = JOE_B_JobCommands_AddJob.Control(new Button(composite, SWT.NONE));
 		addJobButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				addJob();
 			}
@@ -226,6 +229,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 		addOrderButton = JOE_B_JobCommands_AddOrder.Control(new Button(composite, SWT.NONE));
 		addOrderButton.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
 		addOrderButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				addOrder();
 			}
@@ -238,6 +242,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 
 		tCommands = JOE_Tbl_JobCommands_Commands.Control(new Table(gMain, SWT.FULL_SELECTION | SWT.BORDER));
 		tCommands.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseDoubleClick(final MouseEvent e) {
 				if(tCommands.getSelectionCount() > 0){
 					String name = tCommands.getSelection()[0].getText(0) +": " + tCommands.getSelection()[0].getText(1) + tCommands.getSelection()[0].getText(2);
@@ -246,6 +251,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 			}
 		});
 		tCommands.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				TableItem item = (TableItem) e.item;
 				if (item == null)
@@ -279,6 +285,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 		bRemoveExitcode.setLayoutData(gridData);
 		bRemoveExitcode.setEnabled(false);
 		bRemoveExitcode.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				listener.deleteCommand(tCommands);                
 				tCommands.deselectAll();
@@ -347,6 +354,7 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 
 
 
+	@Override
 	public void setToolTipText() {
 //		
 	}

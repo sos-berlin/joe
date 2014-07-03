@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.conf.forms.PeriodForm;
 import sos.scheduler.editor.conf.listeners.DateListener;
 import sos.scheduler.editor.conf.listeners.DaysListener;
@@ -466,7 +466,7 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
 		else
 			if (tabFolder.getSelection()[0].getText().equals(JobAssistentPeriodForms.WEEK_DAY)) {
 				if (comboWeekDay.getSelectionIndex() == -1 || comboWeekDay.getText().length() == 0) {
-					//					ErrorLog.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.period.date"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+					//					ErrorLog.message(shell, com.sos.joe.globals.messages.Messages.getString("assistent.period.date"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 					ErrorLog.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_NoWeekdaySelected.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 					return;
 				}
@@ -744,7 +744,7 @@ public class JobAssistentPeriodForms extends JobWizardBaseForm {
 	}
 
 	private void close() {
-		//		int cont = ErrorLog.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+		//		int cont = ErrorLog.message(shell, com.sos.joe.globals.messages.Messages.getString("assistent.close"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		int cont = ErrorLog.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_Close.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		if (cont == SWT.OK) {
 			job.setContent(jobBackUp.cloneContent());

@@ -219,7 +219,7 @@ public class DetailXMLEditorDialogForm {
 		int cont = -1;
 		boolean retVal = false;
 		if(butApply.isEnabled()) {
-//			cont = MainWindow.message(shell, sos.scheduler.editor.app.Messages.getString("detailform.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+//			cont = MainWindow.message(shell, com.sos.joe.globals.messages.Messages.getString("detailform.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 			cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_0008.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 			if(cont == SWT.OK) {						
 				shell.dispose();

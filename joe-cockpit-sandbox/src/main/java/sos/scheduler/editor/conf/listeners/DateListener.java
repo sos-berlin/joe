@@ -1,23 +1,25 @@
 package sos.scheduler.editor.conf.listeners;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.io.File;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.TreeItem;
-import org.jdom.Element;
-import sos.scheduler.editor.app.Editor;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.TreeData;
-import sos.scheduler.editor.app.Utils;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.TreeItem;
+import org.jdom.Element;
+
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.misc.TreeData;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class DateListener implements Comparator {
 
@@ -42,7 +44,7 @@ public class DateListener implements Comparator {
     private List            _listOfAt    = null;
 
     
-    public DateListener(SchedulerDom dom, Element element, int type) {
+    public DateListener(final SchedulerDom dom, final Element element, final int type) {
         _dom = dom;
         _element = element;
         _type = type;
@@ -63,7 +65,7 @@ public class DateListener implements Comparator {
         
     }    
  
-    public void fillList(org.eclipse.swt.widgets.List list) {
+    public void fillList(final org.eclipse.swt.widgets.List list) {
     	
         list.removeAll();
         if (_list != null) {
@@ -92,7 +94,7 @@ public class DateListener implements Comparator {
         
     }        
     
-    private boolean dateExistInList(TreeItem parent, String date) {
+    private boolean dateExistInList(final TreeItem parent, final String date) {
     	for(int i = 0; i < parent.getItemCount(); i++) {
     		if(parent.getItem(i).getText().equalsIgnoreCase(date)){
     			return true;
@@ -101,7 +103,7 @@ public class DateListener implements Comparator {
     	return false;
     }
     
-    private boolean dateExistInList(org.eclipse.swt.widgets.List list, String date) {
+    private boolean dateExistInList(final org.eclipse.swt.widgets.List list, final String date) {
     	for(int i = 0; i < list.getItemCount(); i++) {
     		if(list.getItem(i).equalsIgnoreCase(date)){
     			return true;
@@ -110,7 +112,7 @@ public class DateListener implements Comparator {
     	return false;
     }
 
-    public Element addDate(int year, int month, int day) {
+    public Element addDate(final int year, final int month, final int day) {
         if (_parent == null && _type == 0) {
             _parent = new Element("holidays");
             _element.addContent(_parent);
@@ -143,7 +145,7 @@ public class DateListener implements Comparator {
     }
 
 
-    public String asStr(int value) {
+    public String asStr(final int value) {
         if (value < 10)
             return "0" + value;
         else
@@ -155,13 +157,13 @@ public class DateListener implements Comparator {
     	String delDate = "";
     	
     	if (index >= 0 && index < _list.size()) {
-    		delDate = Utils.getAttributeValue("date", (Element)(_list.get(index)));
+    		delDate = Utils.getAttributeValue("date", (Element)_list.get(index));
     	}else {
     		
-    		int i = _list.size() - (index); 
+    		int i = _list.size() - index; 
     		if(i < 0) 
-    			i = i*(-1);
-    		Element atE = (Element)(_listOfAt.get(i));
+    			i = i*-1;
+    		Element atE = (Element)_listOfAt.get(i);
     		//System.out.println(atE.getAttributes());
     		delDate = Utils.getAttributeValue("at", atE).substring(0, 10);
     		
@@ -208,7 +210,7 @@ public class DateListener implements Comparator {
     }
 
 
-    public int[] getDate(int index) {
+    public int[] getDate(final int index) {
         Element element = (Element) _list.get(index);
         String date = element.getAttributeValue("date");
         String[] str = date.split("-");
@@ -236,7 +238,7 @@ public class DateListener implements Comparator {
     }
 
 
-    public void fillTreeDays(TreeItem parent, boolean expand) {
+    public void fillTreeDays(final TreeItem parent, final boolean expand) {
         if (_list != null) {
             Iterator it = _list.iterator();
             parent.removeAll();
@@ -291,7 +293,7 @@ public class DateListener implements Comparator {
     }
 
 
-    public boolean exists(int year, int month, int day) {
+    public boolean exists(final int year, final int month, final int day) {
         if (_list != null) {
             for (int i = 0; i < _list.size(); i++) {
                 int[] date = getDate(i);
@@ -315,7 +317,8 @@ public class DateListener implements Comparator {
     }
 
 
-    public int compare(Object o1, Object o2) {
+    @Override
+	public int compare(final Object o1, final Object o2) {
         if (o1 instanceof Element && o2 instanceof Element) {
             String date1 = ((Element) o1).getAttributeValue("date");
             String date2 = ((Element) o2).getAttributeValue("date");
@@ -349,7 +352,7 @@ public class DateListener implements Comparator {
           return new String[0];
   }
     
-    public void fillTable(Table table) {
+    public void fillTable(final Table table) {
     	table.removeAll();
     	if (_parent != null) {    		
     		List includeList = _parent.getChildren("include");
@@ -390,7 +393,7 @@ public class DateListener implements Comparator {
     	}
     }
     
-    public void addInclude(Table table, String filename, boolean isLive) {
+    public void addInclude(final Table table, String filename, boolean isLive) {
     	if (_parent == null && _type == 0) {
     		_parent = new Element("holidays");
     		_element.addContent(_parent);
@@ -413,7 +416,7 @@ public class DateListener implements Comparator {
     			isLive = false;
     		}
     		
-    		_parent.addContent(new Element("include").setAttribute((isLive?"live_file":"file"), filename));
+    		_parent.addContent(new Element("include").setAttribute(isLive?"live_file":"file", filename));
     		_dom.setChanged(true);
     		if(_dom.isDirectory() && _element.getParentElement() != null)
     			_dom.setChangedForDirectory(_element, SchedulerDom.MODIFY);
@@ -438,7 +441,7 @@ public class DateListener implements Comparator {
     		System.out.println("no script element defined!");
     } */   
     
-    public void removeInclude(int index) {
+    public void removeInclude(final int index) {
     	
       /*if (_parent == null && _type == 0) {
         _parent = new Element("holidays");

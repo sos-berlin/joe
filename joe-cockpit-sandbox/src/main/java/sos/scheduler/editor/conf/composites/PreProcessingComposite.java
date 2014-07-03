@@ -1,13 +1,13 @@
 package sos.scheduler.editor.conf.composites;
 
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_PreProcessingComposite_Favourites;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_PreProcessingComposite_Favourites;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cmp_PreProcessingComposite_NameOrdering;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_G_PreProcessingComposite_Script;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_Name;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_PreProcessingComposite_Ordering;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Sp_PreProcessingComposite_Ordering;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_PreProcessingComposite_PreProcessingName;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_PreProcessingComposite_Favourites;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_PreProcessingComposite_Favourites;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cmp_PreProcessingComposite_NameOrdering;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_PreProcessingComposite_Script;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_PreProcessingComposite_Ordering;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Sp_PreProcessingComposite_Ordering;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_PreProcessingComposite_PreProcessingName;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -24,11 +24,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
-import ErrorLog;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 
+import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.objects.job.JobListener;
 
 public class PreProcessingComposite extends CompositeBaseClass {

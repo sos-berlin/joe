@@ -11,13 +11,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.conf.composites.PreProcessingComposite;
 import sos.util.SOSClassUtil;
 
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.misc.TreeData;
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.objects.job.forms.ScriptForm;
 import com.sos.scheduler.model.LanguageDescriptor;

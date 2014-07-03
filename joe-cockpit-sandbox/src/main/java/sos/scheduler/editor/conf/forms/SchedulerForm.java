@@ -25,10 +25,9 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.TabbedContainer;
-import sos.scheduler.editor.app.TreeData;
 import sos.scheduler.editor.app.TreeMenu;
-import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
 import com.sos.dialog.swtdesigner.SWTResourceManager;
@@ -37,7 +36,11 @@ import com.sos.joe.globals.interfaces.IEditor;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.TreeData;
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.interfaces.IContainer;
+import com.sos.joe.xml.IOUtils;
+import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.SchedulerHotFolder;
 
@@ -396,7 +399,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		// if(dom.getFilename() != null && new java.io.File(dom.getFilename()).getName().startsWith("#xml#.config.") &&
 		// dom.getFilename().endsWith(".xml~")) {
 		if (dom.isDirectory()) {
-			res = IOUtils.saveDirectory(dom, false, SchedulerDom.DIRECTORY, null, container);
+			res = MainWindow.saveDirectory(dom, false, SchedulerDom.DIRECTORY, null, container);
 		}
 		else
 			if (dom.isLifeElement()) {
@@ -413,7 +416,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 					type = SchedulerDom.LIFE_ORDER;
 				if (dom.getRoot().getName().equals("add_order"))
 					type = SchedulerDom.LIFE_ADD_ORDER;
-				res = IOUtils.saveDirectory(dom, false, type, dom.getRoot().getName(), container);
+				res = MainWindow.saveDirectory(dom, false, type, dom.getRoot().getName(), container);
 			}
 			else {
 				res = IOUtils.saveFile(dom, false);
@@ -811,40 +814,40 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 			else
 				key1 = elem.getName() + "_" + Utils.getAttributeValue("name", elem);
 			*/
-			if (!dom.getListOfChangedObjects().containsKey(key1))
-				return;
-			if (item.getText().endsWith(SchedulerListener.LOCKS) || item.getText().endsWith(SchedulerListener.PROCESS_CLASSES)) {
-				if (!item.getText().startsWith("*")) {
-					item.setText("*" + item.getText());
-				}
-				return;
-			}
-			if (dom.getListOfChangedObjects().get(key1).equals(SchedulerDom.NEW) && !key1.startsWith("process_class")) {
-				int i = item.getItemCount() - 1;
-				if (i < 0)
-					i = 0;
-				item = item.getItem(i);
-				if (!item.getText().startsWith("*")) {
-					// item.getItem(item.getItemCount()-1);
-					item.setText("*" + item.getText());
-				}
-				return;
-			}
-			while (item != null && item.getParentItem() != null) {
-				String sParent = item.getParentItem().getText();
-				if (sParent.equals(SchedulerListener.JOBS) || sParent.equals(SchedulerListener.ORDERS) || sParent.equals(SchedulerListener.JOB_CHAINS)
-						|| sParent.equals(SchedulerListener.SCHEDULES) || item.getText().equals(SchedulerListener.LOCKS)
-						|| item.getText().equals(SchedulerListener.PROCESS_CLASSES)) {
-					if (!item.getText().startsWith("*")) {
-						item.setText("*" + item.getText());
-					}
-					item = null;
-				}
-				else {
-					item = item.getParentItem();
-					// item.setFont(font);
-				}
-			}
+//			if (!dom.getListOfChangedObjects().containsKey(key1))
+//				return;
+//			if (item.getText().endsWith(SchedulerListener.LOCKS) || item.getText().endsWith(SchedulerListener.PROCESS_CLASSES)) {
+//				if (!item.getText().startsWith("*")) {
+//					item.setText("*" + item.getText());
+//				}
+//				return; 
+//			}
+//			if (dom.getListOfChangedObjects().get(key1).equals(SchedulerDom.NEW) && !key1.startsWith("process_class")) {
+//				int i = item.getItemCount() - 1;
+//				if (i < 0)
+//					i = 0;
+//				item = item.getItem(i);
+//				if (!item.getText().startsWith("*")) {
+//					// item.getItem(item.getItemCount()-1);
+//					item.setText("*" + item.getText());
+//				}
+//				return;
+//			}
+//			while (item != null && item.getParentItem() != null) {
+//				String sParent = item.getParentItem().getText();
+//				if (sParent.equals(SchedulerListener.JOBS) || sParent.equals(SchedulerListener.ORDERS) || sParent.equals(SchedulerListener.JOB_CHAINS)
+//						|| sParent.equals(SchedulerListener.SCHEDULES) || item.getText().equals(SchedulerListener.LOCKS)
+//						|| item.getText().equals(SchedulerListener.PROCESS_CLASSES)) {
+//					if (!item.getText().startsWith("*")) {
+//						item.setText("*" + item.getText());
+//					}
+//					item = null;
+//				}
+//				else {
+//					item = item.getParentItem();
+//					// item.setFont(font);
+//				}
+//			}
 		}
 	}
 

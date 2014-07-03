@@ -36,7 +36,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;
@@ -49,7 +49,7 @@ import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
-import com.sos.joe.jobdoc.editor.listeners.JobListener;
+import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.objects.job.forms.JobDocumentationForm;
 import com.sos.joe.objects.job.forms.ScriptJobMainForm;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;

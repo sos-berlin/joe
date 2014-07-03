@@ -1,14 +1,14 @@
 package sos.scheduler.editor.conf.composites;
 
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobMainComposite_BrowseProcessClass;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobMainComposite_ShowProcessClass;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Cbo_JobMainComposite_ProcessClass;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_G_JobMainComposite_MainOptions;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobMainComposite_JobName;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobMainComposite_JobTitle;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobMainComposite_ProcessClass;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JobMainComposite_JobName;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JobMainComposite_JobTitle;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JobMainComposite_BrowseProcessClass;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JobMainComposite_ShowProcessClass;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_JobMainComposite_ProcessClass;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_JobMainComposite_MainOptions;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobMainComposite_JobName;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobMainComposite_JobTitle;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobMainComposite_ProcessClass;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JobMainComposite_JobName;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JobMainComposite_JobTitle;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -30,16 +30,16 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.Editor;
-import ErrorLog;
-import sos.scheduler.editor.app.IOUtils;
-import sos.scheduler.editor.app.MergeAllXMLinDirectory;
-import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.objects.job.JobListener;
+import com.sos.joe.xml.IOUtils;
+import com.sos.joe.xml.Utils;
+import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 
 public class JobMainComposite extends CompositeBaseClass {
 	@SuppressWarnings("unused")

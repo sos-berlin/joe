@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.w3c.dom.Document;
 
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ParameterListener;

@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.TreeData;
+import com.sos.joe.globals.misc.TreeData;
 import sos.scheduler.editor.classes.LanguageSelector;
 import sos.scheduler.editor.conf.container.JobIncludeFile;
 import sos.scheduler.editor.conf.container.JobJavaAPI;

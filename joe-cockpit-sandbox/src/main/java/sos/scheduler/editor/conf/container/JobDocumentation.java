@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.container;
-
 import java.io.File;
 
 import org.eclipse.swt.SWT;
@@ -15,17 +14,17 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import sos.scheduler.editor.app.Editor;
-import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.classes.FileNameSelector;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.TextArea;
 import sos.scheduler.editor.classes.TextArea.enuSourceTypes;
 import sos.util.SOSClassUtil;
 
+import com.sos.joe.globals.JOEConstants;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.interfaces.IContainer;
 import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
@@ -102,7 +101,7 @@ public class JobDocumentation extends FormBaseClass <JobListener> {
 		GridData gridData12 = new GridData(SWT.FILL, GridData.CENTER, true, false);
 		gridData12.horizontalIndent = -1;
 
-		tFileName = SOSJOEMessageCodes.JOE_T_JobDocumentation_FileName.Control(new FileNameSelector(gDescription, SWT.BORDER));
+		tFileName = (FileNameSelector) SOSJOEMessageCodes.JOE_T_JobDocumentation_FileName.Control(new FileNameSelector(gDescription, SWT.BORDER));
 		tFileName.setLayoutData(gridData12);
 		tFileName.addModifyListener(new ModifyListener() {
 			@Override
@@ -213,7 +212,7 @@ public class JobDocumentation extends FormBaseClass <JobListener> {
 				try {
 					showWaitCursor();
 					if (tFileName.getText() != null && tFileName.getText().length() > 0) {
-						xmlPath = sos.scheduler.editor.app.Options.getSchedulerData();
+						xmlPath = Options.getSchedulerData();
 						xmlPath = xmlPath.endsWith("/") || xmlPath.endsWith("\\") ? xmlPath.concat(tFileName.getText()) : xmlPath.concat("/").concat(
 								tFileName.getText());
 

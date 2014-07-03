@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;

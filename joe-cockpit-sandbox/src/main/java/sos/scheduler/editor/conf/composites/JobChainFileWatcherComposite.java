@@ -1,27 +1,26 @@
 package sos.scheduler.editor.conf.composites;
 
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JCNodesForm_RemoveFile;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_G_JCNodesForm_FileOrderSink;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_DelayAfterError;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_Directory;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_Max;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_MoveTo;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_NextState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_Regex;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_RemoveFile;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JCNodesForm_Repeat;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_M_NoRegex;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_Directory;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_NextState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_Regex;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JCNodesForm_DelayAfterError;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JCNodesForm_Directory;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JCNodesForm_Max;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JCNodesForm_MoveTo;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JCNodesForm_NextState;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JCNodesForm_Regex;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JCNodesForm_Repeat;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_Tbl_JCNodesForm_FileOrderSource;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JCNodesForm_RemoveFile;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNodesForm_DelayAfterError;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNodesForm_Directory;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNodesForm_Max;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNodesForm_MoveTo;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNodesForm_NextState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNodesForm_Regex;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNodesForm_RemoveFile;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNodesForm_Repeat;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_NoRegex;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_Directory;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_NextState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_JCNodesForm_Regex;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JCNodesForm_DelayAfterError;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JCNodesForm_Directory;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JCNodesForm_Max;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JCNodesForm_MoveTo;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JCNodesForm_NextState;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JCNodesForm_Regex;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JCNodesForm_Repeat;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_JCNodesForm_FileOrderSource;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -41,11 +40,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import com.sos.joe.objects.jobchain.JobChainListener;
-
-import ErrorLog;
 import sos.scheduler.editor.app.MainWindow;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.FolderNameSelector;
@@ -54,8 +49,16 @@ import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.messages.SOSMsgJOE;
+import com.sos.joe.objects.jobchain.JobChainListener;
+
 //public class JobChainFileWatcherComposite extends FormBaseClass implements ISOSTableMenueListeners {
 public class JobChainFileWatcherComposite extends CompositeBaseClass /* SOSJOEMessageCodes */ implements ISOSTableMenueListeners {
+	
+	public static final SOSMsgJOE	JOE_G_JCNodesForm_FileOrderSink					= new SOSMsgJOE("JOE_G_JCNodesForm_FileOrderSink");
+
 	@SuppressWarnings("unused")
 	private final String		conSVNVersion				= "$Id$";
 
@@ -166,7 +169,7 @@ public class JobChainFileWatcherComposite extends CompositeBaseClass /* SOSJOEMe
 		//		TableColumnLayout layTableColumnLayout = new TableColumnLayout();
 		//		cmpTableComposite.setLayout(layTableColumnLayout);
 
-		tFileOrderSource = JOE_Tbl_JCNodesForm_FileOrderSource.Control(new SOSTable(gFileOrderSource, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER, this));
+		tFileOrderSource = (SOSTable) JOE_Tbl_JCNodesForm_FileOrderSource.Control(new SOSTable(gFileOrderSource, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER, this));
 		tFileOrderSource.initialize();
 		tFileOrderSource.setData("caption", "tFileOrderSource");
 

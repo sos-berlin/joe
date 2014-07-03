@@ -1,10 +1,10 @@
 package sos.scheduler.editor.conf.composites;
 
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobChainForm_Distributed;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobChainForm_Recoverable;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_B_JobChainForm_Visible;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_L_JobChainForm_MaxOrders;
-import static sos.scheduler.editor.app.SOSJOEMessageCodes.JOE_T_JobChainForm_MaxOrders;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JobChainForm_Distributed;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JobChainForm_Recoverable;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JobChainForm_Visible;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobChainForm_MaxOrders;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_JobChainForm_MaxOrders;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -20,10 +20,10 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import com.sos.joe.objects.jobchain.JobChainListener;
-
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
+
+import com.sos.joe.objects.jobchain.JobChainListener;
 
 public class JobChainOptionsComposite extends CompositeBaseClass {
 	@SuppressWarnings("unused")

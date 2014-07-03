@@ -14,7 +14,6 @@ import org.jdom.xpath.XPath;
 import sos.ftp.profiles.FTPProfile;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.TabbedContainer;
-import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.util.SOSClassUtil;
 
@@ -24,6 +23,7 @@ import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.DomParser;
+import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobscheduler.DetailDom;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 

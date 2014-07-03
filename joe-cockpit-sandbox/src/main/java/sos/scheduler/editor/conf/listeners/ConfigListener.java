@@ -7,7 +7,7 @@ import java.util.List;
 //import org.eclipse.swt.widgets.Table;
 //import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
-import sos.scheduler.editor.app.Utils;
+import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class ConfigListener {

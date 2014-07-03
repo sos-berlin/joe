@@ -18,16 +18,16 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUpdateLanguage;
-
-import sos.scheduler.editor.app.IOUtils;
-import sos.scheduler.editor.app.MergeAllXMLinDirectory;
-import sos.scheduler.editor.app.Options;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.ConfigListener;
+
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.IOUtils;
+import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 /**
  * @author sky2000
@@ -134,7 +134,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	 * @param parent
 	 * @param style
 	 */
-	public ConfigForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate _update) {
+	public ConfigForm(final Composite parent, final int style, final SchedulerDom dom, final ISchedulerUpdate _update) {
 		super(parent, style);
 		listener = new ConfigListener(dom);
 		initialize();
@@ -219,7 +219,8 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tSpoolerID = JOE_T_ConfigForm_SchedulerID.Control(new Text(group_1, SWT.BORDER));
 		tSpoolerID.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		tSpoolerID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setSpoolerID(tSpoolerID.getText());
 			}
 		});
@@ -229,7 +230,8 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tParameter = JOE_T_ConfigForm_Params.Control(new Text(group_1, SWT.BORDER));
 		tParameter.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		tParameter.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setParam(tParameter.getText());
 			}
 		});
@@ -239,7 +241,8 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tIncludePath = JOE_T_ConfigForm_IncludePath.Control(new Text(group_1, SWT.BORDER));
 		tIncludePath.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		tIncludePath.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setIncludePath(tIncludePath.getText());
 			}
 		});
@@ -249,6 +252,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 		tIpAddress = JOE_T_ConfigForm_IPAddress.Control(new Text(group_1, SWT.BORDER));
 		tIpAddress.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				listener.setIpAddress(tIpAddress.getText());
 			}
@@ -260,7 +264,8 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tLogDir = JOE_T_ConfigForm_LogDir.Control(new Text(group_1, SWT.BORDER));
 		tLogDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		tLogDir.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setLogDir(tLogDir.getText());
 			}
 		});
@@ -270,7 +275,8 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tMailXSLTStylesheet = JOE_T_ConfigForm_MailXSLT.Control(new Text(group_1, SWT.BORDER));
 		tMailXSLTStylesheet.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		tMailXSLTStylesheet.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setMailXSLTStylesheet(tMailXSLTStylesheet.getText());
 			}
 		});
@@ -280,6 +286,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 		txtCentralConfigDir = JOE_T_ConfigForm_CentralConfigDir.Control(new Text(group_1, SWT.BORDER));
 		txtCentralConfigDir.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				listener.setCentralConfigDir(txtCentralConfigDir.getText());
 			}
@@ -319,6 +326,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		cConfigurationAddEvent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		cConfigurationAddEvent.setItems(listener.getJobs());
 		cConfigurationAddEvent.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				listener.setConfigurationAddEvent(cConfigurationAddEvent.getText());
 			}
@@ -328,6 +336,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		butBrowse = JOE_B_ConfigForm_Browse1.Control(new Button(eventGroup, SWT.NONE));
 		butBrowse.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butBrowse.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
 				if (jobname != null && jobname.length() > 0) {
@@ -342,6 +351,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		cConfigurationModifyEvent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		cConfigurationModifyEvent.setItems(listener.getJobs());
 		cConfigurationModifyEvent.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				listener.setConfigurationModifyEvent(cConfigurationModifyEvent.getText());
 			}
@@ -351,6 +361,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		butBrowse_1 = JOE_B_ConfigForm_Browse2.Control(new Button(eventGroup, SWT.NONE));
 		butBrowse_1.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butBrowse_1.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
 				if (jobname != null && jobname.length() > 0)
@@ -364,6 +375,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		cConfigurationDeleteEvent.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		cConfigurationDeleteEvent.setItems(listener.getJobs());
 		cConfigurationDeleteEvent.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				listener.setConfigurationDeleteEvent(cConfigurationDeleteEvent.getText());
 			}
@@ -373,6 +385,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		butBrowse_2 = JOE_B_ConfigForm_Browse3.Control(new Button(eventGroup, SWT.NONE));
 		butBrowse_2.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		butBrowse_2.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
 				if (jobname != null && jobname.length() > 0)
@@ -443,7 +456,8 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		cSamePorts = JOE_B_ConfigForm_SamePortsCheckBtn.Control(new Button(gPorts, SWT.CHECK));
 		cSamePorts.setLayoutData(gridData3);
 		cSamePorts.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				setEditable();
 			}
 		});
@@ -456,7 +470,8 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		sPort = JOE_T_ConfigForm_SamePort.Control(new Text(gPorts, SWT.BORDER));
 		sPort.setLayoutData(new GridData(60, SWT.DEFAULT));
 		sPort.addModifyListener(new ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setPort(sPort.getText());
 			}
 		});
@@ -471,7 +486,8 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		sTcpPort = JOE_T_ConfigForm_TCP.Control(new Text(gPorts, SWT.BORDER));
 		sTcpPort.setLayoutData(gridData5);
 		sTcpPort.addModifyListener(new ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setTcpPort(sTcpPort.getText());
 			}
 		});
@@ -481,7 +497,8 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		sUdpPort = JOE_T_ConfigForm_UDP.Control(new Text(gPorts, SWT.BORDER));
 		sUdpPort.setLayoutData(new GridData(60, SWT.DEFAULT));
 		sUdpPort.addModifyListener(new ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setUdpPort(sUdpPort.getText());
 			}
 		});
@@ -505,7 +522,8 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tMainSchedulerHost = JOE_T_ConfigForm_Host.Control(new Text(gMainScheduler, SWT.BORDER));
 		tMainSchedulerHost.setLayoutData(gridData6);
 		tMainSchedulerHost.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setMainScheduler(tMainSchedulerHost.getText() + ":" + listener.getMainSchedulerPort());
 			}
 		});
@@ -518,7 +536,8 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		sMainSchedulerPort = JOE_T_ConfigForm_SupervisorPort.Control(new Text(gMainScheduler, SWT.BORDER));
 		sMainSchedulerPort.setLayoutData(gridData11);
 		sMainSchedulerPort.addModifyListener(new ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				if (sMainSchedulerPort.getText().equals(""))
 					sMainSchedulerPort.setBackground(Options.getRequiredColor());
 				else
@@ -536,7 +555,8 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tJavaClassPath = JOE_T_ConfigForm_ClassPath.Control(new Text(gJavaOptions, SWT.BORDER));
 		tJavaClassPath.setLayoutData(gridData22);
 		tJavaClassPath.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setJavaClasspath(tJavaClassPath.getText());
 			}
 		});
@@ -546,7 +566,8 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tJavaOptions = JOE_T_ConfigForm_Options.Control(new Text(gJavaOptions, SWT.BORDER));
 		tJavaOptions.setLayoutData(gridData24);
 		tJavaOptions.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setJavaOptions(tJavaOptions.getText());
 			}
 		});
@@ -564,8 +585,9 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 		button = JOE_B_ConfigForm_Comment.Control(new Button(group, SWT.NONE));
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
+				String text = com.sos.joe.xml.Utils.showClipboard(tComment.getText(), getShell(), true, "");
 				if (text != null)
 					tComment.setText(text);
 			}
@@ -574,6 +596,7 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 		tComment = JOE_T_ConfigForm_Comment.Control(new Text(group, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.H_SCROLL));
 		tComment.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == 97 && e.stateMask == SWT.CTRL) {
 					tComment.setSelection(0, tComment.getText().length());
@@ -583,13 +606,15 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tComment.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 2));
 		tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+			@Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
 				listener.setComment(tComment.getText());
 			}
 		});
 		new Label(group, SWT.NONE);
 	}
 
+	@Override
 	public void setToolTipText() {
 //
 	}

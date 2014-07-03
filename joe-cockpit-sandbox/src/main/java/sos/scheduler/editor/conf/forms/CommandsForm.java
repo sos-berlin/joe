@@ -11,21 +11,20 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
-import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.interfaces.IUpdateLanguage;
-
-import sos.scheduler.editor.app.Messages;
-import sos.scheduler.editor.app.ResourceManager;
-import sos.scheduler.editor.app.SOSJOEMessageCodes;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.listeners.CommandsListener;
+
+import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 
 public class CommandsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
     private Text              tCommands;
 
-    private CommandsListener  listener;
+    private final CommandsListener  listener;
 
     //private SchedulerListener mainListener;
 
@@ -35,7 +34,7 @@ public class CommandsForm extends SOSJOEMessageCodes implements IUpdateLanguage 
 
 
 
-    public CommandsForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate main) throws Exception {
+    public CommandsForm(final Composite parent, final int style, final SchedulerDom dom, final ISchedulerUpdate main) throws Exception {
         super(parent, style);
         listener = new CommandsListener(dom, main);
         initialize();
@@ -64,7 +63,8 @@ public class CommandsForm extends SOSJOEMessageCodes implements IUpdateLanguage 
 
         tCommands = JOE_T_CommandsForm_Commands.Control(new Text(commandsGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL));
         tCommands.addKeyListener(new KeyAdapter() {
-        	public void keyPressed(final KeyEvent e) {
+        	@Override
+			public void keyPressed(final KeyEvent e) {
         		if(e.keyCode==97 && e.stateMask == SWT.CTRL){
         			tCommands.setSelection(0, tCommands.getText().length());
 				}
@@ -80,7 +80,8 @@ public class CommandsForm extends SOSJOEMessageCodes implements IUpdateLanguage 
         bSave.setLayoutData(gridData);
         getShell().setDefaultButton(bSave);
         bSave.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                 listener.saveCommands(tCommands.getText());
             }
         });
@@ -91,7 +92,8 @@ public class CommandsForm extends SOSJOEMessageCodes implements IUpdateLanguage 
     private void createTable() {
     }
     
-    public void setToolTipText() {
+    @Override
+	public void setToolTipText() {
 //        bSave.setToolTipText(Messages.getTooltip("commands.btn_save"));
 //        tCommands.setToolTipText(Messages.getTooltip("commands.commands"));
     }
