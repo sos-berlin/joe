@@ -23,7 +23,7 @@ import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.Utils;
@@ -349,34 +349,34 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		}
 		*/
 		if (found) {
-			MainWindow.message(JOE_M_0041.label(), SWT.ICON_INFORMATION);
+			JOEMainWindow.message(JOE_M_0041.label(), SWT.ICON_INFORMATION);
 			tURL.setFocus();
 		}
 		else {
 
 			if (!tRequest.getText().equals("") && tResponse.getText().equals("")) {
-				MainWindow.message(JOE_M_0042.label(), SWT.ICON_INFORMATION);
+				JOEMainWindow.message(JOE_M_0042.label(), SWT.ICON_INFORMATION);
 				tResponse.setFocus();
 			}
 			else {
 				if (tRequest.getText().equals("") && !tResponse.getText().equals("")) {
-					MainWindow.message(JOE_M_0043.label(), SWT.ICON_INFORMATION);
+					JOEMainWindow.message(JOE_M_0043.label(), SWT.ICON_INFORMATION);
 					tRequest.setFocus();
 				}
 				else {
 					if (exist) {
-						MainWindow.message(JOE_M_0044.params(tName.getText()), SWT.ICON_INFORMATION);
+						JOEMainWindow.message(JOE_M_0044.params(tName.getText()), SWT.ICON_INFORMATION);
 						tName.setFocus();
 					}
 					else {
 						if (tURL.getText().equals("")) {
-							MainWindow.message(JOE_M_0045.label(), SWT.ICON_INFORMATION);
+							JOEMainWindow.message(JOE_M_0045.label(), SWT.ICON_INFORMATION);
 							tURL.setFocus();
 
 						}
 						else {
 							if (Utils.str2int(sTimeout.getText()) == 0 && sTimeout.getText().length() > 0) {
-								MainWindow.message(JOE_M_0046.label(), SWT.ICON_INFORMATION);
+								JOEMainWindow.message(JOE_M_0046.label(), SWT.ICON_INFORMATION);
 
 							}
 							else {

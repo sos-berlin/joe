@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.FormBaseClass;
 
@@ -360,7 +360,7 @@ public class JobSetback extends FormBaseClass <JobListener>  {
         TableItem[] setback = tSetback.getItems();
 
         if (sSetBackCount.getText().equals("0"))
-            MainWindow.message(SOSJOEMessageCodes.JOE_M_ZeroNotAllowed.label(), SWT.ICON_INFORMATION);
+            JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_ZeroNotAllowed.label(), SWT.ICON_INFORMATION);
         else {
 
             for (int i = 0; i < setback.length; i++) {
@@ -401,22 +401,22 @@ public class JobSetback extends FormBaseClass <JobListener>  {
             }
 
             if (maximum > 1) {
-                MainWindow.message(SOSJOEMessageCodes.JOE_M_0032.label(), SWT.ICON_INFORMATION);
+                JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_0032.label(), SWT.ICON_INFORMATION);
                 sSetBackCount.setFocus();
             }
             else {
                 if (found) {
-                    MainWindow.message(SOSJOEMessageCodes.JOE_M_0033.label(), SWT.ICON_INFORMATION);
+                    JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_0033.label(), SWT.ICON_INFORMATION);
                     sSetBackCount.setFocus();
                 }
                 else {
                     if (sSetBackCount.getText().equals("")) {
-                        MainWindow.message(SOSJOEMessageCodes.JOE_M_0034.label(), SWT.ICON_INFORMATION);
+                        JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_0034.label(), SWT.ICON_INFORMATION);
                         sSetBackCount.setFocus();
                     }
                     else {
                         if (maximumMax > 0 && maximumMax < Utils.str2int(sSetBackCount.getText()) || maxSetback > Utils.str2int(sSetBackCount.getText()) && bIsMaximum.getSelection()) {
-                            MainWindow.message(SOSJOEMessageCodes.JOE_M_0035.label(), SWT.ICON_INFORMATION);
+                            JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_0035.label(), SWT.ICON_INFORMATION);
                             sSetBackCount.setFocus();
                         }
                         else {

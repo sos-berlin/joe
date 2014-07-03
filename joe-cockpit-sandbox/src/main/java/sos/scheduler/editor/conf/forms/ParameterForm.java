@@ -101,7 +101,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSTable;
@@ -232,7 +232,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			logger.debug(conClassName);
 			//			sosString = new SOSString();
 			try {
-				String strT = (String) MainWindow.getContainer().getCurrentTab().getData("ftp_title");
+				String strT = (String) JOEMainWindow.getContainer().getCurrentTab().getData("ftp_title");
 				isRemoteConnection = strT != null && strT.length() > 0;
 			}
 			catch (Exception e) {
@@ -453,7 +453,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 				Element param = (Element) listOfElement.get(i);
 				if (hash.containsKey(Utils.getAttributeValue("name", param))) {
 					//					MainWindow.message("There is not a clearly Parameter: " + Utils.getAttributeValue("name", param), SWT.ICON_WARNING);
-					MainWindow.message(JOE_M_ParameterForm_NoDistinctParam.params(Utils.getAttributeValue("name", param)), SWT.ICON_WARNING);
+					JOEMainWindow.message(JOE_M_ParameterForm_NoDistinctParam.params(Utils.getAttributeValue("name", param)), SWT.ICON_WARNING);
 					return;
 				}
 				hash.put(Utils.getAttributeValue("name", param), "");
@@ -734,7 +734,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 		tParameter.addSelectionListener(new SelectionAdapter() {
 			@Override public void widgetSelected(final SelectionEvent e) {
 				if (bApply.isEnabled()) {
-					int ok = MainWindow.message(JOE_M_ApplyChanges.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
+					int ok = JOEMainWindow.message(JOE_M_ApplyChanges.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
 					if (ok == SWT.YES) {
 						addParam();
 						return;
@@ -1457,7 +1457,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			int index = tParameter.getSelectionIndex();
 			if (index > 0) {
 				listener.changeUp(tParameter);
-				MainWindow.setStatusLine(String.format("moveed Parameter '%1$s' one line up", "???"));
+				JOEMainWindow.setStatusLine(String.format("moveed Parameter '%1$s' one line up", "???"));
 			}
 		}
 	}
@@ -1470,7 +1470,7 @@ public class ParameterForm extends CompositeBaseClass /* SOSJOEMessageCodes */im
 			else
 				if (index >= 0) {
 					listener.changeDown(tParameter);
-					MainWindow.setStatusLine(String.format("moveed parameter '%1$s' one line down", "???"));
+					JOEMainWindow.setStatusLine(String.format("moveed parameter '%1$s' one line down", "???"));
 				}
 		}
 	}

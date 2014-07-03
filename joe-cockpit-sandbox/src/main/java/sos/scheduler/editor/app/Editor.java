@@ -21,16 +21,16 @@ import com.sos.joe.globals.options.Options;
 	private static Logger									logger			= Logger.getLogger(JOEConstants.class);
 	@SuppressWarnings("unused") private final String		conClassName	= "Editor";
 	@SuppressWarnings("unused") private static Log4JHelper	objLogger		= null;
-	public static MainWindow								objMainWindow	= null;
-	private static MainWindow								window			= null;
+	public static JOEMainWindow								objMainWindow	= null;
+	private static JOEMainWindow								window			= null;
 	private static Display									display			= null;
 
 	public static void main(final String[] args) {
 		try {
 			display = Display.getDefault();
-			window = new MainWindow();
+			window = new JOEMainWindow();
 			window.createSShell();
-			final Shell shell = MainWindow.getSShell();
+			final Shell shell = JOEMainWindow.getSShell();
 			ErrorLog.setSShell(shell);
 			Method objApplicationMainMethod = SOSSplashScreen.class.getMethod("openApplicationMainWnd", new Class[] { Shell.class });
 			Image objImage4Splash = null;
@@ -74,16 +74,16 @@ import com.sos.joe.globals.options.Options;
 	}
 
 	public static void openApplicationMainWnd(final Shell shell) {
-		MainWindow.getSShell().open();
-		MainWindow.getSShell().update();
-		while (!MainWindow.getSShell().isDisposed()) {
+		JOEMainWindow.getSShell().open();
+		JOEMainWindow.getSShell().update();
+		while (!JOEMainWindow.getSShell().isDisposed()) {
 			try {
 				if (!display.readAndDispatch()) {
 					display.sleep();
 				}
 			}
 			catch (Exception e) {
-				MainWindow.getSShell().redraw();
+				JOEMainWindow.getSShell().redraw();
 			}
 		}
 		if (display.isDisposed() == false) {

@@ -89,7 +89,7 @@ public class FTPDialogListener {
 			catch (Exception ee) {
 			}
 			hasError = true;
-			MainWindow.message("could not read Profiles from " + configFile, SWT.ICON_WARNING);
+			JOEMainWindow.message("could not read Profiles from " + configFile, SWT.ICON_WARNING);
 		}
 	}
 
@@ -194,7 +194,7 @@ public class FTPDialogListener {
 			}
 			catch (Exception ee) {
 			}
-			MainWindow.message("could not remove Profile: " + profilename + ": cause:\n" + e.getMessage(), SWT.ICON_WARNING);
+			JOEMainWindow.message("could not remove Profile: " + profilename + ": cause:\n" + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}
 
@@ -216,7 +216,7 @@ public class FTPDialogListener {
 			catch (Exception ee) {
 			}
 			hasError = true;
-			MainWindow.message("could not change Directory [" + directory + "] cause:" + e.getMessage(), SWT.ICON_WARNING);
+			JOEMainWindow.message("could not change Directory [" + directory + "] cause:" + e.getMessage(), SWT.ICON_WARNING);
 		}
 		return changeDirectory(directory);
 	}
@@ -379,7 +379,7 @@ public class FTPDialogListener {
 			}
 		}
 		catch (Exception e) {
-			MainWindow.message("could not change Directory [" + directory + "] cause:" + e.getMessage(), SWT.ICON_WARNING);
+			JOEMainWindow.message("could not change Directory [" + directory + "] cause:" + e.getMessage(), SWT.ICON_WARNING);
 			try {
 				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ; could not change Directory [" + directory + "]", e);
 			}
@@ -959,7 +959,7 @@ public class FTPDialogListener {
 			catch (Exception ee) {
 			}
 			hasError = true;
-			MainWindow.message("could not save configurations File: " + configFile + ": cause:\n" + e.getMessage(), SWT.ICON_WARNING);
+			JOEMainWindow.message("could not save configurations File: " + configFile + ": cause:\n" + e.getMessage(), SWT.ICON_WARNING);
 		}
 		finally {
 			cboConnectname.setItems(getProfileNames());

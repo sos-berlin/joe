@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.classes.SOSComboBox;
-import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
@@ -23,8 +22,10 @@ import com.sos.event.service.forms.ActionsForm;
 import com.sos.event.service.listeners.ActionsListener;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.DomParser;
+import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class ContextMenu {
 
@@ -290,7 +291,7 @@ public class ContextMenu {
 //			XPath x3 = XPath.newInstance("//" + pstrTagName + "[@name='" + pstrObjectName + "']");
 //			List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 //			if (!listOfElement_3.isEmpty()) {
-				SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+				SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.JOEMainWindow.getContainer().getCurrentEditor();
 				if (f == null) {
 					return;
 				}
@@ -381,7 +382,7 @@ public class ContextMenu {
 
 					if (!listOfElement_3.isEmpty()) {
 
-						SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+						SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.JOEMainWindow.getContainer().getCurrentEditor();
 						if (f == null)
 							return;
 						Tree tree = f.getTree();
@@ -527,7 +528,7 @@ public class ContextMenu {
 									}
 
 									if (!listOfElement_3.isEmpty()) {
-										SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+										SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.JOEMainWindow.getContainer().getCurrentEditor();
 										if (f == null)
 											return;
 										Tree tree = f.getTree();
@@ -559,7 +560,7 @@ public class ContextMenu {
 										List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 
 										if (!listOfElement_3.isEmpty()) {
-											SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+											SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.JOEMainWindow.getContainer().getCurrentEditor();
 											if (f == null)
 												return;
 											Tree tree = f.getTree();
@@ -592,7 +593,7 @@ public class ContextMenu {
 											XPath x3 = XPath.newInstance("//action[@name='" + name + "']");
 											List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 											if (!listOfElement_3.isEmpty()) {
-												ActionsForm f = (ActionsForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+												ActionsForm f = (ActionsForm) sos.scheduler.editor.app.JOEMainWindow.getContainer().getCurrentEditor();
 												if (f == null)
 													return;
 												Tree tree = f.getTree();
@@ -621,7 +622,7 @@ public class ContextMenu {
 
 												List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 												if (!listOfElement_3.isEmpty()) {
-													ActionsForm f = (ActionsForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+													ActionsForm f = (ActionsForm) sos.scheduler.editor.app.JOEMainWindow.getContainer().getCurrentEditor();
 													if (f == null)
 														return;
 													Tree tree = f.getTree();
@@ -646,7 +647,7 @@ public class ContextMenu {
 
 													List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 													if (!listOfElement_3.isEmpty()) {
-														ActionsForm f = (ActionsForm) MainWindow.getContainer().getCurrentEditor();
+														ActionsForm f = (ActionsForm) JOEMainWindow.getContainer().getCurrentEditor();
 														if (f == null)
 															return;
 														Tree tree = f.getTree();
@@ -667,7 +668,7 @@ public class ContextMenu {
 												}
 												else
 													if (type == JOEConstants.JOB_COMMAND_EXIT_CODES
-															&& sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor() instanceof ActionsForm) {
+															&& sos.scheduler.editor.app.JOEMainWindow.getContainer().getCurrentEditor() instanceof ActionsForm) {
 
 														XPath x3 = null;
 														String job = "";
@@ -685,7 +686,7 @@ public class ContextMenu {
 
 														List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 														if (!listOfElement_3.isEmpty()) {
-															ActionsForm f = (ActionsForm) sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor();
+															ActionsForm f = (ActionsForm) sos.scheduler.editor.app.JOEMainWindow.getContainer().getCurrentEditor();
 															if (f == null)
 																return;
 															Tree tree = f.getTree();
@@ -705,7 +706,7 @@ public class ContextMenu {
 													}
 													else
 														if (type == JOEConstants.JOB_COMMAND_EXIT_CODES
-																&& sos.scheduler.editor.app.MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
+																&& sos.scheduler.editor.app.JOEMainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
 
 															XPath x3 = null;
 															String job = "";
@@ -723,7 +724,7 @@ public class ContextMenu {
 
 															List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 															if (!listOfElement_3.isEmpty()) {
-																SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer()
+																SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.JOEMainWindow.getContainer()
 																		.getCurrentEditor();
 																if (f == null)
 																	return;
@@ -745,7 +746,7 @@ public class ContextMenu {
 														}
 														else
 															if (type == JOEConstants.JOB_COMMAND) {
-																SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.MainWindow.getContainer()
+																SchedulerForm f = (SchedulerForm) sos.scheduler.editor.app.JOEMainWindow.getContainer()
 																		.getCurrentEditor();
 																if (f == null)
 																	return;

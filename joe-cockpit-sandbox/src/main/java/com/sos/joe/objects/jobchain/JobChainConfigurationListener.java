@@ -13,7 +13,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.xml.Utils;
 import sos.util.SOSClassUtil;
 
@@ -197,7 +197,7 @@ public class JobChainConfigurationListener{
 
 					}
 
-					MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
+					JOEMainWindow.message(e.getMessage(), SWT.ICON_ERROR);
 					df.dispose();
 
 					_gui.close();
@@ -217,7 +217,7 @@ public class JobChainConfigurationListener{
 			}
 
 			e.printStackTrace();
-			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
+			JOEMainWindow.message(e.getMessage(), SWT.ICON_ERROR);
 		}
 		_dom.setInit(false);
 		return true;

@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
@@ -152,7 +152,7 @@ public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpda
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
 
-				int c = MainWindow.message(getShell(), JOE_M_JobChainsForm_RemoveChain.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+				int c = JOEMainWindow.message(getShell(), JOE_M_JobChainsForm_RemoveChain.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 				if (c != SWT.YES) {
 					return;
 				}
@@ -262,7 +262,7 @@ public class JobChainsForm extends CompositeBaseClass implements IUnsaved, IUpda
 			detail.getDialogForm().setParamsForWizzard(objDataProvider.get_dom(), update);
 		}
 		else {
-			MainWindow.message(getShell(), JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+			JOEMainWindow.message(getShell(), JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		}
 	}
 

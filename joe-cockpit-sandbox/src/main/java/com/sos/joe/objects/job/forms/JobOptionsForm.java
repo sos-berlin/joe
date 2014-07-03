@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.app.Utils;
 
 import com.sos.joe.globals.interfaces.IUnsaved;
@@ -750,7 +750,7 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			getShell().setDefaultButton(null);
 		}
 		else {
-			MainWindow.message(JOE_M_NoRegex.params(tRegex.getText()), SWT.ICON_INFORMATION);
+			JOEMainWindow.message(JOE_M_NoRegex.params(tRegex.getText()), SWT.ICON_INFORMATION);
 		}
 	}
 
@@ -830,7 +830,7 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		int sel = tSetback.getSelectionIndex();
 		TableItem[] setback = tSetback.getItems();
 		if (sSetBackCount.getText().equals("0"))
-			MainWindow.message(JOE_M_ZeroNotAllowed.label(), SWT.ICON_INFORMATION);
+			JOEMainWindow.message(JOE_M_ZeroNotAllowed.label(), SWT.ICON_INFORMATION);
 		else {
 			for (int i = 0; i < setback.length; i++) {
 				//                if (setback[i].getText(1).equalsIgnoreCase("Yes") && sel != i) {
@@ -865,23 +865,23 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 				maxSetback = Utils.str2int(sSetBackCount.getText());
 			}
 			if (maximum > 1) {
-				MainWindow.message(JOE_M_0032.label(), SWT.ICON_INFORMATION);
+				JOEMainWindow.message(JOE_M_0032.label(), SWT.ICON_INFORMATION);
 				sSetBackCount.setFocus();
 			}
 			else {
 				if (found) {
-					MainWindow.message(JOE_M_0033.label(), SWT.ICON_INFORMATION);
+					JOEMainWindow.message(JOE_M_0033.label(), SWT.ICON_INFORMATION);
 					sSetBackCount.setFocus();
 				}
 				else {
 					if (sSetBackCount.getText().equals("")) {
-						MainWindow.message(JOE_M_0034.label(), SWT.ICON_INFORMATION);
+						JOEMainWindow.message(JOE_M_0034.label(), SWT.ICON_INFORMATION);
 						sSetBackCount.setFocus();
 					}
 					else {
 						if (maximumMax > 0 && maximumMax < Utils.str2int(sSetBackCount.getText()) || maxSetback > Utils.str2int(sSetBackCount.getText())
 								&& bIsMaximum.getSelection()) {
-							MainWindow.message(JOE_M_0035.label(), SWT.ICON_INFORMATION);
+							JOEMainWindow.message(JOE_M_0035.label(), SWT.ICON_INFORMATION);
 							sSetBackCount.setFocus();
 						}
 						else {
@@ -985,22 +985,22 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			maxAktErrorDelay = Utils.str2int(sErrorCount.getText());
 		}
 		if (found) {
-			MainWindow.message(JOE_M_0036.label(), SWT.ICON_INFORMATION);
+			JOEMainWindow.message(JOE_M_0036.label(), SWT.ICON_INFORMATION);
 			sErrorCount.setFocus();
 		}
 		else {
 			if (maxErrorDelay > 0 && maxErrorDelay < Utils.str2int(sErrorCount.getText()) || maxAktErrorDelay > Utils.str2int(sErrorCount.getText())
 					&& bStop.getSelection()) {
-				MainWindow.message(JOE_M_0037.label(), SWT.ICON_INFORMATION);
+				JOEMainWindow.message(JOE_M_0037.label(), SWT.ICON_INFORMATION);
 				sErrorCount.setFocus();
 			}
 			else {
 				if (maximum > 1) {
-					MainWindow.message(JOE_M_0038.label(), SWT.ICON_INFORMATION);
+					JOEMainWindow.message(JOE_M_0038.label(), SWT.ICON_INFORMATION);
 				}
 				else {
 					if (sErrorCount.getText().equals("")) {
-						MainWindow.message(JOE_M_0039.label(), SWT.ICON_INFORMATION);
+						JOEMainWindow.message(JOE_M_0039.label(), SWT.ICON_INFORMATION);
 						sErrorCount.setFocus();
 					}
 					else {

@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.conf.forms.SchedulerEditorFontDialog;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
@@ -420,7 +420,7 @@ public class TextArea extends StyledText /* Text */{
 		addHelpListener(new HelpListener() {
 			@Override
 			public void helpRequested(final HelpEvent objHelpEvent) {
-				MainWindow.message(Messages.getString("OrderJob.Help"), SWT.ICON_INFORMATION);
+				JOEMainWindow.message(Messages.getString("OrderJob.Help"), SWT.ICON_INFORMATION);
 			}
 		});
 
@@ -574,7 +574,7 @@ public class TextArea extends StyledText /* Text */{
 	private String doSelectFile(final String pstrLRUKey) {
 		String strSelectedFileName = "";
 		try {
-			FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
+			FileDialog fdialog = new FileDialog(JOEMainWindow.getSShell(), SWT.OPEN);
 			if (objFormPosSizeHandler != null) {
 				fdialog.setFilterPath(objFormPosSizeHandler.getProperty(pstrLRUKey));
 			}
@@ -599,7 +599,7 @@ public class TextArea extends StyledText /* Text */{
 	private boolean saveFile() {
 		String strFilename4Save = "";
 		try {
-			FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.SAVE);
+			FileDialog fdialog = new FileDialog(JOEMainWindow.getSShell(), SWT.SAVE);
 			if (objFormPosSizeHandler != null) {
 				fdialog.setFilterPath(objFormPosSizeHandler.getProperty("LastSelectedFile4Save"));
 			}
@@ -610,13 +610,13 @@ public class TextArea extends StyledText /* Text */{
 			JSFile objFile = new JSFile(strFilename4Save);
 			if (objFile.exists()) {
 				String strM = Messages.getString("MainListener.doFileOverwrite") + ": " + strFilename4Save;
-				int ok = MainWindow.message(strM, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+				int ok = JOEMainWindow.message(strM, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 				if (ok == SWT.NO) {
 					return false;
 				}
 				if (!objFile.canWrite()) {
 					strM = Messages.getString("MainListener.fileWriteProtected") + ":" + strFilename4Save;
-					MainWindow.message(strM, SWT.ICON_WARNING | SWT.OK);
+					JOEMainWindow.message(strM, SWT.ICON_WARNING | SWT.OK);
 					return false;
 				}
 			}

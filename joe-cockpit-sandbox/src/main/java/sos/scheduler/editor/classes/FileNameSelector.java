@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.objects.job.JobListener;
@@ -151,7 +151,7 @@ public class FileNameSelector extends Text {
 							// applyFile2Include();
 						}
 						else {
-							MainWindow.ErrMsg(String.format("File '%1$s' not found or is not readable", strT));
+							JOEMainWindow.ErrMsg(String.format("File '%1$s' not found or is not readable", strT));
 						}
 					}
 				}

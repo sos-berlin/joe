@@ -296,7 +296,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
     	
     	if(bApply.isEnabled()) {
 			
-			int c = sos.scheduler.editor.app.MainWindow.message(getShell(), JOE_M_ApplyChanges.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO );
+			int c = sos.scheduler.editor.app.JOEMainWindow.message(getShell(), JOE_M_ApplyChanges.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO );
 			if(c == SWT.YES){
 				applyPeriod();
 			}

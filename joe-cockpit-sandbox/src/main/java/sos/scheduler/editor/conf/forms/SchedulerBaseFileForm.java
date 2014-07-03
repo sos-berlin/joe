@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.JDOMException;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.conf.listeners.BaseListener;
 
 import com.sos.joe.globals.interfaces.IUnsaved;
@@ -297,7 +297,7 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 
 	// öffnet das File Dialog um ein Basefile auszuwählen
 	private void openFileDialog() {
-		IContainer con = MainWindow.getContainer();
+		IContainer con = JOEMainWindow.getContainer();
 		String currPath = "";
 		String sep = System.getProperty("file.separator");
 		if (con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
@@ -308,7 +308,7 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 		}
 		currPath = currPath.replace("/".toCharArray()[0], sep.toCharArray()[0]);
 		currPath = currPath.replace("\\".toCharArray()[0], sep.toCharArray()[0]);
-		FileDialog fdialog = JOE_FD_BaseForm_OpenBaseFile.Control(new FileDialog(MainWindow.getSShell(), SWT.OPEN));
+		FileDialog fdialog = JOE_FD_BaseForm_OpenBaseFile.Control(new FileDialog(JOEMainWindow.getSShell(), SWT.OPEN));
 		fdialog.setFilterPath(currPath);
 		fdialog.setFilterExtensions(new String[] { "*.xml", "*.sosdoc", "*.*" });
 		//		fdialog.setText(Messages.getLabel("OpenBaseFile"));
@@ -329,7 +329,7 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 		String currPath = "";
 		String sep = System.getProperty("file.separator");
 		if (tFile.getText() != null && tFile.getText().length() > 0) {
-			IContainer con = MainWindow.getContainer();
+			IContainer con = JOEMainWindow.getContainer();
 			if (con.getCurrentEditor().getFilename() != null && con.getCurrentEditor().getFilename().length() > 0) {
 				currPath = new File(con.getCurrentEditor().getFilename()).getParent();
 			}
@@ -346,7 +346,7 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 			con.setStatusInTitle();
 		}
 		else {
-			MainWindow.message("There is no Basefile defined.", SWT.ICON_WARNING | SWT.OK);
+			JOEMainWindow.message("There is no Basefile defined.", SWT.ICON_WARNING | SWT.OK);
 		}
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

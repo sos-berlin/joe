@@ -201,6 +201,11 @@ public class JOEJobChainDataProvider extends JOEListener {
 		objJobChainNode.setOnError(strOnError);
 	}
 
+	@Deprecated
+	public JobChainNodeWrapper getJobChainNodeWrapper (final Element pobjElement) {
+		return new JobChainNodeWrapper();
+	}
+	
 	public JobChainNodeWrapper getJobChainNodeWrapper(final JSObjBase pobjNode) {
 		JobChainNodeWrapper objN = new JobChainNodeWrapper(pobjNode);
 		objN.setChainName(getJobChainName());

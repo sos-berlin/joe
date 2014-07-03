@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.xml.Utils;
 
@@ -191,10 +191,10 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
                 if (listener.get_dom().isChanged() && changeJobChainName) {
                     if (listener.get_dom().getFilename() == null) {
 //                        MainWindow.message(Messages.getLabel("jobchain.must.saved"), SWT.ICON_WARNING);
-                    	MainWindow.message(JOE_M_JobChainForm_SaveChain.label(), SWT.ICON_WARNING);
+                    	JOEMainWindow.message(JOE_M_JobChainForm_SaveChain.label(), SWT.ICON_WARNING);
                     } else {
 //                        MainWindow.message(Messages.getLabel("jobchain.name.changed"), SWT.ICON_WARNING);
-                    	MainWindow.message(JOE_M_JobChainForm_ChainNameChanged.label(), SWT.ICON_WARNING);
+                    	JOEMainWindow.message(JOE_M_JobChainForm_ChainNameChanged.label(), SWT.ICON_WARNING);
                     }
                     return;
                 }
@@ -352,7 +352,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 
         }
         else {
-            MainWindow.message(getShell(), JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+            JOEMainWindow.message(getShell(), JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
         }
 
     }

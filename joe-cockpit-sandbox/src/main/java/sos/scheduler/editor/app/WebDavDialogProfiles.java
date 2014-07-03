@@ -84,7 +84,7 @@ public class WebDavDialogProfiles {
 
 	public void showForm() {
 
-		schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE
+		schedulerConfigurationShell = new Shell(JOEMainWindow.getSShell(), SWT.CLOSE | SWT.TITLE
 				| SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
@@ -472,7 +472,7 @@ public class WebDavDialogProfiles {
 				new ErrorLog("error in " + SOSClassUtil.getMethodName() + " ;could not reaad WebDav Profiles", e);
 			} catch(Exception ee) {
 			}
-			MainWindow.message("could not reaad WebDav Profiles:" + e.getMessage()  , SWT.ICON_WARNING);
+			JOEMainWindow.message("could not reaad WebDav Profiles:" + e.getMessage()  , SWT.ICON_WARNING);
 		}
 	}
 
@@ -540,7 +540,7 @@ public class WebDavDialogProfiles {
 			} catch(Exception ee) {
 
 			}
-			MainWindow.message("could not save WebDav Profile " + cboConnectname.getText() + ": "  + e.getMessage()  , SWT.ICON_WARNING);
+			JOEMainWindow.message("could not save WebDav Profile " + cboConnectname.getText() + ": "  + e.getMessage()  , SWT.ICON_WARNING);
 		}
 	}
 
@@ -550,7 +550,7 @@ public class WebDavDialogProfiles {
 			return;
 
 		if (butApply.getEnabled()) {
-			int cont = MainWindow.message(schedulerConfigurationShell, Messages.getString("MainListener.apply_changes"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+			int cont = JOEMainWindow.message(schedulerConfigurationShell, Messages.getString("MainListener.apply_changes"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 			if(cont == SWT.OK) {
 				apply();
 			}

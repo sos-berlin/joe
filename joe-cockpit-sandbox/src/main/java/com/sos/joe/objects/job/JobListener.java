@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.conf.listeners.JOEListener;
@@ -107,7 +107,7 @@ public class JobListener extends JOEListener {
 
 	public void setFileAttribute4ProcessTag(final Text file) {
 		if (objJSJob.isScriptEmpty() == false) {
-			int c = MainWindow.message("JobListener: Do you want to remove the existing script and create a process instead?\n(Remember: <process> is a deprecated feature, use script)", SWT.YES | SWT.NO
+			int c = JOEMainWindow.message("JobListener: Do you want to remove the existing script and create a process instead?\n(Remember: <process> is a deprecated feature, use script)", SWT.YES | SWT.NO
 					| SWT.ICON_WARNING);
 			if (c != SWT.YES) {
 				file.setText("");
@@ -734,7 +734,7 @@ public class JobListener extends JOEListener {
 			setDirty();
 		}
 		else {
-			MainWindow.message("No script element defined!", SWT.ICON_ERROR);
+			JOEMainWindow.message("No script element defined!", SWT.ICON_ERROR);
 			logger.debug("no script element defined!");
 		}
 		return true;
@@ -751,7 +751,7 @@ public class JobListener extends JOEListener {
 			}
 		}
 		else {
-			MainWindow.message("No script element defined!", SWT.ICON_ERROR);
+			JOEMainWindow.message("No script element defined!", SWT.ICON_ERROR);
 			logger.debug("no script element defined!");
 		}
 	}
@@ -769,7 +769,7 @@ public class JobListener extends JOEListener {
 			objJSJob.setDirty();
 		}
 		else {
-			MainWindow.message("No script element defined!", SWT.ICON_ERROR);
+			JOEMainWindow.message("No script element defined!", SWT.ICON_ERROR);
 			logger.debug("no script element defined!");
 		}
 	}

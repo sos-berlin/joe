@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.FolderNameSelector;
@@ -218,7 +218,7 @@ public class JobStartWhenDirectoryChanged extends CompositeBaseClass {
 			getShell().setDefaultButton(null);
 		}
 		else {
-			MainWindow.ErrMsg(SOSJOEMessageCodes.JOE_M_NoRegex.params(strRegExp));
+			JOEMainWindow.ErrMsg(SOSJOEMessageCodes.JOE_M_NoRegex.params(strRegExp));
 		}
 	}
 

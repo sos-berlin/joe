@@ -37,14 +37,14 @@ public class MainListener extends JOEListener {
 	private final SOSString		sosString		= new SOSString();
 	private SOSConnection	sosConnection	= null;
 
-	public MainListener(final MainWindow gui, final IContainer container) {
+	public MainListener(final JOEMainWindow gui, final IContainer container) {
 		// _gui = gui;
 		_container = container;
 	}
 
 
 	public void showAbout() {
-		TextDialog objAboutDialogBox = new TextDialog(MainWindow.getSShell());
+		TextDialog objAboutDialogBox = new TextDialog(JOEMainWindow.getSShell());
 		objAboutDialogBox.setText("About JOE - JobScheduler Object Editor");
 //		objAboutDialogBox.setText(Messages.getString("JOE_I_0010"));
 		String message = com.sos.joe.globals.messages.Messages.getString("MainListener.aboutText", Options.getVersion() + //
@@ -130,7 +130,7 @@ public class MainListener extends JOEListener {
 		}
 		if (!found) {
 			String def = Options.getDefault(conPropertyEDITOR_LANGUAGE);
-			MainWindow.message("The language " + Options.getLanguage() + " was not found - setting to " + def, SWT.ICON_WARNING | SWT.OK);
+			JOEMainWindow.message("The language " + Options.getLanguage() + " was not found - setting to " + def, SWT.ICON_WARNING | SWT.OK);
 			Options.setLanguage(def);
 			if (defaultItem != null)
 				defaultItem.setSelection(true);
@@ -139,7 +139,7 @@ public class MainListener extends JOEListener {
 
 	public void loadMessages() {
 		if (!com.sos.joe.globals.messages.Messages.setResource(new Locale(Options.getLanguage()))) {
-			MainWindow.message("The resource bundle " + Messages.getBundle() + " for the language " + Options.getLanguage() + " was not found!", SWT.ICON_ERROR
+			JOEMainWindow.message("The resource bundle " + Messages.getBundle() + " for the language " + Options.getLanguage() + " was not found!", SWT.ICON_ERROR
 					| SWT.OK);
 		}
 		_container.updateLanguages();
@@ -152,13 +152,13 @@ public class MainListener extends JOEListener {
 	public void loadOptions() {
 		String msg = Options.loadOptions(getClass());
 		if (msg != null)
-			MainWindow.message("No options file " + Options.getDefaultOptionFilename() + " found - using defaults!\n" + msg, SWT.ICON_ERROR | SWT.OK);
+			JOEMainWindow.message("No options file " + Options.getDefaultOptionFilename() + " found - using defaults!\n" + msg, SWT.ICON_ERROR | SWT.OK);
 	}
 
 	public void saveOptions() {
 		String msg = Options.saveProperties();
 		if (msg != null) {
-			MainWindow.message("Options cannot be saved!\n" + msg, SWT.ICON_ERROR | SWT.OK);
+			JOEMainWindow.message("Options cannot be saved!\n" + msg, SWT.ICON_ERROR | SWT.OK);
 		}
 	}
 

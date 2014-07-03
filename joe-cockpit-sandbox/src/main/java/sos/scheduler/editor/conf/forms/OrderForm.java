@@ -30,7 +30,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.conf.listeners.OrderListener;
 import sos.util.SOSClassUtil;
@@ -302,10 +302,10 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
                 if (xmlDetailsConfigFilename != null && xmlDetailsConfigFilename.length() > 0 && new File(xmlDetailsConfigFilename).exists()) {
 
 //                  int ok = MainWindow.message(Messages.getString("detailform.remove_state"), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
-                    int ok = MainWindow.message(JOE_M_OrderForm_RemoveState.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
+                    int ok = JOEMainWindow.message(JOE_M_OrderForm_RemoveState.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
                     if (ok == SWT.YES) {
                         if (!new File(xmlDetailsConfigFilename).delete())
-                            MainWindow.message(JOE_M_OrderForm_RemoveFailed.params(xmlDetailsConfigFilename), SWT.ICON_INFORMATION);
+                            JOEMainWindow.message(JOE_M_OrderForm_RemoveFailed.params(xmlDetailsConfigFilename), SWT.ICON_INFORMATION);
                     }
                     existDetailsConfigurationsFile();
                 }

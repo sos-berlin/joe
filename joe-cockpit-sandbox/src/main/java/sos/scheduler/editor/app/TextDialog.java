@@ -329,7 +329,7 @@ public class TextDialog extends Dialog {
 
 	private void close() {
 		if (butApply.getEnabled()) {
-			int count = MainWindow.message(_shell, Messages.getString("detailform.close"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+			int count = JOEMainWindow.message(_shell, Messages.getString("detailform.close"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 			if (count != SWT.OK) {
 				return;
 			}

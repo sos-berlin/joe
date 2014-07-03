@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Display;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.xml.Utils;
 import sos.util.SOSClassUtil;
@@ -260,7 +260,7 @@ public class JOEListener extends JSToolBox {
 				// tu nichts
 			}
 			e.printStackTrace();
-			MainWindow.message(com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }),
+			JOEMainWindow.message(com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }),
 					SWT.ICON_ERROR | SWT.OK);
 		}
 	}

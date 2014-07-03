@@ -73,8 +73,8 @@ public class TabbedContainer implements IContainer {
 		folder.addSelectionListener(new SelectionListener() {
 			@Override public void widgetSelected(final SelectionEvent e) {
 				setWindowTitle();
-				MainWindow.setMenuStatus();
-				MainWindow.shellActivated_();
+				JOEMainWindow.setMenuStatus();
+				JOEMainWindow.shellActivated_();
 			}
 
 			@Override public void widgetDefaultSelected(final SelectionEvent e) {
@@ -288,8 +288,8 @@ public class TabbedContainer implements IContainer {
 		CTabItem tab = new CTabItem(folder, SWT.NONE);
 		tab.addDisposeListener(new DisposeListener() {
 			@Override public void widgetDisposed(final DisposeEvent e) {
-				MainWindow.getSShell().setText(strTitleText /* "Job Scheduler Editor" */);
-				MainWindow.setSaveStatus();
+				JOEMainWindow.getSShell().setText(strTitleText /* "Job Scheduler Editor" */);
+				JOEMainWindow.setSaveStatus();
 			}
 		});
 		tab.setControl(control);
@@ -354,7 +354,7 @@ public class TabbedContainer implements IContainer {
 			title = tab.getData("webdav_remote_directory").toString();
 		tab.setText(getCurrentEditor().hasChanges() == false ? title : "*" + title);
 		setWindowTitle();
-		MainWindow.setMenuStatus();
+		JOEMainWindow.setMenuStatus();
 	}
 
 	public void setStatusInTitle(final CTabItem tab) {
@@ -370,7 +370,7 @@ public class TabbedContainer implements IContainer {
 			title = tab.getData("webdav_remote_directory").toString();
 		tab.setText(getCurrentEditor().hasChanges() == false ? title : "*" + title);
 		setWindowTitle();
-		MainWindow.setMenuStatus();
+		JOEMainWindow.setMenuStatus();
 	}
 
 	@Override public void setNewFilename(final String oldFilename) {
@@ -560,7 +560,7 @@ public class TabbedContainer implements IContainer {
 				if (strRootName.equalsIgnoreCase("schedule")) {
 					return openLiveElement(xmlFilename, SchedulerDom.LIFE_SCHEDULE);
 				}
-				MainWindow.message("Unknown root Element: " + root.getName() + " from filename " + xmlFilename, SWT.NONE);
+				JOEMainWindow.message("Unknown root Element: " + root.getName() + " from filename " + xmlFilename, SWT.NONE);
 			}
 		}
 		catch (Exception e) {
@@ -570,7 +570,7 @@ public class TabbedContainer implements IContainer {
 			catch (Exception ee) {
 				// tu nichts
 			}
-			MainWindow.message("could not open file cause" + e.getMessage(), SWT.NONE);
+			JOEMainWindow.message("could not open file cause" + e.getMessage(), SWT.NONE);
 		}
 		return null;
 	}
@@ -580,7 +580,7 @@ public class TabbedContainer implements IContainer {
 		logger.trace(String.format("Enter procedure %1$s ", conMethodName));
 		String xmlFilename = "";
 		try {
-			FileDialog fdialog = new FileDialog(MainWindow.getSShell(), SWT.OPEN);
+			FileDialog fdialog = new FileDialog(JOEMainWindow.getSShell(), SWT.OPEN);
 			fdialog.setFilterPath(Options.getLastDirectory());
 			fdialog.setText("Open");
 			fdialog.setFilterExtensions(new String[] { "*.xml" });
@@ -594,7 +594,7 @@ public class TabbedContainer implements IContainer {
 			catch (Exception ee) {
 				// tu nichts
 			}
-			MainWindow.message("could not open file cause" + e.getMessage(), SWT.NONE);
+			JOEMainWindow.message("could not open file cause" + e.getMessage(), SWT.NONE);
 		}
 		return null;
 	}

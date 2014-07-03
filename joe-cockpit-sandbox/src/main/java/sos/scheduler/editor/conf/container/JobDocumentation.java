@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.classes.FileNameSelector;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.TextArea;
@@ -193,7 +193,7 @@ public class JobDocumentation extends FormBaseClass <JobListener> {
 					}
 					catch (Exception ee) {
 					}
-					MainWindow.message(getShell(), SOSJOEMessageCodes.JOE_M_0011.params("widgetSelected()", tFileName.getText(), ex.getMessage()),
+					JOEMainWindow.message(getShell(), SOSJOEMessageCodes.JOE_M_0011.params("widgetSelected()", tFileName.getText(), ex.getMessage()),
 							SWT.ICON_WARNING | SWT.OK);
 				}
 				finally {
@@ -221,7 +221,7 @@ public class JobDocumentation extends FormBaseClass <JobListener> {
 						con.setStatusInTitle();
 					}
 					else {
-						MainWindow.message(SOSJOEMessageCodes.JOE_M_JobDocumentation_NoDoc.params(xmlPath), SWT.ICON_WARNING | SWT.OK);
+						JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_JobDocumentation_NoDoc.params(xmlPath), SWT.ICON_WARNING | SWT.OK);
 					}
 				}
 				catch (Exception e1) {

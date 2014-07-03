@@ -495,7 +495,7 @@ public class Utils {
 			// looking for unsaved changes...
 			IUnsaved unsaved = (IUnsaved) c;
 			if (unsaved.isUnsaved()) {
-				int ok = MainWindow.message(Messages.getString("MainListener.apply_changes"), //$NON-NLS-1$
+				int ok = JOEMainWindow.message(Messages.getString("MainListener.apply_changes"), //$NON-NLS-1$
 						SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
 				if (ok == SWT.CANCEL)
 					return false;
@@ -1062,10 +1062,10 @@ public class Utils {
 		}
 		catch (Exception e) {
 			if (onlyWarning) {
-				MainWindow.message(e.getMessage(), SWT.ICON_WARNING);
+				JOEMainWindow.message(e.getMessage(), SWT.ICON_WARNING);
 			}
 			else {
-				int c = MainWindow.message(e.getMessage(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
+				int c = JOEMainWindow.message(e.getMessage(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
 				if (c != SWT.YES) {
 					return false;
 				}
