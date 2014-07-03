@@ -19,17 +19,80 @@ import org.jdom.transform.JDOMSource;
 
 import sos.util.SOSFile;
 
+import com.sos.VirtualFileSystem.Factory.VFSFactory;
+import com.sos.VirtualFileSystem.Interfaces.ISOSVFSHandler;
+import com.sos.VirtualFileSystem.Interfaces.ISOSVfsFileTransfer;
+import com.sos.VirtualFileSystem.Interfaces.ISOSVirtualFile;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
+import com.sos.scheduler.model.SchedulerHotFolder;
+import com.sos.scheduler.model.SchedulerHotFolderFileList;
+import com.sos.scheduler.model.SchedulerObjectFactory;
 
 public class IOUtils {
 	@SuppressWarnings("unused") private final String	conClsName		= "IOUtils";
 	@SuppressWarnings("unused") private final String	conSVNVersion	= "$Id: IOUtils.java 18447 2012-11-21 00:58:01Z kb $";
 	private static final Logger							logger			= Logger.getLogger(IOUtils.class);
+
+	
+	public static SchedulerHotFolder openHotFolder(final String filename) {
+		SchedulerHotFolder objSchedulerHotFolder = null;
+		try {
+			boolean isDirectory = true;
+
+			if (isDirectory) {
+				String strHotFolderPathName = filename;
+				if (filename == null || filename.length() == 0) {
+					DirectoryDialog fdialog = new DirectoryDialog(ErrorLog.getSShell(), SWT.MULTI);
+					fdialog.setFilterPath(Options.getLastDirectory());
+					fdialog.setText("Open HotFolder directory ...");
+					String fname = fdialog.open();
+					if (fname == null) {
+						return null;
+					}
+					strHotFolderPathName = fname;
+				}
+
+				ISOSVFSHandler					objVFS					= null;
+				ISOSVfsFileTransfer				objFileSystemHandler	= null;
+
+				try {
+					objVFS = VFSFactory.getHandler("local");
+					objFileSystemHandler = (ISOSVfsFileTransfer) objVFS;
+				}
+				catch (Exception e) {
+					logger.error(e);
+					return null;
+				}
+
+				SchedulerObjectFactory	objFactory				= null;
+				objFactory = new SchedulerObjectFactory();
+
+				ISOSVirtualFile objHotFolder = objFileSystemHandler.getFileHandle(strHotFolderPathName);
+				objSchedulerHotFolder = objFactory.createSchedulerHotFolder(objHotFolder);
+				logger.info(String.format("... load %1$s", strHotFolderPathName));
+				SchedulerHotFolderFileList objSchedulerHotFolderFileList = objSchedulerHotFolder.load();
+				objSchedulerHotFolderFileList.getFolderList();
+				objSchedulerHotFolderFileList.getJobList();
+				objSchedulerHotFolderFileList.getJobChainList();
+				objSchedulerHotFolderFileList.getOrderList();
+				objSchedulerHotFolderFileList.getProcessClassList();
+				objSchedulerHotFolderFileList.getLockList();
+				objSchedulerHotFolderFileList.getScheduleList();
+				objSchedulerHotFolderFileList.getParamsList();
+			}
+		}
+		catch (Exception e) {
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+		}
+		finally {
+		}
+		return objSchedulerHotFolder;
+	}
 
 	public static boolean openFile(final DomParser dom) {
 		return openFile(null, null, dom);
