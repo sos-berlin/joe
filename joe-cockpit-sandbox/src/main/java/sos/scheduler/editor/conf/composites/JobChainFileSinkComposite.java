@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.util.SOSClassUtil;
 
@@ -318,7 +318,7 @@ public class JobChainFileSinkComposite extends CompositeBaseAbstract<JobChainLis
 			}
 
 			if (!msg.equals("")) {
-				MainWindow.message(msg, SWT.ICON_INFORMATION);
+				JOEMainWindow.message(msg, SWT.ICON_INFORMATION);
 			}
 			else {
 				if (flgInsertNewNode == true) {

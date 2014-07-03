@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.FormBaseClass;
 
@@ -114,7 +114,7 @@ public class JobOptions extends FormBaseClass<JobListener> {
 			@Override
 			public void keyPressed(final KeyEvent event) {
 				if (event.keyCode == SWT.F1) {
-					MainWindow.message("F1 gedrückt", SWT.ICON_INFORMATION);
+					JOEMainWindow.message("F1 gedrückt", SWT.ICON_INFORMATION);
 				}
 
 			}

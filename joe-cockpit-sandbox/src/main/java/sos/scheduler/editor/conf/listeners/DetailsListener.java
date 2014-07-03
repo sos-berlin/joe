@@ -12,7 +12,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
 import sos.ftp.profiles.FTPProfile;
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.util.SOSClassUtil;
@@ -77,10 +77,10 @@ public class DetailsListener {
 	public static void openFilePerFTP(final String xmlFilename) {
 		String file = "";
 		try {
-			org.eclipse.swt.custom.CTabItem currentTab = MainWindow.getContainer().getCurrentTab();
+			org.eclipse.swt.custom.CTabItem currentTab = JOEMainWindow.getContainer().getCurrentTab();
 			if (currentTab != null && currentTab.getData("ftp_title") != null && currentTab.getData("ftp_title").toString().length() > 0) {
 				String remoteDir = currentTab.getData("ftp_remote_directory").toString();
-				DomParser currdom = MainWindow.getSpecifiedDom();
+				DomParser currdom = JOEMainWindow.getSpecifiedDom();
 				if (currdom == null)
 					return;
 				if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isDirectory()) {
@@ -106,7 +106,7 @@ public class DetailsListener {
 		}
 		catch (Exception r) {
 			try {
-				MainWindow.message("could not open File: " + file + ", cause: " + r.toString(), SWT.ICON_WARNING);
+				JOEMainWindow.message("could not open File: " + file + ", cause: " + r.toString(), SWT.ICON_WARNING);
 				new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
 			}
 			catch (Exception ee) {
@@ -117,8 +117,8 @@ public class DetailsListener {
 	public void parseDocuments() {
 		String xmlPaths = "";
 		try {
-			if (isLifeElement || MainWindow.getContainer().getCurrentTab().getData("ftp_title") != null
-					&& MainWindow.getContainer().getCurrentTab().getData("ftp_title").toString().length() > 0) {
+			if (isLifeElement || JOEMainWindow.getContainer().getCurrentTab().getData("ftp_title") != null
+					&& JOEMainWindow.getContainer().getCurrentTab().getData("ftp_title").toString().length() > 0) {
 				if (path != null && path.length() > 0) {
 					File f = new File(path);
 					if (f.isFile())
@@ -150,11 +150,11 @@ public class DetailsListener {
 				File jobChainConfig = new File(xmlPaths + jobChainname + ".config.xml");
 				if (jobChainConfig.exists() && !new File(strConfigurationFileName).exists()) {
 					//int c = MainWindow.message("Es gibt bereits eine Konfiguration für die Jobkette. Soll diese für den Auftrag übernommen werden?", SWT.ICON_QUESTION | SWT.YES | SWT.NO );
-					int c = MainWindow.message("A configuration already exists for this job chain. Should this configuration be used for the order?",
+					int c = JOEMainWindow.message("A configuration already exists for this job chain. Should this configuration be used for the order?",
 							SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					if (c == SWT.YES) {
 						if (!sos.util.SOSFile.copyFile(jobChainConfig.getAbsolutePath(), strConfigurationFileName))
-							MainWindow.message("Could not copy configuration File?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+							JOEMainWindow.message("Could not copy configuration File?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					}
 				}
 			}
@@ -201,7 +201,7 @@ public class DetailsListener {
 				application = root.getChild("application");
 			}
 			if (application == null) {
-				MainWindow.message(new org.eclipse.swt.widgets.Shell(SWT.NONE), Messages.getString("details.listener.missing_job_chain_node"), SWT.OK);
+				JOEMainWindow.message(new org.eclipse.swt.widgets.Shell(SWT.NONE), Messages.getString("details.listener.missing_job_chain_node"), SWT.OK);
 				System.out.println("error: " + Messages.getString("details.listener.missing_job_chain_node"));
 				hasError = true;
 				return;
@@ -235,7 +235,7 @@ public class DetailsListener {
 			}
 			catch (Exception ee) {
 			}
-			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
+			JOEMainWindow.message(e.getMessage(), SWT.ICON_ERROR);
 			System.err.println("..error im DetailsListener.parseDocuments(): " + e.getMessage());
 		}
 	}
@@ -292,7 +292,7 @@ public class DetailsListener {
 			}
 			catch (Exception ee) {
 			}
-			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
+			JOEMainWindow.message(e.getMessage(), SWT.ICON_ERROR);
 		}
 		return newNote;
 	}
@@ -360,7 +360,7 @@ public class DetailsListener {
 			}
 			catch (Exception ee) {
 			}
-			MainWindow.message("Could not save file, cause: " + e.toString(), SWT.ICON_WARNING);
+			JOEMainWindow.message("Could not save file, cause: " + e.toString(), SWT.ICON_WARNING);
 			System.out.println("..error in DetailsListener.save. Could not save file " + e.getMessage());
 		}
 		return f.getAbsolutePath();
@@ -473,7 +473,7 @@ public class DetailsListener {
 				setNoteText(newNoteEN, note);
 		}
 		catch (Exception e) {
-			MainWindow.message("Could not add Params cause: " + e.toString(), SWT.ICON_WARNING);
+			JOEMainWindow.message("Could not add Params cause: " + e.toString(), SWT.ICON_WARNING);
 		}
 	}
 
@@ -841,8 +841,8 @@ public class DetailsListener {
 					Element process = (Element) listOfElement.get(0);
 					process.setAttribute("state", newstate);
 					detailListener.save();
-					MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", detailListener.getConfigurationFilename());
-					MainWindow.saveFTP(new java.util.HashMap());
+					JOEMainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", detailListener.getConfigurationFilename());
+					JOEMainWindow.saveFTP(new java.util.HashMap());
 				}
 			}
 		}
@@ -959,7 +959,7 @@ public class DetailsListener {
 						}
 						XPath x2 = null;
 						//Es ist ein Hot Folder oder der Job ist woanders abgelegt
-						TabbedContainer tab = (TabbedContainer) MainWindow.getContainer();
+						TabbedContainer tab = (TabbedContainer) JOEMainWindow.getContainer();
 						String pathFromHotFolderDirectory = new File(hotFolderfilename).getParent();
 						if (tab.getFilelist() != null
 								&& (tab.getFilelist().contains(hotFolderfilename) || tab.getFilelist().contains(pathFromHotFolderDirectory))) {
@@ -1031,8 +1031,8 @@ public class DetailsListener {
 									Element job = (Element) listOfElement3.get(0);
 									addMonitoring(job, currDom);
 									currDom.writeElement(currDom.getFilename(), currDom.getDoc());
-									MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", hotFolderfilename);
-									MainWindow.saveFTP(new java.util.HashMap());
+									JOEMainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", hotFolderfilename);
+									JOEMainWindow.saveFTP(new java.util.HashMap());
 								}
 							}
 						}
@@ -1114,7 +1114,7 @@ public class DetailsListener {
 					}
 					XPath x2 = XPath.newInstance("//job/monitor/script[@java_class='sos.scheduler.managed.configuration.ConfigurationOrderMonitor']");
 					//Es ist ein Hot Folder oder der Job ist woanders abgelegt
-					TabbedContainer tab = (TabbedContainer) MainWindow.getContainer();
+					TabbedContainer tab = (TabbedContainer) JOEMainWindow.getContainer();
 					if (tab.getFilelist() != null && tab.getFilelist().contains(hotFolderfilename)) {
 						//Hot Folder Element ist in einem Tabraiter offen
 						//org.eclipse.swt.custom.CTabItem f = tab.getFolderTab(hotFolderfilename);

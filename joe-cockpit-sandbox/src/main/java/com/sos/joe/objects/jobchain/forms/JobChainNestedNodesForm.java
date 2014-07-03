@@ -57,7 +57,7 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
@@ -563,7 +563,7 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 			public void widgetSelected(final SelectionEvent e) {
 				if (tNodes.getSelectionCount() > 0) {
 
-					int c = MainWindow.message(getShell(), JOE_M_JCNestedNodesForm_RemoveNode.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+					int c = JOEMainWindow.message(getShell(), JOE_M_JCNestedNodesForm_RemoveNode.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					if (c != SWT.YES)
 						return;
 
@@ -661,7 +661,7 @@ public class JobChainNestedNodesForm extends CompositeBaseClass /* SOSJOEMessage
 		if (!listener.isUniqueState(tState.getText()))
 			msg = JOE_M_JobChain_StateAlreadyDefined.label();
 		if (!msg.equals(""))
-			MainWindow.message(msg, SWT.ICON_INFORMATION);
+			JOEMainWindow.message(msg, SWT.ICON_INFORMATION);
 		else {
 			//listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJobChain.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(), cOnError.getText());
 			if (isInsert)

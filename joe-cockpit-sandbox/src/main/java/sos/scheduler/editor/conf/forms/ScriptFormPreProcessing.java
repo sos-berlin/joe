@@ -11,7 +11,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.conf.composites.PreProcessingComposite;
 import sos.util.SOSClassUtil;
 
@@ -152,7 +152,7 @@ public class ScriptFormPreProcessing extends ScriptForm {
 			if (Options.getProperty(getPrefix() + preProcessingHeader.getCboFavorite().getText()) != null) {
 				if (this.getObjJobJAPI() != null && this.getObjJobJAPI().getTbxClassName().getText().length() > 0 || this.getObjJobIncludeFile() != null
 						&& this.getObjJobIncludeFile().getTableIncludes().isEnabled() && this.getObjJobIncludeFile().getTableIncludes().getItemCount() > 0) {
-					int c = MainWindow.message(getShell(), JOE_M_ScriptFormPreProcessing_OverwriteMonitor.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+					int c = JOEMainWindow.message(getShell(), JOE_M_ScriptFormPreProcessing_OverwriteMonitor.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					if (c != SWT.YES)
 						return;
 					else {

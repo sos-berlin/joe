@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.conf.listeners.DetailXMLEditorListener;
 
 import com.sos.joe.globals.JOEConstants;
@@ -100,7 +100,7 @@ public class DetailXMLEditorDialogForm {
 	
 	public void showXMLEditor() {
 		
-		shell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
+		shell = new Shell(JOEMainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shell.addShellListener(new ShellAdapter() {
 			@Override
 			public void shellClosed(final ShellEvent e) {
@@ -220,7 +220,7 @@ public class DetailXMLEditorDialogForm {
 		boolean retVal = false;
 		if(butApply.isEnabled()) {
 //			cont = MainWindow.message(shell, com.sos.joe.globals.messages.Messages.getString("detailform.close"), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
-			cont = MainWindow.message(shell, SOSJOEMessageCodes.JOE_M_0008.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
+			cont = JOEMainWindow.message(shell, SOSJOEMessageCodes.JOE_M_0008.label(), SWT.ICON_WARNING | SWT.OK |SWT.CANCEL );
 			if(cont == SWT.OK) {						
 				shell.dispose();
 				retVal = true;

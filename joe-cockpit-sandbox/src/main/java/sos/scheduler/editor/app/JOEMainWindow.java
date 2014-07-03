@@ -48,6 +48,7 @@ import com.sos.i18n.annotation.I18NResourceBundle;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.interfaces.IContainer;
 import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
@@ -60,7 +61,7 @@ import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
-public class MainWindow {
+public class JOEMainWindow {
 	private static final String	conNewlineTab							= "n\t";
 	private static final String	conPropertyNameEDITOR_JOB_SHOW_WIZARD	= "JOEConstants.job.show.wizard";
 	private static final String	conStringEDITOR							= "editor";
@@ -69,7 +70,7 @@ public class MainWindow {
 	public static final String	conIconEDITOR_PNG						= "/sos/scheduler/editor/JOEConstants.png";
 	private final String		conClassName							= "MainWindow";
 	private final String		conSVNVersion							= "$Id$";
-	private static final Logger	logger									= Logger.getLogger(MainWindow.class);
+	private static final Logger	logger									= Logger.getLogger(JOEMainWindow.class);
 	private static Shell		sShell									= null;													// @jve:decl-index=0:visual-constraint="3,1"
 	private MainListener		listener								= null;
 	public static IContainer	container								= null;
@@ -78,7 +79,7 @@ public class MainWindow {
 	private Menu				submenu									= null;
 	private Menu				menuLanguages							= null;
 	private Menu				submenu1								= null;
-	private MainWindow			main									= null;
+	private JOEMainWindow			main									= null;
 	private Composite			groupmain								= null;
 	private static ToolItem		butSave									= null;
 	private static ToolItem		butShowAsSML							= null;
@@ -89,7 +90,7 @@ public class MainWindow {
 
 	private static Label		StatusLine								= null;
 
-	public MainWindow() {
+	public JOEMainWindow() {
 		logger.debug(conSVNVersion);
 	}
 
@@ -423,7 +424,7 @@ public class MainWindow {
 				File f = new java.io.File(globalSchedulerPath);
 				if (!f.exists()) {
 					if (!f.mkdirs()) {
-						MainWindow.message("could not create Global Scheduler Configurations: " + globalSchedulerPath, SWT.ICON_WARNING);
+						JOEMainWindow.message("could not create Global Scheduler Configurations: " + globalSchedulerPath, SWT.ICON_WARNING);
 						Utils.stopCursor(getSShell());
 						return;
 					}
@@ -605,7 +606,7 @@ public class MainWindow {
 					}
 					catch (Exception ee) {
 					}
-					MainWindow.message("could not open file on Webdav Server, cause: " + ex.getMessage(), SWT.ICON_WARNING);
+					JOEMainWindow.message("could not open file on Webdav Server, cause: " + ex.getMessage(), SWT.ICON_WARNING);
 				}
 			}
 
@@ -705,7 +706,7 @@ public class MainWindow {
 				else {
 					// String msg = "Help is available after documentation or configuration is opened";
 					String msg = Messages.getString("help.info");
-					MainWindow.message(msg, SWT.ICON_INFORMATION);
+					JOEMainWindow.message(msg, SWT.ICON_INFORMATION);
 				}
 			}
 
@@ -1181,7 +1182,7 @@ public class MainWindow {
 		itemReset.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				int c = MainWindow.message("Do you want to reload the configuration and discard the changes?", SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
+				int c = JOEMainWindow.message("Do you want to reload the configuration and discard the changes?", SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
 				if (c != SWT.YES)
 					return;
 				if (container.getCurrentEditor() instanceof SchedulerForm) {
@@ -1235,7 +1236,7 @@ public class MainWindow {
 				else {
 					// String msg = "Help is available after documentation or configuration is opened";
 					String msg = Messages.getString("help.info");
-					MainWindow.message(msg, SWT.ICON_INFORMATION);
+					JOEMainWindow.message(msg, SWT.ICON_INFORMATION);
 				}
 			}
 
@@ -1285,7 +1286,7 @@ public class MainWindow {
 						DetailsListener.changeJobChainName4NodeParameter(newName, oldname, (SchedulerDom) currdom);
 						//
 						if (!newConfigFile.exists() && !configFile.renameTo(newConfigFile)) {
-							MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename + "].\n"
+							JOEMainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename + "].\n"
 									+ "Please try later by Hand.", SWT.ICON_WARNING);
 						}
 						else {
@@ -1367,7 +1368,7 @@ public class MainWindow {
 					profile.disconnect();
 				}
 				else {
-					MainWindow.message("could not save file on ftp Server", SWT.ICON_WARNING);
+					JOEMainWindow.message("could not save file on ftp Server", SWT.ICON_WARNING);
 				}
 				if (profile.hasError()) {
 					String text = com.sos.joe.xml.Utils.showClipboard(txtLog.getText(), getSShell(), false, EMPTY);
@@ -1377,7 +1378,7 @@ public class MainWindow {
 			}
 		}
 		catch (Exception e) {
-			MainWindow.message("could not save per ftp, cause: " + e.toString(), SWT.ICON_WARNING);
+			JOEMainWindow.message("could not save per ftp, cause: " + e.toString(), SWT.ICON_WARNING);
 			try {
 				new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			}
@@ -1497,27 +1498,27 @@ public class MainWindow {
 
 	public static DomParser getSpecifiedDom() {
 		DomParser currdom = null;
-		if (MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
-			SchedulerForm form = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
+		if (JOEMainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
+			SchedulerForm form = (SchedulerForm) JOEMainWindow.getContainer().getCurrentEditor();
 			currdom = form.getDom();
 		} 
 		else
-			if (MainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm) {
-				DocumentationForm form = (DocumentationForm) MainWindow.getContainer().getCurrentEditor();
+			if (JOEMainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm) {
+				DocumentationForm form = (DocumentationForm) JOEMainWindow.getContainer().getCurrentEditor();
 				currdom = form.getDom();
 			}
 			else
-				if (MainWindow.getContainer().getCurrentEditor() instanceof JobChainConfigurationForm) {
-					JobChainConfigurationForm form = (JobChainConfigurationForm) MainWindow.getContainer().getCurrentEditor();
+				if (JOEMainWindow.getContainer().getCurrentEditor() instanceof JobChainConfigurationForm) {
+					JobChainConfigurationForm form = (JobChainConfigurationForm) JOEMainWindow.getContainer().getCurrentEditor();
 					currdom = form.getDom();
 				}
 				else
-					if (MainWindow.getContainer().getCurrentEditor() instanceof ActionsForm) {
-						ActionsForm form = (ActionsForm) MainWindow.getContainer().getCurrentEditor();
+					if (JOEMainWindow.getContainer().getCurrentEditor() instanceof ActionsForm) {
+						ActionsForm form = (ActionsForm) JOEMainWindow.getContainer().getCurrentEditor();
 						currdom = form.getDom();
 					}
 					else {
-						MainWindow.message("Could not save FTP File. <unspecified type>  ", SWT.ICON_WARNING);
+						JOEMainWindow.message("Could not save FTP File. <unspecified type>  ", SWT.ICON_WARNING);
 					}
 		return currdom;
 	}
@@ -1549,7 +1550,7 @@ public class MainWindow {
 
 	public static void shellActivated_() {
 		try {
-            if ( !(MainWindow.container.getCurrentEditor() instanceof SchedulerForm) || MainWindow.getContainer().getCurrentEditor() == null || !flag) {
+            if ( !(JOEMainWindow.container.getCurrentEditor() instanceof SchedulerForm) || JOEMainWindow.getContainer().getCurrentEditor() == null || !flag) {
 				return;
 			}
 			DomParser dom = getSpecifiedDom();
@@ -1652,7 +1653,7 @@ public class MainWindow {
 							msg = Messages.getString("file.changed.on.filesystem", dom.getFilename());
 						}
 					}
-					int c = MainWindow.message(sShell, msg, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+					int c = JOEMainWindow.message(sShell, msg, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					if (c == SWT.YES) {
 						try {
 							if (f.isDirectory()) {
@@ -1710,7 +1711,7 @@ public class MainWindow {
 							else {
 								if (delFFiles.size() > 0) {
 									// current Tabraiter soll geschlossen werden weil die Kpnfigurationsdatei ausserhalb gelöscht wurden
-									MainWindow.getContainer().getCurrentTab().dispose();
+									JOEMainWindow.getContainer().getCurrentTab().dispose();
 									return;
 								}
 								dom.read(dom.getFilename());
@@ -1836,14 +1837,14 @@ public class MainWindow {
 			else {// sonst life element
 				org.jdom.Element elem = null;
 				if (type == SchedulerDom.LIFE_LOCK) {
-					SchedulerForm form = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
+					SchedulerForm form = (SchedulerForm) JOEMainWindow.getContainer().getCurrentEditor();
 					org.eclipse.swt.widgets.Tree tree = form.getTree();
 					TreeData data = (TreeData) tree.getSelection()[0].getData();
 					elem = data.getElement().getChild("locks").getChild("lock");
 				}
 				else
 					if (type == SchedulerDom.LIFE_PROCESS_CLASS) {
-						SchedulerForm form = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
+						SchedulerForm form = (SchedulerForm) JOEMainWindow.getContainer().getCurrentEditor();
 						org.eclipse.swt.widgets.Tree tree = form.getTree();
 						TreeData data = (TreeData) tree.getSelection()[0].getData();
 						elem = data.getElement().getChild("process_classes").getChild("process_class");

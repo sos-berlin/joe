@@ -75,7 +75,7 @@ public class WebDavDialog {
 
 	public void showForm(final String type_) {
 		type = type_;
-		schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
+		schedulerConfigurationShell = new Shell(JOEMainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 		schedulerConfigurationShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/JOEConstants.png"));
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
 			@Override public void keyTraversed(final TraverseEvent e) {
@@ -394,7 +394,7 @@ public class WebDavDialog {
 		}
 		catch (Exception e) {
 			new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
-			MainWindow.message("could not int WebDav Profiles:" + e.getMessage(), SWT.ICON_WARNING);
+			JOEMainWindow.message("could not int WebDav Profiles:" + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}
 
@@ -451,7 +451,7 @@ public class WebDavDialog {
 	public void saveas(String file) {
 		try {
 			file = file.replaceAll("\\\\", "/");
-			String localfilename = MainWindow.getContainer().getCurrentEditor().getFilename();
+			String localfilename = JOEMainWindow.getContainer().getCurrentEditor().getFilename();
 			String newFilename = "";
 			if (localfilename != null)
 				newFilename = new File(localfilename).getParent() + "/" + new File(file).getName();
@@ -462,18 +462,18 @@ public class WebDavDialog {
 			SchedulerDom currdom = (SchedulerDom)form.getDom();
 			 */
 			DomParser currdom = null;
-			if (MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
-				SchedulerForm form = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
+			if (JOEMainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
+				SchedulerForm form = (SchedulerForm) JOEMainWindow.getContainer().getCurrentEditor();
 				currdom = form.getDom();
 			}
 			else
-				if (MainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm) {
-					DocumentationForm form = (DocumentationForm) MainWindow.getContainer().getCurrentEditor();
+				if (JOEMainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm) {
+					DocumentationForm form = (DocumentationForm) JOEMainWindow.getContainer().getCurrentEditor();
 					currdom = form.getDom();
 				}
 				else
-					if (MainWindow.getContainer().getCurrentEditor() instanceof JobChainConfigurationForm) {
-						JobChainConfigurationForm form = (JobChainConfigurationForm) MainWindow.getContainer().getCurrentEditor();
+					if (JOEMainWindow.getContainer().getCurrentEditor() instanceof JobChainConfigurationForm) {
+						JobChainConfigurationForm form = (JobChainConfigurationForm) JOEMainWindow.getContainer().getCurrentEditor();
 						currdom = form.getDom();
 					}
 			//if(currdom.getFilename() != null && !new File(currdom.getFilename()).delete())
@@ -492,15 +492,15 @@ public class WebDavDialog {
 				else {
 					Utils.setAttribute("name", attrName, currdom.getRoot());
 				}
-				if (MainWindow.getContainer().getCurrentEditor().save()) {
-					MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
-					MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
-					MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::" + listener.getCurrProfileName() + "]");
-					MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
-					MainWindow.setSaveStatus();
+				if (JOEMainWindow.getContainer().getCurrentEditor().save()) {
+					JOEMainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
+					JOEMainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
+					JOEMainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::" + listener.getCurrProfileName() + "]");
+					JOEMainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
+					JOEMainWindow.setSaveStatus();
 				}
 				currdom.setFilename(new java.io.File(newFilename).getCanonicalPath());
-				IContainer con = MainWindow.getContainer();
+				IContainer con = JOEMainWindow.getContainer();
 				SchedulerForm sf = (SchedulerForm) con.getCurrentEditor();
 				sf.updateTree("jobs");
 				String name = currdom.getRoot().getName();
@@ -509,29 +509,29 @@ public class WebDavDialog {
 			}
 			else
 				if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isDirectory()) {
-					if (MainWindow.getContainer().getCurrentEditor().save()) {
+					if (JOEMainWindow.getContainer().getCurrentEditor().save()) {
 						/*ArrayList list = new ArrayList();
 						if(MainWindow.getContainer().getCurrentTab().getData("webdav_hot_folder_elements") != null)
 							list = (ArrayList)MainWindow.getContainer().getCurrentTab().getData("webdav_hot_folder_elements");
 						 */
 						ArrayList newlist = listener.saveHotFolderAs(localfilename, file);
-						MainWindow.getContainer().getCurrentTab().setData("webdav_hot_folder_elements", newlist);
+						JOEMainWindow.getContainer().getCurrentTab().setData("webdav_hot_folder_elements", newlist);
 						//MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", file);
-						MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
-						MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
-						MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::" + listener.getCurrProfileName() + "]");
-						MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
+						JOEMainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
+						JOEMainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
+						JOEMainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::" + listener.getCurrProfileName() + "]");
+						JOEMainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
 					}
 					return;
 				}
 				else {
 					currdom.setFilename(newFilename);
-					if (MainWindow.getContainer().getCurrentEditor().save()) {
-						MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
-						MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
-						MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::" + listener.getCurrProfileName() + "]");
-						MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
-						MainWindow.setSaveStatus();
+					if (JOEMainWindow.getContainer().getCurrentEditor().save()) {
+						JOEMainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
+						JOEMainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
+						JOEMainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::" + listener.getCurrProfileName() + "]");
+						JOEMainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
+						JOEMainWindow.setSaveStatus();
 					}
 				}
 			listener.saveAs(localfilename, file);
@@ -542,7 +542,7 @@ public class WebDavDialog {
 			}
 			catch (Exception ee) {
 			}
-			MainWindow.message("could not save File: cause: " + e.getMessage(), SWT.ICON_WARNING);
+			JOEMainWindow.message("could not save File: cause: " + e.getMessage(), SWT.ICON_WARNING);
 		}
 		finally {
 			//listener.disconnect();
@@ -592,13 +592,13 @@ public class WebDavDialog {
 				if(!new File(dirname).exists()) {
 					new File(dirname).mkdirs();
 				}*/
-			if (MainWindow.getContainer().openDirectory(localFile) != null) {
-				MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
-				MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
-				MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::" + listener.getCurrProfileName() + "]");
-				MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
-				MainWindow.getContainer().getCurrentTab().setData("webdav_hot_folder_elements", nameOfLifeElement);
-				MainWindow.setSaveStatus();
+			if (JOEMainWindow.getContainer().openDirectory(localFile) != null) {
+				JOEMainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
+				JOEMainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
+				JOEMainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::" + listener.getCurrProfileName() + "]");
+				JOEMainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
+				JOEMainWindow.getContainer().getCurrentTab().setData("webdav_hot_folder_elements", nameOfLifeElement);
+				JOEMainWindow.setSaveStatus();
 			}
 			//}
 			//listener.disconnect();
@@ -610,19 +610,19 @@ public class WebDavDialog {
 			}
 			catch (Exception ee) {
 			}
-			MainWindow.message("could not Open Hot Folder: cause: " + e.getMessage(), SWT.ICON_WARNING);
+			JOEMainWindow.message("could not Open Hot Folder: cause: " + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}
 
 	public void openFile() {
 		String file = listener.getFile(txtUrl.getText() + "//" + txtFilename.getText(), null);
 		if (!listener.hasError()) {
-			if (MainWindow.getContainer().openQuick(file) != null) {
-				MainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
-				MainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
-				MainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::" + listener.getCurrProfileName() + "]");
-				MainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
-				MainWindow.setSaveStatus();
+			if (JOEMainWindow.getContainer().openQuick(file) != null) {
+				JOEMainWindow.getContainer().getCurrentTab().setData("webdav_profile_name", listener.getCurrProfileName());
+				JOEMainWindow.getContainer().getCurrentTab().setData("webdav_profile", listener.getCurrProfile());
+				JOEMainWindow.getContainer().getCurrentTab().setData("webdav_title", "[WebDav::" + listener.getCurrProfileName() + "]");
+				JOEMainWindow.getContainer().getCurrentTab().setData("webdav_remote_directory", txtUrl.getText() + "/" + txtFilename.getText());
+				JOEMainWindow.setSaveStatus();
 			}
 			//listener.disconnect();
 			schedulerConfigurationShell.dispose();

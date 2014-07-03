@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.classes.IntegerField;
 import sos.scheduler.editor.conf.listeners.ProcessClassesListener;
 
@@ -363,12 +363,12 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 
 	private boolean checkRemote() {
 		if (tRemoteHost.getText().trim().length() > 0 && tRemotePort.getText().trim().length() == 0) {
-			MainWindow.message(getShell(), JOE_M_ProcessClassesForm_MissingPort.label(), SWT.ICON_WARNING | SWT.OK);
+			JOEMainWindow.message(getShell(), JOE_M_ProcessClassesForm_MissingPort.label(), SWT.ICON_WARNING | SWT.OK);
 			return false;
 		}
 		else
 			if (tRemoteHost.getText().trim().length() == 0 && tRemotePort.getText().trim().length() > 0) {
-				MainWindow.message(getShell(), JOE_M_ProcessClassesForm_MissingHost.label(), SWT.ICON_WARNING | SWT.OK);
+				JOEMainWindow.message(getShell(), JOE_M_ProcessClassesForm_MissingHost.label(), SWT.ICON_WARNING | SWT.OK);
 				return false;
 			}
 		return true;

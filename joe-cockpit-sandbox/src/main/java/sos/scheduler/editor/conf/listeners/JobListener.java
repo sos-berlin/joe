@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.CDATA;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.xml.Utils;
 
 import com.sos.joe.globals.JOEConstants;
@@ -58,7 +58,7 @@ public class JobListener extends JOEListener {
 
 	public void setFile(final String file) {
 		if (_job.getChild("script") != null) {
-			int c = sos.scheduler.editor.app.MainWindow.message("Do you want really remove script and put new Run Executable File?", SWT.YES | SWT.NO
+			int c = sos.scheduler.editor.app.JOEMainWindow.message("Do you want really remove script and put new Run Executable File?", SWT.YES | SWT.NO
 					| SWT.ICON_WARNING);
 			if (c != SWT.YES)
 				return;
@@ -753,7 +753,7 @@ public class JobListener extends JOEListener {
 			setChangedForDirectory();
 		}
 		else {
-			MainWindow.ErrMsg("No script element defined!");
+			JOEMainWindow.ErrMsg("No script element defined!");
 		}
 	}
 
@@ -765,7 +765,7 @@ public class JobListener extends JOEListener {
 			setChangedForDirectory();
 		}
 		else {
-			MainWindow.message("No script element defined!", SWT.ICON_ERROR);
+			JOEMainWindow.message("No script element defined!", SWT.ICON_ERROR);
 			System.out.println("no script element defined!");
 		}
 	}
@@ -792,7 +792,7 @@ public class JobListener extends JOEListener {
 				System.out.println("index " + index + " is out of range for include!");
 		}
 		else {
-			MainWindow.message("No script element defined!", SWT.ICON_ERROR);
+			JOEMainWindow.message("No script element defined!", SWT.ICON_ERROR);
 			System.out.println("no script element defined!");
 		}
 	}
@@ -835,7 +835,7 @@ public class JobListener extends JOEListener {
 				setChangedForDirectory();
 			}
 			else {
-				MainWindow.message("No script element defined!", SWT.ICON_ERROR);
+				JOEMainWindow.message("No script element defined!", SWT.ICON_ERROR);
 				// System.out.println("no script element defined!");
 			}
 		}
@@ -846,7 +846,7 @@ public class JobListener extends JOEListener {
 			catch (Exception ee) {
 				// tu nichts
 			}
-			MainWindow.message(jdom.getMessage(), SWT.ICON_ERROR);
+			JOEMainWindow.message(jdom.getMessage(), SWT.ICON_ERROR);
 		}
 		catch (Exception e) {
 			try {
@@ -855,7 +855,7 @@ public class JobListener extends JOEListener {
 			catch (Exception ee) {
 				// tu nichts
 			}
-			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
+			JOEMainWindow.message(e.getMessage(), SWT.ICON_ERROR);
 			System.out.println(e);
 		}
 	}

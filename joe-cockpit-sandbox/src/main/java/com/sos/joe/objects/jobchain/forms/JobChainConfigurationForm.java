@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.util.SOSClassUtil;
 
 import com.sos.joe.globals.interfaces.IDetailUpdate;
@@ -224,7 +224,7 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
     	 try {
              // open file dialog
              if (filename == null || filename.equals("")) {
-                 FileDialog fdialog = JOE_FD_JobAssistent_OpenFile.Control(new FileDialog(MainWindow.getSShell(), SWT.OPEN));
+                 FileDialog fdialog = JOE_FD_JobAssistent_OpenFile.Control(new FileDialog(JOEMainWindow.getSShell(), SWT.OPEN));
                  fdialog.setFilterPath(Options.getLastDirectory());
 //                 fdialog.setText("Open File");
                  filename = fdialog.open();
@@ -235,7 +235,7 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
                  for (Iterator it = filenames.iterator(); it.hasNext();) {
                      if (((String) it.next()).equals(filename)) {
 //                         MainWindow.message(Messages.getString("MainListener.fileOpened"), SWT.ICON_INFORMATION | SWT.OK);
-                    	 MainWindow.message(JOE_M_JobAssistent_FileIsOpened.label(), SWT.ICON_INFORMATION | SWT.OK);
+                    	 JOEMainWindow.message(JOE_M_JobAssistent_FileIsOpened.label(), SWT.ICON_INFORMATION | SWT.OK);
                          return "";
                      }
                  }
@@ -249,18 +249,18 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
                 	 //System.out.println("~~~~~~~~~~~~~~~~~not exist filename: " + filename);
 //                     MainWindow.message(Messages.getString("MainListener.fileNotFound"), //$NON-NLS-1$
 //                             SWT.ICON_WARNING | SWT.OK);
-                     MainWindow.message(JOE_M_JobAssistent_FileNotFound.label(),
+                     JOEMainWindow.message(JOE_M_JobAssistent_FileNotFound.label(),
                              SWT.ICON_WARNING | SWT.OK);
                  } else if (!file.canRead())
 //                     MainWindow.message(Messages.getString("MainListener.fileReadProtected"), //$NON-NLS-1$
 //                             SWT.ICON_WARNING | SWT.OK);
-                 MainWindow.message(JOE_M_JobAssistent_FileReadProtected.label(),
+                 JOEMainWindow.message(JOE_M_JobAssistent_FileReadProtected.label(),
                          SWT.ICON_WARNING | SWT.OK);
              } else
                  return filename;
 
 //             MainWindow.getSShell().setText("Job Details Editor [" + filename + "]");
-             MainWindow.getSShell().setText(JOE_M_JobAssistent_JobDetailsEditor.params(filename));
+             JOEMainWindow.getSShell().setText(JOE_M_JobAssistent_JobDetailsEditor.params(filename));
 
              Options.setLastDirectory(new File(filename), dom);
              return filename;
@@ -271,7 +271,7 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
  			} catch(Exception ee) {
  			}
              e.printStackTrace();
-             MainWindow.message(e.getMessage(), SWT.ICON_ERROR | SWT.OK);
+             JOEMainWindow.message(e.getMessage(), SWT.ICON_ERROR | SWT.OK);
          }
 
          return filename;

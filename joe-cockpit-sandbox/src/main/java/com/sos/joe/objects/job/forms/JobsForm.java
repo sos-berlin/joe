@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.util.SOSClassUtil;
@@ -156,7 +156,7 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 
 //					int c = MainWindow.message(getShell(), "Do you want remove the job?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-					int c = MainWindow.message(getShell(), JOE_M_RemoveJob.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+					int c = JOEMainWindow.message(getShell(), JOE_M_RemoveJob.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					if (c != SWT.YES)
 						return;
 

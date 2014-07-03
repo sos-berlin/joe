@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
@@ -161,14 +161,14 @@ public abstract class CompositeBaseClass /* extends Composite */ implements IUns
 		display.asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				MainWindow.setStatusLine(pstrText);
+				JOEMainWindow.setStatusLine(pstrText);
 				try {
 					Thread.sleep(delay);
 				}
 				catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				MainWindow.setStatusLine("");
+				JOEMainWindow.setStatusLine("");
 			}
 		});
 
@@ -192,11 +192,11 @@ public abstract class CompositeBaseClass /* extends Composite */ implements IUns
 	}
 
 	protected IContainer getContainer() {
-		return MainWindow.getContainer();
+		return JOEMainWindow.getContainer();
 	}
 
 	protected void MsgWarning(final String pstrMsgText) {
-		MainWindow.message(pstrMsgText, SWT.ICON_WARNING);
+		JOEMainWindow.message(pstrMsgText, SWT.ICON_WARNING);
 		this.setStatusLine(pstrMsgText);
 	}
 

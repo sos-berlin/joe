@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.app.TreeMenu;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
@@ -399,7 +399,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		// if(dom.getFilename() != null && new java.io.File(dom.getFilename()).getName().startsWith("#xml#.config.") &&
 		// dom.getFilename().endsWith(".xml~")) {
 		if (dom.isDirectory()) {
-			res = MainWindow.saveDirectory(dom, false, SchedulerDom.DIRECTORY, null, container);
+			res = JOEMainWindow.saveDirectory(dom, false, SchedulerDom.DIRECTORY, null, container);
 		}
 		else
 			if (dom.isLifeElement()) {
@@ -416,7 +416,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 					type = SchedulerDom.LIFE_ORDER;
 				if (dom.getRoot().getName().equals("add_order"))
 					type = SchedulerDom.LIFE_ADD_ORDER;
-				res = MainWindow.saveDirectory(dom, false, type, dom.getRoot().getName(), container);
+				res = JOEMainWindow.saveDirectory(dom, false, type, dom.getRoot().getName(), container);
 			}
 			else {
 				res = IOUtils.saveFile(dom, false);

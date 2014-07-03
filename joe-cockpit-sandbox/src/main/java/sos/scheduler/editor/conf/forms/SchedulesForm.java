@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.conf.listeners.SchedulesListener;
 import sos.util.SOSClassUtil;
 
@@ -101,7 +101,7 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
             butRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
                 @Override
 				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
-                    int c = MainWindow.message(getShell(), JOE_M_SchedulesForm_RemoveSchedule.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+                    int c = JOEMainWindow.message(getShell(), JOE_M_SchedulesForm_RemoveSchedule.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
                     if (c != SWT.YES)
                         return;
                     if (Utils.checkElement(table.getSelection()[0].getText(0), dom, JOEConstants.SCHEDULES, null))// wird

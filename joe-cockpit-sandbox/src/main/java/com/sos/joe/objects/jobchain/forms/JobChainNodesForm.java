@@ -51,7 +51,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.globals.misc.TreeData;
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.FolderNameSelector;
@@ -667,7 +667,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 	}
 
 	private void showJobChainNodeComposite(final CompositeBaseAbstract.enuOperationMode enuMode) {
-		DialogAdapter objDA = new DialogAdapter(new Shell(MainWindow.getSShell()), intDialogStyle);
+		DialogAdapter objDA = new DialogAdapter(new Shell(JOEMainWindow.getSShell()), intDialogStyle);
 		JobChainNodeComposite objNodeC = new JobChainNodeComposite(objDataProvider, enuMode);
 		// TODO callback for new and edit: Interface IEditCallback
 		//		objDA.setEditCallback(this);
@@ -675,7 +675,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 	}
 
 	private void showJobChainFileSinkComposite(final CompositeBaseAbstract.enuOperationMode enuMode) {
-		DialogAdapter objDA = new DialogAdapter(new Shell(MainWindow.getSShell()), intDialogStyle);
+		DialogAdapter objDA = new DialogAdapter(new Shell(JOEMainWindow.getSShell()), intDialogStyle);
 		JobChainFileSinkComposite objNodeC = new JobChainFileSinkComposite(objDataProvider, enuMode);
 		objDA.open(objNodeC);
 	}
@@ -791,7 +791,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 
 	private void deleteNode() {
 		if (tblJobChainStates.getSelectionCount() > 0) {
-			int c = MainWindow.message(getShell(), JOE_M_JCNodesForm_Remove.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+			int c = JOEMainWindow.message(getShell(), JOE_M_JCNodesForm_Remove.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 			if (c != SWT.YES) {
 				return;
 			}

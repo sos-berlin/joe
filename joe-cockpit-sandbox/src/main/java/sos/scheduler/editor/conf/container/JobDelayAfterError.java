@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.FormBaseClass;
 
@@ -270,22 +270,22 @@ public class JobDelayAfterError extends FormBaseClass<JobListener> {
 			maxAktErrorDelay = Utils.str2int(sErrorCount.getText());
 		}
 		if (found) {
-			MainWindow.message(SOSJOEMessageCodes.JOE_M_0036.label(), SWT.ICON_INFORMATION);
+			JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_0036.label(), SWT.ICON_INFORMATION);
 			sErrorCount.setFocus();
 		}
 		else {
 			if (maxErrorDelay > 0 && maxErrorDelay < Utils.str2int(sErrorCount.getText()) || maxAktErrorDelay > Utils.str2int(sErrorCount.getText())
 					&& bStop.getSelection()) {
-				MainWindow.message(SOSJOEMessageCodes.JOE_M_0037.label(), SWT.ICON_INFORMATION);
+				JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_0037.label(), SWT.ICON_INFORMATION);
 				sErrorCount.setFocus();
 			}
 			else {
 				if (maximum > 1) {
-					MainWindow.message(SOSJOEMessageCodes.JOE_M_0038.label(), SWT.ICON_INFORMATION);
+					JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_0038.label(), SWT.ICON_INFORMATION);
 				}
 				else {
 					if (sErrorCount.getText().equals("")) {
-						MainWindow.message(SOSJOEMessageCodes.JOE_M_0039.label(), SWT.ICON_INFORMATION);
+						JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_0039.label(), SWT.ICON_INFORMATION);
 						sErrorCount.setFocus();
 					}
 					else {

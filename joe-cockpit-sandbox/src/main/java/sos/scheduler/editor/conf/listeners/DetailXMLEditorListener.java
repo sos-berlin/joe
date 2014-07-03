@@ -10,7 +10,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.util.SOSClassUtil;
 
 import com.sos.joe.globals.messages.ErrorLog;
@@ -121,7 +121,7 @@ public class DetailXMLEditorListener {
 			} catch(Exception ee) {
 
 			}
-        	MainWindow.message("XML could not be saved because:\n" + e1.getMessage(), SWT.ICON_ERROR);
+        	JOEMainWindow.message("XML could not be saved because:\n" + e1.getMessage(), SWT.ICON_ERROR);
             e1.printStackTrace();
         } catch (IOException e1) {
         	try {
@@ -130,7 +130,7 @@ public class DetailXMLEditorListener {
 
 			}
 
-        	MainWindow.message("XML could not be saved because:\n" + e1.getMessage(), SWT.ICON_ERROR);
+        	JOEMainWindow.message("XML could not be saved because:\n" + e1.getMessage(), SWT.ICON_ERROR);
             e1.printStackTrace();
         }
 

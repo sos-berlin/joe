@@ -25,7 +25,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.conf.listeners.DateListener;
 import sos.scheduler.editor.conf.listeners.DaysListener;
 
@@ -164,7 +164,7 @@ public class DateForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				}
 				catch (Exception ex) {
 					//					MainWindow.message(sDate + " is not a valid Date: " + ex.getMessage(), SWT.ICON_ERROR);
-					MainWindow.message(JOE_M_0015.params(sDate, ex.getMessage()), SWT.ICON_ERROR);
+					JOEMainWindow.message(JOE_M_0015.params(sDate, ex.getMessage()), SWT.ICON_ERROR);
 					return;
 				}
 				if (listener.exists(year, month, day)) {
@@ -437,7 +437,7 @@ public class DateForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		}
 		catch (Exception ex) {
 			//			MainWindow.message("could not open Holiday File" + ex.getMessage(), SWT.ICON_ERROR);
-			MainWindow.message(JOE_E_0001.params(ex.getMessage()), SWT.ICON_ERROR);
+			JOEMainWindow.message(JOE_E_0001.params(ex.getMessage()), SWT.ICON_ERROR);
 			return;
 		}
 	}

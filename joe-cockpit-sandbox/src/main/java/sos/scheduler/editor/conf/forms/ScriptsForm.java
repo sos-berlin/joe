@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.conf.listeners.PreProstProcessingListener;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 import sos.util.SOSClassUtil;
@@ -115,7 +115,7 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			butRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				@Override
 				public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
-					int c = MainWindow.message(getShell(), JOE_M_ScriptsForm_RemoveMonitor.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+					int c = JOEMainWindow.message(getShell(), JOE_M_ScriptsForm_RemoveMonitor.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					if (c != SWT.YES)
 						return;
 					butRemove.setEnabled(listener.delete(table));

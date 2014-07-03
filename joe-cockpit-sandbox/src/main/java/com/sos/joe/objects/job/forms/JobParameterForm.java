@@ -39,8 +39,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
-import sos.scheduler.editor.app.MainWindow;
-import com.sos.joe.xml.Utils;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.conf.listeners.JobParameterListener;
 import sos.util.SOSString;
 
@@ -57,6 +56,7 @@ import com.sos.joe.objects.job.JobListener;
 import com.sos.joe.wizard.forms.JobAssistentImportJobParamsForm;
 import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
 import com.sos.joe.xml.IOUtils;
+import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.objects.JSObjJob;
   
@@ -125,7 +125,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 	private void initialize() {
 		sosString = new SOSString();
 		try {
-			isRemoteConnection = sosString.parseToString(MainWindow.getContainer().getCurrentTab().getData("ftp_title")).length() > 0;
+			isRemoteConnection = sosString.parseToString(JOEMainWindow.getContainer().getCurrentTab().getData("ftp_title")).length() > 0;
 		}
 		catch (Exception e) {
 		}
@@ -149,7 +149,11 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 	}
 
 	@Override public boolean isUnsaved() {
-		return bApply.isEnabled();
+		boolean flgIsUnsaved = false;
+		if (bApply != null) {
+		flgIsUnsaved = bApply.isEnabled();
+		}
+		return flgIsUnsaved;
 	}
 
 	public void createParameterGroup() {
@@ -279,7 +283,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 				}
 			}
 			if (fNotExist) {
-				MainWindow.message("file not exist: " + f, SWT.ICON_WARNING);
+				JOEMainWindow.message("file not exist: " + f, SWT.ICON_WARNING);
 				return;
 			}
 			final String filename = f;
@@ -312,7 +316,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 				// for(int i = 0; i < paramList.size(); i++) {
 				Element param = (Element) listOfElement.get(i);
 				if (hash.containsKey(Utils.getAttributeValue("name", param))) {
-					MainWindow.message("There is not a clearly Parameter: " + Utils.getAttributeValue("name", param), SWT.ICON_WARNING);
+					JOEMainWindow.message("There is not a clearly Parameter: " + Utils.getAttributeValue("name", param), SWT.ICON_WARNING);
 					return;
 				}
 				hash.put(Utils.getAttributeValue("name", param), "");
@@ -475,7 +479,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 			catch (Exception ee) {
 				// tu nichts
 			}
-			MainWindow.message("could not create Tabitem cause: " + e.getMessage(), SWT.ICON_WARNING);
+			JOEMainWindow.message("could not create Tabitem cause: " + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}
 
@@ -625,7 +629,7 @@ public class JobParameterForm extends Composite implements IUnsaved, IUpdateLang
 		tParameter.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			@Override public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 				if (bApply.isEnabled()) {
-					int ok = MainWindow.message(Messages.getString("MainListener.apply_changes"), //$NON-NLS-1$
+					int ok = JOEMainWindow.message(Messages.getString("MainListener.apply_changes"), //$NON-NLS-1$
 							SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
 					if (ok == SWT.YES) {
 						addParam();

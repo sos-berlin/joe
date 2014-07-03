@@ -72,7 +72,7 @@ public class FTPDialogProfiles {
 	 * @wbp.parser.entryPoint
 	 */
 	public void showForm() {
-		schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
+		schedulerConfigurationShell = new Shell(JOEMainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
 			@Override public void keyTraversed(final TraverseEvent e) {
 				if (e.detail == SWT.TRAVERSE_ESCAPE) {
@@ -524,7 +524,7 @@ public class FTPDialogProfiles {
 			}
 			catch (Exception ee) {
 			}
-			MainWindow.message("could not reaad FTP Profiles:" + e.getMessage(), SWT.ICON_WARNING);
+			JOEMainWindow.message("could not reaad FTP Profiles:" + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}
 
@@ -611,7 +611,7 @@ public class FTPDialogProfiles {
 		if (saved)
 			return;
 		if (butApply.getEnabled()) {
-			int cont = MainWindow.message(schedulerConfigurationShell, Messages.getString("MainListener.apply_changes"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+			int cont = JOEMainWindow.message(schedulerConfigurationShell, Messages.getString("MainListener.apply_changes"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 			if (cont == SWT.OK) {
 				apply();
 			}

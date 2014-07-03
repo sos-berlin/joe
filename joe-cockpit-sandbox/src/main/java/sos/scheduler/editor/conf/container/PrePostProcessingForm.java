@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.ContextMenu;
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.classes.FormBaseClass;
 import sos.scheduler.editor.classes.LanguageSelector;
 import sos.scheduler.editor.classes.SOSComboBox;
@@ -187,7 +187,7 @@ public class PrePostProcessingForm extends FormBaseClass<JOEListener> {
 				if (strFavText.length() > 0) {
 					if (Options.getProperty(getPrefix(strFavText) + cboFavorite.getText()) != null) {
 						if (tbxClassName.isEnabled() && tbxClassName.getText().length() > 0 || tableIncludes.isEnabled() && tableIncludes.getItemCount() > 0) {
-							int c = MainWindow.message(getShell(), SOSJOEMessageCodes.JOE_M_ScriptFormPreProcessing_OverwriteMonitor.label(), SWT.ICON_QUESTION
+							int c = JOEMainWindow.message(getShell(), SOSJOEMessageCodes.JOE_M_ScriptFormPreProcessing_OverwriteMonitor.label(), SWT.ICON_QUESTION
 									| SWT.YES | SWT.NO);
 							if (c != SWT.YES)
 								return;

@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
@@ -49,7 +49,7 @@ public class SchedulerEditorFontDialog {
 
 	public SchedulerEditorFontDialog() {
 		super();
-		objParentShell = MainWindow.getSShell();
+		objParentShell = JOEMainWindow.getSShell();
 	}
 
 	public void setParent(final Shell pobjParentShell) {

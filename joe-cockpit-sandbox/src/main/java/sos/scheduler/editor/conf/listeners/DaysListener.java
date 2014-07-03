@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.util.SOSClassUtil;
 
@@ -612,9 +612,9 @@ public class DaysListener {
 	private void isHolidayWeeksdayParent() {
 		if (_runtime.getName().equals("holidays"))
 			return;
-		if (MainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm)
+		if (JOEMainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm)
 			return;
-		SchedulerForm f = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
+		SchedulerForm f = (SchedulerForm) JOEMainWindow.getContainer().getCurrentEditor();
 		if (f == null)
 			return;
 		Tree tree = f.getTree();

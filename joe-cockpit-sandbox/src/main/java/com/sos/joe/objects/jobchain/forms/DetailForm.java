@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSComboBox;
@@ -452,7 +452,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 					saveWindowPosAndSize();
 					if (butApply.getEnabled()) {
 						//						int count = MainWindow.message(getShell(), com.sos.joe.globals.messages.Messages.getLabel("detailform.close"), SWT.ICON_WARNING | SWT.OK
-						int count = MainWindow.message(getShell(), JOE_M_0008.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+						int count = JOEMainWindow.message(getShell(), JOE_M_0008.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 						if (count != SWT.OK) {
 							return;
 						}
@@ -550,13 +550,13 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 					try {
 						if (dom != null && dom.isChanged()) {
 							//							MainWindow.message("Please save jobchain configuration file before opening XML JOEConstants.", SWT.ICON_ERROR);
-							MainWindow.message(JOE_M_0020.label(), SWT.ICON_ERROR);
+							JOEMainWindow.message(JOE_M_0020.label(), SWT.ICON_ERROR);
 							return;
 						}
 						if (dom == null && butApply.isEnabled()) {
 							// ungespeichert
 							//							int c = MainWindow.message("Should the current values be saved?", SWT.YES | SWT.NO | SWT.ICON_ERROR);
-							int c = MainWindow.message(JOE_M_0021.label(), SWT.YES | SWT.NO | SWT.ICON_ERROR);
+							int c = JOEMainWindow.message(JOE_M_0021.label(), SWT.YES | SWT.NO | SWT.ICON_ERROR);
 							if (c == SWT.YES)
 								detailListener.save();
 						}
@@ -574,7 +574,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 							}
 							else {
 								//								MainWindow.message("Please save jobchain configuration file before opening XML JOEConstants.", SWT.ICON_ERROR);
-								MainWindow.message(JOE_M_0020.label(), SWT.ICON_ERROR);
+								JOEMainWindow.message(JOE_M_0020.label(), SWT.ICON_ERROR);
 							}
 						}
 					}
@@ -619,10 +619,10 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 								}
 							}
 							else
-								MainWindow.message(JOE_M_0013.params(file.getCanonicalPath()), SWT.ICON_ERROR);
+								JOEMainWindow.message(JOE_M_0013.params(file.getCanonicalPath()), SWT.ICON_ERROR);
 						}
 						else
-							MainWindow.message(JOE_M_0012.label(), SWT.ICON_ERROR);
+							JOEMainWindow.message(JOE_M_0012.label(), SWT.ICON_ERROR);
 						//							MainWindow.message("Please save jobchain configuration before opening documentation.", SWT.ICON_ERROR);
 					}
 					catch (Exception ex) {
@@ -707,7 +707,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 	private boolean discardChanges() {
 		if (butApply.getEnabled()) {
 			//			int count = MainWindow.message(getShell(), com.sos.joe.globals.messages.Messages.getString("detailform.open"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-			int count = MainWindow.message(getShell(), JOE_M_0022.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+			int count = JOEMainWindow.message(getShell(), JOE_M_0022.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 			if (count != SWT.OK) {
 				return false;
 			}
@@ -792,7 +792,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 			return;
 		if (txtName.getText() != null && txtName.getText().length() == 0) {
 			//			MainWindow.message(getShell(), com.sos.joe.globals.messages.Messages.getString("tooltip.detail.param.missing_param_name_for_note"), SWT.ICON_WARNING
-			MainWindow.message(getShell(), JOE_M_0024.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+			JOEMainWindow.message(getShell(), JOE_M_0024.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 			return;
 		}
 		if (tableParams.getSelectionCount() == 0 || tableParams.getSelectionCount() > 0
@@ -822,8 +822,8 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 		detailListener.save();
 		if (schedulerDom != null) {
 			DetailsListener.addMonitoring2Job(jobChainname, state, schedulerDom, update);
-			MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", detailListener.getConfigurationFilename());
-			MainWindow.saveFTP(new java.util.HashMap());
+			JOEMainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", detailListener.getConfigurationFilename());
+			JOEMainWindow.saveFTP(new java.util.HashMap());
 		}
 		if (type == JOEConstants.JOB_CHAINS) {
 			isEditable = false;

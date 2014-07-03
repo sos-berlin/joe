@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.CDATA;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.xml.Utils;
 import sos.util.SOSClassUtil;
 
@@ -238,7 +238,7 @@ public class ScriptListener extends JOEListener {
 			setChangedForDirectory();
 		}
 		else {
-			MainWindow.message("No script element defined!", SWT.ICON_ERROR);
+			JOEMainWindow.message("No script element defined!", SWT.ICON_ERROR);
 			System.out.println("no script element defined!");
 		}
 	}
@@ -251,7 +251,7 @@ public class ScriptListener extends JOEListener {
 			setChangedForDirectory();
 		}
 		else {
-			MainWindow.message("No script element defined!", SWT.ICON_ERROR);
+			JOEMainWindow.message("No script element defined!", SWT.ICON_ERROR);
 			System.out.println("no script element defined!");
 		}
 	}
@@ -278,7 +278,7 @@ public class ScriptListener extends JOEListener {
 				System.out.println("index " + index + " is out of range for include!");
 		}
 		else {
-			MainWindow.message("No script element defined!", SWT.ICON_ERROR);
+			JOEMainWindow.message("No script element defined!", SWT.ICON_ERROR);
 			System.out.println("no script element defined!");
 		}
 	}
@@ -316,7 +316,7 @@ public class ScriptListener extends JOEListener {
 				setChangedForDirectory();
 			}
 			else {
-				MainWindow.message("No script element defined!", SWT.ICON_ERROR);
+				JOEMainWindow.message("No script element defined!", SWT.ICON_ERROR);
 				System.out.println("no script element defined!");
 			}
 		}
@@ -326,7 +326,7 @@ public class ScriptListener extends JOEListener {
 			}
 			catch (Exception ee) {
 			}
-			MainWindow.message(jdom.getMessage(), SWT.ICON_ERROR);
+			JOEMainWindow.message(jdom.getMessage(), SWT.ICON_ERROR);
 		}
 		catch (Exception e) {
 			try {
@@ -334,7 +334,7 @@ public class ScriptListener extends JOEListener {
 			}
 			catch (Exception ee) {
 			}
-			MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
+			JOEMainWindow.message(e.getMessage(), SWT.ICON_ERROR);
 			System.out.println(e);
 		}
 	}

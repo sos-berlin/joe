@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.conf.listeners.HttpAuthenticationListener;
 import sos.util.SOSClassUtil;
 import sos.util.SOSCrypt;
@@ -339,7 +339,7 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
 				new ErrorLog(JOE_E_0002.params(SOSClassUtil.getMethodName()) + JOE_M_0016.params(txtPassword.getText()), ex);
     		} catch(Exception ee) {
     		}
-			MainWindow.message(getShell(), JOE_M_0016.params(txtPassword.getText()), SWT.ICON_WARNING | SWT.OK );
+			JOEMainWindow.message(getShell(), JOE_M_0016.params(txtPassword.getText()), SWT.ICON_WARNING | SWT.OK );
 		}
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

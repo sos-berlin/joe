@@ -67,7 +67,7 @@ public class FTPDialog {
 	private FTPProfilePicker	ftpProfilePicker			= null;
 	private TableColumn			newColumnTableColumn_2		= null;
 
-	public FTPDialog(final MainWindow main_) {
+	public FTPDialog(final JOEMainWindow main_) {
 		// main = main_;
 	}
 
@@ -77,7 +77,7 @@ public class FTPDialog {
 	public void showForm(final String type_) {
 		try {
 			type = type_;
-			schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
+			schedulerConfigurationShell = new Shell(JOEMainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 			schedulerConfigurationShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/JOEConstants.png"));
 			schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
 				@Override public void keyTraversed(final TraverseEvent e) {
@@ -141,7 +141,7 @@ public class FTPDialog {
 							_setEnabled(listener.getCurrProfile().isLoggedIn());
 						}
 						catch (Exception r) {
-							MainWindow.message("error while choice Profilename: " + e.toString(), SWT.ICON_WARNING);
+							JOEMainWindow.message("error while choice Profilename: " + e.toString(), SWT.ICON_WARNING);
 							try {
 								new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
 							}
@@ -158,7 +158,7 @@ public class FTPDialog {
 						Utils.startCursor(schedulerConfigurationShell);
 						try {
 							if (listener.getProfileNames().length == 0) {
-								MainWindow.message("Please first define a Profile", SWT.ICON_WARNING);
+								JOEMainWindow.message("Please first define a Profile", SWT.ICON_WARNING);
 								return;
 							}
 							FTPProfile profile = listener.getCurrProfile();
@@ -176,7 +176,7 @@ public class FTPDialog {
 						}
 						catch (Exception ex) {
 							try {
-								MainWindow.message("error while connecting: " + ex.toString(), SWT.ICON_WARNING);
+								JOEMainWindow.message("error while connecting: " + ex.toString(), SWT.ICON_WARNING);
 								new ErrorLog("error in " + SOSClassUtil.getMethodName(), ex);
 							}
 							catch (Exception ee) {
@@ -210,7 +210,7 @@ public class FTPDialog {
 							}
 						}
 						catch (Exception r) {
-							MainWindow.message("error while change Directory: " + e.toString(), SWT.ICON_WARNING);
+							JOEMainWindow.message("error while change Directory: " + e.toString(), SWT.ICON_WARNING);
 							try {
 								new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
 							}
@@ -233,7 +233,7 @@ public class FTPDialog {
 							Utils.stopCursor(schedulerConfigurationShell);
 						}
 						catch (Exception r) {
-							MainWindow.message("error: " + e.toString(), SWT.ICON_WARNING);
+							JOEMainWindow.message("error: " + e.toString(), SWT.ICON_WARNING);
 							try {
 								new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
 							}
@@ -455,7 +455,7 @@ public class FTPDialog {
 			catch (Exception ee) {
 				// tu nichts
 			}
-			MainWindow.message("could not int FTP Profiles:" + e.getMessage(), SWT.ICON_WARNING);
+			JOEMainWindow.message("could not int FTP Profiles:" + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}
 
@@ -477,7 +477,7 @@ public class FTPDialog {
 			catch (Exception ee) {
 				// tu nichts
 			}
-			MainWindow.message("could not int FTP Profiles:" + e.getMessage(), SWT.ICON_WARNING);
+			JOEMainWindow.message("could not int FTP Profiles:" + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}
 
@@ -532,13 +532,13 @@ public class FTPDialog {
 	public void saveas(String file) {
 		try {
 			file = file.replaceAll("\\\\", "/");
-			String localfilename = MainWindow.getContainer().getCurrentEditor().getFilename();
+			String localfilename = JOEMainWindow.getContainer().getCurrentEditor().getFilename();
 			String newFilename = "";
 			if (localfilename != null)
 				newFilename = new File(localfilename).getParent() + "/" + new File(file).getName();
 			else
 				newFilename = new File(sosString.parseToString(listener.getCurrProfile().getLocaldirectory()), new File(file).getName()).getCanonicalPath();
-			DomParser currdom = MainWindow.getSpecifiedDom();
+			DomParser currdom = JOEMainWindow.getSpecifiedDom();
 			if (currdom == null)
 				return;
 			if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isLifeElement()) {
@@ -555,15 +555,15 @@ public class FTPDialog {
 				else {
 					Utils.setAttribute("name", attrName, currdom.getRoot());
 				}
-				if (MainWindow.getContainer().getCurrentEditor().save()) {
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
-					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-					MainWindow.setSaveStatus();
+				if (JOEMainWindow.getContainer().getCurrentEditor().save()) {
+					JOEMainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
+					JOEMainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
+					JOEMainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
+					JOEMainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
+					JOEMainWindow.setSaveStatus();
 				}
 				currdom.setFilename(new java.io.File(newFilename).getCanonicalPath());
-				IContainer con = MainWindow.getContainer();
+				IContainer con = JOEMainWindow.getContainer();
 				SchedulerForm sf = (SchedulerForm) con.getCurrentEditor();
 				sf.updateTree("jobs");
 				String name = currdom.getRoot().getName();
@@ -572,25 +572,25 @@ public class FTPDialog {
 			}
 			else
 				if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isDirectory()) {
-					if (MainWindow.getContainer().getCurrentEditor().save()) {
+					if (JOEMainWindow.getContainer().getCurrentEditor().save()) {
 						ArrayList newlist = listener.getCurrProfile().saveHotFolderAs(localfilename, file);
-						MainWindow.getContainer().getCurrentTab().setData("ftp_hot_folder_elements", newlist);
-						MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-						MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
-						MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
-						MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-						MainWindow.setSaveStatus();
+						JOEMainWindow.getContainer().getCurrentTab().setData("ftp_hot_folder_elements", newlist);
+						JOEMainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
+						JOEMainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
+						JOEMainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
+						JOEMainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
+						JOEMainWindow.setSaveStatus();
 					}
 					return;
 				}
 				else {
 					currdom.setFilename(newFilename);
-					if (MainWindow.getContainer().getCurrentEditor().save()) {
-						MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-						MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
-						MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
-						MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-						MainWindow.setSaveStatus();
+					if (JOEMainWindow.getContainer().getCurrentEditor().save()) {
+						JOEMainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
+						JOEMainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
+						JOEMainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
+						JOEMainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
+						JOEMainWindow.setSaveStatus();
 					}
 				}
 			listener.getCurrProfile().saveAs(localfilename, file);
@@ -602,7 +602,7 @@ public class FTPDialog {
 			catch (Exception ee) {
 				// tu nichts
 			}
-			MainWindow.message("could not save File: cause: " + e.getMessage(), SWT.ICON_WARNING);
+			JOEMainWindow.message("could not save File: cause: " + e.getMessage(), SWT.ICON_WARNING);
 		}
 		finally {
 			try {
@@ -675,7 +675,7 @@ public class FTPDialog {
 				}
 			}
 			if (whichFile.length() > 0) {
-				int c = MainWindow.message(
+				int c = JOEMainWindow.message(
 						"The files in the local directory are not synchron with the files at the server.\nShould the files in the local directory be deleted?\n"
 								+ whichFile, SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
 				if (c == SWT.YES) {
@@ -688,13 +688,13 @@ public class FTPDialog {
 			if (!new File(dirname).exists()) {
 				new File(dirname).mkdirs();
 			}
-			if (MainWindow.getContainer().openDirectory(dirname) != null) {
-				MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-				MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
-				MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
-				MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", strParentSelectedFolder + "/" + tempSubHotFolder);
-				MainWindow.getContainer().getCurrentTab().setData("ftp_hot_folder_elements", nameOfLifeElement);
-				MainWindow.setSaveStatus();
+			if (JOEMainWindow.getContainer().openDirectory(dirname) != null) {
+				JOEMainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
+				JOEMainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
+				JOEMainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
+				JOEMainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", strParentSelectedFolder + "/" + tempSubHotFolder);
+				JOEMainWindow.getContainer().getCurrentTab().setData("ftp_hot_folder_elements", nameOfLifeElement);
+				JOEMainWindow.setSaveStatus();
 			}
 			profile.disconnect();
 			schedulerConfigurationShell.dispose();
@@ -705,7 +705,7 @@ public class FTPDialog {
 			}
 			catch (Exception ee) {
 			}
-			MainWindow.message("could not Open Hot Folder: cause: " + e.getMessage(), SWT.ICON_WARNING);
+			JOEMainWindow.message("could not Open Hot Folder: cause: " + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}
 
@@ -721,12 +721,12 @@ public class FTPDialog {
 			FTPProfile profile = listener.getCurrProfile();
 			file = profile.openFile(txtDir.getText() + "/" + txtFilename.getText(), null);
 			if (!listener.hasError()) {
-				if (MainWindow.getContainer().openQuick(file) != null) {
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
-					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-					MainWindow.setSaveStatus();
+				if (JOEMainWindow.getContainer().openQuick(file) != null) {
+					JOEMainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
+					JOEMainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
+					JOEMainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
+					JOEMainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
+					JOEMainWindow.setSaveStatus();
 				}
 				if (new File(file).getName().endsWith(".job_chain.xml")) {
 					// Es wurde eine Jobkette geöffnet. Es werden automatisch,
@@ -751,7 +751,7 @@ public class FTPDialog {
 		}
 		catch (Exception r) {
 			try {
-				MainWindow.message("could not open File: " + file + ", cause: " + r.toString(), SWT.ICON_WARNING);
+				JOEMainWindow.message("could not open File: " + file + ", cause: " + r.toString(), SWT.ICON_WARNING);
 				new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
 			}
 			catch (Exception ee) {
@@ -773,7 +773,7 @@ public class FTPDialog {
 		}
 		catch (Exception r) {
 			try {
-				MainWindow.message("could not refersh Table, cause: " + r.toString(), SWT.ICON_WARNING);
+				JOEMainWindow.message("could not refersh Table, cause: " + r.toString(), SWT.ICON_WARNING);
 				new ErrorLog("error in " + SOSClassUtil.getMethodName(), r);
 			}
 			catch (Exception ee) {

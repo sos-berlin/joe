@@ -18,7 +18,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.xml.sax.InputSource;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
@@ -79,7 +79,7 @@ public class JobChainListener extends JOEJobChainDataProvider {
 		//Für job_chain node Parameter
 		// TODO create separate Method or Class for JobChain Node Parameter handling
 		if (objJobChain != null && _dom.getFilename() != null) {
-			CTabItem currentTab = MainWindow.getContainer().getCurrentTab();
+			CTabItem currentTab = JOEMainWindow.getContainer().getCurrentTab();
 			String path = _dom.isDirectory() ? _dom.getFilename() : new java.io.File(_dom.getFilename()).getParent();
 			try {
 				if (currentTab.getData("details_parameter") != null) {

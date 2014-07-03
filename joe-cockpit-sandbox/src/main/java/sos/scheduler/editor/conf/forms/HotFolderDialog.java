@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.JOEMainWindow;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 
@@ -68,7 +68,7 @@ public class HotFolderDialog {
 	 */
 	public void showForm(final int type_) {
 		type = type_;
-		schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
+		schedulerConfigurationShell = new Shell(JOEMainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 		schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
 			@Override public void keyTraversed(final TraverseEvent e) {
 				if (e.detail == SWT.TRAVERSE_ESCAPE) {
@@ -218,7 +218,7 @@ public class HotFolderDialog {
 						}
 						else {
 							//							MainWindow.message("could not rename configuration: ", SWT.ICON_INFORMATION);
-							MainWindow.message(SOSJOEMessageCodes.JOE_M_0005.params(""), SWT.ICON_INFORMATION);
+							JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_0005.params(""), SWT.ICON_INFORMATION);
 							schedulerConfigurationShell.setFocus();
 						}
 					}
@@ -231,7 +231,7 @@ public class HotFolderDialog {
 					catch (Exception ee) {
 					}
 					//					MainWindow.message("could not rename configuration: " + ex.getMessage(), SWT.ICON_ERROR);
-					MainWindow.message(SOSJOEMessageCodes.JOE_M_0005.params(ex.getMessage()), SWT.ICON_ERROR);
+					JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_0005.params(ex.getMessage()), SWT.ICON_ERROR);
 					schedulerConfigurationShell.setFocus();
 				}
 			}
@@ -322,7 +322,7 @@ public class HotFolderDialog {
 			catch (Exception ee) {
 			}
 			//			MainWindow.message("..error in create tree for Open Scheduler Cluster/Host " + e.getMessage(), SWT.ICON_ERROR);
-			MainWindow.message(SOSJOEMessageCodes.JOE_E_0003.params(e.getMessage()), SWT.ICON_ERROR);
+			JOEMainWindow.message(SOSJOEMessageCodes.JOE_E_0003.params(e.getMessage()), SWT.ICON_ERROR);
 			schedulerConfigurationShell.setFocus();
 		}
 	}
@@ -401,7 +401,7 @@ public class HotFolderDialog {
 			//			MainWindow.message(
 			//					"..error in create tree for Open Scheduler Cluster/Host "
 			//					+ e.getMessage(), SWT.ICON_ERROR);
-			MainWindow.message(SOSJOEMessageCodes.JOE_E_0003.params(e.getMessage()), SWT.ICON_ERROR);
+			JOEMainWindow.message(SOSJOEMessageCodes.JOE_E_0003.params(e.getMessage()), SWT.ICON_ERROR);
 			schedulerConfigurationShell.setFocus();
 		}
 	}
@@ -416,14 +416,14 @@ public class HotFolderDialog {
 					//host wurde ausgewählt -> enzsprechende Ports öffnen
 					for (int i = 0; i < tree.getSelection()[0].getItemCount(); i++) {
 						path = sosString.parseToString(tree.getSelection()[0].getItem(i).getData());
-						if (MainWindow.getContainer().openDirectory(path) != null)
-							MainWindow.setSaveStatus();
+						if (JOEMainWindow.getContainer().openDirectory(path) != null)
+							JOEMainWindow.setSaveStatus();
 					}
 				}
 				else
 					if (!tree.getSelection()[0].getText().equals(sType)) {
-						if (MainWindow.getContainer().openDirectory(path) != null)
-							MainWindow.setSaveStatus();
+						if (JOEMainWindow.getContainer().openDirectory(path) != null)
+							JOEMainWindow.setSaveStatus();
 					}
 				schedulerConfigurationShell.close();
 			}
@@ -438,7 +438,7 @@ public class HotFolderDialog {
 			//			MainWindow.message(
 			//					"..error in create tree for Open Scheduler Cluster/Host "
 			//					+ e.getMessage(), SWT.ICON_ERROR);
-			MainWindow.message(SOSJOEMessageCodes.JOE_E_0002.params(e.getMessage()), SWT.ICON_ERROR);
+			JOEMainWindow.message(SOSJOEMessageCodes.JOE_E_0002.params(e.getMessage()), SWT.ICON_ERROR);
 			schedulerConfigurationShell.setFocus();
 		}
 		finally {
@@ -488,7 +488,7 @@ public class HotFolderDialog {
 				//System.out.println("rename: " + filename + " in " + newFilename);
 				if (!_f.renameTo(_newF)) {
 					//					MainWindow.message("could not rename configuration: " + filename + " in " + newFilename, SWT.ICON_INFORMATION);
-					MainWindow.message(SOSJOEMessageCodes.JOE_E_0004.params(filename, newFilename), SWT.ICON_INFORMATION);
+					JOEMainWindow.message(SOSJOEMessageCodes.JOE_E_0004.params(filename, newFilename), SWT.ICON_INFORMATION);
 				}
 				item.setData(newFilename);
 			}
@@ -503,7 +503,7 @@ public class HotFolderDialog {
 			//			MainWindow.message(
 			//					"..could not Change Host "
 			//					+ e.getMessage(), SWT.ICON_ERROR);
-			MainWindow.message(SOSJOEMessageCodes.JOE_E_0005.label() + e.getMessage(), SWT.ICON_ERROR);
+			JOEMainWindow.message(SOSJOEMessageCodes.JOE_E_0005.label() + e.getMessage(), SWT.ICON_ERROR);
 		}
 	}
 
@@ -512,7 +512,7 @@ public class HotFolderDialog {
 			String name = "";
 			if (type == SCHEDULER_HOST && (txtName.getText().length() == 0 || txtPort.getText().length() == 0)) {
 				//				MainWindow.message("missing host and port", SWT.NONE);
-				MainWindow.message(SOSJOEMessageCodes.JOE_M_0001.label(), SWT.NONE);
+				JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_0001.label(), SWT.NONE);
 				schedulerConfigurationShell.setFocus();
 				return;
 			}
@@ -533,7 +533,7 @@ public class HotFolderDialog {
 			File newFile = new File(path);
 			if (newFile.exists()) {
 				//				MainWindow.message("could not create remote Directory, cause Directory exist", SWT.NONE);
-				MainWindow.message(SOSJOEMessageCodes.JOE_M_0002.label(), SWT.NONE);
+				JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_0002.label(), SWT.NONE);
 				schedulerConfigurationShell.setFocus();
 				return;
 			}
@@ -572,7 +572,7 @@ public class HotFolderDialog {
 			if (!newFile.exists()) {
 				if (!new File(path).mkdirs()) {
 					//					MainWindow.message("could not crate new Remote Directory " , SWT.ICON_ERROR);
-					MainWindow.message(SOSJOEMessageCodes.JOE_M_0003.label(), SWT.ICON_ERROR);
+					JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_0003.label(), SWT.ICON_ERROR);
 					schedulerConfigurationShell.setFocus();
 				}
 			}
@@ -586,7 +586,7 @@ public class HotFolderDialog {
 			}
 			catch (Exception ee) {
 			}
-			MainWindow.message(SOSJOEMessageCodes.JOE_M_0004.params(sType) + ex.getMessage(), SWT.ICON_ERROR);
+			JOEMainWindow.message(SOSJOEMessageCodes.JOE_M_0004.params(sType) + ex.getMessage(), SWT.ICON_ERROR);
 			schedulerConfigurationShell.setFocus();
 		}
 	}
