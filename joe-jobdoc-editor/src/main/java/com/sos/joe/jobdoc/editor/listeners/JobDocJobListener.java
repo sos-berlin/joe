@@ -6,21 +6,25 @@ import org.eclipse.swt.program.Program;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
-import com.sos.joe.xml.Utils;
-
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 
-public class JobListener extends JobDocBaseListener<DocumentationDom> {
-	private Element					_job;
+public class JobDocJobListener extends JobDocBaseListener<DocumentationDom> {
+	private final Element					_job;
 	private static final String[]	_orderValues	= { "yes", "no", "both" };
 	private static final String[]	_tasksValues	= { "", "1", "unbounded" };
 
-	public JobListener(DocumentationDom dom, Element job) {
+	public JobDocJobListener(final DocumentationDom dom, final Element job) {
 		_dom = dom;
 		_job = job;
 		initElement(job);
 	} 
+
+	public Element getJob() {
+		return _job;
+	}
+
 
 	public File writeToFile() throws IOException, JDOMException {
 		File tmp = File.createTempFile(Options.getXSLTFilePrefix(), Options.getXSLTFileSuffix());
@@ -52,7 +56,7 @@ public class JobListener extends JobDocBaseListener<DocumentationDom> {
 		return getAttributeValue("name", _job);
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		Utils.setAttribute("name", name, _job, _dom);
 	}
 
@@ -60,7 +64,7 @@ public class JobListener extends JobDocBaseListener<DocumentationDom> {
 		return getAttributeValue("title", _job);
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		Utils.setAttribute("title", title, _job, _dom);
 	}
 
@@ -69,13 +73,24 @@ public class JobListener extends JobDocBaseListener<DocumentationDom> {
 	}
 
 	public String getOrder() {
-		String order = getAttributeValue("order", _job);
-		if (order.length() == 0)
-			Utils.setAttribute("order", _orderValues[0], _job);
-		return order.length() > 0 ? order : _orderValues[0];
+		String order = _job.getAttributeValue("order");
+		return order;
 	}
 
-	public void setOrder(String order) {
+	public boolean isOrderJob() {
+		String order = _job.getAttributeValue("order");
+		return order == null ? false : order.equalsIgnoreCase("yes");
+	}
+
+
+//	public String getOrder() {
+//		String order = getAttributeValue("order", _job);
+//		if (order.length() == 0)
+//			Utils.setAttribute("order", _orderValues[0], _job);
+//		return order.length() > 0 ? order : _orderValues[0];
+//	}
+//
+	public void setOrder(final String order) {
 		Utils.setAttribute("order", order, _job, _dom);
 	}
 
@@ -87,7 +102,7 @@ public class JobListener extends JobDocBaseListener<DocumentationDom> {
 		return getAttributeValue("tasks", _job);
 	}
 
-	public void setTasks(String tasks) {
+	public void setTasks(final String tasks) {
 		Utils.setAttribute("tasks", tasks, _job, _dom);
 	}
 }

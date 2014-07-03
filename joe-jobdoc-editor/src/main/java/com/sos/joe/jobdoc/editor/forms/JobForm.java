@@ -25,12 +25,12 @@ import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.jobdoc.editor.SourceGenerator;
-import com.sos.joe.jobdoc.editor.listeners.JobListener;
+import com.sos.joe.jobdoc.editor.listeners.JobDocJobListener;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
  
 public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	@SuppressWarnings("unused") private final static String	conSVNVersion	= "$Id: JobForm.java 25898 2014-06-20 14:36:54Z kb $";
-	private JobListener										listener		= null;
+	private JobDocJobListener										listener		= null;
 	private Group											group			= null;
 	@SuppressWarnings("unused") private Label				label			= null;
 	private Text											tName			= null;
@@ -48,7 +48,7 @@ public class JobForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		super(parent, style);
 		initialize();
 		setToolTipText();
-		listener = new JobListener(dom, job);
+		listener = new JobDocJobListener(dom, job);
 		initValues();
 	}
 
