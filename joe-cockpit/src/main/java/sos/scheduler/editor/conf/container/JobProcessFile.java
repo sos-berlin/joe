@@ -29,7 +29,7 @@ public class JobProcessFile extends FormBaseClass {
     private Button       bIgnoreSignal      = null;
     private Button       bIgnoreError       = null;
 
-    public JobProcessFile(Composite pParentComposite, JobListener pobjJobDataProvider) {
+    public JobProcessFile(final Composite pParentComposite, final JobListener pobjJobDataProvider) {
         super(pParentComposite, pobjJobDataProvider);
         objJobDataProvider = pobjJobDataProvider;
 
@@ -101,9 +101,12 @@ public class JobProcessFile extends FormBaseClass {
         tExecuteFile = SOSJOEMessageCodes.JOE_T_JobProcessFile_File.Control(new Text(gExecutable, SWT.BORDER));
         tExecuteFile.setLayoutData(gridData12);
         tExecuteFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+            @Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
                 if (!init) {
-                    objJobDataProvider.setFile(tExecuteFile.getText());
+                	init = true;
+                    objJobDataProvider.setFile(tExecuteFile);
+                    init = false;
                 }
             }
         });
@@ -114,7 +117,8 @@ public class JobProcessFile extends FormBaseClass {
         tParameter = SOSJOEMessageCodes.JOE_T_JobProcessFile_Parameter.Control(new Text(gExecutable, SWT.BORDER));
         tParameter.setLayoutData(gridData2);
         tParameter.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+            @Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
                 if (!init)
                     objJobDataProvider.setParam(tParameter.getText());
             }
@@ -126,7 +130,8 @@ public class JobProcessFile extends FormBaseClass {
         tLogFile = SOSJOEMessageCodes.JOE_T_JobProcessFile_LogFile.Control(new Text(gExecutable, SWT.BORDER));
         tLogFile.setLayoutData(gridData3);
         tLogFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-            public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+            @Override
+			public void modifyText(final org.eclipse.swt.events.ModifyEvent e) {
                 if (!init)
                     objJobDataProvider.setLogFile(tLogFile.getText());
             }
@@ -138,7 +143,8 @@ public class JobProcessFile extends FormBaseClass {
         bIgnoreSignal = SOSJOEMessageCodes.JOE_B_JobProcessFile_IgnoreSignal.Control(new Button(gExecutable, SWT.CHECK));
         bIgnoreSignal.setLayoutData(gridData21);
         bIgnoreSignal.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                 if (!init)
                     objJobDataProvider.setIgnoreSignal(bIgnoreSignal.getSelection());
             }
@@ -147,7 +153,8 @@ public class JobProcessFile extends FormBaseClass {
         bIgnoreError = SOSJOEMessageCodes.JOE_B_JobProcessFile_IgnoreError.Control(new Button(gExecutable, SWT.CHECK));
         bIgnoreError.setLayoutData(gridData41);
         bIgnoreError.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
                 if (!init)
                     objJobDataProvider.setIgnoreError(bIgnoreError.getSelection());
             }
