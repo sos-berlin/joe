@@ -1,4 +1,4 @@
-package sos.scheduler.editor.app;
+package com.sos.joe.ftp;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,6 +18,9 @@ import org.eclipse.swt.widgets.Text;
 import sos.net.SOSFTP;
 import sos.net.SOSFTPS;
 import sos.net.SOSFileTransfer;
+import sos.scheduler.editor.app.Dialog;
+import sos.scheduler.editor.app.JOEMainWindow;
+import sos.scheduler.editor.app.SOSCrypt;
 import sos.settings.SOSProfileSettings;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
