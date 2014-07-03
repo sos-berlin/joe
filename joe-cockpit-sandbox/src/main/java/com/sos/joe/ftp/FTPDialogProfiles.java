@@ -1,4 +1,4 @@
-package sos.scheduler.editor.app;
+package com.sos.joe.ftp;
 import java.util.Properties;
 
 import org.eclipse.swt.SWT;
@@ -21,6 +21,9 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 
+import sos.scheduler.editor.app.JOEMainWindow;
+import sos.scheduler.editor.app.SOSCrypt;
+import sos.scheduler.editor.app.Utils;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
 

@@ -14,8 +14,11 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.util.SOSClassUtil;
 
+import com.sos.joe.ftp.FTPDialog;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.webdav.WebDavDialog;
+import com.sos.joe.webdav.WebDavDialogListener;
 
 public class Dialog extends org.eclipse.swt.widgets.Dialog {
 	Object			result;

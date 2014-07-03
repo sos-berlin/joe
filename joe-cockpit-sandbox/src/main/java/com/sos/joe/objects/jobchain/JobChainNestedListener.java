@@ -380,7 +380,6 @@ public class JobChainNestedListener extends JOEJobChainDataProvider {
 		return objJobChain;
 	}
 
-
 	private int getIndexOfNode(final TableItem item) {
 		int index = 0;
 		if (objJobChain != null) {

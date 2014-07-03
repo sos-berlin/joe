@@ -1,4 +1,4 @@
-package sos.scheduler.editor.app;
+package com.sos.joe.webdav;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +27,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
+import sos.scheduler.editor.app.Dialog;
+import sos.scheduler.editor.app.JOEMainWindow;
+import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;

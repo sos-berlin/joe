@@ -1,4 +1,4 @@
-package sos.scheduler.editor.app;
+package com.sos.joe.webdav;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +16,9 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import sos.scheduler.editor.app.Dialog;
+import sos.scheduler.editor.app.JOEMainWindow;
+import sos.scheduler.editor.app.SOSCrypt;
 import sos.settings.SOSProfileSettings;
 import sos.util.SOSClassUtil;
 import sos.util.SOSString;
