@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 
 import com.sos.joe.globals.misc.TreeData;
+
 import sos.scheduler.editor.conf.composites.JobMainComposite;
 import sos.scheduler.editor.conf.container.JobDelayAfterError;
 import sos.scheduler.editor.conf.container.JobDocumentation;
@@ -23,7 +24,6 @@ import sos.scheduler.editor.conf.container.JobEmailSettings;
 import sos.scheduler.editor.conf.container.JobOptions;
 import sos.scheduler.editor.conf.container.JobProcessFile;
 import sos.scheduler.editor.conf.container.JobSetback;
-import sos.scheduler.editor.conf.container.JobSourceViewer;
 import sos.scheduler.editor.conf.container.JobStartWhenDirectoryChanged;
 
 import com.sos.joe.globals.messages.ErrorLog;

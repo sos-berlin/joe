@@ -95,7 +95,7 @@ public class JobMainOptionForm extends SOSJOEMessageCodes implements IUpdateLang
 	}
 
 	public boolean isUnsaved() {
-		//return bApply.isEnabled();
+		//if (bApply != null) 		return bApply.isEnabled(); return false;
 		return false;
 	}
 

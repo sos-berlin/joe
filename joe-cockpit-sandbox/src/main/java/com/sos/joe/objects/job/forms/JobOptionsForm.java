@@ -114,7 +114,7 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 
 	@Override
 	public boolean isUnsaved() {
-		return bApply.isEnabled();
+		if (bApply != null) 		return bApply.isEnabled(); return false;
 	}
 
 	private void initialize() {

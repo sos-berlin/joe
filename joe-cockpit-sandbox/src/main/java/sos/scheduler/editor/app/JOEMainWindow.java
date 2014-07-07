@@ -70,7 +70,7 @@ public class JOEMainWindow {
 	private static final String	conStringEDITOR							= "editor";
 	private static final String	conIconOPEN_HOT_FOLDER_GIF				= "/sos/scheduler/editor/icon_open_hot_folder.gif";
 	public static final String	conIconICON_OPEN_GIF					= "/sos/scheduler/editor/icon_open.gif";
-	public static final String	conIconEDITOR_PNG						= "/sos/scheduler/editor/JOEConstants.png";
+	public static final String	conIconEDITOR_PNG						= "/sos/scheduler/editor/Editor.png";
 	private final String		conClassName							= "MainWindow";
 	private final String		conSVNVersion							= "$Id$";
 	private static final Logger	logger									= Logger.getLogger(JOEMainWindow.class);
@@ -171,6 +171,7 @@ public class JOEMainWindow {
 	}
 
 	public static void setStatusLine(final String pstrText) {
+		StatusLine.setVisible(true);
 		StatusLine.setText(pstrText);
 		Timer objT = new Timer();
 		objT.schedule(new TimerTask() {
@@ -181,6 +182,7 @@ public class JOEMainWindow {
 			    	    @Override
 						public void run() {
 							StatusLine.setText("");
+							StatusLine.setVisible(false);
 	                    }
 	                });
 			};

@@ -96,7 +96,7 @@ public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 	}
 
 	public boolean isUnsaved() {
-		return bApply.isEnabled();
+		if (bApply != null) 		return bApply.isEnabled(); return false;
 	}
 
 	private void initialize() {

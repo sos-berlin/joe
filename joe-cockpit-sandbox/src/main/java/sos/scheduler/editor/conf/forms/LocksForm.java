@@ -93,7 +93,7 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 	}
 
 	@Override public boolean isUnsaved() {
-		return bApply.isEnabled();
+		if (bApply != null) 		return bApply.isEnabled(); return false;
 	}
 
 	private void initialize() {

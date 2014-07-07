@@ -78,7 +78,7 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 	}
 
 	@Override public boolean isUnsaved() {
-		return bApply.isEnabled();
+		if (bApply != null) 		return bApply.isEnabled(); return false;
 	}
 
 	@Override public void apply() {
