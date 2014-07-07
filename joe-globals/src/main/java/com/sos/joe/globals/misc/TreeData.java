@@ -8,22 +8,21 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
+import com.sos.joe.globals.JOEConstants;
+import com.sos.scheduler.model.SchedulerHotFolder;
 import com.sos.scheduler.model.objects.JSObjBase;
 import com.sos.scheduler.model.objects.JSObjJob;
 
 public class TreeData {
-	@SuppressWarnings("unused")
-	private final String		conClassName		= this.getClass().getSimpleName();
-	@SuppressWarnings("unused")
-	private static final String	conSVNVersion		= "$Id: TreeData.java 24050 2014-05-01 08:29:09Z kb $";
-	@SuppressWarnings("unused")
-	private final Logger		logger				= Logger.getLogger(this.getClass());
-	private int					_type;
-	private Element				_element;
-	private String				_helpKey;
-	private String				_child;
-	private TreeItem			objTreeItem			= null;
-	Object						objHotFolderObject	= null;
+	@SuppressWarnings("unused") private final String		conClassName		= this.getClass().getSimpleName();
+	@SuppressWarnings("unused") private static final String	conSVNVersion		= "$Id: TreeData.java 24050 2014-05-01 08:29:09Z kb $";
+	@SuppressWarnings("unused") private final Logger		logger				= Logger.getLogger(this.getClass());
+	private int												_type;
+	private Element											_element;
+	private String											_helpKey;
+	private String											_child;
+	private TreeItem										objTreeItem			= null;
+	Object													objHotFolderObject	= null;
 
 	public TreeData() {
 	}
@@ -85,6 +84,17 @@ public class TreeData {
 		_child = child;
 	}
 
+	public boolean isFolder() {
+		boolean flgR = false;
+		flgR = (objHotFolderObject instanceof SchedulerHotFolder) || _type == JOEConstants.ROOT_FOLDER || _type == JOEConstants.SUB_FOLDER;
+		return flgR;
+	}
+
+	public boolean isInternalNode () {
+		boolean flgR = false;
+		flgR = (isFolder() == false && objHotFolderObject == null);
+		return flgR;
+	}
 	public int getType() {
 		return _type;
 	}
@@ -134,16 +144,18 @@ public class TreeData {
 		return pstrName.equalsIgnoreCase(getName());
 		//		return false;
 	}
-	
-	public void deleteTreeItem () {
+
+	public void deleteTreeItem() {
 		Tree objTr = objTreeItem.getParent();
 		objTreeItem.dispose();
 	}
-	public JSObjBase getLiveObject () {
+
+	public JSObjBase getLiveObject() {
 		JSObjBase objO = (JSObjBase) objHotFolderObject;
 		return objO;
 	}
-	public String getName () {
+
+	public String getName() {
 		JSObjBase objO = (JSObjBase) objHotFolderObject;
 		String strT = objO.getObjectName();
 		return strT;
