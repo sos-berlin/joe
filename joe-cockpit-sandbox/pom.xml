@@ -153,6 +153,13 @@
 		</dependency>
 
 		<dependency>
+			<!-- wird verwendet im Parser für den wizzard - jobdoc -->
+			<groupId>javax.xml.parsers</groupId>
+			<artifactId>jaxp-api</artifactId>
+			<version>1.4.1</version>
+		</dependency>
+
+		<dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
 		</dependency>
@@ -188,6 +195,8 @@
             <groupId>webdavclient4j</groupId>
             <artifactId>webdavclient4j-core</artifactId>
         </dependency>
+
+
 
     </dependencies>
 
