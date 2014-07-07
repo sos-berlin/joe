@@ -85,7 +85,7 @@ public class BaseForm extends Composite implements IUnsaved, IUpdateLanguage {
 
     @Override
 	public boolean isUnsaved() {
-        return bApply.isEnabled();
+        if (bApply != null) 		return bApply.isEnabled(); return false;
     }
 
     @Override

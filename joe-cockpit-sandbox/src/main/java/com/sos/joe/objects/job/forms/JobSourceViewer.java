@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.container;
+package com.sos.joe.objects.job.forms;
 
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_E_0002;
 

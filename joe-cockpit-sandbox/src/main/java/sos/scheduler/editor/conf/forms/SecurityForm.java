@@ -81,7 +81,7 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 
 	@Override
 	public boolean isUnsaved() {
-		return bApply.isEnabled();
+		if (bApply != null) 		return bApply.isEnabled(); return false;
 	}
 
 	private void initialize() {

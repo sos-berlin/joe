@@ -659,7 +659,7 @@ public class Utils {
 		}
 
 		if (!dialog.isApplyBoardClick()) {
-			s = null;
+//			s = null;
 		}
 
 		/*if (font != null)

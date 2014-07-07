@@ -109,7 +109,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
     @Override
 	public boolean isUnsaved() {
         return false;
-        // return bApply.isEnabled();
+        // if (bApply != null) 		return bApply.isEnabled(); return false;
     }
 
 

@@ -72,7 +72,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 
     @Override
 	public boolean isUnsaved() {
-        return bApply.isEnabled();
+        if (bApply != null) 		return bApply.isEnabled(); return false;
     }
 
 

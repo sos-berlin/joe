@@ -52,7 +52,9 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.JOEMainWindow;
+
 import com.sos.joe.globals.misc.TreeData;
+
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.FolderNameSelector;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
@@ -68,7 +70,6 @@ import sos.scheduler.editor.conf.composites.JobChainOptionsComposite;
 import sos.scheduler.editor.conf.composites.JobChainParameterComposite;
 import sos.scheduler.editor.conf.composites.JobChainParameterNodesComposite;
 import sos.scheduler.editor.conf.container.JobScript;
-import sos.scheduler.editor.conf.container.JobSourceViewer;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.DialogAdapter;
@@ -79,6 +80,7 @@ import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSMsgJOE;
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.objects.job.forms.JobSourceViewer;
 import com.sos.joe.objects.jobchain.JobChainListener;
 import com.sos.joe.objects.jobchain.JobChainNodeWrapper;
 import com.sos.scheduler.model.objects.JSObjJobChain;

@@ -82,7 +82,10 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 	}
 
 	@Override public boolean isUnsaved() {
-		return bApply.isEnabled();
+		if (bApply != null) {
+		if (bApply != null) 		return bApply.isEnabled(); return false;
+		}
+		return false;
 	}
 
 	private void initialize() {

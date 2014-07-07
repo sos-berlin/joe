@@ -22,8 +22,20 @@ import com.sos.joe.globals.options.Options;
 	@SuppressWarnings("unused") private final String		conClassName	= "Editor";
 	@SuppressWarnings("unused") private static Log4JHelper	objLogger		= null;
 	public static JOEMainWindow								objMainWindow	= null;
-	private static JOEMainWindow								window			= null;
+	private static JOEMainWindow							window			= null;
 	private static Display									display			= null;
+
+	public static Image getSplashImage() {
+		Image objImage4Splash = null;
+		InputStream img = Editor.class.getResourceAsStream("/SplashScreenJOE.bmp");
+		if (img == null) {
+			System.out.println("'/SplashScreenJOE.bmp' not found in resources.");
+		}
+		else {
+			objImage4Splash = new Image(display, img);
+		}
+		return objImage4Splash;
+	}
 
 	public static void main(final String[] args) {
 		try {
@@ -35,13 +47,7 @@ import com.sos.joe.globals.options.Options;
 			Method objApplicationMainMethod = SOSSplashScreen.class.getMethod("openApplicationMainWnd", new Class[] { Shell.class });
 			Image objImage4Splash = null;
 			if (Options.showSplashScreen() == true) {
-				InputStream img = JOEConstants.class.getResourceAsStream("/SplashScreenJOE.bmp");
-				if (img == null) {
-					System.out.println("'/SplashScreenJOE.bmp' not found in resources.");
-				}
-				else {
-					objImage4Splash = new Image(display, img);
-				}
+				objImage4Splash = getSplashImage();
 			}
 			SOSSplashScreen.startDialogExecuteLoop(shell, new Runnable() {
 				@Override public void run() {
