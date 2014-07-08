@@ -1,12 +1,11 @@
 package com.sos.joe.globals.options;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
-
+import com.sos.JSHelper.Basics.JSToolBox;
+import com.sos.JSHelper.Options.SOSOptionLocale;
+import com.sos.dialog.components.SOSPreferenceStore;
+import com.sos.i18n.annotation.I18NResourceBundle;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.resources.SOSProductionResource;
 import org.apache.log4j.Logger;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Color;
@@ -16,16 +15,15 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
-
 import sos.util.SOSClassUtil;
 
-import com.sos.JSHelper.Basics.JSToolBox;
-import com.sos.JSHelper.Options.SOSOptionLocale;
-import com.sos.dialog.components.SOSPreferenceStore;
-import com.sos.i18n.annotation.I18NResourceBundle;
-import com.sos.joe.globals.messages.ErrorLog;
-import com.sos.joe.globals.misc.ResourceManager;
-import com.sos.resources.SOSResource;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class Options extends JSToolBox {
 	private static final String							conEnvVarSOS_JOE_HOME						= "SOS_JOE_HOME";
@@ -348,13 +346,13 @@ import com.sos.resources.SOSResource;
 	}
 
 	public static String getDocSchema() {
-		//		String strSchemaName = SOSResource.JOB_DOC_XSD.getFullName();
+		//		String strSchemaName = SOSProductionResource.JOB_DOC_XSD.getFullName();
 		//		return strSchemaName;
 		return getProperty("documentation.xml.xsd");
 	}
 
 	public static String getActionsSchema() {
-		String strSchemaName = SOSResource.EVENT_SERVICE_XSD.getFullName();
+		String strSchemaName = SOSProductionResource.EVENT_SERVICE_XSD.getFullName();
 		return strSchemaName;
 	}
 
