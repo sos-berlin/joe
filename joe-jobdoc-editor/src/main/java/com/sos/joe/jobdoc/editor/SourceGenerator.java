@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
+import com.sos.resources.SOSProductionResource;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -18,7 +19,6 @@ import com.sos.JSHelper.DataElements.JSDateFormat;
 import com.sos.JSHelper.Exceptions.JobSchedulerException;
 import com.sos.JSHelper.io.Files.JSXMLFile;
 import com.sos.joe.globals.messages.ErrorLog;
-import com.sos.resources.SOSResource;
 
 /**
 * \class SourceGenerator
@@ -98,7 +98,7 @@ public class SourceGenerator extends JSToolBox {
 	public void execute() {
 		logger.setLevel(Level.DEBUG);
 		logger.info("Starting transformation");
-		String conResourcePathName = SOSResource.basePackage();
+		String conResourcePathName = SOSProductionResource.basePackage();
 		String strMessage = "";
 		try {
 			//String strXMLFileName = "c:\\temp\\job.xml";
