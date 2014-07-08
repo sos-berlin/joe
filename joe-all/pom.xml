@@ -80,6 +80,7 @@
         </dependency>
 
         <!--
+        JOE Sandbox muss separat ausgeliefert werden, solange es JOE gibt, da beide Projekte Überschneidungen in der package Struktur haben
         <dependency>
             <groupId>${common.groupid}</groupId>
             <artifactId>joe-cockpit-sandbox</artifactId>
