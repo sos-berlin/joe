@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.composites;
+package com.sos.joe.objects.jobchain.composites;
 
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobChainForm_ChainName;
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JobChainForm_Title;
@@ -20,7 +20,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.sos.joe.xml.Utils;
+
 import sos.scheduler.editor.classes.CompositeBaseClass;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 
 import com.sos.joe.globals.JOEConstants;

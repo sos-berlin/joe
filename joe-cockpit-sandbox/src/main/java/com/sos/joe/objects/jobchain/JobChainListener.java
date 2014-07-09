@@ -19,7 +19,6 @@ import org.jdom.input.SAXBuilder;
 import org.xml.sax.InputSource;
 
 import sos.scheduler.editor.app.JOEMainWindow;
-import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.util.SOSClassUtil;
@@ -29,6 +28,7 @@ import com.sos.JSHelper.io.Files.JSXMLFile;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.Utils;
 import com.sos.scheduler.model.objects.JSObjBase;
 import com.sos.scheduler.model.objects.JSObjJob;
 import com.sos.scheduler.model.objects.JSObjJobChain;
@@ -601,6 +601,7 @@ public class JobChainListener extends JOEJobChainDataProvider {
 	//		return state;
 	//	}
 	//
+	@Deprecated
 	public void applyFileOrderSource(final String directory, final String regex, final String next_state, final String max, final String repeat,
 			final String delay_after_error) {
 		if (_objFileOrderSource == null) {
@@ -617,6 +618,7 @@ public class JobChainListener extends JOEJobChainDataProvider {
 		setDirty();
 	}
 
+	@Deprecated
 	private int getIndexOfNode(final TableItem item) {
 		int index = 0;
 		if (objJobChain != null) {

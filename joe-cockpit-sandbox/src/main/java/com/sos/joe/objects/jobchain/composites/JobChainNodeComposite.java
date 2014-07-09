@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.composites;
+package com.sos.joe.objects.jobchain.composites;
 
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_JCNodesForm_Job;
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_JCNodesForm_OnError;
@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Text;
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.classes.SOSComboBox;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.interfaces.ICompositeBaseAbstract;
@@ -366,8 +367,13 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 		try {
 			//			cboNextState.setVisibleItemCount(20);
 			// TODO use class JobChainNodesWrapper
-			String strState = tbxState.getText();
-			String strJob = cboJob.getText();
+			String strJob = cboJob.getText();			
+			String strState = tbxState.getText().trim();
+			if (strState.equals("")) {
+				strState = "job_" + strJob;
+				tbxState.setText(strState);
+			}
+
 			String strDelay = tDelay.getText();
 			String strNextState = cboNextState.getText();
 			String strErrorState = cboErrorState.getText();
@@ -416,7 +422,6 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 	@Override
 	public String getWindowTitle() {
 		String strS = "Title is " + OperationMode;
-		// TODO Auto-generated method stub
 		return strS;
 	}
 }

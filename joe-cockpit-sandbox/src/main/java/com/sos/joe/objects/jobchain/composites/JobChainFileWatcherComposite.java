@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.composites;
+package com.sos.joe.objects.jobchain.composites;
 
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JCNodesForm_RemoveFile;
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_JCNodesForm_DelayAfterError;
@@ -47,6 +47,7 @@ import sos.scheduler.editor.classes.FolderNameSelector;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 
 import com.sos.joe.globals.messages.ErrorLog;

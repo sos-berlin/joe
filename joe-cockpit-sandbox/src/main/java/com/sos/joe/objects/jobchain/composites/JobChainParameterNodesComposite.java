@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.composites;
+package com.sos.joe.objects.jobchain.composites;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Group;
 import com.sos.joe.objects.jobchain.JobChainListener;
 
 import sos.scheduler.editor.classes.CompositeBaseClass;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 
 public class JobChainParameterNodesComposite extends CompositeBaseClass {
