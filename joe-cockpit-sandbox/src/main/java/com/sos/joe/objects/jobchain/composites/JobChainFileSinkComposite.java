@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.composites;
+package com.sos.joe.objects.jobchain.composites;
 
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_JCNodesForm_OnError;
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_JobChainNodes_ErrorState;
@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.app.JOEMainWindow;
 import sos.scheduler.editor.classes.SOSComboBox;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.interfaces.ICompositeBaseAbstract;
@@ -53,7 +54,7 @@ public class JobChainFileSinkComposite extends CompositeBaseAbstract<JobChainLis
 //	private SOSComboBox			cboJob				= null;
 	private Text				tbxState			= null;
 	private Text				tDelay				= null;
-	private final boolean				refresh				= false;
+//	private final boolean				refresh				= false;
 	private SOSComboBox			cboOnError			= null;
 
 	private boolean				flgInsertNewNode	= false;

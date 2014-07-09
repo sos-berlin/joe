@@ -1,4 +1,4 @@
-package sos.scheduler.editor.conf.composites;
+package com.sos.joe.objects.jobchain.composites;
 
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_ApplyDetails;
 import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DetailForm_ApplyParam;
@@ -74,10 +74,14 @@ import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.JOEMainWindow;
+
 import com.sos.joe.xml.Utils;
+
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
 import sos.scheduler.editor.classes.SOSComboBox;
 import sos.scheduler.editor.classes.SOSTable;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract;
+import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
 import sos.scheduler.editor.conf.forms.DetailXMLEditorDialogForm;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.util.SOSClassUtil;

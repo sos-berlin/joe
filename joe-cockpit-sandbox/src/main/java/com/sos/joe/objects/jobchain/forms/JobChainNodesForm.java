@@ -62,13 +62,7 @@ import sos.scheduler.editor.classes.SOSTabItemCreator;
 import sos.scheduler.editor.classes.SOSTable;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract;
 import sos.scheduler.editor.conf.composites.CompositeBaseAbstract.enuOperationMode;
-import sos.scheduler.editor.conf.composites.JobChainFileSinkComposite;
-import sos.scheduler.editor.conf.composites.JobChainFileWatcherComposite;
-import sos.scheduler.editor.conf.composites.JobChainMainComposite;
-import sos.scheduler.editor.conf.composites.JobChainNodeComposite;
 import sos.scheduler.editor.conf.composites.JobChainOptionsComposite;
-import sos.scheduler.editor.conf.composites.JobChainParameterComposite;
-import sos.scheduler.editor.conf.composites.JobChainParameterNodesComposite;
 import sos.scheduler.editor.conf.container.JobScript;
 import sos.util.SOSClassUtil;
 
@@ -83,6 +77,12 @@ import com.sos.joe.globals.options.Options;
 import com.sos.joe.objects.job.forms.JobSourceViewer;
 import com.sos.joe.objects.jobchain.JobChainListener;
 import com.sos.joe.objects.jobchain.JobChainNodeWrapper;
+import com.sos.joe.objects.jobchain.composites.JobChainFileSinkComposite;
+import com.sos.joe.objects.jobchain.composites.JobChainFileWatcherComposite;
+import com.sos.joe.objects.jobchain.composites.JobChainMainComposite;
+import com.sos.joe.objects.jobchain.composites.JobChainNodeComposite;
+import com.sos.joe.objects.jobchain.composites.JobChainParameterComposite;
+import com.sos.joe.objects.jobchain.composites.JobChainParameterNodesComposite;
 import com.sos.scheduler.model.objects.JSObjJobChain;
 
 public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes */implements IUpdateLanguage, ISOSTableMenueListeners {
