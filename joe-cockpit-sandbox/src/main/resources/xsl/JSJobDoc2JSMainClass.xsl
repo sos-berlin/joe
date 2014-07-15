@@ -42,7 +42,6 @@ package <xsl:value-of select="$package_name" />;
 
 import org.apache.log4j.Logger;
 import com.sos.JSHelper.Basics.JSToolBox;
-import com.sos.JSHelper.Logging.Log4JHelper;
 
 
 /**
@@ -63,8 +62,6 @@ import com.sos.JSHelper.Logging.Log4JHelper;
 public class <xsl:value-of select="$class_name" /> extends <xsl:value-of select="$ExtendsClassName" /> {
 	private final static String					conClassName						= "<xsl:value-of select="$class_name" />"; //$NON-NLS-1$
 	private static Logger		logger			= Logger.getLogger(<xsl:value-of select="$class_name" />.class);
-	@SuppressWarnings("unused")	
-	private static Log4JHelper	objLogger		= null;
 
 	protected <xsl:value-of select="$WorkerClassName" />Options	objOptions			= null;
 
@@ -82,10 +79,6 @@ public class <xsl:value-of select="$class_name" /> extends <xsl:value-of select=
 	public final static void main(String[] pstrArgs) {
 
 		final String conMethodName = conClassName + "::Main"; //$NON-NLS-1$
-
-		objLogger = new Log4JHelper("./log4j.properties"); //$NON-NLS-1$
-
-		logger = Logger.getRootLogger();
 		logger.info("<xsl:value-of select="$WorkerClassName" /> - Main"); //$NON-NLS-1$
 
 		try {
