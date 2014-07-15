@@ -8,11 +8,9 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.jdom.Element;
@@ -32,7 +30,7 @@ import com.sos.scheduler.model.LanguageDescriptor;
 import com.sos.scheduler.model.LanguageDescriptorList;
 import com.sos.scheduler.model.objects.JSObjJob;
 
-public abstract class ScriptForm extends SOSJOEMessageCodes {
+public class ExecutableForm extends SOSJOEMessageCodes {
 	@SuppressWarnings("unused")
 	private final String		conClassName					= this.getClass().getSimpleName();
 	private final Logger		logger							= Logger.getLogger(this.getClass());
@@ -40,9 +38,8 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
 	private final String		conSVNVersion					= "$Id: ScriptForm.java 21297 2013-11-07 12:02:28Z ur $";
 	private final int			intNoOfLabelColumns				= 2;
 	protected JobListener		objDataProvider					= null;
-	private Cursor				objLastCursor					= null;
+	private final Cursor		objLastCursor					= null;
 	private boolean				init							= true;
-	//	protected ISchedulerUpdate	update;
 	protected Element			job;
 	protected LanguageSelector	languageSelector				= null;
 	private Composite			tabItemJavaAPIComposite			= null;
@@ -56,24 +53,17 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
 	protected JobScript			objJobScript					= null;
 	private JobJavaAPI			objJobJAPI						= null;
 	private JobIncludeFile		objJobIncludeFile				= null;
-	//	@Deprecated
-	//	private final SchedulerDom	dom;
-	protected Group				objMainOptionsGroup				= null;
-
-	protected abstract void initForm();
-
-	protected abstract void createGroup();
-
-	protected abstract String getPredefinedFunctionNames();
-
-	protected abstract String[] getScriptLanguages();
-	private TreeData	objTreeData	= null;
-
-	public ScriptForm(final Composite parent, final TreeData pobjTreeData) {
+	protected Group				objExecutableGroup				= null;
+	private TreeData			objTreeData						= null;
+	private  Composite objParent = null;
+	
+	public ExecutableForm(final Composite parent, final TreeData pobjTreeData) {
 		super(parent, SWT.None);
+		objParent = parent;
 		objDataProvider = new JobListener(pobjTreeData);
 		objDataProvider._languages = JSObjJob.ValidLanguages4Job;
 		objTreeData = pobjTreeData;
+		initialize();
 	}
 
 	public void apply() {
@@ -83,33 +73,12 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
 		return false;
 	}
 
-	@Override
-	protected void showWaitCursor() {
-		if (!getShell().isDisposed()) {
-			objLastCursor = getShell().getCursor();
-		}
-		getShell().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_WAIT));
-	}
-
-	@Override
-	protected void restoreCursor() {
-		if (!getShell().isDisposed())
-			if (objLastCursor == null) {
-				getShell().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_ARROW));
-			}
-			else {
-				getShell().setCursor(objLastCursor);
-			}
-	}
-
 	protected void initialize() {
 		try {
 			init = true;
 			this.setLayout(new GridLayout());
 			createGroup();
 			fillForm();
-			setSize(new Point(723, 566));
-			initForm();
 			init = false;
 		}
 		catch (Exception e) {
@@ -119,10 +88,22 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
 		}
 	}
 
-	@Override
-	protected void setResizableV(final Control objControl) {
-		boolean flgGrapVerticalspace = true;
-		objControl.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, flgGrapVerticalspace));
+	protected void createGroup() {
+		GridLayout gridLayoutMainOptionsGroup = new GridLayout();
+		gridLayoutMainOptionsGroup.numColumns = 1;
+		objExecutableGroup = new Group(objParent, SWT.NONE);
+//		objExecutableGroup.setText(objDataProvider.getJobNameAndTitle());
+		objExecutableGroup.setLayout(gridLayoutMainOptionsGroup);
+		objExecutableGroup.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.marginHeight = 1;
+		gridLayout.numColumns = 1;
+		if (objDataProvider.getLanguageDescriptor() == null) {
+			LanguageDescriptor objLD = LanguageDescriptorList.getDefaultLanguage4Monitor();
+			objDataProvider.setLanguage(objLD);
+			languageSelector.selectLanguageItem(objLD);
+		}
+		createScriptTabForm(objExecutableGroup);
 	}
 
 	protected void disposeTabPages() {
@@ -160,21 +141,25 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
 		createTabPages();
 		tabFolder.setSelection(0);
 	}
-	private Composite		tabItemProcessFileComposite	= null;
+	private Composite	tabItemProcessFileComposite	= null;
 	private CTabItem	tabItemProcessFile			= null;
 
 	private void createTabPages() {
 		tabItemJavaAPIComposite = null;
 		tabItemIncludedFilesComposite = null;
 		tabItemScriptComposite = null;
+		tabItemProcessFileComposite = null;
+		//
 		objTabControlComposite = new Composite(tabFolder, SWT.NONE);
 		objTabControlComposite.setLayout(new GridLayout());
 		setResizableV(objTabControlComposite);
+		//
 		tabItemScript = JOE_ScriptForm_TabItemScript.Control(new CTabItem(tabFolder, SWT.NONE));
 		tabItemScriptComposite = new Composite(tabFolder, SWT.NONE);
 		tabItemScriptComposite.setLayout(new GridLayout());
 		setResizableV(tabItemScriptComposite);
 		tabItemScript.setControl(tabItemScriptComposite);
+		//
 		if (objDataProvider.isJava()) {
 			tabItemJavaAPI = JOE_ScriptForm_TabItemJavaAPI.Control(new CTabItem(tabFolder, SWT.NONE));
 			tabItemJavaAPIComposite = new Composite(tabFolder, SWT.NONE);
@@ -192,11 +177,11 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
 		tabItemProcessFileComposite.setLayout(new GridLayout());
 		setResizableV(tabItemProcessFileComposite);
 		tabItemProcessFile.setControl(tabItemProcessFileComposite);
+		//
 		createJavaAPITab(tabItemJavaAPIComposite);
 		createTabItemIncludeFile(tabItemIncludedFilesComposite);
 		createScriptTab(tabItemScriptComposite);
 		createProcessFileTab(tabItemProcessFileComposite);
-
 	}
 
 	private void createProcessFileTab(final Composite pParentComposite) {
@@ -206,7 +191,6 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
 		new JobProcessFile(pParentComposite, objDataProvider);
 		pParentComposite.layout();
 	}
-
 
 	private void createScriptTab(final Composite pParentComposite) {
 		if (pParentComposite == null) {
@@ -287,30 +271,30 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
 		if (objJobScript.getCboPrefunction() != null) {
 			objJobScript.getCboPrefunction().removeAll();
 		}
-		languageSelector.selectLanguageItem(objLanguageDescriptor);
-		if (objLanguageDescriptor.getLanguageNumber() != JobListener.NONE) {
-			objDataProvider.fillIncludesTable(objJobIncludeFile.getTableIncludes());
-		}
-		else {
-			LanguageDescriptor objDefaultL = LanguageDescriptorList.getDefaultLanguage();
-			languageSelector.selectLanguageItem(objDefaultL);
-			objDataProvider.setLanguage(objDefaultL);
-		}
-		String lan = "";
-		if (!languageSelector.isShell() && !languageSelector.isJava()) {
-			lan = this.getPredefinedFunctionNames();
-			objJobScript.getCboPrefunction().setItems(lan.split(";"));
-		}
-		if (languageSelector.isJava() && languageSelector.isHiddenJavaAPIJob() == false) {
-			tabFolder.setSelection(tabItemJavaAPI);
-		}
-		else {
-			if (languageSelector.isHiddenJavaAPIJob() == true) {
-				//				tabItemJavaAPI.s
-			}
-			tabFolder.setSelection(tabItemScript);
-			objJobScript.gettSource().setFocus();
-		}
+		//		languageSelector.selectLanguageItem(objLanguageDescriptor);
+		//		if (objLanguageDescriptor.getLanguageNumber() != JobListener.NONE) {
+		//			objDataProvider.fillIncludesTable(objJobIncludeFile.getTableIncludes());
+		//		}
+		//		else {
+		//			LanguageDescriptor objDefaultL = LanguageDescriptorList.getDefaultLanguage();
+		//			languageSelector.selectLanguageItem(objDefaultL);
+		//			objDataProvider.setLanguage(objDefaultL);
+		//		}
+		//		String lan = "";
+		//		if (!languageSelector.isShell() && !languageSelector.isJava()) {
+		//			lan = this.getPredefinedFunctionNames();
+		//			objJobScript.getCboPrefunction().setItems(lan.split(";"));
+		//		}
+		//		if (languageSelector.isJava() && languageSelector.isHiddenJavaAPIJob() == false) {
+		//			tabFolder.setSelection(tabItemJavaAPI);
+		//		}
+		//		else {
+		//			if (languageSelector.isHiddenJavaAPIJob() == true) {
+		//				//				tabItemJavaAPI.s
+		//			}
+		//			tabFolder.setSelection(tabItemScript);
+		//			objJobScript.gettSource().setFocus();
+		//		}
 		init = false;
 	}
 
@@ -325,4 +309,10 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
 	public CTabItem getTabItemIncludedFiles() {
 		return tabItemIncludedFiles;
 	}
+
+	protected String getPredefinedFunctionNames() {
+		// TODO attribute of languageDescriptor
+		return "spooler_task_before;spooler_task_after;spooler_process_before;spooler_process_after";
+	}
+
 }

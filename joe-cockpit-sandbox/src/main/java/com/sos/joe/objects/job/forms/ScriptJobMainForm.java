@@ -4,33 +4,35 @@ package com.sos.joe.objects.job.forms;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 
-import com.sos.joe.globals.misc.TreeData;
-
 import sos.scheduler.editor.conf.composites.JobMainComposite;
 import sos.scheduler.editor.conf.container.JobDelayAfterError;
 import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.container.JobEmailSettings;
 import sos.scheduler.editor.conf.container.JobOptions;
-import sos.scheduler.editor.conf.container.JobProcessFile;
 import sos.scheduler.editor.conf.container.JobSetback;
 import sos.scheduler.editor.conf.container.JobStartWhenDirectoryChanged;
 
 import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.misc.TreeData;
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.objects.job.JobListener;
+import com.sos.scheduler.model.LanguageDescriptor;
 import com.sos.scheduler.model.objects.JSObjJob;
  
-public class ScriptJobMainForm extends ScriptForm {
+public class ScriptJobMainForm extends SOSJOEMessageCodes {
 
 	@SuppressWarnings("unused")
 	private final String				conClassName					= this.getClass().getSimpleName();
@@ -39,7 +41,7 @@ public class ScriptJobMainForm extends ScriptForm {
 	@SuppressWarnings("unused")
 	private final Logger				logger							= Logger.getLogger(this.getClass());
 
-	private final JobListener	objDataOptionsProvider;
+	private JobListener	objDataOptionsProvider = null;
 
 	private Composite					tabItemOptionsComposite			= null;
 	private Composite					tabItemDirChangedComposite		= null;
@@ -48,23 +50,27 @@ public class ScriptJobMainForm extends ScriptForm {
 	private Composite					tabItemDocumentationComposite	= null;
 	private Composite					tabItemOrderSetBackComposite	= null;
 	private Composite					tabItemDelayAfterErrorComposite	= null;
-	private Composite					tabItemProcessFileComposite		= null;
 	private Composite					tabItemSourceViewerComposite	= null;
 
 	private JobMainComposite			jobMainComposite				= null;
 
+	private Composite tabItemExecutableComposite = null;
+	private CTabItem tabItemExecutable = null;
+	
 	private CTabItem					tabItemSourceViewer				= null;
 	private CTabItem					tabItemEMail					= null;
 	private CTabItem					tabItemDocumentation			= null;
 	private CTabItem					tabItemOrderSetBack				= null;
 	private CTabItem					tabItemDelayAfterError			= null;
-	private CTabItem					tabItemProcessFile				= null;
 	private CTabItem					tabItemOptions					= null;
 	private CTabItem					tabItemDirChanged				= null;
 
 	private JobOptions					objJobOptions					= null;
 
 	private Group						objMainOptionsGroup1			= null;
+	private  TreeData objTreeData = null;
+	private boolean				init							= true;
+	protected CTabFolder		tabFolder						= null;
 
 //	public ScriptJobMainForm(final Composite parent, final int style, final SchedulerDom dom, final Element job, final ISchedulerUpdate main) {
 //		super(parent, style, dom, job, main);
@@ -74,35 +80,96 @@ public class ScriptJobMainForm extends ScriptForm {
 //		restoreCursor();
 //	}
 
+	protected JobListener		objDataProvider					= null;
+
     public ScriptJobMainForm(final Composite parent,  final TreeData pobjTreeData) {
-        super(parent, pobjTreeData);
+		super(parent, SWT.None);
 
-        showWaitCursor();
+        try {
+			showWaitCursor();
+			objTreeData = pobjTreeData;
+			objDataOptionsProvider = new JobListener(pobjTreeData);
+			objDataProvider = new JobListener (pobjTreeData);
+//		objDataProvider._languages = JSObjJob.ValidLanguages4Job;
 
-        objDataOptionsProvider = new JobListener(pobjTreeData);
-        initialize();
-        restoreCursor();
+			initialize();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+        finally {
+			restoreCursor();
+        }
     }
 
-	@Override
 	public void initForm() {
 		jobMainComposite.init();
 	}
 
-	@Override
 	@Deprecated // use JSObjJob instead
 	protected String[] getScriptLanguages() {
 //		return LanguageDescriptorList.getLanguages4APIJobs();
 	        return JSObjJob.ValidLanguages4Job;
 }
 
-	@Override
 	@Deprecated // use JSObjJob instead
 	protected String getPredefinedFunctionNames() {
         return JSObjJob.InternalAPIMethodNames;
 	}
 
-	@Override
+	protected void initialize() {
+		try {
+			init = true;
+			this.setLayout(new GridLayout());
+			createGroup();
+//			fillForm();
+			setSize(new Point(723, 566));
+			initForm();
+			init = false;
+		}
+		catch (Exception e) {
+			new ErrorLog(e.getLocalizedMessage(), e);
+		}
+		finally {
+		}
+	}
+
+//	protected LanguageSelector	languageSelector				= null;
+	LanguageDescriptor	objLanguageDescriptor	= null;
+
+	protected void fillForm() {
+		init = true;
+//		objLanguageDescriptor = objDataProvider.getLanguageDescriptor();
+//		if (objJobScript.getCboPrefunction() != null) {
+//			objJobScript.getCboPrefunction().removeAll();
+//		}
+//		languageSelector.selectLanguageItem(objLanguageDescriptor);
+//		if (objLanguageDescriptor.getLanguageNumber() != JobListener.NONE) {
+//			objDataProvider.fillIncludesTable(objJobIncludeFile.getTableIncludes());
+//		}
+//		else {
+//			LanguageDescriptor objDefaultL = LanguageDescriptorList.getDefaultLanguage();
+//			languageSelector.selectLanguageItem(objDefaultL);
+//			objDataProvider.setLanguage(objDefaultL);
+//		}
+//		String lan = "";
+//		if (!languageSelector.isShell() && !languageSelector.isJava()) {
+//			lan = this.getPredefinedFunctionNames();
+//			objJobScript.getCboPrefunction().setItems(lan.split(";"));
+//		}
+//		if (languageSelector.isJava() && languageSelector.isHiddenJavaAPIJob() == false) {
+//			tabFolder.setSelection(tabItemJavaAPI);
+//		}
+//		else {
+//			if (languageSelector.isHiddenJavaAPIJob() == true) {
+//				//				tabItemJavaAPI.s
+//			}
+//			tabFolder.setSelection(tabItemScript);
+//			objJobScript.gettSource().setFocus();
+//		}
+		init = false;
+	}
+
 	protected void createGroup() {
 		try {
 			this.setRedraw(false);
@@ -122,17 +189,17 @@ public class ScriptJobMainForm extends ScriptForm {
 			jobMainComposite = new JobMainComposite(objMainOptionsGroup1, SWT.NONE, objDataProvider);
 			//			jobMainComposite.setLayout(gridLayout);
 			//			jobMainComposite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
-			createLanguageSelector(jobMainComposite.getgMain());
+//			createLanguageSelector(jobMainComposite.getgMain());
 			createScriptTabForm(objMainOptionsGroup1);
-			createJobMainTabPages();
-			languageSelector.addModifyListener(new ModifyListener() {
-				@Override
-				public void modifyText(final ModifyEvent arg0) {
-
-					disposeJobMainTabPages();
-					createJobMainTabPages();
-				}
-			});
+//			createJobMainTabPages();
+//			languageSelector.addModifyListener(new ModifyListener() {
+//				@Override
+//				public void modifyText(final ModifyEvent arg0) {
+//
+//					disposeJobMainTabPages();
+//					createJobMainTabPages();
+//				}
+//			});
 		}
 		catch (Exception e) {
 			new ErrorLog(e.getLocalizedMessage(), e);
@@ -141,6 +208,27 @@ public class ScriptJobMainForm extends ScriptForm {
 			objMainOptionsGroup1.setRedraw(true);
 			this.setRedraw(true);
 		}
+	}
+
+	protected void createScriptTabForm(final Group pobjMainOptionsGroup) {
+		tabFolder = new CTabFolder(pobjMainOptionsGroup, SWT.None); // SWT.Bottom
+		tabFolder.setLayout(new GridLayout());
+		setResizableV(tabFolder);
+		tabFolder.setSimple(true);
+		tabFolder.addSelectionListener(new SelectionListener() {
+			@Override public void widgetSelected(final SelectionEvent e) {
+				int intIndex = tabFolder.getSelectionIndex();
+				Options.setLastTabItemIndex(intIndex);
+				//                logger.debug("Selected item index = " + tabFolder.getSelectionIndex());
+				logger.debug(JOE_M_ScriptForm_ItemIndex.params(tabFolder.getSelectionIndex()));
+			}
+
+			@Override public void widgetDefaultSelected(final SelectionEvent e) {
+				widgetSelected(e);
+			}
+		});
+		createJobMainTabPages();
+		tabFolder.setSelection(0);
 	}
 
 	private void doDispose(final Control pobjC) {
@@ -168,12 +256,11 @@ public class ScriptJobMainForm extends ScriptForm {
 		if (tabItemDelayAfterError != null) {
 			tabItemDelayAfterError.dispose();
 		}
-		if (tabItemProcessFile != null) {
-			tabItemProcessFile.dispose();
-		}
-
 		if (tabItemOptions != null) {
 			tabItemOptions.dispose();
+		}
+		if (tabItemExecutable != null) {
+			tabItemExecutable.dispose();
 		}
 		if (tabItemDirChanged != null) {
 			tabItemDirChanged.dispose();
@@ -185,6 +272,7 @@ public class ScriptJobMainForm extends ScriptForm {
 	}
 
 	private void createJobMainTabPages() {
+		tabItemExecutableComposite = null;
 		tabItemSourceViewerComposite = null;
 		tabItemOptionsComposite = null;
 		tabItemDirChangedComposite = null;
@@ -192,17 +280,16 @@ public class ScriptJobMainForm extends ScriptForm {
 		tabItemDocumentationComposite = null;
 		tabItemOrderSetBackComposite = null;
 		tabItemDelayAfterErrorComposite = null;
-		tabItemProcessFileComposite = null;
 
 		objTabControlComposite = new Composite(tabFolder, SWT.NONE);
 		objTabControlComposite.setLayout(new GridLayout());
 		setResizableV(objTabControlComposite);
 
-		tabItemProcessFile = JOE_TI_ScriptJobMainForm_ProcessFile.Control(new CTabItem(tabFolder, SWT.NONE));
-		tabItemProcessFileComposite = new Composite(tabFolder, SWT.NONE);
-		tabItemProcessFileComposite.setLayout(new GridLayout());
-		setResizableV(tabItemProcessFileComposite);
-		tabItemProcessFile.setControl(tabItemProcessFileComposite);
+		tabItemExecutable = JOE_TI_ScriptJobMainForm_Executable.Control(new CTabItem(tabFolder, SWT.NONE));
+		tabItemExecutableComposite = new Composite(tabFolder, SWT.NONE);
+		tabItemExecutableComposite.setLayout(new GridLayout());
+		setResizableV(tabItemExecutableComposite);
+		tabItemExecutable.setControl(tabItemExecutableComposite);
 
 		tabItemOptions = JOE_TI_ScriptJobMainForm_Options.Control(new CTabItem(tabFolder, SWT.NONE));
 		tabItemOptionsComposite = new Composite(tabFolder, SWT.NONE);
@@ -259,12 +346,13 @@ public class ScriptJobMainForm extends ScriptForm {
 				}
 			}
 		});
+		
+		createExecutableTab(tabItemExecutableComposite);
 		createSetbackTab(tabItemOrderSetBackComposite);
 		createDelayAfterErrorTab(tabItemDelayAfterErrorComposite);
 		createDirChangedTab(tabItemDirChangedComposite);
 
 		createEmailSettingsTab(tabItemEMailComposite);
-		createProcessFileTab(tabItemProcessFileComposite);
 		createDocumentationTab(tabItemDocumentationComposite);
 		createOptionsTab(tabItemOptionsComposite);
 	}
@@ -293,11 +381,12 @@ public class ScriptJobMainForm extends ScriptForm {
 		pParentComposite.layout();
 	}
 
-	private void createProcessFileTab(final Composite pParentComposite) {
+	private void createExecutableTab(final Composite pParentComposite) {
 		if (pParentComposite == null) {
 			return;
 		}
-		new JobProcessFile(pParentComposite, objDataProvider);
+
+		new ExecutableForm(pParentComposite, objTreeData);
 		pParentComposite.layout();
 	}
 
