@@ -91,10 +91,10 @@ public class ExecutableForm extends SOSJOEMessageCodes {
 	protected void createGroup() {
 		GridLayout gridLayoutMainOptionsGroup = new GridLayout();
 		gridLayoutMainOptionsGroup.numColumns = 1;
-		objExecutableGroup = new Group(objParent, SWT.NONE);
+//		objExecutableGroup = new Group(objParent, SWT.NONE);
 //		objExecutableGroup.setText(objDataProvider.getJobNameAndTitle());
-		objExecutableGroup.setLayout(gridLayoutMainOptionsGroup);
-		objExecutableGroup.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+//		objExecutableGroup.setLayout(gridLayoutMainOptionsGroup);
+//		objExecutableGroup.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginHeight = 1;
 		gridLayout.numColumns = 1;
@@ -103,7 +103,8 @@ public class ExecutableForm extends SOSJOEMessageCodes {
 			objDataProvider.setLanguage(objLD);
 			languageSelector.selectLanguageItem(objLD);
 		}
-		createScriptTabForm(objExecutableGroup);
+//		createScriptTabForm(objExecutableGroup);
+		createScriptTabForm(objParent);
 	}
 
 	protected void disposeTabPages() {
@@ -121,7 +122,7 @@ public class ExecutableForm extends SOSJOEMessageCodes {
 		}
 	}
 
-	protected void createScriptTabForm(final Group pobjMainOptionsGroup) {
+	protected void createScriptTabForm(final Composite pobjMainOptionsGroup) {
 		tabFolder = new CTabFolder(pobjMainOptionsGroup, SWT.None); // SWT.Bottom
 		tabFolder.setLayout(new GridLayout());
 		setResizableV(tabFolder);
