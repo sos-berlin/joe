@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import com.sos.JSHelper.Basics.JSToolBox;
 import com.sos.JSHelper.Listener.JSListenerClass;
-import com.sos.JSHelper.Logging.Log4JHelper;
 
 /**
  * \class 		JOEOptionsOptionsJUnitTest - JOEOptions
@@ -43,8 +42,6 @@ public class JOEOptionsJUnitTest extends JSToolBox {
 	private final String		conClassName	= "JOEOptionsOptionsJUnitTest";				//$NON-NLS-1$
 	@SuppressWarnings("unused")
 	private static Logger		logger			= Logger.getLogger(JOEOptionsJUnitTest.class);
-	@SuppressWarnings("unused")
-	private static Log4JHelper	objLogger		= null;
 	private final JOEOptions	objE			= null;
 
 	protected JOEOptions		objOptions		= null;
@@ -63,9 +60,7 @@ public class JOEOptionsJUnitTest extends JSToolBox {
 
 	@Before
 	public void setUp() throws Exception {
-		objLogger = new Log4JHelper("./log4j.properties"); //$NON-NLS-1$
 		objOptions = new JOEOptions();
-
 		JSListenerClass.bolLogDebugInformation = true;
 		JSListenerClass.intMaxDebugLevel = 9;
 	}

@@ -1,17 +1,11 @@
 package com.sos.joe.options;
 
-import static org.junit.Assert.assertEquals;
-
-import org.apache.log4j.Logger;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import com.sos.JSHelper.Basics.JSToolBox;
 import com.sos.JSHelper.Listener.JSListenerClass;
-import com.sos.JSHelper.Logging.Log4JHelper;
+import org.apache.log4j.Logger;
+import org.junit.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * \class 		JOEOptionsOptionsJUnitTest - JOEOptions
@@ -41,37 +35,15 @@ import com.sos.JSHelper.Logging.Log4JHelper;
  */
 public class JOEOptionsJUnitTest extends JSToolBox {
 	private final String		conClassName	= "JOEOptionsOptionsJUnitTest";				//$NON-NLS-1$
-	@SuppressWarnings("unused")
 	private static Logger		logger			= Logger.getLogger(JOEOptionsJUnitTest.class);
-	@SuppressWarnings("unused")
-	private static Log4JHelper	objLogger		= null;
-	private final JOEOptions	objE			= null;
 
 	protected JOEOptions		objOptions		= null;
 
-	public JOEOptionsJUnitTest() {
-		//
-	}
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
 	@Before
 	public void setUp() throws Exception {
-		objLogger = new Log4JHelper("./log4j.properties"); //$NON-NLS-1$
 		objOptions = new JOEOptions();
-
 		JSListenerClass.bolLogDebugInformation = true;
 		JSListenerClass.intMaxDebugLevel = 9;
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	/**

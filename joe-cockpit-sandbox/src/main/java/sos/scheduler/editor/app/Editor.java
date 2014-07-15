@@ -9,7 +9,6 @@ import org.eclipse.swt.widgets.Shell;
 
 import sos.util.SOSClassUtil;
 
-import com.sos.JSHelper.Logging.Log4JHelper;
 import com.sos.dialog.SOSSplashScreen;
 import com.sos.i18n.annotation.I18NResourceBundle;
 import com.sos.joe.globals.JOEConstants;
@@ -20,7 +19,6 @@ import com.sos.joe.globals.options.Options;
 	private final static String								conSVNVersion	= "$Id$";
 	private static Logger									logger			= Logger.getLogger(JOEConstants.class);
 	@SuppressWarnings("unused") private final String		conClassName	= "Editor";
-	@SuppressWarnings("unused") private static Log4JHelper	objLogger		= null;
 	public static JOEMainWindow								objMainWindow	= null;
 	private static JOEMainWindow							window			= null;
 	private static Display									display			= null;
@@ -68,8 +66,6 @@ import com.sos.joe.globals.options.Options;
 
 	private static void doSomeTimeconsumingOperation() {
 		try {
-			objLogger = new Log4JHelper("./JOE-log4j.properties");
-			logger = Logger.getRootLogger();
 			logger.debug(conSVNVersion);
 			window.OpenLastFolder();
 			objMainWindow = window;
