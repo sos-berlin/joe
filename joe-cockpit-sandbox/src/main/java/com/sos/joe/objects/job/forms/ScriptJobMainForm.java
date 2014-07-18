@@ -1,7 +1,5 @@
 package com.sos.joe.objects.job.forms;
-
 //import org.eclipse.draw2d.*;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -31,90 +29,78 @@ import com.sos.joe.globals.options.Options;
 import com.sos.joe.objects.job.JobListener;
 import com.sos.scheduler.model.LanguageDescriptor;
 import com.sos.scheduler.model.objects.JSObjJob;
- 
+
 public class ScriptJobMainForm extends SOSJOEMessageCodes {
-
 	@SuppressWarnings("unused")
-	private final String				conClassName					= this.getClass().getSimpleName();
+	private final String		conClassName					= this.getClass().getSimpleName();
 	@SuppressWarnings("unused")
-	private static final String			conSVNVersion					= "$Id$";
+	private static final String	conSVNVersion					= "$Id$";
 	@SuppressWarnings("unused")
-	private final Logger				logger							= Logger.getLogger(this.getClass());
-
-	private JobListener	objDataOptionsProvider = null;
-
-	private Composite					tabItemOptionsComposite			= null;
-	private Composite					tabItemDirChangedComposite		= null;
-	private Composite					objTabControlComposite			= null;
-	private Composite					tabItemEMailComposite			= null;
-	private Composite					tabItemDocumentationComposite	= null;
-	private Composite					tabItemOrderSetBackComposite	= null;
-	private Composite					tabItemDelayAfterErrorComposite	= null;
-	private Composite					tabItemSourceViewerComposite	= null;
-
-	private JobMainComposite			jobMainComposite				= null;
-
-	private Composite tabItemExecutableComposite = null;
-	private CTabItem tabItemExecutable = null;
-	
-	private CTabItem					tabItemSourceViewer				= null;
-	private CTabItem					tabItemEMail					= null;
-	private CTabItem					tabItemDocumentation			= null;
-	private CTabItem					tabItemOrderSetBack				= null;
-	private CTabItem					tabItemDelayAfterError			= null;
-	private CTabItem					tabItemOptions					= null;
-	private CTabItem					tabItemDirChanged				= null;
-
-	private JobOptions					objJobOptions					= null;
-
-	private Group						objMainOptionsGroup1			= null;
-	private  TreeData objTreeData = null;
+	private final Logger		logger							= Logger.getLogger(this.getClass());
+	private JobListener			objDataOptionsProvider			= null;
+	private Composite			tabItemOptionsComposite			= null;
+	private Composite			tabItemDirChangedComposite		= null;
+	private Composite			objTabControlComposite			= null;
+	private Composite			tabItemEMailComposite			= null;
+	private Composite			tabItemDocumentationComposite	= null;
+	private Composite			tabItemOrderSetBackComposite	= null;
+	private Composite			tabItemDelayAfterErrorComposite	= null;
+	private Composite			tabItemSourceViewerComposite	= null;
+	private JobMainComposite	jobMainComposite				= null;
+	private Composite			tabItemExecutableComposite		= null;
+	private CTabItem			tabItemExecutable				= null;
+	private CTabItem			tabItemSourceViewer				= null;
+	private CTabItem			tabItemEMail					= null;
+	private CTabItem			tabItemDocumentation			= null;
+	private CTabItem			tabItemOrderSetBack				= null;
+	private CTabItem			tabItemDelayAfterError			= null;
+	private CTabItem			tabItemOptions					= null;
+	private CTabItem			tabItemDirChanged				= null;
+	private JobOptions			objJobOptions					= null;
+	private Group				objMainOptionsGroup1			= null;
+	private TreeData			objTreeData						= null;
 	private boolean				init							= true;
 	protected CTabFolder		tabFolder						= null;
-
-//	public ScriptJobMainForm(final Composite parent, final int style, final SchedulerDom dom, final Element job, final ISchedulerUpdate main) {
-//		super(parent, style, dom, job, main);
-//		showWaitCursor();
-//		objDataOptionsProvider = new JobOptionsListener(dom, job);
-//		initialize();
-//		restoreCursor();
-//	}
-
+	//	public ScriptJobMainForm(final Composite parent, final int style, final SchedulerDom dom, final Element job, final ISchedulerUpdate main) {
+	//		super(parent, style, dom, job, main);
+	//		showWaitCursor();
+	//		objDataOptionsProvider = new JobOptionsListener(dom, job);
+	//		initialize();
+	//		restoreCursor();
+	//	}
 	protected JobListener		objDataProvider					= null;
 
-    public ScriptJobMainForm(final Composite parent,  final TreeData pobjTreeData) {
+	public ScriptJobMainForm(final Composite parent, final TreeData pobjTreeData) {
 		super(parent, SWT.None);
-
-        try {
+		try {
 			showWaitCursor();
 			objTreeData = pobjTreeData;
 			objDataOptionsProvider = new JobListener(pobjTreeData);
-			objDataProvider = new JobListener (pobjTreeData);
-//		objDataProvider._languages = JSObjJob.ValidLanguages4Job;
-
+			objDataProvider = new JobListener(pobjTreeData);
+			//		objDataProvider._languages = JSObjJob.ValidLanguages4Job;
 			initialize();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-        finally {
+		finally {
 			restoreCursor();
-        }
-    }
+		}
+	}
 
 	public void initForm() {
 		jobMainComposite.init();
 	}
 
-	@Deprecated // use JSObjJob instead
+	@Deprecated// use JSObjJob instead
 	protected String[] getScriptLanguages() {
-//		return LanguageDescriptorList.getLanguages4APIJobs();
-	        return JSObjJob.ValidLanguages4Job;
-}
+		//		return LanguageDescriptorList.getLanguages4APIJobs();
+		return JSObjJob.ValidLanguages4Job;
+	}
 
-	@Deprecated // use JSObjJob instead
+	@Deprecated// use JSObjJob instead
 	protected String getPredefinedFunctionNames() {
-        return JSObjJob.InternalAPIMethodNames;
+		return JSObjJob.InternalAPIMethodNames;
 	}
 
 	protected void initialize() {
@@ -122,7 +108,7 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 			init = true;
 			this.setLayout(new GridLayout());
 			createGroup();
-//			fillForm();
+			//			fillForm();
 			setSize(new Point(723, 566));
 			initForm();
 			init = false;
@@ -133,40 +119,11 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 		finally {
 		}
 	}
-
-//	protected LanguageSelector	languageSelector				= null;
+	//	protected LanguageSelector	languageSelector				= null;
 	LanguageDescriptor	objLanguageDescriptor	= null;
 
 	protected void fillForm() {
 		init = true;
-//		objLanguageDescriptor = objDataProvider.getLanguageDescriptor();
-//		if (objJobScript.getCboPrefunction() != null) {
-//			objJobScript.getCboPrefunction().removeAll();
-//		}
-//		languageSelector.selectLanguageItem(objLanguageDescriptor);
-//		if (objLanguageDescriptor.getLanguageNumber() != JobListener.NONE) {
-//			objDataProvider.fillIncludesTable(objJobIncludeFile.getTableIncludes());
-//		}
-//		else {
-//			LanguageDescriptor objDefaultL = LanguageDescriptorList.getDefaultLanguage();
-//			languageSelector.selectLanguageItem(objDefaultL);
-//			objDataProvider.setLanguage(objDefaultL);
-//		}
-//		String lan = "";
-//		if (!languageSelector.isShell() && !languageSelector.isJava()) {
-//			lan = this.getPredefinedFunctionNames();
-//			objJobScript.getCboPrefunction().setItems(lan.split(";"));
-//		}
-//		if (languageSelector.isJava() && languageSelector.isHiddenJavaAPIJob() == false) {
-//			tabFolder.setSelection(tabItemJavaAPI);
-//		}
-//		else {
-//			if (languageSelector.isHiddenJavaAPIJob() == true) {
-//				//				tabItemJavaAPI.s
-//			}
-//			tabFolder.setSelection(tabItemScript);
-//			objJobScript.gettSource().setFocus();
-//		}
 		init = false;
 	}
 
@@ -178,28 +135,25 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 			objMainOptionsGroup1 = new Group(this, SWT.NONE);
 			objMainOptionsGroup1.setRedraw(false);
 			objMainOptionsGroup1.setText(objDataProvider.getJobNameAndTitle());
-
 			objMainOptionsGroup1.setLayout(gridLayoutMainOptionsGroup);
 			objMainOptionsGroup1.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.marginHeight = 1;
 			gridLayout.numColumns = 1;
-
 			jobMainComposite = new JobMainComposite(objMainOptionsGroup1, SWT.NONE, objDataProvider);
 			//			jobMainComposite.setLayout(gridLayout);
 			//			jobMainComposite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
-//			createLanguageSelector(jobMainComposite.getgMain());
+			//			createLanguageSelector(jobMainComposite.getgMain());
 			createScriptTabForm(objMainOptionsGroup1);
-//			createJobMainTabPages();
-//			languageSelector.addModifyListener(new ModifyListener() {
-//				@Override
-//				public void modifyText(final ModifyEvent arg0) {
-//
-//					disposeJobMainTabPages();
-//					createJobMainTabPages();
-//				}
-//			});
+			//			createJobMainTabPages();
+			//			languageSelector.addModifyListener(new ModifyListener() {
+			//				@Override
+			//				public void modifyText(final ModifyEvent arg0) {
+			//
+			//					disposeJobMainTabPages();
+			//					createJobMainTabPages();
+			//				}
+			//			});
 		}
 		catch (Exception e) {
 			new ErrorLog(e.getLocalizedMessage(), e);
@@ -238,15 +192,12 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 	}
 
 	private void disposeJobMainTabPages() {
-
 		if (tabItemSourceViewer != null) {
 			tabItemSourceViewer.dispose();
 		}
-
 		if (tabItemEMail != null) {
 			tabItemEMail.dispose();
 		}
-
 		if (tabItemDocumentation != null) {
 			tabItemDocumentation.dispose();
 		}
@@ -265,7 +216,6 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 		if (tabItemDirChanged != null) {
 			tabItemDirChanged.dispose();
 		}
-
 		if (tabItemDirChanged != null) {
 			tabItemDirChanged.dispose();
 		}
@@ -280,29 +230,24 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 		tabItemDocumentationComposite = null;
 		tabItemOrderSetBackComposite = null;
 		tabItemDelayAfterErrorComposite = null;
-
 		objTabControlComposite = new Composite(tabFolder, SWT.NONE);
 		objTabControlComposite.setLayout(new GridLayout());
 		setResizableV(objTabControlComposite);
-
 		tabItemExecutable = JOE_TI_ScriptJobMainForm_Executable.Control(new CTabItem(tabFolder, SWT.NONE));
 		tabItemExecutableComposite = new Composite(tabFolder, SWT.NONE);
 		tabItemExecutableComposite.setLayout(new GridLayout());
 		setResizableV(tabItemExecutableComposite);
 		tabItemExecutable.setControl(tabItemExecutableComposite);
-
 		tabItemOptions = JOE_TI_ScriptJobMainForm_Options.Control(new CTabItem(tabFolder, SWT.NONE));
 		tabItemOptionsComposite = new Composite(tabFolder, SWT.NONE);
 		tabItemOptionsComposite.setLayout(new GridLayout());
 		setResizableV(tabItemOptionsComposite);
 		tabItemOptions.setControl(tabItemOptionsComposite);
-
 		tabItemEMail = JOE_TI_ScriptJobMainForm_EMail.Control(new CTabItem(tabFolder, SWT.NONE));
 		tabItemEMailComposite = new Composite(tabFolder, SWT.NONE);
 		tabItemEMailComposite.setLayout(new GridLayout());
 		setResizableV(tabItemEMailComposite);
 		tabItemEMail.setControl(tabItemEMailComposite);
-
 		if (objDataProvider.isOrderJob()) {
 			tabItemOrderSetBack = JOE_TI_ScriptJobMainForm_SetBack.Control(new CTabItem(tabFolder, SWT.NONE));
 			tabItemOrderSetBackComposite = new Composite(tabFolder, SWT.NONE);
@@ -316,28 +261,23 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 			tabItemDelayAfterErrorComposite.setLayout(new GridLayout());
 			setResizableV(tabItemDelayAfterErrorComposite);
 			tabItemDelayAfterError.setControl(tabItemDelayAfterErrorComposite);
-
 			tabItemDirChanged = JOE_TI_ScriptJobMainForm_FileWatcher.Control(new CTabItem(tabFolder, SWT.NONE));
 			tabItemDirChangedComposite = new Composite(tabFolder, SWT.NONE);
 			tabItemDirChangedComposite.setLayout(new GridLayout());
 			setResizableV(tabItemDirChangedComposite);
 			tabItemDirChanged.setControl(tabItemDirChangedComposite);
 		}
-
 		tabItemDocumentation = JOE_TI_ScriptJobMainForm_Doc.Control(new CTabItem(tabFolder, SWT.NONE));
 		tabItemDocumentationComposite = new Composite(tabFolder, SWT.NONE);
 		tabItemDocumentationComposite.setLayout(new GridLayout());
 		setResizableV(tabItemDocumentationComposite);
 		tabItemDocumentation.setControl(tabItemDocumentationComposite);
-
 		tabItemSourceViewer = JOE_TI_ScriptJobMainForm_XML.Control(new CTabItem(tabFolder, SWT.NONE));
 		tabItemSourceViewer.setData("type", "xml");
-
 		tabFolder.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent event) {
+			@Override public void widgetSelected(final SelectionEvent event) {
 				CTabItem objSelectedItem = tabFolder.getSelection();
-//				System.out.println(objSelectedItem.getText() + " selected");
+				//				System.out.println(objSelectedItem.getText() + " selected");
 				String strData = (String) objSelectedItem.getData("type");
 				if (strData != null) {
 					if (strData.equalsIgnoreCase("xml")) {
@@ -346,12 +286,10 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 				}
 			}
 		});
-		
 		createExecutableTab(tabItemExecutableComposite);
 		createSetbackTab(tabItemOrderSetBackComposite);
 		createDelayAfterErrorTab(tabItemDelayAfterErrorComposite);
 		createDirChangedTab(tabItemDirChangedComposite);
-
 		createEmailSettingsTab(tabItemEMailComposite);
 		createDocumentationTab(tabItemDocumentationComposite);
 		createOptionsTab(tabItemOptionsComposite);
@@ -361,12 +299,10 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 		if (pParentComposite != null) {
 			pParentComposite.dispose();
 		}
-
 		pParentComposite = new Composite(tabFolder, SWT.NONE);
 		pParentComposite.setLayout(new GridLayout());
 		setResizableV(pParentComposite);
 		pobjTabItem.setControl(pParentComposite);
-
 		new JobSourceViewer(pParentComposite, objDataProvider);
 		pParentComposite.layout();
 		return pParentComposite;
@@ -376,7 +312,6 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 		if (pParentComposite == null) {
 			return;
 		}
-
 		new JobDocumentation(pParentComposite, objDataProvider);
 		pParentComposite.layout();
 	}
@@ -385,7 +320,6 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 		if (pParentComposite == null) {
 			return;
 		}
-
 		new ExecutableForm(pParentComposite, objTreeData);
 		pParentComposite.layout();
 	}
@@ -393,8 +327,7 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 	private void createOptionsTab(final Composite pParentComposite) {
 		objJobOptions = new JobOptions(pParentComposite, objDataProvider);
 		objJobOptions.getbOrderYes().addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				if (objJobOptions.getbOrderYes().getSelection() == false) {
 					return;
 				}
@@ -402,11 +335,9 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 				createJobMainTabPages();
 				tabFolder.setSelection(tabItemOptions);
 			}
-
 		});
 		objJobOptions.getbOrderNo().addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
+			@Override public void widgetSelected(final SelectionEvent e) {
 				if (objJobOptions.getbOrderNo().getSelection() == false) {
 					return;
 				}
@@ -414,9 +345,7 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 				createJobMainTabPages();
 				tabFolder.setSelection(tabItemOptions);
 			}
-
 		});
-
 		pParentComposite.layout();
 	}
 
@@ -440,7 +369,6 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 		if (pParentComposite == null) {
 			return;
 		}
-
 		new JobEmailSettings(pParentComposite, objDataProvider);
 		pParentComposite.layout();
 	}
@@ -452,5 +380,4 @@ public class ScriptJobMainForm extends SOSJOEMessageCodes {
 		new JobStartWhenDirectoryChanged(pParentComposite, objDataProvider);
 		pParentComposite.layout();
 	}
-
 } // @jve:decl-index=0:visual-constraint="10,10"

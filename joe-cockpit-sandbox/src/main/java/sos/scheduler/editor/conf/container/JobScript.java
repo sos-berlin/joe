@@ -83,6 +83,7 @@ public class JobScript extends FormBaseClass<JobListener>  {
 		final TextArea txtPrePostProcessingScriptCode = new TextArea(group, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL);
 		txtPrePostProcessingScriptCode.setDataProvider(objJobDataProvider, enuSourceTypes.ScriptSource);
 		txtPrePostProcessingScriptCode.setFormHandler(objFormPosSizeHandler);
+		txtPrePostProcessingScriptCode.refreshContent();
 		tSource = txtPrePostProcessingScriptCode.getControl();
 
 		init = false;

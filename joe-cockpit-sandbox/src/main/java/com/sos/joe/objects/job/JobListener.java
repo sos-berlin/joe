@@ -10,13 +10,13 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.JOEMainWindow;
-import com.sos.joe.globals.misc.TreeData;
-import com.sos.joe.xml.Utils;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
 import com.sos.JSHelper.Exceptions.JobSchedulerException;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
+import com.sos.joe.globals.misc.TreeData;
+import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.LanguageDescriptor;
 import com.sos.scheduler.model.LanguageDescriptorList;
@@ -45,26 +45,24 @@ public class JobListener extends JOEListener {
 	private final Element					_environment						= null;
 	private int								intJSObjectType						= -1;
 	private final List<Element>				_directories						= null;
-	private final Element		 			_directory							= null;
+	private final Element					_directory							= null;
 	private final List						_setbacks							= null;
 	private final Element					_setback							= null;
 	private final List						_errorDelays						= null;
 	private final Element					_errorDelay							= null;
 	private JSObjJob						objJSJob							= null;
-	private ISchedulerUpdate objUpdate = null;
- 
-	@Deprecated
-	public JobListener(final SchedulerDom dom_, final Element objElement, final ISchedulerUpdate update) {
+	private ISchedulerUpdate				objUpdate							= null;
+
+	@Deprecated public JobListener(final SchedulerDom dom_, final Element objElement, final ISchedulerUpdate update) {
 		objUpdate = update;
 	}
-
 
 	public JobListener(final TreeData pobjTreeData, final ISchedulerUpdate update) {
 		objJSJob = pobjTreeData.getJob();
 		objTreeData = pobjTreeData;
 		intJSObjectType = objTreeData.getType();
 		objUpdate = update;
-		}
+	}
 
 	public JobListener(final TreeData pobjTreeData) {
 		objJSJob = pobjTreeData.getJob();
@@ -76,14 +74,14 @@ public class JobListener extends JOEListener {
 	public ISchedulerUpdate get_main() {
 		return objUpdate;
 	}
-	
+
 	public JobListener(final JSObjJob pobjJob) {
 		objJSJob = pobjJob;
 	}
 
 	public String getInclude() {
 		if (objJSJob.hasDescription()) {
-			List <Object> objDescr = objJSJob.getDescription().getContent();
+			List<Object> objDescr = objJSJob.getDescription().getContent();
 			for (Object objL : objDescr) {
 				if (objL instanceof Include) {
 					return ((Include) objL).getFile();
@@ -93,29 +91,29 @@ public class JobListener extends JOEListener {
 		return "";
 	}
 
-
 	public String getFile() {
 		String strT = objJSJob.getProcess().getFile();
 		return avoidNull(strT);
 	}
 
-	@Deprecated
-	public Element getJob() {
+	@Deprecated public Element getJob() {
 		@SuppressWarnings("unused") final String conMethodName = conClassName + "::getJob";
 		return new Element("job");
 	} // private String getJob
 
 	public void setFileAttribute4ProcessTag(final Text file) {
 		if (objJSJob.isScriptEmpty() == false) {
-			int c = JOEMainWindow.message("JobListener: Do you want to remove the existing script and create a process instead?\n(Remember: <process> is a deprecated feature, use script)", SWT.YES | SWT.NO
-					| SWT.ICON_WARNING);
+			int c = JOEMainWindow.message(
+					"JobListener: Do you want to remove the existing script and create a process instead?\n(Remember: <process> is a deprecated feature, use script)",
+					SWT.YES | SWT.NO | SWT.ICON_WARNING);
 			if (c != SWT.YES) {
 				file.setText("");
 				return;
 			}
 			objJSJob.setScript(null);
 		}
-		setFileAttribute4ProcessTag(file.getText());;
+		setFileAttribute4ProcessTag(file.getText());
+		;
 	}
 
 	private void setFileAttribute4ProcessTag(final String file) {
@@ -513,29 +511,8 @@ public class JobListener extends JOEListener {
 	public String[] getProcessClasses() {
 		// TODO Implement global list in objFactory / Hotfolder
 		String[] names = null;
-		//		if (_dom == null) {
-		//			return new String[] {};
-		//		}
-		//		if (_dom.getRoot().getName().equalsIgnoreCase("spooler")) {
-		//			Element classes = _dom.getRoot().getChild("config").getChild("process_classes");
-		//			if (classes != null) {
-		//				List list = classes.getChildren("process_class");
-		//				names = new String[list.size()];
-		//				int i = 0;
-		//				Iterator it = list.iterator();
-		//				while (it.hasNext()) {
-		//					Object o = it.next();
-		//					if (o instanceof Element) {
-		//						String name = ((Element) o).getAttributeValue("name");
-		//						if (name == null)
-		//							name = "";
-		//						names[i++] = name;
-		//					}
-		//				}
-		//			}
-		//		}
 		if (names == null) {
-			names = new String[] { "" };
+			names = new String[] { " ", "test", "test" };
 		}
 		return names;
 	}
@@ -782,14 +759,27 @@ public class JobListener extends JOEListener {
 
 	@Override public String getSource() {
 		Script objS = objJSJob.getScript();
+		String strS = " ";
 		List<Object> lstS = objS.getContent();
 		if (lstS.size() > 0) {
-			String strS = (String) objS.getContent().get(0);
-			return strS.trim();
+			int i = 0;
+			for (Object object : lstS) {
+				if (object instanceof Include) {
+					
+				}
+				else {
+					String strT = (String) objS.getContent().get(i);
+					strT = strT.trim();
+					if (strT.length() > 0) {
+						strS += strT;
+					}
+//				strS += (String) objS.getContent().get(i);
+				}
+				i++;
+//				return strS.trim();
+			}
 		}
-		else {
-			return "";
-		}
+		return strS.trim();
 	}
 
 	@Override public void setSource(final String source) {
