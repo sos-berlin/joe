@@ -55,8 +55,8 @@ public class ExecutableForm extends SOSJOEMessageCodes {
 	private JobIncludeFile		objJobIncludeFile				= null;
 	protected Group				objExecutableGroup				= null;
 	private TreeData			objTreeData						= null;
-	private  Composite objParent = null;
-	
+	private Composite			objParent						= null;
+
 	public ExecutableForm(final Composite parent, final TreeData pobjTreeData) {
 		super(parent, SWT.None);
 		objParent = parent;
@@ -91,10 +91,6 @@ public class ExecutableForm extends SOSJOEMessageCodes {
 	protected void createGroup() {
 		GridLayout gridLayoutMainOptionsGroup = new GridLayout();
 		gridLayoutMainOptionsGroup.numColumns = 1;
-//		objExecutableGroup = new Group(objParent, SWT.NONE);
-//		objExecutableGroup.setText(objDataProvider.getJobNameAndTitle());
-//		objExecutableGroup.setLayout(gridLayoutMainOptionsGroup);
-//		objExecutableGroup.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginHeight = 1;
 		gridLayout.numColumns = 1;
@@ -103,7 +99,6 @@ public class ExecutableForm extends SOSJOEMessageCodes {
 			objDataProvider.setLanguage(objLD);
 			languageSelector.selectLanguageItem(objLD);
 		}
-//		createScriptTabForm(objExecutableGroup);
 		createScriptTabForm(objParent);
 	}
 
@@ -139,6 +134,7 @@ public class ExecutableForm extends SOSJOEMessageCodes {
 				widgetSelected(e);
 			}
 		});
+		createLanguageSelector(pobjMainOptionsGroup);
 		createTabPages();
 		tabFolder.setSelection(0);
 	}
@@ -272,30 +268,30 @@ public class ExecutableForm extends SOSJOEMessageCodes {
 		if (objJobScript.getCboPrefunction() != null) {
 			objJobScript.getCboPrefunction().removeAll();
 		}
-		//		languageSelector.selectLanguageItem(objLanguageDescriptor);
-		//		if (objLanguageDescriptor.getLanguageNumber() != JobListener.NONE) {
-		//			objDataProvider.fillIncludesTable(objJobIncludeFile.getTableIncludes());
-		//		}
-		//		else {
-		//			LanguageDescriptor objDefaultL = LanguageDescriptorList.getDefaultLanguage();
-		//			languageSelector.selectLanguageItem(objDefaultL);
-		//			objDataProvider.setLanguage(objDefaultL);
-		//		}
-		//		String lan = "";
-		//		if (!languageSelector.isShell() && !languageSelector.isJava()) {
-		//			lan = this.getPredefinedFunctionNames();
-		//			objJobScript.getCboPrefunction().setItems(lan.split(";"));
-		//		}
-		//		if (languageSelector.isJava() && languageSelector.isHiddenJavaAPIJob() == false) {
-		//			tabFolder.setSelection(tabItemJavaAPI);
-		//		}
-		//		else {
-		//			if (languageSelector.isHiddenJavaAPIJob() == true) {
-		//				//				tabItemJavaAPI.s
-		//			}
-		//			tabFolder.setSelection(tabItemScript);
-		//			objJobScript.gettSource().setFocus();
-		//		}
+		languageSelector.selectLanguageItem(objLanguageDescriptor);
+		if (objLanguageDescriptor.getLanguageNumber() != JobListener.NONE) {
+			objDataProvider.fillIncludesTable(objJobIncludeFile.getTableIncludes());
+		}
+		else {
+			LanguageDescriptor objDefaultL = LanguageDescriptorList.getDefaultLanguage();
+			languageSelector.selectLanguageItem(objDefaultL);
+			objDataProvider.setLanguage(objDefaultL);
+		}
+		String lan = "";
+		if (!languageSelector.isShell() && !languageSelector.isJava()) {
+			lan = this.getPredefinedFunctionNames();
+			objJobScript.getCboPrefunction().setItems(lan.split(";"));
+		}
+		if (languageSelector.isJava() && languageSelector.isHiddenJavaAPIJob() == false) {
+			tabFolder.setSelection(tabItemJavaAPI);
+		}
+		else {
+			if (languageSelector.isHiddenJavaAPIJob() == true) {
+				//				tabItemJavaAPI.s
+			}
+			tabFolder.setSelection(tabItemScript);
+			objJobScript.gettSource().setFocus();
+		}
 		init = false;
 	}
 
@@ -315,5 +311,4 @@ public class ExecutableForm extends SOSJOEMessageCodes {
 		// TODO attribute of languageDescriptor
 		return "spooler_task_before;spooler_task_after;spooler_process_before;spooler_process_after";
 	}
-
 }
