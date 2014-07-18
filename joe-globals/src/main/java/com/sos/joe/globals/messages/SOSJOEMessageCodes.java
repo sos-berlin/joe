@@ -1,7 +1,12 @@
 package com.sos.joe.globals.messages;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+
 /*import sos.scheduler.editor.conf.forms.already;
 import sos.scheduler.editor.conf.forms.be;
 import sos.scheduler.editor.conf.forms.must;
@@ -1988,6 +1993,8 @@ public class SOSJOEMessageCodes extends Composite {
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_TI_ScriptJobMainForm_Options					= new SOSMsgJOE("JOE_TI_ScriptJobMainForm_Options");
 	@I18NMsg
+	public static final SOSMsgJOE	JOE_TI_ScriptJobMainForm_Executable					= new SOSMsgJOE("JOE_TI_ScriptJobMainForm_Executable");
+	@I18NMsg
 	public static final SOSMsgJOE	JOE_TI_ScriptJobMainForm_EMail						= new SOSMsgJOE("JOE_TI_ScriptJobMainForm_EMail");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_TI_ScriptJobMainForm_SetBack					= new SOSMsgJOE("JOE_TI_ScriptJobMainForm_SetBack");
@@ -3172,4 +3179,28 @@ public class SOSJOEMessageCodes extends Composite {
 	public SOSJOEMessageCodes(final Composite parent, final int style) {
 		super(parent, style);
 	}
+	Cursor objLastCursor = null;
+	protected void showWaitCursor() {
+		if (!getShell().isDisposed()) {
+			objLastCursor = getShell().getCursor();
+		}
+		getShell().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_WAIT));
+	}
+
+	protected void restoreCursor() {
+		if (!getShell().isDisposed())
+			if (objLastCursor == null) {
+				getShell().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_ARROW));
+			}
+			else {
+				getShell().setCursor(objLastCursor);
+			}
+	}
+
+	protected void setResizableV(final Control objControl) {
+		boolean flgGrapVerticalspace = true;
+		objControl.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, flgGrapVerticalspace));
+	}
+
+
 }
