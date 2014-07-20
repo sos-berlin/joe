@@ -33,6 +33,7 @@ import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.Events.ActionsDom;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
+import com.sos.resources.SOSProductionResource;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public abstract class DomParser extends I18NBase {
 	public static final String				conSchema_SCHEDULER_EDITOR_SCHEMA		= "scheduler_editor_schema";
@@ -65,6 +66,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		return _orders;
 	}
 
+	public String getFileName () {
+		return _filename;
+	}
 	public void setFilename(String filename) {
 		_filename = filename;
 		readFileLastModified();
@@ -137,18 +141,23 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			String[] s = new String[1];
 			s[0] = "";
 			if (this instanceof ActionsDom)
-				s[0] = getClass().getResource(Options.getActionSchema()).toString();
+				s[0]  = this.getClass().getClassLoader().getResource(SOSProductionResource.EVENT_SERVICE_XSD.getFullName()).toString();
+//				s[0] = getClass().getResource(Options.getActionSchema()).toString();
 			else
 				if (this instanceof DocumentationDom) {
-					// s[0] = getClass().getResource(Options.getDocSchema()).toString();
-					strT = Options.getDocSchema();
-					if (strT != null) {
-						s[0] = getClass().getResource(strT).toString();
-					}
+					s[0]  = this.getClass().getClassLoader().getResource(SOSProductionResource.JOB_DOC_XSD.getFullName()).toString();
+//					s[0]  = SOSProductionResource.JOB_DOC_XSD.getFullName();
+
+//					 s[0] = getClass().getResource(Options.getDocSchema()).toString();
+//					strT = Options.getDocSchema();
+//					if (strT != null) {
+//						s[0] = getClass().getResource(strT).toString();
+//					}
 				}
 				else {
 					if (this instanceof SchedulerDom)
-						s[0] = getClass().getResource(Options.getSchema()).toString();
+						s[0]  = this.getClass().getClassLoader().getResource(SOSProductionResource.SCHEDULER_XSD.getFullName()).toString();
+//						s[0] = getClass().getResource(Options.getSchema()).toString();
 					else
 						s[0] = "";
 				}
