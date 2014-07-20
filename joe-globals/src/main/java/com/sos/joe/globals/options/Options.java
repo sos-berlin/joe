@@ -1,11 +1,12 @@
 package com.sos.joe.globals.options;
-import com.sos.JSHelper.Basics.JSToolBox;
-import com.sos.JSHelper.Options.SOSOptionLocale;
-import com.sos.dialog.components.SOSPreferenceStore;
-import com.sos.i18n.annotation.I18NResourceBundle;
-import com.sos.joe.globals.messages.ErrorLog;
-import com.sos.joe.globals.misc.ResourceManager;
-import com.sos.resources.SOSProductionResource;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Color;
@@ -15,15 +16,16 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
+
 import sos.util.SOSClassUtil;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
+import com.sos.JSHelper.Basics.JSToolBox;
+import com.sos.JSHelper.Options.SOSOptionLocale;
+import com.sos.dialog.components.SOSPreferenceStore;
+import com.sos.i18n.annotation.I18NResourceBundle;
+import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.resources.SOSProductionResource;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class Options extends JSToolBox {
 	private static final String							conEnvVarSOS_JOE_HOME						= "SOS_JOE_HOME";
@@ -345,10 +347,10 @@ import java.util.Properties;
 		return getProperty("editor.xml.xslt").replaceAll("\\{scheduler_data\\}", getSchedulerData().replaceAll("\\\\", "/"));
 	}
 
-	public static String getDocSchema() {
-		//		String strSchemaName = SOSProductionResource.JOB_DOC_XSD.getFullName();
-		//		return strSchemaName;
-		return getProperty("documentation.xml.xsd");
+	@Deprecated public static String getDocSchema() {
+		String strSchemaName = SOSProductionResource.JOB_DOC_XSD.getFullName();
+		return strSchemaName;
+		//		return getProperty("documentation.xml.xsd");
 	}
 
 	public static String getActionsSchema() {
