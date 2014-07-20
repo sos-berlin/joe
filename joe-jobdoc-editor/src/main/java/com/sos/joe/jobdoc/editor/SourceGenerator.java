@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
-import com.sos.resources.SOSProductionResource;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -19,6 +18,7 @@ import com.sos.JSHelper.DataElements.JSDateFormat;
 import com.sos.JSHelper.Exceptions.JobSchedulerException;
 import com.sos.JSHelper.io.Files.JSXMLFile;
 import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.resources.SOSProductionResource;
 
 /**
 * \class SourceGenerator
@@ -73,7 +73,9 @@ public class SourceGenerator extends JSToolBox {
 	private static final Logger	logger							= Logger.getLogger(SourceGenerator.class);
 
 	private File copyResource2TempFile (final String pstrResourceName) throws IOException {
-		InputStream stream = this.getClass().getResourceAsStream(pstrResourceName);
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream(pstrResourceName);
+//		InputStream stream = SOSResource.class.getClass().getResourceAsStream(pstrResourceName);
+//		InputStream stream = this.getClass().getResourceAsStream(pstrResourceName);
 	    if (stream == null) {
 	    	throw new JobSchedulerException("can't get resource for " + pstrResourceName);
 	    }
@@ -98,7 +100,7 @@ public class SourceGenerator extends JSToolBox {
 	public void execute() {
 		logger.setLevel(Level.DEBUG);
 		logger.info("Starting transformation");
-		String conResourcePathName = SOSProductionResource.basePackage();
+		String conResource4XslPathName = SOSProductionResource.basePackage() + "/xsl/";
 		String strMessage = "";
 		try {
 			//String strXMLFileName = "c:\\temp\\job.xml";
@@ -112,7 +114,7 @@ public class SourceGenerator extends JSToolBox {
 			strWorkerClassName = javaClassName;
 
 //			File objXSLFile = new File(templatePath, "JSJobDoc2JSOptionSuperClass.xsl");
-			File objXSLFile = copyResource2TempFile(conResourcePathName + "JSJobDoc2JSOptionSuperClass.xsl");
+			File objXSLFile = copyResource2TempFile(conResource4XslPathName + "JSJobDoc2JSOptionSuperClass.xsl");
 			pobjHshMap = new HashMap <String, String>();
 
 			setXSLTParameter("package_name", packageName);
@@ -148,7 +150,7 @@ public class SourceGenerator extends JSToolBox {
 			strMessage += "File generated " + newFileName;
 			doTransform(objXSLFile, objXMLFile, new File(outputDir, newFileName));
 
-			File objXSLOptionClassFile = copyResource2TempFile(conResourcePathName +  "JSJobDoc2JSOptionClass.xsl");
+			File objXSLOptionClassFile = copyResource2TempFile(conResource4XslPathName +  "JSJobDoc2JSOptionClass.xsl");
 			setXSLTParameter("XSLTFilename", objXSLOptionClassFile.getAbsolutePath());
 
 			setXSLTParameter(conXsltParmExtendsClassName, strWorkerClassName + strClassNameExtension);
@@ -162,7 +164,7 @@ public class SourceGenerator extends JSToolBox {
 
 			doTransform(objXSLOptionClassFile, objXMLFile, new File(outputDir, strWorkerClassName + strClassNameExtension + conJavaFilenameExtension));
 
-			File objXSLJSAdapterClassFile = copyResource2TempFile(conResourcePathName + "JSJobDoc2JSAdapterClass.xsl");
+			File objXSLJSAdapterClassFile = copyResource2TempFile(conResource4XslPathName + "JSJobDoc2JSAdapterClass.xsl");
 			setXSLTParameter("XSLTFilename", objXSLJSAdapterClassFile.getAbsolutePath());
 			setXSLTParameter(conXsltParmExtendsClassName, "JobSchedulerJob");
 			strClassNameExtension = "JSAdapterClass";
@@ -176,7 +178,7 @@ public class SourceGenerator extends JSToolBox {
 			objXMLFile.setParameters(pobjHshMap);
 			doTransform(objXSLJSAdapterClassFile, objXMLFile, new File(outputDir, strClassName + conJavaFilenameExtension));
 
-			File objXSLJSWorkerClassFile = copyResource2TempFile(conResourcePathName + "JSJobDoc2JSWorkerClass.xsl");
+			File objXSLJSWorkerClassFile = copyResource2TempFile(conResource4XslPathName + "JSJobDoc2JSWorkerClass.xsl");
 			setXSLTParameter("XSLTFilename", objXSLJSWorkerClassFile.getAbsolutePath());
 			setXSLTParameter(conXsltParmExtendsClassName, "JSToolBox");
 			strClassNameExtension = "";
@@ -189,7 +191,7 @@ public class SourceGenerator extends JSToolBox {
 			objXMLFile.setParameters(pobjHshMap);
 			doTransform(objXSLJSWorkerClassFile, objXMLFile, new File(outputDir, strClassName.trim() + conJavaFilenameExtension));
 
-			File objXSLJSMainClassFile = copyResource2TempFile(conResourcePathName + "JSJobDoc2JSMainClass.xsl");
+			File objXSLJSMainClassFile = copyResource2TempFile(conResource4XslPathName + "JSJobDoc2JSMainClass.xsl");
 			setXSLTParameter("XSLTFilename", objXSLJSMainClassFile.getAbsolutePath());
 
 			setXSLTParameter(conXsltParmExtendsClassName, "JSToolBox");
@@ -204,7 +206,7 @@ public class SourceGenerator extends JSToolBox {
 			objXMLFile.setParameters(pobjHshMap);
 			doTransform(objXSLJSMainClassFile, objXMLFile, new File(outputDir, strClassName.trim() + conJavaFilenameExtension));
 
-			File objXSLJSJUnitClassFile = copyResource2TempFile(conResourcePathName + "JSJobDoc2JSJUnitClass.xsl");
+			File objXSLJSJUnitClassFile = copyResource2TempFile(conResource4XslPathName + "JSJobDoc2JSJUnitClass.xsl");
 			setXSLTParameter("XSLTFilename", objXSLJSJUnitClassFile.getAbsolutePath());
 
 			setXSLTParameter(conXsltParmExtendsClassName, "JSToolBox");
@@ -219,7 +221,7 @@ public class SourceGenerator extends JSToolBox {
 			objXMLFile.setParameters(pobjHshMap);
 			doTransform(objXSLJSJUnitClassFile, objXMLFile, new File(outputDir, strClassName + conJavaFilenameExtension));
 
-			File objXSLJSJUnitOptionSuperClassFile = copyResource2TempFile(conResourcePathName + "JSJobDoc2JSJUnitOptionSuperClass.xsl");
+			File objXSLJSJUnitOptionSuperClassFile = copyResource2TempFile(conResource4XslPathName + "JSJobDoc2JSJUnitOptionSuperClass.xsl");
 			setXSLTParameter("XSLTFilename", objXSLJSJUnitOptionSuperClassFile.getAbsolutePath());
 
 			setXSLTParameter(conXsltParmExtendsClassName, "JSToolBox");

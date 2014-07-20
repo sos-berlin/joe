@@ -27,4 +27,8 @@ public class JobDocBaseListener <T> extends XMLUtils {
 	protected ElementWrapper getWrapper (final Element objE ) {
 		return new ElementWrapper (objE) ;
 	}
+	
+	public T getDom () {
+		return _dom;
+	}
 }
