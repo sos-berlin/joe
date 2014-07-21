@@ -324,6 +324,8 @@ public class JOEMainWindow {
 			public void widgetDefaultSelected(final org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+		
+		/* 
 		MenuItem mpLife = new MenuItem(pmNew, SWT.CASCADE);
 		mpLife.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -413,6 +415,7 @@ public class JOEMainWindow {
 			public void widgetDefaultSelected(final org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+		*/
 		// open remote configuration
 		MenuItem mORC = new MenuItem(mFile, SWT.CASCADE);
 		mORC.setText(getMenuText(Messages.getLabel("MENU_OpenRemoteConfiguration"), EMPTY));
@@ -1003,6 +1006,8 @@ public class JOEMainWindow {
 			public void widgetDefaultSelected(final org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+		
+		/*
 		MenuItem itemHFEJob = new MenuItem(menu, SWT.PUSH);
 		itemHFEJob.setText("Hot Folder Element - Job");
 		itemHFEJob.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -1081,6 +1086,7 @@ public class JOEMainWindow {
 			public void widgetDefaultSelected(final org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+		*/
 		addDropDown(butNew, menu);
 		final ToolItem butOpen = new ToolItem(toolBar, SWT.PUSH);
 		butOpen.addSelectionListener(new SelectionAdapter() {
@@ -1090,6 +1096,7 @@ public class JOEMainWindow {
 					setSaveStatus();
 			}
 		});
+
 		butOpen.setImage(ResourceManager.getImageFromResource(conIconICON_OPEN_GIF));
 		butOpen.setToolTipText("Open Configuration File");
 
@@ -1169,7 +1176,7 @@ public class JOEMainWindow {
 			}
 		});
 		MenuItem itemFTPSave = new MenuItem(menuFTP, SWT.PUSH);
-		itemFTPSave.setText("Save As By FTP");
+		itemFTPSave.setText("Save As by FTP");
 		itemFTPSave.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
