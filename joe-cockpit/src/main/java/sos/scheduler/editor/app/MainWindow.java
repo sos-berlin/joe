@@ -1,4 +1,42 @@
 package sos.scheduler.editor.app;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.ShellListener;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.xpath.XPath;
+
+import sos.scheduler.editor.classes.WindowsSaver;
+import sos.scheduler.editor.conf.forms.HotFolderDialog;
+import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
+import sos.scheduler.editor.conf.forms.SchedulerForm;
+import sos.util.SOSString;
+
 import com.sos.JSHelper.Basics.VersionInfo;
 import com.sos.event.service.forms.ActionsForm;
 import com.sos.i18n.annotation.I18NMessage;
@@ -15,28 +53,6 @@ import com.sos.joe.xml.DomParser;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
-import org.apache.log4j.Logger;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.xpath.XPath;
-import sos.scheduler.editor.classes.WindowsSaver;
-import sos.scheduler.editor.conf.forms.HotFolderDialog;
-import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
-import sos.scheduler.editor.conf.forms.SchedulerForm;
-import sos.util.SOSString;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class MainWindow {
 	private static final String	conNewlineTab							= "n\t";
@@ -845,7 +861,7 @@ import java.util.List;
 			}
 		});
 		MenuItem itemDoc = new MenuItem(menu, SWT.PUSH);
-		itemDoc.setText("Documentation");
+		itemDoc.setText("JobDoc - Documentation");
 		itemDoc.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.newDocumentation() != null)
@@ -877,6 +893,8 @@ import java.util.List;
 			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+		
+		/*
 		MenuItem itemHFEJob = new MenuItem(menu, SWT.PUSH);
 		itemHFEJob.setText("Hot Folder Element - Job");
 		itemHFEJob.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -943,6 +961,8 @@ import java.util.List;
 			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+		
+		*/
 		addDropDown(butNew, menu);
 		final ToolItem butOpen = new ToolItem(toolBar, SWT.PUSH);
 		butOpen.addSelectionListener(new SelectionAdapter() {
@@ -952,7 +972,7 @@ import java.util.List;
 			}
 		});
 		butOpen.setImage(ResourceManager.getImageFromResource(conIconICON_OPEN_GIF));
-		butOpen.setToolTipText("Open Configuration File");
+		butOpen.setToolTipText("Open JobScheduler Configuration");
 		// ---------- butOpenHotFolder ---------
 		final ToolItem butOpenHotFolder = new ToolItem(toolBar, SWT.PUSH);
 		butOpenHotFolder.addSelectionListener(new SelectionAdapter() {
