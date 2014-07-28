@@ -44,30 +44,27 @@ import com.sos.scheduler.model.objects.JobChain.JobChainNode;
  *
  */
 public class JOEJobChainDataProvider extends JOEListener {
-	@SuppressWarnings("unused")
-	private final String			conClassName				= this.getClass().getSimpleName();
-	@SuppressWarnings("unused")
-	private static final String		conSVNVersion				= "$Id$";
-	@SuppressWarnings("unused")
-	private final Logger			logger						= Logger.getLogger(this.getClass());
-	public static final String		conTagFILE_ORDER_SINK		= "file_order_sink";
-	protected Element				objJobChain					= null;
-	public static final String		conAttrSTATE				= "state";
-	public static final String		conTagJOB_CHAIN_NODE		= "job_chain_node";
-	public static final String		conAttrON_ERROR				= "on_error";
-	public static final String		conAttrERROR_STATE			= "error_state";
-	public static final String		conAttrJOBNAME				= "job_name";
-	public static final String		conTagFILE_ORDER_SOURCE		= "file_order_source";
-	public static final String		conAttrMAX					= "max";
-	public static final String		conAttrDIRECTORY			= "directory";
-	public static final String		conAttrREGEX				= "regex";
-	public static final String		conAttrNEXT_STATE			= "next_state";
-	public static final String		conAttrREPEAT				= "repeat";
-	public static final String		conAttrDELAY_AFTER_ERROR	= "delay_after_error";
-	protected Element				_config						= null;
-	protected JobChainNodeWrapper	objJobChainNode						= null;
-	protected String[]				strCurrentStates						= null;
-	protected JSObjectElement		objJSObjectElement			= null;
+	@SuppressWarnings("unused") private final String		conClassName				= this.getClass().getSimpleName();
+	@SuppressWarnings("unused") private static final String	conSVNVersion				= "$Id$";
+	@SuppressWarnings("unused") private final Logger		logger						= Logger.getLogger(this.getClass());
+	public static final String								conTagFILE_ORDER_SINK		= "file_order_sink";
+	protected Element										objJobChain					= null;
+	public static final String								conAttrSTATE				= "state";
+	public static final String								conTagJOB_CHAIN_NODE		= "job_chain_node";
+	public static final String								conAttrON_ERROR				= "on_error";
+	public static final String								conAttrERROR_STATE			= "error_state";
+	public static final String								conAttrJOBNAME				= "job_name";
+	public static final String								conTagFILE_ORDER_SOURCE		= "file_order_source";
+	public static final String								conAttrMAX					= "max";
+	public static final String								conAttrDIRECTORY			= "directory";
+	public static final String								conAttrREGEX				= "regex";
+	public static final String								conAttrNEXT_STATE			= "next_state";
+	public static final String								conAttrREPEAT				= "repeat";
+	public static final String								conAttrDELAY_AFTER_ERROR	= "delay_after_error";
+	protected Element										_config						= null;
+	protected JobChainNodeWrapper							objJobChainNode				= null;
+	protected String[]										strCurrentStates			= null;
+	protected JSObjectElement								objJSObjectElement			= null;
 
 	public JOEJobChainDataProvider() {
 		strUpdateObjectType = "job_chain";
@@ -80,36 +77,33 @@ public class JOEJobChainDataProvider extends JOEListener {
 		strUpdateElementName = getChainName();
 	}
 
-	@Deprecated
-	public JSObjectElement getJSObject() {
+	@Deprecated public JSObjectElement getJSObject() {
 		if (objJSObjectElement == null) {
 			objJSObjectElement = new JSObjectElement(JOEConstants.JOB_CHAIN, objJobChain);
 		}
 		return objJSObjectElement;
 	}
 
-//	public Element getChainElement() {
-//		return objJobChain;
-//	}
-//
-//	private void setAttrYesNo(final String pstrAttr, final boolean pflgValue) {
-//		setAttr(pstrAttr, getBoolYesNo(pflgValue));
-//	}
-
+	//	public Element getChainElement() {
+	//		return objJobChain;
+	//	}
+	//
+	//	private void setAttrYesNo(final String pstrAttr, final boolean pflgValue) {
+	//		setAttr(pstrAttr, getBoolYesNo(pflgValue));
+	//	}
 	public boolean getRecoverable() {
 		return objJSJobChain.isRecoverable();
 	}
 
-//	@Deprecated private void setAttr(final String pstrAttr, final String pstrVal) {
-//		Utils.setAttribute(pstrAttr, pstrVal, objJobChain);
-//		setDirty();
-//	}
-
-//	@Deprecated private String getAttr(final String pstrAttr) {
-//		String strValue = Utils.getAttributeValue(pstrAttr, objJobChain);
-//		return strValue;
-//	}
-//
+	//	@Deprecated private void setAttr(final String pstrAttr, final String pstrVal) {
+	//		Utils.setAttribute(pstrAttr, pstrVal, objJobChain);
+	//		setDirty();
+	//	}
+	//	@Deprecated private String getAttr(final String pstrAttr) {
+	//		String strValue = Utils.getAttributeValue(pstrAttr, objJobChain);
+	//		return strValue;
+	//	}
+	//
 	public JOEJobChainDataProvider setTitle(final String pstrTitle) {
 		objJSJobChain.setTitle(pstrTitle);
 		return this;
@@ -120,7 +114,11 @@ public class JOEJobChainDataProvider extends JOEListener {
 	}
 
 	public String getState() {
-		return objJobChainNode.getState();
+		String strT = "";
+		if (objJobChainNode != null) {
+			strT = objJobChainNode.getState();
+		}
+		return strT;
 	}
 
 	public JobChainNodeWrapper getNewJobChainNode() {
@@ -201,11 +199,10 @@ public class JOEJobChainDataProvider extends JOEListener {
 		objJobChainNode.setOnError(strOnError);
 	}
 
-	@Deprecated
-	public JobChainNodeWrapper getJobChainNodeWrapper (final Element pobjElement) {
+	@Deprecated public JobChainNodeWrapper getJobChainNodeWrapper(final Element pobjElement) {
 		return new JobChainNodeWrapper();
 	}
-	
+
 	public JobChainNodeWrapper getJobChainNodeWrapper(final JSObjBase pobjNode) {
 		JobChainNodeWrapper objN = new JobChainNodeWrapper(pobjNode);
 		objN.setChainName(getJobChainName());
@@ -318,7 +315,7 @@ public class JOEJobChainDataProvider extends JOEListener {
 
 	public String getChainName() {
 		String strT = "???";
-				strT = objJSJobChain.getObjectName();
+		strT = objJSJobChain.getObjectName();
 		return strT;
 	}
 
@@ -381,8 +378,8 @@ public class JOEJobChainDataProvider extends JOEListener {
 		/**
 		 * reload the content of the jobchain, this must be performed until the JOM is used only.
 		 */
-//		objJSJobChain = null;
-//		getJOMJobChain();
+		//		objJSJobChain = null;
+		//		getJOMJobChain();
 	}
 
 	public boolean isFullNode() {

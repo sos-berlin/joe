@@ -12,8 +12,6 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.JOEMainWindow;
-import com.sos.joe.globals.misc.TreeData;
-import com.sos.joe.xml.Utils;
 import sos.util.SOSClassUtil;
 
 import com.sos.JSHelper.Basics.JSToolBox;
@@ -24,7 +22,9 @@ import com.sos.VirtualFileSystem.Options.SOSFTPOptions;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.SchedulerObjectFactory;
 import com.sos.scheduler.model.objects.JSObjJob;
@@ -326,10 +326,10 @@ public class JOEListener extends JSToolBox {
 	}
 
 	protected void setDirty() {
-		_dom.setChanged(true);
-		if (_dom.isDirectory() || _dom.isLifeElement()) {
-			_dom.setChangedForDirectory(strUpdateObjectType, strUpdateElementName, SchedulerDom.MODIFY);
-		}
+//		_dom.setChanged(true);
+//		if (_dom.isDirectory() || _dom.isLifeElement()) {
+//			_dom.setChangedForDirectory(strUpdateObjectType, strUpdateElementName, SchedulerDom.MODIFY);
+//		}
 	}
 
 	protected String getBoolYesNo(final boolean pflgValue) {
