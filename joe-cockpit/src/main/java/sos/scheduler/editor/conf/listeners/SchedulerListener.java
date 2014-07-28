@@ -928,15 +928,17 @@ public class SchedulerListener {
 			while (it.hasNext()) {
 				Object o = it.next();
 				if (o instanceof Element) {
+					boolean flgIsSimpleJobChain = false;
+					boolean flgHasNestedJobChains = false;
 					Element element = (Element) o;
-					TreeItem i = new TreeItem(parent, SWT.NONE);
-					i.setText(getNameAndTitle(element, "treeitem.jobchain"));
-					i.setImage(getImage("jobchain.gif"));
-					i.setData(new TreeData(JOEConstants.JOB_CHAIN, element, Options.getHelpURL("job_chain")));
-					i.setData(conItemDataKeyKEY, "job_chains_@_job_chain");
-					i.setData(conItemDataKeyCOPY_ELEMENT, element);
+					TreeItem objJobChainRootItem = new TreeItem(parent, SWT.NONE);
+					objJobChainRootItem.setText(getNameAndTitle(element, "treeitem.jobchain"));
+					objJobChainRootItem.setImage(getImage("jobchain.gif"));
+					objJobChainRootItem.setData(new TreeData(JOEConstants.JOB_CHAIN, element, Options.getHelpURL("job_chain")));
+					objJobChainRootItem.setData(conItemDataKeyKEY, "job_chains_@_job_chain");
+					objJobChainRootItem.setData(conItemDataKeyCOPY_ELEMENT, element);
 					// Job Chain Nodes
-					TreeItem iNodes = new TreeItem(i, SWT.NONE);
+					TreeItem iNodes = new TreeItem(objJobChainRootItem, SWT.NONE);
 					iNodes.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_StepsNodes.label());
 					iNodes.setImage(getImage("jobchain.gif"));
 					iNodes.setData(new TreeData(JOEConstants.JOB_CHAIN_NODES, element, Options.getHelpURL("job_chain")));
@@ -946,6 +948,7 @@ public class SchedulerListener {
 					while (objNodesIt.hasNext()) {
 						Element node = (Element) objNodesIt.next();
 						if (node.getName().equals("job_chain_node")) {
+							flgIsSimpleJobChain = true;
 							String strJobName = Utils.getAttributeValue("job", node);
 							String strState = Utils.getAttributeValue("state", node);
 							Tree tree = objTree;
@@ -973,26 +976,45 @@ public class SchedulerListener {
 						}
 					}
 					iNodes.setExpanded(true);
-					// Job Chain Nested Nodes
-					TreeItem iNestedNodes = new TreeItem(i, SWT.NONE);
-					iNestedNodes.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_NestedJobChains.label());
-					iNestedNodes.setImage(getImage("jobchain.gif"));
-					iNestedNodes.setData(new TreeData(JOEConstants.JOB_CHAIN_NESTED_NODES, element, Options.getHelpURL("job_chain")));
-					// iNestedNodes.setData("key", "job_chain_node.job_chain");
-					iNestedNodes.setData(conItemDataKeyKEY, "job_chain_node.job_chain");
-					iNestedNodes.setData(conItemDataKeyCOPY_ELEMENT, element);
-					iNestedNodes.setExpanded(true);
-					if (!Utils.isElementEnabled("job_chain", objSchedulerDom, element)) {
-						setDisabled(i); // i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-						setDisabled(iNodes); // iNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-						setDisabled(iNestedNodes); // iNestedNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+					if (flgIsSimpleJobChain == true) {  // no need to show the "nested job Chain" treeitem
 					}
 					else {
-						i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
-						iNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
-						iNestedNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+						// Job Chain Nested Nodes
+						TreeItem iNestedNodes = new TreeItem(objJobChainRootItem, SWT.NONE);
+						iNestedNodes.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_NestedJobChains.label());
+						iNestedNodes.setImage(getImage("category.gif"));
+						iNestedNodes.setData(new TreeData(JOEConstants.JOB_CHAIN_NESTED_NODES, element, Options.getHelpURL("nested_job_chain")));
+						// iNestedNodes.setData("key", "job_chain_node.job_chain");
+						iNestedNodes.setData(conItemDataKeyKEY, "job_chain_node.job_chain");
+						iNestedNodes.setData(conItemDataKeyCOPY_ELEMENT, element);
+						
+						 objNodesIt = element.getChildren().iterator();
+						while (objNodesIt.hasNext()) {
+							Element node = (Element) objNodesIt.next();
+							if (node.getName().equals("job_chain_node.job_chain")) {
+								flgHasNestedJobChains = true;
+								objJobChainRootItem.setImage(getImage("category.gif"));
+							}
+						}
+						
+						iNestedNodes.setExpanded(true);
+						if (!Utils.isElementEnabled("job_chain", objSchedulerDom, element)) {
+							setDisabled(objJobChainRootItem); // i.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+							setDisabled(iNodes); // iNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+							setDisabled(iNestedNodes); // iNestedNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+						}
+						else {
+							objJobChainRootItem.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+							iNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+							iNestedNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+						}
 					}
-					TreeItem objOrders4JobChain = new TreeItem(i, SWT.NONE);
+					if (flgHasNestedJobChains) {
+						iNodes.removeAll();
+						iNodes.dispose();
+					}
+					
+					TreeItem objOrders4JobChain = new TreeItem(objJobChainRootItem, SWT.NONE);
 					objOrders4JobChain.setText("Orders");
 					objOrders4JobChain.setImage(getImage("orders.gif"));
 					objOrders4JobChain.setData(new TreeData(JOEConstants.ORDERS, element, Options.getHelpURL("orders")));
