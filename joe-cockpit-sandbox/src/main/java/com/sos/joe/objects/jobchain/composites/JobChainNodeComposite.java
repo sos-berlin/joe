@@ -261,6 +261,17 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 		}
 	}
 
+	class localModifyJobListener implements ModifyListener {
+		@Override
+		public void modifyText(final ModifyEvent e) {
+			setDirty();
+			if (tbxState.getText().length() <= 0) {
+				tbxState.setText(cboJob.getText());
+			}
+		}
+	}
+
+
 	private void createControl4JobName(final Composite pobjParent) {
 		JOE_L_JCNodesForm_Job.Control(new Label(pobjParent, SWT.NONE));
 		cboJob = new SOSComboBox(pobjParent, JOE_Cbo_JCNodesForm_Job);
@@ -287,7 +298,7 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 				}
 			}
 		});
-		cboJob.addModifyListener(objLocalModifyListener);
+		cboJob.addModifyListener(new localModifyJobListener());
 		cboJob.addKeyListener(objLocalKeyListener);
 	}
 
@@ -322,8 +333,8 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 			tDelay.setText("");
 
 			cboJob.setItems(objDataProvider.getJobs());
-			cboNextState.setItems(objDataProvider.getStates());
-			cboErrorState.setItems(objDataProvider.getAllStates());
+			cboNextState.setItems(objDataProvider.getNextStates());
+			cboErrorState.setItems(objDataProvider.getErrorStates());
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -346,8 +357,8 @@ public class JobChainNodeComposite extends CompositeBaseAbstract<JobChainListene
 			cboJob.setItems(objDataProvider.getJobs());
 		}
 
-		cboNextState.setItems(objDataProvider.getStates());
-		cboErrorState.setItems(objDataProvider.getAllStates());
+		cboNextState.setItems(objDataProvider.getNextStates());
+		cboErrorState.setItems(objDataProvider.getErrorStates());
 
 		cboJob.setText(objDataProvider.getJob());
 		tbxState.setText(objDataProvider.getState());

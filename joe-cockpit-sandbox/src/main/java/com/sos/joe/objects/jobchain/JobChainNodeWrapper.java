@@ -23,17 +23,14 @@ import com.sos.scheduler.model.objects.JobChain.JobChainNode;
  *
  */
 public class JobChainNodeWrapper extends JSToolBox {
-	@SuppressWarnings("unused")
-	private final String		conClassName				= this.getClass().getSimpleName();
-	@SuppressWarnings("unused")
-	private static final String	conSVNVersion				= "$Id$";
-	@SuppressWarnings("unused")
-	private final Logger		logger						= Logger.getLogger(this.getClass());
+	@SuppressWarnings("unused") private final String		conClassName				= this.getClass().getSimpleName();
+	@SuppressWarnings("unused") private static final String	conSVNVersion				= "$Id$";
+	@SuppressWarnings("unused") private final Logger		logger						= Logger.getLogger(this.getClass());
 	// TODO NodeType "split" and "sync"
-	private static final String	conTagFILE_ORDER_SINK		= "file_order_sink";
-	public static final String	conTagJOB_CHAIN_NODE_END	= "job_chain_node.end";
-	public static final String	conTagJOB_CHAIN_NODE		= "job_chain_node";
-	public static final String	conTagFILE_ORDER_SOURCE		= "file_order_source";
+	private static final String								conTagFILE_ORDER_SINK		= "file_order_sink";
+	public static final String								conTagJOB_CHAIN_NODE_END	= "job_chain_node.end";
+	public static final String								conTagJOB_CHAIN_NODE		= "job_chain_node";
+	public static final String								conTagFILE_ORDER_SOURCE		= "file_order_source";
 	//	public static final String	conAttrSTATE				= "state";
 	//	public static final String	conAttrJOB					= "job";
 	//	public static final String	conAttrMOVETO				= "move_to";
@@ -45,18 +42,18 @@ public class JobChainNodeWrapper extends JSToolBox {
 	//	public static final String	conAttrNEXT_STATE			= "next_state";
 	//	public static final String	conAttrREPEAT				= "repeat";
 	//	public static final String	conAttrDELAY				= "delay";
-	private int					intIndex					= -1;
-	private boolean				flgHasNodeParameter			= false;
-	private boolean				flgJobIsMissing				= false;
-	private String				strJobChainName				= "";
-	private final String		strErrorState				= "";
-	private String				strOnError					= "";
-	private String				strDelay					= "";
-	private String				strJobName					= "";
-	private String				strMoveTo					= "";
-	private String				strRemovefile				= "";
+	private int												intIndex					= -1;
+	private boolean											flgHasNodeParameter			= false;
+	private boolean											flgJobIsMissing				= false;
+	private String											strJobChainName				= "";
+	private final String									strErrorState				= "";
+	private String											strOnError					= "";
+	private String											strDelay					= "";
+	private String											strJobName					= "";
+	private String											strMoveTo					= "";
+	private String											strRemovefile				= "";
 	//	private Element				objElement					= null;
-	private final JobChainNode	objJCNode					= null;
+	private final JobChainNode								objJCNode					= null;
 
 	@Deprecated public SchedulerDom getDom() {
 		//		return _dom;
@@ -157,7 +154,14 @@ public class JobChainNodeWrapper extends JSToolBox {
 	 * @param strDelay the strDelay to set
 	 */
 	public JobChainNodeWrapper setDelay(final String strDelay) {
-		getJCN().setDelay(BigInteger.valueOf(Integer.valueOf(strDelay)));
+		if (isNotEmpty(strDelay)) {
+			try {
+				BigInteger bigI = BigInteger.valueOf(Integer.valueOf(strDelay));
+				getJCN().setDelay(bigI);
+			}
+			catch (NumberFormatException e) {
+			}
+		}
 		return this;
 	}
 

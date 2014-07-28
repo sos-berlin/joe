@@ -52,9 +52,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.JOEMainWindow;
-
-import com.sos.joe.globals.misc.TreeData;
-
 import sos.scheduler.editor.classes.CompositeBaseClass;
 import sos.scheduler.editor.classes.FolderNameSelector;
 import sos.scheduler.editor.classes.ISOSTableMenueListeners;
@@ -67,12 +64,14 @@ import sos.scheduler.editor.conf.container.JobScript;
 import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.DialogAdapter;
+import com.sos.dialog.interfaces.IDialogActionHandler;
 import com.sos.i18n.annotation.I18NMsg;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSMsgJOE;
+import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.objects.job.forms.JobSourceViewer;
 import com.sos.joe.objects.jobchain.JobChainListener;
@@ -85,7 +84,7 @@ import com.sos.joe.objects.jobchain.composites.JobChainParameterComposite;
 import com.sos.joe.objects.jobchain.composites.JobChainParameterNodesComposite;
 import com.sos.scheduler.model.objects.JSObjJobChain;
 
-public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes */implements IUpdateLanguage, ISOSTableMenueListeners {
+public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes */implements IUpdateLanguage, ISOSTableMenueListeners, IDialogActionHandler {
 	
 	public static final SOSMsgJOE	JOE_TCl_JCNodesForm_Delay							= new SOSMsgJOE("JOE_TCl_JCNodesForm_Delay");
 	public static final SOSMsgJOE	JOE_TCl_JCNodesForm_HasParams							= new SOSMsgJOE("JOE_TCl_JCNodesForm_HasParams");
@@ -117,6 +116,8 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 	private boolean				flgDoReorderStates		= false;
 	private boolean				checkParameter			= false;
 	private final Element				objJobChainDOMElement	= null;
+	
+
 	class HelpKeyListener extends KeyAdapter {
 		@Override
 		public void keyPressed(final KeyEvent e) {
@@ -672,7 +673,7 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 		DialogAdapter objDA = new DialogAdapter(new Shell(JOEMainWindow.getSShell()), intDialogStyle);
 		JobChainNodeComposite objNodeC = new JobChainNodeComposite(objDataProvider, enuMode);
 		// TODO callback for new and edit: Interface IEditCallback
-		//		objDA.setEditCallback(this);
+				objDA.setDialogActionHandler(this);
 		objDA.open(objNodeC);
 	}
 
@@ -1033,5 +1034,35 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 	@Override
 	protected void applyInputFields(final boolean flgT, final enuOperationMode OperationMode) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override public void doCancel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override public void doEdit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override public void doNew() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override public void doDelete() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override public void doClose() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override public void setDialogActionHandler(IDialogActionHandler pobjDialogActionHandler) {
+		// TODO Auto-generated method stub
+		
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

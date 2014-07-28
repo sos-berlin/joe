@@ -77,6 +77,7 @@ import com.sos.scheduler.model.objects.JSObjJobChain;
 import com.sos.scheduler.model.objects.JSObjOrder;
 import com.sos.scheduler.model.objects.JSObjRunTime;
 import com.sos.scheduler.model.objects.Job;
+import com.sos.scheduler.model.objects.JobChain.JobChainNode;
 
 /*
  * jedes Treeitem muss folgende daten speichern, um die kopie und paste Funktion vollständig zu gewährleisten:
@@ -136,19 +137,19 @@ public class SchedulerListener {
 		objSchedulerDom = dom;
 	}
 
-//	public void treeFillMain1(final Tree tree, final Composite c, final int type_) {
-//		final String conMethodName = conClassName + "::treeFillMain";
-//		logger.debug(SOSJOEMessageCodes.JOE_M_0047.params(conMethodName));
-//		type = type_;
-//		if (objSchedulerDom.isLifeElement()) {
-//			// TODO needed?
-//			// treeFillMainForLifeElement(tree, c);
-//		}
-//		else {
-//			treeFillMain1(tree, c, objSchedulerHotFolder);
-//		}
-//	}
-//
+	//	public void treeFillMain1(final Tree tree, final Composite c, final int type_) {
+	//		final String conMethodName = conClassName + "::treeFillMain";
+	//		logger.debug(SOSJOEMessageCodes.JOE_M_0047.params(conMethodName));
+	//		type = type_;
+	//		if (objSchedulerDom.isLifeElement()) {
+	//			// TODO needed?
+	//			// treeFillMainForLifeElement(tree, c);
+	//		}
+	//		else {
+	//			treeFillMain1(tree, c, objSchedulerHotFolder);
+	//		}
+	//	}
+	//
 	public void treeFillMain2(final SchedulerHotFolder pobjHotFolder, final Object pobjLiveFolderTreeViewer, final Composite c) {
 		@SuppressWarnings("unused") final String conMethodName = conClassName + "::treeFillMain";
 		Display d = Display.getCurrent();
@@ -593,46 +594,45 @@ public class SchedulerListener {
 		item.setImage(getImage("parameter.gif"));
 	}
 
-//	public void createTreeNodes4HotFolderElements1(final Tree pobjTreeViewControl, final Composite c, final SchedulerHotFolder pobjHotFolder) {
-//		@SuppressWarnings("unused") final String conMethodName = conClassName + "::treeFillMainForLifeElement";
-//		logger.debug(String.format("Enter procedure %1$s ", conMethodName));
-//		objSchedulerHotFolder = pobjHotFolder;
-//		pobjTreeViewControl.removeAll();
-//		TreeItem item = new TreeItem(pobjTreeViewControl, SWT.NONE);
-//		String name = "";
-//		for (Object objHotFolderObject : pobjHotFolder.getHotFolderFileList().getSortedFileList()) {
-//			// logger.info(String.format("File '%1$s' is an instance of '%2$s'", objHotFolderObject.getHotFolderSrc().getName(),
-//			if (objHotFolderObject instanceof SchedulerHotFolder) {
-//				SchedulerHotFolder objSubFolder = (SchedulerHotFolder) objHotFolderObject;
-//				logger.info(String.format("... load %1$s", objSubFolder.getHotFolderSrc().getName()));
-//				item = new TreeItem(pobjTreeViewControl, SWT.NONE);
-//				item.setData(new TreeData(-1, objSubFolder, "Hallo"));
-//				item.setText(objSubFolder.getHotFolderSrc().getName());
-//				item.setExpanded(false);
-//			}
-//			else
-//				if (objHotFolderObject instanceof JSObjJob) {
-//					JSObjJob objJob = (JSObjJob) objHotFolderObject;
-//					name = objJob.getHotFolderSrc().getName();
-//					name = name.substring(0, name.indexOf(JSObjJob.fileNameExtension));
-//					item.setText(objJob.getName() + " - " + objJob.getTitle());
-//					item.setData(new TreeData(JOEConstants.JOB, objJob, Options.getHelpURL("job")));
-//					item.setData(conItemDataKeyKEY, "job");
-//					item.setData(conItemDataKeyCOPY_ELEMENT, objJob);
-//					setColorOfJobTreeItem(objJob, item);
-//					createSubTreeNodes4Job(pobjHotFolder, item, objJob, false);
-//					item.setExpanded(true);
-//				}
-//				else
-//					if (objHotFolderObject instanceof JSObjJobChain) {
-//						JSObjJobChain objJobChain = (JSObjJobChain) objHotFolderObject;
-//						continue;
-//					}
-//		}
-//		pobjTreeViewControl.setSelection(new TreeItem[] { pobjTreeViewControl.getItem(0) });
-//		treeSelection(pobjTreeViewControl, c);
-//	}
-
+	//	public void createTreeNodes4HotFolderElements1(final Tree pobjTreeViewControl, final Composite c, final SchedulerHotFolder pobjHotFolder) {
+	//		@SuppressWarnings("unused") final String conMethodName = conClassName + "::treeFillMainForLifeElement";
+	//		logger.debug(String.format("Enter procedure %1$s ", conMethodName));
+	//		objSchedulerHotFolder = pobjHotFolder;
+	//		pobjTreeViewControl.removeAll();
+	//		TreeItem item = new TreeItem(pobjTreeViewControl, SWT.NONE);
+	//		String name = "";
+	//		for (Object objHotFolderObject : pobjHotFolder.getHotFolderFileList().getSortedFileList()) {
+	//			// logger.info(String.format("File '%1$s' is an instance of '%2$s'", objHotFolderObject.getHotFolderSrc().getName(),
+	//			if (objHotFolderObject instanceof SchedulerHotFolder) {
+	//				SchedulerHotFolder objSubFolder = (SchedulerHotFolder) objHotFolderObject;
+	//				logger.info(String.format("... load %1$s", objSubFolder.getHotFolderSrc().getName()));
+	//				item = new TreeItem(pobjTreeViewControl, SWT.NONE);
+	//				item.setData(new TreeData(-1, objSubFolder, "Hallo"));
+	//				item.setText(objSubFolder.getHotFolderSrc().getName());
+	//				item.setExpanded(false);
+	//			}
+	//			else
+	//				if (objHotFolderObject instanceof JSObjJob) {
+	//					JSObjJob objJob = (JSObjJob) objHotFolderObject;
+	//					name = objJob.getHotFolderSrc().getName();
+	//					name = name.substring(0, name.indexOf(JSObjJob.fileNameExtension));
+	//					item.setText(objJob.getName() + " - " + objJob.getTitle());
+	//					item.setData(new TreeData(JOEConstants.JOB, objJob, Options.getHelpURL("job")));
+	//					item.setData(conItemDataKeyKEY, "job");
+	//					item.setData(conItemDataKeyCOPY_ELEMENT, objJob);
+	//					setColorOfJobTreeItem(objJob, item);
+	//					createSubTreeNodes4Job(pobjHotFolder, item, objJob, false);
+	//					item.setExpanded(true);
+	//				}
+	//				else
+	//					if (objHotFolderObject instanceof JSObjJobChain) {
+	//						JSObjJobChain objJobChain = (JSObjJobChain) objHotFolderObject;
+	//						continue;
+	//					}
+	//		}
+	//		pobjTreeViewControl.setSelection(new TreeItem[] { pobjTreeViewControl.getItem(0) });
+	//		treeSelection(pobjTreeViewControl, c);
+	//	}
 	//	public void treeFillMain(final Tree tree, final Composite c) {
 	//		Display d = Display.getCurrent();
 	//		objTree = tree;
@@ -1470,50 +1470,77 @@ public class SchedulerListener {
 		}
 	}
 
-	private Element getJobChains(final SchedulerDom pobjSchedulerDom) {
-		Element jobChains = objSchedulerDom.getRoot().getChild("config").getChild("job_chains");
-		return jobChains;
-	}
-
+	//	private Element getJobChains(final SchedulerDom pobjSchedulerDom) {
+	//		Element jobChains = objSchedulerDom.getRoot().getChild("config").getChild("job_chains");
+	//		return jobChains;
+	//	}
+	//
 	public void createTreeNodes4JobChains(final TreeItem pobjParentTreeNode, final SchedulerHotFolder pobjHotFolder) {
 		@SuppressWarnings("unused") final String conMethodName = conClassName + "::treeFillJobs";
 		pobjParentTreeNode.removeAll();
 		int intSize = pobjHotFolder.getHotFolderFileList().getJobChainList().size();
 		if (intSize > 0) {
 			for (JSObjJobChain objJobChain : pobjHotFolder.getHotFolderFileList().getJobChainList()) {
-				TreeItem item = new TreeItem(pobjParentTreeNode, SWT.NONE);
-				setItemData(item, JOEConstants.JOB_CHAIN, objJobChain, "treeitem.jobchain");
-				item.setText(objJobChain.getObjectNameAndTitle());
-				item.setImage(getImage("jobchain.gif"));
+				TreeItem objJobChainTreeItem = new TreeItem(pobjParentTreeNode, SWT.NONE);
+				setItemData(objJobChainTreeItem, JOEConstants.JOB_CHAIN, objJobChain, "treeitem.jobchain");
+				objJobChainTreeItem.setText(objJobChain.getObjectNameAndTitle());
+				objJobChainTreeItem.setImage(getImage("jobchain.gif"));
 				if (objJobChain.isEnabled() == false) {
-					setDisabled(item);
+					setDisabled(objJobChainTreeItem);
 				}
 				else {
-					item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+					objJobChainTreeItem.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+					createSubTreeNodes4JobChain(pobjHotFolder, objJobChainTreeItem, objJobChain);
 				}
-				createSubTreeNodes4JobChain(pobjHotFolder, item, objJobChain);
 			}
 		}
 	}
 
 	private void createSubTreeNodes4JobChain(final SchedulerHotFolder pobjHotFolder, final TreeItem pobjParentItem, final JSObjJobChain pobjJobChain) {
 		// Job Chain Nodes
-		TreeItem iNodes = new TreeItem(pobjParentItem, SWT.NONE);
-		iNodes.setText(Messages.getLabel("treeitem.nodes"));
-		iNodes.setImage(getImage("jobchain.gif"));
-		setItemData(iNodes, JOEConstants.JOB_CHAIN_NODES, pobjJobChain, "job_chain_node");
-		// Job Chain Nested Nodes
-		TreeItem iNestedNodes = new TreeItem(pobjParentItem, SWT.NONE);
-		iNestedNodes.setText(Messages.getLabel("treeitem.nestedjobchains"));
-		iNestedNodes.setImage(getImage("jobchain.gif"));
-		setItemData(iNodes, JOEConstants.JOB_CHAIN_NESTED_NODES, pobjJobChain, "nestedjobchains");
-		if (pobjJobChain.isEnabled() == false) {
-			setDisabled(iNodes);
-			setDisabled(iNestedNodes);
+		if (pobjJobChain.isNestedJobChain()) {
+			TreeItem iNestedNodes = new TreeItem(pobjParentItem, SWT.NONE);
+			iNestedNodes.setText(Messages.getLabel("treeitem.nestedjobchains"));
+			pobjParentItem.setImage(getImage("category.gif"));
+			iNestedNodes.setImage(getImage("category.gif"));
+			setItemData(iNestedNodes, JOEConstants.JOB_CHAIN_NESTED_NODES, pobjJobChain, "nestedjobchains");
+			if (pobjJobChain.isEnabled() == false) {
+				setDisabled(iNestedNodes);
+			}
+			else {
+				iNestedNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+			}
 		}
 		else {
-			iNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
-			iNestedNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+			TreeItem iNodes = new TreeItem(pobjParentItem, SWT.NONE);
+			iNodes.setText(Messages.getLabel("treeitem.nodes"));
+			iNodes.setImage(getImage("jobchain.gif"));
+			setItemData(iNodes, JOEConstants.JOB_CHAIN_NODES, pobjJobChain, "job_chain_node");
+			// Job Chain Nested Nodes
+			if (pobjJobChain.isEnabled() == false) {
+				setDisabled(iNodes);
+			}
+			else {
+				iNodes.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+				createJobItems4JobChain(pobjHotFolder, iNodes, pobjJobChain);
+			}
+		}
+	}
+
+	private void createJobItems4JobChain(final SchedulerHotFolder pobjHotFolder, final TreeItem pobjParentItem, final JSObjJobChain pobjJobChain) {
+		for (JobChainNode objNode : pobjJobChain.getJobChainNodeList()) {
+			String strJobName = objNode.getJob();
+			JSObjJob objJob = pobjHotFolder.getJobByName(strJobName);
+			if (objJob != null) {
+				TreeItem item = new TreeItem(pobjParentItem, SWT.NONE);
+				setItemData(item, JOEConstants.JOB, objJob, "job");
+				item.setText(objJob.getJobNameAndTitle());
+				setColorOfJobTreeItem(objJob, item);
+				createSubTreeNodes4Job(pobjHotFolder, item, objJob, false);
+			}
+			else {
+				int i = 1; // just for a breakpoint
+			}
 		}
 	}
 
