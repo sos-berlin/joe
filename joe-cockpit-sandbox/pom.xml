@@ -58,7 +58,6 @@
             <!-- wird verwendet im Parser für den wizzard - jobdoc -->
             <groupId>javax.xml.parsers</groupId>
             <artifactId>jaxp-api</artifactId>
-            <version>1.4.1</version>
         </dependency>
 
 
