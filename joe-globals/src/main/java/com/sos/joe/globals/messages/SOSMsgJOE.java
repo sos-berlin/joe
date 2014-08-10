@@ -14,27 +14,25 @@ import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 
+import com.sos.dialog.classes.SOSMsgControl;
 import com.sos.dialog.components.SOSDateTime;
 import com.sos.joe.globals.options.Options;
-import com.sos.joe.globals.messages.Messages;
-import com.sos.localization.SOSMsg;
 
-import org.eclipse.swt.widgets.Text;
-
-public class SOSMsgJOE extends SOSMsg {
+public class SOSMsgJOE extends SOSMsgControl {
 
 	private static String	conClassName	= "SOSMsgJOE";
 
@@ -49,7 +47,12 @@ public class SOSMsgJOE extends SOSMsg {
 		}
 	} // public SOSMsgJOE
 
-	public Text Control(final Text pobjC) {
+	@Override
+	public SOSMsgJOE newMsg(final String pstrMessageCode) {
+		return new SOSMsgJOE (pstrMessageCode);
+	}
+
+	@Override public Text Control(final Text pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 	// Text kommt im Normalfall nicht aus einer Propertie-Datei. Deswegen ergibt es keinen Sinn	
@@ -58,7 +61,7 @@ public class SOSMsgJOE extends SOSMsg {
 		pobjC.setToolTipText(tooltip());
 		setKeyListener(pobjC);
 		pobjC.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
+			@Override public void focusGained(final FocusEvent e) {
 				pobjC.selectAll();
 				// pobjC.setBackground(new Color(SWT.BLACK));
 			}
@@ -70,7 +73,7 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public Text Control
 
-	public Label Control(final Label pobjC) {
+	@Override public Label Control(final Label pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setText(label());
@@ -79,7 +82,7 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public Label Control
 
-	public Group Control(final Group pobjC) {
+	@Override public Group Control(final Group pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setText(caption());
@@ -88,7 +91,7 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public Group Control
 
-	public Button Control(final Button pobjC) {
+	@Override public Button Control(final Button pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		
@@ -98,7 +101,7 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public Button Control
 
-	public Combo Control(final Combo pobjC) {
+	@Override public Combo Control(final Combo pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setText(caption());
@@ -107,7 +110,7 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public Combo Control
 
-	public Composite Control(final Composite pobjC) {
+	@Override public Composite Control(final Composite pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setToolTipText(tooltip());
@@ -115,7 +118,7 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public Composite Control
 	
-	public CCombo Control(final CCombo pobjC) {
+	@Override public CCombo Control(final CCombo pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setToolTipText(tooltip());
@@ -123,7 +126,7 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public CCombo Control
 
-	public TableColumn Control(final TableColumn pobjC) {
+	@Override public TableColumn Control(final TableColumn pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setText(caption());
@@ -131,7 +134,7 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public TableColumn Control
 
-	public Table Control(final Table pobjC) {
+	@Override public Table Control(final Table pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setToolTipText(tooltip());
@@ -139,14 +142,14 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public Table Control
 
-	public FileDialog Control(final FileDialog pobjC) {
+	@Override public FileDialog Control(final FileDialog pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setText(caption());
 		return pobjC;
 	} // public FileDialog Control
 
-	public Spinner Control(final Spinner pobjC) {
+	@Override public Spinner Control(final Spinner pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setToolTipText(tooltip());
@@ -154,14 +157,14 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public Spinner Control
 	
-	public MessageBox Control(final MessageBox pobjC) {
+	@Override public MessageBox Control(final MessageBox pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setMessage(this.caption());
 		return pobjC;
 	} // public MessageBox Control
 	
-	public List Control(final List pobjC) {
+	@Override public List Control(final List pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setToolTipText(tooltip());
@@ -169,7 +172,7 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public List Control
 	
-	public Tree Control(final Tree pobjC) {
+	@Override public Tree Control(final Tree pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setToolTipText(this.tooltip());
@@ -177,7 +180,7 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public Tree Control
 	
-	public Browser Control(final Browser pobjC) {
+	@Override public Browser Control(final Browser pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setText(caption());
@@ -186,7 +189,7 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public Browser Control
 	
-	public TreeColumn Control(final TreeColumn pobjC) {
+	@Override public TreeColumn Control(final TreeColumn pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setText(caption());
@@ -194,7 +197,7 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public TreeColumn Control
 	
-	public TabItem Control(final TabItem pobjC) {
+	@Override public TabItem Control(final TabItem pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setText(caption());
@@ -202,7 +205,7 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public TabItem Control
 	
-	public CTabItem Control(final CTabItem pobjC) {
+	@Override public CTabItem Control(final CTabItem pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setText(caption());
@@ -210,7 +213,7 @@ public class SOSMsgJOE extends SOSMsg {
 		return pobjC;
 	} // public CTabItem Control
 	
-	public SOSDateTime Control(final SOSDateTime pobjC) {
+	@Override public SOSDateTime Control(final SOSDateTime pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";
 		pobjC.setToolTipText(this.tooltip());
@@ -237,7 +240,7 @@ public class SOSMsgJOE extends SOSMsg {
 
 	} // private void setKeyListener
 
-	public void openHelp(String helpKey) {
+	@Override public void openHelp(String helpKey) {
 		String lang = Options.getLanguage();
 		String url = helpKey;
 		try {

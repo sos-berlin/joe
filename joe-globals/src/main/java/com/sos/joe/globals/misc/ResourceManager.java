@@ -10,6 +10,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
+import com.sos.JSHelper.Exceptions.JobSchedulerException;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 
 public class ResourceManager extends SWTResourceManager {
@@ -52,6 +53,14 @@ public class ResourceManager extends SWTResourceManager {
 		return image;
 	}
 
+	public static InputStream getInputStream4Resource (final String pstrKey) {
+		InputStream objSS = pstrKey.getClass().getResourceAsStream(pstrKey);
+		if (objSS == null) {
+			throw new JobSchedulerException("Resource not found: " + pstrKey);
+		}
+		return objSS;
+	}
+	
 	private static Image getMissingImage() {
 		Image image = new Image(Display.getCurrent(), MISSING_IMAGE_SIZE, MISSING_IMAGE_SIZE);
 		//
