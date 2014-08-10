@@ -46,6 +46,9 @@ public class DocumentationForm extends SOSJOEMessageCodes implements IEditor, ID
 		listener = new DocumentationListener(this, dom);
 	}
 
+	public DocumentationListener getDataProvider () {
+		return listener;
+	}
 	private void initialize() {
 		createSashForm();
 		setSize(new Point(724, 479));
