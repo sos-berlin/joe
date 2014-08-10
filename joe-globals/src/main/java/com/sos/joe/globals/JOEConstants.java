@@ -91,4 +91,6 @@ public class JOEConstants {
 
 	public static String	SCHEDULER_ENCODING		= "";
 	public static String	DOCUMENTATION_ENCODING	= "utf-8";
+	
+	public static String   JOE_IMAGES = "/sos/scheduler/editor/";
 }
