@@ -1,19 +1,21 @@
 package com.sos.joe.xml;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.stream.StreamSource;
 
-import org.eclipse.swt.SWT;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -29,6 +31,7 @@ import com.sos.i18n.I18NBase;
 import com.sos.i18n.annotation.I18NResourceBundle;
 import com.sos.joe.globals.interfaces.IDataChanged;
 import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.Events.ActionsDom;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
@@ -66,9 +69,10 @@ import com.sos.resources.SOSProductionResource;
 		return _orders;
 	}
 
-	public String getFileName () {
+	public String getFileName() {
 		return _filename;
 	}
+
 	public void setFilename(String filename) {
 		_filename = filename;
 		readFileLastModified();
@@ -141,23 +145,14 @@ import com.sos.resources.SOSProductionResource;
 			String[] s = new String[1];
 			s[0] = "";
 			if (this instanceof ActionsDom)
-				s[0]  = this.getClass().getClassLoader().getResource(SOSProductionResource.EVENT_SERVICE_XSD.getFullName()).toString();
-//				s[0] = getClass().getResource(Options.getActionSchema()).toString();
+				s[0] = this.getClass().getClassLoader().getResource(SOSProductionResource.EVENT_SERVICE_XSD.getFullName()).toString();
 			else
 				if (this instanceof DocumentationDom) {
-					s[0]  = this.getClass().getClassLoader().getResource(SOSProductionResource.JOB_DOC_XSD.getFullName()).toString();
-//					s[0]  = SOSProductionResource.JOB_DOC_XSD.getFullName();
-
-//					 s[0] = getClass().getResource(Options.getDocSchema()).toString();
-//					strT = Options.getDocSchema();
-//					if (strT != null) {
-//						s[0] = getClass().getResource(strT).toString();
-//					}
+					s[0] = this.getClass().getClassLoader().getResource(SOSProductionResource.JOB_DOC_XSD.getFullName()).toString();
 				}
 				else {
 					if (this instanceof SchedulerDom)
-						s[0]  = this.getClass().getClassLoader().getResource(SOSProductionResource.SCHEDULER_XSD.getFullName()).toString();
-//						s[0] = getClass().getResource(Options.getSchema()).toString();
+						s[0] = this.getClass().getClassLoader().getResource(SOSProductionResource.SCHEDULER_XSD.getFullName()).toString();
 					else
 						s[0] = "";
 				}
@@ -171,7 +166,6 @@ import com.sos.resources.SOSProductionResource;
 				new ErrorLog(strM, e);
 			}
 			catch (Exception ee) {
-				// tu nichts
 			}
 			throw new IOException("error in writeSchemaFile(). could not get schema " + strT + "\n" + e.toString());
 		}
@@ -317,27 +311,27 @@ import com.sos.resources.SOSProductionResource;
 		File tmp = null;
 		try {
 			Document doc = new Document((Element) element.clone());
-			Transformer transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(Options.getXSLT()));
-			// Transformer transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(getXSLT()));
+			String strJobDocXslt = "/com/sos/resources/xsl/scheduler_job_documentation_v2.0.xsl";  // Options.getXSLT();
+			StreamSource objSS = new StreamSource(ResourceManager.getInputStream4Resource(strJobDocXslt));
+			Transformer transformer = TransformerFactory.newInstance().newTransformer(objSS);
+			
 			JDOMSource in = new JDOMSource(doc);
 			JDOMResult out = new JDOMResult();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 			transformer.transform(in, out);
 			List result = out.getResult();
 			tmp = File.createTempFile(Options.getXSLTFilePrefix(), Options.getXSLTFileSuffix());
 			tmp.deleteOnExit();
 			XMLOutputter outp = new XMLOutputter(Format.getPrettyFormat());
-			outp.output(result, new FileWriter(tmp));
+//			outp.output(result, new FileWriter(tmp));
+			FileOutputStream objFOP = new FileOutputStream(tmp);
+			OutputStreamWriter objOSW = new OutputStreamWriter(objFOP, Charset.forName("UTF-8"));
+			outp.output(result, objOSW);
 			return tmp.getAbsolutePath();
 		}
 		catch (Exception e) {
-			// System.err.println("error in DomParser.transform: " + (tmp != null ? tmp.getCanonicalPath() : "")+ e.getMessage());
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			ErrorLog.message("error in DomParser.transform: " + (tmp != null ? tmp.getCanonicalPath() : "") + e.getMessage(), SWT.ICON_WARNING | SWT.OK);
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 		return "";
 	}
