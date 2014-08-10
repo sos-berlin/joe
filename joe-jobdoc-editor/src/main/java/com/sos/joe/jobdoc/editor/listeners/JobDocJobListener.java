@@ -6,12 +6,13 @@ import org.eclipse.swt.program.Program;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 
+import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class JobDocJobListener extends JobDocBaseListener<DocumentationDom> {
-	private final Element					_job;
+	private final Element			_job;
 	private static final String[]	_orderValues	= { "yes", "no", "both" };
 	private static final String[]	_tasksValues	= { "", "1", "unbounded" };
 
@@ -19,12 +20,11 @@ public class JobDocJobListener extends JobDocBaseListener<DocumentationDom> {
 		_dom = dom;
 		_job = job;
 		initElement(job);
-	} 
+	}
 
 	public Element getJob() {
 		return _job;
 	}
-
 
 	public File writeToFile() throws IOException, JDOMException {
 		File tmp = File.createTempFile(Options.getXSLTFilePrefix(), Options.getXSLTFileSuffix());
@@ -38,16 +38,17 @@ public class JobDocJobListener extends JobDocBaseListener<DocumentationDom> {
 		if (element != null) {
 			try {
 				String filename = _dom.transform(element);
-				Program prog = Program.findProgram("html");
-				if (prog != null)
-					prog.execute(filename);
-				else {
-					Runtime.getRuntime().exec(Options.getBrowserExec(filename, null));
+				if (filename.length() > 0) {
+					Program prog = Program.findProgram("html");
+					if (prog != null)
+						prog.execute(filename);
+					else {
+						Runtime.getRuntime().exec(Options.getBrowserExec(filename, null));
+					}
 				}
 			}
 			catch (Exception ex) {
-				ex.printStackTrace();
-				//message("Error: " + ex.getMessage(), SWT.ICON_ERROR | SWT.OK);
+				new ErrorLog("error in preview.", ex);
 			}
 		}
 	}
@@ -82,14 +83,13 @@ public class JobDocJobListener extends JobDocBaseListener<DocumentationDom> {
 		return order == null ? false : order.equalsIgnoreCase("yes");
 	}
 
-
-//	public String getOrder() {
-//		String order = getAttributeValue("order", _job);
-//		if (order.length() == 0)
-//			Utils.setAttribute("order", _orderValues[0], _job);
-//		return order.length() > 0 ? order : _orderValues[0];
-//	}
-//
+	//	public String getOrder() {
+	//		String order = getAttributeValue("order", _job);
+	//		if (order.length() == 0)
+	//			Utils.setAttribute("order", _orderValues[0], _job);
+	//		return order.length() > 0 ? order : _orderValues[0];
+	//	}
+	//
 	public void setOrder(final String order) {
 		Utils.setAttribute("order", order, _job, _dom);
 	}

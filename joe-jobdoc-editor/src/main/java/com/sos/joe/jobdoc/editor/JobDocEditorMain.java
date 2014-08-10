@@ -1,17 +1,20 @@
 package com.sos.joe.jobdoc.editor;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
+import sos.util.SOSClassUtil;
+
 import com.sos.dialog.SOSSplashScreen;
 import com.sos.i18n.annotation.I18NResourceBundle;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.options.Options;
-import org.apache.log4j.Logger;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import sos.util.SOSClassUtil;
-
-import java.io.InputStream;
-import java.lang.reflect.Method;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class JobDocEditorMain {
 	private final static String								conSVNVersion	= "$Id: Editor.java 25898 2014-06-20 14:36:54Z kb $";
@@ -21,7 +24,7 @@ import java.lang.reflect.Method;
 	private static MainWindow								window			= null;
 	private static Display									display			= null;
 
-	public static void main(final String[] args) {
+	public static void main1(final String[] args) {
 		try {
 			display = Display.getDefault();
 			window = new MainWindow();
@@ -66,6 +69,25 @@ import java.lang.reflect.Method;
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * Launch the application.
+	 * @param args
+	 */
+	public static void main(final String args[]) {
+		try {
+			Application window = new Application();
+			BasicConfigurator.configure();
+
+			window.setBlockOnOpen(true);
+			window.open();
+			Display.getCurrent().dispose();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	public static void openApplicationMainWnd(final Shell shell) {
 		MainWindow.getSShell().open();
