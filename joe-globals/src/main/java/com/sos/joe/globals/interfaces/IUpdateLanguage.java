@@ -4,7 +4,9 @@
  */
 package com.sos.joe.globals.interfaces;
 
+@Deprecated
 public interface IUpdateLanguage {
 
+	@Deprecated
     public void setToolTipText();
 }
