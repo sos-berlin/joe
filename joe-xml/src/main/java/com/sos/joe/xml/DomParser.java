@@ -1,5 +1,7 @@
 package com.sos.joe.xml;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -10,10 +12,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
 import org.jdom.Attribute;
@@ -27,11 +31,12 @@ import org.jdom.output.XMLOutputter;
 import org.jdom.transform.JDOMResult;
 import org.jdom.transform.JDOMSource;
 
+import com.sos.JSHelper.io.Files.JSFile;
+import com.sos.JSHelper.io.Files.JSFolder;
 import com.sos.i18n.I18NBase;
 import com.sos.i18n.annotation.I18NResourceBundle;
 import com.sos.joe.globals.interfaces.IDataChanged;
 import com.sos.joe.globals.messages.ErrorLog;
-import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.Events.ActionsDom;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
@@ -55,6 +60,48 @@ import com.sos.resources.SOSProductionResource;
 	/** wann wurde die Konfigurationsdatei zuletzt geändert. Dieser parameter soll dazu dienen, mitzubekommen, ob die 
 	 * Konfigurationsdatei von einem anderen Process verändert wurde*/
 	private long							_lastModifiedFile						= 0;
+	class ClasspathResourceURIResolver implements URIResolver {
+		private String	strBasePath	= "";
+
+		public ClasspathResourceURIResolver(String strPath) {
+			super();
+			strBasePath = strPath;
+		}
+
+		@Override public Source resolve(String href, String base) throws TransformerException {
+			String strH = href;
+			StreamSource objSS = null;
+			if (strH.equalsIgnoreCase("jobdoc.languages.xml")) {
+				objSS = new StreamSource(this.getClass().getResourceAsStream("/com/sos/resources/xsl/" + href));
+			}
+			else {
+				if (strH.startsWith("../")) {
+					strH = strH.substring(3);
+				}
+				else {
+					if (strH.startsWith("./")) {
+						strH = strH.substring(2);
+						if (strH.startsWith("param_")) {
+							strH = "params/" + strH;
+						}
+					}
+				}
+				JSFile objF = new JSFile (strBasePath, strH);
+				if (objF.exists()) {
+					try {
+						objSS = new StreamSource(new FileInputStream(objF));
+					}
+					catch (FileNotFoundException e) {
+					}
+				}
+				else {
+					JSFolder objFolder = new JSFolder(strBasePath);
+					// hier jetzt die Datei im FolderBaum suchen und finden
+				}
+			}
+			return objSS;
+		}
+	}
 
 	public DomParser(String[] schemaTmp, String[] schemaResource, String xslt) {
 		super("JOEMessages"); // , Options.getLanguage());
@@ -307,16 +354,45 @@ import com.sos.resources.SOSProductionResource;
 		}
 	}
 
+	public String transform(Element element, final String pstrFileName) {
+		String strUserDir = System.getProperty("user.dir");
+		// just to make it possible to access the xincluded files
+		// TODO Option BaseDir (für alle inludes), damit auch Files aus anderen Verzeichnissen verarbeitet werden können
+		String strPath = new File(pstrFileName).getParent();
+		String strR = "";
+		if (strPath != null) {
+			System.setProperty("user.dir", strPath);  // hat keinen Effekt auf die Transformation ?
+		}
+		try {
+			objUriResolver = new ClasspathResourceURIResolver(strPath);
+			strR = transform(element);
+		}
+		catch (TransformerFactoryConfigurationError | TransformerException | IOException e) {
+		}
+		finally {
+			System.setProperty("user.dir", strUserDir);
+		}
+		return strR;
+	}
+	private ClasspathResourceURIResolver	objUriResolver	= null;
+
 	public String transform(Element element) throws TransformerFactoryConfigurationError, TransformerException, IOException {
 		File tmp = null;
 		try {
 			Document doc = new Document((Element) element.clone());
-			String strJobDocXslt = "/com/sos/resources/xsl/scheduler_job_documentation_v2.0.xsl";  // Options.getXSLT();
-			StreamSource objSS = new StreamSource(ResourceManager.getInputStream4Resource(strJobDocXslt));
+			TransformErrorListener objEL = new TransformErrorListener();
+			String strJobDocXslt = SOSProductionResource.JOB_DOC_XSLT.getFullName();
+			//			String strJobDocXslt = "/com/sos/resources/xsl/scheduler_job_documentation_v1.1.xsl"; // Options.getXSLT();
+			//			StreamSource objSS = new StreamSource(ResourceManager.getInputStream4Resource("/" + strJobDocXslt));
+			StreamSource objSS = SOSProductionResource.JOB_DOC_XSLT.getAsStreamSource();
 			Transformer transformer = TransformerFactory.newInstance().newTransformer(objSS);
-			
+			transformer.setErrorListener(objEL);
+			if (objUriResolver != null) {
+//				transformer.setURIResolver(objUriResolver);
+			}
 			JDOMSource in = new JDOMSource(doc);
 			JDOMResult out = new JDOMResult();
+			// see: http://docs.oracle.com/javase/7/docs/api/javax/xml/transform/OutputKeys.html
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 			transformer.transform(in, out);
@@ -324,10 +400,12 @@ import com.sos.resources.SOSProductionResource;
 			tmp = File.createTempFile(Options.getXSLTFilePrefix(), Options.getXSLTFileSuffix());
 			tmp.deleteOnExit();
 			XMLOutputter outp = new XMLOutputter(Format.getPrettyFormat());
-//			outp.output(result, new FileWriter(tmp));
 			FileOutputStream objFOP = new FileOutputStream(tmp);
 			OutputStreamWriter objOSW = new OutputStreamWriter(objFOP, Charset.forName("UTF-8"));
 			outp.output(result, objOSW);
+			if (objEL.isBufferNotEmpty() == true) {
+//				new ErrorLog("Transformer reported some warnings/errors:\n\n" + objEL.getBuffer());
+			}
 			return tmp.getAbsolutePath();
 		}
 		catch (Exception e) {
