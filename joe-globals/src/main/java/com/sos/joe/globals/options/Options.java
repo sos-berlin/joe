@@ -375,7 +375,7 @@ import com.sos.resources.SOSProductionResource;
 	}
 
 	public static String getXSLTFileSuffix() {
-		return getProperty("editor.xml.xslt.file.suffix", "html");
+		return getProperty("editor.xml.xslt.file.suffix", ".html");
 	}
 
 	public static String getBackupDir() {
