@@ -44,12 +44,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 
 import com.sos.dialog.BrowserViewForm;
 import com.sos.dialog.Globals;
 import com.sos.dialog.classes.SOSCTabFolder;
 import com.sos.dialog.classes.SOSCTabItem;
 import com.sos.dialog.classes.WindowsSaver;
+import com.sos.dialog.components.TextArea;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSMsgJOE;
 import com.sos.joe.jobdoc.editor.TreeViewEntry.enuTreeItemType;
@@ -73,54 +75,40 @@ public class Application extends ApplicationWindow {
 		addStatusLine();
 	}
 
-	private void initGlobals (Display display) {
+	private void initGlobals(Display display) {
 		Globals.MsgHandler = new SOSMsgJOE("init");
-
-		Globals.stFontRegistry.put("button-text",
-				new FontData[] { new FontData("Arial", 9, SWT.BOLD) });
-		Globals.stFontRegistry.put("code", new FontData[] { new FontData(
-				"Courier New", 10, SWT.NORMAL) });
-		Globals.stFontRegistry.put("text", new FontData[] { new FontData(
-				"Arial", 10, SWT.NORMAL) });
-		Globals.stFontRegistry.put("tabitem-text",
-				new FontData[] { new FontData("", 9, SWT.NORMAL) });
-
-		Globals.stColorRegistry.put("IncludedOption",
-				display.getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW).getRGB());
-		Globals.stColorRegistry.put("MandatoryFieldColor", display
-				.getSystemColor(SWT.COLOR_BLUE).getRGB());
-		Globals.stColorRegistry.put("Color4FieldHasFocus", display
-				.getSystemColor(SWT.COLOR_GREEN).getRGB());
-
+		Globals.stFontRegistry.put("button-text", new FontData[] { new FontData("Arial", 9, SWT.BOLD) });
+		Globals.stFontRegistry.put("code", new FontData[] { new FontData("Courier New", 12, SWT.NORMAL) });
+		Globals.stFontRegistry.put("text", new FontData[] { new FontData("Arial", 10, SWT.NORMAL) });
+		Globals.stFontRegistry.put("tabitem-text", new FontData[] { new FontData("", 9, SWT.NORMAL) });
+		Globals.stColorRegistry.put("IncludedOption", display.getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW).getRGB());
+		Globals.stColorRegistry.put("MandatoryFieldColor", display.getSystemColor(SWT.COLOR_BLUE).getRGB());
+		Globals.stColorRegistry.put("Color4FieldHasFocus", display.getSystemColor(SWT.COLOR_GREEN).getRGB());
 		// Colorschema
-
-		Globals.stColorRegistry.put("FieldBackGround", new RGB(220, 249, 0)); // var.
+//		Globals.stColorRegistry.put("FieldBackGround", new RGB(220, 249, 0)); // var.
+		Globals.stColorRegistry.put("FieldBackGround", new RGB(242, 247, 247)); // var.
 																				// 1
 																				// =
 																				// #DCF900
 																				// =
 																				// rgb(220,249,0)
-		Globals.stColorRegistry
-				.put("Color4FieldHasFocus", new RGB(124, 231, 0)); // var. 1 =
-																	// #7CE700 =
-																	// rgb(124,231,0)
+		Globals.stColorRegistry.put("Color4FieldHasFocus", new RGB(124, 231, 0)); // var. 1 =
+																					// #7CE700 =
+																					// rgb(124,231,0)
 		Globals.stColorRegistry.put("Color4FieldInError", new RGB(255, 225, 0)); // var.
 																					// 1
 																					// =
 																					// #FFE100
 																					// =
 																					// rgb(255,225,0)
-
 		// Globals.stColorRegistry.put("CompositeBackGround", new
 		// RGB(236,252,113)); // var. 5 = #ECFC71 = rgb(236,252,113)
 		// var. 5 = #FFFFB0 = rgb(255,255,176)
-		Globals.stColorRegistry.put("CompositeBackGround", new RGB(255, 255,
-				176)); //
-
+		Globals.stColorRegistry.put("CompositeBackGround", new RGB(242, 247, 247)); //
 		Globals.setApplicationWindow(this);
-//		Globals.MsgHandler = new JADEMsg("init");
-
+		//		Globals.MsgHandler = new JADEMsg("init");
 	}
+
 	/**
 	 * Create contents of the application window.
 	 * @param parent
@@ -128,12 +116,9 @@ public class Application extends ApplicationWindow {
 	@Override protected Control createContents(final Composite parent) {
 		Display display = parent.getDisplay();
 		assert display != null;
-
 		initGlobals(display);
-		
 		final Shell shell = this.getShell();
 		ErrorLog.setSShell(shell);
-
 		objPersistenceStore = new WindowsSaver(this.getClass(), shell, 940, 600);
 		objPersistenceStore.restoreWindowLocation();
 		parent.addDisposeListener(new DisposeListener() {
@@ -155,7 +140,6 @@ public class Application extends ApplicationWindow {
 		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		sashForm.setSashWidth(6);
 		sashForm.setBounds(7, 0, 0, 0);
-		
 		//
 		TreeViewer treeViewer = new TreeViewer(sashForm, SWT.BORDER);
 		treeViewer.addTreeListener(new ITreeViewerListener() {
@@ -188,12 +172,12 @@ public class Application extends ApplicationWindow {
 		FillTree(treeViewer);
 		tabFolder = new SOSCTabFolder(sashForm, SWT.BORDER);
 		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-//		sashForm.setWeights(new int[] { 30, 70 });
+		//		sashForm.setWeights(new int[] { 30, 70 });
 		return container;
 	}
 	//	private final String	strBaseDir	= "C:\\Program Files\\sos-berlin.com\\jobscheduler\\scheduler#4444\\scheduler_data\\jobs";
 	private final String		strBaseDir	= "R:/java.sources/trunk/products/jobscheduler/sos-scheduler/src/main/java/sos/scheduler/jobdoc";
-	private SOSCTabFolder	tabFolder	= null;
+	private SOSCTabFolder		tabFolder	= null;
 	private static MainWindow	window		= null;
 	private static Display		display		= null;
 
@@ -202,46 +186,41 @@ public class Application extends ApplicationWindow {
 		openDocumentation(tabFolder, strFileName);
 	}
 
-	private void openDocumentation(Composite objComposite, final String filename) {
+	private void openDocumentation(Composite objComposite, final String pstrFileName2Open) {
 		try {
-			
 			final SOSCTabFolder objTabFolder = new SOSCTabFolder(objComposite, SWT.BOTTOM);
 			objTabFolder.ItemsHasClose = false;
 			SOSCTabItem objDesignTab = objTabFolder.getTabItem("JobDoc.Design");
 			final SOSCTabItem objFormattedTab = objTabFolder.getTabItem("JobDoc.Format");
-			SOSCTabItem objXMLTab = objTabFolder.getTabItem("JobDoc.XML");
-			
-			newItem(objTabFolder, filename);
-
+			final SOSCTabItem objXMLTab = objTabFolder.getTabItem("JobDoc.XML");
+			newItem(objTabFolder, pstrFileName2Open);
 			final DocumentationForm objJobDocForm = new DocumentationForm(objTabFolder, SWT.NONE);
-			if (objJobDocForm.open(filename, filelist)) {
+			if (objJobDocForm.open(pstrFileName2Open, filelist)) {
 				objDesignTab.setControl(objJobDocForm);
-
 				// CTabItem tab = newItem(doc, doc.getFilename());
-//				newItem(objJobDocForm, objJobDocForm.getFilename());
+				//				newItem(objJobDocForm, objJobDocForm.getFilename());
 				// tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
 			}
 			else
 				return;
-			
 			//
 			objTabFolder.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent event) {
 					logger.debug("CTabFolder Item selected");
 					CTabItem objSelectedItem = objTabFolder.getSelection();
+//					TreeViewEntry objTVE = (TreeViewEntry) objSelectedItem.getData();
 					String strKey = (String) objSelectedItem.getData("key");
+					DocumentationDom objDom = objJobDocForm.getDom();
+					Element element = objDom.getRoot();
 					switch (strKey) {
 						case "JobDoc.Design":
-							
 							break;
 						case "JobDoc.Format":
-							DocumentationDom objDom = objJobDocForm.getDom();
-							Element element = objDom.getRoot();
 							if (element != null) {
 								try {
-									String filename = objDom.transform(element);
+									String filename = objDom.transform(element, pstrFileName2Open);
 									if (filename.length() > 0) {
-										URL objUrl = new File(filename).toURL();
+										URL objUrl = new File(filename).toURI().toURL();
 										BrowserViewForm objBrowser = new BrowserViewForm(objTabFolder, SWT.NONE, objUrl.toString());
 										objFormattedTab.setControl(objBrowser.getBrowser());
 									}
@@ -250,10 +229,19 @@ public class Application extends ApplicationWindow {
 									new ErrorLog("error in preview.", ex);
 								}
 							}
-
 							break;
 						case "JobDoc.XML":
-							
+							TextArea objTA = new TextArea(objTabFolder);
+							objTA.setFormHandler(objPersistenceStore);
+							try {
+								String strXML = objDom.getXML(element);
+								objTA.setText(strXML);
+								objXMLTab.setControl(objTA);
+								objTA.refreshContent();
+							}
+							catch (JDOMException e) {
+								new ErrorLog("error in getxml.", e);
+							}
 							break;
 						default:
 							break;
@@ -279,10 +267,10 @@ public class Application extends ApplicationWindow {
 		objTabITem.setControl(control);
 		tabFolder.setSelection(tabFolder.indexOf(objTabITem));
 		//			tab.setData(new TabData(filename, strTitleText));
-//		TreeViewItem t = (TreeViewItem) objTabITem.getData();
-//		t.caption = filename;
+		//		TreeViewItem t = (TreeViewItem) objTabITem.getData();
+		//		t.caption = filename;
 		objTabITem.setText(filename);
-//		filelist.add(filename);
+		//		filelist.add(filename);
 		return objTabITem;
 	}
 

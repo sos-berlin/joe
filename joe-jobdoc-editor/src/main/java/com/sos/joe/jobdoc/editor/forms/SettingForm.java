@@ -1,7 +1,12 @@
 package com.sos.joe.jobdoc.editor.forms;
+import static com.sos.dialog.Globals.MsgHandler;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -16,12 +21,12 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import com.sos.joe.xml.Utils;
-
 import com.sos.joe.jobdoc.editor.listeners.DocumentationListener;
 import com.sos.joe.jobdoc.editor.listeners.SettingListener;
+import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
- 
+
+
 public class SettingForm extends JobDocBaseForm <SettingListener> {
 	private Group								group1		= null;
 	@SuppressWarnings("unused") private Label	label6		= null;
@@ -77,76 +82,76 @@ public class SettingForm extends JobDocBaseForm <SettingListener> {
 		GridData gridData11 = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
 		GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
 		GridLayout gridLayout1 = new GridLayout(6, false);
-		group1 = JOE_G_SettingForm_Settings.Control(new Group(this, SWT.NONE));
+		group1 = MsgHandler.newMsg("JOE_G_SettingForm_Settings").Control(new Group(this, SWT.NONE));
 		group1.setLayout(gridLayout1); // Generated
-		label6 = JOE_L_Name.Control(new Label(group1, SWT.NONE));
-		tName = JOE_T_SettingForm_Name.Control(new Text(group1, SWT.BORDER));
+		label6 = MsgHandler.newMsg("JOE_L_Name").Control(new Label(group1, SWT.NONE));
+		tName = MsgHandler.newMsg("JOE_T_SettingForm_Name").Control(new Text(group1, SWT.BORDER));
 		tName.setLayoutData(gridData3); // Generated
-		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+		tName.addModifyListener(new ModifyListener() {
+			@Override public void modifyText(ModifyEvent e) {
 				applySettingStatus();
 			}
 		});
-		bApply = JOE_B_SettingForm_Apply.Control(new Button(group1, SWT.NONE));
+		bApply = MsgHandler.newMsg("JOE_B_SettingForm_Apply").Control(new Button(group1, SWT.NONE));
 		bApply.setLayoutData(gridData); // Generated
-		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		bApply.addSelectionListener(new SelectionAdapter() {
+			@Override public void widgetSelected(SelectionEvent e) {
 				applySetting();
 			}
 		});
-		label7 = JOE_L_SettingForm_DefaultValue.Control(new Label(group1, SWT.NONE));
-		tDefault = JOE_T_SettingForm_DefaultValue.Control(new Text(group1, SWT.BORDER));
+		label7 = MsgHandler.newMsg("JOE_L_SettingForm_DefaultValue").Control(new Label(group1, SWT.NONE));
+		tDefault = MsgHandler.newMsg("JOE_T_SettingForm_DefaultValue").Control(new Text(group1, SWT.BORDER));
 		tDefault.setLayoutData(gridData11); // Generated
-		tDefault.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+		tDefault.addModifyListener(new ModifyListener() {
+			@Override public void modifyText(ModifyEvent e) {
 				applySettingStatus();
 			}
 		});
-		label13 = JOE_L_SettingForm_Type.Control(new Label(group1, SWT.NONE));
+		label13 = MsgHandler.newMsg("JOE_L_SettingForm_Type").Control(new Label(group1, SWT.NONE));
 		createCType();
-		label9 = JOE_L_SettingForm_Reference.Control(new Label(group1, SWT.NONE));
+		label9 = MsgHandler.newMsg("JOE_L_SettingForm_Reference").Control(new Label(group1, SWT.NONE));
 		createCReference();
-		label8 = JOE_L_SettingForm_ID.Control(new Label(group1, SWT.NONE));
-		tID = JOE_T_SettingForm_ID.Control(new Text(group1, SWT.BORDER));
+		label8 = MsgHandler.newMsg("JOE_L_SettingForm_ID").Control(new Label(group1, SWT.NONE));
+		tID = MsgHandler.newMsg("JOE_T_SettingForm_ID").Control(new Text(group1, SWT.BORDER));
 		tID.setLayoutData(gridData12); // Generated
-		tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+		tID.addModifyListener(new ModifyListener() {
+			@Override public void modifyText(ModifyEvent e) {
 				applySettingStatus();
 			}
 		});
-		label10 = JOE_L_SettingForm_Required.Control(new Label(group1, SWT.NONE));
-		cRequired = JOE_B_SettingForm_Required.Control(new Button(group1, SWT.CHECK));
-		cRequired.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		label10 = MsgHandler.newMsg("JOE_L_SettingForm_Required").Control(new Label(group1, SWT.NONE));
+		cRequired = MsgHandler.newMsg("JOE_B_SettingForm_Required").Control(new Button(group1, SWT.CHECK));
+		cRequired.addSelectionListener(new SelectionAdapter() {
+			@Override public void widgetSelected(SelectionEvent e) {
 				applySettingStatus();
 			}
 		});
-		cRequired.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		cRequired.addSelectionListener(new SelectionAdapter() {
+			@Override public void widgetSelected(SelectionEvent e) {
 				applySettingStatus();
 			}
 		});
-		bNotes = JOE_B_SettingForm_Notes.Control(new Button(group1, SWT.NONE));
+		bNotes = MsgHandler.newMsg("JOE_B_SettingForm_Notes").Control(new Button(group1, SWT.NONE));
 		bNotes.setLayoutData(gridData14); // Generated
-		bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		bNotes.addSelectionListener(new SelectionAdapter() {
+			@Override public void widgetSelected(SelectionEvent e) {
 				//                String tip = Messages.getTooltip("doc.note.text.setting");
 				String tip = "";
 				//                DocumentationForm.openNoteDialog(dom, listener.getSettingElement(), "note", tip, true, !listener
 				//                        .isNewSetting(),"Settings Note");
 				DocumentationForm.openNoteDialog(dom, listener.getSettingElement(), "note", tip, true, !listener.isNewSetting(),
-						JOE_B_SettingForm_Notes.label());
+						MsgHandler.newMsg("JOE_B_SettingForm_Notes").label());
 			}
 		});
 		label = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label.setText("Label"); // Generated
 		label.setLayoutData(gridData1); // Generated
-		tSettings = JOE_Tbl_SettingForm_Settings.Control(new Table(group1, SWT.BORDER));
+		tSettings = MsgHandler.newMsg("JOE_Tbl_SettingForm_Settings").Control(new Table(group1, SWT.BORDER));
 		tSettings.setHeaderVisible(true); // Generated
 		tSettings.setLayoutData(gridData2); // Generated
 		tSettings.setLinesVisible(true); // Generated
-		tSettings.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		tSettings.addSelectionListener(new SelectionAdapter() {
+			@Override public void widgetSelected(SelectionEvent e) {
 				if (tSettings.getSelectionCount() > 0) {
 					if (listener.selectSetting(tSettings.getSelectionIndex())) {
 						setSettingStatus(true);
@@ -155,22 +160,22 @@ public class SettingForm extends JobDocBaseForm <SettingListener> {
 				}
 			}
 		});
-		TableColumn tableColumn = JOE_TCl_SettingForm_Name.Control(new TableColumn(tSettings, SWT.NONE));
+		TableColumn tableColumn = MsgHandler.newMsg("JOE_TCl_SettingForm_Name").Control(new TableColumn(tSettings, SWT.NONE));
 		tableColumn.setWidth(150); // Generated
-		TableColumn tableColumn31 = JOE_TCl_SettingForm_Default.Control(new TableColumn(tSettings, SWT.NONE));
+		TableColumn tableColumn31 = MsgHandler.newMsg("JOE_TCl_SettingForm_Default").Control(new TableColumn(tSettings, SWT.NONE));
 		tableColumn31.setWidth(120); // Generated
-		TableColumn tableColumn3 = JOE_TCl_SettingForm_Type.Control(new TableColumn(tSettings, SWT.NONE));
+		TableColumn tableColumn3 = MsgHandler.newMsg("JOE_TCl_SettingForm_Type").Control(new TableColumn(tSettings, SWT.NONE));
 		tableColumn3.setWidth(80); // Generated
-		TableColumn tableColumn4 = JOE_TCl_SettingForm_Required.Control(new TableColumn(tSettings, SWT.NONE));
+		TableColumn tableColumn4 = MsgHandler.newMsg("JOE_TCl_SettingForm_Required").Control(new TableColumn(tSettings, SWT.NONE));
 		tableColumn4.setWidth(70); // Generated
-		TableColumn tableColumn2 = JOE_TCl_SettingForm_Reference.Control(new TableColumn(tSettings, SWT.NONE));
+		TableColumn tableColumn2 = MsgHandler.newMsg("JOE_TCl_SettingForm_Reference").Control(new TableColumn(tSettings, SWT.NONE));
 		tableColumn2.setWidth(110); // Generated
-		TableColumn tableColumn1 = JOE_TCl_SettingForm_ID.Control(new TableColumn(tSettings, SWT.NONE));
+		TableColumn tableColumn1 = MsgHandler.newMsg("JOE_TCl_SettingForm_ID").Control(new TableColumn(tSettings, SWT.NONE));
 		tableColumn1.setWidth(120); // Generated
-		bNew = JOE_B_SettingForm_New.Control(new Button(group1, SWT.NONE));
+		bNew = MsgHandler.newMsg("JOE_B_SettingForm_New").Control(new Button(group1, SWT.NONE));
 		bNew.setLayoutData(gridData5); // Generated
-		bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		bNew.addSelectionListener(new SelectionAdapter() {
+			@Override public void widgetSelected(SelectionEvent e) {
 				listener.setNewSetting();
 				setSettingStatus(true);
 				bRemove.setEnabled(false);
@@ -180,10 +185,10 @@ public class SettingForm extends JobDocBaseForm <SettingListener> {
 		label1 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label1.setText("Label"); // Generated
 		label1.setLayoutData(gridData6); // Generated
-		bRemove = JOE_B_SettingForm_Remove.Control(new Button(group1, SWT.NONE));
+		bRemove = MsgHandler.newMsg("JOE_B_SettingForm_Remove").Control(new Button(group1, SWT.NONE));
 		bRemove.setLayoutData(gridData4); // Generated
-		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		bRemove.addSelectionListener(new SelectionAdapter() {
+			@Override public void widgetSelected(SelectionEvent e) {
 				if (tSettings.getSelectionCount() > 0) {
 					if (listener.removeSetting(tSettings.getSelectionIndex())) {
 						setSettingStatus(false);
@@ -201,7 +206,7 @@ public class SettingForm extends JobDocBaseForm <SettingListener> {
 	 */
 	private void createCReference() {
 		GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1);
-		cReference = JOE_Cbo_SettingForm_Reference.Control(new Combo(group1, SWT.NONE));
+		cReference = MsgHandler.newMsg("JOE_Cbo_SettingForm_Reference").Control(new Combo(group1, SWT.NONE));
 		cReference.setLayoutData(gridData13); // Generated
 		cReference.addModifyListener(new ModifyListener() {
 			@Override public void modifyText(ModifyEvent e) {
@@ -210,19 +215,16 @@ public class SettingForm extends JobDocBaseForm <SettingListener> {
 		});
 	}
 
-	/**
-	 * This method initializes cType
-	 */
 	private void createCType() {
 		GridData gridData15 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		cType = JOE_Cbo_SettingForm_Type.Control(new Combo(group1, SWT.READ_ONLY));
+		cType = MsgHandler.newMsg("JOE_Cbo_SettingForm_Type").Control(new Combo(group1, SWT.READ_ONLY));
 		cType.setLayoutData(gridData15); // Generated
-		cType.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		cType.addSelectionListener(new SelectionListener() {
+			@Override public void widgetSelected(SelectionEvent e) {
 				applySettingStatus();
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+			@Override public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 	}
@@ -259,4 +261,14 @@ public class SettingForm extends JobDocBaseForm <SettingListener> {
 		setSettingStatus(tSettings.getSelectionCount() > 0);
 		bRemove.setEnabled(tSettings.getSelectionCount() > 0);
 	}
+
+	@Override public void openBlank() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override public boolean applyChanges() {
+		return false;
+	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"

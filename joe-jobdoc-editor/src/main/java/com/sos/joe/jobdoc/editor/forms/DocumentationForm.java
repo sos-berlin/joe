@@ -1,4 +1,6 @@
 package com.sos.joe.jobdoc.editor.forms;
+import static com.sos.dialog.Globals.MsgHandler;
+
 import java.util.Collection;
 
 import org.eclipse.swt.SWT;
@@ -14,10 +16,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
-import com.sos.joe.globals.interfaces.IEditor;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.jobdoc.editor.IDocumentationUpdate;
@@ -27,10 +27,9 @@ import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 
-// TODO doppelte einträge verhindern
-public class DocumentationForm extends SOSJOEMessageCodes implements IEditor, IDocumentationUpdate {
-	private DocumentationListener	listener	= null;
-	private DocumentationDom		dom			= null;
+public class DocumentationForm extends JobDocBaseForm<DocumentationListener> implements IDocumentationUpdate /* extends SOSJOEMessageCodes implements IEditor, IDocumentationUpdate */ {
+//	private DocumentationListener	listener	= null;
+//	private DocumentationDom		dom			= null;
 	private SashForm				sashForm	= null;
 	private Group					group		= null;
 	private Composite				docMainForm	= null;
@@ -46,9 +45,6 @@ public class DocumentationForm extends SOSJOEMessageCodes implements IEditor, ID
 		listener = new DocumentationListener(this, dom);
 	}
 
-	public DocumentationListener getDataProvider () {
-		return listener;
-	}
 	private void initialize() {
 		createSashForm();
 		setSize(new Point(724, 479));
@@ -70,7 +66,7 @@ public class DocumentationForm extends SOSJOEMessageCodes implements IEditor, ID
 	 * This method initializes group
 	 */
 	private void createGroup() {
-		group = JOE_G_DocumentationForm_DocElements.Control(new Group(sashForm, SWT.V_SCROLL | SWT.H_SCROLL));
+		group = MsgHandler.newMsg("JOE_G_DocumentationForm_DocElements").Control(new Group(sashForm, SWT.V_SCROLL | SWT.H_SCROLL));
 		group.setLayout(new FillLayout()); // Generated
 		docTree = new Tree(group, SWT.NONE);
 		docTree.addListener(SWT.Selection, new Listener() {
@@ -90,37 +86,9 @@ public class DocumentationForm extends SOSJOEMessageCodes implements IEditor, ID
 		});
 	}
 
-	/**
-	 * This method initializes docMainForm
-	 */
 	private void createDocMainForm() {
 		docMainForm = new Composite(sashForm, SWT.NONE);
 		docMainForm.setLayout(new FillLayout());
-	}
-
-	@Override public boolean applyChanges() {
-		Control[] c = docMainForm.getChildren();
-		return c.length == 0 || Utils.applyFormChanges(c[0]);
-	}
-
-	@Override public boolean close() {
-		return applyChanges() && IOUtils.continueAnyway(dom);
-	}
-
-	@Override public boolean hasChanges() {
-		Options.saveSash("documentation", sashForm.getWeights());
-		return dom.isChanged();
-	}
-
-	@Override public boolean open(Collection files) {
-		boolean res = IOUtils.openFile(files, dom);
-		if (res) {
-			initialize();
-			listener.fillTree(docTree);
-			docTree.setSelection(new TreeItem[] { docTree.getItem(0) });
-			listener.treeSelection(docTree, docMainForm);
-		}
-		return res;
 	}
 
 	public boolean open(String filename, Collection files) {
@@ -139,22 +107,6 @@ public class DocumentationForm extends SOSJOEMessageCodes implements IEditor, ID
 		listener.fillTree(docTree);
 		docTree.setSelection(new TreeItem[] { docTree.getItem(0) });
 		listener.treeSelection(docTree, docMainForm);
-	}
-
-	@Override public boolean save() {
-		boolean res = IOUtils.saveFile(dom, false);
-//		if (res)
-//			container.setNewFilename(null);
-		Utils.setResetElement(dom.getRoot());
-		return res;
-	}
-
-	@Override public boolean saveAs() {
-		String old = dom.getFilename();
-		boolean res = IOUtils.saveFile(dom, true);
-//		if (res)
-//			container.setNewFilename(old);
-		return res;
 	}
 
 	@Override public void updateLanguage() {
@@ -214,10 +166,6 @@ public class DocumentationForm extends SOSJOEMessageCodes implements IEditor, ID
 		dialog.open();
 	}
 
-	public DocumentationDom getDom() {
-		return dom;
-	}
-
 	@Override public void updateReleases() {
 		if (docTree.getSelectionCount() > 0) {
 			TreeItem item = docTree.getSelection()[0];
@@ -246,4 +194,24 @@ public class DocumentationForm extends SOSJOEMessageCodes implements IEditor, ID
 		}
 		listener.treeSelection(docTree, docMainForm);
 	}
+
+	@Override protected void applySetting() {
+	}
+	
+	@Override public boolean applyChanges() {
+		Control[] c = docMainForm.getChildren();
+		return c.length == 0 || Utils.applyFormChanges(c[0]);
+	}
+	@Override public boolean open(Collection files) {
+		boolean res = IOUtils.openFile(files, dom);
+		if (res) {
+			initialize();
+			listener.fillTree(docTree);
+			docTree.setSelection(new TreeItem[] { docTree.getItem(0) });
+			listener.treeSelection(docTree, docMainForm);
+		}
+		return res;
+	}
+
+
 } // @jve:decl-index=0:visual-constraint="10,10"
