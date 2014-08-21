@@ -82,10 +82,11 @@ public class SchedulerEditorFontDialog {
 
 	public void readFontData() {
 		String s = Options.getProperty(conSCRIPT_EDITOR_FONT + context);
-		if (s == null) {
+		if (s == null || s.equals("") ) {
 			fontData = new FontData(conDefaultfontName + context, 10, SWT.NORMAL);
 		}
 		else {
+		    System.out.println(conSCRIPT_EDITOR_FONT + context + "---------->" + s);
 			fontData = new FontData(s);
 		}
 		s = Options.getProperty(conSCRIPT_EDITOR_FONT_COLOR + context);
