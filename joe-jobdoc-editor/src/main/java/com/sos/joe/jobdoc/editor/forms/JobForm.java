@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
 import com.sos.JSHelper.Options.SOSOptionFileName;
+import com.sos.JSHelper.io.Files.JSFolder;
 import com.sos.dialog.components.SOSFileNameSelector;
 import com.sos.dialog.components.SOSPreferenceStoreText;
 import com.sos.joe.globals.messages.ErrorLog;
@@ -163,7 +164,9 @@ public class JobForm extends JobDocBaseForm<JobDocJobListener>/* SOSJOEMessageCo
 				strOutPath = tmp.getParent();
 				tbxSourceOutputPathName.setText(strOutPath);
 			}
-			objSourceGenerator.setOutputDir(new File(strOutPath));
+			JSFolder objOutputFolder = new JSFolder(strOutPath);
+			objOutputFolder.CheckFolder(true);
+			objSourceGenerator.setOutputDir(objOutputFolder);
 			objSourceGenerator.setPackageName(tbxJavaPackageName.getText());
 			// TODO Migrate Template path to JOE_HOME Folder
 			//			File f = new File(Options.getSchedulerData(), "config/JOETemplates/java/xsl");
