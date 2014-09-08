@@ -231,13 +231,16 @@ public class IOUtils {
 			if (filename != null && !filename.equals("")) { //$NON-NLS-1$
 				File file = new File(filename);
 				if (!file.exists()) {
-					ErrorLog.message(Messages.getString("MainListener.fileNotFound"), //$NON-NLS-1$
+					file = new File(file.getAbsolutePath());
+				}
+				if (!file.exists()) {
+					ErrorLog.message(Messages.getString("MainListener.fileNotFound", new String[] {file.getAbsolutePath()}), //$NON-NLS-1$
 							SWT.ICON_WARNING | SWT.OK);
 					return false;
 				}
 				else
 					if (!file.canRead())
-						ErrorLog.message(Messages.getString("MainListener.fileReadProtected"), //$NON-NLS-1$
+						ErrorLog.message(Messages.getString("MainListener.fileReadProtected", new String[] {file.getAbsolutePath()}), //$NON-NLS-1$
 								SWT.ICON_WARNING | SWT.OK);
 					else { // open it...
 						int cont = SWT.NO;
@@ -262,7 +265,6 @@ public class IOUtils {
 								new ErrorLog("error in " + getMethodName(), e);
 							}
 							catch (Exception ee) {
-								// tu nichts
 							}
 							ErrorLog.message(Messages.getString("MainListener.errorReadingFile", new String[] { file.getAbsolutePath(), e.getMessage() }),
 									SWT.ICON_ERROR | SWT.OK);

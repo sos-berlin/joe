@@ -81,7 +81,6 @@ public class DocumentationDom extends DomParser {
 			return false;
 		else
 			if (!validate) {
-				// try to avoid the worst
 				Element description = doc.getRootElement();
 				if (description.getChild("job", getNamespace()) == null)
 					description.addContent(new Element("job", getNamespace()));
