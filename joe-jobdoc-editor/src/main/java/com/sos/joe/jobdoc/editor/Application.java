@@ -59,10 +59,13 @@ import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class Application extends ApplicationWindow {
-	@SuppressWarnings("unused") private final String		conClassName	= this.getClass().getSimpleName();
-	@SuppressWarnings("unused") private static final String	conSVNVersion	= "$Id$";
-	@SuppressWarnings("unused") private final Logger		logger			= Logger.getLogger(this.getClass());
-	private WindowsSaver									objPersistenceStore;
+	@SuppressWarnings("unused")
+	private final String		conClassName	= this.getClass().getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String	conSVNVersion	= "$Id$";
+	@SuppressWarnings("unused")
+	private final Logger		logger			= Logger.getLogger(this.getClass());
+	private WindowsSaver		objPersistenceStore;
 
 	/**
 	 * Create the application window.
@@ -77,6 +80,7 @@ public class Application extends ApplicationWindow {
 
 	private void initGlobals(Display display) {
 		Globals.MsgHandler = new SOSMsgJOE("init");
+		Globals.flgIgnoreColors = false;
 		Globals.stFontRegistry.put("button-text", new FontData[] { new FontData("Arial", 9, SWT.BOLD) });
 		Globals.stFontRegistry.put("code", new FontData[] { new FontData("Courier New", 12, SWT.NORMAL) });
 		Globals.stFontRegistry.put("text", new FontData[] { new FontData("Arial", 10, SWT.NORMAL) });
@@ -85,7 +89,7 @@ public class Application extends ApplicationWindow {
 		Globals.stColorRegistry.put("MandatoryFieldColor", display.getSystemColor(SWT.COLOR_BLUE).getRGB());
 		Globals.stColorRegistry.put("Color4FieldHasFocus", display.getSystemColor(SWT.COLOR_GREEN).getRGB());
 		// Colorschema
-//		Globals.stColorRegistry.put("FieldBackGround", new RGB(220, 249, 0)); // var.
+		//		Globals.stColorRegistry.put("FieldBackGround", new RGB(220, 249, 0)); // var.
 		Globals.stColorRegistry.put("FieldBackGround", new RGB(242, 247, 247)); // var.
 																				// 1
 																				// =
@@ -113,7 +117,8 @@ public class Application extends ApplicationWindow {
 	 * Create contents of the application window.
 	 * @param parent
 	 */
-	@Override protected Control createContents(final Composite parent) {
+	@Override
+	protected Control createContents(final Composite parent) {
 		Display display = parent.getDisplay();
 		assert display != null;
 		initGlobals(display);
@@ -122,13 +127,15 @@ public class Application extends ApplicationWindow {
 		objPersistenceStore = new WindowsSaver(this.getClass(), shell, 940, 600);
 		objPersistenceStore.restoreWindowLocation();
 		parent.addDisposeListener(new DisposeListener() {
-			@Override public void widgetDisposed(final DisposeEvent arg0) {
+			@Override
+			public void widgetDisposed(final DisposeEvent arg0) {
 				logger.debug("disposed");
 				objPersistenceStore.saveWindowPosAndSize();
 			}
 		});
 		parent.addControlListener(new ControlAdapter() {
-			@Override public void controlResized(final ControlEvent e) {
+			@Override
+			public void controlResized(final ControlEvent e) {
 				logger.debug("control resized");
 				objPersistenceStore.saveWindowPosAndSize();
 			}
@@ -143,14 +150,17 @@ public class Application extends ApplicationWindow {
 		//
 		TreeViewer treeViewer = new TreeViewer(sashForm, SWT.BORDER);
 		treeViewer.addTreeListener(new ITreeViewerListener() {
-			@Override public void treeCollapsed(final TreeExpansionEvent event) {
+			@Override
+			public void treeCollapsed(final TreeExpansionEvent event) {
 			}
 
-			@Override public void treeExpanded(final TreeExpansionEvent event) {
+			@Override
+			public void treeExpanded(final TreeExpansionEvent event) {
 			}
 		});
 		treeViewer.addDoubleClickListener(new IDoubleClickListener() {
-			@Override public void doubleClick(final DoubleClickEvent objEvent) {
+			@Override
+			public void doubleClick(final DoubleClickEvent objEvent) {
 				IStructuredSelection objSelection = (IStructuredSelection) objEvent.getSelection();
 				TreeViewer objTv = (TreeViewer) objEvent.getSource();
 				Tree tree1 = objTv.getTree();
@@ -183,12 +193,13 @@ public class Application extends ApplicationWindow {
 
 	private void createTabFolder(final TreeViewEntry objTVE) {
 		String strFileName = objTVE.getFile().getAbsolutePath();
+//		String strFileName = objTVE.getFile().getName();
 		openDocumentation(tabFolder, strFileName);
 	}
 
 	private void openDocumentation(Composite objComposite, final String pstrFileName2Open) {
 		try {
-			final SOSCTabFolder objTabFolder = new SOSCTabFolder(objComposite, SWT.BOTTOM);
+			final SOSCTabFolder objTabFolder = new SOSCTabFolder(objComposite, SWT.BOTTOM /* TabItemPos */);
 			objTabFolder.ItemsHasClose = false;
 			SOSCTabItem objDesignTab = objTabFolder.getTabItem("JobDoc.Design");
 			final SOSCTabItem objFormattedTab = objTabFolder.getTabItem("JobDoc.Format");
@@ -205,10 +216,11 @@ public class Application extends ApplicationWindow {
 				return;
 			//
 			objTabFolder.addSelectionListener(new SelectionAdapter() {
-				@Override public void widgetSelected(final SelectionEvent event) {
+				@Override
+				public void widgetSelected(final SelectionEvent event) {
 					logger.debug("CTabFolder Item selected");
 					CTabItem objSelectedItem = objTabFolder.getSelection();
-//					TreeViewEntry objTVE = (TreeViewEntry) objSelectedItem.getData();
+					//					TreeViewEntry objTVE = (TreeViewEntry) objSelectedItem.getData();
 					String strKey = (String) objSelectedItem.getData("key");
 					DocumentationDom objDom = objJobDocForm.getDom();
 					Element element = objDom.getRoot();
@@ -257,14 +269,16 @@ public class Application extends ApplicationWindow {
 	private final String			strTitleText	= "";
 
 	private SOSCTabItem newItem(Control control, String filename) {
-		SOSCTabItem objTabITem = new SOSCTabItem(tabFolder, SWT.NONE);
+		SOSCTabItem objTabITem = new SOSCTabItem(tabFolder, SWT.CLOSE);
 		objTabITem.addDisposeListener(new DisposeListener() {
-			@Override public void widgetDisposed(final DisposeEvent e) {
+			@Override
+			public void widgetDisposed(final DisposeEvent e) {
 				//					MainWindow.getSShell().setText(strTitleText /* "Job Scheduler Editor" */);
 				//					MainWindow.setSaveStatus();
 			}
 		});
 		objTabITem.setControl(control);
+		objTabITem.setShowClose(true);
 		tabFolder.setSelection(tabFolder.indexOf(objTabITem));
 		//			tab.setData(new TabData(filename, strTitleText));
 		//		TreeViewItem t = (TreeViewItem) objTabITem.getData();
@@ -283,7 +297,8 @@ public class Application extends ApplicationWindow {
 	/**
 	 * Return the initial size of the window.
 	 */
-	@Override protected Point getInitialSize() {
+	@Override
+	protected Point getInitialSize() {
 		objPersistenceStore = new WindowsSaver(this.getClass(), this.getShell(), 940, 600);
 		return objPersistenceStore.getWindowSize();
 		// return new Point(947, 502);
@@ -329,7 +344,8 @@ public class Application extends ApplicationWindow {
 		 *            the node
 		 * @return Image
 		 */
-		@Override public Image getImage(final Object arg0) {
+		@Override
+		public Image getImage(final Object arg0) {
 			TreeViewEntry objTV = (TreeViewEntry) arg0;
 			return objTV.getImage();
 		}
@@ -341,7 +357,8 @@ public class Application extends ApplicationWindow {
 		 *            the node
 		 * @return String
 		 */
-		@Override public String getText(final Object arg0) {
+		@Override
+		public String getText(final Object arg0) {
 			// Get the name of the file
 			TreeViewEntry objTV = (TreeViewEntry) arg0;
 			String text = objTV.getName();
@@ -356,14 +373,16 @@ public class Application extends ApplicationWindow {
 		 * @param arg0
 		 *            the listener
 		 */
-		@Override public void addListener(final ILabelProviderListener arg0) {
+		@Override
+		public void addListener(final ILabelProviderListener arg0) {
 			listeners.add(arg0);
 		}
 
 		/**
 		 * Called when this LabelProvider is being disposed
 		 */
-		@Override public void dispose() {
+		@Override
+		public void dispose() {
 			// Dispose the images
 		}
 
@@ -377,7 +396,8 @@ public class Application extends ApplicationWindow {
 		 *            the property
 		 * @return boolean
 		 */
-		@Override public boolean isLabelProperty(final Object arg0, final String arg1) {
+		@Override
+		public boolean isLabelProperty(final Object arg0, final String arg1) {
 			return false;
 		}
 
@@ -387,7 +407,8 @@ public class Application extends ApplicationWindow {
 		 * @param arg0
 		 *            the listener to remove
 		 */
-		@Override public void removeListener(final ILabelProviderListener arg0) {
+		@Override
+		public void removeListener(final ILabelProviderListener arg0) {
 			listeners.remove(arg0);
 		}
 	}
@@ -402,7 +423,8 @@ public class Application extends ApplicationWindow {
 		 *            the parent object
 		 * @return Object[]
 		 */
-		@Override public Object[] getChildren(final Object parentElement) {
+		@Override
+		public Object[] getChildren(final Object parentElement) {
 			TreeViewEntry[] objO = new TreeViewEntry[] {};
 			Vector<TreeViewEntry> objV = new Vector<TreeViewEntry>();
 			if (parentElement instanceof TreeViewEntry) {
@@ -416,13 +438,19 @@ public class Application extends ApplicationWindow {
 						if (objFiles != null) {
 							for (Object objFle : objFiles) {
 								File objFile = (File) objFle;
+								String strName = objFile.getName();
 								boolean flgDoAdd = false;
 								enuTreeItemType intType = TreeViewEntry.enuTreeItemType.isDirectory;
 								if (objFile.isDirectory()) {
-									flgDoAdd = true;
+									if (strName.startsWith(".")) {
+
+									}
+									else {
+										flgDoAdd = true;
+									}
 								}
 								else {
-									if (objFile.getName().endsWith(".xml") || objFile.getName().endsWith(".sosdoc") || objFile.getName().endsWith(".jobdoc")) {
+									if (strName.endsWith(".xml") || strName.endsWith(".sosdoc") || strName.endsWith(".jobdoc")) {
 										intType = TreeViewEntry.enuTreeItemType.isFile;
 										flgDoAdd = true;
 									}
@@ -452,7 +480,8 @@ public class Application extends ApplicationWindow {
 		 *            the object
 		 * @return Object
 		 */
-		@Override public Object getParent(final Object arg0) {
+		@Override
+		public Object getParent(final Object arg0) {
 			// Return this file's parent file
 			return ((File) arg0).getParentFile();
 		}
@@ -464,7 +493,8 @@ public class Application extends ApplicationWindow {
 		 *            the parent object
 		 * @return boolean
 		 */
-		@Override public boolean hasChildren(final Object arg0) {
+		@Override
+		public boolean hasChildren(final Object arg0) {
 			// Get the children
 			Object[] obj = getChildren(arg0);
 			// Return whether the parent has children
@@ -478,7 +508,8 @@ public class Application extends ApplicationWindow {
 		 *            the input data
 		 * @return Object[]
 		 */
-		@Override public Object[] getElements(final Object arg0) {
+		@Override
+		public Object[] getElements(final Object arg0) {
 			File objF;
 			Vector<TreeViewEntry> objV = new Vector<>();
 			if (arg0 instanceof String) {
@@ -520,7 +551,8 @@ public class Application extends ApplicationWindow {
 		/**
 		 * Disposes any created resources
 		 */
-		@Override public void dispose() {
+		@Override
+		public void dispose() {
 			// Nothing to dispose
 		}
 
@@ -534,7 +566,8 @@ public class Application extends ApplicationWindow {
 		 * @param arg2
 		 *            the new input
 		 */
-		@Override public void inputChanged(final Viewer arg0, final Object arg1, final Object arg2) {
+		@Override
+		public void inputChanged(final Viewer arg0, final Object arg1, final Object arg2) {
 			// Nothing to change
 		}
 	}
@@ -569,7 +602,8 @@ public class Application extends ApplicationWindow {
 	 * Create the menu manager.
 	 * @return the menu manager
 	 */
-	@Override protected MenuManager createMenuManager() {
+	@Override
+	protected MenuManager createMenuManager() {
 		MenuManager menuManager = new MenuManager("menu");
 		return menuManager;
 	}
@@ -578,7 +612,8 @@ public class Application extends ApplicationWindow {
 	 * Create the toolbar manager.
 	 * @return the toolbar manager
 	 */
-	@Override protected ToolBarManager createToolBarManager(final int style) {
+	@Override
+	protected ToolBarManager createToolBarManager(final int style) {
 		ToolBarManager toolBarManager = new ToolBarManager(style);
 		return toolBarManager;
 	}
@@ -587,7 +622,8 @@ public class Application extends ApplicationWindow {
 	 * Create the status line manager.
 	 * @return the status line manager
 	 */
-	@Override protected StatusLineManager createStatusLineManager() {
+	@Override
+	protected StatusLineManager createStatusLineManager() {
 		StatusLineManager statusLineManager = new StatusLineManager();
 		return statusLineManager;
 	}
@@ -596,7 +632,8 @@ public class Application extends ApplicationWindow {
 	 * Configure the shell.
 	 * @param newShell
 	 */
-	@Override protected void configureShell(final Shell newShell) {
+	@Override
+	protected void configureShell(final Shell newShell) {
 		super.configureShell(newShell);
 		newShell.setText("SOS Documentation Editor");
 	}

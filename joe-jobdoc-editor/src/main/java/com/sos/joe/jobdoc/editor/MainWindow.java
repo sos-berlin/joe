@@ -1,4 +1,39 @@
 package com.sos.joe.jobdoc.editor;
+import static sos.util.SOSClassUtil.getMethodName;
+
+import java.io.File;
+import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabFolder2Adapter;
+import org.eclipse.swt.custom.CTabFolderEvent;
+import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.ShellListener;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+
 import com.sos.JSHelper.Basics.VersionInfo;
 import com.sos.dialog.classes.WindowsSaver;
 import com.sos.i18n.annotation.I18NMessage;
@@ -11,24 +46,6 @@ import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
 import com.sos.joe.xml.Utils;
-import org.apache.log4j.Logger;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabFolder2Adapter;
-import org.eclipse.swt.custom.CTabFolderEvent;
-import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
-
-import java.io.File;
-import java.util.ArrayList;
-
-import static sos.util.SOSClassUtil.getMethodName;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class MainWindow {
 	private static final String	conStringEDITOR			= "editor";
@@ -146,24 +163,25 @@ import static sos.util.SOSClassUtil.getMethodName;
 	}
 
 	private CTabItem newItem(Control control, String filename) {
-		CTabItem tab = new CTabItem(objCTabFolder, SWT.NONE);
-		tab.addDisposeListener(new DisposeListener() {
+		CTabItem objTabItem = new CTabItem(objCTabFolder, SWT.CLOSE);
+		objTabItem.addDisposeListener(new DisposeListener() {
 			@Override public void widgetDisposed(final DisposeEvent e) {
 //				MainWindow.getSShell().setText(strTitleText /* "Job Scheduler Editor" */);
 //				MainWindow.setSaveStatus();
 			}
 		});
-		tab.setControl(control);
-		objCTabFolder.setSelection(objCTabFolder.indexOf(tab));
+		objTabItem.setControl(control);
+		objTabItem.setShowClose(true);
+		objCTabFolder.setSelection(objCTabFolder.indexOf(objTabItem));
 		String actFilename = Utils.getFileFromURL(filename);
-		tab.setData(new TabData(actFilename, strTitleText));
-		String title = setSuffix(tab, actFilename);
-		TabData t = (TabData) tab.getData();
+		objTabItem.setData(new TabData(actFilename, strTitleText));
+		String title = setSuffix(objTabItem, actFilename);
+		TabData t = (TabData) objTabItem.getData();
 		t.caption = shortCaption(title);
-		tab.setToolTipText(filename);
-		tab.setText(title);
+		objTabItem.setToolTipText(filename);
+		objTabItem.setText(title);
 		filelist.add(filename);
-		return tab;
+		return objTabItem;
 	}
 
 	private String shortCaption(String caption) {

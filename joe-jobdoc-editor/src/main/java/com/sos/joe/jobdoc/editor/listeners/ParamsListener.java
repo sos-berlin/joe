@@ -74,6 +74,7 @@ public class ParamsListener extends JobDocBaseListener<DocumentationDom> {
 				item.setText(2, getBooleanValue("required", param) ? "yes" : "no");
 				item.setText(3, getAttributeValue("reference", param));
 				item.setText(4, getAttributeValue("id", param));
+				item.setText(5, getAttributeValue("DataType", param));
 				if (param.equals(_param))
 					table.select(index);
 				index++;
@@ -122,10 +123,27 @@ public class ParamsListener extends JobDocBaseListener<DocumentationDom> {
 		return _param;
 	}
 
-	public void applyParam(String name, String defaultValue, String id, String reference, boolean required) {
+	public void setDataType (final String pstrDataType) {
+		setParamAttribute("DataType", pstrDataType);		
+	}
+	public String getDataType () {
+		return getAttributeValue("DataType", _param);
+	}
+	
+	public void setParamAttribute (final String pstrAttributeName, final String pstrAttributeValue) {
+		setAttribute(pstrAttributeName, pstrAttributeValue, _param);		
+	}
+
+	public String getParamAttribute (final String pstrAttributeName) {
+		return getAttributeValue(pstrAttributeName, _param);
+	}
+
+	
+	public void applyParam(String name, String defaultValue, String id, String pstrDataType, String reference, boolean required) {
 		setParams();
 		setAttribute("name", name, _param);
 		setAttribute("default_value", defaultValue, _param);
+		setDataType (pstrDataType);
 		setAttribute("id", id, _param);
 		setAttribute("reference", DocumentationListener.getID(reference), _param);
 		setBoolean("required", required, _param);
