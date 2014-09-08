@@ -2,6 +2,8 @@ package com.sos.joe.jobdoc.editor.forms;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -19,39 +21,49 @@ import org.jdom.Element;
 import com.sos.joe.globals.interfaces.IUnsaved;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.messages.SOSMsgJOE;
 import com.sos.joe.jobdoc.editor.listeners.DocumentationListener;
 import com.sos.joe.jobdoc.editor.listeners.ParamsListener;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
- 
+
 public class ParamsForm extends SOSJOEMessageCodes implements IUpdateLanguage, IUnsaved {
-	@SuppressWarnings("unused") private final static String					conSVNVersion		= "$Id: ParamsForm.java 25898 2014-06-20 14:36:54Z kb $";
-	private ParamsListener						listener			= null;													// @jve:decl-index=0:
-	private DocumentationDom					dom					= null;													// @jve:decl-index=0:
-	private Group								group				= null;
-	@SuppressWarnings("unused") private Label	label				= null;
-	private Text								tParamsID			= null;
-	@SuppressWarnings("unused") private Label	label1				= null;
-	private Combo								cParamsReference	= null;
-	private Button								bParamsNotes		= null;
-	private Group								group1				= null;
-	@SuppressWarnings("unused") private Label	label2				= null;
-	@SuppressWarnings("unused") private Label	label3				= null;
-	@SuppressWarnings("unused") private Label	label4				= null;
-	private Text								tName				= null;
-	private Text								tDefault			= null;
-	private Button								cRequired			= null;
-	@SuppressWarnings("unused") private Label	label5				= null;
-	private Text								tID					= null;
-	@SuppressWarnings("unused") private Label	label6				= null;
-	private Combo								cReference			= null;
-	private Button								bApply				= null;
-	private Label								label7				= null;
-	private Table								tParams				= null;
-	private Button								bNew				= null;
-	private Label								label8				= null;
-	private Button								bRemove				= null;
-	private Button								bNotes				= null;
+	@SuppressWarnings("unused")
+	private final static String	conSVNVersion		= "$Id: ParamsForm.java 25898 2014-06-20 14:36:54Z kb $";
+	private ParamsListener		listener			= null;													// @jve:decl-index=0:
+	private DocumentationDom	dom					= null;													// @jve:decl-index=0:
+	private Group				group				= null;
+	@SuppressWarnings("unused")
+	private Label				label				= null;
+	private Text				tParamsID			= null;
+	@SuppressWarnings("unused")
+	private Label				label1				= null;
+	private Combo				cParamsReference	= null;
+	private Button				bParamsNotes		= null;
+	private Group				group1				= null;
+	@SuppressWarnings("unused")
+	private Label				label2				= null;
+	@SuppressWarnings("unused")
+	private Label				label3				= null;
+	@SuppressWarnings("unused")
+	private Label				label4				= null;
+	private Text				tName				= null;
+	private Text				tDefault			= null;
+	private Button				cRequired			= null;
+	@SuppressWarnings("unused")
+	private Label				label5				= null;
+	private Text				tID					= null;
+	@SuppressWarnings("unused")
+	private Label				label6				= null;
+	private Combo				cReference			= null;
+	private Combo				cboDataType			= null;
+	private Button				bApply				= null;
+	private Label				label7				= null;
+	private Table				tParams				= null;
+	private Button				bNew				= null;
+	private Label				label8				= null;
+	private Button				bRemove				= null;
+	private Button				bNotes				= null;
 
 	public ParamsForm(Composite parent, int style) {
 		super(parent, style);
@@ -97,16 +109,18 @@ public class ParamsForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 		label = JOE_L_ParamsForm_ID.Control(new Label(group, SWT.NONE));
 		tParamsID = JOE_T_ParamsForm_ID.Control(new Text(group, SWT.BORDER));
 		tParamsID.setLayoutData(gridData); // Generated
-		tParamsID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+		tParamsID.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
 				listener.setID(tParamsID.getText());
 			}
 		});
 		label1 = JOE_L_ParamsForm_Reference.Control(new Label(group, SWT.NONE));
 		createCParamsReference();
 		bParamsNotes = JOE_B_ParamsForm_ParamsNote.Control(new Button(group, SWT.NONE));
-		bParamsNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		bParamsNotes.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
 				// String tip = Messages.getTooltip("doc.note.text.params");
 				String tip = "";
 				DocumentationForm.openNoteDialog(dom, listener.getParamsElement(), "note", tip, true, JOE_B_ParamsForm_ParamsNote.label());
@@ -123,7 +137,8 @@ public class ParamsForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 		cParamsReference = JOE_Cbo_ParamsForm_Reference.Control(new Combo(group, SWT.NONE));
 		cParamsReference.setLayoutData(gridData1); // Generated
 		cParamsReference.addModifyListener(new ModifyListener() {
-			@Override public void modifyText(ModifyEvent e) {
+			@Override
+			public void modifyText(ModifyEvent e) {
 				listener.setReference(cParamsReference.getText());
 			}
 		});
@@ -152,50 +167,70 @@ public class ParamsForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 		label2 = JOE_L_Name.Control(new Label(group1, SWT.NONE));
 		tName = JOE_T_ParamsForm_Name.Control(new Text(group1, SWT.BORDER));
 		tName.setLayoutData(gridData3); // Generated
-		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+		tName.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
 				setApplyStatus();
 			}
 		});
 		bApply = JOE_B_ParamsForm_Apply.Control(new Button(group1, SWT.NONE));
 		bApply.setLayoutData(gridData8); // Generated
-		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		bApply.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
 				applyParam();
 				newParam();
 			}
 		});
-		label3 = JOE_L_ParamsForm_DefaultValue.Control(new Label(group1, SWT.NONE));
-		tDefault = JOE_T_ParamsForm_DefaultValue.Control(new Text(group1, SWT.BORDER));
-		tDefault.setLayoutData(gridData4); // Generated
-		tDefault.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				setApplyStatus();
-			}
-		});
+		{ // DataType
+			Label label = new SOSMsgJOE("JOE_L_ParamsForm_DataType").Control(new Label(group1, SWT.NONE));
+			cboDataType = new SOSMsgJOE("JOE_Cbo_ParamsForm_DataType").Control(new Combo(group1, SWT.NONE));
+			cboDataType.setLayoutData(gridData4);
+			cboDataType.addModifyListener(new ModifyListener() {
+				@Override
+				public void modifyText(ModifyEvent e) {
+					setApplyStatus();
+				}
+			});
+
+		}
+		{ // DefaultValue
+			label3 = JOE_L_ParamsForm_DefaultValue.Control(new Label(group1, SWT.NONE));
+			tDefault = JOE_T_ParamsForm_DefaultValue.Control(new Text(group1, SWT.BORDER));
+			tDefault.setLayoutData(gridData4); // Generated
+			tDefault.addModifyListener(new ModifyListener() {
+				@Override
+				public void modifyText(ModifyEvent e) {
+					setApplyStatus();
+				}
+			});
+		}
 		label6 = JOE_L_ParamsForm_Reference.Control(new Label(group1, SWT.NONE));
 		createCReference();
 		label4 = JOE_L_ParamsForm_Required.Control(new Label(group1, SWT.NONE));
 		cRequired = JOE_B_ParamsForm_Required.Control(new Button(group1, SWT.CHECK));
 		cRequired.setLayoutData(gridData13); // Generated
-		cRequired.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		cRequired.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
 				setApplyStatus();
 			}
 		});
 		label5 = JOE_L_ParamsForm_ID.Control(new Label(group1, SWT.NONE));
 		tID = JOE_T_ParamsForm_ID2.Control(new Text(group1, SWT.BORDER));
 		tID.setLayoutData(gridData5); // Generated
-		tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
+		tID.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
 				setApplyStatus();
 			}
 		});
 		bNotes = JOE_B_ParamsForm_Notes.Control(new Button(group1, SWT.NONE));
 		bNotes.setEnabled(false);
 		bNotes.setLayoutData(gridData14); // Generated
-		bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		bNotes.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
 				// String tip = Messages.getTooltip("doc.note.text.param");
 				String tip = "";
 				if ((listener.getParamElement() == null) || ((listener.getParamElement() != null) && listener.getParamElement().getParentElement() == null)) {
@@ -212,8 +247,9 @@ public class ParamsForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 		tParams.setHeaderVisible(true); // Generated
 		tParams.setLayoutData(gridData12); // Generated
 		tParams.setLinesVisible(true); // Generated
-		tParams.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		tParams.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
 				if (tParams.getSelectionCount() > 0) {
 					if (listener.selectParam(tParams.getSelectionIndex())) {
 						bRemove.setEnabled(true);
@@ -233,10 +269,13 @@ public class ParamsForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 		tableColumn2.setWidth(120); // Generated
 		TableColumn tableColumn1 = JOE_TCl_ParamsForm_ID.Control(new TableColumn(tParams, SWT.NONE));
 		tableColumn1.setWidth(120); // Generated
+		TableColumn tableColumnD = new SOSMsgJOE("JOE_TCl_ParamsForm_DataType").Control(new TableColumn(tParams, SWT.NONE));
+		tableColumnD.setWidth(120); // Generated
 		bNew = JOE_B_ParamsForm_NewParam.Control(new Button(group1, SWT.NONE));
 		bNew.setLayoutData(gridData11); // Generated
-		bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		bNew.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
 				listener.setNewParam();
 				setParamStatus(true);
 				tParams.deselectAll();
@@ -247,8 +286,9 @@ public class ParamsForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 		label8.setLayoutData(gridData10); // Generated
 		bRemove = JOE_B_ParamsForm_RemoveParam.Control(new Button(group1, SWT.NONE));
 		bRemove.setLayoutData(gridData9); // Generated
-		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+		bRemove.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
 				if (tParams.getSelectionCount() > 0) {
 					listener.removeParam(tParams.getSelectionIndex());
 					setParamStatus(false);
@@ -270,7 +310,8 @@ public class ParamsForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 		cReference = JOE_Cbo_ParamsForm_Reference2.Control(new Combo(group1, SWT.NONE));
 		cReference.setLayoutData(gridData6); // Generated
 		cReference.addModifyListener(new ModifyListener() {
-			@Override public void modifyText(ModifyEvent e) {
+			@Override
+			public void modifyText(ModifyEvent e) {
 				setApplyStatus();
 			}
 		});
@@ -282,9 +323,11 @@ public class ParamsForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 		tID.setEnabled(enabled);
 		cRequired.setEnabled(enabled);
 		cReference.setEnabled(enabled);
+		cboDataType.setEnabled(enabled);
 		bNotes.setEnabled(enabled);
 		if (enabled) {
 			tName.setText(listener.getParamName());
+			cboDataType.setText(listener.getDataType());
 			tDefault.setText(listener.getParamDefaultValue());
 			tID.setText(listener.getParamID());
 			cRequired.setSelection(listener.getParamRequired());
@@ -308,23 +351,27 @@ public class ParamsForm extends SOSJOEMessageCodes implements IUpdateLanguage, I
 	}
 
 	private void applyParam() {
-		listener.applyParam(tName.getText(), tDefault.getText(), tID.getText(), cReference.getText(), cRequired.getSelection());
+		listener.applyParam(tName.getText(), tDefault.getText(), tID.getText(), cboDataType.getText(), cReference.getText(), cRequired.getSelection());
 		DocumentationListener.setCheckbox(cParamsReference, listener.getReferences(listener.getID()), listener.getReference());
 		bApply.setEnabled(false);
 		listener.fillParams(tParams);
 		bRemove.setEnabled(tParams.getSelectionCount() > 0);
 	}
 
-	@Override public void setToolTipText() {
+	@Override
+	public void setToolTipText() {
 		//
 	}
 
-	@Override public void apply() {
-		if (isUnsaved())
+	@Override
+	public void apply() {
+		if (isUnsaved()) {
 			applyParam();
+		}
 	}
 
-	@Override public boolean isUnsaved() {
+	@Override
+	public boolean isUnsaved() {
 		listener.checkParams();
 		return bApply.isEnabled();
 	}
