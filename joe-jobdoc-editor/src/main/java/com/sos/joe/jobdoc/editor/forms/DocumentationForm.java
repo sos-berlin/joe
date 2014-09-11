@@ -1,6 +1,4 @@
 package com.sos.joe.jobdoc.editor.forms;
-import static com.sos.dialog.Globals.MsgHandler;
-
 import java.util.Collection;
 
 import org.eclipse.swt.SWT;
@@ -18,6 +16,7 @@ import org.jdom.Element;
 
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.SOSMsgJOE;
 import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.jobdoc.editor.IDocumentationUpdate;
@@ -66,7 +65,7 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
 	 * This method initializes group
 	 */
 	private void createGroup() {
-		group = MsgHandler.newMsg("JOE_G_DocumentationForm_DocElements").Control(new Group(sashForm, SWT.V_SCROLL | SWT.H_SCROLL));
+		group = new SOSMsgJOE("JOE_G_DocumentationForm_DocElements").Control(new Group(sashForm, SWT.V_SCROLL | SWT.H_SCROLL));
 		group.setLayout(new FillLayout()); // Generated
 		docTree = new Tree(group, SWT.NONE);
 		docTree.addListener(SWT.Selection, new Listener() {

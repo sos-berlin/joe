@@ -241,19 +241,24 @@ public class SourceGenerator extends JSToolBox {
 
 	private void doTransform(final String pstrXSLFileName, final JSXMLFile objXMLFile, final JSFile objOutFile) throws Exception {
 
-		logger.debug("Transformation of " + objOutFile.getAbsolutePath());
+		try {
+			logger.debug("Transformation of " + objOutFile.getAbsolutePath());
 
-		logger.debug("TargetFileName = " + objOutFile.getAbsolutePath());
-		File objXSLOptionClassFile = copyResource2TempFile(conResource4XslPathName + pstrXSLFileName);
-		setXSLTParameter("XSLTFilename", conResource4XslPathName + pstrXSLFileName);
+			logger.debug("TargetFileName = " + objOutFile.getAbsolutePath());
+			File objXSLOptionClassFile = copyResource2TempFile(conResource4XslPathName + pstrXSLFileName);
+			setXSLTParameter("XSLTFilename", conResource4XslPathName + pstrXSLFileName);
 
-		objXMLFile.setParameters(pobjHshMap);
+			objXMLFile.setParameters(pobjHshMap);
 
-		objXMLFile.Transform(objXSLOptionClassFile, objOutFile);
+			objXMLFile.Transform(objXSLOptionClassFile, objOutFile);
 
-		//		String strGeneratedContent = getContent(objOutFile.getAbsolutePath());
-		String strGeneratedContent = objOutFile.getContent();
-		logger.info("Size of generated content is " + strGeneratedContent.length());
+			//		String strGeneratedContent = getContent(objOutFile.getAbsolutePath());
+			String strGeneratedContent = objOutFile.getContent();
+			logger.info("Size of generated content is " + strGeneratedContent.length());
+		}
+		catch (Exception e) {
+			throw new JobSchedulerException(String.format("Error occured with xslt-file %1$s, xml-file is %2$s.\nError is %3$s", pstrXSLFileName, objXMLFile.getAbsolutePath(), e.getLocalizedMessage()), e);
+		}
 
 	}
 
