@@ -186,7 +186,7 @@ public class Application extends ApplicationWindow {
 		return container;
 	}
 	//	private final String	strBaseDir	= "C:\\Program Files\\sos-berlin.com\\jobscheduler\\scheduler#4444\\scheduler_data\\jobs";
-	private final String		strBaseDir	= "R:/java.sources/trunk/products/jobscheduler/sos-scheduler/src/main/java/sos/scheduler/jobdoc";
+	private String		strBaseDir	= "R:/java.sources/trunk/products/jobscheduler/sos-scheduler/src/main/java/sos/scheduler/jobdoc";
 	private SOSCTabFolder		tabFolder	= null;
 	private static MainWindow	window		= null;
 	private static Display		display		= null;
@@ -291,6 +291,10 @@ public class Application extends ApplicationWindow {
 	protected void FillTree(final TreeViewer pobjTreeView) {
 		pobjTreeView.setContentProvider(new FileTreeContentProvider());
 		pobjTreeView.setLabelProvider(new FileTreeLabelProvider());
+		String strT = System.getProperty("Joe.JobDoc.Basedir");
+		if (strT != null) {
+			strBaseDir = strT;
+		}
 		pobjTreeView.setInput(strBaseDir); // pass a non-null that will be ignored
 	}
 
