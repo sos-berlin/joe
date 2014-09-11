@@ -1,5 +1,6 @@
 package com.sos.joe.xml.jobdoc;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -76,7 +77,8 @@ public class DocumentationDom extends DomParser {
 	}
 
 	@Override public boolean read(String filename, boolean validate) throws JDOMException, IOException {
-		Document doc = getBuilder(validate).build(filename);
+		FileInputStream objFIS = new FileInputStream(new File(filename));
+		Document doc = getBuilder(validate).build(objFIS);
 		if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("description")))
 			return false;
 		else
