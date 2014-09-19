@@ -20,15 +20,15 @@
     <dependencies>
 
         <dependency>
-  <groupId>com.sos-berlin.joe</groupId>
-  <artifactId>joe-globals</artifactId>
-            <version>${project.version}</version>
+				  <groupId>com.sos-berlin.joe</groupId>
+				  <artifactId>joe-globals</artifactId>
+          <version>${project.version}</version>
         </dependency>
   
         <dependency>
-  <groupId>com.sos-berlin.joe</groupId>
-  <artifactId>joe-xml</artifactId>
-            <version>${project.version}</version>
+				  <groupId>com.sos-berlin.joe</groupId>
+				  <artifactId>joe-xml</artifactId>
+          <version>${project.version}</version>
         </dependency>
   
         <dependency>
@@ -139,8 +139,6 @@
 		<dependency>
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
-			<!-- set to newer version than the managed one (in company.pom) -->
-			<version>2.0.2</version>
 		</dependency>
 
 		<dependency>
