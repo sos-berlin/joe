@@ -4,17 +4,17 @@ import java.util.List;
 
 import org.jdom.Element;
 
-import com.sos.joe.xml.Utils;
-
+import com.sos.JSHelper.Options.JSOptionsClass;
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class NoteListener extends JobDocBaseListener<DocumentationDom> {
-	private String				_name;
-	private boolean				_optional;
-	private String[]			_languages	= { "de", "en", "fr", "it", "es" };
-	private String				_lang		= null;
-	private boolean				_setChanged	= true;
+	private final String	_name;
+	private final boolean	_optional;
+	private String[]		_languages	= { "de", "en", "fr", "it", "es" };
+	private String			_lang		= null;
+	private boolean			_setChanged	= true;
 
 	public NoteListener(DocumentationDom dom, Element parent, String name, boolean optional, boolean changeStatus) {
 		_dom = dom;
@@ -28,18 +28,31 @@ public class NoteListener extends JobDocBaseListener<DocumentationDom> {
 	private void init() {
 		if (_lang == null) {
 			if (_parent != null) {
-				List list = _parent.getChildren(_name, _dom.getNamespace());
-				if (list.size() > 0) {
-					Element item = (Element) list.get(0);
-					String lang = item.getAttributeValue("language");
-					_lang = lang == null ? _languages[0] : lang;
-				}
-				else
-					_lang = _languages[0];
+				_lang = getSOSLocale();  // https://change.sos-berlin.com/browse/JOE-26
 			}
+//				List list = _parent.getChildren(_name, _dom.getNamespace());
+//				if (list.size() > 0) {
+//					Element item = (Element) list.get(0);
+//					String lang = item.getAttributeValue("language");
+//					if (lang == null) {
+//						_lang = getSOSLocale();
+//					}
+//					else {
+//						_lang = lang;
+//					}
+//				}
+//				else {
+//					_lang = getSOSLocale();
+//				}
+//			}
 		}
 	}
 
+	private String getSOSLocale () {
+		JSOptionsClass objO = new JSOptionsClass();
+		return objO.Locale.Value();
+	}
+	
 	public String[] getLanguages() {
 		String strL = Options.getTemplateLanguageList();
 		_languages = strL.split(";");
