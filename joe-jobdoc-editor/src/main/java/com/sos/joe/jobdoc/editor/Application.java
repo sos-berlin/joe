@@ -26,8 +26,6 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -125,21 +123,21 @@ public class Application extends ApplicationWindow {
 		final Shell shell = this.getShell();
 		ErrorLog.setSShell(shell);
 		objPersistenceStore = new WindowsSaver(this.getClass(), shell, 940, 600);
-		objPersistenceStore.restoreWindowLocation();
-		parent.addDisposeListener(new DisposeListener() {
-			@Override
-			public void widgetDisposed(final DisposeEvent arg0) {
-				logger.debug("disposed");
-				objPersistenceStore.saveWindowPosAndSize();
-			}
-		});
-		parent.addControlListener(new ControlAdapter() {
-			@Override
-			public void controlResized(final ControlEvent e) {
-				logger.debug("control resized");
-				objPersistenceStore.saveWindowPosAndSize();
-			}
-		});
+		objPersistenceStore.restoreWindow();;
+//		parent.addDisposeListener(new DisposeListener() {
+//			@Override
+//			public void widgetDisposed(final DisposeEvent arg0) {
+//				logger.debug("disposed");
+//				objPersistenceStore.saveWindowPosAndSize();
+//			}
+//		});
+//		parent.addControlListener(new ControlAdapter() {
+//			@Override
+//			public void controlResized(final ControlEvent e) {
+//				logger.debug("control resized");
+//				objPersistenceStore.saveWindowPosAndSize();
+//			}
+//		});
 		Composite container = new Composite(parent, SWT.NONE);
 		GridLayout gl_container = new GridLayout(1, true);
 		container.setLayout(gl_container);
@@ -183,6 +181,7 @@ public class Application extends ApplicationWindow {
 		tabFolder = new SOSCTabFolder(sashForm, SWT.BORDER);
 		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 		//		sashForm.setWeights(new int[] { 30, 70 });
+		objPersistenceStore.loadSash(sashForm);
 		return container;
 	}
 	//	private final String	strBaseDir	= "C:\\Program Files\\sos-berlin.com\\jobscheduler\\scheduler#4444\\scheduler_data\\jobs";
