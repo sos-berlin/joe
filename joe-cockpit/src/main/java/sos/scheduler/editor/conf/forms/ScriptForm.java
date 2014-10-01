@@ -31,11 +31,11 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	@SuppressWarnings("unused") private final String	conSVNVersion					= "$Id$";
-	private int											intNoOfLabelColumns				= 2;
+	private final int											intNoOfLabelColumns				= 2;
 	private static Logger								logger							= Logger.getLogger(ScriptJobMainForm.class);
 	@SuppressWarnings("unused") private final String	conClassName					= "ScriptForm";
 	protected JobListener								objDataProvider					= null;
-	private Cursor										objLastCursor					= null;
+	private final Cursor										objLastCursor					= null;
 	private boolean										init							= true;
 	protected ISchedulerUpdate							update;
 	protected Element									job;
@@ -51,7 +51,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 	protected JobScript									objJobScript					= null;
 	private JobJavaAPI									objJobJAPI						= null;
 	private JobIncludeFile								objJobIncludeFile				= null;
-	private SchedulerDom								dom;
+	private final SchedulerDom								dom;
 	protected Group										objMainOptionsGroup				= null;
 
 	protected abstract void initForm();
@@ -81,23 +81,25 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 		return false;
 	}
 
-	protected void showWaitCursor() {
-		if (!getShell().isDisposed()) {
-			objLastCursor = getShell().getCursor();
-		}
-		getShell().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_WAIT));
-	}
-
-	protected void restoreCursor() {
-		if (!getShell().isDisposed())
-			if (objLastCursor == null) {
-				getShell().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_ARROW));
-			}
-			else {
-				getShell().setCursor(objLastCursor);
-			}
-	}
-
+//	@Override
+//	protected void showWaitCursor() {
+//		if (!getShell().isDisposed()) {
+//			objLastCursor = getShell().getCursor();
+//		}
+//		getShell().setCursor(SWTResourceManager.getCursor(SWT.CURSOR_WAIT));
+//	}
+//
+//	@Override
+//	protected void restoreCursor() {
+//		if (!getShell().isDisposed())
+//			if (objLastCursor == null) {
+//				getShell().setCursor(SWTResourceManager.getCursor(SWT.CURSOR_ARROW));
+//			}
+//			else {
+//				getShell().setCursor(objLastCursor);
+//			}
+//	}
+//
 	protected void initialize() {
 		dom.setInit(true);
 		init = true;
@@ -110,6 +112,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 		dom.setInit(true);
 	}
 
+	@Override
 	protected void setResizableV(Control objControl) {
 		boolean flgGrapVerticalspace = true;
 		objControl.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, flgGrapVerticalspace));
@@ -133,6 +136,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 		setResizableV(tabFolder);
 		tabFolder.setSimple(true);
 		tabFolder.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int intIndex = tabFolder.getSelectionIndex();
 				Options.setLastTabItemIndex(intIndex);
@@ -140,6 +144,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 				logger.debug(JOE_M_ScriptForm_ItemIndex.params(tabFolder.getSelectionIndex()));
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
@@ -206,6 +211,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 		labelLanguageSelector.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false, intNoOfLabelColumns, 1));
 		languageSelector = new LanguageSelector(pobjComposite, SWT.NONE);
 		languageSelector.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent arg0) {
 				if (objDataProvider != null && init == false) {
 					String strT = languageSelector.getText();

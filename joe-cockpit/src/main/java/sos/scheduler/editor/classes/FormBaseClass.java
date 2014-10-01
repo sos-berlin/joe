@@ -15,6 +15,8 @@ import sos.scheduler.editor.app.IContainer;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.conf.listeners.JOEListener;
 
+import com.sos.dialog.swtdesigner.SWTResourceManager;
+
 /**
 * \class FormBaseClass 
 * 
@@ -84,6 +86,7 @@ public class FormBaseClass {
 		final int delay = 2000;
 		final Display display = shell.getDisplay();
 		display.asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				Editor.objMainWindow.setStatusLine(pstrText);
 				try {
@@ -103,13 +106,13 @@ public class FormBaseClass {
 		if (!shell.isDisposed()) {
 			objLastCursor = shell.getCursor();
 		}
-		shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT));
+		shell.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_WAIT));
 	}
 
 	protected void restoreCursor() {
 		if (!shell.isDisposed())
 			if (objLastCursor == null) {
-				shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_ARROW));
+				shell.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_ARROW));
 			}
 			else {
 				shell.setCursor(objLastCursor);

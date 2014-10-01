@@ -10,7 +10,6 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
@@ -27,6 +26,7 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.event.service.forms.ActionsForm;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IDataChanged;
@@ -1046,12 +1046,12 @@ public class Utils {
 
 	public static void startCursor(Shell shell) {
 		if (!shell.isDisposed())
-			shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT));
+			shell.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_WAIT));
 	}
 
 	public static void stopCursor(Shell shell) {
 		if (!shell.isDisposed())
-			shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_ARROW));
+			shell.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_ARROW));
 	}
 
 	public static void setResetElement(Element elem) {
