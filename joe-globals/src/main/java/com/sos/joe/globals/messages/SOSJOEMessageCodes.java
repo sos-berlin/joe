@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 /*import sos.scheduler.editor.conf.forms.already;
 import sos.scheduler.editor.conf.forms.be;
 import sos.scheduler.editor.conf.forms.must;
@@ -3179,21 +3180,26 @@ public class SOSJOEMessageCodes extends Composite {
 	public SOSJOEMessageCodes(final Composite parent, final int style) {
 		super(parent, style);
 	}
+	
 	Cursor objLastCursor = null;
+	
 	protected void showWaitCursor() {
 		if (!getShell().isDisposed()) {
 			objLastCursor = getShell().getCursor();
 		}
-		getShell().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_WAIT));
+		
+		getShell().setCursor(SWTResourceManager.getCursor(SWT.CURSOR_WAIT));
 	}
 
 	protected void restoreCursor() {
 		if (!getShell().isDisposed())
 			if (objLastCursor == null) {
-				getShell().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_ARROW));
+//				getShell().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_ARROW));
+				getShell().setCursor(SWTResourceManager.getCursor(SWT.CURSOR_ARROW));
 			}
 			else {
 				getShell().setCursor(objLastCursor);
+				objLastCursor = null;
 			}
 	}
 
