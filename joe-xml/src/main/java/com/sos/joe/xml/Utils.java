@@ -10,7 +10,6 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
@@ -29,6 +28,7 @@ import org.jdom.xpath.XPath;
 
 import sos.scheduler.editor.app.SchedulerEditorFontDialog;
 
+import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IDataChanged;
 import com.sos.joe.globals.interfaces.IUnsaved;
@@ -1047,12 +1047,12 @@ public class Utils {
 
 	public static void startCursor(Shell shell) {
 		if (!shell.isDisposed())
-			shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT));
+			shell.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_WAIT));
 	}
 
 	public static void stopCursor(Shell shell) {
 		if (!shell.isDisposed())
-			shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_ARROW));
+			shell.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_ARROW));
 	}
 
 	public static void setResetElement(Element elem) {
@@ -1098,6 +1098,7 @@ public class Utils {
 		final Shell shell_ = shell;
 		final String text_ = text;
 		butHelp.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				Utils.showClipboard(Messages.getString(text_), shell_, false, null);
 			}
