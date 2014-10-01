@@ -40,7 +40,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
 	private final String		conSVNVersion					= "$Id: ScriptForm.java 21297 2013-11-07 12:02:28Z ur $";
 	private final int			intNoOfLabelColumns				= 2;
 	protected JobListener		objDataProvider					= null;
-	private Cursor				objLastCursor					= null;
+	private final Cursor				objLastCursor					= null;
 	private boolean				init							= true;
 	//	protected ISchedulerUpdate	update;
 	protected Element			job;
@@ -83,25 +83,25 @@ public abstract class ScriptForm extends SOSJOEMessageCodes {
 		return false;
 	}
 
-	@Override
-	protected void showWaitCursor() {
-		if (!getShell().isDisposed()) {
-			objLastCursor = getShell().getCursor();
-		}
-		getShell().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_WAIT));
-	}
-
-	@Override
-	protected void restoreCursor() {
-		if (!getShell().isDisposed())
-			if (objLastCursor == null) {
-				getShell().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_ARROW));
-			}
-			else {
-				getShell().setCursor(objLastCursor);
-			}
-	}
-
+//	@Override
+//	protected void showWaitCursor() {
+//		if (!getShell().isDisposed()) {
+//			objLastCursor = getShell().getCursor();
+//		}
+//		getShell().setCursor(SWTResourceManager.getCursor(SWT.CURSOR_WAIT));
+//	}
+//
+//	@Override
+//	protected void restoreCursor() {
+//		if (!getShell().isDisposed())
+//			if (objLastCursor == null) {
+//				getShell().setCursor(SWTResourceManager.getCursor(SWT.CURSOR_ARROW));
+//			}
+//			else {
+//				getShell().setCursor(objLastCursor);
+//			}
+//	}
+//
 	protected void initialize() {
 		try {
 			init = true;
