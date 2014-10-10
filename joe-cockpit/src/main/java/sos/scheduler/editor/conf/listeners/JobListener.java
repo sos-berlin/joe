@@ -16,6 +16,7 @@ import sos.scheduler.editor.app.Utils;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
+import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.LanguageDescriptorList;
 
@@ -147,7 +148,7 @@ public class JobListener extends JOEListener {
 	public String getJobNameAndTitle() {
 		String strT = this.getJobName();
 		if (this.isDisabled() == true) {
-			strT += " (" + Messages.getLabel("disabled") + ")";
+			strT += " (" +  com.sos.joe.globals.messages.Messages.getLabel("disabled") + ")";
 		}
 		strT += " - " + this.getTitle();
 		return strT;
