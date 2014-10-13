@@ -163,9 +163,11 @@ public class JobListener extends JOEListener {
 	}
 
 	@Override public void setComment(final String comment) {
-		if (_dom.isDirectory() || _dom.isLifeElement())
-			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
-		Utils.setAttribute("__comment__", comment, _job, _dom);
+		if (comment.length() > 0){
+			if (_dom.isDirectory() || _dom.isLifeElement())
+				_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
+			Utils.setAttribute("__comment__", comment, _job, _dom);
+		}
 	}
 
 	@Override public boolean isDisabled() {
