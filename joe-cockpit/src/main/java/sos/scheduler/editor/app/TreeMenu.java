@@ -61,7 +61,7 @@ public class TreeMenu {
 			Element retVal = (Element) _tree.getSelection()[0].getData("copy_element");
 			if (retVal == null) {
 				try {
-					new ErrorLog(_tree.getSelection()[0].getText() + " need copy_element." + sos.util.SOSClassUtil.getMethodName());
+					//new ErrorLog(_tree.getSelection()[0].getText() + " need copy_element." + sos.util.SOSClassUtil.getMethodName());
 				}
 				catch (Exception ee) {
 					// tu nichts
