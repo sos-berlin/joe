@@ -409,6 +409,8 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		bLetRun.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				listener.setLetRun(bLetRun.getSelection());
+				 
+				
 				updateFont();
 				if (bApply != null) {
 					bApply.setEnabled(true);
@@ -423,6 +425,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		cRunOnce.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				listener.setRunOnce(cRunOnce.getSelection());
+				 
 				updateFont();
 				if (bApply != null) {
 					bApply.setEnabled(true);
