@@ -1,25 +1,22 @@
 package com.sos.joe.jobdoc.editor.forms;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_JobScriptForm_UseScript;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.jdom.Element;
 
 import com.sos.joe.globals.JOEConstants;
-import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.jobdoc.editor.listeners.JobScriptListener;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
- 
-public class JobScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
-	private JobScriptListener	listener	= null;
-	private Button				cUseScript	= null;
-	private ScriptForm			scriptForm	= null;
-	private DocumentationDom	dom;
-	private Element				job;
+
+public class JobScriptForm extends JobDocBaseForm<JobScriptListener> {
+	private JobScriptListener		listener	= null;
+	private Button					cUseScript	= null;
+	private ScriptForm				scriptForm	= null;
+	private final DocumentationDom	dom;
+	private final Element			job;
 
 	public JobScriptForm(Composite parent, int style, DocumentationDom dom, Element job) {
 		super(parent, style);
@@ -37,6 +34,7 @@ public class JobScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 	private void initialize() {
 		cUseScript = JOE_B_JobScriptForm_UseScript.Control(new Button(this, SWT.RADIO));
 		cUseScript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (cUseScript.getSelection() != listener.isScript()) {
 					if (cUseScript.getSelection())
@@ -47,8 +45,6 @@ public class JobScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 			}
 		});
 		createScriptForm();
-		setSize(new Point(694, 407));
-		setLayout(new GridLayout());
 	}
 
 	/**
@@ -64,15 +60,36 @@ public class JobScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		scriptForm.setLayoutData(gridData); // Generated
 	}
 
+	@Override
 	public void setToolTipText() {
 		//        cUseScript.setToolTipText(Messages.getTooltip("doc.script.useScript"));
 	}
 
+	@Override
 	public void apply() {
 		scriptForm.apply();
 	}
 
+	@Override
 	public boolean isUnsaved() {
-		return scriptForm.isUnsaved();
+		if (scriptForm != null) {
+			return scriptForm.isUnsaved();
+		}
+		return false;
+	}
+
+	@Override
+	public void openBlank() {
+	}
+
+	@Override
+	protected void applySetting() {
+		apply();
+	}
+
+	@Override
+	public boolean applyChanges() {
+		apply();
+		return false;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

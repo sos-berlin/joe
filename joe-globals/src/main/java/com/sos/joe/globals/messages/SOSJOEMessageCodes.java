@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 
+import com.sos.dialog.classes.SOSComposite;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 /*import sos.scheduler.editor.conf.forms.already;
 import sos.scheduler.editor.conf.forms.be;
@@ -19,7 +20,7 @@ import sos.scheduler.editor.conf.forms.on;
 */
 import com.sos.i18n.annotation.I18NMsg;
 
-public class SOSJOEMessageCodes extends Composite {
+public class SOSJOEMessageCodes extends SOSComposite {
 
 	// BaseForm
 	@I18NMsg

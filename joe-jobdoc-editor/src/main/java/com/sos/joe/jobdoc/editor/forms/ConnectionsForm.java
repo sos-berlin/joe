@@ -1,7 +1,15 @@
 package com.sos.joe.jobdoc.editor.forms;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ConnectionsForm_Apply;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ConnectionsForm_New;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ConnectionsForm_Notes;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ConnectionsForm_Remove;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_ConnectionsForm_Connections;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ConnectionsForm_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ConnectionsForm_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_ConnectionsForm_Connections;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -13,22 +21,19 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.dialog.classes.SOSGroup;
+import com.sos.dialog.classes.SOSLabel;
 import com.sos.joe.jobdoc.editor.IUpdateTree;
 import com.sos.joe.jobdoc.editor.listeners.ConnectionsListener;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
  
-public class ConnectionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
-	private ConnectionsListener					listener		= null;
+public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
 	private IUpdateTree							treeHandler		= null;
 	private DocumentationDom					dom				= null;
 	private Group								group			= null;
 	@SuppressWarnings("unused") private Label	label			= null;
 	private Text								tName			= null;
 	private Button								bNotes			= null;
-	private Button								bApply			= null;
 	private Label								label1			= null;
 	private Button								bNew			= null;
 	private Label								label2			= null;
@@ -45,8 +50,8 @@ public class ConnectionsForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 
 	private void initialize() {
 		createGroup();
-		setSize(new Point(619, 458));
-		setLayout(new FillLayout());
+//		setSize(new Point(619, 458));
+//		setLayout(new FillLayout());
 		setConnectionStatus(false);
 		bRemove.setEnabled(false);
 		fillTable();
@@ -86,12 +91,13 @@ public class ConnectionsForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 		gridData.verticalAlignment = GridData.CENTER; // Generated
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 4; // Generated
-		group = JOE_G_ConnectionsForm_Connections.Control(new Group(this, SWT.NONE));
+		group = JOE_G_ConnectionsForm_Connections.Control(new SOSGroup(this, SWT.NONE));
 		group.setLayout(gridLayout); // Generated
-		label = JOE_L_Name.Control(new Label(group, SWT.NONE));
+		label = JOE_L_Name.Control(new SOSLabel(group, SWT.NONE));
 		tName = JOE_T_ConnectionsForm_Name.Control(new Text(group, SWT.BORDER));
 		tName.setLayoutData(gridData); // Generated
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+			@Override
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				bApply.setEnabled(true);
 				getShell().setDefaultButton(bApply);
@@ -99,6 +105,7 @@ public class ConnectionsForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 		});
 		bNotes = JOE_B_ConnectionsForm_Notes.Control(new Button(group, SWT.NONE));
 		bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				DocumentationForm.openNoteDialog(dom, listener.getConnectionElement(), "note", null, true, !listener.isNewConnection(),
 						JOE_B_ConnectionsForm_Notes.label());
@@ -107,11 +114,12 @@ public class ConnectionsForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 		bApply = JOE_B_ConnectionsForm_Apply.Control(new Button(group, SWT.NONE));
 		bApply.setLayoutData(gridData2); // Generated
 		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				applyConnection();
 			}
 		});
-		label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
+		label1 = new SOSLabel(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		//        label1.setText("Label"); // Generated
 		label1.setLayoutData(gridData3); // Generated
 		tConnections = JOE_Tbl_ConnectionsForm_Connections.Control(new Table(group, SWT.BORDER));
@@ -119,6 +127,7 @@ public class ConnectionsForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 		tConnections.setLayoutData(gridData1); // Generated
 		tConnections.setLinesVisible(true); // Generated
 		tConnections.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (tConnections.getSelectionCount() > 0) {
 					listener.selectConnection(tConnections.getSelectionIndex());
@@ -133,6 +142,7 @@ public class ConnectionsForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 		bNew = JOE_B_ConnectionsForm_New.Control(new Button(group, SWT.NONE));
 		bNew.setLayoutData(gridData4); // Generated
 		bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				listener.setNewConnection();
 				setConnectionStatus(true);
@@ -141,12 +151,13 @@ public class ConnectionsForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 				getShell().setDefaultButton(bApply);
 			}
 		});
-		label2 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
+		label2 = new SOSLabel(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		//        label2.setText("Label"); // Generated
 		label2.setLayoutData(gridData5); // Generated
 		bRemove = JOE_B_ConnectionsForm_Remove.Control(new Button(group, SWT.NONE));
 		bRemove.setLayoutData(gridData6); // Generated
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (tConnections.getSelectionCount() > 0) {
 					if (listener.removeConnection(tConnections.getSelectionIndex())) {
@@ -160,16 +171,19 @@ public class ConnectionsForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 		});
 	}
 
+	@Override
 	public void apply() {
 		if (isUnsaved())
 			applyConnection();
 	}
 
+	@Override
 	public boolean isUnsaved() {
 		listener.checkSettings();
 		return bApply.isEnabled();
 	}
 
+	@Override
 	public void setToolTipText() {
 		//
 	}
@@ -195,5 +209,21 @@ public class ConnectionsForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 		listener.fillConnections(tConnections);
 		if (treeHandler != null)
 			treeHandler.fillConnections();
+	}
+
+	@Override
+	public void openBlank() {
+		
+	}
+
+	@Override
+	protected void applySetting() {
+		
+	}
+
+	@Override
+	public boolean applyChanges() {
+		apply();
+		return true;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

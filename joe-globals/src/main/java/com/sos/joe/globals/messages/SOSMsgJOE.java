@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 
+import com.sos.dialog.classes.SOSGroup;
 import com.sos.dialog.classes.SOSMsgControl;
 import com.sos.dialog.components.SOSDateTime;
 import com.sos.joe.globals.options.Options;
@@ -82,6 +83,15 @@ public class SOSMsgJOE extends SOSMsgControl {
 		return pobjC;
 	} // public Label Control
 
+	public SOSGroup Control(final SOSGroup pobjC) {
+		@SuppressWarnings("unused")
+		final String conMethodName = conClassName + "::Control";
+		pobjC.setText(caption());
+		pobjC.setToolTipText(tooltip());
+		setKeyListener(pobjC);
+		return pobjC;
+	} // public Group Control
+	
 	@Override public Group Control(final Group pobjC) {
 		@SuppressWarnings("unused")
 		final String conMethodName = conClassName + "::Control";

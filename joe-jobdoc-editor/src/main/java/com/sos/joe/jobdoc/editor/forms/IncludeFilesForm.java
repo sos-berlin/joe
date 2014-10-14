@@ -1,7 +1,14 @@
 package com.sos.joe.jobdoc.editor.forms;
+
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_IncludeFilesForm_Add;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_IncludeFilesForm_Remove;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_IncludeFilesForm_IncludeFiles;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_IncludeFilesForm_File;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_IncludeFilesForm_Parameter;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Lst_IncludeFilesForm_Files;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_IncludeFilesForm_File;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -12,22 +19,21 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.dialog.classes.SOSGroup;
+import com.sos.dialog.classes.SOSLabel;
 import com.sos.joe.jobdoc.editor.listeners.IncludeFilesListener;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
- 
-public class IncludeFilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
-	private IncludeFilesListener				listener	= null; // @jve:decl-index=0:
-	private Group								group		= null;
-	@SuppressWarnings("unused") private Label	label		= null;
-	private Text								tFile		= null;
-	private Button								bAdd		= null;
-	private Label								label1		= null;
-	private Label								label51		= null;
-	private List								fileList	= null;
-	private Button								bRemove		= null;
+
+public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
+	private Group	group		= null;
+	@SuppressWarnings("unused")
+	private Label	label		= null;
+	private Text	tFile		= null;
+	private Button	bAdd		= null;
+	private Label	label1		= null;
+	private Label	label51		= null;
+	private List	fileList	= null;
+	private Button	bRemove		= null;
 
 	public IncludeFilesForm(Composite parent, int style) {
 		super(parent, style);
@@ -44,8 +50,6 @@ public class IncludeFilesForm extends SOSJOEMessageCodes implements IUnsaved, IU
 
 	private void initialize() {
 		createGroup();
-		setSize(new Point(600, 365));
-		setLayout(new FillLayout());
 	}
 
 	public void setSeparator(String separator) {
@@ -77,12 +81,13 @@ public class IncludeFilesForm extends SOSJOEMessageCodes implements IUnsaved, IU
 		gridData.verticalAlignment = GridData.CENTER; // Generated
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3; // Generated
-		group = JOE_G_IncludeFilesForm_IncludeFiles.Control(new Group(this, SWT.NONE));
+		group = JOE_G_IncludeFilesForm_IncludeFiles.Control(new SOSGroup(this, SWT.NONE));
 		group.setLayout(gridLayout); // Generated
-		label = JOE_L_IncludeFilesForm_File.Control(new Label(group, SWT.NONE));
+		label = JOE_L_IncludeFilesForm_File.Control(new SOSLabel(group, SWT.NONE));
 		tFile = JOE_T_IncludeFilesForm_File.Control(new Text(group, SWT.BORDER));
 		tFile.setLayoutData(gridData); // Generated
 		tFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+			@Override
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				bAdd.setEnabled(tFile.getText().length() > 0);
 				getShell().setDefaultButton(bAdd);
@@ -91,6 +96,7 @@ public class IncludeFilesForm extends SOSJOEMessageCodes implements IUnsaved, IU
 		bAdd = JOE_B_IncludeFilesForm_Add.Control(new Button(group, SWT.NONE));
 		bAdd.setLayoutData(gridData4); // Generated
 		bAdd.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				addFile();
 			}
@@ -98,12 +104,13 @@ public class IncludeFilesForm extends SOSJOEMessageCodes implements IUnsaved, IU
 		label1 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label1.setText("Label"); // Generated
 		label1.setLayoutData(gridData1); // Generated
-		label51 = JOE_L_IncludeFilesForm_Parameter.Control(new Label(group, SWT.NONE));
+		label51 = JOE_L_IncludeFilesForm_Parameter.Control(new SOSLabel(group, SWT.NONE));
 		label51.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		label51.setVisible(false); // Generated
 		fileList = JOE_Lst_IncludeFilesForm_Files.Control(new List(group, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL));
 		fileList.setLayoutData(gridData2); // Generated
 		fileList.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				boolean selection = fileList.getSelectionIndex() >= 0;
 				if (selection)
@@ -115,24 +122,28 @@ public class IncludeFilesForm extends SOSJOEMessageCodes implements IUnsaved, IU
 		bRemove = JOE_B_IncludeFilesForm_Remove.Control(new Button(group, SWT.NONE));
 		bRemove.setLayoutData(gridData3); // Generated
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				removeFile();
 			}
 		});
 	}
 
+	@Override
 	public void apply() {
 		addFile();
 		if (listener != null)
 			listener.saveIncludes(fileList.getItems());
 	}
 
+	@Override
 	public boolean isUnsaved() {
 		if (listener != null)
 			listener.saveIncludes(fileList.getItems());
 		return bAdd.isEnabled();
 	}
 
+	@Override
 	public void setToolTipText() {
 		//    	
 	}
@@ -142,6 +153,7 @@ public class IncludeFilesForm extends SOSJOEMessageCodes implements IUnsaved, IU
 	 * 
 	 * @see org.eclipse.swt.widgets.Control#setEnabled(boolean)
 	 */
+	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		tFile.setEnabled(enabled);
@@ -169,5 +181,23 @@ public class IncludeFilesForm extends SOSJOEMessageCodes implements IUnsaved, IU
 			bRemove.setEnabled(false);
 			listener.setChanges(true);
 		}
+	}
+
+	@Override
+	public void openBlank() {
+
+	}
+
+	@Override
+	protected void applySetting() {
+		apply();
+
+	}
+
+	@Override
+	public boolean applyChanges() {
+
+		apply();
+		return false;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

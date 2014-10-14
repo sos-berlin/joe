@@ -1,7 +1,10 @@
 package com.sos.joe.jobdoc.editor.forms;
+
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_PayloadForm_DocNote;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_PayloadForm_PayloadNote;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_PayloadForm_Payload;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -9,15 +12,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.jdom.Element;
 
-import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.dialog.classes.SOSButton;
+import com.sos.dialog.classes.SOSGroup;
 import com.sos.joe.jobdoc.editor.listeners.PayloadListener;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
  
-public class PayloadForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
-	private PayloadListener		listener		= null;
-	private DocumentationDom	dom				= null;
+public class PayloadForm extends JobDocBaseForm<PayloadListener>  {
 	private Element				parentElement	= null;
 	private Group				group			= null;
 	private ParamsForm			fParams			= null;
@@ -33,8 +33,6 @@ public class PayloadForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 
 	private void initialize() {
 		createGroup();
-		setSize(new Point(651, 431));
-		setLayout(new FillLayout());
 		listener = new PayloadListener(dom, parentElement, fParams);
 		fParams.setParams(dom, listener.getPayloadElement());
 		setToolTipText();
@@ -45,10 +43,11 @@ public class PayloadForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 	 */
 	private void createGroup() {
 		GridLayout gridLayout = new GridLayout(2, false);
-		group = JOE_G_PayloadForm_Payload.Control(new Group(this, SWT.NONE));
+		group = JOE_G_PayloadForm_Payload.Control(new SOSGroup(this, SWT.NONE));
 		group.setLayout(gridLayout);
-		bNotes = JOE_B_PayloadForm_PayloadNote.Control(new Button(group, SWT.NONE));
+		bNotes = new SOSButton(group, "JOE_B_PayloadForm_PayloadNote");
 		bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				//                String tip = Messages.getTooltip("doc.note.text.payload");
 				String tip = "";
@@ -58,6 +57,7 @@ public class PayloadForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		});
 		bDocNotes = JOE_B_PayloadForm_DocNote.Control(new Button(group, SWT.NONE));
 		bDocNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				//                String tip = Messages.getTooltip("doc.note.text.payload.document");
 				String tip = "";
@@ -77,16 +77,34 @@ public class PayloadForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		fParams.setLayoutData(gridData); // Generated
 	}
 
+	@Override
 	public void setToolTipText() {
 		//    	
 	}
 
+	@Override
 	public void apply() {
 		fParams.apply();
 	}
 
+	@Override
 	public boolean isUnsaved() {
 		listener.checkPayload();
 		return fParams.isUnsaved();
+	}
+
+	@Override
+	public void openBlank() {
+	}
+
+	@Override
+	protected void applySetting() {
+		apply();
+	}
+
+	@Override
+	public boolean applyChanges() {
+		apply();
+		return false;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

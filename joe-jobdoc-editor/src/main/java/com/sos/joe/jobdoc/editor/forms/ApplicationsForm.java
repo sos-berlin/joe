@@ -1,9 +1,21 @@
 package com.sos.joe.jobdoc.editor.forms;
+
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ApplicationsForm_ApplyApplication;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ApplicationsForm_NewApplication;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ApplicationsForm_RemoveApplication;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_ApplicationsForm_Reference;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_ApplicationsForm_Applications;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_ApplicationsForm_ID;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_ApplicationsForm_Reference;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ApplicationsForm_ID;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ApplicationsForm_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ApplicationsForm_Reference;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ApplicationsForm_ID;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ApplicationsForm_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_ApplicationsForm_Applications;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -17,17 +29,15 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
-import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.dialog.classes.SOSGroup;
+import com.sos.dialog.classes.SOSLabel;
 import com.sos.joe.jobdoc.editor.IUpdateTree;
 import com.sos.joe.jobdoc.editor.listeners.ApplicationsListener;
 import com.sos.joe.jobdoc.editor.listeners.DocumentationListener;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 
-public class ApplicationsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
-	private ApplicationsListener				listener		= null;
+public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
 	private IUpdateTree							treeHandler		= null;
 	private TreeItem							tItem			= null;
 	private Element								parentElement	= null;
@@ -38,7 +48,6 @@ public class ApplicationsForm extends SOSJOEMessageCodes implements IUnsaved, IU
 	private Text								tID				= null;
 	@SuppressWarnings("unused") private Label	label2			= null;
 	private Combo								cReference		= null;
-	private Button								bApply			= null;
 	private Label								label3			= null;
 	private Table								table			= null;
 	private Button								bNew			= null;
@@ -56,8 +65,6 @@ public class ApplicationsForm extends SOSJOEMessageCodes implements IUnsaved, IU
 
 	private void initialize() {
 		createGroup();
-		setSize(new Point(670, 422));
-		setLayout(new FillLayout());
 		bApply.setEnabled(false);
 		bRemove.setEnabled(false);
 		setAppStatus(false);
@@ -104,16 +111,13 @@ public class ApplicationsForm extends SOSJOEMessageCodes implements IUnsaved, IU
 		gridData.horizontalAlignment = GridData.FILL; // Generated
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 5; // Generated
-		group = JOE_G_ApplicationsForm_Applications.Control(new Group(this, SWT.NONE));
+		group = JOE_G_ApplicationsForm_Applications.Control(new SOSGroup(this, SWT.NONE));
 		group.setLayout(gridLayout); // Generated
-		label = JOE_L_Name.Control(new Label(group, SWT.NONE));
+		label = JOE_L_Name.Control(new SOSLabel(group, SWT.NONE));
 		tName = JOE_T_ApplicationsForm_Name.Control(new Text(group, SWT.BORDER));
 		tName.setLayoutData(gridData); // Generated
-		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				setApplyStatus();
-			}
-		});
+		tName.addModifyListener(modifyTextListener);
+
 		bApply = JOE_B_ApplicationsForm_ApplyApplication.Control(new Button(group, SWT.NONE));
 		bApply.setLayoutData(gridData2); // Generated
 		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -121,17 +125,14 @@ public class ApplicationsForm extends SOSJOEMessageCodes implements IUnsaved, IU
 				applyApp();
 			}
 		});
-		label1 = JOE_L_ApplicationsForm_ID.Control(new Label(group, SWT.NONE));
+		label1 = JOE_L_ApplicationsForm_ID.Control(new SOSLabel(group, SWT.NONE));
 		tID = JOE_T_ApplicationsForm_ID.Control(new Text(group, SWT.BORDER));
 		tID.setLayoutData(gridData4); // Generated
-		tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			@Override public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				setApplyStatus();
-			}
-		});
-		label2 = JOE_L_ApplicationsForm_Reference.Control(new Label(group, SWT.NONE));
+		tID.addModifyListener(modifyTextListener);
+
+		label2 = JOE_L_ApplicationsForm_Reference.Control(new SOSLabel(group, SWT.NONE));
 		createCReference();
-		label3 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
+		label3 = new SOSLabel(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		//        label3.setText("Label"); // Generated
 		label3.setLayoutData(gridData3); // Generated
 		table = JOE_Tbl_ApplicationsForm_Applications.Control(new Table(group, SWT.BORDER));
@@ -164,7 +165,7 @@ public class ApplicationsForm extends SOSJOEMessageCodes implements IUnsaved, IU
 				table.deselectAll();
 			}
 		});
-		label4 = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
+		label4 = new SOSLabel(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		//        label4.setText("Label"); // Generated
 		label4.setLayoutData(gridData7); // Generated
 		bRemove = JOE_B_ApplicationsForm_RemoveApplication.Control(new Button(group, SWT.NONE));
@@ -192,11 +193,7 @@ public class ApplicationsForm extends SOSJOEMessageCodes implements IUnsaved, IU
 		gridData5.verticalAlignment = GridData.CENTER; // Generated
 		cReference = JOE_Cbo_ApplicationsForm_Reference.Control(new Combo(group, SWT.NONE));
 		cReference.setLayoutData(gridData5); // Generated
-		cReference.addModifyListener(new ModifyListener() {
-			@Override public void modifyText(ModifyEvent e) {
-				setApplyStatus();
-			}
-		});
+		cReference.addModifyListener(modifyTextListener);
 	}
 
 	@Override public void apply() {
@@ -226,7 +223,8 @@ public class ApplicationsForm extends SOSJOEMessageCodes implements IUnsaved, IU
 		bApply.setEnabled(false);
 	}
 
-	private void setApplyStatus() {
+	@Override
+	protected void setApplyStatus() {
 		bApply.setEnabled(tName.getText().length() > 0);
 		Utils.setBackground(tName, true);
 	}
@@ -241,5 +239,23 @@ public class ApplicationsForm extends SOSJOEMessageCodes implements IUnsaved, IU
 	private void fillTable() {
 		listener.fillApps(table);
 		treeHandler.fillApplications(tItem, parentElement, true);
+	}
+
+	@Override
+	public void openBlank() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void applySetting() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean applyChanges() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

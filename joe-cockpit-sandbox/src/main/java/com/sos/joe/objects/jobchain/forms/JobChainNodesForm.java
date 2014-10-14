@@ -65,6 +65,7 @@ import sos.util.SOSClassUtil;
 
 import com.sos.dialog.classes.DialogAdapter;
 import com.sos.dialog.interfaces.IDialogActionHandler;
+import com.sos.dialog.menu.SOSMenueEvent;
 import com.sos.i18n.annotation.I18NMsg;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
@@ -1036,27 +1037,27 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 		// TODO Auto-generated method stub
 	}
 
-	@Override public void doCancel() {
+	public void doCancel() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override public void doEdit() {
+	public void doEdit() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override public void doNew() {
+	public void doNew() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override public void doDelete() {
+	public void doDelete() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override public void doClose() {
+	public void doClose() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -1064,5 +1065,41 @@ public class JobChainNodesForm extends CompositeBaseClass /* SOSJOEMessageCodes 
 	@Override public void setDialogActionHandler(IDialogActionHandler pobjDialogActionHandler) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void doCancel(SOSMenueEvent pobjMenueEvent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void doEdit(SOSMenueEvent pobjMenueEvent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void doNew(SOSMenueEvent pobjMenueEvent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void doDelete(SOSMenueEvent pobjMenueEvent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void doClose(SOSMenueEvent pobjMenueEvent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean doValidation(SOSMenueEvent pobjMenueEvent) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

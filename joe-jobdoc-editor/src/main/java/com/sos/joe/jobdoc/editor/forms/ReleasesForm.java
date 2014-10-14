@@ -1,7 +1,15 @@
 package com.sos.joe.jobdoc.editor.forms;
+
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ReleasesForm_NewRelease;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ReleasesForm_RemoveRelease;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_ReleaseForm_Releases;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ReleasesForm_Created;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ReleasesForm_ID;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ReleasesForm_Modified;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_ReleasesForm_Title;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_ReleasesForm_Releases;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -11,17 +19,12 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
-import com.sos.joe.xml.Utils;
-
-import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.dialog.classes.SOSGroup;
 import com.sos.joe.jobdoc.editor.listeners.ReleasesListener;
+import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
  
-public class ReleasesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
-	private ReleasesListener	listener	= null;
-	private DocumentationDom	dom			= null;
+public class ReleasesForm extends JobDocBaseForm<ReleasesListener> {
 	private Group				group		= null;
 	private Table				tReleases	= null;
 	private Button				bNew		= null;
@@ -42,8 +45,8 @@ public class ReleasesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 
 	private void initialize() {
 		createGroup();
-		setSize(new Point(801, 462));
-		setLayout(new FillLayout());
+//		setSize(new Point(801, 462));
+//		setLayout(new FillLayout());
 		bRemove.setEnabled(false);
 	}
 
@@ -55,7 +58,7 @@ public class ReleasesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		GridData gridData1 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true, 1, 2);
 		GridLayout gridLayout = new GridLayout(2, false);
-		group = JOE_G_ReleaseForm_Releases.Control(new Group(this, SWT.NONE));
+		group = JOE_G_ReleaseForm_Releases.Control(new SOSGroup(this, SWT.NONE));
 		group.setLayout(gridLayout); // Generated
 		createComposite();
 		createGroup1();
@@ -64,6 +67,7 @@ public class ReleasesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		tReleases.setLayoutData(gridData); // Generated
 		tReleases.setLinesVisible(true); // Generated
 		tReleases.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (tReleases.getSelectionCount() > 0) {
 					if (listener.selectRelease(tReleases.getSelectionIndex())) {
@@ -85,6 +89,7 @@ public class ReleasesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		bNew = JOE_B_ReleasesForm_NewRelease.Control(new Button(group, SWT.NONE));
 		bNew.setLayoutData(gridData1); // Generated
 		bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				listener.newRelease();
 				tReleases.deselectAll();
@@ -108,6 +113,7 @@ public class ReleasesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		bRemove = JOE_B_ReleasesForm_RemoveRelease.Control(new Button(group, SWT.NONE));
 		bRemove.setLayoutData(gridData2); // Generated
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (tReleases.getSelectionCount() > 0) {
 					listener.removeRelease(tReleases.getSelectionIndex());
@@ -139,14 +145,17 @@ public class ReleasesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 	private void createComposite() {
 	}
 
+	@Override
 	public void apply() {
 		applyRelease();
 	}
 
+	@Override
 	public boolean isUnsaved() {
 		return false;
 	}
 
+	@Override
 	public void setToolTipText() {
 		//
 	}
@@ -155,5 +164,23 @@ public class ReleasesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		listener.fillReleases(tReleases);
 		bRemove.setEnabled(tReleases.getSelectionCount() > 0);
 		Utils.setBackground(tReleases, true);
+	}
+
+	@Override
+	public void openBlank() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void applySetting() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean applyChanges() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

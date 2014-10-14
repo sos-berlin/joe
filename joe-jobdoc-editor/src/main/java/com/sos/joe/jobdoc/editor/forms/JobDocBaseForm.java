@@ -1,9 +1,14 @@
 package com.sos.joe.jobdoc.editor.forms;
 import java.util.Collection;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
+import com.sos.dialog.classes.SOSComposite;
 import com.sos.joe.globals.interfaces.IEditor;
 import com.sos.joe.globals.interfaces.IUnsaved;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
@@ -11,13 +16,31 @@ import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 
-public abstract class JobDocBaseForm<T>  extends Composite /* SOSJOEMessageCodes */ implements IEditor, IUnsaved, IUpdateLanguage {
+public abstract class JobDocBaseForm<T>  extends SOSComposite /* SOSJOEMessageCodes */ implements IEditor, IUnsaved, IUpdateLanguage {
 	protected T					listener	= null;
 	protected DocumentationDom	dom			= null;
 	protected Button			bApply		= null;
 
+	private class modifyTextEvent implements ModifyListener {
+		@Override
+		public void modifyText(ModifyEvent e) {
+			setApplyStatus();
+		}
+	}
+
+	protected final modifyTextEvent	modifyTextListener	= new modifyTextEvent();
+
+	protected Composite objParent = null;
+	
+	protected void setApplyStatus () {
+		
+	}
+
 	public JobDocBaseForm(Composite parent, int style) {
 		super(parent, style);
+		objParent = parent;
+//		setLayout(new GridLayout(1, true));
+		setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 	}
 
 	public T getDataProvider () {

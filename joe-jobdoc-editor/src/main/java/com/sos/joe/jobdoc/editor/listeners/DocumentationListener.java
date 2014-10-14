@@ -50,6 +50,7 @@ public class DocumentationListener extends JobDocBaseListener<DocumentationDom> 
 		_dom = dom;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void fillTree(Tree tree) {
 		tree.removeAll();
 		Utils.setResetElement(_dom.getRoot());

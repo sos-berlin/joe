@@ -1,7 +1,19 @@
 package com.sos.joe.jobdoc.editor.forms;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DBResources_Apply;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DBResources_New;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DBResources_Notes;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DBResources_Remove;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_DBResources_Type;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_DBResources_Resources;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_DBResources_Type;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_ApplyChanges;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_DBResources_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_DBResources_Type;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_DBResources_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_DBResources_Resources;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -14,17 +26,14 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.dialog.classes.SOSGroup;
+import com.sos.dialog.classes.SOSLabel;
 import com.sos.joe.globals.messages.ErrorLog;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.jobdoc.editor.listeners.DatabaseResourceListener;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
  
-public class DatabaseResourcesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
-	private DatabaseResourceListener			listener	= null;
-	private DocumentationDom					dom			= null;
+public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListener> {
 	private Group								group1		= null;
 	@SuppressWarnings("unused") private Label	label1		= null;
 	private Text								tName		= null;
@@ -32,7 +41,7 @@ public class DatabaseResourcesForm extends SOSJOEMessageCodes implements IUnsave
 	private Combo								cType		= null;
 	private Button								bNotes		= null;
 	private Table								tResources	= null;
-	private Button								bApplyRes	= null;
+	private Button								bApply	= null;
 	private Button								bNewRes		= null;
 	private Button								bRemoveRes	= null;
 	private Label								label4		= null;
@@ -49,8 +58,8 @@ public class DatabaseResourcesForm extends SOSJOEMessageCodes implements IUnsave
 
 	private void initialize() {
 		createGroup();
-		setSize(new Point(636, 477));
-		setLayout(new FillLayout());
+//		setSize(new Point(636, 477));
+//		setLayout(new FillLayout());
 		//sashForm.setWeights(new int[] { 65, 35 });
 		//Options.loadSash("databases", sashForm);
 		cType.setItems(listener.getTypes());
@@ -63,7 +72,7 @@ public class DatabaseResourcesForm extends SOSJOEMessageCodes implements IUnsave
 	 * This method initializes group
 	 */
 	private void createGroup() {
-		//group = new Group(this, SWT.NONE);
+		//group = new SOSGroup(this, SWT.NONE);
 		//group.setText("Databases"); // Generated
 		//group.setLayout(new FillLayout()); // Generated
 		createSashForm();
@@ -93,10 +102,10 @@ public class DatabaseResourcesForm extends SOSJOEMessageCodes implements IUnsave
 		gridData3.verticalAlignment = GridData.CENTER; // Generated
 		GridLayout gridLayout1 = new GridLayout();
 		gridLayout1.numColumns = 5; // Generated
-		group1 = JOE_G_DBResources_Resources.Control(new Group(this, SWT.NONE));
+		group1 = JOE_G_DBResources_Resources.Control(new SOSGroup(this, SWT.NONE));
 		group1.setLayout(gridLayout1); // Generated
 		group1.setLayoutData(gridData11); // Generated
-		label1 = JOE_L_Name.Control(new Label(group1, SWT.NONE));
+		label1 = JOE_L_Name.Control(new SOSLabel(group1, SWT.NONE));
 		tName = JOE_T_DBResources_Name.Control(new Text(group1, SWT.BORDER));
 		tName.setLayoutData(gridData3); // Generated
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -106,14 +115,14 @@ public class DatabaseResourcesForm extends SOSJOEMessageCodes implements IUnsave
 			}
 		});
 		createCType();
-		bApplyRes = JOE_B_DBResources_Apply.Control(new Button(group1, SWT.NONE));
-		bApplyRes.setLayoutData(gridData12); // Generated
-		bApplyRes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+		bApply = JOE_B_DBResources_Apply.Control(new Button(group1, SWT.NONE));
+		bApply.setLayoutData(gridData12); // Generated
+		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				applyResource();
 			}
 		});
-		label5 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
+		label5 = new SOSLabel(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
 		//        label5.setText("Label"); // Generated
 		label5.setLayoutData(gridData5); // Generated
 		tResources = JOE_Tbl_DBResources_Resources.Control(new Table(group1, SWT.FULL_SELECTION | SWT.BORDER));
@@ -161,7 +170,7 @@ public class DatabaseResourcesForm extends SOSJOEMessageCodes implements IUnsave
 				tResources.deselectAll();
 			}
 		});
-		label4 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
+		label4 = new SOSLabel(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
 		//        label4.setText("Label"); // Generated
 		label4.setLayoutData(gridData9); // Generated
 		bRemoveRes = JOE_B_DBResources_Remove.Control(new Button(group1, SWT.NONE));
@@ -199,7 +208,7 @@ public class DatabaseResourcesForm extends SOSJOEMessageCodes implements IUnsave
 	private void createCType() {
 		GridData gridData4 = new GridData();
 		gridData4.widthHint = 100; // Generated
-		label2 = JOE_L_DBResources_Type.Control(new Label(group1, SWT.NONE));
+		label2 = JOE_L_DBResources_Type.Control(new SOSLabel(group1, SWT.NONE));
 		label2.setLayoutData(new GridData());
 		cType = JOE_Cbo_DBResources_Type.Control(new Combo(group1, SWT.READ_ONLY));
 		cType.setLayoutData(gridData4); // Generated
@@ -235,12 +244,11 @@ public class DatabaseResourcesForm extends SOSJOEMessageCodes implements IUnsave
 	}
 
 	@Override public void apply() {
-		if (bApplyRes.isEnabled())
+		if (bApply.isEnabled())
 			applyResource();
 	}
 
 	@Override public boolean isUnsaved() {
-		//return Options.saveSash("databases", sashForm.getWeights());
 		return false;
 	}
 
@@ -267,19 +275,19 @@ public class DatabaseResourcesForm extends SOSJOEMessageCodes implements IUnsave
 			cType.select(cType.indexOf(listener.getType()));
 			tName.setFocus();
 		}
-		bApplyRes.setEnabled(false);
+		bApply.setEnabled(false);
 	}
 
 	private void setApplyResStatus() {
-		bApplyRes.setEnabled(tName.getText().length() > 0);
-		getShell().setDefaultButton(bApplyRes);
+		bApply.setEnabled(tName.getText().length() > 0);
+		getShell().setDefaultButton(bApply);
 	}
 
 	private void applyResource() {
 		listener.applyResource(tName.getText(), cType.getText());
 		listener.fillResources(tResources);
 		bRemoveRes.setEnabled(tResources.getSelectionCount() > 0);
-		bApplyRes.setEnabled(false);
+		bApply.setEnabled(false);
 		setResourceStatus(false);
 		fNote.setEnabled(true);
 		fNote.setParams(dom, listener.getResource(), "note", true, true);
@@ -287,4 +295,22 @@ public class DatabaseResourcesForm extends SOSJOEMessageCodes implements IUnsave
 	}
 	/* private void applyDatabase() {
 	 }*/
+
+	@Override
+	public void openBlank() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void applySetting() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean applyChanges() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 } // @jve:decl-index=0:visual-constraint="10,10"
