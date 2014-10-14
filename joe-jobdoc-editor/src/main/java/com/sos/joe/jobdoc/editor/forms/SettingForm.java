@@ -7,8 +7,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -21,6 +19,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
+import com.sos.dialog.classes.SOSGroup;
+import com.sos.dialog.classes.SOSLabel;
 import com.sos.joe.jobdoc.editor.listeners.DocumentationListener;
 import com.sos.joe.jobdoc.editor.listeners.SettingListener;
 import com.sos.joe.xml.Utils;
@@ -57,8 +57,8 @@ public class SettingForm extends JobDocBaseForm <SettingListener> {
 
 	private void initialize() {
 		createGroup1();
-		this.setLayout(new FillLayout()); // Generated
-		setSize(new Point(825, 445));
+//		this.setLayout(new FillLayout()); // Generated
+//		setSize(new Point(825, 445));
 		bApply.setEnabled(false);
 		bRemove.setEnabled(false);
 		cType.setItems(listener.getTypes());
@@ -82,9 +82,9 @@ public class SettingForm extends JobDocBaseForm <SettingListener> {
 		GridData gridData11 = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
 		GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, true, false, 4, 1);
 		GridLayout gridLayout1 = new GridLayout(6, false);
-		group1 = MsgHandler.newMsg("JOE_G_SettingForm_Settings").Control(new Group(this, SWT.NONE));
+		group1 = MsgHandler.newMsg("JOE_G_SettingForm_Settings").Control(new SOSGroup(this, SWT.NONE));
 		group1.setLayout(gridLayout1); // Generated
-		label6 = MsgHandler.newMsg("JOE_L_Name").Control(new Label(group1, SWT.NONE));
+		label6 = MsgHandler.newMsg("JOE_L_Name").Control(new SOSLabel(group1, SWT.NONE));
 		tName = MsgHandler.newMsg("JOE_T_SettingForm_Name").Control(new Text(group1, SWT.BORDER));
 		tName.setLayoutData(gridData3); // Generated
 		tName.addModifyListener(new ModifyListener() {
@@ -99,7 +99,7 @@ public class SettingForm extends JobDocBaseForm <SettingListener> {
 				applySetting();
 			}
 		});
-		label7 = MsgHandler.newMsg("JOE_L_SettingForm_DefaultValue").Control(new Label(group1, SWT.NONE));
+		label7 = MsgHandler.newMsg("JOE_L_SettingForm_DefaultValue").Control(new SOSLabel(group1, SWT.NONE));
 		tDefault = MsgHandler.newMsg("JOE_T_SettingForm_DefaultValue").Control(new Text(group1, SWT.BORDER));
 		tDefault.setLayoutData(gridData11); // Generated
 		tDefault.addModifyListener(new ModifyListener() {
@@ -107,11 +107,11 @@ public class SettingForm extends JobDocBaseForm <SettingListener> {
 				applySettingStatus();
 			}
 		});
-		label13 = MsgHandler.newMsg("JOE_L_SettingForm_Type").Control(new Label(group1, SWT.NONE));
+		label13 = MsgHandler.newMsg("JOE_L_SettingForm_Type").Control(new SOSLabel(group1, SWT.NONE));
 		createCType();
-		label9 = MsgHandler.newMsg("JOE_L_SettingForm_Reference").Control(new Label(group1, SWT.NONE));
+		label9 = MsgHandler.newMsg("JOE_L_SettingForm_Reference").Control(new SOSLabel(group1, SWT.NONE));
 		createCReference();
-		label8 = MsgHandler.newMsg("JOE_L_SettingForm_ID").Control(new Label(group1, SWT.NONE));
+		label8 = MsgHandler.newMsg("JOE_L_SettingForm_ID").Control(new SOSLabel(group1, SWT.NONE));
 		tID = MsgHandler.newMsg("JOE_T_SettingForm_ID").Control(new Text(group1, SWT.BORDER));
 		tID.setLayoutData(gridData12); // Generated
 		tID.addModifyListener(new ModifyListener() {
@@ -119,7 +119,7 @@ public class SettingForm extends JobDocBaseForm <SettingListener> {
 				applySettingStatus();
 			}
 		});
-		label10 = MsgHandler.newMsg("JOE_L_SettingForm_Required").Control(new Label(group1, SWT.NONE));
+		label10 = MsgHandler.newMsg("JOE_L_SettingForm_Required").Control(new SOSLabel(group1, SWT.NONE));
 		cRequired = MsgHandler.newMsg("JOE_B_SettingForm_Required").Control(new Button(group1, SWT.CHECK));
 		cRequired.addSelectionListener(new SelectionAdapter() {
 			@Override public void widgetSelected(SelectionEvent e) {

@@ -1,12 +1,23 @@
 package com.sos.joe.jobdoc.editor.forms;
+
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_DBResources_Notes;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_ReleaseForm_Releases;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_ReleaseForm_Created;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_ReleaseForm_ID;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_ReleaseForm_Modified;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_ReleaseForm_Title;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_ReleaseForm_Changes;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_ReleaseForm_Created;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_ReleaseForm_Modified;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ReleaseForm_ID;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ReleaseForm_Title;
+
 import java.text.ParseException;
 import java.util.Date;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -15,18 +26,18 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import com.sos.joe.xml.Utils;
-
+import com.sos.dialog.classes.SOSGroup;
+import com.sos.dialog.classes.SOSLabel;
 import com.sos.dialog.components.SOSDateTime;
 import com.sos.joe.globals.interfaces.IUnsaved;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.jobdoc.editor.listeners.ReleaseListener;
+import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
  
-public class ReleaseForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
-	private ReleaseListener						listener	= null;
-	private DocumentationDom					dom			= null;
+public class ReleaseForm extends JobDocBaseForm<ReleaseListener>  /*SOSJOEMessageCodes*/ implements IUnsaved, IUpdateLanguage {
+//	private ReleaseListener						listener	= null;
+//	private DocumentationDom					dom			= null;
 	private Group								group		= null;
 	private Label								label		= null;
 	private Label								label1		= null;
@@ -52,8 +63,6 @@ public class ReleaseForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 
 	private void initialize() {
 		createGroup();
-		setSize(new Point(801, 462));
-		setLayout(new FillLayout());
 		try {
 			setReleaseStatus(false);
 			created.setDate(listener.getCreated());
@@ -75,33 +84,35 @@ public class ReleaseForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 	 */
 	private void createGroup() {
 		GridLayout gridLayout = new GridLayout(4, false);
-		group = JOE_G_ReleaseForm_Releases.Control(new Group(this, SWT.NONE));
+		group = JOE_G_ReleaseForm_Releases.Control(new SOSGroup(this, SWT.NONE));
 		group.setLayout(gridLayout); // Generated
-		label1 = JOE_L_ReleaseForm_ID.Control(new Label(group, SWT.NONE));
+		label1 = JOE_L_ReleaseForm_ID.Control(new SOSLabel(group, SWT.NONE));
 		label1.setLayoutData(new GridData());
 		GridData gridData3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		tID = JOE_T_ReleaseForm_ID.Control(new Text(group, SWT.BORDER));
 		tID.setLayoutData(gridData3); // Generated
 		tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+			@Override
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				Utils.setBackground(tID, true);
 				listener.setId(tID.getText());
 			}
 		});
-		label2 = JOE_L_ReleaseForm_Created.Control(new Label(group, SWT.NONE));
+		label2 = JOE_L_ReleaseForm_Created.Control(new SOSLabel(group, SWT.NONE));
 		createCreated();
-		label = JOE_L_ReleaseForm_Title.Control(new Label(group, SWT.NONE));
+		label = JOE_L_ReleaseForm_Title.Control(new SOSLabel(group, SWT.NONE));
 		label.setLayoutData(new GridData());
 		GridData gridData21 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		tTitle = JOE_T_ReleaseForm_Title.Control(new Text(group, SWT.BORDER));
 		tTitle.setLayoutData(gridData21); // Generated
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+			@Override
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				Utils.setBackground(tTitle, false);
 				listener.setTitle(tTitle.getText());
 			}
 		});
-		label3 = JOE_L_ReleaseForm_Modified.Control(new Label(group, SWT.NONE));
+		label3 = JOE_L_ReleaseForm_Modified.Control(new SOSLabel(group, SWT.NONE));
 		label3.setLayoutData(new GridData());
 		createModified();
 		// Label filler = new Label(group, SWT.NONE);
@@ -177,6 +188,7 @@ public class ReleaseForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		GridData gridData6 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		created = JOE_ReleaseForm_Created.Control(new SOSDateTime(group, SWT.NONE));
 		created.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				listener.setCreated(created.getISODate());
 			}
@@ -191,6 +203,7 @@ public class ReleaseForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		GridData gridData13 = new GridData(GridData.FILL, GridData.CENTER, false, false);
 		modified = JOE_ReleaseForm_Modified.Control(new SOSDateTime(group, SWT.NONE));
 		modified.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				listener.setModified(modified.getISODate());
 			}
@@ -198,14 +211,17 @@ public class ReleaseForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		modified.setLayoutData(gridData13); // Generated
 	}
 
+	@Override
 	public void apply() {
 		applyRelease();
 	}
 
+	@Override
 	public boolean isUnsaved() {
 		return false;
 	}
 
+	@Override
 	public void setToolTipText() {
 		// bNotes.setToolTipText(Messages.getTooltip("doc.releases.notes"));
 		// bChanges.setToolTipText(Messages.getTooltip("doc.releases.changes"));
@@ -235,5 +251,23 @@ public class ReleaseForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		// tID.setText("");
 		// tTitle.setText("");
 		listener.applyRelease(tTitle.getText(), tID.getText(), created.getISODate(), modified.getISODate());
+	}
+
+	@Override
+	public void openBlank() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void applySetting() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean applyChanges() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -72,11 +72,13 @@ public class DocumentationDom extends DomParser {
 		}
 	}
 
-	@Override public boolean read(String filename) throws JDOMException, IOException {
+	@Override
+	public boolean read(String filename) throws JDOMException, IOException {
 		return read(filename, Options.isDocValidate());
 	}
 
-	@Override public boolean read(String filename, boolean validate) throws JDOMException, IOException {
+	@Override
+	public boolean read(String filename, boolean validate) throws JDOMException, IOException {
 		FileInputStream objFIS = new FileInputStream(new File(filename));
 		Document doc = getBuilder(validate).build(objFIS);
 		if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("description")))
@@ -97,7 +99,8 @@ public class DocumentationDom extends DomParser {
 		return true;
 	}
 
-	@Override public boolean readString(String str, boolean validate) throws JDOMException, IOException {
+	@Override
+	public boolean readString(String str, boolean validate) throws JDOMException, IOException {
 		StringReader sr = new StringReader(str);
 		Document doc = getBuilder(validate).build(sr);
 		if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("description")))
@@ -119,7 +122,8 @@ public class DocumentationDom extends DomParser {
 		return true;
 	}
 
-	@Override public void write(String filename) throws IOException, JDOMException {
+	@Override
+	public void write(String filename) throws IOException, JDOMException {
 		writeWithDom(filename);
 	}
 
@@ -178,7 +182,8 @@ public class DocumentationDom extends DomParser {
 		setChanged(false);
 	}
 
-	@Override public String getXML(Element element) throws JDOMException {
+	@Override
+	public String getXML(Element element) throws JDOMException {
 		String encoding = JOEConstants.DOCUMENTATION_ENCODING;
 		if (encoding.equals(""))
 			encoding = DEFAULT_ENCODING;
@@ -191,15 +196,22 @@ public class DocumentationDom extends DomParser {
 	}
 
 	public Element noteAsDom(String xml) throws JDOMException, IOException {
-		xml = xml.replaceAll("<pre space=\"preserve\">", "<pre>");
-		StringReader reader = new StringReader(xml);
-		Document doc = getBuilder(false).build(reader);
-		Element root = doc.getRootElement();
-		doc.removeContent();
-		doc.addContent(((Element) getRoot().clone()).addContent(root));
-		Element div = doc.getRootElement().getChild("div", getNamespace("xhtml"));
-		doc.getRootElement().removeContent();
-		return div;
+		try {
+			xml = xml.replaceAll("<pre space=\"preserve\">", "<pre>");
+			StringReader reader = new StringReader(xml);
+			Document doc = getBuilder(false).build(reader);
+			Element root = doc.getRootElement();
+			doc.removeContent();
+			doc.addContent(((Element) getRoot().clone()).addContent(root));
+			Element div = doc.getRootElement().getChild("div", getNamespace("xhtml"));
+			doc.getRootElement().removeContent();
+			return div;
+
+		}
+		catch (Exception e) {
+			new ErrorLog ("noteAdDom", e);
+		}
+		return null;
 	}
 
 	public String noteAsStr(Element element) {

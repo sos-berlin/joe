@@ -1,7 +1,16 @@
 package com.sos.joe.jobdoc.editor.forms;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_AuthorsForm_Apply;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_AuthorsForm_Remove;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_AuthorsForm_Authors;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_AuthorsForm_EMail;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_AuthorsForm_EMail;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_AuthorsForm_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_AuthorsForm_EMail;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_AuthorsForm_Name;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_AuthorsForm_Authors;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -14,23 +23,20 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import com.sos.i18n.annotation.I18NResourceBundle;
-import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.dialog.classes.SOSGroup;
+import com.sos.dialog.classes.SOSLabel;
 import com.sos.joe.jobdoc.editor.listeners.ReleaseAuthorsListener;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
  
-@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class AuthorsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
 	@SuppressWarnings("unused") private final static String	conSVNVersion	= "$Id: AuthorsForm.java 25898 2014-06-20 14:36:54Z kb $";
-	private ReleaseAuthorsListener							listener		= null;
 	private Group											authorsGroup	= null;
 	private Label											label4			= null;
 	private Text											tName			= null;
 	private Label											label5			= null;
 	private Text											tEmail			= null;
-	private Button											bApplyAuthor	= null;
+	private Button											bApply	= null;
 	private Table											tAuthors		= null;
 	private Button											bRemoveAutho	= null;
 
@@ -43,8 +49,6 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 	private void initialize() {
 		createGroup();
-		setSize(new Point(801, 462));
-		setLayout(new FillLayout());
 		setReleaseStatus(false);
 		listener.fillAuthors(tAuthors);
 	}
@@ -55,7 +59,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 	private void createGroup() {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 5; // Generated
-		authorsGroup = JOE_G_AuthorsForm_Authors.Control(new Group(this, SWT.NONE));
+		authorsGroup = JOE_G_AuthorsForm_Authors.Control(new SOSGroup(this, SWT.NONE));
 		authorsGroup.setLayout(gridLayout); // Generated
 		createCreated();
 		createModified();
@@ -72,11 +76,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 		GridData gridData12 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
 		GridLayout gridLayout1 = new GridLayout();
 		gridLayout1.numColumns = 5; // Generated
-		// group1 = new Group(group, SWT.NONE);
-		// group1.setText("Authors"); // Generated
-		// group1.setLayoutData(gridData5); // Generated
-		// group1.setLayout(gridLayout1); // Generated
-		label4 = JOE_L_Name.Control(new Label(authorsGroup, SWT.NONE));
+		label4 = JOE_L_Name.Control(new SOSLabel(authorsGroup, SWT.NONE));
 		label4.setLayoutData(new GridData());
 		GridData gridData7 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData7.widthHint = 121;
@@ -85,13 +85,13 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			@Override public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if (tName.getText().length() > 0 && tEmail.getText().length() > 0) {
-					bApplyAuthor.setEnabled(true);
-					getShell().setDefaultButton(bApplyAuthor);
+					bApply.setEnabled(true);
+					getShell().setDefaultButton(bApply);
 				}
-				Utils.setBackground(tName, bApplyAuthor.isEnabled());
+				Utils.setBackground(tName, bApply.isEnabled());
 			}
 		});
-		label5 = JOE_L_AuthorsForm_EMail.Control(new Label(authorsGroup, SWT.NONE));
+		label5 = JOE_L_AuthorsForm_EMail.Control(new SOSLabel(authorsGroup, SWT.NONE));
 		label5.setLayoutData(new GridData());
 		GridData gridData8 = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData8.widthHint = 183;
@@ -100,19 +100,19 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 		tEmail.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			@Override public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				if (tName.getText().length() > 0 && tEmail.getText().length() > 0) {
-					bApplyAuthor.setEnabled(true);
-					getShell().setDefaultButton(bApplyAuthor);
+					bApply.setEnabled(true);
+					getShell().setDefaultButton(bApply);
 				}
-				Utils.setBackground(tEmail, bApplyAuthor.isEnabled());
+				Utils.setBackground(tEmail, bApply.isEnabled());
 			}
 		});
 		GridData gridData9 = new GridData(GridData.FILL, GridData.CENTER, false, false);
-		bApplyAuthor = JOE_B_AuthorsForm_Apply.Control(new Button(authorsGroup, SWT.NONE));
-		bApplyAuthor.setLayoutData(gridData9); // Generated
-		bApplyAuthor.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+		bApply = JOE_B_AuthorsForm_Apply.Control(new Button(authorsGroup, SWT.NONE));
+		bApply.setLayoutData(gridData9); // Generated
+		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				applyAuthor(tName.getText(), tEmail.getText());
-				bApplyAuthor.setEnabled(false);
+				bApply.setEnabled(false);
 				tName.setText("");
 				tEmail.setText("");
 				tAuthors.deselectAll();
@@ -133,7 +133,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 					bRemoveAutho.setEnabled(true);
 					tName.setFocus();
 				}
-				bApplyAuthor.setEnabled(false);
+				bApply.setEnabled(false);
 			}
 		});
 		TableColumn tableColumn2 = JOE_TCl_AuthorsForm_Name.Control(new TableColumn(tAuthors, SWT.NONE));
@@ -150,7 +150,7 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 					listener.fillAuthors(tAuthors);
 					tName.setText("");
 					tEmail.setText("");
-					bApplyAuthor.setEnabled(false);
+					bApply.setEnabled(false);
 					bRemoveAutho.setEnabled(false);
 					tAuthors.deselectAll();
 					Utils.setBackground(tAuthors, true);
@@ -190,34 +190,13 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 	}
 
 	private void setReleaseStatus(boolean enabled) {
-		// tEmail.setEnabled(enabled);
-		bApplyAuthor.setEnabled(false);
-		// tAuthors.setEnabled(enabled);
+		bApply.setEnabled(false);
 		bRemoveAutho.setEnabled(false);
 		if (enabled) {
 			listener.fillAuthors(tAuthors);
 		}
 	}
 
-	/*private void applyAuthor(String name, String email) {
-	    name = name.trim();
-	    email = email.trim();
-	    for (int i = 0; i < tAuthors.getItemCount(); i++) {
-	        TableItem author = tAuthors.getItem(i);
-	        if (author.getText(0).equalsIgnoreCase(name)) {
-	            author.setText(0, name);
-	            author.setText(1, email);
-	            Utils.setBackground(tAuthors, true);
-	            return;
-	        }
-	    }
-
-	    // else new item
-	    TableItem author = new TableItem(tAuthors, SWT.NONE);
-	    author.setText(0, name);
-	    author.setText(1, email);
-	    Utils.setBackground(tAuthors, true);
-	}*/
 	private void applyAuthor(String name, String email) {
 		name = name.trim();
 		email = email.trim();
@@ -241,5 +220,23 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 	private void applyRelease() {
 		tName.setText("");
 		tEmail.setText("");
+	}
+
+	@Override
+	public void openBlank() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void applySetting() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean applyChanges() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -6,8 +6,6 @@ import java.util.Collection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -21,6 +19,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
+import com.sos.dialog.classes.SOSGroup;
+import com.sos.dialog.classes.SOSLabel;
 import com.sos.joe.jobdoc.editor.IUpdateTree;
 import com.sos.joe.jobdoc.editor.listeners.DocumentationListener;
 import com.sos.joe.jobdoc.editor.listeners.SectionsListener;
@@ -39,7 +39,6 @@ public class SectionsForm extends JobDocBaseForm <SectionsListener>{
 	private Text								tID				= null;
 	@SuppressWarnings("unused") private Label	label8			= null;
 	private Combo								cReference		= null;
-	private Button								bApply			= null;
 	private Button								bNew			= null;
 	private Label								label			= null;
 	private Button								bRemove			= null;
@@ -58,8 +57,6 @@ public class SectionsForm extends JobDocBaseForm <SectionsListener>{
 
 	private void initialize() {
 		createGroup();
-		setSize(new Point(717, 476));
-		setLayout(new FillLayout());
 		bApply.setEnabled(false);
 		bRemove.setEnabled(false);
 		setToolTipText();
@@ -78,9 +75,9 @@ public class SectionsForm extends JobDocBaseForm <SectionsListener>{
 		GridData gridData1 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 3);
 		GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
 		GridLayout gridLayout1 = new GridLayout(5, false);
-		group = MsgHandler.newMsg("JOE_G_SectionsForm_Sections").Control(new Group(this, SWT.NONE));
+		group = MsgHandler.newMsg("JOE_G_SectionsForm_Sections").Control(new SOSGroup(this, SWT.NONE));
 		group.setLayout(gridLayout1); // Generated
-		label5 = MsgHandler.newMsg("JOE_L_Name").Control(new Label(group, SWT.NONE));
+		label5 = MsgHandler.newMsg("JOE_L_Name").Control(new SOSLabel(group, SWT.NONE));
 		tName = MsgHandler.newMsg("JOE_T_SectionsForm_Name").Control(new Text(group, SWT.BORDER));
 		tName.setLayoutData(gridData); // Generated
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -95,9 +92,9 @@ public class SectionsForm extends JobDocBaseForm <SectionsListener>{
 				applySection();
 			}
 		});
-		label8 = MsgHandler.newMsg("JOE_L_SectionsForm_Reference").Control(new Label(group, SWT.NONE));
+		label8 = MsgHandler.newMsg("JOE_L_SectionsForm_Reference").Control(new SOSLabel(group, SWT.NONE));
 		createCReference();
-		label6 = MsgHandler.newMsg("JOE_L_SectionsForm_ID").Control(new Label(group, SWT.NONE));
+		label6 = MsgHandler.newMsg("JOE_L_SectionsForm_ID").Control(new SOSLabel(group, SWT.NONE));
 		tID = MsgHandler.newMsg("JOE_T_SectionsForm_ID").Control(new Text(group, SWT.BORDER));
 		tID.setLayoutData(gridData2); // Generated
 		tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
@@ -188,7 +185,8 @@ public class SectionsForm extends JobDocBaseForm <SectionsListener>{
 		bApply.setEnabled(false);
 	}
 
-	private void setApplyStatus() {
+	@Override
+	protected void setApplyStatus() {
 		bApply.setEnabled(tName.getText().length() > 0);
 		Utils.setBackground(tName, true);
 	}

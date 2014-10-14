@@ -107,7 +107,7 @@ public class SourceGenerator extends JSToolBox {
 	public void execute() {
 		logger.setLevel(Level.DEBUG);
 		logger.info("Starting transformation");
-		conResource4XslPathName = SOSProductionResource.basePackage() + "/xsl/sourcegenerator/java/";
+		conResource4XslPathName = SOSProductionResource.basePackage() + "/xsl/jobdoc/sourcegenerator/java/";
 		String strMessage = "";
 		try {
 			String strXMLFileName = jobdocFile.getCanonicalPath();

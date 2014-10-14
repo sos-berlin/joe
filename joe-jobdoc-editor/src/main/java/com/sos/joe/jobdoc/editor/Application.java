@@ -26,6 +26,8 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -34,7 +36,6 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -48,8 +49,10 @@ import com.sos.dialog.BrowserViewForm;
 import com.sos.dialog.Globals;
 import com.sos.dialog.classes.SOSCTabFolder;
 import com.sos.dialog.classes.SOSCTabItem;
+import com.sos.dialog.classes.SOSSashForm;
 import com.sos.dialog.classes.WindowsSaver;
 import com.sos.dialog.components.TextArea;
+import com.sos.dialog.components.WaitCursor;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSMsgJOE;
 import com.sos.joe.jobdoc.editor.TreeViewEntry.enuTreeItemType;
@@ -57,12 +60,15 @@ import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class Application extends ApplicationWindow {
+	private static final String	conI18NKey_JOE_L_JOB_DOC_XML	= "JOE_L_JobDoc.XML";
+	private static final String	conI18NKey_JOE_L_JOB_DOC_FORMAT	= "JOE_L_JobDoc.Format";
+	private static final String	conI18NKey_JOE_L_JOB_DOC_DESIGN	= "JOE_L_JobDoc.Design";
 	@SuppressWarnings("unused")
-	private final String		conClassName	= this.getClass().getSimpleName();
+	private final String		conClassName					= this.getClass().getSimpleName();
 	@SuppressWarnings("unused")
-	private static final String	conSVNVersion	= "$Id$";
+	private static final String	conSVNVersion					= "$Id$";
 	@SuppressWarnings("unused")
-	private final Logger		logger			= Logger.getLogger(this.getClass());
+	private final Logger		logger							= Logger.getLogger(this.getClass());
 	private WindowsSaver		objPersistenceStore;
 
 	/**
@@ -123,30 +129,38 @@ public class Application extends ApplicationWindow {
 		final Shell shell = this.getShell();
 		ErrorLog.setSShell(shell);
 		objPersistenceStore = new WindowsSaver(this.getClass(), shell, 940, 600);
-		objPersistenceStore.restoreWindow();;
-//		parent.addDisposeListener(new DisposeListener() {
-//			@Override
-//			public void widgetDisposed(final DisposeEvent arg0) {
-//				logger.debug("disposed");
-//				objPersistenceStore.saveWindowPosAndSize();
-//			}
-//		});
-//		parent.addControlListener(new ControlAdapter() {
-//			@Override
-//			public void controlResized(final ControlEvent e) {
-//				logger.debug("control resized");
-//				objPersistenceStore.saveWindowPosAndSize();
-//			}
-//		});
+		objPersistenceStore.restoreWindow();
+		//		parent.addDisposeListener(new DisposeListener() {
+		//			@Override
+		//			public void widgetDisposed(final DisposeEvent arg0) {
+		//				logger.debug("disposed");
+		//				objPersistenceStore.saveWindowPosAndSize();
+		//			}
+		//		});
+		//		parent.addControlListener(new ControlAdapter() {
+		//			@Override
+		//			public void controlResized(final ControlEvent e) {
+		//				logger.debug("control resized");
+		//				objPersistenceStore.saveWindowPosAndSize();
+		//			}
+		//		});
 		Composite container = new Composite(parent, SWT.NONE);
 		GridLayout gl_container = new GridLayout(1, true);
 		container.setLayout(gl_container);
-		SashForm sashForm = new SashForm(container, SWT.BORDER | SWT.SMOOTH | SWT.HORIZONTAL);
-		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		sashForm.setSashWidth(6);
-		sashForm.setBounds(7, 0, 0, 0);
+		final SOSSashForm sashForm = new SOSSashForm(container, SWT.BORDER | SWT.SMOOTH | SWT.HORIZONTAL, "JobDocApplication");
+
+		parent.addControlListener(new ControlAdapter() {
+			@Override
+			public void controlResized(final ControlEvent e) {
+				logger.debug("control resized");
+			}
+		});
+
 		//
 		TreeViewer treeViewer = new TreeViewer(sashForm, SWT.BORDER);
+		Tree objTree = treeViewer.getTree();
+		objTree.setBackground(Globals.getCompositeBackground());
+
 		treeViewer.addTreeListener(new ITreeViewerListener() {
 			@Override
 			public void treeCollapsed(final TreeExpansionEvent event) {
@@ -159,40 +173,44 @@ public class Application extends ApplicationWindow {
 		treeViewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
 			public void doubleClick(final DoubleClickEvent objEvent) {
-				IStructuredSelection objSelection = (IStructuredSelection) objEvent.getSelection();
-				TreeViewer objTv = (TreeViewer) objEvent.getSource();
-				Tree tree1 = objTv.getTree();
-				int i = 0;
-				for (Object objSel : objSelection.toList()) {
-					if (objSel instanceof TreeViewEntry) {
-						TreeViewEntry objTreeViewEntry = (TreeViewEntry) objSel;
-						if (objTreeViewEntry.isFile()) {
-							String strM = "Section ausgewählt: " + objTreeViewEntry.getName();
-							setStatus(strM);
-							objTreeViewEntry.setTreeItem(tree1.getSelection()[i++]);
-							createTabFolder(objTreeViewEntry);
+				try (WaitCursor objWC = new WaitCursor()) {
+					IStructuredSelection objSelection = (IStructuredSelection) objEvent.getSelection();
+					TreeViewer objTv = (TreeViewer) objEvent.getSource();
+					Tree tree1 = objTv.getTree();
+					int i = 0;
+					for (Object objSel : objSelection.toList()) {
+						if (objSel instanceof TreeViewEntry) {
+							TreeViewEntry objTreeViewEntry = (TreeViewEntry) objSel;
+							if (objTreeViewEntry.isFile()) {
+								String strM = "Section ausgewählt: " + objTreeViewEntry.getName();
+								setStatus(strM);
+								objTreeViewEntry.setTreeItem(tree1.getSelection()[i++]);
+								createTabFolder(objTreeViewEntry);
+							}
 						}
 					}
+
+				}
+				catch (Exception e) {
 				}
 			}
 		});
-		Tree tree = treeViewer.getTree();
+		//		Tree tree = treeViewer.getTree();
 		FillTree(treeViewer);
 		tabFolder = new SOSCTabFolder(sashForm, SWT.BORDER);
 		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		//		sashForm.setWeights(new int[] { 30, 70 });
-		objPersistenceStore.loadSash(sashForm);
+		objPersistenceStore.restoreWindow();
+		sashForm.restoreSize();
 		return container;
 	}
 	//	private final String	strBaseDir	= "C:\\Program Files\\sos-berlin.com\\jobscheduler\\scheduler#4444\\scheduler_data\\jobs";
-	private String		strBaseDir	= "R:/java.sources/trunk/products/jobscheduler/sos-scheduler/src/main/java/sos/scheduler/jobdoc";
+	private String				strBaseDir	= "R:/java.sources/trunk/products/jobscheduler/sos-scheduler/src/main/java/sos/scheduler/jobdoc";
 	private SOSCTabFolder		tabFolder	= null;
 	private static MainWindow	window		= null;
 	private static Display		display		= null;
 
 	private void createTabFolder(final TreeViewEntry objTVE) {
 		String strFileName = objTVE.getFile().getAbsolutePath();
-//		String strFileName = objTVE.getFile().getName();
 		openDocumentation(tabFolder, strFileName);
 	}
 
@@ -200,16 +218,14 @@ public class Application extends ApplicationWindow {
 		try {
 			final SOSCTabFolder objTabFolder = new SOSCTabFolder(objComposite, SWT.BOTTOM /* TabItemPos */);
 			objTabFolder.ItemsHasClose = false;
-			SOSCTabItem objDesignTab = objTabFolder.getTabItem("JobDoc.Design");
-			final SOSCTabItem objFormattedTab = objTabFolder.getTabItem("JobDoc.Format");
-			final SOSCTabItem objXMLTab = objTabFolder.getTabItem("JobDoc.XML");
+			final SOSCTabItem objDesignTab = objTabFolder.getTabItem(conI18NKey_JOE_L_JOB_DOC_DESIGN);
+			final SOSCTabItem objFormattedTab = objTabFolder.getTabItem(conI18NKey_JOE_L_JOB_DOC_FORMAT);
+			final SOSCTabItem objXMLTab = objTabFolder.getTabItem(conI18NKey_JOE_L_JOB_DOC_XML);
 			newItem(objTabFolder, pstrFileName2Open);
+
 			final DocumentationForm objJobDocForm = new DocumentationForm(objTabFolder, SWT.NONE);
 			if (objJobDocForm.open(pstrFileName2Open, filelist)) {
 				objDesignTab.setControl(objJobDocForm);
-				// CTabItem tab = newItem(doc, doc.getFilename());
-				//				newItem(objJobDocForm, objJobDocForm.getFilename());
-				// tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
 			}
 			else
 				return;
@@ -217,45 +233,55 @@ public class Application extends ApplicationWindow {
 			objTabFolder.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(final SelectionEvent event) {
-					logger.debug("CTabFolder Item selected");
-					CTabItem objSelectedItem = objTabFolder.getSelection();
-					//					TreeViewEntry objTVE = (TreeViewEntry) objSelectedItem.getData();
-					String strKey = (String) objSelectedItem.getData("key");
-					DocumentationDom objDom = objJobDocForm.getDom();
-					Element element = objDom.getRoot();
-					switch (strKey) {
-						case "JobDoc.Design":
-							break;
-						case "JobDoc.Format":
-							if (element != null) {
-								try {
-									String filename = objDom.transform(element, pstrFileName2Open);
-									if (filename.length() > 0) {
-										URL objUrl = new File(filename).toURI().toURL();
-										BrowserViewForm objBrowser = new BrowserViewForm(objTabFolder, SWT.NONE, objUrl.toString());
-										objFormattedTab.setControl(objBrowser.getBrowser());
+					try (WaitCursor objWC = new WaitCursor()) {
+						logger.debug("CTabFolder Item selected");
+						CTabItem objSelectedItem = objTabFolder.getSelection();
+						//					TreeViewEntry objTVE = (TreeViewEntry) objSelectedItem.getData();
+						String strI18NKey = (String) objSelectedItem.getData("key");
+						DocumentationDom objDom = objJobDocForm.getDom();
+						Element element = objDom.getRoot();
+
+						switch (strI18NKey) {
+							case conI18NKey_JOE_L_JOB_DOC_DESIGN:
+								break;
+								
+							case conI18NKey_JOE_L_JOB_DOC_FORMAT:
+								if (element != null) {
+									try {
+										String filename = objDom.transform(element, pstrFileName2Open);
+										if (filename.length() > 0) {
+											URL objUrl = new File(filename).toURI().toURL();
+											BrowserViewForm objBrowser = new BrowserViewForm(objTabFolder, SWT.NONE, objUrl.toString());
+											objFormattedTab.setControl(objBrowser.getBrowser());
+										}
+									}
+									catch (Exception ex) {
+										new ErrorLog("error in preview.", ex);
 									}
 								}
-								catch (Exception ex) {
-									new ErrorLog("error in preview.", ex);
+								break;
+								
+							case conI18NKey_JOE_L_JOB_DOC_XML:
+								TextArea objTA = new TextArea(objTabFolder, "JobDoc.XMLSource");
+//								objTA.setEditable(false);
+								try {
+									String strXML = objDom.getXML(element);
+									objTA.setXMLText(strXML);
+									objXMLTab.setControl(objTA);
+									objTA.refreshContent();
 								}
-							}
-							break;
-						case "JobDoc.XML":
-							TextArea objTA = new TextArea(objTabFolder);
-							objTA.setFormHandler(objPersistenceStore);
-							try {
-								String strXML = objDom.getXML(element);
-								objTA.setText(strXML);
-								objXMLTab.setControl(objTA);
-								objTA.refreshContent();
-							}
-							catch (JDOMException e) {
-								new ErrorLog("error in getxml.", e);
-							}
-							break;
-						default:
-							break;
+								catch (JDOMException e) {
+									new ErrorLog("error in getxml.", e);
+								}
+								break;
+								
+							default:
+								break;
+						}
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+						new ErrorLog ("Problem", e);
 					}
 				}
 			});
@@ -272,8 +298,6 @@ public class Application extends ApplicationWindow {
 		objTabITem.addDisposeListener(new DisposeListener() {
 			@Override
 			public void widgetDisposed(final DisposeEvent e) {
-				//					MainWindow.getSShell().setText(strTitleText /* "Job Scheduler Editor" */);
-				//					MainWindow.setSaveStatus();
 			}
 		});
 		objTabITem.setControl(control);
@@ -304,7 +328,6 @@ public class Application extends ApplicationWindow {
 	protected Point getInitialSize() {
 		objPersistenceStore = new WindowsSaver(this.getClass(), this.getShell(), 940, 600);
 		return objPersistenceStore.getWindowSize();
-		// return new Point(947, 502);
 	}
 	/**
 	 * This class provides the labels for the file tree

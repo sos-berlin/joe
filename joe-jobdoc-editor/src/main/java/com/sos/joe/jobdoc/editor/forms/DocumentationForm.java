@@ -2,23 +2,24 @@ package com.sos.joe.jobdoc.editor.forms;
 import java.util.Collection;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+//import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
+import com.sos.dialog.Globals;
+import com.sos.dialog.classes.SOSComposite;
+import com.sos.dialog.classes.SOSGroup;
+import com.sos.dialog.classes.SOSSashForm;
+import com.sos.dialog.classes.SOSTree;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSMsgJOE;
 import com.sos.joe.globals.misc.TreeData;
-import com.sos.joe.globals.options.Options;
 import com.sos.joe.jobdoc.editor.IDocumentationUpdate;
 import com.sos.joe.jobdoc.editor.NoteDialog;
 import com.sos.joe.jobdoc.editor.listeners.DocumentationListener;
@@ -27,18 +28,14 @@ import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 
 public class DocumentationForm extends JobDocBaseForm<DocumentationListener> implements IDocumentationUpdate /* extends SOSJOEMessageCodes implements IEditor, IDocumentationUpdate */ {
-//	private DocumentationListener	listener	= null;
-//	private DocumentationDom		dom			= null;
-	private SashForm				sashForm	= null;
-	private Group					group		= null;
+	private SOSSashForm				sashForm	= null;
+	private SOSGroup					group		= null;
 	private Composite				docMainForm	= null;
-	private Tree					docTree		= null;
+	private SOSTree					docTree		= null;
 	private TreeItem				selection	= null;
 
 	public DocumentationForm(Composite parent, int style) {
 		super(parent, style);
-//		this.container = container;
-		// initialize();
 		dom = new DocumentationDom();
 		dom.setDataChangedListener(this);
 		listener = new DocumentationListener(this, dom);
@@ -46,33 +43,35 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
 
 	private void initialize() {
 		createSashForm();
-		setSize(new Point(724, 479));
-		setLayout(new FillLayout());
+//		setSize(new Point(724, 479));
+//		setLayout(new GridLayout());
 	}
 
 	/**
 	 * This method initializes sashForm
 	 */
 	private void createSashForm() {
-		sashForm = new SashForm(this, SWT.NONE);
+		sashForm = new SOSSashForm(this, SWT.NONE, "JobDocDocumentationForm");
 		createGroup();
 		createDocMainForm();
-		sashForm.setWeights(new int[] { 66, 264 });
-		Options.loadSash("documentation", sashForm);
+		sashForm.restoreSize();
 	}
 
 	/**
 	 * This method initializes group
 	 */
 	private void createGroup() {
-		group = new SOSMsgJOE("JOE_G_DocumentationForm_DocElements").Control(new Group(sashForm, SWT.V_SCROLL | SWT.H_SCROLL));
-		group.setLayout(new FillLayout()); // Generated
-		docTree = new Tree(group, SWT.NONE);
+		group = new SOSMsgJOE("JOE_G_DocumentationForm_DocElements").Control(new SOSGroup(sashForm, SWT.V_SCROLL | SWT.H_SCROLL));
+		docTree = new SOSTree(group, SWT.NONE);
+		docTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		docTree.setBackground(Globals.getCompositeBackground());
+
 		docTree.addListener(SWT.Selection, new Listener() {
 			@Override public void handleEvent(Event e) {
 				if (docTree.getSelectionCount() > 0) {
-					if (selection == null)
+					if (selection == null) {
 						selection = docTree.getItem(0);
+					}
 					e.doit = listener.treeSelection(docTree, docMainForm);
 					if (!e.doit) {
 						docTree.setSelection(new TreeItem[] { selection });
@@ -86,8 +85,8 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
 	}
 
 	private void createDocMainForm() {
-		docMainForm = new Composite(sashForm, SWT.NONE);
-		docMainForm.setLayout(new FillLayout());
+		docMainForm = new SOSComposite(sashForm, SWT.NONE);
+//		docMainForm.setLayout(new FillLayout());
 	}
 
 	public boolean open(String filename, Collection files) {

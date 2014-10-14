@@ -1,7 +1,24 @@
 package com.sos.joe.jobdoc.editor.forms;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_FilesForm_Apply;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_FilesForm_New;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_FilesForm_Notes;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_FilesForm_Remove;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_FilesForm_OS;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_FilesForm_Type;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_FilesForm_Files;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_FilesForm_File;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_FilesForm_ID;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_FilesForm_OS;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_FilesForm_Type;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_FilesForm_File;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_FilesForm_ID;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_FilesForm_OS;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_TCl_FilesForm_Type;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_FilesForm_File;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_FilesForm_ID;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Tbl_FilesForm_Files;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -14,27 +31,22 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import com.sos.joe.xml.Utils;
-
-import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.dialog.classes.SOSGroup;
+import com.sos.dialog.classes.SOSLabel;
 import com.sos.joe.jobdoc.editor.listeners.FilesListener;
+import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
  
-public class FilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
-	private FilesListener						listener;
-	private DocumentationDom					dom;
+public class FilesForm extends JobDocBaseForm<FilesListener> {
 	private Group								group	= null;
 	@SuppressWarnings("unused") private Label	label6	= null;
 	private Text								tFile	= null;
-	@SuppressWarnings("unused") private Label	label9	= null;
+	@SuppressWarnings("unused") private Label	label9	= null; 
 	private Combo								cOS		= null;
 	@SuppressWarnings("unused") private Label	label10	= null;
 	private Combo								cType	= null;
 	@SuppressWarnings("unused") private Label	label11	= null;
 	private Text								tID		= null;
-	private Button								bApply	= null;
 	private Label								label	= null;
 	private Table								table	= null;
 	private Button								bNew	= null;
@@ -53,8 +65,6 @@ public class FilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 
 	private void initialize() {
 		createGroup();
-		setSize(new Point(716, 448));
-		setLayout(new FillLayout());
 		cOS.setItems(listener.getPlatforms());
 		cType.setItems(listener.getTypes());
 		setFileStatus(false);
@@ -81,12 +91,13 @@ public class FilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1);
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.numColumns = 5; // Generated
-		group = JOE_G_FilesForm_Files.Control(new Group(this, SWT.NONE));
+		group = JOE_G_FilesForm_Files.Control(new SOSGroup(this, SWT.NONE));
 		group.setLayout(gridLayout2); // Generated
-		label6 = JOE_L_FilesForm_File.Control(new Label(group, SWT.NONE));
+		label6 = JOE_L_FilesForm_File.Control(new SOSLabel(group, SWT.NONE));
 		tFile = JOE_T_FilesForm_File.Control(new Text(group, SWT.BORDER));
 		tFile.setLayoutData(gridData); // Generated
 		tFile.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+			@Override
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				Utils.setBackground(tFile, true);
 				setApplyStatus();
@@ -95,18 +106,20 @@ public class FilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		bApply = JOE_B_FilesForm_Apply.Control(new Button(group, SWT.NONE));
 		bApply.setLayoutData(gridData4); // Generated
 		bApply.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				applyFile();
 			}
 		});
-		label9 = JOE_L_FilesForm_OS.Control(new Label(group, SWT.NONE));
+		label9 = JOE_L_FilesForm_OS.Control(new SOSLabel(group, SWT.NONE));
 		createCOS();
-		label10 = JOE_L_FilesForm_Type.Control(new Label(group, SWT.NONE));
+		label10 = JOE_L_FilesForm_Type.Control(new SOSLabel(group, SWT.NONE));
 		createCType();
 		GridData gridData11 = new GridData(GridData.FILL, GridData.BEGINNING, false, false);
 		bNotes = JOE_B_FilesForm_Notes.Control(new Button(group, SWT.NONE));
 		bNotes.setLayoutData(gridData11); // Generated
 		bNotes.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				//                String tip = Messages.getTooltip("doc.note.text.files");
 				//                DocumentationForm.openNoteDialog(dom, listener.getFileElement(), "note", tip, true, !listener
@@ -114,14 +127,11 @@ public class FilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 				DocumentationForm.openNoteDialog(dom, listener.getFileElement(), "note", null, true, !listener.isNewFile(), JOE_B_FilesForm_Notes.label());
 			}
 		});
-		label11 = JOE_L_FilesForm_ID.Control(new Label(group, SWT.NONE));
+		label11 = JOE_L_FilesForm_ID.Control(new SOSLabel(group, SWT.NONE));
 		tID = JOE_T_FilesForm_ID.Control(new Text(group, SWT.BORDER));
 		tID.setLayoutData(gridData1); // Generated
-		tID.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				setApplyStatus();
-			}
-		});
+		tID.addModifyListener(modifyTextListener);
+
 		new Label(group, SWT.NONE);
 		label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 		label.setText("Label"); // Generated
@@ -131,6 +141,7 @@ public class FilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		table.setLayoutData(gridData6); // Generated
 		table.setLinesVisible(true); // Generated
 		table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (table.getSelectionCount() > 0) {
 					listener.selectFile(table.getSelectionIndex());
@@ -149,6 +160,7 @@ public class FilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		bNew = JOE_B_FilesForm_New.Control(new Button(group, SWT.NONE));
 		bNew.setLayoutData(gridData7); // Generated
 		bNew.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				listener.setNewFile();
 				setFileStatus(true);
@@ -161,6 +173,7 @@ public class FilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		bRemove = JOE_B_FilesForm_Remove.Control(new Button(group, SWT.NONE));
 		bRemove.setLayoutData(gridData9); // Generated
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (table.getSelectionCount() > 0) {
 					listener.removeFile(table.getSelectionIndex());
@@ -183,10 +196,12 @@ public class FilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		cOS = JOE_Cbo_FilesForm_OS.Control(new Combo(group, SWT.READ_ONLY));
 		cOS.setLayoutData(gridData2); // Generated
 		cOS.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				setApplyStatus();
 			}
 
+			@Override
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
@@ -203,24 +218,29 @@ public class FilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		cType = JOE_Cbo_FilesForm_Type.Control(new Combo(group, SWT.READ_ONLY));
 		cType.setLayoutData(gridData3); // Generated
 		cType.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				setApplyStatus();
 			}
 
+			@Override
 			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 	}
 
+	@Override
 	public void apply() {
 		if (isUnsaved())
 			apply();
 	}
 
+	@Override
 	public boolean isUnsaved() {
 		return bApply.getEnabled();
 	}
 
+	@Override
 	public void setToolTipText() {
 		//
 	}
@@ -242,7 +262,8 @@ public class FilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		bApply.setEnabled(false);
 	}
 
-	private void setApplyStatus() {
+	@Override
+	protected void setApplyStatus() {
 		bApply.setEnabled(tFile.getText().length() > 0);
 		getShell().setDefaultButton(bApply);
 	}
@@ -252,5 +273,23 @@ public class FilesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		bApply.setEnabled(false);
 		listener.fillFiles(table);
 		bRemove.setEnabled(table.getSelectionCount() > 0);
+	}
+
+	@Override
+	public void openBlank() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void applySetting() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean applyChanges() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -1,9 +1,21 @@
 package com.sos.joe.jobdoc.editor.forms;
+
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ScriptForm_JavaRB;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ScriptForm_JavaScriptRB;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ScriptForm_NoneRB;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ScriptForm_PerlScriptRB;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ScriptForm_ShellRB;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_B_ScriptForm_VBScriptRB;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_ScriptForm_Resource;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_G_ScriptForm_Script;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_ScriptForm_JavaClass;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_ScriptForm_Language;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_L_ScriptForm_ResourceID;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_T_ScriptForm_JavaClass;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -14,14 +26,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
-import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.dialog.classes.SOSGroup;
+import com.sos.dialog.classes.SOSLabel;
 import com.sos.joe.jobdoc.editor.listeners.DocumentationListener;
 import com.sos.joe.jobdoc.editor.listeners.ScriptListener;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
  
-public class ScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class ScriptForm extends JobDocBaseForm<ScriptListener> {
 	private ScriptListener						listener			= null;
 	private Group								group;
 	@SuppressWarnings("unused") private Label	label				= null;
@@ -60,8 +71,8 @@ public class ScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 
 	private void initialize() {
 		createGroup();
-		setSize(new Point(743, 447));
-		setLayout(new FillLayout());
+//		setSize(new Point(743, 447));
+//		setLayout(new FillLayout());
 		includeFilesForm.setSeparator(label3.getText());
 	}
 
@@ -74,19 +85,20 @@ public class ScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 		GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridData.horizontalIndent = 7; // Generated
 		GridLayout gl_group = new GridLayout(2, false);
-		group = JOE_G_ScriptForm_Script.Control(new Group(this, SWT.NONE));
+		group = JOE_G_ScriptForm_Script.Control(new SOSGroup(this, SWT.NONE));
 		group.setLayout(gl_group); // Generated
-		label = JOE_L_ScriptForm_Language.Control(new Label(group, SWT.NONE));
+		label = JOE_L_ScriptForm_Language.Control(new SOSLabel(group, SWT.NONE));
 		createComposite();
-		label1 = JOE_L_ScriptForm_JavaClass.Control(new Label(group, SWT.NONE));
+		label1 = JOE_L_ScriptForm_JavaClass.Control(new SOSLabel(group, SWT.NONE));
 		tJavaClass = JOE_T_ScriptForm_JavaClass.Control(new Text(group, SWT.BORDER));
 		tJavaClass.setLayoutData(gridData); // Generated
 		tJavaClass.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
+			@Override
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
 				listener.setJavaClass(tJavaClass.getText());
 			}
 		});
-		label3 = JOE_L_ScriptForm_ResourceID.Control(new Label(group, SWT.NONE));
+		label3 = JOE_L_ScriptForm_ResourceID.Control(new SOSLabel(group, SWT.NONE));
 		createCResource();
 		createIncludeFilesForm();
 	}
@@ -100,6 +112,7 @@ public class ScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 		composite.setLayout(gl_composite); // Generated
 		rbJava = JOE_B_ScriptForm_JavaRB.Control(new Button(composite, SWT.RADIO));
 		rbJava.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (rbJava.getSelection()) {
 					listener.setLanguage(ScriptListener.JAVA);
@@ -109,6 +122,7 @@ public class ScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 		});
 		rbJavascript = JOE_B_ScriptForm_JavaScriptRB.Control(new Button(composite, SWT.RADIO));
 		rbJavascript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (rbJavascript.getSelection()) {
 					listener.setLanguage(ScriptListener.JAVA_SCRIPT);
@@ -118,6 +132,7 @@ public class ScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 		});
 		rbPerlscript = JOE_B_ScriptForm_PerlScriptRB.Control(new Button(composite, SWT.RADIO));
 		rbPerlscript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (rbPerlscript.getSelection()) {
 					listener.setLanguage(ScriptListener.PERL);
@@ -127,6 +142,7 @@ public class ScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 		});
 		rbVBScript = JOE_B_ScriptForm_VBScriptRB.Control(new Button(composite, SWT.RADIO));
 		rbVBScript.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (rbVBScript.getSelection()) {
 					listener.setLanguage(ScriptListener.VB_SCRIPT);
@@ -136,6 +152,7 @@ public class ScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 		});
 		rbShell = JOE_B_ScriptForm_ShellRB.Control(new Button(composite, SWT.RADIO));
 		rbShell.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (rbShell.getSelection()) {
 					listener.setLanguage(ScriptListener.SHELL);
@@ -145,6 +162,7 @@ public class ScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 		});
 		rbNone = JOE_B_ScriptForm_NoneRB.Control(new Button(composite, SWT.RADIO));
 		rbNone.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (rbNone.getSelection()) {
 					listener.setLanguage(ScriptListener.NONE);
@@ -163,6 +181,7 @@ public class ScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 		cResource = JOE_Cbo_ScriptForm_Resource.Control(new Combo(group, SWT.NONE));
 		cResource.setLayoutData(gridData2); // Generated
 		cResource.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(ModifyEvent e) {
 				listener.setResource(cResource.getText());
 			}
@@ -180,16 +199,19 @@ public class ScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 		includeFilesForm.setLayoutData(gridData3); // Generated
 	}
 
+	@Override
 	public void setToolTipText() {
 		//
 	}
 
+	@Override
 	public void apply() {
 		includeFilesForm.apply();
 		if (listener != null)
 			listener.checkScript();
 	}
 
+	@Override
 	public boolean isUnsaved() {
 		boolean status = includeFilesForm.isUnsaved();
 		if (listener != null)
@@ -242,5 +264,23 @@ public class ScriptForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 				rbShell.setSelection(true);
 				break;
 		}
+	}
+
+	@Override
+	public void openBlank() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void applySetting() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean applyChanges() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"
