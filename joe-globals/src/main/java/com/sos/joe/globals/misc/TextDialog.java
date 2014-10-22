@@ -27,7 +27,6 @@ import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.options.Options;
 
-
 public class TextDialog extends Dialog {
 	private Shell	_shell						= null;
 	private Text	_styledText					= null;
@@ -85,7 +84,6 @@ public class TextDialog extends Dialog {
 				new ErrorLog("error in TextDilalog.setContent()", e);
 			}
 			catch (Exception ee) {
-				//tu nichts
 			}
 		}
 	}
@@ -93,11 +91,6 @@ public class TextDialog extends Dialog {
 	public void setContent(String content, int alignment) {
 		content = content.replaceAll("\r", "");
 		_styledText.setText(content);
-		//_styledText.setLineAlignment(0, _styledText.getLineCount(), alignment);
-		/*_styledText.append("test line1\r\n");
-		_styledText.append("test line2\r");
-		_styledText.append("\ntest line3\r\n");
-		*/
 		bEdit = true;
 	}
 
@@ -118,9 +111,11 @@ public class TextDialog extends Dialog {
 		Shell parent = getParent();
 		_shell = new Shell(parent, _shellStyle);
 		_shell.addShellListener(new ShellAdapter() {
+			@Override
 			public void shellClosed(final ShellEvent e) {
-				if (bSaveWindow)
+				if (bSaveWindow) {
 					Options.saveWindow(_shell, "xml_dialog");
+				}
 				else
 					if (!bSaveWindow && butApply.isEnabled()) {
 						close();
@@ -138,7 +133,6 @@ public class TextDialog extends Dialog {
 				new ErrorLog("error in TextDilalog.init()", e);
 			}
 			catch (Exception ee) {
-				//tu nichts
 			}
 			e.printStackTrace();
 			return;
@@ -149,19 +143,23 @@ public class TextDialog extends Dialog {
 	public String open(boolean bLoadWindow) {
 		try {
 			String s = "";
-			if (bLoadWindow)
+			if (bLoadWindow) {
 				Options.loadWindow(_shell, "xml_dialog");
-			else
+			}
+			else {
 				_shell.setSize(_size);
+			}
 			_shell.open();
 			Display display = _shell.getDisplay();
 			while (!_shell.isDisposed()) {
 				s = _styledText.getText();
-				if (!display.readAndDispatch())
+				if (!display.readAndDispatch()) {
 					display.sleep();
+				}
 			}
-			if (_styledText != null)
+			if (_styledText != null) {
 				_styledText.dispose();
+			}
 			return s;
 		}
 		catch (java.lang.IllegalArgumentException ex) {
@@ -193,10 +191,11 @@ public class TextDialog extends Dialog {
 	private void setDialog() {
 		final GridLayout gridLayout = new GridLayout();
 		_shell.setLayout(gridLayout);
-		GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true);
+		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true);
 		//_styledText = new StyledText(_shell, SWT.V_SCROLL | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
 		_styledText = new Text(_shell, SWT.V_SCROLL | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL);
 		_styledText.addVerifyListener(new VerifyListener() {
+			@Override
 			public void verifyText(final VerifyEvent e) {
 				//das ist CTRL-Z
 			}
@@ -224,10 +223,12 @@ public class TextDialog extends Dialog {
 			}
 		});*/
 		_styledText.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				//System.out.println("keyCod: " + e.keyCode);
-				if (e.keyCode == 122 && e.stateMask == SWT.CTRL)
+				if (e.keyCode == 122 && e.stateMask == SWT.CTRL) {
 					e.doit = false;
+				}
 				//System.out.println("char: " + String.valueOf(e.character)+ " -> " + e.character +"keycode= " + e.keyCode + " mask= "+e.stateMask);
 				if (e.keyCode == 97 && e.stateMask == SWT.CTRL) {
 					try {
@@ -240,9 +241,11 @@ public class TextDialog extends Dialog {
 			}
 		});
 		_styledText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
-				if (bEdit)
+				if (bEdit) {
 					butApply.setEnabled(true);
+				}
 			}
 		});
 		_styledText.setEditable(false);
@@ -250,6 +253,7 @@ public class TextDialog extends Dialog {
 		if (Options.getPropertyBoolean("editor.job.show.wizard")) {
 			butShowSiteInFuture = new Button(getShell(), SWT.CHECK);
 			butShowSiteInFuture.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(final SelectionEvent e) {
 					Options.setPropertyBoolean("editor.job.show.wizard", !butShowSiteInFuture.getSelection());
 				}
@@ -269,6 +273,7 @@ public class TextDialog extends Dialog {
 		butApply = new Button(composite, SWT.NONE);
 		butApply.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		butApply.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				applyBoardClick = true;
 				_shell.close();
@@ -278,9 +283,11 @@ public class TextDialog extends Dialog {
 		butApply.setText("Apply");
 		clipboardButton = new Button(composite, SWT.NONE);
 		clipboardButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				if (_styledText.getText().length() > 0)
+				if (_styledText.getText().length() > 0) {
 					clipBoardClick = true;
+				}
 				_shell.close();
 			}
 		});
@@ -293,6 +300,7 @@ public class TextDialog extends Dialog {
 		cboFunctions = new Combo(composite, SWT.NONE);
 		cboFunctions.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		cboFunctions.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				if (cboFunctions.getText().length() > 0) {
 					_styledText.append(Options.getProperty(scriptLanguage + cboFunctions.getText()));
@@ -304,6 +312,7 @@ public class TextDialog extends Dialog {
 		Button closeButton = new Button(composite, SWT.NONE);
 		closeButton.setText("Close");
 		closeButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			@Override
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				close();
 			}
@@ -368,8 +377,9 @@ public class TextDialog extends Dialog {
 	 * @param scriptLanguage the scriptLanguage to set
 	 */
 	public void setScriptLanguage(String scriptLanguage_) {
-		if (scriptLanguage_ != null)
+		if (scriptLanguage_ != null) {
 			this.scriptLanguage = scriptLanguage_.toLowerCase();
+		}
 		if (isShowFunctions()) {
 			cboFunctions.setText("..please select");
 			cboFunctions.setItems(Options.getPropertiesWithPrefix(scriptLanguage));
@@ -394,7 +404,8 @@ public class TextDialog extends Dialog {
 	 * @param butShowSiteInFuture the butShowSiteInFuture to set
 	 */
 	public void setShowWizzardInfo(boolean visible) {
-		if (butShowSiteInFuture != null)
+		if (butShowSiteInFuture != null) {
 			this.butShowSiteInFuture.setVisible(visible);
+		}
 	}
 }
