@@ -98,7 +98,7 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 		for (int i = 0; i < atts.getLength(); i++) {
 			String name = atts.getQName(i);
 			String value = atts.getValue(i);
-			if (name.equals("__comment__")) { // build element comment 
+			if (name.equals("__comment__")) { // build element comment  
 				if (qName.trim().equalsIgnoreCase("job")) {
 					strComment = _indent + "<!-- " + value + " -->\n";
 				}

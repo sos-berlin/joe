@@ -101,10 +101,21 @@ public class JobsListener extends JOEListener {
 		
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.NEW);
 	}*/
+	
+	private String getNewJobName(){
+		int i = 1;
+		String jobname = "job" + i;
+		while (existJobname(jobname)){
+			i++;
+			jobname = "job" + i;
+		}
+		return jobname;
+	}
 	public void newJob(Table table, boolean isOrder) {
 		// TODO: enable usage of Template for job-definition
+		String jobName = getNewJobName();
 		Element job = new Element("job");
-		Utils.setAttribute("name", "job" + (table.getItemCount() + 1), job);
+		Utils.setAttribute("name",   jobName, job);
 		if (isOrder) {
 			Utils.setAttribute("order", "yes", job);
 			Utils.setAttribute("stop_on_error", "no", job);
@@ -117,11 +128,10 @@ public class JobsListener extends JOEListener {
 		fillTable(table);
 		table.setSelection(table.getItemCount() - 1);
 		_main.updateJobs();
-		_main.expandItem("Job: " + "job" + (table.getItemCount()));
+		_main.expandItem("Job: " +  jobName);
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.NEW);
-		// TODO: switch to job-editor form
-	}
+ 	}
 
 	public Element createJobElement(java.util.HashMap attr) {
 		Element job = new Element("job");
