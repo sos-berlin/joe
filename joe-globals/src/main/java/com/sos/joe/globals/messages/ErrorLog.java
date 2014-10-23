@@ -43,6 +43,8 @@ public class ErrorLog extends Exception {
 		try {
 			init();
 			JobSchedulerException objJSE = new JobSchedulerException(msg, e);
+			objJSE.setIntStatus(JobSchedulerException.NONE);
+	 
 			String strMsg = msg + "\n" + objJSE.ExceptionText();
 			message(strMsg, SWT.ERROR);
 			logger.error(strMsg);
@@ -59,6 +61,7 @@ public class ErrorLog extends Exception {
         try {
             init();
             JobSchedulerException objJSE = new JobSchedulerException(msg, e);
+            objJSE.setIntStatus(JobSchedulerException.NONE);
             String strMsg = msg + "\n" + objJSE.ExceptionText();
             message(application, strMsg, SWT.ERROR);
             logger.error(strMsg);

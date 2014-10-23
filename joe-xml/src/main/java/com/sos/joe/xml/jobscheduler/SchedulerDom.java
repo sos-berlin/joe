@@ -206,13 +206,13 @@ public class SchedulerDom extends DomParser {
 	}
 
 	public boolean read(String filename) throws JDOMException, IOException {
-		return read(filename, Options.isValidate());
+        return read(filename, Options.isValidate());
 	}
 
 	public boolean read(String filename, boolean validate) throws JDOMException, IOException {
 		StringReader sr = new StringReader(readFile(filename));
-		Document doc = getBuilder(validate).build(sr);
-		sr.close();
+		Document doc = getBuilder(false).build(sr);
+ 		sr.close();
 		// doc.getRootElement().getChild("config").getChild("jobs").getChild("job").getChild("params").getChild("param")
 		if (doc.getDescendants() != null) {
 			Iterator descendants = doc.getDescendants();
@@ -334,8 +334,9 @@ public class SchedulerDom extends DomParser {
 		FormatHandler handler = new FormatHandler(this);
 		handler.setStyleSheet(styleSheet);
 		handler.setEnconding(encoding);
-		SAXOutputter saxo = new SAXOutputter(handler);
+ 		SAXOutputter saxo = new SAXOutputter(handler);
 		// saxo.output(getDoc());
+ 		 
 		saxo.output(doc);
 		try {
 			getBuilder(true).build(new StringReader(handler.getXML()));

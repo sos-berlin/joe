@@ -24,6 +24,22 @@ public class PeriodListener {
 		initWhenHolidays();
 	}
 
+	private void notifyChange(Element el){
+       _dom.setChanged(true);
+		
+		Element parent = Utils.getRunTimeParentElement(el);
+
+		String name = "";
+	    if (parent.getName().equals("order")){
+	    	name = Utils.getAttributeValue("job_chain", parent) + "," + Utils.getAttributeValue("id", parent);
+	    }else{
+	    	name = Utils.getAttributeValue("name", parent);
+	    }
+
+		_dom.setChangedForDirectory(parent.getName(), name, SchedulerDom.MODIFY);
+
+	}
+	
 	private void initWhenHolidays() {
 		_realNameWhenHolidays = new HashMap();
 		_realNameWhenHolidays.put("previous non holiday", "previous_non_holiday");
@@ -86,13 +102,8 @@ public class PeriodListener {
 								_period = new Element("period");
 								el.addContent(_period);
 								Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period, _dom);
-								_dom.setChanged(true);
 								if (el.getParentElement() != null) {
-									//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",el.getParentElement()), SchedulerDom.MODIFY);								
-									Element parent = Utils.getRunTimeParentElement(el);
-									String name = parent.getName().equals("order") || parent.getName().equals("order") ? Utils.getAttributeValue("job_chain",
-											parent) + "," + Utils.getAttributeValue("id", parent) : Utils.getAttributeValue("name", parent);
-									_dom.setChangedForDirectory(parent.getName(), name, SchedulerDom.MODIFY);
+									notifyChange(el);
 								}
 								break;
 							}
@@ -102,11 +113,7 @@ public class PeriodListener {
 				else {
 					//Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period, _dom);
 					Utils.setAttribute(node, Utils.getTime(maxHour, hours, minutes, seconds, false), _period);
-					Element parent = Utils.getRunTimeParentElement(_period);
-					String name = parent.getName().equals("order") || parent.getName().equals("add_order") ? Utils.getAttributeValue("job_chain", parent) + ","
-							+ Utils.getAttributeValue("id", parent) : Utils.getAttributeValue("name", parent);
-					_dom.setChanged(true);
-					_dom.setChangedForDirectory(parent.getName(), name, SchedulerDom.MODIFY);
+					notifyChange(_period);
 				}
 			if (bApply != null) {
 				bApply.setEnabled(true);
@@ -194,8 +201,8 @@ public class PeriodListener {
 	}
 
 	public void setLetRun(boolean letrun) {
-		Utils.setAttribute("let_run", letrun ? "yes" : "no", "no", _period);
-		_dom.setChanged(true);
+		Utils.setAttribute("let_run", letrun ? "yes" : "no", "no", _period,_dom);
+		notifyChange(_period);
 	}
 
 	public boolean getRunOnce() {
@@ -204,7 +211,7 @@ public class PeriodListener {
 
 	public void setRunOnce(boolean once) {
 		Utils.setAttribute("once", once, false, _period);
-		_dom.setChanged(true);
+		notifyChange(_period);
 	}
 
 	public void setAtElement(Element at) {
@@ -243,12 +250,8 @@ public class PeriodListener {
 	}
 
 	public void setWhenHoliday(String whenHoliday, Button bApply) {
-		//Utils.getAttributeValue("job_chain",_order)+","+Utils.getAttributeValue("id",_order)
-		Element parent = Utils.getRunTimeParentElement(_period);
-		String name = parent.getName().equals("order") || parent.getName().equals("order") ? Utils.getAttributeValue("job_chain", parent) + ","
-				+ Utils.getAttributeValue("id", parent) : Utils.getAttributeValue("name", parent);
-		//_dom.setChangedForDirectory("job", name, SchedulerDom.MODIFY);
-		_dom.setChangedForDirectory(parent.getName(), name, SchedulerDom.MODIFY);
+		notifyChange(_period);
+
 		if (whenHoliday == null || whenHoliday.length() == 0) {
 			Utils.setAttribute("when_holiday", "suppress", "suppress", _period);
 			return;
