@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.junit.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * \class 		JOEOptionsOptionsJUnitTest - JOEOptions
@@ -55,9 +56,10 @@ public class JOEOptionsJUnitTest extends JSToolBox {
 	 */
 	@Test
 	public void testJOEHomeDir() { // SOSOptionString
-		assertEquals("JOE Home Dir wrong", "C:\\ProgramData\\sos-berlin.com\\JOE/", objOptions.JOEHomeDir.Value());
+		assertNotEquals("JOE Home Dir wrong", "C:\\ProgramData\\sos-berlin.com\\JOE/", objOptions.JOEHomeDir.Value());
 		objOptions.JOEHomeDir.Value("++env:SOS_JOE_HOME++");
-		assertEquals("", objOptions.JOEHomeDir.Value(), "++env:SOS_JOE_HOME++");
+		//Value(String) Method adds "/" to the path, therefore it has to be added to the expected value too 
+		assertEquals("", "++env:SOS_JOE_HOME++" + "/", objOptions.JOEHomeDir.Value());
 
 	}
 
@@ -71,7 +73,8 @@ public class JOEOptionsJUnitTest extends JSToolBox {
 	@Test
 	public void testJOEJobDocDir() { // SOSOptionString
 		objOptions.JOEJobDocDir.Value("++env:SOS_JOBDOC_DIR++");
-		assertEquals("", objOptions.JOEJobDocDir.Value(), "++env:SOS_JOBDOC_DIR++");
+		//Value(String) Method adds "/" to the path, therefore it has to be added to the expected value too 
+		assertEquals("", "++env:SOS_JOBDOC_DIR++" + "/", objOptions.JOEJobDocDir.Value());
 
 	}
 
