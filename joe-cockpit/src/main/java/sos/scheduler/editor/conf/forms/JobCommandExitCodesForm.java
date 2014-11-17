@@ -271,11 +271,12 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 		//int index = tCommands.getSelectionIndex();
 		Element e = null;
 		//if (index == -1) {
+ 		String newJobChainName = "job_chain" + tCommands.getItemCount();
 		e = new Element("order");
-		e.setAttribute("job_chain", "job_chain" + tCommands.getItemCount());
+		e.setAttribute("job_chain", newJobChainName);
 		e.setAttribute("replace", "yes");
 		TableItem item = new TableItem(tCommands, SWT.NONE);
-		item.setText(new String[] { "order", "", "job_chain_" + tCommands.getItemCount(), "" });
+		item.setText(new String[] { "order", "", newJobChainName, "" });
 		listener.addCommand(e);
 		//		}
 	}

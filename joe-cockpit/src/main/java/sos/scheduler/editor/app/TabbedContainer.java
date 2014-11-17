@@ -29,13 +29,14 @@ import sos.scheduler.editor.conf.forms.SchedulerForm;
 
 import com.sos.event.service.forms.ActionsForm;
 import com.sos.joe.globals.interfaces.IEditor;
+import com.sos.joe.globals.interfaces.IEditorAdapter;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
  
-public class TabbedContainer implements IContainer {
+public class TabbedContainer implements IContainer, IEditorAdapter  {
 	private static final String							conImageEDITOR_SMALL_PNG	= "/sos/scheduler/editor/editor-small.png";
 	@SuppressWarnings("unused") private final String	conClassName				= "TabbedContainer";
 	@SuppressWarnings("unused") private final String	conSVNVersion				= "$Id$";
@@ -64,6 +65,10 @@ public class TabbedContainer implements IContainer {
 		initialize();
 	}
 
+	public void setSaveStatus() {
+	    MainWindow.setSaveStatus();
+	}
+	
 	private void initialize() {
 		folder.setSimple(false);
 		folder.setSize(new Point(690, 478));
@@ -153,7 +158,7 @@ public class TabbedContainer implements IContainer {
 	}
 
 	public ActionsForm openActions(String filename) {
-		ActionsForm actionsForm = new ActionsForm(folder, SWT.NONE);
+		ActionsForm actionsForm = new ActionsForm(this,folder, SWT.NONE);
 		if (actionsForm.open(filename, filelist)) {
 			CTabItem tab = newItem(actionsForm, actionsForm.getFilename());
 			tab.setImage(new Image(tab.getDisplay(), getClass().getResourceAsStream(conImageEDITOR_SMALL_PNG)));
@@ -599,7 +604,7 @@ public class TabbedContainer implements IContainer {
 	}
 
 	@Override public ActionsForm newActions() {
-		ActionsForm actions = new ActionsForm(folder, SWT.NONE);
+		ActionsForm actions = new ActionsForm(this,folder, SWT.NONE);
 		actions.openBlank();
 		newItem(actions, NEW_DOCUMENTATION_TITLE);
 		return actions;
@@ -611,4 +616,6 @@ public class TabbedContainer implements IContainer {
 	public ArrayList getFilelist() {
 		return filelist;
 	}
+
+    
 }

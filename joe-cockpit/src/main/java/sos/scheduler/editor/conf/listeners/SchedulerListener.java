@@ -333,7 +333,7 @@ public class SchedulerListener {
 		objTreeObjects.setText("JobScheduler Objects");
 		objTreeObjects.setData(conItemDataKeyKEY, "objects");
 		objTreeObjects.setExpanded(true);
-		TreeItem item = null;
+		TreeItem item = null; 
 		Element config = objSchedulerDom.getRoot().getChild("config");
 		if (type != SchedulerDom.DIRECTORY) {
 			item = new TreeItem(tree, SWT.NONE);
@@ -1359,8 +1359,7 @@ public class SchedulerListener {
 					runTreeItem.setData(conItemDataKeyKEY, "schedules_@_schedule");
 					runTreeItem.setData(conItemDataKeyCOPY_ELEMENT, job);
 				}
-			item = new TreeItem(runTreeItem, SWT.NONE);
-			//            item.setText(Messages.getLabel("treeitem.everyday"));
+	 		item = new TreeItem(runTreeItem, SWT.NONE);
 			item.setText(SOSJOEMessageCodes.JOE_M_SchedulerListener_EveryDay.label());
 			item.setData(new TreeData(JOEConstants.EVERYDAY, runtime, Options.getHelpURL("job.run_time.everyday")));
 			item.setData(conItemDataKeyKEY, "period");
@@ -1369,6 +1368,7 @@ public class SchedulerListener {
 				setDisabled(item); // item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 			}
 			objSchedulerForm.updateFont(item);
+	 
 			item = new TreeItem(runTreeItem, SWT.NONE);
 			//            item.setText(Messages.getLabel("treeitem.weekdays"));
 			item.setText(SOSJOEMessageCodes.JOE_M_SchedulerListener_Weekdays.label());

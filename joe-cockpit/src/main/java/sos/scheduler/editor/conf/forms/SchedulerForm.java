@@ -2,6 +2,7 @@ package sos.scheduler.editor.conf.forms;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
@@ -15,6 +16,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -73,22 +75,23 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		listener = new SchedulerListener(this, dom);
 	}
 
-	private void initialize() {
-		FillLayout fillLayout = new FillLayout();
-		fillLayout.spacing = 0;
-		fillLayout.marginWidth = 5;
-		fillLayout.marginHeight = 5;
-		setSize(new Point(783, 450));
-		setLayout(fillLayout);
-		createSashForm();
-	}
+
+    private void initialize() {
+        FillLayout fillLayout = new FillLayout();
+        fillLayout.spacing = 0;
+        fillLayout.marginWidth = 5;
+        fillLayout.marginHeight = 5;
+        setSize(new Point(783, 450));
+        setLayout(fillLayout);
+        createSashForm();
+    }
 
 	/**
 	 * This method initializes sashForm
 	 */
 	private void createSashForm() {
 		sashForm = new SashForm(this, SWT.NONE);
-		createGTree();
+ 		createGTree();
 		createCMainForm();
 		sashForm.setWeights(new int[] { 176, 698 });
 		Options.loadSash("main", sashForm);
@@ -180,7 +183,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	}
 
 	private void createCMainForm() {
-		cMainForm = new Composite(sashForm, SWT.NONE);
+ 		cMainForm = new Composite(sashForm, SWT.NONE);
 		cMainForm.setLayout(new FillLayout());
 		//		cMainForm.setLayout(new GridLayout());
 	}
@@ -266,9 +269,8 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		}
 	}
 
-	@Override public void updateJob(final String s) {
+	@Override public void updateJob(final String job) {
 		TreeItem item = tree.getSelection()[0];
-		String job = s;
 		TreeData data = (TreeData) item.getData();
 		org.jdom.Element element = data.getElement();
 		listener.setColorOfJobTreeItem(element, item);

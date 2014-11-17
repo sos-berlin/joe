@@ -125,7 +125,8 @@ public class EventListener {
 		fillEvent(table);
 
 		_dom.setChanged(true);
-	}
+	
+		}
 	
 	public void removeEvent(Table table) {
 	        if(table.getSelectionCount() > 0) {
