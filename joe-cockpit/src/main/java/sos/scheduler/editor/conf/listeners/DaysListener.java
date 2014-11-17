@@ -32,7 +32,10 @@ public class DaysListener {
 	/** 0 = weekdays 1 = monthdays 2 = ultimos */
 	private int					_type				= 0;
 	private static String[]		_elementName		= { "weekdays", "monthdays", "ultimos", "month" };
-	private static String[]		_weekdays			= { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+	private static String[]		_weekdays_en_short  = { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+    private static String[]     _weekdays_ger_short = { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" };
+    private static String[]     _weekdays_ger       = { "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag" };
+    private static String[]     _weekdays           = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 	private static String[]		_monthdays			= { "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th",
 			"15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd", "24th", "25th", "26th", "27th", "28th", "29th", "30th", "31st" };
 	private static String[]		_ultimos			= { "last day", "1 day", "2 days", "3 days", "4 days", "5 days", "6 days", "7 days", "8 days", "9 days",
@@ -289,8 +292,21 @@ public class DaysListener {
 
 	private int getDayNumber(String day) {
 		for (int i = 0; i < _days[_type].length; i++) {
-			if (_days[_type][i].equalsIgnoreCase(day))
-				return i + _offset[_type];
+            if (_days[_type][i].equalsIgnoreCase(day.toLowerCase())){
+                return i + _offset[_type];
+            }
+            if (_type==0) {
+                if (_weekdays_ger[i].equalsIgnoreCase(day.toLowerCase())){
+                    return i + _offset[_type];
+                }
+                if (_weekdays_ger_short[i].equalsIgnoreCase(day.toLowerCase())){
+                    return i + _offset[_type];
+                }
+                if (_weekdays_en_short[i].equalsIgnoreCase(day.toLowerCase())){
+                    return i + _offset[_type];
+                }
+            }
+             
 		}
 		return -1;
 	}

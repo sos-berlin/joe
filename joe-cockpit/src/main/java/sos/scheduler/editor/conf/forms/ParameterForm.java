@@ -191,7 +191,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		if (type == JOEConstants.JOB || type == JOEConstants.JOB_COMMANDS)
 			createEnvironment();
 		// Includes
-		if (type != JOEConstants.WEBSERVICE)
+		if ((type != JOEConstants.WEBSERVICE) && (type != JOEConstants.CONFIG))
 			createIncludes();
 		// test
 		// createParameterTabItem();

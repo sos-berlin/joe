@@ -700,6 +700,8 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		setMenuStatus();
 		container.setStatusInTitle();
 	}
+	
+	
 
 	public static boolean setMenuStatus() {
 		boolean saved = true;

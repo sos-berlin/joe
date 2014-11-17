@@ -42,6 +42,7 @@ import com.sos.joe.xml.Events.ActionsDom;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.resources.SOSProductionResource;
+import com.sos.resources.SOSResourceFactory;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public abstract class DomParser extends I18NBase {
 	public static final String				conSchema_SCHEDULER_EDITOR_SCHEMA		= "scheduler_editor_schema";
@@ -198,10 +199,11 @@ import com.sos.resources.SOSProductionResource;
 					s[0] = this.getClass().getClassLoader().getResource(SOSProductionResource.JOB_DOC_XSD.getFullName()).toString();
 				}
 				else {
-					if (this instanceof SchedulerDom)
-						s[0] = this.getClass().getClassLoader().getResource(SOSProductionResource.SCHEDULER_XSD.getFullName()).toString();
-					else
+					if (this instanceof SchedulerDom) {
+					    s[0] = this.getClass().getClassLoader().getResource(SOSProductionResource.SCHEDULER_XSD.getFullName()).toString();
+					}else {
 						s[0] = "";
+					}
 				}
 			return s;
 		}

@@ -22,6 +22,14 @@ import com.sos.i18n.annotation.I18NMsg;
 
 public class SOSJOEMessageCodes extends SOSComposite {
 
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_B_Remove                            = new SOSMsgJOE("JOE_B_Remove");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_B_Add                               = new SOSMsgJOE("JOE_B_Add");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_B_Ok                                = new SOSMsgJOE("JOE_B_Ok");
+    
+    
 	// BaseForm
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_G_BaseForm_BaseFiles							= new SOSMsgJOE("JOE_G_BaseForm_BaseFiles");
@@ -99,6 +107,10 @@ public class SOSJOEMessageCodes extends SOSComposite {
 	public static final SOSMsgJOE	JOE_Cbo_PreProcessingComposite_Favourites			= new SOSMsgJOE("JOE_Cbo_PreProcessingComposite_Favourites");
 
 	// ProcessClassesForm
+	@I18NMsg
+    public static final SOSMsgJOE   JOE_B_ProcessClassesForm_NewRemotScheduler          = new SOSMsgJOE("JOE_B_ProcessClassesForm_NewRemotScheduler");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_B_ProcessClassesForm_RemoveRemotScheduler       = new SOSMsgJOE("JOE_B_ProcessClassesForm_RemoveRemotScheduler");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_G_ProcessClassesForm_ProcessClasses				= new SOSMsgJOE("JOE_G_ProcessClassesForm_ProcessClasses");
 	@I18NMsg
