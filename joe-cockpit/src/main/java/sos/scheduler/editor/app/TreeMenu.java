@@ -394,7 +394,7 @@ public class TreeMenu {
 					}
 			}
 			// System.out.println("debug: \n" + newXML);
-			_dom.readString(newXML, true);
+			_dom.readString(newXML, false);
 			_gui.update();
 			_dom.setChanged(true);
 			Element elem = null;
