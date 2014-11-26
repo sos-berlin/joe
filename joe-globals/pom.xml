@@ -1,30 +1,26 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.sos-berlin</groupId>
-    <artifactId>joe</artifactId>
-    <version>1.8-SNAPSHOT</version>
-  </parent>
-  <groupId>com.sos-berlin.joe</groupId>
-  <artifactId>joe-globals</artifactId>
-  <name>joe-globals</name>
-  <description>global classes / objects for all joe components</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.sos-berlin</groupId>
+        <artifactId>joe</artifactId>
+        <version>1.8-SNAPSHOT</version>
+    </parent>
+    <groupId>com.sos-berlin.joe</groupId>
+    <artifactId>joe-globals</artifactId>
+    <name>joe-globals</name>
+    <description>global classes / objects for all joe components</description>
 
-    <!-- Bewirkt die Kopie in lib_release_unversioned_jar und lib_release_jar -->
-    <properties>
-        <setup.do.not.deploy>false</setup.do.not.deploy>
-        <setup.target.name>com.sos.joe.globals</setup.target.name>
-    </properties>
+    <dependencies>
 
-  <dependencies>
-  		<dependency>
-			<groupId>com.sos-berlin.commons</groupId>
-			<artifactId>common-resources</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>com.sos-berlin.commons</groupId>
+            <artifactId>common-resources</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-  
-          <dependency>
+
+        <dependency>
             <groupId>com.sos-berlin.jobscheduler</groupId>
             <artifactId>jobscheduler-helper</artifactId>
             <version>${project.version}</version>
@@ -59,91 +55,91 @@
             <artifactId>jobscheduler-object-model</artifactId>
             <version>${project.version}</version>
         </dependency>
-<!-- 
+        <!--
+                <dependency>
+                    <groupId>com.sos-berlin.jobscheduler</groupId>
+                    <artifactId>sos-mail</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>commons-codec</groupId>
+                    <artifactId>commons-codec</artifactId>
+                </dependency>
+
+                <dependency>
+                    <groupId>commons-httpclient</groupId>
+                    <artifactId>commons-httpclient</artifactId>
+                </dependency>
+
+                <dependency>
+                    <groupId>com.trilead</groupId>
+                    <artifactId>sos-trilead-ssh2</artifactId>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcprov-ext-jdk15on</artifactId>
+                </dependency>
+
+
+         -->
         <dependency>
-            <groupId>com.sos-berlin.jobscheduler</groupId>
-            <artifactId>sos-mail</artifactId>
-            <version>${project.version}</version>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
         </dependency>
 
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>commons-httpclient</groupId>
-			<artifactId>commons-httpclient</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.trilead</groupId>
-			<artifactId>sos-trilead-ssh2</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.eclipse.swt</groupId>
+            <artifactId>org.eclipse.swt.${swtSuffix}</artifactId>
+        </dependency>
 
         <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-ext-jdk15on</artifactId>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
         </dependency>
- 
-		
- -->
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-		</dependency>
 
-		<dependency>
-			<groupId>org.eclipse.swt</groupId>
-			<artifactId>org.eclipse.swt.${swtSuffix}</artifactId>
-		</dependency>
-		
- 		<dependency>
-			<groupId>commons-net</groupId>
-			<artifactId>commons-net</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>slide</groupId>
+            <artifactId>slide-webdavlib</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>slide</groupId>
-			<artifactId>slide-webdavlib</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.jdom</groupId>
-			<artifactId>jdom</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.eclipse.jface</groupId>
-			<artifactId>org.eclipse.jface</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>xerces</groupId>
-			<artifactId>xercesImpl</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.eclipse.jface</groupId>
+            <artifactId>org.eclipse.jface</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>xml-apis</groupId>
-			<artifactId>xml-apis</artifactId>
-			<!-- set to newer version than the managed one (in company.pom) -->
-			</dependency>
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>xalan</groupId>
-			<artifactId>xalan</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <!-- set to newer version than the managed one (in company.pom) -->
+        </dependency>
+
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
         </dependency>
 
-  
-  </dependencies>
+
+    </dependencies>
 </project>
