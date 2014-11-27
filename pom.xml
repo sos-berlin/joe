@@ -14,7 +14,6 @@
     <modules>
         <module>joe-cockpit</module>
         <module>ftp-profiles</module>
-        <module>joe-all</module>
         <!--module>joe-cockpit-sandbox</module-->
         <module>joe-event-service-cockpit</module>
         <module>joe-jobdoc-editor</module>
