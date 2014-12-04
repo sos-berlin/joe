@@ -250,23 +250,5 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			}
 		}
 		periodForm.setEnabled(enable);
-		//_gui.updateRunTime();
-		//holidayForm.setEnabled(enable);
-		//setEnableOfChildren(holidayForm, enable);
-		/*for(int i = 0; i < holidayForm.getChildren().length; i++) {
-			holidayForm.getChildren()[i].setEnabled(enable);
-		}*/
 	}
-	/* private void setEnableOfChildren(Composite form, boolean enable) {
-	 	for(int i = 0; i < form.getChildren().length; i++) {
-	 		if(form.getChildren()[i] instanceof Composite) {
-	 			org.eclipse.swt.widgets.Composite c = (Composite)form.getChildren()[i]; 
-	 			c.setEnabled(enable);    		
-	 			//if(c instanceof Composite)
-	 			if(c.getChildren() != null &&  c.getChildren().length > 0)
-	 				setEnableOfChildren(c, enable) ;
-	 		}
-	 	}
-	 }
-	*/
 } // @jve:decl-index=0:visual-constraint="10,10"

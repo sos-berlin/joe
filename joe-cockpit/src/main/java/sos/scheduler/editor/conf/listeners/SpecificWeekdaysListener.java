@@ -74,6 +74,9 @@ public class SpecificWeekdaysListener {
 		}
 	}
 
+ 
+	
+	
 	public void deleteDay(String day_string) {
 		String day = "";
 		String which = "";

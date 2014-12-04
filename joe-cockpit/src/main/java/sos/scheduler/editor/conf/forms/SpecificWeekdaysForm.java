@@ -25,7 +25,7 @@ public class SpecificWeekdaysForm extends SOSJOEMessageCodes implements IUpdateL
 	private ISchedulerUpdate			_main			= null;
 	private Group						group			= null;
 	private Combo						cWeekdays		= null;
-	private Button						bAdd			= null;
+    private Button                      bAdd            = null;
 	private List						lUsedDays		= null;
 	private Button						bRemove			= null;
 	private Label						label2			= null;
@@ -64,6 +64,10 @@ public class SpecificWeekdaysForm extends SOSJOEMessageCodes implements IUpdateL
 		createCombo();
 		GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.CENTER, false, false);
 		gridData2.widthHint = 90;
+		
+		
+
+		
 		bAdd = JOE_B_SpecificWeekdaysForm_AddWeekday.Control(new Button(group, SWT.NONE));
 		bAdd.setLayoutData(gridData2);
 		getShell().setDefaultButton(bAdd);

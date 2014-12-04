@@ -14,16 +14,13 @@ public class RunTimeListener {
 	//private       ISchedulerUpdate _gui        = null;
 	public RunTimeListener(SchedulerDom dom, Element job, ISchedulerUpdate gui) {
 		_dom = dom;
-		//_gui = gui;
+//		_gui = gui;
 		_job = job;
 		_runtime = _job.getChild("run_time");
 		checkRuntime();
 	}
 
 	public boolean isOnOrder() {
-		/*if(_job.getName().equals("order"))
-			return true;
-		 */
 		return Utils.isAttributeValue("order", _job);
 	}
 
@@ -92,13 +89,15 @@ public class RunTimeListener {
 				_dom.setChangedForDirectory(_job, SchedulerDom.MODIFY);
 		}
 	}
+	
+
 
 	/*
 	Runtime darf Starttime nicht im Attribut haben.
 	Der Starttime darf nur in Perioden definiert werden.
 	   Wenn ein run_time Element bereits definitionen aus der Starttime hat (repeat_time und single_time und absolute_repeat),
 	dann werden diese Attribute in every-Day gemoved.
-	 */
+		 */
 	private void checkRuntime() {
 		//repeat ins every_day moven
 		String repeat = Utils.getAttributeValue("repeat", _runtime);

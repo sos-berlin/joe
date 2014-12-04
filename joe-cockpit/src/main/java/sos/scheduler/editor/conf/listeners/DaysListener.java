@@ -364,6 +364,8 @@ public class DaysListener {
 		setUsedDays();
 	}
 
+	
+ 
 	public void addGroup(String group) {
 		String[] split = null;
 		//Wenn Vaterknoten holidays ist
@@ -561,7 +563,11 @@ public class DaysListener {
 			used = getUsedDays();
 			for (int i = 0; used != null && i < used.length; i++) {
 				TreeItem item = new TreeItem(parent, SWT.NONE);
-				item.setText(used[i]);
+				if (used[i].equals("1 2 3 4 5 6 7")){
+                    item.setText("Every Day");
+				}else {
+	                item.setText(used[i]);
+				}
 				item.setData("max_occur", "1");
 				item.setData("key", used[i] + "_@_" + _dayElements[i].getName());
 				item.setData("copy_element", _dayElements[i]);
