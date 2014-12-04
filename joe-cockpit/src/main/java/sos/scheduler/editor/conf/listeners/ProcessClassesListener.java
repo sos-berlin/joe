@@ -81,23 +81,23 @@ public class ProcessClassesListener {
     }
     
     public void fillRemoteSchedulerTable(Table tableRemoteScheduler) {
-        initRemoteScheduler();
         
-        tableRemoteScheduler.removeAll();
-        if (_listRemoteScheduler != null) {
-            for (Iterator it = _listRemoteScheduler.iterator(); it.hasNext();) {
-                Element e = (Element) it.next();
-                TableItem item = new TableItem(tableRemoteScheduler, SWT.NONE);
-                String remoteScheduler = Utils.getAttributeValue("remote_scheduler", e);
-                String[] s = remoteScheduler.split(":");
-                if ( s.length > 0 ) {
-                    item.setText(0, s[0]);
-                }
-                if ( s.length > 1 ) {
-                    item.setText(1, s[1]);
+            
+            initRemoteScheduler();
+            
+            tableRemoteScheduler.removeAll();
+            if (_listRemoteScheduler != null) {
+                for (Iterator it = _listRemoteScheduler.iterator(); it.hasNext();) {
+                    Element e = (Element) it.next();
+                    TableItem item = new TableItem(tableRemoteScheduler, SWT.NONE);
+                    String host = getRemoteHost(e);
+                    String port = getRemotePort(e);
+
+                    item.setText(0, host);
+                    item.setText(1, port);
                 }
             }
-        }
+        
     }
 
     public Element selectProcessClass(int index) {
@@ -121,27 +121,35 @@ public class ProcessClassesListener {
 		return name;
 	}
 
+	public String getRemoteHost(Element ee) {
+        String host = Utils.getAttributeValue("remote_scheduler", ee);
+        try {
+            host = host.substring(0, host.lastIndexOf(":"));
+        }
+        catch (Exception e) {
+            host = "";
+        }
+        return host.trim();
+    }
+
 	public String getRemoteHost() {
-		String host = Utils.getAttributeValue("remote_scheduler", _class);
-		try {
-			host = host.substring(0, host.indexOf(":"));
-		}
-		catch (Exception e) {
-			host = "";
-		}
-		return host.trim();
+		return getRemoteHost(_class);
 	}
 
-	public String getRemotePort() {
-		String port = Utils.getAttributeValue("remote_scheduler", _class);
-		try {
-			port = port.substring(port.indexOf(":") + 1);
-		}
-		catch (Exception e) {
-			port = "";
-		}
-		return port.trim();
-	}
+    public String getRemotePort(Element ee) {
+        String port = Utils.getAttributeValue("remote_scheduler", ee);
+        try {
+            port = port.substring(port.lastIndexOf(":") + 1);
+        }
+        catch (Exception e) {
+            port = "";
+        }
+        return port.trim();
+    }
+
+    public String getRemotePort() {
+        return getRemotePort(_class);
+    }
 
     
 	public String getMaxProcesses() {
@@ -178,7 +186,7 @@ public class ProcessClassesListener {
 
 	public void newProcessClass() {
 		_class = new Element("process_class");
-        initRemoteScheduler();
+       // initRemoteScheduler();
 
 	}
 
@@ -208,7 +216,10 @@ public class ProcessClassesListener {
  
 
     public void applyRemoteSchedulerTable(Table tableRemoteScheduler) {
-        _listRemoteScheduler.clear();
+        if (tableRemoteScheduler.getItemCount() > 0) {
+            this.initRemoteScheduler();
+            _listRemoteScheduler.clear();
+        }
         for (int i = 0; i < tableRemoteScheduler.getItemCount(); i++) {
             TableItem item = tableRemoteScheduler.getItems()[i];
             _remoteScheduler = new Element("remote_scheduler");
