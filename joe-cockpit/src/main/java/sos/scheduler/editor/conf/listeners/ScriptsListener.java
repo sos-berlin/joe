@@ -48,6 +48,7 @@ public class ScriptsListener {
 				item.setText(1, Utils.getAttributeValue("ordering", monitor));
 			}
 		}
+		_main.updateScripts();
 	}
 
 	public void newScript(Table table, String name) {
