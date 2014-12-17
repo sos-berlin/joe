@@ -78,9 +78,14 @@
             <artifactId>commons-net</artifactId>
         </dependency>
 
-        <dependency>
+        <!--  https://change.sos-berlin.com/browse/JITL-128 -->
+        <!-- dependency>
             <groupId>slide</groupId>
             <artifactId>slide-webdavlib</artifactId>
+        </dependency-->
+        <dependency>
+            <groupId>webdavclient4j</groupId>
+            <artifactId>webdavclient4j-core</artifactId>
         </dependency>
 
         <dependency>
