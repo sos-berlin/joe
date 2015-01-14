@@ -19,7 +19,6 @@ import static org.junit.Assert.assertEquals;
 public class SOSResourceFactoryTest {
 
     @Test
-    @Ignore("Test set to Ignore for later examination")
     public void testAsFile() throws IOException {
         File f = SOSResourceFactory.asFile("com/sos/resources/test.txt");
         assertEquals("this file contains only dummy text.", Files.toString(f, Charset.defaultCharset()));
