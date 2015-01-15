@@ -291,8 +291,8 @@ public class SchedulerListener {
                                 item.setExpanded(true);
                             }
                         }
+        tree.setSelection(new TreeItem[] { tree.getItem(0) });
         if (select){
-            tree.setSelection(new TreeItem[] { tree.getItem(0) });
             treeSelection(tree, c);
         }
     }

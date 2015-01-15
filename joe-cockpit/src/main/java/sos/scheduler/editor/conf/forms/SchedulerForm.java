@@ -273,8 +273,8 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		TreeItem item = tree.getSelection()[0];
 		TreeData data = (TreeData) item.getData();
 		if (data != null){
-		org.jdom.Element element = data.getElement();
-		listener.setColorOfJobTreeItem(element, item);
+		   org.jdom.Element element = data.getElement();
+		   listener.setColorOfJobTreeItem(element, item);
 		item.setText(job);
 		}
 	}
