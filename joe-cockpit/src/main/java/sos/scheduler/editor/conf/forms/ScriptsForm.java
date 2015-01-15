@@ -88,6 +88,16 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				scriptsGroup.setEnabled(false);
 			}
 			createTable();
+			
+			butNew = JOE_B_ScriptsForm_New.Control(new Button(scriptsGroup, SWT.NONE));
+			butNew.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(final SelectionEvent e) {
+					addMonitor();
+				}
+			});
+			butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+			
+			
 			butRemove = JOE_B_ScriptsForm_Remove.Control(new Button(scriptsGroup, SWT.NONE));
 			butRemove.setEnabled(false);
 			butRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -171,13 +181,7 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			tableColumn1.setWidth(281);
 			TableColumn tableColumn2 = JOE_TCl_ScriptsForm_Ordering.Control(new TableColumn(table, SWT.NONE));
 			tableColumn2.setWidth(205);
-			butNew = JOE_B_ScriptsForm_New.Control(new Button(scriptsGroup, SWT.NONE));
-			butNew.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
-					addMonitor();
-				}
-			});
-			butNew.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+			
 		}
 		catch (Exception e) {
 			try {
