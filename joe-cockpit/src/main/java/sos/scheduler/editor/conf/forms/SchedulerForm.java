@@ -144,7 +144,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 				dragSourceItem[0] = null;
 			}
 		});
-		tree.addListener(SWT.MouseUp, new Listener() {
+	/*tree.addListener(SWT.MouseUp, new Listener() {
 			@Override public void handleEvent(final Event event) {
 				if (event.button == 1) { // left mouse button
 					Point point = new Point(event.x, event.y);
@@ -162,8 +162,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 				}
 			}
 		});
-		/*
-		 *
+		 */
 		tree.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
 				if (tree.getSelectionCount() > 0) {
@@ -179,7 +178,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 				}
 			}
 		});
-		 */
+		  
 	}
 
 	private void createCMainForm() {
