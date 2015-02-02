@@ -20,8 +20,10 @@ public class OrdersListener {
 	private Element				_config;
 	private List				_orders;
 	private List				_orders2;
+	private Element             selectedJobchain; 
 
-	public OrdersListener(SchedulerDom dom, ISchedulerUpdate update) {
+	public OrdersListener(SchedulerDom dom, ISchedulerUpdate update, Element selectedJobchain_) {
+		selectedJobchain = selectedJobchain_;
 		_dom = dom;
 		_main = update;
 		if (_dom.isLifeElement())
@@ -48,17 +50,21 @@ public class OrdersListener {
 
 	public void fillTable(Table table) {
 		table.removeAll();
+		String selectedjobChainName = Utils.getAttributeValue("name", selectedJobchain);
 		if (_orders != null) {
 			for (Iterator it = _orders.iterator(); it.hasNext();) {
 				Object o = it.next();
 				if (o instanceof Element) {
 					Element e = (Element) o;
-					TableItem item = new TableItem(table, SWT.NONE);
-					item.setData(e);
-					String id = Utils.getAttributeValue("id", e);
-					item.setText(0, id);
-					if (!Utils.isElementEnabled("commands", _dom, e)) {
-						item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+					String ordersJobchainName = Utils.getAttributeValue("job_chain", e);
+					if (selectedjobChainName.equals("") || selectedjobChainName.equals(ordersJobchainName)){
+						TableItem item = new TableItem(table, SWT.NONE);
+						item.setData(e);
+						String id = Utils.getAttributeValue("id", e);
+						item.setText(0, id);
+						if (!Utils.isElementEnabled("commands", _dom, e)) {
+							item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+						}
 					}
 				}
 			}
@@ -66,12 +72,16 @@ public class OrdersListener {
 				Object o = it.next();
 				if (o instanceof Element) {
 					Element e = (Element) o;
-					TableItem item = new TableItem(table, SWT.NONE);
-					item.setData(e);
-					String id = Utils.getAttributeValue("id", e);
-					item.setText(0, id);
-					if (!Utils.isElementEnabled("commands", _dom, e)) {
-						item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+					String ordersJobchainName = Utils.getAttributeValue("job_chain", e);
+
+					if (selectedjobChainName.equals("") || selectedjobChainName.equals(ordersJobchainName)){
+						TableItem item = new TableItem(table, SWT.NONE);
+						item.setData(e);
+						String id = Utils.getAttributeValue("id", e);
+						item.setText(0, id);
+						if (!Utils.isElementEnabled("commands", _dom, e)) {
+							item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+						}
 					}
 				}
 			}

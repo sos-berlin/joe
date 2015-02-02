@@ -512,8 +512,9 @@ public class TreeMenu {
 							}
 							else
 								if (name.equals(SchedulerListener.ORDERS)) {
+									TreeData data = (TreeData) _tree.getSelection()[0].getData();
 									sos.scheduler.editor.conf.listeners.OrdersListener listener = new sos.scheduler.editor.conf.listeners.OrdersListener(
-											(SchedulerDom) _dom, _gui);
+											(SchedulerDom) _dom, _gui, data.getElement());
 									listener.newCommands(sos.scheduler.editor.conf.forms.OrdersForm.getTable());
 								}
 								else

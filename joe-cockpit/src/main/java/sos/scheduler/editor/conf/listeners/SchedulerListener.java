@@ -1199,7 +1199,7 @@ public class SchedulerListener {
                             new MailForm(c, SWT.NONE, objSchedulerDom, objElement);
                             break;
                         case JOEConstants.ORDERS:
-                            new OrdersForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm);
+                            new OrdersForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm, objElement);
                             break;
                         case JOEConstants.ORDER:
                             new OrderForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);

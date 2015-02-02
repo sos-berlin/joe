@@ -42,9 +42,7 @@ public class DetailsListener {
 	private Document	doc				= null;
 	private String		xmlFilename		= null;
 	private String		orderId			= null;
-	/** Wer hat ihn aufgerufen? */
 	private int			type			= -1;
-	/** Falls Konfigurationsdatei neu generiert wird */
 	private String		encoding		= "ISO-8859-1";
 	private DetailDom	dom				= null;
 	private boolean		hasError		= false;
@@ -527,42 +525,7 @@ public class DetailsListener {
 							list.add(noteen);
 					}
 				}
-				//list.add(param);
-				/*list.add(param);
-
-				if(params.size() > (params.indexOf(param) + 1)) {
-				String paramNoteDE = item.getData("parameter_description_de") != null ? item.getData("parameter_description_de").toString(): "";
-				Element noteDE = (Element)(params.get(params.indexOf(param) + 1)) ;
-				if(noteDE.getName().equalsIgnoreCase("note")) {
-					list.add(noteDE);
-				} else if(noteDE.getChildren().size() == 0) {			
-					//setNoteText(noteDE, paramNoteDE);
-
-					Element note = new Element("note");
-					Utils.setAttribute("language", "de", note);										
-					setNoteText(note, paramNoteDE);
-					list.add(note);
-				}
-				}
-				 */
-				/*if(params.size() > (params.indexOf(param) + 2)) {
-				String paramNoteEN = item.getData("parameter_description_en") != null ? item.getData("parameter_description_en").toString(): "";
-				Element noteEN = (Element)(params.get(params.indexOf(param) + 2)) ;
-				if(!noteEN.getName().equalsIgnoreCase("note") && noteEN.getChildren().size() == 0 ) {			
-					setNoteText(noteEN, paramNoteEN);				
-				}
-				}*/
-				/*String name = item.getText(0);
-				String value = item.getText(1) != null ? item.getText(1) : "";
-
-
-				String paramNoteDE = item.getData("parameter_description_de") != null ? item.getData("parameter_description_de").toString(): "";
-				String paramNoteEN = item.getData("parameter_description_en") != null ? item.getData("parameter_description_en").toString(): "";
-
-				setParam(name, value, paramNoteDE, "", "de");
-				setParam(name, value, paramNoteEN, "", "en");
-
-				 */
+ 
 			}
 			params.removeAll(params);
 			//params.addAll(list); 
@@ -581,30 +544,7 @@ public class DetailsListener {
 		}
 	}
 
-	/*public void addParam(String name, String value, String note, String noteText, String language) {
-		//neues Element
-		Element param = new Element("param");
-		Utils.setAttribute("name", name, param);
-		Utils.setAttribute("value", value, param);	
-		if(noteText != null || noteText.trim().length() > 0) {
-			//org.jdom.CDATA txt = new org.jdom.CDATA(noteText); 
-			org.jdom.Text txt = new org.jdom.Text(noteText);
-			param.addContent(txt);
-		}
-		Element newNoteDE = new Element("note");
-
-		Utils.setAttribute("language", "de", newNoteDE);
-		Element newNoteEN = new Element("note");
-		Utils.setAttribute("language", "en", newNoteEN);
-		//Reihenfolge ist wichtig
-		params.add(param);
-		params.add(newNoteDE);
-		params.add(newNoteEN);
-		if(language.equals("de"))
-			setNoteText(newNoteDE, note);
-		else
-			setNoteText(newNoteEN, note);
-	}*/
+ 
 	public void deleteParameter(Table table, int index) {
 		String name = table.getItem(index).getText(0);
 		for (int i = 0; i < params.size(); i++) {
@@ -948,6 +888,8 @@ public class DetailsListener {
 		monitor.addContent(script);
 		job.addContent(monitor);
 		dom.setChanged(true);
+		
+		
 		if (dom.isDirectory() || dom.isLifeElement())
 			dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.MODIFY);
 	}

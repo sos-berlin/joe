@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.jdom.Attribute;
 import org.jdom.Element;
 
 import sos.scheduler.editor.app.ContextMenu;
@@ -34,17 +35,18 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private Button			bRemoveOrder	= null;
 	private Label			label			= null;
 	private SchedulerDom	_dom			= null;
-
+ 
 	// public OrdersForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update, SchedulerListener mainListener) {
-	public OrdersForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update) {
+	public OrdersForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate update,Element selectedJobchain_) {
 		super(parent, style);
 		_dom = dom;
-		// this.mainListener = mainListener;
-		listener = new OrdersListener(dom, update);
+ 		listener = new OrdersListener(dom, update, selectedJobchain_);
 		initialize();
 		setToolTipText();
 		listener.fillTable(table);
 	}
+	
+	 
 
 	private void initialize() {
 		this.setLayout(new FillLayout());

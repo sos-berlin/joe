@@ -21,8 +21,8 @@ public class ScriptsListener {
 
 	public ScriptsListener(SchedulerDom dom, ISchedulerUpdate update, Element parent) {
 		_dom = dom;
-		_main = update;
-		_parent = parent;
+		_parent=parent;
+		_main = update;		
 		_list = parent.getChildren("monitor");
 	}
 

@@ -97,14 +97,12 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 						return;
 					butRemove.setEnabled(listener.delete(table));
 					table.deselectAll();
-					// txtName.setText("");
-					// txtOrdering.setText("");
+
 				}
 			});
 			butRemove.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			label = new Label(scriptsGroup, SWT.SEPARATOR | SWT.HORIZONTAL);
 			label.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-			//			label.setText("Label");
 		}
 		catch (Exception e) {
 			try {
@@ -151,12 +149,7 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					if (table.getSelectionCount() > 0) {
-						/*TableItem item = table.getSelection()[0];
-						txtName.setText(item.getText(0));
-						txtOrdering.setText(item.getText(1));		
-						txtName.setBackground(null);
-						txtOrdering.setBackground(null);
-						*/
+
 						if (Utils.isElementEnabled("job", dom, (Element) e.item.getData())) {
 							butRemove.setEnabled(true);
 						}
@@ -194,18 +187,11 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	private void addMonitor() {
-		// if(table.getSelectionCount() > 0)
-		// tabell, alte name, ordering,neue name
-		// listener.save(table, table.getSelection()[0].getText(0), txtOrdering.getText(),txtName.getText() );
-		// else
-		// listener.save(table, txtName.getText(), txtOrdering.getText(), null );
-		// txtName.setText("");
-		// txtOrdering.setText("");
-		// listener.save(table, "monitor" + table.getItemCount() , String.valueOf(table.getItemCount()), null );
+
 		listener.save(table, MONITOR + table.getItemCount(), String.valueOf(table.getItemCount()), null);
 		butRemove.setEnabled(false);
 		table.deselectAll();
-		// txtName.setFocus();
+
 	}
 
 	public static Table getTable() {
