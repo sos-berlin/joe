@@ -278,7 +278,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 
 	@Override public void updateJobs() {
 		// if(tree.getSelection()[0].getText().startsWith("Job Chain")) {
-		if (!tree.getSelection()[0].getText().startsWith("Jobs")) {
+		if (!tree.getSelection()[0].getText().startsWith(SchedulerListener.JOBS)) {
 			// Assistent: Der Aufruf erfolgte über den Assistenten. Hier ist nicht das Element "Jobs" im Tree selektiert
 			// sondern das Element "Job Chains".
 			updateJobs_();
