@@ -710,7 +710,7 @@ public class JobListener extends JOEListener {
 		return retVal;
 	}
 
-	public String[] getIncludes() {
+	private String[] getIncludes() {
 		if (_script != null) {
 			List includeList = _script.getChildren("include");
 			String[] includes = new String[includeList.size()];
@@ -720,9 +720,9 @@ public class JobListener extends JOEListener {
 				Element include = (Element) it.next();
 				String file = "";
 				if (include.getAttribute("live_file") != null)
-					file = include.getAttributeValue("live_file");
+					file = "live_file:" + include.getAttributeValue("live_file");
 				else
-					file = include.getAttributeValue("file");
+					file = "file:" + include.getAttributeValue("file");
 				includes[i++] = file == null ? "" : file;
 			}
 			return includes;
@@ -764,10 +764,17 @@ public class JobListener extends JOEListener {
 		}
 	}
 
-	public void addInclude(final String filename) {
+	public void addInclude(final String filename_) {
+		String filename = filename_;
 		if (_script != null) {
+			
+			if (!filename.contains("live_file:") && !filename.contains("file:")){
+				filename = "file:" + filename;
+			}
+			String [] incFilename = filename.split(":");
+			
 			List includes = _script.getChildren("include");
-			_script.addContent(includes.size(), new Element("include").setAttribute("file", filename));
+			_script.addContent(includes.size(), new Element("include").setAttribute(incFilename[0], incFilename[1]));
 			_dom.setChanged(true);
 			setChangedForDirectory();
 		}
