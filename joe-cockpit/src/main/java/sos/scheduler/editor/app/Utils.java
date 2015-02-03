@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
@@ -991,6 +992,121 @@ public class Utils {
 			}
 		}
 		return true;
+	}
+	
+	public static String elementIsUsed(String name, SchedulerDom _dom, int type, String which) throws JDOMException {
+  
+			if (which == null)
+				which = "";
+			if (type == JOEConstants.JOB_CHAIN) {
+				String strObject = Messages.getLabel(JOE_L_Job_chain);
+				String strM = Messages.getLabel(JOE_L_Object_In_Use);
+				String strException = String.format(strM, strObject, name);
+				XPath x3 = XPath.newInstance("//order[@job_chain='" + name + "']");
+				List<Element> listOfElement_3 = x3.selectNodes(_dom.getDoc());
+				if (!listOfElement_3.isEmpty())
+					return strException;
+				XPath x4 = XPath.newInstance("//add_order[@job_chain='" + name + "']");
+				List<Element> listOfElement_4 = x4.selectNodes(_dom.getDoc());
+				if (!listOfElement_4.isEmpty())
+					return strException;
+			}
+			else
+				if (type == JOEConstants.JOB_CHAINS) {
+					String strObject = Messages.getLabel(JOE_L_Job_chain);
+					String strM = Messages.getLabel(JOE_L_Object_In_Use);
+					String strException = String.format(strM, strObject, name);
+					XPath x3 = XPath.newInstance("//order[@job_chain='" + name + "']");
+					List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+					if (!listOfElement_3.isEmpty())
+						return strException;
+					XPath x4 = XPath.newInstance("//add_order[@job_chain='" + name + "']");
+					List listOfElement_4 = x4.selectNodes(_dom.getDoc());
+					if (!listOfElement_4.isEmpty())
+						return strException;
+				}
+				else
+					if (type == JOEConstants.JOB) {
+						String strObject = Messages.getLabel(JOE_L_Job);
+						String strM = Messages.getLabel(JOE_L_Object_In_Use);
+						String strException = String.format(strM, strObject, name);
+						if (which != null && which.equalsIgnoreCase("close")) {
+ 							XPath x0 = XPath.newInstance("//job[@name='" + name + "']");
+							Element e = (Element) x0.selectSingleNode(_dom.getDoc());
+							boolean isOrder = Utils.getAttributeValue("order", e).equalsIgnoreCase("yes");
+							if (!isOrder) {
+								XPath x3 = XPath.newInstance("//job_chain_node[@job='" + name + "']");
+								List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+								if (!listOfElement_3.isEmpty())
+									return strException;
+							}
+						}
+						else {
+							if (name.length() == 0)
+								return "";
+							//
+							XPath x0 = XPath.newInstance("//job[@name='" + name + "']");
+							Element e = (Element) x0.selectSingleNode(_dom.getDoc());
+							boolean isOrder = Utils.getAttributeValue("order", e).equalsIgnoreCase("yes");
+							if (isOrder) {
+								XPath x = XPath.newInstance("//job[@name='" + name + "']/run_time[@let_run='yes' or @once='yes' or @single_start]");
+								List listOfElement = x.selectNodes(_dom.getDoc());
+								if (!listOfElement.isEmpty())
+									return "An order job [name=" + name + "] may not use single_start-, start_once- and "
+											+ "let_run attributes in Runtime Elements. Should these attributes be deleted?";
+								XPath x2 = XPath.newInstance("//job[@name='" + name + "']/run_time//period[@let_run='yes' or @single_start]");
+								List listOfElement_2 = x2.selectNodes(_dom.getDoc());
+								if (!listOfElement_2.isEmpty())
+									return "An order job [name=" + name + "] may not use single_start-, start_once- and "
+											+ "let_run attributes in Runtime Elements. Should these attributes be deleted?";
+							}
+							XPath x3 = XPath.newInstance("//job_chain_node[@job='" + name + "']");
+							List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+							if (!listOfElement_3.isEmpty()) {
+									return strException;
+							}
+						}
+					}
+					else
+						if (type == JOEConstants.JOBS) {
+							String strObject = Messages.getLabel(JOE_L_Job);
+							String strM = Messages.getLabel(JOE_L_Object_In_Use);
+							String strException = String.format(strM, strObject, name);
+							XPath x3 = XPath.newInstance("//job_chain_node[@job='" + name + "']");
+							List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+							if (!listOfElement_3.isEmpty())
+								return strException;
+						}
+						else
+							if (type == JOEConstants.LOCKS) {
+								String strObject = Messages.getLabel(JOE_L_Lock);
+								String strM = Messages.getLabel(JOE_L_Object_In_Use);
+								String strException = String.format(strM, strObject, name);
+								XPath x3 = XPath.newInstance("//lock.use[@lock='" + name + "']");
+								List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+								return strException;
+							}
+							else
+								if (type == JOEConstants.PROCESS_CLASSES) {
+									String strObject = Messages.getLabel(JOE_L_Process_Class);
+									String strM = Messages.getLabel(JOE_L_Object_In_Use);
+									String strException = String.format(strM, strObject, name);
+									XPath x3 = XPath.newInstance("//job[@process_class='" + name + "']");
+									List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+									if (!listOfElement_3.isEmpty())
+										return strException;
+								}
+								else
+									if (type == JOEConstants.SCHEDULES || type == JOEConstants.SCHEDULE) {
+										String strObject = Messages.getLabel(JOE_L_Schedule);
+										String strM = Messages.getLabel(JOE_L_Object_In_Use);
+										String strException = String.format(strM, strObject, name);
+										XPath x3 = XPath.newInstance("//run_time[@schedule='" + name + "']");
+										List listOfElement_3 = x3.selectNodes(_dom.getDoc());
+										return strException;
+									}
+ 
+		return "";
 	}
 
 	/*public static void setUndoElement(Element elem) {

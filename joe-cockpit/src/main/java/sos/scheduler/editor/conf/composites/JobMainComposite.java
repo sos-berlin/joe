@@ -19,8 +19,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.ContextMenu;
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
@@ -47,6 +49,7 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 	private Label										label				= null;
 	private int											intComboBoxStyle	= SWT.NONE;
 	private GridLayout									gridLayout			= null;
+	private String isUsed;
 
 	/**
 	 * Create the composite.
@@ -72,7 +75,7 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 		tbxJobName.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				if (!init) {
-					e.doit = Utils.checkElement(objDataProvider.getJobName(), objDataProvider.get_dom(), JOEConstants.JOB, null);
+				//	e.doit = Utils.checkElement(objDataProvider.getJobName(), objDataProvider.get_dom(), JOEConstants.JOB, null);
 				}
 			}
 		});
@@ -172,8 +175,13 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 
 	public void init() {
 		init = true;
+		try {
+			 isUsed = Utils.elementIsUsed(objDataProvider.getJobName(), objDataProvider.get_dom(), JOEConstants.JOB, null);
+		} catch (JDOMException e) {
+			e.printStackTrace();
+		}
 		tbxJobName.setText(objDataProvider.getJobName());
-		tbxJobTitle.setText(objDataProvider.getTitle());
+ 		tbxJobTitle.setText(objDataProvider.getTitle());
 		tbxJobName.setFocus();
 		String process_class = objDataProvider.getProcessClass();
 		cProcessClass.setItems(objDataProvider.getProcessClasses());
@@ -182,6 +190,18 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 	}
 
 	private void checkName() {
+		if (isUsed.length() > 0){
+			int c = MainWindow.message(isUsed, SWT.YES | SWT.NO | SWT.ICON_WARNING);
+			if (c != SWT.YES) {
+				isUsed = "";
+				tbxJobName.setText(objDataProvider.getJobName());
+				tbxJobName.setSelection(tbxJobName.getText().length());
+  			}else{
+				tbxJobName.setSelection(tbxJobName.getText().length());
+  			}
+			isUsed = "";
+			
+		}
 		if (Utils.existName(tbxJobName.getText(), objDataProvider.getJob(), "job")) {
 			tbxJobName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
 		}
