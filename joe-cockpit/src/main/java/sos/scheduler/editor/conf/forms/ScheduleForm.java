@@ -1,4 +1,8 @@
 package sos.scheduler.editor.conf.forms;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -15,7 +19,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.jdom.Element;
+import org.joda.time.DateTime;
 
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.ScheduleListener;
@@ -40,6 +46,7 @@ public class ScheduleForm extends SOSJOEMessageCodes implements IUpdateLanguage 
 	private SOSDateTime			validFromTime	= null;
 	private SOSDateTime			validToTime		= null;
 	private Combo				cboCombo		= null;
+	private Label               scheduleFormmessage = null;
 
 	public ScheduleForm(Composite parent, int style, SchedulerDom dom, org.jdom.Element schedule_, ISchedulerUpdate update) {
 		super(parent, style);
@@ -166,6 +173,23 @@ public class ScheduleForm extends SOSJOEMessageCodes implements IUpdateLanguage 
 					setValidDateTo();
 				}
 			});
+			
+			new Label(scheduleGroup, SWT.NONE);
+            new Label(scheduleGroup, SWT.NONE);
+            new Label(scheduleGroup, SWT.NONE);
+            new Label(scheduleGroup, SWT.NONE);
+            new Label(scheduleGroup, SWT.NONE);
+            new Label(scheduleGroup, SWT.NONE);
+            new Label(scheduleGroup, SWT.NONE);
+            new Label(scheduleGroup, SWT.NONE);
+            new Label(scheduleGroup, SWT.NONE);
+			 
+            scheduleFormmessage = new Label(scheduleGroup, SWT.BORDER);
+            scheduleFormmessage.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false,3,1));
+	        scheduleFormmessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_LINK_FOREGROUND));
+	        scheduleFormmessage.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+	        scheduleFormmessage.setBounds(10, 267, 430, 23);
+	        scheduleFormmessage.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
 		}
 		catch (Exception e) {
 			try {
@@ -203,10 +227,39 @@ public class ScheduleForm extends SOSJOEMessageCodes implements IUpdateLanguage 
 			txtName.setBackground(null);
 		return retVal;
 	}
+	private void checkDates(){
+	    Calendar calendarNow = GregorianCalendar.getInstance(); 
+        calendarNow.setTime( new Date());
+	    
+	    Calendar calendarTo = GregorianCalendar.getInstance(); 
+        calendarTo.setTime( validToDate.getDate());
+       
+        calendarTo.set(Calendar.HOUR_OF_DAY, (int) validToTime.getHours());  
+        calendarTo.set(Calendar.MINUTE, (int) validToTime.getMinutes());  
+        calendarTo.set(Calendar.SECOND, (int) validToTime.getSeconds());
+        
+        Calendar calendarFrom = GregorianCalendar.getInstance(); 
+        calendarFrom.setTime( validFromDate.getDate());
+       
+        calendarFrom.set(Calendar.HOUR_OF_DAY, (int) validFromTime.getHours());  
+        calendarFrom.set(Calendar.MINUTE, (int) validFromTime.getMinutes());  
+        calendarFrom.set(Calendar.SECOND, (int) validFromTime.getSeconds());  
+          
+		 if (calendarNow.after(calendarFrom)){
+             scheduleFormmessage.setText(JOE_E_ScheduleForm_ValidFromTo_001.label());
+		 }else{
+    		  if (calendarFrom.after(calendarTo)) {
+    			  scheduleFormmessage.setText(JOE_E_ScheduleForm_ValidFromTo_002.label());
+    		  }else{
+    			  scheduleFormmessage.setText("");
+    		  }
+		 }
+	}
 
 	private void setValidDateTo() {
 		if (!init) {
 			try {
+				checkDates();
 				listener.setValidTo(validToDate.getISODate() + " " + validToTime.getISOTime());
 			}
 			catch (Exception es) {
@@ -218,6 +271,7 @@ public class ScheduleForm extends SOSJOEMessageCodes implements IUpdateLanguage 
 	private void setValidDateFrom() {
 		if (!init) {
 			try {
+				checkDates();
 				listener.setValidFrom(validFromDate.getISODate() + " " + validFromTime.getISOTime());
 			}
 			catch (Exception es) {

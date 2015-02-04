@@ -3178,8 +3178,12 @@ public class SOSJOEMessageCodes extends SOSComposite {
 	public static final SOSMsgJOE	JOE_M_SchedulerListener_Webservice					= new SOSMsgJOE("JOE_M_SchedulerListener_Webservice");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_M_SchedulerListener_Parameter					= new SOSMsgJOE("JOE_M_SchedulerListener_Parameter");
-	@I18NMsg
-	public static final SOSMsgJOE	JOE_M_SchedulerListener_Empty						= new SOSMsgJOE("JOE_M_SchedulerListener_Empty");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_M_SchedulerListener_Empty                       = new SOSMsgJOE("JOE_M_SchedulerListener_Empty");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_E_ScheduleForm_ValidFromTo_001                  = new SOSMsgJOE("JOE_E_ScheduleForm_ValidFromTo_001");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_E_ScheduleForm_ValidFromTo_002                  = new SOSMsgJOE("JOE_E_ScheduleForm_ValidFromTo_002");
 
 
 	// public SOSJOEMessageCodes() {
