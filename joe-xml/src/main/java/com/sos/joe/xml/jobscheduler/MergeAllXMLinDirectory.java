@@ -484,6 +484,11 @@ public class MergeAllXMLinDirectory {
 			ErrorLog.message("could not save file " + filename + ". cause:" + e.getMessage(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		}
 	}
+	
+	private String getFileName(String key, String prefix){
+	    return (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + key.substring(prefix.length()) + "."
+                + prefix.substring(0, prefix.length() - 1) + ".xml";
+	}
 
 	private void deleteFiles() {
 		String filename = "";
@@ -518,9 +523,17 @@ public class MergeAllXMLinDirectory {
 									if (key.startsWith("schedule_")) {
 										prefix = "schedule_";
 									}
-				filename = (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + key.substring(prefix.length()) + "."
-						+ prefix.substring(0, prefix.length() - 1) + ".xml";
-				File f = new File(filename);
+				
+                filename = getFileName(key,prefix);
+                File f = new File(filename);
+
+                if (prefix.equals("job_chain_")){
+	                String filenameNodeParameters = filename.replaceAll("job_chain.xml", "config.xml");
+				    File fNodeParameters = new File(filenameNodeParameters);
+				    if (fNodeParameters.exists()){
+				        fNodeParameters.delete();     
+				    }
+				}
 				if (f.exists()) {
 					if (!f.delete()) {
 						// job5.job.xml
