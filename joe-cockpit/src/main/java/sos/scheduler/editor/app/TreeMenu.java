@@ -583,26 +583,17 @@ public class TreeMenu {
 				if (c != SWT.YES)
 					return;
 				if (name.equals("job")) {
-					/*
-					 * if (_tree.getSelection()[0] != null &&
-					 * !_tree.getSelection
-					 * ()[0].getText().equals(SchedulerListener.JOB)) { TreeData
-					 * data = (TreeData)_tree.getSelection()[0].getData();
-					 * ((SchedulerDom)_dom).setChangedForDirectory("job",
-					 * Utils.getAttributeValue("name", elem)
-					 * ,SchedulerDom.MODIFY); elem.detach(); //List el =
-					 * elem.getChildren
-					 * (_tree.getSelection()[0].getText().toLowerCase());
-					 * //if(el != null) //el.clear();
-					 * 
-					 * //getElement().detach(); } //TreeData data =
-					 * (TreeData)_tree.getSelection()[0].getData(); else {
-					 */
-					_dom.setChanged(true);
-					((SchedulerDom) _dom).setChangedForDirectory("job", Utils.getAttributeValue("name", elem), SchedulerDom.DELETE);
-					elem.detach();
-					// }
+                    ((SchedulerDom) _dom).setChangedForDirectory("job", Utils.getAttributeValue("name", elem), SchedulerDom.DELETE);
+                    elem.detach();
+                    TreeItem parentItem = _tree.getSelection()[0].getParentItem();
+                    _tree.setSelection(new TreeItem[] { parentItem });
+                    if (parentItem.getItemCount() == 1){// jobs Element hat keine weiteren Kindelemente
+                        ((TreeData) parentItem.getData()).getElement().getChild("jobs").detach();
+                    }
+
 					_gui.updateJobs();
+                    _gui.updateCMainForm();
+                    _dom.setChanged(true);
 				}
 				else
 					if (name.equals("monitor")) {
@@ -621,10 +612,9 @@ public class TreeMenu {
 							elem.detach();
 							TreeItem parentItem = _tree.getSelection()[0].getParentItem();
 							_tree.setSelection(new TreeItem[] { parentItem });
-							if (parentItem.getItemCount() == 1)// job_chains Element hat
-																// keine weiteren
-																// Kindelemente
-								((TreeData) parentItem.getData()).getElement().getChild("job_chains").detach();
+							if (parentItem.getItemCount() == 1){ // job_chains Element hat keine weiteren Kindelemente
+                                ((TreeData) parentItem.getData()).getElement().getChild("job_chains").detach();
+							}
 							_gui.updateJobChains();
 							_gui.updateCMainForm();
 						}
@@ -635,7 +625,7 @@ public class TreeMenu {
 								elem.detach();
 								TreeItem parentItem = _tree.getSelection()[0].getParentItem();
 								_tree.setSelection(new TreeItem[] { parentItem });
-								if (parentItem.getItemCount() == 1)// job_chains Element hat
+								if (parentItem.getItemCount() == 1)// schedules Element hat
 																	// keine weiteren
 																	// Kindelemente
 									((TreeData) parentItem.getData()).getElement().getChild("schedules").detach();
