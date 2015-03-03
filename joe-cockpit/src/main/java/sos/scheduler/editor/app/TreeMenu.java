@@ -508,7 +508,7 @@ public class TreeMenu {
 							if (name.equals(SchedulerListener.SCHEDULES)) {
 								sos.scheduler.editor.conf.listeners.SchedulesListener listener = new sos.scheduler.editor.conf.listeners.SchedulesListener(
 										(SchedulerDom) _dom, _gui);
-								listener.newScheduler(sos.scheduler.editor.conf.forms.SchedulesForm.getTable());
+								listener.newSchedule(sos.scheduler.editor.conf.forms.SchedulesForm.getTable());
 							}
 							else
 								if (name.equals(SchedulerListener.ORDERS)) {

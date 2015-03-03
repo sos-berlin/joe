@@ -953,7 +953,8 @@ public class Utils {
 										String strException = String.format(strM, strObject, name);
 										XPath x3 = XPath.newInstance("//run_time[@schedule='" + name + "']");
 										List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-										return strException;
+										if (!listOfElement_3.isEmpty())
+										    return strException;
 									}
  
 		return "";

@@ -47,7 +47,7 @@ public class SchedulerDom extends DomParser {
 	public static final String		MODIFY						= "modify";
 	public static final String		DELETE						= "delete";
 	public static final String		NEW							= "new";
-	private static final String[]	CONFIG_ELEMENTS_DIRECTORY	= { "process_classes", "schedules", "locks", "jobs", "job_chains", "commands" };
+	private static final String[]	CONFIG_ELEMENTS_DIRECTORY	= { "process_classes", "schedules", "locks", "jobs", "job_chains", "commands", "monitors" };
 	public static final int			CONFIGURATION				= 0;
 	private static final String[]	HTTP_SERVER					= { "web_service", "http.authentication", "http_directory" };
 	private String					styleSheet					= "";
@@ -84,6 +84,7 @@ public class SchedulerDom extends DomParser {
 		putDomOrder("holidays", HOLIDAYS_ELEMENTS);
 		putDomOrder("params", PARAMS_ELEMENTS);
 		putDomOrder("schedule", RUNTIME_ELEMENTS);
+ 
 		putDomOrder("settings", SETTINGS_ELEMENTS);
 		initScheduler();
 	}

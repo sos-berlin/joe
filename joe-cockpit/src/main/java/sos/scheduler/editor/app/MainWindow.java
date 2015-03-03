@@ -31,6 +31,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
+import sos.ftp.profiles.FTPProfileJadeClient;
 import sos.scheduler.editor.classes.WindowsSaver;
 import sos.scheduler.editor.conf.forms.HotFolderDialog;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
@@ -38,6 +39,7 @@ import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.util.SOSString;
 
 import com.sos.JSHelper.Basics.VersionInfo;
+import com.sos.VirtualFileSystem.common.SOSFileEntry;
 import com.sos.event.service.forms.ActionsForm;
 import com.sos.i18n.annotation.I18NMessage;
 import com.sos.i18n.annotation.I18NMessages;
@@ -72,10 +74,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 	private Menu				submenu									= null;
 	private Menu				menuLanguages							= null;
 	private Menu				submenu1								= null;
-	private MainWindow			main									= null;
-	private Composite			groupmain								= null;
+ 	private Composite			groupmain								= null;
 	private static ToolItem		butSave									= null;
-	private static ToolItem		butShowAsSML							= null;
+	private static ToolItem		butShowAsXML							= null;
 	private static SOSString	sosString								= new SOSString();
 	/**  */
 	private static boolean		flag									= true;													// hilfsvariable
@@ -88,8 +89,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 	private void createContainer(Composite objParent) {
 		container = new TabbedContainer(objParent);
-		// container = new TabbedContainer(groupmain);
-		// container = new TabbedContainer(groupmain);
+		 
 		sShell.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		// TODO: Ausserhalb des Job Editors veränderte Files sollten mit Hilfe einer "Aktualisieren" Funktion neu eingelesen werden können.
 		sShell.addShellListener(new ShellListener() {
@@ -114,8 +114,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 				// System.out.println("icon");
 			}
 		});
-		main = this;
-	}
+ 	}
 
 	private String getMenuText(final String pstrText, final String pstrAccelerator) {
 		@SuppressWarnings("unused") final String conMethodName = conClassName + "::getMenuText";
@@ -466,28 +465,31 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		MenuItem mFTP = new MenuItem(mFile, SWT.CASCADE);
 		mFTP.setText("FTP");
 		Menu pmFTP = new Menu(mNew);
-		MenuItem pOpenFTP = new MenuItem(pmFTP, SWT.PUSH);
-		pOpenFTP.setText("Open By FTP");
-		pOpenFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				FTPDialog ftp = new FTPDialog(main);
-				ftp.showForm(FTPDialog.OPEN);
-			}
-
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
+		
 		MenuItem pOpenHotFolderFTP = new MenuItem(pmFTP, SWT.PUSH);
 		pOpenHotFolderFTP.setText("Open Hot Folder by FTP");
 		pOpenHotFolderFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				FTPDialog ftp = new FTPDialog(main);
-				ftp.showForm(FTPDialog.OPEN_HOT_FOLDER);
+				FTPDialog ftp = new FTPDialogHotFolder();
+				ftp.showForm();
 			}
 
 			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+		
+		MenuItem pOpenFTP = new MenuItem(pmFTP, SWT.PUSH);
+        pOpenFTP.setText("Open By FTP");
+        pOpenFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+            @Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                FTPDialog ftp = new FTPDialogOpenFile();
+                ftp.showForm();
+            }
+
+            @Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            }
+        });
+		
 		new MenuItem(pmFTP, SWT.SEPARATOR);
 		MenuItem pSaveFTP = new MenuItem(pmFTP, SWT.PUSH);
 		pSaveFTP.setText("Save By FTP");
@@ -499,6 +501,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+		
 		mFTP.setMenu(pmFTP);
 		new MenuItem(mFile, SWT.SEPARATOR);
 		// WebDav
@@ -569,6 +572,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+		
 		mWebDav.setMenu(pmWebDav);
 		new MenuItem(mFile, SWT.SEPARATOR);
 		submenuItem2.setMenu(mFile);
@@ -707,11 +711,11 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		boolean saved = true;
 		if (container.getCurrentEditor() != null) {
 			saved = !container.getCurrentEditor().hasChanges();
-			butShowAsSML.setEnabled(true);
+			butShowAsXML.setEnabled(true);
 			butSave.setEnabled(container.getCurrentEditor().hasChanges());
 		}
 		else {
-			butShowAsSML.setEnabled(false);
+			butShowAsXML.setEnabled(false);
 			butSave.setEnabled(false);
 		}
 		MenuItem[] items = mFile.getItems();
@@ -835,9 +839,16 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			changes = (java.util.HashMap) currdom.getChangedJob().clone();
 		}
 		if (container.getCurrentEditor().applyChanges()) {
+            saveJobChainNodeParameter();
 			container.getCurrentEditor().save();
-			saveJobChainNoteParameter();
-			saveFTP(changes);
+	        SOSFileEntry sosFileEntry = (SOSFileEntry) MainWindow.getContainer().getCurrentTab().getData("sosFileEntry");
+	        if (sosFileEntry != null){
+	            String oldFilename = sosFileEntry.getFilename();
+	            if (!sosFileEntry.isDirectory()){
+	                sosFileEntry.setFilename(new File(container.getCurrentEditor().getFilename()).getName());
+	            }
+                saveFTP(oldFilename,sosFileEntry);
+            }
 			saveWebDav(changes);
 			setSaveStatus();
 		}
@@ -988,14 +999,14 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		butSave = new ToolItem(toolBar, SWT.PUSH);
 		butSave.addSelectionListener(new SelectionAdapter() {
 			@Override public void widgetSelected(final SelectionEvent e) {
-				save();
+ 				save();
 			}
 		});
 		butSave.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/save.gif"));
 		butSave.setToolTipText("Save Configuration");
-		butShowAsSML = new ToolItem(toolBar, SWT.PUSH);
-		butShowAsSML.setEnabled(container != null && container.getCurrentEditor() instanceof SchedulerForm);
-		butShowAsSML.addSelectionListener(new SelectionAdapter() {
+		butShowAsXML = new ToolItem(toolBar, SWT.PUSH);
+		butShowAsXML.setEnabled(container != null && container.getCurrentEditor() instanceof SchedulerForm);
+		butShowAsXML.addSelectionListener(new SelectionAdapter() {
 			@Override public void widgetSelected(final SelectionEvent e) {
 				try {
 					if (container.getCurrentEditor() == null)
@@ -1013,35 +1024,38 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 				}
 			}
 		});
-		butShowAsSML.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_view_as_xml.gif"));
-		butShowAsSML.setToolTipText("Show Configuration as XML");
+		butShowAsXML.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_view_as_xml.gif"));
+		butShowAsXML.setToolTipText("Show Configuration as XML");
 		final ToolItem butFTP = new ToolItem(toolBar, SWT.NONE);
 		final Menu menuFTP = new Menu(toolBar);
 		addDropDown(butFTP, menuFTP);
 		butFTP.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_open_ftp.gif"));
 		butFTP.setToolTipText("FTP");
-		MenuItem itemFTPOpen = new MenuItem(menuFTP, SWT.PUSH);
-		itemFTPOpen.setText("Open by FTP");
-		itemFTPOpen.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(final SelectionEvent e) {
-				FTPDialog ftp = new FTPDialog(main);
-				ftp.showForm(FTPDialog.OPEN);
-			}
-
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
+		
 		MenuItem itemFTPOpenHotFolder = new MenuItem(menuFTP, SWT.PUSH);
 		itemFTPOpenHotFolder.setText("Open Hot Folder by FTP");
 		itemFTPOpenHotFolder.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			@Override public void widgetSelected(final SelectionEvent e) {
-				FTPDialog ftp = new FTPDialog(main);
-				ftp.showForm(FTPDialog.OPEN_HOT_FOLDER);
+				FTPDialog ftp = new FTPDialogHotFolder();
+				ftp.showForm();
 			}
 
 			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
+		
+		MenuItem itemFTPOpen = new MenuItem(menuFTP, SWT.PUSH);
+        itemFTPOpen.setText("Open by FTP");
+        itemFTPOpen.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+            @Override public void widgetSelected(final SelectionEvent e) {
+                FTPDialog ftp = new FTPDialogOpenFile();
+                ftp.showForm();
+            }
+
+            @Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            }
+        });
+        
 		MenuItem itemFTPSave = new MenuItem(menuFTP, SWT.PUSH);
 		itemFTPSave.setText("Save As By FTP");
 		itemFTPSave.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -1132,7 +1146,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 	 * Überprüfen, ob job Chain namen verändert wurden. Wenn ja, dann die job chain note parameter anpassen
 	 * Job Chain Note Parameter
 	 */
-	public void saveJobChainNoteParameter() {
+	public void saveJobChainNodeParameter() {
 		try {
 			if (container.getCurrentTab().getData("details_parameter") != null) {
 				HashMap h = new HashMap();
@@ -1151,14 +1165,13 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 						DomParser currdom = getSpecifiedDom();
 						String oldname = configFile.getName().replaceAll(".config.xml", EMPTY);
 						String newName = newConfigFile.getName().replaceAll(".config.xml", EMPTY);
-						sos.scheduler.editor.conf.listeners.DetailsListener.changeDetailsJobChainname(newName, oldname, (SchedulerDom) currdom);
 						//
 						if (!newConfigFile.exists() && !configFile.renameTo(newConfigFile)) {
 							MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename + "].\n"
 									+ "Please try later by Hand.", SWT.ICON_WARNING);
 						}
 						else {
-							// Attribute in der config.xml Datei vderändern
+	                        sos.scheduler.editor.conf.listeners.DetailsListener.changeDetailsJobChainname(newName, oldname, (SchedulerDom) currdom);
 						}
 					}
 				}
@@ -1168,83 +1181,37 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		catch (Exception e) {
 		}
 	}
-
-	public static void saveFTP(java.util.HashMap changes) {
+ 
+	
+	public static void saveFTP(String oldFilename, SOSFileEntry  sosFileEntry) {
 		try {
+		    
+            DomParser currdom = getSpecifiedDom();
 			if (container.getCurrentTab().getData("ftp_title") != null && container.getCurrentTab().getData("ftp_title").toString().length() > 0) {
-				DomParser currdom = getSpecifiedDom();
+			            
 				if (currdom == null)
 					return;
-				String remoteDir = container.getCurrentTab().getData("ftp_remote_directory").toString();
-				ArrayList ftpHotFolderElements = new ArrayList();
-				if (container.getCurrentTab().getData("ftp_hot_folder_elements") != null)
-					ftpHotFolderElements = (ArrayList) container.getCurrentTab().getData("ftp_hot_folder_elements");
+ 
+				String remoteDir = sosFileEntry.getParentPath();
+                String aktFilename = sosFileEntry.getFilename();
 				sos.ftp.profiles.FTPProfile profile = (sos.ftp.profiles.FTPProfile) container.getCurrentTab().getData("ftp_profile");
-				Text txtLog = new Text(getSShell(), SWT.NONE);
-				txtLog.setVisible(false);
-				final GridData gridData = new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false);
-				gridData.widthHint = 0;
-				gridData.heightHint = 0;
-				txtLog.setLayoutData(gridData);
-				txtLog.setSize(0, 0);
-				profile.setLogText(txtLog);
-				profile.connect();
-				if (profile.isLoggedIn()) {
-					if (currdom instanceof SchedulerDom
-							&& sosString.parseToString(container.getCurrentTab().getData("ftp_details_parameter_file")).length() > 0) {
-						// Details Parameter speichern
-						File source = new File(container.getCurrentTab().getData("ftp_details_parameter_file").toString());
-						String remoteDir_ = remoteDir; // remoteDir nicht verändern, da es unten weiterverarbeitet wird
-						remoteDir_ = new File(remoteDir_).getCanonicalPath().endsWith(".xml") ? new File(remoteDir_).getParent() : remoteDir_;
-						remoteDir_ = remoteDir_ != null ? remoteDir_.replaceAll("\\\\", "/") : EMPTY;
-						if (source.exists()) {
-							profile.saveAs(container.getCurrentTab().getData("ftp_details_parameter_file").toString(), remoteDir_ + "/" + source.getName());
-						}
-						container.getCurrentTab().setData("ftp_details_parameter_file", EMPTY);
-						if (sosString.parseToString(container.getCurrentTab().getData("ftp_details_parameter_remove_file")).length() > 0) {
-							// Alte Jobkettenname wurde gelöscht.. Deshalb den alten Job Node Parametern auch löschen.
-							String removeOldFilename = container.getCurrentTab().getData("ftp_details_parameter_remove_file").toString();
-							profile.removeFile(remoteDir_ + "/" + removeOldFilename);
-							container.getCurrentTab().setData("ftp_details_parameter_remove_file", EMPTY);
-						}
-					}
-					if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isLifeElement()) {
-						String filename = container.getCurrentEditor().getFilename();
-						// if(!new File(remoteDir).getName().equalsIgnoreCase(new File(filename).getName())){
-						if (!new File(remoteDir).getName().equalsIgnoreCase(new File(filename).getName())) {
-							// Attribute "name" wurde geändert: Das bedeutet auch Änderungen der life Datei namen.
-							profile.removeFile(remoteDir);
-							try {
-								String newName = sosString.parseToString(new File(remoteDir).getParent()) + "/" + new File(filename).getName();
-								newName = newName.replaceAll("\\\\", "/");
-								container.getCurrentTab().setData("ftp_remote_directory", newName);
-							}
-							catch (Exception e) {
-								System.out.println("could not save per ftp, cause: " + e.toString());
-							} // tu nichts
-						}
-						remoteDir = new File(remoteDir).getParent() + "/" + new File(filename).getName();
-						profile.saveAs(filename, remoteDir);
-					}
-					else
-						if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isDirectory()) {
-							profile.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, ftpHotFolderElements, changes);
-						}
-						else {
-							profile.saveAs(container.getCurrentEditor().getFilename(), remoteDir);
-						}
-					profile.disconnect();
-				}
-				else {
-					MainWindow.message("could not save file on ftp Server", SWT.ICON_WARNING);
-				}
-				if (profile.hasError()) {
-					String text = Utils.showClipboard(txtLog.getText(), getSShell(), false, EMPTY);
-					if (text != null)
-						txtLog.setText(text);
-				}
+                Text txtLog = new Text(getSShell(), SWT.NONE);
+                profile.setLogText(txtLog);
+
+                FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(profile);
+				
+                if (((SchedulerDom) currdom).isLifeElement()){
+                    
+                    ftpProfileJadeClient.copyLocalFileToRemote(profile.getLocaldirectory(), remoteDir,aktFilename);
+                    if (aktFilename.length() > 0 && !aktFilename.equalsIgnoreCase(oldFilename)) {
+                        ftpProfileJadeClient.removeFile(remoteDir,oldFilename);
+                    }
+                } else{
+                    ftpProfileJadeClient.copyLocalFilesToRemote(profile.getLocaldirectory() + "/" + aktFilename, remoteDir,aktFilename);
+                }
 			}
 		}
+                    
 		catch (Exception e) {
 			MainWindow.message("could not save per ftp, cause: " + e.toString(), SWT.ICON_WARNING);
 			try {
@@ -1254,7 +1221,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 				// tu nichts
 			}
 		}
-	}
+    }
 
 	private void saveWebDav(java.util.HashMap changes) {
 		WebDavDialogListener webdavListener = null;
@@ -1303,15 +1270,15 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 	}
 
 	private void saveByFTP() {
-		FTPDialog ftp = new FTPDialog(main);
+		FTPDialog ftpSaveAsDialog = new FTPDialogSaveAs();
 		DomParser currdom = getSpecifiedDom();
 		if (currdom == null)
 			return;
 		if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isDirectory()) {
-			ftp.showForm(FTPDialog.SAVE_AS_HOT_FOLDER);
+			ftpSaveAsDialog.showForm();
 		}
 		else
-			ftp.showForm(FTPDialog.SAVE_AS);
+			ftpSaveAsDialog.showForm();
 	}
 
 	private boolean existLibraries() {
@@ -1344,22 +1311,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			libExist = true;
 		}
 		catch (Exception e) {
-			/*
-			String msg = "Missing libraries to open connection to Webdav Server. \n\n " +
-			"\t- webdavclient4j-core-0.92.jar\n" +
-			"\t- commons-logging.jar\n" +								
-			"\t- commons-codec-1.3.jar\n" +
-			"\t- commons-httpclient-3.0.1.jar\n\n" +
-			"for more information see https://sourceforge.net/projects/webdavclient4j/";
-
-			MainWindow.message(msg, SWT.ICON_WARNING);
-
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " cause: " + msg, e);
-			} catch(Exception ee) {
-				//tu nichts
-			}
-			 */
+			
 		}
 		return libExist;
 	}

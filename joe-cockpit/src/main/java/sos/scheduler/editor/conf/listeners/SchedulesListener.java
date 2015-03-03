@@ -58,9 +58,9 @@ public class SchedulesListener {
 				}
 			}
 		}
-	}
+	} 
 
-	public void newScheduler(Table table) {
+	public void newSchedule(Table table) {
 		Element schedule = new Element("schedule");
 		String name = "schedule" + (table.getItemCount() + 1);
 		schedule.setAttribute("name", name);

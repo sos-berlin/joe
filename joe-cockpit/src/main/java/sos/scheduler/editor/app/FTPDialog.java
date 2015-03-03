@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import sos.ftp.profiles.FTPDialogListener;
-import sos.ftp.profiles.FTPProfile;
+import sos.ftp.profiles.FTPProfileJadeClient;
 import sos.ftp.profiles.FTPProfilePicker;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.util.SOSString;
@@ -37,24 +37,19 @@ import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.DomParser;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
+import com.sos.VirtualFileSystem.common.SOSFileEntry;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 
-public class FTPDialog {
-	private Button				butOpenOrSave				= null;
+public abstract class FTPDialog {
+	protected Button		    butExecute			    	= null;
 	private Group				schedulerGroup				= null;
-	private Shell				schedulerConfigurationShell	= null;
-	private FTPDialogListener	listener					= null;
-	private Table				table						= null;
-	private Text				txtDir						= null;
-	private SOSString			sosString					= new SOSString();
-	private Text				txtFilename					= null;
-	// private MainWindow main = null;
-	private Text				txtLog						= null;
-	private String				type						= "Open";
-	public static String		OPEN						= "Open";
-	public static String		SAVE_AS						= "Save As";
-	public static String		SAVE_AS_HOT_FOLDER			= "Save As Hot Folder";
-	public static String		OPEN_HOT_FOLDER				= "Open Hot Folder";
+	protected Shell				schedulerConfigurationShell	= null;
+	protected FTPDialogListener	listener					= null;
+	protected Table				directoryTable				= null;
+	protected Text				txtDir						= null;
+	protected SOSString			sosString					= new SOSString();
+	protected Text				txtFilename					= null;
+ 	private Text				txtLog						= null;
 	private Button				butChangeDir				= null;
 	private Button				butRefresh					= null;
 	private Button				butNewFolder				= null;
@@ -64,24 +59,29 @@ public class FTPDialog {
 	private Button				butClose					= null;
 	private FTPProfilePicker	ftpProfilePicker			= null;
 	private TableColumn			newColumnTableColumn_2		= null;
-
-	public FTPDialog(MainWindow main_) {
-		// main = main_;
-	}
+	protected FTPProfileJadeClient ftpProfileJadeClient       = null; 
+		
+    abstract String getTitle();
+    abstract void setTxtFilenameText(Text txtFilename, TableItem tableItem);
+    abstract String getFilenameLabel();
+    abstract void fillTable(Table directoryTable, HashMap <String, SOSFileEntry> h);
+    abstract void setTooltip();
+    abstract void execute();
+    
+	public FTPDialog() {
+ 	}
 
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	public void showForm(String type_) {
+	public void showForm() {
 		try {
-			type = type_;
-			schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
+ 			schedulerConfigurationShell = new Shell(MainWindow.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER | SWT.RESIZE);
 			schedulerConfigurationShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 			schedulerConfigurationShell.addTraverseListener(new TraverseListener() {
 				public void keyTraversed(final TraverseEvent e) {
 					if (e.detail == SWT.TRAVERSE_ESCAPE) {
 						try {
-							listener.getCurrProfile().disconnect();
 							schedulerConfigurationShell.dispose();
 						}
 						catch (Exception r) {
@@ -103,7 +103,7 @@ public class FTPDialog {
 			gridLayout.marginBottom = 5;
 			schedulerConfigurationShell.setLayout(gridLayout);
 			schedulerConfigurationShell.setSize(625, 486);
-			schedulerConfigurationShell.setText(type);
+			schedulerConfigurationShell.setText(getTitle());
 			{
 				schedulerGroup = new Group(schedulerConfigurationShell, SWT.NONE);
 				schedulerGroup.setText("Open");
@@ -119,25 +119,24 @@ public class FTPDialog {
 				gridLayout_1.marginBottom = 5;
 				schedulerGroup.setLayout(gridLayout_1);
 				ftpProfilePicker = new FTPProfilePicker(schedulerGroup, SWT.NONE, new File(Options.getSchedulerData(), "config/factory.ini"));
-				// ftpProfilePicker.setLayoutData(new GridData(GridData.FILL,
-				// GridData.CENTER, false, false, 2, 1));
+
 				ftpProfilePicker.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 2, 1));
 				listener = ftpProfilePicker.getListener();
 				if (ftpProfilePicker.getSelectedProfilename() != null && ftpProfilePicker.getSelectedProfilename().length() > 0) {
 					ftpProfilePicker.getProfileByName(ftpProfilePicker.getSelectedProfilename());
 					listener = ftpProfilePicker.getListener();
 				}
-				// Hier: wenn ein neuer Profile im Combobox ausgewählt wird
 				ftpProfilePicker.addSelectionListener((new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						try {
 							txtDir.setText("");
-							table.removeAll();
+							directoryTable.removeAll();
 							txtFilename.setText("");
 							listener.setCurrProfileName(ftpProfilePicker.getSelectedProfilename());
+							ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile());
 							initForm();
-							butOpenOrSave.setEnabled(listener.getCurrProfile().isLoggedIn() && txtFilename.getText().length() > 0);
-							_setEnabled(listener.getCurrProfile().isLoggedIn());
+							butExecute.setEnabled( txtFilename.getText().length() > 0);
+							_setEnabled(true);
 						}
 						catch (Exception r) {
 							MainWindow.message("error while choice Profilename: " + e.toString(), SWT.ICON_WARNING);
@@ -160,18 +159,14 @@ public class FTPDialog {
 								MainWindow.message("Please first define a Profile", SWT.ICON_WARNING);
 								return;
 							}
-							FTPProfile profile = listener.getCurrProfile();
-							sos.net.SOSFileTransfer p = profile.connect();
-							if (p != null && p.isConnected()) {
-								HashMap h = profile.changeDirectory(ftpProfilePicker.getSelectedProfilename(), txtDir.getText());
-								if (profile.isLoggedIn()) {
-									butOpenOrSave.setEnabled(profile.isLoggedIn() && txtFilename.getText().length() > 0);
-									fillTable(h);
-									table.setSortDirection(SWT.UP);
-									sort(newColumnTableColumn_2);
-									_setEnabled(true);
-								}
-							}
+	                        
+						
+						    disconnect();
+					        txtDir.setText(listener.getCurrProfile().getRoot());
+
+	                        ftpProfileJadeClient = new FTPProfileJadeClient(listener.getCurrProfile());
+                            fillTable(ftpProfileJadeClient.getDirectoryContent(listener.getCurrProfile().getRoot()));
+                            _setEnabled(true);
 						}
 						catch (Exception ex) {
 							try {
@@ -186,30 +181,17 @@ public class FTPDialog {
 					}
 				});
 				butSite.setText("Connect");
-				/*
-				 * String selectProfile = Options.getProperty("last_profile");
-				 * if(selectProfile != null && selectProfile.length() > 0) {
-				 * if(listener == null) listener =
-				 * ftpProfilePicker.getListener(); if(
-				 * listener.getProfiles().get(selectProfile) != null) {
-				 * listener.setCurrProfileName(selectProfile); if(txtDir !=
-				 * null) { txtDir.setText(listener.getCurrProfile() != null &&
-				 * listener.getCurrProfile().getRoot() != null ?
-				 * listener.getCurrProfile().getRoot() : "");
-				 * _setEnabled(false); } } }
-				 */
+				 
 				txtDir = new Text(schedulerGroup, SWT.BORDER);
 				txtDir.addKeyListener(new KeyAdapter() {
 					public void keyPressed(final KeyEvent e) {
 						try {
 							if (e.keyCode == SWT.CR) {
-								FTPProfile profile = listener.getCurrProfile();
-								HashMap h = profile.changeDirectory(txtDir.getText());
-								fillTable(h);
+								fillTable(ftpProfileJadeClient.getDirectoryContent(txtDir.getText()));
 							}
 						}
 						catch (Exception r) {
-							MainWindow.message("error while change Directory: " + e.toString(), SWT.ICON_WARNING);
+							MainWindow.message("error while reading directory: " + e.toString(), SWT.ICON_WARNING);
 							try {
 								new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
 							}
@@ -224,12 +206,9 @@ public class FTPDialog {
 				butChangeDir.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						try {
-							Utils.startCursor(schedulerConfigurationShell);
-							// HashMap h = listener.changeDirectory(
-							// cboConnectname.getText(), txtDir.getText());
-							HashMap h = listener.getCurrProfile().changeDirectory(ftpProfilePicker.getSelectedProfilename(), txtDir.getText());
-							fillTable(h);
-							Utils.stopCursor(schedulerConfigurationShell);
+				     	    fillTable(ftpProfileJadeClient.getDirectoryContent(txtDir.getText()+"/"+txtFilename.getText()));
+				     	    txtDir.setText(txtDir.getText()+"/"+txtFilename.getText());
+				     	    txtFilename.setText("");
 						}
 						catch (Exception r) {
 							MainWindow.message("error: " + e.toString(), SWT.ICON_WARNING);
@@ -244,49 +223,43 @@ public class FTPDialog {
 				});
 				butChangeDir.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 				butChangeDir.setText("Change Directory ");
-				table = new Table(schedulerGroup, SWT.FULL_SELECTION | SWT.BORDER);
-				table.setSortDirection(SWT.DOWN);
-				table.addSelectionListener(new SelectionAdapter() {
+				directoryTable = new Table(schedulerGroup, SWT.FULL_SELECTION | SWT.BORDER);
+				directoryTable.setSortDirection(SWT.DOWN);
+				directoryTable.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						try {
-							if (table.getSelectionCount() > 0) {
-								TableItem item = table.getSelection()[0];
-								if (item.getData("type").equals("file") || type.equalsIgnoreCase(OPEN_HOT_FOLDER) || type.equalsIgnoreCase(SAVE_AS_HOT_FOLDER))
-									txtFilename.setText(item.getText(0));
-								else
-									txtFilename.setText("");
+							if (directoryTable.getSelectionCount() > 0) {
+								TableItem item = directoryTable.getSelection()[0];
+								setTxtFilenameText(txtFilename, item);
 							}
-							butOpenOrSave.setEnabled(listener.getCurrProfile().isLoggedIn() && txtFilename.getText().length() > 0);
+							butExecute.setEnabled(true);
 						}
 						catch (Exception ex) {
 							System.err.println(ex.toString());
 						}
 					}
 				});
-				table.addMouseListener(new MouseAdapter() {
+				directoryTable.addMouseListener(new MouseAdapter() {
 					public void mouseDoubleClick(final MouseEvent e) {
 						try {
-							if (table.getSelectionCount() > 0) {
-								TableItem item = table.getSelection()[0];
-								if (item.getData("type").equals("dir")) {
-									txtDir.setText((txtDir.getText().endsWith("/") ? txtDir.getText() : txtDir.getText() + "/") + item.getText());
-									fillTable(listener.getCurrProfile().changeDirectory(txtDir.getText()));
+							if (directoryTable.getSelectionCount() > 0) {
+								TableItem item = directoryTable.getSelection()[0];
+								SOSFileEntry sosFileEntry = (SOSFileEntry) item.getData();
+								if (sosFileEntry.isDirectory() && ! sosFileEntry.isDirUp()) {
+									txtDir.setText(sosFileEntry.getFullPath());
+									txtFilename.setText("");
+									fillTable(ftpProfileJadeClient.getDirectoryContent(txtDir.getText()));
 								}
 								else
-									if (item.getData("type").equals("dir_up")) {
-										String parentPath = new java.io.File(txtDir.getText()).getParent();
-										if (parentPath != null)
-											txtDir.setText(parentPath.replaceAll("\\\\", "/"));
-										else
-											txtDir.setText(".");
-										// test 1 fillTable(listener.cdUP());
-										fillTable(listener.getCurrProfile().cdUP());
+									if (sosFileEntry.isDirUp()) {
+										String parentPath = sosFileEntry.getParentPath();
+	                                    txtDir.setText(parentPath);
+	                                    txtFilename.setText("");
+	                                    fillTable(ftpProfileJadeClient.getDirectoryContent(parentPath));
 									}
-									else
-										if (item.getData("type").equals("file")) {
-											openOrSave();
-										}
-								txtFilename.setText("");
+									else {
+                                        execute();
+									}
 							}
 						}
 						catch (Exception r) {
@@ -299,19 +272,19 @@ public class FTPDialog {
 						}
 					}
 				});
-				table.setHeaderVisible(true);
-				table.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 2, 3));
-				newColumnTableColumn_2 = new TableColumn(table, SWT.NONE);
+				directoryTable.setHeaderVisible(true);
+				directoryTable.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 2, 3));
+				newColumnTableColumn_2 = new TableColumn(directoryTable, SWT.NONE);
 				newColumnTableColumn_2.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						sort(newColumnTableColumn_2);
 					}
 				});
-				table.setSortColumn(newColumnTableColumn_2);
+				directoryTable.setSortColumn(newColumnTableColumn_2);
 				newColumnTableColumn_2.setMoveable(true);
 				newColumnTableColumn_2.setWidth(176);
 				newColumnTableColumn_2.setText("Name");
-				final TableColumn newColumnTableColumn = new TableColumn(table, SWT.NONE);
+				final TableColumn newColumnTableColumn = new TableColumn(directoryTable, SWT.NONE);
 				newColumnTableColumn.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						sort(newColumnTableColumn);
@@ -319,7 +292,7 @@ public class FTPDialog {
 				});
 				newColumnTableColumn.setWidth(117);
 				newColumnTableColumn.setText("Size");
-				newColumnTableColumn_1 = new TableColumn(table, SWT.NONE);
+				newColumnTableColumn_1 = new TableColumn(directoryTable, SWT.NONE);
 				newColumnTableColumn_1.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						sort(newColumnTableColumn_1);
@@ -349,10 +322,10 @@ public class FTPDialog {
 						if (txtFilename.getText() != null) {
 							Utils.startCursor(schedulerConfigurationShell);
 							try {
-								FTPProfile profile = listener.getCurrProfile();
-								profile.removeFile(txtFilename.getText());
-								HashMap h = profile.changeDirectory(txtDir.getText());
-								fillTable(h);
+							    if (directoryTable.getSelection().length > 0){
+	                                ftpProfileJadeClient.removeFile((SOSFileEntry) directoryTable.getSelection()[0].getData());
+	                                fillTable(ftpProfileJadeClient.getDirectoryContent(txtDir.getText()));
+							    }
 							}
 							catch (Exception r) {
 								try {
@@ -369,32 +342,27 @@ public class FTPDialog {
 				butRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 				butRemove.setText("Remove");
 				final Label filenameLabel = new Label(schedulerGroup, SWT.NONE);
-				if (type.equalsIgnoreCase(OPEN_HOT_FOLDER) || type.equalsIgnoreCase(OPEN_HOT_FOLDER)) {
-					filenameLabel.setText("Folder");
-				}
-				else {
-					filenameLabel.setText("Filename");
-				}
+				filenameLabel.setText(getFilenameLabel());
 				txtFilename = new Text(schedulerGroup, SWT.BORDER);
 				txtFilename.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {
 						if (listener == null)
 							listener = ftpProfilePicker.getListener();
-						butOpenOrSave.setEnabled(listener.getCurrProfile().isLoggedIn() && txtFilename.getText().length() > 0);
+						butExecute.setEnabled(true);
 					}
 				});
 				txtFilename.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 				{
-					butOpenOrSave = new Button(schedulerGroup, SWT.NONE);
-					butOpenOrSave.setEnabled(false);
-					butOpenOrSave.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-					butOpenOrSave.addSelectionListener(new SelectionAdapter() {
+					butExecute = new Button(schedulerGroup, SWT.NONE);
+					butExecute.setEnabled(false);
+					butExecute.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+					butExecute.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
-							openOrSave();
+							execute();
 						}
 					});
-					butOpenOrSave.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
-					butOpenOrSave.setText(type);
+					butExecute.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
+					butExecute.setText(getTitle());
 				}
 				new Label(schedulerGroup, SWT.NONE);
 				new Label(schedulerGroup, SWT.NONE);
@@ -402,8 +370,8 @@ public class FTPDialog {
 				butClose.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						try {
-							listener.getCurrProfile().disconnect();
-							schedulerConfigurationShell.dispose();
+						    disconnect();
+						    schedulerConfigurationShell.dispose();
 						}
 						catch (Exception r) {
 							try {
@@ -422,7 +390,7 @@ public class FTPDialog {
 			txtLog.setEditable(false);
 			txtLog.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
 			ftpProfilePicker.setLogText(txtLog);
-			final Button butLog = new Button(schedulerConfigurationShell, SWT.NONE);
+			/*	final Button butLog = new Button(schedulerConfigurationShell, SWT.NONE);
 			butLog.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
 					String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), schedulerConfigurationShell, false, null, false, null, false);
@@ -432,17 +400,7 @@ public class FTPDialog {
 			});
 			butLog.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			butLog.setText("Log");
-			/*
-			 * String selectProfile = Options.getProperty("last_profile");
-			 * if(selectProfile != null && selectProfile.length() > 0) {
-			 * if(listener == null) listener = ftpProfilePicker.getListener();
-			 * if( listener.getProfiles().get(selectProfile) != null) {
-			 * listener.setCurrProfileName(selectProfile); if(txtDir != null) {
-			 * txtDir.setText(listener.getCurrProfile() != null &&
-			 * listener.getCurrProfile().getRoot() != null ?
-			 * listener.getCurrProfile().getRoot() : ""); _setEnabled(false); }
-			 * } }
-			 */
+			*/
 			initForm();
 			schedulerConfigurationShell.layout();
 			schedulerConfigurationShell.open();
@@ -457,6 +415,13 @@ public class FTPDialog {
 			MainWindow.message("could not int FTP Profiles:" + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}
+	
+	private void disconnect() throws Exception{
+	    if (ftpProfileJadeClient != null){
+	       ftpProfileJadeClient.disconnect();
+        }
+	}
+
 
 	private void initForm() {
 		try {
@@ -480,284 +445,15 @@ public class FTPDialog {
 		}
 	}
 
-	private void fillTable(HashMap h) {
-		try {
-			table.removeAll();
-			java.util.Iterator it = h.keySet().iterator();
-			ArrayList files = new ArrayList();
-			TableItem item_ = new TableItem(table, SWT.NONE);
-			item_.setData("type", "dir_up");
-			item_.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory_up.gif"));
-			// directories
-			while (it.hasNext()) {
-				String key = sosString.parseToString(it.next());
-				if (h.get(key).equals("dir")) {
-					TableItem item = new TableItem(table, SWT.NONE);
-					item.setText(0, key);
-					item.setText(1, "");
-					item.setText(2, "Folder");
-					item.setData("type", "dir");
-					item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory.gif"));
-				}
-				else {
-					if (!key.endsWith("_size"))
-						files.add(key);
-				}
-			}
-			// files
-			if (!type.equalsIgnoreCase(OPEN_HOT_FOLDER)) {
-				for (int i = 0; i < files.size(); i++) {
-					String filename = sosString.parseToString(files.get(i));
-					TableItem item = new TableItem(table, SWT.NONE);
-					item.setText(0, filename);
-					item.setText(1, sosString.parseToString(h.get(filename + "_size")));
-					item.setText(2, "File");
-					item.setData("type", "file");
-					item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_file.gif"));
-				}
-			}
-		}
-		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			System.out.println("..error in FTPDialog " + e.getMessage());
-		}
-	}
+	protected void fillTable(HashMap<String, SOSFileEntry> h) {
+            Utils.startCursor(schedulerConfigurationShell);
+			directoryTable.removeAll();
+			fillTable(directoryTable, h);
+            directoryTable.setSortDirection(SWT.UP);
+			sort(newColumnTableColumn_2);
+            Utils.stopCursor(schedulerConfigurationShell);
 
-	public void saveas(String file) {
-		try {
-			file = file.replaceAll("\\\\", "/");
-			String localfilename = MainWindow.getContainer().getCurrentEditor().getFilename();
-			String newFilename = "";
-			if (localfilename != null)
-				newFilename = new File(localfilename).getParent() + "/" + new File(file).getName();
-			else
-				newFilename = new File(sosString.parseToString(listener.getCurrProfile().getLocaldirectory()), new File(file).getName()).getCanonicalPath();
-			DomParser currdom = MainWindow.getSpecifiedDom();
-			if (currdom == null)
-				return;
-			if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isLifeElement()) {
-				File f = new File(newFilename);
-				if (f.isFile())
-					newFilename = f.getParent();
-				localfilename = newFilename;
-				currdom.setFilename(new java.io.File(newFilename).getParent());
-				String attrName = f.getName().substring(0, f.getName().indexOf("." + currdom.getRoot().getName()));
-				if (currdom.getRoot().getName().equals("order")) {
-					Utils.setAttribute("job_chain", attrName.substring(0, attrName.indexOf(",")), currdom.getRoot());
-					Utils.setAttribute("id", attrName.substring(attrName.indexOf(",") + 1), currdom.getRoot());
-				}
-				else {
-					Utils.setAttribute("name", attrName, currdom.getRoot());
-				}
-				if (MainWindow.getContainer().getCurrentEditor().save()) {
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
-					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-					MainWindow.setSaveStatus();
-				}
-				currdom.setFilename(new java.io.File(newFilename).getCanonicalPath());
-				sos.scheduler.editor.app.IContainer con = MainWindow.getContainer();
-				SchedulerForm sf = (SchedulerForm) (con.getCurrentEditor());
-				sf.updateTree("jobs");
-				String name = currdom.getRoot().getName();
-				name = name.substring(0, 1).toUpperCase() + name.substring(1);
-				sf.updateTreeItem(name + ": " + attrName);
-			}
-			else
-				if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isDirectory()) {
-					if (MainWindow.getContainer().getCurrentEditor().save()) {
-						ArrayList newlist = listener.getCurrProfile().saveHotFolderAs(localfilename, file);
-						MainWindow.getContainer().getCurrentTab().setData("ftp_hot_folder_elements", newlist);
-						MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-						MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
-						MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
-						MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-						MainWindow.setSaveStatus();
-					}
-					return;
-				}
-				else {
-					currdom.setFilename(newFilename);
-					if (MainWindow.getContainer().getCurrentEditor().save()) {
-						MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-						MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
-						MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
-						MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-						MainWindow.setSaveStatus();
-					}
-				}
-			listener.getCurrProfile().saveAs(localfilename, file);
-		}
-		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not save File", e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			MainWindow.message("could not save File: cause: " + e.getMessage(), SWT.ICON_WARNING);
-		}
-		finally {
-			try {
-				listener.getCurrProfile().disconnect();
-			}
-			catch (Exception r) {
-				try {
-					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-				}
-				catch (Exception ee) {
-					// tu nichts
-				}
-			}
-			schedulerConfigurationShell.dispose();
-		}
-	}
-
-	public void openHotFolder() {
-		try {
-			FTPProfile profile = listener.getCurrProfile();
-			String strRootFolder = profile.getRoot();
-			String strParentSelectedFolder = txtDir.getText();
-			String strSubFolderRoot = strParentSelectedFolder.substring(strRootFolder.length()) + "/";
-			String tempSubHotFolder = txtFilename.getText();
-			HashMap h = profile.changeDirectory(strParentSelectedFolder + "/" + tempSubHotFolder);
-			if (listener.hasError()) {
-				return;
-			}
-			java.util.Iterator it = h.keySet().iterator();
-			// Alle Hot Folder Dateinamen merken: Grund: Beim Speichern werden
-			// alle Dateien gelöscht und anschliessend
-			// neu zurückgeschrieben
-			ArrayList nameOfLifeElement = new ArrayList();
-			String targetfile = sosString.parseToString(listener.getCurrProfile().getLocaldirectory());
-			targetfile = targetfile.replaceAll("\\\\", "/");
-			targetfile = new File(targetfile, strSubFolderRoot + tempSubHotFolder).getCanonicalPath();
-			targetfile = (targetfile.endsWith("/") || targetfile.endsWith("\\") ? targetfile : targetfile + "/");
-			File f = new File(targetfile);
-			ArrayList l = new ArrayList();
-			if (f.exists() && f.list().length > 0) {
-				String[] list = f.list();
-				for (int i = 0; i < list.length; i++) {
-					if (list[i] != null
-							&& (list[i].endsWith(".job.xml") || list[i].endsWith(".job_chain.xml") || list[i].endsWith(".order.xml")
-									|| list[i].endsWith(".lock.xml") || list[i].endsWith(".process_class.xml") || list[i].endsWith(".config.xml") || list[i].endsWith(".schedule.xml"))) {
-						l.add(list[i]);
-					}
-				}
-			}
-			while (it.hasNext()) {
-				String key = sosString.parseToString(it.next());
-				if (l.contains(key)) {
-					l.remove(key);
-				}
-				if (h.get(key).equals("file")) {
-					if (isLifeElement(sosString.parseToString(key))) {
-						String file = profile.openFile(sosString.parseToString(key), strSubFolderRoot + tempSubHotFolder);
-						nameOfLifeElement.add(file.replaceAll("\\\\", "/"));
-					}
-					else
-						if (key.endsWith(".config.xml")) {
-							profile.openFile(sosString.parseToString(key), strSubFolderRoot + tempSubHotFolder);
-						}
-				}
-			}
-			String whichFile = "";
-			if (l.size() >= 0) {
-				for (int i = 0; i < l.size(); i++) {
-					whichFile = whichFile + l.get(i) + "; ";
-				}
-			}
-			if (whichFile.length() > 0) {
-				int c = MainWindow.message(
-						"The files in the local directory are not synchron with the files at the server.\nShould the files in the local directory be deleted?\n"
-								+ whichFile, SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
-				if (c == SWT.YES) {
-					for (int j = 0; j < l.size(); j++)
-						new File(targetfile + sosString.parseToString(l.get(j))).delete();
-				}
-			}
-			String dirname = sosString.parseToString(listener.getCurrProfile().getLocaldirectory());
-			dirname = new File(dirname, strSubFolderRoot + tempSubHotFolder).getCanonicalPath();
-			if (!new File(dirname).exists()) {
-				new File(dirname).mkdirs();
-			}
-			if (MainWindow.getContainer().openDirectory(dirname) != null) {
-				MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-				MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
-				MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
-				MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", strParentSelectedFolder + "/" + tempSubHotFolder);
-				MainWindow.getContainer().getCurrentTab().setData("ftp_hot_folder_elements", nameOfLifeElement);
-				MainWindow.setSaveStatus();
-			}
-			profile.disconnect();
-			schedulerConfigurationShell.dispose();
-		}
-		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not Open Hot Folder.", e);
-			}
-			catch (Exception ee) {
-			}
-			MainWindow.message("could not Open Hot Folder: cause: " + e.getMessage(), SWT.ICON_WARNING);
-		}
-	}
-
-	/**
-	 * Öffnet das ausgewählte Datei.
-	 * 
-	 * 
-	 * Wenn eine
-	 */
-	public void openFile() {
-		String file = "";
-		try {
-			FTPProfile profile = listener.getCurrProfile();
-			file = profile.openFile(txtDir.getText() + "/" + txtFilename.getText(), null);
-			if (!listener.hasError()) {
-				if (MainWindow.getContainer().openQuick(file) != null) {
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
-					MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
-					MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");
-					MainWindow.getContainer().getCurrentTab().setData("ftp_remote_directory", txtDir.getText() + "/" + txtFilename.getText());
-					MainWindow.setSaveStatus();
-				}
-				if (new File(file).getName().endsWith(".job_chain.xml")) {
-					// Es wurde eine Jobkette geöffnet. Es werden automatisch,
-					// falls vorhanden die entsprechende Job Chain Node
-					// Parameter datei geöffnet
-					int endP = txtFilename.getText().length() - ".job_chain.xml".length();
-					// File detailsfile = new File(txtDir.getText() + "/" +
-					// txtFilename.getText().substring(0, endP) +
-					// ".config.xml");
-					// File detailsfile = new
-					// File(txtFilename.getText().substring(0, endP) +
-					// ".config.xml");
-					java.util.Vector ftpFiles = profile.getList();
-					// fehler wird ueber nlist return value verwertet
-					if (!ftpFiles.isEmpty()) {
-						profile.openFile(txtFilename.getText().substring(0, endP) + ".config.xml", null);
-					}
-				}
-				profile.disconnect();
-				schedulerConfigurationShell.dispose();
-			}
-		}
-		catch (Exception r) {
-			try {
-				MainWindow.message("could not open File: " + file + ", cause: " + r.toString(), SWT.ICON_WARNING);
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-		}
-	}
+	} 
 
 	public FTPDialogListener getListener() {
 		return listener;
@@ -766,7 +462,7 @@ public class FTPDialog {
 	public void refresh() {
 		try {
 			Utils.startCursor(schedulerConfigurationShell);
-			HashMap h = listener.getCurrProfile().changeDirectory(txtDir.getText());
+			HashMap <String, SOSFileEntry> h = ftpProfileJadeClient.getDirectoryContent(txtDir.getText());
 			fillTable(h);
 			Utils.stopCursor(schedulerConfigurationShell);
 		}
@@ -799,86 +495,101 @@ public class FTPDialog {
 
 	private void sort(TableColumn col) {
 		try {
-			if (table.getSortDirection() == SWT.DOWN)
-				table.setSortDirection(SWT.UP);
-			else
-				table.setSortDirection(SWT.DOWN);
-			table.setSortColumn(col);
-			ArrayList listOfSortData = new ArrayList();
-			for (int i = 0; i < table.getItemCount(); i++) {
-				TableItem item = table.getItem(i);
-				if (!item.getData("type").equals("dir_up")) {
-					HashMap hash = new HashMap();
-					for (int j = 0; j < table.getColumnCount(); j++) {
-						hash.put(table.getColumn(j).getText(), item.getText(j));
-					}
-					hash.put("type", item.getData("type"));
-					listOfSortData.add(hash);
+			if (directoryTable.getSortDirection() == SWT.DOWN){
+                directoryTable.setSortDirection(SWT.UP);
+			}else{
+				directoryTable.setSortDirection(SWT.DOWN);
+			}
+			
+			directoryTable.setSortColumn(col);
+			ArrayList<HashMap<String, String>> listOfSortData = new ArrayList<HashMap<String, String>>();
+            HashMap <String,SOSFileEntry>sosFileEntries = new HashMap<String, SOSFileEntry>();
+			for (int i = 0; i < directoryTable.getItemCount(); i++) {
+				TableItem item = directoryTable.getItem(i);
+                HashMap <String,String>hash = new HashMap<String, String>();
+
+                for (int j = 0; j < directoryTable.getColumnCount(); j++) {
+					hash.put(directoryTable.getColumn(j).getText(), item.getText(j));
 				}
+				
+                SOSFileEntry sosFileEntry = (SOSFileEntry) item.getData();
+                if (!sosFileEntry.isDirUp()){
+                   sosFileEntries.put(item.getText(0), sosFileEntry);
+				   listOfSortData.add(hash);
+                }
+				 
 			}
 			listOfSortData = sos.util.SOSSort.sortArrayList(listOfSortData, col.getText());
-			table.removeAll();
-			TableItem item_ = new TableItem(table, SWT.NONE);
-			item_.setData("type", "dir_up");
+			directoryTable.removeAll();
+			
+			
+			SOSFileEntry sosFileEntryDirup = new SOSFileEntry();
+			sosFileEntryDirup.setDirectory(true);
+			sosFileEntryDirup.setFilename("..");
+			sosFileEntryDirup.setFilesize(0);
+			sosFileEntryDirup.setParentPath(new File(txtDir.getText()).getParent());
+            
+			
+			TableItem item_ = new TableItem(directoryTable, SWT.NONE);
+			item_.setData(sosFileEntryDirup);
 			item_.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory_up.gif"));
+
 			TableItem item = null;
-			if (table.getSortDirection() == SWT.DOWN) {
+			if (directoryTable.getSortDirection() == SWT.DOWN) {
 				// Verzeichnis
 				for (int i = 0; i < listOfSortData.size(); i++) {
-					HashMap hash = (HashMap) listOfSortData.get(i);
-					if (!hash.get("type").equals("file")) {
-						item = new TableItem(table, SWT.NONE);
-						item.setData("type", hash.get("type"));
-						if (hash.get("type").equals("dir"))
-							item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory.gif"));
-						else
-							if (hash.get("type").equals("dir_up"))
-								item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory_up.gif"));
-						for (int j = 0; j < table.getColumnCount(); j++) {
-							item.setText(j, sosString.parseToString(hash.get(table.getColumn(j).getText())));
+				    HashMap <String, String> hash = listOfSortData.get(i);
+					SOSFileEntry sosFileEntry = sosFileEntries.get(hash.get(directoryTable.getColumn(0).getText()));
+					if  (sosFileEntry.isDirectory()) {
+						item = new TableItem(directoryTable, SWT.NONE);
+						item.setData(sosFileEntry);
+                        item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory.gif"));
+						for (int j = 0; j < directoryTable.getColumnCount(); j++) {
+							item.setText(j, hash.get(directoryTable.getColumn(j).getText()));
 						}
 					}
 				}
 				// Datei
 				for (int i = 0; i < listOfSortData.size(); i++) {
-					HashMap hash = (HashMap) listOfSortData.get(i);
-					if (hash.get("type").equals("file")) {
-						item = new TableItem(table, SWT.NONE);
-						item.setData("type", hash.get("type"));
+					HashMap <String,String> hash = listOfSortData.get(i);
+	                SOSFileEntry sosFileEntry = sosFileEntries.get(hash.get(directoryTable.getColumn(0).getText()));
+
+					if (!sosFileEntry.isDirectory()) {
+						item = new TableItem(directoryTable, SWT.NONE);
+						item.setData(sosFileEntry);
 						item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_file.gif"));
-						for (int j = 0; j < table.getColumnCount(); j++) {
-							item.setText(j, sosString.parseToString(hash.get(table.getColumn(j).getText())));
+						for (int j = 0; j < directoryTable.getColumnCount(); j++) {
+							item.setText(j, hash.get(directoryTable.getColumn(j).getText()));
 						}
 					}
 				}
 			}
 			else {
 				for (int i = listOfSortData.size() - 1; i >= 0; i--) {
-					HashMap hash = (HashMap) listOfSortData.get(i);
+					HashMap <String,String>hash = listOfSortData.get(i);
+                    SOSFileEntry sosFileEntry = sosFileEntries.get(hash.get(directoryTable.getColumn(0).getText()));
 					// Datei
-					if (hash.get("type").equals("file")) {
-						item = new TableItem(table, SWT.NONE);
-						item.setData("type", hash.get("type"));
-						if (hash.get("type").equals("file"))
+					if (!sosFileEntry.isDirectory()) {
+						item = new TableItem(directoryTable, SWT.NONE);
+						item.setData(sosFileEntry);
+						if (!sosFileEntry.isDirectory())
 							item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_file.gif"));
-						for (int j = 0; j < table.getColumnCount(); j++) {
-							item.setText(j, sosString.parseToString(hash.get(table.getColumn(j).getText())));
+						for (int j = 0; j < directoryTable.getColumnCount(); j++) {
+							item.setText(j, hash.get(directoryTable.getColumn(j).getText()));
 						}
 					}
 				}
 				// Verzeichnis
 				for (int i = listOfSortData.size() - 1; i >= 0; i--) {
-					HashMap hash = (HashMap) listOfSortData.get(i);
-					if (!hash.get("type").equals("file")) {
-						item = new TableItem(table, SWT.NONE);
-						item.setData("type", hash.get("type"));
-						if (hash.get("type").equals("dir"))
-							item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory.gif"));
-						else
-							if (hash.get("type").equals("dir_up"))
-								item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory_up.gif"));
-						for (int j = 0; j < table.getColumnCount(); j++) {
-							item.setText(j, sosString.parseToString(hash.get(table.getColumn(j).getText())));
+					HashMap <String,String> hash = listOfSortData.get(i);
+                    SOSFileEntry sosFileEntry = sosFileEntries.get(hash.get(directoryTable.getColumn(0).getText()));
+
+					if (sosFileEntry.isDirectory()) {
+						item = new TableItem(directoryTable, SWT.NONE);
+						item.setData(sosFileEntry);
+						item.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_directory.gif"));
+						for (int j = 0; j < directoryTable.getColumnCount(); j++) {
+							item.setText(j, hash.get(directoryTable.getColumn(j).getText()));
 						}
 					}
 				}
@@ -894,104 +605,22 @@ public class FTPDialog {
 		}
 	}
 
-	/*
-	 * private void sort(TableColumn col) { try {
-	 * 
-	 * if(table.getSortDirection() == SWT.DOWN) table.setSortDirection(SWT.UP);
-	 * else table.setSortDirection(SWT.DOWN);
-	 * 
-	 * table.setSortColumn(col);
-	 * 
-	 * ArrayList listOfSortData = new ArrayList();
-	 * 
-	 * for(int i = 0; i < table.getItemCount(); i++) { TableItem item =
-	 * table.getItem(i); if(!item.getData("type").equals("dir_up")) { HashMap
-	 * hash = new HashMap(); for(int j = 0; j < table.getColumnCount(); j++) {
-	 * hash.put(table.getColumn(j).getText(), item.getText(j)); }
-	 * 
-	 * hash.put("type", item.getData("type"));
-	 * 
-	 * listOfSortData.add(hash); } }
-	 * 
-	 * listOfSortData = sos.util.SOSSort.sortArrayList(listOfSortData,
-	 * col.getText());
-	 * 
-	 * table.removeAll();
-	 * 
-	 * TableItem item_ = new TableItem(table, SWT.NONE);
-	 * item_.setData("type","dir_up");
-	 * item_.setImage(ResourceManager.getImageFromResource
-	 * ("/sos/scheduler/editor/icon_directory_up.gif"));
-	 * 
-	 * 
-	 * TableItem item = null;
-	 * 
-	 * if(table.getSortDirection() == SWT.DOWN) { for(int i = 0; i <
-	 * listOfSortData.size(); i++) {
-	 * 
-	 * item = new TableItem(table, SWT.NONE); HashMap hash =
-	 * (HashMap)listOfSortData.get(i); item.setData("type", hash.get("type"));
-	 * if(hash.get("type").equals("file"))
-	 * item.setImage(ResourceManager.getImageFromResource
-	 * ("/sos/scheduler/editor/icon_file.gif")); else
-	 * if(hash.get("type").equals("dir"))
-	 * item.setImage(ResourceManager.getImageFromResource
-	 * ("/sos/scheduler/editor/icon_directory.gif")); else
-	 * if(hash.get("type").equals("dir_up"))
-	 * item.setImage(ResourceManager.getImageFromResource
-	 * ("/sos/scheduler/editor/icon_directory_up.gif"));
-	 * 
-	 * for(int j = 0; j < table.getColumnCount(); j++) { item.setText(j,
-	 * sosString.parseToString(hash.get(table.getColumn(j).getText()))); }
-	 * 
-	 * }
-	 * 
-	 * } else {
-	 * 
-	 * for(int i = listOfSortData.size() - 1; i >= 0; i--) {
-	 * 
-	 * item = new TableItem(table, SWT.NONE); HashMap hash =
-	 * (HashMap)listOfSortData.get(i); item.setData("type", hash.get("type"));
-	 * if(hash.get("type").equals("file"))
-	 * item.setImage(ResourceManager.getImageFromResource
-	 * ("/sos/scheduler/editor/icon_file.gif")); else
-	 * if(hash.get("type").equals("dir"))
-	 * item.setImage(ResourceManager.getImageFromResource
-	 * ("/sos/scheduler/editor/icon_directory.gif")); else
-	 * if(hash.get("type").equals("dir_up"))
-	 * item.setImage(ResourceManager.getImageFromResource
-	 * ("/sos/scheduler/editor/icon_directory_up.gif"));
-	 * 
-	 * for(int j = 0; j < table.getColumnCount(); j++) { item.setText(j,
-	 * sosString.parseToString(hash.get(table.getColumn(j).getText()))); }
-	 * 
-	 * }
-	 * 
-	 * 
-	 * }
-	 * 
-	 * } catch(Exception e) { try { new ErrorLog("error in " +
-	 * sos.util.SOSClassUtil.getMethodName(), e); } catch(Exception ee) { //tu
-	 * nichts }
-	 * 
-	 * } }
-	 */
+	protected SOSFileEntry getSosFileEntryFromTable() {
+    	SOSFileEntry sosFileEntry = null;
+        for (int i=1;i<directoryTable.getItems().length;i++){
+            TableItem item = directoryTable.getItem(i);
+            if (item.getText().equals(txtFilename.getText())){
+               sosFileEntry = (SOSFileEntry) item.getData();
+            }
+        }
+        return sosFileEntry;
+    }
+ 
 	public void setToolTipText() {
-		if (type.equalsIgnoreCase(OPEN_HOT_FOLDER)) {
-			butOpenOrSave.setToolTipText(Messages.getTooltip("ftpdialog.btn_open_hot_folder"));
-			txtFilename.setToolTipText(Messages.getTooltip("ftpdialog.txt_open_hot_folder"));
-		}
-		else
-			if (type.equalsIgnoreCase(OPEN)) {
-				butOpenOrSave.setToolTipText(Messages.getTooltip("ftpdialog.btn_open_file"));
-				txtFilename.setToolTipText(Messages.getTooltip("ftpdialog.txt_open_file"));
-			}
-			else
-				if (type.equalsIgnoreCase(SAVE_AS) || type.equalsIgnoreCase(SAVE_AS_HOT_FOLDER)) {
-					butOpenOrSave.setToolTipText(Messages.getTooltip("ftpdialog.btn_save_as"));
-					txtFilename.setToolTipText(Messages.getTooltip("ftpdialog.txt_save_as"));
-				}
-		table.setToolTipText(Messages.getTooltip("ftpdialog.table"));
+	    
+	    setTooltip();
+	 
+		directoryTable.setToolTipText(Messages.getTooltip("ftpdialog.table"));
 		txtDir.setToolTipText(Messages.getTooltip("ftpdialog.directory"));
 		txtLog.setToolTipText(Messages.getTooltip("ftpdialog.log"));
 		butChangeDir.setToolTipText(Messages.getTooltip("ftpdialog.change_directory"));
@@ -1002,31 +631,9 @@ public class FTPDialog {
 		butClose.setToolTipText(Messages.getTooltip("ftpdialog.close"));
 	}
 
-	private boolean isLifeElement(String filename) {
-		if (filename.endsWith(".job.xml") || filename.endsWith(".schedule.xml") || filename.endsWith(".job_chain.xml") || filename.endsWith(".lock.xml")
-				|| filename.endsWith(".process_class.xml") || filename.endsWith(".order.xml")) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
+	 
+ 
+	
 
-	private void openOrSave() {
-		Utils.startCursor(schedulerConfigurationShell);
-		if (butOpenOrSave.getText().equals(OPEN) || butOpenOrSave.getText().equals(OPEN_HOT_FOLDER)) {
-			if (type.equals(OPEN_HOT_FOLDER)) {
-				openHotFolder();
-			}
-			else {
-				// Konfiguratoionsdatei oder HOT Folder Element
-				openFile();
-			}
-		}
-		else {
-			String file = txtDir.getText() + "/" + txtFilename.getText();
-			saveas(file);
-		}
-		Utils.stopCursor(schedulerConfigurationShell);
-	}
+	
 }

@@ -48,10 +48,11 @@
 			<artifactId>org.eclipse.swt.${swtSuffix}</artifactId>
 		</dependency>
 		
-		<dependency>
-			<groupId>com.trilead</groupId>
-			<artifactId>sos-trilead-ssh2</artifactId>
-		</dependency>
+	   <dependency>
+            <groupId>com.sos-berlin.jade</groupId>
+            <artifactId>jade-engine</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
        <dependency>
             <groupId>org.bouncycastle</groupId>

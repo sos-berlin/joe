@@ -421,6 +421,23 @@ public class SchedulerListener {
         //        item.setText(Messages.getLabel("Locks"));
         item.setText(SOSJOEMessageCodes.JOE_L_SchedulerListener_Locks.label());
         item.setImage(getImage("lockedstate.gif"));
+        
+        // Monitors
+        item = new TreeItem(objTreeObjects, SWT.NONE);
+        item.setText(MONITOR);
+      
+        item.setImage(getImage("source_attach_attrib.gif"));
+        item.setData(new TreeData(JOEConstants.MONITORS, config, Options.getHelpURL("job.monitors"), "monitors"));
+        item.setData(conItemDataKeyKEY, "monitors");
+        item.setData(conItemDataKeyCOPY_ELEMENT, config);
+      
+        Element monitors = getMonitors(objSchedulerDom);
+        if (monitors == null) {
+            TreeData data = (TreeData) item.getData();
+            monitors = data.getElement().getChild("monitors");
+        }        
+        treeFillMonitorScripts(item, monitors, false);        
+        
         if (type != SchedulerDom.DIRECTORY) {
             item = new TreeItem(tree, SWT.NONE);
             item.setData(new TreeData(JOEConstants.SCRIPT, config, Options.getHelpURL("start_script"), "script"));
@@ -600,6 +617,9 @@ public class SchedulerListener {
         parent.setExpanded(true);
     }
 
+   
+  
+    
     private void createJobItem(final TreeItem parent, final Element element, final String strPrefix) {
         if (type == SchedulerDom.DIRECTORY) {
             checkLifeAttributes(element, Utils.getAttributeValue("name", element));
@@ -620,6 +640,12 @@ public class SchedulerListener {
         return jobs;
     }
 
+    private Element getMonitors(final SchedulerDom pobjSchedulerDom) {
+        Element monitors = pobjSchedulerDom.getRoot().getChild("config").getChild("monitors");
+        return monitors;
+    }
+   
+    
     private void setDisabled(final TreeItem pobjC) {
         @SuppressWarnings("unused") final String conMethodName = conClassName + "::setDisabled";
         // TODO Color as an global Option
@@ -1656,23 +1682,24 @@ public class SchedulerListener {
 
     public void treeFillMonitorScripts(final TreeItem parent, final Element elem, final boolean disable) {
         parent.removeAll();
-        List l = elem.getChildren("monitor");
-        for (int i = 0; i < l.size(); i++) {
-            Element monitor = (Element) l.get(i);
-            TreeItem item = new TreeItem(parent, SWT.NONE);
-            if (Utils.getAttributeValue("name", monitor).equals(""))
-                //                item.setText(Messages.getLabel("treeitem.empty"));
-                item.setText(SOSJOEMessageCodes.JOE_M_SchedulerListener_Empty.label());
-            else
-                item.setText(Utils.getAttributeValue("name", monitor));
-            item.setImage(getImage("source_attach_attrib.gif"));
-            item.setData(new TreeData(JOEConstants.MONITOR, monitor, Options.getHelpURL("job.monitor"), "monitor"));
-            item.setData(conItemDataKeyKEY, "monitor");
-            item.setData(conItemDataKeyCOPY_ELEMENT, monitor);
-            if (disable) {
-                setDisabled(item); // item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+        if (elem != null){
+            List l = elem.getChildren("monitor");
+            for (int i = 0; i < l.size(); i++) {
+                Element monitor = (Element) l.get(i);
+                TreeItem item = new TreeItem(parent, SWT.NONE);
+                if (Utils.getAttributeValue("name", monitor).equals(""))
+                    item.setText(SOSJOEMessageCodes.JOE_M_SchedulerListener_Empty.label());
+                else
+                    item.setText(Utils.getAttributeValue("name", monitor));
+                item.setImage(getImage("source_attach_attrib.gif"));
+                item.setData(new TreeData(JOEConstants.MONITOR, monitor, Options.getHelpURL("job.monitor"), "monitor"));
+                item.setData(conItemDataKeyKEY, "monitor");
+                item.setData(conItemDataKeyCOPY_ELEMENT, monitor);
+                if (disable) {
+                    setDisabled(item); // item.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+                }
             }
+            parent.setExpanded(true);
         }
-        parent.setExpanded(true);
     }
 }

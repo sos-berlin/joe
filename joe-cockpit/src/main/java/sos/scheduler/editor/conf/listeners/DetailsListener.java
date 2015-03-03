@@ -14,9 +14,11 @@ import org.jdom.xpath.XPath;
 
 import sos.ftp.profiles.FTPProfile;
 import sos.scheduler.editor.app.MainWindow;
+import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 
+import com.sos.VirtualFileSystem.common.SOSFileEntry;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
@@ -70,47 +72,7 @@ public class DetailsListener {
 		parseDocuments();
 	}
 
-	public static void openFilePerFTP(String xmlFilename) {
-		String file = "";
-		try {
-			CTabItem currentTab = MainWindow.getContainer().getCurrentTab();
-			if (currentTab != null && currentTab.getData("ftp_title") != null && currentTab.getData("ftp_title").toString().length() > 0) {
-				String remoteDir = currentTab.getData("ftp_remote_directory").toString();
-				DomParser currdom = MainWindow.getSpecifiedDom();
-				if (currdom == null)
-					return;
-				if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isDirectory()) {
-					remoteDir = remoteDir + "/" + new File(xmlFilename).getName();
-				}
-				else { //if( currdom instanceof SchedulerDom && ((SchedulerDom)currdom).isLifeElement()) {
-					String p = new File(remoteDir).getParent();
-					p = p == null ? "" : p + "/";
-					remoteDir = p + new File(xmlFilename).getName();
-					remoteDir = remoteDir.replaceAll("\\\\", "/");
-				}
-				FTPProfile profile = (sos.ftp.profiles.FTPProfile) currentTab.getData("ftp_profile");
-				profile.setLogText(null);
-				//String a = profile.openFile(remoteDir, xmlFilename);
-				profile.connect();
-				//String parent = new File(remoteDir).getParent() != null ? new File(remoteDir).getParent() : ".";
-				//if(profile.getList(parent).contains(new File(remoteDir))) {
-				profile.getFile(remoteDir, xmlFilename);
-				//long l = profile.getFile(remoteDir, xmlFilename);
-				//}
-				profile.disconnect();
-			}
-		}
-		catch (Exception r) {
-			try {
-				MainWindow.message("could not open File: " + file + ", cause: " + r.toString(), SWT.ICON_WARNING);
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
-		}
-	}
-
+	
 	public void parseDocuments() {
 		String xmlPaths = "";
 		try {
@@ -159,9 +121,7 @@ public class DetailsListener {
 					}
 				}
 			}
-			//hier
-			//if(xmlFilename.endsWith(".config.xml"))
-			//	openFilePerFTP(xmlFilename); 
+			 
 		}
 		catch (Exception e) {
 			try {
@@ -357,6 +317,7 @@ public class DetailsListener {
 				dom = new DetailDom();
 			}
 			dom.writeElement(xmlFilename, doc);
+		 
 		}
 		catch (Exception e) {
 			try {
@@ -796,8 +757,7 @@ public class DetailsListener {
 					Element process = (Element) listOfElement.get(0);
 					process.setAttribute("state", newstate);
 					detailListener.save();
-					MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", detailListener.getConfigurationFilename());
-					MainWindow.saveFTP(new java.util.HashMap());
+				     
 				}
 			}
 		}
@@ -815,19 +775,19 @@ public class DetailsListener {
 	/**
 	 * Wenn der Jobname vom Details sich ändert, dann wird auch in der Job Chain Node Parameter Datei der Attribut job chainname angepasst
 	 */ 
-	public static void changeDetailsJobChainname(String jobChainNewName, String jobchainName, SchedulerDom _dom) {
+	public static void changeDetailsJobChainname(String newJobChainName, String oldJobchainName, SchedulerDom _dom) {
 		try {
-			DetailsListener detailListener = new DetailsListener(jobchainName, null, null, JOEConstants.JOB_CHAINS, null, _dom.isLifeElement()
+			DetailsListener detailListener = new DetailsListener(oldJobchainName, null, null, JOEConstants.JOB_CHAINS, null, _dom.isLifeElement()
 					|| _dom.isDirectory(), _dom.getFilename());
-			XPath x = XPath.newInstance("settings/job_chain[@name='" + jobchainName + "']");
+			XPath x = XPath.newInstance("settings/job_chain[@name='" + oldJobchainName + "']");
 			List listOfElement = x.selectNodes(detailListener.getDoc());
 			if (!listOfElement.isEmpty()) {
 				Element jobchain = (Element) listOfElement.get(0);
-				jobchain.setAttribute("name", jobChainNewName);
-				detailListener.save();
-				//MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", detailListener.getConfigurationFilename());
-				//MainWindow.saveFTP(new java.util.HashMap());
+				jobchain.setAttribute("name", newJobChainName);
 			}
+            detailListener.save();
+             
+
 		}
 		catch (Exception e) {
 			try {
@@ -890,8 +850,9 @@ public class DetailsListener {
 		dom.setChanged(true);
 		
 		
-		if (dom.isDirectory() || dom.isLifeElement())
-			dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.MODIFY);
+		if (dom.isDirectory() || dom.isLifeElement()){
+            dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.MODIFY);
+		}
 	}
 
 	public static void addMonitoring2Job(String jobChainname, String state, SchedulerDom dom, ISchedulerUpdate update) {
@@ -922,7 +883,6 @@ public class DetailsListener {
 					List listOfElement2 = null;
 					if (dom.isLifeElement() || new File(jobname).getParent() != null) {
 						if (!hotFolderfile.exists()) {
-							openFilePerFTP(hotFolderfilename);
 							if (!new File(hotFolderfilename).exists()) {
 								sos.scheduler.editor.app.MainWindow.message("Could not add Monitoring Job, cause Hot Folder File " + hotFolderfilename
 										+ " not exist.", SWT.ICON_WARNING);
@@ -1003,8 +963,6 @@ public class DetailsListener {
 									Element job = (Element) listOfElement3.get(0);
 									addMonitoring(job, currDom);
 									currDom.writeElement(currDom.getFilename(), currDom.getDoc());
-									MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", hotFolderfilename);
-									MainWindow.saveFTP(new java.util.HashMap());
 								}
 							}
 						}

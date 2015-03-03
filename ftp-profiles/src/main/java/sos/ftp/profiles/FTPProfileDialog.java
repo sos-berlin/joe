@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Text;
 
 import sos.util.SOSLogger;
 import sos.util.SOSString;
+
 import java.util.*;
 import java.io.File;
 
@@ -39,71 +40,38 @@ public class FTPProfileDialog {
 
  
 	private              Group            schedulerGroup                = null;
-
 	private              SOSString           sosString                     = null;
-
 	private   static     Shell               shell   = null;
-
-	//private              Properties          currProfile                   = null;
 	private              FTPProfile          currProfile                   = null;
-
 	private              Combo               cboConnectname                = null;
-
 	private              Text                txtPort                       = null;
-
 	private              Text                txtUsername                   = null;
-
 	private              Text                txtPassword                   = null;
-
 	private              Text                txtRoot                       = null;
-
 	private              Text                txtLocalDirectory             = null;
-
 	private              Button              butAscii                      = null;
-
 	private              Button              butbinary                     = null ;
-
 	private              Text                txtHost                       = null;
-
 	private              boolean             newProfile                    = false;
-
 	private              Button              butSavePassword               = null; 
-
 	private              FTPDialogListener   listener                      = null;
-
 	private              Button              useProxyButton                = null; 
-
 	private              Text                txtProxyServer                = null;  
-
 	private              Text                txtProxyPort                  = null; 
-
 	private              Button              butApply                      = null;
-
 	private              boolean             saveSettings                  = false;
-
 	private              Combo               cboProtokol                   = null; 
-
 	private              TabItem             sshTabItem                    = null; 
-
 	private              Group               groupAuthenticationMethods    = null;
-
 	private              Button              butPublicKey                  = null;
-
 	private              Button              butAuthPassword               = null;
-
 	private              Button              butPasswordAndPublic          = null;
-
 	private              Text                txtDirPublicKey               = null;
-
 	private              boolean             saved                         = false; //hilsvariable            
-
 	private              boolean             init                          = false;   
-
 	private              Combo               combo                         = null;
-	
 	private   static     boolean             emptyItem                     = false;
 	
-
 	public FTPProfileDialog(File configFile) throws Exception{
 		try {
 			FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
@@ -122,7 +90,7 @@ public class FTPProfileDialog {
 			combo = combo_;
 			listener.setConnectionsname(combo);
 			String[] profileNames = listener.getProfileNames();
-			HashMap p = listener.getProfiles();
+			HashMap <String, FTPProfile> p = listener.getProfiles();
 			for(int i = 0; i < profileNames.length; i++) {
 				combo.setData(profileNames[i], p.get(profileNames[i]));
 			}
@@ -191,17 +159,7 @@ public class FTPProfileDialog {
 
 			{
 				schedulerGroup = new Group(shell, SWT.NONE);
-				/*schedulerGroup.addTraverseListener(new TraverseListener() {
-				public void keyTraversed(final TraverseEvent e) {					
-					if(e.detail == SWT.TRAVERSE_ESCAPE) {
-						close();
-						saved = true;
-						shell.dispose();
-					}
-
-
-				}
-			});*/
+				 
 				schedulerGroup.setText("Profiles");
 				final GridData gridData = new GridData(GridData.FILL,
 						GridData.FILL, true, true);
@@ -311,7 +269,6 @@ public class FTPProfileDialog {
 							try {
 								init = false;
 								//TODO 
-								//System.out.println("todo");
 								if(txtPassword.getText().length() > 0) {
 									/*	String key = Options.getProperty("profile.timestamp." + cboConnectname.getText());
 
@@ -573,29 +530,13 @@ public class FTPProfileDialog {
 					}
 				});
 				butRemove.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-				butRemove.setText("Remove");
-
-
-				/*if(currProfile.get("transfermode") != null && currProfile.get("transfermode").toString().equalsIgnoreCase("binary")) {
-				butbinary.setSelection(true);
-				butAscii.setSelection(false);
-			} else {
-				butbinary.setSelection(false);
-				butAscii.setSelection(true);
-			}*/
-
-				// final Tree tree = new Tree(schedulerGroup, SWT.BORDER);
-
-
-
+				butRemove.setText("Remove");			
 			}
 
 			final Button butClose = new Button(shell, SWT.NONE);
 			butClose.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(final SelectionEvent e) {
-
 					close();
-
 					saved = true;
 					shell.dispose();
 				}
@@ -615,8 +556,9 @@ public class FTPProfileDialog {
 			});
 
 			//setToolTipText();
-			if(listener.getCurrProfileName() != null)
-				cboConnectname.setText(listener.getCurrProfileName());
+			if(listener.getCurrProfileName() != null){
+                cboConnectname.setText(listener.getCurrProfileName());
+			}
 			initForm();
 
 			shell.layout();
@@ -633,8 +575,7 @@ public class FTPProfileDialog {
 		try {
 			FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
 			init = true;
-			setToolTip();
-			String s = cboConnectname.getText();
+ 			String s = cboConnectname.getText();
 			cboConnectname.setItems(listener.getProfileNames());//löscht den Eintrag, daher mit s merken und wieder zurückschreiben
 			cboConnectname.setText(s);
 
@@ -680,7 +621,6 @@ public class FTPProfileDialog {
 
 
 			cboProtokol.setText(protocol);
-
 
 			if(protocol.equalsIgnoreCase("SFTP")) {
 				groupAuthenticationMethods.setEnabled(true);
@@ -764,11 +704,9 @@ public class FTPProfileDialog {
 			if(newProfile && !listener.getProfiles().containsKey(cboConnectname.getText()) ||
 					listener.getProfiles().isEmpty()) {
 				//neuer Eintrag
-				listener.getProfiles().put(pName, prop);	
-
+				listener.getProfiles().put(pName, new FTPProfile(prop));	
 			} else {
 				listener.removeProfile(pName);
-
 			}
 
 			listener.setProfiles(pName, new FTPProfile(prop));
@@ -787,7 +725,6 @@ public class FTPProfileDialog {
 
 			cboConnectname.setItems(listener.getProfileNames());
 			cboConnectname.setText(pName);
-			//initForm();
 			newProfile = false;
 			saveSettings = true;//Änderungen haben stattgefunden, d.h. in die ini Datei zurückschreiben
 			butApply.setEnabled(false);
@@ -799,12 +736,13 @@ public class FTPProfileDialog {
 
 	private String getAuthMethod() {
 		String authMethod = "";
-		if(butPublicKey.getSelection())
-			authMethod = "publickey";
-		else if(butAuthPassword.getSelection())
-			authMethod = "password";
-		else if(butPasswordAndPublic.getSelection())
-			authMethod = "both";
+		if(butPublicKey.getSelection()){
+            authMethod = "publickey";
+		}else if(butAuthPassword.getSelection()){
+            authMethod = "password";
+		}else if(butPasswordAndPublic.getSelection()){
+                authMethod = "both";
+	  	}
 
 		return authMethod;
 	}
@@ -827,13 +765,12 @@ public class FTPProfileDialog {
 				} 
 			}
 			if(saveSettings) {
-				//listener.saveSettings();
 				listener.saveProfile(butSavePassword.getSelection());			
 			}
 
 			if(combo != null) {
 				String[] profileNames = listener.getProfileNames();
-				HashMap p = listener.getProfiles();
+				HashMap<String, FTPProfile> p = listener.getProfiles();
 				for(int i = 0; i < profileNames.length; i++) {
 					combo.setData(profileNames[i], p.get(profileNames[i]));
 				}
@@ -861,11 +798,7 @@ public class FTPProfileDialog {
 
 	}
 
-
-	private void setToolTip() {
-
-	}
-
+  
 	public static int message(String message, int style) {
 		Shell s_ = shell;
 		if(s_ == null)
@@ -875,14 +808,15 @@ public class FTPProfileDialog {
 		mb.setMessage(message);
 
 		String title = "Message";
-		if ((style & SWT.ICON_ERROR) != 0)
-			title = "Error";
-		else if ((style & SWT.ICON_INFORMATION) != 0)
-			title = "Information";
-		else if ((style & SWT.ICON_QUESTION) != 0)
-			title = "Question";
-		else if ((style & SWT.ICON_WARNING) != 0)
-			title = "Warning";
+		if ((style & SWT.ICON_ERROR) != 0){
+            title = "Error";
+		}else if ((style & SWT.ICON_INFORMATION) != 0){
+            title = "Information";
+		}else if ((style & SWT.ICON_QUESTION) != 0){
+            title = "Question";
+		}else if ((style & SWT.ICON_WARNING) != 0){
+            title = "Warning";
+		}
 		mb.setText(title);
 
 		return mb.open();

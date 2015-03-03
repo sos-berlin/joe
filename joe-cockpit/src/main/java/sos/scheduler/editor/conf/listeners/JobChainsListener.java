@@ -1,4 +1,5 @@
 package sos.scheduler.editor.conf.listeners;
+import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
@@ -164,6 +165,8 @@ public class JobChainsListener {
 		_dom.setChangedForDirectory("job_chain", delname, SchedulerDom.DELETE);
 		_chain = null;
 		update.updateJobChains();
+		
+		
 	}
 
 	/*public void fillFileOrderSource(Table table) {

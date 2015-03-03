@@ -17,19 +17,37 @@ public class ScriptsListener {
 	private ISchedulerUpdate	_main				= null;
 	private List				_list				= null;
 	private Element				_parent				= null;
+    private Element             _config     = null;
+	private Element             _monitors  = null;
+
 	private final static String	EMPTY_MONITOR_NAME	= "<empty>";
 
 	public ScriptsListener(SchedulerDom dom, ISchedulerUpdate update, Element parent) {
 		_dom = dom;
 		_parent=parent;
 		_main = update;		
-		_list = parent.getChildren("monitor");
+		
+		//Parent can be <jobs> or <monitors> 
+		if (!_dom.isLifeElement()) { 
+            _config = _dom.getRoot().getChild("config");
+            /* if (_config.getChild("monitors") == null) {
+            _monitors = new Element("monitors");
+            _config.addContent(_monitors);
+        }else{
+            _monitors = _config.getChild("monitors");
+        }
+        _list = _monitors.getChildren("monitor");
+    }*/
+		}
+        _list = _parent.getChildren("monitor");
+         
 	}
 
 	private void initScripts() {
-		_list = _parent.getChildren("monitor");
+        _list = _parent.getChildren("monitor");
 	}
-
+	
+	 
 	public void fillTable(Table table) {
 		table.removeAll();
 		if (_list != null) {
@@ -48,24 +66,10 @@ public class ScriptsListener {
 				item.setText(1, Utils.getAttributeValue("ordering", monitor));
 			}
 		}
-	}
-
-	public void newScript(Table table, String name) {
-		Element monitor = new Element("monitor");
-		if (name != null && name.length() > 0) {
-			monitor.setAttribute("name", "monitor" + (table.getItemCount() + 1));
-		}
-		if (_list == null)
-			initScripts();
-		_dom.setChanged(true);
-		if (_dom.isLifeElement() || _dom.isDirectory())
-			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _parent), SchedulerDom.MODIFY);
-		fillTable(table);
-		table.setSelection(table.getItemCount() - 1);
 		_main.updateScripts();
-		_main.expandItem("Monitor: " + "monitor" + (table.getItemCount()));
 	}
 
+ 
 	public void save(Table table, String name, String ordering, String newName) {
 		boolean found = false;
 		Element e = null;

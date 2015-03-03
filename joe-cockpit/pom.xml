@@ -22,6 +22,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.sos-berlin.jobscheduler</groupId>
+            <artifactId>virtual-file-system</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.sos-berlin.joe</groupId>
             <artifactId>joe-xml</artifactId>
             <version>${project.version}</version>

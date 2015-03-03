@@ -12,6 +12,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import sos.ftp.profiles.FTPProfileJadeClient;
+
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.misc.ResourceManager;
 
@@ -20,9 +22,7 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 	
 	
 	Object result;
-	
-	//private FTPDialogListener listener = null;
-	//FTPDialog ftpDialog = null;	
+ 
 	private Object obj = null;
 	
 	private Text text = null; 
@@ -36,14 +36,9 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 		this(parent, 0);
 	}
 	
-	/*public Object open(FTPDialog ftpDialog_) {
-		//listener = listener_;
-		ftpDialog = ftpDialog_;
-		return open();
-	}*/
+	 
 	
 	public Object open(Object obj_) {
-		//listener = listener_;
 		obj = obj_;
 		return open();
 	}
@@ -74,12 +69,7 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 		newFolderShell.setText(getText());
 		newFolderShell.pack();
 
-		/*if (obj instanceof FTPDialogListener)
-			text = new Text(newFolderShell, SWT.PASSWORD | SWT.BORDER);
-		else
-		*/ 
-			text = new Text(newFolderShell, SWT.BORDER);
-		
+		text = new Text(newFolderShell, SWT.BORDER);
 		text.addKeyListener(new KeyAdapter() {
 			public void keyPressed(final KeyEvent e) {
 				if (e.keyCode == SWT.CR)
@@ -91,10 +81,7 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 		final Button butOK = new Button(newFolderShell, SWT.NONE);
 		butOK.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				
-				
 				doSomethings();
-				
 			}
 		});
 		butOK.setText("OK");
@@ -109,16 +96,12 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 		butCancel.setText("Cancel");
 		newFolderShell.open();		
 		
-		//org.eclipse.swt.graphics.Rectangle rect = image.getBounds();
 		newFolderShell.setSize(241, 107);
-
-		
 		org.eclipse.swt.widgets.Display display = parent.getDisplay();
 		while (!newFolderShell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
-		//image.dispose();		
 		return result;
 		
 	}
@@ -145,14 +128,10 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 			
 			FTPDialog ftpDialog = (FTPDialog)obj;
 			
-			ftpDialog.getListener().getCurrProfile().mkDirs(text.getText());
+			FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpDialog.getListener().getCurrProfile());
+			ftpProfileJadeClient.mkdir(ftpDialog.txtDir.getText(),text.getText());
 			ftpDialog.refresh();
 			
-		/*} else if (obj instanceof FTPDialogListener) {
-			
-			FTPDialogListener listener = (FTPDialogListener)obj;
-			listener.setPassword(text.getText());
-			*/
 		} else if(obj instanceof WebDavDialog) {
 				
 				WebDavDialog webdavDialog = (WebDavDialog)obj;

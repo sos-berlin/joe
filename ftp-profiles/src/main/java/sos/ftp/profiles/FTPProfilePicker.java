@@ -191,12 +191,6 @@ public class FTPProfilePicker extends Composite {
 						listener = (FTPDialogListener)cboProfile.getData();
 						listener.setCurrProfileName(cboProfile.getText());
 					}
-					try {
-						listener.getCurrProfile().disconnect();
-					} catch (Exception ee) {
-						
-					}
-
 				}
 			});
 

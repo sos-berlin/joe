@@ -86,7 +86,7 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
 			getShell().setDefaultButton(bNewSchedule);
 			bNewSchedule.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-					listener.newScheduler(table);
+					listener.newSchedule(table);
 					butRemove.setEnabled(true);
 				}
 			});
@@ -97,11 +97,7 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
 					int c = MainWindow.message(getShell(), JOE_M_SchedulesForm_RemoveSchedule.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					if (c != SWT.YES)
 						return;
-					if (Utils.checkElement(table.getSelection()[0].getText(0), dom, JOEConstants.SCHEDULES, null))// wird
-						// der
-						// Job
-						// woandes
-						// verwendet?
+					if (Utils.checkElement(table.getSelection()[0].getText(0), dom, JOEConstants.SCHEDULES, null))// wird der Job woandes verwendet?
 						butRemove.setEnabled(listener.deleteSchedule(table));
 				}
 			});

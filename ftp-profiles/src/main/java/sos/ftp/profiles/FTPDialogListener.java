@@ -7,24 +7,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
 import org.eclipse.swt.SWT;
+
 import sos.settings.SOSProfileSettings;
 import sos.util.SOSLogger;
-import sos.util.SOSString;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Text;
 
 
 public class FTPDialogListener {
 
-	/** @see sos.util.SOSString Object*/
-	private              SOSString              sosString                     = null;
-
 	/** Beinhaltet alle Profilnamen, die konfiguriert wurden*/
 	private              String[]               profileNames                  = null;
 
 	/** Hilfsvariable. name=profilname, wert= entsprechende FTPProfile Objekt*/
-	private              HashMap                profiles                      = null;
+	private              HashMap<String, FTPProfile>                profiles                      = null;
 
 	/** aktuell ausgewählte FTPProfile Objekt*/
 	private              FTPProfile             currProfile                   = null;
@@ -68,10 +66,9 @@ public class FTPDialogListener {
 	public FTPDialogListener(FTPProfile profile, String profilename) {
 		try {
 			FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
-			sosString = new SOSString();
 			currProfile = profile;
 			currProfileName = profilename; 
-			profiles = new HashMap();
+			profiles = new HashMap<String, FTPProfile>();
 			profiles.put(profilename,profile);
 		} catch (Exception e){
 			FTPProfile.log("error in FTPDialogListener,  cause: " + e.toString(), 1);    		
@@ -85,7 +82,6 @@ public class FTPDialogListener {
 	 */
 	public FTPDialogListener(File configfile) throws Exception{
 
-		sosString = new SOSString();
 		FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
 		try {		
 
@@ -96,12 +92,12 @@ public class FTPDialogListener {
 			}
 
 			settings = new SOSProfileSettings(configFile);
-			ArrayList l = settings.getSections();
-			profileNames = convert(settings.getSections().toArray());
+			ArrayList <String> l = settings.getSections();
+			profileNames = convert(settings.getSections());
 
-			profiles = new HashMap();
+			profiles = new HashMap<String, FTPProfile>();
 			for(int i = 0; i < l.size(); i++) {
-				String section = sosString.parseToString(l.get(i));
+				String section = l.get(i);
 
 				if(section.toLowerCase().startsWith(prefix)) {
 					String sectionWithoutPrefix = section.substring(prefix.length());
@@ -110,8 +106,6 @@ public class FTPDialogListener {
 					profiles.put(sectionWithoutPrefix, new FTPProfile(prop));
 					if( currProfileName == null) {
 						init(sectionWithoutPrefix);
-						//currProfileName = sectionWithoutPrefix;
-						//currProfile = prop;
 					}
 				}
 
@@ -136,14 +130,14 @@ public class FTPDialogListener {
 	}
 
 	
-	private String[] convert(Object[] obj) throws Exception {
+	private String[] convert(ArrayList <String> obj) throws Exception {
 		FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
-		ArrayList str = new ArrayList();
+		ArrayList<String> str = new ArrayList<String>();
 		String[] retVal = null;
 		try {						
-			for(int i = 0; i < obj.length; i++) {
-				if(sosString.parseToString(obj[i]).startsWith(prefix)) {
-					str.add(sosString.parseToString(obj[i]).substring(prefix.length()));
+			for(int i = 0; i < obj.size(); i++) {
+				if(obj.get(i).startsWith(prefix)) {
+					str.add(obj.get(i).substring(prefix.length()));
 				}
 			}
 			retVal = new String[str.size()];
@@ -164,25 +158,19 @@ public class FTPDialogListener {
 	 */
 	public String[] getProfileNames() {
 		try {
-			profileNames = convert(settings.getSections().toArray());		
+			profileNames = convert(settings.getSections());		
 		} catch (Exception e) {
 		}
 		return profileNames;
 	}
-
-	/**
-	 * Setzt alle Profilnamen
-	 */
-	public void setProfileNames(String[] profileNames) {
-		this.profileNames = profileNames;
-	}
+	 
 
 	/**
 	 * Liefert ein HaspMap Objekt.
 	 * Dieser beinhaltet als name=profilname und value=entsprechende FTPProfile Objekt
 	 * @return
 	 */
-	public HashMap getProfiles() {
+	public HashMap<String, FTPProfile> getProfiles() {
 		return profiles;
 	}
 
@@ -276,6 +264,7 @@ public class FTPDialogListener {
 			}
 
 			if (offset < bytes.length) {
+			    is.close();
 				throw new IOException("Could not completely read file "+file.getName());
 			}        
 			is.close();
@@ -298,7 +287,6 @@ public class FTPDialogListener {
 			setCurrProfileName(profilename);			
 			String filename = configFile;
 
-
 			byte[] b = getBytesFromFile(new File(filename));
 			String s = new String(b);
 
@@ -315,17 +303,11 @@ public class FTPDialogListener {
 				pos2 = s.length();
 
 			String s2 = s.substring(0, pos1) + s.substring(pos2);
-
 			java.nio.ByteBuffer bbuf = java.nio.ByteBuffer.wrap(s2.getBytes());
-
 			java.io.File file = new java.io.File(filename);
-
 			boolean append = false;
-
 			java.nio.channels.FileChannel wChannel = new java.io.FileOutputStream(file, append).getChannel();
-
 			wChannel.write(bbuf);
-
 			wChannel.close();
 
 		} catch (java.io.IOException e) {
@@ -364,21 +346,19 @@ public class FTPDialogListener {
 			String s2 = s.substring(0, pos1);
 			
 			s2 = s2 + "[profile " + profilename + "]\n\n";
-			s2 = s2 + "host=" + sosString.parseToString(profile.getHost()) + "\n";
-			s2 = s2 + "port=" + sosString.parseToString(profile.getPort()) + "\n";
-			s2 = s2 + "user=" + sosString.parseToString(profile.getUser()) + "\n";
+			s2 = s2 + "host=" + profile.getHost() + "\n";
+			s2 = s2 + "port=" + profile.getPort() + "\n";
+			s2 = s2 + "user=" + profile.getUser() + "\n";
 			try {
-				if(savePassword && sosString.parseToString(profile.getPassword()).length() > 0) {				
+				if(savePassword && profile.getPassword().length() > 0) {				
 					
 					String encrypt =  "";
-					if(sosString.parseToString(profile.getPassword()).endsWith("=")) {//ist bereits encrypted
-						encrypt = sosString.parseToString(profile.getPassword());
+					if(profile.getPassword().endsWith("=")) {//ist bereits encrypted
+						encrypt = profile.getPassword();
 					} else {
-						String pass = profile.getPass(profilename);
-						if(pass.length() > 8) {
-							pass = pass.substring(pass.length()-8);
-						}
-						encrypt = SOSProfileCrypt.encrypt(pass , sosString.parseToString(profile.getPassword()));
+						String pass = profilename;
+						 
+						encrypt = SOSProfileCrypt.encrypt(pass , profile.getPassword());
 					}
 					s2 = s2 + "password=" +encrypt + "\n";
 
@@ -392,17 +372,16 @@ public class FTPDialogListener {
 
 				throw e;
 			}			
-			s2 = s2 + "root=" + sosString.parseToString(profile.getRoot()) + "\n";
-			s2 = s2 + "localdirectory=" + sosString.parseToString(profile.getLocaldirectory()) + "\n";
-			s2 = s2 + "transfermode=" + sosString.parseToString(profile.getTransfermode()) + "\n";    		 
+			s2 = s2 + "root=" + profile.getRoot() + "\n";
+			s2 = s2 + "localdirectory=" + profile.getLocaldirectory() + "\n";
+			s2 = s2 + "transfermode=" + profile.getTransfermode() + "\n";    		 
 			s2 = s2 + "save_password=" +profile.isSavePassword() + "\n";
-			s2 = s2 + "protocol=" + sosString.parseToString(profile.getProtocol()) + "\n";
+			s2 = s2 + "protocol=" + profile.getProtocol() + "\n";
 			s2 = s2 + "use_proxy=" + profile.getUseProxy() + "\n";
-			s2 = s2 + "proxy_server=" + sosString.parseToString(profile.getProxyServer()) + "\n";
-			s2 = s2 + "proxy_port=" + sosString.parseToString(profile.getProxyPort()) + "\n";
-			//auth_method=publickey oder password oder both
-			s2 = s2 + "auth_method=" + sosString.parseToString(profile.getAuthMethod()) + "\n";
-			s2 = s2 + "auth_file=" + sosString.parseToString(profile.getAuthFile()) + "\n";    		     		 
+			s2 = s2 + "proxy_server=" + profile.getProxyServer() + "\n";
+			s2 = s2 + "proxy_port=" + profile.getProxyPort() + "\n";
+			s2 = s2 + "auth_method=" + profile.getAuthMethod() + "\n";
+			s2 = s2 + "auth_file=" + profile.getAuthFile() + "\n";    		     		 
 			s2 = s2 + "\n\n";	
 
 			s2 = s2 + s.substring(pos2);
@@ -412,16 +391,10 @@ public class FTPDialogListener {
 			// System.out.println("+++++++++++++++++++++++++++++++++++");
 
 			java.nio.ByteBuffer bbuf = java.nio.ByteBuffer.wrap(s2.getBytes());
-
-
 			java.io.File file = new java.io.File(filename);
-
 			boolean append = false;
-
 			java.nio.channels.FileChannel wChannel = new java.io.FileOutputStream(file, append).getChannel();
-
 			wChannel.write(bbuf);
-
 			wChannel.close();
 
 		} catch (Exception e) {
@@ -450,14 +423,14 @@ public class FTPDialogListener {
 
 
 	private void removeFromProfilenames(String profileName) throws Exception{
-		ArrayList l = new ArrayList() ;		 
+		ArrayList<String> l = new ArrayList<String>() ;		 
 		for(int i = 0; i < profileNames.length ; i++) {
 			if(!profileNames[i].equalsIgnoreCase(profileName)) {
 				l.add(prefix + profileNames[i]);
 			}
 		}
 
-		profileNames = convert(l.toArray());
+		profileNames = convert(l);
 	}
 
 	/** 
@@ -467,14 +440,7 @@ public class FTPDialogListener {
 		return password;
 	}
 
-	/**
-	 * Der Password nicht ini Datei vorhanden. D.h. in Pop Up Fenster nachfragen
-	 * @param password
-	 */
-	public void setPassword(String password) {		
-		this.password = password;
-	}
-
+	
 	/**
 	 * Sind FTP Fehler entsanden?
 	 * @return

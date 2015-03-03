@@ -43,6 +43,7 @@ import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
+import com.sos.VirtualFileSystem.common.SOSFileEntry;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IDetailUpdate;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
@@ -842,8 +843,12 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		detailListener.save();
 		if (schedulerDom != null) {
 			DetailsListener.addMonitoring2Job(jobChainname, state, schedulerDom, update);
-			MainWindow.getContainer().getCurrentTab().setData("ftp_details_parameter_file", detailListener.getConfigurationFilename());
-			MainWindow.saveFTP(new java.util.HashMap());
+			update.updateScripts();
+
+            if (MainWindow.getContainer().getCurrentTab().getData("ftp_remote_directory") != null) {
+	            schedulerDom.setChanged(true);
+            }
+	 
 		}
 		if (type == JOEConstants.JOB_CHAINS) {
 			isEditable = false;
