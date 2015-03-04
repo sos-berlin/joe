@@ -83,7 +83,7 @@ public class TestFTPProfileJadeClient {
         
     }
 
-    @Test
+ 
     
     public void testGetList() throws Exception {
  
@@ -96,7 +96,7 @@ public class TestFTPProfileJadeClient {
         ftpProfileJadeClient.disconnect();
     }
 
-    @Test
+    
     public void testGetDirectoryContent() throws Exception {
         FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
         HashMap<String, SOSFileEntry> h =  ftpProfileJadeClient.getDirectoryContent(ftpProfile.getRoot());
@@ -107,7 +107,6 @@ public class TestFTPProfileJadeClient {
         assertNotEquals("Directory should exist", "",key);
      }
 
-    @Test
     public void testRemoveFileSOSFileEntry() throws Exception {
         String dir=ftpProfile.getRoot();
         String folder="newfolderRemoveFile";
@@ -129,7 +128,6 @@ public class TestFTPProfileJadeClient {
 
     }
 
-    @Test
     public void testRenameFile() throws RuntimeException, Exception {
         String dir=ftpProfile.getRoot();
         String folder="newfolder";
@@ -167,7 +165,6 @@ public class TestFTPProfileJadeClient {
         }
     }
 
-    @Test
     public void testRemoveFileStringString() throws Exception {
         String localDir=ftpProfile.getLocaldirectory();
         String filename = "1.txt";
@@ -189,7 +186,6 @@ public class TestFTPProfileJadeClient {
         assertEquals("File should have been deleted ", 0,h.size());
         ftpProfileJadeClient.disconnect();    }
 
-    @Test
     public void testCopyLocalFileToRemote() throws Exception {
         String localDir=ftpProfile.getLocaldirectory();
         String filename = "1.txt";
@@ -211,7 +207,6 @@ public class TestFTPProfileJadeClient {
         ftpProfileJadeClient.disconnect();        
     }
 
-    @Test
     public void testCopyLocalFilesToRemote() throws RuntimeException, Exception {
         String localDir=ftpProfile.getLocaldirectory();
         String filename = "1.job.xml";
@@ -233,7 +228,6 @@ public class TestFTPProfileJadeClient {
         ftpProfileJadeClient.disconnect();        
     }
 
-    @Test
     public void testCopyRemoteFileToLocal() throws Exception {
         
         testCopyLocalFileToRemote();
@@ -258,7 +252,7 @@ public class TestFTPProfileJadeClient {
 
         ftpProfileJadeClient.disconnect();            }
 
-    @Test
+    
     public void testCopyRemoteFilesToLocal() {
         //fail("Not yet implemented");
     }
