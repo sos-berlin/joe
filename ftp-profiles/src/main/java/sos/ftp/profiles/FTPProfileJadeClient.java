@@ -20,6 +20,10 @@ import com.sos.VirtualFileSystem.common.SOSFileEntries;
 import com.sos.VirtualFileSystem.common.SOSFileEntry;
 
 public class FTPProfileJadeClient {
+    public ISOSVfsFileTransfer getFtpClient() {
+        return ftpClient;
+    }
+
     private static final String REGEX_FOR_JOBSCHEDULER_OBJECTS = "^.*\\.(job|job_chain|order|process_class|schedule|lock|config)\\.xml$";
     protected ISOSVFSHandler        objVFS                  = null;
     protected ISOSVfsFileTransfer   ftpClient               = null;
@@ -44,7 +48,7 @@ public class FTPProfileJadeClient {
         }
     }
     
-    public void connect() throws RuntimeException, Exception {
+    private void connect() throws RuntimeException, Exception {
         if (objVFS == null){
             jadeOptions = new JADEOptions();
             enuSourceTransferType = enuTransferTypes.valueOf(ftpProfile.getProtocol().toLowerCase());
@@ -100,7 +104,9 @@ public class FTPProfileJadeClient {
         
         for (SOSFileEntry sosFileListEntry : sosFileList) {
             String filename = sosFileListEntry.getFilename();
-            h.put(filename,sosFileListEntry);
+            if (!filename.equals(".")){
+               h.put(filename,sosFileListEntry);
+            }
         }
         return  h;
     }
@@ -120,6 +126,7 @@ public class FTPProfileJadeClient {
             ftpClient.delete(sosFileEntry.getFullPath());
         }
     }
+    
     
     
     public void renameFile(String remoteDir, String oldFilename, String newFilename) throws Exception{
@@ -146,7 +153,16 @@ public class FTPProfileJadeClient {
         removeFile(sosFileEntry);
     }
     
-   
+    public void removeDir(String dir) throws Exception{
+        connect();
+
+        String folder = new File(dir).getName();
+        String path = new File(dir).getParent();
+        ftpClient.changeWorkingDirectory(path);
+        
+        ftpClient.rmdir(folder);    
+    }
+       
     public void copyLocalFileToRemote(String localDir, String targetDir, String filename) throws Exception{
         jadeOptions = new JADEOptions();
 
