@@ -27,6 +27,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.sos-berlin.jobscheduler</groupId>
+            <artifactId>virtual-file-system</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.sos-berlin.commons</groupId>
             <artifactId>sos-util</artifactId>
             <version>${project.version}</version>
@@ -59,6 +65,12 @@
             <artifactId>bcprov-ext-jdk15on</artifactId>
         </dependency>
  
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>
