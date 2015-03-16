@@ -79,7 +79,7 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 2;
 			scriptsGroup = new Group(this, SWT.NONE);
-			scriptsGroup.setText(sos.scheduler.editor.conf.listeners.SchedulerListener.MONITOR);
+			scriptsGroup.setText(sos.scheduler.editor.conf.listeners.SchedulerListener.MONITORS);
 			scriptsGroup.setLayout(gridLayout);
 			if (Utils.isElementEnabled("job", dom, listener.getParent())) {
 				scriptsGroup.setEnabled(true);

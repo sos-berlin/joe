@@ -25,7 +25,8 @@ public class MergeAllXMLinDirectory {
 	public final static String	MASK_PROCESS_CLASS			= "^.*\\.process_class\\.xml$";
 	public final static String	MASK_JOB_CHAIN				= "^.*\\.job_chain\\.xml$";
 	public final static String	MASK_ORDER					= "^.*\\.order\\.xml$";
-	public final static String	MASK_SCHEDULE				= "^.*\\.schedule\\.xml$";
+    public final static String  MASK_SCHEDULE               = "^.*\\.schedule\\.xml$";
+    public final static String  MASK_MONITOR                = "^.*\\.monitor\\.xml$";
 	private String				path						= "";
 	private Element				config						= null;
 	private static String		encoding					= "ISO-8859-1";
@@ -49,7 +50,9 @@ public class MergeAllXMLinDirectory {
 		Element root = null;
 		Document parentDoc = null;
 		Element jobs = null;
-		Element locks = null;
+        Element locks = null;
+        Element monitors = null;
+        Element schedules = null;
 		Element processClass = null;
 		Element jobChains = null;
 		Element orders = null;
@@ -66,24 +69,22 @@ public class MergeAllXMLinDirectory {
 			/* Alle <name>.process_classes.xml parsieren */
 			addContains(processClass, "process_classes", MASK_PROCESS_CLASS);
 			/* Alle <name>.schedule.xml parsieren */
-			addContains(locks, "schedules", MASK_SCHEDULE);
+			addContains(schedules, "schedules", MASK_SCHEDULE);
 			/* Alle <name>.lock.xml parsieren */
 			addContains(locks, "locks", MASK_LOCK);
+			
+			 /* Alle <name>.monitor.xml parsieren */
+            addContains(monitors, "monitors", MASK_MONITOR);
+            
 			/* Alle <name>.job.xml parsieren */
 			addContains(jobs, "jobs", MASK_JOB);
 			/* Alle <name>.job_chain.xml parsieren */
 			addContains(jobChains, "job_chains", MASK_JOB_CHAIN);
 			/* Alle <name>.order.xml parsieren */
 			addContainsForOrder(orders, "commands", MASK_ORDER);
-			// Debug Document als String ausgeben
-			// printXML(parentDoc);
-			// Document speichern
-			// System.out.println("test: xmlFilename: " + xmlFilename);
-			// System.out.println("parentDoc: \n" +
-			// Utils.getElementAsString(parentDoc.getRootElement()));
+			
 			return Utils.getElementAsString(parentDoc.getRootElement());
-			// IOUtils.saveXML(parentDoc, xmlFilename);
-			// System.out.println("OK: ");
+			
 		}
 		catch (Exception e) {
 			System.err.println("..error : " + e.getMessage());
@@ -281,6 +282,7 @@ public class MergeAllXMLinDirectory {
 		Element jobChains = null;
 		Element orders = null;
 		Element schedules = null;
+		Element monitors = null;
 		listOfChanges = listOfChanges_;
 		try {
 			// system.out.println("********************************************************************");
@@ -295,10 +297,12 @@ public class MergeAllXMLinDirectory {
 				jobChains = config.getChild("job_chains");
 				orders = config.getChild("commands");
 				schedules = config.getChild("schedules");
+				monitors =  config.getChild("monitors");
 			}
 			save("job", jobs);
 			save("process_class", processClass);
-			save("schedule", schedules);
+            save("schedule", schedules);
+            save("monitor", monitors);
 			save("lock", locks);
 			save("job_chain", jobChains);
 			save("order", orders);
@@ -520,9 +524,12 @@ public class MergeAllXMLinDirectory {
 									prefix = "order_";
 								}
 								else
-									if (key.startsWith("schedule_")) {
-										prefix = "schedule_";
-									}
+                                    if (key.startsWith("schedule_")) {
+                                        prefix = "schedule_";
+                                    }
+                                        if (key.startsWith("monitor_")) {
+                                            prefix = "monitor_";
+                                        }
 				
                 filename = getFileName(key,prefix);
                 File f = new File(filename);

@@ -1388,6 +1388,36 @@ public class SOSJOEMessageCodes extends SOSComposite {
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_B_JobLockUseForm_Browse							= new SOSMsgJOE("JOE_B_JobLockUseForm_Browse");
 
+	
+    // JobMonitorUseForm
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_G_JobMonitorUseForm_Use                         = new SOSMsgJOE("JOE_G_JobMonitorUseForm_Use");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_L_JobMonitorUseForm_Monitor                     = new SOSMsgJOE("JOE_L_JobMonitorUseForm_Monitor");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_Cbo_JobMonitorUseForm_MonitorUse                = new SOSMsgJOE("JOE_Cbo_JobMonitorUseForm_MonitorUse");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_T_JobMonitorUseForm_Ordering                    = new SOSMsgJOE("JOE_B_JobMonitorUseForm_Ordering");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_B_JobMonitorUseForm_ApplyMonitorUse             = new SOSMsgJOE("JOE_B_JobMonitorUseForm_ApplyMonitorUse");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_L_JobMonitorUseForm_Ordering                    = new SOSMsgJOE("JOE_L_JobMonitorUseForm_Ordering");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_Tbl_JobMonitorUseForm_MonitorUseTable           = new SOSMsgJOE("JOE_Tbl_JobMonitorUseForm_MonitorTable");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_TCl_JobMonitorUseForm_Monitor                   = new SOSMsgJOE("JOE_TCl_JobMonitorUseForm_Monitor");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_TCl_JobMonitorUseForm_Ordering                  = new SOSMsgJOE("JOE_TCl_JobMonitorUseForm_Ordering");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_B_JobMonitorUseForm_NewMonitorUse               = new SOSMsgJOE("JOE_B_JobMonitorUseForm_NewMonitorUse");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_B_JobMonitorUseForm_RemoveMonitorUse            = new SOSMsgJOE("JOE_B_JobMonitorUseForm_RemoveMonitorUse");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_B_JobMonitorUseForm_Browse                      = new SOSMsgJOE("JOE_B_JobMonitorUseForm_Browse");
+
+	
+	
+	
 	// JobMainOptionForm
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_M_JobMainOptionForm_MainOptions					= new SOSMsgJOE("JOE_M_JobMainOptionForm_MainOptions");
@@ -3116,8 +3146,12 @@ public class SOSJOEMessageCodes extends SOSComposite {
 	public static final SOSMsgJOE	JOE_L_SchedulerListener_Schedules					= new SOSMsgJOE("JOE_L_SchedulerListener_Schedules");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_SchedulerListener_JobChainOrders				= new SOSMsgJOE("JOE_L_SchedulerListener_JobChainOrders");
-	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_SchedulerListener_Locks						= new SOSMsgJOE("JOE_L_SchedulerListener_Locks");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_L_SchedulerListener_Locks                       = new SOSMsgJOE("JOE_L_SchedulerListener_Locks");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_L_SchedulerListener_Locks_used                  = new SOSMsgJOE("JOE_L_SchedulerListener_Locks_used");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_L_SchedulerListener_Monitors_used               = new SOSMsgJOE("JOE_L_SchedulerListener_Monitors_used");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_M_0047											= new SOSMsgJOE("JOE_M_0047");
 	@I18NMsg

@@ -485,7 +485,7 @@ public class TreeMenu {
 					listeners.newJob(sos.scheduler.editor.conf.forms.JobsForm.getTable(), false);
 				}
 				else
-					if (name.equals(SchedulerListener.MONITOR)) {
+					if (name.equals(SchedulerListener.MONITORS)) {
 						TreeData data = (TreeData) _tree.getSelection()[0].getData();
 						org.eclipse.swt.widgets.Table table = sos.scheduler.editor.conf.forms.ScriptsForm.getTable();
 						sos.scheduler.editor.conf.listeners.ScriptsListener listener = new sos.scheduler.editor.conf.listeners.ScriptsListener(
@@ -1087,7 +1087,7 @@ public class TreeMenu {
 	private String getParentItemName() {
 		if (_tree.getSelectionCount() > 0) {
 			String name = _tree.getSelection()[0].getText();
-			if (name.equals(SchedulerListener.JOBS) || name.equals(SchedulerListener.JOB_CHAINS) || name.equals(SchedulerListener.MONITOR)
+			if (name.equals(SchedulerListener.JOBS) || name.equals(SchedulerListener.JOB_CHAINS) || name.equals(SchedulerListener.MONITORS)
 					|| name.equals(SchedulerListener.ORDERS) || name.equals(SchedulerListener.WEB_SERVICES) || name.equals(SchedulerListener.SCHEDULES)) {
 				return name;
 			}

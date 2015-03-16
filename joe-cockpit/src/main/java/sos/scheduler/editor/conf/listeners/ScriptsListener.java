@@ -17,6 +17,8 @@ public class ScriptsListener {
 	private ISchedulerUpdate	_main				= null;
 	private List				_list				= null;
 	private Element				_parent				= null;
+	private boolean             isJob               = true;
+	private String              objectName          = "";
     private Element             _config     = null;
 	private Element             _monitors  = null;
 
@@ -26,20 +28,27 @@ public class ScriptsListener {
 		_dom = dom;
 		_parent=parent;
 		_main = update;		
-		
+		isJob = true;
+        objectName = "job";
+
 		//Parent can be <jobs> or <monitors> 
 		if (!_dom.isLifeElement()) { 
             _config = _dom.getRoot().getChild("config");
-            /* if (_config.getChild("monitors") == null) {
-            _monitors = new Element("monitors");
-            _config.addContent(_monitors);
-        }else{
-            _monitors = _config.getChild("monitors");
+            if (!parent.getName().equals("job")){    //named monitor.
+                if (_config.getChild("monitors") == null) {
+                   _monitors = new Element("monitors");
+                   _config.addContent(_monitors);
+                }else{
+                  _monitors = _config.getChild("monitors");
+                  
+                }
+                _parent = _monitors;
+                isJob = false;
+                objectName = "monitor";
+            }
+          
+         _list = _parent.getChildren("monitor");
         }
-        _list = _monitors.getChildren("monitor");
-    }*/
-		}
-        _list = _parent.getChildren("monitor");
          
 	}
 
@@ -68,56 +77,58 @@ public class ScriptsListener {
 		}
 		_main.updateScripts();
 	}
-
  
-	public void save(Table table, String name, String ordering, String newName) {
-		boolean found = false;
-		Element e = null;
-		TableItem item = null;
-		if (_list != null) {
-			int index = 0;
-			for (int i = 0; i < _list.size(); i++) {
-				e = (Element) _list.get(i);
-				if (name.equals(Utils.getAttributeValue("name", e)) || (name.equals("<empty>") && Utils.getAttributeValue("name", e).equals(""))) {
-					if (newName != null) {
-						//name ändern
-						Utils.setAttribute("name", newName, e);
-						_main.updateScripts();
-						name = newName;
-					}
-					found = true;
-					Utils.setAttribute("ordering", ordering, e);
-					_dom.setChanged(true);
-					if (_dom.isLifeElement() || _dom.isDirectory())
-						_dom.setChangedForDirectory(_parent.getName(), Utils.getAttributeValue("name", _parent), SchedulerDom.MODIFY);
-					table.getItem(index).setText(new String[] { (name.equals("") ? EMPTY_MONITOR_NAME : name), ordering });
-				}
-				index++;
-			}
-		}
-		if (!found) {
-			e = new Element("monitor");
-			if (name.equals(EMPTY_MONITOR_NAME)) {
-				e.removeAttribute("name");
-				Utils.setAttribute("ordering", ordering, e);
-			}
-			else {
-				Utils.setAttribute("name", name, e);
-				Utils.setAttribute("ordering", ordering, e);
-			}
-			_dom.setChanged(true);
-			if (_dom.isLifeElement() || _dom.isDirectory())
-				_dom.setChangedForDirectory(_parent.getName(), Utils.getAttributeValue("name", _parent), SchedulerDom.MODIFY);
-			if (_list == null)
-				initScripts();
-			if (_list != null)
-				_list.add(e);
-			item = new TableItem(table, SWT.NONE);
-			item.setText(new String[] { (name.equals("") ? EMPTY_MONITOR_NAME : name), ordering });
-			item.setData(e);
-			_main.updateScripts();
-		}
+	
+	public void save(Table table, String name, String ordering, String newName){
+	        boolean found = false;
+	        Element e = null;
+	        TableItem item = null;
+	        if (_list != null) {
+	            int index = 0;
+	            for (int i = 0; i < _list.size(); i++) {
+	                e = (Element) _list.get(i);
+	                if (name.equals(Utils.getAttributeValue("name", e)) || (name.equals("<empty>") && Utils.getAttributeValue("name", e).equals(""))) {
+	                    if (newName != null) {
+	                        Utils.setAttribute("name", newName, e);
+	                        _main.updateScripts();
+	                        name = newName;
+	                    }
+	                    found = true;
+	                    Utils.setAttribute("ordering", ordering, e);
+	                    _dom.setChanged(true);
+	                    if (_dom.isLifeElement() || _dom.isDirectory())
+	                        _dom.setChangedForDirectory(objectName, name, SchedulerDom.MODIFY);
+	                    table.getItem(index).setText(new String[] { (name.equals("") ? EMPTY_MONITOR_NAME : name), ordering });
+	                }
+	                index++;
+	            }
+	        }     
+
+	        if (!found) {
+	            e = new Element("monitor");
+	            if (name.equals(EMPTY_MONITOR_NAME)) {
+	                e.removeAttribute("name");
+	                Utils.setAttribute("ordering", ordering, e);
+	            }
+	            else {
+	                Utils.setAttribute("name", name, e);
+	                Utils.setAttribute("ordering", ordering, e);
+	            }
+	            _dom.setChanged(true);
+	            if (_dom.isLifeElement() || _dom.isDirectory())
+	                _dom.setChangedForDirectory(objectName, name, SchedulerDom.MODIFY);
+	            if (_list == null)
+	                initScripts();
+	            if (_list != null)
+	                _list.add(e);
+	            item = new TableItem(table, SWT.NONE);
+	            item.setText(new String[] { (name.equals("") ? EMPTY_MONITOR_NAME : name), ordering });
+	            item.setData(e);
+	            _main.updateScripts();
+	        }   
 	}
+ 
+	 
 
 	public boolean delete(Table table) {
 		int index = table.getSelectionIndex();
@@ -126,8 +137,13 @@ public class ScriptsListener {
 			Element e = (Element) item.getData();
 			e.detach();
 			_dom.setChanged(true);
-			if (_dom.isLifeElement() || _dom.isDirectory())
-				_dom.setChangedForDirectory(_parent.getName(), Utils.getAttributeValue("name", _parent), SchedulerDom.MODIFY);
+			if (_dom.isLifeElement() || _dom.isDirectory()){
+			    if (isJob){
+	                _dom.setChangedForDirectory(objectName, Utils.getAttributeValue("name", _parent), SchedulerDom.MODIFY);
+			    }else{
+                    _dom.setChangedForDirectory(objectName, item.getText(), SchedulerDom.DELETE);
+			    }
+			}
 			table.remove(index);
 			_main.updateScripts();
 			if (_list == null)

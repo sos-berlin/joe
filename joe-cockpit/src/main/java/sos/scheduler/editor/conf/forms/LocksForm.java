@@ -158,16 +158,7 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				apply();
 				listener.newLock();
-				/*
-				tLock.setEnabled(true);
-				sMaxNonExclusive.setEnabled(false);
-				butUnlimitedNonExclusive.setEnabled(true);
-				butUnlimitedNonExclusive.setSelection(true);
-				tableLocks.deselectAll();
-				bApply.setEnabled(false);
-				bRemove.setEnabled(false);
-				tLock.setBackground(null);
-				*/
+				
 				setInput(true);
 				bApply.setEnabled(listener.isValidLock(tLock.getText()));
 			}

@@ -1376,13 +1376,11 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			DomParser dom = getSpecifiedDom();
 			if (dom.getFilename() != null) {
 				File f = new File(dom.getFilename());
-				ArrayList<File> changeFiles = new ArrayList<File>();// gilt für Hot Folder Dateien, die von einer anderen Process verändert
-																	// wurden
+				ArrayList<File> changeFiles = new ArrayList<File>();// gilt für Hot Folder Dateien, die von einer anderen Process verändert wurden
 				ArrayList<File> newFFiles = new ArrayList<File>();
 				ArrayList<File> delFFiles = new ArrayList<File>();
 				HashMap<String, Long> hFFiles = new HashMap<String, Long>();
-				// System.out.println("file     = " + dom.getLastModifiedFile());
-				// System.out.println("dom file = " + f.lastModified() );
+				 
 				// Hot Folder. Hat sich ein Holt Folder Datei ausserhalb verändert?
 				long lastmod = 0;
 				if (dom.getFilename() != null) {

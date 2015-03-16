@@ -310,7 +310,7 @@ public class ContextMenu {
 						if (f == null)
 							return;
 						Tree tree = f.getTree();
-						if (tree.getSelection()[0].getText().equals(SchedulerListener.MONITOR)) {
+						if (tree.getSelection()[0].getText().equals(SchedulerListener.MONITORS)) {
 							TreeItem[] monitorsItem = tree.getSelection()[0].getItems();
 							for (TreeItem monitor : monitorsItem) {
 								String strName = monitor.getText();

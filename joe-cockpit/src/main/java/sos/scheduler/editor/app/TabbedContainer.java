@@ -561,9 +561,12 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 				if (strRootName.equalsIgnoreCase("order") || strRootName.equalsIgnoreCase("add_order")) {
 					return openLiveElement(xmlFilename, SchedulerDom.LIFE_ORDER);
 				}
-				if (strRootName.equalsIgnoreCase("schedule")) {
-					return openLiveElement(xmlFilename, SchedulerDom.LIFE_SCHEDULE);
-				}
+                if (strRootName.equalsIgnoreCase("schedule")) {
+                    return openLiveElement(xmlFilename, SchedulerDom.LIFE_SCHEDULE);
+                }
+                if (strRootName.equalsIgnoreCase("monitor")) {
+                    return openLiveElement(xmlFilename, SchedulerDom.LIFE_MONITOR);
+                }
 				MainWindow.message("Unknown root Element: " + root.getName() + " from filename " + xmlFilename, SWT.NONE);
 			}
 		}

@@ -36,11 +36,12 @@ public class SchedulerDom extends DomParser {
 	private static Logger			logger						= Logger.getLogger(SchedulerDom.class);
 	private static final String[]	CONFIG_ELEMENTS				= { "base", "params", "security", "plugins", "cluster", "process_classes", "schedules",
 			"locks", "script", "http_server", "holidays", "jobs", "job_chains", "orders", "commands" };
-	private static final String[]	JOB_ELEMENTS				= { "settings", "description", "lock.use", "params", "environment", "script", "process",
+	private static final String[]	JOB_ELEMENTS				= { "settings", "description", "monitor.use", "lock.use", "params", "environment", "script", "process",
 			"monitor", "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };
 	private static final String[]	RUNTIME_ELEMENTS			= { "period", "at", "date", "weekdays", "monthdays", "ultimos", "month", "holidays" };
-	private static final String[]	JOBCHAIN_ELEMENTS			= { "file_order_source", "job_chain_node", "job_chain_node.job_chain", "job_chain_node.end",
-			"file_order_sink"									};
+    private static final String[]   JOBCHAIN_ELEMENTS           = { "file_order_source", "job_chain_node", "job_chain_node.job_chain", "job_chain_node.end",
+    "file_order_sink"                                   };
+    private static final String[]   MONITOR_ELEMENTS           = { "script"};
 	private static final String[]	HOLIDAYS_ELEMENTS			= { "include", "weekdays", "holiday" };
 	private static final String[]	PARAMS_ELEMENTS				= { "param", "copy_params", "include" };
 	private HashMap<String, String>	changedForDirectory			= new HashMap<String, String>();
@@ -67,7 +68,8 @@ public class SchedulerDom extends DomParser {
 	public static final int			LIFE_LOCK					= 5;
 	public static final int			LIFE_ORDER					= 6;
 	public static final int			LIFE_ADD_ORDER				= 7;
-	public static final int			LIFE_SCHEDULE				= 8;
+    public static final int         LIFE_SCHEDULE               = 8;
+    public static final int         LIFE_MONITOR                = 9;
 	private boolean					isDirectory					= false;
 	/** Gilt nur für Hot Folder: Dient zur Überprüfeng ob ausserhalb einer der Hot Folder Dateien von einem  anderen Process verändert wurde*/
 	private HashMap<String, Long>	hotFolderFiles				= null;
@@ -83,8 +85,9 @@ public class SchedulerDom extends DomParser {
 		putDomOrder("start_job", ORDER_ELEMENTS);
 		putDomOrder("holidays", HOLIDAYS_ELEMENTS);
 		putDomOrder("params", PARAMS_ELEMENTS);
-		putDomOrder("schedule", RUNTIME_ELEMENTS);
- 
+        putDomOrder("schedule", RUNTIME_ELEMENTS);
+        putDomOrder("monitor", MONITOR_ELEMENTS);
+ 		 
 		putDomOrder("settings", SETTINGS_ELEMENTS);
 		initScheduler();
 	}
@@ -99,6 +102,7 @@ public class SchedulerDom extends DomParser {
 			putDomOrder("commands", COMMANDS_ELEMENTS);
 			putDomOrder("params", PARAMS_ELEMENTS);
 			putDomOrder("schedule", RUNTIME_ELEMENTS);
+	        putDomOrder("monitor", MONITOR_ELEMENTS);
 			putDomOrder("holidays", HOLIDAYS_ELEMENTS);
 			putDomOrder("settings", SETTINGS_ELEMENTS);
 			putDomOrder("start_job", ORDER_ELEMENTS);
@@ -142,16 +146,23 @@ public class SchedulerDom extends DomParser {
 								initScheduler(type);
 							}
 							else
-								if (type == LIFE_SCHEDULE) {
-									putDomOrder("config", new String[] { "schedules" });
-									putDomOrder("run_time", RUNTIME_ELEMENTS);
-									putDomOrder("holidays", HOLIDAYS_ELEMENTS);
-									initScheduler(type);
-								}
-								else {
-									new SchedulerDom();
-									initScheduler();
-								}
+                                if (type == LIFE_SCHEDULE) {
+                                    putDomOrder("config", new String[] { "schedules" });
+                                    putDomOrder("run_time", RUNTIME_ELEMENTS);
+                                    putDomOrder("holidays", HOLIDAYS_ELEMENTS);
+                                    initScheduler(type);
+                                }
+                                else
+                                    if (type == LIFE_MONITOR) {
+                                        putDomOrder("config", new String[] { "monitors" });
+                                        initScheduler(type);
+                                    }
+    								else {
+    									new SchedulerDom();
+    									initScheduler();
+    								}
+								
+
 	}
 
 	public void initScheduler() {
@@ -198,10 +209,14 @@ public class SchedulerDom extends DomParser {
 								elem.setAttribute("name", "job_chain1");
 							}
 							else
-								if (type == LIFE_SCHEDULE) {
-									elem = new Element("schedule");
-									elem.setAttribute("name", "schedule1");
-								}
+                                if (type == LIFE_SCHEDULE) {
+                                    elem = new Element("schedule");
+                                    elem.setAttribute("name", "schedule1");
+                                }
+                                    if (type == LIFE_MONITOR) {
+                                        elem = new Element("monitor");
+                                        elem.setAttribute("name", "monitor0");
+                                    }
 			setDoc(new Document(elem));
 		}
 	}
@@ -219,8 +234,7 @@ public class SchedulerDom extends DomParser {
 			Iterator descendants = doc.getDescendants();
 			findStyleSheet(descendants);
 		}
-		// if (!validate && (!doc.hasRootElement() || !doc.getRootElement().getName().equals("spooler")))
-		if (!validate && !doc.hasRootElement())
+ 		if (!validate && !doc.hasRootElement())
 			return false;
 		setDoc(doc);
 		// set comments as attributes
@@ -244,21 +258,7 @@ public class SchedulerDom extends DomParser {
 		return true;
 	}
 
-	/*public boolean read_2(String filename) throws JDOMException, IOException {
-
-	    StringReader sr = new StringReader(readFile(filename));
-	    Document doc = getBuilder(false).build(sr);
-	    sr.close();
-
-	    setDoc(doc);
-
-	    // set comments as attributes
-	    setComments(getDoc().getContent());
-
-	    setChanged(false);
-	    setFilename(filename);
-	    return true;
-	}*/
+ 
 	public boolean isEnabled(Element e) {
 		String enabledAttr = Utils.getAttributeValue("enabled", e);
 		boolean enabled = enabledAttr.equalsIgnoreCase("yes") || enabledAttr.length() == 0;
@@ -336,8 +336,7 @@ public class SchedulerDom extends DomParser {
 		handler.setStyleSheet(styleSheet);
 		handler.setEnconding(encoding);
  		SAXOutputter saxo = new SAXOutputter(handler);
-		// saxo.output(getDoc());
- 		 
+  		 
 		saxo.output(doc);
 		try {
 			getBuilder(true).build(new StringReader(handler.getXML()));
@@ -357,11 +356,7 @@ public class SchedulerDom extends DomParser {
 		OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
 		writer.write(handler.getXML());
 		writer.close();
-		// FileOutputStream stream = new FileOutputStream(new File(filename));
-		// XMLOutputter out = new XMLOutputter(getFormat());
-		// out.output(_doc, stream);
-		// stream.close();
-		// setFilename(filename);
+		 
 		setChanged(false);
 		deorderDOM();
 	}
@@ -565,8 +560,10 @@ public class SchedulerDom extends DomParser {
 			listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_ORDER, java.util.regex.Pattern.CASE_INSENSITIVE));
 			listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_PROCESS_CLASS,
 					java.util.regex.Pattern.CASE_INSENSITIVE));
-			listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_SCHEDULE,
-					java.util.regex.Pattern.CASE_INSENSITIVE));
+            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_SCHEDULE,
+                    java.util.regex.Pattern.CASE_INSENSITIVE));
+            listOfhotFolderFiles.addAll(SOSFile.getFilelist(f.getCanonicalPath(), MergeAllXMLinDirectory.MASK_MONITOR,
+                    java.util.regex.Pattern.CASE_INSENSITIVE));
 		}
 		catch (Exception e) {
 			try {
