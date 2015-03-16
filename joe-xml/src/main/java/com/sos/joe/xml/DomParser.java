@@ -220,34 +220,7 @@ import com.sos.resources.SOSResourceFactory;
 		}
 	}
 
-	/* protected String[] writeSchemaFile_old() throws IOException {
-	     ArrayList urls = new ArrayList();
-
-	     for (int i = 0; i < _schemaTmpFile.length; i++) {
-	         if (_schemaTmpFile[i] != null && !_schemaTmpFile[i].equals("") && _schemaResource[i] != null
-	                 && !_schemaResource[i].equals("")) {
-
-	             File tmp = File.createTempFile(_schemaTmpFile[i], ".xsd");
-	             tmp.deleteOnExit();
-
-	             InputStream in = getClass().getResourceAsStream(_schemaResource[i]);
-	             FileOutputStream out = new FileOutputStream(tmp, true);
-
-	             int c;
-	             while ((c = in.read()) != -1)
-	                 out.write(c);
-
-	             in.close();
-	             out.close();
-
-	             urls.add(tmp.getAbsolutePath());
-	         }
-	     }
-
-	     return (String[]) urls.toArray(new String[urls.size()]);
-	 }
-
-	*/
+	 
 	protected SAXBuilder getBuilder(boolean validate) throws IOException {
 		SAXBuilder builder = new SAXBuilder(validate);
 		if (validate) {
