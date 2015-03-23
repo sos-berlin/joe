@@ -91,7 +91,10 @@ public class TestFTPProfileJadeClientFTP extends TestFTPProfileJadeClient {
 
     @Test
     public void testCopyRemoteFileToLocal() throws Exception {
-       super.testCopyRemoteFileToLocal(); 
+        ftpProperties.put("root","./");
+        ftpProfile = new FTPProfile(ftpProperties);
+
+         super.testCopyRemoteFileToLocal(); 
     }
 
     @Test

@@ -224,7 +224,7 @@ public class TestFTPProfileJadeClient {
         ftpProfileJadeClient.copyLocalFilesToRemote(localDir,  targetDir, folder);
         
         HashMap<String, SOSFileEntry> h =  ftpProfileJadeClient.getDirectoryContent(path);
-        assertEquals("File should have been deleted ", 1,h.size());
+        assertEquals("File should have been transfered ", 1,h.size());
         ftpProfileJadeClient.disconnect();        
     }
 
@@ -250,11 +250,33 @@ public class TestFTPProfileJadeClient {
         ftpProfileJadeClient.copyRemoteFileToLocal(sosFileEntry);
         assertTrue ("File must exist",targetFile.exists());
 
-        ftpProfileJadeClient.disconnect();            }
-
-    
-    public void testCopyRemoteFilesToLocal() {
-        //fail("Not yet implemented");
+        ftpProfileJadeClient.disconnect();            
+        
     }
+
+   public void testCopyRemoteFilesToLocal() throws Exception {
+        
+        String filename = "1.txt";
+        String sourceDir=ftpProfile.getRoot();
+        String folder="newfolder";
+        String path = sourceDir + "/" + folder;
+        
+        File targetFile = new File (ftpProfile.getLocaldirectory(),filename);
+        targetFile.delete();
+
+        FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
+        ftpProfileJadeClient.mkdir(sourceDir,folder);
+
+        SOSFileEntry sosFileEntry = new SOSFileEntry();
+        sosFileEntry.setDirectory(true);
+        sosFileEntry.setFilename(filename);
+        sosFileEntry.setParentPath(path);
+        ftpProfileJadeClient.copyRemoteFileToLocal(sosFileEntry);
+        assertTrue ("File must exist",targetFile.exists());
+
+        ftpProfileJadeClient.disconnect();            
+        
+    }    
+   
 
 }

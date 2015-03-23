@@ -39,7 +39,7 @@ import java.io.File;
 public class FTPProfileDialog {
 
  
-	private              Group            schedulerGroup                = null;
+	private              Group               schedulerGroup                = null;
 	private              SOSString           sosString                     = null;
 	private   static     Shell               shell   = null;
 	private              FTPProfile          currProfile                   = null;
@@ -50,13 +50,16 @@ public class FTPProfileDialog {
 	private              Text                txtRoot                       = null;
 	private              Text                txtLocalDirectory             = null;
 	private              Button              butAscii                      = null;
-	private              Button              butbinary                     = null ;
+	private              Button              butbinary                     = null;
 	private              Text                txtHost                       = null;
 	private              boolean             newProfile                    = false;
 	private              Button              butSavePassword               = null; 
 	private              FTPDialogListener   listener                      = null;
 	private              Button              useProxyButton                = null; 
-	private              Text                txtProxyServer                = null;  
+    private              Text                txtProxyServer                = null;  
+    private              Text                txtProxyUser                  = null;  
+    private              Combo               cboProxyProtocol              = null; 
+    private              Text                txtProxyPassword              = null;  
 	private              Text                txtProxyPort                  = null; 
 	private              Button              butApply                      = null;
 	private              boolean             saveSettings                  = false;
@@ -270,18 +273,6 @@ public class FTPProfileDialog {
 								init = false;
 								//TODO 
 								if(txtPassword.getText().length() > 0) {
-									/*	String key = Options.getProperty("profile.timestamp." + cboConnectname.getText());
-
-								if(key != null && key.length() > 8) {
-									key = key.substring(key.length()-8);
-								}
-								String password = txtPassword.getText();
-
-								if(password.length() > 0 && sosString.parseToString(key).length() > 0) {
-									password = SOSCrypt.decrypt(key, password);
-								}
-								txtPassword.setText(password);
-									 */
 								}
 							} catch(Exception ex) {
 								System.out.println(ex.getMessage());
@@ -364,28 +355,31 @@ public class FTPProfileDialog {
 				final TabItem proxyTabItem = new TabItem(tabFolder, SWT.NONE);
 				proxyTabItem.setText("Proxy");
 
-				final Group group_1 = new Group(tabFolder, SWT.NONE);
+				final Group groupProxy = new Group(tabFolder, SWT.NONE);
 				final GridLayout gridLayout_3 = new GridLayout();
 				gridLayout_3.numColumns = 2;
-				group_1.setLayout(gridLayout_3);
-				proxyTabItem.setControl(group_1);
+				groupProxy.setLayout(gridLayout_3);
+				proxyTabItem.setControl(groupProxy);
 
-				useProxyButton = new Button(group_1, SWT.CHECK);
+				useProxyButton = new Button(groupProxy, SWT.CHECK);
 				useProxyButton.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
 						txtProxyServer.setEnabled(useProxyButton.getSelection());
 						txtProxyPort.setEnabled(useProxyButton.getSelection());
+                        txtProxyUser.setEnabled(useProxyButton.getSelection());
+                        txtProxyPassword.setEnabled(useProxyButton.getSelection());
+                        cboProxyProtocol.setEnabled(useProxyButton.getSelection());
 						setEnabled();
 					}
 				});
 				useProxyButton.setLayoutData(new GridData(SWT.DEFAULT, 52));
 				useProxyButton.setText("Use Proxy");
-				new Label(group_1, SWT.NONE);
+				new Label(groupProxy, SWT.NONE);
 
-				final Label proxyServerLabel = new Label(group_1, SWT.NONE);
+				final Label proxyServerLabel = new Label(groupProxy, SWT.NONE);
 				proxyServerLabel.setText("Proxy Server");
 
-				txtProxyServer = new Text(group_1, SWT.BORDER);
+				txtProxyServer = new Text(groupProxy, SWT.BORDER);
 				txtProxyServer.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {
 						setEnabled();
@@ -393,10 +387,10 @@ public class FTPProfileDialog {
 				});
 				txtProxyServer.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
-				final Label proxyPortLabel = new Label(group_1, SWT.NONE);
+				final Label proxyPortLabel = new Label(groupProxy, SWT.NONE);
 				proxyPortLabel.setText("Proxy Port");
 
-				txtProxyPort = new Text(group_1, SWT.BORDER);
+				txtProxyPort = new Text(groupProxy, SWT.BORDER);
 				txtProxyPort.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {
 						setEnabled();
@@ -404,6 +398,41 @@ public class FTPProfileDialog {
 				});
 				txtProxyPort.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 
+				
+                final Label proxyUserLabel = new Label(groupProxy, SWT.NONE);
+                proxyUserLabel.setText("Proxy User");
+
+                txtProxyUser = new Text(groupProxy, SWT.BORDER);
+                txtProxyUser.addModifyListener(new ModifyListener() {
+                    public void modifyText(final ModifyEvent e) {
+                        setEnabled();
+                    }
+                });
+                txtProxyUser.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+                final Label proxyPasswordLabel = new Label(groupProxy, SWT.NONE);
+                proxyPasswordLabel.setText("Proxy Password");
+
+                txtProxyPassword = new Text(groupProxy, SWT.BORDER);
+                txtProxyPassword.addModifyListener(new ModifyListener() {
+                    public void modifyText(final ModifyEvent e) {
+                        setEnabled();
+                    }
+                });
+                txtProxyPassword.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+
+                final Label proxyProtocolLabel = new Label(groupProxy, SWT.NONE);
+                proxyProtocolLabel.setText("Proxy Protocol");
+
+                cboProxyProtocol = new Combo(groupProxy, SWT.NONE);
+                cboProxyProtocol.setItems(new String[] {"http", "socks4", "socks5"});
+ 
+                cboProxyProtocol.addModifyListener(new ModifyListener() {
+                    public void modifyText(final ModifyEvent e) {
+                        setEnabled();
+                    }
+                });                
+                 
 				sshTabItem = new TabItem(tabFolder, SWT.NONE);
 				sshTabItem.setText("SSH");
 
@@ -501,7 +530,10 @@ public class FTPProfileDialog {
 						txtProxyPort.setText("");
 						txtProxyServer.setText("");
 						txtProxyPort.setEnabled(false);
-						txtProxyServer.setEnabled(false);
+                        txtProxyServer.setEnabled(false);
+                        txtProxyUser.setEnabled(false);
+                        txtProxyPassword.setEnabled(false);
+                        cboProxyProtocol.setEnabled(false);
 						useProxyButton.setSelection(false);
 						cboProtokol.select(0);
 						cboConnectname.setFocus();
@@ -598,12 +630,24 @@ public class FTPProfileDialog {
 			if(useProxyButton.getSelection()) {
 				txtProxyServer.setEnabled(true);
 				txtProxyPort.setEnabled(true);
-				txtProxyServer.setText(sosString.parseToString(currProfile.getProxyServer()));
+                txtProxyUser.setEnabled(true);
+                txtProxyPassword.setEnabled(true);
+                cboProxyProtocol.setEnabled(true);
+                txtProxyServer.setText(sosString.parseToString(currProfile.getProxyServer()));
+                txtProxyUser.setText(sosString.parseToString(currProfile.getProxyUser()));
+                txtProxyPassword.setText(sosString.parseToString(currProfile.getProxyPassword()));
+                cboProxyProtocol.setText(sosString.parseToString(currProfile.getProxyProtocol()));
 				txtProxyPort.setText(sosString.parseToString(currProfile.getProxyPort()));
 			} else {
 				txtProxyServer.setEnabled(false);
 				txtProxyPort.setEnabled(false);
-				txtProxyServer.setText("");
+                txtProxyUser.setEnabled(false);
+                txtProxyPassword.setEnabled(false);
+                cboProxyProtocol.setEnabled(false);
+                txtProxyServer.setText("");             
+                txtProxyUser.setText("");             
+                txtProxyPassword.setText("");
+                cboProxyProtocol.setText("");                
 				txtProxyPort.setText("");						
 			}
 
@@ -692,7 +736,10 @@ public class FTPProfileDialog {
 			if(useProxyButton.getSelection()) {
 				prop.put("use_proxy", "yes");
 				prop.put("proxy_server", txtProxyServer.getText());
-				prop.put("proxy_port", txtProxyPort.getText());
+                prop.put("proxy_port", txtProxyPort.getText());
+                prop.put("proxy_user", txtProxyUser.getText());
+                prop.put("proxy_password", txtProxyPassword.getText());
+                prop.put("proxy_protocol", cboProxyProtocol.getText());
 			}	    				
 
 			if(cboProtokol.getText().equalsIgnoreCase("SFTP")){

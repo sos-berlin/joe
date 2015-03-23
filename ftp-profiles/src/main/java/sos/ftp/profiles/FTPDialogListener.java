@@ -379,16 +379,15 @@ public class FTPDialogListener {
 			s2 = s2 + "protocol=" + profile.getProtocol() + "\n";
 			s2 = s2 + "use_proxy=" + profile.getUseProxy() + "\n";
 			s2 = s2 + "proxy_server=" + profile.getProxyServer() + "\n";
-			s2 = s2 + "proxy_port=" + profile.getProxyPort() + "\n";
+            s2 = s2 + "proxy_port=" + profile.getProxyPort() + "\n";
+            s2 = s2 + "proxy_user=" + profile.getProxyUser() + "\n";
+            s2 = s2 + "proxy_password=" + profile.getProxyPassword() + "\n";
+            s2 = s2 + "proxy_protocol=" + profile.getProxyProtocol() + "\n";
 			s2 = s2 + "auth_method=" + profile.getAuthMethod() + "\n";
 			s2 = s2 + "auth_file=" + profile.getAuthFile() + "\n";    		     		 
 			s2 = s2 + "\n\n";	
 
 			s2 = s2 + s.substring(pos2);
-
-			// System.out.println("+++++++++++++++++++++++++++++++++++");			
-			// System.out.println(s2);
-			// System.out.println("+++++++++++++++++++++++++++++++++++");
 
 			java.nio.ByteBuffer bbuf = java.nio.ByteBuffer.wrap(s2.getBytes());
 			java.io.File file = new java.io.File(filename);

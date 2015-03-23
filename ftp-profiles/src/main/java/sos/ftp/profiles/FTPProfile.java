@@ -56,20 +56,25 @@ public class FTPProfile {
     private String protocol = null;
 
     /** Wird proxy verwendet? */
-    private boolean use_proxy = false;
+    private boolean useProxy = false;
 
     /**
      * Der Wert des Parameters ist der Hostname oder die IP-Adresse eines
      * Proxies, über den die Verbindung zum SSH Server hergestellt wird. Die
      * Verwendung von Proxies ist optional.
      */
-    private String proxy_server = null;
+    private String proxyServer = null;
 
+    
     /**
      * Der Wert des Parameters ist der Port des Proxies, über den eine
      * Verbindung zum SSH Server hergestellt wird.
      */
-    private String proxy_port = null;
+    private String proxyPort = null;
+    private String proxyUser = null;
+    private String proxyPassword = null;
+
+    private String proxyProtocol = null;
 
     /**
      * Der Parmeter spezifiziert die Authentifizierungsmethode am SSH Server,
@@ -122,9 +127,12 @@ public class FTPProfile {
             localdirectory = sosString.parseToString(prop, "localdirectory");
             transfermode = sosString.parseToString(prop, "transfermode");
             protocol = sosString.parseToString(prop, "protocol");
-            use_proxy = sosString.parseToBoolean(sosString.parseToString(prop, "use_proxy"));
-            proxy_server = sosString.parseToString(prop, "proxy_server");
-            proxy_port = sosString.parseToString(prop, "proxy_port");
+            useProxy = sosString.parseToBoolean(sosString.parseToString(prop, "use_proxy"));
+            proxyServer = sosString.parseToString(prop, "proxy_server");
+            proxyPort = sosString.parseToString(prop, "proxy_port");
+            proxyUser = sosString.parseToString(prop, "proxy_user");
+            proxyPassword = sosString.parseToString(prop, "proxy_password");
+            proxyProtocol = sosString.parseToString(prop, "proxy_protocol");
             auth_method = sosString.parseToString(prop, "auth_method");
             auth_file = sosString.parseToString(prop, "auth_file");
         } catch (Exception e) {
@@ -166,6 +174,18 @@ public class FTPProfile {
      */
     public String getUser() {
         return user;
+    }
+    
+    public String getProxyUser() {
+        return proxyUser;
+    }
+
+    public String getProxyPassword() {
+        return proxyPassword;
+    }
+
+    public String getProxyProtocol() {
+        return proxyProtocol;
     }
 
     /**
@@ -236,7 +256,7 @@ public class FTPProfile {
      * @return the use_proxy
      */
     public boolean getUseProxy() {
-        return use_proxy;
+        return useProxy;
     }
 
     /**
@@ -247,7 +267,7 @@ public class FTPProfile {
      * @return the proxy_server
      */
     public String getProxyServer() {
-        return proxy_server;
+        return proxyServer;
     }
 
     /**
@@ -257,7 +277,7 @@ public class FTPProfile {
      * @return the proxy_port
      */
     public String getProxyPort() {
-        return proxy_port;
+        return proxyPort;
     }
 
     /**
