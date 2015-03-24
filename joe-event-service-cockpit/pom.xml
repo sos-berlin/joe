@@ -120,9 +120,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>slide</groupId>
-			<artifactId>slide-webdavlib</artifactId>
-		</dependency>
+			<!-- groupId>slide</groupId -->
+			<!-- artifactId>slide-webdavlib</artifactId -->
+			<groupId>webdavclient4j</groupId>
+      <artifactId>webdavclient4j-core</artifactId>
+    </dependency>
 		
 		<dependency>
 			<groupId>jaxen</groupId>
