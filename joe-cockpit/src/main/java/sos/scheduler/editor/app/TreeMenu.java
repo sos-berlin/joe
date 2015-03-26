@@ -588,7 +588,10 @@ public class TreeMenu {
                     TreeItem parentItem = _tree.getSelection()[0].getParentItem();
                     _tree.setSelection(new TreeItem[] { parentItem });
                     if (parentItem.getItemCount() == 1){// jobs Element hat keine weiteren Kindelemente
-                        ((TreeData) parentItem.getData()).getElement().getChild("jobs").detach();
+                        if (((TreeData) parentItem.getData()).getElement().getChild("jobs") != null){
+                            ((TreeData) parentItem.getData()).getElement().getChild("jobs").detach();
+                        }
+                        
                     }
 
 					_gui.updateJobs();
