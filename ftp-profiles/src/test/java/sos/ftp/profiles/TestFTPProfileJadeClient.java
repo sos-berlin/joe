@@ -142,6 +142,9 @@ public class TestFTPProfileJadeClient {
         sosFileEntry.setDirectory(true);
         sosFileEntry.setFilename(folder);
         sosFileEntry.setParentPath(dir);
+        try {
+            ftpProfileJadeClient.removeDir(dir + "/renamed");
+        }catch(Exception e){}
         ftpProfileJadeClient.renameFile(dir, folder, "renamed");
         assertTrue ("Directory must exist", ftpProfileJadeClient.getFtpClient().isDirectory(dir + "/renamed"));
         assertFalse ("Directory should have been deleted ", ftpProfileJadeClient.getFtpClient().isDirectory(path));
@@ -153,6 +156,8 @@ public class TestFTPProfileJadeClient {
     }
     
     private void CreateTestFile(String dir, String filename) {
+        
+        new JSFile(dir).mkdirs();
         JSFile temporaryFile = new JSFile(dir + "/" + filename);
         temporaryFile.deleteOnExit();
         try {

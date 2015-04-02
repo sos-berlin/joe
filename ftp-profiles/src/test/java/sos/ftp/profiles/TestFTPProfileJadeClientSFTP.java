@@ -31,7 +31,7 @@ public class TestFTPProfileJadeClientSFTP extends TestFTPProfileJadeClient {
         ftpProperties.put("password","12345");
         ftpProperties.put("root","/home/test");
         ftpProperties.put("transfertype","ASCII");
-        ftpProperties.put("localdirectory",System.getProperty("java.io.tmpdir"));
+        ftpProperties.put("localdirectory",System.getProperty("java.io.tmpdir") + "/jobschedulertest");
         ftpProperties.put("profilename","test");
         ftpProperties.put("protocol","sftp");
         ftpProperties.put("auth_method","password");
