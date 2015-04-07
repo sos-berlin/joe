@@ -19,6 +19,7 @@ import org.jdom.Comment;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.Namespace;
 import org.jdom.ProcessingInstruction;
 import org.jdom.Text;
 import org.jdom.output.SAXOutputter;
@@ -36,7 +37,7 @@ public class SchedulerDom extends DomParser {
 	private static Logger			logger						= Logger.getLogger(SchedulerDom.class);
 	private static final String[]	CONFIG_ELEMENTS				= { "base", "params", "security", "plugins", "cluster", "process_classes", "schedules",
 			"locks", "script", "http_server", "holidays", "jobs", "job_chains", "orders", "commands" };
-	private static final String[]	JOB_ELEMENTS				= { "settings", "description", "monitor.use", "lock.use", "params", "environment", "script", "process",
+	private static final String[]	JOB_ELEMENTS				= { "settings", "description", "lock.use", "params", "environment", "script", "monitor.use", "process",
 			"monitor", "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };
 	private static final String[]	RUNTIME_ELEMENTS			= { "period", "at", "date", "weekdays", "monthdays", "ultimos", "month", "holidays" };
     private static final String[]   JOBCHAIN_ELEMENTS           = { "file_order_source", "job_chain_node", "job_chain_node.job_chain", "job_chain_node.end",
@@ -192,7 +193,8 @@ public class SchedulerDom extends DomParser {
 				if (type == LIVE_JOB_CHAIN) {
 					elem = new Element("job_chain");
 					elem.setAttribute("name", "job_chain1");
-				}
+				  
+ 				}
 				else
 					if (type == LIFE_PROCESS_CLASS) {
 						elem = new Element("process_class");
@@ -336,6 +338,7 @@ public class SchedulerDom extends DomParser {
 		handler.setStyleSheet(styleSheet);
 		handler.setEnconding(encoding);
  		SAXOutputter saxo = new SAXOutputter(handler);
+        saxo.setReportNamespaceDeclarations(true);
   		 
 		saxo.output(doc);
 		try {

@@ -1218,7 +1218,9 @@ public class SOSJOEMessageCodes extends SOSComposite {
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_B_JCNodesForm_AddMissingNodes					= new SOSMsgJOE("JOE_B_JCNodesForm_AddMissingNodes");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_B_JCNodesForm_Remove							= new SOSMsgJOE("JOE_B_JCNodesForm_Remove");
+    public static final SOSMsgJOE   JOE_B_JCNodesForm_ReturnCodes                        = new SOSMsgJOE("JOE_B_JCNodesForm_ReturnCode");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_B_JCNodesForm_Remove                            = new SOSMsgJOE("JOE_B_JCNodesForm_Remove");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_M_JCNodesForm_Remove							= new SOSMsgJOE("JOE_M_JCNodesForm_Remove");
 	@I18NMsg

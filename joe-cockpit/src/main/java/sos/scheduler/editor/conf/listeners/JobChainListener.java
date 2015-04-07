@@ -4,17 +4,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
+import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
 
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.classes.returncodes.JobchainListOfReturnCodeElements;
+import sos.scheduler.editor.classes.returncodes.JobchainReturnCodeAddOrderElement;
+import sos.scheduler.editor.classes.returncodes.JobchainReturnCodeElement;
+import sos.scheduler.editor.classes.returncodes.JobchainReturnCodeNextStateElement;
 import sos.util.SOSString;
 
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
@@ -32,10 +38,18 @@ public class JobChainListener {
 	private final SOSString		sosString		= new SOSString();
 	private ISchedulerUpdate	update			= null;
 	private ArrayList			listOfAllState	= null;
-
+	private Namespace namespace;	
+	//Contains the on_return_codes for the selected current node.
+    private JobchainListOfReturnCodeElements jobchainListOfReturnCodeElements = null;
+ 
 	public JobChainListener(final SchedulerDom dom, final Element jobChain) {
+	    
+	    namespace = Namespace.getNamespace("https://jobscheduler-plugins.sos-berlin.com/NodeOrderPlugin NodeOrderPlugin.xsd");
+
 		_dom = dom;
-		_chain = jobChain;
+        _chain = jobChain;
+
+         jobchainListOfReturnCodeElements = new JobchainListOfReturnCodeElements();
 		if (_chain.getParentElement() != null)
 			_config = _chain.getParentElement().getParentElement();
 	}
@@ -213,7 +227,15 @@ public class JobChainListener {
 		}
 	}
 
-	public void fillChain(final Table table) {
+    public void setJobchainListOfReturnCodeElements(JobchainListOfReturnCodeElements jobchainListOfReturnCodeElements) {
+        this.jobchainListOfReturnCodeElements = jobchainListOfReturnCodeElements;
+    }
+    
+    public JobchainListOfReturnCodeElements getJobchainListOfReturnCodeElements() {
+        return jobchainListOfReturnCodeElements;
+    }
+    
+    public void fillChain(final Table table) {
 		table.removeAll();
 		String state = "";
 		String nodetype = "";
@@ -261,17 +283,19 @@ public class JobChainListener {
 							}
 						}
 					TableItem item = new TableItem(table, SWT.NONE);
-					//item.setChecked(sos.scheduler.editor.conf.listeners.DetailsListener.existDetailsParameter(state, Utils.getAttributeValue("name", _chain), action, _dom, update, false));
-					if (sos.scheduler.editor.conf.listeners.DetailsListener.existDetailsParameter(state, Utils.getAttributeValue("name", _chain), action, _dom,
-							update, false, null))
+					
+					if (sos.scheduler.editor.conf.listeners.DetailsListener.existDetailsParameter(state, Utils.getAttributeValue("name", _chain), action, _dom,	update, false, null)){
 						item.setBackground(Options.getLightBlueColor());
-					else
+					}else{
 						item.setBackground(null);
+					}
 					item.setText(new String[] { state, nodetype, action, next, error, onError });
-					if (!next.equals("") && !checkForState(next))
+					if (!next.equals("") && !checkForState(next)){
 						item.setBackground(3, Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-					if (!error.equals("") && !checkForState(error))
+					}
+					if (!error.equals("") && !checkForState(error)){
 						item.setBackground(4, Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+					}
 				}
 			}
 		}
@@ -285,13 +309,60 @@ public class JobChainListener {
 		return false;
 	}
 
+	private void fillOnReturnCodes(Element node){
+	    List<Element> listOfonReturnCodes = null;
+
+	    if (jobchainListOfReturnCodeElements.size() == 0){
+    	    Element onReturnCodes = _node.getChild("on_return_codes");
+    	    if (onReturnCodes != null){
+        	    listOfonReturnCodes = onReturnCodes.getChildren("on_return_code"); 
+              
+        	    Iterator<Element> it = listOfonReturnCodes.iterator();
+                while (it.hasNext()) {
+                    Element returnCode =  it.next();
+                    Element toState = returnCode.getChild("to_state");
+                    Element addOrder = returnCode.getChild("add_order",namespace);
+                    String returnCodeValue = Utils.getAttributeValue("return_code", returnCode);
+                    if (toState != null){
+                        JobchainReturnCodeNextStateElement jobchainReturnCodeNextStateElement = new JobchainReturnCodeNextStateElement();
+                        jobchainReturnCodeNextStateElement.setReturnCodes(returnCodeValue);
+                        jobchainReturnCodeNextStateElement.setNextState(Utils.getAttributeValue("state", toState));
+                        jobchainListOfReturnCodeElements.add(jobchainReturnCodeNextStateElement);
+                    }
+                    if (addOrder != null){
+                        JobchainReturnCodeAddOrderElement jobchainReturnCodeAddOrderElement = new JobchainReturnCodeAddOrderElement();
+                        jobchainReturnCodeAddOrderElement.setReturnCodes(returnCodeValue);
+                        jobchainReturnCodeAddOrderElement.setJobChain(Utils.getAttributeValue("job_chain", addOrder)); 
+                        jobchainReturnCodeAddOrderElement.setOrderId(Utils.getAttributeValue("order_id", addOrder)); 
+                        
+                        Element addOrderParams = addOrder.getChild("params");
+                        if (addOrderParams != null){
+                            List<Element> listOfParams = addOrderParams.getChildren("param"); 
+                            Iterator<Element> itParam = listOfParams.iterator();
+                            while (it.hasNext()) {
+                                Element param =  itParam.next();
+                                jobchainReturnCodeAddOrderElement.addParam(Utils.getAttributeValue("name", param), Utils.getAttributeValue("value", param));
+                            }
+                        }
+                        jobchainListOfReturnCodeElements.add(jobchainReturnCodeAddOrderElement);
+                    }
+                }
+               
+             }
+	    }
+	}
+	
 	public void selectNode(final Table tableNodes) {
 		if (tableNodes == null) {
 			_node = null;
 		}
 		else {
 			int index = getIndexOfNode(tableNodes.getItem(tableNodes.getSelectionIndex()));
-			_node = (Element) _chain.getChildren().get(index);
+
+          
+	          _node = (Element) _chain.getChildren().get(index);
+	        
+			fillOnReturnCodes(_node);
 			if (_states == null)
 				setStates();
 		}
@@ -378,12 +449,59 @@ public class JobChainListener {
 		return Utils.getAttributeValue("remove", _node).equals("yes");
 	}
 
+	private Element getOnReturnCodes(){
+	    
+        
+	    Element onReturnCodes  = null;
+	    
+	    if (jobchainListOfReturnCodeElements.size() > 0){
+	        onReturnCodes = new Element("on_return_codes");
+   
+	        jobchainListOfReturnCodeElements.reset();
+        
+    	     while (jobchainListOfReturnCodeElements.hasNext()) {
+                JobchainReturnCodeElement jobchainReturnCodeElement = jobchainListOfReturnCodeElements.getNext();
+                Element on_return_code  = new Element("on_return_code");
+                onReturnCodes.addContent(on_return_code);
+                if (jobchainReturnCodeElement.getJobchainListOfReturnCodeAddOrderElements() != null){
+                    while(jobchainReturnCodeElement.getJobchainListOfReturnCodeAddOrderElements().hasNext()){
+                        JobchainReturnCodeAddOrderElement jobchainReturnCodeAddOrderElement = jobchainReturnCodeElement.getJobchainListOfReturnCodeAddOrderElements().getNext();
+                        Element add_order  = new Element("add_order",namespace);
+                        Utils.setAttribute("job_chain", jobchainReturnCodeAddOrderElement.getJobChain(), add_order, _dom);
+                        Utils.setAttribute("order_id", jobchainReturnCodeAddOrderElement.getOrderId(), add_order, _dom);
+                        
+                        if (jobchainReturnCodeAddOrderElement.getParams().size() > 0){
+                            Element params  = new Element("params");
+                            for (Entry<String, String> entry : jobchainReturnCodeAddOrderElement.getParams().entrySet()) {
+                                Element param  = new Element("param");
+                                Utils.setAttribute("name", entry.getKey(), param, _dom);
+                                Utils.setAttribute("value", entry.getValue(), param, _dom);
+                                params.addContent(param);
+                            }
+                            add_order.addContent(params);
+                        }
+                        on_return_code.addContent(add_order);
+                    }
+                }
+                if (jobchainReturnCodeElement.getJobchainReturnCodeNextStateElement() != null){
+                    Element to_state  = new Element("to_state");
+                    Utils.setAttribute("state", jobchainReturnCodeElement.getJobchainReturnCodeNextStateElement().getNextState(), to_state, _dom);
+                    on_return_code.addContent(to_state);
+                }
+
+                Utils.setAttribute("return_code", jobchainReturnCodeElement.getReturnCodes(), on_return_code, _dom);
+            } 
+	    }
+      return onReturnCodes;         
+	}
+	
 	public void applyNode(final boolean isJobchainNode, final String state, final String job, final String delay, final String next, final String error,
 			final boolean removeFile, final String moveTo, final String onError) throws Exception {
 		try {
 			Element node = null;
-			if (_node != null) {//Wenn der Knotentyp geändert wird, alten löschen und einen neuen anlegen.
-				//System.out.println("node != null, old state=" + Utils.getAttributeValue("state", _node) + ", new state=" + state);
+            Element onReturnCodes = getOnReturnCodes();
+
+            if (_node != null) {//Wenn der Knotentyp geändert wird, alten löschen und einen neuen anlegen.
 				String oldState = Utils.getAttributeValue("state", _node);
 				if (oldState != null && state != null && !oldState.equals(state)) {
 					//state hat sicg geändert. ggf die Details state auch ändern
@@ -406,6 +524,14 @@ public class JobChainListener {
 					Utils.setAttribute("next_state", next, _node, _dom);
 					Utils.setAttribute("error_state", error, _node, _dom);
 					Utils.setAttribute("on_error", onError, _node, _dom);
+					if (onReturnCodes != null){
+					    Element e = _node.getChild("on_return_codes");
+	                    if (e != null){
+	                        e.detach();
+	                     }
+      			       _node.addContent(onReturnCodes);
+					}
+					
 				}
 				else {
 					Utils.setAttribute("state", state, _node, _dom);
@@ -429,6 +555,16 @@ public class JobChainListener {
 					Utils.setAttribute("move_to", moveTo, node, _dom);
 					Utils.setAttribute("remove", removeFile, node, _dom);
 				}
+				
+                if (onReturnCodes != null){
+                    Element e = _node.getChild("on_return_codes");
+                    if (e != null){
+                       e.detach();
+                    }
+                    node.addContent(onReturnCodes);
+                }
+
+                
 				_chain.addContent(node);
 				_node = node;
 			}
@@ -444,6 +580,8 @@ public class JobChainListener {
 	public void applyInsertNode(final boolean isJobchainNode, final String state, final String job, final String delay, final String next, final String error,
 			final boolean removeFile, final String moveTo, final String onError) {
 		Element node = null;
+        Element onReturnCodes = getOnReturnCodes();
+        
 		if (isJobchainNode) {
 			node = new Element("job_chain_node");
 			Utils.setAttribute("state", state, node, _dom);
@@ -474,6 +612,11 @@ public class JobChainListener {
 				}
 			}
 		}
+		
+        if (onReturnCodes != null){
+            node.addContent(onReturnCodes);
+        }
+
 		if (!found) {
 			_chain.addContent(0, node);
 		}
@@ -841,51 +984,7 @@ public class JobChainListener {
 		}
 	}
 
-	/*public String[] getAllStates() {
-		
-		String[] states = null;
-		List nodes = _chain.getChildren("job_chain_node");
-		List sinks = _chain.getChildren("file_order_sink");
-		List endNodes = _chain.getChildren("job_chain_node.end");
-		
-		Iterator it = nodes.iterator();
-		_states = new String[sinks.size() + nodes.size() + endNodes.size()];
-
-		listOfAllState = new ArrayList();
-
-		int index = 0;
-		while (it.hasNext()) {
-			Element el = ((Element) it.next());
-			String state = el.getAttributeValue("state");
-			_states[index++] = state != null ? state : "";
-			if(state != null && !listOfAllState.contains(state))
-				listOfAllState.add(state);
-			
-			String errorState = el.getAttributeValue("error_state");
-			if(errorState != null && !listOfAllState.contains(errorState))
-				listOfAllState.add(errorState);			
-		}
-
-		it = sinks.iterator();
-		while (it.hasNext()) {
-			String state = ((Element) it.next()).getAttributeValue("state");
-			_states[index++] = state != null ? state : "";
-			if(state != null && !listOfAllState.contains(state))
-				listOfAllState.add(state);
-		}
-
-		it = endNodes.iterator();
-		while (it.hasNext()) {
-			Element el = (Element) it.next();
-			String state = el.getAttributeValue("state");
-			_states[index++] = state != null ? state : "";
-			if(state != null && !listOfAllState.contains(state))
-				listOfAllState.add(state);
-
-		}
-		return states;
-	}
-	*/
+	 
 	public boolean isValidState(final String state) {
 		if (_states == null)
 			return true;

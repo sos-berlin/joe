@@ -11,6 +11,7 @@ import java.util.Vector;
 import org.eclipse.swt.SWT;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
 import sos.util.SOSFile;
@@ -73,8 +74,6 @@ public class MergeAllXMLinDirectory {
 			/* Alle <name>.lock.xml parsieren */
 			addContains(locks, "locks", MASK_LOCK);
 			
-			 /* Alle <name>.monitor.xml parsieren */
-            addContains(monitors, "monitors", MASK_MONITOR);
             
 			/* Alle <name>.job.xml parsieren */
 			addContains(jobs, "jobs", MASK_JOB);
@@ -82,6 +81,9 @@ public class MergeAllXMLinDirectory {
 			addContains(jobChains, "job_chains", MASK_JOB_CHAIN);
 			/* Alle <name>.order.xml parsieren */
 			addContainsForOrder(orders, "commands", MASK_ORDER);
+
+			/* Alle <name>.monitor.xml parsieren */
+           addContains(monitors, "monitors", MASK_MONITOR);
 			
 			return Utils.getElementAsString(parentDoc.getRootElement());
 			
@@ -393,6 +395,12 @@ public class MergeAllXMLinDirectory {
 	public String saveLifeElement(String pstrCurrentTagName, final Element e) {
 		String filename = " ";
 		String attrName = "";
+		
+        //if (pstrCurrentTagName.equals("job_chain")) {
+        //    Namespace namespace = Namespace.getNamespace("NodeOrderPlugin", "https://jobscheduler-plugins.sos-berlin.com/NodeOrderPlugin NodeOrderPlugin.xsd");
+        //    e.addNamespaceDeclaration(namespace);
+        //}
+
 		if (isOrderTag(pstrCurrentTagName)) {
 			pstrCurrentTagName = "order";
 		}
