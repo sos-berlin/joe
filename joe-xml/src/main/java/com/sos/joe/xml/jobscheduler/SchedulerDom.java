@@ -37,7 +37,7 @@ public class SchedulerDom extends DomParser {
 	private static Logger			logger						= Logger.getLogger(SchedulerDom.class);
 	private static final String[]	CONFIG_ELEMENTS				= { "base", "params", "security", "plugins", "cluster", "process_classes", "schedules",
 			"locks", "script", "http_server", "holidays", "jobs", "job_chains", "orders", "commands" };
-	private static final String[]	JOB_ELEMENTS				= { "settings", "description", "lock.use", "params", "environment", "script", "monitor.use", "process",
+	private static final String[]	JOB_ELEMENTS				= { "settings", "description", "lock.use", "params", "environment", "script",  "process", "monitor.use",
 			"monitor", "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };
 	private static final String[]	RUNTIME_ELEMENTS			= { "period", "at", "date", "weekdays", "monthdays", "ultimos", "month", "holidays" };
     private static final String[]   JOBCHAIN_ELEMENTS           = { "file_order_source", "job_chain_node", "job_chain_node.job_chain", "job_chain_node.end",
