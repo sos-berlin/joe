@@ -44,7 +44,7 @@ public class JobChainListener {
  
 	public JobChainListener(final SchedulerDom dom, final Element jobChain) {
 	    
-	    namespace = Namespace.getNamespace("https://jobscheduler-plugins.sos-berlin.com/NodeOrderPlugin NodeOrderPlugin.xsd");
+	    namespace = Namespace.getNamespace("https://jobscheduler-plugins.sos-berlin.com/NodeOrderPlugin");
 
 		_dom = dom;
         _chain = jobChain;
