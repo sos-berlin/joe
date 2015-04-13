@@ -1324,7 +1324,6 @@ public class SchedulerListener {
                             j.setISchedulerUpdate(objSchedulerForm);
                             break;
                         case JOEConstants.COMMANDS:
-                            new CommandsForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm);
                             break;
                         case JOEConstants.SCHEDULES:
                             new sos.scheduler.editor.conf.forms.SchedulesForm(c, SWT.NONE, objSchedulerDom, objSchedulerForm);

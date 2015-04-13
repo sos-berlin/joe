@@ -594,7 +594,8 @@ public class TreeMenu {
                         
                     }
 
-					_gui.updateJobs();
+					//_gui.updateJobs();
+					_gui.refreshTree();
                     _gui.updateCMainForm();
                     _dom.setChanged(true);
 				}

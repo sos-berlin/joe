@@ -278,14 +278,15 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 
 	@Override public void updateJobs() {
 		// if(tree.getSelection()[0].getText().startsWith("Job Chain")) {
-		if (!tree.getSelection()[0].getText().startsWith(SchedulerListener.JOBS)) {
+		if (!tree.getSelection()[0].getText().startsWith(SchedulerListener.JOBS) && !tree.getSelection()[0].getText().startsWith("Steps")) {
 			// Assistent: Der Aufruf erfolgte über den Assistenten. Hier ist nicht das Element "Jobs" im Tree selektiert
 			// sondern das Element "Job Chains".
 			updateJobs_();
 		}
 		else
-			if (tree.getSelectionCount() > 0)
-				listener.treeFillJobs(tree.getSelection()[0]);
+			if (tree.getSelectionCount() > 0){
+                listener.treeFillJobs(tree.getSelection()[0]);
+			}
 	}
 
 	@Override public void expandItem(final String name) {
@@ -297,9 +298,9 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 			for (int i = 0; i < tree.getItemCount(); i++) {
 				TreeItem ti = tree.getItem(i);
 				if (ti.getText().equalsIgnoreCase("Jobs")) {
-					// System.out.println("itemText "+ ti.getText());
 					listener.treeFillJobs(ti);
 				}
+	 			 
 			}
 		}
 	}
@@ -320,11 +321,15 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		return c.length == 0 || Utils.applyFormChanges(c[0]);
 	}
 
-	@Override public void openBlank() {
-		initialize();
-		// dom.initScheduler();
-		listener.treeFillMain(tree, cMainForm);
-	}
+    @Override public void openBlank() {
+        initialize();
+        // dom.initScheduler();
+        listener.treeFillMain(tree, cMainForm);
+    }
+
+    public void refreshTree() {
+        listener.treeFillMain(tree, cMainForm);
+    }
 
 	public void openBlank(final int type) {
 		initialize();
