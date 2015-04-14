@@ -21,13 +21,17 @@ public class JobAssistentForm extends JobWizardBaseForm {
 	
 	public void startJobAssistant() {
 		try {
-			if(Options.isShowWizardInfo()) { 
+			/*if(Options.isShowWizardInfo()) { 
 				JobAssistentInfoForms info = new JobAssistentInfoForms(dom, update);
 				info.showInfoForm();
 			} else {
 				JobAssistentTypeForms typeForms = new JobAssistentTypeForms(dom, update);												
 				typeForms.showTypeForms();
 			}
+			*/
+			
+			 JobAssistentTypeForms typeForms = new JobAssistentTypeForms(dom, update);                                               
+             typeForms.showTypeForms();
 			
 		} catch (Exception e){
 			try {
