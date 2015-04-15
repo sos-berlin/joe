@@ -11,9 +11,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
+import org.jdom.output.DOMOutputter;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
@@ -309,6 +314,44 @@ public class JobChainListener {
 		return false;
 	}
 
+    public org.w3c.dom.Element convertToDOM(org.jdom.Element jdomElement) throws JDOMException {
+       DOMOutputter outputter = new DOMOutputter();
+       jdomElement.detach();
+       org.jdom.Document jdomD = new org.jdom.Document(jdomElement);       
+       org.w3c.dom.Document w3cD = outputter.output(jdomD);
+       return w3cD.getDocumentElement();
+    }
+
+	private JobchainReturnCodeAddOrderElement addOrderParameters(Element addOrderParams, JobchainReturnCodeAddOrderElement jobchainReturnCodeAddOrderElement){
+// This is neccessary because
+//            List<Element> listOfParams = addOrderParams.getChildren("param",addOrder.getNamespace());
+// does not work within a namespace
+	    
+	    
+        if (addOrderParams != null){
+            org.w3c.dom.Element params;
+            try {
+                params = convertToDOM(addOrderParams);
+             
+                NodeList n = params.getElementsByTagNameNS(addOrderParams.getNamespace().getURI(), "param");
+            
+                for (int i = 0; i < n.getLength(); i++) {
+                
+                    Node currentNode = n.item(i);
+                    if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
+                        org.w3c.dom.Element e = (org.w3c.dom.Element)currentNode;
+                        jobchainReturnCodeAddOrderElement.addParam(e.getAttribute("name"),  e.getAttribute("value"));
+                    }
+                }
+             
+            } catch (JDOMException e1) {
+                e1.printStackTrace();
+            }            
+        }
+	    return jobchainReturnCodeAddOrderElement;
+	    
+	}
+	
 	private void fillOnReturnCodes(Element node){
 	    List<Element> listOfonReturnCodes = null;
 
@@ -334,16 +377,10 @@ public class JobChainListener {
                         jobchainReturnCodeAddOrderElement.setReturnCodes(returnCodeValue);
                         jobchainReturnCodeAddOrderElement.setJobChain(Utils.getAttributeValue("job_chain", addOrder)); 
                         jobchainReturnCodeAddOrderElement.setOrderId(Utils.getAttributeValue("order_id", addOrder)); 
-                        
-                        Element addOrderParams = addOrder.getChild("params");
-                        if (addOrderParams != null){
-                            List<Element> listOfParams = addOrderParams.getChildren("param"); 
-                            Iterator<Element> itParam = listOfParams.iterator();
-                            while (it.hasNext()) {
-                                Element param =  itParam.next();
-                                jobchainReturnCodeAddOrderElement.addParam(Utils.getAttributeValue("name", param), Utils.getAttributeValue("value", param));
-                            }
-                        }
+                                               
+                        Element addOrderParams = addOrder.getChild("params",addOrder.getNamespace());
+                        jobchainReturnCodeAddOrderElement = addOrderParameters(addOrderParams, jobchainReturnCodeAddOrderElement);
+  
                         jobchainListOfReturnCodeElements.add(jobchainReturnCodeAddOrderElement);
                     }
                 }
@@ -471,9 +508,9 @@ public class JobChainListener {
                         Utils.setAttribute("order_id", jobchainReturnCodeAddOrderElement.getOrderId(), add_order, _dom);
                         
                         if (jobchainReturnCodeAddOrderElement.getParams().size() > 0){
-                            Element params  = new Element("params");
+                            Element params  = new Element("params",namespace);
                             for (Entry<String, String> entry : jobchainReturnCodeAddOrderElement.getParams().entrySet()) {
-                                Element param  = new Element("param");
+                                Element param  = new Element("param",namespace);
                                 Utils.setAttribute("name", entry.getKey(), param, _dom);
                                 Utils.setAttribute("value", entry.getValue(), param, _dom);
                                 params.addContent(param);
