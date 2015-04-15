@@ -945,29 +945,12 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	public void savePeriod() {
-		int hB = sBeginHours.getText().length() == 0 ? 0 : Integer.parseInt(sBeginHours.getText());
-		int mB = sBeginMinutes.getText().length() == 0 ? 0 : Integer.parseInt(sBeginMinutes.getText());
-		int sB = sBeginSeconds.getText().length() == 0 ? 0 : Integer.parseInt(sBeginSeconds.getText());
-		boolean begin = (hB + mB + sB) > 0;
-		if (begin)
-			setBeginHours();
-		int hE = sEndHours.getText().length() == 0 ? 0 : Integer.parseInt(sEndHours.getText());
-		int mE = sEndMinutes.getText().length() == 0 ? 0 : Integer.parseInt(sEndMinutes.getText());
-		int sE = sEndSeconds.getText().length() == 0 ? 0 : Integer.parseInt(sEndSeconds.getText());
-		boolean end = (hE + mE + sE) > 0;
-		if (end)
-			setEndHours();
-		int hs = stHour.getText().length() == 0 ? 0 : Integer.parseInt(stHour.getText());
-		int ms = stMinutes.getText().length() == 0 ? 0 : Integer.parseInt(stMinutes.getText());
-		int ss = stSeconds.getText().length() == 0 ? 0 : Integer.parseInt(stSeconds.getText());
-		boolean isCbo = (hs + ms + ss) > 0;
-		//
-		if (isCbo) {
-			//SINGLE Start
-			if (cboStarttime.getText().equals(SINGLE_START) && cboStarttime.getText().length() > 0) {
-				listener.clearNONSingleStartAttributes();
-			}
-			setHours();
+    	setBeginHours();
+		setEndHours();
+		//SINGLE Start
+    	if (cboStarttime.getText().equals(SINGLE_START) && cboStarttime.getText().length() > 0) {
+			listener.clearNONSingleStartAttributes();
 		}
+		setHours();
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"
