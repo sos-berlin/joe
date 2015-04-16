@@ -433,14 +433,14 @@ public class SchedulerDom extends DomParser {
 	 */
 	@Deprecated
 	public void setChangedForDirectory(String which, String name, String what) {
-		if (!isChanged())
-			return;
+		if (!isChanged()){
+            return;
+		}
 		changedForDirectory.put(which + "_" + name, what);
 		String filename = which + "." + name + ".xml";
-		if (what.equals(DELETE))
-			return;
-//		SchedulerForm form = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
-//		form.setChangedTreeItemText(which + "_" + name);
+		if (what.equals(DELETE)){
+            return;
+		}
 	}
 
 	public HashMap getChangedJob() {

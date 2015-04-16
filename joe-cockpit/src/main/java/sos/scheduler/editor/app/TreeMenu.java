@@ -580,8 +580,11 @@ public class TreeMenu {
 				Element elem = getItemElement();
 				String name = elem.getName();
 				int c = MainWindow.message("Do you want remove the " + name + "?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-				if (c != SWT.YES)
-					return;
+				if (c != SWT.YES){
+                    return;
+				}
+                _dom.setChanged(true);
+
 				if (name.equals("job")) {
                     ((SchedulerDom) _dom).setChangedForDirectory("job", Utils.getAttributeValue("name", elem), SchedulerDom.DELETE);
                     elem.detach();
@@ -594,24 +597,20 @@ public class TreeMenu {
                         
                     }
 
-					//_gui.updateJobs();
+				   //_gui.updateJobs();
 					_gui.refreshTree();
                     _gui.updateCMainForm();
                     _dom.setChanged(true);
 				}
 				else
 					if (name.equals("monitor")) {
-						_dom.setChanged(true);
 						((SchedulerDom) _dom).setChangedForDirectory("job", Utils.getAttributeValue("name", elem.getParentElement()), SchedulerDom.MODIFY);
 						elem.detach();
 						_gui.updateJobs();
 					}
 					else
 						if (name.equals("job_chain")) {
-							// TreeData data =
-							// (TreeData)_tree.getSelection()[0].getData();
-							// data.getElement().detach();
-							_dom.setChanged(true);
+		
 							((SchedulerDom) _dom).setChangedForDirectory("job_chain", Utils.getAttributeValue("name", elem), SchedulerDom.DELETE);
 							elem.detach();
 							TreeItem parentItem = _tree.getSelection()[0].getParentItem();
@@ -624,7 +623,6 @@ public class TreeMenu {
 						}
 						else
 							if (name.equals("schedule")) {
-								_dom.setChanged(true);
 								((SchedulerDom) _dom).setChangedForDirectory("schedule", Utils.getAttributeValue("name", elem), SchedulerDom.DELETE);
 								elem.detach();
 								TreeItem parentItem = _tree.getSelection()[0].getParentItem();
@@ -638,7 +636,6 @@ public class TreeMenu {
 							}
 							else
 								if (name.equals("order") || name.equals("add_order")) {
-									_dom.setChanged(true);
 									((SchedulerDom) _dom).setChangedForDirectory("order",
 											Utils.getAttributeValue("job_chain", elem) + "," + Utils.getAttributeValue("id", elem), SchedulerDom.DELETE);
 									elem.detach();
@@ -653,15 +650,9 @@ public class TreeMenu {
 								}
 								else
 									if (name.equals("web_service")) {
-										// TreeData data =
-										// (TreeData)_tree.getSelection()[0].getData();
-										_dom.setChanged(true);
 										elem.detach();
 										TreeItem parentItem = _tree.getSelection()[0].getParentItem();
 										_tree.setSelection(new TreeItem[] { parentItem });
-										// if(parentItem.getItemCount() == 1)//job_chains Element
-										// hat keine weiteren Kindelemente
-										// ((TreeData)parentItem.getData()).getElement().getChild("Web Services").detach();
 										_gui.updateWebServices();
 										_gui.updateCMainForm();
 									}
