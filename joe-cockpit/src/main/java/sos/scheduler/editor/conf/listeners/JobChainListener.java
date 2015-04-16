@@ -316,40 +316,72 @@ public class JobChainListener {
 
     public org.w3c.dom.Element convertToDOM(org.jdom.Element jdomElement) throws JDOMException {
        DOMOutputter outputter = new DOMOutputter();
-       jdomElement.detach();
-       org.jdom.Document jdomD = new org.jdom.Document(jdomElement);       
+       org.jdom.Element j = (Element) jdomElement.clone();
+       j.detach();
+       org.jdom.Document jdomD = new org.jdom.Document(j);       
        org.w3c.dom.Document w3cD = outputter.output(jdomD);
        return w3cD.getDocumentElement();
     }
 
-	private JobchainReturnCodeAddOrderElement addOrderParameters(Element addOrderParams, JobchainReturnCodeAddOrderElement jobchainReturnCodeAddOrderElement){
+	private JobchainReturnCodeAddOrderElement addOrderParameters(org.w3c.dom.Element addOrderParams, JobchainReturnCodeAddOrderElement jobchainReturnCodeAddOrderElement){
 // This is neccessary because
 //            List<Element> listOfParams = addOrderParams.getChildren("param",addOrder.getNamespace());
 // does not work within a namespace
 	    
-	    
         if (addOrderParams != null){
-            org.w3c.dom.Element params;
-            try {
-                params = convertToDOM(addOrderParams);
-             
-                NodeList n = params.getElementsByTagNameNS(addOrderParams.getNamespace().getURI(), "param");
-            
+                NodeList n = addOrderParams.getElementsByTagNameNS(namespace.getURI(), "param");
                 for (int i = 0; i < n.getLength(); i++) {
-                
                     Node currentNode = n.item(i);
                     if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
                         org.w3c.dom.Element e = (org.w3c.dom.Element)currentNode;
                         jobchainReturnCodeAddOrderElement.addParam(e.getAttribute("name"),  e.getAttribute("value"));
                     }
                 }
+        }
+	    return jobchainReturnCodeAddOrderElement;
+	    
+	}
+	
+	private void addAddOrderElements(Element returnCode){
+        String returnCodeValue = Utils.getAttributeValue("return_code", returnCode);
+
+	    if (returnCode != null){
+            org.w3c.dom.Element returnCodeElement;
+            try {
+                returnCodeElement = convertToDOM(returnCode);
+             
+                NodeList n = returnCodeElement.getElementsByTagNameNS(namespace.getURI(), "add_order");
+            
+                for (int i = 0; i < n.getLength(); i++) {
+                
+                    Node currentNode = n.item(i);
+                    if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
+                        org.w3c.dom.Element addOrder = (org.w3c.dom.Element)currentNode;
+                        
+                        JobchainReturnCodeAddOrderElement jobchainReturnCodeAddOrderElement = new JobchainReturnCodeAddOrderElement();
+                        jobchainReturnCodeAddOrderElement.setReturnCodes(returnCodeValue);
+                        jobchainReturnCodeAddOrderElement.setJobChain(addOrder.getAttribute("job_chain")); 
+                        jobchainReturnCodeAddOrderElement.setOrderId(addOrder.getAttribute("order_id")); 
+                                               
+                        NodeList paramsList = addOrder.getElementsByTagNameNS(namespace.getURI(), "params");
+                        if (paramsList != null && paramsList.getLength() > 0){
+                            Node currentParamsNode = paramsList.item(0);
+
+                            if (currentParamsNode.getNodeType() == Node.ELEMENT_NODE) {
+                                org.w3c.dom.Element addOrderParams = (org.w3c.dom.Element) paramsList.item(0);
+                                jobchainReturnCodeAddOrderElement = addOrderParameters(addOrderParams, jobchainReturnCodeAddOrderElement);
+                            }
+                        }
+
+
+                        jobchainListOfReturnCodeElements.add(jobchainReturnCodeAddOrderElement);
+                        }
+                 }
              
             } catch (JDOMException e1) {
                 e1.printStackTrace();
             }            
         }
-	    return jobchainReturnCodeAddOrderElement;
-	    
 	}
 	
 	private void fillOnReturnCodes(Element node){
@@ -364,7 +396,6 @@ public class JobChainListener {
                 while (it.hasNext()) {
                     Element returnCode =  it.next();
                     Element toState = returnCode.getChild("to_state");
-                    Element addOrder = returnCode.getChild("add_order",namespace);
                     String returnCodeValue = Utils.getAttributeValue("return_code", returnCode);
                     if (toState != null){
                         JobchainReturnCodeNextStateElement jobchainReturnCodeNextStateElement = new JobchainReturnCodeNextStateElement();
@@ -372,17 +403,8 @@ public class JobChainListener {
                         jobchainReturnCodeNextStateElement.setNextState(Utils.getAttributeValue("state", toState));
                         jobchainListOfReturnCodeElements.add(jobchainReturnCodeNextStateElement);
                     }
-                    if (addOrder != null){
-                        JobchainReturnCodeAddOrderElement jobchainReturnCodeAddOrderElement = new JobchainReturnCodeAddOrderElement();
-                        jobchainReturnCodeAddOrderElement.setReturnCodes(returnCodeValue);
-                        jobchainReturnCodeAddOrderElement.setJobChain(Utils.getAttributeValue("job_chain", addOrder)); 
-                        jobchainReturnCodeAddOrderElement.setOrderId(Utils.getAttributeValue("order_id", addOrder)); 
-                                               
-                        Element addOrderParams = addOrder.getChild("params",addOrder.getNamespace());
-                        jobchainReturnCodeAddOrderElement = addOrderParameters(addOrderParams, jobchainReturnCodeAddOrderElement);
-  
-                        jobchainListOfReturnCodeElements.add(jobchainReturnCodeAddOrderElement);
-                    }
+                    
+                    addAddOrderElements(returnCode);
                 }
                
              }
