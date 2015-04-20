@@ -126,7 +126,14 @@ public class JobChainListener {
 		}
 		return i;
 	}
+	
+	 
 
+
+    public String getProcessClass() {
+        return Utils.getAttributeValue("process_class", _chain);
+    }
+	
 	public void setMaxorders(final int maxOrder) {
 		if (maxOrder == 0) {
 			_chain.removeAttribute("max_orders");
@@ -139,6 +146,19 @@ public class JobChainListener {
 			_dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
 	}
 
+    public void setProcessClass(final String processClass) {
+        if (processClass == "") {
+            _chain.removeAttribute("process_class");
+        }
+        else {
+            Utils.setAttribute("process_class", processClass, _chain);
+        }
+        _dom.setChanged(true);
+        if (_dom.isDirectory() || _dom.isLifeElement())
+            _dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
+    }
+	
+	
 	public Element getChain() {
 		return _chain;
 	}

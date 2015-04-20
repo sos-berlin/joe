@@ -1085,10 +1085,14 @@ public class SOSJOEMessageCodes extends SOSComposite {
 	public static final SOSMsgJOE	JOE_L_JobChainForm_Title							= new SOSMsgJOE("JOE_L_JobChainForm_Title");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_JobChainForm_Title							= new SOSMsgJOE("JOE_T_JobChainForm_Title");
-	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JobChainForm_MaxOrders						= new SOSMsgJOE("JOE_L_JobChainForm_MaxOrders");
-	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_JobChainForm_MaxOrders						= new SOSMsgJOE("JOE_T_JobChainForm_MaxOrders");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_L_JobChainForm_MaxOrders                        = new SOSMsgJOE("JOE_L_JobChainForm_MaxOrders");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_T_JobChainForm_MaxOrders                        = new SOSMsgJOE("JOE_T_JobChainForm_MaxOrders");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_L_JobChainForm_ProcessClass                     = new SOSMsgJOE("JOE_L_JobChainForm_ProcessClass");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_T_JobChainForm_ProcessClass                     = new SOSMsgJOE("JOE_T_JobChainForm_ProcessClass");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_B_JobChainForm_Recoverable						= new SOSMsgJOE("JOE_B_JobChainForm_Recoverable");
 	@I18NMsg
