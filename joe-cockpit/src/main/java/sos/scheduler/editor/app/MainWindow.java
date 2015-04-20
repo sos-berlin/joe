@@ -645,12 +645,14 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		});
 		submenuItem3.setMenu(submenu1);
 		submenu = new Menu(submenuItem);
-		MenuItem mnuLanguageSelection = new MenuItem(submenu, SWT.CASCADE);
+		
+		/*MenuItem mnuLanguageSelection = new MenuItem(submenu, SWT.CASCADE);
 		mnuLanguageSelection.setText(Messages.getLabel("MENU_Language"));
 		menuLanguages = new Menu(mnuLanguageSelection);
 		// create languages menu
 		listener.setLanguages(menuLanguages);
 		mnuLanguageSelection.setMenu(menuLanguages);
+		*/
 		submenuItem.setMenu(submenu);
 		MenuItem submenuItemInfo = new MenuItem(submenu, SWT.PUSH);
 		submenuItemInfo.addSelectionListener(new SelectionAdapter() {
