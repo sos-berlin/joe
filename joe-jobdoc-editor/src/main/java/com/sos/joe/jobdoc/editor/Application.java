@@ -223,7 +223,7 @@ public class Application extends ApplicationWindow {
 			final SOSCTabItem objXMLTab = objTabFolder.getTabItem(conI18NKey_JOE_L_JOB_DOC_XML);
 			newItem(objTabFolder, pstrFileName2Open);
 
-			final DocumentationForm objJobDocForm = new DocumentationForm(objTabFolder, SWT.NONE);
+			final DocumentationForm objJobDocForm = new DocumentationForm(null ,objTabFolder, SWT.NONE);
 			if (objJobDocForm.open(pstrFileName2Open, filelist)) {
 				objDesignTab.setControl(objJobDocForm);
 			}
