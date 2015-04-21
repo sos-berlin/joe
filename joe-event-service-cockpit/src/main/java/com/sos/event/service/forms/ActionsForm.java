@@ -35,6 +35,7 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 	private Composite		docMainForm	= null;
 	private Tree			tree		= null;
 	private TreeItem		selection	= null;
+	private IEditorAdapter container    = null;
 
 	public ActionsForm(IEditorAdapter container_, Composite parent, int style) {
 		super(parent, style);
@@ -180,8 +181,7 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 	}
 
 	@Override public void dataChanged() {
-		// TODO setStatusInTitle
-		container.setSaveStatus();
+    	container.setSaveStatus();
 	}
 
 	public ActionsDom getDom() {
