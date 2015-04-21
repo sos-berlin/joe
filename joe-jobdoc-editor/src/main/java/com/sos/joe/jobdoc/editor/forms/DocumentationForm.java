@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 
 import com.sos.joe.globals.interfaces.IEditor;
+import com.sos.joe.globals.interfaces.IEditorAdapter;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
@@ -36,10 +37,11 @@ public class DocumentationForm extends SOSJOEMessageCodes implements IEditor, ID
 	private Composite				docMainForm	= null;
 	private Tree					docTree		= null;
 	private TreeItem				selection	= null;
+	private IEditorAdapter container = null;
 
-	public DocumentationForm(Composite parent, int style) {
+	public DocumentationForm(IEditorAdapter container_, Composite parent, int style) {
 		super(parent, style);
-//		this.container = container;
+        container = container_;
 		// initialize();
 		dom = new DocumentationDom();
 		dom.setDataChangedListener(this);
@@ -177,7 +179,7 @@ public class DocumentationForm extends SOSJOEMessageCodes implements IEditor, ID
 	}
 
 	@Override public void dataChanged() {
-//		container.setStatusInTitle();
+    	container.setSaveStatus();
 	}
 
 	public static void openNoteDialog(DocumentationDom dom, Element parentElement, String name, boolean optional, String title) {

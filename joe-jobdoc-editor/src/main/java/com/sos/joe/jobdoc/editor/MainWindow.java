@@ -5,12 +5,14 @@ import com.sos.i18n.annotation.I18NMessage;
 import com.sos.i18n.annotation.I18NMessages;
 import com.sos.i18n.annotation.I18NResourceBundle;
 import com.sos.joe.globals.interfaces.IEditor;
+import com.sos.joe.globals.interfaces.IEditorAdapter;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
 import com.sos.joe.xml.Utils;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 
 import static sos.util.SOSClassUtil.getMethodName;
 
-@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class MainWindow {
+@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class MainWindow implements IEditorAdapter{
 	private static final String	conStringEDITOR			= "editor";
 	public static final String	conIconICON_OPEN_GIF	= "/sos/scheduler/editor/icon_open.gif";
 	public static final String	conIconEDITOR_PNG		= "/sos/scheduler/editor/editor.png";
@@ -48,7 +50,7 @@ import static sos.util.SOSClassUtil.getMethodName;
 	/**  */
 	private final static String	EMPTY					= "";
 	private static Label		StatusLine				= null;
-	class TabData {
+	class TabData  {
 		protected String	title	= "";
 		protected String	caption	= "";
 		protected int		cnt		= 0;
@@ -83,7 +85,7 @@ import static sos.util.SOSClassUtil.getMethodName;
 	IEditor	objDataHandler	= null;
 
 	public DocumentationForm newDocumentation() {
-		DocumentationForm doc = new DocumentationForm(objCTabFolder, SWT.NONE);
+		DocumentationForm doc = new DocumentationForm(this, objCTabFolder, SWT.NONE);
 		objDataHandler = doc;
 		doc.openBlank();
 		newItem(doc, NEW_DOCUMENTATION_TITLE);
@@ -92,7 +94,7 @@ import static sos.util.SOSClassUtil.getMethodName;
 
 	public DocumentationForm openDocumentation() {
 		try {
-			DocumentationForm doc = new DocumentationForm(objCTabFolder, SWT.NONE);
+			DocumentationForm doc = new DocumentationForm(this, objCTabFolder, SWT.NONE);
 			if (doc.open(filelist)) {
 				// CTabItem tab = newItem(doc, doc.getFilename());
 				newItem(doc, doc.getFilename());
@@ -110,7 +112,7 @@ import static sos.util.SOSClassUtil.getMethodName;
 
 	public DocumentationForm openDocumentation(String filename) {
 		try {
-			DocumentationForm doc = new DocumentationForm(objCTabFolder, SWT.NONE);
+			DocumentationForm doc = new DocumentationForm(this, objCTabFolder, SWT.NONE);
 			if (doc.open(filename, filelist)) {
 				// CTabItem tab = newItem(doc, doc.getFilename());
 				newItem(doc, doc.getFilename());
@@ -129,7 +131,7 @@ import static sos.util.SOSClassUtil.getMethodName;
 
 	public String openDocumentationName() {
 		try {
-			DocumentationForm doc = new DocumentationForm(objCTabFolder, SWT.NONE);
+			DocumentationForm doc = new DocumentationForm(this, objCTabFolder, SWT.NONE);
 			if (doc.open(filelist)) {
 				// CTabItem tab = newItem(doc, doc.getFilename());
 				// tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
@@ -532,7 +534,7 @@ import static sos.util.SOSClassUtil.getMethodName;
 		return strT;
 	} // private String getMsg
 
-	public static void setSaveStatus() {
+	public void setSaveStatus() {
 		setMenuStatus();
 		//		container.setStatusInTitle();
 	}

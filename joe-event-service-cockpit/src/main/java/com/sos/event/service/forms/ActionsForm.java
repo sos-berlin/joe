@@ -17,6 +17,7 @@ import org.jdom.Element;
 import com.sos.event.service.actions.IActionsUpdate;
 import com.sos.event.service.listeners.ActionsListener;
 import com.sos.joe.globals.interfaces.IEditor;
+import com.sos.joe.globals.interfaces.IEditorAdapter;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.TreeData;
@@ -34,10 +35,11 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 	private Composite		docMainForm	= null;
 	private Tree			tree		= null;
 	private TreeItem		selection	= null;
+	private IEditorAdapter container    = null;
 
-	public ActionsForm(Composite parent, int style) {
+	public ActionsForm(IEditorAdapter container_, Composite parent, int style) {
 		super(parent, style);
-		//		this.container = container;
+		container = container_;
 		// initialize();
 		dom = new ActionsDom();
 		dom.setDataChangedListener(this);
@@ -179,8 +181,7 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 	}
 
 	@Override public void dataChanged() {
-		// TODO setStatusInTitle
-		//		container.setStatusInTitle();
+    	container.setSaveStatus();
 	}
 
 	public ActionsDom getDom() {
