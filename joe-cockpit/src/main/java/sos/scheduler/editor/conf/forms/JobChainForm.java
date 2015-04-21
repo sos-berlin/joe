@@ -331,8 +331,8 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		bVisible.setSelection(listener.getVisible());
 		tName.setBackground(null);
         sMaxorders.setText(String.valueOf(listener.getMaxOrders()));
-        cProcessClass.setText(String.valueOf(listener.getProcessClass()));
         cProcessClass.setItems(jobListener.getProcessClasses());
+        cProcessClass.setText(listener.getProcessClass());
 	}
 
 	public void setISchedulerUpdate(ISchedulerUpdate update_) {
