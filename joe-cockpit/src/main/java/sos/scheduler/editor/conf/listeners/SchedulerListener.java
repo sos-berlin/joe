@@ -131,14 +131,14 @@ public class SchedulerListener {
         logger.debug(SOSJOEMessageCodes.JOE_M_0047.params(conMethodName));
         type = type_;
         if (objSchedulerDom.isLifeElement()) {
-            treeFillMainForLifeElement(tree, c);
+            treeFillMainForLifeElement(tree, c, true);
         }
         else {
             treeFillMain(tree, c);
         }
     }
 
-    public void treeFillMainForLifeElement(final Tree tree, final Composite c) {
+    public void treeFillMainForLifeElement(final Tree tree, final Composite c, boolean select) {
         final String conMethodName = conClassName + "::treeFillMainForLifeElement";
         logger.debug(SOSJOEMessageCodes.JOE_M_0047.params(conMethodName));
         tree.removeAll();
@@ -314,7 +314,9 @@ public class SchedulerListener {
                          }
                         }
         tree.setSelection(new TreeItem[] { tree.getItem(0) });
-        treeSelection(tree, c);
+        if (select){
+            treeSelection(tree, c);
+        }
     }
 
     public void setColorOfJobTreeItem(final Element element, final TreeItem item) {
@@ -1148,7 +1150,7 @@ public class SchedulerListener {
                     _runtime.removeChild("period");
                 }
 
-                objSchedulerForm.updateTree("main");
+                objSchedulerForm.updateTree("convert");
                 objSchedulerDom.setChanged(true);
                 objSchedulerDom.setChangedForDirectory(objElement, SchedulerDom.MODIFY);
             }
@@ -1169,7 +1171,7 @@ public class SchedulerListener {
     }
 
     public boolean treeSelection(final Tree tree, final Composite c) {
-        try {
+        try { 
             if (tree.getSelectionCount() > 0) {
                 // dispose the old form
                 Control[] children = c.getChildren();
@@ -1182,10 +1184,10 @@ public class SchedulerListener {
                 TreeData objTreeItemUserdata = (TreeData) objSelectedTreeItem.getData();
                 if (objTreeItemUserdata != null) {
                     objSchedulerDom.setInit(true);
-                    if (c.getChildren().length > 0) {
-                    }
+                    
                     Element objElement = objTreeItemUserdata.getElement();
                     objElement = convertPeriodToEveryDay(objElement);
+                    
                     int intType = objTreeItemUserdata.getType();
                     c.setLayout(new FillLayout());
                     switch (intType) {

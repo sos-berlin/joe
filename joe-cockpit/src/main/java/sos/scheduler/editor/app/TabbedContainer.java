@@ -191,7 +191,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 	}
 
 	@Override public DocumentationForm newDocumentation() {
-		DocumentationForm doc = new DocumentationForm(folder, SWT.NONE);
+		DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
 		doc.openBlank();
 		newItem(doc, NEW_DOCUMENTATION_TITLE);
 		return doc;
@@ -199,7 +199,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 
 	@Override public DocumentationForm openDocumentation() {
 		try {
-			DocumentationForm doc = new DocumentationForm(folder, SWT.NONE);
+			DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
 			if (doc.open(filelist)) {
 				// CTabItem tab = newItem(doc, doc.getFilename());
 				newItem(doc, doc.getFilename());
@@ -222,7 +222,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 
 	@Override public DocumentationForm openDocumentation(String filename) {
 		try {
-			DocumentationForm doc = new DocumentationForm(folder, SWT.NONE);
+			DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
 			if (doc.open(filename, filelist)) {
 				// CTabItem tab = newItem(doc, doc.getFilename());
 				newItem(doc, doc.getFilename());
@@ -246,7 +246,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 
 	@Override public String openDocumentationName() {
 		try {
-			DocumentationForm doc = new DocumentationForm(folder, SWT.NONE);
+			DocumentationForm doc = new DocumentationForm(this, folder, SWT.NONE);
 			if (doc.open(filelist)) {
 				// CTabItem tab = newItem(doc, doc.getFilename());
 				// tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));

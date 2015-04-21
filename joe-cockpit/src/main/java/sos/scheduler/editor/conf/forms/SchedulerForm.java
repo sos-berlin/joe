@@ -271,9 +271,11 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	@Override public void updateJob(final String job) {
 		TreeItem item = tree.getSelection()[0];
 		TreeData data = (TreeData) item.getData();
-		org.jdom.Element element = data.getElement();
-		listener.setColorOfJobTreeItem(element, item);
+		if (data != null){
+		   org.jdom.Element element = data.getElement();
+		   listener.setColorOfJobTreeItem(element, item);
 		item.setText(job);
+		}
 	}
 
 	@Override public void updateJobs() {
@@ -512,18 +514,26 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	}
 
 	@Override public void updateTree(final String which) {
-		// String mar = getTreeSelection();
-		if (which.equalsIgnoreCase("main")) {
+		if (which.equalsIgnoreCase("convert")) {
 			if (dom.isLifeElement()) {
-				listener.treeFillMainForLifeElement(tree, cMainForm);
+				listener.treeFillMainForLifeElement(tree, cMainForm,false);
 			}
 			else {
 				listener.treeFillMain(tree, cMainForm);
 			}
-			// } else if(which.equalsIgnoreCase("jobs"))
+		}else{
+
+			if (which.equalsIgnoreCase("main")) {
+				if (dom.isLifeElement()) {
+					listener.treeFillMainForLifeElement(tree, cMainForm,true);
+				}
+				else {
+					listener.treeFillMain(tree, cMainForm);
+				}
+			}
+			else
+				listener.treeSelection(tree, cMainForm);
 		}
-		else
-			listener.treeSelection(tree, cMainForm);
 	}
 
 	public void selectTreeItem(final String parent, final String child) {
