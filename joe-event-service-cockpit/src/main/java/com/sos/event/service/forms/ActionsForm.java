@@ -29,13 +29,12 @@ import com.sos.joe.xml.Events.ActionsDom;
 public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActionsUpdate {
 	private ActionsListener	listener	= null;
 	private ActionsDom		dom			= null;
-    private IEditorAdapter		container	= null;
+  private IEditorAdapter		container	= null;
 	private SashForm		sashForm	= null;
 	private Group			group		= null;
 	private Composite		docMainForm	= null;
 	private Tree			tree		= null;
 	private TreeItem		selection	= null;
-	private IEditorAdapter container    = null;
 
 	public ActionsForm(IEditorAdapter container_, Composite parent, int style) {
 		super(parent, style);
