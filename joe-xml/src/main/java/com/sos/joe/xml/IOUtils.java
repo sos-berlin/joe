@@ -448,23 +448,8 @@ public class IOUtils {
 		}
 	}
 
-	// kuddellmuddell ... mann, mann, mann
-	// muß in das paket actions.
-	public static boolean save_Action(final DomParser dom, final boolean saveas) {
-		try {
-			if (dom.getFilename() == null || saveas) {
-//				 SaveEventsDialogForm d= new sos.scheduler.editor.actions.forms.SaveEventsDialogForm();
-//								new sos.scheduler.editor.actions.forms.SaveEventsDialogForm();
-				if (dom.getFilename() == null)// Cancel
-					return false;
-			}
-			saveFile(dom, false);
-		}
-		catch (Exception e) {
-			new ErrorLog("error in " + getMethodName() + " could not save directory.", e);
-		}
-		return true;
-	}
+	
+	
 
 	/**
 	 * Speichert das Dokument in die einzelnen Dateien (als HOT FOLDER ELEMENT) wieder zurück
