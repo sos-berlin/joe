@@ -1,4 +1,6 @@
 package com.sos.event.service.forms;
+import static sos.util.SOSClassUtil.getMethodName;
+
 import java.util.Collection;
 
 import org.eclipse.swt.SWT;
@@ -19,9 +21,11 @@ import com.sos.event.service.listeners.ActionsListener;
 import com.sos.joe.globals.interfaces.IEditor;
 import com.sos.joe.globals.interfaces.IEditorAdapter;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.DomParser;
 import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.Events.ActionsDom;
@@ -139,9 +143,25 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 		tree.setSelection(new TreeItem[] { tree.getItem(0) });
 		listener.treeSelection(tree, docMainForm);
 	}
+	
+	public static boolean save_Action(final DomParser dom, final boolean saveas) {
+		try {
+			if (dom.getFilename() == null || saveas) {
+				 SaveEventsDialogForm d= new SaveEventsDialogForm(dom);
+				if (dom.getFilename() == null)// Cancel
+					return false;
+			}
+			IOUtils.saveFile(dom, false);
+		}
+		catch (Exception e) {
+			new ErrorLog("error in " + getMethodName() + " could not save directory.", e);
+		}
+		return true;
+	}
+
 
 	@Override public boolean save() {
-		boolean res = IOUtils.save_Action(dom, false);
+		boolean res = save_Action(dom, false);
 		// TODO setNEwFilename
 		//		if (res)
 		//			container.setNewFilename(null);
@@ -151,7 +171,7 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 
 	@Override public boolean saveAs() {
 		String old = dom.getFilename();
-		boolean res = IOUtils.save_Action(dom, true);
+		boolean res = save_Action(dom, true);
 		//		if (res)
 		//			container.setNewFilename(old);
 		return res;

@@ -12,6 +12,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -24,12 +25,11 @@ import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
+import com.sos.joe.xml.DomParser;
 import com.sos.joe.xml.Events.ActionsDom;
 
-@Deprecated  // not used?
 public class SaveEventsDialogForm {
 	private Shell		_shell			= null;
-	private SOSString	sosString		= null;
 	private Group		eventgroup		= null;
 	private Text		txtName			= null;
 	private Text		txtJobChain		= null;
@@ -37,22 +37,19 @@ public class SaveEventsDialogForm {
 	private Text		txtEventClass	= null;
 	private Button		butDirectory	= null;
 	private Label		lblDirectory	= null;
-	private ActionsDom	dom				= null;
+	private DomParser	dom				= null;
 	private String		filename		= null;
 	private Button		butApply		= null;
 
-	public SaveEventsDialogForm() {
+	public SaveEventsDialogForm(DomParser  dom_) {
 		try {
-			ActionsForm f = null; // (ActionsForm) MainWindow.getContainer().getCurrentEditor();
-			dom = f.getDom();
-			sosString = new SOSString();
+			dom = dom_;
 			showForm();
 			init();
 			while (!_shell.isDisposed()) {
 				if (!_shell.getDisplay().readAndDispatch())
 					_shell.getDisplay().sleep();
-			}
-			_shell.getDisplay().dispose();
+			}		
 		}
 		catch (Exception e) {
 			try {
@@ -63,12 +60,13 @@ public class SaveEventsDialogForm {
 			}
 		}
 	}
+	
 
 	private void init() throws Exception {
 		String filename = "";
 		try {
 			filename = dom.getFilename();
-			if (sosString.parseToString(filename).length() == 0)
+			if (filename == null || filename.length() == 0)
 				return;
 			File f = new File(filename);
 			if (f.getParent() != null)
