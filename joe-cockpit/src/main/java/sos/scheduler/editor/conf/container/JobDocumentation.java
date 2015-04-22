@@ -58,29 +58,39 @@ public class JobDocumentation extends FormBaseClass {
 		init = false;
 		restoreCursor();
 	}
-
-	public void apply() {
-		// if (isUnsaved())
-		// addParam();
-	}
-
+	 
 	public boolean isUnsaved() {
-		// return bApply.isEnabled();
 		return false;
 	}
 
 	private void initForm() {
 
 		this.tFileName.setText(objJobDataProvider.getInclude());
+		butShow.setEnabled(tFileName.getText().trim().length() > 0);
+		butOpen.setEnabled(tFileName.getText().trim().length() > 0);
+
 		this.butIsLiveFile.setSelection(objJobDataProvider.isLiveFile());
+	}
+	
+	private String getJobsDirectoryName(){
+		String jobsDirectoryName="";
+		if (new File(tFileName.getText()).exists()){
+			jobsDirectoryName = tFileName.getText();
+		}else{
+			if (butIsLiveFile.getSelection()){
+	        	jobsDirectoryName = Options.getSchedulerNormalizedHotFolder(); 
+            }else{
+			     jobsDirectoryName = Options.getSchedulerNormalizedData(); 
+	        }
+		}
+		return jobsDirectoryName;
 	}
 
 	private void createGroup(Composite objParent) {
 		GridLayout gridLayout2 = new GridLayout();
 		gridLayout2.numColumns = 1;
 		group = new Group(objParent, SWT.NONE);
-		String strM = SOSJOEMessageCodes.JOE_M_JobAssistent_JobGroup.params(objJobDataProvider.getJobName())
-				+ (objJobDataProvider.isDisabled() ? SOSJOEMessageCodes.JOE_M_JobCommand_Disabled.label() : "");
+		String strM = SOSJOEMessageCodes.JOE_M_JobAssistent_JobGroup.params(objJobDataProvider.getJobName()) + (objJobDataProvider.isDisabled() ? SOSJOEMessageCodes.JOE_M_JobCommand_Disabled.label() : "");
 		group.setText(strM);
 		group.setLayout(gridLayout2);
 
@@ -110,8 +120,9 @@ public class JobDocumentation extends FormBaseClass {
 		tFileName.setLayoutData(gridData12);
 		tFileName.addModifyListener(new ModifyListener() {
 			@Override public void modifyText(ModifyEvent e) {
-				if (init)
+				if (init){
 					return;
+				}
 
 				showWaitCursor();
 				objJobDataProvider.setInclude(tFileName.getText(), butIsLiveFile.getSelection());
@@ -133,9 +144,10 @@ public class JobDocumentation extends FormBaseClass {
 		butIsLiveFile = SOSJOEMessageCodes.JOE_B_JobDocumentation_IsLiveFile.Control(new Button(gDescription, SWT.CHECK));
 		butIsLiveFile.addSelectionListener(new SelectionAdapter() {
 			@Override public void widgetSelected(final SelectionEvent e) {
-				if (init)
+				if (init){
 					return;
-
+				}
+				
 				showWaitCursor();
 				objJobDataProvider.setInclude(tFileName.getText(), butIsLiveFile.getSelection());
 
@@ -176,22 +188,22 @@ public class JobDocumentation extends FormBaseClass {
 				try {
 					showWaitCursor();
 					if (tFileName.getText() != null && tFileName.getText().length() > 0) {
-						String sData = "";// getData(tFileName.getText());
+						String jobsDirectoryName = getJobsDirectoryName();
+						 
 
 						Program prog = Program.findProgram("html");
 
-						String strFileName = new File((sData).concat(tFileName.getText())).toURI().toURL().toString();
-						if (prog != null)
+						String strFileName = new File((jobsDirectoryName).concat(tFileName.getText())).toURI().toURL().toString();
+						if (prog != null){
 							prog.execute(strFileName);
-						else {
+						} else {
 							Runtime.getRuntime().exec(Options.getBrowserExec(strFileName, Options.getLanguage()));
 						}
 					}
 				}
 				catch (Exception ex) {
 					try {
-						new ErrorLog(SOSJOEMessageCodes.JOE_M_0011.params(sos.util.SOSClassUtil.getMethodName(), tFileName.getText(),
-								ex));
+						new ErrorLog(SOSJOEMessageCodes.JOE_M_0011.params(sos.util.SOSClassUtil.getMethodName(), tFileName.getText(),ex));
 					}
 					catch (Exception ee) {
 					}
@@ -209,20 +221,18 @@ public class JobDocumentation extends FormBaseClass {
 		butOpen.setEnabled(false);
 		butOpen.addSelectionListener(new SelectionAdapter() {
 			@Override public void widgetSelected(final SelectionEvent e) {
-				String xmlPath = "";
+				String jobsDirectoryName = "";
 				try {
 					showWaitCursor();
 					if (tFileName.getText() != null && tFileName.getText().length() > 0) {
-						xmlPath = Options.getSchedulerData();
-						xmlPath = (xmlPath.endsWith("/") || xmlPath.endsWith("\\") ? xmlPath.concat(tFileName.getText()) : xmlPath.concat("/").concat(
-								tFileName.getText()));
+						jobsDirectoryName = getJobsDirectoryName();
 
 						IContainer con = getContainer();
-						con.openDocumentation(xmlPath);
+						con.openDocumentation(jobsDirectoryName.concat(tFileName.getText()));
 						con.setStatusInTitle();
 					}
 					else {
-						MainWindow.message(SOSJOEMessageCodes.JOE_M_JobDocumentation_NoDoc.params(xmlPath), SWT.ICON_WARNING | SWT.OK);
+						MainWindow.message(SOSJOEMessageCodes.JOE_M_JobDocumentation_NoDoc.params(jobsDirectoryName), SWT.ICON_WARNING | SWT.OK);
 					}
 				}
 				catch (Exception e1) {
@@ -251,7 +261,7 @@ public class JobDocumentation extends FormBaseClass {
 		tComment.setText(objJobDataProvider.getComment());
 	}
 
-	public void startWizzard(boolean onlyParams) {
+	private void startWizzard(boolean onlyParams) {
 		try {
 			showWaitCursor();
 			if (objJobDataProvider.getInclude() != null && objJobDataProvider.getInclude().trim().length() > 0) {
@@ -260,8 +270,9 @@ public class JobDocumentation extends FormBaseClass {
 				JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objJobDataProvider.get_dom(), objJobDataProvider.get_main(),
 						objJobDataProvider, onlyParams ? JOEConstants.JOB : JOEConstants.JOB_WIZARD);
 
-				if (!onlyParams)
+				if (!onlyParams){
 					paramsForm.setJobForm(this);
+				}
 				paramsForm.showAllImportJobParams(objJobDataProvider.getInclude());
 			}
 			else {
@@ -275,7 +286,6 @@ public class JobDocumentation extends FormBaseClass {
 			}
 		}
 		catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		finally {
@@ -283,31 +293,6 @@ public class JobDocumentation extends FormBaseClass {
 		}
 	}
 
-	public String getData(String filename) {
-
-		String data = ".";
-		if ((objJobDataProvider.get_dom().isDirectory() || objJobDataProvider.get_dom().isLifeElement()) && butIsLiveFile.getSelection()) {
-			if (filename.startsWith("/") || filename.startsWith("\\")) {
-				data = Options.getSchedulerHotFolder();
-			}
-			else
-				if (objJobDataProvider.get_dom().getFilename() != null) {
-					data = new File(objJobDataProvider.get_dom().getFilename()).getParent();
-				}
-		}
-		else {
-			if (butIsLiveFile.getSelection())
-				data = Options.getSchedulerHotFolder();
-			else
-				data = Options.getSchedulerData();
-		}
-
-		if (!(data.endsWith("\\") || data.endsWith("/")))
-			data = data.concat("/");
-
-		data = data.replaceAll("\\\\", "/");
-
-		return data;
-	}
+	
 
 } // @jve:decl-index=0:visual-constraint="10,10"
