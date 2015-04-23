@@ -123,26 +123,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		bRemove.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				removePeriod();
-				/* if (tPeriods.getSelectionCount() > 0) {
-				     int index = tPeriods.getSelectionIndex();
-				     tPeriods.remove(index);
-				     
-				     //listener.removePeriod(index);
-				     listener.removePeriod(listener.getPeriod(index));
-
-				     if (index >= tPeriods.getItemCount())
-				         index--;
-				     if (tPeriods.getItemCount() > 0) {
-				         tPeriods.select(index);
-				         //tPeriodSelect();   
-				     }
-				 }
-
-				 fillPeriod(true);
-				 bRemove.setEnabled(tPeriods.getSelectionCount() > 0);
-				 periodForm.setEnabled(tPeriods.getSelectionCount() > 0);
-				 bApply.setEnabled(false);
-				 */
+				
 			}
 		});
 	}

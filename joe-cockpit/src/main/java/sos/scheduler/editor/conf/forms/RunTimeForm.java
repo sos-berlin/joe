@@ -32,7 +32,6 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private Text				tFunction				= null;
 	private RunTimeListener		listener				= null;
 	private Group				gRunTime				= null;
-	//private DateForm        holidayForm              = null;
 	private PeriodForm			periodForm				= null;
 	private Group				gComment				= null;
 	private Text				tComment				= null;
@@ -44,18 +43,15 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private Element				runTimeBackUpElem		= null;
 	private boolean				init					= false;
 
-	//private SchedulerDom    _dom                     = null;               
 	public RunTimeForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate gui) {
 		super(parent, style);
 		init = true;
 		_gui = gui;
-		//_dom = dom;
 		listener = new RunTimeListener(dom, job, _gui);
 		initialize();
 		setToolTipText();
 		dom.setInit(true);
 		this.gRunTime.setEnabled(Utils.isElementEnabled("job", dom, job));
-		//holidayForm.setObjects(dom, listener.getRunTime(), gui);
 		periodForm.setParams(dom, listener.isOnOrder());
 		periodForm.setRunOnce(true);
 		periodForm.setEnabled(true);
@@ -83,8 +79,6 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		gRunTime = JOE_G_RunTimeForm_RunTime.Control(new Group(this, SWT.NONE));
 		gRunTime.setLayout(gridLayout3);
 		createPeriodForm();
-		//        GridData gridData4 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, true);
-		//        gridData4.heightHint = 348;
 		groupStartTimeFuction = JOE_G_RunTimeForm_StartTimeFunction.Control(new Group(gRunTime, SWT.NONE));
 		groupStartTimeFuction.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		final GridLayout gridLayout = new GridLayout();
@@ -92,13 +86,13 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tFunction = JOE_T_RunTimeForm_StartTimeFunction.Control(new Text(groupStartTimeFuction, SWT.BORDER));
 		tFunction.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
-				if (init)
+				if (init){
 					return;
+				}
 				setEnabled();
 				listener.setFunction(tFunction.getText());
 				_gui.updateFont();
-				if (!init)
-					_gui.updateRunTime();
+				_gui.updateRunTime();
 			}
 		});
 		final GridData gridData10_1_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
@@ -112,9 +106,9 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		comSchedule = JOE_Cbo_RunTimeForm_Schedule.Control(new Combo(groupSchedule, SWT.NONE));
 		comSchedule.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				//listener.setSchedule(comSchedule.getText());
-				if (init)
+				if (init){
 					return;
+				}
 				listener.setSchedule(comSchedule.getText());
 				_gui.updateFont();
 			}
@@ -124,21 +118,22 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		comSchedule.setText(listener.getSchedule());
 		comSchedule.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
-				if (init)
+				if (init){
 					return;
+				}
 				setEnabled();
 				listener.setSchedule(comSchedule.getText());
 				_gui.updateFont();
-				if (!init)
-					_gui.updateRunTime();
+				_gui.updateRunTime();
 			}
 		});
 		butBrowse = JOE_B_RunTimeForm_Browse.Control(new Button(groupSchedule, SWT.NONE));
 		butBrowse.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_SCHEDULE);
-				if (name != null && name.length() > 0)
+				if (name != null && name.length() > 0){
 					comSchedule.setText(name);
+				}
 			}
 		});
 		gComment = JOE_G_RunTimeForm_Comment.Control(new Group(gRunTime, SWT.NONE));
@@ -158,8 +153,9 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tComment.setFont(ResourceManager.getFont("Courier New", 8, SWT.NONE));
 		tComment.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				if (init)
+				if (init){
 					return;
+				}
 				listener.setComment(tComment.getText());
 			}
 		});
@@ -171,8 +167,9 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				String text = sos.scheduler.editor.app.Utils.showClipboard(tComment.getText(), getShell(), true, "");
-				if (text != null)
+				if (text != null){
 					tComment.setText(text);
+				}
 			}
 		});
 		button.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_edit.gif"));
@@ -201,14 +198,12 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				groupSchedule.setEnabled(true);
 				groupStartTimeFuction.setEnabled(false);
 				periodForm.setEnabled(false);
-			}
-			else
+			} else
 				if (tFunction.getText().trim().length() > 0) {
 					groupSchedule.setEnabled(false);
 					groupStartTimeFuction.setEnabled(true);
 					periodForm.setEnabled(false);
-				}
-				else {
+				} else {
 					groupSchedule.setEnabled(true);
 					groupStartTimeFuction.setEnabled(true);
 					periodForm.setEnabled(true);
@@ -226,8 +221,7 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				groupSchedule.setEnabled(false);
 				groupStartTimeFuction.setEnabled(true);
 				enable = false;
-			}
-			else {
+			} else {
 				if (runTimeBackUpElem != null) {
 					Element e = listener.getRunTime();
 					e.removeAttribute("schedule");
@@ -246,9 +240,10 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				runTimeBackUpElem = (Element) listener.getRunTime().clone();
 				listener.getRunTime().removeContent();
 				listener.getRunTime().getAttributes().clear();
-				//_gui.updateRunTime(!enable);
 			}
 		}
 		periodForm.setEnabled(enable);
+		 
 	}
+	 
 } // @jve:decl-index=0:visual-constraint="10,10"
