@@ -33,6 +33,7 @@ public class ScriptFormPreProcessing extends ScriptForm implements IUpdateLangua
 	public ScriptFormPreProcessing(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate main) {
 		super(parent, style, dom, job, main);
 		objDataProvider._languages = objDataProvider._languagesMonitor;
+		
 		initialize();
 	}
 
