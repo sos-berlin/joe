@@ -301,7 +301,7 @@ public class SchedulerDom extends DomParser {
 		handler.setStyleSheet(styleSheet);
 		handler.setEnconding(encoding);
 		SAXOutputter saxo = new SAXOutputter(handler);
-        saxo.setReportNamespaceDeclarations(true);
+        saxo.setReportNamespaceDeclarations(false);
 
 		saxo.output(getDoc());
 		// Document doc = null;
@@ -340,7 +340,7 @@ public class SchedulerDom extends DomParser {
 		handler.setStyleSheet(styleSheet);
 		handler.setEnconding(encoding);
  		SAXOutputter saxo = new SAXOutputter(handler);
-        saxo.setReportNamespaceDeclarations(true);
+        saxo.setReportNamespaceDeclarations(false);
   		 
 		saxo.output(doc);
 		try {
@@ -372,7 +372,7 @@ public class SchedulerDom extends DomParser {
 		handler.setStyleSheet(styleSheet);
 		handler.setEnconding(DEFAULT_ENCODING);
 		SAXOutputter saxo = new SAXOutputter(handler);
-        saxo.setReportNamespaceDeclarations(true);
+        saxo.setReportNamespaceDeclarations(false);
 
 		saxo.output(element);
 		deorderDOM();
