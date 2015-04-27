@@ -603,11 +603,13 @@ public class JobChainListener {
 					Utils.setAttribute("next_state", next, _node, _dom);
 					Utils.setAttribute("error_state", error, _node, _dom);
 					Utils.setAttribute("on_error", onError, _node, _dom);
-					if (onReturnCodes != null){
-					    Element e = _node.getChild("on_return_codes");
-	                    if (e != null){
-	                        e.detach();
-	                     }
+                    
+					Element e = _node.getChild("on_return_codes");
+                    if (e != null){
+                        e.detach();
+                     }
+
+                    if (onReturnCodes != null){
       			       _node.addContent(onReturnCodes);
 					}
 					
@@ -634,12 +636,13 @@ public class JobChainListener {
 					Utils.setAttribute("move_to", moveTo, node, _dom);
 					Utils.setAttribute("remove", removeFile, node, _dom);
 				}
+
+				Element e = _node.getChild("on_return_codes");
+                if (e != null){
+                   e.detach();
+                }
 				
                 if (onReturnCodes != null){
-                    Element e = _node.getChild("on_return_codes");
-                    if (e != null){
-                       e.detach();
-                    }
                     node.addContent(onReturnCodes);
                 }
 
