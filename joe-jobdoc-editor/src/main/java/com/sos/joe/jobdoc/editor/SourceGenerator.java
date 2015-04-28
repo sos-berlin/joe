@@ -107,7 +107,7 @@ public class SourceGenerator extends JSToolBox {
 	public void execute() {
 		logger.setLevel(Level.DEBUG);
 		logger.info("Starting transformation");
-		conResource4XslPathName = SOSProductionResource.basePackage() + "/xsl/jobdoc/sourcegenerator/java/";
+		conResource4XslPathName = SOSProductionResource.basePackage() + "/xsl/";
 		String strMessage = "";
 		try {
 			String strXMLFileName = jobdocFile.getCanonicalPath();
@@ -161,6 +161,7 @@ public class SourceGenerator extends JSToolBox {
 
 				doTransform("JSJobDoc2JSOptionClass.xsl", objXMLFile, outputDir.newFile(strWorkerClassName + strClassNameExtension + conJavaFilenameExtension));
 			}
+			/*
 			{
 				strClassNameExtension = "Interface";
 				setXSLTParameter(conXsltParmExtendsClassName, strWorkerClassName + strClassNameExtension);
@@ -169,6 +170,7 @@ public class SourceGenerator extends JSToolBox {
 				setXSLTParameter(conXsltParmClassName, strParamClassName);
 				doTransform("JSJobDoc2JSOptionInterface.xsl", objXMLFile, outputDir.newFile(strParamClassName + conJavaFilenameExtension));
 			}
+			*/
 			{
 				setXSLTParameter(conXsltParmExtendsClassName, "JobSchedulerJobAdapter");
 				strClassNameExtension = "JSAdapterClass";
