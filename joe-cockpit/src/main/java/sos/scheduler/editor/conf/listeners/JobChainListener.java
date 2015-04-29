@@ -381,7 +381,7 @@ public class JobChainListener {
                         JobchainReturnCodeAddOrderElement jobchainReturnCodeAddOrderElement = new JobchainReturnCodeAddOrderElement();
                         jobchainReturnCodeAddOrderElement.setReturnCodes(returnCodeValue);
                         jobchainReturnCodeAddOrderElement.setJobChain(addOrder.getAttribute("job_chain")); 
-                        jobchainReturnCodeAddOrderElement.setOrderId(addOrder.getAttribute("order_id")); 
+                        jobchainReturnCodeAddOrderElement.setOrderId(addOrder.getAttribute("id")); 
                                                
                         NodeList paramsList = addOrder.getElementsByTagNameNS(namespace.getURI(), "params");
                         if (paramsList != null && paramsList.getLength() > 0){
@@ -547,7 +547,7 @@ public class JobChainListener {
                         JobchainReturnCodeAddOrderElement jobchainReturnCodeAddOrderElement = jobchainReturnCodeElement.getJobchainListOfReturnCodeAddOrderElements().getNext();
                         Element add_order  = new Element("add_order",namespace);
                         Utils.setAttribute("job_chain", jobchainReturnCodeAddOrderElement.getJobChain(), add_order, _dom);
-                        Utils.setAttribute("order_id", jobchainReturnCodeAddOrderElement.getOrderId(), add_order, _dom);
+                        Utils.setAttribute("id", jobchainReturnCodeAddOrderElement.getOrderId(), add_order, _dom);
                         
                         if (jobchainReturnCodeAddOrderElement.getParams().size() > 0){
                             Element params  = new Element("params",namespace);
