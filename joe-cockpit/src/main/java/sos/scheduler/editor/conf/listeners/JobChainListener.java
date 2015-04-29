@@ -594,33 +594,30 @@ public class JobChainListener {
 					_node.detach();
 					_node = null;
 				}
-			}
-			if (_node != null) {
+				
 				if (isJobchainNode) {
-					Utils.setAttribute("state", state, _node, _dom);
-					Utils.setAttribute("job", job, _node, _dom);
-					Utils.setAttribute("delay", delay, _node, _dom);
-					Utils.setAttribute("next_state", next, _node, _dom);
-					Utils.setAttribute("error_state", error, _node, _dom);
-					Utils.setAttribute("on_error", onError, _node, _dom);
+                    Utils.setAttribute("state", state, _node, _dom);
+                    Utils.setAttribute("job", job, _node, _dom);
+                    Utils.setAttribute("delay", delay, _node, _dom);
+                    Utils.setAttribute("next_state", next, _node, _dom);
+                    Utils.setAttribute("error_state", error, _node, _dom);
+                    Utils.setAttribute("on_error", onError, _node, _dom);
                     
-					Element e = _node.getChild("on_return_codes");
+                    Element e = _node.getChild("on_return_codes");
                     if (e != null){
                         e.detach();
                      }
 
                     if (onReturnCodes != null){
-      			       _node.addContent(onReturnCodes);
-					}
-					
-				}
-				else {
-					Utils.setAttribute("state", state, _node, _dom);
-					Utils.setAttribute("move_to", moveTo, _node, _dom);
-					Utils.setAttribute("remove", removeFile, _node, _dom);
-				}
-			}
-			else {
+                       _node.addContent(onReturnCodes);
+                    }
+                    
+                } else {
+                    Utils.setAttribute("state", state, _node, _dom);
+                    Utils.setAttribute("move_to", moveTo, _node, _dom);
+                    Utils.setAttribute("remove", removeFile, _node, _dom);
+                }				
+			} else {
 				if (isJobchainNode) {
 					node = new Element("job_chain_node");
 					Utils.setAttribute("state", state, node, _dom);
@@ -629,25 +626,18 @@ public class JobChainListener {
 					Utils.setAttribute("next_state", next, node, _dom);
 					Utils.setAttribute("error_state", error, node, _dom);
 					Utils.setAttribute("on_error", onError, node, _dom);
-				}
-				else {
+				} else {
 					node = new Element("file_order_sink");
 					Utils.setAttribute("state", state, node, _dom);
 					Utils.setAttribute("move_to", moveTo, node, _dom);
 					Utils.setAttribute("remove", removeFile, node, _dom);
 				}
 
-				Element e = _node.getChild("on_return_codes");
-                if (e != null){
-                   e.detach();
-                }
-				
                 if (onReturnCodes != null){
                     node.addContent(onReturnCodes);
                 }
 
-                
-				_chain.addContent(node);
+                _chain.addContent(node);
 				_node = node;
 			}
 			_dom.setChanged(true);
