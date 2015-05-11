@@ -984,12 +984,13 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
                 MainWindow.message(msg, SWT.ICON_INFORMATION);
             }
             else {
-                if (isInsert)
+                if (isInsert){
                     listener.applyInsertNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(),
                             cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), cOnError.getText());
-                else
+                }else{
                     listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(),
                             cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), cOnError.getText());
+                }
                 DetailsListener.checkDetailsParameter(tState.getText(), listener.getChainName(), cJob.getText(), dom, update);
                 listener.fillChain(tNodes);
                 bApplyNode.setEnabled(false);

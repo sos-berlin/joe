@@ -594,7 +594,9 @@ public class JobChainListener {
 					_node.detach();
 					_node = null;
 				}
+            }
 				
+			if (_node != null) {
 				if (isJobchainNode) {
                     Utils.setAttribute("state", state, _node, _dom);
                     Utils.setAttribute("job", job, _node, _dom);
