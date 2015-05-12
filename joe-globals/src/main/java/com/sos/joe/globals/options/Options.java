@@ -301,7 +301,7 @@ import com.sos.resources.SOSProductionResource;
 	}
 
 	public static String getSchemaVersion() {
-		readSchemaVersion();// zum testen
+		//readSchemaVersion();// zum testen
 		return getProperty("editor.schemaversion");
 	}
 
