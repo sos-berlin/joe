@@ -42,9 +42,13 @@ public class FTPProfileJadeClient {
     public void disconnect() throws Exception{
         if (objVFS != null){
             objVFS.CloseConnection();
+            objVFS.CloseSession();
+            objVFS = null;
         }
         if (ftpClient != null){
            ftpClient.disconnect();
+           ftpClient.close();
+           ftpClient = null;
         }
     }
     
