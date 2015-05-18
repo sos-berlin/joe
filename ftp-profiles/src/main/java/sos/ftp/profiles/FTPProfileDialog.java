@@ -520,7 +520,12 @@ public class FTPProfileDialog {
 						txtUsername.setText("");
 						txtPassword.setText("");
 						txtRoot.setText("");
-						txtLocalDirectory.setText("");
+						String s = System.getProperty("SCHEDULER_DATA");
+						if (s == null){
+							s = System.getProperty("java.io.tmpdir");
+						}
+						s = s + "/joe/cache/";
+						txtLocalDirectory.setText(s);
 						butAscii.setSelection(true);
 						butbinary.setSelection(false);
 						butSavePassword.setSelection(true);
@@ -725,9 +730,9 @@ public class FTPProfileDialog {
 			
 			prop.put("password", txtPassword.getText());
 			prop.put("root", txtRoot.getText());
-			if(txtLocalDirectory.getText().length() > 0 &&
-					!new java.io.File(txtLocalDirectory.getText()).exists())
+			if(txtLocalDirectory.getText().length() > 0 &&	!new java.io.File(txtLocalDirectory.getText()).exists()){
 				new java.io.File(txtLocalDirectory.getText()).mkdirs();
+			}
 			prop.put("localdirectory", txtLocalDirectory.getText());
 			prop.put("transfermode", butbinary.getSelection() ? "binary" : "ASCII");
 			prop.put("save_password", (butSavePassword.getSelection() ? "yes" : "no"));
