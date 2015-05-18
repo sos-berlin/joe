@@ -838,6 +838,8 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		if (container.getCurrentEditor() instanceof sos.scheduler.editor.conf.forms.SchedulerForm) {
 			sos.scheduler.editor.conf.forms.SchedulerForm form = (sos.scheduler.editor.conf.forms.SchedulerForm) container.getCurrentEditor();
 			SchedulerDom currdom = form.getDom();
+			long l = currdom.getLastModifiedFile();
+			currdom.setLastModifiedFile(0);
 			changes = (java.util.HashMap) currdom.getChangedJob().clone();
 		}
 		if (container.getCurrentEditor().applyChanges()) {
@@ -854,6 +856,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			saveWebDav(changes);
 			setSaveStatus();
 		}
+		
+	 
+
 		Utils.stopCursor(getSShell());
 	}
 
@@ -1433,7 +1438,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 						lastmod = f.lastModified();
 					}
 				}
-				if (dom.getFilename() != null && lastmod != dom.getLastModifiedFile()) {
+				if (dom.getFilename() != null && dom.getLastModifiedFile() != 0 && lastmod != dom.getLastModifiedFile()) {
 					flag = false;
 					String msg = EMPTY;
 					if (f.isDirectory()) {

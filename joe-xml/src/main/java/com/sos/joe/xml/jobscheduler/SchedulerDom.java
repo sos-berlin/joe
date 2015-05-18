@@ -331,7 +331,7 @@ public class SchedulerDom extends DomParser {
 		deorderDOM();
 	}
 
-	public void writeElement(String filename, Document doc) throws IOException, JDOMException {
+	public boolean writeElement(String filename, Document doc) throws IOException, JDOMException {
 		String encoding = JOEConstants.SCHEDULER_ENCODING;
 		if (encoding.equals(""))
 			encoding = DEFAULT_ENCODING;
@@ -347,16 +347,11 @@ public class SchedulerDom extends DomParser {
 			getBuilder(true).build(new StringReader(handler.getXML()));
 		}
 		catch (JDOMException e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			//int res = MainWindow.message(Messages.getMsg(conMessage_MAIN_LISTENER_OUTPUT_INVALID, e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+		 
 			int res = ErrorLog.message("Element is not valid. Should it still be saved?" + "\n" + e.getMessage(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-			if (res == SWT.NO)
-				return;
+ 			if (res == SWT.NO){
+				return false;
+			}
 		}
 		OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
 		writer.write(handler.getXML());
@@ -364,6 +359,7 @@ public class SchedulerDom extends DomParser {
 		 
 		setChanged(false);
 		deorderDOM();
+		return true;
 	}
 
 	public String getXML(Element element) throws JDOMException {

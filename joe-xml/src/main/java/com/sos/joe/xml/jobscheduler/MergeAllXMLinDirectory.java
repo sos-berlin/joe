@@ -395,11 +395,8 @@ public class MergeAllXMLinDirectory {
 	public String saveLifeElement(String pstrCurrentTagName, final Element e) {
 		String filename = " ";
 		String attrName = "";
-		
-        //if (pstrCurrentTagName.equals("job_chain")) {
-        //    Namespace namespace = Namespace.getNamespace("NodeOrderPlugin", "https://jobscheduler-plugins.sos-berlin.com/NodeOrderPlugin NodeOrderPlugin.xsd");
-        //    e.addNamespaceDeclaration(namespace);
-        //}
+		boolean ok = false;
+      
 
 		if (isOrderTag(pstrCurrentTagName)) {
 			pstrCurrentTagName = "order";
@@ -410,13 +407,14 @@ public class MergeAllXMLinDirectory {
 		else {
 			attrName = Utils.getAttributeValue("name", e);
 		}
-		if (attrName != null && attrName.length() == 0)
+		if (attrName != null && attrName.length() == 0){
 			return "";
+		}
+		
+
 		filename = (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + attrName + "."
 				+ (pstrCurrentTagName.equalsIgnoreCase("add_order") ? "order" : pstrCurrentTagName) + ".xml";
-		// filename = (path.endsWith("/") || path.endsWith("\\")? path :
-		// path.concat("/")) + new File(attrName).getName() + "." +
-		// (name.equalsIgnoreCase("add_order")? "order": name) + ".xml";
+		 
 		if (listOfChanges.containsKey(pstrCurrentTagName + "_" + attrName)) {
 			if (listOfChanges.get(pstrCurrentTagName + "_" + attrName).equals(SchedulerDom.DELETE)) {
 				if (!new File(filename).delete()) {
@@ -445,7 +443,7 @@ public class MergeAllXMLinDirectory {
 					e.removeAttribute("spooler_id");
 				}
 				String xml = Utils.getElementAsString(_elem);
-				saveXML(xml, filename);
+				ok = saveXML(xml, filename);
 				// attribute wieder zurückschreiben zum weiterverarbeiten
 				if (isOrderTag(pstrCurrentTagName)) {
 					Utils.setAttribute("job_chain", attrName.substring(0, attrName.indexOf(",")), e);
@@ -457,7 +455,7 @@ public class MergeAllXMLinDirectory {
 			}
 		}
 		// Element ist neu angelegt, also muss dieser auch gespeichert werden.
-		if (!new File(filename).exists()) {
+		if (ok && !new File(filename).exists()) {
 			String xml = Utils.getElementAsString(e);
 			saveXML(xml, filename);
 		}
@@ -473,27 +471,31 @@ public class MergeAllXMLinDirectory {
 		return pstrTag.equalsIgnoreCase("order") || pstrTag.equalsIgnoreCase("add_order");
 	}
 
-	private void saveXML(final String xml, String filename) {
+	private boolean saveXML(final String xml, String filename) {
 		String originalFilename = filename;
 		filename = filename + "~";
+		boolean saveFile = false;
 		try {
 			// system.out.println("********************************************************************");
 			SAXBuilder builder2 = getBuilder(false);
 			Document doc = builder2.build(new StringReader(xml));
 			// test
 			SchedulerDom dom = new SchedulerDom(SchedulerDom.DIRECTORY);
-			// dom.setInit(true);
-			new File(originalFilename).delete();
-			dom.writeElement(filename, doc);
-			if (!new File(filename).renameTo(new File(originalFilename))) {
+ 			new File(originalFilename).delete();
+			saveFile = dom.writeElement(filename, doc);
+			if (saveFile && !new File(filename).renameTo(new File(originalFilename))) {
 				ErrorLog.message("could not rename file in " + filename, SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 			}
-			// dom.setInit(false);
-		}
+ 		}
+		
+		
 		catch (Exception e) {
-			// System.out.println("..error in MergeAllXMLinDirectory.saveXML. Could not save file "
-			// + e.getMessage());
+			
 			ErrorLog.message("could not save file " + filename + ". cause:" + e.getMessage(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+			saveFile = false;
+		}
+		finally{
+			return saveFile;
 		}
 	}
 	
