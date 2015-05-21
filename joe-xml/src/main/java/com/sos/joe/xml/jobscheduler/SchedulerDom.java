@@ -19,7 +19,6 @@ import org.jdom.Comment;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.jdom.Namespace;
 import org.jdom.ProcessingInstruction;
 import org.jdom.Text;
 import org.jdom.output.SAXOutputter;
@@ -431,7 +430,6 @@ public class SchedulerDom extends DomParser {
 	/*
 	 * what is: NEW or MODIFY or DELETE
 	 */
-	@Deprecated
 	public void setChangedForDirectory(String which, String name, String what) {
 		if (!isChanged()){
             return;
