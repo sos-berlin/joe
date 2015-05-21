@@ -17,7 +17,6 @@ import org.jdom.Element;
 
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
-import sos.scheduler.editor.conf.listeners.ExecuteListener;
 import sos.scheduler.editor.conf.listeners.JobsListener;
 import sos.scheduler.editor.conf.listeners.ScriptListener;
 
@@ -43,14 +42,11 @@ public class JobAssistentExecuteForms {
 	private Shell				shell			= null;
 	private Combo				jobname			= null;
 	private Button				butScript		= null;
-	private Button				butProcess		= null;
 	private Combo				comLanguage		= null;
 	private Element				job				= null;
 	private Text				txtInclude		= null;
 	private Element				jobBackUp		= null;
 	private ScriptJobMainForm	jobForm			= null;
-	/** Hilsvariable für das Schliessen des Dialogs. 
-	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean				closeDialog		= false;
 
 	/**
@@ -67,8 +63,9 @@ public class JobAssistentExecuteForms {
 		shell = new Shell(ErrorLog.getSShell(), SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		shell.addShellListener(new ShellAdapter() {
 			@Override public void shellClosed(final ShellEvent e) {
-				if (!closeDialog)
-					close();
+				if (!closeDialog){
+                    close();
+				}
 				e.doit = shell.isDisposed();
 			}
 		});
@@ -81,11 +78,9 @@ public class JobAssistentExecuteForms {
 		gridLayout.numColumns = 3;
 		shell.setLayout(gridLayout);
 		shell.setSize(411, 200);
-		//		shell.setText("Execute");
 		shell.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_Execute.label());
 		{
 			final Group jobGroup = new Group(shell, SWT.NONE);
-			//			jobGroup.setText("Job: " + Utils.getAttributeValue("name", job));
 			jobGroup.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobGroup.params(Utils.getAttributeValue("name", job)));
 			final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true, true, 3, 1);
 			jobGroup.setLayoutData(gridData);
@@ -100,10 +95,7 @@ public class JobAssistentExecuteForms {
 			gridLayout_1.marginBottom = 10;
 			gridLayout_1.numColumns = 5;
 			jobGroup.setLayout(gridLayout_1);
-			butProcess = SOSJOEMessageCodes.JOE_B_JobAssistent_Process.Control(new Button(jobGroup, SWT.RADIO));
-			butProcess.setLayoutData(new GridData());
-			//			butProcess.setText("Process");
-			butProcess.setSelection(job.getChild("process") != null);
+			 
 			new Label(jobGroup, SWT.NONE);
 			new Label(jobGroup, SWT.NONE);
 			new Label(jobGroup, SWT.NONE);
@@ -123,11 +115,10 @@ public class JobAssistentExecuteForms {
 			final GridData gridData_3 = new GridData(GridData.BEGINNING, GridData.CENTER, false, true);
 			gridData_3.widthHint = 69;
 			butScript.setLayoutData(gridData_3);
-			//			butScript.setText("Script");
+		 
 			{
 				final Label lblLanguage = SOSJOEMessageCodes.JOE_L_JobAssistent_Language.Control(new Label(jobGroup, SWT.NONE));
 				lblLanguage.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, true));
-				//				lblLanguage.setText("Language");
 			}
 			comLanguage = SOSJOEMessageCodes.JOE_Cbo_JobAssistent_Language.Control(new Combo(jobGroup, SWT.NONE));
 			comLanguage.setItems(ScriptListener._languagesJob);
@@ -158,12 +149,10 @@ public class JobAssistentExecuteForms {
 					if (scriptlistener.getIncludes().length > 0) {
 						txtInclude.setText(scriptlistener.getIncludes()[scriptlistener.getIncludes().length - 1]);
 					}
-				}
-				else {
+				} else {
 					txtInclude.setEditable(false);
 				}
-			}
-			else {
+			} else {
 				comLanguage.setEnabled(false);
 			}
 			final Label includeLabel = SOSJOEMessageCodes.JOE_L_JobAssistent_Include.Control(new Label(jobGroup, SWT.NONE));
@@ -189,7 +178,6 @@ public class JobAssistentExecuteForms {
 						close();
 					}
 				});
-				//				butCancel.setText("Cancel");
 			}
 		}
 		{
@@ -207,7 +195,6 @@ public class JobAssistentExecuteForms {
 						Utils.showClipboard(Utils.getElementAsString(job), shell, false, null, false, null, false);
 					}
 				});
-				//				butShow.setText("Show");
 			}
 			{
 				butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite, SWT.NONE));
@@ -218,7 +205,6 @@ public class JobAssistentExecuteForms {
 						shell.dispose();
 					}
 				});
-				//				butFinish.setText("Finish");
 			}
 			butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite, SWT.NONE));
 			butBack.addSelectionListener(new SelectionAdapter() {
@@ -226,14 +212,14 @@ public class JobAssistentExecuteForms {
 					refreshJob();
 					JobAssistentTasksForm tasks = new JobAssistentTasksForm(dom, update, job, assistentType);
 					tasks.showTasksForm();
-					if (jobname != null)
-						tasks.setJobname(jobname);
+					if (jobname != null){
+                        tasks.setJobname(jobname);
+					}
 					tasks.setBackUpJob(jobBackUp, jobForm);
 					closeDialog = true;
 					shell.dispose();
 				}
 			});
-			//			butBack.setText("Back");
 			{
 				butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite, SWT.NONE));
 				butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
@@ -244,29 +230,13 @@ public class JobAssistentExecuteForms {
 						shell.dispose();
 					}
 				});
-				//				butNext.setText("Next");
 			}
-			//			Utils.createHelpButton(composite, "assistent.script_or_execute", shell);
 			Utils.createHelpButton(composite, "JOE_M_JobAssistentExecuteForm_Help.label", shell);
 		}
-		//		setToolTipText();
 		shell.layout();
 	}
 
-	public void setToolTipText() {
-		//		butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
-		//		butNext.setToolTipText(Messages.getTooltip("assistent.next"));
-		//		butShow.setToolTipText(Messages.getTooltip("assistent.show"));
-		//		butFinish.setToolTipText(Messages.getTooltip("assistent.finish"));
-		//		butBack.setToolTipText(Messages.getTooltip("butBack"));
-		//		comLanguage.setToolTipText(Messages.getTooltip("assistent.script_or_execute.script"));
-		//		butProcess.setToolTipText(Messages.getTooltip("assistent.script_or_execute.process"));
-		//		butScript.setToolTipText(Messages.getTooltip("assistent.script_or_execute.language"));
-		//		txtInclude.setToolTipText(Messages.getTooltip("assistent.script_or_execute.include"));
-	}
-
 	private void close() {
-		//		int cont = ErrorLog.message(shell, sos.scheduler.editor.app.Messages.getString("assistent.cancel"), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		int cont = ErrorLog.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_CancelWizard.label(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 		if (cont == SWT.OK) {
 			if (jobBackUp != null)
@@ -280,22 +250,13 @@ public class JobAssistentExecuteForms {
 	}
 
 	private void refreshJob() {
-		if (butProcess.getSelection()) {
-			ExecuteListener executeListener = new ExecuteListener(dom, job);
-			executeListener.setExecutable(true);
+		ScriptListener scriptlistener = new ScriptListener(dom, job, JOEConstants.SCRIPT, update);
+		if (comLanguage.getSelectionIndex() > -1) {
+			scriptlistener.setLanguage(comLanguage.getSelectionIndex());
 		}
-		else {
-			ExecuteListener executeListener = new ExecuteListener(dom, job);
-			executeListener.setExecutable(false);
-			ScriptListener scriptlistener = new ScriptListener(dom, job, JOEConstants.SCRIPT, update);
-			if (comLanguage.getSelectionIndex() > -1) {
-				scriptlistener.setLanguage(comLanguage.getSelectionIndex());
-			}
-			if (comLanguage.getSelectionIndex() > 1 && txtInclude.getText() != null && txtInclude.getText().trim().length() > 0) {
-				// wurde eine neue include Datei angegeben
-				if (scriptlistener.getIncludes().length == 0
-						|| !scriptlistener.getIncludes()[scriptlistener.getIncludes().length - 1].equals(txtInclude.getText()))
-					scriptlistener.addInclude(txtInclude.getText());
+		if (comLanguage.getSelectionIndex() > 1 && txtInclude.getText() != null && txtInclude.getText().trim().length() > 0) {
+			if (scriptlistener.getIncludes().length == 0 || !scriptlistener.getIncludes()[scriptlistener.getIncludes().length - 1].equals(txtInclude.getText())){
+				scriptlistener.addInclude(txtInclude.getText());
 			}
 		}
 	}
@@ -303,35 +264,26 @@ public class JobAssistentExecuteForms {
 	private void refreshElement(boolean apply) {
 		refreshJob();
 		if (!apply) {
-			if (butProcess.getSelection()) {
-				JobAssistentProcessForms process = new JobAssistentProcessForms(dom, update, job, assistentType);
-				process.showProcessForm();
-				if (jobname != null)
-					process.setJobname(jobname);
-				process.setBackUpJob(jobBackUp, jobForm);
+			JobAssistentScriptForms script = new JobAssistentScriptForms(dom, update, job, assistentType);
+			script.showScriptForm();
+			if (jobname != null){
+				script.setJobname(jobname);
 			}
-			else {
-				JobAssistentScriptForms script = new JobAssistentScriptForms(dom, update, job, assistentType);
-				script.showScriptForm();
-				if (jobname != null)
-					script.setJobname(jobname);
-				script.setBackUpJob(jobBackUp, jobForm);
-			}
+			script.setBackUpJob(jobBackUp, jobForm);
 		}
 		if (apply) {
 			if (assistentType == JOEConstants.JOB_WIZARD) {
 				jobForm.initForm();
-			}
-			else {
-				if (jobname != null)
-					jobname.setText(Utils.getAttributeValue("name", job));
+			} else {
+				if (jobname != null){
+                    jobname.setText(Utils.getAttributeValue("name", job));
+				}
 				JobsListener listener = new JobsListener(dom, update);
 				listener.newImportJob(job, assistentType);
 			}
-			if (Options.getPropertyBoolean("editor.job.show.wizard"))
-				//				Utils.showClipboard(Messages.getString("assistent.finish") + "\n\n" + Utils.getElementAsString(job), shell, false, null, false, null, true);
-				Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(job), shell, false, null, false,
-						null, true);
+			if (Options.getPropertyBoolean("editor.job.show.wizard")){
+                Utils.showClipboard(SOSJOEMessageCodes.JOE_M_JobAssistent_Finish.label() + "\n\n" + Utils.getElementAsString(job), shell, false, null, false, null, true);
+			}
 		}
 	}
 
@@ -341,8 +293,9 @@ public class JobAssistentExecuteForms {
 	 * @param backUpJob
 	 */
 	public void setBackUpJob(Element backUpJob, ScriptJobMainForm jobForm_) {
-		if (backUpJob != null)
+		if (backUpJob != null){
 			jobBackUp = (Element) backUpJob.clone();
+		}
 		jobForm = jobForm_;
 	}
 }

@@ -29,7 +29,17 @@ public class JobOptionsListener extends JOEListener {
 		_setbacks = _job.getChildren("delay_order_after_setback");
 		_errorDelays = _job.getChildren("delay_after_error");
 	}
+	
+    public boolean hasProcessFile() {
+        return (_job.getChild("process") != null);
+      }
+    public void deleteProcessFile() {
+        if (hasProcessFile()){
+         _job.getChild("process").detach();
+        }
+      }
 
+    
 	// directory trigger
 	public boolean isDirectoryTrigger() {
 		return _directories.size() > 0;
@@ -59,8 +69,9 @@ public class JobOptionsListener extends JOEListener {
 	public void applyDirectory(String directory, String regex) {
 		Utils.setAttribute("directory", directory, _directory, _dom);
 		Utils.setAttribute("regex", regex, _directory, _dom);
-		if (!_directories.contains(_directory))
+		if (!_directories.contains(_directory)){
 			_directories.add(_directory);
+		}
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
 	}

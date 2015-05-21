@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
 
+import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
@@ -57,6 +58,7 @@ public class JobMainOptionForm extends SOSJOEMessageCodes implements IUpdateLang
 		dom.setInit(true);
 		this.setEnabled(Utils.isElementEnabled("job", dom, job));
 		listener = new JobListener(dom, job, main);
+		
 		initialize();
 		setToolTipText();
 		updateTree = false;

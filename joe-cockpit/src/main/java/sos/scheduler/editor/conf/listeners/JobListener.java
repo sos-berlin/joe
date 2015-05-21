@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Text;
 import org.jdom.CDATA;
 import org.jdom.Element;
 
@@ -16,7 +15,6 @@ import sos.scheduler.editor.app.Utils;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
-import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.LanguageDescriptorList;
 
@@ -30,15 +28,8 @@ public class JobListener extends JOEListener {
 	public String[]										_languages			= null;
 	private Element										_script				= null;
 	private Element										_settings			= null;
-	private Element										_process			= null;
-	private Element										_environment		= null;
-	private final int									_type				= -1;
 	private List<Element>								_directories		= null;
 	private Element										_directory			= null;
-	private List										_setbacks			= null;
-	private final Element								_setback			= null;
-	private List										_errorDelays		= null;
-	private final Element								_errorDelay			= null;
  
 	public JobListener(final SchedulerDom dom, final Element job, final ISchedulerUpdate update) {
 		_dom = dom;
@@ -47,105 +38,17 @@ public class JobListener extends JOEListener {
 		objElement = _job;
 		_main = update;
 		_directories = _job.getChildren("start_when_directory_changed");
-		_setbacks = _job.getChildren("delay_order_after_setback");
-		_errorDelays = _job.getChildren("delay_after_error");
 		_settings = _job.getChild("settings");
 		 
 		
 		setScript();
-		setProcess();
 	}
 
-	public String getFile() {
-		return Utils.getAttributeValue("file", _process);
-	}
-
-	public void setFile(final Text file) {
-		Element objScript = _job.getChild("script");
-		if (objScript != null && objScript.getText().trim().length() > 0) {
-			int c = sos.scheduler.editor.app.MainWindow.message("JobListener: Do you want to remove the existing script and create a process instead?\n(Remember: <process> is a deprecated feature, use script)", SWT.YES | SWT.NO
-					| SWT.ICON_WARNING);
-			if (c != SWT.YES) {
-				file.setText("");
-				return;
-			}
-		}
-		initProcess();
-		Utils.setAttribute("file", file.getText(), _process, _dom);
-		Utils.setChangedForDirectory(_job, _dom);
-	}
-
-	public String getParam() {
-		return Utils.getAttributeValue("param", _process);
-	}
-
-	public void setParam(final String param) {
-		initProcess();
-		Utils.setAttribute("param", param, _process, _dom);
-		Utils.setChangedForDirectory(_job, _dom);
-	}
-
-	public String getLogFile() {
-		return Utils.getAttributeValue("log_file", _process);
-	}
-
-	public void setLogFile(final String file) {
-		initProcess();
-		Utils.setAttribute("log_file", file, _process, _dom);
-		Utils.setChangedForDirectory(_job, _dom);
-	}
-
-	public boolean isIgnoreSignal() {
-		return Utils.isAttributeValue("ignore_signal", _process);
-	}
-
-	public void setIgnoreSignal(final boolean ignore) {
-		Utils.setAttribute("ignore_signal", ignore, _process, _dom);
-		Utils.setChangedForDirectory(_job, _dom);
-	}
-
-	public boolean isIgnoreError() {
-		return Utils.isAttributeValue("ignore_error", _process);
-	}
-
-	public void setIgnoreError(final boolean ignore) {
-		Utils.setAttribute("ignore_error", ignore, _process, _dom);
-		Utils.setChangedForDirectory(_job, _dom);
-	}
-
-	private void setProcess() {
-		_process = _job.getChild("process");
-		if (_process != null) {
-			_script = null;
-			_environment = _process.getChild("environment");
-		}
-	}
-
-	private void initProcess() {
-		if (_process == null) {
-			_job.addContent(new Element("process").addContent(new Element("environment")));
-			_job.removeChild("script");
-			setProcess();
-			_dom.setChanged(true);
-		}
-	}
-
-	public boolean isShell() {
-		// String strLang = getLanguageAsString(getLanguage());
-		// return strLang.equalsIgnoreCase("shell");
-		return getLanguage() == 0;
-	}
 
 	private void setScript() {
-		if (_type == JOEConstants.MONITOR) {
-			Element monitor = _job;
-			if (monitor != null) {
-				_script = monitor.getChild("script");
-			}
-		}
-		else
-			_script = _job.getChild("script");
+    	_script = _job.getChild("script");
 	}
+
 
 	public String getJobNameAndTitle() {
 		String strT = this.getJobName();
@@ -624,17 +527,7 @@ public class JobListener extends JOEListener {
 		if (_script == null && language != NONE) {
 			// init script element
 			_script = new Element("script");
-			if (_type == JOEConstants.MONITOR) {
-				// Element monitor = _job.getChild("monitor");
-				Element monitor = _job;
-				if (monitor == null) {
-					monitor = new Element("monitor");
-					_job.addContent(monitor);
-				}
-				monitor.addContent(_script);
-			}
-			else
-				_job.addContent(_script);
+			_job.addContent(_script);
 		}
 		if (_script != null) {
 			
@@ -1037,10 +930,6 @@ public class JobListener extends JOEListener {
 		}
 	}
 
-	public boolean isExecutable() {
-		setProcess();
-		return _process != null;
-	}
 
 	public String getHistoryWithLog() {
 		return getValue("history_with_log");

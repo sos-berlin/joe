@@ -31,11 +31,11 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	@SuppressWarnings("unused") private final String	conSVNVersion					= "$Id$";
-	private final int											intNoOfLabelColumns				= 2;
+	private final int									intNoOfLabelColumns				= 2;
 	private static Logger								logger							= Logger.getLogger(ScriptJobMainForm.class);
 	@SuppressWarnings("unused") private final String	conClassName					= "ScriptForm";
 	protected JobListener								objDataProvider					= null;
-	private final Cursor										objLastCursor					= null;
+	private final Cursor								objLastCursor					= null;
 	private boolean										init							= true;
 	protected ISchedulerUpdate							update;
 	protected Element									job;
@@ -51,7 +51,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 	protected JobScript									objJobScript					= null;
 	private JobJavaAPI									objJobJAPI						= null;
 	private JobIncludeFile								objJobIncludeFile				= null;
-	private final SchedulerDom								dom;
+	private final SchedulerDom							dom;
 	protected Group										objMainOptionsGroup				= null;
 
 	protected abstract void initForm();

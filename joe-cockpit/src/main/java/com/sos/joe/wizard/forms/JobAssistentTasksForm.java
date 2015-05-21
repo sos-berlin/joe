@@ -284,19 +284,12 @@ public class JobAssistentTasksForm {
 				execute.setJobname(jobname);
 			execute.setBackUpJob(jobBackUp, jobForm);
 		}
-		else
-			if (job.getChild("process") != null) {
-				JobAssistentProcessForms process = new JobAssistentProcessForms(dom, update, job, assistentType);
-				process.showProcessForm();
-				if (jobname != null)
-					process.setJobname(jobname);
-				process.setBackUpJob(jobBackUp, jobForm);
-			}
-			else {
+		else {
 				JobAssistentScriptForms script = new JobAssistentScriptForms(dom, update, job, assistentType);
 				script.showScriptForm();
-				if (jobname != null)
-					script.setJobname(jobname);
+				if (jobname != null){
+                    script.setJobname(jobname);
+				}
 				script.setBackUpJob(jobBackUp, jobForm);
 			}
 		closeDialog = true;
