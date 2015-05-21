@@ -83,7 +83,6 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
     private Button                                          bApplyFileOrderSource       = null;
     private Text                                            tDirectory                  = null;
     private Text                                            tDelayAfterError            = null;
-    private Text                                            tMax                        = null;
     private Text                                            tNextState                  = null;
     private Text                                            tRegex                      = null;
     private Text                                            tRepeat                     = null;
@@ -767,7 +766,8 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             });
             tRepeat.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
             new Label(gFileOrderSource, SWT.NONE);
-            @SuppressWarnings("unused") final Label maxLabel = JOE_L_JCNodesForm_Max.Control(new Label(gFileOrderSource, SWT.NONE));
+           /* @SuppressWarnings("unused") final Label maxLabel = JOE_L_JCNodesForm_Max.Control(new Label(gFileOrderSource, SWT.NONE));
+            
             tMax = JOE_T_JCNodesForm_Max.Control(new Text(gFileOrderSource, SWT.BORDER));
             tMax.addModifyListener(new ModifyListener() {
                 @Override public void modifyText(final ModifyEvent e) {
@@ -777,6 +777,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
                 }
             });
             tMax.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+            */
             @SuppressWarnings("unused") final Label stateLabel = JOE_L_JCNodesForm_NextState.Control(new Label(gFileOrderSource, SWT.NONE));
             tNextState = JOE_T_JCNodesForm_NextState.Control(new Text(gFileOrderSource, SWT.BORDER));
             tNextState.addModifyListener(new ModifyListener() {
@@ -899,7 +900,6 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
 
     private void enableFileOrderSource(boolean enable) {
         tDirectory.setEnabled(enable);
-        tMax.setEnabled(enable);
         tRepeat.setEnabled(enable);
         tDelayAfterError.setEnabled(enable);
         tNextState.setEnabled(enable);
@@ -967,7 +967,6 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
     private void fillFileOrderSource(boolean clear) {
         tDirectory.setText(clear ? "" : listener.getFileOrderSource("directory"));
         tRegex.setText(clear ? "" : listener.getFileOrderSource("regex"));
-        tMax.setText(clear ? "" : listener.getFileOrderSource("max"));
         tDelayAfterError.setText(clear ? "" : listener.getFileOrderSource("delay_after_error"));
         tRepeat.setText(listener.getFileOrderSource(clear ? "" : "repeat"));
         tNextState.setText(listener.getFileOrderSource(clear ? "" : "next_state"));
@@ -1013,8 +1012,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
 
     private void applyFileOrderSource() {
         if (Utils.isRegExpressions(tRegex.getText())) {
-            listener.applyFileOrderSource(tDirectory.getText(), tRegex.getText(), tNextState.getText(), tMax.getText(), tRepeat.getText(),
-                    tDelayAfterError.getText());
+            listener.applyFileOrderSource(tDirectory.getText(), tRegex.getText(), tNextState.getText(), tRepeat.getText(), tDelayAfterError.getText());
             listener.fillFileOrderSource(tFileOrderSource);
             bApplyFileOrderSource.setEnabled(false);
             bRemoveFileOrderSource.setEnabled(false);

@@ -1248,10 +1248,6 @@ public class SOSJOEMessageCodes extends SOSComposite {
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_JCNodesForm_Repeat							= new SOSMsgJOE("JOE_T_JCNodesForm_Repeat");
 	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JCNodesForm_Max								= new SOSMsgJOE("JOE_L_JCNodesForm_Max");
-	@I18NMsg
-	public static final SOSMsgJOE	JOE_T_JCNodesForm_Max								= new SOSMsgJOE("JOE_T_JCNodesForm_Max");
-	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_JCNodesForm_NextState							= new SOSMsgJOE("JOE_L_JCNodesForm_NextState");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_JCNodesForm_NextState							= new SOSMsgJOE("JOE_T_JCNodesForm_NextState");
