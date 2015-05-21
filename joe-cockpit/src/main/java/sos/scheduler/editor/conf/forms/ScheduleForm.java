@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-import org.joda.time.DateTime;
 
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.ScheduleListener;

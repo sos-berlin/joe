@@ -11,10 +11,8 @@ public class RunTimeListener {
 	private Element			_job		= null;
 	private Element			_runtime	= null;
 
-	//private       ISchedulerUpdate _gui        = null;
 	public RunTimeListener(SchedulerDom dom, Element job, ISchedulerUpdate gui) {
 		_dom = dom;
-//		_gui = gui;
 		_job = job;
 		_runtime = _job.getChild("run_time");
 		checkRuntime();
@@ -44,24 +42,7 @@ public class RunTimeListener {
 			setRuntime();
 		return _runtime;
 	}
-
-	public void setFunction(String function_name) {
-		if (_runtime != null) {
-			Utils.setAttribute("start_time_function", function_name, _runtime, _dom);
-			//_gui.updateRunTime();
-			//_dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_job), SchedulerDom.MODIFY);
-			if (_dom.isDirectory() || _dom.isLifeElement())
-				_dom.setChangedForDirectory(_job, SchedulerDom.MODIFY);
-		}
-	}
-
-	public String getFunction() {
-		String s = _runtime.getAttributeValue("start_time_function");
-		if (s == null)
-			s = "";
-		return s;
-	}
-
+ 
 	public String[] getSchedules() {
 		String[] retval = new String[0];
 		if (!_dom.isLifeElement() && _dom.getRoot() != null) {
@@ -92,12 +73,7 @@ public class RunTimeListener {
 	
 
 
-	/*
-	Runtime darf Starttime nicht im Attribut haben.
-	Der Starttime darf nur in Perioden definiert werden.
-	   Wenn ein run_time Element bereits definitionen aus der Starttime hat (repeat_time und single_time und absolute_repeat),
-	dann werden diese Attribute in every-Day gemoved.
-		 */
+	 
 	private void checkRuntime() {
 		//repeat ins every_day moven
 		String repeat = Utils.getAttributeValue("repeat", _runtime);

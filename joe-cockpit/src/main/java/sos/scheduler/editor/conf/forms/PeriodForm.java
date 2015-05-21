@@ -71,7 +71,6 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private String										savEndHours				= "";
 	private String										savEndMinutes			= "";
 	private String										savEndSeconds			= "";
-	private boolean										assistent				= false;
 	private int											_type					= JOEConstants.PERIODS;
 	private ISchedulerUpdate							_gui					= null;
 	private Combo										cboWhenHoliday			= null;
@@ -90,8 +89,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	}
 
 	public PeriodForm(Composite parent, int style, boolean assistent_) {
-		this(parent, style, JOEConstants.JOB_WIZARD);
-		assistent = assistent_;
+		this(parent, style, JOEConstants.JOB_WIZARD);	
 	}
 
 	public void setParams(SchedulerDom dom, boolean onOrder) {
@@ -162,8 +160,9 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 								stSeconds.setText("00");
 							}
 				}
-				if (cRunOnce.isVisible())
+				if (cRunOnce.isVisible()){
 					cRunOnce.setSelection(listener.getRunOnce());
+				}
 			}
 			bLetRun.setSelection(listener.getLetRun());
 			sBeginHours.setFocus();

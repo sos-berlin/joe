@@ -29,7 +29,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 
 public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
-	private Text				tFunction				= null;
 	private RunTimeListener		listener				= null;
 	private Group				gRunTime				= null;
 	private PeriodForm			periodForm				= null;
@@ -38,7 +37,6 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private Combo				comSchedule				= null;
 	private Button				butBrowse				= null;
 	private ISchedulerUpdate	_gui					= null;
-	private Group				groupStartTimeFuction	= null;
 	private Group				groupSchedule			= null;
 	private Element				runTimeBackUpElem		= null;
 	private boolean				init					= false;
@@ -57,7 +55,6 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		periodForm.setEnabled(true);
 		periodForm.setPeriod(listener.getRunTime());
 		tComment.setText(listener.getComment());
-		tFunction.setText(listener.getFunction());
 		String title = gComment.getText();
 		gComment.setText(title);
 		dom.setInit(false);
@@ -79,25 +76,8 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		gRunTime = JOE_G_RunTimeForm_RunTime.Control(new Group(this, SWT.NONE));
 		gRunTime.setLayout(gridLayout3);
 		createPeriodForm();
-		groupStartTimeFuction = JOE_G_RunTimeForm_StartTimeFunction.Control(new Group(gRunTime, SWT.NONE));
-		groupStartTimeFuction.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-		final GridLayout gridLayout = new GridLayout();
-		groupStartTimeFuction.setLayout(gridLayout);
-		tFunction = JOE_T_RunTimeForm_StartTimeFunction.Control(new Text(groupStartTimeFuction, SWT.BORDER));
-		tFunction.addModifyListener(new ModifyListener() {
-			public void modifyText(final ModifyEvent e) {
-				if (init){
-					return;
-				}
-				setEnabled();
-				listener.setFunction(tFunction.getText());
-				_gui.updateFont();
-				_gui.updateRunTime();
-			}
-		});
-		final GridData gridData10_1_1 = new GridData(GridData.FILL, GridData.CENTER, true, false);
-		gridData10_1_1.widthHint = 243;
-		tFunction.setLayoutData(gridData10_1_1);
+	 
+ 
 		groupSchedule = JOE_G_RunTimeForm_Schedule.Control(new Group(gRunTime, SWT.NONE));
 		groupSchedule.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
 		final GridLayout gridLayout_2 = new GridLayout();
@@ -193,48 +173,32 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 
 	private void setEnabled() {
 		if (init) {
-			//initialisierung
 			if (comSchedule.getText().trim().length() > 0) {
 				groupSchedule.setEnabled(true);
-				groupStartTimeFuction.setEnabled(false);
 				periodForm.setEnabled(false);
-			} else
-				if (tFunction.getText().trim().length() > 0) {
-					groupSchedule.setEnabled(false);
-					groupStartTimeFuction.setEnabled(true);
-					periodForm.setEnabled(false);
-				} else {
-					groupSchedule.setEnabled(true);
-					groupStartTimeFuction.setEnabled(true);
-					periodForm.setEnabled(true);
+			} else {
+				groupSchedule.setEnabled(true);
+				periodForm.setEnabled(true);
 				}
 			return;
 		}
 		boolean enable = true;
 		if (comSchedule.getText().trim().length() > 0) {
 			groupSchedule.setEnabled(true);
-			groupStartTimeFuction.setEnabled(false);
 			enable = false;
-		}
-		else
-			if (tFunction.getText().trim().length() > 0) {
-				groupSchedule.setEnabled(false);
-				groupStartTimeFuction.setEnabled(true);
-				enable = false;
-			} else {
-				if (runTimeBackUpElem != null) {
-					Element e = listener.getRunTime();
-					e.removeAttribute("schedule");
-					e.setContent(runTimeBackUpElem.cloneContent());
-					for (int i = 0; i < runTimeBackUpElem.getAttributes().size(); i++) {
-						org.jdom.Attribute attr = (org.jdom.Attribute) runTimeBackUpElem.getAttributes().get(i);
-						e.setAttribute(attr.getName(), attr.getValue(), e.getNamespace());
-					}
-					runTimeBackUpElem = null;
+		} else {
+			if (runTimeBackUpElem != null) {
+				Element e = listener.getRunTime();
+				e.removeAttribute("schedule");
+				e.setContent(runTimeBackUpElem.cloneContent());
+				for (int i = 0; i < runTimeBackUpElem.getAttributes().size(); i++) {
+					org.jdom.Attribute attr = (org.jdom.Attribute) runTimeBackUpElem.getAttributes().get(i);
+					e.setAttribute(attr.getName(), attr.getValue(), e.getNamespace());
 				}
-				groupSchedule.setEnabled(true);
-				groupStartTimeFuction.setEnabled(true);
+				runTimeBackUpElem = null;
 			}
+			groupSchedule.setEnabled(true);
+		}
 		if (!enable) {
 			if (runTimeBackUpElem == null) {
 				runTimeBackUpElem = (Element) listener.getRunTime().clone();
