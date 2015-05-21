@@ -205,12 +205,20 @@ public class JobAssistentTimeoutOrderForms {
 			butBack.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent e) {
 					Element job = joblistener.getJob();
-					JobAssistentScriptForms script = new JobAssistentScriptForms(dom, update, job, assistentType);
-					script.showScriptForm();
-					if (jobname != null){
-                        script.setJobname(jobname);
+					if (job.getChild("process") != null) {
+						JobAssistentProcessForms process = new JobAssistentProcessForms(dom, update, job, assistentType);
+						process.showProcessForm();
+						if (jobname != null)
+							process.setJobname(jobname);
+						process.setBackUpJob(jobBackUp, jobForm);
 					}
-					script.setBackUpJob(jobBackUp, jobForm);
+					else {
+						JobAssistentScriptForms script = new JobAssistentScriptForms(dom, update, job, assistentType);
+						script.showScriptForm();
+						if (jobname != null)
+							script.setJobname(jobname);
+						script.setBackUpJob(jobBackUp, jobForm);
+					}
 					closeDialog = true;
 					shellTimeout.dispose();
 				}

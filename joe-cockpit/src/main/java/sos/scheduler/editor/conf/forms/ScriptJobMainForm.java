@@ -16,12 +16,12 @@ import org.jdom.Element;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.conf.composites.JobMainComposite;
 import sos.scheduler.editor.conf.container.JobDelayAfterError;
 import sos.scheduler.editor.conf.container.JobDocumentation;
 import sos.scheduler.editor.conf.container.JobEmailSettings;
 import sos.scheduler.editor.conf.container.JobOptions;
+import sos.scheduler.editor.conf.container.JobProcessFile;
 import sos.scheduler.editor.conf.container.JobSetback;
 import sos.scheduler.editor.conf.container.JobSourceViewer;
 import sos.scheduler.editor.conf.container.JobStartWhenDirectoryChanged;
@@ -39,6 +39,7 @@ public class ScriptJobMainForm extends ScriptForm {
 	private Composite									tabItemDocumentationComposite	= null;
 	private Composite									tabItemOrderSetBackComposite	= null;
 	private Composite									tabItemDelayAfterErrorComposite	= null;
+	private Composite									tabItemProcessFileComposite		= null;
 	private Composite									tabItemSourceViewerComposite	= null;
 	private JobMainComposite							jobMainComposite				= null;
 	private CTabItem									tabItemSourceViewer				= null;
@@ -46,6 +47,7 @@ public class ScriptJobMainForm extends ScriptForm {
 	private CTabItem									tabItemDocumentation			= null;
 	private CTabItem									tabItemOrderSetBack				= null;
 	private CTabItem									tabItemDelayAfterError			= null;
+	private CTabItem									tabItemProcessFile				= null;
 	private CTabItem									tabItemOptions					= null;
 	private CTabItem									tabItemDirChanged				= null;
 	private JobOptions									objJobOptions					= null;
@@ -61,10 +63,6 @@ public class ScriptJobMainForm extends ScriptForm {
 
 	public void initForm() {
 		jobMainComposite.init();
-		if (objDataOptionsProvider.hasProcessFile()){
-            MainWindow.message("<process file=> detected. This is no longer supported", SWT.ICON_ERROR);
-            objDataOptionsProvider.deleteProcessFile();
-        }
 	}
 
 	protected String[] getScriptLanguages() {
@@ -115,7 +113,9 @@ public class ScriptJobMainForm extends ScriptForm {
 		if (tabItemDelayAfterError != null) {
 			tabItemDelayAfterError.dispose();
 		}
-		 
+		if (tabItemProcessFile != null) {
+			tabItemProcessFile.dispose();
+		}
 		if (tabItemOptions != null) {
 			tabItemOptions.dispose();
 		}
@@ -135,10 +135,15 @@ public class ScriptJobMainForm extends ScriptForm {
 		tabItemDocumentationComposite = null;
 		tabItemOrderSetBackComposite = null;
 		tabItemDelayAfterErrorComposite = null;
- 		objTabControlComposite = new Composite(tabFolder, SWT.NONE);
+		tabItemProcessFileComposite = null;
+		objTabControlComposite = new Composite(tabFolder, SWT.NONE);
 		objTabControlComposite.setLayout(new GridLayout());
 		setResizableV(objTabControlComposite);
-		 
+		tabItemProcessFile = JOE_TI_ScriptJobMainForm_ProcessFile.Control(new CTabItem(tabFolder, SWT.NONE));
+		tabItemProcessFileComposite = new Composite(tabFolder, SWT.NONE);
+		tabItemProcessFileComposite.setLayout(new GridLayout());
+		setResizableV(tabItemProcessFileComposite);
+		tabItemProcessFile.setControl(tabItemProcessFileComposite);
 		tabItemOptions = JOE_TI_ScriptJobMainForm_Options.Control(new CTabItem(tabFolder, SWT.NONE));
 		tabItemOptionsComposite = new Composite(tabFolder, SWT.NONE);
 		tabItemOptionsComposite.setLayout(new GridLayout());
@@ -182,6 +187,7 @@ public class ScriptJobMainForm extends ScriptForm {
 		createDelayAfterErrorTab(tabItemDelayAfterErrorComposite);
 		createDirChangedTab(tabItemDirChangedComposite);
 		createEmailSettingsTab(tabItemEMailComposite);
+		createProcessFileTab(tabItemProcessFileComposite);
 		createDocumentationTab(tabItemDocumentationComposite);
 		createOptionsTab(tabItemOptionsComposite);
 		createSourceViewerTab(tabItemSourceViewerComposite);
@@ -203,7 +209,13 @@ public class ScriptJobMainForm extends ScriptForm {
 		pParentComposite.layout();
 	}
 
-	
+	private void createProcessFileTab(final Composite pParentComposite) {
+		if (pParentComposite == null) {
+			return;
+		}
+		new JobProcessFile(pParentComposite, objDataProvider);
+		pParentComposite.layout();
+	}
 
 	private void createOptionsTab(final Composite pParentComposite) {
 		objJobOptions = new JobOptions(pParentComposite, objDataProvider);
