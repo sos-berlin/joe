@@ -16,6 +16,8 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 	private int						_level						= 0;
 	private boolean					_isOpen						= false;
 	private String					_stylesheet					= "";
+	private String                  aktNamepace = "___";
+	private String                  aktElementName="___";
 	private ArrayList				_noIndentInCDATAElements	= null;
 	/** NO_CDATA_ELEMENTS dürfen nicht in CDATA geschrieben werden. Es geht hier um "Yes_no" XML Typen, die nur als Text yes oder no (ohne leerzeichen) haben dürfen */
 	private static final String[]	NO_CDATA_ELEMENTS			= { "log_mail_cc", "log_mail_bcc", "log_mail_to", "mail_on_error", "mail_on_warning",
@@ -53,6 +55,10 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 	}
 
 	public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
+	    
+        if (aktElementName.equals(qName)){
+            aktNamepace = "__";
+        }
 		_level--;
 		_indent = strRepeat(_indentStr, _level);
 		String text = _text.toString().trim();
@@ -107,10 +113,15 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 				}
 			}
 			else { // add attribute
-				String uri = atts.getURI(i);
-				if (!uri.equals("")) {
-					attributes.append(sep + "xmlns:xsi" + "=\"" + uri + "\"");
-				}
+                String uri = atts.getURI(i);
+                if (!uri.equals("")) {
+                    attributes.append(sep + "xmlns:xsi" + "=\"" + uri + "\"");
+                }
+                if (!namespaceURI.equals("") && !aktNamepace.equals(namespaceURI)) {
+                    attributes.append(sep + "xmlns" + "=\"" + namespaceURI + "\"");
+                    aktNamepace = namespaceURI;
+                    aktElementName = qName;
+                }
 				attributes.append(sep + name + "=\"" + value + "\"");
 				// sep = sepStr;
 				if (name.equals("name")) {
@@ -118,6 +129,7 @@ public class FormatHandler extends DefaultHandler implements ContentHandler {
 				}
 			}
 		}
+ 
 		_sb.append(_indent + "<" + qName + " " + attributes.toString());
 		_isOpen = true;
 		if (qName.trim().equalsIgnoreCase("job")) {

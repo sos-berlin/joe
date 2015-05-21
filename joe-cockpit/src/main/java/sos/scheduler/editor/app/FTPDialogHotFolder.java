@@ -13,6 +13,7 @@ import com.sos.VirtualFileSystem.common.SOSFileEntry;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
 
 public class FTPDialogHotFolder extends FTPDialog{
  
@@ -109,7 +110,10 @@ public class FTPDialogHotFolder extends FTPDialog{
             
                 ArrayList<String> hotFolderElements = ftpProfileJadeClient.copyRemoteFilesToLocal(dir,hotfolder);
            
+                String s = Options.getLastFolderName();
                 if (MainWindow.getContainer().openDirectory(listener.getCurrProfile().getLocaldirectory() + "/" + hotfolder) != null) {
+                    Options.setLastFolderName(s);
+
                     MainWindow.getContainer().getCurrentTab().setData("ftp_profile_name", listener.getCurrProfileName());
                     MainWindow.getContainer().getCurrentTab().setData("ftp_profile", listener.getCurrProfile());
                     MainWindow.getContainer().getCurrentTab().setData("ftp_title", "[FTP::" + listener.getCurrProfileName() + "]");

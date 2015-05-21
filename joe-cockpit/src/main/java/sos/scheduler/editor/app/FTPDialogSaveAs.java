@@ -17,6 +17,7 @@ import com.sos.VirtualFileSystem.common.SOSFileEntry;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.misc.ResourceManager;
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.DomParser;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 

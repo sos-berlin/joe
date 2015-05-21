@@ -40,6 +40,7 @@ import com.sos.i18n.annotation.I18NMessage;
 import com.sos.i18n.annotation.I18NMessages;
 import com.sos.i18n.annotation.I18NResourceBundle;
 import com.sos.joe.globals.interfaces.IEditor;
+import com.sos.joe.globals.interfaces.IEditorAdapter;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.misc.ResourceManager;
@@ -47,7 +48,7 @@ import com.sos.joe.globals.options.Options;
 import com.sos.joe.jobdoc.editor.forms.DocumentationForm;
 import com.sos.joe.xml.Utils;
 
-@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class MainWindow {
+@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class MainWindow implements IEditorAdapter {
 	private static final String	conStringEDITOR			= "editor";
 	public static final String	conIconICON_OPEN_GIF	= "/sos/scheduler/editor/icon_open.gif";
 	public static final String	conIconEDITOR_PNG		= "/sos/scheduler/editor/editor.png";
@@ -100,7 +101,7 @@ import com.sos.joe.xml.Utils;
 	IEditor	objDataHandler	= null;
 
 	public DocumentationForm newDocumentation() {
-		DocumentationForm doc = new DocumentationForm(objCTabFolder, SWT.NONE);
+		DocumentationForm doc = new DocumentationForm(this, objCTabFolder, SWT.NONE);
 		objDataHandler = doc;
 		doc.openBlank();
 		newItem(doc, NEW_DOCUMENTATION_TITLE);
@@ -109,7 +110,7 @@ import com.sos.joe.xml.Utils;
 
 	public DocumentationForm openDocumentation() {
 		try {
-			DocumentationForm doc = new DocumentationForm(objCTabFolder, SWT.NONE);
+			DocumentationForm doc = new DocumentationForm(this, objCTabFolder, SWT.NONE);
 			if (doc.open(filelist)) {
 				// CTabItem tab = newItem(doc, doc.getFilename());
 				newItem(doc, doc.getFilename());
@@ -127,7 +128,7 @@ import com.sos.joe.xml.Utils;
 
 	public DocumentationForm openDocumentation(String filename) {
 		try {
-			DocumentationForm doc = new DocumentationForm(objCTabFolder, SWT.NONE);
+			DocumentationForm doc = new DocumentationForm(this, objCTabFolder, SWT.NONE);
 			if (doc.open(filename, filelist)) {
 				// CTabItem tab = newItem(doc, doc.getFilename());
 				newItem(doc, doc.getFilename());
@@ -146,7 +147,7 @@ import com.sos.joe.xml.Utils;
 
 	public String openDocumentationName() {
 		try {
-			DocumentationForm doc = new DocumentationForm(objCTabFolder, SWT.NONE);
+			DocumentationForm doc = new DocumentationForm(this, objCTabFolder, SWT.NONE);
 			if (doc.open(filelist)) {
 				// CTabItem tab = newItem(doc, doc.getFilename());
 				// tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
@@ -550,7 +551,7 @@ import com.sos.joe.xml.Utils;
 		return strT;
 	} // private String getMsg
 
-	public static void setSaveStatus() {
+	public void setSaveStatus() {
 		setMenuStatus();
 		//		container.setStatusInTitle();
 	}

@@ -11,9 +11,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
+import org.jdom.output.DOMOutputter;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
@@ -44,7 +49,7 @@ public class JobChainListener {
  
 	public JobChainListener(final SchedulerDom dom, final Element jobChain) {
 	    
-	    namespace = Namespace.getNamespace("https://jobscheduler-plugins.sos-berlin.com/NodeOrderPlugin NodeOrderPlugin.xsd");
+	    namespace = Namespace.getNamespace("https://jobscheduler-plugins.sos-berlin.com/NodeOrderPlugin");
 
 		_dom = dom;
         _chain = jobChain;
@@ -121,7 +126,14 @@ public class JobChainListener {
 		}
 		return i;
 	}
+	
+	 
 
+
+    public String getProcessClass() {
+        return Utils.getAttributeValue("process_class", _chain);
+    }
+	
 	public void setMaxorders(final int maxOrder) {
 		if (maxOrder == 0) {
 			_chain.removeAttribute("max_orders");
@@ -134,6 +146,19 @@ public class JobChainListener {
 			_dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
 	}
 
+    public void setProcessClass(final String processClass) {
+        if (processClass == "") {
+            _chain.removeAttribute("process_class");
+        }
+        else {
+            Utils.setAttribute("process_class", processClass, _chain);
+        }
+        _dom.setChanged(true);
+        if (_dom.isDirectory() || _dom.isLifeElement())
+            _dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
+    }
+	
+	
 	public Element getChain() {
 		return _chain;
 	}
@@ -309,6 +334,76 @@ public class JobChainListener {
 		return false;
 	}
 
+    public org.w3c.dom.Element convertToDOM(org.jdom.Element jdomElement) throws JDOMException {
+       DOMOutputter outputter = new DOMOutputter();
+       org.jdom.Element j = (Element) jdomElement.clone();
+       j.detach();
+       org.jdom.Document jdomD = new org.jdom.Document(j);       
+       org.w3c.dom.Document w3cD = outputter.output(jdomD);
+       return w3cD.getDocumentElement();
+    }
+
+	private JobchainReturnCodeAddOrderElement addOrderParameters(org.w3c.dom.Element addOrderParams, JobchainReturnCodeAddOrderElement jobchainReturnCodeAddOrderElement){
+// This is neccessary because
+//            List<Element> listOfParams = addOrderParams.getChildren("param",addOrder.getNamespace());
+// does not work within a namespace
+	    
+        if (addOrderParams != null){
+                NodeList n = addOrderParams.getElementsByTagNameNS(namespace.getURI(), "param");
+                for (int i = 0; i < n.getLength(); i++) {
+                    Node currentNode = n.item(i);
+                    if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
+                        org.w3c.dom.Element e = (org.w3c.dom.Element)currentNode;
+                        jobchainReturnCodeAddOrderElement.addParam(e.getAttribute("name"),  e.getAttribute("value"));
+                    }
+                }
+        }
+	    return jobchainReturnCodeAddOrderElement;
+	    
+	}
+	
+	private void addAddOrderElements(Element returnCode){
+        String returnCodeValue = Utils.getAttributeValue("return_code", returnCode);
+
+	    if (returnCode != null){
+            org.w3c.dom.Element returnCodeElement;
+            try {
+                returnCodeElement = convertToDOM(returnCode);
+             
+                NodeList n = returnCodeElement.getElementsByTagNameNS(namespace.getURI(), "add_order");
+            
+                for (int i = 0; i < n.getLength(); i++) {
+                
+                    Node currentNode = n.item(i);
+                    if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
+                        org.w3c.dom.Element addOrder = (org.w3c.dom.Element)currentNode;
+                        
+                        JobchainReturnCodeAddOrderElement jobchainReturnCodeAddOrderElement = new JobchainReturnCodeAddOrderElement();
+                        jobchainReturnCodeAddOrderElement.setReturnCodes(returnCodeValue);
+                        jobchainReturnCodeAddOrderElement.setJobChain(addOrder.getAttribute("job_chain")); 
+                        jobchainReturnCodeAddOrderElement.setOrderId(addOrder.getAttribute("id")); 
+                                               
+                        NodeList paramsList = addOrder.getElementsByTagNameNS(namespace.getURI(), "params");
+                        if (paramsList != null && paramsList.getLength() > 0){
+                            Node currentParamsNode = paramsList.item(0);
+
+                            if (currentParamsNode.getNodeType() == Node.ELEMENT_NODE) {
+                                org.w3c.dom.Element addOrderParams = (org.w3c.dom.Element) paramsList.item(0);
+                                jobchainReturnCodeAddOrderElement = addOrderParameters(addOrderParams, jobchainReturnCodeAddOrderElement);
+                            }
+                        }
+
+
+                        jobchainListOfReturnCodeElements.add(jobchainReturnCodeAddOrderElement);
+                        }
+                 }
+             
+            } catch (JDOMException e1) {
+                e1.printStackTrace();
+            }            
+        }
+	}
+	
 	private void fillOnReturnCodes(Element node){
 	    List<Element> listOfonReturnCodes = null;
 
@@ -321,7 +416,6 @@ public class JobChainListener {
                 while (it.hasNext()) {
                     Element returnCode =  it.next();
                     Element toState = returnCode.getChild("to_state");
-                    Element addOrder = returnCode.getChild("add_order",namespace);
                     String returnCodeValue = Utils.getAttributeValue("return_code", returnCode);
                     if (toState != null){
                         JobchainReturnCodeNextStateElement jobchainReturnCodeNextStateElement = new JobchainReturnCodeNextStateElement();
@@ -329,23 +423,8 @@ public class JobChainListener {
                         jobchainReturnCodeNextStateElement.setNextState(Utils.getAttributeValue("state", toState));
                         jobchainListOfReturnCodeElements.add(jobchainReturnCodeNextStateElement);
                     }
-                    if (addOrder != null){
-                        JobchainReturnCodeAddOrderElement jobchainReturnCodeAddOrderElement = new JobchainReturnCodeAddOrderElement();
-                        jobchainReturnCodeAddOrderElement.setReturnCodes(returnCodeValue);
-                        jobchainReturnCodeAddOrderElement.setJobChain(Utils.getAttributeValue("job_chain", addOrder)); 
-                        jobchainReturnCodeAddOrderElement.setOrderId(Utils.getAttributeValue("order_id", addOrder)); 
-                        
-                        Element addOrderParams = addOrder.getChild("params");
-                        if (addOrderParams != null){
-                            List<Element> listOfParams = addOrderParams.getChildren("param"); 
-                            Iterator<Element> itParam = listOfParams.iterator();
-                            while (it.hasNext()) {
-                                Element param =  itParam.next();
-                                jobchainReturnCodeAddOrderElement.addParam(Utils.getAttributeValue("name", param), Utils.getAttributeValue("value", param));
-                            }
-                        }
-                        jobchainListOfReturnCodeElements.add(jobchainReturnCodeAddOrderElement);
-                    }
+                    
+                    addAddOrderElements(returnCode);
                 }
                
              }
@@ -468,12 +547,12 @@ public class JobChainListener {
                         JobchainReturnCodeAddOrderElement jobchainReturnCodeAddOrderElement = jobchainReturnCodeElement.getJobchainListOfReturnCodeAddOrderElements().getNext();
                         Element add_order  = new Element("add_order",namespace);
                         Utils.setAttribute("job_chain", jobchainReturnCodeAddOrderElement.getJobChain(), add_order, _dom);
-                        Utils.setAttribute("order_id", jobchainReturnCodeAddOrderElement.getOrderId(), add_order, _dom);
+                        Utils.setAttribute("id", jobchainReturnCodeAddOrderElement.getOrderId(), add_order, _dom);
                         
                         if (jobchainReturnCodeAddOrderElement.getParams().size() > 0){
-                            Element params  = new Element("params");
+                            Element params  = new Element("params",namespace);
                             for (Entry<String, String> entry : jobchainReturnCodeAddOrderElement.getParams().entrySet()) {
-                                Element param  = new Element("param");
+                                Element param  = new Element("param",namespace);
                                 Utils.setAttribute("name", entry.getKey(), param, _dom);
                                 Utils.setAttribute("value", entry.getValue(), param, _dom);
                                 params.addContent(param);
@@ -515,31 +594,32 @@ public class JobChainListener {
 					_node.detach();
 					_node = null;
 				}
-			}
+            }
+				
 			if (_node != null) {
 				if (isJobchainNode) {
-					Utils.setAttribute("state", state, _node, _dom);
-					Utils.setAttribute("job", job, _node, _dom);
-					Utils.setAttribute("delay", delay, _node, _dom);
-					Utils.setAttribute("next_state", next, _node, _dom);
-					Utils.setAttribute("error_state", error, _node, _dom);
-					Utils.setAttribute("on_error", onError, _node, _dom);
-					if (onReturnCodes != null){
-					    Element e = _node.getChild("on_return_codes");
-	                    if (e != null){
-	                        e.detach();
-	                     }
-      			       _node.addContent(onReturnCodes);
-					}
-					
-				}
-				else {
-					Utils.setAttribute("state", state, _node, _dom);
-					Utils.setAttribute("move_to", moveTo, _node, _dom);
-					Utils.setAttribute("remove", removeFile, _node, _dom);
-				}
-			}
-			else {
+                    Utils.setAttribute("state", state, _node, _dom);
+                    Utils.setAttribute("job", job, _node, _dom);
+                    Utils.setAttribute("delay", delay, _node, _dom);
+                    Utils.setAttribute("next_state", next, _node, _dom);
+                    Utils.setAttribute("error_state", error, _node, _dom);
+                    Utils.setAttribute("on_error", onError, _node, _dom);
+                    
+                    Element e = _node.getChild("on_return_codes");
+                    if (e != null){
+                        e.detach();
+                     }
+
+                    if (onReturnCodes != null){
+                       _node.addContent(onReturnCodes);
+                    }
+                    
+                } else {
+                    Utils.setAttribute("state", state, _node, _dom);
+                    Utils.setAttribute("move_to", moveTo, _node, _dom);
+                    Utils.setAttribute("remove", removeFile, _node, _dom);
+                }				
+			} else {
 				if (isJobchainNode) {
 					node = new Element("job_chain_node");
 					Utils.setAttribute("state", state, node, _dom);
@@ -548,24 +628,18 @@ public class JobChainListener {
 					Utils.setAttribute("next_state", next, node, _dom);
 					Utils.setAttribute("error_state", error, node, _dom);
 					Utils.setAttribute("on_error", onError, node, _dom);
-				}
-				else {
+				} else {
 					node = new Element("file_order_sink");
 					Utils.setAttribute("state", state, node, _dom);
 					Utils.setAttribute("move_to", moveTo, node, _dom);
 					Utils.setAttribute("remove", removeFile, node, _dom);
 				}
-				
+
                 if (onReturnCodes != null){
-                    Element e = _node.getChild("on_return_codes");
-                    if (e != null){
-                       e.detach();
-                    }
                     node.addContent(onReturnCodes);
                 }
 
-                
-				_chain.addContent(node);
+                _chain.addContent(node);
 				_node = node;
 			}
 			_dom.setChanged(true);

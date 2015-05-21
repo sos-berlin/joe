@@ -37,7 +37,7 @@ public class SchedulerDom extends DomParser {
 	private static Logger			logger						= Logger.getLogger(SchedulerDom.class);
 	private static final String[]	CONFIG_ELEMENTS				= { "base", "params", "security", "plugins", "cluster", "process_classes", "schedules",
 			"locks", "script", "http_server", "holidays", "jobs", "job_chains", "orders", "commands" };
-	private static final String[]	JOB_ELEMENTS				= { "settings", "description", "lock.use", "params", "environment", "script", "monitor.use", "process",
+	private static final String[]	JOB_ELEMENTS				= { "settings", "description", "lock.use", "params", "environment", "script",  "process", "monitor.use",
 			"monitor", "start_when_directory_changed", "delay_after_error", "delay_order_after_setback", "run_time", "commands" };
 	private static final String[]	RUNTIME_ELEMENTS			= { "period", "at", "date", "weekdays", "monthdays", "ultimos", "month", "holidays" };
     private static final String[]   JOBCHAIN_ELEMENTS           = { "file_order_source", "job_chain_node", "job_chain_node.job_chain", "job_chain_node.end",
@@ -301,6 +301,8 @@ public class SchedulerDom extends DomParser {
 		handler.setStyleSheet(styleSheet);
 		handler.setEnconding(encoding);
 		SAXOutputter saxo = new SAXOutputter(handler);
+        saxo.setReportNamespaceDeclarations(false);
+
 		saxo.output(getDoc());
 		// Document doc = null;
 		try {
@@ -329,7 +331,7 @@ public class SchedulerDom extends DomParser {
 		deorderDOM();
 	}
 
-	public void writeElement(String filename, Document doc) throws IOException, JDOMException {
+	public boolean writeElement(String filename, Document doc) throws IOException, JDOMException {
 		String encoding = JOEConstants.SCHEDULER_ENCODING;
 		if (encoding.equals(""))
 			encoding = DEFAULT_ENCODING;
@@ -338,23 +340,18 @@ public class SchedulerDom extends DomParser {
 		handler.setStyleSheet(styleSheet);
 		handler.setEnconding(encoding);
  		SAXOutputter saxo = new SAXOutputter(handler);
-        saxo.setReportNamespaceDeclarations(true);
+        saxo.setReportNamespaceDeclarations(false);
   		 
 		saxo.output(doc);
 		try {
 			getBuilder(true).build(new StringReader(handler.getXML()));
 		}
 		catch (JDOMException e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			//int res = MainWindow.message(Messages.getMsg(conMessage_MAIN_LISTENER_OUTPUT_INVALID, e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+		 
 			int res = ErrorLog.message("Element is not valid. Should it still be saved?" + "\n" + e.getMessage(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-			if (res == SWT.NO)
-				return;
+ 			if (res == SWT.NO){
+				return false;
+			}
 		}
 		OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
 		writer.write(handler.getXML());
@@ -362,6 +359,7 @@ public class SchedulerDom extends DomParser {
 		 
 		setChanged(false);
 		deorderDOM();
+		return true;
 	}
 
 	public String getXML(Element element) throws JDOMException {
@@ -370,6 +368,8 @@ public class SchedulerDom extends DomParser {
 		handler.setStyleSheet(styleSheet);
 		handler.setEnconding(DEFAULT_ENCODING);
 		SAXOutputter saxo = new SAXOutputter(handler);
+        saxo.setReportNamespaceDeclarations(false);
+
 		saxo.output(element);
 		deorderDOM();
 		return handler.getXML();
@@ -433,14 +433,14 @@ public class SchedulerDom extends DomParser {
 	 */
 	@Deprecated
 	public void setChangedForDirectory(String which, String name, String what) {
-		if (!isChanged())
-			return;
+		if (!isChanged()){
+            return;
+		}
 		changedForDirectory.put(which + "_" + name, what);
 		String filename = which + "." + name + ".xml";
-		if (what.equals(DELETE))
-			return;
-//		SchedulerForm form = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
-//		form.setChangedTreeItemText(which + "_" + name);
+		if (what.equals(DELETE)){
+            return;
+		}
 	}
 
 	public HashMap getChangedJob() {

@@ -39,7 +39,7 @@ public class JobListener extends JOEListener {
 	private final Element								_setback			= null;
 	private List										_errorDelays		= null;
 	private final Element								_errorDelay			= null;
-
+ 
 	public JobListener(final SchedulerDom dom, final Element job, final ISchedulerUpdate update) {
 		_dom = dom;
 		_job = job;
@@ -50,6 +50,8 @@ public class JobListener extends JOEListener {
 		_setbacks = _job.getChildren("delay_order_after_setback");
 		_errorDelays = _job.getChildren("delay_after_error");
 		_settings = _job.getChild("settings");
+		 
+		
 		setScript();
 		setProcess();
 	}
@@ -635,12 +637,14 @@ public class JobListener extends JOEListener {
 				_job.addContent(_script);
 		}
 		if (_script != null) {
-			if (!isJava()) {
-				_script.removeAttribute("java_class");
-				_script.removeAttribute("java_class_path");
-			}
-			if (language != NONE)
+			
+			if (language != NONE){
 				Utils.setAttribute("language", languageAsString(language), _script, _dom);
+			}
+			if (!isJava()) {
+                _script.removeAttribute("java_class");
+                _script.removeAttribute("java_class_path");
+            }
 			_dom.setChanged(true);
 			setChangedForDirectory();
 		}
@@ -901,12 +905,21 @@ public class JobListener extends JOEListener {
 	}
 
 	private void setChangedForDirectory() {
+	   
 		if (_dom.isDirectory() || _dom.isLifeElement()) {
 			if (_job != null) {
 				Element job = _job;
-				if (!job.getName().equals(_job))
-					job = Utils.getJobElement(_job);
-				_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.MODIFY);
+				if (!job.getName().equals(_job)){
+                    job = Utils.getJobElement(_job);
+				}
+                String which;
+				if (job.getName().equalsIgnoreCase("job")){
+				    which = "job";
+				}else{
+				    which = "monitor";
+				    job = _job;
+				}
+				_dom.setChangedForDirectory(which, Utils.getAttributeValue("name", job), SchedulerDom.MODIFY);
 			}
 		}
 	}

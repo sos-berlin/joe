@@ -271,21 +271,24 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	@Override public void updateJob(final String job) {
 		TreeItem item = tree.getSelection()[0];
 		TreeData data = (TreeData) item.getData();
-		org.jdom.Element element = data.getElement();
-		listener.setColorOfJobTreeItem(element, item);
+		if (data != null){
+		   org.jdom.Element element = data.getElement();
+		   listener.setColorOfJobTreeItem(element, item);
 		item.setText(job);
+		}
 	}
 
 	@Override public void updateJobs() {
 		// if(tree.getSelection()[0].getText().startsWith("Job Chain")) {
-		if (!tree.getSelection()[0].getText().startsWith(SchedulerListener.JOBS)) {
+		if (!tree.getSelection()[0].getText().startsWith(SchedulerListener.JOBS) && !tree.getSelection()[0].getText().startsWith("Steps")) {
 			// Assistent: Der Aufruf erfolgte über den Assistenten. Hier ist nicht das Element "Jobs" im Tree selektiert
 			// sondern das Element "Job Chains".
 			updateJobs_();
 		}
 		else
-			if (tree.getSelectionCount() > 0)
-				listener.treeFillJobs(tree.getSelection()[0]);
+			if (tree.getSelectionCount() > 0){
+                listener.treeFillJobs(tree.getSelection()[0]);
+			}
 	}
 
 	@Override public void expandItem(final String name) {
@@ -297,9 +300,9 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 			for (int i = 0; i < tree.getItemCount(); i++) {
 				TreeItem ti = tree.getItem(i);
 				if (ti.getText().equalsIgnoreCase("Jobs")) {
-					// System.out.println("itemText "+ ti.getText());
 					listener.treeFillJobs(ti);
 				}
+	 			 
 			}
 		}
 	}
@@ -320,11 +323,15 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		return c.length == 0 || Utils.applyFormChanges(c[0]);
 	}
 
-	@Override public void openBlank() {
-		initialize();
-		// dom.initScheduler();
-		listener.treeFillMain(tree, cMainForm);
-	}
+    @Override public void openBlank() {
+        initialize();
+        // dom.initScheduler();
+        listener.treeFillMain(tree, cMainForm);
+    }
+
+    public void refreshTree() {
+        listener.treeFillMain(tree, cMainForm);
+    }
 
 	public void openBlank(final int type) {
 		initialize();
@@ -507,18 +514,26 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	}
 
 	@Override public void updateTree(final String which) {
-		// String mar = getTreeSelection();
-		if (which.equalsIgnoreCase("main")) {
+		if (which.equalsIgnoreCase("convert")) {
 			if (dom.isLifeElement()) {
-				listener.treeFillMainForLifeElement(tree, cMainForm);
+				listener.treeFillMainForLifeElement(tree, cMainForm,false);
 			}
 			else {
 				listener.treeFillMain(tree, cMainForm);
 			}
-			// } else if(which.equalsIgnoreCase("jobs"))
+		}else{
+
+			if (which.equalsIgnoreCase("main")) {
+				if (dom.isLifeElement()) {
+					listener.treeFillMainForLifeElement(tree, cMainForm,true);
+				}
+				else {
+					listener.treeFillMain(tree, cMainForm);
+				}
+			}
+			else
+				listener.treeSelection(tree, cMainForm);
 		}
-		else
-			listener.treeSelection(tree, cMainForm);
 	}
 
 	public void selectTreeItem(final String parent, final String child) {

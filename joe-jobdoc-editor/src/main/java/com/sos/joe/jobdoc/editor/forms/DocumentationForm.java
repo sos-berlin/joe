@@ -16,6 +16,7 @@ import com.sos.dialog.classes.SOSComposite;
 import com.sos.dialog.classes.SOSGroup;
 import com.sos.dialog.classes.SOSSashForm;
 import com.sos.dialog.classes.SOSTree;
+import com.sos.joe.globals.interfaces.IEditorAdapter;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSMsgJOE;
@@ -33,9 +34,11 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
 	private Composite				docMainForm	= null;
 	private SOSTree					docTree		= null;
 	private TreeItem				selection	= null;
+	private IEditorAdapter container = null;
 
-	public DocumentationForm(Composite parent, int style) {
+	public DocumentationForm(IEditorAdapter container_, Composite parent, int style) {
 		super(parent, style);
+        container = container_;
 		dom = new DocumentationDom();
 		dom.setDataChangedListener(this);
 		listener = new DocumentationListener(this, dom);
@@ -130,7 +133,7 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
 	}
 
 	@Override public void dataChanged() {
-//		container.setStatusInTitle();
+    	container.setSaveStatus();
 	}
 
 	public static void openNoteDialog(DocumentationDom dom, Element parentElement, String name, boolean optional, String title) {

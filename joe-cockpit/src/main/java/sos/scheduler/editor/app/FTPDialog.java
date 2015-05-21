@@ -259,6 +259,7 @@ public abstract class FTPDialog {
 									}
 									else {
                                         execute();
+                                        disconnect();
 									}
 							}
 						}
@@ -359,6 +360,11 @@ public abstract class FTPDialog {
 					butExecute.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(final SelectionEvent e) {
 							execute();
+							try {
+								disconnect();
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
 						}
 					});
 					butExecute.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
@@ -390,17 +396,7 @@ public abstract class FTPDialog {
 			txtLog.setEditable(false);
 			txtLog.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
 			ftpProfilePicker.setLogText(txtLog);
-			/*	final Button butLog = new Button(schedulerConfigurationShell, SWT.NONE);
-			butLog.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(final SelectionEvent e) {
-					String text = sos.scheduler.editor.app.Utils.showClipboard(txtLog.getText(), schedulerConfigurationShell, false, null, false, null, false);
-					if (text != null)
-						txtLog.setText(text);
-				}
-			});
-			butLog.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-			butLog.setText("Log");
-			*/
+			 
 			initForm();
 			schedulerConfigurationShell.layout();
 			schedulerConfigurationShell.open();

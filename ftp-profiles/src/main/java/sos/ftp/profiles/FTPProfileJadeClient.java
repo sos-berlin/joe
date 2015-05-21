@@ -42,9 +42,13 @@ public class FTPProfileJadeClient {
     public void disconnect() throws Exception{
         if (objVFS != null){
             objVFS.CloseConnection();
+            objVFS.CloseSession();
+            objVFS = null;
         }
         if (ftpClient != null){
            ftpClient.disconnect();
+           ftpClient.close();
+           ftpClient = null;
         }
     }
     
@@ -245,7 +249,7 @@ public class FTPProfileJadeClient {
        
         if(!ftpProfile.getAuthMethod().equals("")){
             jadeOptions.getConnectionOptions().Target().auth_method.Value(ftpProfile.getAuthMethod());
-            jadeOptions.Target().auth_file.Value(ftpProfile.getAuthFile());
+            jadeOptions.getConnectionOptions().Target().auth_file.Value(ftpProfile.getAuthFile());
         }
         
         
@@ -256,7 +260,7 @@ public class FTPProfileJadeClient {
         jadeOptions.getConnectionOptions().Source().password.Value(ftpProfile.getDecryptetPassword());
         if(!ftpProfile.getAuthMethod().equals("")){
             jadeOptions.getConnectionOptions().Source().auth_method.Value(ftpProfile.getAuthMethod());
-            jadeOptions.Target().auth_file.Value(ftpProfile.getAuthFile());
+            jadeOptions.getConnectionOptions().Source().auth_file.Value(ftpProfile.getAuthFile());
         }
         
         
@@ -279,6 +283,8 @@ public class FTPProfileJadeClient {
         
         if(!ftpProfile.getAuthMethod().equals("")){
             jadeOptions.Source().auth_method.Value(ftpProfile.getAuthMethod());
+            jadeOptions.Source().auth_file.Value(ftpProfile.getAuthFile());
+
         }
         
         
@@ -382,7 +388,7 @@ public class FTPProfileJadeClient {
         
         if(!ftpProfile.getAuthMethod().equals("")){
             jadeOptions.Source().auth_method.Value(ftpProfile.getAuthMethod());
-            jadeOptions.Target().auth_file.Value(ftpProfile.getAuthFile());
+            jadeOptions.Source().auth_file.Value(ftpProfile.getAuthFile());
         }
 
         jadeOptions.TargetDir.Value(ftpProfile.getLocaldirectory());
@@ -470,7 +476,7 @@ public class FTPProfileJadeClient {
          
          if(!ftpProfile.getAuthMethod().equals("")){
              jadeOptions.Source().auth_method.Value(ftpProfile.getAuthMethod());
-             jadeOptions.Target().auth_file.Value(ftpProfile.getAuthFile());
+             jadeOptions.Source().auth_file.Value(ftpProfile.getAuthFile());
          }
 
          jadeOptions.TargetDir.Value(localDir);
