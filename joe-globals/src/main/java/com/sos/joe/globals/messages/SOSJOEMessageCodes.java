@@ -1239,8 +1239,10 @@ public class SOSJOEMessageCodes extends SOSComposite {
 	public static final SOSMsgJOE	JOE_T_JCNodesForm_DelayAfterError					= new SOSMsgJOE("JOE_T_JCNodesForm_DelayAfterError");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_B_JCNodesForm_ApplyFileOrderSource				= new SOSMsgJOE("JOE_B_JCNodesForm_ApplyFileOrderSource");
-	@I18NMsg
-	public static final SOSMsgJOE	JOE_L_JCNodesForm_Regex								= new SOSMsgJOE("JOE_L_JCNodesForm_Regex");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_L_JCNodesForm_Regex                             = new SOSMsgJOE("JOE_L_JCNodesForm_Regex");
+    @I18NMsg
+    public static final SOSMsgJOE   JOE_L_JCNodesForm_AlertWhenDirectoryMissing         = new SOSMsgJOE("JOE_L_JCNodesForm_AlertWhenDirectoryMissing");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_JCNodesForm_Regex								= new SOSMsgJOE("JOE_T_JCNodesForm_Regex");
 	@I18NMsg

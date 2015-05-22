@@ -128,8 +128,6 @@ public class JobChainListener {
 	}
 	
 	 
-
-
     public String getProcessClass() {
         return Utils.getAttributeValue("process_class", _chain);
     }
@@ -473,6 +471,10 @@ public class JobChainListener {
 
 	public String getFileOrderSource(final String a) {
 		return Utils.getAttributeValue(a, _source);
+	}
+	
+	public boolean isAlertWhenDirectoryMissing(){
+        return (Utils.getAttributeValue("alert_when_directory_missing", _source).equalsIgnoreCase("yes"));
 	}
 
 	public String getState() {
@@ -863,13 +865,14 @@ public class JobChainListener {
 	}
 
 	public void applyFileOrderSource(final String directory, final String regex, final String next_state, final String repeat,
-			final String delay_after_error) {
+			final String delay_after_error,boolean alertWhenDirectoryMissing) {
 		Element source = null;
 		if (_source != null) {
 			Utils.setAttribute("directory", directory, _source, _dom);
 			Utils.setAttribute("regex", regex, _source, _dom);
 			Utils.setAttribute("next_state", next_state, _source, _dom);
-			Utils.setAttribute("repeat", repeat, _source, _dom);
+            Utils.setAttribute("repeat", repeat, _source, _dom);
+            Utils.setAttribute("alert_when_directory_missing", alertWhenDirectoryMissing, _source, _dom);
 			Utils.setAttribute("delay_after_error", delay_after_error, _source, _dom);
 		}
 		else {
@@ -878,6 +881,7 @@ public class JobChainListener {
 			Utils.setAttribute("regex", regex, source, _dom);
 			Utils.setAttribute("next_state", next_state, source, _dom);
 			Utils.setAttribute("repeat", repeat, source, _dom);
+            Utils.setAttribute("alert_when_directory_missing", alertWhenDirectoryMissing, source, _dom);
 			Utils.setAttribute("delay_after_error", delay_after_error, source, _dom);
 			_chain.addContent(source);
 			_source = source;

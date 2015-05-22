@@ -105,6 +105,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
     private boolean                                         isInsert                    = false;
     private Button                                          reorderButton               = null;
     private Button                                          butAddMissingNodes          = null;
+    private Button                                          cbAlertWhenDirectoryMissing = null;
     /**
      * Hilfsvariable: Wenn Parameter Formular geöffnet wurde muss überprüft
      * werden, ob der Checkbox in der Tabelle - State gesetzt werden soll.
@@ -712,7 +713,6 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             gridLayout_1.numColumns = 5;
             gFileOrderSource.setLayout(gridLayout_1);
             final Label directoryLabel = JOE_L_JCNodesForm_Directory.Control(new Label(gFileOrderSource, SWT.NONE));
-            directoryLabel.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
             tDirectory = JOE_T_JCNodesForm_Directory.Control(new Text(gFileOrderSource, SWT.BORDER));
             tDirectory.addModifyListener(new ModifyListener() {
                 @Override public void modifyText(final ModifyEvent e) {
@@ -745,7 +745,6 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             bApplyFileOrderSource.setEnabled(false);
             bApplyFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
             final Label regexLabel = JOE_L_JCNodesForm_Regex.Control(new Label(gFileOrderSource, SWT.NONE));
-            regexLabel.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
             tRegex = JOE_T_JCNodesForm_Regex.Control(new Text(gFileOrderSource, SWT.BORDER));
             tRegex.addModifyListener(new ModifyListener() {
                 @Override public void modifyText(final ModifyEvent e) {
@@ -766,18 +765,21 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             });
             tRepeat.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
             new Label(gFileOrderSource, SWT.NONE);
-           /* @SuppressWarnings("unused") final Label maxLabel = JOE_L_JCNodesForm_Max.Control(new Label(gFileOrderSource, SWT.NONE));
-            
-            tMax = JOE_T_JCNodesForm_Max.Control(new Text(gFileOrderSource, SWT.BORDER));
-            tMax.addModifyListener(new ModifyListener() {
-                @Override public void modifyText(final ModifyEvent e) {
+            @SuppressWarnings("unused") final Label alertWhenDirectoryMissingLabel = JOE_L_JCNodesForm_AlertWhenDirectoryMissing .Control(new Label(gFileOrderSource, SWT.NONE));
+            cbAlertWhenDirectoryMissing = JOE_B_JCNodesForm_Reorder.Control(new Button(gFileOrderSource, SWT.CHECK));
+    
+            cbAlertWhenDirectoryMissing.addSelectionListener(new SelectionAdapter() {
+                @Override public void widgetSelected(final SelectionEvent e) {
                     bApplyFileOrderSource.setEnabled(isValidSource());
                     if (bApplyFileOrderSource.getEnabled())
                         getShell().setDefaultButton(bApplyFileOrderSource);
                 }
-            });
-            tMax.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-            */
+            });                
+                
+ 
+            cbAlertWhenDirectoryMissing.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+           
+            
             @SuppressWarnings("unused") final Label stateLabel = JOE_L_JCNodesForm_NextState.Control(new Label(gFileOrderSource, SWT.NONE));
             tNextState = JOE_T_JCNodesForm_NextState.Control(new Text(gFileOrderSource, SWT.BORDER));
             tNextState.addModifyListener(new ModifyListener() {
@@ -797,7 +799,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
                     if (tFileOrderSource.getSelectionCount() > 0) {
                         listener.selectFileOrderSource(tFileOrderSource);
                         bApplyFileOrderSource.setEnabled(false);
-                        fillFileOrderSource(false);
+                        fillFileOrderSource();
                         enableFileOrderSource(true);
                     }
                     bRemoveFileOrderSource.setEnabled(tFileOrderSource.getSelectionCount() > 0);
@@ -822,7 +824,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
                     tFileOrderSource.deselectAll();
                     listener.selectFileOrderSource(null);
                     bRemoveFileOrderSource.setEnabled(false);
-                    fillFileOrderSource(true);
+                    clearFileOrderSource();
                     enableFileOrderSource(true);
                     tDirectory.setFocus();
                 }
@@ -843,7 +845,11 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
                         if (index >= tFileOrderSource.getItemCount())
                             index--;
                         boolean empty = tFileOrderSource.getItemCount() == 0;
-                        fillFileOrderSource(empty);
+                        if (empty){
+                            clearFileOrderSource();
+                        }else{
+                            fillFileOrderSource();
+                        }
                         enableFileOrderSource(!empty);
                         bRemoveFileOrderSource.setEnabled(!empty);
                         if (!empty) {
@@ -904,6 +910,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
         tDelayAfterError.setEnabled(enable);
         tNextState.setEnabled(enable);
         tRegex.setEnabled(enable);
+        cbAlertWhenDirectoryMissing.setEnabled(enable);
         bApplyFileOrderSource.setEnabled(false);
     }
 
@@ -964,12 +971,26 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
         }
     }
 
-    private void fillFileOrderSource(boolean clear) {
-        tDirectory.setText(clear ? "" : listener.getFileOrderSource("directory"));
-        tRegex.setText(clear ? "" : listener.getFileOrderSource("regex"));
-        tDelayAfterError.setText(clear ? "" : listener.getFileOrderSource("delay_after_error"));
-        tRepeat.setText(listener.getFileOrderSource(clear ? "" : "repeat"));
-        tNextState.setText(listener.getFileOrderSource(clear ? "" : "next_state"));
+
+    private void clearFileOrderSource() {
+        
+        tDirectory.setText("");
+        tRegex.setText("");
+        tDelayAfterError.setText("");
+        tRepeat.setText("");
+        tNextState.setText("");
+        cbAlertWhenDirectoryMissing.setSelection(false);
+        bApplyFileOrderSource.setEnabled(false);
+    }
+    
+    private void fillFileOrderSource() {
+        
+        tDirectory.setText(listener.getFileOrderSource("directory"));
+        tRegex.setText(listener.getFileOrderSource("regex"));
+        tDelayAfterError.setText(listener.getFileOrderSource("delay_after_error"));
+        tRepeat.setText(listener.getFileOrderSource("repeat"));
+        tNextState.setText(listener.getFileOrderSource("next_state"));
+        cbAlertWhenDirectoryMissing.setSelection(listener.isAlertWhenDirectoryMissing());
         bApplyFileOrderSource.setEnabled(false);
     }
 
@@ -1012,7 +1033,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
 
     private void applyFileOrderSource() {
         if (Utils.isRegExpressions(tRegex.getText())) {
-            listener.applyFileOrderSource(tDirectory.getText(), tRegex.getText(), tNextState.getText(), tRepeat.getText(), tDelayAfterError.getText());
+            listener.applyFileOrderSource(tDirectory.getText(), tRegex.getText(), tNextState.getText(), tRepeat.getText(), tDelayAfterError.getText(),cbAlertWhenDirectoryMissing.getSelection());
             listener.fillFileOrderSource(tFileOrderSource);
             bApplyFileOrderSource.setEnabled(false);
             bRemoveFileOrderSource.setEnabled(false);
@@ -1020,7 +1041,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             tMoveTo.setEnabled(bFullNode.getEnabled());
             bRemoveFile.setEnabled(bFullNode.getEnabled());
             listener.selectFileOrderSource(null);
-            fillFileOrderSource(true);
+            clearFileOrderSource();
             enableFileOrderSource(false);
         }
         else {
@@ -1031,8 +1052,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
     private boolean isValidNode() {
         if (tState.getText().equals("") || bFullNode.getSelection() && cJob.getText().equals("")) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -1040,8 +1060,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
     private boolean isValidSource() {
         if (tDirectory.getText().equals("")) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -1057,8 +1076,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), isLifeElement, listener.get_dom().getFilename());
             detail.showDetails();
             detail.getDialogForm().setParamsForWizzard(listener.get_dom(), update, jobname);
-        }
-        else {
+        } else {
             DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), state, null, isLifeElement, listener.get_dom().getFilename());
             detail.showDetails();
             detail.getDialogForm().setParamsForWizzard(listener.get_dom(), update, jobname);
