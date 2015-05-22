@@ -924,11 +924,23 @@ public class JobChainListener {
 		return index;
 	}
 
-	public void deleteNode(final Table tableNodes) {
-		List nodes = _chain.getChildren();
+	public void deleteNode(Table tableNodes) {
+		List <Element> nodes = _chain.getChildren();
 		int index = getIndexOfNode(tableNodes.getItem(tableNodes.getSelectionIndex()));
 		DetailsListener.deleteDetailsState(tableNodes.getSelection()[0].getText(0), Utils.getAttributeValue("name", _chain), _dom);
-		nodes.remove(index);
+        String state = _node.getAttributeValue("state");
+        String nextState = _node.getAttributeValue("next_state");
+        
+        List <Element>list = _chain.getChildren("job_chain_node");
+        for (int i = 0; i < list.size(); i++) {
+            Element e = list.get(i);
+            String aktNextState = e.getAttributeValue("next_state");
+            if (aktNextState != null && aktNextState.equals(state)) {
+                e.setAttribute("next_state", nextState);
+            } 
+        }
+  
+ 		nodes.remove(index);
 		_node = null;
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
