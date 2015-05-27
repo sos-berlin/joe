@@ -127,9 +127,9 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 				}
 				String newName = tName.getText().trim();
 				boolean existname = Utils.existName(newName, listener.getChain(), "job_chain");
-				if (existname)
-					tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-				else {
+				if (existname){
+                    tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+				} else {
 					tName.setBackground(null);
 				}
 				if (update != null){
@@ -138,8 +138,9 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 				
 				listener.setChainName(newName);
 				String strJobChainName = "";
-				if (listener.getChainName() != null)
-					strJobChainName = listener.getChainName();
+				if (listener.getChainName() != null){
+                    strJobChainName = listener.getChainName();
+				}
 				jobChainGroup.setText(JOE_M_JobChainForm_JobChain.params(strJobChainName));
 				changeJobChainName = true;
 			}

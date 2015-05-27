@@ -179,16 +179,16 @@ public class DetailsListener {
 				if (state != null && state.length() > 0) {
 					//					Parameter der Job mit der state.. bestimmen
 					params_ = getStateParams(order);
-				}
-				else {
+				} else {
 					//globale parameter
 					params_ = order.getChild("params");
 				}
 			}
-			if (params_ != null)
-				params = params_.getChildren();
-			else
-				params = new java.util.ArrayList();
+			if (params_ != null){
+                params = params_.getChildren();
+			}else{
+                params = new java.util.ArrayList();
+			}
 		}
 		catch (Exception e) {
 			hasError = true;
@@ -204,12 +204,14 @@ public class DetailsListener {
 	}
 
 	public String getNote(String language) {
-		if (language == null)
-			return getNoteText(noteEN);
-		if (language.equalsIgnoreCase("de"))
-			return getNoteText(noteDE);
-		else
-			return getNoteText(noteEN);
+		if (language == null){
+            return getNoteText(noteEN);
+		}
+		if (language.equalsIgnoreCase("de")){
+            return getNoteText(noteDE);
+		}else{
+            return getNoteText(noteEN);
+		}
 	}
 
 	public void setNote(String noteText, String language) {
@@ -218,8 +220,7 @@ public class DetailsListener {
 				noteDE = createNote(language);
 			}
 			setNoteText(noteDE, noteText);
-		}
-		else {
+		} else {
 			if (noteEN == null) {
 				noteEN = createNote(language);
 			}
@@ -777,7 +778,7 @@ public class DetailsListener {
 	 */ 
 	public static void changeDetailsJobChainname(String newJobChainName, String oldJobchainName, SchedulerDom _dom) {
 		try {
-			DetailsListener detailListener = new DetailsListener(oldJobchainName, null, null, JOEConstants.JOB_CHAINS, null, _dom.isLifeElement()
+			DetailsListener detailListener = new DetailsListener(newJobChainName, null, null, JOEConstants.JOB_CHAINS, null, _dom.isLifeElement()
 					|| _dom.isDirectory(), _dom.getFilename());
 			XPath x = XPath.newInstance("settings/job_chain[@name='" + oldJobchainName + "']");
 			List listOfElement = x.selectNodes(detailListener.getDoc());

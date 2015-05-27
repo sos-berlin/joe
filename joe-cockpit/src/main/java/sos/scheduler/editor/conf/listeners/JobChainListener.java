@@ -83,7 +83,7 @@ public class JobChainListener {
 					h.put(_chain, new java.io.File(path, oldjobChainName + ".config.xml").getCanonicalPath());
 					currentTab.setData("details_parameter", h);
 				}
-				//für das Speicher per FTP
+
 				String filename = _dom.isLifeElement() ? new File(_dom.getFilename()).getParent() : _dom.getFilename();
 				currentTab.setData("ftp_details_parameter_file", filename + "/" + name + ".config.xml");
 				if (oldjobChainName != null && oldjobChainName.length() > 0 && new File(filename + "/" + oldjobChainName + ".config.xml").exists()) {
@@ -97,7 +97,6 @@ public class JobChainListener {
 		if (oldjobChainName != null && oldjobChainName.length() > 0) {
 			if (_dom.isChanged() && (_dom.isDirectory() && !Utils.existName(oldjobChainName, _chain, "job_chain") || _dom.isLifeElement())) {
 				_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
-				//_dom.setChangedForDirectory("job_chain", oldjobChainName + ".config.xml" , SchedulerDom.DELETE);
 			}
 		}
 		Utils.setAttribute("name", name, _chain);

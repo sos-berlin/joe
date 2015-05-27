@@ -1150,8 +1150,8 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 	}
 
 	/**
-	 * Überprüfen, ob job Chain namen verändert wurden. Wenn ja, dann die job chain note parameter anpassen
-	 * Job Chain Note Parameter
+	 * Überprüfen, ob job Chain namen verändert wurden. Wenn ja, dann die job chain node parameter anpassen
+	 * Job Chain Node Parameter
 	 */
 	public void saveJobChainNodeParameter() {
 		try {
