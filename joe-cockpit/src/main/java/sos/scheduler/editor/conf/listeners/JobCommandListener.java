@@ -19,7 +19,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 public class JobCommandListener {
 	private ISchedulerUpdate	_main;
 	private SchedulerDom		_dom;
-	private String[]			_chains	= new String[0];
 	private List				_params;
 	private List				_environments;
 	private Element				_command;
@@ -366,23 +365,29 @@ public class JobCommandListener {
 	}
 
 	public String[] getJobChains() {
-		if (_dom.isLifeElement())
+		String[] _chains	= new String[0];
+
+		if (_dom.isLifeElement()){
 			return new String[0];
+		}
+		
 		Element element = null;
-		if (_job != null && _job.getParentElement() != null && _job.getParentElement().getParentElement() != null)
+		if (_job != null && _job.getParentElement() != null && _job.getParentElement().getParentElement() != null){
 			element = _job.getParentElement().getParentElement().getChild("job_chains");
+		}
+		
 		if (element != null) {
-			List chains = element.getChildren("job_chain");
+			List<Element> chains = element.getChildren("job_chain");
 			_chains = new String[chains.size()];
 			int index = 0;
-			Iterator it = chains.iterator();
+			Iterator <Element> it = chains.iterator();
 			while (it.hasNext()) {
-				String name = ((Element) it.next()).getAttributeValue("name");
+				String name = (it.next()).getAttributeValue("name");
 				_chains[index++] = name != null ? name : "";
 			}
-		}
-		else
+		} else {
 			_chains = new String[0];
+		}
 		return _chains;
 	}
 
