@@ -191,7 +191,6 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             });
             bApplyNode.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
             bApplyNode.setEnabled(false);
-            // composite_2.setLayout(gridLayout_6);
             label7 = JOE_L_JCNodesForm_Job.Control(new Label(gNodes, SWT.NONE));
             butGoto = JOE_B_JobChainNodes_Goto.Control(new Button(gNodes, SWT.ARROW | SWT.DOWN));
             butGoto.addSelectionListener(new SelectionAdapter() {
@@ -203,13 +202,8 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             cJob = JOE_Cbo_JCNodesForm_Job.Control(new Combo(gNodes, SWT.BORDER));
             cJob.setVisibleItemCount(9);
             cJob.setMenu(new sos.scheduler.editor.app.ContextMenu(cJob, dom, JOEConstants.JOB).getMenu());
-            // Utils.goTo(cJob.getText(), listener.get_dom(),
-            // sos.scheduler.editor.app.JOEConstants.JOB);
-            /*
-             * cJob.addListener(SWT.MenuDetect, new Listener() { public void
-             * handleEvent(Event e) { //e.doit = cJob.getSelectionCount() > 0; }
-             * });
-             */
+           
+          
             cJob.addMouseListener(new MouseAdapter() {
                 @Override public void mouseDown(final MouseEvent e) {
                     if (refresh) {
@@ -275,9 +269,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
                     }
                 }
             });
-            // txtStateText = new Text(composite_2, SWT.BORDER);
-            // txtStateText.setBounds(0, 0, composite_2.getBounds().height,
-            // composite_2.getBounds().height);
+         
             @SuppressWarnings("unused") final Label delayLabel = JOE_L_JCNodesForm_Delay.Control(new Label(gNodes, SWT.NONE));
             tDelay = JOE_T_JCNodesForm_Delay.Control(new Text(gNodes, SWT.BORDER));
             tDelay.addModifyListener(new ModifyListener() {
@@ -363,9 +355,6 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
                     enableNode(true);
                     fillNode(true);
                     tState.setFocus();
-                    // test
-                    // cNextState.setVisible(false);
-                    // txtStateText.setVisible(true);
                     cNextState.setVisibleItemCount(0);
                 }
             });
@@ -662,7 +651,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             butReturnCode.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             butReturnCode.addSelectionListener(new SelectionAdapter() {
                 @Override public void widgetSelected(final SelectionEvent e) {
-                    JobchainNodeReturnCodeDialog jobchainNodeReturnCodeDialog = new JobchainNodeReturnCodeDialog(getShell(), 0);
+                    JobchainNodeReturnCodeDialog jobchainNodeReturnCodeDialog = new JobchainNodeReturnCodeDialog(getShell(), 0, listener);
                     jobchainNodeReturnCodeDialog.setJobchainListOfReturnCodeElements(listener.getJobchainListOfReturnCodeElements());
                     jobchainNodeReturnCodeDialog.execute();
                     listener.setJobchainListOfReturnCodeElements(jobchainNodeReturnCodeDialog.getJobchainListOfReturnCodeElements());
@@ -926,10 +915,12 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             tState.setText(clear ? "" : listener.getState());
             tDelay.setText(clear ? "" : listener.getDelay());
             cJob.setItems(listener.getJobs());
-            if (listener.getStates().length > 0)
+            if (listener.getStates().length > 0){
                 cNextState.setItems(listener.getStates());
-            if (listener.getAllStates().length > 0)
+            }
+            if (listener.getAllStates().length > 0){
                 cErrorState.setItems(listener.getAllStates());
+            }
             tMoveTo.setText(listener.getMoveTo());
             bRemoveFile.setSelection(listener.getRemoveFile());
             int job = cJob.indexOf(listener.getJob());

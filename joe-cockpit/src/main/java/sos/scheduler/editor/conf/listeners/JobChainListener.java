@@ -1080,4 +1080,35 @@ public class JobChainListener {
 	public void setISchedulerUpdate(final ISchedulerUpdate update_) {
 		update = update_;
 	}
+	
+	
+	public String[] getJobChains() {
+		String[] listOfchains = new String[0];
+
+		if (_dom.isLifeElement()){
+			return new String[0];
+		}
+		
+		Element element = null;
+		if (_chain != null && _chain.getParentElement() != null && _chain.getParentElement().getParentElement() != null){
+			element = _chain.getParentElement().getParentElement().getChild("job_chains");
+		}
+
+		if (element != null) {
+			List <Element>chains = element.getChildren("job_chain");
+			listOfchains = new String[chains.size()];
+			int index = 0;
+			Iterator <Element> it = chains.iterator();
+			while (it.hasNext()) {
+				String name = ( it.next()).getAttributeValue("name");
+				listOfchains[index++] = name != null ? name : "";
+			}
+		} else {
+			listOfchains = new String[0];
+		}
+		return listOfchains;
+	}
+
+	
+	
 }
