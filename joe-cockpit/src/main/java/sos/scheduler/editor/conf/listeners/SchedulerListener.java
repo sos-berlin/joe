@@ -22,7 +22,6 @@ import org.jdom.Element;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.forms.ClusterForm;
-import sos.scheduler.editor.conf.forms.CommandsForm;
 import sos.scheduler.editor.conf.forms.ConfigForm;
 import sos.scheduler.editor.conf.forms.DateForm;
 import sos.scheduler.editor.conf.forms.DaysForm;
@@ -32,7 +31,8 @@ import sos.scheduler.editor.conf.forms.JobChainForm;
 import sos.scheduler.editor.conf.forms.JobChainNestedNodesForm;
 import sos.scheduler.editor.conf.forms.JobChainNodesForm;
 import sos.scheduler.editor.conf.forms.JobChainsForm;
-import sos.scheduler.editor.conf.forms.JobCommandForm;
+import sos.scheduler.editor.conf.forms.JobCommandFormAddOrder;
+import sos.scheduler.editor.conf.forms.JobCommandFormStartJob;
 import sos.scheduler.editor.conf.forms.JobCommandsForm;
 import sos.scheduler.editor.conf.forms.JobDocumentationForm;
 import sos.scheduler.editor.conf.forms.JobLockUseForm;
@@ -1251,7 +1251,12 @@ public class SchedulerListener {
                             new sos.scheduler.editor.conf.forms.JobCommandExitCodesForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
                             break;
                         case JOEConstants.JOB_COMMAND:
-                            new JobCommandForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+                            if (objElement.getName().equalsIgnoreCase("start_job")) {
+                                new JobCommandFormStartJob(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+                            }
+                            else {
+                                new JobCommandFormAddOrder(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
+                            }
                             break;
                         case JOEConstants.JOB_COMMANDS:
                             new JobCommandsForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm, this);
