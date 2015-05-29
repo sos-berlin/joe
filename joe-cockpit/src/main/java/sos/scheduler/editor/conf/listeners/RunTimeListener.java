@@ -65,7 +65,6 @@ public class RunTimeListener {
 	public void setSchedule(String schedule) {
 		if (_runtime != null) {
 			Utils.setAttribute("schedule", schedule, _runtime, _dom);
-			//_gui.updateRunTime();
 			if (_dom.isDirectory() || _dom.isLifeElement())
 				_dom.setChangedForDirectory(_job, SchedulerDom.MODIFY);
 		}

@@ -86,13 +86,11 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 	}
 
 	public void apply() {
-		// if (isUnsaved())
-		// addParam();
+		
 	}
 
 	public boolean isUnsaved() {
 		return false;
-		// return bApply.isEnabled();
 	}
 
 	private void initialize() {
@@ -119,11 +117,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		tOrderId.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				/*if (event) {                  
-				    listener.setOrderId(tOrderId.getText(), true, !checkName());
-				    group.setText("Order: " + tOrderId.getText());
-				}
-				 */
+				
 				if (event) {
 					if (checkName()) {
 						listener.setCommandAttribute("id", tOrderId.getText());
@@ -162,8 +156,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 						tState.setItems(listener.getStates());
 						tState.setText(curstate);
 						cboStates.setItems(listener.getStates());
-						//                        cboStates.add("global");
-						//                        cboStates.setText("global");
+
 						cboStates.add(JOE_M_OrderForm_Global.label());
 						cboStates.setText(JOE_M_OrderForm_Global.label());
 						String curEndstate = listener.getCommandAttribute("end_state");
@@ -175,18 +168,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 					}
 			}
 		});
-		/*Button butBrowse = new Button(gOrder, SWT.NONE);
-		butBrowse.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-		butBrowse.addSelectionListener(new SelectionAdapter() {
-		    public void widgetSelected(final SelectionEvent e) {                
-		        String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB_CHAIN);
-		        if(jobname != null && jobname.length() > 0) {
-		            cJobchain.setText(jobname);
-		        }
-		    }
-		});
-		butBrowse.setText("Browse");
-		 */
+		
 		final Label titleLabel = JOE_L_OrderForm_Title.Control(new Label(gOrder, SWT.NONE));
 		final GridData gridData_6 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
 		gridData_6.widthHint = 47;
@@ -194,8 +176,9 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		tTitle = JOE_T_OrderForm_Title.Control(new Text(gOrder, SWT.BORDER));
 		tTitle.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				if (event)
+				if (event){
 					listener.setCommandAttribute("title", tTitle.getText());
+				}
 			}
 		});
 		tTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
@@ -209,8 +192,9 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		});
 		tPriority.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				if (event)
-					listener.setCommandAttribute("priority", tPriority.getText());
+				if (event){
+                    listener.setCommandAttribute("priority", tPriority.getText());
+				}
 			}
 		});
 		tPriority.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
@@ -219,8 +203,9 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		tState = JOE_T_OrderForm_State.Control(new Combo(gOrder, SWT.BORDER));
 		tState.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				if (event)
-					listener.setCommandAttribute("state", tState.getText());
+				if (event){
+                    listener.setCommandAttribute("state", tState.getText());
+				}
 			}
 		});
 		tState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
@@ -229,8 +214,9 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		cboEndState = JOE_Cbo_OrderForm_EndState.Control(new Combo(gOrder, SWT.NONE));
 		cboEndState.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
-				if (event)
+				if (event){
 					listener.setCommandAttribute("end_state", cboEndState.getText());
+				}
 			}
 		});
 		cboEndState.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1));
@@ -248,7 +234,6 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		butRemove.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				if (xmlDetailsConfigFilename != null && xmlDetailsConfigFilename.length() > 0 && new File(xmlDetailsConfigFilename).exists()) {
-					//                  int ok = MainWindow.message(Messages.getString("detailform.remove_state"), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
 					int ok = MainWindow.message(JOE_M_OrderForm_RemoveState.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
 					if (ok == SWT.YES) {
 						if (!new File(xmlDetailsConfigFilename).delete())
@@ -267,10 +252,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		});
 		butDetails.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				// DetailForm dialogForm =new DetailForm(composite, SWT.NONE, cJobchain.getText(), tState.getText(), null,
-				// JOEConstants.JOB_CHAINS, null, null, dom.isLifeElement(), dom.getFilename());
-				// DetailDialogForm detail = new DetailDialogForm(cJobchain.getText(), tState.getText(), tOrderId.getText(),
-				// dom.isLifeElement() || dom.isDirectory(), dom.getFilename());
+				
 				String state = cboStates.getText().length() == 0 || cboStates.getText().equals("global") ? null : cboStates.getText();
 				DetailDialogForm detail = new DetailDialogForm(cJobchain.getText(), state, tOrderId.getText(), dom.isLifeElement() || dom.isDirectory(),
 						dom.getFilename());
@@ -286,7 +268,6 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 	 * This method initializes group1
 	 */
 	private void createGroup1() {
-		// listener.setCommandAttribute("replace", "yes");
 	}
 
 	/**
@@ -299,9 +280,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		gridData18.grabExcessHorizontalSpace = true;
 		gridData18.grabExcessVerticalSpace = true;
 		gridData18.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		if (!dom.isLifeElement()) {
-		}
-		// new ParameterForm(dom, order, main, group, JOEConstants.ORDER);
+	
 		createGroup1();
 		createGroup2();
 	}
@@ -336,8 +315,6 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		cJobchain.setText(listener.getCommandAttribute("job_chain"));
 		tPriority.setText(listener.getCommandAttribute("priority"));
 		cboStates.setItems(listener.getStates());
-		//        cboStates.add("global");
-		//        cboStates.setText("global");
 		cboStates.add(JOE_M_OrderForm_Global.label());
 		cboStates.setText(JOE_M_OrderForm_Global.label());
 		butDetails.setEnabled(cJobchain.getText().length() > 0);
@@ -368,16 +345,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 	}
 
 	private void existDetailsConfigurationsFile() {
-		/*sos.scheduler.editor.conf.listeners.DetailsListener detailListener = 
-		    new sos.scheduler.editor.conf.listeners.DetailsListener(cJobchain.getText(), 
-		            cboStates.getText(), 
-		            tOrderId.getText(),  
-		            JOEConstants.JOB_CHAINS, 
-		            null, 
-		            dom.isLifeElement() || dom.isDirectory(), 
-		            dom.getFilename());
-		xmlDetailsConfigFilename = detailListener.getConfigurationFilename();
-		 */
+		
 		try {
 			String path = dom.getFilename();
 			String xmlPaths = "";
@@ -412,9 +380,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		}
 		catch (Exception e) {
 			try {
-				//              System.out.println("..error in " + sos.util.SOSClassUtil.getMethodName() + ": " + e.getMessage());
 				System.out.println(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + ": " + e.getMessage());
-				//              new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {

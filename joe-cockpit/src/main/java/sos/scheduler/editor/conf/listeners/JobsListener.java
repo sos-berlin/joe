@@ -83,24 +83,7 @@ public class JobsListener extends JOEListener {
 		}
 	}
 
-/*
-	public void newJob(Table table) {
-		Element job = new Element("job");
-		job.setAttribute("name", "job" + (table.getItemCount() + 1));
-		Element runtime = new Element("run_time");
-		//runtime.setAttribute("let_run", "no");
-		if (_list == null)
-			initJobs();
-		_list.add(job.addContent(runtime));
-				
-		fillTable(table);
-		table.setSelection(table.getItemCount() - 1);
-		_main.updateJobs();
-		_main.expandItem("Job: "+ "job" + (table.getItemCount()));
-		_dom.setChanged(true);
-		
-		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.NEW);
-	}*/
+
 	
 	private String getNewJobName(){
 		int i = 1;

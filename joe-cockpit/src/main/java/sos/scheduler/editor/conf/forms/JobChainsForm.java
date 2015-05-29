@@ -124,11 +124,14 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		bRemoveChain.setEnabled(false);
 		bRemoveChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+                
 				int c = MainWindow.message(getShell(), JOE_M_JobChainsForm_RemoveChain.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-				if (c != SWT.YES)
+				if (c != SWT.YES){
 					return;
-				if (Utils.checkElement(tChains.getSelection()[0].getText(0), listener.get_dom(), JOEConstants.JOB_CHAINS, null))//wird der Job woandes verwendet?
+				}
+				if (Utils.checkElement(tChains.getSelection()[0].getText(0), listener.get_dom(), JOEConstants.JOB_CHAINS, null)){//wird der Job woandes verwendet?
 					deleteChain();
+				}
 			}
 		});
 		butDetails = JOE_B_JobChainsForm_Details.Control(new Button(jobchainsGroup, SWT.NONE));

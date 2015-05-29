@@ -68,7 +68,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
         jobListener = new JobListener(dom, jobChain, update);
 		initialize();
 		setToolTipText();
-		fillChain(false, false);
+		fillChain();
 		this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
 		init = false;
 	}
@@ -309,6 +309,8 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
         bVisible = JOE_B_JobChainForm_Visible.Control(button_2);
 		bVisible.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		bVisible.setSelection(true);
+
+		
 		bVisible.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 if (init){
@@ -322,7 +324,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 	 
 	}
 
-	private void fillChain(boolean enable, boolean isNew) {
+	private void fillChain() {
 		tName.setEnabled(true);
 		bRecoverable.setEnabled(true);
 		bVisible.setEnabled(true);
@@ -334,6 +336,11 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
         sMaxorders.setText(String.valueOf(listener.getMaxOrders()));
         cProcessClass.setItems(jobListener.getProcessClasses());
         cProcessClass.setText(listener.getProcessClass());
+        
+        listener.setVisible(bVisible.getSelection());
+        listener.setDistributed(butDistributed.getSelection());
+        listener.setRecoverable(bRecoverable.getSelection());
+
 	}
 
 	public void setISchedulerUpdate(ISchedulerUpdate update_) {

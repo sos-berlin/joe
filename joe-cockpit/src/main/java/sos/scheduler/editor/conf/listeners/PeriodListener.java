@@ -13,10 +13,7 @@ public class PeriodListener {
 	private Element			_period					= null;
 	private Element			_at						= null;
 	private String[]		_whenHolidays			= { "previous non holiday", "next non holiday", "suppress execution", "ignore holiday" };
-	//suppress
-	//ignore_holiday
-	//previous_non_holiday
-	//next_non_holiday
+	
 	private HashMap			_realNameWhenHolidays	= null;
 
 	public PeriodListener(SchedulerDom dom) {

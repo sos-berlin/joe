@@ -738,12 +738,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 									if (type == JOEConstants.RUNTIME) {
 										elem = elem.getChild("run_time");
 										if (elem != null) {
-											/*int hasAttribute = Utils.getAttributeValue("begin", elem).length() + Utils.getAttributeValue("end", elem).length() +
-											(Utils.getAttributeValue("let_run", elem).equals("yes") ? 1 : 0) +
-											(Utils.getAttributeValue("once", elem).equals("yes") ? 1 : 0);
-
-											if(hasAttribute > 0)
-											*/
+											
 											if (elem.getAttributes().size() > 0)
 												isBold = true;
 										}

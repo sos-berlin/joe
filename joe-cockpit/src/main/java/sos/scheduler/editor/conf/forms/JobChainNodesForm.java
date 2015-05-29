@@ -759,8 +759,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             tRepeat.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
             new Label(gFileOrderSource, SWT.NONE);
             @SuppressWarnings("unused") final Label alertWhenDirectoryMissingLabel = JOE_L_JCNodesForm_AlertWhenDirectoryMissing .Control(new Label(gFileOrderSource, SWT.NONE));
-            cbAlertWhenDirectoryMissing = JOE_B_JCNodesForm_Reorder.Control(new Button(gFileOrderSource, SWT.CHECK));
-    
+            cbAlertWhenDirectoryMissing = new Button(gFileOrderSource, SWT.CHECK);
             cbAlertWhenDirectoryMissing.addSelectionListener(new SelectionAdapter() {
                 @Override public void widgetSelected(final SelectionEvent e) {
                     bApplyFileOrderSource.setEnabled(isValidSource());

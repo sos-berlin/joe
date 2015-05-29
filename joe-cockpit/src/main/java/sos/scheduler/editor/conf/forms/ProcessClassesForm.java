@@ -40,9 +40,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
  */
 public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 	private ProcessClassesListener	listener		= null;
-	//	final String					JOE_L_at_port				= "JOE_L_at_port";				// "at Port";
-	//	final String					JOE_L_Apply					= "JOE_L_Apply";				// "Apply";
-	//	final String					JOE_L_Remove_Process_Class	= "JOE_L_Remove_Process_Class"; // "Remove Process Class";
+	 
 	private Group					group;
     private Table                   tableRemoteScheduler   = null;
     private static Table            tableProcessClasses    = null;
@@ -137,10 +135,11 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         tProcessClass.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
             public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
                 boolean valid = listener.isValidClass(tProcessClass.getText()) || dom.isLifeElement();
-                if (valid)
+                if (valid){
                     tProcessClass.setBackground(null);
-                else
+                }else{
                     tProcessClass.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+                }
                 btApply.setEnabled(valid);
             }
         });

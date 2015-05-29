@@ -63,6 +63,10 @@ public class OrderListener {
 				}
 			}
 		}
+		
+		if (tableParameters.getItemCount() == 0){
+		    _order.removeChild("params");
+		}
 	}
 
 	public void deleteParameter(Table table, int index) {
@@ -77,7 +81,6 @@ public class OrderListener {
 
 	public void saveParameter(Table table, String name, String value) {
 		boolean found = false;
-		//String value2 = value.replaceAll("\"", "&quot;");
 		if (_params != null) {
 			int index = 0;
 			Iterator it = _params.iterator();
@@ -88,7 +91,6 @@ public class OrderListener {
 					if (e.getName().equals("param")) {
 						if (name.equals(e.getAttributeValue("name"))) {
 							found = true;
-							//e.setAttribute("value", value2);
 							e.setAttribute("value", value);
 							_dom.setChanged(true);
 							_dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", _order) + "," + Utils.getAttributeValue("id", _order),
@@ -103,15 +105,16 @@ public class OrderListener {
 		if (!found) {
 			Element e = new Element("param");
 			e.setAttribute("name", name);
-			//e.setAttribute("value", value2);
 			e.setAttribute("value", value);
 			_dom.setChanged(true);
 			_dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", _order) + "," + Utils.getAttributeValue("id", _order),
 					SchedulerDom.MODIFY);
-			if (_params == null)
+			if (_params == null){
 				initParams();
-			if (_params != null)
+			}
+			if (_params != null){
 				_params.add(e);
+			}
 			TableItem item = new TableItem(table, SWT.NONE);
 			item.setText(new String[] { name, value });
 		}
@@ -147,7 +150,6 @@ public class OrderListener {
 				for (int i = 0; i < stateList.size(); i++)
 					retVal[i] = stateList.get(i).toString();
 			}
-			//if(!listOfElement_3.isEmpty())
 		}
 		catch (Exception e) {
 			try {
@@ -241,11 +243,7 @@ public class OrderListener {
 				String name = Utils.getAttributeValue("id", e) + "," + Utils.getAttributeValue("job_chain", e);
 				if (!e.equals(_order) && removename != null && name.equals(removename))
 					return true;
-				/*if(!h.containsKey(name)) {
-					h.put(name, "");	    				
-				} else {	    				
-					return true;
-				}*/
+				
 			}
 		}
 		return false;

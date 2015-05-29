@@ -78,6 +78,19 @@ public class Utils {
 			return "";
 	}
 
+	public static String getAttributeValue(String attribute, Element element, String default_) {
+        if (element != null) {
+            String val = element.getAttributeValue(attribute);
+            if (val == null){
+                return default_;
+            }else{
+                return val;
+            }
+        }
+        else
+            return "";
+    }
+
 	public static int getIntValue(String attribute, Element element) {
 		return getIntValue(attribute, 0, element);
 	}
@@ -100,6 +113,10 @@ public class Utils {
 	public static boolean isAttributeValue(String attribute, Element element) {
 		return getAttributeValue(attribute, element).equalsIgnoreCase("yes");
 	}
+	
+    public static boolean isAttributeValue(String attribute, Element element,String default_) {
+        return getAttributeValue(attribute, element,default_).equalsIgnoreCase("yes");
+    }
 
 	public static boolean getBooleanValue(String attribute, Element element) {
 		return getAttributeValue(attribute, element).equalsIgnoreCase("true");

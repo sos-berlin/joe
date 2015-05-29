@@ -134,8 +134,7 @@ public class JobChainListener {
 	public void setMaxorders(final int maxOrder) {
 		if (maxOrder == 0) {
 			_chain.removeAttribute("max_orders");
-		}
-		else {
+		} else {
 			Utils.setAttribute("max_orders", maxOrder, _chain);
 		}
 		_dom.setChanged(true);
@@ -161,22 +160,30 @@ public class JobChainListener {
 	}
 
 	public boolean getRecoverable() {
-		return Utils.isAttributeValue("orders_recoverable", _chain);
+		return Utils.isAttributeValue("orders_recoverable", _chain,"yes");
 	}
 
 	public void setRecoverable(final boolean ordersRecoverable) {
-		Utils.setAttribute("orders_recoverable", ordersRecoverable, _chain);
+	    if (ordersRecoverable){
+	        _chain.removeAttribute("orders_recoverable");
+	    }else{
+		    Utils.setAttribute("orders_recoverable", ordersRecoverable, _chain);
+	    }
 		_dom.setChanged(true);
 		if (_dom.isDirectory() || _dom.isLifeElement())
 			_dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
 	}
 
 	public boolean getVisible() {
-		return Utils.isAttributeValue("visible", _chain);
+ 		return Utils.isAttributeValue("visible", _chain,"yes");
 	}
 
 	public void setVisible(final boolean visible) {
-		Utils.setAttribute("visible", visible, _chain);
+	    if (visible){
+            _chain.removeAttribute("visible");
+        }else{
+	    	Utils.setAttribute("visible", visible, _chain);
+        }
 		_dom.setChanged(true);
 		if (_dom.isDirectory() || _dom.isLifeElement())
 			_dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
@@ -200,9 +207,9 @@ public class JobChainListener {
 				_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
 		}
 		Utils.setAttribute("name", name, _chain);
-		Utils.setAttribute("orders_recoverable", ordersRecoverable, _chain);
-		Utils.setAttribute("visible", visible, _chain);
-		Utils.setAttribute("distributed", distributed, false, _chain);
+		setRecoverable(ordersRecoverable);
+		setVisible(visible);
+		setDistributed(distributed); 
 		Utils.setAttribute("title", title, _chain);
 		_dom.setChanged(true);
 		if (_dom.isDirectory() || _dom.isLifeElement())
@@ -473,7 +480,7 @@ public class JobChainListener {
 	}
 	
 	public boolean isAlertWhenDirectoryMissing(){
-        return (Utils.getAttributeValue("alert_when_directory_missing", _source).equalsIgnoreCase("yes"));
+	    return Utils.isAttributeValue("alert_when_directory_missing", _source,"no");
 	}
 
 	public String getState() {
@@ -867,11 +874,15 @@ public class JobChainListener {
 			final String delay_after_error,boolean alertWhenDirectoryMissing) {
 		Element source = null;
 		if (_source != null) {
+		    if (!alertWhenDirectoryMissing) {
+	            _chain.removeAttribute("alert_when_directory_missing");
+	        } else {
+	            Utils.setAttribute("alert_when_directory_missing", alertWhenDirectoryMissing, _source, _dom);
+	        }
 			Utils.setAttribute("directory", directory, _source, _dom);
 			Utils.setAttribute("regex", regex, _source, _dom);
 			Utils.setAttribute("next_state", next_state, _source, _dom);
             Utils.setAttribute("repeat", repeat, _source, _dom);
-            Utils.setAttribute("alert_when_directory_missing", alertWhenDirectoryMissing, _source, _dom);
 			Utils.setAttribute("delay_after_error", delay_after_error, _source, _dom);
 		}
 		else {
@@ -880,8 +891,12 @@ public class JobChainListener {
 			Utils.setAttribute("regex", regex, source, _dom);
 			Utils.setAttribute("next_state", next_state, source, _dom);
 			Utils.setAttribute("repeat", repeat, source, _dom);
-            Utils.setAttribute("alert_when_directory_missing", alertWhenDirectoryMissing, source, _dom);
-			Utils.setAttribute("delay_after_error", delay_after_error, source, _dom);
+		    if (!alertWhenDirectoryMissing) {
+	             _chain.removeAttribute("alert_when_directory_missing");
+	        } else {
+	              Utils.setAttribute("alert_when_directory_missing", alertWhenDirectoryMissing, _source, _dom);
+	        }			
+		    Utils.setAttribute("delay_after_error", delay_after_error, source, _dom);
 			_chain.addContent(source);
 			_source = source;
 		}

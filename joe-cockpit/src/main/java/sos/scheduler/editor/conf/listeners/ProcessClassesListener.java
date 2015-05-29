@@ -1,6 +1,7 @@
 package sos.scheduler.editor.conf.listeners;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListResourceBundle;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -48,17 +49,19 @@ public class ProcessClassesListener {
         _listProcessClasses = _processClasses.getChildren("process_class");
     }
 
+    
     private void initRemoteScheduler() {
-        if (_class.getChild("remote_schedulers") == null) {
+
+        if (_class.getChild("remote_schedulers") == null ) {
             _remoteSchedulers = new Element("remote_schedulers");
             _class.addContent(_remoteSchedulers);
         }
         else {
             _remoteSchedulers = _class.getChild("remote_schedulers");
         }
-        if (_remoteSchedulers != null) {
-            _listRemoteScheduler = _remoteSchedulers.getChildren("remote_scheduler");
-        }
+        
+        _listRemoteScheduler = _remoteSchedulers.getChildren("remote_scheduler");
+     
     }
 
     public void fillProcessClassesTable(Table tableProcessClasses) {
@@ -68,8 +71,9 @@ public class ProcessClassesListener {
                 Element e = (Element) it.next();
                 TableItem item = new TableItem(tableProcessClasses, SWT.NONE);
                 String name = Utils.getAttributeValue("name", e);
-                if (name.equals(""))
+                if (name.equals("")){
                     name = CATCHALL;
+                }
                 item.setText(0, name);
                 item.setText(1, "" + Utils.getIntValue("max_processes", e));
                 item.setText(2, Utils.getAttributeValue("remote_scheduler", e));
@@ -83,10 +87,13 @@ public class ProcessClassesListener {
     public void fillRemoteSchedulerTable(Table tableRemoteScheduler) {
         
             
-            initRemoteScheduler();
-            
+        initRemoteScheduler();
+             
             tableRemoteScheduler.removeAll();
             if (_listRemoteScheduler != null) {
+                if (_listRemoteScheduler.size()== 0){
+                    _class.removeChild("remote_schedulers");
+                }
                 for (Iterator it = _listRemoteScheduler.iterator(); it.hasNext();) {
                     Element e = (Element) it.next();
                     TableItem item = new TableItem(tableRemoteScheduler, SWT.NONE);
@@ -186,8 +193,6 @@ public class ProcessClassesListener {
 
 	public void newProcessClass() {
 		_class = new Element("process_class");
-       // initRemoteScheduler();
-
 	}
 
 	public void applyProcessClass(String processClass, String host, String port, int maxProcesses) {
@@ -198,8 +203,9 @@ public class ProcessClassesListener {
 		if (host.trim().concat(port.trim()).length() > 0) {
 			Utils.setAttribute("remote_scheduler", host.trim() + ":" + port.trim(), _class, _dom);
 		}
-		if (_listProcessClasses == null)
+		if (_listProcessClasses == null){
 			initClasses();
+		}
 		if (!_listProcessClasses.contains(_class)) {
 			_listProcessClasses.add(_class);
 			_dom.setChangedForDirectory("process_class", processClass, SchedulerDom.NEW);

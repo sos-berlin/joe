@@ -112,10 +112,10 @@ public class OrdersListener {
 		}
 		Element add_order = new Element("order");
 		Element runtime = new Element("run_time");
-		runtime.setAttribute("let_run", "no");
 		add_order.setAttribute("id", id);
-		if (_commands == null)
-			initCommands();
+		if (_commands == null){
+            initCommands();
+		}
 		add_order.addContent(runtime);
 		_orders2.add(add_order);
 		fillTable(table);
