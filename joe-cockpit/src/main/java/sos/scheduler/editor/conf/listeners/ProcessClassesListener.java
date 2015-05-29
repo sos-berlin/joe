@@ -216,8 +216,9 @@ public class ProcessClassesListener {
  
 
     public void applyRemoteSchedulerTable(Table tableRemoteScheduler) {
+    	_class.removeChild("remote_schedulers");
         if (tableRemoteScheduler.getItemCount() > 0) {
-            this.initRemoteScheduler();
+        	this.initRemoteScheduler();
             _listRemoteScheduler.clear();
         }
         for (int i = 0; i < tableRemoteScheduler.getItemCount(); i++) {
