@@ -103,14 +103,18 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			bNewJob.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					listener.newJob(table, false);
-					bRemoveJob.setEnabled(true);
+					if (table.getSelection().length > 0){
+						bRemoveJob.setEnabled(true);
+					}
 				}
 			});
 			newOrderJob = JOE_B_JobsForm_NewOrderJob.Control(new Button(group, SWT.NONE));
 			newOrderJob.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent e) {
 					listener.newJob(table, true);
-					bRemoveJob.setEnabled(true);
+					if (table.getSelection().length > 0){
+						bRemoveJob.setEnabled(true);
+					}
 				}
 			});
 			newOrderJob.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
@@ -124,13 +128,9 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 					}
 					catch (Exception ex) {
 						try {
-							//							new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not start assistent.", ex);
 							new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + " ; " + JOE_M_0040.label(), ex);
 						}
-						catch (Exception ee) {
-							// tu nichts
-						}
-						//						System.out.println("..error " + ex.getMessage());
+						catch (Exception ee) {}
 						System.out.println(JOE_E_0002.params("createGroup()") + ex.getMessage());
 					}
 					finally {
@@ -145,29 +145,26 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					//					int c = MainWindow.message(getShell(), "Do you want remove the job?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					int c = MainWindow.message(getShell(), JOE_M_RemoveJob.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-					if (c != SWT.YES)
+					if (c != SWT.YES){
 						return;
-					if (Utils.checkElement(table.getSelection()[0].getText(1), dom, JOEConstants.JOBS, null))// wird der
-						// Job
-						// woandes
-						// verwendet?
+					}
+					if ((table.getSelection().length > 0) && (Utils.checkElement(table.getSelection()[0].getText(1), dom, JOEConstants.JOBS, null))){
+						// wird der Job woandes verwendet?
 						bRemoveJob.setEnabled(listener.deleteJob(table));
+					}
 				}
 			});
 			bRemoveJob.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			label = new Label(group, SWT.SEPARATOR | SWT.HORIZONTAL);
 			label.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
-			//			label.setText("Label");
 		}
 		catch (Exception e) {
 			try {
-				//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
 			catch (Exception ee) {
 				// tu nichts
 			}
-			//			System.err.println("..error in JobsForm.createGroup() " + e.getMessage());
 			System.err.println(JOE_E_0002.params("JobsForm.createGroup()") + e.getMessage());
 		}
 	}
@@ -192,7 +189,9 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			table.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 				@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					if (Utils.isElementEnabled("job", dom, (Element) e.item.getData())) {
-						bRemoveJob.setEnabled(true);
+						if (table.getSelection().length > 0){
+							bRemoveJob.setEnabled(true);
+						}
 					}
 					else {
 						bRemoveJob.setEnabled(false);
