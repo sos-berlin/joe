@@ -392,9 +392,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
 					enableNode(true);
 					fillNode(true);
 					tState.setFocus();
-					// test
-					// cNextState.setVisible(false);
-					// txtStateText.setVisible(true);
+				
 					cNextState.setVisibleItemCount(0);
 				}
 			});
@@ -673,12 +671,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
 							listener.selectNode(null);
 							fillNode(true);
 							enableNode(false);
-							// listener.applyNode(bFullNode.getSelection() ||
-							// bEndNode.getSelection(), tState.getText(),
-							// cJob.getText(), tDelay.getText(),
-							// cNextState.getText(),
-							// cErrorState.getText(),bRemoveFile.getSelection(),tMoveTo.getText(),
-							// cOnError.getText());
+						 
 						}
 					}
 					catch (Exception ex) {
@@ -700,13 +693,15 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
 				@Override public void widgetSelected(final SelectionEvent e) {
 					if (tNodes.getSelectionCount() > 0) {
 						int c = MainWindow.message(getShell(), JOE_M_JCNodesForm_Remove.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-						if (c != SWT.YES)
+						if (c != SWT.YES){
 							return;
+						}
 						int index = tNodes.getSelectionIndex();
 						listener.deleteNode(tNodes);
 						tNodes.remove(index);
-						if (index >= tNodes.getItemCount())
+						if (index >= tNodes.getItemCount()){
 							index--;
+						}
 						boolean empty = tNodes.getItemCount() == 0;
 						fillNode(empty);
 						enableNode(!empty);
