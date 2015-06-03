@@ -85,10 +85,7 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		tChains.setLinesVisible(true);
 		tChains.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				/*if (e.detail == SWT.CHECK) {
-					e.doit = false;
-					return;
-				}*/
+ 
 				boolean enabled = true;
 				if (tChains.getSelectionCount() > 0) {
 					listener.selectChain(tChains.getSelectionIndex());
@@ -113,10 +110,6 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		bNewChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				createNewJobChain();
-				/*listener.newChain();
-				applyChain();
-				tChains.deselectAll();
-				butDetails.setEnabled(false);*/
 			}
 		});
 		bRemoveChain = JOE_B_JobChainsForm_RemoveChain.Control(new Button(jobchainsGroup, SWT.NONE));
@@ -125,10 +118,13 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		bRemoveChain.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				int c = MainWindow.message(getShell(), JOE_M_JobChainsForm_RemoveChain.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-				if (c != SWT.YES)
+				if (c != SWT.YES){
 					return;
-				if (Utils.checkElement(tChains.getSelection()[0].getText(0), listener.get_dom(), JOEConstants.JOB_CHAINS, null))//wird der Job woandes verwendet?
+				}
+				if ((tChains.getSelection().length > 0) && (Utils.checkElement(tChains.getSelection()[0].getText(0), listener.get_dom(), JOEConstants.JOB_CHAINS, null))){
+					//wird der Job woandes verwendet?
 					deleteChain();
+				}
 			}
 		});
 		butDetails = JOE_B_JobChainsForm_Details.Control(new Button(jobchainsGroup, SWT.NONE));
@@ -155,38 +151,36 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 			int index = tChains.getSelectionIndex();
 			listener.deleteChain(index);
 			tChains.remove(index);
-			if (index >= tChains.getItemCount())
+			if (index >= tChains.getItemCount()){
 				index--;
+			}
 			if (tChains.getItemCount() > 0) {
 				tChains.select(index);
 				listener.selectChain(index);
 			}
 		}
-		boolean selection = tChains.getSelectionCount() > 0;
-		bRemoveChain.setEnabled(selection);
+		bRemoveChain.setEnabled(tChains.getSelectionCount() > 0 );
 	}
 
 	private void applyChain() {
 		int i = tChains.getItemCount() + 1;
-		//	   String newName = "job_chain" + i;
 		String newName = JOE_M_JobChain.label() + i;
 		while (listener.indexOf(newName) >= 0) {
 			i++;
-			//		  newName = "job_chain" + i;
 			newName = JOE_M_JobChain.label() + i;
 		}
 		listener.applyChain(newName, true, true);
 		int index = tChains.getSelectionIndex();
-		if (index == -1)
+		if (index == -1){
 			index = tChains.getItemCount();
+		}
 		listener.fillChains(tChains);
-		tChains.select(index);
-		bRemoveChain.setEnabled(true);
+		tChains.select(tChains.getItemCount()-1);
+		bRemoveChain.setEnabled(tChains.getSelectionCount() > 0);
 		getShell().setDefaultButton(bNewChain);
 		if (listener.getChainName() != null && listener.getChainName().length() > 0) {
 			butDetails.setEnabled(true);
-		}
-		else {
+		} else {
 			butDetails.setEnabled(false);
 		}
 	}
@@ -202,8 +196,7 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 	private void showDetails(String state) {
 		String name = tChains.getSelection()[0].getText(0);
 		if (name != null && name.length() > 0) {
-			//OrdersListener ordersListener =  new OrdersListener(listener.get_dom(), update);
-			//String[] listOfOrders = ordersListener.getOrderIds();
+ 
 			boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory();
 			if (state == null) {
 				DetailDialogForm detail = new DetailDialogForm(name, isLifeElement, listener.get_dom().getFilename());
@@ -232,7 +225,6 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 	public void createNewJobChain() {
 		listener.newChain();
 		applyChain();
-		tChains.deselectAll();
 		butDetails.setEnabled(false);
 	}
 
