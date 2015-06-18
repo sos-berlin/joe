@@ -228,7 +228,7 @@ public class SourceGenerator extends JSToolBox {
 			throw new JobSchedulerException(e);
 		}
 		finally {
-			MessageDialog.openInformation(ErrorLog.getSShell(), "Result of run \n", strMessage);
+			//MessageDialog.openInformation(ErrorLog.getSShell(), "Result of run \n", strMessage);
 		}
 	}
 

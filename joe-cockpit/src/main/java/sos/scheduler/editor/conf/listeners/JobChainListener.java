@@ -1,4 +1,6 @@
 package sos.scheduler.editor.conf.listeners;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_E_0002;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +18,7 @@ import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
 import org.jdom.output.DOMOutputter;
+import org.jdom.xpath.XPath;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -904,6 +907,21 @@ public class JobChainListener {
 		_dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);
 	}
 
+  /*  public void applyReturnCodes(){ 
+        Element onReturnCodes = getOnReturnCodes();
+      
+        if (_node != null) {
+            if (onReturnCodes != null){
+                Element e = _node.getChild("on_return_codes");
+                if (e != null){
+                    e.detach();
+                 }
+                  _node.addContent(onReturnCodes);
+                  _dom.setChanged(true);
+                  _dom.setChangedForDirectory("job_chain", Utils.getAttributeValue("name", _chain), SchedulerDom.MODIFY);            }
+        } 
+    }
+         */
 	private int getIndexOfNode(final TableItem item) {
 		int index = 0;
 		if (_chain != null) {
@@ -1097,7 +1115,7 @@ public class JobChainListener {
 		return true;
 	}
 
-	public SchedulerDom get_dom() {
+	public SchedulerDom getDom() {
 		return _dom;
 	}
 
@@ -1136,7 +1154,39 @@ public class JobChainListener {
 		}
 		return listOfchains;
 	}
+	
+    public boolean isNestedJobchain() {
+        try {
+            XPath x3 = XPath.newInstance("//job_chain[@name='" + getChainName() + "']/job_chain_node.job_chain");
+            List listOfElement_3 = x3.selectNodes(getDom().getDoc());
+            if (listOfElement_3.isEmpty())
+                return false;
+            else
+                return true;
+        }
+        catch (Exception e) {
+            try {
+                new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+            }
+            catch (Exception ee) {
+                // tu nichts
+            }
+            return true;
+        }
+    }    
 
+    public boolean hasFileorderSource(){
+        if (_chain != null) {
+            Iterator<Element> it = _chain.getChildren().iterator();
+            while (it.hasNext()) {
+                Element node =   it.next();
+                if (node.getName() == "file_order_source") {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 	
 	
 }

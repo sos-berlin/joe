@@ -1,4 +1,7 @@
 package sos.scheduler.editor.conf.forms;
+import java.io.File;
+import java.io.StringReader;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -19,11 +22,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.composites.JobChainDiagramComposite;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
@@ -31,7 +37,9 @@ import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
+import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
+import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
@@ -111,7 +119,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		tName.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				if (!init) {
-					e.doit = Utils.checkElement(listener.getChainName(), listener.get_dom(), JOEConstants.JOB_CHAIN, null);
+					e.doit = Utils.checkElement(listener.getChainName(), listener.getDom(), JOEConstants.JOB_CHAIN, null);
 				}
 			}
 		});
@@ -149,8 +157,8 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		butDetails.setEnabled(true);
 		butDetails.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				if (listener.get_dom().isChanged() && changeJobChainName) {
-					if (listener.get_dom().getFilename() == null) {
+				if (listener.getDom().isChanged() && changeJobChainName) {
+					if (listener.getDom().getFilename() == null) {
 						MainWindow.message(JOE_M_JobChainForm_SaveChain.label(), SWT.ICON_WARNING);
 					}
 					else {
@@ -208,12 +216,12 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
         
         @SuppressWarnings("unused") Label lblProcessClass = JOE_L_JobChainForm_ProcessClass.Control(new Label(jobChainGroup, SWT.NONE));
         butShowProcessClass = JOE_B_JobMainComposite_ShowProcessClass.Control(new Button(jobChainGroup, SWT.ARROW | SWT.DOWN));
-        butShowProcessClass.setVisible(listener.get_dom() != null && !listener.get_dom().isLifeElement());
+        butShowProcessClass.setVisible(listener.getDom() != null && !listener.getDom().isLifeElement());
         butShowProcessClass.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(final SelectionEvent e) {
                 String strT = cProcessClass.getText();
                 if (strT.length() > 0) {
-                    ContextMenu.goTo(strT, listener.get_dom(), JOEConstants.PROCESS_CLASSES);
+                    ContextMenu.goTo(strT, listener.getDom(), JOEConstants.PROCESS_CLASSES);
                 }
             }
         });
@@ -223,7 +231,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
         Combo combo = new Combo(jobChainGroup, SWT.NONE);
         combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         cProcessClass = JOE_Cbo_JobMainComposite_ProcessClass.Control(combo);
-        cProcessClass.setMenu(new ContextMenu(cProcessClass, listener.get_dom(), JOEConstants.PROCESS_CLASSES).getMenu());
+        cProcessClass.setMenu(new ContextMenu(cProcessClass, listener.getDom(), JOEConstants.PROCESS_CLASSES).getMenu());
         cProcessClass.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
                 if (init) {
@@ -252,7 +260,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
             @Override public void mouseDoubleClick(MouseEvent arg0) {
                 String strT = cProcessClass.getText();
                 if (strT.length() > 0) {
-                    ContextMenu.goTo(strT, listener.get_dom(), JOEConstants.PROCESS_CLASSES);
+                    ContextMenu.goTo(strT, listener.getDom(), JOEConstants.PROCESS_CLASSES);
                 }
             }
         });
@@ -320,10 +328,44 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 				 
 			}
 		});
-        new Label(jobChainGroup, SWT.NONE);
+        
+		new Label(jobChainGroup, SWT.NONE);        
+ 
+		if (Options.isShowDiagram()){
+            JobChainDiagramComposite jobChainDiagramComposite = new JobChainDiagramComposite(jobChainGroup);
+            GridData gd_jobChainDiagramComposite = new GridData(SWT.FILL, SWT.FILL, true, true, 4, 2);
+            gd_jobChainDiagramComposite.heightHint = 226;
+            jobChainDiagramComposite.setLayoutData(gd_jobChainDiagramComposite);
+            try {
+                String xml = Utils.getElementAsString(listener.getChain());
+                File inputFile = new File(listener.getDom().getFilename(),listener.getChainName() + ".job_chain.xml~");
+                jobChainDiagramComposite.jobChainDiagram(xml,inputFile);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+            jobChainDiagramComposite.layout();
+		}
 	 
 	}
+	private boolean saveXML(final String xml, String filename) {
+        boolean saveFile = false;
+        try {
+            SAXBuilder builder2 = new SAXBuilder();
 
+            Document doc = builder2.build(new StringReader(xml));
+            SchedulerDom dom = new SchedulerDom(SchedulerDom.DIRECTORY);
+            saveFile = dom.writeElement(filename, doc);
+        }
+        
+        catch (Exception e) {
+            ErrorLog.message("could not save file " + filename + ". cause:" + e.getMessage(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
+            saveFile = false;
+        }
+        finally{
+            return saveFile;
+        }
+    }	
+    
 	private void fillChain() {
 		tName.setEnabled(true);
 		bRecoverable.setEnabled(true);
@@ -349,16 +391,16 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 
 	private void showDetails(String state) {
 		if (tName.getText() != null && tName.getText().length() > 0) {
-			boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory();
+			boolean isLifeElement = listener.getDom().isLifeElement() || listener.getDom().isDirectory();
 			if (state == null) {
-				DetailDialogForm detail = new DetailDialogForm(tName.getText(), isLifeElement, listener.get_dom().getFilename());
+				DetailDialogForm detail = new DetailDialogForm(tName.getText(), isLifeElement, listener.getDom().getFilename());
 				detail.showDetails();
-				detail.getDialogForm().setParamsForWizzard(listener.get_dom(), update);
+				detail.getDialogForm().setParamsForWizzard(listener.getDom(), update);
 			}
 			else {
-				DetailDialogForm detail = new DetailDialogForm(tName.getText(), state, null, isLifeElement, listener.get_dom().getFilename());
+				DetailDialogForm detail = new DetailDialogForm(tName.getText(), state, null, isLifeElement, listener.getDom().getFilename());
 				detail.showDetails();
-				detail.getDialogForm().setParamsForWizzard(listener.get_dom(), update);
+				detail.getDialogForm().setParamsForWizzard(listener.getDom(), update);
 			}
 		}
 		else {

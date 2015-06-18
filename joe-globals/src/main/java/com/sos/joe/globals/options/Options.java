@@ -47,7 +47,8 @@ import com.sos.resources.SOSProductionResource;
 	private static Properties							JOESettingsDefaults							= null;
 	private static Properties							_properties									= null;
 	private static boolean								_changed									= false;
-	private static boolean								_showWizardInfo								= true;
+    private static boolean                              _showWizardInfo                             = true;
+    private static boolean                              _showDiagram                                = false;
 	private static String[]								jobTitleList								= null;
 	private static HashMap								holidaysDescription							= null;
 	public static String								conJOEGreeting								= "";
@@ -315,9 +316,6 @@ import com.sos.resources.SOSProductionResource;
 			if (!listOfElement.isEmpty()) {
 				Element e = listOfElement.get(0);
 				String version = e.getText();
-				//int pos1 = version.indexOf("$") + "$Id: ".length();
-				//int pos2 = version.indexOf("jz $");
-				//version = version.substring(pos1, pos2);
 				_properties.put("editor.schemaversion", version);
 			}
 		}
@@ -632,18 +630,31 @@ import com.sos.resources.SOSProductionResource;
 		}
 	}
 
-	public static boolean isShowWizardInfo() {
-		String s = getProperty("editor.job.wizard.info.show");
-		if (s != null && s.trim().length() > 0) {
-			_showWizardInfo = s.equals("true");
-		}
-		return _showWizardInfo;
-	}
+    public static boolean isShowWizardInfo() {
+        String s = getProperty("editor.job.wizard.info.show");
+        if (s != null && s.trim().length() > 0) {
+            _showWizardInfo = s.equals("true");
+        }
+        return _showWizardInfo;
+    }
 
-	public static void setShowWizardInfo(final boolean wizardInfo) {
-		_showWizardInfo = wizardInfo;
-		setProperty("editor.job.wizard.info.show", wizardInfo ? "true" : "false");
-	}
+    public static void setShowDiagram(final boolean showDiagram) {
+        _showDiagram = showDiagram;
+        setProperty("editor.jobchain.digagram.show", showDiagram ? "true" : "false");
+    }
+
+    public static boolean isShowDiagram() {
+        String s = getProperty("editor.jobchain.digagram.show");
+        if (s != null && s.trim().length() > 0) {
+            _showDiagram = s.equals("true");
+        }
+        return _showDiagram;
+    }
+
+    public static void setShowWizardInfo(final boolean wizardInfo) {
+        _showWizardInfo = wizardInfo;
+        setProperty("editor.job.wizard.info.show", wizardInfo ? "true" : "false");
+    }
 
 	public static boolean getPropertyBoolean(final String name) {
 		String s = getProperty(name);

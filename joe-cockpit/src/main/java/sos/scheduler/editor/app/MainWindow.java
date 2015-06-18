@@ -1,5 +1,9 @@
 package sos.scheduler.editor.app;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -57,7 +61,10 @@ import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 @I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class MainWindow {
-	private static final String	conNewlineTab							= "n\t";
+    public static final String  name        = System.getProperty("os.name");
+    public static final boolean isWindows   = name.startsWith("Windows");
+    private static String       DOT         = isWindows ? "dot.exe" : "dot";
+    private static final String	conNewlineTab							= "n\t";
 	private static final String	conPropertyNameEDITOR_JOB_SHOW_WIZARD	= "editor.job.show.wizard";
 	private static final String	conStringEDITOR							= "editor";
 	private static final String	conIconOPEN_HOT_FOLDER_GIF				= "/sos/scheduler/editor/icon_open_hot_folder.gif";
@@ -87,7 +94,27 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		logger.debug(conSVNVersion);
 	}
 
+
+    private String getCommandString(String[] args) {
+        StringBuffer b = new StringBuffer();
+        for (String s : args) {
+            b.append(s + " ");
+        }
+        return b.toString();
+    }
 	private void createContainer(Composite objParent) {
+	    
+	    
+	    Runtime rt = Runtime.getRuntime();
+        String[] args = { DOT, "-T" + "", "", "-o", "" };
+        try {
+            rt.exec(args);
+            Options.setShowDiagram(true);
+        } catch (IOException e) {
+            Options.setShowDiagram(false);
+        }
+        
+        
 		container = new TabbedContainer(objParent);
 		 
 		sShell.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
@@ -111,7 +138,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			}
 
 			@Override public void shellIconified(ShellEvent arg0) {
-				// System.out.println("icon");
 			}
 		});
  	}
