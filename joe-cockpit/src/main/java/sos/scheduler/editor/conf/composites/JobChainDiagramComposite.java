@@ -49,7 +49,8 @@ public class JobChainDiagramComposite extends Composite {
     private boolean fitToScreen=true;
     private boolean showErrorNodes=true;
     private Canvas canvas;
-
+    private int headerHeight;
+    private Menu contentMenu;
     
     public class InputTask extends TimerTask {
         public void run() {
@@ -69,8 +70,9 @@ public class JobChainDiagramComposite extends Composite {
         }
     }
     
-    public JobChainDiagramComposite(Composite parent_) {
+    public JobChainDiagramComposite(Composite parent_,int headerHeight_) {
         super(parent_, SWT.NONE);
+        headerHeight = headerHeight_;
         inputTimer = new Timer();
      }
 
@@ -131,11 +133,14 @@ public class JobChainDiagramComposite extends Composite {
         this.setLayout(layout);
         createContents();
  
+        createMenue();
         diagramFile = generateDiagram(inputFile,outputDir);
         showDiagram(diagramFile);
 
-        createMenue();
-        inputFile.delete();
+
+        if (inputFile.getAbsolutePath().endsWith("~")){
+            inputFile.delete();
+        }
         this.layout();
     }
     
@@ -158,7 +163,7 @@ public class JobChainDiagramComposite extends Composite {
         double scale = 1;
         if (fitToScreen){
             Rectangle rect = originalImage.getBounds();
-            double a =  this.getShell().getClientArea().height-360;
+            double a =  this.getShell().getClientArea().height-headerHeight;
             double b = rect.height;
             scale = a/b;
             }
@@ -173,6 +178,7 @@ public class JobChainDiagramComposite extends Composite {
         final Point origin = new Point(0, 0);
         canvas = new Canvas(gJobchainDiagramm, SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL);
         canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        canvas.setMenu(contentMenu);
         final ScrollBar hBar = canvas.getHorizontalBar();
         hBar.addListener(SWT.Selection, new Listener() {
             @Override
@@ -212,13 +218,15 @@ public class JobChainDiagramComposite extends Composite {
                 int hSelection = hBar.getSelection();
                 int vSelection = vBar.getSelection();
                 if (hSelection >= hPage) {
-                    if (hPage <= 0)
+                    if (hPage <= 0){
                         hSelection = 0;
+                    }
                     origin.x = -hSelection;
                 }
                 if (vSelection >= vPage) {
-                    if (vPage <= 0)
+                    if (vPage <= 0){
                         vSelection = 0;
+                    }
                     origin.y = -vSelection;
                 }
                 canvas.redraw();
@@ -246,13 +254,13 @@ public class JobChainDiagramComposite extends Composite {
     }
    
    public void createMenue() {
-       Menu contentMenu = new Menu(gJobchainDiagramm);
+       contentMenu = new Menu(gJobchainDiagramm);
        gJobchainDiagramm.setMenu(contentMenu);
-       canvas.setMenu(contentMenu);
        // =============================================================================================
        final MenuItem showErrorMenuItem = new SOSMenuItem(contentMenu, SWT.CHECK,"showErrornodes","Show error nodes",true);
-
+        showErrorNodes = showErrorMenuItem.getSelection();
         showErrorMenuItem.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+            
            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                try {
                    showErrorNodes = showErrorMenuItem.getSelection();
@@ -269,6 +277,7 @@ public class JobChainDiagramComposite extends Composite {
              
        new MenuItem(contentMenu, SWT.SEPARATOR);
        final SOSMenuItem fitToScreenMenuItem = new SOSMenuItem(contentMenu, SWT.CHECK,"fittoScreen","Fit to Screen",true);
+       fitToScreen = fitToScreenMenuItem.getSelection();
        fitToScreenMenuItem.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                try {
@@ -286,86 +295,7 @@ public class JobChainDiagramComposite extends Composite {
        
    }   
 
-   private void showDiagram2(File diagramFile) throws Exception {
-       
-       Image originalImage = null;
-       try {
-           originalImage = new Image(gJobchainDiagramm.getDisplay(), new FileInputStream(diagramFile));
-       } catch (FileNotFoundException e1) {
-           new ErrorLog(e1.getLocalizedMessage(), e1);
-       }
-       final Image image = originalImage;
-       final Point origin = new Point(0, 0);
-       final Canvas canvas = new Canvas(gJobchainDiagramm, SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL);
-       canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-       final ScrollBar hBar = canvas.getHorizontalBar();
-       hBar.addListener(SWT.Selection, new Listener() {
-           @Override
-           public void handleEvent(final Event e) {
-               int hSelection = hBar.getSelection();
-               int destX = -hSelection - origin.x;
-               Rectangle rect = image.getBounds();
-               canvas.scroll(destX, 0, 0, 0, rect.width, rect.height, false);
-               origin.x = -hSelection;
-           }
-       });
-       final ScrollBar vBar = canvas.getVerticalBar();
-       vBar.addListener(SWT.Selection, new Listener() {
-           @Override
-           public void handleEvent(final Event e) {
-               int vSelection = vBar.getSelection();
-               int destY = -vSelection - origin.y;
-               Rectangle rect = image.getBounds();
-               canvas.scroll(0, destY, 0, 0, rect.width, rect.height, false);
-               origin.y = -vSelection;
-           }
-       });
-       canvas.addListener(SWT.Resize, new Listener() {
-           @Override
-           public void handleEvent(final Event e) {
-               Rectangle rect = image.getBounds();
-               Rectangle client = canvas.getClientArea();
-               hBar.setMaximum(rect.width);
-               vBar.setMaximum(rect.height);
-               hBar.setThumb(Math.min(rect.width, client.width));
-               vBar.setThumb(Math.min(rect.height, client.height));
-               int hPage = rect.width - client.width;
-               int vPage = rect.height - client.height;
-               int hSelection = hBar.getSelection();
-               int vSelection = vBar.getSelection();
-               if (hSelection >= hPage) {
-                   if (hPage <= 0)
-                       hSelection = 0;
-                   origin.x = -hSelection;
-               }
-               if (vSelection >= vPage) {
-                   if (vPage <= 0)
-                       vSelection = 0;
-                   origin.y = -vSelection;
-               }
-               canvas.redraw();
-           }
-       });
-       canvas.addListener(SWT.Paint, new Listener() {
-           @Override
-           public void handleEvent(final Event e) {
-               GC gc = e.gc;
-               gc.drawImage(image, origin.x, origin.y);
-               Rectangle rect = image.getBounds();
-               Rectangle client = canvas.getClientArea();
-               int marginWidth = client.width - rect.width;
-               if (marginWidth > 0) {
-                   gc.fillRectangle(rect.width, 0, marginWidth, client.height);
-               }
-               int marginHeight = client.height - rect.height;
-               if (marginHeight > 0) {
-                   gc.fillRectangle(0, rect.height, client.width, marginHeight);
-               }
-           }
-       });
-
-      this.layout();
-   }
+  
    
    public void resetInputTimer() {
        inputTimer.cancel();

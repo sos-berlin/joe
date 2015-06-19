@@ -18,7 +18,7 @@ public class SOSTabJobChainDiagram extends CTabItem {
         super(parent_, SWT.NONE);
         parent = parent_;
         setText(caption);
-        composite = new JobChainDiagramComposite(parent);
+        composite = new JobChainDiagramComposite(parent,190);
   
         this.setControl(composite);
         composite.layout();
