@@ -2,16 +2,7 @@ package sos.scheduler.editor.app;
 
 import java.util.Map.Entry;
 
- 
-
-
-
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -20,7 +11,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -35,6 +25,7 @@ import sos.scheduler.editor.classes.returncodes.JobchainReturnCodeAddOrderElemen
 import sos.scheduler.editor.classes.returncodes.JobchainReturnCodeElement;
 import sos.scheduler.editor.classes.returncodes.JobchainReturnCodeNextStateElement;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
+import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Group;
@@ -43,7 +34,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 
-public class JobchainNodeReturnCodeDialog extends Dialog {
+public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
 
     protected Object result;
     protected Shell shell;
@@ -62,11 +53,11 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
     private Button btNewJobchainNodeReturnAddOrder;
     private Button btRemoveJobchainNodeReturnCodeAddOrder;
 
-    private Text tReturnCodesNextState;
+    private Text  tReturnCodesNextState;
     private Combo cNextState = null;
     private Table tableJobchainNodeReturnCodesAddOrder;
     private Combo cJobChain;
-    private Text tOrderId;
+    private Text  tOrderId;
     private Table tableParams;
 
     private Group grpGroup;
@@ -91,13 +82,13 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
     public JobchainNodeReturnCodeDialog(Shell parent_, int style, JobChainListener listener_) {
         super(parent_, style);
         listener = listener_;
-        setText("Exit Codes");
-        parent = parent_;
+         parent = parent_;
     }
 
     public void execute() {
         Display display = Display.getDefault();
         Shell shell = open(display);
+        
         while (!shell.isDisposed()) {
             if (!display.readAndDispatch()) {
                 display.sleep();
@@ -146,9 +137,10 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
     private Shell open(final Display display) {
  
         final Shell dialogShell = new Shell(parent, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
-        dialogShell.setMinimumSize(new Point(900, 700));
+        dialogShell.setMinimumSize(new Point(900, 900));
+        dialogShell.setLocation(parent.getLocation().x+40,parent.getLocation().y+40);
 
-        dialogShell.setSize(1024, 700);
+        dialogShell.setSize(900, 900);
         dialogShell.setLayout(new GridLayout(4, false));
         dialogShell.pack();
 
@@ -161,12 +153,12 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
 
-        Button btnOk = new Button(grpGroup, SWT.NONE);
+        Button btnOk = JOE_B_Apply.Control(new Button(grpGroup, SWT.NONE))  ;
         GridData gd_btnOk = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
         gd_btnOk.widthHint = 58;
         btnOk.setLayoutData(gd_btnOk);
         btnOk.setSize(68, 25);
-        btnOk.setText("Ok");
+    
         btnOk.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -178,9 +170,9 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
             }
         });
 
-        Button btnCancelButton = new Button(grpGroup, SWT.NONE);
+        Button btnCancelButton = JOE_B_Cancel.Control(new Button(grpGroup, SWT.NONE));
+
         btnCancelButton.setSize(48, 25);
-        btnCancelButton.setText("Cancel");
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
@@ -264,10 +256,7 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
                 clearInputFieldsAddOrder();
                 tReturnCodesAddOrder.setFocus();
             }
-             
-            
-            
-        }
+           }
         tableJobchainNodeReturnCodesAddOrder.setSelection(-1);
     }
 
@@ -314,12 +303,12 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
      */
     private void createGroup(Composite parent) {
 
-        // group = JOE_G_ProcessClassesForm_ProcessClasses.Control(new
-        // Group(this, SWT.NONE));
         grpGroup = new Group(parent, SWT.NONE);
+        grpGroup.setText(JOE_G_ReturnCodesForm_ReturnCodes.params(listener.getState())); 
+
         GridData gd_grpGroup = new GridData(SWT.FILL, SWT.CENTER, false, true, 4, 1);
-        gd_grpGroup.widthHint = 871;
-        gd_grpGroup.heightHint = 622;
+        gd_grpGroup.widthHint = 880;
+        gd_grpGroup.heightHint = 900;
         grpGroup.setLayoutData(gd_grpGroup);
         GridLayout gl_grpGroup = new GridLayout(5, false);
         gl_grpGroup.horizontalSpacing = 6;
@@ -329,10 +318,9 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
         createTableNextStates();
 
         GridData gd_btOkJobchainNodeReturnCodeNextState = new GridData(SWT.FILL, SWT.BOTTOM, false, false, 1, 1);
-        gd_btOkJobchainNodeReturnCodeNextState.widthHint = 100;
+        gd_btOkJobchainNodeReturnCodeNextState.widthHint = 140;
 
-        btOkJobchainNodeReturnCodeNextState = new Button(grpGroup, SWT.NONE);
-        btOkJobchainNodeReturnCodeNextState.setText("Add Next State");
+        btOkJobchainNodeReturnCodeNextState = JOE_B_ReturnCodesForm_Add_Next_State.Control(new Button(grpGroup, SWT.NONE))  ;;
         btOkJobchainNodeReturnCodeNextState.setLayoutData(gd_btOkJobchainNodeReturnCodeNextState);
         btOkJobchainNodeReturnCodeNextState.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -342,12 +330,9 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
 
         GridData gd_btNewJobchainNodeReturnNextState = new GridData(SWT.CENTER, SWT.TOP, false, false, 1, 1);
         gd_btNewJobchainNodeReturnNextState.widthHint = 100;
-        // btNewRemoteScheduler =
-        // JOE_B_ProcessClassesForm_NewRemotScheduler.Control(new Button(group,
-        // SWT.NONE));
-        btNewJobchainNodeReturnNextState = new Button(grpGroup, SWT.NONE);
+        
+        btNewJobchainNodeReturnNextState = JOE_B_New.Control(new Button(grpGroup, SWT.NONE));
         btNewJobchainNodeReturnNextState.setEnabled(false);
-        btNewJobchainNodeReturnNextState.setText("New");
         btNewJobchainNodeReturnNextState.setLayoutData(gd_btNewJobchainNodeReturnNextState);
         btNewJobchainNodeReturnNextState.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -358,15 +343,11 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
                 btNewJobchainNodeReturnNextState.setEnabled(false);
             }
         });
-        new Label(grpGroup, SWT.NONE);
 
         GridData gd_btRemoveJobchainNodeReturnCodeNextState = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);
         gd_btRemoveJobchainNodeReturnCodeNextState.widthHint = 100;
-        // btRemoveRemoteScheduler =
-        // JOE_B_ProcessClassesForm_RemoveRemotScheduler.Control(new
-        // Button(group, SWT.NONE));
-        btRemoveJobchainNodeReturnCodeNextState = new Button(grpGroup, SWT.NONE);
-        btRemoveJobchainNodeReturnCodeNextState.setText("Remove");
+
+        btRemoveJobchainNodeReturnCodeNextState = JOE_B_Remove.Control(new Button(grpGroup, SWT.NONE));
         btRemoveJobchainNodeReturnCodeNextState.setLayoutData(gd_btRemoveJobchainNodeReturnCodeNextState);
         btRemoveJobchainNodeReturnCodeNextState.setEnabled(false);
 
@@ -384,6 +365,8 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
                 btRemoveJobchainNodeReturnCodeNextState.setEnabled(tableJobchainNodeReturnCodesNextState.getSelectionCount() > 0);
             }
         });
+
+        new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
 
         Label lbSchedulerReturnCodesNextState = new Label(grpGroup, SWT.NONE);
@@ -398,9 +381,9 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
 
-        Label lbSchedulerRemotePort = new Label(grpGroup, SWT.NONE);
-        lbSchedulerRemotePort.setLayoutData(new GridData(SWT.RIGHT, SWT.BOTTOM, false, false, 1, 1));
-        lbSchedulerRemotePort.setText("State");
+        Label lbState = new Label(grpGroup, SWT.NONE);
+        lbState.setLayoutData(new GridData(SWT.RIGHT, SWT.BOTTOM, false, false, 1, 1));
+        lbState.setText("State");
         
         cNextState = new Combo(grpGroup, SWT.BORDER);
         GridData gd_tNextState = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
@@ -410,21 +393,22 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
         	cNextState.setItems(listener.getAllStates());
         }
         new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+
 
         
         
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
-
-        Label lblNewLabel_1 = new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
 
-        Label lblAddOrders = new Label(grpGroup, SWT.NONE);
+        
+        Label lblAddOrders = JOE_L_ReturnCodesForm_Add_Order.Control(new Label(grpGroup, SWT.NONE));
+
         lblAddOrders.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-        lblAddOrders.setText("Add Orders");
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
@@ -432,7 +416,7 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
 
         createTableAddOrder();
 
-        btOkJobchainNodeReturnCodeAddOrder = new Button(grpGroup, SWT.NONE);
+        btOkJobchainNodeReturnCodeAddOrder = JOE_B_ReturnCodesForm_Add_Order.Control(new Button(grpGroup, SWT.NONE));
         btOkJobchainNodeReturnCodeAddOrder.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -440,12 +424,11 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
             }
         });
         btOkJobchainNodeReturnCodeAddOrder.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        btOkJobchainNodeReturnCodeAddOrder.setText("Add Order");
 
-        btNewJobchainNodeReturnAddOrder = new Button(grpGroup, SWT.NONE);
+        btNewJobchainNodeReturnAddOrder = JOE_B_New.Control(new Button(grpGroup, SWT.NONE));
         btNewJobchainNodeReturnAddOrder.setEnabled(false);
         GridData gd_btNewJobchainNodeReturnAddOrder = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
-        gd_btNewJobchainNodeReturnAddOrder.widthHint = 92;
+        gd_btNewJobchainNodeReturnAddOrder.widthHint = 100;
         btNewJobchainNodeReturnAddOrder.setLayoutData(gd_btNewJobchainNodeReturnAddOrder);
         btNewJobchainNodeReturnAddOrder.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -457,10 +440,9 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
                 btNewJobchainNodeReturnNextState.setEnabled(false);
             }
         });
-        btNewJobchainNodeReturnAddOrder.setText("New");
-        new Label(grpGroup, SWT.NONE);
 
-        btRemoveJobchainNodeReturnCodeAddOrder = new Button(grpGroup, SWT.NONE);
+
+        btRemoveJobchainNodeReturnCodeAddOrder = JOE_B_Remove.Control(new Button(grpGroup, SWT.NONE));
         btRemoveJobchainNodeReturnCodeAddOrder.setEnabled(false);
         btRemoveJobchainNodeReturnCodeAddOrder.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -482,9 +464,10 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
         GridData gd_btRemoveJobchainNodeReturnCodeAddOrder = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
         gd_btRemoveJobchainNodeReturnCodeAddOrder.widthHint = 109;
         btRemoveJobchainNodeReturnCodeAddOrder.setLayoutData(gd_btRemoveJobchainNodeReturnCodeAddOrder);
-        btRemoveJobchainNodeReturnCodeAddOrder.setText("Remove");
+        new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
 
+        
         Label lblNewLabel = new Label(grpGroup, SWT.NONE);
         lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
         lblNewLabel.setText("ReturnCodes");
@@ -493,19 +476,16 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
         tReturnCodesAddOrder.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
         new Label(grpGroup, SWT.NONE);
 
-        Label lblName = new Label(grpGroup, SWT.NONE);
-        lblName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-        lblName.setText("Name");
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
 
-        tParamName = new Text(grpGroup, SWT.BORDER);
-        GridData gd_tParamName = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-        gd_tParamName.widthHint = 254;
-        tParamName.setLayoutData(gd_tParamName);
+        
+        
+     
 
-        Label lblJobChain = new Label(grpGroup, SWT.NONE);
+        Label lblJobChain = JOE_L_OrderForm_JobChain.Control(new Label(grpGroup, SWT.NONE));
         lblJobChain.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-        lblJobChain.setText("Job Chain");
-
+ 
         cJobChain = new Combo(grpGroup, SWT.BORDER);
         cJobChain.setItems(listener.getJobChains());
         
@@ -513,11 +493,10 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
         gd_tJobChain.widthHint = 250;
         cJobChain.setLayoutData(gd_tJobChain);
         
-        Button btnBrowse = new Button(grpGroup, SWT.NONE);
+        Button btnBrowse = JOE_B_JobChainNodes_Browse.Control(new Button(grpGroup, SWT.NONE));
         GridData gd_btnBrowse = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-        gd_btnBrowse.widthHint = 50;
+        gd_btnBrowse.widthHint = 80;
         btnBrowse.setLayoutData(gd_btnBrowse);
-        btnBrowse.setText("Browse");
         btnBrowse.addSelectionListener(new SelectionAdapter() {
             @Override public void widgetSelected(final SelectionEvent e) {
                 String jobChain = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
@@ -528,14 +507,9 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
         });
 
         
-        
-        Label lblValue = new Label(grpGroup, SWT.NONE);
-        lblValue.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-        lblValue.setText("Value");
-
-        tParamValue = new Text(grpGroup, SWT.BORDER);
-        tParamValue.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+       
         Label lblOrderId = new Label(grpGroup, SWT.NONE);
         lblOrderId.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
         lblOrderId.setText("Order ID");
@@ -547,11 +521,38 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
-        new Label(grpGroup, SWT.NONE);
 
-        btAddParam = new Button(grpGroup, SWT.NONE);
+     
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        
+        Label lblName = new Label(grpGroup, SWT.NONE);
+        lblName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+        lblName.setText("Name");
+
+        tParamName = new Text(grpGroup, SWT.BORDER);
+        GridData gd_tParamName = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+        gd_tParamName.widthHint = 254;
+        tParamName.setLayoutData(gd_tParamName);
+
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+       
+        
+        Label lblValue = JOE_L_ParameterForm_Value.Control(new Label(grpGroup, SWT.NONE));
+        lblValue.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+ 
+        tParamValue = new Text(grpGroup, SWT.BORDER);
+        tParamValue.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        btAddParam = JOE_B_ReturnCodesForm_Add_Param.Control(new Button(grpGroup, SWT.NONE));
         btAddParam.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -593,7 +594,6 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
             }
         });
         btAddParam.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        btAddParam.setText("Add Param");
 
         tableParams = new Table(grpGroup, SWT.BORDER | SWT.FULL_SELECTION);
         GridData gd_tableParams = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 7);
@@ -616,17 +616,17 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
         });
 
         TableColumn tblclmnName = new TableColumn(tableParams, SWT.NONE);
-        tblclmnName.setWidth(162);
+        tblclmnName.setWidth(260);
         tblclmnName.setText("Name");
 
         TableColumn tblclmnValue = new TableColumn(tableParams, SWT.NONE);
-        tblclmnValue.setWidth(95);
-        tblclmnValue.setText("Value");
+        tblclmnValue.setWidth(330);
+         tblclmnValue.setText(JOE_L_ParameterForm_Value.label());
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
 
-        btNewParam = new Button(grpGroup, SWT.NONE);
+        btNewParam = JOE_B_ReturnCodesForm_New_Param.Control(new Button(grpGroup, SWT.NONE))  ;;
         btNewParam.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -636,12 +636,11 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
             }
         });
         btNewParam.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        btNewParam.setText("New Param");
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
-
-        btRemoveParam = new Button(grpGroup, SWT.NONE);
+         
+        btRemoveParam = JOE_B_ReturnCodesForm_Remove_Param.Control(new Button(grpGroup, SWT.NONE))  ;;
         btRemoveParam.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -658,11 +657,18 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
             }
         });
         btRemoveParam.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        btRemoveParam.setText("Remove Param");
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);
+        new Label(grpGroup, SWT.NONE);        
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
@@ -684,7 +690,7 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
         tableJobchainNodeReturnCodesAddOrder = new Table(grpGroup, SWT.BORDER | SWT.FULL_SELECTION);
         GridData gd_tableJobchainNodeReturnCodesAddOrder = new GridData(SWT.FILL, SWT.FILL, false, true, 5, 4);
         gd_tableJobchainNodeReturnCodesAddOrder.heightHint = 82;
-        gd_tableJobchainNodeReturnCodesAddOrder.widthHint = 782;
+        gd_tableJobchainNodeReturnCodesAddOrder.widthHint = 720;
         tableJobchainNodeReturnCodesAddOrder.setLayoutData(gd_tableJobchainNodeReturnCodesAddOrder);
         tableJobchainNodeReturnCodesAddOrder.setHeaderVisible(true);
         tableJobchainNodeReturnCodesAddOrder.setLinesVisible(true);
@@ -712,15 +718,15 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
         });
 
         TableColumn tblclmnReturnCodes = new TableColumn(tableJobchainNodeReturnCodesAddOrder, SWT.NONE);
-        tblclmnReturnCodes.setWidth(203);
+        tblclmnReturnCodes.setWidth(250);
         tblclmnReturnCodes.setText("Return Codes");
 
         TableColumn tblclmnJobChain = new TableColumn(tableJobchainNodeReturnCodesAddOrder, SWT.NONE);
-        tblclmnJobChain.setWidth(344);
-        tblclmnJobChain.setText("Job Chain");
+        tblclmnJobChain.setWidth(300);
+        tblclmnJobChain.setText(JOE_TCl_JobCommands_JobChain.label());
 
         TableColumn tblclmnOrderId = new TableColumn(tableJobchainNodeReturnCodesAddOrder, SWT.NONE);
-        tblclmnOrderId.setWidth(233);
+        tblclmnOrderId.setWidth(300);
         tblclmnOrderId.setText("Order ID");
 
     }
@@ -730,9 +736,9 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
      */
     private void createTableNextStates() {
 
-        Label lblNextState = new Label(grpGroup, SWT.NONE);
+        Label lblNextState = JOE_L_JobChainNodes_NextState.Control(new Label(grpGroup, SWT.NONE));
+
         lblNextState.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-        lblNextState.setText("Next State");
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
@@ -742,7 +748,7 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
         tableJobchainNodeReturnCodesNextState.setHeaderVisible(true);
         tableJobchainNodeReturnCodesNextState.setLinesVisible(true);
         GridData gd_tableJobchainNodeReturnCodesNextState = new GridData(SWT.FILL, SWT.FILL, false, false, 5, 3);
-        gd_tableJobchainNodeReturnCodesNextState.widthHint = 832;
+        gd_tableJobchainNodeReturnCodesNextState.widthHint = 720;
         gd_tableJobchainNodeReturnCodesNextState.heightHint = 112;
         tableJobchainNodeReturnCodesNextState.setLayoutData(gd_tableJobchainNodeReturnCodesNextState);
         tableJobchainNodeReturnCodesNextState.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -758,12 +764,12 @@ public class JobchainNodeReturnCodeDialog extends Dialog {
             }
         });
         TableColumn tableColumnHost = new TableColumn(tableJobchainNodeReturnCodesNextState, SWT.NONE);
-        tableColumnHost.setWidth(567);
+        tableColumnHost.setWidth(250);
         tableColumnHost.setText("Return Codes");
 
         TableColumn tableColumnPort = new TableColumn(tableJobchainNodeReturnCodesNextState, SWT.NONE);
-        tableColumnPort.setWidth(261);
-        tableColumnPort.setText("State");
+        tableColumnPort.setWidth(600);
+        tableColumnPort.setText(JOE_L_JobChainNodes_State.label());
 
     }
 

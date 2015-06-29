@@ -6,7 +6,6 @@ JOE_L_JobDoc.Design.label=Design
 JOE_L_JobDoc.Format.label=Format
 
 
-
 JOE_B_Remove.label = Remove
 JOE_B_Remove.tooltip = Deletes the selected element from the list.
 JOE_B_Remove.shorttext = Deletes the selected element from the list.
@@ -26,9 +25,34 @@ JOE_B_Ok.shorttext = Ok
 JOE_B_Ok.F1 =
 JOE_B_Ok.F10 =
 
+JOE_B_New.label = New
+JOE_B_New.tooltip =
+JOE_B_New.shorttext =
+JOE_B_New.F1 =
+JOE_B_New.F10 =
+
+JOE_B_Apply.label = Apply
+JOE_B_Apply.tooltip = Apply
+JOE_B_Apply.shorttext = Apply
+JOE_B_Apply.F1 =
+JOE_B_Apply.F10 =
+
+JOE_B_Cancel.label = Cancel
+JOE_B_Cancel.tooltip = leave this Dialog
+JOE_B_Cancel.shorttext = leave this Dialog
+JOE_B_Cancel.F1 =
+JOE_B_Cancel.F10 =
+
+##Return Codes
+JOE_L_ReturnCodesForm_Add_Order=Add Orders
+JOE_G_ReturnCodesForm_ReturnCodes.label=Return-Codes for %1$s
+JOE_B_ReturnCodesForm_Add_Next_State=Add Next State
+JOE_B_ReturnCodesForm_Add_Order=Add Order
+JOE_B_ReturnCodesForm_Add_Param=Add Param
+JOE_B_ReturnCodesForm_New_Param=New Param
+JOE_B_ReturnCodesForm_Remove_Param=Remove Param
+
 ##BaseForm
-
-
 JOE_G_BaseForm_BaseFiles.label = Object Base Files
 JOE_G_BaseForm_BaseFiles.tooltip =
 JOE_G_BaseForm_BaseFiles.shorttext =
@@ -262,7 +286,6 @@ JOE_T_ProcessClassesForm_Port.tooltip = none
 JOE_T_ProcessClassesForm_Port.shorttext =
 JOE_T_ProcessClassesForm_Port.F1 =
 JOE_T_ProcessClassesForm_Port.F10 =
-
 
 JOE_B_ProcessClassesForm_RemoveRemotScheduler.label = Remove Host
 JOE_B_ProcessClassesForm_RemoveRemotScheduler.tooltip = Remove a Host
@@ -2797,7 +2820,6 @@ JOE_B_JCNodesForm_ReturnCode.F1 =
 JOE_B_JCNodesForm_ReturnCode.F10 =
 
 JOE_M_JCNodesForm_Remove.label = Do you want remove the job node from this job chain?
-
 JOE_G_JCNodesForm_FileOrderSources.label = File Order Sources for %1$s
 
 JOE_L_JCNodesForm_Directory.label = Directory
@@ -3315,8 +3337,8 @@ JOE_L_JobMainOptionForm_Tasks.label = Tasks
 JOE_T_JobMainOptionForm_Tasks.label =
 JOE_T_JobMainOptionForm_Tasks.tooltip = Maximum number of tasks that a job can operate in parallel.
 JOE_T_JobMainOptionForm_Tasks.shorttext = Maximum number of tasks that a job can operate in parallel.
-JOE_T_JobMainOptionForm_Tasks.F1 =
-JOE_T_JobMainOptionForm_Tasks.F10 =
+JOE_T_JobMainOptionForm_Tasks.F1 =[fehlt]
+JOE_T_JobMainOptionForm_Tasks.F10 = [fehlt]
 
 JOE_L_JobMainOptionForm_Timeout.label= Timeout
 
@@ -4102,8 +4124,8 @@ JOE_B_ParameterForm_RemoveEnv.F1 =
 JOE_B_ParameterForm_RemoveEnv.F10 =
 
 JOE_TI_ParameterForm_TabItemIncludes.label = Includes
-JOE_TI_ParameterForm_TabItemIncludes.tooltip =
-JOE_TI_ParameterForm_TabItemIncludes.shorttext =
+JOE_TI_ParameterForm_TabItemIncludes.tooltip =[fehlt]
+JOE_TI_ParameterForm_TabItemIncludes.shorttext = [fehlt]
 JOE_TI_ParameterForm_TabItemIncludes.F1 =
 JOE_TI_ParameterForm_TabItemIncludes.F10 =
 
@@ -7516,6 +7538,9 @@ JOE_L_OrderId = Order ID
 treeitem.order.label=Order
 treeitem.order.tooltip=Order
 
+[fehlt]
+[fehlt]
+
 orders.label=Job Chain Orders
 orders.tooltip=Job chain Orders
 jobchainorders.label=Job Chain Orders
@@ -8283,11 +8308,8 @@ tooltip.web_services.table=The list of Web Services in this configuration.
 tooltip.web_services.timeout=When an order is not forwarded to the first job within the allocated waiting time,\nthen the JobScheduler will reject a HTTP call with\n"504 Gateway Timeout" and cancel the order with a message.
 tooltip.web_services.url=The path of the URL to this Web Service should include a leading "/"\nhost and port are added by the JobScheduler\nand should not be specified here.
 
-***********************TODO 30.07.2009
 
-#tooltip.job.warn_if_longer_than="HH\:MM\:SS|seconds|percentage%"\nWenn ein Jobschritt l\u00E4nger als die angegebenen Zeit dauert, gibt der Scheduler eine Warnung (SCHEDULER-711) aus.\nDie Zeit kann im den Formaten HH\:MM, HH\:MM\:SS, als Sekundenzahl oder als Prozentangabe angegeben werden. Dabei sind 100% die durchschnittliche Laufzeit der bisherigen Jobschritte, ermittelt aus der Datenbanktabelle SCHEDULER_HISTORY.
 tooltip.job.warn_if_longer_than="HH\:MM\:SS|seconds|percentage%"\nIf a step takes longer than the specified time, Scheduler displays a warning (SCHEDULER-711). \nThe time may be specified in HH\:MM or HH\:MM\:SS format, as a number of seconds or as percentage values, whereas 100% is the average run time of previous steps, determined from the database table SCHEDULER_HISTORY.
-#tooltip.job.warn_if_shorter_than="HH\:MM\:SS|seconds|percentage%"\nWenn ein Jobschritt vor der angegebenen Zeit beendet wird, gibt der Scheduler eine Warnung (SCHEDULER-711) aus.\nDie Zeit kann im den Formaten HH\:MM, HH\:MM\:SS, als Sekundenzahl oder als Prozentangabe angegeben werden. Dabei sind 100% die durchschnittliche Laufzeit der bisherigen Jobschritte, ermittelt aus der Datenbanktabelle SCHEDULER_HISTORY.
 tooltip.job.warn_if_shorter_than="HH\:MM\:SS|seconds|percentage%"\nIf a step finishes before the expiration of the specified time, Scheduler displays a warning (SCHEDULER-711). \nThe time may be specified in HH\:MM or HH\:MM\:SS format, as a number of seconds or as percentage values, whereas 100% is the average run time of previous steps, determined from the database table SCHEDULER_HISTORY.
 
 **Formular JobSourceViewer
