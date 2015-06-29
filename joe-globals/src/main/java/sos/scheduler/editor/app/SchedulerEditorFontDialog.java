@@ -38,8 +38,7 @@ public class SchedulerEditorFontDialog {
 	@Deprecated  // use setParent (shell)
 	public SchedulerEditorFontDialog() {
 		super();
-//		objParentShell = MainWindow.getSShell();
-	}
+ 	}
 
 	public SchedulerEditorFontDialog(final Shell pobjParentShell) {
 		super();
@@ -86,7 +85,6 @@ public class SchedulerEditorFontDialog {
 			fontData = new FontData(conDefaultfontName + context, 10, SWT.NORMAL);
 		}
 		else {
-		    System.out.println(conSCRIPT_EDITOR_FONT + context + "---------->" + s);
 			fontData = new FontData(s);
 		}
 		s = Options.getProperty(conSCRIPT_EDITOR_FONT_COLOR + context);
@@ -102,8 +100,6 @@ public class SchedulerEditorFontDialog {
 			foreGround = new RGB(r, g, b);
 		}
 		catch (NumberFormatException e) {
-			//			System.out.println("Wrong colour in Profile");
-			//			System.out.println(SOSJOEMessageCodes.JOE_M_WrongColour.label());
 			foreGround = new RGB(0, 0, 0);
 		}
 	}
@@ -131,7 +127,6 @@ public class SchedulerEditorFontDialog {
 
 	public void show(final Display pobjDisplay) {
 		final Display d = pobjDisplay;
-		// final Shell s1 = new Shell(d);
 		final Shell s = new Shell(objParentShell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.BORDER);
 		final RGB aktForeGround = foreGround;
 		s.setSize(302, 160);
@@ -193,9 +188,5 @@ public class SchedulerEditorFontDialog {
 	public void setContext(String context) {
 		this.context = context;
 	}
-	//	 public static void main(String[] a) {
-	//	 SchedulerEditorFontDialog s = new SchedulerEditorFontDialog("Courier new", 12, SWT.BOLD);
-	//	 s.show();
-	//
-	//	 }
+	 
 }

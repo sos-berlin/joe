@@ -444,7 +444,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				}
 			});
 			//			butApply.setText("Apply Details");
-			cancelButton = JOE_B_DetailForm_Cancel.Control(new Button(parameterGroup, SWT.NONE));
+			cancelButton = JOE_B_Cancel.Control(new Button(parameterGroup, SWT.NONE));
 			cancelButton.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			cancelButton.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent e) {
