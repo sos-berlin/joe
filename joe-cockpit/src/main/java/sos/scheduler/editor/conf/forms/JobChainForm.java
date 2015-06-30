@@ -332,7 +332,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		new Label(jobChainGroup, SWT.NONE);        
  
 		if (Options.isShowDiagram()){
-            JobChainDiagramComposite jobChainDiagramComposite = new JobChainDiagramComposite(jobChainGroup, 360);
+            JobChainDiagramComposite jobChainDiagramComposite = new JobChainDiagramComposite(jobChainGroup, 370);
             GridData gd_jobChainDiagramComposite = new GridData(SWT.FILL, SWT.FILL, true, true, 4, 2);
             gd_jobChainDiagramComposite.heightHint = 226;
             jobChainDiagramComposite.setLayoutData(gd_jobChainDiagramComposite);
