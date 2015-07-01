@@ -16,10 +16,7 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
 import sos.scheduler.editor.conf.listeners.JobListener;
-import com.sos.joe.globals.messages.ErrorLog;
-import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
-import com.sos.joe.globals.options.Options;
 
 public class PreProcessingComposite extends SOSJOEMessageCodes {
 	@SuppressWarnings("unused") private final String	conSVNVersion	= "$Id$";

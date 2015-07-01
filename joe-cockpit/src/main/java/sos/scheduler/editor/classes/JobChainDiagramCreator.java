@@ -29,7 +29,7 @@ public class JobChainDiagramCreator {
             schedulerObjectFactory.initMarshaller(JobChain.class);
             jobChain = schedulerObjectFactory.createJobChain();
             jobChain.loadObject(jobChainFile);
-            outputFile = new File(jobChain.createDOTFile(outputDirectory,showErrorNodes));
+            outputFile = new File(jobChain.createGraphVizImageFile(outputDirectory,showErrorNodes));
  
         } catch (JAXBException e) {
             e.printStackTrace();
