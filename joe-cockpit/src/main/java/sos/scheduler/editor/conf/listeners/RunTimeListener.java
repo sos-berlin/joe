@@ -18,6 +18,16 @@ public class RunTimeListener {
 		checkRuntime();
 	}
 
+   public String getTimeZone() {
+        return Utils.getAttributeValue("time_zone", _runtime);
+    }
+
+   public void setTimeZone(String timeZone) {
+	   Utils.setAttribute("time_zone", timeZone, _runtime,_dom);
+       notifyChange(_runtime);
+
+    }
+	    
 	public boolean isOnOrder() {
 		return Utils.isAttributeValue("order", _job);
 	}
@@ -28,6 +38,7 @@ public class RunTimeListener {
 
 	public void setComment(String comment) {
 		Utils.setAttribute("__comment__", comment, _runtime, _dom);
+		notifyChange(_runtime);
 	}
 
 	private void setRuntime() {
@@ -36,6 +47,23 @@ public class RunTimeListener {
 			_job.addContent(_runtime);
 		}
 	}
+	
+	private void notifyChange(Element el){
+	       _dom.setChanged(true);
+	        
+	        Element parent = Utils.getRunTimeParentElement(el);
+
+	        String name = "";
+	        if (parent.getName().equals("order")){
+	            name = Utils.getAttributeValue("job_chain", parent) + "," + Utils.getAttributeValue("id", parent);
+	        }else{
+	            name = Utils.getAttributeValue("name", parent);
+	        }
+
+	        _dom.setChangedForDirectory(parent.getName(), name, SchedulerDom.MODIFY);
+
+	    }
+	    
 
 	public Element getRunTime() {
 		if (_runtime == null)

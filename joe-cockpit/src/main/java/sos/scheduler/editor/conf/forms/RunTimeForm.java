@@ -1,5 +1,8 @@
 package sos.scheduler.editor.conf.forms;
+import java.util.Set;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -13,8 +16,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import org.joda.time.DateTimeZone;
 
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.RunTimeListener;
@@ -40,6 +45,7 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private Group				groupSchedule			= null;
 	private Element				runTimeBackUpElem		= null;
 	private boolean				init					= false;
+    private CCombo              cbTimeZone;
 
 	public RunTimeForm(Composite parent, int style, SchedulerDom dom, Element job, ISchedulerUpdate gui) {
 		super(parent, style);
@@ -72,16 +78,42 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	 * This method initializes group
 	 */
 	private void createGroup() {
-		GridLayout gridLayout3 = new GridLayout();
-		gRunTime = JOE_G_RunTimeForm_RunTime.Control(new Group(this, SWT.NONE));
+          
+	    GridLayout gridLayout3 = new GridLayout(2,false);
+ 		gRunTime = JOE_G_RunTimeForm_RunTime.Control(new Group(this, SWT.NONE));
 		gRunTime.setLayout(gridLayout3);
+		
+ 		
+        Label lblTimezone = new Label(gRunTime, SWT.NONE);
+        lblTimezone.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+
+        lblTimezone.setText("Timezone");
+
+        cbTimeZone = new CCombo(gRunTime, SWT.BORDER);
+        cbTimeZone.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
+
+        cbTimeZone.addModifyListener(new ModifyListener() {
+            public void modifyText(final ModifyEvent e) {
+                if (init){
+                    return;
+                }
+                listener.setTimeZone(cbTimeZone.getText());
+                _gui.updateFont();
+                _gui.updateRunTime();
+            }
+        });
+        Set<String> setOfTimeZones = DateTimeZone.getAvailableIDs();
+        cbTimeZone.setItems(setOfTimeZones.toArray(new String[setOfTimeZones.size()]));
+        cbTimeZone.setText(listener.getTimeZone());
+        
 		createPeriodForm();
+        new Label(gRunTime, SWT.NONE);
 	 
  
 		groupSchedule = JOE_G_RunTimeForm_Schedule.Control(new Group(gRunTime, SWT.NONE));
-		groupSchedule.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
+ 		groupSchedule.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false,2,1));
 		final GridLayout gridLayout_2 = new GridLayout();
-		gridLayout_2.numColumns = 2;
+ 		gridLayout_2.numColumns = 2;
 		groupSchedule.setLayout(gridLayout_2);
 		comSchedule = JOE_Cbo_RunTimeForm_Schedule.Control(new Combo(groupSchedule, SWT.NONE));
 		comSchedule.addSelectionListener(new SelectionAdapter() {
@@ -107,6 +139,7 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				_gui.updateRunTime();
 			}
 		});
+        new Label(gRunTime, SWT.NONE);
 		butBrowse = JOE_B_RunTimeForm_Browse.Control(new Button(groupSchedule, SWT.NONE));
 		butBrowse.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
@@ -117,7 +150,7 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			}
 		});
 		gComment = JOE_G_RunTimeForm_Comment.Control(new Group(gRunTime, SWT.NONE));
-		gComment.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true));
+		gComment.setLayoutData(new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true,2,1));
 		final GridLayout gridLayout_1 = new GridLayout();
 		gridLayout_1.numColumns = 2;
 		gComment.setLayout(gridLayout_1);
@@ -160,8 +193,9 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	 * This method initializes periodForm
 	 */
 	private void createPeriodForm() {
-		GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, false);
+		GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, false, false,2,1);
 		gridData2.widthHint = 151;
+		gridData2.horizontalSpan=2;
 		periodForm = new PeriodForm(gRunTime, SWT.NONE, JOEConstants.RUNTIME);
 		periodForm.setLayoutData(gridData2);
 		periodForm.setSchedulerUpdate(_gui);
