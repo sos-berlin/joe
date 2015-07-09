@@ -171,9 +171,9 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				}
 			});
 			TableColumn tableColumn1 = JOE_TCl_ScriptsForm_Name.Control(new TableColumn(table, SWT.NONE));
-			tableColumn1.setWidth(281);
+			tableColumn1.setWidth(280);
 			TableColumn tableColumn2 = JOE_TCl_ScriptsForm_Ordering.Control(new TableColumn(table, SWT.NONE));
-			tableColumn2.setWidth(205);
+			tableColumn2.setWidth(280);
 			
 		}
 		catch (Exception e) {

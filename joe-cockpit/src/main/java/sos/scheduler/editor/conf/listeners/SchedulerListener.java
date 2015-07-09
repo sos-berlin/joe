@@ -354,7 +354,7 @@ public class SchedulerListener {
             Utils.setResetElement(objSchedulerDom.getRoot().getChild("config"));
         }
         TreeItem objTreeObjects = new TreeItem(tree, SWT.NONE);
-        objTreeObjects.setText("JobScheduler Objects");
+        objTreeObjects.setText("JobScheduler");
         objTreeObjects.setData(conItemDataKeyKEY, "objects");
         objTreeObjects.setExpanded(true);
         TreeItem item = null; 

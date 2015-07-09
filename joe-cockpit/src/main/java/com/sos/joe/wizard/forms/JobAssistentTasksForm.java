@@ -177,7 +177,7 @@ public class JobAssistentTasksForm {
 		}
 		final Composite composite_2 = new Composite(tasksShell, SWT.NONE);
 		final GridData gridData = new GridData(GridData.END, GridData.CENTER, false, false);
-		gridData.widthHint = 211;
+		gridData.widthHint = 250;
 		composite_2.setLayoutData(gridData);
 		final GridLayout gridLayout_4 = new GridLayout();
 		gridLayout_4.marginWidth = 0;
@@ -220,7 +220,7 @@ public class JobAssistentTasksForm {
 		{
 			butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite_2, SWT.NONE));
 			butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
-			butNext.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+			butNext.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 			butNext.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent e) {
 					doNext();

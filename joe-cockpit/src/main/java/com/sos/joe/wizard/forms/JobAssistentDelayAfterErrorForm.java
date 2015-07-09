@@ -282,7 +282,7 @@ public class JobAssistentDelayAfterErrorForm extends JobWizardBaseForm {
 		}
 		{
 			butFinish = SOSJOEMessageCodes.JOE_B_JobAssistent_Finish.Control(new Button(composite_2, SWT.NONE));
-			butFinish.setLayoutData(new GridData(40, SWT.DEFAULT));
+			butFinish.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent e) {
 					if (!check())
@@ -330,7 +330,7 @@ public class JobAssistentDelayAfterErrorForm extends JobWizardBaseForm {
 			butNext = SOSJOEMessageCodes.JOE_B_JobAssistent_Next.Control(new Button(composite_2, SWT.NONE));
 			butNext.setFont(SWTResourceManager.getFont("", 8, SWT.BOLD));
 			final GridData gridData = new GridData(GridData.END, GridData.CENTER, false, false);
-			gridData.widthHint = 38;
+			gridData.widthHint = 45;
 			butNext.setLayoutData(gridData);
 			butNext.setEnabled(Utils.getAttributeValue("order", job).equals("yes"));
 			butNext.addSelectionListener(new SelectionAdapter() {
