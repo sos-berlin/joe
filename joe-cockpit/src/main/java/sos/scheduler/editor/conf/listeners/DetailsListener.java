@@ -876,12 +876,15 @@ public class DetailsListener {
 						hotFolderfile = new File(Options.getSchedulerHotFolder(), jobname + ".job.xml");
 					}
 					else {
-						hotFolderfile = new File(new File(dom.getFilename()).getParent(), new File(jobname).getName() + ".job.xml");
+						hotFolderfile = new File(new File(dom.getFilename()), new File(jobname).getName() + ".job.xml");
 					}
 					hotFolderfilename = hotFolderfile.getCanonicalPath();
 					//Unterscheiden, ob Hot Folder Element. Wenn ja, dann Hot Folder Datei öffnen. Wenn das Hot Folder Element bereits offen ist, dann verändern
 					List listOfElement2 = null;
-					if (dom.isLifeElement() || new File(jobname).getParent() != null) {
+					if (new File(dom.getFilename()).getAbsolutePath().equals(hotFolderfile.getParent())){
+						jobname = new File(jobname).getName();
+					}
+					if ((dom.isLifeElement() || (new File(jobname).getParent() != null) ))	 {
 						if (!hotFolderfile.exists()) {
 							if (!new File(hotFolderfilename).exists()) {
 								sos.scheduler.editor.app.MainWindow.message("Could not add Monitoring Job, cause Hot Folder File " + hotFolderfilename
@@ -893,7 +896,7 @@ public class DetailsListener {
 						//Es ist ein Hot Folder oder der Job ist woanders abgelegt
 						sos.scheduler.editor.app.TabbedContainer tab = ((sos.scheduler.editor.app.TabbedContainer) MainWindow.getContainer());
 						String pathFromHotFolderDirectory = new File(hotFolderfilename).getParent();
-						if (tab.getFilelist() != null
+						if (tab.getFilelist() != null							
 								&& (tab.getFilelist().contains(hotFolderfilename) || tab.getFilelist().contains(pathFromHotFolderDirectory))) {
 							//Hot Folder oder Hot Folder Element ist in einem Tabraiter offen oder							
 							SchedulerForm form = null;
@@ -929,8 +932,9 @@ public class DetailsListener {
 									if (currdom.isLifeElement())
 										form.getTree().setSelection(new org.eclipse.swt.widgets.TreeItem[] { form.getTree().getItem(0) });
 									else
-										if (currdom.isDirectory())
+										if (currdom.isDirectory()){
 											form.selectTreeItem(SchedulerListener.JOBS, new File(jobname).getName());
+										}
 									currdom.setChanged(true);
 									if (form != null) {
 										form.updateJob(job);
