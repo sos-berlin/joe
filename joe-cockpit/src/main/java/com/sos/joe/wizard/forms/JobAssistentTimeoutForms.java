@@ -70,7 +70,7 @@ public class JobAssistentTimeoutForms {
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		shellTimeout.setLayout(gridLayout);
-		shellTimeout.setSize(293, 164);
+		shellTimeout.setSize(350, 164);
 		String step = " ";
 		if (Utils.getAttributeValue("order", joblistener.getJob()).equalsIgnoreCase("yes"))
 			step += SOSJOEMessageCodes.JOE_M_JobAssistent_Step6of9.label();
