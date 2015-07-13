@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.CDATA;
 import org.jdom.Element;
 
+import sos.scheduler.editor.app.IProcessClassDataProvider;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 
@@ -18,7 +19,7 @@ import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.scheduler.model.LanguageDescriptorList;
 
-public class JobListener extends JOEListener {
+public class JobListener extends JOEListener implements IProcessClassDataProvider {
 	@SuppressWarnings("unused") private final String	conClassName		= this.getClass().getSimpleName();
 	@SuppressWarnings("unused") private final Logger	logger				= Logger.getLogger(this.getClass());
 	@SuppressWarnings("unused") private final String	conSVNVersion		= "$Id$";
@@ -975,4 +976,7 @@ public class JobListener extends JOEListener {
 		_dom.setChanged(true);
 		setChangedForDirectory();
 	}
+
+ 
+  
 }

@@ -6,8 +6,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
@@ -16,7 +14,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
@@ -26,12 +23,12 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
-import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.composites.JobChainDiagramComposite;
+import sos.scheduler.editor.conf.composites.ProcessClassSelector;
+import sos.scheduler.editor.conf.listeners.JobChainFileWatchingListener;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
-import sos.scheduler.editor.conf.listeners.JobListener;
 
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
@@ -40,8 +37,6 @@ import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.options.Options;
-import com.sos.joe.xml.IOUtils;
-import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
@@ -49,9 +44,9 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 	final String										conMethodName		= conClassName + "::enclosing_method";
 	@SuppressWarnings("unused") private final String	conSVNVersion		= "$Id$";
 	private static final Logger							logger				= Logger.getLogger(JobChainForm.class);
-    private JobChainListener                            listener            = null;
-    private JobListener                                 jobListener         = null;
-	private Group										jobChainGroup		= null;
+    private JobChainListener                            jobchainDataProvider = null;
+    private JobChainFileWatchingListener                jobChainFileWatchingListener;
+ 	private Group										jobChainGroup		= null;
 	private Label										chainNameLabel		= null;
 	private Text										tName				= null;
 	private Button										bRecoverable		= null;
@@ -63,18 +58,19 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 	private boolean										init				= false;
 	private boolean										changeJobChainName	= true;
     private Text                                        sMaxorders;
+    private ProcessClassSelector                        processClassSelectorJobChain; 
+    private ProcessClassSelector                        processClassSelectorFileWatcher; 
     @SuppressWarnings("unused") private Label           lblProcessClass     = null;
-    private Combo                                       cProcessClass       = null;
-    private Button                                      butBrowse           = null;
-    private Button                                      butShowProcessClass = null;
+   
 
 
 	public JobChainForm(Composite parent, int style, SchedulerDom dom, Element jobChain) {
 		super(parent, style);
 		init = true;
-        listener = new JobChainListener(dom, jobChain);
-        jobListener = new JobListener(dom, jobChain, update);
-		initialize();
+        jobchainDataProvider = new JobChainListener(dom, jobChain);
+        jobChainFileWatchingListener = new JobChainFileWatchingListener(jobchainDataProvider);
+
+ 		initialize();
 		setToolTipText();
 		fillChain();
 		this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
@@ -101,8 +97,8 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 	private void createGroup() {
 		jobChainGroup = new Group(this, SWT.NONE);
 		String strJobChainName = "";
-		if (listener.getChainName() != null){
-            strJobChainName = listener.getChainName();
+		if (jobchainDataProvider.getChainName() != null){
+            strJobChainName = jobchainDataProvider.getChainName();
         }		
 		jobChainGroup.setText(JOE_M_JobChainForm_JobChain.params(strJobChainName));
 		final GridLayout gridLayout = new GridLayout();
@@ -119,14 +115,14 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		tName.addVerifyListener(new VerifyListener() {
 			public void verifyText(final VerifyEvent e) {
 				if (!init) {
-					e.doit = Utils.checkElement(listener.getChainName(), listener.getDom(), JOEConstants.JOB_CHAIN, null);
+					e.doit = Utils.checkElement(jobchainDataProvider.getChainName(), jobchainDataProvider.getDom(), JOEConstants.JOB_CHAIN, null);
 				}
 			}
 		});
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, true, false, 1, 1);
 		gridData_4.widthHint = 273;
 		tName.setLayoutData(gridData_4);
-		tName.setText(listener.getChainName());
+		tName.setText(jobchainDataProvider.getChainName());
 		tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
@@ -134,7 +130,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
                     return;
 				}
 				String newName = tName.getText().trim();
-				boolean existname = Utils.existName(newName, listener.getChain(), "job_chain");
+				boolean existname = Utils.existName(newName, jobchainDataProvider.getChain(), "job_chain");
 				if (existname){
                     tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
 				} else {
@@ -144,10 +140,10 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
                     update.updateTreeItem(JOE_M_JobChainForm_JobChain.params(newName));
 				}
 				
-				listener.setChainName(newName);
+				jobchainDataProvider.setChainName(newName);
 				String strJobChainName = "";
-				if (listener.getChainName() != null){
-                    strJobChainName = listener.getChainName();
+				if (jobchainDataProvider.getChainName() != null){
+                    strJobChainName = jobchainDataProvider.getChainName();
 				}
 				jobChainGroup.setText(JOE_M_JobChainForm_JobChain.params(strJobChainName));
 				changeJobChainName = true;
@@ -157,8 +153,8 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		butDetails.setEnabled(true);
 		butDetails.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				if (listener.getDom().isChanged() && changeJobChainName) {
-					if (listener.getDom().getFilename() == null) {
+				if (jobchainDataProvider.getDom().isChanged() && changeJobChainName) {
+					if (jobchainDataProvider.getDom().getFilename() == null) {
 						MainWindow.message(JOE_M_JobChainForm_SaveChain.label(), SWT.ICON_WARNING);
 					}
 					else {
@@ -181,7 +177,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 			public void modifyText(final ModifyEvent e) {
 				if (init)
 					return;
-				listener.setTitle(txtTitle.getText());
+				jobchainDataProvider.setTitle(txtTitle.getText());
 			}
 		});
 		txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
@@ -202,7 +198,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 				catch (NumberFormatException e) {
 					maxOrders = 0;
 				}
-				listener.setMaxorders(maxOrders);
+				jobchainDataProvider.setMaxorders(maxOrders);
 			}
 		});
 		GridData gd_sMaxorders = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -211,69 +207,15 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
         new Label(jobChainGroup, SWT.NONE);
        
 
-        
-        
-        
-        @SuppressWarnings("unused") Label lblProcessClass = JOE_L_JobChainForm_ProcessClass.Control(new Label(jobChainGroup, SWT.NONE));
-        butShowProcessClass = JOE_B_JobMainComposite_ShowProcessClass.Control(new Button(jobChainGroup, SWT.ARROW | SWT.DOWN));
-        butShowProcessClass.setVisible(listener.getDom() != null && !listener.getDom().isLifeElement());
-        butShowProcessClass.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(final SelectionEvent e) {
-                String strT = cProcessClass.getText();
-                if (strT.length() > 0) {
-                    ContextMenu.goTo(strT, listener.getDom(), JOEConstants.PROCESS_CLASSES);
-                }
-            }
-        });
-        butShowProcessClass.setAlignment(SWT.RIGHT);
-        butShowProcessClass.setVisible(true);
+        processClassSelectorJobChain = new ProcessClassSelector(jobchainDataProvider ,jobChainGroup, 1,SWT.NONE);
+        processClassSelectorJobChain.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false,6,1));
+        processClassSelectorJobChain.setLabel("Process Class Job Chain");
 
-        Combo combo = new Combo(jobChainGroup, SWT.NONE);
-        combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-        cProcessClass = JOE_Cbo_JobMainComposite_ProcessClass.Control(combo);
-        cProcessClass.setMenu(new ContextMenu(cProcessClass, listener.getDom(), JOEConstants.PROCESS_CLASSES).getMenu());
-        cProcessClass.addModifyListener(new ModifyListener() {
-            public void modifyText(final ModifyEvent e) {
-                if (init) {
-                    return;
-                }
-                listener.setProcessClass(cProcessClass.getText());
-            }
-        });
-        cProcessClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 1, 1));
-        cProcessClass.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                if (init) {
-                    return;
-                }
-                listener.setProcessClass(cProcessClass.getText());
-            }
-        });
+        processClassSelectorFileWatcher = new ProcessClassSelector(jobChainFileWatchingListener,jobChainGroup, 1,SWT.NONE);
+        processClassSelectorFileWatcher.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false,6,1));
+        processClassSelectorFileWatcher.setLabel("Process Class Filewatcher");
+
          
-        cProcessClass.addMouseListener(new MouseListener() {
-            @Override public void mouseUp(MouseEvent arg0) {
-            }
-
-            @Override public void mouseDown(MouseEvent arg0) {
-            }
-
-            @Override public void mouseDoubleClick(MouseEvent arg0) {
-                String strT = cProcessClass.getText();
-                if (strT.length() > 0) {
-                    ContextMenu.goTo(strT, listener.getDom(), JOEConstants.PROCESS_CLASSES);
-                }
-            }
-        });
-        butBrowse = JOE_B_JobMainComposite_BrowseProcessClass.Control(new Button(jobChainGroup, SWT.NONE));
-        butBrowse.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(final SelectionEvent e) {
-                String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_PROCESS_CLASS);
-                if (name != null && name.length() > 0)
-                    cProcessClass.setText(name);
-            }
-        });
-      
-      
         new Label(jobChainGroup, SWT.NONE);
         new Label(jobChainGroup, SWT.NONE);
         Button button = new Button(jobChainGroup, SWT.CHECK);
@@ -287,7 +229,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
                     return;
 				}
 				
-				listener.setRecoverable(bRecoverable.getSelection());
+				jobchainDataProvider.setRecoverable(bRecoverable.getSelection());
 			}
 		});
 		
@@ -304,10 +246,10 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
                 if (init){
                     return;
                 }
-				listener.setDistributed(butDistributed.getSelection());
+				jobchainDataProvider.setDistributed(butDistributed.getSelection());
 			}
 		});
-		butDistributed.setSelection(listener.isDistributed());
+		butDistributed.setSelection(jobchainDataProvider.isDistributed());
 
         new Label(jobChainGroup, SWT.NONE);
 
@@ -324,7 +266,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
                 if (init){
                     return;
                 }
-				listener.setVisible(bVisible.getSelection());
+				jobchainDataProvider.setVisible(bVisible.getSelection());
 				 
 			}
 		});
@@ -337,8 +279,8 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
             gd_jobChainDiagramComposite.heightHint = 226;
             jobChainDiagramComposite.setLayoutData(gd_jobChainDiagramComposite);
             try {
-                String xml = Utils.getElementAsString(listener.getChain());
-                File inputFile = new File(listener.getDom().getFilename(),listener.getChainName() + ".job_chain.xml~");
+                String xml = Utils.getElementAsString(jobchainDataProvider.getChain());
+                File inputFile = new File(jobchainDataProvider.getDom().getFilename(),jobchainDataProvider.getChainName() + ".job_chain.xml~");
                 jobChainDiagramComposite.jobChainDiagram(xml,inputFile);
             } catch (Exception e1) {
                 e1.printStackTrace();
@@ -370,19 +312,17 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		tName.setEnabled(true);
 		bRecoverable.setEnabled(true);
 		bVisible.setEnabled(true);
-		tName.setText(listener.getChainName());
-		txtTitle.setText(listener.getTitle());
-		bRecoverable.setSelection(listener.getRecoverable());
-		bVisible.setSelection(listener.getVisible());
+		tName.setText(jobchainDataProvider.getChainName());
+		txtTitle.setText(jobchainDataProvider.getTitle());
+		bRecoverable.setSelection(jobchainDataProvider.getRecoverable());
+		bVisible.setSelection(jobchainDataProvider.getVisible());
 		tName.setBackground(null);
-        sMaxorders.setText(String.valueOf(listener.getMaxOrders()));
-        cProcessClass.setItems(jobListener.getProcessClasses());
-        cProcessClass.setText(listener.getProcessClass());
+        sMaxorders.setText(String.valueOf(jobchainDataProvider.getMaxOrders()));
         
-        listener.setVisible(bVisible.getSelection());
-        listener.setDistributed(butDistributed.getSelection());
-        listener.setRecoverable(bRecoverable.getSelection());
-
+        
+        jobchainDataProvider.setVisible(bVisible.getSelection());
+        jobchainDataProvider.setDistributed(butDistributed.getSelection());
+        jobchainDataProvider.setRecoverable(bRecoverable.getSelection());
 	}
 
 	public void setISchedulerUpdate(ISchedulerUpdate update_) {
@@ -391,16 +331,16 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 
 	private void showDetails(String state) {
 		if (tName.getText() != null && tName.getText().length() > 0) {
-			boolean isLifeElement = listener.getDom().isLifeElement() || listener.getDom().isDirectory();
+			boolean isLifeElement = jobchainDataProvider.getDom().isLifeElement() || jobchainDataProvider.getDom().isDirectory();
 			if (state == null) {
-				DetailDialogForm detail = new DetailDialogForm(tName.getText(), isLifeElement, listener.getDom().getFilename());
+				DetailDialogForm detail = new DetailDialogForm(tName.getText(), isLifeElement, jobchainDataProvider.getDom().getFilename());
 				detail.showDetails();
-				detail.getDialogForm().setParamsForWizzard(listener.getDom(), update);
+				detail.getDialogForm().setParamsForWizzard(jobchainDataProvider.getDom(), update);
 			}
 			else {
-				DetailDialogForm detail = new DetailDialogForm(tName.getText(), state, null, isLifeElement, listener.getDom().getFilename());
+				DetailDialogForm detail = new DetailDialogForm(tName.getText(), state, null, isLifeElement, jobchainDataProvider.getDom().getFilename());
 				detail.showDetails();
-				detail.getDialogForm().setParamsForWizzard(listener.getDom(), update);
+				detail.getDialogForm().setParamsForWizzard(jobchainDataProvider.getDom(), update);
 			}
 		}
 		else {

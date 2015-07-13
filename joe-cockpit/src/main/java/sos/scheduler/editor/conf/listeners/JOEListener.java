@@ -146,7 +146,7 @@ public class JOEListener extends JSToolBox {
 		return false;
 	}
 
-	public boolean isHelpKey(final int pintKeyCode) {
+	private boolean isHelpKey(final int pintKeyCode) {
 		boolean flgRet = (pintKeyCode == SWT.F1);
 		return flgRet;
 	}

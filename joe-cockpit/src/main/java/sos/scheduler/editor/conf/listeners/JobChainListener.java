@@ -23,6 +23,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import sos.scheduler.editor.app.IProcessClassDataProvider;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.returncodes.JobchainListOfReturnCodeElements;
@@ -36,12 +37,12 @@ import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class JobChainListener {
-	private SchedulerDom		_dom			= null;
+public class JobChainListener extends JOEListener implements IProcessClassDataProvider{
+	protected SchedulerDom		_dom			= null;
 	private Element				_config			= null;
-	private Element				_chain			= null;
-	private Element				_node			= null;
-	private Element				_source			= null;
+	protected Element			_chain			= null;
+	protected Element			_node			= null;
+	protected Element				_source			= null;
 	private String[]			_states			= null;
 	private final SOSString		sosString		= new SOSString();
 	private ISchedulerUpdate	update			= null;
@@ -129,7 +130,7 @@ public class JobChainListener {
 		return i;
 	}
 	
-	 
+	@Override	 
     public String getProcessClass() {
         return Utils.getAttributeValue("process_class", _chain);
     }
@@ -145,6 +146,7 @@ public class JobChainListener {
 			_dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
 	}
 
+	@Override
     public void setProcessClass(final String processClass) {
         if (processClass == "") {
             _chain.removeAttribute("process_class");
@@ -478,10 +480,18 @@ public class JobChainListener {
 			return true;
 	}
 
-	public String getFileOrderSource(final String a) {
-		return Utils.getAttributeValue(a, _source);
-	}
-	
+    public String getFileOrderSource(final String a) {
+        return Utils.getAttributeValue(a, _source);
+    }
+    
+    public Element getFileOrderSource() {
+        return _source;
+    }
+    
+    public void setFileOrderSource(Element e) {
+         _source = e;
+    }
+    
 	public boolean isAlertWhenDirectoryMissing(){
 	    return Utils.isAttributeValue("alert_when_directory_missing", _source,"no");
 	}
@@ -1187,6 +1197,39 @@ public class JobChainListener {
         }
         return false;
     }
-	
+
+    
+    @Override
+    public SchedulerDom get_dom() {
+        return _dom;
+    }
+
+    @Override
+    public String[] getProcessClasses() {
+        String[] names = null;
+        if (_dom.getRoot().getName().equalsIgnoreCase("spooler")) {
+            Element classes = _dom.getRoot().getChild("config").getChild("process_classes");
+            if (classes != null) {
+                List list = classes.getChildren("process_class");
+                names = new String[list.size()];
+                int i = 0;
+                Iterator it = list.iterator();
+                while (it.hasNext()) {
+                    Object o = it.next();
+                    if (o instanceof Element) {
+                        String name = ((Element) o).getAttributeValue("name");
+                        if (name == null)
+                            name = "";
+                        names[i++] = name;
+                    }
+                }
+            }
+        }
+        if (names == null) {
+            names = new String[] { "" };
+        }
+        return names;    }
+
+    	
 	
 }

@@ -15,6 +15,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -22,6 +23,7 @@ import org.eclipse.swt.widgets.Text;
 import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.ContextMenu;
+import sos.scheduler.editor.app.IProcessClassDataProvider;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.JobListener;
@@ -36,19 +38,14 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 	private final int									intNoOfLabelColumns	= 2;
 	@SuppressWarnings("unused") private static Logger	logger				= Logger.getLogger(JobMainComposite.class);
 	@SuppressWarnings("unused") private final String	conClassName		= "JobMainForm";
-	private JobListener									objDataProvider		= null;
+	private JobListener									jobDataProvider		= null;
 	private Group										gMain				= null;
 	private Text										tbxJobName			= null;
 	private Label										lblJobTitlelabel1	= null;
-	@SuppressWarnings("unused") private Label			lblProcessClass		= null;
 	private Text										tbxJobTitle			= null;
-	private Combo										cProcessClass		= null;
-	private Button										butBrowse			= null;
 	private boolean										init				= true;
-	private Button										butShowProcessClass	= null;
 	private Label										label				= null;
-	private int											intComboBoxStyle	= SWT.NONE;
-	private GridLayout									gridLayout			= null;
+ 	private GridLayout									gridLayout			= null;
 	private String isUsed;
 
 	/**
@@ -58,7 +55,7 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 	 */
 	public JobMainComposite(Group parent, int style, JobListener objDataProvider_) {
 		super(parent, style);
-		objDataProvider = objDataProvider_;
+		jobDataProvider = objDataProvider_;
 		createGroup(parent);
 	}
 
@@ -86,8 +83,8 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 					return;
 				}
 				checkName();
-				objDataProvider.setJobName(tbxJobName.getText(), true);
-				parent.setText(objDataProvider.getJobNameAndTitle());
+				jobDataProvider.setJobName(tbxJobName.getText(), true);
+				parent.setText(jobDataProvider.getJobNameAndTitle());
 			}
 		});
 		lblJobTitlelabel1 = JOE_L_JobMainComposite_JobTitle.Control(new Label(gMain, SWT.NONE));
@@ -98,94 +95,28 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 			public void modifyText(ModifyEvent e) {
 				if (init)
 					return;
-				objDataProvider.setTitle(tbxJobTitle.getText());
+				jobDataProvider.setTitle(tbxJobTitle.getText());
 			}
 		});
-		// tbxJobTitle.setItems(Options.getJobTitleList());
-		lblProcessClass = JOE_L_JobMainComposite_ProcessClass.Control(new Label(gMain, SWT.NONE));
-		// butShowProcessClass = JOE_goto.Control(new Button(gMain, SWT.ARROW | SWT.DOWN));
-		butShowProcessClass = JOE_B_JobMainComposite_ShowProcessClass.Control(new Button(gMain, SWT.ARROW | SWT.DOWN));
-		butShowProcessClass.setVisible(objDataProvider.get_dom() != null && !objDataProvider.get_dom().isLifeElement());
-		butShowProcessClass.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				String strT = cProcessClass.getText();
-				if (strT.length() > 0) {
-					ContextMenu.goTo(strT, objDataProvider.get_dom(), JOEConstants.PROCESS_CLASSES);
-				}
-			}
-		});
-		butShowProcessClass.setAlignment(SWT.RIGHT);
-		butShowProcessClass.setVisible(true);
-		cProcessClass = JOE_Cbo_JobMainComposite_ProcessClass.Control(new Combo(gMain, intComboBoxStyle));
-		cProcessClass.setMenu(new ContextMenu(cProcessClass, objDataProvider.get_dom(), JOEConstants.PROCESS_CLASSES).getMenu());
-		cProcessClass.addModifyListener(new ModifyListener() {
-			public void modifyText(final ModifyEvent e) {
-				if (init) {
-					return;
-				}
-				objDataProvider.setProcessClass(cProcessClass.getText());
-				butShowProcessClass.setVisible(true);
-			}
-		});
-		cProcessClass.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 3, 1));
-		cProcessClass.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				if (init) {
-					return;
-				}
-				objDataProvider.setProcessClass(cProcessClass.getText());
-			}
-		});
-		cProcessClass.addKeyListener(new KeyListener() {
-			@Override public void keyPressed(KeyEvent event) {
-				if (event.keyCode == SWT.F1) {
-					objDataProvider.openXMLAttributeDoc("job", "process_class");
-				}
-				if (event.keyCode == SWT.F10) {
-					objDataProvider.openXMLDoc("job");
-				}
-			}
+		
+	
+	ProcessClassSelector processClassSelector = new ProcessClassSelector(jobDataProvider ,gMain, SWT.NONE);
+	processClassSelector.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false,6,1));
 
-			@Override public void keyReleased(KeyEvent arg0) {
-			}
-		});
-		cProcessClass.addMouseListener(new MouseListener() {
-			@Override public void mouseUp(MouseEvent arg0) {
-			}
-
-			@Override public void mouseDown(MouseEvent arg0) {
-			}
-
-			@Override public void mouseDoubleClick(MouseEvent arg0) {
-				String strT = cProcessClass.getText();
-				if (strT.length() > 0) {
-					ContextMenu.goTo(strT, objDataProvider.get_dom(), JOEConstants.PROCESS_CLASSES);
-				}
-			}
-		});
-		butBrowse = JOE_B_JobMainComposite_BrowseProcessClass.Control(new Button(gMain, SWT.NONE));
-		butBrowse.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				String name = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_PROCESS_CLASS);
-				if (name != null && name.length() > 0)
-					cProcessClass.setText(name);
-			}
-		});
+     
 	}
 
 	public void init() {
 		init = true;
 		try {
-			 isUsed = Utils.elementIsUsed(objDataProvider.getJobName(), objDataProvider.get_dom(), JOEConstants.JOB, null);
+			 isUsed = Utils.elementIsUsed(jobDataProvider.getJobName(), jobDataProvider.get_dom(), JOEConstants.JOB, null);
 		} catch (JDOMException e) {
 			e.printStackTrace();
 		}
-		tbxJobName.setText(objDataProvider.getJobName());
- 		tbxJobTitle.setText(objDataProvider.getTitle());
+		tbxJobName.setText(jobDataProvider.getJobName());
+ 		tbxJobTitle.setText(jobDataProvider.getTitle());
 		tbxJobName.setFocus();
-		String process_class = objDataProvider.getProcessClass();
-		cProcessClass.setItems(objDataProvider.getProcessClasses());
-		cProcessClass.setText(process_class);
+		
 		init = false;
 	}
 
@@ -194,7 +125,7 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 			int c = MainWindow.message(isUsed, SWT.YES | SWT.NO | SWT.ICON_WARNING);
 			if (c != SWT.YES) {
 				isUsed = "";
-				tbxJobName.setText(objDataProvider.getJobName());
+				tbxJobName.setText(jobDataProvider.getJobName());
 				tbxJobName.setSelection(tbxJobName.getText().length());
   			}else{
 				tbxJobName.setSelection(tbxJobName.getText().length());
@@ -202,7 +133,7 @@ public class JobMainComposite extends SOSJOEMessageCodes {
 			isUsed = "";
 			
 		}
-		if (Utils.existName(tbxJobName.getText(), objDataProvider.getJob(), "job")) {
+		if (Utils.existName(tbxJobName.getText(), jobDataProvider.getJob(), "job")) {
 			tbxJobName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
 		}
 		else {

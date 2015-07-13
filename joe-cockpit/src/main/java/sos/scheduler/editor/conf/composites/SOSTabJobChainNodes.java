@@ -40,6 +40,7 @@ import sos.scheduler.editor.conf.forms.DetailDialogForm;
 import sos.scheduler.editor.conf.forms.JobChainNodesForm;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
+import sos.scheduler.editor.conf.listeners.JobChainFileWatchingListener;
 
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
@@ -70,12 +71,11 @@ public class SOSTabJobChainNodes extends CTabItem {
 	    private Button                                          bFileSink                   = null;
 	    private Button                                          bEndNode                    = null;
 	    private Button                                          bFullNode                   = null;
-	    private Composite                                       cType                       = null;
 	    private Combo                                           cJob                        = null;
 	    @SuppressWarnings("unused") private Label               label7                      = null;
 	    private Text                                            tState                      = null;
 	    private Label                                           label6                      = null;
-	    private JobChainListener                                listener                    = null;
+        private JobChainListener                                jobchainDataProvider        = null;
 	    private Button                                          bRemoveNode                 = null;
 	    private Group                                           gNodes;
 	    private Text                                            tDelay                      = null;
@@ -95,25 +95,24 @@ public class SOSTabJobChainNodes extends CTabItem {
 	   
         private boolean                                         isInsert                    = false;
         private boolean                                         checkParameter              = false;
-
 	
 	public SOSTabJobChainNodes(final String caption, final CTabFolder parent, JobChainListener listener_ ) {
 		super(parent, SWT.NONE);
  		setText(caption);
- 		listener = listener_;
+        jobchainDataProvider = listener_;
 		composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(1, false);
 		composite.setLayout(layout);
 		createContents();
 		
-	    boolean isJobchain=!listener.isNestedJobchain();
+	    boolean isJobchain=!jobchainDataProvider.isNestedJobchain();
 		gNodes.setEnabled(isJobchain);
 		bNewNode.setEnabled(isJobchain);
         if (isJobchain){
             initJobChain();
         }
         
-        composite.setEnabled(Utils.isElementEnabled("job_chain", listener.getDom(), listener.getChain()));		
+        composite.setEnabled(Utils.isElementEnabled("job_chain", jobchainDataProvider.getDom(), jobchainDataProvider.getChain()));		
 		this.setControl(composite);
         composite.layout();
 	}
@@ -130,26 +129,27 @@ public class SOSTabJobChainNodes extends CTabItem {
         try {
     
             gNodes = new Group(composite, SWT.NONE);
-            gNodes.setLayout(new GridLayout(1, false));
-
+ 
             GridData gd_gNodes = new GridData(SWT.FILL, GridData.FILL, true, true);
             gd_gNodes.heightHint = 379;
             gd_gNodes.widthHint = 300;
             gd_gNodes.minimumHeight = 379;
             gNodes.setLayoutData(gd_gNodes);
-            gNodes.setText(JOE_M_JCNodesForm_NodesGroup.params(listener.getChainName())); // Chain Nodes for 'CHAINNAME'
+            gNodes.setText(JOE_M_JCNodesForm_NodesGroup.params(jobchainDataProvider.getChainName())); // Chain Nodes for 'CHAINNAME'
             final GridLayout gridLayout_3 = new GridLayout();
             gridLayout_3.marginBottom = 5;
             gridLayout_3.marginTop = 5;
             gridLayout_3.numColumns = 6;
             gNodes.setLayout(gridLayout_3);
+            
+            
             label6 = JOE_L_JobChainNodes_State.Control(new Label(gNodes, SWT.NONE));
             label6.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
             new Label(gNodes, SWT.NONE);
             tState = JOE_T_JobChainNodes_State.Control(new Text(gNodes, SWT.BORDER));
             tState.addModifyListener(new ModifyListener() {
                 @Override public void modifyText(final ModifyEvent e) {
-                    boolean valid = listener.isValidState(tState.getText());
+                    boolean valid = jobchainDataProvider.isValidState(tState.getText());
                     if (!valid){
                         tState.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
                     }else{
@@ -172,24 +172,26 @@ public class SOSTabJobChainNodes extends CTabItem {
             });
             bApplyNode.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
             bApplyNode.setEnabled(false);
+           
+
             label7 = JOE_L_JCNodesForm_Job.Control(new Label(gNodes, SWT.NONE));
             butGoto = JOE_B_JobChainNodes_Goto.Control(new Button(gNodes, SWT.ARROW | SWT.DOWN));
             butGoto.addSelectionListener(new SelectionAdapter() {
                 @Override public void widgetSelected(final SelectionEvent e) {
-                    ContextMenu.goTo(cJob.getText(), listener.getDom(), JOEConstants.JOB);
+                    ContextMenu.goTo(cJob.getText(), jobchainDataProvider.getDom(), JOEConstants.JOB);
                 }
             });
             butGoto.setAlignment(SWT.RIGHT);
             cJob = JOE_Cbo_JCNodesForm_Job.Control(new Combo(gNodes, SWT.BORDER));
             cJob.setVisibleItemCount(9);
-            cJob.setMenu(new sos.scheduler.editor.app.ContextMenu(cJob, listener.getDom(), JOEConstants.JOB).getMenu());
+            cJob.setMenu(new sos.scheduler.editor.app.ContextMenu(cJob, jobchainDataProvider.getDom(), JOEConstants.JOB).getMenu());
            
           
             cJob.addMouseListener(new MouseAdapter() {
                 @Override public void mouseDown(final MouseEvent e) {
                     if (refresh) {
-                        if (listener.getJobs() != null) {
-                            cJob.setItems(listener.getJobs());
+                        if (jobchainDataProvider.getJobs() != null) {
+                            cJob.setItems(jobchainDataProvider.getJobs());
                             refresh = false;
                         }
                     }
@@ -213,17 +215,10 @@ public class SOSTabJobChainNodes extends CTabItem {
             final GridData gridData13 = new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1);
             gridData13.widthHint = 300;
             cJob.setLayoutData(gridData13);
-            final Composite composite = new Composite(gNodes, SWT.NONE);
-            composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false));
-            final GridLayout gridLayout_2 = new GridLayout();
-            gridLayout_2.marginWidth = 0;
-            gridLayout_2.marginHeight = 0;
-            gridLayout_2.numColumns = 2;
-            composite.setLayout(gridLayout_2);
-            butBrowse = JOE_B_JobChainNodes_Browse.Control(new Button(composite, SWT.NONE));
-            new Label(composite, SWT.NONE);
-            GridData gd_butBrowse = new GridData(GridData.FILL, GridData.CENTER, true, false);
-            gd_butBrowse.horizontalSpan = 2;
+           
+            butBrowse = JOE_B_JobChainNodes_Browse.Control(new Button(gNodes, SWT.NONE));
+          
+            GridData gd_butBrowse = new GridData(GridData.FILL, SWT.BOTTOM, false, false);
             butBrowse.setLayoutData(gd_butBrowse);
             butBrowse.addSelectionListener(new SelectionAdapter() {
                 @Override public void widgetSelected(final SelectionEvent e) {
@@ -233,7 +228,8 @@ public class SOSTabJobChainNodes extends CTabItem {
                     }
                 }
             });
-           
+          
+
             label8 = JOE_L_JobChainNodes_NextState.Control(new Label(gNodes, SWT.NONE));
             new Label(gNodes, SWT.NONE);
             cNextState = JOE_Cbo_JobChainNodes_NextState.Control(new Combo(gNodes, SWT.NONE));
@@ -275,15 +271,17 @@ public class SOSTabJobChainNodes extends CTabItem {
             butImportJob.addSelectionListener(new SelectionAdapter() {
                 @Override public void widgetSelected(final SelectionEvent e) {
                      
-                    JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(listener.getDom(), update, JOEConstants.JOB_CHAINS);
+                    JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(jobchainDataProvider.getDom(), update, JOEConstants.JOB_CHAINS);
                     importJobs.setJobname(cJob);
                     importJobs.showAllImportJobs("order");
-                    if (!listener.getDom().isLifeElement()){
+                    if (!jobchainDataProvider.getDom().isLifeElement()){
                         update.updateOrders();
                     }
                     refresh = true;
                 }
             });
+ 
+            
             Label label9 = JOE_L_JobChainNodes_ErrorState.Control(new Label(gNodes, SWT.NONE));
             new Label(gNodes, SWT.NONE);
              
@@ -335,7 +333,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                     getShell().setDefaultButton(null);
                     tNodes.deselectAll();
                     butDetailsJob.setEnabled(false);
-                    listener.selectNode(null);
+                    jobchainDataProvider.selectNode(null);
                     bRemoveNode.setEnabled(false);
                     enableNode(true);
                     fillNode(true);
@@ -344,27 +342,74 @@ public class SOSTabJobChainNodes extends CTabItem {
                 }
             });
             bNewNode.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
+ 
             new Label(gNodes, SWT.NONE);
             new Label(gNodes, SWT.NONE);
             new Label(gNodes, SWT.NONE);
             new Label(gNodes, SWT.NONE);
-            cType = new Composite(gNodes, SWT.NONE);
-            final GridLayout gridLayout_4 = new GridLayout();
-            gridLayout_4.marginHeight = 0;
-            gridLayout_4.marginWidth = 0;
-            gridLayout_4.numColumns = 4;
-            cType.setLayout(gridLayout_4);
-            final GridData gridData5 = new GridData(GridData.FILL, GridData.CENTER, true, false, 5, 1);
-            gridData5.widthHint = 387;
-            gridData5.heightHint = 35;
-            cType.setLayoutData(gridData5);
-            bFullNode = JOE_B_JCNodesForm_FullNode.Control(new Button(cType, SWT.RADIO));
+            new Label(gNodes, SWT.NONE);
+            butInsert = JOE_B_JCNodesForm_Insert.Control(new Button(gNodes, SWT.NONE));
+            butInsert.addSelectionListener(new SelectionAdapter() {
+                @Override public void widgetSelected(final SelectionEvent e) {
+                    isInsert = true;
+                    String state = tState.getText();
+                    tState.setText("");
+                    tDelay.setText("");
+                    cErrorState.setText("");
+                    cOnError.setText("");
+                    cJob.setText("");
+                    enableNode(true);
+                    bFullNode.setSelection(true);
+                    bEndNode.setSelection(false);
+                    cNextState.setText(state);
+                }
+            });
+            butInsert.setLayoutData(new GridData(GridData.FILL, SWT.BOTTOM, false, false));
+            
+            
+            
+            new Label(gNodes, SWT.NONE);
+            new Label(gNodes, SWT.NONE);
+            new Label(gNodes, SWT.NONE);
+
+            
+            @SuppressWarnings("unused") final Label removeFileLabel = JOE_L_JCNodesForm_RemoveFile.Control(new Label(gNodes, SWT.NONE));
+            bRemoveFile = JOE_B_JCNodesForm_RemoveFile.Control(new Button(gNodes, SWT.CHECK));
+            final GridData gridData_1 = new GridData();
+            gridData_1.horizontalIndent = 5;
+            bRemoveFile.setLayoutData(gridData_1);
+            bRemoveFile.addSelectionListener(new SelectionAdapter() {
+                @Override public void widgetSelected(final SelectionEvent e) {
+                    if (bRemoveFile.getSelection()){
+                        tMoveTo.setText("");
+                    }
+                    bApplyNode.setEnabled(isValidNode());
+                    if (bApplyNode.getEnabled()){
+                        getShell().setDefaultButton(bApplyNode);
+                    }
+                }
+            });
+            bRemoveFile.addKeyListener(new KeyAdapter() {
+                @Override public void keyPressed(final KeyEvent e) {
+                    if (e.keyCode == SWT.CR) {
+                        applyNode();
+                    }
+                }
+            });
+            bRemoveFile.setEnabled(false);
+            new Label(gNodes, SWT.NONE);
+
+            
+            
+            
+            
+            bFullNode = JOE_B_JCNodesForm_FullNode.Control(new Button(gNodes, SWT.RADIO));
             bFullNode.addSelectionListener(new SelectionAdapter() {
                 @Override public void widgetDefaultSelected(final SelectionEvent e) {
                 }
             });
             bFullNode.setSelection(true);
-            bEndNode = JOE_B_JCNodesForm_EndNode.Control(new Button(cType, SWT.RADIO));
+            bEndNode = JOE_B_JCNodesForm_EndNode.Control(new Button(gNodes, SWT.RADIO));
             bEndNode.addSelectionListener(new SelectionAdapter() {
                 @Override public void widgetSelected(final SelectionEvent e) {
                     if (bFileSink.getSelection()) {
@@ -408,7 +453,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                     bApplyNode.setEnabled(isValidNode());
                 }
             });
-            bFileSink = JOE_B_JCNodesForm_FileSink.Control(new Button(cType, SWT.RADIO));
+            bFileSink = JOE_B_JCNodesForm_FileSink.Control(new Button(gNodes, SWT.RADIO));
             final GridData gridData = new GridData(GridData.FILL, GridData.CENTER, false, false);
             gridData.widthHint = 71;
             bFileSink.setLayoutData(gridData);
@@ -425,50 +470,21 @@ public class SOSTabJobChainNodes extends CTabItem {
                         cOnError.setText("");
                         tMoveTo.setEnabled(true);
                         bRemoveFile.setEnabled(true);
+
                         if (tState.getText().equals("")){
                             bApplyNode.setEnabled(false);
                         }
                     }
                 }
             });
- 
-            final Composite composite_3 = new Composite(cType, SWT.NONE);
-            final GridData gridData_5 = new GridData(GridData.FILL, GridData.FILL, true, false);
-            gridData_5.widthHint = 238;
-            composite_3.setLayoutData(gridData_5);
-            final GridLayout gridLayout_7 = new GridLayout();
-            gridLayout_7.verticalSpacing = 0;
-            gridLayout_7.numColumns = 2;
-            gridLayout_7.marginWidth = 0;
-            gridLayout_7.marginHeight = 0;
-            gridLayout_7.horizontalSpacing = 0;
-            composite_3.setLayout(gridLayout_7);
-            @SuppressWarnings("unused") final Label removeFileLabel = JOE_L_JCNodesForm_RemoveFile.Control(new Label(composite_3, SWT.NONE));
-            bRemoveFile = JOE_B_JCNodesForm_RemoveFile.Control(new Button(composite_3, SWT.CHECK));
-            final GridData gridData_1 = new GridData();
-            gridData_1.horizontalIndent = 5;
-            bRemoveFile.setLayoutData(gridData_1);
-            bRemoveFile.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
-                    if (bRemoveFile.getSelection()){
-                        tMoveTo.setText("");
-                    }
-                    bApplyNode.setEnabled(isValidNode());
-                    if (bApplyNode.getEnabled()){
-                        getShell().setDefaultButton(bApplyNode);
-                    }
-                }
-            });
-            bRemoveFile.addKeyListener(new KeyAdapter() {
-                @Override public void keyPressed(final KeyEvent e) {
-                    if (e.keyCode == SWT.CR) {
-                        applyNode();
-                    }
-                }
-            });
-            bRemoveFile.setEnabled(false);
-            @SuppressWarnings("unused") final Label movweToLabel = JOE_L_JCNodesForm_MoveTo.Control(new Label(composite_3, SWT.NONE));
-            tMoveTo = JOE_T_JCNodesForm_MoveTo.Control(new Text(composite_3, SWT.BORDER));
+            
+
+            
+            
+            
+            
+            @SuppressWarnings("unused") final Label moveToLabel = JOE_L_JCNodesForm_MoveTo.Control(new Label(gNodes, SWT.NONE));
+            tMoveTo = JOE_T_JCNodesForm_MoveTo.Control(new Text(gNodes, SWT.BORDER));
             final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
             gridData_3.horizontalIndent = 5;
             tMoveTo.setLayoutData(gridData_3);
@@ -491,23 +507,8 @@ public class SOSTabJobChainNodes extends CTabItem {
                 }
             });
             tMoveTo.setEnabled(false);
-            butInsert = JOE_B_JCNodesForm_Insert.Control(new Button(gNodes, SWT.NONE));
-            butInsert.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
-                    isInsert = true;
-                    String state = tState.getText();
-                    tState.setText("");
-                    tDelay.setText("");
-                    cErrorState.setText("");
-                    cOnError.setText("");
-                    cJob.setText("");
-                    enableNode(true);
-                    bFullNode.setSelection(true);
-                    bEndNode.setSelection(false);
-                    cNextState.setText(state);
-                }
-            });
-            butInsert.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
+            new Label(gNodes, SWT.NONE);
+            
             tNodes = JOE_Tbl_JCNodesForm_Nodes.Control(new Table(gNodes, SWT.FULL_SELECTION | SWT.BORDER));
             tNodes.addSelectionListener(new SelectionAdapter() {
                 @Override public void widgetSelected(final SelectionEvent e) {
@@ -547,7 +548,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                     if (tNodes.getSelectionCount() > 0) {
                         int index = tNodes.getSelectionIndex();
                         if (index > 0) {
-                            listener.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(),
+                            jobchainDataProvider.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(),
                                     tDelay.getText(), cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), index,
                                     reorderButton.getSelection());
                             selectNodes();
@@ -566,7 +567,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                         }
                         else
                             if (index >= 0) {
-                                listener.changeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(),
+                                jobchainDataProvider.changeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(),
                                         tDelay.getText(), cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), index,
                                         reorderButton.getSelection());
                                 selectNodes();
@@ -592,7 +593,7 @@ public class SOSTabJobChainNodes extends CTabItem {
             butDetailsJob.addFocusListener(new FocusAdapter() {
                 @Override public void focusGained(final FocusEvent e) {
                     if (checkParameter) {
-                        listener.fillChain(tNodes);
+                        jobchainDataProvider.fillChain(tNodes);
                         checkParameter = false;
                     }
                 }
@@ -603,18 +604,18 @@ public class SOSTabJobChainNodes extends CTabItem {
                     try {
                         if (tNodes.getSelectionCount() > 0) {
                             TableItem item = tNodes.getSelection()[0];
-                            if (!listener.checkForState(item.getText(3))) {
-                                listener.selectNode(null);
-                                listener.applyNode(true, item.getText(3), "", "", "", "", false, "", "");
+                            if (!jobchainDataProvider.checkForState(item.getText(3))) {
+                                jobchainDataProvider.selectNode(null);
+                                jobchainDataProvider.applyNode(true, item.getText(3), "", "", "", "", false, "", "");
                             }
-                            if (!listener.checkForState(item.getText(4))) {
-                                listener.selectNode(null);
-                                listener.applyNode(true, item.getText(4), "", "", "", "", false, "", "");
+                            if (!jobchainDataProvider.checkForState(item.getText(4))) {
+                                jobchainDataProvider.selectNode(null);
+                                jobchainDataProvider.applyNode(true, item.getText(4), "", "", "", "", false, "", "");
                             }
-                            listener.fillChain(tNodes);
+                            jobchainDataProvider.fillChain(tNodes);
                             bApplyNode.setEnabled(false);
                             bRemoveNode.setEnabled(false);
-                            listener.selectNode(null);
+                            jobchainDataProvider.selectNode(null);
                             fillNode(true);
                             enableNode(false);
                             
@@ -638,10 +639,10 @@ public class SOSTabJobChainNodes extends CTabItem {
             butReturnCode.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             butReturnCode.addSelectionListener(new SelectionAdapter() {
                 @Override public void widgetSelected(final SelectionEvent e) {
-                    JobchainNodeReturnCodeDialog jobchainNodeReturnCodeDialog = new JobchainNodeReturnCodeDialog(getShell(), 0, listener);
-                    jobchainNodeReturnCodeDialog.setJobchainListOfReturnCodeElements(listener.getJobchainListOfReturnCodeElements());
+                    JobchainNodeReturnCodeDialog jobchainNodeReturnCodeDialog = new JobchainNodeReturnCodeDialog(getShell(), 0, jobchainDataProvider);
+                    jobchainNodeReturnCodeDialog.setJobchainListOfReturnCodeElements(jobchainDataProvider.getJobchainListOfReturnCodeElements());
                     jobchainNodeReturnCodeDialog.execute();
-                    listener.setJobchainListOfReturnCodeElements(jobchainNodeReturnCodeDialog.getJobchainListOfReturnCodeElements());
+                    jobchainDataProvider.setJobchainListOfReturnCodeElements(jobchainNodeReturnCodeDialog.getJobchainListOfReturnCodeElements());
                     applyNode();
                                 
                 }
@@ -659,9 +660,9 @@ public class SOSTabJobChainNodes extends CTabItem {
                             return;
                         }
                         int index = tNodes.getSelectionIndex();
-                        listener.deleteNode(tNodes);
+                        jobchainDataProvider.deleteNode(tNodes);
                         
-                        listener.fillChain(tNodes);
+                        jobchainDataProvider.fillChain(tNodes);
 
                         if (index >= tNodes.getItemCount()) {
                             index--;
@@ -672,10 +673,10 @@ public class SOSTabJobChainNodes extends CTabItem {
                         bRemoveNode.setEnabled(!empty);
                         if (!empty) {
                             tNodes.select(index);
-                            listener.selectNode(tNodes);
+                            jobchainDataProvider.selectNode(tNodes);
                         }
                         else {
-                            listener.selectNode(null);
+                            jobchainDataProvider.selectNode(null);
                         }
                     }
                 }
@@ -709,23 +710,23 @@ public class SOSTabJobChainNodes extends CTabItem {
         try {
             cNextState.setVisibleItemCount(5);
             String msg = "";
-            if (!listener.isValidState(tState.getText()))
+            if (!jobchainDataProvider.isValidState(tState.getText()))
                 msg = JOE_M_JobChain_StateAlreadyDefined.label();
             if (!msg.equals("")) {
                 MainWindow.message(msg, SWT.ICON_INFORMATION);
             } else {
                 if (isInsert){
-                    listener.applyInsertNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(),
+                    jobchainDataProvider.applyInsertNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(),
                            cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), cOnError.getText());
                 }else{
-                    listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(),
+                    jobchainDataProvider.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(),
                             cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), cOnError.getText());
                 }
-                DetailsListener.checkDetailsParameter(tState.getText(), listener.getChainName(), cJob.getText(), listener.getDom(), update);
-                listener.fillChain(tNodes);
+                DetailsListener.checkDetailsParameter(tState.getText(), jobchainDataProvider.getChainName(), cJob.getText(), jobchainDataProvider.getDom(), update);
+                jobchainDataProvider.fillChain(tNodes);
                 bApplyNode.setEnabled(false);
                 bRemoveNode.setEnabled(false);
-                listener.selectNode(null);
+                jobchainDataProvider.selectNode(null);
                 fillNode(true);
                 enableNode(false);
             }
@@ -742,52 +743,52 @@ public class SOSTabJobChainNodes extends CTabItem {
     private void fillNode(boolean clear) {
         try {
             butAddMissingNodes.setEnabled(false);
-            boolean fullNode = listener.isFullNode();
-            boolean fileSinkNode = listener.isFileSinkNode();
+            boolean fullNode = jobchainDataProvider.isFullNode();
+            boolean fileSinkNode = jobchainDataProvider.isFileSinkNode();
             boolean endNode = !fullNode && !fileSinkNode;
             bFullNode.setSelection(clear || fullNode);
             bEndNode.setSelection(!clear && endNode);
-            bFileSink.setSelection(!clear && fileSinkNode && listener.hasFileorderSource());
+            bFileSink.setSelection(!clear && fileSinkNode && jobchainDataProvider.hasFileorderSource());
             tDelay.setEnabled(fullNode);
             
             cNextState.setEnabled(fullNode);
             cErrorState.setEnabled(fullNode);
             cOnError.setEnabled(fullNode);
             cJob.setEnabled(fullNode);
-            tMoveTo.setEnabled(fileSinkNode && listener.hasFileorderSource());
-            bRemoveFile.setEnabled(fileSinkNode && listener.hasFileorderSource());
-            tState.setText(clear ? "" : listener.getState());
-            tDelay.setText(clear ? "" : listener.getDelay());
-            cJob.setItems(listener.getJobs());
-            if (listener.getStates().length > 0){
-                cNextState.setItems(listener.getStates());
+            tMoveTo.setEnabled(fileSinkNode && jobchainDataProvider.hasFileorderSource());
+            bRemoveFile.setEnabled(fileSinkNode && jobchainDataProvider.hasFileorderSource());
+            tState.setText(clear ? "" : jobchainDataProvider.getState());
+            tDelay.setText(clear ? "" : jobchainDataProvider.getDelay());
+            cJob.setItems(jobchainDataProvider.getJobs());
+            if (jobchainDataProvider.getStates().length > 0){
+                cNextState.setItems(jobchainDataProvider.getStates());
             }
-            if (listener.getAllStates().length > 0){
-                cErrorState.setItems(listener.getAllStates());
+            if (jobchainDataProvider.getAllStates().length > 0){
+                cErrorState.setItems(jobchainDataProvider.getAllStates());
             }
-            tMoveTo.setText(listener.getMoveTo());
-            bRemoveFile.setSelection(listener.getRemoveFile());
-            int job = cJob.indexOf(listener.getJob());
+            tMoveTo.setText(jobchainDataProvider.getMoveTo());
+            bRemoveFile.setSelection(jobchainDataProvider.getRemoveFile());
+            int job = cJob.indexOf(jobchainDataProvider.getJob());
             if (clear || job == -1){
-                cJob.setText(listener.getJob());
+                cJob.setText(jobchainDataProvider.getJob());
             }else{
                 cJob.select(job);
             }
-            int next = cNextState.indexOf(listener.getNextState());
+            int next = cNextState.indexOf(jobchainDataProvider.getNextState());
             if (clear || !fullNode || next == -1){
-                cNextState.setText(listener.getNextState());
+                cNextState.setText(jobchainDataProvider.getNextState());
             }else{
                 cNextState.select(next);
             }
-            int error = cErrorState.indexOf(listener.getErrorState());
+            int error = cErrorState.indexOf(jobchainDataProvider.getErrorState());
             if (clear || !fullNode || error == -1){
-                cErrorState.setText(listener.getErrorState());
+                cErrorState.setText(jobchainDataProvider.getErrorState());
             }else{
                 cErrorState.select(error);
             }
-            int onError = cOnError.indexOf(listener.getOnError());
+            int onError = cOnError.indexOf(jobchainDataProvider.getOnError());
             if (clear || !fullNode || onError == -1){
-                cOnError.setText(listener.getOnError());
+                cOnError.setText(jobchainDataProvider.getOnError());
             }else{
                 cOnError.select(onError);
             }
@@ -811,16 +812,16 @@ public class SOSTabJobChainNodes extends CTabItem {
             }
         }
         
-        listener.setJobchainListOfReturnCodeElements(new JobchainListOfReturnCodeElements());
+        jobchainDataProvider.setJobchainListOfReturnCodeElements(new JobchainListOfReturnCodeElements());
  
 
         if (tNodes.getSelectionCount() > 0) {
-            listener.selectNode(tNodes);
+            jobchainDataProvider.selectNode(tNodes);
             enableNode(true);
             fillNode(false);
             butDetailsJob.setEnabled(true);
-            butAddMissingNodes.setEnabled(!listener.checkForState(tNodes.getSelection()[0].getText(3))
-                    || !listener.checkForState(tNodes.getSelection()[0].getText(4)));
+            butAddMissingNodes.setEnabled(!jobchainDataProvider.checkForState(tNodes.getSelection()[0].getText(3))
+                    || !jobchainDataProvider.checkForState(tNodes.getSelection()[0].getText(4)));
         }
         else {
             butDetailsJob.setEnabled(false);
@@ -830,15 +831,15 @@ public class SOSTabJobChainNodes extends CTabItem {
     }
     
     private void showDetails(String state, String jobname) {
-        boolean isLifeElement = listener.getDom().isLifeElement() || listener.getDom().isDirectory();
+        boolean isLifeElement = jobchainDataProvider.getDom().isLifeElement() || jobchainDataProvider.getDom().isDirectory();
         if (state == null) {
-            DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), isLifeElement, listener.getDom().getFilename());
+            DetailDialogForm detail = new DetailDialogForm(jobchainDataProvider.getChainName(), isLifeElement, jobchainDataProvider.getDom().getFilename());
             detail.showDetails();
-            detail.getDialogForm().setParamsForWizzard(listener.getDom(), update, jobname);
+            detail.getDialogForm().setParamsForWizzard(jobchainDataProvider.getDom(), update, jobname);
         } else {
-            DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), state, null, isLifeElement, listener.getDom().getFilename());
+            DetailDialogForm detail = new DetailDialogForm(jobchainDataProvider.getChainName(), state, null, isLifeElement, jobchainDataProvider.getDom().getFilename());
             detail.showDetails();
-            detail.getDialogForm().setParamsForWizzard(listener.getDom(), update, jobname);
+            detail.getDialogForm().setParamsForWizzard(jobchainDataProvider.getDom(), update, jobname);
         }
     }
     
@@ -852,24 +853,24 @@ public class SOSTabJobChainNodes extends CTabItem {
         cErrorState.setEnabled(enable);
         cOnError.setEnabled(enable);
         tDelay.setEnabled(enable);
-        if (!listener.getDom().isLifeElement()){
+        if (!jobchainDataProvider.getDom().isLifeElement()){
             butImportJob.setEnabled(enable);
         }
         butReturnCode.setEnabled(enable);
         butBrowse.setEnabled(enable);
-        tMoveTo.setEnabled(enable && listener.hasFileorderSource());
-        bRemoveFile.setEnabled(enable && listener.hasFileorderSource());
+        tMoveTo.setEnabled(enable && jobchainDataProvider.hasFileorderSource());
+        bRemoveFile.setEnabled(enable && jobchainDataProvider.hasFileorderSource());
         bApplyNode.setEnabled(false);
     }    
 
     private void initJobChain() {
-        listener.fillChain(tNodes);
+        jobchainDataProvider.fillChain(tNodes);
         bNewNode.setEnabled(true);
         enableNode(false);
     }
     
     public void enableFileOrderSourceControls(){
-       boolean hasFileOrderSource = listener.hasFileorderSource();
+       boolean hasFileOrderSource = jobchainDataProvider.hasFileorderSource();
        tMoveTo.setEnabled(hasFileOrderSource);
        bRemoveFile.setEnabled(hasFileOrderSource);
        bFileSink.setEnabled(hasFileOrderSource);

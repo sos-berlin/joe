@@ -40,7 +40,7 @@ public class SOSTabFileOrderSource extends CTabItem {
     private Button                                          dumm2                       = null;
     @SuppressWarnings("unused") private Label               label8                      = null;
     private Group                                           gFileOrderSource            = null;
-    private JobChainListener                                listener                    = null;
+    private JobChainListener                                jobchainDataProvider        = null;
     private Button                                          bNewFileOrderSource         = null;
     private Button                                          bRemoveFileOrderSource      = null;
     private Button                                          bApplyFileOrderSource       = null;
@@ -51,22 +51,22 @@ public class SOSTabFileOrderSource extends CTabItem {
     private Text                                            tRepeat                     = null;
     private Table                                           tFileOrderSource            = null;
     private Button                                          cbAlertWhenDirectoryMissing = null;
- 	 
+  	 
 	public SOSTabFileOrderSource(final String caption, final CTabFolder parent,JobChainListener listener_ ) {
 		super(parent, SWT.NONE);
-		listener = listener_;
+		jobchainDataProvider = listener_;
  		setText(caption);
 		composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(1, false);
 		composite.setLayout(layout);
 		createContents();
-        boolean isJobchain=!listener.isNestedJobchain();
+        boolean isJobchain=!jobchainDataProvider.isNestedJobchain();
         gFileOrderSource.setEnabled(isJobchain);
         if (isJobchain){
             initFileOrderSource();
         }
         
-        composite.setEnabled(Utils.isElementEnabled("job_chain", listener.getDom(), listener.getChain()));       		
+        composite.setEnabled(Utils.isElementEnabled("job_chain", jobchainDataProvider.getDom(), jobchainDataProvider.getChain()));       		
 		this.setControl(composite);
         composite.layout();
         
@@ -78,21 +78,21 @@ public class SOSTabFileOrderSource extends CTabItem {
 	 * Create contents of the window
 	 */
 	protected void createContents() {
-	    
- 
- 
+	     
         gFileOrderSource = new Group(composite, SWT.NONE);
         final GridData gridData_10 = new GridData(SWT.FILL, GridData.FILL, true, true);
         gridData_10.heightHint = 379;
         gridData_10.minimumHeight = 379;
         gFileOrderSource.setLayoutData(gridData_10);
-        gFileOrderSource.setText(JOE_G_JCNodesForm_FileOrderSources.params(listener.getChainName()));
+        gFileOrderSource.setText(JOE_G_JCNodesForm_FileOrderSources.params(jobchainDataProvider.getChainName()));
         final GridLayout gridLayout_1 = new GridLayout();
         gridLayout_1.marginTop = 5;
         gridLayout_1.marginBottom = 5;
-        gridLayout_1.numColumns = 5;
+        gridLayout_1.numColumns = 6;
         gFileOrderSource.setLayout(gridLayout_1);
         final Label directoryLabel = JOE_L_JCNodesForm_Directory.Control(new Label(gFileOrderSource, SWT.NONE));
+        new Label(gFileOrderSource, SWT.NONE);
+
         tDirectory = JOE_T_JCNodesForm_Directory.Control(new Text(gFileOrderSource, SWT.BORDER));
         tDirectory.addModifyListener(new ModifyListener() {
             @Override public void modifyText(final ModifyEvent e) {
@@ -127,6 +127,8 @@ public class SOSTabFileOrderSource extends CTabItem {
         bApplyFileOrderSource.setEnabled(false);
         bApplyFileOrderSource.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
         final Label regexLabel = JOE_L_JCNodesForm_Regex.Control(new Label(gFileOrderSource, SWT.NONE));
+        new Label(gFileOrderSource, SWT.NONE);
+
         tRegex = JOE_T_JCNodesForm_Regex.Control(new Text(gFileOrderSource, SWT.BORDER));
         tRegex.addModifyListener(new ModifyListener() {
             @Override public void modifyText(final ModifyEvent e) {
@@ -148,6 +150,8 @@ public class SOSTabFileOrderSource extends CTabItem {
         tRepeat.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
         new Label(gFileOrderSource, SWT.NONE);
         @SuppressWarnings("unused") final Label alertWhenDirectoryMissingLabel = JOE_L_JCNodesForm_AlertWhenDirectoryMissing .Control(new Label(gFileOrderSource, SWT.NONE));
+        new Label(gFileOrderSource, SWT.NONE);
+
         cbAlertWhenDirectoryMissing = new Button(gFileOrderSource, SWT.CHECK);
         cbAlertWhenDirectoryMissing.addSelectionListener(new SelectionAdapter() {
             @Override public void widgetSelected(final SelectionEvent e) {
@@ -174,11 +178,12 @@ public class SOSTabFileOrderSource extends CTabItem {
         dumm2 = JOE_B_JCNodesForm_RemoveFileOrderSource.Control(new Button(gFileOrderSource, SWT.NONE));
         dumm2.setVisible(false);
         dumm2.setEnabled(false);
+           
         tFileOrderSource = JOE_Tbl_JCNodesForm_FileOrderSource.Control(new Table(gFileOrderSource, SWT.BORDER));
         tFileOrderSource.addSelectionListener(new SelectionAdapter() {
             @Override public void widgetSelected(final SelectionEvent e) {
                 if (tFileOrderSource.getSelectionCount() > 0) {
-                    listener.selectFileOrderSource(tFileOrderSource);
+                    jobchainDataProvider.selectFileOrderSource(tFileOrderSource);
                     bApplyFileOrderSource.setEnabled(false);
                     fillFileOrderSource();
                     enableFileOrderSource(true);
@@ -188,7 +193,7 @@ public class SOSTabFileOrderSource extends CTabItem {
         });
         tFileOrderSource.setLinesVisible(true);
         tFileOrderSource.setHeaderVisible(true);
-        final GridData gridData_9 = new GridData(GridData.FILL, GridData.FILL, true, true, 4, 2);
+        final GridData gridData_9 = new GridData(GridData.FILL, GridData.FILL, true, true, 5, 2);
         gridData_9.minimumHeight = 40;
         gridData_9.heightHint = 138;
         tFileOrderSource.setLayoutData(gridData_9);
@@ -203,7 +208,7 @@ public class SOSTabFileOrderSource extends CTabItem {
             @Override public void widgetSelected(final SelectionEvent e) {
                 getShell().setDefaultButton(null);
                 tFileOrderSource.deselectAll();
-                listener.selectFileOrderSource(null);
+                jobchainDataProvider.selectFileOrderSource(null);
                 bRemoveFileOrderSource.setEnabled(false);
                 fillFileOrderSource();
                 enableFileOrderSource(true);
@@ -218,7 +223,7 @@ public class SOSTabFileOrderSource extends CTabItem {
             @Override public void widgetSelected(final SelectionEvent e) {
                 if (tFileOrderSource.getSelectionCount() > 0) {
                     int index = tFileOrderSource.getSelectionIndex();
-                    listener.deleteFileOrderSource(tFileOrderSource);
+                    jobchainDataProvider.deleteFileOrderSource(tFileOrderSource);
                     tFileOrderSource.remove(index);
                     if (index >= tFileOrderSource.getItemCount())
                         index--;
@@ -228,17 +233,16 @@ public class SOSTabFileOrderSource extends CTabItem {
                     bRemoveFileOrderSource.setEnabled(!empty);
                     if (!empty) {
                         tFileOrderSource.select(index);
-                        listener.selectFileOrderSource(tFileOrderSource);
+                        jobchainDataProvider.selectFileOrderSource(tFileOrderSource);
                     }
                     else {
-                        listener.selectFileOrderSource(null);
+                        jobchainDataProvider.selectFileOrderSource(null);
                     }
                 }
             }
         });
         bRemoveFileOrderSource.setEnabled(false);
         bRemoveFileOrderSource.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, true));        
-        
 
  	}
 
@@ -257,11 +261,11 @@ public class SOSTabFileOrderSource extends CTabItem {
 	  public void applyFileOrderSource() {
 	      if (bApplyFileOrderSource.getEnabled()){
     	      if (Utils.isRegExpressions(tRegex.getText())) {
-    	          listener.applyFileOrderSource(tDirectory.getText(), tRegex.getText(), tNextState.getText(), tRepeat.getText(), tDelayAfterError.getText(),cbAlertWhenDirectoryMissing.getSelection());
-    	          listener.fillFileOrderSource(tFileOrderSource);
+    	          jobchainDataProvider.applyFileOrderSource(tDirectory.getText(), tRegex.getText(), tNextState.getText(), tRepeat.getText(), tDelayAfterError.getText(),cbAlertWhenDirectoryMissing.getSelection());
+    	          jobchainDataProvider.fillFileOrderSource(tFileOrderSource);
     	          bApplyFileOrderSource.setEnabled(false);
     	          bRemoveFileOrderSource.setEnabled(false);
-    	          listener.selectFileOrderSource(null);
+    	          jobchainDataProvider.selectFileOrderSource(null);
     	          clearFileOrderSource();
     	          enableFileOrderSource(false);
     	      }
@@ -276,7 +280,7 @@ public class SOSTabFileOrderSource extends CTabItem {
 	      tRepeat.setEnabled(enable);
 	      tDelayAfterError.setEnabled(enable);
 	      tNextState.setEnabled(enable);
-	      tRegex.setEnabled(enable);
+	      tRegex.setEnabled(enable);	      
 	      cbAlertWhenDirectoryMissing.setEnabled(enable);
 	      bApplyFileOrderSource.setEnabled(false);
 	 }	  
@@ -284,13 +288,13 @@ public class SOSTabFileOrderSource extends CTabItem {
 	    
 	 private void fillFileOrderSource() {
 	      
-	     tDirectory.setText(listener.getFileOrderSource("directory"));
-	     tRegex.setText(listener.getFileOrderSource("regex"));
-	     tDelayAfterError.setText(listener.getFileOrderSource("delay_after_error"));
-	     tRepeat.setText(listener.getFileOrderSource("repeat"));
-	     tNextState.setText(listener.getFileOrderSource("next_state"));
-	     cbAlertWhenDirectoryMissing.setSelection(listener.isAlertWhenDirectoryMissing());
-	     bApplyFileOrderSource.setEnabled(false);
+	     tDirectory.setText(jobchainDataProvider.getFileOrderSource("directory"));
+	     tRegex.setText(jobchainDataProvider.getFileOrderSource("regex"));
+	     tDelayAfterError.setText(jobchainDataProvider.getFileOrderSource("delay_after_error"));
+	     tRepeat.setText(jobchainDataProvider.getFileOrderSource("repeat"));
+	     tNextState.setText(jobchainDataProvider.getFileOrderSource("next_state"));
+	     cbAlertWhenDirectoryMissing.setSelection(jobchainDataProvider.isAlertWhenDirectoryMissing());
+         bApplyFileOrderSource.setEnabled(false);
 	 }
 	    
 	 private void clearFileOrderSource() {
@@ -304,7 +308,7 @@ public class SOSTabFileOrderSource extends CTabItem {
 	 }
 	 
 	 private void initFileOrderSource() {
-         listener.fillFileOrderSource(tFileOrderSource);
+         jobchainDataProvider.fillFileOrderSource(tFileOrderSource);
 	     bNewFileOrderSource.setEnabled(true);
 	     enableFileOrderSource(false);
 	    }
