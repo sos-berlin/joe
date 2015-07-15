@@ -4,8 +4,9 @@
     <parent>
         <groupId>com.sos-berlin</groupId>
 		    <artifactId>products</artifactId>
-        <version>1.10.0-SNAPSHOT</version>
-    </parent>
+<<<<<<< .mine        <version>1.10.0-SNAPSHOT</version>
+=======        <version>1.9.4-SNAPSHOT</version>
+>>>>>>> .theirs    </parent>
 
     <artifactId>joe</artifactId>
     <packaging>pom</packaging>
