@@ -1137,7 +1137,10 @@ public class JobChainListener extends JOEListener implements IProcessClassDataPr
 		update = update_;
 	}
 	
-	
+    public ISchedulerUpdate getISchedulerUpdate() {
+        return update;
+    }
+    
 	public String[] getJobChains() {
 		String[] listOfchains = new String[0];
 

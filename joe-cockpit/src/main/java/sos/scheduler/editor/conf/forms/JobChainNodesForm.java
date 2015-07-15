@@ -42,9 +42,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
     SOSTabJobChainNodes         tbtmJobchainNode;
     SOSTabFileOrderSource       tbtmFileOrderSource;
     SOSTabJobChainDiagram       tbtmJobchainDiagram;
-    //SOSTabJobChainReturnCodes   tbtmReturncodes;
-    //SOSTabJobChainDiagram       tbtmJobchainNodeParameters;    
- 
+     
     public JobChainNodesForm(Composite parent_, int style, SchedulerDom dom_, Element jobChain) {
         super(parent_, style);
         dom = dom_;
@@ -87,7 +85,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
                     switch (intIndex) {
                         case 0: //
                             tbtmJobchainNode.enableFileOrderSourceControls();
-                            break;
+                              break;
                         case 2:
                             try {
                                 String xml = Utils.getElementAsString(listener.getChain());
@@ -97,11 +95,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
                                 e1.printStackTrace();
                             }
                             break;
-                        case 3:
-                            // tbtmReturncodes.setJobchainListOfReturnCodeElements(listener.getJobchainListOfReturnCodeElements());
-                            // tbtmReturncodes.setEnabled(tbtmJobchainNode.hasSelectedNode());
-                            // tbtmReturncodes.setTitle(tbtmJobchainNode.getState());
-                            break;
+                        
                         default:
                             break;
                     }                    
@@ -117,13 +111,10 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
            if (Options.isShowDiagram()){
               tbtmJobchainDiagram = new SOSTabJobChainDiagram("Diagram", mainTabFolder);
            }
-         //  tbtmReturncodes = new SOSTabJobChainReturnCodes("Return Codes", mainTabFolder, listener);
-         //  tbtmJobchainNodeParameters = new SOSTabJobChainDiagram("Node Parameters", mainTabFolder);
-            
+         
            mainTabFolder.setSelection(0);
            tbtmJobchainNode.enableFileOrderSourceControls();
-          // tbtmReturncodes.setEnabled(tbtmJobchainNode.hasSelectedNode());
-
+ 
                   
         }
         catch (Exception e) {
@@ -137,7 +128,7 @@ public class JobChainNodesForm extends Composite implements IUnsaved, IUpdateLan
  
      
     public void setISchedulerUpdate(ISchedulerUpdate update_) {
-         listener.setISchedulerUpdate(update_);
+          listener.setISchedulerUpdate(update_);
     }
 
     @Override public void setToolTipText() {

@@ -84,7 +84,6 @@ public class SOSTabJobChainNodes extends CTabItem {
 	    private boolean                                         refresh                     = false;
 	    private Button                                          butDetailsJob               = null;
 	    private Button                                          butBrowse                   = null;
-	    private ISchedulerUpdate                                update                      = null;
 	    private Combo                                           cOnError                    = null;
 	    private Button                                          butUp                       = null;
 	    private Button                                          butDown                     = null;
@@ -100,6 +99,7 @@ public class SOSTabJobChainNodes extends CTabItem {
 		super(parent, SWT.NONE);
  		setText(caption);
         jobchainDataProvider = listener_;
+      
 		composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(1, false);
 		composite.setLayout(layout);
@@ -271,11 +271,11 @@ public class SOSTabJobChainNodes extends CTabItem {
             butImportJob.addSelectionListener(new SelectionAdapter() {
                 @Override public void widgetSelected(final SelectionEvent e) {
                      
-                    JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(jobchainDataProvider.getDom(), update, JOEConstants.JOB_CHAINS);
+                    JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(jobchainDataProvider.getDom(),  jobchainDataProvider.getISchedulerUpdate(), JOEConstants.JOB_CHAINS);
                     importJobs.setJobname(cJob);
                     importJobs.showAllImportJobs("order");
                     if (!jobchainDataProvider.getDom().isLifeElement()){
-                        update.updateOrders();
+                        jobchainDataProvider.getISchedulerUpdate().updateOrders();
                     }
                     refresh = true;
                 }
@@ -722,7 +722,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                     jobchainDataProvider.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(),
                             cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), cOnError.getText());
                 }
-                DetailsListener.checkDetailsParameter(tState.getText(), jobchainDataProvider.getChainName(), cJob.getText(), jobchainDataProvider.getDom(), update);
+                DetailsListener.checkDetailsParameter(tState.getText(), jobchainDataProvider.getChainName(), cJob.getText(), jobchainDataProvider.getDom(),  jobchainDataProvider.getISchedulerUpdate());
                 jobchainDataProvider.fillChain(tNodes);
                 bApplyNode.setEnabled(false);
                 bRemoveNode.setEnabled(false);
@@ -835,11 +835,11 @@ public class SOSTabJobChainNodes extends CTabItem {
         if (state == null) {
             DetailDialogForm detail = new DetailDialogForm(jobchainDataProvider.getChainName(), isLifeElement, jobchainDataProvider.getDom().getFilename());
             detail.showDetails();
-            detail.getDialogForm().setParamsForWizzard(jobchainDataProvider.getDom(), update, jobname);
+            detail.getDialogForm().setParamsForWizzard(jobchainDataProvider.getDom(),  jobchainDataProvider.getISchedulerUpdate(), jobname);
         } else {
             DetailDialogForm detail = new DetailDialogForm(jobchainDataProvider.getChainName(), state, null, isLifeElement, jobchainDataProvider.getDom().getFilename());
             detail.showDetails();
-            detail.getDialogForm().setParamsForWizzard(jobchainDataProvider.getDom(), update, jobname);
+            detail.getDialogForm().setParamsForWizzard(jobchainDataProvider.getDom(),  jobchainDataProvider.getISchedulerUpdate(), jobname);
         }
     }
     
