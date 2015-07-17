@@ -197,6 +197,8 @@ public class ProcessClassesListener {
 		Utils.setAttribute("max_processes", maxProcesses, _class, _dom);
 		if (host.trim().concat(port.trim()).length() > 0) {
 			Utils.setAttribute("remote_scheduler", host.trim() + ":" + port.trim(), _class, _dom);
+		}else{
+			_class.removeAttribute("remote_scheduler");
 		}
 		if (_listProcessClasses == null)
 			initClasses();
