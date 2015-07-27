@@ -2869,6 +2869,8 @@ public class SOSJOEMessageCodes extends SOSComposite {
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_G_ParamsForm_Parameter							= new SOSMsgJOE("JOE_G_ParamsForm_Parameter");
 	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_ParamsForm_DataType   						= new SOSMsgJOE("JOE_L_ParamsForm_DataType");
+	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_ParamsForm_ID									= new SOSMsgJOE("JOE_L_ParamsForm_ID");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_ParamsForm_ID									= new SOSMsgJOE("JOE_T_ParamsForm_ID");
