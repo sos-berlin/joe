@@ -182,7 +182,7 @@ public class SourceGenerator extends JSToolBox {
 				doTransform("JSJobDoc2JSAdapterClass.xsl", objXMLFile, outputDir.newFile(strClassName + conJavaFilenameExtension));
 			}
 			{
-				setXSLTParameter(conXsltParmExtendsClassName, "JSToolBox");
+				setXSLTParameter(conXsltParmExtendsClassName, "JSJobUtilitiesClass");
 				strClassNameExtension = "";
 				setXSLTParameter(conXsltParmClassNameExtension, strClassNameExtension);
 				strClassName = (strWorkerClassName + strClassNameExtension).trim();
