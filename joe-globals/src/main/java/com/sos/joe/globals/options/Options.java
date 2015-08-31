@@ -41,7 +41,6 @@ import com.sos.resources.SOSProductionResource;
 	public static final String							conPropertyTEMPLATE_LANGUAGE_LIST			= "template.language.list";
 	public static final String							conPropertyEDITOR_ShowSplashScreenPicture	= "editor.ShowSplashScreenPicture";					// "/SplashScreenJOE.bmp";
 	private final static String							conClassName								= "Options";
-	@SuppressWarnings("unused") private final String	conSVNVersion								= "$Id: Options.java 21467 2013-12-02 11:24:40Z ur $";
 	private static final Logger							logger										= Logger.getLogger(Options.class);
 	public static final String							DEFAULT_OPTIONS								= "/sos/scheduler/editor/options.properties";
 	private static Properties							JOESettingsDefaults							= null;
