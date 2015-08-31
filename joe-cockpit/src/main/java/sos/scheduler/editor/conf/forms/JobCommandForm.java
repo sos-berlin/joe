@@ -143,7 +143,7 @@ public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsa
 	    bBrowseJobChain.setLayoutData(gd_butBrowseJobchain);
 	    bBrowseJobChain.addSelectionListener(new SelectionAdapter() {
 	        @Override public void widgetSelected(final SelectionEvent e) {
-	             String jobChain = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
+	             String jobChain = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB_CHAIN);
 	             if (jobChain != null && jobChain.length() > 0){
                      tJobchain.setText(jobChain);
 	             }
