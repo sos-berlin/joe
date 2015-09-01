@@ -85,26 +85,21 @@ public class ProcessClassesListener {
     }
     
     public void fillRemoteSchedulerTable(Table tableRemoteScheduler) {
-        
-            
+ 
         initRemoteScheduler();
              
-            tableRemoteScheduler.removeAll();
-            if (_listRemoteScheduler != null) {
-                if (_listRemoteScheduler.size()== 0){
-                    _class.removeChild("remote_schedulers");
-                }
-                for (Iterator it = _listRemoteScheduler.iterator(); it.hasNext();) {
-                    Element e = (Element) it.next();
-                    TableItem item = new TableItem(tableRemoteScheduler, SWT.NONE);
-                    String host = getRemoteHost(e);
-                    String port = getRemotePort(e);
-
-                    item.setText(0, host);
-                    item.setText(1, port);
-                }
+        tableRemoteScheduler.removeAll();
+        if (_listRemoteScheduler != null) {
+            if (_listRemoteScheduler.size()== 0){
+                _class.removeChild("remote_schedulers");
             }
-        
+            for (Iterator it = _listRemoteScheduler.iterator(); it.hasNext();) {
+               Element e = (Element) it.next();
+               TableItem item = new TableItem(tableRemoteScheduler, SWT.NONE);
+               String url = Utils.getAttributeValue("remote_scheduler", e);
+               item.setText(0, url);
+            }
+        }
     }
 
     public Element selectProcessClass(int index) {
@@ -143,7 +138,7 @@ public class ProcessClassesListener {
 		return getRemoteHost(_class);
 	}
 
-    public String getRemotePort(Element ee) {
+    private String getRemotePort(Element ee) {
         String port = Utils.getAttributeValue("remote_scheduler", ee);
         try {
             port = port.substring(port.lastIndexOf(":") + 1);
@@ -232,11 +227,10 @@ public class ProcessClassesListener {
         for (int i = 0; i < tableRemoteScheduler.getItemCount(); i++) {
             TableItem item = tableRemoteScheduler.getItems()[i];
             _remoteScheduler = new Element("remote_scheduler");
-            String host = item.getText(0);
-            String port = item.getText(1);
+            String url = item.getText(0);
             
-            if (host.trim().concat(port.trim()).length() > 0) {
-                Utils.setAttribute("remote_scheduler", host.trim() + ":" + port.trim(), _remoteScheduler, _dom);
+            if (url.trim().length() > 0) {
+                Utils.setAttribute("remote_scheduler", url.trim(), _remoteScheduler, _dom);
             }
             
            _listRemoteScheduler.add(_remoteScheduler);

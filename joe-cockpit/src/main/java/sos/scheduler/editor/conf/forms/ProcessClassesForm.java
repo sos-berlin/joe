@@ -39,25 +39,24 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
  * @author sky2000
  */
 public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
-	private ProcessClassesListener	listener		= null;
-	 
-	private Group					group;
-    private Table                   tableRemoteScheduler   = null;
-    private static Table            tableProcessClasses    = null;
-	private Button					btRemove			       = null;
+	
+    private ProcessClassesListener	listener		        = null;
+	private Group					group                   = null; 
+    private Table                   tableRemoteScheduler    = null;
+    private static Table            tableProcessClasses     = null;
+	private Button					btRemove			    = null;
     private Button                  btNew                   = null;
     private Button                  btNewRemoteScheduler    = null;
     private Button                  btApply                 = null;
-    private Button                  btOkRemoteScheduler    = null;
+    private Button                  btOkRemoteScheduler     = null;
     private Button                  btRemoveRemoteScheduler = null;
-	private Text					tProcessClass	       = null;
-	private Text					tMaxProcesses	       = null;
-	private Label					label			= null;
-    private Text                    tRemoteHost     = null;
-    private Text                    tRemotePort     = null;
-    private Text                    tRemoteSchedulerHost     = null;
-    private Text                    tRemoteSchedulerPort     = null;
-	private SchedulerDom			dom				= null;
+	private Text					tProcessClass	        = null;
+	private Text					tMaxProcesses	        = null;
+	private Label					label			        = null;
+    private Text                    tRemoteHost             = null;
+    private Text                    tRemotePort             = null;
+    private Text                    tRemoteSchedulerUrl     = null;
+	private SchedulerDom			dom				        = null;
 
 	/**
 	 * @param parent
@@ -242,9 +241,8 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         btNewRemoteScheduler.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 tableRemoteScheduler.setSelection(-1);
-                tRemoteSchedulerHost.setText("");
-                tRemoteSchedulerPort.setText("");
-                tRemoteSchedulerHost.setFocus();
+                tRemoteSchedulerUrl.setText("");
+                tRemoteSchedulerUrl.setFocus();
                 btNewRemoteScheduler.setEnabled(false);
             }
         });
@@ -264,9 +262,8 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
                     int index = tableRemoteScheduler.getSelectionIndex();
                     tableRemoteScheduler.remove(index);
                     tableRemoteScheduler.setSelection(-1);
-                    tRemoteSchedulerHost.setText("");
-                    tRemoteSchedulerPort.setText("");
-                    tRemoteSchedulerHost.setFocus();
+                    tRemoteSchedulerUrl.setText("");
+                    tRemoteSchedulerUrl.setFocus();
                     btRemoveRemoteScheduler.setEnabled(false);
                     btApply.setEnabled(true);
                 }
@@ -278,14 +275,11 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
                
-        Label lbSchedulerRemoteHost = new Label(group, SWT.NONE);
-        lbSchedulerRemoteHost.setLayoutData(new GridData(SWT.CENTER, SWT.BOTTOM, false, false, 1, 1));
-        lbSchedulerRemoteHost.setText("Host");
+        Label lbSchedulerRemoteUrl = new Label(group, SWT.NONE);
+        lbSchedulerRemoteUrl.setLayoutData(new GridData(SWT.CENTER, SWT.BOTTOM, false, false, 1, 1));
+        lbSchedulerRemoteUrl.setText("Url");
         new Label(group, SWT.NONE);
-        
-        Label lbSchedulerRemotePort = new Label(group, SWT.NONE);
-        lbSchedulerRemotePort.setLayoutData(new GridData(SWT.CENTER, SWT.BOTTOM, false, false, 1, 1));
-        lbSchedulerRemotePort.setText("Port");
+        new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
 
         
@@ -295,38 +289,31 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         btOkRemoteScheduler.setLayoutData(gridData2);
         btOkRemoteScheduler.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (tRemoteSchedulerHost.getText().length() > 0 && tRemoteSchedulerPort.getText().length() > 0) {
+                if (tRemoteSchedulerUrl.getText().length() > 0) {
                     if (tableRemoteScheduler.getSelectionIndex() >= 0) {
                         TableItem item = tableRemoteScheduler.getItems()[tableRemoteScheduler.getSelectionIndex()];
-                        item.setText(0, tRemoteSchedulerHost.getText());
-                        item.setText(1, tRemoteSchedulerPort.getText());
-                        tRemoteSchedulerHost.setText("");
-                        tRemoteSchedulerPort.setText("");
-                        tRemoteSchedulerHost.setFocus();
+                        item.setText(0, tRemoteSchedulerUrl.getText());
+                        tRemoteSchedulerUrl.setText("");
+                        tRemoteSchedulerUrl.setFocus();
                         btApply.setEnabled(true);
                     }else {
                         for (int i = 0; i < tableRemoteScheduler.getItemCount(); i++) {
                             TableItem item = tableRemoteScheduler.getItems()[i];
-                            if ((item.getText(0).equals(tRemoteSchedulerHost.getText()) && tRemoteSchedulerHost.getText().length() > 0 && (item.getText(1).equals(tRemoteSchedulerPort.getText())))) {
-                                item.setText(0, tRemoteSchedulerHost.getText());
-                                item.setText(1, tRemoteSchedulerPort.getText());
-                                tRemoteSchedulerHost.setText("");
-                                tRemoteSchedulerPort.setText("");
-                                tRemoteSchedulerHost.setFocus();
+                            if ((item.getText(0).equals(tRemoteSchedulerUrl.getText())  )) {
+                                item.setText(0, tRemoteSchedulerUrl.getText());
+                                tRemoteSchedulerUrl.setText("");
+                                tRemoteSchedulerUrl.setFocus();
 
                                 btApply.setEnabled(true);
                                 }
                         }
-                        if (tRemoteSchedulerHost.getText().length() > 0) {
+                        if (tRemoteSchedulerUrl.getText().length() > 0) {
     
                             TableItem item = new TableItem(tableRemoteScheduler, SWT.NONE);
-                            item.setText(0, tRemoteSchedulerHost.getText());
-                            item.setText(1, tRemoteSchedulerPort.getText());
-                            tRemoteSchedulerHost.setText("");
-                            tRemoteSchedulerPort.setText("");
-                            tRemoteSchedulerHost.setFocus();
+                            item.setText(0, tRemoteSchedulerUrl.getText());
+                            tRemoteSchedulerUrl.setText("");
+                            tRemoteSchedulerUrl.setFocus();
 
-                            
                             btApply.setEnabled(true);
                         }
                     }
@@ -334,18 +321,11 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
             }
         });
 
-        tRemoteSchedulerHost = JOE_T_ProcessClassesForm_remoteExecution.Control(new Text(group, SWT.BORDER));
-        tRemoteSchedulerHost.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false, 1, 1));
+        tRemoteSchedulerUrl = JOE_T_ProcessClassesForm_remoteExecution.Control(new Text(group, SWT.BORDER));
+        tRemoteSchedulerUrl.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false, 3, 1));
         
-        Label lblNewLabel_2 = new Label(group, SWT.NONE);
-        lblNewLabel_2.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
-        lblNewLabel_2.setText(":");
-        
-        tRemoteSchedulerPort = JOE_T_ProcessClassesForm_remoteExecution.Control(new Text(group, SWT.BORDER));
-        tRemoteSchedulerPort.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+      //newline
         new Label(group, SWT.NONE);
-
-//newline
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
@@ -414,8 +394,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 if (tableRemoteScheduler.getSelectionIndex() >= 0) {
                     TableItem item = tableRemoteScheduler.getItems()[tableRemoteScheduler.getSelectionIndex()];
-                    tRemoteSchedulerHost.setText(item.getText(0));
-                    tRemoteSchedulerPort.setText(item.getText(1));
+                    tRemoteSchedulerUrl.setText(item.getText(0));
                     btRemoveRemoteScheduler.setEnabled(true);
                     btNewRemoteScheduler.setEnabled(true);
                 }
@@ -423,16 +402,8 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
             }
         });
         TableColumn tableColumnHost = new TableColumn(tableRemoteScheduler, SWT.NONE);
-        tableColumnHost.setWidth(400);
-        tableColumnHost.setText("Host");
-
-        TableColumn tableColumnPort = new TableColumn(tableRemoteScheduler, SWT.NONE);
-        tableColumnPort.setWidth(100);
-        tableColumnPort.setText("Port");
- 
-        
-        
-        
+        tableColumnHost.setWidth(500);
+        tableColumnHost.setText("Url"); 
     }
     
     private boolean checkChange() {
