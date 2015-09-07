@@ -170,8 +170,9 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		txtTitle = JOE_T_JobChainForm_Title.Control(new Text(jobChainGroup, SWT.BORDER));
 		txtTitle.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
-				if (init)
+				if (init){
 					return;
+    			}
 				listener.setTitle(txtTitle.getText());
 			}
 		});
@@ -184,17 +185,12 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		sMaxorders = JOE_T_JobChainForm_MaxOrders.Control(new Text(jobChainGroup, SWT.BORDER));
 		sMaxorders.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
-				if (init)
+				if (init){
 					return;
-				int maxOrders;
-				try {
-					maxOrders = Integer.parseInt(sMaxorders.getText().trim());
 				}
-				catch (NumberFormatException e) {
-					maxOrders = 0;
+				
+				listener.setMaxorders(sMaxorders.getText().trim());
 				}
-				listener.setMaxorders(maxOrders);
-			}
 		});
 		GridData gd_sMaxorders = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_sMaxorders.minimumWidth = 60;
@@ -330,7 +326,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		bRecoverable.setSelection(listener.getRecoverable());
 		bVisible.setSelection(listener.getVisible());
 		tName.setBackground(null);
-        sMaxorders.setText(String.valueOf(listener.getMaxOrders()));
+		sMaxorders.setText(listener.getMaxOrders());
         cProcessClass.setItems(jobListener.getProcessClasses());
         cProcessClass.setText(listener.getProcessClass());
 	}
