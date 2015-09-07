@@ -134,7 +134,10 @@ public class JobChainListener extends JOEListener implements IProcessClassDataPr
     public String getProcessClass() {
         return Utils.getAttributeValue("process_class", _chain);
     }
-		if (maxOrder.equals("")) {
+
+    public void setMaxorders(String maxOrder) {
+    try {
+       if (maxOrder.equals("")) {
 			_chain.removeAttribute("max_orders");
 		}
 		else {
@@ -150,10 +153,7 @@ public class JobChainListener extends JOEListener implements IProcessClassDataPr
 	}catch (NumberFormatException e) {}		
 	}
 
-    public String getProcessClass() {
-        return Utils.getAttributeValue("process_class", _chain);
-    }
-
+ 
     public void setProcessClass(final String processClass) {
         if (processClass == "") {
             _chain.removeAttribute("process_class");
