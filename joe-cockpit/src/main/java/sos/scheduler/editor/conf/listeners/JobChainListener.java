@@ -127,7 +127,6 @@ public class JobChainListener {
 		}
 	}
 	
-		if (maxOrder == 0) {
 	public void setMaxorders(final String maxOrder) {
 		
 	try {
