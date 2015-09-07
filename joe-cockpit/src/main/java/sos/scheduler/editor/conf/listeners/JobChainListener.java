@@ -97,27 +97,34 @@ public class JobChainListener {
 			_dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
 	}
 
-	public int getMaxOrders() {
-		int i;
+	public String getMaxOrders() {
 		try {
-			i = Integer.parseInt(Utils.getAttributeValue("max_orders", _chain));
+			String sMaxOrders = Utils.getAttributeValue("max_orders", _chain);
+			Integer.parseInt(sMaxOrders);
+			return sMaxOrders;
 		}
 		catch (NumberFormatException e) {
-			i = 0;
+			return "";
 		}
-		return i;
 	}
 
-	public void setMaxorders(final int maxOrder) {
-		if (maxOrder == 0) {
+	public void setMaxorders(final String maxOrder) {
+		
+	try {
+		if (maxOrder.equals("")) {
 			_chain.removeAttribute("max_orders");
 		}
 		else {
+			Integer.parseInt(maxOrder);
 			Utils.setAttribute("max_orders", maxOrder, _chain);
 		}
+		
 		_dom.setChanged(true);
-		if (_dom.isDirectory() || _dom.isLifeElement())
+		if (_dom.isDirectory() || _dom.isLifeElement()){
 			_dom.setChangedForDirectory("job_chain", getChainName(), SchedulerDom.MODIFY);
+		}
+		
+	}catch (NumberFormatException e) {}		
 	}
 
 	public Element getChain() {

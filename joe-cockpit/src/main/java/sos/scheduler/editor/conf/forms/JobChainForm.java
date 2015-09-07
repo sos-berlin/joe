@@ -97,15 +97,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 				if (!init) {// während der initialiserung sollen keine überprüfungen stattfinden
 					// String name = listener.getChainName();
 					e.doit = Utils.checkElement(listener.getChainName(), listener.get_dom(), JOEConstants.JOB_CHAIN, null);
-					/*System.out.println(e.doit);
-					if(e.doit) {
-						init = true; 
-						name = name.substring(0, e.start) + e.text + name.substring(e.start,  e.end);
-						tName.setText(name); 
-						listener.setChainName(name);
-						init = false;
-					} 
-					*/
+					
 				}
 			}
 		});
@@ -168,8 +160,9 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		txtTitle = JOE_T_JobChainForm_Title.Control(new Text(jobChainGroup, SWT.BORDER));
 		txtTitle.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
-				if (init)
+				if (init){
 					return;
+    			}
 				listener.setTitle(txtTitle.getText());
 			}
 		});
@@ -180,16 +173,11 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		sMaxorders = JOE_T_JobChainForm_MaxOrders.Control(new Text(jobChainGroup, SWT.BORDER));
 		sMaxorders.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
-				if (init)
+				if (init){
 					return;
-				int maxOrders;
-				try {
-					maxOrders = Integer.parseInt(sMaxorders.getText().trim());
 				}
-				catch (NumberFormatException e) {
-					maxOrders = 0;
-				}
-				listener.setMaxorders(maxOrders);
+				
+				listener.setMaxorders(sMaxorders.getText().trim());
 			}
 		});
 		GridData gd_sMaxorders = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -204,8 +192,9 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		bRecoverable.setSelection(true);
 		bRecoverable.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (init)
+				if (init){
 					return;
+				}
 				listener.setRecoverable(bRecoverable.getSelection());
 			}
 		});
@@ -216,11 +205,11 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		butDistributed.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		butDistributed.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				if (init)
+				if (init){
 					return;
+				}
 				listener.setDistributed(butDistributed.getSelection());
-				// getShell().setDefaultButton(bApplyChain);
-				// bApplyChain.setEnabled(true);
+			
 			}
 		});
 		butDistributed.setSelection(listener.isDistributed());
@@ -232,17 +221,16 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		bVisible.setSelection(true);
 		bVisible.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (init)
+				if (init){
 					return;
+				}
 				listener.setVisible(bVisible.getSelection());
-				// getShell().setDefaultButton(bApplyChain);
-				// bApplyChain.setEnabled(true);
+				
 			}
 		});
-		//        Format
+	
 		new Label(jobChainGroup, SWT.NONE);
-		//        if (!listener.get_dom().isLifeElement()) {
-		//        }
+		
 	}
 
 	private void fillChain(boolean enable, boolean isNew) {
@@ -254,7 +242,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		bRecoverable.setSelection(listener.getRecoverable());
 		bVisible.setSelection(listener.getVisible());
 		tName.setBackground(null);
-		sMaxorders.setText(String.valueOf(listener.getMaxOrders()));
+		sMaxorders.setText(listener.getMaxOrders());
 	}
 
 	public void setISchedulerUpdate(ISchedulerUpdate update_) {
@@ -263,21 +251,16 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 
 	private void showDetails(String state) {
 		if (tName.getText() != null && tName.getText().length() > 0) {
-			// OrdersListener ordersListener = new OrdersListener(listener.get_dom(), update);
-			// String[] listOfOrders = ordersListener.getOrderIds();
-			// DetailDialogForm detail = new DetailDialogForm(tName.getText(), listOfOrders);
-			// detail.showDetails();
+			
 			boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory();
 			if (state == null) {
-				// DetailDialogForm detail = new DetailDialogForm(tName.getText(), listOfOrders, isLifeElement,
-				// listener.get_dom().getFilename());
+				
 				DetailDialogForm detail = new DetailDialogForm(tName.getText(), isLifeElement, listener.get_dom().getFilename());
 				detail.showDetails();
 				detail.getDialogForm().setParamsForWizzard(listener.get_dom(), update);
 			}
 			else {
-				// DetailDialogForm detail = new DetailDialogForm(tName.getText(), state, listOfOrders, isLifeElement,
-				// listener.get_dom().getFilename());
+				
 				DetailDialogForm detail = new DetailDialogForm(tName.getText(), state, null, isLifeElement, listener.get_dom().getFilename());
 				detail.showDetails();
 				detail.getDialogForm().setParamsForWizzard(listener.get_dom(), update);
