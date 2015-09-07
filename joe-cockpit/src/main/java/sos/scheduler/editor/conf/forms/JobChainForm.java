@@ -177,6 +177,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 			public void modifyText(final ModifyEvent e) {
 				if (init){
 					return;
+				}
 				jobchainDataProvider.setTitle(txtTitle.getText());
 			}
 		});
@@ -193,7 +194,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 					return;
 				}
 				
-				listener.setMaxorders(sMaxorders.getText().trim());
+				jobchainDataProvider.setMaxorders(sMaxorders.getText().trim());
 				}
 		});
 		GridData gd_sMaxorders = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
@@ -312,7 +313,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		bRecoverable.setSelection(jobchainDataProvider.getRecoverable());
 		bVisible.setSelection(jobchainDataProvider.getVisible());
 		tName.setBackground(null);
-        sMaxorders.setText((jobchainDataProvider.getMaxOrders());
+        sMaxorders.setText(jobchainDataProvider.getMaxOrders());
         
         
         jobchainDataProvider.setVisible(bVisible.getSelection());
