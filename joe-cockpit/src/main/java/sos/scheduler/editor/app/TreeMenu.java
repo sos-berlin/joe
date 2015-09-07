@@ -557,7 +557,7 @@ public class TreeMenu {
 													int i = 1;
 													if (data.getElement().getChild("process_classes") != null)
 														i = data.getElement().getChild("process_classes").getChildren("process_class").size() + 1;
-													listener.applyProcessClass("processClass_" + i, "", "", 0);
+													listener.applyProcessClass("processClass_" + i, "", 0);
 													listener.fillProcessClassesTable(sos.scheduler.editor.conf.forms.ProcessClassesForm.getTable());
 													listener.selectProcessClass(i - 1);
 												}

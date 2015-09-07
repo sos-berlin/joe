@@ -123,37 +123,11 @@ public class ProcessClassesListener {
 		return name;
 	}
 
-	public String getRemoteHost(Element ee) {
-        String host = Utils.getAttributeValue("remote_scheduler", ee);
-        try {
-            host = host.substring(0, host.lastIndexOf(":"));
-        }
-        catch (Exception e) {
-            host = "";
-        }
-        return host.trim();
+
+	public String getRemoteUrl() {
+		return Utils.getAttributeValue("remote_scheduler", _class);
     }
-
-	public String getRemoteHost() {
-		return getRemoteHost(_class);
-	}
-
-    private String getRemotePort(Element ee) {
-        String port = Utils.getAttributeValue("remote_scheduler", ee);
-        try {
-            port = port.substring(port.lastIndexOf(":") + 1);
-        }
-        catch (Exception e) {
-            port = "";
-        }
-        return port.trim();
-    }
-
-    public String getRemotePort() {
-        return getRemotePort(_class);
-    }
-
-    
+	    
 	public String getMaxProcesses() {
 		return Utils.getAttributeValue("max_processes", _class);
 	}
@@ -190,13 +164,13 @@ public class ProcessClassesListener {
 		_class = new Element("process_class");
 	}
 
-	public void applyProcessClass(String processClass, String host, String port, int maxProcesses) {
+	public void applyProcessClass(String processClass, String url, int maxProcesses) {
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("process_class", Utils.getAttributeValue("name", _class), SchedulerDom.DELETE);
 		Utils.setAttribute("name", processClass, _class, _dom);
 		Utils.setAttribute("max_processes", maxProcesses, _class, _dom);
-		if (host.trim().concat(port.trim()).length() > 0) {
-			Utils.setAttribute("remote_scheduler", host.trim() + ":" + port.trim(), _class, _dom);
+		if (url.trim().length() > 0) {
+			Utils.setAttribute("remote_scheduler", url.trim() , _class, _dom);
 		}else{
 			_class.removeAttribute("remote_scheduler");
 		}
