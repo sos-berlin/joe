@@ -42,9 +42,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		listener.fillTable(tPeriods);
 		periodForm.setEnabled(false);
 		periodForm.hasRepeatTimes(listener.hasRepeatTimes());
-		//periodForm.setEnabled(!Utils.hasSchedulesElement(dom, element));
 		this.group.setEnabled(Utils.isElementEnabled("job", dom, element) && !Utils.hasSchedulesElement(dom, element));
-		//this.group.setEnabled(Utils.isElementEnabled("job", dom, element));
 	}
 
 	public void apply() {
@@ -176,8 +174,7 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		periodForm = new PeriodForm(group, SWT.NONE, JOEConstants.PERIODS);
 		periodForm.setParams(dom, listener.isOnOrder());
 		periodForm.setLayoutData(gridData);
-		//periodForm.setPeriodsForm(this);//um die Tabelle zu aktualisieren
-	}
+ 	}
 
 	private void fillPeriod(boolean newPeriod) {
 		int index = tPeriods.getSelectionIndex();
@@ -190,6 +187,8 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 			if (newPeriod) {
 				periodForm.setPeriod(listener.getNewPeriod());
 				periodForm.fillPeriod();
+				periodForm.setCboStarttime(periodForm.SINGLE_START);
+
 				periodForm.setEnabled(true);
 			}
 	}
