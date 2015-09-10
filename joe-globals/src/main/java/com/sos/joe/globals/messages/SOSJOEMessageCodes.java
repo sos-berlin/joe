@@ -986,6 +986,8 @@ public class SOSJOEMessageCodes extends SOSComposite {
 	public static final SOSMsgJOE	JOE_T_JobAssistent_AtMinute							= new SOSMsgJOE("JOE_T_JobAssistent_AtMinute");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_JobAssistent_AtSecond							= new SOSMsgJOE("JOE_T_JobAssistent_AtSecond");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_M_StartTimeFunctionDetected						= new SOSMsgJOE("JOE_M_StartTimeFunctionDetected");
 
 	// JobAssistentScriptForms
 	@I18NMsg

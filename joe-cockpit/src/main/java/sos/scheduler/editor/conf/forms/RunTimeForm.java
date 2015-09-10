@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.jdom.Element;
 import org.joda.time.DateTimeZone;
 
@@ -107,8 +108,17 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
         cbTimeZone.setText(listener.getTimeZone());
         
 		createPeriodForm();
-        new Label(gRunTime, SWT.NONE);
-	 
+	    
+        String s  =  listener.getFunction();
+        if (s != null && s.length() > 0){
+        	Label lblStartFunction = new Label(gRunTime, SWT.NONE);
+        	lblStartFunction.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
+        	lblStartFunction.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+        	lblStartFunction.setForeground(SWTResourceManager.getColor(SWT.COLOR_LINK_FOREGROUND));
+        	lblStartFunction.setText(JOE_M_StartTimeFunctionDetected.paramsNoKey(s));
+        }else{
+            new Label(gRunTime, SWT.NONE);
+        }
  
 		groupSchedule = JOE_G_RunTimeForm_Schedule.Control(new Group(gRunTime, SWT.NONE));
  		groupSchedule.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false,2,1));
