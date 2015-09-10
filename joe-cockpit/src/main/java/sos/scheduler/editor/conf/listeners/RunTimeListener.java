@@ -99,6 +99,12 @@ public class RunTimeListener {
 	}
 	
 
+	public String getFunction() {
+		String s = _runtime.getAttributeValue("start_time_function");
+		if (s == null)
+			s = "";
+		return s;
+	}
 
 	 
 	private void checkRuntime() {
