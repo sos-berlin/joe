@@ -38,9 +38,9 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 	private Text										stSeconds;
 	private Text										stMinutes;
 	private Text										stHour;
-	public  static String						        		SINGLE_START			= JOE_M_PeriodForm_SingleStart.label();
-	public  static String								        REPEAT_TIME				= JOE_M_PeriodForm_RepeatTime.label();
-	public  static String								        ABSOLUTE_TIME			= JOE_M_PeriodForm_AbsoluteTime.label();
+	public  static String						      	SINGLE_START			= JOE_M_PeriodForm_SingleStart.label();
+	public  static String								REPEAT_TIME				= JOE_M_PeriodForm_RepeatTime.label();
+	public  static String						        ABSOLUTE_TIME			= JOE_M_PeriodForm_AbsoluteTime.label();
 	private PeriodListener								listener				= null;
 	private boolean										onOrder;
 	private Composite									gPeriod					= null;
@@ -363,10 +363,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		return listener;
 	}
 
-	public void setCboStarttime(String s){
-	    cboStarttime.setText(s);
-
-	}
+ 
 
 	/**
 	 * This method initializes group
