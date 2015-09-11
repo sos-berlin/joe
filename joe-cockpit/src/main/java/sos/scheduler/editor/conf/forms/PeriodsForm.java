@@ -187,7 +187,6 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 			if (newPeriod) {
 				periodForm.setPeriod(listener.getNewPeriod());
 				periodForm.fillPeriod();
-				periodForm.setCboStarttime(periodForm.SINGLE_START);
 
 				periodForm.setEnabled(true);
 			}
