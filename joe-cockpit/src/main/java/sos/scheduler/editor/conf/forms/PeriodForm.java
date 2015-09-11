@@ -363,10 +363,7 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		return listener;
 	}
 
-	public void setCboStarttime(String s){
-	    cboStarttime.setText(s);
 
-	}
 
 	/**
 	 * This method initializes group

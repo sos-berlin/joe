@@ -6,7 +6,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
-
 import com.sos.dialog.classes.SOSComposite;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
  
@@ -1584,6 +1583,10 @@ public class SOSJOEMessageCodes extends SOSComposite {
 	public static final SOSMsgJOE	JOE_TCl_JobOptionsForm_Dir							= new SOSMsgJOE("JOE_TCl_JobOptionsForm_Dir");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_TCl_JobOptionsForm_Regex						= new SOSMsgJOE("JOE_TCl_JobOptionsForm_Regex");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_L_JobOptionsForm_StdErrLogLevel					= new SOSMsgJOE("JOE_L_JobOptionsForm_StdErrLogLevel");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_Cbo_JobOptionsForm_StdErrLogLevel				= new SOSMsgJOE("JOE_Cbo_JobOptionsForm_StdErrLogLevel");	
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_M_ZeroNotAllowed								= new SOSMsgJOE("JOE_M_ZeroNotAllowed");
 	@I18NMsg
