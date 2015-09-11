@@ -81,7 +81,7 @@ public class JobEmailSettings extends FormBaseClass {
 		mailOnError.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
-				objJobDataProvider.setValue("mail_on_error", mailOnError.getText(), "no");
+				objJobDataProvider.setValue("mail_on_error", mailOnError.getText());
 			}
 		});
 		GridData gd_mailOnError = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
@@ -95,7 +95,7 @@ public class JobEmailSettings extends FormBaseClass {
 		mailOnWarning.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				mailOnDelayAfterError.setEnabled(mailOnWarning.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
-				objJobDataProvider.setValue("mail_on_warning", mailOnWarning.getText(), "no");
+				objJobDataProvider.setValue("mail_on_warning", mailOnWarning.getText());
 			}
 		});
 		GridData gd_mailOnWarning = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
@@ -108,7 +108,7 @@ public class JobEmailSettings extends FormBaseClass {
 		mailOnSuccess.setItems(comboItems);
 		mailOnSuccess.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				objJobDataProvider.setValue("mail_on_success", mailOnSuccess.getText(), "no");
+				objJobDataProvider.setValue("mail_on_success", mailOnSuccess.getText());
 			}
 		});
 		GridData gd_mailOnSuccess = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
@@ -121,7 +121,7 @@ public class JobEmailSettings extends FormBaseClass {
 		mailOnProcess.setItems(comboItems);
 		mailOnProcess.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				objJobDataProvider.setValue("mail_on_process", mailOnProcess.getText(), "no");
+				objJobDataProvider.setValue("mail_on_process", mailOnProcess.getText());
 			}
 		});
 		GridData gd_mailOnProcess = new GridData(GridData.BEGINNING, GridData.CENTER, true, false);
@@ -135,7 +135,7 @@ public class JobEmailSettings extends FormBaseClass {
 		mailOnDelayAfterError.setEnabled(mailOnError.getText().equals("yes") || mailOnWarning.getText().equals("yes"));
 		mailOnDelayAfterError.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				objJobDataProvider.setValue("mail_on_delay_after_error", mailOnDelayAfterError.getText(), "no");
+				objJobDataProvider.setValue("mail_on_delay_after_error", mailOnDelayAfterError.getText());
 			}
 		});
 		mailOnDelayAfterError.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, true, false));

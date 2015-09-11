@@ -148,6 +148,14 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
 		String forceIdleTimeout = _job.getAttributeValue("force_idle_timeout");
 		return forceIdleTimeout == null ? false : forceIdleTimeout.equalsIgnoreCase("yes");
 	}
+	
+	public void removeAttribute(String attr){
+		_job.removeAttribute("stderr_log_level");
+		_dom.setChanged(true);
+
+		if (_dom.isDirectory() || _dom.isLifeElement())
+			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", _job), SchedulerDom.MODIFY);
+	}
 
 	public void setOrder(final boolean order) {
 		if (order) {
@@ -682,16 +690,6 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
 		}
 	}
 
-	/*  private void removeScriptSource() {
-	    String includes[] = getIncludes();
-
-	    _script.removeContent();
-
-	    for (int i = 0; i < includes.length; i++) {
-	      addInclude(includes[i]);
-	     }
-	  }
-	*/
 	public void removeInclude(final int index) {
 		if (_script != null) {
 			List includeList = _script.getChildren("include");
@@ -728,10 +726,7 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
 			return "";
 	}
 
-	/*public void deleteScript() {
-	  //    if (_script != null) 	_script.removeContent();
-	  if (_script != null) 	removeScriptSource();
-	}*/
+
 	@Override public void setSource(final String source) {
 		try {
 			if (_script != null) {
@@ -776,10 +771,6 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
 		return _job;
 	}
 
-	// public String getName() {
-	// return Utils.getAttributeValue("name", _job);
-	// }
-	//
 	public void setName(final String name) {
 		Utils.setAttribute("name", name, _job);
 		if (_main != null) 
@@ -883,18 +874,25 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
 		return Utils.getAttributeValue("regex", _directory);
 	}
 
-	public void setValue(final String name, final String value) {
-		setValue(name, value, "");
-		/*setMail();
-		Utils.setAttribute(name, value, _settings, _dom);
-		if(_dom.isDirectory() || _dom.isLifeElement()) _dom.setChangedForDirectory("job", Utils.getAttributeValue("name",_parent), SchedulerDom.MODIFY);
-		*/
+	public String getStdErrLogLevel() {
+		String s=Utils.getAttributeValue("stderr_log_level", _job);
+		if (s==null || s.length()==0){
+			s="info";
+		}
+		return s;
 	}
 
-	public void setValue(final String name, final String value, final String default_) {
+
+
+	public void setStdErrLogLevel(String s) {
+		Utils.setAttribute("stderr_log_level", s, _parent);
+		_dom.setChanged(true);
+		setChangedForDirectory();	
+    }
+
+	public void setValue(final String name, final String value) {
 		if (value == null || value.length() == 0) {
 			if (_settings != null) {
-				// return;
 				_settings.removeChild(name);
 				if (_settings.getContentSize() == 0 && _job != null) {
 					_job.removeContent(_settings);
@@ -909,7 +907,6 @@ public class JobListener extends JOEListener implements IProcessClassDataProvide
 			}
 		}
 		setMail();
-		// Utils.setAttribute(name, value, default_, _settings, _dom);
 		Element elem = null;
 		if (_settings.getChild(name) == null) {
 			elem = new Element(name);
