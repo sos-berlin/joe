@@ -499,7 +499,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
         btnBrowse.setLayoutData(gd_btnBrowse);
         btnBrowse.addSelectionListener(new SelectionAdapter() {
             @Override public void widgetSelected(final SelectionEvent e) {
-                String jobChain = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
+                String jobChain = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB_CHAIN);
                 if (jobChain != null && jobChain.length() > 0){
                 	cJobChain.setText(jobChain);
                 }
