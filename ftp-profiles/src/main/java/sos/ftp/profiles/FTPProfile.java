@@ -233,6 +233,20 @@ public class FTPProfile {
     }
 
     /**
+     * Kopien der Datein werden im lokalen Verzeichnis abgelegt
+     * 
+     * @return the localdirectory
+     * @throws IOException 
+     */
+    public String getLocaldirectory(String defaultFileName) throws IOException {
+    	if (localdirectory.length()==0){
+            return new File(defaultFileName).getCanonicalPath();
+    	}else{
+            return new File(localdirectory).getCanonicalPath();
+    	}
+    }
+
+    /**
      * Der Transfer-Modus kann die Werte ascii oder binary beinhalten
      * 
      * @return the transfermode
