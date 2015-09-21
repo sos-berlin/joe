@@ -29,13 +29,6 @@ import sos.util.SOSString;
 import java.util.*;
 import java.io.File;
 
-/**
- * Formular zur Erstellen, Beabeiten oder Löschen von FTP Zugängen.
- * 
- * 
- * @author Mueruevet Oeksuez
- *
- */
 public class FTPProfileDialog {
 
  
@@ -148,16 +141,13 @@ public class FTPProfileDialog {
 
 				}
 			});
-			//shell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 			final GridLayout gridLayout = new GridLayout();
 			gridLayout.marginTop = 5;
 			gridLayout.marginRight = 5;
 			gridLayout.marginLeft = 5;
 			gridLayout.marginBottom = 5;
 			shell.setLayout(gridLayout);
-			shell.setSize(558, 488);
-
-
+			shell.setSize(750, 488);
 			shell.setText("Profiles");
 
 			{
@@ -209,15 +199,12 @@ public class FTPProfileDialog {
 				cboConnectname.setLayoutData(gridData_2);
 				cboConnectname.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
-						//if( !cboConnectname.getText().equals(currProfile.get("name")))
 						if( !cboConnectname.getText().equals(currProfile.getProfilename()))
 							initForm();
 					}
 				});
 
-				//if(!shell.isDisposed())
-				//cboConnectname.setText(listener.getCurrProfileName());
-
+		 
 
 				final Label protocolLabel = new Label(group, SWT.NONE);
 				protocolLabel.setText("Protocol");
@@ -260,7 +247,6 @@ public class FTPProfileDialog {
 					}
 				});
 				txtUsername.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
-				//txtUsername.setText(currProfile.get("user") != null ? currProfile.get("user").toString() : "");
 
 				final Label passwordLabel = new Label(group, SWT.NONE);
 				passwordLabel.setText("Password");			
@@ -282,7 +268,6 @@ public class FTPProfileDialog {
 					}
 				});
 				txtPassword.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
-				//txtPassword.setText(currProfile.get("password") != null ? currProfile.get("password").toString() : "");
 
 				final Label rootLabel = new Label(group, SWT.NONE);
 				rootLabel.setText("Root Directory");
@@ -294,7 +279,6 @@ public class FTPProfileDialog {
 					}
 				});
 				txtRoot.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
-				//txtRoot.setText(currProfile.get("root") != null ? currProfile.get("root").toString() : "");
 
 				final Label directoryFroLocalLabel = new Label(group, SWT.NONE);
 				directoryFroLocalLabel.setText("Directory For Local Copy");
@@ -325,7 +309,6 @@ public class FTPProfileDialog {
 				});
 				butSavePassword.setLayoutData(new GridData());
 				new Label(group, SWT.NONE);
-				//txtLocalDirectory.setText(currProfile.get("localdirectory") != null ? currProfile.get("localdirectory").toString() : "");
 
 				final Label transferModeLabel = new Label(group, SWT.NONE);
 				final GridData gridData_3 = new GridData(GridData.BEGINNING, GridData.END, false, false);
@@ -509,7 +492,6 @@ public class FTPProfileDialog {
 				});
 				butApply.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 				butApply.setText("Apply");
-				//txtHost.setText(currProfile.get("host") != null ? currProfile.get("host").toString() : "");
 
 				final Button butNewProfile = new Button(schedulerGroup, SWT.NONE);
 				butNewProfile.addSelectionListener(new SelectionAdapter() {
@@ -520,12 +502,7 @@ public class FTPProfileDialog {
 						txtUsername.setText("");
 						txtPassword.setText("");
 						txtRoot.setText("");
-						String s = System.getProperty("SCHEDULER_DATA");
-						if (s == null){
-							s = System.getProperty("java.io.tmpdir");
-						}
-						s = s + "/joe/cache/";
-						txtLocalDirectory.setText(s);
+						txtLocalDirectory.setText(getInitValueLocalDirectory());
 						butAscii.setSelection(true);
 						butbinary.setSelection(false);
 						butSavePassword.setSelection(true);
@@ -551,7 +528,6 @@ public class FTPProfileDialog {
 				});
 				butNewProfile.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 				butNewProfile.setText("New Profile");
-				//txtPort.setText(currProfile.get("port") != null ? currProfile.get("port").toString() : "");
 
 				final Button butRemove = new Button(schedulerGroup, SWT.NONE);
 				butRemove.addSelectionListener(new SelectionAdapter() {
@@ -592,7 +568,6 @@ public class FTPProfileDialog {
 				}
 			});
 
-			//setToolTipText();
 			if(listener.getCurrProfileName() != null){
                 cboConnectname.setText(listener.getCurrProfileName());
 			}
@@ -606,6 +581,14 @@ public class FTPProfileDialog {
 		}
 	}
 
+	private String getInitValueLocalDirectory(){
+		String s = System.getProperty("SCHEDULER_DATA");
+		if (s == null){
+			s = System.getProperty("java.io.tmpdir");
+		}
+		s = s + "/joe/cache/";
+		return s;
+	}
 
 	private void initForm()  {
 		
@@ -613,10 +596,9 @@ public class FTPProfileDialog {
 			FTPProfile.log("calling " + sos.util.SOSClassUtil.getMethodName(), SOSLogger.DEBUG9);
 			init = true;
  			String s = cboConnectname.getText();
-			cboConnectname.setItems(listener.getProfileNames());//löscht den Eintrag, daher mit s merken und wieder zurückschreiben
+			cboConnectname.setItems(listener.getProfileNames());
 			cboConnectname.setText(s);
 
-			//currProfile = listener.getProfiles().get(cboConnectname.getText()) != null ? (Properties)listener.getProfiles().get(cboConnectname.getText()) : new Properties();
 			currProfile = listener.getProfiles().get(cboConnectname.getText()) != null ? (FTPProfile)listener.getProfiles().get(cboConnectname.getText()) : new FTPProfile(new Properties());
 
 			listener.setCurrProfile(currProfile);
@@ -627,7 +609,7 @@ public class FTPProfileDialog {
 			txtUsername.setText(currProfile.getUser());
 			txtPassword.setText(currProfile.getPassword() );
 			txtRoot.setText(currProfile.getRoot());
-			txtLocalDirectory.setText(currProfile.getLocaldirectory());
+			txtLocalDirectory.setText(currProfile.getLocaldirectory(getInitValueLocalDirectory()));
 
 			butSavePassword.setSelection(currProfile.isSavePassword());
 
@@ -755,7 +737,6 @@ public class FTPProfileDialog {
 
 			if(newProfile && !listener.getProfiles().containsKey(cboConnectname.getText()) ||
 					listener.getProfiles().isEmpty()) {
-				//neuer Eintrag
 				listener.getProfiles().put(pName, new FTPProfile(prop));	
 			} else {
 				listener.removeProfile(pName);
@@ -778,7 +759,7 @@ public class FTPProfileDialog {
 			cboConnectname.setItems(listener.getProfileNames());
 			cboConnectname.setText(pName);
 			newProfile = false;
-			saveSettings = true;//Änderungen haben stattgefunden, d.h. in die ini Datei zurückschreiben
+			saveSettings = true;
 			butApply.setEnabled(false);
 			
 		} catch (Exception e) {
@@ -844,10 +825,6 @@ public class FTPProfileDialog {
 			}	
 		}
 		stopCursor(shell);
-
-
-
-
 	}
 
   
@@ -874,13 +851,11 @@ public class FTPProfileDialog {
 		return mb.open();
 	}
 
-	//setzt den Maus auf SandUhr
 	public static void startCursor(Shell shell){
 		if(!shell.isDisposed())
 			shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT));
 	}
 
-	//setzt den Maus auf Pfeil
 	public static void stopCursor(Shell shell){
 		if(!shell.isDisposed())
 			shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_ARROW));
