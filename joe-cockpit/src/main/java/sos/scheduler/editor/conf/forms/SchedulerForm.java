@@ -382,8 +382,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 
 	@Override public boolean save() {
 		boolean res = true;
-		// if(dom.getFilename() != null && new java.io.File(dom.getFilename()).getName().startsWith("#xml#.config.") &&
-		// dom.getFilename().endsWith(".xml~")) {
+		 
 		if (dom.isDirectory()) {
 			res = MainWindow.saveDirectory(dom, false, SchedulerDom.DIRECTORY, null, container);
 		}

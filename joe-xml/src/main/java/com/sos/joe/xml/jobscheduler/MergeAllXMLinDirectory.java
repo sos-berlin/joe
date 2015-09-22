@@ -1,5 +1,7 @@
 package com.sos.joe.xml.jobscheduler;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -545,25 +547,27 @@ public class MergeAllXMLinDirectory {
                 File f = new File(filename);
 
                 if (prefix.equals("job_chain_")){
-	                String filenameNodeParameters = filename.replaceAll("job_chain.xml", "config.xml");
+	                String filenameNodeParameters = filename.replaceAll(".job_chain.xml", ".config.xml");
 				    File fNodeParameters = new File(filenameNodeParameters);
 				    if (fNodeParameters.exists()){
 				        fNodeParameters.delete();     
 				    }
+				    String filenameGraphvizDiagram = filename.replaceAll(".job_chain.xml", ".dot");
+					File fGraphvizDiagram = new File(filenameGraphvizDiagram);
+					if (fGraphvizDiagram.exists()){
+						fGraphvizDiagram.delete();     
+					}				   
+                    String filenameGraphvizDiagramPng = filename.replaceAll(".job_chain.xml", ".png");
+					File fGraphvizDiagramPng = new File(filenameGraphvizDiagramPng);
+					if (fGraphvizDiagramPng.exists()){
+						fGraphvizDiagramPng.delete();     
+					}
 				}
 				if (f.exists()) {
 					if (!f.delete()) {
-						// job5.job.xml
 						ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-					}
-					else {
-						// System.out.println(filename + " wurde gelöscht.");
-					}
-				}
-				else {
-					// System.out.println(filename +
-					// " zum löschen gibts nicht.");
-				}
+					}			
+				}				
 			}
 		}
 	}
@@ -607,60 +611,6 @@ public class MergeAllXMLinDirectory {
 		return elem;
 	}
 
-	public static void main(final String[] args) throws Exception {
-		// MergeAllXMLinDirectory allJob = new
-		// MergeAllXMLinDirectory("C:/scheduler/config/temp",
-		// "C:/scheduler/config/temp/config.xml");
-		// allJob.parseDocuments();
-		/*
-		 * SAXBuilder builder = new SAXBuilder();
-		 * 
-		 * builder.setFeature("http://apache.org/xml/features/xinclude", true);
-		 * Document doc = builder.build("C:/temp/a.xml");
-		 * 
-		 * Element root = doc.getRootElement();
-		 * System.out.println(Utils.getElementAsString(root));
-		 */
-		/*
-		 * javax.xml.parsers.SAXParserFactory spf =
-		 * javax.xml.parsers.SAXParserFactory.newInstance();
-		 * spf.setNamespaceAware(true); spf.setXIncludeAware(true);
-		 */
-		/*
-		 * javax.xml.parsers.DocumentBuilderFactory dbf =
-		 * javax.xml.parsers.DocumentBuilderFactory.newInstance();
-		 * dbf.setNamespaceAware(true); dbf.setXIncludeAware(true);
-		 * 
-		 * javax.xml.parsers.DocumentBuilder dom = dbf.newDocumentBuilder();
-		 * org.w3c.dom.Document document_ = dom.parse("C:/temp/a.xml");
-		 * org.w3c.dom.Element root_ = document_.getDocumentElement();
-		 * System.out.println(root_);
-		 */
-		/*
-		 * System.setProperty("javax.xml.parsers.DocumentBuilderFactory","org.apache.xerces.jaxp.DocumentBuilderFactoryImpl"
-		 * ); javax.xml.parsers.DocumentBuilderFactory dbfactory =
-		 * javax.xml.parsers.DocumentBuilderFactory.newInstance();
-		 * 
-		 * dbfactory.setFeature("http://apache.org/xml/features/xinclude",
-		 * true);dbfactory.setFeature(
-		 * "http://apache.org/xml/features/xinclude/fixup-base-uris",false);
-		 * 
-		 * 
-		 * dbfactory.setNamespaceAware(true); dbfactory.setXIncludeAware(true);
-		 * 
-		 * 
-		 * javax.xml.parsers.DocumentBuilder parser =
-		 * dbfactory.newDocumentBuilder();
-		 * 
-		 * System.out.println("Namespace aware:" + parser.isNamespaceAware());
-		 * System.out.println("XInclude aware:" + parser.isXIncludeAware());
-		 * 
-		 * org.w3c.dom.Document document = parser.parse(new
-		 * File("sourceXMLFilePath"));
-		 * 
-		 * //Source xmlsource = new DOMSource(document);
-		 */
-	}
 
 	public ArrayList getListOfReadOnly() {
 		return listOfReadOnly;
@@ -699,30 +649,5 @@ public class MergeAllXMLinDirectory {
 			throw new IOException("error in writeSchemaFile(). could get schema " + e.toString());
 		}
 	}
-	/*
-	 * protected String[] writeSchemaFile_old() throws IOException { ArrayList
-	 * urls = new ArrayList();
-	 * 
-	 * String[] _schemaTmpFile = new String[] {"scheduler_editor_schema" };
-	 * 
-	 * String[] _schemaResource = new String[] { Options.getSchema() };
-	 * 
-	 * for (int i = 0; i < _schemaTmpFile.length; i++) { if (_schemaTmpFile[i]
-	 * != null && !_schemaTmpFile[i].equals("") && _schemaResource[i] != null &&
-	 * !_schemaResource[i].equals("")) {
-	 * 
-	 * File tmp = File.createTempFile(_schemaTmpFile[i], ".xsd");
-	 * tmp.deleteOnExit(); InputStream in =
-	 * getClass().getResourceAsStream(_schemaResource[i]);
-	 * 
-	 * FileOutputStream out = new FileOutputStream(tmp, true);
-	 * 
-	 * int c; while ((c = in.read()) != -1) out.write(c);
-	 * 
-	 * in.close(); out.close();
-	 * 
-	 * urls.add(tmp.getAbsolutePath()); } }
-	 * 
-	 * return (String[]) urls.toArray(new String[urls.size()]); }
-	 */
+	
 }

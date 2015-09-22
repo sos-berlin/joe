@@ -154,7 +154,9 @@ public class JobChainDiagramComposite extends Composite {
 
         Image originalImage = null;
         try {
-            originalImage = new Image(gJobchainDiagramm.getDisplay(), new FileInputStream(diagramFile));
+        	FileInputStream fis = new FileInputStream(diagramFile);
+            originalImage = new Image(gJobchainDiagramm.getDisplay(), fis);
+            fis.close();
              
         } catch (FileNotFoundException e1) {
             new ErrorLog(e1.getLocalizedMessage(), e1);
@@ -174,7 +176,7 @@ public class JobChainDiagramComposite extends Composite {
         
         final Image image = new Image(gJobchainDiagramm.getDisplay(),
                  originalImage.getImageData().scaledTo((int)(originalImage.getBounds().width*scale),(int)(originalImage.getBounds().height*scale)));
-         
+        
         final Point origin = new Point(0, 0);
         canvas = new Canvas(gJobchainDiagramm, SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL);
         canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
