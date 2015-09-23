@@ -12,14 +12,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * 
- * Wenn Password nicht angegeben wurde, dann kommt ein Dialog, indem 
- * der Password geschrieben werden kann.
- * 
- * @author Mueruevet Oeksuez
- *
- */
 class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
 
 
@@ -56,7 +48,6 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
 			}
 		});
 
-		//newFolderShell.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor.png"));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.verticalSpacing = 10;
 		gridLayout.horizontalSpacing = 10;
@@ -101,7 +92,6 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
 		butCancel.setText("Cancel");
 		newFolderShell.open();		
 
-		//org.eclipse.swt.graphics.Rectangle rect = image.getBounds();
 		newFolderShell.setSize(241, 107);
 
 
@@ -110,7 +100,6 @@ class FTPPopUpDialog extends org.eclipse.swt.widgets.Dialog {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
-		//image.dispose();		
 		return result;
 
 	}

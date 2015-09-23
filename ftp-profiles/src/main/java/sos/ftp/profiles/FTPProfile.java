@@ -9,16 +9,7 @@ import org.eclipse.swt.widgets.Text;
 import sos.util.SOSLogger;
 import sos.util.SOSString;
 
-/**
- * Beinhaltet alle FTP Zugangsdaten zu einer Profile.
- * 
- * Anhand der Zugangsdaten kann hier eine FTP Verbindung stattfinden. Hier
- * können Dateien per FTP transferiert werden.
- * 
- * @author Mueruevet Oeksuez
- * @author Uwe Risse
- * 
- */
+
 public class FTPProfile {
     @SuppressWarnings("unused")
     private final String conSVNVersion = "$Id$";
