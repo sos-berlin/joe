@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.jdom.input.SAXBuilder;
 
+import sos.scheduler.editor.classes.JoeLockFolder;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 
@@ -88,25 +89,20 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 		// on tab close
 		folder.addCTabFolder2Listener(new CTabFolder2Adapter() {
 			@Override public void close(CTabFolderEvent event) {
-				// IEditor editor = getCurrentEditor();
 				IEditor editor = (IEditor) ((CTabItem) (event.item)).getControl();
 				if (editor.hasChanges()) {
 					event.doit = editor.close();
 				}
-				if (event.doit)
+				if (event.doit){
 					filelist.remove(editor.getFilename());
+					JoeLockFolder joeLockFolder = new JoeLockFolder(editor.getFilename());
+				    joeLockFolder.unLockFolder();				
+				    }
 			}
 		});
 		folder.addTraverseListener(new TraverseListener() {
 			@Override public void keyTraversed(final TraverseEvent e) {
-				/*if(e.detail == SWT.TRAVERSE_ESCAPE) {		
-					System.out.println(folder.getChildren().length);
-					IEditor editor = (IEditor)folder.getSelection().getControl();
-					filelist.remove(editor.getFilename());
-					editor.close();
-					folder.getSelection().dispose();
-					folder.removeControlListener(listener)
-				}*/
+				 
 			}
 		});
 	}
@@ -468,6 +464,9 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 			CTabItem tab = folder.getItem(i);
 			folder.setSelection(i);
 			if (((IEditor) tab.getControl()).close()) {
+			    String s =((IEditor) tab.getControl()).getFilename();
+			    JoeLockFolder joeLockFolder = new JoeLockFolder(s);
+                joeLockFolder.unLockFolder();   
 				tab.dispose();
 				i--;
 			}
@@ -495,22 +494,25 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 		}
 	}
 
-	/* public SchedulerForm openDirectory() {
-	    SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE, SchedulerDom.DIRECTORY);
-
-	    if (scheduler.openDirectory(null, filelist)) {
-	        CTabItem tab = newItem(scheduler, scheduler.getFilename());
-	        tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
-	        return scheduler;
-	    } else
-	        return null;
-	}*/
+ 
 	@Override public SchedulerForm openDirectory(String filename) {
 		SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE, SchedulerDom.DIRECTORY);
 		if (scheduler.openDirectory(filename, filelist)) {
-			CTabItem tab = newItem(scheduler, scheduler.getFilename());
-			Options.setLastFolderName(scheduler.getFilename());
-			tab.setImage(ResourceManager.getImageFromResource(conImageEDITOR_SMALL_PNG));
+			
+		    JoeLockFolder joeLockFolder = new JoeLockFolder(scheduler.getFilename());
+		    if ( joeLockFolder.isFolderLocked()){
+		          joeLockFolder.getDataFromFile(new File(scheduler.getFilename()));
+		          String m = String.format("The folder %s is open.\n\nUser: %s \nDate %s\n\n Do you want to take over",scheduler.getFilename(),joeLockFolder.getUserFromFile(), joeLockFolder.getSinceFromFile());
+	              int c = MainWindow.message(m, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+	              if (c != SWT.YES){
+	                  return null;
+	              }
+		    }
+		    
+		    joeLockFolder.lockFolder();
+		    CTabItem tab = newItem(scheduler, scheduler.getFilename());
+            Options.setLastFolderName(scheduler.getFilename());
+            tab.setImage(ResourceManager.getImageFromResource(conImageEDITOR_SMALL_PNG));
 			return scheduler;
 		}
 		else

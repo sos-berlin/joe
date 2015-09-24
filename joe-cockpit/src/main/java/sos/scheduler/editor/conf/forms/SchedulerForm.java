@@ -1,4 +1,6 @@
 package sos.scheduler.editor.conf.forms;
+import static org.junit.Assert.assertEquals;
+
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
@@ -32,6 +34,7 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.app.TreeMenu;
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.classes.JoeLockFolder;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
 import com.sos.joe.globals.JOEConstants;
@@ -144,25 +147,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 				dragSourceItem[0] = null;
 			}
 		});
-	/*tree.addListener(SWT.MouseUp, new Listener() {
-			@Override public void handleEvent(final Event event) {
-				if (event.button == 1) { // left mouse button
-					Point point = new Point(event.x, event.y);
-					TreeItem item = tree.getItem(point);
-					if (item != null) {
-						selection = item;
-						event.doit = listener.treeSelection(tree, cMainForm);
-						if (!event.doit) {
-							tree.setSelection(new TreeItem[] { selection });
-						}
-						else {
-							selection = tree.getSelection()[0];
-						}
-					}
-				}
-			}
-		});
-		 */
+ 
 		tree.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
 				if (tree.getSelectionCount() > 0) {
@@ -184,8 +169,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	private void createCMainForm() {
  		cMainForm = new Composite(sashForm, SWT.NONE);
 		cMainForm.setLayout(new FillLayout());
-		//		cMainForm.setLayout(new GridLayout());
-	}
+ 	}
 
 	public Shell getSShell() {
 		return this.getShell();
@@ -215,8 +199,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 			item.setExpanded(true);
 			if (item.getItemCount() > 0)
 				item.getItems()[item.getItemCount() - 1].setExpanded(true);
-			// listener.treeFillCommands(tree.getSelection()[0], data.getElement(), true);
-			// hier einen neuen TreeItem aufbauen
+
 		}
 	}
 
@@ -230,11 +213,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 
 	@Override public void updateDays(final int type) {
 		updateDays(type, null);
-		/*if (tree.getSelectionCount() > 0) {
-		 TreeItem item = tree.getSelection()[0];
-		 TreeData data = (TreeData) item.getData();
-		 listener.treeFillDays(item, data.getElement(), type, true);
-		 }*/
+	
 	}
 
 	@Override public void updateDays(final int type, final String name) {
@@ -261,10 +240,8 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 			item.setText(job);
 			TreeData data = (TreeData) item.getData();
 			data.setElement(elem);
-			// listener.treeFillMain(tree, this, SchedulerDom.LIVE_JOB);
 			listener.treeFillJob(item, data.getElement(), true);
 			listener.treeSelection(tree, cMainForm);
-			// listener.treeFillJobs(tree.getParentItem());
 		}
 	}
 
@@ -279,10 +256,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	}
 
 	@Override public void updateJobs() {
-		// if(tree.getSelection()[0].getText().startsWith("Job Chain")) {
 		if (!tree.getSelection()[0].getText().startsWith(SchedulerListener.JOBS) && !tree.getSelection()[0].getText().startsWith("Steps")) {
-			// Assistent: Der Aufruf erfolgte über den Assistenten. Hier ist nicht das Element "Jobs" im Tree selektiert
-			// sondern das Element "Job Chains".
 			updateJobs_();
 		}
 		else
@@ -325,7 +299,6 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 
     @Override public void openBlank() {
         initialize();
-        // dom.initScheduler();
         listener.treeFillMain(tree, cMainForm);
     }
 
@@ -335,13 +308,11 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 
 	public void openBlank(final int type) {
 		initialize();
-		// dom.initScheduler();
 		listener.treeFillMain(tree, cMainForm, type);
 	}
 
 	public boolean openDirectory(final String filename, final Collection files) {
-		// boolean res = IOUtils.openFile("#xml#", files, dom);
-		// System.out.println("test: " + filename);
+
 		boolean res = IOUtils.openFile(filename, files, dom);
 		if (res) {
 			if (dom.getListOfChangeElementNames() != null && dom.getListOfChangeElementNames().size() > 0) {
@@ -436,63 +407,9 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 
 	@Override public boolean hasChanges() {
 		Options.saveSash("main", sashForm.getWeights());
-		// System.out.println(dom.isChanged() + " isLife: " + (dom.isDirectory() || dom.isLifeElement()));
-		// if(dom.isDirectory()) {
-		/*if(dom.isChanged()) {
-			fontChange = true;
-			setChangedInItalicFont();
-		} else {
-			//zurücksetzen
-			if (fontChange){
-				FontData fontDatas[] = tree.getFont().getFontData();
-				FontData fdata = fontDatas[0];
-				Font font = new Font(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.NORMAL);
-				tree.setFont(font);
-				for(int i = 0; i < tree.getItemCount(); i++) {
-					TreeItem item = tree.getItem(i);
-					setChangedFont(item);
-				}
-			}
-
-
-		}
-		*/
 		return dom.isChanged();
 	}
-
-	/*//Nur für Hot Foldern. Setz den Font vom kursiv auf normal
-	private void setChangedFont(TreeItem item ) {
-		FontData fontDatas[] = tree.getFont().getFontData();
-		FontData fdata = fontDatas[0];
-		Font font = new Font(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.NORMAL);
-
-		item.setFont(font);
-		for(int j = 0; j < item.getItemCount(); j++) {
-			TreeItem cItem = item.getItem(j);
-			setChangedFont(cItem);
-		}
-	}
-
-
-
-
-	//Nur für Hot Foldern
-	private void setChangedInItalicFont() {
-		if (tree.getSelectionCount() > 0) {
-			TreeItem item = tree.getSelection()[0];
-			TreeData data = (TreeData) item.getData();
-			FontData fontDatas[] = item.getFont().getFontData();
-			FontData fdata = fontDatas[0];
-			Font font = new Font(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.ITALIC);
-			item.setFont(font);
-			while(item.getParentItem() != null) {
-				item = item.getParentItem();
-				item.setFont(font);
-			}
-
-		}
-	}
-	*/
+ 
 	@Override public String getHelpKey() {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
@@ -590,8 +507,6 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 					}
 				}
 			}
-			// String jobChain = "Job Chain: " + newName;
-			// item.setText(jobChain);
 		}
 	}
 
@@ -771,23 +686,10 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	public void setChangedTreeItemText(final String key1) {
 		if (tree.getSelectionCount() > 0) {
 			TreeItem item = tree.getSelection()[0];
-			/*TreeData data = (TreeData) item.getData();
-			FontData fontDatas[] = item.getFont().getFontData();
-			FontData fdata = fontDatas[0];
-			Font font = new Font(Display.getCurrent(), fdata.getName(), fdata.getHeight(), SWT.ITALIC);
-			item.setFont(font);
-			*/
+			
 			if (!dom.isDirectory())
 				return;
-			// TreeData data = (TreeData) item.getData();
-			/*Element elem = Utils.getHotFolderParentElement(data.getElement());
-			String key1 = "";
 
-			if(elem.getName().equals("order") || elem.getName().equals("add_order"))
-				key1 = elem.getName()+ "_" + Utils.getAttributeValue("job_chain",elem)+ "," +Utils.getAttributeValue("id",elem);
-			else
-				key1 = elem.getName() + "_" + Utils.getAttributeValue("name", elem);
-			*/
 			if (!dom.getChangedJob().containsKey(key1))
 				return;
 			if (item.getText().endsWith(SchedulerListener.LOCKS) || item.getText().endsWith(SchedulerListener.PROCESS_CLASSES)) {
@@ -819,7 +721,6 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 				}
 				else {
 					item = item.getParentItem();
-					// item.setFont(font);
 				}
 			}
 		}

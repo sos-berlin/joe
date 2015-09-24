@@ -36,6 +36,7 @@ import org.jdom.Element;
 import org.jdom.xpath.XPath;
 
 import sos.ftp.profiles.FTPProfileJadeClient;
+import sos.scheduler.editor.classes.JoeLockFolder;
 import sos.scheduler.editor.classes.WindowsSaver;
 import sos.scheduler.editor.conf.forms.HotFolderDialog;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
@@ -707,12 +708,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		objPersistenceStore.restoreWindowSize();
 	}
 
-/*
-	private void saveWindowPosAndSize() {
-		objPersistenceStore.saveWindow();
-		objPersistenceStore.restoreWindowSize();
-	}
-*/
+
 	private void saveWindowPosAndSize() {
 		objPersistenceStore.saveWindow();
 	}
@@ -789,19 +785,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		return message(getSShell(), application, message, style);
 	}
 
-	// /**
-	// * Erzeugt einen Confirm-Dialog, wenn der Button zum schlieﬂen des Fensters
-	// * bet‰tigt wird.
-	// *
-	// * @see org.eclipse.jface.window.Window#handleShellCloseEvent()
-	// */
-	// @Override
-	// protected void handleShellCloseEvent () {
-	// if (MessageDialog.openConfirm(null, "Best‰tigung",
-	// "Wollen Sie das Programm beenden?")) {
-	// super.handleShellCloseEvent();
-	// }
-	// }
+ 
 	public static int message(Shell shell, String pstrMessage, int style) {
 		MessageBox mb = new MessageBox(shell, style);
 		if (mb == null) {
@@ -868,6 +852,20 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			currdom.setLastModifiedFile(0);
 			changes = (java.util.HashMap) currdom.getChangedJob().clone();
 		}
+		
+		 JoeLockFolder joeLockFolder = new JoeLockFolder(container.getCurrentEditor().getFilename());
+         
+         if (joeLockFolder.userChanged()){
+             String m = String.format("The folder %s is open.\n\nUser: %s \nDate %s\n\n Do you want to save it nevertheless?",container.getCurrentEditor().getFilename(),joeLockFolder.getUserFromFile(), joeLockFolder.getSinceFromFile());
+             int c = MainWindow.message(m, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+             if (c != SWT.YES){
+                 Utils.stopCursor(getSShell());
+                 return;
+             }
+         }
+             
+        
+         
 		if (container.getCurrentEditor().applyChanges()) {
             saveJobChainNodeParameter();
 			container.getCurrentEditor().save();
@@ -940,75 +938,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			}
 		});
 		
-		/*
-		MenuItem itemHFEJob = new MenuItem(menu, SWT.PUSH);
-		itemHFEJob.setText("Hot Folder Element - Job");
-		itemHFEJob.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIVE_JOB) != null)
-					setSaveStatus();
-			}
-
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem itemHFEJobChain = new MenuItem(menu, SWT.PUSH);
-		itemHFEJobChain.setText("Hot Folder Element - Job Chain");
-		itemHFEJobChain.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIVE_JOB_CHAIN) != null)
-					setSaveStatus();
-			}
-
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem itemHFEProcessClass = new MenuItem(menu, SWT.PUSH);
-		itemHFEProcessClass.setText("Hot Folder Element - Process Class");
-		itemHFEProcessClass.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_PROCESS_CLASS) != null)
-					setSaveStatus();
-			}
-
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem itemHFELock = new MenuItem(menu, SWT.PUSH);
-		itemHFELock.setText("Hot Folder Element - Lock");
-		itemHFELock.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_LOCK) != null)
-					setSaveStatus();
-			}
-
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem itemHFEOrder = new MenuItem(menu, SWT.PUSH);
-		itemHFEOrder.setText("Hot Folder Element - Order");
-		itemHFEOrder.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_ORDER) != null)
-					setSaveStatus();
-			}
-
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem itemHFEScheduler = new MenuItem(menu, SWT.PUSH);
-		itemHFEScheduler.setText("HotFolder Element - Schedule");
-		itemHFEScheduler.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_SCHEDULE) != null)
-					setSaveStatus();
-			}
-
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		
-		*/
+	 
 		addDropDown(butNew, menu);
 		final ToolItem butOpen = new ToolItem(toolBar, SWT.PUSH);
 		butOpen.addSelectionListener(new SelectionAdapter() {
