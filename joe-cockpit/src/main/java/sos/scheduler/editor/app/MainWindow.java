@@ -862,9 +862,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
                  Utils.stopCursor(getSShell());
                  return;
              }
-         }
-             
-        
+         }                   
          
 		if (container.getCurrentEditor().applyChanges()) {
             saveJobChainNodeParameter();

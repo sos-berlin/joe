@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.time.Instant;
 
 import org.eclipse.swt.SWT;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import sos.scheduler.editor.app.MainWindow;
 
@@ -75,8 +79,15 @@ public class JoeLockFolder {
         return (!userFromFile.equals(System.getProperty("user.name")));
     }
 
+
     public String getSinceFromFile() {
-        return sinceFromFile;
+        final DateTimeZone fromTimeZone = DateTimeZone.UTC;
+        final DateTimeZone toTimeZone = DateTimeZone.getDefault();
+        final DateTime dateTime = new DateTime(sinceFromFile, fromTimeZone);
+
+        final DateTimeFormatter outputFormatter 
+            = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").withZone(toTimeZone);
+        return outputFormatter.print(dateTime);
     }
 
 
@@ -101,7 +112,7 @@ public class JoeLockFolder {
         if (!userChanged()){
             lockFile.delete();
         }else{
-            String message = String.format("Could not unlock the folder \n\n%s\n\nas the User %s holds the folder since %s",folderName,userFromFile,sinceFromFile);
+            String message = String.format("Could not unlock the folder \n\n%s\n\nas the User %s holds the folder since %s",folderName,userFromFile,getSinceFromFile());
             MainWindow.message(message, SWT.ICON_INFORMATION);
 
         }
