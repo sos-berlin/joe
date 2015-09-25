@@ -1,10 +1,7 @@
 package sos.scheduler.editor.conf.forms;
-import static org.junit.Assert.assertEquals;
-
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
@@ -18,7 +15,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -34,7 +30,6 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.TabbedContainer;
 import sos.scheduler.editor.app.TreeMenu;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.classes.JoeLockFolder;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
 import com.sos.joe.globals.JOEConstants;

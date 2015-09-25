@@ -2,6 +2,7 @@ package sos.scheduler.editor.classes;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.junit.After;
@@ -27,10 +28,15 @@ public class TestJoeLockFolder {
     @After
     public void tearDown() throws Exception {
     }
+    
+    private String getTempFolder() throws IOException{
+        File f = File.createTempFile("", "");
+        return f.getParent();        
+    }
 
     @Test
     public void testLockFolder() throws IOException {
-        JoeLockFolder joeLockFolder = new JoeLockFolder("c:/temp");
+        JoeLockFolder joeLockFolder = new JoeLockFolder(getTempFolder() );
         joeLockFolder.unLockFolder();
         joeLockFolder.lockFolder();
         assertEquals("testLockFolder",true,joeLockFolder.getLockFile().exists());
@@ -41,7 +47,7 @@ public class TestJoeLockFolder {
 
     @Test
     public void testIsFolderLocked() throws IOException {
-        JoeLockFolder joeLockFolder = new JoeLockFolder("c:/temp");
+        JoeLockFolder joeLockFolder = new JoeLockFolder(getTempFolder() );
         joeLockFolder.unLockFolder();
         joeLockFolder.lockFolder();
         assertEquals("testLockFolder",true,joeLockFolder.isFolderLocked());        
@@ -49,7 +55,7 @@ public class TestJoeLockFolder {
     
     @Test
     public void testUnlockFolder() throws IOException {
-        JoeLockFolder joeLockFolder = new JoeLockFolder("c:/temp");
+        JoeLockFolder joeLockFolder = new JoeLockFolder(getTempFolder() );
         joeLockFolder.lockFolder();
         assertEquals("testLockFolder",true,joeLockFolder.getLockFile().exists());
         joeLockFolder.unLockFolder();
@@ -58,7 +64,7 @@ public class TestJoeLockFolder {
     
     @Test
     public void testGetData() throws IOException {
-        JoeLockFolder joeLockFolder = new JoeLockFolder("c:/temp");
+        JoeLockFolder joeLockFolder = new JoeLockFolder(getTempFolder() );
         joeLockFolder.lockFolder();
         joeLockFolder.getDataFromFile();
         assertEquals("testLockFolder",System.getProperty("user.name"),joeLockFolder.getUserFromFile());      
