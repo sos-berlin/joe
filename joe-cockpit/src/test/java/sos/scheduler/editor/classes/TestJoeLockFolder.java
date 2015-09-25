@@ -30,7 +30,7 @@ public class TestJoeLockFolder {
     }
     
     private String getTempFolder() throws IOException{
-        File f = File.createTempFile("", "");
+        File f = File.createTempFile("sos", "test");
         return f.getParent();        
     }
 
