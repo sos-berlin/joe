@@ -110,6 +110,7 @@ public class SchedulerListener {
     public static String                                MONITORS                             = SOSJOEMessageCodes.JOE_M_SchedulerListener_PrePostProcessing.label();
     /** Aufruf erfolgt durch open Directory oder open Configurations*/
     private int                                         type                                = -1;
+    private JobChainForm jobChainForm=null;
     public class MyElementComparator implements Comparator<Element> {
         @Override public int compare(final Element o1, final Element o2) {
             Element element1 = o1;
@@ -1319,8 +1320,11 @@ public class SchedulerListener {
                             new JobChainsForm(c, SWT.NONE, objSchedulerDom, objElement, objSchedulerForm);
                             break;
                         case JOEConstants.JOB_CHAIN:
-                            JobChainForm jc_ = new JobChainForm(c, SWT.NONE, objSchedulerDom, objElement);
-                            jc_.setISchedulerUpdate(objSchedulerForm);
+                        	if (jobChainForm != null){
+                        		jobChainForm.removeTimer();
+                        	}
+                        	jobChainForm = new JobChainForm(c, SWT.NONE, objSchedulerDom, objElement);
+                        	jobChainForm.setISchedulerUpdate(objSchedulerForm);
                             break;
                         case JOEConstants.JOB_CHAIN_NODES:
                             JobChainNodesForm jcn_ = new JobChainNodesForm(c, SWT.NONE, objSchedulerDom, objElement);
