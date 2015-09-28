@@ -65,6 +65,7 @@ public class JobChainDiagramComposite extends Composite {
                         e.printStackTrace();
                     }
                     inputTimer.cancel();
+                    inputTimer.purge();
                 };
             });
         }
@@ -73,7 +74,6 @@ public class JobChainDiagramComposite extends Composite {
     public JobChainDiagramComposite(Composite parent_,int headerHeight_) {
         super(parent_, SWT.NONE);
         headerHeight = headerHeight_;
-        inputTimer = new Timer();
      }
 
     /**
@@ -122,7 +122,7 @@ public class JobChainDiagramComposite extends Composite {
         this.getShell().addListener (SWT.Resize,  new Listener () {
             public void handleEvent (Event e) {
                 if (!gJobchainDiagramm.isDisposed()){
-                  resetInputTimer();
+                   resetInputTimer();
                 }
             }
           });
@@ -297,12 +297,23 @@ public class JobChainDiagramComposite extends Composite {
        
    }   
 
+   public void removeTimer(){
+	   if (inputTimer != null){
+		  inputTimer.cancel();
+          inputTimer.purge();
+          inputTimer = null;
+	   }
+   }
   
    
    public void resetInputTimer() {
-       inputTimer.cancel();
+       if (inputTimer != null){
+           inputTimer.cancel();
+           inputTimer.purge();
+       }
        inputTimer = new Timer();
        inputTimer.schedule(new InputTask(), 1 * 200, 1 * 200);
+       
    }
 
 }

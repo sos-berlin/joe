@@ -60,7 +60,9 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
     private Text                                        sMaxorders;
     private ProcessClassSelector                        processClassSelectorJobChain; 
     private ProcessClassSelector                        processClassSelectorFileWatcher; 
+    private JobChainDiagramComposite                    jobChainDiagramComposite= null;
     @SuppressWarnings("unused") private Label           lblProcessClass     = null;
+    
    
 
 
@@ -270,7 +272,8 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		new Label(jobChainGroup, SWT.NONE);        
  
 		if (Options.isShowDiagram()){
-            JobChainDiagramComposite jobChainDiagramComposite = new JobChainDiagramComposite(jobChainGroup, 370);
+	 
+            jobChainDiagramComposite = new JobChainDiagramComposite(jobChainGroup, 370);
             GridData gd_jobChainDiagramComposite = new GridData(SWT.FILL, SWT.FILL, true, true, 4, 2);
             gd_jobChainDiagramComposite.heightHint = 226;
             jobChainDiagramComposite.setLayoutData(gd_jobChainDiagramComposite);
@@ -344,6 +347,11 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		}
 	}
 
+	public void removeTimer(){
+		if (jobChainDiagramComposite != null){
+			jobChainDiagramComposite.removeTimer();
+		}
+	}
 	public void setToolTipText() {
 		//
 	}
