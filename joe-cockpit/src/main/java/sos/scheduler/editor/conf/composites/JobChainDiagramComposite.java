@@ -117,6 +117,9 @@ public class JobChainDiagramComposite extends Composite {
         xml=xml_;
         inputFile = inputFile_;
         outputDir = inputFile_.getParentFile();
+        if (!xml_.contains("<job_chain_node")){
+        	return;
+        }
         saveXML(xml, inputFile.getAbsolutePath());
         
         this.getShell().addListener (SWT.Resize,  new Listener () {
@@ -134,9 +137,9 @@ public class JobChainDiagramComposite extends Composite {
         createContents();
  
         createMenue();
+      
         diagramFile = generateDiagram(inputFile,outputDir);
         showDiagram(diagramFile);
-
 
         if (inputFile.getAbsolutePath().endsWith("~")){
             inputFile.delete();
