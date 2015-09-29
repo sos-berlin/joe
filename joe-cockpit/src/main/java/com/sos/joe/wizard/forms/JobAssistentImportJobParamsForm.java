@@ -381,10 +381,7 @@ import com.sos.scheduler.model.xmldoc.Param;
 							}
 					if (Options.getPropertyBoolean("editor.job.show.wizard"))
 						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell, false, null, false, null, true);
-					// Event auslösen
-					//					if (refreshDetailsText != null)
-					//ur 2011-11-09						refreshDetailsText.setText("X");
-					//					closeDialog = true;
+					
 					jobParameterShell.dispose();
 				}
 			});

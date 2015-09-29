@@ -399,17 +399,15 @@ public class JobsListener extends JOEListener {
 				_list.add(job);
 			}
 			_dom.setChanged(true);
+			_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.NEW);
+
 			if (JOEConstants.JOB_CHAINS != assistentType && JobsForm.getTable() != null) {
 				fillTable(JobsForm.getTable());
 				JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);
 			}
 			if (_dom.isLifeElement()) {
 				List l = job.getAttributes();
-				/*List cont = job.getContent();
-				for(int i = 0; i < cont.size(); i++) {
-				     Element elem1 = (Element)cont.get(i);
-					_dom.getRoot().addContent(elem1.clone());
-				}*/
+				 
 				_dom.getRoot().removeContent();
 				_dom.getRoot().addContent(job.cloneContent());
 				for (int i = 0; i < l.size(); i++) {
@@ -440,6 +438,8 @@ public class JobsListener extends JOEListener {
 			initJobs();
 		_list.add(job);
 		_dom.setChanged(true);
+		_dom.setChangedForDirectory("job", Utils.getAttributeValue("name", job), SchedulerDom.NEW);
+
 		fillTable(JobsForm.getTable());
 		JobsForm.getTable().setSelection(JobsForm.getTable().getItemCount() - 1);
 		_main.updateJobs();
@@ -529,12 +529,7 @@ public class JobsListener extends JOEListener {
 		return false;
 	}
 
-	/**
-	 * Existiert ein param Element mit der gleichen 
-	 * @param params
-	 * @param name
-	 * @return
-	 */
+ 
 	private boolean existParams(Element params, String name) {
 		List param = params.getChildren("param");
 		for (int i = 0; i < param.size(); i++) {

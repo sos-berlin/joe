@@ -55,48 +55,7 @@ import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 
-/**
- * Job Wizzard.
- * 
- * Liste der Standalone Jobs bzw. Auftragsgesteuerte Jobs.
- *
- * Es werden alle Standalone Jobs oder Auftragsgesteuerte Jobs zur Auswahl gestellt.
- *
- * Die Kriterien stehen in der Job Dokumentation.
- * Das bedeutet alle Job Dokumentationen aus der Verzeichnis <SCHEDULER_DATA>/jobs/*.xml werden parsiert.
- *
- * Folgen Funktionen können hier ausgeführt werden:
- *
- *
- * show:
- * 		zeigt den Job mit den Informationen aus der ausgewählten Jobdokumentation aus der Liste im seperaten Fenster als XML.
- *
- * next:
- * 		geht in das nächste Wizzard Formular Parameter.
- * 		Hier werden alle Parameter der ausgewählten Jobdokumentation aus der Liste übergeben.
- *
- * finish:
- * 		Generiert einen Job. Übernimmt die Einstellungen der ausgewählten Job aus der Liste.
- *      Alle Defaulteinstellungen des Jobs werden hier mit übernommen.
- *
- * Help Button:
- * 		Öffnet einen Dialog mit Hilfetext
- *
- * Description:
- * 		Öffnet einen neuen IE mit der ausgewählten JobDocumentation
- *
- * Back:
- * 		geht einen Formular zurück
- *
- * Cancel:
- * 		beendet den Wizzard
- *
- * Der Aufbau eines Jobs kann aus der Dokumentation <SCHEDULER_>\config\html\doc\de\xml.xml entnommen werden.
- *
- * @author mueruevet.oeksuez@sos-berlin.com
- *
- * @version $Id: JobAssistentImportJobsForm.java 25898 2014-06-20 14:36:54Z kb $
- */
+ 
 public class JobAssistentImportJobsForm { 
 	private Shell													shell				= null;
 	private Display													display				= null;
