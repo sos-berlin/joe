@@ -21,31 +21,20 @@ public class JobAssistentForm extends JobWizardBaseForm {
 	
 	public void startJobAssistant() {
 		try {
-			/*if(Options.isShowWizardInfo()) { 
-				JobAssistentInfoForms info = new JobAssistentInfoForms(dom, update);
-				info.showInfoForm();
-			} else {
-				JobAssistentTypeForms typeForms = new JobAssistentTypeForms(dom, update);												
-				typeForms.showTypeForms();
-			}
-			*/
+		
 			
 			 JobAssistentTypeForms typeForms = new JobAssistentTypeForms(dom, update);                                               
              typeForms.showTypeForms();
 			
 		} catch (Exception e){
 			try {
-//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
 				new ErrorLog(SOSJOEMessageCodes.JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e));
 			} catch(Exception ee) {
-				//tu nichts
 			}
-//			System.out.println("error in JobAssistent.startJobAssistent: " + e.getMessage() );
 			try {
 				System.out.println(SOSJOEMessageCodes.JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e));
 			}
 			catch (Exception e1) {
-				//tu nichts
 			}
 		}
 		
