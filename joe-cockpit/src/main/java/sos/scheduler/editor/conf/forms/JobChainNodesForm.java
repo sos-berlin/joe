@@ -35,6 +35,7 @@ import sos.scheduler.editor.app.JobchainNodeReturnCodeDialog;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.classes.returncodes.JobchainListOfReturnCodeElements;
+import sos.scheduler.editor.classes.returncodes.JobchainReturnCodeElement;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.scheduler.editor.conf.listeners.JobChainListener;
 
@@ -652,10 +653,14 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             butReturnCode.addSelectionListener(new SelectionAdapter() {
                 @Override public void widgetSelected(final SelectionEvent e) {
                     JobchainNodeReturnCodeDialog jobchainNodeReturnCodeDialog = new JobchainNodeReturnCodeDialog(getShell(), 0, listener);
-                    jobchainNodeReturnCodeDialog.setJobchainListOfReturnCodeElements(listener.getJobchainListOfReturnCodeElements());
+                    JobchainListOfReturnCodeElements jobchainListOfReturnCodeElements = new JobchainListOfReturnCodeElements(listener.getJobchainListOfReturnCodeElements());
+                   
+                    jobchainNodeReturnCodeDialog.setJobchainListOfReturnCodeElements(jobchainListOfReturnCodeElements);
                     jobchainNodeReturnCodeDialog.execute();
-                    listener.setJobchainListOfReturnCodeElements(jobchainNodeReturnCodeDialog.getJobchainListOfReturnCodeElements());
-                    bApplyNode.setEnabled(jobchainNodeReturnCodeDialog.isOk());
+                    if (jobchainNodeReturnCodeDialog.isOk()){
+                        listener.setJobchainListOfReturnCodeElements(jobchainNodeReturnCodeDialog.getJobchainListOfReturnCodeElements());
+                        bApplyNode.setEnabled(true);
+                    }
                                 
                 }
             });
