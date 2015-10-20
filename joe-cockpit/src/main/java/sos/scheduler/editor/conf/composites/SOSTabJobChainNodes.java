@@ -640,11 +640,14 @@ public class SOSTabJobChainNodes extends CTabItem {
             butReturnCode.addSelectionListener(new SelectionAdapter() {
                 @Override public void widgetSelected(final SelectionEvent e) {
                     JobchainNodeReturnCodeDialog jobchainNodeReturnCodeDialog = new JobchainNodeReturnCodeDialog(getShell(), 0, jobchainDataProvider);
-                    jobchainNodeReturnCodeDialog.setJobchainListOfReturnCodeElements(jobchainDataProvider.getJobchainListOfReturnCodeElements());
+                    JobchainListOfReturnCodeElements jobchainListOfReturnCodeElements = new JobchainListOfReturnCodeElements(jobchainDataProvider.getJobchainListOfReturnCodeElements());
+                   
+                    jobchainNodeReturnCodeDialog.setJobchainListOfReturnCodeElements(jobchainListOfReturnCodeElements);
                     jobchainNodeReturnCodeDialog.execute();
-                    jobchainDataProvider.setJobchainListOfReturnCodeElements(jobchainNodeReturnCodeDialog.getJobchainListOfReturnCodeElements());
-                    applyNode();
-                                
+                    if (jobchainNodeReturnCodeDialog.isOk()){
+                    	jobchainDataProvider.setJobchainListOfReturnCodeElements(jobchainNodeReturnCodeDialog.getJobchainListOfReturnCodeElements());
+                        bApplyNode.setEnabled(true);
+                    }
                 }
             });
 
