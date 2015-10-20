@@ -14,6 +14,20 @@ public class JobchainListOfReturnCodeElements {
         jobchainListOfReturnCodeElements = new ArrayList<JobchainReturnCodeElement>();
     }
 
+    public JobchainListOfReturnCodeElements(JobchainListOfReturnCodeElements jobchainListOfReturnCodeElements_) {
+        super();
+        jobchainListOfReturnCodeElements = new ArrayList<JobchainReturnCodeElement>();
+        jobchainListOfReturnCodeElements_.reset();
+        
+        while (jobchainListOfReturnCodeElements_.hasNext()) {
+          JobchainReturnCodeElement jobchainReturnCodeElement = jobchainListOfReturnCodeElements_.getNext();
+          add(jobchainReturnCodeElement);
+        }
+        
+    }
+    
+   
+    
 
     public ArrayList<JobchainReturnCodeElement> getJobchainListOfReturnCodeElements() {
         return jobchainListOfReturnCodeElements;
