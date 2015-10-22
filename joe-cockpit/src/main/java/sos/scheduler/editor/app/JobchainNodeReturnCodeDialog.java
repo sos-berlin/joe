@@ -258,6 +258,8 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
             }
            }
         tableJobchainNodeReturnCodesAddOrder.setSelection(-1);
+        btAddParam.setEnabled(false);
+
     }
 
     private void addReturnCodeNextState() {
@@ -434,6 +436,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 tableJobchainNodeReturnCodesAddOrder.setSelection(-1);
+                btAddParam.setEnabled(false);
                 clearInputFieldsAddOrder();
 
                 tReturnCodesAddOrder.setFocus();
@@ -452,6 +455,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
                     if (index >= 0) {
                         tableJobchainNodeReturnCodesAddOrder.remove(index);
                         tableJobchainNodeReturnCodesAddOrder.setSelection(-1);
+                        btAddParam.setEnabled(false);
                         clearInputFieldsAddOrder();
 
                         tReturnCodesNextState.setFocus();
@@ -553,6 +557,7 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
         new Label(grpGroup, SWT.NONE);
         new Label(grpGroup, SWT.NONE);
         btAddParam = JOE_B_ReturnCodesForm_Add_Param.Control(new Button(grpGroup, SWT.NONE));
+        btAddParam.setEnabled(false);
         btAddParam.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -705,6 +710,8 @@ public class JobchainNodeReturnCodeDialog extends SOSJOEMessageCodes {
                     tOrderId.setText(jobchainReturnCodeAddOrderElement.getOrderId());
                     
                     tableParams.removeAll();
+                    btAddParam.setEnabled(true);
+
                     for (Entry<String, String> entry : jobchainReturnCodeAddOrderElement.getParams().entrySet()) {
                         TableItem itemParam = new TableItem(tableParams, SWT.NONE);
                         itemParam.setText(0,entry.getKey());
