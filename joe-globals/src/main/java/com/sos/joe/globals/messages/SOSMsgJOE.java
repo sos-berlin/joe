@@ -3,7 +3,6 @@ package com.sos.joe.globals.messages;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.FocusAdapter;
@@ -189,15 +188,6 @@ public class SOSMsgJOE extends SOSMsgControl {
 		setKeyListener(pobjC);
 		return pobjC;
 	} // public Tree Control
-	
-	@Override public Browser Control(final Browser pobjC) {
-		@SuppressWarnings("unused")
-		final String conMethodName = conClassName + "::Control";
-		pobjC.setText(caption());
-		pobjC.setToolTipText(tooltip());
-		setKeyListener(pobjC);
-		return pobjC;
-	} // public Browser Control
 	
 	@Override public TreeColumn Control(final TreeColumn pobjC) {
 		@SuppressWarnings("unused")
