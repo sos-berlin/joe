@@ -663,9 +663,10 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 				tParaValue.setText(item.getText(1));
 				bRemove.setEnabled(tParameter.getSelectionCount() > 0);
 				if (type == JOEConstants.JOB) {
-					// txtParameterDescription.setText(listener.getParameterDescription(item.getText(0)));
 					try {
-						txtParameterDescription.setText(sosString.parseToString(item.getData("parameter_description_" + Options.getLanguage())));
+						String s = sosString.parseToString(item.getData("parameter_description_" + Options.getLanguage()));
+				        s = s.replaceAll("\\<.*?>","");
+						txtParameterDescription.setText(s);
 					}
 					catch (Exception ew) {
 					}

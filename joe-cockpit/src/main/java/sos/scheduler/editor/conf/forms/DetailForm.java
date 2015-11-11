@@ -898,8 +898,7 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 				JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(schedulerDom, joblistener.get_main(), joblistener,
 						tableParams, JOEConstants.PARAMETER);
 				paramsForm.showAllImportJobParams(jobDocumentation);
-				paramsForm.setDetailsRefresh(butRefreshWizzardNoteParam);
-			}
+ 			}
 			else {
 				JobAssistentImportJobsForm importParameterForms = new JobAssistentImportJobsForm(joblistener, tableParams, JOEConstants.PARAMETER);
 				importParameterForms.showAllImportJobs();

@@ -265,14 +265,10 @@ public class JobDocumentation extends FormBaseClass {
 		try {
 			showWaitCursor();
 			if (objJobDataProvider.getInclude() != null && objJobDataProvider.getInclude().trim().length() > 0) {
-				// JobDokumentation ist bekannt -> d.h Parameter aus dieser
-				// Jobdoku extrahieren
-				JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objJobDataProvider.get_dom(), objJobDataProvider.get_main(),
+					JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(objJobDataProvider.get_dom(), objJobDataProvider.get_main(),
 						objJobDataProvider, onlyParams ? JOEConstants.JOB : JOEConstants.JOB_WIZARD);
 
-				if (!onlyParams){
-					paramsForm.setJobForm(this);
-				}
+			
 				paramsForm.showAllImportJobParams(objJobDataProvider.getInclude());
 			}
 			else {
