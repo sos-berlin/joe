@@ -36,7 +36,6 @@ public class ParameterListener {
     private String jobname = "";
     private static HashMap parameterDescription = new HashMap();
     private static HashMap parameterRequired = new HashMap();
-    // default ist config
     private int type = JOEConstants.CONFIG;
 
     public ParameterListener(final SchedulerDom dom, final Element parent,
@@ -82,8 +81,7 @@ public class ParameterListener {
                 Object o = it.next();
                 if (o instanceof Element) {
                     Element e = (Element) o;
-                    // if (e.getName().equals("copy_params") && type ==
-                    // JOEConstants.COMMANDS) {
+
                     if (e.getName().equals("copy_params")) {
                         TableItem item = new TableItem(table, SWT.NONE);
                         item.setText(0, "<from>");
@@ -118,29 +116,7 @@ public class ParameterListener {
                             }
                         }
                     }
-                    /*
-                     * TableItem item = new TableItem(table, SWT.NONE);
-                     * //item.setText(0, ((Element)
-                     * o).getAttributeValue("name")); //item.setText(1,
-                     * (((Element) o).getAttributeValue("value") != null ?
-                     * ((Element) o).getAttributeValue("value") : ""));
-                     * item.setText(0, ((Element) o).getAttributeValue("name"));
-                     * item.setText(1, (((Element) o).getAttributeValue("value")
-                     * != null ? ((Element) o).getAttributeValue("value") :
-                     * "")); if(parameterDescription != null) {
-                     * item.setData("parameter_description_de",
-                     * parameterDescription.get("parameter_description_de_" +
-                     * ((Element) o).getAttributeValue("name")));
-                     * item.setData("parameter_description_en",
-                     * parameterDescription.get("parameter_description_en_" +
-                     * ((Element) o).getAttributeValue("name"))); }
-                     * if(parameterRequired != null &&
-                     * isParameterRequired(((Element)
-                     * o).getAttributeValue("name"))){
-                     * if(Utils.getAttributeValue("value", e).length() > 0)
-                     * item.setBackground(Options.getLightYellow()); else
-                     * item.setBackground(Options.getRequiredColor()); } }
-                     */
+       
                 }
             }
         }
@@ -293,10 +269,7 @@ public class ParameterListener {
         Element e = new Element("param");
         e.setAttribute("name", name);
         e.setAttribute("value", value);
-        // parameterDescription_de =
-        // Utils.normalizedHTMLTags(parameterDescription_de);
-        // parameterDescription_en =
-        // Utils.normalizedHTMLTags(parameterDescription_en);
+       
         if ((_dom.isLifeElement() || _dom.isDirectory()) && _params == null) {
             Element params = _parent.getChild("params");
             if (params != null)
@@ -442,8 +415,7 @@ public class ParameterListener {
             _params = params.getChildren();
         }
         if (_params != null) {
-            // if (name.equals("<from>") && type == JOEConstants.COMMANDS) {
-            if (name.equals("<from>")) {
+             if (name.equals("<from>")) {
                 found = table.getSelectionIndex() > -1;
             } else {
                 int index = 0;
@@ -457,10 +429,7 @@ public class ParameterListener {
                                 found = true;
                                 e.setAttribute("value", value);
                                 _dom.setChanged(true);
-                                // if(type == JOEConstants.JOB)
-                                // _dom.setChangedForDirectory("job",
-                                // Utils.getAttributeValue("name",_parent),
-                                // SchedulerDom.MODIFY);
+                                
                                 Utils.setChangedForDirectory(_parent, _dom);
                                 table.getItem(index).setText(1, value);
                                 if (isParameterRequired(table.getItem(index)
@@ -480,8 +449,7 @@ public class ParameterListener {
                     }
                 }
             }
-            // if (name.equals("<from>") && found && type ==
-            // JOEConstants.COMMANDS) {
+            
             if (name.equals("<from>") && found) {
                 int index = table.getSelectionIndex();
                 table.getItem(index).setText(0, name);
@@ -492,10 +460,7 @@ public class ParameterListener {
                 e.removeAttribute("name");
                 e.removeAttribute("value");
                 _dom.setChanged(true);
-                // if(type == JOEConstants.JOB)
-                // _dom.setChangedForDirectory("job",
-                // Utils.getAttributeValue("name",_parent),
-                // SchedulerDom.MODIFY);
+                
             }
         }
         if (!found) {
@@ -552,10 +517,8 @@ public class ParameterListener {
             SAXBuilder builder = new SAXBuilder();
             Document doc = builder.build(new File(xmlPaths));
             Element root = doc.getRootElement();
-            Element config = root
-                    .getChild("configuration", root.getNamespace());
-            // Element params = config.getChild("params",
-            // config.getNamespace());
+            Element config = root.getChild("configuration", root.getNamespace());
+           
             List listOfParams = config.getChildren("params",
                     config.getNamespace());
 
@@ -614,12 +577,7 @@ public class ParameterListener {
         }
     }
 
-    /**
-     * Note/Beschreibung der Parameter
-     * 
-     * @param name
-     * @return
-     */
+    
     public String getParameterDescription(final String name) {
         return parameterDescription.get("parameter_description_"
                 + Options.getLanguage() + "_" + name) != null ? parameterDescription
@@ -627,12 +585,7 @@ public class ParameterListener {
                         + name).toString() : "";
     }
 
-    /**
-     * Note/Beschreibung der Parameter
-     * 
-     * @param name
-     * @return
-     */
+    
     public String getParameterDescription(final String name,
             final String language) {
         return parameterDescription.get("parameter_description_" + language
