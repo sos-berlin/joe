@@ -1,5 +1,6 @@
 package sos.scheduler.editor.app;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -47,15 +48,12 @@ public class Utils {
 	final static String			JOE_L_Job_chain		= "job_chain";
 	final static String			JOE_L_Lock			= "lock";
 	final static String			JOE_L_Schedule		= "schedule";
-	// saving a default value results in removing the tag
 	private static final String	STR_DEFAULT			= "";
 	private static final String	INT_DEFAULT			= null;
 	private static final String	BOOLEAN_DEFAULT		= null;
 	private static Clipboard	_cb					= null;
-	//all root elements for undo 
-	//private static       List         undo            = null;
-	//private static       int          UNDO_SIZE       = 10;
-	private static Element		resetElement		= null;
+	
+	private static HashMap<String,Element>		resetElements		= null;
 
 	public static String getIntegerAsString(int i) {
 		String s;
@@ -842,16 +840,7 @@ public class Utils {
 		//Matcher matcher = pattern.matcher(filename);
 	}
 
-	/**
-	 * Überprüft die Abhängigkeiten der Elementen 
-	 * @param name -> Names des Element, der gelöscht bzw. geändert wurde
-	 * @param _dom
-	 * @param type -> Im welchen Formular wurde geändert
-	 * @param which -> Wenn type nicht ausreicht:  z.B. im Job Formular (type=JOB) wird einmal beim Schliessen und einmal beim Ändern der
-	 * Name des Jobs überprüft.
-	 * 
-	 * @return boolean true alles im grünen Bereich. 
-	 */
+
 	public static boolean checkElement(String name, SchedulerDom _dom, int type, String which) {
 		boolean onlyWarning = false;//-> true: Gibt nur eine Warnung aus. Sonst Warnung mit Yes- und No- Button um ggf. die Änderungen zurückzunehmen
 		try {
@@ -880,14 +869,10 @@ public class Utils {
 					XPath x3 = XPath.newInstance("//order[@job_chain='" + name + "']");
 					List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 					if (!listOfElement_3.isEmpty())
-						//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
-						//"Soll die Jobkette trotzdem gelöscht werden");
 						throw new Exception(strException);
 					XPath x4 = XPath.newInstance("//add_order[@job_chain='" + name + "']");
 					List listOfElement_4 = x4.selectNodes(_dom.getDoc());
 					if (!listOfElement_4.isEmpty())
-						//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
-						//"Soll die Jobkette trotzdem gelöscht werden");
 						throw new Exception(strException);
 				}
 				else
@@ -993,24 +978,7 @@ public class Utils {
 		return true;
 	}
 
-	/*public static void setUndoElement(Element elem) {
-		if(undo == null)
-			undo = new java.util.ArrayList();
-
-		undo.set(0, elem);
-		if(undo.size() > UNDO_SIZE)
-			undo.remove(undo.size()-1);
-	}
-
-	public static Element getUndoElement() {
-		if(undo != null) {    		    
-			Element retval = (Element)((Element)undo.get(0)).clone();
-			undo.remove(0);    		
-			return retval;    		
-		}
-		return null;
-	}
-	*/
+ 
 	public static void setChangedForDirectory(Element elem, SchedulerDom dom) {
 		if (dom.isDirectory() || dom.isLifeElement()) {
 			//mögliche hot folder element
@@ -1054,13 +1022,18 @@ public class Utils {
 			shell.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_ARROW));
 	}
 
-	public static void setResetElement(Element elem) {
-		resetElement = (Element) elem.clone();
+	public static void setResetElement(String filename,Element elem) {
+		Element resetElement = (Element) elem.clone();
+		if (resetElements == null){
+			resetElements = new HashMap<String, Element>();
+		}
+		resetElements.put(filename,resetElement);
 	}
 
 	//public static void reset(Element elem, ISchedulerUpdate update, SchedulerDom currdom) {
 	public static void reset(Element elem, IDataChanged update, DomParser currdom) {
 		try {
+			Element resetElement = resetElements.get(currdom.getFilename());
 			elem.getAttributes().removeAll(elem.getAttributes());
 			List l = resetElement.getAttributes();
 			for (int i = 0; i < l.size(); i++) {
@@ -1087,10 +1060,7 @@ public class Utils {
 		}
 	}
 
-	/**
-	 * Generiert einen Help Button. 
-	 * Beim Klicken wird ein Fenster geöffnet, indem der text steht 
-	 */
+	 
 	public static Button createHelpButton(Composite composite, String text, Shell shell) {
 		Button butHelp = new Button(composite, SWT.NONE);
 		//butHelp.setLayoutData(new GridData());
