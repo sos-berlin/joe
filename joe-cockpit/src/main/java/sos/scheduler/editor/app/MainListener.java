@@ -40,14 +40,8 @@ public class MainListener extends JOEListener {
 	public void showAbout() {
 		TextDialog objAboutDialogBox = new TextDialog(MainWindow.getSShell());
 		objAboutDialogBox.setText("About JOE - JobScheduler Object Editor");
-<<<<<<< HEAD
-		//		objAboutDialogBox.setText(Messages.getString("JOE_I_0010"));
-		String message = com.sos.joe.globals.messages.Messages.getString("JOE_L_MainListener.aboutText", VersionInfo.JAR_VERSION/*Options.getVersion()*/ + //
-				"\nSchema-Version:\n\t" + Options.getSchemaVersion() );
-=======
 		String message = com.sos.joe.globals.messages.Messages.getString("MainListener.aboutText", VersionInfo.JAR_VERSION/*Options.getVersion()*/ + //
 				"\nSchema-Version:\n\t" + Options.getSchemaVersion() + "\n" + "SVN: \t" + getSVNVersion());
->>>>>>> ef658f060bafe5bdc47c0d043036a9de909e94e1
 		objAboutDialogBox.setContent(message, SWT.CENTER);
 		objAboutDialogBox.getStyledText().setEditable(false);
 		StyleRange bold = new StyleRange();
