@@ -1057,7 +1057,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 	}
 
  
-	public void saveJobChainNodeParameter() {
+	private void saveJobChainNodeParameter() {
 		try {
 			if (container.getCurrentTab().getData("details_parameter") != null) {
 				HashMap h = new HashMap();
@@ -1076,22 +1076,21 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 						DomParser currdom = getSpecifiedDom();
 						String oldname = configFile.getName().replaceAll(".config.xml", EMPTY);
 						String newName = newConfigFile.getName().replaceAll(".config.xml", EMPTY);
+						sos.scheduler.editor.conf.listeners.DetailsListener.changeDetailsJobChainname(newName, oldname, (SchedulerDom) currdom);
 						//
 						if (!newConfigFile.exists() && !configFile.renameTo(newConfigFile)) {
 							MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename + "].\n"
 									+ "Please try later by Hand.", SWT.ICON_WARNING);
 						}
-						else {
-	                        sos.scheduler.editor.conf.listeners.DetailsListener.changeDetailsJobChainname(newName, oldname, (SchedulerDom) currdom);
-						}
+					 
 					}
+				}
 				container.getCurrentTab().setData("details_parameter", new HashMap());
 			}
 		}
 		catch (Exception e) {
 		}
-	}
- 
+	} 
 	
 	public static void saveFTP(String oldFilename, SOSFileEntry  sosFileEntry) {
 		try {

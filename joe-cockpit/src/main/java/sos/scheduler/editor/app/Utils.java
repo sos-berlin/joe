@@ -998,11 +998,7 @@ public class Utils {
 		return true;
 	 
 	}
-	
-	
-	/*public static void setUndoElement(Element elem) {
-		if(undo == null)
-			undo = new java.util.ArrayList();
+	 
 
 	public static void setChangedForDirectory(Element elem, SchedulerDom dom) {
 		if (dom.isDirectory() || dom.isLifeElement()) {
