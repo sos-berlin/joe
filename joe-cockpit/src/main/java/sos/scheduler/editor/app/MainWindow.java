@@ -250,7 +250,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		//
 		MenuItem mNew = new MenuItem(mFile, SWT.CASCADE);
 		mNew.setText(getMenuText(Messages.getLabel(MENU_New), EMPTY));
-		// mNew.setAccelerator(SWT.CTRL | 'N');
 		Menu pmNew = new Menu(mNew);
 		MenuItem pNew = new MenuItem(pmNew, SWT.PUSH);
 		pNew.setText(getMenuText(Messages.getLabel(MENU_Configuration), "I"));
@@ -789,19 +788,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		return message(getSShell(), application, message, style);
 	}
 
-	// /**
-	// * Erzeugt einen Confirm-Dialog, wenn der Button zum schließen des Fensters
-	// * betätigt wird.
-	// *
-	// * @see org.eclipse.jface.window.Window#handleShellCloseEvent()
-	// */
-	// @Override
-	// protected void handleShellCloseEvent () {
-	// if (MessageDialog.openConfirm(null, "Bestätigung",
-	// "Wollen Sie das Programm beenden?")) {
-	// super.handleShellCloseEvent();
-	// }
-	// }
+	
 	public static int message(Shell shell, String pstrMessage, int style) {
 		MessageBox mb = new MessageBox(shell, style);
 		if (mb == null) {
@@ -917,17 +904,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-		/*MenuItem itemDetails = new MenuItem(menu, SWT.PUSH);
-		itemDetails.setText("Details");
-		itemDetails.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newDetails() != null)
-					setSaveStatus();
-			}
-			public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		 */
+	
 		MenuItem itemActions = new MenuItem(menu, SWT.PUSH);
 		itemActions.setText("Event Handler");
 		itemActions.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
@@ -940,75 +917,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			}
 		});
 		
-		/*
-		MenuItem itemHFEJob = new MenuItem(menu, SWT.PUSH);
-		itemHFEJob.setText("Hot Folder Element - Job");
-		itemHFEJob.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIVE_JOB) != null)
-					setSaveStatus();
-			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem itemHFEJobChain = new MenuItem(menu, SWT.PUSH);
-		itemHFEJobChain.setText("Hot Folder Element - Job Chain");
-		itemHFEJobChain.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIVE_JOB_CHAIN) != null)
-					setSaveStatus();
-			}
-
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem itemHFEProcessClass = new MenuItem(menu, SWT.PUSH);
-		itemHFEProcessClass.setText("Hot Folder Element - Process Class");
-		itemHFEProcessClass.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_PROCESS_CLASS) != null)
-					setSaveStatus();
-			}
-
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem itemHFELock = new MenuItem(menu, SWT.PUSH);
-		itemHFELock.setText("Hot Folder Element - Lock");
-		itemHFELock.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_LOCK) != null)
-					setSaveStatus();
-			}
-
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem itemHFEOrder = new MenuItem(menu, SWT.PUSH);
-		itemHFEOrder.setText("Hot Folder Element - Order");
-		itemHFEOrder.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_ORDER) != null)
-					setSaveStatus();
-			}
-
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		MenuItem itemHFEScheduler = new MenuItem(menu, SWT.PUSH);
-		itemHFEScheduler.setText("HotFolder Element - Schedule");
-		itemHFEScheduler.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				if (container.newScheduler(SchedulerDom.LIFE_SCHEDULE) != null)
-					setSaveStatus();
-			}
-
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
-			}
-		});
-		
-		*/
 		addDropDown(butNew, menu);
 		final ToolItem butOpen = new ToolItem(toolBar, SWT.PUSH);
 		butOpen.addSelectionListener(new SelectionAdapter() {
@@ -1100,8 +1009,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			}
 		});
 		final ToolItem itemReset = new ToolItem(toolBar, SWT.PUSH);
-		// itemReset.setEnabled(container != null && (container.getCurrentEditor() instanceof sos.scheduler.editor.actions.forms.ActionsForm
-		// || container.getCurrentEditor() instanceof SchedulerForm ));
 		itemReset.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_reset.gif"));
 		itemReset.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
 			@Override public void widgetSelected(final SelectionEvent e) {
@@ -1175,10 +1082,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		});
 	}
 
-	/**
-	 * Überprüfen, ob job Chain namen verändert wurden. Wenn ja, dann die job chain node parameter anpassen
-	 * Job Chain Node Parameter
-	 */
+ 
 	public void saveJobChainNodeParameter() {
 		try {
 			if (container.getCurrentTab().getData("details_parameter") != null) {
@@ -1207,7 +1111,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 	                        sos.scheduler.editor.conf.listeners.DetailsListener.changeDetailsJobChainname(newName, oldname, (SchedulerDom) currdom);
 						}
 					}
-				}
 				container.getCurrentTab().setData("details_parameter", new HashMap());
 			}
 		}
@@ -1394,7 +1297,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			catch (Exception ee) {
 				// tu nichts
 			}
-			// System.out.println("..error " + ex.getMessage());
 		}
 		finally {
 			Utils.stopCursor(sShell);
@@ -1414,7 +1316,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 				ArrayList<File> delFFiles = new ArrayList<File>();
 				HashMap<String, Long> hFFiles = new HashMap<String, Long>();
 				 
-				// Hot Folder. Hat sich ein Holt Folder Datei ausserhalb verändert?
 				long lastmod = 0;
 				if (dom.getFilename() != null) {
 					hFFiles = ((SchedulerDom) dom).getHotFolderFiles();
@@ -1586,9 +1487,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 											form.updateTree("main");
 											form.update();
 										}
-								// dom.setFileLastModified(f.lastModified());
-								// System.out.println("neu= " + f.lastModified());
-								// System.out.println("neu= " + dom.getFileLastModified());
 							}
 						}
 						catch (Exception e) {
@@ -2052,33 +1950,8 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 													 * \brief About
 													 */
 	public static final String	MENU_About				= "MENU_About";
-	// @I18NMessages(value = { @I18NMessage("Reset Dialog"), //
-	// @I18NMessage(value = "Reset Dialog", //
-	// locale = "en_UK", //
-	// explanation = "Reset Dialog" //
-	// ), //
-	// @I18NMessage(value = "Einstellung zurücksetzen", //
-	// locale = "de", //
-	// explanation = "JOE wird neu initialisiert. Die Einstellungen werden neu geladen" //
-	// ), //
-	// @I18NMessage(value = "Reset Dialog", locale = "es", //
-	// explanation = "Reset Dialog" //
-	// ), //
-	// @I18NMessage(value = "Reset Dialog", locale = "fr", //
-	// explanation = "Reset Dialog" //
-	// ), //
-	// @I18NMessage(value = "Reset Dialog", locale = "it", //
-	// explanation = "Reset Dialog" //
-	// ) //
-	// }, msgnum = "MENU_ResetDialog", msgurl = "Menu-ResetDialog")
-	// /*!
-	// * \var MENU_Reset Dialog
-	// * \brief Reset Dialog
-	// */
+	 
 	public static final String	MENU_Reset_Dialog		= "MENU_ResetDialog";
-	// /*!
-	// * \var MENU_Order
-	// * \brief Order
-	// */
+	 
 	public static final String	MENU_Order				= "MENU_Order";
 }

@@ -26,7 +26,6 @@ import com.sos.joe.xml.IOUtils;
 
 public class MainListener extends JOEListener {
 	private static final String							conPropertyEDITOR_LANGUAGE	= "editor.language";
-	// private MainWindow _gui = null;
 	@SuppressWarnings("unused") private final String	conClsName					= "MainListener";
 	@SuppressWarnings("unused") private final String	conSVNVersion				= "$Id$";
 	private static final Logger							logger						= Logger.getLogger(MainListener.class);
@@ -35,26 +34,28 @@ public class MainListener extends JOEListener {
 	private SOSConnection								sosConnection				= null;
 
 	public MainListener(MainWindow gui, IContainer container) {
-		// _gui = gui;
 		_container = container;
 	}
 
 	public void showAbout() {
 		TextDialog objAboutDialogBox = new TextDialog(MainWindow.getSShell());
 		objAboutDialogBox.setText("About JOE - JobScheduler Object Editor");
+<<<<<<< HEAD
 		//		objAboutDialogBox.setText(Messages.getString("JOE_I_0010"));
 		String message = com.sos.joe.globals.messages.Messages.getString("JOE_L_MainListener.aboutText", VersionInfo.JAR_VERSION/*Options.getVersion()*/ + //
 				"\nSchema-Version:\n\t" + Options.getSchemaVersion() );
+=======
+		String message = com.sos.joe.globals.messages.Messages.getString("MainListener.aboutText", VersionInfo.JAR_VERSION/*Options.getVersion()*/ + //
+				"\nSchema-Version:\n\t" + Options.getSchemaVersion() + "\n" + "SVN: \t" + getSVNVersion());
+>>>>>>> ef658f060bafe5bdc47c0d043036a9de909e94e1
 		objAboutDialogBox.setContent(message, SWT.CENTER);
 		objAboutDialogBox.getStyledText().setEditable(false);
 		StyleRange bold = new StyleRange();
 		bold.start = 0;
 		bold.length = message.lastIndexOf("\n");
 		bold.fontStyle = SWT.BOLD;
-		// dialog.getStyledText().setStyleRange(bold);
 		objAboutDialogBox.setVisibleApplyButton(false);
 		objAboutDialogBox.setShowWizzardInfo(false);
-		// dialog.setSize(new org.eclipse.swt.graphics.Point(100, 200));
 		objAboutDialogBox.open(false);
 	}
 
@@ -83,7 +84,6 @@ public class MainListener extends JOEListener {
 			}
 		}
 		catch (Exception e) {
-			//			MainWindow.message("could not read SVN-Version ", SWT.ICON_WARNING | SWT.OK);
 		}
 		return svnVersion;
 	}
@@ -259,7 +259,6 @@ public class MainListener extends JOEListener {
 				}
 				if (sosString.parseToString(hash, "holiday_date").length() > 0) {
 					field2 = sosString.parseToString(hash, "holiday_date");
-					// merke: <id>+_+<datum>, id -> datum ist nicht eindeutig, deshalb kommt der der prefix id
 					holidaysDescription.put(holidayId + "_" + field2, holidayId);
 					holidayId = "";
 					field2 = "";
@@ -273,9 +272,7 @@ public class MainListener extends JOEListener {
 		return holidaysDescription;
 	}
 
-	/**
-	 * DB Initialisierung
-	 */
+
 	private void getConnection(String iniFile) throws Exception {
 		try {
 			if (sosConnection != null)

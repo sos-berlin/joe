@@ -349,10 +349,10 @@ public class SchedulerListener {
         logger.debug(SOSJOEMessageCodes.JOE_M_0047.params(conMethodName));
         tree.removeAll();
         if (objSchedulerDom.isLifeElement()) {
-            Utils.setResetElement(objSchedulerDom.getRoot());
+            Utils.setResetElement(objSchedulerDom.getFileName(),objSchedulerDom.getRoot());
         }
         else {
-            Utils.setResetElement(objSchedulerDom.getRoot().getChild("config"));
+            Utils.setResetElement(objSchedulerDom.getFileName(),objSchedulerDom.getRoot().getChild("config"));
         }
         TreeItem objTreeObjects = new TreeItem(tree, SWT.NONE);
         objTreeObjects.setText("JobScheduler");
