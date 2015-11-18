@@ -1,5 +1,6 @@
 package sos.scheduler.editor.app;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -48,15 +49,12 @@ public class Utils {
 	final static String			JOE_L_Job_chain		= "job_chain";
 	final static String			JOE_L_Lock			= "lock";
 	final static String			JOE_L_Schedule		= "schedule";
-	// saving a default value results in removing the tag
 	private static final String	STR_DEFAULT			= "";
 	private static final String	INT_DEFAULT			= null;
 	private static final String	BOOLEAN_DEFAULT		= null;
 	private static Clipboard	_cb					= null;
-	//all root elements for undo 
-	//private static       List         undo            = null;
-	//private static       int          UNDO_SIZE       = 10;
-	private static Element		resetElement		= null;
+
+	private static HashMap<String,Element>		resetElements		= null;
 
 	public static String getIntegerAsString(int i) {
 		String s;
@@ -1006,20 +1004,6 @@ public class Utils {
 		if(undo == null)
 			undo = new java.util.ArrayList();
 
-		undo.set(0, elem);
-		if(undo.size() > UNDO_SIZE)
-			undo.remove(undo.size()-1);
-	}
-
-	public static Element getUndoElement() {
-		if(undo != null) {    		    
-			Element retval = (Element)((Element)undo.get(0)).clone();
-			undo.remove(0);    		
-			return retval;    		
-		}
-		return null;
-	}
-	*/
 	public static void setChangedForDirectory(Element elem, SchedulerDom dom) {
 		if (dom.isDirectory() || dom.isLifeElement()) {
 			Element e = Utils.getHotFolderParentElement(elem);
@@ -1062,13 +1046,18 @@ public class Utils {
 			shell.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_ARROW));
 	}
 
-	public static void setResetElement(Element elem) {
-		resetElement = (Element) elem.clone();
+	public static void setResetElement(String filename,Element elem) {
+		Element resetElement = (Element) elem.clone();
+		if (resetElements == null){
+			resetElements = new HashMap<String, Element>();
+	}
+		resetElements.put(filename,resetElement);
 	}
 
 	//public static void reset(Element elem, ISchedulerUpdate update, SchedulerDom currdom) {
 	public static void reset(Element elem, IDataChanged update, DomParser currdom) {
 		try {
+			Element resetElement = resetElements.get(currdom.getFilename());
 			elem.getAttributes().removeAll(elem.getAttributes());
 			List l = resetElement.getAttributes();
 			for (int i = 0; i < l.size(); i++) {
@@ -1095,10 +1084,7 @@ public class Utils {
 		}
 	}
 
-	/**
-	 * Generiert einen Help Button. 
-	 * Beim Klicken wird ein Fenster geöffnet, indem der text steht 
-	 */
+	 
 	public static Button createHelpButton(Composite composite, String text, Shell shell) {
 		Button butHelp = new Button(composite, SWT.NONE);
 		//butHelp.setLayoutData(new GridData());

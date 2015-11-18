@@ -412,9 +412,9 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		if (res)
 			setReChangedTreeItemText();
 		if (dom.getRoot().getName().equals("spooler"))
-			Utils.setResetElement(dom.getRoot().getChild("config"));
+			Utils.setResetElement(dom.getFileName(),dom.getRoot().getChild("config"));
 		else
-			Utils.setResetElement(dom.getRoot());
+			Utils.setResetElement(dom.getFileName(),dom.getRoot());
 		return res;
 	}
 
