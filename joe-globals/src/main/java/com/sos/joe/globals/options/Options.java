@@ -67,7 +67,7 @@ import com.sos.resources.SOSProductionResource;
 	public static void setLastTabItemIndex(final int pintLastTabItemIndex) {
 		setProperty("LastTabItemIndex", String.valueOf(pintLastTabItemIndex));
 	}
-	public static SOSPreferenceStore	objPrefStore	= new SOSPreferenceStore(Options.class);
+	public static SOSPreferenceStore	objPrefStore	= new SOSPreferenceStore(getJOEHomeDir().replaceAll("\\\\", "_"));
 
 	public static String getLastFolderName() {
 		String strT = getProperty("LastFolderName");
