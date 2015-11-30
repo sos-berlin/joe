@@ -97,7 +97,11 @@ public class ProcessClassesListener {
                Element e = (Element) it.next();
                TableItem item = new TableItem(tableRemoteScheduler, SWT.NONE);
                String url = Utils.getAttributeValue("remote_scheduler", e);
+               String heartbeat_timeout = Utils.getAttributeValue("http_heartbeat_timeout", e);
+               String heartbeat_period = Utils.getAttributeValue("http_heartbeat_period", e);
                item.setText(0, url);
+               item.setText(1, heartbeat_timeout);
+               item.setText(2, heartbeat_period);
             }
         }
     }
@@ -124,7 +128,7 @@ public class ProcessClassesListener {
 	}
 
 	public String getHttpHeartBeatPeriod() {
-		   return  Utils.getAttributeValue("http_heartbeat_period", _class);
+		return Utils.getAttributeValue("remote_scheduler", _class);
 		}
 		
 	public String getHttpHeartBeatTimeout() {
@@ -172,18 +176,13 @@ public class ProcessClassesListener {
 		_class = new Element("process_class");
 	}
 
-	public void applyProcessClass(String processClass, String url,int httpHeartBeatPeriod, int httpHeartBeatTimeout, int maxProcesses) {
+	public void applyProcessClass(String processClass, String url, int maxProcesses) {
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("process_class", Utils.getAttributeValue("name", _class), SchedulerDom.DELETE);
 		Utils.setAttribute("name", processClass, _class, _dom);
 		Utils.setAttribute("max_processes", maxProcesses, _class, _dom);
 		
-		if (httpHeartBeatPeriod != -1){
-		   Utils.setAttribute("http_heartbeat_period", httpHeartBeatPeriod, _class, _dom);
-		}
-		if (httpHeartBeatTimeout != -1){
-		   Utils.setAttribute("http_heartbeat_timeout", httpHeartBeatTimeout, _class, _dom);
-		}
+		 
 
 		if (url.trim().length() > 0) {
 			Utils.setAttribute("remote_scheduler", url.trim() , _class, _dom);
@@ -218,9 +217,17 @@ public class ProcessClassesListener {
             TableItem item = tableRemoteScheduler.getItems()[i];
             _remoteScheduler = new Element("remote_scheduler");
             String url = item.getText(0);
+            String heartBeatTimeout = item.getText(1);
+            String heartBeatPeriod = item.getText(2);
             
             if (url.trim().length() > 0) {
                 Utils.setAttribute("remote_scheduler", url.trim(), _remoteScheduler, _dom);
+            }
+            if (heartBeatTimeout.trim().length() > 0) {
+                Utils.setAttribute("http_heartbeat_timeout", heartBeatTimeout.trim(), _remoteScheduler, _dom);
+            }
+            if (heartBeatPeriod.trim().length() > 0) {
+                Utils.setAttribute("http_heartbeat_period", heartBeatPeriod.trim(), _remoteScheduler, _dom);
             }
             
            _listRemoteScheduler.add(_remoteScheduler);
