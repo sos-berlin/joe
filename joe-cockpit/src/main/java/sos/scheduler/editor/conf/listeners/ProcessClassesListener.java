@@ -123,7 +123,15 @@ public class ProcessClassesListener {
 		return name;
 	}
 
-
+	public String getHttpHeartBeatPeriod() {
+		   return  Utils.getAttributeValue("http_heartbeat_period", _class);
+		}
+		
+	public String getHttpHeartBeatTimeout() {
+		   return  Utils.getAttributeValue("http_heartbeat_timeout", _class);
+		}
+		
+	
 	public String getRemoteUrl() {
 		return Utils.getAttributeValue("remote_scheduler", _class);
     }
@@ -164,11 +172,19 @@ public class ProcessClassesListener {
 		_class = new Element("process_class");
 	}
 
-	public void applyProcessClass(String processClass, String url, int maxProcesses) {
+	public void applyProcessClass(String processClass, String url,int httpHeartBeatPeriod, int httpHeartBeatTimeout, int maxProcesses) {
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("process_class", Utils.getAttributeValue("name", _class), SchedulerDom.DELETE);
 		Utils.setAttribute("name", processClass, _class, _dom);
 		Utils.setAttribute("max_processes", maxProcesses, _class, _dom);
+		
+		if (httpHeartBeatPeriod != -1){
+		   Utils.setAttribute("http_heartbeat_period", httpHeartBeatPeriod, _class, _dom);
+		}
+		if (httpHeartBeatTimeout != -1){
+		   Utils.setAttribute("http_heartbeat_timeout", httpHeartBeatTimeout, _class, _dom);
+		}
+
 		if (url.trim().length() > 0) {
 			Utils.setAttribute("remote_scheduler", url.trim() , _class, _dom);
 		}else{

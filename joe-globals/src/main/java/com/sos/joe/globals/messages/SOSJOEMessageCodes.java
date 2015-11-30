@@ -138,6 +138,10 @@ public class SOSJOEMessageCodes extends SOSComposite {
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_ProcessClassesForm_remoteExecution			= new SOSMsgJOE("JOE_T_ProcessClassesForm_remoteExecution");
 	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ProcessClassesForm_httpHeartBeatTimeout		= new SOSMsgJOE("JOE_T_ProcessClassesForm_httpHeartBeatTimeout");
+	@I18NMsg
+	public static final SOSMsgJOE	JOE_T_ProcessClassesForm_httpHeartBeatPerion		= new SOSMsgJOE("JOE_T_ProcessClassesForm_httpHeartBeatPeriod");
+	@I18NMsg
 	public static final SOSMsgJOE	JOE_L_ProcessClassesForm_Port						= new SOSMsgJOE("JOE_L_ProcessClassesForm_Port");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_T_ProcessClassesForm_Port						= new SOSMsgJOE("JOE_T_ProcessClassesForm_Port");
