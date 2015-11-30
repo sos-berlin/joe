@@ -24,9 +24,9 @@ import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
-import sos.scheduler.editor.classes.IntegerField;
 import sos.scheduler.editor.conf.listeners.ProcessClassesListener;
 
+import com.sos.dialog.components.IntegerField;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IUnsaved;
 import com.sos.joe.globals.interfaces.IUpdateLanguage;
@@ -35,9 +35,7 @@ import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-/**
- * @author sky2000
- */
+
 public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
 	
     private ProcessClassesListener	listener		        = null;
@@ -51,17 +49,14 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
     private Button                  btOkRemoteScheduler     = null;
     private Button                  btRemoveRemoteScheduler = null;
 	private Text					tProcessClass	        = null;
-	private Text					tMaxProcesses	        = null;
-	private Label					label			        = null;
-    private Text                    tRemoteUrl              = null;
+	private IntegerField    		tMaxProcesses	        = null;
+	private Text                    tRemoteUrl              = null;
+	private IntegerField            tHttpHeartBeatPeriod    = null;
+	private IntegerField            tHttpHeartBeatTimeout   = null;
     private Text                    tRemoteSchedulerUrl     = null;
 	private SchedulerDom			dom				        = null;
 
-	/**
-	 * @param parent
-	 * @param style
-	 * @throws JDOMException
-	 */
+ 
 	public ProcessClassesForm(Composite parent, int style, SchedulerDom dom_, Element config) throws JDOMException {
 		super(parent, style);
 		dom = dom_;
@@ -93,16 +88,13 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 	           tableProcessClasses.setVisible(false);
 	           btNew.setVisible(false);
 	           btRemove.setVisible(false);
-	           label.setVisible(false);
 	        }
 	     listener.fillProcessClassesTable(tableProcessClasses);
 	     new Label(group, SWT.NONE);
 	
 	}
 
-	/**
-	 * This method initializes group
-	 */
+ 
 	private void createGroup() {
  
 	    group = JOE_G_ProcessClassesForm_ProcessClasses.Control(new Group(this, SWT.NONE));
@@ -163,7 +155,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
         
-        tMaxProcesses = JOE_T_ProcessClassesForm_MaxProcesses.Control(new IntegerField(group, SWT.BORDER));
+        tMaxProcesses = JOE_T_ProcessClassesForm_MaxProcesses.integerField(new IntegerField(group, SWT.BORDER));
         tMaxProcesses.setLayoutData(new GridData(GridData.FILL, SWT.CENTER, true, false,1,1));
         tMaxProcesses.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent arg0) {
@@ -200,18 +192,64 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
                 btApply.setEnabled(true);
             }
         });
+        new Label(group, SWT.NONE);
         
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
-        new Label(group, SWT.NONE);
-        new Label(group, SWT.NONE);
-        new Label(group, SWT.NONE);
-        new Label(group, SWT.NONE);
-        new Label(group, SWT.NONE);
-        new Label(group, SWT.NONE);
-
-
+        
+        
+        
+        Label lbHttpHeartBeatPeriod = new Label(group, SWT.NONE);
+        lbHttpHeartBeatPeriod.setText("Heartbeat Period");
+        lbHttpHeartBeatPeriod.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
        
+        final Label lbHttpHeartBeatTimeout = new Label(group, SWT.NONE);
+        lbHttpHeartBeatTimeout.setText("Heartbeat Timeout");
+        lbHttpHeartBeatTimeout.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
+        new Label(group, SWT.NONE);
+        new Label(group, SWT.NONE);
+        new Label(group, SWT.NONE);
+                
+        
+        tHttpHeartBeatPeriod = JOE_T_ProcessClassesForm_httpHeartBeatTimeout.integerField(new IntegerField(group, SWT.BORDER));
+        tHttpHeartBeatPeriod.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,1,1));
+        tHttpHeartBeatPeriod.setEnabled(false);
+
+        tHttpHeartBeatPeriod.addTraverseListener(new TraverseListener() {
+            public void keyTraversed(final TraverseEvent e) {
+                traversed(e);
+            }
+        });
+        tHttpHeartBeatPeriod.addModifyListener(new ModifyListener() {
+            public void modifyText(final ModifyEvent e) {
+                btApply.setEnabled(true);
+            }
+        }); 
+        
+        tHttpHeartBeatTimeout = JOE_T_ProcessClassesForm_httpHeartBeatTimeout.integerField(new IntegerField(group, SWT.BORDER));
+        tHttpHeartBeatTimeout.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,1,1));
+        tHttpHeartBeatTimeout.setEnabled(false);
+
+        tHttpHeartBeatTimeout.addTraverseListener(new TraverseListener() {
+            public void keyTraversed(final TraverseEvent e) {
+                traversed(e);
+            }
+        });
+        tHttpHeartBeatTimeout.addModifyListener(new ModifyListener() {
+            public void modifyText(final ModifyEvent e) {
+                btApply.setEnabled(true);
+            }
+        }); 
+                
+        
+        
+        
+        
+        new Label(group, SWT.NONE);
+        new Label(group, SWT.NONE);
+        new Label(group, SWT.NONE);        
+
+        
         createTableRemoteScheduler();
         
         GridData gridData3 = new GridData(SWT.FILL, SWT.TOP, false, false,1,1);
@@ -264,10 +302,10 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         new Label(group, SWT.NONE);
 
         
-        GridData gridData2 = new GridData(SWT.FILL, SWT.BOTTOM, false, false, 1, 1);
-        gridData2.widthHint = 100;
+        GridData layoutDataOkButton = new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1);
+        layoutDataOkButton.widthHint = 100;
         btOkRemoteScheduler = JOE_B_Ok.Control(new Button(group, SWT.NONE));
-        btOkRemoteScheduler.setLayoutData(gridData2);
+        btOkRemoteScheduler.setLayoutData(layoutDataOkButton);
         btOkRemoteScheduler.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 if (tRemoteSchedulerUrl.getText().length() > 0) {
@@ -360,9 +398,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         
 	}
  
-	/**
-     * This method initializes table
-     */
+ 
     private void createTableRemoteScheduler()   {    
         
         tableRemoteScheduler = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
@@ -433,26 +469,25 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 
 	private void applyClass() {
  
-		boolean _continue = true;
-		if (listener.getProcessClass().length() > 0 && !listener.getProcessClass().equals(tProcessClass.getText())
-				&& !Utils.checkElement(listener.getProcessClass(), dom, JOEConstants.PROCESS_CLASSES, null))
-			_continue = false;
-		if (_continue)
-			try {
-				Integer.parseInt(tMaxProcesses.getText());
-			}
-			catch (NumberFormatException e) {
-				tMaxProcesses.setText("1");
-			}
-        listener.applyRemoteSchedulerTable(tableRemoteScheduler);
-		listener.applyProcessClass(tProcessClass.getText(), tRemoteUrl.getText(), Integer.parseInt(tMaxProcesses.getText()));
-		listener.fillProcessClassesTable(tableProcessClasses);
+		if (tHttpHeartBeatPeriod.getIntegerValue(0) >= tHttpHeartBeatTimeout.getIntegerValue(0)){
+			MainWindow.message("HTTP Hearbeat Period must be greater than HTTP Heartbeat Timeout ", SWT.ICON_WARNING);
+		}else{
+			if (tHttpHeartBeatPeriod.getIntegerValue(0) < 0){
+				MainWindow.message("HTTP Hearbeat Period must be greater than 0 ", SWT.ICON_WARNING);
 
-		setInput(false);
-		getShell().setDefaultButton(btNew);
-		tProcessClass.setBackground(null);
-		if (dom.isLifeElement()) {
-			setInput(true);
+			}else{
+			
+		        listener.applyRemoteSchedulerTable(tableRemoteScheduler);
+				listener.applyProcessClass(tProcessClass.getText(), tRemoteUrl.getText(),tHttpHeartBeatPeriod.getIntegerValue(-1),tHttpHeartBeatTimeout.getIntegerValue(-1), tMaxProcesses.getIntegerValue(1));
+				listener.fillProcessClassesTable(tableProcessClasses);
+		
+				setInput(false);
+				getShell().setDefaultButton(btNew);
+				tProcessClass.setBackground(null);
+				if (dom.isLifeElement()) {
+					setInput(true);
+				}
+			}
 		}
 	}
 
@@ -460,17 +495,23 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 		tProcessClass.setEnabled(enabled);
 		tMaxProcesses.setEnabled(enabled);
 		tRemoteUrl.setEnabled(enabled);
+		tHttpHeartBeatPeriod.setEnabled(enabled);		
+		tHttpHeartBeatTimeout.setEnabled(enabled);
       
 
 		if (enabled) {
+			tHttpHeartBeatPeriod.setText(listener.getHttpHeartBeatPeriod());
+			tHttpHeartBeatTimeout.setText(listener.getHttpHeartBeatTimeout());
 			tProcessClass.setText(listener.getProcessClass());
 			tRemoteUrl.setText(listener.getRemoteUrl());
-			tMaxProcesses.setText(String.valueOf(listener.getMaxProcesses()));
+			tMaxProcesses.setText(listener.getMaxProcesses());
 			tProcessClass.setFocus();
 		    listener.fillRemoteSchedulerTable(tableRemoteScheduler);
 
 		}
 		else {
+			tHttpHeartBeatPeriod.setText("");
+			tHttpHeartBeatTimeout.setText("");
 			tProcessClass.setText("");
 			tRemoteUrl.setText("");
 			tMaxProcesses.setText("");
