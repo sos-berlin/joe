@@ -108,9 +108,11 @@ public class SOSJOEMessageCodes extends SOSComposite {
 
 	// ProcessClassesForm
 	@I18NMsg
-    public static final SOSMsgJOE   JOE_B_ProcessClassesForm_NewRemotScheduler          = new SOSMsgJOE("JOE_B_ProcessClassesForm_NewRemotScheduler");
+    public static final SOSMsgJOE   JOE_B_ProcessClassesForm_ApplyRemoteScheduler          = new SOSMsgJOE("JOE_B_ProcessClassesForm_ApplyRemoteScheduler");
+	@I18NMsg
+    public static final SOSMsgJOE   JOE_B_ProcessClassesForm_NewRemoteScheduler          = new SOSMsgJOE("JOE_B_ProcessClassesForm_NewRemoteScheduler");
     @I18NMsg
-    public static final SOSMsgJOE   JOE_B_ProcessClassesForm_RemoveRemotScheduler       = new SOSMsgJOE("JOE_B_ProcessClassesForm_RemoveRemotScheduler");
+    public static final SOSMsgJOE   JOE_B_ProcessClassesForm_RemoveRemoteScheduler       = new SOSMsgJOE("JOE_B_ProcessClassesForm_RemoveRemoteScheduler");
 	@I18NMsg
 	public static final SOSMsgJOE	JOE_G_ProcessClassesForm_ProcessClasses				= new SOSMsgJOE("JOE_G_ProcessClassesForm_ProcessClasses");
 	@I18NMsg
