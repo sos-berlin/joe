@@ -206,7 +206,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         
         GridData gridData3 = new GridData(SWT.FILL, SWT.TOP, false, false,1,1);
         gridData3.widthHint = 100;
-        btNewRemoteScheduler = JOE_B_ProcessClassesForm_NewRemotScheduler.Control(new Button(group, SWT.NONE));
+        btNewRemoteScheduler = JOE_B_ProcessClassesForm_NewRemoteScheduler.Control(new Button(group, SWT.NONE));
         btNewRemoteScheduler.setLayoutData(gridData3);
         btNewRemoteScheduler.setEnabled(false);
         btNewRemoteScheduler.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -225,7 +225,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         
         GridData gridData4 = new GridData(SWT.FILL, SWT.TOP, false, false,1,1);
         gridData4.widthHint = 100;
-        btRemoveRemoteScheduler = JOE_B_ProcessClassesForm_RemoveRemotScheduler.Control(new Button(group, SWT.NONE));
+        btRemoveRemoteScheduler = JOE_B_ProcessClassesForm_RemoveRemoteScheduler.Control(new Button(group, SWT.NONE));
         btRemoveRemoteScheduler.setLayoutData(gridData4);
         btRemoveRemoteScheduler.setEnabled(false);
 
@@ -261,63 +261,12 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
       
         GridData layoutDataOkButton = new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1);
         layoutDataOkButton.widthHint = 100;
-        btOkRemoteScheduler = JOE_B_Ok.Control(new Button(group, SWT.NONE));
+        btOkRemoteScheduler = JOE_B_ProcessClassesForm_ApplyRemoteScheduler.Control(new Button(group, SWT.NONE));
         btOkRemoteScheduler.setLayoutData(layoutDataOkButton);
         btOkRemoteScheduler.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-            	
-        		if (tHttpHeartBeatPeriod.getIntegerValue(0) >= tHttpHeartBeatTimeout.getIntegerValue(-1)){
-        			MainWindow.message("HTTP Hearbeat Timeout must be greater than HTTP Heartbeat Period ", SWT.ICON_WARNING);
-        		}else{
-        			if (tHttpHeartBeatPeriod.getIntegerValue(0) < 0){
-        				MainWindow.message("HTTP Hearbeat Period must be greater than 0 ", SWT.ICON_WARNING);
-
-        			}else{
-
-            	
-		            	if (tRemoteSchedulerUrl.getText().length() > 0) {
-		                    if (tableRemoteScheduler.getSelectionIndex() >= 0) {
-		                        TableItem item = tableRemoteScheduler.getItems()[tableRemoteScheduler.getSelectionIndex()];
-		                        item.setText(0, tRemoteSchedulerUrl.getText());
-		                        item.setText(1, tHttpHeartBeatTimeout.getText());
-		                        item.setText(2, tHttpHeartBeatPeriod.getText());
-		                        tRemoteSchedulerUrl.setText("");
-		                        tHttpHeartBeatTimeout.setText("");
-		                        tHttpHeartBeatPeriod.setText("");
-		                        tRemoteSchedulerUrl.setFocus();
-		                        btApply.setEnabled(true);
-		                    }else {
-		                        for (int i = 0; i < tableRemoteScheduler.getItemCount(); i++) {
-		                            TableItem item = tableRemoteScheduler.getItems()[i];
-		                            if ((item.getText(0).equals(tRemoteSchedulerUrl.getText())  )) {
-		                                item.setText(0, tRemoteSchedulerUrl.getText());
-		                                item.setText(1, tHttpHeartBeatTimeout.getText());
-		                                item.setText(2, tHttpHeartBeatPeriod.getText());
-		                                tRemoteSchedulerUrl.setText("");
-		                                tHttpHeartBeatTimeout.setText("");
-		                                tHttpHeartBeatPeriod.setText("");
-		                                tRemoteSchedulerUrl.setFocus();
-		
-		                                btApply.setEnabled(true);
-		                                }
-		                        }
-		                        if (tRemoteSchedulerUrl.getText().length() > 0) {
-		    
-		                            TableItem item = new TableItem(tableRemoteScheduler, SWT.NONE);
-		                            item.setText(0, tRemoteSchedulerUrl.getText());
-		                            item.setText(1, tHttpHeartBeatTimeout.getText());
-		                            item.setText(2, tHttpHeartBeatPeriod.getText());
-		                            tRemoteSchedulerUrl.setText("");
-		                            tHttpHeartBeatTimeout.setText("");
-		                            tHttpHeartBeatPeriod.setText("");
-		                            tRemoteSchedulerUrl.setFocus();
-		
-		                            btApply.setEnabled(true);
-		                        }
-		                    }
-		            	}
-        			}
-                }
+            	applyRemoteSchedulerEntry();
+ 
             }
         });
 
@@ -430,6 +379,63 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         
         
 	}
+	
+	private void applyRemoteSchedulerEntry(){
+       	boolean checkHearbeat =  (tHttpHeartBeatPeriod.getText().length() > 0 || tHttpHeartBeatTimeout.getText().length() > 0);
+		
+    	
+    		if (checkHearbeat && tHttpHeartBeatPeriod.getIntegerValue(0) >= tHttpHeartBeatTimeout.getIntegerValue(-1)){
+    			MainWindow.message("HTTP Hearbeat Timeout must be greater than HTTP Heartbeat Period ", SWT.ICON_WARNING);
+    		}else{
+    			if (checkHearbeat && tHttpHeartBeatPeriod.getIntegerValue(0) < 0){
+    				MainWindow.message("HTTP Hearbeat Period must be greater than 0 ", SWT.ICON_WARNING);
+
+    			}else{
+        	
+	            	if (tRemoteSchedulerUrl.getText().length() > 0) {
+	                    if (tableRemoteScheduler.getSelectionIndex() >= 0) {
+	                        TableItem item = tableRemoteScheduler.getItems()[tableRemoteScheduler.getSelectionIndex()];
+	                        item.setText(0, tRemoteSchedulerUrl.getText());
+	                        item.setText(1, tHttpHeartBeatTimeout.getText());
+	                        item.setText(2, tHttpHeartBeatPeriod.getText());
+	                        tRemoteSchedulerUrl.setText("");
+	                        tHttpHeartBeatTimeout.setText("");
+	                        tHttpHeartBeatPeriod.setText("");
+	                        tRemoteSchedulerUrl.setFocus();
+	                        btApply.setEnabled(true);
+	                    }else {
+	                        for (int i = 0; i < tableRemoteScheduler.getItemCount(); i++) {
+	                            TableItem item = tableRemoteScheduler.getItems()[i];
+	                            if ((item.getText(0).equals(tRemoteSchedulerUrl.getText())  )) {
+	                                item.setText(0, tRemoteSchedulerUrl.getText());
+	                                item.setText(1, tHttpHeartBeatTimeout.getText());
+	                                item.setText(2, tHttpHeartBeatPeriod.getText());
+	                                tRemoteSchedulerUrl.setText("");
+	                                tHttpHeartBeatTimeout.setText("");
+	                                tHttpHeartBeatPeriod.setText("");
+	                                tRemoteSchedulerUrl.setFocus();
+	
+	                                btApply.setEnabled(true);
+	                                }
+	                        }
+	                        if (tRemoteSchedulerUrl.getText().length() > 0) {
+	    
+	                            TableItem item = new TableItem(tableRemoteScheduler, SWT.NONE);
+	                            item.setText(0, tRemoteSchedulerUrl.getText());
+	                            item.setText(1, tHttpHeartBeatTimeout.getText());
+	                            item.setText(2, tHttpHeartBeatPeriod.getText());
+	                            tRemoteSchedulerUrl.setText("");
+	                            tHttpHeartBeatTimeout.setText("");
+	                            tHttpHeartBeatPeriod.setText("");
+	                            tRemoteSchedulerUrl.setFocus();
+	
+	                            btApply.setEnabled(true);
+	                        }
+	                    }
+	            	}
+    			}
+            }
+	}
  
  
     private void createTableRemoteScheduler()   {    
@@ -511,13 +517,14 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 	}
 
 	private void applyClass() {
+		 applyRemoteSchedulerEntry();
 	     listener.applyRemoteSchedulerTable(tableRemoteScheduler);
 	     listener.applyProcessClass(tProcessClass.getText(), tRemoteUrl.getText(), tMaxProcesses.getIntegerValue(1));
 	     listener.fillProcessClassesTable(tableProcessClasses);
 			
-		 setInput(false);
 		 getShell().setDefaultButton(btNew);
 		 tProcessClass.setBackground(null);
+		 btApply.setEnabled(false);
 		 if (dom.isLifeElement()) {
 		 	setInput(true);
 		 }
