@@ -237,7 +237,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         
         GridData gridData3 = new GridData(SWT.FILL, SWT.TOP, false, false,1,1);
         gridData3.widthHint = 100;
-        btNewRemoteScheduler = JOE_B_ProcessClassesForm_NewRemotScheduler.Control(new Button(group, SWT.NONE));
+        btNewRemoteScheduler = JOE_B_ProcessClassesForm_NewRemoteScheduler.Control(new Button(group, SWT.NONE));
         btNewRemoteScheduler.setLayoutData(gridData3);
         btNewRemoteScheduler.setEnabled(false);
         btNewRemoteScheduler.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -255,7 +255,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         
         GridData gridData4 = new GridData(SWT.FILL, SWT.TOP, false, false,1,1);
         gridData4.widthHint = 100;
-        btRemoveRemoteScheduler = JOE_B_ProcessClassesForm_RemoveRemotScheduler.Control(new Button(group, SWT.NONE));
+        btRemoveRemoteScheduler = JOE_B_ProcessClassesForm_RemoveRemoteScheduler.Control(new Button(group, SWT.NONE));
         btRemoveRemoteScheduler.setLayoutData(gridData4);
         btRemoveRemoteScheduler.setEnabled(false);
 
@@ -292,51 +292,21 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         
         GridData gridData2 = new GridData(SWT.FILL, SWT.BOTTOM, false, false, 1, 1);
         gridData2.widthHint = 100;
-        btOkRemoteScheduler = JOE_B_Ok.Control(new Button(group, SWT.NONE));
+        btOkRemoteScheduler = JOE_B_ProcessClassesForm_ApplyRemoteScheduler.Control(new Button(group, SWT.NONE));
         btOkRemoteScheduler.setLayoutData(gridData2);
         btOkRemoteScheduler.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
             public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-                if (tRemoteSchedulerHost.getText().length() > 0 && tRemoteSchedulerPort.getText().length() > 0) {
-                    if (tableRemoteScheduler.getSelectionIndex() >= 0) {
-                        TableItem item = tableRemoteScheduler.getItems()[tableRemoteScheduler.getSelectionIndex()];
-                        item.setText(0, tRemoteSchedulerHost.getText());
-                        item.setText(1, tRemoteSchedulerPort.getText());
-                        tRemoteSchedulerHost.setText("");
-                        tRemoteSchedulerPort.setText("");
-                        tRemoteSchedulerHost.setFocus();
-                        btApply.setEnabled(true);
-                    }else {
-                        for (int i = 0; i < tableRemoteScheduler.getItemCount(); i++) {
-                            TableItem item = tableRemoteScheduler.getItems()[i];
-                            if ((item.getText(0).equals(tRemoteSchedulerHost.getText()) && tRemoteSchedulerHost.getText().length() > 0 && (item.getText(1).equals(tRemoteSchedulerPort.getText())))) {
-                                item.setText(0, tRemoteSchedulerHost.getText());
-                                item.setText(1, tRemoteSchedulerPort.getText());
-                                tRemoteSchedulerHost.setText("");
-                                tRemoteSchedulerPort.setText("");
-                                tRemoteSchedulerHost.setFocus();
-
-                                btApply.setEnabled(true);
-                                }
-                        }
-                        if (tRemoteSchedulerHost.getText().length() > 0) {
-    
-                            TableItem item = new TableItem(tableRemoteScheduler, SWT.NONE);
-                            item.setText(0, tRemoteSchedulerHost.getText());
-                            item.setText(1, tRemoteSchedulerPort.getText());
-                            tRemoteSchedulerHost.setText("");
-                            tRemoteSchedulerPort.setText("");
-                            tRemoteSchedulerHost.setFocus();
-
-                            
-                            btApply.setEnabled(true);
-                        }
-                    }
-                }
+               applyRemoteSchedulerEntry();
             }
         });
 
         tRemoteSchedulerHost = JOE_T_ProcessClassesForm_remoteExecution.Control(new Text(group, SWT.BORDER));
         tRemoteSchedulerHost.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false, 1, 1));
+        tRemoteSchedulerHost.addModifyListener(new ModifyListener() {
+            public void modifyText(final ModifyEvent e) {
+                btApply.setEnabled(true);
+            }
+        });
         
         Label lblNewLabel_2 = new Label(group, SWT.NONE);
         lblNewLabel_2.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
@@ -344,6 +314,11 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         
         tRemoteSchedulerPort = JOE_T_ProcessClassesForm_remoteExecution.Control(new Text(group, SWT.BORDER));
         tRemoteSchedulerPort.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+        tRemoteSchedulerPort.addModifyListener(new ModifyListener() {
+            public void modifyText(final ModifyEvent e) {
+                btApply.setEnabled(true);
+            }
+        });
         new Label(group, SWT.NONE);
 
 //newline
@@ -400,6 +375,44 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
         
 	}
  
+	private void applyRemoteSchedulerEntry(){
+		 if (tRemoteSchedulerHost.getText().length() > 0 && tRemoteSchedulerPort.getText().length() > 0) {
+             if (tableRemoteScheduler.getSelectionIndex() >= 0) {
+                 TableItem item = tableRemoteScheduler.getItems()[tableRemoteScheduler.getSelectionIndex()];
+                 item.setText(0, tRemoteSchedulerHost.getText());
+                 item.setText(1, tRemoteSchedulerPort.getText());
+                 tRemoteSchedulerHost.setText("");
+                 tRemoteSchedulerPort.setText("");
+                 tRemoteSchedulerHost.setFocus();
+                 btApply.setEnabled(true);
+             }else {
+                 for (int i = 0; i < tableRemoteScheduler.getItemCount(); i++) {
+                     TableItem item = tableRemoteScheduler.getItems()[i];
+                     if ((item.getText(0).equals(tRemoteSchedulerHost.getText()) && tRemoteSchedulerHost.getText().length() > 0 && (item.getText(1).equals(tRemoteSchedulerPort.getText())))) {
+                         item.setText(0, tRemoteSchedulerHost.getText());
+                         item.setText(1, tRemoteSchedulerPort.getText());
+                         tRemoteSchedulerHost.setText("");
+                         tRemoteSchedulerPort.setText("");
+                         tRemoteSchedulerHost.setFocus();
+
+                         btApply.setEnabled(true);
+                         }
+                 }
+                 if (tRemoteSchedulerHost.getText().length() > 0) {
+
+                     TableItem item = new TableItem(tableRemoteScheduler, SWT.NONE);
+                     item.setText(0, tRemoteSchedulerHost.getText());
+                     item.setText(1, tRemoteSchedulerPort.getText());
+                     tRemoteSchedulerHost.setText("");
+                     tRemoteSchedulerPort.setText("");
+                     tRemoteSchedulerHost.setFocus();
+
+                     
+                     btApply.setEnabled(true);
+                 }
+             }
+         }
+	}
 	/**
      * This method initializes table
      */
@@ -494,13 +507,14 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 			catch (NumberFormatException e) {
 				tMaxProcesses.setText("1");
 			}
+		applyRemoteSchedulerEntry();
         listener.applyRemoteSchedulerTable(tableRemoteScheduler);
 		listener.applyProcessClass(tProcessClass.getText(), tRemoteHost.getText(), tRemotePort.getText(), Integer.parseInt(tMaxProcesses.getText()));
 		listener.fillProcessClassesTable(tableProcessClasses);
 
-		setInput(false);
-		getShell().setDefaultButton(btNew);
+ 		getShell().setDefaultButton(btNew);
 		tProcessClass.setBackground(null);
+		btApply.setEnabled(false);
 		if (dom.isLifeElement()) {
 			setInput(true);
 		}
