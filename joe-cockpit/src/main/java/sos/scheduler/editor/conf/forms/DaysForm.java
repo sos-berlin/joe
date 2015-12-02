@@ -22,12 +22,11 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.DaysListener;
 
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import org.eclipse.swt.graphics.Point;
 
-public class DaysForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class DaysForm extends SOSJOEMessageCodes  {
 	private DaysListener			listener;
 	private ISchedulerUpdate		_main;
 	private int						_type				= 0;
@@ -56,7 +55,6 @@ public class DaysForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		_main = main;
 		_type = type;
 		initialize();
-		setToolTipText();
 		read();
 
 		this.group.setEnabled(Utils.isElementEnabled("job", dom, job) && !Utils.hasSchedulesElement(dom, job));
@@ -471,8 +469,6 @@ public class DaysForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		}
 	}
 
-	public void setToolTipText() {
-//
-	}
+ 
 
 } // @jve:decl-index=0:visual-constraint="10,10"

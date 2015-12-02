@@ -24,13 +24,12 @@ import sos.scheduler.editor.conf.listeners.JobsListener;
 
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.wizard.forms.JobAssistentForm;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class JobsForm extends SOSJOEMessageCodes   {
 	@SuppressWarnings("unused") private final String	conSVNVersion	= "$Id$";
 	private static Logger								logger			= Logger.getLogger(JobsForm.class);
 	@SuppressWarnings("unused") private final String	conClassName	= "JobsForm";
@@ -52,7 +51,6 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			this.update = update;
 			listener = new JobsListener(dom, update);
 			initialize();
-			setToolTipText();
 			listener.fillTable(table);
 		}
 		catch (Exception e) {
@@ -216,9 +214,7 @@ public class JobsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		}
 	}
 
-	@Override public void setToolTipText() {
-		//
-	}
+
 
 	public static Table getTable() {
 		return table;

@@ -30,13 +30,12 @@ import sos.scheduler.editor.conf.listeners.JobListener;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 	private final String								conClassName		= "JobChainForm";
 	final String										conMethodName		= conClassName + "::enclosing_method";
 	@SuppressWarnings("unused") private final String	conSVNVersion		= "$Id$";
@@ -67,7 +66,6 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
         listener = new JobChainListener(dom, jobChain);
         jobListener = new JobListener(dom, jobChain, update);
 		initialize();
-		setToolTipText();
 		fillChain(false, false);
 		this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
 		init = false;
@@ -354,7 +352,11 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		}
 	}
 
+<<<<<<< HEAD
 	public void setToolTipText() {
 		//
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"
+=======
+} // @jve:decl-index=0:visual-constraint="10,10"
+>>>>>>> origin/release/1.8

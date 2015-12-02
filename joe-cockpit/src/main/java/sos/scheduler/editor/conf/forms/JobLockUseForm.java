@@ -20,13 +20,12 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.JobLockUseListener;
 
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 
-public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved {
 	private Combo				tLockUse		= null;
 	private JobLockUseListener	listener		= null;
 	private Group				group1			= null;
@@ -44,7 +43,6 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		listener = new JobLockUseListener(dom, job);
 		initialize();
 		initLockUseTable(true);
-		setToolTipText();
 		group1.setEnabled(Utils.isElementEnabled("job", dom, job));
 	}
 
@@ -211,7 +209,5 @@ public class JobLockUseForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		getShell().setDefaultButton(null);
 	}
 
-	public void setToolTipText() {
-		//
-	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"

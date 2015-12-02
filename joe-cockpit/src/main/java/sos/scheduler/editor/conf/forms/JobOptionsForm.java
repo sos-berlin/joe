@@ -25,11 +25,10 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.JobOptionsListener;
 
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved {
 	private JobOptionsListener					listener			= null;
 	private Group								group				= null;
 	private Group								group1				= null;
@@ -82,7 +81,6 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		super(parent, style);
 		listener = new JobOptionsListener(dom, job);
 		initialize();
-		setToolTipText();
 		initDirectories(listener.isDirectoryTrigger());
 		initSetbacks(listener.isSetbackDelay());
 		initErrorDelays(listener.isErrorDelay());
@@ -986,7 +984,5 @@ public class JobOptionsForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		}
 	}
 
-	public void setToolTipText() {
-		//
-	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -16,8 +16,6 @@ public interface IEditor {
 
 	public boolean applyChanges();
 
-	public void updateLanguage();
-
 	public String getHelpKey();
 
 	public String getFilename();

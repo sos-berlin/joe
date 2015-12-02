@@ -69,7 +69,6 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
 		bRemove.setEnabled(false);
 		setAppStatus(false);
 		fillTable();
-		setToolTipText();
 	}
 
 	/**
@@ -205,9 +204,6 @@ public class ApplicationsForm extends JobDocBaseForm<ApplicationsListener> {
 		return bApply.isEnabled();
 	}
 
-	@Override public void setToolTipText() {
-		//
-	}
 
 	private void setAppStatus(boolean enabled) {
 		tName.setEnabled(enabled);

@@ -59,7 +59,6 @@ public class SectionsForm extends JobDocBaseForm <SectionsListener>{
 		createGroup();
 		bApply.setEnabled(false);
 		bRemove.setEnabled(false);
-		setToolTipText();
 	}
 
 	/**
@@ -213,9 +212,7 @@ public class SectionsForm extends JobDocBaseForm <SectionsListener>{
 		
 	}
 
-	@Override public void updateLanguage() {
-		
-	}
+ 
 
 	@Override public boolean applyChanges() {
 		return false;

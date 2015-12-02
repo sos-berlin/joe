@@ -34,7 +34,6 @@ import sos.scheduler.editor.conf.listeners.JobChainNestedListener;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
@@ -42,7 +41,7 @@ import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 
-public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsaved {
 	private Button					butAddMissingNodes;
 	private Button					bNewNode		= null;
 	private Table					tNodes			= null;
@@ -79,7 +78,6 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
 		dom = dom_;
 		listener = new JobChainNestedListener(dom, jobChain);
 		initialize();
-		setToolTipText();
 		boolean existChainNodes = check();
 		jobChainGroup.setEnabled(existChainNodes);
 		bNewNode.setEnabled(existChainNodes);
@@ -589,8 +587,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
 		bRemoveNode.setEnabled(tNodes.getSelectionCount() > 0);
 	}
 
-	public void setToolTipText() {
-	}
+
 
 	//ein Job Chain hat entweder job_chain_node ODER job_chain_node.job_chain Kindknoten. 
 	private boolean check() {

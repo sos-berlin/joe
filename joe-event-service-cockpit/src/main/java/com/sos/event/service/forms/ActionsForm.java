@@ -20,7 +20,6 @@ import com.sos.event.service.actions.IActionsUpdate;
 import com.sos.event.service.listeners.ActionsListener;
 import com.sos.joe.globals.interfaces.IEditor;
 import com.sos.joe.globals.interfaces.IEditorAdapter;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.TreeData;
@@ -175,14 +174,6 @@ public class ActionsForm extends SOSJOEMessageCodes implements IEditor, IActions
 		//		if (res)
 		//			container.setNewFilename(old);
 		return res;
-	}
-
-	@Override public void updateLanguage() {
-		if (docMainForm.getChildren().length > 0) {
-			if (docMainForm.getChildren()[0] instanceof IUpdateLanguage) {
-				((IUpdateLanguage) docMainForm.getChildren()[0]).setToolTipText();
-			}
-		}
 	}
 
 	@Override public String getHelpKey() {

@@ -54,7 +54,6 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
 		this.dom = dom;
 		listener = new ResourcesListener(dom, parentElement);
 		initialize();
-		setToolTipText();
 	}
 
 	private void initialize() {
@@ -229,11 +228,6 @@ public class ResourcesForm extends JobDocBaseForm<ResourcesListener> {
 	@Override
 	public boolean isUnsaved() {
 		return false;
-	}
-
-	@Override
-	public void setToolTipText() {
-		//
 	}
 
 	private void setMemoryStatus(boolean enabled) {

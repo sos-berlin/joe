@@ -488,23 +488,6 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 		}
 	}
 
-	@Override public void updateLanguages() {
-		for (int i = 0; i < folder.getItemCount(); i++) {
-			CTabItem tab = folder.getItem(i);
-			((IEditor) tab.getControl()).updateLanguage();
-		}
-	}
-
-	/* public SchedulerForm openDirectory() {
-	    SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE, SchedulerDom.DIRECTORY);
-
-	    if (scheduler.openDirectory(null, filelist)) {
-	        CTabItem tab = newItem(scheduler, scheduler.getFilename());
-	        tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
-	        return scheduler;
-	    } else
-	        return null;
-	}*/
 	@Override public SchedulerForm openDirectory(String filename) {
 		SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE, SchedulerDom.DIRECTORY);
 		if (scheduler.openDirectory(filename, filelist)) {

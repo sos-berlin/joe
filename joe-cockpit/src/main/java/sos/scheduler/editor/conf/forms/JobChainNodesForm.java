@@ -43,7 +43,6 @@ import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
@@ -52,6 +51,7 @@ import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
+<<<<<<< HEAD
 public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
     private final String                                    conClassName                = "JobChainNodesForm";
     final String                                            conMethodName               = conClassName + "::enclosing_method";
@@ -128,6 +128,82 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
             fillChain(false, false);
         this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
     }
+=======
+public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
+	private final String									conClassName				= "JobChainNodesForm";
+	final String											conMethodName				= conClassName + "::enclosing_method";
+	@SuppressWarnings("unused") private final String		conSVNVersion				= "$Id$";
+	@SuppressWarnings("unused") private static final Logger	logger						= Logger.getLogger(JobChainNodesForm.class);
+	private Button											dumm2						= null;
+	private Button											bNewNode					= null;
+	private Table											tNodes						= null;
+	private Button											bApplyNode					= null;
+	private Text											tMoveTo						= null;
+	private Button											bRemoveFile					= null;
+	private Combo											cErrorState					= null;
+	private Label											label9						= null;
+	private Combo											cNextState					= null;
+	@SuppressWarnings("unused") private Label				label8						= null;
+	private Button											bFileSink					= null;
+	private Button											bEndNode					= null;
+	private Button											bFullNode					= null;
+	private Composite										cType						= null;
+	private Combo											cJob						= null;
+	@SuppressWarnings("unused") private Label				label7						= null;
+	private Text											tState						= null;
+	private Label											label6						= null;
+	private static final String								GROUP_FILEORDERSOURCE_TITLE	= "File Order Sources";
+	private Group											gFileOrderSource			= null;
+	private JobChainListener								listener					= null;
+	private Group											jobChainGroup				= null;
+	private Button											bNewFileOrderSource			= null;
+	private Button											bRemoveFileOrderSource		= null;
+	private Button											bApplyFileOrderSource		= null;
+	private Text											tDirectory					= null;
+	private Text											tDelayAfterError			= null;
+	private Text											tMax						= null;
+	private Text											tNextState					= null;
+	private Text											tRegex						= null;
+	private Text											tRepeat						= null;
+	private Table											tFileOrderSource			= null;
+	private Button											bRemoveNode					= null;
+	private Group											gNodes;
+	private Text											tDelay						= null;
+	private Button											butImportJob				= null;
+	private boolean											refresh						= false;
+	private Button											butDetailsJob				= null;
+	private Button											butBrowse					= null;
+	private ISchedulerUpdate								update						= null;
+	private Combo											cOnError					= null;
+	private Button											butUp						= null;
+	private Button											butDown						= null;
+	private SchedulerDom									dom							= null;
+	private Button											butGoto						= null;
+	private Button											butInsert					= null;
+	private boolean											isInsert					= false;
+	private Button											reorderButton				= null;
+	private Button											butAddMissingNodes			= null;
+	/**
+	 * Hilfsvariable: Wenn Parameter Formular geöffnet wurde muss überprüft
+	 * werden, ob der Checkbox in der Tabelle - State gesetzt werden soll.
+	 */
+	private boolean											checkParameter				= false;
+
+	// private Text txtStateText = null;
+	// private Composite composite_2 = null;
+	public JobChainNodesForm(Composite parent, int style, SchedulerDom dom_, Element jobChain) {
+		super(parent, style);
+		dom = dom_;
+		listener = new JobChainListener(dom, jobChain);
+		initialize();
+		boolean existChainNodes = check();
+		jobChainGroup.setEnabled(existChainNodes);
+		bNewNode.setEnabled(existChainNodes);
+		if (existChainNodes)
+			fillChain(false, false);
+		this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
+	}
+>>>>>>> origin/release/1.8
 
     @Override public void apply() {
         if (bApplyNode.isEnabled())
@@ -1091,9 +1167,12 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
         bRemoveNode.setEnabled(tNodes.getSelectionCount() > 0);
     }
 
+<<<<<<< HEAD
     @Override public void setToolTipText() {
         //      
     }
+=======
+>>>>>>> origin/release/1.8
 
     // ein Job Chain hat entweder job_chain_node ODER job_chain_node.job_chain
     // Kindknoten.

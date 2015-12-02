@@ -27,56 +27,37 @@ import org.jdom.Element;
 import com.sos.event.service.listeners.EventListener;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.Events.ActionsDom;
 
 
-public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage  {
+public class EventForm extends SOSJOEMessageCodes implements IUnsaved  {
 
 
 	private EventListener     listener                  = null;
-
 	private Group              group                    = null;
-
 	private Text               txtEventName             = null;
-
 	private int                type                     = -1;
-
 	private Table              table                    = null;
-
 	private Button             butApply                 = null;
-
 	private Button             butNew                   = null;
-
 	private Button             butRemove                = null;
-
 	private Combo              cboEventClass            = null;
-
 	private Text               txtEventId               = null;
-
 	private Text               txtJobChain              = null;
-
 	private Text               txtJobname               = null;
-
 	private Text               txtOrderId               = null;
-
 	private Text               txtTitle                 = null;
-
 	private Text               txtComment               = null;
-
 	private Text               txtExitCode              = null;
-
 	private Text               txtHourExpirationPeriod  = null;
 	private Text               txtMinExpirationPeriod   = null;
 	private Text               txtSecExpirationPeriod   = null;
-
 	private Text               txtHourExpirationCycle   = null;
 	private Text               txtMinExpirationCycle    = null;
 	private Text               txtSecExpirationCycle    = null;
-
 	private Group              matchingAttributesGroup  = null;
 
 	public EventForm(final Composite parent, final int style, final ActionsDom dom, final Element eventGroup, final int type_) {
@@ -86,10 +67,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		type = type_;
 		listener = new EventListener(dom, eventGroup, type_);
 		initialize();
-		setToolTipText();
 		txtEventName.setFocus();
-
-
 	}
 
 	private void initialize() {
@@ -488,10 +466,6 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 	}
 
 
-	@Override
-	public void setToolTipText() {
-//		
-	}
 
 	private void createExpirationTime(final Group matchingAttributesGroup) {
 		

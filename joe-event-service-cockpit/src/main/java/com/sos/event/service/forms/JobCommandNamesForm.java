@@ -27,13 +27,12 @@ import org.jdom.JDOMException;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.event.service.listeners.JobCommandNamesListener;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.Events.ActionsDom;
 
-public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved {
 	private Table					tCommands		= null;
 	private JobCommandNamesListener	listener		= null;
 	private Group					gMain			= null;
@@ -51,7 +50,6 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved,
 		listener = new JobCommandNamesListener(dom, command, main);
 		_dom = dom;
 		initialize();
-		setToolTipText();
 		dom.setInit(true);
 		listener.fillCommands(tCommands);
 		dom.setInit(false);
@@ -221,7 +219,5 @@ public class JobCommandNamesForm extends SOSJOEMessageCodes implements IUnsaved,
 		return listener.getCommand();
 	}
 
-	public void setToolTipText() {
-		//
-	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"

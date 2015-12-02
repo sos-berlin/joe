@@ -27,29 +27,20 @@ import sos.scheduler.editor.conf.listeners.HttpAuthenticationListener;
 import sos.util.SOSCrypt;
 
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsaved {
 	
 	private HttpAuthenticationListener listener;
-	
 	private Group                      httpAuthenticationGroup             = null;
-	
-	private Text                       txtUsername                      = null;
-	
+    private Text                       txtUsername                      = null;	
 	private Text                       txtPassword                      = null;
-	
 	private Table                      tableHttpUsers                   = null;
-	
 	private Button                     butApplyHttpUser                 = null;
-	
 	private Button                     butRemoveHttpUser                = null;
-	
 	private Button                     butEncrypt                       = null; 
-	
 	private Text                       txtMD5Password                   = null; 
 	
 	
@@ -58,7 +49,6 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
 		super(parent, style);
 		listener = new HttpAuthenticationListener(dom, config);
 		initialize();
-		setToolTipText();		
 		listener.fillHttpAuthenticationTable(tableHttpUsers);		
 		
 	}
@@ -293,16 +283,6 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
 	}
 	
 	
-	
-	public void setToolTipText() {
-//		txtUsername.setToolTipText(Messages.getTooltip("http_authentication.name"));
-//		txtMD5Password.setToolTipText(Messages.getTooltip("http_authentication.md5_password"));
-//		txtPassword.setToolTipText(Messages.getTooltip("http_authentication.password"));
-//		tableHttpUsers.setToolTipText(Messages.getTooltip("http_authentication.http_authentication_table"));
-//		butApplyHttpUser.setToolTipText(Messages.getTooltip("http_authentication.apply_button"));
-//		butEncrypt.setToolTipText(Messages.getTooltip("http_authentication.encryt_button"));
-//		butRemoveHttpUser.setToolTipText(Messages.getTooltip("http_authentication.remove_button"));
-	}
 	
 	public boolean isUnsaved() {	
 		return false;

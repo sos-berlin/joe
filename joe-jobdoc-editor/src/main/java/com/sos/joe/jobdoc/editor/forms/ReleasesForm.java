@@ -36,11 +36,9 @@ public class ReleasesForm extends JobDocBaseForm<ReleasesListener> {
 		listener = new ReleasesListener(dom, parentElement);
 		_gui = gui;
 		initialize();
-		setToolTipText();
 		this.dom = dom;
 		listener.fillReleases(tReleases);
-		// fNote.setTitle("HHallo");        
-		// fNote.setParams(dom, listener.getRelease(), "note", true, !listener.isNewRelease());
+
 	}
 
 	private void initialize() {
@@ -155,10 +153,6 @@ public class ReleasesForm extends JobDocBaseForm<ReleasesListener> {
 		return false;
 	}
 
-	@Override
-	public void setToolTipText() {
-		//
-	}
 
 	private void applyRelease() {
 		listener.fillReleases(tReleases);

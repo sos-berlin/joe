@@ -28,12 +28,11 @@ import org.jdom.Element;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.event.service.listeners.EventsListener;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.Events.ActionsDom;
 
-public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class EventsForm extends SOSJOEMessageCodes implements IUnsaved {
 	private EventsListener	listener				= null;
 	private Group			actionsGroup			= null;
 	private Text			txtLogic				= null;
@@ -53,7 +52,6 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 		listener = new EventsListener(dom, action, _gui);
 		_dom = dom;
 		initialize();
-		setToolTipText();
 	}
 
 	private void initialize() {
@@ -228,9 +226,7 @@ public class EventsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateL
 		newColumnTableColumn_2.setWidth(189);
 	}
 
-	public void setToolTipText() {
-		//        
-	}
+
 
 	public boolean isUnsaved() {
 		return butApply.isEnabled();

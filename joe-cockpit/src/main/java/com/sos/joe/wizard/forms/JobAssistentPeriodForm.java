@@ -20,11 +20,10 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.PeriodListener;
 import sos.scheduler.editor.conf.listeners.PeriodsListener;
 
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class JobAssistentPeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class JobAssistentPeriodForm extends SOSJOEMessageCodes  {
 	private PeriodListener	listener;
 	private Group			gPeriod				= null;
 	private Label			label2				= null;
@@ -218,7 +217,6 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes implements IUpdat
 		});
 		// Format
 		new Label(gPeriod, SWT.NONE);
-		setToolTipText();
 	}
 
 	public JobAssistentPeriodForm(Composite parent, int style, SchedulerDom dom, boolean onOrder) {
@@ -329,14 +327,6 @@ public class JobAssistentPeriodForm extends SOSJOEMessageCodes implements IUpdat
 		}
 	}
 
-	@Override public void setToolTipText() {
-		// sBeginHours.setToolTipText(Messages.getTooltip("period.begin.hours"));
-		// sBeginMinutes.setToolTipText(Messages.getTooltip("period.begin.minutes"));
-		// sBeginSeconds.setToolTipText(Messages.getTooltip("period.begin.seconds"));
-		// sEndHours.setToolTipText(Messages.getTooltip("period.end.hours"));
-		// sEndMinutes.setToolTipText(Messages.getTooltip("period.end.minutes"));
-		// sEndSeconds.setToolTipText(Messages.getTooltip("period.end.seconds"));
-	}
 
 	public void setApplyButton(Button b) {
 		bApply = b;

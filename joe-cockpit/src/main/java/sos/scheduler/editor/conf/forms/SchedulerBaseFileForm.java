@@ -29,13 +29,12 @@ import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.conf.listeners.BaseListener;
 
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsaved {
 	private final String								conClassName			= this.getClass().getSimpleName();
 	@SuppressWarnings("unused") private final Logger	logger					= Logger.getLogger(this.getClass());
 	private static final String							conImageICON_OPEN_GIF	= "/sos/scheduler/editor/icon_open.gif";
@@ -67,7 +66,6 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 		super(parent, style);
 		listener = new BaseListener(dom);
 		initialize();
-		setToolTipText();
 		listener.fillTable(table);
 	}
 
@@ -285,9 +283,6 @@ public class SchedulerBaseFileForm extends SOSJOEMessageCodes implements IUnsave
 		bRemove.setEnabled(table.getSelectionCount() > 0);
 	}
 
-	@Override public void setToolTipText() {
-		//
-	}
 
 	// öffnet das File Dialog um ein Basefile auszuwählen
 	private void openFileDialog() {

@@ -153,7 +153,6 @@ public class NoteForm extends JobDocBaseForm<NoteListener> {
 		});
 	}
 
-	@Override
 	public void setToolTipText() {
 		switch (type) {
 			case JOEConstants.DOC_CONFIGURATION:
