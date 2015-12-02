@@ -354,6 +354,3 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 		//
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"
-=======
-} // @jve:decl-index=0:visual-constraint="10,10"
-
