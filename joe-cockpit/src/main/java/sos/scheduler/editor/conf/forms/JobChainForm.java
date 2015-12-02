@@ -352,11 +352,5 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 		}
 	}
 
-<<<<<<< HEAD
-	public void setToolTipText() {
-		//
-	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"
-=======
-} // @jve:decl-index=0:visual-constraint="10,10"
->>>>>>> origin/release/1.8
