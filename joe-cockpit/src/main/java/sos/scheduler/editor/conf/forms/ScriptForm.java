@@ -24,12 +24,11 @@ import sos.scheduler.editor.conf.container.JobScript;
 import sos.scheduler.editor.conf.listeners.JobListener;
 
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public abstract class ScriptForm extends SOSJOEMessageCodes   {
 	@SuppressWarnings("unused") private final String	conSVNVersion					= "$Id$";
 	private final int									intNoOfLabelColumns				= 2;
 	private static Logger								logger							= Logger.getLogger(ScriptJobMainForm.class);
@@ -81,25 +80,7 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 		return false;
 	}
 
-//	@Override
-//	protected void showWaitCursor() {
-//		if (!getShell().isDisposed()) {
-//			objLastCursor = getShell().getCursor();
-//		}
-//		getShell().setCursor(SWTResourceManager.getCursor(SWT.CURSOR_WAIT));
-//	}
-//
-//	@Override
-//	protected void restoreCursor() {
-//		if (!getShell().isDisposed())
-//			if (objLastCursor == null) {
-//				getShell().setCursor(SWTResourceManager.getCursor(SWT.CURSOR_ARROW));
-//			}
-//			else {
-//				getShell().setCursor(objLastCursor);
-//			}
-//	}
-//
+
 	protected void initialize() {
 		dom.setInit(true);
 		init = true;
@@ -279,10 +260,6 @@ public abstract class ScriptForm extends SOSJOEMessageCodes implements IUpdateLa
 			objJobScript.gettSource().setFocus();
 		}
 		init = false;
-	}
-
-	@Override public void setToolTipText() {
-		// 
 	}
 
 	public JobJavaAPI getObjJobJAPI() {

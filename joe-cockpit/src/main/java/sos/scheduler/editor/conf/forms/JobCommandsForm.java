@@ -20,11 +20,10 @@ import sos.scheduler.editor.conf.listeners.SchedulerListener;
 
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class JobCommandsForm extends SOSJOEMessageCodes   {
 	private JobCommandsListener	listener		= null;
 	private Group				commandsGroup	= null;
 	private Table				table			= null;
@@ -38,7 +37,6 @@ public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLangua
 		_dom = dom;
 		listener = new JobCommandsListener(dom, job, update);
 		initialize();
-		setToolTipText();
 		listener.fillTable(table);
 		commandsGroup.setEnabled(Utils.isElementEnabled("job", dom, job));
 	}
@@ -113,7 +111,5 @@ public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLangua
 		});
 	}
 
-	public void setToolTipText() {
-		//
-	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"

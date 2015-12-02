@@ -35,7 +35,6 @@ import sos.scheduler.editor.conf.listeners.SchedulerListener;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IEditor;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.TreeData;
 import com.sos.joe.globals.options.Options;
@@ -170,13 +169,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		return this.getShell();
 	}
 
-	@Override public void updateLanguage() {
-		if (cMainForm.getChildren().length > 0) {
-			if (cMainForm.getChildren()[0] instanceof IUpdateLanguage) {
-				((IUpdateLanguage) cMainForm.getChildren()[0]).setToolTipText();
-			}
-		}
-	}
+ 
 
 	@Override public void dataChanged() {
 		container.setStatusInTitle();

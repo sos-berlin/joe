@@ -24,7 +24,6 @@ public interface IContainer {
 	public void setStatusInTitle();
 	public void setNewFilename(String oldFilename);
 	public boolean closeAll();
-	public void updateLanguages();
 	public JobChainConfigurationForm newDetails();
 	public JobChainConfigurationForm openDetails();
 	public SchedulerForm openDirectory(String filename);

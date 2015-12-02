@@ -14,12 +14,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.jdom.Element;
 
 import com.sos.event.service.listeners.JobCommandsListener;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.Events.ActionsDom;
 
-public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class JobCommandsForm extends SOSJOEMessageCodes {
 	private JobCommandsListener	listener		= null;
 	private Group				commandsGroup	= null;
 	private Table				table			= null;
@@ -33,7 +32,6 @@ public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLangua
 		listener = new JobCommandsListener(dom, action, gui);
 		_dom = dom;
 		initialize();
-		setToolTipText();
 		listener.fillTable(table);
 	}
 
@@ -117,7 +115,5 @@ public class JobCommandsForm extends SOSJOEMessageCodes implements IUpdateLangua
 		newColumnTableColumn.setWidth(100);
 	}
 
-	public void setToolTipText() {
-		//    	
-	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"

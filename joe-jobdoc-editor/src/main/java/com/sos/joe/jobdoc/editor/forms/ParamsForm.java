@@ -111,7 +111,6 @@ public class ParamsForm extends JobDocBaseForm<ParamsListener> {
 		createGroup();
 		setParamStatus(false);
 		tParamsID.setFocus();
-		setToolTipText();
 	}
 
 	public void setParamNote(boolean enabled) {
@@ -367,10 +366,7 @@ public class ParamsForm extends JobDocBaseForm<ParamsListener> {
 		bRemove.setEnabled(tParams.getSelectionCount() > 0);
 	}
 
-	@Override
-	public void setToolTipText() {
-		//
-	}
+
 
 	@Override
 	public void apply() {

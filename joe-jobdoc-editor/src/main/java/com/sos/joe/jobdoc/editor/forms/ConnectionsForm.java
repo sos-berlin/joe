@@ -55,7 +55,6 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
 		setConnectionStatus(false);
 		bRemove.setEnabled(false);
 		fillTable();
-		setToolTipText();
 	}
 
 	/**
@@ -181,11 +180,6 @@ public class ConnectionsForm extends JobDocBaseForm<ConnectionsListener> {
 	public boolean isUnsaved() {
 		listener.checkSettings();
 		return bApply.isEnabled();
-	}
-
-	@Override
-	public void setToolTipText() {
-		//
 	}
 
 	private void applyConnection() {

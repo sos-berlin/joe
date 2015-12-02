@@ -230,10 +230,7 @@ public class JobForm extends JobDocBaseForm<JobDocJobListener> {
 		
 	}
 
-	@Override public void updateLanguage() {
-		
-	}
-
+ 
 	@Override protected void applySetting() {
 		
 	}

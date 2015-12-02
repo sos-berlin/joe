@@ -23,7 +23,6 @@ import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
 
 import com.sos.joe.globals.interfaces.IDetailUpdate;
 import com.sos.joe.globals.interfaces.IEditor;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.TreeData;
@@ -114,13 +113,6 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
 		return this.getShell();
 	}
 
-	@Override public void updateLanguage() {
-		if (cMainForm.getChildren().length > 0) {
-			if (cMainForm.getChildren()[0] instanceof IUpdateLanguage) {
-				((IUpdateLanguage) cMainForm.getChildren()[0]).setToolTipText();
-			}
-		}
-	}
 
 	@Override public void dataChanged() {
 		container.setStatusInTitle();

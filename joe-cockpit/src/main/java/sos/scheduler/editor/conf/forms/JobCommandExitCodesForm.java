@@ -30,11 +30,10 @@ import sos.scheduler.editor.conf.listeners.JobCommandExitCodesListener;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsaved {
 	private Table						tCommands			= null;
 	private JobCommandExitCodesListener	listener			= null;
 	private Group						jobsAndOrdersGroup	= null;
@@ -54,7 +53,6 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 		_dom = dom;
 		listener = new JobCommandExitCodesListener(dom, command, main);
 		initialize();
-		setToolTipText();
 		dom.setInit(true);
 		listener.fillCommands(tCommands);
 		updateTree = false;
@@ -285,7 +283,5 @@ public class JobCommandExitCodesForm extends SOSJOEMessageCodes implements IUnsa
 		return listener.getCommand();
 	}
 
-	public void setToolTipText() {
-		//		
-	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -40,7 +40,6 @@ import sos.util.SOSString;
 import com.sos.event.service.listeners.ParameterListener;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
@@ -48,7 +47,7 @@ import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.Events.ActionsDom;
 
-public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved  {
 	private Button				butDown_1				= null;
 	private Button				butUp_1					= null;
 	private Label				label4_3				= null;

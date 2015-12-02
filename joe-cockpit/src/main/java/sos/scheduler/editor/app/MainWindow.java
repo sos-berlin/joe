@@ -231,7 +231,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		// sShell.setSize(new org.eclipse.swt.graphics.Point(940, 600));
 		// load resources
 		listener.loadOptions();
-		listener.loadMessages();
 		listener.loadJobTitels();
 		listener.loadHolidaysTitel();
 		menuBar = new Menu(sShell, SWT.BAR);

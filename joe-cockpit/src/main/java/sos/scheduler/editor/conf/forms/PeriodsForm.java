@@ -17,11 +17,10 @@ import sos.scheduler.editor.conf.listeners.PeriodsListener;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved {
 	private PeriodsListener	listener	= null;
 	private SchedulerDom	dom			= null;
 	private Group			group		= null;
@@ -38,7 +37,6 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		listener = new PeriodsListener(dom, element, _main);
 		this.dom = dom;
 		initialize();
-		setToolTipText();
 		listener.fillTable(tPeriods);
 		periodForm.setEnabled(false);
 		periodForm.hasRepeatTimes(listener.hasRepeatTimes());
@@ -212,9 +210,6 @@ public class PeriodsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		bApply.setEnabled(false);
 	}
 
-	public void setToolTipText() {
-		//
-	}
 
 	private void tPeriodSelect() {
 		if (bApply.isEnabled()) {

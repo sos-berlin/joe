@@ -29,14 +29,13 @@ import sos.scheduler.editor.conf.listeners.ProcessClassesListener;
 import com.sos.dialog.components.IntegerField;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 
-public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
 	
     private ProcessClassesListener	listener		        = null;
 	private Group					group                   = null; 
@@ -62,7 +61,6 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 		dom = dom_;
 		listener = new ProcessClassesListener(dom, config);
 		initialize();
-		setToolTipText();
 	}
 
 	public void apply() {
@@ -518,6 +516,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 
 	private void applyClass() {
 		 applyRemoteSchedulerEntry();
+		applyRemoteSchedulerEntry();
 	     listener.applyRemoteSchedulerTable(tableRemoteScheduler);
 	     listener.applyProcessClass(tProcessClass.getText(), tRemoteUrl.getText(), tMaxProcesses.getIntegerValue(1));
 	     listener.fillProcessClassesTable(tableProcessClasses);
@@ -552,9 +551,6 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 		btRemove.setEnabled(tableProcessClasses.getSelectionCount() > 0);
 	}
 
-	public void setToolTipText() {
-		//
-	}
 
 	 
 

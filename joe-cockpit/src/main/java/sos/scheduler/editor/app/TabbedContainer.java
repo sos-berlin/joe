@@ -487,14 +487,6 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 		}
 	}
 
-	@Override public void updateLanguages() {
-		for (int i = 0; i < folder.getItemCount(); i++) {
-			CTabItem tab = folder.getItem(i);
-			((IEditor) tab.getControl()).updateLanguage();
-		}
-	}
-
- 
 	@Override public SchedulerForm openDirectory(String filename) {
 		SchedulerForm scheduler = new SchedulerForm(this, folder, SWT.NONE, SchedulerDom.DIRECTORY);
 		if (scheduler.openDirectory(filename, filelist)) {

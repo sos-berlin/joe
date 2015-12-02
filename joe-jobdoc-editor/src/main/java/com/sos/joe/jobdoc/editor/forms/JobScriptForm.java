@@ -21,7 +21,6 @@ public class JobScriptForm extends JobDocBaseForm<JobScriptListener> {
 	public JobScriptForm(Composite parent, int style, DocumentationDom dom, Element job) {
 		super(parent, style);
 		initialize();
-		setToolTipText();
 		this.dom = dom;
 		this.job = job;
 		listener = new JobScriptListener(dom, job);
@@ -60,10 +59,7 @@ public class JobScriptForm extends JobDocBaseForm<JobScriptListener> {
 		scriptForm.setLayoutData(gridData); // Generated
 	}
 
-	@Override
-	public void setToolTipText() {
-		//        cUseScript.setToolTipText(Messages.getTooltip("doc.script.useScript"));
-	}
+
 
 	@Override
 	public void apply() {

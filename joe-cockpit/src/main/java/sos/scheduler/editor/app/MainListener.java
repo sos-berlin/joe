@@ -107,7 +107,6 @@ public class MainListener extends JOEListener {
 						String lang = (String) item.getData();
 						Options.setLanguage(lang);
 						com.sos.joe.globals.messages.Messages.clearMsgObj();
-						loadMessages();
 					}
 				}
 
@@ -122,14 +121,6 @@ public class MainListener extends JOEListener {
 			if (defaultItem != null)
 				defaultItem.setSelection(true);
 		}
-	}
-
-	public void loadMessages() {
-		if (!com.sos.joe.globals.messages.Messages.setResource(new Locale(Options.getLanguage()))) {
-			MainWindow.message("The resource bundle " + Messages.getBundle() + " for the language " + Options.getLanguage() + " was not found!", SWT.ICON_ERROR
-					| SWT.OK);
-		}
-		_container.updateLanguages();
 	}
 
 	public void resetInfoDialog() {

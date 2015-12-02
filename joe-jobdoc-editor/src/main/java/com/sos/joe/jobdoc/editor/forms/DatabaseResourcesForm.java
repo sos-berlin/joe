@@ -65,7 +65,6 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
 		cType.setItems(listener.getTypes());
 		// bRemove.setEnabled(false);
 		setDatabaseStatus(true);
-		setToolTipText();
 	}
 
 	/**
@@ -252,9 +251,6 @@ public class DatabaseResourcesForm extends JobDocBaseForm<DatabaseResourceListen
 		return false;
 	}
 
-	@Override public void setToolTipText() {
-		//
-	}
 
 	private void setDatabaseStatus(boolean enabled) {
 		tResources.setEnabled(enabled);

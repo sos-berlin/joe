@@ -22,11 +22,10 @@ import org.jdom.Element;
 import sos.scheduler.editor.conf.listeners.HttpDirectoriesListener;
 
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved {
 	private HttpDirectoriesListener	listener				= null;
 	private Group					httpDirectoriesGroup	= null;
 	private Text					tUrlPath				= null;
@@ -39,7 +38,6 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved,
 		super(parent, style);
 		listener = new HttpDirectoriesListener(dom, config);
 		initialize();
-		//		setToolTipText();
 		listener.fillHttpDirectoryTable(tHttpDirectory);
 	}
 
@@ -204,11 +202,5 @@ public class HttpDirectoriesForm extends SOSJOEMessageCodes implements IUnsaved,
 		applyHttpDirectory();
 	}
 
-	public void setToolTipText() {
-		//		tUrlPath.setToolTipText(Messages.getTooltip("http_directory.url_path"));
-		//		tHttpDirectory.setToolTipText(Messages.getTooltip("http_directory.http_directory"));
-		//		tPath.setToolTipText(Messages.getTooltip("http_directory.http_directory"));
-		//		bApplyHttpDirectory.setToolTipText(Messages.getTooltip("http_directory.apply_button"));
-		//		bRemoveHttpDirectory.setToolTipText(Messages.getTooltip("http_directory.remove_button"));
-	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"
