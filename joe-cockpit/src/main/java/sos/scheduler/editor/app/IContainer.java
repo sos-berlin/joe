@@ -27,8 +27,6 @@ public interface IContainer {
 
 	public SchedulerForm openScheduler(String filename);
 
-
-
 	public String openDocumentationName();
 
 	public IEditor getCurrentEditor();
@@ -38,8 +36,6 @@ public interface IContainer {
 	public void setNewFilename(String oldFilename);
 
 	public boolean closeAll();
-
-	public void updateLanguages();
 
 	public JobChainConfigurationForm newDetails();
 

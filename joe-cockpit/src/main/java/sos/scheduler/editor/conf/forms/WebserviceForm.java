@@ -22,11 +22,10 @@ import sos.scheduler.editor.conf.listeners.WebserviceListener;
 
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class WebserviceForm extends SOSJOEMessageCodes implements IUnsaved {
 	private WebserviceListener	listener	= null;
 	private Group				group		= null;
 	private Group				group_1;

@@ -11,12 +11,11 @@ import org.eclipse.swt.widgets.Composite;
 import com.sos.dialog.classes.SOSComposite;
 import com.sos.joe.globals.interfaces.IEditor;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
 
-public abstract class JobDocBaseForm<T>  extends SOSComposite /* SOSJOEMessageCodes */ implements IEditor, IUnsaved, IUpdateLanguage {
+public abstract class JobDocBaseForm<T>  extends SOSComposite /* SOSJOEMessageCodes */ implements IEditor, IUnsaved {
 	protected T					listener	= null;
 	protected DocumentationDom	dom			= null;
 	protected Button			bApply		= null;
@@ -65,13 +64,9 @@ public abstract class JobDocBaseForm<T>  extends SOSComposite /* SOSJOEMessageCo
 		return flgR;
 	}
 
-	@Override public void setToolTipText() {
-		//
-	}
-	
+ 	
 	protected abstract void applySetting();
 	@Override public abstract boolean applyChanges();
-//	@Override public abstract boolean open(Collection files);
 
 
 	@Override public boolean close() {
@@ -106,9 +101,7 @@ public abstract class JobDocBaseForm<T>  extends SOSComposite /* SOSJOEMessageCo
 		return dom.getFilename();
 	}
 
-	@Override public void updateLanguage() {
-		
-	}
+
 
 	@Override public boolean open(Collection files) {
 		return false;

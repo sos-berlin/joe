@@ -52,7 +52,6 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
 	public ScriptForm(Composite parent, int style) {
 		super(parent, style);
 		initialize();
-		setToolTipText();
 	}
 
 	public void setParams(DocumentationDom dom, Element parent, int type) {
@@ -199,10 +198,6 @@ public class ScriptForm extends JobDocBaseForm<ScriptListener> {
 		includeFilesForm.setLayoutData(gridData3); // Generated
 	}
 
-	@Override
-	public void setToolTipText() {
-		//
-	}
 
 	@Override
 	public void apply() {

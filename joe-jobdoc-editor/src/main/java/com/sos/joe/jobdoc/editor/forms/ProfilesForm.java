@@ -56,7 +56,6 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener>
 		setProfileStatus(false);
 		bRemove.setEnabled(false);
 		fillProfiles();
-		setToolTipText();
 	}
 
 	private void createGroup() {
@@ -162,11 +161,6 @@ public class ProfilesForm extends JobDocBaseForm<ProfilesListener>
 	public boolean isUnsaved() {
 		listener.checkSettings();
 		return bApply.isEnabled();
-	}
-
-	@Override
-	public void setToolTipText() {
-		//
 	}
 
 	private void applyProfile() {

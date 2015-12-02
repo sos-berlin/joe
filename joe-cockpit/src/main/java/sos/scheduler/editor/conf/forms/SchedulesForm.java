@@ -19,12 +19,11 @@ import sos.scheduler.editor.conf.listeners.SchedulesListener;
 
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class SchedulesForm extends SOSJOEMessageCodes   {
 	private SchedulesListener	listener		= null;
 	private Group				schedulesGroup	= null;
 	private static Table		table			= null;
@@ -39,7 +38,6 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
 			listener = new SchedulesListener(dom_, update);
 			dom = dom_;
 			initialize();
-			setToolTipText();
 			listener.fillTable(table);
 		}
 		catch (Exception e) {
@@ -157,10 +155,6 @@ public class SchedulesForm extends SOSJOEMessageCodes implements IUpdateLanguage
 			}
 			System.err.println(JOE_E_0002.params("SchedulesForm.createTable() ") + e.getMessage());
 		}
-	}
-
-	public void setToolTipText() {
-		//
 	}
 
 	public static Table getTable() {

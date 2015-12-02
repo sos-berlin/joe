@@ -14,30 +14,22 @@ import org.eclipse.swt.widgets.Text;
 import sos.scheduler.editor.conf.listeners.CommandsListener;
 
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class CommandsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class CommandsForm extends SOSJOEMessageCodes  {
 
     private Text              tCommands;
-
     private CommandsListener  listener;
-
-    //private SchedulerListener mainListener;
-
     private Group             commandsGroup = null;
-
     private Button            bSave         = null;
-
 
 
     public CommandsForm(Composite parent, int style, SchedulerDom dom, ISchedulerUpdate main) throws Exception {
         super(parent, style);
         listener = new CommandsListener(dom, main);
         initialize();
-        setToolTipText();
         tCommands.setText(listener.readCommands());
     }
 
@@ -58,7 +50,6 @@ public class CommandsForm extends SOSJOEMessageCodes implements IUpdateLanguage 
         commandsGroup = JOE_G_CommandsForm_Commands.Control(new Group(this, SWT.NONE));
 //        commandsGroup.setText("Commands");
         commandsGroup.setLayout(gridLayout);
-        createTable();
 
         tCommands = JOE_T_CommandsForm_Commands.Control(new Text(commandsGroup, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL));
         tCommands.addKeyListener(new KeyAdapter() {
@@ -83,14 +74,6 @@ public class CommandsForm extends SOSJOEMessageCodes implements IUpdateLanguage 
             }
         });
     }
-    /**
-     * This method initializes table
-     */
-    private void createTable() {
-    }
+
     
-    public void setToolTipText() {
-//        bSave.setToolTipText(Messages.getTooltip("commands.btn_save"));
-//        tCommands.setToolTipText(Messages.getTooltip("commands.commands"));
-    }
 } // @jve:decl-index=0:visual-constraint="10,10"

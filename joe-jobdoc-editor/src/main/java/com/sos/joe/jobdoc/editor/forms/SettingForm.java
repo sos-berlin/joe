@@ -64,7 +64,6 @@ public class SettingForm extends JobDocBaseForm <SettingListener> {
 		cType.setItems(listener.getTypes());
 		setSettingStatus(false);
 		listener.fillSettings(tSettings);
-		setToolTipText();
 	}
 
 	/**

@@ -35,7 +35,6 @@ public class PayloadForm extends JobDocBaseForm<PayloadListener>  {
 		createGroup();
 		listener = new PayloadListener(dom, parentElement, fParams);
 		fParams.setParams(dom, listener.getPayloadElement());
-		setToolTipText();
 	}
 
 	/**
@@ -77,10 +76,6 @@ public class PayloadForm extends JobDocBaseForm<PayloadListener>  {
 		fParams.setLayoutData(gridData); // Generated
 	}
 
-	@Override
-	public void setToolTipText() {
-		//    	
-	}
 
 	@Override
 	public void apply() {

@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.forms;
-//import org.eclipse.draw2d.*;
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;

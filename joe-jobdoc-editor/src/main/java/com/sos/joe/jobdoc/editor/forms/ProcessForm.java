@@ -59,7 +59,6 @@ public class ProcessForm extends JobDocBaseForm<ProcessListener>
 	public ProcessForm(Composite parent, int style, DocumentationDom dom, Element job) {
 		super(parent, style);
 		initialize();
-		setToolTipText();
 		listener = new ProcessListener(dom, job);
 		cUseProcess.setSelection(listener.isProcess());
 		initValues();
@@ -230,10 +229,7 @@ public class ProcessForm extends JobDocBaseForm<ProcessListener>
 		return bApply.isEnabled();
 	}
 
-	@Override
-	public void setToolTipText() {
-		// cUseProcess.setToolTipText(Messages.getTooltip("doc.process.useProcess"));
-	}
+
 
 	private void initValues() {
 		boolean enabled = cUseProcess.getSelection();

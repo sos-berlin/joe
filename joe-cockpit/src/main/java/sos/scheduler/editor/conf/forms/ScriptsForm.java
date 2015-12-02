@@ -23,13 +23,12 @@ import sos.scheduler.editor.conf.listeners.ScriptsListener;
 
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 ;
-public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class ScriptsForm extends SOSJOEMessageCodes   {
 	private ScriptsListener	listener		= null;
 	private Group			scriptsGroup	= null;
 	private static Table	table			= null;
@@ -45,7 +44,6 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			this.dom = pobjXMLDom;
 			listener = new ScriptsListener(pobjXMLDom, update, elem);
 			initialize();
-			setToolTipText();
 			listener.fillTable(table);
 		}
 		catch (Exception e) {
@@ -193,9 +191,6 @@ public class ScriptsForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		}
 	}
 
-	public void setToolTipText() {
-		//
-	}
 
 	private void addMonitor() {
 		// if(table.getSelectionCount() > 0)

@@ -29,7 +29,6 @@ import sos.scheduler.editor.conf.listeners.ProcessClassesListener;
 
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
@@ -38,7 +37,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 /**
  * @author sky2000
  */
-public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
 	private ProcessClassesListener	listener		= null;
 	//	final String					JOE_L_at_port				= "JOE_L_at_port";				// "at Port";
 	//	final String					JOE_L_Apply					= "JOE_L_Apply";				// "Apply";
@@ -71,7 +70,6 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 		dom = dom_;
 		listener = new ProcessClassesListener(dom, config);
 		initialize();
-		setToolTipText();
 	}
 
 	public void apply() {
@@ -546,9 +544,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved, 
 		btRemove.setEnabled(tableProcessClasses.getSelectionCount() > 0);
 	}
 
-	public void setToolTipText() {
-		//
-	}
+
 
 	private boolean checkRemote() {
 		if (tRemoteHost.getText().trim().length() > 0 && tRemotePort.getText().trim().length() == 0) {

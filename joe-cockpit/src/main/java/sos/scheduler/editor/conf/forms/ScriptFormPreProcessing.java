@@ -18,12 +18,11 @@ import sos.scheduler.editor.conf.composites.PreProcessingComposite;
 
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class ScriptFormPreProcessing extends ScriptForm implements IUpdateLanguage {
+public class ScriptFormPreProcessing extends ScriptForm   {
 	@SuppressWarnings("unused") private final String	conSVNVersion		= "$Id$";
 	@SuppressWarnings("unused") private static Logger	logger				= Logger.getLogger(ScriptJobMainForm.class);
 	@SuppressWarnings("unused") private final String	conClassName		= "PreProcessingForm";

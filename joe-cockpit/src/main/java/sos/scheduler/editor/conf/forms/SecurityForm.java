@@ -1,6 +1,3 @@
-/**
- * 
- */
 package sos.scheduler.editor.conf.forms;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -21,14 +18,10 @@ import org.jdom.JDOMException;
 import sos.scheduler.editor.conf.listeners.SecurityListener;
 
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-/**
- * @author sky2000
- */
-public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved {
 	private SecurityListener					listener			= null;
 	private Group								group				= null;
 	private Table								table				= null;
@@ -52,7 +45,6 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		super(parent, style);
 		listener = new SecurityListener(dom, config);
 		initialize();
-		setToolTipText();
 		listener.fillTable(table);
 		cIgnoreUnknownHosts.setSelection(listener.getIgnoreUnknownHosts());
 		cLevel.setItems(listener.getLevels());
@@ -254,7 +246,4 @@ public class SecurityForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		bRemove.setEnabled(table.getSelectionCount() > 0);
 	}
 
-	public void setToolTipText() {
-		//
-	}
 } // @jve:decl-index=0:visual-constraint="10,10"

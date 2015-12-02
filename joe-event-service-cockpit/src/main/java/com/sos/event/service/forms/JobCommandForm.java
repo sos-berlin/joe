@@ -27,14 +27,13 @@ import sos.util.SOSDate;
 import com.sos.event.service.listeners.JobCommandListener;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.Events.ActionsDom;
 
-public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
 	private JobCommandListener	listener			= null;
 	private Group				jobsAndOrdersGroup	= null;
 	private Label				lblJob				= null;
@@ -72,7 +71,6 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 			type = JOEConstants.COMMANDS;
 		}
 		initialize();
-		setToolTipText();
 		event = true;
 	}
 
@@ -717,7 +715,5 @@ public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved, IUpd
 		return retVal;
 	}
 
-	@Override public void setToolTipText() {
-		//tStartAt.setToolTipText(Messages.getTooltip("jobcommand.startat"));
-	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"

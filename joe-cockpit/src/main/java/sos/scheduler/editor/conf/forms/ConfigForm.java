@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Text;
 import sos.scheduler.editor.conf.listeners.ConfigListener;
 
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
@@ -28,10 +27,8 @@ import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 
-/**
- * @author sky2000
- */
-public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+
+public class ConfigForm extends SOSJOEMessageCodes  {
 	private Button								butBrowse_2					= null;
 	private Combo								cConfigurationDeleteEvent	= null;
 	@SuppressWarnings("unused") private Label	label12_3					= null;
@@ -84,7 +81,6 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		super(parent, style);
 		listener = new ConfigListener(dom);
 		initialize();
-		setToolTipText();
 		tSpoolerID.setFocus();
 	}
 
@@ -479,7 +475,5 @@ public class ConfigForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		new Label(group, SWT.NONE);
 	}
 
-	public void setToolTipText() {
-		//
-	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -38,7 +38,6 @@ public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
 	public IncludeFilesForm(Composite parent, int style) {
 		super(parent, style);
 		initialize();
-		setToolTipText();
 		bAdd.setEnabled(false);
 		bRemove.setEnabled(false);
 	}
@@ -143,10 +142,7 @@ public class IncludeFilesForm extends JobDocBaseForm<IncludeFilesListener> {
 		return bAdd.isEnabled();
 	}
 
-	@Override
-	public void setToolTipText() {
-		//    	
-	}
+ 
 
 	/*
 	 * (non-Javadoc)

@@ -27,11 +27,10 @@ import sos.scheduler.editor.conf.listeners.JobChainListener;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 	private final String								conClassName		= "JobChainForm";
 	final String										conMethodName		= conClassName + "::enclosing_method";
 	@SuppressWarnings("unused") private final String	conSVNVersion		= "$Id$";
@@ -55,7 +54,6 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		init = true;
 		listener = new JobChainListener(dom, jobChain);
 		initialize();
-		setToolTipText();
 		fillChain(false, false);
 		this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
 		init = false;
@@ -271,7 +269,4 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved, IUpdat
 		}
 	}
 
-	public void setToolTipText() {
-		//
-	}
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -16,11 +16,10 @@ import sos.scheduler.editor.conf.listeners.DaysListener;
 import sos.scheduler.editor.conf.listeners.SpecificWeekdaysListener;
 
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class SpecificWeekdaysForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class SpecificWeekdaysForm extends SOSJOEMessageCodes   {
 	private SpecificWeekdaysListener	listener		= null;
 	private ISchedulerUpdate			_main			= null;
 	private Group						group			= null;
@@ -36,7 +35,6 @@ public class SpecificWeekdaysForm extends SOSJOEMessageCodes implements IUpdateL
 		listener = new SpecificWeekdaysListener(dom, job);
 		_main = main;
 		initialize();
-		setToolTipText();
 		lUsedDays.setItems(listener.getDays());
 		this.group.setEnabled(Utils.isElementEnabled("job", dom, job));
 	}
@@ -126,7 +124,4 @@ public class SpecificWeekdaysForm extends SOSJOEMessageCodes implements IUpdateL
 		cWeekdays.setLayoutData(gridData4);
 	}
 
-	public void setToolTipText() {
-		//
-	}
 } // @jve:decl-index=0:visual-constraint="10,10"

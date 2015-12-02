@@ -20,11 +20,10 @@ import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.MailListener;
 
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class MailForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class MailForm extends SOSJOEMessageCodes implements IUnsaved {
 	private Combo			cboHistoryWithLog		= null;
 	private Combo			cboHistoryOnProcess		= null;
 	private Combo			cboHistory				= null;
@@ -46,7 +45,6 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 	public MailForm(Composite parent, int style, SchedulerDom dom, Element element) {
 		super(parent, style);
 		initialize();
-		setToolTipText();
 		setAttributes(dom, element, type);
 		init = false;
 	}
@@ -237,9 +235,6 @@ public class MailForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLan
 		cboHistoryWithLog.setLayoutData(gd_cboHistoryWithLog);
 	}
 
-	public void setToolTipText() {
-		//
-	}
 
 	public boolean isUnsaved() {
 		return false;

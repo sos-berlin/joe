@@ -25,14 +25,13 @@ import sos.scheduler.editor.conf.listeners.LocksListener;
 
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 /**
  * @author
  */
-public class LocksForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class LocksForm extends SOSJOEMessageCodes implements IUnsaved {
 	private LocksListener	listener					= null;
 	private Group			locksGroup					= null;
 	private static Table	tableLocks					= null;
@@ -59,7 +58,6 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		dom = dom_;
 		listener = new LocksListener(dom, config);
 		initialize();
-		setToolTipText();
 		listener.fillTable(tableLocks);
 		if (dom.isLifeElement()) {
 			tableLocks.setVisible(false);
@@ -300,9 +298,7 @@ public class LocksForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		bRemove.setEnabled(tableLocks.getSelectionCount() > 0);
 	}
 
-	public void setToolTipText() {
-		//
-	}
+
 
 	public static Table getTable() {
 		return tableLocks;

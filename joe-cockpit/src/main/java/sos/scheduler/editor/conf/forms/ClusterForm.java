@@ -14,11 +14,10 @@ import org.jdom.Element;
 import sos.scheduler.editor.conf.listeners.ClusterListener;
 
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class ClusterForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class ClusterForm extends SOSJOEMessageCodes implements IUnsaved {
 	private ClusterListener	listener;
 	private int				type;
 	private Group			gScript			= null;
@@ -32,13 +31,11 @@ public class ClusterForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 	public ClusterForm(Composite parent, int style) {
 		super(parent, style);
 		initialize();
-		setToolTipText();
 	}
 
 	public ClusterForm(Composite parent, int style, SchedulerDom dom, Element element) {
 		super(parent, style);
 		initialize();
-		setToolTipText();
 		setAttributes(dom, element, type);
 	}
 
@@ -123,16 +120,16 @@ public class ClusterForm extends SOSJOEMessageCodes implements IUnsaved, IUpdate
 		tTimeout.setLayoutData(gridData);
 	}
 
-	public void setToolTipText() {
-		//		tOwnTimeout.setToolTipText(Messages.getTooltip("cluster.heart_beat_own_timeout"));
-		//		tWarnTimeout.setToolTipText(Messages.getTooltip("cluster.heart_beat_warn_timeout"));
-		//		tTimeout.setToolTipText(Messages.getTooltip("cluster.heart_beat_timeout"));
-	}
 
 	public boolean isUnsaved() {
 		return false;
 	}
 
+	@Override
 	public void apply() {
+		// TODO Auto-generated method stub
+		
 	}
+
+
 } // @jve:decl-index=0:visual-constraint="10,10"

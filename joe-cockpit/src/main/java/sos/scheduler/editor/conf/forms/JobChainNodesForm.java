@@ -40,7 +40,6 @@ import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
@@ -49,7 +48,7 @@ import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
 	private final String									conClassName				= "JobChainNodesForm";
 	final String											conMethodName				= conClassName + "::enclosing_method";
 	@SuppressWarnings("unused") private final String		conSVNVersion				= "$Id$";
@@ -116,7 +115,6 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
 		dom = dom_;
 		listener = new JobChainListener(dom, jobChain);
 		initialize();
-		setToolTipText();
 		boolean existChainNodes = check();
 		jobChainGroup.setEnabled(existChainNodes);
 		bNewNode.setEnabled(existChainNodes);
@@ -1103,9 +1101,6 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved, I
 		bRemoveNode.setEnabled(tNodes.getSelectionCount() > 0);
 	}
 
-	@Override public void setToolTipText() {
-		//    	
-	}
 
 	// ein Job Chain hat entweder job_chain_node ODER job_chain_node.job_chain
 	// Kindknoten.
