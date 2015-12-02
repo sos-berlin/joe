@@ -47,7 +47,6 @@ import com.sos.VirtualFileSystem.common.SOSFileEntry;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IDetailUpdate;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
@@ -57,7 +56,7 @@ import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
 import com.sos.joe.xml.jobscheduler.DetailDom;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class DetailForm extends SOSJOEMessageCodes   {
 	private Button							butDown						= null;
 	private Button							butUp						= null;
 	private String							jobChainname				= "";
@@ -113,7 +112,6 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		gui = gui_;
 		type = type_;
 		initialize();
-		setToolTipText();
 		parent = parent_;
 		isLifeElement = isLifeElement_;
 		path = path_;
@@ -139,7 +137,6 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		w.restoreWindowLocation();
 		initialize();
 		w.restoreWindowSize();
-		setToolTipText();
 		parent = parent_;
 		isLifeElement = isLifeElement_;
 		path = path_;
@@ -661,8 +658,6 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 			gridData_11.widthHint = 496;
 			gridData_11.heightHint = 18;
 			statusBar.setLayoutData(gridData_11);
-			//			statusBar.setText("Configurations File:");
-			setToolTipText();
 			if (type == JOEConstants.JOB_CHAINS)
 				setEnabled_(false);
 			setVisibility();
@@ -815,21 +810,6 @@ public class DetailForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		}
 	}
 
-	@Override public void setToolTipText() {
-		//		comboLanguage.setToolTipText(Messages.getTooltip("detail.language"));
-		//		txtJobchainNote.setToolTipText(Messages.getTooltip("detail.detail_note"));
-		//		butApply.setToolTipText(Messages.getTooltip("detail.apply"));
-		//		txtName.setToolTipText(Messages.getTooltip("detail.param.name"));
-		//		txtValue.setToolTipText(Messages.getTooltip("detail.param.value"));
-		//		tableParams.setToolTipText(Messages.getTooltip("detail.param.table"));
-		//		butApplyParam.setToolTipText(Messages.getTooltip("detail.param.apply"));
-		//		butRemove.setToolTipText(Messages.getTooltip("detail.param.remove"));
-		//		cancelButton.setToolTipText(Messages.getTooltip("detail.cancel"));
-		//		txtParamNote.setToolTipText(Messages.getTooltip("detail.param.note"));
-		//		statusBar.setToolTipText(Messages.getTooltip("detail.status_bar_for_configuration_filename"));
-		//		butXML.setToolTipText(Messages.getTooltip("detail.xml_configuration"));
-		//		butDocumentation.setToolTipText(Messages.getTooltip("detail.open_documentation"));
-	}
 
 	public DetailDom getDom() {
 		return dom;

@@ -50,7 +50,6 @@ import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
@@ -60,7 +59,7 @@ import com.sos.joe.wizard.forms.JobAssistentImportJobsForm;
 import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
 	private Button				butDown_1				= null;
 	private Button				butUp_1					= null;
 	private Button				butImport_1				= null;
@@ -121,7 +120,6 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		type = type_;
 		listener = new ParameterListener(dom, parentElem, main, type_);
 		initialize();
-		setToolTipText();
 	}
 
 	public ParameterForm(Composite parent, int style, SchedulerDom _dom, Element parentElem, ISchedulerUpdate main, int type_, String jobname)
@@ -132,7 +130,6 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		listener = new ParameterListener(dom, parentElem, main, type_);
 		listener.setJobname(jobname);
 		initialize();
-		setToolTipText();
 	}
 
 	private void initialize() {
@@ -198,7 +195,6 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		tabFolder.setSelection(0);
 		if (tParaName != null)
 			tParaName.setFocus();
-		// setToolTipText();
 	}
 
 	private void addParam() {
@@ -1243,9 +1239,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		}
 	}
 
-	@Override public void setToolTipText() {
-		//
-	}
+
 
 	private void setParams(TableItem item) {
 		tParaName.setText(item.getText(0));

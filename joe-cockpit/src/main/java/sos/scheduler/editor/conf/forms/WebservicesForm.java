@@ -19,11 +19,10 @@ import sos.scheduler.editor.conf.listeners.WebservicesListener;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved {
 	private WebservicesListener	listener	= null;
 	private Group				group		= null;
 	private static Table		tServices	= null;
@@ -37,13 +36,11 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 		_dom = dom;
 		listener = new WebservicesListener(dom, config, main);
 		initialize();
-		setToolTipText();
 		listener.fillTable(tServices);
 	}
 
 	public void apply() {
-		//if (isUnsaved())
-		//applyService();
+
 	}
 
 	public boolean isUnsaved() {
@@ -87,12 +84,7 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 				bRemove.setEnabled(selection);
 				if (selection) {
 					listener.selectService(tServices.getSelectionIndex());
-					/*setInput(true);
-					sTimeout.setEnabled(!cChain.getText().equals(""));
-					tRequest.setEnabled(!sTimeout.getEnabled());
-					tResponse.setEnabled(!sTimeout.getEnabled());
-					tForward.setEnabled(!sTimeout.getEnabled());
-					*/
+
 				}
 			}
 		});
@@ -140,9 +132,6 @@ public class WebservicesForm extends SOSJOEMessageCodes implements IUnsaved, IUp
 		bRemove.setLayoutData(gridData3);
 	}
 
-	public void setToolTipText() {
-		//
-	}
 
 	public static Table getTable() {
 		return tServices;

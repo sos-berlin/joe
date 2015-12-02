@@ -17,11 +17,10 @@ import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
 
 import com.sos.event.service.listeners.ActionsListListener;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.Events.ActionsDom;
 
-public class ActionsListForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class ActionsListForm extends SOSJOEMessageCodes  {
 	private ActionsListListener	listener		= null;
 	private Group				actionsGroup	= null;
 	private Table				list			= null;
@@ -36,7 +35,6 @@ public class ActionsListForm extends SOSJOEMessageCodes implements IUpdateLangua
 		_dom = dom;
 		listener = new ActionsListListener(dom, actions);
 		initialize();
-		setToolTipText();
 	}
 
 	private void initialize() {
@@ -90,7 +88,5 @@ public class ActionsListForm extends SOSJOEMessageCodes implements IUpdateLangua
 		new Label(actionsGroup, SWT.NONE);
 	}
 
-	public void setToolTipText() {
-		//
-	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"

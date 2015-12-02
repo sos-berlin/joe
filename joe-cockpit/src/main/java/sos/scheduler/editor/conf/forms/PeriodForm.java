@@ -26,11 +26,10 @@ import sos.scheduler.editor.conf.listeners.PeriodListener;
 
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class PeriodForm extends SOSJOEMessageCodes  {
 	private static final String EMPTY_STRING = "";
 	@SuppressWarnings("unused") private final String	conSVNVersion			= "$Id$";
 	private Label										lblOrSecond;
@@ -78,7 +77,6 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		super(parent, style);
 		_type = type;
 		initialize();
-		setToolTipText();
 		setRunOnce(false);
 	}
 
@@ -328,9 +326,6 @@ public class PeriodForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		}
 	}
 
-	@Override public void setToolTipText() {
-		setStarttimeToolTip();
-	}
 
 	private void setStarttimeToolTip() {
 		if (_type != JOEConstants.RUNTIME) {

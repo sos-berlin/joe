@@ -36,14 +36,13 @@ import com.sos.i18n.annotation.I18NMsg;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
 	private Button					butDetails					= null;
 	private OrderListener			listener					= null;
 	private Group					group						= null;
@@ -75,7 +74,6 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		order = _order;
 		listener = new OrderListener(dom, order, main);
 		initialize();
-		setToolTipText();
 		dom.setInit(true);
 		cJobchain.setItems(listener.getJobChains());
 		fillOrder();
@@ -322,9 +320,6 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLa
 		checkName();
 	}
 
-	public void setToolTipText() {
-		//      
-	}
 
 	private boolean checkName() {
 		if (listener.existName(tOrderId.getText() + "," + cJobchain.getText())) {

@@ -25,11 +25,10 @@ import sos.scheduler.editor.conf.listeners.JobChainsListener;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved, IUpdateLanguage {
+public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
 	private ISchedulerUpdate	update			= null;
 	private JobChainsListener	listener		= null;
 	private Group				group			= null;
@@ -47,7 +46,6 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		listener = new JobChainsListener(dom, config, update_);
 		_dom = dom;
 		initialize();
-		setToolTipText();
 		update = update_;
 		listener.fillChains(tChains);
 	}
@@ -186,9 +184,6 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved, IUpda
 		}
 	}
 
-	public void setToolTipText() {
-		//
-	}
 
 	public void setISchedulerUpdate(ISchedulerUpdate update_) {
 		update = update_;

@@ -32,66 +32,41 @@ import sos.scheduler.editor.conf.listeners.DateListener;
 import sos.scheduler.editor.conf.listeners.DaysListener;
 
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class DateForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class DateForm extends SOSJOEMessageCodes  {
 
 	private Table				tableIncludes	= null;
-
 	private Button				butIsLifeFile	= null;
-
 	private Button				bRemove			= null;
-
 	private Label				label_1			= null;
-
 	private Button				bAdd			= null;
-
 	private Combo				tInclude		= null;
-
 	private Group				gInclude		= null;
-
 	private Button				bRemoveDate		= null;
-
 	private List				lDates			= null;
-
 	private Label				label3			= null;
-
 	private Button				bAddDay			= null;
-
 	private Spinner				sDay			= null;
-
 	private Label				label2			= null;
-
 	private Spinner				sMonth			= null;
-
 	private Label				label1			= null;
-
 	private Spinner				sYear			= null;
-
 	private Label				yearLabel		= null;
-
 	private DateListener		listener		= null;
-
 	private int					type			= -1;
-
 	private SchedulerDom		dom				= null;
-
 	private ISchedulerUpdate	main			= null;
-
 	private static String[]		groupLabel		= { "Holidays", "Specific dates" };
-
 	private Group				gDates			= null;
-
 	private Button				butOpenInclude	= null;
 
 	public DateForm(Composite parent, int style, int type) {
 		super(parent, style);
 		this.type = type;
 		initialize();
-		setToolTipText();
 	}
 
 	public DateForm(Composite parent, int style, int type, SchedulerDom dom, Element element, ISchedulerUpdate main) {
@@ -445,27 +420,7 @@ public class DateForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 //		bRemove.setText("Remove File");
 	}
 
-	public void setToolTipText() {
-//
-//		sYear.setToolTipText(Messages.getTooltip("date.year"));
-//		sMonth.setToolTipText(Messages.getTooltip("date.month"));
-//		sDay.setToolTipText(Messages.getTooltip("date.day"));
-//		bAddDay.setToolTipText(Messages.getTooltip("date.btn_add_holiday"));
-//		lDates.setToolTipText(Messages.getTooltip("date.list"));
-//
-//		bRemoveDate.setToolTipText(Messages.getTooltip("date.btn_remove"));
-//		if (butIsLifeFile != null)
-//			butIsLifeFile.setToolTipText(Messages.getTooltip("is_live_file"));
-//		if (tInclude != null)
-//			tInclude.setToolTipText(Messages.getTooltip("include.file"));
-//		if (bAdd != null)
-//			bAdd.setToolTipText(Messages.getTooltip("include.add"));
-//		if (tableIncludes != null)
-//			tableIncludes.setToolTipText(Messages.getTooltip("include.list"));
-//		if (bRemove != null)
-//			bRemove.setToolTipText(Messages.getTooltip("include.remove"));
-
-	}
+ 
 
 	private void removeInclude() {
 		if (tableIncludes.getSelectionCount() > 0) {

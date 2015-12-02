@@ -1,6 +1,5 @@
 package sos.scheduler.editor.conf.forms;
 
-//import org.eclipse.draw2d.*;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -15,10 +14,9 @@ import org.eclipse.swt.widgets.Group;
 import org.jdom.Element;
 
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
  
-public class ScriptFormSchedulerStartScript extends ScriptForm implements IUpdateLanguage {
+public class ScriptFormSchedulerStartScript extends ScriptForm   {
 
     @SuppressWarnings("unused")
     private final String conSVNVersion = "$Id$";

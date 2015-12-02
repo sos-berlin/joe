@@ -17,7 +17,6 @@ import com.sos.dialog.classes.SOSGroup;
 import com.sos.dialog.classes.SOSSashForm;
 import com.sos.dialog.classes.SOSTree;
 import com.sos.joe.globals.interfaces.IEditorAdapter;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSMsgJOE;
 import com.sos.joe.globals.misc.TreeData;
@@ -110,13 +109,6 @@ public class DocumentationForm extends JobDocBaseForm<DocumentationListener> imp
 		listener.treeSelection(docTree, docMainForm);
 	}
 
-	@Override public void updateLanguage() {
-		if (docMainForm.getChildren().length > 0) {
-			if (docMainForm.getChildren()[0] instanceof IUpdateLanguage) {
-				((IUpdateLanguage) docMainForm.getChildren()[0]).setToolTipText();
-			}
-		}
-	}
 
 	@Override public String getHelpKey() {
 		if (docTree.getSelectionCount() > 0) {

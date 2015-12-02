@@ -27,14 +27,18 @@ import sos.scheduler.editor.conf.listeners.RunTimeListener;
 
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
 import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 
+<<<<<<< HEAD
 public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+=======
+public class RunTimeForm extends SOSJOEMessageCodes  {
+	private Text				tFunction				= null;
+>>>>>>> origin/release/1.9
 	private RunTimeListener		listener				= null;
 	private Group				gRunTime				= null;
 	private PeriodForm			periodForm				= null;
@@ -54,7 +58,6 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		_gui = gui;
 		listener = new RunTimeListener(dom, job, _gui);
 		initialize();
-		setToolTipText();
 		dom.setInit(true);
 		this.gRunTime.setEnabled(Utils.isElementEnabled("job", dom, job));
 		periodForm.setParams(dom, listener.isOnOrder());
@@ -211,9 +214,7 @@ public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		periodForm.setSchedulerUpdate(_gui);
 	}
 
-	public void setToolTipText() {
-		//        
-	}
+
 
 	private void setEnabled() {
 		if (init) {

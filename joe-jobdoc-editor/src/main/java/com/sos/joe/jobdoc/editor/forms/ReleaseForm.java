@@ -30,12 +30,11 @@ import com.sos.dialog.classes.SOSGroup;
 import com.sos.dialog.classes.SOSLabel;
 import com.sos.dialog.components.SOSDateTime;
 import com.sos.joe.globals.interfaces.IUnsaved;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.jobdoc.editor.listeners.ReleaseListener;
 import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.jobdoc.DocumentationDom;
  
-public class ReleaseForm extends JobDocBaseForm<ReleaseListener>  /*SOSJOEMessageCodes*/ implements IUnsaved, IUpdateLanguage {
+public class ReleaseForm extends JobDocBaseForm<ReleaseListener>  implements IUnsaved {
 //	private ReleaseListener						listener	= null;
 //	private DocumentationDom					dom			= null;
 	private Group								group		= null;
@@ -57,8 +56,6 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener>  /*SOSJOEMessag
 		this.dom = dom;
 		listener = new ReleaseListener(dom, release);
 		initialize();
-		setToolTipText();
-		// listener.fillReleases(tReleases);
 	}
 
 	private void initialize() {
@@ -221,11 +218,6 @@ public class ReleaseForm extends JobDocBaseForm<ReleaseListener>  /*SOSJOEMessag
 		return false;
 	}
 
-	@Override
-	public void setToolTipText() {
-		// bNotes.setToolTipText(Messages.getTooltip("doc.releases.notes"));
-		// bChanges.setToolTipText(Messages.getTooltip("doc.releases.changes"));
-	}
 
 	private void setReleaseStatus(boolean enabled) throws ParseException {
 		// bApply.setEnabled(false);

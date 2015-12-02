@@ -28,12 +28,11 @@ import com.sos.dialog.components.SOSDateTime;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class ScheduleForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class ScheduleForm extends SOSJOEMessageCodes   {
 	private ScheduleListener	listener		= null;
 	private Group				scheduleGroup	= null;
 	private SchedulerDom		dom				= null;
@@ -54,7 +53,6 @@ public class ScheduleForm extends SOSJOEMessageCodes implements IUpdateLanguage 
 			this.dom = dom;
 			listener = new ScheduleListener(dom, update, schedule_);
 			initialize();
-			setToolTipText();
 			init = false;
 		}
 		catch (Exception e) {
@@ -201,9 +199,7 @@ public class ScheduleForm extends SOSJOEMessageCodes implements IUpdateLanguage 
 		}
 	}
 
-	public void setToolTipText() {
-		//
-	}
+
 
 	private boolean existScheduleName() {
 		boolean retVal = false;

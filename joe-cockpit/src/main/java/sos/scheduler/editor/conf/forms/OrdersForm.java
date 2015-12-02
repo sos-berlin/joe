@@ -21,12 +21,11 @@ import sos.scheduler.editor.conf.listeners.OrdersListener;
 
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
-import com.sos.joe.globals.interfaces.IUpdateLanguage;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 //import sos.scheduler.editor.conf.listeners.SchedulerListener;
-public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
+public class OrdersForm extends SOSJOEMessageCodes  {
 	private OrdersListener	listener;
 	// private SchedulerListener mainListener;
 	private Group			ordersGroup		= null;
@@ -42,7 +41,6 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		_dom = dom;
  		listener = new OrdersListener(dom, update, selectedJobchain_);
 		initialize();
-		setToolTipText();
 		listener.fillTable(table);
 	}
 	
@@ -127,9 +125,6 @@ public class OrdersForm extends SOSJOEMessageCodes implements IUpdateLanguage {
 		tableColumn.setWidth(240);
 	}
 
-	public void setToolTipText() {
-		//
-	}
 
 	public static Table getTable() {
 		return table;

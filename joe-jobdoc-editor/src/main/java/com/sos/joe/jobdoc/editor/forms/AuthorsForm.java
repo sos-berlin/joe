@@ -44,7 +44,6 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
 		super(parent, style);
 		listener = new ReleaseAuthorsListener(dom, parentElement);
 		initialize();
-		setToolTipText();
 	}
 
 	private void initialize() {
@@ -185,9 +184,6 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
 		return false;
 	}
 
-	@Override public void setToolTipText() {
-		//
-	}
 
 	private void setReleaseStatus(boolean enabled) {
 		bApply.setEnabled(false);
@@ -239,4 +235,5 @@ public class AuthorsForm extends JobDocBaseForm<ReleaseAuthorsListener> {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 } // @jve:decl-index=0:visual-constraint="10,10"

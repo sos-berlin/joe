@@ -68,7 +68,6 @@ public class FilesForm extends JobDocBaseForm<FilesListener> {
 		cOS.setItems(listener.getPlatforms());
 		cType.setItems(listener.getTypes());
 		setFileStatus(false);
-		setToolTipText();
 	}
 
 	/**
@@ -240,10 +239,7 @@ public class FilesForm extends JobDocBaseForm<FilesListener> {
 		return bApply.getEnabled();
 	}
 
-	@Override
-	public void setToolTipText() {
-		//
-	}
+
 
 	private void setFileStatus(boolean enabled) {
 		tFile.setEnabled(enabled);

@@ -54,7 +54,6 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
 		createGroup();
 		bRemove.setEnabled(false);
 		setDatabaseStatus(false);
-		setToolTipText();
 	}
 
 	/**
@@ -191,17 +190,6 @@ public class DatabasesForm extends JobDocBaseForm<DatabasesListener> {
 		return bApply.isEnabled();
 	}
 
-	@Override
-	public void setToolTipText() {
-		/*tName.setToolTipText(Messages.getTooltip("doc.databases.resources.name"));
-		cType.setToolTipText(Messages.getTooltip("doc.databases.resources.type"));
-		bNotes.setToolTipText(Messages.getTooltip("doc.databases.resources.notes"));
-		bApplyRes.setToolTipText(Messages.getTooltip("doc.databases.resources.apply"));
-		tResources.setToolTipText(Messages.getTooltip("doc.databases.resources.table"));
-		bNewRes.setToolTipText(Messages.getTooltip("doc.databases.resources.new"));
-		bRemoveRes.setToolTipText(Messages.getTooltip("doc.databases.resources.remove"));
-		*/
-	}
 
 	private void setDatabaseStatus(boolean enabled) {
 		tDB.setEnabled(enabled);
