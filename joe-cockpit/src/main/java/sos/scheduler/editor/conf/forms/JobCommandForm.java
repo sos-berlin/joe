@@ -32,8 +32,8 @@ import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-public class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
-	private JobCommandListener	listener			= null;
+public abstract class JobCommandForm extends SOSJOEMessageCodes implements IUnsaved {
+	protected JobCommandListener	listener			= null;
 	private Group				jobsAndOrdersGroup	= null;
 	private SashForm			sashForm			= null;
 	private Group				gDescription		= null;

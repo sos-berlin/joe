@@ -33,12 +33,9 @@ import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 
-<<<<<<< HEAD
-public class RunTimeForm extends SOSJOEMessageCodes implements IUpdateLanguage {
-=======
+ 
 public class RunTimeForm extends SOSJOEMessageCodes  {
-	private Text				tFunction				= null;
->>>>>>> origin/release/1.9
+ 
 	private RunTimeListener		listener				= null;
 	private Group				gRunTime				= null;
 	private PeriodForm			periodForm				= null;
