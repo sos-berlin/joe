@@ -110,12 +110,16 @@ public class OrdersListener {
 			}
 			c++;
 		}
+ 
 		Element add_order = new Element("order");
 		Element runtime = new Element("run_time");
 		runtime.setAttribute("let_run", "no");
+		add_order.setAttribute("job_chain",Utils.getAttributeValue("name", selectedJobchain));
 		add_order.setAttribute("id", id);
-		if (_commands == null)
+
+		if (_commands == null){
 			initCommands();
+		}
 		add_order.addContent(runtime);
 		_orders2.add(add_order);
 		fillTable(table);

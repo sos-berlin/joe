@@ -143,25 +143,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 				dragSourceItem[0] = null;
 			}
 		});
-	/*tree.addListener(SWT.MouseUp, new Listener() {
-			@Override public void handleEvent(final Event event) {
-				if (event.button == 1) { // left mouse button
-					Point point = new Point(event.x, event.y);
-					TreeItem item = tree.getItem(point);
-					if (item != null) {
-						selection = item;
-						event.doit = listener.treeSelection(tree, cMainForm);
-						if (!event.doit) {
-							tree.setSelection(new TreeItem[] { selection });
-						}
-						else {
-							selection = tree.getSelection()[0];
-						}
-					}
-				}
-			}
-		});
-		 */
+
 		tree.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
 				if (tree.getSelectionCount() > 0) {
@@ -183,7 +165,6 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	private void createCMainForm() {
  		cMainForm = new Composite(sashForm, SWT.NONE);
 		cMainForm.setLayout(new FillLayout());
-		//		cMainForm.setLayout(new GridLayout());
 	}
 
 	public Shell getSShell() {
@@ -272,10 +253,7 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	}
 
 	@Override public void updateJobs() {
-		// if(tree.getSelection()[0].getText().startsWith("Job Chain")) {
 		if (!tree.getSelection()[0].getText().startsWith(SchedulerListener.JOBS) && !tree.getSelection()[0].getText().startsWith("Steps")) {
-			// Assistent: Der Aufruf erfolgte über den Assistenten. Hier ist nicht das Element "Jobs" im Tree selektiert
-			// sondern das Element "Job Chains".
 			updateJobs_();
 		}
 		else
@@ -306,9 +284,16 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	}
 
 	@Override public void updateOrders() {
-		if (tree.getSelectionCount() > 0) {
-			listener.treeFillOrders(tree.getSelection()[0], true);
-		}
+        for (int i = 0; i < listener.mainTreeItems.size(); i++){
+        	   TreeItem t = listener.mainTreeItems.get(i);
+        	   if (!t.isDisposed()){
+	        	   TreeData td = (TreeData) t.getData();
+	        	  
+	               if (td.getType() == JOEConstants.ORDERS ) {
+	            		listener.treeFillOrders(t, true);
+	               }
+        	   }
+        }
 	}
 
 	@Override public boolean applyChanges() {
@@ -550,15 +535,43 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 		else
 			return "Config";
 	}
-
-	@Override public void updateJobChains() {
-		listener.treeFillJobChains(tree.getSelection()[0]);
-		if (tree.getSelection()[0].getItemCount() > 0)
-			tree.getSelection()[0].getItems()[tree.getSelection()[0].getItemCount() - 1].setExpanded(true);
+	
+	private void selectJobChain(TreeItem parent, String selectedJobchainName){
+		TreeItem [] jobchains = parent.getItems();
+		for (int i=0;i<jobchains.length;i++){
+			TreeItem t = jobchains[i];
+			if (t.getText().equals(selectedJobchainName)){
+				tree.setSelection(t.getItem(0));
+				t.getItem(0).setExpanded(true);
+			}
+		}
+		
 	}
 
+	@Override public void updateJobChains() {
+		String selectedJobchainName =  tree.getSelection()[0].getParentItem().getText();
+		
+		for (int i = 0; i < listener.mainTreeItems.size(); i++){
+     	   TreeItem t = listener.mainTreeItems.get(i);
+     	   if (!t.isDisposed()){
+	        	   TreeData td = (TreeData) t.getData();
+	        	  
+	               if (td.getType() == JOEConstants.JOB_CHAINS ) {
+	           		   listener.treeFillJobChains(t);
+	           		   selectJobChain(t,selectedJobchainName);
+ 	               }
+             }
+        }
+		
+	}
+
+	@Override public void updateSelectedJobChain() {
+		TreeItem selectedJobchain =  tree.getSelection()[0];
+		listener.treeFillJobChainNodes(selectedJobchain);
+  
+	}	
+	
 	@Override public void updateJobChain(final String newName, final String oldName) {
-		// listener.treeFillJobChains(tree.getSelection()[0]);
 		if (newName.equals(oldName))
 			return;
 		if (dom.isLifeElement()) {
@@ -584,8 +597,6 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 					}
 				}
 			}
-			// String jobChain = "Job Chain: " + newName;
-			// item.setText(jobChain);
 		}
 	}
 

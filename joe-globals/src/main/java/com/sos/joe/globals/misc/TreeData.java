@@ -157,7 +157,10 @@ public class TreeData {
 
 	public String getName() {
 		JSObjBase objO = (JSObjBase) objHotFolderObject;
-		String strT = objO.getObjectName();
-		return strT;
+		if (objO != null){
+		   return objO.getObjectName();
+		}else{
+		   return "";	
+		}
 	}
 }

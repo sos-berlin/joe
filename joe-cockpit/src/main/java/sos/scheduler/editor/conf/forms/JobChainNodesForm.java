@@ -106,14 +106,10 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
     private boolean                                         isInsert                    = false;
     private Button                                          reorderButton               = null;
     private Button                                          butAddMissingNodes          = null;
-    /**
-     * Hilfsvariable: Wenn Parameter Formular geöffnet wurde muss überprüft
-     * werden, ob der Checkbox in der Tabelle - State gesetzt werden soll.
-     */
+ 
     private boolean                                         checkParameter              = false;
 
-    // private Text txtStateText = null;
-    // private Composite composite_2 = null;
+ 
     public JobChainNodesForm(Composite parent, int style, SchedulerDom dom_, Element jobChain) {
         super(parent, style);
         dom = dom_;
@@ -203,7 +199,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             cJob.setVisibleItemCount(9);
             cJob.setMenu(new sos.scheduler.editor.app.ContextMenu(cJob, dom, JOEConstants.JOB).getMenu());
            
-          
+    		
             cJob.addMouseListener(new MouseAdapter() {
                 @Override public void mouseDown(final MouseEvent e) {
                     if (refresh) {
@@ -692,6 +688,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                         else {
                             listener.selectNode(null);
                         }
+                        listener.updateSelectedJobChain();
                     }
                 }
             });
@@ -997,6 +994,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                 enableNode(false);
             }
             isInsert = false;
+        	listener.updateSelectedJobChain();
         }
         catch (Exception e) {
             try {

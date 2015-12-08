@@ -44,7 +44,6 @@ public class JobChainListener {
 	private ISchedulerUpdate	update			= null;
 	private ArrayList			listOfAllState	= null;
 	private Namespace namespace;	
-	//Contains the on_return_codes for the selected current node.
     private JobchainListOfReturnCodeElements jobchainListOfReturnCodeElements = null;
  
 	public JobChainListener(final SchedulerDom dom, final Element jobChain) {
@@ -62,8 +61,16 @@ public class JobChainListener {
 	public String getChainName() {
 		return Utils.getAttributeValue("name", _chain);
 	}
-
-	public void setChainName(final String name) {
+	
+    public void updateSelectedJobChain(){
+    	update.updateSelectedJobChain();
+    }
+    
+    public void updateJobChains(){
+    	update.updateJobChains();
+    }
+    
+    public void setChainName(final String name) {
 		_dom.setChanged(true);
 		String oldjobChainName = Utils.getAttributeValue("name", _chain);
 		//Für job_chain node Parameter
@@ -83,8 +90,7 @@ public class JobChainListener {
 					h.put(_chain, new java.io.File(path, oldjobChainName + ".config.xml").getCanonicalPath());
 					currentTab.setData("details_parameter", h);
 				}
-				//für das Speicher per FTP
-				String filename = _dom.isLifeElement() ? new File(_dom.getFilename()).getParent() : _dom.getFilename();
+ 				String filename = _dom.isLifeElement() ? new File(_dom.getFilename()).getParent() : _dom.getFilename();
 				currentTab.setData("ftp_details_parameter_file", filename + "/" + name + ".config.xml");
 				if (oldjobChainName != null && oldjobChainName.length() > 0 && new File(filename + "/" + oldjobChainName + ".config.xml").exists()) {
 					currentTab.setData("ftp_details_parameter_remove_file", oldjobChainName + ".config.xml");
@@ -97,7 +103,6 @@ public class JobChainListener {
 		if (oldjobChainName != null && oldjobChainName.length() > 0) {
 			if (_dom.isChanged() && (_dom.isDirectory() && !Utils.existName(oldjobChainName, _chain, "job_chain") || _dom.isLifeElement())) {
 				_dom.setChangedForDirectory("job_chain", oldjobChainName, SchedulerDom.DELETE);
-				//_dom.setChangedForDirectory("job_chain", oldjobChainName + ".config.xml" , SchedulerDom.DELETE);
 			}
 		}
 		Utils.setAttribute("name", name, _chain);

@@ -62,10 +62,10 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
 	private Combo					cboStates					= null;
 	private String					xmlDetailsConfigFilename	= null;
 	private Button					butRemove					= null;
-	@I18NMsg private final String	JOE_L_JOB_CHAIN				= "JOE_L_JOB_CHAIN";	// "Job chain";
-	@I18NMsg private final String	JOE_L_Title_order			= "JOE_L_Title_order";	// "Title";
-	@I18NMsg private final String	JOE_L_Order					= "JOE_L_Order";		// ""Order"";
-	@I18NMsg private final String	JOE_L_OrderId				= "JOE_L_OrderId";		// "Order ID";
+	@I18NMsg private final String	JOE_L_JOB_CHAIN				= "JOE_L_JOB_CHAIN";	 
+	@I18NMsg private final String	JOE_L_Title_order			= "JOE_L_Title_order";	 
+	@I18NMsg private final String	JOE_L_Order					= "JOE_L_Order";		 
+	@I18NMsg private final String	JOE_L_OrderId				= "JOE_L_OrderId";		 
 
 	public OrderForm(Composite parent, int style, SchedulerDom _dom, Element _order, ISchedulerUpdate _main) throws JDOMException, TransformerException {
 		super(parent, style);
@@ -84,14 +84,12 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
 	}
 
 	public void apply() {
-		// if (isUnsaved())
-		// addParam();
+ 
 	}
 
 	public boolean isUnsaved() {
 		return false;
-		// return bApply.isEnabled();
-	}
+ 	}
 
 	private void initialize() {
 		this.setLayout(new FillLayout());
@@ -99,9 +97,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
 		setSize(new org.eclipse.swt.graphics.Point(723, 566));
 	}
 
-	/**
-	 * This method initializes group
-	 */
+ 
 	private void createGroup() {
 		GridLayout gridLayout2 = new GridLayout();
 		group = new Group(this, SWT.NONE);
@@ -117,11 +113,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
 		tOrderId.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		tOrderId.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				/*if (event) {                  
-				    listener.setOrderId(tOrderId.getText(), true, !checkName());
-				    group.setText("Order: " + tOrderId.getText());
-				}
-				 */
+ 
 				if (event) {
 					if (checkName()) {
 						listener.setCommandAttribute("id", tOrderId.getText());
@@ -160,8 +152,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
 						tState.setItems(listener.getStates());
 						tState.setText(curstate);
 						cboStates.setItems(listener.getStates());
-						//                        cboStates.add("global");
-						//                        cboStates.setText("global");
+ 
 						cboStates.add(JOE_M_OrderForm_Global.label());
 						cboStates.setText(JOE_M_OrderForm_Global.label());
 						String curEndstate = listener.getCommandAttribute("end_state");
@@ -170,21 +161,19 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
 						butDetails.setEnabled(cJobchain.getText().length() > 0);
 						cboStates.setEnabled(cJobchain.getText().length() > 0);
 						existDetailsConfigurationsFile();
+
 					}
 			}
 		});
-		/*Button butBrowse = new Button(gOrder, SWT.NONE);
-		butBrowse.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-		butBrowse.addSelectionListener(new SelectionAdapter() {
-		    public void widgetSelected(final SelectionEvent e) {                
-		        String jobname = IOUtils.openDirectoryFile(MergeAllXMLinDirectory.MASK_JOB_CHAIN);
-		        if(jobname != null && jobname.length() > 0) {
-		            cJobchain.setText(jobname);
-		        }
-		    }
+		
+		
+		cJobchain.addFocusListener(new FocusAdapter() {
+			public void focusLost(final FocusEvent e) {
+				listener.updateOrders();
+			}
 		});
-		butBrowse.setText("Browse");
-		 */
+		
+		 
 		final Label titleLabel = JOE_L_OrderForm_Title.Control(new Label(gOrder, SWT.NONE));
 		final GridData gridData_6 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
 		gridData_6.widthHint = 47;
@@ -265,10 +254,6 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
 		});
 		butDetails.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				// DetailForm dialogForm =new DetailForm(composite, SWT.NONE, cJobchain.getText(), tState.getText(), null,
-				// JOEConstants.JOB_CHAINS, null, null, dom.isLifeElement(), dom.getFilename());
-				// DetailDialogForm detail = new DetailDialogForm(cJobchain.getText(), tState.getText(), tOrderId.getText(),
-				// dom.isLifeElement() || dom.isDirectory(), dom.getFilename());
 				String state = cboStates.getText().length() == 0 || cboStates.getText().equals("global") ? null : cboStates.getText();
 				DetailDialogForm detail = new DetailDialogForm(cJobchain.getText(), state, tOrderId.getText(), dom.isLifeElement() || dom.isDirectory(),
 						dom.getFilename());
@@ -334,8 +319,6 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
 		cJobchain.setText(listener.getCommandAttribute("job_chain"));
 		tPriority.setText(listener.getCommandAttribute("priority"));
 		cboStates.setItems(listener.getStates());
-		//        cboStates.add("global");
-		//        cboStates.setText("global");
 		cboStates.add(JOE_M_OrderForm_Global.label());
 		cboStates.setText(JOE_M_OrderForm_Global.label());
 		butDetails.setEnabled(cJobchain.getText().length() > 0);
