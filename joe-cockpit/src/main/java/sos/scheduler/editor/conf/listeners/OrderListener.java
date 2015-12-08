@@ -162,22 +162,29 @@ public class OrderListener {
 		return retVal;
 	}
 
+	public void updateOrders(){
+		_main.updateOrders();
+	}
+
 	public void setCommandAttribute(String name, String value) {
 		_dom.setChanged(true);
 		_dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", _order) + "," + Utils.getAttributeValue("id", _order), SchedulerDom.DELETE);
 		Utils.setAttribute(name, value, _order, _dom);
-		if (name.equals("id"))
+		if (name.equals("id")){
 			_main.updateOrder(value);
+		}
 		_dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", _order) + "," + Utils.getAttributeValue("id", _order), SchedulerDom.MODIFY);
 	}
 
 	public void setOrderId(String id, boolean updateTree, boolean rem) {
 		String removename = Utils.getAttributeValue("job_chain", _order) + "," + Utils.getAttributeValue("id", _order);
 		Utils.setAttribute("id", id, _order, _dom);
-		if (rem)
+		if (rem) {
 			_dom.setChangedForDirectory("order", removename, SchedulerDom.DELETE);
-		if (updateTree)
+        }
+		if (updateTree){
 			_main.updateOrder(id);
+		}
 		_dom.setChangedForDirectory("order", Utils.getAttributeValue("job_chain", _order) + "," + Utils.getAttributeValue("id", _order), SchedulerDom.MODIFY);
 	}
 
@@ -200,17 +207,14 @@ public class OrderListener {
 						_chains[i] = n;
 					}
 					return _chains;
-					//_chains = new java.io.File(_dom.getFilename());
 				}
 				catch (Exception e) {
 					try {
 						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 					}
-					catch (Exception ee) {
-						//tu nichts
-					}
+					catch (Exception ee) {}
 					System.out.println(e.getMessage());
-				} //Tu nichts
+			}
 			}
 			_chains = new String[0];
 			return _chains;
@@ -243,7 +247,7 @@ public class OrderListener {
 				String name = Utils.getAttributeValue("id", e) + "," + Utils.getAttributeValue("job_chain", e);
 				if (!e.equals(_order) && removename != null && name.equals(removename))
 					return true;
-				
+				 
 			}
 		}
 		return false;

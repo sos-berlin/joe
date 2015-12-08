@@ -62,10 +62,10 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
 	private Combo					cboStates					= null;
 	private String					xmlDetailsConfigFilename	= null;
 	private Button					butRemove					= null;
-	@I18NMsg private final String	JOE_L_JOB_CHAIN				= "JOE_L_JOB_CHAIN";	// "Job chain";
-	@I18NMsg private final String	JOE_L_Title_order			= "JOE_L_Title_order";	// "Title";
-	@I18NMsg private final String	JOE_L_Order					= "JOE_L_Order";		// ""Order"";
-	@I18NMsg private final String	JOE_L_OrderId				= "JOE_L_OrderId";		// "Order ID";
+	@I18NMsg private final String	JOE_L_JOB_CHAIN				= "JOE_L_JOB_CHAIN";	 
+	@I18NMsg private final String	JOE_L_Title_order			= "JOE_L_Title_order";	 
+	@I18NMsg private final String	JOE_L_Order					= "JOE_L_Order";		 
+	@I18NMsg private final String	JOE_L_OrderId				= "JOE_L_OrderId";		 
 
 	public OrderForm(Composite parent, int style, SchedulerDom _dom, Element _order, ISchedulerUpdate _main) throws JDOMException, TransformerException {
 		super(parent, style);
@@ -97,9 +97,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
 		setSize(new org.eclipse.swt.graphics.Point(723, 566));
 	}
 
-	/**
-	 * This method initializes group
-	 */
+ 
 	private void createGroup() {
 		GridLayout gridLayout2 = new GridLayout();
 		group = new Group(this, SWT.NONE);
@@ -163,10 +161,19 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
 						butDetails.setEnabled(cJobchain.getText().length() > 0);
 						cboStates.setEnabled(cJobchain.getText().length() > 0);
 						existDetailsConfigurationsFile();
+
 					}
 			}
 		});
 		
+		
+		cJobchain.addFocusListener(new FocusAdapter() {
+			public void focusLost(final FocusEvent e) {
+				listener.updateOrders();
+			}
+		});
+		
+		 
 		final Label titleLabel = JOE_L_OrderForm_Title.Control(new Label(gOrder, SWT.NONE));
 		final GridData gridData_6 = new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1);
 		gridData_6.widthHint = 47;

@@ -681,6 +681,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                         else {
                             jobchainDataProvider.selectNode(null);
                         }
+                        jobchainDataProvider.updateSelectedJobChain();
                     }
                 }
             });
@@ -734,6 +735,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                 enableNode(false);
             }
             isInsert = false;
+            jobchainDataProvider.updateSelectedJobChain();
         }
         catch (Exception e) {
             try {

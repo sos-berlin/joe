@@ -110,9 +110,12 @@ public class OrdersListener {
 			}
 			c++;
 		}
+ 
 		Element add_order = new Element("order");
 		Element runtime = new Element("run_time");
+		add_order.setAttribute("job_chain",Utils.getAttributeValue("name", selectedJobchain));
 		add_order.setAttribute("id", id);
+
 		if (_commands == null){
             initCommands();
 		}

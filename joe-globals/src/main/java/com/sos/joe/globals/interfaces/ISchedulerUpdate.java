@@ -27,6 +27,8 @@ public interface ISchedulerUpdate extends IDataChanged {
 	public void updateSpecificWeekdays();
 
 	public void updateJobChains();
+	public void updateSelectedJobChain();
+
 
 	public void updateJobChain(String newName, String oldName);
 

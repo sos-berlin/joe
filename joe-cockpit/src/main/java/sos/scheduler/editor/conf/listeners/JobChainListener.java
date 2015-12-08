@@ -48,7 +48,6 @@ public class JobChainListener extends JOEListener implements IProcessClassDataPr
 	private ISchedulerUpdate	update			= null;
 	private ArrayList			listOfAllState	= null;
 	private Namespace namespace;	
-	//Contains the on_return_codes for the selected current node.
     private JobchainListOfReturnCodeElements jobchainListOfReturnCodeElements = null;
  
 	public JobChainListener(final SchedulerDom dom, final Element jobChain) {
@@ -67,6 +66,14 @@ public class JobChainListener extends JOEListener implements IProcessClassDataPr
 		return Utils.getAttributeValue("name", _chain);
 	}
 
+    public void updateSelectedJobChain(){
+    	update.updateSelectedJobChain();
+    }
+    
+    public void updateJobChains(){
+    	update.updateJobChains();
+    }
+    
 	public void setChainName(final String name) {
 		_dom.setChanged(true);
 		String oldjobChainName = Utils.getAttributeValue("name", _chain);

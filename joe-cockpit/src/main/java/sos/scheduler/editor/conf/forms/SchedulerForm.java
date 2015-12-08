@@ -275,9 +275,16 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 	}
 
 	@Override public void updateOrders() {
-		if (tree.getSelectionCount() > 0) {
-			listener.treeFillOrders(tree.getSelection()[0], true);
+        for (int i = 0; i < listener.mainTreeItems.size(); i++){
+        	   TreeItem t = listener.mainTreeItems.get(i);
+        	   if (!t.isDisposed()){
+	        	   TreeData td = (TreeData) t.getData();
+	        	  
+	               if (td.getType() == JOEConstants.ORDERS ) {
+	            		listener.treeFillOrders(t, true);
 		}
+	}
+        }
 	}
 
 	@Override public boolean applyChanges() {
@@ -462,14 +469,42 @@ public class SchedulerForm extends SOSJOEMessageCodes implements ISchedulerUpdat
 			return "Config";
 	}
 
-	@Override public void updateJobChains() {
-		listener.treeFillJobChains(tree.getSelection()[0]);
-		if (tree.getSelection()[0].getItemCount() > 0)
-			tree.getSelection()[0].getItems()[tree.getSelection()[0].getItemCount() - 1].setExpanded(true);
+	private void selectJobChain(TreeItem parent, String selectedJobchainName){
+		TreeItem [] jobchains = parent.getItems();
+		for (int i=0;i<jobchains.length;i++){
+			TreeItem t = jobchains[i];
+			if (t.getText().equals(selectedJobchainName)){
+				tree.setSelection(t.getItem(0));
+				t.getItem(0).setExpanded(true);
+			}
+		}
+		
 	}
 
+	@Override public void updateJobChains() {
+		String selectedJobchainName =  tree.getSelection()[0].getParentItem().getText();
+		
+		for (int i = 0; i < listener.mainTreeItems.size(); i++){
+     	   TreeItem t = listener.mainTreeItems.get(i);
+     	   if (!t.isDisposed()){
+	        	   TreeData td = (TreeData) t.getData();
+	        	  
+	               if (td.getType() == JOEConstants.JOB_CHAINS ) {
+	           		   listener.treeFillJobChains(t);
+	           		   selectJobChain(t,selectedJobchainName);
+	}
+             }
+        }
+
+	}
+
+	@Override public void updateSelectedJobChain() {
+		TreeItem selectedJobchain =  tree.getSelection()[0];
+		listener.treeFillJobChainNodes(selectedJobchain);
+  
+	}	
+	
 	@Override public void updateJobChain(final String newName, final String oldName) {
-		// listener.treeFillJobChains(tree.getSelection()[0]);
 		if (newName.equals(oldName))
 			return;
 		if (dom.isLifeElement()) {
