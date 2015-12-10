@@ -463,7 +463,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         
         TableColumn tableColumnHeatbeatTimeout = new TableColumn(tableRemoteScheduler, SWT.NONE);
         tableColumnHeatbeatTimeout.setWidth(150);
-        tableColumnHeatbeatTimeout.setText("Heartbeat Timout"); 
+        tableColumnHeatbeatTimeout.setText("Heartbeat Timeout"); 
 
         TableColumn tableColumnHeatbeatPeriod = new TableColumn(tableRemoteScheduler, SWT.NONE);
         tableColumnHeatbeatPeriod.setWidth(150);
