@@ -137,14 +137,16 @@ import com.sos.resources.SOSResourceFactory;
 	 * 
 	 */
 	public void readFileLastModified() {
-		if (_filename == null)
+		if (_filename == null){
 			_lastModifiedFile = 0;
-		File f = new File(_filename);
-		if (f.exists())
-			_lastModifiedFile = f.lastModified();
-		else
-			_lastModifiedFile = 0;
-		// System.out.println("domparser= " + _lastModifiedFile);
+		}else{
+			File f = new File(_filename);
+			if (f.exists()){
+				_lastModifiedFile = f.lastModified();
+			}else{
+				_lastModifiedFile = 0;
+			}
+		}
 	}
 
 	public void setXSLT(String xslt) {

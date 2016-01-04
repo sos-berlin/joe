@@ -435,23 +435,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 				if (container.getCurrentEditor() != null && container.getCurrentEditor().applyChanges()) {
 					SchedulerForm form = (SchedulerForm) container.getCurrentEditor();
 					SchedulerDom currdom = form.getDom();
-					if (saveDirectory(currdom, true, SchedulerDom.DIRECTORY, null, container)) {
-						Element root = currdom.getRoot();
-						if (root != null) {
-							Element config = root.getChild("config");
-							if (config != null) {
-								config.removeChildren("jobs");
-								config.removeChildren("job_chains");
-								config.removeChildren("locks");
-								Utils.removeChildrensWithName(config, "process_classes");
-								config.removeChildren("schedules");
-								config.removeChildren("commands");
-								form.updateTree("main");
-								form.update();
-							}
-						}
-					}
-					container.getCurrentEditor().save();
+					saveDirectory(currdom, true, SchedulerDom.DIRECTORY, null, container);  
 					setSaveStatus();
 				}
 			}
