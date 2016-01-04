@@ -852,14 +852,14 @@ public class Utils {
 				String strException = String.format(strM, strObject, name);
 				XPath x3 = XPath.newInstance("//order[@job_chain='" + name + "']");
 				List<Element> listOfElement_3 = x3.selectNodes(_dom.getDoc());
-				if (!listOfElement_3.isEmpty())
-					//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
-					//"Soll die Jobkette trotzdem umbennant werden");
-					throw new Exception(strException);
+				if (!listOfElement_3.isEmpty()){
+ 				 	throw new Exception(strException);
+				}
 				XPath x4 = XPath.newInstance("//add_order[@job_chain='" + name + "']");
 				List<Element> listOfElement_4 = x4.selectNodes(_dom.getDoc());
-				if (!listOfElement_4.isEmpty())
+				if (!listOfElement_4.isEmpty()){
 					throw new Exception(strException);
+				}
 			}
 			else
 				if (type == JOEConstants.JOB_CHAINS) {
@@ -868,12 +868,14 @@ public class Utils {
 					String strException = String.format(strM, strObject, name);
 					XPath x3 = XPath.newInstance("//order[@job_chain='" + name + "']");
 					List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-					if (!listOfElement_3.isEmpty())
+					if (!listOfElement_3.isEmpty()){
 						throw new Exception(strException);
+					}
 					XPath x4 = XPath.newInstance("//add_order[@job_chain='" + name + "']");
 					List listOfElement_4 = x4.selectNodes(_dom.getDoc());
-					if (!listOfElement_4.isEmpty())
+					if (!listOfElement_4.isEmpty()){
 						throw new Exception(strException);
+					}
 				}
 				else
 					if (type == JOEConstants.JOB) {
@@ -888,8 +890,9 @@ public class Utils {
 							if (!isOrder) {
 								XPath x3 = XPath.newInstance("//job_chain_node[@job='" + name + "']");
 								List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-								if (!listOfElement_3.isEmpty())
+								if (!listOfElement_3.isEmpty()){
 									throw new Exception(strException);
+								}
 							}
 						}
 						else {
@@ -940,8 +943,9 @@ public class Utils {
 								String strException = String.format(strM, strObject, name);
 								XPath x3 = XPath.newInstance("//lock.use[@lock='" + name + "']");
 								List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-								if (!listOfElement_3.isEmpty())
+								if (!listOfElement_3.isEmpty()){
 									throw new Exception(strException);
+								}
 							}
 							else
 								if (type == JOEConstants.PROCESS_CLASSES) {
@@ -950,8 +954,9 @@ public class Utils {
 									String strException = String.format(strM, strObject, name);
 									XPath x3 = XPath.newInstance("//job[@process_class='" + name + "']");
 									List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-									if (!listOfElement_3.isEmpty())
+									if (!listOfElement_3.isEmpty()){
 										throw new Exception(strException);
+									}
 								}
 								else
 									if (type == JOEConstants.SCHEDULES || type == JOEConstants.SCHEDULE) {
@@ -960,8 +965,9 @@ public class Utils {
 										String strException = String.format(strM, strObject, name);
 										XPath x3 = XPath.newInstance("//run_time[@schedule='" + name + "']");
 										List listOfElement_3 = x3.selectNodes(_dom.getDoc());
-										if (!listOfElement_3.isEmpty())
+										if (!listOfElement_3.isEmpty()){
 											throw new Exception(strException);
+										}
 									}
 		}
 		catch (Exception e) {

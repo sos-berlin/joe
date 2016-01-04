@@ -78,10 +78,10 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 	 */
 	private void createGroup() {
 		jobChainGroup = new Group(this, SWT.NONE);
-		//      jobChainGroup.setText(Messages.getLabel("JobChain") + ": " + (listener.getChainName() != null ? listener.getChainName() : ""));
 		String strJobChainName = "";
-		if (listener.getChainName() != null)
+		if (listener.getChainName() != null){
 			strJobChainName = listener.getChainName();
+		}
 		jobChainGroup.setText(JOE_M_JobChainForm_JobChain.params(strJobChainName));
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.marginTop = 10;
@@ -90,20 +90,8 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 		chainNameLabel = JOE_L_JobChainForm_ChainName.Control(new Label(jobChainGroup, SWT.NONE));
 		chainNameLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		tName = JOE_T_JobChainForm_ChainName.Control(new Text(jobChainGroup, SWT.BORDER));
-		tName.addVerifyListener(new VerifyListener() {
-			public void verifyText(final VerifyEvent e) {
-				if (!init) {// während der initialiserung sollen keine überprüfungen stattfinden
-					// String name = listener.getChainName();
-					e.doit = Utils.checkElement(listener.getChainName(), listener.get_dom(), JOEConstants.JOB_CHAIN, null);
-					
-				}
-			}
-		});
-		tName.addFocusListener(new FocusAdapter() {
-			public void focusGained(final FocusEvent e) {
-				// tName.selectAll();
-			}
-		});
+		 
+ 
 		final GridData gridData_4 = new GridData(GridData.FILL, GridData.BEGINNING, true, false, 1, 1);
 		gridData_4.widthHint = 273;
 		tName.setLayoutData(gridData_4);
@@ -111,26 +99,31 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 		tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		tName.addModifyListener(new org.eclipse.swt.events.ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				if (init)
+				if (init){
 					return;
-				String newName = tName.getText().trim();
-				boolean existname = Utils.existName(newName, listener.getChain(), "job_chain");
-				if (existname)
-					tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-				else {
-					// getShell().setDefaultButton(bApplyChain);
-					tName.setBackground(null);
 				}
-				if (update != null)
-					//                  update.updateTreeItem("Job Chain: " + newName);
-					update.updateTreeItem(JOE_M_JobChainForm_JobChain.params(newName));
-				listener.setChainName(newName);
-				String strJobChainName = "";
-				if (listener.getChainName() != null)
-					strJobChainName = listener.getChainName();
-				jobChainGroup.setText(JOE_M_JobChainForm_JobChain.params(strJobChainName));
-				//                jobChainGroup.setText("Job Chain: " + (listener.getChainName() != null ? listener.getChainName() : ""));
-				changeJobChainName = true;
+				String newName = tName.getText().trim();
+				
+				if (Utils.checkElement(listener.getChainName(), listener.get_dom(), JOEConstants.JOB_CHAIN, null)){
+					tName.setSelection(newName.length()); 
+				 
+					boolean existname = Utils.existName(newName, listener.getChain(), "job_chain");
+					if (existname){
+						tName.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+					} else {
+						tName.setBackground(null);
+					}
+					if (update != null){
+						update.updateTreeItem(JOE_M_JobChainForm_JobChain.params(newName));
+					}
+					listener.setChainName(newName);
+					String strJobChainName = "";
+					if (listener.getChainName() != null){
+						strJobChainName = listener.getChainName();
+					}
+					jobChainGroup.setText(JOE_M_JobChainForm_JobChain.params(strJobChainName));
+					changeJobChainName = true;
+				}
 			}
 		});
 		butDetails = JOE_B_JobChainForm_Parameter.Control(new Button(jobChainGroup, SWT.NONE));
@@ -139,11 +132,9 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 			public void widgetSelected(final SelectionEvent e) {
 				if (listener.get_dom().isChanged() && changeJobChainName) {
 					if (listener.get_dom().getFilename() == null) {
-						//                        MainWindow.message(Messages.getLabel("jobchain.must.saved"), SWT.ICON_WARNING);
 						MainWindow.message(JOE_M_JobChainForm_SaveChain.label(), SWT.ICON_WARNING);
 					}
 					else {
-						//                        MainWindow.message(Messages.getLabel("jobchain.name.changed"), SWT.ICON_WARNING);
 						MainWindow.message(JOE_M_JobChainForm_ChainNameChanged.label(), SWT.ICON_WARNING);
 					}
 					return;
@@ -165,8 +156,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 			}
 		});
 		txtTitle.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		//        Format
-		new Label(jobChainGroup, SWT.NONE);
+ 		new Label(jobChainGroup, SWT.NONE);
 		@SuppressWarnings("unused") Label lblMaxOrders = JOE_L_JobChainForm_MaxOrders.Control(new Label(jobChainGroup, SWT.NONE));
 		sMaxorders = JOE_T_JobChainForm_MaxOrders.Control(new Text(jobChainGroup, SWT.BORDER));
 		sMaxorders.addModifyListener(new ModifyListener() {
@@ -181,11 +171,9 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 		GridData gd_sMaxorders = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
 		gd_sMaxorders.minimumWidth = 60;
 		sMaxorders.setLayoutData(gd_sMaxorders);
-		//        Format
+ 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
-		new Label(jobChainGroup, SWT.NONE);
-		//		new Label(jobChainGroup, SWT.NONE);
-		bRecoverable = JOE_B_JobChainForm_Recoverable.Control(new Button(jobChainGroup, SWT.CHECK));
+ 		bRecoverable = JOE_B_JobChainForm_Recoverable.Control(new Button(jobChainGroup, SWT.CHECK));
 		bRecoverable.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		bRecoverable.setSelection(true);
 		bRecoverable.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
@@ -196,8 +184,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 				listener.setRecoverable(bRecoverable.getSelection());
 			}
 		});
-		//        Format
-		new Label(jobChainGroup, SWT.NONE);
+ 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
 		butDistributed = JOE_B_JobChainForm_Distributed.Control(new Button(jobChainGroup, SWT.CHECK));
 		butDistributed.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
@@ -211,8 +198,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 			}
 		});
 		butDistributed.setSelection(listener.isDistributed());
-		//        Format
-		new Label(jobChainGroup, SWT.NONE);
+ 		new Label(jobChainGroup, SWT.NONE);
 		new Label(jobChainGroup, SWT.NONE);
 		bVisible = JOE_B_JobChainForm_Visible.Control(new Button(jobChainGroup, SWT.CHECK));
 		bVisible.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
