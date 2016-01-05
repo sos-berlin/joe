@@ -17,6 +17,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 import com.trilead.ssh2.channel.RemoteX11AcceptThread;
 
 public class ProcessClassesListener {
+	private static final String REMOTE_SCHEDULER_DEFAULT_SELECT = "first";
 	private final static String	CATCHALL		    = "<empty>";
 	private SchedulerDom		_dom			    = null;
 	private Element				_config			    = null;
@@ -97,11 +98,16 @@ public class ProcessClassesListener {
                Element e = (Element) it.next();
                TableItem item = new TableItem(tableRemoteScheduler, SWT.NONE);
                String url = Utils.getAttributeValue("remote_scheduler", e);
-               String heartbeat_timeout = Utils.getAttributeValue("http_heartbeat_timeout", e);
-               String heartbeat_period = Utils.getAttributeValue("http_heartbeat_period", e);
+               String heartbeatTimeout = Utils.getAttributeValue("http_heartbeat_timeout", e);
+               String heartbeatPeriod = Utils.getAttributeValue("http_heartbeat_period", e);
+               String select = Utils.getAttributeValue("select", e);
+               if (select.length() == 0){
+            	   select = REMOTE_SCHEDULER_DEFAULT_SELECT;
+               }
                item.setText(0, url);
-               item.setText(1, heartbeat_timeout);
-               item.setText(2, heartbeat_period);
+               item.setText(1, heartbeatTimeout);
+               item.setText(2, heartbeatPeriod);
+               item.setText(3, select);
             }
         }
     }
@@ -217,17 +223,21 @@ public class ProcessClassesListener {
             TableItem item = tableRemoteScheduler.getItems()[i];
             _remoteScheduler = new Element("remote_scheduler");
             String url = item.getText(0);
-            String heartBeatTimeout = item.getText(1);
-            String heartBeatPeriod = item.getText(2);
+            String heartbeatTimeout = item.getText(1);
+            String heartbeatPeriod = item.getText(2);
+            String select = item.getText(3);
             
             if (url.trim().length() > 0) {
                 Utils.setAttribute("remote_scheduler", url.trim(), _remoteScheduler, _dom);
             }
-            if (heartBeatTimeout.trim().length() > 0) {
-                Utils.setAttribute("http_heartbeat_timeout", heartBeatTimeout.trim(), _remoteScheduler, _dom);
+            if (heartbeatTimeout.trim().length() > 0) {
+                Utils.setAttribute("http_heartbeat_timeout", heartbeatTimeout.trim(), _remoteScheduler, _dom);
             }
-            if (heartBeatPeriod.trim().length() > 0) {
-                Utils.setAttribute("http_heartbeat_period", heartBeatPeriod.trim(), _remoteScheduler, _dom);
+            if (heartbeatPeriod.trim().length() > 0) {
+                Utils.setAttribute("http_heartbeat_period", heartbeatPeriod.trim(), _remoteScheduler, _dom);
+            }
+            if (select.trim().length() > 0 && !select.equals(REMOTE_SCHEDULER_DEFAULT_SELECT)) {
+                Utils.setAttribute("select", select.trim(), _remoteScheduler, _dom);
             }
             
            _listRemoteScheduler.add(_remoteScheduler);

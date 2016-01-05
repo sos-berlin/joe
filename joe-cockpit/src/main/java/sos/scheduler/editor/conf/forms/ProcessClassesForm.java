@@ -2,7 +2,13 @@
  * 
  */
 package sos.scheduler.editor.conf.forms;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_Cbo_JCNodesForm_OnError;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JCNodesForm_Setback;
+import static com.sos.joe.globals.messages.SOSJOEMessageCodes.JOE_M_JCNodesForm_Suspend;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.TraverseEvent;
@@ -11,6 +17,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
@@ -54,6 +61,7 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
 	private IntegerField            tHttpHeartBeatTimeout   = null;
     private Text                    tRemoteSchedulerUrl     = null;
 	private SchedulerDom			dom				        = null;
+    private Combo                   cSelect                 = null;
 
  
 	public ProcessClassesForm(Composite parent, int style, SchedulerDom dom_, Element config) throws JDOMException {
@@ -272,8 +280,10 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         tRemoteSchedulerUrl.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, false, 3, 1));
         
         new Label(group, SWT.NONE);
-        new Label(group, SWT.NONE);
 
+        final Label lbSelect = new Label(group, SWT.NONE);
+        lbSelect.setText("Select");
+        lbSelect.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
        
         final Label lbHttpHeartBeatTimeout = new Label(group, SWT.NONE);
         lbHttpHeartBeatTimeout.setText("Heartbeat Timeout");
@@ -285,8 +295,21 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         
         new Label(group, SWT.NONE);
         new Label(group, SWT.NONE);
-        new Label(group, SWT.NONE);
-                
+    
+        
+        cSelect = JOE_Cbo_JCNodesForm_OnError.Control(new Combo(group, SWT.READ_ONLY));
+        cSelect.setItems(new String[] { "first", "next" });
+        cSelect.addModifyListener(new ModifyListener() {
+            @Override public void modifyText(final ModifyEvent e) {
+            	btApply.setEnabled(true);
+            }
+        });
+         
+        final GridData gridData_12 = new GridData(SWT.FILL, GridData.CENTER, true, false);
+        gridData_12.widthHint = 50;
+        gridData_12.minimumWidth = 20;
+        cSelect.setLayoutData(gridData_12);        
+        
         
         
         tHttpHeartBeatTimeout = JOE_T_ProcessClassesForm_httpHeartBeatTimeout.integerField(new IntegerField(group, SWT.BORDER));
@@ -396,6 +419,9 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
 	                        item.setText(0, tRemoteSchedulerUrl.getText());
 	                        item.setText(1, tHttpHeartBeatTimeout.getText());
 	                        item.setText(2, tHttpHeartBeatPeriod.getText());
+	                        item.setText(3, cSelect.getText());
+	                        
+	                        cSelect.select(0);
 	                        tRemoteSchedulerUrl.setText("");
 	                        tHttpHeartBeatTimeout.setText("");
 	                        tHttpHeartBeatPeriod.setText("");
@@ -408,7 +434,9 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
 	                                item.setText(0, tRemoteSchedulerUrl.getText());
 	                                item.setText(1, tHttpHeartBeatTimeout.getText());
 	                                item.setText(2, tHttpHeartBeatPeriod.getText());
-	                                tRemoteSchedulerUrl.setText("");
+	                                item.setText(3, cSelect.getText());
+	    	                        cSelect.select(0);
+	    	                        tRemoteSchedulerUrl.setText("");
 	                                tHttpHeartBeatTimeout.setText("");
 	                                tHttpHeartBeatPeriod.setText("");
 	                                tRemoteSchedulerUrl.setFocus();
@@ -422,6 +450,8 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
 	                            item.setText(0, tRemoteSchedulerUrl.getText());
 	                            item.setText(1, tHttpHeartBeatTimeout.getText());
 	                            item.setText(2, tHttpHeartBeatPeriod.getText());
+	                            item.setText(3, cSelect.getText());
+    	                        cSelect.select(0);
 	                            tRemoteSchedulerUrl.setText("");
 	                            tHttpHeartBeatTimeout.setText("");
 	                            tHttpHeartBeatPeriod.setText("");
@@ -451,6 +481,8 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
                     tRemoteSchedulerUrl.setText(item.getText(0));
                     tHttpHeartBeatTimeout.setText(item.getText(1));
                     tHttpHeartBeatPeriod.setText(item.getText(2));
+                    cSelect.setText(item.getText(3));
+
                     btRemoveRemoteScheduler.setEnabled(true);
                     btNewRemoteScheduler.setEnabled(true);
                 }
@@ -460,14 +492,18 @@ public class ProcessClassesForm extends SOSJOEMessageCodes implements IUnsaved {
         TableColumn tableColumnHost = new TableColumn(tableRemoteScheduler, SWT.NONE);
         tableColumnHost.setWidth(300);
         tableColumnHost.setText("Url"); 
-        
+              
         TableColumn tableColumnHeatbeatTimeout = new TableColumn(tableRemoteScheduler, SWT.NONE);
         tableColumnHeatbeatTimeout.setWidth(150);
         tableColumnHeatbeatTimeout.setText("Heartbeat Timeout"); 
 
         TableColumn tableColumnHeatbeatPeriod = new TableColumn(tableRemoteScheduler, SWT.NONE);
         tableColumnHeatbeatPeriod.setWidth(150);
-        tableColumnHeatbeatPeriod.setText("Heartbeat Period"); 
+        tableColumnHeatbeatPeriod.setText("Heartbeat Period");
+        
+        TableColumn tableColumnSelect = new TableColumn(tableRemoteScheduler, SWT.NONE);
+        tableColumnSelect.setWidth(50);
+        tableColumnSelect.setText("Select");           
     }
     
     private boolean checkChange() {
