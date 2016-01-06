@@ -50,25 +50,25 @@ public class JoeLockFolder {
     public void getDataFromFile(File lockFilePath){
         BufferedReader br = null;
         if (lockFilePath != null) {
-        try {
-            
-            FileReader fr = new FileReader(new File(lockFilePath,JOE_XML_LOCK));
-            br = new BufferedReader(fr);
-            String zeile = null;
-         
-            if ((zeile = br.readLine()) != null) {
-                userFromFile = zeile.replaceAll("^.*User: (.*)$", "$1");
-            }
-            if ((zeile = br.readLine()) != null) {
-                sinceFromFile = zeile.replaceAll("^.*Since: (.*)$", "$1");
-            }
-            br.close();
-            fr.close();
-         } catch (IOException e) {
-              e.printStackTrace();
-              userFromFile = "Error occured reading lock file: " + lockFilePath.getAbsolutePath();
-              sinceFromFile = e.getMessage();
-         }
+            try {
+                
+                FileReader fr = new FileReader(new File(lockFilePath,JOE_XML_LOCK));
+                br = new BufferedReader(fr);
+                String zeile = null;
+             
+                if ((zeile = br.readLine()) != null) {
+                    userFromFile = zeile.replaceAll("^.*User: (.*)$", "$1");
+                }
+                if ((zeile = br.readLine()) != null) {
+                    sinceFromFile = zeile.replaceAll("^.*Since: (.*)$", "$1");
+                }
+                br.close();
+                fr.close();
+             } catch (IOException e) {
+                  e.printStackTrace();
+                  userFromFile = "Error occured reading lock file: " + lockFilePath.getAbsolutePath();
+                  sinceFromFile = e.getMessage();
+             }
         }else{
             userFromFile=System.getProperty("user.name"); 
             sinceFromFile="2000-01-01T00:00:00.000Z";
