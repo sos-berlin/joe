@@ -100,15 +100,11 @@ public class ProcessClassesListener {
                String url = Utils.getAttributeValue("remote_scheduler", e);
                String heartbeatTimeout = Utils.getAttributeValue("http_heartbeat_timeout", e);
                String heartbeatPeriod = Utils.getAttributeValue("http_heartbeat_period", e);
-               String select = Utils.getAttributeValue("select", e);
-               if (select.length() == 0){
-            	   select = REMOTE_SCHEDULER_DEFAULT_SELECT;
-               }
+                
                item.setText(0, url);
                item.setText(1, heartbeatTimeout);
                item.setText(2, heartbeatPeriod);
-               item.setText(3, select);
-            }
+             }
         }
     }
 
@@ -118,7 +114,8 @@ public class ProcessClassesListener {
         }
         if (_listProcessClasses != null && index >= 0 && index < _listProcessClasses.size()) {
             _class = (Element) _listProcessClasses.get(index);
-        }
+             this.initRemoteScheduler();
+          }
         else {
             _class = null;
         }
@@ -145,7 +142,11 @@ public class ProcessClassesListener {
 	public String getRemoteUrl() {
 		return Utils.getAttributeValue("remote_scheduler", _class);
     }
-	    
+	 
+	public String getSelect() {
+		return Utils.getAttributeValue("select", _remoteSchedulers,"first");
+    }
+	
 	public String getMaxProcesses() {
 		return Utils.getAttributeValue("max_processes", _class);
 	}
@@ -213,11 +214,15 @@ public class ProcessClassesListener {
 	}
  
 
-    public void applyRemoteSchedulerTable(Table tableRemoteScheduler) {
+    public void applyRemoteSchedulerTable(Table tableRemoteScheduler, String select) {
     	_class.removeChild("remote_schedulers");
         if (tableRemoteScheduler.getItemCount() > 0) {
         	this.initRemoteScheduler();
             _listRemoteScheduler.clear();
+            if (!select.equals(REMOTE_SCHEDULER_DEFAULT_SELECT)){
+               Utils.setAttribute("select", select, _remoteSchedulers, _dom);
+            }
+
         }
         for (int i = 0; i < tableRemoteScheduler.getItemCount(); i++) {
             TableItem item = tableRemoteScheduler.getItems()[i];
@@ -225,8 +230,7 @@ public class ProcessClassesListener {
             String url = item.getText(0);
             String heartbeatTimeout = item.getText(1);
             String heartbeatPeriod = item.getText(2);
-            String select = item.getText(3);
-            
+             
             if (url.trim().length() > 0) {
                 Utils.setAttribute("remote_scheduler", url.trim(), _remoteScheduler, _dom);
             }
@@ -236,9 +240,7 @@ public class ProcessClassesListener {
             if (heartbeatPeriod.trim().length() > 0) {
                 Utils.setAttribute("http_heartbeat_period", heartbeatPeriod.trim(), _remoteScheduler, _dom);
             }
-            if (select.trim().length() > 0 && !select.equals(REMOTE_SCHEDULER_DEFAULT_SELECT)) {
-                Utils.setAttribute("select", select.trim(), _remoteScheduler, _dom);
-            }
+            
             
            _listRemoteScheduler.add(_remoteScheduler);
         }
