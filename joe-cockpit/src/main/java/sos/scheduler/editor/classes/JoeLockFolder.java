@@ -49,6 +49,7 @@ public class JoeLockFolder {
     
     public void getDataFromFile(File lockFilePath){
         BufferedReader br = null;
+        if (lockFilePath != null) {
         try {
             
             FileReader fr = new FileReader(new File(lockFilePath,JOE_XML_LOCK));
@@ -68,6 +69,10 @@ public class JoeLockFolder {
               userFromFile = "Error occured reading lock file: " + lockFilePath.getAbsolutePath();
               sinceFromFile = e.getMessage();
          }
+        }else{
+            userFromFile=System.getProperty("user.name"); 
+            sinceFromFile="2000-01-01T00:00:00.000Z";
+        }
     }
 
     public String getUserFromFile() {
