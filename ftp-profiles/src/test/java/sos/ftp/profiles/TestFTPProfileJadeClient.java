@@ -39,10 +39,16 @@ public class TestFTPProfileJadeClient {
             ftpProfileJadeClient.removeFile(sosFileEntry);
         }catch (Exception e){}
         try{
+            sosFileEntry.setDirectory(false);
+            sosFileEntry.setFilename("2.job.xml");
+            sosFileEntry.setParentPath(dir);
+            ftpProfileJadeClient.removeFile(sosFileEntry);
+        }catch (Exception e){}
+        try{
             sosFileEntry.setFilename("1.txt");
             ftpProfileJadeClient.removeFile(sosFileEntry);
             ftpProfileJadeClient.disconnect();
-        }catch (Exception e){}
+    }catch (Exception e){}
         
     }
 
@@ -143,6 +149,7 @@ public class TestFTPProfileJadeClient {
         sosFileEntry.setFilename(folder);
         sosFileEntry.setParentPath(dir);
         try {
+        	cleanupFolder(dir + "/renamed");
             ftpProfileJadeClient.removeDir(dir + "/renamed");
         }catch(Exception e){}
         ftpProfileJadeClient.renameFile(dir, folder, "renamed");
@@ -172,7 +179,7 @@ public class TestFTPProfileJadeClient {
 
     public void testRemoveFileStringString() throws Exception {
         String localDir=ftpProfile.getLocaldirectory();
-        String filename = "1.txt";
+        String filename = "2.job.xml";
         String targetDir=ftpProfile.getRoot();
         String folder="newfolder";
         String path = targetDir + "/" + folder;
@@ -193,7 +200,7 @@ public class TestFTPProfileJadeClient {
 
     public void testCopyLocalFileToRemote() throws Exception {
         String localDir=ftpProfile.getLocaldirectory();
-        String filename = "1.txt";
+        String filename = "2.job.xml";
         String targetDir=ftpProfile.getRoot();
         String folder="newfolder";
         String path = targetDir + "/" + folder;
@@ -213,13 +220,16 @@ public class TestFTPProfileJadeClient {
     }
 
     public void testCopyLocalFilesToRemote() throws RuntimeException, Exception {
-        String localDir=ftpProfile.getLocaldirectory();
+    	testCopyLocalFileToRemote();
+    	File f = new File(ftpProfile.getLocaldirectory(),"2.job.xml");
+    	f.delete();
+    	
+    	String localDir=ftpProfile.getLocaldirectory();
         String filename = "1.job.xml";
         String targetDir=ftpProfile.getRoot();
         String folder="newfolder";
         String path = targetDir + "/" + folder;
         
-        cleanupFolder(path);
         
         FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
         ftpProfileJadeClient.mkdir(targetDir,folder);
@@ -237,7 +247,7 @@ public class TestFTPProfileJadeClient {
         
         testCopyLocalFileToRemote();
         
-        String filename = "1.txt";
+        String filename = "2.job.xml";
         String sourceDir=ftpProfile.getRoot();
         String folder="newfolder";
         String path = sourceDir + "/" + folder;
@@ -260,24 +270,24 @@ public class TestFTPProfileJadeClient {
     }
 
    public void testCopyRemoteFilesToLocal() throws Exception {
-        
-        String filename = "1.txt";
+        String filename = "1.job.xml";
+        String filenameTest = "shouldnotexist.job.xml";       
         String sourceDir=ftpProfile.getRoot();
         String folder="newfolder";
-        String path = sourceDir + "/" + folder;
-        
+         
         File targetFile = new File (ftpProfile.getLocaldirectory(),filename);
+        File testFile = new File (ftpProfile.getLocaldirectory() + "/" + folder,filenameTest);
+        testFile.createNewFile();
+        
         targetFile.delete();
 
         FTPProfileJadeClient ftpProfileJadeClient = new FTPProfileJadeClient(ftpProfile);
         ftpProfileJadeClient.mkdir(sourceDir,folder);
-
-        SOSFileEntry sosFileEntry = new SOSFileEntry();
-        sosFileEntry.setDirectory(true);
-        sosFileEntry.setFilename(filename);
-        sosFileEntry.setParentPath(path);
-        ftpProfileJadeClient.copyRemoteFileToLocal(sosFileEntry);
-        assertTrue ("File must exist",targetFile.exists());
+        testCopyLocalFilesToRemote();
+ 
+        ftpProfileJadeClient.copyRemoteFilesToLocal(sourceDir,folder);
+        assertTrue ("File " + filename + " must exist",targetFile.exists());
+        assertFalse ("File " + filenameTest + " must not exist",testFile.exists());
 
         ftpProfileJadeClient.disconnect();            
         
