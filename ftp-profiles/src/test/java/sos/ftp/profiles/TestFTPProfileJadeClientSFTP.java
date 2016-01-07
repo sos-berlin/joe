@@ -3,6 +3,7 @@ package sos.ftp.profiles;
 import static org.junit.Assert.*;
 
 import java.util.Properties;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -94,8 +95,8 @@ public class TestFTPProfileJadeClientSFTP extends TestFTPProfileJadeClient {
     }
 
     @Test
-    public void testCopyRemoteFilesToLocal() {
-        //fail("Not yet implemented");
+    public void testCopyRemoteFilesToLocal() throws Exception {
+    	super.testCopyRemoteFilesToLocal();
     }
 
 }
