@@ -821,7 +821,7 @@ public class DetailForm extends SOSJOEMessageCodes   {
 			addParam();
 		}
 		detailListener.save();
-		if (schedulerDom != null) {
+		if (schedulerDom != null  && state != null) {
 			DetailsListener.addMonitoring2Job(jobChainname, state, schedulerDom, update);
 			update.updateScripts();
 
