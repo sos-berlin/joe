@@ -48,6 +48,7 @@ public class FTPProfile {
 
     /** Wird proxy verwendet? */
     private boolean useProxy = false;
+    private boolean passiveMode=true;
 
     /**
      * Der Wert des Parameters ist der Hostname oder die IP-Adresse eines
@@ -119,6 +120,7 @@ public class FTPProfile {
             transfermode = sosString.parseToString(prop, "transfermode");
             protocol = sosString.parseToString(prop, "protocol");
             useProxy = sosString.parseToBoolean(sosString.parseToString(prop, "use_proxy"));
+            passiveMode = sosString.parseToBoolean(sosString.parseToString(prop, "passivemode"));
             proxyServer = sosString.parseToString(prop, "proxy_server");
             proxyPort = sosString.parseToString(prop, "proxy_port");
             proxyUser = sosString.parseToString(prop, "proxy_user");
@@ -245,7 +247,13 @@ public class FTPProfile {
     public String getTransfermode() {
         return transfermode;
     }
-
+    public String getPassiveMode() {
+    	if (isPassiveMode()){
+    		return "true";
+    	}else{
+    		return "false";
+    	}
+    }
     /**
      * Protokoll: FTP oder SFTP
      * 
@@ -262,6 +270,10 @@ public class FTPProfile {
      */
     public boolean getUseProxy() {
         return useProxy;
+    }
+
+    public boolean isPassiveMode() {
+        return passiveMode;
     }
 
     /**
