@@ -44,6 +44,7 @@ public class FTPProfileDialog {
 	private              Text                txtLocalDirectory             = null;
 	private              Button              butAscii                      = null;
 	private              Button              butbinary                     = null;
+	private              Button              butPassive                    = null;
 	private              Text                txtHost                       = null;
 	private              boolean             newProfile                    = false;
 	private              Button              butSavePassword               = null; 
@@ -334,6 +335,21 @@ public class FTPProfileDialog {
 				});
 				butbinary.setLayoutData(new GridData());
 				butbinary.setText("Binary");
+				
+				final Label passiveMode = new Label(group, SWT.NONE);
+				final GridData gridData_4 = new GridData(GridData.BEGINNING, GridData.END, false, false);
+				gridData_3.heightHint = 21;
+				passiveMode.setLayoutData(gridData_4);
+				passiveMode.setText("Passive Mode");
+				
+				butPassive = new Button(group, SWT.CHECK);
+				butPassive.addSelectionListener(new SelectionAdapter() {
+					 
+					public void widgetSelected(final SelectionEvent e) {
+						setEnabled();
+					}
+				});
+				butPassive.setLayoutData(new GridData());
 
 				final TabItem proxyTabItem = new TabItem(tabFolder, SWT.NONE);
 				proxyTabItem.setText("Proxy");
@@ -435,8 +451,8 @@ public class FTPProfileDialog {
 						setEnabled();
 					}
 				});
-				final GridData gridData_4 = new GridData(GridData.BEGINNING, GridData.END, false, false, 2, 1);
-				butPublicKey.setLayoutData(gridData_4);
+				final GridData gridData_pk = new GridData(GridData.BEGINNING, GridData.END, false, false, 2, 1);
+				butPublicKey.setLayoutData(gridData_pk);
 				butPublicKey.setText("Public Key");
 
 				butAuthPassword = new Button(groupAuthenticationMethods, SWT.RADIO);
@@ -505,6 +521,7 @@ public class FTPProfileDialog {
 						txtLocalDirectory.setText(getInitValueLocalDirectory());
 						butAscii.setSelection(true);
 						butbinary.setSelection(false);
+						butPassive.setSelection(true);
 						butSavePassword.setSelection(true);
 						txtHost.setText("");
 						
@@ -646,9 +663,12 @@ public class FTPProfileDialog {
 				butbinary.setSelection(false);
 				butAscii.setSelection(true);
 			}
+			
+			butPassive.setSelection(currProfile.isPassiveMode());
 			String protocol = sosString.parseToString(currProfile.getProtocol());
-			if(protocol.length() == 0)
+			if(protocol.length() == 0){
 				protocol = "FTP";
+			}
 
 
 			cboProtokol.setText(protocol);
@@ -717,6 +737,7 @@ public class FTPProfileDialog {
 			}
 			prop.put("localdirectory", txtLocalDirectory.getText());
 			prop.put("transfermode", butbinary.getSelection() ? "binary" : "ASCII");
+			prop.put("passivemode", butPassive.getSelection() ? "true" : "false");
 			prop.put("save_password", (butSavePassword.getSelection() ? "yes" : "no"));
 			prop.put("protocol", cboProtokol.getText());
 
