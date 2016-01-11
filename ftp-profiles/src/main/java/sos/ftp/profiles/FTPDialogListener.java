@@ -377,6 +377,7 @@ public class FTPDialogListener {
 			s2 = s2 + "transfermode=" + profile.getTransfermode() + "\n";    		 
 			s2 = s2 + "save_password=" +profile.isSavePassword() + "\n";
 			s2 = s2 + "protocol=" + profile.getProtocol() + "\n";
+			s2 = s2 + "passivemode=" + profile.getPassiveMode() + "\n";
 			s2 = s2 + "use_proxy=" + profile.getUseProxy() + "\n";
 			s2 = s2 + "proxy_server=" + profile.getProxyServer() + "\n";
             s2 = s2 + "proxy_port=" + profile.getProxyPort() + "\n";

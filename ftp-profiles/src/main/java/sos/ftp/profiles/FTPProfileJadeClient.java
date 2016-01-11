@@ -66,6 +66,7 @@ public class FTPProfileJadeClient {
             virtuelFileSystemOptions.user.Value(ftpProfile.getUser());
             virtuelFileSystemOptions.password.Value(ftpProfile.getDecryptetPassword());
             virtuelFileSystemOptions.protocol.Value(enuSourceTransferType);
+            virtuelFileSystemOptions.passive_mode.value(ftpProfile.isPassiveMode());
             
             if(!ftpProfile.getAuthMethod().equals("")){
                 virtuelFileSystemOptions.auth_method.Value(ftpProfile.getAuthMethod());
