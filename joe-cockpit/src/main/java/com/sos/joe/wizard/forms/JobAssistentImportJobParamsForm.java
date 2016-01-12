@@ -18,6 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -44,6 +45,8 @@ import org.jdom.Element;
 import org.w3c.dom.Document;
 
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.container.JobDocumentation;
+import sos.scheduler.editor.conf.forms.DetailForm;
 import sos.scheduler.editor.conf.forms.JobDocumentationForm;
 import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
 import sos.scheduler.editor.conf.listeners.JobListener;
@@ -69,6 +72,10 @@ import com.sos.scheduler.model.xmldoc.Param;
 	@SuppressWarnings("unused") private final String				conClsName						= "JobAssistentImportJobParamsForm";
 	@SuppressWarnings("unused") private final String				conSVNVersion					= "$Id: JobAssistentImportJobParamsForm.java 25898 2014-06-20 14:36:54Z kb $";
 	private static final Logger										logger							= Logger.getLogger(JobAssistentImportJobParamsForm.class);
+	//	private static final String										conMsgKeyASSISTENT_JOBPARAMETER_NO_SELECTED	= "assistent.jobparameter.no_selected";
+	//	private static final String										conMsgKeyASSISTENT_JOBPARAMETER_EXIST		= "assistent.jobparameter.exist";
+	//	private static final String										conMsgKeyMAIN_LISTENER_APPLY_CHANGES		= "MainListener.apply_changes";
+	//	private static final String										conMsgKeyASSISTENT_JOBPARAMETER_REQUIRED	= "assistent.jobparameter.required";
 	private static final String										conKeyPARAMETER_DESCRIPTION_	= "parameter_description_";
 	private static final String				 						conKeyPARAMETER_DESCRIPTION_EN	= "parameter_description_en";
 	private static final String										conKeyPARAMETER_DESCRIPTION_DE	= "parameter_description_de";
@@ -81,7 +88,8 @@ import com.sos.scheduler.model.xmldoc.Param;
 	private final static String										conClassName					= "JobAssistentImportJobParamsForm";
 	private static JAXBContext										context							= null;
 	private static Unmarshaller										unmarshaller					= null;
-	private Text													txtDescription					= null;
+	// private Text txtDescription = null;
+	private Browser													txtDescription					= null;
 	private Table													tblSelectedParams				= null;
 	private Table													tableDescParameters				= null;
 	private Shell													jobParameterShell				= null;
@@ -89,6 +97,7 @@ import com.sos.scheduler.model.xmldoc.Param;
 	private String													xmlPaths						= null;
 	private Text													txtName							= null;
 	private JobListener												joblistener						= null;
+	// Tabelle aus der JobForm: Falls die Klasse über den Import Button vom JobFrom erfolgte
 	private Table													tParameter						= null;
 	private Button													butFinish						= null;
 	private Button													butApply						= null;
@@ -99,7 +108,7 @@ import com.sos.scheduler.model.xmldoc.Param;
 	private ISchedulerUpdate										update							= null;
 	private Button													butCancel						= null;
 	private Button													showButton						= null;
-
+	/** Wer hat ihn aufgerufen, der Job assistent oder job_chain assistent*/
 	private int														assistentType					= -1;
 	private Button													butPut							= null;
 	private Button													butPutAll						= null;
@@ -109,9 +118,12 @@ import com.sos.scheduler.model.xmldoc.Param;
 	private Element													jobBackUp						= null;
 	private ScriptJobMainForm										jobForm							= null;
 	private JobDocumentationForm									jobDocForm						= null;
+	/** Hilsvariable für das Schliessen des Dialogs. 
+	 * Das wird gebraucht wenn das Dialog über den "X"-Botten (oben rechts vom Dialog) geschlossen wird .*/
 	private boolean													closeDialog						= false;
 	private sos.scheduler.editor.conf.listeners.ParameterListener	paramListener					= null;
- 
+	private Text													refreshDetailsText				= null;
+    private DetailForm detailForm;
 	public JobAssistentImportJobParamsForm() {
 	}
 
@@ -351,8 +363,22 @@ import com.sos.scheduler.model.xmldoc.Param;
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent e) {
 					if (assistentType == JOEConstants.PARAMETER) {
+						HashMap <String,String> h = new HashMap<String, String>();
+						for (int i=0;i<tParameter.getItemCount();i++){
+							TableItem item = tParameter.getItem(i);
+							h.put(item.getText(0),item.getText(2));
+						}
 						tParameter.removeAll();
 						paramListener.fillParams(tParameter);
+						for (int i=0;i<tParameter.getItemCount();i++){
+							TableItem item = tParameter.getItem(i);
+							if (h.get(item.getText(0)) != null){
+								item.setText(2,h.get(item.getText(0)));
+							}
+						}
+						if (detailForm != null){
+							detailForm.onJobAssistentImportJobParamsFormClose();
+			            }
 					}
 					else
 						if (assistentType == JOEConstants.JOB || assistentType == JOEConstants.JOB_WIZARD) {
@@ -370,7 +396,10 @@ import com.sos.scheduler.model.xmldoc.Param;
 							}
 					if (Options.getPropertyBoolean("editor.job.show.wizard"))
 						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell, false, null, false, null, true);
-					
+					// Event auslösen
+					// 				if (refreshDetailsText != null)
+					// 					refreshDetailsText.setText("X");
+					// 				   closeDialog = true;
 					jobParameterShell.dispose();
 				}
 			});
@@ -486,13 +515,10 @@ import com.sos.scheduler.model.xmldoc.Param;
 			tableDescParameters.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent e) {
 					if (tableDescParameters.getSelectionCount() > -1) {
-						String s = tableDescParameters.getSelection()[0].getData(conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage()) != null ? tableDescParameters.getSelection()[0].getData(
+						txtDescription.setText(tableDescParameters.getSelection()[0].getData(conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage()) != null ? tableDescParameters.getSelection()[0].getData(
 								conKeyPARAMETER_DESCRIPTION_ + Options.getLanguage())
 								.toString()
-								: "";
-								
-						s = s.replaceAll("\\<.*?>","");
-						txtDescription.setText(s);
+								: "");
 					}
 				}
 			});
@@ -628,16 +654,27 @@ import com.sos.scheduler.model.xmldoc.Param;
 			colName.setWidth(119);
 			final TableColumn colValue = SOSJOEMessageCodes.JOE_TCl_JobAssistent_ValueColumn.Control(new TableColumn(tblSelectedParams, SWT.NONE));
 			colValue.setWidth(212);
-			txtDescription = new Text(textParameterGroup, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.H_SCROLL);
+			// txtDescription = new Text(textParameterGroup, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.H_SCROLL);
+			try {
+				txtDescription = SOSJOEMessageCodes.JOE_DescriptionBrowser.Control(new Browser(textParameterGroup, SWT.MULTI | SWT.BORDER | SWT.WRAP
+						| SWT.H_SCROLL | SWT.H_SCROLL));
+			}
+			catch (Exception e) {
+				txtDescription = null;
+				final Label txtDescriptionLabel = SOSJOEMessageCodes.JOE_L_Value.Control(new Label(textParameterGroup, SWT.NONE));
+				txtDescriptionLabel.setText(SOSJOEMessageCodes.JOE_M_JobAssistent_JobParameter.label());
+			}
 			final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
 			gridData_2.heightHint = 108;
 			txtDescription.setLayoutData(gridData_2);
 			txtDescription.setBackground(SWTResourceManager.getColor(247, 247, 247));
- 
+			// txtDescription.setEditable(false);
+			// der Wizard soll ohne Jobbeschreibung laufen
 			if (!xmlFilename.equals("..")) {
 				listOfParams = this.parseDocuments(xmlFilename, "");
 			}
 			fillTable(listOfParams);
+			//			setToolTipText();
 			jobParameterShell.layout();
 			jobParameterShell.pack();
 			jobParameterShell.open();
@@ -804,8 +841,16 @@ import com.sos.scheduler.model.xmldoc.Param;
 			jobDocForm = jobDocForm_;
 	}
 
+	public void setJobForm(final JobDocumentation jobDocForm_) {
+		//		if (jobDocForm_ != null)
+		//			jobDocForm = jobDocForm_;
+	}
 
-	 
+	/**
+	 * Der Wizard wurde für ein bestehende Job gestartet. 
+	 * Beim verlassen der Wizard ohne Speichern, muss der bestehende Job ohne Änderungen wieder zurückgesetz werden.
+	 * @param backUpJob
+	 */
 	public void setBackUpJob(final Element backUpJob, final ScriptJobMainForm jobForm_) {
 		if (backUpJob != null)
 			jobBackUp = (Element) backUpJob.clone();
@@ -884,6 +929,10 @@ import com.sos.scheduler.model.xmldoc.Param;
 	}
 
  
-
-
+	public void setDetailsRefresh(final Text refreshDetailsText_) {
+		refreshDetailsText = refreshDetailsText_;
+	}
+	public void setDetailForm(DetailForm detailForm) {
+		this.detailForm = detailForm;
+	}	
 }

@@ -262,6 +262,7 @@ public class DetailsListener {
 	}
 
 	private void setNoteText(Element note, String text) {
+		text = text.replaceAll("<\\?xml version=.1.0. encoding=.ISO-8859-1.\\?>(.*)","$1");
 		Element div = note.getChild("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
 		if (div == null) {
 			div = new Element("div", org.jdom.Namespace.getNamespace("http://www.w3.org/1999/xhtml"));
@@ -383,10 +384,8 @@ public class DetailsListener {
 								param.getContent().remove(0);
 						}
 						org.jdom.Text txt = new org.jdom.Text(noteText);
-						//org.jdom.CDATA txt = new org.jdom.CDATA(noteText);
 						param.addContent(txt);
 					}
-					//if(params.size() > 1 || params.size() > i+1) {
 					if (params.size() > i + 1) {
 						for (int j = 1; j < 3; j++) {
 							Element elNote = (Element) params.get(i + j);
@@ -394,7 +393,7 @@ public class DetailsListener {
 								noNote = true;
 								break;//die nächsten beiden Knoten der param Elemente sind nicht die note Elemente
 							}
-							if (elNote.getName().equalsIgnoreCase("note") && Utils.getAttributeValue("language", elNote).equalsIgnoreCase(language)) {
+							if (note != null && elNote.getName().equalsIgnoreCase("note") && Utils.getAttributeValue("language", elNote).equalsIgnoreCase(language)) {
 								setNoteText(elNote, note);
 							}
 						}
@@ -480,7 +479,7 @@ public class DetailsListener {
 						if (notede.getName().equals("note") && Utils.getAttributeValue("language", notede).equals("de"))
 							list.add(notede);
 					}
-					if (params.size() > index + 1) {
+					if (params.size() > index + 2) {
 						Element noteen = (Element) params.get(index + 2);
 						if (noteen.getName().equals("note") && Utils.getAttributeValue("language", noteen).equals("en"))
 							list.add(noteen);
