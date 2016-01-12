@@ -46,6 +46,7 @@ import org.w3c.dom.Document;
 
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.container.JobDocumentation;
+import sos.scheduler.editor.conf.forms.DetailForm;
 import sos.scheduler.editor.conf.forms.JobDocumentationForm;
 import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
 import sos.scheduler.editor.conf.listeners.JobListener;
@@ -122,7 +123,7 @@ import com.sos.scheduler.model.xmldoc.Param;
 	private boolean													closeDialog						= false;
 	private sos.scheduler.editor.conf.listeners.ParameterListener	paramListener					= null;
 	private Text													refreshDetailsText				= null;
-
+    private DetailForm detailForm;
 	public JobAssistentImportJobParamsForm() {
 	}
 
@@ -362,8 +363,22 @@ import com.sos.scheduler.model.xmldoc.Param;
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent e) {
 					if (assistentType == JOEConstants.PARAMETER) {
+						HashMap <String,String> h = new HashMap<String, String>();
+						for (int i=0;i<tParameter.getItemCount();i++){
+							TableItem item = tParameter.getItem(i);
+							h.put(item.getText(0),item.getText(2));
+						}
 						tParameter.removeAll();
 						paramListener.fillParams(tParameter);
+						for (int i=0;i<tParameter.getItemCount();i++){
+							TableItem item = tParameter.getItem(i);
+							if (h.get(item.getText(0)) != null){
+								item.setText(2,h.get(item.getText(0)));
+							}
+						}
+						if (detailForm != null){
+							detailForm.onJobAssistentImportJobParamsFormClose();
+			            }
 					}
 					else
 						if (assistentType == JOEConstants.JOB || assistentType == JOEConstants.JOB_WIZARD) {
@@ -382,9 +397,9 @@ import com.sos.scheduler.model.xmldoc.Param;
 					if (Options.getPropertyBoolean("editor.job.show.wizard"))
 						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell, false, null, false, null, true);
 					// Event auslösen
-					//					if (refreshDetailsText != null)
-					//ur 2011-11-09						refreshDetailsText.setText("X");
-					//					closeDialog = true;
+					// 				if (refreshDetailsText != null)
+					// 					refreshDetailsText.setText("X");
+					// 				   closeDialog = true;
 					jobParameterShell.dispose();
 				}
 			});
@@ -913,9 +928,11 @@ import com.sos.scheduler.model.xmldoc.Param;
 		txtName.setFocus();
 	}
 
-	// Details hat einen anderen Aufbau der Parameter Description.
-	// Beim generieren der Parameter mit Wizard müssen die Parameterdescriptchen anders aufgebaut werden.
+ 
 	public void setDetailsRefresh(final Text refreshDetailsText_) {
 		refreshDetailsText = refreshDetailsText_;
 	}
+	public void setDetailForm(DetailForm detailForm) {
+		this.detailForm = detailForm;
+	}	
 }
