@@ -38,6 +38,7 @@ import org.jdom.input.SAXBuilder;
 
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.container.JobDocumentation;
+import sos.scheduler.editor.conf.forms.DetailForm;
 import sos.scheduler.editor.conf.forms.JobDocumentationForm;
 import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
 import sos.scheduler.editor.conf.listeners.JobListener;
@@ -92,6 +93,9 @@ public class JobAssistentImportJobsForm {
 	private boolean													closeDialog			= false;
 	private boolean													flagBackUpJob		= true;
 	private final JobDocumentationForm								jobDocForm			= null;
+	private DetailForm detailForm;
+
+
 
 	/**
 	 * Konstruktor
@@ -451,6 +455,7 @@ public class JobAssistentImportJobsForm {
 								jobname.setText(txtJobname.getText());
 							}
 							JobAssistentImportJobParamsForm defaultParams = new JobAssistentImportJobParamsForm();
+ 
 							// OTRS: http://www.sos-berlin.com/otrs/index.pl?Action=AgentZoom&TicketID=76
 							// http://www.sos-berlin.com/jira/browse/JS-852
 							// If the user is pressing "finish" then no parameters should be copied/moved to the object.
@@ -543,6 +548,7 @@ public class JobAssistentImportJobsForm {
 						Element job = listener.createJobElement(attr, joblistener.getJob());
 						JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(), job,
 								assistentType);
+
 						paramsForm.setBackUpJob(jobBackUp, jobForm);
 						paramsForm.setJobForm(jobForm);
 						paramsForm.showAllImportJobParams(txtPath.getText());
@@ -551,7 +557,9 @@ public class JobAssistentImportJobsForm {
 						if (assistentType == JOEConstants.PARAMETER) {
 							JobAssistentImportJobParamsForm paramsForm = new JobAssistentImportJobParamsForm(joblistener.get_dom(), joblistener.get_main(),
 									joblistener, tParameter, assistentType);
-							paramsForm.showAllImportJobParams(txtPath.getText());
+                            paramsForm.showAllImportJobParams(txtPath.getText());
+                            paramsForm.setDetailForm(detailForm);
+							
 						}
 						else {
 							if (assistentType != JOEConstants.JOB_WIZARD && listener.existJobname(txtJobname.getText())) {
@@ -823,6 +831,9 @@ public class JobAssistentImportJobsForm {
 			if (tree.getSelection().length == 0)
 				return h;
 			Element elMain = (Element) tree.getSelection()[0].getData();
+			if (elMain == null){
+				return h;
+			}
 			// Attribute der Job bestimmen
 			if (jobType != null && jobType.trim().length() > 0)
 				h.put("order", jobType.equalsIgnoreCase("order") ? "yes" : "no");
@@ -922,7 +933,7 @@ public class JobAssistentImportJobsForm {
 					h.put("process_log", process.getAttributeValue("log"));
 				// environment Variablen bestimmen
 				Element environment = process.getChild("environment", elMain.getNamespace());
-				if (environment != null) {
+				if (environment != null) { 
 					List listOfEnvironment = environment.getChildren("variable", elMain.getNamespace());
 					ArrayList listOfIncludeFilename = new ArrayList();
 					for (int i = 0; i < listOfEnvironment.size(); i++) {
@@ -1035,9 +1046,12 @@ public class JobAssistentImportJobsForm {
 		return true;
 	}
 
-	// Details hat einen anderen Aufbau der Parameter Description.
-	// Beim generieren der Parameter mit Wizzard müssen die Parameterdescriptchen anders aufgebaut werden.
+	
 	public void setDetailsRefresh(final Text refreshDetailsText_) {
 		refreshDetailsText = refreshDetailsText_;
 	}
+	
+	public void setDetailForm(DetailForm detailForm) {
+		this.detailForm = detailForm;
+	}	
 }

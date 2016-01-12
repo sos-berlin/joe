@@ -44,6 +44,8 @@ import org.jdom.Element;
 import org.w3c.dom.Document;
 
 import sos.scheduler.editor.app.Utils;
+import sos.scheduler.editor.conf.container.JobDocumentation;
+import sos.scheduler.editor.conf.forms.DetailForm;
 import sos.scheduler.editor.conf.forms.JobDocumentationForm;
 import sos.scheduler.editor.conf.forms.ScriptJobMainForm;
 import sos.scheduler.editor.conf.listeners.JobListener;
@@ -69,7 +71,7 @@ import com.sos.scheduler.model.xmldoc.Param;
 	@SuppressWarnings("unused") private final String				conClsName						= "JobAssistentImportJobParamsForm";
 	@SuppressWarnings("unused") private final String				conSVNVersion					= "$Id: JobAssistentImportJobParamsForm.java 25898 2014-06-20 14:36:54Z kb $";
 	private static final Logger										logger							= Logger.getLogger(JobAssistentImportJobParamsForm.class);
-	private static final String										conKeyPARAMETER_DESCRIPTION_	= "parameter_description_";
+ 	private static final String										conKeyPARAMETER_DESCRIPTION_	= "parameter_description_";
 	private static final String				 						conKeyPARAMETER_DESCRIPTION_EN	= "parameter_description_en";
 	private static final String										conKeyPARAMETER_DESCRIPTION_DE	= "parameter_description_de";
 	public static final String										conSystemPropertyUSER_DIR		= "user.dir";
@@ -81,7 +83,7 @@ import com.sos.scheduler.model.xmldoc.Param;
 	private final static String										conClassName					= "JobAssistentImportJobParamsForm";
 	private static JAXBContext										context							= null;
 	private static Unmarshaller										unmarshaller					= null;
-	private Text													txtDescription					= null;
+	private Text 													txtDescription					= null;
 	private Table													tblSelectedParams				= null;
 	private Table													tableDescParameters				= null;
 	private Shell													jobParameterShell				= null;
@@ -99,7 +101,6 @@ import com.sos.scheduler.model.xmldoc.Param;
 	private ISchedulerUpdate										update							= null;
 	private Button													butCancel						= null;
 	private Button													showButton						= null;
-
 	private int														assistentType					= -1;
 	private Button													butPut							= null;
 	private Button													butPutAll						= null;
@@ -111,7 +112,8 @@ import com.sos.scheduler.model.xmldoc.Param;
 	private JobDocumentationForm									jobDocForm						= null;
 	private boolean													closeDialog						= false;
 	private sos.scheduler.editor.conf.listeners.ParameterListener	paramListener					= null;
- 
+	private Text													refreshDetailsText				= null;
+    private DetailForm detailForm;
 	public JobAssistentImportJobParamsForm() {
 	}
 
@@ -351,8 +353,22 @@ import com.sos.scheduler.model.xmldoc.Param;
 			butFinish.addSelectionListener(new SelectionAdapter() {
 				@Override public void widgetSelected(final SelectionEvent e) {
 					if (assistentType == JOEConstants.PARAMETER) {
+						HashMap <String,String> h = new HashMap<String, String>();
+						for (int i=0;i<tParameter.getItemCount();i++){
+							TableItem item = tParameter.getItem(i);
+							h.put(item.getText(0),item.getText(2));
+						}
 						tParameter.removeAll();
 						paramListener.fillParams(tParameter);
+						for (int i=0;i<tParameter.getItemCount();i++){
+							TableItem item = tParameter.getItem(i);
+							if (h.get(item.getText(0)) != null){
+								item.setText(2,h.get(item.getText(0)));
+							}
+						}
+						if (detailForm != null){
+							detailForm.onJobAssistentImportJobParamsFormClose();
+			            }
 					}
 					else
 						if (assistentType == JOEConstants.JOB || assistentType == JOEConstants.JOB_WIZARD) {
@@ -370,8 +386,7 @@ import com.sos.scheduler.model.xmldoc.Param;
 							}
 					if (Options.getPropertyBoolean("editor.job.show.wizard"))
 						Utils.showClipboard(Utils.getElementAsString(joblistener.getJob()), jobParameterShell, false, null, false, null, true);
-					
-					jobParameterShell.dispose();
+ 					jobParameterShell.dispose();
 				}
 			});
 			butBack = SOSJOEMessageCodes.JOE_B_JobAssistent_Back.Control(new Button(composite_3, SWT.NONE));
@@ -628,17 +643,16 @@ import com.sos.scheduler.model.xmldoc.Param;
 			colName.setWidth(119);
 			final TableColumn colValue = SOSJOEMessageCodes.JOE_TCl_JobAssistent_ValueColumn.Control(new TableColumn(tblSelectedParams, SWT.NONE));
 			colValue.setWidth(212);
-			txtDescription = new Text(textParameterGroup, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.H_SCROLL);
+		    txtDescription = new Text(textParameterGroup, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.H_SCROLL);
 			final GridData gridData_2 = new GridData(GridData.FILL, GridData.CENTER, false, false, 5, 1);
 			gridData_2.heightHint = 108;
 			txtDescription.setLayoutData(gridData_2);
 			txtDescription.setBackground(SWTResourceManager.getColor(247, 247, 247));
- 
 			if (!xmlFilename.equals("..")) {
 				listOfParams = this.parseDocuments(xmlFilename, "");
 			}
 			fillTable(listOfParams);
-			jobParameterShell.layout();
+ 			jobParameterShell.layout();
 			jobParameterShell.pack();
 			jobParameterShell.open();
 		}
@@ -804,9 +818,8 @@ import com.sos.scheduler.model.xmldoc.Param;
 			jobDocForm = jobDocForm_;
 	}
 
-
-	 
-	public void setBackUpJob(final Element backUpJob, final ScriptJobMainForm jobForm_) {
+ 
+ 	public void setBackUpJob(final Element backUpJob, final ScriptJobMainForm jobForm_) {
 		if (backUpJob != null)
 			jobBackUp = (Element) backUpJob.clone();
 		if (jobForm_ != null)
@@ -884,6 +897,10 @@ import com.sos.scheduler.model.xmldoc.Param;
 	}
 
  
-
-
+	public void setDetailsRefresh(final Text refreshDetailsText_) {
+		refreshDetailsText = refreshDetailsText_;
+	}
+	public void setDetailForm(DetailForm detailForm) {
+		this.detailForm = detailForm;
+	}	
 }
