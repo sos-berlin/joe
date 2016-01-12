@@ -38,6 +38,7 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
 	private SashForm			sashForm		= null;
 	private Button				butDetails		= null;
 	private SchedulerDom		_dom			= null;
+	private int                 lastSelectionIndex = -1;
 	/**Hilfsvariable: Wenn Parameter Formular geöffnet wurde muss überprüft werden, ob der Checkbox in der Tabelle - State gesetzt werden soll.*/
 	private boolean				checkParameter	= false;
 
@@ -190,7 +191,12 @@ public class JobChainsForm extends SOSJOEMessageCodes implements IUnsaved {
 	}
 
 	private void showDetails(String state) {
+		if (tChains.getSelectionIndex() < 0){
+			tChains.setSelection(lastSelectionIndex);
+		}
 		String name = tChains.getSelection()[0].getText(0);
+		lastSelectionIndex = tChains.getSelectionIndex();
+
 		if (name != null && name.length() > 0) {
  
 			boolean isLifeElement = listener.get_dom().isLifeElement() || listener.get_dom().isDirectory();
