@@ -49,6 +49,7 @@ import com.sos.event.service.forms.ActionsForm;
 import com.sos.i18n.annotation.I18NMessage;
 import com.sos.i18n.annotation.I18NMessages;
 import com.sos.i18n.annotation.I18NResourceBundle;
+import com.sos.joe.globals.interfaces.IEditor;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.misc.ResourceManager;
@@ -707,6 +708,13 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 	} // private String getMsg
 
 	public static void setSaveStatus() {
+	    if (container.getCurrentEditor() != null){
+    	    String s = container.getCurrentEditor().getFilename();
+    	    JoeLockFolder joeLockFolder = new JoeLockFolder(s);
+            if (!joeLockFolder.isFolderLocked()){
+                joeLockFolder.lockFolder();  
+            }
+        }
 		setMenuStatus();
 		container.setStatusInTitle();
 	}

@@ -17,6 +17,7 @@ import sos.scheduler.editor.app.MainWindow;
 
 public class JoeLockFolder {
 
+    private static final String DEFAUL_TIME_SINCE = "2000-01-01T00:00:00.000Z";
     private static final String JOE_XML_LOCK = "joe.xml.lock";
     String folderName;
     File lockFile;
@@ -51,19 +52,22 @@ public class JoeLockFolder {
         BufferedReader br = null;
         if (lockFilePath != null) {
             try {
-                
-                FileReader fr = new FileReader(new File(lockFilePath,JOE_XML_LOCK));
-                br = new BufferedReader(fr);
-                String zeile = null;
-             
-                if ((zeile = br.readLine()) != null) {
-                    userFromFile = zeile.replaceAll("^.*User: (.*)$", "$1");
+                File f = new File(lockFilePath,JOE_XML_LOCK);
+                if (f.exists()){
+                 
+                    FileReader fr = new FileReader(new File(lockFilePath,JOE_XML_LOCK));
+                    br = new BufferedReader(fr);
+                    String zeile = null;
+                 
+                    if ((zeile = br.readLine()) != null) {
+                        userFromFile = zeile.replaceAll("^.*User: (.*)$", "$1");
+                    }
+                    if ((zeile = br.readLine()) != null) {
+                        sinceFromFile = zeile.replaceAll("^.*Since: (.*)$", "$1");
+                    }
+                    br.close();
+                    fr.close();
                 }
-                if ((zeile = br.readLine()) != null) {
-                    sinceFromFile = zeile.replaceAll("^.*Since: (.*)$", "$1");
-                }
-                br.close();
-                fr.close();
              } catch (IOException e) {
                   e.printStackTrace();
                   userFromFile = "Error occured reading lock file: " + lockFilePath.getAbsolutePath();
@@ -71,7 +75,7 @@ public class JoeLockFolder {
              }
         }else{
             userFromFile=System.getProperty("user.name"); 
-            sinceFromFile="2000-01-01T00:00:00.000Z";
+            sinceFromFile=DEFAUL_TIME_SINCE;
         }
     }
 
@@ -90,8 +94,7 @@ public class JoeLockFolder {
         final DateTimeZone toTimeZone = DateTimeZone.getDefault();
         final DateTime dateTime = new DateTime(sinceFromFile, fromTimeZone);
 
-        final DateTimeFormatter outputFormatter 
-            = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").withZone(toTimeZone);
+        final DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").withZone(toTimeZone);
         return outputFormatter.print(dateTime);
     }
 
@@ -113,7 +116,9 @@ public class JoeLockFolder {
     }
      
     public void unLockFolder(){
-         
+        if (!isFolderLocked()){
+            lockFolder();
+        }
         if (!userChanged()){
             lockFile.delete();
         }else{
