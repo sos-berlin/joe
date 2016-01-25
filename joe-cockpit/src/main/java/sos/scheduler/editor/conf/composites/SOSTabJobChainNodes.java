@@ -2,6 +2,8 @@ package sos.scheduler.editor.conf.composites;
 
  
 
+import java.util.HashMap;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -338,8 +340,7 @@ public class SOSTabJobChainNodes extends CTabItem {
                     enableNode(true);
                     fillNode(true);
                     tState.setFocus();
-                    cNextState.setVisibleItemCount(0);
-                }
+                 }
             });
             bNewNode.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
  
@@ -353,6 +354,10 @@ public class SOSTabJobChainNodes extends CTabItem {
                 @Override public void widgetSelected(final SelectionEvent e) {
                     isInsert = true;
                     String state = tState.getText();
+                	
+                    cNextState.setItems(initStateCombo());
+					cErrorState.setItems(initStateCombo());
+					
                     tState.setText("");
                     tDelay.setText("");
                     cErrorState.setText("");
@@ -745,6 +750,28 @@ public class SOSTabJobChainNodes extends CTabItem {
         }
     }
 
+    private String[] initStateCombo(){
+	   TableItem[] items = tNodes.getItems();
+	   HashMap <String,String> states = new HashMap<String, String>();
+	   for (int i = 0; i < items.length; i++) {
+		   String s = tNodes.getItem(i).getText(0);
+	       if (!tState.getText().equals(s)){
+	          states.put(s,s);
+ 	       }
+	   }
+
+	   states.put("success", "succes");
+	   states.put("error", "error");
+
+	   String[] retStates = new String[states.size()];
+	   int index = 0;
+	   for (String key : states.keySet()) {
+		   retStates[index] = key;
+		   index = index +1;
+	   }
+    return retStates;
+	}
+
     private void fillNode(boolean clear) {
         try {
             butAddMissingNodes.setEnabled(false);
@@ -765,12 +792,10 @@ public class SOSTabJobChainNodes extends CTabItem {
             tState.setText(clear ? "" : jobchainDataProvider.getState());
             tDelay.setText(clear ? "" : jobchainDataProvider.getDelay());
             cJob.setItems(jobchainDataProvider.getJobs());
-            if (jobchainDataProvider.getStates().length > 0){
-                cNextState.setItems(jobchainDataProvider.getStates());
-            }
-            if (jobchainDataProvider.getAllStates().length > 0){
-                cErrorState.setItems(jobchainDataProvider.getAllStates());
-            }
+
+        	cNextState.setItems(initStateCombo());
+			cErrorState.setItems(initStateCombo());
+			
             tMoveTo.setText(jobchainDataProvider.getMoveTo());
             bRemoveFile.setSelection(jobchainDataProvider.getRemoveFile());
             int job = cJob.indexOf(jobchainDataProvider.getJob());
