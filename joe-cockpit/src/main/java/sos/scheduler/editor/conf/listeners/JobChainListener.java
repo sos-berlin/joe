@@ -331,7 +331,7 @@ public class JobChainListener {
 				}
 			}
 		}
-	}
+	
 
 	public boolean checkForState(final String state) {
 		if (state.equals("")){
