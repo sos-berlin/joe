@@ -988,13 +988,15 @@ public class JobChainListener extends JOEListener implements IProcessClassDataPr
         String state = _node.getAttributeValue("state");
         String nextState = _node.getAttributeValue("next_state");
         
-        List <Element>list = _chain.getChildren("job_chain_node");
-        for (int i = 0; i < list.size(); i++) {
-            Element e = list.get(i);
-            String aktNextState = e.getAttributeValue("next_state");
-            if (aktNextState != null && aktNextState.equals(state)) {
-                e.setAttribute("next_state", nextState);
-            } 
+        if (nextState != null){
+	        List <Element>list = _chain.getChildren("job_chain_node");
+	        for (int i = 0; i < list.size(); i++) {
+	            Element e = list.get(i);
+	            String aktNextState = e.getAttributeValue("next_state");
+	            if (aktNextState != null && aktNextState.equals(state)) {
+	                e.setAttribute("next_state", nextState);
+	            } 
+	        }
         }
   
  		nodes.remove(index);
