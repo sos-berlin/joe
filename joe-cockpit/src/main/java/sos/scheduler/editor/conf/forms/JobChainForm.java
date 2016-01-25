@@ -103,9 +103,11 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 					return;
 				}
 				String newName = tName.getText().trim();
-				
+				boolean setSelection = !Utils.checkElement(listener.getChainName(), listener.get_dom(), JOEConstants.JOB_CHAIN, null,false);
 				if (Utils.checkElement(listener.getChainName(), listener.get_dom(), JOEConstants.JOB_CHAIN, null)){
-					tName.setSelection(newName.length()); 
+					if (setSelection){
+	    				tName.setSelection(tName.getText().length()); 
+    				}
 				 
 					boolean existname = Utils.existName(newName, listener.getChain(), "job_chain");
 					if (existname){

@@ -840,8 +840,7 @@ public class Utils {
 		//Matcher matcher = pattern.matcher(filename);
 	}
 
-
-	public static boolean checkElement(String name, SchedulerDom _dom, int type, String which) {
+	public static boolean checkElement(String name, SchedulerDom _dom, int type, String which, boolean dlg) {
 		boolean onlyWarning = false;//-> true: Gibt nur eine Warnung aus. Sonst Warnung mit Yes- und No- Button um ggf. die Änderungen zurückzunehmen
 		try {
 			if (which == null)
@@ -896,9 +895,10 @@ public class Utils {
 							}
 						}
 						else {
-							if (name.length() == 0)
+							if (name.length() == 0){
 								return true;
-							//
+							}
+
 							XPath x0 = XPath.newInstance("//job[@name='" + name + "']");
 							Element e = (Element) x0.selectSingleNode(_dom.getDoc());
 							boolean isOrder = Utils.getAttributeValue("order", e).equalsIgnoreCase("yes");
@@ -971,17 +971,26 @@ public class Utils {
 									}
 		}
 		catch (Exception e) {
-			if (onlyWarning) {
-				MainWindow.message(e.getMessage(), SWT.ICON_WARNING);
-			}
-			else {
-				int c = MainWindow.message(e.getMessage(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
-				if (c != SWT.YES) {
-					return false;
+			if (dlg){
+				if (onlyWarning) {
+					MainWindow.message(e.getMessage(), SWT.ICON_WARNING);
 				}
+				else {
+					int c = MainWindow.message(e.getMessage(), SWT.YES | SWT.NO | SWT.ICON_WARNING);
+					if (c != SWT.YES) {
+						return false;
+					}
+				}
+			}else{
+				return false;
 			}
 		}
 		return true;
+		
+	}
+
+	public static boolean checkElement(String name, SchedulerDom _dom, int type, String which) {
+		return checkElement(name, _dom, type, which,true);
 	}
 
  
