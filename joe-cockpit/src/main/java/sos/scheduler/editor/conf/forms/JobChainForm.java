@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import sos.scheduler.editor.app.MainWindow;
@@ -122,9 +123,17 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
                     return;
 				}
 				String newName = tName.getText().trim();
+				boolean setSelection = true;
+				try {
+                    setSelection = (Utils.elementIsUsed(jobchainDataProvider.getChainName(), jobchainDataProvider.get_dom(), JOEConstants.JOB_CHAIN, null).length() > 0);
+                } catch (JDOMException e1) {
+                   setSelection = false;
+                }
 				
 				if (Utils.checkElement(jobchainDataProvider.getChainName(), jobchainDataProvider.get_dom(), JOEConstants.JOB_CHAIN, null)){
+					if (setSelection){
 					tName.setSelection(newName.length()); 
+					}
 				 
 				    boolean existname = Utils.existName(newName, jobchainDataProvider.getChain(), "job_chain");
 					if (existname){
