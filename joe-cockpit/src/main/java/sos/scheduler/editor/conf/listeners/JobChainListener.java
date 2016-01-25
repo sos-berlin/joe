@@ -275,9 +275,9 @@ public class JobChainListener {
 					else
 						item.setBackground(null);
 					item.setText(new String[] { state, nodetype, action, next, error, onError });
-					if (!next.equals("") && !checkForState(next))
+					if ( !checkForState(next))
 						item.setBackground(3, Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-					if (!error.equals("") && !checkForState(error))
+					if ( !checkForState(error))
 						item.setBackground(4, Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
 				}
 			}
@@ -285,6 +285,9 @@ public class JobChainListener {
 	}
 
 	public boolean checkForState(final String state) {
+		if (state.equals("")){
+			return true;
+		}
 		for (String _state : _states) {
 			if (_state.equals(state))
 				return true;
