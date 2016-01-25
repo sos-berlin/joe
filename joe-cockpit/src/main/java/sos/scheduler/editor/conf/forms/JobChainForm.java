@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.MainWindow;
@@ -116,9 +117,17 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
                     return;
 				}
 				String newName = tName.getText().trim();
+				boolean setSelection = true;
+				try {
+                    setSelection = (Utils.elementIsUsed(listener.getChainName(), listener.get_dom(), JOEConstants.JOB_CHAIN, null).length() > 0);
+                } catch (JDOMException e1) {
+                   setSelection = false;
+                }
 				
 				if (Utils.checkElement(listener.getChainName(), listener.get_dom(), JOEConstants.JOB_CHAIN, null)){
-					tName.setSelection(newName.length()); 
+					if (setSelection){
+					    tName.setSelection(newName.length()); 
+					}
 				 
 				boolean existname = Utils.existName(newName, listener.getChain(), "job_chain");
 					if (existname){
