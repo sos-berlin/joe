@@ -1,4 +1,5 @@
 package com.sos.joe.xml.jobscheduler;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,7 +14,6 @@ import java.util.Vector;
 import org.eclipse.swt.SWT;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
 import sos.util.SOSFile;
@@ -23,6 +23,7 @@ import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.Utils;
 
 public class MergeAllXMLinDirectory {
+
 	public final static String	MASK_JOB					= "^.*\\.job\\.xml$";
 	public final static String	MASK_LOCK					= "^.*\\.lock\\.xml$";
 	public final static String	MASK_PROCESS_CLASS			= "^.*\\.process_class\\.xml$";
@@ -33,14 +34,9 @@ public class MergeAllXMLinDirectory {
 	private String				path						= "";
 	private Element				config						= null;
 	private static String		encoding					= "ISO-8859-1";
-	private HashMap				listOfChanges				= null;
-	/* Liste der SChreibgeschützen Dateien */
-	private ArrayList			listOfReadOnly				= null;
-	/*
-	 * Wenn dateiname ungleich der Element Attribute Name ist, dann wird der
-	 * Dateiname als name-Attribut gesetzt und * für save
-	 */
-	private ArrayList			listOfChangeElementNames	= null;
+    private HashMap<String, String> listOfChanges = null;
+    private ArrayList<String> listOfReadOnly = null;
+    private ArrayList<String> listOfChangeElementNames = null;
 
 	public MergeAllXMLinDirectory(final String path_) {
 		path = path_;
@@ -59,8 +55,8 @@ public class MergeAllXMLinDirectory {
 		Element processClass = null;
 		Element jobChains = null;
 		Element orders = null;
-		listOfReadOnly = new ArrayList();
-		listOfChangeElementNames = new ArrayList();
+        listOfReadOnly = new ArrayList<String>();
+        listOfChangeElementNames = new ArrayList<String>();
 		try {
 			SAXBuilder builder = new SAXBuilder();
 			String xml = createConfigurationFile();
@@ -69,50 +65,19 @@ public class MergeAllXMLinDirectory {
 			if (root != null) {
 				config = root.getChild("config");
 			}
-			/* Alle <name>.process_classes.xml parsieren */
 			addContains(processClass, "process_classes", MASK_PROCESS_CLASS);
-			/* Alle <name>.schedule.xml parsieren */
 			addContains(schedules, "schedules", MASK_SCHEDULE);
-			/* Alle <name>.lock.xml parsieren */
 			addContains(locks, "locks", MASK_LOCK);
-			
-            
-			/* Alle <name>.job.xml parsieren */
 			addContains(jobs, "jobs", MASK_JOB);
-			/* Alle <name>.job_chain.xml parsieren */
 			addContains(jobChains, "job_chains", MASK_JOB_CHAIN);
-			/* Alle <name>.order.xml parsieren */
 			addContainsForOrder(orders, "commands", MASK_ORDER);
-
-			/* Alle <name>.monitor.xml parsieren */
            addContains(monitors, "monitors", MASK_MONITOR);
 			
 			return Utils.getElementAsString(parentDoc.getRootElement());
 			
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 			System.err.println("..error : " + e.getMessage());
 			return null;
-		}
-	}
-
-	public void printXML(final Document doc) {
-		try {
-			/*
-			 * //DebugSystem.out.println(
-			 * "********************************************************************"
-			 * ); JDOMSource in = new JDOMSource(doc); Format format =
-			 * Format.getPrettyFormat(); //format.setEncoding(encoding);
-			 * XMLOutputter outp = new XMLOutputter(format); String output =
-			 * outp.outputString(doc);
-			 * 
-			 * System.out.println(output);System.out.println(
-			 * "********************************************************************"
-			 * );
-			 */
-		}
-		catch (Exception e) {
-			System.out.println("..error in MergeAllXMLinDirectory.printXML. Could not save file " + e.getMessage());
 		}
 	}
 
@@ -120,18 +85,15 @@ public class MergeAllXMLinDirectory {
 		try {
 			if (url.startsWith("file")) {
 				return new java.io.File(java.net.URI.create(url));
-			}
-			else {
+            } else {
 				return new java.io.File(url);
 			}
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 			throw new Exception("-> ..error : " + e);
 		}
 	}
 
 	private void addContains(Element parent, final String name, final String mask) {
-		// SAXBuilder builder = new SAXBuilder(true);
 		SAXBuilder builder = null;
 		Document currDocument = null;
 		String jobXMLFilename = "";
@@ -147,23 +109,17 @@ public class MergeAllXMLinDirectory {
 					Element xmlRoot = currDocument.getRootElement();
 					if (xmlRoot != null) {
 						if (parent == null) {
-							// config hat keinen Kindknoten {name}, also
-							// erzeugen
 							parent = new Element(name);
 							config.addContent(parent);
 						}
-						String jobXMLNameWithoutExtension = jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName() + ".xml"));
+                        String jobXMLNameWithoutExtension = jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName()
+                                + ".xml"));
 						if (Utils.getAttributeValue("name", xmlRoot).length() > 0
 								&& !jobXMLNameWithoutExtension.equalsIgnoreCase(Utils.getAttributeValue("name", xmlRoot))) {
-							// life Dateiname und Element-Attribute-name müssen
-							// gleich sein. Wenn dieser ungleich sind,
-							// dann umbennen wie der Dateiname
 							listOfChangeElementNames.add(xmlRoot.getName() + "_" + jobXMLNameWithoutExtension);
 							xmlRoot.setAttribute("name", jobXMLNameWithoutExtension);
 						}
 						if (Utils.getAttributeValue("name", xmlRoot).length() == 0) {
-							// In der Formular sieht man den Namen. Beim
-							// speichern soll es nicht zurückgeschrieben werden
 							xmlRoot.setAttribute("name", jobXMLNameWithoutExtension);
 						}
 						parent.addContent((Element) xmlRoot.clone());
@@ -171,14 +127,12 @@ public class MergeAllXMLinDirectory {
 							listOfReadOnly.add(getChildElementName(name) + "_" + Utils.getAttributeValue("name", xmlRoot));
 						}
 					}
-				}
-				catch (Exception e) {
+                } catch (Exception e) {
 					ErrorLog.message(jobXMLFilename + " has error:" + e.toString(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 					continue;
 				}
 			}
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 			System.out.println("error: " + e.getMessage());
 		}
 	}
@@ -187,11 +141,10 @@ public class MergeAllXMLinDirectory {
 		SAXBuilder builder = new SAXBuilder();
 		Document currDocument = null;
 		try {
-			Vector filelist = SOSFile.getFilelist(getNormalizedFile(path).getAbsolutePath(), mask, java.util.regex.Pattern.CASE_INSENSITIVE);
-			Iterator orderIterator = filelist.iterator();
+            Vector<File> filelist = SOSFile.getFilelist(getNormalizedFile(path).getAbsolutePath(), mask, java.util.regex.Pattern.CASE_INSENSITIVE);
+            Iterator<File> orderIterator = filelist.iterator();
 			while (orderIterator.hasNext()) {
-				String xmlFilename = orderIterator.next().toString();
-				File xmlFile = new File(xmlFilename);
+                File xmlFile = orderIterator.next();
 				currDocument = builder.build(xmlFile);
 				Element xmlRoot = currDocument.getRootElement();
 				if (xmlRoot != null) {
@@ -200,9 +153,8 @@ public class MergeAllXMLinDirectory {
 						parent = new Element(name);
 						config.addContent(parent);
 					}
-					// jobchainname,orderid.order.xml
-					String xmlNameWithoutExtension = xmlFile.getName().substring(0,
-							xmlFile.getName().indexOf("." + (xmlRoot.getName().equalsIgnoreCase("add_order") ? "order" : xmlRoot.getName() + ".xml")));
+                    String xmlNameWithoutExtension = xmlFile.getName().substring(0, xmlFile.getName().indexOf("."
+                            + (xmlRoot.getName().equalsIgnoreCase("add_order") ? "order" : xmlRoot.getName() + ".xml")));
 					String[] splitNames = xmlNameWithoutExtension.split(",");
 					String jobChainname = "";
 					String orderId = "";
@@ -212,16 +164,10 @@ public class MergeAllXMLinDirectory {
 					}
 					if (Utils.getAttributeValue("job_chain", xmlRoot).length() > 0
 							&& !jobChainname.equalsIgnoreCase(Utils.getAttributeValue("job_chain", xmlRoot))) {
-						// life Dateiname und Element-Attribute-name müssen
-						// gleich sein. Wenn dieser ungleich sind,
-						// dann umbennen wie der Dateiname
 						listOfChangeElementNames.add(xmlRoot.getName() + "_" + xmlNameWithoutExtension);
 						xmlRoot.setAttribute("job_chain", jobChainname);
 					}
 					if (Utils.getAttributeValue("id", xmlRoot).length() > 0 && !orderId.equalsIgnoreCase(Utils.getAttributeValue("id", xmlRoot))) {
-						// life Dateiname und Element-Attribute-name müssen
-						// gleich sein. Wenn dieser ungleich sind,
-						// dann umbennen wie der Dateiname
 						listOfChangeElementNames.add(xmlRoot.getName() + "_" + xmlNameWithoutExtension);
 						xmlRoot.setAttribute("id", orderId);
 					}
@@ -232,14 +178,13 @@ public class MergeAllXMLinDirectory {
 						xmlRoot.setAttribute("id", orderId);
 					}
 					parent.addContent((Element) xmlRoot.clone());
-					if (!new File(xmlFilename).canWrite()) {
+                    if (!xmlFile.canWrite()) {
 						listOfReadOnly.add(getChildElementName(name) + "_" + Utils.getAttributeValue("job_chain", xmlRoot) + ","
 								+ Utils.getAttributeValue("id", xmlRoot));
 					}
 				}
 			}
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 			System.out.println("error: " + e.getMessage());
 		}
 	}
@@ -247,20 +192,13 @@ public class MergeAllXMLinDirectory {
 	private String getChildElementName(final String pName) {
 		if (pName.equals("jobs")) {
 			return "job";
-		}
-		else
-			if (pName.equals("process_classes")) {
+        } else if (pName.equals("process_classes")) {
 				return "process_class";
-			}
-			else
-				if (pName.equals("locks")) {
+        } else if (pName.equals("locks")) {
 					return "lock";
-				}
-				else
-					if (pName.equals("job_chains")) {
+        } else if (pName.equals("job_chains")) {
 						return "job_chain";
-					}
-					else {
+        } else {
 						return pName;
 					}
 	}
@@ -269,17 +207,14 @@ public class MergeAllXMLinDirectory {
 		String xml = "<?xml version=\"1.0\" encoding=\"" + encoding + "\"?> ";
 		try {
 			xml = xml + "<spooler>  " + "      <config> " + "      </config> " + "    </spooler>";
-		}
-		catch (Exception e) {
-			System.out.println("..error in MergeAllXMLinDirectory.createConfigurationFile(). Could not create a new configuration file: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("..error in MergeAllXMLinDirectory.createConfigurationFile(). Could not create a new configuration file: "
+                    + e.getMessage());
 		}
 		return xml;
 	}
 
-	/**
-	 * Speichert das Dokument in die einzelnen Dateien wieder zurück
-	 */
-	public void saveXMLDirectory(final Document doc, final HashMap listOfChanges_) {
+    public void saveXMLDirectory(final Document doc, final HashMap<String, String> listOfChanges_) {
 		Element jobs = null;
 		Element locks = null;
 		Element processClass = null;
@@ -289,7 +224,6 @@ public class MergeAllXMLinDirectory {
 		Element monitors = null;
 		listOfChanges = listOfChanges_;
 		try {
-			// system.out.println("********************************************************************");
 			Element root = doc.getRootElement();
 			if (root != null) {
 				config = root.getChild("config");
@@ -313,15 +247,12 @@ public class MergeAllXMLinDirectory {
 			save("add_order", orders);
 			deleteFiles();
 			listOfChanges.clear();
-			// system.out.println("********************************************************************");
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 			System.out.println("..error in MergeAllXMLinDirectory.save. Could not save file " + e.getMessage());
 		}
 	}
 
 	private void save(final String name, final Element elem) {
-		// String filename = " ";
 		List list = null;
 		if (elem != null) {
 			list = elem.getChildren(name);
@@ -335,7 +266,8 @@ public class MergeAllXMLinDirectory {
 		}
 	}
 
-	public String saveLifeElement(final String name, final Element e, final HashMap listOfChanges_, final ArrayList listOfChangeElementNames_) {
+    public String saveLifeElement(final String name, final Element e, final HashMap<String, String> listOfChanges_,
+            final ArrayList<String> listOfChangeElementNames_) {
 		listOfChangeElementNames = listOfChangeElementNames_;
 		listOfChanges = listOfChanges_;
 		return saveLifeElement(name, e);
@@ -356,14 +288,12 @@ public class MergeAllXMLinDirectory {
 			if (file.length == 2) {
 				attrName = (file.length >= 2 ? file[0] : "") + "," + (file.length >= 2 ? file[1] : "");
 				attrName = attrName.substring(0, attrName.indexOf(".order.xml"));
-			}
-			else {
+            } else {
 				attrName = Utils.getAttributeValue("job_chain", e) + "," + file[0];
 				filename = filename.replaceAll(new File(filename).getName(), attrName);
 				attrName = attrName.substring(0, attrName.indexOf(".order.xml"));
 			}
-		}
-		else {
+        } else {
 			if (!filename.endsWith("." + e.getName() + ".xml")) {
 				if (!new File(filename).renameTo(new File(filename + "." + e.getName() + ".xml"))) {
 					new File(filename).deleteOnExit();
@@ -378,8 +308,7 @@ public class MergeAllXMLinDirectory {
 			_elem.removeAttribute("job_chain");
 			_elem.removeAttribute("id");
 			_elem.removeAttribute("replace");
-		}
-		else {
+        } else {
 			_elem.removeAttribute("name");
 		}
 		String xml = Utils.getElementAsString(_elem);
@@ -387,8 +316,7 @@ public class MergeAllXMLinDirectory {
 		if (name.equals("order")) {
 			Utils.setAttribute("job_chain", attrName.substring(0, attrName.indexOf(",")), e);
 			Utils.setAttribute("id", attrName.substring(attrName.indexOf(",") + 1), e);
-		}
-		else {
+        } else {
 			Utils.setAttribute("name", attrName, e);
 		}
 		return filename;
@@ -399,21 +327,18 @@ public class MergeAllXMLinDirectory {
 		String attrName = "";
 		boolean ok = false;
       
-
 		if (isOrderTag(pstrCurrentTagName)) {
 			pstrCurrentTagName = "order";
 		}
 		if (pstrCurrentTagName.equals("order")) {
 			attrName = Utils.getAttributeValue("job_chain", e) + "," + Utils.getAttributeValue("id", e);
-		}
-		else {
+        } else {
 			attrName = Utils.getAttributeValue("name", e);
 		}
 		if (attrName != null && attrName.length() == 0){
 			return "";
 		}
 		
-
 		filename = (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + attrName + "."
 				+ (pstrCurrentTagName.equalsIgnoreCase("add_order") ? "order" : pstrCurrentTagName) + ".xml";
 		 
@@ -422,23 +347,24 @@ public class MergeAllXMLinDirectory {
 				if (!new File(filename).delete()) {
 					ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 				}
-			}
-			else {
+            } else {
 				Element _elem = e;
 				if (isOrderTag(pstrCurrentTagName)) {
 					_elem.removeAttribute("job_chain");
 					_elem.removeAttribute("id");
 					_elem.removeAttribute("replace");
-				}
-				else {
+                } else {
 					_elem.removeAttribute("name");
 				}
 				if (isJobTag(pstrCurrentTagName)) {
-					if (_elem.getChild("process") != null) { // this is just a workaround to avoid script and process at the same object
+                    if (_elem.getChild("process") != null) { // this is just a
+                                                             // workaround to
+                                                             // avoid script and
+                                                             // process at the
+                                                             // same object
 						if (_elem.getChild("process").getAttribute("file") == null) {
 							_elem.removeChild("process");
-						}
-						else {
+                        } else {
 							_elem.removeChild("script");
 						}
 					}
@@ -446,17 +372,14 @@ public class MergeAllXMLinDirectory {
 				}
 				String xml = Utils.getElementAsString(_elem);
 				ok = saveXML(xml, filename);
-				// attribute wieder zurückschreiben zum weiterverarbeiten
 				if (isOrderTag(pstrCurrentTagName)) {
 					Utils.setAttribute("job_chain", attrName.substring(0, attrName.indexOf(",")), e);
 					Utils.setAttribute("id", attrName.substring(attrName.indexOf(",") + 1), e);
-				}
-				else {
+                } else {
 					Utils.setAttribute("name", attrName, e);
 				}
 			}
 		}
-		// Element ist neu angelegt, also muss dieser auch gespeichert werden.
 		if (ok && !new File(filename).exists()) {
 			String xml = Utils.getElementAsString(e);
 			saveXML(xml, filename);
@@ -478,7 +401,6 @@ public class MergeAllXMLinDirectory {
 		filename = filename + "~";
 		boolean saveFile = false;
 		try {
-			// system.out.println("********************************************************************");
 			SAXBuilder builder2 = getBuilder(false);
 			Document doc = builder2.build(new StringReader(xml));
 			// test
@@ -488,18 +410,15 @@ public class MergeAllXMLinDirectory {
 			if (saveFile && !new File(filename).renameTo(new File(originalFilename))) {
 				ErrorLog.message("could not rename file in " + filename, SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
 			}
+            return saveFile;
  		}
-		
 		
 		catch (Exception e) {
 			
 			ErrorLog.message("could not save file " + filename + ". cause:" + e.getMessage(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-			saveFile = false;
+            return false;
 		}
-		finally{
-			return saveFile;
 		}
-	}
 	
 	private String getFileName(String key, String prefix){
 	    return (path.endsWith("/") || path.endsWith("\\") ? path : path.concat("/")) + key.substring(prefix.length()) + "."
@@ -509,34 +428,26 @@ public class MergeAllXMLinDirectory {
 	private void deleteFiles() {
 		String filename = "";
 		String prefix = "";
-		Iterator keys1 = listOfChanges.keySet().iterator();
-		Iterator values1 = listOfChanges.values().iterator();
+        Iterator<String> keys1 = listOfChanges.keySet().iterator();
+        Iterator<String> values1 = listOfChanges.values().iterator();
 		while (keys1.hasNext()) {
-			String key = keys1.next().toString();
-			Object oVal = values1.next();
-			String val = oVal != null ? oVal.toString() : "";
-			if (val.equals(SchedulerDom.DELETE)) {
+            String key = keys1.next();
+            String listOfChangesValue = values1.next();
+            if (listOfChangesValue == null) {
+                listOfChangesValue = "";
+            }
+            if (listOfChangesValue.equals(SchedulerDom.DELETE)) {
 				if (key.startsWith("job_chain_")) {
 					prefix = "job_chain_";
-				}
-				else
-					if (key.startsWith("job_")) {
+                } else if (key.startsWith("job_")) {
 						prefix = "job_";
-					}
-					else
-						if (key.startsWith("process_class_")) {
+                } else if (key.startsWith("process_class_")) {
 							prefix = "process_class_";
-						}
-						else
-							if (key.startsWith("lock_")) {
+                } else if (key.startsWith("lock_")) {
 								prefix = "lock_";
-							}
-							else
-								if (key.startsWith("order_")) {
+                } else if (key.startsWith("order_")) {
 									prefix = "order_";
-								}
-								else
-                                    if (key.startsWith("schedule_")) {
+                } else if (key.startsWith("schedule_")) {
                                         prefix = "schedule_";
                                     }
                                         if (key.startsWith("monitor_")) {
@@ -556,7 +467,7 @@ public class MergeAllXMLinDirectory {
 					File fGraphvizDiagram = new File(filenameGraphvizDiagram);
 					if (fGraphvizDiagram.exists()){
 						fGraphvizDiagram.delete();     
-					}				   
+                }
                     String filenameGraphvizDiagramPng = filename.replaceAll(".job_chain.xml", ".png");
 					File fGraphvizDiagramPng = new File(filenameGraphvizDiagramPng);
 					if (fGraphvizDiagramPng.exists()){
@@ -566,22 +477,20 @@ public class MergeAllXMLinDirectory {
 				if (f.exists()) {
 					if (!f.delete()) {
 						ErrorLog.message(filename + " could not delete.", SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-					}			
-				}				
-			}
-		}
-	}
+                    }
+                }
+            }
+        }
+    }
 
 	public String getJobname(final String filename) {
 		String jobname = "";
 		try {
 			SAXBuilder builder = new SAXBuilder();
-			// String xml = createConfigurationFile();
 			Document doc = builder.build(new File(filename));
 			Element root = doc.getRootElement();
 			jobname = Utils.getAttributeValue("name", root);
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 			ErrorLog.message(".. could not get jobname from " + filename + " cause: " + e.getMessage(), SWT.ICON_ERROR);
 		}
 		return jobname;
@@ -601,26 +510,23 @@ public class MergeAllXMLinDirectory {
 				String id = split.length > 1 ? split[1] : "";
 				Utils.setAttribute("job_chain", jobChain, elem);
 				Utils.setAttribute("id", id, elem);
-			}
-			else
+            } else
 				Utils.setAttribute("name", name, elem);
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 			ErrorLog.message(".. could not read Element from " + file + " cause: " + e.getMessage(), SWT.ICON_ERROR);
 		}
 		return elem;
 	}
 
-
-	public ArrayList getListOfReadOnly() {
+    public ArrayList<String> getListOfReadOnly() {
 		return listOfReadOnly;
 	}
 
-	public ArrayList getListOfChangeElementNames() {
+    public ArrayList<String> getListOfChangeElementNames() {
 		return listOfChangeElementNames;
 	}
 
-	public void setListOfChangeElementNames(final ArrayList listOfChangeElementNames) {
+    public void setListOfChangeElementNames(final ArrayList<String> listOfChangeElementNames) {
 		this.listOfChangeElementNames = listOfChangeElementNames;
 	}
 
@@ -638,16 +544,13 @@ public class MergeAllXMLinDirectory {
 			String[] s = new String[1];
 			s[0] = getClass().getResource(Options.getSchema()).toString();
 			return s;
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 			try {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could get schema ", e);
-			}
-			catch (Exception ee) {
-				// tu nichts
+            } catch (Exception ee) {
 			}
 			throw new IOException("error in writeSchemaFile(). could get schema " + e.toString());
 		}
 	}
-	
+
 }
