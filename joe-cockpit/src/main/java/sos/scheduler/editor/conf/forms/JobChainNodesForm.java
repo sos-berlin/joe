@@ -1,4 +1,5 @@
 package sos.scheduler.editor.conf.forms;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -390,8 +391,6 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
 					enableNode(true);
 					fillNode(true);
 					tState.setFocus();
-				
-					cNextState.setVisibleItemCount(0);
 				}
 			});
 			bNewNode.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
@@ -541,6 +540,10 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
 				@Override public void widgetSelected(final SelectionEvent e) {
 					isInsert = true;
 					String state = tState.getText();
+					
+					cNextState.setItems(initStateCombo());
+					cErrorState.setItems(initStateCombo());
+
 					tState.setText("");
 					tDelay.setText("");
 					cErrorState.setText("");
@@ -919,6 +922,28 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
 		tRegex.setEnabled(enable);
 		bApplyFileOrderSource.setEnabled(false);
 	}
+	
+	private String[] initStateCombo(){
+	   TableItem[] items = tNodes.getItems();
+	   HashMap <String,String> states = new HashMap<String, String>();
+	   for (int i = 0; i < items.length; i++) {
+		   String s = tNodes.getItem(i).getText(0);
+	       if (!tState.getText().equals(s)){
+	          states.put(s,s);
+    	   }
+	   }
+
+	   states.put("success", "succes");
+	   states.put("error", "error");
+
+	   String[] retStates = new String[states.size()];
+	   int index = 0;
+	   for (String key : states.keySet()) {
+		   retStates[index] = key;
+		   index = index +1;
+	   }
+       return retStates;
+	}
 
 	private void fillNode(boolean clear) {
 		try {
@@ -939,10 +964,10 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
 			tState.setText(clear ? "" : listener.getState());
 			tDelay.setText(clear ? "" : listener.getDelay());
 			cJob.setItems(listener.getJobs());
-			if (listener.getStates().length > 0)
-				cNextState.setItems(listener.getStates());
-			if (listener.getAllStates().length > 0)
-				cErrorState.setItems(listener.getAllStates());
+			
+			cNextState.setItems(initStateCombo());
+			cErrorState.setItems(initStateCombo());
+
 			tMoveTo.setText(listener.getMoveTo());
 			bRemoveFile.setSelection(listener.getRemoveFile());
 			int job = cJob.indexOf(listener.getJob());
