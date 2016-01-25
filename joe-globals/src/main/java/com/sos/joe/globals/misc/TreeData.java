@@ -130,6 +130,11 @@ public class TreeData {
 	public boolean equals(final int type) {
 		return _type == type;
 	}
+	
+	public int hasCode(){
+	    return _type;
+	}
+	 
 
 	public void UpdateTreeItem() {
 		JSObjBase objO = (JSObjBase) objHotFolderObject;
