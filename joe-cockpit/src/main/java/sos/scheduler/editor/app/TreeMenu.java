@@ -714,16 +714,8 @@ public class TreeMenu {
 
 	private void paste(String key, TreeData data, boolean overrideAttributes) {
 		try {
-<<<<<<< HEAD
-
+	
 			if (_type != data.getType()) {
-=======
-			// ungleiche Typen, überprüfen, ob das pastelement ein möglicher
-			// Vaterknoten von _copy element ist, z.B. _copy Element ist job und
-			// paste Element ist jobs
-			
-			if (_type != data.getType()) {
-				// System.out.println("*****************************************");
 				if (_type != JOEConstants.JOB &&
 					_type != JOEConstants.JOB_CHAIN &&
 					_type != JOEConstants.SCHEDULE &&
@@ -731,7 +723,7 @@ public class TreeMenu {
 					_type != JOEConstants.MONITOR) {
 					return;
 				}
->>>>>>> origin/release/1.8
+
 				pasteChild(key, data);
 				return;
 			}
