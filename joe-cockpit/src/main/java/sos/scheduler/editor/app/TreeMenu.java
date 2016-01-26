@@ -502,6 +502,9 @@ public class TreeMenu {
 		return new Listener() {
 			@Override public void handleEvent(Event e) {
 				Element elem = getItemElement();
+				if (elem == null){
+					return;
+				}
 				String name = elem.getName();
 				int c = MainWindow.message("Do you want remove the " + name + "?", SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 				if (c != SWT.YES){
@@ -711,8 +714,16 @@ public class TreeMenu {
 
 	private void paste(String key, TreeData data, boolean overrideAttributes) {
 		try {
-
+	
 			if (_type != data.getType()) {
+				if (_type != JOEConstants.JOB &&
+					_type != JOEConstants.JOB_CHAIN &&
+					_type != JOEConstants.SCHEDULE &&
+					_type != JOEConstants.ORDER &&
+					_type != JOEConstants.MONITOR) {
+					return;
+				}
+
 				pasteChild(key, data);
 				return;
 			}
