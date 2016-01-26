@@ -948,7 +948,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
 			cNextState.setItems(initStateCombo());
 			cErrorState.setItems(initStateCombo());
 
-            }
+             
             tMoveTo.setText(listener.getMoveTo());
             bRemoveFile.setSelection(listener.getRemoveFile());
             int job = cJob.indexOf(listener.getJob());
