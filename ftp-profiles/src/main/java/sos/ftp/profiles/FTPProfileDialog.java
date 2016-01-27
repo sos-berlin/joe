@@ -39,7 +39,8 @@ public class FTPProfileDialog {
 	private              Combo               cboConnectname                = null;
 	private              Text                txtPort                       = null;
 	private              Text                txtUsername                   = null;
-	private              Text                txtPassword                   = null;
+    private              Text                txtPassword                   = null;
+    private              Text                txtPassphrase                 = null;
 	private              Text                txtRoot                       = null;
 	private              Text                txtLocalDirectory             = null;
 	private              Button              butAscii                      = null;
@@ -62,7 +63,6 @@ public class FTPProfileDialog {
 	private              Group               groupAuthenticationMethods    = null;
 	private              Button              butPublicKey                  = null;
 	private              Button              butAuthPassword               = null;
-	private              Button              butPasswordAndPublic          = null;
 	private              Text                txtDirPublicKey               = null;
 	private              boolean             saved                         = false; //hilsvariable            
 	private              boolean             init                          = false;   
@@ -252,18 +252,12 @@ public class FTPProfileDialog {
 				final Label passwordLabel = new Label(group, SWT.NONE);
 				passwordLabel.setText("Password");			
 
-				txtPassword = new Text(group, SWT.PASSWORD | SWT.BORDER);
+//                txtPassword = new Text(group, SWT.PASSWORD | SWT.BORDER);
+                txtPassword = new Text(group, SWT.BORDER);
 				txtPassword.addModifyListener(new ModifyListener() {
 					public void modifyText(final ModifyEvent e) {
-						if(init) {
-							try {
-								init = false;
-								//TODO 
-								if(txtPassword.getText().length() > 0) {
-								}
-							} catch(Exception ex) {
-								System.out.println(ex.getMessage());
-							}
+					    if (!txtPassphrase.getText().equals(txtPassword.getText())){
+					        txtPassphrase.setText(txtPassword.getText());
 						}
 						setEnabled();
 					}
@@ -455,6 +449,7 @@ public class FTPProfileDialog {
 				butPublicKey.setLayoutData(gridData_pk);
 				butPublicKey.setText("Public Key");
 
+								
 				butAuthPassword = new Button(groupAuthenticationMethods, SWT.RADIO);
 				butAuthPassword.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(final SelectionEvent e) {
@@ -464,14 +459,21 @@ public class FTPProfileDialog {
 				butAuthPassword.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
 				butAuthPassword.setText("Password");
 
-				butPasswordAndPublic = new Button(groupAuthenticationMethods, SWT.RADIO);
-				butPasswordAndPublic.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(final SelectionEvent e) {
-						setEnabled();
-					}
-				});
-				butPasswordAndPublic.setText("Public Key and Password");
-				new Label(groupAuthenticationMethods, SWT.NONE);
+		        final Label passphraseLabel = new Label(groupAuthenticationMethods, SWT.NONE);
+		        passphraseLabel.setText("Passphrase");      
+                //txtPassphrase = new Text(group, SWT.PASSWORD | SWT.BORDER);
+                txtPassphrase = new Text(groupAuthenticationMethods, SWT.BORDER);
+		        txtPassphrase.addModifyListener(new ModifyListener() {
+                    public void modifyText(final ModifyEvent e) {
+                        if (!txtPassphrase.getText().equals(txtPassword.getText())){
+                            txtPassword.setText(txtPassphrase.getText());
+                        }
+                        setEnabled();
+                    }
+                });
+		        txtPassphrase.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false, 2, 1));
+                 
+
 
 				final Label pathToPublicLabel = new Label(groupAuthenticationMethods, SWT.NONE);
 				pathToPublicLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 2, 1));
@@ -539,7 +541,6 @@ public class FTPProfileDialog {
 						//auth
 						txtDirPublicKey.setText("");
 						butPublicKey.setSelection(false);
-						butPasswordAndPublic.setSelection(false);
 						butAuthPassword.setSelection(false);
 					}
 				});
@@ -680,16 +681,10 @@ public class FTPProfileDialog {
 				if(method.equalsIgnoreCase("publickey")) {
 					butPublicKey.setSelection(true);	
 					butAuthPassword.setSelection(false);
-					butPasswordAndPublic.setSelection(false);
 				} else if(method.equalsIgnoreCase("password")) {
 					butAuthPassword.setSelection(true);
 					butPublicKey.setSelection(false);	
-					butPasswordAndPublic.setSelection(false);
-				} else if(method.equalsIgnoreCase("both")) {
-					butPasswordAndPublic.setSelection(true);
-					butAuthPassword.setSelection(false);
-					butPublicKey.setSelection(false);	
-				}
+				} 
 
 
 			} else {
@@ -697,7 +692,6 @@ public class FTPProfileDialog {
 				txtDirPublicKey.setText("");
 				butPublicKey.setSelection(false);
 				butAuthPassword.setSelection(false);
-				butPasswordAndPublic.setSelection(false);
 			}
 
 
@@ -794,9 +788,7 @@ public class FTPProfileDialog {
             authMethod = "publickey";
 		}else if(butAuthPassword.getSelection()){
             authMethod = "password";
-		}else if(butPasswordAndPublic.getSelection()){
-                authMethod = "both";
-	  	}
+		}
 
 		return authMethod;
 	}
