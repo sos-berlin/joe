@@ -69,6 +69,27 @@ public class TreeMenu {
 		return null;
 	}
 
+	private boolean isCopyItem(int type){
+	    return (type == JOEConstants.JOB ||
+	            type == JOEConstants.JOB_CHAIN ||
+	            type == JOEConstants.ORDER ||
+	            type == JOEConstants.SCHEDULE ||
+	            type == JOEConstants.LOCKS ||
+	            type == JOEConstants.MONITOR ||
+	            type == JOEConstants.PARAMETER ||
+	            type == JOEConstants.RUNTIME ||
+                type == JOEConstants.JOB_OPTION ||
+                type == JOEConstants.MONITORS ||
+                type == JOEConstants.OPTIONS ||
+                type == JOEConstants.LOCKUSE ||
+                type == JOEConstants.MONITORUSE ||
+                type == JOEConstants.COMMANDS ||
+                type == JOEConstants.JOB_DOCUMENTATION ||
+                type == JOEConstants.RUNTIME ||
+                type == JOEConstants.PROCESS_CLASSES ||
+	            type == JOEConstants.SETTINGS );
+	            
+	}
  
 	private void createMenu() {
 		_menu = new Menu(_tree.getShell(), SWT.POP_UP);
@@ -107,10 +128,8 @@ public class TreeMenu {
 					if (element != null) {
 						getItem(TreeMenu.EDIT_XML).setEnabled(true);
 						
-						getItem(TreeMenu.SHOW_XML).setEnabled(true); // show xml
-						getItem(TreeMenu.COPY_TO_CLIPBOARD).setEnabled(true); // copy
-																				// to
-																				// clipboard
+						getItem(TreeMenu.SHOW_XML).setEnabled(true); 
+						getItem(TreeMenu.COPY_TO_CLIPBOARD).setEnabled(true); 
 						if (_dom instanceof SchedulerDom) {
 							SchedulerDom curDom = ((SchedulerDom) _dom);
 							if (curDom.isLifeElement()) {
@@ -123,8 +142,7 @@ public class TreeMenu {
 							}
 						}
 
-						getItem(TreeMenu.COPY).setEnabled(true); // copy
-
+						getItem(TreeMenu.COPY).setEnabled(isCopyItem(((TreeData) _tree.getSelection()[0].getData()).getType()));  
 						if (_copy != null) {
 							MenuItem _paste = getItem(TreeMenu.PASTE);
 							_paste.setEnabled(true); // paste
@@ -132,9 +150,21 @@ public class TreeMenu {
 						if (getParentItemName().length() > 0) {
 							getItem(TreeMenu.NEW).setEnabled(true);
 						}
+                        getItem(TreeMenu.DELETE).setEnabled(false);
 						if ((_dom instanceof SchedulerDom) && !((SchedulerDom) _dom).isLifeElement()) {
 							if (getItemElement() != null) {
-								getItem(TreeMenu.DELETE).setEnabled(true);
+							    TreeData data = (TreeData) _tree.getSelection()[0].getData();
+							    _type = ((TreeData) _tree.getSelection()[0].getData()).getType();
+							    boolean del = false;
+						        if (_type == JOEConstants.JOB ||
+						            _type == JOEConstants.JOB_CHAIN ||
+						            _type == JOEConstants.SCHEDULE ||
+						            _type == JOEConstants.ORDER ||
+						            _type == JOEConstants.MONITOR){
+							        del = true;
+							    }
+							        
+								getItem(TreeMenu.DELETE).setEnabled(del);
 							}
 						}
 					}
