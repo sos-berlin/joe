@@ -299,15 +299,13 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
             Document doc = builder2.build(new StringReader(xml));
             SchedulerDom dom = new SchedulerDom(SchedulerDom.DIRECTORY);
             saveFile = dom.writeElement(filename, doc);
+
         }
-        
         catch (Exception e) {
             ErrorLog.message("could not save file " + filename + ". cause:" + e.getMessage(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
             saveFile = false;
         }
-        finally{
-            return saveFile;
-        }
+        return saveFile;
     }	
     
 	private void fillChain() {
