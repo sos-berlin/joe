@@ -2,6 +2,7 @@ package com.sos.event.service.listeners;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -27,6 +28,8 @@ import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.Events.ActionsDom;
 
 public class ActionsListener implements IUpdateTree {
+    private final static Logger LOGGER = Logger.getLogger(ActionsListener.class);
+
 	private ActionsDom		_dom;
 	private ActionsForm		_gui;
 	public static String	ACTION_PREFIX	= "Action: ";
@@ -50,7 +53,6 @@ public class ActionsListener implements IUpdateTree {
 
 	public boolean treeSelection(Tree tree, Composite c) {
 		try {
-			//System.out.println("--> " + tree.getSelectionCount());
 			if (tree.getSelectionCount() > 0) {
 				// dispose the old form
 				Control[] children = c.getChildren();
@@ -63,7 +65,6 @@ public class ActionsListener implements IUpdateTree {
 				TreeData data = (TreeData) item.getData();
 				if (data == null)
 					return false;
-				//System.out.println("test: "  + item.getText());
 				_dom.setInit(true);
 				switch (data.getType()) {
 					case JOEConstants.ACTIONS:
@@ -95,17 +96,16 @@ public class ActionsListener implements IUpdateTree {
 						new JobCommandForm(c, SWT.NONE, _dom, data.getElement(), _gui);
 						break;
 					case JOEConstants.PARAMETER:
-						//int type = getType(data.getElement());
 						new ParameterForm(c, SWT.NONE, _dom, data.getElement(), _gui, JOEConstants.JOB_COMMANDS);
 						break;
 					default:
-						System.out.println("no form found for " + item.getText());
+					    LOGGER.info("no form found for " + item.getText());
 				}
 				c.layout();
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(),e);
 			ErrorLog.message(e.getMessage(), SWT.ICON_ERROR);
 		}
 		_dom.setInit(false);
@@ -153,7 +153,6 @@ public class ActionsListener implements IUpdateTree {
 				TreeItem item2 = new TreeItem(parent, SWT.NONE);
 				item2.setText(GROUP_PREFIX + Utils.getAttributeValue("group", eventGroup));
 				item2.setData(new TreeData(JOEConstants.EVENT_GROUP, eventGroup, Options.getDocHelpURL("event_group")));
-				//item.setExpanded(true);	
 			}
 		}
 	}

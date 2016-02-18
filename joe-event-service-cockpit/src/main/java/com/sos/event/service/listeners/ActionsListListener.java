@@ -21,8 +21,9 @@ public class ActionsListListener {
 	}
 
 	public void newAction(String name) {
-		if (_actions == null)
-			_actions = _dom.getRoot();
+		if (_actions == null){
+		    _actions = _dom.getRoot();
+		}
 		Element action = new Element("action");
 		Utils.setAttribute("name", name, action);
 		_actions.addContent(action);
@@ -30,8 +31,9 @@ public class ActionsListListener {
 	}
 
 	public void fillActions(Table table) {
-		if (_actions == null)
-			_actions = _dom.getRoot();
+		if (_actions == null){
+		    _actions = _dom.getRoot();
+		}
 		if (table != null) {
 			table.removeAll();
 			java.util.List l = _actions.getChildren("action");
