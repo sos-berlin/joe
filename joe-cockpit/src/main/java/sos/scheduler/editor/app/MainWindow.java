@@ -1,5 +1,5 @@
 package sos.scheduler.editor.app;
-import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -34,15 +33,12 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
-
 import sos.ftp.profiles.FTPProfileJadeClient;
 import sos.scheduler.editor.classes.JoeLockFolder;
 import sos.scheduler.editor.classes.WindowsSaver;
 import sos.scheduler.editor.conf.forms.HotFolderDialog;
 import sos.scheduler.editor.conf.forms.JobChainConfigurationForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
-import sos.util.SOSString;
-
 import com.sos.JSHelper.Basics.VersionInfo;
 import com.sos.VirtualFileSystem.common.SOSFileEntry;
 import com.sos.event.service.forms.ActionsForm;
@@ -62,38 +58,38 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en") public class MainWindow {
+@I18NResourceBundle(baseName = "JOEMessages", defaultLocale = "en")
+public class MainWindow {
+
     public static final String  name        = System.getProperty("os.name");
     public static final boolean isWindows   = name.startsWith("Windows");
     private static String       DOT         = isWindows ? "dot.exe" : "dot";
-    private static final String	conNewlineTab							= "n\t";
-	private static final String	conPropertyNameEDITOR_JOB_SHOW_WIZARD	= "editor.job.show.wizard";
-	private static final String	conStringEDITOR							= "editor";
-	private static final String	conIconOPEN_HOT_FOLDER_GIF				= "/sos/scheduler/editor/icon_open_hot_folder.gif";
-	public static final String	conIconICON_OPEN_GIF					= "/sos/scheduler/editor/icon_open.gif";
-	public static final String	conIconEDITOR_PNG						= "/sos/scheduler/editor/editor.png";
+    private static final String NEWLINE_TAB = "n\t";
+    private static final String PROPERTY_NAME_EDITOR_JOB_SHOW_WIZARD = "editor.job.show.wizard";
+    private static final String STRING_EDITOR = "editor";
+    private static final String ICON_OPEN_HOT_FOLDER_GIF = "/sos/scheduler/editor/icon_open_hot_folder.gif";
+    public static final String ICON_OPEN_GIF = "/sos/scheduler/editor/icon_open.gif";
+    public static final String ICON_EDITOR_PNG = "/sos/scheduler/editor/editor.png";
+    private final String CLASS_NAME = "MainWindow";
 	private final String		conClassName							= "MainWindow";
 	private final String		conSVNVersion							= "$Id$";
-	private static final Logger	logger									= Logger.getLogger(MainWindow.class);
+    private static final Logger LOGGER = Logger.getLogger(MainWindow.class);
 	private static Shell		sShell									= null;													// @jve:decl-index=0:visual-constraint="3,1"
 	private MainListener		listener								= null;
 	public static IContainer	container								= null;
 	private Menu				menuBar									= null;
 	private static Menu			mFile									= null;
 	private Menu				submenu									= null;
-	private Menu				menuLanguages							= null;
 	private Menu				submenu1								= null;
  	private Composite			groupmain								= null;
 	private static ToolItem		butSave									= null;
 	private static ToolItem		butShowAsXML							= null;
-	private static SOSString	sosString								= new SOSString();
-	/**  */
-	private static boolean		flag									= true;													// hilfsvariable
+    private static boolean flag = true;
 	private final static String	EMPTY									= "";
 	private static Label		StatusLine								= null;
 
 	public MainWindow() {
-		logger.debug(conSVNVersion);
+        LOGGER.debug(conSVNVersion);
 	}
 
 
@@ -120,39 +116,46 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		container = new TabbedContainer(objParent);
 		 
 		sShell.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-		// TODO: Ausserhalb des Job Editors veränderte Files sollten mit Hilfe einer "Aktualisieren" Funktion neu eingelesen werden können.
+        // TODO: Ausserhalb des Job Editors veränderte Files sollten mit Hilfe
+        // einer "Aktualisieren" Funktion neu eingelesen werden können.
 		sShell.addShellListener(new ShellListener() {
-			@Override public void shellActivated(ShellEvent event) {
+
+            @Override
+            public void shellActivated(ShellEvent event) {
 				shellActivated_();
 			}
 
-			@Override public void shellClosed(ShellEvent arg0) {
+            @Override
+            public void shellClosed(ShellEvent arg0) {
 				saveWindowPosAndSize();
-				logger.debug("shellClosed");
+                LOGGER.debug("shellClosed");
 			}
 
-			@Override public void shellDeactivated(ShellEvent arg0) {
-				logger.debug("shellDeactivated");
+            @Override
+            public void shellDeactivated(ShellEvent arg0) {
+                LOGGER.debug("shellDeactivated");
 			}
 
-			@Override public void shellDeiconified(ShellEvent arg0) {
-				logger.debug("shellDeiconified");
+            @Override
+            public void shellDeiconified(ShellEvent arg0) {
+                LOGGER.debug("shellDeiconified");
 			}
 
-			@Override public void shellIconified(ShellEvent arg0) {
+            @Override
+            public void shellIconified(ShellEvent arg0) {
 			}
 		});
  	}
 
 	private String getMenuText(final String pstrText, final String pstrAccelerator) {
-		@SuppressWarnings("unused") final String conMethodName = conClassName + "::getMenuText";
+        @SuppressWarnings("unused")
+        final String conMethodName = CLASS_NAME + "::getMenuText";
 		String strRet = pstrText;
 		int intLen = pstrAccelerator.trim().length();
 		if (intLen > 0) {
 			if (intLen == 1) {
 				strRet += "\tCtrl+" + pstrAccelerator;
-			}
-			else {
+            } else {
 				strRet += "\t" + pstrAccelerator;
 			}
 		}
@@ -171,25 +174,20 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 	public void setStatusLine(final String pstrText, final int pintMsgType) {
 		StatusLine.setText(pstrText);
-		// StatusLine.setForeground(SWT.COLOR_BLUE);
 	}
 
 	public void setStatusLine(final String pstrText) {
 		StatusLine.setText(pstrText);
-		// StatusLine.setForeground(SWT.COLOR_BLUE);
 	}
+
 	private WindowsSaver	objPersistenceStore;
 
-	/**
-	 * This method initializes sShell Will only be executed with JOE standalone
-	 * @wbp.parser.entryPoint
-	 */
 	public void createSShell() {
 		Shell shell = new Shell();
 		final GridLayout gridLayout_1 = new GridLayout();
 		shell.setLayout(gridLayout_1);
 		shell.setMinimumSize(940, 600);
-		shell.setImage(ResourceManager.getImageFromResource(conIconEDITOR_PNG));
+        shell.setImage(ResourceManager.getImageFromResource(ICON_EDITOR_PNG));
 		Composite groupmain = new Composite(shell, SWT.NONE);
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.verticalSpacing = 0;
@@ -199,23 +197,18 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		groupmain.setLayout(gridLayout);
 		groupmain.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
 		createSShell(shell, groupmain);
-		Options.loadWindow(sShell, conStringEDITOR);
+        Options.loadWindow(sShell, STRING_EDITOR);
 		String strT = Messages.getLabel(JOE_I_0010) + " " + VersionInfo.JAR_VERSION;
 		container.setTitleText(strT);
 		sShell.setText(strT);
-		logger.debug(strT);
+        LOGGER.debug(strT);
 		Options.conJOEGreeting = strT;
 		sShell.setData(sShell.getText());
 	}
 
-	/**
-	 * This method initializes sShell Will only be executed with JOE using in Dashboard
-	 * @wbp.parser.entryPoint
-	 */
 	public void createSShell(Composite containerParent, Composite objParent) {
 		sShell = objParent.getShell();
-		//  final GridLayout grdLayout_1 = new GridLayout();
-		//  objParent.setLayout(grdLayout_1);
+
 		groupmain = objParent;
 		groupmain.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
 		createToolBar();
@@ -225,12 +218,10 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		gridStatuslineLayout.horizontalAlignment = GridData.FILL;
 		gridStatuslineLayout.grabExcessHorizontalSpace = true;
 		StatusLine.setLayoutData(gridStatuslineLayout);
-		// setStatusLine("Hey, Joe ...", 0);
 		listener = new MainListener(this, container);
 		objPersistenceStore = new WindowsSaver(this.getClass(), sShell, 940, 600);
 		objPersistenceStore.restoreWindowLocation();
-		// sShell.setSize(new org.eclipse.swt.graphics.Point(940, 600));
-		// load resources
+
 		listener.loadOptions();
 		listener.loadJobTitels();
 		listener.loadHolidaysTitel();
@@ -240,7 +231,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		mFile = new Menu(submenuItem2);
 		MenuItem open = new MenuItem(mFile, SWT.PUSH);
 		open.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
 				if (container.openQuick() != null) {
 					setSaveStatus();
 				}
@@ -248,7 +241,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		});
 		open.setText(getMenuText(Messages.getLabel(MENU_OPEN), "O"));
 		open.setAccelerator(SWT.CTRL | 'O');
-		//
+
 		MenuItem mNew = new MenuItem(mFile, SWT.CASCADE);
 		mNew.setText(getMenuText(Messages.getLabel(MENU_New), EMPTY));
 		Menu pmNew = new Menu(mNew);
@@ -256,107 +249,51 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		pNew.setText(getMenuText(Messages.getLabel(MENU_Configuration), "I"));
 		pNew.setAccelerator(SWT.CTRL | 'I');
 		pNew.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.newScheduler() != null)
 					setSaveStatus();
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		mNew.setMenu(pmNew);
 		MenuItem push1 = new MenuItem(pmNew, SWT.PUSH);
 		push1.setText(getMenuText(Messages.getLabel(MENU_Documentation), "P")); // Generated
-		// push1.setText(getMenuText("Modify Documentation", "P")); // Generated
+
 		push1.setAccelerator(SWT.CTRL | 'P');
 		push1.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.newDocumentation() != null)
 					setSaveStatus();
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-		// new event handler
+
 		MenuItem pNewActions = new MenuItem(pmNew, SWT.PUSH);
 		pNewActions.setText(getMenuText(Messages.getLabel(MENU_EventHandler), "H"));
 		pNewActions.setAccelerator(SWT.CTRL | 'H');
 		pNewActions.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.newActions() != null)
 					setSaveStatus();
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-		if (1 == 0) {
-			MenuItem mpLife = new MenuItem(pmNew, SWT.CASCADE);
-			mpLife.addSelectionListener(new SelectionAdapter() {
-				@Override public void widgetSelected(final SelectionEvent e) {
-				}
-			});
-			mpLife.setText(getMenuText(Messages.getLabel(MENU_HotFolderObject), EMPTY));
-			// mpLife.setAccelerator(SWT.CTRL | 'L');
-			Menu mLife = new Menu(mpLife);
-			MenuItem mLifeJob = new MenuItem(mLife, SWT.PUSH);
-			mLifeJob.addSelectionListener(new SelectionAdapter() {
-				@Override public void widgetSelected(final SelectionEvent e) {
-					if (container.newScheduler(SchedulerDom.LIVE_JOB) != null)
-						setSaveStatus();
-				}
-			});
-			mLifeJob.setText(getMenuText(Messages.getLabel(MENU_Job), "J"));
-			mLifeJob.setAccelerator(SWT.CTRL | 'J');
-			mpLife.setMenu(mLife);
-			MenuItem mLifeJobChain = new MenuItem(mLife, SWT.PUSH);
-			mLifeJobChain.addSelectionListener(new SelectionAdapter() {
-				@Override public void widgetSelected(final SelectionEvent e) {
-					if (container.newScheduler(SchedulerDom.LIVE_JOB_CHAIN) != null)
-						setSaveStatus();
-				}
-			});
-			mLifeJobChain.setText(getMenuText(Messages.getLabel(MENU_JobChain), "K"));
-			mLifeJobChain.setAccelerator(SWT.CTRL | 'K');
-			MenuItem mLifeProcessClass = new MenuItem(mLife, SWT.PUSH);
-			mLifeProcessClass.addSelectionListener(new SelectionAdapter() {
-				@Override public void widgetSelected(final SelectionEvent e) {
-					if (container.newScheduler(SchedulerDom.LIFE_PROCESS_CLASS) != null)
-						setSaveStatus();
-				}
-			});
-			mLifeProcessClass.setText(getMenuText(Messages.getLabel(MENU_ProcessClass), "R"));
-			mLifeProcessClass.setAccelerator(SWT.CTRL | 'R');
-			MenuItem mLifeLock = new MenuItem(mLife, SWT.PUSH);
-			mLifeLock.addSelectionListener(new SelectionAdapter() {
-				@Override public void widgetSelected(final SelectionEvent e) {
-					if (container.newScheduler(SchedulerDom.LIFE_LOCK) != null)
-						setSaveStatus();
-				}
-			});
-			mLifeLock.setText(getMenuText(Messages.getLabel(MENU_Lock), "M"));
-			mLifeLock.setAccelerator(SWT.CTRL | 'M');
-			MenuItem mLifeOrder = new MenuItem(mLife, SWT.PUSH);
-			mLifeOrder.addSelectionListener(new SelectionAdapter() {
-				@Override public void widgetSelected(final SelectionEvent e) {
-					if (container.newScheduler(SchedulerDom.LIFE_ORDER) != null)
-						setSaveStatus();
-				}
-			});
-			mLifeOrder.setText(getMenuText(Messages.getLabel(MENU_Order), "W"));
-			mLifeOrder.setAccelerator(SWT.CTRL | 'W');
-			MenuItem mLifeSchedule = new MenuItem(mLife, SWT.PUSH);
-			mLifeSchedule.addSelectionListener(new SelectionAdapter() {
-				@Override public void widgetSelected(final SelectionEvent e) {
-					if (container.newScheduler(SchedulerDom.LIFE_SCHEDULE) != null)
-						setSaveStatus();
-				}
-			});
-			mLifeSchedule.setText(getMenuText(Messages.getLabel("MENU_Schedule"), "U"));
-			// mLifeSchedule.setText("Schedule      \tCtrl+U");
-			mLifeSchedule.setAccelerator(SWT.CTRL | 'U');
-		}
+
 		new MenuItem(mFile, SWT.SEPARATOR);
 		MenuItem openDir = new MenuItem(mFile, SWT.PUSH);
 		openDir.setText(getMenuText(Messages.getLabel("MENU_OpenHotFolder"), "D"));
@@ -364,22 +301,25 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		openDir.setAccelerator(SWT.CTRL | 'D');
 		openDir.setEnabled(true);
 		openDir.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.openDirectory(null) != null)
 					setSaveStatus();
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
-		// open remote configuration
 		MenuItem mORC = new MenuItem(mFile, SWT.CASCADE);
 		mORC.setText(getMenuText(Messages.getLabel("MENU_OpenRemoteConfiguration"), EMPTY));
-		// mORC.setText("Open Remote Configuration");
 		Menu pMOpenGlobalScheduler = new Menu(mORC);
 		MenuItem pOpenGlobalScheduler = new MenuItem(pMOpenGlobalScheduler, SWT.PUSH);
 		pOpenGlobalScheduler.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
 				Utils.startCursor(getSShell());
 				String globalSchedulerPath = Options.getSchedulerData().endsWith("/") || Options.getSchedulerData().endsWith("\\") ? Options.getSchedulerData()
 						: Options.getSchedulerData() + "/";
@@ -399,25 +339,26 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			}
 		});
 		pOpenGlobalScheduler.setText(Messages.getLabel("MENU_OpenGlobalScheduler"));
-		// pOpenGlobalScheduler.setText("Open Global Scheduler");
 		MenuItem pOpenSchedulerCluster = new MenuItem(pMOpenGlobalScheduler, SWT.PUSH);
 		pOpenSchedulerCluster.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
 				HotFolderDialog dialog = new HotFolderDialog();
 				dialog.showForm(HotFolderDialog.SCHEDULER_CLUSTER);
 			}
 		});
 		pOpenSchedulerCluster.setText(Messages.getLabel("MENU_OpenClusterConfiguration"));
-		// pOpenSchedulerCluster.setText("Open Cluster Configuration");
 		MenuItem pOpenSchedulerHost = new MenuItem(pMOpenGlobalScheduler, SWT.PUSH);
 		pOpenSchedulerHost.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
 				HotFolderDialog dialog = new HotFolderDialog();
 				dialog.showForm(HotFolderDialog.SCHEDULER_HOST);
 			}
 		});
 		pOpenSchedulerHost.setText(Messages.getLabel("MENU_OpenRemoteSchedulerConfiguration"));
-		// pOpenSchedulerHost.setText("Open Remote Scheduler Configuration");
 		mORC.setMenu(pMOpenGlobalScheduler);
 		new MenuItem(mFile, SWT.SEPARATOR);
 		MenuItem pSaveFile = new MenuItem(mFile, SWT.PUSH);
@@ -425,18 +366,23 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		pSaveFile.setAccelerator(SWT.CTRL | 'S');
 		pSaveFile.setEnabled(false);
 		pSaveFile.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				save();
 			}
 
-			@Override public void widgetDefaultSelected(SelectionEvent arg0) {
+            @Override
+            public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});
 		MenuItem pSaveAs = new MenuItem(mFile, SWT.PUSH);
 		pSaveAs.setText("Save As                            ");
 		pSaveAs.setEnabled(false);
 		pSaveAs.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.getCurrentEditor() != null && container.getCurrentEditor().applyChanges()) {
 					if (container.getCurrentTab().getData("ftp_title") != null) {
 						container.getCurrentTab().setData("ftp_title", null);
@@ -450,7 +396,8 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 				}
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		MenuItem pSaveAsHotFolderElement = new MenuItem(mFile, SWT.PUSH);
@@ -458,7 +405,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		pSaveAsHotFolderElement.setAccelerator(SWT.CTRL | 'B');
 		pSaveAsHotFolderElement.setEnabled(false);
 		pSaveAsHotFolderElement.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.getCurrentEditor() != null && container.getCurrentEditor().applyChanges()) {
 					SchedulerForm form = (SchedulerForm) container.getCurrentEditor();
 					SchedulerDom currdom = form.getDom();
@@ -467,11 +416,11 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 				}
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		new MenuItem(mFile, SWT.SEPARATOR);
-		// FTP
 		MenuItem mFTP = new MenuItem(mFile, SWT.CASCADE);
 		mFTP.setText("FTP");
 		Menu pmFTP = new Menu(mNew);
@@ -479,24 +428,30 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		MenuItem pOpenHotFolderFTP = new MenuItem(pmFTP, SWT.PUSH);
 		pOpenHotFolderFTP.setText("Open Hot Folder by FTP");
 		pOpenHotFolderFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				FTPDialog ftp = new FTPDialogHotFolder();
 				ftp.showForm();
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		
 		MenuItem pOpenFTP = new MenuItem(pmFTP, SWT.PUSH);
         pOpenFTP.setText("Open By FTP");
         pOpenFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-            @Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
                 FTPDialog ftp = new FTPDialogOpenFile();
                 ftp.showForm();
             }
 
-            @Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
         });
 		
@@ -504,17 +459,19 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		MenuItem pSaveFTP = new MenuItem(pmFTP, SWT.PUSH);
 		pSaveFTP.setText("Save By FTP");
 		pSaveFTP.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				saveByFTP();
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		
 		mFTP.setMenu(pmFTP);
 		new MenuItem(mFile, SWT.SEPARATOR);
-		// WebDav
 		boolean existwebDavLib = existLibraries();
 		MenuItem mWebDav = new MenuItem(mFile, SWT.CASCADE);
 		mWebDav.setText("WebDav");
@@ -525,39 +482,39 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		pOpenWebDav.setText("Open by WebDav");
 		pOpenWebDav.setEnabled(existwebDavLib);
 		pOpenWebDav.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				try {
 					if (existLibraries()) {
 						WebDavDialog webdav = new WebDavDialog();
 						webdav.showForm(WebDavDialog.OPEN);
 					}
-				}
-				catch (Exception ex) {
-					try {
+                } catch (Exception ex) {
 						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not open file on Webdav Server", ex);
-					}
-					catch (Exception ee) {
-						// tu nichts
-					}
 					MainWindow.message("could not open file on Webdav Server, cause: " + ex.getMessage(), SWT.ICON_WARNING);
 				}
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		MenuItem pOpenHotFolderWebDav = new MenuItem(pmWebDav, SWT.PUSH);
 		pOpenHotFolderWebDav.setText("Open HotFolder by WebDav");
 		pOpenHotFolderWebDav.setEnabled(existwebDavLib);
 		pOpenHotFolderWebDav.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (existLibraries()) {
 					WebDavDialog webdav = new WebDavDialog();
 					webdav.showForm(WebDavDialog.OPEN_HOT_FOLDER);
 				}
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		new MenuItem(pmWebDav, SWT.SEPARATOR);
@@ -565,7 +522,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		pSaveWebDav.setText("Save by WebDav");
 		pSaveWebDav.setEnabled(existwebDavLib);
 		pSaveWebDav.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (existLibraries()) {
 					WebDavDialog webdav = new WebDavDialog();
 					DomParser currdom = getSpecifiedDom();
@@ -573,13 +532,13 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 						return;
 					if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isDirectory()) {
 						webdav.showForm(WebDavDialog.SAVE_AS_HOT_FOLDER);
-					}
-					else
+                    } else
 						webdav.showForm(WebDavDialog.SAVE_AS);
 				}
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		
@@ -591,22 +550,19 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		pExit.setText(getMenuText(Messages.getLabel("MENU_Exit"), "E"));
 		pExit.setAccelerator(SWT.CTRL | 'E');
 		pExit.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				try {
 					saveWindowPosAndSize();
 					sShell.close();
-				}
-				catch (Exception es) {
-					try {
+                } catch (Exception es) {
 						new ErrorLog("error: " + sos.util.SOSClassUtil.getMethodName(), es);
 					}
-					catch (Exception ee) {
-						// tu nichts
 					}
-				}
-			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		MenuItem submenuItem = new MenuItem(menuBar, SWT.CASCADE);
@@ -617,80 +573,85 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		MenuItem pHelS = new MenuItem(submenu1, SWT.PUSH);
 		pHelS.setText("JOE " + getMenuText(Messages.getLabel(MENU_Help), EMPTY));
 		pHelS.addSelectionListener(new SelectionListener() {
-			@Override public void widgetSelected(SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
 				listener.openHelp(Options.getHelpURL("index"));
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		MenuItem pHelp = new MenuItem(submenu1, SWT.PUSH);
 		pHelp.setText(getMenuText(Messages.getLabel(MENU_Help), "F1"));
-		// pHelp.setAccelerator(SWT.F1);
 		pHelp.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.getCurrentEditor() != null) {
 					listener.openHelp(container.getCurrentEditor().getHelpKey());
-				}
-				else {
-					// String msg = "Help is available after documentation or configuration is opened";
+                } else {
+                    // String msg =
+                    // "Help is available after documentation or configuration is opened";
 					String msg = Messages.getString("help.info");
 					MainWindow.message(msg, SWT.ICON_INFORMATION);
 				}
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		// TODO FAQ, JIRA, Ticket-System, .... als Menu-Items
 		MenuItem pAbout = new MenuItem(submenu1, SWT.PUSH);
 		pAbout.setText(getMenuText(Messages.getLabel(MENU_About), EMPTY) + " JOE");
 		pAbout.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				listener.showAbout();
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		submenuItem3.setMenu(submenu1);
 		submenu = new Menu(submenuItem);
 		
-		/*MenuItem mnuLanguageSelection = new MenuItem(submenu, SWT.CASCADE);
-		mnuLanguageSelection.setText(Messages.getLabel("MENU_Language"));
-		menuLanguages = new Menu(mnuLanguageSelection);
-		// create languages menu
-		listener.setLanguages(menuLanguages);
-		mnuLanguageSelection.setMenu(menuLanguages);
-		*/
 		submenuItem.setMenu(submenu);
 		MenuItem submenuItemInfo = new MenuItem(submenu, SWT.PUSH);
 		submenuItemInfo.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
 				listener.resetInfoDialog();
-				Options.setPropertyBoolean(conPropertyNameEDITOR_JOB_SHOW_WIZARD, true);
+                Options.setPropertyBoolean(PROPERTY_NAME_EDITOR_JOB_SHOW_WIZARD, true);
 				Options.saveProperties();
 			}
 		});
 		submenuItemInfo.setText(getMenuText(Messages.getLabel(MENU_Reset_Dialog), EMPTY));
 		sShell.setMenuBar(menuBar);
 		sShell.addShellListener(new ShellAdapter() {
-			@Override public void shellClosed(ShellEvent e) {
+
+            @Override
+            public void shellClosed(ShellEvent e) {
 				e.doit = container.closeAll();
 				setSaveStatus();
-				Options.saveWindow(sShell, conStringEDITOR);
+                Options.saveWindow(sShell, STRING_EDITOR);
 				saveWindowPosAndSize();
 				listener.saveOptions();
 				ResourceManager.dispose();
 			}
 
-			@Override public void shellActivated(org.eclipse.swt.events.ShellEvent e) {
+            @Override
+            public void shellActivated(org.eclipse.swt.events.ShellEvent e) {
 				setSaveStatus();
 			}
 		});
 		objPersistenceStore.restoreWindowSize();
 	}
-
 
 	private void saveWindowPosAndSize() {
 		objPersistenceStore.saveWindow();
@@ -700,8 +661,10 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		return sShell;
 	}
 
-	@SuppressWarnings("unused") private String getMsg(final String pstrKey) {
-		@SuppressWarnings("unused") final String conMethodName = conClassName + "::getMsg";
+    @SuppressWarnings("unused")
+    private String getMsg(final String pstrKey) {
+        @SuppressWarnings("unused")
+        final String conMethodName = CLASS_NAME + "::getMsg";
 		// super.setLocale(Options.getLanguage());
 		String strT = Messages.getString(pstrKey, EMPTY);
 		return strT;
@@ -719,16 +682,13 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		container.setStatusInTitle();
 	}
 	
-	
-
 	public static boolean setMenuStatus() {
 		boolean saved = true;
 		if (container.getCurrentEditor() != null) {
 			saved = !container.getCurrentEditor().hasChanges();
 			butShowAsXML.setEnabled(true);
 			butSave.setEnabled(container.getCurrentEditor().hasChanges());
-		}
-		else {
+        } else {
 			butShowAsXML.setEnabled(false);
 			butSave.setEnabled(false);
 		}
@@ -752,12 +712,10 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			if (!dom.isLifeElement() && !dom.isDirectory()) {
 				items[index + 2].setEnabled(true);
 				butSave.setEnabled(true);
-			}
-			else {
+            } else {
 				items[index + 2].setEnabled(false);
 			}
-		}
-		else {
+        } else {
 			items[index + 2].setEnabled(false);
 		}
 		return saved;
@@ -775,12 +733,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		return message(getSShell(), application, message, style);
 	}
 
-	
 	public static int message(Shell shell, String pstrMessage, int style) {
 		MessageBox mb = new MessageBox(shell, style);
-		if (mb == null) {
-			return -1;
-		}
+
 		if (pstrMessage == null) {
 			pstrMessage = "??????";
 		}
@@ -791,11 +746,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		else {
 			if ((style & SWT.ICON_INFORMATION) != 0)
 				title = Messages.getLabel("information");
-			else
-				if ((style & SWT.ICON_QUESTION) != 0)
+            else if ((style & SWT.ICON_QUESTION) != 0)
 					title = Messages.getLabel("question");
-				else
-					if ((style & SWT.ICON_WARNING) != 0)
+            else if ((style & SWT.ICON_WARNING) != 0)
 						title = Messages.getLabel("warning");
 		}
 		mb.setText("JOE: " + title);
@@ -804,9 +757,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 	public static int message(Shell shell, String application, String pstrMessage, int style) {
 		MessageBox mb = new MessageBox(shell, style);
-		if (mb == null) {
-			return -1;
-		}
+
 		if (pstrMessage == null) {
 			pstrMessage = "??????";
 		}
@@ -817,11 +768,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		else {
 			if ((style & SWT.ICON_INFORMATION) != 0)
 				title = Messages.getLabel("information");
-			else
-				if ((style & SWT.ICON_QUESTION) != 0)
+            else if ((style & SWT.ICON_QUESTION) != 0)
 					title = Messages.getLabel("question");
-				else
-					if ((style & SWT.ICON_WARNING) != 0)
+            else if ((style & SWT.ICON_WARNING) != 0)
 						title = Messages.getLabel("warning");
 		}
 		mb.setText(application + ": " + title);
@@ -869,8 +818,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			setSaveStatus();
 		}
 		
-	 
-
 		Utils.stopCursor(getSShell());
 	}
 
@@ -884,62 +831,75 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		MenuItem itemConfig = new MenuItem(menu, SWT.PUSH);
 		itemConfig.setText("Configuration");
 		itemConfig.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.newScheduler() != null)
 					setSaveStatus();
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		MenuItem itemDoc = new MenuItem(menu, SWT.PUSH);
 		itemDoc.setText("JobDoc - Documentation");
 		itemDoc.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.newDocumentation() != null)
 					setSaveStatus();
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 	
 		MenuItem itemActions = new MenuItem(menu, SWT.PUSH);
 		itemActions.setText("Event Handler");
 		itemActions.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 				if (container.newActions() != null)
 					setSaveStatus();
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		
-	 
 		addDropDown(butNew, menu);
 		final ToolItem butOpen = new ToolItem(toolBar, SWT.PUSH);
 		butOpen.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
 				if (container.openQuick() != null)
 					setSaveStatus();
 			}
 		});
-		butOpen.setImage(ResourceManager.getImageFromResource(conIconICON_OPEN_GIF));
+        butOpen.setImage(ResourceManager.getImageFromResource(ICON_OPEN_GIF));
 		butOpen.setToolTipText("Open JobScheduler Configuration");
-		// ---------- butOpenHotFolder ---------
 		final ToolItem butOpenHotFolder = new ToolItem(toolBar, SWT.PUSH);
 		butOpenHotFolder.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
 				if (container.openDirectory(null) != null)
 					setSaveStatus();
 			}
 		});
-		butOpenHotFolder.setImage(ResourceManager.getImageFromResource(conIconOPEN_HOT_FOLDER_GIF));
+        butOpenHotFolder.setImage(ResourceManager.getImageFromResource(ICON_OPEN_HOT_FOLDER_GIF));
 		butOpenHotFolder.setToolTipText("Open HotFolder");
 		butSave = new ToolItem(toolBar, SWT.PUSH);
 		butSave.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
  				save();
 			}
 		});
@@ -948,22 +908,18 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		butShowAsXML = new ToolItem(toolBar, SWT.PUSH);
 		butShowAsXML.setEnabled(container != null && container.getCurrentEditor() instanceof SchedulerForm);
 		butShowAsXML.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
 				try {
 					if (container.getCurrentEditor() == null)
 						return;
 					DomParser currDomParser = getSpecifiedDom();
 					Utils.showClipboard(Utils.getElementAsString(currDomParser.getRoot()), getSShell(), false, null, false, null, false);
-				}
-				catch (Exception ex) {
-					try {
+                } catch (Exception ex) {
 						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " cause: " + ex.toString(), ex);
 					}
-					catch (Exception ee) {
-						// tu nichts
 					}
-				}
-			}
 		});
 		butShowAsXML.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_view_as_xml.gif"));
 		butShowAsXML.setToolTipText("Show Configuration as XML");
@@ -976,42 +932,54 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		MenuItem itemFTPOpenHotFolder = new MenuItem(menuFTP, SWT.PUSH);
 		itemFTPOpenHotFolder.setText("Open Hot Folder by FTP");
 		itemFTPOpenHotFolder.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
 				FTPDialog ftp = new FTPDialogHotFolder();
 				ftp.showForm();
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		
 		MenuItem itemFTPOpen = new MenuItem(menuFTP, SWT.PUSH);
         itemFTPOpen.setText("Open by FTP");
         itemFTPOpen.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-            @Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
                 FTPDialog ftp = new FTPDialogOpenFile();
                 ftp.showForm();
             }
 
-            @Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
             }
         });
         
 		MenuItem itemFTPSave = new MenuItem(menuFTP, SWT.PUSH);
 		itemFTPSave.setText("Save As By FTP");
 		itemFTPSave.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
 				saveByFTP();
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		final ToolItem itemReset = new ToolItem(toolBar, SWT.PUSH);
 		itemReset.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_reset.gif"));
 		itemReset.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(final SelectionEvent e) {
-				int c = MainWindow.message("Do you want to reload the configuration and discard the changes?", SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                int c = MainWindow.message("Do you want to reload the configuration and discard the changes?", SWT.ICON_INFORMATION | SWT.YES
+                        | SWT.NO);
 				if (c != SWT.YES)
 					return;
 				if (container.getCurrentEditor() instanceof SchedulerForm) {
@@ -1021,57 +989,62 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 						Utils.reset(currdom.getRoot(), form, currdom);
 					else
 						Utils.reset(currdom.getRoot().getChild("config"), form, currdom);
-				}
-				else
-					if (container.getCurrentEditor() instanceof ActionsForm) {
+                } else if (container.getCurrentEditor() instanceof ActionsForm) {
 						ActionsForm form = (ActionsForm) container.getCurrentEditor();
 						com.sos.joe.xml.Events.ActionsDom currdom = form.getDom();
 						Utils.reset(currdom.getRoot(), form, currdom);
-					}
-					else
-						if (container.getCurrentEditor() instanceof DocumentationForm) {
+                } else if (container.getCurrentEditor() instanceof DocumentationForm) {
 							DocumentationForm form = (DocumentationForm) container.getCurrentEditor();
 							DocumentationDom currdom = form.getDom();
 							Utils.reset(currdom.getRoot(), form, currdom);
 						}
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		final ToolItem butWizzard = new ToolItem(toolBar, SWT.PUSH);
 		butWizzard.setToolTipText("Wizard");
 		butWizzard.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_wizzard.gif"));
 		butWizzard.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
 				startWizard();
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 		final ToolItem butHelp = new ToolItem(toolBar, SWT.PUSH);
 		butHelp.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/icon_help.gif"));
 		butHelp.addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
-			@Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
 				if (container.getCurrentEditor() != null) {
 					listener.openHelp(container.getCurrentEditor().getHelpKey());
-				}
-				else {
-					// String msg = "Help is available after documentation or configuration is opened";
+                } else {
+                    // String msg =
+                    // "Help is available after documentation or configuration is opened";
 					String msg = Messages.getString("help.info");
 					MainWindow.message(msg, SWT.ICON_INFORMATION);
 				}
 			}
 
-			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
+            @Override
+            public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
 		});
 	}
 
 	private static void addDropDown(final ToolItem item, final Menu menu) {
 		item.addSelectionListener(new SelectionAdapter() {
-			@Override public void widgetSelected(final SelectionEvent e) {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
 				Rectangle rect = item.getBounds();
 				Point pt = new Point(rect.x, rect.y + rect.height);
 				pt = item.getParent().toDisplay(pt);
@@ -1081,7 +1054,6 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		});
 	}
 
- 
 	private void saveJobChainNodeParameter() {
 		try {
 			if (container.getCurrentTab().getData("details_parameter") != null) {
@@ -1104,18 +1076,17 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 						sos.scheduler.editor.conf.listeners.DetailsListener.changeDetailsJobChainname(newName, oldname, (SchedulerDom) currdom);
 						//
 						if (!newConfigFile.exists() && !configFile.renameTo(newConfigFile)) {
-							MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename + "].\n"
-									+ "Please try later by Hand.", SWT.ICON_WARNING);
+                            MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename
+                                    + "].\n" + "Please try later by Hand.", SWT.ICON_WARNING);
 						}
 					 
 					}
 				}
 				container.getCurrentTab().setData("details_parameter", new HashMap());
 			}
+        } catch (Exception e) {
 		}
-		catch (Exception e) {
 		}
-	} 
 	
 	public static void saveFTP(String oldFilename, SOSFileEntry  sosFileEntry) {
 		try {
@@ -1148,27 +1119,24 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
                     
 		catch (Exception e) {
 			MainWindow.message("could not save per ftp, cause: " + e.toString(), SWT.ICON_WARNING);
-			try {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
-			catch (Exception ee) {
-				// tu nichts
 			}
-		}
-    }
 
 	private void saveWebDav(java.util.HashMap changes) {
 		WebDavDialogListener webdavListener = null;
 		Text txtLog = null;
 		if (container.getCurrentTab().getData("webdav_title") != null && container.getCurrentTab().getData("webdav_title").toString().length() > 0) {
 			DomParser currdom = getSpecifiedDom();
-			if (currdom == null)
+            if (currdom == null) {
 				return;
+            }
 			String profilename = container.getCurrentTab().getData("webdav_profile_name").toString();
 			String remoteDir = container.getCurrentTab().getData("webdav_remote_directory").toString();
 			ArrayList webdavHotFolderElements = new ArrayList();
-			if (container.getCurrentTab().getData("webdav_hot_folder_elements") != null)
+            if (container.getCurrentTab().getData("webdav_hot_folder_elements") != null) {
 				webdavHotFolderElements = (ArrayList) container.getCurrentTab().getData("webdav_hot_folder_elements");
+            }
 			java.util.Properties profile = (java.util.Properties) container.getCurrentTab().getData("webdav_profile");
 			txtLog = new Text(getSShell(), SWT.NONE);
 			txtLog.setVisible(false);
@@ -1182,69 +1150,64 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isLifeElement()) {
 				String filename = container.getCurrentEditor().getFilename();
 				if (!new File(remoteDir).getName().equalsIgnoreCase(new File(filename).getName())) {
-					// Attribute "name" wurde geändert: Das bedeutet auch Änderungen der life Datei namen.
+                    // Attribute "name" wurde geändert: Das bedeutet auch
+                    // Änderungen der life Datei namen.
 					webdavListener.removeFile(remoteDir);
 				}
 				remoteDir = remoteDir.substring(0, remoteDir.lastIndexOf("/")) + "/" + new File(filename).getName();
 				webdavListener.saveAs(filename, remoteDir);
-			}
-			else
-				if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isDirectory()) {
+            } else if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isDirectory()) {
 					webdavListener.saveHotFolderAs(container.getCurrentEditor().getFilename(), remoteDir, webdavHotFolderElements, changes);
-				}
-				else {
+            } else {
 					webdavListener.saveAs(container.getCurrentEditor().getFilename(), remoteDir);
 				}
 			if (webdavListener.hasError()) {
 				String text = Utils.showClipboard(txtLog.getText(), getSShell(), false, EMPTY);
-				if (text != null)
+                if (text != null) {
 					txtLog.setText(text);
 			}
 		}
 	}
+    }
 
 	private void saveByFTP() {
 		FTPDialog ftpSaveAsDialog = new FTPDialogSaveAs();
 		DomParser currdom = getSpecifiedDom();
-		if (currdom == null)
+        if (currdom == null) {
 			return;
+        }
 		if (currdom instanceof SchedulerDom && ((SchedulerDom) currdom).isDirectory()) {
 			ftpSaveAsDialog.showForm();
-		}
-		else
+        } else {
 			ftpSaveAsDialog.showForm();
 	}
+    }
 
 	private boolean existLibraries() {
 		boolean libExist = false;
 		try {
 			try {
 				Class.forName("org.apache.commons.logging.LogFactory");
-			}
-			catch (Exception e) {
+            } catch (Exception e) {
 				throw e;
 			}
 			try {
 				Class.forName("org.apache.commons.httpclient.HttpState");
-			}
-			catch (Exception e) {
+            } catch (Exception e) {
 				throw e;
 			}
 			try {
 				Class.forName("org.apache.commons.codec.DecoderException");
-			}
-			catch (Exception e) {
+            } catch (Exception e) {
 				throw e;
 			}
 			try {
 				Class.forName("org.apache.webdav.lib.WebdavResource");
-			}
-			catch (Exception e) {
+            } catch (Exception e) {
 				throw e;
 			}
 			libExist = true;
-		}
-		catch (Exception e) {
+        } catch (Exception e) {
 			
 		}
 		return libExist;
@@ -1255,23 +1218,16 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 		if (MainWindow.getContainer().getCurrentEditor() instanceof SchedulerForm) {
 			SchedulerForm form = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
 			currdom = form.getDom();
-		}
-		else
-			if (MainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm) {
+        } else if (MainWindow.getContainer().getCurrentEditor() instanceof DocumentationForm) {
 				DocumentationForm form = (DocumentationForm) MainWindow.getContainer().getCurrentEditor();
 				currdom = form.getDom();
-			}
-			else
-				if (MainWindow.getContainer().getCurrentEditor() instanceof JobChainConfigurationForm) {
+        } else if (MainWindow.getContainer().getCurrentEditor() instanceof JobChainConfigurationForm) {
 					JobChainConfigurationForm form = (JobChainConfigurationForm) MainWindow.getContainer().getCurrentEditor();
 					currdom = form.getDom();
-				}
-				else
-					if (MainWindow.getContainer().getCurrentEditor() instanceof ActionsForm) {
+        } else if (MainWindow.getContainer().getCurrentEditor() instanceof ActionsForm) {
 						ActionsForm form = (ActionsForm) MainWindow.getContainer().getCurrentEditor();
 						currdom = form.getDom();
-					}
-					else {
+        } else {
 						MainWindow.message("Could not save FTP File. <unspecified type>  ", SWT.ICON_WARNING);
 					}
 		return currdom;
@@ -1287,16 +1243,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			JobAssistentForm assitant = new JobAssistentForm(_scheduler.getDom(), _scheduler);
 			assitant.startJobAssistant();
 			setSaveStatus();
-		}
-		catch (Exception ex) {
-			try {
+        } catch (Exception ex) {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not start wizard.", ex);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-		}
-		finally {
+        } finally {
 			Utils.stopCursor(sShell);
 		}
 	}
@@ -1309,7 +1258,16 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			DomParser dom = getSpecifiedDom();
 			if (dom.getFilename() != null) {
 				File f = new File(dom.getFilename());
-				ArrayList<File> changeFiles = new ArrayList<File>();// gilt für Hot Folder Dateien, die von einer anderen Process verändert wurden
+                ArrayList<File> changeFiles = new ArrayList<File>();// gilt für
+                                                                    // Hot
+                                                                    // Folder
+                                                                    // Dateien,
+                                                                    // die von
+                                                                    // einer
+                                                                    // anderen
+                                                                    // Process
+                                                                    // verändert
+                                                                    // wurden
 				ArrayList<File> newFFiles = new ArrayList<File>();
 				ArrayList<File> delFFiles = new ArrayList<File>();
 				HashMap<String, Long> hFFiles = new HashMap<String, Long>();
@@ -1323,28 +1281,25 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 						for (int i = 0; i < listOfhotFolderFiles.size(); i++) {
 							File fFile = listOfhotFolderFiles.get(i);
 							try {
-								long current = fFile.lastModified();// aktuelle Änderungs Zeitstempel
+                                long current = fFile.lastModified();// aktuelle
+                                                                    // Änderungs
+                                                                    // Zeitstempel
 								if (hFFiles.containsKey(fFile.getName())) {
-									long domc = Long.parseLong((hFFiles.get(fFile.getName()).toString()));// gespeicherte Zeitstempel
+                                    long domc = Long.parseLong((hFFiles.get(fFile.getName()).toString()));// gespeicherte
+                                                                                                          // Zeitstempel
 									if (current != domc)
 										changeFiles.add(fFile);
-								}
-								else {
-									// sind neue HotFolder Dateien ausserhalb zustande gekommen?
-									// ("jobname" + "_" + name, what)
+                                } else {
+
 									String fName = fFile.getName();
 									int pos1 = fName.indexOf(".");
 									int pos2 = fName.lastIndexOf(".");
 									String n = fName.substring(pos1, pos2) + "_" + fName.substring(0, pos1);
-									if (!(((SchedulerDom) dom).getChangedJob().get(n) != null && ((SchedulerDom) dom).getChangedJob()
-											.get(n)
-											.equals(SchedulerDom.DELETE)))
+                                    if (!(((SchedulerDom) dom).getChangedJob().get(n) != null && ((SchedulerDom) dom).getChangedJob().get(n).equals(SchedulerDom.DELETE)))
 										newFFiles.add(fFile);
 								}
-							}
-							catch (Exception e) {
-								// tu nichts
-								e.printStackTrace();
+                            } catch (Exception e) {
+                                LOGGER.error(e.getMessage(), e);
 							}
 							lastmod = lastmod + fFile.lastModified();
 						}
@@ -1356,10 +1311,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 								delFFiles.add(new File(dom.getFilename(), fName));
 							}
 						}
-					}
-					else {
-						// if(!new File(dom.getFilename()).exists())
-						// delFFiles.add(new File(dom.getFilename()));
+                    } else {
 						lastmod = f.lastModified();
 					}
 				}
@@ -1371,38 +1323,39 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 						if (newFFiles.size() > 0) {
 							msg = msg + "\n" + Messages.getString("files.new"); // "New Files:";
 							for (int i = 0; i < newFFiles.size(); i++) {
-								if (i == 0)
-									msg = msg + conNewlineTab + newFFiles.get(i).getName();
-								else
-									msg = msg + conNewlineTab + newFFiles.get(i).getName();
+                                if (i == 0) {
+                                    msg = msg + NEWLINE_TAB + newFFiles.get(i).getName();
+                                } else {
+                                    msg = msg + NEWLINE_TAB + newFFiles.get(i).getName();
 							}
 						}
+                        }
 						if (changeFiles.size() > 0) {
 							msg = msg + "\n" + Messages.getString("files.changed"); // "Changed Files:";
 							for (int i = 0; i < changeFiles.size(); i++) {
-								if (i == 0)
-									msg = msg + conNewlineTab + changeFiles.get(i);
-								else
-									msg = msg + conNewlineTab + changeFiles.get(i);
+                                if (i == 0) {
+                                    msg = msg + NEWLINE_TAB + changeFiles.get(i);
+                                } else {
+                                    msg = msg + NEWLINE_TAB + changeFiles.get(i);
 							}
 						}
+                        }
 						if (delFFiles.size() > 0) {
 							msg = msg + "\n" + Messages.getString("files.removed"); // "Removed Files:";
 							for (int i = 0; i < delFFiles.size(); i++) {
-								if (i == 0)
-									msg = msg + conNewlineTab + delFFiles.get(i);
-								else
-									msg = msg + conNewlineTab + delFFiles.get(i);
+                                if (i == 0) {
+                                    msg = msg + NEWLINE_TAB + delFFiles.get(i);
+                                } else {
+                                    msg = msg + NEWLINE_TAB + delFFiles.get(i);
 							}
 						}
-						msg = msg + "\n" + Messages.getString("reload.wanted");
 					}
-					else {
+                        msg = msg + "\n" + Messages.getString("reload.wanted");
+                    } else {
 						if (!new File(dom.getFilename()).exists()) {
 							msg = Messages.getString("file.deleted.on.filesystem", dom.getFilename());
 							delFFiles.add(new File(dom.getFilename()));
-						}
-						else {
+                        } else {
 							msg = Messages.getString("file.changed.on.filesystem", dom.getFilename());
 						}
 					}
@@ -1423,7 +1376,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 										pe.addContent((Element) n.clone());
 									}
 								}
-								// Es wurden ausserhalb vom Editor neue Hot Folder dateien hinzugefügt. In diesem Fall soll der Editor
+                                // Es wurden ausserhalb vom Editor neue Hot
+                                // Folder dateien hinzugefügt. In diesem Fall
+                                // soll der Editor
 								// aktualisiert werden
 								for (int i = 0; i < newFFiles.size(); i++) {
 									File newHFFile = newFFiles.get(i);
@@ -1434,8 +1389,7 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 										Element pe = listOfElement.get(0);
 										Element n = MergeAllXMLinDirectory.readElementFromHotHolderFile(newHFFile);
 										pe.addContent((Element) n.clone());
-									}
-									else {
+                                    } else {
 										Element pe = new Element(sXPATH);
 										dom.getRoot().addContent(pe);
 										Element n = MergeAllXMLinDirectory.readElementFromHotHolderFile(newHFFile);
@@ -1456,14 +1410,11 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 								if (changeFiles.size() > 0 || newFFiles.size() > 0 || delFFiles.size() > 0) {
 									SchedulerForm form = (SchedulerForm) container.getCurrentEditor();
 									form.updateTree("main");
-									// form.updateCommands();
 									form.update();
 									dom.readFileLastModified();
 								}
-							}
-							else {
+                            } else {
 								if (delFFiles.size() > 0) {
-									// current Tabraiter soll geschlossen werden weil die Kpnfigurationsdatei ausserhalb gelöscht wurden
 									MainWindow.getContainer().getCurrentTab().dispose();
 									return;
 								}
@@ -1472,26 +1423,20 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 									SchedulerForm form = (SchedulerForm) container.getCurrentEditor();
 									form.updateTree("main");
 									form.update();
-								}
-								else
-									if (container.getCurrentEditor() instanceof DocumentationForm) {
+                                } else if (container.getCurrentEditor() instanceof DocumentationForm) {
 										DocumentationForm form = (DocumentationForm) container.getCurrentEditor();
 										form.updateTree("main");
 										form.update();
-									}
-									else
-										if (container.getCurrentEditor() instanceof ActionsForm) {
+                                } else if (container.getCurrentEditor() instanceof ActionsForm) {
 											ActionsForm form = (ActionsForm) container.getCurrentEditor();
 											form.updateTree("main");
 											form.update();
 										}
 							}
+                        } catch (Exception e) {
+                            LOGGER.error(e.getMessage(), e);
 						}
-						catch (Exception e) {
-							System.out.println(e.toString());
-						}
-					}
-					else {
+                    } else {
 						if (!f.isDirectory()) {
 							if (delFFiles.size() > 0) {
 								dom.setFilename(null);
@@ -1501,22 +1446,14 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 					}
 				}
 			}
-		}
-		catch (Exception e) {
-			try {
+        } catch (Exception e) {
 				new ErrorLog(Messages.getString("exception.raised", sos.util.SOSClassUtil.getMethodName()), e);
 			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-		}
 		flag = true;
 	}
 
-	/**
-	 * @param hFfile
-	 * @return
-	 */
+    /** @param hFfile
+     * @return */
 	private static String getXPathString(File hFfile, boolean onlyParentPath) {
 		String aName = EMPTY;
 		String eName = EMPTY;
@@ -1530,21 +1467,20 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			parentElementname = "commands";
 			aName = aName.substring(aName.indexOf(",") + 1);
 			attributName = "id";
-		}
-		else
-			if (eName.equalsIgnoreCase("process_class")) {
+        } else if (eName.equalsIgnoreCase("process_class")) {
 				parentElementname = eName.concat("es");
-			}
-			else {
+        } else {
 				parentElementname = eName.concat("s");
 			}
-		if (onlyParentPath)
+        if (onlyParentPath) {
 			return "//" + parentElementname;
-		else
+        } else {
 			return "//" + parentElementname + "/" + eName + "[@" + attributName + "='" + aName + "']";
 	}
+    }
 
-	public static boolean saveDirectory(final DomParser dom, final boolean saveas, final int type, final String nameOfElement, final IContainer container) {
+    public static boolean saveDirectory(final DomParser dom, final boolean saveas, final int type, final String nameOfElement,
+            final IContainer container) {
 		Document currDoc = dom.getDoc();
 		File configFile = null;
 		try {
@@ -1559,72 +1495,61 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 				File _file = null;
 				// existiert der Hot Folder Element
 				if (dom.getRoot().getName().equals("order") || dom.getRoot().getName().equals("add_order")) {
-					_file = new File(path + "//" + Utils.getAttributeValue("job_chain", dom.getRoot()) + "," + Utils.getAttributeValue("id", dom.getRoot())
-							+ ".order.xml");
-				}
-				else {
+                    _file = new File(path + "//" + Utils.getAttributeValue("job_chain", dom.getRoot()) + ","
+                            + Utils.getAttributeValue("id", dom.getRoot()) + ".order.xml");
+                } else {
 					_file = new File(path + "//" + Utils.getAttributeValue("name", dom.getRoot()) + "." + dom.getRoot().getName() + ".xml");
 				}
 				if (_file.exists()) {
 					int ok = ErrorLog.message(Messages.getString("MainListener.doFileOverwrite"), //$NON-NLS-1$
 							SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-					if (ok == SWT.NO)
+                    if (ok == SWT.NO) {
 						return false;
 				}
-				configFile = new File(path);
 			}
-			else {
+                configFile = new File(path);
+            } else {
 				configFile = new File(dom.getFilename());
 			}
 			MergeAllXMLinDirectory save = null;
-			if (dom instanceof SchedulerDom && ((SchedulerDom) dom).isLifeElement() && configFile.isFile())
+            if (dom instanceof SchedulerDom && ((SchedulerDom) dom).isLifeElement() && configFile.isFile()) {
 				save = new MergeAllXMLinDirectory(configFile.getParent());
-			else
+            } else {
 				save = new MergeAllXMLinDirectory(configFile.getPath());
+            }
 			if (type == SchedulerDom.DIRECTORY) {
 				save.saveXMLDirectory(currDoc, ((SchedulerDom) dom).getChangedJob());
-			}
-			else {// sonst life element
+            } else {
 				org.jdom.Element elem = null;
 				if (type == SchedulerDom.LIFE_LOCK) {
 					SchedulerForm form = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
 					org.eclipse.swt.widgets.Tree tree = form.getTree();
 					TreeData data = (TreeData) tree.getSelection()[0].getData();
 					elem = data.getElement().getChild("locks").getChild("lock");
-				}
-				else
-					if (type == SchedulerDom.LIFE_PROCESS_CLASS) {
+                } else if (type == SchedulerDom.LIFE_PROCESS_CLASS) {
 						SchedulerForm form = (SchedulerForm) MainWindow.getContainer().getCurrentEditor();
 						org.eclipse.swt.widgets.Tree tree = form.getTree();
 						TreeData data = (TreeData) tree.getSelection()[0].getData();
 						elem = data.getElement().getChild("process_classes").getChild("process_class");
-					}
-					else {
+                } else {
 						elem = currDoc.getRootElement();
 					}
-				String name = save.saveLifeElement(nameOfElement, elem, ((SchedulerDom) dom).getChangedJob(),
-						((SchedulerDom) dom).getListOfChangeElementNames());
+                String name = save.saveLifeElement(nameOfElement, elem, ((SchedulerDom) dom).getChangedJob(), ((SchedulerDom) dom).getListOfChangeElementNames());
 				Options.setLastDirectory(new File(name), dom);
 				try {
 					dom.setFilename(new java.io.File(name).getCanonicalPath());
-				}
-				catch (Exception e) {
+                } catch (Exception e) {
 				}
 				dom.setChanged(true);
 			}
 			dom.readFileLastModified();
 			dom.setChanged(false);
-		}
-		catch (Exception e) {
-			try {
+        } catch (Exception e) {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " could not save directory.", e);
 			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-		}
 		return true;
 	}
+
 	public static final String	JOE_I_0010				= "JOE_I_0010";
 	@I18NMessages(value = { @I18NMessage("Open"), //
 			@I18NMessage(value = "Open", //
@@ -1644,9 +1569,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@I18NMessage(value = "Open", locale = "it", //
 			explanation = "Open" //
 			) //
-	}, msgnum = "MENU_OPEN", msgurl = "Menu-Open")/*!
-													 * \var MENU_OPEN
-													 * \brief Open
+    }, msgnum = "MENU_OPEN", msgurl = "Menu-Open")
+    /*
+     * ! \var MENU_OPEN \brief Open
 													 */
 	public static final String	MENU_OPEN				= "MENU_OPEN";
 	@I18NMessages(value = { @I18NMessage("Configuration"), //
@@ -1667,9 +1592,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@I18NMessage(value = "Configuration", locale = "it", //
 			explanation = "Configuration" //
 			) //
-	}, msgnum = "MENU_Configuration", msgurl = "Menu-Configuration")/*!
-																	 * \var MENU_Configuration
-																	 * \brief Configuration
+    }, msgnum = "MENU_Configuration", msgurl = "Menu-Configuration")
+    /*
+     * ! \var MENU_Configuration \brief Configuration
 																	 */
 	public static final String	MENU_Configuration		= "MENU_Configuration";
 	@I18NMessages(value = { @I18NMessage("New"), //
@@ -1690,9 +1615,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@I18NMessage(value = "New", locale = "it", //
 			explanation = "New" //
 			) //
-	}, msgnum = "MENU_New", msgurl = "Menu-New")/*!
-												 * \var MENU_New
-												 * \brief New
+    }, msgnum = "MENU_New", msgurl = "Menu-New")
+    /*
+     * ! \var MENU_New \brief New
 												 */
 	public static final String	MENU_New				= "MENU_New";
 	@I18NMessages(value = { @I18NMessage("Documentation"), //
@@ -1713,9 +1638,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@I18NMessage(value = "Modify Documentation", locale = "it", //
 			explanation = "Modify Documentation of a job template" //
 			) //
-	}, msgnum = "MENU_Documentation", msgurl = "Menu-Documentation")/*!
-																	 * \var MENU_Documentation
-																	 * \brief Documentation
+    }, msgnum = "MENU_Documentation", msgurl = "Menu-Documentation")
+    /*
+     * ! \var MENU_Documentation \brief Documentation
 																	 */
 	public static final String	MENU_Documentation		= "MENU_Documentation";
 	@I18NMessages(value = { @I18NMessage("EventHandler"), //
@@ -1736,9 +1661,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@I18NMessage(value = "EventHandler", locale = "it", //
 			explanation = "EventHandler" //
 			) //
-	}, msgnum = "MENU_EventHandler", msgurl = "Menu-EventHandler")/*!
-																	 * \var MENU_EventHandler
-																	 * \brief EventHandler
+    }, msgnum = "MENU_EventHandler", msgurl = "Menu-EventHandler")
+    /*
+     * ! \var MENU_EventHandler \brief EventHandler
 																	 */
 	public static final String	MENU_EventHandler		= "MENU_EventHandler";
 	@I18NMessages(value = { @I18NMessage("HotFolderObject"), //
@@ -1759,9 +1684,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@I18NMessage(value = "HotFolderObject", locale = "it", //
 			explanation = "HotFolderObject" //
 			) //
-	}, msgnum = "MENU_HotFolderObject", msgurl = "Menu-HotFolderObject")/*!
-																		 * \var MENU_HotFolderObject
-																		 * \brief HotFolderObject
+    }, msgnum = "MENU_HotFolderObject", msgurl = "Menu-HotFolderObject")
+    /*
+     * ! \var MENU_HotFolderObject \brief HotFolderObject
 																		 */
 	public static final String	MENU_HotFolderObject	= "MENU_HotFolderObject";
 	@I18NMessages(value = { @I18NMessage("Job"), //
@@ -1782,9 +1707,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@I18NMessage(value = "Job", locale = "it", //
 			explanation = "Job" //
 			) //
-	}, msgnum = "MENU_Job", msgurl = "Menu-Job")/*!
-												 * \var MENU_Job
-												 * \brief Job
+    }, msgnum = "MENU_Job", msgurl = "Menu-Job")
+    /*
+     * ! \var MENU_Job \brief Job
 												 */
 	public static final String	MENU_Job				= "MENU_Job";
 	@I18NMessages(value = { @I18NMessage("JobChain"), //
@@ -1805,9 +1730,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@I18NMessage(value = "JobChain", locale = "it", //
 			explanation = "JobChain" //
 			) //
-	}, msgnum = "MENU_JobChain", msgurl = "Menu-JobChain")/*!
-															 * \var MENU_JobChain
-															 * \brief JobChain
+    }, msgnum = "MENU_JobChain", msgurl = "Menu-JobChain")
+    /*
+     * ! \var MENU_JobChain \brief JobChain
 															 */
 	public static final String	MENU_JobChain			= "MENU_JobChain";
 	@I18NMessages(value = { @I18NMessage("ProcessClass"), //
@@ -1828,9 +1753,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@I18NMessage(value = "ProcessClass", locale = "it", //
 			explanation = "ProcessClass" //
 			) //
-	}, msgnum = "MENU_ProcessClass", msgurl = "Menu-ProcessClass")/*!
-																	 * \var MENU_ProcessClass
-																	 * \brief ProcessClass
+    }, msgnum = "MENU_ProcessClass", msgurl = "Menu-ProcessClass")
+    /*
+     * ! \var MENU_ProcessClass \brief ProcessClass
 																	 */
 	public static final String	MENU_ProcessClass		= "MENU_ProcessClass";
 	@I18NMessages(value = { @I18NMessage("Lock"), //
@@ -1851,9 +1776,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@I18NMessage(value = "Lock", locale = "it", //
 			explanation = "Lock" //
 			) //
-	}, msgnum = "MENU_Lock", msgurl = "Menu-Lock")/*!
-													 * \var MENU_Lock
-													 * \brief Lock
+    }, msgnum = "MENU_Lock", msgurl = "Menu-Lock")
+    /*
+     * ! \var MENU_Lock \brief Lock
 													 */
 	public static final String	MENU_Lock				= "MENU_Lock";
 	@I18NMessages(value = { @I18NMessage("File"), //
@@ -1874,9 +1799,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@I18NMessage(value = "File", locale = "it", //
 			explanation = "File" //
 			) //
-	}, msgnum = "MENU_File", msgurl = "Menu-File")/*!
-													 * \var MENU_File
-													 * \brief File
+    }, msgnum = "MENU_File", msgurl = "Menu-File")
+    /*
+     * ! \var MENU_File \brief File
 													 */
 	public static final String	MENU_File				= "MENU_File";
 	@I18NMessages(value = { @I18NMessage("Options"), //
@@ -1897,9 +1822,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@I18NMessage(value = "Options", locale = "it", //
 			explanation = "Options" //
 			) //
-	}, msgnum = "MENU_Options", msgurl = "Menu-Options")/*!
-														 * \var MENU_Options
-														 * \brief Options
+    }, msgnum = "MENU_Options", msgurl = "Menu-Options")
+    /*
+     * ! \var MENU_Options \brief Options
 														 */
 	public static final String	MENU_Options			= "MENU_Options";
 	@I18NMessages(value = { @I18NMessage("Help"), //
@@ -1920,9 +1845,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@I18NMessage(value = "Help", locale = "it", //
 			explanation = "Help" //
 			) //
-	}, msgnum = "MENU_Help", msgurl = "Menu-Help")/*!
-													 * \var MENU_Help
-													 * \brief Help
+    }, msgnum = "MENU_Help", msgurl = "Menu-Help")
+    /*
+     * ! \var MENU_Help \brief Help
 													 */
 	public static final String	MENU_Help				= "MENU_Help";
 	@I18NMessages(value = { @I18NMessage("About"), //
@@ -1943,9 +1868,9 @@ import com.sos.joe.xml.jobscheduler.SchedulerDom;
 			@I18NMessage(value = "About", locale = "it", //
 			explanation = "About" //
 			) //
-	}, msgnum = "MENU_About", msgurl = "Menu-About")/*!
-													 * \var MENU_About
-													 * \brief About
+    }, msgnum = "MENU_About", msgurl = "Menu-About")
+    /*
+     * ! \var MENU_About \brief About
 													 */
 	public static final String	MENU_About				= "MENU_About";
 	 
