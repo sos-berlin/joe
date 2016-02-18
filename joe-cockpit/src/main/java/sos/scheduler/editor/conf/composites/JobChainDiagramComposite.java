@@ -107,9 +107,8 @@ public class JobChainDiagramComposite extends Composite {
             ErrorLog.message("could not save file " + filename + ". cause:" + e.getMessage(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
             saveFile = false;
         }
-        finally{
-            return saveFile;
-        }
+        
+        return saveFile;
     }
 
     
