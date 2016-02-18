@@ -131,7 +131,7 @@ public class TreeData {
 		return _type == type;
 	}
 	
-	public int hasCode(){
+	public int hashCode(){
 	    return _type;
 	}
 	 
