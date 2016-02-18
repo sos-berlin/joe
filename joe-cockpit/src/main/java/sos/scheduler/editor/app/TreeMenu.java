@@ -2,7 +2,7 @@ package sos.scheduler.editor.app;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Event;
@@ -14,7 +14,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-
 import sos.scheduler.editor.conf.forms.JobChainsForm;
 import sos.scheduler.editor.conf.forms.SchedulerForm;
 import sos.scheduler.editor.conf.listeners.SchedulerListener;
@@ -27,20 +26,23 @@ import com.sos.joe.xml.DomParser;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class TreeMenu {
-	private DomParser			_dom					= null;
+    private static final Logger LOGGER = Logger.getLogger(TreeMenu.class);
+
+    private static final String EDIT_XML                = "Edit XML";
+    private static final String SHOW_XML                = "Show XML";
+    private static final String COPY                    = "Copy";
+    private static final String COPY_TO_CLIPBOARD       = "XML to Clipboard";
+    private static final String PASTE                   = "Paste";
+    private static final String DELETE_HOT_HOLDER_FILE  = "Delete Hot Folder File";
+    private static final String NEW                     = "New";
+    private static final String DELETE                  = "Delete";
+
+    private DomParser			_dom					= null;
 	private Tree				_tree					= null;
 	private Menu				_menu					= null;
 	private static Element		_copy					= null;
 	private static int			_type					= -1;
 	private SchedulerForm		_gui					= null;
-	private static final String	EDIT_XML				= "Edit XML";
-	private static final String	SHOW_XML				= "Show XML";
-	private static final String	COPY					= "Copy";
-	private static final String	COPY_TO_CLIPBOARD		= "XML to Clipboard";
-	private static final String	PASTE					= "Paste";
-	private static final String	DELETE_HOT_HOLDER_FILE	= "Delete Hot Folder File";
-	private static final String	NEW						= "New";
-	private static final String	DELETE					= "Delete";
 
 	public TreeMenu(Tree tree, DomParser dom, SchedulerForm gui) {
 		_tree = tree;
@@ -205,13 +207,8 @@ public class TreeMenu {
 						}
 					}
 					catch (Exception ex) {
-						try {
-							new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
-						}
-						catch (Exception ee) {
-							// tu nichts
-						}
-						ex.printStackTrace();
+						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
+						LOGGER.error(ex.getMessage(),ex);
 						message("Error: " + ex.getMessage(), SWT.ICON_ERROR | SWT.OK);
 					}
 				}
@@ -227,12 +224,8 @@ public class TreeMenu {
 				xml = _dom.getXML(element);
 			}
 			catch (JDOMException ex) {
-				try {
-					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
-				}
-				catch (Exception ee) {
-					// tu nichts
-				}
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
+                LOGGER.error(ex.getMessage(),ex);
 				message("Error: " + ex.getMessage(), SWT.ICON_ERROR | SWT.OK);
 				return null;
 			}
@@ -252,12 +245,8 @@ public class TreeMenu {
 				}
 			}
 			catch (JDOMException ex) {
-				try {
-					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
-				}
-				catch (Exception ee) {
-					// tu nichts
-				}
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
+                LOGGER.error(ex.getMessage(),ex);
 				message("Error: " + ex.getMessage(), SWT.ICON_ERROR | SWT.OK);
 				return null;
 			}
@@ -275,29 +264,29 @@ public class TreeMenu {
 					if (_dom instanceof SchedulerDom
 							&& (((SchedulerDom) _dom).isLifeElement() || ((SchedulerDom) _dom).isDirectory())) {
 						element = getElement();
-					}
-					else {
+					} else {
 						element = _dom.getRoot().getChild("config");
 					}
 					if (element != null) {
 						xml = getXML(element);
 					}
-				}
-				else {
+				} else {
 					element = getElement();
 					if (element != null) {
 						xml = getXML(element);
 					}
 				}
 				if (element != null) {
-					if (xml == null) // error
-						return;
+					if (xml == null) {
+					    return;
+					}
 					String selectStr = Utils.getAttributeValue("name", getElement());
 					selectStr = selectStr == null || selectStr.length() == 0 ? getElement().getName() : selectStr;
 					String newXML = Utils.showClipboard(xml, _tree.getShell(), i.getText().equalsIgnoreCase(TreeMenu.EDIT_XML), selectStr);
 
-					if (newXML != null)
-						applyXMLChange(newXML);
+					if (newXML != null){
+					    applyXMLChange(newXML);
+					}
 				}
 			}
 		};
@@ -407,12 +396,8 @@ public class TreeMenu {
 			refreshTree("main");
 		}
 		catch (Exception de) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), de);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), de);
+            LOGGER.error(de.getMessage(),de);
 			MainWindow.message(MainWindow.getSShell(), "..error while update XML: " + de.getMessage(), SWT.ICON_WARNING);
 		}
 	}
