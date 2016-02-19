@@ -53,7 +53,6 @@ import com.sos.joe.xml.Utils;
 	public static final String	conIconICON_OPEN_GIF	= "/sos/scheduler/editor/icon_open.gif";
 	public static final String	conIconEDITOR_PNG		= "/sos/scheduler/editor/editor.png";
 	private final String		conClassName			= "MainWindow";
-	private final String		conSVNVersion			= "$Id: MainWindow.java 25898 2014-06-20 14:36:54Z kb $";
 	private static final Logger	logger					= Logger.getLogger(MainWindow.class);
 	private static Shell		sShell					= null;													// @jve:decl-index=0:visual-constraint="3,1"
 	private Menu				menuBar					= null;
@@ -78,8 +77,8 @@ import com.sos.joe.xml.Utils;
 	}
 
 	public MainWindow() {
-		logger.debug(conSVNVersion);
-	}
+ 	}
+	
 	private final ArrayList<String>	filelist				= new ArrayList<String>();
 	private static final String		NEW_DOCUMENTATION_TITLE	= "Unknown";
 

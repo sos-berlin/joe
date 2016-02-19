@@ -517,7 +517,7 @@ public class Utils {
 			retVal = output.outputString(job);
 		}
 		catch (Exception e) {
-            new ("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+            new ErrorLog ("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 		return retVal;
 	}
