@@ -1,5 +1,4 @@
 package sos.scheduler.editor.conf.forms;
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -16,12 +15,10 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.jdom.Element;
-
 import sos.scheduler.editor.app.ContextMenu;
 import sos.scheduler.editor.app.MainWindow;
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.JobsListener;
-
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
 import com.sos.joe.globals.messages.ErrorLog;
@@ -30,9 +27,6 @@ import com.sos.joe.wizard.forms.JobAssistentForm;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobsForm extends SOSJOEMessageCodes   {
-	@SuppressWarnings("unused") private final String	conSVNVersion	= "$Id$";
-	private static Logger								logger			= Logger.getLogger(JobsForm.class);
-	@SuppressWarnings("unused") private final String	conClassName	= "JobsForm";
 	private JobsListener								listener		= null;
 	private Group										group			= null;
 	private static Table								table			= null;
@@ -54,14 +48,7 @@ public class JobsForm extends SOSJOEMessageCodes   {
 			listener.fillTable(table);
 		}
 		catch (Exception e) {
-			try {
-				//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			System.err.println(JOE_E_0002.params("JobsForm.init()") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 
@@ -72,20 +59,11 @@ public class JobsForm extends SOSJOEMessageCodes   {
 			setSize(new org.eclipse.swt.graphics.Point(656, 400));
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			//			System.err.println("..error in JobsForm.initialize() " + e.getMessage());
-			System.err.println(JOE_E_0002.params("JobsForm.initialize()") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 
-	/**
-	 * This method initializes group
-	 */
+ 
 	private void createGroup() {
 		try {
 			GridLayout gridLayout = new GridLayout();
@@ -119,11 +97,7 @@ public class JobsForm extends SOSJOEMessageCodes   {
 						assitent.startJobAssistant();
 					}
 					catch (Exception ex) {
-						try {
-							new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + " ; " + JOE_M_0040.label(), ex);
-						}
-						catch (Exception ee) {}
-						System.out.println(JOE_E_0002.params("createGroup()") + ex.getMessage());
+						new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + " ; " + JOE_M_0040.label(), ex);
 					}
 					finally {
 						Utils.stopCursor(getShell());
@@ -150,13 +124,7 @@ public class JobsForm extends SOSJOEMessageCodes   {
 			label.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			System.err.println(JOE_E_0002.params("JobsForm.createGroup()") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 
@@ -204,13 +172,7 @@ public class JobsForm extends SOSJOEMessageCodes   {
 			tableColumn4.setWidth(40);
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			System.err.println(JOE_E_0002.params("JobsForm.createTable() ") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 

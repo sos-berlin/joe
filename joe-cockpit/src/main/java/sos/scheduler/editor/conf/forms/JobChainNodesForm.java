@@ -634,12 +634,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                         }
                     }
                     catch (Exception ex) {
-                        try {
-                            new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
-                        }
-                        catch (Exception ee) {
-                            // tu nichts
-                        }
+                       new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
                     }
                 }
             });
@@ -855,12 +850,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             bRemoveFileOrderSource.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, true));
         }
         catch (Exception e) {
-            try {
-                new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-            }
-            catch (Exception ee) {
-                // tu nichts
-            }
+            new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
         }
     }
 
@@ -974,12 +964,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             bApplyNode.setEnabled(false);
         }
         catch (Exception e) {
-            try {
-                new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-            }
-            catch (Exception ee) {
-                // tu nichts
-            }
+            new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
         }
     }
 
@@ -1022,12 +1007,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
         	listener.updateSelectedJobChain();
         }
         catch (Exception e) {
-            try {
-                new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-            }
-            catch (Exception ee) {
-                // tu nichts
-            }
+           new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
         }
     }
 
@@ -1127,13 +1107,8 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                 return false;
         }
         catch (Exception e) {
-            try {
-                new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-            }
-            catch (Exception ee) {
-                // tu nichts
-            }
-            return true;
+           new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+           return true;
         }
     }
 } // @jve:decl-index=0:visual-constraint="10,10"

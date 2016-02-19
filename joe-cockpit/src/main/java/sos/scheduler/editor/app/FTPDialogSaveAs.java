@@ -9,15 +9,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-
 import sos.ftp.profiles.FTPProfileJadeClient;
-import sos.scheduler.editor.conf.forms.SchedulerForm;
-
 import com.sos.VirtualFileSystem.common.SOSFileEntry;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
 import com.sos.joe.globals.misc.ResourceManager;
-import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.DomParser;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
@@ -73,12 +69,7 @@ public class FTPDialogSaveAs extends FTPDialog{
              
         }
         catch (Exception e) {
-            try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-            }
-            catch (Exception ee) {
-            }
-            System.out.println("..error in FTPDialog " + e.getMessage());
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
         }
     }
     
@@ -217,12 +208,7 @@ public class FTPDialogSaveAs extends FTPDialog{
             openRemote();
         }
         catch (Exception e) {
-            try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not save File", e);
-            }
-            catch (Exception ee) {
-                // tu nichts
-            }
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not save File", e);
             MainWindow.message("could not save File: cause: " + e.getMessage(), SWT.ICON_WARNING);
         }
         finally {

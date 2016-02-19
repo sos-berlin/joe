@@ -657,13 +657,7 @@ import com.sos.scheduler.model.xmldoc.Param;
 			jobParameterShell.open();
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-				System.out.println(SOSJOEMessageCodes.JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()));
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
+			new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 
@@ -729,12 +723,7 @@ import com.sos.scheduler.model.xmldoc.Param;
 			}
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			throw new Exception(SOSJOEMessageCodes.JOE_M_0010.params(e.toString()));
 		}
 	}

@@ -21,7 +21,6 @@ import com.sos.joe.globals.options.Options;
 import com.sos.joe.xml.DomParser;
 
 public class DocumentationDom extends DomParser {
-	private final static String		conSVNVersion		= "$Id: DocumentationDom.java 15437 2011-10-25 13:54:07Z ur $";
 	private static final String[]	_descriptionOrder	= { "job", "releases", "resources", "configuration", "documentation" };
 	private static final String[]	_jobOrder			= { "script", "process", "monitor" };
 	private static final String[]	_releaseOrder		= { "title", "author", "note", "changes" };

@@ -491,12 +491,7 @@ public class JobChainNestedListener {
 				table.setSelection(index + 1);
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			sos.scheduler.editor.app.MainWindow.message(e.getMessage(), SWT.ICON_INFORMATION);
 		}
 	}
@@ -547,12 +542,7 @@ public class JobChainNestedListener {
 			return names;
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			return new String[0];
 		}
 	}

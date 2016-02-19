@@ -27,7 +27,6 @@ import com.sos.joe.xml.IOUtils;
 public class MainListener extends JOEListener {
 	private static final String							conPropertyEDITOR_LANGUAGE	= "editor.language";
 	@SuppressWarnings("unused") private final String	conClsName					= "MainListener";
-	@SuppressWarnings("unused") private final String	conSVNVersion				= "$Id$";
 	private static final Logger							logger						= Logger.getLogger(MainListener.class);
 	private IContainer									_container					= null;
 	private final SOSString								sosString					= new SOSString();
@@ -165,7 +164,6 @@ public class MainListener extends JOEListener {
 			Options.setJobTitleList(titles);
 		}
 		catch (Exception e) {
-			System.out.println("error while read job descrition " + sos.util.SOSClassUtil.getMethodName());
 			new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
 			return;
 		}
@@ -200,7 +198,6 @@ public class MainListener extends JOEListener {
 			Options.setHolidaysDescription(holidaysDescription);
 		}
 		catch (Exception e) {
-			System.out.println("error while read holidays description " + sos.util.SOSClassUtil.getMethodName());
 			new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 		finally {
@@ -251,7 +248,6 @@ public class MainListener extends JOEListener {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("error while read holidays description " + sos.util.SOSClassUtil.getMethodName());
 			new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 		return holidaysDescription;
@@ -262,12 +258,10 @@ public class MainListener extends JOEListener {
 		try {
 			if (sosConnection != null)
 				return;
-			// sosConnection = SOSConnection.createInstance( iniFile, new sos.util.SOSStandardLogger(sos.util.SOSStandardLogger.INFO)) ;
 			sosConnection = SOSConnection.createInstance(iniFile, ErrorLog.getLogger());
 			sosConnection.connect();
 		}
 		catch (Exception e) {
-			System.out.println("error while read job description " + sos.util.SOSClassUtil.getMethodName());
 			new ErrorLog("error while read job descrition " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 	}

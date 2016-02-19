@@ -12,20 +12,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.jdom.Comment;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.jdom.Namespace;
 import org.jdom.ProcessingInstruction;
 import org.jdom.Text;
 import org.jdom.output.SAXOutputter;
-
 import sos.util.SOSFile;
-
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.options.Options;
@@ -33,8 +29,6 @@ import com.sos.joe.xml.DomParser;
 import com.sos.joe.xml.Utils;
 
 public class SchedulerDom extends DomParser {
-	private final static String		conSVNVersion				= "$Id: SchedulerDom.java 17997 2012-09-10 14:15:41Z ur $";
-	private static Logger			logger						= Logger.getLogger(SchedulerDom.class);
 	private static final String[]	CONFIG_ELEMENTS				= { "base", "params", "security", "plugins", "cluster", "process_classes", "schedules",
 			"locks", "script", "http_server", "holidays", "jobs", "job_chains", "orders", "commands" };
 	private static final String[]	JOB_ELEMENTS				= { "settings", "description", "lock.use", "params", "environment", "script",  "process", "monitor.use",
@@ -304,17 +298,11 @@ public class SchedulerDom extends DomParser {
         saxo.setReportNamespaceDeclarations(false);
 
 		saxo.output(getDoc());
-		// Document doc = null;
-		try {
+ 		try {
 			getBuilder(true).build(new StringReader(handler.getXML()));
 		}
 		catch (JDOMException e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			int res = ErrorLog.message(Messages.getMsg(conMessage_MAIN_LISTENER_OUTPUT_INVALID, e.getMessage()), SWT.ICON_WARNING | SWT.YES | SWT.NO);
 			if (res == SWT.NO)
 				return;
@@ -322,10 +310,7 @@ public class SchedulerDom extends DomParser {
 		OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(filename), encoding);
 		writer.write(handler.getXML());
 		writer.close();
-		// FileOutputStream stream = new FileOutputStream(new File(filename));
-		// XMLOutputter out = new XMLOutputter(getFormat());
-		// out.output(_doc, stream);
-		// stream.close();
+		 
 		setFilename(filename);
 		setChanged(false);
 		deorderDOM();
@@ -460,13 +445,7 @@ public class SchedulerDom extends DomParser {
 					styleSheet = "<?" + h.getTarget() + " " + h.getValue() + "?>";
 				}
 				catch (Exception e) {
-					try {
-						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-					}
-					catch (Exception ee) {
-						// tu nichts
-					}
-					//					System.out.println("error in SchedulerDom write: " + e.getMessage());
+					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 				}
 			}
 		}
@@ -538,12 +517,7 @@ public class SchedulerDom extends DomParser {
 			}
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 	}
 
@@ -569,12 +543,7 @@ public class SchedulerDom extends DomParser {
                     java.util.regex.Pattern.CASE_INSENSITIVE));
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 		return listOfhotFolderFiles;
 	}

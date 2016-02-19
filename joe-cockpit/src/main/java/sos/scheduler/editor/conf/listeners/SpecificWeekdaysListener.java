@@ -163,13 +163,7 @@ public class SpecificWeekdaysListener {
 					days.put(day, w);
 				}
 				catch (Exception ex) {
-					try {
-						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;Invalid weekday element in monthdays", ex);
-					}
-					catch (Exception ee) {
-						//tu nichts
-					}
-					System.out.println("Invalid weekday element in monthdays:" + ex.getMessage());
+					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;Invalid weekday element in monthdays", ex);
 				}
 			}
 			Iterator weekdayV_it = days.values().iterator();
@@ -237,13 +231,7 @@ public class SpecificWeekdaysListener {
 					days.put(day, w);
 				}
 				catch (Exception ex) {
-					try {
-						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;Invalid weekday element in monthdays", ex);
-					}
-					catch (Exception ee) {
-						//tu nichts
-					}
-					System.out.println("Invalid weekday element in monthdays:" + ex.getMessage());
+    				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;Invalid weekday element in monthdays", ex);
 				}
 			}
 			Iterator weekdayV_it = days.values().iterator();

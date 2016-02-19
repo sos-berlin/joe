@@ -224,7 +224,6 @@ public class JobAssistentImportJobsForm {
 		try {
 			listOfDoc = new ArrayList();
 			if (!new File(xmlPaths).exists()) {
-				//				 ErrorLog.message(shell, "Missing Directory for Job Description: " + xmlPaths, SWT.ICON_WARNING | SWT.OK);
 				ErrorLog.message(shell, SOSJOEMessageCodes.JOE_M_JobAssistent_MissingDirectory.params(xmlPaths), SWT.ICON_WARNING | SWT.OK);
 				return listOfDoc;
 			}
@@ -258,14 +257,7 @@ public class JobAssistentImportJobsForm {
 			}
 		}
 		catch (Exception ex) {
-			try {
-				// new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			ex.printStackTrace();
+			new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
 		}
 		return listOfDoc;
 	}
@@ -514,14 +506,7 @@ public class JobAssistentImportJobsForm {
 							shell.dispose();
 						}
 						catch (Exception ex) {
-							try {
-								// new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
-								new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
-							}
-							catch (Exception ee) {
-								// tu nichts
-							}
-							System.err.print(ex.getMessage());
+							new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
 						}
 					}
 				});
@@ -693,33 +678,17 @@ public class JobAssistentImportJobsForm {
 				createTreeItems();
 			}
 			catch (Exception e) {
-				try {
-					// new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 					new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-				}
-				catch (Exception ee) {
-					// tu nichts
-				}
-				System.err.print(e.getMessage());
 			}
 			if (joblistener != null) {
 				selectTree();
 			}
-			setToolTipText();
 			shell.layout();
 			shell.pack();
 			shell.open();
 		}
 		catch (Exception e) {
-			try {
-				// new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-				// System.err.println("error in JobAssistentImportJobsForm.showAllImportJobs(): " + e.getMessage());
-				System.err.println(SOSJOEMessageCodes.JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()));
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
 		}
 	}
 
@@ -728,12 +697,7 @@ public class JobAssistentImportJobsForm {
 			tree.removeAll();
 			final TreeItem newItemTreeItem_ = new TreeItem(tree, SWT.NONE);
 			//          ermöglicht das Starten des Wizards ohne vorhandene Jobbeschreibung
-/*            newItemTreeItem_.setText(0, SOSJOEMessageCodes.JOE_M_JobAssistent_NoJobDoc.label());
-			newItemTreeItem_.setText(1, "..");
-			newItemTreeItem_.setText(2, "..");
-			Element j = new Element("job");
-			Utils.setAttribute("order", (jobType.equals("order") ? "yes" : "no"), j);
-			newItemTreeItem_.setData(j);*/
+ 
 			ArrayList listOfDoc = parseDocuments();
 			Collections.sort(listOfDoc, new JobListComparator("name"));
 			String filename = "";
@@ -793,37 +757,11 @@ public class JobAssistentImportJobsForm {
 			}
 		}
 		catch (Exception e) {
-			try {
-				//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			//			System.out.println("error in JobAssistentImportJobsForm.createTreeItems(): " + e.getMessage());
-			System.out.println(SOSJOEMessageCodes.JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()));
+			new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
+ 
 
-	public void setToolTipText() {
-		// butImport.setToolTipText(Messages.getTooltip("butImport"));
-		// butParameters.setToolTipText(Messages.getTooltip("butParameters"));
-		// butdescription.setToolTipText(Messages.getTooltip("butdescription"));
-		// tree.setToolTipText(Messages.getTooltip("tree"));
-		// txtJobname.setToolTipText(Messages.getTooltip("jobname"));
-		// txtTitle.setToolTipText(Messages.getTooltip("jobtitle"));
-		// txtPath.setToolTipText(Messages.getTooltip("jobdescription"));
-		// butBack.setToolTipText(Messages.getTooltip("butBack"));
-		// if (butCancel != null)
-		// butCancel.setToolTipText(Messages.getTooltip("assistent.cancel"));
-		// if (butShow != null)
-		// butShow.setToolTipText(Messages.getTooltip("assistent.show"));
-	}
-
-	/**
-	 * Felder und Attribute werden aus der Jobdokumnetation genommen und in eine hashMap gepackt.
-	 * @return HashMap
-	 */
 	private HashMap getJobFromDescription() {
 		HashMap h = new HashMap();
 		try {
@@ -948,15 +886,7 @@ public class JobAssistentImportJobsForm {
 			}
 		}
 		catch (Exception e) {
-			try {
-				//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			//			System.out.println("..error in JobAssistentImportJobsForm.getJobFromDescription() " + e.getMessage());
-			System.out.println(SOSJOEMessageCodes.JOE_M_0010.params("getJobFromDescription()", e.getMessage()));
+			new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 		return h;
 	}

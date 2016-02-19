@@ -380,15 +380,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
 			}
 		}
 		catch (Exception e) {
-			try {
-				//              System.out.println("..error in " + sos.util.SOSClassUtil.getMethodName() + ": " + e.getMessage());
-				System.out.println(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + ": " + e.getMessage());
-				//              new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

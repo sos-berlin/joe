@@ -432,12 +432,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
 					}
 				}
 				catch (Exception ex) {
-					try {
-						new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
-					}
-					catch (Exception ee) {
-						//tu nichts
-					}
+					new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
 				}
 			}
 		});
@@ -602,12 +597,7 @@ public class JobChainNestedNodesForm extends SOSJOEMessageCodes implements IUnsa
 				return false;
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			return true;
 		}
 	}

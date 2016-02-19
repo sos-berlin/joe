@@ -121,7 +121,6 @@ import com.sos.joe.xml.Utils;
 		}
 		catch (Exception e) {
 			new ErrorLog("error in " + getMethodName(), e);
-			System.out.println("error in TabbedContainer.openDocumentation()" + e.getMessage());
 			return null;
 		}
 	}
@@ -140,7 +139,6 @@ import com.sos.joe.xml.Utils;
 		}
 		catch (Exception e) {
 			new ErrorLog("error in " + getMethodName(), e);
-			System.out.println("error in TabbedContainer.openDocumentation()" + e.getMessage());
 			return null;
 		}
 	}
@@ -149,8 +147,6 @@ import com.sos.joe.xml.Utils;
 		try {
 			DocumentationForm doc = new DocumentationForm(this, objCTabFolder, SWT.NONE);
 			if (doc.open(filelist)) {
-				// CTabItem tab = newItem(doc, doc.getFilename());
-				// tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
 				return doc.getFilename();
 			}
 			else
@@ -158,7 +154,6 @@ import com.sos.joe.xml.Utils;
 		}
 		catch (Exception e) {
 			new ErrorLog("error in " + getMethodName(), e);
-			System.out.println("error in TabbedContainer.openDocumentation()" + e.getMessage());
 			return null;
 		}
 	}
@@ -469,8 +464,7 @@ import com.sos.joe.xml.Utils;
 		pHelS.setText("JOE " + getMenuText(Messages.getLabel(MENU_Help), EMPTY));
 		pHelS.addSelectionListener(new SelectionListener() {
 			@Override public void widgetSelected(SelectionEvent e) {
-				//				listener.openHelp(Options.getHelpURL("index"));
-			}
+ 			}
 
 			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
@@ -480,14 +474,7 @@ import com.sos.joe.xml.Utils;
 		// pHelp.setAccelerator(SWT.F1);
 		pHelp.addSelectionListener(new SelectionListener() {
 			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				//				if (container.getCurrentEditor() != null) {
-				//					listener.openHelp(container.getCurrentEditor().getHelpKey());
-				//				}
-				//				else {
-				//					// String msg = "Help is available after documentation or configuration is opened";
-				//					String msg = Messages.getString("help.info");
-				//					MainWindow.message(msg, SWT.ICON_INFORMATION);
-				//				}
+			 
 			}
 
 			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -498,8 +485,7 @@ import com.sos.joe.xml.Utils;
 		pAbout.setText(getMenuText(Messages.getLabel(MENU_About), EMPTY) + " JOE");
 		pAbout.addSelectionListener(new SelectionListener() {
 			@Override public void widgetSelected(SelectionEvent e) {
-				//				listener.showAbout();
-			}
+ 			}
 
 			@Override public void widgetDefaultSelected(SelectionEvent e) {
 			}

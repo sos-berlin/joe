@@ -20,11 +20,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-import org.joda.time.DateTime;
-
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.ScheduleListener;
-
 import com.sos.dialog.components.SOSDateTime;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.JOEConstants;
@@ -57,13 +54,7 @@ public class ScheduleForm extends SOSJOEMessageCodes   {
 			init = false;
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			System.err.println(JOE_E_0002.params("ScheduleForm.init() ") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 
@@ -87,19 +78,11 @@ public class ScheduleForm extends SOSJOEMessageCodes   {
 			txtName.setFocus();
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			System.err.println(JOE_E_0002.params("ScheduleForm.initialize() ") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 
-	/**
-	 * This method initializes group
-	 */
+ 
 	private void createGroup() {
 		try {
 			GridLayout gridLayout = new GridLayout();
@@ -190,13 +173,7 @@ public class ScheduleForm extends SOSJOEMessageCodes   {
 	        scheduleFormmessage.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			System.err.println(JOE_E_0002.params("ScheduleForm.createGroup() ") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 

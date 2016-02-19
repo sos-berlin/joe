@@ -18,17 +18,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
-
 import com.sos.joe.globals.misc.ResourceManager;
-
 import sos.scheduler.editor.app.MainWindow;
 import sos.util.SOSString;
-
 import java.util.*;
-
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.Messages;
-import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.options.Options;
 
 public class WebDavDialogProfiles {
@@ -364,12 +359,7 @@ public class WebDavDialogProfiles {
 			init = false;
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not reaad WebDav Profiles", e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not reaad WebDav Profiles", e);
 			MainWindow.message("could not reaad WebDav Profiles:" + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}
@@ -417,12 +407,7 @@ public class WebDavDialogProfiles {
 			butApply.setEnabled(false);
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not save Profile " + cboConnectname.getText(), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;could not save Profile " + cboConnectname.getText(), e);
 			MainWindow.message("could not save WebDav Profile " + cboConnectname.getText() + ": " + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}

@@ -65,12 +65,7 @@ public class FTPDialogHotFolder extends FTPDialog{
           
         }
         catch (Exception e) {
-            try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-            }
-            catch (Exception ee) {
-            }
-            System.out.println("..error in FTPDialog " + e.getMessage());
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
         }
     }
 
@@ -128,11 +123,7 @@ public class FTPDialogHotFolder extends FTPDialog{
             
         }
         catch (Exception e) {
-            try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not Open Hot Folder.", e);
-            }
-            catch (Exception ee) {
-            }
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not Open Hot Folder.", e);
             MainWindow.message("could not Open Hot Folder: cause: " + e.getMessage(), SWT.ICON_WARNING);
         }
     }

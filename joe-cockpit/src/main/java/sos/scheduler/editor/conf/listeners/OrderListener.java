@@ -150,12 +150,7 @@ public class OrderListener {
 			//if(!listOfElement_3.isEmpty())
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 		return retVal;
 	}
@@ -207,11 +202,7 @@ public class OrderListener {
 					return _chains;
  				}
 				catch (Exception e) {
-					try {
-						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-					}
-					catch (Exception ee) {}
-					System.out.println(e.getMessage());
+					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 				}  
 			}
 			_chains = new String[0];
