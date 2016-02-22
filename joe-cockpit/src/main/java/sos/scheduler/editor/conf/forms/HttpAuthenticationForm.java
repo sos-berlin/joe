@@ -299,12 +299,7 @@ public class HttpAuthenticationForm extends SOSJOEMessageCodes implements IUnsav
 			String _encrypt = SOSCrypt.MD5encrypt(txtPassword.getText());
 			txtMD5Password.setText(_encrypt.toUpperCase());
 		} catch (Exception ex) {
-			try {
-//    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() +  txtPassword.getText() + " could not encrypt.", ex);
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + JOE_M_0016.params(txtPassword.getText()), ex);
-    		} catch(Exception ee) {
-    			//tu nichts
-    		}
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + JOE_M_0016.params(txtPassword.getText()), ex);
 			MainWindow.message(getShell(), JOE_M_0016.params(txtPassword.getText()), SWT.ICON_WARNING | SWT.OK );
 		}
 	}

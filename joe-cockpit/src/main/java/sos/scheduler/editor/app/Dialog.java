@@ -149,11 +149,7 @@ class Dialog extends org.eclipse.swt.widgets.Dialog {
 			
 		}
 		} catch (Exception e) {
-			try {
   			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-  		} catch(Exception ee) {
-  			//tu nichts
-  		}
 		}
 		close();
 	}

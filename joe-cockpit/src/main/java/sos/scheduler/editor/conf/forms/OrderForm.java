@@ -381,13 +381,7 @@ public class OrderForm extends SOSJOEMessageCodes implements IUnsaved {
 			}
 		}
 		catch (Exception e) {
-			try {
-				System.out.println(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()) + ": " + e.getMessage());
 				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
-			catch (Exception ee) {
-				// tu nichts
 			}
-		}
-	}
 } // @jve:decl-index=0:visual-constraint="10,10"

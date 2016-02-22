@@ -219,14 +219,7 @@ public class JobChainConfigurationForm extends SOSJOEMessageCodes implements IDe
 			return filename;
 		}
 		catch (Exception e) {
-			try {
-				// 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() , e);
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
-			e.printStackTrace();
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			MainWindow.message(e.getMessage(), SWT.ICON_ERROR | SWT.OK);
 		}
 		return filename;

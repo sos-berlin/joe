@@ -2,7 +2,6 @@ package sos.scheduler.editor.app;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Event;
@@ -26,7 +25,6 @@ import com.sos.joe.xml.DomParser;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class TreeMenu {
-    private static final Logger LOGGER = Logger.getLogger(TreeMenu.class);
 
     private static final String EDIT_XML                = "Edit XML";
     private static final String SHOW_XML                = "Show XML";
@@ -208,7 +206,6 @@ public class TreeMenu {
 					}
 					catch (Exception ex) {
 						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
-						LOGGER.error(ex.getMessage(),ex);
 						message("Error: " + ex.getMessage(), SWT.ICON_ERROR | SWT.OK);
 					}
 				}
@@ -225,7 +222,6 @@ public class TreeMenu {
 			}
 			catch (JDOMException ex) {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
-                LOGGER.error(ex.getMessage(),ex);
 				message("Error: " + ex.getMessage(), SWT.ICON_ERROR | SWT.OK);
 				return null;
 			}
@@ -246,7 +242,6 @@ public class TreeMenu {
 			}
 			catch (JDOMException ex) {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
-                LOGGER.error(ex.getMessage(),ex);
 				message("Error: " + ex.getMessage(), SWT.ICON_ERROR | SWT.OK);
 				return null;
 			}
@@ -397,7 +392,6 @@ public class TreeMenu {
 		}
 		catch (Exception de) {
 			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), de);
-            LOGGER.error(de.getMessage(),de);
 			MainWindow.message(MainWindow.getSShell(), "..error while update XML: " + de.getMessage(), SWT.ICON_WARNING);
 		}
 	}
@@ -478,14 +472,9 @@ public class TreeMenu {
 												listener.selectLock(i - 1);
 											}
 											catch (Exception es) {
-												try {
 													new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), es);
 												}
-												catch (Exception ee) {
-													// tu nichts
 												}
-											}
-										}
 										else
 											if (name.equals(SchedulerListener.PROCESS_CLASSES)) {
 												TreeData data = (TreeData) _tree.getSelection()[0].getData();
@@ -501,15 +490,10 @@ public class TreeMenu {
 													listener.selectProcessClass(i - 1);
 												}
 												catch (Exception es) {
-													try {
 														new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), es);
 													}
-													catch (Exception ee) {
-														// tu nichts
 													}
 												}
-											}
-			}
 		};
 	}
 
@@ -810,14 +794,9 @@ public class TreeMenu {
 			updateTreeView(data);
 		}
 		catch (Exception e) {
-			try {
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			}
-			catch (Exception ee) {
-				// tu nichts
 			}
-		}
-	}
 
 
 	private void pasteChild(String key, TreeData data) {

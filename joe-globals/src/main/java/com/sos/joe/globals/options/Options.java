@@ -562,7 +562,6 @@ import com.sos.resources.SOSProductionResource;
 			return ResourceManager.getColor(r, g, b);
 		}
 		catch (Exception e) {
-//			new ErrorLog("error in " + SOSClassUtil.getMethodName(), e);
 			return ResourceManager.getColor(255, 255, 210);
 		}
 	}

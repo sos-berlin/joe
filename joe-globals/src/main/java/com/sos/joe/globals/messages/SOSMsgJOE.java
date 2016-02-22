@@ -279,14 +279,8 @@ public class SOSMsgJOE extends SOSMsgControl {
 			}
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; "
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "; "
 						+ com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			e.printStackTrace();
 			ErrorLog.message(com.sos.joe.globals.messages.Messages.getString("MainListener.cannot_open_help", new String[] { url, lang, e.getMessage() }),
 					SWT.ICON_ERROR | SWT.OK);
 		}

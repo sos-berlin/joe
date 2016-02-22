@@ -392,12 +392,7 @@ public class WebDavDialog {
 			_setEnabled(false);
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			MainWindow.message("could not int WebDav Profiles:" + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}
@@ -443,13 +438,7 @@ public class WebDavDialog {
 			}
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
-			System.out.println("..error in WebDavDialog " + e.getMessage());
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 	}
 
@@ -542,12 +531,7 @@ public class WebDavDialog {
 			listener.saveAs(localfilename, file);
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not save File", e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not save File", e);
 			MainWindow.message("could not save File: cause: " + e.getMessage(), SWT.ICON_WARNING);
 		}
 		finally {
@@ -611,12 +595,7 @@ public class WebDavDialog {
 			schedulerConfigurationShell.dispose();
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not Open Hot Folder.", e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not Open Hot Folder.", e);
 			MainWindow.message("could not Open Hot Folder: cause: " + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}
@@ -728,21 +707,12 @@ public class WebDavDialog {
 			}
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 	}
 
 	public void setToolTipText() {
-		/*.setToolTipText(Messages.getTooltip(""));
-		.setToolTipText(Messages.getTooltip(""));
-		.setToolTipText(Messages.getTooltip(""));
-		.setToolTipText(Messages.getTooltip(""));
-		 */
+ 
 		if (type.equalsIgnoreCase(OPEN_HOT_FOLDER)) {
 			butOpenOrSave.setToolTipText(Messages.getTooltip("webdavdialog.btn_open_hot_folder"));
 			txtFilename.setToolTipText(Messages.getTooltip("webdavdialog.txt_open_hot_folder"));

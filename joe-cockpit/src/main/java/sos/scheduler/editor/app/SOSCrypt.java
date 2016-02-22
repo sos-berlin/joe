@@ -1,23 +1,13 @@
 package sos.scheduler.editor.app;
-/*CREATE OR REPLACE AND COMPILE JAVA SOURCE NAMED
-    SOSCrypt
-  AS
-*/
+
 import javax.crypto.Cipher;
 import java.security.*;
-
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
 import com.sos.joe.globals.messages.ErrorLog;
-import com.sos.joe.globals.messages.Messages;
-import com.sos.joe.globals.options.Options;
 
 
-/**
- * @author re
- * 
- */
+ 
 public class SOSCrypt {
 
     // usage:
@@ -30,14 +20,7 @@ public class SOSCrypt {
     private static final String fillchars = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
 
 
-    /**
-     * Schlüssel auffüllen
-     * 
-     * @param pass   Schlüssel
-     * @param length gewünschte Länge
-     * @return
-     * @throws Exception
-     */
+ 
     public static String getKey(String pass, int length) throws Exception {
 
         if (pass == null || pass.length() == 0) {
@@ -55,22 +38,10 @@ public class SOSCrypt {
         return pass;
     }
    
-    
-    /**
-     * Verschlüsseln
-     * 
-     * @param pass   Schlüssel
-     * @param str    Daten
-     * @return
-     * @throws Exception
-     */
+ 
     public static String encrypt(String pass, String str) throws Exception {
         
-        /*
-        if(pass == null || pass.getBytes().length != 8){
-            throw new Exception("ivalid key length for encryption");
-        }
-        */
+       
         
         try {
 	
@@ -110,21 +81,10 @@ public class SOSCrypt {
         }
     }
 
-    /**
-     * Entschlüsseln
-     * 
-     * @param pass Schlüssel
-     * @param str  Daten
-     * @return
-     * @throws Exception
-     */
+    
     public static String decrypt(String pass, String str) throws Exception {
 
-        /*
-        if(pass == null || pass.getBytes().length != 8){
-            throw new Exception("ivalid key length for decrypt");
-        }
-        */
+ 
         
         try {
 

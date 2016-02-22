@@ -240,13 +240,7 @@ public class DaysListener {
 					}
 				}
 				catch (Exception ex) {
-					try {
-						new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;Invalid day element in " + _elementName[_type], ex);
-					}
-					catch (Exception ee) {
-						//tu nichts
-					}
-					System.out.println("Invalid day element in " + _elementName[_type]);
+					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ;Invalid day element in " + _elementName[_type], ex);
 				}
 			}
 			_usedDays = sort(days, elements);
@@ -279,13 +273,7 @@ public class DaysListener {
 			return sorted;
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
-			System.err.println("error in daysListener.sort: " + e.getMessage());
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			return sorted;
 		}
 	}
@@ -579,12 +567,7 @@ public class DaysListener {
 			parent.setExpanded(expand);
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not open file on Webdav Server", e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+    		new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not open file on Webdav Server", e);
 		}
 	}
 

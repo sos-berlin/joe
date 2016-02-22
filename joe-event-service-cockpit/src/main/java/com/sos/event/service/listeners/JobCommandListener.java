@@ -468,16 +468,7 @@ public class JobCommandListener {
 				String state = Utils.getAttributeValue("state", e);
 				if (state.length() > 0)
 					stateList.add(state);
-				/*if(whichState.equals("state") && !endstate) {    				
-
-					if(state.length() > 0)
-						stateList.add(state);
-
-				} else if(whichState.equals("end_state") && endstate) {
-					if(state.length() > 0)
-						stateList.add(state);
-				}
-				*/
+			
 			}
 			if (stateList.size() > 0) {
 				retVal = new String[stateList.size()];
@@ -487,12 +478,7 @@ public class JobCommandListener {
 			//if(!listOfElement_3.isEmpty())
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 		return retVal;
 	}

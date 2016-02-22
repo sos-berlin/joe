@@ -203,13 +203,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 				return null;
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			System.out.println("error in TabbedContainer.openDocumentation()" + e.getMessage());
+    		new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			return null;
 		}
 	}
@@ -227,13 +221,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 				return null;
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			System.out.println("error in TabbedContainer.openDocumentation()" + e.getMessage());
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			return null;
 		}
 	}
@@ -250,13 +238,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 				return null;
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			System.out.println("error in TabbedContainer.openDocumentation()" + e.getMessage());
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 			return null;
 		}
 	}
@@ -563,12 +545,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 			}
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not open file " + xmlFilename, e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not open file " + xmlFilename, e);
 			MainWindow.message("could not open file cause" + e.getMessage(), SWT.NONE);
 		}
 		return null;
@@ -587,12 +564,7 @@ public class TabbedContainer implements IContainer, IEditorAdapter  {
 			return openQuick(xmlFilename);
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not open File ", e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not open File ", e);
 			MainWindow.message("could not open file cause" + e.getMessage(), SWT.NONE);
 		}
 		return null;

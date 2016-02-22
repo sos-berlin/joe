@@ -2,7 +2,7 @@ package com.sos.joe.xml;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.regex.Pattern;
-
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -25,9 +25,7 @@ import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
-
 import sos.scheduler.editor.app.SchedulerEditorFontDialog;
-
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IDataChanged;
@@ -42,20 +40,18 @@ import com.sos.joe.xml.jobdoc.DocumentationDom;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class Utils {
+    private static final Logger LOGGER = Logger.getLogger(Utils.class);
+
 	final static String			JOE_L_Object_In_Use	= "JOE_L_Object_In_Use";
 	final static String			JOE_L_Process_Class	= "processclass";
 	final static String			JOE_L_Job			= "job";
 	final static String			JOE_L_Job_chain		= "job_chain";
 	final static String			JOE_L_Lock			= "lock";
 	final static String			JOE_L_Schedule		= "schedule";
-	// saving a default value results in removing the tag
 	private static final String	STR_DEFAULT			= "";
 	private static final String	INT_DEFAULT			= null;
 	private static final String	BOOLEAN_DEFAULT		= null;
 	private static Clipboard	_cb					= null;
-	//all root elements for undo 
-	//private static       List         undo            = null;
-	//private static       int          UNDO_SIZE       = 10;
 	private static Element		resetElement		= null;
 
 	public static String getIntegerAsString(int i) {
@@ -309,7 +305,6 @@ public class Utils {
 
 	public static String fill(int l, String s) {
 		String n = "00000000000000000000000000000";
-		//if ((s.length() < l) && (!s.trim().equals(""))) {
 		if (s.length() < l) {
 			s = n.substring(0, l - s.length()) + s;
 		}
@@ -438,19 +433,7 @@ public class Utils {
 	}
 
 	public static String getFileFromURL(String url) {
-		/*String separator = System.getProperty("file.separator");
-		int index = url.lastIndexOf(separator);
-		if(url != null && new java.io.File(url).getName().startsWith("#xml#.config.")) {
-			return new java.io.File(url).getParent();
-		}
-		if (index < 0)
-		    return url;
-		else
-		    return url.substring(index + 1);
-		 */
-		/*if(url != null && new java.io.File(url).getName().startsWith("#xml#.config.")) {
-		return new java.io.File(url).getParent();
-		}*/
+		 
 		if (url != null && new java.io.File(url).isDirectory()) {
 			return new java.io.File(url).getPath();
 		}
@@ -491,14 +474,8 @@ public class Utils {
 			retVal = output.outputString(job);
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
-			System.out.println(e);
-		}
+    		new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
+ 		}
 		return retVal;
 	}
 
@@ -513,13 +490,7 @@ public class Utils {
 			stream.close();
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
-			e.printStackTrace();
+    		new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 		String str = stream.toString().trim();
 		if (str.startsWith("<div")) {
@@ -539,7 +510,7 @@ public class Utils {
 			retVal = output.outputString(job);
 		}
 		catch (Exception e) {
-			System.out.println(e);
+			LOGGER.error(e.getMessage(),e);
 		}
 		return retVal;
 	}
@@ -560,35 +531,15 @@ public class Utils {
 		return retVal;
 	}
 
-	/*public static String showClipboard(String xml, Shell shell) {
-		return showClipboard(xml, shell, false, null, false, null, true);    	
-	}*/
+ 
 	public static String showClipboard(String xml, Shell shell, boolean bApply, String selectStr) {
 		return showClipboard(xml, shell, bApply, selectStr, false, null, false);
 	}
 
-	/**
-	 * 
-	 * @param xml
-	 * @param shell
-	 * @param bApply
-	 * @param selectStr
-	 * @param showFunction -> wird in Pre Function in Job Execute verwendet
-	 * @param scriptLanguage -> wird in Pre Function in Job Execute verwendet
-	 * @param dontShowWizzardInfo -> wird in Jobs Wizzard verwendet
-	 * @return
-	 */
+ 
 	public static String showClipboard(String xml, Shell shell, boolean bApply, String selectStr, boolean showFunction, String scriptLanguage,
 			boolean showWizzardInfo) {
-		/*System.out.println("test 1 XXX xml " + xml);
-		System.out.println("test 2  XXX shell " + shell);
-		System.out.println("test 3 XXX bApply " + bApply);
-		System.out.println("test 4 XXX selectStr " + selectStr);
-		System.out.println("test 5 XXX showFunction " + showFunction);
-		System.out.println("test 6 XXX scriptLanguage " + scriptLanguage);
-		System.out.println("test 7 XXX showWizzardInfo " + showWizzardInfo);
-		 */
-		//kommt jetzt aus den Options Font font = new Font(Display.getDefault(), "Courier New", 8, SWT.NORMAL);
+ 
 		TextDialog dialog = new TextDialog(shell, SWT.CLOSE | SWT.TITLE | SWT.APPLICATION_MODAL | SWT.RESIZE, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		dialog.setSize(new Point(500, 400));
 		if (selectStr != null && selectStr.trim().length() > 0) {
@@ -608,7 +559,6 @@ public class Utils {
 		dialog.setShowFunctions(showFunction);
 		dialog.setScriptLanguage(scriptLanguage);
 		dialog.setShowWizzardInfo(showWizzardInfo);
-		//String s = dialog.open(true);
 		String s = dialog.open(false);
 		if (dialog.isClipBoardClick()) {
 			copyClipboard(s, shell.getDisplay());
@@ -617,9 +567,7 @@ public class Utils {
 		if (!dialog.isApplyBoardClick()) {
 			s = null;
 		}
-		/*if (font != null)
-			font.dispose();
-			*/
+ 
 		return s;
 	}
 
@@ -630,12 +578,7 @@ public class Utils {
 		_cb.setContents(new Object[] { content }, new Transfer[] { transfer });
 	}
 
-	/**
-	 * Element ist schreibgeschützt
-	 * @param dom
-	 * @param elem
-	 * @return
-	 */
+ 
 	public static boolean isElementEnabled(String which, SchedulerDom dom, Element elem) {
 		if (which.equals("job") && elem != null && !elem.getName().equals("job")) {
 			elem = getJobElement(elem);
@@ -657,9 +600,7 @@ public class Utils {
 		return true;
 	}
 
-	/*
-	 * liefert den Vaterknoten Job
-	 */
+ 
 	public static Element getJobElement(Element elem) {
 		boolean loop = true;
 		int counter = 0;
@@ -687,11 +628,7 @@ public class Utils {
 		return elem;
 	}
 
-	/*
-	 * liefert den Hotfolder Vaterknoten 
-	 * mögliche Vaterknoten
-	 * "job", "job_chain", "add_order", "order", process_class, schedule, lock
-	 */
+ 
 	public static Element getHotFolderParentElement(Element elem) {
 		boolean loop = true;
 		int counter = 0;
@@ -724,11 +661,7 @@ public class Utils {
 		return elem;
 	}
 
-	/*
-	 * liefert den Vaterknoten der Runtime
-	 * 
-	 * folgende Vaterknoten sind gesucht: job, order, schedule
-	 */
+ 
 	public static Element getRunTimeParentElement(Element elem) {
 		boolean loop = true;
 		int counter = 0;
@@ -757,9 +690,7 @@ public class Utils {
 		return elem;
 	}
 
-	/**
-	 * Normalizes the given string
-	 */
+ 
 	public static String escape(String s) {
 		if (s == null) {
 			return s;
@@ -843,16 +774,7 @@ public class Utils {
 		//Matcher matcher = pattern.matcher(filename);
 	}
 
-	/**
-	 * Überprüft die Abhängigkeiten der Elementen 
-	 * @param name -> Names des Element, der gelöscht bzw. geändert wurde
-	 * @param _dom
-	 * @param type -> Im welchen Formular wurde geändert
-	 * @param which -> Wenn type nicht ausreicht:  z.B. im Job Formular (type=JOB) wird einmal beim Schliessen und einmal beim Ändern der
-	 * Name des Jobs überprüft.
-	 * 
-	 * @return boolean true alles im grünen Bereich. 
-	 */
+ 
 	public static boolean checkElement(String name, SchedulerDom _dom, int type, String which) {
 		boolean onlyWarning = false;//-> true: Gibt nur eine Warnung aus. Sonst Warnung mit Yes- und No- Button um ggf. die Änderungen zurückzunehmen
 		try {
@@ -865,8 +787,7 @@ public class Utils {
 				XPath x3 = XPath.newInstance("//order[@job_chain='" + name + "']");
 				List<Element> listOfElement_3 = x3.selectNodes(_dom.getDoc());
 				if (!listOfElement_3.isEmpty())
-					//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
-					//"Soll die Jobkette trotzdem umbennant werden");
+ 
 					throw new Exception(strException);
 				XPath x4 = XPath.newInstance("//add_order[@job_chain='" + name + "']");
 				List<Element> listOfElement_4 = x4.selectNodes(_dom.getDoc());
@@ -881,14 +802,12 @@ public class Utils {
 					XPath x3 = XPath.newInstance("//order[@job_chain='" + name + "']");
 					List listOfElement_3 = x3.selectNodes(_dom.getDoc());
 					if (!listOfElement_3.isEmpty())
-						//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
-						//"Soll die Jobkette trotzdem gelöscht werden");
+ 
 						throw new Exception(strException);
 					XPath x4 = XPath.newInstance("//add_order[@job_chain='" + name + "']");
 					List listOfElement_4 = x4.selectNodes(_dom.getDoc());
 					if (!listOfElement_4.isEmpty())
-						//throw new Exception ("Die Jobkette [job_chain=" + name + "] wird in einem Auftrag verwendet. " +
-						//"Soll die Jobkette trotzdem gelöscht werden");
+ 
 						throw new Exception(strException);
 				}
 				else
@@ -994,24 +913,7 @@ public class Utils {
 		return true;
 	}
 
-	/*public static void setUndoElement(Element elem) {
-		if(undo == null)
-			undo = new java.util.ArrayList();
-
-		undo.set(0, elem);
-		if(undo.size() > UNDO_SIZE)
-			undo.remove(undo.size()-1);
-	}
-
-	public static Element getUndoElement() {
-		if(undo != null) {    		    
-			Element retval = (Element)((Element)undo.get(0)).clone();
-			undo.remove(0);    		
-			return retval;    		
-		}
-		return null;
-	}
-	*/
+ 
 	public static void setChangedForDirectory(Element elem, SchedulerDom dom) {
 		if (dom.isDirectory() || dom.isLifeElement()) {
 			//mögliche hot folder element
@@ -1036,11 +938,7 @@ public class Utils {
 				return false;
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 		return false;
 	}
@@ -1079,22 +977,13 @@ public class Utils {
 						update.updateTree("main");
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 	}
 
-	/**
-	 * Generiert einen Help Button. 
-	 * Beim Klicken wird ein Fenster geöffnet, indem der text steht 
-	 */
+ 
 	public static Button createHelpButton(Composite composite, String text, Shell shell) {
 		Button butHelp = new Button(composite, SWT.NONE);
-		//butHelp.setLayoutData(new GridData());
 		final Shell shell_ = shell;
 		final String text_ = text;
 		butHelp.addSelectionListener(new SelectionAdapter() {
