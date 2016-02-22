@@ -2,6 +2,7 @@ package sos.scheduler.editor.conf.listeners;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -12,7 +13,8 @@ import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
  
 public class CommandsListener {
-	private SchedulerDom		_dom;
+    private static final Logger LOGGER = Logger.getLogger(JOEListener.class);
+    private SchedulerDom		_dom;
 	private Element				_config;
 	private ISchedulerUpdate	_main;
 	private Element				_commands;
@@ -28,26 +30,16 @@ public class CommandsListener {
 		String xml = "";
 		if (_commands != null) {
 			try {
-				//Iterator it = _commands.getChildren().iterator();
-				java.util.List l = _commands.getChildren();
+				@SuppressWarnings("unchecked")
+                java.util.List<Element> l = _commands.getChildren();
 				for (int i = 0; i < l.size(); i++) {
-					Element e = (Element) l.get(i);
+					Element e = l.get(i);
 					String s = _dom.getXML(e);
 					xml += s.substring(45);
 				}
-				/* while (it.hasNext()) {
-				    Element e = (Element) it.next();
-				    String s = _dom.getXML(e);
-				    xml += s.substring(45);
-				}*/
 			}
 			catch (JDOMException ex) {
-				try {
-					new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
-				}
-				catch (Exception ee) {
-					//tu nichts
-				}
+				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
 				throw new Exception("error in " + sos.util.SOSClassUtil.getMethodName() + " : " + ex.getMessage());
 			}
 		}
@@ -74,22 +66,12 @@ public class CommandsListener {
 			_main.updateOrders();
 		}
 		catch (JDOMException e1) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e1);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
-			e1.printStackTrace();
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e1);
+			LOGGER.error(e1.getMessage(),e1);
 		}
 		catch (IOException e1) {
-			try {
-				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e1);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
-			e1.printStackTrace();
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e1);
+            LOGGER.error(e1.getMessage(),e1);
 		}
 	}
 }

@@ -130,20 +130,7 @@ public class Application extends ApplicationWindow {
 		ErrorLog.setSShell(shell);
 		objPersistenceStore = new WindowsSaver(this.getClass(), shell, 940, 600);
 		objPersistenceStore.restoreWindow();
-		//		parent.addDisposeListener(new DisposeListener() {
-		//			@Override
-		//			public void widgetDisposed(final DisposeEvent arg0) {
-		//				logger.debug("disposed");
-		//				objPersistenceStore.saveWindowPosAndSize();
-		//			}
-		//		});
-		//		parent.addControlListener(new ControlAdapter() {
-		//			@Override
-		//			public void controlResized(final ControlEvent e) {
-		//				logger.debug("control resized");
-		//				objPersistenceStore.saveWindowPosAndSize();
-		//			}
-		//		});
+		 
 		Composite container = new Composite(parent, SWT.NONE);
 		GridLayout gl_container = new GridLayout(1, true);
 		container.setLayout(gl_container);
@@ -280,7 +267,6 @@ public class Application extends ApplicationWindow {
 						}
 					}
 					catch (Exception e) {
-						e.printStackTrace();
 						new ErrorLog ("Problem", e);
 					}
 				}

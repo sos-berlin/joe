@@ -86,11 +86,7 @@ public abstract class FTPDialog {
                         try {
                             schedulerConfigurationShell.dispose();
                         } catch (Exception r) {
-                            try {
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-                            } catch (Exception ee) {
-                                // tu nichts
-                            }
+                            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
                         }
                     }
                 }
@@ -140,11 +136,7 @@ public abstract class FTPDialog {
                             _setEnabled(true);
                         } catch (Exception r) {
                             MainWindow.message("error while choice Profilename: " + e.toString(), SWT.ICON_WARNING);
-                            try {
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-                            } catch (Exception ee) {
-                                // tu nichts
-                            }
+                            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
                         }
                     }
                 }));
@@ -167,12 +159,8 @@ public abstract class FTPDialog {
                             fillTable(ftpProfileJadeClient.getDirectoryContent(listener.getCurrProfile().getRoot()));
                             _setEnabled(true);
                         } catch (Exception ex) {
-                            try {
                                 MainWindow.message("error while connecting: " + ex.toString(), SWT.ICON_WARNING);
                                 new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
-                            } catch (Exception ee) {
-                                // tu nichts
-                            }
                         }
                         Utils.stopCursor(schedulerConfigurationShell);
                     }
@@ -189,11 +177,7 @@ public abstract class FTPDialog {
                             }
                         } catch (Exception r) {
                             MainWindow.message("error while reading directory: " + e.toString(), SWT.ICON_WARNING);
-                            try {
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-                            } catch (Exception ee) {
-                                // tu nichts
-                            }
+                            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
                         }
                     }
                 });
@@ -208,11 +192,7 @@ public abstract class FTPDialog {
                             txtFilename.setText("");
                         } catch (Exception r) {
                             MainWindow.message("error: " + e.toString(), SWT.ICON_WARNING);
-                            try {
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-                            } catch (Exception ee) {
-                                // tu nichts
-                            }
+                            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
                         }
                     }
                 });
@@ -256,11 +236,7 @@ public abstract class FTPDialog {
                                 }
                             }
                         } catch (Exception r) {
-                            try {
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-                            } catch (Exception ee) {
-                                // tu nichts
-                            }
+                             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
                         }
                     }
                 });
@@ -325,11 +301,7 @@ public abstract class FTPDialog {
                                     fillTable(ftpProfileJadeClient.getDirectoryContent(txtDir.getText()));
                                 }
                             } catch (Exception r) {
-                                try {
-                                    new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-                                } catch (Exception ee) {
-                                    // tu nichts
-                                }
+                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
                             }
                             Utils.stopCursor(schedulerConfigurationShell);
                         }
@@ -377,11 +349,7 @@ public abstract class FTPDialog {
                             disconnect();
                             schedulerConfigurationShell.dispose();
                         } catch (Exception r) {
-                            try {
-                                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-                            } catch (Exception ee) {
-                                // tu nichts
-                            }
+                            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
                         }
                     }
                 });
@@ -397,11 +365,7 @@ public abstract class FTPDialog {
             schedulerConfigurationShell.layout();
             schedulerConfigurationShell.open();
         } catch (Exception e) {
-            try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-            } catch (Exception ee) {
-                // tu nichts
-            }
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
             MainWindow.message("could not int FTP Profiles:" + e.getMessage(), SWT.ICON_WARNING);
         }
     }
@@ -423,11 +387,7 @@ public abstract class FTPDialog {
             txtDir.setText(listener.getCurrProfile() != null ? listener.getCurrProfile().getRoot() : "");
             _setEnabled(false);
         } catch (Exception e) {
-            try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-            } catch (Exception ee) {
-                // tu nichts
-            }
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
             MainWindow.message("could not int FTP Profiles:" + e.getMessage(), SWT.ICON_WARNING);
         }
     }
@@ -453,12 +413,8 @@ public abstract class FTPDialog {
             fillTable(h);
             Utils.stopCursor(schedulerConfigurationShell);
         } catch (Exception r) {
-            try {
-                MainWindow.message("could not refersh Table, cause: " + r.toString(), SWT.ICON_WARNING);
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
-            } catch (Exception ee) {
-                // tu nichts
-            }
+               MainWindow.message("could not refersh Table, cause: " + r.toString(), SWT.ICON_WARNING);
+               new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), r);
         }
     }
 
@@ -575,10 +531,7 @@ public abstract class FTPDialog {
                 }
             }
         } catch (Exception e) {
-            try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-            } catch (Exception ee) {
-            }
+             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
         }
     }
 

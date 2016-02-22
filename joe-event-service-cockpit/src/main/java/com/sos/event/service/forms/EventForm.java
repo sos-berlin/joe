@@ -427,11 +427,7 @@ public class EventForm extends SOSJOEMessageCodes implements IUnsaved  {
 				refresh();
 			}
 		} catch(Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			} catch(Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			ErrorLog.message((JOE_E_0002.params("'save Event'") + e.getMessage()), SWT.ICON_WARNING);
 
 		}

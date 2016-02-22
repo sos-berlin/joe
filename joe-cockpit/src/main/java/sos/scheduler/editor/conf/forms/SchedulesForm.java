@@ -41,13 +41,7 @@ public class SchedulesForm extends SOSJOEMessageCodes   {
 			listener.fillTable(table);
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			System.err.println(JOE_E_0002.params("SchedulesForm.init() ") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 
@@ -58,19 +52,11 @@ public class SchedulesForm extends SOSJOEMessageCodes   {
 			setSize(new org.eclipse.swt.graphics.Point(656, 400));
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			System.err.println(JOE_E_0002.params("SchedulesForm.initialize() ") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 
-	/**
-	 * This method initializes group
-	 */
+ 
 	private void createGroup() {
 		try {
 			GridData gridData = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.BEGINNING, false, false);
@@ -105,19 +91,11 @@ public class SchedulesForm extends SOSJOEMessageCodes   {
 			//            label.setText("Label");
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			System.err.println(JOE_E_0002.params("SchedulesForm.createGroup() ") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 
-	/**
-	 * This method initializes table
-	 */
+ 
 	private void createTable() {
 		try {
 			GridData gridData2 = new org.eclipse.swt.layout.GridData(GridData.FILL, GridData.FILL, true, true, 1, 3);
@@ -143,13 +121,7 @@ public class SchedulesForm extends SOSJOEMessageCodes   {
 			tableColumn.setWidth(385);
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			System.err.println(JOE_E_0002.params("SchedulesForm.createTable() ") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 

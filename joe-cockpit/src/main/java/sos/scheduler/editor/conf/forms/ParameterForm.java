@@ -501,14 +501,7 @@ public class ParameterForm extends SOSJOEMessageCodes implements IUnsaved {
 			tabFolder.setSelection(includeParameterTabItem);
 		}
 		catch (Exception e) {
-			try {
-				//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
-			//			MainWindow.message("could not create Tabitem cause: " + e.getMessage(), SWT.ICON_WARNING);
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			MainWindow.message(JOE_E_0010.label() + e.getMessage(), SWT.ICON_WARNING);
 		}
 	}

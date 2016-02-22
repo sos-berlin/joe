@@ -64,12 +64,7 @@ public class FTPDialogOpenFile extends FTPDialog{
              
         }
         catch (Exception e) {
-            try {
-                new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-            }
-            catch (Exception ee) {
-            }
-            System.out.println("..error in FTPDialog " + e.getMessage());
+           new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
         }
     }
 

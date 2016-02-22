@@ -80,11 +80,7 @@ public class TextDialog extends Dialog {
 			bEdit = true;
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in TextDilalog.setContent()", e);
-			}
-			catch (Exception ee) {
-			}
+			new ErrorLog("error in TextDilalog.setContent()", e);
 		}
 	}
 
@@ -129,12 +125,7 @@ public class TextDialog extends Dialog {
 			_shell.setImage(_image);
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog("error in TextDilalog.init()", e);
-			}
-			catch (Exception ee) {
-			}
-			e.printStackTrace();
+			new ErrorLog("error in TextDilalog.init()", e);
 			return;
 		}
 		setDialog();
@@ -163,23 +154,11 @@ public class TextDialog extends Dialog {
 			return s;
 		}
 		catch (java.lang.IllegalArgumentException ex) {
-			ex.printStackTrace();
-			try {
-				new ErrorLog("error in TextDialog.open , cause: " + ex.getMessage(), ex);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog("error in TextDialog.open , cause: " + ex.getMessage(), ex);
 			return "";
 		}
 		catch (Exception e) {
-			e.printStackTrace();
-			try {
-				new ErrorLog("error in TextDialog.open() , cause: " + e.getMessage(), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog("error in TextDialog.open() , cause: " + e.getMessage(), e);
 			return "";
 		}
 	}
@@ -200,43 +179,19 @@ public class TextDialog extends Dialog {
 				//das ist CTRL-Z
 			}
 		});
-		/*_styledText.addVerifyKeyListener(new VerifyKeyListener() {
-			public void verifyKey(VerifyEvent event) {
-				
-				_styledText.setKeyBinding(SWT.CTRL | 'A', 10000);
-				
-				// check whether the current keystroke is a <CTRL>+<X>				
-				boolean isCtrlX = (event.stateMask == SWT.CTRL) && (event.character == 'A' );
-		System.out.println("isCtrlX: " + isCtrlX + " " + _styledText.getKeyBinding(SWT.CTRL | 'A') + " " + event.keyCode);
-		    		// select one page if the previous keystroke was <CTRL>+<X> and 
-				// the current keystroke is 'P'
-				if (previousCtrlX && Character.toUpperCase(event.character) == 'P') {
-					_styledText.invokeAction(SWT.SELECTED);
-					// ignore the second key of a multi-keystroke
-					event.doit = false;
-				} else if (isCtrlX) {
-					// ignore <CTRL>+<X> key strokes
-		        		event.doit = false; 		
-		    		}
-				previousCtrlX = isCtrlX;
-				
-			}
-		});*/
+		 
 		_styledText.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(final KeyEvent e) {
-				//System.out.println("keyCod: " + e.keyCode);
-				if (e.keyCode == 122 && e.stateMask == SWT.CTRL) {
+ 				if (e.keyCode == 122 && e.stateMask == SWT.CTRL) {
 					e.doit = false;
 				}
-				//System.out.println("char: " + String.valueOf(e.character)+ " -> " + e.character +"keycode= " + e.keyCode + " mask= "+e.stateMask);
-				if (e.keyCode == 97 && e.stateMask == SWT.CTRL) {
+ 				if (e.keyCode == 97 && e.stateMask == SWT.CTRL) {
 					try {
 						_styledText.setSelection(0, _styledText.getText().length());
 					}
 					catch (Exception es) {
-						//System.out.println(es.getMessage());
-					}
+ 					}
 				}
 			}
 		});

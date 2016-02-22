@@ -3,7 +3,6 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -42,8 +41,7 @@ import com.sos.joe.xml.DomParser;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class Utils {
-     private static final Logger LOGGER = Logger.getLogger(Utils.class);
-    
+   
 	final static String			JOE_L_OBJECT_IN_USE	= "JOE_L_Object_In_Use";
 	final static String			JOE_L_PROCESS_CLASS	= "processclass";
 	final static String			JOE_L_JOB			= "job";
@@ -538,7 +536,7 @@ public class Utils {
 			retVal = output.outputString(job);
 		}
 		catch (Exception e) {
-		    LOGGER.error(e.getMessage(),e);
+            new ErrorLog ("error in " + sos.util.SOSClassUtil.getMethodName(), e);
 		}
 		return retVal;
 	}
@@ -937,8 +935,7 @@ public class Utils {
 		     }
 		    
 		} catch (JDOMException e1) {
-            LOGGER.error(e1.getMessage(),e1);
- 
+	          new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e1);
 		}
 		return true;
 	 

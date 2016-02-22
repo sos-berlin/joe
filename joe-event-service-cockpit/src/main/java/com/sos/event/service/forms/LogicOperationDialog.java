@@ -18,9 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-
 import sos.util.SOSString;
-
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.globals.misc.ResourceManager;
@@ -28,27 +26,16 @@ import com.sos.joe.globals.misc.ResourceManager;
 class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 
 	private final Object		result			= null;
-
 	private Text		txt				= null;
-
 	private Text		txtExpression	= null;
-
 	private Button		butCancel		= null;
-
 	private Button		butApply		= null;
-
 	private ArrayList	operator		= null;
-
 	private final SOSString	sosString		= new SOSString();
-
 	private final ArrayList	undo			= new ArrayList();
-
 	private List		listOfIds		= null;
-
 	private List		list			= null;
-
 	private Button		restoreButton	= null;
-
 	private Button		butClear		= null;
 
 	public LogicOperationDialog(final int style) {
@@ -226,12 +213,7 @@ class LogicOperationDialog extends org.eclipse.swt.widgets.Dialog {
 
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-				//tu nichts
-			}
+			new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 

@@ -42,8 +42,6 @@ import sos.scheduler.editor.classes.WindowsSaver;
 import sos.scheduler.editor.conf.listeners.DetailsListener;
 import sos.scheduler.editor.conf.listeners.JobChainConfigurationListener;
 import sos.scheduler.editor.conf.listeners.JobListener;
-
-import com.sos.VirtualFileSystem.common.SOSFileEntry;
 import com.sos.joe.globals.JOEConstants;
 import com.sos.joe.globals.interfaces.IDetailUpdate;
 import com.sos.joe.globals.interfaces.ISchedulerUpdate;
@@ -574,18 +572,11 @@ public class DetailForm extends SOSJOEMessageCodes   {
 						}
 					}
 					catch (Exception ex) {
-						try {
-							//							System.out.println("..error in " + sos.util.SOSClassUtil.getMethodName() + ": " + ex.getMessage());
-							System.out.println(JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), ex.getMessage()));
-							new ErrorLog(JOE_M_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
-						}
-						catch (Exception ee) {
-							// tu nichts
-						}
+						new ErrorLog(JOE_M_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
 					}
 				}
 			});
-			//			butXML.setText("Open XML");
+			 	 
 			butDocumentation = JOE_B_DetailForm_Documentation.Control(new Button(jobChainGroup, SWT.NONE));
 			butDocumentation.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 			butDocumentation.addSelectionListener(new SelectionAdapter() {
@@ -622,27 +613,13 @@ public class DetailForm extends SOSJOEMessageCodes   {
 						//							MainWindow.message("Please save jobchain configuration before opening documentation.", SWT.ICON_ERROR);
 					}
 					catch (Exception ex) {
-						try {
-							//							System.out.println("..could not open file " + filename + " " + ex.getMessage());
-							System.out.println(JOE_M_0011.params(sos.util.SOSClassUtil.getMethodName(), filename, ex.getMessage()));
-							new ErrorLog(JOE_M_0011.params(sos.util.SOSClassUtil.getMethodName(), filename, ex.getMessage()));
-						}
-						catch (Exception ee) {
-							// tu nichts
-						}
+						new ErrorLog(JOE_M_0011.params(sos.util.SOSClassUtil.getMethodName(), filename, ex.getMessage()));
 					}
 				}
 			});
-			//			butDocumentation.setText("Documentation");
 			final Label fileLabel = JOE_L_DetailForm_JobDocumentation.Control(new Label(parameterGroup, SWT.NONE));
 			fileLabel.setLayoutData(new GridData());
-			//			fileLabel.setText("Job Documentation: ");
 			txtParamsFile = JOE_T_DetailForm_ParamsFile.Control(new Text(parameterGroup, SWT.BORDER));
-			//			txtParamsFile.addFocusListener(new FocusAdapter() {
-			//				public void focusGained(final FocusEvent e) {
-			//					txtParamsFile.selectAll();
-			//				}
-			//			});
 			txtParamsFile.addModifyListener(new ModifyListener() {
 				@Override public void modifyText(final ModifyEvent e) {
 					detailListener.setParamsFileName(txtParamsFile.getText());
@@ -662,13 +639,7 @@ public class DetailForm extends SOSJOEMessageCodes   {
 			setVisibility();
 		}
 		catch (Exception e) {
-			try {
-				//				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + "cause: " + e.toString(), e);
-				new ErrorLog(JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.toString()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
+			new ErrorLog(JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.toString()), e);
 		}
 	}
 
@@ -896,13 +867,7 @@ public class DetailForm extends SOSJOEMessageCodes   {
 				dom.setChanged(true);
 		}
 		catch (Exception e) {
-			try {
-				System.out.println(JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()));
-				new ErrorLog(JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
+			new ErrorLog(JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()), e);
 		}
 		Utils.stopCursor(getShell());
 	}
@@ -917,13 +882,7 @@ public class DetailForm extends SOSJOEMessageCodes   {
 			butApply.setEnabled(true);
 		}
 		catch (Exception e) {
-			try {
-				System.out.println(JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()));
-				new ErrorLog(JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()), e);
-			}
-			catch (Exception ee) {
-				// tu nichts
-			}
+			new ErrorLog(JOE_M_0010.params(sos.util.SOSClassUtil.getMethodName(), e.getMessage()), e);
 		}
 	}
 

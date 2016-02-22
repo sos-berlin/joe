@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
@@ -19,7 +18,6 @@ import com.sos.joe.xml.Utils;
 import com.sos.joe.xml.Events.ActionsDom;
 
 public class ParameterListener {
-    private final static Logger LOGGER = Logger.getLogger(ParameterListener.class);
 
 	private ActionsForm		_main					= null;
 	private ActionsDom		_dom					= null;
@@ -379,7 +377,6 @@ public class ParameterListener {
 		}
 		catch (Exception ex) {
 			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), ex);
-			LOGGER.error(ex.getMessage(),ex);
 		}
 	}
 

@@ -1,8 +1,9 @@
 package sos.scheduler.editor.conf.forms;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -20,10 +21,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jdom.Element;
-
 import sos.scheduler.editor.app.Utils;
 import sos.scheduler.editor.conf.listeners.ScheduleListener;
-
 import com.sos.dialog.components.SOSDateTime;
 import com.sos.dialog.swtdesigner.SWTResourceManager;
 import com.sos.joe.globals.JOEConstants;
@@ -33,6 +32,8 @@ import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class ScheduleForm extends SOSJOEMessageCodes   {
+
+    private static final Logger LOGGER = Logger.getLogger(ScheduleForm.class);
 	private ScheduleListener	listener		= null;
 	private Group				scheduleGroup	= null;
 	private SchedulerDom		dom				= null;
@@ -54,17 +55,10 @@ public class ScheduleForm extends SOSJOEMessageCodes   {
 			listener = new ScheduleListener(dom, update, schedule_);
 			initialize();
 			init = false;
-		}
-		catch (Exception e) {
-			try {
+        } catch (Exception e) {
 				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
-			catch (Exception ee) {
-				// tu nichts
 			}
-			System.err.println(JOE_E_0002.params("ScheduleForm.init() ") + e.getMessage());
-		}
-	}
 
 	private void initialize() {
 		try {
@@ -84,30 +78,22 @@ public class ScheduleForm extends SOSJOEMessageCodes   {
 			cboCombo.setText(listener.getSubstitute());
 			setSize(new org.eclipse.swt.graphics.Point(656, 400));
 			txtName.setFocus();
-		}
-		catch (Exception e) {
-			try {
+        } catch (Exception e) {
 				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
-			catch (Exception ee) {
-				// tu nichts
 			}
-			System.err.println(JOE_E_0002.params("ScheduleForm.initialize() ") + e.getMessage());
-		}
-	}
 
-	/**
-	 * This method initializes group
-	 */
 	private void createGroup() {
 		try {
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 3;
 			scheduleGroup = JOE_G_ScheduleForm_Schedule.Control(new Group(this, SWT.NONE));
 			scheduleGroup.setLayout(gridLayout);
-			@SuppressWarnings("unused") final Label nameLabel = JOE_L_Name.Control(new Label(scheduleGroup, SWT.NONE));
+            @SuppressWarnings("unused")
+            final Label nameLabel = JOE_L_Name.Control(new Label(scheduleGroup, SWT.NONE));
 			txtName = JOE_T_ScheduleForm_Name.Control(new Text(scheduleGroup, SWT.BORDER));
 			txtName.addVerifyListener(new VerifyListener() {
+
 				public void verifyText(final VerifyEvent e) {
 					if (!init)// während der initialiserung sollen keine
 								// überprüfungen stattfinden
@@ -115,6 +101,7 @@ public class ScheduleForm extends SOSJOEMessageCodes   {
 				}
 			});
 			txtName.addModifyListener(new ModifyListener() {
+
 				public void modifyText(final ModifyEvent e) {
 					if (!init && !existScheduleName())
 						listener.setName(txtName.getText());
@@ -125,6 +112,7 @@ public class ScheduleForm extends SOSJOEMessageCodes   {
 			titleLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 			txtTitle = JOE_T_ScheduleForm_Title.Control(new Text(scheduleGroup, SWT.BORDER));
 			txtTitle.addModifyListener(new ModifyListener() {
+
 				public void modifyText(final ModifyEvent e) {
 					if (!init)
 						listener.setTitle(txtTitle.getText());
@@ -134,9 +122,11 @@ public class ScheduleForm extends SOSJOEMessageCodes   {
 			new Label(scheduleGroup, SWT.NONE);
 			new Label(scheduleGroup, SWT.NONE);
 			new Label(scheduleGroup, SWT.NONE);
-			@SuppressWarnings("unused") final Label substitueLabel = JOE_L_ScheduleForm_Substitute.Control(new Label(scheduleGroup, SWT.NONE));
+            @SuppressWarnings("unused")
+            final Label substitueLabel = JOE_L_ScheduleForm_Substitute.Control(new Label(scheduleGroup, SWT.NONE));
 			cboCombo = JOE_Cbo_ScheduleForm_Substitute.Control(new Combo(scheduleGroup, SWT.NONE));
 			cboCombo.addModifyListener(new ModifyListener() {
+
 				public void modifyText(final ModifyEvent e) {
 					if (!init)
 						listener.setSubstitut(cboCombo.getText());
@@ -147,25 +137,30 @@ public class ScheduleForm extends SOSJOEMessageCodes   {
 			validFromLabel.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 			validFromDate = JOE_ScheduleForm_ValidFromDate.Control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN));
 			validFromDate.addSelectionListener(new SelectionAdapter() {
+
 				public void widgetSelected(SelectionEvent e) {
 					setValidDateFrom();
 				}
 			});
 			validFromTime = JOE_ScheduleForm_ValidFromTime.Control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.TIME | SWT.DROP_DOWN));
 			validFromTime.addSelectionListener(new SelectionAdapter() {
+
 				public void widgetSelected(SelectionEvent e) {
 					setValidDateFrom();
 				}
 			});
-			@SuppressWarnings("unused") final Label validToLabel = JOE_L_ScheduleForm_ValidTo.Control(new Label(scheduleGroup, SWT.NONE));
+            @SuppressWarnings("unused")
+            final Label validToLabel = JOE_L_ScheduleForm_ValidTo.Control(new Label(scheduleGroup, SWT.NONE));
 			validToDate = JOE_ScheduleForm_ValidToDate.Control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN));
 			validToDate.addSelectionListener(new SelectionAdapter() {
+
 				public void widgetSelected(SelectionEvent e) {
 					setValidDateTo();
 				}
 			});
 			validToTime = JOE_ScheduleForm_ValidToTime.Control(new SOSDateTime(scheduleGroup, SWT.BORDER | SWT.TIME | SWT.DROP_DOWN));
 			validToTime.addSelectionListener(new SelectionAdapter() {
+
 				public void widgetSelected(SelectionEvent e) {
 					setValidDateTo();
 				}
@@ -187,19 +182,10 @@ public class ScheduleForm extends SOSJOEMessageCodes   {
 	        scheduleFormmessage.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
 	        scheduleFormmessage.setBounds(10, 267, 430, 23);
 	        scheduleFormmessage.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
-		}
-		catch (Exception e) {
-			try {
+        } catch (Exception e) {
 				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 			}
-			catch (Exception ee) {
-				// tu nichts
 			}
-			System.err.println(JOE_E_0002.params("ScheduleForm.createGroup() ") + e.getMessage());
-		}
-	}
-
-
 
 	private boolean existScheduleName() {
 		boolean retVal = false;
@@ -222,6 +208,7 @@ public class ScheduleForm extends SOSJOEMessageCodes   {
 			txtName.setBackground(null);
 		return retVal;
 	}
+
 	private void checkDates(){
 	    Calendar calendarNow = GregorianCalendar.getInstance(); 
         calendarNow.setTime( new Date());
@@ -256,22 +243,20 @@ public class ScheduleForm extends SOSJOEMessageCodes   {
 			try {
 				checkDates();
 				listener.setValidTo(validToDate.getISODate() + " " + validToTime.getISOTime());
+            } catch (Exception es) {
+                LOGGER.error(es.getMessage(),es);
 			}
-			catch (Exception es) {
-				es.printStackTrace();
 			}
 		}
-	}
 
 	private void setValidDateFrom() {
 		if (!init) {
 			try {
 				checkDates();
 				listener.setValidFrom(validFromDate.getISODate() + " " + validFromTime.getISOTime());
+            } catch (Exception es) {
+                LOGGER.error(es.getMessage(),es);
 			}
-			catch (Exception es) {
-				es.printStackTrace();
 			}
 		}
-	}
 } // @jve:decl-index=0:visual-constraint="10,10"

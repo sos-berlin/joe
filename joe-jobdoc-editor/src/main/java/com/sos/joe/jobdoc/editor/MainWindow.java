@@ -53,7 +53,6 @@ import com.sos.joe.xml.Utils;
 	public static final String	conIconICON_OPEN_GIF	= "/sos/scheduler/editor/icon_open.gif";
 	public static final String	conIconEDITOR_PNG		= "/sos/scheduler/editor/editor.png";
 	private final String		conClassName			= "MainWindow";
-	private final String		conSVNVersion			= "$Id: MainWindow.java 25898 2014-06-20 14:36:54Z kb $";
 	private static final Logger	logger					= Logger.getLogger(MainWindow.class);
 	private static Shell		sShell					= null;													// @jve:decl-index=0:visual-constraint="3,1"
 	private Menu				menuBar					= null;
@@ -78,8 +77,8 @@ import com.sos.joe.xml.Utils;
 	}
 
 	public MainWindow() {
-		logger.debug(conSVNVersion);
-	}
+ 	}
+	
 	private final ArrayList<String>	filelist				= new ArrayList<String>();
 	private static final String		NEW_DOCUMENTATION_TITLE	= "Unknown";
 
@@ -121,7 +120,6 @@ import com.sos.joe.xml.Utils;
 		}
 		catch (Exception e) {
 			new ErrorLog("error in " + getMethodName(), e);
-			System.out.println("error in TabbedContainer.openDocumentation()" + e.getMessage());
 			return null;
 		}
 	}
@@ -140,7 +138,6 @@ import com.sos.joe.xml.Utils;
 		}
 		catch (Exception e) {
 			new ErrorLog("error in " + getMethodName(), e);
-			System.out.println("error in TabbedContainer.openDocumentation()" + e.getMessage());
 			return null;
 		}
 	}
@@ -149,8 +146,6 @@ import com.sos.joe.xml.Utils;
 		try {
 			DocumentationForm doc = new DocumentationForm(this, objCTabFolder, SWT.NONE);
 			if (doc.open(filelist)) {
-				// CTabItem tab = newItem(doc, doc.getFilename());
-				// tab.setImage(ResourceManager.getImageFromResource("/sos/scheduler/editor/editor-small.png"));
 				return doc.getFilename();
 			}
 			else
@@ -158,7 +153,6 @@ import com.sos.joe.xml.Utils;
 		}
 		catch (Exception e) {
 			new ErrorLog("error in " + getMethodName(), e);
-			System.out.println("error in TabbedContainer.openDocumentation()" + e.getMessage());
 			return null;
 		}
 	}
@@ -469,8 +463,7 @@ import com.sos.joe.xml.Utils;
 		pHelS.setText("JOE " + getMenuText(Messages.getLabel(MENU_Help), EMPTY));
 		pHelS.addSelectionListener(new SelectionListener() {
 			@Override public void widgetSelected(SelectionEvent e) {
-				//				listener.openHelp(Options.getHelpURL("index"));
-			}
+ 			}
 
 			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
 			}
@@ -480,14 +473,7 @@ import com.sos.joe.xml.Utils;
 		// pHelp.setAccelerator(SWT.F1);
 		pHelp.addSelectionListener(new SelectionListener() {
 			@Override public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-				//				if (container.getCurrentEditor() != null) {
-				//					listener.openHelp(container.getCurrentEditor().getHelpKey());
-				//				}
-				//				else {
-				//					// String msg = "Help is available after documentation or configuration is opened";
-				//					String msg = Messages.getString("help.info");
-				//					MainWindow.message(msg, SWT.ICON_INFORMATION);
-				//				}
+			 
 			}
 
 			@Override public void widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -498,8 +484,7 @@ import com.sos.joe.xml.Utils;
 		pAbout.setText(getMenuText(Messages.getLabel(MENU_About), EMPTY) + " JOE");
 		pAbout.addSelectionListener(new SelectionListener() {
 			@Override public void widgetSelected(SelectionEvent e) {
-				//				listener.showAbout();
-			}
+ 			}
 
 			@Override public void widgetDefaultSelected(SelectionEvent e) {
 			}

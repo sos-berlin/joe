@@ -47,12 +47,7 @@ public class ScriptsForm extends SOSJOEMessageCodes   {
 			listener.fillTable(table);
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-			}
-			System.err.println(JOE_E_0002.params("ScriptsForm.init() ") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 
@@ -63,12 +58,7 @@ public class ScriptsForm extends SOSJOEMessageCodes   {
 			setSize(new org.eclipse.swt.graphics.Point(656, 400));
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-			}
-			System.err.println(JOE_E_0002.params("ScriptsForm.initialize() ") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 
@@ -113,12 +103,7 @@ public class ScriptsForm extends SOSJOEMessageCodes   {
 			label.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-			}
-			System.err.println(JOE_E_0002.params("ScriptsForm.createGroup() ") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 
@@ -175,12 +160,7 @@ public class ScriptsForm extends SOSJOEMessageCodes   {
 			
 		}
 		catch (Exception e) {
-			try {
-				new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-			}
-			catch (Exception ee) {
-			}
-			System.err.println(JOE_E_0002.params("ScriptsForm.createTable() ") + e.getMessage());
+			new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
 		}
 	}
 

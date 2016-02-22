@@ -1,8 +1,5 @@
 package com.sos.joe.globals.messages;
-/**
- *
- */
-
+ 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
@@ -17,12 +14,7 @@ import com.sos.joe.globals.options.Options;
 public class ErrorLog extends Exception {
 
 	private static final long	serialVersionUID	= -4414810697191992062L;
-	@SuppressWarnings("unused")
-	private final String conClassName = this.getClass().getSimpleName();
-	@SuppressWarnings("unused")
-	private static final String conSVNVersion = "$Id: ErrorLog.java 20985 2013-09-04 09:13:12Z ur $";
-	@SuppressWarnings("unused")
-	private final Logger logger = Logger.getLogger(this.getClass());
+	private final Logger LOGGER = Logger.getLogger(this.getClass());
 
 	public ErrorLog(final String msg) {
 		super();
@@ -30,7 +22,7 @@ public class ErrorLog extends Exception {
 
 			init();
 			message(msg, SWT.ERROR);
-			logger.info(msg);
+			LOGGER.info(msg);
 		}
 		catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -47,7 +39,7 @@ public class ErrorLog extends Exception {
 	 
 			String strMsg = msg + "\n" + objJSE.ExceptionText();
 			message(strMsg, SWT.ERROR);
-			logger.error(strMsg);
+			LOGGER.error(strMsg,e);
 		}
 		catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -64,29 +56,18 @@ public class ErrorLog extends Exception {
             objJSE.setIntStatus(JobSchedulerException.NONE);
             String strMsg = msg + "\n" + objJSE.ExceptionText();
             message(application, strMsg, SWT.ERROR);
-            logger.error(strMsg);
+            LOGGER.error(strMsg);
         }
         catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
 
     }
-	//	/**
-	//	 * @param args
-	//	 */
-	//	public static void main(final String[] args) throws ErrorLog{
-	//
-	//		try {
-	//			throw new Exception("Testerror");
-	//		} catch(Exception e) {
-	//			new ErrorLog("mein Testerror", e);
-	//		}
-	//	}
-	//
+ 
 	private void init() {
 		String filename = "";
 		try {
-			if (logger != null) {
+			if (LOGGER != null) {
 				return;
 			}
 			filename = Options.getSchedulerData();
@@ -100,22 +81,17 @@ public class ErrorLog extends Exception {
 
 			filename = filename + "/scheduler_editor.log";
 
-//			if (logger == null)
-//				logger = new SOSStandardLogger(filename, SOSStandardLogger.DEBUG1);
-
 		}
 		catch (Exception e) {
 			try {
-				if (logger != null)
-					logger.debug("error in " + SOSClassUtil.getMethodName() + ", cause: " + e.getMessage());
+				if (LOGGER != null)
+					LOGGER.debug("error in " + SOSClassUtil.getMethodName() + ", cause: " + e.getMessage());
 			}
 			catch (Exception f) {
 
 			}
 		}
-		finally {
-
-		}
+		 
 	}
 
 	public String getErrorMessage(final Exception ex) {
@@ -141,9 +117,6 @@ public class ErrorLog extends Exception {
 	}
 
 	public static SOSStandardLogger getLogger() {
-//		if (logger == null)
-//			init();
-//		return logger;
 		return null;
 	}
 	
@@ -161,19 +134,7 @@ public class ErrorLog extends Exception {
 	public static int message(String application, String message, int style) {
         return message(getSShell(), application, message, style);
     }
-	// /**
-	// * Erzeugt einen Confirm-Dialog, wenn der Button zum schlieﬂen des Fensters
-	// * bet‰tigt wird.
-	// *
-	// * @see org.eclipse.jface.window.Window#handleShellCloseEvent()
-	// */
-	// @Override
-	// protected void handleShellCloseEvent () {
-	// if (MessageDialog.openConfirm(null, "Best‰tigung",
-	// "Wollen Sie das Programm beenden?")) {
-	// super.handleShellCloseEvent();
-	// }
-	// }
+ 
 	public static int message(Shell shell, String pstrMessage, int style) {
 		MessageBox mb = new MessageBox(shell, style);
 		if (mb == null) {
