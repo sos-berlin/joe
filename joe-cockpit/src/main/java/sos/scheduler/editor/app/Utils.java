@@ -499,7 +499,6 @@ public class Utils {
 		}
 		catch (Exception e) {
 			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			LOGGER.error(e.getMessage(),e);
 		}
 		return retVal;
 	}
@@ -516,7 +515,6 @@ public class Utils {
 		}
 		catch (Exception e) {
 			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-			LOGGER.error(e.getMessage(),e);
 		}
 		String str = stream.toString().trim();
 		if (str.startsWith("<div")) {
