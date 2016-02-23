@@ -162,6 +162,7 @@ public class DetailsListener {
                 params = params_.getChildren();
 			}else{
                 params = new java.util.ArrayList();
+			}
         } catch (Exception e) {
 			hasError = true;
 				new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
