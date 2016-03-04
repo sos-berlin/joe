@@ -4,6 +4,7 @@ import java.io.File;
 
 import javax.xml.bind.JAXBException;
 
+import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.scheduler.model.SchedulerObjectFactory;
 import com.sos.scheduler.model.objects.JSObjJobChain;
 import com.sos.scheduler.model.objects.JobChain;
@@ -32,7 +33,7 @@ public class JobChainDiagramCreator {
             outputFile = new File(jobChain.createGraphVizImageFile(outputDirectory,showErrorNodes));
  
         } catch (JAXBException e) {
-            e.printStackTrace();
+			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
         }
 
     }

@@ -41,7 +41,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
 	private final String								conClassName		= "JobChainForm";
 	final String										conMethodName		= conClassName + "::enclosing_method";
 	@SuppressWarnings("unused") private final String	conSVNVersion		= "$Id$";
-	private static final Logger							logger				= Logger.getLogger(JobChainForm.class);
+	private static final Logger							LOGGER				= Logger.getLogger(JobChainForm.class);
     private JobChainListener                            jobchainDataProvider = null;
     private JobChainFileWatchingListener                jobChainFileWatchingListener;
  	private Group										jobChainGroup		= null;
@@ -282,7 +282,7 @@ public class JobChainForm extends SOSJOEMessageCodes implements IUnsaved {
                 File inputFile = new File(jobchainDataProvider.getDom().getFilename(),jobchainDataProvider.getChainName() + ".job_chain.xml~");
                 jobChainDiagramComposite.jobChainDiagram(xml,inputFile);
             } catch (Exception e1) {
-                e1.printStackTrace();
+    			new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e1);
             }
             jobChainDiagramComposite.layout();
 		}
