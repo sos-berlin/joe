@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.Instant;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -17,6 +18,7 @@ import sos.scheduler.editor.app.MainWindow;
 
 public class JoeLockFolder {
 
+    private static final Logger  LOGGER    = Logger.getLogger(JoeLockFolder.class);
     private static final String DEFAUL_TIME_SINCE = "2000-01-01T00:00:00.000Z";
     private static final String JOE_XML_LOCK = "joe.xml.lock";
     String folderName;
@@ -69,7 +71,7 @@ public class JoeLockFolder {
                     fr.close();
                 }
              } catch (IOException e) {
-                  e.printStackTrace();
+                  LOGGER.error(e.getMessage(),e);
                   userFromFile = "Error occured reading lock file: " + lockFilePath.getAbsolutePath();
                   sinceFromFile = e.getMessage();
              }
@@ -111,7 +113,7 @@ public class JoeLockFolder {
         try {
             createLockFile();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(),e);
         }
     }
      
