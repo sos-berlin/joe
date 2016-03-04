@@ -7,6 +7,7 @@ import java.io.StringReader;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
  
 import org.eclipse.swt.graphics.GC;
@@ -26,18 +27,15 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
-
 import sos.scheduler.editor.classes.JobChainDiagramCreator;
- 
-
-
 import com.sos.dialog.components.SOSMenuItem;
 import com.sos.joe.globals.messages.ErrorLog;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class JobChainDiagramComposite extends Composite {
 
-    
+	private static final Logger LOGGER = Logger.getLogger(JobChainDiagramComposite.class);
+
     private Group gJobchainDiagramm;
     private File inputFile;
     private File outputDir;
@@ -62,7 +60,7 @@ public class JobChainDiagramComposite extends Composite {
                     try {
                         jobChainDiagram(xml,inputFile);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        LOGGER.error(e.getMessage(),e);
                     }
                     inputTimer.cancel();
                     inputTimer.purge();
@@ -270,7 +268,7 @@ public class JobChainDiagramComposite extends Composite {
                    showErrorNodes = showErrorMenuItem.getSelection();
                    jobChainDiagram(xml,inputFile);
                 } catch (Exception e1) {
-                   e1.printStackTrace();
+                    LOGGER.error(e1.getMessage(),e1);
                }
            }
 
@@ -288,7 +286,7 @@ public class JobChainDiagramComposite extends Composite {
                    fitToScreen = fitToScreenMenuItem.getSelection();
                    jobChainDiagram(xml,inputFile);
                 } catch (Exception e1) {
-                   e1.printStackTrace();
+                    LOGGER.error(e1.getMessage(),e1);
                }
            }
 
