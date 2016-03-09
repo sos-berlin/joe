@@ -244,7 +244,7 @@ public class ScheduleForm extends SOSJOEMessageCodes {
                 checkDates();
                 listener.setValidTo(validToDate.getISODate() + " " + validToTime.getISOTime());
             } catch (Exception es) {
-                LOGGER.error(es.getMessage(),es);
+                LOGGER.error(es.getMessage(), es);
             }
         }
     }
@@ -255,7 +255,7 @@ public class ScheduleForm extends SOSJOEMessageCodes {
                 checkDates();
                 listener.setValidFrom(validFromDate.getISODate() + " " + validFromTime.getISOTime());
             } catch (Exception es) {
-                LOGGER.error(es.getMessage(),es);
+                LOGGER.error(es.getMessage(), es);
             }
         }
     }

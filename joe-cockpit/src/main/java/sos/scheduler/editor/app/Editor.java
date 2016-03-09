@@ -53,7 +53,7 @@ public class Editor {
         } catch (Exception e) {
             try {
                 LOGGER.fatal("sudden death", e);
-                LOGGER.error(e.getMessage(),e);
+                LOGGER.error(e.getMessage(), e);
                 new ErrorLog("error in " + SOSClassUtil.getMethodName() + "cause: " + e.toString(), e);
             } catch (Exception ee) {
             }
@@ -66,7 +66,7 @@ public class Editor {
             window.OpenLastFolder();
             objMainWindow = window;
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(),e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
 

@@ -869,7 +869,7 @@ public class MainWindow {
                     DomParser currDomParser = getSpecifiedDom();
                     Utils.showClipboard(Utils.getElementAsString(currDomParser.getRoot()), getSShell(), false, null, false, null, false);
                 } catch (Exception ex) {
-                     new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " cause: " + ex.toString(), ex);
+                    new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " cause: " + ex.toString(), ex);
                 }
             }
         });
@@ -930,8 +930,7 @@ public class MainWindow {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                int c = MainWindow.message("Do you want to reload the configuration and discard the changes?", SWT.ICON_INFORMATION | SWT.YES
-                        | SWT.NO);
+                int c = MainWindow.message("Do you want to reload the configuration and discard the changes?", SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
                 if (c != SWT.YES)
                     return;
                 if (container.getCurrentEditor() instanceof SchedulerForm) {
@@ -1028,8 +1027,8 @@ public class MainWindow {
                         sos.scheduler.editor.conf.listeners.DetailsListener.changeDetailsJobChainname(newName, oldname, (SchedulerDom) currdom);
                         //
                         if (!newConfigFile.exists() && !configFile.renameTo(newConfigFile)) {
-                            MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename
-                                    + "].\n" + "Please try later by Hand.", SWT.ICON_WARNING);
+                            MainWindow.message("could not rename job chain node configuration file [" + configFilename + "] in [" + newConfigFilename + "].\n"
+                                    + "Please try later by Hand.", SWT.ICON_WARNING);
                         }
 
                     }
@@ -1196,7 +1195,7 @@ public class MainWindow {
             assitant.startJobAssistant();
             setSaveStatus();
         } catch (Exception ex) {
-             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not start wizard.", ex);
+            new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName() + " ; could not start wizard.", ex);
         } finally {
             Utils.stopCursor(sShell);
         }
@@ -1399,7 +1398,7 @@ public class MainWindow {
                 }
             }
         } catch (Exception e) {
-            new ErrorLog(Messages.getString("exception.raised", sos.util.SOSClassUtil.getMethodName()), e);       
+            new ErrorLog(Messages.getString("exception.raised", sos.util.SOSClassUtil.getMethodName()), e);
         }
         flag = true;
     }
@@ -1431,8 +1430,7 @@ public class MainWindow {
         }
     }
 
-    public static boolean saveDirectory(final DomParser dom, final boolean saveas, final int type, final String nameOfElement,
-            final IContainer container) {
+    public static boolean saveDirectory(final DomParser dom, final boolean saveas, final int type, final String nameOfElement, final IContainer container) {
         Document currDoc = dom.getDoc();
         File configFile = null;
         try {
@@ -1447,8 +1445,8 @@ public class MainWindow {
                 File _file = null;
                 // existiert der Hot Folder Element
                 if (dom.getRoot().getName().equals("order") || dom.getRoot().getName().equals("add_order")) {
-                    _file = new File(path + "//" + Utils.getAttributeValue("job_chain", dom.getRoot()) + ","
-                            + Utils.getAttributeValue("id", dom.getRoot()) + ".order.xml");
+                    _file = new File(path + "//" + Utils.getAttributeValue("job_chain", dom.getRoot()) + "," + Utils.getAttributeValue("id", dom.getRoot())
+                            + ".order.xml");
                 } else {
                     _file = new File(path + "//" + Utils.getAttributeValue("name", dom.getRoot()) + "." + dom.getRoot().getName() + ".xml");
                 }

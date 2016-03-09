@@ -25,231 +25,233 @@ import com.sos.joe.globals.messages.SOSJOEMessageCodes;
 
 public class JobStartWhenDirectoryChanged extends FormBaseClass {
 
-	@SuppressWarnings("unused")
-	private final String		conSVNVersion		= "$Id$";
+    @SuppressWarnings("unused")
+    private final String conSVNVersion = "$Id$";
 
-	private Group				group1				= null;
-	private FolderNameSelector	tDirectory			= null;
-	//private Text tDirectory=null;
-	private Text				tRegex				= null;
-	@SuppressWarnings("unused")
-	private Label				label11				= null;
-	private Button				bApplyDirectory		= null;
-	private Label				label1				= null;
-	private Table				tDirectories		= null;
-	private Button				bNewDirectory		= null;
-	private Label				label21				= null;
-	private Button				bRemoveDirectory	= null;
+    private Group group1 = null;
+    private FolderNameSelector tDirectory = null;
+    // private Text tDirectory=null;
+    private Text tRegex = null;
+    @SuppressWarnings("unused")
+    private Label label11 = null;
+    private Button bApplyDirectory = null;
+    private Label label1 = null;
+    private Table tDirectories = null;
+    private Button bNewDirectory = null;
+    private Label label21 = null;
+    private Button bRemoveDirectory = null;
 
-	private JobListener			objJobDataProvider	= null;
+    private JobListener objJobDataProvider = null;
 
-	public JobStartWhenDirectoryChanged(Composite pParentComposite, JobListener pobjDataProvider) {
-		super(pParentComposite, pobjDataProvider);
-		showWaitCursor();
+    public JobStartWhenDirectoryChanged(Composite pParentComposite, JobListener pobjDataProvider) {
+        super(pParentComposite, pobjDataProvider);
+        showWaitCursor();
 
-		objJobDataProvider = pobjDataProvider;
-		createGroup();
-		initForm();
-		restoreCursor();
-	}
+        objJobDataProvider = pobjDataProvider;
+        createGroup();
+        initForm();
+        restoreCursor();
+    }
 
-	private void createGroup() {
+    private void createGroup() {
 
-		GridData gridData51 = new org.eclipse.swt.layout.GridData();
-		gridData51.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData51.widthHint = 90;
-		gridData51.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-		GridData gridData41 = new org.eclipse.swt.layout.GridData();
-		gridData41.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData41.widthHint = -1;
-		gridData41.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-		GridData gridData31 = new org.eclipse.swt.layout.GridData();
-		gridData31.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData31.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
-		GridData gridData210 = new org.eclipse.swt.layout.GridData();
-		gridData210.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData210.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-		GridData gridData110 = new org.eclipse.swt.layout.GridData();
-		gridData110.horizontalSpan = 5;
-		gridData110.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-		gridData110.heightHint = 10;
-		gridData110.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		GridData gridData4 = new org.eclipse.swt.layout.GridData();
-		gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData4.grabExcessHorizontalSpace = true;
-		gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
+        GridData gridData51 = new org.eclipse.swt.layout.GridData();
+        gridData51.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        gridData51.widthHint = 90;
+        gridData51.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
+        GridData gridData41 = new org.eclipse.swt.layout.GridData();
+        gridData41.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        gridData41.widthHint = -1;
+        gridData41.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
+        GridData gridData31 = new org.eclipse.swt.layout.GridData();
+        gridData31.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        gridData31.verticalAlignment = org.eclipse.swt.layout.GridData.BEGINNING;
+        GridData gridData210 = new org.eclipse.swt.layout.GridData();
+        gridData210.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        gridData210.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
+        GridData gridData110 = new org.eclipse.swt.layout.GridData();
+        gridData110.horizontalSpan = 5;
+        gridData110.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
+        gridData110.heightHint = 10;
+        gridData110.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        GridData gridData4 = new org.eclipse.swt.layout.GridData();
+        gridData4.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        gridData4.grabExcessHorizontalSpace = true;
+        gridData4.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
 
-		GridLayout gridLayout1 = new GridLayout();
-		gridLayout1.numColumns = 5;
-		GridData gridData = new org.eclipse.swt.layout.GridData();
-		gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        GridLayout gridLayout1 = new GridLayout();
+        gridLayout1.numColumns = 5;
+        GridData gridData = new org.eclipse.swt.layout.GridData();
+        gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.grabExcessVerticalSpace = true;
+        gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
 
-		group1 = SOSJOEMessageCodes.JOE_G_JobOptionsForm_StartWhenDirectoryChanged.Control(new Group(objParent, SWT.NONE));
-		group1.setLayout(gridLayout1);
-		group1.setLayoutData(gridData);
+        group1 = SOSJOEMessageCodes.JOE_G_JobOptionsForm_StartWhenDirectoryChanged.Control(new Group(objParent, SWT.NONE));
+        group1.setLayout(gridLayout1);
+        group1.setLayoutData(gridData);
 
-		@SuppressWarnings("unused")
-		Label label = SOSJOEMessageCodes.JOE_L_JobOptionsForm_WatchDirectory.Control(new Label(group1, SWT.NONE));
+        @SuppressWarnings("unused")
+        Label label = SOSJOEMessageCodes.JOE_L_JobOptionsForm_WatchDirectory.Control(new Label(group1, SWT.NONE));
 
-		tDirectory = new FolderNameSelector(group1, SWT.BORDER);
-		tDirectory.setParentForm(this);
-		tDirectory.setDataProvider(objJobDataProvider);
+        tDirectory = new FolderNameSelector(group1, SWT.BORDER);
+        tDirectory.setParentForm(this);
+        tDirectory.setDataProvider(objJobDataProvider);
 
-	//	tDirectory = new Text(group1,SWT.BORDER);
-		
-		label11 = SOSJOEMessageCodes.JOE_L_JobOptionsForm_FileRegex.Control(new Label(group1, SWT.NONE));
+        // tDirectory = new Text(group1,SWT.BORDER);
 
-		tRegex = SOSJOEMessageCodes.JOE_T_JobOptionsForm_FileRegex.Control(new Text(group1, SWT.BORDER));
-		tRegex.setLayoutData(gridData4);
+        label11 = SOSJOEMessageCodes.JOE_L_JobOptionsForm_FileRegex.Control(new Label(group1, SWT.NONE));
 
-		bApplyDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_ApplyDir.Control(new Button(group1, SWT.NONE));
-		bApplyDirectory.setEnabled(false);
-		bApplyDirectory.setLayoutData(gridData51);
-		bApplyDirectory.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				applyDirectory();
-			}
-		});
+        tRegex = SOSJOEMessageCodes.JOE_T_JobOptionsForm_FileRegex.Control(new Text(group1, SWT.BORDER));
+        tRegex.setLayoutData(gridData4);
 
-		label1 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-		// label1.setText("Label");
-		label1.setLayoutData(gridData110);
+        bApplyDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_ApplyDir.Control(new Button(group1, SWT.NONE));
+        bApplyDirectory.setEnabled(false);
+        bApplyDirectory.setLayoutData(gridData51);
+        bApplyDirectory.addSelectionListener(new SelectionAdapter() {
 
-		createTable3();
+            public void widgetSelected(SelectionEvent e) {
+                applyDirectory();
+            }
+        });
 
-		bNewDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_NewDir.Control(new Button(group1, SWT.NONE));
-		bNewDirectory.setLayoutData(gridData41);
-		bNewDirectory.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				tDirectories.deselectAll();
-				objJobDataProvider.newDirectory();
-				initDirectory(true);
-				tDirectory.setFocus();
-			}
-		});
+        label1 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
+        // label1.setText("Label");
+        label1.setLayoutData(gridData110);
 
-		label21 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
-		// label21.setText("Label");
-		label21.setLayoutData(gridData210);
+        createTable3();
 
-		bRemoveDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_RemoveDir.Control(new Button(group1, SWT.NONE));
-		bRemoveDirectory.setEnabled(false);
-		bRemoveDirectory.setLayoutData(gridData31);
-		bRemoveDirectory.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				if (tDirectories.getSelectionCount() > 0) {
-					int index = tDirectories.getSelectionIndex();
-					objJobDataProvider.deleteDirectory(index);
-					tDirectories.remove(index);
-					if (index >= tDirectories.getItemCount())
-						index--;
-					if (tDirectories.getItemCount() > 0) {
-						tDirectories.setSelection(index);
-						objJobDataProvider.selectDirectory(index);
-						initDirectory(true);
-					}
-					else {
-						initDirectory(false);
-						bRemoveDirectory.setEnabled(false);
-					}
-				}
-			}
-		});
+        bNewDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_NewDir.Control(new Button(group1, SWT.NONE));
+        bNewDirectory.setLayoutData(gridData41);
+        bNewDirectory.addSelectionListener(new SelectionAdapter() {
 
-		tDirectory.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				if (!tDirectory.getText().equals("")) {
-					getShell().setDefaultButton(bApplyDirectory);
-				}
-				bApplyDirectory.setEnabled(!tDirectory.getText().equals(""));
-			}
-		});
+            public void widgetSelected(SelectionEvent e) {
+                tDirectories.deselectAll();
+                objJobDataProvider.newDirectory();
+                initDirectory(true);
+                tDirectory.setFocus();
+            }
+        });
 
-		tRegex.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				if (!tDirectory.getText().equals(""))
-					getShell().setDefaultButton(bApplyDirectory);
-				bApplyDirectory.setEnabled(!tDirectory.getText().equals(""));
-			}
-		});
+        label21 = new Label(group1, SWT.SEPARATOR | SWT.HORIZONTAL);
+        // label21.setText("Label");
+        label21.setLayoutData(gridData210);
 
-	}
+        bRemoveDirectory = SOSJOEMessageCodes.JOE_B_JobOptionsForm_RemoveDir.Control(new Button(group1, SWT.NONE));
+        bRemoveDirectory.setEnabled(false);
+        bRemoveDirectory.setLayoutData(gridData31);
+        bRemoveDirectory.addSelectionListener(new SelectionAdapter() {
 
-	private void initForm() {
-		objJobDataProvider.fillDirectories(tDirectories);
-		/*this.tRegex.setText(that.tRegex.getText());
-		this.tDirectory.setText(that.tDirectory.getText());
-		
-		for (int i= 0;i<that.tDirectories.getItemCount();i++){
-		    TableItem t = new TableItem(this.tDirectories, SWT.None);
-		    t.setText(that.tDirectories.getItems()[i].getText());
-		}*/
-	}
+            public void widgetSelected(SelectionEvent e) {
+                if (tDirectories.getSelectionCount() > 0) {
+                    int index = tDirectories.getSelectionIndex();
+                    objJobDataProvider.deleteDirectory(index);
+                    tDirectories.remove(index);
+                    if (index >= tDirectories.getItemCount())
+                        index--;
+                    if (tDirectories.getItemCount() > 0) {
+                        tDirectories.setSelection(index);
+                        objJobDataProvider.selectDirectory(index);
+                        initDirectory(true);
+                    } else {
+                        initDirectory(false);
+                        bRemoveDirectory.setEnabled(false);
+                    }
+                }
+            }
+        });
 
-	private void initDirectory(boolean enabled) {
-		tDirectory.setEnabled(enabled);
-		tRegex.setEnabled(enabled);
-		if (enabled) {
-			tDirectory.setText(objJobDataProvider.getDirectory());
-			tRegex.setText(objJobDataProvider.getRegex());
-		}
-		else {
-			tDirectory.setText("");
-			tRegex.setText("");
-		}
-		bApplyDirectory.setEnabled(false);
-	}
+        tDirectory.addModifyListener(new ModifyListener() {
 
-	private void applyDirectory() {
-		String strRegExp = tRegex.getText();
-		if (Utils.isRegExpressions(strRegExp)) {
-			objJobDataProvider.applyDirectory(tDirectory.getText(), strRegExp);
-			objJobDataProvider.fillDirectories(tDirectories);
-			initDirectory(false);
-			getShell().setDefaultButton(null);
-		}
-		else {
-			MainWindow.ErrMsg(SOSJOEMessageCodes.JOE_M_NoRegex.params(strRegExp));
-		}
-	}
+            public void modifyText(ModifyEvent e) {
+                if (!tDirectory.getText().equals("")) {
+                    getShell().setDefaultButton(bApplyDirectory);
+                }
+                bApplyDirectory.setEnabled(!tDirectory.getText().equals(""));
+            }
+        });
 
-	private void createTable3() {
-		GridData gridData30 = new org.eclipse.swt.layout.GridData();
-		gridData30.horizontalSpan = 4;
-		gridData30.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData30.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData30.grabExcessHorizontalSpace = true;
-		gridData30.grabExcessVerticalSpace = true;
-		gridData30.verticalSpan = 3;
+        tRegex.addModifyListener(new ModifyListener() {
 
-		tDirectories = SOSJOEMessageCodes.JOE_Tbl_JobOptionsForm_Dirs.Control(new Table(group1, SWT.BORDER | SWT.FULL_SELECTION));
-		tDirectories.setHeaderVisible(true);
-		tDirectories.setLayoutData(gridData30);
-		tDirectories.setLinesVisible(true);
-		tDirectories.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				if (tDirectories.getSelectionCount() > 0) {
-					objJobDataProvider.selectDirectory(tDirectories.getSelectionIndex());
-					initDirectory(true);
-					tDirectory.setFocus();
-				}
-				else
-					initDirectory(false);
-				bRemoveDirectory.setEnabled(tDirectories.getSelectionCount() > 0);
-			}
+            public void modifyText(ModifyEvent e) {
+                if (!tDirectory.getText().equals(""))
+                    getShell().setDefaultButton(bApplyDirectory);
+                bApplyDirectory.setEnabled(!tDirectory.getText().equals(""));
+            }
+        });
 
-			public void widgetDefaultSelected(final SelectionEvent e) {
-				tDirectory.selectAll();
-			}
-		});
+    }
 
-		TableColumn tableColumn5 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Dir.Control(new TableColumn(tDirectories, SWT.NONE));
-		tableColumn5.setWidth(300);
+    private void initForm() {
+        objJobDataProvider.fillDirectories(tDirectories);
+        /*
+         * this.tRegex.setText(that.tRegex.getText());
+         * this.tDirectory.setText(that.tDirectory.getText()); for (int i=
+         * 0;i<that.tDirectories.getItemCount();i++){ TableItem t = new
+         * TableItem(this.tDirectories, SWT.None);
+         * t.setText(that.tDirectories.getItems()[i].getText()); }
+         */
+    }
 
-		TableColumn tableColumn6 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Regex.Control(new TableColumn(tDirectories, SWT.NONE));
-		tableColumn6.setWidth(250);
-	}
+    private void initDirectory(boolean enabled) {
+        tDirectory.setEnabled(enabled);
+        tRegex.setEnabled(enabled);
+        if (enabled) {
+            tDirectory.setText(objJobDataProvider.getDirectory());
+            tRegex.setText(objJobDataProvider.getRegex());
+        } else {
+            tDirectory.setText("");
+            tRegex.setText("");
+        }
+        bApplyDirectory.setEnabled(false);
+    }
+
+    private void applyDirectory() {
+        String strRegExp = tRegex.getText();
+        if (Utils.isRegExpressions(strRegExp)) {
+            objJobDataProvider.applyDirectory(tDirectory.getText(), strRegExp);
+            objJobDataProvider.fillDirectories(tDirectories);
+            initDirectory(false);
+            getShell().setDefaultButton(null);
+        } else {
+            MainWindow.ErrMsg(SOSJOEMessageCodes.JOE_M_NoRegex.params(strRegExp));
+        }
+    }
+
+    private void createTable3() {
+        GridData gridData30 = new org.eclipse.swt.layout.GridData();
+        gridData30.horizontalSpan = 4;
+        gridData30.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        gridData30.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
+        gridData30.grabExcessHorizontalSpace = true;
+        gridData30.grabExcessVerticalSpace = true;
+        gridData30.verticalSpan = 3;
+
+        tDirectories = SOSJOEMessageCodes.JOE_Tbl_JobOptionsForm_Dirs.Control(new Table(group1, SWT.BORDER | SWT.FULL_SELECTION));
+        tDirectories.setHeaderVisible(true);
+        tDirectories.setLayoutData(gridData30);
+        tDirectories.setLinesVisible(true);
+        tDirectories.addSelectionListener(new SelectionAdapter() {
+
+            public void widgetSelected(SelectionEvent e) {
+                if (tDirectories.getSelectionCount() > 0) {
+                    objJobDataProvider.selectDirectory(tDirectories.getSelectionIndex());
+                    initDirectory(true);
+                    tDirectory.setFocus();
+                } else
+                    initDirectory(false);
+                bRemoveDirectory.setEnabled(tDirectories.getSelectionCount() > 0);
+            }
+
+            public void widgetDefaultSelected(final SelectionEvent e) {
+                tDirectory.selectAll();
+            }
+        });
+
+        TableColumn tableColumn5 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Dir.Control(new TableColumn(tDirectories, SWT.NONE));
+        tableColumn5.setWidth(300);
+
+        TableColumn tableColumn6 = SOSJOEMessageCodes.JOE_TCl_JobOptionsForm_Regex.Control(new TableColumn(tDirectories, SWT.NONE));
+        tableColumn6.setWidth(250);
+    }
 }

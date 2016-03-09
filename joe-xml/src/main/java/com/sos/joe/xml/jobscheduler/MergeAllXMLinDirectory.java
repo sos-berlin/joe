@@ -110,8 +110,7 @@ public class MergeAllXMLinDirectory {
                             parent = new Element(name);
                             config.addContent(parent);
                         }
-                        String jobXMLNameWithoutExtension = jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName()
-                                + ".xml"));
+                        String jobXMLNameWithoutExtension = jobXMLFile.getName().substring(0, jobXMLFile.getName().indexOf("." + xmlRoot.getName() + ".xml"));
                         if (Utils.getAttributeValue("name", xmlRoot).length() > 0
                                 && !jobXMLNameWithoutExtension.equalsIgnoreCase(Utils.getAttributeValue("name", xmlRoot))) {
                             listOfChangeElementNames.add(xmlRoot.getName() + "_" + jobXMLNameWithoutExtension);
@@ -206,8 +205,7 @@ public class MergeAllXMLinDirectory {
         try {
             xml = xml + "<spooler>  " + "      <config> " + "      </config> " + "    </spooler>";
         } catch (Exception e) {
-            System.out.println("..error in MergeAllXMLinDirectory.createConfigurationFile(). Could not create a new configuration file: "
-                    + e.getMessage());
+            System.out.println("..error in MergeAllXMLinDirectory.createConfigurationFile(). Could not create a new configuration file: " + e.getMessage());
         }
         return xml;
     }

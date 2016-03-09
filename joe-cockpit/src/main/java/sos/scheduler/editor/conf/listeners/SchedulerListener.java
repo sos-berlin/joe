@@ -861,8 +861,7 @@ public class SchedulerListener {
     public void treeFillDays(final TreeItem parent, Element element, final int type, final boolean expand, final String name) {
         parent.removeAll();
         if (element != null) {
-            if (type == DaysListener.WEEKDAYS || type == DaysListener.MONTHDAYS || type == DaysListener.ULTIMOS
-                    || type == DaysListener.SPECIFIC_MONTHS) {
+            if (type == DaysListener.WEEKDAYS || type == DaysListener.MONTHDAYS || type == DaysListener.ULTIMOS || type == DaysListener.SPECIFIC_MONTHS) {
                 if (parent.getParentItem().getText().equals("Holidays")) {
                     if (element.getChild("holidays") == null)
                         element.addContent(new Element("holidays"));
@@ -1282,7 +1281,7 @@ public class SchedulerListener {
             }
         } catch (Exception e) {
             new ErrorLog(SOSJOEMessageCodes.JOE_E_0002.params(SOSClassUtil.getMethodName()), e);
-            LOGGER.error(e.getMessage(),e);
+            LOGGER.error(e.getMessage(), e);
             MainWindow.message(e.getMessage(), SWT.ICON_ERROR);
         }
         objSchedulerDom.setInit(false);

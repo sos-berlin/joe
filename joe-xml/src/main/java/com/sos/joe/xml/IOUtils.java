@@ -83,7 +83,7 @@ public class IOUtils {
             }
         } catch (Exception e) {
             new ErrorLog("error in " + sos.util.SOSClassUtil.getMethodName(), e);
-        }  
+        }
         return objSchedulerHotFolder;
     }
 
@@ -164,7 +164,7 @@ public class IOUtils {
                 fdialog.setText("Open" + getDomInstance(dom) + " File");
                 filename = fdialog.open();
             }
- 
+
             if (isDirectory) {
                 String path = filename;
                 if (filename == null || filename.length() == 0) {
@@ -176,15 +176,15 @@ public class IOUtils {
                         return false;
                     path = fname;
                 }
- 
+
                 MergeAllXMLinDirectory allJob = new MergeAllXMLinDirectory(path);
                 xml = allJob.parseDocuments();
- 
+
                 ((SchedulerDom) dom).setListOfReadOnlyFiles(allJob.getListOfReadOnly());
- 
+
                 if (allJob.getListOfChangeElementNames() != null && allJob.getListOfChangeElementNames().size() > 0)
                     ((SchedulerDom) dom).setListOfChangeElementNames(allJob.getListOfChangeElementNames());
- 
+
                 filename = path;
                 if (filename == null)
                     return false;
@@ -220,8 +220,8 @@ public class IOUtils {
                         } else
                             dom.read(filename);
                     } catch (JDOMException e) {
-                        cont = ErrorLog.message(Messages.getString("MainListener.validationError", new String[] { file.getAbsolutePath(),
-                                e.getMessage() }), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+                        cont = ErrorLog.message(Messages.getString("MainListener.validationError", new String[] { file.getAbsolutePath(), e.getMessage() }), SWT.ICON_WARNING
+                                | SWT.YES | SWT.NO);
                         if (cont == SWT.NO)
                             return false;
                     } catch (IOException e) {
@@ -326,8 +326,7 @@ public class IOUtils {
                     if (!overrideOriFile) {
                         new File(originFilename).delete();
                     }
-                    if (!(dom instanceof SchedulerDom && ((SchedulerDom) dom).isDirectory())
-                            && !new File(filename).renameTo(new File(originFilename))) {
+                    if (!(dom instanceof SchedulerDom && ((SchedulerDom) dom).isDirectory()) && !new File(filename).renameTo(new File(originFilename))) {
                         ErrorLog.message("..could not rename file: " + filename, SWT.ICON_ERROR | SWT.OK);
                     }
                 }
@@ -385,7 +384,6 @@ public class IOUtils {
         }
     }
 
-    
     public static void saveXML(final Document doc, final String filename) {
         try {
             JDOMSource in = new JDOMSource(doc);

@@ -1,4 +1,5 @@
 package sos.scheduler.editor.conf.forms;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -51,66 +52,69 @@ import com.sos.joe.xml.IOUtils;
 import com.sos.joe.xml.jobscheduler.MergeAllXMLinDirectory;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
-
 public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
-    private final String                                    conClassName                = "JobChainNodesForm";
-    final String                                            conMethodName               = conClassName + "::enclosing_method";
-    @SuppressWarnings("unused") private final String        conSVNVersion               = "$Id$";
-    @SuppressWarnings("unused") private static final Logger logger                      = Logger.getLogger(JobChainNodesForm.class);
-    private Button                                          dumm2                       = null;
-    private Button                                          bNewNode                    = null;
-    private Table                                           tNodes                      = null;
-    private Button                                          bApplyNode                  = null;
-    private Text                                            tMoveTo                     = null;
-    private Button                                          bRemoveFile                 = null;
-    private Combo                                           cErrorState                 = null;
-    private Label                                           label9                      = null;
-    private Combo                                           cNextState                  = null;
-    @SuppressWarnings("unused") private Label               label8                      = null;
-    private Button                                          bFileSink                   = null;
-    private Button                                          bEndNode                    = null;
-    private Button                                          bFullNode                   = null;
-    private Composite                                       cType                       = null;
-    private Combo                                           cJob                        = null;
-    @SuppressWarnings("unused") private Label               label7                      = null;
-    private Text                                            tState                      = null;
-    private Label                                           label6                      = null;
-    private static final String                             GROUP_FILEORDERSOURCE_TITLE = "File Order Sources";
-    private Group                                           gFileOrderSource            = null;
-    private JobChainListener                                listener                    = null;
-    private Group                                           jobChainGroup               = null;
-    private Button                                          bNewFileOrderSource         = null;
-    private Button                                          bRemoveFileOrderSource      = null;
-    private Button                                          bApplyFileOrderSource       = null;
-    private Text                                            tDirectory                  = null;
-    private Text                                            tDelayAfterError            = null;
-    private Text                                            tMax                        = null;
-    private Text                                            tNextState                  = null;
-    private Text                                            tRegex                      = null;
-    private Text                                            tRepeat                     = null;
-    private Table                                           tFileOrderSource            = null;
-    private Button                                          bRemoveNode                 = null;
-    private Group                                           gNodes;
-    private Text                                            tDelay                      = null;
-    private Button                                          butImportJob                = null;
-    private Button                                          butReturnCode                = null; 
-    private boolean                                         refresh                     = false;
-    private Button                                          butDetailsJob               = null;
-    private Button                                          butBrowse                   = null;
-    private ISchedulerUpdate                                update                      = null;
-    private Combo                                           cOnError                    = null;
-    private Button                                          butUp                       = null;
-    private Button                                          butDown                     = null;
-    private SchedulerDom                                    dom                         = null;
-    private Button                                          butGoto                     = null;
-    private Button                                          butInsert                   = null;
-    private boolean                                         isInsert                    = false;
-    private Button                                          reorderButton               = null;
-    private Button                                          butAddMissingNodes          = null;
- 
-    private boolean                                         checkParameter              = false;
 
- 
+    private final String conClassName = "JobChainNodesForm";
+    final String conMethodName = conClassName + "::enclosing_method";
+    @SuppressWarnings("unused")
+    private final String conSVNVersion = "$Id$";
+    @SuppressWarnings("unused")
+    private static final Logger logger = Logger.getLogger(JobChainNodesForm.class);
+    private Button dumm2 = null;
+    private Button bNewNode = null;
+    private Table tNodes = null;
+    private Button bApplyNode = null;
+    private Text tMoveTo = null;
+    private Button bRemoveFile = null;
+    private Combo cErrorState = null;
+    private Label label9 = null;
+    private Combo cNextState = null;
+    @SuppressWarnings("unused")
+    private Label label8 = null;
+    private Button bFileSink = null;
+    private Button bEndNode = null;
+    private Button bFullNode = null;
+    private Composite cType = null;
+    private Combo cJob = null;
+    @SuppressWarnings("unused")
+    private Label label7 = null;
+    private Text tState = null;
+    private Label label6 = null;
+    private static final String GROUP_FILEORDERSOURCE_TITLE = "File Order Sources";
+    private Group gFileOrderSource = null;
+    private JobChainListener listener = null;
+    private Group jobChainGroup = null;
+    private Button bNewFileOrderSource = null;
+    private Button bRemoveFileOrderSource = null;
+    private Button bApplyFileOrderSource = null;
+    private Text tDirectory = null;
+    private Text tDelayAfterError = null;
+    private Text tMax = null;
+    private Text tNextState = null;
+    private Text tRegex = null;
+    private Text tRepeat = null;
+    private Table tFileOrderSource = null;
+    private Button bRemoveNode = null;
+    private Group gNodes;
+    private Text tDelay = null;
+    private Button butImportJob = null;
+    private Button butReturnCode = null;
+    private boolean refresh = false;
+    private Button butDetailsJob = null;
+    private Button butBrowse = null;
+    private ISchedulerUpdate update = null;
+    private Combo cOnError = null;
+    private Button butUp = null;
+    private Button butDown = null;
+    private SchedulerDom dom = null;
+    private Button butGoto = null;
+    private Button butInsert = null;
+    private boolean isInsert = false;
+    private Button reorderButton = null;
+    private Button butAddMissingNodes = null;
+
+    private boolean checkParameter = false;
+
     public JobChainNodesForm(Composite parent, int style, SchedulerDom dom_, Element jobChain) {
         super(parent, style);
         dom = dom_;
@@ -123,14 +127,15 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             fillChain(false, false);
         this.setEnabled(Utils.isElementEnabled("job_chain", dom, jobChain));
     }
- 
 
-    @Override public void apply() {
+    @Override
+    public void apply() {
         if (bApplyNode.isEnabled())
             applyNode();
     }
 
-    @Override public boolean isUnsaved() {
+    @Override
+    public boolean isUnsaved() {
         return bApplyNode.isEnabled();
     }
 
@@ -140,9 +145,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
         setSize(new Point(776, 664));
     }
 
-    /**
-     * This method initializes group
-     */
+    /** This method initializes group */
     private void createGroup() {
         try {
             jobChainGroup = new Group(this, SWT.NONE);
@@ -155,7 +158,10 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             gd_gNodes.widthHint = 300;
             gd_gNodes.minimumHeight = 379;
             gNodes.setLayoutData(gd_gNodes);
-            gNodes.setText(JOE_M_JCNodesForm_NodesGroup.params(listener.getChainName())); // Chain Nodes for 'CHAINNAME'
+            gNodes.setText(JOE_M_JCNodesForm_NodesGroup.params(listener.getChainName())); // Chain
+                                                                                          // Nodes
+                                                                                          // for
+                                                                                          // 'CHAINNAME'
             final GridLayout gridLayout_3 = new GridLayout();
             gridLayout_3.marginBottom = 5;
             gridLayout_3.marginTop = 5;
@@ -166,7 +172,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             new Label(gNodes, SWT.NONE);
             tState = JOE_T_JobChainNodes_State.Control(new Text(gNodes, SWT.BORDER));
             tState.addModifyListener(new ModifyListener() {
-                @Override public void modifyText(final ModifyEvent e) {
+
+                @Override
+                public void modifyText(final ModifyEvent e) {
                     boolean valid = listener.isValidState(tState.getText());
                     if (!valid)
                         tState.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
@@ -182,7 +190,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             tState.setLayoutData(gridData18);
             bApplyNode = JOE_B_JobChainNodes_ApplyNode.Control(new Button(gNodes, SWT.NONE));
             bApplyNode.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     applyNode();
                 }
             });
@@ -191,7 +201,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             label7 = JOE_L_JCNodesForm_Job.Control(new Label(gNodes, SWT.NONE));
             butGoto = JOE_B_JobChainNodes_Goto.Control(new Button(gNodes, SWT.ARROW | SWT.DOWN));
             butGoto.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     ContextMenu.goTo(cJob.getText(), dom, JOEConstants.JOB);
                 }
             });
@@ -199,10 +211,11 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             cJob = JOE_Cbo_JCNodesForm_Job.Control(new Combo(gNodes, SWT.BORDER));
             cJob.setVisibleItemCount(9);
             cJob.setMenu(new sos.scheduler.editor.app.ContextMenu(cJob, dom, JOEConstants.JOB).getMenu());
-           
-    		
+
             cJob.addMouseListener(new MouseAdapter() {
-                @Override public void mouseDown(final MouseEvent e) {
+
+                @Override
+                public void mouseDown(final MouseEvent e) {
                     if (refresh) {
                         if (listener.getJobs() != null) {
                             cJob.setItems(listener.getJobs());
@@ -212,14 +225,18 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             });
             cJob.addModifyListener(new ModifyListener() {
-                @Override public void modifyText(final ModifyEvent e) {
+
+                @Override
+                public void modifyText(final ModifyEvent e) {
                     bApplyNode.setEnabled(isValidNode());
                     if (bApplyNode.getEnabled())
                         getShell().setDefaultButton(bApplyNode);
                 }
             });
             cJob.addKeyListener(new KeyAdapter() {
-                @Override public void keyPressed(final KeyEvent e) {
+
+                @Override
+                public void keyPressed(final KeyEvent e) {
                     if (e.keyCode == SWT.CR) {
                         applyNode();
                     }
@@ -241,7 +258,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             gd_butBrowse.horizontalSpan = 2;
             butBrowse.setLayoutData(gd_butBrowse);
             butBrowse.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     String jobname = IOUtils.getJobschedulerObjectPathName(MergeAllXMLinDirectory.MASK_JOB);
                     if (jobname != null && jobname.length() > 0)
                         cJob.setText(jobname);
@@ -253,33 +272,40 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             cNextState = JOE_Cbo_JobChainNodes_NextState.Control(new Combo(gNodes, SWT.NONE));
             cNextState.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cNextState.addModifyListener(new ModifyListener() {
-                @Override public void modifyText(final ModifyEvent e) {
+
+                @Override
+                public void modifyText(final ModifyEvent e) {
                     bApplyNode.setEnabled(isValidNode());
                     if (bApplyNode.getEnabled())
                         getShell().setDefaultButton(bApplyNode);
                 }
             });
             cNextState.addKeyListener(new KeyAdapter() {
-                @Override public void keyPressed(final KeyEvent e) {
+
+                @Override
+                public void keyPressed(final KeyEvent e) {
                     if (e.keyCode == SWT.CR) {
                         applyNode();
                     }
                 }
             });
-         
-            @SuppressWarnings("unused") final Label delayLabel = JOE_L_JCNodesForm_Delay.Control(new Label(gNodes, SWT.NONE));
+
+            @SuppressWarnings("unused")
+            final Label delayLabel = JOE_L_JCNodesForm_Delay.Control(new Label(gNodes, SWT.NONE));
             tDelay = JOE_T_JCNodesForm_Delay.Control(new Text(gNodes, SWT.BORDER));
             tDelay.addModifyListener(new ModifyListener() {
-                @Override public void modifyText(final ModifyEvent e) {
+
+                @Override
+                public void modifyText(final ModifyEvent e) {
                     bApplyNode.setEnabled(isValidNode());
                     if (bApplyNode.getEnabled())
                         getShell().setDefaultButton(bApplyNode);
                 }
             });
-            //            tDelay.addKeyListener(new KeyAdapter() {
-            //                public void keyPressed(final KeyEvent e) {
-            //                }
-            //            });
+            // tDelay.addKeyListener(new KeyAdapter() {
+            // public void keyPressed(final KeyEvent e) {
+            // }
+            // });
             final GridData gridData_8 = new GridData(SWT.FILL, GridData.CENTER, true, false);
             gridData_8.minimumWidth = 35;
             gridData_8.widthHint = 222;
@@ -288,8 +314,10 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             butImportJob = JOE_B_JCNodesForm_ImportJob.Control(new Button(gNodes, SWT.NONE));
             butImportJob.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             butImportJob.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
-                     
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
+
                     JobAssistentImportJobsForm importJobs = new JobAssistentImportJobsForm(listener.get_dom(), update, JOEConstants.JOB_CHAINS);
                     importJobs.setJobname(cJob);
                     importJobs.showAllImportJobs("order");
@@ -300,17 +328,21 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             });
             label9 = JOE_L_JobChainNodes_ErrorState.Control(new Label(gNodes, SWT.NONE));
             new Label(gNodes, SWT.NONE);
-             
+
             cErrorState = JOE_Cbo_JobChainNodes_ErrorState.Control(new Combo(gNodes, SWT.NONE));
             cErrorState.addModifyListener(new ModifyListener() {
-                @Override public void modifyText(final ModifyEvent e) {
+
+                @Override
+                public void modifyText(final ModifyEvent e) {
                     bApplyNode.setEnabled(isValidNode());
                     if (bApplyNode.getEnabled())
                         getShell().setDefaultButton(bApplyNode);
                 }
             });
             cErrorState.addKeyListener(new KeyAdapter() {
-                @Override public void keyPressed(final KeyEvent e) {
+
+                @Override
+                public void keyPressed(final KeyEvent e) {
                     if (e.keyCode == SWT.CR) {
                         applyNode();
                     }
@@ -319,18 +351,23 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             final GridData gridData15 = new GridData(SWT.FILL, GridData.CENTER, false, false);
             gridData15.widthHint = 80;
             cErrorState.setLayoutData(gridData15);
-            @SuppressWarnings("unused") final Label onErrorLabel = JOE_L_JCNodesForm_OnError.Control(new Label(gNodes, SWT.NONE));
+            @SuppressWarnings("unused")
+            final Label onErrorLabel = JOE_L_JCNodesForm_OnError.Control(new Label(gNodes, SWT.NONE));
             cOnError = JOE_Cbo_JCNodesForm_OnError.Control(new Combo(gNodes, SWT.READ_ONLY));
             cOnError.setItems(new String[] { "", JOE_M_JCNodesForm_Setback.label(), JOE_M_JCNodesForm_Suspend.label() });
             cOnError.addModifyListener(new ModifyListener() {
-                @Override public void modifyText(final ModifyEvent e) {
+
+                @Override
+                public void modifyText(final ModifyEvent e) {
                     bApplyNode.setEnabled(isValidNode());
                     if (bApplyNode.getEnabled())
                         getShell().setDefaultButton(bApplyNode);
                 }
             });
             cOnError.addKeyListener(new KeyAdapter() {
-                @Override public void keyPressed(final KeyEvent e) {
+
+                @Override
+                public void keyPressed(final KeyEvent e) {
                     if (e.keyCode == SWT.CR) {
                         applyNode();
                     }
@@ -342,7 +379,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             cOnError.setLayoutData(gridData_12);
             bNewNode = JOE_B_JCNodesForm_NewNode.Control(new Button(gNodes, SWT.NONE));
             bNewNode.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     isInsert = false;
                     getShell().setDefaultButton(null);
                     tNodes.deselectAll();
@@ -371,13 +410,17 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             cType.setLayoutData(gridData5);
             bFullNode = JOE_B_JCNodesForm_FullNode.Control(new Button(cType, SWT.RADIO));
             bFullNode.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetDefaultSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetDefaultSelected(final SelectionEvent e) {
                 }
             });
             bFullNode.setSelection(true);
             bEndNode = JOE_B_JCNodesForm_EndNode.Control(new Button(cType, SWT.RADIO));
             bEndNode.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     if (bFileSink.getSelection()) {
                         cNextState.setEnabled(false);
                         cErrorState.setEnabled(false);
@@ -423,7 +466,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             gridData.widthHint = 71;
             bFileSink.setLayoutData(gridData);
             bFileSink.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     if (bFileSink.getSelection()) {
                         cNextState.setEnabled(false);
                         cErrorState.setEnabled(false);
@@ -452,13 +497,16 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             gridLayout_7.marginHeight = 0;
             gridLayout_7.horizontalSpacing = 0;
             composite_3.setLayout(gridLayout_7);
-            @SuppressWarnings("unused") final Label removeFileLabel = JOE_L_JCNodesForm_RemoveFile.Control(new Label(composite_3, SWT.NONE));
+            @SuppressWarnings("unused")
+            final Label removeFileLabel = JOE_L_JCNodesForm_RemoveFile.Control(new Label(composite_3, SWT.NONE));
             bRemoveFile = JOE_B_JCNodesForm_RemoveFile.Control(new Button(composite_3, SWT.CHECK));
             final GridData gridData_1 = new GridData();
             gridData_1.horizontalIndent = 5;
             bRemoveFile.setLayoutData(gridData_1);
             bRemoveFile.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     if (bRemoveFile.getSelection())
                         tMoveTo.setText("");
                     bApplyNode.setEnabled(isValidNode());
@@ -467,20 +515,25 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             });
             bRemoveFile.addKeyListener(new KeyAdapter() {
-                @Override public void keyPressed(final KeyEvent e) {
+
+                @Override
+                public void keyPressed(final KeyEvent e) {
                     if (e.keyCode == SWT.CR) {
                         applyNode();
                     }
                 }
             });
             bRemoveFile.setEnabled(false);
-            @SuppressWarnings("unused") final Label movweToLabel = JOE_L_JCNodesForm_MoveTo.Control(new Label(composite_3, SWT.NONE));
+            @SuppressWarnings("unused")
+            final Label movweToLabel = JOE_L_JCNodesForm_MoveTo.Control(new Label(composite_3, SWT.NONE));
             tMoveTo = JOE_T_JCNodesForm_MoveTo.Control(new Text(composite_3, SWT.BORDER));
             final GridData gridData_3 = new GridData(GridData.FILL, GridData.CENTER, true, false);
             gridData_3.horizontalIndent = 5;
             tMoveTo.setLayoutData(gridData_3);
             tMoveTo.addModifyListener(new ModifyListener() {
-                @Override public void modifyText(final ModifyEvent e) {
+
+                @Override
+                public void modifyText(final ModifyEvent e) {
                     if (!tMoveTo.getText().equals(""))
                         bRemoveFile.setSelection(false);
                     bApplyNode.setEnabled(isValidNode());
@@ -489,7 +542,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                 }
             });
             tMoveTo.addKeyListener(new KeyAdapter() {
-                @Override public void keyPressed(final KeyEvent e) {
+
+                @Override
+                public void keyPressed(final KeyEvent e) {
                     if (e.keyCode == SWT.CR) {
                         applyNode();
                     }
@@ -498,12 +553,14 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             tMoveTo.setEnabled(false);
             butInsert = JOE_B_JCNodesForm_Insert.Control(new Button(gNodes, SWT.NONE));
             butInsert.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     isInsert = true;
                     String state = tState.getText();
-					
-					cNextState.setItems(initStateCombo());
-					cErrorState.setItems(initStateCombo());
+
+                    cNextState.setItems(initStateCombo());
+                    cErrorState.setItems(initStateCombo());
 
                     tState.setText("");
                     tDelay.setText("");
@@ -520,7 +577,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             butInsert.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
             tNodes = JOE_Tbl_JCNodesForm_Nodes.Control(new Table(gNodes, SWT.FULL_SELECTION | SWT.BORDER));
             tNodes.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     selectNodes();
                 }
             });
@@ -552,13 +611,13 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             butUp = JOE_B_Up.Control(new Button(composite_1, SWT.NONE));
             butUp.setText("");
             butUp.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     if (tNodes.getSelectionCount() > 0) {
                         int index = tNodes.getSelectionIndex();
                         if (index > 0) {
-                            listener.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(),
-                                    tDelay.getText(), cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), index,
-                                    reorderButton.getSelection());
+                            listener.changeUp(tNodes, true, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), index, reorderButton.getSelection());
                             selectNodes();
                         }
                     }
@@ -568,19 +627,17 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             butDown = JOE_B_Down.Control(new Button(composite_1, SWT.NONE));
             butDown.setText("");
             butDown.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     if (tNodes.getSelectionCount() > 0) {
                         int index = tNodes.getSelectionIndex();
                         if (index == tNodes.getItemCount() - 1) {
                             // System.out.println("Datensatz ist bereits ganz unten.");
+                        } else if (index >= 0) {
+                            listener.changeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), index, reorderButton.getSelection());
+                            selectNodes();
                         }
-                        else
-                            if (index >= 0) {
-                                listener.changeUp(tNodes, false, bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(),
-                                        tDelay.getText(), cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), index,
-                                        reorderButton.getSelection());
-                                selectNodes();
-                            }
                     }
                 }
             });
@@ -591,7 +648,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             butDetailsJob = JOE_B_JCNodesForm_Details.Control(new Button(gNodes, SWT.NONE));
             butDetailsJob.setEnabled(false);
             butDetailsJob.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     if (tNodes.getSelectionCount() > 0) {
                         showDetails(tNodes.getSelection()[0].getText(0), cJob.getText());
                         // tNodes.deselectAll();
@@ -603,7 +662,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             });
             butDetailsJob.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, false, false));
             butDetailsJob.addFocusListener(new FocusAdapter() {
-                @Override public void focusGained(final FocusEvent e) {
+
+                @Override
+                public void focusGained(final FocusEvent e) {
                     if (checkParameter) {
                         listener.fillChain(tNodes);
                         checkParameter = false;
@@ -612,7 +673,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             });
             butAddMissingNodes = JOE_B_JCNodesForm_AddMissingNodes.Control(new Button(gNodes, SWT.NONE));
             butAddMissingNodes.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     try {
                         if (tNodes.getSelectionCount() > 0) {
                             TableItem item = tNodes.getSelection()[0];
@@ -630,52 +693,54 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                             listener.selectNode(null);
                             fillNode(true);
                             enableNode(false);
-                            
+
                         }
-                    }
-                    catch (Exception ex) {
-                       new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
+                    } catch (Exception ex) {
+                        new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), ex);
                     }
                 }
             });
             butAddMissingNodes.setEnabled(false);
             butAddMissingNodes.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
-            
-            
+
             butReturnCode = JOE_B_JCNodesForm_ReturnCodes.Control(new Button(gNodes, SWT.NONE));
             butReturnCode.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             butReturnCode.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     JobchainNodeReturnCodeDialog jobchainNodeReturnCodeDialog = new JobchainNodeReturnCodeDialog(getShell(), 0, listener);
                     JobchainListOfReturnCodeElements jobchainListOfReturnCodeElements = new JobchainListOfReturnCodeElements(listener.getJobchainListOfReturnCodeElements());
-                   
+
                     jobchainNodeReturnCodeDialog.setJobchainListOfReturnCodeElements(jobchainListOfReturnCodeElements);
                     jobchainNodeReturnCodeDialog.execute();
-                    if (jobchainNodeReturnCodeDialog.isOk()){
+                    if (jobchainNodeReturnCodeDialog.isOk()) {
                         listener.setJobchainListOfReturnCodeElements(jobchainNodeReturnCodeDialog.getJobchainListOfReturnCodeElements());
                         bApplyNode.setEnabled(true);
                     }
-                                
+
                 }
             });
 
             bRemoveNode = JOE_B_JCNodesForm_Remove.Control(new Button(gNodes, SWT.NONE));
             new Label(gNodes, SWT.NONE);
             bRemoveNode.setEnabled(false);
-            
+
             bRemoveNode.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     if (tNodes.getSelectionCount() > 0) {
                         int c = MainWindow.message(getShell(), JOE_M_JCNodesForm_Remove.label(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-						if (c != SWT.YES){
+                        if (c != SWT.YES) {
                             return;
-						}
+                        }
                         int index = tNodes.getSelectionIndex();
                         listener.deleteNode(tNodes);
                         tNodes.remove(index);
-						if (index >= tNodes.getItemCount()){
+                        if (index >= tNodes.getItemCount()) {
                             index--;
-						}
+                        }
                         boolean empty = tNodes.getItemCount() == 0;
                         fillNode(empty);
                         enableNode(!empty);
@@ -683,8 +748,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                         if (!empty) {
                             tNodes.select(index);
                             listener.selectNode(tNodes);
-                        }
-                        else {
+                        } else {
                             listener.selectNode(null);
                         }
                         listener.updateSelectedJobChain();
@@ -707,21 +771,28 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             directoryLabel.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
             tDirectory = JOE_T_JCNodesForm_Directory.Control(new Text(gFileOrderSource, SWT.BORDER));
             tDirectory.addModifyListener(new ModifyListener() {
-                @Override public void modifyText(final ModifyEvent e) {
+
+                @Override
+                public void modifyText(final ModifyEvent e) {
                     bApplyFileOrderSource.setEnabled(isValidSource());
                     if (bApplyFileOrderSource.getEnabled())
                         getShell().setDefaultButton(bApplyFileOrderSource);
                 }
             });
             tDirectory.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                 }
             });
             tDirectory.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-            @SuppressWarnings("unused") final Label delay_after_errorLabel = JOE_L_JCNodesForm_DelayAfterError.Control(new Label(gFileOrderSource, SWT.NONE));
+            @SuppressWarnings("unused")
+            final Label delay_after_errorLabel = JOE_L_JCNodesForm_DelayAfterError.Control(new Label(gFileOrderSource, SWT.NONE));
             tDelayAfterError = JOE_T_JCNodesForm_DelayAfterError.Control(new Text(gFileOrderSource, SWT.BORDER));
             tDelayAfterError.addModifyListener(new ModifyListener() {
-                @Override public void modifyText(final ModifyEvent e) {
+
+                @Override
+                public void modifyText(final ModifyEvent e) {
                     bApplyFileOrderSource.setEnabled(isValidSource());
                     if (bApplyFileOrderSource.getEnabled())
                         getShell().setDefaultButton(bApplyFileOrderSource);
@@ -730,7 +801,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             tDelayAfterError.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
             bApplyFileOrderSource = JOE_B_JCNodesForm_ApplyFileOrderSource.Control(new Button(gFileOrderSource, SWT.NONE));
             bApplyFileOrderSource.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     applyFileOrderSource();
                 }
             });
@@ -740,17 +813,22 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             regexLabel.setFont(SWTResourceManager.getFont("", 8, SWT.NONE));
             tRegex = JOE_T_JCNodesForm_Regex.Control(new Text(gFileOrderSource, SWT.BORDER));
             tRegex.addModifyListener(new ModifyListener() {
-                @Override public void modifyText(final ModifyEvent e) {
+
+                @Override
+                public void modifyText(final ModifyEvent e) {
                     bApplyFileOrderSource.setEnabled(isValidSource());
                     if (bApplyFileOrderSource.getEnabled())
                         getShell().setDefaultButton(bApplyFileOrderSource);
                 }
             });
             tRegex.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-            @SuppressWarnings("unused") final Label repeatLabel = JOE_L_JCNodesForm_Repeat.Control(new Label(gFileOrderSource, SWT.NONE));
+            @SuppressWarnings("unused")
+            final Label repeatLabel = JOE_L_JCNodesForm_Repeat.Control(new Label(gFileOrderSource, SWT.NONE));
             tRepeat = JOE_T_JCNodesForm_Repeat.Control(new Text(gFileOrderSource, SWT.BORDER));
             tRepeat.addModifyListener(new ModifyListener() {
-                @Override public void modifyText(final ModifyEvent e) {
+
+                @Override
+                public void modifyText(final ModifyEvent e) {
                     bApplyFileOrderSource.setEnabled(isValidSource());
                     if (bApplyFileOrderSource.getEnabled())
                         getShell().setDefaultButton(bApplyFileOrderSource);
@@ -758,20 +836,26 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             });
             tRepeat.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
             new Label(gFileOrderSource, SWT.NONE);
-            @SuppressWarnings("unused") final Label maxLabel = JOE_L_JCNodesForm_Max.Control(new Label(gFileOrderSource, SWT.NONE));
+            @SuppressWarnings("unused")
+            final Label maxLabel = JOE_L_JCNodesForm_Max.Control(new Label(gFileOrderSource, SWT.NONE));
             tMax = JOE_T_JCNodesForm_Max.Control(new Text(gFileOrderSource, SWT.BORDER));
             tMax.addModifyListener(new ModifyListener() {
-                @Override public void modifyText(final ModifyEvent e) {
+
+                @Override
+                public void modifyText(final ModifyEvent e) {
                     bApplyFileOrderSource.setEnabled(isValidSource());
                     if (bApplyFileOrderSource.getEnabled())
                         getShell().setDefaultButton(bApplyFileOrderSource);
                 }
             });
             tMax.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-            @SuppressWarnings("unused") final Label stateLabel = JOE_L_JCNodesForm_NextState.Control(new Label(gFileOrderSource, SWT.NONE));
+            @SuppressWarnings("unused")
+            final Label stateLabel = JOE_L_JCNodesForm_NextState.Control(new Label(gFileOrderSource, SWT.NONE));
             tNextState = JOE_T_JCNodesForm_NextState.Control(new Text(gFileOrderSource, SWT.BORDER));
             tNextState.addModifyListener(new ModifyListener() {
-                @Override public void modifyText(final ModifyEvent e) {
+
+                @Override
+                public void modifyText(final ModifyEvent e) {
                     bApplyFileOrderSource.setEnabled(isValidSource());
                     if (bApplyFileOrderSource.getEnabled())
                         getShell().setDefaultButton(bApplyFileOrderSource);
@@ -783,7 +867,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             dumm2.setEnabled(false);
             tFileOrderSource = JOE_Tbl_JCNodesForm_FileOrderSource.Control(new Table(gFileOrderSource, SWT.BORDER));
             tFileOrderSource.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     if (tFileOrderSource.getSelectionCount() > 0) {
                         listener.selectFileOrderSource(tFileOrderSource);
                         bApplyFileOrderSource.setEnabled(false);
@@ -807,7 +893,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             newColumnTableColumn_2.setWidth(100);
             bNewFileOrderSource = JOE_B_JCNodesForm_NewFileOrderSource.Control(new Button(gFileOrderSource, SWT.NONE));
             bNewFileOrderSource.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     getShell().setDefaultButton(null);
                     tFileOrderSource.deselectAll();
                     listener.selectFileOrderSource(null);
@@ -822,9 +910,12 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             new Label(gFileOrderSource, SWT.NONE);
             new Label(gFileOrderSource, SWT.NONE);
             bRemoveFileOrderSource.addSelectionListener(new SelectionAdapter() {
-                @Override public void widgetSelected(final SelectionEvent e) {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
                     if (tFileOrderSource.getSelectionCount() > 0) {
-                        //bFileSink.setEnabled(tFileOrderSource.getItemCount() > 0);
+                        // bFileSink.setEnabled(tFileOrderSource.getItemCount()
+                        // > 0);
                         tMoveTo.setEnabled(tFileOrderSource.getItemCount() > 0);
                         bRemoveFile.setEnabled(tFileOrderSource.getItemCount() > 0);
                         int index = tFileOrderSource.getSelectionIndex();
@@ -839,8 +930,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                         if (!empty) {
                             tFileOrderSource.select(index);
                             listener.selectFileOrderSource(tFileOrderSource);
-                        }
-                        else {
+                        } else {
                             listener.selectFileOrderSource(null);
                         }
                     }
@@ -848,8 +938,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             });
             bRemoveFileOrderSource.setEnabled(false);
             bRemoveFileOrderSource.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, true));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
         }
     }
@@ -866,7 +955,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
     private void enableNode(boolean enable) {
         bFullNode.setEnabled(enable);
         bEndNode.setEnabled(enable);
-        //bFileSink.setEnabled(enable && tFileOrderSource.getItemCount() > 0);
+        // bFileSink.setEnabled(enable && tFileOrderSource.getItemCount() > 0);
         bFileSink.setEnabled(enable);
         tState.setEnabled(enable);
         cJob.setEnabled(enable);
@@ -893,27 +982,27 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
         bApplyFileOrderSource.setEnabled(false);
     }
 
-	private String[] initStateCombo(){
-	   TableItem[] items = tNodes.getItems();
-	   HashMap <String,String> states = new HashMap<String, String>();
-	   for (int i = 0; i < items.length; i++) {
-		   String s = tNodes.getItem(i).getText(0);
-	       if (!tState.getText().equals(s)){
-	          states.put(s,s);
-    	   }
-	   }
+    private String[] initStateCombo() {
+        TableItem[] items = tNodes.getItems();
+        HashMap<String, String> states = new HashMap<String, String>();
+        for (int i = 0; i < items.length; i++) {
+            String s = tNodes.getItem(i).getText(0);
+            if (!tState.getText().equals(s)) {
+                states.put(s, s);
+            }
+        }
 
-	   states.put("success", "succes");
-	   states.put("error", "error");
+        states.put("success", "succes");
+        states.put("error", "error");
 
-	   String[] retStates = new String[states.size()];
-	   int index = 0;
-	   for (String key : states.keySet()) {
-		   retStates[index] = key;
-		   index = index +1;
-	   }
-       return retStates;
-	}
+        String[] retStates = new String[states.size()];
+        int index = 0;
+        for (String key : states.keySet()) {
+            retStates[index] = key;
+            index = index + 1;
+        }
+        return retStates;
+    }
 
     private void fillNode(boolean clear) {
         try {
@@ -934,11 +1023,10 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             tState.setText(clear ? "" : listener.getState());
             tDelay.setText(clear ? "" : listener.getDelay());
             cJob.setItems(listener.getJobs());
-			
-			cNextState.setItems(initStateCombo());
-			cErrorState.setItems(initStateCombo());
 
-             
+            cNextState.setItems(initStateCombo());
+            cErrorState.setItems(initStateCombo());
+
             tMoveTo.setText(listener.getMoveTo());
             bRemoveFile.setSelection(listener.getRemoveFile());
             int job = cJob.indexOf(listener.getJob());
@@ -962,8 +1050,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             else
                 cOnError.select(onError);
             bApplyNode.setEnabled(false);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
         }
     }
@@ -986,14 +1073,11 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                 msg = JOE_M_JobChain_StateAlreadyDefined.label();
             if (!msg.equals("")) {
                 MainWindow.message(msg, SWT.ICON_INFORMATION);
-            }
-            else {
-                if (isInsert){
-                    listener.applyInsertNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(),
-                            cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), cOnError.getText());
-                }else{
-                    listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(),
-                            cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), cOnError.getText());
+            } else {
+                if (isInsert) {
+                    listener.applyInsertNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), cOnError.getText());
+                } else {
+                    listener.applyNode(bFullNode.getSelection() || bEndNode.getSelection(), tState.getText(), cJob.getText(), tDelay.getText(), cNextState.getText(), cErrorState.getText(), bRemoveFile.getSelection(), tMoveTo.getText(), cOnError.getText());
                 }
                 DetailsListener.checkDetailsParameter(tState.getText(), listener.getChainName(), cJob.getText(), dom, update);
                 listener.fillChain(tNodes);
@@ -1004,17 +1088,15 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                 enableNode(false);
             }
             isInsert = false;
-        	listener.updateSelectedJobChain();
-        }
-        catch (Exception e) {
-           new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+            listener.updateSelectedJobChain();
+        } catch (Exception e) {
+            new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
         }
     }
 
     private void applyFileOrderSource() {
         if (Utils.isRegExpressions(tRegex.getText())) {
-            listener.applyFileOrderSource(tDirectory.getText(), tRegex.getText(), tNextState.getText(), tMax.getText(), tRepeat.getText(),
-                    tDelayAfterError.getText());
+            listener.applyFileOrderSource(tDirectory.getText(), tRegex.getText(), tNextState.getText(), tMax.getText(), tRepeat.getText(), tDelayAfterError.getText());
             listener.fillFileOrderSource(tFileOrderSource);
             bApplyFileOrderSource.setEnabled(false);
             bRemoveFileOrderSource.setEnabled(false);
@@ -1024,8 +1106,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             listener.selectFileOrderSource(null);
             fillFileOrderSource(true);
             enableFileOrderSource(false);
-        }
-        else {
+        } else {
             MainWindow.message(JOE_M_NoRegex.params(tRegex.getText()), SWT.ICON_INFORMATION);
         }
     }
@@ -1033,8 +1114,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
     private boolean isValidNode() {
         if (tState.getText().equals("") || bFullNode.getSelection() && cJob.getText().equals("")) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -1042,8 +1122,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
     private boolean isValidSource() {
         if (tDirectory.getText().equals("")) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -1059,8 +1138,7 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), isLifeElement, listener.get_dom().getFilename());
             detail.showDetails();
             detail.getDialogForm().setParamsForWizzard(listener.get_dom(), update, jobname);
-        }
-        else {
+        } else {
             DetailDialogForm detail = new DetailDialogForm(listener.getChainName(), state, null, isLifeElement, listener.get_dom().getFilename());
             detail.showDetails();
             detail.getDialogForm().setParamsForWizzard(listener.get_dom(), update, jobname);
@@ -1074,9 +1152,8 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                 applyNode();
             }
         }
-        
+
         listener.setJobchainListOfReturnCodeElements(new JobchainListOfReturnCodeElements());
- 
 
         if (tNodes.getSelectionCount() > 0) {
             listener.selectNode(tNodes);
@@ -1085,15 +1162,12 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
             butDetailsJob.setEnabled(true);
             butAddMissingNodes.setEnabled(!listener.checkForState(tNodes.getSelection()[0].getText(3))
                     || !listener.checkForState(tNodes.getSelection()[0].getText(4)));
-        }
-        else {
+        } else {
             butDetailsJob.setEnabled(false);
             butAddMissingNodes.setEnabled(false);
         }
         bRemoveNode.setEnabled(tNodes.getSelectionCount() > 0);
     }
-
- 
 
     // ein Job Chain hat entweder job_chain_node ODER job_chain_node.job_chain
     // Kindknoten.
@@ -1105,10 +1179,9 @@ public class JobChainNodesForm extends SOSJOEMessageCodes implements IUnsaved {
                 return true;
             else
                 return false;
-        }
-        catch (Exception e) {
-           new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
-           return true;
+        } catch (Exception e) {
+            new ErrorLog(JOE_E_0002.params(sos.util.SOSClassUtil.getMethodName()), e);
+            return true;
         }
     }
 } // @jve:decl-index=0:visual-constraint="10,10"

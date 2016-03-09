@@ -1,4 +1,5 @@
 package sos.scheduler.editor.conf.listeners;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,73 +14,74 @@ import sos.scheduler.editor.app.Utils;
 import com.sos.joe.xml.jobscheduler.SchedulerDom;
 
 public class BaseListener {
-	private SchedulerDom	_dom		= null;
-	private Element			_config		= null;
-	private Element			_baseFile	= null;
-	private List			_list		= null;
 
-	public BaseListener(SchedulerDom dom) throws JDOMException {
-		_dom = dom;
-		_config = _dom.getRoot().getChild("config");
-		_list = _config.getChildren("base");
-	}
+    private SchedulerDom _dom = null;
+    private Element _config = null;
+    private Element _baseFile = null;
+    private List _list = null;
 
-	public String getComment() {
-		return Utils.getAttributeValue("__comment__", _baseFile);
-	}
+    public BaseListener(SchedulerDom dom) throws JDOMException {
+        _dom = dom;
+        _config = _dom.getRoot().getChild("config");
+        _list = _config.getChildren("base");
+    }
 
-	public String[] getFiles() {
-		Iterator it = _list.iterator();
-		String[] files = new String[_list.size()];
-		int index = 0;
-		while (it.hasNext()) {
-			String file = ((Element) it.next()).getAttributeValue("file");
-			if (file == null)
-				file = "UNKNOWN FILE";
-			files[index++] = file;
-		}
-		return files;
-	}
+    public String getComment() {
+        return Utils.getAttributeValue("__comment__", _baseFile);
+    }
 
-	public void fillTable(Table table) {
-		table.removeAll();
-		for (Iterator it = _list.iterator(); it.hasNext();) {
-			Element e = (Element) it.next();
-			TableItem item = new TableItem(table, SWT.NONE);
-			item.setText(0, Utils.getAttributeValue("file", e));
-			String comment = Utils.getAttributeValue("__comment__", e);
-			if (comment.indexOf("\n") > -1)
-				comment = comment.substring(0, comment.indexOf("\n") - 1) + "...";
-			item.setText(1, comment);
-		}
-	}
+    public String[] getFiles() {
+        Iterator it = _list.iterator();
+        String[] files = new String[_list.size()];
+        int index = 0;
+        while (it.hasNext()) {
+            String file = ((Element) it.next()).getAttributeValue("file");
+            if (file == null)
+                file = "UNKNOWN FILE";
+            files[index++] = file;
+        }
+        return files;
+    }
 
-	public void selectBaseFile(int index) {
-		if (index >= 0 && index < _list.size())
-			_baseFile = (Element) _list.get(index);
-		else
-			_baseFile = null;
-	}
+    public void fillTable(Table table) {
+        table.removeAll();
+        for (Iterator it = _list.iterator(); it.hasNext();) {
+            Element e = (Element) it.next();
+            TableItem item = new TableItem(table, SWT.NONE);
+            item.setText(0, Utils.getAttributeValue("file", e));
+            String comment = Utils.getAttributeValue("__comment__", e);
+            if (comment.indexOf("\n") > -1)
+                comment = comment.substring(0, comment.indexOf("\n") - 1) + "...";
+            item.setText(1, comment);
+        }
+    }
 
-	public void newBaseFile() {
-		_baseFile = new Element("base");
-	}
+    public void selectBaseFile(int index) {
+        if (index >= 0 && index < _list.size())
+            _baseFile = (Element) _list.get(index);
+        else
+            _baseFile = null;
+    }
 
-	public void applyBaseFile(String file, String comment) {
-		_baseFile.setAttribute("file", file);
-		_baseFile.setAttribute("__comment__", comment);
-		if (!_list.contains(_baseFile))
-			_list.add(_baseFile);
-		_dom.setChanged(true);
-	}
+    public void newBaseFile() {
+        _baseFile = new Element("base");
+    }
 
-	public void removeBaseFile(int index) {
-		if (index >= 0 && index < _list.size())
-			_list.remove(index);
-		_dom.setChanged(true);
-	}
+    public void applyBaseFile(String file, String comment) {
+        _baseFile.setAttribute("file", file);
+        _baseFile.setAttribute("__comment__", comment);
+        if (!_list.contains(_baseFile))
+            _list.add(_baseFile);
+        _dom.setChanged(true);
+    }
 
-	public String getFile() {
-		return Utils.getAttributeValue("file", _baseFile);
-	}
+    public void removeBaseFile(int index) {
+        if (index >= 0 && index < _list.size())
+            _list.remove(index);
+        _dom.setChanged(true);
+    }
+
+    public String getFile() {
+        return Utils.getAttributeValue("file", _baseFile);
+    }
 }

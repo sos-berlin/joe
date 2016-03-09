@@ -22,15 +22,15 @@ import com.sos.joe.globals.options.Options;
 public class JobScript extends FormBaseClass {
 
     @SuppressWarnings("unused")
-    private final String conClassName       = "JobScript";
+    private final String conClassName = "JobScript";
     @SuppressWarnings("unused")
-    private final String conSVNVersion      = "$Id$";
-    private Group        group              = null;
-    private Combo        cboPrefunction     = null;
+    private final String conSVNVersion = "$Id$";
+    private Group group = null;
+    private Combo cboPrefunction = null;
     @SuppressWarnings("unused")
-	private boolean      init               = true;
-    private JobListener  objJobDataProvider = null;
-    private StyledText   tSource            = null;
+    private boolean init = true;
+    private JobListener objJobDataProvider = null;
+    private StyledText tSource = null;
 
     public JobScript(Composite pParentComposite, JobListener pobjJobDataProvider) {
         super(pParentComposite, pobjJobDataProvider);
@@ -52,11 +52,12 @@ public class JobScript extends FormBaseClass {
         group.setLayout(gridLayout_2);
 
         @SuppressWarnings("unused")
-		Label lblPrefunction1 = SOSJOEMessageCodes.JOE_L_JobScript_PredefinedFunctions.Control(new Label(group, SWT.NONE));
-        
+        Label lblPrefunction1 = SOSJOEMessageCodes.JOE_L_JobScript_PredefinedFunctions.Control(new Label(group, SWT.NONE));
+
         cboPrefunction = SOSJOEMessageCodes.JOE_Cbo_JobScript_PredefinedFunctions.Control(new Combo(group, intComboBoxStyle));
         cboPrefunction.setVisibleItemCount(7);
         cboPrefunction.addSelectionListener(new SelectionAdapter() {
+
             public void widgetSelected(final SelectionEvent e) {
                 if (cboPrefunction.getText().length() > 0) {
                     String lan = "function_" + objJobDataProvider.getLanguage(objJobDataProvider.getLanguage()) + "_";
@@ -71,7 +72,7 @@ public class JobScript extends FormBaseClass {
             }
         });
         cboPrefunction.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-        
+
         final TextArea txtPrePostProcessingScriptCode = new TextArea(group, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL);
         txtPrePostProcessingScriptCode.setDataProvider(objJobDataProvider, enuSourceTypes.ScriptSource);
         tSource = txtPrePostProcessingScriptCode.getControl();
